@@ -95,14 +95,15 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.BindComments(this, FullLocation);
         }
 
+        protected virtual T BodyDeclaringSymbol => symbol;
+
         public BlockSyntax Block
         {
             get
             {
-                return symbol.
+                return BodyDeclaringSymbol.
                     DeclaringSyntaxReferences.
-                    Select(r => r.GetSyntax()).
-                    SelectMany(n => n.ChildNodes()).
+                    SelectMany(r => r.GetSyntax().ChildNodes()).
                     OfType<BlockSyntax>().
                     FirstOrDefault();
             }
@@ -112,7 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return symbol.
+                return BodyDeclaringSymbol.
                     DeclaringSyntaxReferences.
                     SelectMany(r => r.GetSyntax().ChildNodes()).
                     OfType<ArrowExpressionClauseSyntax>().
@@ -135,16 +136,32 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.metadata_handle(this, Location, MetadataTokens.GetToken(handle.Value));
         }
 
+        static System.Reflection.PropertyInfo GetPropertyInfo(object o, string name) =>
+            o.GetType().GetProperty(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetProperty);
+
         public Handle? MetadataHandle
         {
             get
             {
-                var propertyInfo = symbol.GetType().GetProperty("Handle",
-                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetProperty);
+                var handleProp = GetPropertyInfo(symbol, "Handle");
+                object handleObj = symbol;
 
-                if (propertyInfo != null)
+                if (handleProp is null)
                 {
-                    switch (propertyInfo.GetValue(symbol))
+                    var underlyingSymbolProp = GetPropertyInfo(symbol, "UnderlyingSymbol");
+                    if (underlyingSymbolProp is object)
+                    {
+                        if (underlyingSymbolProp.GetValue(symbol) is object underlying)
+                        {
+                            handleProp = GetPropertyInfo(underlying, "Handle");
+                            handleObj = underlying;
+                        }
+                    }
+                }
+
+                if (handleProp is object)
+                {
+                    switch (handleProp.GetValue(handleObj))
                     {
                         case MethodDefinitionHandle md: return md;
                         case TypeDefinitionHandle td: return td;

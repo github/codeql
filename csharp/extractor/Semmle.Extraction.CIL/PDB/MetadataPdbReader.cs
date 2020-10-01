@@ -25,7 +25,7 @@ namespace Semmle.Extraction.PDB
 
             public string Path { get; private set; }
 
-            public string Contents => File.Exists(Path) ? File.ReadAllText(Path, System.Text.Encoding.Default) : null;
+            public string? Contents => File.Exists(Path) ? File.ReadAllText(Path, System.Text.Encoding.Default) : null;
         }
 
         // Turns out to be very important to keep the MetadataReaderProvider live
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.PDB
 
         public IEnumerable<ISourceFile> SourceFiles => reader.Documents.Select(handle => new SourceFile(reader, handle));
 
-        public IMethod GetMethod(MethodDebugInformationHandle handle)
+        public IMethod? GetMethod(MethodDebugInformationHandle handle)
         {
             var debugInfo = reader.GetMethodDebugInformation(handle);
 
@@ -51,10 +51,10 @@ namespace Semmle.Extraction.PDB
                 Where(p => p.Location.File.Path != null).
                 ToArray();
 
-            return sequencePoints.Any() ? new Method() { SequencePoints = sequencePoints } : null;
+            return sequencePoints.Any() ? new Method(sequencePoints) : null;
         }
 
-        public static MetadataPdbReader CreateFromAssembly(string assemblyPath, PEReader peReader)
+        public static MetadataPdbReader? CreateFromAssembly(string assemblyPath, PEReader peReader)
         {
             foreach (var provider in peReader.
                 ReadDebugDirectory().

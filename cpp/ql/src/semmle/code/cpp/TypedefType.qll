@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling typedefs and type aliases.
+ */
+
 import semmle.code.cpp.Type
 private import semmle.code.cpp.internal.ResolveClass
 
@@ -55,7 +59,7 @@ class TypedefType extends UserType {
 class CTypedefType extends TypedefType {
   CTypedefType() { usertypes(underlyingElement(this), _, 5) }
 
-  override string getCanonicalQLClass() { result = "CTypedefType" }
+  override string getAPrimaryQlClass() { result = "CTypedefType" }
 
   override string explain() {
     result = "typedef {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\""
@@ -71,7 +75,7 @@ class CTypedefType extends TypedefType {
 class UsingAliasTypedefType extends TypedefType {
   UsingAliasTypedefType() { usertypes(underlyingElement(this), _, 14) }
 
-  override string getCanonicalQLClass() { result = "UsingAliasTypedefType" }
+  override string getAPrimaryQlClass() { result = "UsingAliasTypedefType" }
 
   override string explain() {
     result = "using {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\""
@@ -88,7 +92,7 @@ class UsingAliasTypedefType extends TypedefType {
 class LocalTypedefType extends TypedefType {
   LocalTypedefType() { isLocal() }
 
-  override string getCanonicalQLClass() { result = "LocalTypedefType" }
+  override string getAPrimaryQlClass() { result = "LocalTypedefType" }
 }
 
 /**
@@ -101,7 +105,7 @@ class LocalTypedefType extends TypedefType {
 class NestedTypedefType extends TypedefType {
   NestedTypedefType() { this.isMember() }
 
-  override string getCanonicalQLClass() { result = "NestedTypedefType" }
+  override string getAPrimaryQlClass() { result = "NestedTypedefType" }
 
   /**
    * DEPRECATED: use `.hasSpecifier("private")` instead.

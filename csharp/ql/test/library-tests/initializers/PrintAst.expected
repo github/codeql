@@ -1,0 +1,58 @@
+initializers.cs:
+#    3| [Class] S1
+#    5|   5: [Field] P1
+#    6|   6: [Property] P2
+#    6|     3: [Getter] get_P2
+#    6|     4: [Setter] set_P2
+#-----|       2: (Parameters)
+#    6|         0: [Parameter] value
+#    7|   7: [Property] P3
+#    7|     3: [Setter] set_P3
+#-----|       2: (Parameters)
+#    7|         0: [Parameter] value
+#    7|       4: [BlockStmt] {...}
+#   10| [Class] S2
+#-----|   3: (Base types)
+#   10|     1: [Interface] IEnumerable
+#   12|   5: [Method] Add
+#-----|     2: (Parameters)
+#   12|       0: [Parameter] x
+#   12|     4: [BlockStmt] {...}
+#   13|   6: [Method] Add
+#-----|     2: (Parameters)
+#   13|       0: [Parameter] x
+#   13|       1: [Parameter] y
+#   13|     4: [BlockStmt] {...}
+#   14|   7: [Method] GetEnumerator
+#   14|     4: [BlockStmt] {...}
+#   14|       0: [ReturnStmt] return ...;
+#   14|         0: [NullLiteral] null
+#   17| [Class] Test
+#   19|   5: [Method] Main
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] args
+#   20|     4: [BlockStmt] {...}
+#   21|       0: [ExprStmt] ...;
+#   21|         0: [ObjectCreation] object creation of type S1
+#   21|           -1: [ObjectInitializer] { ..., ... }
+#   21|             0: [MemberInitializer] ... = ...
+#   21|               0: [IntLiteral] 1
+#   21|               1: [FieldAccess] access to field P1
+#   21|             1: [MemberInitializer] ... = ...
+#   21|               0: [IntLiteral] 2
+#   21|               1: [PropertyCall] access to property P2
+#   21|             2: [MemberInitializer] ... = ...
+#   21|               0: [IntLiteral] 3
+#   21|               1: [PropertyCall] access to property P3
+#   22|       1: [ExprStmt] ...;
+#   22|         0: [ObjectCreation] object creation of type S2
+#   22|           -1: [CollectionInitializer] { ..., ... }
+#   22|             0: [ElementInitializer] call to method Add
+#   22|               0: [IntLiteral] 1
+#   22|             1: [ElementInitializer] call to method Add
+#   22|               0: [IntLiteral] 2
+#   22|             2: [ElementInitializer] call to method Add
+#   22|               0: [IntLiteral] 3
+#   22|             3: [ElementInitializer] call to method Add
+#   22|               0: [IntLiteral] 4
+#   22|               1: [IntLiteral] 5

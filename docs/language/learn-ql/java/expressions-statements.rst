@@ -26,7 +26,7 @@ If ``l`` is bigger than 2\ :sup:`31`\ - 1 (the largest positive value of type ``
 
    All primitive numeric types have a maximum value, beyond which they will wrap around to their lowest possible value (called an "overflow"). For ``int``, this maximum value is 2\ :sup:`31`\ - 1. Type ``long`` can accommodate larger values up to a maximum of 2\ :sup:`63`\ - 1. In this example, this means that ``l`` can take on a value that is higher than the maximum for type ``int``; ``i`` will never be able to reach this value, instead overflowing and returning to a low value.
 
-We're going to develop a query that finds code that looks like it might exhibit this kind of behavior. We'll be using several of the standard library classes for representing statements and functions. For a full list, see :doc:`Abstract syntax tree classes for working with Java programs <ast-class-reference>`.
+We're going to develop a query that finds code that looks like it might exhibit this kind of behavior. We'll be using several of the standard library classes for representing statements and functions. For a full list, see ":doc:`Abstract syntax tree classes for working with Java programs <ast-class-reference>`."
 
 Initial query
 -------------
@@ -42,7 +42,7 @@ We'll start by writing a query that finds less-than expressions (CodeQL class ``
        expr.getRightOperand().getType().hasName("long")
    select expr
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/672320008/>`__. This query usually finds results on most projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/490866529746563234/>`__. This query usually finds results on most projects.
 
 Notice that we use the predicate ``getType`` (available on all subclasses of ``Expr``) to determine the type of the operands. Types, in turn, define the ``hasName`` predicate, which allows us to identify the primitive types ``int`` and ``long``. As it stands, this query finds *all* less-than expressions comparing ``int`` and ``long``, but in fact we are only interested in comparisons that are part of a loop condition. Also, we want to filter out comparisons where either operand is constant, since these are less likely to be real bugs. The revised query looks like this:
 
@@ -57,7 +57,7 @@ Notice that we use the predicate ``getType`` (available on all subclasses of ``E
        not expr.getAnOperand().isCompileTimeConstant()
    select expr
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/690010001/>`__. Notice that fewer results are found.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/4315986481180063825/>`__. Notice that fewer results are found.
 
 The class ``LoopStmt`` is a common superclass of all loops, including, in particular, ``for`` loops as in our example above. While different kinds of loops have different syntax, they all have a loop condition, which can be accessed through predicate ``getCondition``. We use the reflexive transitive closure operator ``*`` applied to the ``getAChildExpr`` predicate to express the requirement that ``expr`` should be nested inside the loop condition. In particular, it can be the loop condition itself.
 
@@ -120,7 +120,7 @@ Now we rewrite our query to make use of these new classes:
    not expr.getAnOperand().isCompileTimeConstant()
    select expr
 
-➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/1951710018/lang:java/>`__.
+➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/506868054626167462/>`__.
 
 Further reading
 ---------------

@@ -21,7 +21,7 @@ private import Conversion
  *
  * Example:
  *
- * ```
+ * ```csharp
  * interface I { void M(); }
  *
  * class A { public void M() { } }
@@ -52,7 +52,7 @@ predicate implements(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
  *
  * Example:
  *
- * ```
+ * ```csharp
  * interface I { void M(); }
  *
  * class A { public void M() { } }
@@ -143,10 +143,10 @@ private predicate getACompatibleInterfaceAccessorAux(
  * of the interface `i`. Note that the class or struct need not be a
  * sub type of the interface in the inheritance hierarchy:
  *
- * ```
- * interface I { void M() }
+ * ```csharp
+ * interface I { void M(); }
  *
- * class A { public void M() }
+ * class A { public void M() { } }
  *
  * class B { }
  *
@@ -259,7 +259,7 @@ private module Gvn {
   private newtype TGvnType =
     TLeafGvnType(LeafType t) or
     TMethodTypeParameterGvnType(int i) { i = any(MethodTypeParameter p).getIndex() } or
-    TConstructedGvnType(ConstructedGvnTypeList l)
+    TConstructedGvnType(ConstructedGvnTypeList l) { l.isFullyConstructed() }
 
   private newtype TConstructedGvnTypeList =
     TConstructedGvnTypeNil(Unification::CompoundTypeKind k) or
@@ -334,6 +334,10 @@ private module Gvn {
       )
     }
 
+    predicate isFullyConstructed() {
+      this.getKind().getNumberOfTypeParameters() - 1 = this.length()
+    }
+
     private GvnType getArg(int i) {
       exists(GvnType head, ConstructedGvnTypeList tail |
         this = TConstructedGvnTypeCons(head, tail)
@@ -345,47 +349,71 @@ private module Gvn {
       )
     }
 
+    private Unification::GenericType getConstructedGenericDeclaringTypeAt(int i) {
+      i = 0 and
+      result = this.getKind().getConstructedSourceDeclaration()
+      or
+      result = this.getConstructedGenericDeclaringTypeAt(i - 1).getGenericDeclaringType()
+    }
+
+    private predicate isDeclaringTypeAt(int i) {
+      exists(this.getConstructedGenericDeclaringTypeAt(i - 1))
+    }
+
     /**
-     * Gets a textual representation of this constructed type, restricted
-     * to the prefix `t` of the underlying source declaration type.
-     *
-     * The `toString()` calculation needs to be split up into prefixes, in
-     * order to apply the type arguments correctly. For example, a source
-     * declaration type `A<>.B.C<,>` applied to types `int, string, bool`
-     * needs to be printed as `A<int>.B.C<string,bool>`.
+     * Gets the `j`th `toString()` part of the `i`th nested component of this
+     * constructed type, if any. The nested components are sorted in reverse
+     * order, while the individual parts are sorted in normal order.
      */
     language[monotonicAggregates]
-    private string toStringConstructed(Unification::GenericType t) {
-      t = this.getKind().getConstructedSourceDeclaration().getGenericDeclaringType*() and
-      exists(int offset, int children, string name, string nameArgs |
-        offset = t.getNumberOfDeclaringArguments() and
-        children = t.getNumberOfArgumentsSelf() and
-        name = Unification::getNameNested(t) and
-        if children = 0
-        then nameArgs = name
-        else
-          exists(string offsetArgs |
-            offsetArgs =
-              concat(int i |
-                i in [offset .. offset + children - 1]
-              |
-                this.getArg(i).toString(), "," order by i
-              ) and
-            nameArgs = name.prefix(name.length() - children - 1) + "<" + offsetArgs + ">"
+    private string toStringConstructedPart(int i, int j) {
+      this.isFullyConstructed() and
+      exists(Unification::GenericType t |
+        t = this.getConstructedGenericDeclaringTypeAt(i) and
+        exists(int offset, int children, string name |
+          offset = t.getNumberOfDeclaringArguments() and
+          children = t.getNumberOfArgumentsSelf() and
+          name = Unification::getNameNested(t) and
+          if children = 0
+          then
+            j = 0 and result = name
+            or
+            this.isDeclaringTypeAt(i) and j = 1 and result = "."
+          else (
+            j = 0 and result = name.prefix(name.length() - children - 1) + "<"
+            or
+            j in [1 .. 2 * children - 1] and
+            if j % 2 = 0
+            then result = ","
+            else result = this.getArg((j + 1) / 2 + offset - 1).toString()
+            or
+            j = 2 * children and
+            result = ">"
+            or
+            this.isDeclaringTypeAt(i) and
+            j = 2 * children + 1 and
+            result = "."
           )
-      |
-        offset = 0 and result = nameArgs
-        or
-        result = this.toStringConstructed(t.getGenericDeclaringType()) + "." + nameArgs
+        )
       )
     }
 
     language[monotonicAggregates]
     string toString() {
+      this.isFullyConstructed() and
       exists(Unification::CompoundTypeKind k | k = this.getKind() |
         result = k.toStringBuiltin(this.getArg(0).toString())
         or
-        result = this.toStringConstructed(k.getConstructedSourceDeclaration())
+        result =
+          strictconcat(int i, int j |
+            exists(Unification::GenericType t, int children |
+              t = this.getConstructedGenericDeclaringTypeAt(i) and
+              children = t.getNumberOfArgumentsSelf() and
+              if children = 0 then j = 0 else j in [0 .. 2 * children]
+            )
+          |
+            this.toStringConstructedPart(i, j) order by i desc, j
+          )
       )
     }
 

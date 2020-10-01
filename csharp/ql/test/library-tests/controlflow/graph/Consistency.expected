@@ -5,3 +5,77 @@ breakInvariant3
 breakInvariant4
 breakInvariant5
 multipleSuccessors
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | successor | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | successor | ConditionalAccess.cs:30:10:30:12 | exit Out |
+| MultiImplementationA.cs:6:22:6:31 | enter get_P1 | successor | MultiImplementationA.cs:6:28:6:31 | null |
+| MultiImplementationA.cs:6:22:6:31 | enter get_P1 | successor | MultiImplementationB.cs:3:22:3:22 | 0 |
+| MultiImplementationA.cs:7:21:7:23 | enter get_P2 | successor | MultiImplementationA.cs:7:25:7:39 | {...} |
+| MultiImplementationA.cs:7:21:7:23 | enter get_P2 | successor | MultiImplementationB.cs:4:25:4:37 | {...} |
+| MultiImplementationA.cs:7:41:7:43 | enter set_P2 | successor | MultiImplementationA.cs:7:45:7:59 | {...} |
+| MultiImplementationA.cs:7:41:7:43 | enter set_P2 | successor | MultiImplementationB.cs:4:43:4:45 | {...} |
+| MultiImplementationA.cs:8:16:8:16 | enter M | successor | MultiImplementationA.cs:8:29:8:32 | null |
+| MultiImplementationA.cs:8:16:8:16 | enter M | successor | MultiImplementationB.cs:5:23:5:23 | 2 |
+| MultiImplementationA.cs:13:16:13:20 | ... = ... | successor | MultiImplementationA.cs:13:16:13:16 | this access |
+| MultiImplementationA.cs:13:16:13:20 | ... = ... | successor | MultiImplementationA.cs:24:16:24:16 | this access |
+| MultiImplementationA.cs:13:16:13:20 | ... = ... | successor | MultiImplementationB.cs:11:16:11:16 | this access |
+| MultiImplementationA.cs:13:16:13:20 | ... = ... | successor | MultiImplementationB.cs:22:16:22:16 | this access |
+| MultiImplementationA.cs:14:31:14:31 | enter get_Item | successor | MultiImplementationA.cs:14:31:14:31 | access to parameter i |
+| MultiImplementationA.cs:14:31:14:31 | enter get_Item | successor | MultiImplementationB.cs:12:37:12:40 | null |
+| MultiImplementationA.cs:15:36:15:38 | enter get_Item | successor | MultiImplementationA.cs:15:40:15:52 | {...} |
+| MultiImplementationA.cs:15:36:15:38 | enter get_Item | successor | MultiImplementationB.cs:13:40:13:54 | {...} |
+| MultiImplementationA.cs:15:54:15:56 | enter set_Item | successor | MultiImplementationA.cs:15:58:15:60 | {...} |
+| MultiImplementationA.cs:15:54:15:56 | enter set_Item | successor | MultiImplementationB.cs:13:60:13:62 | {...} |
+| MultiImplementationA.cs:16:17:16:18 | enter M1 | successor | MultiImplementationA.cs:17:5:19:5 | {...} |
+| MultiImplementationA.cs:16:17:16:18 | enter M1 | successor | MultiImplementationB.cs:15:5:17:5 | {...} |
+| MultiImplementationA.cs:20:12:20:13 | enter C2 | successor | MultiImplementationA.cs:13:16:13:16 | this access |
+| MultiImplementationA.cs:20:12:20:13 | enter C2 | successor | MultiImplementationB.cs:11:16:11:16 | this access |
+| MultiImplementationA.cs:21:12:21:13 | enter C2 | successor | MultiImplementationA.cs:21:24:21:24 | 0 |
+| MultiImplementationA.cs:21:12:21:13 | enter C2 | successor | MultiImplementationB.cs:19:24:19:24 | 1 |
+| MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | successor | MultiImplementationA.cs:21:27:21:29 | {...} |
+| MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | successor | MultiImplementationB.cs:19:27:19:29 | {...} |
+| MultiImplementationA.cs:22:6:22:7 | enter ~C2 | successor | MultiImplementationA.cs:22:11:22:13 | {...} |
+| MultiImplementationA.cs:22:6:22:7 | enter ~C2 | successor | MultiImplementationB.cs:20:11:20:25 | {...} |
+| MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | successor | MultiImplementationA.cs:23:50:23:53 | null |
+| MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | successor | MultiImplementationB.cs:21:56:21:59 | null |
+| MultiImplementationA.cs:24:32:24:34 | ... = ... | successor | MultiImplementationA.cs:20:22:20:31 | {...} |
+| MultiImplementationA.cs:24:32:24:34 | ... = ... | successor | MultiImplementationA.cs:24:16:24:16 | this access |
+| MultiImplementationA.cs:24:32:24:34 | ... = ... | successor | MultiImplementationB.cs:18:22:18:36 | {...} |
+| MultiImplementationA.cs:24:32:24:34 | ... = ... | successor | MultiImplementationB.cs:22:16:22:16 | this access |
+| MultiImplementationA.cs:36:9:36:10 | enter M1 | successor | MultiImplementationA.cs:36:14:36:28 | {...} |
+| MultiImplementationA.cs:36:9:36:10 | enter M1 | successor | MultiImplementationB.cs:32:17:32:17 | 0 |
+| MultiImplementationB.cs:3:22:3:22 | enter get_P1 | successor | MultiImplementationA.cs:6:28:6:31 | null |
+| MultiImplementationB.cs:3:22:3:22 | enter get_P1 | successor | MultiImplementationB.cs:3:22:3:22 | 0 |
+| MultiImplementationB.cs:4:21:4:23 | enter get_P2 | successor | MultiImplementationA.cs:7:25:7:39 | {...} |
+| MultiImplementationB.cs:4:21:4:23 | enter get_P2 | successor | MultiImplementationB.cs:4:25:4:37 | {...} |
+| MultiImplementationB.cs:4:39:4:41 | enter set_P2 | successor | MultiImplementationA.cs:7:45:7:59 | {...} |
+| MultiImplementationB.cs:4:39:4:41 | enter set_P2 | successor | MultiImplementationB.cs:4:43:4:45 | {...} |
+| MultiImplementationB.cs:5:16:5:16 | enter M | successor | MultiImplementationA.cs:8:29:8:32 | null |
+| MultiImplementationB.cs:5:16:5:16 | enter M | successor | MultiImplementationB.cs:5:23:5:23 | 2 |
+| MultiImplementationB.cs:11:16:11:20 | ... = ... | successor | MultiImplementationA.cs:13:16:13:16 | this access |
+| MultiImplementationB.cs:11:16:11:20 | ... = ... | successor | MultiImplementationA.cs:24:16:24:16 | this access |
+| MultiImplementationB.cs:11:16:11:20 | ... = ... | successor | MultiImplementationB.cs:11:16:11:16 | this access |
+| MultiImplementationB.cs:11:16:11:20 | ... = ... | successor | MultiImplementationB.cs:22:16:22:16 | this access |
+| MultiImplementationB.cs:12:31:12:40 | enter get_Item | successor | MultiImplementationA.cs:14:31:14:31 | access to parameter i |
+| MultiImplementationB.cs:12:31:12:40 | enter get_Item | successor | MultiImplementationB.cs:12:37:12:40 | null |
+| MultiImplementationB.cs:13:36:13:38 | enter get_Item | successor | MultiImplementationA.cs:15:40:15:52 | {...} |
+| MultiImplementationB.cs:13:36:13:38 | enter get_Item | successor | MultiImplementationB.cs:13:40:13:54 | {...} |
+| MultiImplementationB.cs:13:56:13:58 | enter set_Item | successor | MultiImplementationA.cs:15:58:15:60 | {...} |
+| MultiImplementationB.cs:13:56:13:58 | enter set_Item | successor | MultiImplementationB.cs:13:60:13:62 | {...} |
+| MultiImplementationB.cs:14:17:14:18 | enter M1 | successor | MultiImplementationA.cs:17:5:19:5 | {...} |
+| MultiImplementationB.cs:14:17:14:18 | enter M1 | successor | MultiImplementationB.cs:15:5:17:5 | {...} |
+| MultiImplementationB.cs:18:12:18:13 | enter C2 | successor | MultiImplementationA.cs:13:16:13:16 | this access |
+| MultiImplementationB.cs:18:12:18:13 | enter C2 | successor | MultiImplementationB.cs:11:16:11:16 | this access |
+| MultiImplementationB.cs:19:12:19:13 | enter C2 | successor | MultiImplementationA.cs:21:24:21:24 | 0 |
+| MultiImplementationB.cs:19:12:19:13 | enter C2 | successor | MultiImplementationB.cs:19:24:19:24 | 1 |
+| MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | successor | MultiImplementationA.cs:21:27:21:29 | {...} |
+| MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | successor | MultiImplementationB.cs:19:27:19:29 | {...} |
+| MultiImplementationB.cs:20:6:20:7 | enter ~C2 | successor | MultiImplementationA.cs:22:11:22:13 | {...} |
+| MultiImplementationB.cs:20:6:20:7 | enter ~C2 | successor | MultiImplementationB.cs:20:11:20:25 | {...} |
+| MultiImplementationB.cs:21:28:21:35 | enter implicit conversion | successor | MultiImplementationA.cs:23:50:23:53 | null |
+| MultiImplementationB.cs:21:28:21:35 | enter implicit conversion | successor | MultiImplementationB.cs:21:56:21:59 | null |
+| MultiImplementationB.cs:22:32:22:34 | ... = ... | successor | MultiImplementationA.cs:20:22:20:31 | {...} |
+| MultiImplementationB.cs:22:32:22:34 | ... = ... | successor | MultiImplementationA.cs:24:16:24:16 | this access |
+| MultiImplementationB.cs:22:32:22:34 | ... = ... | successor | MultiImplementationB.cs:18:22:18:36 | {...} |
+| MultiImplementationB.cs:22:32:22:34 | ... = ... | successor | MultiImplementationB.cs:22:16:22:16 | this access |
+| MultiImplementationB.cs:32:9:32:10 | enter M1 | successor | MultiImplementationA.cs:36:14:36:28 | {...} |
+| MultiImplementationB.cs:32:9:32:10 | enter M1 | successor | MultiImplementationB.cs:32:17:32:17 | 0 |

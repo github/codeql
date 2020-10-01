@@ -5,6 +5,7 @@ using Semmle.Util.Logging;
 using System;
 using Semmle.Extraction.Entities;
 using System.IO;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -47,9 +48,9 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(cx.assemblyPath.Replace("\\", "/"));
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return GetType() == obj.GetType() && Equals(file, ((Assembly)obj).file);
+            return GetType() == obj?.GetType() && Equals(file, ((Assembly)obj).file);
         }
 
         public override int GetHashCode() => 7 * file.GetHashCode();
@@ -63,7 +64,7 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 yield return file;
-                yield return Tuples.assemblies(this, file, FullName, assemblyName.Name, assemblyName.Version.ToString());
+                yield return Tuples.assemblies(this, file, FullName, assemblyName.Name ?? string.Empty, assemblyName.Version?.ToString() ?? string.Empty);
 
                 if (cx.pdb != null)
                 {
@@ -75,7 +76,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 foreach (var handle in cx.mdReader.TypeDefinitions)
                 {
-                    IExtractionProduct product = null;
+                    IExtractionProduct? product = null;
                     try
                     {
                         product = cx.Create(handle);
@@ -92,7 +93,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 foreach (var handle in cx.mdReader.MethodDefinitions)
                 {
-                    IExtractionProduct product = null;
+                    IExtractionProduct? product = null;
                     try
                     {
                         product = cx.Create(handle);
@@ -134,14 +135,17 @@ namespace Semmle.Extraction.CIL.Entities
             extracted = false;
             try
             {
-                var extractor = new Extractor(false, assemblyPath, logger);
-                var project = layout.LookupProjectOrDefault(assemblyPath);
-                using (var trapWriter = project.CreateTrapWriter(logger, assemblyPath + ".cil", true, trapCompression))
+                var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
+                var pathTransformer = new PathTransformer(canonicalPathCache);
+                var extractor = new Extractor(false, assemblyPath, logger, pathTransformer);
+                var transformedAssemblyPath = pathTransformer.Transform(assemblyPath);
+                var project = layout.LookupProjectOrDefault(transformedAssemblyPath);
+                using (var trapWriter = project.CreateTrapWriter(logger, transformedAssemblyPath.WithSuffix(".cil"), true, trapCompression))
                 {
                     trapFile = trapWriter.TrapFile;
                     if (nocache || !System.IO.File.Exists(trapFile))
                     {
-                        var cx = extractor.CreateContext(null, trapWriter, null);
+                        var cx = extractor.CreateContext(null, trapWriter, null, false);
                         ExtractCIL(cx, assemblyPath, extractPdbs);
                         extracted = true;
                     }

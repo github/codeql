@@ -493,11 +493,21 @@
 | ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:13:25:14 | "" |
 | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:13:25:14 | "" |
 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:25:31:25:31 | access to local variable s |
-| ConditionalAccess.cs:31:70:31:71 | access to parameter s1 | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 |
-| ConditionalAccess.cs:31:70:31:78 | ... + ... | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 |
-| ConditionalAccess.cs:31:70:31:83 | ... + ... | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 |
-| ConditionalAccess.cs:31:75:31:78 | ", " | ConditionalAccess.cs:31:75:31:78 | ", " |
-| ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | ConditionalAccess.cs:31:82:31:83 | access to parameter s2 |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:32:30:32 | 0 |
+| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:32:30:32 | 0 |
+| ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:33:5:36:5 | {...} |
+| ConditionalAccess.cs:34:9:34:13 | ... = ... | ConditionalAccess.cs:34:13:34:13 | 0 |
+| ConditionalAccess.cs:34:9:34:14 | ...; | ConditionalAccess.cs:34:9:34:14 | ...; |
+| ConditionalAccess.cs:34:13:34:13 | 0 | ConditionalAccess.cs:34:13:34:13 | 0 |
+| ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:35:9:35:12 | this access |
+| ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:12 | this access |
+| ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:25 | ...; |
+| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:12 | this access |
+| ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
+| ConditionalAccess.cs:41:70:41:78 | ... + ... | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
+| ConditionalAccess.cs:41:70:41:83 | ... + ... | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
+| ConditionalAccess.cs:41:75:41:78 | ", " | ConditionalAccess.cs:41:75:41:78 | ", " |
+| ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 |
 | Conditions.cs:4:5:9:5 | {...} | Conditions.cs:4:5:9:5 | {...} |
 | Conditions.cs:5:9:6:16 | if (...) ... | Conditions.cs:5:9:6:16 | if (...) ... |
 | Conditions.cs:5:13:5:15 | access to parameter inc | Conditions.cs:5:13:5:15 | access to parameter inc |
@@ -1408,24 +1418,24 @@
 | LoopUnrolling.cs:9:13:9:28 | ... == ... | LoopUnrolling.cs:9:13:9:16 | access to parameter args |
 | LoopUnrolling.cs:9:28:9:28 | 0 | LoopUnrolling.cs:9:28:9:28 | 0 |
 | LoopUnrolling.cs:10:13:10:19 | return ...; | LoopUnrolling.cs:10:13:10:19 | return ...; |
-| LoopUnrolling.cs:11:9:12:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:11:28:11:31 | access to parameter args |
-| LoopUnrolling.cs:11:21:11:23 | String arg | LoopUnrolling.cs:11:21:11:23 | String arg |
-| LoopUnrolling.cs:11:28:11:31 | access to parameter args | LoopUnrolling.cs:11:28:11:31 | access to parameter args |
+| LoopUnrolling.cs:11:9:12:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:11:29:11:32 | access to parameter args |
+| LoopUnrolling.cs:11:22:11:24 | String arg | LoopUnrolling.cs:11:22:11:24 | String arg |
+| LoopUnrolling.cs:11:29:11:32 | access to parameter args | LoopUnrolling.cs:11:29:11:32 | access to parameter args |
 | LoopUnrolling.cs:12:13:12:34 | call to method WriteLine | LoopUnrolling.cs:12:31:12:33 | access to local variable arg |
 | LoopUnrolling.cs:12:13:12:35 | ...; | LoopUnrolling.cs:12:13:12:35 | ...; |
 | LoopUnrolling.cs:12:31:12:33 | access to local variable arg | LoopUnrolling.cs:12:31:12:33 | access to local variable arg |
 | LoopUnrolling.cs:16:5:20:5 | {...} | LoopUnrolling.cs:16:5:20:5 | {...} |
-| LoopUnrolling.cs:17:9:17:47 | ... ...; | LoopUnrolling.cs:17:9:17:47 | ... ...; |
-| LoopUnrolling.cs:17:13:17:46 | String[] xs = ... | LoopUnrolling.cs:17:18:17:46 | array creation of type String[] |
-| LoopUnrolling.cs:17:18:17:46 | 3 | LoopUnrolling.cs:17:18:17:46 | 3 |
-| LoopUnrolling.cs:17:18:17:46 | array creation of type String[] | LoopUnrolling.cs:17:18:17:46 | array creation of type String[] |
-| LoopUnrolling.cs:17:30:17:46 | { ..., ... } | LoopUnrolling.cs:17:32:17:34 | "a" |
-| LoopUnrolling.cs:17:32:17:34 | "a" | LoopUnrolling.cs:17:32:17:34 | "a" |
-| LoopUnrolling.cs:17:37:17:39 | "b" | LoopUnrolling.cs:17:37:17:39 | "b" |
-| LoopUnrolling.cs:17:42:17:44 | "c" | LoopUnrolling.cs:17:42:17:44 | "c" |
-| LoopUnrolling.cs:18:9:19:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:18:26:18:27 | access to local variable xs |
-| LoopUnrolling.cs:18:21:18:21 | String x | LoopUnrolling.cs:18:21:18:21 | String x |
-| LoopUnrolling.cs:18:26:18:27 | access to local variable xs | LoopUnrolling.cs:18:26:18:27 | access to local variable xs |
+| LoopUnrolling.cs:17:9:17:48 | ... ...; | LoopUnrolling.cs:17:9:17:48 | ... ...; |
+| LoopUnrolling.cs:17:13:17:47 | String[] xs = ... | LoopUnrolling.cs:17:18:17:47 | array creation of type String[] |
+| LoopUnrolling.cs:17:18:17:47 | 3 | LoopUnrolling.cs:17:18:17:47 | 3 |
+| LoopUnrolling.cs:17:18:17:47 | array creation of type String[] | LoopUnrolling.cs:17:18:17:47 | array creation of type String[] |
+| LoopUnrolling.cs:17:31:17:47 | { ..., ... } | LoopUnrolling.cs:17:33:17:35 | "a" |
+| LoopUnrolling.cs:17:33:17:35 | "a" | LoopUnrolling.cs:17:33:17:35 | "a" |
+| LoopUnrolling.cs:17:38:17:40 | "b" | LoopUnrolling.cs:17:38:17:40 | "b" |
+| LoopUnrolling.cs:17:43:17:45 | "c" | LoopUnrolling.cs:17:43:17:45 | "c" |
+| LoopUnrolling.cs:18:9:19:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:18:27:18:28 | access to local variable xs |
+| LoopUnrolling.cs:18:22:18:22 | String x | LoopUnrolling.cs:18:22:18:22 | String x |
+| LoopUnrolling.cs:18:27:18:28 | access to local variable xs | LoopUnrolling.cs:18:27:18:28 | access to local variable xs |
 | LoopUnrolling.cs:19:13:19:32 | call to method WriteLine | LoopUnrolling.cs:19:31:19:31 | access to local variable x |
 | LoopUnrolling.cs:19:13:19:33 | ...; | LoopUnrolling.cs:19:13:19:33 | ...; |
 | LoopUnrolling.cs:19:31:19:31 | access to local variable x | LoopUnrolling.cs:19:31:19:31 | access to local variable x |
@@ -1444,70 +1454,70 @@
 | LoopUnrolling.cs:31:13:31:30 | String[] xs = ... | LoopUnrolling.cs:31:29:31:29 | 0 |
 | LoopUnrolling.cs:31:18:31:30 | array creation of type String[] | LoopUnrolling.cs:31:29:31:29 | 0 |
 | LoopUnrolling.cs:31:29:31:29 | 0 | LoopUnrolling.cs:31:29:31:29 | 0 |
-| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:32:26:32:27 | access to local variable xs |
-| LoopUnrolling.cs:32:21:32:21 | String x | LoopUnrolling.cs:32:21:32:21 | String x |
-| LoopUnrolling.cs:32:26:32:27 | access to local variable xs | LoopUnrolling.cs:32:26:32:27 | access to local variable xs |
+| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:32:27:32:28 | access to local variable xs |
+| LoopUnrolling.cs:32:22:32:22 | String x | LoopUnrolling.cs:32:22:32:22 | String x |
+| LoopUnrolling.cs:32:27:32:28 | access to local variable xs | LoopUnrolling.cs:32:27:32:28 | access to local variable xs |
 | LoopUnrolling.cs:33:13:33:32 | call to method WriteLine | LoopUnrolling.cs:33:31:33:31 | access to local variable x |
 | LoopUnrolling.cs:33:13:33:33 | ...; | LoopUnrolling.cs:33:13:33:33 | ...; |
 | LoopUnrolling.cs:33:31:33:31 | access to local variable x | LoopUnrolling.cs:33:31:33:31 | access to local variable x |
 | LoopUnrolling.cs:37:5:43:5 | {...} | LoopUnrolling.cs:37:5:43:5 | {...} |
-| LoopUnrolling.cs:38:9:38:47 | ... ...; | LoopUnrolling.cs:38:9:38:47 | ... ...; |
-| LoopUnrolling.cs:38:13:38:46 | String[] xs = ... | LoopUnrolling.cs:38:18:38:46 | array creation of type String[] |
-| LoopUnrolling.cs:38:18:38:46 | 3 | LoopUnrolling.cs:38:18:38:46 | 3 |
-| LoopUnrolling.cs:38:18:38:46 | array creation of type String[] | LoopUnrolling.cs:38:18:38:46 | array creation of type String[] |
-| LoopUnrolling.cs:38:30:38:46 | { ..., ... } | LoopUnrolling.cs:38:32:38:34 | "a" |
-| LoopUnrolling.cs:38:32:38:34 | "a" | LoopUnrolling.cs:38:32:38:34 | "a" |
-| LoopUnrolling.cs:38:37:38:39 | "b" | LoopUnrolling.cs:38:37:38:39 | "b" |
-| LoopUnrolling.cs:38:42:38:44 | "c" | LoopUnrolling.cs:38:42:38:44 | "c" |
-| LoopUnrolling.cs:39:9:39:47 | ... ...; | LoopUnrolling.cs:39:9:39:47 | ... ...; |
-| LoopUnrolling.cs:39:13:39:46 | String[] ys = ... | LoopUnrolling.cs:39:18:39:46 | array creation of type String[] |
-| LoopUnrolling.cs:39:18:39:46 | 3 | LoopUnrolling.cs:39:18:39:46 | 3 |
-| LoopUnrolling.cs:39:18:39:46 | array creation of type String[] | LoopUnrolling.cs:39:18:39:46 | array creation of type String[] |
-| LoopUnrolling.cs:39:30:39:46 | { ..., ... } | LoopUnrolling.cs:39:32:39:34 | "0" |
-| LoopUnrolling.cs:39:32:39:34 | "0" | LoopUnrolling.cs:39:32:39:34 | "0" |
-| LoopUnrolling.cs:39:37:39:39 | "1" | LoopUnrolling.cs:39:37:39:39 | "1" |
-| LoopUnrolling.cs:39:42:39:44 | "2" | LoopUnrolling.cs:39:42:39:44 | "2" |
-| LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | LoopUnrolling.cs:40:26:40:27 | access to local variable xs |
-| LoopUnrolling.cs:40:21:40:21 | String x | LoopUnrolling.cs:40:21:40:21 | String x |
-| LoopUnrolling.cs:40:26:40:27 | access to local variable xs | LoopUnrolling.cs:40:26:40:27 | access to local variable xs |
-| LoopUnrolling.cs:41:13:42:41 | foreach (... ... in ...) ... | LoopUnrolling.cs:41:30:41:31 | access to local variable ys |
-| LoopUnrolling.cs:41:25:41:25 | String y | LoopUnrolling.cs:41:25:41:25 | String y |
-| LoopUnrolling.cs:41:30:41:31 | access to local variable ys | LoopUnrolling.cs:41:30:41:31 | access to local variable ys |
+| LoopUnrolling.cs:38:9:38:48 | ... ...; | LoopUnrolling.cs:38:9:38:48 | ... ...; |
+| LoopUnrolling.cs:38:13:38:47 | String[] xs = ... | LoopUnrolling.cs:38:18:38:47 | array creation of type String[] |
+| LoopUnrolling.cs:38:18:38:47 | 3 | LoopUnrolling.cs:38:18:38:47 | 3 |
+| LoopUnrolling.cs:38:18:38:47 | array creation of type String[] | LoopUnrolling.cs:38:18:38:47 | array creation of type String[] |
+| LoopUnrolling.cs:38:31:38:47 | { ..., ... } | LoopUnrolling.cs:38:33:38:35 | "a" |
+| LoopUnrolling.cs:38:33:38:35 | "a" | LoopUnrolling.cs:38:33:38:35 | "a" |
+| LoopUnrolling.cs:38:38:38:40 | "b" | LoopUnrolling.cs:38:38:38:40 | "b" |
+| LoopUnrolling.cs:38:43:38:45 | "c" | LoopUnrolling.cs:38:43:38:45 | "c" |
+| LoopUnrolling.cs:39:9:39:48 | ... ...; | LoopUnrolling.cs:39:9:39:48 | ... ...; |
+| LoopUnrolling.cs:39:13:39:47 | String[] ys = ... | LoopUnrolling.cs:39:18:39:47 | array creation of type String[] |
+| LoopUnrolling.cs:39:18:39:47 | 3 | LoopUnrolling.cs:39:18:39:47 | 3 |
+| LoopUnrolling.cs:39:18:39:47 | array creation of type String[] | LoopUnrolling.cs:39:18:39:47 | array creation of type String[] |
+| LoopUnrolling.cs:39:31:39:47 | { ..., ... } | LoopUnrolling.cs:39:33:39:35 | "0" |
+| LoopUnrolling.cs:39:33:39:35 | "0" | LoopUnrolling.cs:39:33:39:35 | "0" |
+| LoopUnrolling.cs:39:38:39:40 | "1" | LoopUnrolling.cs:39:38:39:40 | "1" |
+| LoopUnrolling.cs:39:43:39:45 | "2" | LoopUnrolling.cs:39:43:39:45 | "2" |
+| LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | LoopUnrolling.cs:40:27:40:28 | access to local variable xs |
+| LoopUnrolling.cs:40:22:40:22 | String x | LoopUnrolling.cs:40:22:40:22 | String x |
+| LoopUnrolling.cs:40:27:40:28 | access to local variable xs | LoopUnrolling.cs:40:27:40:28 | access to local variable xs |
+| LoopUnrolling.cs:41:13:42:41 | foreach (... ... in ...) ... | LoopUnrolling.cs:41:31:41:32 | access to local variable ys |
+| LoopUnrolling.cs:41:26:41:26 | String y | LoopUnrolling.cs:41:26:41:26 | String y |
+| LoopUnrolling.cs:41:31:41:32 | access to local variable ys | LoopUnrolling.cs:41:31:41:32 | access to local variable ys |
 | LoopUnrolling.cs:42:17:42:40 | call to method WriteLine | LoopUnrolling.cs:42:35:42:35 | access to local variable x |
 | LoopUnrolling.cs:42:17:42:41 | ...; | LoopUnrolling.cs:42:17:42:41 | ...; |
 | LoopUnrolling.cs:42:35:42:35 | access to local variable x | LoopUnrolling.cs:42:35:42:35 | access to local variable x |
 | LoopUnrolling.cs:42:35:42:39 | ... + ... | LoopUnrolling.cs:42:35:42:35 | access to local variable x |
 | LoopUnrolling.cs:42:39:42:39 | access to local variable y | LoopUnrolling.cs:42:39:42:39 | access to local variable y |
 | LoopUnrolling.cs:46:5:53:5 | {...} | LoopUnrolling.cs:46:5:53:5 | {...} |
-| LoopUnrolling.cs:47:9:47:47 | ... ...; | LoopUnrolling.cs:47:9:47:47 | ... ...; |
-| LoopUnrolling.cs:47:13:47:46 | String[] xs = ... | LoopUnrolling.cs:47:18:47:46 | array creation of type String[] |
-| LoopUnrolling.cs:47:18:47:46 | 3 | LoopUnrolling.cs:47:18:47:46 | 3 |
-| LoopUnrolling.cs:47:18:47:46 | array creation of type String[] | LoopUnrolling.cs:47:18:47:46 | array creation of type String[] |
-| LoopUnrolling.cs:47:30:47:46 | { ..., ... } | LoopUnrolling.cs:47:32:47:34 | "a" |
-| LoopUnrolling.cs:47:32:47:34 | "a" | LoopUnrolling.cs:47:32:47:34 | "a" |
-| LoopUnrolling.cs:47:37:47:39 | "b" | LoopUnrolling.cs:47:37:47:39 | "b" |
-| LoopUnrolling.cs:47:42:47:44 | "c" | LoopUnrolling.cs:47:42:47:44 | "c" |
-| LoopUnrolling.cs:48:9:52:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:48:26:48:27 | access to local variable xs |
-| LoopUnrolling.cs:48:21:48:21 | String x | LoopUnrolling.cs:48:21:48:21 | String x |
-| LoopUnrolling.cs:48:26:48:27 | access to local variable xs | LoopUnrolling.cs:48:26:48:27 | access to local variable xs |
+| LoopUnrolling.cs:47:9:47:48 | ... ...; | LoopUnrolling.cs:47:9:47:48 | ... ...; |
+| LoopUnrolling.cs:47:13:47:47 | String[] xs = ... | LoopUnrolling.cs:47:18:47:47 | array creation of type String[] |
+| LoopUnrolling.cs:47:18:47:47 | 3 | LoopUnrolling.cs:47:18:47:47 | 3 |
+| LoopUnrolling.cs:47:18:47:47 | array creation of type String[] | LoopUnrolling.cs:47:18:47:47 | array creation of type String[] |
+| LoopUnrolling.cs:47:31:47:47 | { ..., ... } | LoopUnrolling.cs:47:33:47:35 | "a" |
+| LoopUnrolling.cs:47:33:47:35 | "a" | LoopUnrolling.cs:47:33:47:35 | "a" |
+| LoopUnrolling.cs:47:38:47:40 | "b" | LoopUnrolling.cs:47:38:47:40 | "b" |
+| LoopUnrolling.cs:47:43:47:45 | "c" | LoopUnrolling.cs:47:43:47:45 | "c" |
+| LoopUnrolling.cs:48:9:52:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:48:27:48:28 | access to local variable xs |
+| LoopUnrolling.cs:48:22:48:22 | String x | LoopUnrolling.cs:48:22:48:22 | String x |
+| LoopUnrolling.cs:48:27:48:28 | access to local variable xs | LoopUnrolling.cs:48:27:48:28 | access to local variable xs |
 | LoopUnrolling.cs:49:9:52:9 | {...} | LoopUnrolling.cs:49:9:52:9 | {...} |
-| LoopUnrolling.cs:50:13:50:17 | Label: | LoopUnrolling.cs:50:13:50:17 | Label: |
-| LoopUnrolling.cs:50:20:50:39 | call to method WriteLine | LoopUnrolling.cs:50:38:50:38 | access to local variable x |
-| LoopUnrolling.cs:50:20:50:40 | ...; | LoopUnrolling.cs:50:20:50:40 | ...; |
-| LoopUnrolling.cs:50:38:50:38 | access to local variable x | LoopUnrolling.cs:50:38:50:38 | access to local variable x |
+| LoopUnrolling.cs:50:9:50:13 | Label: | LoopUnrolling.cs:50:9:50:13 | Label: |
+| LoopUnrolling.cs:50:16:50:35 | call to method WriteLine | LoopUnrolling.cs:50:34:50:34 | access to local variable x |
+| LoopUnrolling.cs:50:16:50:36 | ...; | LoopUnrolling.cs:50:16:50:36 | ...; |
+| LoopUnrolling.cs:50:34:50:34 | access to local variable x | LoopUnrolling.cs:50:34:50:34 | access to local variable x |
 | LoopUnrolling.cs:51:13:51:23 | goto ...; | LoopUnrolling.cs:51:13:51:23 | goto ...; |
 | LoopUnrolling.cs:56:5:65:5 | {...} | LoopUnrolling.cs:56:5:65:5 | {...} |
-| LoopUnrolling.cs:57:9:57:47 | ... ...; | LoopUnrolling.cs:57:9:57:47 | ... ...; |
-| LoopUnrolling.cs:57:13:57:46 | String[] xs = ... | LoopUnrolling.cs:57:18:57:46 | array creation of type String[] |
-| LoopUnrolling.cs:57:18:57:46 | 3 | LoopUnrolling.cs:57:18:57:46 | 3 |
-| LoopUnrolling.cs:57:18:57:46 | array creation of type String[] | LoopUnrolling.cs:57:18:57:46 | array creation of type String[] |
-| LoopUnrolling.cs:57:30:57:46 | { ..., ... } | LoopUnrolling.cs:57:32:57:34 | "a" |
-| LoopUnrolling.cs:57:32:57:34 | "a" | LoopUnrolling.cs:57:32:57:34 | "a" |
-| LoopUnrolling.cs:57:37:57:39 | "b" | LoopUnrolling.cs:57:37:57:39 | "b" |
-| LoopUnrolling.cs:57:42:57:44 | "c" | LoopUnrolling.cs:57:42:57:44 | "c" |
-| LoopUnrolling.cs:58:9:64:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:58:26:58:27 | access to local variable xs |
-| LoopUnrolling.cs:58:21:58:21 | String x | LoopUnrolling.cs:58:21:58:21 | String x |
-| LoopUnrolling.cs:58:26:58:27 | access to local variable xs | LoopUnrolling.cs:58:26:58:27 | access to local variable xs |
+| LoopUnrolling.cs:57:9:57:48 | ... ...; | LoopUnrolling.cs:57:9:57:48 | ... ...; |
+| LoopUnrolling.cs:57:13:57:47 | String[] xs = ... | LoopUnrolling.cs:57:18:57:47 | array creation of type String[] |
+| LoopUnrolling.cs:57:18:57:47 | 3 | LoopUnrolling.cs:57:18:57:47 | 3 |
+| LoopUnrolling.cs:57:18:57:47 | array creation of type String[] | LoopUnrolling.cs:57:18:57:47 | array creation of type String[] |
+| LoopUnrolling.cs:57:31:57:47 | { ..., ... } | LoopUnrolling.cs:57:33:57:35 | "a" |
+| LoopUnrolling.cs:57:33:57:35 | "a" | LoopUnrolling.cs:57:33:57:35 | "a" |
+| LoopUnrolling.cs:57:38:57:40 | "b" | LoopUnrolling.cs:57:38:57:40 | "b" |
+| LoopUnrolling.cs:57:43:57:45 | "c" | LoopUnrolling.cs:57:43:57:45 | "c" |
+| LoopUnrolling.cs:58:9:64:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:58:27:58:28 | access to local variable xs |
+| LoopUnrolling.cs:58:22:58:22 | String x | LoopUnrolling.cs:58:22:58:22 | String x |
+| LoopUnrolling.cs:58:27:58:28 | access to local variable xs | LoopUnrolling.cs:58:27:58:28 | access to local variable xs |
 | LoopUnrolling.cs:59:9:64:9 | {...} | LoopUnrolling.cs:59:9:64:9 | {...} |
 | LoopUnrolling.cs:60:13:61:37 | if (...) ... | LoopUnrolling.cs:60:13:61:37 | if (...) ... |
 | LoopUnrolling.cs:60:17:60:17 | access to parameter b | LoopUnrolling.cs:60:17:60:17 | access to parameter b |
@@ -1528,12 +1538,134 @@
 | LoopUnrolling.cs:71:9:71:12 | access to parameter args | LoopUnrolling.cs:71:9:71:12 | access to parameter args |
 | LoopUnrolling.cs:71:9:71:20 | call to method Clear | LoopUnrolling.cs:71:9:71:12 | access to parameter args |
 | LoopUnrolling.cs:71:9:71:21 | ...; | LoopUnrolling.cs:71:9:71:21 | ...; |
-| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:72:28:72:31 | access to parameter args |
-| LoopUnrolling.cs:72:21:72:23 | String arg | LoopUnrolling.cs:72:21:72:23 | String arg |
-| LoopUnrolling.cs:72:28:72:31 | access to parameter args | LoopUnrolling.cs:72:28:72:31 | access to parameter args |
+| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:72:29:72:32 | access to parameter args |
+| LoopUnrolling.cs:72:22:72:24 | String arg | LoopUnrolling.cs:72:22:72:24 | String arg |
+| LoopUnrolling.cs:72:29:72:32 | access to parameter args | LoopUnrolling.cs:72:29:72:32 | access to parameter args |
 | LoopUnrolling.cs:73:13:73:34 | call to method WriteLine | LoopUnrolling.cs:73:31:73:33 | access to local variable arg |
 | LoopUnrolling.cs:73:13:73:35 | ...; | LoopUnrolling.cs:73:13:73:35 | ...; |
 | LoopUnrolling.cs:73:31:73:33 | access to local variable arg | LoopUnrolling.cs:73:31:73:33 | access to local variable arg |
+| LoopUnrolling.cs:77:5:83:5 | {...} | LoopUnrolling.cs:77:5:83:5 | {...} |
+| LoopUnrolling.cs:78:9:78:34 | ... ...; | LoopUnrolling.cs:78:9:78:34 | ... ...; |
+| LoopUnrolling.cs:78:13:78:33 | String[,] xs = ... | LoopUnrolling.cs:78:29:78:29 | 2 |
+| LoopUnrolling.cs:78:18:78:33 | array creation of type String[,] | LoopUnrolling.cs:78:29:78:29 | 2 |
+| LoopUnrolling.cs:78:29:78:29 | 2 | LoopUnrolling.cs:78:29:78:29 | 2 |
+| LoopUnrolling.cs:78:32:78:32 | 0 | LoopUnrolling.cs:78:32:78:32 | 0 |
+| LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:27:79:28 | access to local variable xs |
+| LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:79:22:79:22 | String x |
+| LoopUnrolling.cs:79:27:79:28 | access to local variable xs | LoopUnrolling.cs:79:27:79:28 | access to local variable xs |
+| LoopUnrolling.cs:80:9:82:9 | {...} | LoopUnrolling.cs:80:9:82:9 | {...} |
+| LoopUnrolling.cs:81:13:81:32 | call to method WriteLine | LoopUnrolling.cs:81:31:81:31 | access to local variable x |
+| LoopUnrolling.cs:81:13:81:33 | ...; | LoopUnrolling.cs:81:13:81:33 | ...; |
+| LoopUnrolling.cs:81:31:81:31 | access to local variable x | LoopUnrolling.cs:81:31:81:31 | access to local variable x |
+| LoopUnrolling.cs:86:5:92:5 | {...} | LoopUnrolling.cs:86:5:92:5 | {...} |
+| LoopUnrolling.cs:87:9:87:34 | ... ...; | LoopUnrolling.cs:87:9:87:34 | ... ...; |
+| LoopUnrolling.cs:87:13:87:33 | String[,] xs = ... | LoopUnrolling.cs:87:29:87:29 | 0 |
+| LoopUnrolling.cs:87:18:87:33 | array creation of type String[,] | LoopUnrolling.cs:87:29:87:29 | 0 |
+| LoopUnrolling.cs:87:29:87:29 | 0 | LoopUnrolling.cs:87:29:87:29 | 0 |
+| LoopUnrolling.cs:87:32:87:32 | 2 | LoopUnrolling.cs:87:32:87:32 | 2 |
+| LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:88:27:88:28 | access to local variable xs |
+| LoopUnrolling.cs:88:22:88:22 | String x | LoopUnrolling.cs:88:22:88:22 | String x |
+| LoopUnrolling.cs:88:27:88:28 | access to local variable xs | LoopUnrolling.cs:88:27:88:28 | access to local variable xs |
+| LoopUnrolling.cs:89:9:91:9 | {...} | LoopUnrolling.cs:89:9:91:9 | {...} |
+| LoopUnrolling.cs:90:13:90:32 | call to method WriteLine | LoopUnrolling.cs:90:31:90:31 | access to local variable x |
+| LoopUnrolling.cs:90:13:90:33 | ...; | LoopUnrolling.cs:90:13:90:33 | ...; |
+| LoopUnrolling.cs:90:31:90:31 | access to local variable x | LoopUnrolling.cs:90:31:90:31 | access to local variable x |
+| LoopUnrolling.cs:95:5:101:5 | {...} | LoopUnrolling.cs:95:5:101:5 | {...} |
+| LoopUnrolling.cs:96:9:96:34 | ... ...; | LoopUnrolling.cs:96:9:96:34 | ... ...; |
+| LoopUnrolling.cs:96:13:96:33 | String[,] xs = ... | LoopUnrolling.cs:96:29:96:29 | 2 |
+| LoopUnrolling.cs:96:18:96:33 | array creation of type String[,] | LoopUnrolling.cs:96:29:96:29 | 2 |
+| LoopUnrolling.cs:96:29:96:29 | 2 | LoopUnrolling.cs:96:29:96:29 | 2 |
+| LoopUnrolling.cs:96:32:96:32 | 2 | LoopUnrolling.cs:96:32:96:32 | 2 |
+| LoopUnrolling.cs:97:9:100:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:97:27:97:28 | access to local variable xs |
+| LoopUnrolling.cs:97:22:97:22 | String x | LoopUnrolling.cs:97:22:97:22 | String x |
+| LoopUnrolling.cs:97:27:97:28 | access to local variable xs | LoopUnrolling.cs:97:27:97:28 | access to local variable xs |
+| LoopUnrolling.cs:98:9:100:9 | {...} | LoopUnrolling.cs:98:9:100:9 | {...} |
+| LoopUnrolling.cs:99:13:99:32 | call to method WriteLine | LoopUnrolling.cs:99:31:99:31 | access to local variable x |
+| LoopUnrolling.cs:99:13:99:33 | ...; | LoopUnrolling.cs:99:13:99:33 | ...; |
+| LoopUnrolling.cs:99:31:99:31 | access to local variable x | LoopUnrolling.cs:99:31:99:31 | access to local variable x |
+| MultiImplementationA.cs:6:22:6:31 | throw ... | MultiImplementationA.cs:6:28:6:31 | null |
+| MultiImplementationA.cs:6:28:6:31 | null | MultiImplementationA.cs:6:28:6:31 | null |
+| MultiImplementationA.cs:7:25:7:39 | {...} | MultiImplementationA.cs:7:25:7:39 | {...} |
+| MultiImplementationA.cs:7:27:7:37 | throw ...; | MultiImplementationA.cs:7:33:7:36 | null |
+| MultiImplementationA.cs:7:33:7:36 | null | MultiImplementationA.cs:7:33:7:36 | null |
+| MultiImplementationA.cs:7:45:7:59 | {...} | MultiImplementationA.cs:7:45:7:59 | {...} |
+| MultiImplementationA.cs:7:47:7:57 | throw ...; | MultiImplementationA.cs:7:53:7:56 | null |
+| MultiImplementationA.cs:7:53:7:56 | null | MultiImplementationA.cs:7:53:7:56 | null |
+| MultiImplementationA.cs:8:23:8:32 | throw ... | MultiImplementationA.cs:8:29:8:32 | null |
+| MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationA.cs:8:29:8:32 | null |
+| MultiImplementationA.cs:13:16:13:16 | access to field F | MultiImplementationA.cs:13:16:13:16 | this access |
+| MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationA.cs:13:16:13:16 | this access |
+| MultiImplementationA.cs:13:16:13:20 | ... = ... | MultiImplementationA.cs:13:16:13:16 | this access |
+| MultiImplementationA.cs:13:20:13:20 | 0 | MultiImplementationA.cs:13:20:13:20 | 0 |
+| MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationA.cs:14:31:14:31 | access to parameter i |
+| MultiImplementationA.cs:15:40:15:52 | {...} | MultiImplementationA.cs:15:40:15:52 | {...} |
+| MultiImplementationA.cs:15:42:15:50 | return ...; | MultiImplementationA.cs:15:49:15:49 | access to parameter s |
+| MultiImplementationA.cs:15:49:15:49 | access to parameter s | MultiImplementationA.cs:15:49:15:49 | access to parameter s |
+| MultiImplementationA.cs:15:58:15:60 | {...} | MultiImplementationA.cs:15:58:15:60 | {...} |
+| MultiImplementationA.cs:16:28:16:28 | 0 | MultiImplementationA.cs:16:28:16:28 | 0 |
+| MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationA.cs:17:5:19:5 | {...} |
+| MultiImplementationA.cs:18:9:18:22 | M2(...) | MultiImplementationA.cs:18:9:18:22 | M2(...) |
+| MultiImplementationA.cs:18:21:18:21 | 0 | MultiImplementationA.cs:18:21:18:21 | 0 |
+| MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationA.cs:20:22:20:31 | {...} |
+| MultiImplementationA.cs:20:24:20:24 | access to field F | MultiImplementationA.cs:20:24:20:24 | this access |
+| MultiImplementationA.cs:20:24:20:24 | this access | MultiImplementationA.cs:20:24:20:24 | this access |
+| MultiImplementationA.cs:20:24:20:28 | ... = ... | MultiImplementationA.cs:20:24:20:24 | this access |
+| MultiImplementationA.cs:20:24:20:29 | ...; | MultiImplementationA.cs:20:24:20:29 | ...; |
+| MultiImplementationA.cs:20:28:20:28 | access to parameter i | MultiImplementationA.cs:20:28:20:28 | access to parameter i |
+| MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | MultiImplementationA.cs:21:24:21:24 | 0 |
+| MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationA.cs:21:24:21:24 | 0 |
+| MultiImplementationA.cs:21:27:21:29 | {...} | MultiImplementationA.cs:21:27:21:29 | {...} |
+| MultiImplementationA.cs:22:11:22:13 | {...} | MultiImplementationA.cs:22:11:22:13 | {...} |
+| MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationA.cs:23:50:23:53 | null |
+| MultiImplementationA.cs:24:16:24:16 | access to property P | MultiImplementationA.cs:24:16:24:16 | this access |
+| MultiImplementationA.cs:24:16:24:16 | this access | MultiImplementationA.cs:24:16:24:16 | this access |
+| MultiImplementationA.cs:24:32:24:34 | ... = ... | MultiImplementationA.cs:24:16:24:16 | this access |
+| MultiImplementationA.cs:24:34:24:34 | 0 | MultiImplementationA.cs:24:34:24:34 | 0 |
+| MultiImplementationA.cs:30:28:30:37 | throw ... | MultiImplementationA.cs:30:34:30:37 | null |
+| MultiImplementationA.cs:30:34:30:37 | null | MultiImplementationA.cs:30:34:30:37 | null |
+| MultiImplementationA.cs:36:14:36:28 | {...} | MultiImplementationA.cs:36:14:36:28 | {...} |
+| MultiImplementationA.cs:36:16:36:26 | throw ...; | MultiImplementationA.cs:36:22:36:25 | null |
+| MultiImplementationA.cs:36:22:36:25 | null | MultiImplementationA.cs:36:22:36:25 | null |
+| MultiImplementationA.cs:37:14:37:28 | {...} | MultiImplementationA.cs:37:14:37:28 | {...} |
+| MultiImplementationA.cs:37:16:37:26 | throw ...; | MultiImplementationA.cs:37:22:37:25 | null |
+| MultiImplementationA.cs:37:22:37:25 | null | MultiImplementationA.cs:37:22:37:25 | null |
+| MultiImplementationB.cs:3:22:3:22 | 0 | MultiImplementationB.cs:3:22:3:22 | 0 |
+| MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationB.cs:4:25:4:37 | {...} |
+| MultiImplementationB.cs:4:27:4:35 | return ...; | MultiImplementationB.cs:4:34:4:34 | 1 |
+| MultiImplementationB.cs:4:34:4:34 | 1 | MultiImplementationB.cs:4:34:4:34 | 1 |
+| MultiImplementationB.cs:4:43:4:45 | {...} | MultiImplementationB.cs:4:43:4:45 | {...} |
+| MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationB.cs:5:23:5:23 | 2 |
+| MultiImplementationB.cs:11:16:11:16 | access to field F | MultiImplementationB.cs:11:16:11:16 | this access |
+| MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationB.cs:11:16:11:16 | this access |
+| MultiImplementationB.cs:11:16:11:20 | ... = ... | MultiImplementationB.cs:11:16:11:16 | this access |
+| MultiImplementationB.cs:11:20:11:20 | 1 | MultiImplementationB.cs:11:20:11:20 | 1 |
+| MultiImplementationB.cs:12:31:12:40 | throw ... | MultiImplementationB.cs:12:37:12:40 | null |
+| MultiImplementationB.cs:12:37:12:40 | null | MultiImplementationB.cs:12:37:12:40 | null |
+| MultiImplementationB.cs:13:40:13:54 | {...} | MultiImplementationB.cs:13:40:13:54 | {...} |
+| MultiImplementationB.cs:13:42:13:52 | throw ...; | MultiImplementationB.cs:13:48:13:51 | null |
+| MultiImplementationB.cs:13:48:13:51 | null | MultiImplementationB.cs:13:48:13:51 | null |
+| MultiImplementationB.cs:13:60:13:62 | {...} | MultiImplementationB.cs:13:60:13:62 | {...} |
+| MultiImplementationB.cs:14:28:14:28 | 1 | MultiImplementationB.cs:14:28:14:28 | 1 |
+| MultiImplementationB.cs:15:5:17:5 | {...} | MultiImplementationB.cs:15:5:17:5 | {...} |
+| MultiImplementationB.cs:16:9:16:31 | M2(...) | MultiImplementationB.cs:16:9:16:31 | M2(...) |
+| MultiImplementationB.cs:16:21:16:30 | throw ... | MultiImplementationB.cs:16:27:16:30 | null |
+| MultiImplementationB.cs:16:27:16:30 | null | MultiImplementationB.cs:16:27:16:30 | null |
+| MultiImplementationB.cs:18:22:18:36 | {...} | MultiImplementationB.cs:18:22:18:36 | {...} |
+| MultiImplementationB.cs:18:24:18:34 | throw ...; | MultiImplementationB.cs:18:30:18:33 | null |
+| MultiImplementationB.cs:18:30:18:33 | null | MultiImplementationB.cs:18:30:18:33 | null |
+| MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | MultiImplementationB.cs:19:24:19:24 | 1 |
+| MultiImplementationB.cs:19:24:19:24 | 1 | MultiImplementationB.cs:19:24:19:24 | 1 |
+| MultiImplementationB.cs:19:27:19:29 | {...} | MultiImplementationB.cs:19:27:19:29 | {...} |
+| MultiImplementationB.cs:20:11:20:25 | {...} | MultiImplementationB.cs:20:11:20:25 | {...} |
+| MultiImplementationB.cs:20:13:20:23 | throw ...; | MultiImplementationB.cs:20:19:20:22 | null |
+| MultiImplementationB.cs:20:19:20:22 | null | MultiImplementationB.cs:20:19:20:22 | null |
+| MultiImplementationB.cs:21:50:21:59 | throw ... | MultiImplementationB.cs:21:56:21:59 | null |
+| MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationB.cs:21:56:21:59 | null |
+| MultiImplementationB.cs:22:16:22:16 | access to property P | MultiImplementationB.cs:22:16:22:16 | this access |
+| MultiImplementationB.cs:22:16:22:16 | this access | MultiImplementationB.cs:22:16:22:16 | this access |
+| MultiImplementationB.cs:22:32:22:34 | ... = ... | MultiImplementationB.cs:22:16:22:16 | this access |
+| MultiImplementationB.cs:22:34:22:34 | 1 | MultiImplementationB.cs:22:34:22:34 | 1 |
+| MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationB.cs:32:17:32:17 | 0 |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:23:3:23 | access to parameter i |
 | NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
 | NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:28:3:28 | 0 |

@@ -1,0 +1,6 @@
+os_import
+| test.py:2:8:2:9 | GSSA Variable os |
+flowstep
+jumpStep
+| test.py:2:8:2:9 | GSSA Variable os | test.py:0:0:0:0 | ModuleVariableNode for Global Variable os in Module test |
+essaFlowStep

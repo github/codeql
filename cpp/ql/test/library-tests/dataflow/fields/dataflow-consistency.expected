@@ -1,16 +1,7 @@
 uniqueEnclosingCallable
 | C.cpp:37:24:37:33 | 0 | Node should have one enclosing callable but has 0. |
 | C.cpp:37:24:37:33 | new | Node should have one enclosing callable but has 0. |
-uniqueTypeBound
-| complex.cpp:22:11:22:17 | constructor init of field f [post-this] | Node should have one type bound but has 0. |
-| complex.cpp:22:11:22:17 | constructor init of field f [pre-this] | Node should have one type bound but has 0. |
-| complex.cpp:25:7:25:7 | constructor init of field inner [post-this] | Node should have one type bound but has 0. |
-| complex.cpp:25:7:25:7 | constructor init of field inner [pre-this] | Node should have one type bound but has 0. |
-uniqueTypeRepr
-| complex.cpp:22:11:22:17 | constructor init of field f [post-this] | Node should have one type representation but has 0. |
-| complex.cpp:22:11:22:17 | constructor init of field f [pre-this] | Node should have one type representation but has 0. |
-| complex.cpp:25:7:25:7 | constructor init of field inner [post-this] | Node should have one type representation but has 0. |
-| complex.cpp:25:7:25:7 | constructor init of field inner [pre-this] | Node should have one type representation but has 0. |
+uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
@@ -25,7 +16,6 @@ postHasUniquePre
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
-storeIsPostUpdate
 argHasPostUpdate
 | A.cpp:41:15:41:21 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:55:12:55:19 | new | ArgumentNode is missing PostUpdateNode. |
@@ -40,6 +30,12 @@ argHasPostUpdate
 | D.cpp:43:24:43:40 | new | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:50:24:50:40 | new | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:57:25:57:41 | new | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:7:8:7:13 | access to array | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:8:8:8:13 | access to array | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:9:8:9:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:10:8:10:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:16:8:16:13 | access to array | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:17:8:17:13 | access to array | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:51:8:51:8 | s | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:57:8:57:8 | s | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:63:8:63:8 | s | ArgumentNode is missing PostUpdateNode. |

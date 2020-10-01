@@ -20,7 +20,7 @@ import semmle.code.csharp.frameworks.system.Web
  */
 predicate hasWebConfigXFrameOptions(WebConfigXML webConfig) {
   // Looking for an entry in `webConfig` that looks like this:
-  // ```
+  // ```xml
   // <system.webServer>
   //   <httpProtocol>
   //    <customHeaders>

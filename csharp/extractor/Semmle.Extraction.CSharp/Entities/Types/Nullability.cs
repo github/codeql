@@ -127,7 +127,7 @@ namespace Semmle.Extraction.CSharp.Entities
             symbol.WriteId(trapFile);
         }
 
-        public static NullabilityEntity Create(Context cx, Nullability init) => NullabilityFactory.Instance.CreateEntity(cx, init);
+        public static NullabilityEntity Create(Context cx, Nullability init) => NullabilityFactory.Instance.CreateEntity(cx, init, init);
 
         class NullabilityFactory : ICachedEntityFactory<Nullability, NullabilityEntity>
         {

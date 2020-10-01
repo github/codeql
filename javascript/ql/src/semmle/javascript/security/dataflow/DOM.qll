@@ -90,7 +90,8 @@ class DomMethodCallExpr extends MethodCallExpr {
         attr = "formaction" or
         attr = "href" or
         attr = "src" or
-        attr = "xlink:href"
+        attr = "xlink:href" or
+        attr = "data"
       |
         getArgument(argPos - 1).getStringValue().toLowerCase() = attr
       )
@@ -115,6 +116,17 @@ class DomPropWriteNode extends Assignment {
   predicate interpretsValueAsHTML() {
     lhs.getPropertyName() = "innerHTML" or
     lhs.getPropertyName() = "outerHTML"
+  }
+
+  /**
+   * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.
+   */
+  predicate interpretsValueAsJavaScriptUrl() {
+    lhs.getPropertyName() = "action" or
+    lhs.getPropertyName() = "formaction" or
+    lhs.getPropertyName() = "href" or
+    lhs.getPropertyName() = "src" or
+    lhs.getPropertyName() = "data"
   }
 }
 
@@ -186,6 +198,11 @@ class PostMessageEventHandler extends Function {
       addEventListener = DataFlow::globalVarRef("addEventListener").getACall() and
       addEventListener.getArgument(0).mayHaveStringValue("message") and
       addEventListener.getArgument(1).getABoundFunctionValue(paramIndex).getFunction() = this
+    )
+    or
+    exists(DataFlow::Node rhs |
+      rhs = DataFlow::globalObjectRef().getAPropertyWrite("onmessage").getRhs() and
+      rhs.getABoundFunctionValue(paramIndex).getFunction() = this
     )
   }
 

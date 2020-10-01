@@ -365,6 +365,11 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 int offset = Offset;
 
+                if (Method.Implementation is null)
+                {
+                    yield break;
+                }
+
                 yield return Tuples.cil_instruction(this, (int)OpCode, Index, Method.Implementation);
 
                 switch (PayloadType)
@@ -414,11 +419,17 @@ namespace Semmle.Extraction.CIL.Entities
                         break;
                     case Payload.Arg8:
                     case Payload.Arg16:
-                        yield return Tuples.cil_access(this, Method.Parameters[(int)UnsignedPayloadValue]);
+                        if (Method.Parameters is object)
+                        {
+                            yield return Tuples.cil_access(this, Method.Parameters[(int)UnsignedPayloadValue]);
+                        }
                         break;
                     case Payload.Local8:
                     case Payload.Local16:
-                        yield return Tuples.cil_access(this, Method.LocalVariables[(int)UnsignedPayloadValue]);
+                        if (Method.LocalVariables is object)
+                        {
+                            yield return Tuples.cil_access(this, Method.LocalVariables[(int)UnsignedPayloadValue]);
+                        }
                         break;
                     case Payload.None:
                     case Payload.Target8:
@@ -439,7 +450,7 @@ namespace Semmle.Extraction.CIL.Entities
         public IEnumerable<IExtractionProduct> JumpContents(Dictionary<int, IInstruction> jump_table)
         {
             int target;
-            IInstruction inst;
+            IInstruction? inst;
 
             switch (PayloadType)
             {

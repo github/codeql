@@ -293,7 +293,7 @@ private predicate impossibleEdge(BasicBlock bb1, BasicBlock bb2) {
 
 /** A control flow edge that leaves a finally-block. */
 private predicate leavingFinally(BasicBlock bb1, BasicBlock bb2, boolean normaledge) {
-  exists(TryStmt try, Block finally |
+  exists(TryStmt try, BlockStmt finally |
     try.getFinally() = finally and
     bb1.getABBSuccessor() = bb2 and
     bb1.getEnclosingStmt().getEnclosingStmt*() = finally and

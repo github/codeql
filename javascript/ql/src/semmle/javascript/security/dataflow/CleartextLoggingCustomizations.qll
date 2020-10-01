@@ -34,15 +34,11 @@ module CleartextLogging {
   /**
    * A call to `.replace()` that seems to mask sensitive information.
    */
-  class MaskingReplacer extends Barrier, DataFlow::MethodCallNode {
+  class MaskingReplacer extends Barrier, StringReplaceCall {
     MaskingReplacer() {
-      this.getCalleeName() = "replace" and
-      exists(RegExpLiteral reg |
-        reg = this.getArgument(0).getALocalSource().asExpr() and
-        reg.isGlobal() and
-        any(RegExpDot term).getLiteral() = reg
-      ) and
-      exists(this.getArgument(1).getStringValue())
+      this.isGlobal() and
+      exists(this.getRawReplacement().getStringValue()) and
+      any(RegExpDot term).getLiteral() = getRegExp().asExpr()
     }
   }
 
@@ -202,10 +198,9 @@ module CleartextLogging {
     exists(DataFlow::PropWrite write, DataFlow::PropRead read |
       read = write.getRhs()
       or
-      exists(DataFlow::MethodCallNode stringify |
-        stringify = write.getRhs() and
-        stringify = DataFlow::globalVarRef("JSON").getAMethodCall("stringify") and
-        stringify.getArgument(0) = read
+      exists(JsonStringifyCall stringify |
+        stringify.getOutput() = write.getRhs() and
+        stringify.getInput() = read
       )
     |
       not exists(write.getPropertyName()) and

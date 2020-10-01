@@ -43,18 +43,6 @@ class Node extends TNode {
     Stages::DataFlowStage::forceCachingInSameStage() and result = this.(NodeImpl).getTypeImpl()
   }
 
-  /** INTERNAL: Do not use. Gets an upper bound on the type of this node. */
-  cached
-  DataFlowType getTypeBound() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
-    exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
-      t0 = getCSharpType(this.getType())
-      or
-      not exists(getCSharpType(this.getType())) and
-      t0 instanceof ObjectType
-    )
-  }
-
   /** Gets the enclosing callable of this node. */
   cached
   final DataFlowCallable getEnclosingCallable() {
@@ -177,15 +165,7 @@ AssignableDefinitionNode assignableDefinitionNode(AssignableDefinition def) {
   result.getDefinition() = def
 }
 
-/**
- * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
- * (intra-procedural) step.
- */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
-  or
-  extendedLocalFlowStep(nodeFrom, nodeTo)
-}
+predicate localFlowStep = localFlowStepImpl/2;
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local
@@ -231,7 +211,8 @@ class BarrierGuard extends Guard {
 }
 
 /**
- * A reference contained in an object. This is either a field or a property.
+ * A reference contained in an object. This is either a field, a property,
+ * or an element in a collection.
  */
 class Content extends TContent {
   /** Gets a textual representation of this content. */
@@ -241,10 +222,10 @@ class Content extends TContent {
   Location getLocation() { none() }
 
   /** Gets the type of the object containing this content. */
-  deprecated DataFlowType getContainerType() { none() }
+  deprecated Gvn::GvnType getContainerType() { none() }
 
   /** Gets the type of this content. */
-  deprecated DataFlowType getType() { none() }
+  deprecated Gvn::GvnType getType() { none() }
 }
 
 /** A reference to a field. */
@@ -260,11 +241,11 @@ class FieldContent extends Content, TFieldContent {
 
   override Location getLocation() { result = f.getLocation() }
 
-  deprecated override DataFlowType getContainerType() {
+  deprecated override Gvn::GvnType getContainerType() {
     result = Gvn::getGlobalValueNumber(f.getDeclaringType())
   }
 
-  deprecated override DataFlowType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
+  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
 }
 
 /** A reference to a property. */
@@ -280,9 +261,16 @@ class PropertyContent extends Content, TPropertyContent {
 
   override Location getLocation() { result = p.getLocation() }
 
-  deprecated override DataFlowType getContainerType() {
+  deprecated override Gvn::GvnType getContainerType() {
     result = Gvn::getGlobalValueNumber(p.getDeclaringType())
   }
 
-  deprecated override DataFlowType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
+  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
+}
+
+/** A reference to an element in a collection. */
+class ElementContent extends Content, TElementContent {
+  override string toString() { result = "[]" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
 }

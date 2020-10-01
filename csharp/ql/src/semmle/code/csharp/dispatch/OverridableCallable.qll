@@ -38,7 +38,7 @@ class OverridableCallable extends Callable {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * interface I { void M(); }
    *
    * class A { public void M() { } }
@@ -76,7 +76,7 @@ class OverridableCallable extends Callable {
    *
    * Note that this is generally *not* equivalent with
    *
-   * ```
+   * ```ql
    * result = getAnImplementor()
    * or
    * result = getAnImplementor().(OverridableCallable).getAnOverrider+()`
@@ -84,7 +84,7 @@ class OverridableCallable extends Callable {
    *
    * as the example below illustrates:
    *
-   * ```
+   * ```csharp
    * interface I { void M(); }
    *
    * class A { public virtual void M() { } }
@@ -118,7 +118,7 @@ class OverridableCallable extends Callable {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * class C1 { public virtual void M() { } }
    *
    * class C2 : C1 { public override void M() { } }

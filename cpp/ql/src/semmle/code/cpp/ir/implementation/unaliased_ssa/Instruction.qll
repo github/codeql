@@ -1,3 +1,7 @@
+/**
+ * Provides classes that represent the individual instructions in the IR for a function.
+ */
+
 private import internal.IRInternal
 import IRFunction
 import IRBlock
@@ -27,7 +31,7 @@ private Instruction getAnInstructionAtLine(IRFunction irFunc, Language::File fil
 }
 
 /**
- * Represents a single operation in the IR.
+ * A single instruction in the IR.
  */
 class Instruction extends Construction::TStageInstruction {
   Instruction() {
@@ -36,6 +40,7 @@ class Instruction extends Construction::TStageInstruction {
     Construction::hasInstruction(this)
   }
 
+  /** Gets a textual representation of this element. */
   final string toString() { result = getOpcode().toString() + ": " + getAST().toString() }
 
   /**
@@ -210,6 +215,15 @@ class Instruction extends Construction::TStageInstruction {
     result = Raw::getInstructionUnconvertedResultExpression(this)
   }
 
+  /**
+   * Gets the language-specific type of the result produced by this instruction.
+   *
+   * Most consumers of the IR should use `getResultIRType()` instead. `getResultIRType()` uses a
+   * less complex, language-neutral type system in which all semantically equivalent types share the
+   * same `IRType` instance. For example, in C++, four different `Instruction`s might have three
+   * different values for `getResultLanguageType()`: `unsigned int`, `char32_t`, and `wchar_t`,
+   * whereas all four instructions would have the same value for `getResultIRType()`, `uint4`.
+   */
   final Language::LanguageType getResultLanguageType() {
     result = Construction::getInstructionResultType(this)
   }
@@ -247,10 +261,12 @@ class Instruction extends Construction::TStageInstruction {
    * given by `getResultType()`.
    *
    * For example, the statement `y = x;` generates the following IR:
+   * ```
    * r1_0(glval: int) = VariableAddress[x]
    * r1_1(int)        = Load r1_0, mu0_1
    * r1_2(glval: int) = VariableAddress[y]
    * mu1_3(int)       = Store r1_2, r1_1
+   * ```
    *
    * The result of each `VariableAddress` instruction is a glvalue of type
    * `int`, representing the address of the corresponding integer variable. The
@@ -399,6 +415,17 @@ class Instruction extends Construction::TStageInstruction {
   final Instruction getAPredecessor() { result = getPredecessor(_) }
 }
 
+/**
+ * An instruction that refers to a variable.
+ *
+ * This class is used for any instruction whose operation fundamentally depends on a specific
+ * variable. For example, it is used for `VariableAddress`, which returns the address of a specific
+ * variable, and `InitializeParameter`, which returns the value that was passed to the specified
+ * parameter by the caller. `VariableInstruction` is not used for `Load` or `Store` instructions
+ * that happen to load from or store to a particular variable; in those cases, the memory location
+ * being accessed is specified by the `AddressOperand` on the instruction, which may or may not be
+ * defined by the result of a `VariableAddress` instruction.
+ */
 class VariableInstruction extends Instruction {
   IRVariable var;
 
@@ -406,6 +433,9 @@ class VariableInstruction extends Instruction {
 
   override string getImmediateString() { result = var.toString() }
 
+  /**
+   * Gets the variable that this instruction references.
+   */
   final IRVariable getIRVariable() { result = var }
 
   /**
@@ -414,6 +444,16 @@ class VariableInstruction extends Instruction {
   final Language::Variable getASTVariable() { result = var.(IRUserVariable).getVariable() }
 }
 
+/**
+ * An instruction that refers to a field of a class, struct, or union.
+ *
+ * This class is used for any instruction whose operation fundamentally depends on a specific
+ * field. For example, it is used for `FieldAddress`, which computes the address of a specific
+ * field on an object. `FieldInstruction` is not used for `Load` or `Store` instructions that happen
+ * to load from or store to a particular field; in those cases, the memory location being accessed
+ * is specified by the `AddressOperand` on the instruction, which may or may not be defined by the
+ * result of a `FieldAddress` instruction.
+ */
 class FieldInstruction extends Instruction {
   Language::Field field;
 
@@ -421,9 +461,22 @@ class FieldInstruction extends Instruction {
 
   final override string getImmediateString() { result = field.toString() }
 
+  /**
+   * Gets the field that this instruction references.
+   */
   final Language::Field getField() { result = field }
 }
 
+/**
+ * An instruction that refers to a function.
+ *
+ * This class is used for any instruction whose operation fundamentally depends on a specific
+ * function. For example, it is used for `FunctionAddress`, which returns the address of a specific
+ * function. `FunctionInstruction` is not used for `Call` instructions that happen to call a
+ * particular function; in that case, the function being called is specified by the
+ * `CallTargetOperand` on the instruction, which may or may not be defined by the result of a
+ * `FunctionAddress` instruction.
+ */
 class FunctionInstruction extends Instruction {
   Language::Function funcSymbol;
 
@@ -431,9 +484,15 @@ class FunctionInstruction extends Instruction {
 
   final override string getImmediateString() { result = funcSymbol.toString() }
 
+  /**
+   * Gets the function that this instruction references.
+   */
   final Language::Function getFunctionSymbol() { result = funcSymbol }
 }
 
+/**
+ * An instruction whose result is a compile-time constant value.
+ */
 class ConstantValueInstruction extends Instruction {
   string value;
 
@@ -441,9 +500,18 @@ class ConstantValueInstruction extends Instruction {
 
   final override string getImmediateString() { result = value }
 
+  /**
+   * Gets the constant value of this instruction's result.
+   */
   final string getValue() { result = value }
 }
 
+/**
+ * An instruction that refers to an argument of a `Call` instruction.
+ *
+ * This instruction is used for side effects of a `Call` instruction that read or write memory
+ * pointed to by one of the arguments of the call.
+ */
 class IndexedInstruction extends Instruction {
   int index;
 
@@ -451,26 +519,81 @@ class IndexedInstruction extends Instruction {
 
   final override string getImmediateString() { result = index.toString() }
 
+  /**
+   * Gets the zero-based index of the argument that this instruction references.
+   */
   final int getIndex() { result = index }
 }
 
+/**
+ * An instruction representing the entry point to a function.
+ *
+ * Each `IRFunction` has exactly one `EnterFunction` instruction. Execution of the function begins
+ * at this instruction. This instruction has no predecessors.
+ */
 class EnterFunctionInstruction extends Instruction {
   EnterFunctionInstruction() { getOpcode() instanceof Opcode::EnterFunction }
 }
 
+/**
+ * An instruction that returns the address of a variable.
+ *
+ * This instruction returns the address of a local variable, parameter, static field,
+ * namespace-scope variable, or global variable. For the address of a non-static field of a class,
+ * struct, or union, see `FieldAddressInstruction`.
+ */
 class VariableAddressInstruction extends VariableInstruction {
   VariableAddressInstruction() { getOpcode() instanceof Opcode::VariableAddress }
 }
 
+/**
+ * An instruction that returns the address of a function.
+ *
+ * This instruction returns the address of a function, including non-member functions, static member
+ * functions, and non-static member functions.
+ *
+ * The result has an `IRFunctionAddress` type.
+ */
+class FunctionAddressInstruction extends FunctionInstruction {
+  FunctionAddressInstruction() { getOpcode() instanceof Opcode::FunctionAddress }
+}
+
+/**
+ * An instruction that initializes a parameter of the enclosing function with the value of the
+ * corresponding argument passed by the caller.
+ *
+ * Each parameter of a function will have exactly one `InitializeParameter` instruction that
+ * initializes that parameter.
+ */
 class InitializeParameterInstruction extends VariableInstruction {
   InitializeParameterInstruction() { getOpcode() instanceof Opcode::InitializeParameter }
 
+  /**
+   * Gets the parameter initialized by this instruction.
+   */
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
 }
 
+/**
+ * An instruction that initializes all memory that existed before this function was called.
+ *
+ * This instruction provides a definition for memory that, because it was actually allocated and
+ * initialized elsewhere, would not otherwise have a definition in this function.
+ */
+class InitializeNonLocalInstruction extends Instruction {
+  InitializeNonLocalInstruction() { getOpcode() instanceof Opcode::InitializeNonLocal }
+}
+
+/**
+ * An instruction that initializes the memory pointed to by a parameter of the enclosing function
+ * with the value of that memory on entry to the function.
+ */
 class InitializeIndirectionInstruction extends VariableInstruction {
   InitializeIndirectionInstruction() { getOpcode() instanceof Opcode::InitializeIndirection }
 
+  /**
+   * Gets the parameter initialized by this instruction.
+   */
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
 }
 
@@ -481,12 +604,40 @@ class InitializeThisInstruction extends Instruction {
   InitializeThisInstruction() { getOpcode() instanceof Opcode::InitializeThis }
 }
 
+/**
+ * An instruction that computes the address of a non-static field of an object.
+ */
 class FieldAddressInstruction extends FieldInstruction {
   FieldAddressInstruction() { getOpcode() instanceof Opcode::FieldAddress }
 
+  /**
+   * Gets the operand that provides the address of the object containing the field.
+   */
   final UnaryOperand getObjectAddressOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the instruction whose result provides the address of the object containing the field.
+   */
   final Instruction getObjectAddress() { result = getObjectAddressOperand().getDef() }
+}
+
+/**
+ * An instruction that computes the address of the first element of a managed array.
+ *
+ * This instruction is used for element access to C# arrays.
+ */
+class ElementsAddressInstruction extends UnaryInstruction {
+  ElementsAddressInstruction() { getOpcode() instanceof Opcode::ElementsAddress }
+
+  /**
+   * Gets the operand that provides the address of the array object.
+   */
+  final UnaryOperand getArrayObjectAddressOperand() { result = getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the address of the array object.
+   */
+  final Instruction getArrayObjectAddress() { result = getArrayObjectAddressOperand().getDef() }
 }
 
 /**
@@ -503,6 +654,12 @@ class ErrorInstruction extends Instruction {
   ErrorInstruction() { getOpcode() instanceof Opcode::Error }
 }
 
+/**
+ * An instruction that returns an uninitialized value.
+ *
+ * This instruction is used to provide an initial definition for a stack variable that does not have
+ * an initializer, or whose initializer only partially initializes the variable.
+ */
 class UninitializedInstruction extends VariableInstruction {
   UninitializedInstruction() { getOpcode() instanceof Opcode::Uninitialized }
 
@@ -512,35 +669,94 @@ class UninitializedInstruction extends VariableInstruction {
   final Language::Variable getLocalVariable() { result = var.(IRUserVariable).getVariable() }
 }
 
+/**
+ * An instruction that has no effect.
+ *
+ * This instruction is typically inserted to ensure that a particular AST is associated with at
+ * least one instruction, even when the AST has no semantic effect.
+ */
 class NoOpInstruction extends Instruction {
   NoOpInstruction() { getOpcode() instanceof Opcode::NoOp }
 }
 
+/**
+ * An instruction that returns control to the caller of the function.
+ *
+ * This instruction represents the normal (non-exception) return from a function, either from an
+ * explicit `return` statement or from control flow reaching the end of the function's body.
+ *
+ * Each function has exactly one `ReturnInstruction`. Each `return` statement in a function is
+ * represented as an initialization of the temporary variable that holds the return value, with
+ * control then flowing to the common `ReturnInstruction` for that function. Exception: A function
+ * that never returns will not have a `ReturnInstruction`.
+ *
+ * The `ReturnInstruction` for a function will have a control-flow successor edge to a block
+ * containing the `ExitFunction` instruction for that function.
+ *
+ * There are two differet return instructions: `ReturnValueInstruction`, for returning a value from
+ * a non-`void`-returning function, and `ReturnVoidInstruction`, for returning from a
+ * `void`-returning function.
+ */
 class ReturnInstruction extends Instruction {
   ReturnInstruction() { getOpcode() instanceof ReturnOpcode }
 }
 
+/**
+ * An instruction that returns control to the caller of the function, without returning a value.
+ */
 class ReturnVoidInstruction extends ReturnInstruction {
   ReturnVoidInstruction() { getOpcode() instanceof Opcode::ReturnVoid }
 }
 
+/**
+ * An instruction that returns control to the caller of the function, including a return value.
+ */
 class ReturnValueInstruction extends ReturnInstruction {
   ReturnValueInstruction() { getOpcode() instanceof Opcode::ReturnValue }
 
+  /**
+   * Gets the operand that provides the value being returned by the function.
+   */
   final LoadOperand getReturnValueOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the instruction whose result provides the value being returned by the function, if an
+   * exact definition is available.
+   */
   final Instruction getReturnValue() { result = getReturnValueOperand().getDef() }
 }
 
+/**
+ * An instruction that represents the use of the value pointed to by a parameter of the function
+ * after the function returns control to its caller.
+ *
+ * This instruction does not itself return control to the caller. It merely represents the potential
+ * for a caller to use the memory pointed to by the parameter sometime after the call returns. This
+ * is the counterpart to the `InitializeIndirection` instruction, which represents the possibility
+ * that the caller initialized the memory pointed to by the parameter before the call.
+ */
 class ReturnIndirectionInstruction extends VariableInstruction {
   ReturnIndirectionInstruction() { getOpcode() instanceof Opcode::ReturnIndirection }
 
+  /**
+   * Gets the operand that provides the value of the pointed-to memory.
+   */
   final SideEffectOperand getSideEffectOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the instruction whose result provides the value of the pointed-to memory, if an exact
+   * definition is available.
+   */
   final Instruction getSideEffect() { result = getSideEffectOperand().getDef() }
 
+  /**
+   * Gets the operand that provides the address of the pointed-to memory.
+   */
   final AddressOperand getSourceAddressOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the instruction whose result provides the address of the pointed-to memory.
+   */
   final Instruction getSourceAddress() { result = getSourceAddressOperand().getDef() }
 
   /**
@@ -555,60 +771,128 @@ class ReturnIndirectionInstruction extends VariableInstruction {
   final predicate isThisIndirection() { var instanceof IRThisVariable }
 }
 
+/**
+ * An instruction that returns a copy of its operand.
+ *
+ * There are several different copy instructions, depending on the source and destination of the
+ * copy operation:
+ * - `CopyInstruction` - Copies a register operand to a register result.
+ * - `LoadInstruction` - Copies a memory operand to a register result.
+ * - `StoreInstruction` - Copies a register operand to a memory result.
+ */
 class CopyInstruction extends Instruction {
   CopyInstruction() { getOpcode() instanceof CopyOpcode }
 
+  /**
+   * Gets the operand that provides the input value of the copy.
+   */
   Operand getSourceValueOperand() { none() }
 
+  /**
+   * Gets the instruction whose result provides the input value of the copy, if an exact definition
+   * is available.
+   */
   final Instruction getSourceValue() { result = getSourceValueOperand().getDef() }
 }
 
+/**
+ * An instruction that returns a register result containing a copy of its register operand.
+ */
 class CopyValueInstruction extends CopyInstruction, UnaryInstruction {
   CopyValueInstruction() { getOpcode() instanceof Opcode::CopyValue }
 
   final override UnaryOperand getSourceValueOperand() { result = getAnOperand() }
 }
 
+/**
+ * An instruction that returns a register result containing a copy of its memory operand.
+ */
 class LoadInstruction extends CopyInstruction {
   LoadInstruction() { getOpcode() instanceof Opcode::Load }
 
+  /**
+   * Gets the operand that provides the address of the value being loaded.
+   */
   final AddressOperand getSourceAddressOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the instruction whose result provides the address of the value being loaded.
+   */
   final Instruction getSourceAddress() { result = getSourceAddressOperand().getDef() }
 
   final override LoadOperand getSourceValueOperand() { result = getAnOperand() }
 }
 
+/**
+ * An instruction that returns a memory result containing a copy of its register operand.
+ */
 class StoreInstruction extends CopyInstruction {
   StoreInstruction() { getOpcode() instanceof Opcode::Store }
 
+  /**
+   * Gets the operand that provides the address of the location to which the value will be stored.
+   */
   final AddressOperand getDestinationAddressOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the instruction whose result provides the address of the location to which the value will
+   * be stored, if an exact definition is available.
+   */
   final Instruction getDestinationAddress() { result = getDestinationAddressOperand().getDef() }
 
   final override StoreValueOperand getSourceValueOperand() { result = getAnOperand() }
 }
 
+/**
+ * An instruction that branches to one of two successor instructions based on the value of a Boolean
+ * operand.
+ */
 class ConditionalBranchInstruction extends Instruction {
   ConditionalBranchInstruction() { getOpcode() instanceof Opcode::ConditionalBranch }
 
+  /**
+   * Gets the operand that provides the Boolean condition controlling the branch.
+   */
   final ConditionOperand getConditionOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the instruction whose result provides the Boolean condition controlling the branch.
+   */
   final Instruction getCondition() { result = getConditionOperand().getDef() }
 
+  /**
+   * Gets the instruction to which control will flow if the condition is true.
+   */
   final Instruction getTrueSuccessor() { result = getSuccessor(EdgeKind::trueEdge()) }
 
+  /**
+   * Gets the instruction to which control will flow if the condition is false.
+   */
   final Instruction getFalseSuccessor() { result = getSuccessor(EdgeKind::falseEdge()) }
 }
 
+/**
+ * An instruction representing the exit point of a function.
+ *
+ * Each `IRFunction` has exactly one `ExitFunction` instruction, unless the function neither returns
+ * nor throws an exception. Control flows to the `ExitFunction` instruction from both normal returns
+ * (`ReturnVoid`, `ReturnValue`) and propagated exceptions (`Unwind`). This instruction has no
+ * successors.
+ */
 class ExitFunctionInstruction extends Instruction {
   ExitFunctionInstruction() { getOpcode() instanceof Opcode::ExitFunction }
 }
 
+/**
+ * An instruction whose result is a constant value.
+ */
 class ConstantInstruction extends ConstantValueInstruction {
   ConstantInstruction() { getOpcode() instanceof Opcode::Constant }
 }
 
+/**
+ * An instruction whose result is a constant value of integer or Boolean type.
+ */
 class IntegerConstantInstruction extends ConstantInstruction {
   IntegerConstantInstruction() {
     exists(IRType resultType |
@@ -618,27 +902,53 @@ class IntegerConstantInstruction extends ConstantInstruction {
   }
 }
 
+/**
+ * An instruction whose result is a constant value of floating-point type.
+ */
 class FloatConstantInstruction extends ConstantInstruction {
   FloatConstantInstruction() { getResultIRType() instanceof IRFloatingPointType }
 }
 
+/**
+ * An instruction whose result is the address of a string literal.
+ */
 class StringConstantInstruction extends VariableInstruction {
   override IRStringLiteral var;
 
   final override string getImmediateString() { result = Language::getStringLiteralText(getValue()) }
 
+  /**
+   * Gets the string literal whose address is returned by this instruction.
+   */
   final Language::StringLiteral getValue() { result = var.getLiteral() }
 }
 
+/**
+ * An instruction whose result is computed from two operands.
+ */
 class BinaryInstruction extends Instruction {
   BinaryInstruction() { getOpcode() instanceof BinaryOpcode }
 
+  /**
+   * Gets the left operand of this binary instruction.
+   */
   final LeftOperand getLeftOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the right operand of this binary instruction.
+   */
   final RightOperand getRightOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the instruction whose result provides the value of the left operand of this binary
+   * instruction.
+   */
   final Instruction getLeft() { result = getLeftOperand().getDef() }
 
+  /**
+   * Gets the instruction whose result provides the value of the right operand of this binary
+   * instruction.
+   */
   final Instruction getRight() { result = getRightOperand().getDef() }
 
   /**
@@ -651,66 +961,161 @@ class BinaryInstruction extends Instruction {
   }
 }
 
+/**
+ * An instruction that computes the result of an arithmetic operation.
+ */
 class ArithmeticInstruction extends Instruction {
   ArithmeticInstruction() { getOpcode() instanceof ArithmeticOpcode }
 }
 
+/**
+ * An instruction that performs an arithmetic operation on two numeric operands.
+ */
 class BinaryArithmeticInstruction extends ArithmeticInstruction, BinaryInstruction { }
 
+/**
+ * An instruction whose result is computed by performing an arithmetic operation on a single
+ * numeric operand.
+ */
 class UnaryArithmeticInstruction extends ArithmeticInstruction, UnaryInstruction { }
 
+/**
+ * An instruction that computes the sum of two numeric operands.
+ *
+ * Both operands must have the same numeric type, which will also be the result type. The result of
+ * integer overflow is the infinite-precision result modulo 2^n. Floating-point addition is
+ * performed according to IEEE-754.
+ */
 class AddInstruction extends BinaryArithmeticInstruction {
   AddInstruction() { getOpcode() instanceof Opcode::Add }
 }
 
+/**
+ * An instruction that computes the difference of two numeric operands.
+ *
+ * Both operands must have the same numeric type, which will also be the result type. The result of
+ * integer overflow is the infinite-precision result modulo 2^n. Floating-point subtraction is performed
+ * according to IEEE-754.
+ */
 class SubInstruction extends BinaryArithmeticInstruction {
   SubInstruction() { getOpcode() instanceof Opcode::Sub }
 }
 
+/**
+ * An instruction that computes the product of two numeric operands.
+ *
+ * Both operands must have the same numeric type, which will also be the result type. The result of
+ * integer overflow is the infinite-precision result modulo 2^n. Floating-point multiplication is
+ * performed according to IEEE-754.
+ */
 class MulInstruction extends BinaryArithmeticInstruction {
   MulInstruction() { getOpcode() instanceof Opcode::Mul }
 }
 
+/**
+ * An instruction that computes the quotient of two numeric operands.
+ *
+ * Both operands must have the same numeric type, which will also be the result type. The result of
+ * division by zero or integer overflow is undefined. Floating-point division is performed according
+ * to IEEE-754.
+ */
 class DivInstruction extends BinaryArithmeticInstruction {
   DivInstruction() { getOpcode() instanceof Opcode::Div }
 }
 
+/**
+ * An instruction that computes the remainder of two integer operands.
+ *
+ * Both operands must have the same integer type, which will also be the result type. The result of
+ * division by zero or integer overflow is undefined.
+ */
 class RemInstruction extends BinaryArithmeticInstruction {
   RemInstruction() { getOpcode() instanceof Opcode::Rem }
 }
 
+/**
+ * An instruction that negates a single numeric operand.
+ *
+ * The operand must have a numeric type, which will also be the result type. The result of integer
+ * negation uses two's complement, and is computed modulo 2^n. The result of floating-point negation
+ * is performed according to IEEE-754.
+ */
 class NegateInstruction extends UnaryArithmeticInstruction {
   NegateInstruction() { getOpcode() instanceof Opcode::Negate }
 }
 
+/**
+ * An instruction that computes the result of a bitwise operation.
+ */
 class BitwiseInstruction extends Instruction {
   BitwiseInstruction() { getOpcode() instanceof BitwiseOpcode }
 }
 
+/**
+ * An instruction that performs a bitwise operation on two integer operands.
+ */
 class BinaryBitwiseInstruction extends BitwiseInstruction, BinaryInstruction { }
 
+/**
+ * An instruction that performs a bitwise operation on a single integer operand.
+ */
 class UnaryBitwiseInstruction extends BitwiseInstruction, UnaryInstruction { }
 
+/**
+ * An instruction that computes the bitwise "and" of two integer operands.
+ *
+ * Both operands must have the same integer type, which will also be the result type.
+ */
 class BitAndInstruction extends BinaryBitwiseInstruction {
   BitAndInstruction() { getOpcode() instanceof Opcode::BitAnd }
 }
 
+/**
+ * An instruction that computes the bitwise "or" of two integer operands.
+ *
+ * Both operands must have the same integer type, which will also be the result type.
+ */
 class BitOrInstruction extends BinaryBitwiseInstruction {
   BitOrInstruction() { getOpcode() instanceof Opcode::BitOr }
 }
 
+/**
+ * An instruction that computes the bitwise "xor" of two integer operands.
+ *
+ * Both operands must have the same integer type, which will also be the result type.
+ */
 class BitXorInstruction extends BinaryBitwiseInstruction {
   BitXorInstruction() { getOpcode() instanceof Opcode::BitXor }
 }
 
+/**
+ * An instruction that shifts its left operand to the left by the number of bits specified by its
+ * right operand.
+ *
+ * Both operands must have an integer type. The result has the same type as the left operand. The
+ * rightmost bits are zero-filled.
+ */
 class ShiftLeftInstruction extends BinaryBitwiseInstruction {
   ShiftLeftInstruction() { getOpcode() instanceof Opcode::ShiftLeft }
 }
 
+/**
+ * An instruction that shifts its left operand to the right by the number of bits specified by its
+ * right operand.
+ *
+ * Both operands must have an integer type. The result has the same type as the left operand. If the
+ * left operand has an unsigned integer type, the leftmost bits are zero-filled. If the left operand
+ * has a signed integer type, the leftmost bits are filled by duplicating the most significant bit
+ * of the left operand.
+ */
 class ShiftRightInstruction extends BinaryBitwiseInstruction {
   ShiftRightInstruction() { getOpcode() instanceof Opcode::ShiftRight }
 }
 
+/**
+ * An instruction that performs a binary arithmetic operation involving at least one pointer
+ * operand.
+ */
 class PointerArithmeticInstruction extends BinaryInstruction {
   int elementSize;
 
@@ -721,44 +1126,129 @@ class PointerArithmeticInstruction extends BinaryInstruction {
 
   final override string getImmediateString() { result = elementSize.toString() }
 
+  /**
+   * Gets the size of the elements pointed to by the pointer operands, in bytes.
+   *
+   * When adding an integer offset to a pointer (`PointerAddInstruction`) or subtracting an integer
+   * offset from a pointer (`PointerSubInstruction`), the integer offset is multiplied by the
+   * element size to compute the actual number of bytes added to or subtracted from the pointer
+   * address. When computing the integer difference between two pointers (`PointerDiffInstruction`),
+   * the result is computed by computing the difference between the two pointer byte addresses, then
+   * dividing that byte count by the element size.
+   */
   final int getElementSize() { result = elementSize }
 }
 
+/**
+ * An instruction that adds or subtracts an integer offset from a pointer.
+ */
 class PointerOffsetInstruction extends PointerArithmeticInstruction {
   PointerOffsetInstruction() { getOpcode() instanceof PointerOffsetOpcode }
 }
 
+/**
+ * An instruction that adds an integer offset to a pointer.
+ *
+ * The result is the byte address computed by adding the value of the right (integer) operand,
+ * multiplied by the element size, to the value of the left (pointer) operand. The result of pointer
+ * overflow is undefined.
+ */
 class PointerAddInstruction extends PointerOffsetInstruction {
   PointerAddInstruction() { getOpcode() instanceof Opcode::PointerAdd }
 }
 
+/**
+ * An instruction that subtracts an integer offset from a pointer.
+ *
+ * The result is the byte address computed by subtracting the value of the right (integer) operand,
+ * multiplied by the element size, from the value of the left (pointer) operand. The result of
+ * pointer underflow is undefined.
+ */
 class PointerSubInstruction extends PointerOffsetInstruction {
   PointerSubInstruction() { getOpcode() instanceof Opcode::PointerSub }
 }
 
+/**
+ * An instruction that computes the difference between two pointers.
+ *
+ * Both operands must have the same pointer type. The result must have an integer type whose size is
+ * the same as that of the pointer operands. The result is computed by subtracting the byte address
+ * in the right operand from the byte address in the left operand, and dividing by the element size.
+ * If the difference in byte addresses is not divisible by the element size, the result is
+ * undefined.
+ */
 class PointerDiffInstruction extends PointerArithmeticInstruction {
   PointerDiffInstruction() { getOpcode() instanceof Opcode::PointerDiff }
 }
 
+/**
+ * An instruction whose result is computed from a single operand.
+ */
 class UnaryInstruction extends Instruction {
   UnaryInstruction() { getOpcode() instanceof UnaryOpcode }
 
+  /**
+   * Gets the sole operand of this instruction.
+   */
   final UnaryOperand getUnaryOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the instruction whose result provides the sole operand of this instruction.
+   */
   final Instruction getUnary() { result = getUnaryOperand().getDef() }
 }
 
+/**
+ * An instruction that converts the value of its operand to a value of a different type.
+ */
 class ConvertInstruction extends UnaryInstruction {
   ConvertInstruction() { getOpcode() instanceof Opcode::Convert }
 }
 
+/**
+ * An instruction that converts the address of a polymorphic object to the address of a different
+ * subobject of the same polymorphic object, returning a null address if the dynamic type of the
+ * object is not compatible with the result type.
+ *
+ * If the operand holds a null address, the result is a null address.
+ *
+ * This instruction is used to represent a C++ `dynamic_cast<>` to a pointer type, or a C# `is` or
+ * `as` expression.
+ */
 class CheckedConvertOrNullInstruction extends UnaryInstruction {
   CheckedConvertOrNullInstruction() { getOpcode() instanceof Opcode::CheckedConvertOrNull }
 }
 
 /**
- * Represents an instruction that converts between two addresses
- * related by inheritance.
+ * An instruction that converts the address of a polymorphic object to the address of a different
+ * subobject of the same polymorphic object, throwing an exception if the dynamic type of the object
+ * is not compatible with the result type.
+ *
+ * If the operand holds a null address, the result is a null address.
+ *
+ * This instruction is used to represent a C++ `dynamic_cast<>` to a reference type, or a C# cast
+ * expression.
+ */
+class CheckedConvertOrThrowInstruction extends UnaryInstruction {
+  CheckedConvertOrThrowInstruction() { getOpcode() instanceof Opcode::CheckedConvertOrThrow }
+}
+
+/**
+ * An instruction that returns the address of the complete object that contains the subobject
+ * pointed to by its operand.
+ *
+ * If the operand holds a null address, the result is a null address.
+ *
+ * This instruction is used to represent `dyanmic_cast<void*>` in C++, which returns the pointer to
+ * the most-derived object.
+ */
+class CompleteObjectAddressInstruction extends UnaryInstruction {
+  CompleteObjectAddressInstruction() { getOpcode() instanceof Opcode::CompleteObjectAddress }
+}
+
+/**
+ * An instruction that converts the address of an object to the address of a different subobject of
+ * the same object, without any type checking at runtime.
  */
 class InheritanceConversionInstruction extends UnaryInstruction {
   Language::Class baseClass;
@@ -795,59 +1285,91 @@ class InheritanceConversionInstruction extends UnaryInstruction {
 }
 
 /**
- * Represents an instruction that converts from the address of a derived class
- * to the address of a base class.
+ * An instruction that converts from the address of a derived class to the address of a base class.
  */
 class ConvertToBaseInstruction extends InheritanceConversionInstruction {
   ConvertToBaseInstruction() { getOpcode() instanceof ConvertToBaseOpcode }
 }
 
 /**
- * Represents an instruction that converts from the address of a derived class
- * to the address of a direct non-virtual base class.
+ * An instruction that converts from the address of a derived class to the address of a direct
+ * non-virtual base class.
+ *
+ * If the operand holds a null address, the result is a null address.
  */
 class ConvertToNonVirtualBaseInstruction extends ConvertToBaseInstruction {
   ConvertToNonVirtualBaseInstruction() { getOpcode() instanceof Opcode::ConvertToNonVirtualBase }
 }
 
 /**
- * Represents an instruction that converts from the address of a derived class
- * to the address of a virtual base class.
+ * An instruction that converts from the address of a derived class to the address of a virtual base
+ * class.
+ *
+ * If the operand holds a null address, the result is a null address.
  */
 class ConvertToVirtualBaseInstruction extends ConvertToBaseInstruction {
   ConvertToVirtualBaseInstruction() { getOpcode() instanceof Opcode::ConvertToVirtualBase }
 }
 
 /**
- * Represents an instruction that converts from the address of a base class
- * to the address of a direct non-virtual derived class.
+ * An instruction that converts from the address of a base class to the address of a direct
+ * non-virtual derived class.
+ *
+ * If the operand holds a null address, the result is a null address.
  */
 class ConvertToDerivedInstruction extends InheritanceConversionInstruction {
   ConvertToDerivedInstruction() { getOpcode() instanceof Opcode::ConvertToDerived }
 }
 
+/**
+ * An instruction that computes the bitwise complement of its operand.
+ *
+ * The operand must have an integer type, which will also be the result type.
+ */
 class BitComplementInstruction extends UnaryBitwiseInstruction {
   BitComplementInstruction() { getOpcode() instanceof Opcode::BitComplement }
 }
 
+/**
+ * An instruction that computes the logical complement of its operand.
+ *
+ * The operand must have a Boolean type, which will also be the result type.
+ */
 class LogicalNotInstruction extends UnaryInstruction {
   LogicalNotInstruction() { getOpcode() instanceof Opcode::LogicalNot }
 }
 
+/**
+ * An instruction that compares two numeric operands.
+ */
 class CompareInstruction extends BinaryInstruction {
   CompareInstruction() { getOpcode() instanceof CompareOpcode }
 }
 
+/**
+ * An instruction that returns a `true` result if its operands are equal.
+ *
+ * Both operands must have the same numeric or address type. The result must have a Boolean type.
+ * The result is `true` if `left == right`, and `false` if `left != right` or the two operands are
+ * unordered. Floating-point comparison is performed according to IEEE-754.
+ */
 class CompareEQInstruction extends CompareInstruction {
   CompareEQInstruction() { getOpcode() instanceof Opcode::CompareEQ }
 }
 
+/**
+ * An instruction that returns a `true` result if its operands are not equal.
+ *
+ * Both operands must have the same numeric or address type. The result must have a Boolean type.
+ * The result is `true` if `left != right` or if the two operands are unordered, and `false` if
+ * `left == right`. Floating-point comparison is performed according to IEEE-754.
+ */
 class CompareNEInstruction extends CompareInstruction {
   CompareNEInstruction() { getOpcode() instanceof Opcode::CompareNE }
 }
 
 /**
- * Represents an instruction that does a relative comparison of two values, such as `<` or `>=`.
+ * An instruction that does a relative comparison of two values, such as `<` or `>=`.
  */
 class RelationalInstruction extends CompareInstruction {
   RelationalInstruction() { getOpcode() instanceof RelationalOpcode }
@@ -874,6 +1396,13 @@ class RelationalInstruction extends CompareInstruction {
   predicate isStrict() { none() }
 }
 
+/**
+ * An instruction that returns a `true` result if its left operand is less than its right operand.
+ *
+ * Both operands must have the same numeric or address type. The result must have a Boolean type.
+ * The result is `true` if the `left < right`, and `false` if `left >= right` or if the two operands
+ * are unordered. Floating-point comparison is performed according to IEEE-754.
+ */
 class CompareLTInstruction extends RelationalInstruction {
   CompareLTInstruction() { getOpcode() instanceof Opcode::CompareLT }
 
@@ -884,6 +1413,13 @@ class CompareLTInstruction extends RelationalInstruction {
   override predicate isStrict() { any() }
 }
 
+/**
+ * An instruction that returns a `true` result if its left operand is greater than its right operand.
+ *
+ * Both operands must have the same numeric or address type. The result must have a Boolean type.
+ * The result is `true` if the `left > right`, and `false` if `left <= right` or if the two operands
+ * are unordered. Floating-point comparison is performed according to IEEE-754.
+ */
 class CompareGTInstruction extends RelationalInstruction {
   CompareGTInstruction() { getOpcode() instanceof Opcode::CompareGT }
 
@@ -894,6 +1430,14 @@ class CompareGTInstruction extends RelationalInstruction {
   override predicate isStrict() { any() }
 }
 
+/**
+ * An instruction that returns a `true` result if its left operand is less than or equal to its
+ * right operand.
+ *
+ * Both operands must have the same numeric or address type. The result must have a Boolean type.
+ * The result is `true` if the `left <= right`, and `false` if `left > right` or if the two operands
+ * are unordered. Floating-point comparison is performed according to IEEE-754.
+ */
 class CompareLEInstruction extends RelationalInstruction {
   CompareLEInstruction() { getOpcode() instanceof Opcode::CompareLE }
 
@@ -904,6 +1448,14 @@ class CompareLEInstruction extends RelationalInstruction {
   override predicate isStrict() { none() }
 }
 
+/**
+ * An instruction that returns a `true` result if its left operand is greater than or equal to its
+ * right operand.
+ *
+ * Both operands must have the same numeric or address type. The result must have a Boolean type.
+ * The result is `true` if the `left >= right`, and `false` if `left < right` or if the two operands
+ * are unordered. Floating-point comparison is performed according to IEEE-754.
+ */
 class CompareGEInstruction extends RelationalInstruction {
   CompareGEInstruction() { getOpcode() instanceof Opcode::CompareGE }
 
@@ -914,15 +1466,32 @@ class CompareGEInstruction extends RelationalInstruction {
   override predicate isStrict() { none() }
 }
 
+/**
+ * An instruction that branches to one of multiple successor instructions based on the value of an
+ * integer operand.
+ *
+ * This instruction will have zero or more successors whose edge kind is `CaseEdge`, each
+ * representing the branch that will be taken if the controlling expression is within the range
+ * specified for that case edge. The range of a case edge must be disjoint from the range of each
+ * other case edge.
+ *
+ * The instruction may optionally have a successor edge whose edge kind is `DefaultEdge`,
+ * representing the branch that will be taken if the controlling expression is not within the range
+ * of any case edge.
+ */
 class SwitchInstruction extends Instruction {
   SwitchInstruction() { getOpcode() instanceof Opcode::Switch }
 
+  /** Gets the operand that provides the integer value controlling the switch. */
   final ConditionOperand getExpressionOperand() { result = getAnOperand() }
 
+  /** Gets the instruction whose result provides the integer value controlling the switch. */
   final Instruction getExpression() { result = getExpressionOperand().getDef() }
 
+  /** Gets the successor instructions along the case edges of the switch. */
   final Instruction getACaseSuccessor() { exists(CaseEdge edge | result = getSuccessor(edge)) }
 
+  /** Gets the successor instruction along the default edge of the switch, if any. */
   final Instruction getDefaultSuccessor() { result = getSuccessor(EdgeKind::defaultEdge()) }
 }
 
@@ -953,7 +1522,7 @@ class CallInstruction extends Instruction {
    * Gets the `Function` that the call targets, if this is statically known.
    */
   final Language::Function getStaticCallTarget() {
-    result = getCallTarget().(FunctionInstruction).getFunctionSymbol()
+    result = getCallTarget().(FunctionAddressInstruction).getFunctionSymbol()
   }
 
   /**
@@ -998,6 +1567,9 @@ class CallInstruction extends Instruction {
 class SideEffectInstruction extends Instruction {
   SideEffectInstruction() { getOpcode() instanceof SideEffectOpcode }
 
+  /**
+   * Gets the instruction whose execution causes this side effect.
+   */
   final Instruction getPrimaryInstruction() {
     result = Construction::getPrimaryInstructionForSideEffect(this)
   }
@@ -1013,9 +1585,10 @@ class CallSideEffectInstruction extends SideEffectInstruction {
 
 /**
  * An instruction representing the side effect of a function call on any memory
- * that might be read by that call. This instruction is emitted instead of
- * `CallSideEffectInstruction` when it's certain that the call target cannot
- * write to escaped memory.
+ * that might be read by that call.
+ *
+ * This instruction is emitted instead of `CallSideEffectInstruction` when it is certain that the
+ * call target cannot write to escaped memory.
  */
 class CallReadSideEffectInstruction extends SideEffectInstruction {
   CallReadSideEffectInstruction() { getOpcode() instanceof Opcode::CallReadSideEffect }
@@ -1063,7 +1636,15 @@ class SizedBufferReadSideEffectInstruction extends ReadSideEffectInstruction {
     getOpcode() instanceof Opcode::SizedBufferReadSideEffect
   }
 
-  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
+  /**
+   * Gets the operand that holds the number of bytes read from the buffer.
+   */
+  final BufferSizeOperand getBufferSizeOperand() { result = getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the number of bytes read from the buffer.
+   */
+  final Instruction getBufferSize() { result = getBufferSizeOperand().getDef() }
 }
 
 /**
@@ -1073,7 +1654,15 @@ class SizedBufferReadSideEffectInstruction extends ReadSideEffectInstruction {
 class WriteSideEffectInstruction extends SideEffectInstruction, IndexedInstruction {
   WriteSideEffectInstruction() { getOpcode() instanceof WriteSideEffectOpcode }
 
-  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
+  /**
+   * Get the operand that holds the address of the memory to be written.
+   */
+  final AddressOperand getDestinationAddressOperand() { result = getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the address of the memory to be written.
+   */
+  Instruction getDestinationAddress() { result = getDestinationAddressOperand().getDef() }
 }
 
 /**
@@ -1104,11 +1693,20 @@ class SizedBufferMustWriteSideEffectInstruction extends WriteSideEffectInstructi
     getOpcode() instanceof Opcode::SizedBufferMustWriteSideEffect
   }
 
-  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
+  /**
+   * Gets the operand that holds the number of bytes written to the buffer.
+   */
+  final BufferSizeOperand getBufferSizeOperand() { result = getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the number of bytes written to the buffer.
+   */
+  final Instruction getBufferSize() { result = getBufferSizeOperand().getDef() }
 }
 
 /**
  * An instruction representing the potential write of an indirect parameter within a function call.
+ *
  * Unlike `IndirectWriteSideEffectInstruction`, the location might not be completely overwritten.
  * written.
  */
@@ -1120,6 +1718,7 @@ class IndirectMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
 
 /**
  * An instruction representing the write of an indirect buffer parameter within a function call.
+ *
  * Unlike `BufferWriteSideEffectInstruction`, the buffer might not be completely overwritten.
  */
 class BufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
@@ -1128,6 +1727,7 @@ class BufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
 
 /**
  * An instruction representing the write of an indirect buffer parameter within a function call.
+ *
  * Unlike `BufferWriteSideEffectInstruction`, the buffer might not be completely overwritten.
  */
 class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
@@ -1135,11 +1735,19 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
     getOpcode() instanceof Opcode::SizedBufferMayWriteSideEffect
   }
 
-  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
+  /**
+   * Gets the operand that holds the number of bytes written to the buffer.
+   */
+  final BufferSizeOperand getBufferSizeOperand() { result = getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the number of bytes written to the buffer.
+   */
+  final Instruction getBufferSize() { result = getBufferSizeOperand().getDef() }
 }
 
 /**
- * An instruction representing the initial value of newly allocated memory, e.g. the result of a
+ * An instruction representing the initial value of newly allocated memory, such as the result of a
  * call to `malloc`.
  */
 class InitializeDynamicAllocationInstruction extends SideEffectInstruction {
@@ -1354,20 +1962,30 @@ class ChiInstruction extends Instruction {
    * Gets the operand that represents the new value written by the memory write.
    */
   final Instruction getPartial() { result = getPartialOperand().getDef() }
+
+  /**
+   * Gets the bit range `[startBit, endBit)` updated by the partial operand of this `ChiInstruction`, relative to the start address of the total operand.
+   */
+  final predicate getUpdatedInterval(int startBit, int endBit) {
+    Construction::getIntervalUpdatedByChi(this, startBit, endBit)
+  }
 }
 
 /**
- * An instruction representing unreachable code. Inserted in place of the original target
- * instruction of a `ConditionalBranch` or `Switch` instruction where that particular edge is
- * infeasible.
+ * An instruction representing unreachable code.
+ *
+ * This instruction is inserted in place of the original target instruction of a `ConditionalBranch`
+ * or `Switch` instruction where that particular edge is infeasible.
  */
 class UnreachedInstruction extends Instruction {
   UnreachedInstruction() { getOpcode() instanceof Opcode::Unreached }
 }
 
 /**
- * An instruction representing a built-in operation. This is used to represent
- * operations such as access to variable argument lists.
+ * An instruction representing a built-in operation.
+ *
+ * This is used to represent a variety of intrinsic operations provided by the compiler
+ * implementation, such as vector arithmetic.
  */
 class BuiltInOperationInstruction extends Instruction {
   Language::BuiltInOperation operation;
@@ -1377,6 +1995,10 @@ class BuiltInOperationInstruction extends Instruction {
     operation = Raw::getInstructionBuiltInOperation(this)
   }
 
+  /**
+   * Gets the language-specific `BuiltInOperation` object that specifies the operation that is
+   * performed by this instruction.
+   */
   final Language::BuiltInOperation getBuiltInOperation() { result = operation }
 }
 
@@ -1388,4 +2010,60 @@ class BuiltInInstruction extends BuiltInOperationInstruction {
   BuiltInInstruction() { getOpcode() instanceof Opcode::BuiltIn }
 
   final override string getImmediateString() { result = getBuiltInOperation().toString() }
+}
+
+/**
+ * An instruction that returns a `va_list` to access the arguments passed to the `...` parameter.
+ *
+ * The operand specifies the address of the `IREllipsisVariable` used to represent the `...`
+ * parameter. The result is a `va_list` that initially refers to the first argument that was passed
+ * to the `...` parameter.
+ */
+class VarArgsStartInstruction extends UnaryInstruction {
+  VarArgsStartInstruction() { getOpcode() instanceof Opcode::VarArgsStart }
+}
+
+/**
+ * An instruction that cleans up a `va_list` after it is no longer in use.
+ *
+ * The operand specifies the address of the `va_list` to clean up. This instruction does not return
+ * a result.
+ */
+class VarArgsEndInstruction extends UnaryInstruction {
+  VarArgsEndInstruction() { getOpcode() instanceof Opcode::VarArgsEnd }
+}
+
+/**
+ * An instruction that returns the address of the argument currently pointed to by a `va_list`.
+ *
+ * The operand is the `va_list` that points to the argument. The result is the address of the
+ * argument.
+ */
+class VarArgInstruction extends UnaryInstruction {
+  VarArgInstruction() { getOpcode() instanceof Opcode::VarArg }
+}
+
+/**
+ * An instruction that modifies a `va_list` to point to the next argument that was passed to the
+ * `...` parameter.
+ *
+ * The operand is the current `va_list`. The result is an updated `va_list` that points to the next
+ * argument of the `...` parameter.
+ */
+class NextVarArgInstruction extends UnaryInstruction {
+  NextVarArgInstruction() { getOpcode() instanceof Opcode::NextVarArg }
+}
+
+/**
+ * An instruction that allocates a new object on the managed heap.
+ *
+ * This instruction is used to represent the allocation of a new object in C# using the `new`
+ * expression. This instruction does not invoke a constructor for the object. Instead, there will be
+ * a subsequent `Call` instruction to invoke the appropriate constructor directory, passing the
+ * result of the `NewObj` as the `this` argument.
+ *
+ * The result is the address of the newly allocated object.
+ */
+class NewObjInstruction extends Instruction {
+  NewObjInstruction() { getOpcode() instanceof Opcode::NewObj }
 }

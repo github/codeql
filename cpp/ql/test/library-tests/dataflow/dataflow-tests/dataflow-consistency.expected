@@ -1,6 +1,5 @@
 uniqueEnclosingCallable
-uniqueTypeBound
-uniqueTypeRepr
+uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
@@ -15,7 +14,6 @@ postHasUniquePre
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
-storeIsPostUpdate
 argHasPostUpdate
 | lambdas.cpp:18:7:18:7 | a | ArgumentNode is missing PostUpdateNode. |
 | lambdas.cpp:25:2:25:2 | b | ArgumentNode is missing PostUpdateNode. |

@@ -24,6 +24,16 @@ class ConditionalAccess
         var s = ((int?)i)?.ToString();
         s = ""?.CommaJoinWith(s);
     }
+
+    ConditionalAccess Prop { get; set; }
+
+    void Out(out int i) => i = 0;
+
+    void M8(bool b, out int i)
+    {
+        i = 0;
+        Prop?.Out(out i);
+    }
 }
 
 static class Ext

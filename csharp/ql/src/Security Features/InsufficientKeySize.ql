@@ -29,8 +29,8 @@ predicate incorrectUseOfDSA(ObjectCreation e, string msg) {
       .getTarget()
       .getDeclaringType()
       .hasQualifiedName("System.Security.Cryptography", "DSACryptoServiceProvider") and
-  exists(Expr i | e.getArgument(0) = i and i.getValue().toInt() < 1024) and
-  msg = "Key size should be at least 1024 bits for DSA encryption."
+  exists(Expr i | e.getArgument(0) = i and i.getValue().toInt() < 2048) and
+  msg = "Key size should be at least 2048 bits for DSA encryption."
 }
 
 predicate incorrectUseOfRSA(ObjectCreation e, string msg) {
@@ -38,8 +38,8 @@ predicate incorrectUseOfRSA(ObjectCreation e, string msg) {
       .getTarget()
       .getDeclaringType()
       .hasQualifiedName("System.Security.Cryptography", "RSACryptoServiceProvider") and
-  exists(Expr i | e.getArgument(0) = i and i.getValue().toInt() < 1024) and
-  msg = "Key size should be at least 1024 bits for RSA encryption."
+  exists(Expr i | e.getArgument(0) = i and i.getValue().toInt() < 2048) and
+  msg = "Key size should be at least 2048 bits for RSA encryption."
 }
 
 from Expr e, string msg

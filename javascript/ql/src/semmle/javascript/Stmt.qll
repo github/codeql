@@ -64,6 +64,13 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
   }
 }
 
+private class TControlStmt =
+  TLoopStmt or @if_stmt or @with_stmt or @switch_stmt or @try_stmt or @catch_clause;
+
+private class TLoopStmt = TEnhancedForLoop or @while_stmt or @do_while_stmt or @for_stmt;
+
+private class TEnhancedForLoop = @for_in_stmt or @for_each_stmt or @for_of_stmt;
+
 /**
  * A control statement, that is, is a loop, an if statement, a switch statement,
  * a with statement, a try statement, or a catch clause.
@@ -82,7 +89,7 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
  * }
  * ```
  */
-abstract class ControlStmt extends Stmt {
+class ControlStmt extends TControlStmt, Stmt {
   /** Gets a statement controlled by this control statement. */
   abstract Stmt getAControlledStmt();
 }
@@ -102,7 +109,7 @@ abstract class ControlStmt extends Stmt {
  * } while(++i < lines.length);
  * ```
  */
-abstract class LoopStmt extends ControlStmt {
+class LoopStmt extends TLoopStmt, ControlStmt {
   /** Gets the body of this loop. */
   abstract Stmt getBody();
 
@@ -121,7 +128,7 @@ abstract class LoopStmt extends ControlStmt {
  * ;
  * ```
  */
-class EmptyStmt extends @emptystmt, Stmt { }
+class EmptyStmt extends @empty_stmt, Stmt { }
 
 /**
  * A block of statements.
@@ -134,7 +141,7 @@ class EmptyStmt extends @emptystmt, Stmt { }
  * }
  * ```
  */
-class BlockStmt extends @blockstmt, Stmt {
+class BlockStmt extends @block_stmt, Stmt {
   /** Gets the `i`th statement in this block. */
   Stmt getStmt(int i) { result = getChildStmt(i) }
 
@@ -158,7 +165,7 @@ class BlockStmt extends @blockstmt, Stmt {
  * console.log("Restart.");
  * ```
  */
-class ExprStmt extends @exprstmt, Stmt {
+class ExprStmt extends @expr_stmt, Stmt {
   /** Gets the expression of this expression statement. */
   Expr getExpr() { result = getChildExpr(0) }
 
@@ -399,7 +406,7 @@ class BundleDirective extends KnownDirective {
  * }
  * ```
  */
-class IfStmt extends @ifstmt, ControlStmt {
+class IfStmt extends @if_stmt, ControlStmt {
   /** Gets the condition of this `if` statement. */
   Expr getCondition() { result = getChildExpr(0) }
 
@@ -442,13 +449,17 @@ class IfStmt extends @ifstmt, ControlStmt {
  * }
  * ```
  */
-class LabeledStmt extends @labeledstmt, Stmt {
+class LabeledStmt extends @labeled_stmt, Stmt {
   /** Gets the label of this statement. */
   string getLabel() { result = getChildExpr(0).(Identifier).getName() }
 
   /** Gets the labeled statement of this statement. */
   Stmt getStmt() { result = getChildStmt(1) }
 }
+
+private class TJumpStmt = TBreakOrContinueStmt or @return_stmt or @throw_stmt;
+
+private class TBreakOrContinueStmt = @break_stmt or @continue_stmt;
 
 /**
  * A statement that disrupts structured control flow, that is, a `continue` statement,
@@ -463,7 +474,7 @@ class LabeledStmt extends @labeledstmt, Stmt {
  * return -1;
  * ```
  */
-abstract class JumpStmt extends Stmt {
+class JumpStmt extends TJumpStmt, Stmt {
   /**
    * Gets the target of this jump.
    *
@@ -490,7 +501,7 @@ abstract class JumpStmt extends Stmt {
  * break;
  * ```
  */
-abstract class BreakOrContinueStmt extends JumpStmt {
+class BreakOrContinueStmt extends TBreakOrContinueStmt, JumpStmt {
   /** Gets the label this statement refers to, if any. */
   string getTargetLabel() { result = getChildExpr(0).(Identifier).getName() }
 
@@ -498,7 +509,7 @@ abstract class BreakOrContinueStmt extends JumpStmt {
   predicate hasTargetLabel() { exists(getTargetLabel()) }
 
   /** Gets the statement this statement breaks out of or continues with. */
-  override Stmt getTarget() { jumpTargets(this, result) }
+  override Stmt getTarget() { jump_targets(this, result) }
 
   override predicate isSubjectToSemicolonInsertion() { any() }
 }
@@ -513,7 +524,7 @@ abstract class BreakOrContinueStmt extends JumpStmt {
  * break;
  * ```
  */
-class BreakStmt extends @breakstmt, BreakOrContinueStmt { }
+class BreakStmt extends @break_stmt, BreakOrContinueStmt { }
 
 /**
  * A `continue` statement.
@@ -525,7 +536,7 @@ class BreakStmt extends @breakstmt, BreakOrContinueStmt { }
  * continue;
  * ```
  */
-class ContinueStmt extends @continuestmt, BreakOrContinueStmt { }
+class ContinueStmt extends @continue_stmt, BreakOrContinueStmt { }
 
 /**
  * A `with` statement.
@@ -538,7 +549,7 @@ class ContinueStmt extends @continuestmt, BreakOrContinueStmt { }
  * }
  * ```
  */
-class WithStmt extends @withstmt, ControlStmt {
+class WithStmt extends @with_stmt, ControlStmt {
   /** Gets the controlling expression of this `with` statement. */
   Expr getExpr() { result = getChildExpr(0) }
 
@@ -579,7 +590,7 @@ class WithStmt extends @withstmt, ControlStmt {
  * }
  * ```
  */
-class SwitchStmt extends @switchstmt, ControlStmt {
+class SwitchStmt extends @switch_stmt, ControlStmt {
   /** Gets the controlling expression of this `switch` statement. */
   Expr getExpr() { result = getChildExpr(-1) }
 
@@ -605,7 +616,7 @@ class SwitchStmt extends @switchstmt, ControlStmt {
  * return;
  * ```
  */
-class ReturnStmt extends @returnstmt, JumpStmt {
+class ReturnStmt extends @return_stmt, JumpStmt {
   /** Gets the expression specifying the returned value, if any. */
   Expr getExpr() { result = getChildExpr(0) }
 
@@ -628,7 +639,7 @@ class ReturnStmt extends @returnstmt, JumpStmt {
  * throw new Error();
  * ```
  */
-class ThrowStmt extends @throwstmt, JumpStmt {
+class ThrowStmt extends @throw_stmt, JumpStmt {
   /** Gets the expression specifying the value to throw. */
   Expr getExpr() { result = getChildExpr(0) }
 
@@ -666,7 +677,7 @@ class ThrowStmt extends @throwstmt, JumpStmt {
  * }
  * ```
  */
-class TryStmt extends @trystmt, ControlStmt {
+class TryStmt extends @try_stmt, ControlStmt {
   /** Gets the body of this `try` statement. */
   BlockStmt getBody() { result = getChildStmt(0) }
 
@@ -712,7 +723,7 @@ class TryStmt extends @trystmt, ControlStmt {
  * }
  * ```
  */
-class WhileStmt extends @whilestmt, LoopStmt {
+class WhileStmt extends @while_stmt, LoopStmt {
   /** Gets the loop condition of this `while` loop. */
   Expr getExpr() { result = getChildExpr(0) }
 
@@ -732,7 +743,7 @@ class WhileStmt extends @whilestmt, LoopStmt {
  * } while(++i < lines.length);
  * ```
  */
-class DoWhileStmt extends @dowhilestmt, LoopStmt {
+class DoWhileStmt extends @do_while_stmt, LoopStmt {
   /** Gets the loop condition of this `do`-`while` loop. */
   Expr getExpr() { result = getChildExpr(1) }
 
@@ -771,7 +782,7 @@ class ExprOrVarDecl extends ASTNode {
  * }
  * ```
  */
-class ForStmt extends @forstmt, LoopStmt {
+class ForStmt extends @for_stmt, LoopStmt {
   /** Gets the init part of this `for` loop. */
   ExprOrVarDecl getInit() {
     result = getChildExpr(0) or
@@ -801,7 +812,7 @@ class ForStmt extends @forstmt, LoopStmt {
  * }
  * ```
  */
-abstract class EnhancedForLoop extends LoopStmt {
+class EnhancedForLoop extends TEnhancedForLoop, LoopStmt {
   /**
    * Gets the iterator of this `for`-`in` or `for`-`of` loop; this can be either a
    * pattern, a property reference, or a variable declaration statement.
@@ -867,7 +878,7 @@ abstract class EnhancedForLoop extends LoopStmt {
  * }
  * ```
  */
-class ForInStmt extends @forinstmt, EnhancedForLoop { }
+class ForInStmt extends @for_in_stmt, EnhancedForLoop { }
 
 /**
  * A `for`-`of` loop.
@@ -880,11 +891,11 @@ class ForInStmt extends @forinstmt, EnhancedForLoop { }
  * }
  * ```
  */
-class ForOfStmt extends @forofstmt, EnhancedForLoop {
+class ForOfStmt extends @for_of_stmt, EnhancedForLoop {
   /**
    * Holds if this is a `for-await-of` statement.
    */
-  predicate isAwait() { isForAwaitOf(this) }
+  predicate isAwait() { is_for_await_of(this) }
 }
 
 /**
@@ -898,7 +909,7 @@ class ForOfStmt extends @forofstmt, EnhancedForLoop {
  * }
  * ```
  */
-class ForEachStmt extends @foreachstmt, EnhancedForLoop { }
+class ForEachStmt extends @for_each_stmt, EnhancedForLoop { }
 
 /**
  * A `debugger` statement.
@@ -909,7 +920,7 @@ class ForEachStmt extends @foreachstmt, EnhancedForLoop { }
  * debugger;
  * ```
  */
-class DebuggerStmt extends @debuggerstmt, Stmt {
+class DebuggerStmt extends @debugger_stmt, Stmt {
   override predicate isSubjectToSemicolonInsertion() { any() }
 }
 
@@ -924,7 +935,7 @@ class DebuggerStmt extends @debuggerstmt, Stmt {
  * }
  * ```
  */
-class FunctionDeclStmt extends @functiondeclstmt, Stmt, Function {
+class FunctionDeclStmt extends @function_decl_stmt, Stmt, Function {
   override Stmt getEnclosingStmt() { result = this }
 }
 
@@ -940,7 +951,7 @@ class FunctionDeclStmt extends @functiondeclstmt, Stmt, Function {
  * let i = 1, j = i-1;
  * ```
  */
-class DeclStmt extends @declstmt, Stmt {
+class DeclStmt extends @decl_stmt, Stmt {
   /** Gets the `i`th declarator in this declaration statement. */
   VariableDeclarator getDecl(int i) { result = getChildExpr(i) and i >= 0 }
 
@@ -962,7 +973,7 @@ class DeclStmt extends @declstmt, Stmt {
  * var count = 0;
  * ```
  */
-class VarDeclStmt extends @vardeclstmt, DeclStmt { }
+class VarDeclStmt extends @var_decl_stmt, DeclStmt { }
 
 /**
  * A `const` declaration statement.
@@ -973,7 +984,7 @@ class VarDeclStmt extends @vardeclstmt, DeclStmt { }
  * const fs = require('fs');
  * ```
  */
-class ConstDeclStmt extends @constdeclstmt, DeclStmt { }
+class ConstDeclStmt extends @const_decl_stmt, DeclStmt { }
 
 /**
  * A `let` declaration statement.
@@ -984,7 +995,7 @@ class ConstDeclStmt extends @constdeclstmt, DeclStmt { }
  * let i = 1, j = i-1;
  * ```
  */
-class LetStmt extends @letstmt, DeclStmt { }
+class LetStmt extends @let_stmt, DeclStmt { }
 
 /**
  * A legacy `let` statement, that is, a statement of the form `let(vardecls) stmt`.
@@ -997,7 +1008,7 @@ class LetStmt extends @letstmt, DeclStmt { }
  * }
  * ```
  */
-class LegacyLetStmt extends @legacy_letstmt, DeclStmt {
+class LegacyLetStmt extends @legacy_let_stmt, DeclStmt {
   /** Gets the statement this let statement scopes over. */
   Stmt getBody() { result = getChildStmt(-1) }
 
@@ -1045,7 +1056,7 @@ class Case extends @case, Stmt {
  * }
  * ```
  */
-class CatchClause extends @catchclause, ControlStmt, Parameterized {
+class CatchClause extends @catch_clause, ControlStmt, Parameterized {
   /** Gets the body of this `catch` clause. */
   BlockStmt getBody() { result = getChildStmt(1) }
 

@@ -14,9 +14,9 @@ import javascript
  * string[]
  * ```
  */
-class ExprOrType extends @exprortype, Documentable {
+class ExprOrType extends @expr_or_type, Documentable {
   /** Gets the statement in which this expression or type appears. */
-  Stmt getEnclosingStmt() { enclosingStmt(this, result) }
+  Stmt getEnclosingStmt() { enclosing_stmt(this, result) }
 
   /** Gets the function in which this expression or type appears, if any. */
   Function getEnclosingFunction() { result = getContainer() }
@@ -109,7 +109,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
 
   /** Gets the constant string value this expression evaluates to, if any. */
   cached
-  string getStringValue() { none() }
+  string getStringValue() { result = getStringValue(this) }
 
   /** Holds if this expression is impure, that is, its evaluation could have side effects. */
   predicate isImpure() { any() }
@@ -238,7 +238,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   pragma[inline]
   private Stmt getRawEnclosingStmt(Expr e) {
     // For performance reasons, we need the enclosing statement without overrides
-    enclosingStmt(e, result)
+    enclosing_stmt(e, result)
   }
 
   /**
@@ -328,7 +328,7 @@ class Literal extends @literal, Expr {
  * (function() { console.log("Hello, world!"); }())
  * ```
  */
-class ParExpr extends @parexpr, Expr {
+class ParExpr extends @par_expr, Expr {
   /** Gets the expression within parentheses. */
   Expr getExpression() { result = this.getChildExpr(0) }
 
@@ -352,7 +352,7 @@ class ParExpr extends @parexpr, Expr {
  * null
  * ```
  */
-class NullLiteral extends @nullliteral, Literal { }
+class NullLiteral extends @null_literal, Literal { }
 
 /**
  * A Boolean literal, that is, either `true` or `false`.
@@ -364,7 +364,7 @@ class NullLiteral extends @nullliteral, Literal { }
  * false
  * ```
  */
-class BooleanLiteral extends @booleanliteral, Literal { }
+class BooleanLiteral extends @boolean_literal, Literal { }
 
 /**
  * A numeric literal.
@@ -379,7 +379,7 @@ class BooleanLiteral extends @booleanliteral, Literal { }
  * 6.626e-34
  * ```
  */
-class NumberLiteral extends @numberliteral, Literal {
+class NumberLiteral extends @number_literal, Literal {
   /** Gets the integer value of this literal. */
   override int getIntValue() { result = getValue().toInt() }
 
@@ -396,7 +396,7 @@ class NumberLiteral extends @numberliteral, Literal {
  * 9007199254740991n
  * ```
  */
-class BigIntLiteral extends @bigintliteral, Literal {
+class BigIntLiteral extends @bigint_literal, Literal {
   /**
    * Gets the integer value of this literal if it can be represented
    * as a QL integer value.
@@ -422,9 +422,7 @@ class BigIntLiteral extends @bigintliteral, Literal {
  * 'Hello, "world"!'
  * ```
  */
-class StringLiteral extends @stringliteral, Literal {
-  override string getStringValue() { result = getValue() }
-
+class StringLiteral extends @string_literal, Literal {
   /**
    * Gets the value of this string literal parsed as a regular expression, if possible.
    *
@@ -446,7 +444,7 @@ class StringLiteral extends @stringliteral, Literal {
  * /(?i)ab*c(d|e)$/
  * ```
  */
-class RegExpLiteral extends @regexpliteral, Literal, RegExpParent {
+class RegExpLiteral extends @regexp_literal, Literal, RegExpParent {
   /** Gets the root term of this regular expression literal. */
   RegExpTerm getRoot() { this = result.getParent() }
 
@@ -475,7 +473,7 @@ class RegExpLiteral extends @regexpliteral, Literal, RegExpParent {
  * this
  * ```
  */
-class ThisExpr extends @thisexpr, Expr {
+class ThisExpr extends @this_expr, Expr {
   override predicate isImpure() { none() }
 
   /**
@@ -504,7 +502,7 @@ class ThisExpr extends @thisexpr, Expr {
  * [ 1, , [ 3, 4 ] ]
  * ```
  */
-class ArrayExpr extends @arrayexpr, Expr {
+class ArrayExpr extends @array_expr, Expr {
   /** Gets the `i`th element of this array literal. */
   Expr getElement(int i) { result = this.getChildExpr(i) }
 
@@ -512,7 +510,7 @@ class ArrayExpr extends @arrayexpr, Expr {
   Expr getAnElement() { result = this.getAChildExpr() }
 
   /** Gets the number of elements in this array literal. */
-  int getSize() { arraySize(this, result) }
+  int getSize() { array_size(this, result) }
 
   /**
    * Holds if this array literal includes a trailing comma after the
@@ -547,7 +545,7 @@ class ArrayExpr extends @arrayexpr, Expr {
  * };
  * ```
  */
-class ObjectExpr extends @objexpr, Expr {
+class ObjectExpr extends @obj_expr, Expr {
   /** Gets the `i`th property in this object literal. */
   Property getProperty(int i) { properties(result, this, i, _, _) }
 
@@ -616,10 +614,10 @@ class Property extends @property, Documentable {
   }
 
   /** Holds if the name of this property is computed. */
-  predicate isComputed() { isComputed(this) }
+  predicate isComputed() { is_computed(this) }
 
   /** Holds if this property is defined using method syntax. */
-  predicate isMethod() { isMethod(this) }
+  predicate isMethod() { is_method(this) }
 
   /** Holds if this property is defined using shorthand syntax. */
   predicate isShorthand() { getNameExpr().getLocation() = getInit().getLocation() }
@@ -777,7 +775,7 @@ class SpreadProperty extends Property {
  * }
  * ```
  */
-class FunctionExpr extends @functionexpr, Expr, Function {
+class FunctionExpr extends @function_expr, Expr, Function {
   /** Holds if this function expression is a property setter. */
   predicate isSetter() { exists(PropertySetter s | s.getInit() = this) }
 
@@ -804,7 +802,7 @@ class FunctionExpr extends @functionexpr, Expr, Function {
  * var greet =
  *   () => console.log("Hi!");  // arrow function expression
  */
-class ArrowFunctionExpr extends @arrowfunctionexpr, Expr, Function {
+class ArrowFunctionExpr extends @arrow_function_expr, Expr, Function {
   /** Gets the statement in which this expression appears. */
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
@@ -824,7 +822,7 @@ class ArrowFunctionExpr extends @arrowfunctionexpr, Expr, Function {
  * x++, y++
  * ```
  */
-class SeqExpr extends @seqexpr, Expr {
+class SeqExpr extends @seq_expr, Expr {
   /** Gets the `i`th expression in this sequence. */
   Expr getOperand(int i) { result = getChildExpr(i) }
 
@@ -839,8 +837,6 @@ class SeqExpr extends @seqexpr, Expr {
 
   override predicate isImpure() { getAnOperand().isImpure() }
 
-  override string getStringValue() { result = getLastOperand().getStringValue() }
-
   override Expr getUnderlyingValue() { result = getLastOperand().getUnderlyingValue() }
 }
 
@@ -853,7 +849,7 @@ class SeqExpr extends @seqexpr, Expr {
  * x == 0 ? 0 : 1/x
  * ```
  */
-class ConditionalExpr extends @conditionalexpr, Expr {
+class ConditionalExpr extends @conditional_expr, Expr {
   /** Gets the condition expression of this conditional. */
   Expr getCondition() { result = getChildExpr(0) }
 
@@ -990,7 +986,7 @@ class InvokeExpr extends @invokeexpr, Expr {
  * new Array(16)
  * ```
  */
-class NewExpr extends @newexpr, InvokeExpr { }
+class NewExpr extends @new_expr, InvokeExpr { }
 
 /**
  * A function call expression.
@@ -1003,7 +999,7 @@ class NewExpr extends @newexpr, InvokeExpr { }
  * x.f()
  * ```
  */
-class CallExpr extends @callexpr, InvokeExpr {
+class CallExpr extends @call_expr, InvokeExpr {
   /**
    * Gets the expression specifying the receiver on which the function
    * is invoked, if any.
@@ -1100,7 +1096,7 @@ class PropAccess extends @propaccess, Expr {
  * Math.PI
  * ```
  */
-class DotExpr extends @dotexpr, PropAccess {
+class DotExpr extends @dot_expr, PropAccess {
   override string getPropertyName() { result = getProperty().getName() }
 
   /** Gets the identifier specifying the name of the accessed property. */
@@ -1118,7 +1114,7 @@ class DotExpr extends @dotexpr, PropAccess {
  * arguments[i]
  * ```
  */
-class IndexExpr extends @indexexpr, PropAccess {
+class IndexExpr extends @index_expr, PropAccess {
   /** Gets the expression specifying the name of the accessed property. */
   Expr getIndex() { result = getChildExpr(1) }
 
@@ -1163,7 +1159,7 @@ class UnaryExpr extends @unaryexpr, Expr {
  * -x
  * ```
  */
-class NegExpr extends @negexpr, UnaryExpr {
+class NegExpr extends @neg_expr, UnaryExpr {
   override string getOperator() { result = "-" }
 
   override int getIntValue() { result = -getOperand().getIntValue() }
@@ -1178,7 +1174,7 @@ class NegExpr extends @negexpr, UnaryExpr {
  * +x
  * ```
  */
-class PlusExpr extends @plusexpr, UnaryExpr {
+class PlusExpr extends @plus_expr, UnaryExpr {
   override string getOperator() { result = "+" }
 }
 
@@ -1191,7 +1187,7 @@ class PlusExpr extends @plusexpr, UnaryExpr {
  * !done
  * ```
  */
-class LogNotExpr extends @lognotexpr, UnaryExpr {
+class LogNotExpr extends @log_not_expr, UnaryExpr {
   override string getOperator() { result = "!" }
 }
 
@@ -1204,7 +1200,7 @@ class LogNotExpr extends @lognotexpr, UnaryExpr {
  * ~bitmask
  * ```
  */
-class BitNotExpr extends @bitnotexpr, UnaryExpr {
+class BitNotExpr extends @bit_not_expr, UnaryExpr {
   override string getOperator() { result = "~" }
 }
 
@@ -1217,7 +1213,7 @@ class BitNotExpr extends @bitnotexpr, UnaryExpr {
  * typeof A.prototype
  * ```
  */
-class TypeofExpr extends @typeofexpr, UnaryExpr {
+class TypeofExpr extends @typeof_expr, UnaryExpr {
   override string getOperator() { result = "typeof" }
 }
 
@@ -1230,7 +1226,7 @@ class TypeofExpr extends @typeofexpr, UnaryExpr {
  * void(0)
  * ```
  */
-class VoidExpr extends @voidexpr, UnaryExpr {
+class VoidExpr extends @void_expr, UnaryExpr {
   override string getOperator() { result = "void" }
 }
 
@@ -1243,7 +1239,7 @@ class VoidExpr extends @voidexpr, UnaryExpr {
  * delete elt[_expando]
  * ```
  */
-class DeleteExpr extends @deleteexpr, UnaryExpr {
+class DeleteExpr extends @delete_expr, UnaryExpr {
   override string getOperator() { result = "delete" }
 
   override predicate isImpure() { any() }
@@ -1260,7 +1256,7 @@ class DeleteExpr extends @deleteexpr, UnaryExpr {
  * )
  * ```
  */
-class SpreadElement extends @spreadelement, UnaryExpr {
+class SpreadElement extends @spread_element, UnaryExpr {
   override string getOperator() { result = "..." }
 }
 
@@ -1346,7 +1342,7 @@ class Comparison extends @comparison, BinaryExpr { }
  * res !== res
  * ```
  */
-class EqualityTest extends @equalitytest, Comparison {
+class EqualityTest extends @equality_test, Comparison {
   /** Gets the polarity of this test: `true` for equalities, `false` for inequalities. */
   boolean getPolarity() {
     (this instanceof EqExpr or this instanceof StrictEqExpr) and
@@ -1371,7 +1367,7 @@ class EqualityTest extends @equalitytest, Comparison {
  * "" == arg
  * ```
  */
-class EqExpr extends @eqexpr, EqualityTest {
+class EqExpr extends @eq_expr, EqualityTest {
   override string getOperator() { result = "==" }
 }
 
@@ -1384,7 +1380,7 @@ class EqExpr extends @eqexpr, EqualityTest {
  * x != null
  * ```
  */
-class NEqExpr extends @neqexpr, EqualityTest {
+class NEqExpr extends @neq_expr, EqualityTest {
   override string getOperator() { result = "!=" }
 }
 
@@ -1397,7 +1393,7 @@ class NEqExpr extends @neqexpr, EqualityTest {
  * recv === undefined
  * ```
  */
-class StrictEqExpr extends @eqqexpr, EqualityTest {
+class StrictEqExpr extends @eqq_expr, EqualityTest {
   override string getOperator() { result = "===" }
 }
 
@@ -1410,7 +1406,7 @@ class StrictEqExpr extends @eqqexpr, EqualityTest {
  * res !== res
  * ```
  */
-class StrictNEqExpr extends @neqqexpr, EqualityTest {
+class StrictNEqExpr extends @neqq_expr, EqualityTest {
   override string getOperator() { result = "!==" }
 }
 
@@ -1423,7 +1419,7 @@ class StrictNEqExpr extends @neqqexpr, EqualityTest {
  * i < 10
  * ```
  */
-class LTExpr extends @ltexpr, Comparison {
+class LTExpr extends @lt_expr, Comparison {
   override string getOperator() { result = "<" }
 }
 
@@ -1436,7 +1432,7 @@ class LTExpr extends @ltexpr, Comparison {
  * x+1 <= a.length
  * ```
  */
-class LEExpr extends @leexpr, Comparison {
+class LEExpr extends @le_expr, Comparison {
   override string getOperator() { result = "<=" }
 }
 
@@ -1449,7 +1445,7 @@ class LEExpr extends @leexpr, Comparison {
  * a[j] > a[k]
  * ```
  */
-class GTExpr extends @gtexpr, Comparison {
+class GTExpr extends @gt_expr, Comparison {
   override string getOperator() { result = ">" }
 }
 
@@ -1462,7 +1458,7 @@ class GTExpr extends @gtexpr, Comparison {
  * x >= 0
  * ```
  */
-class GEExpr extends @geexpr, Comparison {
+class GEExpr extends @ge_expr, Comparison {
   override string getOperator() { result = ">=" }
 }
 
@@ -1475,7 +1471,7 @@ class GEExpr extends @geexpr, Comparison {
  * 2 << i
  * ```
  */
-class LShiftExpr extends @lshiftexpr, BinaryExpr {
+class LShiftExpr extends @lshift_expr, BinaryExpr {
   override string getOperator() { result = "<<" }
 }
 
@@ -1488,7 +1484,7 @@ class LShiftExpr extends @lshiftexpr, BinaryExpr {
  * r >> 8
  * ```
  */
-class RShiftExpr extends @rshiftexpr, BinaryExpr {
+class RShiftExpr extends @rshift_expr, BinaryExpr {
   override string getOperator() { result = ">>" }
 }
 
@@ -1501,7 +1497,7 @@ class RShiftExpr extends @rshiftexpr, BinaryExpr {
  * u >>> v
  * ```
  */
-class URShiftExpr extends @urshiftexpr, BinaryExpr {
+class URShiftExpr extends @urshift_expr, BinaryExpr {
   override string getOperator() { result = ">>>" }
 }
 
@@ -1515,14 +1511,72 @@ class URShiftExpr extends @urshiftexpr, BinaryExpr {
  * msg + "\n"
  * ```
  */
-class AddExpr extends @addexpr, BinaryExpr {
+class AddExpr extends @add_expr, BinaryExpr {
   override string getOperator() { result = "+" }
-
-  override string getStringValue() {
-    result = getLeftOperand().getStringValue() + getRightOperand().getStringValue() and
-    result.length() < 1000 * 1000
-  }
 }
+
+/**
+ * Gets the string value for the expression `e`.
+ * This string-value is either a constant-string, or the result from a simple string-concatenation.
+ */
+private string getStringValue(Expr e) {
+  result = getConstantString(e)
+  or
+  result = getConcatenatedString(e)
+}
+
+/**
+ * Gets the constant string value for the expression `e`.
+ */
+private string getConstantString(Expr e) {
+  result = getConstantString(e.getUnderlyingValue())
+  or
+  result = e.(StringLiteral).getValue()
+  or
+  exists(TemplateLiteral lit | lit = e |
+    // fold singletons
+    lit.getNumChildExpr() = 0 and
+    result = ""
+    or
+    e.getNumChildExpr() = 1 and
+    result = getConstantString(lit.getElement(0))
+  )
+  or
+  result = e.(TemplateElement).getValue()
+}
+
+/**
+ * Holds if `add` is a string-concatenation where all the transitive leafs have a constant string value.
+ */
+private predicate hasAllConstantLeafs(AddExpr add) {
+  forex(Expr leaf | leaf = getAnAddOperand*(add) and not exists(getAnAddOperand(leaf)) |
+    exists(getConstantString(leaf))
+  )
+}
+
+/**
+ * Gets the concatenated string for a string-concatenation `add`.
+ * Only has a result if `add` is not itself an operand in another string-concatenation with all constant leafs.
+ */
+private string getConcatenatedString(Expr add) {
+  result = getConcatenatedString(add.getUnderlyingValue())
+  or
+  not add = getAnAddOperand(any(AddExpr parent | hasAllConstantLeafs(parent))) and
+  hasAllConstantLeafs(add) and
+  result =
+    strictconcat(Expr leaf |
+      leaf = getAnAddOperand*(add)
+    |
+      getConstantString(leaf) order by leaf.getFirstToken().getIndex()
+    ) and
+  result.length() < 1000 * 1000
+}
+
+/**
+ * Gets an operand from `add`.
+ * Is specialized to `AddExpr` such that `getAnAddOperand*(add)` can be used to get a leaf from a string-concatenation transitively.
+ */
+private Expr getAnAddOperand(AddExpr add) { result = add.getAnOperand().getUnderlyingValue() }
 
 /**
  * A subtraction expression.
@@ -1533,7 +1587,7 @@ class AddExpr extends @addexpr, BinaryExpr {
  * w - len
  * ```
  */
-class SubExpr extends @subexpr, BinaryExpr {
+class SubExpr extends @sub_expr, BinaryExpr {
   override string getOperator() { result = "-" }
 }
 
@@ -1546,7 +1600,7 @@ class SubExpr extends @subexpr, BinaryExpr {
  * x * y
  * ```
  */
-class MulExpr extends @mulexpr, BinaryExpr {
+class MulExpr extends @mul_expr, BinaryExpr {
   override string getOperator() { result = "*" }
 }
 
@@ -1559,7 +1613,7 @@ class MulExpr extends @mulexpr, BinaryExpr {
  * gg / ac
  * ```
  */
-class DivExpr extends @divexpr, BinaryExpr {
+class DivExpr extends @div_expr, BinaryExpr {
   override string getOperator() { result = "/" }
 }
 
@@ -1572,7 +1626,7 @@ class DivExpr extends @divexpr, BinaryExpr {
  * n % 2
  * ```
  */
-class ModExpr extends @modexpr, BinaryExpr {
+class ModExpr extends @mod_expr, BinaryExpr {
   override string getOperator() { result = "%" }
 }
 
@@ -1585,7 +1639,7 @@ class ModExpr extends @modexpr, BinaryExpr {
  * p ** 10
  * ```
  */
-class ExpExpr extends @expexpr, BinaryExpr {
+class ExpExpr extends @exp_expr, BinaryExpr {
   override string getOperator() { result = "**" }
 }
 
@@ -1598,7 +1652,7 @@ class ExpExpr extends @expexpr, BinaryExpr {
  * O_RDWR | O_APPEND
  * ```
  */
-class BitOrExpr extends @bitorexpr, BinaryExpr {
+class BitOrExpr extends @bitor_expr, BinaryExpr {
   override string getOperator() { result = "|" }
 }
 
@@ -1611,7 +1665,7 @@ class BitOrExpr extends @bitorexpr, BinaryExpr {
  * x ^ 1
  * ```
  */
-class XOrExpr extends @xorexpr, BinaryExpr {
+class XOrExpr extends @xor_expr, BinaryExpr {
   override string getOperator() { result = "^" }
 }
 
@@ -1624,7 +1678,7 @@ class XOrExpr extends @xorexpr, BinaryExpr {
  * flags & O_APPEND
  * ```
  */
-class BitAndExpr extends @bitandexpr, BinaryExpr {
+class BitAndExpr extends @bitand_expr, BinaryExpr {
   override string getOperator() { result = "&" }
 }
 
@@ -1637,7 +1691,7 @@ class BitAndExpr extends @bitandexpr, BinaryExpr {
  * "leftpad" in String.prototype
  * ```
  */
-class InExpr extends @inexpr, BinaryExpr {
+class InExpr extends @in_expr, BinaryExpr {
   override string getOperator() { result = "in" }
 }
 
@@ -1650,7 +1704,7 @@ class InExpr extends @inexpr, BinaryExpr {
  * b instanceof Buffer
  * ```
  */
-class InstanceofExpr extends @instanceofexpr, BinaryExpr {
+class InstanceofExpr extends @instanceof_expr, BinaryExpr {
   override string getOperator() { result = "instanceof" }
 }
 
@@ -1663,7 +1717,7 @@ class InstanceofExpr extends @instanceofexpr, BinaryExpr {
  * x != null && x.f
  * ```
  */
-class LogAndExpr extends @logandexpr, BinaryExpr {
+class LogAndExpr extends @logand_expr, BinaryExpr {
   override string getOperator() { result = "&&" }
 
   override ControlFlowNode getFirstControlFlowNode() { result = this }
@@ -1678,7 +1732,7 @@ class LogAndExpr extends @logandexpr, BinaryExpr {
  * x == null || x.f
  * ```
  */
-class LogOrExpr extends @logorexpr, BinaryExpr {
+class LogOrExpr extends @logor_expr, BinaryExpr {
   override string getOperator() { result = "||" }
 
   override ControlFlowNode getFirstControlFlowNode() { result = this }
@@ -1693,7 +1747,7 @@ class LogOrExpr extends @logorexpr, BinaryExpr {
  * x ?? f
  * ```
  */
-class NullishCoalescingExpr extends @nullishcoalescingexpr, BinaryExpr {
+class NullishCoalescingExpr extends @nullishcoalescing_expr, BinaryExpr {
   override string getOperator() { result = "??" }
 
   override ControlFlowNode getFirstControlFlowNode() { result = this }
@@ -1790,9 +1844,15 @@ class Assignment extends @assignment, Expr {
  * x = y
  * ```
  */
-class AssignExpr extends @assignexpr, Assignment {
+class AssignExpr extends @assign_expr, Assignment {
   override Expr getUnderlyingValue() { result = getRhs().getUnderlyingValue() }
 }
+
+private class TCompoundAssignExpr =
+  @assign_add_expr or @assign_sub_expr or @assign_mul_expr or @assign_div_expr or
+      @assign_mod_expr or @assign_exp_expr or @assign_lshift_expr or @assign_rshift_expr or
+      @assign_urshift_expr or @assign_or_expr or @assign_xor_expr or @assign_and_expr or
+      @assignlogandexpr or @assignlogorexpr or @assignnullishcoalescingexpr;
 
 /**
  * A compound assign expression.
@@ -1804,7 +1864,7 @@ class AssignExpr extends @assignexpr, Assignment {
  * x /= 2
  * ```
  */
-abstract class CompoundAssignExpr extends Assignment { }
+class CompoundAssignExpr extends TCompoundAssignExpr, Assignment { }
 
 /**
  * A compound add-assign expression.
@@ -1815,7 +1875,7 @@ abstract class CompoundAssignExpr extends Assignment { }
  * sum += element
  * ```
  */
-class AssignAddExpr extends @assignaddexpr, CompoundAssignExpr { }
+class AssignAddExpr extends @assign_add_expr, CompoundAssignExpr { }
 
 /**
  * A compound subtract-assign expression.
@@ -1826,7 +1886,7 @@ class AssignAddExpr extends @assignaddexpr, CompoundAssignExpr { }
  * i -= 2
  * ```
  */
-class AssignSubExpr extends @assignsubexpr, CompoundAssignExpr { }
+class AssignSubExpr extends @assign_sub_expr, CompoundAssignExpr { }
 
 /**
  * A compound multiply-assign expression.
@@ -1837,7 +1897,7 @@ class AssignSubExpr extends @assignsubexpr, CompoundAssignExpr { }
  * x *= y
  * ```
  */
-class AssignMulExpr extends @assignmulexpr, CompoundAssignExpr { }
+class AssignMulExpr extends @assign_mul_expr, CompoundAssignExpr { }
 
 /**
  * A compound divide-assign expression.
@@ -1848,7 +1908,7 @@ class AssignMulExpr extends @assignmulexpr, CompoundAssignExpr { }
  * n /= 10
  * ```
  */
-class AssignDivExpr extends @assigndivexpr, CompoundAssignExpr { }
+class AssignDivExpr extends @assign_div_expr, CompoundAssignExpr { }
 
 /**
  * A compound modulo-assign expression.
@@ -1859,7 +1919,7 @@ class AssignDivExpr extends @assigndivexpr, CompoundAssignExpr { }
  * m %= 3
  * ```
  */
-class AssignModExpr extends @assignmodexpr, CompoundAssignExpr { }
+class AssignModExpr extends @assign_mod_expr, CompoundAssignExpr { }
 
 /**
  * A compound exponentiate-assign expression.
@@ -1870,7 +1930,7 @@ class AssignModExpr extends @assignmodexpr, CompoundAssignExpr { }
  * scale **= 10
  * ```
  */
-class AssignExpExpr extends @assignexpexpr, CompoundAssignExpr { }
+class AssignExpExpr extends @assign_exp_expr, CompoundAssignExpr { }
 
 /**
  * A compound left-shift-assign expression.
@@ -1881,7 +1941,7 @@ class AssignExpExpr extends @assignexpexpr, CompoundAssignExpr { }
  * exp <<= 2
  * ```
  */
-class AssignLShiftExpr extends @assignlshiftexpr, CompoundAssignExpr { }
+class AssignLShiftExpr extends @assign_lshift_expr, CompoundAssignExpr { }
 
 /**
  * A compound right-shift-assign expression.
@@ -1892,7 +1952,7 @@ class AssignLShiftExpr extends @assignlshiftexpr, CompoundAssignExpr { }
  * qw >>= 8
  * ```
  */
-class AssignRShiftExpr extends @assignrshiftexpr, CompoundAssignExpr { }
+class AssignRShiftExpr extends @assign_rshift_expr, CompoundAssignExpr { }
 
 /**
  * A compound unsigned-right-shift-assign expression.
@@ -1903,7 +1963,7 @@ class AssignRShiftExpr extends @assignrshiftexpr, CompoundAssignExpr { }
  * bits >>>= 16
  * ```
  */
-class AssignURShiftExpr extends @assignurshiftexpr, CompoundAssignExpr { }
+class AssignURShiftExpr extends @assign_urshift_expr, CompoundAssignExpr { }
 
 /**
  * A compound bitwise-'or'-assign expression.
@@ -1914,7 +1974,7 @@ class AssignURShiftExpr extends @assignurshiftexpr, CompoundAssignExpr { }
  * flags |= O_CREAT
  * ```
  */
-class AssignOrExpr extends @assignorexpr, CompoundAssignExpr { }
+class AssignOrExpr extends @assign_or_expr, CompoundAssignExpr { }
 
 /**
  * A compound exclusive-'or'-assign expression.
@@ -1925,7 +1985,7 @@ class AssignOrExpr extends @assignorexpr, CompoundAssignExpr { }
  * bits ^= mask
  * ```
  */
-class AssignXOrExpr extends @assignxorexpr, CompoundAssignExpr { }
+class AssignXOrExpr extends @assign_xor_expr, CompoundAssignExpr { }
 
 /**
  * A compound bitwise-'and'-assign expression.
@@ -1936,7 +1996,40 @@ class AssignXOrExpr extends @assignxorexpr, CompoundAssignExpr { }
  * data &= 0xffff
  * ```
  */
-class AssignAndExpr extends @assignandexpr, CompoundAssignExpr { }
+class AssignAndExpr extends @assign_and_expr, CompoundAssignExpr { }
+
+/**
+ * A logical-'or'-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * x ||= y
+ * ```
+ */
+class AssignLogOrExpr extends @assignlogandexpr, CompoundAssignExpr { }
+
+/**
+ * A logical-'and'-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * x &&= y
+ * ```
+ */
+class AssignLogAndExpr extends @assignlogorexpr, CompoundAssignExpr { }
+
+/**
+ * A 'nullish-coalescing'-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * x ??= y
+ * ```
+ */
+class AssignNullishCoalescingExpr extends @assignnullishcoalescingexpr, CompoundAssignExpr { }
 
 /**
  * An update expression, that is, an increment or decrement expression.
@@ -1974,7 +2067,7 @@ class UpdateExpr extends @updateexpr, Expr {
  * ++i
  * ```
  */
-class PreIncExpr extends @preincexpr, UpdateExpr {
+class PreIncExpr extends @preinc_expr, UpdateExpr {
   override predicate isPrefix() { any() }
 
   override string getOperator() { result = "++" }
@@ -1989,7 +2082,7 @@ class PreIncExpr extends @preincexpr, UpdateExpr {
  * i++
  * ```
  */
-class PostIncExpr extends @postincexpr, UpdateExpr {
+class PostIncExpr extends @postinc_expr, UpdateExpr {
   override string getOperator() { result = "++" }
 }
 
@@ -2002,7 +2095,7 @@ class PostIncExpr extends @postincexpr, UpdateExpr {
  * --i
  * ```
  */
-class PreDecExpr extends @predecexpr, UpdateExpr {
+class PreDecExpr extends @predec_expr, UpdateExpr {
   override predicate isPrefix() { any() }
 
   override string getOperator() { result = "--" }
@@ -2017,7 +2110,7 @@ class PreDecExpr extends @predecexpr, UpdateExpr {
  * i--
  * ```
  */
-class PostDecExpr extends @postdecexpr, UpdateExpr {
+class PostDecExpr extends @postdec_expr, UpdateExpr {
   override string getOperator() { result = "--" }
 }
 
@@ -2030,12 +2123,12 @@ class PostDecExpr extends @postdecexpr, UpdateExpr {
  * yield next
  * ```
  */
-class YieldExpr extends @yieldexpr, Expr {
+class YieldExpr extends @yield_expr, Expr {
   /** Gets the operand of this `yield` expression. */
   Expr getOperand() { result = getChildExpr(0) }
 
   /** Holds if this is a `yield*` expression. */
-  predicate isDelegating() { isDelegating(this) }
+  predicate isDelegating() { is_delegating(this) }
 
   override predicate isImpure() { any() }
 
@@ -2057,7 +2150,7 @@ class YieldExpr extends @yieldexpr, Expr {
  * (for (x of xs) x*x)
  * ```
  */
-class ComprehensionExpr extends @comprehensionexpr, Expr {
+class ComprehensionExpr extends @comprehension_expr, Expr {
   /** Gets the `n`th comprehension block in this comprehension. */
   ComprehensionBlock getBlock(int n) {
     exists(int idx |
@@ -2112,7 +2205,7 @@ class ComprehensionExpr extends @comprehensionexpr, Expr {
  * [for (x of xs) x*x]
  * ```
  */
-class ArrayComprehensionExpr extends @arraycomprehensionexpr, ComprehensionExpr { }
+class ArrayComprehensionExpr extends @array_comprehension_expr, ComprehensionExpr { }
 
 /**
  * A generator expression.
@@ -2123,7 +2216,7 @@ class ArrayComprehensionExpr extends @arraycomprehensionexpr, ComprehensionExpr 
  * (for (x of xs) x*x)
  * ```
  */
-class GeneratorExpr extends @generatorexpr, ComprehensionExpr { }
+class GeneratorExpr extends @generator_expr, ComprehensionExpr { }
 
 /**
  * A comprehension block in a comprehension expression.
@@ -2142,7 +2235,7 @@ class GeneratorExpr extends @generatorexpr, ComprehensionExpr { }
  * ]
  * ```
  */
-class ComprehensionBlock extends @comprehensionblock, Expr {
+class ComprehensionBlock extends @comprehension_block, Expr {
   /** Gets the iterating variable or pattern of this comprehension block. */
   BindingPattern getIterator() { result = getChildExpr(0) }
 
@@ -2167,7 +2260,7 @@ class ComprehensionBlock extends @comprehensionblock, Expr {
  * ]
  * ```
  */
-class ForInComprehensionBlock extends @forincomprehensionblock, ComprehensionBlock { }
+class ForInComprehensionBlock extends @for_in_comprehension_block, ComprehensionBlock { }
 
 /**
  * A `for`-`of` comprehension block in a comprehension expression.
@@ -2181,7 +2274,7 @@ class ForInComprehensionBlock extends @forincomprehensionblock, ComprehensionBlo
  * ]
  * ```
  */
-class ForOfComprehensionBlock extends @forofcomprehensionblock, ComprehensionBlock { }
+class ForOfComprehensionBlock extends @for_of_comprehension_block, ComprehensionBlock { }
 
 /**
  * A binary arithmetic expression using `+`, `-`, `/`, `%` or `**`.
@@ -2467,7 +2560,7 @@ class ImmediatelyInvokedFunctionExpr extends Function {
  * await p()
  * ```
  */
-class AwaitExpr extends @awaitexpr, Expr {
+class AwaitExpr extends @await_expr, Expr {
   /** Gets the operand of this `await` expression. */
   Expr getOperand() { result = getChildExpr(0) }
 
@@ -2491,7 +2584,7 @@ class AwaitExpr extends @awaitexpr, Expr {
  * function.sent
  * ```
  */
-class FunctionSentExpr extends @functionsentexpr, Expr {
+class FunctionSentExpr extends @function_sent_expr, Expr {
   override predicate isImpure() { none() }
 }
 
@@ -2579,7 +2672,7 @@ class Decoratable extends ASTNode {
  * ::b.f
  * ```
  */
-class FunctionBindExpr extends @bindexpr, Expr {
+class FunctionBindExpr extends @bind_expr, Expr {
   /**
    * Gets the object of this function bind expression; undefined for
    * expressions of the form `::b.f`.
@@ -2605,7 +2698,7 @@ class FunctionBindExpr extends @bindexpr, Expr {
  * import("fs")
  * ```
  */
-class DynamicImportExpr extends @dynamicimport, Expr, Import {
+class DynamicImportExpr extends @dynamic_import, Expr, Import {
   /** Gets the expression specifying the path of the imported module. */
   Expr getSource() { result = getChildExpr(0) }
 
@@ -2680,6 +2773,6 @@ class OptionalChainRoot extends ChainElem {
  * let url = import.meta.url;
  * ```
  */
-class ImportMetaExpr extends @importmetaexpr, Expr {
+class ImportMetaExpr extends @import_meta_expr, Expr {
   override predicate isImpure() { none() }
 }

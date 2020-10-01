@@ -82,13 +82,19 @@ namespace Semmle.Extraction
         ILogger Logger { get; }
 
         /// <summary>
+        /// The path transformer to apply.
+        /// </summary>
+        PathTransformer PathTransformer { get; }
+
+        /// <summary>
         /// Creates a new context.
         /// </summary>
         /// <param name="c">The C# compilation.</param>
         /// <param name="trapWriter">The trap writer.</param>
         /// <param name="scope">The extraction scope (what to include in this trap file).</param>
+        /// <param name="addAssemblyTrapPrefix">Whether to add assembly prefixes to TRAP labels.</param>
         /// <returns></returns>
-        Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope);
+        Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix);
     }
 
     /// <summary>
@@ -111,11 +117,14 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="standalone">If the extraction is standalone.</param>
         /// <param name="outputPath">The name of the output DLL/EXE, or null if not specified (standalone extraction).</param>
-        public Extractor(bool standalone, string outputPath, ILogger logger)
+        /// <param name="logger">The object used for logging.</param>
+        /// <param name="pathTransformer">The object used for path transformations.</param>
+        public Extractor(bool standalone, string outputPath, ILogger logger, PathTransformer pathTransformer)
         {
             Standalone = standalone;
             OutputPath = outputPath;
             Logger = logger;
+            PathTransformer = pathTransformer;
         }
 
         // Limit the number of error messages in the log file
@@ -187,9 +196,9 @@ namespace Semmle.Extraction
             }
         }
 
-        public Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope)
+        public Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
         {
-            return new Context(this, c, trapWriter, scope);
+            return new Context(this, c, trapWriter, scope, addAssemblyTrapPrefix);
         }
 
         public IEnumerable<string> MissingTypes => missingTypes;
@@ -205,5 +214,7 @@ namespace Semmle.Extraction
         public ILogger Logger { get; private set; }
 
         public static string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
+
+        public PathTransformer PathTransformer { get; }
     }
 }

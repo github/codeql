@@ -96,4 +96,6 @@ class Parameter extends Element, @param, LocalScopeVariable {
       call.getCallee().getSourceDeclaration().getAParameter() = this
     )
   }
+
+  override string getAPrimaryQlClass() { result = "Parameter" }
 }

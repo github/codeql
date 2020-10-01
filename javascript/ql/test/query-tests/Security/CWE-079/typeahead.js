@@ -7,7 +7,7 @@
     source: autocompleter.ttAdapter(),
     templates: {
       suggestion: function(loc) {
-        return loc; // NOT OK!
+        return loc; // NOT OK - but only flagged when `AdditionalSources` are imported [INCONSISTENCY].
       }
     }
   })

@@ -1,3 +1,7 @@
+/**
+ * Provides a hierarchy of classes for modeling C/C++ statements.
+ */
+
 import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
@@ -21,10 +25,10 @@ class Stmt extends StmtParent, @stmt {
   /**
    * Gets the nearest enclosing block of this statement in the source, if any.
    */
-  Block getEnclosingBlock() {
+  BlockStmt getEnclosingBlock() {
     if
-      getParentStmt() instanceof Block and
-      not getParentStmt().(Block).getLocation() instanceof UnknownLocation
+      getParentStmt() instanceof BlockStmt and
+      not getParentStmt().(BlockStmt).getLocation() instanceof UnknownLocation
     then result = getParentStmt()
     else result = getParentStmt().getEnclosingBlock()
   }
@@ -49,7 +53,7 @@ class Stmt extends StmtParent, @stmt {
    * to trace the flow of control instead.
    */
   Stmt getFollowingStmt() {
-    exists(Block b, int i |
+    exists(BlockStmt b, int i |
       this = b.getStmt(i) and
       result = b.getStmt(i + 1)
     )
@@ -133,12 +137,14 @@ class Stmt extends StmtParent, @stmt {
   predicate isCompilerGenerated() { compgenerated(underlyingElement(this)) }
 }
 
+private class TStmtParent = @stmt or @expr;
+
 /**
  * An element that is the parent of a statement in the C/C++ AST.
  *
  * This is normally a statement, but may be a `StmtExpr`.
  */
-abstract class StmtParent extends ControlFlowNode { }
+class StmtParent extends ControlFlowNode, TStmtParent { }
 
 /**
  * A C/C++ 'expression' statement.
@@ -150,7 +156,7 @@ abstract class StmtParent extends ControlFlowNode { }
  * is an assignment expression inside an 'expression' statement.
  */
 class ExprStmt extends Stmt, @stmt_expr {
-  override string getCanonicalQLClass() { result = "ExprStmt" }
+  override string getAPrimaryQlClass() { result = "ExprStmt" }
 
   /**
    * Gets the expression of this 'expression' statement.
@@ -175,28 +181,32 @@ class ExprStmt extends Stmt, @stmt_expr {
   }
 }
 
+private class TControlStructure = TConditionalStmt or TLoop;
+
 /**
  * A C/C++ control structure, that is, either a conditional statement or
  * a loop.
  */
-abstract class ControlStructure extends Stmt {
+class ControlStructure extends Stmt, TControlStructure {
   /**
    * Gets the controlling expression of this control structure.
    *
    * This is the condition of 'if' statements and loops, and the
    * switched expression for 'switch' statements.
    */
-  abstract Expr getControllingExpr();
+  Expr getControllingExpr() { none() } // overridden by subclasses
 
   /** Gets a child declaration of this scope. */
   Declaration getADeclaration() { none() }
 }
 
+private class TConditionalStmt = @stmt_if or @stmt_constexpr_if or @stmt_switch;
+
 /**
  * A C/C++ conditional statement, that is, either an 'if' statement or a
  * 'switch' statement.
  */
-abstract class ConditionalStmt extends ControlStructure { }
+class ConditionalStmt extends ControlStructure, TConditionalStmt { }
 
 /**
  * A C/C++ 'if' statement. For example, the `if` statement in the following
@@ -208,7 +218,7 @@ abstract class ConditionalStmt extends ControlStructure { }
  * ```
  */
 class IfStmt extends ConditionalStmt, @stmt_if {
-  override string getCanonicalQLClass() { result = "IfStmt" }
+  override string getAPrimaryQlClass() { result = "IfStmt" }
 
   /**
    * Gets the condition expression of this 'if' statement.
@@ -230,7 +240,7 @@ class IfStmt extends ConditionalStmt, @stmt_if {
    * ```
    * if (b) { x = 1; }
    * ```
-   * the result is the `Block` `{ x = 1; }`.
+   * the result is the `BlockStmt` `{ x = 1; }`.
    */
   Stmt getThen() { if_then(underlyingElement(this), unresolveElement(result)) }
 
@@ -241,7 +251,7 @@ class IfStmt extends ConditionalStmt, @stmt_if {
    * ```
    * if (b) { x = 1; } else { x = 2; }
    * ```
-   * the result is the `Block` `{ x = 2; }`, and for
+   * the result is the `BlockStmt` `{ x = 2; }`, and for
    * ```
    * if (b) { x = 1; }
    * ```
@@ -294,7 +304,7 @@ class IfStmt extends ConditionalStmt, @stmt_if {
  * ```
  */
 class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
-  override string getCanonicalQLClass() { result = "ConstexprIfStmt" }
+  override string getAPrimaryQlClass() { result = "ConstexprIfStmt" }
 
   /**
    * Gets the condition expression of this 'constexpr if' statement.
@@ -316,7 +326,7 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
    * ```
    * if constexpr (b) { x = 1; }
    * ```
-   * the result is the `Block` `{ x = 1; }`.
+   * the result is the `BlockStmt` `{ x = 1; }`.
    */
   Stmt getThen() { constexpr_if_then(underlyingElement(this), unresolveElement(result)) }
 
@@ -327,7 +337,7 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
    * ```
    * if constexpr (b) { x = 1; } else { x = 2; }
    * ```
-   * the result is the `Block` `{ x = 2; }`, and for
+   * the result is the `BlockStmt` `{ x = 2; }`, and for
    * ```
    * if constexpr (b) { x = 1; }
    * ```
@@ -370,16 +380,18 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
   }
 }
 
+private class TLoop = @stmt_while or @stmt_end_test_while or @stmt_range_based_for or @stmt_for;
+
 /**
  * A C/C++ loop, that is, either a 'while' loop, a 'for' loop, or a
  * 'do' loop.
  */
-abstract class Loop extends ControlStructure {
+class Loop extends ControlStructure, TLoop {
   /** Gets the condition expression of this loop. */
-  abstract Expr getCondition();
+  Expr getCondition() { none() } // overridden in subclasses
 
   /** Gets the body statement of this loop. */
-  abstract Stmt getStmt();
+  Stmt getStmt() { none() } // overridden in subclasses
 }
 
 /**
@@ -393,7 +405,7 @@ abstract class Loop extends ControlStructure {
  * ```
  */
 class WhileStmt extends Loop, @stmt_while {
-  override string getCanonicalQLClass() { result = "WhileStmt" }
+  override string getAPrimaryQlClass() { result = "WhileStmt" }
 
   override Expr getCondition() { result = this.getChild(0) }
 
@@ -457,8 +469,8 @@ class WhileStmt extends Loop, @stmt_while {
 /**
  * A C/C++ jump statement.
  */
-abstract class JumpStmt extends Stmt, @jump {
-  override string getCanonicalQLClass() { result = "JumpStmt" }
+class JumpStmt extends Stmt, @jump {
+  override string getAPrimaryQlClass() { result = "JumpStmt" }
 
   /** Gets the target of this jump statement. */
   Stmt getTarget() { jumpinfo(underlyingElement(this), _, unresolveElement(result)) }
@@ -475,7 +487,7 @@ abstract class JumpStmt extends Stmt, @jump {
  * ```
  */
 class GotoStmt extends JumpStmt, @stmt_goto {
-  override string getCanonicalQLClass() { result = "GotoStmt" }
+  override string getAPrimaryQlClass() { result = "GotoStmt" }
 
   /**
    * Gets the name of the label this 'goto' statement refers to.
@@ -570,7 +582,7 @@ class ComputedGotoStmt extends Stmt, @stmt_assigned_goto {
  * ```
  */
 class ContinueStmt extends JumpStmt, @stmt_continue {
-  override string getCanonicalQLClass() { result = "ContinueStmt" }
+  override string getAPrimaryQlClass() { result = "ContinueStmt" }
 
   override string toString() { result = "continue;" }
 
@@ -602,7 +614,7 @@ private Stmt getEnclosingContinuable(Stmt s) {
  * ```
  */
 class BreakStmt extends JumpStmt, @stmt_break {
-  override string getCanonicalQLClass() { result = "BreakStmt" }
+  override string getAPrimaryQlClass() { result = "BreakStmt" }
 
   override string toString() { result = "break;" }
 
@@ -635,7 +647,7 @@ private Stmt getEnclosingBreakable(Stmt s) {
  * ```
  */
 class LabelStmt extends Stmt, @stmt_label {
-  override string getCanonicalQLClass() { result = "LabelStmt" }
+  override string getAPrimaryQlClass() { result = "LabelStmt" }
 
   /** Gets the name of this 'label' statement. */
   string getName() { jumpinfo(underlyingElement(this), result, _) and result != "" }
@@ -651,6 +663,67 @@ class LabelStmt extends Stmt, @stmt_label {
 }
 
 /**
+ * A C/C++ `co_return` statement.
+ *
+ * For example:
+ * ```
+ * co_return 1+2;
+ * ```
+ * or
+ * ```
+ * co_return;
+ * ```
+ */
+class CoReturnStmt extends Stmt, @stmt_co_return {
+  override string getAPrimaryQlClass() { result = "CoReturnStmt" }
+
+  /**
+   * Gets the operand of this 'co_return' statement.
+   *
+   * For example, for
+   * ```
+   * co_return 1+2;
+   * ```
+   * the operand is a function call `return_value(1+2)`, and for
+   * ```
+   * co_return;
+   * ```
+   * the operand is a function call `return_void()`.
+   */
+  FunctionCall getOperand() { result = this.getChild(0) }
+
+  /**
+   * Gets the expression of this 'co_return' statement, if any.
+   *
+   * For example, for
+   * ```
+   * co_return 1+2;
+   * ```
+   * the result is `1+2`, and there is no result for
+   * ```
+   * co_return;
+   * ```
+   */
+  Expr getExpr() { result = this.getOperand().getArgument(0) }
+
+  /**
+   * Holds if this 'co_return' statement has an expression.
+   *
+   * For example, this holds for
+   * ```
+   * co_return 1+2;
+   * ```
+   * but not for
+   * ```
+   * co_return;
+   * ```
+   */
+  predicate hasExpr() { exists(this.getExpr()) }
+
+  override string toString() { result = "co_return ..." }
+}
+
+/**
  * A C/C++ 'return' statement.
  *
  * For example:
@@ -663,7 +736,7 @@ class LabelStmt extends Stmt, @stmt_label {
  * ```
  */
 class ReturnStmt extends Stmt, @stmt_return {
-  override string getCanonicalQLClass() { result = "ReturnStmt" }
+  override string getAPrimaryQlClass() { result = "ReturnStmt" }
 
   /**
    * Gets the expression of this 'return' statement.
@@ -711,7 +784,7 @@ class ReturnStmt extends Stmt, @stmt_return {
  * ```
  */
 class DoStmt extends Loop, @stmt_end_test_while {
-  override string getCanonicalQLClass() { result = "DoStmt" }
+  override string getAPrimaryQlClass() { result = "DoStmt" }
 
   override Expr getCondition() { result = this.getChild(0) }
 
@@ -760,7 +833,7 @@ class DoStmt extends Loop, @stmt_end_test_while {
  * where `begin_expr` and `end_expr` depend on the type of `xs`.
  */
 class RangeBasedForStmt extends Loop, @stmt_range_based_for {
-  override string getCanonicalQLClass() { result = "RangeBasedForStmt" }
+  override string getAPrimaryQlClass() { result = "RangeBasedForStmt" }
 
   /**
    * Gets the 'body' statement of this range-based 'for' statement.
@@ -769,7 +842,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * ```
    * for (int x : xs) { y += x; }
    * ```
-   * the result is the `Block` `{ y += x; }`.
+   * the result is the `BlockStmt` `{ y += x; }`.
    */
   override Stmt getStmt() { result = this.getChild(5) }
 
@@ -847,7 +920,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
  * ```
  */
 class ForStmt extends Loop, @stmt_for {
-  override string getCanonicalQLClass() { result = "ForStmt" }
+  override string getAPrimaryQlClass() { result = "ForStmt" }
 
   /**
    * Gets the initialization statement of this 'for' statement.
@@ -1078,7 +1151,7 @@ private predicate inForUpdate(Expr forUpdate, Expr child) {
  * ```
  */
 class SwitchCase extends Stmt, @stmt_switch_case {
-  override string getCanonicalQLClass() { result = "SwitchCase" }
+  override string getAPrimaryQlClass() { result = "SwitchCase" }
 
   /**
    * Gets the expression of this 'switch case' statement (or the start of
@@ -1156,7 +1229,7 @@ class SwitchCase extends Stmt, @stmt_switch_case {
    * DEPRECATED: use `SwitchCase.getAStmt` or `ControlFlowNode.getASuccessor`
    * rather than this predicate.
    *
-   * Gets the `Block` statement immediately following this 'switch case'
+   * Gets the `BlockStmt` statement immediately following this 'switch case'
    * statement, if any.
    *
    * For example, for
@@ -1177,7 +1250,7 @@ class SwitchCase extends Stmt, @stmt_switch_case {
    * the `case 7:` has result `{ x = 2; break; }`, `default:` has result
    * `{ x = 3; }`, and the others have no result.
    */
-  deprecated Block getLabelledStmt() {
+  deprecated BlockStmt getLabelledStmt() {
     exists(int i, Stmt parent |
       this = parent.getChild(i) and
       result = parent.getChild(i + 1)
@@ -1258,7 +1331,7 @@ class SwitchCase extends Stmt, @stmt_switch_case {
    * `default:` has results `{ x = 3; }, `x = 4;` and `break;`.
    */
   Stmt getAStmt() {
-    exists(Block b, int i, int j |
+    exists(BlockStmt b, int i, int j |
       b.getStmt(i) = this and
       b.getStmt(j) = result and
       i < j and
@@ -1297,8 +1370,8 @@ class SwitchCase extends Stmt, @stmt_switch_case {
     exists(Stmt lastStmt |
       lastStmt = this.getAStmt() and
       not lastStmt.getFollowingStmt() = this.getAStmt() and
-      if lastStmt instanceof Block
-      then result = lastStmt.(Block).getLastStmtIn()
+      if lastStmt instanceof BlockStmt
+      then result = lastStmt.(BlockStmt).getLastStmtIn()
       else result = lastStmt
     )
   }
@@ -1431,7 +1504,7 @@ class DefaultCase extends SwitchCase {
  * ```
  */
 class SwitchStmt extends ConditionalStmt, @stmt_switch {
-  override string getCanonicalQLClass() { result = "SwitchStmt" }
+  override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
   /**
    * Gets the expression that this 'switch' statement switches on.
@@ -1455,7 +1528,7 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
   /**
    * Gets the body statement of this 'switch' statement.
    *
-   * In almost all cases the result will be a `Block`, but there are
+   * In almost all cases the result will be a `BlockStmt`, but there are
    * other syntactically valid constructions.
    *
    * For example, for
@@ -1642,7 +1715,7 @@ class EnumSwitch extends SwitchStmt {
 class Handler extends Stmt, @stmt_handler {
   override string toString() { result = "<handler>" }
 
-  override string getCanonicalQLClass() { result = "Handler" }
+  override string getAPrimaryQlClass() { result = "Handler" }
 
   /**
    * Gets the block containing the implementation of this handler.
@@ -1695,7 +1768,7 @@ deprecated class FinallyEnd extends Stmt {
  * ```
  */
 class TryStmt extends Stmt, @stmt_try_block {
-  override string getCanonicalQLClass() { result = "TryStmt" }
+  override string getAPrimaryQlClass() { result = "TryStmt" }
 
   override string toString() { result = "try { ... }" }
 
@@ -1770,7 +1843,7 @@ class TryStmt extends Stmt, @stmt_try_block {
 class FunctionTryStmt extends TryStmt {
   FunctionTryStmt() { not exists(this.getEnclosingBlock()) }
 
-  override string getCanonicalQLClass() { result = "FunctionTryStmt" }
+  override string getAPrimaryQlClass() { result = "FunctionTryStmt" }
 }
 
 /**
@@ -1786,8 +1859,8 @@ class FunctionTryStmt extends TryStmt {
  * }
  * ```
  */
-class CatchBlock extends Block {
-  override string getCanonicalQLClass() { result = "CatchBlock" }
+class CatchBlock extends BlockStmt {
+  override string getAPrimaryQlClass() { result = "CatchBlock" }
 
   CatchBlock() { ishandler(underlyingElement(this)) }
 
@@ -1818,7 +1891,7 @@ class CatchBlock extends Block {
 class CatchAnyBlock extends CatchBlock {
   CatchAnyBlock() { not exists(this.getParameter()) }
 
-  override string getCanonicalQLClass() { result = "CatchAnyBlock" }
+  override string getAPrimaryQlClass() { result = "CatchAnyBlock" }
 }
 
 /**
@@ -1852,10 +1925,10 @@ class MicrosoftTryExceptStmt extends MicrosoftTryStmt {
   /** Gets the expression guarding the `__except` statement. */
   Expr getCondition() { result = getChild(1) }
 
-  /** Gets the `__except` statement (usually a `Block`). */
+  /** Gets the `__except` statement (usually a `BlockStmt`). */
   Stmt getExcept() { result = getChild(2) }
 
-  override string getCanonicalQLClass() { result = "MicrosoftTryExceptStmt" }
+  override string getAPrimaryQlClass() { result = "MicrosoftTryExceptStmt" }
 }
 
 /**
@@ -1876,10 +1949,10 @@ class MicrosoftTryFinallyStmt extends MicrosoftTryStmt {
 
   override string toString() { result = "__try { ... } __finally { ... }" }
 
-  /** Gets the `__finally` statement (usually a `Block`). */
+  /** Gets the `__finally` statement (usually a `BlockStmt`). */
   Stmt getFinally() { result = getChild(1) }
 
-  override string getCanonicalQLClass() { result = "MicrosoftTryFinallyStmt" }
+  override string getAPrimaryQlClass() { result = "MicrosoftTryFinallyStmt" }
 }
 
 /**
@@ -1891,7 +1964,7 @@ class MicrosoftTryFinallyStmt extends MicrosoftTryStmt {
  * ```
  */
 class DeclStmt extends Stmt, @stmt_decl {
-  override string getCanonicalQLClass() { result = "DeclStmt" }
+  override string getAPrimaryQlClass() { result = "DeclStmt" }
 
   /**
    * Gets the `i`th declaration entry declared by this 'declaration' statement.
@@ -1972,7 +2045,7 @@ class DeclStmt extends Stmt, @stmt_decl {
  * ```
  */
 class EmptyStmt extends Stmt, @stmt_empty {
-  override string getCanonicalQLClass() { result = "EmptyStmt" }
+  override string getAPrimaryQlClass() { result = "EmptyStmt" }
 
   override string toString() { result = ";" }
 
@@ -1992,7 +2065,7 @@ class EmptyStmt extends Stmt, @stmt_empty {
 class AsmStmt extends Stmt, @stmt_asm {
   override string toString() { result = "asm statement" }
 
-  override string getCanonicalQLClass() { result = "AsmStmt" }
+  override string getAPrimaryQlClass() { result = "AsmStmt" }
 }
 
 /**
@@ -2009,7 +2082,7 @@ class AsmStmt extends Stmt, @stmt_asm {
 class VlaDimensionStmt extends Stmt, @stmt_set_vla_size {
   override string toString() { result = "VLA dimension size" }
 
-  override string getCanonicalQLClass() { result = "VlaDimensionStmt" }
+  override string getAPrimaryQlClass() { result = "VlaDimensionStmt" }
 
   /** Gets the expression which gives the size. */
   Expr getDimensionExpr() { result = this.getChild(0) }
@@ -2028,14 +2101,14 @@ class VlaDimensionStmt extends Stmt, @stmt_set_vla_size {
 class VlaDeclStmt extends Stmt, @stmt_vla_decl {
   override string toString() { result = "VLA declaration" }
 
-  override string getCanonicalQLClass() { result = "VlaDeclStmt" }
+  override string getAPrimaryQlClass() { result = "VlaDeclStmt" }
 
   /**
    * Gets the number of VLA dimension statements in this VLA
    * declaration statement.
    */
   int getNumberOfVlaDimensionStmts() {
-    exists(Block b, int j |
+    exists(BlockStmt b, int j |
       this = b.getStmt(j) and
       result =
         j - 1 -
@@ -2052,7 +2125,7 @@ class VlaDeclStmt extends Stmt, @stmt_vla_decl {
    */
   VlaDimensionStmt getVlaDimensionStmt(int i) {
     i in [0 .. this.getNumberOfVlaDimensionStmts() - 1] and
-    exists(Block b, int j |
+    exists(BlockStmt b, int j |
       this = b.getStmt(j) and
       result = b.getStmt(j - this.getNumberOfVlaDimensionStmts() + i)
     )

@@ -78,7 +78,7 @@ module DOM {
   /**
    * A JSX element, viewed as an `ElementDefinition`.
    */
-  private class JsxElementDefinition extends ElementDefinition, @jsxelement {
+  private class JsxElementDefinition extends ElementDefinition, @jsx_element {
     JsxElementDefinition() { this instanceof JSXElement }
 
     override string getName() { result = this.(JSXElement).getName() }
@@ -339,6 +339,9 @@ module DOM {
   private DataFlow::SourceNode domValueRef(DataFlow::TypeTracker t) {
     t.start() and
     result = domValueSource()
+    or
+    t.start() and
+    result = domValueRef().getAMethodCall(["item", "namedItem"])
     or
     exists(DataFlow::TypeTracker t2 | result = domValueRef(t2).track(t2, t))
   }

@@ -1,3 +1,25 @@
+| arrayassignment.cpp:17:7:17:10 | * ... | arrayassignment.cpp:14:9:14:14 | call to source |
+| arrayassignment.cpp:33:7:33:9 | r_x | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:57:10:57:12 | call to get | arrayassignment.cpp:54:9:54:14 | call to source |
+| arrayassignment.cpp:67:10:67:12 | call to get | arrayassignment.cpp:64:13:64:18 | call to source |
+| arrayassignment.cpp:101:7:101:18 | access to array | arrayassignment.cpp:99:17:99:22 | call to source |
+| arrayassignment.cpp:135:7:135:10 | ref1 | arrayassignment.cpp:134:9:134:14 | call to source |
+| arrayassignment.cpp:140:7:140:11 | * ... | arrayassignment.cpp:139:10:139:15 | call to source |
+| arrayassignment.cpp:145:7:145:13 | access to array | arrayassignment.cpp:144:12:144:17 | call to source |
+| copyableclass.cpp:40:8:40:9 | s1 | copyableclass.cpp:34:22:34:27 | call to source |
+| copyableclass.cpp:41:8:41:9 | s2 | copyableclass.cpp:35:24:35:29 | call to source |
+| copyableclass.cpp:42:8:42:9 | s3 | copyableclass.cpp:34:22:34:27 | call to source |
+| copyableclass.cpp:43:8:43:9 | s4 | copyableclass.cpp:38:8:38:13 | call to source |
+| copyableclass.cpp:65:8:65:9 | s1 | copyableclass.cpp:60:40:60:45 | call to source |
+| copyableclass.cpp:66:8:66:9 | s2 | copyableclass.cpp:63:24:63:29 | call to source |
+| copyableclass.cpp:67:11:67:11 | call to operator= | copyableclass.cpp:67:13:67:18 | call to source |
+| copyableclass_declonly.cpp:40:8:40:9 | s1 | copyableclass_declonly.cpp:34:30:34:35 | call to source |
+| copyableclass_declonly.cpp:41:8:41:9 | s2 | copyableclass_declonly.cpp:35:32:35:37 | call to source |
+| copyableclass_declonly.cpp:42:8:42:9 | s3 | copyableclass_declonly.cpp:34:30:34:35 | call to source |
+| copyableclass_declonly.cpp:43:8:43:9 | s4 | copyableclass_declonly.cpp:38:8:38:13 | call to source |
+| copyableclass_declonly.cpp:65:8:65:9 | s1 | copyableclass_declonly.cpp:60:56:60:61 | call to source |
+| copyableclass_declonly.cpp:66:8:66:9 | s2 | copyableclass_declonly.cpp:63:32:63:37 | call to source |
+| copyableclass_declonly.cpp:67:11:67:11 | call to operator= | copyableclass_declonly.cpp:67:13:67:18 | call to source |
 | format.cpp:57:8:57:13 | buffer | format.cpp:56:36:56:49 | call to source |
 | format.cpp:62:8:62:13 | buffer | format.cpp:61:30:61:43 | call to source |
 | format.cpp:67:8:67:13 | buffer | format.cpp:66:52:66:65 | call to source |
@@ -8,46 +30,279 @@
 | format.cpp:100:8:100:13 | buffer | format.cpp:99:30:99:43 | call to source |
 | format.cpp:105:8:105:13 | buffer | format.cpp:104:31:104:45 | call to source |
 | format.cpp:110:8:110:14 | wbuffer | format.cpp:109:38:109:52 | call to source |
+| format.cpp:115:8:115:13 | buffer | format.cpp:114:37:114:50 | call to source |
 | format.cpp:157:7:157:22 | access to array | format.cpp:147:12:147:25 | call to source |
 | format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |
-| stl.cpp:71:7:71:7 | a | stl.cpp:67:12:67:17 | call to source |
-| stl.cpp:73:7:73:7 | c | stl.cpp:69:16:69:21 | call to source |
-| stl.cpp:75:9:75:13 | call to c_str | stl.cpp:69:16:69:21 | call to source |
-| stl.cpp:125:13:125:17 | call to c_str | stl.cpp:117:10:117:15 | call to source |
-| stl.cpp:129:13:129:17 | call to c_str | stl.cpp:117:10:117:15 | call to source |
-| stl.cpp:132:13:132:17 | call to c_str | stl.cpp:117:10:117:15 | call to source |
-| stl.cpp:142:7:142:8 | cs | stl.cpp:137:19:137:24 | call to source |
-| stl.cpp:143:7:143:8 | ss | stl.cpp:137:19:137:24 | call to source |
-| stl.cpp:156:7:156:8 | cs | stl.cpp:148:19:148:24 | call to source |
-| stl.cpp:157:7:157:8 | ss | stl.cpp:148:19:148:24 | call to source |
-| swap1.cpp:60:12:60:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
-| swap1.cpp:65:12:65:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
-| swap1.cpp:66:12:66:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
-| swap1.cpp:70:13:70:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
-| swap1.cpp:74:13:74:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
-| swap1.cpp:75:13:75:17 | data1 | swap1.cpp:68:27:68:28 | z2 |
-| swap1.cpp:75:13:75:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
-| swap1.cpp:84:12:84:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
-| swap1.cpp:89:12:89:16 | data1 | swap1.cpp:80:23:80:23 | x |
-| swap1.cpp:89:12:89:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
-| swap1.cpp:90:12:90:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
-| swap1.cpp:98:20:98:24 | data1 | swap1.cpp:96:23:96:28 | call to source |
-| swap1.cpp:102:18:102:22 | data1 | swap1.cpp:95:23:95:31 | move_from |
-| swap1.cpp:102:18:102:22 | data1 | swap1.cpp:96:23:96:28 | call to source |
-| swap2.cpp:60:12:60:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
-| swap2.cpp:65:12:65:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
-| swap2.cpp:66:12:66:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
-| swap2.cpp:70:13:70:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
-| swap2.cpp:74:13:74:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
-| swap2.cpp:75:13:75:17 | data1 | swap2.cpp:68:27:68:28 | z2 |
-| swap2.cpp:75:13:75:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
-| swap2.cpp:84:12:84:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
-| swap2.cpp:89:12:89:16 | data1 | swap2.cpp:80:23:80:23 | x |
-| swap2.cpp:89:12:89:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
-| swap2.cpp:90:12:90:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
-| swap2.cpp:98:20:98:24 | data1 | swap2.cpp:96:23:96:28 | call to source |
-| swap2.cpp:102:18:102:22 | data1 | swap2.cpp:95:23:95:31 | move_from |
-| swap2.cpp:102:18:102:22 | data1 | swap2.cpp:96:23:96:28 | call to source |
+| movableclass.cpp:44:8:44:9 | s1 | movableclass.cpp:39:21:39:26 | call to source |
+| movableclass.cpp:45:8:45:9 | s2 | movableclass.cpp:40:23:40:28 | call to source |
+| movableclass.cpp:46:8:46:9 | s3 | movableclass.cpp:42:8:42:13 | call to source |
+| movableclass.cpp:54:8:54:9 | s1 | movableclass.cpp:50:38:50:43 | call to source |
+| movableclass.cpp:55:8:55:9 | s2 | movableclass.cpp:52:23:52:28 | call to source |
+| movableclass.cpp:64:8:64:9 | s2 | movableclass.cpp:23:55:23:60 | call to source |
+| movableclass.cpp:65:11:65:11 | call to operator= | movableclass.cpp:65:13:65:18 | call to source |
+| smart_pointer.cpp:12:10:12:10 | call to operator* | smart_pointer.cpp:11:52:11:57 | call to source |
+| smart_pointer.cpp:13:10:13:10 | p | smart_pointer.cpp:11:52:11:57 | call to source |
+| smart_pointer.cpp:24:10:24:10 | call to operator* | smart_pointer.cpp:23:52:23:57 | call to source |
+| smart_pointer.cpp:25:10:25:10 | p | smart_pointer.cpp:23:52:23:57 | call to source |
+| smart_pointer.cpp:52:12:52:14 | call to get | smart_pointer.cpp:51:52:51:57 | call to source |
+| smart_pointer.cpp:57:12:57:14 | call to get | smart_pointer.cpp:56:52:56:57 | call to source |
+| standalone_iterators.cpp:40:10:40:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
+| standalone_iterators.cpp:41:10:41:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
+| standalone_iterators.cpp:42:10:42:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
+| standalone_iterators.cpp:46:10:46:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
+| standalone_iterators.cpp:47:10:47:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
+| standalone_iterators.cpp:48:10:48:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
+| string.cpp:28:7:28:7 | a | string.cpp:24:12:24:17 | call to source |
+| string.cpp:30:7:30:7 | c | string.cpp:26:16:26:21 | call to source |
+| string.cpp:32:9:32:13 | call to c_str | string.cpp:26:16:26:21 | call to source |
+| string.cpp:38:13:38:17 | call to c_str | string.cpp:14:10:14:15 | call to source |
+| string.cpp:42:13:42:17 | call to c_str | string.cpp:14:10:14:15 | call to source |
+| string.cpp:45:13:45:17 | call to c_str | string.cpp:14:10:14:15 | call to source |
+| string.cpp:55:7:55:8 | cs | string.cpp:50:19:50:24 | call to source |
+| string.cpp:56:7:56:8 | ss | string.cpp:50:19:50:24 | call to source |
+| string.cpp:69:7:69:8 | cs | string.cpp:61:19:61:24 | call to source |
+| string.cpp:70:7:70:8 | ss | string.cpp:61:19:61:24 | call to source |
+| string.cpp:92:8:92:9 | s1 | string.cpp:87:18:87:23 | call to source |
+| string.cpp:93:8:93:9 | s2 | string.cpp:88:20:88:25 | call to source |
+| string.cpp:94:8:94:9 | s3 | string.cpp:90:8:90:13 | call to source |
+| string.cpp:113:8:113:9 | s1 | string.cpp:109:32:109:37 | call to source |
+| string.cpp:114:8:114:9 | s2 | string.cpp:111:20:111:25 | call to source |
+| string.cpp:121:8:121:8 | c | string.cpp:119:16:119:21 | call to source |
+| string.cpp:125:8:125:8 | call to operator* | string.cpp:119:16:119:21 | call to source |
+| string.cpp:129:8:129:8 | c | string.cpp:119:16:119:21 | call to source |
+| string.cpp:134:8:134:8 | c | string.cpp:132:28:132:33 | call to source |
+| string.cpp:144:11:144:11 | call to operator+ | string.cpp:141:18:141:23 | call to source |
+| string.cpp:145:11:145:11 | call to operator+ | string.cpp:141:18:141:23 | call to source |
+| string.cpp:146:11:146:11 | call to operator+ | string.cpp:141:18:141:23 | call to source |
+| string.cpp:149:11:149:11 | call to operator+ | string.cpp:149:13:149:18 | call to source |
+| string.cpp:158:8:158:9 | s5 | string.cpp:154:18:154:23 | call to source |
+| string.cpp:161:11:161:11 | call to operator+= | string.cpp:154:18:154:23 | call to source |
+| string.cpp:162:8:162:9 | s6 | string.cpp:154:18:154:23 | call to source |
+| string.cpp:165:11:165:11 | call to operator+= | string.cpp:165:14:165:19 | call to source |
+| string.cpp:166:11:166:11 | call to operator+= | string.cpp:165:14:165:19 | call to source |
+| string.cpp:167:8:167:9 | s7 | string.cpp:165:14:165:19 | call to source |
+| string.cpp:171:8:171:9 | s8 | string.cpp:154:18:154:23 | call to source |
+| string.cpp:176:8:176:9 | s9 | string.cpp:174:13:174:18 | call to source |
+| string.cpp:184:8:184:10 | s10 | string.cpp:181:12:181:26 | call to source |
+| string.cpp:198:10:198:15 | call to assign | string.cpp:190:17:190:22 | call to source |
+| string.cpp:199:7:199:8 | s4 | string.cpp:190:17:190:22 | call to source |
+| string.cpp:201:10:201:15 | call to assign | string.cpp:191:11:191:25 | call to source |
+| string.cpp:202:7:202:8 | s5 | string.cpp:191:11:191:25 | call to source |
+| string.cpp:205:7:205:8 | s6 | string.cpp:193:17:193:22 | call to source |
+| string.cpp:219:10:219:15 | call to insert | string.cpp:210:17:210:22 | call to source |
+| string.cpp:220:7:220:8 | s4 | string.cpp:210:17:210:22 | call to source |
+| string.cpp:223:10:223:15 | call to insert | string.cpp:210:17:210:22 | call to source |
+| string.cpp:224:7:224:8 | s5 | string.cpp:210:17:210:22 | call to source |
+| string.cpp:227:10:227:15 | call to insert | string.cpp:211:11:211:25 | call to source |
+| string.cpp:228:7:228:8 | s6 | string.cpp:211:11:211:25 | call to source |
+| string.cpp:242:10:242:16 | call to replace | string.cpp:233:17:233:22 | call to source |
+| string.cpp:243:7:243:8 | s4 | string.cpp:233:17:233:22 | call to source |
+| string.cpp:246:10:246:16 | call to replace | string.cpp:233:17:233:22 | call to source |
+| string.cpp:247:7:247:8 | s5 | string.cpp:233:17:233:22 | call to source |
+| string.cpp:250:10:250:16 | call to replace | string.cpp:234:11:234:25 | call to source |
+| string.cpp:251:7:251:8 | s6 | string.cpp:234:11:234:25 | call to source |
+| string.cpp:264:7:264:8 | b2 | string.cpp:258:17:258:22 | call to source |
+| string.cpp:274:7:274:8 | s2 | string.cpp:269:17:269:22 | call to source |
+| string.cpp:276:7:276:8 | s4 | string.cpp:271:17:271:22 | call to source |
+| string.cpp:281:7:281:8 | s1 | string.cpp:269:17:269:22 | call to source |
+| string.cpp:282:7:282:8 | s2 | string.cpp:269:17:269:22 | call to source |
+| string.cpp:283:7:283:8 | s3 | string.cpp:271:17:271:22 | call to source |
+| string.cpp:284:7:284:8 | s4 | string.cpp:271:17:271:22 | call to source |
+| string.cpp:292:7:292:8 | s1 | string.cpp:288:17:288:22 | call to source |
+| string.cpp:293:7:293:8 | s2 | string.cpp:289:17:289:22 | call to source |
+| string.cpp:294:7:294:8 | s3 | string.cpp:290:17:290:22 | call to source |
+| string.cpp:300:7:300:8 | s1 | string.cpp:288:17:288:22 | call to source |
+| string.cpp:302:7:302:8 | s3 | string.cpp:290:17:290:22 | call to source |
+| string.cpp:311:9:311:12 | call to data | string.cpp:308:16:308:21 | call to source |
+| string.cpp:322:9:322:14 | call to substr | string.cpp:319:16:319:21 | call to source |
+| string.cpp:339:7:339:7 | a | string.cpp:335:9:335:23 | call to source |
+| string.cpp:340:7:340:7 | b | string.cpp:336:12:336:26 | call to source |
+| string.cpp:341:7:341:7 | c | string.cpp:335:9:335:23 | call to source |
+| string.cpp:349:7:349:9 | str | string.cpp:348:18:348:32 | call to source |
+| string.cpp:350:11:350:14 | call to data | string.cpp:348:18:348:32 | call to source |
+| string.cpp:361:11:361:16 | call to append | string.cpp:356:18:356:23 | call to source |
+| string.cpp:362:8:362:9 | s1 | string.cpp:356:18:356:23 | call to source |
+| string.cpp:380:8:380:8 | call to operator* | string.cpp:372:18:372:23 | call to source |
+| string.cpp:381:13:381:13 | call to operator[] | string.cpp:372:18:372:23 | call to source |
+| string.cpp:394:8:394:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:395:8:395:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:397:8:397:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:399:8:399:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:402:8:402:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:405:8:405:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:407:8:407:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:409:8:409:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:413:8:413:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:427:10:427:15 | call to insert | string.cpp:422:14:422:19 | call to source |
+| string.cpp:428:7:428:8 | s2 | string.cpp:422:14:422:19 | call to source |
+| string.cpp:442:10:442:15 | call to insert | string.cpp:442:32:442:46 | call to source |
+| string.cpp:443:8:443:8 | b | string.cpp:442:32:442:46 | call to source |
+| string.cpp:455:10:455:15 | call to insert | string.cpp:450:18:450:23 | call to source |
+| string.cpp:456:8:456:8 | d | string.cpp:450:18:450:23 | call to source |
+| string.cpp:458:11:458:16 | call to insert | string.cpp:450:18:450:23 | call to source |
+| string.cpp:459:8:459:9 | s2 | string.cpp:450:18:450:23 | call to source |
+| string.cpp:471:10:471:15 | call to append | string.cpp:466:18:466:23 | call to source |
+| string.cpp:472:8:472:8 | f | string.cpp:466:18:466:23 | call to source |
+| string.cpp:474:11:474:16 | call to append | string.cpp:466:18:466:23 | call to source |
+| string.cpp:475:8:475:9 | s4 | string.cpp:466:18:466:23 | call to source |
+| string.cpp:487:10:487:15 | call to assign | string.cpp:482:18:482:23 | call to source |
+| string.cpp:488:8:488:8 | h | string.cpp:482:18:482:23 | call to source |
+| string.cpp:491:8:491:9 | s6 | string.cpp:482:18:482:23 | call to source |
+| string.cpp:504:7:504:8 | s2 | string.cpp:497:14:497:19 | call to source |
+| string.cpp:506:7:506:8 | s4 | string.cpp:497:14:497:19 | call to source |
+| string.cpp:515:9:515:13 | call to front | string.cpp:514:14:514:28 | call to source |
+| string.cpp:516:9:516:12 | call to back | string.cpp:514:14:514:28 | call to source |
+| string.cpp:529:11:529:11 | call to operator+= | string.cpp:529:20:529:25 | call to source |
+| string.cpp:530:21:530:21 | call to operator+= | string.cpp:530:24:530:29 | call to source |
+| string.cpp:531:25:531:25 | call to operator+= | string.cpp:531:15:531:20 | call to source |
+| string.cpp:534:8:534:8 | c | string.cpp:529:20:529:25 | call to source |
+| string.cpp:535:8:535:8 | d | string.cpp:529:20:529:25 | call to source |
+| string.cpp:536:8:536:8 | e | string.cpp:530:24:530:29 | call to source |
+| string.cpp:537:8:537:8 | f | string.cpp:531:15:531:20 | call to source |
+| string.cpp:549:11:549:16 | call to assign | string.cpp:549:27:549:32 | call to source |
+| string.cpp:550:24:550:29 | call to assign | string.cpp:550:31:550:36 | call to source |
+| string.cpp:554:8:554:8 | c | string.cpp:549:27:549:32 | call to source |
+| string.cpp:555:8:555:8 | d | string.cpp:549:27:549:32 | call to source |
+| string.cpp:556:8:556:8 | e | string.cpp:550:31:550:36 | call to source |
+| string.cpp:557:8:557:8 | f | string.cpp:551:18:551:23 | call to source |
+| stringstream.cpp:32:11:32:11 | call to operator<< | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:33:20:33:20 | call to operator<< | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:34:23:34:23 | call to operator<< | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:35:11:35:11 | call to operator<< | stringstream.cpp:29:16:29:21 | call to source |
+| stringstream.cpp:38:7:38:9 | ss2 | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:39:7:39:9 | ss3 | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:40:7:40:9 | ss4 | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:41:7:41:9 | ss5 | stringstream.cpp:29:16:29:21 | call to source |
+| stringstream.cpp:43:11:43:13 | call to str | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:44:11:44:13 | call to str | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:45:11:45:13 | call to str | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:46:11:46:13 | call to str | stringstream.cpp:29:16:29:21 | call to source |
+| stringstream.cpp:52:7:52:9 | ss6 | stringstream.cpp:49:10:49:15 | call to source |
+| stringstream.cpp:53:7:53:9 | ss7 | stringstream.cpp:50:10:50:15 | call to source |
+| stringstream.cpp:56:11:56:13 | call to put | stringstream.cpp:56:15:56:29 | call to source |
+| stringstream.cpp:57:44:57:46 | call to put | stringstream.cpp:57:25:57:39 | call to source |
+| stringstream.cpp:59:7:59:9 | ss9 | stringstream.cpp:56:15:56:29 | call to source |
+| stringstream.cpp:60:7:60:10 | ss10 | stringstream.cpp:57:25:57:39 | call to source |
+| stringstream.cpp:63:12:63:16 | call to write | stringstream.cpp:63:18:63:23 | call to source |
+| stringstream.cpp:64:54:64:58 | call to write | stringstream.cpp:64:36:64:41 | call to source |
+| stringstream.cpp:66:7:66:10 | ss12 | stringstream.cpp:63:18:63:23 | call to source |
+| stringstream.cpp:67:7:67:10 | ss13 | stringstream.cpp:64:36:64:41 | call to source |
+| stringstream.cpp:76:11:76:11 | call to operator<< | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:78:11:78:11 | call to operator>> | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:81:7:81:9 | ss2 | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:83:11:83:13 | call to str | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:85:7:85:8 | v2 | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:100:11:100:11 | call to operator= | stringstream.cpp:100:31:100:36 | call to source |
+| stringstream.cpp:103:7:103:9 | ss2 | stringstream.cpp:91:19:91:24 | call to source |
+| stringstream.cpp:105:7:105:9 | ss4 | stringstream.cpp:95:44:95:49 | call to source |
+| stringstream.cpp:107:7:107:9 | ss6 | stringstream.cpp:100:31:100:36 | call to source |
+| stringstream.cpp:120:7:120:9 | ss1 | stringstream.cpp:113:24:113:29 | call to source |
+| stringstream.cpp:121:7:121:9 | ss2 | stringstream.cpp:113:24:113:29 | call to source |
+| stringstream.cpp:122:7:122:9 | ss3 | stringstream.cpp:115:24:115:29 | call to source |
+| stringstream.cpp:123:7:123:9 | ss4 | stringstream.cpp:115:24:115:29 | call to source |
+| stringstream.cpp:143:11:143:11 | call to operator<< | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:146:11:146:11 | call to operator>> | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:147:17:147:17 | call to operator>> | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:149:7:149:8 | s2 | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:150:7:150:8 | s3 | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:151:7:151:8 | s4 | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:154:11:154:11 | call to operator>> | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:155:17:155:17 | call to operator>> | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:157:7:157:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:158:7:158:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:159:7:159:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:162:11:162:14 | call to read | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:166:11:166:13 | call to get | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:168:7:168:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:170:7:170:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:172:7:172:9 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:175:7:175:20 | ... = ... | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:177:7:177:21 | ... = ... | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:179:11:179:13 | call to get | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:181:7:181:8 | c2 | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:183:7:183:8 | c4 | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:185:7:185:8 | c6 | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:196:10:196:16 | call to putback | stringstream.cpp:196:18:196:32 | call to source |
+| stringstream.cpp:197:10:197:12 | call to get | stringstream.cpp:196:18:196:32 | call to source |
+| stringstream.cpp:215:11:215:17 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:216:11:216:17 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:219:7:219:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:220:7:220:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:223:11:223:17 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:224:11:224:17 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:227:7:227:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:228:7:228:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:230:29:230:35 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:231:7:231:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:232:7:232:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:235:7:235:13 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:236:7:236:13 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:239:7:239:8 | s2 | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:240:7:240:8 | s3 | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:243:7:243:13 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:244:7:244:13 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:247:7:247:8 | s5 | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:248:7:248:8 | s6 | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:250:7:250:13 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:251:7:251:8 | s7 | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:252:7:252:8 | s8 | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:262:32:262:34 | call to get | stringstream.cpp:257:24:257:29 | call to source |
+| stringstream.cpp:263:7:263:8 | call to basic_string | stringstream.cpp:257:24:257:29 | call to source |
+| stringstream.cpp:264:7:264:8 | call to basic_string | stringstream.cpp:257:24:257:29 | call to source |
+| stringstream.cpp:266:62:266:66 | call to write | stringstream.cpp:266:41:266:46 | call to source |
+| stringstream.cpp:267:7:267:9 | ss2 | stringstream.cpp:266:41:266:46 | call to source |
+| structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
+| structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
+| structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |
+| structlikeclass.cpp:38:8:38:9 | s4 | structlikeclass.cpp:33:8:33:13 | call to source |
+| structlikeclass.cpp:60:8:60:9 | s1 | structlikeclass.cpp:55:40:55:45 | call to source |
+| structlikeclass.cpp:61:8:61:9 | s2 | structlikeclass.cpp:58:24:58:29 | call to source |
+| structlikeclass.cpp:62:8:62:20 | ... = ... | structlikeclass.cpp:62:13:62:18 | call to source |
+| swap1.cpp:73:12:73:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
+| swap1.cpp:78:12:78:16 | data1 | swap1.cpp:69:23:69:23 | x |
+| swap1.cpp:78:12:78:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
+| swap1.cpp:79:12:79:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
+| swap1.cpp:83:13:83:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
+| swap1.cpp:87:13:87:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
+| swap1.cpp:88:13:88:17 | data1 | swap1.cpp:81:27:81:28 | z2 |
+| swap1.cpp:88:13:88:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
+| swap1.cpp:97:12:97:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
+| swap1.cpp:102:12:102:16 | data1 | swap1.cpp:93:23:93:23 | x |
+| swap1.cpp:102:12:102:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
+| swap1.cpp:103:12:103:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
+| swap1.cpp:111:20:111:24 | data1 | swap1.cpp:109:23:109:28 | call to source |
+| swap1.cpp:115:18:115:22 | data1 | swap1.cpp:108:23:108:31 | move_from |
+| swap1.cpp:115:18:115:22 | data1 | swap1.cpp:109:23:109:28 | call to source |
+| swap1.cpp:124:12:124:16 | data1 | swap1.cpp:122:15:122:20 | call to source |
+| swap1.cpp:129:12:129:16 | data1 | swap1.cpp:120:23:120:23 | x |
+| swap1.cpp:129:12:129:16 | data1 | swap1.cpp:122:15:122:20 | call to source |
+| swap1.cpp:130:12:130:16 | data1 | swap1.cpp:122:15:122:20 | call to source |
+| swap1.cpp:139:12:139:16 | data1 | swap1.cpp:137:15:137:20 | call to source |
+| swap1.cpp:144:12:144:16 | data1 | swap1.cpp:135:23:135:23 | x |
+| swap1.cpp:144:12:144:16 | data1 | swap1.cpp:137:15:137:20 | call to source |
+| swap1.cpp:145:12:145:16 | data1 | swap1.cpp:137:15:137:20 | call to source |
+| swap2.cpp:73:12:73:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
+| swap2.cpp:78:12:78:16 | data1 | swap2.cpp:69:23:69:23 | x |
+| swap2.cpp:78:12:78:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
+| swap2.cpp:79:12:79:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
+| swap2.cpp:83:13:83:17 | data1 | swap2.cpp:82:16:82:21 | call to source |
+| swap2.cpp:88:13:88:17 | data1 | swap2.cpp:81:27:81:28 | z2 |
+| swap2.cpp:88:13:88:17 | data1 | swap2.cpp:82:16:82:21 | call to source |
+| swap2.cpp:97:12:97:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
+| swap2.cpp:102:12:102:16 | data1 | swap2.cpp:93:23:93:23 | x |
+| swap2.cpp:102:12:102:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
+| swap2.cpp:103:12:103:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
+| swap2.cpp:111:20:111:24 | data1 | swap2.cpp:109:23:109:28 | call to source |
+| swap2.cpp:115:18:115:22 | data1 | swap2.cpp:108:23:108:31 | move_from |
+| swap2.cpp:115:18:115:22 | data1 | swap2.cpp:109:23:109:28 | call to source |
+| swap2.cpp:124:12:124:16 | data1 | swap2.cpp:122:15:122:20 | call to source |
+| swap2.cpp:129:12:129:16 | data1 | swap2.cpp:120:23:120:23 | x |
+| swap2.cpp:129:12:129:16 | data1 | swap2.cpp:122:15:122:20 | call to source |
+| swap2.cpp:130:12:130:16 | data1 | swap2.cpp:122:15:122:20 | call to source |
+| swap2.cpp:139:12:139:16 | data1 | swap2.cpp:137:15:137:20 | call to source |
+| swap2.cpp:144:12:144:16 | data1 | swap2.cpp:135:23:135:23 | x |
+| swap2.cpp:144:12:144:16 | data1 | swap2.cpp:137:15:137:20 | call to source |
+| swap2.cpp:145:12:145:16 | data1 | swap2.cpp:137:15:137:20 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |
@@ -59,7 +314,12 @@
 | taint.cpp:91:11:91:11 | d | taint.cpp:77:7:77:12 | call to source |
 | taint.cpp:93:11:93:11 | b | taint.cpp:71:22:71:27 | call to source |
 | taint.cpp:94:11:94:11 | c | taint.cpp:72:7:72:12 | call to source |
+| taint.cpp:109:7:109:13 | access to array | taint.cpp:105:12:105:17 | call to source |
+| taint.cpp:110:7:110:13 | access to array | taint.cpp:105:12:105:17 | call to source |
+| taint.cpp:111:7:111:13 | access to array | taint.cpp:106:12:106:17 | call to source |
+| taint.cpp:112:7:112:13 | access to array | taint.cpp:106:12:106:17 | call to source |
 | taint.cpp:129:7:129:9 | * ... | taint.cpp:120:11:120:16 | call to source |
+| taint.cpp:130:7:130:9 | * ... | taint.cpp:127:8:127:13 | call to source |
 | taint.cpp:134:7:134:9 | * ... | taint.cpp:120:11:120:16 | call to source |
 | taint.cpp:137:7:137:9 | * ... | taint.cpp:120:11:120:16 | call to source |
 | taint.cpp:151:7:151:12 | call to select | taint.cpp:151:20:151:25 | call to source |
@@ -87,6 +347,8 @@
 | taint.cpp:350:7:350:7 | t | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:351:7:351:7 | a | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:352:7:352:7 | b | taint.cpp:330:6:330:11 | call to source |
+| taint.cpp:353:7:353:7 | c | taint.cpp:330:6:330:11 | call to source |
+| taint.cpp:354:7:354:7 | d | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:372:7:372:7 | a | taint.cpp:365:24:365:29 | source |
 | taint.cpp:374:7:374:7 | c | taint.cpp:365:24:365:29 | source |
 | taint.cpp:382:7:382:7 | a | taint.cpp:377:23:377:28 | source |
@@ -102,3 +364,68 @@
 | taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:471:7:471:7 | y | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:485:7:485:10 | line | taint.cpp:480:26:480:32 | source1 |
+| vector.cpp:20:8:20:8 | x | vector.cpp:16:43:16:49 | source1 |
+| vector.cpp:24:8:24:8 | call to operator* | vector.cpp:16:43:16:49 | source1 |
+| vector.cpp:28:8:28:8 | x | vector.cpp:16:43:16:49 | source1 |
+| vector.cpp:33:8:33:8 | x | vector.cpp:16:43:16:49 | source1 |
+| vector.cpp:52:7:52:8 | v2 | vector.cpp:51:10:51:15 | call to source |
+| vector.cpp:53:9:53:9 | call to operator[] | vector.cpp:51:10:51:15 | call to source |
+| vector.cpp:54:9:54:9 | call to operator[] | vector.cpp:51:10:51:15 | call to source |
+| vector.cpp:55:9:55:9 | call to operator[] | vector.cpp:51:10:51:15 | call to source |
+| vector.cpp:58:7:58:8 | v3 | vector.cpp:51:10:51:15 | call to source |
+| vector.cpp:59:9:59:9 | call to operator[] | vector.cpp:51:10:51:15 | call to source |
+| vector.cpp:60:9:60:9 | call to operator[] | vector.cpp:51:10:51:15 | call to source |
+| vector.cpp:61:9:61:9 | call to operator[] | vector.cpp:51:10:51:15 | call to source |
+| vector.cpp:64:7:64:8 | v4 | vector.cpp:63:10:63:15 | call to source |
+| vector.cpp:65:9:65:9 | call to operator[] | vector.cpp:63:10:63:15 | call to source |
+| vector.cpp:66:9:66:9 | call to operator[] | vector.cpp:63:10:63:15 | call to source |
+| vector.cpp:67:9:67:9 | call to operator[] | vector.cpp:63:10:63:15 | call to source |
+| vector.cpp:70:7:70:8 | v5 | vector.cpp:69:15:69:20 | call to source |
+| vector.cpp:71:10:71:14 | call to front | vector.cpp:69:15:69:20 | call to source |
+| vector.cpp:72:10:72:13 | call to back | vector.cpp:69:15:69:20 | call to source |
+| vector.cpp:75:7:75:8 | v6 | vector.cpp:74:17:74:22 | call to source |
+| vector.cpp:76:7:76:18 | access to array | vector.cpp:74:17:74:22 | call to source |
+| vector.cpp:83:7:83:8 | v7 | vector.cpp:81:17:81:22 | call to source |
+| vector.cpp:84:10:84:14 | call to front | vector.cpp:81:17:81:22 | call to source |
+| vector.cpp:85:10:85:13 | call to back | vector.cpp:81:17:81:22 | call to source |
+| vector.cpp:97:7:97:8 | v9 | vector.cpp:96:13:96:18 | call to source |
+| vector.cpp:98:10:98:11 | call to at | vector.cpp:96:13:96:18 | call to source |
+| vector.cpp:99:10:99:11 | call to at | vector.cpp:96:13:96:18 | call to source |
+| vector.cpp:100:10:100:11 | call to at | vector.cpp:96:13:96:18 | call to source |
+| vector.cpp:109:7:109:8 | v1 | vector.cpp:106:15:106:20 | call to source |
+| vector.cpp:112:7:112:8 | v4 | vector.cpp:107:15:107:20 | call to source |
+| vector.cpp:117:7:117:8 | v1 | vector.cpp:106:15:106:20 | call to source |
+| vector.cpp:118:7:118:8 | v2 | vector.cpp:106:15:106:20 | call to source |
+| vector.cpp:119:7:119:8 | v3 | vector.cpp:107:15:107:20 | call to source |
+| vector.cpp:120:7:120:8 | v4 | vector.cpp:107:15:107:20 | call to source |
+| vector.cpp:130:7:130:8 | v1 | vector.cpp:126:15:126:20 | call to source |
+| vector.cpp:131:7:131:8 | v2 | vector.cpp:127:15:127:20 | call to source |
+| vector.cpp:132:7:132:8 | v3 | vector.cpp:128:15:128:20 | call to source |
+| vector.cpp:139:7:139:8 | v1 | vector.cpp:126:15:126:20 | call to source |
+| vector.cpp:140:7:140:8 | v2 | vector.cpp:127:15:127:20 | call to source |
+| vector.cpp:141:7:141:8 | v3 | vector.cpp:128:15:128:20 | call to source |
+| vector.cpp:162:8:162:15 | access to array | vector.cpp:161:14:161:19 | call to source |
+| vector.cpp:171:13:171:13 | call to operator[] | vector.cpp:170:14:170:19 | call to source |
+| vector.cpp:180:13:180:13 | call to operator[] | vector.cpp:179:14:179:19 | call to source |
+| vector.cpp:201:13:201:13 | call to operator[] | vector.cpp:200:14:200:19 | call to source |
+| vector.cpp:242:7:242:8 | v2 | vector.cpp:238:17:238:30 | call to source |
+| vector.cpp:243:7:243:8 | v3 | vector.cpp:239:15:239:20 | call to source |
+| vector.cpp:258:8:258:9 | v5 | vector.cpp:239:15:239:20 | call to source |
+| vector.cpp:259:8:259:9 | i1 | vector.cpp:239:15:239:20 | call to source |
+| vector.cpp:260:8:260:9 | i2 | vector.cpp:239:15:239:20 | call to source |
+| vector.cpp:261:8:261:9 | v6 | vector.cpp:239:15:239:20 | call to source |
+| vector.cpp:273:8:273:9 | v7 | vector.cpp:269:18:269:31 | call to source |
+| vector.cpp:274:8:274:9 | v8 | vector.cpp:270:18:270:35 | call to source |
+| vector.cpp:275:8:275:9 | v9 | vector.cpp:271:18:271:34 | call to source |
+| vector.cpp:285:7:285:8 | v1 | vector.cpp:284:15:284:20 | call to source |
+| vector.cpp:286:10:286:13 | call to data | vector.cpp:284:15:284:20 | call to source |
+| vector.cpp:287:7:287:18 | access to array | vector.cpp:284:15:284:20 | call to source |
+| vector.cpp:290:7:290:8 | v2 | vector.cpp:289:17:289:30 | call to source |
+| vector.cpp:291:10:291:13 | call to data | vector.cpp:289:17:289:30 | call to source |
+| vector.cpp:292:7:292:18 | access to array | vector.cpp:289:17:289:30 | call to source |
+| vector.cpp:308:9:308:14 | call to insert | vector.cpp:303:14:303:19 | call to source |
+| vector.cpp:309:7:309:7 | c | vector.cpp:303:14:303:19 | call to source |
+| vector.cpp:311:9:311:14 | call to insert | vector.cpp:303:14:303:19 | call to source |
+| vector.cpp:312:7:312:7 | d | vector.cpp:303:14:303:19 | call to source |
+| vector.cpp:324:7:324:8 | v2 | vector.cpp:318:15:318:20 | call to source |
+| vector.cpp:326:7:326:8 | v4 | vector.cpp:318:15:318:20 | call to source |

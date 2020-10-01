@@ -1,5 +1,9 @@
 | single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue | dataA | single-component-file-1.vue:6:40:6:41 | 42 |
 | single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue | dataA | single-file-component-3-script.js:4:37:4:38 | 42 |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | dataA | single-file-component-4.vue:15:14:15:15 | 42 |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | message | single-file-component-4.vue:12:23:12:30 | 'Hello!' |
+| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue | dataA | single-file-component-5.vue:13:14:13:15 | 42 |
+| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue | message | single-file-component-5.vue:10:23:10:30 | 'Hello!' |
 | tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) | dataA | tst.js:8:10:8:11 | 42 |
 | tst.js:12:1:16:2 | new Vue ... \\t}),\\n}) | dataA | tst.js:14:10:14:11 | 42 |
 | tst.js:18:1:27:2 | Vue.com ... }\\n\\t}\\n}) | dataA | tst.js:20:10:20:11 | 42 |

@@ -93,266 +93,434 @@ import python
 
 cached
 private module SsaComputeImpl {
+  cached
+  module EssaDefinitionsImpl {
+    /** Whether `n` is a live update that is a definition of the variable `v`. */
     cached
-    module EssaDefinitionsImpl {
-        /** Whether `n` is a live update that is a definition of the variable `v`. */
-        cached
-        predicate variableDefinition(
-            SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int rankix, int i
-        ) {
-            SsaComputeImpl::variableDefine(v, n, b, i) and
-            SsaComputeImpl::defUseRank(v, b, rankix, i) and
-            (
-                SsaComputeImpl::defUseRank(v, b, rankix + 1, _) and
-                not SsaComputeImpl::defRank(v, b, rankix + 1, _)
-                or
-                not SsaComputeImpl::defUseRank(v, b, rankix + 1, _) and Liveness::liveAtExit(v, b)
-            )
-        }
-
-        /** Whether `n` is a live update that is a definition of the variable `v`. */
-        cached
-        predicate variableRefinement(
-            SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int rankix, int i
-        ) {
-            SsaComputeImpl::variableRefine(v, n, b, i) and
-            SsaComputeImpl::defUseRank(v, b, rankix, i) and
-            (
-                SsaComputeImpl::defUseRank(v, b, rankix + 1, _) and
-                not SsaComputeImpl::defRank(v, b, rankix + 1, _)
-                or
-                not SsaComputeImpl::defUseRank(v, b, rankix + 1, _) and Liveness::liveAtExit(v, b)
-            )
-        }
-
-        cached
-        predicate variableUpdate(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int rankix, int i) {
-            variableDefinition(v, n, b, rankix, i)
-            or
-            variableRefinement(v, n, b, rankix, i)
-        }
-
-        /** Holds if `def` is a pi-node for `v` on the edge `pred` -> `succ` */
-        cached
-        predicate piNode(SsaSourceVariable v, BasicBlock pred, BasicBlock succ) {
-            v.hasRefinementEdge(_, pred, succ) and
-            Liveness::liveAtEntry(v, succ)
-        }
-
-        /** A phi node for `v` at the beginning of basic block `b`. */
-        cached
-        predicate phiNode(SsaSourceVariable v, BasicBlock b) {
-            (
-                exists(BasicBlock def | def.dominanceFrontier(b) | SsaComputeImpl::ssaDef(v, def))
-                or
-                piNode(v, _, b) and strictcount(b.getAPredecessor()) > 1
-            ) and
-            Liveness::liveAtEntry(v, b)
-        }
-    }
-
-    cached
-    predicate variableDefine(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
-        v.hasDefiningNode(n) and
-        exists(int j |
-            n = b.getNode(j) and
-            i = j * 2 + 1
-        )
-    }
-
-    cached
-    predicate variableRefine(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
-        v.hasRefinement(_, n) and
-        exists(int j |
-            n = b.getNode(j) and
-            i = j * 2 + 1
-        )
-    }
-
-    cached
-    predicate variableDef(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
-        variableDefine(v, n, b, i) or variableRefine(v, n, b, i)
-    }
-
-    /**
-     * A ranking of the indices `i` at which there is an SSA definition or use of
-     * `v` in the basic block `b`.
-     *
-     * Basic block indices are translated to rank indices in order to skip
-     * irrelevant indices at which there is no definition or use when traversing
-     * basic blocks.
-     */
-    cached
-    predicate defUseRank(SsaSourceVariable v, BasicBlock b, int rankix, int i) {
-        i = rank[rankix](int j | variableDef(v, _, b, j) or variableUse(v, _, b, j))
-    }
-
-    /** A definition of a variable occurring at the specified rank index in basic block `b`. */
-    cached
-    predicate defRank(SsaSourceVariable v, BasicBlock b, int rankix, int i) {
-        variableDef(v, _, b, i) and
-        defUseRank(v, b, rankix, i)
-    }
-
-    /** A `VarAccess` `use` of `v` in `b` at index `i`. */
-    cached
-    predicate variableUse(SsaSourceVariable v, ControlFlowNode use, BasicBlock b, int i) {
-        (v.getAUse() = use or v.hasRefinement(use, _)) and
-        exists(int j |
-            b.getNode(j) = use and
-            i = 2 * j
-        )
-    }
-
-    /**
-     * A definition of an SSA variable occurring at the specified position.
-     * This is either a phi node, a `VariableUpdate`, or a parameter.
-     */
-    cached
-    predicate ssaDef(SsaSourceVariable v, BasicBlock b) {
-        EssaDefinitions::phiNode(v, b)
-        or
-        EssaDefinitions::variableUpdate(v, _, b, _, _)
-        or
-        EssaDefinitions::piNode(v, _, b)
-    }
-
-    /*
-     * The construction of SSA form ensures that each use of a variable is
-     * dominated by its definition. A definition of an SSA variable therefore
-     * reaches a `ControlFlowNode` if it is the _closest_ SSA variable definition
-     * that dominates the node. If two definitions dominate a node then one must
-     * dominate the other, so therefore the definition of _closest_ is given by the
-     * dominator tree. Thus, reaching definitions can be calculated in terms of
-     * dominance.
-     */
-
-    /** The maximum rank index for the given variable and basic block. */
-    cached
-    int lastRank(SsaSourceVariable v, BasicBlock b) {
-        result = max(int rankix | defUseRank(v, b, rankix, _))
-        or
-        not defUseRank(v, b, _, _) and
-        (EssaDefinitions::phiNode(v, b) or EssaDefinitions::piNode(v, _, b)) and
-        result = 0
-    }
-
-    private predicate ssaDefRank(SsaSourceVariable v, BasicBlock b, int rankix, int i) {
-        EssaDefinitions::variableUpdate(v, _, b, rankix, i)
-        or
-        EssaDefinitions::phiNode(v, b) and rankix = 0 and i = phiIndex()
-        or
-        EssaDefinitions::piNode(v, _, b) and
-        EssaDefinitions::phiNode(v, b) and
-        rankix = -1 and
-        i = piIndex()
-        or
-        EssaDefinitions::piNode(v, _, b) and
-        not EssaDefinitions::phiNode(v, b) and
-        rankix = 0 and
-        i = piIndex()
-    }
-
-    /** The SSA definition reaches the rank index `rankix` in its own basic block `b`. */
-    cached
-    predicate ssaDefReachesRank(SsaSourceVariable v, BasicBlock b, int i, int rankix) {
-        ssaDefRank(v, b, rankix, i)
-        or
-        ssaDefReachesRank(v, b, i, rankix - 1) and
-        rankix <= lastRank(v, b) and
-        not ssaDefRank(v, b, rankix, _)
-    }
-
-    /**
-     * The SSA definition of `v` at `def` reaches `use` in the same basic block
-     * without crossing another SSA definition of `v`.
-     */
-    cached
-    predicate ssaDefReachesUseWithinBlock(
-        SsaSourceVariable v, BasicBlock b, int i, ControlFlowNode use
+    predicate variableDefinition(
+      SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int rankix, int i
     ) {
-        exists(int rankix, int useix |
-            ssaDefReachesRank(v, b, i, rankix) and
-            defUseRank(v, b, rankix, useix) and
-            variableUse(v, use, b, useix)
-        )
+      SsaComputeImpl::variableDefine(v, n, b, i) and
+      SsaComputeImpl::defUseRank(v, b, rankix, i) and
+      (
+        SsaComputeImpl::defUseRank(v, b, rankix + 1, _) and
+        not SsaComputeImpl::defRank(v, b, rankix + 1, _)
+        or
+        not SsaComputeImpl::defUseRank(v, b, rankix + 1, _) and Liveness::liveAtExit(v, b)
+      )
+    }
+
+    /** Whether `n` is a live update that is a definition of the variable `v`. */
+    cached
+    predicate variableRefinement(
+      SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int rankix, int i
+    ) {
+      SsaComputeImpl::variableRefine(v, n, b, i) and
+      SsaComputeImpl::defUseRank(v, b, rankix, i) and
+      (
+        SsaComputeImpl::defUseRank(v, b, rankix + 1, _) and
+        not SsaComputeImpl::defRank(v, b, rankix + 1, _)
+        or
+        not SsaComputeImpl::defUseRank(v, b, rankix + 1, _) and Liveness::liveAtExit(v, b)
+      )
     }
 
     cached
-    module LivenessImpl {
-        cached
-        predicate liveAtExit(SsaSourceVariable v, BasicBlock b) { liveAtEntry(v, b.getASuccessor()) }
-
-        cached
-        predicate liveAtEntry(SsaSourceVariable v, BasicBlock b) {
-            SsaComputeImpl::defUseRank(v, b, 1, _) and not SsaComputeImpl::defRank(v, b, 1, _)
-            or
-            not SsaComputeImpl::defUseRank(v, b, _, _) and liveAtExit(v, b)
-        }
+    predicate variableUpdate(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int rankix, int i) {
+      variableDefinition(v, n, b, rankix, i)
+      or
+      variableRefinement(v, n, b, rankix, i)
     }
+
+    /** Holds if `def` is a pi-node for `v` on the edge `pred` -> `succ` */
+    cached
+    predicate piNode(SsaSourceVariable v, BasicBlock pred, BasicBlock succ) {
+      v.hasRefinementEdge(_, pred, succ) and
+      Liveness::liveAtEntry(v, succ)
+    }
+
+    /** A phi node for `v` at the beginning of basic block `b`. */
+    cached
+    predicate phiNode(SsaSourceVariable v, BasicBlock b) {
+      (
+        exists(BasicBlock def | def.dominanceFrontier(b) | SsaComputeImpl::ssaDef(v, def))
+        or
+        piNode(v, _, b) and strictcount(b.getAPredecessor()) > 1
+      ) and
+      Liveness::liveAtEntry(v, b)
+    }
+  }
+
+  cached
+  predicate variableDefine(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
+    v.hasDefiningNode(n) and
+    exists(int j |
+      n = b.getNode(j) and
+      i = j * 2 + 1
+    )
+  }
+
+  cached
+  predicate variableRefine(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
+    v.hasRefinement(_, n) and
+    exists(int j |
+      n = b.getNode(j) and
+      i = j * 2 + 1
+    )
+  }
+
+  cached
+  predicate variableDef(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
+    variableDefine(v, n, b, i) or variableRefine(v, n, b, i)
+  }
+
+  /**
+   * A ranking of the indices `i` at which there is an SSA definition or use of
+   * `v` in the basic block `b`.
+   *
+   * Basic block indices are translated to rank indices in order to skip
+   * irrelevant indices at which there is no definition or use when traversing
+   * basic blocks.
+   */
+  cached
+  predicate defUseRank(SsaSourceVariable v, BasicBlock b, int rankix, int i) {
+    i = rank[rankix](int j | variableDef(v, _, b, j) or variableUse(v, _, b, j))
+  }
+
+  /** A definition of a variable occurring at the specified rank index in basic block `b`. */
+  cached
+  predicate defRank(SsaSourceVariable v, BasicBlock b, int rankix, int i) {
+    variableDef(v, _, b, i) and
+    defUseRank(v, b, rankix, i)
+  }
+
+  /** A variable access `use` of `v` in `b` at index `i`. */
+  cached
+  predicate variableUse(SsaSourceVariable v, ControlFlowNode use, BasicBlock b, int i) {
+    (v.getAUse() = use or v.hasRefinement(use, _)) and
+    exists(int j |
+      b.getNode(j) = use and
+      i = 2 * j
+    )
+  }
+
+  /**
+   * A definition of an SSA variable occurring at the specified position.
+   * This is either a phi node, a `VariableUpdate`, or a parameter.
+   */
+  cached
+  predicate ssaDef(SsaSourceVariable v, BasicBlock b) {
+    EssaDefinitions::phiNode(v, b)
+    or
+    EssaDefinitions::variableUpdate(v, _, b, _, _)
+    or
+    EssaDefinitions::piNode(v, _, b)
+  }
+
+  /*
+   * The construction of SSA form ensures that each use of a variable is
+   * dominated by its definition. A definition of an SSA variable therefore
+   * reaches a `ControlFlowNode` if it is the _closest_ SSA variable definition
+   * that dominates the node. If two definitions dominate a node then one must
+   * dominate the other, so therefore the definition of _closest_ is given by the
+   * dominator tree. Thus, reaching definitions can be calculated in terms of
+   * dominance.
+   */
+
+  /** The maximum rank index for the given variable and basic block. */
+  cached
+  int lastRank(SsaSourceVariable v, BasicBlock b) {
+    result = max(int rankix | defUseRank(v, b, rankix, _))
+    or
+    not defUseRank(v, b, _, _) and
+    (EssaDefinitions::phiNode(v, b) or EssaDefinitions::piNode(v, _, b)) and
+    result = 0
+  }
+
+  private predicate ssaDefRank(SsaSourceVariable v, BasicBlock b, int rankix, int i) {
+    EssaDefinitions::variableUpdate(v, _, b, rankix, i)
+    or
+    EssaDefinitions::phiNode(v, b) and rankix = 0 and i = phiIndex()
+    or
+    EssaDefinitions::piNode(v, _, b) and
+    EssaDefinitions::phiNode(v, b) and
+    rankix = -1 and
+    i = piIndex()
+    or
+    EssaDefinitions::piNode(v, _, b) and
+    not EssaDefinitions::phiNode(v, b) and
+    rankix = 0 and
+    i = piIndex()
+  }
+
+  /** The SSA definition reaches the rank index `rankix` in its own basic block `b`. */
+  cached
+  predicate ssaDefReachesRank(SsaSourceVariable v, BasicBlock b, int i, int rankix) {
+    ssaDefRank(v, b, rankix, i)
+    or
+    ssaDefReachesRank(v, b, i, rankix - 1) and
+    rankix <= lastRank(v, b) and
+    not ssaDefRank(v, b, rankix, _)
+  }
+
+  /**
+   * The SSA definition of `v` at `def` reaches `use` in the same basic block
+   * without crossing another SSA definition of `v`.
+   */
+  cached
+  predicate ssaDefReachesUseWithinBlock(
+    SsaSourceVariable v, BasicBlock b, int i, ControlFlowNode use
+  ) {
+    exists(int rankix, int useix |
+      ssaDefReachesRank(v, b, i, rankix) and
+      defUseRank(v, b, rankix, useix) and
+      variableUse(v, use, b, useix)
+    )
+  }
+
+  cached
+  module LivenessImpl {
+    cached
+    predicate liveAtExit(SsaSourceVariable v, BasicBlock b) { liveAtEntry(v, b.getASuccessor()) }
 
     cached
-    module SsaDefinitionsImpl {
-        pragma[noinline]
-        private predicate reachesEndOfBlockRec(
-            SsaSourceVariable v, BasicBlock defbb, int defindex, BasicBlock b
-        ) {
-            exists(BasicBlock idom | reachesEndOfBlock(v, defbb, defindex, idom) |
-                idom = b.getImmediateDominator()
-            )
-        }
-
-        /**
-         * The SSA definition of `v` at `def` reaches the end of a basic block `b`, at
-         * which point it is still live, without crossing another SSA definition of `v`.
-         */
-        cached
-        predicate reachesEndOfBlock(SsaSourceVariable v, BasicBlock defbb, int defindex, BasicBlock b) {
-            Liveness::liveAtExit(v, b) and
-            (
-                defbb = b and
-                SsaComputeImpl::ssaDefReachesRank(v, defbb, defindex, SsaComputeImpl::lastRank(v, b))
-                or
-                // It is sufficient to traverse the dominator graph, cf. discussion above.
-                reachesEndOfBlockRec(v, defbb, defindex, b) and
-                not SsaComputeImpl::ssaDef(v, b)
-            )
-        }
-
-        /**
-         * The SSA definition of `v` at `(defbb, defindex)` reaches `use` without crossing another
-         * SSA definition of `v`.
-         */
-        cached
-        predicate reachesUse(SsaSourceVariable v, BasicBlock defbb, int defindex, ControlFlowNode use) {
-            SsaComputeImpl::ssaDefReachesUseWithinBlock(v, defbb, defindex, use)
-            or
-            exists(BasicBlock b |
-                SsaComputeImpl::variableUse(v, use, b, _) and
-                reachesEndOfBlock(v, defbb, defindex, b.getAPredecessor()) and
-                not SsaComputeImpl::ssaDefReachesUseWithinBlock(v, b, _, use)
-            )
-        }
-
-        /**
-         * Holds if `(defbb, defindex)` is an SSA definition of `v` that reaches an exit without crossing another
-         * SSA definition of `v`.
-         */
-        cached
-        predicate reachesExit(SsaSourceVariable v, BasicBlock defbb, int defindex) {
-            exists(BasicBlock last, ControlFlowNode use, int index |
-                not Liveness::liveAtExit(v, last) and
-                reachesUse(v, defbb, defindex, use) and
-                SsaComputeImpl::defUseRank(v, last, SsaComputeImpl::lastRank(v, last), index) and
-                SsaComputeImpl::variableUse(v, use, last, index)
-            )
-        }
+    predicate liveAtEntry(SsaSourceVariable v, BasicBlock b) {
+      SsaComputeImpl::defUseRank(v, b, 1, _) and not SsaComputeImpl::defRank(v, b, 1, _)
+      or
+      not SsaComputeImpl::defUseRank(v, b, _, _) and liveAtExit(v, b)
     }
+  }
+
+  cached
+  module SsaDefinitionsImpl {
+    pragma[noinline]
+    private predicate reachesEndOfBlockRec(
+      SsaSourceVariable v, BasicBlock defbb, int defindex, BasicBlock b
+    ) {
+      exists(BasicBlock idom | reachesEndOfBlock(v, defbb, defindex, idom) |
+        idom = b.getImmediateDominator()
+      )
+    }
+
+    /**
+     * The SSA definition of `v` at `def` reaches the end of a basic block `b`, at
+     * which point it is still live, without crossing another SSA definition of `v`.
+     */
+    cached
+    predicate reachesEndOfBlock(SsaSourceVariable v, BasicBlock defbb, int defindex, BasicBlock b) {
+      Liveness::liveAtExit(v, b) and
+      (
+        defbb = b and
+        SsaComputeImpl::ssaDefReachesRank(v, defbb, defindex, SsaComputeImpl::lastRank(v, b))
+        or
+        // It is sufficient to traverse the dominator graph, cf. discussion above.
+        reachesEndOfBlockRec(v, defbb, defindex, b) and
+        not SsaComputeImpl::ssaDef(v, b)
+      )
+    }
+
+    /**
+     * The SSA definition of `v` at `(defbb, defindex)` reaches `use` without crossing another
+     * SSA definition of `v`.
+     */
+    cached
+    predicate reachesUse(SsaSourceVariable v, BasicBlock defbb, int defindex, ControlFlowNode use) {
+      SsaComputeImpl::ssaDefReachesUseWithinBlock(v, defbb, defindex, use)
+      or
+      exists(BasicBlock b |
+        SsaComputeImpl::variableUse(v, use, b, _) and
+        reachesEndOfBlock(v, defbb, defindex, b.getAPredecessor()) and
+        not SsaComputeImpl::ssaDefReachesUseWithinBlock(v, b, _, use)
+      )
+    }
+
+    /**
+     * Holds if `(defbb, defindex)` is an SSA definition of `v` that reaches an exit without crossing another
+     * SSA definition of `v`.
+     */
+    cached
+    predicate reachesExit(SsaSourceVariable v, BasicBlock defbb, int defindex) {
+      exists(BasicBlock last, ControlFlowNode use, int index |
+        not Liveness::liveAtExit(v, last) and
+        reachesUse(v, defbb, defindex, use) and
+        SsaComputeImpl::defUseRank(v, last, SsaComputeImpl::lastRank(v, last), index) and
+        SsaComputeImpl::variableUse(v, use, last, index)
+      )
+    }
+  }
+
+  cached
+  module AdjacentUsesImpl {
+    /**
+     * Holds if `rankix` is the rank the index `i` at which there is an SSA definition or explicit use of
+     * `v` in the basic block `b`.
+     */
+    cached
+    predicate defSourceUseRank(SsaSourceVariable v, BasicBlock b, int rankix, int i) {
+      i = rank[rankix](int j | variableDefine(v, _, b, j) or variableSourceUse(v, _, b, j))
+    }
+
+    /** A variable access `use` of `v` in `b` at index `i`. */
+    cached
+    predicate variableSourceUse(SsaSourceVariable v, ControlFlowNode use, BasicBlock b, int i) {
+      v.getASourceUse() = use and
+      exists(int j |
+        b.getNode(j) = use and
+        i = 2 * j
+      )
+    }
+
+    /** Gets the maximum rank index for the given variable and basic block. */
+    private int lastSourceUseRank(SsaSourceVariable v, BasicBlock b) {
+      result = max(int rankix | defSourceUseRank(v, b, rankix, _))
+    }
+
+    /** Holds if `v` is defined or used in `b`. */
+    private predicate varOccursInBlock(SsaSourceVariable v, BasicBlock b) {
+      defSourceUseRank(v, b, _, _)
+    }
+
+    /** Holds if `v` occurs in `b` or one of `b`'s transitive successors. */
+    private predicate blockPrecedesVar(SsaSourceVariable v, BasicBlock b) {
+      varOccursInBlock(v, b)
+      or
+      SsaDefinitionsImpl::reachesEndOfBlock(v, _, _, b)
+    }
+
+    /**
+     * Holds if `b2` is a transitive successor of `b1` and `v` occurs in `b1` and
+     * in `b2` or one of its transitive successors but not in any block on the path
+     * between `b1` and `b2`.
+     */
+    private predicate varBlockReaches(SsaSourceVariable v, BasicBlock b1, BasicBlock b2) {
+      varOccursInBlock(v, b1) and
+      b2 = b1.getASuccessor() and
+      blockPrecedesVar(v, b2)
+      or
+      exists(BasicBlock mid |
+        varBlockReaches(v, b1, mid) and
+        b2 = mid.getASuccessor() and
+        not varOccursInBlock(v, mid) and
+        blockPrecedesVar(v, b2)
+      )
+    }
+
+    /**
+     * Holds if `b2` is a transitive successor of `b1` and `v` occurs in `b1` and
+     * `b2` but not in any block on the path between `b1` and `b2`.
+     */
+    private predicate varBlockStep(SsaSourceVariable v, BasicBlock b1, BasicBlock b2) {
+      varBlockReaches(v, b1, b2) and
+      varOccursInBlock(v, b2)
+    }
+
+    /**
+     * Holds if `v` occurs at index `i1` in `b1` and at index `i2` in `b2` and
+     * there is a path between them without any occurrence of `v`.
+     */
+    cached
+    predicate adjacentVarRefs(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2) {
+      exists(int rankix |
+        b1 = b2 and
+        defSourceUseRank(v, b1, rankix, i1) and
+        defSourceUseRank(v, b2, rankix + 1, i2)
+      )
+      or
+      defSourceUseRank(v, b1, lastSourceUseRank(v, b1), i1) and
+      varBlockStep(v, b1, b2) and
+      defSourceUseRank(v, b2, 1, i2)
+    }
+
+    /**
+     * Holds if `use1` and `use2` form an adjacent use-use-pair of the same SSA
+     * variable, that is, the value read in `use1` can reach `use2` without passing
+     * through any other use or any SSA definition of the variable.
+     */
+    cached
+    predicate adjacentUseUseSameVar(ControlFlowNode use1, ControlFlowNode use2) {
+      exists(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
+        adjacentVarRefs(v, b1, i1, b2, i2) and
+        variableSourceUse(v, use1, b1, i1) and
+        variableSourceUse(v, use2, b2, i2)
+      )
+    }
+
+    /**
+     * Holds if `use1` and `use2` form an adjacent use-use-pair of the same
+     * `SsaSourceVariable`, that is, the value read in `use1` can reach `use2`
+     * without passing through any other use or any SSA definition of the variable
+     * except for phi nodes.
+     */
+    cached
+    predicate adjacentUseUse(ControlFlowNode use1, ControlFlowNode use2) {
+      adjacentUseUseSameVar(use1, use2)
+      or
+      exists(SsaSourceVariable v, EssaDefinition def, BasicBlock b1, int i1, BasicBlock b2, int i2 |
+        adjacentVarRefs(v, b1, i1, b2, i2) and
+        variableUse(v, use1, b1, i1) and
+        definesAt(def, v, b2, i2) and
+        firstUse(def, use2) and
+        def instanceof PhiFunction
+      )
+    }
+
+    /**
+     * Holds if the value defined at `def` can reach `use` without passing through
+     * any other uses, but possibly through phi nodes.
+     */
+    cached
+    predicate firstUse(EssaDefinition def, ControlFlowNode use) {
+      exists(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
+        adjacentVarRefs(v, b1, i1, b2, i2) and
+        definesAt(def, v, b1, i1) and
+        variableSourceUse(v, use, b2, i2)
+      )
+      or
+      exists(
+        SsaSourceVariable v, EssaDefinition redef, BasicBlock b1, int i1, BasicBlock b2, int i2
+      |
+        redef instanceof PhiFunction
+      |
+        adjacentVarRefs(v, b1, i1, b2, i2) and
+        definesAt(def, v, b1, i1) and
+        definesAt(redef, v, b2, i2) and
+        firstUse(redef, use)
+      )
+    }
+
+    /**
+     * Holds if `def` defines `v` at the specified position.
+     * Phi nodes are placed at index -1.
+     */
+    cached
+    predicate definesAt(EssaDefinition def, SsaSourceVariable v, BasicBlock b, int i) {
+      exists(ControlFlowNode defNode |
+        def.(EssaNodeDefinition).definedBy(v, defNode) and
+        variableDefine(v, defNode, b, i)
+      )
+      or
+      v = def.(PhiFunction).getSourceVariable() and
+      b = def.(PhiFunction).getBasicBlock() and
+      i = -1
+    }
+
+    /**
+     * Holds if the value defined at `def` can reach `use`, possibly through phi nodes.
+     */
+    cached
+    predicate useOfDef(EssaDefinition def, ControlFlowNode use) {
+      exists(ControlFlowNode firstUse |
+        firstUse(def, firstUse) and
+        adjacentUseUse*(firstUse, use)
+      )
+    }
+  }
 }
 
 import SsaComputeImpl::SsaDefinitionsImpl as SsaDefinitions
 import SsaComputeImpl::EssaDefinitionsImpl as EssaDefinitions
 import SsaComputeImpl::LivenessImpl as Liveness
+import SsaComputeImpl::AdjacentUsesImpl as AdjacentUses
 
 /* This is exported primarily for testing */
 /*

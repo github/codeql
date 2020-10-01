@@ -11,7 +11,7 @@ import javascript
  * highlight `Hello, ${user.name}!`
  * ```
  */
-class TaggedTemplateExpr extends Expr, @taggedtemplateexpr {
+class TaggedTemplateExpr extends Expr, @tagged_template_expr {
   /** Gets the tagging expression of this tagged template. */
   Expr getTag() { result = getChildExpr(0) }
 
@@ -39,7 +39,7 @@ class TaggedTemplateExpr extends Expr, @taggedtemplateexpr {
  * `Hello, ${user.name}!`
  * ```
  */
-class TemplateLiteral extends Expr, @templateliteral {
+class TemplateLiteral extends Expr, @template_literal {
   /**
    * Gets the `i`th element of this template literal, which may either
    * be an interpolated expression or a constant template element.
@@ -57,15 +57,6 @@ class TemplateLiteral extends Expr, @templateliteral {
   int getNumElement() { result = count(getAnElement()) }
 
   override predicate isImpure() { getAnElement().isImpure() }
-
-  override string getStringValue() {
-    // fold singletons
-    getNumChildExpr() = 0 and
-    result = ""
-    or
-    getNumChildExpr() = 1 and
-    result = getElement(0).getStringValue()
-  }
 }
 
 /**
@@ -77,7 +68,7 @@ class TemplateLiteral extends Expr, @templateliteral {
  * `Hello, ${user.name}!` // "Hello, " and "!" are constant template elements
  * ```
  */
-class TemplateElement extends Expr, @templateelement {
+class TemplateElement extends Expr, @template_element {
   /**
    * Holds if this template element has a "cooked" value.
    *
@@ -103,6 +94,4 @@ class TemplateElement extends Expr, @templateelement {
   string getRawValue() { literals(_, result, this) }
 
   override predicate isImpure() { none() }
-
-  override string getStringValue() { result = getValue() }
 }

@@ -1,11 +1,14 @@
+/**
+ * Provides predicates for reasoning about when the value of an expression is
+ * guarded by an operation such as `<`, which confines its range.
+ */
+
 import cpp
 import semmle.code.cpp.controlflow.Dominance
 
-/*
- * Guarding
+/**
+ * Holds if the value of `use` is guarded using `abs`.
  */
-
-/** is the size of this use guarded using 'abs'? */
 predicate guardedAbs(Operation e, Expr use) {
   exists(FunctionCall fc | fc.getTarget().getName() = "abs" |
     fc.getArgument(0).getAChild*() = use and
@@ -13,7 +16,10 @@ predicate guardedAbs(Operation e, Expr use) {
   )
 }
 
-/** This is `BasicBlock.getNode`, restricted to `Stmt` for performance. */
+/**
+ * Gets the position of `stmt` in basic block `block` (this is a thin layer
+ * over `BasicBlock.getNode`, intended to improve performance).
+ */
 pragma[noinline]
 private int getStmtIndexInBlock(BasicBlock block, Stmt stmt) { block.getNode(result) = stmt }
 
@@ -30,7 +36,9 @@ private predicate stmtDominates(Stmt dominator, Stmt dominated) {
   bbStrictlyDominates(dominator.getBasicBlock(), dominated.getBasicBlock())
 }
 
-/** is the size of this use guarded to be less than something? */
+/**
+ * Holds if the value of `use` is guarded to be less than something.
+ */
 pragma[nomagic]
 predicate guardedLesser(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
@@ -54,7 +62,9 @@ predicate guardedLesser(Operation e, Expr use) {
   guardedAbs(e, use)
 }
 
-/** is the size of this use guarded to be greater than something? */
+/**
+ * Holds if the value of `use` is guarded to be greater than something.
+ */
 pragma[nomagic]
 predicate guardedGreater(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
@@ -78,10 +88,14 @@ predicate guardedGreater(Operation e, Expr use) {
   guardedAbs(e, use)
 }
 
-/** a use of a given variable */
+/**
+ * Gets a use of a given variable `v`.
+ */
 VariableAccess varUse(LocalScopeVariable v) { result = v.getAnAccess() }
 
-/** is e not guarded against overflow by use? */
+/**
+ * Holds if `e` is not guarded against overflow by `use`.
+ */
 predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
@@ -100,7 +114,9 @@ predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
   )
 }
 
-/** is e not guarded against underflow by use? */
+/**
+ * Holds if `e` is not guarded against underflow by `use`.
+ */
 predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |

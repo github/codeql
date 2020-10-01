@@ -76,15 +76,15 @@ namespace Semmle.Extraction.CSharp
                 return ExitCode.Ok;
             }
 
-            using (var analyser = new Analyser(new LogProgressMonitor(logger), logger))
+            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
+            var pathTransformer = new PathTransformer(canonicalPathCache);
+
+            using (var analyser = new Analyser(new LogProgressMonitor(logger), logger, commandLineArguments.AssemblySensitiveTrap, pathTransformer))
             using (var references = new BlockingCollection<MetadataReference>())
             {
                 try
                 {
                     var compilerVersion = new CompilerVersion(commandLineArguments);
-
-                    bool preserveSymlinks = Environment.GetEnvironmentVariable("SEMMLE_PRESERVE_SYMLINKS") == "true";
-                    var canonicalPathCache = CanonicalPathCache.Create(logger, 1000, preserveSymlinks ? CanonicalPathCache.Symlinks.Preserve : CanonicalPathCache.Symlinks.Follow);
 
                     if (compilerVersion.SkipExtraction)
                     {
@@ -140,6 +140,12 @@ namespace Semmle.Extraction.CSharp
                         return ExitCode.Failed;
                     }
 
+                    // csc.exe (CSharpCompiler.cs) also provides CompilationOptions
+                    // .WithMetadataReferenceResolver(),
+                    // .WithXmlReferenceResolver() and
+                    // .WithSourceReferenceResolver().
+                    // These would be needed if we hadn't explicitly provided the source/references
+                    // already.
                     var compilation = CSharpCompilation.Create(
                         compilerArguments.CompilationName,
                         syntaxTrees,
@@ -147,11 +153,6 @@ namespace Semmle.Extraction.CSharp
                         compilerArguments.CompilationOptions.
                             WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default).
                             WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
-                        // csc.exe (CSharpCompiler.cs) also provides WithMetadataReferenceResolver,
-                        // WithXmlReferenceResolver and
-                        // WithSourceReferenceResolver.
-                        // These would be needed if we hadn't explicitly provided the source/references
-                        // already.
                         );
 
                     analyser.EndInitialize(compilerArguments, commandLineArguments, compilation);
@@ -317,7 +318,10 @@ namespace Semmle.Extraction.CSharp
             ILogger logger,
             CommonOptions options)
         {
-            using (var analyser = new Analyser(pm, logger))
+            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
+            var pathTransformer = new PathTransformer(canonicalPathCache);
+
+            using (var analyser = new Analyser(pm, logger, false, pathTransformer))
             using (var references = new BlockingCollection<MetadataReference>())
             {
                 try

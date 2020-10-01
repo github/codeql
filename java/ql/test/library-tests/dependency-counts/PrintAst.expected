@@ -1,0 +1,16 @@
+Example.java:
+#    0| [CompilationUnit] Example
+#-----|   -1: (Imports)
+#    1|     1: [ImportType] import Set
+#    2|     2: [ImportType] import List
+#    4|   1: [Interface] Example
+#-----|     -2: (Generic Parameters)
+#    4|       0: [TypeVariable] A
+#-----|     -1: (Base Types)
+#    4|       0: [TypeAccess] Set<List<A>>
+#    4|         0: [TypeAccess] List<A>
+#    4|           0: [TypeAccess] A
+#    5|     1: [Interface] InnerExample
+#-----|       -1: (Base Types)
+#    5|         0: [TypeAccess] Example<Set<>>
+#    5|           0: [TypeAccess] Set<>

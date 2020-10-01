@@ -129,7 +129,11 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";commentline");
         }
 
-        static CommentLine Create(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw) => CommentLineFactory.Instance.CreateEntity(cx, loc, type, text, raw);
+        static CommentLine Create(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw)
+        {
+            var init = (loc, type, text, raw);
+            return CommentLineFactory.Instance.CreateEntity(cx, init, init);
+        }
 
         class CommentLineFactory : ICachedEntityFactory<(Microsoft.CodeAnalysis.Location, CommentLineType, string, string), CommentLine>
         {

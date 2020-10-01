@@ -12,5 +12,6 @@ private import Imports::TempVariableTag
  * computed on each branch. The set of possible `TempVariableTag`s is language-dependent.
  */
 class TempVariableTag extends TTempVariableTag {
+  /** Gets a textual representation of this tag. */
   string toString() { result = getTempVariableTagId(this) }
 }

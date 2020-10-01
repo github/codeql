@@ -1,4 +1,23 @@
 nodes
+| sanitizer.js:2:9:2:25 | url |
+| sanitizer.js:2:15:2:25 | window.name |
+| sanitizer.js:2:15:2:25 | window.name |
+| sanitizer.js:4:27:4:29 | url |
+| sanitizer.js:4:27:4:29 | url |
+| sanitizer.js:16:27:16:29 | url |
+| sanitizer.js:16:27:16:29 | url |
+| sanitizer.js:19:27:19:29 | url |
+| sanitizer.js:19:27:19:29 | url |
+| sanitizer.js:22:27:22:29 | url |
+| sanitizer.js:22:27:22:29 | url |
+| sanitizer.js:25:27:25:29 | url |
+| sanitizer.js:25:27:25:29 | url |
+| sanitizer.js:28:27:28:29 | url |
+| sanitizer.js:28:27:28:29 | url |
+| sanitizer.js:31:27:31:29 | url |
+| sanitizer.js:31:27:31:29 | url |
+| sanitizer.js:37:27:37:29 | url |
+| sanitizer.js:37:27:37:29 | url |
 | tst2.js:2:7:2:33 | href |
 | tst2.js:2:7:2:33 | href |
 | tst2.js:2:14:2:28 | window.location |
@@ -67,6 +86,41 @@ nodes
 | tst12.js:4:15:4:45 | urlPart ... s.value |
 | tst12.js:5:23:5:25 | loc |
 | tst12.js:5:23:5:25 | loc |
+| tst13.js:2:9:2:52 | payload |
+| tst13.js:2:19:2:35 | document.location |
+| tst13.js:2:19:2:35 | document.location |
+| tst13.js:2:19:2:42 | documen ... .search |
+| tst13.js:2:19:2:52 | documen ... bstr(1) |
+| tst13.js:4:15:4:21 | payload |
+| tst13.js:4:15:4:21 | payload |
+| tst13.js:8:21:8:27 | payload |
+| tst13.js:8:21:8:27 | payload |
+| tst13.js:12:14:12:20 | payload |
+| tst13.js:12:14:12:20 | payload |
+| tst13.js:16:17:16:23 | payload |
+| tst13.js:16:17:16:23 | payload |
+| tst13.js:20:14:20:20 | payload |
+| tst13.js:20:14:20:20 | payload |
+| tst13.js:24:14:24:20 | payload |
+| tst13.js:24:14:24:20 | payload |
+| tst13.js:28:21:28:27 | payload |
+| tst13.js:28:21:28:27 | payload |
+| tst13.js:32:17:32:23 | payload |
+| tst13.js:32:17:32:23 | payload |
+| tst13.js:36:21:36:27 | payload |
+| tst13.js:36:21:36:27 | payload |
+| tst13.js:40:15:40:21 | payload |
+| tst13.js:40:15:40:21 | payload |
+| tst13.js:44:14:44:20 | payload |
+| tst13.js:44:14:44:20 | payload |
+| tst13.js:49:32:49:32 | e |
+| tst13.js:49:32:49:32 | e |
+| tst13.js:50:23:50:23 | e |
+| tst13.js:50:23:50:23 | e |
+| tst13.js:52:34:52:34 | e |
+| tst13.js:52:34:52:34 | e |
+| tst13.js:53:28:53:28 | e |
+| tst13.js:53:28:53:28 | e |
 | tst.js:2:19:2:69 | /.*redi ... n.href) |
 | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
 | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
@@ -80,6 +134,24 @@ nodes
 | tst.js:6:34:6:50 | document.location |
 | tst.js:6:34:6:55 | documen ... on.href |
 edges
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:19:27:19:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:19:27:19:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:22:27:22:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:22:27:22:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:25:27:25:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:25:27:25:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:28:27:28:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:28:27:28:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:31:27:31:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:31:27:31:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:37:27:37:29 | url |
+| sanitizer.js:2:9:2:25 | url | sanitizer.js:37:27:37:29 | url |
+| sanitizer.js:2:15:2:25 | window.name | sanitizer.js:2:9:2:25 | url |
+| sanitizer.js:2:15:2:25 | window.name | sanitizer.js:2:9:2:25 | url |
 | tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href |
 | tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href |
 | tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
@@ -144,6 +216,40 @@ edges
 | tst12.js:4:15:4:25 | urlParts[0] | tst12.js:4:15:4:45 | urlPart ... s.value |
 | tst12.js:4:15:4:45 | urlPart ... s.value | tst12.js:4:9:4:45 | loc |
 | tst12.js:5:23:5:25 | loc | tst12.js:3:20:3:34 | window.location |
+| tst13.js:2:9:2:52 | payload | tst13.js:4:15:4:21 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:4:15:4:21 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:8:21:8:27 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:8:21:8:27 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:12:14:12:20 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:12:14:12:20 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:16:17:16:23 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:16:17:16:23 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:20:14:20:20 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:20:14:20:20 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:24:14:24:20 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:24:14:24:20 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:28:21:28:27 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:28:21:28:27 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:32:17:32:23 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:32:17:32:23 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:36:21:36:27 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:36:21:36:27 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:40:15:40:21 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:40:15:40:21 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:44:14:44:20 | payload |
+| tst13.js:2:9:2:52 | payload | tst13.js:44:14:44:20 | payload |
+| tst13.js:2:19:2:35 | document.location | tst13.js:2:19:2:42 | documen ... .search |
+| tst13.js:2:19:2:35 | document.location | tst13.js:2:19:2:42 | documen ... .search |
+| tst13.js:2:19:2:42 | documen ... .search | tst13.js:2:19:2:52 | documen ... bstr(1) |
+| tst13.js:2:19:2:52 | documen ... bstr(1) | tst13.js:2:9:2:52 | payload |
+| tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
+| tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
+| tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
+| tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
+| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
+| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
+| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
+| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
 | tst.js:2:19:2:69 | /.*redi ... n.href) | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
 | tst.js:2:19:2:69 | /.*redi ... n.href) | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
 | tst.js:2:47:2:63 | document.location | tst.js:2:47:2:68 | documen ... on.href |
@@ -155,6 +261,14 @@ edges
 | tst.js:6:34:6:50 | document.location | tst.js:6:34:6:55 | documen ... on.href |
 | tst.js:6:34:6:55 | documen ... on.href | tst.js:6:20:6:56 | indirec ... n.href) |
 #select
+| sanitizer.js:4:27:4:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:4:27:4:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
+| sanitizer.js:16:27:16:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:16:27:16:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
+| sanitizer.js:19:27:19:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:19:27:19:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
+| sanitizer.js:22:27:22:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:22:27:22:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
+| sanitizer.js:25:27:25:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:25:27:25:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
+| sanitizer.js:28:27:28:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:28:27:28:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
+| sanitizer.js:31:27:31:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:31:27:31:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
+| sanitizer.js:37:27:37:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:37:27:37:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | tst2.js:4:21:4:55 | href.su ... '?')+1) | tst2.js:2:14:2:28 | window.location | tst2.js:4:21:4:55 | href.su ... '?')+1) | Untrusted URL redirection due to $@. | tst2.js:2:14:2:28 | window.location | user-provided value |
 | tst6.js:4:21:4:28 | redirect | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:4:21:4:28 | redirect | Untrusted URL redirection due to $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
 | tst6.js:6:17:6:24 | redirect | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:6:17:6:24 | redirect | Untrusted URL redirection due to $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
@@ -167,5 +281,18 @@ edges
 | tst10.js:11:17:11:50 | '//foo' ... .search | tst10.js:11:27:11:43 | document.location | tst10.js:11:17:11:50 | '//foo' ... .search | Untrusted URL redirection due to $@. | tst10.js:11:27:11:43 | document.location | user-provided value |
 | tst10.js:14:17:14:56 | 'https: ... .search | tst10.js:14:33:14:49 | document.location | tst10.js:14:17:14:56 | 'https: ... .search | Untrusted URL redirection due to $@. | tst10.js:14:33:14:49 | document.location | user-provided value |
 | tst12.js:5:23:5:25 | loc | tst12.js:3:20:3:34 | window.location | tst12.js:5:23:5:25 | loc | Untrusted URL redirection due to $@. | tst12.js:3:20:3:34 | window.location | user-provided value |
+| tst13.js:4:15:4:21 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:4:15:4:21 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:8:21:8:27 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:8:21:8:27 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:12:14:12:20 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:12:14:12:20 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:16:17:16:23 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:16:17:16:23 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:20:14:20:20 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:20:14:20:20 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:24:14:24:20 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:24:14:24:20 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:28:21:28:27 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:28:21:28:27 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:32:17:32:23 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:32:17:32:23 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:36:21:36:27 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:36:21:36:27 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:40:15:40:21 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:40:15:40:21 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:44:14:44:20 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:44:14:44:20 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
+| tst13.js:50:23:50:23 | e | tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e | Untrusted URL redirection due to $@. | tst13.js:49:32:49:32 | e | user-provided value |
+| tst13.js:53:28:53:28 | e | tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e | Untrusted URL redirection due to $@. | tst13.js:52:34:52:34 | e | user-provided value |
 | tst.js:2:19:2:72 | /.*redi ... ref)[1] | tst.js:2:47:2:63 | document.location | tst.js:2:19:2:72 | /.*redi ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:2:47:2:63 | document.location | user-provided value |
 | tst.js:6:20:6:59 | indirec ... ref)[1] | tst.js:6:34:6:50 | document.location | tst.js:6:20:6:59 | indirec ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:6:34:6:50 | document.location | user-provided value |

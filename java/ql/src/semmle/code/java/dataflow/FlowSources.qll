@@ -15,8 +15,11 @@ import semmle.code.java.frameworks.ApacheHttp
 import semmle.code.java.frameworks.android.XmlParsing
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
+import semmle.code.java.frameworks.javase.WebSocket
 import semmle.code.java.frameworks.android.Intent
-import semmle.code.java.frameworks.SpringWeb
+import semmle.code.java.frameworks.spring.SpringWeb
+import semmle.code.java.frameworks.spring.SpringController
+import semmle.code.java.frameworks.spring.SpringWebClient
 import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
@@ -118,7 +121,7 @@ private class SpringMultipartFileSource extends RemoteFlowSource {
 
 private class SpringServletInputParameterSource extends RemoteFlowSource {
   SpringServletInputParameterSource() {
-    this.asParameter().getAnAnnotation() instanceof SpringServletInputAnnotation
+    this.asParameter() = any(SpringRequestMappingParameter srmp | srmp.isTaintedInput())
   }
 
   override string getSourceType() { result = "Spring servlet input parameter" }
@@ -151,6 +154,14 @@ private class ThriftIfaceParameterSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "Thrift Iface parameter" }
+}
+
+private class WebSocketMessageParameterSource extends RemoteFlowSource {
+  WebSocketMessageParameterSource() {
+    exists(WebsocketOnText t | t.getParameter(1) = this.asParameter())
+  }
+
+  override string getSourceType() { result = "Websocket onText parameter" }
 }
 
 /** Class for `tainted` user input. */
@@ -215,6 +226,8 @@ private class RemoteTaintedMethod extends Method {
     this instanceof HttpServletRequestGetRequestURIMethod or
     this instanceof HttpServletRequestGetRequestURLMethod or
     this instanceof HttpServletRequestGetRemoteUserMethod or
+    this instanceof SpringWebRequestGetMethod or
+    this instanceof SpringRestTemplateResponseEntityMethod or
     this instanceof ServletRequestGetBodyMethod or
     this instanceof CookieGetValueMethod or
     this instanceof CookieGetNameMethod or
@@ -229,6 +242,22 @@ private class RemoteTaintedMethod extends Method {
     this instanceof XmlAttrSetGetMethod or
     // The current URL in a browser may be untrusted or uncontrolled.
     this instanceof WebViewGetUrlMethod
+  }
+}
+
+private class SpringWebRequestGetMethod extends Method {
+  SpringWebRequestGetMethod() {
+    exists(SpringWebRequest swr | this = swr.getAMethod() |
+      this.hasName("getDescription") or
+      this.hasName("getHeader") or
+      this.hasName("getHeaderNames") or
+      this.hasName("getHeaderValues") or
+      this.hasName("getParameter") or
+      this.hasName("getParameterMap") or
+      this.hasName("getParameterNames") or
+      this.hasName("getParameterValues")
+      // TODO consider getRemoteUser
+    )
   }
 }
 

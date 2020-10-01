@@ -27,10 +27,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        public static Expression Create(ExpressionNodeInfo info, ConditionalAccessExpressionSyntax node) =>
+        public static Expression Create(ExpressionNodeInfo info, ConditionalAccessExpressionSyntax node)
+        {
             // The qualifier is located by walking the syntax tree.
             // `node.WhenNotNull` will contain a MemberBindingExpressionSyntax, calling the method below.
-            CreateFromNode(new ExpressionNodeInfo(info.Context, node.WhenNotNull, info.Parent, info.Child, info.TypeInfo));
+            return CreateFromNode(new ExpressionNodeInfo(info.Context, node.WhenNotNull, info.Parent, info.Child, info.TypeInfo));
+        }
 
         public static Expression Create(ExpressionNodeInfo info, MemberBindingExpressionSyntax node)
         {

@@ -11,29 +11,31 @@
 | mongodb.js:65:3:65:17 | doc.find(query) |
 | mongodb.js:73:5:77:27 | client\\n ...  tag }) |
 | mongodb.js:81:3:85:25 | importe ...  tag }) |
+| mongodb.js:98:5:98:19 | doc.find(query) |
+| mongodb.js:112:5:112:19 | doc.find(query) |
 | mongodb_bodySafe.js:18:7:18:21 | doc.find(query) |
 | mongodb_bodySafe.js:29:7:29:21 | doc.find(query) |
 | mongoose.js:63:2:63:34 | Documen ... then(X) |
 | mongoose.js:65:2:65:51 | Documen ... on(){}) |
 | mongoose.js:67:2:68:27 | new Mon ... on(){}) |
-| mongoose.js:71:2:77:9 | Documen ... .exec() |
-| mongoose.js:84:2:84:52 | Documen ... query)) |
+| mongoose.js:71:5:78:9 | Documen ... .exec() |
 | mongoose.js:85:2:85:52 | Documen ... query)) |
-| mongoose.js:86:2:86:57 | Documen ... query)) |
+| mongoose.js:86:2:86:52 | Documen ... query)) |
 | mongoose.js:87:2:87:57 | Documen ... query)) |
-| mongoose.js:88:2:88:52 | Documen ... query)) |
-| mongoose.js:89:2:89:55 | Documen ... query)) |
-| mongoose.js:91:2:91:52 | Documen ... query)) |
-| mongoose.js:92:2:92:49 | Documen ... query)) |
-| mongoose.js:93:2:93:57 | Documen ... query)) |
-| mongoose.js:94:2:94:54 | Documen ... query)) |
-| mongoose.js:95:2:95:52 | Documen ... query)) |
+| mongoose.js:88:2:88:57 | Documen ... query)) |
+| mongoose.js:89:2:89:52 | Documen ... query)) |
+| mongoose.js:90:2:90:55 | Documen ... query)) |
+| mongoose.js:92:2:92:52 | Documen ... query)) |
+| mongoose.js:93:2:93:49 | Documen ... query)) |
+| mongoose.js:94:2:94:57 | Documen ... query)) |
+| mongoose.js:95:2:95:54 | Documen ... query)) |
 | mongoose.js:96:2:96:52 | Documen ... query)) |
-| mongoose.js:98:2:98:50 | Documen ... query)) |
+| mongoose.js:97:2:97:52 | Documen ... query)) |
+| mongoose.js:99:2:99:50 | Documen ... query)) |
 | socketio.js:11:5:11:54 | db.run( ... ndle}`) |
 | tst2.js:7:3:7:62 | sql.que ... ms.id}` |
 | tst2.js:9:3:9:85 | new sql ...  + "'") |
-| tst3.js:10:3:12:4 | pool.qu ... ts\\n  }) |
-| tst3.js:17:3:19:4 | pool.qu ... ts\\n  }) |
+| tst3.js:9:3:11:4 | pool.qu ... ts\\n  }) |
+| tst3.js:16:3:18:4 | pool.qu ... ts\\n  }) |
 | tst4.js:8:3:8:67 | db.get( ...  + '"') |
 | tst.js:10:3:10:65 | db.get( ...  + '"') |

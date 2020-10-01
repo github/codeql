@@ -18,6 +18,45 @@ C# built-in support
    NHibernate, Database ORM
    WinForms, User interface
 
+Go built-in support
+================================
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+
+   Name, Category
+   Gin, Web framework
+   glog, Logging library
+   go-restful, Web application framework
+   go-sh, Utility library
+   Gokogiri, XPath library
+   golang.org/x/crypto/ssh, Network communicator
+   golang.org/x/net/websocket, Network communicator
+   Gorilla websocket, Network communicator
+   GORM, Database
+   GoWebsocket, Network communicator
+   goxpath, XPath library
+   https://github.com/antchfx/htmlquery, XPath library
+   https://github.com/antchfx/jsonquery, XPath library
+   https://github.com/antchfx/xmlquery, XPath library
+   https://github.com/antchfx/xpath, XPath library
+   https://github.com/go-xmlpath/xmlpath, XPath library
+   json-iterator, Serialization
+   klog, Logging library
+   Logrus, Logging library
+   Macaron, Web framework
+   mongo, Database
+   mux, HTTP request router and dispatcher
+   nhooyr.io/websocket, Network communicator
+   pg, Database
+   sqlx, Database
+   SendGrid, Email library
+   Squirrel, Database
+   ws, Network communicator
+   xpathparser, XPath library
+
 Java built-in support
 ==================================
 
@@ -71,6 +110,7 @@ JavaScript and TypeScript built-in support
    sqlite3, Database
    superagent, Network communicator
    underscore, Utility library
+   vue, HTML framework
 
 
 

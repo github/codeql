@@ -30,7 +30,7 @@ private DataFlow::Node commandArgument(SystemCommandExecution sys, DataFlow::Typ
   t.start() and
   result = sys.getACommandArgument()
   or
-  exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, commandArgument(sys, t2)))
+  exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, commandArgument(sys, t2)))
 }
 
 /**
@@ -64,6 +64,26 @@ private DataFlow::SourceNode argumentList(SystemCommandExecution sys) {
 }
 
 /**
+ * Gets a data-flow node whose value ends up being interpreted as an element of the argument list
+ * `args` after a flow summarised by `t`.
+ */
+private DataFlow::Node argumentListElement(DataFlow::SourceNode args, DataFlow::TypeBackTracker t) {
+  t.start() and
+  args = argumentList(_) and
+  result = args.getAPropertyWrite().getRhs()
+  or
+  exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, argumentListElement(args, t2)))
+}
+
+/**
+ * Gets a data-flow node whose value ends up being interpreted as an element of the argument list
+ * `args`.
+ */
+private DataFlow::Node argumentListElement(DataFlow::SourceNode args) {
+  result = argumentListElement(args, DataFlow::TypeBackTracker::end())
+}
+
+/**
  * Holds if `source` contributes to the arguments of an indirect command execution `sys`.
  *
  * An indirect command execution is a system execution command that starts with `sh -c`, `cmd.exe /c`, or similar.
@@ -86,12 +106,12 @@ predicate isIndirectCommandArgument(DataFlow::Node source, SystemCommandExecutio
   exists(DataFlow::ArrayCreationNode args, DataFlow::Node shell, string dashC |
     shellCmd(shell.asExpr(), dashC) and
     shell = commandArgument(sys) and
-    args.getAPropertyWrite().getRhs().mayHaveStringValue(dashC) and
     args = argumentList(sys) and
-    (
-      source = argumentList(sys)
-      or
-      source = argumentList(sys).getAPropertyWrite().getRhs()
+    argumentListElement(args).mayHaveStringValue(dashC) and
+    exists(DataFlow::SourceNode argsSource | argsSource = argumentList(sys) |
+      if exists(argsSource.getAPropertyWrite())
+      then source = argsSource.getAPropertyWrite().getRhs()
+      else source = argsSource
     )
   )
 }

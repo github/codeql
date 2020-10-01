@@ -4,7 +4,7 @@ eval(totallyHarmlessString);                                // OK: throws parse 
 
 var test = "0123456789";
 try {
-  eval(test+"n"); // OK, but currently flagged
+  eval(test+"n"); // OK, but currently flagged [INCONSISTENCY]
   console.log("Bigints supported.");
 } catch(e) {
   console.log("Bigints not supported.");

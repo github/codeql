@@ -152,9 +152,9 @@
 
 	$.fn.my_plugin = function my_plugin(options) {
 		let target = options.target;
-		target === DEFAULTS.target? $(target): $(document).find(target); // NOT OK
-		options.target === DEFAULTS.target? $(options.target): $(document).find(options.target); // NOT OK
-		options.targets.a === DEFAULTS.target? $(options.target.a): $(document).find(options.target.a); // OK - but still flagged
+		target === DEFAULTS.target? $(target): $(document).find(target); // OK
+		options.target === DEFAULTS.target? $(options.target): $(document).find(options.target); // OK
+		options.targets.a === DEFAULTS.target? $(options.target.a): $(document).find(options.target.a); // OK - should be sanitized by `MembershipTestSanitizer` - but still flagged because `AccessPath` can't handle these deeply nested properties [INCONSISTENCY]
 	}
 
 	$.fn.my_plugin = function my_plugin(options) {

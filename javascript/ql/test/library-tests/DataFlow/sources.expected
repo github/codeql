@@ -2,8 +2,10 @@
 | arguments.js:1:1:12:4 | (functi ... );\\n})() |
 | arguments.js:1:2:1:1 | this |
 | arguments.js:1:2:12:1 | functio ... , 3);\\n} |
+| arguments.js:1:2:12:1 | return of anonymous function |
 | arguments.js:2:5:2:4 | this |
 | arguments.js:2:5:10:5 | functio ... ;\\n    } |
+| arguments.js:2:5:10:5 | return of function f |
 | arguments.js:2:16:2:16 | x |
 | arguments.js:4:28:4:39 | arguments[0] |
 | arguments.js:5:25:5:36 | arguments[1] |
@@ -14,20 +16,24 @@
 | eval.js:1:1:1:0 | this |
 | eval.js:1:1:1:0 | this |
 | eval.js:1:1:5:1 | functio ... eval`\\n} |
+| eval.js:1:1:5:1 | return of function k |
 | eval.js:3:3:3:6 | eval |
 | eval.js:3:3:3:16 | eval("x = 23") |
 | file://:0:0:0:0 | global access path |
 | sources.js:1:1:1:0 | this |
 | sources.js:1:1:1:12 | new (x => x) |
 | sources.js:1:6:1:6 | x |
+| sources.js:1:6:1:11 | return of anonymous function |
 | sources.js:1:6:1:11 | x => x |
 | sources.js:3:1:5:6 | (functi ... \\n})(23) |
 | sources.js:3:2:3:1 | this |
 | sources.js:3:2:5:1 | functio ... x+19;\\n} |
+| sources.js:3:2:5:1 | return of anonymous function |
 | sources.js:3:11:3:11 | x |
 | sources.js:7:1:7:3 | /x/ |
 | sources.js:9:1:9:0 | this |
 | sources.js:9:1:12:1 | functio ... ey; }\\n} |
+| sources.js:9:1:12:1 | return of function foo |
 | sources.js:9:14:9:18 | array |
 | sources.js:10:12:10:14 | key |
 | sources.js:11:12:11:18 | { key } |
@@ -36,12 +42,14 @@
 | tst2.ts:3:3:3:8 | setX() |
 | tst2.ts:7:1:7:0 | this |
 | tst2.ts:7:1:9:1 | functio ... = 23;\\n} |
+| tst2.ts:7:1:9:1 | return of function setX |
 | tst2.ts:8:3:8:5 | A.x |
 | tst2.ts:11:11:11:13 | A.x |
 | tst2.ts:13:1:13:40 | class S ... ing> {} |
 | tst2.ts:13:26:13:29 | List |
 | tst2.ts:13:39:13:38 | (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | args |
+| tst2.ts:13:39:13:38 | return of default constructor of class StringList |
 | tst2.ts:13:39:13:38 | super(...args) |
 | tst2.ts:13:39:13:38 | this |
 | tst.js:1:1:1:0 | this |
@@ -50,6 +58,7 @@
 | tst.js:16:1:20:9 | (functi ... ("arg") |
 | tst.js:16:2:16:1 | this |
 | tst.js:16:2:20:1 | functio ... n "";\\n} |
+| tst.js:16:2:20:1 | return of function f |
 | tst.js:16:13:16:13 | a |
 | tst.js:17:7:17:10 | Math |
 | tst.js:17:7:17:17 | Math.random |
@@ -57,13 +66,16 @@
 | tst.js:22:7:22:18 | readFileSync |
 | tst.js:28:1:30:3 | (() =>\\n ... les\\n)() |
 | tst.js:28:2:29:3 | () =>\\n  x |
+| tst.js:28:2:29:3 | return of anonymous function |
 | tst.js:32:1:32:0 | this |
 | tst.js:32:1:34:1 | functio ... ables\\n} |
+| tst.js:32:1:34:1 | return of function g |
 | tst.js:32:12:32:12 | b |
 | tst.js:35:1:35:7 | g(true) |
 | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
 | tst.js:39:4:39:3 | this |
 | tst.js:39:4:41:3 | () {\\n    this;\\n  } |
+| tst.js:39:4:41:3 | return of method m |
 | tst.js:43:1:43:3 | o.x |
 | tst.js:44:1:44:3 | o.m |
 | tst.js:44:1:44:5 | o.m() |
@@ -73,6 +85,7 @@
 | tst.js:49:17:49:17 | B |
 | tst.js:50:14:50:13 | this |
 | tst.js:50:14:53:3 | () {\\n   ... et`\\n  } |
+| tst.js:50:14:53:3 | return of constructor of class A |
 | tst.js:51:5:51:13 | super(42) |
 | tst.js:58:1:58:3 | tag |
 | tst.js:61:1:61:5 | ::o.m |
@@ -80,6 +93,7 @@
 | tst.js:62:1:62:4 | o::g |
 | tst.js:64:1:64:0 | this |
 | tst.js:64:1:67:1 | functio ... lysed\\n} |
+| tst.js:64:1:67:1 | return of function h |
 | tst.js:65:3:65:10 | yield 42 |
 | tst.js:66:13:66:25 | function.sent |
 | tst.js:68:12:68:14 | h() |
@@ -87,6 +101,7 @@
 | tst.js:69:1:69:13 | iter.next(23) |
 | tst.js:71:1:71:0 | this |
 | tst.js:71:1:73:1 | async f ... lysed\\n} |
+| tst.js:71:1:73:1 | return of function k |
 | tst.js:72:3:72:11 | await p() |
 | tst.js:72:9:72:9 | p |
 | tst.js:72:9:72:11 | p() |
@@ -97,6 +112,7 @@
 | tst.js:87:1:96:2 | (functi ... r: 0\\n}) |
 | tst.js:87:2:87:1 | this |
 | tst.js:87:2:92:1 | functio ...  + z;\\n} |
+| tst.js:87:2:92:1 | return of anonymous function |
 | tst.js:87:11:87:24 | { p: x, ...o } |
 | tst.js:87:13:87:16 | p: x |
 | tst.js:87:22:87:22 | ...o |
@@ -106,6 +122,7 @@
 | tst.js:98:1:103:17 | (functi ... 3, 0 ]) |
 | tst.js:98:2:98:1 | this |
 | tst.js:98:2:103:1 | functio ...  + z;\\n} |
+| tst.js:98:2:103:1 | return of anonymous function |
 | tst.js:98:11:98:24 | [ x, ...rest ] |
 | tst.js:98:13:98:13 | x |
 | tst.js:98:19:98:22 | ...rest |
@@ -114,6 +131,7 @@
 | tst.js:103:4:103:16 | [ 19, 23, 0 ] |
 | tst.js:107:2:107:1 | this |
 | tst.js:107:2:113:1 | functio ...  v2c;\\n} |
+| tst.js:107:2:113:1 | return of anonymous function |
 | tst.js:108:7:108:9 | v1a |
 | tst.js:108:12:108:20 | v1b = o1b |
 | tst.js:108:18:108:20 | o1b |
@@ -130,3 +148,7 @@
 | tst.js:115:1:115:10 | Array.call |
 | tst.js:115:1:115:12 | Array.call() |
 | tst.js:115:1:115:12 | reflective call |
+| tst.js:117:10:117:15 | Object |
+| tst.js:117:10:117:20 | Object.seal |
+| tst.js:117:10:117:24 | Object.seal(x1) |
+| tst.js:117:22:117:23 | x1 |

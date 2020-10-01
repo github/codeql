@@ -49,7 +49,7 @@ We could then write this query to find all ``@SuppressWarnings`` annotations att
        anntp.hasQualifiedName("java.lang", "SuppressWarnings")
    select ann, ann.getValue("value")
 
-➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/632150601>`__. Several of the LGTM.com demo projects use the ``@SuppressWarnings`` annotation. Looking at the ``value``\ s of the annotation element returned by the query, we can see that the *apache/activemq* project uses the ``"rawtypes"`` value described above.
+➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/1775658606775222283/>`__. Several of the LGTM.com demo projects use the ``@SuppressWarnings`` annotation. Looking at the ``value``\ s of the annotation element returned by the query, we can see that the *apache/activemq* project uses the ``"rawtypes"`` value described above.
 
 As another example, this query finds all annotation types that only have a single annotation element, which has name ``value``:
 
@@ -64,7 +64,7 @@ As another example, this query finds all annotation types that only have a singl
    )
    select anntp
 
-➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/669220001>`__.
+➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/2145264152490258283/>`__.
 
 Example: Finding missing ``@Override`` annotations
 --------------------------------------------------
@@ -122,7 +122,7 @@ This makes it very easy to write our query for finding methods that override ano
        not overriding.getAnAnnotation() instanceof OverrideAnnotation
    select overriding, "Method overrides another method, but does not have an @Override annotation."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505752756202/>`__. In practice, this query may yield many results from compiled library code, which aren't very interesting. It's therefore a good idea to add another conjunct ``overriding.fromSource()`` to restrict the result to only report methods for which source code is available.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/7419756266089837339/>`__. In practice, this query may yield many results from compiled library code, which aren't very interesting. It's therefore a good idea to add another conjunct ``overriding.fromSource()`` to restrict the result to only report methods for which source code is available.
 
 Example: Finding calls to deprecated methods
 --------------------------------------------
@@ -180,7 +180,7 @@ Finally, we use these classes to find calls to deprecated methods, excluding cal
 
 In our example, this query flags the call to ``A.m`` in ``A.r``, but not the one in ``A.n``.
 
-For more information about the class ``Call``, see :doc:`Navigating the call graph <call-graph>`.
+For more information about the class ``Call``, see ":doc:`Navigating the call graph <call-graph>`."
 
 Improvements
 ~~~~~~~~~~~~
@@ -192,13 +192,13 @@ For instance, consider this slightly updated example:
 .. code-block:: java
 
    class A {
-   @Deprecated void m() {}
+       @Deprecated void m() {}
 
-   @Deprecated void n() {
-       m();
-   }
+       @Deprecated void n() {
+           m();
+       }
 
-   @SuppressWarnings("deprecated")
+       @SuppressWarnings("deprecated")
        void r() {
            m();
        }
@@ -235,7 +235,7 @@ Now we can extend our query to filter out calls in methods carrying a ``Suppress
        and not call.getCaller().getAnAnnotation() instanceof SuppressDeprecationWarningAnnotation
    select call, "This call invokes a deprecated method."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/665760001>`__. It's fairly common for projects to contain calls to methods that appear to be deprecated.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8706367340403790260/>`__. It's fairly common for projects to contain calls to methods that appear to be deprecated.
 
 Further reading
 ---------------

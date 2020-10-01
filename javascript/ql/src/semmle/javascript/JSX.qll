@@ -15,7 +15,7 @@ import javascript
  * <><h1>Title</h1>Some <b>text</b></>
  * ```
  */
-class JSXNode extends Expr, @jsxelement {
+class JSXNode extends Expr, @jsx_element {
   /** Gets the `i`th element in the body of this element or fragment. */
   Expr getBodyElement(int i) { i >= 0 and result = getChildExpr(-i - 2) }
 
@@ -153,7 +153,7 @@ class JSXSpreadAttribute extends JSXAttribute {
  * html:href
  * ```
  */
-class JSXQualifiedName extends Expr, @jsxqualifiedname {
+class JSXQualifiedName extends Expr, @jsx_qualified_name {
   /** Gets the namespace component of this qualified name. */
   Identifier getNamespace() { result = getChildExpr(0) }
 
@@ -181,6 +181,7 @@ class JSXQualifiedName extends Expr, @jsxqualifiedname {
 class JSXName extends Expr {
   JSXName() {
     this instanceof Identifier or
+    this instanceof ThisExpr or
     this.(DotExpr).getBase() instanceof JSXName or
     this instanceof JSXQualifiedName
   }
@@ -198,6 +199,9 @@ class JSXName extends Expr {
     exists(JSXQualifiedName qual | qual = this |
       result = qual.getNamespace().getName() + ":" + qual.getName().getName()
     )
+    or
+    this instanceof ThisExpr and
+    result = "this"
   }
 }
 
@@ -210,7 +214,7 @@ class JSXName extends Expr {
  * { /* TBD *&#47; }
  * </pre>
  */
-class JSXEmptyExpr extends Expr, @jsxemptyexpr { }
+class JSXEmptyExpr extends Expr, @jsx_empty_expr { }
 
 /**
  * A legacy `@jsx` pragma.

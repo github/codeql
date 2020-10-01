@@ -1,4 +1,4 @@
-let walkSync = require('walkSync'),
+let walkSync = require('walk-sync'),
     walk = require('walk'),
     glob = require('glob'),
     globby = require('globby'),

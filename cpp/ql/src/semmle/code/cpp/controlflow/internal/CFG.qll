@@ -118,7 +118,7 @@ private predicate excludeNodeAndNodesBelow(Expr e) {
   or
   // Constructor init lists should be evaluated, and we can change this in
   // the future, but it would mean that a `Function` entry point is not
-  // always a `Block` or `FunctionTryStmt`.
+  // always a `BlockStmt` or `FunctionTryStmt`.
   e instanceof ConstructorInit
   or
   // Destructor field destructions should also be hooked into the CFG
@@ -408,10 +408,10 @@ private Node getControlOrderChildSparse(Node n, int i) {
   // in-line in the block containing their corresponding DeclStmt but should
   // not be evaluated in the order implied by their position in the block. We
   // do the following.
-  // - Block skips all the VlaDeclStmt and VlaDimensionStmt children.
+  // - BlockStmt skips all the VlaDeclStmt and VlaDimensionStmt children.
   // - VlaDeclStmt is inserted as a child of DeclStmt
   // - VlaDimensionStmt is inserted as a child of VlaDeclStmt
-  result = n.(Block).getChild(i) and
+  result = n.(BlockStmt).getChild(i) and
   not result instanceof VlaDeclStmt and
   not result instanceof VlaDimensionStmt
   or
@@ -557,7 +557,7 @@ private class Spec extends Pos {
  */
 private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
   scope =
-    any(Block b |
+    any(BlockStmt b |
       i = -1 and ni = b and spec.isAt()
       or
       if exists(getLastControlOrderChild(b))
@@ -734,7 +734,7 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       or
       // If the switch body is not a block then this step is skipped, and the
       // expression jumps directly to the cases.
-      i = 1 and ni = s.getStmt().(Block) and spec.isAt()
+      i = 1 and ni = s.getStmt().(BlockStmt) and spec.isAt()
       or
       i = 2 and ni = s.getASwitchCase() and spec.isBefore()
       or
@@ -1010,7 +1010,7 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
  * The exact placement of that call in the CFG depends on the type of
  * `node` as follows:
  *
- * - `Block`: after ordinary control flow falls off the end of the block
+ * - `BlockStmt`: after ordinary control flow falls off the end of the block
  *   without jumps or exceptions.
  * - `ReturnStmt`: After the statement itself or after its operand (if
  *   present).
@@ -1376,8 +1376,6 @@ private module Cached {
   /**
    * Holds if `n2` is a successor of `n1` in the CFG. This includes also
    * true-successors and false-successors.
-   *
-   * This corresponds to the old `successors` dbscheme relation.
    */
   cached
   predicate qlCFGSuccessor(Node n1, Node n2) {
@@ -1390,9 +1388,8 @@ private module Cached {
   }
 
   /**
-   * Holds if `n2` is a true-successor of `n1` in the CFG.
-   *
-   * This corresponds to the old `truecond` dbscheme relation.
+   * Holds if `n2` is a control-flow node such that the control-flow
+   * edge `(n1, n2)` may be taken when `n1` is an expression that is true.
    */
   cached
   predicate qlCFGTrueSuccessor(Node n1, Node n2) {
@@ -1401,9 +1398,8 @@ private module Cached {
   }
 
   /**
-   * Holds if `n2` is a false-successor of `n1` in the CFG.
-   *
-   * This corresponds to the old `falsecond` dbscheme relation.
+   * Holds if `n2` is a control-flow node such that the control-flow
+   * edge `(n1, n2)` may be taken when `n1` is an expression that is false.
    */
   cached
   predicate qlCFGFalseSuccessor(Node n1, Node n2) {

@@ -53,26 +53,13 @@ private predicate functionSignature(Function f, string qualifiedName, int nparam
 }
 
 /**
- * Holds if the call context `ctx` reduces the set of viable dispatch
- * targets of `ma` in `c`.
+ * Holds if the set of viable implementations that can be called by `call`
+ * might be improved by knowing the call context.
  */
-predicate reducedViableImplInCallContext(Call call, Function f, Call ctx) { none() }
+predicate mayBenefitFromCallContext(Call call, Function f) { none() }
 
 /**
- * Gets a viable dispatch target of `ma` in the context `ctx`. This is
- * restricted to those `ma`s for which the context makes a difference.
+ * Gets a viable dispatch target of `call` in the context `ctx`. This is
+ * restricted to those `call`s for which a context might make a difference.
  */
-Function prunedViableImplInCallContext(Call call, Call ctx) { none() }
-
-/**
- * Holds if flow returning from `m` to `ma` might return further and if
- * this path restricts the set of call sites that can be returned to.
- */
-predicate reducedViableImplInReturn(Function f, Call call) { none() }
-
-/**
- * Gets a viable dispatch target of `ma` in the context `ctx`. This is
- * restricted to those `ma`s and results for which the return flow from the
- * result to `ma` restricts the possible context `ctx`.
- */
-Function prunedViableImplInCallContextReverse(Call call, Call ctx) { none() }
+Function viableImplInCallContext(Call call, Call ctx) { none() }

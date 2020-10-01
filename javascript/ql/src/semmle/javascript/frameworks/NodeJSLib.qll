@@ -5,6 +5,7 @@
 import javascript
 import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.SensitiveActions
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 module NodeJSLib {
   private GlobalVariable processVariable() { variables(result, "process", any(GlobalScope sc)) }
@@ -227,7 +228,12 @@ module NodeJSLib {
       t.start() and
       result = handler.flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
+        result = succ.backtrack(t2, t)
+        or
+        t = t2 and
+        HTTP::routeHandlerStep(result, succ)
+      )
     }
 
     override Expr getServer() { result = server }
@@ -458,7 +464,18 @@ module NodeJSLib {
       ) and
       t.start()
       or
-      exists(DataFlow::TypeTracker t2 | result = fsModule(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
+        result = pred.track(t2, t)
+        or
+        t.continue() = t2 and
+        exists(DataFlow::CallNode promisifyAllCall |
+          result = promisifyAllCall and
+          pred.flowsTo(promisifyAllCall.getArgument(0)) and
+          promisifyAllCall =
+            [DataFlow::moduleMember("bluebird", "promisifyAll"),
+                DataFlow::moduleImport("util-promisifyall")].getACall()
+        )
+      )
     }
   }
 
@@ -604,10 +621,26 @@ module NodeJSLib {
     result = callback
     or
     exists(DataFlow::CallNode promisify |
-      promisify = DataFlow::moduleMember("util", "promisify").getACall()
+      promisify = DataFlow::moduleMember(["util", "bluebird"], "promisify").getACall()
     |
       result = promisify and promisify.getArgument(0).getALocalSource() = callback
     )
+  }
+
+  /**
+   * A call to `util.deprecate`, considered to introduce data flow from its first argument
+   * to its result.
+   */
+  private class UtilDeprecateStep extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode deprecate |
+        deprecate = DataFlow::moduleMember("util", "deprecate").getACall() or
+        deprecate = DataFlow::moduleImport("util-deprecate").getACall()
+      |
+        pred = deprecate.getArgument(0) and
+        succ = deprecate
+      )
+    }
   }
 
   /**
@@ -693,16 +726,8 @@ module NodeJSLib {
         astNode.getParameter(0).getName() = request and
         astNode.getParameter(1).getName() = response
       |
-        not (
-          // heuristic: not a class method (Node.js invokes this with a function call)
-          astNode = any(MethodDefinition def).getBody()
-          or
-          // heuristic: does not return anything (Node.js will not use the return value)
-          exists(astNode.getAReturnStmt().getExpr())
-          or
-          // heuristic: is not invoked (Node.js invokes this at a call site we cannot reason precisely about)
-          exists(DataFlow::InvokeNode cs | cs.getACallee() = astNode)
-        )
+        // heuristic: not a class method (Node.js invokes this with a function call)
+        not astNode = any(MethodDefinition def).getBody()
       )
     }
   }
@@ -1040,8 +1065,10 @@ module NodeJSLib {
   /**
    * An instance of net.createServer(), which creates a new TCP/IPC server.
    */
-  private class NodeJSNetServer extends DataFlow::SourceNode {
-    NodeJSNetServer() { this = DataFlow::moduleMember("net", "createServer").getAnInvocation() }
+  class NodeJSNetServer extends DataFlow::InvokeNode {
+    NodeJSNetServer() {
+      this = DataFlow::moduleMember(["net", "tls"], "createServer").getAnInvocation()
+    }
 
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and result = this
@@ -1068,6 +1095,8 @@ module NodeJSLib {
       |
         this = call.getCallback(1).getParameter(0)
       )
+      or
+      this = server.getCallback([0, 1]).getParameter(0)
     }
 
     DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }

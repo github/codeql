@@ -42,7 +42,7 @@ class ScopeElement extends ASTNode {
 }
 
 /** The global scope. */
-class GlobalScope extends Scope, @globalscope {
+class GlobalScope extends Scope, @global_scope {
   override string toString() { result = "global scope" }
 }
 
@@ -54,7 +54,7 @@ class LocalScope extends Scope {
 /**
  * A scope induced by a Node.js or ES2015 module
  */
-class ModuleScope extends Scope, @modulescope {
+class ModuleScope extends Scope, @module_scope {
   /** Gets the module that induces this scope. */
   Module getModule() { result = getScopeElement() }
 
@@ -62,7 +62,7 @@ class ModuleScope extends Scope, @modulescope {
 }
 
 /** A scope induced by a function. */
-class FunctionScope extends Scope, @functionscope {
+class FunctionScope extends Scope, @function_scope {
   /** Gets the function that induces this scope. */
   Function getFunction() { result = getScopeElement() }
 
@@ -70,7 +70,7 @@ class FunctionScope extends Scope, @functionscope {
 }
 
 /** A scope induced by a catch clause. */
-class CatchScope extends Scope, @catchscope {
+class CatchScope extends Scope, @catch_scope {
   /** Gets the catch clause that induces this scope. */
   CatchClause getCatchClause() { result = getScopeElement() }
 
@@ -78,7 +78,7 @@ class CatchScope extends Scope, @catchscope {
 }
 
 /** A scope induced by a block of statements. */
-class BlockScope extends Scope, @blockscope {
+class BlockScope extends Scope, @block_scope {
   /** Gets the block of statements that induces this scope. */
   BlockStmt getBlock() { result = getScopeElement() }
 
@@ -86,7 +86,7 @@ class BlockScope extends Scope, @blockscope {
 }
 
 /** A scope induced by a `for` statement. */
-class ForScope extends Scope, @forscope {
+class ForScope extends Scope, @for_scope {
   /** Gets the `for` statement that induces this scope. */
   ForStmt getLoop() { result = getScopeElement() }
 
@@ -94,7 +94,7 @@ class ForScope extends Scope, @forscope {
 }
 
 /** A scope induced by a `for`-`in` or `for`-`of` statement. */
-class ForInScope extends Scope, @forinscope {
+class ForInScope extends Scope, @for_in_scope {
   /** Gets the `for`-`in` or `for`-`of` statement that induces this scope. */
   EnhancedForLoop getLoop() { result = getScopeElement() }
 
@@ -102,7 +102,7 @@ class ForInScope extends Scope, @forinscope {
 }
 
 /** A scope induced by a comprehension block. */
-class ComprehensionBlockScope extends Scope, @comprehensionblockscope {
+class ComprehensionBlockScope extends Scope, @comprehension_block_scope {
   /** Gets the comprehension block that induces this scope. */
   ComprehensionBlock getComprehensionBlock() { result = getScopeElement() }
 
@@ -116,7 +116,7 @@ class ComprehensionBlockScope extends Scope, @comprehensionblockscope {
  * and currently does not include variables exported from other declarations
  * of the same namespace.
  */
-class NamespaceScope extends Scope, @namespacescope {
+class NamespaceScope extends Scope, @namespace_scope {
   override string toString() { result = "namespace scope" }
 }
 
@@ -204,7 +204,7 @@ class Variable extends @variable, LexicalName {
 
 /** An `arguments` variable of a function. */
 class ArgumentsVariable extends Variable {
-  ArgumentsVariable() { isArgumentsObject(this) }
+  ArgumentsVariable() { is_arguments_object(this) }
 
   override FunctionScope getScope() { result = Variable.super.getScope() }
 
@@ -312,8 +312,11 @@ class LocalVariable extends Variable {
     this = result.getScope().getAVariable()
     or
     exists(VarDecl d | d = getADeclaration() |
-      if d = any(FunctionDeclStmt fds).getId()
-      then exists(FunctionDeclStmt fds | d = fds.getId() | result = fds.getEnclosingContainer())
+      if d = any(FunctionDeclStmt fds).getIdentifier()
+      then
+        exists(FunctionDeclStmt fds | d = fds.getIdentifier() |
+          result = fds.getEnclosingContainer()
+        )
       else result = d.getContainer()
     )
   }
@@ -406,6 +409,8 @@ class BindingPattern extends @pattern, Expr {
   }
 }
 
+private class TDestructuringPattern = @array_pattern or @object_pattern;
+
 /**
  * A destructuring pattern, that is, either an array pattern or an object pattern.
  *
@@ -418,9 +423,9 @@ class BindingPattern extends @pattern, Expr {
  * }
  * ```
  */
-abstract class DestructuringPattern extends BindingPattern {
+class DestructuringPattern extends TDestructuringPattern, BindingPattern {
   /** Gets the rest pattern of this destructuring pattern, if any. */
-  abstract Expr getRest();
+  Expr getRest() { none() } // Overridden in subtypes.
 }
 
 /**
@@ -434,7 +439,7 @@ abstract class DestructuringPattern extends BindingPattern {
  *   o = null;
  * }
  */
-class VarDecl extends @vardecl, VarRef, LexicalDecl {
+class VarDecl extends @var_decl, VarRef, LexicalDecl {
   override Variable getVariable() { decl(this, result) }
 
   override predicate isLValue() {
@@ -473,7 +478,7 @@ class GlobalVarDecl extends VarDecl {
  * }
  * ```
  */
-class ArrayPattern extends DestructuringPattern, @arraypattern {
+class ArrayPattern extends DestructuringPattern, @array_pattern {
   /** Gets the `i`th element of this array pattern. */
   Expr getElement(int i) {
     i >= 0 and
@@ -499,7 +504,7 @@ class ArrayPattern extends DestructuringPattern, @arraypattern {
   predicate hasRest() { exists(getRest()) }
 
   /** Gets the number of elements in this array pattern, not including any rest pattern. */
-  int getSize() { arraySize(this, result) }
+  int getSize() { array_size(this, result) }
 
   /** Holds if the `i`th element of this array pattern is omitted. */
   predicate elementIsOmitted(int i) {
@@ -529,7 +534,7 @@ class ArrayPattern extends DestructuringPattern, @arraypattern {
  * }
  * ```
  */
-class ObjectPattern extends DestructuringPattern, @objectpattern {
+class ObjectPattern extends DestructuringPattern, @object_pattern {
   /** Gets the `i`th property pattern in this object pattern. */
   PropertyPattern getPropertyPattern(int i) { properties(result, this, i, _, _) }
 
@@ -575,7 +580,7 @@ class PropertyPattern extends @property, ASTNode {
   }
 
   /** Holds if the name of this property pattern is computed. */
-  predicate isComputed() { isComputed(this) }
+  predicate isComputed() { is_computed(this) }
 
   /** Gets the expression specifying the name of the matched property. */
   Expr getNameExpr() { result = this.getChildExpr(0) }
@@ -625,7 +630,7 @@ class PropertyPattern extends @property, ASTNode {
  *   y = z;  // variable declarator
  * ```
  */
-class VariableDeclarator extends Expr, @vardeclarator {
+class VariableDeclarator extends Expr, @var_declarator {
   /** Gets the pattern specifying the declared variable(s). */
   BindingPattern getBindingPattern() { result = this.getChildExpr(0) }
 
@@ -640,7 +645,7 @@ class VariableDeclarator extends Expr, @vardeclarator {
   }
 
   /** Holds if this is a TypeScript variable marked as definitely assigned with the `!` operator. */
-  predicate hasDefiniteAssignmentAssertion() { hasDefiniteAssignmentAssertion(this) }
+  predicate hasDefiniteAssignmentAssertion() { has_definite_assignment_assertion(this) }
 
   /** Gets the declaration statement this declarator belongs to, if any. */
   DeclStmt getDeclStmt() { this = result.getADecl() }
@@ -777,7 +782,7 @@ class Parameter extends BindingPattern {
    * function f(x?: number) {}
    * ```
    */
-  predicate isDeclaredOptional() { isOptionalParameterDeclaration(this) }
+  predicate isDeclaredOptional() { is_optional_parameter_declaration(this) }
 }
 
 /**

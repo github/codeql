@@ -1,8 +1,13 @@
+/**
+ * Classes for modelling NHibernate.
+ */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.Sql
 
+/** Definitions relating to the `NHibernate` package. */
 module NHibernate {
   /** A class that is mapped to the database. */
   abstract class MappedClass extends Class { }

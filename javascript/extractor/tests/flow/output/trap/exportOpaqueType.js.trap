@@ -74,8 +74,8 @@ hasLocation(#20001,#20024)
 scopes(#20025,3)
 scopenodes(#20001,#20025)
 scopenesting(#20025,#20000)
-isModule(#20001)
-isES2015Module(#20001)
+is_module(#20001)
+is_es2015_module(#20001)
 #20026=*
 entry_cfg_node(#20026,#20001)
 #20027=@"loc,{#10000},1,1,1,0"

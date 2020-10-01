@@ -1011,7 +1011,7 @@ class TranslatedDynamicCast extends TranslatedSingleInstructionConversion {
       if resultType instanceof PointerType
       then
         if resultType.(PointerType).getBaseType() instanceof VoidType
-        then result instanceof Opcode::DynamicCastToVoid
+        then result instanceof Opcode::CompleteObjectAddress
         else result instanceof Opcode::CheckedConvertOrNull
       else result instanceof Opcode::CheckedConvertOrThrow
     )
@@ -2905,7 +2905,7 @@ predicate exprNeedsCopyIfNotLoaded(Expr expr) {
 private predicate exprImmediatelyDiscarded(Expr expr) {
   exists(ExprStmt s |
     s = expr.getParent() and
-    not exists(StmtExpr se | s = se.getStmt().(Block).getLastStmt())
+    not exists(StmtExpr se | s = se.getStmt().(BlockStmt).getLastStmt())
   )
   or
   exists(CommaExpr c | c.getLeftOperand() = expr)

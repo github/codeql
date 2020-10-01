@@ -56,6 +56,7 @@ syncCommand
 | other.js:7:5:7:36 | require ... nc(cmd) |
 | other.js:9:5:9:35 | require ... nc(cmd) |
 | other.js:12:5:12:30 | require ... nc(cmd) |
+| other.js:30:5:30:36 | require ... ")(cmd) |
 | third-party-command-injection.js:6:9:6:28 | cp.execSync(command) |
 | tst_shell-command-injection-from-environment.js:4:2:4:62 | cp.exec ... emp")]) |
 | tst_shell-command-injection-from-environment.js:5:2:5:54 | cp.exec ... temp")) |
@@ -90,9 +91,11 @@ syncCommand
 | uselesscat.js:158:16:158:46 | cspawn. ... /bar']) |
 | uselesscat.js:159:16:159:68 | cspawn. ... tf8' }) |
 options
-| child_process-test.js:53:5:53:59 | cp.spaw ...  cmd])) | child_process-test.js:53:25:53:58 | ['/C',  ... , cmd]) |
-| child_process-test.js:54:5:54:50 | cp.spaw ... t(cmd)) | child_process-test.js:54:25:54:49 | ['/C',  ... at(cmd) |
-| child_process-test.js:64:3:64:21 | cp.spawn(cmd, args) | child_process-test.js:64:17:64:20 | args |
+| child_process-test.js:56:5:56:59 | cp.spaw ...  cmd])) | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) |
+| child_process-test.js:57:5:57:50 | cp.spaw ... t(cmd)) | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) |
+| child_process-test.js:67:3:67:21 | cp.spawn(cmd, args) | child_process-test.js:67:17:67:20 | args |
+| exec-sh2.js:10:12:10:57 | cp.spaw ... ptions) | exec-sh2.js:10:50:10:56 | options |
+| exec-sh.js:15:12:15:61 | cp.spaw ... ptions) | exec-sh.js:15:54:15:60 | options |
 | lib/lib.js:152:2:152:23 | cp.spaw ... gs, cb) | lib/lib.js:152:21:152:22 | cb |
 | lib/lib.js:159:2:159:23 | cp.spaw ... gs, cb) | lib/lib.js:159:21:159:22 | cb |
 | lib/lib.js:163:2:167:2 | cp.spaw ... t' }\\n\\t) | lib/lib.js:166:3:166:22 | { stdio: 'inherit' } |
@@ -114,6 +117,3 @@ options
 | uselesscat.js:156:1:156:35 | cspawn( ... tf8' }) | uselesscat.js:156:15:156:34 | { encoding: 'utf8' } |
 | uselesscat.js:159:16:159:68 | cspawn. ... tf8' }) | uselesscat.js:159:48:159:67 | { encoding: 'utf8' } |
 | uselesscat.js:164:1:164:76 | execmod ... (out)}) | uselesscat.js:164:24:164:41 | {encoding: 'utf8'} |
-#select
-| False negative | uselesscat.js:54:42:54:69 | // NOT  ... lagged] |
-| False positive | uselesscat.js:44:37:44:85 | // OK [ ... le read |

@@ -8,3 +8,11 @@
         }
     });
 });
+
+const isFalsyObject = (v) => typeof v === 'undefined' && v !== undefined; // OK
+
+function f(v) {
+    if (typeof v === 'undefined' && v !== undefined) { // OK
+        doSomething(v);
+    }
+}

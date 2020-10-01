@@ -25,6 +25,8 @@ class UnaryLogicalOperation extends LogicalOperation, UnaryOperation, @un_log_op
  */
 class LogicalNotExpr extends UnaryLogicalOperation, @log_not_expr {
   override string getOperator() { result = "!" }
+
+  override string getAPrimaryQlClass() { result = "LogicalNotExpr" }
 }
 
 /**
@@ -41,6 +43,8 @@ class BinaryLogicalOperation extends LogicalOperation, BinaryOperation, @bin_log
  */
 class LogicalAndExpr extends BinaryLogicalOperation, @log_and_expr {
   override string getOperator() { result = "&&" }
+
+  override string getAPrimaryQlClass() { result = "LogicalAndExpr" }
 }
 
 /**
@@ -48,12 +52,14 @@ class LogicalAndExpr extends BinaryLogicalOperation, @log_and_expr {
  */
 class LogicalOrExpr extends BinaryLogicalOperation, @log_or_expr {
   override string getOperator() { result = "||" }
+
+  override string getAPrimaryQlClass() { result = "LogicalOrExpr" }
 }
 
 /**
  * A null-coalescing operation, for example `s ?? ""` on line 2 in
  *
- * ```
+ * ```csharp
  * string NonNullOrEmpty(string s) {
  *   return s ?? "";
  * }
@@ -61,6 +67,8 @@ class LogicalOrExpr extends BinaryLogicalOperation, @log_or_expr {
  */
 class NullCoalescingExpr extends BinaryLogicalOperation, @null_coalescing_expr {
   override string getOperator() { result = "??" }
+
+  override string getAPrimaryQlClass() { result = "NullCoalescingExpr" }
 }
 
 /**
@@ -73,7 +81,7 @@ class TernaryLogicalOperation extends LogicalOperation, TernaryOperation, @terna
  * A conditional expression, for example `s != null ? s.Length : -1`
  * on line 2 in
  *
- * ```
+ * ```csharp
  * int LengthOrNegative(string s) {
  *   return s != null ? s.Length : -1;
  * }
@@ -92,4 +100,6 @@ class ConditionalExpr extends TernaryLogicalOperation, @conditional_expr {
   override string getOperator() { result = "?" }
 
   override string toString() { result = "... ? ... : ..." }
+
+  override string getAPrimaryQlClass() { result = "ConditionalExpr" }
 }

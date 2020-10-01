@@ -102,7 +102,7 @@ private class IteratorExceptionStep extends DataFlow::MethodCallNode, DataFlow::
  */
 class StringReplaceCall extends DataFlow::MethodCallNode {
   StringReplaceCall() {
-    getMethodName() = "replace" and
+    getMethodName() = ["replace", "replaceAll"] and
     (getNumArgument() = 2 or getReceiver().mayHaveStringValue(_))
   }
 
@@ -122,10 +122,15 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
   DataFlow::Node getRawReplacement() { result = getArgument(1) }
 
   /**
-   * Holds if this is a global replacement, that is, the first argument is a regular expression
-   * with the `g` flag.
+   * Gets a function flowing into the second argument of this call to `replace`.
    */
-  predicate isGlobal() { getRegExp().isGlobal() }
+  DataFlow::FunctionNode getReplacementCallback() { result = getCallback(1) }
+
+  /**
+   * Holds if this is a global replacement, that is, the first argument is a regular expression
+   * with the `g` flag, or this is a call to `.replaceAll()`.
+   */
+  predicate isGlobal() { getRegExp().isGlobal() or getMethodName() = "replaceAll" }
 
   /**
    * Holds if this call to `replace` replaces `old` with `new`.

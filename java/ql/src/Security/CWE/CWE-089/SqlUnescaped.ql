@@ -8,6 +8,7 @@
  * @id java/concatenated-sql-query
  * @tags security
  *       external/cwe/cwe-089
+ *       external/cwe/cwe-564
  */
 
 import java
@@ -40,7 +41,7 @@ class UncontrolledStringBuilderSourceFlowConfig extends TaintTracking::Configura
 from QueryInjectionSink query, Expr uncontrolled
 where
   (
-    builtFromUncontrolledConcat(query.getExpr(), uncontrolled)
+    builtFromUncontrolledConcat(query.asExpr(), uncontrolled)
     or
     exists(StringBuilderVar sbv, UncontrolledStringBuilderSourceFlowConfig conf |
       uncontrolledStringBuilderQuery(sbv, uncontrolled) and

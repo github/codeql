@@ -15,9 +15,7 @@ abstract class HeuristicAdditionalTaintStep extends DataFlow::ValueNode { }
  * A call to `tainted.replace(x, y)` that preserves taint.
  */
 private class HeuristicStringManipulationTaintStep extends HeuristicAdditionalTaintStep,
-  TaintTracking::AdditionalTaintStep, DataFlow::MethodCallNode {
-  HeuristicStringManipulationTaintStep() { getMethodName() = "replace" }
-
+  TaintTracking::AdditionalTaintStep, StringReplaceCall {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = getReceiver() and succ = this
   }

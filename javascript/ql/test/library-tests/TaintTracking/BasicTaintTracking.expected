@@ -52,7 +52,6 @@ typeInferenceMismatch
 | exceptions.js:21:17:21:24 | source() | exceptions.js:24:10:24:21 | e.toString() |
 | exceptions.js:21:17:21:24 | source() | exceptions.js:25:10:25:18 | e.message |
 | exceptions.js:21:17:21:24 | source() | exceptions.js:26:10:26:19 | e.fileName |
-| exceptions.js:48:16:48:23 | source() | exceptions.js:50:10:50:10 | e |
 | exceptions.js:59:24:59:31 | source() | exceptions.js:61:12:61:12 | e |
 | exceptions.js:88:6:88:13 | source() | exceptions.js:11:10:11:10 | e |
 | exceptions.js:88:6:88:13 | source() | exceptions.js:32:10:32:10 | e |
@@ -68,6 +67,18 @@ typeInferenceMismatch
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
 | importedReactComponent.jsx:4:40:4:47 | source() | exportedReactComponent.jsx:2:10:2:19 | props.text |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:5:8:5:29 | JSON.st ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:9:8:9:47 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:10:8:10:42 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:11:8:11:41 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:12:8:12:52 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:13:8:13:45 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:14:8:14:46 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:15:8:15:38 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:16:8:16:38 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:17:8:17:39 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:18:8:18:40 | require ... source) |
+| json-stringify.js:3:15:3:22 | source() | json-stringify.js:8:8:8:31 | jsonStr ... (taint) |
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |
 | nested-props.js:9:18:9:25 | source() | nested-props.js:10:10:10:16 | obj.x.y |
 | nested-props.js:35:13:35:20 | source() | nested-props.js:36:10:36:20 | doLoad(obj) |
@@ -103,6 +114,14 @@ typeInferenceMismatch
 | spread.js:2:15:2:22 | source() | spread.js:5:8:5:43 | { f: 'h ... orld' } |
 | spread.js:2:15:2:22 | source() | spread.js:7:8:7:19 | [ ...taint ] |
 | spread.js:2:15:2:22 | source() | spread.js:8:8:8:28 | [ 1, 2, ... nt, 3 ] |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:5:14:5:22 | RegExp.$1 |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:15:14:15:22 | RegExp.$1 |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:17:14:17:22 | RegExp.$1 |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:21:14:21:22 | RegExp.$1 |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:24:14:24:22 | RegExp.$1 |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:27:14:27:22 | RegExp.$1 |
+| static-capture-groups.js:32:17:32:24 | source() | static-capture-groups.js:38:10:38:18 | RegExp.$1 |
+| static-capture-groups.js:42:12:42:19 | source() | static-capture-groups.js:43:14:43:22 | RegExp.$1 |
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |

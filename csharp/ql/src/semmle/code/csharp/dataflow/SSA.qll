@@ -171,7 +171,7 @@ module Ssa {
        * callable. A pseudo read is inserted to make assignments to `out`/`ref` variables
        * live, for example line 1 in
        *
-       * ```
+       * ```csharp
        * void M(out int i) {
        *   i = 0;
        * }
@@ -189,7 +189,7 @@ module Ssa {
        * A pseudo read is inserted to make assignments to the `ref` variable live, for example
        * line 2 in
        *
-       * ```
+       * ```csharp
        * void M() {
        *   ref int i = ref GetRef();
        *   i = 0;
@@ -612,7 +612,7 @@ module Ssa {
      * For example, if `bb` is a basic block with a phi node for `v` (considered
      * to be at index -1), reads `v` at node 2, and defines it at node 5, we have:
      *
-     * ```
+     * ```ql
      * ssaRefRank(bb, -1, v, SsaDef()) = 1    // phi node
      * ssaRefRank(bb,  2, v, Read())   = 2    // read at node 2
      * ssaRefRank(bb,  5, v, SsaDef()) = 3    // definition at node 5
@@ -706,9 +706,9 @@ module Ssa {
 
     /**
      * Holds if `def` is accessed in basic block `bb1` (either a read or a write),
-     * `bb2` is a transitive successor of `bb1`, and `def` is *maybe* read in `bb2`
-     * or one of its transitive successors, but not in any block on the path between
-     * `bb1` and `bb2`.
+     * `bb2` is a transitive successor of `bb1`, `def` is live at the end of `bb1`,
+     * and the underlying variable for `def` is neither read nor written in any block
+     * on the path between `bb1` and `bb2`.
      */
     private predicate varBlockReaches(TrackedDefinition def, BasicBlock bb1, BasicBlock bb2) {
       varOccursInBlock(def, bb1, _) and
@@ -893,7 +893,7 @@ module Ssa {
    * of the field or property. For example, there is an implicit update of
    * `this.Field` on line 7 in
    *
-   * ```
+   * ```csharp
    * int Field;
    *
    * void SetField(int i) { Field = i; }
@@ -1359,7 +1359,7 @@ module Ssa {
    * site that conceivably could reach an update of the captured variable.
    * For example, there is an implicit update of `v` on line 4 in
    *
-   * ```
+   * ```csharp
    * int M() {
    *   int i = 0;
    *   Action a = () => { i = 1; };
@@ -1559,7 +1559,7 @@ module Ssa {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * void M() {
    *   int i = 0;
    *   void M2() {
@@ -1736,7 +1736,7 @@ module Ssa {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * class C {
      *   void M1() {
      *     int i = 0;
@@ -1775,7 +1775,7 @@ module Ssa {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * class C {
      *   void M1() {
      *     int i = 0;
@@ -1845,7 +1845,7 @@ module Ssa {
         (
           exists(ReadKind rk | liveAfterWrite(bb, i, v, rk) |
             // A `ref` assignment such as
-            // ```
+            // ```csharp
             // ref int i = ref GetRef();
             // ```
             // is dead when there are no reads of or writes to `i`.
@@ -2005,7 +2005,7 @@ module Ssa {
      * can be reached from this SSA definition without passing through any
      * other SSA definitions. Example:
      *
-     * ```
+     * ```csharp
      * int Field;
      *
      * void SetField(int i) {
@@ -2034,7 +2034,7 @@ module Ssa {
      * control flow node `cfn` that can be reached from this SSA definition
      * without passing through any other SSA definitions. Example:
      *
-     * ```
+     * ```csharp
      * int Field;
      *
      * void SetField(int i) {
@@ -2066,7 +2066,7 @@ module Ssa {
      * can be reached from this SSA definition without passing through any
      * other SSA definition or read. Example:
      *
-     * ```
+     * ```csharp
      * int Field;
      *
      * void SetField(int i) {
@@ -2102,7 +2102,7 @@ module Ssa {
      * control flow node `cfn` that can be reached from this SSA definition
      * without passing through any other SSA definition or read. Example:
      *
-     * ```
+     * ```csharp
      * int Field;
      *
      * void SetField(int i) {
@@ -2142,7 +2142,7 @@ module Ssa {
      * another SSA definition for the source variable, without passing through
      * any other read. Example:
      *
-     * ```
+     * ```csharp
      * int Field;
      *
      * void SetField(int i) {
@@ -2172,7 +2172,7 @@ module Ssa {
      * enclosing callable, or another SSA definition for the source variable,
      * without passing through any other read. Example:
      *
-     * ```
+     * ```csharp
      * int Field;
      *
      * void SetField(int i) {
@@ -2203,7 +2203,7 @@ module Ssa {
      * Gets a definition that ultimately defines this SSA definition and is
      * not itself a pseudo node. Example:
      *
-     * ```
+     * ```csharp
      * int Field;
      *
      * void SetField(int i) {
@@ -2322,7 +2322,7 @@ module Ssa {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * class C {
      *   void M1() {
      *     int i = 0;
@@ -2349,7 +2349,7 @@ module Ssa {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * class C {
      *   void M1() {
      *     int i = 0;
@@ -2510,7 +2510,7 @@ module Ssa {
     /**
      * Gets an input of this phi node. Example:
      *
-     * ```
+     * ```csharp
      * int Field;
      *
      * void SetField(int i) {
@@ -2535,6 +2535,13 @@ module Ssa {
         bb.getAPredecessor() = phiPred and
         ssaDefReachesEndOfBlock(phiPred, result, v)
       )
+    }
+
+    /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+    predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
+      this.getAnInput() = inp and
+      this.getBasicBlock().getAPredecessor() = bb and
+      inp.isLiveAtEndOfBlock(bb)
     }
 
     override string toString() {

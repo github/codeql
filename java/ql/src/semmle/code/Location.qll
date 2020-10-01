@@ -86,20 +86,33 @@ class Top extends @top {
   /** Gets a textual representation of this element. */
   cached
   string toString() { hasName(this, result) }
+
+  /**
+   * Gets the name of a primary CodeQL class to which this element belongs.
+   *
+   * For most elements, this is simply the most precise syntactic category to
+   * which they belong; for example, `AddExpr` is a primary class, but
+   * `BinaryExpr` is not.
+   *
+   * This predicate always has a result. If no primary class can be
+   * determined, the result is `"???"`. If multiple primary classes match,
+   * this predicate can have multiple results.
+   */
+  string getAPrimaryQlClass() { result = "???" }
 }
 
 /** A location maps language elements to positions in source files. */
 class Location extends @location {
-  /** Gets the line number where this location starts. */
+  /** Gets the 1-based line number (inclusive) where this location starts. */
   int getStartLine() { locations_default(this, _, result, _, _, _) }
 
-  /** Gets the column number where this location starts. */
+  /** Gets the 1-based column number (inclusive) where this location starts. */
   int getStartColumn() { locations_default(this, _, _, result, _, _) }
 
-  /** Gets the line number where this location ends. */
+  /** Gets the 1-based line number (inclusive) where this location ends. */
   int getEndLine() { locations_default(this, _, _, _, result, _) }
 
-  /** Gets the column number where this location ends. */
+  /** Gets the 1-based column number (inclusive) where this location ends. */
   int getEndColumn() { locations_default(this, _, _, _, _, result) }
 
   /**

@@ -1,3 +1,9 @@
+/**
+ * Provides classes that describe how a particular `Instruction` or its operands access memory.
+ */
+
+private import IRConfiguration
+
 private newtype TMemoryAccessKind =
   TIndirectMemoryAccess() or
   TBufferMemoryAccess() or
@@ -14,6 +20,7 @@ private newtype TMemoryAccessKind =
  * memory result.
  */
 class MemoryAccessKind extends TMemoryAccessKind {
+  /** Gets a textual representation of this access kind. */
   string toString() { none() }
 
   /**

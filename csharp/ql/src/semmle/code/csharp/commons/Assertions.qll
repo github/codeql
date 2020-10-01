@@ -52,7 +52,7 @@ class Assertion extends MethodCall {
    * Moreover, this assertion corresponds to multiple control flow nodes,
    * which is why
    *
-   * ```
+   * ```ql
    * exists(BasicBlock bb |
    *   bb.getANode() = this.getAControlFlowNode() |
    *   bb.immediatelyDominates(succ)
@@ -100,7 +100,7 @@ class Assertion extends MethodCall {
     or
     // Equivalent with
     //
-    // ```
+    // ```ql
     // exists(JoinBlockPredecessor pred | pred = bb.getAPredecessor() |
     //   this.strictlyDominatesSplit(pred)
     // ) and
@@ -288,7 +288,7 @@ class ForwarderAssertMethod extends AssertMethod {
   ForwarderAssertMethod() {
     p = this.getAParameter() and
     strictcount(AssignableDefinition def | def.getTarget() = p) = 1 and
-    forex(ControlFlowElement body | body = this.getABody() |
+    forex(ControlFlowElement body | body = this.getBody() |
       bodyAsserts(this, body, a) and
       a.getExpr() = p.getAnAccess()
     )
@@ -306,7 +306,7 @@ class ForwarderAssertMethod extends AssertMethod {
 
 pragma[noinline]
 private predicate bodyAsserts(Callable c, ControlFlowElement body, Assertion a) {
-  c.getABody() = body and
+  c.getBody() = body and
   body = getAnAssertingElement(a)
 }
 

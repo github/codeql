@@ -1,3 +1,7 @@
+/**
+ * Provides classes that represent the input values of IR instructions.
+ */
+
 private import internal.IRInternal
 private import Instruction
 private import IRBlock
@@ -78,10 +82,17 @@ private PhiOperandBase phiOperand(
  * A source operand of an `Instruction`. The operand represents a value consumed by the instruction.
  */
 class Operand extends TOperand {
+  /** Gets a textual representation of this element. */
   string toString() { result = "Operand" }
 
+  /**
+   * Gets the location of the source code for this operand.
+   */
   final Language::Location getLocation() { result = getUse().getLocation() }
 
+  /**
+   * Gets the function that contains this operand.
+   */
   final IRFunction getEnclosingIRFunction() { result = getUse().getEnclosingIRFunction() }
 
   /**
@@ -270,6 +281,9 @@ class NonPhiOperand extends Operand {
 
   final override int getDumpSortOrder() { result = tag.getSortOrder() }
 
+  /**
+   * Gets the `OperandTag` that specifies how this operand is used by its `Instruction`.
+   */
   final OperandTag getOperandTag() { result = tag }
 }
 
@@ -292,6 +306,9 @@ class RegisterOperand extends NonPhiOperand, RegisterOperandBase {
   }
 }
 
+/**
+ * A memory operand other than the operand of a `Phi` instruction.
+ */
 class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, NonPhiMemoryOperandBase {
   override MemoryOperandTag tag;
 
@@ -311,8 +328,19 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, NonPhiMemoryOper
     not Construction::isInCycle(useInstr) and
     strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
   }
+
+  /**
+   * Holds if the operand totally overlaps with its definition and consumes the
+   * bit range `[startBitOffset, endBitOffset)` relative to the start address of the definition.
+   */
+  predicate getUsedInterval(int startBitOffset, int endBitOffset) {
+    Construction::getUsedInterval(this, startBitOffset, endBitOffset)
+  }
 }
 
+/**
+ * A memory operand whose type may be different from the type of the result of its definition.
+ */
 class TypedOperand extends NonPhiMemoryOperand {
   override TypedOperandTag tag;
 
@@ -416,6 +444,9 @@ class PositionalArgumentOperand extends ArgumentOperand {
   final int getIndex() { result = tag.getArgIndex() }
 }
 
+/**
+ * An operand representing memory read as a side effect of evaluating another instruction.
+ */
 class SideEffectOperand extends TypedOperand {
   override SideEffectOperandTag tag;
 }

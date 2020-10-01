@@ -196,16 +196,17 @@ private predicate operandReturned(Operand operand, IntValue bitOffset) {
   bitOffset = Ints::unknown()
 }
 
-private predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
+private predicate isArgumentForParameter(
+  CallInstruction ci, Operand operand, InitializeParameterInstruction init
+) {
   exists(Language::Function f |
     ci = operand.getUse() and
     f = ci.getStaticCallTarget() and
     (
-      init.(InitializeParameterInstruction).getParameter() =
-        f.getParameter(operand.(PositionalArgumentOperand).getIndex())
+      init.getParameter() = f.getParameter(operand.(PositionalArgumentOperand).getIndex())
       or
-      init.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable and
-      init.getEnclosingFunction() = f and
+      init.getIRVariable() instanceof IRThisVariable and
+      unique( | | init.getEnclosingFunction()) = f and
       operand instanceof ThisArgumentOperand
     ) and
     not Language::isFunctionVirtual(f) and

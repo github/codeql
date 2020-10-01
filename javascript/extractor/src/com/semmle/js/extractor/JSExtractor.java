@@ -130,15 +130,15 @@ public class JSExtractor {
       if (!config.isTolerateParseErrors()) throw parseError;
       Label key = trapwriter.freshLabel();
       String errorLine = textualExtractor.getLine(parseError.getPosition().getLine());
-      trapwriter.addTuple("jsParseErrors", key, toplevelLabel, "Error: " + parseError, errorLine);
+      trapwriter.addTuple("js_parse_errors", key, toplevelLabel, "Error: " + parseError, errorLine);
       locationManager.emitErrorLocation(
           key, parseError.getPosition(), textualExtractor.getNumLines());
       lexicalExtractor.extractLines(source, toplevelLabel);
     }
 
-    if (config.isExterns()) textualExtractor.getTrapwriter().addTuple("isExterns", toplevelLabel);
+    if (config.isExterns()) textualExtractor.getTrapwriter().addTuple("is_externs", toplevelLabel);
     if (platform == Platform.NODE && sourceType == SourceType.COMMONJS_MODULE)
-      textualExtractor.getTrapwriter().addTuple("isNodejs", toplevelLabel);
+      textualExtractor.getTrapwriter().addTuple("is_nodejs", toplevelLabel);
 
     textualExtractor.getMetrics().stopPhase(ExtractionPhase.JSExtractor_extract);
 

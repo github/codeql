@@ -365,7 +365,7 @@ int callCommand(void)
   return 0;
 }
 
-int shifts(void)
+void shifts(void)
 {
 	unsigned int x = 3;
 
@@ -374,11 +374,50 @@ int shifts(void)
 	if (x >> 1 == 1) {} // always true [NOT DETECTED]
 }
 
-int bitwise_ands()
+void bitwise_ands()
 {
 	unsigned int x = 0xFF;
 
 	if ((x & 2) >= 1) {}
 	if ((x & 2) >= 2) {}
 	if ((x & 2) >= 3) {} // always false
+}
+
+void unsigned_mult(unsigned int x, unsigned int y) {
+  if(x < 13 && y < 35) {
+      if(x * y > 1024) {} // always false
+      if(x * y < 204) {}
+      if(x >= 3 && y >= 2) {
+        if(x * y < 5) {} // always false
+      }
+  }
+}
+
+void mult_rounding() {
+  unsigned long x, y, xy;
+  x = y = 1000000003UL; // 1e9 + 3
+  xy = 1000000006000000009UL; // x * y, precisely
+  // Even though the range analysis wrongly considers x*y to be xy - 9, there
+  // are no PointlessComparison false positives in these tests because alerts
+  // are suppressed when ulp() < 1, which roughly means that the number is
+  // larger than 2^53.
+  if (x * y < xy) {} // always false [NOT DETECTED]
+  if (x * y > xy) {} // always false [NOT DETECTED]
+}
+
+void mult_overflow() {
+  unsigned long x, y;
+  // The following two numbers multiply to 2^64 + 1, which is 1 when truncated
+  // to 64-bit unsigned.
+  x = 274177UL;
+  y = 67280421310721UL;
+  if (x * y == 1) {} // always true [BUG: reported as always false]
+
+  // This bug appears to be caused by
+  // `RangeAnalysisUtils::typeUpperBound(unsigned long)` having a result of
+  // 2**64 + 384, making the range analysis think that the multiplication can't
+  // overflow. The correct `typeUpperBound` would be 2**64 - 1, but we can't
+  // represent that with a QL float or int. We could make `typeUpperBound`
+  // exclusive instead of inclusive, but there is no exclusive upper bound for
+  // floats.
 }

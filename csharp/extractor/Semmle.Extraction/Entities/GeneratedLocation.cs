@@ -28,11 +28,11 @@ namespace Semmle.Extraction.Entities
 
         public override bool Equals(object? obj) => obj != null && obj.GetType() == typeof(GeneratedLocation);
 
-        public static GeneratedLocation Create(Context cx) => GeneratedLocationFactory.Instance.CreateNullableEntity(cx, null);
+        public static GeneratedLocation Create(Context cx) => GeneratedLocationFactory.Instance.CreateEntity(cx, typeof(GeneratedLocation), null);
 
         class GeneratedLocationFactory : ICachedEntityFactory<string?, GeneratedLocation>
         {
-            public static GeneratedLocationFactory Instance = new GeneratedLocationFactory();
+            public static readonly GeneratedLocationFactory Instance = new GeneratedLocationFactory();
 
             public GeneratedLocation Create(Context cx, string? init) => new GeneratedLocation(cx);
         }

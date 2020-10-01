@@ -7,28 +7,28 @@ import python
  * This is an artificial approximation, which is necessary for static analysis.
  */
 class ImportTimeScope extends Scope {
-    ImportTimeScope() { not this.getEnclosingScope*() instanceof Function }
+  ImportTimeScope() { not this.getEnclosingScope*() instanceof Function }
 
-    /**
-     * Whether this scope explicitly defines 'name'.
-     * Does not cover implicit definitions be import *
-     */
-    pragma[nomagic]
-    predicate definesName(string name) {
-        exists(SsaVariable var | name = var.getId() and var.getAUse() = this.getANormalExit())
-    }
+  /**
+   * Whether this scope explicitly defines 'name'.
+   * Does not cover implicit definitions be import *
+   */
+  pragma[nomagic]
+  predicate definesName(string name) {
+    exists(SsaVariable var | name = var.getId() and var.getAUse() = this.getANormalExit())
+  }
 
-    /** Holds if the control flow passes from `outer` to `inner` when this scope starts executing */
-    predicate entryEdge(ControlFlowNode outer, ControlFlowNode inner) {
-        inner = this.getEntryNode() and
-        outer.getNode().(ClassExpr).getInnerScope() = this
-    }
+  /** Holds if the control flow passes from `outer` to `inner` when this scope starts executing */
+  predicate entryEdge(ControlFlowNode outer, ControlFlowNode inner) {
+    inner = this.getEntryNode() and
+    outer.getNode().(ClassExpr).getInnerScope() = this
+  }
 
-    /** Gets the global variable that is used during lookup, should `var` be undefined. */
-    GlobalVariable getOuterVariable(LocalVariable var) {
-        this instanceof Class and
-        var.getScope() = this and
-        result.getScope() = this.getEnclosingModule() and
-        var.getId() = result.getId()
-    }
+  /** Gets the global variable that is used during lookup, should `var` be undefined. */
+  GlobalVariable getOuterVariable(LocalVariable var) {
+    this instanceof Class and
+    var.getScope() = this and
+    result.getScope() = this.getEnclosingModule() and
+    var.getId() = result.getId()
+  }
 }

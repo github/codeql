@@ -97,7 +97,7 @@
 			return e;
 		}
 	}
-	var foo = returnsRejected(new Promise((resolve, reject) => reject(source)));
+	var foo = await returnsRejected(new Promise((resolve, reject) => reject(source)));
 	sink(foo); // NOT OK!
 	
 	new Promise((resolve, reject) => reject("BLA")).catch(x => {return source}).then(x => sink(x)); // NOT OK
@@ -130,3 +130,39 @@
 	
 	Promise.resolve(resolved).then(x => sink(x)); // NOT OK
 })();
+
+
+(async function () {
+	var source = "source";
+  
+	async function async() {
+	  return source;
+	}
+	sink(async()); // OK - wrapped in a promise. (NOT OK for taint-tracking configs)
+	sink(await async()); // NOT OK
+  
+	async function throwsAsync() {
+	  throw source;
+	}
+	try {
+	  throwsAsync();
+	} catch (e) {
+	  sink(e); // OK - throwsAsync just returns a promise.
+	}
+	try {
+	  await throwsAsync();
+	} catch (e) {
+	  sink(e); // NOT OK
+	}
+})();
+
+(function () {
+	var source = "source";
+
+	var bluebird = require("bluebird");
+
+	bluebird.mapSeries(source, x => sink(x)); // NOT OK (for taint-tracking configs)
+
+	const foo = bluebird.mapSeries(source, x => x);
+	sink(foo); // NOT OK (for taint-tracking configs)
+})

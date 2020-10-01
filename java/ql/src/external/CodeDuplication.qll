@@ -77,7 +77,7 @@ private predicate blockCoversStatement(int equivClass, int first, int last, Stmt
 
 private Stmt statementInMethod(Method m) {
   result.getEnclosingCallable() = m and
-  not result instanceof Block
+  not result instanceof BlockStmt
 }
 
 private predicate duplicateStatement(Method m1, Method m2, Stmt s1, Stmt s2) {

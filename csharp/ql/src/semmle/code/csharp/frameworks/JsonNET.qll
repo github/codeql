@@ -106,7 +106,7 @@ module JsonNET {
   private class SerializedMember extends TaintTracking::TaintedMember {
     SerializedMember() {
       // This member has a Json attribute
-      exists(Class attribute | attribute = this.(Attributable).getAnAttribute().getType() |
+      exists(Class attribute | attribute = this.getAnAttribute().getType() |
         attribute.hasName("JsonPropertyAttribute")
         or
         attribute.hasName("JsonDictionaryAttribute")
@@ -135,8 +135,10 @@ module JsonNET {
   class JsonSerializerClass extends JsonClass, LibraryTypeDataFlow {
     JsonSerializerClass() { this.hasName("JsonSerializer") }
 
+    /** Gets the method for `JsonSerializer.Serialize`. */
     Method getSerializeMethod() { result = this.getAMethod("Serialize") }
 
+    /** Gets the method for `JsonSerializer.Deserialize`. */
     Method getDeserializeMethod() { result = this.getAMethod("Deserialize") }
 
     override predicate callableFlow(
@@ -214,7 +216,7 @@ module JsonNET {
         any(Operator op |
           op.getDeclaringType() = this.getABaseType*() and op.getReturnType() instanceof StringType
         ) and
-      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
+      source.(CallableFlowSourceArg).getArgumentIndex() = 0 and
       sink instanceof CallableFlowSinkReturn and
       preservesValue = false
       or

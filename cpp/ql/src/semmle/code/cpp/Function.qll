@@ -3,7 +3,6 @@
  */
 
 import semmle.code.cpp.Location
-import semmle.code.cpp.Member
 import semmle.code.cpp.Class
 import semmle.code.cpp.Parameter
 import semmle.code.cpp.exprs.Call
@@ -269,7 +268,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * block, this gives the block guarded by the try statement. See
    * `FunctionTryStmt` for further information.
    */
-  Block getBlock() { result.getParentScope() = this }
+  BlockStmt getBlock() { result.getParentScope() = this }
 
   /** Holds if this function has an entry point. */
   predicate hasEntryPoint() { exists(getEntryPoint()) }
@@ -277,7 +276,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   /**
    * Gets the first node in this function's control flow graph.
    *
-   * For most functions, this first node will be the `Block` returned by
+   * For most functions, this first node will be the `BlockStmt` returned by
    * `getBlock`. However in C++, the first node can also be a
    * `FunctionTryStmt`.
    */
@@ -514,7 +513,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /** Gets the function which is being declared or defined. */
   override Function getDeclaration() { result = getFunction() }
 
-  override string getCanonicalQLClass() { result = "FunctionDeclarationEntry" }
+  override string getAPrimaryQlClass() { result = "FunctionDeclarationEntry" }
 
   /** Gets the function which is being declared or defined. */
   Function getFunction() { fun_decls(underlyingElement(this), unresolveElement(result), _, _, _) }
@@ -565,7 +564,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    * If this is a function definition, get the block containing the
    * function body.
    */
-  Block getBlock() {
+  BlockStmt getBlock() {
     this.isDefinition() and
     result = getFunction().getBlock() and
     result.getFile() = this.getFile()
@@ -577,7 +576,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    */
   pragma[noopt]
   int getNumberOfLines() {
-    exists(Block b, Location l, int start, int end, int diff | b = getBlock() |
+    exists(BlockStmt b, Location l, int start, int end, int diff | b = getBlock() |
       l = b.getLocation() and
       start = l.getStartLine() and
       end = l.getEndLine() and
@@ -699,7 +698,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
 class TopLevelFunction extends Function {
   TopLevelFunction() { not this.isMember() }
 
-  override string getCanonicalQLClass() { result = "TopLevelFunction" }
+  override string getAPrimaryQlClass() { result = "TopLevelFunction" }
 }
 
 /**
@@ -708,7 +707,7 @@ class TopLevelFunction extends Function {
 class Operator extends Function {
   Operator() { functions(underlyingElement(this), _, 5) }
 
-  override string getCanonicalQLClass() {
+  override string getAPrimaryQlClass() {
     not this instanceof MemberFunction and result = "Operator"
   }
 }
@@ -739,7 +738,7 @@ class TemplateFunction extends Function {
     is_function_template(underlyingElement(this)) and exists(getATemplateArgument())
   }
 
-  override string getCanonicalQLClass() { result = "TemplateFunction" }
+  override string getAPrimaryQlClass() { result = "TemplateFunction" }
 
   /**
    * Gets a compiler-generated instantiation of this function template.
@@ -779,7 +778,7 @@ class FunctionTemplateInstantiation extends Function {
 
   FunctionTemplateInstantiation() { tf.getAnInstantiation() = this }
 
-  override string getCanonicalQLClass() { result = "FunctionTemplateInstantiation" }
+  override string getAPrimaryQlClass() { result = "FunctionTemplateInstantiation" }
 
   /**
    * Gets the function template from which this instantiation was instantiated.
@@ -824,7 +823,7 @@ class FunctionTemplateInstantiation extends Function {
 class FunctionTemplateSpecialization extends Function {
   FunctionTemplateSpecialization() { this.isSpecialization() }
 
-  override string getCanonicalQLClass() { result = "FunctionTemplateSpecialization" }
+  override string getAPrimaryQlClass() { result = "FunctionTemplateSpecialization" }
 
   /**
    * Gets the primary template for the specialization (the function template

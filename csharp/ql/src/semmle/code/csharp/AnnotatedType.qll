@@ -7,6 +7,7 @@
  */
 
 import csharp
+private import TypeRef
 
 private module Annotations {
   newtype TAnnotation =

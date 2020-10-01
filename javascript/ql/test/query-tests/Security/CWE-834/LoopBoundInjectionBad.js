@@ -35,9 +35,9 @@ function whileLoop(val) {
 function useLengthIndirectly(val) {
     var ret = [];
 
-    var len = val.length;
+    var len = val.length; // NOT OK!
 
-    for (var i = 0; i < len; i++) { // NOT OK!
+    for (var i = 0; i < len; i++) {
         ret.push(val[i]);
     }
 }

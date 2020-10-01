@@ -61,13 +61,42 @@ predicate localFlowStep(
  * Holds if an exception thrown from `pred` can propagate locally to `succ`.
  */
 predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
+  localExceptionStepWithAsyncFlag(pred, succ, false)
+}
+
+/**
+ * Holds if an exception thrown from `pred` can propagate locally to `succ`.
+ *
+ * The `async` flag is true if the step involves wrapping the exception in a rejected Promise.
+ */
+predicate localExceptionStepWithAsyncFlag(DataFlow::Node pred, DataFlow::Node succ, boolean async) {
+  exists(DataFlow::Node target | target = getThrowTarget(pred) |
+    // this also covers generators - as the behavior of exceptions is close enough to the behavior of ordinary
+    // functions when it comes to exceptions (assuming that the iterator does not cross function boundaries).
+    async = false and
+    succ = target and
+    not succ = any(DataFlow::FunctionNode f | f.getFunction().isAsync()).getExceptionalReturn()
+    or
+    async = true and
+    exists(DataFlow::FunctionNode f | f.getExceptionalReturn() = target |
+      succ = f.getReturnNode() // returns a rejected promise - therefore using the ordinary return node.
+    )
+  )
+}
+
+/**
+ * Gets the dataflow-node that an exception thrown at `thrower` will flow to.
+ *
+ * The predicate that all functions are not async.
+ */
+DataFlow::Node getThrowTarget(DataFlow::Node thrower) {
   exists(Expr expr |
     expr = any(ThrowStmt throw).getExpr() and
-    pred = expr.flow()
+    thrower = expr.flow()
     or
-    DataFlow::exceptionalInvocationReturnNode(pred, expr)
+    DataFlow::exceptionalInvocationReturnNode(thrower, expr)
   |
-    succ = expr.getExceptionTarget()
+    result = expr.getExceptionTarget()
   )
 }
 
@@ -213,14 +242,14 @@ private module CachedSteps {
 
   /**
    * Holds if there is a flow step from `pred` to `succ` through:
-   * - returning a value from a function call, or
+   * - returning a value from a function call (from the special `FunctionReturnNode`), or
    * - throwing an exception out of a function call, or
    * - the receiver flowing out of a constructor call.
    */
   cached
   predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Function f | calls(succ, f) or callsBound(succ, f, _) |
-      returnExpr(f, pred, _)
+      DataFlow::functionReturnNode(pred, f)
       or
       succ instanceof DataFlow::NewNode and
       DataFlow::thisNode(pred, f)
@@ -403,6 +432,18 @@ private module CachedSteps {
   cached
   predicate receiverPropWrite(Function f, string prop, DataFlow::Node rhs) {
     DataFlow::thisNode(f).hasPropertyWrite(prop, rhs)
+  }
+
+  /**
+   * A step from `pred` to `succ` through a call to an identity function.
+   */
+  cached
+  predicate identityFunctionStep(DataFlow::Node pred, DataFlow::CallNode succ) {
+    exists(DataFlow::GlobalVarRefNode global |
+      global.getName() = "Object" and
+      succ.(DataFlow::MethodCallNode).calls(global, ["freeze", "seal"]) and
+      pred = succ.getArgument(0)
+    )
   }
 }
 

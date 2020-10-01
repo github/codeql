@@ -193,6 +193,18 @@ predicate readStep(Node node1, Content f, Node node2) {
     fr.getField() = f.(FieldContent).getField() and
     fr = node2.asExpr()
   )
+  or
+  exists(Record r, Method getter, Field recf, MethodAccess get |
+    getter.getDeclaringType() = r and
+    recf.getDeclaringType() = r and
+    getter.getNumberOfParameters() = 0 and
+    getter.getName() = recf.getName() and
+    not exists(getter.getBody()) and
+    recf = f.(FieldContent).getField() and
+    get.getMethod() = getter and
+    node1.asExpr() = get.getQualifier() and
+    node2.asExpr() = get
+  )
 }
 
 /**
@@ -209,7 +221,7 @@ predicate clearsContent(Node n, Content c) {
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
  */
-DataFlowType getErasedRepr(Type t) {
+private DataFlowType getErasedRepr(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
     then result.(BoxedType).getPrimitiveType().getName() = "double"
@@ -221,6 +233,9 @@ DataFlowType getErasedRepr(Type t) {
   or
   t instanceof NullType and result instanceof TypeObject
 }
+
+pragma[noinline]
+DataFlowType getNodeType(Node n) { result = getErasedRepr(n.getTypeBound()) }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
 string ppReprType(Type t) {

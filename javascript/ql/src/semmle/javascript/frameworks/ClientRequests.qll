@@ -68,6 +68,11 @@ class ClientRequest extends DataFlow::InvokeNode {
    * wrapped in a promise object.
    */
   DataFlow::Node getAResponseDataNode() { result = getAResponseDataNode(_, _) }
+
+  /**
+   * Gets a data-flow node that determines where in the file-system the result of the request should be saved.
+   */
+  DataFlow::Node getASavePath() { result = self.getASavePath() }
 }
 
 deprecated class CustomClientRequest = ClientRequest::Range;
@@ -103,6 +108,11 @@ module ClientRequest {
      * See the decription of `responseType` in `ClientRequest::getAResponseDataNode`.
      */
     DataFlow::Node getAResponseDataNode(string responseType, boolean promise) { none() }
+
+    /**
+     * Gets a data-flow node that determines where in the file-system the result of the request should be saved.
+     */
+    DataFlow::Node getASavePath() { none() }
   }
 
   /**
@@ -180,6 +190,14 @@ module ClientRequest {
     }
 
     override DataFlow::Node getADataNode() { result = getArgument(1) }
+
+    override DataFlow::Node getASavePath() {
+      exists(DataFlow::CallNode write |
+        write = DataFlow::moduleMember("fs", "createWriteStream").getACall() and
+        write = this.getAMemberCall("pipe").getArgument(0).getALocalSource() and
+        result = write.getArgument(0)
+      )
+    }
   }
 
   /** Gets the string `url` or `uri`. */
@@ -368,6 +386,53 @@ module ClientRequest {
           responseType = "text" and
           promise = true
         )
+    }
+  }
+
+  /**
+   * Gets an instantiation `socket` of `require("net").Socket` type tracked using `t`.
+   */
+  private DataFlow::SourceNode netSocketInstantiation(
+    DataFlow::TypeTracker t, DataFlow::NewNode socket
+  ) {
+    t.start() and
+    socket = DataFlow::moduleMember("net", "Socket").getAnInstantiation() and
+    result = socket
+    or
+    exists(DataFlow::TypeTracker t2 | result = netSocketInstantiation(t2, socket).track(t2, t))
+  }
+
+  /**
+   * A model of a request made using `(new require("net").Socket()).connect(args);`.
+   */
+  class NetSocketRequest extends ClientRequest::Range {
+    DataFlow::NewNode socket;
+
+    NetSocketRequest() {
+      this = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMethodCall("connect")
+    }
+
+    override DataFlow::Node getUrl() {
+      result = getArgument([0, 1]) // there are multiple overrides of `connect`, and the URL can be in the first or second argument.
+    }
+
+    override DataFlow::Node getHost() { result = getOptionArgument(0, "host") }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      responseType = "text" and
+      promise = false and
+      exists(DataFlow::CallNode call |
+        call = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMemberCall("on") and
+        call.getArgument(0).mayHaveStringValue("data") and
+        result = call.getABoundCallbackParameter(1, 0)
+      )
+    }
+
+    override DataFlow::Node getADataNode() {
+      exists(DataFlow::CallNode call |
+        call = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMemberCall("write") and
+        result = call.getArgument(0)
+      )
     }
   }
 
@@ -632,6 +697,10 @@ module ClientRequest {
     override DataFlow::Node getHost() { none() }
 
     override DataFlow::Node getADataNode() { none() }
+
+    override DataFlow::Node getASavePath() {
+      result = this.getArgument(1).getALocalSource().getAPropertyWrite("target").getRhs()
+    }
   }
 
   /**

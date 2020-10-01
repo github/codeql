@@ -3,13 +3,14 @@
  * such as methods and operators.
  */
 
-import Type
 import Member
 import Stmt
+import Type
 import exprs.Call
 private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.metrics.Complexity
+private import TypeRef
 
 /**
  * An element that can be called.
@@ -31,68 +32,12 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * Gets the body of this callable, if any.
    *
    * The body is either a `BlockStmt` or an `Expr`.
-   */
-  final ControlFlowElement getBody() {
-    result = this.getStatementBody() or
-    result = this.getExpressionBody()
-  }
-
-  /**
-   * Gets a body of this callable, if any.
    *
-   * Unlike `getBody()`, this predicate may return multiple bodies, in the case
-   * where the same callable is compiled multiple times. For example, if we
-   * compile both `A.cs`
+   * Normally, each callable will have at most one body, except in the case where
+   * the same callable is compiled multiple times. For example, if we compile
+   * both `A.cs`
    *
-   * ```
-   * namespaces N {
-   *   public class C {
-   *     public int M() => 0;
-   *   }
-   * }
-   * ```
-   *
-   * and later `B.cs`
-   *
-   * ```
-   * namespaces N {
-   *   public class C {
-   *     public int M() { return 1; }
-   *   }
-   * }
-   * ```
-   *
-   * to the same assembly, then both `0` and `{ return 1; }` are bodies of `N.C.M()`.
-   */
-  final ControlFlowElement getABody() {
-    result = this.getAStatementBody() or
-    result = this.getAnExpressionBody()
-  }
-
-  override predicate hasBody() { exists(getBody()) }
-
-  /**
-   * Holds if this callable has a non-empty body. That is, either it has
-   * an expression body, or it has a non-empty statement body.
-   */
-  predicate hasNonEmptyBody() {
-    this.hasExpressionBody()
-    or
-    this.hasStatementBody() and
-    not this.getStatementBody().stripSingletonBlocks().(BlockStmt).isEmpty()
-  }
-
-  /** Gets the statement body of this callable, if any. */
-  final BlockStmt getStatementBody() { result = this.getAChildStmt() }
-
-  /**
-   * Gets a statement body of this callable, if any.
-   *
-   * Unlike `getStatementBody()`, this predicate may return multiple bodies, in
-   * the case where the same callable is compiled multiple times. For example,
-   * if we compile both `A.cs`
-   *
-   * ```
+   * ```csharp
    * namespaces N {
    *   public class C {
    *     public int M() { return 0; }
@@ -102,7 +47,56 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    *
    * and later `B.cs`
    *
+   * ```csharp
+   * namespaces N {
+   *   public class C {
+   *     public int M() => 1;
+   *   }
+   * }
    * ```
+   *
+   * then both `{ return 0; }` and `1` are bodies of `N.C.M()`.
+   */
+  final ControlFlowElement getBody() {
+    result = this.getStatementBody() or
+    result = this.getExpressionBody()
+  }
+
+  /**
+   * DEPRECATED: Use `getBody()` instead.
+   */
+  deprecated final ControlFlowElement getABody() { result = this.getBody() }
+
+  override predicate hasBody() { exists(this.getBody()) }
+
+  /**
+   * Holds if this callable has a non-empty body. That is, either it has
+   * an expression body, or it has a non-empty statement body.
+   */
+  predicate hasNonEmptyBody() {
+    this.hasExpressionBody()
+    or
+    this.getStatementBody().stripSingletonBlocks() = any(Stmt s | not s.(BlockStmt).isEmpty())
+  }
+
+  /**
+   * Gets the statement body of this callable, if any.
+   *
+   * Normally, each callable will have at most one statement body, except in the
+   * case where the same callable is compiled multiple times. For example, if
+   * we compile both `A.cs`
+   *
+   * ```csharp
+   * namespaces N {
+   *   public class C {
+   *     public int M() { return 0; }
+   *   }
+   * }
+   * ```
+   *
+   * and later `B.cs`
+   *
+   * ```csharp
    * namespaces N {
    *   public class C {
    *     public int M() { return 1; }
@@ -110,25 +104,27 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * }
    * ```
    *
-   * to the same assembly, then both `{ return 0; }` and `{ return 1; }` are
-   * statement bodies of `N.C.M()`.
+   * then both `{ return 0; }` and `{ return 1; }` are statement bodies of
+   * `N.C.M()`.
    */
-  final BlockStmt getAStatementBody() { stmt_parent_top_level(result, _, this) }
+  final BlockStmt getStatementBody() { result = this.getAChildStmt() }
+
+  /**
+   * DEPRECATED: Use `getStatementBody` instead.
+   */
+  final BlockStmt getAStatementBody() { result = this.getStatementBody() }
 
   /** Holds if this callable has a statement body. */
   final predicate hasStatementBody() { exists(getStatementBody()) }
 
-  /** Gets the expression body of this callable (if any), specified by `=>`. */
-  final Expr getExpressionBody() { result = this.getChildExpr(0) }
-
   /**
-   * Gets an expression body of this callable (if any), specified by `=>`.
+   * Gets the expression body of this callable (if any), specified by `=>`.
    *
-   * Unlike `getExpressionBody()`, this predicate may return multiple bodies, in
-   * the case where the same callable is compiled multiple times. For example,
-   * if we compile both `A.cs`
+   * Normally, each callable will have at most one expression body, except in the
+   * case where the same callable is compiled multiple times. For example, if
+   * we compile both `A.cs`
    *
-   * ```
+   * ```csharp
    * namespaces N {
    *   public class C {
    *     public int M() => 0;
@@ -138,7 +134,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    *
    * and later `B.cs`
    *
-   * ```
+   * ```csharp
    * namespaces N {
    *   public class C {
    *     public int M() => 1;
@@ -146,9 +142,17 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * }
    * ```
    *
-   * to the same assembly, then both `0` and `1` are expression bodies of `N.C.M()`.
+   * then both `0` and `1` are expression bodies of `N.C.M()`.
    */
-  final Expr getAnExpressionBody() { expr_parent_top_level_adjusted(result, 0, this) }
+  final Expr getExpressionBody() {
+    result = this.getAChildExpr() and
+    not result = this.(Constructor).getInitializer()
+  }
+
+  /**
+   * DEPRECATED: Use `getExpressionBody()` instead.
+   */
+  deprecated final Expr getAnExpressionBody() { result = this.getExpressionBody() }
 
   /** Holds if this callable has an expression body. */
   final predicate hasExpressionBody() { exists(getExpressionBody()) }
@@ -223,7 +227,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
 /**
  * A method, for example
  *
- * ```
+ * ```csharp
  * public override bool Equals(object other) {
  *   ...
  * }
@@ -284,12 +288,14 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   override Parameter getRawParameter(int i) {
     if this.isStatic() then result = this.getParameter(i) else result = this.getParameter(i - 1)
   }
+
+  override string getAPrimaryQlClass() { result = "Method" }
 }
 
 /**
  * An extension method, for example
  *
- * ```
+ * ```csharp
  * static bool IsDefined(this Widget w) {
  *   ...
  * }
@@ -302,12 +308,14 @@ class ExtensionMethod extends Method {
 
   /** Gets the type being extended by this method. */
   Type getExtendedType() { result = getParameter(0).getType() }
+
+  override string getAPrimaryQlClass() { result = "ExtensionMethod" }
 }
 
 /**
  * A constructor, for example `public C() { }` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public C() { }
  * }
@@ -326,7 +334,7 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
    * the initializer of the constructor on line 2 is `this(null)`
    * on line 3 in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public C()
    *     : this(null) { ... }
@@ -361,7 +369,7 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
  * A static constructor (as opposed to an instance constructor),
  * for example `static public C() { }` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   static public C() { }
  * }
@@ -371,13 +379,15 @@ class StaticConstructor extends Constructor {
   StaticConstructor() { this.isStatic() }
 
   override string getUndecoratedName() { result = ".cctor" }
+
+  override string getAPrimaryQlClass() { result = "StaticConstructor" }
 }
 
 /**
  * An instance constructor (as opposed to a static constructor),
  * for example `public C() { }` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public C() { }
  * }
@@ -385,12 +395,14 @@ class StaticConstructor extends Constructor {
  */
 class InstanceConstructor extends Constructor {
   InstanceConstructor() { not this.isStatic() }
+
+  override string getAPrimaryQlClass() { result = "InstanceConstructor" }
 }
 
 /**
  * A destructor, for example `~C() { }` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   ~C() { }
  * }
@@ -413,6 +425,8 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
   override Location getALocation() { destructor_location(this, result) }
 
   override string toString() { result = Callable.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "Destructor" }
 }
 
 /**
@@ -427,6 +441,9 @@ class Operator extends Callable, Member, Attributable, @operator {
 
   override string getName() { operators(this, _, result, _, _, _) }
 
+  /**
+   * Gets the metadata name of the operator, such as `op_implicit` or `op_RightShift`.
+   */
   string getFunctionName() { none() }
 
   override ValueOrRefType getDeclaringType() { operators(this, _, _, result, _, _) }
@@ -461,7 +478,7 @@ class UnaryOperator extends Operator {
 /**
  * A user-defined plus operator (`+`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator +(Widget w) {
  *   ...
  * }
@@ -471,12 +488,14 @@ class PlusOperator extends UnaryOperator {
   PlusOperator() { this.getName() = "+" }
 
   override string getFunctionName() { result = "op_UnaryPlus" }
+
+  override string getAPrimaryQlClass() { result = "PlusOperator" }
 }
 
 /**
  * A user-defined minus operator (`-`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator -(Widget w) {
  *   ...
  * }
@@ -486,12 +505,14 @@ class MinusOperator extends UnaryOperator {
   MinusOperator() { this.getName() = "-" }
 
   override string getFunctionName() { result = "op_UnaryNegation" }
+
+  override string getAPrimaryQlClass() { result = "MinusOperator" }
 }
 
 /**
  * A user-defined not operator (`!`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator !(Widget w) {
  *   ...
  * }
@@ -501,12 +522,14 @@ class NotOperator extends UnaryOperator {
   NotOperator() { this.getName() = "!" }
 
   override string getFunctionName() { result = "op_LogicalNot" }
+
+  override string getAPrimaryQlClass() { result = "NotOperator" }
 }
 
 /**
  * A user-defined complement operator (`~`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator ~(Widget w) {
  *   ...
  * }
@@ -516,12 +539,14 @@ class ComplementOperator extends UnaryOperator {
   ComplementOperator() { this.getName() = "~" }
 
   override string getFunctionName() { result = "op_OnesComplement" }
+
+  override string getAPrimaryQlClass() { result = "ComplementOperator" }
 }
 
 /**
  * A user-defined increment operator (`++`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator ++(Widget w) {
  *   ...
  * }
@@ -531,12 +556,14 @@ class IncrementOperator extends UnaryOperator {
   IncrementOperator() { this.getName() = "++" }
 
   override string getFunctionName() { result = "op_Increment" }
+
+  override string getAPrimaryQlClass() { result = "IncrementOperator" }
 }
 
 /**
  * A user-defined decrement operator (`--`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator --(Widget w) {
  *   ...
  * }
@@ -546,12 +573,14 @@ class DecrementOperator extends UnaryOperator {
   DecrementOperator() { this.getName() = "--" }
 
   override string getFunctionName() { result = "op_Decrement" }
+
+  override string getAPrimaryQlClass() { result = "DecrementOperator" }
 }
 
 /**
  * A user-defined false operator (`false`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator false(Widget w) {
  *   ...
  * }
@@ -561,12 +590,14 @@ class FalseOperator extends UnaryOperator {
   FalseOperator() { this.getName() = "false" }
 
   override string getFunctionName() { result = "op_False" }
+
+  override string getAPrimaryQlClass() { result = "FalseOperator" }
 }
 
 /**
  * A user-defined true operator (`true`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator true(Widget w) {
  *   ...
  * }
@@ -576,6 +607,8 @@ class TrueOperator extends UnaryOperator {
   TrueOperator() { this.getName() = "true" }
 
   override string getFunctionName() { result = "op_True" }
+
+  override string getAPrimaryQlClass() { result = "TrueOperator" }
 }
 
 /**
@@ -598,7 +631,7 @@ class BinaryOperator extends Operator {
 /**
  * A user-defined addition operator (`+`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator +(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -608,12 +641,14 @@ class AddOperator extends BinaryOperator {
   AddOperator() { this.getName() = "+" }
 
   override string getFunctionName() { result = "op_Addition" }
+
+  override string getAPrimaryQlClass() { result = "AddOperator" }
 }
 
 /**
  * A user-defined subtraction operator (`-`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator -(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -623,12 +658,14 @@ class SubOperator extends BinaryOperator {
   SubOperator() { this.getName() = "-" }
 
   override string getFunctionName() { result = "op_Subtraction" }
+
+  override string getAPrimaryQlClass() { result = "SubOperator" }
 }
 
 /**
  * A user-defined multiplication operator (`*`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator *(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -638,12 +675,14 @@ class MulOperator extends BinaryOperator {
   MulOperator() { this.getName() = "*" }
 
   override string getFunctionName() { result = "op_Multiply" }
+
+  override string getAPrimaryQlClass() { result = "MulOperator" }
 }
 
 /**
  * A user-defined division operator (`/`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator /(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -653,12 +692,14 @@ class DivOperator extends BinaryOperator {
   DivOperator() { this.getName() = "/" }
 
   override string getFunctionName() { result = "op_Division" }
+
+  override string getAPrimaryQlClass() { result = "DivOperator" }
 }
 
 /**
  * A user-defined remainder operator (`%`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator %(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -668,12 +709,14 @@ class RemOperator extends BinaryOperator {
   RemOperator() { this.getName() = "%" }
 
   override string getFunctionName() { result = "op_Modulus" }
+
+  override string getAPrimaryQlClass() { result = "RemOperator" }
 }
 
 /**
  * A user-defined and operator (`&`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator &(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -683,12 +726,14 @@ class AndOperator extends BinaryOperator {
   AndOperator() { this.getName() = "&" }
 
   override string getFunctionName() { result = "op_BitwiseAnd" }
+
+  override string getAPrimaryQlClass() { result = "AndOperator" }
 }
 
 /**
  * A user-defined or operator (`|`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator |(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -698,12 +743,14 @@ class OrOperator extends BinaryOperator {
   OrOperator() { this.getName() = "|" }
 
   override string getFunctionName() { result = "op_BitwiseOr" }
+
+  override string getAPrimaryQlClass() { result = "OrOperator" }
 }
 
 /**
  * A user-defined xor operator (`^`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator ^(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -713,12 +760,14 @@ class XorOperator extends BinaryOperator {
   XorOperator() { this.getName() = "^" }
 
   override string getFunctionName() { result = "op_ExclusiveOr" }
+
+  override string getAPrimaryQlClass() { result = "XorOperator" }
 }
 
 /**
  * A user-defined left shift operator (`<<`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator <<(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -728,12 +777,14 @@ class LShiftOperator extends BinaryOperator {
   LShiftOperator() { this.getName() = "<<" }
 
   override string getFunctionName() { result = "op_LeftShift" }
+
+  override string getAPrimaryQlClass() { result = "LShiftOperator" }
 }
 
 /**
  * A user-defined right shift operator (`>>`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator >>(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -743,12 +794,14 @@ class RShiftOperator extends BinaryOperator {
   RShiftOperator() { this.getName() = ">>" }
 
   override string getFunctionName() { result = "op_RightShift" }
+
+  override string getAPrimaryQlClass() { result = "RShiftOperator" }
 }
 
 /**
  * A user-defined equals operator (`==`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator ==(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -758,12 +811,14 @@ class EQOperator extends BinaryOperator {
   EQOperator() { this.getName() = "==" }
 
   override string getFunctionName() { result = "op_Equality" }
+
+  override string getAPrimaryQlClass() { result = "EQOperator" }
 }
 
 /**
  * A user-defined not equals operator (`!=`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator !=(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -773,12 +828,14 @@ class NEOperator extends BinaryOperator {
   NEOperator() { this.getName() = "!=" }
 
   override string getFunctionName() { result = "op_Inequality" }
+
+  override string getAPrimaryQlClass() { result = "NEOperator" }
 }
 
 /**
  * A user-defined lesser than operator (`<`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator <(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -788,12 +845,14 @@ class LTOperator extends BinaryOperator {
   LTOperator() { this.getName() = "<" }
 
   override string getFunctionName() { result = "op_LessThan" }
+
+  override string getAPrimaryQlClass() { result = "LTOperator" }
 }
 
 /**
  * A user-defined greater than operator (`>`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator >(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -803,12 +862,14 @@ class GTOperator extends BinaryOperator {
   GTOperator() { this.getName() = ">" }
 
   override string getFunctionName() { result = "op_GreaterThan" }
+
+  override string getAPrimaryQlClass() { result = "GTOperator" }
 }
 
 /**
  * A user-defined less than or equals operator (`<=`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator <=(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -818,12 +879,14 @@ class LEOperator extends BinaryOperator {
   LEOperator() { this.getName() = "<=" }
 
   override string getFunctionName() { result = "op_LessThanOrEqual" }
+
+  override string getAPrimaryQlClass() { result = "LEOperator" }
 }
 
 /**
  * A user-defined greater than or equals operator (`>=`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator >=(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -833,12 +896,14 @@ class GEOperator extends BinaryOperator {
   GEOperator() { this.getName() = ">=" }
 
   override string getFunctionName() { result = "op_GreaterThanOrEqual" }
+
+  override string getAPrimaryQlClass() { result = "GEOperator" }
 }
 
 /**
  * A user-defined conversion operator, for example
  *
- * ```
+ * ```csharp
  * public static implicit operator int(BigInteger i) {
  *   ...
  * }
@@ -860,7 +925,7 @@ class ConversionOperator extends Operator {
 /**
  * A user-defined implicit conversion operator, for example
  *
- * ```
+ * ```csharp
  * public static implicit operator int(BigInteger i) {
  *   ...
  * }
@@ -870,12 +935,14 @@ class ImplicitConversionOperator extends ConversionOperator {
   ImplicitConversionOperator() { this.getName() = "implicit conversion" }
 
   override string getFunctionName() { result = "op_Implicit" }
+
+  override string getAPrimaryQlClass() { result = "ImplicitConversionOperator" }
 }
 
 /**
  * A user-defined explicit conversion operator, for example
  *
- * ```
+ * ```csharp
  * public static explicit operator int(BigInteger i) {
  *   ...
  * }
@@ -885,13 +952,15 @@ class ExplicitConversionOperator extends ConversionOperator {
   ExplicitConversionOperator() { this.getName() = "explicit conversion" }
 
   override string getFunctionName() { result = "op_Explicit" }
+
+  override string getAPrimaryQlClass() { result = "ExplicitConversionOperator" }
 }
 
 /**
  * A local function, defined within the scope of another callable.
  * For example, `Fac` on lines 2--4 in
  *
- * ```
+ * ```csharp
  * int Choose(int n, int m) {
  *   int Fac(int x) {
  *     return x > 1 ? x * Fac(x - 1) : 1;
@@ -923,4 +992,6 @@ class LocalFunction extends Callable, Modifiable, @local_function {
   override Location getALocation() { result = getStatement().getALocation() }
 
   override Parameter getRawParameter(int i) { result = getParameter(i) }
+
+  override string getAPrimaryQlClass() { result = "LocalFunction" }
 }

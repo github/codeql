@@ -54,7 +54,7 @@ Code injection in Apache struts
 .. note::
 
    More details on the CVE can be found here: https://securitylab.github.com/research/apache-struts-CVE-2018-11776 and 
-   https://github.com/github/security-lab/tree/master/CodeQL_Queries/java/Apache_Struts_CVE-2018-11776
+   https://github.com/github/security-lab/tree/main/CodeQL_Queries/java/Apache_Struts_CVE-2018-11776
 
    More details on OGNL can be found here: https://commons.apache.org/proper/commons-ognl/
 

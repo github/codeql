@@ -23,6 +23,8 @@ class EqualityOperation extends ComparisonOperation, @equality_op_expr { }
  */
 class EQExpr extends EqualityOperation, @eq_expr {
   override string getOperator() { result = "==" }
+
+  override string getAPrimaryQlClass() { result = "EQExpr" }
 }
 
 /**
@@ -30,6 +32,8 @@ class EQExpr extends EqualityOperation, @eq_expr {
  */
 class NEExpr extends EqualityOperation, @ne_expr {
   override string getOperator() { result = "!=" }
+
+  override string getAPrimaryQlClass() { result = "NEExpr" }
 }
 
 /**
@@ -53,6 +57,9 @@ class RelationalOperation extends ComparisonOperation, @rel_op_expr {
    * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
    */
   Expr getLesserOperand() { none() }
+
+  /** Holds if this comparison is strict, i.e. `<` or `>`. */
+  predicate isStrict() { this instanceof LTExpr or this instanceof GTExpr }
 }
 
 /**
@@ -64,6 +71,8 @@ class GTExpr extends RelationalOperation, @gt_expr {
   override Expr getGreaterOperand() { result = getLeftOperand() }
 
   override Expr getLesserOperand() { result = getRightOperand() }
+
+  override string getAPrimaryQlClass() { result = "GTExpr" }
 }
 
 /**
@@ -75,6 +84,8 @@ class LTExpr extends RelationalOperation, @lt_expr {
   override Expr getGreaterOperand() { result = getRightOperand() }
 
   override Expr getLesserOperand() { result = getLeftOperand() }
+
+  override string getAPrimaryQlClass() { result = "LTExpr" }
 }
 
 /**
@@ -86,6 +97,8 @@ class GEExpr extends RelationalOperation, @ge_expr {
   override Expr getGreaterOperand() { result = getLeftOperand() }
 
   override Expr getLesserOperand() { result = getRightOperand() }
+
+  override string getAPrimaryQlClass() { result = "GEExpr" }
 }
 
 /**
@@ -97,4 +110,6 @@ class LEExpr extends RelationalOperation, @le_expr {
   override Expr getGreaterOperand() { result = getRightOperand() }
 
   override Expr getLesserOperand() { result = getLeftOperand() }
+
+  override string getAPrimaryQlClass() { result = "LEExpr" }
 }

@@ -14,37 +14,37 @@
 import python
 
 predicate func_with_side_effects(Expr e) {
-    exists(string name | name = e.(Attribute).getName() or name = e.(Name).getId() |
-        name = "print" or
-        name = "write" or
-        name = "append" or
-        name = "pop" or
-        name = "remove" or
-        name = "discard" or
-        name = "delete" or
-        name = "close" or
-        name = "open" or
-        name = "exit"
-    )
+  exists(string name | name = e.(Attribute).getName() or name = e.(Name).getId() |
+    name = "print" or
+    name = "write" or
+    name = "append" or
+    name = "pop" or
+    name = "remove" or
+    name = "discard" or
+    name = "delete" or
+    name = "close" or
+    name = "open" or
+    name = "exit"
+  )
 }
 
 predicate call_with_side_effect(Call e) {
-    e.getAFlowNode() = Value::named("subprocess.call").getACall()
-    or
-    e.getAFlowNode() = Value::named("subprocess.check_call").getACall()
-    or
-    e.getAFlowNode() = Value::named("subprocess.check_output").getACall()
+  e.getAFlowNode() = Value::named("subprocess.call").getACall()
+  or
+  e.getAFlowNode() = Value::named("subprocess.check_call").getACall()
+  or
+  e.getAFlowNode() = Value::named("subprocess.check_output").getACall()
 }
 
 predicate probable_side_effect(Expr e) {
-    // Only consider explicit yields, not artificial ones in comprehensions
-    e instanceof Yield and not exists(Comp c | c.contains(e))
-    or
-    e instanceof YieldFrom
-    or
-    e instanceof Call and func_with_side_effects(e.(Call).getFunc())
-    or
-    e instanceof Call and call_with_side_effect(e)
+  // Only consider explicit yields, not artificial ones in comprehensions
+  e instanceof Yield and not exists(Comp c | c.contains(e))
+  or
+  e instanceof YieldFrom
+  or
+  e instanceof Call and func_with_side_effects(e.(Call).getFunc())
+  or
+  e instanceof Call and call_with_side_effect(e)
 }
 
 from Assert a, Expr e

@@ -4,6 +4,6 @@
     "slevesque.vscode-zipexplorer"
   ],
   "settings": {
-    "codeQL.experimentalBqrsParsing": true
+    "codeQL.runningQueries.memory": 2048
   }
 }

@@ -44,7 +44,7 @@ class PointlessLoop extends WhileStmt {
     getCondition().(BooleanLiteral).getBooleanValue() = true and
     // The only `break` must be the last statement.
     forall(BreakStmt break | break.(JumpStmt).getTarget() = this |
-      this.getStmt().(Block).getLastStmt() = break
+      this.getStmt().(BlockStmt).getLastStmt() = break
     ) and
     // No `continue` statements.
     not exists(ContinueStmt continue | continue.(JumpStmt).getTarget() = this)

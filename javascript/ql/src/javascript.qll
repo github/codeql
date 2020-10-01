@@ -5,6 +5,7 @@
 import Customizations
 import semmle.javascript.Aliases
 import semmle.javascript.AMD
+import semmle.javascript.ApiGraphs
 import semmle.javascript.Arrays
 import semmle.javascript.AST
 import semmle.javascript.BasicBlocks
@@ -27,6 +28,7 @@ import semmle.javascript.Extend
 import semmle.javascript.Externs
 import semmle.javascript.Files
 import semmle.javascript.Functions
+import semmle.javascript.Generators
 import semmle.javascript.GlobalAccessPaths
 import semmle.javascript.HTML
 import semmle.javascript.HtmlSanitizers
@@ -34,6 +36,7 @@ import semmle.javascript.InclusionTests
 import semmle.javascript.JSDoc
 import semmle.javascript.JSON
 import semmle.javascript.JsonParsers
+import semmle.javascript.JsonStringifiers
 import semmle.javascript.JSX
 import semmle.javascript.Lines
 import semmle.javascript.Locations

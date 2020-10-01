@@ -51,7 +51,7 @@ private module AccessImpl {
 /**
  * A `this` access, for example `this` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   int Count;
  *
@@ -64,7 +64,7 @@ private module AccessImpl {
  * Note that a `this` access may be implicit, for example the implicit `this`
  * qualifier on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   int Count;
  *
@@ -78,12 +78,14 @@ class ThisAccess extends Access, @this_access_expr {
   override Class getTarget() { result = this.getEnclosingCallable().getDeclaringType() }
 
   override string toString() { result = "this access" }
+
+  override string getAPrimaryQlClass() { result = "ThisAccess" }
 }
 
 /**
  * A `base` access, for example `base` on line 2 in
  *
- * ```
+ * ```csharp
  * public override void Dispose() {
  *   base.Dispose();
  *   ...
@@ -96,6 +98,8 @@ class BaseAccess extends Access, @base_access_expr {
   }
 
   override string toString() { result = "base access" }
+
+  override string getAPrimaryQlClass() { result = "BaseAccess" }
 }
 
 /**
@@ -211,7 +215,7 @@ class LocalScopeVariableWrite extends LocalScopeVariableAccess, VariableWrite { 
 /**
  * An access to a parameter, for example the access to `p` on line 2 in
  *
- * ```
+ * ```csharp
  * int M(int p) {
  *   return -p;
  * }
@@ -221,13 +225,15 @@ class ParameterAccess extends LocalScopeVariableAccess, @parameter_access_expr {
   override Parameter getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to parameter " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "ParameterAccess" }
 }
 
 /**
  * An access to a parameter that reads the underlying value, for example
  * the access to `p` on line 2 in
  *
- * ```
+ * ```csharp
  * int M(int p) {
  *   return -p;
  * }
@@ -245,7 +251,7 @@ class ParameterRead extends ParameterAccess, LocalScopeVariableRead {
  * An access to a parameter that updates the underlying value, for example
  * the access to `p` on line 2 in
  *
- * ```
+ * ```csharp
  * int M(int p) {
  *   p = 1;
  *   return p;
@@ -257,7 +263,7 @@ class ParameterWrite extends ParameterAccess, VariableWrite { }
 /**
  * An access to a local variable, for example the access to `x` on line 3 in
  *
- * ```
+ * ```csharp
  * int M(int p) {
  *   var x = -p;
  *   return x;
@@ -273,13 +279,15 @@ class LocalVariableAccess extends LocalScopeVariableAccess, @local_variable_acce
     not this instanceof LocalVariableDeclExpr and
     result = "access to local variable " + this.getTarget().getName()
   }
+
+  override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
 }
 
 /**
  * An access to a local variable that reads the underlying value, for example
  * the access to `x` on line 3 in
  *
- * ```
+ * ```csharp
  * int M(int p) {
  *   var x = -p;
  *   return x;
@@ -298,7 +306,7 @@ class LocalVariableRead extends LocalVariableAccess, LocalScopeVariableRead {
  * An access to a local variable that updates the underlying value, for example
  * the access to `x` on line 3 in
  *
- * ```
+ * ```csharp
  * int M(int p) {
  *   int x;
  *   x = -p;
@@ -311,7 +319,7 @@ class LocalVariableWrite extends LocalVariableAccess, VariableWrite { }
 /**
  * An access to a field, for example the access to `F` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   int F = 0;
  *
@@ -325,13 +333,15 @@ class FieldAccess extends AssignableMemberAccess, VariableAccess, @field_access_
   override Field getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to field " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "FieldAccess" }
 }
 
 /**
  * An access to a field that reads the underlying value, for example the
  * access to `F` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   int F = 0;
  *
@@ -347,7 +357,7 @@ class FieldRead extends FieldAccess, VariableRead { }
  * An access to a field that updates the underlying value, for example the
  * access to `F` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   int F = 0;
  *
@@ -362,7 +372,7 @@ class FieldWrite extends FieldAccess, VariableWrite { }
 /**
  * An access to a member (field), for example the access to `F` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   const int F = 0;
  *
@@ -378,6 +388,8 @@ class MemberConstantAccess extends FieldAccess {
   override MemberConstant getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to constant " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "MemberConstantAccess" }
 }
 
 /**
@@ -399,7 +411,7 @@ library class PropertyAccessExpr extends Expr, @property_access_expr {
 /**
  * An access to a property, for example the access to `P` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   int P { get; private set; }
  *
@@ -417,7 +429,7 @@ class PropertyAccess extends AssignableMemberAccess, PropertyAccessExpr {
  * An access to a property that reads the underlying value, for example
  * the access to `P` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   int P { get; private set; }
  *
@@ -437,7 +449,7 @@ class PropertyRead extends PropertyAccess, AssignableRead {
  * An access to a property that updates the underlying value, for example the
  * access to `P` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   int P { get; private set; }
  *
@@ -453,7 +465,7 @@ class PropertyWrite extends PropertyAccess, AssignableWrite { }
  * An access to a trivial property - a property with a default getter and
  * setter. For example, the access to `P` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   int P { get; private set; }
  *
@@ -471,7 +483,7 @@ class TrivialPropertyAccess extends PropertyAccess {
  * An access to a virtual property - a property that is virtual or defined in
  * an interface. For example, the access to `P` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   virtual int P { get; private set; }
  *
@@ -534,7 +546,7 @@ library class IndexerAccessExpr extends Expr, @indexer_access_expr {
 /**
  * An access to an indexer, for example the access to `c` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public string this[int i] { ... }
  *
@@ -556,7 +568,7 @@ class IndexerAccess extends AssignableMemberAccess, ElementAccess, IndexerAccess
  * An access to an indexer that reads the underlying value, for example the
  * access to `c` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public string this[int i] { ... }
  *
@@ -576,7 +588,7 @@ class IndexerRead extends IndexerAccess, ElementRead {
  * An access to an indexer that updates the underlying value, for example the
  * access to `c` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public string this[int i] { ... }
  *
@@ -592,7 +604,7 @@ class IndexerWrite extends IndexerAccess, ElementWrite { }
  * An access to a virtual indexer - an indexer that is virtual or defined in
  * an interface. For example, the access to `c` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public virtual string this[int i] { ... }
  *
@@ -600,6 +612,7 @@ class IndexerWrite extends IndexerAccess, ElementWrite { }
  *     return c[0];
  *   }
  * }
+ * ```
  */
 class VirtualIndexerAccess extends IndexerAccess {
   VirtualIndexerAccess() { targetIsOverridableOrImplementable() }
@@ -620,7 +633,7 @@ library class EventAccessExpr extends Expr, @event_access_expr {
  * An access to an event, for example the accesses to `Click` on lines
  * 7 and 8 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public delegate void EventHandler(object sender, object e);
  *
@@ -635,13 +648,15 @@ library class EventAccessExpr extends Expr, @event_access_expr {
  */
 class EventAccess extends AssignableMemberAccess, EventAccessExpr {
   override Event getTarget() { result = getEvent() }
+
+  override string getAPrimaryQlClass() { result = "EventAccess" }
 }
 
 /**
  * An access to an event that reads the underlying value, for example the
  * accesses to `Click` on lines 7 and 8 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public delegate void EventHandler(object sender, object e);
  *
@@ -660,7 +675,7 @@ class EventRead extends EventAccess, AssignableRead { }
  * An access to an event that updates the underlying value, for example the
  * access to `Click` on line 7 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public delegate void EventHandler(object sender, object e);
  *
@@ -678,7 +693,7 @@ class EventWrite extends EventAccess, AssignableWrite { }
  * An access to a virtual event - an event that is virtual or defined in
  * an interface. For example, the accesses to `Click` on lines 7 and 8 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public delegate void EventHandler(object sender, object e);
  *
@@ -708,7 +723,7 @@ class CallableAccess extends Access, @method_access_expr {
 /**
  * An access to a method, for example the access to `Filter` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   bool Filter(string s) { ... }
  *
@@ -726,12 +741,14 @@ class MethodAccess extends MemberAccess, CallableAccess {
   override Method getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to method " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "MethodAccess" }
 }
 
 /**
  * An access to a local function, for example the access to `Filter` on line 4 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public IEnumerable<string> DoFilter(IEnumerable<string> list) {
  *     bool Filter(string s) { ... };
@@ -749,13 +766,15 @@ class LocalFunctionAccess extends CallableAccess {
   override LocalFunction getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to local function " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "LocalFunctionAccess" }
 }
 
 /**
  * An access to a virtual method - a method that is virtual or defined in
  * an interface. For example, the access to `Filter` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public virtual bool Filter(string s) { ... }
  *
@@ -774,7 +793,7 @@ class VirtualMethodAccess extends MethodAccess {
 /**
  * An access to a type, for example the access to `C` on line 3 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public Type GetCType() {
  *     return typeof(C);
@@ -786,12 +805,14 @@ class TypeAccess extends MemberAccess, @type_access_expr {
   override Type getTarget() { result = this.getType() }
 
   override string toString() { result = "access to type " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "TypeAccess" }
 }
 
 /**
  * An access to an array, for example the access to `args` on line 3 in
  *
- * ```
+ * ```csharp
  * public int FirstOrNegative(params int[] args) {
  *   return args.Length > 0
  *     ? args[0]
@@ -806,13 +827,15 @@ class ArrayAccess extends ElementAccess, @array_access_expr {
   // Although an array (element) can be assigned a value, there is no
   // corresponding assignable (`ArrayAccess` does not extend `MemberAccess`)
   override Assignable getTarget() { none() }
+
+  override string getAPrimaryQlClass() { result = "ArrayAccess" }
 }
 
 /**
  * An access to an array that reads the underlying value, for example
  * the access to `a` on line 2 in
  *
- * ```
+ * ```csharp
  * public string Get(string[] a, int i) {
  *   return a[i];
  * }
@@ -824,7 +847,7 @@ class ArrayRead extends ArrayAccess, ElementRead { }
  * An access to an array that updates the underlying value, for example
  * the access to `a` on line 2 in
  *
- * ```
+ * ```csharp
  * public void Set(string[] a, int i, string s) {
  *   a[i] = s;
  * }
@@ -839,4 +862,6 @@ class NamespaceAccess extends Access, @namespace_access_expr {
   override Namespace getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to namespace " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "NamespaceAccess" }
 }

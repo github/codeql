@@ -65,6 +65,6 @@ Entity types are rarely used directly, the usual pattern is to define a class th
 
   For example, the database schemas for C/++, C#, and Java CodeQL databases are here: 
   
-  - https://github.com/github/codeql/blob/master/cpp/ql/src/semmlecode.cpp.dbscheme 
-  - https://github.com/github/codeql/blob/master/csharp/ql/src/semmlecode.csharp.dbscheme 
-  - https://github.com/github/codeql/blob/master/java/ql/src/config/semmlecode.dbscheme 
+  - https://github.com/github/codeql/blob/main/cpp/ql/src/semmlecode.cpp.dbscheme 
+  - https://github.com/github/codeql/blob/main/csharp/ql/src/semmlecode.csharp.dbscheme 
+  - https://github.com/github/codeql/blob/main/java/ql/src/config/semmlecode.dbscheme 

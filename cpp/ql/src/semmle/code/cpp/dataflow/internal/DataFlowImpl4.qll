@@ -1066,7 +1066,7 @@ private module LocalFlowBigStep {
    * Holds if `node` can be the first node in a maximal subsequence of local
    * flow steps in a dataflow path.
    */
-  private predicate localFlowEntry(Node node, Configuration config) {
+  predicate localFlowEntry(Node node, Configuration config) {
     nodeCand2(node, config) and
     (
       config.isSource(node) or
@@ -1124,11 +1124,11 @@ private module LocalFlowBigStep {
       (
         localFlowStepNodeCand1(node1, node2, config) and
         preservesValue = true and
-        t = getErasedNodeTypeBound(node1)
+        t = getNodeType(node1)
         or
         additionalLocalFlowStepNodeCand2(node1, node2, config) and
         preservesValue = false and
-        t = getErasedNodeTypeBound(node2)
+        t = getNodeType(node2)
       ) and
       node1 != node2 and
       cc.relevantFor(node1.getEnclosingCallable()) and
@@ -1147,7 +1147,7 @@ private module LocalFlowBigStep {
         additionalLocalFlowStepNodeCand2(mid, node2, config) and
         not mid instanceof FlowCheckNode and
         preservesValue = false and
-        t = getErasedNodeTypeBound(node2) and
+        t = getNodeType(node2) and
         nodeCand2(node2, unbind(config))
       )
     )
@@ -1202,9 +1202,7 @@ private predicate flowCandFwd(
 ) {
   flowCandFwd0(node, fromArg, argApf, apf, config) and
   not apf.isClearedAt(node) and
-  if node instanceof CastingNode
-  then compatibleTypes(getErasedNodeTypeBound(node), apf.getType())
-  else any()
+  if node instanceof CastingNode then compatibleTypes(getNodeType(node), apf.getType()) else any()
 }
 
 pragma[nomagic]
@@ -1216,7 +1214,7 @@ private predicate flowCandFwd0(
   config.isSource(node) and
   fromArg = false and
   argApf = TAccessPathFrontNone() and
-  apf = TFrontNil(getErasedNodeTypeBound(node))
+  apf = TFrontNil(getNodeType(node))
   or
   exists(Node mid |
     flowCandFwd(mid, fromArg, argApf, apf, config) and
@@ -1242,7 +1240,7 @@ private predicate flowCandFwd0(
     additionalJumpStep(mid, node, config) and
     fromArg = false and
     argApf = TAccessPathFrontNone() and
-    apf = TFrontNil(getErasedNodeTypeBound(node))
+    apf = TFrontNil(getNodeType(node))
   )
   or
   // store
@@ -1652,94 +1650,105 @@ private class AccessPathOption extends TAccessPathOption {
  * Holds if `node` is reachable with access path `ap` from a source in
  * the configuration `config`.
  *
- * The Boolean `fromArg` records whether the node is reached through an
+ * The call context `cc` records whether the node is reached through an
  * argument in a call, and if so, `argAp` records the access path of that
  * argument.
  */
 private predicate flowFwd(
-  Node node, boolean fromArg, AccessPathOption argAp, AccessPathFront apf, AccessPath ap,
+  Node node, CallContext cc, AccessPathOption argAp, AccessPathFront apf, AccessPath ap,
   Configuration config
 ) {
-  flowFwd0(node, fromArg, argAp, apf, ap, config) and
+  flowFwd0(node, cc, argAp, apf, ap, config) and
   flowCand(node, _, _, apf, config)
 }
 
 private predicate flowFwd0(
-  Node node, boolean fromArg, AccessPathOption argAp, AccessPathFront apf, AccessPath ap,
+  Node node, CallContext cc, AccessPathOption argAp, AccessPathFront apf, AccessPath ap,
   Configuration config
 ) {
   flowCand(node, _, _, _, config) and
   config.isSource(node) and
-  fromArg = false and
+  cc instanceof CallContextAny and
   argAp = TAccessPathNone() and
-  ap = TNil(getErasedNodeTypeBound(node)) and
+  ap = TNil(getNodeType(node)) and
   apf = ap.(AccessPathNil).getFront()
   or
   flowCand(node, _, _, _, unbind(config)) and
   (
-    exists(Node mid |
-      flowFwd(mid, fromArg, argAp, apf, ap, config) and
-      localFlowBigStep(mid, node, true, _, config, _)
+    exists(Node mid, LocalCallContext localCC |
+      flowFwdLocalEntry(mid, cc, argAp, apf, ap, localCC, config) and
+      localFlowBigStep(mid, node, true, _, config, localCC)
     )
     or
-    exists(Node mid, AccessPathNil nil |
-      flowFwd(mid, fromArg, argAp, _, nil, config) and
-      localFlowBigStep(mid, node, false, apf, config, _) and
+    exists(Node mid, AccessPathNil nil, LocalCallContext localCC |
+      flowFwdLocalEntry(mid, cc, argAp, _, nil, localCC, config) and
+      localFlowBigStep(mid, node, false, apf, config, localCC) and
       apf = ap.(AccessPathNil).getFront()
     )
     or
     exists(Node mid |
       flowFwd(mid, _, _, apf, ap, config) and
       jumpStep(mid, node, config) and
-      fromArg = false and
+      cc instanceof CallContextAny and
       argAp = TAccessPathNone()
     )
     or
     exists(Node mid, AccessPathNil nil |
       flowFwd(mid, _, _, _, nil, config) and
       additionalJumpStep(mid, node, config) and
-      fromArg = false and
+      cc instanceof CallContextAny and
       argAp = TAccessPathNone() and
-      ap = TNil(getErasedNodeTypeBound(node)) and
+      ap = TNil(getNodeType(node)) and
       apf = ap.(AccessPathNil).getFront()
     )
   )
   or
   // store
-  exists(TypedContent tc | flowFwdStore(node, tc, pop(tc, ap), apf, fromArg, argAp, config))
+  exists(TypedContent tc | flowFwdStore(node, tc, pop(tc, ap), apf, cc, argAp, config))
   or
   // read
   exists(TypedContent tc |
-    flowFwdRead(node, _, push(tc, ap), apf, fromArg, argAp, config) and
+    flowFwdRead(node, _, push(tc, ap), apf, cc, argAp, config) and
     flowFwdConsCand(tc, apf, ap, config)
   )
   or
   // flow into a callable
-  flowFwdIn(_, node, _, _, apf, ap, config) and
-  fromArg = true and
+  flowFwdIn(_, node, _, cc, _, apf, ap, config) and
   if flowCand(node, true, _, apf, config)
   then argAp = TAccessPathSome(ap)
   else argAp = TAccessPathNone()
   or
   // flow out of a callable
   exists(DataFlowCall call |
-    flowFwdOut(call, node, fromArg, argAp, apf, ap, config) and
-    fromArg = false
+    exists(DataFlowCallable c |
+      flowFwdOut(call, node, any(CallContextNoCall innercc), c, argAp, apf, ap, config) and
+      if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
+    )
     or
     exists(AccessPath argAp0 |
       flowFwdOutFromArg(call, node, argAp0, apf, ap, config) and
-      flowFwdIsEntered(call, fromArg, argAp, argAp0, config)
+      flowFwdIsEntered(call, cc, argAp, argAp0, config)
     )
   )
 }
 
 pragma[nomagic]
+private predicate flowFwdLocalEntry(
+  Node node, CallContext cc, AccessPathOption argAp, AccessPathFront apf, AccessPath ap,
+  LocalCallContext localCC, Configuration config
+) {
+  flowFwd(node, cc, argAp, apf, ap, config) and
+  localFlowEntry(node, config) and
+  localCC = getLocalCallContext(cc, node.getEnclosingCallable())
+}
+
+pragma[nomagic]
 private predicate flowFwdStore(
-  Node node, TypedContent tc, AccessPath ap0, AccessPathFront apf, boolean fromArg,
+  Node node, TypedContent tc, AccessPath ap0, AccessPathFront apf, CallContext cc,
   AccessPathOption argAp, Configuration config
 ) {
   exists(Node mid, AccessPathFront apf0 |
-    flowFwd(mid, fromArg, argAp, apf0, ap0, config) and
+    flowFwd(mid, cc, argAp, apf0, ap0, config) and
     flowFwdStore0(mid, tc, node, apf0, apf, config)
   )
 }
@@ -1766,20 +1775,20 @@ private predicate flowFwdStore0(
 
 pragma[nomagic]
 private predicate flowFwdRead0(
-  Node node1, TypedContent tc, AccessPathFrontHead apf0, AccessPath ap0, Node node2,
-  boolean fromArg, AccessPathOption argAp, Configuration config
+  Node node1, TypedContent tc, AccessPathFrontHead apf0, AccessPath ap0, Node node2, CallContext cc,
+  AccessPathOption argAp, Configuration config
 ) {
-  flowFwd(node1, fromArg, argAp, apf0, ap0, config) and
+  flowFwd(node1, cc, argAp, apf0, ap0, config) and
   readCandFwd(node1, tc, apf0, node2, config)
 }
 
 pragma[nomagic]
 private predicate flowFwdRead(
-  Node node, AccessPathFrontHead apf0, AccessPath ap0, AccessPathFront apf, boolean fromArg,
+  Node node, AccessPathFrontHead apf0, AccessPath ap0, AccessPathFront apf, CallContext cc,
   AccessPathOption argAp, Configuration config
 ) {
   exists(Node mid, TypedContent tc |
-    flowFwdRead0(mid, tc, apf0, ap0, node, fromArg, argAp, config) and
+    flowFwdRead0(mid, tc, apf0, ap0, node, cc, argAp, config) and
     flowCand(node, _, _, apf, unbind(config)) and
     flowCandConsCand(tc, apf, unbind(config))
   )
@@ -1797,13 +1806,16 @@ private predicate flowFwdConsCand(
 
 pragma[nomagic]
 private predicate flowFwdIn(
-  DataFlowCall call, ParameterNode p, boolean fromArg, AccessPathOption argAp, AccessPathFront apf,
-  AccessPath ap, Configuration config
+  DataFlowCall call, ParameterNode p, CallContext outercc, CallContext innercc,
+  AccessPathOption argAp, AccessPathFront apf, AccessPath ap, Configuration config
 ) {
-  exists(ArgumentNode arg, boolean allowsFieldFlow |
-    flowFwd(arg, fromArg, argAp, apf, ap, config) and
+  exists(ArgumentNode arg, boolean allowsFieldFlow, DataFlowCallable c |
+    flowFwd(arg, outercc, argAp, apf, ap, config) and
     flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
-    flowCand(p, _, _, _, unbind(config))
+    c = p.getEnclosingCallable() and
+    c = resolveCall(call, outercc) and
+    flowCand(p, _, _, _, unbind(config)) and
+    if recordDataFlowCallSite(call, c) then innercc = TSpecificCall(call) else innercc = TSomeCall()
   |
     ap instanceof AccessPathNil or allowsFieldFlow = true
   )
@@ -1811,13 +1823,19 @@ private predicate flowFwdIn(
 
 pragma[nomagic]
 private predicate flowFwdOut(
-  DataFlowCall call, Node node, boolean fromArg, AccessPathOption argAp, AccessPathFront apf,
-  AccessPath ap, Configuration config
+  DataFlowCall call, Node node, CallContext innercc, DataFlowCallable innerc,
+  AccessPathOption argAp, AccessPathFront apf, AccessPath ap, Configuration config
 ) {
   exists(ReturnNodeExt ret, boolean allowsFieldFlow |
-    flowFwd(ret, fromArg, argAp, apf, ap, config) and
+    flowFwd(ret, innercc, argAp, apf, ap, config) and
     flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
-    flowCand(node, _, _, _, unbind(config))
+    innerc = ret.getEnclosingCallable() and
+    flowCand(node, _, _, _, unbind(config)) and
+    (
+      resolveReturn(innercc, innerc, call)
+      or
+      innercc.(CallContextCall).matchesCall(call)
+    )
   |
     ap instanceof AccessPathNil or allowsFieldFlow = true
   )
@@ -1828,7 +1846,7 @@ private predicate flowFwdOutFromArg(
   DataFlowCall call, Node node, AccessPath argAp, AccessPathFront apf, AccessPath ap,
   Configuration config
 ) {
-  flowFwdOut(call, node, true, TAccessPathSome(argAp), apf, ap, config)
+  flowFwdOut(call, node, any(CallContextCall ccc), _, TAccessPathSome(argAp), apf, ap, config)
 }
 
 /**
@@ -1836,10 +1854,10 @@ private predicate flowFwdOutFromArg(
  */
 pragma[nomagic]
 private predicate flowFwdIsEntered(
-  DataFlowCall call, boolean fromArg, AccessPathOption argAp, AccessPath ap, Configuration config
+  DataFlowCall call, CallContext cc, AccessPathOption argAp, AccessPath ap, Configuration config
 ) {
   exists(ParameterNode p, AccessPathFront apf |
-    flowFwdIn(call, p, fromArg, argAp, apf, ap, config) and
+    flowFwdIn(call, p, cc, _, argAp, apf, ap, config) and
     flowCand(p, true, TAccessPathFrontSome(_), apf, config)
   )
 }
@@ -1922,7 +1940,7 @@ private predicate flow0(
   // flow out of a callable
   flowOut(_, node, _, _, ap, config) and
   toReturn = true and
-  if flowFwd(node, true, TAccessPathSome(_), _, ap, config)
+  if flowFwd(node, any(CallContextCall ccc), TAccessPathSome(_), _, ap, config)
   then returnAp = TAccessPathSome(ap)
   else returnAp = TAccessPathNone()
 }
@@ -2008,9 +2026,10 @@ private predicate flowIsReturned(
   DataFlowCall call, boolean toReturn, AccessPathOption returnAp, AccessPath ap,
   Configuration config
 ) {
-  exists(ReturnNodeExt ret |
+  exists(ReturnNodeExt ret, CallContextCall ccc |
     flowOut(call, ret, toReturn, returnAp, ap, config) and
-    flowFwd(ret, true, TAccessPathSome(_), _, ap, config)
+    flowFwd(ret, ccc, TAccessPathSome(_), _, ap, config) and
+    ccc.matchesCall(call)
   )
 }
 
@@ -2033,7 +2052,7 @@ private newtype TSummaryCtx =
     exists(ReturnNodeExt ret, Configuration config, AccessPath ap0 |
       parameterFlow(p, ap, ret.getEnclosingCallable(), config) and
       flow(ret, true, TAccessPathSome(_), ap0, config) and
-      flowFwd(ret, true, TAccessPathSome(ap), _, ap0, config)
+      flowFwd(ret, any(CallContextCall ccc), TAccessPathSome(ap), _, ap0, config)
     )
   }
 
@@ -2077,7 +2096,7 @@ private newtype TPathNode =
     config.isSource(node) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
-    ap = TNil(getErasedNodeTypeBound(node))
+    ap = TNil(getNodeType(node))
     or
     // ... or a step from an existing PathNode to another node.
     exists(PathNodeMid mid |
@@ -2304,7 +2323,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
   cc instanceof CallContextAny and
   sc instanceof SummaryCtxNone and
   mid.getAp() instanceof AccessPathNil and
-  ap = TNil(getErasedNodeTypeBound(node))
+  ap = TNil(getNodeType(node))
   or
   exists(TypedContent tc | pathStoreStep(mid, node, pop(tc, ap), tc, cc)) and
   sc = mid.getSummaryCtx()
@@ -2354,7 +2373,7 @@ private predicate pathOutOfCallable0(
 ) {
   pos = getReturnPosition(mid.getNode()) and
   innercc = mid.getCallContext() and
-  not innercc instanceof CallContextCall and
+  innercc instanceof CallContextNoCall and
   ap = mid.getAp() and
   config = mid.getConfiguration()
 }
@@ -2646,7 +2665,7 @@ private module FlowExploration {
       cc instanceof CallContextAny and
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
-      ap = TPartialNil(getErasedNodeTypeBound(node)) and
+      ap = TPartialNil(getNodeType(node)) and
       not fullBarrier(node, config) and
       exists(config.explorationLimit())
       or
@@ -2663,7 +2682,7 @@ private module FlowExploration {
       partialPathStep(mid, node, cc, sc1, sc2, ap, config) and
       not fullBarrier(node, config) and
       if node instanceof CastingNode
-      then compatibleTypes(getErasedNodeTypeBound(node), ap.getType())
+      then compatibleTypes(getNodeType(node), ap.getType())
       else any()
     )
   }
@@ -2776,7 +2795,7 @@ private module FlowExploration {
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       mid.getAp() instanceof PartialAccessPathNil and
-      ap = TPartialNil(getErasedNodeTypeBound(node)) and
+      ap = TPartialNil(getNodeType(node)) and
       config = mid.getConfiguration()
     )
     or
@@ -2792,7 +2811,7 @@ private module FlowExploration {
     sc1 = TSummaryCtx1None() and
     sc2 = TSummaryCtx2None() and
     mid.getAp() instanceof PartialAccessPathNil and
-    ap = TPartialNil(getErasedNodeTypeBound(node)) and
+    ap = TPartialNil(getNodeType(node)) and
     config = mid.getConfiguration()
     or
     partialPathStoreStep(mid, _, _, node, ap) and
@@ -2806,7 +2825,7 @@ private module FlowExploration {
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       apConsFwd(ap, tc, ap0, config) and
-      compatibleTypes(ap.getType(), getErasedNodeTypeBound(node))
+      compatibleTypes(ap.getType(), getNodeType(node))
     )
     or
     partialPathIntoCallable(mid, node, _, cc, sc1, sc2, _, ap, config)
@@ -2869,7 +2888,7 @@ private module FlowExploration {
   ) {
     pos = getReturnPosition(mid.getNode()) and
     innercc = mid.getCallContext() and
-    not innercc instanceof CallContextCall and
+    innercc instanceof CallContextNoCall and
     ap = mid.getAp() and
     config = mid.getConfiguration()
   }

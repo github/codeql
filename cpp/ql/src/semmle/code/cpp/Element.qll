@@ -55,12 +55,21 @@ class ElementBase extends @element {
   cached
   string toString() { none() }
 
+  /** DEPRECATED: use `getAPrimaryQlClass` instead. */
+  deprecated string getCanonicalQLClass() { result = this.getAPrimaryQlClass() }
+
   /**
-   * Canonical QL class corresponding to this element.
+   * Gets the name of a primary CodeQL class to which this element belongs.
    *
-   * ElementBase is the root class for this predicate.
+   * For most elements, this is simply the most precise syntactic category to
+   * which they belong; for example, `AddExpr` is a primary class, but
+   * `BinaryOperation` is not.
+   *
+   * This predicate always has a result. If no primary class can be
+   * determined, the result is `"???"`. If multiple primary classes match,
+   * this predicate can have multiple results.
    */
-  string getCanonicalQLClass() { result = "???" }
+  string getAPrimaryQlClass() { result = "???" }
 }
 
 /**
@@ -119,7 +128,7 @@ class Element extends ElementBase {
 
   /**
    * Gets the parent scope of this `Element`, if any.
-   * A scope is a `Type` (`Class` / `Enum`), a `Namespace`, a `Block`, a `Function`,
+   * A scope is a `Type` (`Class` / `Enum`), a `Namespace`, a `BlockStmt`, a `Function`,
    * or certain kinds of `Statement`.
    */
   Element getParentScope() {
@@ -152,7 +161,7 @@ class Element extends ElementBase {
     exists(EnumConstant e | this = e and result = e.getDeclaringEnum())
     or
     // result instanceof block|function
-    exists(Block b | this = b and blockscope(unresolveElement(b), unresolveElement(result)))
+    exists(BlockStmt b | this = b and blockscope(unresolveElement(b), unresolveElement(result)))
     or
     exists(TemplateFunction tf | this = tf.getATemplateArgument() and result = tf)
     or
@@ -188,7 +197,8 @@ class Element extends ElementBase {
     initialisers(underlyingElement(this), unresolveElement(result), _, _) or
     exprconv(unresolveElement(result), underlyingElement(this)) or
     param_decl_bind(underlyingElement(this), _, unresolveElement(result)) or
-    using_container(unresolveElement(result), underlyingElement(this))
+    using_container(unresolveElement(result), underlyingElement(this)) or
+    static_asserts(unresolveElement(this), _, _, _, underlyingElement(result))
   }
 
   /** Gets the closest `Element` enclosing this one. */
@@ -269,12 +279,12 @@ class StaticAssert extends Locatable, @static_assert {
   /**
    * Gets the expression which this static assertion ensures is true.
    */
-  Expr getCondition() { static_asserts(underlyingElement(this), unresolveElement(result), _, _) }
+  Expr getCondition() { static_asserts(underlyingElement(this), unresolveElement(result), _, _, _) }
 
   /**
    * Gets the message which will be reported by the compiler if this static assertion fails.
    */
-  string getMessage() { static_asserts(underlyingElement(this), _, result, _) }
+  string getMessage() { static_asserts(underlyingElement(this), _, result, _, _) }
 
-  override Location getLocation() { static_asserts(underlyingElement(this), _, _, result) }
+  override Location getLocation() { static_asserts(underlyingElement(this), _, _, result, _) }
 }

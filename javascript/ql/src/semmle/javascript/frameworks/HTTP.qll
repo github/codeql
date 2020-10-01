@@ -234,6 +234,75 @@ module HTTP {
   }
 
   /**
+   * Holds if `call` decorates the function `pred`.
+   * This means that `call` returns a function that forwards its arguments to `pred`.
+   * Only holds when the decorator looks like it is decorating a route-handler.
+   *
+   * Below is a code example relating `call`, `decoratee`, `outer`, `inner`.
+   * ```
+   * function outer(method) {
+   *    return function inner(req, res) {
+   *      return method.call(this, req, res);
+   *    };
+   *  }
+   *  var route = outer(function decoratee(req, res) { // <- call
+   *    res.end("foo");
+   *  });
+   * ```
+   */
+  private predicate isDecoratedCall(DataFlow::CallNode call, DataFlow::FunctionNode decoratee) {
+    // indirect route-handler `result` is given to function `outer`, which returns function `inner` which calls the function `pred`.
+    exists(int i, DataFlow::FunctionNode outer, HTTP::RouteHandlerCandidate inner |
+      decoratee = call.getArgument(i).getALocalSource() and
+      outer.getFunction() = call.getACallee() and
+      returnsRouteHandler(outer, inner) and
+      isAForwardingRouteHandlerCall(outer.getParameter(i), inner)
+    )
+  }
+
+  /**
+   * Holds if `fun` returns the route-handler-candidate `routeHandler`.
+   */
+  pragma[noinline]
+  private predicate returnsRouteHandler(
+    DataFlow::FunctionNode fun, HTTP::RouteHandlerCandidate routeHandler
+  ) {
+    routeHandler = fun.getAReturn().getALocalSource()
+  }
+
+  /**
+   * Holds if `f` looks like a route-handler and a call to `callee` inside `f` forwards all of the parameters from `f` to that call.
+   */
+  private predicate isAForwardingRouteHandlerCall(
+    DataFlow::SourceNode callee, HTTP::RouteHandlerCandidate f
+  ) {
+    exists(DataFlow::CallNode call | call = callee.getACall() |
+      forall(int arg | arg = [0 .. f.getNumParameter() - 1] |
+        f.getParameter(arg).flowsTo(call.getArgument(arg))
+      ) and
+      call.getContainer() = f.getFunction()
+    )
+  }
+
+  /**
+   * Holds if there exists a step from `pred` to `succ` for a RouteHandler - beyond the usual steps defined by TypeTracking.
+   */
+  predicate routeHandlerStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+    isDecoratedCall(succ, pred)
+    or
+    // A forwarding call
+    isAForwardingRouteHandlerCall(pred, succ)
+    or
+    // a container containing route-handlers.
+    exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
+    or
+    // (function (req, res) {}).bind(this);
+    exists(DataFlow::PartialInvokeNode call |
+      succ = call.getBoundFunction(any(DataFlow::Node n | pred.flowsTo(n)), 0)
+    )
+  }
+
+  /**
    * An expression that sets up a route on a server.
    */
   abstract class RouteSetup extends Expr { }
@@ -555,7 +624,9 @@ module HTTP {
             create.getArgument(0).asExpr() instanceof NullLiteral
           )
         ) and
-        exists(RouteHandlerCandidate candidate | candidate.flowsTo(getAPropertyWrite().getRhs()))
+        exists(RouteHandlerCandidate candidate |
+          getAPossiblyDecoratedHandler(candidate).flowsTo(getAPropertyWrite().getRhs())
+        )
       }
 
       override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
@@ -563,7 +634,7 @@ module HTTP {
         exists(DataFlow::PropWrite write, DataFlow::PropRead read |
           access = read and
           ref(this).getAPropertyRead() = read and
-          result.flowsTo(write.getRhs()) and
+          getAPossiblyDecoratedHandler(result).flowsTo(write.getRhs()) and
           write = this.getAPropertyWrite()
         |
           write.getPropertyName() = read.getPropertyName()
@@ -571,8 +642,31 @@ module HTTP {
           exists(EnumeratedPropName prop | access = prop.getASourceProp())
           or
           read = DataFlow::lvalueNode(any(ForOfStmt stmt).getLValue())
+          or
+          // for forwarding calls to an element where the key is determined by the request.
+          getRequestParameterRead().flowsToExpr(read.getPropertyNameExpr())
         )
       }
+    }
+
+    /**
+     * Gets a (chained) property-read/method-call on the request parameter of the route-handler `f`.
+     */
+    private DataFlow::SourceNode getRequestParameterRead() {
+      result = any(RouteHandlerCandidate f).getParameter(0)
+      or
+      result = getRequestParameterRead().getAPropertyRead()
+      or
+      result = getRequestParameterRead().getAMethodCall()
+    }
+
+    /**
+     * Gets a node that is either `candidate`, or a call that decorates `candidate`.
+     */
+    DataFlow::SourceNode getAPossiblyDecoratedHandler(RouteHandlerCandidate candidate) {
+      result = candidate
+      or
+      isDecoratedCall(result, candidate)
     }
 
     /**
@@ -592,13 +686,14 @@ module HTTP {
       }
 
       override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+        result instanceof RouteHandlerCandidate and
         exists(
           DataFlow::Node input, TypeTrackingPseudoProperty key, CollectionFlowStep store,
           CollectionFlowStep load, DataFlow::Node storeTo, DataFlow::Node loadFrom
         |
           this.flowsTo(storeTo) and
           store.store(input, storeTo, key) and
-          result.(RouteHandlerCandidate).flowsTo(input) and
+          getAPossiblyDecoratedHandler(result).flowsTo(input) and
           ref(this).flowsTo(loadFrom) and
           load.load(loadFrom, access, key)
         )

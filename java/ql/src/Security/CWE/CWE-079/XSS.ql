@@ -12,23 +12,24 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.XSS
-import DataFlow2::PathGraph
+import DataFlow::PathGraph
 
-class XSSConfig extends TaintTracking2::Configuration {
+class XSSConfig extends TaintTracking::Configuration {
   XSSConfig() { this = "XSSConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof NumericType or node.getType() instanceof BooleanType
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof XssSanitizer }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(XssAdditionalTaintStep s).step(node1, node2)
   }
 }
 
-from DataFlow2::PathNode source, DataFlow2::PathNode sink, XSSConfig conf
+from DataFlow::PathNode source, DataFlow::PathNode sink, XSSConfig conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@.",
   source.getNode(), "user-provided value"

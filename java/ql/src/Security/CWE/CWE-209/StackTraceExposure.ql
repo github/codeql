@@ -14,7 +14,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.XSS
 
 /**
@@ -22,7 +22,10 @@ import semmle.code.java.security.XSS
  */
 class PrintStackTraceMethod extends Method {
   PrintStackTraceMethod() {
-    getDeclaringType().hasQualifiedName("java.lang", "Throwable") and
+    getDeclaringType()
+        .getSourceDeclaration()
+        .getASourceSupertype*()
+        .hasQualifiedName("java.lang", "Throwable") and
     getName() = "printStackTrace"
   }
 }
@@ -81,7 +84,7 @@ predicate stackTraceExpr(Expr exception, MethodAccess stackTraceString) {
   )
 }
 
-class StackTraceStringToXssSinkFlowConfig extends TaintTracking2::Configuration {
+class StackTraceStringToXssSinkFlowConfig extends TaintTracking::Configuration {
   StackTraceStringToXssSinkFlowConfig() {
     this = "StackTraceExposure::StackTraceStringToXssSinkFlowConfig"
   }
@@ -96,7 +99,8 @@ class StackTraceStringToXssSinkFlowConfig extends TaintTracking2::Configuration 
  */
 predicate printsStackExternally(MethodAccess call, Expr stackTrace) {
   printsStackToWriter(call) and
-  call.getQualifier() = stackTrace
+  call.getQualifier() = stackTrace and
+  not call.getQualifier() instanceof SuperAccess
 }
 
 /**
@@ -120,7 +124,7 @@ class GetMessageFlowSource extends MethodAccess {
   }
 }
 
-class GetMessageFlowSourceToXssSinkFlowConfig extends TaintTracking2::Configuration {
+class GetMessageFlowSourceToXssSinkFlowConfig extends TaintTracking::Configuration {
   GetMessageFlowSourceToXssSinkFlowConfig() {
     this = "StackTraceExposure::GetMessageFlowSourceToXssSinkFlowConfig"
   }

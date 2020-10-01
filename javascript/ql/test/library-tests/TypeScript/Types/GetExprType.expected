@@ -67,12 +67,10 @@
 | tst.ts:26:15:26:24 | () => void | () => void |
 | tst.ts:27:5:27:17 | undefinedType | undefined |
 | tst.ts:28:5:28:12 | nullType | null |
-| tst.ts:28:22:28:25 | null | null |
 | tst.ts:29:5:29:13 | neverType | () => never |
 | tst.ts:29:16:29:26 | () => never | () => never |
 | tst.ts:30:5:30:14 | symbolType | symbol |
 | tst.ts:31:7:31:22 | uniqueSymbolType | typeof uniqueSymbolType |
-| tst.ts:31:41:31:44 | null | null |
 | tst.ts:32:5:32:14 | objectType | object |
 | tst.ts:33:5:33:16 | intersection | string & { x: string; } |
 | tst.ts:33:29:33:29 | x | string |
@@ -92,6 +90,13 @@
 | tst.ts:43:26:43:48 | { foo:  ... s const | { readonly foo: "foo"; } |
 | tst.ts:43:28:43:30 | foo | "foo" |
 | tst.ts:43:33:43:37 | "foo" | "foo" |
+| tst.ts:47:8:47:8 | e | unknown |
+| tst.ts:48:7:48:14 | typeof e | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:48:7:48:27 | typeof  ... string" | boolean |
+| tst.ts:48:14:48:14 | e | unknown |
+| tst.ts:48:20:48:27 | "string" | "string" |
+| tst.ts:49:11:49:11 | b | string |
+| tst.ts:49:24:49:24 | e | string |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |

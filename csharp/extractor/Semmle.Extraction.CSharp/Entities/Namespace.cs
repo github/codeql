@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";namespace");
         }
 
-        public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntity2(cx, ns);
+        public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntityFromSymbol(cx, ns);
 
         class NamespaceFactory : ICachedEntityFactory<INamespaceSymbol, Namespace>
         {
