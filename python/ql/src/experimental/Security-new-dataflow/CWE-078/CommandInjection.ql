@@ -27,19 +27,30 @@ class CommandInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = any(SystemCommandExecution e).getCommand()
+    sink = any(SystemCommandExecution e).getCommand() and
+    // Since the implementation of os.popen looks like
+    // ```py
+    // def popen(cmd, mode="r", buffering=-1):
+    //     ...
+    //     proc = subprocess.Popen(cmd, ...)
+    // ```
+    // any time we would report flow to the `os.popen` sink, we can ALSO report the flow
+    // from the `cmd` parameter to the `subprocess.Popen` sink -- obviously we don't want
+    // that.
+    //
+    // However, simply removing taint edges out of a sink is not a good enough solution,
+    // since we would only flag one of the `os.system` calls in the following example due
+    // to use-use flow
+    // ```py
+    // os.system(cmd)
+    // os.system(cmd)
+    // ```
+    //
+    // Best solution I could come up with is to exclude all sinks inside the standard
+    // library -- this does have a downside: If we have overlooked a function in the
+    // standard library that internally runs a command, we no longer give an alert :|
+    not sink.getLocation().getFile().inStdlib()
   }
-
-  // Since the implementation of os.popen looks like
-  // ```py
-  // def popen(cmd, mode="r", buffering=-1):
-  //     ...
-  //     proc = subprocess.Popen(cmd, ...)
-  // ```
-  // any time we would report flow to the `os.popen` sink, we can ALSO report the flow
-  // from the `cmd` parameter to the `subprocess.Popen` sink -- obviously we don't want
-  // that, so to prevent that we remove any taint edges out of a sink.
-  override predicate isSanitizerOut(DataFlow::Node node) { isSink(node) }
 }
 
 from CommandInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
