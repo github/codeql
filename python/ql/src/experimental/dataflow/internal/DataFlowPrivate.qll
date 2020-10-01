@@ -270,11 +270,18 @@ module ArgumentPassing {
     )
   }
 
+  predicate connects(CallNode call, CallableValue callable) {
+    exists(DataFlowCall c |
+      call = c.getNode() and
+      callable = c.getCallable().getCallableValue()
+    )
+  }
+
   /**
    * Gets the argument to `call` that is passed to the `n`th parameter of `callable`.
    */
   Node getArg(CallNode call, CallableValue callable, int n) {
-    call = callable.getACall() and
+    connects(call, callable) and
     (
       // positional argument
       result = TCfgNode(call.getArg(n))
@@ -287,20 +294,14 @@ module ArgumentPassing {
       )
       or
       // a synthezised argument passed to the starred parameter (at position -1)
-      exists(Function f |
-        f = callable.getScope() and
-        f.hasVarArg() and
-        n = -1 and
-        result = TPosOverflowNode(call, callable)
-      )
+      callable.getScope().hasVarArg() and
+      n = -1 and
+      result = TPosOverflowNode(call, callable)
       or
       // a synthezised argument passed to the doubly starred parameter (at position -2)
-      exists(Function f |
-        f = callable.getScope() and
-        f.hasKwArg() and
-        n = -2 and
-        result = TKwOverflowNode(call, callable)
-      )
+      callable.getScope().hasKwArg() and
+      n = -2 and
+      result = TKwOverflowNode(call, callable)
       or
       // argument unpacked from dict
       exists(string name |
@@ -312,7 +313,7 @@ module ArgumentPassing {
 
   /** Gets the control flow node that is passed as the `n`th overflow positional argument. */
   ControlFlowNode getPositionalOverflowArg(CallNode call, CallableValue callable, int n) {
-    call = callable.getACall() and
+    connects(call, callable) and
     exists(Function f, int posCount, int argNr |
       f = callable.getScope() and
       f.hasVarArg() and
@@ -325,7 +326,7 @@ module ArgumentPassing {
 
   /** Gets the control flow node that is passed as the overflow keyword argument with key `key`. */
   ControlFlowNode getKeywordOverflowArg(CallNode call, CallableValue callable, string key) {
-    call = callable.getACall() and
+    connects(call, callable) and
     exists(Function f |
       f = callable.getScope() and
       f.hasKwArg() and
@@ -339,7 +340,7 @@ module ArgumentPassing {
    * It will then be passed to the `n`th parameter of `callable`.
    */
   predicate call_unpacks(CallNode call, CallableValue callable, string name, int n) {
-    call = callable.getACall() and
+    connects(call, callable) and
     exists(Function f |
       f = callable.getScope() and
       not exists(call.getArg(n)) and // no positional arguement available
