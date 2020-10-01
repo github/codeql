@@ -11,6 +11,8 @@
 import csharp
 import semmle.code.csharp.frameworks.microsoft.AspNetCore
 import semmle.code.csharp.dataflow.TaintTracking
+import semmle.code.csharp.dataflow.flowsources.Remote
+import semmle.code.csharp.frameworks.system.web.Mvc as Mvc
 import DataFlow::PathGraph
 
 /*
@@ -26,26 +28,18 @@ class RazorEngineClass extends Class {
   }
 }
 
-/*
- * We are only interested in ASP.NET MVC Controller or ControllerBase classes
- */
-
-class ControllerMVC extends Class {
-  ControllerMVC() {
-    this.hasQualifiedName("System.Web.Mvc", "Controller") or
-    this.hasQualifiedName("Microsoft.AspNetCore.Mvc", "Controller") or
-    this instanceof MicrosoftAspNetCoreMvcController or
-    this instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+class Controller extends Class {
+  Controller() {
+    this instanceof Mvc::Controller
+    or
+    this instanceof MicrosoftAspNetCoreMvcController
   }
-}
 
-/*
- * We filter by the ActionResult. I think this might not be needed.
- */
-
-class ActionResultCall extends Call {
-  ActionResultCall() {
-    this.getEnclosingCallable().getAnnotatedReturnType().toString() = "ActionResult"
+  Method getAPostActionMethod() {
+    result = this.(Mvc::Controller).getAPostActionMethod()
+    or
+    result = this.(MicrosoftAspNetCoreMvcController).getAnActionMethod() and
+    result.getAnAttribute() instanceof MicrosoftAspNetCoreMvcHttpPostAttribute
   }
 }
 
@@ -57,15 +51,12 @@ class RazorEngineInjection extends TaintTracking::Configuration {
   RazorEngineInjection() { this = "RazorEngineInjection" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(ActionResultCall ar |
-      ar.getEnclosingCallable().getDeclaringType().getABaseType() instanceof ControllerMVC and
-      source.asParameter() = ar.getEnclosingCallable().getAParameter()
-    )
+    source.asParameter() = any(Controller c).getAPostActionMethod().getAParameter()
   }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(RazorEngineClass rec, MethodCall mc |
-      mc.getQualifiedDeclaration() = rec.getParseMethod() and
+      mc.getTarget() = rec.getParseMethod() and
       sink.asExpr() = mc.getArgument(0)
     )
   }
