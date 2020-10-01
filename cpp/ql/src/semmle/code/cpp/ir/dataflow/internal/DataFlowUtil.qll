@@ -208,10 +208,19 @@ class FieldNode extends Node, TFieldNode, PartialDefinitionNode {
 
   FieldNode() { this = TFieldNode(field) }
 
+  /** Gets the `Field` of this `FieldNode`. */
   Field getField() { result = getFieldInstruction().getField() }
 
+  /** Gets the `FieldAddressInstruction` of this `FieldNode`. */
   FieldAddressInstruction getFieldInstruction() { result = field }
 
+  /**
+   * Gets the `FieldNode` corresponding to the parent field of this `FieldNode`, if any.
+   *
+   * For example, if `f` is the `FieldNode` for `c` in the expression `a.b.c`, then `f.getObjectNode()`
+   * gives the `FieldNode` of `b`, and `f.getObjectNode().getObjectNode()` has no result as `a` is
+   * not a field.
+   */
   FieldNode getObjectNode() {
     exists(FieldAddressInstruction parent |
       parent = skipCopyInstructions(field.getObjectAddress()) and
@@ -219,8 +228,15 @@ class FieldNode extends Node, TFieldNode, PartialDefinitionNode {
     )
   }
 
+  /**
+   * Gets the `FieldNode` that has this `FieldNode` as parent, if any.
+   *
+   * For example, if `f` is the `FieldNode` corresponding to `b` in `a.b.c`, then `f.getNextNode()`
+   * gives the `FieldNode` corresponding to `c`, and `f.getNextNode().getNextNode()`.
+   */
   FieldNode getNextNode() { result.getObjectNode() = this }
 
+  /** Gets the class where the field of this node is declared. */
   Class getDeclaringType() { result = getField().getDeclaringType() }
 
   override Node getPreUpdateNode() {
@@ -257,6 +273,7 @@ class PostArraySuppressionNode extends Node, TPostArraySuppressionNode {
 
   PostArraySuppressionNode() { this = TPostArraySuppressionNode(write) }
 
+  /** Gets the `WriteSideEffectInstruction` of this node. */
   WriteSideEffectInstruction getWriteSideEffect() { result = write }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
@@ -430,6 +447,7 @@ abstract class PostUpdateNode extends Node {
  * ```
  */
 abstract private class PartialDefinitionNode extends PostUpdateNode {
+  /** Gets the expression that is partially defined by this node, if any. */
   abstract Expr getDefinedExpr();
 }
 
