@@ -151,6 +151,9 @@ class ParameterNode extends EssaNode {
   }
 
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+
+  /** Gets the `Parameter` this `ParameterNode` represents. */
+  Parameter getParameter() { result = var.(ParameterDefinition).getParameter() }
 }
 
 /**
