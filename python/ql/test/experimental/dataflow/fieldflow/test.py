@@ -26,6 +26,9 @@ class MyObj(object):
     def __init__(self, foo):
         self.foo = foo
 
+    def setFoo(self, foo):
+        self.foo = foo
+
 
 class NestedObj(object):
     def __init__(self):
@@ -44,6 +47,13 @@ def test_example1():
     myobj = MyObj("OK")
 
     setFoo(myobj, SOURCE)
+    SINK(myobj.foo)
+
+
+def test_example1_method():
+    myobj = MyObj("OK")
+
+    myobj.setFoo(SOURCE)
     SINK(myobj.foo)
 
 

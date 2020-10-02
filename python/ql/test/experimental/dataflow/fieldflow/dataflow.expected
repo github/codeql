@@ -20,29 +20,29 @@ edges
 | examples.py:49:13:49:18 | ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
 | examples.py:50:6:50:8 | ControlFlowNode for obj [Attribute foo] | examples.py:50:6:50:12 | ControlFlowNode for Attribute |
 | examples.py:59:29:59:34 | ControlFlowNode for SOURCE | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:46:19:46:24 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:51:9:51:14 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:71:17:71:22 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:76:21:76:26 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:87:33:87:38 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:49:19:49:24 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:61:9:61:14 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:81:17:81:22 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:86:21:86:26 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:97:33:97:38 | ControlFlowNode for SOURCE |
 | test.py:3:1:3:6 | GSSA Variable SOURCE | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test |
 | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:3:1:3:6 | GSSA Variable SOURCE |
-| test.py:46:12:46:16 | [post arg] ControlFlowNode for myobj [Attribute foo] | test.py:47:10:47:14 | ControlFlowNode for myobj [Attribute foo] |
-| test.py:46:19:46:24 | ControlFlowNode for SOURCE | test.py:46:12:46:16 | [post arg] ControlFlowNode for myobj [Attribute foo] |
-| test.py:47:10:47:14 | ControlFlowNode for myobj [Attribute foo] | test.py:47:10:47:18 | ControlFlowNode for Attribute |
-| test.py:51:9:51:14 | ControlFlowNode for SOURCE | test.py:55:17:55:17 | ControlFlowNode for x |
-| test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:55:5:55:9 | [post store] ControlFlowNode for Attribute [Attribute foo] | test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:55:17:55:17 | ControlFlowNode for x | test.py:55:5:55:9 | [post store] ControlFlowNode for Attribute [Attribute foo] |
-| test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:57:10:57:14 | ControlFlowNode for Attribute [Attribute foo] |
-| test.py:57:10:57:14 | ControlFlowNode for Attribute [Attribute foo] | test.py:57:10:57:18 | ControlFlowNode for Attribute |
-| test.py:71:11:71:23 | ControlFlowNode for MyObj() [Attribute foo] | test.py:72:10:72:12 | ControlFlowNode for obj [Attribute foo] |
-| test.py:71:17:71:22 | ControlFlowNode for SOURCE | test.py:71:11:71:23 | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:72:10:72:12 | ControlFlowNode for obj [Attribute foo] | test.py:72:10:72:16 | ControlFlowNode for Attribute |
-| test.py:76:11:76:27 | ControlFlowNode for MyObj() [Attribute foo] | test.py:77:10:77:12 | ControlFlowNode for obj [Attribute foo] |
-| test.py:76:21:76:26 | ControlFlowNode for SOURCE | test.py:76:11:76:27 | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:77:10:77:12 | ControlFlowNode for obj [Attribute foo] | test.py:77:10:77:16 | ControlFlowNode for Attribute |
-| test.py:87:33:87:38 | ControlFlowNode for SOURCE | test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() |
+| test.py:49:12:49:16 | [post arg] ControlFlowNode for myobj [Attribute foo] | test.py:50:10:50:14 | ControlFlowNode for myobj [Attribute foo] |
+| test.py:49:19:49:24 | ControlFlowNode for SOURCE | test.py:49:12:49:16 | [post arg] ControlFlowNode for myobj [Attribute foo] |
+| test.py:50:10:50:14 | ControlFlowNode for myobj [Attribute foo] | test.py:50:10:50:18 | ControlFlowNode for Attribute |
+| test.py:61:9:61:14 | ControlFlowNode for SOURCE | test.py:65:17:65:17 | ControlFlowNode for x |
+| test.py:65:5:65:5 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:65:5:65:9 | [post store] ControlFlowNode for Attribute [Attribute foo] | test.py:65:5:65:5 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:65:17:65:17 | ControlFlowNode for x | test.py:65:5:65:9 | [post store] ControlFlowNode for Attribute [Attribute foo] |
+| test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:67:10:67:14 | ControlFlowNode for Attribute [Attribute foo] |
+| test.py:67:10:67:14 | ControlFlowNode for Attribute [Attribute foo] | test.py:67:10:67:18 | ControlFlowNode for Attribute |
+| test.py:81:11:81:23 | ControlFlowNode for MyObj() [Attribute foo] | test.py:82:10:82:12 | ControlFlowNode for obj [Attribute foo] |
+| test.py:81:17:81:22 | ControlFlowNode for SOURCE | test.py:81:11:81:23 | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:82:10:82:12 | ControlFlowNode for obj [Attribute foo] | test.py:82:10:82:16 | ControlFlowNode for Attribute |
+| test.py:86:11:86:27 | ControlFlowNode for MyObj() [Attribute foo] | test.py:87:10:87:12 | ControlFlowNode for obj [Attribute foo] |
+| test.py:86:21:86:26 | ControlFlowNode for SOURCE | test.py:86:11:86:27 | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:87:10:87:12 | ControlFlowNode for obj [Attribute foo] | test.py:87:10:87:16 | ControlFlowNode for Attribute |
+| test.py:97:33:97:38 | ControlFlowNode for SOURCE | test.py:97:10:97:39 | ControlFlowNode for fields_with_local_flow() |
 nodes
 | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj [Attribute foo] | semmle.label | [post arg] ControlFlowNode for myobj [Attribute foo] |
 | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -65,27 +65,27 @@ nodes
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | semmle.label | ModuleVariableNode for Global Variable SOURCE in Module test |
 | test.py:3:1:3:6 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
 | test.py:3:10:3:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
-| test.py:46:12:46:16 | [post arg] ControlFlowNode for myobj [Attribute foo] | semmle.label | [post arg] ControlFlowNode for myobj [Attribute foo] |
-| test.py:46:19:46:24 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:47:10:47:14 | ControlFlowNode for myobj [Attribute foo] | semmle.label | ControlFlowNode for myobj [Attribute foo] |
-| test.py:47:10:47:18 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:51:9:51:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] | semmle.label | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:55:5:55:9 | [post store] ControlFlowNode for Attribute [Attribute foo] | semmle.label | [post store] ControlFlowNode for Attribute [Attribute foo] |
-| test.py:55:17:55:17 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj, Attribute foo] | semmle.label | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:57:10:57:14 | ControlFlowNode for Attribute [Attribute foo] | semmle.label | ControlFlowNode for Attribute [Attribute foo] |
-| test.py:57:10:57:18 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:71:11:71:23 | ControlFlowNode for MyObj() [Attribute foo] | semmle.label | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:71:17:71:22 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:72:10:72:12 | ControlFlowNode for obj [Attribute foo] | semmle.label | ControlFlowNode for obj [Attribute foo] |
-| test.py:72:10:72:16 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:76:11:76:27 | ControlFlowNode for MyObj() [Attribute foo] | semmle.label | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:76:21:76:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:77:10:77:12 | ControlFlowNode for obj [Attribute foo] | semmle.label | ControlFlowNode for obj [Attribute foo] |
-| test.py:77:10:77:16 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() | semmle.label | ControlFlowNode for fields_with_local_flow() |
-| test.py:87:33:87:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:49:12:49:16 | [post arg] ControlFlowNode for myobj [Attribute foo] | semmle.label | [post arg] ControlFlowNode for myobj [Attribute foo] |
+| test.py:49:19:49:24 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:50:10:50:14 | ControlFlowNode for myobj [Attribute foo] | semmle.label | ControlFlowNode for myobj [Attribute foo] |
+| test.py:50:10:50:18 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:61:9:61:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:65:5:65:5 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] | semmle.label | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:65:5:65:9 | [post store] ControlFlowNode for Attribute [Attribute foo] | semmle.label | [post store] ControlFlowNode for Attribute [Attribute foo] |
+| test.py:65:17:65:17 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj, Attribute foo] | semmle.label | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:67:10:67:14 | ControlFlowNode for Attribute [Attribute foo] | semmle.label | ControlFlowNode for Attribute [Attribute foo] |
+| test.py:67:10:67:18 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:81:11:81:23 | ControlFlowNode for MyObj() [Attribute foo] | semmle.label | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:81:17:81:22 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:82:10:82:12 | ControlFlowNode for obj [Attribute foo] | semmle.label | ControlFlowNode for obj [Attribute foo] |
+| test.py:82:10:82:16 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:86:11:86:27 | ControlFlowNode for MyObj() [Attribute foo] | semmle.label | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:86:21:86:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:87:10:87:12 | ControlFlowNode for obj [Attribute foo] | semmle.label | ControlFlowNode for obj [Attribute foo] |
+| test.py:87:10:87:16 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:97:10:97:39 | ControlFlowNode for fields_with_local_flow() | semmle.label | ControlFlowNode for fields_with_local_flow() |
+| test.py:97:33:97:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 #select
 | examples.py:28:6:28:14 | ControlFlowNode for Attribute | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:28:6:28:14 | ControlFlowNode for Attribute | Flow found |
 | examples.py:37:6:37:14 | ControlFlowNode for Attribute | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:37:6:37:14 | ControlFlowNode for Attribute | Flow found |
@@ -99,13 +99,13 @@ nodes
 | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() | examples.py:40:5:40:10 | ControlFlowNode for SOURCE | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() | Flow found |
 | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() | examples.py:49:13:49:18 | ControlFlowNode for SOURCE | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() | Flow found |
 | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() | examples.py:59:29:59:34 | ControlFlowNode for SOURCE | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() | Flow found |
-| test.py:47:10:47:18 | ControlFlowNode for Attribute | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:47:10:47:18 | ControlFlowNode for Attribute | Flow found |
-| test.py:47:10:47:18 | ControlFlowNode for Attribute | test.py:46:19:46:24 | ControlFlowNode for SOURCE | test.py:47:10:47:18 | ControlFlowNode for Attribute | Flow found |
-| test.py:57:10:57:18 | ControlFlowNode for Attribute | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:57:10:57:18 | ControlFlowNode for Attribute | Flow found |
-| test.py:57:10:57:18 | ControlFlowNode for Attribute | test.py:51:9:51:14 | ControlFlowNode for SOURCE | test.py:57:10:57:18 | ControlFlowNode for Attribute | Flow found |
-| test.py:72:10:72:16 | ControlFlowNode for Attribute | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:72:10:72:16 | ControlFlowNode for Attribute | Flow found |
-| test.py:72:10:72:16 | ControlFlowNode for Attribute | test.py:71:17:71:22 | ControlFlowNode for SOURCE | test.py:72:10:72:16 | ControlFlowNode for Attribute | Flow found |
-| test.py:77:10:77:16 | ControlFlowNode for Attribute | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:77:10:77:16 | ControlFlowNode for Attribute | Flow found |
-| test.py:77:10:77:16 | ControlFlowNode for Attribute | test.py:76:21:76:26 | ControlFlowNode for SOURCE | test.py:77:10:77:16 | ControlFlowNode for Attribute | Flow found |
-| test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() | Flow found |
-| test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() | test.py:87:33:87:38 | ControlFlowNode for SOURCE | test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() | Flow found |
+| test.py:50:10:50:18 | ControlFlowNode for Attribute | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:50:10:50:18 | ControlFlowNode for Attribute | Flow found |
+| test.py:50:10:50:18 | ControlFlowNode for Attribute | test.py:49:19:49:24 | ControlFlowNode for SOURCE | test.py:50:10:50:18 | ControlFlowNode for Attribute | Flow found |
+| test.py:67:10:67:18 | ControlFlowNode for Attribute | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:67:10:67:18 | ControlFlowNode for Attribute | Flow found |
+| test.py:67:10:67:18 | ControlFlowNode for Attribute | test.py:61:9:61:14 | ControlFlowNode for SOURCE | test.py:67:10:67:18 | ControlFlowNode for Attribute | Flow found |
+| test.py:82:10:82:16 | ControlFlowNode for Attribute | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:82:10:82:16 | ControlFlowNode for Attribute | Flow found |
+| test.py:82:10:82:16 | ControlFlowNode for Attribute | test.py:81:17:81:22 | ControlFlowNode for SOURCE | test.py:82:10:82:16 | ControlFlowNode for Attribute | Flow found |
+| test.py:87:10:87:16 | ControlFlowNode for Attribute | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:87:10:87:16 | ControlFlowNode for Attribute | Flow found |
+| test.py:87:10:87:16 | ControlFlowNode for Attribute | test.py:86:21:86:26 | ControlFlowNode for SOURCE | test.py:87:10:87:16 | ControlFlowNode for Attribute | Flow found |
+| test.py:97:10:97:39 | ControlFlowNode for fields_with_local_flow() | test.py:3:10:3:17 | ControlFlowNode for Str | test.py:97:10:97:39 | ControlFlowNode for fields_with_local_flow() | Flow found |
+| test.py:97:10:97:39 | ControlFlowNode for fields_with_local_flow() | test.py:97:33:97:38 | ControlFlowNode for SOURCE | test.py:97:10:97:39 | ControlFlowNode for fields_with_local_flow() | Flow found |
