@@ -125,10 +125,10 @@ namespace Semmle.Autobuild.Shared
 
         IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
         {
-            var matchingFiles = GetExtensions(extension).
-                Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2)).
-                Where(p => p.ProjectOrSolution.HasLanguage(this.Options.Language)).
-                ToArray();
+            var matchingFiles = GetExtensions(extension)
+                .Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2))
+                .Where(p => p.ProjectOrSolution.HasLanguage(this.Options.Language))
+                .ToArray();
 
             if (matchingFiles.Length == 0)
                 return null;
@@ -136,9 +136,9 @@ namespace Semmle.Autobuild.Shared
             if (Options.AllSolutions)
                 return matchingFiles.Select(p => p.ProjectOrSolution);
 
-            return matchingFiles.
-                Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot).
-                Select(f => f.ProjectOrSolution);
+            return matchingFiles
+                .Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot)
+                .Select(f => f.ProjectOrSolution);
         }
 
         /// <summary>

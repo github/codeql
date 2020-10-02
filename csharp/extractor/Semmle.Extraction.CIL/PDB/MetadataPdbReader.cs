@@ -45,11 +45,12 @@ namespace Semmle.Extraction.PDB
         {
             var debugInfo = reader.GetMethodDebugInformation(handle);
 
-            var sequencePoints = debugInfo.GetSequencePoints().
-                Where(p => !p.Document.IsNil && !p.IsHidden).
-                Select(p => new SequencePoint(p.Offset, new Location(new SourceFile(reader, p.Document), p.StartLine, p.StartColumn, p.EndLine, p.EndColumn))).
-                Where(p => p.Location.File.Path != null).
-                ToArray();
+            var sequencePoints = debugInfo.GetSequencePoints()
+                .Where(p => !p.Document.IsNil && !p.IsHidden)
+                .Select(p => new SequencePoint(p.Offset, new Location(
+                    new SourceFile(reader, p.Document), p.StartLine, p.StartColumn, p.EndLine, p.EndColumn)))
+                .Where(p => p.Location.File.Path != null)
+                .ToArray();
 
             return sequencePoints.Any() ? new Method(sequencePoints) : null;
         }

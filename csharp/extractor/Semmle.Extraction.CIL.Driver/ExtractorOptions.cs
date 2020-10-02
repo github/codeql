@@ -75,10 +75,10 @@ namespace Semmle.Extraction.CIL.Driver
                 // Get our own assembly name
                 name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());
 
-                references = mdReader.AssemblyReferences.
-                    Select(r => mdReader.GetAssemblyReference(r)).
-                    Select(ar => CreateAssemblyName(mdReader, ar)).
-                    ToArray();
+                references = mdReader.AssemblyReferences
+                    .Select(r => mdReader.GetAssemblyReference(r))
+                    .Select(ar => CreateAssemblyName(mdReader, ar))
+                    .ToArray();
             }
             catch (System.BadImageFormatException)
             {

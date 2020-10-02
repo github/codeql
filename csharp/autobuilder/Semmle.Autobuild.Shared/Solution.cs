@@ -77,12 +77,11 @@ namespace Semmle.Autobuild.Shared
                 return;
             }
 
-            includedProjects =
-                solution.ProjectsInOrder.
-                Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat).
-                Select(p => builder.Actions.PathCombine(DirectoryName, builder.Actions.PathCombine(p.RelativePath.Split('\\', StringSplitOptions.RemoveEmptyEntries)))).
-                Select(p => new Project(builder, p)).
-                ToArray();
+            includedProjects = solution.ProjectsInOrder
+                .Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat)
+                .Select(p => builder.Actions.PathCombine(DirectoryName, builder.Actions.PathCombine(p.RelativePath.Split('\\', StringSplitOptions.RemoveEmptyEntries))))
+                .Select(p => new Project(builder, p))
+                .ToArray();
         }
 
         IEnumerable<Version> ToolsVersions => includedProjects.Where(p => p.ValidToolsVersion).Select(p => p.ToolsVersion);

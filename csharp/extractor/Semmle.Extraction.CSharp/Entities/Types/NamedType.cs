@@ -110,14 +110,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         static IEnumerable<Microsoft.CodeAnalysis.Location> GetLocations(INamedTypeSymbol type)
         {
-            return type.Locations.
-                Where(l => l.IsInMetadata).
-                Concat(
-                    type.
-                    DeclaringSyntaxReferences.
-                    Select(loc => loc.GetSyntax()).
-                    OfType<CSharpSyntaxNode>().
-                    Select(l => l.FixedLocation())
+            return type.Locations
+                .Where(l => l.IsInMetadata)
+                .Concat(type.DeclaringSyntaxReferences
+                    .Select(loc => loc.GetSyntax())
+                    .OfType<CSharpSyntaxNode>()
+                    .Select(l => l.FixedLocation())
                 );
         }
 
@@ -155,11 +153,11 @@ namespace Semmle.Extraction.CSharp.Entities
             var et = GetEnumerableType(cx, type);
             if (et.Symbol != null) return et;
 
-            return type.AllInterfaces.
-                        Where(i => i.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T).
-                        Concat(type.AllInterfaces.Where(i => i.SpecialType == SpecialType.System_Collections_IEnumerable)).
-                        Select(i => GetEnumerableType(cx, i)).
-                        FirstOrDefault();
+            return type.AllInterfaces
+                .Where(i => i.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
+                .Concat(type.AllInterfaces.Where(i => i.SpecialType == SpecialType.System_Collections_IEnumerable))
+                .Select(i => GetEnumerableType(cx, i))
+                .FirstOrDefault();
         }
 
         static AnnotatedTypeSymbol GetEnumerableType(Context cx, INamedTypeSymbol type)

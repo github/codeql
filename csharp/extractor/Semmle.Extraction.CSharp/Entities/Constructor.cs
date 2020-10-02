@@ -88,10 +88,10 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return symbol.DeclaringSyntaxReferences.
-                    Select(r => r.GetSyntax()).
-                    OfType<ConstructorDeclarationSyntax>().
-                    FirstOrDefault();
+                return symbol.DeclaringSyntaxReferences
+                    .Select(r => r.GetSyntax())
+                    .OfType<ConstructorDeclarationSyntax>()
+                    .FirstOrDefault();
             }
         }
 

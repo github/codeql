@@ -78,10 +78,10 @@ namespace Semmle.Extraction
         {
             if (!useLayoutFile) return DefaultProject;
 
-            return blocks.
-                Where(block => block.Matches(sourceFile)).
-                Select(block => block.Directories).
-                FirstOrDefault();
+            return blocks
+                .Where(block => block.Matches(sourceFile))
+                .Select(block => block.Directories)
+                .FirstOrDefault();
         }
 
         /// <summary>

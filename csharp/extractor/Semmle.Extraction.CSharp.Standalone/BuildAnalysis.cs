@@ -72,10 +72,10 @@ namespace Semmle.BuildAnalyser
 
             progressMonitor.FindingFiles(options.SrcDir);
 
-            allSources = sourceDir.GetFiles("*.cs", SearchOption.AllDirectories).
-                Select(d => d.FullName).
-                Where(d => !options.ExcludesFile(d)).
-                ToArray();
+            allSources = sourceDir.GetFiles("*.cs", SearchOption.AllDirectories)
+                .Select(d => d.FullName)
+                .Where(d => !options.ExcludesFile(d))
+                .ToArray();
 
             var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
             PackageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));

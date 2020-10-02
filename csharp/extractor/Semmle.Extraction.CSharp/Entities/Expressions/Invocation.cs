@@ -118,10 +118,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     // For some reason, typeof(X).InvokeMember(...) fails to resolve the correct
                     // InvokeMember() method, even though the number of parameters clearly identifies the correct method
 
-                    var candidates = si.CandidateSymbols.
-                        OfType<IMethodSymbol>().
-                        Where(method => method.Parameters.Length >= Syntax.ArgumentList.Arguments.Count).
-                        Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= Syntax.ArgumentList.Arguments.Count);
+                    var candidates = si.CandidateSymbols
+                        .OfType<IMethodSymbol>()
+                        .Where(method => method.Parameters.Length >= Syntax.ArgumentList.Arguments.Count)
+                        .Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= Syntax.ArgumentList.Arguments.Count);
 
                     return cx.Extractor.Standalone ?
                         candidates.FirstOrDefault() :

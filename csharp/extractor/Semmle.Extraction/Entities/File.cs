@@ -30,13 +30,14 @@ namespace Semmle.Extraction.Entities
             var fromSource = TransformedPath.Extension.ToLowerInvariant().Equals("cs");
             if (fromSource)
             {
-                foreach (var text in Context.Compilation.SyntaxTrees.
-                    Where(t => t.FilePath == OriginalPath).
-                    Select(tree => tree.GetText()))
+                foreach (var text in Context.Compilation.SyntaxTrees
+                    .Where(t => t.FilePath == OriginalPath)
+                    .Select(tree => tree.GetText()))
                 {
                     var rawText = text.ToString() ?? "";
                     var lineCounts = LineCounter.ComputeLineCounts(rawText);
-                    if (rawText.Length > 0 && rawText[rawText.Length - 1] != '\n') lineCounts.Total++;
+                    if (rawText.Length > 0 && rawText[rawText.Length - 1] != '\n')
+                        lineCounts.Total++;
 
                     trapFile.numlines(this, lineCounts);
                     Context.TrapWriter.Archive(OriginalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default);

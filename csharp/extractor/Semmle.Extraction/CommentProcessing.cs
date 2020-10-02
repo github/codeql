@@ -206,9 +206,9 @@ namespace Semmle.Extraction.CommentProcessing
             /// <returns>The element before l, or null.</returns>
             public KeyValuePair<Location, Label>? FindBefore(Location l)
             {
-                return elementStack.
-                    Where(v => v.Key.SourceSpan.End < l.SourceSpan.Start).
-                    LastOrNull();
+                return elementStack
+                    .Where(v => v.Key.SourceSpan.End < l.SourceSpan.Start)
+                    .LastOrNull();
             }
 
             /// <summary>

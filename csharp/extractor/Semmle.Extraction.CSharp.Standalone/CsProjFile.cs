@@ -59,11 +59,10 @@ namespace Semmle.BuildAnalyser
         {
             var msbuildProject = new Microsoft.Build.Execution.ProjectInstance(filename.FullName);
 
-            var references = msbuildProject.
-                Items.
-                Where(item => item.ItemType == "Reference").
-                Select(item => item.EvaluatedInclude).
-                ToArray();
+            var references = msbuildProject.Items
+                .Where(item => item.ItemType == "Reference")
+                .Select(item => item.EvaluatedInclude)
+                .ToArray();
 
             var csFiles = msbuildProject.Items
                 .Where(item => item.ItemType == "Compile")
@@ -95,33 +94,34 @@ namespace Semmle.BuildAnalyser
 
             if (netCoreProjectFile)
             {
-                var explicitCsFiles = root.SelectNodes("/Project/ItemGroup/Compile/@Include", mgr).
-                    NodeList().
-                    Select(node => node.Value).
-                    Select(cs => Path.DirectorySeparatorChar == '/' ? cs.Replace("\\", "/") : cs).
-                    Select(f => Path.GetFullPath(Path.Combine(projDir.FullName, f)));
+                var explicitCsFiles = root
+                    .SelectNodes("/Project/ItemGroup/Compile/@Include", mgr)
+                    .NodeList()
+                    .Select(node => node.Value)
+                    .Select(cs => Path.DirectorySeparatorChar == '/' ? cs.Replace("\\", "/") : cs)
+                    .Select(f => Path.GetFullPath(Path.Combine(projDir.FullName, f)));
 
                 var additionalCsFiles = System.IO.Directory.GetFiles(directoryName, "*.cs", SearchOption.AllDirectories);
 
                 return (explicitCsFiles.Concat(additionalCsFiles).ToArray(), Array.Empty<string>());
             }
 
-            var references =
-                root.SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Reference/@Include", mgr).
-                NodeList().
-                Select(node => node.Value).
-                ToArray();
+            var references = root
+                .SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Reference/@Include", mgr)
+                .NodeList()
+                .Select(node => node.Value)
+                .ToArray();
 
-            var relativeCsIncludes =
-                root.SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Compile/@Include", mgr).
-                NodeList().
-                Select(node => node.Value).
-                ToArray();
+            var relativeCsIncludes = root
+                .SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Compile/@Include", mgr)
+                .NodeList()
+                .Select(node => node.Value)
+                .ToArray();
 
-            var csFiles = relativeCsIncludes.
-                Select(cs => Path.DirectorySeparatorChar == '/' ? cs.Replace("\\", "/") : cs).
-                Select(f => Path.GetFullPath(Path.Combine(projDir.FullName, f))).
-                ToArray();
+            var csFiles = relativeCsIncludes
+                .Select(cs => Path.DirectorySeparatorChar == '/' ? cs.Replace("\\", "/") : cs)
+                .Select(f => Path.GetFullPath(Path.Combine(projDir.FullName, f)))
+                .ToArray();
 
             return (csFiles, references);
         }

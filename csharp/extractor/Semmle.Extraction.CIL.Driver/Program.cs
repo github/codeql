@@ -41,10 +41,11 @@ namespace Semmle.Extraction.CIL.Driver
             var layout = new Layout();
             using var logger = new ConsoleLogger(options.Verbosity);
 
-            var actions = options.
-                AssembliesToExtract.Select(asm => asm.filename).
-                Select<string, Action>(filename => () => ExtractAssembly(layout, filename, logger, options.NoCache, options.PDB, options.TrapCompression)).
-                ToArray();
+            var actions = options.AssembliesToExtract
+                .Select(asm => asm.filename)
+                .Select<string, Action>(filename =>
+                    () => ExtractAssembly(layout, filename, logger, options.NoCache, options.PDB, options.TrapCompression))
+                .ToArray();
 
             foreach (var missingRef in options.MissingReferences)
                 logger.Log(Severity.Info, "  Missing assembly " + missingRef);

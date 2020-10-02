@@ -87,14 +87,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return
-                    symbol.
-                    DeclaringSyntaxReferences.
-                    Select(r => r.GetSyntax()).
-                    OfType<IndexerDeclarationSyntax>().
-                    Select(s => s.GetLocation()).
-                    Concat(symbol.Locations).
-                    First();
+                return symbol.DeclaringSyntaxReferences
+                    .Select(r => r.GetSyntax())
+                    .OfType<IndexerDeclarationSyntax>()
+                    .Select(s => s.GetLocation())
+                    .Concat(symbol.Locations)
+                    .First();
             }
         }
 

@@ -101,11 +101,10 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return BodyDeclaringSymbol.
-                    DeclaringSyntaxReferences.
-                    SelectMany(r => r.GetSyntax().ChildNodes()).
-                    OfType<BlockSyntax>().
-                    FirstOrDefault();
+                return BodyDeclaringSymbol.DeclaringSyntaxReferences
+                    .SelectMany(r => r.GetSyntax().ChildNodes())
+                    .OfType<BlockSyntax>()
+                    .FirstOrDefault();
             }
         }
 
@@ -113,12 +112,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return BodyDeclaringSymbol.
-                    DeclaringSyntaxReferences.
-                    SelectMany(r => r.GetSyntax().ChildNodes()).
-                    OfType<ArrowExpressionClauseSyntax>().
-                    Select(arrow => arrow.Expression).
-                    FirstOrDefault();
+                return BodyDeclaringSymbol.DeclaringSyntaxReferences
+                    .SelectMany(r => r.GetSyntax().ChildNodes())
+                    .OfType<ArrowExpressionClauseSyntax>()
+                    .Select(arrow => arrow.Expression)
+                    .FirstOrDefault();
             }
         }
 

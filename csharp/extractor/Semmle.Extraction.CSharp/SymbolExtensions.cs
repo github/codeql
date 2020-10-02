@@ -70,16 +70,14 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static IEnumerable<string> GetSourceLevelModifiers(this ISymbol symbol)
         {
-            var methodModifiers =
-                symbol.DeclaringSyntaxReferences.
-                Select(r => r.GetSyntax()).
-                OfType<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>().
-                SelectMany(md => md.Modifiers);
-            var typeModifers =
-                symbol.DeclaringSyntaxReferences.
-                Select(r => r.GetSyntax()).
-                OfType<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>().
-                SelectMany(cd => cd.Modifiers);
+            var methodModifiers = symbol.DeclaringSyntaxReferences
+                .Select(r => r.GetSyntax())
+                .OfType<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>()
+                .SelectMany(md => md.Modifiers);
+            var typeModifers = symbol.DeclaringSyntaxReferences
+                .Select(r => r.GetSyntax())
+                .OfType<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>()
+                .SelectMany(cd => cd.Modifiers);
             return methodModifiers.Concat(typeModifers).Select(m => m.Text);
         }
 

@@ -58,11 +58,10 @@ namespace Semmle.Extraction.CSharp.Entities
             Context.BindComments(this, Location.symbol);
 
             int child = 0;
-            foreach (var initializer in
-                symbol.DeclaringSyntaxReferences.
-                Select(n => n.GetSyntax()).
-                OfType<VariableDeclaratorSyntax>().
-                Where(n => n.Initializer != null))
+            foreach (var initializer in symbol.DeclaringSyntaxReferences
+                .Select(n => n.GetSyntax())
+                .OfType<VariableDeclaratorSyntax>()
+                .Where(n => n.Initializer != null))
             {
                 Context.PopulateLater(() =>
                 {
@@ -77,10 +76,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 });
             }
 
-            foreach (var initializer in symbol.DeclaringSyntaxReferences.
-                Select(n => n.GetSyntax()).
-                OfType<EnumMemberDeclarationSyntax>().
-                Where(n => n.EqualsValue != null))
+            foreach (var initializer in symbol.DeclaringSyntaxReferences
+                .Select(n => n.GetSyntax())
+                .OfType<EnumMemberDeclarationSyntax>()
+                .Where(n => n.EqualsValue != null))
             {
                 // Mark fields that have explicit initializers.
                 var constValue = symbol.HasConstantValue
@@ -93,10 +92,16 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             if (IsSourceDeclaration)
-                foreach (var syntax in symbol.DeclaringSyntaxReferences.
-                    Select(d => d.GetSyntax()).OfType<VariableDeclaratorSyntax>().
-                    Select(d => d.Parent).OfType<VariableDeclarationSyntax>())
+            {
+                foreach (var syntax in symbol.DeclaringSyntaxReferences
+                  .Select(d => d.GetSyntax())
+                  .OfType<VariableDeclaratorSyntax>()
+                  .Select(d => d.Parent)
+                  .OfType<VariableDeclarationSyntax>())
+                {
                     TypeMention.Create(Context, syntax.Type, this, Type);
+                }
+            }
         }
 
         private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Extraction.Entities.Location loc,

@@ -77,9 +77,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
 
                 int child = 1;
-                foreach (var initializer in declSyntaxReferences.
-                    Select(n => n.Initializer).
-                    Where(i => i != null))
+                foreach (var initializer in declSyntaxReferences
+                    .Select(n => n.Initializer)
+                    .Where(i => i != null))
                 {
                     Context.PopulateLater(() =>
                     {
@@ -105,14 +105,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return
-                    symbol.
-                    DeclaringSyntaxReferences.
-                    Select(r => r.GetSyntax()).
-                    OfType<PropertyDeclarationSyntax>().
-                    Select(s => s.GetLocation()).
-                    Concat(symbol.Locations).
-                    First();
+                return symbol.DeclaringSyntaxReferences
+                    .Select(r => r.GetSyntax())
+                    .OfType<PropertyDeclarationSyntax>()
+                    .Select(s => s.GetLocation())
+                    .Concat(symbol.Locations)
+                    .First();
             }
         }
 

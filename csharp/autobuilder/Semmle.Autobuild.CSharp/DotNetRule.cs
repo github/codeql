@@ -23,10 +23,10 @@ namespace Semmle.Autobuild.CSharp
 
             if (auto)
             {
-                var notDotNetProject = builder.ProjectsOrSolutionsToBuild.
-                  SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects)).
-                  OfType<Project>().
-                  FirstOrDefault(p => !p.DotNetProject);
+                var notDotNetProject = builder.ProjectsOrSolutionsToBuild
+                    .SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects))
+                    .OfType<Project>()
+                    .FirstOrDefault(p => !p.DotNetProject);
                 if (notDotNetProject != null)
                 {
                     builder.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);
@@ -94,11 +94,11 @@ namespace Semmle.Autobuild.CSharp
                     {
                         var minimumVersion = new Version(3, 0);
                         var regex = new Regex(@"Microsoft\.NETCore\.App (\d\.\d\.\d)");
-                        compatibleClr = runtimes.
-                            Select(runtime => regex.Match(runtime)).
-                            Where(m => m.Success).
-                            Select(m => m.Groups[1].Value).
-                            Any(m => Version.TryParse(m, out var v) && v >= minimumVersion);
+                        compatibleClr = runtimes
+                            .Select(runtime => regex.Match(runtime))
+                            .Where(m => m.Success)
+                            .Select(m => m.Groups[1].Value)
+                            .Any(m => Version.TryParse(m, out var v) && v >= minimumVersion);
                     }
 
                     if (!compatibleClr)

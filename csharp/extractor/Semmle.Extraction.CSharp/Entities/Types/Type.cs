@@ -183,12 +183,13 @@ namespace Semmle.Extraction.CSharp.Entities
                 baseLists = baseLists.Concat(declSyntaxReferences.OfType<InterfaceDeclarationSyntax>().Select(c => c.BaseList));
                 baseLists = baseLists.Concat(declSyntaxReferences.OfType<StructDeclarationSyntax>().Select(c => c.BaseList));
 
-                baseLists.
-                    Where(bl => bl != null).
-                    SelectMany(bl => bl.Types).
-                    Zip(baseTypes.Where(bt => bt.symbol.SpecialType != SpecialType.System_Object),
-                        (s, t) => TypeMention.Create(Context, s.Type, this, t)).
-                    Enumerate();
+                baseLists
+                    .Where(bl => bl != null)
+                    .SelectMany(bl => bl.Types)
+                    .Zip(
+                        baseTypes.Where(bt => bt.symbol.SpecialType != SpecialType.System_Object),
+                        (s, t) => TypeMention.Create(Context, s.Type, this, t))
+                    .Enumerate();
             }
         }
 

@@ -65,10 +65,11 @@ namespace Semmle.Extraction.PDB
                 if (method.GetSequencePointCount(out var count) != 0 || count == 0)
                     return null;
 
-                var s = method.GetSequencePoints().
-                    Where(sp => !sp.IsHidden).
-                    Select(sp => new SequencePoint(sp.Offset, new Location(new Document(sp.Document), sp.StartLine, sp.StartColumn, sp.EndLine, sp.EndColumn))).
-                    ToArray();
+                var s = method.GetSequencePoints()
+                    .Where(sp => !sp.IsHidden)
+                    .Select(sp => new SequencePoint(sp.Offset, new Location(
+                        new Document(sp.Document), sp.StartLine, sp.StartColumn, sp.EndLine, sp.EndColumn)))
+                    .ToArray();
 
                 return s.Any() ? new Method(s) : null;
             }

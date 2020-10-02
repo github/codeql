@@ -53,11 +53,14 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var l in Locations)
                 trapFile.event_location(this, l);
 
-            foreach (var syntaxType in declSyntaxReferences.OfType<VariableDeclaratorSyntax>().
-                Select(d => d.Parent).
-                OfType<VariableDeclarationSyntax>().
-                Select(syntax => syntax.Type))
+            foreach (var syntaxType in declSyntaxReferences
+                .OfType<VariableDeclaratorSyntax>()
+                .Select(d => d.Parent)
+                .OfType<VariableDeclarationSyntax>()
+                .Select(syntax => syntax.Type))
+            {
                 TypeMention.Create(Context, syntaxType, this, type);
+            }
         }
 
         public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol);
