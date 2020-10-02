@@ -128,9 +128,10 @@ private module Stdlib {
    */
   private class OsExecCall extends SystemCommandExecution::Range {
     OsExecCall() {
-      this.asCfgNode().(CallNode).getFunction() =
-        os_attr(["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"])
-            .asCfgNode()
+      exists(string name |
+        name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
+        this.asCfgNode().(CallNode).getFunction() = os_attr(name).asCfgNode()
+      )
     }
 
     override DataFlow::Node getCommand() {
@@ -144,9 +145,11 @@ private module Stdlib {
    */
   private class OsSpawnCall extends SystemCommandExecution::Range {
     OsSpawnCall() {
-      this.asCfgNode().(CallNode).getFunction() =
-        os_attr(["spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp",
-              "spawnvpe"]).asCfgNode()
+      exists(string name |
+        name in ["spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp",
+              "spawnvpe"] and
+        this.asCfgNode().(CallNode).getFunction() = os_attr(name).asCfgNode()
+      )
     }
 
     override DataFlow::Node getCommand() {
@@ -247,8 +250,10 @@ private module Stdlib {
 
     SubprocessPopenCall() {
       call = this.asCfgNode() and
-      call.getFunction() =
-        subprocess_attr(["Popen", "call", "check_call", "check_output", "run"]).asCfgNode()
+      exists(string name |
+        name in ["Popen", "call", "check_call", "check_output", "run"] and
+        call.getFunction() = subprocess_attr(name).asCfgNode()
+      )
     }
 
     /** Gets the ControlFlowNode for the `args` argument, if any. */
