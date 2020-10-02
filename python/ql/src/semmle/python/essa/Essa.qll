@@ -567,6 +567,7 @@ class ParameterDefinition extends EssaNodeDefinition {
     exists(Function func | func.getKwarg() = this.getDefiningNode().getNode())
   }
 
+  /** Gets the `Parameter` this `ParameterDefinition` represents. */
   Parameter getParameter() { result = this.getDefiningNode().getNode() }
 }
 
