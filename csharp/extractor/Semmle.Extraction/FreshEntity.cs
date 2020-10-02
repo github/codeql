@@ -1,5 +1,3 @@
-using Semmle.Extraction.Entities;
-using System;
 using System.IO;
 
 namespace Semmle.Extraction

@@ -1,5 +1,4 @@
 using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp.Populators;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;

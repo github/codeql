@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Semmle.BuildAnalyser;
 using Semmle.Util.Logging;
 

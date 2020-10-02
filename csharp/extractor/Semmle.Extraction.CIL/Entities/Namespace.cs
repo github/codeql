@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CIL.Entities
 {

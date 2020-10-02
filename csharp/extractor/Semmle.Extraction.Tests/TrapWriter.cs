@@ -1,8 +1,6 @@
 using Xunit;
 using Semmle.Util.Logging;
 using Semmle.Util;
-using System.Runtime.InteropServices;
-using System.IO;
 
 namespace Semmle.Extraction.Tests
 {
