@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return symbol.OriginalDefinition == null || SymbolEqualityComparer.Default.Equals(symbol.OriginalDefinition, symbol) ? original : Create(cx, symbol.OriginalDefinition);
         }
 
-        public new static Destructor Create(Context cx, IMethodSymbol symbol) =>
+        public static new Destructor Create(Context cx, IMethodSymbol symbol) =>
             DestructorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
         private class DestructorFactory : ICachedEntityFactory<IMethodSymbol, Destructor>

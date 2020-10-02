@@ -24,7 +24,7 @@ namespace Semmle.Extraction.Entities
             FileEntity = File.Create(Context, Position.Path);
         }
 
-        public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => SourceLocationFactory.Instance.CreateEntity(cx, loc, loc);
+        public static new Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => SourceLocationFactory.Instance.CreateEntity(cx, loc, loc);
 
         public override void Populate(TextWriter trapFile)
         {

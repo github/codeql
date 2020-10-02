@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities
             Overrides(trapFile);
         }
 
-        public new static EventAccessor Create(Context cx, IMethodSymbol symbol) =>
+        public static new EventAccessor Create(Context cx, IMethodSymbol symbol) =>
             EventAccessorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
         private class EventAccessorFactory : ICachedEntityFactory<IMethodSymbol, EventAccessor>

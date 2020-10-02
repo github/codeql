@@ -78,7 +78,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public new static Accessor Create(Context cx, IMethodSymbol symbol) =>
+        public static new Accessor Create(Context cx, IMethodSymbol symbol) =>
             AccessorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
         private class AccessorFactory : ICachedEntityFactory<IMethodSymbol, Accessor>

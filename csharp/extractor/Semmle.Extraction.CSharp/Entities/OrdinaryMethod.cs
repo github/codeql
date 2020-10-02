@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractCompilerGenerated(trapFile);
         }
 
-        public new static OrdinaryMethod Create(Context cx, IMethodSymbol method) => OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);
+        public static new OrdinaryMethod Create(Context cx, IMethodSymbol method) => OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);
 
         private class OrdinaryMethodFactory : ICachedEntityFactory<IMethodSymbol, OrdinaryMethod>
         {

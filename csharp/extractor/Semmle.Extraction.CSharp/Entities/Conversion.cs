@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private Conversion(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        public new static Conversion Create(Context cx, IMethodSymbol symbol) =>
+        public static new Conversion Create(Context cx, IMethodSymbol symbol) =>
             ConversionFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation

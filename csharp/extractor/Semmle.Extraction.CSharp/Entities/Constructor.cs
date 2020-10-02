@@ -97,7 +97,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public new static Constructor Create(Context cx, IMethodSymbol constructor)
+        public static new Constructor Create(Context cx, IMethodSymbol constructor)
         {
             if (constructor == null)
                 return null;
