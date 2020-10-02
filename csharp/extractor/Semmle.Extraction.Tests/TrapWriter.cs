@@ -42,7 +42,7 @@ namespace Semmle.Extraction.Tests
             Assert.Equal(@"C:\Temp\source_archive\diskstation\share\source\def.cs", TrapWriter.NestPaths(logger, @"C:\Temp\source_archive", $@"{root3}{root3}diskstation\share\source\def.cs").Replace('/', '\\'));
         }
 
-        class LoggerMock : ILogger
+        sealed class LoggerMock : ILogger
         {
             public void Dispose() { }
 

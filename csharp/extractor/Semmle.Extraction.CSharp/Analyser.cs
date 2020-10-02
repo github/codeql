@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp
     /// <summary>
     /// Encapsulates a C# analysis task.
     /// </summary>
-    public class Analyser : IDisposable
+    public sealed class Analyser : IDisposable
     {
         IExtractor extractor;
 

@@ -46,7 +46,7 @@ namespace Semmle.BuildAnalyser
     /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    class BuildAnalysis : IBuildAnalysis, IDisposable
+    sealed class BuildAnalysis : IBuildAnalysis, IDisposable
     {
         private readonly AssemblyCache assemblyCache;
         private readonly IProgressMonitor progressMonitor;

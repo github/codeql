@@ -199,7 +199,7 @@ namespace Semmle.Extraction.Tests
                 new Semmle.Extraction.Layout(null, null, "layout.txt"));
         }
 
-        class LoggerMock : ILogger
+        sealed class LoggerMock : ILogger
         {
             public void Dispose() { }
 

@@ -283,7 +283,7 @@ namespace Semmle.Extraction
 
         public IDisposable StackGuard => new ScopeGuard(this);
 
-        private class ScopeGuard : IDisposable
+        private sealed class ScopeGuard : IDisposable
         {
             readonly Context cx;
 

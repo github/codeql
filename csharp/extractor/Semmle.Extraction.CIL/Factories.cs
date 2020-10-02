@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL
     /// <summary>
     /// Provides methods for creating and caching various entities.
     /// </summary>
-    public partial class Context
+    public sealed partial class Context
     {
         readonly Dictionary<object, Label> ids = new Dictionary<object, Label>();
 

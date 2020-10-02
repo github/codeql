@@ -10,20 +10,20 @@ namespace SemmleTests.Semmle.Util
     /// Ensure that the Extractor works with long paths.
     /// These should be handled by .NET Core.
     /// </summary>
-    public class LongPaths : IDisposable
+    public sealed class LongPaths : IDisposable
     {
         static readonly string tmpDir = Path.GetTempPath();
         static readonly string shortPath = Path.Combine(tmpDir, "test.txt");
         static readonly string longPath = Path.Combine(tmpDir, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
             "ccccccccccccccccccccccccccccccc", "ddddddddddddddddddddddddddddddddddddd", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "fffffffffffffffffffffffffffffffff",
-            "ggggggggggggggggggggggggggggggggggg","hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh","iiiiiiiiiiiiiiii.txt");
+            "ggggggggggggggggggggggggggggggggggg", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", "iiiiiiiiiiiiiiii.txt");
 
         public LongPaths()
         {
             CleanUp();
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             CleanUp();
         }
@@ -34,14 +34,14 @@ namespace SemmleTests.Semmle.Util
             {
                 File.Delete(shortPath);
             }
-            catch(DirectoryNotFoundException)
+            catch (DirectoryNotFoundException)
             {
             }
             try
             {
                 File.Delete(longPath);
             }
-            catch(DirectoryNotFoundException)
+            catch (DirectoryNotFoundException)
             {
             }
         }

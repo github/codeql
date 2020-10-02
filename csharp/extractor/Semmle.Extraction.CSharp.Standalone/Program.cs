@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// <summary>
     ///     Searches for source/references and creates separate extractions.
     /// </summary>
-    class Analysis : IDisposable
+    sealed class Analysis : IDisposable
     {
         public Analysis(ILogger logger, Options options)
         {

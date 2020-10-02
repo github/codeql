@@ -6,7 +6,7 @@ using System;
 
 namespace SemmleTests.Semmle.Util
 {
-    public class CanonicalPathCacheTest : IDisposable
+    public sealed class CanonicalPathCacheTest : IDisposable
     {
         readonly ILogger Logger = new LoggerMock();
         readonly string root;
@@ -24,9 +24,10 @@ namespace SemmleTests.Semmle.Util
             root = Win32.IsWindows() ? @"X:\" : "/";
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             File.Delete("abc");
+            Logger.Dispose();
         }
 
         [Fact]
@@ -172,7 +173,7 @@ namespace SemmleTests.Semmle.Util
             CanonicalPathDots();
         }
 
-        class LoggerMock : ILogger
+        sealed class LoggerMock : ILogger
         {
             public void Dispose() { }
 
