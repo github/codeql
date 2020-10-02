@@ -171,22 +171,6 @@ class StdSequenceContainerAssign extends TaintFunction {
 }
 
 /**
- * The standard container `before_begin` and `cbefore_begin` functions.
- */
-class StdSequenceContainerBeginEnd extends TaintFunction {
-  StdSequenceContainerBeginEnd() {
-    this
-        .hasQualifiedName("std", "forward_list",
-          ["before_begin", "cbefore_begin"])
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
-  }
-}
-
-/**
  * The standard container `swap` functions.
  */
 class StdSequenceContainerSwap extends TaintFunction {

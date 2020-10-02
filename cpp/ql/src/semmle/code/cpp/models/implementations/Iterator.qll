@@ -280,7 +280,9 @@ class IteratorArrayMemberOperator extends MemberFunction, TaintFunction, Iterato
  */
 class BeginOrEndFunction extends MemberFunction, TaintFunction {
   BeginOrEndFunction() {
-    this.hasName(["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend"]) and
+    this
+        .hasName(["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend",
+              "before_begin", "cbefore_begin"]) and
     this.getType().getUnspecifiedType() instanceof Iterator
   }
 
