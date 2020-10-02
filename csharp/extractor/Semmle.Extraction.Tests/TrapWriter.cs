@@ -49,8 +49,6 @@ namespace Semmle.Extraction.Tests
             public void Dispose() { }
 
             public void Log(Severity s, string text) { }
-
-            public void Log(Severity s, string text, params object[] args) { }
         }
     }
 }

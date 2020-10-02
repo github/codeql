@@ -194,7 +194,7 @@ namespace Semmle.Extraction.CIL.Entities
                     for (int i = 0; i < genericParams.Length; ++i)
                         genericParams[i] = cx.Populate(new MethodTypeParameter(this, this, i));
                     for (int i = 0; i < genericParams.Length; ++i)
-                        genericParams[i].PopulateHandle(this, md.GetGenericParameters()[i]);
+                        genericParams[i].PopulateHandle(md.GetGenericParameters()[i]);
                     foreach (var p in genericParams)
                         yield return p;
                 }

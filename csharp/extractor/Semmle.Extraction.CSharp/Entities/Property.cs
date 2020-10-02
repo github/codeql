@@ -125,10 +125,6 @@ namespace Semmle.Extraction.CSharp.Entities
             return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntityFromSymbol(cx, prop);
         }
 
-        public void VisitDeclaration(Context cx, PropertyDeclarationSyntax p)
-        {
-        }
-
         class PropertyFactory : ICachedEntityFactory<IPropertySymbol, Property>
         {
             public static readonly PropertyFactory Instance = new PropertyFactory();

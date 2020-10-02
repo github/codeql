@@ -150,7 +150,7 @@ namespace Semmle.Extraction.PDB
         public static IPdb? Create(string assemblyPath, PEReader peReader)
         {
             return (IPdb?)MetadataPdbReader.CreateFromAssembly(assemblyPath, peReader) ??
-                NativePdbReader.CreateFromAssembly(assemblyPath, peReader);
+                NativePdbReader.CreateFromAssembly(peReader);
         }
     }
 }
