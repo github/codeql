@@ -32,19 +32,6 @@ class StdPairConstructor extends Constructor, TaintFunction {
 }
 
 /**
- * An instantiation of `std::make_pair`.
- */
-class StdMakePair extends TaintFunction {
-  StdMakePair() { this.hasQualifiedName("std", "make_pair") }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from first parameter to the returned object
-    input.isParameterDeref(1) and
-    output.isReturnValue()
-  }
-}
-
-/**
  * The standard pair `swap` function.
  */
 class StdPairSwap extends TaintFunction {

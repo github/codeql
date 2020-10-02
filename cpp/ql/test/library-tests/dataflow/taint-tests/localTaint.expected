@@ -518,17 +518,8 @@
 | map.cpp:76:7:76:7 | l [post update] | map.cpp:78:7:78:7 | l |  |
 | map.cpp:77:7:77:7 | l [post update] | map.cpp:78:7:78:7 | l |  |
 | map.cpp:80:7:80:15 | call to make_pair | map.cpp:80:7:80:29 | call to pair | TAINT |
-| map.cpp:80:24:80:28 | 456 | map.cpp:80:7:80:15 | call to make_pair | TAINT |
-| map.cpp:81:24:81:28 | 456 | map.cpp:81:7:81:15 | call to make_pair | TAINT |
-| map.cpp:82:24:82:28 | 456 | map.cpp:82:7:82:15 | call to make_pair | TAINT |
 | map.cpp:83:7:83:15 | call to make_pair | map.cpp:83:7:83:32 | call to pair | TAINT |
-| map.cpp:83:27:83:31 | 456 | map.cpp:83:7:83:15 | call to make_pair | TAINT |
-| map.cpp:84:27:84:31 | 456 | map.cpp:84:7:84:15 | call to make_pair | TAINT |
-| map.cpp:85:27:85:31 | 456 | map.cpp:85:7:85:15 | call to make_pair | TAINT |
 | map.cpp:86:7:86:15 | call to make_pair | map.cpp:86:7:86:32 | call to pair | TAINT |
-| map.cpp:86:24:86:29 | call to source | map.cpp:86:7:86:15 | call to make_pair | TAINT |
-| map.cpp:87:24:87:29 | call to source | map.cpp:87:7:87:15 | call to make_pair | TAINT |
-| map.cpp:88:24:88:29 | call to source | map.cpp:88:7:88:15 | call to make_pair | TAINT |
 | map.cpp:91:6:91:14 | call to make_pair | map.cpp:91:6:91:49 | call to pair | TAINT |
 | map.cpp:91:6:91:49 | call to pair | map.cpp:91:2:91:49 | ... = ... |  |
 | map.cpp:91:6:91:49 | call to pair | map.cpp:92:7:92:7 | m |  |
@@ -536,8 +527,6 @@
 | map.cpp:91:6:91:49 | call to pair | map.cpp:94:7:94:7 | m |  |
 | map.cpp:91:6:91:49 | call to pair | map.cpp:95:7:95:7 | m |  |
 | map.cpp:91:6:91:49 | call to pair | map.cpp:96:7:96:7 | m |  |
-| map.cpp:91:33:91:38 | call to source | map.cpp:91:16:91:24 | call to make_pair | TAINT |
-| map.cpp:91:44:91:48 | 789 | map.cpp:91:6:91:14 | call to make_pair | TAINT |
 | map.cpp:92:7:92:7 | m | map.cpp:92:7:92:7 | call to pair | TAINT |
 | map.cpp:94:7:94:7 | m [post update] | map.cpp:95:7:95:7 | m |  |
 | map.cpp:94:7:94:7 | m [post update] | map.cpp:96:7:96:7 | m |  |
@@ -598,7 +587,6 @@
 | map.cpp:104:17:104:30 | call to make_pair | map.cpp:104:17:104:44 | call to pair | TAINT |
 | map.cpp:104:17:104:44 | call to pair | map.cpp:104:7:104:8 | ref arg m1 | TAINT |
 | map.cpp:104:17:104:44 | call to pair | map.cpp:104:10:104:15 | call to insert | TAINT |
-| map.cpp:104:39:104:43 | def | map.cpp:104:17:104:30 | call to make_pair | TAINT |
 | map.cpp:104:47:104:51 | first | map.cpp:104:7:104:51 | call to iterator |  |
 | map.cpp:105:7:105:8 | ref arg m2 | map.cpp:111:7:111:8 | m2 |  |
 | map.cpp:105:7:105:8 | ref arg m2 | map.cpp:117:7:117:8 | m2 |  |
@@ -618,7 +606,6 @@
 | map.cpp:105:17:105:30 | call to make_pair | map.cpp:105:17:105:47 | call to pair | TAINT |
 | map.cpp:105:17:105:47 | call to pair | map.cpp:105:7:105:8 | ref arg m2 | TAINT |
 | map.cpp:105:17:105:47 | call to pair | map.cpp:105:10:105:15 | call to insert | TAINT |
-| map.cpp:105:39:105:44 | call to source | map.cpp:105:17:105:30 | call to make_pair | TAINT |
 | map.cpp:105:50:105:54 | first | map.cpp:105:7:105:54 | call to iterator |  |
 | map.cpp:106:7:106:8 | ref arg m3 | map.cpp:112:7:112:8 | m3 |  |
 | map.cpp:106:7:106:8 | ref arg m3 | map.cpp:118:7:118:8 | m3 |  |
@@ -629,7 +616,6 @@
 | map.cpp:106:17:106:30 | call to make_pair | map.cpp:106:17:106:47 | call to pair | TAINT |
 | map.cpp:106:17:106:47 | call to pair | map.cpp:106:7:106:8 | ref arg m3 | TAINT |
 | map.cpp:106:17:106:47 | call to pair | map.cpp:106:10:106:15 | call to insert | TAINT |
-| map.cpp:106:42:106:46 | def | map.cpp:106:17:106:30 | call to make_pair | TAINT |
 | map.cpp:106:50:106:54 | first | map.cpp:106:7:106:54 | call to iterator |  |
 | map.cpp:107:7:107:8 | ref arg m4 | map.cpp:113:7:113:8 | m4 |  |
 | map.cpp:107:7:107:8 | ref arg m4 | map.cpp:119:7:119:8 | m4 |  |
@@ -892,25 +878,21 @@
 | map.cpp:175:13:175:26 | call to make_pair | map.cpp:175:13:175:36 | call to pair | TAINT |
 | map.cpp:175:13:175:36 | call to pair | map.cpp:175:2:175:4 | ref arg m14 | TAINT |
 | map.cpp:175:13:175:36 | call to pair | map.cpp:175:6:175:11 | call to insert | TAINT |
-| map.cpp:175:33:175:35 | a | map.cpp:175:13:175:26 | call to make_pair | TAINT |
 | map.cpp:176:2:176:4 | ref arg m14 | map.cpp:177:2:177:4 | m14 |  |
 | map.cpp:176:2:176:4 | ref arg m14 | map.cpp:178:2:178:4 | m14 |  |
 | map.cpp:176:2:176:4 | ref arg m14 | map.cpp:249:1:249:1 | m14 |  |
 | map.cpp:176:13:176:26 | call to make_pair | map.cpp:176:13:176:41 | call to pair | TAINT |
 | map.cpp:176:13:176:41 | call to pair | map.cpp:176:2:176:4 | ref arg m14 | TAINT |
 | map.cpp:176:13:176:41 | call to pair | map.cpp:176:6:176:11 | call to insert | TAINT |
-| map.cpp:176:33:176:38 | call to source | map.cpp:176:13:176:26 | call to make_pair | TAINT |
 | map.cpp:177:2:177:4 | ref arg m14 | map.cpp:178:2:178:4 | m14 |  |
 | map.cpp:177:2:177:4 | ref arg m14 | map.cpp:249:1:249:1 | m14 |  |
 | map.cpp:177:13:177:26 | call to make_pair | map.cpp:177:13:177:41 | call to pair | TAINT |
 | map.cpp:177:13:177:41 | call to pair | map.cpp:177:2:177:4 | ref arg m14 | TAINT |
 | map.cpp:177:13:177:41 | call to pair | map.cpp:177:6:177:11 | call to insert | TAINT |
-| map.cpp:177:33:177:38 | call to source | map.cpp:177:13:177:26 | call to make_pair | TAINT |
 | map.cpp:178:2:178:4 | ref arg m14 | map.cpp:249:1:249:1 | m14 |  |
 | map.cpp:178:13:178:26 | call to make_pair | map.cpp:178:13:178:36 | call to pair | TAINT |
 | map.cpp:178:13:178:36 | call to pair | map.cpp:178:2:178:4 | ref arg m14 | TAINT |
 | map.cpp:178:13:178:36 | call to pair | map.cpp:178:6:178:11 | call to insert | TAINT |
-| map.cpp:178:33:178:35 | d | map.cpp:178:13:178:26 | call to make_pair | TAINT |
 | map.cpp:179:7:179:8 | ref arg m2 | map.cpp:180:7:180:8 | m2 |  |
 | map.cpp:179:7:179:8 | ref arg m2 | map.cpp:181:7:181:8 | m2 |  |
 | map.cpp:179:7:179:8 | ref arg m2 | map.cpp:182:7:182:8 | m2 |  |
@@ -1244,7 +1226,6 @@
 | map.cpp:256:17:256:30 | call to make_pair | map.cpp:256:17:256:44 | call to pair | TAINT |
 | map.cpp:256:17:256:44 | call to pair | map.cpp:256:7:256:8 | ref arg m1 | TAINT |
 | map.cpp:256:17:256:44 | call to pair | map.cpp:256:10:256:15 | call to insert | TAINT |
-| map.cpp:256:39:256:43 | def | map.cpp:256:17:256:30 | call to make_pair | TAINT |
 | map.cpp:256:47:256:51 | first | map.cpp:256:7:256:51 | call to iterator |  |
 | map.cpp:257:7:257:8 | ref arg m2 | map.cpp:263:7:263:8 | m2 |  |
 | map.cpp:257:7:257:8 | ref arg m2 | map.cpp:269:7:269:8 | m2 |  |
@@ -1261,7 +1242,6 @@
 | map.cpp:257:17:257:30 | call to make_pair | map.cpp:257:17:257:47 | call to pair | TAINT |
 | map.cpp:257:17:257:47 | call to pair | map.cpp:257:7:257:8 | ref arg m2 | TAINT |
 | map.cpp:257:17:257:47 | call to pair | map.cpp:257:10:257:15 | call to insert | TAINT |
-| map.cpp:257:39:257:44 | call to source | map.cpp:257:17:257:30 | call to make_pair | TAINT |
 | map.cpp:257:50:257:54 | first | map.cpp:257:7:257:54 | call to iterator |  |
 | map.cpp:258:7:258:8 | ref arg m3 | map.cpp:264:7:264:8 | m3 |  |
 | map.cpp:258:7:258:8 | ref arg m3 | map.cpp:270:7:270:8 | m3 |  |
@@ -1272,7 +1252,6 @@
 | map.cpp:258:17:258:30 | call to make_pair | map.cpp:258:17:258:47 | call to pair | TAINT |
 | map.cpp:258:17:258:47 | call to pair | map.cpp:258:7:258:8 | ref arg m3 | TAINT |
 | map.cpp:258:17:258:47 | call to pair | map.cpp:258:10:258:15 | call to insert | TAINT |
-| map.cpp:258:42:258:46 | def | map.cpp:258:17:258:30 | call to make_pair | TAINT |
 | map.cpp:258:50:258:54 | first | map.cpp:258:7:258:54 | call to iterator |  |
 | map.cpp:259:7:259:8 | ref arg m4 | map.cpp:265:7:265:8 | m4 |  |
 | map.cpp:259:7:259:8 | ref arg m4 | map.cpp:271:7:271:8 | m4 |  |
@@ -1523,25 +1502,21 @@
 | map.cpp:327:13:327:26 | call to make_pair | map.cpp:327:13:327:36 | call to pair | TAINT |
 | map.cpp:327:13:327:36 | call to pair | map.cpp:327:2:327:4 | ref arg m14 | TAINT |
 | map.cpp:327:13:327:36 | call to pair | map.cpp:327:6:327:11 | call to insert | TAINT |
-| map.cpp:327:33:327:35 | a | map.cpp:327:13:327:26 | call to make_pair | TAINT |
 | map.cpp:328:2:328:4 | ref arg m14 | map.cpp:329:2:329:4 | m14 |  |
 | map.cpp:328:2:328:4 | ref arg m14 | map.cpp:330:2:330:4 | m14 |  |
 | map.cpp:328:2:328:4 | ref arg m14 | map.cpp:398:1:398:1 | m14 |  |
 | map.cpp:328:13:328:26 | call to make_pair | map.cpp:328:13:328:41 | call to pair | TAINT |
 | map.cpp:328:13:328:41 | call to pair | map.cpp:328:2:328:4 | ref arg m14 | TAINT |
 | map.cpp:328:13:328:41 | call to pair | map.cpp:328:6:328:11 | call to insert | TAINT |
-| map.cpp:328:33:328:38 | call to source | map.cpp:328:13:328:26 | call to make_pair | TAINT |
 | map.cpp:329:2:329:4 | ref arg m14 | map.cpp:330:2:330:4 | m14 |  |
 | map.cpp:329:2:329:4 | ref arg m14 | map.cpp:398:1:398:1 | m14 |  |
 | map.cpp:329:13:329:26 | call to make_pair | map.cpp:329:13:329:41 | call to pair | TAINT |
 | map.cpp:329:13:329:41 | call to pair | map.cpp:329:2:329:4 | ref arg m14 | TAINT |
 | map.cpp:329:13:329:41 | call to pair | map.cpp:329:6:329:11 | call to insert | TAINT |
-| map.cpp:329:33:329:38 | call to source | map.cpp:329:13:329:26 | call to make_pair | TAINT |
 | map.cpp:330:2:330:4 | ref arg m14 | map.cpp:398:1:398:1 | m14 |  |
 | map.cpp:330:13:330:26 | call to make_pair | map.cpp:330:13:330:36 | call to pair | TAINT |
 | map.cpp:330:13:330:36 | call to pair | map.cpp:330:2:330:4 | ref arg m14 | TAINT |
 | map.cpp:330:13:330:36 | call to pair | map.cpp:330:6:330:11 | call to insert | TAINT |
-| map.cpp:330:33:330:35 | d | map.cpp:330:13:330:26 | call to make_pair | TAINT |
 | map.cpp:331:7:331:8 | ref arg m2 | map.cpp:332:7:332:8 | m2 |  |
 | map.cpp:331:7:331:8 | ref arg m2 | map.cpp:333:7:333:8 | m2 |  |
 | map.cpp:331:7:331:8 | ref arg m2 | map.cpp:398:1:398:1 | m2 |  |
