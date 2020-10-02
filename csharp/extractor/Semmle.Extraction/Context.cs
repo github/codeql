@@ -149,11 +149,9 @@ namespace Semmle.Extraction
             {
                 return false;
             }
-            else
-            {
-                extractedGenerics.Add(entity.Label);
-                return true;
-            }
+
+            extractedGenerics.Add(entity.Label);
+            return true;
         }
 
         /// <summary>

@@ -131,14 +131,13 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     return syn.Identifier.GetLocation();
                 }
-                else if (symbol.IsImplicitlyDeclared)
+
+                if (symbol.IsImplicitlyDeclared)
                 {
                     return ContainingType.ReportingLocation;
                 }
-                else
-                {
-                    return symbol.ContainingType.Locations.FirstOrDefault();
-                }
+
+                return symbol.ContainingType.Locations.FirstOrDefault();
             }
         }
 

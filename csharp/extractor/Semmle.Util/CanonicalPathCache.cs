@@ -84,32 +84,31 @@ namespace Semmle.Util
                 // File/directory does not exist.
                 return ConstructCanonicalPath(path, cache);
             }
-            else
+
+            StringBuilder outPath = new StringBuilder(Win32.MAX_PATH);
+            int length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
+
+            if (length >= outPath.Capacity)
             {
-                StringBuilder outPath = new StringBuilder(Win32.MAX_PATH);
-                int length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
-                if (length >= outPath.Capacity)
-                {
-                    // Path length exceeded MAX_PATH.
-                    // Possible if target has a long path.
-                    outPath = new StringBuilder(length + 1);
-                    length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
-                }
-
-                const int PREAMBLE = 4; // outPath always starts \\?\
-
-                if (length <= PREAMBLE)
-                {
-                    // Failed. GetFinalPathNameByHandle() failed somehow.
-                    return ConstructCanonicalPath(path, cache);
-                }
-
-                string result = outPath.ToString(PREAMBLE, length - PREAMBLE);  // Trim off leading \\?\
-
-                return result.StartsWith("UNC") ?
-                    @"\" + result.Substring(3) :
-                    result;
+                // Path length exceeded MAX_PATH.
+                // Possible if target has a long path.
+                outPath = new StringBuilder(length + 1);
+                length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
             }
+
+            const int PREAMBLE = 4; // outPath always starts \\?\
+
+            if (length <= PREAMBLE)
+            {
+                // Failed. GetFinalPathNameByHandle() failed somehow.
+                return ConstructCanonicalPath(path, cache);
+            }
+
+            string result = outPath.ToString(PREAMBLE, length - PREAMBLE);  // Trim off leading \\?\
+
+            return result.StartsWith("UNC")
+                ? @"\" + result.Substring(3)
+                : result;
         }
     }
 
@@ -123,29 +122,28 @@ namespace Semmle.Util
         {
             DirectoryInfo parent = Directory.GetParent(path);
 
-            if (parent != null)
-            {
-                var name = Path.GetFileName(path);
-                var parentPath = cache.GetCanonicalPath(parent.FullName);
-                try
-                {
-                    string[] entries = Directory.GetFileSystemEntries(parentPath, name);
-                    return entries.Length == 1 ?
-                        entries[0] :
-                        Path.Combine(parentPath, name);
-                }
-                catch  // lgtm[cs/catch-of-all-exceptions]
-                {
-                    // IO error or security error querying directory.
-                    return Path.Combine(parentPath, name);
-                }
-            }
-            else
+            if (parent == null)
             {
                 // We are at a root of the filesystem.
                 // Convert drive letters, UNC paths etc. to uppercase.
                 // On UNIX, this should be "/" or "".
                 return path.ToUpperInvariant();
+
+            }
+
+            var name = Path.GetFileName(path);
+            var parentPath = cache.GetCanonicalPath(parent.FullName);
+            try
+            {
+                string[] entries = Directory.GetFileSystemEntries(parentPath, name);
+                return entries.Length == 1
+                    ? entries[0]
+                    : Path.Combine(parentPath, name);
+            }
+            catch  // lgtm[cs/catch-of-all-exceptions]
+            {
+                // IO error or security error querying directory.
+                return Path.Combine(parentPath, name);
             }
         }
     }
