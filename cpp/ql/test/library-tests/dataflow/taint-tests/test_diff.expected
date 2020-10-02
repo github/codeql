@@ -60,6 +60,10 @@
 | string.cpp:409:8:409:8 | string.cpp:389:18:389:23 | AST only |
 | string.cpp:411:8:411:8 | string.cpp:389:18:389:23 | AST only |
 | string.cpp:415:8:415:11 | string.cpp:389:18:389:23 | IR only |
+| string.cpp:418:8:418:8 | string.cpp:389:18:389:23 | AST only |
+| string.cpp:419:8:419:10 | string.cpp:389:18:389:23 | AST only |
+| string.cpp:421:8:421:8 | string.cpp:389:18:389:23 | AST only |
+| string.cpp:422:8:422:10 | string.cpp:389:18:389:23 | AST only |
 | string.cpp:436:10:436:15 | string.cpp:431:14:431:19 | AST only |
 | string.cpp:449:10:449:15 | string.cpp:449:32:449:46 | AST only |
 | string.cpp:462:10:462:15 | string.cpp:457:18:457:23 | AST only |

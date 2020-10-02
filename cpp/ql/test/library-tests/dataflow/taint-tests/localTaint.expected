@@ -1020,6 +1020,8 @@
 | string.cpp:393:28:393:32 | call to begin | string.cpp:405:8:405:9 | i2 |  |
 | string.cpp:393:28:393:32 | call to begin | string.cpp:408:8:408:9 | i2 |  |
 | string.cpp:393:28:393:32 | call to begin | string.cpp:410:8:410:9 | i2 |  |
+| string.cpp:393:28:393:32 | call to begin | string.cpp:417:9:417:10 | i2 |  |
+| string.cpp:393:28:393:32 | call to begin | string.cpp:420:9:420:10 | i2 |  |
 | string.cpp:396:10:396:11 | i2 | string.cpp:396:12:396:12 | call to operator+ | TAINT |
 | string.cpp:396:10:396:11 | ref arg i2 | string.cpp:397:10:397:11 | i2 |  |
 | string.cpp:396:10:396:11 | ref arg i2 | string.cpp:398:8:398:9 | i2 |  |
@@ -1028,6 +1030,8 @@
 | string.cpp:396:10:396:11 | ref arg i2 | string.cpp:405:8:405:9 | i2 |  |
 | string.cpp:396:10:396:11 | ref arg i2 | string.cpp:408:8:408:9 | i2 |  |
 | string.cpp:396:10:396:11 | ref arg i2 | string.cpp:410:8:410:9 | i2 |  |
+| string.cpp:396:10:396:11 | ref arg i2 | string.cpp:417:9:417:10 | i2 |  |
+| string.cpp:396:10:396:11 | ref arg i2 | string.cpp:420:9:420:10 | i2 |  |
 | string.cpp:396:12:396:12 | call to operator+ | string.cpp:396:8:396:8 | call to operator* | TAINT |
 | string.cpp:397:10:397:11 | i2 | string.cpp:397:12:397:12 | call to operator- | TAINT |
 | string.cpp:397:10:397:11 | ref arg i2 | string.cpp:398:8:398:9 | i2 |  |
@@ -1036,6 +1040,8 @@
 | string.cpp:397:10:397:11 | ref arg i2 | string.cpp:405:8:405:9 | i2 |  |
 | string.cpp:397:10:397:11 | ref arg i2 | string.cpp:408:8:408:9 | i2 |  |
 | string.cpp:397:10:397:11 | ref arg i2 | string.cpp:410:8:410:9 | i2 |  |
+| string.cpp:397:10:397:11 | ref arg i2 | string.cpp:417:9:417:10 | i2 |  |
+| string.cpp:397:10:397:11 | ref arg i2 | string.cpp:420:9:420:10 | i2 |  |
 | string.cpp:397:12:397:12 | call to operator- | string.cpp:397:8:397:8 | call to operator* | TAINT |
 | string.cpp:398:8:398:9 | i2 | string.cpp:398:3:398:9 | ... = ... |  |
 | string.cpp:398:8:398:9 | i2 | string.cpp:399:12:399:13 | i3 |  |
@@ -1074,6 +1080,20 @@
 | string.cpp:414:5:414:6 | i9 | string.cpp:414:3:414:3 | call to operator-- |  |
 | string.cpp:414:5:414:6 | ref arg i9 | string.cpp:415:9:415:10 | i9 |  |
 | string.cpp:415:9:415:10 | i9 | string.cpp:415:8:415:8 | call to operator* | TAINT |
+| string.cpp:417:9:417:10 | i2 | string.cpp:417:3:417:10 | ... = ... |  |
+| string.cpp:417:9:417:10 | i2 | string.cpp:418:10:418:12 | i10 |  |
+| string.cpp:417:9:417:10 | i2 | string.cpp:419:8:419:10 | i10 |  |
+| string.cpp:418:10:418:12 | i10 | string.cpp:418:13:418:13 | call to operator++ |  |
+| string.cpp:418:10:418:12 | ref arg i10 | string.cpp:419:8:419:10 | i10 |  |
+| string.cpp:418:13:418:13 | call to operator++ | string.cpp:418:8:418:8 | call to operator* | TAINT |
+| string.cpp:419:8:419:10 | i10 | string.cpp:419:8:419:10 | call to iterator |  |
+| string.cpp:420:9:420:10 | i2 | string.cpp:420:3:420:10 | ... = ... |  |
+| string.cpp:420:9:420:10 | i2 | string.cpp:421:10:421:12 | i11 |  |
+| string.cpp:420:9:420:10 | i2 | string.cpp:422:8:422:10 | i11 |  |
+| string.cpp:421:10:421:12 | i11 | string.cpp:421:13:421:13 | call to operator-- |  |
+| string.cpp:421:10:421:12 | ref arg i11 | string.cpp:422:8:422:10 | i11 |  |
+| string.cpp:421:13:421:13 | call to operator-- | string.cpp:421:8:421:8 | call to operator* | TAINT |
+| string.cpp:422:8:422:10 | i11 | string.cpp:422:8:422:10 | call to iterator |  |
 | string.cpp:428:17:428:20 | aa | string.cpp:428:17:428:21 | call to basic_string | TAINT |
 | string.cpp:428:17:428:21 | call to basic_string | string.cpp:433:7:433:8 | s1 |  |
 | string.cpp:428:17:428:21 | call to basic_string | string.cpp:434:7:434:8 | s1 |  |

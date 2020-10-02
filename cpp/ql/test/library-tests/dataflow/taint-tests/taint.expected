@@ -133,6 +133,10 @@
 | string.cpp:409:8:409:8 | call to operator* | string.cpp:389:18:389:23 | call to source |
 | string.cpp:411:8:411:8 | call to operator* | string.cpp:389:18:389:23 | call to source |
 | string.cpp:415:8:415:8 | call to operator* | string.cpp:389:18:389:23 | call to source |
+| string.cpp:418:8:418:8 | call to operator* | string.cpp:389:18:389:23 | call to source |
+| string.cpp:419:8:419:10 | call to iterator | string.cpp:389:18:389:23 | call to source |
+| string.cpp:421:8:421:8 | call to operator* | string.cpp:389:18:389:23 | call to source |
+| string.cpp:422:8:422:10 | call to iterator | string.cpp:389:18:389:23 | call to source |
 | string.cpp:436:10:436:15 | call to insert | string.cpp:431:14:431:19 | call to source |
 | string.cpp:437:7:437:8 | s2 | string.cpp:431:14:431:19 | call to source |
 | string.cpp:449:10:449:15 | call to insert | string.cpp:449:32:449:46 | call to source |
