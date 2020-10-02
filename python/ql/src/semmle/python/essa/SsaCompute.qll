@@ -382,7 +382,9 @@ private module SsaComputeImpl {
 
     /** Holds if `v` occurs in `b` or one of `b`'s transitive successors. */
     private predicate blockPrecedesVar(SsaSourceVariable v, BasicBlock b) {
-      varOccursInBlock(v, b.getASuccessor*())
+      varOccursInBlock(v, b)
+      or
+      SsaDefinitionsImpl::reachesEndOfBlock(v, _, _, b)
     }
 
     /**

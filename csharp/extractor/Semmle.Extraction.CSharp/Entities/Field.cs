@@ -68,13 +68,12 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.PopulateLater(() =>
                 {
                     var loc = Context.Create(initializer.GetLocation());
-                    var simpleAssignExpr = new Expression(new ExpressionInfo(Context, Type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
-                    Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Initializer.Value, simpleAssignExpr, 0));
-                    var access = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, null));
-                    trapFile.expr_access(access, this);
+
+                    var fieldAccess = AddInitializerAssignment(trapFile, initializer.Initializer.Value, loc, null, ref child);
+
                     if (!symbol.IsStatic)
                     {
-                        This.CreateImplicit(Context, Entities.Type.Create(Context, symbol.ContainingType), Location, access, -1);
+                        This.CreateImplicit(Context, Entities.Type.Create(Context, symbol.ContainingType), Location, fieldAccess, -1);
                     }
                 });
             }
@@ -85,8 +84,13 @@ namespace Semmle.Extraction.CSharp.Entities
                 Where(n => n.EqualsValue != null))
             {
                 // Mark fields that have explicit initializers.
-                var expr = new Expression(new ExpressionInfo(Context, Type, Context.Create(initializer.EqualsValue.Value.FixedLocation()), Kinds.ExprKind.FIELD_ACCESS, this, child++, false, null));
-                trapFile.expr_access(expr, this);
+                var constValue = symbol.HasConstantValue
+                    ? Expression.ValueAsString(symbol.ConstantValue)
+                    : null;
+
+                var loc = Context.Create(initializer.GetLocation());
+
+                AddInitializerAssignment(trapFile, initializer.EqualsValue.Value, loc, constValue, ref child);
             }
 
             if (IsSourceDeclaration)
@@ -94,6 +98,16 @@ namespace Semmle.Extraction.CSharp.Entities
                     Select(d => d.GetSyntax()).OfType<VariableDeclaratorSyntax>().
                     Select(d => d.Parent).OfType<VariableDeclarationSyntax>())
                     TypeMention.Create(Context, syntax.Type, this, Type);
+        }
+
+        private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Extraction.Entities.Location loc,
+            string constValue, ref int child)
+        {
+            var simpleAssignExpr = new Expression(new ExpressionInfo(Context, Type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, constValue));
+            Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer, simpleAssignExpr, 0));
+            var access = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, constValue));
+            trapFile.expr_access(access, this);
+            return access;
         }
 
         readonly Lazy<AnnotatedType> type;

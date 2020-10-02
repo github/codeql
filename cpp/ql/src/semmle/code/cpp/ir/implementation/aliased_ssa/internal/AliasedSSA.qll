@@ -133,6 +133,12 @@ abstract class MemoryLocation extends TMemoryLocation {
   predicate isAlwaysAllocatedOnStack() { none() }
 }
 
+/**
+ * Represents a set of `MemoryLocation`s that cannot overlap with
+ * `MemoryLocation`s outside of the set. The `VirtualVariable` will be
+ * represented by a `MemoryLocation` that totally overlaps all other
+ * `MemoryLocations` in the set.
+ */
 abstract class VirtualVariable extends MemoryLocation { }
 
 abstract class AllocationMemoryLocation extends MemoryLocation {

@@ -397,8 +397,14 @@
 | Guards.cs:276:16:276:16 | access to parameter o | match access to type Action<Object> | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:276:16:276:16 | access to parameter o | match null | Guards.cs:276:16:276:16 | access to parameter o | null |
 | Guards.cs:276:16:276:16 | access to parameter o | non-match null | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:278:13:279:28 | ... => ... | true | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:280:13:281:28 | ... => ... | true | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:281:17:281:17 | access to local variable a | non-null | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:281:17:281:17 | access to local variable a | null | Guards.cs:276:16:276:16 | access to parameter o | null |
+| Guards.cs:282:13:283:28 | ... => ... | true | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:284:13:285:28 | ... => ... | false | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:284:13:285:28 | ... => ... | true | Guards.cs:276:16:276:16 | access to parameter o | null |
+| Guards.cs:286:13:287:28 | ... => ... | true | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:296:16:296:17 | access to local variable b2 | match true | Guards.cs:294:13:294:14 | access to parameter b1 | false |
 | Guards.cs:296:16:296:17 | access to local variable b2 | match true | Guards.cs:296:16:296:17 | access to local variable b2 | true |
 | Guards.cs:308:16:308:17 | access to local variable b2 | match true | Guards.cs:306:13:306:14 | access to parameter b1 | true |

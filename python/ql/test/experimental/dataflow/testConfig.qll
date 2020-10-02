@@ -43,4 +43,6 @@ class TestConfiguration extends DataFlow::Configuration {
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
+
+  override int explorationLimit() { result = 4 }
 }

@@ -16,56 +16,99 @@ class DataFlowCfgNode extends ControlFlowNode {
   DataFlowCfgNode() { isExpressionNode(this) }
 }
 
-/** A data flow node which should have an associated post-update node. */
-abstract class PreUpdateNode extends Node { }
+/** A data flow node for which we should synthesise an associated pre-update node. */
+abstract class NeedsSyntheticPreUpdateNode extends Node {
+  /** A label for this kind of node. This will figure in the textual representation of the synthesized pre-update node. */
+  abstract string label();
+}
+
+class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
+  NeedsSyntheticPreUpdateNode post;
+
+  SyntheticPreUpdateNode() { this = TSyntheticPreUpdateNode(post) }
+
+  /** Gets the node for which this is a synthetic pre-update node. */
+  Node getPostUpdateNode() { result = post }
+
+  override string toString() { result = "[pre " + post.label() + "] " + post.toString() }
+
+  override Scope getScope() { result = post.getScope() }
+
+  override Location getLocation() { result = post.getLocation() }
+}
+
+/** A data flow node for which we should synthesise an associated post-update node. */
+abstract class NeedsSyntheticPostUpdateNode extends Node {
+  /** A label for this kind of node. This will figure in the textual representation of the synthesized post-update node. */
+  abstract string label();
+}
 
 /** An argument might have its value changed as a result of a call. */
-class ArgumentPreUpdateNode extends PreUpdateNode, ArgumentNode { }
+class ArgumentPreUpdateNode extends NeedsSyntheticPostUpdateNode, ArgumentNode {
+  // Certain arguments, such as implicit self arguments are already post-update nodes
+  // and should not have an extra node synthesised.
+  ArgumentPreUpdateNode() {
+    this = any(CallNodeCall c).getArg(_)
+    or
+    this = any(SpecialCall c).getArg(_)
+    or
+    // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
+    exists(ClassCall c, int n | n > 0 | this = c.getArg(n))
+  }
+
+  override string label() { result = "arg" }
+}
 
 /** An object might have its value changed after a store. */
-class StorePreUpdateNode extends PreUpdateNode, CfgNode {
+class StorePreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
   StorePreUpdateNode() {
     exists(Attribute a |
       node = a.getObject().getAFlowNode() and
       a.getCtx() instanceof Store
     )
   }
+
+  override string label() { result = "store" }
 }
 
 /** A node marking the state change of an object after a read. */
-class ReadPreUpdateNode extends PreUpdateNode, CfgNode {
+class ReadPreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
   ReadPreUpdateNode() {
     exists(Attribute a |
       node = a.getObject().getAFlowNode() and
       a.getCtx() instanceof Load
     )
   }
+
+  override string label() { result = "read" }
 }
 
-/**
- * A node associated with an object after an operation that might have
- * changed its state.
- *
- * This can be either the argument to a callable after the callable returns
- * (which might have mutated the argument), or the qualifier of a field after
- * an update to the field.
- *
- * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
- * to the value before the update.
- */
-class PostUpdateNode extends Node, TPostUpdateNode {
-  PreUpdateNode pre;
+/** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
+class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
+  NeedsSyntheticPostUpdateNode pre;
 
-  PostUpdateNode() { this = TPostUpdateNode(pre) }
+  SyntheticPostUpdateNode() { this = TSyntheticPostUpdateNode(pre) }
 
-  /** Gets the node before the state update. */
-  Node getPreUpdateNode() { result = pre }
+  override Node getPreUpdateNode() { result = pre }
 
-  override string toString() { result = "[post] " + pre.toString() }
+  override string toString() { result = "[post " + pre.label() + "] " + pre.toString() }
 
   override Scope getScope() { result = pre.getScope() }
 
   override Location getLocation() { result = pre.getLocation() }
+}
+
+/**
+ * Calls to constructors are treated as post-update nodes for the synthesized argument
+ * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
+ * object after the constructor (currently only `__init__`) has run.
+ */
+class ObjectCreationNode extends PostUpdateNode, NeedsSyntheticPreUpdateNode, CfgNode {
+  ObjectCreationNode() { node.(CallNode) = any(ClassCall c).getNode() }
+
+  override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
+
+  override string label() { result = "objCreate" }
 }
 
 class DataFlowExpr = Expr;
@@ -191,16 +234,18 @@ private Node update(Node node) {
 //--------
 // Global flow
 //--------
+//
 /**
  * IPA type for DataFlowCallable.
- * A callable is either a callable value or a class.
+ *
+ * A callable is either a callable value or a module (for enclosing `ModuleVariableNode`s).
+ * A module has no calls.
  */
 newtype TDataFlowCallable =
   TCallableValue(CallableValue callable) or
-  TClassValue(ClassValue c) or
   TModule(Module m)
 
-/** Represents a callable */
+/** Represents a callable. */
 abstract class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -218,6 +263,7 @@ abstract class DataFlowCallable extends TDataFlowCallable {
   abstract string getName();
 }
 
+/** A class representing a callable value. */
 class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
   CallableValue callable;
 
@@ -232,24 +278,6 @@ class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
   override NameNode getParameter(int n) { result = callable.getParameter(n) }
 
   override string getName() { result = callable.getName() }
-}
-
-class DataFlowClassValue extends DataFlowCallable, TClassValue {
-  ClassValue c;
-
-  DataFlowClassValue() { this = TClassValue(c) }
-
-  override string toString() { result = c.toString() }
-
-  override CallNode getACall() { result = c.getACall() }
-
-  override Scope getScope() { result = c.getScope() }
-
-  override NameNode getParameter(int n) {
-    result.getNode() = c.getScope().getInitMethod().getArg(n + 1).asName()
-  }
-
-  override string getName() { result = c.getName() }
 }
 
 /** A class representing the scope in which a `ModuleVariableNode` appears. */
@@ -269,10 +297,24 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
   override string getName() { result = mod.getName() }
 }
 
+/**
+ * IPA type for DataFlowCall.
+ *
+ * Calls corresponding to `CallNode`s are either to callable values or to classes.
+ * The latter is directed to the callable corresponding to the `__init__` method of the class.
+ *
+ * An `__init__` method can also be called directly, so that the callable can be targeted by
+ * different types of calls. In that case, the parameter mappings will be different,
+ * as the class call will synthesize an argument node to be mapped to the `self` parameter.
+ *
+ * A call corresponding to a special method call is handled by the corresponding `SpecialMethodCallNode`.
+ */
 newtype TDataFlowCall =
-  TCallNode(CallNode call) or
+  TCallNode(CallNode call) { call = any(CallableValue c).getACall() } or
+  TClassCall(CallNode call) { call = any(ClassValue c).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
+/** Represents a call. */
 abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -281,7 +323,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlowCallable getCallable();
 
   /** Get the specified argument to this call. */
-  abstract ControlFlowNode getArg(int n);
+  abstract Node getArg(int n);
 
   /** Get the control flow node representing this call. */
   abstract ControlFlowNode getNode();
@@ -290,7 +332,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlowCallable getEnclosingCallable();
 }
 
-/** Represents a call to a callable. */
+/** Represents a call to a callable (currently only callable values). */
 class CallNodeCall extends DataFlowCall, TCallNode {
   CallNode call;
   DataFlowCallable callable;
@@ -302,13 +344,43 @@ class CallNodeCall extends DataFlowCall, TCallNode {
 
   override string toString() { result = call.toString() }
 
-  override ControlFlowNode getArg(int n) { result = call.getArg(n) }
+  override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
 
   override ControlFlowNode getNode() { result = call }
 
   override DataFlowCallable getCallable() { result = callable }
 
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
+}
+
+/** Represents a call to a class. */
+class ClassCall extends DataFlowCall, TClassCall {
+  CallNode call;
+  ClassValue c;
+
+  ClassCall() {
+    this = TClassCall(call) and
+    call = c.getACall()
+  }
+
+  override string toString() { result = call.toString() }
+
+  override Node getArg(int n) {
+    n > 0 and result = TCfgNode(call.getArg(n - 1))
+    or
+    n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
+  }
+
+  override ControlFlowNode getNode() { result = call }
+
+  override DataFlowCallable getCallable() {
+    exists(CallableValue callable |
+      result = TCallableValue(callable) and
+      c.getScope().getInitMethod() = callable.getScope()
+    )
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
 }
 
 /** Represents a call to a special method. */
@@ -319,7 +391,7 @@ class SpecialCall extends DataFlowCall, TSpecialCall {
 
   override string toString() { result = special.toString() }
 
-  override ControlFlowNode getArg(int n) { result = special.(SpecialMethod::Potential).getArg(n) }
+  override Node getArg(int n) { result = TCfgNode(special.(SpecialMethod::Potential).getArg(n)) }
 
   override ControlFlowNode getNode() { result = special }
 
@@ -333,11 +405,11 @@ class SpecialCall extends DataFlowCall, TSpecialCall {
 }
 
 /** A data flow node that represents a call argument. */
-class ArgumentNode extends CfgNode {
-  ArgumentNode() { exists(DataFlowCall call, int pos | node = call.getArg(pos)) }
+class ArgumentNode extends Node {
+  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
 
   /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowCall call, int pos) { node = call.getArg(pos) }
+  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
 
   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
@@ -411,7 +483,11 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 /**
  * Gets the type of `node`.
  */
-DataFlowType getNodeType(Node node) { result = TAnyFlow() }
+DataFlowType getNodeType(Node node) {
+  result = TAnyFlow() and
+  // Suppress unused variable warning
+  node = node
+}
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
 string ppReprType(DataFlowType t) { none() }
@@ -449,6 +525,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   dictStoreStep(nodeFrom, c, nodeTo)
   or
   comprehensionStoreStep(nodeFrom, c, nodeTo)
+  or
+  attributeStoreStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from an element of a list to the list. */
@@ -458,7 +536,9 @@ predicate listStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) 
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the list, `[..., 42, ...]`, cfg node
   //   c denotes element of list
-  nodeTo.getNode().(ListNode).getAnElement() = nodeFrom.getNode()
+  nodeTo.getNode().(ListNode).getAnElement() = nodeFrom.getNode() and
+  // Suppress unused variable warning
+  c = c
 }
 
 /** Data flows from an element of a set to the set. */
@@ -468,7 +548,9 @@ predicate setStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) {
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the set, `{..., 42, ...}`, cfg node
   //   c denotes element of list
-  nodeTo.getNode().(SetNode).getAnElement() = nodeFrom.getNode()
+  nodeTo.getNode().(SetNode).getAnElement() = nodeFrom.getNode() and
+  // Suppress unused variable warning
+  c = c
 }
 
 /** Data flows from an element of a tuple to the tuple at a specific index. */
@@ -524,6 +606,23 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
 }
 
 /**
+ * Holds if `nodeFrom` flows into an attribute (corresponding to `c`) of `nodeTo` via an attribute assignment.
+ *
+ * For example, in
+ * ```python
+ * obj.foo = x
+ * ```
+ * data flows from `x` to (the post-update node for) `obj` via assignment to `foo`.
+ */
+predicate attributeStoreStep(CfgNode nodeFrom, AttributeContent c, PostUpdateNode nodeTo) {
+  exists(AttrNode attr |
+    nodeFrom.asCfgNode() = attr.(DefinitionNode).getValue() and
+    attr.getName() = c.getAttribute() and
+    attr.getObject() = nodeTo.getPreUpdateNode().(CfgNode).getNode()
+  )
+}
+
+/**
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
@@ -532,6 +631,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   popReadStep(nodeFrom, c, nodeTo)
   or
   comprehensionReadStep(nodeFrom, c, nodeTo)
+  or
+  attributeReadStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -615,6 +716,24 @@ predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
     c instanceof ListElementContent
     or
     c instanceof SetElementContent
+  )
+}
+
+/**
+ * Holds if `nodeTo` is a read of an attribute (corresponding to `c`) of the object in `nodeFrom`.
+ *
+ * For example, in
+ * ```python
+ * obj.foo
+ * ```
+ * data flows from `obj` to `obj.foo` via a read from `foo`.
+ */
+predicate attributeReadStep(CfgNode nodeFrom, AttributeContent c, CfgNode nodeTo) {
+  exists(AttrNode attr |
+    nodeFrom.asCfgNode() = attr.getObject() and
+    nodeTo.asCfgNode() = attr and
+    attr.getName() = c.getAttribute() and
+    attr.isLoad()
   )
 }
 

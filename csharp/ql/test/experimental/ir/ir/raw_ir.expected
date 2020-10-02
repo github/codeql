@@ -1327,8 +1327,8 @@ pointers.cs:
 #    6|     r6_1(glval<Int32*>)  = VariableAddress[b]          : 
 #    6|     r6_2(glval<Int32[]>) = VariableAddress[arr]        : 
 #    6|     r6_3(Int32[])        = Load                        : &:r6_2, ~m?
-#    6|     r6_4(Int32*)         = Convert                     : r6_3
-#    6|     mu6_5(Int32*)        = Store                       : &:r6_1, r6_3
+#    6|     r6_4(Int32*)         = CheckedConvertOrThrow       : r6_3
+#    6|     mu6_5(Int32*)        = Store                       : &:r6_1, r6_4
 #    8|     r8_1(glval<Int32*>)  = VariableAddress[p]          : 
 #    8|     r8_2(glval<Int32*>)  = VariableAddress[b]          : 
 #    8|     r8_3(Int32*)         = Load                        : &:r8_2, ~m?

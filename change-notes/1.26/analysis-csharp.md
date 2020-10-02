@@ -12,7 +12,7 @@ The following changes in version 1.26 affect C# analysis in all applications.
 
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
-
+| Weak encryption: Insufficient key size (`cs/insufficient-key-size`) | More results | The required key size has been increased from 1024 to 2048. |
 
 ## Removal of old queries
 

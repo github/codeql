@@ -1,6 +1,7 @@
 private import cpp
 private import DataFlowUtil
 private import DataFlowDispatch
+private import FlowVar
 
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
@@ -106,7 +107,7 @@ private class ExprOutNode extends OutNode, ExprNode {
   override DataFlowCall getCall() { result = this.getExpr() }
 }
 
-private class RefOutNode extends OutNode, DefinitionByReferenceNode {
+private class RefOutNode extends OutNode, DefinitionByReferenceOrIteratorNode {
   /** Gets the underlying call. */
   override DataFlowCall getCall() { result = this.getArgument().getParent() }
 }
@@ -120,7 +121,7 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   kind = TNormalReturnKind()
   or
   exists(int i |
-    result.asDefiningArgument() = call.getArgument(i) and
+    result.(DefinitionByReferenceOrIteratorNode).getArgument() = call.getArgument(i) and
     kind = TRefReturnKind(i)
   )
 }

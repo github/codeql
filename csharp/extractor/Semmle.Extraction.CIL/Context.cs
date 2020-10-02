@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CIL
             namespaceFactory = new CachedFunction<StringHandle, Entities.Namespace>(n => CreateNamespace(mdReader.GetString(n)));
             namespaceDefinitionFactory = new CachedFunction<NamespaceDefinitionHandle, Entities.Namespace>(CreateNamespace);
             sourceFiles = new CachedFunction<PDB.ISourceFile, Entities.PdbSourceFile>(path => new Entities.PdbSourceFile(this, path));
-            folders = new CachedFunction<string, Entities.Folder>(path => new Entities.Folder(this, path));
+            folders = new CachedFunction<PathTransformer.ITransformedPath, Entities.Folder>(path => new Entities.Folder(this, path));
             sourceLocations = new CachedFunction<PDB.Location, Entities.PdbSourceLocation>(location => new Entities.PdbSourceLocation(this, location));
 
             defaultGenericContext = new EmptyContext(this);

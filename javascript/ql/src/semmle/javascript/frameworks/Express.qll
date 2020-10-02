@@ -195,7 +195,7 @@ module Express {
 
     PassportRouteHandler() { this = any(PassportRouteSetup setup).getARouteHandler() }
 
-    override SimpleParameter getRouteHandlerParameter(string kind) {
+    override Parameter getRouteHandlerParameter(string kind) {
       kind = "request" and
       result = astNode.getParameter(0)
     }
@@ -329,17 +329,17 @@ module Express {
      *
      * `kind` is one of: "error", "request", "response", "next", or "parameter".
      */
-    abstract SimpleParameter getRouteHandlerParameter(string kind);
+    abstract Parameter getRouteHandlerParameter(string kind);
 
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    SimpleParameter getRequestParameter() { result = getRouteHandlerParameter("request") }
+    Parameter getRequestParameter() { result = getRouteHandlerParameter("request") }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    SimpleParameter getResponseParameter() { result = getRouteHandlerParameter("response") }
+    Parameter getResponseParameter() { result = getRouteHandlerParameter("response") }
 
     /**
      * Gets a request body access of this handler.
@@ -357,7 +357,7 @@ module Express {
 
     StandardRouteHandler() { this = routeSetup.getARouteHandler() }
 
-    override SimpleParameter getRouteHandlerParameter(string kind) {
+    override Parameter getRouteHandlerParameter(string kind) {
       if routeSetup.isParameterHandler()
       then result = getRouteParameterHandlerParameter(astNode, kind)
       else result = getRouteHandlerParameter(astNode, kind)
@@ -505,6 +505,10 @@ module Express {
         // `req.cookies`
         kind = "cookie" and
         this = request.getAPropertyRead("cookies")
+        or
+        // `req.files`, treated the same as `req.body`.
+        kind = "body" and
+        this = request.getAPropertyRead("files")
       )
       or
       kind = "body" and
@@ -886,7 +890,7 @@ module Express {
 
     TrackedRouteHandlerCandidateWithSetup() { this = routeSetup.getARouteHandler() }
 
-    override SimpleParameter getRouteHandlerParameter(string kind) {
+    override Parameter getRouteHandlerParameter(string kind) {
       if routeSetup.isParameterHandler()
       then result = getRouteParameterHandlerParameter(astNode, kind)
       else result = getRouteHandlerParameter(astNode, kind)

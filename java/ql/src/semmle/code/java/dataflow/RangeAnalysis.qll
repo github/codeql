@@ -66,6 +66,7 @@
 import java
 private import SSA
 private import RangeUtils
+private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import SignAnalysis
 private import ModulusAnalysis

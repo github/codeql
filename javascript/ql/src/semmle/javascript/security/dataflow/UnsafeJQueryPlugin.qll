@@ -39,10 +39,9 @@ module UnsafeJQueryPlugin {
       StringConcatenation::taintStep(pred, succ, _, any(int i | i >= 1))
       or
       // prefixing through a poor-mans templating system:
-      exists(DataFlow::MethodCallNode replace |
+      exists(StringReplaceCall replace |
         replace = succ and
-        pred = replace.getArgument(1) and
-        replace.getMethodName() = "replace"
+        pred = replace.getRawReplacement()
       )
     }
 
