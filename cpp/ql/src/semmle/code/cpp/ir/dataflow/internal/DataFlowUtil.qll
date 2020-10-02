@@ -509,12 +509,15 @@ class DefinitionByReferenceNode extends InstructionNode {
  * A node representing the memory pointed to by a function argument.
  *
  * This class exists only in order to override `toString`, which would
- * otherwise be the default implementation inherited from `InstructionNode`.
+ * otherwise be the default implementation inherited from `OperandNode`.
  */
-private class ArgumentIndirectionNode extends InstructionNode {
-  override ReadSideEffectInstruction instr;
+private class ArgumentIndirectionNode extends OperandNode {
+  override SideEffectOperand op;
+  ReadSideEffectInstruction read;
 
-  override string toString() { result = "Argument " + instr.getIndex() + " indirection" }
+  ArgumentIndirectionNode() { read.getSideEffectOperand() = op }
+
+  override string toString() { result = "Argument " + read.getIndex() + " indirection" }
 }
 
 /**
@@ -679,10 +682,6 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
   iTo.(CopyInstruction).getSourceValueOperand() = opFrom
   or
   iTo.(PhiInstruction).getAnInputOperand() = opFrom
-  or
-  // A read side effect is almost never exact since we don't know exactly how
-  // much memory the callee will read.
-  iTo.(ReadSideEffectInstruction).getSideEffectOperand() = opFrom
   or
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnaryOperand() = opFrom
