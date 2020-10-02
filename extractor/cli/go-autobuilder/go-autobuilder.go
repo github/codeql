@@ -350,7 +350,15 @@ func main() {
 		}
 
 		// create a new folder which we will add to GOPATH below
-		root := filepath.Join(srcdir, "root")
+		// Note we evaluate all symlinks here for consistency: otherwise os.Chdir below
+		// will follow links but other references to the path may not, which can lead to
+		// disagreements between GOPATH and the working directory.
+		realSrc, err := filepath.EvalSymlinks(srcdir)
+		if err != nil {
+			log.Fatalf("Failed to evaluate symlinks in %s: %s\n", srcdir, err.Error())
+		}
+
+		root := filepath.Join(realSrc, "root")
 
 		// move source files to where Go expects them to be
 		newdir := filepath.Join(root, "src", importpath)
