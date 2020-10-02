@@ -46,8 +46,8 @@ def not_into_sink_impl():
     flow through the actual `popen` function to the internal call to `subprocess.Popen` -- we would usually
     see that flow since we extract the `os.py` file from the standard library.
 
-    os.popen implementation:
-    https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/os.py#L974
+    os.popen implementation: https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/os.py#L974
+    subprocess.call implementation: https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/subprocess.py#L341
     """
     command = request.args.get('command', '')
     os.system(command)

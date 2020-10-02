@@ -28,7 +28,7 @@ class CommandInjectionConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink = any(SystemCommandExecution e).getCommand() and
-    // Since the implementation of os.popen looks like
+    // Since the implementation of standard library functions such `os.popen` looks like
     // ```py
     // def popen(cmd, mode="r", buffering=-1):
     //     ...
@@ -49,6 +49,10 @@ class CommandInjectionConfiguration extends TaintTracking::Configuration {
     // Best solution I could come up with is to exclude all sinks inside the standard
     // library -- this does have a downside: If we have overlooked a function in the
     // standard library that internally runs a command, we no longer give an alert :|
+    //
+    // This does not only affect `os.popen`, but also the helper functions in `subprocess`. See
+    // https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/os.py#L974
+    // https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/subprocess.py#L341
     not sink.getLocation().getFile().inStdlib()
   }
 }
