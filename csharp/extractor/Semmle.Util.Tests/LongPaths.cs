@@ -28,7 +28,7 @@ namespace SemmleTests.Semmle.Util
             CleanUp();
         }
 
-        void CleanUp()
+        static void CleanUp()
         {
             try
             {

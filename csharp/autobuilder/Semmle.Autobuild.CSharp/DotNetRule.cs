@@ -268,7 +268,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
         static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
             dotNetPath != null ? actions.PathCombine(dotNetPath, "dotnet") : "dotnet";
 
-        BuildScript GetInfoCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        static BuildScript GetInfoCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var info = new CommandBuilder(actions, null, environment).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -276,7 +276,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return info.Script;
         }
 
-        CommandBuilder GetCleanCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        static CommandBuilder GetCleanCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var clean = new CommandBuilder(actions, null, environment).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -284,7 +284,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return clean;
         }
 
-        CommandBuilder GetRestoreCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        static CommandBuilder GetRestoreCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var restore = new CommandBuilder(actions, null, environment).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -309,7 +309,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
         /// hence the need for CLR tracing), by adding a
         /// `/p:UseSharedCompilation=false` argument.
         /// </summary>
-        BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, bool compatibleClr, string projOrSln)
+        static BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, bool compatibleClr, string projOrSln)
         {
             var build = new CommandBuilder(builder.Actions, null, environment);
             var script = builder.MaybeIndex(build, DotNetCommand(builder.Actions, dotNetPath)).

@@ -59,11 +59,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public sealed override Microsoft.CodeAnalysis.Location ReportingLocation => Node.GetLocation();
 
-        public IEnumerable<Tuple> GetTuples()
-        {
-            yield break;
-        }
-
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }
