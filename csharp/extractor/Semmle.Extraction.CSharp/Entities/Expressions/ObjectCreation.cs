@@ -8,7 +8,8 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal abstract class ObjectCreation<SyntaxNode> : Expression<SyntaxNode> where SyntaxNode : ExpressionSyntax
+    internal abstract class ObjectCreation<TExpressionSyntax> : Expression<TExpressionSyntax>
+        where TExpressionSyntax : ExpressionSyntax
     {
         protected ObjectCreation(ExpressionNodeInfo info)
             : base(info) { }

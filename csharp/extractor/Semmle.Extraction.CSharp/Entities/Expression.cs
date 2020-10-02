@@ -291,15 +291,15 @@ namespace Semmle.Extraction.CSharp.Entities
         }
     }
 
-    internal abstract class Expression<SyntaxNode> : Expression
-        where SyntaxNode : ExpressionSyntax
+    internal abstract class Expression<TExpressionSyntax> : Expression
+        where TExpressionSyntax : ExpressionSyntax
     {
-        public readonly SyntaxNode Syntax;
+        public readonly TExpressionSyntax Syntax;
 
         protected Expression(ExpressionNodeInfo info)
             : base(info)
         {
-            Syntax = (SyntaxNode)info.Node;
+            Syntax = (TExpressionSyntax)info.Node;
         }
 
         /// <summary>

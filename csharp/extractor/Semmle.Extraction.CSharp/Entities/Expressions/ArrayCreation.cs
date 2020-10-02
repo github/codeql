@@ -7,12 +7,14 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal abstract class ArrayCreation<SyntaxNode> : Expression<SyntaxNode> where SyntaxNode : ExpressionSyntax
+    internal abstract class ArrayCreation<TSyntaxNode> : Expression<TSyntaxNode>
+        where TSyntaxNode : ExpressionSyntax
     {
         protected ArrayCreation(ExpressionNodeInfo info) : base(info) { }
     }
 
-    internal abstract class ExplicitArrayCreation<SyntaxNode> : ArrayCreation<SyntaxNode> where SyntaxNode : ExpressionSyntax
+    internal abstract class ExplicitArrayCreation<TSyntaxNode> : ArrayCreation<TSyntaxNode>
+        where TSyntaxNode : ExpressionSyntax
     {
         protected ExplicitArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 

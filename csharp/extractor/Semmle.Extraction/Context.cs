@@ -88,13 +88,13 @@ namespace Semmle.Extraction
 
         public Label GetNewLabel() => new Label(GetNewId());
 
-        public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, object cacheKey, Type init)
-            where Entity : ICachedEntity =>
+        public TEntity CreateEntity<TInit, TEntity>(ICachedEntityFactory<TInit, TEntity> factory, object cacheKey, TInit init)
+            where TEntity : ICachedEntity =>
             cacheKey is ISymbol s ? CreateEntity(factory, s, init, symbolEntityCache) : CreateEntity(factory, cacheKey, init, objectEntityCache);
 
-        public Entity CreateEntityFromSymbol<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init)
-            where Type : ISymbol
-            where Entity : ICachedEntity => CreateEntity(factory, init, init, symbolEntityCache);
+        public TEntity CreateEntityFromSymbol<TSymbol, TEntity>(ICachedEntityFactory<TSymbol, TEntity> factory, TSymbol init)
+            where TSymbol : ISymbol
+            where TEntity : ICachedEntity => CreateEntity(factory, init, init, symbolEntityCache);
 
         /// <summary>
         /// Creates and populates a new entity, or returns the existing one from the cache.
@@ -104,12 +104,12 @@ namespace Semmle.Extraction
         /// <param name="init">The initializer for the entity.</param>
         /// <param name="dictionary">The dictionary to use for caching.</param>
         /// <returns>The new/existing entity.</returns>
-        private Entity CreateEntity<Type, CacheKeyType, Entity>(ICachedEntityFactory<Type, Entity> factory, CacheKeyType cacheKey, Type init, IDictionary<CacheKeyType, ICachedEntity> dictionary)
-            where CacheKeyType : notnull
-            where Entity : ICachedEntity
+        private TEntity CreateEntity<TInit, TCacheKey, TEntity>(ICachedEntityFactory<TInit, TEntity> factory, TCacheKey cacheKey, TInit init, IDictionary<TCacheKey, ICachedEntity> dictionary)
+            where TCacheKey : notnull
+            where TEntity : ICachedEntity
         {
             if (dictionary.TryGetValue(cacheKey, out var cached))
-                return (Entity)cached;
+                return (TEntity)cached;
 
             using (StackGuard)
             {
