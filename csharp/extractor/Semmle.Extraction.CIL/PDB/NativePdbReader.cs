@@ -96,11 +96,13 @@ namespace Semmle.Extraction.PDB
 
             var debugDirectory = peReader.ReadDebugDirectory();
 
-            foreach (var path in debugDirectory.
-                Where(d => d.Type == DebugDirectoryEntryType.CodeView).
-                Select(peReader.ReadCodeViewDebugDirectoryData).
-                Select(cv => cv.Path).
-                Where(path => File.Exists(path)))
+            var path = debugDirectory
+                .Where(d => d.Type == DebugDirectoryEntryType.CodeView)
+                .Select(peReader.ReadCodeViewDebugDirectoryData)
+                .Select(cv => cv.Path)
+                .FirstOrDefault(File.Exists);
+
+            if (path is object)
             {
                 return new NativePdbReader(path);
             }

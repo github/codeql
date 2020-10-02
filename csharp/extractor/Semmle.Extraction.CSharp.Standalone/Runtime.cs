@@ -27,8 +27,12 @@ namespace Semmle.Extraction.CSharp.Standalone
                     : new[] { "/usr/share/dotnet", @"C:\Program Files\dotnet" };
                 var coreDirs = dotnetDirs.Select(d => Path.Combine(d, "shared", "Microsoft.NETCore.App"));
 
-                foreach (var dir in coreDirs.Where(Directory.Exists))
+                var dir = coreDirs.FirstOrDefault(Directory.Exists);
+                if (dir is object)
+                {
                     return Directory.EnumerateDirectories(dir).OrderByDescending(Path.GetFileName);
+                }
+
                 return Enumerable.Empty<string>();
             }
         }
@@ -48,15 +52,17 @@ namespace Semmle.Extraction.CSharp.Standalone
 
                 if (Directory.Exists(@"C:\Windows\Microsoft.NET\Framework64"))
                 {
-                    return Directory.EnumerateDirectories(@"C:\Windows\Microsoft.NET\Framework64", "v*").
-                        OrderByDescending(Path.GetFileName);
+                    return Directory.EnumerateDirectories(@"C:\Windows\Microsoft.NET\Framework64", "v*")
+                        .OrderByDescending(Path.GetFileName);
                 }
 
-                foreach (var dir in monoDirs.Where(Directory.Exists))
+                var dir = monoDirs.FirstOrDefault(Directory.Exists);
+
+                if (dir is object)
                 {
-                    return Directory.EnumerateDirectories(dir).
-                        Where(d => Char.IsDigit(Path.GetFileName(d)[0])).
-                        OrderByDescending(Path.GetFileName);
+                    return Directory.EnumerateDirectories(dir)
+                        .Where(d => Char.IsDigit(Path.GetFileName(d)[0]))
+                        .OrderByDescending(Path.GetFileName);
                 }
 
                 return Enumerable.Empty<string>();

@@ -256,25 +256,23 @@ namespace Semmle.Extraction.CSharp
                 }
                 else
                 {
-                    bool referenceFound = false;
+                    var composed = referencePaths.Value
+                        .Select(path => Path.Combine(path, clref.Reference))
+                        .Where(path => File.Exists(path))
+                        .Select(path => canonicalPathCache.GetCanonicalPath(path))
+                        .FirstOrDefault();
+
+                    if (composed is object)
                     {
-                        foreach (var composed in referencePaths.Value.
-                            Select(path => Path.Combine(path, clref.Reference)).
-                            Where(path => File.Exists(path)).
-                            Select(path => canonicalPathCache.GetCanonicalPath(path)))
+                        var reference = MakeReference(clref, composed);
+                        ret.Add(reference);
+                    }
+                    else
+                    {
+                        lock (analyser)
                         {
-                            referenceFound = true;
-                            var reference = MakeReference(clref, composed);
-                            ret.Add(reference);
-                            break;
-                        }
-                        if (!referenceFound)
-                        {
-                            lock (analyser)
-                            {
-                                analyser.Logger.Log(Severity.Error, "  Unable to resolve reference '{0}'", clref.Reference);
-                                ++analyser.CompilationErrors;
-                            }
+                            analyser.Logger.Log(Severity.Error, "  Unable to resolve reference '{0}'", clref.Reference);
+                            ++analyser.CompilationErrors;
                         }
                     }
                 }
