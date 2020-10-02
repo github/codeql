@@ -150,7 +150,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 var callType = GetCallType(cx, node);
                 if (callType == CallType.Dynamic)
                 {
-                    UserOperator.OperatorSymbol(method.Name, out string operatorName);
+                    UserOperator.OperatorSymbol(method.Name, out var operatorName);
                     trapFile.dynamic_member_name(this, operatorName);
                     return;
                 }

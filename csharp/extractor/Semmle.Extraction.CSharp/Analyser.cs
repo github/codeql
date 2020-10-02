@@ -312,7 +312,7 @@ namespace Semmle.Extraction.CSharp
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            CIL.Entities.Assembly.ExtractCIL(layout, r.FilePath, Logger, !options.Cache, options.PDB, options.TrapCompression, out string trapFile, out bool extracted);
+            CIL.Entities.Assembly.ExtractCIL(layout, r.FilePath, Logger, !options.Cache, options.PDB, options.TrapCompression, out var trapFile, out var extracted);
             stopwatch.Stop();
             ReportProgress(r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }
@@ -360,9 +360,9 @@ namespace Semmle.Extraction.CSharp
                 var transformedSourcePath = PathTransformer.Transform(sourcePath);
 
                 var projectLayout = layout.LookupProjectOrNull(transformedSourcePath);
-                bool excluded = projectLayout == null;
-                string trapPath = excluded ? "" : projectLayout.GetTrapPath(Logger, transformedSourcePath, options.TrapCompression);
-                bool upToDate = false;
+                var excluded = projectLayout == null;
+                var trapPath = excluded ? "" : projectLayout.GetTrapPath(Logger, transformedSourcePath, options.TrapCompression);
+                var upToDate = false;
 
                 if (!excluded)
                 {
@@ -373,7 +373,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (!upToDate)
                     {
-                        Context cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
+                        var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
                         Populators.CompilationUnit.Extract(cx, tree.GetRoot());
                         cx.PopulateAll();
                         cx.ExtractComments(cx.CommentGenerator);

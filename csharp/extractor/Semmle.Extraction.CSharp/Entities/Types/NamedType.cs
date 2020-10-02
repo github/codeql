@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
                 else if (symbol.IsReallyUnbound())
                 {
-                    for (int i = 0; i < symbol.TypeParameters.Length; ++i)
+                    for (var i = 0; i < symbol.TypeParameters.Length; ++i)
                     {
                         TypeParameter.Create(Context, symbol.TypeParameters[i]);
                         var param = symbol.TypeParameters[i];
@@ -67,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         : Type.Create(Context, symbol.ConstructedFrom);
                     trapFile.constructed_generic(this, unbound.TypeRef);
 
-                    for (int i = 0; i < symbol.TypeArguments.Length; ++i)
+                    for (var i = 0; i < symbol.TypeArguments.Length; ++i)
                     {
                         trapFile.type_arguments(TypeArguments[i].TypeRef, i, this);
                     }

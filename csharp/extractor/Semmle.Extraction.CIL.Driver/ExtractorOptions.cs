@@ -144,7 +144,7 @@ namespace Semmle.Extraction.CIL.Driver
             while (assembliesToReference.Any())
             {
                 var item = assembliesToReference.Pop();
-                if (assembliesRead.TryGetValue(item, out AssemblyInfo? info))
+                if (assembliesRead.TryGetValue(item, out var info))
                 {
                     if (!info.extract)
                     {
@@ -213,7 +213,7 @@ namespace Semmle.Extraction.CIL.Driver
             if (File.Exists(path))
             {
                 assemblyList.AddFile(path, true);
-                string? directory = Path.GetDirectoryName(path);
+                var directory = Path.GetDirectoryName(path);
                 if (directory is null)
                 {
                     throw new InternalError($"Directory of path '{path}' is null");

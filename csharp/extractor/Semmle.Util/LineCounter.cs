@@ -242,7 +242,7 @@ namespace Semmle.Util
         private static void ReadRestOfString(string input, Context context)
         {
             char? cur = '\0';
-            int numSlashes = 0;
+            var numSlashes = 0;
             while (cur != null && ((cur = GetNext(input, context)) != '"' || (numSlashes % 2 != 0)))
             {
                 if (cur == '\\') ++numSlashes;

@@ -50,7 +50,7 @@ namespace Semmle.Extraction.CommentProcessing
             if (l1 == null) return -1;
             if (l2 == null) return 1;
 
-            int diff = l1.SourceTree == l2.SourceTree ? 0 : l1.SourceTree.FilePath.CompareTo(l2.SourceTree.FilePath);
+            var diff = l1.SourceTree == l2.SourceTree ? 0 : l1.SourceTree.FilePath.CompareTo(l2.SourceTree.FilePath);
             if (diff != 0) return diff;
             diff = l1.SourceSpan.Start - l2.SourceSpan.Start;
             if (diff != 0) return diff;
@@ -312,7 +312,7 @@ namespace Semmle.Extraction.CommentProcessing
              * (Note that comment processing is O(n.log n) overall due to dictionary of elements and comments.)
             */
 
-            ElementStack elementStack = new ElementStack();
+            var elementStack = new ElementStack();
 
             using IEnumerator<KeyValuePair<Location, Label>> elementEnumerator = elements.GetEnumerator();
             using IEnumerator<KeyValuePair<Location, ICommentLine>> commentEnumerator = comments.GetEnumerator();
@@ -361,11 +361,11 @@ namespace Semmle.Extraction.CommentProcessing
         {
             if (!CommentLines.Any()) return true;
 
-            bool sameFile = Location.SourceTree == newLine.Location.SourceTree;
-            bool sameRow = Location.EndLine() == newLine.Location.StartLine();
-            bool sameColumn = Location.EndLine() + 1 == newLine.Location.StartLine();
-            bool nextRow = Location.StartColumn() == newLine.Location.StartColumn();
-            bool adjacent = sameFile && (sameRow || (sameColumn && nextRow));
+            var sameFile = Location.SourceTree == newLine.Location.SourceTree;
+            var sameRow = Location.EndLine() == newLine.Location.StartLine();
+            var sameColumn = Location.EndLine() + 1 == newLine.Location.StartLine();
+            var nextRow = Location.StartColumn() == newLine.Location.StartColumn();
+            var adjacent = sameFile && (sameRow || (sameColumn && nextRow));
 
             return
                 newLine.Type == CommentLineType.MultilineContinuation ||

@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.compilations(this, FileUtils.ConvertToUnix(cwd));
 
             // Arguments
-            int index = 0;
+            var index = 0;
             foreach (var arg in args)
             {
                 trapFile.compilation_args(this, index++, arg);
@@ -57,8 +57,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public void PopulatePerformance(PerformanceMetrics p)
         {
             var trapFile = cx.TrapWriter.Writer;
-            int index = 0;
-            foreach (float metric in p.Metrics)
+            var index = 0;
+            foreach (var metric in p.Metrics)
             {
                 trapFile.compilation_time(this, -1, index++, metric);
             }

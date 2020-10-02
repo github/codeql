@@ -55,16 +55,16 @@ namespace Semmle.Extraction.CIL.Entities
                     yield break;
                 }
 
-                for (int index = 0; index < decoded.FixedArguments.Length; ++index)
+                for (var index = 0; index < decoded.FixedArguments.Length; ++index)
                 {
-                    object value = decoded.FixedArguments[index].Value;
+                    var value = decoded.FixedArguments[index].Value;
                     var stringValue = value?.ToString();
                     yield return Tuples.cil_attribute_positional_argument(this, index, stringValue ?? "null");
                 }
 
                 foreach (var p in decoded.NamedArguments)
                 {
-                    object value = p.Value;
+                    var value = p.Value;
                     var stringValue = value?.ToString();
                     yield return Tuples.cil_attribute_named_argument(this, p.Name, stringValue ?? "null");
                 }

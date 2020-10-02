@@ -112,7 +112,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
             var child = 0;
 
-            Expression objectInitializer = Syntax.Initializers.Any() ?
+            var objectInitializer = Syntax.Initializers.Any() ?
                 new Expression(new ExpressionInfo(cx, Type, Location, ExprKind.OBJECT_INIT, this, -1, false, null)) :
                 null;
 

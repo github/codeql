@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitArgumentList(ArgumentListSyntax node)
         {
-            int c = 0;
+            var c = 0;
             foreach (var m in node.Arguments)
             {
                 cx.Extract(m, parent, c++);

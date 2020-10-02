@@ -127,7 +127,7 @@ namespace Semmle.Extraction
             var sections = new List<TransformerSection>();
             try
             {
-                int i = 0;
+                var i = 0;
                 while (i < lines.Length && !lines[i].StartsWith("#"))
                     i++;
                 while (i < lines.Length)

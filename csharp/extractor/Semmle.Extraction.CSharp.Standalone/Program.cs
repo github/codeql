@@ -69,7 +69,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             output.Log(Severity.Info, "Running C# standalone extractor");
             using var a = new Analysis(output, options);
-            int sourceFileCount = a.Extraction.Sources.Count;
+            var sourceFileCount = a.Extraction.Sources.Count;
 
             if (sourceFileCount == 0)
             {

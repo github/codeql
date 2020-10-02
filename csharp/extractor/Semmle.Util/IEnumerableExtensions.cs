@@ -33,8 +33,8 @@ namespace Semmle.Util
         /// </summary>
         public static IEnumerable<T> Interleave<T>(this IEnumerable<T> first, IEnumerable<T> second)
         {
-            using IEnumerator<T> enumerator1 = first.GetEnumerator();
-            using IEnumerator<T> enumerator2 = second.GetEnumerator();
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
             bool moveNext1;
             while ((moveNext1 = enumerator1.MoveNext()) && enumerator2.MoveNext())
             {
@@ -94,7 +94,7 @@ namespace Semmle.Util
         /// <returns>The hash code.</returns>
         public static int SequenceHash<T>(this IEnumerable<T> items) where T : notnull
         {
-            int h = 0;
+            var h = 0;
             foreach (var i in items)
                 h = h * 7 + i.GetHashCode();
             return h;

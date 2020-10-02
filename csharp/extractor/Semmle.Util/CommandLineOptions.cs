@@ -41,9 +41,9 @@ namespace Semmle.Util
     {
         public static void ParseArguments(this ICommandLineOptions options, IReadOnlyList<string> arguments)
         {
-            for (int i = 0; i < arguments.Count; ++i)
+            for (var i = 0; i < arguments.Count; ++i)
             {
-                string arg = arguments[i];
+                var arg = arguments[i];
                 if (arg.StartsWith("--"))
                 {
                     var colon = arg.IndexOf(':');

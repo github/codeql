@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             trapFile.commentblock(this);
-            int child = 0;
+            var child = 0;
             trapFile.commentblock_location(this, Context.Create(symbol.Location));
             foreach (var l in symbol.CommentLines)
             {

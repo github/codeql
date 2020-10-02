@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             trapFile.types(this, Kinds.TypeKind.TYPE_PARAMETER, symbol.Name);
 
-            Namespace parentNs = Namespace.Create(Context, symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : symbol.ContainingNamespace);
+            var parentNs = Namespace.Create(Context, symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : symbol.ContainingNamespace);
             trapFile.parent_namespace(this, parentNs);
 
             foreach (var l in symbol.Locations)

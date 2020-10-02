@@ -379,7 +379,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             string? nugetRestore = null, string? allSolutions = null,
             string cwd = @"C:\Project")
         {
-            string codeqlUpperLanguage = Language.CSharp.UpperCaseName;
+            var codeqlUpperLanguage = Language.CSharp.UpperCaseName;
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_TRAP_DIR"] = "";
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_SOURCE_ARCHIVE_DIR"] = "";
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_ROOT"] = $@"C:\codeql\{codeqlUpperLanguage.ToLowerInvariant()}";
@@ -591,7 +591,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Assert.Equal(commandsRun, EndCallbackReturn.Count);
 
             var action = Actions.RunProcess.GetEnumerator();
-            for (int cmd = 0; cmd < commandsRun; ++cmd)
+            for (var cmd = 0; cmd < commandsRun; ++cmd)
             {
                 Assert.True(action.MoveNext());
 

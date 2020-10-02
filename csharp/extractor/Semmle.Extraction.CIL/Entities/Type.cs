@@ -427,12 +427,12 @@ namespace Semmle.Extraction.CIL.Entities
 
             var newTypeParams = new TypeTypeParameter[ThisTypeParameters];
             var genericParams = td.GetGenericParameters();
-            int toSkip = genericParams.Count - newTypeParams.Length;
+            var toSkip = genericParams.Count - newTypeParams.Length;
 
             // Two-phase population because type parameters can be mutually dependent
-            for (int i = 0; i < newTypeParams.Length; ++i)
+            for (var i = 0; i < newTypeParams.Length; ++i)
                 newTypeParams[i] = cx.Populate(new TypeTypeParameter(this, this, i));
-            for (int i = 0; i < newTypeParams.Length; ++i)
+            for (var i = 0; i < newTypeParams.Length; ++i)
                 newTypeParams[i].PopulateHandle(genericParams[i + toSkip]);
             return newTypeParams;
         }
@@ -578,7 +578,7 @@ namespace Semmle.Extraction.CIL.Entities
         private TypeTypeParameter[] MakeTypeParameters()
         {
             var newTypeParams = new TypeTypeParameter[ThisTypeParameters];
-            for (int i = 0; i < newTypeParams.Length; ++i)
+            for (var i = 0; i < newTypeParams.Length; ++i)
             {
                 newTypeParams[i] = new TypeTypeParameter(this, this, i);
             }
@@ -726,7 +726,7 @@ namespace Semmle.Extraction.CIL.Entities
                 foreach (var c in base.Contents)
                     yield return c;
 
-                int i = 0;
+                var i = 0;
                 foreach (var type in ThisGenericArguments)
                 {
                     yield return type;
@@ -777,7 +777,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override int GetHashCode()
         {
-            int h = unboundGenericType.GetHashCode();
+            var h = unboundGenericType.GetHashCode();
             h = 13 * h + (containingType is null ? 0 : containingType.GetHashCode());
             if (!(thisTypeArguments is null))
                 h = h * 13 + thisTypeArguments.SequenceHash();
@@ -822,7 +822,7 @@ namespace Semmle.Extraction.CIL.Entities
             if (thisTypeArguments != null && thisTypeArguments.Any())
             {
                 trapFile.Write('<');
-                int index = 0;
+                var index = 0;
                 foreach (var t in thisTypeArguments)
                 {
                     trapFile.WriteSeparator(",", ref index);
@@ -914,7 +914,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             elementType.GetId(trapFile, inContext);
             trapFile.Write('[');
-            for (int i = 1; i < rank; ++i)
+            for (var i = 1; i < rank; ++i)
                 trapFile.Write(',');
             trapFile.Write(']');
         }
@@ -1209,7 +1209,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('[');
-                for (int i = 1; i < shape.Rank; ++i)
+                for (var i = 1; i < shape.Rank; ++i)
                     trapFile.Write(',');
                 trapFile.Write(']');
             }
@@ -1279,7 +1279,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 genericType.WriteId(trapFile, gc);
                 trapFile.Write('<');
-                int index = 0;
+                var index = 0;
                 foreach (var arg in typeArguments)
                 {
                     trapFile.WriteSeparator(",", ref index);

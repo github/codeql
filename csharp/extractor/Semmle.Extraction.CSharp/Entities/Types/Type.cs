@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var baseTypes = new List<Type>();
             if (symbol.GetNonObjectBaseType(Context) is INamedTypeSymbol @base)
             {
-                Type baseKey = Create(Context, @base);
+                var baseKey = Create(Context, @base);
                 trapFile.extend(this, baseKey.TypeRef);
                 if (symbol.TypeKind != TypeKind.Struct)
                     baseTypes.Add(baseKey);
@@ -123,7 +123,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var containingType = ContainingType;
             if (containingType != null && symbol.Kind != SymbolKind.TypeParameter)
             {
-                Type originalDefinition = symbol.TypeKind == TypeKind.Error ? this : Create(Context, symbol.OriginalDefinition);
+                var originalDefinition = symbol.TypeKind == TypeKind.Error ? this : Create(Context, symbol.OriginalDefinition);
                 trapFile.nested_types(this, containingType, originalDefinition);
             }
             else if (symbol.ContainingNamespace != null)
@@ -134,16 +134,16 @@ namespace Semmle.Extraction.CSharp.Entities
             if (symbol is IArrayTypeSymbol)
             {
                 // They are in the namespace of the original object
-                ITypeSymbol elementType = ((IArrayTypeSymbol)symbol).ElementType;
-                INamespaceSymbol ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
+                var elementType = ((IArrayTypeSymbol)symbol).ElementType;
+                var ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
                 if (ns != null)
                     trapFile.parent_namespace(this, Namespace.Create(Context, ns));
             }
 
             if (symbol is IPointerTypeSymbol)
             {
-                ITypeSymbol elementType = ((IPointerTypeSymbol)symbol).PointedAtType;
-                INamespaceSymbol ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
+                var elementType = ((IPointerTypeSymbol)symbol).PointedAtType;
+                var ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
 
                 if (ns != null)
                     trapFile.parent_namespace(this, Namespace.Create(Context, ns));

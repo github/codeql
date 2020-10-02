@@ -143,12 +143,12 @@ namespace Semmle.Extraction
             {
                 var lines = File.ReadAllLines(layout);
 
-                int i = 0;
+                var i = 0;
                 while (!lines[i].StartsWith("#"))
                     i++;
                 while (i < lines.Length)
                 {
-                    LayoutBlock block = new LayoutBlock(lines, ref i);
+                    var block = new LayoutBlock(lines, ref i);
                     blocks.Add(block);
                 }
 
@@ -174,7 +174,7 @@ namespace Semmle.Extraction
 
         private static string? ReadVariable(string name, string line)
         {
-            string prefix = name + "=";
+            var prefix = name + "=";
             if (!line.StartsWith(prefix))
                 return null;
             return line.Substring(prefix.Length).Trim();
@@ -184,10 +184,10 @@ namespace Semmle.Extraction
         {
             // first line: #name
             i++;
-            string? TRAP_FOLDER = ReadVariable("TRAP_FOLDER", lines[i++]);
+            var TRAP_FOLDER = ReadVariable("TRAP_FOLDER", lines[i++]);
             // Don't care about ODASA_DB.
             ReadVariable("ODASA_DB", lines[i++]);
-            string? SOURCE_ARCHIVE = ReadVariable("SOURCE_ARCHIVE", lines[i++]);
+            var SOURCE_ARCHIVE = ReadVariable("SOURCE_ARCHIVE", lines[i++]);
 
             Directories = new Layout.SubProject(TRAP_FOLDER, SOURCE_ARCHIVE);
             // Don't care about ODASA_BUILD_ERROR_DIR.

@@ -25,7 +25,7 @@ namespace Semmle.BuildAnalyser
 
             // Expect nuget.exe to be in a `nuget` directory under the directory containing this exe.
             var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string? directory = Path.GetDirectoryName(currentAssembly);
+            var directory = Path.GetDirectoryName(currentAssembly);
             if (directory is null)
                 throw new FileNotFoundException($"Directory path '{currentAssembly}' of current assembly is null");
 
@@ -113,8 +113,8 @@ namespace Semmle.BuildAnalyser
             {
                 using var p = Process.Start(pi);
 
-                string output = p.StandardOutput.ReadToEnd();
-                string error = p.StandardError.ReadToEnd();
+                var output = p.StandardOutput.ReadToEnd();
+                var error = p.StandardError.ReadToEnd();
 
                 p.WaitForExit();
                 if (p.ExitCode != 0)

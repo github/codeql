@@ -190,7 +190,7 @@ namespace Semmle.BuildAnalyser
 
             sortedReferences = sortedReferences.OrderBy(r => r.Version).ToList();
 
-            Dictionary<string, AssemblyInfo> finalAssemblyList = new Dictionary<string, AssemblyInfo>();
+            var finalAssemblyList = new Dictionary<string, AssemblyInfo>();
 
             // Pick the highest version for each assembly name
             foreach (var r in sortedReferences)
@@ -296,7 +296,7 @@ namespace Semmle.BuildAnalyser
                 {
                     try
                     {
-                        AssemblyInfo resolved = assemblyCache.ResolveReference(@ref);
+                        var resolved = assemblyCache.ResolveReference(@ref);
                         UseReference(resolved.Filename);
                     }
                     catch (AssemblyLoadException)
@@ -325,7 +325,7 @@ namespace Semmle.BuildAnalyser
 
         private void Restore(string projectOrSolution)
         {
-            int exit = DotNet.RestoreToDirectory(projectOrSolution, PackageDirectory.DirInfo.FullName);
+            var exit = DotNet.RestoreToDirectory(projectOrSolution, PackageDirectory.DirInfo.FullName);
             switch (exit)
             {
                 case 0:

@@ -64,7 +64,7 @@ namespace Semmle.Extraction.CIL.Entities
                 trapFile.Write(signature.GenericParameterCount);
             }
             trapFile.Write('(');
-            int index = 0;
+            var index = 0;
             foreach (var param in signature.ParameterTypes)
             {
                 trapFile.WriteSeparator(",", ref index);
@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         protected IEnumerable<Parameter> MakeParameters(IEnumerable<Type> parameterTypes)
         {
-            int i = 0;
+            var i = 0;
 
             if (!IsStatic)
             {
@@ -190,9 +190,9 @@ namespace Semmle.Extraction.CIL.Entities
                     // We need to perform a 2-phase population because some type parameters can
                     // depend on other type parameters (as a constraint).
                     genericParams = new MethodTypeParameter[md.GetGenericParameters().Count];
-                    for (int i = 0; i < genericParams.Length; ++i)
+                    for (var i = 0; i < genericParams.Length; ++i)
                         genericParams[i] = cx.Populate(new MethodTypeParameter(this, this, i));
-                    for (int i = 0; i < genericParams.Length; ++i)
+                    for (var i = 0; i < genericParams.Length; ++i)
                         genericParams[i].PopulateHandle(md.GetGenericParameters()[i]);
                     foreach (var p in genericParams)
                         yield return p;
@@ -237,7 +237,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                         this.locals = new LocalVariable[localVariableTypes.Length];
 
-                        for (int l = 0; l < this.locals.Length; ++l)
+                        for (var l = 0; l < this.locals.Length; ++l)
                         {
                             this.locals[l] = cx.Populate(new LocalVariable(cx, Implementation, l, localVariableTypes[l]));
                             yield return this.locals[l];
@@ -249,7 +249,7 @@ namespace Semmle.Extraction.CIL.Entities
                     foreach (var c in Decode(body.GetILBytes(), jump_table))
                         yield return c;
 
-                    int filter_index = 0;
+                    var filter_index = 0;
                     foreach (var region in body.ExceptionRegions)
                     {
                         yield return new ExceptionRegion(this, Implementation, filter_index++, region, jump_table);
@@ -326,8 +326,8 @@ namespace Semmle.Extraction.CIL.Entities
                 }
             }
 
-            int child = 0;
-            for (int offset = 0; offset < ilbytes.Length;)
+            var child = 0;
+            for (var offset = 0; offset < ilbytes.Length;)
             {
                 var instruction = new Instruction(cx, this, ilbytes, offset, child++);
                 yield return instruction;
@@ -368,8 +368,8 @@ namespace Semmle.Extraction.CIL.Entities
 
                     var ilbytes = body.GetILBytes();
 
-                    int child = 0;
-                    for (int offset = 0; offset < ilbytes.Length;)
+                    var child = 0;
+                    for (var offset = 0; offset < ilbytes.Length;)
                     {
                         Instruction decoded;
                         try
@@ -452,7 +452,7 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 genericParams = new MethodTypeParameter[signature.GenericParameterCount];
-                for (int p = 0; p < genericParams.Length; ++p)
+                for (var p = 0; p < genericParams.Length; ++p)
                     genericParams[p] = cx.Populate(new MethodTypeParameter(this, this, p));
 
                 foreach (var p in genericParams)
@@ -495,7 +495,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             unboundMethod.WriteId(trapFile);
             trapFile.Write('<');
-            int index = 0;
+            var index = 0;
             foreach (var param in typeParams)
             {
                 trapFile.WriteSeparator(",", ref index);
@@ -555,7 +555,7 @@ namespace Semmle.Extraction.CIL.Entities
                 if (typeParams.Length != unboundMethod.GenericParameterCount)
                     throw new InternalError("Method type parameter mismatch");
 
-                for (int p = 0; p < typeParams.Length; ++p)
+                for (var p = 0; p < typeParams.Length; ++p)
                 {
                     yield return Tuples.cil_type_argument(this, p, typeParams[p]);
                 }

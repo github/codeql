@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override int GetHashCode()
         {
-            int h = ParentNamespace is null ? 19 : ParentNamespace.GetHashCode();
+            var h = ParentNamespace is null ? 19 : ParentNamespace.GetHashCode();
             return 13 * h + Name.GetHashCode();
         }
 

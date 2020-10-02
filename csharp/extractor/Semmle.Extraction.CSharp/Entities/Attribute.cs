@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 cx.PopulateLater(() =>
                 {
-                    int child = 0;
+                    var child = 0;
                     foreach (var arg in syntax.ArgumentList.Arguments)
                     {
                         var expr = Expression.Create(cx, arg.Expression, this, child++);

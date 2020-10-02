@@ -109,7 +109,7 @@ namespace Semmle.Extraction
             if (string.IsNullOrEmpty(archive)) return;
 
             // Calling GetFullPath makes this use the canonical capitalisation, if the file exists.
-            string fullInputPath = Path.GetFullPath(originalPath);
+            var fullInputPath = Path.GetFullPath(originalPath);
 
             ArchivePath(fullInputPath, transformedPath, inputEncoding);
         }
@@ -208,14 +208,14 @@ namespace Semmle.Extraction
         /// exceed the system path limit of 260 characters.</exception>
         private void ArchivePath(string fullInputPath, PathTransformer.ITransformedPath transformedPath, Encoding inputEncoding)
         {
-            string contents = File.ReadAllText(fullInputPath, inputEncoding);
+            var contents = File.ReadAllText(fullInputPath, inputEncoding);
             ArchiveContents(transformedPath, contents);
         }
 
         private void ArchiveContents(PathTransformer.ITransformedPath transformedPath, string contents)
         {
-            string dest = NestPaths(Logger, archive, transformedPath.Value);
-            string tmpSrcFile = Path.GetTempFileName();
+            var dest = NestPaths(Logger, archive, transformedPath.Value);
+            var tmpSrcFile = Path.GetTempFileName();
             File.WriteAllText(tmpSrcFile, contents, UTF8);
             try
             {
@@ -231,7 +231,7 @@ namespace Semmle.Extraction
 
         public static string NestPaths(ILogger logger, string? outerpath, string innerpath)
         {
-            string nested = innerpath;
+            var nested = innerpath;
             if (!string.IsNullOrEmpty(outerpath))
             {
                 // Remove all leading path separators / or \

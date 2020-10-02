@@ -100,7 +100,7 @@ namespace Semmle.BuildAnalyser
             (id, assemblyName) = AssemblyInfo.ComputeSanitizedAssemblyInfo(id);
 
             // Look up the id in our references map.
-            if (assemblyInfoById.TryGetValue(id, out AssemblyInfo? result))
+            if (assemblyInfoById.TryGetValue(id, out var result))
             {
                 // The string is in the references map.
                 return result;

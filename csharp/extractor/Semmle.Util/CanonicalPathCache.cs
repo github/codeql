@@ -40,7 +40,7 @@ namespace Semmle.Util
         /// <returns>A canonical path.</returns>
         protected static string ConstructCanonicalPath(string path, IPathCache cache)
         {
-            DirectoryInfo parent = Directory.GetParent(path);
+            var parent = Directory.GetParent(path);
 
             return parent != null ?
                 Path.Combine(cache.GetCanonicalPath(parent.FullName), Path.GetFileName(path)) :
@@ -85,8 +85,8 @@ namespace Semmle.Util
                 return ConstructCanonicalPath(path, cache);
             }
 
-            StringBuilder outPath = new StringBuilder(Win32.MAX_PATH);
-            int length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
+            var outPath = new StringBuilder(Win32.MAX_PATH);
+            var length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
 
             if (length >= outPath.Capacity)
             {
@@ -104,7 +104,7 @@ namespace Semmle.Util
                 return ConstructCanonicalPath(path, cache);
             }
 
-            string result = outPath.ToString(PREAMBLE, length - PREAMBLE);  // Trim off leading \\?\
+            var result = outPath.ToString(PREAMBLE, length - PREAMBLE);  // Trim off leading \\?\
 
             return result.StartsWith("UNC")
                 ? @"\" + result.Substring(3)
@@ -120,7 +120,7 @@ namespace Semmle.Util
     {
         public override string GetCanonicalPath(string path, IPathCache cache)
         {
-            DirectoryInfo parent = Directory.GetParent(path);
+            var parent = Directory.GetParent(path);
 
             if (parent == null)
             {
@@ -135,7 +135,7 @@ namespace Semmle.Util
             var parentPath = cache.GetCanonicalPath(parent.FullName);
             try
             {
-                string[] entries = Directory.GetFileSystemEntries(parentPath, name);
+                var entries = Directory.GetFileSystemEntries(parentPath, name);
                 return entries.Length == 1
                     ? entries[0]
                     : Path.Combine(parentPath, name);

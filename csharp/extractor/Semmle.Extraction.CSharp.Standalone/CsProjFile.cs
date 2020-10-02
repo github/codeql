@@ -90,7 +90,7 @@ namespace Semmle.BuildAnalyser
 
             // Figure out if it's dotnet core
 
-            bool netCoreProjectFile = root.GetAttribute("Sdk") == "Microsoft.NET.Sdk";
+            var netCoreProjectFile = root.GetAttribute("Sdk") == "Microsoft.NET.Sdk";
 
             if (netCoreProjectFile)
             {

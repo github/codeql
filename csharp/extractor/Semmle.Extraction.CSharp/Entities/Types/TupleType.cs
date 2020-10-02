@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             trapFile.tuple_underlying_type(this, underlyingType);
 
-            int index = 0;
+            var index = 0;
             foreach (var element in TupleElements)
                 trapFile.tuple_element(this, index++, element);
 
