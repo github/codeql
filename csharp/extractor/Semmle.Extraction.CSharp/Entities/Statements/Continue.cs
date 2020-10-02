@@ -19,4 +19,3 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         protected override void PopulateStatement(TextWriter trapFile) { }
     }
 }
-

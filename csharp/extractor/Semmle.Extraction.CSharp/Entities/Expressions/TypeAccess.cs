@@ -36,4 +36,3 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression Create(ExpressionNodeInfo info) => new TypeAccess(info).TryPopulate();
     }
 }
-
