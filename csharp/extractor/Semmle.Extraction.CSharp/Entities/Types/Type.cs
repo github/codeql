@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
     public abstract class Type : CachedSymbol<ITypeSymbol>
     {
-        public Type(Context cx, ITypeSymbol init)
+        protected Type(Context cx, ITypeSymbol init)
             : base(cx, init) { }
 
         public virtual AnnotatedType ElementType => default(AnnotatedType);
@@ -336,7 +336,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
     abstract class Type<T> : Type where T : ITypeSymbol
     {
-        public Type(Context cx, T init)
+        protected Type(Context cx, T init)
             : base(cx, init) { }
 
         public new T symbol => (T)base.symbol;

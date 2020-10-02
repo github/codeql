@@ -9,7 +9,7 @@ namespace Semmle.Extraction
     {
         protected readonly Context cx;
 
-        public FreshEntity(Context cx)
+        protected FreshEntity(Context cx)
         {
             this.cx = cx;
             cx.AddFreshLabel(this);

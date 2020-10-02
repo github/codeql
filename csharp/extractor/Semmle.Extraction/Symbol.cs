@@ -9,7 +9,7 @@ namespace Semmle.Extraction
     /// <typeparam name="Initializer">The type of the symbol.</typeparam>
     public abstract class CachedEntity<Initializer> : ICachedEntity
     {
-        public CachedEntity(Context context, Initializer init)
+        protected CachedEntity(Context context, Initializer init)
         {
             Context = context;
             symbol = init;

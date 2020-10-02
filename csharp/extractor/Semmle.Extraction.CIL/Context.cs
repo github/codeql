@@ -125,7 +125,7 @@ namespace Semmle.Extraction.CIL
     {
         public Context cx;
 
-        public GenericContext(Context cx)
+        protected GenericContext(Context cx)
         {
             this.cx = cx;
         }

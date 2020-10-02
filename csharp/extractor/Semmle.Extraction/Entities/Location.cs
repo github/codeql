@@ -3,7 +3,7 @@ namespace Semmle.Extraction.Entities
 {
     public abstract class Location : CachedEntity<Microsoft.CodeAnalysis.Location?>
     {
-        public Location(Context cx, Microsoft.CodeAnalysis.Location? init)
+        protected Location(Context cx, Microsoft.CodeAnalysis.Location? init)
             : base(cx, init) { }
 
         public static Location Create(Context cx, Microsoft.CodeAnalysis.Location? loc) =>

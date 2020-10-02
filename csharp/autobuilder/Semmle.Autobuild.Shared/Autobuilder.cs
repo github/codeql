@@ -146,7 +146,7 @@ namespace Semmle.Autobuild.Shared
         /// solution file and tools.
         /// </summary>
         /// <param name="options">The command line options.</param>
-        public Autobuilder(IBuildActions actions, AutobuildOptions options)
+        protected Autobuilder(IBuildActions actions, AutobuildOptions options)
         {
             Actions = actions;
             Options = options;

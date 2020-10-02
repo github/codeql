@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CIL.Driver
 
             var options = new ExtractorOptions(args);
             var layout = new Layout();
-            var logger = new ConsoleLogger(options.Verbosity);
+            using var logger = new ConsoleLogger(options.Verbosity);
 
             var actions = options.
                 AssembliesToExtract.Select(asm => asm.filename).
