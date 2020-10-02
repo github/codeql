@@ -46,11 +46,11 @@ namespace Semmle.Extraction.CIL.Entities
         {
             trapFile.Write("@\"");
             WriteId(trapFile);
-            trapFile.Write(IdSuffix);
+            trapFile.Write(idSuffix);
             trapFile.Write('\"');
         }
 
-        private const string IdSuffix = ";cil-field";
+        private const string idSuffix = ";cil-field";
 
         public abstract string Name { get; }
 
@@ -136,14 +136,14 @@ namespace Semmle.Extraction.CIL.Entities
 
     internal sealed class MemberReferenceField : Field
     {
-        private readonly MemberReferenceHandle Handle;
+        private readonly MemberReferenceHandle handle;
         private readonly MemberReference mr;
         private readonly GenericContext gc;
         private readonly Type declType;
 
         public MemberReferenceField(GenericContext gc, MemberReferenceHandle handle) : base(gc.cx)
         {
-            Handle = handle;
+            this.handle = handle;
             this.gc = gc;
             mr = cx.mdReader.GetMemberReference(handle);
             declType = (Type)cx.CreateGeneric(gc, mr.Parent);
@@ -151,12 +151,12 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override bool Equals(object? obj)
         {
-            return obj is MemberReferenceField field && Handle.Equals(field.Handle);
+            return obj is MemberReferenceField field && handle.Equals(field.handle);
         }
 
         public override int GetHashCode()
         {
-            return Handle.GetHashCode();
+            return handle.GetHashCode();
         }
 
         public override string Name => cx.GetString(mr.Name);

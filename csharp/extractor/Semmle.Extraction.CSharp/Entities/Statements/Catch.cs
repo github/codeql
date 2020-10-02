@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 {
     internal class Catch : Statement<CatchClauseSyntax>
     {
-        private static readonly string SystemExceptionName = typeof(System.Exception).ToString();
+        private static readonly string systemExceptionName = typeof(System.Exception).ToString();
 
         private Catch(Context cx, CatchClauseSyntax node, Try parent, int child)
             : base(cx, node, StmtKind.CATCH, parent, child, cx.Create(node.GetLocation())) { }
@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             }
             else // A catch clause of the form 'catch { ... }'
             {
-                var exception = Type.Create(cx, cx.Compilation.GetTypeByMetadataName(SystemExceptionName));
+                var exception = Type.Create(cx, cx.Compilation.GetTypeByMetadataName(systemExceptionName));
                 trapFile.catch_type(this, exception, false);
             }
 

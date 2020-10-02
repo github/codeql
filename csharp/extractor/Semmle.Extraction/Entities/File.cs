@@ -10,15 +10,15 @@ namespace Semmle.Extraction.Entities
         private File(Context cx, string path)
             : base(cx, path)
         {
-            OriginalPath = path;
-            TransformedPathLazy = new Lazy<PathTransformer.ITransformedPath>(() => Context.Extractor.PathTransformer.Transform(OriginalPath));
+            originalPath = path;
+            transformedPathLazy = new Lazy<PathTransformer.ITransformedPath>(() => Context.Extractor.PathTransformer.Transform(originalPath));
         }
 
-        private readonly string OriginalPath;
-        private readonly Lazy<PathTransformer.ITransformedPath> TransformedPathLazy;
-        private PathTransformer.ITransformedPath TransformedPath => TransformedPathLazy.Value;
+        private readonly string originalPath;
+        private readonly Lazy<PathTransformer.ITransformedPath> transformedPathLazy;
+        private PathTransformer.ITransformedPath TransformedPath => transformedPathLazy.Value;
 
-        public override bool NeedsPopulation => Context.DefinesFile(OriginalPath) || OriginalPath == Context.Extractor.OutputPath;
+        public override bool NeedsPopulation => Context.DefinesFile(originalPath) || originalPath == Context.Extractor.OutputPath;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.Entities
             if (fromSource)
             {
                 foreach (var text in Context.Compilation.SyntaxTrees
-                    .Where(t => t.FilePath == OriginalPath)
+                    .Where(t => t.FilePath == originalPath)
                     .Select(tree => tree.GetText()))
                 {
                     var rawText = text.ToString() ?? "";
@@ -40,7 +40,7 @@ namespace Semmle.Extraction.Entities
                         lineCounts.Total++;
 
                     trapFile.numlines(this, lineCounts);
-                    Context.TrapWriter.Archive(OriginalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default);
+                    Context.TrapWriter.Archive(originalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default);
                 }
             }
 

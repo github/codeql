@@ -66,7 +66,7 @@ namespace Semmle.Extraction
                 new TrapWriter(logger, srcFile, TRAP_FOLDER, SOURCE_ARCHIVE, discardDuplicates, trapCompression);
         }
 
-        private readonly SubProject DefaultProject;
+        private readonly SubProject defaultProject;
 
         /// <summary>
         /// Finds the suitable directories for a given source file.
@@ -77,7 +77,7 @@ namespace Semmle.Extraction
         public SubProject? LookupProjectOrNull(PathTransformer.ITransformedPath sourceFile)
         {
             if (!useLayoutFile)
-                return DefaultProject;
+                return defaultProject;
 
             return blocks
                 .Where(block => block.Matches(sourceFile))
@@ -93,7 +93,7 @@ namespace Semmle.Extraction
         /// <returns>The relevant subproject, or DefaultProject if not found.</returns>
         public SubProject LookupProjectOrDefault(PathTransformer.ITransformedPath sourceFile)
         {
-            return LookupProjectOrNull(sourceFile) ?? DefaultProject;
+            return LookupProjectOrNull(sourceFile) ?? defaultProject;
         }
 
         private readonly bool useLayoutFile;
@@ -123,11 +123,11 @@ namespace Semmle.Extraction
             if (useLayoutFile)
             {
                 ReadLayoutFile(layout!);
-                DefaultProject = blocks[0].Directories;
+                defaultProject = blocks[0].Directories;
             }
             else
             {
-                DefaultProject = new SubProject(traps, archive);
+                defaultProject = new SubProject(traps, archive);
             }
         }
 
@@ -185,12 +185,12 @@ namespace Semmle.Extraction
         {
             // first line: #name
             i++;
-            var TRAP_FOLDER = ReadVariable("TRAP_FOLDER", lines[i++]);
+            var trapFolder = ReadVariable("TRAP_FOLDER", lines[i++]);
             // Don't care about ODASA_DB.
             ReadVariable("ODASA_DB", lines[i++]);
-            var SOURCE_ARCHIVE = ReadVariable("SOURCE_ARCHIVE", lines[i++]);
+            var sourceArchive = ReadVariable("SOURCE_ARCHIVE", lines[i++]);
 
-            Directories = new Layout.SubProject(TRAP_FOLDER, SOURCE_ARCHIVE);
+            Directories = new Layout.SubProject(trapFolder, sourceArchive);
             // Don't care about ODASA_BUILD_ERROR_DIR.
             ReadVariable("ODASA_BUILD_ERROR_DIR", lines[i++]);
             while (i < lines.Length && !lines[i].StartsWith("#"))

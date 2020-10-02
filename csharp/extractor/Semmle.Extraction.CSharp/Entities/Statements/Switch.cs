@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 {
     internal class Switch : Statement<SwitchStatementSyntax>
     {
-        private static readonly object NullLabel = new object();
+        private static readonly object nullLabel = new object();
         public static readonly object DefaultLabel = new object();
 
         // Sometimes, the literal "null" is used as a label.
@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         // This cannot be stored in a Dictionary<>, so substitute an object which can be.
         public static object LabelForValue(object label)
         {
-            return label ?? NullLabel;
+            return label ?? nullLabel;
         }
 
         private Switch(Context cx, SwitchStatementSyntax node, IStatementParentEntity parent, int child)

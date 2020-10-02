@@ -6,14 +6,14 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 {
     internal class Labeled : Statement<LabeledStatementSyntax>
     {
-        private readonly Statement Parent;
-        private readonly int Child;
+        private readonly Statement parent;
+        private readonly int child;
 
         private Labeled(Context cx, LabeledStatementSyntax stmt, Statement parent, int child)
             : base(cx, stmt, StmtKind.LABEL, parent, child)
         {
-            Parent = parent;
-            Child = child;
+            this.parent = parent;
+            this.child = child;
         }
 
         public static Labeled Create(Context cx, LabeledStatementSyntax node, Statement parent, int child)
@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             // For compatilibty with the Mono extractor, make insert the labelled statement into the same block
             // as this one. The parent MUST be a block statement.
-            labelledStmt = Statement.Create(cx, Stmt.Statement, Parent, Child + 1);
+            labelledStmt = Statement.Create(cx, Stmt.Statement, parent, child + 1);
         }
 
         private Statement labelledStmt;

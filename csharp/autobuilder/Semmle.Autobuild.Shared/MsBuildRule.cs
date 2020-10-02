@@ -11,7 +11,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// The name of the msbuild command.
         /// </summary>
-        private const string MsBuild = "msbuild";
+        private const string msBuild = "msbuild";
 
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {
@@ -57,7 +57,7 @@ namespace Semmle.Autobuild.Shared
                             Script;
                     var nugetRestore = GetNugetRestoreScript();
                     var msbuildRestoreCommand = new CommandBuilder(builder.Actions).
-                        RunCommand(MsBuild).
+                        RunCommand(msBuild).
                         Argument("/t:restore").
                         QuoteArgument(projectOrSolution.FullPath);
 
@@ -95,7 +95,7 @@ namespace Semmle.Autobuild.Shared
                     command.RunCommand("set Platform=&& type NUL", quoteExe: false);
                 }
 
-                builder.MaybeIndex(command, MsBuild);
+                builder.MaybeIndex(command, msBuild);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
                 command.Argument("/p:UseSharedCompilation=false");

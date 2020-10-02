@@ -255,17 +255,17 @@ namespace Semmle.Extraction.CSharp.Entities
 
     internal class ConstructedExtensionParameter : Parameter
     {
-        private readonly ITypeSymbol ConstructedType;
+        private readonly ITypeSymbol constructedType;
 
         private ConstructedExtensionParameter(Context cx, Method method, Parameter original)
             : base(cx, original.symbol, method, original)
         {
-            ConstructedType = method.symbol.ReceiverType;
+            constructedType = method.symbol.ReceiverType;
         }
 
         public override void Populate(TextWriter trapFile)
         {
-            var typeKey = Type.Create(Context, ConstructedType);
+            var typeKey = Type.Create(Context, constructedType);
             trapFile.@params(this, Original.symbol.Name, typeKey.TypeRef, 0, Kind.This, Parent, Original);
             trapFile.param_location(this, Original.Location);
         }

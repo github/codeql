@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         public int Annotation { get; }
 
-        private static readonly Nullability[] EmptyArray = System.Array.Empty<Nullability>();
+        private static readonly Nullability[] emptyArray = System.Array.Empty<Nullability>();
         public readonly Nullability[] NullableParameters;
 
         public static Nullability Create(AnnotatedTypeSymbol ts)
@@ -50,12 +50,12 @@ namespace Semmle.Extraction.CSharp.Entities
                     Annotation = 0;
                     break;
             }
-            NullableParameters = EmptyArray;
+            NullableParameters = emptyArray;
         }
 
         private Nullability(AnnotatedTypeSymbol ts) : this(ts.Nullability)
         {
-            NullableParameters = ts.HasConsistentNullability() ? EmptyArray : ts.GetAnnotatedTypeArguments().Select(Create).ToArray();
+            NullableParameters = ts.HasConsistentNullability() ? emptyArray : ts.GetAnnotatedTypeArguments().Select(Create).ToArray();
         }
 
         public Nullability(IMethodSymbol method)

@@ -9,27 +9,27 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private readonly AttributeData AttributeData;
-        private readonly IEntity Entity;
+        private readonly AttributeData attribute;
+        private readonly IEntity entity;
 
         public Attribute(Context cx, AttributeData attribute, IEntity entity)
             : base(cx)
         {
-            AttributeData = attribute;
-            Entity = entity;
+            this.attribute = attribute;
+            this.entity = entity;
             TryPopulate();
         }
 
         protected override void Populate(TextWriter trapFile)
         {
-            if (AttributeData.ApplicationSyntaxReference != null)
+            if (attribute.ApplicationSyntaxReference != null)
             {
                 // !! Extract attributes from assemblies.
                 // This is harder because the "expression" entities presume the
                 // existence of a syntax tree. This is not the case for compiled
                 // attributes.
-                var syntax = AttributeData.ApplicationSyntaxReference.GetSyntax() as AttributeSyntax;
-                ExtractAttribute(cx.TrapWriter.Writer, syntax, AttributeData.AttributeClass, Entity);
+                var syntax = attribute.ApplicationSyntaxReference.GetSyntax() as AttributeSyntax;
+                ExtractAttribute(cx.TrapWriter.Writer, syntax, attribute.AttributeClass, entity);
             }
         }
 

@@ -49,11 +49,11 @@ namespace Semmle.Extraction
         private int GetNewId() => TrapWriter.IdCounter++;
 
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
-        private bool WritingLabel = false;
+        private bool writingLabel = false;
 
         public void DefineLabel(IEntity entity, TextWriter trapFile, IExtractor extractor)
         {
-            if (WritingLabel)
+            if (writingLabel)
             {
                 // Don't define a label whilst writing a label.
                 PopulateLater(() => DefineLabel(entity, trapFile, extractor));
@@ -62,12 +62,12 @@ namespace Semmle.Extraction
             {
                 try
                 {
-                    WritingLabel = true;
+                    writingLabel = true;
                     entity.DefineLabel(trapFile, extractor);
                 }
                 finally
                 {
-                    WritingLabel = false;
+                    writingLabel = false;
                 }
             }
         }
@@ -237,18 +237,18 @@ namespace Semmle.Extraction
         {
             Extractor = e;
             Compilation = c;
-            Scope = scope;
+            this.scope = scope;
             TrapWriter = trapWriter;
             ShouldAddAssemblyTrapPrefix = addAssemblyTrapPrefix;
         }
 
-        public bool FromSource => Scope.FromSource;
+        public bool FromSource => scope.FromSource;
 
-        public bool IsGlobalContext => Scope.IsGlobalScope;
+        public bool IsGlobalContext => scope.IsGlobalScope;
 
         public readonly ICommentGenerator CommentGenerator = new CommentProcessor();
 
-        private readonly IExtractionScope Scope;
+        private readonly IExtractionScope scope;
 
         /// <summary>
         ///     Whether the given symbol needs to be defined in this context.
@@ -258,13 +258,13 @@ namespace Semmle.Extraction
         /// <param name="symbol">The symbol to populate.</param>
         public bool Defines(ISymbol symbol) =>
             !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
-            Scope.InScope(symbol);
+            scope.InScope(symbol);
 
         /// <summary>
         /// Whether the current extraction context defines a given file.
         /// </summary>
         /// <param name="path">The path to query.</param>
-        public bool DefinesFile(string path) => Scope.InFileScope(path);
+        public bool DefinesFile(string path) => scope.InFileScope(path);
 
         private int currentRecursiveDepth = 0;
         private const int maxRecursiveDepth = 150;
@@ -301,17 +301,17 @@ namespace Semmle.Extraction
 
         private class PushEmitter : ITrapEmitter
         {
-            private readonly Key Key;
+            private readonly Key key;
 
             public PushEmitter(Key key)
             {
-                Key = key;
+                this.key = key;
             }
 
             public void EmitTrap(TextWriter trapFile)
             {
                 trapFile.Write(".push ");
-                Key.AppendTo(trapFile);
+                key.AppendTo(trapFile);
                 trapFile.WriteLine();
             }
         }
@@ -334,7 +334,7 @@ namespace Semmle.Extraction
         /// <exception cref="InternalError">Thrown on invalid trap stack behaviour.</exception>
         public void Populate(ISymbol? optionalSymbol, ICachedEntity entity)
         {
-            if (WritingLabel)
+            if (writingLabel)
             {
                 // Don't write tuples etc if we're currently defining a label
                 PopulateLater(() => Populate(optionalSymbol, entity));
@@ -384,7 +384,7 @@ namespace Semmle.Extraction
         /// </summary>
         public void WithDuplicationGuard(Key key, Action a)
         {
-            if (Scope is AssemblyScope)
+            if (scope is AssemblyScope)
             {
                 // No need for a duplication guard when extracting assemblies,
                 // and the duplication guard could lead to method bodies being missed

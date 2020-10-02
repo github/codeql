@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
     internal class Expression : FreshEntity, IExpressionParentEntity
     {
-        private readonly IExpressionInfo Info;
+        private readonly IExpressionInfo info;
         public readonly AnnotatedType Type;
         public readonly Extraction.Entities.Location Location;
         public readonly ExprKind Kind;
@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities
         internal Expression(IExpressionInfo info)
             : base(info.Context)
         {
-            Info = info;
+            this.info = info;
             Location = info.Location;
             Kind = info.Kind;
             Type = info.Type;
@@ -40,10 +40,10 @@ namespace Semmle.Extraction.CSharp.Entities
         protected sealed override void Populate(TextWriter trapFile)
         {
             trapFile.expressions(this, Kind, Type.Type.TypeRef);
-            if (Info.Parent.IsTopLevelParent)
-                trapFile.expr_parent_top_level(this, Info.Child, Info.Parent);
+            if (info.Parent.IsTopLevelParent)
+                trapFile.expr_parent_top_level(this, info.Child, info.Parent);
             else
-                trapFile.expr_parent(this, Info.Child, Info.Parent);
+                trapFile.expr_parent(this, info.Child, info.Parent);
             trapFile.expr_location(this, Location);
 
             var annotatedType = Type.Symbol;
@@ -53,15 +53,15 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.type_nullability(this, n);
             }
 
-            if (Info.FlowState != NullableFlowState.None)
+            if (info.FlowState != NullableFlowState.None)
             {
-                trapFile.expr_flowstate(this, (int)Info.FlowState);
+                trapFile.expr_flowstate(this, (int)info.FlowState);
             }
 
-            if (Info.IsCompilerGenerated)
+            if (info.IsCompilerGenerated)
                 trapFile.expr_compiler_generated(this);
 
-            if (Info.ExprValue is string value)
+            if (info.ExprValue is string value)
                 trapFile.expr_value(this, value);
 
             Type.Type.PopulateGenerics();

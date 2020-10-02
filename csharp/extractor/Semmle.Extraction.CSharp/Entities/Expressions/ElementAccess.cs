@@ -11,28 +11,28 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected ElementAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, BracketedArgumentListSyntax argumentList)
             : base(info.SetKind(GetKind(info.Context, qualifier)))
         {
-            Qualifier = qualifier;
-            ArgumentList = argumentList;
+            this.qualifier = qualifier;
+            this.argumentList = argumentList;
         }
 
-        private readonly ExpressionSyntax Qualifier;
-        private readonly BracketedArgumentListSyntax ArgumentList;
+        private readonly ExpressionSyntax qualifier;
+        private readonly BracketedArgumentListSyntax argumentList;
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
             if (Kind == ExprKind.POINTER_INDIRECTION)
             {
-                var qualifierInfo = new ExpressionNodeInfo(cx, Qualifier, this, 0);
+                var qualifierInfo = new ExpressionNodeInfo(cx, qualifier, this, 0);
                 var add = new Expression(new ExpressionInfo(cx, qualifierInfo.Type, Location, ExprKind.ADD, this, 0, false, null));
                 qualifierInfo.SetParent(add, 0);
                 CreateFromNode(qualifierInfo);
-                PopulateArguments(trapFile, ArgumentList, 1);
+                PopulateArguments(trapFile, argumentList, 1);
             }
             else
             {
                 var child = -1;
-                Create(cx, Qualifier, this, child++);
-                foreach (var a in ArgumentList.Arguments)
+                Create(cx, qualifier, this, child++);
+                foreach (var a in argumentList.Arguments)
                 {
                     cx.Extract(a, this, child++);
                 }

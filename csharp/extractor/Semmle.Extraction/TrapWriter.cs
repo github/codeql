@@ -25,28 +25,28 @@ namespace Semmle.Extraction
         /// The location of the src_archive directory.
         /// </summary>
         private readonly string? archive;
-        private static readonly Encoding UTF8 = new UTF8Encoding(false);
+        private static readonly Encoding utf8 = new UTF8Encoding(false);
 
         private readonly bool discardDuplicates;
 
         public int IdCounter { get; set; } = 1;
 
-        private readonly Lazy<StreamWriter> WriterLazy;
+        private readonly Lazy<StreamWriter> writerLazy;
 
-        public StreamWriter Writer => WriterLazy.Value;
+        public StreamWriter Writer => writerLazy.Value;
 
-        private readonly ILogger Logger;
+        private readonly ILogger logger;
 
-        private readonly CompressionMode TrapCompression;
+        private readonly CompressionMode trapCompression;
 
         public TrapWriter(ILogger logger, PathTransformer.ITransformedPath outputfile, string? trap, string? archive, bool discardDuplicates, CompressionMode trapCompression)
         {
-            Logger = logger;
-            TrapCompression = trapCompression;
+            this.logger = logger;
+            this.trapCompression = trapCompression;
 
-            TrapFile = TrapPath(Logger, trap, outputfile, trapCompression);
+            TrapFile = TrapPath(this.logger, trap, outputfile, trapCompression);
 
-            WriterLazy = new Lazy<StreamWriter>(() =>
+            writerLazy = new Lazy<StreamWriter>(() =>
             {
                 var tempPath = trap ?? Path.GetTempPath();
 
@@ -85,7 +85,7 @@ namespace Semmle.Extraction
                 }
 
 
-                return new StreamWriter(compressionStream, UTF8, 2000000);
+                return new StreamWriter(compressionStream, utf8, 2000000);
             });
             this.archive = archive;
             this.discardDuplicates = discardDuplicates;
@@ -163,9 +163,9 @@ namespace Semmle.Extraction
         {
             try
             {
-                if (WriterLazy.IsValueCreated)
+                if (writerLazy.IsValueCreated)
                 {
-                    WriterLazy.Value.Close();
+                    writerLazy.Value.Close();
                     if (TryMove(tmpFile, TrapFile))
                         return;
 
@@ -180,16 +180,16 @@ namespace Semmle.Extraction
                     if (existingHash != hash)
                     {
                         var root = TrapFile.Substring(0, TrapFile.Length - 8); // Remove trailing ".trap.gz"
-                        if (TryMove(tmpFile, $"{root}-{hash}.trap{TrapExtension(TrapCompression)}"))
+                        if (TryMove(tmpFile, $"{root}-{hash}.trap{TrapExtension(trapCompression)}"))
                             return;
                     }
-                    Logger.Log(Severity.Info, "Identical trap file for {0} already exists", TrapFile);
+                    logger.Log(Severity.Info, "Identical trap file for {0} already exists", TrapFile);
                     FileUtils.TryDelete(tmpFile);
                 }
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                Logger.Log(Severity.Error, "Failed to move the trap file from {0} to {1} because {2}", tmpFile, TrapFile, ex);
+                logger.Log(Severity.Error, "Failed to move the trap file from {0} to {1} because {2}", tmpFile, TrapFile, ex);
             }
         }
 
@@ -216,9 +216,9 @@ namespace Semmle.Extraction
 
         private void ArchiveContents(PathTransformer.ITransformedPath transformedPath, string contents)
         {
-            var dest = NestPaths(Logger, archive, transformedPath.Value);
+            var dest = NestPaths(logger, archive, transformedPath.Value);
             var tmpSrcFile = Path.GetTempFileName();
-            File.WriteAllText(tmpSrcFile, contents, UTF8);
+            File.WriteAllText(tmpSrcFile, contents, utf8);
             try
             {
                 FileUtils.MoveOrReplace(tmpSrcFile, dest);
@@ -227,7 +227,7 @@ namespace Semmle.Extraction
             {
                 // If this happened, it was probably because the same file was compiled multiple times.
                 // In any case, this is not a fatal error.
-                Logger.Log(Severity.Warning, "Problem archiving " + dest + ": " + ex);
+                logger.Log(Severity.Warning, "Problem archiving " + dest + ": " + ex);
             }
         }
 

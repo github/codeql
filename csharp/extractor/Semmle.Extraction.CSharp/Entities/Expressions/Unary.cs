@@ -9,10 +9,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private Unary(ExpressionNodeInfo info, ExprKind kind)
             : base(info.SetKind(UnaryOperatorKind(info.Context, info.Kind, info.Node)))
         {
-            OperatorKind = kind;
+            operatorKind = kind;
         }
 
-        private readonly ExprKind OperatorKind;
+        private readonly ExprKind operatorKind;
 
         public static Unary Create(ExpressionNodeInfo info)
         {
@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             Create(cx, Syntax.Operand, this, 0);
             OperatorCall(trapFile, Syntax);
 
-            if ((OperatorKind == ExprKind.PRE_INCR || OperatorKind == ExprKind.PRE_DECR) &&
+            if ((operatorKind == ExprKind.PRE_INCR || operatorKind == ExprKind.PRE_DECR) &&
                 Kind == ExprKind.OPERATOR_INVOCATION)
             {
                 trapFile.mutator_invocation_mode(this, 1);
