@@ -121,8 +121,10 @@ namespace Semmle.Extraction.CIL.Driver
                 filesAnalyzed.Add(assemblyPath);
                 try
                 {
-                    var info = new AssemblyInfo(assemblyPath);
-                    info.extract = extractAll;
+                    var info = new AssemblyInfo(assemblyPath)
+                    {
+                        extract = extractAll
+                    };
                     if (!assembliesRead.ContainsKey(info.name))
                         assembliesRead.Add(info.name, info);
                 }
