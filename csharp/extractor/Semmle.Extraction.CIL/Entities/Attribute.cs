@@ -7,18 +7,18 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A CIL attribute.
     /// </summary>
-    interface IAttribute : IExtractedEntity
+    internal interface IAttribute : IExtractedEntity
     {
     }
 
     /// <summary>
     /// Entity representing a CIL attribute.
     /// </summary>
-    sealed class Attribute : UnlabelledEntity, IAttribute
+    internal sealed class Attribute : UnlabelledEntity, IAttribute
     {
-        readonly CustomAttributeHandle handle;
-        readonly CustomAttribute attrib;
-        readonly IEntity @object;
+        private readonly CustomAttributeHandle handle;
+        private readonly CustomAttribute attrib;
+        private readonly IEntity @object;
 
         public Attribute(Context cx, IEntity @object, CustomAttributeHandle handle) : base(cx)
         {
@@ -84,9 +84,9 @@ namespace Semmle.Extraction.CIL.Entities
     /// Helper class to decode the attribute structure.
     /// Note that there are some unhandled cases that should be fixed in due course.
     /// </summary>
-    class CustomAttributeDecoder : ICustomAttributeTypeProvider<Type>
+    internal class CustomAttributeDecoder : ICustomAttributeTypeProvider<Type>
     {
-        readonly Context cx;
+        private readonly Context cx;
         public CustomAttributeDecoder(Context cx) { this.cx = cx; }
 
         public Type GetPrimitiveType(PrimitiveTypeCode typeCode) => cx.Create(typeCode);

@@ -46,12 +46,12 @@ namespace Semmle.Autobuild.Shared
         /// <returns>The exit code from this build script.</returns>
         public abstract int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout);
 
-        class BuildCommand : BuildScript
+        private class BuildCommand : BuildScript
         {
-            readonly string exe, arguments;
-            readonly string? workingDirectory;
-            readonly IDictionary<string, string>? environment;
-            readonly bool silent;
+            private readonly string exe, arguments;
+            private readonly string? workingDirectory;
+            private readonly IDictionary<string, string>? environment;
+            private readonly bool silent;
 
             /// <summary>
             /// Create a simple build command.
@@ -112,9 +112,9 @@ namespace Semmle.Autobuild.Shared
 
         }
 
-        class ReturnBuildCommand : BuildScript
+        private class ReturnBuildCommand : BuildScript
         {
-            readonly Func<IBuildActions, int> func;
+            private readonly Func<IBuildActions, int> func;
             public ReturnBuildCommand(Func<IBuildActions, int> func)
             {
                 this.func = func;
@@ -129,11 +129,12 @@ namespace Semmle.Autobuild.Shared
             }
         }
 
-        class BindBuildScript : BuildScript
+        private class BindBuildScript : BuildScript
         {
-            readonly BuildScript s1;
-            readonly Func<IList<string>, int, BuildScript>? s2a;
-            readonly Func<int, BuildScript>? s2b;
+            private readonly BuildScript s1;
+            private readonly Func<IList<string>, int, BuildScript>? s2a;
+            private readonly Func<int, BuildScript>? s2b;
+
             public BindBuildScript(BuildScript s1, Func<IList<string>, int, BuildScript> s2)
             {
                 this.s1 = s1;
@@ -227,19 +228,19 @@ namespace Semmle.Autobuild.Shared
         public static BuildScript Bind(BuildScript s1, Func<IList<string>, int, BuildScript> s2) =>
             new BindBuildScript(s1, s2);
 
-        const int SuccessCode = 0;
+        private const int SuccessCode = 0;
         /// <summary>
         /// The empty build script that always returns exit code 0.
         /// </summary>
         public static readonly BuildScript Success = Create(actions => SuccessCode);
 
-        const int FailureCode = 1;
+        private const int FailureCode = 1;
         /// <summary>
         /// The empty build script that always returns exit code 1.
         /// </summary>
         public static readonly BuildScript Failure = Create(actions => FailureCode);
 
-        static bool Succeeded(int i) => i == SuccessCode;
+        private static bool Succeeded(int i) => i == SuccessCode;
 
         public static BuildScript operator &(BuildScript s1, BuildScript s2) =>
             new BindBuildScript(s1, ret1 => Succeeded(ret1) ? s2 : Create(actions => ret1));

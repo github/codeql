@@ -7,15 +7,15 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Invocation : Expression<InvocationExpressionSyntax>
+    internal class Invocation : Expression<InvocationExpressionSyntax>
     {
-        Invocation(ExpressionNodeInfo info)
+        private Invocation(ExpressionNodeInfo info)
             : base(info.SetKind(GetKind(info)))
         {
             this.info = info;
         }
 
-        readonly ExpressionNodeInfo info;
+        private readonly ExpressionNodeInfo info;
 
         public static Expression Create(ExpressionNodeInfo info) => new Invocation(info).TryPopulate();
 
@@ -93,7 +93,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             trapFile.expr_call(this, targetKey);
         }
 
-        static bool IsDynamicCall(ExpressionNodeInfo info)
+        private static bool IsDynamicCall(ExpressionNodeInfo info)
         {
             // Either the qualifier (Expression) is dynamic,
             // or one of the arguments is dynamic.
@@ -132,7 +132,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        static bool IsDelegateCall(ExpressionNodeInfo info)
+        private static bool IsDelegateCall(ExpressionNodeInfo info)
         {
             var si = info.SymbolInfo;
 
@@ -153,13 +153,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ((IMethodSymbol)si.Symbol).MethodKind == MethodKind.DelegateInvoke;
         }
 
-        static bool IsLocalFunctionInvocation(ExpressionNodeInfo info)
+        private static bool IsLocalFunctionInvocation(ExpressionNodeInfo info)
         {
             return info.SymbolInfo.Symbol is IMethodSymbol target &&
                 target.MethodKind == MethodKind.LocalFunction;
         }
 
-        static ExprKind GetKind(ExpressionNodeInfo info)
+        private static ExprKind GetKind(ExpressionNodeInfo info)
         {
             return IsNameof((InvocationExpressionSyntax)info.Node)
                 ? ExprKind.NAMEOF
@@ -170,7 +170,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         : ExprKind.METHOD_INVOCATION;
         }
 
-        static bool IsNameof(InvocationExpressionSyntax syntax)
+        private static bool IsNameof(InvocationExpressionSyntax syntax)
         {
             // Odd that this is not a separate expression type.
             // Maybe it will be in the future.

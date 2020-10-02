@@ -8,20 +8,20 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A property.
     /// </summary>
-    interface IProperty : IExtractedEntity
+    internal interface IProperty : IExtractedEntity
     {
     }
 
     /// <summary>
     /// A property.
     /// </summary>
-    sealed class Property : LabelledEntity, IProperty
+    internal sealed class Property : LabelledEntity, IProperty
     {
-        readonly Handle handle;
-        readonly Type type;
-        readonly PropertyDefinition pd;
+        private readonly Handle handle;
+        private readonly Type type;
+        private readonly PropertyDefinition pd;
         public override string IdSuffix => ";cil-property";
-        readonly GenericContext gc;
+        private readonly GenericContext gc;
 
         public Property(GenericContext gc, Type type, PropertyDefinitionHandle handle) : base(gc.cx)
         {

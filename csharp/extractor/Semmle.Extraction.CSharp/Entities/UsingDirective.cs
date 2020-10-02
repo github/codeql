@@ -6,10 +6,10 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class UsingDirective : FreshEntity
+    internal class UsingDirective : FreshEntity
     {
-        readonly UsingDirectiveSyntax Node;
-        readonly NamespaceDeclaration Parent;
+        private readonly UsingDirectiveSyntax Node;
+        private readonly NamespaceDeclaration Parent;
 
         public UsingDirective(Context cx, UsingDirectiveSyntax usingDirective, NamespaceDeclaration parent)
             : base(cx)

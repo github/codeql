@@ -12,7 +12,7 @@ namespace Semmle.BuildAnalyser
     /// Locates packages in a source tree and downloads all of the
     /// referenced assemblies to a temp folder.
     /// </summary>
-    class NugetPackages
+    internal class NugetPackages
     {
         /// <summary>
         /// Create the package manager for a specified source tree.
@@ -80,7 +80,7 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         /// <param name="package">The package file.</param>
         /// <param name="pm">Where to log progress/errors.</param>
-        void RestoreNugetPackage(string package, IProgressMonitor pm)
+        private void RestoreNugetPackage(string package, IProgressMonitor pm)
         {
             pm.NugetInstall(package);
 
@@ -129,6 +129,6 @@ namespace Semmle.BuildAnalyser
             }
         }
 
-        readonly string nugetExe;
+        private readonly string nugetExe;
     }
 }

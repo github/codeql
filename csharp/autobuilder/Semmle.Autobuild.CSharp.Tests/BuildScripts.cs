@@ -15,7 +15,7 @@ namespace Semmle.Autobuild.CSharp.Tests
     /// - an IList to capture the the arguments passed to it
     /// - an IDictionary of possible return values.
     /// </summary>
-    class TestActions : IBuildActions
+    internal class TestActions : IBuildActions
     {
         /// <summary>
         /// List of strings passed to FileDelete.
@@ -197,7 +197,7 @@ namespace Semmle.Autobuild.CSharp.Tests
     /// <summary>
     /// A fake solution to build.
     /// </summary>
-    class TestSolution : ISolution
+    internal class TestSolution : ISolution
     {
         public IEnumerable<SolutionConfigurationInSolution> Configurations => throw new NotImplementedException();
 
@@ -219,21 +219,21 @@ namespace Semmle.Autobuild.CSharp.Tests
 
     public class BuildScriptTests
     {
-        readonly TestActions Actions = new TestActions();
+        private readonly TestActions Actions = new TestActions();
 
         // Records the arguments passed to StartCallback.
-        readonly IList<string> StartCallbackIn = new List<string>();
+        private readonly IList<string> StartCallbackIn = new List<string>();
 
-        void StartCallback(string s, bool silent)
+        private void StartCallback(string s, bool silent)
         {
             StartCallbackIn.Add(s);
         }
 
         // Records the arguments passed to EndCallback
-        readonly IList<string> EndCallbackIn = new List<string>();
-        readonly IList<int> EndCallbackReturn = new List<int>();
+        private readonly IList<string> EndCallbackIn = new List<string>();
+        private readonly IList<int> EndCallbackReturn = new List<int>();
 
-        void EndCallback(int ret, string s, bool silent)
+        private void EndCallback(int ret, string s, bool silent)
         {
             EndCallbackReturn.Add(ret);
             EndCallbackIn.Add(s);
@@ -372,7 +372,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             Assert.Equal(0, BuildScript.Try(BuildScript.Failure).Run(Actions, StartCallback, EndCallback));
         }
 
-        CSharpAutobuilder CreateAutoBuilder(bool isWindows,
+        private CSharpAutobuilder CreateAutoBuilder(bool isWindows,
             string? buildless = null, string? solution = null, string? buildCommand = null, string? ignoreErrors = null,
             string? msBuildArguments = null, string? msBuildPlatform = null, string? msBuildConfiguration = null, string? msBuildTarget = null,
             string? dotnetArguments = null, string? dotnetVersion = null, string? vsToolsVersion = null,
@@ -572,7 +572,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             TestAutobuilderScript(autobuilder, 0, 1);
         }
 
-        void SkipVsWhere()
+        private void SkipVsWhere()
         {
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = false;
@@ -581,7 +581,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = false;
         }
 
-        void TestAutobuilderScript(Autobuilder autobuilder, int expectedOutput, int commandsRun)
+        private void TestAutobuilderScript(Autobuilder autobuilder, int expectedOutput, int commandsRun)
         {
             Assert.Equal(expectedOutput, autobuilder.GetBuildScript().Run(Actions, StartCallback, EndCallback));
 

@@ -9,19 +9,19 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Lambda : Expression<AnonymousFunctionExpressionSyntax>, IStatementParentEntity
+    internal class Lambda : Expression<AnonymousFunctionExpressionSyntax>, IStatementParentEntity
     {
         bool IStatementParentEntity.IsTopLevelParent => false;
 
         protected override void PopulateExpression(TextWriter trapFile) { }
 
-        void VisitParameter(ParameterSyntax p)
+        private void VisitParameter(ParameterSyntax p)
         {
             var symbol = cx.GetModel(p).GetDeclaredSymbol(p);
             Parameter.Create(cx, symbol, this);
         }
 
-        Lambda(ExpressionNodeInfo info, CSharpSyntaxNode body, IEnumerable<ParameterSyntax> @params)
+        private Lambda(ExpressionNodeInfo info, CSharpSyntaxNode body, IEnumerable<ParameterSyntax> @params)
             : base(info)
         {
             // No need to use `Populate` as the population happens later
@@ -39,17 +39,17 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             });
         }
 
-        Lambda(ExpressionNodeInfo info, ParenthesizedLambdaExpressionSyntax node)
+        private Lambda(ExpressionNodeInfo info, ParenthesizedLambdaExpressionSyntax node)
             : this(info.SetKind(ExprKind.LAMBDA), node.Body, node.ParameterList.Parameters) { }
 
         public static Lambda Create(ExpressionNodeInfo info, ParenthesizedLambdaExpressionSyntax node) => new Lambda(info, node);
 
-        Lambda(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node)
+        private Lambda(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node)
             : this(info.SetKind(ExprKind.LAMBDA), node.Body, Enumerators.Singleton(node.Parameter)) { }
 
         public static Lambda Create(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node) => new Lambda(info, node);
 
-        Lambda(ExpressionNodeInfo info, AnonymousMethodExpressionSyntax node) :
+        private Lambda(ExpressionNodeInfo info, AnonymousMethodExpressionSyntax node) :
             this(info.SetKind(ExprKind.ANONYMOUS_METHOD), node.Body, node.ParameterList == null ? Enumerable.Empty<ParameterSyntax>() : node.ParameterList.Parameters)
         { }
 

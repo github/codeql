@@ -6,9 +6,9 @@ using System.Diagnostics;
 
 namespace Semmle.Extraction.CIL.Driver
 {
-    class Program
+    public static class Program
     {
-        static void DisplayHelp()
+        private static void DisplayHelp()
         {
             Console.WriteLine("CIL command line extractor");
             Console.WriteLine();
@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CIL.Driver
             Console.WriteLine("    path       A directory/dll/exe to analyze");
         }
 
-        static void ExtractAssembly(Layout layout, string assemblyPath, ILogger logger, bool nocache, bool extractPdbs, TrapWriter.CompressionMode trapCompression)
+        private static void ExtractAssembly(Layout layout, string assemblyPath, ILogger logger, bool nocache, bool extractPdbs, TrapWriter.CompressionMode trapCompression)
         {
             var sw = new Stopwatch();
             sw.Start();
@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CIL.Driver
             logger.Log(Severity.Info, "  {0} ({1})", assemblyPath, sw.Elapsed);
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             if (args.Length == 0)
             {

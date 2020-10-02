@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         public int Annotation { get; }
 
-        static readonly Nullability[] EmptyArray = System.Array.Empty<Nullability>();
+        private static readonly Nullability[] EmptyArray = System.Array.Empty<Nullability>();
         public readonly Nullability[] NullableParameters;
 
         public static Nullability Create(AnnotatedTypeSymbol ts)
@@ -32,9 +32,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public bool IsOblivious => Annotation == 0 && NullableParameters.Length == 0;
 
-        static readonly Nullability oblivious = new Nullability(NullableAnnotation.None);
-        static readonly Nullability annotated = new Nullability(NullableAnnotation.Annotated);
-        static readonly Nullability notannotated = new Nullability(NullableAnnotation.NotAnnotated);
+        private static readonly Nullability oblivious = new Nullability(NullableAnnotation.None);
+        private static readonly Nullability annotated = new Nullability(NullableAnnotation.Annotated);
+        private static readonly Nullability notannotated = new Nullability(NullableAnnotation.NotAnnotated);
 
         private Nullability(NullableAnnotation n)
         {
@@ -127,7 +127,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static NullabilityEntity Create(Context cx, Nullability init) => NullabilityFactory.Instance.CreateEntity(cx, init, init);
 
-        class NullabilityFactory : ICachedEntityFactory<Nullability, NullabilityEntity>
+        private class NullabilityFactory : ICachedEntityFactory<Nullability, NullabilityEntity>
         {
             public static readonly NullabilityFactory Instance = new NullabilityFactory();
 

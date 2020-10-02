@@ -2,7 +2,7 @@
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Unknown : Expression
+    internal class Unknown : Expression
     {
         public Unknown(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.UNKNOWN)) { }
     }

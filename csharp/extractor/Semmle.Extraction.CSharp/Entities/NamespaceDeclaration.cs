@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class NamespaceDeclaration : FreshEntity
+    internal class NamespaceDeclaration : FreshEntity
     {
         private readonly NamespaceDeclaration Parent;
         private readonly NamespaceDeclarationSyntax Node;

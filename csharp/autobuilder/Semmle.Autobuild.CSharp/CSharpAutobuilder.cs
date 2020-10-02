@@ -92,7 +92,7 @@ namespace Semmle.Autobuild.CSharp
         /// Gets the build strategy that the autobuilder should apply, based on the
         /// options in the `lgtm.yml` file.
         /// </summary>
-        CSharpBuildStrategy GetCSharpBuildStrategy()
+        private CSharpBuildStrategy GetCSharpBuildStrategy()
         {
             if (Options.BuildCommand != null)
                 return CSharpBuildStrategy.CustomBuildCommand;
@@ -112,7 +112,7 @@ namespace Semmle.Autobuild.CSharp
             return CSharpBuildStrategy.Auto;
         }
 
-        enum CSharpBuildStrategy
+        private enum CSharpBuildStrategy
         {
             CustomBuildCommand,
             Buildless,

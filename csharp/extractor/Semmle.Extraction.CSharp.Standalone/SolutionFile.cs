@@ -8,9 +8,9 @@ namespace Semmle.BuildAnalyser
     /// <summary>
     /// Access data in a .sln file.
     /// </summary>
-    class SolutionFile
+    internal class SolutionFile
     {
-        readonly Microsoft.Build.Construction.SolutionFile solutionFile;
+        private readonly Microsoft.Build.Construction.SolutionFile solutionFile;
 
         private string FullPath { get; }
 

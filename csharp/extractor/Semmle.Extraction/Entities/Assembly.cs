@@ -5,10 +5,10 @@ namespace Semmle.Extraction.Entities
 {
     public class Assembly : Location
     {
-        readonly string assemblyPath;
-        readonly IAssemblySymbol assembly;
+        private readonly string assemblyPath;
+        private readonly IAssemblySymbol assembly;
 
-        Assembly(Context cx, Microsoft.CodeAnalysis.Location? init)
+        private Assembly(Context cx, Microsoft.CodeAnalysis.Location? init)
             : base(cx, init)
         {
             if (init == null)
@@ -51,14 +51,14 @@ namespace Semmle.Extraction.Entities
 
         public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
 
-        class AssemblyConstructorFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
+        private class AssemblyConstructorFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
         {
             public static readonly AssemblyConstructorFactory Instance = new AssemblyConstructorFactory();
 
             public Assembly Create(Context cx, Microsoft.CodeAnalysis.Location? init) => new Assembly(cx, init);
         }
 
-        static readonly object outputAssemblyCacheKey = new object();
+        private static readonly object outputAssemblyCacheKey = new object();
         public static Location CreateOutputAssembly(Context cx)
         {
             if (cx.Extractor.OutputPath == null)

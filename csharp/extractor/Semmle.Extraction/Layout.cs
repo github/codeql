@@ -26,7 +26,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// List of blocks in the layout file.
         /// </summary>
-        readonly List<LayoutBlock> blocks;
+        private readonly List<LayoutBlock> blocks;
 
         /// <summary>
         /// A subproject in the layout file.
@@ -66,7 +66,7 @@ namespace Semmle.Extraction
                 new TrapWriter(logger, srcFile, TRAP_FOLDER, SOURCE_ARCHIVE, discardDuplicates, trapCompression);
         }
 
-        readonly SubProject DefaultProject;
+        private readonly SubProject DefaultProject;
 
         /// <summary>
         /// Finds the suitable directories for a given source file.
@@ -95,7 +95,7 @@ namespace Semmle.Extraction
             return LookupProjectOrNull(sourceFile) ?? DefaultProject;
         }
 
-        readonly bool useLayoutFile;
+        private readonly bool useLayoutFile;
 
         /// <summary>
         /// Default constructor reads parameters from the environment.
@@ -137,7 +137,7 @@ namespace Semmle.Extraction
         /// <returns>True iff there is no layout file or the layout file specifies the file.</returns>
         public bool FileInLayout(PathTransformer.ITransformedPath path) => LookupProjectOrNull(path) != null;
 
-        void ReadLayoutFile(string layout)
+        private void ReadLayoutFile(string layout)
         {
             try
             {
@@ -166,13 +166,13 @@ namespace Semmle.Extraction
         }
     }
 
-    sealed class LayoutBlock
+    internal sealed class LayoutBlock
     {
         private readonly List<FilePattern> filePatterns = new List<FilePattern>();
 
         public readonly Layout.SubProject Directories;
 
-        static string? ReadVariable(string name, string line)
+        private static string? ReadVariable(string name, string line)
         {
             string prefix = name + "=";
             if (!line.StartsWith(prefix))

@@ -150,7 +150,7 @@ namespace Semmle.Autobuild.Shared
 
         bool IBuildActions.FileExists(string file) => File.Exists(file);
 
-        static ProcessStartInfo GetProcessStartInfo(string exe, string arguments, string? workingDirectory, IDictionary<string, string>? environment, bool redirectStandardOutput)
+        private static ProcessStartInfo GetProcessStartInfo(string exe, string arguments, string? workingDirectory, IDictionary<string, string>? environment, bool redirectStandardOutput)
         {
             var pi = new ProcessStartInfo(exe, arguments)
             {
@@ -215,7 +215,7 @@ namespace Semmle.Autobuild.Shared
 
         public string EnvironmentExpandEnvironmentVariables(string s) => Environment.ExpandEnvironmentVariables(s);
 
-        static async Task DownloadFileAsync(string address, string filename)
+        private static async Task DownloadFileAsync(string address, string filename)
         {
             using var httpClient = new HttpClient();
             using var request = new HttpRequestMessage(HttpMethod.Get, address);

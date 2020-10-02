@@ -23,9 +23,9 @@ namespace Semmle.Extraction.CSharp
             Failed      // Trap could not be generated
         }
 
-        class LogProgressMonitor : IProgressMonitor
+        private class LogProgressMonitor : IProgressMonitor
         {
-            readonly ILogger Logger;
+            private readonly ILogger Logger;
 
             public LogProgressMonitor(ILogger logger)
             {
@@ -205,7 +205,7 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         /// <param name="args">Command line arguments.</param>
         /// <returns>List of directories.</returns>
-        static IEnumerable<string> FixedReferencePaths(Microsoft.CodeAnalysis.CommandLineArguments args)
+        private static IEnumerable<string> FixedReferencePaths(Microsoft.CodeAnalysis.CommandLineArguments args)
         {
             // See https://msdn.microsoft.com/en-us/library/s5bac5fx.aspx
             // on how csc resolves references. Basically,
@@ -224,7 +224,7 @@ namespace Semmle.Extraction.CSharp
                 yield return lib;
         }
 
-        static MetadataReference MakeReference(CommandLineReference reference, string path)
+        private static MetadataReference MakeReference(CommandLineReference reference, string path)
         {
             return MetadataReference.CreateFromFile(path).WithProperties(reference.Properties);
         }
@@ -235,7 +235,7 @@ namespace Semmle.Extraction.CSharp
         /// The resolved references will be added (thread-safely) to the supplied
         /// list <paramref name="ret"/>.
         /// </summary>
-        static IEnumerable<Action> ResolveReferences(Microsoft.CodeAnalysis.CommandLineArguments args, Analyser analyser, CanonicalPathCache canonicalPathCache, BlockingCollection<MetadataReference> ret)
+        private static IEnumerable<Action> ResolveReferences(Microsoft.CodeAnalysis.CommandLineArguments args, Analyser analyser, CanonicalPathCache canonicalPathCache, BlockingCollection<MetadataReference> ret)
         {
             var referencePaths = new Lazy<string[]>(() => FixedReferencePaths(args).ToArray());
             return args.MetadataReferences.Select<CommandLineReference, Action>(clref => () =>
@@ -287,7 +287,7 @@ namespace Semmle.Extraction.CSharp
         /// The constructed syntax trees will be added (thread-safely) to the supplied
         /// list <paramref name="ret"/>.
         /// </summary>
-        static IEnumerable<Action> ReadSyntaxTrees(IEnumerable<string> sources, Analyser analyser, CSharpParseOptions parseOptions, Encoding encoding, IList<SyntaxTree> ret)
+        private static IEnumerable<Action> ReadSyntaxTrees(IEnumerable<string> sources, Analyser analyser, CSharpParseOptions parseOptions, Encoding encoding, IList<SyntaxTree> ret)
         {
             return sources.Select<string, Action>(path => () =>
             {
@@ -403,7 +403,7 @@ namespace Semmle.Extraction.CSharp
         public static IEnumerable<string> GetCSharpArgsLogs() =>
             Directory.EnumerateFiles(GetCSharpLogDirectory(), "csharp.*.txt");
 
-        static string GetCSharpLogDirectory()
+        private static string GetCSharpLogDirectory()
         {
             var codeQlLogDir = Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_LOG_DIR");
             if (!string.IsNullOrEmpty(codeQlLogDir))

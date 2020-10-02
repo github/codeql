@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class OrdinaryMethod : Method
+    internal class OrdinaryMethod : Method
     {
-        OrdinaryMethod(Context cx, IMethodSymbol init)
+        private OrdinaryMethod(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
         public override string Name => symbol.GetName();
@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public new static OrdinaryMethod Create(Context cx, IMethodSymbol method) => OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);
 
-        class OrdinaryMethodFactory : ICachedEntityFactory<IMethodSymbol, OrdinaryMethod>
+        private class OrdinaryMethodFactory : ICachedEntityFactory<IMethodSymbol, OrdinaryMethod>
         {
             public static readonly OrdinaryMethodFactory Instance = new OrdinaryMethodFactory();
 

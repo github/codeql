@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Populators
 {
     public static class MethodExtensions
     {
-        class AstLineCounter : CSharpSyntaxVisitor<LineCounts>
+        private class AstLineCounter : CSharpSyntaxVisitor<LineCounts>
         {
             public override LineCounts DefaultVisit(SyntaxNode node)
             {

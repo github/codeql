@@ -3,9 +3,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Destructor : Method
+    internal class Destructor : Method
     {
-        Destructor(Context cx, IMethodSymbol init)
+        private Destructor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
         public override void Populate(TextWriter trapFile)
@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.destructor_location(this, Location);
         }
 
-        static new Destructor OriginalDefinition(Context cx, Destructor original, IMethodSymbol symbol)
+        private static new Destructor OriginalDefinition(Context cx, Destructor original, IMethodSymbol symbol)
         {
             return symbol.OriginalDefinition == null || SymbolEqualityComparer.Default.Equals(symbol.OriginalDefinition, symbol) ? original : Create(cx, symbol.OriginalDefinition);
         }
@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public new static Destructor Create(Context cx, IMethodSymbol symbol) =>
             DestructorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class DestructorFactory : ICachedEntityFactory<IMethodSymbol, Destructor>
+        private class DestructorFactory : ICachedEntityFactory<IMethodSymbol, Destructor>
         {
             public static readonly DestructorFactory Instance = new DestructorFactory();
 

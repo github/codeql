@@ -5,9 +5,9 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Switch : Statement<SwitchStatementSyntax>
+    internal class Switch : Statement<SwitchStatementSyntax>
     {
-        static readonly object NullLabel = new object();
+        private static readonly object NullLabel = new object();
         public static readonly object DefaultLabel = new object();
 
         // Sometimes, the literal "null" is used as a label.
@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             return label ?? NullLabel;
         }
 
-        Switch(Context cx, SwitchStatementSyntax node, IStatementParentEntity parent, int child)
+        private Switch(Context cx, SwitchStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.SWITCH, parent, child) { }
 
         public static Switch Create(Context cx, SwitchStatementSyntax node, IStatementParentEntity parent, int child)

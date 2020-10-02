@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A CIL instruction.
     /// </summary>
-    interface IInstruction : IExtractedEntity
+    internal interface IInstruction : IExtractedEntity
     {
         /// <summary>
         /// Gets the extraction products for branches.
@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A CIL instruction.
     /// </summary>
-    class Instruction : UnlabelledEntity, IInstruction
+    internal class Instruction : UnlabelledEntity, IInstruction
     {
         /// <summary>
         /// The additional data following the opcode, if any.
@@ -272,8 +272,8 @@ namespace Semmle.Extraction.CIL.Entities
         public readonly ILOpCode OpCode;
         public readonly int Offset;
         public readonly int Index;
-        readonly int PayloadValue;
-        readonly uint UnsignedPayloadValue;
+        private readonly int PayloadValue;
+        private readonly uint UnsignedPayloadValue;
 
         public Payload PayloadType
         {
@@ -306,10 +306,9 @@ namespace Semmle.Extraction.CIL.Entities
             get; set;
         }
 
+        private readonly byte[] data;
 
-        readonly byte[] data;
-
-        int PayloadSize => payloadSizes[(int)PayloadType];
+        private int PayloadSize => payloadSizes[(int)PayloadType];
 
         /// <summary>
         /// Reads the instruction from a byte stream.

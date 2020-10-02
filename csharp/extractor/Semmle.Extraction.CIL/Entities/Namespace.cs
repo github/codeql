@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A namespace.
     /// </summary>
-    interface INamespace : ITypeContainer
+    internal interface INamespace : ITypeContainer
     {
     }
 
@@ -56,13 +56,13 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override IEnumerable<Type> MethodParameters => throw new NotImplementedException();
 
-        static string parseNamespaceName(string fqn)
+        private static string parseNamespaceName(string fqn)
         {
             var i = fqn.LastIndexOf('.');
             return i == -1 ? fqn : fqn.Substring(i + 1);
         }
 
-        static Namespace? createParentNamespace(Context cx, string fqn)
+        private static Namespace? createParentNamespace(Context cx, string fqn)
         {
             if (fqn.Length == 0) return null;
             var i = fqn.LastIndexOf('.');

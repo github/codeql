@@ -11,7 +11,7 @@ namespace Semmle.BuildAnalyser
     /// <summary>
     /// Stores information about an assembly file (DLL).
     /// </summary>
-    sealed class AssemblyInfo
+    internal sealed class AssemblyInfo
     {
         /// <summary>
         /// The file containing the assembly.

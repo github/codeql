@@ -52,7 +52,7 @@ namespace Semmle.Util
     /// Determine canonical paths using the Win32 function
     /// GetFinalPathNameByHandle(). Follows symlinks.
     /// </summary>
-    class GetFinalPathNameByHandleStrategy : PathStrategy
+    internal class GetFinalPathNameByHandleStrategy : PathStrategy
     {
         /// <summary>
         /// Call GetFinalPathNameByHandle() to get a canonical filename.
@@ -116,7 +116,7 @@ namespace Semmle.Util
     /// Determine file case by querying directory contents.
     /// Preserves symlinks.
     /// </summary>
-    class QueryDirectoryStrategy : PathStrategy
+    internal class QueryDirectoryStrategy : PathStrategy
     {
         public override string GetCanonicalPath(string path, IPathCache cache)
         {
@@ -152,14 +152,14 @@ namespace Semmle.Util
     /// Uses Mono.Unix.UnixPath to resolve symlinks.
     /// Not available on Windows.
     /// </summary>
-    class PosixSymlinkStrategy : PathStrategy
+    internal class PosixSymlinkStrategy : PathStrategy
     {
         public PosixSymlinkStrategy()
         {
             GetRealPath(".");   // Test that it works
         }
 
-        static string GetRealPath(string path)
+        private static string GetRealPath(string path)
         {
             path = UnixPath.GetFullPath(path);
             return UnixPath.GetCompleteRealPath(path);
@@ -188,7 +188,7 @@ namespace Semmle.Util
         /// <summary>
         /// The maximum number of items in the cache.
         /// </summary>
-        readonly int maxCapacity;
+        private readonly int maxCapacity;
 
         /// <summary>
         /// How to handle symlinks.
@@ -202,7 +202,7 @@ namespace Semmle.Util
         /// <summary>
         /// Algorithm for computing the canonical path.
         /// </summary>
-        readonly PathStrategy pathStrategy;
+        private readonly PathStrategy pathStrategy;
 
         /// <summary>
         /// Create cache with a given capacity.
@@ -287,12 +287,12 @@ namespace Semmle.Util
         /// <summary>
         /// Map of path to canonical path.
         /// </summary>
-        readonly IDictionary<string, string> cache = new Dictionary<string, string>();
+        private readonly IDictionary<string, string> cache = new Dictionary<string, string>();
 
         /// <summary>
         /// Used to evict random cache items when the cache is full.
         /// </summary>
-        readonly Random random = new Random();
+        private readonly Random random = new Random();
 
         /// <summary>
         /// The current number of items in the cache.
@@ -312,7 +312,7 @@ namespace Semmle.Util
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="canonical">The canonical form of path.</param>
-        void AddToCache(string path, string canonical)
+        private void AddToCache(string path, string canonical)
         {
             if (cache.Count >= maxCapacity)
             {

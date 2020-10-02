@@ -37,10 +37,10 @@ namespace Semmle.Extraction
             string DatabaseId { get; }
         }
 
-        struct TransformedPath : ITransformedPath
+        private struct TransformedPath : ITransformedPath
         {
             public TransformedPath(string value) { this.value = value; }
-            readonly string value;
+            private readonly string value;
 
             public string Value => value;
 
@@ -82,7 +82,7 @@ namespace Semmle.Extraction
             public override string ToString() => value;
         }
 
-        readonly Func<string, string> transform;
+        private readonly Func<string, string> transform;
 
         /// <summary>
         /// Returns the path obtained by transforming `path`.
@@ -122,7 +122,7 @@ namespace Semmle.Extraction
             };
         }
 
-        static IEnumerable<TransformerSection> ParsePathTransformerSpec(string[] lines)
+        private static IEnumerable<TransformerSection> ParsePathTransformerSpec(string[] lines)
         {
             var sections = new List<TransformerSection>();
             try
@@ -147,10 +147,10 @@ namespace Semmle.Extraction
         }
     }
 
-    sealed class TransformerSection
+    internal sealed class TransformerSection
     {
-        readonly string name;
-        readonly List<FilePattern> filePatterns = new List<FilePattern>();
+        private readonly string name;
+        private readonly List<FilePattern> filePatterns = new List<FilePattern>();
 
         public TransformerSection(string[] lines, ref int i)
         {

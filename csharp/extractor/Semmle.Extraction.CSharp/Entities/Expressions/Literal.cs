@@ -6,15 +6,15 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Literal : Expression<LiteralExpressionSyntax>
+    internal class Literal : Expression<LiteralExpressionSyntax>
     {
-        Literal(ExpressionNodeInfo info) : base(info.SetKind(GetKind(info))) { }
+        private Literal(ExpressionNodeInfo info) : base(info.SetKind(GetKind(info))) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new Literal(info).TryPopulate();
 
         protected override void PopulateExpression(TextWriter trapFile) { }
 
-        static ExprKind GetKind(ExpressionNodeInfo info)
+        private static ExprKind GetKind(ExpressionNodeInfo info)
         {
             switch (info.Node.Kind())
             {

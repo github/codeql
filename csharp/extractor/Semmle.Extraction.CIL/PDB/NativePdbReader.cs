@@ -14,11 +14,11 @@ namespace Semmle.Extraction.PDB
     /// A PDB reader using Microsoft.DiaSymReader.Native.
     /// This is an unmanaged Windows DLL, which therefore only works on Windows.
     /// </summary>
-    sealed class NativePdbReader : IPdb
+    internal sealed class NativePdbReader : IPdb
     {
-        sealed class Document : ISourceFile
+        private sealed class Document : ISourceFile
         {
-            readonly ISymUnmanagedDocument document;
+            private readonly ISymUnmanagedDocument document;
 
             public Document(ISymUnmanagedDocument doc)
             {
@@ -49,7 +49,7 @@ namespace Semmle.Extraction.PDB
 
             public override string ToString() => Path;
 
-            readonly Lazy<string?> contents;
+            private readonly Lazy<string?> contents;
 
             public string? Contents => contents.Value;
         }
@@ -76,15 +76,15 @@ namespace Semmle.Extraction.PDB
             return null;
         }
 
-        NativePdbReader(string path)
+        private NativePdbReader(string path)
         {
             pdbStream = new FileStream(path, FileMode.Open);
             var metadataProvider = new MdProvider();
             reader = SymUnmanagedReaderFactory.CreateReader<ISymUnmanagedReader5>(pdbStream, metadataProvider);
         }
 
-        readonly ISymUnmanagedReader5 reader;
-        readonly FileStream pdbStream;
+        private readonly ISymUnmanagedReader5 reader;
+        private readonly FileStream pdbStream;
 
         public static NativePdbReader? CreateFromAssembly(PEReader peReader)
         {
@@ -118,7 +118,7 @@ namespace Semmle.Extraction.PDB
     /// <summary>
     /// This is not used but is seemingly needed in order to use DiaSymReader.
     /// </summary>
-    class MdProvider : ISymReaderMetadataProvider
+    internal class MdProvider : ISymReaderMetadataProvider
     {
         public MdProvider()
         {

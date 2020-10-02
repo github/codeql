@@ -62,7 +62,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // so there's nothing to extract.
         }
 
-        void PopulateMethodBody(TextWriter trapFile)
+        private void PopulateMethodBody(TextWriter trapFile)
         {
             if (!IsSourceDeclaration)
                 return;
@@ -279,7 +279,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public bool IsBoundGeneric => IsGeneric && !IsUnboundGeneric;
 
-        bool IsReducedExtension => symbol.MethodKind == MethodKind.ReducedExtension;
+        private bool IsReducedExtension => symbol.MethodKind == MethodKind.ReducedExtension;
 
         protected IMethodSymbol ConstructedFromSymbol => symbol.ConstructedFrom.ReducedFrom ?? symbol.ConstructedFrom;
 

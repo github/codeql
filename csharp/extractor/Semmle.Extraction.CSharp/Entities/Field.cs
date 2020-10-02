@@ -9,9 +9,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Field : CachedSymbol<IFieldSymbol>, IExpressionParentEntity
+    internal class Field : CachedSymbol<IFieldSymbol>, IExpressionParentEntity
     {
-        Field(Context cx, IFieldSymbol init)
+        private Field(Context cx, IFieldSymbol init)
             : base(cx, init)
         {
             type = new Lazy<AnnotatedType>(() => Entities.Type.Create(cx, symbol.GetAnnotatedType()));
@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return access;
         }
 
-        readonly Lazy<AnnotatedType> type;
+        private readonly Lazy<AnnotatedType> type;
         public AnnotatedType Type => type.Value;
 
         public override void WriteId(TextWriter trapFile)
@@ -129,7 +129,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        class FieldFactory : ICachedEntityFactory<IFieldSymbol, Field>
+        private class FieldFactory : ICachedEntityFactory<IFieldSymbol, Field>
         {
             public static readonly FieldFactory Instance = new FieldFactory();
 

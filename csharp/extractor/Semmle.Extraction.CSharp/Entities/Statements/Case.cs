@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    abstract class Case<TSyntax> : Statement<TSyntax> where TSyntax : SwitchLabelSyntax
+    internal abstract class Case<TSyntax> : Statement<TSyntax> where TSyntax : SwitchLabelSyntax
     {
         protected Case(Context cx, TSyntax node, Switch parent, int child)
             : base(cx, node, StmtKind.CASE, parent, child, cx.Create(node.GetLocation())) { }
@@ -28,9 +28,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         }
     }
 
-    class CaseLabel : Case<CaseSwitchLabelSyntax>
+    internal class CaseLabel : Case<CaseSwitchLabelSyntax>
     {
-        CaseLabel(Context cx, CaseSwitchLabelSyntax node, Switch parent, int child)
+        private CaseLabel(Context cx, CaseSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
 
         protected override void PopulateStatement(TextWriter trapFile)
@@ -48,9 +48,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         }
     }
 
-    class CaseDefault : Case<DefaultSwitchLabelSyntax>
+    internal class CaseDefault : Case<DefaultSwitchLabelSyntax>
     {
-        CaseDefault(Context cx, DefaultSwitchLabelSyntax node, Switch parent, int child)
+        private CaseDefault(Context cx, DefaultSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
 
         protected override void PopulateStatement(TextWriter trapFile) { }
@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         }
     }
 
-    class CasePattern : Case<CasePatternSwitchLabelSyntax>
+    internal class CasePattern : Case<CasePatternSwitchLabelSyntax>
     {
         private CasePattern(Context cx, CasePatternSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }

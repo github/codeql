@@ -7,18 +7,18 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// An event.
     /// </summary>
-    interface IEvent : IExtractedEntity
+    internal interface IEvent : IExtractedEntity
     {
     }
 
     /// <summary>
     /// An event entity.
     /// </summary>
-    sealed class Event : LabelledEntity, IEvent
+    internal sealed class Event : LabelledEntity, IEvent
     {
-        readonly EventDefinitionHandle handle;
-        readonly Type parent;
-        readonly EventDefinition ed;
+        private readonly EventDefinitionHandle handle;
+        private readonly Type parent;
+        private readonly EventDefinition ed;
 
         public Event(Context cx, Type parent, EventDefinitionHandle handle) : base(cx)
         {

@@ -57,8 +57,8 @@ namespace Semmle.Util.Logging
     /// </summary>
     public sealed class FileLogger : ILogger
     {
-        readonly StreamWriter writer;
-        readonly Verbosity verbosity;
+        private readonly StreamWriter writer;
+        private readonly Verbosity verbosity;
 
         public FileLogger(Verbosity verbosity, string outputFile)
         {
@@ -85,7 +85,7 @@ namespace Semmle.Util.Logging
             writer.Dispose();
         }
 
-        static string GetSeverityPrefix(Severity s)
+        private static string GetSeverityPrefix(Severity s)
         {
             return "[" + s.ToString().ToUpper() + "] ";
         }
@@ -102,7 +102,7 @@ namespace Semmle.Util.Logging
     /// </summary>
     public sealed class ConsoleLogger : ILogger
     {
-        readonly Verbosity verbosity;
+        private readonly Verbosity verbosity;
 
         public ConsoleLogger(Verbosity verbosity)
         {
@@ -111,12 +111,12 @@ namespace Semmle.Util.Logging
 
         public void Dispose() { }
 
-        static TextWriter GetConsole(Severity s)
+        private static TextWriter GetConsole(Severity s)
         {
             return s == Severity.Error ? Console.Error : Console.Out;
         }
 
-        static string GetSeverityPrefix(Severity s)
+        private static string GetSeverityPrefix(Severity s)
         {
             switch (s)
             {
@@ -145,8 +145,8 @@ namespace Semmle.Util.Logging
     /// </summary>
     public sealed class CombinedLogger : ILogger
     {
-        readonly ILogger logger1;
-        readonly ILogger logger2;
+        private readonly ILogger logger1;
+        private readonly ILogger logger2;
 
         public CombinedLogger(ILogger logger1, ILogger logger2)
         {
@@ -167,7 +167,7 @@ namespace Semmle.Util.Logging
         }
     }
 
-    static class VerbosityExtensions
+    internal static class VerbosityExtensions
     {
         /// <summary>
         /// Whether a message with the given severity must be included

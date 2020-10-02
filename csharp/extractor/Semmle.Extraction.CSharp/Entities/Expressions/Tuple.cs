@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Tuple : Expression<TupleExpressionSyntax>
+    internal class Tuple : Expression<TupleExpressionSyntax>
     {
         public static Expression Create(ExpressionNodeInfo info) => new Tuple(info).TryPopulate();
 
-        Tuple(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.TUPLE))
+        private Tuple(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.TUPLE))
         {
         }
 

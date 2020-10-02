@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Property : CachedSymbol<IPropertySymbol>, IExpressionParentEntity
+    internal class Property : CachedSymbol<IPropertySymbol>, IExpressionParentEntity
     {
         protected Property(Context cx, IPropertySymbol init)
             : base(cx, init)
@@ -17,8 +17,9 @@ namespace Semmle.Extraction.CSharp.Entities
             type = new Lazy<Type>(() => Type.Create(Context, symbol.Type));
         }
 
-        readonly Lazy<Type> type;
-        Type Type => type.Value;
+        private readonly Lazy<Type> type;
+
+        private Type Type => type.Value;
 
         public override void WriteId(TextWriter trapFile)
         {
@@ -123,7 +124,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntityFromSymbol(cx, prop);
         }
 
-        class PropertyFactory : ICachedEntityFactory<IPropertySymbol, Property>
+        private class PropertyFactory : ICachedEntityFactory<IPropertySymbol, Property>
         {
             public static readonly PropertyFactory Instance = new PropertyFactory();
 

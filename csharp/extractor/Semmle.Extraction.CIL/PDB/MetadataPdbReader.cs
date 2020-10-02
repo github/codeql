@@ -13,9 +13,9 @@ namespace Semmle.Extraction.PDB
     ///
     /// PDB information can be in a separate PDB file, or embedded in the DLL.
     /// </summary>
-    sealed class MetadataPdbReader : IPdb
+    internal sealed class MetadataPdbReader : IPdb
     {
-        class SourceFile : ISourceFile
+        private class SourceFile : ISourceFile
         {
             public SourceFile(MetadataReader reader, DocumentHandle handle)
             {
@@ -30,8 +30,8 @@ namespace Semmle.Extraction.PDB
 
         // Turns out to be very important to keep the MetadataReaderProvider live
         // or the reader will crash.
-        readonly MetadataReaderProvider provider;
-        readonly MetadataReader reader;
+        private readonly MetadataReaderProvider provider;
+        private readonly MetadataReader reader;
 
         public MetadataPdbReader(MetadataReaderProvider provider)
         {

@@ -2,20 +2,20 @@
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    interface IExceptionRegion : IExtractedEntity
+    internal interface IExceptionRegion : IExtractedEntity
     {
     }
 
     /// <summary>
     /// An exception region entity.
     /// </summary>
-    class ExceptionRegion : UnlabelledEntity, IExceptionRegion
+    internal class ExceptionRegion : UnlabelledEntity, IExceptionRegion
     {
-        readonly GenericContext gc;
-        readonly MethodImplementation method;
-        readonly int index;
-        readonly System.Reflection.Metadata.ExceptionRegion r;
-        readonly Dictionary<int, IInstruction> jump_table;
+        private readonly GenericContext gc;
+        private readonly MethodImplementation method;
+        private readonly int index;
+        private readonly System.Reflection.Metadata.ExceptionRegion r;
+        private readonly Dictionary<int, IInstruction> jump_table;
 
         public ExceptionRegion(GenericContext gc, MethodImplementation method, int index, System.Reflection.Metadata.ExceptionRegion r, Dictionary<int, IInstruction> jump_table) : base(gc.cx)
         {

@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Indexer : Property, IExpressionParentEntity
+    internal class Indexer : Property, IExpressionParentEntity
     {
         protected Indexer(Context cx, IPropertySymbol init)
             : base(cx, init) { }
 
-        Indexer OriginalDefinition => IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
+        private Indexer OriginalDefinition => IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
 
         public override void Populate(TextWriter trapFile)
         {
@@ -98,7 +98,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        class IndexerFactory : ICachedEntityFactory<IPropertySymbol, Indexer>
+        private class IndexerFactory : ICachedEntityFactory<IPropertySymbol, Indexer>
         {
             public static readonly IndexerFactory Instance = new IndexerFactory();
 

@@ -13,21 +13,21 @@ namespace Semmle.Extraction.CIL.Entities
     /// An entity represting a member.
     /// Used to type tuples correctly.
     /// </summary>
-    interface IMember : IExtractedEntity
+    internal interface IMember : IExtractedEntity
     {
     }
 
     /// <summary>
     /// An entity representing a field.
     /// </summary>
-    interface IField : IMember
+    internal interface IField : IMember
     {
     }
 
     /// <summary>
     /// An entity representing a field.
     /// </summary>
-    abstract class Field : GenericContext, IField
+    internal abstract class Field : GenericContext, IField
     {
         protected Field(Context cx) : base(cx)
         {
@@ -58,7 +58,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public Location ReportingLocation => throw new NotImplementedException();
 
-        abstract public Type Type { get; }
+        public abstract Type Type { get; }
 
         public virtual IEnumerable<IExtractionProduct> Contents
         {
@@ -76,10 +76,10 @@ namespace Semmle.Extraction.CIL.Entities
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 
-    sealed class DefinitionField : Field
+    internal sealed class DefinitionField : Field
     {
-        readonly Handle handle;
-        readonly FieldDefinition fd;
+        private readonly Handle handle;
+        private readonly FieldDefinition fd;
 
         public DefinitionField(GenericContext gc, FieldDefinitionHandle handle) : base(gc.cx)
         {
@@ -134,12 +134,12 @@ namespace Semmle.Extraction.CIL.Entities
         public override IEnumerable<Type> MethodParameters => throw new NotImplementedException();
     }
 
-    sealed class MemberReferenceField : Field
+    internal sealed class MemberReferenceField : Field
     {
-        readonly MemberReferenceHandle Handle;
-        readonly MemberReference mr;
-        readonly GenericContext gc;
-        readonly Type declType;
+        private readonly MemberReferenceHandle Handle;
+        private readonly MemberReference mr;
+        private readonly GenericContext gc;
+        private readonly Type declType;
 
         public MemberReferenceField(GenericContext gc, MemberReferenceHandle handle) : base(gc.cx)
         {

@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CIL.Entities
     {
     }
 
-    interface IAssembly : ILocation
+    internal interface IAssembly : ILocation
     {
     }
 
@@ -22,8 +22,8 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public class Assembly : LabelledEntity, IAssembly
     {
-        readonly File file;
-        readonly AssemblyName assemblyName;
+        private readonly File file;
+        private readonly AssemblyName assemblyName;
 
         public Assembly(Context cx) : base(cx)
         {
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string IdSuffix => ";assembly";
 
-        string FullName => assemblyName.GetPublicKey() is null ? assemblyName.FullName + ", PublicKeyToken=null" : assemblyName.FullName;
+        private string FullName => assemblyName.GetPublicKey() is null ? assemblyName.FullName + ", PublicKeyToken=null" : assemblyName.FullName;
 
         public override IEnumerable<IExtractionProduct> Contents
         {
@@ -111,7 +111,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        static void ExtractCIL(Extraction.Context cx, string assemblyPath, bool extractPdbs)
+        private static void ExtractCIL(Extraction.Context cx, string assemblyPath, bool extractPdbs)
         {
             using var cilContext = new Context(cx, assemblyPath, extractPdbs);
             cilContext.Populate(new Assembly(cilContext));

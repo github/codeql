@@ -128,9 +128,9 @@ namespace Semmle.Extraction
 
         // Limit the number of error messages in the log file
         // to handle pathological cases.
-        const int maxErrors = 1000;
+        private const int maxErrors = 1000;
 
-        readonly object mutex = new object();
+        private readonly object mutex = new object();
 
         public void Message(Message msg)
         {
@@ -157,7 +157,7 @@ namespace Semmle.Extraction
 
         // Roslyn framework has no apparent mechanism to associate assemblies with their files.
         // So this lookup table needs to be populated.
-        readonly Dictionary<string, string> referenceFilenames = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> referenceFilenames = new Dictionary<string, string>();
 
         public void SetAssemblyFile(string assembly, string file)
         {
@@ -174,8 +174,8 @@ namespace Semmle.Extraction
             get; private set;
         }
 
-        readonly ISet<string> missingTypes = new SortedSet<string>();
-        readonly ISet<string> missingNamespaces = new SortedSet<string>();
+        private readonly ISet<string> missingTypes = new SortedSet<string>();
+        private readonly ISet<string> missingNamespaces = new SortedSet<string>();
 
         public void MissingType(string fqn, bool fromSource)
         {

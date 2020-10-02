@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Ref : Expression<RefExpressionSyntax>
+    internal class Ref : Expression<RefExpressionSyntax>
     {
-        Ref(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.REF)) { }
+        private Ref(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.REF)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new Ref(info).TryPopulate();
 

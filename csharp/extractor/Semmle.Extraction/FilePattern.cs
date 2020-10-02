@@ -42,7 +42,7 @@ namespace Semmle.Extraction
         /// Constructs a regex string from a file pattern. Throws
         /// `InvalidFilePatternException` for invalid patterns.
         /// </summary>
-        static StringBuilder BuildRegex(string pattern)
+        private static StringBuilder BuildRegex(string pattern)
         {
             bool HasCharAt(int i, Predicate<char> p) =>
                 i >= 0 && i < pattern.Length && p(pattern[i]);

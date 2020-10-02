@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CommentProcessing
     /// Registers locations of comments and program elements,
     /// then generates binding information.
     /// </summary>
-    class CommentProcessor : ICommentGenerator
+    internal class CommentProcessor : ICommentGenerator
     {
         public void AddComment(ICommentLine comment)
         {
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CommentProcessing
             return null;
         }
 
-        class LocationComparer : IComparer<Location>
+        private class LocationComparer : IComparer<Location>
         {
             public int Compare(Location? l1, Location? l2) => CommentProcessor.Compare(l1, l2);
         }
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="l1">First location</param>
         /// <param name="l2">Second location</param>
         /// <returns>&lt;0 if l1 before l2, &gt;0 if l1 after l2, else 0.</returns>
-        static int Compare(Location? l1, Location? l2)
+        private static int Compare(Location? l1, Location? l2)
         {
             if (object.ReferenceEquals(l1, l2)) return 0;
             if (l1 == null) return -1;
@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CommentProcessing
 
         // Ensure that commentBlock and element refer to the same file
         // which can happen when processing multiple files.
-        static void EnsureSameFile(ICommentBlock commentBlock, ref KeyValuePair<Location, Label>? element)
+        private static void EnsureSameFile(ICommentBlock commentBlock, ref KeyValuePair<Location, Label>? element)
         {
             if (element != null && element.Value.Key.SourceTree != commentBlock.Location.SourceTree)
                 element = null;
@@ -89,7 +89,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="nextElement">The element after the comment block.</param>
         /// <param name="parentElement">The parent element of the comment block.</param>
         /// <param name="callback">Output binding information.</param>
-        void GenerateBindings(
+        private void GenerateBindings(
             ICommentBlock commentBlock,
             KeyValuePair<Location, Label>? previousElement,
             KeyValuePair<Location, Label>? nextElement,
@@ -175,7 +175,7 @@ namespace Semmle.Extraction.CommentProcessing
         private class ElementStack
         {
             // Invariant: the top of the stack must be contained by items below it.
-            readonly Stack<KeyValuePair<Location, Label>> elementStack = new Stack<KeyValuePair<Location, Label>>();
+            private readonly Stack<KeyValuePair<Location, Label>> elementStack = new Stack<KeyValuePair<Location, Label>>();
 
             /// <summary>
             /// Add a new element to the stack.
@@ -253,7 +253,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="elementStack">A stack of nested program elements.</param>
         /// <param name="cb">Where to send the results.</param>
         /// <returns>true if there are more comments to process, false otherwise.</returns>
-        bool GenerateBindings(
+        private bool GenerateBindings(
             IEnumerator<KeyValuePair<Location, ICommentLine>> commentEnumerator,
             KeyValuePair<Location, Label>? nextElement,
             ElementStack elementStack,
@@ -338,7 +338,7 @@ namespace Semmle.Extraction.CommentProcessing
         }
     }
 
-    class CommentBlock : ICommentBlock
+    internal class CommentBlock : ICommentBlock
     {
         private readonly List<ICommentLine> lines;
 

@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Attribute : FreshEntity, IExpressionParentEntity
+    internal class Attribute : FreshEntity, IExpressionParentEntity
     {
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractAttribute(cx.TrapWriter.Writer, attribute, info.Symbol.ContainingType, entity);
         }
 
-        void ExtractAttribute(System.IO.TextWriter trapFile, AttributeSyntax syntax, ITypeSymbol attributeClass, IEntity entity)
+        private void ExtractAttribute(System.IO.TextWriter trapFile, AttributeSyntax syntax, ITypeSymbol attributeClass, IEntity entity)
         {
             var type = Type.Create(cx, attributeClass);
             trapFile.attributes(this, type.TypeRef, entity);

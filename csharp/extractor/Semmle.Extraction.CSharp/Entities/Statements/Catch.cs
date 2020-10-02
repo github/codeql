@@ -5,11 +5,11 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Catch : Statement<CatchClauseSyntax>
+    internal class Catch : Statement<CatchClauseSyntax>
     {
-        static readonly string SystemExceptionName = typeof(System.Exception).ToString();
+        private static readonly string SystemExceptionName = typeof(System.Exception).ToString();
 
-        Catch(Context cx, CatchClauseSyntax node, Try parent, int child)
+        private Catch(Context cx, CatchClauseSyntax node, Try parent, int child)
             : base(cx, node, StmtKind.CATCH, parent, child, cx.Create(node.GetLocation())) { }
 
         protected override void PopulateStatement(TextWriter trapFile)

@@ -89,8 +89,8 @@ namespace Semmle.Extraction
             }
         }
 
-        const int maxStringBytes = 1 << 20;  // 1MB
-        static readonly System.Text.Encoding encoding = System.Text.Encoding.UTF8;
+        private const int maxStringBytes = 1 << 20;  // 1MB
+        private static readonly System.Text.Encoding encoding = System.Text.Encoding.UTF8;
 
         private static bool NeedsTruncation(string s)
         {

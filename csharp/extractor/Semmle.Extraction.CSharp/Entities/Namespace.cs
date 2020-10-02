@@ -3,9 +3,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    sealed class Namespace : CachedEntity<INamespaceSymbol>
+    internal sealed class Namespace : CachedEntity<INamespaceSymbol>
     {
-        Namespace(Context cx, INamespaceSymbol init)
+        private Namespace(Context cx, INamespaceSymbol init)
             : base(cx, init) { }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntityFromSymbol(cx, ns);
 
-        class NamespaceFactory : ICachedEntityFactory<INamespaceSymbol, Namespace>
+        private class NamespaceFactory : ICachedEntityFactory<INamespaceSymbol, Namespace>
         {
             public static readonly NamespaceFactory Instance = new NamespaceFactory();
 
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override int GetHashCode() => QualifiedName.GetHashCode();
 
-        string QualifiedName => symbol.ToDisplayString();
+        private string QualifiedName => symbol.ToDisplayString();
 
         public override bool Equals(object obj)
         {

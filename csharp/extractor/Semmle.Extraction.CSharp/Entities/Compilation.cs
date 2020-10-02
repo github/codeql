@@ -7,7 +7,7 @@ using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Compilation : FreshEntity
+    internal class Compilation : FreshEntity
     {
         private readonly string cwd;
         private readonly string[] args;
@@ -68,11 +68,11 @@ namespace Semmle.Extraction.CSharp.Entities
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 
-    class Diagnostic : FreshEntity
+    internal class Diagnostic : FreshEntity
     {
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
 
-        readonly Microsoft.CodeAnalysis.Diagnostic diagnostic;
+        private readonly Microsoft.CodeAnalysis.Diagnostic diagnostic;
 
         public Diagnostic(Context cx, Microsoft.CodeAnalysis.Diagnostic diag) : base(cx)
         {

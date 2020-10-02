@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    abstract class ElementAccess : Expression<ExpressionSyntax>
+    internal abstract class ElementAccess : Expression<ExpressionSyntax>
     {
         protected ElementAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, BracketedArgumentListSyntax argumentList)
             : base(info.SetKind(GetKind(info.Context, qualifier)))
@@ -15,8 +15,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             ArgumentList = argumentList;
         }
 
-        readonly ExpressionSyntax Qualifier;
-        readonly BracketedArgumentListSyntax ArgumentList;
+        private readonly ExpressionSyntax Qualifier;
+        private readonly BracketedArgumentListSyntax ArgumentList;
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public sealed override Microsoft.CodeAnalysis.Location ReportingLocation => base.ReportingLocation;
 
-        static ExprKind GetKind(Context cx, ExpressionSyntax qualifier)
+        private static ExprKind GetKind(Context cx, ExpressionSyntax qualifier)
         {
             var qualifierType = cx.GetType(qualifier);
 
@@ -69,17 +69,17 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class NormalElementAccess : ElementAccess
+    internal class NormalElementAccess : ElementAccess
     {
-        NormalElementAccess(ExpressionNodeInfo info)
+        private NormalElementAccess(ExpressionNodeInfo info)
             : base(info, ((ElementAccessExpressionSyntax)info.Node).Expression, ((ElementAccessExpressionSyntax)info.Node).ArgumentList) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new NormalElementAccess(info).TryPopulate();
     }
 
-    class BindingElementAccess : ElementAccess
+    internal class BindingElementAccess : ElementAccess
     {
-        BindingElementAccess(ExpressionNodeInfo info)
+        private BindingElementAccess(ExpressionNodeInfo info)
             : base(info, FindConditionalQualifier(info.Node), ((ElementBindingExpressionSyntax)info.Node).ArgumentList) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new BindingElementAccess(info).TryPopulate();

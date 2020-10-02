@@ -6,9 +6,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class CommentLine : CachedEntity<(Microsoft.CodeAnalysis.Location, string)>, ICommentLine
+    internal class CommentLine : CachedEntity<(Microsoft.CodeAnalysis.Location, string)>, ICommentLine
     {
-        CommentLine(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw)
+        private CommentLine(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw)
             : base(cx, (loc, text))
         {
             Type = type;
@@ -110,7 +110,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        Extraction.Entities.Location location;
+        private Extraction.Entities.Location location;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -129,13 +129,13 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";commentline");
         }
 
-        static CommentLine Create(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw)
+        private static CommentLine Create(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw)
         {
             var init = (loc, type, text, raw);
             return CommentLineFactory.Instance.CreateEntity(cx, init, init);
         }
 
-        class CommentLineFactory : ICachedEntityFactory<(Microsoft.CodeAnalysis.Location, CommentLineType, string, string), CommentLine>
+        private class CommentLineFactory : ICachedEntityFactory<(Microsoft.CodeAnalysis.Location, CommentLineType, string, string), CommentLine>
         {
             public static readonly CommentLineFactory Instance = new CommentLineFactory();
 

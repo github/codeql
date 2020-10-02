@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Cast : Expression<CastExpressionSyntax>
+    internal class Cast : Expression<CastExpressionSyntax>
     {
-        Cast(ExpressionNodeInfo info) : base(info.SetKind(UnaryOperatorKind(info.Context, ExprKind.CAST, info.Node))) { }
+        private Cast(ExpressionNodeInfo info) : base(info.SetKind(UnaryOperatorKind(info.Context, ExprKind.CAST, info.Node))) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new Cast(info).TryPopulate();
 

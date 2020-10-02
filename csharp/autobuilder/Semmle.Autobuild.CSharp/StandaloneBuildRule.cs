@@ -5,7 +5,7 @@ namespace Semmle.Autobuild.CSharp
     /// <summary>
     /// Build using standalone extraction.
     /// </summary>
-    class StandaloneBuildRule : IBuildRule
+    internal class StandaloneBuildRule : IBuildRule
     {
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {

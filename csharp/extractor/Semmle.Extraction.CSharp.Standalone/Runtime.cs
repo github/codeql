@@ -10,9 +10,9 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// <summary>
     /// Locates .NET Runtimes.
     /// </summary>
-    static class Runtime
+    internal static class Runtime
     {
-        static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
+        private static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
 
         /// <summary>
         /// Locates .NET Core Runtimes.

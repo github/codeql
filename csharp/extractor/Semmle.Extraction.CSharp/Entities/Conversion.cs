@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Conversion : UserOperator
+    internal class Conversion : UserOperator
     {
-        Conversion(Context cx, IMethodSymbol init)
+        private Conversion(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
         public new static Conversion Create(Context cx, IMethodSymbol symbol) =>
@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        class ConversionFactory : ICachedEntityFactory<IMethodSymbol, Conversion>
+        private class ConversionFactory : ICachedEntityFactory<IMethodSymbol, Conversion>
         {
             public static readonly ConversionFactory Instance = new ConversionFactory();
 

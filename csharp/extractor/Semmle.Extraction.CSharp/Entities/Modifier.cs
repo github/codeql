@@ -3,9 +3,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Modifier : Extraction.CachedEntity<string>
+    internal class Modifier : Extraction.CachedEntity<string>
     {
-        Modifier(Context cx, string init)
+        private Modifier(Context cx, string init)
             : base(cx, init) { }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
@@ -140,7 +140,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return ModifierFactory.Instance.CreateEntity(cx, (typeof(Modifier), modifier), modifier);
         }
 
-        class ModifierFactory : ICachedEntityFactory<string, Modifier>
+        private class ModifierFactory : ICachedEntityFactory<string, Modifier>
         {
             public static readonly ModifierFactory Instance = new ModifierFactory();
 

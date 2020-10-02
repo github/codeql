@@ -5,11 +5,11 @@ using Semmle.Extraction.CSharp.Entities;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
-    class Ast : CSharpSyntaxVisitor
+    internal class Ast : CSharpSyntaxVisitor
     {
-        readonly Context cx;
-        readonly IExpressionParentEntity parent;
-        readonly int child;
+        private readonly Context cx;
+        private readonly IExpressionParentEntity parent;
+        private readonly int child;
 
         public Ast(Context cx, IExpressionParentEntity parent, int child)
         {

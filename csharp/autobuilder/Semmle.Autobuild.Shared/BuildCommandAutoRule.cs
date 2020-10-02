@@ -16,18 +16,18 @@ namespace Semmle.Autobuild.Shared
             this.withDotNet = withDotNet;
         }
 
-        readonly IEnumerable<string> winExtensions = new List<string> {
+        private readonly IEnumerable<string> winExtensions = new List<string> {
             ".bat",
             ".cmd",
             ".exe"
         };
 
-        readonly IEnumerable<string> linuxExtensions = new List<string> {
+        private readonly IEnumerable<string> linuxExtensions = new List<string> {
             "",
             ".sh"
         };
 
-        readonly IEnumerable<string> buildScripts = new List<string> {
+        private readonly IEnumerable<string> buildScripts = new List<string> {
             "build"
         };
 

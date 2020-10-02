@@ -13,14 +13,14 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A method entity.
     /// </summary>
-    interface IMethod : IMember
+    internal interface IMethod : IMember
     {
     }
 
     /// <summary>
     /// A method entity.
     /// </summary>
-    abstract class Method : TypeContainer, IMethod
+    internal abstract class Method : TypeContainer, IMethod
     {
         protected MethodTypeParameter[]? genericParams;
         protected GenericContext gc;
@@ -50,7 +50,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public abstract string NameLabel { get; }
 
-        internal protected void WriteMethodId(TextWriter trapFile, Type parent, string methodName)
+        protected internal void WriteMethodId(TextWriter trapFile, Type parent, string methodName)
         {
             signature.ReturnType.WriteId(trapFile, this);
             trapFile.Write(' ');
@@ -103,7 +103,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A method implementation entity.
     /// </summary>
-    interface IMethodImplementation : IExtractedEntity
+    internal interface IMethodImplementation : IExtractedEntity
     {
     }
 
@@ -111,9 +111,9 @@ namespace Semmle.Extraction.CIL.Entities
     /// A method implementation entity.
     /// In the database, the same method could in principle have multiple implementations.
     /// </summary>
-    class MethodImplementation : UnlabelledEntity, IMethodImplementation
+    internal class MethodImplementation : UnlabelledEntity, IMethodImplementation
     {
-        readonly Method m;
+        private readonly Method m;
 
         public MethodImplementation(Method m) : base(m.cx)
         {
@@ -133,15 +133,15 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A definition method - a method defined in the current assembly.
     /// </summary>
-    sealed class DefinitionMethod : Method, IMember
+    internal sealed class DefinitionMethod : Method, IMember
     {
-        readonly Handle handle;
-        readonly MethodDefinition md;
-        readonly PDB.IMethod? methodDebugInformation;
-        readonly Type declaringType;
+        private readonly Handle handle;
+        private readonly MethodDefinition md;
+        private readonly PDB.IMethod? methodDebugInformation;
+        private readonly Type declaringType;
 
-        readonly string name;
-        LocalVariable[]? locals;
+        private readonly string name;
+        private LocalVariable[]? locals;
 
         public MethodImplementation? Implementation { get; private set; }
 
@@ -302,7 +302,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        IEnumerable<IExtractionProduct> Decode(byte[] ilbytes, Dictionary<int, IInstruction> jump_table)
+        private IEnumerable<IExtractionProduct> Decode(byte[] ilbytes, Dictionary<int, IInstruction> jump_table)
         {
             // Sequence points are stored in order of offset.
             // We use an enumerator to locate the correct sequence point for each instruction.
@@ -391,13 +391,13 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// This is a late-bound reference to a method.
     /// </summary>
-    sealed class MemberReferenceMethod : Method
+    internal sealed class MemberReferenceMethod : Method
     {
-        readonly MemberReferenceHandle handle;
-        readonly MemberReference mr;
-        readonly Type declaringType;
-        readonly GenericContext parent;
-        readonly Method? sourceDeclaration;
+        private readonly MemberReferenceHandle handle;
+        private readonly MemberReference mr;
+        private readonly Type declaringType;
+        private readonly GenericContext parent;
+        private readonly Method? sourceDeclaration;
 
         public MemberReferenceMethod(GenericContext gc, MemberReferenceHandle handle) : base(gc)
         {
@@ -476,12 +476,12 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A constructed method.
     /// </summary>
-    sealed class MethodSpecificationMethod : Method
+    internal sealed class MethodSpecificationMethod : Method
     {
-        readonly MethodSpecificationHandle handle;
-        readonly MethodSpecification ms;
-        readonly Method unboundMethod;
-        readonly ImmutableArray<Type> typeParams;
+        private readonly MethodSpecificationHandle handle;
+        private readonly MethodSpecification ms;
+        private readonly Method unboundMethod;
+        private readonly ImmutableArray<Type> typeParams;
 
         public MethodSpecificationMethod(GenericContext gc, MethodSpecificationHandle handle) : base(gc)
         {

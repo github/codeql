@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
         bool IsTopLevelParent { get; }
     }
 
-    class Expression : FreshEntity, IExpressionParentEntity
+    internal class Expression : FreshEntity, IExpressionParentEntity
     {
         private readonly IExpressionInfo Info;
         public readonly AnnotatedType Type;
@@ -122,7 +122,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 cx.PopulateLater(() => Create(cx, node, parent, child));
         }
 
-        static bool ContainsPattern(SyntaxNode node) =>
+        private static bool ContainsPattern(SyntaxNode node) =>
             node is PatternSyntax || node is VariableDesignationSyntax || node.ChildNodes().Any(ContainsPattern);
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }
 
-    static class CallTypeExtensions
+    internal static class CallTypeExtensions
     {
         /// <summary>
         /// Adjust the expression kind <paramref name="k"/> to match this call type.
@@ -291,7 +291,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
     }
 
-    abstract class Expression<SyntaxNode> : Expression
+    internal abstract class Expression<SyntaxNode> : Expression
         where SyntaxNode : ExpressionSyntax
     {
         public readonly SyntaxNode Syntax;
@@ -322,7 +322,7 @@ namespace Semmle.Extraction.CSharp.Entities
     /// <summary>
     /// Holds all information required to create an Expression entity.
     /// </summary>
-    interface IExpressionInfo
+    internal interface IExpressionInfo
     {
         Context Context { get; }
 
@@ -370,7 +370,7 @@ namespace Semmle.Extraction.CSharp.Entities
     /// <summary>
     /// Explicitly constructed expression information.
     /// </summary>
-    class ExpressionInfo : IExpressionInfo
+    internal class ExpressionInfo : IExpressionInfo
     {
         public Context Context { get; }
         public AnnotatedType Type { get; }
@@ -401,7 +401,7 @@ namespace Semmle.Extraction.CSharp.Entities
     /// <summary>
     /// Expression information constructed from a syntax node.
     /// </summary>
-    class ExpressionNodeInfo : IExpressionInfo
+    internal class ExpressionNodeInfo : IExpressionInfo
     {
         public ExpressionNodeInfo(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child) :
             this(cx, node, parent, child, cx.GetTypeInfo(node))
@@ -457,7 +457,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        Microsoft.CodeAnalysis.Location location;
+        private Microsoft.CodeAnalysis.Location location;
 
         public Microsoft.CodeAnalysis.Location CodeAnalysisLocation
         {
@@ -484,7 +484,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        AnnotatedType cachedType;
+        private AnnotatedType cachedType;
 
         public AnnotatedType Type
         {
@@ -500,7 +500,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        Extraction.Entities.Location cachedLocation;
+        private Extraction.Entities.Location cachedLocation;
 
         public Extraction.Entities.Location Location
         {
@@ -546,7 +546,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return this;
         }
 
-        SymbolInfo cachedSymbolInfo;
+        private SymbolInfo cachedSymbolInfo;
 
         public SymbolInfo SymbolInfo
         {

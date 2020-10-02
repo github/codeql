@@ -17,11 +17,11 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public sealed class Analyser : IDisposable
     {
-        IExtractor extractor;
+        private IExtractor extractor;
 
-        readonly Stopwatch stopWatch = new Stopwatch();
+        private readonly Stopwatch stopWatch = new Stopwatch();
 
-        readonly IProgressMonitor progressMonitor;
+        private readonly IProgressMonitor progressMonitor;
 
         public readonly ILogger Logger;
 
@@ -39,8 +39,8 @@ namespace Semmle.Extraction.CSharp
             PathTransformer = pathTransformer;
         }
 
-        CSharpCompilation compilation;
-        Layout layout;
+        private CSharpCompilation compilation;
+        private Layout layout;
 
         private bool init;
         /// <summary>
@@ -84,7 +84,7 @@ namespace Semmle.Extraction.CSharp
         ///     Roslyn doesn't record the relationship between a filename and its assembly
         ///     information, so we need to retrieve this information manually.
         /// </summary>
-        void SetReferencePaths()
+        private void SetReferencePaths()
         {
             foreach (var reference in compilation.References.OfType<PortableExecutableReference>())
             {
@@ -126,14 +126,14 @@ namespace Semmle.Extraction.CSharp
             SetReferencePaths();
         }
 
-        readonly HashSet<string> errorsToIgnore = new HashSet<string>
+        private readonly HashSet<string> errorsToIgnore = new HashSet<string>
         {
             "CS7027",   // Code signing failure
             "CS1589",   // XML referencing not supported
             "CS1569"    // Error writing XML documentation
         };
 
-        IEnumerable<Diagnostic> FilteredDiagnostics
+        private IEnumerable<Diagnostic> FilteredDiagnostics
         {
             get
             {
@@ -154,7 +154,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="compilation">Information about the compilation.</param>
         /// <param name="cancel">Cancellation token required.</param>
         /// <returns>The filename.</returns>
-        static string GetOutputName(CSharpCompilation compilation,
+        private static string GetOutputName(CSharpCompilation compilation,
             CSharpCommandLineArguments commandLineArguments)
         {
             // There's no apparent way to access the output filename from the compilation,
@@ -194,7 +194,7 @@ namespace Semmle.Extraction.CSharp
         /// Perform an analysis on an assembly.
         /// </summary>
         /// <param name="assembly">Assembly to analyse.</param>
-        void AnalyseAssembly(PortableExecutableReference assembly)
+        private void AnalyseAssembly(PortableExecutableReference assembly)
         {
             // CIL first - it takes longer.
             if (options.CIL)
@@ -202,12 +202,12 @@ namespace Semmle.Extraction.CSharp
             extractionTasks.Add(() => DoAnalyseAssembly(assembly));
         }
 
-        readonly object progressMutex = new object();
-        int taskCount = 0;
+        private readonly object progressMutex = new object();
+        private int taskCount = 0;
 
-        CommonOptions options;
+        private CommonOptions options;
 
-        static bool FileIsUpToDate(string src, string dest)
+        private static bool FileIsUpToDate(string src, string dest)
         {
             return File.Exists(dest) &&
                 File.GetLastWriteTime(dest) >= File.GetLastWriteTime(src);
@@ -221,10 +221,10 @@ namespace Semmle.Extraction.CSharp
             extractionTasks.Add(() => DoAnalyseCompilation(cwd, args));
         }
 
-        Entities.Compilation compilationEntity;
-        IDisposable compilationTrapFile;
+        private Entities.Compilation compilationEntity;
+        private IDisposable compilationTrapFile;
 
-        void DoAnalyseCompilation(string cwd, string[] args)
+        private void DoAnalyseCompilation(string cwd, string[] args)
         {
             try
             {
@@ -252,7 +252,7 @@ namespace Semmle.Extraction.CSharp
         ///     extraction within the snapshot.
         /// </summary>
         /// <param name="r">The assembly to extract.</param>
-        void DoAnalyseAssembly(PortableExecutableReference r)
+        private void DoAnalyseAssembly(PortableExecutableReference r)
         {
             try
             {
@@ -308,7 +308,7 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        void DoExtractCIL(PortableExecutableReference r)
+        private void DoExtractCIL(PortableExecutableReference r)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -317,7 +317,7 @@ namespace Semmle.Extraction.CSharp
             ReportProgress(r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }
 
-        void AnalyseNamespace(Context cx, INamespaceSymbol ns)
+        private void AnalyseNamespace(Context cx, INamespaceSymbol ns)
         {
             foreach (var memberNamespace in ns.GetNamespaceMembers())
             {
@@ -342,15 +342,15 @@ namespace Semmle.Extraction.CSharp
         }
 
         // The bulk of the extraction work, potentially executed in parallel.
-        readonly List<Action> extractionTasks = new List<Action>();
+        private readonly List<Action> extractionTasks = new List<Action>();
 
-        void ReportProgress(string src, string output, TimeSpan time, AnalysisAction action)
+        private void ReportProgress(string src, string output, TimeSpan time, AnalysisAction action)
         {
             lock (progressMutex)
                 progressMonitor.Analysed(++taskCount, extractionTasks.Count, src, output, time, action);
         }
 
-        void DoExtractTree(SyntaxTree tree)
+        private void DoExtractTree(SyntaxTree tree)
         {
             try
             {

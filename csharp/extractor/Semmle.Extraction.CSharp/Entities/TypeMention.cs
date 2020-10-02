@@ -7,14 +7,14 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class TypeMention : FreshEntity
+    internal class TypeMention : FreshEntity
     {
-        readonly TypeSyntax Syntax;
-        readonly IEntity Parent;
-        readonly Type Type;
-        readonly Microsoft.CodeAnalysis.Location Loc;
+        private readonly TypeSyntax Syntax;
+        private readonly IEntity Parent;
+        private readonly Type Type;
+        private readonly Microsoft.CodeAnalysis.Location Loc;
 
-        TypeMention(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)
+        private TypeMention(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)
             : base(cx)
         {
             Syntax = syntax;
@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
             Loc = loc;
         }
 
-        static TypeSyntax GetElementType(TypeSyntax type)
+        private static TypeSyntax GetElementType(TypeSyntax type)
         {
             switch (type)
             {
@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        static Type GetElementType(Type type)
+        private static Type GetElementType(Type type)
         {
             switch (type)
             {
@@ -106,7 +106,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        void Emit(TextWriter trapFile, Microsoft.CodeAnalysis.Location loc, IEntity parent, Type type)
+        private void Emit(TextWriter trapFile, Microsoft.CodeAnalysis.Location loc, IEntity parent, Type type)
         {
             trapFile.type_mention(this, type.TypeRef, parent);
             trapFile.type_mention_location(this, cx.Create(loc));

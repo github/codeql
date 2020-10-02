@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        Kind ParamKind
+        private Kind ParamKind
         {
             get
             {
@@ -84,7 +84,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        string Name
+        private string Name
         {
             get
             {
@@ -162,13 +162,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        static EqualsValueClauseSyntax GetParameterDefaultValue(IParameterSymbol parameter)
+        private static EqualsValueClauseSyntax GetParameterDefaultValue(IParameterSymbol parameter)
         {
             var syntax = parameter.DeclaringSyntaxReferences.Select(@ref => @ref.GetSyntax()).OfType<ParameterSyntax>().FirstOrDefault();
             return syntax?.Default;
         }
 
-        class ParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>
+        private class ParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>
         {
             public static readonly ParameterFactory Instance = new ParameterFactory();
 
@@ -178,9 +178,9 @@ namespace Semmle.Extraction.CSharp.Entities
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }
 
-    class VarargsType : Type
+    internal class VarargsType : Type
     {
-        VarargsType(Context cx)
+        private VarargsType(Context cx)
             : base(cx, null) { }
 
         public override void Populate(TextWriter trapFile)
@@ -209,7 +209,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, typeof(VarargsType), null);
 
-        class VarargsTypeFactory : ICachedEntityFactory<string, VarargsType>
+        private class VarargsTypeFactory : ICachedEntityFactory<string, VarargsType>
         {
             public static readonly VarargsTypeFactory Instance = new VarargsTypeFactory();
 
@@ -217,9 +217,9 @@ namespace Semmle.Extraction.CSharp.Entities
         }
     }
 
-    class VarargsParam : Parameter
+    internal class VarargsParam : Parameter
     {
-        VarargsParam(Context cx, Method methodKey)
+        private VarargsParam(Context cx, Method methodKey)
             : base(cx, null, methodKey, null) { }
 
         public override void Populate(TextWriter trapFile)
@@ -244,7 +244,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, typeof(VarargsParam), method);
 
-        class VarargsParamFactory : ICachedEntityFactory<Method, VarargsParam>
+        private class VarargsParamFactory : ICachedEntityFactory<Method, VarargsParam>
         {
             public static readonly VarargsParamFactory Instance = new VarargsParamFactory();
 
@@ -252,11 +252,11 @@ namespace Semmle.Extraction.CSharp.Entities
         }
     }
 
-    class ConstructedExtensionParameter : Parameter
+    internal class ConstructedExtensionParameter : Parameter
     {
-        readonly ITypeSymbol ConstructedType;
+        private readonly ITypeSymbol ConstructedType;
 
-        ConstructedExtensionParameter(Context cx, Method method, Parameter original)
+        private ConstructedExtensionParameter(Context cx, Method method, Parameter original)
             : base(cx, original.symbol, method, original)
         {
             ConstructedType = method.symbol.ReceiverType;
@@ -272,7 +272,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static ConstructedExtensionParameter Create(Context cx, Method method, Parameter parameter) =>
             ExtensionParamFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(parameter.symbol), new SymbolEqualityWrapper(method.symbol.ReceiverType)), (method, parameter));
 
-        class ExtensionParamFactory : ICachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
+        private class ExtensionParamFactory : ICachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
         {
             public static readonly ExtensionParamFactory Instance = new ExtensionParamFactory();
 

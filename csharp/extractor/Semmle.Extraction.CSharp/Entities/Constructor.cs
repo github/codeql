@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public class Constructor : Method
     {
-        Constructor(Context cx, IMethodSymbol init)
+        private Constructor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
         public override void Populate(TextWriter trapFile)
@@ -84,7 +84,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        ConstructorDeclarationSyntax Syntax
+        private ConstructorDeclarationSyntax Syntax
         {
             get
             {
@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";constructor");
         }
 
-        ConstructorDeclarationSyntax GetSyntax() =>
+        private ConstructorDeclarationSyntax GetSyntax() =>
             symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
 
         public override Microsoft.CodeAnalysis.Location FullLocation => ReportingLocation;
@@ -141,7 +141,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        class ConstructorFactory : ICachedEntityFactory<IMethodSymbol, Constructor>
+        private class ConstructorFactory : ICachedEntityFactory<IMethodSymbol, Constructor>
         {
             public static readonly ConstructorFactory Instance = new ConstructorFactory();
 

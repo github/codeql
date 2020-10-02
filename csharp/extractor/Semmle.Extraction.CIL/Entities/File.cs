@@ -3,11 +3,11 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    interface IFileOrFolder : IEntity
+    internal interface IFileOrFolder : IEntity
     {
     }
 
-    interface IFile : IFileOrFolder
+    internal interface IFile : IFileOrFolder
     {
     }
 
@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CIL.Entities
 
     public class PdbSourceFile : File
     {
-        readonly PDB.ISourceFile file;
+        private readonly PDB.ISourceFile file;
 
         public PdbSourceFile(Context cx, PDB.ISourceFile file) : base(cx, file.Path)
         {

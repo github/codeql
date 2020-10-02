@@ -31,13 +31,13 @@ namespace Semmle.Extraction
 
         public int IdCounter { get; set; } = 1;
 
-        readonly Lazy<StreamWriter> WriterLazy;
+        private readonly Lazy<StreamWriter> WriterLazy;
 
         public StreamWriter Writer => WriterLazy.Value;
 
-        readonly ILogger Logger;
+        private readonly ILogger Logger;
 
-        readonly CompressionMode TrapCompression;
+        private readonly CompressionMode TrapCompression;
 
         public TrapWriter(ILogger logger, PathTransformer.ITransformedPath outputfile, string? trap, string? archive, bool discardDuplicates, CompressionMode trapCompression)
         {
@@ -95,7 +95,7 @@ namespace Semmle.Extraction
         /// The output filename of the trap.
         /// </summary>
         public readonly string TrapFile;
-        string tmpFile = "";     // The temporary file which is moved to trapFile once written.
+        private string tmpFile = "";     // The temporary file which is moved to trapFile once written.
 
         /// <summary>
         /// Adds the specified input file to the source archive. It may end up in either the normal or long path area
@@ -134,7 +134,7 @@ namespace Semmle.Extraction
         /// <param name="sourceFile">The source filename.</param>
         /// <param name="destFile">The destination filename.</param>
         /// <returns>true if the file was moved.</returns>
-        static bool TryMove(string sourceFile, string destFile)
+        private static bool TryMove(string sourceFile, string destFile)
         {
             try
             {
@@ -255,7 +255,7 @@ namespace Semmle.Extraction
             return nested;
         }
 
-        static string TrapExtension(CompressionMode compression)
+        private static string TrapExtension(CompressionMode compression)
         {
             switch (compression)
             {

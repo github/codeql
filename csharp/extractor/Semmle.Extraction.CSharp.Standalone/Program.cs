@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// <summary>
     ///     One independent run of the extractor.
     /// </summary>
-    class Extraction
+    internal class Extraction
     {
         public Extraction(string directory)
         {
@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// <summary>
     ///     Searches for source/references and creates separate extractions.
     /// </summary>
-    sealed class Analysis : IDisposable
+    internal sealed class Analysis : IDisposable
     {
         public Analysis(ILogger logger, Options options)
         {
@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// </summary>
         public Extraction Extraction { get; }
 
-        readonly BuildAnalysis buildAnalysis;
+        private readonly BuildAnalysis buildAnalysis;
 
         public void Dispose()
         {
@@ -50,7 +50,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
     public class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             var options = Options.Create(args);
             // options.CIL = true;  // To do: Enable this
@@ -95,14 +95,14 @@ namespace Semmle.Extraction.CSharp.Standalone
             return 0;
         }
 
-        class ExtractionProgress : IProgressMonitor
+        private class ExtractionProgress : IProgressMonitor
         {
             public ExtractionProgress(ILogger output)
             {
                 logger = output;
             }
 
-            readonly ILogger logger;
+            private readonly ILogger logger;
 
             public void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action)
             {

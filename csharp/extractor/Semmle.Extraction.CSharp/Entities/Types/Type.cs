@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         public Type Type;
 
-        readonly private NullableAnnotation annotation;
+        private readonly NullableAnnotation annotation;
 
         /// <summary>
         /// Gets the annotated type symbol of this annotated type.
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 symbol.ContainingType != null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
-        static Kinds.TypeKind GetClassType(Context cx, ITypeSymbol t, bool constructUnderlyingTupleType)
+        private static Kinds.TypeKind GetClassType(Context cx, ITypeSymbol t, bool constructUnderlyingTupleType)
         {
             switch (t.SpecialType)
             {
@@ -291,9 +291,9 @@ namespace Semmle.Extraction.CSharp.Entities
         /// A copy of a delegate "Invoke" method parameter used for the delgate
         /// type.
         /// </summary>
-        class DelegateTypeParameter : Parameter
+        private class DelegateTypeParameter : Parameter
         {
-            DelegateTypeParameter(Context cx, IParameterSymbol init, IEntity parent, Parameter original)
+            private DelegateTypeParameter(Context cx, IParameterSymbol init, IEntity parent, Parameter original)
                 : base(cx, init, parent, original) { }
 
             new public static DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter original = null) =>
@@ -301,7 +301,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // `DelegateTypeParameter`s and `Parameter`s
                 DelegateTypeParameterFactory.Instance.CreateEntity(cx, (typeof(DelegateTypeParameter), new SymbolEqualityWrapper(param)), (param, parent, original));
 
-            class DelegateTypeParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), DelegateTypeParameter>
+            private class DelegateTypeParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), DelegateTypeParameter>
             {
                 public static readonly DelegateTypeParameterFactory Instance = new DelegateTypeParameterFactory();
 
@@ -335,7 +335,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override int GetHashCode() => SymbolEqualityComparer.IncludeNullability.GetHashCode(symbol);
     }
 
-    abstract class Type<T> : Type where T : ITypeSymbol
+    internal abstract class Type<T> : Type where T : ITypeSymbol
     {
         protected Type(Context cx, T init)
             : base(cx, init) { }

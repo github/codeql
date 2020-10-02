@@ -7,16 +7,16 @@ namespace Semmle.Extraction.Entities
 {
     public class File : CachedEntity<string>
     {
-        File(Context cx, string path)
+        private File(Context cx, string path)
             : base(cx, path)
         {
             OriginalPath = path;
             TransformedPathLazy = new Lazy<PathTransformer.ITransformedPath>(() => Context.Extractor.PathTransformer.Transform(OriginalPath));
         }
 
-        readonly string OriginalPath;
-        readonly Lazy<PathTransformer.ITransformedPath> TransformedPathLazy;
-        PathTransformer.ITransformedPath TransformedPath => TransformedPathLazy.Value;
+        private readonly string OriginalPath;
+        private readonly Lazy<PathTransformer.ITransformedPath> TransformedPathLazy;
+        private PathTransformer.ITransformedPath TransformedPath => TransformedPathLazy.Value;
 
         public override bool NeedsPopulation => Context.DefinesFile(OriginalPath) || OriginalPath == Context.Extractor.OutputPath;
 
@@ -57,9 +57,9 @@ namespace Semmle.Extraction.Entities
 
         public static File CreateGenerated(Context cx) => GeneratedFile.Create(cx);
 
-        class GeneratedFile : File
+        private class GeneratedFile : File
         {
-            GeneratedFile(Context cx) : base(cx, "") { }
+            private GeneratedFile(Context cx) : base(cx, "") { }
 
             public override bool NeedsPopulation => true;
 
@@ -76,7 +76,7 @@ namespace Semmle.Extraction.Entities
             public static GeneratedFile Create(Context cx) =>
                 GeneratedFileFactory.Instance.CreateEntity(cx, typeof(GeneratedFile), null);
 
-            class GeneratedFileFactory : ICachedEntityFactory<string?, GeneratedFile>
+            private class GeneratedFileFactory : ICachedEntityFactory<string?, GeneratedFile>
             {
                 public static readonly GeneratedFileFactory Instance = new GeneratedFileFactory();
 
@@ -86,7 +86,7 @@ namespace Semmle.Extraction.Entities
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
-        class FileFactory : ICachedEntityFactory<string, File>
+        private class FileFactory : ICachedEntityFactory<string, File>
         {
             public static readonly FileFactory Instance = new FileFactory();
 

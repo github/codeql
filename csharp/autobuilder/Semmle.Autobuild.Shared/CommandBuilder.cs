@@ -9,15 +9,15 @@ namespace Semmle.Autobuild.Shared
     /// </summary>
     public class CommandBuilder
     {
-        enum EscapeMode { Process, Cmd };
+        private enum EscapeMode { Process, Cmd };
 
-        readonly StringBuilder arguments;
-        bool firstCommand;
-        string? executable;
-        readonly EscapeMode escapingMode;
-        readonly string? workingDirectory;
-        readonly IDictionary<string, string>? environment;
-        readonly bool silent;
+        private readonly StringBuilder arguments;
+        private bool firstCommand;
+        private string? executable;
+        private readonly EscapeMode escapingMode;
+        private readonly string? workingDirectory;
+        private readonly IDictionary<string, string>? environment;
+        private readonly bool silent;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Semmle.Autobuild.CommandBuilder"/> class.
@@ -45,7 +45,7 @@ namespace Semmle.Autobuild.Shared
             this.silent = silent;
         }
 
-        void OdasaIndex(string odasa)
+        private void OdasaIndex(string odasa)
         {
             RunCommand(odasa, "index --auto");
         }
@@ -74,8 +74,8 @@ namespace Semmle.Autobuild.Shared
             return this;
         }
 
-        static readonly char[] specialChars = { ' ', '\t', '\n', '\v', '\"' };
-        static readonly char[] cmdMetacharacter = { '(', ')', '%', '!', '^', '\"', '<', '>', '&', '|' };
+        private static readonly char[] specialChars = { ' ', '\t', '\n', '\v', '\"' };
+        private static readonly char[] cmdMetacharacter = { '(', ')', '%', '!', '^', '\"', '<', '>', '&', '|' };
 
         /// <summary>
         /// Appends the given argument to the command line.
@@ -88,7 +88,7 @@ namespace Semmle.Autobuild.Shared
         /// This implementation is copied from
         /// https://blogs.msdn.microsoft.com/twistylittlepassagesallalike/2011/04/23/everyone-quotes-command-line-arguments-the-wrong-way/
         /// </remarks>
-        void ArgvQuote(string argument, bool force)
+        private void ArgvQuote(string argument, bool force)
         {
             bool cmd = escapingMode == EscapeMode.Cmd;
             if (!force &&
@@ -153,7 +153,7 @@ namespace Semmle.Autobuild.Shared
             return this;
         }
 
-        void NextArgument()
+        private void NextArgument()
         {
             if (arguments.Length > 0)
                 arguments.Append(' ');
@@ -169,7 +169,7 @@ namespace Semmle.Autobuild.Shared
             return this;
         }
 
-        void NextCommand()
+        private void NextCommand()
         {
             if (firstCommand)
                 firstCommand = false;

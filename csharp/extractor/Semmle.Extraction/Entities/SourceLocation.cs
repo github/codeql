@@ -55,7 +55,7 @@ namespace Semmle.Extraction.Entities
             trapFile.Write(Position.Span.End.Character);
         }
 
-        class SourceLocationFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location, SourceLocation>
+        private class SourceLocationFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location, SourceLocation>
         {
             public static readonly SourceLocationFactory Instance = new SourceLocationFactory();
 

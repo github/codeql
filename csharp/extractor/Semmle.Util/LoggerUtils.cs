@@ -34,6 +34,6 @@ namespace Semmle.Util
             WriteLine(value is null ? value : String.Format(value, args));
         }
 
-        readonly object mutex = new object();
+        private readonly object mutex = new object();
     }
 }

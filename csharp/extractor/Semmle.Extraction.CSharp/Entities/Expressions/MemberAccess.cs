@@ -4,9 +4,9 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class MemberAccess : Expression
+    internal class MemberAccess : Expression
     {
-        readonly IEntity Target;
+        private readonly IEntity Target;
 
         private MemberAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, ISymbol target) : base(info)
         {
@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression Create(ExpressionNodeInfo info, MemberAccessExpressionSyntax node) =>
             Create(info, node.Expression, node.Name);
 
-        static Expression Create(ExpressionNodeInfo info, ExpressionSyntax expression, SimpleNameSyntax name)
+        private static Expression Create(ExpressionNodeInfo info, ExpressionSyntax expression, SimpleNameSyntax name)
         {
             if (IsDynamic(info.Context, expression))
             {

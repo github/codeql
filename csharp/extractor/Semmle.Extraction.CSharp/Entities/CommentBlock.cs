@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class CommentBlock : CachedEntity<ICommentBlock>
+    internal class CommentBlock : CachedEntity<ICommentBlock>
     {
-        CommentBlock(Context cx, ICommentBlock init)
+        private CommentBlock(Context cx, ICommentBlock init)
             : base(cx, init) { }
 
         public override void Populate(TextWriter trapFile)
@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static CommentBlock Create(Context cx, ICommentBlock block) => CommentBlockFactory.Instance.CreateEntity(cx, block, block);
 
-        class CommentBlockFactory : ICachedEntityFactory<ICommentBlock, CommentBlock>
+        private class CommentBlockFactory : ICachedEntityFactory<ICommentBlock, CommentBlock>
         {
             public static readonly CommentBlockFactory Instance = new CommentBlockFactory();
 

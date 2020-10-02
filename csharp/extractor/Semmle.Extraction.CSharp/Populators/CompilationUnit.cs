@@ -64,7 +64,7 @@ namespace Semmle.Extraction.CSharp.Populators
         }
     }
 
-    class TypeOrNamespaceVisitor : TypeContainerVisitor
+    internal class TypeOrNamespaceVisitor : TypeContainerVisitor
     {
         public TypeOrNamespaceVisitor(Context cx, TextWriter trapFile, IEntity parent)
             : base(cx, trapFile, parent) { }
@@ -82,7 +82,7 @@ namespace Semmle.Extraction.CSharp.Populators
         }
     }
 
-    class CompilationUnitVisitor : TypeOrNamespaceVisitor
+    internal class CompilationUnitVisitor : TypeOrNamespaceVisitor
     {
         public CompilationUnitVisitor(Context cx)
             : base(cx, cx.TrapWriter.Writer, null) { }

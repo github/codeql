@@ -14,7 +14,7 @@ namespace Semmle.BuildAnalyser
     /// <summary>
     /// The output of a build analysis.
     /// </summary>
-    interface IBuildAnalysis
+    internal interface IBuildAnalysis
     {
         /// <summary>
         /// Full filepaths of external references.
@@ -46,7 +46,7 @@ namespace Semmle.BuildAnalyser
     /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    sealed class BuildAnalysis : IBuildAnalysis, IDisposable
+    internal sealed class BuildAnalysis : IBuildAnalysis, IDisposable
     {
         private readonly AssemblyCache assemblyCache;
         private readonly IProgressMonitor progressMonitor;
@@ -172,7 +172,7 @@ namespace Semmle.BuildAnalyser
         /// If the same assembly name is duplicated with different versions,
         /// resolve to the higher version number.
         /// </summary>
-        void ResolveConflicts()
+        private void ResolveConflicts()
         {
             var sortedReferences = new List<AssemblyInfo>();
             foreach (var usedReference in usedReferences)
@@ -217,7 +217,7 @@ namespace Semmle.BuildAnalyser
         /// Store that a particular reference file is used.
         /// </summary>
         /// <param name="reference">The filename of the reference.</param>
-        void UseReference(string reference)
+        private void UseReference(string reference)
         {
             usedReferences[reference] = true;
         }
@@ -226,7 +226,7 @@ namespace Semmle.BuildAnalyser
         /// Store that a particular source file is used (by a project file).
         /// </summary>
         /// <param name="sourceFile">The source file.</param>
-        void UseSource(FileInfo sourceFile)
+        private void UseSource(FileInfo sourceFile)
         {
             sources[sourceFile.FullName] = sourceFile.Exists;
         }
@@ -263,24 +263,24 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         /// <param name="id">The assembly ID.</param>
         /// <param name="projectFile">The project file making the reference.</param>
-        void UnresolvedReference(string id, string projectFile)
+        private void UnresolvedReference(string id, string projectFile)
         {
             unresolvedReferences[id] = projectFile;
         }
 
-        readonly TemporaryDirectory PackageDirectory;
+        private readonly TemporaryDirectory PackageDirectory;
 
         /// <summary>
         /// Reads all the source files and references from the given list of projects.
         /// </summary>
         /// <param name="projectFiles">The list of projects to analyse.</param>
-        void AnalyseProjectFiles(IEnumerable<FileInfo> projectFiles)
+        private void AnalyseProjectFiles(IEnumerable<FileInfo> projectFiles)
         {
             foreach (var proj in projectFiles)
                 AnalyseProject(proj);
         }
 
-        void AnalyseProject(FileInfo project)
+        private void AnalyseProject(FileInfo project)
         {
             if (!project.Exists)
             {
@@ -323,7 +323,7 @@ namespace Semmle.BuildAnalyser
 
         }
 
-        void Restore(string projectOrSolution)
+        private void Restore(string projectOrSolution)
         {
             int exit = DotNet.RestoreToDirectory(projectOrSolution, PackageDirectory.DirInfo.FullName);
             switch (exit)

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class UserOperator : Method
+    internal class UserOperator : Method
     {
         protected UserOperator(Context cx, IMethodSymbol init)
             : base(cx, init) { }
@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         /// <param name="containingType">The type containing this operator.</param>
         /// <returns></returns>
-        bool IsImplicitOperator(out ITypeSymbol containingType)
+        private bool IsImplicitOperator(out ITypeSymbol containingType)
         {
             containingType = symbol.ContainingType;
             if (containingType != null)
@@ -185,7 +185,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public new static UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
+        private class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
         {
             public static readonly UserOperatorFactory Instance = new UserOperatorFactory();
 

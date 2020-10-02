@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// </summary>
     public sealed class Options : CommonOptions
     {
-        public override bool handleFlag(string key, bool value)
+        public override bool HandleFlag(string key, bool value)
         {
             switch (key)
             {
@@ -40,11 +40,11 @@ namespace Semmle.Extraction.CSharp.Standalone
                     UseSelfContainedDotnet = value;
                     return true;
                 default:
-                    return base.handleFlag(key, value);
+                    return base.HandleFlag(key, value);
             }
         }
 
-        public override bool handleOption(string key, string value)
+        public override bool HandleOption(string key, string value)
         {
             switch (key)
             {
@@ -55,11 +55,11 @@ namespace Semmle.Extraction.CSharp.Standalone
                     DllDirs.Add(value);
                     return true;
                 default:
-                    return base.handleOption(key, value);
+                    return base.HandleOption(key, value);
             }
         }
 
-        public override bool handleArgument(string arg)
+        public override bool HandleArgument(string arg)
         {
             SolutionFile = arg;
             var fi = new FileInfo(SolutionFile);
@@ -71,7 +71,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             return true;
         }
 
-        public override void invalidArgument(string argument)
+        public override void InvalidArgument(string argument)
         {
             System.Console.WriteLine($"Error: Invalid argument {argument}");
             Errors = true;

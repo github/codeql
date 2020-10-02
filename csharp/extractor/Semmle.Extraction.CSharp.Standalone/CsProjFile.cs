@@ -9,7 +9,7 @@ namespace Semmle.BuildAnalyser
     /// <summary>
     /// Represents a .csproj file and reads information from it.
     /// </summary>
-    class CsProjFile
+    internal class CsProjFile
     {
         private string Filename { get; }
 
@@ -126,8 +126,8 @@ namespace Semmle.BuildAnalyser
             return (csFiles, references);
         }
 
-        readonly string[] references;
-        readonly string[] csFiles;
+        private readonly string[] references;
+        private readonly string[] csFiles;
 
         /// <summary>
         /// The list of references as a list of assembly IDs.
@@ -140,7 +140,7 @@ namespace Semmle.BuildAnalyser
         public IEnumerable<string> Sources => csFiles;
     }
 
-    static class XmlNodeHelper
+    internal static class XmlNodeHelper
     {
         /// <summary>
         /// Helper to convert an XmlNodeList into an IEnumerable.

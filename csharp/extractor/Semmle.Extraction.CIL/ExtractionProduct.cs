@@ -121,9 +121,9 @@ namespace Semmle.Extraction.CIL
     /// <summary>
     /// A tuple that is an extraction product.
     /// </summary>
-    class Tuple : IExtractionProduct
+    internal class Tuple : IExtractionProduct
     {
-        readonly Extraction.Tuple tuple;
+        private readonly Extraction.Tuple tuple;
 
         public Tuple(string name, params object[] args)
         {

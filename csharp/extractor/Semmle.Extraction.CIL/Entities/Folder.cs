@@ -3,13 +3,13 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    interface IFolder : IFileOrFolder
+    internal interface IFolder : IFileOrFolder
     {
     }
 
     public sealed class Folder : LabelledEntity, IFolder
     {
-        readonly PathTransformer.ITransformedPath TransformedPath;
+        private readonly PathTransformer.ITransformedPath TransformedPath;
 
         public Folder(Context cx, PathTransformer.ITransformedPath path) : base(cx)
         {

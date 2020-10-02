@@ -88,7 +88,7 @@ namespace Semmle.Autobuild.Shared
                 Select(s => AsStringWithExpandedEnvVars(s, actions)).ToArray();
         }
 
-        static readonly Regex linuxEnvRegEx = new Regex(@"\$([a-zA-Z_][a-zA-Z_0-9]*)", RegexOptions.Compiled);
+        private static readonly Regex linuxEnvRegEx = new Regex(@"\$([a-zA-Z_][a-zA-Z_0-9]*)", RegexOptions.Compiled);
 
         public static string AsStringWithExpandedEnvVars(this string value, IBuildActions actions)
         {

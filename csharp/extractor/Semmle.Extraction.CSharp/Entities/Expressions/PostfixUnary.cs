@@ -4,17 +4,17 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class PostfixUnary : Expression<ExpressionSyntax>
+    internal class PostfixUnary : Expression<ExpressionSyntax>
     {
-        PostfixUnary(ExpressionNodeInfo info, ExprKind kind, ExpressionSyntax operand)
+        private PostfixUnary(ExpressionNodeInfo info, ExprKind kind, ExpressionSyntax operand)
             : base(info.SetKind(UnaryOperatorKind(info.Context, kind, info.Node)))
         {
             Operand = operand;
             OperatorKind = kind;
         }
 
-        readonly ExpressionSyntax Operand;
-        readonly ExprKind OperatorKind;
+        private readonly ExpressionSyntax Operand;
+        private readonly ExprKind OperatorKind;
 
         public static Expression Create(ExpressionNodeInfo info, ExpressionSyntax operand) => new PostfixUnary(info, info.Kind, operand).TryPopulate();
 

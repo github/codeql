@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CIL
     /// </summary>
     public sealed partial class Context
     {
-        readonly Dictionary<object, Label> ids = new Dictionary<object, Label>();
+        private readonly Dictionary<object, Label> ids = new Dictionary<object, Label>();
 
         public T Populate<T>(T e) where T : IExtractedEntity
         {
@@ -97,9 +97,9 @@ namespace Semmle.Extraction.CIL
         /// <returns></returns>
         public IExtractedEntity CreateGeneric(GenericContext genericContext, Handle h) => genericHandleFactory[genericContext, h];
 
-        readonly GenericContext defaultGenericContext;
+        private readonly GenericContext defaultGenericContext;
 
-        IExtractedEntity CreateGenericHandle(GenericContext gc, Handle handle)
+        private IExtractedEntity CreateGenericHandle(GenericContext gc, Handle handle)
         {
             IExtractedEntity entity;
             switch (handle.Kind)
@@ -136,7 +136,7 @@ namespace Semmle.Extraction.CIL
             return entity;
         }
 
-        IExtractedEntity Create(GenericContext gc, MemberReferenceHandle handle)
+        private IExtractedEntity Create(GenericContext gc, MemberReferenceHandle handle)
         {
             var mr = mdReader.GetMemberReference(handle);
             switch (mr.GetKind())
@@ -159,11 +159,11 @@ namespace Semmle.Extraction.CIL
 
         #region Namespaces
 
-        readonly CachedFunction<StringHandle, Namespace> namespaceFactory;
+        private readonly CachedFunction<StringHandle, Namespace> namespaceFactory;
 
         public Namespace CreateNamespace(StringHandle fqn) => namespaceFactory[fqn];
 
-        readonly Lazy<Namespace> globalNamespace, systemNamespace;
+        private readonly Lazy<Namespace> globalNamespace, systemNamespace;
 
         /// <summary>
         /// The entity representing the global namespace.
@@ -180,9 +180,9 @@ namespace Semmle.Extraction.CIL
         /// </summary>
         /// <param name="fqn">The fully-qualified namespace name.</param>
         /// <returns>The namespace entity.</returns>
-        Namespace CreateNamespace(string fqn) => Populate(new Namespace(this, fqn));
+        private Namespace CreateNamespace(string fqn) => Populate(new Namespace(this, fqn));
 
-        readonly CachedFunction<NamespaceDefinitionHandle, Namespace> namespaceDefinitionFactory;
+        private readonly CachedFunction<NamespaceDefinitionHandle, Namespace> namespaceDefinitionFactory;
 
         /// <summary>
         /// Creates a namespace from a namespace handle.
@@ -191,7 +191,7 @@ namespace Semmle.Extraction.CIL
         /// <returns>The namespace entity.</returns>
         public Namespace Create(NamespaceDefinitionHandle handle) => namespaceDefinitionFactory[handle];
 
-        Namespace CreateNamespace(NamespaceDefinitionHandle handle)
+        private Namespace CreateNamespace(NamespaceDefinitionHandle handle)
         {
             if (handle.IsNil) return GlobalNamespace;
             NamespaceDefinition nd = mdReader.GetNamespaceDefinition(handle);
@@ -200,9 +200,9 @@ namespace Semmle.Extraction.CIL
         #endregion
 
         #region Locations
-        readonly CachedFunction<PDB.ISourceFile, PdbSourceFile> sourceFiles;
-        readonly CachedFunction<PathTransformer.ITransformedPath, Folder> folders;
-        readonly CachedFunction<PDB.Location, PdbSourceLocation> sourceLocations;
+        private readonly CachedFunction<PDB.ISourceFile, PdbSourceFile> sourceFiles;
+        private readonly CachedFunction<PathTransformer.ITransformedPath, Folder> folders;
+        private readonly CachedFunction<PDB.Location, PdbSourceLocation> sourceLocations;
 
         /// <summary>
         /// Creates a source file entity from a PDB source file.
@@ -227,7 +227,7 @@ namespace Semmle.Extraction.CIL
 
         #endregion
 
-        readonly CachedFunction<GenericContext, Handle, IExtractedEntity> genericHandleFactory;
+        private readonly CachedFunction<GenericContext, Handle, IExtractedEntity> genericHandleFactory;
 
         /// <summary>
         /// Gets the short name of a member, without the preceding interface qualifier.

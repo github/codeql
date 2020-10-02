@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities
         bool IsTopLevelParent { get; }
     }
 
-    abstract class Statement : FreshEntity, IExpressionParentEntity, IStatementParentEntity
+    internal abstract class Statement : FreshEntity, IExpressionParentEntity, IStatementParentEntity
     {
         protected Statement(Context cx) : base(cx) { }
 
@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NeedsLabel;
     }
 
-    abstract class Statement<TSyntax> : Statement where TSyntax : CSharpSyntaxNode
+    internal abstract class Statement<TSyntax> : Statement where TSyntax : CSharpSyntaxNode
     {
         protected readonly TSyntax Stmt;
         private readonly int Child;

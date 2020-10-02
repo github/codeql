@@ -4,12 +4,12 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Labeled : Statement<LabeledStatementSyntax>
+    internal class Labeled : Statement<LabeledStatementSyntax>
     {
-        readonly Statement Parent;
-        readonly int Child;
+        private readonly Statement Parent;
+        private readonly int Child;
 
-        Labeled(Context cx, LabeledStatementSyntax stmt, Statement parent, int child)
+        private Labeled(Context cx, LabeledStatementSyntax stmt, Statement parent, int child)
             : base(cx, stmt, StmtKind.LABEL, parent, child)
         {
             Parent = parent;
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             labelledStmt = Statement.Create(cx, Stmt.Statement, Parent, Child + 1);
         }
 
-        Statement labelledStmt;
+        private Statement labelledStmt;
 
         public override int NumberOfStatements => 1 + labelledStmt.NumberOfStatements;
     }

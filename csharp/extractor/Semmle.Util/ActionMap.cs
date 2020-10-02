@@ -37,9 +37,9 @@ namespace Semmle.Util
         }
 
         // Action associated with each key.
-        readonly Dictionary<Key, Action<Value>> actions = new Dictionary<Key, Action<Value>>();
+        private readonly Dictionary<Key, Action<Value>> actions = new Dictionary<Key, Action<Value>>();
 
         // Values associated with each key.
-        readonly Dictionary<Key, Value> values = new Dictionary<Key, Value>();
+        private readonly Dictionary<Key, Value> values = new Dictionary<Key, Value>();
     }
 }

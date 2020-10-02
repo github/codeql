@@ -14,7 +14,7 @@ namespace Semmle.Autobuild.CSharp
     /// A build rule where the build command is of the form "dotnet build".
     /// Currently unused because the tracer does not work with dotnet.
     /// </summary>
-    class DotNetRule : IBuildRule
+    internal class DotNetRule : IBuildRule
     {
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {
@@ -57,7 +57,7 @@ namespace Semmle.Autobuild.CSharp
                 });
         }
 
-        static BuildScript WithDotNet(Autobuilder builder, Func<string?, IDictionary<string, string>?, bool, BuildScript> f)
+        private static BuildScript WithDotNet(Autobuilder builder, Func<string?, IDictionary<string, string>?, bool, BuildScript> f)
         {
             string? installDir = builder.Actions.PathCombine(builder.Options.RootDirectory, ".dotnet");
             var installScript = DownloadDotNet(builder, installDir);
@@ -129,7 +129,7 @@ namespace Semmle.Autobuild.CSharp
         /// .NET Core SDK. The SDK(s) will be installed at <code>installDir</code>
         /// (provided that the script succeeds).
         /// </summary>
-        static BuildScript DownloadDotNet(Autobuilder builder, string installDir)
+        private static BuildScript DownloadDotNet(Autobuilder builder, string installDir)
         {
             if (!string.IsNullOrEmpty(builder.Options.DotNetVersion))
                 // Specific version supplied in configuration: always use that
@@ -166,7 +166,7 @@ namespace Semmle.Autobuild.CSharp
         ///
         /// See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script.
         /// </summary>
-        static BuildScript DownloadDotNetVersion(Autobuilder builder, string path, string version)
+        private static BuildScript DownloadDotNetVersion(Autobuilder builder, string path, string version)
         {
             return BuildScript.Bind(GetInstalledSdksScript(builder.Actions), (sdks, sdksRet) =>
                 {
@@ -257,7 +257,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                 });
         }
 
-        static BuildScript GetInstalledSdksScript(IBuildActions actions)
+        private static BuildScript GetInstalledSdksScript(IBuildActions actions)
         {
             var listSdks = new CommandBuilder(actions, silent: true).
                 RunCommand("dotnet").
@@ -265,10 +265,10 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return listSdks.Script;
         }
 
-        static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
+        private static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
             dotNetPath != null ? actions.PathCombine(dotNetPath, "dotnet") : "dotnet";
 
-        static BuildScript GetInfoCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        private static BuildScript GetInfoCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var info = new CommandBuilder(actions, null, environment).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -276,7 +276,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return info.Script;
         }
 
-        static CommandBuilder GetCleanCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        private static CommandBuilder GetCleanCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var clean = new CommandBuilder(actions, null, environment).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -284,7 +284,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return clean;
         }
 
-        static CommandBuilder GetRestoreCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        private static CommandBuilder GetRestoreCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var restore = new CommandBuilder(actions, null, environment).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -292,7 +292,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return restore;
         }
 
-        static BuildScript GetInstalledRuntimesScript(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
+        private static BuildScript GetInstalledRuntimesScript(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
             var listSdks = new CommandBuilder(actions, environment: environment, silent: true).
                 RunCommand(DotNetCommand(actions, dotNetPath)).
@@ -309,7 +309,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
         /// hence the need for CLR tracing), by adding a
         /// `/p:UseSharedCompilation=false` argument.
         /// </summary>
-        static BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, bool compatibleClr, string projOrSln)
+        private static BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, bool compatibleClr, string projOrSln)
         {
             var build = new CommandBuilder(builder.Actions, null, environment);
             var script = builder.MaybeIndex(build, DotNetCommand(builder.Actions, dotNetPath)).

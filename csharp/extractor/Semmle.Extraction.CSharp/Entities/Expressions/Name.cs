@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    static class Name
+    internal static class Name
     {
         public static Expression Create(ExpressionNodeInfo info)
         {

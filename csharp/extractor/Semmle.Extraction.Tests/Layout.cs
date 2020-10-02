@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 
 namespace Semmle.Extraction.Tests
 {
-    struct TransformedPathStub : PathTransformer.ITransformedPath
+    internal struct TransformedPathStub : PathTransformer.ITransformedPath
     {
-        readonly string value;
+        private readonly string value;
         public TransformedPathStub(string value) => this.value = value;
         public string Value => value;
 
@@ -27,7 +27,7 @@ namespace Semmle.Extraction.Tests
 
     public class Layout
     {
-        readonly ILogger Logger = new LoggerMock();
+        private readonly ILogger Logger = new LoggerMock();
 
         [Fact]
         public void TestDefaultLayout()
@@ -199,7 +199,7 @@ namespace Semmle.Extraction.Tests
                 new Semmle.Extraction.Layout(null, null, "layout.txt"));
         }
 
-        sealed class LoggerMock : ILogger
+        private sealed class LoggerMock : ILogger
         {
             public void Dispose() { }
 
@@ -207,16 +207,16 @@ namespace Semmle.Extraction.Tests
         }
     }
 
-    static class TrapWriterTestExtensions
+    internal static class TrapWriterTestExtensions
     {
         public static void Emit(this TrapWriter trapFile, string s)
         {
             trapFile.Emit(new StringTrapEmitter(s));
         }
 
-        class StringTrapEmitter : ITrapEmitter
+        private class StringTrapEmitter : ITrapEmitter
         {
-            readonly string Content;
+            private readonly string Content;
             public StringTrapEmitter(string content)
             {
                 Content = content;

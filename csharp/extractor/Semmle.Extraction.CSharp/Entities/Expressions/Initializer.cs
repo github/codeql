@@ -7,14 +7,14 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    abstract class Initializer : Expression<InitializerExpressionSyntax>
+    internal abstract class Initializer : Expression<InitializerExpressionSyntax>
     {
         protected Initializer(ExpressionNodeInfo info) : base(info) { }
     }
 
-    class ArrayInitializer : Expression<InitializerExpressionSyntax>
+    internal class ArrayInitializer : Expression<InitializerExpressionSyntax>
     {
-        ArrayInitializer(ExpressionNodeInfo info) : base(info.SetType(NullType.Create(info.Context)).SetKind(ExprKind.ARRAY_INIT)) { }
+        private ArrayInitializer(ExpressionNodeInfo info) : base(info.SetType(NullType.Create(info.Context)).SetKind(ExprKind.ARRAY_INIT)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new ArrayInitializer(info).TryPopulate();
 
@@ -38,9 +38,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     }
 
     // Array initializer { ..., ... }.
-    class ImplicitArrayInitializer : Initializer
+    internal class ImplicitArrayInitializer : Initializer
     {
-        ImplicitArrayInitializer(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
+        private ImplicitArrayInitializer(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new ImplicitArrayInitializer(info).TryPopulate();
 
@@ -51,9 +51,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class ObjectInitializer : Initializer
+    internal class ObjectInitializer : Initializer
     {
-        ObjectInitializer(ExpressionNodeInfo info)
+        private ObjectInitializer(ExpressionNodeInfo info)
             : base(info.SetKind(ExprKind.OBJECT_INIT)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new ObjectInitializer(info).TryPopulate();
@@ -107,9 +107,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class CollectionInitializer : Initializer
+    internal class CollectionInitializer : Initializer
     {
-        CollectionInitializer(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.COLLECTION_INIT)) { }
+        private CollectionInitializer(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.COLLECTION_INIT)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new CollectionInitializer(info).TryPopulate();
 

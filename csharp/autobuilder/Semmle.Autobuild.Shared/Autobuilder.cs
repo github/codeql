@@ -48,7 +48,7 @@ namespace Semmle.Autobuild.Shared
         /// by distance in ascending order.
         /// </summary>
         public IEnumerable<(string, int)> Paths => pathsLazy.Value;
-        readonly Lazy<IEnumerable<(string, int)>> pathsLazy;
+        private readonly Lazy<IEnumerable<(string, int)>> pathsLazy;
 
         /// <summary>
         /// Gets a list of paths matching a set of extensions (including the "."),
@@ -91,7 +91,7 @@ namespace Semmle.Autobuild.Shared
         /// <returns>True iff the path was found.</returns>
         public bool HasPath(string path) => Paths.Any(p => path == p.Item1);
 
-        void FindFiles(string dir, int depth, int maxDepth, IList<(string, int)> results)
+        private void FindFiles(string dir, int depth, int maxDepth, IList<(string, int)> results)
         {
             foreach (var f in Actions.EnumerateFiles(dir))
             {
@@ -110,7 +110,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// The root of the source directory.
         /// </summary>
-        string RootDirectory => Options.RootDirectory;
+        private string RootDirectory => Options.RootDirectory;
 
         /// <summary>
         /// Gets the supplied build configuration.
@@ -123,7 +123,7 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         public IBuildActions Actions { get; }
 
-        IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
+        private IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
         {
             var matchingFiles = GetExtensions(extension)
                 .Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2))
@@ -209,7 +209,7 @@ namespace Semmle.Autobuild.Shared
 
         protected string SourceArchiveDir { get; }
 
-        readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
+        private readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
 
         /// <summary>
         /// Log a given build event to the console.

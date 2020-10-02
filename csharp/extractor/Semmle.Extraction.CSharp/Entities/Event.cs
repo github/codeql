@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Event : CachedSymbol<IEventSymbol>
+    internal class Event : CachedSymbol<IEventSymbol>
     {
-        Event(Context cx, IEventSymbol init)
+        private Event(Context cx, IEventSymbol init)
             : base(cx, init) { }
 
         public override void WriteId(TextWriter trapFile)
@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class EventFactory : ICachedEntityFactory<IEventSymbol, Event>
+        private class EventFactory : ICachedEntityFactory<IEventSymbol, Event>
         {
             public static readonly EventFactory Instance = new EventFactory();
 

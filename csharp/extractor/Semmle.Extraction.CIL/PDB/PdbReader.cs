@@ -86,7 +86,7 @@ namespace Semmle.Extraction.PDB
         Location Location { get; }
     }
 
-    class Method : IMethod
+    internal class Method : IMethod
     {
         public IEnumerable<SequencePoint> SequencePoints { get; }
 
@@ -136,7 +136,7 @@ namespace Semmle.Extraction.PDB
         IMethod? GetMethod(MethodDebugInformationHandle methodHandle);
     }
 
-    class PdbReader
+    internal class PdbReader
     {
         /// <summary>
         /// Returns the PDB information associated with an assembly.

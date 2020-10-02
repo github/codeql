@@ -11,8 +11,8 @@ namespace Semmle.Extraction.CIL
     /// <typeparam name="TargetType">The type of the generated object.</typeparam>
     public class CachedFunction<SrcType, TargetType> where SrcType : notnull
     {
-        readonly Func<SrcType, TargetType> generator;
-        readonly Dictionary<SrcType, TargetType> cache;
+        private readonly Func<SrcType, TargetType> generator;
+        private readonly Dictionary<SrcType, TargetType> cache;
 
         /// <summary>
         /// Initializes the factory with a given mapping.
@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CIL
     /// <typeparam name="Target">The target type.</typeparam>
     public class CachedFunction<Src1, Src2, Target>
     {
-        readonly CachedFunction<(Src1, Src2), Target> factory;
+        private readonly CachedFunction<(Src1, Src2), Target> factory;
 
         /// <summary>
         /// Initializes the factory with a given mapping.

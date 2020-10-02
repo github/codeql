@@ -4,9 +4,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class LocalVariable : CachedSymbol<ISymbol>
+    internal class LocalVariable : CachedSymbol<ISymbol>
     {
-        LocalVariable(Context cx, ISymbol init) : base(cx, init) { }
+        private LocalVariable(Context cx, ISymbol init) : base(cx, init) { }
 
         public override void WriteId(TextWriter trapFile)
         {
@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return LocalVariableFactory.Instance.CreateEntityFromSymbol(cx, local);
         }
 
-        void DefineConstantValue(TextWriter trapFile)
+        private void DefineConstantValue(TextWriter trapFile)
         {
             if (symbol is ILocalSymbol local && local.HasConstantValue)
             {
@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        class LocalVariableFactory : ICachedEntityFactory<ISymbol, LocalVariable>
+        private class LocalVariableFactory : ICachedEntityFactory<ISymbol, LocalVariable>
         {
             public static readonly LocalVariableFactory Instance = new LocalVariableFactory();
 

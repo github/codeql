@@ -4,15 +4,15 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Unary : Expression<PrefixUnaryExpressionSyntax>
+    internal class Unary : Expression<PrefixUnaryExpressionSyntax>
     {
-        Unary(ExpressionNodeInfo info, ExprKind kind)
+        private Unary(ExpressionNodeInfo info, ExprKind kind)
             : base(info.SetKind(UnaryOperatorKind(info.Context, info.Kind, info.Node)))
         {
             OperatorKind = kind;
         }
 
-        readonly ExprKind OperatorKind;
+        private readonly ExprKind OperatorKind;
 
         public static Unary Create(ExpressionNodeInfo info)
         {

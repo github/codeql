@@ -7,8 +7,8 @@ namespace Semmle.Extraction
     /// </summary>
     public struct Tuple : ITrapEmitter
     {
-        readonly string Name;
-        readonly object[] Args;
+        private readonly string Name;
+        private readonly object[] Args;
 
         public Tuple(string name, params object[] args)
         {

@@ -6,9 +6,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Assignment : Expression<AssignmentExpressionSyntax>
+    internal class Assignment : Expression<AssignmentExpressionSyntax>
     {
-        Assignment(ExpressionNodeInfo info)
+        private Assignment(ExpressionNodeInfo info)
             : base(info.SetKind(GetKind(info.Context, (AssignmentExpressionSyntax)info.Node)))
         {
         }
@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        static ExprKind GetAssignmentOperation(Context cx, AssignmentExpressionSyntax syntax)
+        private static ExprKind GetAssignmentOperation(Context cx, AssignmentExpressionSyntax syntax)
         {
             switch (syntax.OperatorToken.Kind())
             {
@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        static ExprKind GetKind(Context cx, AssignmentExpressionSyntax syntax)
+        private static ExprKind GetKind(Context cx, AssignmentExpressionSyntax syntax)
         {
             var leftSymbol = cx.GetSymbolInfo(syntax.Left);
             bool assignEvent = leftSymbol.Symbol != null && leftSymbol.Symbol is IEventSymbol;
@@ -111,7 +111,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// assignment is not an assignment operator). For example, the operator
         /// kind of `*=` is `*`.
         /// </summary>
-        ExprKind? OperatorKind
+        private ExprKind? OperatorKind
         {
             get
             {

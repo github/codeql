@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp
         }
     }
 
-    static class SymbolExtensions
+    internal static class SymbolExtensions
     {
         /// <summary>
         /// Tries to recover from an ErrorType.
@@ -153,7 +153,7 @@ namespace Semmle.Extraction.CSharp
         public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType = false) =>
             type.BuildTypeId(cx, trapFile, symbolBeingDefined, true, constructUnderlyingTupleType);
 
-        static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
+        private static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
         {
             using (cx.StackGuard)
             {
@@ -193,7 +193,7 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        static void BuildOrWriteId(this ISymbol symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType = false)
+        private static void BuildOrWriteId(this ISymbol symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType = false)
         {
             // We need to keep track of the symbol being defined in order to avoid cyclic labels.
             // For example, in
@@ -262,7 +262,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("::");
         }
 
-        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
+        private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
         {
             if (!constructUnderlyingTupleType && named.IsTupleType)
             {
@@ -339,13 +339,13 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter trapFile)
+        private static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter trapFile)
         {
             trapFile.WriteSubId(Namespace.Create(cx, ns));
             trapFile.Write('.');
         }
 
-        static void BuildAnonymousName(this INamedTypeSymbol type, Context cx, TextWriter trapFile)
+        private static void BuildAnonymousName(this INamedTypeSymbol type, Context cx, TextWriter trapFile)
         {
             int memberCount = type.GetMembers().OfType<IPropertySymbol>().Count();
             int hackTypeNumber = memberCount == 1 ? 1 : 0;

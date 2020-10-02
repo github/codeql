@@ -23,7 +23,7 @@ namespace Semmle.Extraction
     /// </summary>
     public class FreshId : IId
     {
-        FreshId() { }
+        private FreshId() { }
 
         /// <summary>
         /// Gets the singleton <see cref="FreshId"/> instance.
@@ -48,7 +48,7 @@ namespace Semmle.Extraction
     /// </summary>
     public class Key : IId
     {
-        readonly StringWriter TrapBuilder = new StringWriter();
+        private readonly StringWriter TrapBuilder = new StringWriter();
 
         /// <summary>
         /// Creates a new key by concatenating the contents of the supplied arguments.
@@ -114,7 +114,7 @@ namespace Semmle.Extraction
 
         public int Value { get; private set; }
 
-        static public readonly Label InvalidLabel = new Label(0);
+        public static readonly Label InvalidLabel = new Label(0);
 
         public bool Valid => Value > 0;
 

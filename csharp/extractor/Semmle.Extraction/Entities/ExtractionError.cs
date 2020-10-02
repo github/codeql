@@ -2,9 +2,9 @@
 
 namespace Semmle.Extraction.Entities
 {
-    class ExtractionMessage : FreshEntity
+    internal class ExtractionMessage : FreshEntity
     {
-        readonly Message msg;
+        private readonly Message msg;
 
         public ExtractionMessage(Context cx, Message msg) : base(cx)
         {

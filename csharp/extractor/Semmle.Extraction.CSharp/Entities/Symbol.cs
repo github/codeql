@@ -134,8 +134,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.metadata_handle(this, Location, MetadataTokens.GetToken(handle.Value));
         }
 
-        static System.Reflection.PropertyInfo GetPropertyInfo(object o, string name) =>
-            o.GetType().GetProperty(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetProperty);
+        private static System.Reflection.PropertyInfo GetPropertyInfo(object o, string name)
+        {
+            return o.GetType().GetProperty(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetProperty);
+        }
 
         public Handle? MetadataHandle
         {

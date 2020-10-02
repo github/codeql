@@ -5,7 +5,7 @@ namespace Semmle.BuildAnalyser
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
-    static class DotNet
+    internal static class DotNet
     {
         public static int RestoreToDirectory(string projectOrSolutionFile, string packageDirectory)
         {

@@ -11,7 +11,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// The name of the msbuild command.
         /// </summary>
-        const string MsBuild = "msbuild";
+        private const string MsBuild = "msbuild";
 
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {
@@ -155,7 +155,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Returns a script for downloading `nuget.exe` from nuget.org.
         /// </summary>
-        static BuildScript DownloadNugetExe(Autobuilder builder, string path) =>
+        private static BuildScript DownloadNugetExe(Autobuilder builder, string path) =>
             BuildScript.Create(_ =>
             {
                 builder.Log(Severity.Info, "Attempting to download nuget.exe");

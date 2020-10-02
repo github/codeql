@@ -7,16 +7,16 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    enum Variance
+    internal enum Variance
     {
         None = 0,
         Out = 1,
         In = 2
     }
 
-    class TypeParameter : Type<ITypeParameterSymbol>
+    internal class TypeParameter : Type<ITypeParameterSymbol>
     {
-        TypeParameter(Context cx, ITypeParameterSymbol init)
+        private TypeParameter(Context cx, ITypeParameterSymbol init)
             : base(cx, init) { }
 
         public override void Populate(TextWriter trapFile)
@@ -82,7 +82,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        static public TypeParameter Create(Context cx, ITypeParameterSymbol p) =>
+        public static TypeParameter Create(Context cx, ITypeParameterSymbol p) =>
             TypeParameterFactory.Instance.CreateEntityFromSymbol(cx, p);
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(kind);
         }
 
-        class TypeParameterFactory : ICachedEntityFactory<ITypeParameterSymbol, TypeParameter>
+        private class TypeParameterFactory : ICachedEntityFactory<ITypeParameterSymbol, TypeParameter>
         {
             public static readonly TypeParameterFactory Instance = new TypeParameterFactory();
 
