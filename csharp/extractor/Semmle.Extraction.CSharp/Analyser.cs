@@ -381,7 +381,11 @@ namespace Semmle.Extraction.CSharp
                     }
                 }
 
-                ReportProgress(sourcePath, trapPath, stopwatch.Elapsed, excluded ? AnalysisAction.Excluded : upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                ReportProgress(sourcePath, trapPath, stopwatch.Elapsed, excluded
+                    ? AnalysisAction.Excluded
+                    : upToDate
+                        ? AnalysisAction.UpToDate
+                        : AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {

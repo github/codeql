@@ -61,11 +61,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 return ExprKind.POINTER_INDIRECTION;
             }
 
-            return IsDynamic(cx, qualifier) ?
-                ExprKind.DYNAMIC_ELEMENT_ACCESS :
-                qualifierType.Symbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Array ?
-                    ExprKind.ARRAY_ACCESS :
-                    ExprKind.INDEXER_ACCESS;
+            return IsDynamic(cx, qualifier)
+                ? ExprKind.DYNAMIC_ELEMENT_ACCESS
+                : qualifierType.Symbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Array
+                    ? ExprKind.ARRAY_ACCESS
+                    : ExprKind.INDEXER_ACCESS;
         }
     }
 

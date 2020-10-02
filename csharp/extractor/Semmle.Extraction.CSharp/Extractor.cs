@@ -37,7 +37,11 @@ namespace Semmle.Extraction.CSharp
                 if (action != AnalysisAction.UpToDate)
                 {
                     Logger.Log(Severity.Info, "  {0} ({1})", source,
-                        action == AnalysisAction.Extracted ? time.ToString() : action == AnalysisAction.Excluded ? "excluded" : "up to date");
+                        action == AnalysisAction.Extracted
+                            ? time.ToString()
+                            : action == AnalysisAction.Excluded
+                                ? "excluded"
+                                : "up to date");
                 }
             }
 

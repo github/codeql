@@ -107,7 +107,11 @@ namespace Semmle.Extraction.CSharp.Standalone
             public void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action)
             {
                 logger.Log(Severity.Info, "[{0}/{1}] {2} ({3})", item, total, source,
-                    action == AnalysisAction.Extracted ? time.ToString() : action == AnalysisAction.Excluded ? "excluded" : "up to date");
+                    action == AnalysisAction.Extracted
+                        ? time.ToString()
+                        : action == AnalysisAction.Excluded
+                            ? "excluded"
+                            : "up to date");
             }
 
             public void MissingType(string type)

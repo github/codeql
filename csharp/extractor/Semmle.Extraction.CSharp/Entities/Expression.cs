@@ -78,7 +78,13 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns>The string representation.</returns>
         public static string ValueAsString(object value)
         {
-            return value == null ? "null" : value is bool ? ((bool)value ? "true" : "false") : value.ToString();
+            return value == null
+                ? "null"
+                : value is bool b
+                    ? b
+                        ? "true"
+                        : "false"
+                    : value.ToString();
         }
 
         /// <summary>

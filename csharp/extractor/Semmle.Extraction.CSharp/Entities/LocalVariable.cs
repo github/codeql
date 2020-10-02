@@ -23,10 +23,9 @@ namespace Semmle.Extraction.CSharp.Entities
         public void PopulateManual(Expression parent, bool isVar)
         {
             var trapFile = Context.TrapWriter.Writer;
-            var (kind, type) =
-                symbol is ILocalSymbol l ?
-                    (l.IsRef ? 3 : l.IsConst ? 2 : 1, Type.Create(Context, l.GetAnnotatedType())) :
-                    (1, parent.Type);
+            var (kind, type) = symbol is ILocalSymbol l
+                ? (l.IsRef ? 3 : l.IsConst ? 2 : 1, Type.Create(Context, l.GetAnnotatedType()))
+                : (1, parent.Type);
             trapFile.localvars(this, kind, symbol.Name, isVar ? 1 : 0, type.Type.TypeRef, parent);
 
             if (symbol is ILocalSymbol local)

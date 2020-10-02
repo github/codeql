@@ -161,13 +161,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         static ExprKind GetKind(ExpressionNodeInfo info)
         {
-            return IsNameof((InvocationExpressionSyntax)info.Node) ?
-                ExprKind.NAMEOF :
-                IsDelegateCall(info) ?
-                ExprKind.DELEGATE_INVOCATION :
-                IsLocalFunctionInvocation(info) ?
-                ExprKind.LOCAL_FUNCTION_INVOCATION :
-                ExprKind.METHOD_INVOCATION;
+            return IsNameof((InvocationExpressionSyntax)info.Node)
+                ? ExprKind.NAMEOF
+                : IsDelegateCall(info)
+                    ? ExprKind.DELEGATE_INVOCATION
+                    : IsLocalFunctionInvocation(info)
+                        ? ExprKind.LOCAL_FUNCTION_INVOCATION
+                        : ExprKind.METHOD_INVOCATION;
         }
 
         static bool IsNameof(InvocationExpressionSyntax syntax)

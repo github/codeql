@@ -164,11 +164,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         static AnnotatedTypeSymbol GetEnumerableType(Context cx, INamedTypeSymbol type)
         {
-            return type.SpecialType == SpecialType.System_Collections_IEnumerable ?
-                    cx.Compilation.ObjectType.WithAnnotation(NullableAnnotation.NotAnnotated) :
-                    type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ?
-                    type.GetAnnotatedTypeArguments().First() :
-                    default(AnnotatedTypeSymbol);
+            return type.SpecialType == SpecialType.System_Collections_IEnumerable
+                ? cx.Compilation.ObjectType.WithAnnotation(NullableAnnotation.NotAnnotated)
+                : type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T
+                    ? type.GetAnnotatedTypeArguments().First()
+                    : default(AnnotatedTypeSymbol);
         }
 
         public override AnnotatedType ElementType => Type.Create(Context, GetElementType(Context, symbol));
