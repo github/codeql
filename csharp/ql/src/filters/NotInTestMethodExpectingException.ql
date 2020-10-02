@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Filter: only keep results that are outside of a test method expecting an exception
  * @description Exclude results in test methods expecting exceptions.
  * @kind problem

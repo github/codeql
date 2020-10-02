@@ -1,6 +1,6 @@
 import csharp
 
-class ExternalElement extends @external_element {
+deprecated class ExternalElement extends @external_element {
   /** Gets a textual representation of this element. */
   string toString() { none() }
 
@@ -11,7 +11,7 @@ class ExternalElement extends @external_element {
   File getFile() { result = getLocation().getFile() }
 }
 
-class ExternalDefect extends ExternalElement, @externalDefect {
+deprecated class ExternalDefect extends ExternalElement, @externalDefect {
   string getQueryPath() {
     exists(string path |
       externalDefects(this, path, _, _, _) and
@@ -30,7 +30,7 @@ class ExternalDefect extends ExternalElement, @externalDefect {
   }
 }
 
-class ExternalMetric extends ExternalElement, @externalMetric {
+deprecated class ExternalMetric extends ExternalElement, @externalMetric {
   string getQueryPath() { externalMetrics(this, result, _, _) }
 
   float getValue() { externalMetrics(this, _, _, result) }
@@ -40,7 +40,7 @@ class ExternalMetric extends ExternalElement, @externalMetric {
   override string toString() { result = getQueryPath() + ": " + getLocation() + " - " + getValue() }
 }
 
-class ExternalData extends ExternalElement, @externalDataElement {
+deprecated class ExternalData extends ExternalElement, @externalDataElement {
   string getDataPath() { externalData(this, result, _, _) }
 
   string getQueryPath() { result = getDataPath().regexpReplaceAll("\\.[^.]*$", ".ql") }
@@ -67,7 +67,7 @@ class ExternalData extends ExternalElement, @externalDataElement {
 /**
  * External data with a location, and a message, as produced by tools that used to produce QLDs.
  */
-class DefectExternalData extends ExternalData {
+deprecated class DefectExternalData extends ExternalData {
   DefectExternalData() {
     this.getField(0).regexpMatch("\\w+://.*:[0-9]+:[0-9]+:[0-9]+:[0-9]+$") and
     this.getNumFields() = 2

@@ -1,11 +1,11 @@
 import csharp
 
-external predicate defectResults(
+deprecated external predicate defectResults(
   int id, string queryPath, string file, int startline, int startcol, int endline, int endcol,
   string message
 );
 
-class DefectResult extends int {
+deprecated class DefectResult extends int {
   DefectResult() { defectResults(this, _, _, _, _, _, _, _) }
 
   string getQueryPath() { defectResults(this, result, _, _, _, _, _, _) }

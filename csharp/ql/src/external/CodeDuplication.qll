@@ -9,12 +9,12 @@ private string relativePath(File file) { result = file.getRelativePath().replace
  * For more information, see [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
  */
 pragma[nomagic]
-predicate tokenLocation(File file, int sl, int sc, int ec, int el, Copy copy, int index) {
+deprecated predicate tokenLocation(File file, int sl, int sc, int ec, int el, Copy copy, int index) {
   file = copy.sourceFile() and
   tokens(copy, index, sl, sc, ec, el)
 }
 
-class Copy extends @duplication_or_similarity {
+deprecated class Copy extends @duplication_or_similarity {
   private int lastToken() { result = max(int i | tokens(this, i, _, _, _, _) | i) }
 
   int tokenStartingAt(Location loc) {
@@ -56,11 +56,11 @@ class Copy extends @duplication_or_similarity {
   string toString() { none() }
 }
 
-class DuplicateBlock extends Copy, @duplication {
+deprecated class DuplicateBlock extends Copy, @duplication {
   override string toString() { result = "Duplicate code: " + sourceLines() + " duplicated lines." }
 }
 
-class SimilarBlock extends Copy, @similarity {
+deprecated class SimilarBlock extends Copy, @similarity {
   override string toString() {
     result = "Similar code: " + sourceLines() + " almost duplicated lines."
   }
@@ -72,7 +72,7 @@ private int numberOfSourceMethods(Class c) {
   result = count(Method m | m = sourceMethod() and m.getDeclaringType() = c)
 }
 
-private predicate blockCoversStatement(int equivClass, int first, int last, Stmt stmt) {
+deprecated private predicate blockCoversStatement(int equivClass, int first, int last, Stmt stmt) {
   exists(DuplicateBlock b, Location loc |
     stmt.getLocation() = loc and
     first = b.tokenStartingAt(loc) and
@@ -86,7 +86,7 @@ private Stmt statementInMethod(Method m) {
   not result instanceof BlockStmt
 }
 
-private predicate duplicateStatement(Method m1, Method m2, Stmt s1, Stmt s2) {
+deprecated private predicate duplicateStatement(Method m1, Method m2, Stmt s1, Stmt s2) {
   exists(int equivClass, int first, int last |
     s1 = statementInMethod(m1) and
     s2 = statementInMethod(m2) and
@@ -98,7 +98,7 @@ private predicate duplicateStatement(Method m1, Method m2, Stmt s1, Stmt s2) {
 }
 
 /** Holds if `duplicate` number of statements are duplicated in the methods. */
-predicate duplicateStatements(Method m1, Method m2, int duplicate, int total) {
+deprecated predicate duplicateStatements(Method m1, Method m2, int duplicate, int total) {
   duplicate = strictcount(Stmt s | duplicateStatement(m1, m2, s, _)) and
   total = strictcount(statementInMethod(m1))
 }
@@ -106,15 +106,15 @@ predicate duplicateStatements(Method m1, Method m2, int duplicate, int total) {
 /**
  * Find pairs of methods are identical
  */
-predicate duplicateMethod(Method m, Method other) {
+deprecated predicate duplicateMethod(Method m, Method other) {
   exists(int total | duplicateStatements(m, other, total, total))
 }
 
-private predicate similarLines(File f, int line) {
+deprecated private predicate similarLines(File f, int line) {
   exists(SimilarBlock b | b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()])
 }
 
-private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, File f) {
+deprecated private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, File f) {
   lines =
     strictsum(SimilarBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
@@ -125,7 +125,7 @@ private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, Fil
 }
 
 pragma[noopt]
-private predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
+deprecated private predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getNumberOfLines() |
     exists(int coveredApprox |
       coveredApprox =
@@ -149,13 +149,13 @@ private predicate similarLinesCovered(File f, int coveredLines, File otherFile) 
   )
 }
 
-private predicate duplicateLines(File f, int line) {
+deprecated private predicate duplicateLines(File f, int line) {
   exists(DuplicateBlock b |
     b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()]
   )
 }
 
-private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, File f) {
+deprecated private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, File f) {
   lines =
     strictsum(DuplicateBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
@@ -166,7 +166,7 @@ private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, F
 }
 
 pragma[noopt]
-private predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
+deprecated private predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getNumberOfLines() |
     exists(int coveredApprox |
       coveredApprox =
@@ -191,7 +191,7 @@ private predicate duplicateLinesCovered(File f, int coveredLines, File otherFile
 }
 
 /** Holds if the two files are not duplicated but have more than 80% similar lines. */
-predicate similarFiles(File f, File other, int percent) {
+deprecated predicate similarFiles(File f, File other, int percent) {
   exists(int covered, int total |
     similarLinesCovered(f, covered, other) and
     total = f.getNumberOfLines() and
@@ -202,7 +202,7 @@ predicate similarFiles(File f, File other, int percent) {
 }
 
 /** Holds if the two files have more than 70% duplicated lines. */
-predicate duplicateFiles(File f, File other, int percent) {
+deprecated predicate duplicateFiles(File f, File other, int percent) {
   exists(int covered, int total |
     duplicateLinesCovered(f, covered, other) and
     total = f.getNumberOfLines() and
@@ -212,7 +212,7 @@ predicate duplicateFiles(File f, File other, int percent) {
 }
 
 pragma[noopt]
-private predicate duplicateAnonymousClass(AnonymousClass c, AnonymousClass other) {
+deprecated private predicate duplicateAnonymousClass(AnonymousClass c, AnonymousClass other) {
   exists(int numDup |
     numDup =
       strictcount(Method m1 |
@@ -233,7 +233,7 @@ private predicate duplicateAnonymousClass(AnonymousClass c, AnonymousClass other
 }
 
 pragma[noopt]
-private predicate mostlyDuplicateClassBase(Class c, Class other, int numDup, int total) {
+deprecated private predicate mostlyDuplicateClassBase(Class c, Class other, int numDup, int total) {
   numDup =
     strictcount(Method m1 |
       exists(Method m2 |
@@ -252,7 +252,7 @@ private predicate mostlyDuplicateClassBase(Class c, Class other, int numDup, int
 }
 
 /** Holds if the methods in the two classes are more than 80% duplicated. */
-predicate mostlyDuplicateClass(Class c, Class other, string message) {
+deprecated predicate mostlyDuplicateClass(Class c, Class other, string message) {
   exists(int numDup, int total |
     mostlyDuplicateClassBase(c, other, numDup, total) and
     (
@@ -277,7 +277,7 @@ predicate mostlyDuplicateClass(Class c, Class other, string message) {
 }
 
 /** Holds if the two files are similar or duplicated. */
-predicate fileLevelDuplication(File f, File other) {
+deprecated predicate fileLevelDuplication(File f, File other) {
   similarFiles(f, other, _) or duplicateFiles(f, other, _)
 }
 
@@ -285,7 +285,7 @@ predicate fileLevelDuplication(File f, File other) {
  * Holds if the two classes are duplicated anonymous classes or more than 80% of
  * their methods are duplicated.
  */
-predicate classLevelDuplication(Class c, Class other) {
+deprecated predicate classLevelDuplication(Class c, Class other) {
   duplicateAnonymousClass(c, other) or mostlyDuplicateClass(c, other, _)
 }
 
@@ -298,7 +298,7 @@ private Element whitelistedDuplicateElement() {
  * Holds if the `line` in the `file` contains an element, such as a `using`
  * directive, that is not considered for code duplication.
  */
-predicate whitelistedLineForDuplication(File file, int line) {
+deprecated predicate whitelistedLineForDuplication(File file, int line) {
   exists(Location loc | loc = whitelistedDuplicateElement().getLocation() |
     line = loc.getStartLine() and file = loc.getFile()
   )

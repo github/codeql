@@ -1,11 +1,11 @@
 import csharp
 
-external predicate metricResults(
+deprecated external predicate metricResults(
   int id, string queryPath, string file, int startline, int startcol, int endline, int endcol,
   float value
 );
 
-class MetricResult extends int {
+deprecated class MetricResult extends int {
   MetricResult() { metricResults(this, _, _, _, _, _, _, _) }
 
   string getQueryPath() { metricResults(this, result, _, _, _, _, _, _) }

@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Filter: only keep results from source that have not changed since the base line
  * @description Complement of ChangedLines.ql.
  * @kind problem

@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Filter: only keep results in non-generated files
  * @description Exclude results that come from generated code.
  * @kind problem

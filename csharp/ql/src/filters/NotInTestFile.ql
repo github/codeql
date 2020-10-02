@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Filter: only keep results that are outside of test files
  * @description Exclude results in test files.
  * @kind problem

@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Filter: only keep results that are outside of test methods
  * @description Exclude results in test methods.
  * @kind problem
