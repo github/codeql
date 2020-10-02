@@ -8,7 +8,9 @@ class Conf extends TaintTracking::Configuration {
     n.asExpr().(MethodAccess).getMethod().hasName("taint")
   }
 
-  override predicate isSink(DataFlow::Node n) { any() }
+  override predicate isSink(DataFlow::Node n) {
+    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+  }
 }
 
 from DataFlow::Node src, DataFlow::Node sink, Conf conf

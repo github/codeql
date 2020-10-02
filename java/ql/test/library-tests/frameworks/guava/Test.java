@@ -9,52 +9,54 @@ import java.util.HashMap;
 class Test {
     String taint() { return "tainted"; }
 
+    void sink(Object o) {}
+
     void test1() {
         String x = taint();
 
-        Strings.padStart(x, 10, ' ');
-        Strings.padEnd(x, 10, ' ');
-        Strings.repeat(x, 3);
-        Strings.emptyToNull(Strings.nullToEmpty(x));
-        Strings.lenientFormat(x, 3);
-        Strings.commonPrefix(x, "abc");
-        Strings.commonSuffix(x, "cde");
-        Strings.lenientFormat("%s = %s", x, 3);
+        sink(Strings.padStart(x, 10, ' '));
+        sink(Strings.padEnd(x, 10, ' '));
+        sink(Strings.repeat(x, 3));
+        sink(Strings.emptyToNull(Strings.nullToEmpty(x)));
+        sink(Strings.lenientFormat(x, 3));
+        sink(Strings.commonPrefix(x, "abc"));
+        sink(Strings.commonSuffix(x, "cde"));
+        sink(Strings.lenientFormat("%s = %s", x, 3));
     }
 
     void test2() {
         String x = taint();
         Splitter s = Splitter.on(x).omitEmptyStrings();
 
-        s.split("x y z");
-        s.split(x);
-        s.splitToList(x);
-        s.withKeyValueSeparator("=").split("a=b");
-        s.withKeyValueSeparator("=").split(x);
+        sink(s.split("x y z"));
+        sink(s.split(x));
+        sink(s.splitToList(x));
+        sink(s.withKeyValueSeparator("=").split("a=b"));
+        sink(s.withKeyValueSeparator("=").split(x));
     }
 
     void test3() {
         String x = taint();
-        Joiner j1 = Joiner.on(x);
-        Joiner j2 = Joiner.on(", ");
+        Joiner taintedJoiner = Joiner.on(x);
+        Joiner safeJoiner = Joiner.on(", ");
 
         StringBuilder sb = new StringBuilder();
-        j2.appendTo(sb, "a", "b", "c");
-        sb.toString();
-        j1.appendTo(sb, "a", "b", "c");
-        sb.toString();
-        j2.appendTo(sb, "a", "b", "c");
-        sb.toString();
+        sink(safeJoiner.appendTo(sb, "a", "b", "c"));
+        sink(sb.toString());
+        sink(taintedJoiner.appendTo(sb, "a", "b", "c"));
+        sink(sb.toString());
+        sink(safeJoiner.appendTo(sb, "a", "b", "c"));
+        sink(sb.toString());
 
         sb = new StringBuilder();
-        j2.appendTo(sb, x, x);
+        sink(safeJoiner.appendTo(sb, x, x));
 
         Map<String, String> m = new HashMap<String, String>();
         m.put("k", "v");
-        j2.withKeyValueSeparator("=").join(m);
-        j2.withKeyValueSeparator(x).join(m);
-        j1.useForNull("(null)").withKeyValueSeparator("=").join(m);
+        sink(safeJoiner.withKeyValueSeparator("=").join(m));
+        sink(safeJoiner.withKeyValueSeparator(x).join(m));
+        sink(taintedJoiner.useForNull("(null)").withKeyValueSeparator("=").join(m));
         m.put("k2", x);
-        j2.withKeyValueSeparator("=").join(m);
+        sink(safeJoiner.withKeyValueSeparator("=").join(m));
     }
 }
