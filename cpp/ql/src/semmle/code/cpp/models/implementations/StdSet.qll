@@ -50,23 +50,6 @@ class StdSetInsert extends TaintFunction {
 }
 
 /**
- * The standard set `begin` and `end` functions and their
- * variants.
- */
-class StdSetBeginEnd extends TaintFunction {
-  StdSetBeginEnd() {
-    this.hasQualifiedName("std", ["set", "unordered_set"], ["begin", "end", "cbegin", "cend"])
-    or
-    this.hasQualifiedName("std", "set", ["rbegin", "crbegin", "rend", "crend"])
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
-  }
-}
-
-/**
  * The standard set `swap` functions.
  */
 class StdSetSwap extends TaintFunction {
