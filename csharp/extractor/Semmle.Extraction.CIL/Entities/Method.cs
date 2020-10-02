@@ -409,9 +409,9 @@ namespace Semmle.Extraction.CIL.Entities
 
             parent = (GenericContext)cx.CreateGeneric(gc, mr.Parent);
 
-            var parentMethod = parent as Method;
-
-            var declType = parentMethod is null ? parent as Type : parentMethod.DeclaringType;
+            var declType = parent is Method parentMethod
+                ? parentMethod.DeclaringType
+                : parent as Type;
 
             if (declType is null)
                 throw new InternalError("Parent context of method is not a type");

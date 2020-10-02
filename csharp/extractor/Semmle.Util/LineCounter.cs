@@ -33,8 +33,10 @@ namespace Semmle.Util
 
         public override bool Equals(object? other)
         {
-            var rhs = other as LineCounts;
-            return rhs != null && Total == rhs.Total && Code == rhs.Code && Comment == rhs.Comment;
+            return other is LineCounts rhs &&
+                Total == rhs.Total &&
+                Code == rhs.Code &&
+                Comment == rhs.Comment;
         }
 
         public override int GetHashCode()

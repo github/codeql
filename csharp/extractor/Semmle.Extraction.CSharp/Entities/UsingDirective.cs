@@ -26,19 +26,17 @@ namespace Semmle.Extraction.CSharp.Entities
             if (Node.StaticKeyword.Kind() == SyntaxKind.None)
             {
                 // A normal using
-                var namespaceSymbol = info.Symbol as INamespaceSymbol;
-
-                if (namespaceSymbol == null)
-                {
-                    cx.Extractor.MissingNamespace(Node.Name.ToFullString(), cx.FromSource);
-                    cx.ModelError(Node, "Namespace not found");
-                    return;
-                }
-                else
+                if (info.Symbol is INamespaceSymbol namespaceSymbol)
                 {
                     var ns = Namespace.Create(cx, namespaceSymbol);
                     trapFile.using_namespace_directives(this, ns);
                     trapFile.using_directive_location(this, cx.Create(ReportingLocation));
+                }
+                else
+                {
+                    cx.Extractor.MissingNamespace(Node.Name.ToFullString(), cx.FromSource);
+                    cx.ModelError(Node, "Namespace not found");
+                    return;
                 }
             }
             else

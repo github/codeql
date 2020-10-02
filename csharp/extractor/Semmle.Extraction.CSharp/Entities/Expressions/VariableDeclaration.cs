@@ -157,8 +157,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     cx.TrapWriter.Writer.expr_access(access, localVar);
                 }
 
-                var decl = d.Parent as VariableDeclarationSyntax;
-                if (decl != null)
+                if (d.Parent is VariableDeclarationSyntax decl)
                     TypeMention.Create(cx, decl.Type, ret, type);
             });
             return ret;

@@ -61,7 +61,8 @@ namespace Semmle.Extraction.CSharp.Entities
             if (containingType != null)
             {
                 var containingNamedType = containingType as INamedTypeSymbol;
-                return containingNamedType == null || !containingNamedType.GetMembers(symbol.Name).Contains(symbol);
+                return containingNamedType == null ||
+                    !containingNamedType.GetMembers(symbol.Name).Contains(symbol);
             }
 
             var pointerType = symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();

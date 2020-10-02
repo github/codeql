@@ -43,11 +43,10 @@ namespace Semmle.Extraction.Entities
 
         public override bool Equals(object? obj)
         {
-            var other = obj as Assembly;
-            if (other == null || other.GetType() != typeof(Assembly))
-                return false;
+            if (obj is Assembly other && other.GetType() == typeof(Assembly))
+                return Equals(symbol, other.symbol);
 
-            return Equals(symbol, other.symbol);
+            return false;
         }
 
         public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);

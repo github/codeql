@@ -16,8 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static IPropertySymbol GetPropertySymbol(IMethodSymbol symbol)
         {
             // Usually, the property/indexer can be fetched from the associated symbol
-            var prop = symbol.AssociatedSymbol as IPropertySymbol;
-            if (prop != null)
+            if (symbol.AssociatedSymbol is IPropertySymbol prop)
                 return prop;
 
             // But for properties/indexers that implement explicit interfaces, Roslyn

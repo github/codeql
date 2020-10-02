@@ -39,8 +39,7 @@ namespace Semmle.Extraction.PDB
 
             public override bool Equals(object? obj)
             {
-                var otherDoc = obj as Document;
-                return otherDoc != null && Path.Equals(otherDoc.Path);
+                return obj is Document otherDoc && Path.Equals(otherDoc.Path);
             }
 
             public override int GetHashCode() => Path.GetHashCode();

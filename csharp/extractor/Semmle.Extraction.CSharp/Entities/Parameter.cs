@@ -34,8 +34,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 // omit the "this" parameter, so the parameters are
                 // actually numbered from 1.
                 // This is to be consistent from the original (unreduced) extension method.
-                var method = symbol.ContainingSymbol as IMethodSymbol;
-                bool isReducedExtension = method != null && method.MethodKind == MethodKind.ReducedExtension;
+                bool isReducedExtension =
+                    symbol.ContainingSymbol is IMethodSymbol method &&
+                    method.MethodKind == MethodKind.ReducedExtension;
                 return symbol.Ordinal + (isReducedExtension ? 1 : 0);
             }
         }
@@ -57,8 +58,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
                         if (Ordinal == 0)
                         {
-                            var method = symbol.ContainingSymbol as IMethodSymbol;
-                            if (method != null && method.IsExtensionMethod) return Kind.This;
+                            if (symbol.ContainingSymbol is IMethodSymbol method && method.IsExtensionMethod)
+                                return Kind.This;
                         }
                         return Kind.None;
                 }
@@ -160,7 +161,7 @@ namespace Semmle.Extraction.CSharp.Entities
         static EqualsValueClauseSyntax GetParameterDefaultValue(IParameterSymbol parameter)
         {
             var syntax = parameter.DeclaringSyntaxReferences.Select(@ref => @ref.GetSyntax()).OfType<ParameterSyntax>().FirstOrDefault();
-            return syntax != null ? syntax.Default : null;
+            return syntax?.Default;
         }
 
         class ParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>
