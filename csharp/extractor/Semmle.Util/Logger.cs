@@ -69,8 +69,8 @@ namespace Semmle.Util.Logging
                 string? dir = Path.GetDirectoryName(outputFile);
                 if (!string.IsNullOrEmpty(dir) && !System.IO.Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
-                writer = new PidStreamWriter(new FileStream(outputFile, FileMode.Append, FileAccess.Write,
-                    FileShare.ReadWrite, 8192));
+                writer = new PidStreamWriter(
+                    new FileStream(outputFile, FileMode.Append, FileAccess.Write, FileShare.ReadWrite, 8192));
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {

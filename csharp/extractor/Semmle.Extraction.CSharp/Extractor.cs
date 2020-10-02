@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CSharp
             stopwatch.Start();
             var commandLineArguments = Options.CreateWithEnvironment(args);
             var fileLogger = new FileLogger(commandLineArguments.Verbosity, GetCSharpLogPath());
-            var logger = commandLineArguments.Console
+            using var logger = commandLineArguments.Console
                 ? new CombinedLogger(new ConsoleLogger(commandLineArguments.Verbosity), fileLogger)
                 : (ILogger)fileLogger;
 

@@ -25,7 +25,7 @@ namespace Semmle.Extraction.Tests
                 root3 = "/";
             }
 
-            var logger = new LoggerMock();
+            using var logger = new LoggerMock();
 
             Assert.Equal($@"C:\Temp\source_archive\def.cs", TrapWriter.NestPaths(logger, @"C:\Temp\source_archive", "def.cs").Replace('/', '\\'));
 
