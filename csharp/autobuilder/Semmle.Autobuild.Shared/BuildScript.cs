@@ -104,7 +104,7 @@ namespace Semmle.Autobuild.Shared
                     when (ex is System.ComponentModel.Win32Exception || ex is FileNotFoundException)
                 {
                     retMessage = ex.Message;
-                    stdout = new string[0];
+                    stdout = Array.Empty<string>();
                 }
                 exitCallBack(ret, retMessage, silent);
                 return ret;
@@ -124,7 +124,7 @@ namespace Semmle.Autobuild.Shared
 
             public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout)
             {
-                stdout = new string[0];
+                stdout = Array.Empty<string>();
                 return func(actions);
             }
         }

@@ -45,7 +45,7 @@ namespace Semmle.Autobuild.Shared
             DotNetArguments = actions.GetEnvironmentVariable(prefix + "DOTNET_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
             DotNetVersion = actions.GetEnvironmentVariable(prefix + "DOTNET_VERSION");
             BuildCommand = actions.GetEnvironmentVariable(prefix + "BUILD_COMMAND");
-            Solution = actions.GetEnvironmentVariable(prefix + "SOLUTION").AsListWithExpandedEnvVars(actions, new string[0]);
+            Solution = actions.GetEnvironmentVariable(prefix + "SOLUTION").AsListWithExpandedEnvVars(actions, Array.Empty<string>());
 
             IgnoreErrors = actions.GetEnvironmentVariable(prefix + "IGNORE_ERRORS").AsBool("ignore_errors", false);
             Buildless = actions.GetEnvironmentVariable(prefix + "BUILDLESS").AsBool("buildless", false);
