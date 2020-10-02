@@ -415,6 +415,12 @@ class Location extends @location {
         locations_ast(this, m, startline, startcolumn, endline, endcolumn)
       )
     )
+    or
+    // Packages have no suitable filepath, so we use just the path instead.
+    exists(Module m | not exists(m.getFile()) |
+      filepath = m.getPath().getAbsolutePath() and
+      locations_ast(this, m, startline, startcolumn, endline, endcolumn)
+    )
   }
 }
 
