@@ -19,7 +19,7 @@ string value_from_expr(Expr e) {
 class SystemCommandExecutionTest extends InlineExpectationsTest {
   SystemCommandExecutionTest() { this = "SystemCommandExecutionTest" }
 
-  override string getARelevantTag() { result = "SystemCommandExecution_getCommand" }
+  override string getARelevantTag() { result = "getCommand" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(SystemCommandExecution sce, DataFlow::Node command |
@@ -28,7 +28,7 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
       location = command.getLocation() and
       element = command.toString() and
       value = value_from_expr(command.asExpr()) and
-      tag = "SystemCommandExecution_getCommand"
+      tag = "getCommand"
     )
   }
 }

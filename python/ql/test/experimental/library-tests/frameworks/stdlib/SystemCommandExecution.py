@@ -13,8 +13,8 @@ import os
 
 # can't use a string literal with spaces in the tags of an InlineExpectationsTest, so using variables :|
 
-os.popen("cmd1; cmd2")  # $SystemCommandExecution_getCommand="cmd1; cmd2"
-os.system("cmd1; cmd2")  # $SystemCommandExecution_getCommand="cmd1; cmd2"
+os.popen("cmd1; cmd2")  # $getCommand="cmd1; cmd2"
+os.system("cmd1; cmd2")  # $getCommand="cmd1; cmd2"
 
 
 def os_members():
@@ -24,8 +24,8 @@ def os_members():
     # :|
     from os import popen, system
 
-    popen("cmd1; cmd2")  # $SystemCommandExecution_getCommand="cmd1; cmd2"
-    system("cmd1; cmd2")  # $SystemCommandExecution_getCommand="cmd1; cmd2"
+    popen("cmd1; cmd2")  # $getCommand="cmd1; cmd2"
+    system("cmd1; cmd2")  # $getCommand="cmd1; cmd2"
 
 
 ########################################
@@ -36,92 +36,92 @@ def os_members():
 # clever in our analysis that discards that code, I used `if UNKNOWN` instead
 if UNKNOWN:
     env = {"FOO": "foo"}
-    os.execl("executable", "<progname>", "arg0")  # $SystemCommandExecution_getCommand="executable"
-    os.execle("executable", "<progname>", "arg0", env)  # $SystemCommandExecution_getCommand="executable"
-    os.execlp("executable", "<progname>", "arg0")  # $SystemCommandExecution_getCommand="executable"
-    os.execlpe("executable", "<progname>", "arg0", env)  # $SystemCommandExecution_getCommand="executable"
-    os.execv("executable", ["<progname>", "arg0"])  # $SystemCommandExecution_getCommand="executable"
-    os.execve("executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
-    os.execvp("executable", ["<progname>", "arg0"])  # $SystemCommandExecution_getCommand="executable"
-    os.execvpe("executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
+    os.execl("executable", "<progname>", "arg0")  # $getCommand="executable"
+    os.execle("executable", "<progname>", "arg0", env)  # $getCommand="executable"
+    os.execlp("executable", "<progname>", "arg0")  # $getCommand="executable"
+    os.execlpe("executable", "<progname>", "arg0", env)  # $getCommand="executable"
+    os.execv("executable", ["<progname>", "arg0"])  # $getCommand="executable"
+    os.execve("executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
+    os.execvp("executable", ["<progname>", "arg0"])  # $getCommand="executable"
+    os.execvpe("executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
 
 
 ########################################
 # https://docs.python.org/3.8/library/os.html#os.spawnl
 env = {"FOO": "foo"}
-os.spawnl(os.P_WAIT, "executable", "<progname>", "arg0")  # $SystemCommandExecution_getCommand="executable"
-os.spawnle(os.P_WAIT, "executable", "<progname>", "arg0", env)  # $SystemCommandExecution_getCommand="executable"
-os.spawnlp(os.P_WAIT, "executable", "<progname>", "arg0")  # $SystemCommandExecution_getCommand="executable"
-os.spawnlpe(os.P_WAIT, "executable", "<progname>", "arg0", env)  # $SystemCommandExecution_getCommand="executable"
-os.spawnv(os.P_WAIT, "executable", ["<progname>", "arg0"])  # $SystemCommandExecution_getCommand="executable"
-os.spawnve(os.P_WAIT, "executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
-os.spawnvp(os.P_WAIT, "executable", ["<progname>", "arg0"])  # $SystemCommandExecution_getCommand="executable"
-os.spawnvpe(os.P_WAIT, "executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
+os.spawnl(os.P_WAIT, "executable", "<progname>", "arg0")  # $getCommand="executable"
+os.spawnle(os.P_WAIT, "executable", "<progname>", "arg0", env)  # $getCommand="executable"
+os.spawnlp(os.P_WAIT, "executable", "<progname>", "arg0")  # $getCommand="executable"
+os.spawnlpe(os.P_WAIT, "executable", "<progname>", "arg0", env)  # $getCommand="executable"
+os.spawnv(os.P_WAIT, "executable", ["<progname>", "arg0"])  # $getCommand="executable"
+os.spawnve(os.P_WAIT, "executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
+os.spawnvp(os.P_WAIT, "executable", ["<progname>", "arg0"])  # $getCommand="executable"
+os.spawnvpe(os.P_WAIT, "executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
 
 # Added in Python 3.8
-os.posix_spawn("executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
-os.posix_spawnp("executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
+os.posix_spawn("executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
+os.posix_spawnp("executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
 
 ########################################
 
 import subprocess
 
-subprocess.Popen("cmd1; cmd2", shell=True)  # $SystemCommandExecution_getCommand="cmd1; cmd2"
-subprocess.Popen("cmd1; cmd2", shell="truthy string")  # $SystemCommandExecution_getCommand="cmd1; cmd2"
-subprocess.Popen(["cmd1; cmd2", "shell-arg"], shell=True)  # $SystemCommandExecution_getCommand="cmd1; cmd2"
-subprocess.Popen("cmd1; cmd2", shell=True, executable="/bin/bash")  # $SystemCommandExecution_getCommand="cmd1; cmd2" $SystemCommandExecution_getCommand="/bin/bash"
+subprocess.Popen("cmd1; cmd2", shell=True)  # $getCommand="cmd1; cmd2"
+subprocess.Popen("cmd1; cmd2", shell="truthy string")  # $getCommand="cmd1; cmd2"
+subprocess.Popen(["cmd1; cmd2", "shell-arg"], shell=True)  # $getCommand="cmd1; cmd2"
+subprocess.Popen("cmd1; cmd2", shell=True, executable="/bin/bash")  # $getCommand="cmd1; cmd2" $getCommand="/bin/bash"
 
-subprocess.Popen("executable")  # $SystemCommandExecution_getCommand="executable"
-subprocess.Popen(["executable", "arg0"])  # $SystemCommandExecution_getCommand="executable"
-subprocess.Popen("<progname>", executable="executable")  # $SystemCommandExecution_getCommand="executable"
-subprocess.Popen(["<progname>", "arg0"], executable="executable")  # $SystemCommandExecution_getCommand="executable"
+subprocess.Popen("executable")  # $getCommand="executable"
+subprocess.Popen(["executable", "arg0"])  # $getCommand="executable"
+subprocess.Popen("<progname>", executable="executable")  # $getCommand="executable"
+subprocess.Popen(["<progname>", "arg0"], executable="executable")  # $getCommand="executable"
 
 # call/check_call/check_output/run all work like Popen from a command execution point of view
-subprocess.call(["executable", "arg0"])  # $SystemCommandExecution_getCommand="executable"
-subprocess.check_call(["executable", "arg0"])  # $SystemCommandExecution_getCommand="executable"
-subprocess.check_output(["executable", "arg0"])  # $SystemCommandExecution_getCommand="executable"
-subprocess.run(["executable", "arg0"])  # $SystemCommandExecution_getCommand="executable"
+subprocess.call(["executable", "arg0"])  # $getCommand="executable"
+subprocess.check_call(["executable", "arg0"])  # $getCommand="executable"
+subprocess.check_output(["executable", "arg0"])  # $getCommand="executable"
+subprocess.run(["executable", "arg0"])  # $getCommand="executable"
 
 
 ########################################
 # actively using known shell as the executable
 
-subprocess.Popen(["/bin/sh", "-c", "vuln"])  # $SystemCommandExecution_getCommand="/bin/sh" $f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["/bin/bash", "-c", "vuln"])  # $SystemCommandExecution_getCommand="/bin/bash" $f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["/bin/dash", "-c", "vuln"])  # $SystemCommandExecution_getCommand="/bin/dash" $f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["/bin/zsh", "-c", "vuln"])  # $SystemCommandExecution_getCommand="/bin/zsh" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["/bin/sh", "-c", "vuln"])  # $getCommand="/bin/sh" $f-:getCommand="vuln"
+subprocess.Popen(["/bin/bash", "-c", "vuln"])  # $getCommand="/bin/bash" $f-:getCommand="vuln"
+subprocess.Popen(["/bin/dash", "-c", "vuln"])  # $getCommand="/bin/dash" $f-:getCommand="vuln"
+subprocess.Popen(["/bin/zsh", "-c", "vuln"])  # $getCommand="/bin/zsh" $f-:getCommand="vuln"
 
-subprocess.Popen(["sh", "-c", "vuln"])  # $SystemCommandExecution_getCommand="sh" $f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["bash", "-c", "vuln"])  # $SystemCommandExecution_getCommand="bash" $f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["dash", "-c", "vuln"])  # $SystemCommandExecution_getCommand="dash" $f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["zsh", "-c", "vuln"])  # $SystemCommandExecution_getCommand="zsh" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["sh", "-c", "vuln"])  # $getCommand="sh" $f-:getCommand="vuln"
+subprocess.Popen(["bash", "-c", "vuln"])  # $getCommand="bash" $f-:getCommand="vuln"
+subprocess.Popen(["dash", "-c", "vuln"])  # $getCommand="dash" $f-:getCommand="vuln"
+subprocess.Popen(["zsh", "-c", "vuln"])  # $getCommand="zsh" $f-:getCommand="vuln"
 
 # Check that we don't consider ANY argument a command injection sink
-subprocess.Popen(["sh", "/bin/python"])  # $SystemCommandExecution_getCommand="sh"
+subprocess.Popen(["sh", "/bin/python"])  # $getCommand="sh"
 
-subprocess.Popen(["cmd.exe", "/c", "vuln"])  # $SystemCommandExecution_getCommand="cmd.exe" $f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["cmd.exe", "/C", "vuln"])  # $SystemCommandExecution_getCommand="cmd.exe" $f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["cmd", "/c", "vuln"])  # $SystemCommandExecution_getCommand="cmd" $f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["cmd", "/C", "vuln"])  # $SystemCommandExecution_getCommand="cmd" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["cmd.exe", "/c", "vuln"])  # $getCommand="cmd.exe" $f-:getCommand="vuln"
+subprocess.Popen(["cmd.exe", "/C", "vuln"])  # $getCommand="cmd.exe" $f-:getCommand="vuln"
+subprocess.Popen(["cmd", "/c", "vuln"])  # $getCommand="cmd" $f-:getCommand="vuln"
+subprocess.Popen(["cmd", "/C", "vuln"])  # $getCommand="cmd" $f-:getCommand="vuln"
 
-subprocess.Popen(["<progname>", "-c", "vuln"], executable="/bin/bash")  # $SystemCommandExecution_getCommand="/bin/bash" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["<progname>", "-c", "vuln"], executable="/bin/bash")  # $getCommand="/bin/bash" $f-:getCommand="vuln"
 
 if UNKNOWN:
-    os.execl("/bin/sh", "<progname>", "-c", "vuln")  # $SystemCommandExecution_getCommand="/bin/sh" $f-:SystemCommandExecution_getCommand="vuln"
+    os.execl("/bin/sh", "<progname>", "-c", "vuln")  # $getCommand="/bin/sh" $f-:getCommand="vuln"
 
-os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $SystemCommandExecution_getCommand="/bin/sh" $f-:SystemCommandExecution_getCommand="vuln"
+os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $getCommand="/bin/sh" $f-:getCommand="vuln"
 
 
 ########################################
 # Passing arguments by reference
 
 args = ["/bin/sh", "-c", "vuln"]
-subprocess.Popen(args)  # $SystemCommandExecution_getCommand=args
+subprocess.Popen(args)  # $getCommand=args
 
 args = "<progname>"
 use_shell = False
 exe = "executable"
-subprocess.Popen(args, shell=use_shell, executable=exe)  # $f+:SystemCommandExecution_getCommand=args $SystemCommandExecution_getCommand=exe
+subprocess.Popen(args, shell=use_shell, executable=exe)  # $f+:getCommand=args $getCommand=exe
 
 
 ################################################################################
