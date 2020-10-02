@@ -68,7 +68,8 @@ namespace Semmle.BuildAnalyser
                 yield return Id;
                 if (Version != null)
                 {
-                    if (Culture != null) yield return string.Format("{0}, Version={1}, Culture={2}", Name, Version, Culture);
+                    if (Culture != null)
+                        yield return string.Format("{0}, Version={1}, Culture={2}", Name, Version, Culture);
                     yield return string.Format("{0}, Version={1}", Name, Version);
                 }
                 yield return Name;

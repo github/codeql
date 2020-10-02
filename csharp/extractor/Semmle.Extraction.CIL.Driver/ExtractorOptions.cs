@@ -66,11 +66,13 @@ namespace Semmle.Extraction.CIL.Driver
             using var peReader = new PEReader(stream);
             try
             {
-                if (!peReader.HasMetadata) throw new InvalidAssemblyException();
+                if (!peReader.HasMetadata)
+                    throw new InvalidAssemblyException();
 
                 var mdReader = peReader.GetMetadataReader();
 
-                if (!mdReader.IsAssembly) throw new InvalidAssemblyException();
+                if (!mdReader.IsAssembly)
+                    throw new InvalidAssemblyException();
 
                 // Get our own assembly name
                 name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());

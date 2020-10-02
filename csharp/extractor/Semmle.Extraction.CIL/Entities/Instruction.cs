@@ -295,7 +295,8 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                if (OpCode == ILOpCode.Switch) return 5 + 4 * PayloadValue;
+                if (OpCode == ILOpCode.Switch)
+                    return 5 + 4 * PayloadValue;
 
                 return ((int)OpCode > 255 ? 2 : 1) + PayloadSize;
             }

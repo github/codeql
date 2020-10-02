@@ -193,7 +193,8 @@ namespace Semmle.Extraction.CIL
 
         private Namespace CreateNamespace(NamespaceDefinitionHandle handle)
         {
-            if (handle.IsNil) return GlobalNamespace;
+            if (handle.IsNil)
+                return GlobalNamespace;
             var nd = mdReader.GetNamespaceDefinition(handle);
             return Populate(new Namespace(this, GetString(nd.Name), Create(nd.Parent)));
         }
@@ -237,8 +238,10 @@ namespace Semmle.Extraction.CIL
         public string ShortName(StringHandle handle)
         {
             var str = mdReader.GetString(handle);
-            if (str.EndsWith(".ctor")) return ".ctor";
-            if (str.EndsWith(".cctor")) return ".cctor";
+            if (str.EndsWith(".ctor"))
+                return ".ctor";
+            if (str.EndsWith(".cctor"))
+                return ".cctor";
             var dot = str.LastIndexOf('.');
             return dot == -1 ? str : str.Substring(dot + 1);
         }

@@ -32,7 +32,8 @@ namespace Semmle.Extraction
 
         public static void WriteSeparator(this TextWriter trapFile, string separator, ref int index)
         {
-            if (index++ > 0) trapFile.Write(separator);
+            if (index++ > 0)
+                trapFile.Write(separator);
         }
 
 

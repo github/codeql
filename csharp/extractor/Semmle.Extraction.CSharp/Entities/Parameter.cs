@@ -54,7 +54,8 @@ namespace Semmle.Extraction.CSharp.Entities
                     case RefKind.In:
                         return Kind.In;
                     default:
-                        if (symbol.IsParams) return Kind.Params;
+                        if (symbol.IsParams)
+                            return Kind.Params;
 
                         if (Ordinal == 0)
                         {

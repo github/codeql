@@ -106,7 +106,8 @@ namespace Semmle.Extraction
         /// <param name="inputEncoding">The encoding used by the input file.</param>
         public void Archive(string originalPath, PathTransformer.ITransformedPath transformedPath, Encoding inputEncoding)
         {
-            if (string.IsNullOrEmpty(archive)) return;
+            if (string.IsNullOrEmpty(archive))
+                return;
 
             // Calling GetFullPath makes this use the canonical capitalisation, if the file exists.
             var fullInputPath = Path.GetFullPath(originalPath);
@@ -121,7 +122,8 @@ namespace Semmle.Extraction
         /// <param name="contents">The contents of the file.</param>
         public void Archive(PathTransformer.ITransformedPath inputPath, string contents)
         {
-            if (string.IsNullOrEmpty(archive)) return;
+            if (string.IsNullOrEmpty(archive))
+                return;
 
             ArchiveContents(inputPath, contents);
         }

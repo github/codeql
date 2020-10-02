@@ -769,8 +769,10 @@ namespace Semmle.Extraction.CIL.Entities
         {
             if (obj is ConstructedType t && Equals(unboundGenericType, t.unboundGenericType) && Equals(containingType, t.containingType))
             {
-                if (thisTypeArguments is null) return t.thisTypeArguments is null;
-                if (!(t.thisTypeArguments is null)) return thisTypeArguments.SequenceEqual(t.thisTypeArguments);
+                if (thisTypeArguments is null)
+                    return t.thisTypeArguments is null;
+                if (!(t.thisTypeArguments is null))
+                    return thisTypeArguments.SequenceEqual(t.thisTypeArguments);
             }
             return false;
         }

@@ -33,12 +33,14 @@ namespace Semmle.Extraction.CSharp.Entities
         protected override void ExtractInitializers(TextWriter trapFile)
         {
             // Do not extract initializers for constructed types.
-            if (!IsSourceDeclaration) return;
+            if (!IsSourceDeclaration)
+                return;
 
             var syntax = Syntax;
             var initializer = syntax?.Initializer;
 
-            if (initializer == null) return;
+            if (initializer == null)
+                return;
 
             Type initializerType;
             var symbolInfo = Context.GetSymbolInfo(initializer);
@@ -97,7 +99,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public new static Constructor Create(Context cx, IMethodSymbol constructor)
         {
-            if (constructor == null) return null;
+            if (constructor == null)
+                return null;
 
             switch (constructor.MethodKind)
             {
@@ -111,7 +114,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            if (symbol.IsStatic) trapFile.Write("static");
+            if (symbol.IsStatic)
+                trapFile.Write("static");
             trapFile.WriteSubId(ContainingType);
             AddParametersToId(Context, trapFile, symbol);
             trapFile.Write(";constructor");

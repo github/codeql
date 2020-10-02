@@ -46,14 +46,19 @@ namespace Semmle.Extraction.CommentProcessing
         /// <returns>&lt;0 if l1 before l2, &gt;0 if l1 after l2, else 0.</returns>
         private static int Compare(Location? l1, Location? l2)
         {
-            if (object.ReferenceEquals(l1, l2)) return 0;
-            if (l1 == null) return -1;
-            if (l2 == null) return 1;
+            if (object.ReferenceEquals(l1, l2))
+                return 0;
+            if (l1 == null)
+                return -1;
+            if (l2 == null)
+                return 1;
 
             var diff = l1.SourceTree == l2.SourceTree ? 0 : l1.SourceTree.FilePath.CompareTo(l2.SourceTree.FilePath);
-            if (diff != 0) return diff;
+            if (diff != 0)
+                return diff;
             diff = l1.SourceSpan.Start - l2.SourceSpan.Start;
-            if (diff != 0) return diff;
+            if (diff != 0)
+                return diff;
             return l1.SourceSpan.End - l2.SourceSpan.End;
         }
 
@@ -359,7 +364,8 @@ namespace Semmle.Extraction.CommentProcessing
         /// <returns>Whether the new line should be appended to this block.</returns>
         public bool CombinesWith(ICommentLine newLine)
         {
-            if (!CommentLines.Any()) return true;
+            if (!CommentLines.Any())
+                return true;
 
             var sameFile = Location.SourceTree == newLine.Location.SourceTree;
             var sameRow = Location.EndLine() == newLine.Location.StartLine();

@@ -60,7 +60,9 @@ namespace Semmle.Autobuild.Shared
     {
         public static bool AsBool(this string? value, string param, bool defaultValue)
         {
-            if (value == null) return defaultValue;
+            if (value == null)
+                return defaultValue;
+
             switch (value.ToLower())
             {
                 case "on":

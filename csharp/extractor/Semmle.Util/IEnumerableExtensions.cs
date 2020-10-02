@@ -65,7 +65,8 @@ namespace Semmle.Util
         /// </summary>
         public static IEnumerable<T> EnumerateNull<T>(this IEnumerable<T>? items)
         {
-            if (items == null) yield break;
+            if (items == null)
+                yield break;
             foreach (var item in items) yield return item;
         }
 

@@ -92,9 +92,10 @@ namespace Semmle.Extraction.CSharp.Entities
                         var nextLineLocation = currentLocation + fullLine.Length + 1;
                         fullLine = fullLine.TrimEnd('\r');
                         var trimmedLine = fullLine;
-                        if (line == 0) trimmedLine = trimmedLine.Substring(2);
-                        if (line == split.Length - 1) trimmedLine = trimmedLine.Substring(0, trimmedLine.Length - 2);
-
+                        if (line == 0)
+                            trimmedLine = trimmedLine.Substring(2);
+                        if (line == split.Length - 1)
+                            trimmedLine = trimmedLine.Substring(0, trimmedLine.Length - 2);
                         trimmedLine = trimmedLine.Trim();
 
                         var span = Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(currentLocation, currentLocation + fullLine.Length);

@@ -502,7 +502,8 @@ namespace Semmle.Extraction.CSharp
 
         public static IEntity CreateEntity(this Context cx, ISymbol symbol)
         {
-            if (symbol == null) return null;
+            if (symbol == null)
+                return null;
 
             using (cx.StackGuard)
             {

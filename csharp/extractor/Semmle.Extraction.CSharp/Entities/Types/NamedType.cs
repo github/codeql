@@ -151,7 +151,8 @@ namespace Semmle.Extraction.CSharp.Entities
         private static AnnotatedTypeSymbol GetElementType(Context cx, INamedTypeSymbol type)
         {
             var et = GetEnumerableType(cx, type);
-            if (et.Symbol != null) return et;
+            if (et.Symbol != null)
+                return et;
 
             return type.AllInterfaces
                 .Where(i => i.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)

@@ -18,7 +18,8 @@ namespace Semmle.Extraction.Entities
         protected NonGeneratedSourceLocation(Context cx, Microsoft.CodeAnalysis.Location? init)
             : base(cx, init)
         {
-            if (init is null) throw new ArgumentException("Location may not be null", nameof(init));
+            if (init is null)
+                throw new ArgumentException("Location may not be null", nameof(init));
             Position = init.GetLineSpan();
             FileEntity = File.Create(Context, Position.Path);
         }

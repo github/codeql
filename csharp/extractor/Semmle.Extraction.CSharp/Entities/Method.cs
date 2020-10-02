@@ -217,7 +217,8 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns></returns>
         public static Method Create(Context cx, IMethodSymbol methodDecl)
         {
-            if (methodDecl == null) return null;
+            if (methodDecl == null)
+                return null;
 
             var methodKind = methodDecl.MethodKind;
 

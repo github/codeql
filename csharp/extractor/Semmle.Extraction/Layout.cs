@@ -76,7 +76,8 @@ namespace Semmle.Extraction
         /// <returns>The relevant subproject, or null if not found.</returns>
         public SubProject? LookupProjectOrNull(PathTransformer.ITransformedPath sourceFile)
         {
-            if (!useLayoutFile) return DefaultProject;
+            if (!useLayoutFile)
+                return DefaultProject;
 
             return blocks
                 .Where(block => block.Matches(sourceFile))

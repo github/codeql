@@ -110,7 +110,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var si = SymbolInfo;
 
-                if (si.Symbol != null) return si.Symbol as IMethodSymbol;
+                if (si.Symbol != null)
+                    return si.Symbol as IMethodSymbol;
 
                 if (si.CandidateReason == CandidateReason.OverloadResolutionFailure)
                 {

@@ -196,7 +196,8 @@ namespace Semmle.Util
             // If we reached the end of a line (as opposed to reaching the end of the text),
             // put the '\n' back so that it can be handled by the normal newline processing
             // code.
-            if (IsNewLine(c)) --context.CurIndex;
+            if (IsNewLine(c))
+                --context.CurIndex;
         }
 
         /// <summary>
@@ -245,8 +246,10 @@ namespace Semmle.Util
             var numSlashes = 0;
             while (cur != null && ((cur = GetNext(input, context)) != '"' || (numSlashes % 2 != 0)))
             {
-                if (cur == '\\') ++numSlashes;
-                else numSlashes = 0;
+                if (cur == '\\')
+                    ++numSlashes;
+                else
+                    numSlashes = 0;
             }
         }
 

@@ -17,7 +17,8 @@ namespace Semmle.Util
             do
             {
                 s = process.StandardOutput.ReadLine();
-                if (s != null) stdout.Add(s);
+                if (s != null)
+                    stdout.Add(s);
             }
             while (s != null);
             process.WaitForExit();

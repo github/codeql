@@ -33,7 +33,11 @@ namespace Semmle.Util
             var first = true;
             foreach (var item in items)
             {
-                if (first) first = false; else builder.Append(separator);
+                if (first)
+                    first = false;
+                else
+                    builder.Append(separator);
+
                 action(item, builder);
             }
             return builder;

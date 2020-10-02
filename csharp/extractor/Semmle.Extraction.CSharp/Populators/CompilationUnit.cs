@@ -53,7 +53,8 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitAttributeList(AttributeListSyntax node)
         {
-            if (cx.Extractor.Standalone) return;
+            if (cx.Extractor.Standalone)
+                return;
 
             var outputAssembly = Assembly.CreateOutputAssembly(cx);
             foreach (var attribute in node.Attributes)

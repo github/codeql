@@ -101,7 +101,8 @@ namespace Semmle.Util
             foreach (var candidate in candidates)
             {
                 var d = distance(query, candidate.Key);
-                if (d == 0) return candidate.Value;
+                if (d == 0)
+                    return candidate.Value;
 
                 if (first || d < bestDistance)
                 {

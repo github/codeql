@@ -67,7 +67,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 case SpecialType.System_Single: return Kinds.TypeKind.FLOAT;
                 case SpecialType.System_IntPtr: return Kinds.TypeKind.INT_PTR;
                 default:
-                    if (t.IsBoundNullable()) return Kinds.TypeKind.NULLABLE;
+                    if (t.IsBoundNullable())
+                        return Kinds.TypeKind.NULLABLE;
+
                     switch (t.TypeKind)
                     {
                         case TypeKind.Class: return Kinds.TypeKind.CLASS;

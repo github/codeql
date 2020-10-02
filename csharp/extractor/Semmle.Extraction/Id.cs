@@ -132,7 +132,8 @@ namespace Semmle.Extraction
 
         public override bool Equals(object? other)
         {
-            if (other is null) return false;
+            if (other is null)
+                return false;
             return GetType() == other.GetType() && ((Label)other).Value == Value;
         }
 
