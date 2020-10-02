@@ -30,22 +30,19 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                IInstruction? try_start, try_end, handler_start;
 
-                if (!jump_table.TryGetValue(r.TryOffset, out try_start))
+                if (!jump_table.TryGetValue(r.TryOffset, out IInstruction? try_start))
                     throw new InternalError("Failed  to retrieve handler");
-                if (!jump_table.TryGetValue(r.TryOffset + r.TryLength, out try_end))
+                if (!jump_table.TryGetValue(r.TryOffset + r.TryLength, out IInstruction? try_end))
                     throw new InternalError("Failed  to retrieve handler");
-                if (!jump_table.TryGetValue(r.HandlerOffset, out handler_start))
+                if (!jump_table.TryGetValue(r.HandlerOffset, out IInstruction? handler_start))
                     throw new InternalError("Failed  to retrieve handler");
-
 
                 yield return Tuples.cil_handler(this, method, index, (int)r.Kind, try_start, try_end, handler_start);
 
                 if (r.FilterOffset != -1)
                 {
-                    IInstruction? filter_start;
-                    if (!jump_table.TryGetValue(r.FilterOffset, out filter_start))
+                    if (!jump_table.TryGetValue(r.FilterOffset, out IInstruction? filter_start))
                         throw new InternalError("ExceptionRegion filter clause");
 
                     yield return Tuples.cil_handler_filter(this, filter_start);

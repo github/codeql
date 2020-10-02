@@ -279,8 +279,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                Payload result;
-                if (!opPayload.TryGetValue(OpCode, out result))
+                if (!opPayload.TryGetValue(OpCode, out Payload result))
                     throw new InternalError("Unknown op code " + OpCode);
                 return result;
             }
@@ -468,9 +467,14 @@ namespace Semmle.Extraction.CIL.Entities
                     for (int b = 0; b < PayloadValue; ++b, offset += 4)
                     {
                         target = BitConverter.ToInt32(data, offset) + end;
-                        if (!jump_table.TryGetValue(target, out inst))
+                        if (jump_table.TryGetValue(target, out inst))
+                        {
+                            yield return Tuples.cil_switch(this, b, inst);
+                        }
+                        else
+                        {
                             throw new InternalError("Invalid jump target");
-                        yield return Tuples.cil_switch(this, b, inst);
+                        }
                     }
 
                     yield break;

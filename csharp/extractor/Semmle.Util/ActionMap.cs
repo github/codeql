@@ -30,8 +30,7 @@ namespace Semmle.Util
                 actions.Add(key, action);
             }
 
-            Value val;
-            if (values.TryGetValue(key, out val))
+            if (values.TryGetValue(key, out Value val))
             {
                 action(val);
             }
