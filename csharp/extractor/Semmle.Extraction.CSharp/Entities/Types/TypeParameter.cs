@@ -19,8 +19,6 @@ namespace Semmle.Extraction.CSharp.Entities
         TypeParameter(Context cx, ITypeParameterSymbol init)
             : base(cx, init) { }
 
-        static readonly string valueTypeName = typeof(System.ValueType).ToString();
-
         public override void Populate(TextWriter trapFile)
         {
             var constraints = new TypeParameterConstraints(Context);
