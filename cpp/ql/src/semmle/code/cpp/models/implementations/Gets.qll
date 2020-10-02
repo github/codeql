@@ -16,11 +16,10 @@ import semmle.code.cpp.models.interfaces.FlowSource
 class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
   SideEffectFunction, RemoteFlowFunction {
   GetsFunction() {
-    exists(string name | hasGlobalOrStdName(name) |
-      name = "gets" or // gets(str)
-      name = "fgets" or // fgets(str, num, stream)
-      name = "fgetws" // fgetws(wstr, num, stream)
-    )
+    // gets(str)
+    // fgets(str, num, stream)
+    // fgetws(wstr, num, stream)
+    hasGlobalOrStdName(["gets", "fgets", "fgetws"])
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {

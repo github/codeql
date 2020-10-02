@@ -4,16 +4,11 @@ import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
- * The standard function templates `std::move` and `std::identity`
+ * The standard function templates `std::move` and `std::forward`.
  */
 class IdentityFunction extends DataFlowFunction, SideEffectFunction, AliasFunction {
   IdentityFunction() {
-    this.getNamespace().getParentNamespace() instanceof GlobalNamespace and
-    this.getNamespace().getName() = "std" and
-    (
-      this.getName() = "move" or
-      this.getName() = "forward"
-    )
+    this.hasQualifiedName("std", ["move", "forward"])
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }

@@ -10,13 +10,8 @@ import cpp
  */
 class SALMacro extends Macro {
   SALMacro() {
-    exists(string filename | filename = this.getFile().getBaseName() |
-      filename = "sal.h" or
-      filename = "specstrings_strict.h" or
-      filename = "specstrings.h" or
-      filename = "w32p.h" or
-      filename = "minwindef.h"
-    ) and
+    this.getFile().getBaseName() =
+      ["sal.h", "specstrings_strict.h", "specstrings.h", "w32p.h", "minwindef.h"] and
     (
       // Dialect for Windows 8 and above
       this.getName().matches("\\_%\\_")
@@ -58,10 +53,7 @@ class SALAnnotation extends MacroInvocation {
  */
 class SALCheckReturn extends SALAnnotation {
   SALCheckReturn() {
-    exists(SALMacro m | m = this.getMacro() |
-      m.getName() = "_Check_return_" or
-      m.getName() = "_Must_inspect_result_"
-    )
+    this.getMacro().(SALMacro).getName() = ["_Check_return_", "_Must_inspect_result_"]
   }
 }
 

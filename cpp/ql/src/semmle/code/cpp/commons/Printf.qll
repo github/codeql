@@ -9,10 +9,7 @@ import semmle.code.cpp.models.interfaces.FormattingFunction
 import semmle.code.cpp.models.implementations.Printf
 
 class PrintfFormatAttribute extends FormatAttribute {
-  PrintfFormatAttribute() {
-    getArchetype() = "printf" or
-    getArchetype() = "__printf__"
-  }
+  PrintfFormatAttribute() { getArchetype() = ["printf", "__printf__"] }
 }
 
 /**
@@ -601,12 +598,12 @@ class FormatLiteral extends Literal {
         or
         len = "l" and result = this.getLongType()
         or
-        (len = "ll" or len = "L" or len = "q") and
+        len = ["ll", "L", "q"] and
         result instanceof LongLongType
         or
         len = "j" and result = this.getIntmax_t()
         or
-        (len = "z" or len = "Z") and
+        len = ["z", "Z"] and
         (result = this.getSize_t() or result = this.getSsize_t())
         or
         len = "t" and result = this.getPtrdiff_t()
@@ -639,12 +636,12 @@ class FormatLiteral extends Literal {
         or
         len = "l" and result = this.getLongType()
         or
-        (len = "ll" or len = "L" or len = "q") and
+        len = ["ll", "L", "q"] and
         result instanceof LongLongType
         or
         len = "j" and result = this.getIntmax_t()
         or
-        (len = "z" or len = "Z") and
+        len = ["z", "Z"] and
         (result = this.getSize_t() or result = this.getSsize_t())
         or
         len = "t" and result = this.getPtrdiff_t()
@@ -670,9 +667,7 @@ class FormatLiteral extends Literal {
   FloatingPointType getFloatingPointConversion(int n) {
     exists(string len |
       len = this.getLength(n) and
-      if len = "L" or len = "ll"
-      then result instanceof LongDoubleType
-      else result instanceof DoubleType
+      if len = ["L", "ll"] then result instanceof LongDoubleType else result instanceof DoubleType
     )
   }
 
@@ -689,7 +684,7 @@ class FormatLiteral extends Literal {
         or
         len = "l" and base = this.getLongType()
         or
-        (len = "ll" or len = "L") and
+        len = ["ll", "L"] and
         base instanceof LongLongType
         or
         len = "q" and base instanceof LongLongType
@@ -736,12 +731,12 @@ class FormatLiteral extends Literal {
     exists(string len, string conv |
       this.parseConvSpec(n, _, _, _, _, _, len, conv) and
       (
-        (conv = "c" or conv = "C") and
+        conv = ["c", "C"] and
         len = "h" and
         result instanceof PlainCharType
         or
-        (conv = "c" or conv = "C") and
-        (len = "l" or len = "w") and
+        conv = ["c", "C"] and
+        len = ["l", "w"] and
         result = getWideCharType()
         or
         conv = "c" and
@@ -781,12 +776,12 @@ class FormatLiteral extends Literal {
     exists(string len, string conv |
       this.parseConvSpec(n, _, _, _, _, _, len, conv) and
       (
-        (conv = "s" or conv = "S") and
+        conv = ["s", "S"] and
         len = "h" and
         result.(PointerType).getBaseType() instanceof PlainCharType
         or
-        (conv = "s" or conv = "S") and
-        (len = "l" or len = "w") and
+        conv = ["s", "S"] and
+        len = ["l", "w"] and
         result.(PointerType).getBaseType() = getWideCharType()
         or
         conv = "s" and
@@ -823,10 +818,7 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType9(int n) {
     this.getConversionChar(n) = "Z" and
-    (
-      this.getLength(n) = "l" or
-      this.getLength(n) = "w"
-    ) and
+    this.getLength(n) = ["l", "w"] and
     exists(Type t |
       t.getName() = "UNICODE_STRING" and
       result.(PointerType).getBaseType() = t
@@ -979,10 +971,7 @@ class FormatLiteral extends Literal {
           len = (afterdot.maximum(1) + 6).maximum(1 + 1 + dot + afterdot + 1 + 1 + 3)
         ) // (e.g. "-1.59203e-319")
         or
-        (
-          this.getConversionChar(n).toLowerCase() = "d" or
-          this.getConversionChar(n).toLowerCase() = "i"
-        ) and
+        this.getConversionChar(n).toLowerCase() = ["d", "i"] and
         // e.g. -2^31 = "-2147483648"
         exists(int sizeBits |
           sizeBits =

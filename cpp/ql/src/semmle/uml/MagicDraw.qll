@@ -65,15 +65,8 @@ class UMLElement extends XMLElement {
  */
 class UMLType extends UMLElement {
   UMLType() {
-    exists(string type |
-      this.getName() = "packagedElement" and
-      this.getAttribute("type").getValue() = type and
-      (
-        type = "uml:Class" or
-        type = "uml:Interface" or
-        type = "uml:PrimitiveType"
-      )
-    )
+    this.getName() = "packagedElement" and
+    this.getAttribute("type").getValue() = ["uml:Class", "uml:Interface", "uml:PrimitiveType"]
   }
 
   /**

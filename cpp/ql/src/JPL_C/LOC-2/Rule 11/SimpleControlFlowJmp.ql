@@ -13,14 +13,7 @@
 import cpp
 
 class ForbiddenFunction extends Function {
-  ForbiddenFunction() {
-    exists(string name | name = this.getName() |
-      name = "setjmp" or
-      name = "longjmp" or
-      name = "sigsetjmp" or
-      name = "siglongjmp"
-    )
-  }
+  ForbiddenFunction() { this.getName() = ["setjmp", "longjmp", "sigsetjmp", "siglongjmp"] }
 }
 
 from FunctionCall call
