@@ -456,11 +456,11 @@ namespace Semmle.Extraction.CSharp
         /// <returns>The list of parameters, or an empty list.</returns>
         public static IEnumerable<IParameterSymbol> GetParameters(this ISymbol parameterizable)
         {
-            if (parameterizable is IMethodSymbol)
-                return ((IMethodSymbol)parameterizable).Parameters;
+            if (parameterizable is IMethodSymbol meth)
+                return meth.Parameters;
 
-            if (parameterizable is IPropertySymbol)
-                return ((IPropertySymbol)parameterizable).Parameters;
+            if (parameterizable is IPropertySymbol prop)
+                return prop.Parameters;
 
             return Enumerable.Empty<IParameterSymbol>();
         }
