@@ -193,7 +193,9 @@ namespace Semmle.Extraction
                 populateQueue.Enqueue(() => WithDuplicationGuard(key, a));
             }
             else
+            {
                 populateQueue.Enqueue(a);
+            }
         }
 
         /// <summary>

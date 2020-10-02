@@ -111,9 +111,10 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 if (ContainingType != null)
+                {
                     foreach (var t in ContainingType.TypeArguments)
                         yield return t;
-
+                }
                 foreach (var t in ThisTypeArguments)
                     yield return t;
 
@@ -211,8 +212,10 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 if (ContainingType != null)
+                {
                     foreach (var t in ContainingType.GenericArguments)
                         yield return t;
+                }
                 foreach (var t in ThisGenericArguments)
                     yield return t;
             }

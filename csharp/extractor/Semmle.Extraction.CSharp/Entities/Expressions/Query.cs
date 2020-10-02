@@ -81,7 +81,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     }
                 }
                 else
+                {
                     declType = type;
+                }
 
                 var decl = VariableDeclaration.Create(cx,
                     variableSymbol,

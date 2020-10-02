@@ -86,7 +86,9 @@ namespace Semmle.Extraction
                     }
                 }
                 else
+                {
                     sb.Append(Regex.Escape(pattern[i++].ToString()));
+                }
             }
             return sb.Append(".*");
         }

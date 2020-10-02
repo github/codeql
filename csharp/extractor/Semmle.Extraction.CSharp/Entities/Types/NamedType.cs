@@ -126,7 +126,9 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void WriteId(TextWriter trapFile)
         {
             if (IsAnonymousType())
+            {
                 trapFile.Write('*');
+            }
             else
             {
                 symbol.BuildTypeId(Context, trapFile, symbol, constructUnderlyingTupleType);

@@ -15,8 +15,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             Create(cx, Syntax.Expression, this, 0);
 
             if (Kind == ExprKind.CAST)
-                // Type cast
+            {  // Type cast
                 TypeAccess.Create(new ExpressionNodeInfo(cx, Syntax.Type, this, 1));
+            }
             else
             {
                 // Type conversion

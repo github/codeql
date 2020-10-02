@@ -62,7 +62,9 @@ namespace Semmle.Autobuild.Shared
                         QuoteArgument(projectOrSolution.FullPath);
 
                     if (nugetDownloaded)
+                    {
                         ret &= BuildScript.Try(nugetRestore | msbuildRestoreCommand.Script);
+                    }
                     else
                     {
                         // If `nuget restore` fails, and we have not already attempted to download `nuget.exe`,
