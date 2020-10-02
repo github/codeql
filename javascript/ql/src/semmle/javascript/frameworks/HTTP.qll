@@ -237,15 +237,36 @@ module HTTP {
    * Holds if `call` decorates the function `pred`.
    * This means that `call` returns a function that forwards its arguments to `pred`.
    * Only holds when the decorator looks like it is decorating a route-handler.
+   *
+   * Below is a code example relating `call`, `decoratee`, `outer`, `inner`.
+   * ```
+   * function outer(method) {
+   *    return function inner(req, res) {
+   *      return method.call(this, req, res);
+   *    };
+   *  }
+   *  var route = outer(function decoratee(req, res) { // <- call
+   *    res.end("foo");
+   *  });
+   * ```
    */
   private predicate isDecoratedCall(DataFlow::CallNode call, DataFlow::FunctionNode decoratee) {
     // indirect route-handler `result` is given to function `outer`, which returns function `inner` which calls the function `pred`.
-    exists(int i, Function outer, Function inner |
+    exists(int i, DataFlow::FunctionNode outer, HTTP::RouteHandlerCandidate inner |
+      inner = outer.getAReturn().getALocalSource() and
       decoratee = call.getArgument(i).getALocalSource() and
-      outer = call.getACallee() and
-      inner = outer.getAReturnedExpr() and
-      isAForwardingRouteHandlerCall(DataFlow::parameterNode(outer.getParameter(i)), inner.flow())
+      outer.getFunction() = call.getACallee() and
+      hasForwardingHandlerParameter(i, outer, inner)
     )
+  }
+
+  /**
+   * Holds if the `i`th parameter of `outer` has a call that `inner` forwards its parameters to.
+   */
+  private predicate hasForwardingHandlerParameter(
+    int i, DataFlow::FunctionNode outer, HTTP::RouteHandlerCandidate inner
+  ) {
+    isAForwardingRouteHandlerCall(outer.getParameter(i), inner)
   }
 
   /**
@@ -448,6 +469,23 @@ module HTTP {
        * Gets the server on which this route setup sets up routes.
        */
       abstract Expr getServer();
+    }
+
+    /**
+     * A parameter containing data received by a NodeJS HTTP server.
+     * E.g. `chunk` in: `http.createServer().on('request', (req, res) => req.on("data", (chunk) => ...))`.
+     */
+    private class ServerRequestDataEvent extends RemoteFlowSource, DataFlow::ParameterNode {
+      RequestSource req;
+
+      ServerRequestDataEvent() {
+        exists(DataFlow::MethodCallNode mcn | mcn = req.ref().getAMethodCall(EventEmitter::on()) |
+          mcn.getArgument(0).mayHaveStringValue("data") and
+          this = mcn.getABoundCallbackParameter(1, 0)
+        )
+      }
+
+      override string getSourceType() { result = "NodeJS HTTP server data event" }
     }
   }
 

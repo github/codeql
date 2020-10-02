@@ -646,3 +646,17 @@
 | vector.cpp:312:7:312:7 | d | vector.cpp:303:14:303:19 | call to source |
 | vector.cpp:324:7:324:8 | v2 | vector.cpp:318:15:318:20 | call to source |
 | vector.cpp:326:7:326:8 | v4 | vector.cpp:318:15:318:20 | call to source |
+| vector.cpp:342:7:342:8 | v1 | vector.cpp:341:8:341:13 | call to source |
+| vector.cpp:347:7:347:8 | v2 | vector.cpp:345:9:345:14 | call to source |
+| vector.cpp:357:7:357:8 | v4 | vector.cpp:330:10:330:15 | call to source |
+| vector.cpp:361:7:361:8 | v5 | vector.cpp:360:8:360:13 | call to source |
+| vector.cpp:363:7:363:8 | v5 | vector.cpp:360:8:360:13 | call to source |
+| vector.cpp:367:7:367:8 | v6 | vector.cpp:366:8:366:13 | call to source |
+| vector.cpp:369:7:369:8 | v6 | vector.cpp:366:8:366:13 | call to source |
+| vector.cpp:374:8:374:9 | v7 | vector.cpp:373:9:373:14 | call to source |
+| vector.cpp:379:7:379:8 | v7 | vector.cpp:373:9:373:14 | call to source |
+| vector.cpp:383:7:383:8 | v8 | vector.cpp:382:8:382:13 | call to source |
+| vector.cpp:385:7:385:8 | v8 | vector.cpp:382:8:382:13 | call to source |
+| vector.cpp:392:7:392:8 | v9 | vector.cpp:330:10:330:15 | call to source |
+| vector.cpp:392:7:392:8 | v9 | vector.cpp:389:8:389:13 | call to source |
+| vector.cpp:400:7:400:9 | v11 | vector.cpp:399:38:399:43 | call to source |

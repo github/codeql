@@ -14,12 +14,14 @@
   - [json-stringify-safe](https://www.npmjs.com/package/json-stringify-safe)
   - [json3](https://www.npmjs.com/package/json3)
   - [lodash](https://www.npmjs.com/package/lodash)
+  - [needle](https://www.npmjs.com/package/needle)
   - [object-inspect](https://www.npmjs.com/package/object-inspect)
   - [pretty-format](https://www.npmjs.com/package/pretty-format)
   - [stringify-object](https://www.npmjs.com/package/stringify-object)
   - [underscore](https://www.npmjs.com/package/underscore)
 
 * Analyzing files with the ".cjs" extension is now supported.
+* ES2021 features are now supported.
 
 ## New queries
 
@@ -38,6 +40,7 @@
 | Unsafe shell command constructed from library input (`js/shell-command-constructed-from-input`) | More results | This query now recognizes more commands where colon, dash, and underscore are used. |
 | Unsafe jQuery plugin (`js/unsafe-jquery-plugin`) | More results | This query now detects more unsafe uses of nested option properties. |
 | Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | More results | This query now recognizes some unsafe uses of `importScripts()` inside WebWorkers. |
+| Missing CSRF middleware (`js/missing-token-validation`) | More results | This query now recognizes writes to cookie and session variables as potentially vulnerable to CSRF attacks. |
 
 
 ## Changes to libraries

@@ -79,7 +79,8 @@ private PhiOperandBase phiOperand(
 }
 
 /**
- * A source operand of an `Instruction`. The operand represents a value consumed by the instruction.
+ * An operand of an `Instruction`. The operand represents a use of the result of one instruction
+ * (the defining instruction) in another instruction (the use instruction)
  */
 class Operand extends TOperand {
   /** Gets a textual representation of this element. */

@@ -50,6 +50,18 @@
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
     "python/ql/src/experimental/dataflow/internal/DataFlowImplConsistency.qll"
   ],
+  "SsaReadPosition Java/C#": [
+    "java/ql/src/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll"
+  ],
+  "Sign Java/C#": [
+    "java/ql/src/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/rangeanalysis/Sign.qll"
+  ],
+  "SignAnalysis Java/C#": [
+    "java/ql/src/semmle/code/java/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll"
+  ],
   "C++ SubBasicBlocks": [
     "cpp/ql/src/semmle/code/cpp/controlflow/SubBasicBlocks.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll"
@@ -87,7 +99,7 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/Operand.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/Operand.qll",
     "csharp/ql/src/experimental/ir/implementation/raw/Operand.qll",
-    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/Operand.qll" 
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/Operand.qll"
   ],
   "IR IRType": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/IRType.qll",
@@ -109,11 +121,11 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/OperandTag.qll",
     "csharp/ql/src/experimental/ir/implementation/internal/OperandTag.qll"
   ],
-  "IR TInstruction":[
+  "IR TInstruction": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/TInstruction.qll",
     "csharp/ql/src/experimental/ir/implementation/internal/TInstruction.qll"
   ],
-  "IR TIRVariable":[
+  "IR TIRVariable": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/TIRVariable.qll",
     "csharp/ql/src/experimental/ir/implementation/internal/TIRVariable.qll"
   ],

@@ -706,9 +706,9 @@ module Ssa {
 
     /**
      * Holds if `def` is accessed in basic block `bb1` (either a read or a write),
-     * `bb2` is a transitive successor of `bb1`, and `def` is *maybe* read in `bb2`
-     * or one of its transitive successors, but not in any block on the path between
-     * `bb1` and `bb2`.
+     * `bb2` is a transitive successor of `bb1`, `def` is live at the end of `bb1`,
+     * and the underlying variable for `def` is neither read nor written in any block
+     * on the path between `bb1` and `bb2`.
      */
     private predicate varBlockReaches(TrackedDefinition def, BasicBlock bb1, BasicBlock bb2) {
       varOccursInBlock(def, bb1, _) and
@@ -2535,6 +2535,13 @@ module Ssa {
         bb.getAPredecessor() = phiPred and
         ssaDefReachesEndOfBlock(phiPred, result, v)
       )
+    }
+
+    /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+    predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
+      this.getAnInput() = inp and
+      this.getBasicBlock().getAPredecessor() = bb and
+      inp.isLiveAtEndOfBlock(bb)
     }
 
     override string toString() {

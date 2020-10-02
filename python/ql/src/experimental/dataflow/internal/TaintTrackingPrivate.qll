@@ -101,7 +101,7 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
     nodeFrom.getNode() = object and
     method_name in ["partition", "rpartition", "rsplit", "split", "splitlines"]
     or
-    // List[str] -> str
+    // Iterable[str] -> str
     // TODO: check if these should be handled differently in regards to content
     method_name = "join" and
     nodeFrom.getNode() = call.getArg(0)
@@ -130,7 +130,6 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
   // f-strings
   nodeTo.asExpr().(Fstring).getAValue() = nodeFrom.asExpr()
   // TODO: Handle encode/decode from base64/quopri
-  // TODO: Handle os.path.join
   // TODO: Handle functions in https://docs.python.org/3/library/binascii.html
 }
 
@@ -182,7 +181,7 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   exists(CallNode call, string name |
     name in ["append", "add"] and
     call.getFunction().(AttrNode).getObject(name) =
-      nodeTo.(PostUpdateNode).getPreUpdateNode().asCfgNode() and
+      nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode().asCfgNode() and
     call.getArg(0) = nodeFrom.getNode()
   )
 }

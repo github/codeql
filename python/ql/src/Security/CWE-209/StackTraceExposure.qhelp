@@ -47,6 +47,6 @@ log, but remote users will not see the information.
 </example>
 
 <references>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Information_Leak_(information_disclosure)">Information Leak</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/Improper_Error_Handling">Improper Error Handling</a>.</li>
 </references>
 </qhelp>

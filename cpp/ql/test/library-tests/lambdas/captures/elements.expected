@@ -13,9 +13,9 @@
 | captures.cpp:3:5:3:5 | (constructor) |
 | captures.cpp:3:5:3:5 | (constructor) |
 | captures.cpp:3:5:3:5 | (constructor) |
-| captures.cpp:3:5:3:5 | declaration of (null) |
-| captures.cpp:3:5:3:5 | declaration of (null) |
-| captures.cpp:3:5:3:5 | definition of (null) |
+| captures.cpp:3:5:3:5 | declaration of (constructor) |
+| captures.cpp:3:5:3:5 | declaration of (constructor) |
+| captures.cpp:3:5:3:5 | definition of (constructor) |
 | captures.cpp:3:5:3:5 | definition of operator= |
 | captures.cpp:3:5:3:5 | operator= |
 | captures.cpp:3:5:5:5 | [...](...){...} |
@@ -50,9 +50,9 @@
 | captures.cpp:9:5:9:5 | (constructor) |
 | captures.cpp:9:5:9:5 | (constructor) |
 | captures.cpp:9:5:9:5 | (constructor) |
-| captures.cpp:9:5:9:5 | declaration of (null) |
-| captures.cpp:9:5:9:5 | declaration of (null) |
-| captures.cpp:9:5:9:5 | definition of (null) |
+| captures.cpp:9:5:9:5 | declaration of (constructor) |
+| captures.cpp:9:5:9:5 | declaration of (constructor) |
+| captures.cpp:9:5:9:5 | definition of (constructor) |
 | captures.cpp:9:5:9:5 | definition of operator= |
 | captures.cpp:9:5:9:5 | operator= |
 | captures.cpp:9:5:11:5 | [...](...){...} |
@@ -87,9 +87,9 @@
 | captures.cpp:15:5:15:5 | (constructor) |
 | captures.cpp:15:5:15:5 | (constructor) |
 | captures.cpp:15:5:15:5 | (constructor) |
-| captures.cpp:15:5:15:5 | declaration of (null) |
-| captures.cpp:15:5:15:5 | declaration of (null) |
-| captures.cpp:15:5:15:5 | definition of (null) |
+| captures.cpp:15:5:15:5 | declaration of (constructor) |
+| captures.cpp:15:5:15:5 | declaration of (constructor) |
+| captures.cpp:15:5:15:5 | definition of (constructor) |
 | captures.cpp:15:5:15:5 | definition of operator= |
 | captures.cpp:15:5:15:5 | operator= |
 | captures.cpp:15:5:17:5 | [...](...){...} |
@@ -129,9 +129,9 @@
 | captures.cpp:22:19:22:19 | Unknown literal |
 | captures.cpp:22:19:22:19 | constructor init of field x |
 | captures.cpp:22:19:22:19 | constructor init of field y |
-| captures.cpp:22:19:22:19 | declaration of (null) |
-| captures.cpp:22:19:22:19 | definition of (null) |
-| captures.cpp:22:19:22:19 | definition of (null) |
+| captures.cpp:22:19:22:19 | declaration of (constructor) |
+| captures.cpp:22:19:22:19 | definition of (constructor) |
+| captures.cpp:22:19:22:19 | definition of (constructor) |
 | captures.cpp:22:19:22:19 | definition of operator= |
 | captures.cpp:22:19:22:19 | operator= |
 | captures.cpp:22:19:22:19 | return ... |
@@ -187,9 +187,9 @@
 | end_pos.cpp:9:15:9:15 | (constructor) |
 | end_pos.cpp:9:15:9:15 | Unknown literal |
 | end_pos.cpp:9:15:9:15 | constructor init of field ii |
-| end_pos.cpp:9:15:9:15 | declaration of (null) |
-| end_pos.cpp:9:15:9:15 | definition of (null) |
-| end_pos.cpp:9:15:9:15 | definition of (null) |
+| end_pos.cpp:9:15:9:15 | declaration of (constructor) |
+| end_pos.cpp:9:15:9:15 | definition of (constructor) |
+| end_pos.cpp:9:15:9:15 | definition of (constructor) |
 | end_pos.cpp:9:15:9:15 | definition of operator= |
 | end_pos.cpp:9:15:9:15 | operator= |
 | end_pos.cpp:9:15:9:15 | return ... |

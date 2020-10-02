@@ -2,7 +2,7 @@
  * Provides classes for capturing various ways of performing comparison tests.
  */
 
-import csharp
+private import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
