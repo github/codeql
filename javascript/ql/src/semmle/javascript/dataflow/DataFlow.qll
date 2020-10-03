@@ -709,7 +709,9 @@ module DataFlow {
       result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
     }
 
-    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+    override Expr getPropertyNameExpr() {
+      none() // The parameter value is not the name of the field
+    }
 
     override string getPropertyName() { result = prop.getName() }
 
