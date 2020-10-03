@@ -493,33 +493,6 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
 }
 
 /**
- * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
- * For instance, an update to a field of a struct containing only one field. For these cases we
- * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
- * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
- */
-private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode, InstructionNode {
-  override StoreInstruction instr;
-
-  ExplicitSingleFieldStoreQualifierNode() {
-    not exists(ChiInstruction chi | chi.getPartial() = instr) and
-    // Without this condition any store would create a `PostUpdateNode`.
-    instr.getDestinationAddress() instanceof FieldAddressInstruction
-  }
-
-  override Node getPreUpdateNode() { none() }
-
-  override Expr getDefinedExpr() {
-    result =
-      instr
-          .getDestinationAddress()
-          .(FieldAddressInstruction)
-          .getObjectAddress()
-          .getUnconvertedResultExpression()
-  }
-}
-
-/**
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
  */
