@@ -455,8 +455,15 @@ func main() {
 		// try to build the project
 		buildSucceeded := autobuilder.Autobuild()
 
+		// Build failed or there are still dependency errors; we'll try to install dependencies
+		// ourselves
 		if !buildSucceeded {
-			// Build failed; we'll try to install dependencies ourselves
+			log.Println("Build failed, continuing to install dependencies.")
+
+			shouldInstallDependencies = true
+		} else if util.DepErrors("./...", modMode.argsForGoVersion(getEnvGoSemVer())...) {
+			log.Println("Dependencies are still not resolving after the build, continuing to install dependencies.")
+
 			shouldInstallDependencies = true
 		}
 	} else {

@@ -90,6 +90,18 @@ func GetPkgDir(pkgpath string, flags ...string) string {
 	return abs
 }
 
+// DepErrors checks there are any errors resolving dependencies for `pkgpath`. It passes the `go
+// list` command the flags specified by `flags`.
+func DepErrors(pkgpath string, flags ...string) bool {
+	out, err := runGoList("{{if .DepsErrors}}{{else}}error{{end}}", pkgpath, flags...)
+	if err != nil {
+		// if go list failed, assume dependencies are broken
+		return false
+	}
+
+	return out != ""
+}
+
 // FileExists tests whether the file at `filename` exists and is not a directory.
 func FileExists(filename string) bool {
 	info, err := os.Stat(filename)
