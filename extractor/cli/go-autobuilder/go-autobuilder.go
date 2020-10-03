@@ -293,12 +293,14 @@ func main() {
 		log.Println("Found glide.yaml, enabling go modules")
 	}
 
-	// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
-	// skip the dependency installation step and run the extractor with `-mod=vendor`
-	if util.FileExists("vendor/modules.txt") {
-		modMode = ModVendor
-	} else if util.DirExists("vendor") {
-		modMode = ModMod
+	if depMode == GoGetWithModules {
+		// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
+		// skip the dependency installation step and run the extractor with `-mod=vendor`
+		if util.FileExists("vendor/modules.txt") {
+			modMode = ModVendor
+		} else if util.DirExists("vendor") {
+			modMode = ModMod
+		}
 	}
 
 	if modMode == ModVendor {
