@@ -384,7 +384,11 @@ private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
  * shared dataflow library will infer a store step from `z` to `y`.
  */
 private predicate reverseReadStep(Node node1, FieldContent f, FieldNode node2) {
-  node1 = node2.getPreUpdateNode() and
+  (
+    node1 = node2.getObjectNode()
+    or
+    not exists(node2.getObjectNode()) and node1 = node2.getRootNode()
+  ) and
   f.getADirectField() = node2.getField()
 }
 

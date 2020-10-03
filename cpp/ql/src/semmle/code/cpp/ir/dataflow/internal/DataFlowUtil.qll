@@ -16,9 +16,10 @@ private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
   TOperandNode(Operand op) or
   TVariableNode(Variable var) or
-  // `FieldNodes` are used as targets of certain `storeStep`s to implement handling of stores to
-  // nested structs.
-  TFieldNode(FieldAddressInstruction field) or
+  //  `FieldNodes` are used as targets of certain `storeStep`s to implement handling of stores to
+  // nested structs. We include the operand that uses the `FieldAddressInstruction` to avoid having
+  // multiple `PostUpdateNode`s share the same pre update node.
+  TFieldNode(FieldAddressInstruction field, Operand op) { op.getDef() = field } or
   // We insert a synthetic `PostArraySuppressionNode` to replace `ArrayContent` with `FieldContent` in
   // certain cases. This nodes exists so that we can target it in `suppressArrayRead`, and immediately
   // transition to `fieldStoreStepAfterArraySuppression`.
@@ -199,14 +200,45 @@ FieldNode getFieldNodeForFieldInstruction(Instruction instr) {
   result.getFieldInstruction() = skipCopyInstructions(instr)
 }
 
+predicate isUsedForStore(Operand op) {
+  exists(StoreInstruction store | store.getDestinationAddressOperand() = op)
+  or
+  exists(WriteSideEffectInstruction write | write.getDestinationAddressOperand() = op)
+  or
+  exists(FieldAddressInstruction field, Operand fieldOp |
+    op = field.getObjectAddressOperand() and
+    fieldOp.getDef() = field and
+    isUsedForStore(fieldOp)
+  )
+  or
+  exists(UnaryInstruction unary, Operand unaryOp |
+    op = unary.getUnaryOperand() and
+    unaryOp.getDef() = unary and
+    isUsedForStore(unaryOp)
+  )
+  or
+  exists(PointerArithmeticInstruction arith, Operand arithOp |
+    op = arith.getLeftOperand() and
+    arithOp.getDef() = arith and
+    isUsedForStore(arithOp)
+  )
+  or
+  exists(LoadInstruction load, Operand addrOp |
+    op = load.getSourceAddressOperand() and
+    addrOp.getDef() = load and
+    isUsedForStore(addrOp)
+  )
+}
+
 /**
  * INTERNAL: do not use. A `FieldNode` represents the state of an object after modifying one
  * of its fields.
  */
-class FieldNode extends Node, TFieldNode, PartialDefinitionNode {
+class FieldNode extends Node, TFieldNode {
   FieldAddressInstruction field;
+  Operand op;
 
-  FieldNode() { this = TFieldNode(field) }
+  FieldNode() { this = TFieldNode(field, op) }
 
   /** Gets the `Field` of this `FieldNode`. */
   Field getField() { result = getFieldInstruction().getField() }
@@ -221,10 +253,13 @@ class FieldNode extends Node, TFieldNode, PartialDefinitionNode {
    * gives the `FieldNode` of `b`, and `f.getObjectNode().getObjectNode()` has no result as `a` is
    * not a field.
    */
-  FieldNode getObjectNode() {
-    exists(FieldAddressInstruction parent |
-      parent = skipCopyInstructions(field.getObjectAddress()) and
-      result = TFieldNode(parent)
+  FieldNode getObjectNode() { result = TFieldNode(_, field.getObjectAddressOperand()) }
+
+  Node getRootNode() {
+    exists(ChiInstruction chi, AddressOperand addressOperand |
+      getFieldNodeForFieldInstruction(addressOperand.getDef()) = this.getNextNode*() and
+      chi.getPartial().getAnOperand() = addressOperand and
+      result.asOperand() = chi.getTotalOperand()
     )
   }
 
@@ -239,21 +274,6 @@ class FieldNode extends Node, TFieldNode, PartialDefinitionNode {
   /** Gets the class where the field of this node is declared. */
   Class getDeclaringType() { result = getField().getDeclaringType() }
 
-  override Node getPreUpdateNode() {
-    result = this.getObjectNode()
-    or
-    not exists(this.getObjectNode()) and
-    exists(ChiInstruction chi, AddressOperand addressOperand |
-      getFieldNodeForFieldInstruction(addressOperand.getDef()) = this.getNextNode*() and
-      chi.getPartial().getAnOperand() = addressOperand and
-      result.asOperand() = chi.getTotalOperand()
-    )
-  }
-
-  override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
-  }
-
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override Function getFunction() { result = field.getEnclosingFunction() }
@@ -262,7 +282,28 @@ class FieldNode extends Node, TFieldNode, PartialDefinitionNode {
 
   override Location getLocation() { result = field.getLocation() }
 
-  override string toString() { result = this.getField().toString() }
+  override string toString() {
+    result = this.getField().toString() // + "[" + op.getDumpString() + "]"
+  }
+}
+
+/**
+ * INTERNAL: do not use. A `FieldNode` represents the state of an object after modifying one
+ * of its fields.
+ */
+class PostUpdateFieldNode extends FieldNode, PartialDefinitionNode {
+  PostUpdateFieldNode() { this = TFieldNode(field, op) and isUsedForStore(op) }
+
+  override Node getPreUpdateNode() {
+    result = this.getObjectNode()
+    or
+    not exists(this.getObjectNode()) and
+    result = this.getRootNode()
+  }
+
+  override Expr getDefinedExpr() {
+    result = field.getObjectAddress().getUnconvertedResultExpression()
+  }
 }
 
 /**
