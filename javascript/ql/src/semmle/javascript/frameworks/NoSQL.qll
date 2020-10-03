@@ -537,13 +537,13 @@ private module Mongoose {
             param = func.getLastParameter().getParameter(1)
           )
           or
-          exists(API::Node f, string executor, int paramIndex |
-            executor = "then" and paramIndex = 0
+          exists(API::Node f |
+            f = Query::getAMongooseQuery().getMember("then") and
+            param = f.getParameter(0).getParameter(0)
             or
-            executor = "exec" and paramIndex = 1
+            f = Query::getAMongooseQuery().getMember("exec") and
+            param = f.getParameter(0).getParameter(1)
           |
-            f = Query::getAMongooseQuery().getMember(executor) and
-            param = f.getParameter(0).getParameter(paramIndex) and
             exists(DataFlow::MethodCallNode pred |
               // limitation: look at the previous method call	
               Query::MethodSignatures::returnsDocumentQuery(pred.getMethodName(), asArray) and
