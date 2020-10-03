@@ -50,6 +50,9 @@ class ArgumentPreUpdateNode extends NeedsSyntheticPostUpdateNode, ArgumentNode {
   ArgumentPreUpdateNode() {
     this = any(CallNodeCall c).getArg(_)
     or
+    // this = any(BoundMethodCall c).getArg(_)
+    exists(BoundMethodCall c, int n | n > 0 | this = c.getArg(n))
+    or
     this = any(SpecialCall c).getArg(_)
     or
     // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
@@ -253,7 +256,11 @@ module ArgumentPassing {
    */
   NameNode getParameter(CallableValue callable, int n) {
     // positional parameter
+    // bound method values have their positional parameters shifted.
+    not callable instanceof BoundMethodValue and
     result = callable.getParameter(n)
+    or
+    result = callable.(BoundMethodValue).getParameter(n - 1)
     or
     // starred parameter, `*tuple`
     exists(Function f |
@@ -368,7 +375,11 @@ import ArgumentPassing
  * A module has no calls.
  */
 newtype TDataFlowCallable =
-  TCallableValue(CallableValue callable) or
+  TCallableValue(CallableValue callable) {
+    callable instanceof FunctionValue
+    or
+    callable instanceof ClassValue
+  } or
   TModule(Module m)
 
 /** Represents a callable. */
@@ -443,7 +454,9 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
  * A call corresponding to a special method call is handled by the corresponding `SpecialMethodCallNode`.
  */
 newtype TDataFlowCall =
-  TCallNode(CallNode call) { call = any(CallableValue c).getACall() } or
+  TCallNode(CallNode call) { call = any(FunctionValue f).getAFunctionCall() } or
+  /** Bound methods need to make room for the explicit self parameter */
+  TBoundMethodCall(CallNode call) { call = any(FunctionValue f).getAMethodCall() } or
   TClassCall(CallNode call) { call = any(ClassValue c).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
@@ -471,7 +484,12 @@ abstract class DataFlowCall extends TDataFlowCall {
   Location getLocation() { result = this.getNode().getLocation() }
 }
 
-/** Represents a call to a callable (currently only callable values). */
+/**
+ * Represents a call to a callable (currently only callable values).
+ * This excludes calls to bound methods, classes, and special methods.
+ * Bound method calls and class calls insert an argument for the explicit
+ * `self` parameter, and special method calls have special argument passing.
+ */
 class CallNodeCall extends DataFlowCall, TCallNode {
   CallNode call;
   DataFlowCallable callable;
@@ -492,7 +510,42 @@ class CallNodeCall extends DataFlowCall, TCallNode {
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
 }
 
-/** Represents a call to a class. */
+/**
+ * Represents a call to a bound method call.
+ * The node representing the instance is inserted as argument to the `self` parameter.
+ */
+class BoundMethodCall extends DataFlowCall, TBoundMethodCall {
+  CallNode call;
+  FunctionValue bm;
+
+  BoundMethodCall() {
+    this = TBoundMethodCall(call) and
+    call = bm.getACall()
+  }
+
+  private CallableValue getCallableValue() { result = bm }
+
+  override string toString() { result = call.toString() }
+
+  override Node getArg(int n) {
+    n > 0 and result = getArg(call, n - 1, this.getCallableValue(), n)
+    or
+    n = 0 and result = TCfgNode(call.getFunction().(AttrNode).getObject())
+  }
+
+  override ControlFlowNode getNode() { result = call }
+
+  override DataFlowCallable getCallable() { result = TCallableValue(this.getCallableValue()) }
+
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
+}
+
+/**
+ * Represents a call to a class.
+ * The pre-update node for the call is inserted as argument to the `self` parameter.
+ * That makes the call node be the post-update node holding the value of the object
+ * after the constructor has run.
+ */
 class ClassCall extends DataFlowCall, TClassCall {
   CallNode call;
   ClassValue c;

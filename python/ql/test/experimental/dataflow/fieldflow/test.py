@@ -54,7 +54,7 @@ def test_example1_method():
     myobj = MyObj("OK")
 
     myobj.setFoo(SOURCE)
-    SINK(myobj.foo)  # Flow not found
+    SINK(myobj.foo)
 
 
 def test_example2():
@@ -74,7 +74,7 @@ def test_example2_method():
 
     a.getObj().foo = x
 
-    SINK(a.obj.foo)  # Flow missing
+    SINK(a.obj.foo)
 
 
 def test_example3():
