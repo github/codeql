@@ -29,11 +29,22 @@ newtype TNode =
   TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
   /** A node representing a global (module-level) variable in a specific module. */
   TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() } or
-  /** A node representing the overflow positional arguments to a call. */
+  /**
+   * A node representing the overflow positional arguments to a call.
+   * That is, `call` contains more positional arguments than there are
+   * positional parameters in `callable`. The extra ones are passed as
+   * a tuple to a starred parameter; this synthetic node represents that tuple.
+   */
   TPosOverflowNode(CallNode call, CallableValue callable) {
     exists(getPositionalOverflowArg(call, callable, _))
   } or
-  /** A node representing the overflow keyword arguments to a call. */
+  /**
+   * A node representing the overflow keyword arguments to a call.
+   * That is, `call` contains keyword arguments for keys that do not have
+   * keyword parameters in `callable`. These extra ones are passed as
+   * a dictionary to a doubly starred parameter; this synthetic node
+   * represents that dictionary.
+   */
   TKwOverflowNode(CallNode call, CallableValue callable) {
     exists(getKeywordOverflowArg(call, callable, _))
     or
@@ -43,7 +54,7 @@ newtype TNode =
   /**
    * A node representing an unpacked element of a dictionary argument.
    * That is, `call` contains argument `**{"foo": bar}` which is passed
-   * to parameter `foo` of `callable.
+   * to parameter `foo` of `callable`.
    */
   TKwUnpacked(CallNode call, CallableValue callable, string name) {
     call_unpacks(call, _, callable, name, _)
