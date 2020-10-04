@@ -266,6 +266,10 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Location getLocation() { result = mod.getLocation() }
 }
 
+/**
+ * The node holding the extra positional arguments to a call. This node is passed as a tuple
+ * to the starred parameter of the callable.
+ */
 class PosOverflowNode extends Node, TPosOverflowNode {
   CallNode call;
 
@@ -276,6 +280,10 @@ class PosOverflowNode extends Node, TPosOverflowNode {
   override Location getLocation() { result = call.getLocation() }
 }
 
+/**
+ * The node holding the extra keyword arguments to a call. This node is passed as a dictionary
+ * to the doubly starred parameter of the callable.
+ */
 class KwOverflowNode extends Node, TKwOverflowNode {
   CallNode call;
 
@@ -286,6 +294,10 @@ class KwOverflowNode extends Node, TKwOverflowNode {
   override Location getLocation() { result = call.getLocation() }
 }
 
+/**
+ * The node representing the synthetic argument of a call that is unpacked from a dictionary
+ * argument.
+ */
 class KwUnpacked extends Node, TKwUnpacked {
   CallNode call;
   string name;
