@@ -245,7 +245,39 @@ private Node update(Node node) {
 // Global flow
 //--------
 //
-/** Computes routing of arguments to parameters */
+/**
+ * Computes routing of arguments to parameters
+ *
+ * When a call contains more positional arguments than there are positional parameters,
+ * the extra positional arguments are passed as a tuple to a starred parameter. This is
+ * achieved by synthesising a node `TPosOverflowNode(call, callable)`
+ * that represents the tuple of extra positional arguments. There is a store step from each
+ * extra positional argument to this node.
+ *
+ * CURRENTLY NOT SUPPORTED:
+ * When a call contains a tuple argument, it is expanded into positional arguments.
+ *
+ * CURRENTLY NOT SUPPORTED:
+ * Whe a call contains a tuple argument and the callee contains a starred argument, any extra
+ * positional arguments are passed to the starred argument.
+ *
+ * When a call contains keyword arguments that do not correspond to keyword parameters, these
+ * extra keyword arguments are passed as a dictionary to a doubly starred parameter. This is
+ * achieved by synthesising a node `TKwOverflowNode(call, callable)`
+ * that represents the dictionary of extra keyword arguments. There is a store step from each
+ * extra keyword argument to this node.
+ *
+ * When a call contains a dictionary argument with entries corresponding to a keyword parameter,
+ * the value at such a key is unpacked and passed to the positional parameter. This is achieved
+ * by synthesising an argument node `TKwUnpacked(call, callable, name)` representing the unpacked
+ * value. This is used as the argument passed to the matching keyword parameter. There is a read
+ * step from the dictionary argument to the synthesized argument node.
+ *
+ * When a call contains a dictionary argument and the callee contains a doubly starred parameter,
+ * entries which are not unpacked are passed to the doubly starred parameter. This is achieved by
+ * adding a dataflow step from the dictionary argument to `TKwOverflowNode(call, callable)` and a
+ * step to clear content of that node at any unpacked keys.
+ */
 module ArgumentPassing {
   /**
    * Gets the `n`th parameter of `callable`.
@@ -288,7 +320,7 @@ module ArgumentPassing {
    * Gets the argument to `call` that is passed to the `n`th parameter of `callable`.
    * If it is a positional argument, it must appear at position `argNr`.
    * `argNr` will differ from `n` for method- or class calls, where the first parameter
-   * is `self` and the first positional arguemnt is passed to the second positional parameter.
+   * is `self` and the first positional argument is passed to the second positional parameter.
    */
   Node getArg(CallNode call, int argNr, CallableValue callable, int n) {
     connects(call, callable) and
