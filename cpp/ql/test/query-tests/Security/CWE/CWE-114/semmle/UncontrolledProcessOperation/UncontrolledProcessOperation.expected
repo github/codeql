@@ -32,8 +32,10 @@ nodes
 | test.cpp:31:10:31:16 | command | semmle.label | command |
 | test.cpp:31:10:31:16 | command | semmle.label | command |
 | test.cpp:31:10:31:16 | command | semmle.label | command |
+| test.cpp:42:7:42:16 | Arg(0) | semmle.label | Arg(0) |
 | test.cpp:42:18:42:23 | call to getenv | semmle.label | call to getenv |
 | test.cpp:42:18:42:34 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:43:7:43:16 | Arg(0) | semmle.label | Arg(0) |
 | test.cpp:43:18:43:23 | call to getenv | semmle.label | call to getenv |
 | test.cpp:43:18:43:34 | (const char *)... | semmle.label | (const char *)... |
 | test.cpp:56:12:56:17 | buffer | semmle.label | buffer |
