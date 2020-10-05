@@ -33,6 +33,12 @@ private class PrimaryArgumentNode extends ArgumentNode {
     or
     op = call.getThisArgumentOperand() and pos = -1
   }
+
+  override string toString() {
+    result = "Argument " + op.(PositionalArgumentOperand).getIndex()
+    or
+    op instanceof ThisArgumentOperand and result = "this"
+  }
 }
 
 /**

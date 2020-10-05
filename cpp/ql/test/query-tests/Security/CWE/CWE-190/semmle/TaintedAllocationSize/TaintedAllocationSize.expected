@@ -141,8 +141,8 @@ nodes
 | test.cpp:231:9:231:24 | call to get_tainted_size | semmle.label | call to get_tainted_size |
 | test.cpp:231:9:231:24 | call to get_tainted_size | semmle.label | call to get_tainted_size |
 | test.cpp:231:9:231:24 | call to get_tainted_size | semmle.label | call to get_tainted_size |
-| test.cpp:235:2:235:9 | Arg(0) | semmle.label | Arg(0) |
-| test.cpp:237:2:237:8 | Arg(0) | semmle.label | Arg(0) |
+| test.cpp:235:2:235:9 | Argument 0 | semmle.label | Argument 0 |
+| test.cpp:237:2:237:8 | Argument 0 | semmle.label | Argument 0 |
 | test.cpp:241:2:241:32 | Chi [array content] | semmle.label | Chi [array content] |
 | test.cpp:241:2:241:32 | Store | semmle.label | Store |
 | test.cpp:241:18:241:23 | call to getenv | semmle.label | call to getenv |

@@ -21,8 +21,8 @@ nodes
 | search.c:23:39:23:43 | query | semmle.label | query |
 | search.c:41:21:41:26 | call to getenv | semmle.label | call to getenv |
 | search.c:41:21:41:26 | call to getenv | semmle.label | call to getenv |
-| search.c:45:5:45:15 | Arg(0) | semmle.label | Arg(0) |
-| search.c:47:5:47:15 | Arg(0) | semmle.label | Arg(0) |
+| search.c:45:5:45:15 | Argument 0 | semmle.label | Argument 0 |
+| search.c:47:5:47:15 | Argument 0 | semmle.label | Argument 0 |
 #select
 | search.c:17:8:17:12 | query | search.c:41:21:41:26 | call to getenv | search.c:17:8:17:12 | query | Cross-site scripting vulnerability due to $@. | search.c:41:21:41:26 | call to getenv | this query data |
 | search.c:23:39:23:43 | query | search.c:41:21:41:26 | call to getenv | search.c:23:39:23:43 | query | Cross-site scripting vulnerability due to $@. | search.c:41:21:41:26 | call to getenv | this query data |

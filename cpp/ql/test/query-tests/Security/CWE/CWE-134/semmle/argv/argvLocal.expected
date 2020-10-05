@@ -214,7 +214,7 @@ nodes
 | argvLocal.c:116:9:116:10 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:116:9:116:10 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:116:9:116:10 | i3 | semmle.label | i3 |
-| argvLocal.c:117:2:117:13 | Arg(0) | semmle.label | Arg(0) |
+| argvLocal.c:117:2:117:13 | Argument 0 | semmle.label | Argument 0 |
 | argvLocal.c:117:15:117:16 | Argument 0 indirection | semmle.label | Argument 0 indirection |
 | argvLocal.c:117:15:117:16 | array to pointer conversion | semmle.label | array to pointer conversion |
 | argvLocal.c:117:15:117:16 | array to pointer conversion | semmle.label | array to pointer conversion |
@@ -223,7 +223,7 @@ nodes
 | argvLocal.c:121:9:121:10 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:121:9:121:10 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:121:9:121:10 | i4 | semmle.label | i4 |
-| argvLocal.c:122:2:122:13 | Arg(0) | semmle.label | Arg(0) |
+| argvLocal.c:122:2:122:13 | Argument 0 | semmle.label | Argument 0 |
 | argvLocal.c:122:15:122:16 | Argument 0 indirection | semmle.label | Argument 0 indirection |
 | argvLocal.c:122:15:122:16 | i4 | semmle.label | i4 |
 | argvLocal.c:122:15:122:16 | i4 | semmle.label | i4 |
@@ -234,7 +234,7 @@ nodes
 | argvLocal.c:127:9:127:10 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:127:9:127:10 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:127:9:127:10 | i5 | semmle.label | i5 |
-| argvLocal.c:128:2:128:13 | Arg(0) | semmle.label | Arg(0) |
+| argvLocal.c:128:2:128:13 | Argument 0 | semmle.label | Argument 0 |
 | argvLocal.c:128:15:128:16 | Argument 0 indirection | semmle.label | Argument 0 indirection |
 | argvLocal.c:128:15:128:16 | array to pointer conversion | semmle.label | array to pointer conversion |
 | argvLocal.c:128:15:128:16 | array to pointer conversion | semmle.label | array to pointer conversion |
