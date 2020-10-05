@@ -37,7 +37,7 @@ private class PrimaryArgumentNode extends ArgumentNode {
   override string toString() {
     result = "Argument " + op.(PositionalArgumentOperand).getIndex()
     or
-    op instanceof ThisArgumentOperand and result = "this"
+    op instanceof ThisArgumentOperand and result = "This argument"
   }
 }
 
