@@ -1264,21 +1264,6 @@ namespace Semmle.Extraction.CIL.Entities
                 this.typeArguments = typeArguments;
             }
 
-            public override bool Equals(object? obj)
-            {
-                return base.Equals(obj);
-            }
-
-            public override int GetHashCode()
-            {
-                return base.GetHashCode();
-            }
-
-            public override string? ToString()
-            {
-                return base.ToString();
-            }
-
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
                 genericType.WriteId(trapFile, gc);
