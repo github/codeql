@@ -102,7 +102,7 @@ void test_map()
 	std::map<char *, char *> m1, m2, m3, m4, m5, m6;
 
 	sink(m1.insert(std::make_pair("abc", "def")).first);
-	sink(m2.insert(std::make_pair("abc", source())).first); // tainted [NOT DETECTED]
+	sink(m2.insert(std::make_pair("abc", source())).first); // tainted
 	sink(m3.insert(std::make_pair(source(), "def")).first); // tainted [NOT DETECTED]
 	sink(m4.insert(m4.begin(), std::pair<char *, char *>("abc", source()))); // tainted
 	sink(m5.insert_or_assign("abc", source()).first); // tainted
@@ -254,7 +254,7 @@ void test_unordered_map()
 	std::unordered_map<char *, char *> m1, m2, m3, m4, m5, m6;
 
 	sink(m1.insert(std::make_pair("abc", "def")).first);
-	sink(m2.insert(std::make_pair("abc", source())).first); // tainted [NOT DETECTED]
+	sink(m2.insert(std::make_pair("abc", source())).first); // tainted
 	sink(m3.insert(std::make_pair(source(), "def")).first); // tainted [NOT DETECTED]
 	sink(m4.insert(m4.begin(), std::pair<char *, char *>("abc", source()))); // tainted
 	sink(m5.insert_or_assign("abc", source()).first); // tainted
