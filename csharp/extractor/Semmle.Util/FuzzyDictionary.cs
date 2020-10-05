@@ -133,7 +133,7 @@ namespace Semmle.Util
         /// </summary>
         /// <param name="input">The string to enumerate.</param>
         /// <returns>The sequence of integers.</returns>
-        public static IEnumerable<int> ExtractIntegers(string input)
+        private static IEnumerable<int> ExtractIntegers(string input)
         {
             var inNumber = false;
             var value = 0;
