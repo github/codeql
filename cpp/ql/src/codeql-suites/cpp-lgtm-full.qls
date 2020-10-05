@@ -9,10 +9,7 @@
     tags contain:
       - ide-contextual-queries/local-definitions
       - ide-contextual-queries/local-references
-- query: Metrics/Dependencies/ExternalDependencies.ql
-- query: Metrics/Dependencies/ExternalDependenciesSourceLinks.ql
 - query: Metrics/Files/FLinesOfCode.ql
 - query: Metrics/Files/FLinesOfCommentedOutCode.ql
 - query: Metrics/Files/FLinesOfComments.ql
-- query: Metrics/Files/FLinesOfDuplicatedCode.ql
 - query: Metrics/Files/FNumberOfTests.ql

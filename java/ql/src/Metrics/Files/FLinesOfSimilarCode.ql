@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Similar lines in files
  * @description The number of lines in a file, including code, comment and whitespace lines,
  *              which are similar to lines in at least one other place.

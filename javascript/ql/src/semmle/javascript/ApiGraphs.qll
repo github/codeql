@@ -578,7 +578,11 @@ module API {
         ref = DataFlow::moduleImport(m)
       )
       or
-      exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) | ref = cls.getAReceiverNode())
+      exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) |
+        ref = cls.getAReceiverNode()
+        or
+        ref = cls.(DataFlow::ClassNode::FunctionStyleClass).getAPrototypeReference()
+      )
       or
       nd = MkUse(ref)
       or
