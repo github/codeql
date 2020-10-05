@@ -395,6 +395,13 @@ class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaratio
       result = DataFlow::valueNode(d.getSource())
     )
     or
+    exists(ObjectPattern obj | obj = getOperand().(DeclStmt).getADecl().getBindingPattern() |
+      exists(DataFlow::PropRead read | read = result |
+        read.getBase() = obj.flow() and
+        name = read.getPropertyName()
+      )
+    )
+    or
     exists(ExportSpecifier spec | spec = getASpecifier() and name = spec.getExportedName() |
       not exists(getImportedPath()) and result = DataFlow::valueNode(spec.getLocal())
       or
