@@ -65,16 +65,12 @@ class IFStream extends Type {
  * The variable `std::cin` or `std::wcin`.
  */
 class CinVariable extends NamespaceVariable {
-  CinVariable() {
-    this.hasQualifiedName("std", ["cin", "wcin"])
-  }
+  CinVariable() { this.hasQualifiedName("std", ["cin", "wcin"]) }
 }
 
 /** A call to `std::operator>>`. */
 class OperatorRShiftCall extends FunctionCall {
-  OperatorRShiftCall() {
-    getTarget().hasQualifiedName("std", "operator>>")
-  }
+  OperatorRShiftCall() { getTarget().hasQualifiedName("std", "operator>>") }
 
   /*
    * This is complicated by the fact this overload can be made

@@ -276,7 +276,8 @@ private predicate insideFunctionValueMoveTo(Element src, Element dest) {
       dest = formattingSend and
       formattingSend.getArgument(arg) = src and
       format = formattingSend.getFormat() and
-      format.getConversionChar(arg - formattingSend.getTarget().getNumberOfParameters()) = ["s", "S", "@"]
+      format.getConversionChar(arg - formattingSend.getTarget().getNumberOfParameters()) =
+        ["s", "S", "@"]
     )
     or
     // Expressions computed from tainted data are also tainted
