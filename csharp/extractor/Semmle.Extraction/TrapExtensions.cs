@@ -86,7 +86,7 @@ namespace Semmle.Extraction
                 case Enum _:
                     return trapFile.WriteColumn((int)o);
                 default:
-                    throw new ArgumentException(nameof(o));
+                    throw new NotSupportedException($"Unsupported object type '{o.GetType()}' received");
             }
         }
 

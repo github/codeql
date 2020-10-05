@@ -171,7 +171,7 @@ namespace Semmle.Extraction.CSharp
                 if (entry == null)
                 {
                     if (compilation.SyntaxTrees.Length == 0)
-                        throw new ArgumentNullException("No source files seen");
+                        throw new InvalidOperationException("No source files seen");
 
                     // Probably invalid, but have a go anyway.
                     var entryPointFile = compilation.SyntaxTrees.First().FilePath;

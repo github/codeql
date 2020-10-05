@@ -81,7 +81,7 @@ namespace Semmle.Extraction
                         compressionStream = fileStream;
                         break;
                     default:
-                        throw new ArgumentException(nameof(trapCompression));
+                        throw new ArgumentOutOfRangeException(nameof(trapCompression), trapCompression, "Unsupported compression type");
                 }
 
 
@@ -264,7 +264,7 @@ namespace Semmle.Extraction
                 case CompressionMode.None: return "";
                 case CompressionMode.Gzip: return ".gz";
                 case CompressionMode.Brotli: return ".br";
-                default: throw new ArgumentException(nameof(compression));
+                default: throw new ArgumentOutOfRangeException(nameof(compression), compression, "Unsupported compression type");
             }
         }
 

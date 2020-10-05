@@ -212,7 +212,7 @@ namespace Semmle.Util
         public CanonicalPathCache(int maxCapacity, PathStrategy pathStrategy)
         {
             if (maxCapacity <= 0)
-                throw new ArgumentOutOfRangeException("Invalid cache size specified");
+                throw new ArgumentOutOfRangeException(nameof(maxCapacity), maxCapacity, "Invalid cache size specified");
 
             this.maxCapacity = maxCapacity;
             this.pathStrategy = pathStrategy;
@@ -278,7 +278,7 @@ namespace Semmle.Util
                     pathStrategy = new QueryDirectoryStrategy();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("Invalid symlinks option");
+                    throw new ArgumentOutOfRangeException(nameof(symlinks), symlinks, "Invalid symlinks option");
             }
 
             return new CanonicalPathCache(maxCapacity, pathStrategy);

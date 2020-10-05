@@ -123,7 +123,7 @@ namespace Semmle.Extraction
         public override string ToString()
         {
             if (!Valid)
-                throw new NullReferenceException("Attempt to use an invalid label");
+                throw new InvalidOperationException("Attempt to use an invalid label");
 
             return "#" + Value;
         }
@@ -148,7 +148,7 @@ namespace Semmle.Extraction
         public void AppendTo(System.IO.TextWriter trapFile)
         {
             if (!Valid)
-                throw new NullReferenceException("Attempt to use an invalid label");
+                throw new InvalidOperationException("Attempt to use an invalid label");
 
             trapFile.Write('#');
             trapFile.Write(Value);
