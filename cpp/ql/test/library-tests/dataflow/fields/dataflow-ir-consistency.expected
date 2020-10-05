@@ -129,11 +129,8 @@ postHasUniquePre
 | realistic.cpp:65:25:65:27 | bar | PostUpdateNode should have one pre-update node but has 0. |
 | realistic.cpp:65:32:65:34 | baz | PostUpdateNode should have one pre-update node but has 0. |
 | realistic.cpp:65:37:65:45 | userInput | PostUpdateNode should have one pre-update node but has 0. |
-| simple.cpp:65:5:65:22 | Store | PostUpdateNode should have one pre-update node but has 0. |
 | simple.cpp:65:7:65:7 | i | PostUpdateNode should have one pre-update node but has 0. |
-| simple.cpp:92:5:92:22 | Store | PostUpdateNode should have one pre-update node but has 0. |
 | simple.cpp:92:7:92:7 | i | PostUpdateNode should have one pre-update node but has 0. |
-| simple.cpp:104:5:104:24 | Store | PostUpdateNode should have one pre-update node but has 0. |
 | simple.cpp:104:7:104:7 | a | PostUpdateNode should have one pre-update node but has 0. |
 | struct_init.c:15:12:15:12 | a | PostUpdateNode should have one pre-update node but has 0. |
 | struct_init.c:16:12:16:12 | b | PostUpdateNode should have one pre-update node but has 0. |
