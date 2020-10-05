@@ -369,7 +369,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Array:
                         var array = (IArrayTypeSymbol)type;
                         var elementType = array.ElementType;
-                        if (elementType.MetadataName.IndexOf("`") >= 0)
+                        if (elementType.MetadataName.Contains("`"))
                         {
                             trapFile.Write(elementType.Name);
                             return;
