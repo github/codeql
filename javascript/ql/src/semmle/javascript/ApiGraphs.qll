@@ -346,16 +346,30 @@ module API {
             exists(SSA::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
           )
         )
+        or
+        m = any(CanonicalName n | isDefined(n)).getExternalModuleName()
       } or
-      MkModuleImport(string m) { imports(_, m) } or
+      MkModuleImport(string m) {
+        imports(_, m)
+        or
+        m = any(CanonicalName n | isUsed(n)).getExternalModuleName()
+      } or
       MkClassInstance(DataFlow::ClassNode cls) { cls = trackDefNode(_) and hasSemantics(cls) } or
       MkAsyncFuncResult(DataFlow::FunctionNode f) {
         f = trackDefNode(_) and f.getFunction().isAsync() and hasSemantics(f)
       } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
-      MkCanonicalNameDef(CanonicalName n) { isDefined(n) } or
-      MkCanonicalNameUse(CanonicalName n) { isUsed(n) }
+      MkCanonicalNameDef(CanonicalName n) {
+        // module roots are represented by `MkModuleExport` nodes
+        not n.isRoot() and
+        isDefined(n)
+      } or
+      MkCanonicalNameUse(CanonicalName n) {
+        // module roots are represented by `MkModuleImport` nodes
+        not n.isRoot() and
+        isUsed(n)
+      }
 
     class TDef = MkModuleDef or TNonModuleDef;
 
@@ -397,6 +411,18 @@ module API {
       |
         not def.isAmbient()
       )
+    }
+
+    private TApiNode mkCanonicalNameDef(CanonicalName cn) {
+      if cn.isModuleRoot()
+      then result = MkModuleExport(cn.getExternalModuleName())
+      else result = MkCanonicalNameDef(cn)
+    }
+
+    private TApiNode mkCanonicalNameUse(CanonicalName cn) {
+      if cn.isModuleRoot()
+      then result = MkModuleImport(cn.getExternalModuleName())
+      else result = MkCanonicalNameUse(cn)
     }
 
     /**
@@ -698,20 +724,11 @@ module API {
         succ = MkClassInstance(trackDefNode(def))
       )
       or
-      exists(CanonicalName cn |
-        pred = MkRoot() and
-        lbl = Label::mod(cn.getExternalModuleName())
-      |
-        succ = MkCanonicalNameUse(cn) or
-        succ = MkCanonicalNameDef(cn)
-      )
-      or
-      exists(CanonicalName cn1, CanonicalName cn2 |
-        cn2 = cn1.getAChild() and
-        lbl = Label::member(cn2.getName())
-      |
-        (pred = MkCanonicalNameDef(cn1) or pred = MkCanonicalNameUse(cn1)) and
-        (succ = MkCanonicalNameDef(cn2) or succ = MkCanonicalNameUse(cn2))
+      exists(CanonicalName cn1, string n, CanonicalName cn2 |
+        pred in [mkCanonicalNameDef(cn1), mkCanonicalNameUse(cn1)] and
+        cn2 = cn1.getChild(n) and
+        lbl = Label::member(n) and
+        succ in [mkCanonicalNameDef(cn2), mkCanonicalNameUse(cn2)]
       )
       or
       exists(DataFlow::Node nd, DataFlow::FunctionNode f |
