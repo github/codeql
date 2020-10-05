@@ -5,15 +5,9 @@ private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.DefUse
 private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.Validation
-private import semmle.code.java.frameworks.android.Intent
-private import semmle.code.java.frameworks.android.SQLite
-private import semmle.code.java.frameworks.Guice
-private import semmle.code.java.frameworks.Protobuf
-private import semmle.code.java.frameworks.spring.SpringController
-private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.ContainerFlow
-private import semmle.code.java.frameworks.jackson.JacksonSerializability
+private import semmle.code.java.dataflow.TaintTrackingFrameworks
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -76,6 +70,34 @@ class AdditionalTaintStep extends Unit {
 predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintStep(src, sink) or
   any(AdditionalTaintStep a).step(src, sink)
+}
+
+/**
+ * A method that returns tainted data when one of its inputs (an argument or the qualifier) are tainted.
+ *
+ * Extend this class to add additional taint steps through a method that should
+ * apply to all taint configurations.
+ */
+abstract class TaintPreservingMethod extends Method {
+  /**
+   * Holds if this method returns tainted data when `arg` tainted.
+   * `arg` is a parameter index, or is -1 to indicate the qualifier.
+   */
+  abstract predicate returnsTaint(int arg);
+}
+
+/**
+ * A method that transfers taint from one of its inputs (an argument or the qualifier) to another.
+ *
+ * Extend this class to add additional taint steps through a method that should
+ * apply to all taint configurations.
+ */
+abstract class TaintTransferringMethod extends Method {
+  /**
+   * Holds if this method writes tainted data to `sink` when `src` is tainted.
+   * `src` and `sink` are parameter indices, or -1 to indicate the qualifier.
+   */
+  predicate transfersTaint(int src, int sink) { none() }
 }
 
 /**
@@ -300,6 +322,8 @@ private predicate taintPreservingQualifierToArgument(Method m, int arg) {
   m.getDeclaringType().getASupertype*().hasQualifiedName("java.io", "Reader") and
   m.hasName("read") and
   arg = 0
+  or
+  m.(TaintTransferringMethod).transfersTaint(-1, arg)
 }
 
 /** Access to a method that passes taint from the qualifier. */
@@ -412,6 +436,8 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
   // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
   m.hasName(["buildQuery", "buildUnionQuery", "buildUnionSubQuery"])
+  or
+  m.(TaintPreservingMethod).returnsTaint(-1)
 }
 
 private class StringReplaceMethod extends Method {
@@ -429,7 +455,7 @@ private predicate unsafeEscape(MethodAccess ma) {
   // Removing `<script>` tags using a string-replace method is
   // unsafe if such a tag is embedded inside another one (e.g. `<scr<script>ipt>`).
   exists(StringReplaceMethod m | ma.getMethod() = m |
-    ma.getArgument(0).(StringLiteral).getRepresentedString() = "(<script>)" and
+    ma.getArgument(0).(StringLiteral).getRepresentedString() = "<script>" and
     ma.getArgument(1).(StringLiteral).getRepresentedString() = ""
   )
 }
@@ -620,6 +646,8 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
   method.hasName("query") and
   arg = 0
+  or
+  method.(TaintPreservingMethod).returnsTaint(arg)
 }
 
 /**
@@ -678,6 +706,8 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   method.hasName("appendColumns") and
   input = 1 and
   output = 0
+  or
+  method.(TaintTransferringMethod).transfersTaint(input, output)
 }
 
 /**
@@ -737,6 +767,8 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   // appendWhereStandalone(CharSequence inWhere)
   method.hasName(["setProjectionMap", "setTables", "appendWhere", "appendWhereStandalone"]) and
   arg = 0
+  or
+  method.(TaintTransferringMethod).transfersTaint(arg, -1)
 }
 
 /** A comparison or equality test with a constant. */
