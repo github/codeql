@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly System.Reflection.Metadata.ExceptionRegion r;
         private readonly Dictionary<int, IInstruction> jump_table;
 
-        public ExceptionRegion(GenericContext gc, MethodImplementation method, int index, System.Reflection.Metadata.ExceptionRegion r, Dictionary<int, IInstruction> jump_table) : base(gc.cx)
+        public ExceptionRegion(GenericContext gc, MethodImplementation method, int index, System.Reflection.Metadata.ExceptionRegion r, Dictionary<int, IInstruction> jump_table) : base(gc.Cx)
         {
             this.gc = gc;
             this.method = method;
@@ -50,7 +50,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 if (!r.CatchType.IsNil)
                 {
-                    var catchType = (Type)cx.CreateGeneric(gc, r.CatchType);
+                    var catchType = (Type)Cx.CreateGeneric(gc, r.CatchType);
                     yield return catchType;
                     yield return Tuples.cil_handler_type(this, catchType);
                 }

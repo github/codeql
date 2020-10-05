@@ -24,14 +24,14 @@ namespace Semmle.Extraction.CIL.Entities
         {
             this.handle = handle;
             this.parent = parent;
-            ed = cx.mdReader.GetEventDefinition(handle);
+            ed = cx.MdReader.GetEventDefinition(handle);
         }
 
         public override void WriteId(TextWriter trapFile)
         {
             parent.WriteId(trapFile);
             trapFile.Write('.');
-            trapFile.Write(cx.ShortName(ed.Name));
+            trapFile.Write(Cx.ShortName(ed.Name));
         }
 
         public override string IdSuffix => ";cil-event";
@@ -47,34 +47,34 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                var signature = (Type)cx.CreateGeneric(parent, ed.Type);
+                var signature = (Type)Cx.CreateGeneric(parent, ed.Type);
                 yield return signature;
 
-                yield return Tuples.cil_event(this, parent, cx.ShortName(ed.Name), signature);
+                yield return Tuples.cil_event(this, parent, Cx.ShortName(ed.Name), signature);
 
                 var accessors = ed.GetAccessors();
                 if (!accessors.Adder.IsNil)
                 {
-                    var adder = (Method)cx.CreateGeneric(parent, accessors.Adder);
+                    var adder = (Method)Cx.CreateGeneric(parent, accessors.Adder);
                     yield return adder;
                     yield return Tuples.cil_adder(this, adder);
                 }
 
                 if (!accessors.Remover.IsNil)
                 {
-                    var remover = (Method)cx.CreateGeneric(parent, accessors.Remover);
+                    var remover = (Method)Cx.CreateGeneric(parent, accessors.Remover);
                     yield return remover;
                     yield return Tuples.cil_remover(this, remover);
                 }
 
                 if (!accessors.Raiser.IsNil)
                 {
-                    var raiser = (Method)cx.CreateGeneric(parent, accessors.Raiser);
+                    var raiser = (Method)Cx.CreateGeneric(parent, accessors.Raiser);
                     yield return raiser;
                     yield return Tuples.cil_raiser(this, raiser);
                 }
 
-                foreach (var c in Attribute.Populate(cx, this, ed.GetCustomAttributes()))
+                foreach (var c in Attribute.Populate(Cx, this, ed.GetCustomAttributes()))
                     yield return c;
             }
         }

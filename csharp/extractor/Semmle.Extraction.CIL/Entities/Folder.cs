@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 if (transformedPath.ParentDirectory is PathTransformer.ITransformedPath parent)
                 {
-                    var parentFolder = cx.CreateFolder(parent);
+                    var parentFolder = Cx.CreateFolder(parent);
                     yield return parentFolder;
                     yield return Tuples.containerparent(parentFolder, this);
                 }

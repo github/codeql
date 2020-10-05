@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public Attribute(Context cx, IEntity @object, CustomAttributeHandle handle) : base(cx)
         {
-            attrib = cx.mdReader.GetCustomAttribute(handle);
+            attrib = cx.MdReader.GetCustomAttribute(handle);
             this.handle = handle;
             this.@object = @object;
         }
@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                var constructor = (Method)cx.Create(attrib.Constructor);
+                var constructor = (Method)Cx.Create(attrib.Constructor);
                 yield return constructor;
 
                 yield return Tuples.cil_attribute(this, @object, constructor);
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 try
                 {
-                    decoded = attrib.DecodeValue(new CustomAttributeDecoder(cx));
+                    decoded = attrib.DecodeValue(new CustomAttributeDecoder(Cx));
                 }
                 catch (NotImplementedException)
                 {
