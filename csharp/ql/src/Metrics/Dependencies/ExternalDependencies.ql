@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name External dependencies
  * @description Count the number of dependencies a C# source file has on assembly files.
  * @kind treemap

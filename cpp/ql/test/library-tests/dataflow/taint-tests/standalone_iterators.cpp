@@ -37,15 +37,15 @@ public:
 };
 
 void test_typedefs(int_iterator_by_typedefs source1) {
-    sink(*source1);
-    sink(*(source1++));
-    sink(*(++source1));
+    sink(*source1); // tainted
+    sink(*(source1++)); // tainted
+    sink(*(++source1)); // tainted
 }
 
 void test_trait(int_iterator_by_trait source1) {
-    sink(*source1);
-    sink(*(source1++));
-    sink(*(++source1));
+    sink(*source1); // tainted
+    sink(*(source1++)); // tainted
+    sink(*(++source1)); // tainted
 }
 
 void test_non_iterator(non_iterator source1) {
