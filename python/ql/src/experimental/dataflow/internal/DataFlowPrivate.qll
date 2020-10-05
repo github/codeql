@@ -48,10 +48,10 @@ class ArgumentPreUpdateNode extends NeedsSyntheticPostUpdateNode, ArgumentNode {
   // Certain arguments, such as implicit self arguments are already post-update nodes
   // and should not have an extra node synthesised.
   ArgumentPreUpdateNode() {
-    this = any(CallNodeCall c).getArg(_)
+    this = any(FunctionCall c).getArg(_)
     or
-    // this = any(BoundMethodCall c).getArg(_)
-    exists(BoundMethodCall c, int n | n > 0 | this = c.getArg(n))
+    // Avoid argument 0 of method calls as those have read post-update nodes.
+    exists(MethodCall c, int n | n > 0 | this = c.getArg(n))
     or
     this = any(SpecialCall c).getArg(_)
     or
@@ -312,6 +312,17 @@ private Node update(Node node) {
  */
 module ArgumentPassing {
   /**
+   * Holds if `call` is a call to `callable`.
+   * Used to limit the size of predicates.
+   */
+  predicate connects(CallNode call, CallableValue callable) {
+    exists(DataFlowCall c |
+      call = c.getNode() and
+      callable = c.getCallable().getCallableValue()
+    )
+  }
+
+  /**
    * Gets the `n`th parameter of `callable`.
    * If the callable has a starred parameter, say `*tuple`, that is matched with `n=-1`.
    * If the callable has a doubly starred parameter, say `**dict`, that is matched with `n=-2`.
@@ -320,11 +331,7 @@ module ArgumentPassing {
    */
   NameNode getParameter(CallableValue callable, int n) {
     // positional parameter
-    // bound method values have their positional parameters shifted.
-    not callable instanceof BoundMethodValue and
     result = callable.getParameter(n)
-    or
-    result = callable.(BoundMethodValue).getParameter(n - 1)
     or
     // starred parameter, `*tuple`
     exists(Function f |
@@ -338,13 +345,6 @@ module ArgumentPassing {
       f = callable.getScope() and
       n = -2 and
       result = f.getKwarg().getAFlowNode()
-    )
-  }
-
-  predicate connects(CallNode call, CallableValue callable) {
-    exists(DataFlowCall c |
-      call = c.getNode() and
-      callable = c.getCallable().getCallableValue()
     )
   }
 
@@ -435,7 +435,7 @@ import ArgumentPassing
 /**
  * IPA type for DataFlowCallable.
  *
- * A callable is either a callable value or a module (for enclosing `ModuleVariableNode`s).
+ * A callable is either a function value, a class value, or a module (for enclosing `ModuleVariableNode`s).
  * A module has no calls.
  */
 newtype TDataFlowCallable =
@@ -518,9 +518,9 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
  * A call corresponding to a special method call is handled by the corresponding `SpecialMethodCallNode`.
  */
 newtype TDataFlowCall =
-  TCallNode(CallNode call) { call = any(FunctionValue f).getAFunctionCall() } or
+  TFunctionCall(CallNode call) { call = any(FunctionValue f).getAFunctionCall() } or
   /** Bound methods need to make room for the explicit self parameter */
-  TBoundMethodCall(CallNode call) { call = any(FunctionValue f).getAMethodCall() } or
+  TMethodCall(CallNode call) { call = any(FunctionValue f).getAMethodCall() } or
   TClassCall(CallNode call) { call = any(ClassValue c).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
@@ -554,12 +554,12 @@ abstract class DataFlowCall extends TDataFlowCall {
  * Bound method calls and class calls insert an argument for the explicit
  * `self` parameter, and special method calls have special argument passing.
  */
-class CallNodeCall extends DataFlowCall, TCallNode {
+class FunctionCall extends DataFlowCall, TFunctionCall {
   CallNode call;
   DataFlowCallable callable;
 
-  CallNodeCall() {
-    this = TCallNode(call) and
+  FunctionCall() {
+    this = TFunctionCall(call) and
     call = callable.getACall()
   }
 
@@ -578,12 +578,12 @@ class CallNodeCall extends DataFlowCall, TCallNode {
  * Represents a call to a bound method call.
  * The node representing the instance is inserted as argument to the `self` parameter.
  */
-class BoundMethodCall extends DataFlowCall, TBoundMethodCall {
+class MethodCall extends DataFlowCall, TMethodCall {
   CallNode call;
   FunctionValue bm;
 
-  BoundMethodCall() {
-    this = TBoundMethodCall(call) and
+  MethodCall() {
+    this = TMethodCall(call) and
     call = bm.getACall()
   }
 
