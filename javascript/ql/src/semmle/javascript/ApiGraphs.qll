@@ -286,6 +286,17 @@ module API {
   /** Gets a node corresponding to an export of module `m`. */
   Node moduleExport(string m) { result = Impl::MkModuleDef(m).(Node).getMember("exports") }
 
+  /** Provides helper predicates for accessing API-graph nodes. */
+  module Node {
+    /** Gets a node whose type has the given qualified name. */
+    Node ofType(string moduleName, string exportedName) {
+      exists(TypeName tn |
+        tn.hasQualifiedName(moduleName, exportedName) and
+        result = Impl::MkCanonicalNameUse(tn).(Node).getInstance()
+      )
+    }
+  }
+
   /**
    * An API entry point.
    *
