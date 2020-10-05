@@ -129,7 +129,7 @@ namespace Semmle.Util.Logging
                 case Severity.Error:
                     return "Error: ";
                 default:
-                    throw new ArgumentOutOfRangeException("s");
+                    throw new ArgumentOutOfRangeException(nameof(s));
             }
         }
 
@@ -188,7 +188,7 @@ namespace Semmle.Util.Logging
                 case Severity.Error:
                     return v >= Verbosity.Error;
                 default:
-                    throw new ArgumentOutOfRangeException("s");
+                    throw new ArgumentOutOfRangeException(nameof(s));
             }
         }
     }
