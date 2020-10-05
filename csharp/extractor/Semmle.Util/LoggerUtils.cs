@@ -31,7 +31,7 @@ namespace Semmle.Util
 
         public override void WriteLine(string? format, params object?[] args)
         {
-            WriteLine(format is null ? format : String.Format(format, args));
+            WriteLine(format is null ? format : string.Format(format, args));
         }
 
         private readonly object mutex = new object();
