@@ -1,6 +1,6 @@
 /**
- * @name Detect JHipster Generator Vulnnerability CVE-2019-16303
- * @description Detector for the CVE-2019-16303 vulnerability that existed in the JHipster code generator.
+ * @name Detect JHipster Generator Vulnerability CVE-2019-16303
+ * @description Using a vulnerable version of JHipster to generate random numbers makes it easier for attackers to take over accounts.
  * @kind problem
  * @problem.severity error
  * @precision very-high

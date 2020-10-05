@@ -1,4 +1,4 @@
-/* Definitions related to the Apache Commons Lang library. */
+/** Definitions related to the Apache Commons Lang library. */
 import semmle.code.java.Type
 
 /*--- Types ---*/
