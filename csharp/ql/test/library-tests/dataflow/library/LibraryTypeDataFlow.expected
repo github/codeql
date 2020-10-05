@@ -1780,6 +1780,7 @@ callableFlowAccessPath
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.Reverse(int, int) | argument 0 [[]] -> return [[]] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.set_Item(int, T) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Runtime.CompilerServices.TaskAwaiter<>.GetResult() | qualifier [m_task, Result] -> return [<empty>] | true |
 | System.Security.PermissionSet.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Security.PermissionSet.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.String.Concat(IEnumerable<String>) | argument 0 [[]] -> return [<empty>] | false |
@@ -1929,6 +1930,7 @@ callableFlowAccessPath
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskContinuationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.GetAwaiter() | qualifier [<empty>] -> return [m_task] | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object) | output from argument 0 [<empty>] -> return [Result] | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions) | output from argument 0 [<empty>] -> return [Result] | true |

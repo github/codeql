@@ -11,6 +11,7 @@ private import semmle.code.csharp.frameworks.system.io.Compression
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.system.Net
 private import semmle.code.csharp.frameworks.system.Text
+private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
@@ -93,6 +94,11 @@ module AccessPath {
   /** Gets a singleton property access path. */
   AccessPath property(Property p) {
     result = singleton(any(PropertyContent c | c.getProperty() = p.getSourceDeclaration()))
+  }
+
+  /** Gets a singleton field access path. */
+  AccessPath field(Field f) {
+    result = singleton(any(FieldContent c | c.getField() = f.getSourceDeclaration()))
   }
 
   /** Gets an access path representing a property inside a collection. */
@@ -1714,9 +1720,7 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
 }
 
 /** Data flow for `System.Threading.Tasks.Task<>`. */
-class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
-  SystemThreadingTasksTaskTFlow() { this instanceof SystemThreadingTasksTaskTClass }
-
+class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow, SystemThreadingTasksTaskTClass {
   override predicate callableFlow(
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
     SourceDeclarationCallable c, boolean preservesValue
@@ -1807,6 +1811,14 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
         sinkAp = AccessPath::property(this.(SystemThreadingTasksTaskTClass).getResultProperty())
       )
     )
+    or
+    m = this.getGetAwaiterMethod() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp =
+      AccessPath::field(any(SystemRuntimeCompilerServicesTaskAwaiterStruct s)
+            .getUnderlyingTaskField())
   }
 }
 
@@ -1888,6 +1900,29 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
         )
       )
     )
+  }
+}
+
+/** Data flow for `System.Runtime.CompilerServices.TaskAwaiter<>`. */
+class SystemRuntimeCompilerServicesTaskAwaiterFlow extends LibraryTypeDataFlow,
+  SystemRuntimeCompilerServicesTaskAwaiterStruct {
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    preservesValue = true and
+    c = this.getGetResultMethod() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp =
+      AccessPath::cons(any(FieldContent fc | fc.getField() = this.getUnderlyingTaskField()),
+        AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())) and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty()
+  }
+
+  override predicate requiresAccessPath(Content head, AccessPath tail) {
+    head.(FieldContent).getField() = this.getUnderlyingTaskField() and
+    tail = AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())
   }
 }
 
