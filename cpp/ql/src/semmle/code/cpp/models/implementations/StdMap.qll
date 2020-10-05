@@ -52,23 +52,6 @@ class StdMapInsert extends TaintFunction {
 }
 
 /**
- * The standard map `begin` and `end` functions and their
- * variants.
- */
-class StdMapBeginEnd extends TaintFunction {
-  StdMapBeginEnd() {
-    this.hasQualifiedName("std", ["map", "unordered_map"], ["begin", "end", "cbegin", "cend"])
-    or
-    this.hasQualifiedName("std", "map", ["rbegin", "crbegin", "rend", "crend"])
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
-  }
-}
-
-/**
  * The standard map `swap` functions.
  */
 class StdMapSwap extends TaintFunction {

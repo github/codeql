@@ -39,8 +39,8 @@ void test_pair()
 
 	std::pair<char *, char *> e(source(), "456");
 	sink(e.first); // tainted
-	sink(e.second); // [FALSE POSITIVE]
-	sink(e); // tainted
+	sink(e.second);
+	sink(e); // tainted [NOT DETECTED]
 
 	std::pair<char *, char *> f("123", source());
 	sink(f.first); // [FALSE POSITIVE]
@@ -80,19 +80,19 @@ void test_pair()
 	sink(make_pair("123", "456"));
 	sink(make_pair("123", "456").first);
 	sink(make_pair("123", "456").second);
-	sink(make_pair(source(), "456")); // tainted
-	sink(make_pair(source(), "456").first); // tainted
-	sink(make_pair(source(), "456").second); // [FALSE POSITIVE]
+	sink(make_pair(source(), "456")); // tainted [NOT DETECTED]
+	sink(make_pair(source(), "456").first); // tainted [NOT DETECTED]
+	sink(make_pair(source(), "456").second);
 	sink(make_pair("123", source())); // tainted
 	sink(make_pair("123", source()).first); // [FALSE POSITIVE]
 	sink(make_pair("123", source()).second); // tainted
 
 	std::pair<std::pair<char *, char *>, char *> m;
 	m = make_pair(make_pair("123", source()), "789");
-	sink(m); // tainted
-	sink(m.first); // tainted
-	sink(m.first.first); // [FALSE POSITIVE]
-	sink(m.first.second); // tainted
+	sink(m); // tainted [NOT DETECTED]
+	sink(m.first); // tainted [NOT DETECTED]
+	sink(m.first.first);
+	sink(m.first.second); // tainted [NOT DETECTED]
 	sink(m.second);
 }
 
@@ -102,26 +102,26 @@ void test_map()
 	std::map<char *, char *> m1, m2, m3, m4, m5, m6;
 
 	sink(m1.insert(std::make_pair("abc", "def")).first);
-	sink(m2.insert(std::make_pair("abc", source())).first); // tainted [NOT DETECTED]
+	sink(m2.insert(std::make_pair("abc", source())).first); // tainted
 	sink(m3.insert(std::make_pair(source(), "def")).first); // tainted [NOT DETECTED]
 	sink(m4.insert(m4.begin(), std::pair<char *, char *>("abc", source()))); // tainted
 	sink(m5.insert_or_assign("abc", source()).first); // tainted
 	sink(m6.insert_or_assign(m6.begin(), "abc", source())); // tainted
 	sink(m1);
 	sink(m2); // tainted
-	sink(m3); // tainted
+	sink(m3); // tainted [NOT DETECTED]
 	sink(m4); // tainted
 	sink(m5); // tainted
 	sink(m6); // tainted
 	sink(m1.find("abc"));
 	sink(m2.find("abc")); // tainted
-	sink(m3.find("abc")); // [FALSE POSITIVE]
+	sink(m3.find("abc"));
 	sink(m4.find("abc")); // tainted
 	sink(m5.find("abc")); // tainted
 	sink(m6.find("abc")); // tainted
 	sink(m1.find("def"));
 	sink(m2.find("def")); // [FALSE POSITIVE]
-	sink(m3.find("def")); // [FALSE POSITIVE]
+	sink(m3.find("def"));
 	sink(m4.find("def")); // [FALSE POSITIVE]
 	sink(m5.find("def")); // [FALSE POSITIVE]
 	sink(m6.find("def")); // [FALSE POSITIVE]
@@ -154,7 +154,7 @@ void test_map()
 	}
 	for (i3 = m3.begin(); i3 != m3.end(); i3++)
 	{
-		sink(*i3); // tainted
+		sink(*i3); // tainted [NOT DETECTED]
 		sink(i2->first); // tainted
 		sink(i2->second); // [FALSE POSITIVE]
 	}
@@ -254,26 +254,26 @@ void test_unordered_map()
 	std::unordered_map<char *, char *> m1, m2, m3, m4, m5, m6;
 
 	sink(m1.insert(std::make_pair("abc", "def")).first);
-	sink(m2.insert(std::make_pair("abc", source())).first); // tainted [NOT DETECTED]
+	sink(m2.insert(std::make_pair("abc", source())).first); // tainted
 	sink(m3.insert(std::make_pair(source(), "def")).first); // tainted [NOT DETECTED]
 	sink(m4.insert(m4.begin(), std::pair<char *, char *>("abc", source()))); // tainted
 	sink(m5.insert_or_assign("abc", source()).first); // tainted
 	sink(m6.insert_or_assign(m6.begin(), "abc", source())); // tainted
 	sink(m1);
 	sink(m2); // tainted
-	sink(m3); // tainted
+	sink(m3); // tainted [NOT DETECTED]
 	sink(m4); // tainted
 	sink(m5); // tainted
 	sink(m6); // tainted
 	sink(m1.find("abc"));
 	sink(m2.find("abc")); // tainted
-	sink(m3.find("abc")); // [FALSE POSITIVE]
+	sink(m3.find("abc"));
 	sink(m4.find("abc")); // tainted
 	sink(m5.find("abc")); // tainted
 	sink(m6.find("abc")); // tainted
 	sink(m1.find("def"));
 	sink(m2.find("def")); // [FALSE POSITIVE]
-	sink(m3.find("def")); // [FALSE POSITIVE]
+	sink(m3.find("def"));
 	sink(m4.find("def")); // [FALSE POSITIVE]
 	sink(m5.find("def")); // [FALSE POSITIVE]
 	sink(m6.find("def")); // [FALSE POSITIVE]
@@ -306,7 +306,7 @@ void test_unordered_map()
 	}
 	for (i3 = m3.begin(); i3 != m3.end(); i3++)
 	{
-		sink(*i3); // tainted
+		sink(*i3); // tainted [NOT DETECTED]
 		sink(i2->first); // tainted
 		sink(i2->second); // [FALSE POSITIVE]
 	}

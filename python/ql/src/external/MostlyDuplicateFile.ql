@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Mostly duplicate module
  * @description There is another file that shares a lot of the code with this file. Merge the two files to improve maintainability.
  * @kind problem

@@ -20,26 +20,14 @@ class StdPairConstructor extends Constructor, TaintFunction {
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from any parameter of a value type to the qualifier
-    input.isParameterDeref(getAValueTypeParameterIndex()) and
+    // taint flow from second parameter of a value type to the qualifier
+    getAValueTypeParameterIndex() = 1 and
+    input.isParameterDeref(1) and
     (
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
       or
       output.isQualifierObject()
     )
-  }
-}
-
-/**
- * An instantiation of `std::make_pair`.
- */
-class StdMakePair extends TaintFunction {
-  StdMakePair() { this.hasQualifiedName("std", "make_pair") }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from any parameter to the returned object
-    input.isParameterDeref([0, 1]) and
-    output.isReturnValue()
   }
 }
 
