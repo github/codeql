@@ -2050,6 +2050,37 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
 }
 
 /**
+ * IR translation of the materialization of a temporary object.
+ * 
+ * This translation allocates a temporary variable, and initializes it treating `expr.getExpr()` as
+ * its initializer.
+ */
+class TranslatedTemporaryObjectExpr extends TranslatedNonConstantExpr, TranslatedVariableInitialization {
+  override TemporaryObjectExpr expr;
+
+  final override predicate hasTempVariable(TempVariableTag tag, CppType type) {
+    tag = TempObjectTempVar() and
+    type = getTypeForPRValue(expr.getType())
+  }
+
+  override Type getTargetType() { result = expr.getType() }
+
+  final override TranslatedInitialization getInitialization() {
+    result = getTranslatedInitialization(expr.getExpr())
+  }
+
+  final override IRVariable getIRVariable() { result = getIRTempVariable(expr, TempObjectTempVar()) }
+
+  final override Instruction getInitializationSuccessor() {
+    result = getParent().getChildSuccessor(this)
+  }
+
+  final override Instruction getResult() {
+    result = getTargetAddress()
+  }
+}
+
+/**
  * IR translation of a `throw` expression.
  */
 abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {

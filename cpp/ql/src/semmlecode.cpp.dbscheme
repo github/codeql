@@ -1171,6 +1171,7 @@ conversionkinds(
             | @parexpr
             | @reference_to
             | @ref_indirect
+            | @temp_init
             ;
 
 /*
@@ -1673,6 +1674,7 @@ case @expr.kind of
 | 326 = @spaceshipexpr
 | 327 = @co_await
 | 328 = @co_yield
+| 329 = @temp_init
 ;
 
 @var_args_expr = @vastartexpr

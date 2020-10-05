@@ -351,6 +351,7 @@ newtype TTranslatedElement =
       exists(ConstructorFieldInit fieldInit | fieldInit.getExpr().getFullyConverted() = expr) or
       exists(NewExpr newExpr | newExpr.getInitializer().getFullyConverted() = expr) or
       exists(ThrowExpr throw | throw.getExpr().getFullyConverted() = expr) or
+      exists(TemporaryObjectExpr temp | temp.getExpr() = expr) or
       exists(LambdaExpression lambda | lambda.getInitializer().getFullyConverted() = expr)
     )
   } or

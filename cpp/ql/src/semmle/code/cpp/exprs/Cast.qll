@@ -841,6 +841,27 @@ class ArrayToPointerConversion extends Conversion, @array_to_pointer {
 }
 
 /**
+ * A node representing a temporary object created as part of an expression.
+ * 
+ * This is most commonly seen in the following cases (from [class.temporary]/2):
+ * - when binding a reference to a prvalue
+ * - when performing member access on a class prvalue
+ * - when performing an array-to-pointer conversion or subscripting on an array prvalue
+ * - when initializing an object of type std::initializer_list from a braced-init-list
+ * - for certain unevaluated operands
+ * - when a prvalue that has type other than cv void appears as a discarded-value expression
+ * 
+ * This node will only exist if the object is of class type, and even then only if either the
+ * object's initialization or destruction is non-trivial.
+ */
+class TemporaryObjectExpr extends Conversion, @temp_init {
+  /** Gets a textual representation of this conversion. */
+  override string toString() { result = "temporary object" }
+
+  override string getAPrimaryQlClass() { result = "TemporaryObjectExpr" }
+}
+
+/**
  * A node representing the Cast sub-class of entity `cast`.
  */
 string qlCast(Cast cast) {

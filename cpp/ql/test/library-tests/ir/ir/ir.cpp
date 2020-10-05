@@ -1322,4 +1322,82 @@ void f(int* p)
   new (p) int;
 }
 
+template<typename T>
+T defaultConstruct() {
+    return T();
+}
+
+class constructor_only {
+private:
+    int x;
+
+public:
+    constructor_only(int x);
+};
+
+class copy_constructor {
+private:
+    int y;
+
+public:
+    copy_constructor();
+    copy_constructor(const copy_constructor&);
+
+    void method();
+};
+
+class destructor_only {
+public:
+    ~destructor_only();
+
+    void method();
+};
+
+template<typename T>
+void acceptRef(const T& v);
+
+template<typename T>
+void acceptValue(T v);
+
+template<typename T>
+T returnValue();
+
+void temporary_string() {
+    String s = returnValue<String>();  // No temporary
+    const String& rs = returnValue<String>();  // Binding a reference variable to a temporary
+
+    acceptRef(s);  // No temporary
+    acceptRef<String>("foo");  // Binding a const reference to a temporary
+    acceptValue(s);
+    acceptValue<String>("foo");
+    String().c_str();
+    returnValue<String>().c_str();  // Member access on a temporary
+
+    defaultConstruct<String>();
+}
+
+void temporary_destructor_only() {
+    destructor_only d = returnValue<destructor_only>();
+    const destructor_only& rd = returnValue<destructor_only>();
+    destructor_only d2;
+    acceptRef(d);
+    acceptValue(d);
+    destructor_only().method();
+    returnValue<destructor_only>().method();
+
+    defaultConstruct<destructor_only>();
+}
+
+void temporary_copy_constructor() {
+    copy_constructor d = returnValue<copy_constructor>();
+    const copy_constructor& rd = returnValue<copy_constructor>();
+    copy_constructor d2;
+    acceptRef(d);
+    acceptValue(d);
+    copy_constructor().method();
+    returnValue<copy_constructor>().method();
+
+    defaultConstruct<copy_constructor>();
+}
+
 // semmle-extractor-options: -std=c++17 --clang
