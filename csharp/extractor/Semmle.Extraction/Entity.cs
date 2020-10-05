@@ -30,7 +30,7 @@ namespace Semmle.Extraction
         /// Writes the unique identifier of this entitiy to a trap file.
         /// </summary>
         /// <param name="trapFile">The trapfile to write to.</param>
-        void WriteId(TextWriter writrapFileter);
+        void WriteId(TextWriter trapFile);
 
         /// <summary>
         /// Writes the quoted identifier of this entity,
