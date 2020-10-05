@@ -33,13 +33,13 @@ private module MongoDB {
     not result.getAnImmediateUse().(DataFlow::ParameterNode).getName() = "db" // mongodb v2 provides a `Db` here
   }
 
-  /** Gets an api node that refers to a `connect` callback. */
+  /** Gets an API-graph node that refers to a `connect` callback. */
   private API::Node getAMongoDbCallback() {
     result = getAMongoClient().getMember("connect").getLastParameter()
   }
 
   /**
-   * Gets an API node that may refer to a MongoDB database connection.
+   * Gets an API-graph node that may refer to a MongoDB database connection.
    */
   private API::Node getAMongoDb() {
     result = getAMongoClient().getMember("db").getReturn()
@@ -183,7 +183,7 @@ private module Mongoose {
    */
   private class MongooseFunction extends API::Node {
     /**
-     * Gets the API node for the result from this function (if the function returns a Query).
+     * Gets the API-graph node for the result from this function (if the function returns a `Query`).
      */
     abstract API::Node getQueryReturn();
 
@@ -237,7 +237,7 @@ private module Mongoose {
     }
 
     /**
-     * Gets a API node referring to a Mongoose Model object.
+     * Gets a API-graph node referring to a Mongoose Model object.
      */
     private API::Node getModelObject() {
       result = getAMongooseInstance().getMember("model").getReturn()

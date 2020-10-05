@@ -302,7 +302,7 @@ module API {
     /** Gets a data-flow node that defines this entry point. */
     abstract DataFlow::Node getARhs();
 
-    /** Gets a API-node for this entry point. */
+    /** Gets an API-graph node for this entry point. */
     API::Node getNode() { result = root().getASuccessor(this) }
   }
 
