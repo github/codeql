@@ -442,6 +442,7 @@ callableFlow
 | System.Int32.TryParse(string, NumberStyles, IFormatProvider, out int) | argument 0 -> return | false |
 | System.Int32.TryParse(string, out int) | argument 0 -> argument 1 | false |
 | System.Int32.TryParse(string, out int) | argument 0 -> return | false |
+| System.Lazy<>.get_Value() | qualifier -> return | false |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | argument 1 -> parameter 0 of argument 2 | true |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | output from argument 2 -> parameter 0 of argument 3 | true |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | output from argument 3 -> return | true |

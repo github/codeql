@@ -718,6 +718,13 @@ class SystemLazyFlow extends LibraryTypeDataFlow, SystemLazyClass {
       sink = TCallableFlowSinkReturn() and
       sinkAp = AccessPath::property(this.getValueProperty())
     )
+    or
+    preservesValue = false and
+    c = this.getValueProperty().getGetter() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty()
   }
 }
 
