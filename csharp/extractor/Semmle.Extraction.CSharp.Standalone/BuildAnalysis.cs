@@ -53,7 +53,6 @@ namespace Semmle.BuildAnalyser
         private readonly IDictionary<string, bool> usedReferences = new ConcurrentDictionary<string, bool>();
         private readonly IDictionary<string, bool> sources = new ConcurrentDictionary<string, bool>();
         private readonly IDictionary<string, string> unresolvedReferences = new ConcurrentDictionary<string, string>();
-        private readonly DirectoryInfo sourceDir;
         private int failedProjects, succeededProjects;
         private readonly string[] allSources;
         private int conflictedReferences = 0;
@@ -68,7 +67,7 @@ namespace Semmle.BuildAnalyser
             var startTime = DateTime.Now;
 
             progressMonitor = progress;
-            sourceDir = new DirectoryInfo(options.SrcDir);
+            var sourceDir = new DirectoryInfo(options.SrcDir);
 
             progressMonitor.FindingFiles(options.SrcDir);
 

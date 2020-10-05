@@ -6,8 +6,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
     internal class MemberAccess : Expression
     {
-        private readonly IEntity target;
-
         private MemberAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, ISymbol target) : base(info)
         {
             var trapFile = info.Context.TrapWriter.Writer;
@@ -20,8 +18,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
             else
             {
-                this.target = cx.CreateEntity(target);
-                trapFile.expr_access(this, this.target);
+                var t = cx.CreateEntity(target);
+                trapFile.expr_access(this, t);
             }
         }
 
