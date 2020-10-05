@@ -277,6 +277,38 @@ private Node update(Node node) {
  * entries which are not unpacked are passed to the doubly starred parameter. This is achieved by
  * adding a dataflow step from the dictionary argument to `TKwOverflowNode(call, callable)` and a
  * step to clear content of that node at any unpacked keys.
+ *
+ * ## Examples:
+ * Assume that we have the callable
+ * ```python
+ * def f(x, y, *t, *d):
+ *   pass
+ * ```
+ * Then the call
+ * ```python
+ * f(0, 1, 2, a=3)
+ * ```
+ * will be modelled as
+ * ```python
+ * f(0, 1, [*t], [**d])
+ * ```
+ * where `[` and `]` denotes synthesisezed nodes, so `[*t]` is the synthesized tuple argument
+ * `TPosOverflowNode` and `[**d]` is the synthesized dictionary argument `TKwOverflowNode`.
+ * There will be a store step from `2` to `[*t]` at pos `0` and one from `3` to `[**d]` at key
+ * `a`.
+ *
+ * For the call
+ * ```python
+ * f(0, **{"y": 1, "a": 3})
+ * ```
+ * no tuple arguemnt is synthesized. It is modelled as
+ * ```python
+ * f(0, [y=1], [**d])
+ * ```
+ * where `[y=1]` is the synthesised unpacked argument `TKwUnpacked` (with `name` = `y`). There is
+ * a read step from `**{"y": 1, "a": 3}` to `[y=1]` at key `y` to get the value passed to the parameter
+ * `y`. There is a dataflow step from `**{"y": 1, "a": 3}` to `[**d]` to transfer the content and
+ * a clearing of content at key `y` for node `[**d]`, since that value has been unpacked.
  */
 module ArgumentPassing {
   /**
