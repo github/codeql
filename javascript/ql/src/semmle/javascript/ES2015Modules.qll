@@ -235,7 +235,7 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
   ES2015Module getEnclosingModule() { this = result.getAnExport() }
 
   /** Holds if this export declaration exports variable `v` under the name `name`. */
-  abstract predicate exportsAs(LexicalName v, string name); // TODO: Can I deprecate this?
+  abstract predicate exportsAs(LexicalName v, string name);
 
   /**
    * Gets the data flow node corresponding to the value this declaration exports
