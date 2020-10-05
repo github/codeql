@@ -15,9 +15,7 @@
 import cpp
 
 class Allocation extends FunctionCall {
-  Allocation() {
-    this.getTarget().hasGlobalOrStdName(["malloc", "calloc", "realloc"])
-  }
+  Allocation() { this.getTarget().hasGlobalOrStdName(["malloc", "calloc", "realloc"]) }
 
   private string getName() { this.getTarget().hasGlobalOrStdName(result) }
 
