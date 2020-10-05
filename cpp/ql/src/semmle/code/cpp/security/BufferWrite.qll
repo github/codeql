@@ -354,10 +354,10 @@ class SnprintfBW extends BufferWriteCall {
  */
 class GetsBW extends BufferWriteCall {
   GetsBW() {
-    // gets(dst)
-    // fgets(dst, max_amount, src_stream)
-    // fgetws(dst, max_amount, src_stream)
-    getTarget().(TopLevelFunction).getName() = ["gets", "fgets", "fgetws"]
+    getTarget().(TopLevelFunction).getName() =
+      ["gets", // gets(dst)
+          "fgets", // fgets(dst, max_amount, src_stream)
+          "fgetws"] // fgetws(dst, max_amount, src_stream)
   }
 
   /**

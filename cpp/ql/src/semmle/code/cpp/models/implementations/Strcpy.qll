@@ -13,23 +13,21 @@ import semmle.code.cpp.models.interfaces.SideEffect
  */
 class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, SideEffectFunction {
   StrcpyFunction() {
-    // strcpy(dst, src)
-    // wcscpy(dst, src)
-    // _mbscpy(dst, src)
-    // strncpy(dst, src, max_amount)
-    // _strncpy_l(dst, src, max_amount, locale)
-    // wcsncpy(dst, src, max_amount)
-    // _wcsncpy_l(dst, src, max_amount, locale)
-    // _mbsncpy(dst, src, max_amount)
-    // _mbsncpy_l(dst, src, max_amount, locale)
     getName() =
-      ["strcpy", "wcscpy", "_mbscpy", "strncpy", "_strncpy_l", "wcsncpy", "_wcsncpy_l", "_mbsncpy",
-          "_mbsncpy_l"]
+      ["strcpy", // strcpy(dst, src)
+          "wcscpy", // wcscpy(dst, src)
+          "_mbscpy", // _mbscpy(dst, src)
+          "strncpy", // strncpy(dst, src, max_amount)
+          "_strncpy_l", // _strncpy_l(dst, src, max_amount, locale)
+          "wcsncpy", // wcsncpy(dst, src, max_amount)
+          "_wcsncpy_l", // _wcsncpy_l(dst, src, max_amount, locale)
+          "_mbsncpy", // _mbsncpy(dst, src, max_amount)
+          "_mbsncpy_l"] // _mbsncpy_l(dst, src, max_amount, locale)
     or
-    // strcpy_s(dst, max_amount, src)
-    // wcscpy_s(dst, max_amount, src)
-    // _mbscpy_s(dst, max_amount, src)
-    getName() = ["strcpy_s", "wcscpy_s", "_mbscpy_s"] and
+    getName() =
+      ["strcpy_s", // strcpy_s(dst, max_amount, src)
+          "wcscpy_s", // wcscpy_s(dst, max_amount, src)
+          "_mbscpy_s"] and // _mbscpy_s(dst, max_amount, src)
     // exclude the 2-parameter template versions
     // that find the size of a fixed size destination buffer.
     getNumberOfParameters() = 3
