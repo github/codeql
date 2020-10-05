@@ -18,16 +18,24 @@ namespace Semmle.Extraction.CSharp
     public sealed class Analyser : IDisposable
     {
         private IExtractor extractor;
+        private CSharpCompilation compilation;
+        private Layout layout;
+        private bool init;
+        private readonly object progressMutex = new object();
+        private int taskCount = 0;
+        private CommonOptions options;
+        private Entities.Compilation compilationEntity;
+        private IDisposable compilationTrapFile;
 
         private readonly Stopwatch stopWatch = new Stopwatch();
 
         private readonly IProgressMonitor progressMonitor;
 
-        public readonly ILogger Logger;
+        public ILogger Logger { get; }
 
-        public readonly bool AddAssemblyTrapPrefix;
+        public bool AddAssemblyTrapPrefix { get; }
 
-        public readonly PathTransformer PathTransformer;
+        public PathTransformer PathTransformer { get; }
 
         public Analyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
         {
@@ -39,10 +47,6 @@ namespace Semmle.Extraction.CSharp
             PathTransformer = pathTransformer;
         }
 
-        private CSharpCompilation compilation;
-        private Layout layout;
-
-        private bool init;
         /// <summary>
         /// Start initialization of the analyser.
         /// </summary>
@@ -202,11 +206,6 @@ namespace Semmle.Extraction.CSharp
             extractionTasks.Add(() => DoAnalyseAssembly(assembly));
         }
 
-        private readonly object progressMutex = new object();
-        private int taskCount = 0;
-
-        private CommonOptions options;
-
         private static bool FileIsUpToDate(string src, string dest)
         {
             return File.Exists(dest) &&
@@ -221,8 +220,7 @@ namespace Semmle.Extraction.CSharp
             extractionTasks.Add(() => DoAnalyseCompilation(cwd, args));
         }
 
-        private Entities.Compilation compilationEntity;
-        private IDisposable compilationTrapFile;
+
 
         private void DoAnalyseCompilation(string cwd, string[] args)
         {

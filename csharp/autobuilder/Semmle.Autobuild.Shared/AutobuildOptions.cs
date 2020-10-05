@@ -9,26 +9,24 @@ namespace Semmle.Autobuild.Shared
     /// </summary>
     public class AutobuildOptions
     {
-        public readonly int SearchDepth = 3;
-        public readonly string RootDirectory;
         private const string prefix = "LGTM_INDEX_";
 
-        public readonly string? VsToolsVersion;
-        public readonly string? MsBuildArguments;
-        public readonly string? MsBuildPlatform;
-        public readonly string? MsBuildConfiguration;
-        public readonly string? MsBuildTarget;
-        public readonly string? DotNetArguments;
-        public readonly string? DotNetVersion;
-        public readonly string? BuildCommand;
-        public readonly string[] Solution;
-
-        public readonly bool IgnoreErrors;
-        public readonly bool Buildless;
-        public readonly bool AllSolutions;
-        public readonly bool NugetRestore;
-
-        public readonly Language Language;
+        public int SearchDepth { get; } = 3;
+        public string RootDirectory { get; }
+        public string? VsToolsVersion { get; }
+        public string? MsBuildArguments { get; }
+        public string? MsBuildPlatform { get; }
+        public string? MsBuildConfiguration { get; }
+        public string? MsBuildTarget { get; }
+        public string? DotNetArguments { get; }
+        public string? DotNetVersion { get; }
+        public string? BuildCommand { get; }
+        public string[] Solution { get; }
+        public bool IgnoreErrors { get; }
+        public bool Buildless { get; }
+        public bool AllSolutions { get; }
+        public bool NugetRestore { get; }
+        public Language Language { get; }
 
         /// <summary>
         /// Reads options from environment variables.

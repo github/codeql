@@ -9,8 +9,8 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
     {
-        protected IEntity Parent;
-        protected readonly Parameter Original;
+        protected IEntity Parent { get; set; }
+        protected Parameter Original { get; }
 
         protected Parameter(Context cx, IParameterSymbol init, IEntity parent, Parameter original)
             : base(cx, init)

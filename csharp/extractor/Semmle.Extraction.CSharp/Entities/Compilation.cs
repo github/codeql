@@ -89,7 +89,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
     public struct Timings
     {
-        public TimeSpan Elapsed, Cpu, User;
+        public TimeSpan Elapsed { get; set; }
+        public TimeSpan Cpu { get; set; }
+        public TimeSpan User { get; set; }
     }
 
     /// <summary>
@@ -97,8 +99,10 @@ namespace Semmle.Extraction.CSharp.Entities
     /// </summary>
     public struct PerformanceMetrics
     {
-        public Timings Frontend, Extractor, Total;
-        public long PeakWorkingSet;
+        public Timings Frontend { get; set; }
+        public Timings Extractor { get; set; }
+        public Timings Total { get; set; }
+        public long PeakWorkingSet { get; set; }
 
         /// <summary>
         /// These are in database order (0 indexed)

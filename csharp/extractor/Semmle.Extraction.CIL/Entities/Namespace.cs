@@ -16,8 +16,8 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public sealed class Namespace : TypeContainer, INamespace
     {
-        public Namespace? ParentNamespace;
-        public readonly string Name;
+        public Namespace? ParentNamespace { get; }
+        public string Name { get; }
 
         public bool IsGlobalNamespace => ParentNamespace is null;
 

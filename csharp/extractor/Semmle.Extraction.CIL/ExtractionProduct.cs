@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CIL
             cx2.Extract(this);
         }
 
-        public readonly Context cx;
+        public Context cx { get; }
 
         protected UnlabelledEntity(Context cx)
         {
@@ -101,7 +101,7 @@ namespace Semmle.Extraction.CIL
             cx2.Populate(this);
         }
 
-        public readonly Context cx;
+        public Context cx { get; }
 
         protected LabelledEntity(Context cx)
         {

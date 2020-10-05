@@ -10,9 +10,9 @@ namespace Semmle.Extraction.CSharp.Populators
 {
     public class TypeContainerVisitor : CSharpSyntaxVisitor
     {
-        protected readonly Context cx;
-        protected readonly IEntity parent;
-        protected readonly TextWriter trapFile;
+        protected Context cx { get; }
+        protected IEntity parent { get; }
+        protected TextWriter trapFile { get; }
 
         public TypeContainerVisitor(Context cx, TextWriter trapFile, IEntity parent)
         {

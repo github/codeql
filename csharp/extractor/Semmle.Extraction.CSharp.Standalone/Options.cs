@@ -80,67 +80,63 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// <summary>
         /// Files/patterns to exclude.
         /// </summary>
-        public IList<string> Excludes = new List<string>();
+        public IList<string> Excludes { get; } = new List<string>();
 
-        /// <summary>
-        /// The number of concurrent threads to use.
-        /// </summary>
-        public int NumberOfThreads = Semmle.Extraction.Extractor.DefaultNumberOfThreads;
 
         /// <summary>
         /// The directory containing the source code;
         /// </summary>
-        public readonly string SrcDir = System.IO.Directory.GetCurrentDirectory();
+        public string SrcDir { get; } = System.IO.Directory.GetCurrentDirectory();
 
         /// <summary>
         /// Whether to analyse NuGet packages.
         /// </summary>
-        public bool UseNuGet = true;
+        public bool UseNuGet { get; private set; } = true;
 
         /// <summary>
         /// Directories to search DLLs in.
         /// </summary>
-        public IList<string> DllDirs = new List<string>();
+        public IList<string> DllDirs { get; } = new List<string>();
 
         /// <summary>
         /// Whether to search the .Net framework directory.
         /// </summary>
-        public bool ScanNetFrameworkDlls = true;
+        public bool ScanNetFrameworkDlls { get; private set; } = true;
 
         /// <summary>
         /// Whether to use mscorlib as a reference.
         /// </summary>
-        public bool UseMscorlib = true;
+        public bool UseMscorlib { get; private set; } = true;
 
         /// <summary>
         /// Whether to search .csproj files.
         /// </summary>
-        public bool AnalyseCsProjFiles = true;
+        public bool AnalyseCsProjFiles { get; private set; } = true;
 
         /// <summary>
         /// The solution file to analyse, or null if not specified.
         /// </summary>
-        public string? SolutionFile;
+        public string? SolutionFile { get; private set; }
 
         /// <summary>
         /// Whether the extraction phase should be skipped (dry-run).
         /// </summary>
-        public bool SkipExtraction = false;
+        public bool SkipExtraction { get; private set; } = false;
 
         /// <summary>
         /// Whether errors were encountered parsing the arguments.
         /// </summary>
-        public bool Errors = false;
+        public bool Errors { get; private set; } = false;
 
         /// <summary>
         /// Whether to show help.
         /// </summary>
-        public bool Help = false;
+        public bool Help { get; private set; } = false;
 
         /// <summary>
         /// Whether to use the packaged dotnet runtime.
         /// </summary>
-        public bool UseSelfContainedDotnet = false;
+        public bool UseSelfContainedDotnet { get; private set; } = false;
 
         /// <summary>
         /// Determine whether the given path should be excluded.

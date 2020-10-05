@@ -18,7 +18,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Access various extraction functions, e.g. logger, trap writer.
         /// </summary>
-        public readonly IExtractor Extractor;
+        public IExtractor Extractor { get; }
 
         /// <summary>
         /// The program database provided by Roslyn.
@@ -39,12 +39,12 @@ namespace Semmle.Extraction
         /// <summary>
         /// Access to the trap file.
         /// </summary>
-        public readonly TrapWriter TrapWriter;
+        public TrapWriter TrapWriter { get; }
 
         /// <summary>
         /// Holds if assembly information should be prefixed to TRAP labels.
         /// </summary>
-        public readonly bool ShouldAddAssemblyTrapPrefix;
+        public bool ShouldAddAssemblyTrapPrefix { get; }
 
         private int GetNewId() => TrapWriter.IdCounter++;
 
@@ -223,7 +223,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// The current compilation unit.
         /// </summary>
-        public readonly Compilation Compilation;
+        public Compilation Compilation { get; }
 
         /// <summary>
         /// Create a new context, one per source file/assembly.
@@ -246,9 +246,9 @@ namespace Semmle.Extraction
 
         public bool IsGlobalContext => scope.IsGlobalScope;
 
-        public readonly ICommentGenerator CommentGenerator = new CommentProcessor();
+        public ICommentGenerator CommentGenerator { get; } = new CommentProcessor();
 
-        private readonly IExtractionScope scope;
+        private IExtractionScope scope { get; }
 
         /// <summary>
         ///     Whether the given symbol needs to be defined in this context.

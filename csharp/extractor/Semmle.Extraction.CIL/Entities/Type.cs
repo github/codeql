@@ -50,7 +50,6 @@ namespace Semmle.Extraction.CIL.Entities
     {
         protected TypeContainer(Context cx) : base(cx)
         {
-            this.cx = cx;
         }
 
         public virtual Label Label { get; set; }

@@ -13,8 +13,8 @@ namespace Semmle.Extraction.CIL.Entities
 
     public class File : LabelledEntity, IFile
     {
-        protected readonly string OriginalPath;
-        protected readonly PathTransformer.ITransformedPath TransformedPath;
+        protected string OriginalPath { get; }
+        protected PathTransformer.ITransformedPath TransformedPath { get; }
 
         public File(Context cx, string path) : base(cx)
         {

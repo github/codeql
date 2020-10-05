@@ -15,8 +15,8 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public struct AnnotatedTypeSymbol
     {
-        public ITypeSymbol Symbol;
-        public NullableAnnotation Nullability;
+        public ITypeSymbol Symbol { get; set; }
+        public NullableAnnotation Nullability { get; }
 
         public AnnotatedTypeSymbol(ITypeSymbol symbol, NullableAnnotation nullability)
         {

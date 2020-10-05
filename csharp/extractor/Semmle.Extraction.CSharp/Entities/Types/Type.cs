@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// The underlying type.
         /// </summary>
-        public Type Type;
+        public Type Type { get; private set; }
 
         private readonly NullableAnnotation annotation;
 

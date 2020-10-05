@@ -9,8 +9,8 @@ namespace Semmle.Autobuild.Shared
     /// </summary>
     public class VcVarsBatFile
     {
-        public readonly int ToolsVersion;
-        public readonly string Path;
+        public int ToolsVersion { get; }
+        public string Path { get; }
 
         public VcVarsBatFile(string path, int version)
         {

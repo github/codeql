@@ -15,12 +15,12 @@ namespace Semmle.Extraction.PDB
         /// <summary>
         /// The byte-offset of the instruction.
         /// </summary>
-        public readonly int Offset;
+        public int Offset { get; }
 
         /// <summary>
         /// The source location of the instruction.
         /// </summary>
-        public readonly Location Location;
+        public Location Location { get; }
 
         public override string ToString()
         {
@@ -42,12 +42,27 @@ namespace Semmle.Extraction.PDB
         /// <summary>
         /// The file containing the code.
         /// </summary>
-        public readonly ISourceFile File;
+        public ISourceFile File { get; }
 
         /// <summary>
-        /// The span of text within the text file.
+        /// The start line of text within the source file.
         /// </summary>
-        public readonly int StartLine, StartColumn, EndLine, EndColumn;
+        public int StartLine { get; }
+
+        /// <summary>
+        /// The start column of text within the source file.
+        /// </summary>
+        public int StartColumn { get; }
+
+        /// <summary>
+        /// The end line of text within the source file.
+        /// </summary>
+        public int EndLine { get; }
+
+        /// <summary>
+        /// The end column of text within the source file.
+        /// </summary>
+        public int EndColumn { get; }
 
         public override string ToString()
         {
