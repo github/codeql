@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public int Annotation { get; }
 
         private static readonly Nullability[] emptyArray = System.Array.Empty<Nullability>();
-        public Nullability[] NullableParameters { get; }
+        public IEnumerable<Nullability> NullableParameters { get; }
 
         public static Nullability Create(AnnotatedTypeSymbol ts)
         {
@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return new Nullability(ts);
         }
 
-        public bool IsOblivious => Annotation == 0 && NullableParameters.Length == 0;
+        public bool IsOblivious => Annotation == 0 && !NullableParameters.Any();
 
         private static readonly Nullability oblivious = new Nullability(NullableAnnotation.None);
         private static readonly Nullability annotated = new Nullability(NullableAnnotation.Annotated);

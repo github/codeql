@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
         /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
-        public bool BeginInitialize(string[] roslynArgs)
+        public bool BeginInitialize(IEnumerable<string> roslynArgs)
         {
             return init = LogRoslynArgs(roslynArgs, Extraction.Extractor.Version);
         }
@@ -447,7 +447,7 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
         /// <returns>A Boolean indicating whether the same arguments have been logged previously.</returns>
-        public bool LogRoslynArgs(string[] roslynArgs, string extractorVersion)
+        private bool LogRoslynArgs(IEnumerable<string> roslynArgs, string extractorVersion)
         {
             LogExtractorInfo(extractorVersion);
             Logger.Log(Severity.Info, $"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");

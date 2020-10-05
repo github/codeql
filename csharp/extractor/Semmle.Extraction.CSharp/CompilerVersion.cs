@@ -134,6 +134,6 @@ namespace Semmle.Extraction.CSharp
             return args.Any(arg => new[] { "/noconfig", "-noconfig" }.Contains(arg.ToLowerInvariant()));
         }
 
-        public string[] ArgsWithResponse { get; }
+        public IEnumerable<string> ArgsWithResponse { get; }
     }
 }

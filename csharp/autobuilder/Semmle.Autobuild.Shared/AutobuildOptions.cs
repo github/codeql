@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -21,7 +22,7 @@ namespace Semmle.Autobuild.Shared
         public string? DotNetArguments { get; }
         public string? DotNetVersion { get; }
         public string? BuildCommand { get; }
-        public string[] Solution { get; }
+        public IEnumerable<string> Solution { get; }
         public bool IgnoreErrors { get; }
         public bool Buildless { get; }
         public bool AllSolutions { get; }

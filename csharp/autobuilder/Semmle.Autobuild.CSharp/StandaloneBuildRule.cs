@@ -1,4 +1,5 @@
-﻿using Semmle.Autobuild.Shared;
+﻿using System.Linq;
+using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -44,9 +45,7 @@ namespace Semmle.Autobuild.CSharp
             if (!builder.Options.Buildless)
                 return BuildScript.Failure;
 
-            var solutions = builder.Options.Solution.Length;
-
-            if (solutions == 0)
+            if (!builder.Options.Solution.Any())
                 return GetCommand(null);
 
             var script = BuildScript.Success;
