@@ -1,7 +1,7 @@
 edges
 | A.cpp:55:5:55:5 | set output argument [c] | A.cpp:56:13:56:15 | call to get |
 | A.cpp:55:12:55:19 | (C *)... | A.cpp:55:5:55:5 | set output argument [c] |
-| A.cpp:55:12:55:19 | new | A.cpp:55:12:55:19 | (C *)... |
+| A.cpp:55:12:55:19 | new | A.cpp:55:5:55:5 | set output argument [c] |
 | A.cpp:57:11:57:24 | B output argument [c] | A.cpp:57:28:57:30 | call to get |
 | A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | B output argument [c] |
 | A.cpp:98:12:98:18 | new | A.cpp:100:5:100:13 | Store |
@@ -19,12 +19,11 @@ edges
 | A.cpp:143:7:143:31 | Chi [b] | A.cpp:151:12:151:24 | D output argument [b] |
 | A.cpp:143:7:143:31 | Store | A.cpp:143:7:143:31 | Chi [b] |
 | A.cpp:143:25:143:31 | new | A.cpp:143:7:143:31 | Store |
-| A.cpp:150:12:150:18 | new | A.cpp:151:18:151:18 | b |
+| A.cpp:150:12:150:18 | new | A.cpp:151:12:151:24 | D output argument [b] |
 | A.cpp:151:12:151:24 | Chi [b] | A.cpp:152:13:152:13 | b |
 | A.cpp:151:12:151:24 | D output argument [b] | A.cpp:151:12:151:24 | Chi [b] |
 | A.cpp:151:18:151:18 | Chi [c] | A.cpp:154:13:154:13 | c |
 | A.cpp:151:18:151:18 | D output argument [c] | A.cpp:151:18:151:18 | Chi [c] |
-| A.cpp:151:18:151:18 | b | A.cpp:151:12:151:24 | D output argument [b] |
 | C.cpp:18:12:18:18 | C output argument [s1] | C.cpp:27:8:27:11 | *#this [s1] |
 | C.cpp:18:12:18:18 | C output argument [s3] | C.cpp:27:8:27:11 | *#this [s3] |
 | C.cpp:22:12:22:21 | Chi [s1] | C.cpp:24:5:24:25 | Chi [s1] |
@@ -229,7 +228,6 @@ nodes
 | A.cpp:151:12:151:24 | D output argument [b] | semmle.label | D output argument [b] |
 | A.cpp:151:18:151:18 | Chi [c] | semmle.label | Chi [c] |
 | A.cpp:151:18:151:18 | D output argument [c] | semmle.label | D output argument [c] |
-| A.cpp:151:18:151:18 | b | semmle.label | b |
 | A.cpp:152:13:152:13 | b | semmle.label | b |
 | A.cpp:154:13:154:13 | c | semmle.label | c |
 | C.cpp:18:12:18:18 | C output argument [s1] | semmle.label | C output argument [s1] |

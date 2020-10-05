@@ -5,23 +5,15 @@ private import DataFlowDispatch
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
- * to the callable. Instance arguments (`this` pointer) are also included.
+ * to the callable. Instance arguments (`this` pointer) and read side effects
+ * on parameters are also included.
  */
-class ArgumentNode extends Node {
-  ArgumentNode() {
-    // To avoid making this class abstract, we enumerate its values here.
-    this instanceof PrimaryArgumentNode or
-    this instanceof SideEffectArgumentNode
-  }
-
+abstract class ArgumentNode extends OperandNode {
   /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  predicate argumentOf(DataFlowCall call, int pos) {
-    this.(PrimaryArgumentNode).argumentOf(call, pos) or
-    this.(SideEffectArgumentNode).argumentOf(call, pos)
-  }
+  abstract predicate argumentOf(DataFlowCall call, int pos);
 
   /** Gets the call in which this node is an argument. */
   DataFlowCall getCall() { this.argumentOf(result, _) }
@@ -31,17 +23,15 @@ class ArgumentNode extends Node {
  * A data flow node that occurs as the argument to a call, or an
  * implicit `this` pointer argument.
  */
-private class PrimaryArgumentNode extends InstructionNode {
-  PrimaryArgumentNode() { exists(CallInstruction call | instr = call.getAnArgument()) }
+private class PrimaryArgumentNode extends ArgumentNode {
+  override ArgumentOperand op;
 
-  /**
-   * Holds if this argument occurs at the given position in the given call.
-   * The instance argument is considered to have index `-1`.
-   */
-  predicate argumentOf(DataFlowCall call, int pos) {
-    instr = call.getPositionalArgument(pos)
+  PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
+
+  override predicate argumentOf(DataFlowCall call, int pos) {
+    op = call.getPositionalArgumentOperand(pos)
     or
-    instr = call.getThisArgument() and pos = -1
+    op = call.getThisArgumentOperand() and pos = -1
   }
 }
 
@@ -49,26 +39,18 @@ private class PrimaryArgumentNode extends InstructionNode {
  * A data flow node representing the read side effect of a call on a
  * specific parameter.
  */
-private class SideEffectArgumentNode extends OperandNode {
+private class SideEffectArgumentNode extends ArgumentNode {
   override SideEffectOperand op;
   ReadSideEffectInstruction read;
 
-  SideEffectArgumentNode() {
-    exists(CallInstruction call |
-      read.getPrimaryInstruction() = call and
-      op = read.getSideEffectOperand()
-    )
-  }
+  SideEffectArgumentNode() { op = read.getSideEffectOperand() }
 
-  /**
-   * Holds if this argument occurs at the given position in the given call.
-   * See `getArgumentPosOfSideEffect` for a describing of how read side effects
-   * are assigned an argument position.
-   */
-  predicate argumentOf(DataFlowCall call, int pos) {
+  override predicate argumentOf(DataFlowCall call, int pos) {
     read.getPrimaryInstruction() = call and
     pos = getArgumentPosOfSideEffect(read.getIndex())
   }
+
+  override string toString() { result = "Argument " + read.getIndex() + " indirection" }
 }
 
 private newtype TReturnKind =

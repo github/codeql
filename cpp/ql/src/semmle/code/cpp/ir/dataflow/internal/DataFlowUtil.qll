@@ -506,21 +506,6 @@ class DefinitionByReferenceNode extends InstructionNode {
 }
 
 /**
- * A node representing the memory pointed to by a function argument.
- *
- * This class exists only in order to override `toString`, which would
- * otherwise be the default implementation inherited from `OperandNode`.
- */
-private class ArgumentIndirectionNode extends OperandNode {
-  override SideEffectOperand op;
-  ReadSideEffectInstruction read;
-
-  ArgumentIndirectionNode() { read.getSideEffectOperand() = op }
-
-  override string toString() { result = "Argument " + read.getIndex() + " indirection" }
-}
-
-/**
  * A `Node` corresponding to a variable in the program, as opposed to the
  * value of that variable at some particular point. This can be used for
  * modeling flow in and out of global variables.
