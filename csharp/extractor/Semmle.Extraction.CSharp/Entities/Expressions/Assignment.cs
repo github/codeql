@@ -81,8 +81,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private static ExprKind GetKind(Context cx, AssignmentExpressionSyntax syntax)
         {
-            var leftSymbol = cx.GetSymbolInfo(syntax.Left);
-            var assignEvent = leftSymbol.Symbol != null && leftSymbol.Symbol is IEventSymbol;
             var kind = GetAssignmentOperation(cx, syntax);
             var leftType = cx.GetType(syntax.Left);
 
@@ -92,6 +90,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 // even though EVERY operator has an invocation in C#. (This is a flaw in the dbscheme and should be fixed).
                 return kind;
             }
+
+            var leftSymbol = cx.GetSymbolInfo(syntax.Left);
+            var assignEvent = leftSymbol.Symbol is IEventSymbol;
 
             if (kind == ExprKind.ASSIGN_ADD && assignEvent)
             {
