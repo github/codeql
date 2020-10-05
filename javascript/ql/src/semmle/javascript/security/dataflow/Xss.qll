@@ -6,7 +6,6 @@ import javascript
 
 /** Provides classes and predicates shared between the XSS queries. */
 module Shared {
-  /** A data flow source for XSS vulnerabilities. */
   abstract class Source extends DataFlow::Node { }
 
   /** A data flow sink for XSS vulnerabilities. */
