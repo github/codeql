@@ -23,5 +23,10 @@ app.add_url_rule('/later-set', 'later_set', view_func=None)  # $routeSetup="/lat
 app.view_functions['later_set'] = later_set
 
 
+@app.route(UNKNOWN_ROUTE) # $routeSetup
+def unkown_route(foo, bar):  # $routeHandler
+    return make_response("unkown_route")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
