@@ -91,12 +91,12 @@ module NodeJSLib {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    SimpleParameter getRequestParameter() { result = getFunction().getParameter(0) }
+    Parameter getRequestParameter() { result = getFunction().getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    SimpleParameter getResponseParameter() { result = getFunction().getParameter(1) }
+    Parameter getResponseParameter() { result = getFunction().getParameter(1) }
   }
 
   /**

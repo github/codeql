@@ -113,14 +113,14 @@ class AmdModuleDefinition extends CallExpr {
   /**
    * Gets the `i`th parameter of the factory function of this module.
    */
-  private SimpleParameter getFactoryParameter(int i) {
+  private Parameter getFactoryParameter(int i) {
     getFactoryNodeInternal().asExpr().(Function).getParameter(i) = result
   }
 
   /**
    * Gets the parameter corresponding to the pseudo-dependency `require`.
    */
-  SimpleParameter getRequireParameter() {
+  Parameter getRequireParameter() {
     result = getDependencyParameter("require")
     or
     // if no dependencies are listed, the first parameter is assumed to be `require`
@@ -133,7 +133,7 @@ class AmdModuleDefinition extends CallExpr {
   /**
    * Gets the parameter corresponding to the pseudo-dependency `exports`.
    */
-  SimpleParameter getExportsParameter() {
+  Parameter getExportsParameter() {
     result = getDependencyParameter("exports")
     or
     // if no dependencies are listed, the second parameter is assumed to be `exports`
@@ -143,7 +143,7 @@ class AmdModuleDefinition extends CallExpr {
   /**
    * Gets the parameter corresponding to the pseudo-dependency `module`.
    */
-  SimpleParameter getModuleParameter() {
+  Parameter getModuleParameter() {
     result = getDependencyParameter("module")
     or
     // if no dependencies are listed, the third parameter is assumed to be `module`
