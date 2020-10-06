@@ -147,12 +147,12 @@ module Promises {
   /**
    * Gets the pseudo-field used to describe resolved values in a promise.
    */
-  string valueProp() { result = "$PromiseResolveField$" }
+  string valueProp() { none() }
 
   /**
    * Gets the pseudo-field used to describe rejected values in a promise.
    */
-  string errorProp() { result = "$PromiseRejectField$" }
+  string errorProp() { none() }
 }
 
 /**
