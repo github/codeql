@@ -16,6 +16,7 @@ private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.system.Collections
+private import semmle.code.csharp.frameworks.system.threading.Tasks
 
 abstract class NodeImpl extends Node {
   /** Do not call: use `getEnclosingCallable()` instead. */
@@ -151,10 +152,6 @@ module LocalFlow {
         isSuccessor = false
         or
         e1 = e2.(Cast).getExpr() and
-        scope = e2 and
-        isSuccessor = true
-        or
-        e1 = e2.(AwaitExpr).getExpr() and
         scope = e2 and
         isSuccessor = true
         or
@@ -679,6 +676,11 @@ private module Cached {
     storeStepLibrary(node1, c, node2)
   }
 
+  pragma[nomagic]
+  private PropertyContent getResultContent() {
+    result.getProperty() = any(SystemThreadingTasksTaskTClass c_).getResultProperty()
+  }
+
   /**
    * Holds if data can flow from `node1` to `node2` via a read of content `c`.
    */
@@ -699,6 +701,10 @@ private module Cached {
         node2.(SsaDefinitionNode).getDefinition() = def and
         c instanceof ElementContent
       )
+      or
+      x.hasNodePath(node1, node2) and
+      node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
+      c = getResultContent()
     )
     or
     readStepLibrary(node1, c, node2)
@@ -2180,6 +2186,11 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     isSuccessor = true and
     arrayRead(e1, e2) and
     scope = e2
+    or
+    exactScope = false and
+    e1 = e2.(AwaitExpr).getExpr() and
+    scope = e2 and
+    isSuccessor = true
   }
 
   override predicate candidateDef(
