@@ -47,7 +47,7 @@ module HTTP {
     /**
      * An data-flow node that sets up a route on a server.
      *
-     * Extend this class to model new APIs. If you want to model new APIs,
+     * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `RouteSetup::Range` instead.
      */
     class RouteSetup extends DataFlow::Node {
