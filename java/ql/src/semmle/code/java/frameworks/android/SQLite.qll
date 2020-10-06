@@ -1,5 +1,6 @@
 import java
 import Android
+private import semmle.code.java.dataflow.TaintTracking::TaintTracking as TT
 
 /**
  * The class `android.database.sqlite.SQLiteDatabase`.
@@ -225,4 +226,60 @@ private class ContentProviderUpdateMethod extends SQLiteRunner {
   }
 
   override int sqlIndex() { result = 2 }
+}
+
+private class QueryBuilderBuildMethod extends TT::TaintPreservingMethod {
+  QueryBuilderBuildMethod() {
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
+    // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
+    // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
+    // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
+    // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
+    // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
+    // static buildQueryString(boolean distinct, String tables, String[] columns, String where, String groupBy, String having, String orderBy, String limit)
+    this.hasName(["buildQuery", "buildUnionQuery", "buildUnionSubQuery", "buildQueryString"])
+  }
+
+  override predicate returnsTaint(int arg) {
+    arg = -1
+    or
+    hasName(["buildQuery", "buildUnionQuery"]) and
+    arg = [0 .. getNumberOfParameters()]
+    or
+    hasName("buildQueryString") and
+    arg = [1 .. getNumberOfParameters()]
+    or
+    hasName("buildUnionSubQuery") and
+    arg = [0 .. getNumberOfParameters()] and
+    arg != 3
+  }
+}
+
+private class QueryBuilderAppendMethod extends TT::TaintTransferringMethod {
+  QueryBuilderAppendMethod() {
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
+    // setProjectionMap(Map<String, String> columnMap)
+    // setTables(String inTables)
+    // appendWhere(CharSequence inWhere)
+    // appendWhereStandalone(CharSequence inWhere)
+    // static appendColumns(StringBuilder s, String[] columns)
+    this
+        .hasName(["setProjectionMap", "setTables", "appendWhere", "appendWhereStandalone",
+              "appendColumns"])
+  }
+
+  override predicate transfersTaint(int src, int sink) {
+    if hasName("appendColumns") then (src = 1 and sink = 0) else (src = 0 and sink = -1)
+  }
+}
+
+private class UnsafeAppendUtilMethod extends TT::TaintPreservingMethod {
+  UnsafeAppendUtilMethod() {
+    this.getDeclaringType() instanceof TypeDatabaseUtils and
+    // String[] appendSelectionArgs(String[] originalValues, String[] newValues)
+    // String concatenateWhere(String a, String b)
+    this.hasName(["appendSelectionArgs", "concatenateWhere"])
+  }
+
+  override predicate returnsTaint(int arg) { arg = [0 .. getNumberOfParameters()] }
 }

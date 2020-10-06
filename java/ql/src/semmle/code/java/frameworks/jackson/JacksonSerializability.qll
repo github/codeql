@@ -4,11 +4,11 @@
  */
 
 import java
-import semmle.code.java.dataflow.TaintTracking::TaintTracking as TT
 import semmle.code.java.Serializability
 import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow5
+private import semmle.code.java.dataflow.TaintTracking::TaintTracking as TT
 
 /**
  * A `@com.fasterxml.jackson.annotation.JsonIgnore` annoation.

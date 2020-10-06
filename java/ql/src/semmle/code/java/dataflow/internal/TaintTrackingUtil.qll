@@ -97,7 +97,7 @@ abstract class TaintTransferringMethod extends Method {
    * Holds if this method writes tainted data to `sink` when `src` is tainted.
    * `src` and `sink` are parameter indices, or -1 to indicate the qualifier.
    */
-  predicate transfersTaint(int src, int sink) { none() }
+  abstract predicate transfersTaint(int src, int sink);
 }
 
 private class StringTaintPreservingMethod extends TaintPreservingMethod {
@@ -429,14 +429,6 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     )
   )
   or
-  m.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
-  // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
-  // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
-  // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
-  // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
-  // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
-  m.hasName(["buildQuery", "buildUnionQuery", "buildUnionSubQuery"])
-  or
   m.(TaintPreservingMethod).returnsTaint(-1)
 }
 
@@ -470,12 +462,6 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
     tracked = sink.getArgument(i)
   )
   or
-  exists(MethodAccess ma |
-    taintPreservingArgumentToMethod(ma.getMethod()) and
-    tracked = ma.getAnArgument() and
-    sink = ma
-  )
-  or
   exists(Method springResponseEntityOfOk |
     sink.getMethod() = springResponseEntityOfOk and
     springResponseEntityOfOk.getDeclaringType() instanceof SpringResponseEntity and
@@ -491,23 +477,6 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
     tracked = sink.getArgument(0) and
     tracked.getType() instanceof TypeString
   )
-}
-
-/**
- * Holds if `method` is a library method that returns tainted data if any
- * of its arguments are tainted.
- */
-private predicate taintPreservingArgumentToMethod(Method method) {
-  method.getDeclaringType() instanceof TypeDatabaseUtils and
-  // String[] appendSelectionArgs(String[] originalValues, String[] newValues)
-  // String concatenateWhere(String a, String b)
-  method.hasName(["appendSelectionArgs", "concatenateWhere"])
-  or
-  method.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
-  // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
-  // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
-  // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
-  method.hasName(["buildQuery", "buildUnionQuery"])
 }
 
 /**
@@ -611,18 +580,6 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method.hasName("append") and
   arg = 0
   or
-  method.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
-  (
-    // static buildQueryString(boolean distinct, String tables, String[] columns, String where, String groupBy, String having, String orderBy, String limit)
-    method.hasName("buildQueryString") and arg = [1 .. method.getNumberOfParameters()]
-    or
-    // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
-    // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
-    method.hasName("buildUnionSubQuery") and
-    arg = [0 .. method.getNumberOfParameters()] and
-    arg != 3
-  )
-  or
   (
     method.getDeclaringType() instanceof AndroidContentProvider or
     method.getDeclaringType() instanceof AndroidContentResolver
@@ -680,12 +637,6 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   input = 0 and
   output = 2
   or
-  method.getDeclaringType() instanceof TypeSQLiteQueryBuilder and
-  // static appendColumns(StringBuilder s, String[] columns)
-  method.hasName("appendColumns") and
-  input = 1 and
-  output = 0
-  or
   method.(TaintTransferringMethod).transfersTaint(input, output)
 }
 
@@ -724,14 +675,6 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
     arg = 0 and
     append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
   )
-  or
-  method.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
-  // setProjectionMap(Map<String, String> columnMap)
-  // setTables(String inTables)
-  // appendWhere(CharSequence inWhere)
-  // appendWhereStandalone(CharSequence inWhere)
-  method.hasName(["setProjectionMap", "setTables", "appendWhere", "appendWhereStandalone"]) and
-  arg = 0
   or
   method.(TaintTransferringMethod).transfersTaint(arg, -1)
 }
