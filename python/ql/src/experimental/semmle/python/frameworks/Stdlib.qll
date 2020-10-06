@@ -413,4 +413,73 @@ private module Stdlib {
       result.asCfgNode() = this.asCfgNode().(CallNode).getArgByName("cmd")
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // platform
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `platform` module. */
+  private DataFlow::Node platform(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importModule("platform")
+    or
+    exists(DataFlow::TypeTracker t2 | result = platform(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `platform` module. */
+  DataFlow::Node platform() { result = platform(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `platform` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node platform_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["popen"] and
+    (
+      t.start() and
+      result = DataFlow::importMember("platform", attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = DataFlow::importModule("platform")
+    )
+    or
+    // Due to bad performance when using normal setup with `platform_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        platform_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate platform_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(platform_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `platform` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node platform_attr(string attr_name) {
+    result = platform_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  /**
+   * A call to the `platform.popen` function.
+   * See https://docs.python.org/2.7/library/platform.html#platform.popen
+   */
+  private class PlatformPopenCall extends SystemCommandExecution::Range {
+    PlatformPopenCall() {
+      this.asCfgNode().(CallNode).getFunction() = platform_attr("popen").asCfgNode()
+    }
+
+    override DataFlow::Node getCommand() {
+      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+      or
+      result.asCfgNode() = this.asCfgNode().(CallNode).getArgByName("cmd")
+    }
+  }
 }
