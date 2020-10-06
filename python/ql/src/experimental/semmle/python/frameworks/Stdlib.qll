@@ -339,4 +339,78 @@ private module Stdlib {
       )
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // popen2
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `popen2` module (only available in Python 2). */
+  private DataFlow::Node popen2(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importModule("popen2")
+    or
+    exists(DataFlow::TypeTracker t2 | result = popen2(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `popen2` module. */
+  DataFlow::Node popen2() { result = popen2(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `popen2` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node popen2_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["popen2", "popen3", "popen4",
+          // classes
+          "Popen3", "Popen4"] and
+    (
+      t.start() and
+      result = DataFlow::importMember("popen2", attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = DataFlow::importModule("popen2")
+    )
+    or
+    // Due to bad performance when using normal setup with `popen2_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        popen2_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate popen2_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(popen2_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `popen2` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node popen2_attr(string attr_name) {
+    result = popen2_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  /**
+   * A call to any of the `popen.popen*` functions, or instantiation of a `popen.Popen*` class.
+   * See https://docs.python.org/2.7/library/popen2.html
+   */
+  private class Popen2PopenCall extends SystemCommandExecution::Range {
+    Popen2PopenCall() {
+      exists(string name |
+        name in ["popen2", "popen3", "popen4", "Popen3", "Popen4"] and
+        this.asCfgNode().(CallNode).getFunction() = popen2_attr(name).asCfgNode()
+      )
+    }
+
+    override DataFlow::Node getCommand() {
+      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+      or
+      result.asCfgNode() = this.asCfgNode().(CallNode).getArgByName("cmd")
+    }
+  }
 }

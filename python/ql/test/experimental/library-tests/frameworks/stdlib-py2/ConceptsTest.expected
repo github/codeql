@@ -1,12 +1,2 @@
 | SystemCommandExecution.py:19:31:19:56 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
 | SystemCommandExecution.py:20:35:20:60 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:26:30:26:55 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:27:30:27:55 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:28:30:28:55 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:29:30:29:55 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:30:30:30:55 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:32:34:32:59 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:33:34:33:59 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:34:34:34:59 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:35:34:35:59 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:36:34:36:59 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
