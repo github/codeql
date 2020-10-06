@@ -533,14 +533,6 @@ module JQuery {
       }
     }
 
-    /**
-     * A `this` node in a JQuery plugin function, which is a JQuery object.
-     */
-    private class JQueryPluginThisObject extends Range {
-      JQueryPluginThisObject() {
-        this = DataFlow::thisNode(any(JQueryPluginMethod method).getFunction())
-      }
-    }
   }
 
   /** A source of jQuery objects from the AST-based `JQueryObject` class. */

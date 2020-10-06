@@ -172,15 +172,6 @@ module DomBasedXss {
       this = any(Typeahead::TypeaheadSuggestionFunction f).getAReturn()
       or
       this = any(Handlebars::SafeString s).getAnArgument()
-      or
-      this = any(JQuery::MethodCall call | call.getMethodName() = "jGrowl").getArgument(0)
-      or
-      // A construction of a JSDOM object (server side DOM), where scripts are allowed.
-      exists(DataFlow::NewNode instance |
-        instance = API::moduleImport("jsdom").getMember("JSDOM").getInstance().getAnImmediateUse() and
-        this = instance.getArgument(0) and
-        instance.getOptionArgument(1, "runScripts").mayHaveStringValue("dangerously")
-      )
     }
   }
 
