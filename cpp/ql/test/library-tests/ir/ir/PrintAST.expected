@@ -9652,7 +9652,7 @@ ir.cpp:
 # 1178|   body: [BlockStmt] { ... }
 # 1179|     0: [ReturnStmt] return ...
 # 1179|       0: [ConstructorCall] call to String
-# 1179|           Type = [Struct] String
+# 1179|           Type = [VoidType] void
 # 1179|           ValueCategory = prvalue
 # 1179|         0: [ArrayToPointerConversion] array to pointer conversion
 # 1179|             Type = [PointerType] const char *
@@ -10535,7 +10535,7 @@ ir.cpp:
 # 1326|   body: [BlockStmt] { ... }
 # 1327|     0: [ReturnStmt] return ...
 # 1327|       0: [ConstructorCall] call to String
-# 1327|           Type = [Struct] String
+# 1327|           Type = [VoidType] void
 # 1327|           ValueCategory = prvalue
 # 1326| [TemplateFunction,TopLevelFunction] T defaultConstruct<T>()
 # 1326|   params: 
@@ -10550,14 +10550,14 @@ ir.cpp:
 # 1326|   body: [BlockStmt] { ... }
 # 1327|     0: [ReturnStmt] return ...
 # 1327|       0: [ConstructorCall] call to copy_constructor
-# 1327|           Type = [Class] copy_constructor
+# 1327|           Type = [VoidType] void
 # 1327|           ValueCategory = prvalue
 # 1326| [FunctionTemplateInstantiation,TopLevelFunction] destructor_only defaultConstruct<destructor_only>()
 # 1326|   params: 
 # 1326|   body: [BlockStmt] { ... }
 # 1327|     0: [ReturnStmt] return ...
 # 1327|       0: [Literal] 0
-# 1327|           Type = [RoutineType] ..()(..)
+# 1327|           Type = [Class] destructor_only
 # 1327|           Value = [Literal] 0
 # 1327|           ValueCategory = prvalue
 # 1330| [CopyAssignmentOperator] constructor_only& constructor_only::operator=(constructor_only const&)
