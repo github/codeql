@@ -13,6 +13,7 @@
 | A.java:20:22:20:28 | taint(...) | A.java:24:9:24:27 | new ..[] { .. } |
 | A.java:20:22:20:28 | taint(...) | A.java:24:24:24:26 | bad |
 | A.java:20:22:20:28 | taint(...) | A.java:25:9:25:9 | f |
+| A.java:20:22:20:28 | taint(...) | A.java:25:9:25:20 | toString(...) |
 | A.java:29:22:29:28 | taint(...) | A.java:29:22:29:28 | taint(...) |
 | A.java:29:22:29:28 | taint(...) | A.java:33:9:33:10 | sb |
 | A.java:29:22:29:28 | taint(...) | A.java:33:9:33:21 | toString(...) |
