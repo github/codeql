@@ -100,6 +100,24 @@ abstract class TaintTransferringMethod extends Method {
   predicate transfersTaint(int src, int sink) { none() }
 }
 
+private class StringTaintPreservingMethod extends TaintPreservingMethod {
+  StringTaintPreservingMethod() {
+    getDeclaringType() instanceof TypeString and
+    hasName(["concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent",
+          "intern", "join", "repeat", "split", "strip", "stripIndent", "stripLeading",
+          "stripTrailing", "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase",
+          "trim"])
+  }
+
+  override predicate returnsTaint(int arg) {
+    arg = -1
+    or
+    this.hasName(["concat", "copyValueOf"]) and arg = 0
+    or
+    this.hasName(["format", "formatted", "join"]) and arg = [0 .. getNumberOfParameters()]
+  }
+}
+
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
@@ -338,21 +356,6 @@ private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
 private predicate taintPreservingQualifierToMethod(Method m) {
   m instanceof CloneMethod
   or
-  m.getDeclaringType() instanceof TypeString and
-  (
-    m.getName() = "concat" or
-    m.getName() = "endsWith" or
-    m.getName() = "formatted" or
-    m.getName() = "getBytes" or
-    m.getName() = "split" or
-    m.getName() = "substring" or
-    m.getName() = "toCharArray" or
-    m.getName() = "toLowerCase" or
-    m.getName() = "toString" or
-    m.getName() = "toUpperCase" or
-    m.getName() = "trim"
-  )
-  or
   exists(Class c | c.getQualifiedName() = "java.lang.Number" | hasSubtype*(c, m.getDeclaringType())) and
   (
     m.getName().matches("to%String") or
@@ -426,9 +429,6 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     )
   )
   or
-  m.getDeclaringType() instanceof TypeFormatter and
-  m.hasName(["format", "out"])
-  or
   m.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
   // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
   // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
@@ -440,7 +440,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.(TaintPreservingMethod).returnsTaint(-1)
 }
 
-private class StringReplaceMethod extends Method {
+private class StringReplaceMethod extends TaintPreservingMethod {
   StringReplaceMethod() {
     getDeclaringType() instanceof TypeString and
     (
@@ -449,6 +449,8 @@ private class StringReplaceMethod extends Method {
       hasName("replaceFirst")
     )
   }
+
+  override predicate returnsTaint(int arg) { arg = 1 }
 }
 
 private predicate unsafeEscape(MethodAccess ma) {
@@ -496,12 +498,6 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  * of its arguments are tainted.
  */
 private predicate taintPreservingArgumentToMethod(Method method) {
-  method.getDeclaringType() instanceof TypeString and
-  (method.hasName("format") or method.hasName("formatted") or method.hasName("join"))
-  or
-  method.getDeclaringType() instanceof TypeFormatter and
-  method.hasName("format")
-  or
   method.getDeclaringType() instanceof TypeDatabaseUtils and
   // String[] appendSelectionArgs(String[] originalValues, String[] newValues)
   // String concatenateWhere(String a, String b)
@@ -519,8 +515,6 @@ private predicate taintPreservingArgumentToMethod(Method method) {
  * `arg`th argument is tainted.
  */
 private predicate taintPreservingArgumentToMethod(Method method, int arg) {
-  method instanceof StringReplaceMethod and arg = 1
-  or
   exists(Class c | c.getQualifiedName() = "java.lang.Number" |
     hasSubtype*(c, method.getDeclaringType())
   ) and
@@ -531,10 +525,6 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
     or
     method.getName().matches("to%String") and arg = 0
   )
-  or
-  method.getDeclaringType() instanceof TypeString and
-  method.getName() = "concat" and
-  arg = 0
   or
   (
     method.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
@@ -617,11 +607,6 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   exists(ProtobufMessageLite m | method = m.getAParseFromMethod()) and
   arg = 0
   or
-  // Jackson serialization methods that return the serialized data
-  method instanceof JacksonWriteValueMethod and
-  method.getNumberOfParameters() = 1 and
-  arg = 0
-  or
   method.getDeclaringType().hasQualifiedName("java.io", "StringWriter") and
   method.hasName("append") and
   arg = 0
@@ -695,12 +680,6 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   input = 0 and
   output = 2
   or
-  // Jackson serialization methods that write data to the first argument
-  method instanceof JacksonWriteValueMethod and
-  method.getNumberOfParameters() > 1 and
-  input = method.getNumberOfParameters() - 1 and
-  output = 0
-  or
   method.getDeclaringType() instanceof TypeSQLiteQueryBuilder and
   // static appendColumns(StringBuilder s, String[] columns)
   method.hasName("appendColumns") and
@@ -721,20 +700,6 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
     tracked = ma.getArgument(i) and
     sink = ma.getQualifier()
   )
-  or
-  exists(MethodAccess ma |
-    taintPreservingArgumentToQualifier(ma.getMethod()) and
-    tracked = ma.getAnArgument() and
-    sink = ma.getQualifier()
-  )
-}
-
-/**
- * Holds if `method` is a method that transfers taint from any of its arguments to its qualifier.
- */
-private predicate taintPreservingArgumentToQualifier(Method method) {
-  method.getDeclaringType() instanceof TypeFormatter and
-  method.hasName("format")
 }
 
 /**
@@ -890,6 +855,20 @@ private class FormatterVar extends LocalVariableDecl {
 /** The class `java.util.Formatter`. */
 private class TypeFormatter extends Class {
   TypeFormatter() { this.hasQualifiedName("java.util", "Formatter") }
+}
+
+private class FormatterMethod extends TaintPreservingMethod, TaintTransferringMethod {
+  FormatterMethod() {
+    getDeclaringType() instanceof TypeFormatter and
+    hasName(["format", "out", "toString"])
+  }
+
+  override predicate returnsTaint(int arg) { arg = [-1 .. getNumberOfParameters()] }
+
+  override predicate transfersTaint(int src, int sink) {
+    sink = -1 and
+    src = [0 .. getNumberOfParameters()]
+  }
 }
 
 private import StringBuilderVarModule
