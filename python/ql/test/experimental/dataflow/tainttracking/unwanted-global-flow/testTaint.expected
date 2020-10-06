@@ -1,0 +1,6 @@
+| test.py:12 | ok   | test | tainted_later |
+| test.py:25 | ok   | test | initially_tainted |
+| test.py:28 | fail | use_of_initially_tainted | initially_tainted |
+| test.py:35 | ok   | use_of_initially_tainted2 | initially_tainted2 |
+| test.py:40 | ok   | test | initially_tainted2 |
+| test.py:50 | ok   | sink_global | g |

@@ -12,7 +12,6 @@
         "watch": "tsc -p . -w --sourceMap"
     },
     "devDependencies": {
-        "@types/node": "12.7.11",
-        "tslint": "^5.9.1"
+        "@types/node": "12.7.11"
     }
 }

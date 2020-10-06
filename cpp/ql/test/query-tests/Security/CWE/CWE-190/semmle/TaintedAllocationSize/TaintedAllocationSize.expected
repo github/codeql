@@ -47,30 +47,31 @@ edges
 | test.cpp:214:23:214:23 | s | test.cpp:215:21:215:21 | s |
 | test.cpp:220:21:220:21 | s | test.cpp:221:21:221:21 | s |
 | test.cpp:220:21:220:21 | s | test.cpp:221:21:221:21 | s |
+| test.cpp:227:24:227:29 | call to getenv | test.cpp:214:23:214:23 | s |
+| test.cpp:227:24:227:29 | call to getenv | test.cpp:220:21:220:21 | s |
 | test.cpp:227:24:227:29 | call to getenv | test.cpp:229:9:229:18 | (size_t)... |
 | test.cpp:227:24:227:29 | call to getenv | test.cpp:229:9:229:18 | local_size |
 | test.cpp:227:24:227:29 | call to getenv | test.cpp:229:9:229:18 | local_size |
-| test.cpp:227:24:227:29 | call to getenv | test.cpp:235:11:235:20 | (size_t)... |
-| test.cpp:227:24:227:29 | call to getenv | test.cpp:237:10:237:19 | (size_t)... |
+| test.cpp:227:24:227:37 | (const char *)... | test.cpp:214:23:214:23 | s |
+| test.cpp:227:24:227:37 | (const char *)... | test.cpp:220:21:220:21 | s |
 | test.cpp:227:24:227:37 | (const char *)... | test.cpp:229:9:229:18 | (size_t)... |
 | test.cpp:227:24:227:37 | (const char *)... | test.cpp:229:9:229:18 | local_size |
 | test.cpp:227:24:227:37 | (const char *)... | test.cpp:229:9:229:18 | local_size |
-| test.cpp:227:24:227:37 | (const char *)... | test.cpp:235:11:235:20 | (size_t)... |
-| test.cpp:227:24:227:37 | (const char *)... | test.cpp:237:10:237:19 | (size_t)... |
-| test.cpp:235:11:235:20 | (size_t)... | test.cpp:214:23:214:23 | s |
-| test.cpp:237:10:237:19 | (size_t)... | test.cpp:220:21:220:21 | s |
-| test.cpp:241:2:241:32 | Chi | test.cpp:279:17:279:20 | get_size output argument |
-| test.cpp:241:2:241:32 | Chi | test.cpp:295:18:295:21 | get_size output argument |
-| test.cpp:241:18:241:23 | call to getenv | test.cpp:241:2:241:32 | Chi |
-| test.cpp:241:18:241:31 | (const char *)... | test.cpp:241:2:241:32 | Chi |
+| test.cpp:241:2:241:32 | Chi [array content] | test.cpp:279:17:279:20 | get_size output argument [array content] |
+| test.cpp:241:2:241:32 | Chi [array content] | test.cpp:295:18:295:21 | get_size output argument [array content] |
+| test.cpp:241:2:241:32 | Store | test.cpp:241:2:241:32 | Chi [array content] |
+| test.cpp:241:18:241:23 | call to getenv | test.cpp:241:2:241:32 | Store |
+| test.cpp:241:18:241:31 | (const char *)... | test.cpp:241:2:241:32 | Store |
 | test.cpp:249:20:249:25 | call to getenv | test.cpp:253:11:253:29 | ... * ... |
 | test.cpp:249:20:249:25 | call to getenv | test.cpp:253:11:253:29 | ... * ... |
 | test.cpp:249:20:249:33 | (const char *)... | test.cpp:253:11:253:29 | ... * ... |
 | test.cpp:249:20:249:33 | (const char *)... | test.cpp:253:11:253:29 | ... * ... |
-| test.cpp:279:17:279:20 | get_size output argument | test.cpp:281:11:281:28 | ... * ... |
-| test.cpp:279:17:279:20 | get_size output argument | test.cpp:281:11:281:28 | ... * ... |
-| test.cpp:295:18:295:21 | get_size output argument | test.cpp:298:10:298:27 | ... * ... |
-| test.cpp:295:18:295:21 | get_size output argument | test.cpp:298:10:298:27 | ... * ... |
+| test.cpp:279:17:279:20 | Chi | test.cpp:281:11:281:28 | ... * ... |
+| test.cpp:279:17:279:20 | Chi | test.cpp:281:11:281:28 | ... * ... |
+| test.cpp:279:17:279:20 | get_size output argument [array content] | test.cpp:279:17:279:20 | Chi |
+| test.cpp:295:18:295:21 | Chi | test.cpp:298:10:298:27 | ... * ... |
+| test.cpp:295:18:295:21 | Chi | test.cpp:298:10:298:27 | ... * ... |
+| test.cpp:295:18:295:21 | get_size output argument [array content] | test.cpp:295:18:295:21 | Chi |
 | test.cpp:301:19:301:24 | call to getenv | test.cpp:305:11:305:28 | ... * ... |
 | test.cpp:301:19:301:24 | call to getenv | test.cpp:305:11:305:28 | ... * ... |
 | test.cpp:301:19:301:32 | (const char *)... | test.cpp:305:11:305:28 | ... * ... |
@@ -140,9 +141,10 @@ nodes
 | test.cpp:231:9:231:24 | call to get_tainted_size | semmle.label | call to get_tainted_size |
 | test.cpp:231:9:231:24 | call to get_tainted_size | semmle.label | call to get_tainted_size |
 | test.cpp:231:9:231:24 | call to get_tainted_size | semmle.label | call to get_tainted_size |
-| test.cpp:235:11:235:20 | (size_t)... | semmle.label | (size_t)... |
-| test.cpp:237:10:237:19 | (size_t)... | semmle.label | (size_t)... |
-| test.cpp:241:2:241:32 | Chi | semmle.label | Chi |
+| test.cpp:235:2:235:9 | Argument 0 | semmle.label | Argument 0 |
+| test.cpp:237:2:237:8 | Argument 0 | semmle.label | Argument 0 |
+| test.cpp:241:2:241:32 | Chi [array content] | semmle.label | Chi [array content] |
+| test.cpp:241:2:241:32 | Store | semmle.label | Store |
 | test.cpp:241:18:241:23 | call to getenv | semmle.label | call to getenv |
 | test.cpp:241:18:241:31 | (const char *)... | semmle.label | (const char *)... |
 | test.cpp:249:20:249:25 | call to getenv | semmle.label | call to getenv |
@@ -150,11 +152,13 @@ nodes
 | test.cpp:253:11:253:29 | ... * ... | semmle.label | ... * ... |
 | test.cpp:253:11:253:29 | ... * ... | semmle.label | ... * ... |
 | test.cpp:253:11:253:29 | ... * ... | semmle.label | ... * ... |
-| test.cpp:279:17:279:20 | get_size output argument | semmle.label | get_size output argument |
+| test.cpp:279:17:279:20 | Chi | semmle.label | Chi |
+| test.cpp:279:17:279:20 | get_size output argument [array content] | semmle.label | get_size output argument [array content] |
 | test.cpp:281:11:281:28 | ... * ... | semmle.label | ... * ... |
 | test.cpp:281:11:281:28 | ... * ... | semmle.label | ... * ... |
 | test.cpp:281:11:281:28 | ... * ... | semmle.label | ... * ... |
-| test.cpp:295:18:295:21 | get_size output argument | semmle.label | get_size output argument |
+| test.cpp:295:18:295:21 | Chi | semmle.label | Chi |
+| test.cpp:295:18:295:21 | get_size output argument [array content] | semmle.label | get_size output argument [array content] |
 | test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |
 | test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |
 | test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |

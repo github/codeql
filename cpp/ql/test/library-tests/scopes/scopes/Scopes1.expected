@@ -21,8 +21,10 @@
 | scopes.cpp:2:7:2:7 | A | Class | scopes.cpp:2:7:2:7 | operator= |  |
 | scopes.cpp:7:7:7:7 | B | Class | scopes.cpp:7:7:7:7 | operator= |  |
 | scopes.cpp:7:7:7:7 | B | Class | scopes.cpp:7:7:7:7 | operator= |  |
+| scopes.cpp:11:7:11:7 | C | Class | scopes.cpp:11:7:11:7 | C |  |
 | scopes.cpp:11:7:11:7 | C | Class | scopes.cpp:11:7:11:7 | operator= |  |
 | scopes.cpp:11:7:11:7 | C | Class | scopes.cpp:11:7:11:7 | operator= |  |
+| scopes.cpp:15:7:15:7 | D | Class | scopes.cpp:15:7:15:7 | D |  |
 | scopes.cpp:15:7:15:7 | D | Class | scopes.cpp:15:7:15:7 | operator= |  |
 | scopes.cpp:15:7:15:7 | D | Class | scopes.cpp:15:7:15:7 | operator= |  |
 | scopes.cpp:15:7:15:7 | D | Class | scopes.cpp:21:7:21:10 | E | NestedClass |
@@ -32,6 +34,7 @@
 | scopes.cpp:21:7:21:10 | E | NestedClass | scopes.cpp:31:7:31:13 | F | NestedClass |
 | scopes.cpp:25:8:25:8 | G | NestedClass | scopes.cpp:25:8:25:8 | operator= |  |
 | scopes.cpp:25:8:25:8 | G | NestedClass | scopes.cpp:25:8:25:8 | operator= |  |
+| scopes.cpp:31:7:31:13 | F | NestedClass | scopes.cpp:31:13:31:13 | F |  |
 | scopes.cpp:31:7:31:13 | F | NestedClass | scopes.cpp:31:13:31:13 | operator= |  |
 | scopes.cpp:31:7:31:13 | F | NestedClass | scopes.cpp:31:13:31:13 | operator= |  |
 | scopes.cpp:31:7:31:13 | F | NestedClass | scopes.cpp:32:8:32:27 | doubleNestedFunction |  |
@@ -39,6 +42,7 @@
 | scopes.cpp:46:8:46:8 | S | Class | scopes.cpp:46:8:46:8 | operator= |  |
 | scopes.cpp:46:8:46:8 | S | Class | scopes.cpp:47:7:47:8 | af |  |
 | scopes.cpp:46:8:46:8 | S | Class | scopes.cpp:50:7:50:8 | ag |  |
+| scopes.cpp:58:7:58:10 | Name | Class | scopes.cpp:58:7:58:7 | Name |  |
 | scopes.cpp:58:7:58:10 | Name | Class | scopes.cpp:58:7:58:7 | operator= |  |
 | scopes.cpp:58:7:58:10 | Name | Class | scopes.cpp:58:7:58:7 | operator= |  |
 | scopes.cpp:58:7:58:10 | Name | Class | scopes.cpp:59:14:59:14 | s |  |
@@ -59,9 +63,11 @@
 | scopes.cpp:74:11:74:13 | One | Namespace | scopes.cpp:95:8:95:8 | I | Class |
 | scopes.cpp:77:8:77:8 | H<T> | Class | scopes.cpp:76:18:76:18 | T |  |
 | scopes.cpp:77:8:77:8 | H<T> | Class | scopes.cpp:79:5:79:5 | t |  |
+| scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:77:8:77:8 | H |  |
 | scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:77:8:77:8 | operator= |  |
 | scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:77:8:77:8 | operator= |  |
 | scopes.cpp:77:8:77:8 | H<long> | Class | scopes.cpp:79:5:79:5 | t |  |
+| scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:77:8:77:8 | H |  |
 | scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:77:8:77:8 | operator= |  |
 | scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:77:8:77:8 | operator= |  |
 | scopes.cpp:77:8:77:8 | H<short> | Class | scopes.cpp:79:5:79:5 | t |  |

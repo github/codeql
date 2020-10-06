@@ -156,4 +156,4 @@ customized = Customized()
 SINK(Customized.a)
 SINK_F(Customized.b)
 SINK(customized.a)
-SINK(customized.b)
+SINK(customized.b)  # Flow found

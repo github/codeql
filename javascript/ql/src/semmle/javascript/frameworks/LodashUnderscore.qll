@@ -394,6 +394,52 @@ module LodashUnderscore {
       succ = this.getExceptionalReturn()
     }
   }
+
+  /**
+   * Holds if there is a taint-step involving a (non-function) underscore method from `pred` to `succ`.
+   */
+  private predicate underscoreTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(string name, DataFlow::CallNode call |
+      call = any(Member member | member.getName() = name).getACall()
+    |
+      name =
+        ["find", "filter", "findWhere", "where", "reject", "pluck", "max", "min", "sortBy",
+            "shuffle", "sample", "toArray", "partition", "compact", "first", "initial", "last",
+            "rest", "flatten", "without", "difference", "uniq", "unique", "unzip", "transpose",
+            "object", "chunk", "values", "mapObject", "pick", "omit", "defaults", "clone", "tap",
+            "identity"] and
+      pred = call.getArgument(0) and
+      succ = call
+      or
+      name = ["union", "zip"] and
+      pred = call.getAnArgument() and
+      succ = call
+      or
+      name =
+        ["each", "map", "every", "some", "max", "min", "sortBy", "partition", "mapObject", "tap"] and
+      pred = call.getArgument(0) and
+      succ = call.getABoundCallbackParameter(1, 0)
+      or
+      name = ["reduce", "reduceRight"] and
+      pred = call.getArgument(0) and
+      succ = call.getABoundCallbackParameter(1, 1)
+      or
+      name = ["map", "reduce", "reduceRight"] and
+      pred = call.getCallback(1).getAReturn() and
+      succ = call
+    )
+  }
+
+  /**
+   * A model for taint-steps involving (non-function) underscore methods.
+   */
+  private class UnderscoreTaintStep extends TaintTracking::AdditionalTaintStep {
+    UnderscoreTaintStep() { underscoreTaintStep(this, _) }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      underscoreTaintStep(pred, succ) and pred = this
+    }
+  }
 }
 
 /**

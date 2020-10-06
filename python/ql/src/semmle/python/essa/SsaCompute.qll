@@ -382,7 +382,9 @@ private module SsaComputeImpl {
 
     /** Holds if `v` occurs in `b` or one of `b`'s transitive successors. */
     private predicate blockPrecedesVar(SsaSourceVariable v, BasicBlock b) {
-      varOccursInBlock(v, b.getASuccessor*())
+      varOccursInBlock(v, b)
+      or
+      SsaDefinitionsImpl::reachesEndOfBlock(v, _, _, b)
     }
 
     /**
@@ -444,8 +446,27 @@ private module SsaComputeImpl {
     }
 
     /**
+     * Holds if `use1` and `use2` form an adjacent use-use-pair of the same
+     * `SsaSourceVariable`, that is, the value read in `use1` can reach `use2`
+     * without passing through any other use or any SSA definition of the variable
+     * except for phi nodes.
+     */
+    cached
+    predicate adjacentUseUse(ControlFlowNode use1, ControlFlowNode use2) {
+      adjacentUseUseSameVar(use1, use2)
+      or
+      exists(SsaSourceVariable v, EssaDefinition def, BasicBlock b1, int i1, BasicBlock b2, int i2 |
+        adjacentVarRefs(v, b1, i1, b2, i2) and
+        variableUse(v, use1, b1, i1) and
+        definesAt(def, v, b2, i2) and
+        firstUse(def, use2) and
+        def instanceof PhiFunction
+      )
+    }
+
+    /**
      * Holds if the value defined at `def` can reach `use` without passing through
-     * any other uses, but possibly through phi nodes and uncertain implicit updates.
+     * any other uses, but possibly through phi nodes.
      */
     cached
     predicate firstUse(EssaDefinition def, ControlFlowNode use) {
@@ -481,6 +502,17 @@ private module SsaComputeImpl {
       v = def.(PhiFunction).getSourceVariable() and
       b = def.(PhiFunction).getBasicBlock() and
       i = -1
+    }
+
+    /**
+     * Holds if the value defined at `def` can reach `use`, possibly through phi nodes.
+     */
+    cached
+    predicate useOfDef(EssaDefinition def, ControlFlowNode use) {
+      exists(ControlFlowNode firstUse |
+        firstUse(def, firstUse) and
+        adjacentUseUse*(firstUse, use)
+      )
     }
   }
 }

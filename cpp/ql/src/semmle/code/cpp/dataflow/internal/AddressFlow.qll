@@ -29,7 +29,7 @@ private predicate stdIdentityFunction(Function f) { f.hasQualifiedName("std", ["
  */
 private predicate stdAddressOf(Function f) { f.hasQualifiedName("std", "addressof") }
 
-private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
+private predicate lvalueToLvalueStepPure(Expr lvalueIn, Expr lvalueOut) {
   lvalueIn.getConversion() = lvalueOut.(ParenthesisExpr)
   or
   // When an object is implicitly converted to a reference to one of its base
@@ -42,6 +42,10 @@ private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
   // such casts.
   lvalueIn.getConversion() = lvalueOut and
   lvalueOut.(CStyleCast).isImplicit()
+}
+
+private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
+  lvalueToLvalueStepPure(lvalueIn, lvalueOut)
   or
   // C++ only
   lvalueIn = lvalueOut.(PrefixCrementOperation).getOperand().getFullyConverted()
@@ -214,6 +218,69 @@ private predicate referenceToUpdate(Expr reference, Expr outer, ControlFlowNode 
   )
 }
 
+private predicate lvalueFromVariableAccess(VariableAccess va, Expr lvalue) {
+  // Base case for non-reference types.
+  lvalue = va and
+  not va.getConversion() instanceof ReferenceDereferenceExpr
+  or
+  // Base case for reference types where we pretend that they are
+  // non-reference types. The type of the target of `va` can be `ReferenceType`
+  // or `FunctionReferenceType`.
+  lvalue = va.getConversion().(ReferenceDereferenceExpr)
+  or
+  // lvalue -> lvalue
+  exists(Expr prev |
+    lvalueFromVariableAccess(va, prev) and
+    lvalueToLvalueStep(prev, lvalue)
+  )
+  or
+  // pointer -> lvalue
+  exists(Expr prev |
+    pointerFromVariableAccess(va, prev) and
+    pointerToLvalueStep(prev, lvalue)
+  )
+  or
+  // reference -> lvalue
+  exists(Expr prev |
+    referenceFromVariableAccess(va, prev) and
+    referenceToLvalueStep(prev, lvalue)
+  )
+}
+
+private predicate pointerFromVariableAccess(VariableAccess va, Expr pointer) {
+  // pointer -> pointer
+  exists(Expr prev |
+    pointerFromVariableAccess(va, prev) and
+    pointerToPointerStep(prev, pointer)
+  )
+  or
+  // reference -> pointer
+  exists(Expr prev |
+    referenceFromVariableAccess(va, prev) and
+    referenceToPointerStep(prev, pointer)
+  )
+  or
+  // lvalue -> pointer
+  exists(Expr prev |
+    lvalueFromVariableAccess(va, prev) and
+    lvalueToPointerStep(prev, pointer)
+  )
+}
+
+private predicate referenceFromVariableAccess(VariableAccess va, Expr reference) {
+  // reference -> reference
+  exists(Expr prev |
+    referenceFromVariableAccess(va, prev) and
+    referenceToReferenceStep(prev, reference)
+  )
+  or
+  // lvalue -> reference
+  exists(Expr prev |
+    lvalueFromVariableAccess(va, prev) and
+    lvalueToReferenceStep(prev, reference)
+  )
+}
+
 /**
  * Holds if `node` is a control-flow node that may modify `inner` (or what it
  * points to) through `outer`. The two expressions may be `Conversion`s. Plain
@@ -236,7 +303,7 @@ predicate valueToUpdate(Expr inner, Expr outer, ControlFlowNode node) {
   (
     inner instanceof VariableAccess and
     // Don't track non-field assignments
-    (assignmentTo(outer, _) implies inner instanceof FieldAccess)
+    not (assignmentTo(outer, _) and outer.(VariableAccess).getTarget() instanceof StackVariable)
     or
     inner instanceof ThisExpr
     or
@@ -244,4 +311,28 @@ predicate valueToUpdate(Expr inner, Expr outer, ControlFlowNode node) {
     // `inner` could also be `*` or `ReferenceDereferenceExpr`, but we
     // can't do anything useful with those at the moment.
   )
+}
+
+/**
+ * Holds if `e` is a fully-converted expression that evaluates to an lvalue
+ * derived from `va` and is used for reading from or assigning to. This is in
+ * contrast with a variable access that is used for taking an address (`&x`)
+ * or simply discarding its value (`x;`).
+ *
+ * This analysis does not propagate across assignments or calls, and unlike
+ * `variableAccessedAsValue` in `semmle.code.cpp.dataflow.EscapesTree` it
+ * propagates through array accesses but not field accesses. The analysis is
+ * also not concerned with whether the lvalue `e` is converted to an rvalue --
+ * to examine that, use the relevant member predicates on `Expr`.
+ *
+ * If `va` has reference type, the analysis concerns the value pointed to by
+ * the reference rather than the reference itself. The expression `e` may be a
+ * `Conversion`.
+ */
+predicate variablePartiallyAccessed(VariableAccess va, Expr e) {
+  lvalueFromVariableAccess(va, e) and
+  not lvalueToLvalueStepPure(e, _) and
+  not lvalueToPointerStep(e, _) and
+  not lvalueToReferenceStep(e, _) and
+  not e = any(ExprInVoidContext eivc | e = eivc.getConversion*())
 }

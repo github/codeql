@@ -14,12 +14,6 @@ namespace Semmle.Extraction
 
     public sealed class TrapWriter : IDisposable
     {
-        public enum InnerPathComputation
-        {
-            ABSOLUTE,
-            RELATIVE
-        }
-
         public enum CompressionMode
         {
             None,
@@ -45,7 +39,7 @@ namespace Semmle.Extraction
 
         readonly CompressionMode TrapCompression;
 
-        public TrapWriter(ILogger logger, string outputfile, string? trap, string? archive, bool discardDuplicates, CompressionMode trapCompression)
+        public TrapWriter(ILogger logger, PathTransformer.ITransformedPath outputfile, string? trap, string? archive, bool discardDuplicates, CompressionMode trapCompression)
         {
             Logger = logger;
             TrapCompression = trapCompression;
@@ -107,16 +101,17 @@ namespace Semmle.Extraction
         /// Adds the specified input file to the source archive. It may end up in either the normal or long path area
         /// of the source archive, depending on the length of its full path.
         /// </summary>
-        /// <param name="inputPath">The path to the input file.</param>
+        /// <param name="originalPath">The path to the input file.</param>
+        /// <param name="transformedPath">The transformed path to the input file.</param>
         /// <param name="inputEncoding">The encoding used by the input file.</param>
-        public void Archive(string inputPath, Encoding inputEncoding)
+        public void Archive(string originalPath, PathTransformer.ITransformedPath transformedPath, Encoding inputEncoding)
         {
             if (string.IsNullOrEmpty(archive)) return;
 
             // Calling GetFullPath makes this use the canonical capitalisation, if the file exists.
-            string fullInputPath = Path.GetFullPath(inputPath);
+            string fullInputPath = Path.GetFullPath(originalPath);
 
-            ArchivePath(fullInputPath, inputEncoding);
+            ArchivePath(fullInputPath, transformedPath, inputEncoding);
         }
 
         /// <summary>
@@ -124,14 +119,11 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="inputPath">The path of the file.</param>
         /// <param name="contents">The contents of the file.</param>
-        public void Archive(string inputPath, string contents)
+        public void Archive(PathTransformer.ITransformedPath inputPath, string contents)
         {
             if (string.IsNullOrEmpty(archive)) return;
 
-            // Calling GetFullPath makes this use the canonical capitalisation, if the file exists.
-            string fullInputPath = Path.GetFullPath(inputPath);
-
-            ArchiveContents(fullInputPath, contents);
+            ArchiveContents(inputPath, contents);
         }
 
         /// <summary>
@@ -210,18 +202,19 @@ namespace Semmle.Extraction
         /// source archive less than the system path limit of 260 characters.
         /// </summary>
         /// <param name="fullInputPath">The full path to the input file.</param>
+        /// <param name="transformedPath">The transformed path to the input file.</param>
         /// <param name="inputEncoding">The encoding used by the input file.</param>
         /// <exception cref="PathTooLongException">If the output path in the source archive would
         /// exceed the system path limit of 260 characters.</exception>
-        private void ArchivePath(string fullInputPath, Encoding inputEncoding)
+        private void ArchivePath(string fullInputPath, PathTransformer.ITransformedPath transformedPath, Encoding inputEncoding)
         {
             string contents = File.ReadAllText(fullInputPath, inputEncoding);
-            ArchiveContents(fullInputPath, contents);
+            ArchiveContents(transformedPath, contents);
         }
 
-        private void ArchiveContents(string fullInputPath, string contents)
+        private void ArchiveContents(PathTransformer.ITransformedPath transformedPath, string contents)
         {
-            string dest = NestPaths(Logger, archive, fullInputPath, InnerPathComputation.ABSOLUTE);
+            string dest = NestPaths(Logger, archive, transformedPath.Value);
             string tmpSrcFile = Path.GetTempFileName();
             File.WriteAllText(tmpSrcFile, contents, UTF8);
             try
@@ -236,14 +229,11 @@ namespace Semmle.Extraction
             }
         }
 
-        public static string NestPaths(ILogger logger, string? outerpath, string innerpath, InnerPathComputation innerPathComputation)
+        public static string NestPaths(ILogger logger, string? outerpath, string innerpath)
         {
             string nested = innerpath;
             if (!string.IsNullOrEmpty(outerpath))
             {
-                if (!Path.IsPathRooted(innerpath) && innerPathComputation == InnerPathComputation.ABSOLUTE)
-                    innerpath = Path.GetFullPath(innerpath);
-
                 // Remove all leading path separators / or \
                 // For example, UNC paths have two leading \\
                 innerpath = innerpath.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
@@ -276,13 +266,13 @@ namespace Semmle.Extraction
             }
         }
 
-        public static string TrapPath(ILogger logger, string? folder, string filename, TrapWriter.CompressionMode trapCompression)
+        public static string TrapPath(ILogger logger, string? folder, PathTransformer.ITransformedPath path, TrapWriter.CompressionMode trapCompression)
         {
-            filename = $"{Path.GetFullPath(filename)}.trap{TrapExtension(trapCompression)}";
+            var filename = $"{path.Value}.trap{TrapExtension(trapCompression)}";
             if (string.IsNullOrEmpty(folder))
                 folder = Directory.GetCurrentDirectory();
 
-            return NestPaths(logger, folder, filename, InnerPathComputation.ABSOLUTE); ;
+            return NestPaths(logger, folder, filename);
         }
     }
 }

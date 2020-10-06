@@ -6,6 +6,8 @@
 | file://:0:0:0:0 | p#0 | false |
 | test.cpp:0:0:0:0 | test.cpp | false |
 | test.cpp:2:1:2:61 | #define FOO class S{int i; void f(void) { int j; return; } }; | false |
+| test.cpp:4:1:4:1 | S | false |
+| test.cpp:4:1:4:1 | declaration of S | false |
 | test.cpp:4:1:4:1 | declaration of operator= | false |
 | test.cpp:4:1:4:1 | declaration of operator= | false |
 | test.cpp:4:1:4:1 | operator= | false |

@@ -16,7 +16,7 @@ def command_injection1():
 def command_injection2():
     files = request.args.get('files', '')
     # Don't let files be `; rm -rf /`
-    subprocess.Popen(["ls", files], shell = True)
+    subprocess.Popen("ls " + files, shell=True)
 
 
 @app.route("/command3")

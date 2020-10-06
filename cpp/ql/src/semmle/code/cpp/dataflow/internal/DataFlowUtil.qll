@@ -6,6 +6,7 @@ private import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
+private import semmle.code.cpp.dataflow.internal.AddressFlow
 
 cached
 private newtype TNode =
@@ -182,27 +183,28 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
 }
 
 /**
- * A node that represents the value of a variable after a function call that
- * may have changed the variable because it's passed by reference.
+ * INTERNAL: do not use.
  *
- * A typical example would be a call `f(&x)`. Firstly, there will be flow into
- * `x` from previous definitions of `x`. Secondly, there will be a
- * `DefinitionByReferenceNode` to represent the value of `x` after the call has
- * returned. This node will have its `getArgument()` equal to `&x`.
+ * A node that represents the value of a variable after a function call that
+ * may have changed the variable because it's passed by reference or because an
+ * iterator for it was passed by value or by reference.
  */
-class DefinitionByReferenceNode extends PartialDefinitionNode {
+class DefinitionByReferenceOrIteratorNode extends PartialDefinitionNode {
   Expr inner;
   Expr argument;
 
-  DefinitionByReferenceNode() {
-    this.getPartialDefinition().(DefinitionByReference).definesExpressions(inner, argument)
+  DefinitionByReferenceOrIteratorNode() {
+    this.getPartialDefinition().definesExpressions(inner, argument) and
+    (
+      this.getPartialDefinition() instanceof DefinitionByReference
+      or
+      this.getPartialDefinition() instanceof DefinitionByIterator
+    )
   }
 
   override Function getFunction() { result = inner.getEnclosingFunction() }
 
   override Type getType() { result = inner.getType() }
-
-  override string toString() { result = "ref arg " + argument.toString() }
 
   override Location getLocation() { result = argument.getLocation() }
 
@@ -218,6 +220,21 @@ class DefinitionByReferenceNode extends PartialDefinitionNode {
       result = call.getTarget().getParameter(i)
     )
   }
+}
+
+/**
+ * A node that represents the value of a variable after a function call that
+ * may have changed the variable because it's passed by reference.
+ *
+ * A typical example would be a call `f(&x)`. Firstly, there will be flow into
+ * `x` from previous definitions of `x`. Secondly, there will be a
+ * `DefinitionByReferenceNode` to represent the value of `x` after the call has
+ * returned. This node will have its `getArgument()` equal to `&x`.
+ */
+class DefinitionByReferenceNode extends DefinitionByReferenceOrIteratorNode {
+  override VariablePartialDefinition pd;
+
+  override string toString() { result = "ref arg " + argument.toString() }
 }
 
 /**
@@ -283,18 +300,34 @@ abstract class PostUpdateNode extends Node {
   override Location getLocation() { result = getPreUpdateNode().getLocation() }
 }
 
-private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
+abstract private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
   PartialDefinition pd;
 
   PartialDefinitionNode() { this = TPartialDefinitionNode(pd) }
-
-  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
 
   override Location getLocation() { result = pd.getActualLocation() }
 
   PartialDefinition getPartialDefinition() { result = pd }
 
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
+}
+
+private class VariablePartialDefinitionNode extends PartialDefinitionNode {
+  override VariablePartialDefinition pd;
+
+  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A synthetic data flow node used for flow into a collection when an iterator
+ * write occurs in a callee.
+ */
+class IteratorPartialDefinitionNode extends PartialDefinitionNode {
+  override IteratorPartialDefinition pd;
+
+  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
 }
 
 /**
@@ -610,6 +643,15 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   or
   toExpr.(AddressOfExpr).getOperand() = fromExpr
   or
+  // This rule enables flow from an array to its elements. Example: `a` to
+  // `a[i]` or `*a`, where `a` is an array type. It does not enable flow from a
+  // pointer to its indirection as in `p[i]` where `p` is a pointer type.
+  exists(Expr toConverted |
+    variablePartiallyAccessed(fromExpr, toConverted) and
+    toExpr = toConverted.getUnconverted() and
+    not toExpr = fromExpr
+  )
+  or
   toExpr.(BuiltInOperationBuiltInAddressOf).getOperand() = fromExpr
   or
   // The following case is needed to track the qualifier object for flow
@@ -629,14 +671,25 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   // `ClassAggregateLiteral` (`{ capture1, ..., captureN }`).
   toExpr.(LambdaExpression).getInitializer() = fromExpr
   or
+  // Data flow through a function model.
   toExpr =
     any(Call call |
-      exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
-        call.getTarget() = f and
+      exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel |
         f.hasDataFlow(inModel, outModel) and
-        outModel.isReturnValue() and
-        inModel.isParameter(iIn) and
-        fromExpr = call.getArgument(iIn)
+        (
+          exists(int iIn |
+            inModel.isParameter(iIn) and
+            fromExpr = call.getArgument(iIn)
+          )
+          or
+          inModel.isQualifierObject() and
+          fromExpr = call.getQualifier()
+          or
+          inModel.isQualifierAddress() and
+          fromExpr = call.getQualifier()
+        ) and
+        call.getTarget() = f and
+        outModel.isReturnValue()
       )
     )
 }

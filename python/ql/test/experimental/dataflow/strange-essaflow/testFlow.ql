@@ -1,5 +1,6 @@
 import python
 import experimental.dataflow.DataFlow
+private import experimental.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /** Gets the EssaNode that holds the module imported by the fully qualified module name `name` */
 DataFlow::EssaNode module_import(string name) {
@@ -27,10 +28,10 @@ query predicate flowstep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
 
 query predicate jumpStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   os_import(nodeFrom) and
-  DataFlow::jumpStep(nodeFrom, nodeTo)
+  DataFlowPrivate::jumpStep(nodeFrom, nodeTo)
 }
 
 query predicate essaFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   os_import(nodeFrom) and
-  DataFlow::EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+  DataFlowPrivate::EssaFlow::essaFlowStep(nodeFrom, nodeTo)
 }

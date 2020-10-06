@@ -1,0 +1,23 @@
+Test.java:
+#    0| [CompilationUnit] Test
+#    1|   1: [Class] Test
+#    2|     2: [Method] foo
+#    2|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    2|         0: [Parameter] s
+#    2|           0: [TypeAccess] String
+#    2|       5: [BlockStmt] stmt
+#    3|         0: [LocalVariableDeclStmt] stmt
+#    3|           0: [TypeAccess] int
+#    3|           1: [LocalVariableDeclExpr] x
+#    3|             0: [SwitchExpr] switch (...)
+#    3|               -1: [VarAccess] s
+#    4|               0: [ConstCase] stmt
+#    4|                 -1: [IntegerLiteral] 1
+#    4|                 0: [StringLiteral] "a"
+#    4|                 1: [StringLiteral] "b"
+#    5|               1: [ConstCase] stmt
+#    5|                 -1: [IntegerLiteral] 2
+#    5|                 0: [StringLiteral] "c"
+#    6|               2: [DefaultCase] stmt
+#    6|                 -1: [IntegerLiteral] 3

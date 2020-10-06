@@ -44,6 +44,11 @@
 | lambdas.cpp:29:3:29:6 | t | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:35:8:35:8 | a | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:41:8:41:8 | (reference dereference) | lambdas.cpp:8:10:8:15 | call to source |
+| lambdas.cpp:46:7:46:7 | w | lambdas.cpp:43:7:43:12 | call to source |
+| ref.cpp:56:10:56:11 | x1 | ref.cpp:55:23:55:28 | call to source |
+| ref.cpp:59:10:59:11 | x2 | ref.cpp:58:19:58:24 | call to source |
+| ref.cpp:62:10:62:11 | x3 | ref.cpp:29:11:29:16 | call to source |
+| ref.cpp:65:10:65:11 | x4 | ref.cpp:44:11:44:16 | call to source |
 | ref.cpp:123:13:123:15 | val | ref.cpp:122:23:122:28 | call to source |
 | ref.cpp:126:13:126:15 | val | ref.cpp:125:19:125:24 | call to source |
 | ref.cpp:129:13:129:15 | val | ref.cpp:94:15:94:20 | call to source |
@@ -77,6 +82,7 @@
 | test.cpp:394:10:394:12 | tmp | test.cpp:388:53:388:59 | source1 |
 | test.cpp:450:9:450:22 | (statement expression) | test.cpp:449:26:449:32 | source1 |
 | test.cpp:461:8:461:12 | local | test.cpp:449:26:449:32 | source1 |
+| test.cpp:471:8:471:8 | x | test.cpp:465:8:465:13 | call to source |
 | true_upon_entry.cpp:13:8:13:8 | x | true_upon_entry.cpp:9:11:9:16 | call to source |
 | true_upon_entry.cpp:21:8:21:8 | x | true_upon_entry.cpp:17:11:17:16 | call to source |
 | true_upon_entry.cpp:29:8:29:8 | x | true_upon_entry.cpp:27:9:27:14 | call to source |

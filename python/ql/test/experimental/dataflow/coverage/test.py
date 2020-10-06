@@ -534,3 +534,40 @@ def test_deep_callgraph():
 
     x = f6(SOURCE)
     SINK(x)  # Flow missing
+
+
+def test_dynamic_tuple_creation_1():
+    tup = tuple()
+    tup += (SOURCE,)
+    tup += (NONSOURCE,)
+
+    SINK(tup[0])  # Flow missing
+    SINK_F(tup[1])
+
+
+def test_dynamic_tuple_creation_2():
+    tup = ()
+    tup += (SOURCE,)
+    tup += (NONSOURCE,)
+
+    SINK(tup[0])  # Flow missing
+    SINK_F(tup[1])
+
+
+def test_dynamic_tuple_creation_3():
+    tup1 = (SOURCE,)
+    tup2 = (NONSOURCE,)
+    tup = tup1 + tup2
+
+    SINK(tup[0])  # Flow missing
+    SINK_F(tup[1])
+
+
+# Inspired by FP-report https://github.com/github/codeql/issues/4239
+def test_dynamic_tuple_creation_4():
+    tup = ()
+    for item in [SOURCE, NONSOURCE]:
+        tup += (item,)
+
+    SINK(tup[0])  # Flow missing
+    SINK_F(tup[1])

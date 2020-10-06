@@ -27,13 +27,16 @@ namespace Semmle.Extraction.CSharp
 
         public readonly bool AddAssemblyTrapPrefix;
 
-        public Analyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix)
+        public readonly PathTransformer PathTransformer;
+
+        public Analyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
         {
             Logger = logger;
             AddAssemblyTrapPrefix = addAssemblyTrapPrefix;
             Logger.Log(Severity.Info, "EXTRACTION STARTING at {0}", DateTime.Now);
             stopWatch.Start();
             progressMonitor = pm;
+            PathTransformer = pathTransformer;
         }
 
         CSharpCompilation compilation;
@@ -67,7 +70,7 @@ namespace Semmle.Extraction.CSharp
             layout = new Layout();
             this.options = options;
             this.compilation = compilation;
-            extractor = new Extraction.Extractor(false, GetOutputName(compilation, commandLineArguments), Logger);
+            extractor = new Extraction.Extractor(false, GetOutputName(compilation, commandLineArguments), Logger, PathTransformer);
             LogDiagnostics();
 
             SetReferencePaths();
@@ -117,7 +120,7 @@ namespace Semmle.Extraction.CSharp
         {
             compilation = compilationIn;
             layout = new Layout();
-            extractor = new Extraction.Extractor(true, null, Logger);
+            extractor = new Extraction.Extractor(true, null, Logger, PathTransformer);
             this.options = options;
             LogExtractorInfo(Extraction.Extractor.Version);
             SetReferencePaths();
@@ -230,9 +233,10 @@ namespace Semmle.Extraction.CSharp
             try
             {
                 var assemblyPath = extractor.OutputPath;
+                var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
                 var assembly = compilation.Assembly;
-                var projectLayout = layout.LookupProjectOrDefault(assemblyPath);
-                var trapWriter = projectLayout.CreateTrapWriter(Logger, assemblyPath, true, options.TrapCompression);
+                var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
+                var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, true, options.TrapCompression);
                 compilationTrapFile = trapWriter;  // Dispose later
                 var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath, true), AddAssemblyTrapPrefix);
 
@@ -260,8 +264,9 @@ namespace Semmle.Extraction.CSharp
                 stopwatch.Start();
 
                 var assemblyPath = r.FilePath;
-                var projectLayout = layout.LookupProjectOrDefault(assemblyPath);
-                using (var trapWriter = projectLayout.CreateTrapWriter(Logger, assemblyPath, true, options.TrapCompression))
+                var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
+                var projectLayout = layout.LookupProjectOrDefault(transformedAssemblyPath);
+                using (var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedAssemblyPath, true, options.TrapCompression))
                 {
                     var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
 
@@ -360,16 +365,17 @@ namespace Semmle.Extraction.CSharp
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 var sourcePath = tree.FilePath;
+                var transformedSourcePath = PathTransformer.Transform(sourcePath);
 
-                var projectLayout = layout.LookupProjectOrNull(sourcePath);
+                var projectLayout = layout.LookupProjectOrNull(transformedSourcePath);
                 bool excluded = projectLayout == null;
-                string trapPath = excluded ? "" : projectLayout.GetTrapPath(Logger, sourcePath, options.TrapCompression);
+                string trapPath = excluded ? "" : projectLayout.GetTrapPath(Logger, transformedSourcePath, options.TrapCompression);
                 bool upToDate = false;
 
                 if (!excluded)
                 {
                     // compilation.Clone() is used to allow symbols to be garbage collected.
-                    using (var trapWriter = projectLayout.CreateTrapWriter(Logger, sourcePath, false, options.TrapCompression))
+                    using (var trapWriter = projectLayout.CreateTrapWriter(Logger, transformedSourcePath, false, options.TrapCompression))
                     {
                         upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
 

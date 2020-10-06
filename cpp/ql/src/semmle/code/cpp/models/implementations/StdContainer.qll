@@ -38,7 +38,11 @@ class StdSequenceContainerConstructor extends Constructor, TaintFunction {
       input.isParameterDeref(getAValueTypeParameterIndex()) or
       input.isParameter(getAnIteratorParameterIndex())
     ) and
-    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+    (
+      output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
+      or
+      output.isQualifierObject()
+    )
   }
 }
 
@@ -163,26 +167,6 @@ class StdSequenceContainerAssign extends TaintFunction {
       input.isParameter(getAnIteratorParameterIndex())
     ) and
     output.isQualifierObject()
-  }
-}
-
-/**
- * The standard container `begin` and `end` functions and their
- * variants.
- */
-class StdSequenceContainerBeginEnd extends TaintFunction {
-  StdSequenceContainerBeginEnd() {
-    this
-        .hasQualifiedName("std", ["array", "vector", "deque", "list"],
-          ["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend"]) or
-    this
-        .hasQualifiedName("std", "forward_list",
-          ["before_begin", "begin", "end", "cbefore_begin", "cbegin", "cend"])
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
   }
 }
 

@@ -48,6 +48,6 @@ void following_pointers(
 
   int stackArray[2] = { source(), source() };
   stackArray[0] = source();
-  sink(stackArray); // no flow
+  sink(stackArray); // flow
 }
 

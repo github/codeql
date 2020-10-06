@@ -224,8 +224,8 @@ booleanNode
 | Finally.cs:190:21:190:22 | [finally: exception(ExceptionA), b1 (line 176): true] access to parameter b1 | b1 (line 176): true |
 | LoopUnrolling.cs:58:9:64:9 | [b (line 55): false] foreach (... ... in ...) ... | b (line 55): false |
 | LoopUnrolling.cs:58:9:64:9 | [b (line 55): true] foreach (... ... in ...) ... | b (line 55): true |
-| LoopUnrolling.cs:58:21:58:21 | [b (line 55): false] String x | b (line 55): false |
-| LoopUnrolling.cs:58:21:58:21 | [b (line 55): true] String x | b (line 55): true |
+| LoopUnrolling.cs:58:22:58:22 | [b (line 55): false] String x | b (line 55): false |
+| LoopUnrolling.cs:58:22:58:22 | [b (line 55): true] String x | b (line 55): true |
 | LoopUnrolling.cs:59:9:64:9 | [b (line 55): false] {...} | b (line 55): false |
 | LoopUnrolling.cs:59:9:64:9 | [b (line 55): true] {...} | b (line 55): true |
 | LoopUnrolling.cs:60:13:61:37 | [b (line 55): false] if (...) ... | b (line 55): false |
@@ -736,6 +736,9 @@ entryPoint
 | LoopUnrolling.cs:45:10:45:11 | M6 | LoopUnrolling.cs:46:5:53:5 | {...} |
 | LoopUnrolling.cs:55:10:55:11 | M7 | LoopUnrolling.cs:56:5:65:5 | {...} |
 | LoopUnrolling.cs:67:10:67:11 | M8 | LoopUnrolling.cs:68:5:74:5 | {...} |
+| LoopUnrolling.cs:76:10:76:11 | M9 | LoopUnrolling.cs:77:5:83:5 | {...} |
+| LoopUnrolling.cs:85:10:85:12 | M10 | LoopUnrolling.cs:86:5:92:5 | {...} |
+| LoopUnrolling.cs:94:10:94:12 | M11 | LoopUnrolling.cs:95:5:101:5 | {...} |
 | MultiImplementationA.cs:6:22:6:31 | get_P1 | MultiImplementationA.cs:6:28:6:31 | null |
 | MultiImplementationA.cs:6:22:6:31 | get_P1 | MultiImplementationB.cs:3:22:3:22 | 0 |
 | MultiImplementationA.cs:7:21:7:23 | get_P2 | MultiImplementationA.cs:7:25:7:39 | {...} |

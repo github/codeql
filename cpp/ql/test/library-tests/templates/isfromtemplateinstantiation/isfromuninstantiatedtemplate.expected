@@ -347,6 +347,7 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:26:1:26:1 | return ... | I |  | Stmt |  |
 | isfromtemplateinstantiation.cpp:29:7:29:7 | declaration of operator= |  |  | DeclarationEntry |  |
 | isfromtemplateinstantiation.cpp:29:7:29:7 | declaration of operator= |  |  | DeclarationEntry |  |
+| isfromtemplateinstantiation.cpp:29:7:29:7 | normal_class |  |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:29:7:29:7 | operator= |  |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:29:7:29:7 | operator= |  |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:29:7:29:18 | normal_class |  |  | Declaration |  |
@@ -361,6 +362,7 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:44:26:44:26 | declaration of operator= | I |  | DeclarationEntry |  |
 | isfromtemplateinstantiation.cpp:44:26:44:26 | operator= | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:44:26:44:26 | operator= | I |  | Declaration |  |
+| isfromtemplateinstantiation.cpp:44:26:44:26 | template_class | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:46:4:46:4 | definition of t |  | T | Definition |  |

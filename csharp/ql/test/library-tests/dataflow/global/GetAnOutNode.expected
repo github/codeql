@@ -186,13 +186,15 @@
 | GlobalDataFlow.cs:231:19:231:49 | call to method Select | yield return | GlobalDataFlow.cs:231:19:231:49 | call to method Select |
 | GlobalDataFlow.cs:231:19:231:57 | call to method First | return | GlobalDataFlow.cs:231:19:231:57 | call to method First |
 | GlobalDataFlow.cs:231:37:231:48 | [implicit call] delegate creation of type Func<String,String> | return | GlobalDataFlow.cs:231:37:231:48 | [output] delegate creation of type Func<String,String> |
-| GlobalDataFlow.cs:238:22:238:51 | call to method Run | return | GlobalDataFlow.cs:238:22:238:51 | call to method Run |
-| GlobalDataFlow.cs:238:31:238:50 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:238:31:238:50 | [output] (...) => ... |
-| GlobalDataFlow.cs:244:24:244:41 | call to method Run | return | GlobalDataFlow.cs:244:24:244:41 | call to method Run |
-| GlobalDataFlow.cs:244:33:244:40 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:244:33:244:40 | [output] (...) => ... |
-| GlobalDataFlow.cs:295:17:295:38 | call to method ApplyFunc | return | GlobalDataFlow.cs:295:17:295:38 | call to method ApplyFunc |
-| GlobalDataFlow.cs:384:16:384:19 | delegate call | return | GlobalDataFlow.cs:384:16:384:19 | delegate call |
-| GlobalDataFlow.cs:449:44:449:47 | delegate call | return | GlobalDataFlow.cs:449:44:449:47 | delegate call |
+| GlobalDataFlow.cs:238:20:238:49 | call to method Run | return | GlobalDataFlow.cs:238:20:238:49 | call to method Run |
+| GlobalDataFlow.cs:238:29:238:48 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:238:29:238:48 | [output] (...) => ... |
+| GlobalDataFlow.cs:239:22:239:32 | access to property Result | return | GlobalDataFlow.cs:239:22:239:32 | access to property Result |
+| GlobalDataFlow.cs:245:16:245:33 | call to method Run | return | GlobalDataFlow.cs:245:16:245:33 | call to method Run |
+| GlobalDataFlow.cs:245:25:245:32 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:245:25:245:32 | [output] (...) => ... |
+| GlobalDataFlow.cs:246:24:246:34 | access to property Result | return | GlobalDataFlow.cs:246:24:246:34 | access to property Result |
+| GlobalDataFlow.cs:297:17:297:38 | call to method ApplyFunc | return | GlobalDataFlow.cs:297:17:297:38 | call to method ApplyFunc |
+| GlobalDataFlow.cs:386:16:386:19 | delegate call | return | GlobalDataFlow.cs:386:16:386:19 | delegate call |
+| GlobalDataFlow.cs:451:44:451:47 | delegate call | return | GlobalDataFlow.cs:451:44:451:47 | delegate call |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return | return | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return | return | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return |
 | Splitting.cs:20:22:20:30 | call to method Return | return | Splitting.cs:20:22:20:30 | call to method Return |

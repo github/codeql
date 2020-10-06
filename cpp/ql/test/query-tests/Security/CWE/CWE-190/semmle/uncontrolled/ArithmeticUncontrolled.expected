@@ -42,18 +42,22 @@ edges
 | test.cpp:8:9:8:12 | Store | test.cpp:24:11:24:18 | call to get_rand |
 | test.cpp:8:9:8:12 | call to rand | test.cpp:8:9:8:12 | Store |
 | test.cpp:8:9:8:12 | call to rand | test.cpp:8:9:8:12 | Store |
-| test.cpp:13:2:13:15 | Chi | test.cpp:30:13:30:14 | get_rand2 output argument |
-| test.cpp:13:10:13:13 | call to rand | test.cpp:13:2:13:15 | Chi |
-| test.cpp:13:10:13:13 | call to rand | test.cpp:13:2:13:15 | Chi |
-| test.cpp:18:2:18:14 | Chi | test.cpp:36:13:36:13 | get_rand3 output argument |
-| test.cpp:18:9:18:12 | call to rand | test.cpp:18:2:18:14 | Chi |
-| test.cpp:18:9:18:12 | call to rand | test.cpp:18:2:18:14 | Chi |
+| test.cpp:13:2:13:15 | Chi [array content] | test.cpp:30:13:30:14 | get_rand2 output argument [array content] |
+| test.cpp:13:2:13:15 | Store | test.cpp:13:2:13:15 | Chi [array content] |
+| test.cpp:13:10:13:13 | call to rand | test.cpp:13:2:13:15 | Store |
+| test.cpp:13:10:13:13 | call to rand | test.cpp:13:2:13:15 | Store |
+| test.cpp:18:2:18:14 | Chi [array content] | test.cpp:36:13:36:13 | get_rand3 output argument [array content] |
+| test.cpp:18:2:18:14 | Store | test.cpp:18:2:18:14 | Chi [array content] |
+| test.cpp:18:9:18:12 | call to rand | test.cpp:18:2:18:14 | Store |
+| test.cpp:18:9:18:12 | call to rand | test.cpp:18:2:18:14 | Store |
 | test.cpp:24:11:24:18 | call to get_rand | test.cpp:25:7:25:7 | r |
 | test.cpp:24:11:24:18 | call to get_rand | test.cpp:25:7:25:7 | r |
-| test.cpp:30:13:30:14 | get_rand2 output argument | test.cpp:31:7:31:7 | r |
-| test.cpp:30:13:30:14 | get_rand2 output argument | test.cpp:31:7:31:7 | r |
-| test.cpp:36:13:36:13 | get_rand3 output argument | test.cpp:37:7:37:7 | r |
-| test.cpp:36:13:36:13 | get_rand3 output argument | test.cpp:37:7:37:7 | r |
+| test.cpp:30:13:30:14 | Chi | test.cpp:31:7:31:7 | r |
+| test.cpp:30:13:30:14 | Chi | test.cpp:31:7:31:7 | r |
+| test.cpp:30:13:30:14 | get_rand2 output argument [array content] | test.cpp:30:13:30:14 | Chi |
+| test.cpp:36:13:36:13 | Chi | test.cpp:37:7:37:7 | r |
+| test.cpp:36:13:36:13 | Chi | test.cpp:37:7:37:7 | r |
+| test.cpp:36:13:36:13 | get_rand3 output argument [array content] | test.cpp:36:13:36:13 | Chi |
 nodes
 | test.c:18:13:18:16 | call to rand | semmle.label | call to rand |
 | test.c:18:13:18:16 | call to rand | semmle.label | call to rand |
@@ -106,21 +110,25 @@ nodes
 | test.cpp:8:9:8:12 | Store | semmle.label | Store |
 | test.cpp:8:9:8:12 | call to rand | semmle.label | call to rand |
 | test.cpp:8:9:8:12 | call to rand | semmle.label | call to rand |
-| test.cpp:13:2:13:15 | Chi | semmle.label | Chi |
+| test.cpp:13:2:13:15 | Chi [array content] | semmle.label | Chi [array content] |
+| test.cpp:13:2:13:15 | Store | semmle.label | Store |
 | test.cpp:13:10:13:13 | call to rand | semmle.label | call to rand |
 | test.cpp:13:10:13:13 | call to rand | semmle.label | call to rand |
-| test.cpp:18:2:18:14 | Chi | semmle.label | Chi |
+| test.cpp:18:2:18:14 | Chi [array content] | semmle.label | Chi [array content] |
+| test.cpp:18:2:18:14 | Store | semmle.label | Store |
 | test.cpp:18:9:18:12 | call to rand | semmle.label | call to rand |
 | test.cpp:18:9:18:12 | call to rand | semmle.label | call to rand |
 | test.cpp:24:11:24:18 | call to get_rand | semmle.label | call to get_rand |
 | test.cpp:25:7:25:7 | r | semmle.label | r |
 | test.cpp:25:7:25:7 | r | semmle.label | r |
 | test.cpp:25:7:25:7 | r | semmle.label | r |
-| test.cpp:30:13:30:14 | get_rand2 output argument | semmle.label | get_rand2 output argument |
+| test.cpp:30:13:30:14 | Chi | semmle.label | Chi |
+| test.cpp:30:13:30:14 | get_rand2 output argument [array content] | semmle.label | get_rand2 output argument [array content] |
 | test.cpp:31:7:31:7 | r | semmle.label | r |
 | test.cpp:31:7:31:7 | r | semmle.label | r |
 | test.cpp:31:7:31:7 | r | semmle.label | r |
-| test.cpp:36:13:36:13 | get_rand3 output argument | semmle.label | get_rand3 output argument |
+| test.cpp:36:13:36:13 | Chi | semmle.label | Chi |
+| test.cpp:36:13:36:13 | get_rand3 output argument [array content] | semmle.label | get_rand3 output argument [array content] |
 | test.cpp:37:7:37:7 | r | semmle.label | r |
 | test.cpp:37:7:37:7 | r | semmle.label | r |
 | test.cpp:37:7:37:7 | r | semmle.label | r |

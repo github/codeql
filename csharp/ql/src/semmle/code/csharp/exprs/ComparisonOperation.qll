@@ -57,6 +57,9 @@ class RelationalOperation extends ComparisonOperation, @rel_op_expr {
    * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
    */
   Expr getLesserOperand() { none() }
+
+  /** Holds if this comparison is strict, i.e. `<` or `>`. */
+  predicate isStrict() { this instanceof LTExpr or this instanceof GTExpr }
 }
 
 /**

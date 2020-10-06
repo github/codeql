@@ -97,4 +97,16 @@ app.post('/documents/find', (req, res) => {
 	Document.find(X).then(Y, (err) => err.count(query)); // OK
 
 	Document.count(X, (err, res) => res.count(query)); // OK (res is a number)
+    
+	function innocent(X, Y, query) { // To detect if API-graphs were used incorrectly.
+		return new Mongoose.Query("constant", "constant", "constant");
+	}
+	new innocent(X, Y, query);
+
+	function getQueryConstructor() {
+		return Mongoose.Query;
+	}
+
+	var C = getQueryConstructor();
+	new C(X, Y, query); // NOT OK
 });

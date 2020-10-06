@@ -7,10 +7,10 @@ edges
 | command_injection.py:12:23:12:27 | externally controlled string | command_injection.py:12:15:12:27 | externally controlled string |
 | command_injection.py:17:13:17:24 | dict of externally controlled string | command_injection.py:17:13:17:41 | externally controlled string |
 | command_injection.py:17:13:17:24 | dict of externally controlled string | command_injection.py:17:13:17:41 | externally controlled string |
-| command_injection.py:17:13:17:41 | externally controlled string | command_injection.py:19:29:19:33 | externally controlled string |
-| command_injection.py:17:13:17:41 | externally controlled string | command_injection.py:19:29:19:33 | externally controlled string |
-| command_injection.py:19:29:19:33 | externally controlled string | command_injection.py:19:22:19:34 | sequence of externally controlled string |
-| command_injection.py:19:29:19:33 | externally controlled string | command_injection.py:19:22:19:34 | sequence of externally controlled string |
+| command_injection.py:17:13:17:41 | externally controlled string | command_injection.py:19:30:19:34 | externally controlled string |
+| command_injection.py:17:13:17:41 | externally controlled string | command_injection.py:19:30:19:34 | externally controlled string |
+| command_injection.py:19:30:19:34 | externally controlled string | command_injection.py:19:22:19:34 | externally controlled string |
+| command_injection.py:19:30:19:34 | externally controlled string | command_injection.py:19:22:19:34 | externally controlled string |
 | command_injection.py:24:11:24:22 | dict of externally controlled string | command_injection.py:24:11:24:37 | externally controlled string |
 | command_injection.py:24:11:24:22 | dict of externally controlled string | command_injection.py:24:11:24:37 | externally controlled string |
 | command_injection.py:24:11:24:37 | externally controlled string | command_injection.py:25:23:25:25 | externally controlled string |
@@ -25,6 +25,6 @@ edges
 | command_injection.py:32:22:32:26 | externally controlled string | command_injection.py:32:14:32:26 | externally controlled string |
 #select
 | command_injection.py:12:15:12:27 | BinaryExpr | command_injection.py:10:13:10:24 | dict of externally controlled string | command_injection.py:12:15:12:27 | externally controlled string | This command depends on $@. | command_injection.py:10:13:10:24 | Attribute | a user-provided value |
-| command_injection.py:19:22:19:34 | List | command_injection.py:17:13:17:24 | dict of externally controlled string | command_injection.py:19:22:19:34 | sequence of externally controlled string | This command depends on $@. | command_injection.py:17:13:17:24 | Attribute | a user-provided value |
+| command_injection.py:19:22:19:34 | BinaryExpr | command_injection.py:17:13:17:24 | dict of externally controlled string | command_injection.py:19:22:19:34 | externally controlled string | This command depends on $@. | command_injection.py:17:13:17:24 | Attribute | a user-provided value |
 | command_injection.py:25:22:25:36 | List | command_injection.py:24:11:24:22 | dict of externally controlled string | command_injection.py:25:22:25:36 | first item in sequence of externally controlled string | This command depends on $@. | command_injection.py:24:11:24:22 | Attribute | a user-provided value |
 | command_injection.py:32:14:32:26 | BinaryExpr | command_injection.py:30:13:30:24 | dict of externally controlled string | command_injection.py:32:14:32:26 | externally controlled string | This command depends on $@. | command_injection.py:30:13:30:24 | Attribute | a user-provided value |

@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Similar function
  * @description There is another function that is very similar this one. Extract the common code to a common function to improve sharing.
  * @kind problem

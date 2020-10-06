@@ -126,7 +126,11 @@ public class ScriptExtractor implements IExtractor {
     }
     try {
       BufferedReader reader = new BufferedReader(new FileReader(file));
-      String result = new Gson().fromJson(reader, PackageJSON.class).type;
+      PackageJSON pkgjson = new Gson().fromJson(reader, PackageJSON.class);
+      if (pkgjson == null) {
+        return null;
+      }
+      String result = pkgjson.type;
       packageTypeCache.put(folder, Optional.ofNullable(result));
       return result;
     } catch (IOException | JsonSyntaxException e) {

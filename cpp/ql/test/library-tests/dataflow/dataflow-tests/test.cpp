@@ -428,7 +428,7 @@ void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
   sink(local); // tainted
-  sink(*local); // clean
+  sink(*local); // tainted
 }
 
 void intArraySourceCaller() {
@@ -441,7 +441,7 @@ void intArraySourceCaller2() {
   int local[2];
   intArraySource(local, 2);
   sink(local); // tainted
-  sink(*local); // clean
+  sink(*local); // tainted
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -468,5 +468,5 @@ void intOutparamSource(int *p) {
 void viaOutparam() {
   int x = 0;
   intOutparamSource(&x);
-  sink(x); // tainted [FALSE NEGATIVE]
+  sink(x); // tainted
 }

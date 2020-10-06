@@ -132,6 +132,17 @@ class AnyCall extends MethodCall {
   }
 }
 
+/** A LINQ Count(...) call. */
+class CountCall extends MethodCall {
+  CountCall() {
+    exists(Method m |
+      m = getTarget() and
+      isEnumerableType(m.getDeclaringType()) and
+      m.hasName("Count")
+    )
+  }
+}
+
 /** A variable of type IEnumerable&lt;T>, for some T. */
 class IEnumerableSequence extends Variable {
   IEnumerableSequence() { isIEnumerableType(getType()) }

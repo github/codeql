@@ -43,7 +43,7 @@ private string repr(Expr e) {
   result = repr(e.(Attribute).getObject()) + "." + e.(Attribute).getName()
 }
 
-query predicate test_taint(string arg_location, string test_res, string function_name, string repr) {
+query predicate test_taint(string arg_location, string test_res, string scope_name, string repr) {
   exists(Call call, Expr arg, boolean expected_taint, boolean has_taint |
     // only consider files that are extracted as part of the test
     exists(call.getLocation().getFile().getRelativePath()) and
@@ -68,7 +68,7 @@ query predicate test_taint(string arg_location, string test_res, string function
     // select
     arg_location = arg.getLocation().toString() and
     test_res = test_res and
-    function_name = call.getScope().(Function).getName() and
+    scope_name = call.getScope().getName() and
     repr = repr(arg)
   )
 }

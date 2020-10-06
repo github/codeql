@@ -5,6 +5,7 @@
 private import python
 private import DataFlowPrivate
 import experimental.dataflow.TypeTracker
+private import semmle.python.essa.SsaCompute
 
 /**
  * IPA type for data flow nodes.
@@ -22,8 +23,12 @@ newtype TNode =
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
   TCfgNode(DataFlowCfgNode node) or
-  /** A node representing the value of an object after a state change */
-  TPostUpdateNode(PreUpdateNode pre)
+  /** A synthetic node representing the value of an object before a state change */
+  TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
+  /** A synthetic node representing the value of an object after a state change */
+  TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
+  /** A node representing a global (module-level) variable in a specific module */
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() }
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
@@ -149,6 +154,101 @@ class ParameterNode extends EssaNode {
 }
 
 /**
+ * A node associated with an object after an operation that might have
+ * changed its state.
+ *
+ * This can be either the argument to a callable after the callable returns
+ * (which might have mutated the argument), or the qualifier of a field after
+ * an update to the field.
+ *
+ * Nodes corresponding to AST elements, for example `ExprNode`s, usually refer
+ * to the value before the update with the exception of `ObjectCreationNode`s,
+ * which represents the value _after_ the constructor has run.
+ */
+abstract class PostUpdateNode extends Node {
+  /** Gets the node before the state update. */
+  abstract Node getPreUpdateNode();
+}
+
+/**
+ * A data flow node corresponding to a module-level (global) variable that is accessed outside of the module scope.
+ *
+ * Global variables may appear twice in the data flow graph, as both `EssaNode`s and
+ * `ModuleVariableNode`s. The former is used to represent data flow between global variables as it
+ * occurs during module initialization, and the latter is used to represent data flow via global
+ * variable reads and writes during run-time.
+ *
+ * It is possible for data to flow from assignments made at module initialization time to reads made
+ * at run-time, but not vice versa. For example, there will be flow from `SOURCE` to `SINK` in the
+ * following snippet:
+ *
+ * ```python
+ * g = SOURCE
+ *
+ * def foo():
+ *     SINK(g)
+ * ```
+ * but not the other way round:
+ *
+ * ```python
+ * SINK(g)
+ *
+ * def bar()
+ *     global g
+ *     g = SOURCE
+ * ```
+ *
+ * Data flow through `ModuleVariableNode`s is represented as `jumpStep`s, and so any write of a
+ * global variable can flow to any read of the same variable.
+ */
+class ModuleVariableNode extends Node, TModuleVariableNode {
+  Module mod;
+  GlobalVariable var;
+
+  ModuleVariableNode() { this = TModuleVariableNode(mod, var) }
+
+  override Scope getScope() { result = mod }
+
+  override string toString() {
+    result = "ModuleVariableNode for " + var.toString() + " in " + mod.toString()
+  }
+
+  /** Gets the module in which this variable appears. */
+  Module getModule() { result = mod }
+
+  /** Gets the global variable corresponding to this node. */
+  GlobalVariable getVariable() { result = var }
+
+  /** Gets a node that reads this variable. */
+  Node getARead() {
+    result.asCfgNode() = var.getALoad().getAFlowNode() and
+    // Ignore reads that happen when the module is imported. These are only executed once.
+    not result.getScope() = mod
+  }
+
+  /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
+  EssaNode getAWrite() {
+    result.asVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }
+
+  override Location getLocation() { result = mod.getLocation() }
+}
+
+/**
+ * A node that controls whether other nodes are evaluated.
+ */
+class GuardNode extends ControlFlowNode {
+  ConditionBlock conditionBlock;
+
+  GuardNode() { this = conditionBlock.getLastNode() }
+
+  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
+  predicate controlsBlock(BasicBlock b, boolean branch) { conditionBlock.controls(b, branch) }
+}
+
+/**
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -157,16 +257,18 @@ class ParameterNode extends EssaNode {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends Expr {
-  // /** Holds if this guard validates `e` upon evaluating to `v`. */
-  // abstract predicate checks(Expr e, AbstractValue v);
+class BarrierGuard extends GuardNode {
+  /** Holds if this guard validates `node` upon evaluating to `branch`. */
+  abstract predicate checks(ControlFlowNode node, boolean branch);
+
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
-    none()
-    // exists(Expr e, AbstractValue v |
-    //   this.checks(e, v) and
-    //   this.controlsNode(result.getControlFlowNode(), e, v)
-    // )
+    exists(EssaDefinition def, ControlFlowNode node, boolean branch |
+      AdjacentUses::useOfDef(def, node) and
+      this.checks(node, branch) and
+      AdjacentUses::useOfDef(def, result.asCfgNode()) and
+      this.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
+    )
   }
 }
 
@@ -187,7 +289,9 @@ newtype TContent =
     key = any(Keyword kw).getArg()
   } or
   /** An element of a dictionary at any key. */
-  TDictionaryElementAnyContent()
+  TDictionaryElementAnyContent() or
+  /** An object attribute. */
+  TAttributeContent(string attr) { attr = any(Attribute a).getName() }
 
 class Content extends TContent {
   /** Gets a textual representation of this element. */
@@ -195,12 +299,10 @@ class Content extends TContent {
 }
 
 class ListElementContent extends TListElementContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "List element" }
 }
 
 class SetElementContent extends TSetElementContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Set element" }
 }
 
@@ -209,10 +311,9 @@ class TupleElementContent extends TTupleElementContent, Content {
 
   TupleElementContent() { this = TTupleElementContent(index) }
 
-  /** Gets the index for this tuple element */
+  /** Gets the index for this tuple element. */
   int getIndex() { result = index }
 
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Tuple element at index " + index.toString() }
 }
 
@@ -221,14 +322,23 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
 
   DictionaryElementContent() { this = TDictionaryElementContent(key) }
 
-  /** Gets the index for this tuple element */
+  /** Gets the key for this dictionary element. */
   string getKey() { result = key }
 
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Dictionary element at key " + key }
 }
 
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Any dictionary element" }
+}
+
+class AttributeContent extends TAttributeContent, Content {
+  private string attr;
+
+  AttributeContent() { this = TAttributeContent(attr) }
+
+  /** Gets the name of the attribute under which this content is stored. */
+  string getAttribute() { result = attr }
+
+  override string toString() { result = "Attribute " + attr }
 }

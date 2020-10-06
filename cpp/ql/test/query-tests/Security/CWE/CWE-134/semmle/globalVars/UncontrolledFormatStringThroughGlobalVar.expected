@@ -13,6 +13,8 @@ edges
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:50:9:50:13 | copy2 |
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:50:9:50:13 | copy2 |
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:50:9:50:13 | copy2 |
+| globalVars.c:11:22:11:25 | *argv | globalVars.c:12:2:12:15 | Store |
+| globalVars.c:11:22:11:25 | argv | globalVars.c:11:22:11:25 | *argv |
 | globalVars.c:11:22:11:25 | argv | globalVars.c:12:2:12:15 | Store |
 | globalVars.c:12:2:12:15 | Store | globalVars.c:8:7:8:10 | copy |
 | globalVars.c:15:21:15:23 | val | globalVars.c:16:2:16:12 | Store |
@@ -29,10 +31,12 @@ edges
 nodes
 | globalVars.c:8:7:8:10 | copy | semmle.label | copy |
 | globalVars.c:9:7:9:11 | copy2 | semmle.label | copy2 |
+| globalVars.c:11:22:11:25 | *argv | semmle.label | *argv |
 | globalVars.c:11:22:11:25 | argv | semmle.label | argv |
 | globalVars.c:12:2:12:15 | Store | semmle.label | Store |
 | globalVars.c:15:21:15:23 | val | semmle.label | val |
 | globalVars.c:16:2:16:12 | Store | semmle.label | Store |
+| globalVars.c:24:2:24:9 | Argument 0 | semmle.label | Argument 0 |
 | globalVars.c:24:11:24:14 | argv | semmle.label | argv |
 | globalVars.c:24:11:24:14 | argv | semmle.label | argv |
 | globalVars.c:27:9:27:12 | (const char *)... | semmle.label | (const char *)... |
@@ -43,6 +47,7 @@ nodes
 | globalVars.c:30:15:30:18 | copy | semmle.label | copy |
 | globalVars.c:30:15:30:18 | copy | semmle.label | copy |
 | globalVars.c:30:15:30:18 | copy | semmle.label | copy |
+| globalVars.c:35:2:35:9 | Argument 0 | semmle.label | Argument 0 |
 | globalVars.c:35:11:35:14 | copy | semmle.label | copy |
 | globalVars.c:38:9:38:13 | (const char *)... | semmle.label | (const char *)... |
 | globalVars.c:38:9:38:13 | (const char *)... | semmle.label | (const char *)... |

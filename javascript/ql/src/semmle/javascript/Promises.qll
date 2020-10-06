@@ -117,11 +117,11 @@ class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
 }
 
 /**
- * An aggregated promise produced either by `Promise.all` or `Promise.race`.
+ * An aggregated promise produced either by `Promise.all`, `Promise.race`, or `Promise.any`.
  */
 class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   AggregateES2015PromiseDefinition() {
-    exists(string m | m = "all" or m = "race" |
+    exists(string m | m = "all" or m = "race" or m = "any" |
       this = DataFlow::globalVarRef("Promise").getAMemberCall(m)
     )
   }
@@ -439,6 +439,18 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(AwaitExpr await |
     pred.getEnclosingExpr() = await.getOperand() and
     succ.getEnclosingExpr() = await
+  )
+  or
+  exists(DataFlow::CallNode mapSeries |
+    mapSeries = DataFlow::moduleMember("bluebird", "mapSeries").getACall()
+  |
+    // from `xs` to `x` in `require("bluebird").mapSeries(xs, (x) => {...})`.
+    pred = mapSeries.getArgument(0) and
+    succ = mapSeries.getABoundCallbackParameter(1, 0)
+    or
+    // from `y` to `require("bluebird").mapSeries(x, x => y)`.
+    pred = mapSeries.getCallback(1).getAReturn() and
+    succ = mapSeries
   )
 }
 
