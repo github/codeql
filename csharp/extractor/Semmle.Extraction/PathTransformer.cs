@@ -44,7 +44,21 @@ namespace Semmle.Extraction
 
             public string Value => value;
 
-            public string Extension => Path.GetExtension(value)?.Substring(1) ?? "";
+            public string Extension
+            {
+                get
+                {
+                    var extension = Path.GetExtension(value);
+                    if (string.IsNullOrEmpty(extension))
+                    {
+                        return "";
+                    }
+                    else
+                    {
+                        return extension.Substring(1);
+                    }
+                }
+            }
 
             public string NameWithoutExtension => Path.GetFileNameWithoutExtension(value);
 
