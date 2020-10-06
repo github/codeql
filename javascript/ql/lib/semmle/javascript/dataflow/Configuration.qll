@@ -777,10 +777,10 @@ private class AdditionalFlowStepAsSharedStep extends SharedFlowStep {
  */
 module PseudoProperties {
   bindingset[s]
-  private string pseudoProperty(string s) { result = "$" + s + "$" }
+  private string pseudoProperty(string s) { none() }
 
   bindingset[s, v]
-  private string pseudoProperty(string s, string v) { result = "$" + s + "|" + v + "$" }
+  private string pseudoProperty(string s, string v) { none() }
 
   /**
    * Gets a pseudo-property for the location of elements in a `Set`
