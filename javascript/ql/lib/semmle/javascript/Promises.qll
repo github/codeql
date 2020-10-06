@@ -183,19 +183,12 @@ module Promises {
   /**
    * Gets the pseudo-field used to describe resolved values in a promise.
    */
-  string valueProp() { result = "$PromiseResolveField$" }
+  string valueProp() { none() }
 
   /**
    * Gets the pseudo-field used to describe rejected values in a promise.
    */
-  string errorProp() { result = "$PromiseRejectField$" }
-
-  /** A property set containing the pseudo-properites of a promise object. */
-  class PromiseProps extends DataFlow::PropertySet {
-    PromiseProps() { this = "PromiseProps" }
-
-    override string getAProperty() { result = [valueProp(), errorProp()] }
-  }
+  string errorProp() { none() }
 }
 
 /**
