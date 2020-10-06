@@ -1,73 +1,73 @@
-| CSharp7.cs:249:9:275:9 | switch (...) {...} | CSharp7.cs:249:17:249:17 | access to local variable o | semmle.label | successor |
-| CSharp7.cs:249:17:249:17 | access to local variable o | CSharp7.cs:251:13:251:23 | case ...: | semmle.label | successor |
-| CSharp7.cs:251:13:251:23 | case ...: | CSharp7.cs:251:18:251:22 | "xyz" | semmle.label | successor |
-| CSharp7.cs:251:18:251:22 | "xyz" | CSharp7.cs:252:17:252:22 | break; | semmle.label | match |
-| CSharp7.cs:251:18:251:22 | "xyz" | CSharp7.cs:253:13:253:31 | case ...: | semmle.label | no-match |
-| CSharp7.cs:252:17:252:22 | break; | CSharp7.cs:231:10:231:13 | exit Test | semmle.label | break |
-| CSharp7.cs:253:13:253:31 | case ...: | CSharp7.cs:253:18:253:19 | "" | semmle.label | successor |
-| CSharp7.cs:253:18:253:19 | "" | CSharp7.cs:253:26:253:26 | 1 | semmle.label | match |
-| CSharp7.cs:253:18:253:19 | "" | CSharp7.cs:255:13:255:41 | case ...: | semmle.label | no-match |
-| CSharp7.cs:253:26:253:26 | 1 | CSharp7.cs:253:30:253:30 | 2 | semmle.label | successor |
-| CSharp7.cs:253:26:253:30 | ... < ... | CSharp7.cs:254:17:254:22 | break; | semmle.label | true |
-| CSharp7.cs:253:30:253:30 | 2 | CSharp7.cs:253:26:253:30 | ... < ... | semmle.label | successor |
-| CSharp7.cs:254:17:254:22 | break; | CSharp7.cs:231:10:231:13 | exit Test | semmle.label | break |
-| CSharp7.cs:255:13:255:41 | case ...: | CSharp7.cs:255:18:255:20 | "x" | semmle.label | successor |
-| CSharp7.cs:255:18:255:20 | "x" | CSharp7.cs:255:27:255:27 | access to local variable o | semmle.label | match |
-| CSharp7.cs:255:18:255:20 | "x" | CSharp7.cs:258:13:258:36 | case ...: | semmle.label | no-match |
-| CSharp7.cs:255:27:255:27 | access to local variable o | CSharp7.cs:255:32:255:40 | String s4 | semmle.label | successor |
-| CSharp7.cs:255:27:255:40 | ... is ... | CSharp7.cs:256:17:256:45 | ...; | semmle.label | true |
-| CSharp7.cs:255:27:255:40 | ... is ... | CSharp7.cs:258:13:258:36 | case ...: | semmle.label | false |
-| CSharp7.cs:255:32:255:40 | String s4 | CSharp7.cs:255:27:255:40 | ... is ... | semmle.label | successor |
-| CSharp7.cs:256:17:256:44 | call to method WriteLine | CSharp7.cs:257:17:257:22 | break; | semmle.label | successor |
-| CSharp7.cs:256:17:256:45 | ...; | CSharp7.cs:256:37:256:38 | "x " | semmle.label | successor |
-| CSharp7.cs:256:35:256:43 | $"..." | CSharp7.cs:256:17:256:44 | call to method WriteLine | semmle.label | successor |
-| CSharp7.cs:256:37:256:38 | "x " | CSharp7.cs:256:40:256:41 | access to local variable s4 | semmle.label | successor |
-| CSharp7.cs:256:40:256:41 | access to local variable s4 | CSharp7.cs:256:35:256:43 | $"..." | semmle.label | successor |
-| CSharp7.cs:257:17:257:22 | break; | CSharp7.cs:231:10:231:13 | exit Test | semmle.label | break |
-| CSharp7.cs:258:13:258:36 | case ...: | CSharp7.cs:258:18:258:23 | Int32 i2 | semmle.label | successor |
-| CSharp7.cs:258:18:258:23 | Int32 i2 | CSharp7.cs:258:30:258:31 | access to local variable i2 | semmle.label | match |
-| CSharp7.cs:258:18:258:23 | Int32 i2 | CSharp7.cs:261:13:261:24 | case ...: | semmle.label | no-match |
-| CSharp7.cs:258:30:258:31 | access to local variable i2 | CSharp7.cs:258:35:258:35 | 0 | semmle.label | successor |
-| CSharp7.cs:258:30:258:35 | ... > ... | CSharp7.cs:259:17:259:52 | ...; | semmle.label | true |
-| CSharp7.cs:258:30:258:35 | ... > ... | CSharp7.cs:261:13:261:24 | case ...: | semmle.label | false |
-| CSharp7.cs:258:35:258:35 | 0 | CSharp7.cs:258:30:258:35 | ... > ... | semmle.label | successor |
-| CSharp7.cs:259:17:259:51 | call to method WriteLine | CSharp7.cs:260:17:260:22 | break; | semmle.label | successor |
-| CSharp7.cs:259:17:259:52 | ...; | CSharp7.cs:259:37:259:45 | "positive " | semmle.label | successor |
-| CSharp7.cs:259:35:259:50 | $"..." | CSharp7.cs:259:17:259:51 | call to method WriteLine | semmle.label | successor |
-| CSharp7.cs:259:37:259:45 | "positive " | CSharp7.cs:259:47:259:48 | access to local variable i2 | semmle.label | successor |
-| CSharp7.cs:259:47:259:48 | access to local variable i2 | CSharp7.cs:259:35:259:50 | $"..." | semmle.label | successor |
-| CSharp7.cs:260:17:260:22 | break; | CSharp7.cs:231:10:231:13 | exit Test | semmle.label | break |
-| CSharp7.cs:261:13:261:24 | case ...: | CSharp7.cs:261:18:261:23 | Int32 i3 | semmle.label | successor |
-| CSharp7.cs:261:18:261:23 | Int32 i3 | CSharp7.cs:262:17:262:47 | ...; | semmle.label | match |
-| CSharp7.cs:261:18:261:23 | Int32 i3 | CSharp7.cs:264:13:264:27 | case ...: | semmle.label | no-match |
-| CSharp7.cs:262:17:262:46 | call to method WriteLine | CSharp7.cs:263:17:263:22 | break; | semmle.label | successor |
-| CSharp7.cs:262:17:262:47 | ...; | CSharp7.cs:262:37:262:40 | "int " | semmle.label | successor |
-| CSharp7.cs:262:35:262:45 | $"..." | CSharp7.cs:262:17:262:46 | call to method WriteLine | semmle.label | successor |
-| CSharp7.cs:262:37:262:40 | "int " | CSharp7.cs:262:42:262:43 | access to local variable i3 | semmle.label | successor |
-| CSharp7.cs:262:42:262:43 | access to local variable i3 | CSharp7.cs:262:35:262:45 | $"..." | semmle.label | successor |
-| CSharp7.cs:263:17:263:22 | break; | CSharp7.cs:231:10:231:13 | exit Test | semmle.label | break |
-| CSharp7.cs:264:13:264:27 | case ...: | CSharp7.cs:264:18:264:26 | String s2 | semmle.label | successor |
-| CSharp7.cs:264:18:264:26 | String s2 | CSharp7.cs:265:17:265:50 | ...; | semmle.label | match |
-| CSharp7.cs:264:18:264:26 | String s2 | CSharp7.cs:267:13:267:26 | case ...: | semmle.label | no-match |
-| CSharp7.cs:265:17:265:49 | call to method WriteLine | CSharp7.cs:266:17:266:22 | break; | semmle.label | successor |
-| CSharp7.cs:265:17:265:50 | ...; | CSharp7.cs:265:37:265:43 | "string " | semmle.label | successor |
-| CSharp7.cs:265:35:265:48 | $"..." | CSharp7.cs:265:17:265:49 | call to method WriteLine | semmle.label | successor |
-| CSharp7.cs:265:37:265:43 | "string " | CSharp7.cs:265:45:265:46 | access to local variable s2 | semmle.label | successor |
-| CSharp7.cs:265:45:265:46 | access to local variable s2 | CSharp7.cs:265:35:265:48 | $"..." | semmle.label | successor |
-| CSharp7.cs:266:17:266:22 | break; | CSharp7.cs:231:10:231:13 | exit Test | semmle.label | break |
-| CSharp7.cs:267:13:267:26 | case ...: | CSharp7.cs:267:18:267:23 | access to type Double | semmle.label | successor |
-| CSharp7.cs:267:18:267:23 | access to type Double | CSharp7.cs:268:17:268:44 | ...; | semmle.label | match |
-| CSharp7.cs:267:18:267:23 | access to type Double | CSharp7.cs:270:13:270:24 | case ...: | semmle.label | no-match |
-| CSharp7.cs:268:17:268:43 | call to method WriteLine | CSharp7.cs:269:17:269:22 | break; | semmle.label | successor |
-| CSharp7.cs:268:17:268:44 | ...; | CSharp7.cs:268:35:268:42 | "Double" | semmle.label | successor |
-| CSharp7.cs:268:35:268:42 | "Double" | CSharp7.cs:268:17:268:43 | call to method WriteLine | semmle.label | successor |
-| CSharp7.cs:269:17:269:22 | break; | CSharp7.cs:231:10:231:13 | exit Test | semmle.label | break |
-| CSharp7.cs:270:13:270:24 | case ...: | CSharp7.cs:270:18:270:23 | Object v2 | semmle.label | successor |
-| CSharp7.cs:270:18:270:23 | Object v2 | CSharp7.cs:271:17:271:22 | break; | semmle.label | match |
-| CSharp7.cs:270:18:270:23 | Object v2 | CSharp7.cs:272:13:272:20 | default: | semmle.label | no-match |
-| CSharp7.cs:271:17:271:22 | break; | CSharp7.cs:231:10:231:13 | exit Test | semmle.label | break |
-| CSharp7.cs:272:13:272:20 | default: | CSharp7.cs:273:17:273:52 | ...; | semmle.label | successor |
-| CSharp7.cs:273:17:273:51 | call to method WriteLine | CSharp7.cs:274:17:274:22 | break; | semmle.label | successor |
-| CSharp7.cs:273:17:273:52 | ...; | CSharp7.cs:273:35:273:50 | "Something else" | semmle.label | successor |
-| CSharp7.cs:273:35:273:50 | "Something else" | CSharp7.cs:273:17:273:51 | call to method WriteLine | semmle.label | successor |
-| CSharp7.cs:274:17:274:22 | break; | CSharp7.cs:231:10:231:13 | exit Test | semmle.label | break |
+| CSharp7.cs:250:9:276:9 | switch (...) {...} | CSharp7.cs:250:17:250:17 | access to local variable o | semmle.label | successor |
+| CSharp7.cs:250:17:250:17 | access to local variable o | CSharp7.cs:252:13:252:23 | case ...: | semmle.label | successor |
+| CSharp7.cs:252:13:252:23 | case ...: | CSharp7.cs:252:18:252:22 | "xyz" | semmle.label | successor |
+| CSharp7.cs:252:18:252:22 | "xyz" | CSharp7.cs:253:17:253:22 | break; | semmle.label | match |
+| CSharp7.cs:252:18:252:22 | "xyz" | CSharp7.cs:254:13:254:31 | case ...: | semmle.label | no-match |
+| CSharp7.cs:253:17:253:22 | break; | CSharp7.cs:232:10:232:13 | exit Test | semmle.label | break |
+| CSharp7.cs:254:13:254:31 | case ...: | CSharp7.cs:254:18:254:19 | "" | semmle.label | successor |
+| CSharp7.cs:254:18:254:19 | "" | CSharp7.cs:254:26:254:26 | 1 | semmle.label | match |
+| CSharp7.cs:254:18:254:19 | "" | CSharp7.cs:256:13:256:41 | case ...: | semmle.label | no-match |
+| CSharp7.cs:254:26:254:26 | 1 | CSharp7.cs:254:30:254:30 | 2 | semmle.label | successor |
+| CSharp7.cs:254:26:254:30 | ... < ... | CSharp7.cs:255:17:255:22 | break; | semmle.label | true |
+| CSharp7.cs:254:30:254:30 | 2 | CSharp7.cs:254:26:254:30 | ... < ... | semmle.label | successor |
+| CSharp7.cs:255:17:255:22 | break; | CSharp7.cs:232:10:232:13 | exit Test | semmle.label | break |
+| CSharp7.cs:256:13:256:41 | case ...: | CSharp7.cs:256:18:256:20 | "x" | semmle.label | successor |
+| CSharp7.cs:256:18:256:20 | "x" | CSharp7.cs:256:27:256:27 | access to local variable o | semmle.label | match |
+| CSharp7.cs:256:18:256:20 | "x" | CSharp7.cs:259:13:259:36 | case ...: | semmle.label | no-match |
+| CSharp7.cs:256:27:256:27 | access to local variable o | CSharp7.cs:256:32:256:40 | String s4 | semmle.label | successor |
+| CSharp7.cs:256:27:256:40 | ... is ... | CSharp7.cs:257:17:257:45 | ...; | semmle.label | true |
+| CSharp7.cs:256:27:256:40 | ... is ... | CSharp7.cs:259:13:259:36 | case ...: | semmle.label | false |
+| CSharp7.cs:256:32:256:40 | String s4 | CSharp7.cs:256:27:256:40 | ... is ... | semmle.label | successor |
+| CSharp7.cs:257:17:257:44 | call to method WriteLine | CSharp7.cs:258:17:258:22 | break; | semmle.label | successor |
+| CSharp7.cs:257:17:257:45 | ...; | CSharp7.cs:257:37:257:38 | "x " | semmle.label | successor |
+| CSharp7.cs:257:35:257:43 | $"..." | CSharp7.cs:257:17:257:44 | call to method WriteLine | semmle.label | successor |
+| CSharp7.cs:257:37:257:38 | "x " | CSharp7.cs:257:40:257:41 | access to local variable s4 | semmle.label | successor |
+| CSharp7.cs:257:40:257:41 | access to local variable s4 | CSharp7.cs:257:35:257:43 | $"..." | semmle.label | successor |
+| CSharp7.cs:258:17:258:22 | break; | CSharp7.cs:232:10:232:13 | exit Test | semmle.label | break |
+| CSharp7.cs:259:13:259:36 | case ...: | CSharp7.cs:259:18:259:23 | Int32 i2 | semmle.label | successor |
+| CSharp7.cs:259:18:259:23 | Int32 i2 | CSharp7.cs:259:30:259:31 | access to local variable i2 | semmle.label | match |
+| CSharp7.cs:259:18:259:23 | Int32 i2 | CSharp7.cs:262:13:262:24 | case ...: | semmle.label | no-match |
+| CSharp7.cs:259:30:259:31 | access to local variable i2 | CSharp7.cs:259:35:259:35 | 0 | semmle.label | successor |
+| CSharp7.cs:259:30:259:35 | ... > ... | CSharp7.cs:260:17:260:52 | ...; | semmle.label | true |
+| CSharp7.cs:259:30:259:35 | ... > ... | CSharp7.cs:262:13:262:24 | case ...: | semmle.label | false |
+| CSharp7.cs:259:35:259:35 | 0 | CSharp7.cs:259:30:259:35 | ... > ... | semmle.label | successor |
+| CSharp7.cs:260:17:260:51 | call to method WriteLine | CSharp7.cs:261:17:261:22 | break; | semmle.label | successor |
+| CSharp7.cs:260:17:260:52 | ...; | CSharp7.cs:260:37:260:45 | "positive " | semmle.label | successor |
+| CSharp7.cs:260:35:260:50 | $"..." | CSharp7.cs:260:17:260:51 | call to method WriteLine | semmle.label | successor |
+| CSharp7.cs:260:37:260:45 | "positive " | CSharp7.cs:260:47:260:48 | access to local variable i2 | semmle.label | successor |
+| CSharp7.cs:260:47:260:48 | access to local variable i2 | CSharp7.cs:260:35:260:50 | $"..." | semmle.label | successor |
+| CSharp7.cs:261:17:261:22 | break; | CSharp7.cs:232:10:232:13 | exit Test | semmle.label | break |
+| CSharp7.cs:262:13:262:24 | case ...: | CSharp7.cs:262:18:262:23 | Int32 i3 | semmle.label | successor |
+| CSharp7.cs:262:18:262:23 | Int32 i3 | CSharp7.cs:263:17:263:47 | ...; | semmle.label | match |
+| CSharp7.cs:262:18:262:23 | Int32 i3 | CSharp7.cs:265:13:265:27 | case ...: | semmle.label | no-match |
+| CSharp7.cs:263:17:263:46 | call to method WriteLine | CSharp7.cs:264:17:264:22 | break; | semmle.label | successor |
+| CSharp7.cs:263:17:263:47 | ...; | CSharp7.cs:263:37:263:40 | "int " | semmle.label | successor |
+| CSharp7.cs:263:35:263:45 | $"..." | CSharp7.cs:263:17:263:46 | call to method WriteLine | semmle.label | successor |
+| CSharp7.cs:263:37:263:40 | "int " | CSharp7.cs:263:42:263:43 | access to local variable i3 | semmle.label | successor |
+| CSharp7.cs:263:42:263:43 | access to local variable i3 | CSharp7.cs:263:35:263:45 | $"..." | semmle.label | successor |
+| CSharp7.cs:264:17:264:22 | break; | CSharp7.cs:232:10:232:13 | exit Test | semmle.label | break |
+| CSharp7.cs:265:13:265:27 | case ...: | CSharp7.cs:265:18:265:26 | String s2 | semmle.label | successor |
+| CSharp7.cs:265:18:265:26 | String s2 | CSharp7.cs:266:17:266:50 | ...; | semmle.label | match |
+| CSharp7.cs:265:18:265:26 | String s2 | CSharp7.cs:268:13:268:26 | case ...: | semmle.label | no-match |
+| CSharp7.cs:266:17:266:49 | call to method WriteLine | CSharp7.cs:267:17:267:22 | break; | semmle.label | successor |
+| CSharp7.cs:266:17:266:50 | ...; | CSharp7.cs:266:37:266:43 | "string " | semmle.label | successor |
+| CSharp7.cs:266:35:266:48 | $"..." | CSharp7.cs:266:17:266:49 | call to method WriteLine | semmle.label | successor |
+| CSharp7.cs:266:37:266:43 | "string " | CSharp7.cs:266:45:266:46 | access to local variable s2 | semmle.label | successor |
+| CSharp7.cs:266:45:266:46 | access to local variable s2 | CSharp7.cs:266:35:266:48 | $"..." | semmle.label | successor |
+| CSharp7.cs:267:17:267:22 | break; | CSharp7.cs:232:10:232:13 | exit Test | semmle.label | break |
+| CSharp7.cs:268:13:268:26 | case ...: | CSharp7.cs:268:18:268:23 | access to type Double | semmle.label | successor |
+| CSharp7.cs:268:18:268:23 | access to type Double | CSharp7.cs:269:17:269:44 | ...; | semmle.label | match |
+| CSharp7.cs:268:18:268:23 | access to type Double | CSharp7.cs:271:13:271:24 | case ...: | semmle.label | no-match |
+| CSharp7.cs:269:17:269:43 | call to method WriteLine | CSharp7.cs:270:17:270:22 | break; | semmle.label | successor |
+| CSharp7.cs:269:17:269:44 | ...; | CSharp7.cs:269:35:269:42 | "Double" | semmle.label | successor |
+| CSharp7.cs:269:35:269:42 | "Double" | CSharp7.cs:269:17:269:43 | call to method WriteLine | semmle.label | successor |
+| CSharp7.cs:270:17:270:22 | break; | CSharp7.cs:232:10:232:13 | exit Test | semmle.label | break |
+| CSharp7.cs:271:13:271:24 | case ...: | CSharp7.cs:271:18:271:23 | Object v2 | semmle.label | successor |
+| CSharp7.cs:271:18:271:23 | Object v2 | CSharp7.cs:272:17:272:22 | break; | semmle.label | match |
+| CSharp7.cs:271:18:271:23 | Object v2 | CSharp7.cs:273:13:273:20 | default: | semmle.label | no-match |
+| CSharp7.cs:272:17:272:22 | break; | CSharp7.cs:232:10:232:13 | exit Test | semmle.label | break |
+| CSharp7.cs:273:13:273:20 | default: | CSharp7.cs:274:17:274:52 | ...; | semmle.label | successor |
+| CSharp7.cs:274:17:274:51 | call to method WriteLine | CSharp7.cs:275:17:275:22 | break; | semmle.label | successor |
+| CSharp7.cs:274:17:274:52 | ...; | CSharp7.cs:274:35:274:50 | "Something else" | semmle.label | successor |
+| CSharp7.cs:274:35:274:50 | "Something else" | CSharp7.cs:274:17:274:51 | call to method WriteLine | semmle.label | successor |
+| CSharp7.cs:275:17:275:22 | break; | CSharp7.cs:232:10:232:13 | exit Test | semmle.label | break |
