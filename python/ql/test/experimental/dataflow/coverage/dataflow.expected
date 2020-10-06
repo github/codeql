@@ -30,7 +30,7 @@ edges
 | datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] | datamodel.py:159:6:159:17 | ControlFlowNode for Attribute |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:36:21:36:26 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:49:9:49:14 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:81:9:81:14 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:81:10:81:15 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:87:10:87:15 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:97:10:97:15 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:102:22:102:27 | ControlFlowNode for SOURCE |
@@ -64,7 +64,7 @@ edges
 | test.py:60:9:60:17 | ControlFlowNode for Str | test.py:61:10:61:10 | ControlFlowNode for x |
 | test.py:65:9:65:10 | ControlFlowNode for IntegerLiteral | test.py:66:10:66:10 | ControlFlowNode for x |
 | test.py:70:9:70:12 | ControlFlowNode for FloatLiteral | test.py:71:10:71:10 | ControlFlowNode for x |
-| test.py:81:9:81:14 | ControlFlowNode for SOURCE | test.py:82:10:82:10 | ControlFlowNode for x |
+| test.py:81:10:81:15 | ControlFlowNode for SOURCE | test.py:82:10:82:10 | ControlFlowNode for x |
 | test.py:87:9:87:16 | ControlFlowNode for List [List element] | test.py:88:10:88:10 | ControlFlowNode for x [List element] |
 | test.py:87:10:87:15 | ControlFlowNode for SOURCE | test.py:87:9:87:16 | ControlFlowNode for List [List element] |
 | test.py:88:10:88:10 | ControlFlowNode for x [List element] | test.py:88:10:88:13 | ControlFlowNode for Subscript |
@@ -193,7 +193,7 @@ nodes
 | test.py:66:10:66:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:70:9:70:12 | ControlFlowNode for FloatLiteral | semmle.label | ControlFlowNode for FloatLiteral |
 | test.py:71:10:71:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:81:9:81:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:81:10:81:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:82:10:82:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:87:9:87:16 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
 | test.py:87:10:87:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -341,7 +341,7 @@ nodes
 | test.py:66:10:66:10 | ControlFlowNode for x | test.py:65:9:65:10 | ControlFlowNode for IntegerLiteral | test.py:66:10:66:10 | ControlFlowNode for x | Flow found |
 | test.py:71:10:71:10 | ControlFlowNode for x | test.py:70:9:70:12 | ControlFlowNode for FloatLiteral | test.py:71:10:71:10 | ControlFlowNode for x | Flow found |
 | test.py:82:10:82:10 | ControlFlowNode for x | test.py:14:10:14:17 | ControlFlowNode for Str | test.py:82:10:82:10 | ControlFlowNode for x | Flow found |
-| test.py:82:10:82:10 | ControlFlowNode for x | test.py:81:9:81:14 | ControlFlowNode for SOURCE | test.py:82:10:82:10 | ControlFlowNode for x | Flow found |
+| test.py:82:10:82:10 | ControlFlowNode for x | test.py:81:10:81:15 | ControlFlowNode for SOURCE | test.py:82:10:82:10 | ControlFlowNode for x | Flow found |
 | test.py:88:10:88:13 | ControlFlowNode for Subscript | test.py:14:10:14:17 | ControlFlowNode for Str | test.py:88:10:88:13 | ControlFlowNode for Subscript | Flow found |
 | test.py:88:10:88:13 | ControlFlowNode for Subscript | test.py:87:10:87:15 | ControlFlowNode for SOURCE | test.py:88:10:88:13 | ControlFlowNode for Subscript | Flow found |
 | test.py:98:10:98:13 | ControlFlowNode for Subscript | test.py:14:10:14:17 | ControlFlowNode for Str | test.py:98:10:98:13 | ControlFlowNode for Subscript | Flow found |
