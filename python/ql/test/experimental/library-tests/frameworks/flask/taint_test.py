@@ -1,8 +1,8 @@
 from flask import Flask, request
 app = Flask(__name__)
 
-@app.route('/test_taint/<name>/<int:number>')
-def test_taint(name = "World!", number="0", foo="foo"):
+@app.route("/test_taint/<name>/<int:number>")  # $routeSetup="/test_taint/<name>/<int:number>"
+def test_taint(name = "World!", number="0", foo="foo"):  # $routeHandler $routedParameter=name $routedParameter=number
     ensure_tainted(name, number)
     ensure_not_tainted(foo)
 
@@ -191,8 +191,8 @@ def test_taint(name = "World!", number="0", foo="foo"):
 
 
 
-@app.route('/debug/<foo>/<bar>', methods=['GET'])
-def debug(foo, bar):
+@app.route("/debug/<foo>/<bar>", methods=['GET']) # $routeSetup="/debug/<foo>/<bar>"
+def debug(foo, bar):  # $routeHandler $routedParameter=foo $routedParameter=bar
     print("request.view_args", request.view_args)
 
     print("request.headers {!r}".format(request.headers))
@@ -202,8 +202,8 @@ def debug(foo, bar):
 
     return 'ok'
 
-@app.route('/stream', methods=['POST'])
-def stream():
+@app.route("/stream", methods=['POST'])  # $routeSetup="/stream"
+def stream():  # $routeHandler
     print(request.path)
     s = request.stream
     print(s)
@@ -212,8 +212,8 @@ def stream():
 
     return 'ok'
 
-@app.route('/input_stream', methods=['POST'])
-def input_stream():
+@app.route("/input_stream", methods=['POST'])  # $routeSetup="/input_stream"
+def input_stream():  # $routeHandler
     print(request.path)
     s = request.input_stream
     print(s)
@@ -223,15 +223,15 @@ def input_stream():
 
     return 'ok'
 
-@app.route('/form', methods=['POST'])
-def form():
+@app.route("/form", methods=['POST'])  # $routeSetup="/form"
+def form():  # $routeHandler
     print(request.path)
     print("request.form", request.form)
 
     return 'ok'
 
-@app.route('/cache_control', methods=['POST'])
-def cache_control():
+@app.route("/cache_control", methods=['POST'])  # $routeSetup="/cache_control"
+def cache_control():  # $routeHandler
     print(request.path)
     print("request.cache_control.max_age", request.cache_control.max_age, type(request.cache_control.max_age))
     print("request.cache_control.max_stale", request.cache_control.max_stale, type(request.cache_control.max_stale))
@@ -239,16 +239,16 @@ def cache_control():
 
     return 'ok'
 
-@app.route('/file_upload', methods=['POST'])
-def file_upload():
+@app.route("/file_upload", methods=['POST'])  # $routeSetup="/file_upload"
+def file_upload():  # $routeHandler
     print(request.path)
     for k,v in request.files.items():
         print(k, v, v.name, v.filename, v.stream)
 
     return 'ok'
 
-@app.route('/args', methods=['GET'])
-def args():
+@app.route("/args", methods=['GET'])  # $routeSetup="/args"
+def args():  # $routeHandler
     print(request.path)
     print("request.args", request.args)
 

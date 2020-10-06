@@ -1,5 +1,6 @@
 /**
- * Provides classes modeling security-relevant aspects of the `flask` package.
+ * Provides classes modeling security-relevant aspects of the `flask` PyPI package.
+ * See https://flask.palletsprojects.com/en/1.1.x/.
  */
 
 private import python
@@ -11,6 +12,10 @@ private import experimental.semmle.python.frameworks.Werkzeug
 
 // for old improved impl see
 // https://github.com/github/codeql/blob/9f95212e103c68d0c1dfa4b6f30fb5d53954ccef/python/ql/src/semmle/python/web/flask/Request.qll
+/**
+ * Provides models for the `flask` PyPI package.
+ * See https://flask.palletsprojects.com/en/1.1.x/.
+ */
 private module Flask {
   /** Gets a reference to the `flask` module. */
   DataFlow::Node flask(DataFlow::TypeTracker t) {
@@ -23,6 +28,7 @@ private module Flask {
   /** Gets a reference to the `flask` module. */
   DataFlow::Node flask() { result = flask(DataFlow::TypeTracker::end()) }
 
+  /** Provides models for the `flask` module. */
   module flask {
     /** Gets a reference to the `flask.request` object. */
     DataFlow::Node request(DataFlow::TypeTracker t) {
@@ -32,13 +38,171 @@ private module Flask {
       t.startInAttr("request") and
       result = flask()
       or
-      exists(DataFlow::TypeTracker t2 | result = flask::request(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = request(t2).track(t2, t))
     }
 
     /** Gets a reference to the `flask.request` object. */
-    DataFlow::Node request() { result = flask::request(DataFlow::TypeTracker::end()) }
+    DataFlow::Node request() { result = request(DataFlow::TypeTracker::end()) }
+
+    /** Gets a reference to the `flask.Flask` class. */
+    private DataFlow::Node classFlask(DataFlow::TypeTracker t) {
+      t.start() and
+      result = DataFlow::importMember("flask", "Flask")
+      or
+      t.startInAttr("Flask") and
+      result = flask()
+      or
+      exists(DataFlow::TypeTracker t2 | result = classFlask(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `flask.Flask` class. */
+    DataFlow::Node classFlask() { result = classFlask(DataFlow::TypeTracker::end()) }
+
+    /** Gets a reference to an instance of `flask.Flask` (a Flask application). */
+    private DataFlow::Node app(DataFlow::TypeTracker t) {
+      t.start() and
+      result.asCfgNode().(CallNode).getFunction() = flask::classFlask().asCfgNode()
+      or
+      exists(DataFlow::TypeTracker t2 | result = app(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `flask.Flask` (a flask application). */
+    DataFlow::Node app() { result = app(DataFlow::TypeTracker::end()) }
   }
 
+  // ---------------------------------------------------------------------------
+  // routing modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * Gets a reference to the attribute `attr_name` of a flask application.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node app_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["route", "add_url_rule"] and
+    t.startInAttr(attr_name) and
+    result = flask::app()
+    or
+    // Due to bad performance when using normal setup with `app_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        app_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate app_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(app_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of a flask application.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node app_attr(string attr_name) {
+    result = app_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  private string werkzeug_rule_re() {
+    // since flask uses werkzeug internally, we are using its routing rules from
+    // https://github.com/pallets/werkzeug/blob/4dc8d6ab840d4b78cbd5789cef91b01e3bde01d5/src/werkzeug/routing.py#L138-L151
+    result =
+      "(?<static>[^<]*)<(?:(?<converter>[a-zA-Z_][a-zA-Z0-9_]*)(?:\\((?<args>.*?)\\))?\\:)?(?<variable>[a-zA-Z_][a-zA-Z0-9_]*)>"
+  }
+
+  /** A route setup made by flask (sharing handling of URL patterns). */
+  abstract private class FlaskRouteSetup extends HTTP::Server::RouteSetup::Range {
+    override Parameter getARoutedParameter() {
+      exists(string name |
+        result = this.getARouteHandler().getArgByName(name) and
+        exists(string match |
+          match = this.getUrlPattern().regexpFind(werkzeug_rule_re(), _, _) and
+          name = match.regexpCapture(werkzeug_rule_re(), 4)
+        )
+      )
+    }
+
+    /** Gets the argument used to pass in the URL pattern. */
+    abstract DataFlow::Node getUrlPatternArg();
+
+    override string getUrlPattern() {
+      exists(StrConst str |
+        DataFlow::localFlow(DataFlow::exprNode(str), this.getUrlPatternArg()) and
+        result = str.getText()
+      )
+    }
+  }
+
+  /**
+   * A call to `flask.Flask.route`.
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.route
+   */
+  private class FlaskAppRouteCall extends FlaskRouteSetup {
+    CallNode call;
+
+    FlaskAppRouteCall() {
+      call.getFunction() = app_attr("route").asCfgNode() and
+      this.asCfgNode() = call
+    }
+
+    override DataFlow::Node getUrlPatternArg() {
+      exists(ControlFlowNode pattern_arg |
+        (
+          pattern_arg = call.getArg(0)
+          or
+          pattern_arg = call.getArgByName("rule")
+        ) and
+        result.asCfgNode() = pattern_arg
+      )
+    }
+
+    override Function getARouteHandler() { result.getADecorator() = call.getNode() }
+  }
+
+  /**
+   * A call to `flask.Flask.add_url_rule`.
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.add_url_rule
+   */
+  private class FlaskAppAddUrlRule extends FlaskRouteSetup {
+    CallNode call;
+
+    FlaskAppAddUrlRule() {
+      call.getFunction() = app_attr("add_url_rule").asCfgNode() and
+      this.asCfgNode() = call
+    }
+
+    override DataFlow::Node getUrlPatternArg() {
+      exists(ControlFlowNode pattern_arg |
+        (
+          pattern_arg = call.getArg(0)
+          or
+          pattern_arg = call.getArgByName("rule")
+        ) and
+        result.asCfgNode() = pattern_arg
+      )
+    }
+
+    override Function getARouteHandler() {
+      exists(ControlFlowNode view_func_arg, DataFlow::Node func_src |
+        view_func_arg = call.getArg(2)
+        or
+        view_func_arg = call.getArgByName("view_func")
+      |
+        DataFlow::localFlow(func_src, any(DataFlow::Node dest | dest.asCfgNode() = view_func_arg)) and
+        func_src.asExpr().(CallableExpr) = result.getDefinition()
+      )
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // flask.Request taint modeling
+  // ---------------------------------------------------------------------------
   // TODO: Do we even need this class? :|
   /**
    * A source of remote flow from a flask request.
