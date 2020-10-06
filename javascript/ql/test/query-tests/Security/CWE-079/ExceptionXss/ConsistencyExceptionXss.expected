@@ -1,0 +1,2 @@
+| query-tests/Security/CWE-079/ExceptionXss/exception-xss.js:149 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/ExceptionXss/exception-xss.js:175 | expected an alert, but found none | NOT OK |  |

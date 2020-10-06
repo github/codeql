@@ -6,7 +6,6 @@
 | mssql2.js:29:30:29:81 | 'create ...  table' |
 | mysql1.js:13:18:13:43 | 'SELECT ... lution' |
 | mysql1.js:18:18:22:1 | {\\n    s ... vid']\\n} |
-| mysql1a.js:17:18:17:43 | 'SELECT ... lution' |
 | mysql2.js:12:12:12:37 | 'SELECT ... lution' |
 | mysql2tst.js:14:3:14:62 | 'SELECT ... ` > 45' |
 | mysql2tst.js:23:3:23:56 | 'SELECT ... e` > ?' |
@@ -14,10 +13,7 @@
 | mysql4.js:14:18:14:20 | sql |
 | mysqlImport.js:3:18:5:1 | {\\n    s ... = ?',\\n} |
 | postgres1.js:37:21:37:24 | text |
-| postgres2.js:30:16:30:41 | 'SELECT ... number' |
 | postgres3.js:15:16:15:40 | 'SELECT ... s name' |
-| postgres5.js:8:21:8:25 | query |
-| postgresImport.js:4:18:4:43 | 'SELECT ... number' |
 | sequelize2.js:10:17:10:118 | 'SELECT ... Y name' |
 | sequelize.js:8:17:8:118 | 'SELECT ... Y name' |
 | sequelizeImport.js:3:17:3:118 | 'SELECT ... Y name' |
@@ -43,5 +39,4 @@
 | spanner.js:19:23:19:32 | "SQL code" |
 | spannerImport.js:4:8:4:17 | "SQL code" |
 | sqlite.js:7:8:7:45 | "UPDATE ... id = ?" |
-| sqliteArray.js:6:12:6:49 | "UPDATE ... id = ?" |
 | sqliteImport.js:2:8:2:44 | "UPDATE ... id = ?" |

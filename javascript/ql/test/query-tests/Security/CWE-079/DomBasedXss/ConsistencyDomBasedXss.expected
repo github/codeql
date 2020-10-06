@@ -1,0 +1,6 @@
+| query-tests/Security/CWE-079/DomBasedXss/express.js:6 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/DomBasedXss/jwt-server.js:10 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/DomBasedXss/tst.js:349 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/DomBasedXss/tst.js:356 | expected an alert, but found none | NOT OK. (this is a jQuery object) |  |
+| query-tests/Security/CWE-079/DomBasedXss/tst.js:360 | expected an alert, but found none | NOT OK. (this is a DOM-node); |  |
+| query-tests/Security/CWE-079/DomBasedXss/tst.js:363 | expected an alert, but found none | NOT OK. |  |

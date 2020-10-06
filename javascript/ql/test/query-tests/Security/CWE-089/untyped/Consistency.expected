@@ -1,0 +1,29 @@
+| query-tests/Security/CWE-089/untyped/marsdb-flow-to.js:13 | expected an alert, but found none | NOT OK: query is tainted by user-provided object value |  |
+| query-tests/Security/CWE-089/untyped/marsdb.js:15 | expected an alert, but found none | NOT OK: query is tainted by user-provided object value |  |
+| query-tests/Security/CWE-089/untyped/minimongo.js:17 | expected an alert, but found none | NOT OK: query is tainted by user-provided object value |  |
+| query-tests/Security/CWE-089/untyped/mongodb.js:64 | expected an alert, but found none | NOT OK: query is tainted by user-provided object value |  |
+| query-tests/Security/CWE-089/untyped/mongodb.js:76 | expected an alert, but found none | NOT OK: query is tainted by user-provided object value |  |
+| query-tests/Security/CWE-089/untyped/mongodb.js:84 | expected an alert, but found none | NOT OK: query is tainted by user-provided object value |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:67 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:68 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:72 | expected an alert, but found none | NOT OK - `.where()` on a Query. |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:73 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:74 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:75 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:77 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:87 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:89 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:94 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:96 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:111 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:118 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/mongoose.js:123 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/redis.js:10 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/redis.js:18 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/redis.js:19 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/redis.js:25 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/redis.js:30 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/redis.js:32 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/redis.js:39 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/redis.js:43 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/redis.js:46 | expected an alert, but found none | NOT OK |  |

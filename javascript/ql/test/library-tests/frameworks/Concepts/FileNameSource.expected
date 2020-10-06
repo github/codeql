@@ -1,0 +1,9 @@
+| tst-file-names.js:7:1:7:10 | walkSync() |
+| tst-file-names.js:9:35:9:44 | stats.name |
+| tst-file-names.js:11:1:11:12 | glob.sync(_) |
+| tst-file-names.js:13:13:13:16 | name |
+| tst-file-names.js:15:22:15:25 | name |
+| tst-file-names.js:17:1:17:22 | new glo ... ).found |
+| tst-file-names.js:19:1:19:14 | globby.sync(_) |
+| tst-file-names.js:23:1:23:16 | fastGlob.sync(_) |
+| tst-file-names.js:29:27:29:30 | file |

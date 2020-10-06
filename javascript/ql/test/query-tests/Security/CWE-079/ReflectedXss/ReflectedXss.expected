@@ -157,8 +157,6 @@ edges
 | promises.js:5:3:5:59 | new Pro ... .data)) | promises.js:6:11:6:11 | x |
 | promises.js:5:44:5:57 | req.query.data | promises.js:5:3:5:59 | new Pro ... .data)) |
 | promises.js:5:44:5:57 | req.query.data | promises.js:5:3:5:59 | new Pro ... .data)) |
-| promises.js:5:44:5:57 | req.query.data | promises.js:6:11:6:11 | x |
-| promises.js:5:44:5:57 | req.query.data | promises.js:6:11:6:11 | x |
 | promises.js:6:11:6:11 | x | promises.js:6:25:6:25 | x |
 | promises.js:6:11:6:11 | x | promises.js:6:25:6:25 | x |
 | tst2.js:6:7:6:30 | p | tst2.js:7:12:7:12 | p |

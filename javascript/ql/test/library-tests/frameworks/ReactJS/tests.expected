@@ -228,8 +228,6 @@ test_ReactComponent_getACandidatePropsValue
 | props.js:32:22:32:34 | "propFromJSX" |
 | props.js:34:33:34:53 | "propFr ... ructor" |
 | useHigherOrderComponent.jsx:5:33:5:37 | "red" |
-| useHigherOrderComponent.jsx:11:39:11:44 | "lazy" |
-| useHigherOrderComponent.jsx:17:40:17:46 | "lazy2" |
 test_ReactComponent
 | es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} |
 | es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} |

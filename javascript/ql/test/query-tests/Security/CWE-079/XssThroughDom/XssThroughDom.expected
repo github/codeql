@@ -38,9 +38,6 @@ nodes
 | xss-through-dom.js:64:30:64:40 | valMethod() |
 | xss-through-dom.js:64:30:64:40 | valMethod() |
 | xss-through-dom.js:64:30:64:40 | valMethod() |
-| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
-| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
-| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
 | xss-through-dom.js:73:9:73:41 | selector |
 | xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name |
 | xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name |
@@ -63,7 +60,6 @@ edges
 | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") |
 | xss-through-dom.js:61:30:61:69 | $(docum ... value") | xss-through-dom.js:61:30:61:69 | $(docum ... value") |
 | xss-through-dom.js:64:30:64:40 | valMethod() | xss-through-dom.js:64:30:64:40 | valMethod() |
-| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
 | xss-through-dom.js:73:9:73:41 | selector | xss-through-dom.js:77:4:77:11 | selector |
 | xss-through-dom.js:73:9:73:41 | selector | xss-through-dom.js:77:4:77:11 | selector |
 | xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | xss-through-dom.js:73:9:73:41 | selector |
@@ -83,6 +79,5 @@ edges
 | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | DOM text |
 | xss-through-dom.js:61:30:61:69 | $(docum ... value") | xss-through-dom.js:61:30:61:69 | $(docum ... value") | xss-through-dom.js:61:30:61:69 | $(docum ... value") | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:61:30:61:69 | $(docum ... value") | DOM text |
 | xss-through-dom.js:64:30:64:40 | valMethod() | xss-through-dom.js:64:30:64:40 | valMethod() | xss-through-dom.js:64:30:64:40 | valMethod() | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:64:30:64:40 | valMethod() | DOM text |
-| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | DOM text |
 | xss-through-dom.js:77:4:77:11 | selector | xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | xss-through-dom.js:77:4:77:11 | selector | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | DOM text |
 | xss-through-dom.js:79:4:79:34 | documen ... t.value | xss-through-dom.js:79:4:79:34 | documen ... t.value | xss-through-dom.js:79:4:79:34 | documen ... t.value | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:79:4:79:34 | documen ... t.value | DOM text |

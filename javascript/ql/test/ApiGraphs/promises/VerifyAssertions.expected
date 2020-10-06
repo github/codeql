@@ -1,0 +1,3 @@
+| index.js:11:28:11:109 | /* def  ... )))) */ | def (return (member readFile (member exports (module promises)))) has no outgoing edge labelled promised; it has no outgoing edges at all. |
+| index.js:18:25:18:106 | /* use  ... )))) */ | use (return (member readFile (member exports (module fs-extra)))) has no outgoing edge labelled promised; it does have outgoing edges labelled member then. |
+| index.js:19:33:19:123 | /* def  ... )))) */ | def (return (member readFileAndEncode (member exports (module promises)))) has no outgoing edge labelled promised; it has no outgoing edges at all. |

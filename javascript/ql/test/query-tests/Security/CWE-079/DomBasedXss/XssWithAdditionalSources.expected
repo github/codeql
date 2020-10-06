@@ -118,9 +118,6 @@ nodes
 | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:42:18:64 | datefor ...  taint) |
 | dates.js:18:59:18:63 | taint |
-| express.js:7:15:7:33 | req.param("wobble") |
-| express.js:7:15:7:33 | req.param("wobble") |
-| express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
@@ -154,21 +151,6 @@ nodes
 | jquery.js:16:38:16:52 | window.location |
 | jquery.js:16:38:16:52 | window.location |
 | jquery.js:16:38:16:63 | window. ... tring() |
-| jwt-server.js:7:9:7:35 | taint |
-| jwt-server.js:7:17:7:35 | req.param("wobble") |
-| jwt-server.js:7:17:7:35 | req.param("wobble") |
-| jwt-server.js:9:16:9:20 | taint |
-| jwt-server.js:9:55:9:61 | decoded |
-| jwt-server.js:11:19:11:25 | decoded |
-| jwt-server.js:11:19:11:29 | decoded.foo |
-| jwt-server.js:11:19:11:29 | decoded.foo |
-| jwt.js:4:36:4:39 | data |
-| jwt.js:4:36:4:39 | data |
-| jwt.js:5:9:5:34 | decoded |
-| jwt.js:5:19:5:34 | jwt_decode(data) |
-| jwt.js:5:30:5:33 | data |
-| jwt.js:6:14:6:20 | decoded |
-| jwt.js:6:14:6:20 | decoded |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message |
@@ -578,22 +560,6 @@ nodes
 | tst.js:343:5:343:17 | getUrl().hash |
 | tst.js:343:5:343:30 | getUrl( ... ring(1) |
 | tst.js:343:5:343:30 | getUrl( ... ring(1) |
-| tst.js:348:7:348:39 | target |
-| tst.js:348:16:348:32 | document.location |
-| tst.js:348:16:348:32 | document.location |
-| tst.js:348:16:348:39 | documen ... .search |
-| tst.js:349:12:349:17 | target |
-| tst.js:349:12:349:17 | target |
-| tst.js:355:10:355:42 | target |
-| tst.js:355:19:355:35 | document.location |
-| tst.js:355:19:355:35 | document.location |
-| tst.js:355:19:355:42 | documen ... .search |
-| tst.js:356:16:356:21 | target |
-| tst.js:356:16:356:21 | target |
-| tst.js:360:21:360:26 | target |
-| tst.js:360:21:360:26 | target |
-| tst.js:363:18:363:23 | target |
-| tst.js:363:18:363:23 | target |
 | tst.js:371:7:371:39 | target |
 | tst.js:371:16:371:32 | document.location |
 | tst.js:371:16:371:32 | document.location |
@@ -803,7 +769,6 @@ edges
 | dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:59:18:63 | taint | dates.js:18:42:18:64 | datefor ...  taint) |
-| express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
 | jquery.js:2:17:2:33 | document.location | jquery.js:2:17:2:40 | documen ... .search |
@@ -831,19 +796,6 @@ edges
 | jquery.js:16:38:16:52 | window.location | jquery.js:16:38:16:63 | window. ... tring() |
 | jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
 | jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
-| jwt-server.js:7:9:7:35 | taint | jwt-server.js:9:16:9:20 | taint |
-| jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
-| jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
-| jwt-server.js:9:16:9:20 | taint | jwt-server.js:9:55:9:61 | decoded |
-| jwt-server.js:9:55:9:61 | decoded | jwt-server.js:11:19:11:25 | decoded |
-| jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
-| jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
-| jwt.js:4:36:4:39 | data | jwt.js:5:30:5:33 | data |
-| jwt.js:4:36:4:39 | data | jwt.js:5:30:5:33 | data |
-| jwt.js:5:9:5:34 | decoded | jwt.js:6:14:6:20 | decoded |
-| jwt.js:5:9:5:34 | decoded | jwt.js:6:14:6:20 | decoded |
-| jwt.js:5:19:5:34 | jwt_decode(data) | jwt.js:5:9:5:34 | decoded |
-| jwt.js:5:30:5:33 | data | jwt.js:5:19:5:34 | jwt_decode(data) |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
@@ -1073,7 +1025,6 @@ edges
 | tst.js:70:3:70:19 | document.location | tst.js:70:3:70:26 | documen ... .search |
 | tst.js:70:3:70:19 | document.location | tst.js:70:3:70:26 | documen ... .search |
 | tst.js:70:3:70:26 | documen ... .search | tst.js:70:1:70:27 | [,docum ... search] |
-| tst.js:70:3:70:26 | documen ... .search | tst.js:70:46:70:46 | x |
 | tst.js:70:46:70:46 | x | tst.js:73:20:73:20 | x |
 | tst.js:70:46:70:46 | x | tst.js:73:20:73:20 | x |
 | tst.js:77:49:77:65 | document.location | tst.js:77:49:77:72 | documen ... .search |
@@ -1205,20 +1156,6 @@ edges
 | tst.js:341:20:341:36 | document.location | tst.js:343:5:343:17 | getUrl().hash |
 | tst.js:343:5:343:17 | getUrl().hash | tst.js:343:5:343:30 | getUrl( ... ring(1) |
 | tst.js:343:5:343:17 | getUrl().hash | tst.js:343:5:343:30 | getUrl( ... ring(1) |
-| tst.js:348:7:348:39 | target | tst.js:349:12:349:17 | target |
-| tst.js:348:7:348:39 | target | tst.js:349:12:349:17 | target |
-| tst.js:348:16:348:32 | document.location | tst.js:348:16:348:39 | documen ... .search |
-| tst.js:348:16:348:32 | document.location | tst.js:348:16:348:39 | documen ... .search |
-| tst.js:348:16:348:39 | documen ... .search | tst.js:348:7:348:39 | target |
-| tst.js:355:10:355:42 | target | tst.js:356:16:356:21 | target |
-| tst.js:355:10:355:42 | target | tst.js:356:16:356:21 | target |
-| tst.js:355:10:355:42 | target | tst.js:360:21:360:26 | target |
-| tst.js:355:10:355:42 | target | tst.js:360:21:360:26 | target |
-| tst.js:355:10:355:42 | target | tst.js:363:18:363:23 | target |
-| tst.js:355:10:355:42 | target | tst.js:363:18:363:23 | target |
-| tst.js:355:19:355:35 | document.location | tst.js:355:19:355:42 | documen ... .search |
-| tst.js:355:19:355:35 | document.location | tst.js:355:19:355:42 | documen ... .search |
-| tst.js:355:19:355:42 | documen ... .search | tst.js:355:10:355:42 | target |
 | tst.js:371:7:371:39 | target | tst.js:374:18:374:23 | target |
 | tst.js:371:7:371:39 | target | tst.js:374:18:374:23 | target |
 | tst.js:371:16:371:32 | document.location | tst.js:371:16:371:39 | documen ... .search |
@@ -1327,5 +1264,4 @@ edges
 | winjs.js:2:17:2:40 | documen ... .search | winjs.js:2:17:2:53 | documen ... ring(1) |
 | winjs.js:2:17:2:53 | documen ... ring(1) | winjs.js:2:7:2:53 | tainted |
 #select
-| jwt.js:6:14:6:20 | decoded | jwt.js:4:36:4:39 | data | jwt.js:6:14:6:20 | decoded | Cross-site scripting vulnerability due to $@. | jwt.js:4:36:4:39 | data | user-provided value |
 | typeahead.js:10:16:10:18 | loc | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc | Cross-site scripting vulnerability due to $@. | typeahead.js:9:28:9:30 | loc | user-provided value |

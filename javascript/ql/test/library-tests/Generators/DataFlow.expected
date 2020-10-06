@@ -1,0 +1,4 @@
+| library-tests/Generators/generators.js:9 | expected an alert, but found none | NOT OK |  |
+| library-tests/Generators/generators.js:18 | expected an alert, but found none | NOT OK |  |
+| library-tests/Generators/generators.js:23 | expected an alert, but found none | NOT OK |  |
+| library-tests/Generators/generators.js:42 | expected an alert, but found none | NOT OK |  |
