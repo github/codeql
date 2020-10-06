@@ -24,7 +24,7 @@ app.view_functions['later_set'] = later_set
 
 
 @app.route(UNKNOWN_ROUTE) # $routeSetup
-def unkown_route(foo, bar):  # $routeHandler
+def unkown_route(foo, bar):  # $routeHandler $routedParameter=foo $routedParameter=bar
     return make_response("unkown_route")
 
 

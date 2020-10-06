@@ -117,6 +117,12 @@ private module Flask {
   /** A route setup made by flask (sharing handling of URL patterns). */
   abstract private class FlaskRouteSetup extends HTTP::Server::RouteSetup::Range {
     override Parameter getARoutedParameter() {
+      // If we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      not exists(this.getUrlPattern()) and
+      result = this.getARouteHandler().getArgByName(_)
+      or
       exists(string name |
         result = this.getARouteHandler().getArgByName(name) and
         exists(string match |
