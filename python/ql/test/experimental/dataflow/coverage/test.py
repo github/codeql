@@ -411,7 +411,7 @@ def test_assignment_expression():
 
 # 6.13. Conditional expressions
 def test_conditional_true():
-    SINK(SOURCE if True else NONSOURCE)  # Flow missing
+    SINK(SOURCE if True else NONSOURCE)
 
 
 def test_conditional_true_guards():
@@ -419,7 +419,7 @@ def test_conditional_true_guards():
 
 
 def test_conditional_false():
-    SINK(NONSOURCE if False else SOURCE)  # Flow missing
+    SINK(NONSOURCE if False else SOURCE)
 
 
 def test_conditional_false_guards():

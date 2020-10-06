@@ -48,6 +48,8 @@ edges
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:334:11:334:16 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:338:16:338:21 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:361:28:361:33 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:414:10:414:15 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:422:34:422:39 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:446:12:446:17 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:453:28:453:33 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:502:9:502:14 | ControlFlowNode for SOURCE |
@@ -147,6 +149,8 @@ edges
 | test.py:338:10:338:22 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:338:10:338:27 | ControlFlowNode for Subscript |
 | test.py:338:16:338:21 | ControlFlowNode for SOURCE | test.py:338:10:338:22 | ControlFlowNode for Dict [Dictionary element at key s] |
 | test.py:361:28:361:33 | ControlFlowNode for SOURCE | test.py:361:10:361:34 | ControlFlowNode for second() |
+| test.py:414:10:414:15 | ControlFlowNode for SOURCE | test.py:414:10:414:38 | ControlFlowNode for IfExp |
+| test.py:422:34:422:39 | ControlFlowNode for SOURCE | test.py:422:10:422:39 | ControlFlowNode for IfExp |
 | test.py:446:12:446:17 | ControlFlowNode for SOURCE | test.py:446:10:446:18 | ControlFlowNode for f() |
 | test.py:453:28:453:33 | ControlFlowNode for SOURCE | test.py:453:10:453:34 | ControlFlowNode for second() |
 | test.py:502:9:502:14 | ControlFlowNode for SOURCE | test.py:504:10:504:10 | ControlFlowNode for a |
@@ -292,6 +296,10 @@ nodes
 | test.py:338:16:338:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:361:10:361:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
 | test.py:361:28:361:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:414:10:414:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:414:10:414:38 | ControlFlowNode for IfExp | semmle.label | ControlFlowNode for IfExp |
+| test.py:422:10:422:39 | ControlFlowNode for IfExp | semmle.label | ControlFlowNode for IfExp |
+| test.py:422:34:422:39 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:446:10:446:18 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
 | test.py:446:12:446:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:453:10:453:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
@@ -368,6 +376,10 @@ nodes
 | test.py:338:10:338:27 | ControlFlowNode for Subscript | test.py:338:16:338:21 | ControlFlowNode for SOURCE | test.py:338:10:338:27 | ControlFlowNode for Subscript | Flow found |
 | test.py:361:10:361:34 | ControlFlowNode for second() | test.py:14:10:14:17 | ControlFlowNode for Str | test.py:361:10:361:34 | ControlFlowNode for second() | Flow found |
 | test.py:361:10:361:34 | ControlFlowNode for second() | test.py:361:28:361:33 | ControlFlowNode for SOURCE | test.py:361:10:361:34 | ControlFlowNode for second() | Flow found |
+| test.py:414:10:414:38 | ControlFlowNode for IfExp | test.py:14:10:14:17 | ControlFlowNode for Str | test.py:414:10:414:38 | ControlFlowNode for IfExp | Flow found |
+| test.py:414:10:414:38 | ControlFlowNode for IfExp | test.py:414:10:414:15 | ControlFlowNode for SOURCE | test.py:414:10:414:38 | ControlFlowNode for IfExp | Flow found |
+| test.py:422:10:422:39 | ControlFlowNode for IfExp | test.py:14:10:14:17 | ControlFlowNode for Str | test.py:422:10:422:39 | ControlFlowNode for IfExp | Flow found |
+| test.py:422:10:422:39 | ControlFlowNode for IfExp | test.py:422:34:422:39 | ControlFlowNode for SOURCE | test.py:422:10:422:39 | ControlFlowNode for IfExp | Flow found |
 | test.py:446:10:446:18 | ControlFlowNode for f() | test.py:14:10:14:17 | ControlFlowNode for Str | test.py:446:10:446:18 | ControlFlowNode for f() | Flow found |
 | test.py:446:10:446:18 | ControlFlowNode for f() | test.py:446:12:446:17 | ControlFlowNode for SOURCE | test.py:446:10:446:18 | ControlFlowNode for f() | Flow found |
 | test.py:453:10:453:34 | ControlFlowNode for second() | test.py:14:10:14:17 | ControlFlowNode for Str | test.py:453:10:453:34 | ControlFlowNode for second() | Flow found |
