@@ -21,7 +21,7 @@ void test_range_based_for_loop_vector(int source1) {
 	}
 
 	for(std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
-		sink(*it); // tainted
+		sink(*it); // tainted [NOT DETECTED by IR]
 	}
 
 	for(int& x : v) {
@@ -324,4 +324,78 @@ void test_constructors_more() {
 	sink(v2); // tainted
 	sink(v3);
 	sink(v4); // tainted
+}
+
+void taint_vector_output_iterator(std::vector<int>::iterator iter) {
+	*iter = source();
+}
+
+void vector_iterator_assign_wrapper(std::vector<int>::iterator iter, int i) {
+	*iter = i;
+}
+
+void test_vector_output_iterator(int b) {
+	std::vector<int> v1(10), v2(10), v3(10), v4(10), v5(10), v6(10), v7(10), v8(10), v9(10), v10(10), v11(10);
+
+	std::vector<int>::iterator i1 = v1.begin();
+	*i1 = source();
+	sink(v1); // tainted [NOT DETECTED by IR]
+
+	for(std::vector<int>::iterator it = v2.begin(); it != v2.end(); ++it) {
+		*it = source();
+	}
+	sink(v2); // tainted [NOT DETECTED by IR]
+
+	for(int& x : v3) {
+		x = source();
+	}
+	sink(v3); // tainted [NOT DETECTED]
+
+	for(std::vector<int>::iterator it = v4.begin(); it != v4.end(); ++it) {
+		taint_vector_output_iterator(it);
+	}
+	sink(v4); // tainted [NOT DETECTED by IR]
+	
+	std::vector<int>::iterator i5 = v5.begin();
+	*i5 = source();
+	sink(v5); // tainted [NOT DETECTED by IR]
+	*i5 = 1;
+	sink(v5); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i6 = v6.begin();
+	*i6 = source();
+	sink(v6); // tainted [NOT DETECTED by IR]
+	v6 = std::vector<int>(10);
+	sink(v6); // [FALSE POSITIVE in AST]
+
+	std::vector<int>::iterator i7 = v7.begin();
+	if(b) {
+		*i7 = source();
+		sink(v7); // tainted [NOT DETECTED by IR]
+	} else {
+		*i7 = 1;
+		sink(v7);
+	}
+	sink(v7); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i8 = v8.begin();
+	*i8 = source();
+	sink(v8); // tainted [NOT DETECTED by IR]
+	*i8 = 1;
+	sink(v8);
+
+	std::vector<int>::iterator i9 = v9.begin();
+
+	*i9 = source();
+	taint_vector_output_iterator(i9);
+
+	sink(v9);
+
+	std::vector<int>::iterator i10 = v10.begin();
+	vector_iterator_assign_wrapper(i10, 10);
+	sink(v10);
+
+	std::vector<int>::iterator i11 = v11.begin();
+	vector_iterator_assign_wrapper(i11, source());
+	sink(v11); // tainted [NOT DETECTED by IR]
 }

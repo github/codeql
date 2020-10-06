@@ -23,8 +23,10 @@ newtype TNode =
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
   TCfgNode(DataFlowCfgNode node) or
-  /** A node representing the value of an object after a state change */
-  TPostUpdateNode(PreUpdateNode pre) or
+  /** A synthetic node representing the value of an object before a state change */
+  TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
+  /** A synthetic node representing the value of an object after a state change */
+  TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
   /** A node representing a global (module-level) variable in a specific module */
   TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() }
 
@@ -152,6 +154,23 @@ class ParameterNode extends EssaNode {
 }
 
 /**
+ * A node associated with an object after an operation that might have
+ * changed its state.
+ *
+ * This can be either the argument to a callable after the callable returns
+ * (which might have mutated the argument), or the qualifier of a field after
+ * an update to the field.
+ *
+ * Nodes corresponding to AST elements, for example `ExprNode`s, usually refer
+ * to the value before the update with the exception of `ObjectCreationNode`s,
+ * which represents the value _after_ the constructor has run.
+ */
+abstract class PostUpdateNode extends Node {
+  /** Gets the node before the state update. */
+  abstract Node getPreUpdateNode();
+}
+
+/**
  * A data flow node corresponding to a module-level (global) variable that is accessed outside of the module scope.
  *
  * Global variables may appear twice in the data flow graph, as both `EssaNode`s and
@@ -270,7 +289,9 @@ newtype TContent =
     key = any(Keyword kw).getArg()
   } or
   /** An element of a dictionary at any key. */
-  TDictionaryElementAnyContent()
+  TDictionaryElementAnyContent() or
+  /** An object attribute. */
+  TAttributeContent(string attr) { attr = any(Attribute a).getName() }
 
 class Content extends TContent {
   /** Gets a textual representation of this element. */
@@ -278,12 +299,10 @@ class Content extends TContent {
 }
 
 class ListElementContent extends TListElementContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "List element" }
 }
 
 class SetElementContent extends TSetElementContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Set element" }
 }
 
@@ -292,10 +311,9 @@ class TupleElementContent extends TTupleElementContent, Content {
 
   TupleElementContent() { this = TTupleElementContent(index) }
 
-  /** Gets the index for this tuple element */
+  /** Gets the index for this tuple element. */
   int getIndex() { result = index }
 
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Tuple element at index " + index.toString() }
 }
 
@@ -304,14 +322,23 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
 
   DictionaryElementContent() { this = TDictionaryElementContent(key) }
 
-  /** Gets the index for this tuple element */
+  /** Gets the key for this dictionary element. */
   string getKey() { result = key }
 
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Dictionary element at key " + key }
 }
 
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Any dictionary element" }
+}
+
+class AttributeContent extends TAttributeContent, Content {
+  private string attr;
+
+  AttributeContent() { this = TAttributeContent(attr) }
+
+  /** Gets the name of the attribute under which this content is stored. */
+  string getAttribute() { result = attr }
+
+  override string toString() { result = "Attribute " + attr }
 }

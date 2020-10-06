@@ -437,7 +437,7 @@ class SignAnalysis
 
     unsafe void PointerCast(byte* src, byte* dst)
     {
-        var x = (int)(src-dst);
+        var x = (int)(src - dst);
         if (x < 0)
         {
             System.Console.WriteLine(x); // strictly negative
@@ -449,6 +449,20 @@ class SignAnalysis
         {
             System.Console.WriteLine((int)to);
         }
+    }
+
+    uint Unsigned() { return 1; }
+    void UnsignedCheck(int i)
+    {
+        long l = Unsigned();
+        if (l != 0)
+        {
+            System.Console.WriteLine(l); // strictly positive
+        }
+
+        uint x = (uint)i;
+        x++;
+        System.Console.WriteLine(x); // strictly positive
     }
 }
 

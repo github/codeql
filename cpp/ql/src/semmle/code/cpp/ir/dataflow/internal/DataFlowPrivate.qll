@@ -5,35 +5,58 @@ private import DataFlowDispatch
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
- * to the callable. Instance arguments (`this` pointer) are also included.
+ * to the callable. Instance arguments (`this` pointer) and read side effects
+ * on parameters are also included.
  */
-class ArgumentNode extends InstructionNode {
-  ArgumentNode() {
-    exists(CallInstruction call |
-      instr = call.getAnArgument()
-      or
-      instr.(ReadSideEffectInstruction).getPrimaryInstruction() = call
-    )
-  }
-
+abstract class ArgumentNode extends OperandNode {
   /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  predicate argumentOf(DataFlowCall call, int pos) {
-    instr = call.getPositionalArgument(pos)
-    or
-    instr = call.getThisArgument() and pos = -1
-    or
-    exists(ReadSideEffectInstruction read |
-      read = instr and
-      read.getPrimaryInstruction() = call and
-      pos = getArgumentPosOfSideEffect(read.getIndex())
-    )
-  }
+  abstract predicate argumentOf(DataFlowCall call, int pos);
 
   /** Gets the call in which this node is an argument. */
   DataFlowCall getCall() { this.argumentOf(result, _) }
+}
+
+/**
+ * A data flow node that occurs as the argument to a call, or an
+ * implicit `this` pointer argument.
+ */
+private class PrimaryArgumentNode extends ArgumentNode {
+  override ArgumentOperand op;
+
+  PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
+
+  override predicate argumentOf(DataFlowCall call, int pos) {
+    op = call.getPositionalArgumentOperand(pos)
+    or
+    op = call.getThisArgumentOperand() and pos = -1
+  }
+
+  override string toString() {
+    result = "Argument " + op.(PositionalArgumentOperand).getIndex()
+    or
+    op instanceof ThisArgumentOperand and result = "This argument"
+  }
+}
+
+/**
+ * A data flow node representing the read side effect of a call on a
+ * specific parameter.
+ */
+private class SideEffectArgumentNode extends ArgumentNode {
+  override SideEffectOperand op;
+  ReadSideEffectInstruction read;
+
+  SideEffectArgumentNode() { op = read.getSideEffectOperand() }
+
+  override predicate argumentOf(DataFlowCall call, int pos) {
+    read.getPrimaryInstruction() = call and
+    pos = getArgumentPosOfSideEffect(read.getIndex())
+  }
+
+  override string toString() { result = "Argument " + read.getIndex() + " indirection" }
 }
 
 private newtype TReturnKind =
@@ -355,14 +378,16 @@ private class ArrayToPointerConvertInstruction extends ConvertInstruction {
   }
 }
 
-private Instruction skipOneCopyValueInstruction(Instruction instr) {
-  not instr instanceof CopyValueInstruction and result = instr
+private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
+  copy.getUnary() = result and not result instanceof CopyValueInstruction
   or
-  result = instr.(CopyValueInstruction).getUnary()
+  result = skipOneCopyValueInstructionRec(copy.getUnary())
 }
 
 private Instruction skipCopyValueInstructions(Instruction instr) {
-  result = skipOneCopyValueInstruction*(instr) and not result instanceof CopyValueInstruction
+  not result instanceof CopyValueInstruction and result = instr
+  or
+  result = skipOneCopyValueInstructionRec(instr)
 }
 
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {

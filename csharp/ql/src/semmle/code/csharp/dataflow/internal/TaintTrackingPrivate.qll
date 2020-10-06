@@ -95,6 +95,10 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
           scope = e2 and
           isSuccessor = true
         )
+      or
+      e1 = e2.(AwaitExpr).getExpr() and
+      scope = e2 and
+      isSuccessor = true
     )
   }
 }

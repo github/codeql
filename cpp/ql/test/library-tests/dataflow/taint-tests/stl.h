@@ -11,6 +11,25 @@ struct remove_const<const T> { typedef T type; };
 template<class T>
 using remove_const_t = typename remove_const<T>::type;
 
+template<class T>
+struct remove_reference { typedef T type; };
+
+template<class T>
+struct remove_reference<T &> { typedef T type; };
+
+template<class T>
+struct remove_reference<T &&> { typedef T type; };
+
+// `remove_reference_t<T>` removes any `&` from `T`
+template<class T>
+using remove_reference_t = typename remove_reference<T>::type;
+
+namespace std
+{
+	template<class T> constexpr T&& forward(remove_reference_t<T>& t) noexcept;
+	template<class T> constexpr T&& forward(remove_reference_t<T>&& t) noexcept;
+}
+
 // --- iterator ---
 
 namespace std {
@@ -36,6 +55,7 @@ namespace std {
 		bool operator==(iterator other) const;
 		bool operator!=(iterator other) const;
 		reference_type operator*() const;
+		pointer_type operator->() const;
 		iterator operator+(int);
 		iterator operator-(int);
 		iterator &operator+=(int);
@@ -128,7 +148,12 @@ namespace std
 	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const charT* rhs);
 
 	typedef basic_string<char> string;
+}
 
+// --- istring / ostream / stringstream ---
+
+namespace std
+{
 	template <class charT, class traits = char_traits<charT> >
 	class basic_istream /*: virtual public basic_ios<charT,traits> - not needed for this test */ {
 	public:
@@ -301,3 +326,159 @@ namespace std {
 
 	template<typename T, class... Args> shared_ptr<T> make_shared(Args&&...);
 }
+
+// --- pair ---
+
+namespace std {
+	template <class T1, class T2>
+	struct pair {
+		typedef T1 first_type;
+		typedef T2 second_type;
+
+		T1 first;
+		T2 second;
+		pair();
+		pair(const T1& x, const T2& y) : first(x), second(y) {};
+		template<class U, class V> pair(const pair<U, V> &p);
+
+		void swap(pair& p) /*noexcept(...)*/;
+	};
+
+	template<class T1, class T2> constexpr pair<remove_reference_t<T1>, remove_reference_t<T2>> make_pair(T1&& x, T2&& y) {
+		return pair<T1, T2>(std::forward<T1>(x), std::forward<T2>(y));
+	}
+}
+
+// --- map ---
+
+namespace std {
+	template<class T = void> struct less;
+
+	template<class Key, class T, class Compare = less<Key>, class Allocator = allocator<pair<const Key, T>>>
+	class map {
+	public:
+		using key_type = Key;
+		using mapped_type = T;
+		using value_type = pair<const Key, T>;
+		using iterator = std::iterator<random_access_iterator_tag, value_type >;
+		using const_iterator = std::iterator<random_access_iterator_tag, const value_type >;
+
+		map() /*: map(Compare()) { }*/;
+		map(const map& x);
+		map(map&& x);
+		~map();
+
+		map& operator=(const map& x);
+		map& operator=(map&& x) /*noexcept(allocator_traits<Allocator>::is_always_equal::value && is_nothrow_move_assignable_v<Compare>)*/;
+
+		iterator begin() noexcept;
+		const_iterator begin() const noexcept;
+		iterator end() noexcept;
+		const_iterator end() const noexcept;
+
+		T& operator[](const key_type& x);
+		T& operator[](key_type&& x);
+		T& at(const key_type& x);
+		const T& at(const key_type& x) const;
+
+		template<class... Args> pair<iterator, bool> emplace(Args&&... args);
+		template<class... Args> iterator emplace_hint(const_iterator position, Args&&... args);
+
+		pair<iterator, bool> insert(const value_type& x);
+		pair<iterator, bool> insert(value_type&& x);
+		iterator insert(const_iterator position, const value_type& x);
+		iterator insert(const_iterator position, value_type&& x);
+
+		template<class... Args> pair<iterator, bool> try_emplace(const key_type& k, Args&&... args);
+		template<class... Args> pair<iterator, bool> try_emplace(key_type&& k, Args&&... args);
+		template<class... Args> iterator try_emplace(const_iterator hint, const key_type& k, Args&&... args);
+		template<class... Args> iterator try_emplace(const_iterator hint, key_type&& k, Args&&... args);
+		template<class M> pair<iterator, bool> insert_or_assign(const key_type& k, M&& obj);
+		template<class M> pair<iterator, bool> insert_or_assign(key_type&& k, M&& obj);
+		template<class M> iterator insert_or_assign(const_iterator hint, const key_type& k, M&& obj);
+		template<class M> iterator insert_or_assign(const_iterator hint, key_type&& k, M&& obj);
+
+		iterator erase(iterator position);
+		iterator erase(const_iterator position);
+		iterator erase(const_iterator first, const_iterator last);
+		void swap(map&) /*noexcept(/*==allocator_traits<Allocator>::is_always_equal::value && is_nothrow_swappable_v<Compare>)*/;
+		void clear() noexcept;
+
+		template<class C2> void merge(map<Key, T, C2, Allocator>& source);
+		template<class C2> void merge(map<Key, T, C2, Allocator>&& source);
+
+		iterator find(const key_type& x);
+		const_iterator find(const key_type& x) const;
+
+		iterator lower_bound(const key_type& x);
+		const_iterator lower_bound(const key_type& x) const;
+		iterator upper_bound(const key_type& x);
+		const_iterator upper_bound(const key_type& x) const;
+
+		pair<iterator, iterator> equal_range(const key_type& x);
+		pair<const_iterator, const_iterator> equal_range(const key_type& x) const;
+	};
+
+	template<class T> struct hash;
+	template<class T = void> struct equal_to;
+
+	template<class Key, class T, class Hash = hash<Key>, class Pred = equal_to<Key>, class Allocator = allocator<pair<const Key, T>>>
+	class unordered_map {
+	public:
+		using key_type = Key;
+		using mapped_type = T;
+		using value_type = pair<const Key, T>;
+		using iterator = std::iterator<random_access_iterator_tag, value_type >;
+		using const_iterator = std::iterator<random_access_iterator_tag, const value_type >;
+
+		unordered_map();
+		unordered_map(const unordered_map&);
+		unordered_map(unordered_map&&);
+		~unordered_map();
+
+		unordered_map& operator=(const unordered_map&);
+		unordered_map& operator=(unordered_map&&) /*noexcept(allocator_traits<Allocator>::is_always_equal::value && is_nothrow_move_assignable_v<Hash> && is_nothrow_move_assignable_v<Pred>)*/;
+
+		iterator begin() noexcept;
+		const_iterator begin() const noexcept;
+		iterator end() noexcept;
+		const_iterator end() const noexcept;
+
+		mapped_type& operator[](const key_type& k);
+		mapped_type& operator[](key_type&& k);
+		mapped_type& at(const key_type& k);
+		const mapped_type& at(const key_type& k) const;
+		
+		template<class... Args> pair<iterator, bool> emplace(Args&&... args);
+		template<class... Args> iterator emplace_hint(const_iterator position, Args&&... args);
+
+		pair<iterator, bool> insert(const value_type& obj);
+		pair<iterator, bool> insert(value_type&& obj);
+		iterator insert(const_iterator hint, const value_type& obj);
+		iterator insert(const_iterator hint, value_type&& obj);
+
+		template<class... Args> pair<iterator, bool> try_emplace(const key_type& k, Args&&... args);
+		template<class... Args> pair<iterator, bool> try_emplace(key_type&& k, Args&&... args);
+		template<class... Args> iterator try_emplace(const_iterator hint, const key_type& k, Args&&... args);
+		template<class... Args> iterator try_emplace(const_iterator hint, key_type&& k, Args&&... args);
+		template<class M> pair<iterator, bool> insert_or_assign(const key_type& k, M&& obj);
+		template<class M> pair<iterator, bool> insert_or_assign(key_type&& k, M&& obj);
+		template<class M> iterator insert_or_assign(const_iterator hint, const key_type& k, M&& obj);
+		template<class M> iterator insert_or_assign(const_iterator hint, key_type&& k, M&& obj);
+
+		iterator erase(iterator position);
+		iterator erase(const_iterator position);
+		iterator erase(const_iterator first, const_iterator last);
+		void swap(unordered_map&) /*noexcept(allocator_traits<Allocator>::is_always_equal::value && is_nothrow_swappable_v<Hash> && is_nothrow_swappable_v<Pred>)*/;
+		void clear() noexcept;
+
+		template<class H2, class P2> void merge(unordered_map<Key, T, H2, P2, Allocator>& source);
+		template<class H2, class P2> void merge(unordered_map<Key, T, H2, P2, Allocator>&& source);
+
+		iterator find(const key_type& k);
+		const_iterator find(const key_type& k) const;
+
+		pair<iterator, iterator> equal_range(const key_type& k);
+		pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
+	};
+};

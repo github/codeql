@@ -9,6 +9,11 @@ int test_extensibility_add(int x) {
 }
 
 int test_overridability_sub(int x) {
-  int result = x - x; // Returns 0 due to custom modeling in QL
+  int result = x - (unsigned char)x; // Returns 0 due to custom modeling for this test being deliberately wrong
   return result; // 0
+}
+
+void test_parameter_override(int magic_name_at_most_10, int magic_name_at_most_20) {
+  magic_name_at_most_10;
+  magic_name_at_most_20;
 }

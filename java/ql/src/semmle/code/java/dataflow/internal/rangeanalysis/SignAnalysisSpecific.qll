@@ -53,6 +53,8 @@ private module Impl {
   private import SignAnalysisCommon
   private import SsaReadPositionCommon
 
+  class UnsignedNumericType = CharacterType;
+
   float getNonIntegerValue(Expr e) {
     result = e.(LongLiteral).getValue().toFloat() or
     result = e.(FloatingPointLiteral).getValue().toFloat() or

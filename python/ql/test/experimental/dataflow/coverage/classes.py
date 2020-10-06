@@ -50,8 +50,8 @@ def test_new():
 class With_init:
 
     def __init__(self):
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK1(self)
+        OK()
 
 
 def test_init():

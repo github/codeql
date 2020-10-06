@@ -8,7 +8,7 @@
  * @id js/missing-postmessageorigin-verification
  * @tags correctness
  *       security
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import javascript
