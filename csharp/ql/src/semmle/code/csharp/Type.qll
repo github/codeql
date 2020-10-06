@@ -258,8 +258,11 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     getAMember().(Virtualizable).getOverridee() = v
   }
 
+  /** Gets a field (or member constant) with the given name. */
+  Field getField(string name) { result = getAMember() and result.hasName(name) }
+
   /** Gets a field (or member constant) of this type, if any. */
-  Field getAField() { result = getAMember() }
+  Field getAField() { result = this.getField(_) }
 
   /** Gets a member constant of this type, if any. */
   MemberConstant getAConstant() { result = getAMember() }

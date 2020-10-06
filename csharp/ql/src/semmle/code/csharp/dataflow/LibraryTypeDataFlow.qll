@@ -1679,6 +1679,62 @@ class SystemCollectionsGenericKeyValuePairStructFlow extends LibraryTypeDataFlow
   }
 }
 
+/** Data flow for `System.[Value]Tuple<,...,>`. */
+class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
+  SystemTupleFlow() {
+    this.getNamespace() instanceof SystemNamespace and
+    this.getName().regexpMatch("(Value)?Tuple(<,*>)?")
+    or
+    this instanceof TupleType
+  }
+
+  private AccessPath getItemAccessPath(int i) {
+    i in [1 .. count(this.getAMember())] and
+    result in [AccessPath::field(this.getField("Item" + i)),
+          AccessPath::property(this.getProperty("Item" + i))]
+  }
+
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    preservesValue = true and
+    (
+      exists(SystemTupleFlow t, int i |
+        source = getFlowSourceArg(c, i - 1, _) and
+        sourceAp = AccessPath::empty() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = t.getItemAccessPath(i)
+      |
+        c.(Constructor).getDeclaringType() = this and
+        t = this
+        or
+        c = this.getAMethod(any(string name | name.regexpMatch("Create(<,*>)?"))) and
+        t = c.getReturnType().getSourceDeclaration()
+      )
+      or
+      c =
+        any(ExtensionMethod m |
+          m.hasName("Deconstruct") and
+          this = m.getExtendedType().getSourceDeclaration() and
+          exists(int i |
+            m.getParameter(i).isOut() and
+            source = getFlowSourceArg(c, 0, _) and
+            sourceAp = this.getItemAccessPath(i) and
+            sink = TCallableFlowSinkArg(i) and
+            sinkAp = AccessPath::empty()
+          )
+        )
+      or
+      c = this.getAnIndexer().getGetter() and
+      source = TCallableFlowSourceQualifier() and
+      sourceAp = this.getItemAccessPath(_) and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty()
+    )
+  }
+}
+
 /** Data flow for `System.Threading.Tasks.Task`. */
 class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingTasksTaskClass {
   override predicate callableFlow(
