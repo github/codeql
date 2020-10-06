@@ -40,7 +40,7 @@ DataFlow::Node getAValueExportedBy(PackageJSON packageJSON) {
   exists(DataFlow::SourceNode callee |
     callee = getAValueExportedBy(packageJSON).(DataFlow::NewNode).getCalleeNode().getALocalSource()
   |
-    result = callee.getAPropertyRead("prototype").getAPropertyWrite()
+    result = callee.getAPropertyRead("prototype").getAPropertyWrite().getRhs()
     or
     result = callee.(DataFlow::ClassNode).getAnInstanceMethod()
   )
@@ -68,10 +68,5 @@ DataFlow::Node getAValueExportedBy(PackageJSON packageJSON) {
 private DataFlow::Node getAnExportFromModule(Module mod) {
   result.analyze().getAValue() = mod.(NodeModule).getAModuleExportsValue()
   or
-  exists(ASTNode export | result.getEnclosingExpr() = export | mod.exports(_, export))
-  or
-  exists(ExportDeclaration export |
-    result = export.getSourceNode(_) and
-    mod = export.getTopLevel()
-  )
+  result = mod.getAnExportedValue(_)
 }
