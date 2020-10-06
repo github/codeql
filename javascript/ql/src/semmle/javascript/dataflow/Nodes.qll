@@ -995,6 +995,13 @@ class ClassNode extends DataFlow::SourceNode {
   predicate hasQualifiedName(string name) {
     getAClassReference().flowsTo(AccessPath::getAnAssignmentTo(name))
   }
+
+  /**
+   * Gets the type annotation for the field `fieldName`, if any.
+   */
+  TypeAnnotation getFieldTypeAnnotation(string fieldName) {
+    result = impl.getFieldTypeAnnotation(fieldName)
+  }
 }
 
 module ClassNode {
@@ -1047,6 +1054,11 @@ module ClassNode {
      * of this node.
      */
     abstract DataFlow::Node getASuperClassNode();
+
+    /**
+     * Gets the type annotation for the field `fieldName`, if any.
+     */
+    TypeAnnotation getFieldTypeAnnotation(string fieldName) { none() }
   }
 
   /**
@@ -1106,6 +1118,14 @@ module ClassNode {
     }
 
     override DataFlow::Node getASuperClassNode() { result = astNode.getSuperClass().flow() }
+
+    override TypeAnnotation getFieldTypeAnnotation(string fieldName) {
+      exists(FieldDeclaration field |
+        field.getDeclaringClass() = astNode and
+        fieldName = field.getName() and
+        result = field.getTypeAnnotation()
+      )
+    }
   }
 
   private DataFlow::PropRef getAPrototypeReferenceInFile(string name, File f) {
