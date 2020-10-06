@@ -55,7 +55,7 @@ module TaintedPath {
      * There are currently four flow labels, representing the different combinations of
      * normalization and absoluteness.
      */
-    abstract class PosixPath extends DataFlow::FlowLabel {
+    class PosixPath extends DataFlow::FlowLabel {
       Normalization normalization;
       Relativeness relativeness;
 
@@ -113,7 +113,7 @@ module TaintedPath {
     /**
      * A flow label representing an array of path elements that may include "..".
      */
-    abstract class SplitPath extends DataFlow::FlowLabel {
+    class SplitPath extends DataFlow::FlowLabel {
       SplitPath() { this = "splitPath" }
     }
   }
@@ -218,12 +218,12 @@ module TaintedPath {
       output = this
       or
       // non-global replace or replace of something other than /\.\./g, /[/]/g, or /[\.]/g.
-      this instanceof StringReplaceCall and
+      this.getCalleeName() = "replace" and
       input = getReceiver() and
       output = this and
       not exists(RegExpLiteral literal, RegExpTerm term |
-        this.(StringReplaceCall).getRegExp().asExpr() = literal and
-        this.(StringReplaceCall).isGlobal() and
+        getArgument(0).getALocalSource().asExpr() = literal and
+        literal.isGlobal() and
         literal.getRoot() = term
       |
         term.getAMatchedString() = "/" or
@@ -247,15 +247,16 @@ module TaintedPath {
   /**
    * A call that removes all instances of "../" in the prefix of the string.
    */
-  class DotDotSlashPrefixRemovingReplace extends StringReplaceCall {
+  class DotDotSlashPrefixRemovingReplace extends DataFlow::CallNode {
     DataFlow::Node input;
     DataFlow::Node output;
 
     DotDotSlashPrefixRemovingReplace() {
+      this.getCalleeName() = "replace" and
       input = getReceiver() and
       output = this and
       exists(RegExpLiteral literal, RegExpTerm term |
-        getRegExp().asExpr() = literal and
+        getArgument(0).getALocalSource().asExpr() = literal and
         (term instanceof RegExpStar or term instanceof RegExpPlus) and
         term.getChild(0) = getADotDotSlashMatcher()
       |
@@ -297,16 +298,17 @@ module TaintedPath {
   /**
    * A call that removes all "." or ".." from a path, without also removing all forward slashes.
    */
-  class DotRemovingReplaceCall extends StringReplaceCall {
+  class DotRemovingReplaceCall extends DataFlow::CallNode {
     DataFlow::Node input;
     DataFlow::Node output;
 
     DotRemovingReplaceCall() {
+      this.getCalleeName() = "replace" and
       input = getReceiver() and
       output = this and
-      isGlobal() and
       exists(RegExpLiteral literal, RegExpTerm term |
-        getRegExp().asExpr() = literal and
+        getArgument(0).getALocalSource().asExpr() = literal and
+        literal.isGlobal() and
         literal.getRoot() = term and
         not term.getAMatchedString() = "/"
       |
@@ -622,13 +624,6 @@ module TaintedPath {
    */
   class AngularJSTemplateUrlSink extends Sink, DataFlow::ValueNode {
     AngularJSTemplateUrlSink() { this = any(AngularJS::CustomDirective d).getMember("templateUrl") }
-  }
-
-  /**
-   * The path argument of a [send](https://www.npmjs.com/package/send) call, viewed as a sink.
-   */
-  class SendPathSink extends Sink, DataFlow::ValueNode {
-    SendPathSink() { this = DataFlow::moduleImport("send").getACall().getArgument(1) }
   }
 
   /**

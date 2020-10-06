@@ -450,33 +450,8 @@ module NodeJSLib {
      * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
      */
     DataFlow::SourceNode moduleMember(string member) {
-      result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)
-    }
-
-    private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
-      exists(string moduleName |
-        moduleName = ["mz/fs", "original-fs", "fs-extra", "graceful-fs", "fs"]
-      |
-        result = DataFlow::moduleImport(moduleName)
-        or
-        // extra support for flexible names
-        result.asExpr().(Require).getArgument(0).mayHaveStringValue(moduleName)
-      ) and
-      t.start()
-      or
-      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
-        result = pred.track(t2, t)
-        or
-        t.continue() = t2 and
-        exists(DataFlow::CallNode promisifyAllCall |
-          result = promisifyAllCall and
-          pred.flowsTo(promisifyAllCall.getArgument(0)) and
-          promisifyAllCall =
-            [
-              DataFlow::moduleMember("bluebird", "promisifyAll"),
-              DataFlow::moduleImport("util-promisifyall")
-            ].getACall()
-        )
+      exists(string moduleName | moduleName = ["fs-extra", "graceful-fs", "fs"] |
+        result = DataFlow::moduleMember(moduleName, member)
       )
     }
   }
@@ -487,7 +462,7 @@ module NodeJSLib {
   private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
-    NodeJSFileSystemAccess() { this = maybePromisified(FS::moduleMember(methodName)).getACall() }
+    NodeJSFileSystemAccess() { this = FS::moduleMember(methodName).getACall() }
 
     /**
      * Gets the name of the called method.

@@ -861,28 +861,6 @@ module Express {
     override string getCredentialsKind() { result = kind }
   }
 
-  /** A call to `response.sendFile`, considered as a file system access. */
-  private class ResponseSendFileAsFileSystemAccess extends FileSystemReadAccess,
-    DataFlow::MethodCallNode {
-    ResponseSendFileAsFileSystemAccess() {
-      exists(string name | name = "sendFile" or name = "sendfile" |
-        calls(any(ResponseExpr res).flow(), name)
-      )
-    }
-
-    override DataFlow::Node getADataNode() { none() }
-
-    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
-
-    override DataFlow::Node getRootPathArgument() {
-      result = this.(DataFlow::CallNode).getOptionArgument(1, "root")
-    }
-
-    override predicate isUpwardNavigationRejected(DataFlow::Node argument) {
-      argument = getAPathArgument()
-    }
-  }
-
   /**
    * A function that flows to a route setup.
    */
