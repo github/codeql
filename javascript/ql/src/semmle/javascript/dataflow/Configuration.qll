@@ -426,7 +426,9 @@ private predicate barrierGuardBlocksSsaRefinement(
  * `outcome` is bound to the outcome of `cond` for join-ordering purposes.
  */
 pragma[noinline]
-private predicate barrierGuardUsedInCondition(BarrierGuardNode guard, ConditionGuardNode cond, boolean outcome) {
+private predicate barrierGuardUsedInCondition(
+  BarrierGuardNode guard, ConditionGuardNode cond, boolean outcome
+) {
   barrierGuardIsRelevant(guard) and
   outcome = cond.getOutcome() and
   (
