@@ -14,7 +14,8 @@ class AndroidComponent extends Class {
     this.getASupertype*().hasQualifiedName("android.app", "Activity") or
     this.getASupertype*().hasQualifiedName("android.app", "Service") or
     this.getASupertype*().hasQualifiedName("android.content", "BroadcastReceiver") or
-    this.getASupertype*().hasQualifiedName("android.content", "ContentProvider")
+    this.getASupertype*().hasQualifiedName("android.content", "ContentProvider") or
+    this.getASupertype*().hasQualifiedName("android.content", "ContentResolver")
   }
 
   /** The XML element corresponding to this Android component. */
@@ -50,5 +51,12 @@ class AndroidBroadcastReceiver extends AndroidComponent {
 class AndroidContentProvider extends AndroidComponent {
   AndroidContentProvider() {
     this.getASupertype*().hasQualifiedName("android.content", "ContentProvider")
+  }
+}
+
+/** An Android content resolver. */
+class AndroidContentResolver extends AndroidComponent {
+  AndroidContentResolver() {
+    this.getASupertype*().hasQualifiedName("android.content", "ContentResolver")
   }
 }
