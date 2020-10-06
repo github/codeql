@@ -10,24 +10,27 @@ namespace Semmle.Extraction.CSharp.Entities
             : base(cx, init) { }
 
         /// <summary>
+        /// Gets the property symbol associated accessor `symbol`, or `null`
+        /// if there is no associated symbol.
+        /// </summary>
+        public static IPropertySymbol GetPropertySymbol(IMethodSymbol symbol)
+        {
+            // Usually, the property/indexer can be fetched from the associated symbol
+            var prop = symbol.AssociatedSymbol as IPropertySymbol;
+            if (prop != null)
+                return prop;
+
+            // But for properties/indexers that implement explicit interfaces, Roslyn
+            // does not properly populate `AssociatedSymbol`
+            var props = symbol.ContainingType.GetMembers().OfType<IPropertySymbol>();
+            props = props.Where(p => SymbolEqualityComparer.Default.Equals(symbol, p.GetMethod) || SymbolEqualityComparer.Default.Equals(symbol, p.SetMethod));
+            return props.SingleOrDefault();
+        }
+
+        /// <summary>
         /// Gets the property symbol associated with this accessor.
         /// </summary>
-        IPropertySymbol PropertySymbol
-        {
-            get
-            {
-                // Usually, the property/indexer can be fetched from the associated symbol
-                var prop = symbol.AssociatedSymbol as IPropertySymbol;
-                if (prop != null)
-                    return prop;
-
-                // But for properties/indexers that implement explicit interfaces, Roslyn
-                // does not properly populate `AssociatedSymbol`
-                var props = symbol.ContainingType.GetMembers().OfType<IPropertySymbol>();
-                props = props.Where(p => SymbolEqualityComparer.Default.Equals(symbol, p.GetMethod) || SymbolEqualityComparer.Default.Equals(symbol, p.SetMethod));
-                return props.SingleOrDefault();
-            }
-        }
+        IPropertySymbol PropertySymbol => GetPropertySymbol(symbol);
 
         public new Accessor OriginalDefinition => Create(Context, symbol.OriginalDefinition);
 

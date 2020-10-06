@@ -240,7 +240,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     return Destructor.Create(cx, methodDecl);
                 case MethodKind.PropertyGet:
                 case MethodKind.PropertySet:
-                    return methodDecl.AssociatedSymbol is null ? OrdinaryMethod.Create(cx, methodDecl) : (Method)Accessor.Create(cx, methodDecl);
+                    return Accessor.GetPropertySymbol(methodDecl) is null ? OrdinaryMethod.Create(cx, methodDecl) : (Method)Accessor.Create(cx, methodDecl);
                 case MethodKind.EventAdd:
                 case MethodKind.EventRemove:
                     return EventAccessor.Create(cx, methodDecl);
