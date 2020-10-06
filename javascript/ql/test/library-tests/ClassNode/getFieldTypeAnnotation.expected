@@ -1,0 +1,4 @@
+| fields.ts:1:1:3:1 | class B ... mber;\\n} | baseField | fields.ts:2:16:2:21 | number |
+| fields.ts:5:1:13:1 | class F ... > {};\\n} | x | fields.ts:6:27:6:32 | number |
+| fields.ts:5:1:13:1 | class F ... > {};\\n} | y | fields.ts:6:46:6:51 | string |
+| fields.ts:5:1:13:1 | class F ... > {};\\n} | z | fields.ts:10:8:10:15 | string[] |
