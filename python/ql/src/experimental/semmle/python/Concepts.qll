@@ -38,3 +38,56 @@ module SystemCommandExecution {
     abstract DataFlow::Node getCommand();
   }
 }
+
+/** Provides classes for modeling HTTP-related APIs. */
+module HTTP {
+  /** Provides classes for modeling HTTP servers. */
+  module Server {
+    /**
+     * An data-flow node that sets up a route on a server.
+     *
+     * Extend this class to model new APIs. If you want to model new APIs,
+     * extend `RouteSetup::Range` instead.
+     */
+    class RouteSetup extends DataFlow::Node {
+      RouteSetup::Range range;
+
+      RouteSetup() { this = range }
+
+      /** Gets the URL pattern for this route, if it can be statically determined. */
+      string getUrlPattern() { result = range.getUrlPattern() }
+
+      /** Gets a function that will handle incoming requests for this route, if any. */
+      Function getARouteHandler() { result = range.getARouteHandler() }
+
+      /**
+       * Gets a parameter that will receive parts of the url when handling incoming
+       * requests for this route, if any. These automatically become a `RemoteFlowSource`.
+       */
+      Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+    }
+
+    /** Provides a class for modeling new HTTP routing APIs. */
+    module RouteSetup {
+      /**
+       * An data-flow node that sets up a route on a server.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `RouteSetup` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the URL pattern for this route, if it can be statically determined. */
+        abstract string getUrlPattern();
+
+        /** Gets a function that will handle incoming requests for this route, if any. */
+        abstract Function getARouteHandler();
+
+        /**
+         * Gets a parameter that will receive parts of the url when handling incoming
+         * requests for this route, if any. These automatically become a `RemoteFlowSource`.
+         */
+        abstract Parameter getARoutedParameter();
+      }
+    }
+  }
+}
