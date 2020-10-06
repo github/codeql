@@ -7,6 +7,7 @@
 import python
 private import experimental.dataflow.DataFlow
 private import experimental.semmle.python.Frameworks
+private import experimental.dataflow.RemoteFlowSources
 
 /**
  * A data-flow node that executes an operating system command,
@@ -88,6 +89,12 @@ module HTTP {
          */
         abstract Parameter getARoutedParameter();
       }
+    }
+
+    private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+      RoutedParameter() { this.getParameter() = any(RouteSetup setup).getARoutedParameter() }
+
+      override string getSourceType() { result = "RoutedParameter" }
     }
   }
 }

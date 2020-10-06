@@ -1,5 +1,5 @@
-| taint_test.py:6 | fail | test_taint | name |
-| taint_test.py:6 | fail | test_taint | number |
+| taint_test.py:6 | ok   | test_taint | name |
+| taint_test.py:6 | ok   | test_taint | number |
 | taint_test.py:7 | ok   | test_taint | foo |
 | taint_test.py:14 | ok   | test_taint | request.environ |
 | taint_test.py:15 | ok   | test_taint | request.environ.get(..) |
