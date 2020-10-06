@@ -13,10 +13,10 @@ module NoSQL {
 }
 
 /**
- * Gets a value that has been assigned to the "$where" property of an object that flows to `queryArg`.
+ * Gets the value of a `$where` property of an object that flows to `n`.
  */
-private DataFlow::Node getADollarWhereProperty(API::Node queryArg) {
-  result = queryArg.getMember("$where").getARhs()
+private DataFlow::Node getADollarWherePropertyValue(DataFlow::Node n) {
+  result = n.getALocalSource().getAPropertyWrite("$where").getRhs()
 }
 
 /**
@@ -24,70 +24,107 @@ private DataFlow::Node getADollarWhereProperty(API::Node queryArg) {
  */
 private module MongoDB {
   /**
+   * Gets an import of MongoDB.
+   */
+  DataFlow::ModuleImportNode mongodb() { result.getPath() = "mongodb" }
+
+  /**
    * Gets an access to `mongodb.MongoClient`.
    */
-  private API::Node getAMongoClient() {
-    result = API::moduleImport("mongodb").getMember("MongoClient")
+  private DataFlow::SourceNode getAMongoClient(DataFlow::TypeTracker t) {
+    t.start() and
+      result = mongodb().getAPropertyRead("MongoClient")
     or
-    result = getAMongoDbCallback().getParameter(1) and
-    not result.getAnImmediateUse().(DataFlow::ParameterNode).getName() = "db" // mongodb v2 provides a `Db` here
-  }
-
-  /** Gets an API-graph node that refers to a `connect` callback. */
-  private API::Node getAMongoDbCallback() {
-    result = getAMongoClient().getMember("connect").getLastParameter()
+    exists(DataFlow::TypeTracker t2 | result = getAMongoClient(t2).track(t2, t))
   }
 
   /**
-   * Gets an API-graph node that may refer to a MongoDB database connection.
+   * Gets an access to `mongodb.MongoClient`.
    */
-  private API::Node getAMongoDb() {
-    result = getAMongoClient().getMember("db").getReturn()
+  DataFlow::SourceNode getAMongoClient() { result = getAMongoClient(DataFlow::TypeTracker::end()) }
+
+  /** Gets a data flow node that leads to a `connect` callback. */
+  private DataFlow::SourceNode getAMongoDbCallback(DataFlow::TypeBackTracker t) {
+    t.start() and
+    result = getAMongoClient().getAMemberCall("connect").getLastArgument().getALocalSource()
     or
-    result = getAMongoDbCallback().getParameter(1) and
-    not result.getAnImmediateUse().(DataFlow::ParameterNode).getName() = "client" // mongodb v3 provides a `Mongoclient` here
+    exists(DataFlow::TypeBackTracker t2 | result = getAMongoDbCallback(t2).backtrack(t2, t))
+  }
+
+  /** Gets a data flow node that leads to a `connect` callback. */
+  private DataFlow::FunctionNode getAMongoDbCallback() {
+    result = getAMongoDbCallback(DataFlow::TypeBackTracker::end())
+  }
+
+  /**
+   * Gets an expression that may refer to a MongoDB database connection.
+   */
+  private DataFlow::SourceNode getAMongoDb(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      exists(DataFlow::ParameterNode p |
+        p = result and
+        p = getAMongoDbCallback().getParameter(1) and
+        not p.getName().toLowerCase() = "client" // mongodb v3 provides a `Mongoclient` here
+      )
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = getAMongoDb(t2).track(t2, t))
+  }
+
+  /**
+   * Gets an expression that may refer to a MongoDB database connection.
+   */
+  DataFlow::SourceNode getAMongoDb() { result = getAMongoDb(DataFlow::TypeTracker::end()) }
+
+  /**
+   * A data flow node that may hold a MongoDB collection.
+   */
+  abstract class Collection extends DataFlow::SourceNode { }
+
+  /**
+   * A collection resulting from calling `Db.collection(...)`.
+   */
+  private class CollectionFromDb extends Collection {
+    CollectionFromDb() {
+      this = getAMongoDb().getAMethodCall("collection")
+      or
+      this = getAMongoDb().getAMethodCall("collection").getCallback(1).getParameter(0)
+    }
+  }
+
+  /**
+   * A collection based on the type `mongodb.Collection`.
+   *
+   * Note that this also covers `mongoose` models since they are subtypes
+   * of `mongodb.Collection`.
+   */
+  private class CollectionFromType extends Collection {
+    CollectionFromType() { hasUnderlyingType("mongodb", "Collection") }
   }
 
   /** Gets a data flow node referring to a MongoDB collection. */
-  private API::Node getACollection() {
-    // A collection resulting from calling `Db.collection(...)`.
-    exists(API::Node collection | collection = getAMongoDb().getMember("collection").getReturn() |
-      result = collection
-      or
-      result = collection.getParameter(1).getParameter(0)
-    )
+  private DataFlow::SourceNode getACollection(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof Collection
     or
-    // note that this also covers `mongoose` models since they are subtypes of `mongodb.Collection`
-    result = API::Node::ofType("mongodb", "Collection")
+    exists(DataFlow::TypeTracker t2 | result = getACollection(t2).track(t2, t))
   }
 
+  /** Gets a data flow node referring to a MongoDB collection. */
+  DataFlow::SourceNode getACollection() { result = getACollection(DataFlow::TypeTracker::end()) }
+
   /** A call to a MongoDB query method. */
-  private class QueryCall extends DatabaseAccess, API::CallNode {
+  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     int queryArgIdx;
 
     QueryCall() {
-      exists(string method |
-        CollectionMethodSignatures::interpretsArgumentAsQuery(method, queryArgIdx) and
-        this = getACollection().getMember(method).getACall()
+      exists(string m | this = getACollection().getAMethodCall(m) |
+        CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )
     }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
-
-    DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(getParameter(queryArgIdx))
-    }
-  }
-
-  /**
-   * An expression that is interpreted as a MongoDB query.
-   */
-  class Query extends NoSQL::Query {
-    QueryCall qc;
-
-    Query() { this = qc.getAQueryArgument().asExpr() }
-
-    override DataFlow::Node getACodeOperator() { result = qc.getACodeOperator() }
   }
 
   /**
@@ -147,6 +184,17 @@ private module MongoDB {
       )
     }
   }
+
+  /**
+   * An expression that is interpreted as a MongoDB query.
+   */
+  class Query extends NoSQL::Query {
+    Query() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+
+    override DataFlow::Node getACodeOperator() {
+      result = getADollarWherePropertyValue(this.flow())
+    }
+  }
 }
 
 /**
@@ -156,73 +204,81 @@ private module Mongoose {
   /**
    * Gets an import of Mongoose.
    */
-  API::Node getAMongooseInstance() { result = API::moduleImport("mongoose") }
+  DataFlow::ModuleImportNode getAMongooseInstance() { result.getPath() = "mongoose" }
 
   /**
-   * Gets a reference to `mongoose.createConnection`.
+   * Gets a call to `mongoose.createConnection`.
    */
-  API::Node createConnection() { result = getAMongooseInstance().getMember("createConnection") }
+  DataFlow::CallNode createConnection() {
+    result = getAMongooseInstance().getAMemberCall("createConnection")
+  }
 
   /**
-   * A Mongoose function.
+   * A Mongoose function invocation.
    */
-  abstract private class MongooseFunction extends API::Node {
+  private class InvokeNode extends DataFlow::InvokeNode {
     /**
-     * Gets the API-graph node for the result from this function (if the function returns a `Query`).
+     * Holds if this invocation returns an object of type `Query`.
      */
-    abstract API::Node getQueryReturn();
+    abstract predicate returnsQuery();
 
     /**
-     * Holds if this function returns a `Query` that evaluates to one or
+     * Holds if this invocation returns a `Query` that evaluates to one or
      * more Documents (`asArray` is false if it evaluates to a single
      * Document).
      */
     abstract predicate returnsDocumentQuery(boolean asArray);
 
     /**
-     * Gets an argument that this function interprets as a query.
+     * Holds if this invocation interprets `arg` as a query.
      */
-    abstract API::Node getQueryArgument();
+    abstract predicate interpretsArgumentAsQuery(DataFlow::Node arg);
   }
 
   /**
    * Provides classes modeling the Mongoose Model class
    */
   module Model {
-    private class ModelFunction extends MongooseFunction {
-      string methodName;
+    private class ModelInvokeNode extends InvokeNode, DataFlow::MethodCallNode {
+      ModelInvokeNode() { this = ref().getAMethodCall() }
 
-      ModelFunction() { this = getModelObject().getMember(methodName) }
-
-      override API::Node getQueryReturn() {
-        MethodSignatures::returnsQuery(methodName) and result = this.getReturn()
-      }
+      override predicate returnsQuery() { MethodSignatures::returnsQuery(getMethodName()) }
 
       override predicate returnsDocumentQuery(boolean asArray) {
-        MethodSignatures::returnsDocumentQuery(methodName, asArray)
+        MethodSignatures::returnsDocumentQuery(getMethodName(), asArray)
       }
 
-      override API::Node getQueryArgument() {
+      override predicate interpretsArgumentAsQuery(DataFlow::Node arg) {
         exists(int n |
-          MethodSignatures::interpretsArgumentAsQuery(methodName, n) and
-          result = this.getParameter(n)
+          MethodSignatures::interpretsArgumentAsQuery(this.getMethodName(), n) and
+          arg = this.getArgument(n)
         )
       }
     }
 
     /**
-     * Gets a API-graph node referring to a Mongoose Model object.
+     * Gets a data flow node referring to a Mongoose Model object.
      */
-    private API::Node getModelObject() {
-      result = getAMongooseInstance().getMember("model").getReturn()
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      (
+        result = getAMongooseInstance().getAMemberCall("model")
+        or
+        exists(DataFlow::SourceNode conn | conn = createConnection() |
+          result = conn.getAMemberCall("model") or
+          result = conn.getAPropertyRead("models").getAPropertyRead()
+        )
+        or
+        result.hasUnderlyingType("mongoose", "Model")
+      ) and
+      t.start()
       or
-      exists(API::Node conn | conn = createConnection().getReturn() |
-        result = conn.getMember("model").getReturn() or
-        result = conn.getMember("models").getAMember()
-      )
-      or
-      result = API::Node::ofType("mongoose", "Model")
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }
+
+    /**
+     * Gets a data flow node referring to a Mongoose model object.
+     */
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
 
     /**
      * Provides signatures for the Model methods.
@@ -235,30 +291,36 @@ private module Mongoose {
         // implement lots of the MongoDB collection interface
         MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(name, n)
         or
-        name = "find" + ["ById", "One"] + "AndUpdate" and n = 1
+        name = "findByIdAndUpdate" and n = 1
         or
-        name in ["delete" + ["Many", "One"], "geoSearch", "remove", "replaceOne", "where"] and
-        n = 0
-        or
-        name in [
-            "find" + ["", "ById", "One"],
-            "find" + ["ById", "One"] + "And" + ["Delete", "Remove", "Update"],
-            "update" + ["", "Many", "One"]
-          ] and
-        n = 0
+        name = "where" and n = 0
       }
 
       /**
        * Holds if Model method `name` returns a Query.
        */
       predicate returnsQuery(string name) {
-        name =
-          [
-            "$where", "count", "findOne", "findOneAndDelete", "findOneAndRemove",
-            "findOneAndReplace", "findOneAndUpdate", "geosearch", "remove", "replaceOne", "update",
-            "updateMany", "countDocuments", "updateOne", "where", "deleteMany", "deleteOne", "find",
-            "findById", "findByIdAndDelete", "findByIdAndRemove", "findByIdAndUpdate"
-          ]
+        name = "$where" or
+        name = "count" or
+        name = "countDocuments" or
+        name = "deleteMany" or
+        name = "deleteOne" or
+        name = "find" or
+        name = "findById" or
+        name = "findByIdAndDelete" or
+        name = "findByIdAndRemove" or
+        name = "findByIdAndUpdate" or
+        name = "findOne" or
+        name = "findOneAndDelete" or
+        name = "findOneAndRemove" or
+        name = "findOneAndReplace" or
+        name = "findOneAndUpdate" or
+        name = "geosearch" or
+        name = "replaceOne" or
+        name = "update" or
+        name = "updateMany" or
+        name = "updateOne" or
+        name = "where"
       }
 
       /**
@@ -275,127 +337,22 @@ private module Mongoose {
   }
 
   /**
-   * Provides classes modeling the Mongoose Query class
-   */
-  module Query {
-    private class QueryFunction extends MongooseFunction {
-      string methodName;
-
-      QueryFunction() { this = getAMongooseQuery().getMember(methodName) }
-
-      override API::Node getQueryReturn() {
-        MethodSignatures::returnsQuery(methodName) and result = this.getReturn()
-      }
-
-      override predicate returnsDocumentQuery(boolean asArray) {
-        MethodSignatures::returnsDocumentQuery(methodName, asArray)
-      }
-
-      override API::Node getQueryArgument() {
-        exists(int n |
-          MethodSignatures::interpretsArgumentAsQuery(methodName, n) and
-          result = this.getParameter(n)
-        )
-      }
-    }
-
-    private class NewQueryFunction extends MongooseFunction {
-      NewQueryFunction() { this = getAMongooseInstance().getMember("Query") }
-
-      override API::Node getQueryReturn() { result = this.getInstance() }
-
-      override predicate returnsDocumentQuery(boolean asArray) { none() }
-
-      override API::Node getQueryArgument() { result = this.getParameter(2) }
-    }
-
-    /**
-     * Gets a data flow node referring to a Mongoose query object.
-     */
-    API::Node getAMongooseQuery() {
-      result = any(MongooseFunction f).getQueryReturn()
-      or
-      result = API::Node::ofType("mongoose", "Query")
-      or
-      result =
-        getAMongooseQuery()
-            .getMember(any(string name | MethodSignatures::returnsQuery(name)))
-            .getReturn()
-    }
-
-    /**
-     * Provides signatures for the Query methods.
-     */
-    module MethodSignatures {
-      /**
-       * Holds if Query method `name` interprets parameter `n` as a query.
-       */
-      predicate interpretsArgumentAsQuery(string name, int n) {
-        n = 0 and
-        name =
-          [
-            "and", "count", "findOneAndReplace", "findOneAndUpdate", "merge", "nor", "or", "remove",
-            "replaceOne", "setQuery", "setUpdate", "update", "countDocuments", "updateMany",
-            "updateOne", "where", "deleteMany", "deleteOne", "elemMatch", "find", "findOne",
-            "findOneAndDelete", "findOneAndRemove"
-          ]
-        or
-        n = 1 and
-        name = ["distinct", "findOneAndUpdate", "update", "updateMany", "updateOne"]
-      }
-
-      /**
-       * Holds if Query method `name` returns a Query.
-       */
-      predicate returnsQuery(string name) {
-        name =
-          [
-            "$where", "J", "comment", "count", "countDocuments", "distinct", "elemMatch", "equals",
-            "error", "estimatedDocumentCount", "exists", "explain", "all", "find", "findById",
-            "findOne", "findOneAndRemove", "findOneAndUpdate", "geometry", "get", "gt", "gte",
-            "hint", "and", "in", "intersects", "lean", "limit", "lt", "lte", "map", "map",
-            "maxDistance", "maxTimeMS", "batchsize", "maxscan", "mod", "ne", "near", "nearSphere",
-            "nin", "or", "orFail", "polygon", "populate", "box", "read", "readConcern", "regexp",
-            "remove", "select", "session", "set", "setOptions", "setQuery", "setUpdate", "center",
-            "size", "skip", "slaveOk", "slice", "snapshot", "sort", "update", "w", "where",
-            "within", "centerSphere", "wtimeout", "circle", "collation"
-          ]
-      }
-
-      /**
-       * Holds if Query method `name` returns a query that results in
-       * one or more documents, the documents are wrapped in an array
-       * if `asArray` is true.
-       */
-      predicate returnsDocumentQuery(string name, boolean asArray) {
-        asArray = false and name = "findOne"
-        or
-        asArray = true and name = "find"
-      }
-    }
-  }
-
-  /**
    * Provides classes modeling the Mongoose Document class
    */
   module Document {
-    private class DocumentFunction extends MongooseFunction {
-      string methodName;
+    private class DocumentInvokeNode extends InvokeNode, DataFlow::MethodCallNode {
+      DocumentInvokeNode() { this = ref().getAMethodCall() }
 
-      DocumentFunction() { this = getAMongooseDocument().getMember(methodName) }
-
-      override API::Node getQueryReturn() {
-        MethodSignatures::returnsQuery(methodName) and result = this.getReturn()
-      }
+      override predicate returnsQuery() { MethodSignatures::returnsQuery(getMethodName()) }
 
       override predicate returnsDocumentQuery(boolean asArray) {
-        MethodSignatures::returnsDocumentQuery(methodName, asArray)
+        MethodSignatures::returnsDocumentQuery(getMethodName(), asArray)
       }
 
-      override API::Node getQueryArgument() {
+      override predicate interpretsArgumentAsQuery(DataFlow::Node arg) {
         exists(int n |
-          MethodSignatures::interpretsArgumentAsQuery(methodName, n) and
-          result = this.getParameter(n)
+          MethodSignatures::interpretsArgumentAsQuery(this.getMethodName(), n) and
+          arg = this.getArgument(n)
         )
       }
     }
@@ -403,33 +360,23 @@ private module Mongoose {
     /**
      * A Mongoose Document that is retrieved from the backing database.
      */
-    class RetrievedDocument extends API::Node {
+    class RetrievedDocument extends DataFlow::SourceNode {
       RetrievedDocument() {
-        exists(boolean asArray, API::Node param |
-          exists(MongooseFunction func |
-            func.returnsDocumentQuery(asArray) and
-            param = func.getLastParameter().getParameter(1)
-          )
-          or
-          exists(API::Node f |
-            f = Query::getAMongooseQuery().getMember("then") and
-            param = f.getParameter(0).getParameter(0)
-            or
-            f = Query::getAMongooseQuery().getMember("exec") and
-            param = f.getParameter(0).getParameter(1)
-          |
-            exists(DataFlow::MethodCallNode pred |
-              // limitation: look at the previous method call	
-              Query::MethodSignatures::returnsDocumentQuery(pred.getMethodName(), asArray) and
-              pred.getAMethodCall() = f.getACall()
-            )
+        exists(boolean asArray, DataFlow::ParameterNode param |
+          exists(InvokeNode call |
+            call.returnsDocumentQuery(asArray) and
+            param = call.getCallback(call.getNumArgument() - 1).getParameter(1)
           )
         |
           asArray = false and this = param
           or
           asArray = true and
-          // limitation: look for direct accesses
-          this = param.getUnknownMember()
+          exists(DataFlow::PropRead access |
+            // limitation: look for direct accesses
+            access = param.getAPropertyRead() and
+            not exists(access.getPropertyName()) and
+            this = access
+          )
         )
       }
     }
@@ -437,16 +384,25 @@ private module Mongoose {
     /**
      * Gets a data flow node referring to a Mongoose Document object.
      */
-    private API::Node getAMongooseDocument() {
-      result instanceof RetrievedDocument
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      (
+        result instanceof RetrievedDocument or
+        result.hasUnderlyingType("mongoose", "Document")
+      ) and
+      t.start()
       or
-      result = API::Node::ofType("mongoose", "Document")
-      or
-      result =
-        getAMongooseDocument()
-            .getMember(any(string name | MethodSignatures::returnsDocument(name)))
-            .getReturn()
+      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode succ | succ = ref(t2) |
+        result = succ.track(t2, t)
+        or
+        result = succ.getAMethodCall(any(string name | MethodSignatures::returnsDocument(name))) and
+        t = t2.continue()
+      )
     }
+
+    /**
+     * Gets a data flow node referring to a Mongoose Document object.
+     */
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
 
     private module MethodSignatures {
       /**
@@ -504,9 +460,7 @@ private module Mongoose {
     string kind;
 
     Credentials() {
-      exists(string prop |
-        this = createConnection().getParameter(3).getMember(prop).getARhs().asExpr()
-      |
+      exists(string prop | this = createConnection().getOptionArgument(3, prop).asExpr() |
         prop = "user" and kind = "user name"
         or
         prop = "pass" and kind = "password"
@@ -520,217 +474,29 @@ private module Mongoose {
    * An expression that is interpreted as a (part of a) MongoDB query.
    */
   class MongoDBQueryPart extends NoSQL::Query {
-    MongooseFunction f;
-
-    MongoDBQueryPart() { this = f.getQueryArgument().getARhs().asExpr() }
+    MongoDBQueryPart() { any(InvokeNode call).interpretsArgumentAsQuery(this.flow()) }
 
     override DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(f.getQueryArgument())
+      result = getADollarWherePropertyValue(this.flow())
     }
   }
 
   /**
    * An evaluation of a MongoDB query.
    */
-  class ShorthandQueryEvaluation extends DatabaseAccess, DataFlow::InvokeNode {
-    MongooseFunction f;
+  class ShorthandQueryEvaluation extends DatabaseAccess {
+    InvokeNode invk;
 
     ShorthandQueryEvaluation() {
-      this = f.getACall() and
+      this = invk and
       // shorthand for execution: provide a callback
-      exists(f.getQueryReturn()) and
-      exists(this.getCallback(this.getNumArgument() - 1))
+      invk.returnsQuery() and
+      exists(invk.getCallback(invk.getNumArgument() - 1))
     }
 
     override DataFlow::Node getAQueryArgument() {
       // NB: the complete information is not easily accessible for deeply chained calls
-      f.getQueryArgument().getARhs() = result
-    }
-  }
-
-  class ExplicitQueryEvaluation extends DatabaseAccess {
-    ExplicitQueryEvaluation() {
-      // explicit execution using a Query method call
-      Query::getAMongooseQuery().getMember(["exec", "then", "catch"]).getACall() = this
-    }
-
-    override DataFlow::Node getAQueryArgument() {
-      // NB: the complete information is not easily accessible for deeply chained calls
-      none()
-    }
-  }
-}
-
-/**
- * Provides classes modeling the Minimongo library.
- */
-private module Minimongo {
-  /**
-   * Provides signatures for the Collection methods.
-   */
-  module CollectionMethodSignatures {
-    /**
-     * Holds if Collection method `name` interprets parameter `n` as a query.
-     */
-    predicate interpretsArgumentAsQuery(string m, int queryArgIdx) {
-      // implements most of the MongoDB interface
-      MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
-    }
-  }
-
-  /** A call to a Minimongo query method. */
-  private class QueryCall extends DatabaseAccess, API::CallNode {
-    int queryArgIdx;
-
-    QueryCall() {
-      exists(string m |
-        this =
-          API::moduleImport("minimongo")
-              .getAMember()
-              .getReturn()
-              .getAMember()
-              .getMember(m)
-              .getACall() and
-        CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
-      )
-    }
-
-    override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
-
-    DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(getParameter(queryArgIdx))
-    }
-  }
-
-  /**
-   * An expression that is interpreted as a Minimongo query.
-   */
-  class Query extends NoSQL::Query {
-    QueryCall qc;
-
-    Query() { this = qc.getAQueryArgument().asExpr() }
-
-    override DataFlow::Node getACodeOperator() { result = qc.getACodeOperator() }
-  }
-}
-
-/**
- * Provides classes modeling the MarsDB library.
- */
-private module MarsDB {
-  /** A call to a MarsDB query method. */
-  private class QueryCall extends DatabaseAccess, API::CallNode {
-    int queryArgIdx;
-
-    QueryCall() {
-      exists(string m |
-        this =
-          API::moduleImport("marsdb").getMember("Collection").getInstance().getMember(m).getACall() and
-        // implements parts of the Minimongo interface
-        Minimongo::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
-      )
-    }
-
-    override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
-
-    DataFlow::Node getACodeOperator() {
-      result = getADollarWhereProperty(getParameter(queryArgIdx))
-    }
-  }
-
-  /**
-   * An expression that is interpreted as a MarsDB query.
-   */
-  class Query extends NoSQL::Query {
-    QueryCall qc;
-
-    Query() { this = qc.getAQueryArgument().asExpr() }
-
-    override DataFlow::Node getACodeOperator() { result = qc.getACodeOperator() }
-  }
-}
-
-/**
- * Provides classes modeling the `Node Redis` library.
- *
- * Redis is an in-memory key-value store and not a database,
- * but `Node Redis` can be exploited similarly to a NoSQL database by giving a method an array as argument instead of a string.
- * As an example the below two invocations of `client.set` are equivalent:
- *
- * ```
- * const redis = require("redis");
- * const client = redis.createClient();
- * client.set("key", "value");
- * client.set(["key", "value"]);
- * ```
- *
- * ioredis is a very similar library. However, ioredis does not support array arguments in the same way, and is therefore not vulnerable to the same kind of type confusion.
- */
-private module Redis {
-  /**
-   * Gets a `Node Redis` client.
-   */
-  private API::Node client() {
-    result = API::moduleImport("redis").getMember("createClient").getReturn()
-    or
-    result = API::moduleImport("redis").getMember("RedisClient").getInstance()
-    or
-    result = client().getMember("duplicate").getReturn()
-    or
-    result = client().getMember("duplicate").getLastParameter().getParameter(1)
-  }
-
-  /**
-   * Gets a (possibly chained) reference to a batch operation object.
-   * These have the same API as a redis client, except the calls are chained, and the sequence is terminated with a `.exec` call.
-   */
-  private API::Node multi() {
-    result = client().getMember(["multi", "batch"]).getReturn()
-    or
-    result = multi().getAMember().getReturn()
-  }
-
-  /**
-   * Gets a `Node Redis` client instance. Either a client created using `createClient()`, or a batch operation object.
-   */
-  private API::Node redis() { result = [client(), multi()] }
-
-  /**
-   * Provides signatures for the query methods from Node Redis.
-   */
-  module QuerySignatures {
-    /**
-     * Holds if `method` interprets parameter `argIndex` as a key, and a later parameter determines a value/field.
-     * Thereby the method is vulnerable if parameter `argIndex` is unexpectedly an array instead of a string, as an attacker can control arguments to Redis that the attacker was not supposed to control.
-     *
-     * Only setters and similar methods are included.
-     * For getter-like methods it is not generally possible to gain access "outside" of where you are supposed to have access,
-     * it is at most possible to get a Redis call to return more results than expected (e.g. by adding more members to [`geohash`](https://redis.io/commands/geohash)).
-     */
-    predicate argumentIsAmbiguousKey(string method, int argIndex) {
-      method =
-        [
-          "set", "publish", "append", "bitfield", "decrby", "getset", "hincrby", "hincrbyfloat",
-          "hset", "hsetnx", "incrby", "incrbyfloat", "linsert", "lpush", "lpushx", "lset", "ltrim",
-          "rename", "renamenx", "rpushx", "setbit", "setex", "smove", "zincrby", "zinterstore",
-          "hdel", "lpush", "pfadd", "rpush", "sadd", "sdiffstore", "srem"
-        ] and
-      argIndex = 0
-      or
-      method = ["bitop", "hmset", "mset", "msetnx", "geoadd"] and
-      argIndex in [0 .. any(DataFlow::InvokeNode invk).getNumArgument() - 1]
-    }
-  }
-
-  /**
-   * An expression that is interpreted as a key in a Node Redis call.
-   */
-  class RedisKeyArgument extends NoSQL::Query {
-    RedisKeyArgument() {
-      exists(string method, int argIndex |
-        QuerySignatures::argumentIsAmbiguousKey(method, argIndex) and
-        this = redis().getMember(method).getParameter(argIndex).getARhs().asExpr()
-      )
+      invk.interpretsArgumentAsQuery(result)
     }
   }
 }
