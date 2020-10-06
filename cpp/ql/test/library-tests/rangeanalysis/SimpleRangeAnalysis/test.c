@@ -639,3 +639,15 @@ void two_bounds_from_one_test(short ss, unsigned short us) {
     out(ss); // -1 .. 2
   }
 }
+
+void guard_bound_out_of_range(void) {
+  int i = 0;
+  if (i < 0) {
+    out(i); // 0 .. 0 [BUG: is -max .. +max]
+  }
+
+  unsigned int u = 0;
+  if (u < 0) {
+    out(u); // 0 .. 0 [BUG: is 0 .. +max]
+  }
+}
