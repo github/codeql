@@ -216,10 +216,43 @@ class SsaNode extends Node, MkSsaNode {
   }
 }
 
+private module FunctionNode {
+  /** A function, viewed as a node in a data flow graph. */
+  abstract class Range extends Node {
+    /** Gets the `i`th parameter of this function. */
+    abstract ParameterNode getParameter(int i);
+
+    /** Gets the name of this function, if it has one. */
+    abstract string getName();
+
+    /**
+     * Gets the dataflow node holding the value of the receiver, if any.
+     */
+    abstract ReceiverNode getReceiver();
+
+    /**
+     * Gets a value returned by the given function via a return statement or an assignment to a
+     * result variable.
+     */
+    abstract ResultNode getAResult();
+
+    /**
+     * Gets the function entity this node corresponds to.
+     *
+     * Note that this predicate has no result for function literals.
+     */
+    Function getFunction() { none() }
+  }
+}
+
 /** A function, viewed as a node in a data flow graph. */
-abstract class FunctionNode extends Node {
+class FunctionNode extends Node {
+  FunctionNode::Range self;
+
+  FunctionNode() { this = self }
+
   /** Gets the `i`th parameter of this function. */
-  abstract ParameterNode getParameter(int i);
+  ParameterNode getParameter(int i) { result = self.getParameter(i) }
 
   /** Gets a parameter of this function. */
   ParameterNode getAParameter() { result = this.getParameter(_) }
@@ -228,18 +261,18 @@ abstract class FunctionNode extends Node {
   int getNumParameter() { result = count(this.getAParameter()) }
 
   /** Gets the name of this function, if it has one. */
-  abstract string getName();
+  string getName() { result = self.getName() }
 
   /**
    * Gets the dataflow node holding the value of the receiver, if any.
    */
-  abstract ReceiverNode getReceiver();
+  ReceiverNode getReceiver() { result = self.getReceiver() }
 
   /**
    * Gets a value returned by the given function via a return statement or an assignment to a
    * result variable.
    */
-  abstract ResultNode getAResult();
+  ResultNode getAResult() { result = self.getAResult() }
 
   /**
    * Gets the data-flow node corresponding to the `i`th result of this function.
@@ -251,11 +284,11 @@ abstract class FunctionNode extends Node {
    *
    * Note that this predicate has no result for function literals.
    */
-  Function getFunction() { none() }
+  Function getFunction() { result = self.getFunction() }
 }
 
 /** A representation of a function that is declared in the module scope. */
-class GlobalFunctionNode extends FunctionNode, MkGlobalFunctionNode {
+class GlobalFunctionNode extends FunctionNode::Range, MkGlobalFunctionNode {
   Function func;
 
   GlobalFunctionNode() { this = MkGlobalFunctionNode(func) }
@@ -284,7 +317,7 @@ class GlobalFunctionNode extends FunctionNode, MkGlobalFunctionNode {
 }
 
 /** A representation of the function that is defined by a function literal. */
-class FuncLitNode extends FunctionNode, ExprNode {
+class FuncLitNode extends FunctionNode::Range, ExprNode {
   override FuncLit expr;
 
   override ParameterNode getParameter(int i) { result = parameterNode(expr.getParameter(i)) }
