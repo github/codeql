@@ -22,13 +22,49 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "getCommand" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
     exists(SystemCommandExecution sce, DataFlow::Node command |
-      exists(location.getFile().getRelativePath()) and
       command = sce.getCommand() and
       location = command.getLocation() and
       element = command.toString() and
       value = value_from_expr(command.asExpr()) and
       tag = "getCommand"
+    )
+  }
+}
+
+class HttpServerRouteSetupTest extends InlineExpectationsTest {
+  HttpServerRouteSetupTest() { this = "HttpServerRouteSetupTest" }
+
+  override string getARelevantTag() { result in ["routeSetup", "routeHandler", "routedParameter"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(HTTP::Server::RouteSetup setup |
+      location = setup.getLocation() and
+      element = setup.toString() and
+      (
+        value = "\"" + setup.getUrlPattern() + "\""
+        or
+        not exists(setup.getUrlPattern()) and
+        value = ""
+      ) and
+      tag = "routeSetup"
+    )
+    or
+    exists(HTTP::Server::RouteSetup setup, Function func |
+      func = setup.getARouteHandler() and
+      location = func.getLocation() and
+      element = func.toString() and
+      value = "" and
+      tag = "routeHandler"
+    )
+    or
+    exists(HTTP::Server::RouteSetup setup, Parameter param |
+      param = setup.getARoutedParameter() and
+      location = param.getLocation() and
+      element = param.toString() and
+      value = param.asName().getId() and
+      tag = "routedParameter"
     )
   }
 }
