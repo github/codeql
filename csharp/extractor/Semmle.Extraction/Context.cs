@@ -124,11 +124,9 @@ namespace Semmle.Extraction
                     Populate(init as ISymbol, entity);
 
 #if DEBUG_LABELS
-                using (var id = new StringWriter())
-                {
-                    entity.WriteQuotedId(id);
-                    CheckEntityHasUniqueLabel(id.ToString(), entity);
-                }
+                using var id = new StringWriter();
+                entity.WriteQuotedId(id);
+                CheckEntityHasUniqueLabel(id.ToString(), entity);
 #endif
 
                 return entity;

@@ -46,11 +46,9 @@ namespace Semmle.Extraction
         {
             get
             {
-                using (var writer = new StringWriter())
-                {
-                    Populate(writer);
-                    return writer.ToString();
-                }
+                using var writer = new StringWriter();
+                Populate(writer);
+                return writer.ToString();
             }
         }
 

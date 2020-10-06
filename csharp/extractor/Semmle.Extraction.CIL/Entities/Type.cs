@@ -76,11 +76,9 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string ToString()
         {
-            using (var writer = new StringWriter())
-            {
-                WriteQuotedId(writer);
-                return writer.ToString();
-            }
+            using var writer = new StringWriter();
+            WriteQuotedId(writer);
+            return writer.ToString();
         }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;

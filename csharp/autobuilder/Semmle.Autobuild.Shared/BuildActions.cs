@@ -169,11 +169,9 @@ namespace Semmle.Autobuild.Shared
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment)
         {
             var pi = GetProcessStartInfo(cmd, args, workingDirectory, environment, false);
-            using (var p = Process.Start(pi))
-            {
-                p.WaitForExit();
-                return p.ExitCode;
-            }
+            using var p = Process.Start(pi);
+            p.WaitForExit();
+            return p.ExitCode;
         }
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment, out IList<string> stdOut)

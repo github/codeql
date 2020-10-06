@@ -70,47 +70,45 @@ namespace Semmle.Util
         /// <returns>The canonical path.</returns>
         public override string GetCanonicalPath(string path, IPathCache cache)
         {
-            using (var hFile = Win32.CreateFile(  // lgtm[cs/call-to-unmanaged-code]
+            using var hFile = Win32.CreateFile(  // lgtm[cs/call-to-unmanaged-code]
                 path,
                 0,
                 Win32.FILE_SHARE_READ | Win32.FILE_SHARE_WRITE,
                 IntPtr.Zero,
                 Win32.OPEN_EXISTING,
                 Win32.FILE_FLAG_BACKUP_SEMANTICS,
-                IntPtr.Zero))
-            {
+                IntPtr.Zero);
 
-                if (hFile.IsInvalid)
+            if (hFile.IsInvalid)
+            {
+                // File/directory does not exist.
+                return ConstructCanonicalPath(path, cache);
+            }
+            else
+            {
+                StringBuilder outPath = new StringBuilder(Win32.MAX_PATH);
+                int length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
+                if (length >= outPath.Capacity)
                 {
-                    // File/directory does not exist.
+                    // Path length exceeded MAX_PATH.
+                    // Possible if target has a long path.
+                    outPath = new StringBuilder(length + 1);
+                    length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
+                }
+
+                const int PREAMBLE = 4; // outPath always starts \\?\
+
+                if (length <= PREAMBLE)
+                {
+                    // Failed. GetFinalPathNameByHandle() failed somehow.
                     return ConstructCanonicalPath(path, cache);
                 }
-                else
-                {
-                    StringBuilder outPath = new StringBuilder(Win32.MAX_PATH);
-                    int length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
-                    if (length >= outPath.Capacity)
-                    {
-                        // Path length exceeded MAX_PATH.
-                        // Possible if target has a long path.
-                        outPath = new StringBuilder(length + 1);
-                        length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
-                    }
 
-                    const int PREAMBLE = 4; // outPath always starts \\?\
+                string result = outPath.ToString(PREAMBLE, length - PREAMBLE);  // Trim off leading \\?\
 
-                    if (length <= PREAMBLE)
-                    {
-                        // Failed. GetFinalPathNameByHandle() failed somehow.
-                        return ConstructCanonicalPath(path, cache);
-                    }
-
-                    string result = outPath.ToString(PREAMBLE, length - PREAMBLE);  // Trim off leading \\?\
-
-                    return result.StartsWith("UNC") ?
-                        @"\" + result.Substring(3) :
-                        result;
-                }
+                return result.StartsWith("UNC") ?
+                    @"\" + result.Substring(3) :
+                    result;
             }
         }
     }

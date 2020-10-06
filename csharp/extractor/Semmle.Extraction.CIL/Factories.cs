@@ -36,19 +36,17 @@ namespace Semmle.Extraction.CIL
                         c.Extract(this);
                 });
 #if DEBUG_LABELS
-                using (var writer = new StringWriter())
-                {
-                    e.WriteId(writer);
-                    var id = writer.ToString();
+                using var writer = new StringWriter();
+                e.WriteId(writer);
+                var id = writer.ToString();
 
-                    if (debugLabels.TryGetValue(id, out IExtractedEntity? previousEntity))
-                    {
-                        cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
-                    }
-                    else
-                    {
-                        debugLabels.Add(id, e);
-                    }
+                if (debugLabels.TryGetValue(id, out IExtractedEntity? previousEntity))
+                {
+                    cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
+                }
+                else
+                {
+                    debugLabels.Add(id, e);
                 }
 #endif
             }

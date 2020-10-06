@@ -28,11 +28,9 @@ namespace Semmle.Extraction
         public override string ToString()
         {
             // Only implemented for debugging purposes
-            using (var writer = new StringWriter())
-            {
-                EmitTrap(writer);
-                return writer.ToString();
-            }
+            using var writer = new StringWriter();
+            EmitTrap(writer);
+            return writer.ToString();
         }
     }
 }

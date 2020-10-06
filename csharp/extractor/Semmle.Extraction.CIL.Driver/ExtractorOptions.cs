@@ -62,32 +62,30 @@ namespace Semmle.Extraction.CIL.Driver
             filename = path;
 
             // Attempt to open the file and see if it's a valid assembly.
-            using (var stream = File.OpenRead(path))
-            using (var peReader = new PEReader(stream))
+            using var stream = File.OpenRead(path);
+            using var peReader = new PEReader(stream);
+            try
             {
-                try
-                {
-                    if (!peReader.HasMetadata) throw new InvalidAssemblyException();
+                if (!peReader.HasMetadata) throw new InvalidAssemblyException();
 
-                    var mdReader = peReader.GetMetadataReader();
+                var mdReader = peReader.GetMetadataReader();
 
-                    if (!mdReader.IsAssembly) throw new InvalidAssemblyException();
+                if (!mdReader.IsAssembly) throw new InvalidAssemblyException();
 
-                    // Get our own assembly name
-                    name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());
+                // Get our own assembly name
+                name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());
 
-                    references = mdReader.AssemblyReferences.
-                        Select(r => mdReader.GetAssemblyReference(r)).
-                        Select(ar => CreateAssemblyName(mdReader, ar)).
-                        ToArray();
-                }
-                catch (System.BadImageFormatException)
-                {
-                    // This failed on one of the Roslyn tests that includes
-                    // a deliberately malformed assembly.
-                    // In this case, we just skip the extraction of this assembly.
-                    throw new InvalidAssemblyException();
-                }
+                references = mdReader.AssemblyReferences.
+                    Select(r => mdReader.GetAssemblyReference(r)).
+                    Select(ar => CreateAssemblyName(mdReader, ar)).
+                    ToArray();
+            }
+            catch (System.BadImageFormatException)
+            {
+                // This failed on one of the Roslyn tests that includes
+                // a deliberately malformed assembly.
+                // In this case, we just skip the extraction of this assembly.
+                throw new InvalidAssemblyException();
             }
         }
 
