@@ -1,17 +1,17 @@
 /**
- * Provides models for C++ containers `std::map` and `std::unordered_map`.
+ * Provides models for C++ containers `std::set` and `std::unordered_set`.
  */
 
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.implementations.Iterator
 
 /**
- * Additional model for map constructors using iterator inputs.
+ * Additional model for set constructors using iterator inputs.
  */
-class StdMapConstructor extends Constructor, TaintFunction {
-  StdMapConstructor() {
-    this.hasQualifiedName("std", "map", "map") or
-    this.hasQualifiedName("std", "unordered_map", "unordered_map")
+class StdSetConstructor extends Constructor, TaintFunction {
+  StdSetConstructor() {
+    this.hasQualifiedName("std", "set", "set") or
+    this.hasQualifiedName("std", "unordered_set", "unordered_set")
   }
 
   /**
@@ -33,12 +33,10 @@ class StdMapConstructor extends Constructor, TaintFunction {
 }
 
 /**
- * The standard map `insert` and `insert_or_assign` functions.
+ * The standard set `insert` and `insert_or_assign` functions.
  */
-class StdMapInsert extends TaintFunction {
-  StdMapInsert() {
-    this.hasQualifiedName("std", ["map", "unordered_map"], ["insert", "insert_or_assign"])
-  }
+class StdSetInsert extends TaintFunction {
+  StdSetInsert() { this.hasQualifiedName("std", ["set", "unordered_set"], "insert") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from last parameter to qualifier and return value
@@ -52,10 +50,10 @@ class StdMapInsert extends TaintFunction {
 }
 
 /**
- * The standard map `swap` functions.
+ * The standard set `swap` functions.
  */
-class StdMapSwap extends TaintFunction {
-  StdMapSwap() { this.hasQualifiedName("std", ["map", "unordered_map"], "swap") }
+class StdSetSwap extends TaintFunction {
+  StdSetSwap() { this.hasQualifiedName("std", ["set", "unordered_set"], "swap") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // container1.swap(container2)
@@ -68,27 +66,10 @@ class StdMapSwap extends TaintFunction {
 }
 
 /**
- * The standard map functions `at` and `operator[]`.
+ * The standard set `find` function.
  */
-class StdMapAt extends TaintFunction {
-  StdMapAt() { this.hasQualifiedName("std", ["map", "unordered_map"], ["at", "operator[]"]) }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from qualifier to referenced return value
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
-    or
-    // reverse flow from returned reference to the qualifier
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-  }
-}
-
-/**
- * The standard map `find` function.
- */
-class StdMapFind extends TaintFunction {
-  StdMapFind() { this.hasQualifiedName("std", ["map", "unordered_map"], "find") }
+class StdSetFind extends TaintFunction {
+  StdSetFind() { this.hasQualifiedName("std", ["set", "unordered_set"], "find") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
@@ -97,10 +78,10 @@ class StdMapFind extends TaintFunction {
 }
 
 /**
- * The standard map `erase` function.
+ * The standard set `erase` function.
  */
-class StdMapErase extends TaintFunction {
-  StdMapErase() { this.hasQualifiedName("std", ["map", "unordered_map"], "erase") }
+class StdSetErase extends TaintFunction {
+  StdSetErase() { this.hasQualifiedName("std", ["set", "unordered_set"], "erase") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to iterator return value
