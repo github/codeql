@@ -496,7 +496,7 @@ module NodeJSLib {
      * A member `member` from module `fs`.
      */
     DataFlow::SourceNode moduleMember(string member) {
-      exists(string moduleName | moduleName = ["fs"] |
+      exists(string moduleName | moduleName = ["fs-extra", "graceful-fs", "fs"] |
         result = DataFlow::moduleMember(moduleName, member)
       )
     }
