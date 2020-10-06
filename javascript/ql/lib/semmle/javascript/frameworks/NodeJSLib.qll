@@ -451,53 +451,8 @@ module NodeJSLib {
      * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
      */
     DataFlow::SourceNode moduleMember(string member) {
-      result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)
-    }
-
-    private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
-      exists(string moduleName |
-        moduleName = ["mz/fs", "original-fs", "fs-extra", "graceful-fs", "fs"]
-      |
-        result = DataFlow::moduleImport(moduleName)
-        or
-        // extra support for flexible names
-        result.asExpr().(Require).getArgument(0).mayHaveStringValue(moduleName)
-      ) and
-      t.start()
-      or
-      t.start() and
-      result = DataFlow::moduleMember("fs", "promises")
-      or
-      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
-        result = pred.track(t2, t)
-        or
-        t.continue() = t2 and
-        exists(Promisify::PromisifyAllCall promisifyAllCall |
-          result = promisifyAllCall and
-          pred.flowsTo(promisifyAllCall.getArgument(0))
-        )
-        or
-        // const fs = require('fs');
-        // let fs_copy = methods.reduce((obj, method) => {
-        //  obj[method] = fs[method];
-        //  return obj;
-        // }, {});
-        t.continue() = t2 and
-        exists(
-          DataFlow::MethodCallNode call, DataFlow::ParameterNode obj, DataFlow::SourceNode method
-        |
-          call.getMethodName() = "reduce" and
-          result = call and
-          obj = call.getABoundCallbackParameter(0, 0) and
-          obj.flowsTo(any(DataFlow::FunctionNode f).getAReturn()) and
-          exists(DataFlow::PropWrite write, DataFlow::PropRead read |
-            write = obj.getAPropertyWrite() and
-            method.flowsToExpr(write.getPropertyNameExpr()) and
-            method.flowsToExpr(read.getPropertyNameExpr()) and
-            read.getBase().getALocalSource() = fsModule(t2) and
-            write.getRhs() = maybePromisified(read)
-          )
-        )
+      exists(string moduleName | moduleName = ["fs-extra", "graceful-fs", "fs"] |
+        result = DataFlow::moduleMember(moduleName, member)
       )
     }
   }
@@ -508,7 +463,7 @@ module NodeJSLib {
   private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
-    NodeJSFileSystemAccess() { this = maybePromisified(FS::moduleMember(methodName)).getACall() }
+    NodeJSFileSystemAccess() { this = FS::moduleMember(methodName).getACall() }
 
     /**
      * Gets the name of the called method.
