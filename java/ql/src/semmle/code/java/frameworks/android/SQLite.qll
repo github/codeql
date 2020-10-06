@@ -1,6 +1,6 @@
 import java
 import Android
-private import semmle.code.java.dataflow.TaintTracking::TaintTracking as TT
+import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The class `android.database.sqlite.SQLiteDatabase`.
@@ -228,7 +228,7 @@ private class ContentProviderUpdateMethod extends SQLiteRunner {
   override int sqlIndex() { result = 2 }
 }
 
-private class QueryBuilderBuildMethod extends TT::TaintPreservingMethod {
+private class QueryBuilderBuildMethod extends TaintPreservingMethod {
   QueryBuilderBuildMethod() {
     this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
     // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
@@ -255,7 +255,7 @@ private class QueryBuilderBuildMethod extends TT::TaintPreservingMethod {
   }
 }
 
-private class QueryBuilderAppendMethod extends TT::TaintTransferringMethod {
+private class QueryBuilderAppendMethod extends TaintTransferringMethod {
   QueryBuilderAppendMethod() {
     this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
     // setProjectionMap(Map<String, String> columnMap)
@@ -273,7 +273,7 @@ private class QueryBuilderAppendMethod extends TT::TaintTransferringMethod {
   }
 }
 
-private class UnsafeAppendUtilMethod extends TT::TaintPreservingMethod {
+private class UnsafeAppendUtilMethod extends TaintPreservingMethod {
   UnsafeAppendUtilMethod() {
     this.getDeclaringType() instanceof TypeDatabaseUtils and
     // String[] appendSelectionArgs(String[] originalValues, String[] newValues)

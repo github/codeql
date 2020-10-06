@@ -8,7 +8,7 @@ import semmle.code.java.Serializability
 import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow5
-private import semmle.code.java.dataflow.TaintTracking::TaintTracking as TT
+import semmle.code.java.dataflow.FlowSteps
 
 /**
  * A `@com.fasterxml.jackson.annotation.JsonIgnore` annoation.
@@ -28,7 +28,7 @@ abstract class JacksonSerializableType extends Type { }
  * A method used for serializing objects using Jackson. The final parameter is the object to be
  * serialized.
  */
-library class JacksonWriteValueMethod extends TT::TaintPreservingMethod, TT::TaintTransferringMethod {
+library class JacksonWriteValueMethod extends TaintPreservingMethod, TaintTransferringMethod {
   JacksonWriteValueMethod() {
     (
       getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectWriter") or
