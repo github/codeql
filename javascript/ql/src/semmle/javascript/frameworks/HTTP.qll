@@ -470,6 +470,23 @@ module HTTP {
        */
       abstract Expr getServer();
     }
+
+    /**
+     * A parameter containing data received by a NodeJS HTTP server.
+     * E.g. `chunk` in: `http.createServer().on('request', (req, res) => req.on("data", (chunk) => ...))`.
+     */
+    private class ServerRequestDataEvent extends RemoteFlowSource, DataFlow::ParameterNode {
+      RequestSource req;
+
+      ServerRequestDataEvent() {
+        exists(DataFlow::MethodCallNode mcn | mcn = req.ref().getAMethodCall(EventEmitter::on()) |
+          mcn.getArgument(0).mayHaveStringValue("data") and
+          this = mcn.getABoundCallbackParameter(1, 0)
+        )
+      }
+
+      override string getSourceType() { result = "NodeJS HTTP server data event" }
+    }
   }
 
   /**

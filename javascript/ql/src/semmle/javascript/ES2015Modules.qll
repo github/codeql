@@ -27,8 +27,8 @@ class ES2015Module extends Module {
   /** Gets an export declaration in this module. */
   ExportDeclaration getAnExport() { result.getTopLevel() = this }
 
-  override predicate exports(string name, ASTNode export) {
-    exists(ExportDeclaration ed | ed = getAnExport() and ed = export | ed.exportsAs(_, name))
+  override DataFlow::Node getAnExportedValue(string name) {
+    exists(ExportDeclaration ed | ed = getAnExport() and result = ed.getSourceNode(name))
   }
 
   /** Holds if this module exports variable `v` under the name `name`. */
@@ -393,6 +393,13 @@ class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaratio
     exists(VarDef d | d.getTarget() = getADecl() |
       name = d.getTarget().(VarDecl).getName() and
       result = DataFlow::valueNode(d.getSource())
+    )
+    or
+    exists(ObjectPattern obj | obj = getOperand().(DeclStmt).getADecl().getBindingPattern() |
+      exists(DataFlow::PropRead read | read = result |
+        read.getBase() = obj.flow() and
+        name = read.getPropertyName()
+      )
     )
     or
     exists(ExportSpecifier spec | spec = getASpecifier() and name = spec.getExportedName() |

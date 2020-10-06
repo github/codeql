@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Duplicate method
  * @description There is another identical implementation of this method. Extract the code to a common superclass or delegate to improve sharing.
  * @kind problem

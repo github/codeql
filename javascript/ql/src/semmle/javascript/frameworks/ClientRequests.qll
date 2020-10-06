@@ -328,6 +328,85 @@ module ClientRequest {
   }
 
   /**
+   * Classes for modelling the url request library `needle`.
+   */
+  private module Needle {
+    /**
+     * A model of a URL request made using `require("needle")(...)`.
+     */
+    class PromisedNeedleRequest extends ClientRequest::Range {
+      DataFlow::Node url;
+
+      PromisedNeedleRequest() { this = DataFlow::moduleImport("needle").getACall() }
+
+      override DataFlow::Node getUrl() { result = getArgument(1) }
+
+      override DataFlow::Node getHost() { none() }
+
+      override DataFlow::Node getADataNode() {
+        result = getOptionArgument([2, 3], "headers")
+        or
+        result = getArgument(2)
+      }
+
+      override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+        responseType = "fetch.response" and
+        promise = true and
+        result = this
+      }
+    }
+
+    /**
+     * A model of a URL request made using `require("needle")[method](...)`.
+     * E.g. `needle.get("http://example.org", (err, resp, body) => {})`.
+     *
+     * As opposed to the calls modeled in `PromisedNeedleRequest` these calls do not return promises.
+     * Instead they take an optional callback as their last argument.
+     */
+    class NeedleMethodRequest extends ClientRequest::Range {
+      boolean hasData;
+
+      NeedleMethodRequest() {
+        exists(string method |
+          method = ["get", "head"] and hasData = false
+          or
+          method = ["post", "put", "patch", "delete"] and hasData = true
+          or
+          method = "request" and hasData = [true, false]
+        |
+          this = DataFlow::moduleMember("needle", method).getACall()
+        )
+      }
+
+      override DataFlow::Node getUrl() { result = getArgument(0) }
+
+      override DataFlow::Node getHost() { none() }
+
+      override DataFlow::Node getADataNode() {
+        hasData = true and
+        (
+          result = getArgument(1)
+          or
+          result = getOptionArgument(2, "headers")
+        )
+        or
+        hasData = false and
+        result = getOptionArgument(1, "headers")
+      }
+
+      override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+        promise = false and
+        result = this.getABoundCallbackParameter(this.getNumArgument() - 1, 1) and
+        responseType = "fetch.response"
+        or
+        promise = false and
+        result = this.getABoundCallbackParameter(this.getNumArgument() - 1, 2) and
+        responseType = "json"
+      }
+    }
+  }
+
+  /**
    * A model of a URL request made using the `got` library.
    */
   class GotUrlRequest extends ClientRequest::Range {

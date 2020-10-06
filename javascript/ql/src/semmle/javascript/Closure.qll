@@ -165,9 +165,9 @@ module Closure {
       result = getScope().getVariable("exports")
     }
 
-    override predicate exports(string name, ASTNode export) {
+    override DataFlow::Node getAnExportedValue(string name) {
       exists(DataFlow::PropWrite write, Expr base |
-        write.getAstNode() = export and
+        result = write.getRhs() and
         write.writes(base.flow(), name, _) and
         (
           base = getExportsVariable().getAReference()

@@ -18,8 +18,8 @@ string cookieProperty() { result = "session" or result = "cookies" or result = "
 /** Gets a data flow node that flows to the base of an access to `cookies`, `session`, or `user`. */
 private DataFlow::SourceNode nodeLeadingToCookieAccess(DataFlow::TypeBackTracker t) {
   t.start() and
-  exists(DataFlow::PropRead value |
-    value = result.getAPropertyRead(cookieProperty()).getAPropertyRead() and
+  exists(DataFlow::PropRef value |
+    value = result.getAPropertyRead(cookieProperty()).getAPropertyReference() and
     // Ignore accesses to values that are part of a CSRF or captcha check
     not value.getPropertyName().regexpMatch("(?i).*(csrf|xsrf|captcha).*") and
     // Ignore calls like `req.session.save()`

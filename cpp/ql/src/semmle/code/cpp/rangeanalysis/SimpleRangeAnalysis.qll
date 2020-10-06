@@ -45,6 +45,7 @@
 import cpp
 private import RangeAnalysisUtils
 private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisExpr
+private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisDefinition
 import RangeSSA
 import SimpleRangeAnalysisCached
 private import NanAnalysis
@@ -335,6 +336,11 @@ private predicate defDependsOnDef(
   or
   // Phi nodes.
   phiDependsOnDef(def, v, srcDef, srcVar)
+  or
+  // Extensions
+  exists(Expr expr | def.(SimpleRangeAnalysisDefinition).dependsOnExpr(v, expr) |
+    exprDependsOnDef(expr, srcDef, srcVar)
+  )
 }
 
 /**
@@ -492,6 +498,9 @@ private predicate analyzableDef(RangeSsaDefinition def, StackVariable v) {
   v = def.getAVariable()
   or
   phiDependsOnDef(def, v, _, _)
+  or
+  // A modeled def for range analysis
+  def.(SimpleRangeAnalysisDefinition).hasRangeInformationFor(v)
 }
 
 /**
@@ -1215,6 +1224,9 @@ private float getDefLowerBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Phi nodes.
   result = getPhiLowerBounds(v, def)
   or
+  // A modeled def for range analysis
+  result = def.(SimpleRangeAnalysisDefinition).getLowerBounds(v)
+  or
   // Unanalyzable definitions.
   unanalyzableDefBounds(def, v, result, _)
 }
@@ -1247,6 +1259,9 @@ private float getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   or
   // Phi nodes.
   result = getPhiUpperBounds(v, def)
+  or
+  // A modeled def for range analysis
+  result = def.(SimpleRangeAnalysisDefinition).getUpperBounds(v)
   or
   // Unanalyzable definitions.
   unanalyzableDefBounds(def, v, _, result)

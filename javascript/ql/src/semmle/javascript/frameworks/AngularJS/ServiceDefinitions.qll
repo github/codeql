@@ -479,7 +479,7 @@ abstract class ServiceRequest extends Expr {
   /**
    * Gets the parameter of this request into which `service` is injected.
    */
-  abstract SimpleParameter getDependencyParameter(ServiceReference service);
+  abstract Parameter getDependencyParameter(ServiceReference service);
 }
 
 /**
@@ -488,7 +488,7 @@ abstract class ServiceRequest extends Expr {
 private class LinkFunctionWithScopeInjection extends ServiceRequest {
   LinkFunctionWithScopeInjection() { this instanceof LinkFunction }
 
-  override SimpleParameter getDependencyParameter(ServiceReference service) {
+  override Parameter getDependencyParameter(ServiceReference service) {
     service instanceof ScopeServiceReference and
     result = this.(LinkFunction).getScopeParameter()
   }
@@ -521,7 +521,7 @@ class InjectableFunctionServiceRequest extends ServiceRequest {
     result.isInjectable()
   }
 
-  override SimpleParameter getDependencyParameter(ServiceReference service) {
+  override Parameter getDependencyParameter(ServiceReference service) {
     service = injectedFunction.getAResolvedDependency(result)
   }
 }
