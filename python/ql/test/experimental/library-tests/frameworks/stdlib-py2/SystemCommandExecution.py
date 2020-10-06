@@ -10,7 +10,7 @@ os.popen2(cmd="cmd1; cmd2")  # $getCommand="cmd1; cmd2"
 os.popen3(cmd="cmd1; cmd2")  # $getCommand="cmd1; cmd2"
 os.popen4(cmd="cmd1; cmd2")  # $getCommand="cmd1; cmd2"
 
-# os.popen does not support keyword arguments
+# os.popen does not support keyword arguments, so this is a TypeError
 os.popen(cmd="cmd1; cmd2")
 
 ########################################

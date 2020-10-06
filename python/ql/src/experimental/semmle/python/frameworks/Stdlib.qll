@@ -32,7 +32,7 @@ private module Stdlib {
    * For example, using `attr_name = "system"` will get all uses of `os.system`.
    */
   private DataFlow::Node os_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["system", "popen",
+    attr_name in ["system", "popen", "popen2", "popen3", "popen4",
           // exec
           "execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe",
           // spawn
@@ -111,14 +111,26 @@ private module Stdlib {
   }
 
   /**
-   * A call to `os.popen`
+   * A call to any of the `os.popen*` functions
    * See https://docs.python.org/3/library/os.html#os.popen
+   *
+   * Note that in Python 2, there are also `popen2`, `popen3`, and `popen4` functions.
+   * Although deprecated since version 2.6, they still work in 2.7.
+   * See https://docs.python.org/2.7/library/os.html#os.popen2
    */
   private class OsPopenCall extends SystemCommandExecution::Range {
-    OsPopenCall() { this.asCfgNode().(CallNode).getFunction() = os_attr("popen").asCfgNode() }
+    string name;
+
+    OsPopenCall() {
+      name in ["popen", "popen2", "popen3", "popen4"] and
+      this.asCfgNode().(CallNode).getFunction() = os_attr(name).asCfgNode()
+    }
 
     override DataFlow::Node getCommand() {
       result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+      or
+      not name = "popen" and
+      result.asCfgNode() = this.asCfgNode().(CallNode).getArgByName("cmd")
     }
   }
 
