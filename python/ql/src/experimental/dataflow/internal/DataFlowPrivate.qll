@@ -255,10 +255,10 @@ private Node update(Node node) {
  * extra positional argument to this node.
  *
  * CURRENTLY NOT SUPPORTED:
- * When a call contains a tuple argument, it is expanded into positional arguments.
+ * When a call contains an iterable unpacking argument, such as `func(*args)`, it is expanded into positional arguments.
  *
  * CURRENTLY NOT SUPPORTED:
- * Whe a call contains a tuple argument and the callee contains a starred argument, any extra
+ * When a call contains an iterable unpacking argument, such as `func(*args)`, and the callee contains a starred argument, any extra
  * positional arguments are passed to the starred argument.
  *
  * When a call contains keyword arguments that do not correspond to keyword parameters, these
@@ -273,7 +273,7 @@ private Node update(Node node) {
  * value. This is used as the argument passed to the matching keyword parameter. There is a read
  * step from the dictionary argument to the synthesized argument node.
  *
- * When a call contains a dictionary argument and the callee contains a doubly starred parameter,
+ * When a call contains a dictionary unpacking argument, such as `func(**kwargs)`, and the callee contains a doubly starred parameter,
  * entries which are not unpacked are passed to the doubly starred parameter. This is achieved by
  * adding a dataflow step from the dictionary argument to `TKwOverflowNode(call, callable)` and a
  * step to clear content of that node at any unpacked keys.
@@ -281,7 +281,7 @@ private Node update(Node node) {
  * ## Examples:
  * Assume that we have the callable
  * ```python
- * def f(x, y, *t, *d):
+ * def f(x, y, *t, **d):
  *   pass
  * ```
  * Then the call

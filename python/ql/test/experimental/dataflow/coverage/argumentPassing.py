@@ -54,9 +54,9 @@ def argument_passing(
     b,
     /,
     c,
-    d="",
+    d=arg4,
     *,
-    e="",
+    e=arg5,
     f,
     **g,
 ):
@@ -70,8 +70,12 @@ def argument_passing(
 
 
 @expects(7)
-def test_argument_passing():
+def test_argument_passing1():
     argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})
+    
+@expects(7)
+def test_argument_passing2():
+    argument_passing(arg1, arg2, arg3, f=arg6)
 
 
 def with_pos_only(a, /, b):
