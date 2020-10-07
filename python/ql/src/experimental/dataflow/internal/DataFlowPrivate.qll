@@ -273,7 +273,7 @@ private Node update(Node node) {
  * When a call contains a dictionary unpacking argument, such as `func(**kwargs)`, with entries corresponding to a keyword parameter,
  * the value at such a key is unpacked and passed to the parameter. This is achieved
  * by synthesising an argument node `TKwUnpacked(call, callable, name)` representing the unpacked
- * value. This is used as the argument passed to the matching keyword parameter. There is a read
+ * value. This node is used as the argument passed to the matching keyword parameter. There is a read
  * step from the dictionary argument to the synthesized argument node.
  *
  * When a call contains a dictionary unpacking argument, such as `func(**kwargs)`, and the callee contains a doubly starred parameter,
@@ -352,14 +352,14 @@ module ArgumentPassing {
   }
 
   /**
-   * Gets the argument to `call` that is passed to the `n`th parameter of `callable`.
-   * If it is a positional argument, it must appear at position `argNr`.
-   * `argNr` will differ from `n` for method- or class calls, where the first parameter
+   * Gets the argument to `call` that is passed to the parameter at position `paramNr` in `callable`.
+   * If it is a positional argument, it must appear at position `argNr` in `call`.
+   * `argNr` will differ from `paramNr` for method- or constructor calls, where the first parameter
    * is `self` and the first positional argument is passed to the second positional parameter.
    */
-  Node getArg(CallNode call, int argNr, CallableValue callable, int n) {
+  Node getArg(CallNode call, int argNr, CallableValue callable, int paramNr) {
     connects(call, callable) and
-    n - argNr in [0, 1] and // constrain for now to limit the size of the predicate; we only use it to insert one argument (self).
+    paramNr - argNr in [0, 1] and // constrain for now to limit the size of the predicate; we only use it to insert one argument (self).
     (
       // positional argument
       result = TCfgNode(call.getArg(argNr))
@@ -367,23 +367,23 @@ module ArgumentPassing {
       // keyword argument
       exists(Function f, string argName |
         f = callable.getScope() and
-        f.getArgName(n) = argName and
+        f.getArgName(paramNr) = argName and
         result = TCfgNode(call.getArgByName(argName))
       )
       or
       // a synthezised argument passed to the starred parameter (at position -1)
       callable.getScope().hasVarArg() and
-      n = -1 and
+      paramNr = -1 and
       result = TPosOverflowNode(call, callable)
       or
       // a synthezised argument passed to the doubly starred parameter (at position -2)
       callable.getScope().hasKwArg() and
-      n = -2 and
+      paramNr = -2 and
       result = TKwOverflowNode(call, callable)
       or
       // argument unpacked from dict
       exists(string name |
-        call_unpacks(call, argNr, callable, name, n) and
+        call_unpacks(call, argNr, callable, name, paramNr) and
         result = TKwUnpacked(call, callable, name)
       )
     )
