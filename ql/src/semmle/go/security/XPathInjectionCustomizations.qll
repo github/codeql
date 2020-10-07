@@ -36,6 +36,6 @@ module XPathInjection {
 
   /** An XPath expression string, considered as a taint sink for XPath injection. */
   class XPathExpressionStringAsSink extends Sink {
-    XPathExpressionStringAsSink() { this instanceof XPath::XPathExpressionString::Range }
+    XPathExpressionStringAsSink() { this instanceof XPath::XPathExpressionString }
   }
 }
