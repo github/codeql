@@ -30,9 +30,9 @@ private class ConstantBitwiseAndExprRange extends SimpleRangeAnalysisExpr {
       r = this.(AssignAndExpr).getRValue()
     |
       // No operands can be negative constants
-      not (evaluateConstantExpr(getLOp(this)) < 0 or evaluateConstantExpr(getROp(this)) < 0) and
+      not (evaluateConstantExpr(l) < 0 or evaluateConstantExpr(r) < 0) and
       // At least one operand must be a non-negative constant
-      (evaluateConstantExpr(getLOp(this)) >= 0 or evaluateConstantExpr(getROp(this)) >= 0)
+      (evaluateConstantExpr(l) >= 0 or evaluateConstantExpr(r) >= 0)
     )
   }
 
@@ -49,11 +49,9 @@ private class ConstantBitwiseAndExprRange extends SimpleRangeAnalysisExpr {
   override float getLowerBounds() {
     // If an operand can have negative values, the lower bound is unconstrained.
     // Otherwise, the lower bound is zero.
-    exists(float lLower, float lUpper, float rLower, float rUpper |
+    exists(float lLower, float rLower |
       lLower = getFullyConvertedLowerBounds(getLeftOperand()) and
-      lUpper = getFullyConvertedUpperBounds(getLeftOperand()) and
       rLower = getFullyConvertedLowerBounds(getRightOperand()) and
-      rUpper = getFullyConvertedUpperBounds(getRightOperand()) and
       (
         (lLower < 0 or rLower < 0) and
         result = exprMinVal(this)
