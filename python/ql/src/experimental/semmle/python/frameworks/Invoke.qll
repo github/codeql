@@ -31,7 +31,7 @@ private module Invoke {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node invoke_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["run", "sudo", "context", "Context"] and
+    attr_name in ["run", "sudo", "context", "Context", "task"] and
     (
       t.start() and
       result = DataFlow::importMember("invoke", attr_name)
@@ -96,6 +96,12 @@ private module Invoke {
           t.start() and
           result.asCfgNode().(CallNode).getFunction() =
             invoke::context::Context::class_().asCfgNode()
+          or
+          t.start() and
+          exists(Function func |
+            func.getADecorator() = invoke_attr("task").asExpr() and
+            result.asExpr() = func.getArg(0)
+          )
           or
           exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
         }
