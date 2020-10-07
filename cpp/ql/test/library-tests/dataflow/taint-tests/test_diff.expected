@@ -49,6 +49,9 @@
 | map.cpp:162:12:162:17 | map.cpp:108:39:108:44 | IR only |
 | map.cpp:172:10:172:10 | map.cpp:168:20:168:25 | AST only |
 | map.cpp:174:10:174:10 | map.cpp:170:23:170:28 | AST only |
+| map.cpp:184:7:184:31 | map.cpp:108:39:108:44 | IR only |
+| map.cpp:185:7:185:32 | map.cpp:108:39:108:44 | IR only |
+| map.cpp:187:7:187:32 | map.cpp:108:39:108:44 | IR only |
 | map.cpp:193:7:193:9 | map.cpp:191:49:191:54 | AST only |
 | map.cpp:196:7:196:9 | map.cpp:192:49:192:54 | AST only |
 | map.cpp:199:7:199:9 | map.cpp:191:49:191:54 | AST only |
@@ -94,6 +97,9 @@
 | map.cpp:314:12:314:17 | map.cpp:260:39:260:44 | IR only |
 | map.cpp:324:10:324:10 | map.cpp:320:20:320:25 | AST only |
 | map.cpp:326:10:326:10 | map.cpp:322:23:322:28 | AST only |
+| map.cpp:334:7:334:31 | map.cpp:260:39:260:44 | IR only |
+| map.cpp:335:7:335:32 | map.cpp:260:39:260:44 | IR only |
+| map.cpp:336:7:336:32 | map.cpp:260:39:260:44 | IR only |
 | map.cpp:342:7:342:9 | map.cpp:340:49:340:54 | AST only |
 | map.cpp:345:7:345:9 | map.cpp:341:49:341:54 | AST only |
 | map.cpp:348:7:348:9 | map.cpp:340:49:340:54 | AST only |

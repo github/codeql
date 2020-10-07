@@ -179,12 +179,12 @@ void test_map()
 	m14.insert(std::make_pair("b", source()));
 	m14.insert(std::make_pair("c", source()));
 	m14.insert(std::make_pair("d", "d"));
-	sink(m2.lower_bound("b")); // tainted [NOT DETECTED]
-	sink(m2.upper_bound("b")); // tainted [NOT DETECTED]
-	sink(m2.equal_range("b").first); // tainted [NOT DETECTED]
-	sink(m2.equal_range("b").second); // tainted [NOT DETECTED]
-	sink(m2.upper_bound("c"));
-	sink(m2.equal_range("c").second);
+	sink(m2.lower_bound("b")); // tainted
+	sink(m2.upper_bound("b")); // tainted
+	sink(m2.equal_range("b").first); // tainted
+	sink(m2.equal_range("b").second); // tainted
+	sink(m2.upper_bound("c")); // [FALSE POSITIVE]
+	sink(m2.equal_range("c").second); // [FALSE POSITIVE]
 
 	// swap
 	std::map<char *, char *> m15, m16, m17, m18;
@@ -331,9 +331,9 @@ void test_unordered_map()
 	m14.insert(std::make_pair("b", source()));
 	m14.insert(std::make_pair("c", source()));
 	m14.insert(std::make_pair("d", "d"));
-	sink(m2.equal_range("b").first); // tainted [NOT DETECTED]
-	sink(m2.equal_range("b").second); // tainted [NOT DETECTED]
-	sink(m2.equal_range("c").second);
+	sink(m2.equal_range("b").first); // tainted
+	sink(m2.equal_range("b").second); // tainted
+	sink(m2.equal_range("c").second); // [FALSE POSITIVE]
 
 	// swap
 	std::unordered_map<char *, char *> m15, m16, m17, m18;

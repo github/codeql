@@ -893,28 +893,34 @@
 | map.cpp:181:13:181:26 | call to make_pair | map.cpp:181:13:181:36 | call to pair | TAINT |
 | map.cpp:181:13:181:36 | call to pair | map.cpp:181:2:181:4 | ref arg m14 | TAINT |
 | map.cpp:181:13:181:36 | call to pair | map.cpp:181:6:181:11 | call to insert | TAINT |
+| map.cpp:182:7:182:8 | m2 | map.cpp:182:10:182:20 | call to lower_bound | TAINT |
 | map.cpp:182:7:182:8 | ref arg m2 | map.cpp:183:7:183:8 | m2 |  |
 | map.cpp:182:7:182:8 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
 | map.cpp:182:7:182:8 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
 | map.cpp:182:7:182:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
 | map.cpp:182:7:182:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:182:7:182:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
+| map.cpp:183:7:183:8 | m2 | map.cpp:183:10:183:20 | call to upper_bound | TAINT |
 | map.cpp:183:7:183:8 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
 | map.cpp:183:7:183:8 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
 | map.cpp:183:7:183:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
 | map.cpp:183:7:183:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:183:7:183:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
+| map.cpp:184:7:184:8 | m2 | map.cpp:184:10:184:20 | call to equal_range | TAINT |
 | map.cpp:184:7:184:8 | ref arg m2 | map.cpp:185:7:185:8 | m2 |  |
 | map.cpp:184:7:184:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
 | map.cpp:184:7:184:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:184:7:184:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
 | map.cpp:184:27:184:31 | first | map.cpp:184:7:184:31 | call to iterator |  |
+| map.cpp:185:7:185:8 | m2 | map.cpp:185:10:185:20 | call to equal_range | TAINT |
 | map.cpp:185:7:185:8 | ref arg m2 | map.cpp:186:7:186:8 | m2 |  |
 | map.cpp:185:7:185:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:185:7:185:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
 | map.cpp:185:27:185:32 | second | map.cpp:185:7:185:32 | call to iterator |  |
+| map.cpp:186:7:186:8 | m2 | map.cpp:186:10:186:20 | call to upper_bound | TAINT |
 | map.cpp:186:7:186:8 | ref arg m2 | map.cpp:187:7:187:8 | m2 |  |
 | map.cpp:186:7:186:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
+| map.cpp:187:7:187:8 | m2 | map.cpp:187:10:187:20 | call to equal_range | TAINT |
 | map.cpp:187:7:187:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
 | map.cpp:187:27:187:32 | second | map.cpp:187:7:187:32 | call to iterator |  |
 | map.cpp:190:27:190:29 | call to map | map.cpp:191:2:191:4 | m15 |  |
@@ -1571,13 +1577,16 @@
 | map.cpp:333:13:333:26 | call to make_pair | map.cpp:333:13:333:36 | call to pair | TAINT |
 | map.cpp:333:13:333:36 | call to pair | map.cpp:333:2:333:4 | ref arg m14 | TAINT |
 | map.cpp:333:13:333:36 | call to pair | map.cpp:333:6:333:11 | call to insert | TAINT |
+| map.cpp:334:7:334:8 | m2 | map.cpp:334:10:334:20 | call to equal_range | TAINT |
 | map.cpp:334:7:334:8 | ref arg m2 | map.cpp:335:7:335:8 | m2 |  |
 | map.cpp:334:7:334:8 | ref arg m2 | map.cpp:336:7:336:8 | m2 |  |
 | map.cpp:334:7:334:8 | ref arg m2 | map.cpp:418:1:418:1 | m2 |  |
 | map.cpp:334:27:334:31 | first | map.cpp:334:7:334:31 | call to iterator |  |
+| map.cpp:335:7:335:8 | m2 | map.cpp:335:10:335:20 | call to equal_range | TAINT |
 | map.cpp:335:7:335:8 | ref arg m2 | map.cpp:336:7:336:8 | m2 |  |
 | map.cpp:335:7:335:8 | ref arg m2 | map.cpp:418:1:418:1 | m2 |  |
 | map.cpp:335:27:335:32 | second | map.cpp:335:7:335:32 | call to iterator |  |
+| map.cpp:336:7:336:8 | m2 | map.cpp:336:10:336:20 | call to equal_range | TAINT |
 | map.cpp:336:7:336:8 | ref arg m2 | map.cpp:418:1:418:1 | m2 |  |
 | map.cpp:336:27:336:32 | second | map.cpp:336:7:336:32 | call to iterator |  |
 | map.cpp:339:37:339:39 | call to unordered_map | map.cpp:340:2:340:4 | m15 |  |

@@ -74,6 +74,9 @@
 | map.cpp:170:7:170:30 | ... = ... | map.cpp:170:23:170:28 | call to source |
 | map.cpp:172:10:172:10 | call to operator[] | map.cpp:168:20:168:25 | call to source |
 | map.cpp:174:10:174:10 | call to operator[] | map.cpp:170:23:170:28 | call to source |
+| map.cpp:182:10:182:20 | call to lower_bound | map.cpp:108:39:108:44 | call to source |
+| map.cpp:183:10:183:20 | call to upper_bound | map.cpp:108:39:108:44 | call to source |
+| map.cpp:186:10:186:20 | call to upper_bound | map.cpp:108:39:108:44 | call to source |
 | map.cpp:193:7:193:9 | call to map | map.cpp:191:49:191:54 | call to source |
 | map.cpp:196:7:196:9 | call to map | map.cpp:192:49:192:54 | call to source |
 | map.cpp:199:7:199:9 | call to map | map.cpp:191:49:191:54 | call to source |

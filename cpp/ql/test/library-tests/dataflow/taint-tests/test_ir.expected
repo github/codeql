@@ -85,6 +85,12 @@
 | map.cpp:162:12:162:17 | second | map.cpp:108:39:108:44 | call to source |
 | map.cpp:168:7:168:27 | ... = ... | map.cpp:168:20:168:25 | call to source |
 | map.cpp:170:7:170:30 | ... = ... | map.cpp:170:23:170:28 | call to source |
+| map.cpp:182:10:182:20 | call to lower_bound | map.cpp:108:39:108:44 | call to source |
+| map.cpp:183:10:183:20 | call to upper_bound | map.cpp:108:39:108:44 | call to source |
+| map.cpp:184:7:184:31 | call to iterator | map.cpp:108:39:108:44 | call to source |
+| map.cpp:185:7:185:32 | call to iterator | map.cpp:108:39:108:44 | call to source |
+| map.cpp:186:10:186:20 | call to upper_bound | map.cpp:108:39:108:44 | call to source |
+| map.cpp:187:7:187:32 | call to iterator | map.cpp:108:39:108:44 | call to source |
 | map.cpp:226:11:226:15 | call to erase | map.cpp:223:49:223:54 | call to source |
 | map.cpp:226:11:226:15 | call to erase | map.cpp:224:49:224:54 | call to source |
 | map.cpp:235:7:235:40 | call to iterator | map.cpp:235:26:235:31 | call to source |
@@ -107,6 +113,9 @@
 | map.cpp:314:12:314:17 | second | map.cpp:260:39:260:44 | call to source |
 | map.cpp:320:7:320:27 | ... = ... | map.cpp:320:20:320:25 | call to source |
 | map.cpp:322:7:322:30 | ... = ... | map.cpp:322:23:322:28 | call to source |
+| map.cpp:334:7:334:31 | call to iterator | map.cpp:260:39:260:44 | call to source |
+| map.cpp:335:7:335:32 | call to iterator | map.cpp:260:39:260:44 | call to source |
+| map.cpp:336:7:336:32 | call to iterator | map.cpp:260:39:260:44 | call to source |
 | map.cpp:375:11:375:15 | call to erase | map.cpp:372:49:372:54 | call to source |
 | map.cpp:375:11:375:15 | call to erase | map.cpp:373:49:373:54 | call to source |
 | map.cpp:384:7:384:40 | call to iterator | map.cpp:384:26:384:31 | call to source |
