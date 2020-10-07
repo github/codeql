@@ -283,3 +283,17 @@ private class UnsafeAppendUtilMethod extends TaintPreservingMethod {
 
   override predicate returnsTaint(int arg) { arg = [0 .. getNumberOfParameters()] }
 }
+
+private class TaintPreservingQueryMethod extends TaintPreservingMethod {
+  TaintPreservingQueryMethod() {
+    (
+      this.getDeclaringType() instanceof AndroidContentProvider or
+      this.getDeclaringType() instanceof AndroidContentResolver
+    ) and
+    // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder, CancellationSignal cancellationSignal)
+    // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
+    this.hasName("query")
+  }
+
+  override predicate returnsTaint(int arg) { arg = 0 }
+}

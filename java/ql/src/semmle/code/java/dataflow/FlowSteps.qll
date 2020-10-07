@@ -2,10 +2,37 @@
  * Provides classes representing various flow steps for taint tracking.
  */
 
-import java
+private import java
+private import semmle.code.java.dataflow.DataFlow
 
 /**
- * A method that returns tainted data when one of its inputs (an argument or the qualifier) are tainted.
+ * A module importing the frameworks that implement additional flow steps,
+ * ensuring that they are visible to the taint tracking library.
+ */
+module Frameworks {
+  private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.android.Intent
+  private import semmle.code.java.frameworks.android.SQLite
+  private import semmle.code.java.frameworks.Guice
+  private import semmle.code.java.frameworks.Protobuf
+}
+
+/**
+ * A unit class for adding additional taint steps.
+ *
+ * Extend this class to add additional taint steps that should apply to all
+ * taint configurations.
+ */
+class AdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for all configurations.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
+/**
+ * A method that returns tainted data when one of its inputs (an argument or the qualifier) is tainted.
  *
  * Extend this class to add additional taint steps through a method that should
  * apply to all taint configurations.

@@ -7,8 +7,9 @@ private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.Validation
 private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.ContainerFlow
-private import semmle.code.java.dataflow.FlowSteps
-private import semmle.code.java.dataflow.internal.TaintTrackingFrameworks
+private import semmle.code.java.frameworks.spring.SpringController
+private import semmle.code.java.frameworks.spring.SpringHttp
+import semmle.code.java.dataflow.FlowSteps
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -48,20 +49,6 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     arg.isVararg() and
     sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
   )
-}
-
-/**
- * A unit class for adding additional taint steps.
- *
- * Extend this class to add additional taint steps that should apply to all
- * taint configurations.
- */
-class AdditionalTaintStep extends Unit {
-  /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
-   * step for all configurations.
-   */
-  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
 /**
@@ -354,8 +341,6 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getDeclaringType().hasQualifiedName("javax.xml.transform.stream", "StreamSource") and
   m.hasName("getInputStream")
   or
-  m instanceof IntentGetExtraMethod
-  or
   m.getDeclaringType().hasQualifiedName("java.nio", "ByteBuffer") and
   m.hasName("get")
   or
@@ -364,10 +349,6 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   m.getDeclaringType().hasQualifiedName("java.net", "URI") and
   m.hasName("toURL")
-  or
-  m = any(GuiceProvider gp).getAnOverridingGetMethod()
-  or
-  m = any(ProtobufMessageLite p).getAGetterMethod()
   or
   m instanceof GetterMethod and m.getDeclaringType() instanceof SpringUntrustedDataType
   or
@@ -525,23 +506,8 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method.hasName("sourceToInputSource") and
   arg = 0
   or
-  exists(ProtobufParser p | method = p.getAParseFromMethod()) and
-  arg = 0
-  or
-  exists(ProtobufMessageLite m | method = m.getAParseFromMethod()) and
-  arg = 0
-  or
   method.getDeclaringType().hasQualifiedName("java.io", "StringWriter") and
   method.hasName("append") and
-  arg = 0
-  or
-  (
-    method.getDeclaringType() instanceof AndroidContentProvider or
-    method.getDeclaringType() instanceof AndroidContentResolver
-  ) and
-  // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder, CancellationSignal cancellationSignal)
-  // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
-  method.hasName("query") and
   arg = 0
   or
   method.(TaintPreservingMethod).returnsTaint(arg)
