@@ -347,7 +347,7 @@ private module Stdlib {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node builtins_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["exec", "eval"] and
+    attr_name in ["exec", "eval", "compile"] and
     (
       t.start() and
       result = DataFlow::importMember(["builtins", "__builtin__"], attr_name)
@@ -418,6 +418,21 @@ private module Stdlib {
     }
 
     override DataFlow::Node getCode() { result.asCfgNode() = call.getArg(0) }
+  }
+
+  /** An additional taint step for calls to the builtin function `compile` */
+  private class BuiltinsCompileCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(CallNode call |
+        nodeTo.asCfgNode() = call and
+        call.getFunction() = builtins_attr("compile").asCfgNode() and
+        (
+          call.getArg(0) = nodeFrom.asCfgNode()
+          or
+          call.getArgByName("source") = nodeFrom.asCfgNode()
+        )
+      )
+    }
   }
 }
 
