@@ -5,10 +5,7 @@
 
 private import python
 private import experimental.dataflow.DataFlow
-private import experimental.dataflow.RemoteFlowSources
-private import experimental.dataflow.TaintTracking
 private import experimental.semmle.python.Concepts
-private import experimental.semmle.python.frameworks.Werkzeug
 
 /**
  * Provides models for the `invoke` PyPI package.
