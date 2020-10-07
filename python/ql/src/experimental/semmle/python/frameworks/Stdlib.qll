@@ -328,3 +328,17 @@ private module Stdlib {
     }
   }
 }
+
+/**
+ * An exec statement (only Python 2).
+ * Se ehttps://docs.python.org/2/reference/simple_stmts.html#the-exec-statement.
+ */
+private class ExecStatement extends CodeExecution::Range {
+  ExecStatement() {
+    // since there are no DataFlow::Nodes for a Statement, we can't do anything like
+    // `this = any(Exec exec)`
+    this.asExpr() = any(Exec exec).getBody()
+  }
+
+  override DataFlow::Node getCode() { result = this }
+}
