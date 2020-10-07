@@ -1,50 +1,6 @@
 private import cpp
 private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisExpr
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
-private import experimental.semmle.code.cpp.rangeanalysis.BinaryOrAssignOperation
-
-/**
- * The current implementation for `BitwiseAndExpr` only handles cases where both operands are
- * either unsigned or non-negative constants. This class not only covers these cases, but also
- * adds support for `&` expressions between a signed integer with a non-negative range and a
- * non-negative constant. It also adds support for `&=` for the same set of cases as `&`.
- */
-private class ConstantBitwiseAndExprRange extends SimpleRangeAnalysisExpr {
-  BinaryOrAssignConstantBitwiseAndExpr e;
-
-  ConstantBitwiseAndExprRange() { this = e.getOperation() }
-
-  BinaryOrAssignConstantBitwiseAndExpr getExpr() { result = e }
-
-  Expr getLeftOperand() { result = e.getLeftOperand() }
-
-  Expr getRightOperand() { result = e.getRightOperand() }
-
-  override float getLowerBounds() { result = e.getLowerBounds() }
-
-  override float getUpperBounds() { result = e.getUpperBounds() }
-
-  override predicate dependsOnChild(Expr child) { child = e.getAnOperand() }
-}
-
-private class ConstantBitwiseAndExprOp extends Expr {
-  BinaryOrAssignConstantBitwiseAndExpr b;
-  float lowerBound;
-  float upperBound;
-
-  ConstantBitwiseAndExprOp() {
-    this = b.getAnOperand() and
-    lowerBound = getFullyConvertedLowerBounds(this) and
-    upperBound = getFullyConvertedUpperBounds(this) and
-    lowerBound <= upperBound
-  }
-
-  float getLowerBound() { result = lowerBound }
-
-  float getUpperBound() { result = upperBound }
-
-  predicate hasNegativeRange() { getLowerBound() < 0 or getUpperBound() < 0 }
-}
 
 /**
  * Holds if `e` is a constant or if it is a variable with a constant value
@@ -58,32 +14,49 @@ float evaluateConstantExpr(Expr e) {
   )
 }
 
-private class BinaryOrAssignConstantBitwiseAndExpr extends BinaryOrAssignOperation {
-  BinaryOrAssignConstantBitwiseAndExpr() {
-    (
-      getOperation() instanceof BitwiseAndExpr
+/**
+ * The current implementation for `BitwiseAndExpr` only handles cases where both operands are
+ * either unsigned or non-negative constants. This class not only covers these cases, but also
+ * adds support for `&` expressions between a signed integer with a non-negative range and a
+ * non-negative constant. It also adds support for `&=` for the same set of cases as `&`.
+ */
+private class ConstantBitwiseAndExprRange extends SimpleRangeAnalysisExpr {
+  ConstantBitwiseAndExprRange() {
+    exists(Expr l, Expr r |
+      l = this.(BitwiseAndExpr).getLeftOperand() and
+      r = this.(BitwiseAndExpr).getRightOperand()
       or
-      getOperation() instanceof AssignAndExpr
-    ) and
-    // Make sure all operands and the result type are integral
-    getOperation().getUnspecifiedType() instanceof IntegralType and
-    getLeftOperand().getUnspecifiedType() instanceof IntegralType and
-    getRightOperand().getUnspecifiedType() instanceof IntegralType and
-    // No operands can be negative constants
-    not (evaluateConstantExpr(getLeftOperand()) < 0 or evaluateConstantExpr(getRightOperand()) < 0) and
-    // At least one operand must be a non-negative constant
-    (evaluateConstantExpr(getLeftOperand()) >= 0 or evaluateConstantExpr(getRightOperand()) >= 0)
+      l = this.(AssignAndExpr).getLValue() and
+      r = this.(AssignAndExpr).getRValue()
+    |
+      // No operands can be negative constants
+      not (evaluateConstantExpr(getLOp(this)) < 0 or evaluateConstantExpr(getROp(this)) < 0) and
+      // At least one operand must be a non-negative constant
+      (evaluateConstantExpr(getLOp(this)) >= 0 or evaluateConstantExpr(getROp(this)) >= 0)
+    )
   }
 
-  float getLowerBounds() {
-    // If both operands have non-negative ranges, the lower bound is zero. If an operand can have
-    // negative values, the lower bound is unconstrained.
-    exists(ConstantBitwiseAndExprOp l, ConstantBitwiseAndExprOp r |
-      l = getLeftOperand() and
-      r = getRightOperand() and
+  Expr getLeftOperand() {
+    result = this.(BitwiseAndExpr).getLeftOperand() or
+    result = this.(AssignAndExpr).getLValue()
+  }
+
+  Expr getRightOperand() {
+    result = this.(BitwiseAndExpr).getRightOperand() or
+    result = this.(AssignAndExpr).getRValue()
+  }
+
+  override float getLowerBounds() {
+    // If an operand can have negative values, the lower bound is unconstrained.
+    // Otherwise, the lower bound is zero.
+    exists(float lLower, float lUpper, float rLower, float rUpper |
+      lLower = getFullyConvertedLowerBounds(getLeftOperand()) and
+      lUpper = getFullyConvertedUpperBounds(getLeftOperand()) and
+      rLower = getFullyConvertedLowerBounds(getRightOperand()) and
+      rUpper = getFullyConvertedUpperBounds(getRightOperand()) and
       (
-        (l.hasNegativeRange() or r.hasNegativeRange()) and
-        result = exprMinVal(getOperation())
+        (lLower < 0 or rLower < 0) and
+        result = exprMinVal(this)
         or
         // This technically results in two lowerBounds when an operand range is negative, but
         // that's fine since `exprMinVal(x) <= 0`. We can't use an if statement here without
@@ -93,20 +66,27 @@ private class BinaryOrAssignConstantBitwiseAndExpr extends BinaryOrAssignOperati
     )
   }
 
-  float getUpperBounds() {
+  override float getUpperBounds() {
     // If an operand can have negative values, the upper bound is unconstrained.
-    // Otherwise, the upper bound is the maximum of the upper bounds of the operands
-    exists(ConstantBitwiseAndExprOp l, ConstantBitwiseAndExprOp r |
-      l = getLeftOperand() and
-      r = getRightOperand() and
+    // Otherwise, the upper bound is the minimum of the upper bounds of the operands
+    exists(float lLower, float lUpper, float rLower, float rUpper |
+      lLower = getFullyConvertedLowerBounds(getLeftOperand()) and
+      lUpper = getFullyConvertedUpperBounds(getLeftOperand()) and
+      rLower = getFullyConvertedLowerBounds(getRightOperand()) and
+      rUpper = getFullyConvertedUpperBounds(getRightOperand()) and
       (
-        (l.hasNegativeRange() or r.hasNegativeRange()) and
-        result = exprMaxVal(getOperation())
+        (lLower < 0 or rLower < 0) and
+        result = exprMaxVal(this)
         or
         // This technically results in two upperBounds when an operand range is negative, but
-        // that's fine since `exprMaxVal(b) >= result`
-        result = r.getUpperBound().minimum(l.getUpperBound())
+        // that's fine since `exprMaxVal(b) >= result`. We can't use an if statement here without
+        // non-monotonic recursion issues
+        result = rUpper.minimum(lUpper)
       )
     )
+  }
+
+  override predicate dependsOnChild(Expr child) {
+    child = getLeftOperand() or child = getRightOperand()
   }
 }
