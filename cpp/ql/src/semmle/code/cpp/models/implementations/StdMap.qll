@@ -52,6 +52,51 @@ class StdMapInsert extends TaintFunction {
 }
 
 /**
+ * The standard map `emplace` and `emplace_hint` functions.
+ */
+class StdMapEmplace extends TaintFunction {
+  StdMapEmplace() {
+    this.hasQualifiedName("std", ["map", "unordered_map"], ["emplace", "emplace_hint"])
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from any parameter to qualifier and return value
+    // (here we assume taint flow from any constructor parameter to the constructed object)
+    // (where the return value is a pair, this should really flow just to the first part of it)
+    input.isParameterDeref(_) and
+    (
+      output.isQualifierObject() or
+      output.isReturnValue()
+    )
+  }
+}
+
+/**
+ * The standard map `try_emplace` function.
+ */
+class StdMapTryEmplace extends TaintFunction {
+  StdMapTryEmplace() { this.hasQualifiedName("std", ["map", "unordered_map"], "try_emplace") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from any parameter apart from the key to qualifier and return value
+    // (here we assume taint flow from any constructor parameter to the constructed object)
+    // (where the return value is a pair, this should really flow just to the first part of it)
+    exists(int arg |
+      (
+        getUnspecifiedType() instanceof Iterator and arg != 1
+        or
+        not getUnspecifiedType() instanceof Iterator and arg != 0
+      ) and
+      input.isParameterDeref(arg)
+    ) and
+    (
+      output.isQualifierObject() or
+      output.isReturnValue()
+    )
+  }
+}
+
+/**
  * The standard map `swap` functions.
  */
 class StdMapSwap extends TaintFunction {

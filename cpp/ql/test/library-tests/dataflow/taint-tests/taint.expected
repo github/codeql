@@ -92,6 +92,12 @@
 | map.cpp:227:7:227:9 | call to map | map.cpp:224:49:224:54 | call to source |
 | map.cpp:229:7:229:9 | call to map | map.cpp:223:49:223:54 | call to source |
 | map.cpp:229:7:229:9 | call to map | map.cpp:224:49:224:54 | call to source |
+| map.cpp:236:7:236:9 | call to map | map.cpp:235:26:235:31 | call to source |
+| map.cpp:239:11:239:22 | call to emplace_hint | map.cpp:239:44:239:49 | call to source |
+| map.cpp:240:7:240:9 | call to map | map.cpp:239:44:239:49 | call to source |
+| map.cpp:247:7:247:9 | call to map | map.cpp:246:30:246:35 | call to source |
+| map.cpp:250:11:250:21 | call to try_emplace | map.cpp:250:43:250:48 | call to source |
+| map.cpp:251:7:251:9 | call to map | map.cpp:250:43:250:48 | call to source |
 | map.cpp:262:10:262:15 | call to insert | map.cpp:262:62:262:67 | call to source |
 | map.cpp:264:10:264:25 | call to insert_or_assign | map.cpp:264:46:264:51 | call to source |
 | map.cpp:266:7:266:8 | call to unordered_map | map.cpp:260:39:260:44 | call to source |
@@ -135,6 +141,19 @@
 | map.cpp:376:7:376:9 | call to unordered_map | map.cpp:373:49:373:54 | call to source |
 | map.cpp:378:7:378:9 | call to unordered_map | map.cpp:372:49:372:54 | call to source |
 | map.cpp:378:7:378:9 | call to unordered_map | map.cpp:373:49:373:54 | call to source |
+| map.cpp:385:7:385:9 | call to unordered_map | map.cpp:384:26:384:31 | call to source |
+| map.cpp:388:11:388:22 | call to emplace_hint | map.cpp:388:44:388:49 | call to source |
+| map.cpp:389:7:389:9 | call to unordered_map | map.cpp:388:44:388:49 | call to source |
+| map.cpp:398:7:398:9 | call to unordered_map | map.cpp:396:30:396:35 | call to source |
+| map.cpp:398:7:398:9 | call to unordered_map | map.cpp:397:30:397:35 | call to source |
+| map.cpp:401:11:401:21 | call to try_emplace | map.cpp:401:43:401:48 | call to source |
+| map.cpp:402:7:402:9 | call to unordered_map | map.cpp:401:43:401:48 | call to source |
+| map.cpp:412:7:412:41 | call to pair | map.cpp:412:30:412:35 | call to source |
+| map.cpp:413:7:413:9 | call to unordered_map | map.cpp:412:30:412:35 | call to source |
+| map.cpp:414:7:414:16 | call to pair | map.cpp:412:30:412:35 | call to source |
+| map.cpp:415:7:415:41 | call to pair | map.cpp:415:33:415:38 | call to source |
+| map.cpp:416:7:416:9 | call to unordered_map | map.cpp:415:33:415:38 | call to source |
+| map.cpp:417:7:417:16 | call to pair | map.cpp:415:33:415:38 | call to source |
 | movableclass.cpp:44:8:44:9 | s1 | movableclass.cpp:39:21:39:26 | call to source |
 | movableclass.cpp:45:8:45:9 | s2 | movableclass.cpp:40:23:40:28 | call to source |
 | movableclass.cpp:46:8:46:9 | s3 | movableclass.cpp:42:8:42:13 | call to source |

@@ -232,23 +232,23 @@ void test_map()
 	std::map<char *, char *> m24, m25;
 	sink(m24.emplace("abc", "def").first);
 	sink(m24);
-	sink(m24.emplace("abc", source()).first); // tainted [NOT DETECTED]
-	sink(m24); // tainted [NOT DETECTED]
+	sink(m24.emplace("abc", source()).first); // tainted
+	sink(m24); // tainted
 	sink(m25.emplace_hint(m25.begin(), "abc", "def"));
 	sink(m25);
-	sink(m25.emplace_hint(m25.begin(), "abc", source())); // tainted [NOT DETECTED]
-	sink(m25); // tainted [NOT DETECTED]
+	sink(m25.emplace_hint(m25.begin(), "abc", source())); // tainted
+	sink(m25); // tainted
 	
 	// try_emplace
 	std::map<char *, char *> m26, m27;
 	sink(m26.try_emplace("abc", "def").first);
 	sink(m26);
-	sink(m26.try_emplace("abc", source()).first); // tainted [NOT DETECTED]
-	sink(m26); // tainted [NOT DETECTED]
+	sink(m26.try_emplace("abc", source()).first); // tainted
+	sink(m26); // tainted
 	sink(m27.try_emplace(m27.begin(), "abc", "def"));
 	sink(m27);
-	sink(m27.try_emplace(m27.begin(), "abc", source())); // tainted [NOT DETECTED]
-	sink(m27); // tainted [NOT DETECTED]
+	sink(m27.try_emplace(m27.begin(), "abc", source())); // tainted
+	sink(m27); // tainted
 }
 
 void test_unordered_map()
@@ -381,25 +381,25 @@ void test_unordered_map()
 	std::unordered_map<char *, char *> m24, m25;
 	sink(m24.emplace("abc", "def").first);
 	sink(m24);
-	sink(m24.emplace("abc", source()).first); // tainted [NOT DETECTED]
-	sink(m24); // tainted [NOT DETECTED]
+	sink(m24.emplace("abc", source()).first); // tainted
+	sink(m24); // tainted
 	sink(m25.emplace_hint(m25.begin(), "abc", "def"));
 	sink(m25);
-	sink(m25.emplace_hint(m25.begin(), "abc", source())); // tainted [NOT DETECTED]
-	sink(m25); // tainted [NOT DETECTED]
-	
+	sink(m25.emplace_hint(m25.begin(), "abc", source())); // tainted
+	sink(m25); // tainted
+
 	// try_emplace
 	std::unordered_map<char *, char *> m26, m27;
 	sink(m26.try_emplace("abc", "def").first);
 	sink(m26.try_emplace("abc", "def").second);
 	sink(m26);
-	sink(m26.try_emplace("abc", source()).first); // tainted [NOT DETECTED]
-	sink(m26.try_emplace("abc", source()).second);
-	sink(m26); // tainted [NOT DETECTED]
+	sink(m26.try_emplace("abc", source()).first); // tainted
+	sink(m26.try_emplace("abc", source()).second); // [FALSE POSITIVE]
+	sink(m26); // tainted
 	sink(m27.try_emplace(m27.begin(), "abc", "def"));
 	sink(m27);
-	sink(m27.try_emplace(m27.begin(), "abc", source())); // tainted [NOT DETECTED]
-	sink(m27); // tainted [NOT DETECTED]
+	sink(m27.try_emplace(m27.begin(), "abc", source())); // tainted
+	sink(m27); // tainted
 
 	// additional emplace test cases
 	std::unordered_map<char *, std::pair<int, int>> m28, m29, m30, m31;
@@ -409,10 +409,10 @@ void test_unordered_map()
 	sink(m29.try_emplace(source(), 1, 2)); // tainted [NOT DETECTED]
 	sink(m29); // tainted [NOT DETECTED]
 	sink(m29["abc"]);
-	sink(m30.try_emplace("abc", source(), 2)); // tainted [NOT DETECTED]
-	sink(m30); // tainted [NOT DETECTED]
-	sink(m30["abc"]); // tainted [NOT DETECTED]
-	sink(m31.try_emplace("abc", 1, source())); // tainted [NOT DETECTED]
-	sink(m31); // tainted [NOT DETECTED]
-	sink(m31["abc"]); // tainted [NOT DETECTED]
+	sink(m30.try_emplace("abc", source(), 2)); // tainted
+	sink(m30); // tainted
+	sink(m30["abc"]); // tainted
+	sink(m31.try_emplace("abc", 1, source())); // tainted
+	sink(m31); // tainted
+	sink(m31["abc"]); // tainted
 }
