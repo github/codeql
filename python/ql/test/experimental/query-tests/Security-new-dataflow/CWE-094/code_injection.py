@@ -6,3 +6,5 @@ def code_execution():
     code = request.args.get("code")
     exec(code)
     eval(code)
+    cmd = compile(code, "<filename>", "exec")
+    exec(cmd)
