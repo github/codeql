@@ -47,8 +47,8 @@ class Splitting
     {
         var s = b switch { true => "taint source", false => "not tainted" };
         if (b)
-            Check(s); // flow [MISSING]
+            Check(s); // flow
         else
-            Check(s); // no flow
+            Check(s); // no flow [FALSE POSITIVE]
     }
 }

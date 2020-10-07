@@ -60,3 +60,5 @@
 | Splitting.cs:34:19:34:19 | access to local variable x |
 | Splitting.cs:41:19:41:19 | access to local variable s |
 | Splitting.cs:43:19:43:19 | access to local variable s |
+| Splitting.cs:50:19:50:19 | access to local variable s |
+| Splitting.cs:52:19:52:19 | access to local variable s |

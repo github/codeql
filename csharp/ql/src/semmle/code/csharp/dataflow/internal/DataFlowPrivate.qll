@@ -171,6 +171,10 @@ module LocalFlow {
         e1 = e2.(ArrayCreation).getInitializer() and
         scope = e2 and
         isSuccessor = false
+        or
+        e1 = e2.(SwitchExpr).getACase().getBody() and
+        scope = e2 and
+        isSuccessor = false
       )
     }
 
