@@ -55,10 +55,11 @@
 | GlobalDataFlow.cs:326:15:326:25 | access to parameter sinkParam11 |
 | GlobalDataFlow.cs:401:15:401:20 | access to local variable sink11 |
 | GlobalDataFlow.cs:424:41:424:46 | access to local variable sink20 |
+| GlobalDataFlow.cs:453:15:453:20 | access to local variable sink43 |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x |
-| Splitting.cs:21:28:21:32 | access to parameter value |
+| Splitting.cs:21:21:21:33 | call to method Return |
 | Splitting.cs:32:15:32:15 | [b (line 24): false] access to local variable x |
 | Splitting.cs:32:15:32:15 | [b (line 24): true] access to local variable x |
 | Splitting.cs:34:19:34:19 | access to local variable x |

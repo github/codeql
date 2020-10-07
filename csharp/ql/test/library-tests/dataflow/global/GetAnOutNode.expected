@@ -194,7 +194,12 @@
 | GlobalDataFlow.cs:246:24:246:34 | access to property Result | return | GlobalDataFlow.cs:246:24:246:34 | access to property Result |
 | GlobalDataFlow.cs:297:17:297:38 | call to method ApplyFunc | return | GlobalDataFlow.cs:297:17:297:38 | call to method ApplyFunc |
 | GlobalDataFlow.cs:386:16:386:19 | delegate call | return | GlobalDataFlow.cs:386:16:386:19 | delegate call |
-| GlobalDataFlow.cs:451:44:451:47 | delegate call | return | GlobalDataFlow.cs:451:44:451:47 | delegate call |
+| GlobalDataFlow.cs:445:9:445:20 | call to method Append | return | GlobalDataFlow.cs:445:9:445:20 | call to method Append |
+| GlobalDataFlow.cs:450:18:450:36 | object creation of type StringBuilder | return | GlobalDataFlow.cs:450:18:450:36 | object creation of type StringBuilder |
+| GlobalDataFlow.cs:452:22:452:34 | call to method ToString | return | GlobalDataFlow.cs:452:22:452:34 | call to method ToString |
+| GlobalDataFlow.cs:455:9:455:18 | call to method Clear | return | GlobalDataFlow.cs:455:9:455:18 | call to method Clear |
+| GlobalDataFlow.cs:456:23:456:35 | call to method ToString | return | GlobalDataFlow.cs:456:23:456:35 | call to method ToString |
+| GlobalDataFlow.cs:468:44:468:47 | delegate call | return | GlobalDataFlow.cs:468:44:468:47 | delegate call |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return | return | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return | return | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return |
 | Splitting.cs:20:22:20:30 | call to method Return | return | Splitting.cs:20:22:20:30 | call to method Return |
