@@ -3,36 +3,22 @@ edges
 | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:20:15:20:27 | ControlFlowNode for BinaryExpr |
 | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:21:15:21:27 | ControlFlowNode for BinaryExpr |
 | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:23:20:23:32 | ControlFlowNode for BinaryExpr |
-| command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:23:20:23:32 | ControlFlowNode for BinaryExpr |
 | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:25:19:25:31 | ControlFlowNode for BinaryExpr |
 | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:26:19:26:31 | ControlFlowNode for BinaryExpr |
 | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:27:19:27:31 | ControlFlowNode for BinaryExpr |
 | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:28:19:28:31 | ControlFlowNode for BinaryExpr |
 | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:29:19:29:31 | ControlFlowNode for BinaryExpr |
-| command_injection.py:23:20:23:32 | ControlFlowNode for BinaryExpr | file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:453:11:453:13 | SSA variable cmd |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:415:23:415:25 | SSA variable cmd | file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:421:19:421:41 | ControlFlowNode for BinaryExpr |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:453:11:453:13 | SSA variable cmd | file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:482:22:482:24 | ControlFlowNode for cmd |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:453:11:453:13 | SSA variable cmd | file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:482:22:482:24 | ControlFlowNode for cmd |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:453:11:453:13 | SSA variable cmd | file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:484:22:484:24 | ControlFlowNode for cmd |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:482:22:482:24 | ControlFlowNode for cmd | file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:415:23:415:25 | SSA variable cmd |
 nodes
 | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | command_injection.py:19:15:19:27 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:20:15:20:27 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:21:15:21:27 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:23:20:23:32 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| command_injection.py:23:20:23:32 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:25:19:25:31 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:26:19:26:31 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:27:19:27:31 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:28:19:28:31 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:29:19:29:31 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:415:23:415:25 | SSA variable cmd | semmle.label | SSA variable cmd |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:421:19:421:41 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:453:11:453:13 | SSA variable cmd | semmle.label | SSA variable cmd |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:482:22:482:24 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:482:22:482:24 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:484:22:484:24 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
 #select
 | command_injection.py:19:15:19:27 | ControlFlowNode for BinaryExpr | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:19:15:19:27 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | a user-provided value |
 | command_injection.py:20:15:20:27 | ControlFlowNode for BinaryExpr | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:20:15:20:27 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | a user-provided value |
@@ -43,6 +29,3 @@ nodes
 | command_injection.py:27:19:27:31 | ControlFlowNode for BinaryExpr | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:27:19:27:31 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | a user-provided value |
 | command_injection.py:28:19:28:31 | ControlFlowNode for BinaryExpr | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:28:19:28:31 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | a user-provided value |
 | command_injection.py:29:19:29:31 | ControlFlowNode for BinaryExpr | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | command_injection.py:29:19:29:31 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | a user-provided value |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:421:19:421:41 | ControlFlowNode for BinaryExpr | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:421:19:421:41 | ControlFlowNode for BinaryExpr | This command depends on $@. | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | a user-provided value |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:482:22:482:24 | ControlFlowNode for cmd | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:482:22:482:24 | ControlFlowNode for cmd | This command depends on $@. | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | a user-provided value |
-| file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:484:22:484:24 | ControlFlowNode for cmd | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | file:///home/rasmus/.pyenv/versions/2.7.17/lib/python2.7/platform.py:484:22:484:24 | ControlFlowNode for cmd | This command depends on $@. | command_injection.py:18:13:18:24 | ControlFlowNode for Attribute | a user-provided value |
