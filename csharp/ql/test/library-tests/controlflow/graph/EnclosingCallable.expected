@@ -794,7 +794,7 @@ nodeEnclosing
 | Conditions.cs:79:17:79:26 | ...; | Conditions.cs:70:9:70:10 | M6 |
 | Conditions.cs:79:21:79:25 | false | Conditions.cs:70:9:70:10 | M6 |
 | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:70:9:70:10 | M6 |
-| Conditions.cs:81:12:81:12 | access to local variable b | Conditions.cs:70:9:70:10 | M6 |
+| Conditions.cs:81:13:81:13 | access to local variable b | Conditions.cs:70:9:70:10 | M6 |
 | Conditions.cs:82:13:82:13 | access to local variable x | Conditions.cs:70:9:70:10 | M6 |
 | Conditions.cs:82:13:82:15 | ...++ | Conditions.cs:70:9:70:10 | M6 |
 | Conditions.cs:82:13:82:16 | ...; | Conditions.cs:70:9:70:10 | M6 |
@@ -879,14 +879,14 @@ nodeEnclosing
 | Conditions.cs:115:16:115:23 | String s = ... | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:115:20:115:23 | null | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:116:9:123:9 | for (...;...;...) ... | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:116:17:116:21 | Int32 i = ... | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:116:21:116:21 | 0 | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:116:24:116:38 | ... < ... | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:116:28:116:31 | access to parameter args | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:116:28:116:38 | access to property Length | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:116:41:116:43 | ...++ | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:116:18:116:22 | Int32 i = ... | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:116:22:116:22 | 0 | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:116:25:116:25 | access to local variable i | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:116:25:116:39 | ... < ... | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:116:29:116:32 | access to parameter args | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:116:29:116:39 | access to property Length | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:116:42:116:42 | access to local variable i | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:116:42:116:44 | ...++ | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:118:13:118:44 | ... ...; | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:118:17:118:43 | Boolean last = ... | Conditions.cs:113:10:113:11 | M9 |
@@ -949,6 +949,30 @@ nodeEnclosing
 | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:129:10:129:12 | M10 |
 | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString | Conditions.cs:129:10:129:12 | M10 |
 | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; | Conditions.cs:129:10:129:12 | M10 |
+| Conditions.cs:143:10:143:12 | enter M11 | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:143:10:143:12 | exit M11 | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:144:5:150:5 | {...} | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:9:145:30 | ... ...; | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:13:145:29 | [b (line 143): false] String s = ... | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:13:145:29 | [b (line 143): true] String s = ... | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:17:145:17 | access to parameter b | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:17:145:29 | ... ? ... : ... | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:21:145:23 | [b (line 143): true] "a" | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:146:9:149:49 | [b (line 143): false] if (...) ... | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:146:9:149:49 | [b (line 143): true] if (...) ... | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:146:13:146:13 | [b (line 143): false] access to parameter b | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:146:13:146:13 | [b (line 143): true] access to parameter b | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:147:13:147:48 | call to method WriteLine | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:147:13:147:49 | ...; | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:147:38:147:47 | $"..." | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:147:40:147:43 | "a = " | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:147:45:147:45 | access to local variable s | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:149:13:149:48 | call to method WriteLine | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:149:13:149:49 | ...; | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:149:38:149:47 | $"..." | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:149:40:149:43 | "b = " | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:149:45:149:45 | access to local variable s | Conditions.cs:143:10:143:12 | M11 |
 | ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:7:10:7:11 | M1 |
 | ExitMethods.cs:7:10:7:11 | exit M1 | ExitMethods.cs:7:10:7:11 | M1 |
 | ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:7:10:7:11 | M1 |
@@ -2725,7 +2749,7 @@ nodeEnclosing
 | Switch.cs:27:13:27:39 | case ...: | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:27:18:27:25 | Double d | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:28:17:28:21 | Label: | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:28:13:28:17 | Label: | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:29:17:29:23 | return ...; | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:30:13:30:20 | default: | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:31:17:31:27 | goto ...; | Switch.cs:10:10:10:11 | M2 |
@@ -2755,40 +2779,40 @@ nodeEnclosing
 | Switch.cs:57:17:57:17 | 1 | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:57:17:57:21 | ... + ... | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:57:21:57:21 | 2 | Switch.cs:55:10:55:11 | M5 |
-| Switch.cs:59:13:59:20 | case ...: | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:59:13:59:19 | case ...: | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:59:18:59:18 | 2 | Switch.cs:55:10:55:11 | M5 |
-| Switch.cs:61:13:61:20 | case ...: | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:61:13:61:19 | case ...: | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:61:18:61:18 | 3 | Switch.cs:55:10:55:11 | M5 |
-| Switch.cs:62:15:62:20 | break; | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:62:17:62:22 | break; | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:66:10:66:11 | enter M6 | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:66:10:66:11 | exit M6 | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:67:5:75:5 | {...} | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:68:17:68:25 | (...) ... | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:68:25:68:25 | access to parameter s | Switch.cs:66:10:66:11 | M6 |
-| Switch.cs:70:13:70:24 | case ...: | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:70:13:70:23 | case ...: | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:66:10:66:11 | M6 |
-| Switch.cs:72:13:72:21 | case ...: | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:72:13:72:20 | case ...: | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:72:18:72:19 | "" | Switch.cs:66:10:66:11 | M6 |
-| Switch.cs:73:15:73:20 | break; | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:73:17:73:22 | break; | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:77:10:77:11 | enter M7 | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:77:10:77:11 | exit M7 | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:78:5:89:5 | {...} | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:79:17:79:17 | access to parameter i | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:81:13:81:20 | case ...: | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:81:13:81:19 | case ...: | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:81:18:81:18 | 1 | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:82:15:82:26 | return ...; | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:82:22:82:25 | true | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:83:13:83:20 | case ...: | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:82:17:82:28 | return ...; | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:82:24:82:27 | true | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:83:13:83:19 | case ...: | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:83:18:83:18 | 2 | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:84:15:85:22 | if (...) ... | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:84:19:84:19 | access to parameter j | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:84:19:84:23 | ... > ... | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:84:23:84:23 | 2 | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:85:17:85:22 | break; | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:86:15:86:26 | return ...; | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:86:22:86:25 | true | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:84:17:85:26 | if (...) ... | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:84:21:84:21 | access to parameter j | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:84:21:84:25 | ... > ... | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:84:25:84:25 | 2 | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:85:21:85:26 | break; | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:86:17:86:28 | return ...; | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:86:24:86:27 | true | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:88:9:88:21 | return ...; | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:88:16:88:20 | false | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:91:10:91:11 | enter M8 | Switch.cs:91:10:91:11 | M8 |
@@ -2796,10 +2820,10 @@ nodeEnclosing
 | Switch.cs:92:5:99:5 | {...} | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:93:17:93:17 | access to parameter o | Switch.cs:91:10:91:11 | M8 |
-| Switch.cs:95:13:95:24 | case ...: | Switch.cs:91:10:91:11 | M8 |
+| Switch.cs:95:13:95:23 | case ...: | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:91:10:91:11 | M8 |
-| Switch.cs:96:15:96:26 | return ...; | Switch.cs:91:10:91:11 | M8 |
-| Switch.cs:96:22:96:25 | true | Switch.cs:91:10:91:11 | M8 |
+| Switch.cs:96:17:96:28 | return ...; | Switch.cs:91:10:91:11 | M8 |
+| Switch.cs:96:24:96:27 | true | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:98:9:98:21 | return ...; | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:98:16:98:20 | false | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:101:9:101:10 | enter M9 | Switch.cs:101:9:101:10 | M9 |
@@ -2808,14 +2832,14 @@ nodeEnclosing
 | Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:103:19:103:25 | access to property Length | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:105:13:105:20 | case ...: | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:105:13:105:19 | case ...: | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:105:18:105:18 | 0 | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:105:22:105:30 | return ...; | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:105:29:105:29 | 0 | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:106:13:106:20 | case ...: | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:105:21:105:29 | return ...; | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:105:28:105:28 | 0 | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:106:13:106:19 | case ...: | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:106:18:106:18 | 1 | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:106:22:106:30 | return ...; | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:106:29:106:29 | 1 | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:106:21:106:29 | return ...; | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:106:28:106:28 | 1 | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:108:9:108:18 | return ...; | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:108:16:108:17 | -... | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:108:17:108:17 | 1 | Switch.cs:101:9:101:10 | M9 |
@@ -2829,20 +2853,20 @@ nodeEnclosing
 | Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:115:17:115:17 | access to parameter s | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:115:17:115:24 | access to property Length | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:117:13:117:34 | case ...: | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:117:13:117:35 | case ...: | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:117:18:117:18 | 3 | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:117:25:117:25 | access to parameter s | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:117:25:117:32 | ... == ... | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:117:28:117:32 | "foo" | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:117:36:117:44 | return ...; | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:117:43:117:43 | 1 | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:118:13:118:33 | case ...: | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:117:25:117:34 | ... == ... | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:117:30:117:34 | "foo" | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:117:37:117:45 | return ...; | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:117:44:117:44 | 1 | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:13:118:34 | case ...: | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:18:118:18 | 2 | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:118:25:118:31 | ... == ... | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:118:28:118:31 | "fu" | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:118:35:118:43 | return ...; | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:118:42:118:42 | 2 | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:25:118:33 | ... == ... | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:30:118:33 | "fu" | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:36:118:44 | return ...; | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:43:118:43 | 2 | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:120:9:120:18 | return ...; | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:120:16:120:17 | -... | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:113:9:113:11 | M10 |
@@ -2906,6 +2930,31 @@ nodeEnclosing
 | Switch.cs:150:18:150:18 | 2 | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:150:21:150:29 | return ...; | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:150:28:150:28 | 2 | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:154:10:154:12 | enter M15 | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:154:10:154:12 | exit M15 | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:155:5:161:5 | {...} | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:9:156:55 | ... ...; | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:13:156:54 | String s = ... | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:17:156:17 | access to parameter b | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:28:156:31 | true | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:28:156:38 | ... => ... | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:36:156:38 | "a" | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:41:156:45 | false | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:50:156:52 | "b" | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:157:9:160:49 | if (...) ... | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:157:13:157:13 | access to parameter b | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:158:13:158:48 | call to method WriteLine | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:158:13:158:49 | ...; | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:158:38:158:47 | $"..." | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:158:40:158:43 | "a = " | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:158:45:158:45 | access to local variable s | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:160:13:160:48 | call to method WriteLine | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:160:13:160:49 | ...; | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:160:38:160:47 | $"..." | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:160:40:160:43 | "b = " | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:160:45:160:45 | access to local variable s | Switch.cs:154:10:154:12 | M15 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:3:10:3:10 | exit M | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:3:10:3:10 | M |
@@ -3779,8 +3828,8 @@ blockEnclosing
 | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:116:25:116:25 | access to local variable i | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:116:42:116:42 | access to local variable i | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | Conditions.cs:113:10:113:11 | M9 |
@@ -3789,6 +3838,10 @@ blockEnclosing
 | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true | Conditions.cs:129:10:129:12 | M10 |
 | Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} | Conditions.cs:129:10:129:12 | M10 |
 | Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:129:10:129:12 | M10 |
+| Conditions.cs:143:10:143:12 | enter M11 | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:143:10:143:12 | exit M11 | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:21:145:23 | [b (line 143): true] "a" | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | Conditions.cs:143:10:143:12 | M11 |
 | ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:7:10:7:11 | M1 |
 | ExitMethods.cs:13:10:13:11 | enter M2 | ExitMethods.cs:13:10:13:11 | M2 |
 | ExitMethods.cs:19:10:19:11 | enter M3 | ExitMethods.cs:19:10:19:11 | M3 |
@@ -4321,35 +4374,35 @@ blockEnclosing
 | Switch.cs:55:10:55:11 | enter M5 | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:66:10:66:11 | enter M6 | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:66:10:66:11 | exit M6 | Switch.cs:66:10:66:11 | M6 |
-| Switch.cs:73:15:73:20 | break; | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:73:17:73:22 | break; | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:77:10:77:11 | enter M7 | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:77:10:77:11 | exit M7 | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:82:22:82:25 | true | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:83:13:83:20 | case ...: | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:84:15:85:22 | if (...) ... | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:85:17:85:22 | break; | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:86:22:86:25 | true | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:82:24:82:27 | true | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:83:13:83:19 | case ...: | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:84:17:85:26 | if (...) ... | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:85:21:85:26 | break; | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:86:24:86:27 | true | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:88:16:88:20 | false | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:91:10:91:11 | enter M8 | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:91:10:91:11 | exit M8 | Switch.cs:91:10:91:11 | M8 |
-| Switch.cs:96:22:96:25 | true | Switch.cs:91:10:91:11 | M8 |
+| Switch.cs:96:24:96:27 | true | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:98:16:98:20 | false | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:101:9:101:10 | enter M9 | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:101:9:101:10 | exit M9 | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:103:19:103:25 | access to property Length | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:105:13:105:20 | case ...: | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:105:29:105:29 | 0 | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:106:13:106:20 | case ...: | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:106:29:106:29 | 1 | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:105:13:105:19 | case ...: | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:105:28:105:28 | 0 | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:106:13:106:19 | case ...: | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:106:28:106:28 | 1 | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:108:17:108:17 | 1 | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:111:17:111:21 | enter Throw | Switch.cs:111:17:111:21 | Throw |
 | Switch.cs:113:9:113:11 | enter M10 | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:113:9:113:11 | exit M10 | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:117:25:117:25 | access to parameter s | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:117:43:117:43 | 1 | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:118:13:118:33 | case ...: | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:117:44:117:44 | 1 | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:13:118:34 | case ...: | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:118:42:118:42 | 2 | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:43:118:43 | 2 | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:123:10:123:12 | enter M11 | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:123:10:123:12 | exit M11 | Switch.cs:123:10:123:12 | M11 |
@@ -4373,6 +4426,14 @@ blockEnclosing
 | Switch.cs:149:13:149:20 | default: | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:150:13:150:19 | case ...: | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:150:28:150:28 | 2 | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:154:10:154:12 | enter M15 | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:154:10:154:12 | exit M15 | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:13:156:54 | String s = ... | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:36:156:38 | "a" | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:50:156:52 | "b" | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:158:13:158:49 | ...; | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:160:13:160:49 | ...; | Switch.cs:154:10:154:12 | M15 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | M |

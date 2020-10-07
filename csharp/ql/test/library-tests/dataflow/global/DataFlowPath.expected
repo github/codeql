@@ -240,6 +240,8 @@ edges
 | Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element : String | Splitting.cs:34:19:34:19 | access to local variable x |
 | Splitting.cs:31:19:31:25 | [b (line 24): false] access to parameter tainted : String | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element : String |
 | Splitting.cs:31:19:31:25 | [b (line 24): true] access to parameter tainted : String | Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element : String |
+| Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | Splitting.cs:41:19:41:19 | access to local variable s |
+| Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | Splitting.cs:43:19:43:19 | access to local variable s |
 nodes
 | Capture.cs:7:20:7:26 | tainted : String | semmle.label | tainted : String |
 | Capture.cs:12:19:12:24 | access to local variable sink27 | semmle.label | access to local variable sink27 |
@@ -443,12 +445,17 @@ nodes
 | Splitting.cs:32:15:32:15 | [b (line 24): false] access to local variable x | semmle.label | [b (line 24): false] access to local variable x |
 | Splitting.cs:32:15:32:15 | [b (line 24): true] access to local variable x | semmle.label | [b (line 24): true] access to local variable x |
 | Splitting.cs:34:19:34:19 | access to local variable x | semmle.label | access to local variable x |
+| Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | semmle.label | [b (line 37): true] "taint source" : String |
+| Splitting.cs:41:19:41:19 | access to local variable s | semmle.label | access to local variable s |
+| Splitting.cs:43:19:43:19 | access to local variable s | semmle.label | access to local variable s |
 #select
 | Splitting.cs:32:15:32:15 | [b (line 24): false] access to local variable x | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:32:15:32:15 | [b (line 24): false] access to local variable x | [b (line 24): false] access to local variable x |
 | Splitting.cs:32:15:32:15 | [b (line 24): true] access to local variable x | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:32:15:32:15 | [b (line 24): true] access to local variable x | [b (line 24): true] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | [b (line 3): true] access to local variable x |
 | GlobalDataFlow.cs:19:15:19:29 | access to field SinkField0 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:19:15:19:29 | access to field SinkField0 | access to field SinkField0 |
+| Splitting.cs:41:19:41:19 | access to local variable s | Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | Splitting.cs:41:19:41:19 | access to local variable s | access to local variable s |
+| Splitting.cs:43:19:43:19 | access to local variable s | Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | Splitting.cs:43:19:43:19 | access to local variable s | access to local variable s |
 | GlobalDataFlow.cs:72:15:72:19 | access to local variable sink0 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:72:15:72:19 | access to local variable sink0 | access to local variable sink0 |
 | GlobalDataFlow.cs:74:15:74:19 | access to local variable sink1 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:74:15:74:19 | access to local variable sink1 | access to local variable sink1 |
 | GlobalDataFlow.cs:191:15:191:20 | access to local variable sink10 | GlobalDataFlow.cs:338:16:338:29 | "taint source" : String | GlobalDataFlow.cs:191:15:191:20 | access to local variable sink10 | access to local variable sink10 |
