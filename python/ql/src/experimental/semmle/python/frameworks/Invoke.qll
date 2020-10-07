@@ -100,7 +100,7 @@ private module Invoke {
           t.start() and
           exists(Function func |
             func.getADecorator() = invoke_attr("task").asExpr() and
-            result.asExpr() = func.getArg(0)
+            result.(DataFlow::ParameterNode).getParameter() = func.getArg(0)
           )
           or
           exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))

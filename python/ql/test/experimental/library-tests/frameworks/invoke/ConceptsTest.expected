@@ -1,2 +1,0 @@
-| invoke_test.py:31:26:31:51 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| invoke_test.py:38:26:38:51 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
