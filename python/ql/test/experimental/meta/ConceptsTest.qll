@@ -32,3 +32,20 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
     )
   }
 }
+
+class CodeExecutionTest extends InlineExpectationsTest {
+  CodeExecutionTest() { this = "CodeExecutionTest" }
+
+  override string getARelevantTag() { result = "getCode" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(CodeExecution ce, DataFlow::Node code |
+      exists(location.getFile().getRelativePath()) and
+      code = ce.getCode() and
+      location = code.getLocation() and
+      element = code.toString() and
+      value = value_from_expr(code.asExpr()) and
+      tag = "getCode"
+    )
+  }
+}
