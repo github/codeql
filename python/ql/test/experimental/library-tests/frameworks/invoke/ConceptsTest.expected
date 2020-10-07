@@ -1,0 +1,9 @@
+| invoke_test.py:8:27:8:52 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
+| invoke_test.py:9:35:9:60 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
+| invoke_test.py:13:32:13:57 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
+| invoke_test.py:14:40:14:65 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
+| invoke_test.py:19:26:19:51 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
+| invoke_test.py:20:27:20:52 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
+| invoke_test.py:24:27:24:52 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
+| invoke_test.py:31:26:31:51 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
+| invoke_test.py:38:26:38:51 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
