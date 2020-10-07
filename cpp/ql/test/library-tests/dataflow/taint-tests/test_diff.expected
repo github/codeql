@@ -380,3 +380,5 @@
 | vector.cpp:392:7:392:8 | vector.cpp:389:8:389:13 | AST only |
 | vector.cpp:400:7:400:9 | vector.cpp:399:38:399:43 | AST only |
 | vector.cpp:405:7:405:9 | vector.cpp:404:9:404:14 | AST only |
+| vector.cpp:409:7:409:9 | vector.cpp:408:11:408:16 | AST only |
+| vector.cpp:414:7:414:9 | vector.cpp:413:11:413:16 | AST only |

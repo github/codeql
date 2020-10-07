@@ -7054,6 +7054,8 @@
 | vector.cpp:402:35:402:37 | v12 | vector.cpp:402:39:402:43 | call to begin | TAINT |
 | vector.cpp:402:39:402:43 | call to begin | vector.cpp:403:3:403:5 | i12 |  |
 | vector.cpp:402:39:402:43 | call to begin | vector.cpp:404:3:404:5 | i12 |  |
+| vector.cpp:403:2:403:2 | call to operator* [post update] | vector.cpp:405:7:405:9 | v12 |  |
+| vector.cpp:403:2:403:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v12 |  |
 | vector.cpp:403:2:403:11 | ... = ... | vector.cpp:403:2:403:2 | call to operator* [post update] |  |
 | vector.cpp:403:3:403:5 | i12 | vector.cpp:403:6:403:6 | call to operator++ |  |
 | vector.cpp:403:3:403:5 | ref arg i12 | vector.cpp:404:3:404:5 | i12 |  |
@@ -7071,6 +7073,8 @@
 | vector.cpp:407:35:407:37 | ref arg v13 | vector.cpp:415:1:415:1 | v13 |  |
 | vector.cpp:407:35:407:37 | v13 | vector.cpp:407:39:407:43 | call to begin | TAINT |
 | vector.cpp:407:39:407:43 | call to begin | vector.cpp:408:3:408:5 | i13 |  |
+| vector.cpp:408:2:408:2 | call to operator* [post update] | vector.cpp:409:7:409:9 | v13 |  |
+| vector.cpp:408:2:408:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v13 |  |
 | vector.cpp:408:2:408:18 | ... = ... | vector.cpp:408:2:408:2 | call to operator* [post update] |  |
 | vector.cpp:408:3:408:5 | i13 | vector.cpp:408:6:408:6 | call to operator++ |  |
 | vector.cpp:408:6:408:6 | call to operator++ | vector.cpp:408:2:408:2 | call to operator* | TAINT |
@@ -7084,6 +7088,8 @@
 | vector.cpp:411:39:411:43 | call to begin | vector.cpp:413:3:413:5 | i14 |  |
 | vector.cpp:412:2:412:4 | i14 | vector.cpp:412:5:412:5 | call to operator++ |  |
 | vector.cpp:412:2:412:4 | ref arg i14 | vector.cpp:413:3:413:5 | i14 |  |
+| vector.cpp:413:2:413:2 | call to operator* [post update] | vector.cpp:414:7:414:9 | v14 |  |
+| vector.cpp:413:2:413:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v14 |  |
 | vector.cpp:413:2:413:18 | ... = ... | vector.cpp:413:2:413:2 | call to operator* [post update] |  |
 | vector.cpp:413:3:413:5 | i14 | vector.cpp:413:6:413:6 | call to operator++ |  |
 | vector.cpp:413:6:413:6 | call to operator++ | vector.cpp:413:2:413:2 | call to operator* | TAINT |

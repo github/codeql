@@ -807,6 +807,12 @@ module FlowVar_internal {
       def.getAnUltimateDefiningValue(iterator) = c and
       result = def.getAUse(iterator)
     )
+    or
+    exists(Call crement |
+      crement = result and
+      [crement.getQualifier(), crement.getArgument(0)] = getAnIteratorAccess(collection) and
+      crement.getTarget().getName() = ["operator++", "operator--"]
+    )
   }
 
   class IteratorParameter extends Parameter {

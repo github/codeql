@@ -406,10 +406,10 @@ void test_vector_output_iterator(int b) {
 
 	std::vector<int>::iterator i13 = v13.begin();
 	*i13++ = source();
-	sink(v13); // tainted [NOT DETECTED]
+	sink(v13); // tainted [NOT DETECTED by IR]
 
 	std::vector<int>::iterator i14 = v14.begin();
 	i14++;
 	*i14++ = source();
-	sink(v14); // tainted [NOT DETECTED]
+	sink(v14); // tainted [NOT DETECTED by IR]
 }
