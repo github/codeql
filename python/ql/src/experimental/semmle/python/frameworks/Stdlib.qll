@@ -351,7 +351,7 @@ private module Stdlib {
     exists(DataFlow::TypeTracker t2 | result = popen2(t2).track(t2, t))
   }
 
-  /** Gets a reference to the `popen2` module. */
+  /** Gets a reference to the `popen2` module (only available in Python 2). */
   DataFlow::Node popen2() { result = popen2(DataFlow::TypeTracker::end()) }
 
   /**
