@@ -11,7 +11,7 @@ namespace ns_int
 }
 
 void sink(int);
-void sink(std::vector<int> &);
+template<typename T> void sink(std::vector<T> &);
 
 void test_range_based_for_loop_vector(int source1) {
 	std::vector<int> v(100, source1);
@@ -412,4 +412,27 @@ void test_vector_output_iterator(int b) {
 	i14++;
 	*i14++ = source();
 	sink(v14); // tainted [NOT DETECTED by IR]
+}
+
+void test_vector_inserter(char *source_string) {
+	{
+		std::vector<std::string> out;
+		auto it = out.end();
+		*it++ = std::string(source_string);
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<std::string> out;
+		auto it = std::back_inserter(out);
+		*it++ = std::string(source_string);
+		sink(out); // tainted [NOT DETECTED]
+	}
+
+	{
+		std::vector<int> out;
+		auto it = std::back_inserter(out);
+		*it++ = source();
+		sink(out); // tainted [NOT DETECTED]
+	}
 }

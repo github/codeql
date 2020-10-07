@@ -260,6 +260,8 @@
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | format.cpp:16:21:16:21 | s | format.cpp:22:22:22:22 | s |  |
 | format.cpp:16:31:16:31 | n | format.cpp:22:25:22:25 | n |  |
 | format.cpp:16:46:16:51 | format | format.cpp:22:28:22:33 | format |  |
@@ -3145,147 +3147,160 @@
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:53:12:53:18 | source1 |  |
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:54:14:54:20 | source1 |  |
 | standalone_iterators.cpp:53:12:53:18 | ref arg source1 | standalone_iterators.cpp:54:14:54:20 | source1 |  |
-| stl.h:241:30:241:40 | call to allocator | stl.h:241:21:241:41 | noexcept(...) | TAINT |
-| stl.h:241:30:241:40 | call to allocator | stl.h:241:21:241:41 | noexcept(...) | TAINT |
-| stl.h:241:30:241:40 | call to allocator | stl.h:241:21:241:41 | noexcept(...) | TAINT |
-| stl.h:241:30:241:40 | call to allocator | stl.h:241:21:241:41 | noexcept(...) | TAINT |
-| stl.h:241:30:241:40 | call to allocator | stl.h:241:21:241:41 | noexcept(...) | TAINT |
-| stl.h:241:53:241:63 | 0 | stl.h:241:46:241:64 | (no string representation) | TAINT |
-| stl.h:334:9:334:9 | Unknown literal | stl.h:334:9:334:9 | constructor init of field first | TAINT |
-| stl.h:334:9:334:9 | Unknown literal | stl.h:334:9:334:9 | constructor init of field second | TAINT |
-| stl.h:334:9:334:9 | constructor init of field first [post-this] | stl.h:334:9:334:9 | constructor init of field second [pre-this] |  |
-| stl.h:334:9:334:9 | constructor init of field first [pre-this] | stl.h:334:9:334:9 | constructor init of field second [pre-this] |  |
-| stl.h:334:9:334:9 | this | stl.h:334:9:334:9 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:6 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:18:341:18 | x | stl.h:341:18:341:18 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:18:341:18 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:18:341:18 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:18:341:18 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:31:341:31 | y | stl.h:341:31:341:31 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:31:341:31 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:31:341:31 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:31:341:31 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:36:341:43 | call to unknown function | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:46:341:54 | call to unknown function | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:347:109:347:109 | x |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:347:109:347:109 | x |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:347:109:347:109 | x |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:347:109:347:109 | x |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:348:40:348:40 | x [inner post update] |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:348:40:348:40 | x [inner post update] |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:348:40:348:40 | x [inner post update] |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:348:40:348:40 | x [inner post update] |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:44:348:59 | call to forward | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:44:348:59 | call to forward | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:347:117:347:117 | y |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:347:117:347:117 | y |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:347:117:347:117 | y |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:347:117:347:117 | y |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:348:61:348:61 | y [inner post update] |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:348:61:348:61 | y [inner post update] |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:348:61:348:61 | y [inner post update] |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:348:61:348:61 | y [inner post update] |  |
-| stl.h:348:61:348:61 | y | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:61:348:61 | y | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
+| stl.h:75:8:75:8 | Unknown literal | stl.h:75:8:75:8 | constructor init of field container | TAINT |
+| stl.h:75:8:75:8 | Unknown literal | stl.h:75:8:75:8 | constructor init of field container | TAINT |
+| stl.h:75:8:75:8 | this | stl.h:75:8:75:8 | constructor init of field container [pre-this] |  |
+| stl.h:75:8:75:8 | this | stl.h:75:8:75:8 | constructor init of field container [pre-this] |  |
+| stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
+| stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
+| stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
+| stl.h:95:69:95:69 | x | stl.h:96:42:96:42 | x |  |
+| stl.h:95:69:95:69 | x | stl.h:96:42:96:42 | x |  |
+| stl.h:95:69:95:69 | x | stl.h:96:42:96:42 | x |  |
+| stl.h:96:42:96:42 | ref arg x | stl.h:95:69:95:69 | x |  |
+| stl.h:96:42:96:42 | ref arg x | stl.h:95:69:95:69 | x |  |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:53:292:63 | 0 | stl.h:292:46:292:64 | (no string representation) | TAINT |
+| stl.h:385:9:385:9 | Unknown literal | stl.h:385:9:385:9 | constructor init of field first | TAINT |
+| stl.h:385:9:385:9 | Unknown literal | stl.h:385:9:385:9 | constructor init of field second | TAINT |
+| stl.h:385:9:385:9 | constructor init of field first [post-this] | stl.h:385:9:385:9 | constructor init of field second [pre-this] |  |
+| stl.h:385:9:385:9 | constructor init of field first [pre-this] | stl.h:385:9:385:9 | constructor init of field second [pre-this] |  |
+| stl.h:385:9:385:9 | this | stl.h:385:9:385:9 | constructor init of field first [pre-this] |  |
+| stl.h:392:3:392:3 | this | stl.h:392:36:392:43 | constructor init of field first [pre-this] |  |
+| stl.h:392:3:392:3 | this | stl.h:392:36:392:43 | constructor init of field first [pre-this] |  |
+| stl.h:392:3:392:3 | this | stl.h:392:36:392:43 | constructor init of field first [pre-this] |  |
+| stl.h:392:3:392:3 | this | stl.h:392:36:392:43 | constructor init of field first [pre-this] |  |
+| stl.h:392:3:392:3 | this | stl.h:392:36:392:43 | constructor init of field first [pre-this] |  |
+| stl.h:392:3:392:3 | this | stl.h:392:36:392:43 | constructor init of field first [pre-this] |  |
+| stl.h:392:3:392:3 | this | stl.h:392:36:392:43 | constructor init of field first [pre-this] |  |
+| stl.h:392:3:392:6 | this | stl.h:392:36:392:43 | constructor init of field first [pre-this] |  |
+| stl.h:392:18:392:18 | x | stl.h:392:18:392:18 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:18:392:18 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:18:392:18 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:18:392:18 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:42:392:42 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:42:392:42 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:42:392:42 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:42:392:42 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:42:392:42 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:42:392:42 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:42:392:42 | x |  |
+| stl.h:392:18:392:18 | x | stl.h:392:42:392:42 | x |  |
+| stl.h:392:31:392:31 | y | stl.h:392:31:392:31 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:31:392:31 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:31:392:31 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:31:392:31 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:53:392:53 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:53:392:53 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:53:392:53 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:53:392:53 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:53:392:53 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:53:392:53 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:53:392:53 | y |  |
+| stl.h:392:31:392:31 | y | stl.h:392:53:392:53 | y |  |
+| stl.h:392:36:392:43 | call to unknown function | stl.h:392:36:392:43 | constructor init of field first | TAINT |
+| stl.h:392:36:392:43 | constructor init of field first [post-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [post-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [post-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [post-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [post-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [post-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [post-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [post-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [pre-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [pre-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [pre-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [pre-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [pre-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [pre-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [pre-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:36:392:43 | constructor init of field first [pre-this] | stl.h:392:46:392:54 | constructor init of field second [pre-this] |  |
+| stl.h:392:42:392:42 | x | stl.h:392:36:392:43 | constructor init of field first | TAINT |
+| stl.h:392:42:392:42 | x | stl.h:392:36:392:43 | constructor init of field first | TAINT |
+| stl.h:392:42:392:42 | x | stl.h:392:36:392:43 | constructor init of field first | TAINT |
+| stl.h:392:42:392:42 | x | stl.h:392:36:392:43 | constructor init of field first | TAINT |
+| stl.h:392:42:392:42 | x | stl.h:392:36:392:43 | constructor init of field first | TAINT |
+| stl.h:392:42:392:42 | x | stl.h:392:36:392:43 | constructor init of field first | TAINT |
+| stl.h:392:42:392:42 | x | stl.h:392:36:392:43 | constructor init of field first | TAINT |
+| stl.h:392:46:392:54 | call to unknown function | stl.h:392:46:392:54 | constructor init of field second | TAINT |
+| stl.h:392:53:392:53 | y | stl.h:392:46:392:54 | constructor init of field second | TAINT |
+| stl.h:392:53:392:53 | y | stl.h:392:46:392:54 | constructor init of field second | TAINT |
+| stl.h:392:53:392:53 | y | stl.h:392:46:392:54 | constructor init of field second | TAINT |
+| stl.h:392:53:392:53 | y | stl.h:392:46:392:54 | constructor init of field second | TAINT |
+| stl.h:392:53:392:53 | y | stl.h:392:46:392:54 | constructor init of field second | TAINT |
+| stl.h:392:53:392:53 | y | stl.h:392:46:392:54 | constructor init of field second | TAINT |
+| stl.h:392:53:392:53 | y | stl.h:392:46:392:54 | constructor init of field second | TAINT |
+| stl.h:398:109:398:109 | x | stl.h:398:109:398:109 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:398:109:398:109 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:398:109:398:109 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:398:109:398:109 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:398:109:398:109 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:398:109:398:109 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:398:109:398:109 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:399:40:399:40 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:399:40:399:40 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:399:40:399:40 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:399:40:399:40 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:399:40:399:40 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:399:40:399:40 | x |  |
+| stl.h:398:109:398:109 | x | stl.h:399:40:399:40 | x |  |
+| stl.h:398:117:398:117 | y | stl.h:398:117:398:117 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:398:117:398:117 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:398:117:398:117 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:398:117:398:117 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:398:117:398:117 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:398:117:398:117 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:398:117:398:117 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:399:61:399:61 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:399:61:399:61 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:399:61:399:61 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:399:61:399:61 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:399:61:399:61 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:399:61:399:61 | y |  |
+| stl.h:398:117:398:117 | y | stl.h:399:61:399:61 | y |  |
+| stl.h:399:10:399:63 | call to pair | stl.h:399:10:399:63 | call to pair | TAINT |
+| stl.h:399:10:399:63 | call to pair | stl.h:399:10:399:63 | call to pair | TAINT |
+| stl.h:399:10:399:63 | call to pair | stl.h:399:10:399:63 | call to pair | TAINT |
+| stl.h:399:10:399:63 | call to pair | stl.h:399:10:399:63 | call to pair | TAINT |
+| stl.h:399:10:399:63 | call to pair | stl.h:399:10:399:63 | call to pair | TAINT |
+| stl.h:399:10:399:63 | call to pair | stl.h:399:10:399:63 | call to pair | TAINT |
+| stl.h:399:23:399:38 | ref arg call to forward | stl.h:398:109:398:109 | x |  |
+| stl.h:399:23:399:38 | ref arg call to forward | stl.h:398:109:398:109 | x |  |
+| stl.h:399:23:399:38 | ref arg call to forward | stl.h:398:109:398:109 | x |  |
+| stl.h:399:23:399:38 | ref arg call to forward | stl.h:398:109:398:109 | x |  |
+| stl.h:399:23:399:38 | ref arg call to forward | stl.h:399:40:399:40 | x [inner post update] |  |
+| stl.h:399:23:399:38 | ref arg call to forward | stl.h:399:40:399:40 | x [inner post update] |  |
+| stl.h:399:23:399:38 | ref arg call to forward | stl.h:399:40:399:40 | x [inner post update] |  |
+| stl.h:399:23:399:38 | ref arg call to forward | stl.h:399:40:399:40 | x [inner post update] |  |
+| stl.h:399:40:399:40 | x | stl.h:399:23:399:38 | call to forward |  |
+| stl.h:399:40:399:40 | x | stl.h:399:23:399:38 | call to forward |  |
+| stl.h:399:40:399:40 | x | stl.h:399:23:399:38 | call to forward |  |
+| stl.h:399:40:399:40 | x | stl.h:399:23:399:38 | call to forward |  |
+| stl.h:399:40:399:40 | x | stl.h:399:23:399:38 | call to forward |  |
+| stl.h:399:40:399:40 | x | stl.h:399:23:399:38 | call to forward |  |
+| stl.h:399:44:399:59 | call to forward | stl.h:399:10:399:63 | call to pair | TAINT |
+| stl.h:399:44:399:59 | call to forward | stl.h:399:10:399:63 | call to pair | TAINT |
+| stl.h:399:44:399:59 | ref arg call to forward | stl.h:398:117:398:117 | y |  |
+| stl.h:399:44:399:59 | ref arg call to forward | stl.h:398:117:398:117 | y |  |
+| stl.h:399:44:399:59 | ref arg call to forward | stl.h:398:117:398:117 | y |  |
+| stl.h:399:44:399:59 | ref arg call to forward | stl.h:398:117:398:117 | y |  |
+| stl.h:399:44:399:59 | ref arg call to forward | stl.h:399:61:399:61 | y [inner post update] |  |
+| stl.h:399:44:399:59 | ref arg call to forward | stl.h:399:61:399:61 | y [inner post update] |  |
+| stl.h:399:44:399:59 | ref arg call to forward | stl.h:399:61:399:61 | y [inner post update] |  |
+| stl.h:399:44:399:59 | ref arg call to forward | stl.h:399:61:399:61 | y [inner post update] |  |
+| stl.h:399:61:399:61 | y | stl.h:399:10:399:63 | call to pair | TAINT |
+| stl.h:399:61:399:61 | y | stl.h:399:10:399:63 | call to pair | TAINT |
+| stl.h:399:61:399:61 | y | stl.h:399:44:399:59 | call to forward |  |
+| stl.h:399:61:399:61 | y | stl.h:399:44:399:59 | call to forward |  |
+| stl.h:399:61:399:61 | y | stl.h:399:44:399:59 | call to forward |  |
+| stl.h:399:61:399:61 | y | stl.h:399:44:399:59 | call to forward |  |
+| stl.h:399:61:399:61 | y | stl.h:399:44:399:59 | call to forward |  |
+| stl.h:399:61:399:61 | y | stl.h:399:44:399:59 | call to forward |  |
 | string.cpp:25:12:25:17 | call to source | string.cpp:29:7:29:7 | a |  |
 | string.cpp:26:16:26:20 | 123 | string.cpp:26:16:26:21 | call to basic_string | TAINT |
 | string.cpp:26:16:26:21 | call to basic_string | string.cpp:30:7:30:7 | b |  |
@@ -7096,3 +7111,40 @@
 | vector.cpp:413:11:413:16 | call to source | vector.cpp:413:2:413:2 | call to operator* [post update] | TAINT |
 | vector.cpp:413:11:413:16 | call to source | vector.cpp:413:2:413:18 | ... = ... |  |
 | vector.cpp:414:7:414:9 | ref arg v14 | vector.cpp:415:1:415:1 | v14 |  |
+| vector.cpp:417:33:417:45 | source_string | vector.cpp:421:23:421:35 | source_string |  |
+| vector.cpp:417:33:417:45 | source_string | vector.cpp:428:23:428:35 | source_string |  |
+| vector.cpp:419:28:419:30 | call to vector | vector.cpp:420:13:420:15 | out |  |
+| vector.cpp:419:28:419:30 | call to vector | vector.cpp:422:8:422:10 | out |  |
+| vector.cpp:419:28:419:30 | call to vector | vector.cpp:423:2:423:2 | out |  |
+| vector.cpp:420:13:420:15 | out | vector.cpp:420:17:420:19 | call to end | TAINT |
+| vector.cpp:420:13:420:15 | ref arg out | vector.cpp:422:8:422:10 | out |  |
+| vector.cpp:420:13:420:15 | ref arg out | vector.cpp:423:2:423:2 | out |  |
+| vector.cpp:420:17:420:19 | call to end | vector.cpp:421:4:421:5 | it |  |
+| vector.cpp:421:3:421:3 | call to operator* [post update] | vector.cpp:422:8:422:10 | out |  |
+| vector.cpp:421:3:421:3 | call to operator* [post update] | vector.cpp:423:2:423:2 | out |  |
+| vector.cpp:421:3:421:36 | ... = ... | vector.cpp:421:3:421:3 | call to operator* [post update] |  |
+| vector.cpp:421:4:421:5 | it | vector.cpp:421:6:421:6 | call to operator++ |  |
+| vector.cpp:421:6:421:6 | call to operator++ | vector.cpp:421:3:421:3 | call to operator* | TAINT |
+| vector.cpp:421:11:421:36 | call to basic_string | vector.cpp:421:3:421:3 | call to operator* [post update] | TAINT |
+| vector.cpp:421:11:421:36 | call to basic_string | vector.cpp:421:3:421:36 | ... = ... |  |
+| vector.cpp:421:23:421:35 | source_string | vector.cpp:421:11:421:36 | call to basic_string | TAINT |
+| vector.cpp:422:8:422:10 | ref arg out | vector.cpp:423:2:423:2 | out |  |
+| vector.cpp:426:28:426:30 | call to vector | vector.cpp:427:32:427:34 | out |  |
+| vector.cpp:426:28:426:30 | call to vector | vector.cpp:429:8:429:10 | out |  |
+| vector.cpp:426:28:426:30 | call to vector | vector.cpp:430:2:430:2 | out |  |
+| vector.cpp:427:13:427:30 | call to back_inserter | vector.cpp:428:4:428:5 | it |  |
+| vector.cpp:427:32:427:34 | ref arg out | vector.cpp:429:8:429:10 | out |  |
+| vector.cpp:427:32:427:34 | ref arg out | vector.cpp:430:2:430:2 | out |  |
+| vector.cpp:428:4:428:5 | it | vector.cpp:428:6:428:6 | call to operator++ |  |
+| vector.cpp:428:6:428:6 | call to operator++ | vector.cpp:428:3:428:3 | call to operator* | TAINT |
+| vector.cpp:428:23:428:35 | source_string | vector.cpp:428:11:428:36 | call to basic_string | TAINT |
+| vector.cpp:429:8:429:10 | ref arg out | vector.cpp:430:2:430:2 | out |  |
+| vector.cpp:433:20:433:22 | call to vector | vector.cpp:434:32:434:34 | out |  |
+| vector.cpp:433:20:433:22 | call to vector | vector.cpp:436:8:436:10 | out |  |
+| vector.cpp:433:20:433:22 | call to vector | vector.cpp:437:2:437:2 | out |  |
+| vector.cpp:434:13:434:30 | call to back_inserter | vector.cpp:435:4:435:5 | it |  |
+| vector.cpp:434:32:434:34 | ref arg out | vector.cpp:436:8:436:10 | out |  |
+| vector.cpp:434:32:434:34 | ref arg out | vector.cpp:437:2:437:2 | out |  |
+| vector.cpp:435:4:435:5 | it | vector.cpp:435:6:435:6 | call to operator++ |  |
+| vector.cpp:435:6:435:6 | call to operator++ | vector.cpp:435:3:435:3 | call to operator* | TAINT |
+| vector.cpp:436:8:436:10 | ref arg out | vector.cpp:437:2:437:2 | out |  |
