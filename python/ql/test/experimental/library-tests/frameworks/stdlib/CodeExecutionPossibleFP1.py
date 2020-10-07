@@ -8,4 +8,4 @@ def eval(*args, **kwargs):
 
 
 # This function call might be marked as a code execution, but it actually isn't.
-eval("print(42)")
+eval("print(42)")  # $f+:getCode="print(42)"

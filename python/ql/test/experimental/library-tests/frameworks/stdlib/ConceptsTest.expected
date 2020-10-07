@@ -1,5 +1,0 @@
-| CodeExecution.py:12:20:12:41 | Comment # $getCode="print(42)" | Missing result:getCode="print(42)" |
-| CodeExecution.py:13:20:13:41 | Comment # $getCode="print(42)" | Missing result:getCode="print(42)" |
-| CodeExecution.py:15:29:15:50 | Comment # $getCode="print(42)" | Missing result:getCode="print(42)" |
-| CodeExecution.py:18:12:18:25 | Comment # $getCode=cmd | Missing result:getCode=cmd |
-| CodeExecution.py:21:12:21:25 | Comment # $getCode=cmd | Missing result:getCode=cmd |
