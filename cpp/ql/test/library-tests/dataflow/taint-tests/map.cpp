@@ -208,8 +208,8 @@ void test_map()
 	sink(m20);
 	sink(m21);
 	sink(m22); // tainted
-	m15.merge(m16);
-	m17.merge(m18);
+	m19.merge(m20);
+	m21.merge(m22);
 	sink(m19); // tainted
 	sink(m20); // tainted [NOT DETECTED]
 	sink(m21); // tainted [NOT DETECTED]
@@ -357,8 +357,8 @@ void test_unordered_map()
 	sink(m20);
 	sink(m21);
 	sink(m22); // tainted
-	m15.merge(m16);
-	m17.merge(m18);
+	m19.merge(m20);
+	m21.merge(m22);
 	sink(m19); // tainted
 	sink(m20); // tainted [NOT DETECTED]
 	sink(m21); // tainted [NOT DETECTED]
