@@ -409,7 +409,7 @@ module AssertionSplitting {
    * ```
    *
    * we record whether `i >= 0` evaluates to `true` or `false`, and restrict the
-   * edges out out of the assertion accordingly.
+   * edges out of the assertion accordingly.
    */
   class AssertionSplitImpl extends SplitImpl, TAssertionSplit {
     Assertion a;

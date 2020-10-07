@@ -126,6 +126,9 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    * ```
    *
    * does not work.
+   *
+   * `cb` records all of the possible condition blocks for this control flow element
+   * that a path from the callable entry point to `succ` may go through.
    */
   pragma[nomagic]
   private predicate immediatelyControlsBlockSplit(
