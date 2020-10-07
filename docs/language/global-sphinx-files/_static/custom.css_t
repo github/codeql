@@ -76,6 +76,9 @@ div.linkbar {
     text-decoration: underline;
 }
 
+div.footer {
+    width: 100%;
+}
 
 /* CODEQL DOCUMENTATION AND SEARCHBOX BANNER ---------------------------------------------------------- */
 
@@ -156,6 +159,10 @@ div.body li {
 
 /* -- SIDEBAR ------------------------------------------------------------------------------- */
 
+.SideNav {
+    height: 100vh;
+}
+
 div.navBox {
     width:29%;
     padding-left: 25px;
@@ -190,6 +197,20 @@ div.navBox {
     text-decoration: underline;
 }
 
+/* -- BREADCRUMBS --------------------------------------------------------------------------------*/
+
+div.related ul {
+    padding: 0;
+}
+
+a.reference {
+    border-bottom: none;
+}
+
+a.reference:hover {
+    text-decoration: none; 
+}
+
 /* -- SIDEBAR TOC ----------------------------------------------------------------------------------*/
 
 #toc h1 {
@@ -201,12 +222,13 @@ div.navBox {
 /* -- SMALL SCREEN ------------------------------------------------------------------------------- */
 
 @media screen and (max-width: 875px){ 
-   
+    /* Override strange behaviour caused by default styles */
     body {
-        margin: 0;
         padding: 0;
-        overflow: inherit;
-        width: 100%;
+    } 
+    
+    div.footer {
+        display: block;
     }
 
     #siteBanner {
@@ -266,9 +288,6 @@ div.navBox {
         padding-left:0;
     }
 
-    div.body {
-        min-width: unset;
-    }
 
     ul {
     margin: 10px 20px 10px 20px;
