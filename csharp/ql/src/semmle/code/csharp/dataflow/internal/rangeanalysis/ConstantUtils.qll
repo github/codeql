@@ -18,6 +18,13 @@ predicate propertyOverrides(Property p, string baseClass, string property) {
 }
 
 /**
+ * Holds if `pa` is an access to the `Length` property of an array.
+ */
+predicate systemArrayLengthAccess(PropertyAccess pa) {
+  propertyOverrides(pa.getTarget(), "System.Array", "Length")
+}
+
+/**
  * Holds if expression `e` is either
  * - a compile time constant with integer value `val`, or
  * - a read of a compile time constant with integer value `val`, or
@@ -47,7 +54,7 @@ private int getArrayLengthRec(ArrayCreation arrCreation, int index) {
 }
 
 private predicate isArrayLengthAccess(PropertyAccess pa, int length) {
-  propertyOverrides(pa.getTarget(), "System.Array", "Length") and
+  systemArrayLengthAccess(pa) and
   exists(ExplicitDefinition arr, ArrayCreation arrCreation |
     getArrayLengthRec(arrCreation, arrCreation.getNumberOfLengthArguments() - 1) = length and
     arrCreation = arr.getADefinition().getSource() and

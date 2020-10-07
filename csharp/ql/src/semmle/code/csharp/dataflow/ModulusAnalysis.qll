@@ -4,4 +4,4 @@
  * variable), and `v` is an integer in the range `[0 .. m-1]`.
  */
 
-import semmle.code.java.dataflow.internal.rangeanalysis.ModulusAnalysisCommon
+import semmle.code.csharp.dataflow.internal.rangeanalysis.ModulusAnalysisCommon

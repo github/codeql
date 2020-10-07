@@ -2,9 +2,10 @@
  * Provides C#-specific definitions for use in sign analysis.
  */
 module Private {
-  private import SsaUtils as SU
   private import csharp as CS
+  private import SsaUtils as SU
   private import ConstantUtils as CU
+  private import RangeUtils as RU
   private import semmle.code.csharp.controlflow.Guards as G
   import Impl
 
@@ -33,6 +34,8 @@ module Private {
   class Expr = CS::Expr;
 
   predicate ssaRead = SU::ssaRead/2;
+
+  predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
 }
 
 private module Impl {
@@ -45,8 +48,6 @@ private module Impl {
   private import SignAnalysisCommon
   private import SsaReadPositionCommon
   private import semmle.code.csharp.commons.ComparisonTest
-
-  private class BooleanValue = AbstractValues::BooleanValue;
 
   float getNonIntegerValue(Expr e) {
     exists(string s |
@@ -253,15 +254,6 @@ private module Impl {
   Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode().getElement() }
 
   Guard getComparisonGuard(ComparisonExpr ce) { result = ce.getExpr() }
-
-  /**
-   * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
-   */
-  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    exists(BooleanValue b | b.getValue() = testIsTrue |
-      guard.controlsBasicBlock(controlled.(SsaReadPositionBlock).getBlock(), b)
-    )
-  }
 
   /** A relational comparison */
   class ComparisonExpr extends ComparisonTest {
