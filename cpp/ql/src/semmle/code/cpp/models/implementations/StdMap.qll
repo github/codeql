@@ -113,6 +113,22 @@ class StdMapSwap extends TaintFunction {
 }
 
 /**
+ * The standard map `merge` functions.
+ */
+class StdMapMerge extends TaintFunction {
+  StdMapMerge() { this.hasQualifiedName("std", ["map", "unordered_map"], "merge") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // container1.merge(container2)
+    input.isQualifierObject() and
+    output.isParameterDeref(0)
+    or
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+/**
  * The standard map functions `at` and `operator[]`.
  */
 class StdMapAt extends TaintFunction {

@@ -1027,12 +1027,16 @@
 | map.cpp:211:7:211:9 | m20 | map.cpp:211:7:211:9 | call to map |  |
 | map.cpp:212:7:212:9 | m21 | map.cpp:212:7:212:9 | call to map |  |
 | map.cpp:213:7:213:9 | m22 | map.cpp:213:7:213:9 | call to map |  |
+| map.cpp:214:2:214:4 | m19 | map.cpp:214:12:214:14 | ref arg m20 | TAINT |
 | map.cpp:214:2:214:4 | ref arg m19 | map.cpp:216:7:216:9 | m19 |  |
 | map.cpp:214:2:214:4 | ref arg m19 | map.cpp:252:1:252:1 | m19 |  |
+| map.cpp:214:12:214:14 | m20 | map.cpp:214:2:214:4 | ref arg m19 | TAINT |
 | map.cpp:214:12:214:14 | ref arg m20 | map.cpp:217:7:217:9 | m20 |  |
 | map.cpp:214:12:214:14 | ref arg m20 | map.cpp:252:1:252:1 | m20 |  |
+| map.cpp:215:2:215:4 | m21 | map.cpp:215:12:215:14 | ref arg m22 | TAINT |
 | map.cpp:215:2:215:4 | ref arg m21 | map.cpp:218:7:218:9 | m21 |  |
 | map.cpp:215:2:215:4 | ref arg m21 | map.cpp:252:1:252:1 | m21 |  |
+| map.cpp:215:12:215:14 | m22 | map.cpp:215:2:215:4 | ref arg m21 | TAINT |
 | map.cpp:215:12:215:14 | ref arg m22 | map.cpp:219:7:219:9 | m22 |  |
 | map.cpp:215:12:215:14 | ref arg m22 | map.cpp:252:1:252:1 | m22 |  |
 | map.cpp:216:7:216:9 | m19 | map.cpp:216:7:216:9 | call to map |  |
@@ -1686,12 +1690,16 @@
 | map.cpp:360:7:360:9 | m20 | map.cpp:360:7:360:9 | call to unordered_map |  |
 | map.cpp:361:7:361:9 | m21 | map.cpp:361:7:361:9 | call to unordered_map |  |
 | map.cpp:362:7:362:9 | m22 | map.cpp:362:7:362:9 | call to unordered_map |  |
+| map.cpp:363:2:363:4 | m19 | map.cpp:363:12:363:14 | ref arg m20 | TAINT |
 | map.cpp:363:2:363:4 | ref arg m19 | map.cpp:365:7:365:9 | m19 |  |
 | map.cpp:363:2:363:4 | ref arg m19 | map.cpp:418:1:418:1 | m19 |  |
+| map.cpp:363:12:363:14 | m20 | map.cpp:363:2:363:4 | ref arg m19 | TAINT |
 | map.cpp:363:12:363:14 | ref arg m20 | map.cpp:366:7:366:9 | m20 |  |
 | map.cpp:363:12:363:14 | ref arg m20 | map.cpp:418:1:418:1 | m20 |  |
+| map.cpp:364:2:364:4 | m21 | map.cpp:364:12:364:14 | ref arg m22 | TAINT |
 | map.cpp:364:2:364:4 | ref arg m21 | map.cpp:367:7:367:9 | m21 |  |
 | map.cpp:364:2:364:4 | ref arg m21 | map.cpp:418:1:418:1 | m21 |  |
+| map.cpp:364:12:364:14 | m22 | map.cpp:364:2:364:4 | ref arg m21 | TAINT |
 | map.cpp:364:12:364:14 | ref arg m22 | map.cpp:368:7:368:9 | m22 |  |
 | map.cpp:364:12:364:14 | ref arg m22 | map.cpp:418:1:418:1 | m22 |  |
 | map.cpp:365:7:365:9 | m19 | map.cpp:365:7:365:9 | call to unordered_map |  |
