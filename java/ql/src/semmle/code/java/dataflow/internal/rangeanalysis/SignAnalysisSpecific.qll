@@ -39,8 +39,6 @@ module Private {
 
   class VariableUpdate = J::VariableUpdate;
 
-  class ExprWithPossibleValue = J::Literal;
-
   class Field = J::Field;
 
   class DivExpr = J::DivExpr;
@@ -186,6 +184,13 @@ private module Impl {
 
   /** Gets the character value of expression `e`. */
   string getCharValue(Expr e) { result = e.(CharacterLiteral).getValue() }
+
+  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expressions. */
+  float getNonIntegerValue(Expr e) {
+    result = e.(LongLiteral).getValue().toFloat() or
+    result = e.(FloatingPointLiteral).getValue().toFloat() or
+    result = e.(DoubleLiteral).getValue().toFloat()
+  }
 
   /**
    * Holds if `e` is an access to the size of a container (`string`, `Map`, or

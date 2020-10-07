@@ -41,18 +41,6 @@ private Sign certainExprSign(Expr e) {
   )
 }
 
-/**
- * Gets the value of the expression if it can't be converted to integer, but
- * can be converted to float.
- */
-private float getNonIntegerValue(ExprWithPossibleValue e) {
-  exists(string s |
-    s = e.getValue() and
-    result = s.toFloat() and
-    not exists(s.toInt())
-  )
-}
-
 /** Holds if the sign of `e` is too complicated to determine. */
 private predicate unknownSign(Expr e) {
   not exists(certainExprSign(e)) and

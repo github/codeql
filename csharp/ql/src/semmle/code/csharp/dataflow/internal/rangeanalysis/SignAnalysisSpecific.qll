@@ -35,8 +35,6 @@ module Private {
 
   class VariableUpdate = CS::AssignableDefinition;
 
-  class ExprWithPossibleValue = CS::Expr;
-
   class Field = CS::Field;
 
   class RealLiteral = CS::RealLiteral;
@@ -129,6 +127,15 @@ private module Impl {
 
   /** Gets the character value of expression `e`. */
   string getCharValue(Expr e) { result = e.getValue() and e.getType() instanceof CharType }
+
+  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expressions. */
+  float getNonIntegerValue(Expr e) {
+    exists(string s |
+      s = e.getValue() and
+      result = s.toFloat() and
+      not exists(s.toInt())
+    )
+  }
 
   /**
    * Holds if `e` is an access to the size of a container (`string`, `Array`,
