@@ -270,8 +270,8 @@ private Node update(Node node) {
  * that represents the dictionary of extra keyword arguments. There is a store step from each
  * extra keyword argument to this node.
  *
- * When a call contains a dictionary argument with entries corresponding to a keyword parameter,
- * the value at such a key is unpacked and passed to the positional parameter. This is achieved
+ * When a call contains a dictionary unpacking argument, such as `func(**kwargs)`, with entries corresponding to a keyword parameter,
+ * the value at such a key is unpacked and passed to the parameter. This is achieved
  * by synthesising an argument node `TKwUnpacked(call, callable, name)` representing the unpacked
  * value. This is used as the argument passed to the matching keyword parameter. There is a read
  * step from the dictionary argument to the synthesized argument node.
