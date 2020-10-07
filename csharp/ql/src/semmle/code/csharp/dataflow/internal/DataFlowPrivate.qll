@@ -1814,6 +1814,13 @@ module LibraryFlow {
       x.hasExprPath(source.getSource(call), entry.(ExprNode).getControlFlowNode(), _, callCfn)
     )
     or
+    // The source is an implicit array for a `params` parameter
+    exists(DataFlowCall call, int pos |
+      pos = source.(CallableFlowSourceArg).getArgumentIndex() and
+      entry.(ParamsArgumentNode).argumentOf(call, pos) and
+      callCfn = call.getControlFlowNode()
+    )
+    or
     // The source is the output of a supplied delegate argument, for
     // example the output of `Foo` in `new Lazy(Foo)`
     exists(DataFlowCall call, int pos |
