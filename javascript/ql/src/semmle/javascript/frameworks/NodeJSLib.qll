@@ -91,12 +91,12 @@ module NodeJSLib {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    SimpleParameter getRequestParameter() { result = getFunction().getParameter(0) }
+    Parameter getRequestParameter() { result = getFunction().getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    SimpleParameter getResponseParameter() { result = getFunction().getParameter(1) }
+    Parameter getResponseParameter() { result = getFunction().getParameter(1) }
   }
 
   /**
@@ -639,6 +639,20 @@ module NodeJSLib {
       |
         pred = deprecate.getArgument(0) and
         succ = deprecate
+      )
+    }
+  }
+
+  private import semmle.javascript.PackageExports as Exports
+
+  /**
+   * A direct step from an named export to a property-read reading the exported value.
+   */
+  private class ExportsStep extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Import imp, string name |
+        succ = DataFlow::valueNode(imp).(DataFlow::SourceNode).getAPropertyRead(name) and
+        pred = imp.getImportedModule().getAnExportedValue(name)
       )
     }
   }

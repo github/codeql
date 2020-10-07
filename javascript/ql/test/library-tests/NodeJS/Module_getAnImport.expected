@@ -15,4 +15,5 @@
 | mjs-files/require-from-js.js:1:1:4:0 | <toplevel> | mjs-files/require-from-js.js:1:12:1:36 | require ... on-me') |
 | mjs-files/require-from-js.js:1:1:4:0 | <toplevel> | mjs-files/require-from-js.js:2:12:2:39 | require ... me.js') |
 | mjs-files/require-from-js.js:1:1:4:0 | <toplevel> | mjs-files/require-from-js.js:3:12:3:40 | require ... e.mjs') |
+| reexport/b.js:1:1:6:1 | <toplevel> | reexport/b.js:1:11:1:24 | require("./a") |
 | sub/c.js:1:1:4:0 | <toplevel> | sub/c.js:1:1:1:15 | require('../a') |

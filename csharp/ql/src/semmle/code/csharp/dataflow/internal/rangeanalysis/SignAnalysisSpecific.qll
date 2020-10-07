@@ -71,14 +71,29 @@ private module Impl {
 
   predicate positiveExpression(Expr e) { e instanceof SizeofExpr }
 
-  class NumericOrCharType extends Type {
-    NumericOrCharType() {
-      this instanceof CharType or
-      this instanceof IntegralType or
-      this instanceof FloatingPointType or
-      this instanceof DecimalType or
-      this instanceof Enum or
-      this instanceof PointerType // should be similar to unsigned integers
+  abstract class NumericOrCharType extends Type { }
+
+  class UnsignedNumericType extends NumericOrCharType {
+    UnsignedNumericType() {
+      this instanceof CharType
+      or
+      this instanceof UnsignedIntegralType
+      or
+      this instanceof PointerType
+      or
+      this instanceof Enum and this.(Enum).getUnderlyingType() instanceof UnsignedIntegralType
+    }
+  }
+
+  class SignedNumericType extends NumericOrCharType {
+    SignedNumericType() {
+      this instanceof SignedIntegralType
+      or
+      this instanceof FloatingPointType
+      or
+      this instanceof DecimalType
+      or
+      this instanceof Enum and this.(Enum).getUnderlyingType() instanceof SignedIntegralType
     }
   }
 
@@ -125,6 +140,7 @@ private module Impl {
     e.getType() instanceof NumericOrCharType and
     not e = getARead(_) and
     not e instanceof FieldAccess and
+    not e instanceof TypeAccess and
     // The expression types that are listed here are the ones handled in `specificSubExprSign`.
     // Keep them in sync.
     not e instanceof AssignExpr and

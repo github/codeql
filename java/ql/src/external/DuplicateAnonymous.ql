@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Duplicate anonymous class
  * @description Duplicated anonymous classes indicate that refactoring is necessary.
  * @kind problem

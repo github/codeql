@@ -90,6 +90,7 @@
 | SignAnalysis.cs:108:13:108:21 | Decimal de = ... | strictlyPositive |
 | SignAnalysis.cs:108:18:108:21 | 4.2 | strictlyPositive |
 | SignAnalysis.cs:109:34:109:35 | access to local variable de | strictlyPositive |
+| SignAnalysis.cs:110:13:110:13 | access to local variable c | positive |
 | SignAnalysis.cs:110:13:110:19 | Char c = ... | strictlyPositive |
 | SignAnalysis.cs:110:17:110:19 | a | strictlyPositive |
 | SignAnalysis.cs:111:34:111:34 | access to local variable c | strictlyPositive |
@@ -162,6 +163,8 @@
 | SignAnalysis.cs:306:21:306:22 | -... | strictlyNegative |
 | SignAnalysis.cs:306:22:306:22 | 1 | strictlyPositive |
 | SignAnalysis.cs:309:38:309:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:315:13:315:15 | access to local variable min | positive |
+| SignAnalysis.cs:316:13:316:15 | access to local variable max | positive |
 | SignAnalysis.cs:316:13:316:31 | Char max = ... | strictlyPositive |
 | SignAnalysis.cs:316:19:316:31 | access to constant MaxValue | strictlyPositive |
 | SignAnalysis.cs:317:13:317:23 | Int32 c = ... | strictlyPositive |
@@ -193,7 +196,13 @@
 | SignAnalysis.cs:342:38:342:38 | access to local variable x | negative |
 | SignAnalysis.cs:348:62:348:62 | 5 | strictlyPositive |
 | SignAnalysis.cs:351:38:351:38 | access to local variable i | strictlyNegative |
+| SignAnalysis.cs:357:13:357:13 | access to parameter i | positive |
+| SignAnalysis.cs:359:38:359:38 | access to parameter i | strictlyPositive |
 | SignAnalysis.cs:371:38:371:38 | access to local variable y | strictlyNegative |
+| SignAnalysis.cs:377:16:377:17 | access to local variable dp | positive |
+| SignAnalysis.cs:377:16:377:22 | Single* dp = ... | positive |
+| SignAnalysis.cs:377:21:377:22 | &... | positive |
+| SignAnalysis.cs:378:18:378:19 | access to local variable dp | positive |
 | SignAnalysis.cs:381:38:381:38 | access to local variable x | strictlyNegative |
 | SignAnalysis.cs:385:50:385:99 | access to constant Explicit | strictlyPositive |
 | SignAnalysis.cs:385:109:385:110 | 15 | strictlyPositive |
@@ -211,6 +220,29 @@
 | SignAnalysis.cs:414:13:414:13 | access to local variable i | strictlyPositive |
 | SignAnalysis.cs:415:31:415:31 | access to local variable i | strictlyPositive |
 | SignAnalysis.cs:424:31:424:31 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:428:19:428:19 | access to constant A | strictlyPositive |
+| SignAnalysis.cs:428:19:428:24 | ... = ... | strictlyPositive |
+| SignAnalysis.cs:428:23:428:24 | 12 | strictlyPositive |
 | SignAnalysis.cs:434:38:434:38 | access to local variable i | strictlyNegative |
+| SignAnalysis.cs:440:23:440:25 | access to parameter src | positive |
+| SignAnalysis.cs:440:29:440:31 | access to parameter dst | positive |
 | SignAnalysis.cs:443:38:443:38 | access to local variable x | strictlyNegative |
 | SignAnalysis.cs:446:31:446:32 | 10 | strictlyPositive |
+| SignAnalysis.cs:448:22:448:23 | access to local variable to | positive |
+| SignAnalysis.cs:448:22:448:29 | Byte* to = ... | positive |
+| SignAnalysis.cs:448:27:448:29 | (...) ... | positive |
+| SignAnalysis.cs:450:38:450:44 | (...) ... | positive |
+| SignAnalysis.cs:450:43:450:44 | access to local variable to | positive |
+| SignAnalysis.cs:454:30:454:30 | 1 | strictlyPositive |
+| SignAnalysis.cs:454:30:454:30 | (...) ... | strictlyPositive |
+| SignAnalysis.cs:457:14:457:27 | Int64 l = ... | positive |
+| SignAnalysis.cs:457:18:457:27 | (...) ... | positive |
+| SignAnalysis.cs:457:18:457:27 | call to method Unsigned | positive |
+| SignAnalysis.cs:458:13:458:13 | access to local variable l | positive |
+| SignAnalysis.cs:460:38:460:38 | access to local variable l | strictlyPositive |
+| SignAnalysis.cs:463:14:463:14 | access to local variable x | positive |
+| SignAnalysis.cs:463:14:463:24 | UInt32 x = ... | positive |
+| SignAnalysis.cs:463:18:463:24 | (...) ... | positive |
+| SignAnalysis.cs:464:9:464:9 | access to local variable x | positive |
+| SignAnalysis.cs:464:9:464:11 | ...++ | positive |
+| SignAnalysis.cs:465:34:465:34 | access to local variable x | strictlyPositive |

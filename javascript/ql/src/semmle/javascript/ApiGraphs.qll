@@ -24,7 +24,10 @@ module API {
      * Gets a data-flow node corresponding to a use of the API component represented by this node.
      *
      * For example, `require('fs').readFileSync` is a use of the function `readFileSync` from the
-     * `fs` module, and `require('fs').readFileSync(file)` is a use of the result of that function.
+     * `fs` module, and `require('fs').readFileSync(file)` is a use of the return of that function.
+     *
+     * This includes indirect uses found via data flow, meaning that in
+     * `f(obj.foo); function f(x) {};` both `obj.foo` and `x` are uses of the `foo` member from `obj`.
      *
      * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
      * `x` are uses of the first parameter of `plusOne`.
@@ -34,6 +37,34 @@ module API {
         Impl::trackUseNode(src).flowsTo(result)
       )
     }
+
+    /**
+     * Gets an immediate use of the API component represented by this node.
+     *
+     * For example, `require('fs').readFileSync` is a an immediate use of the `readFileSync` member
+     * from the `fs` module.
+     *
+     * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
+     * found via data flow. This means that in `const x = fs.readFile` only `fs.readFile` is a reference
+     * to the `readFile` member of `fs`, neither `x` nor any node that `x` flows to is a reference to
+     * this API component.
+     */
+    DataFlow::SourceNode getAnImmediateUse() { Impl::use(this, result) }
+
+    /**
+     * Gets a call to the function represented by this API component.
+     */
+    DataFlow::CallNode getACall() { result = getReturn().getAnImmediateUse() }
+
+    /**
+     * Gets a `new` call to the function represented by this API component.
+     */
+    DataFlow::NewNode getAnInstantiation() { result = getInstance().getAnImmediateUse() }
+
+    /**
+     * Gets an invocation (with our without `new`) to the function represented by this API component.
+     */
+    DataFlow::InvokeNode getAnInvocation() { result = getACall() or result = getAnInstantiation() }
 
     /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of the API
@@ -270,6 +301,9 @@ module API {
 
     /** Gets a data-flow node that defines this entry point. */
     abstract DataFlow::Node getARhs();
+
+    /** Gets an API-graph node for this entry point. */
+    API::Node getNode() { result = root().getASuccessor(this) }
   }
 
   /**
@@ -412,22 +446,39 @@ module API {
           rhs = f.getAReturn()
         )
         or
-        exists(DataFlow::SourceNode src, DataFlow::InvokeNode invk |
-          use(base, src) and invk = trackUseNode(src).getAnInvocation()
-        |
-          exists(int i |
-            lbl = Label::parameter(i) and
-            rhs = invk.getArgument(i)
-          )
-          or
-          lbl = Label::receiver() and
-          rhs = invk.(DataFlow::CallNode).getReceiver()
+        exists(int i |
+          lbl = Label::parameter(i) and
+          argumentPassing(base, i, rhs)
         )
         or
         exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
           use(base, src) and pw = trackUseNode(src).getAPropertyWrite() and rhs = pw.getRhs()
         |
           lbl = Label::memberFromRef(pw)
+        )
+      )
+    }
+
+    /**
+     * Holds if `arg` is passed as the `i`th argument to a use of `base`, either by means of a
+     * full invocation, or in a partial function application.
+     *
+     * The receiver is considered to be argument -1.
+     */
+    private predicate argumentPassing(TApiNode base, int i, DataFlow::Node arg) {
+      exists(DataFlow::SourceNode use, DataFlow::SourceNode pred |
+        use(base, use) and pred = trackUseNode(use)
+      |
+        arg = pred.getAnInvocation().getArgument(i)
+        or
+        arg = pred.getACall().getReceiver() and
+        i = -1
+        or
+        exists(DataFlow::PartialInvokeNode pin, DataFlow::Node callback | pred.flowsTo(callback) |
+          pin.isPartialArgument(callback, arg, i)
+          or
+          arg = pin.getBoundReceiver(callback) and
+          i = -1
         )
       )
     }
@@ -530,7 +581,11 @@ module API {
         ref = DataFlow::moduleImport(m)
       )
       or
-      exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) | ref = cls.getAReceiverNode())
+      exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) |
+        ref = cls.getAReceiverNode()
+        or
+        ref = cls.(DataFlow::ClassNode::FunctionStyleClass).getAPrototypeReference()
+      )
       or
       nd = MkUse(ref)
       or
@@ -719,10 +774,14 @@ private module Label {
   bindingset[s]
   string parameterByStringIndex(string s) {
     result = "parameter " + s and
-    s.toInt() >= 0
+    s.toInt() >= -1
   }
 
-  /** Gets the `parameter` edge label for the `i`th parameter. */
+  /**
+   * Gets the `parameter` edge label for the `i`th parameter.
+   *
+   * The receiver is considered to be parameter -1.
+   */
   bindingset[i]
   string parameter(int i) { result = parameterByStringIndex(i.toString()) }
 

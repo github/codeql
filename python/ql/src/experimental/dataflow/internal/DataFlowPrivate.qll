@@ -180,6 +180,9 @@ module EssaFlow {
       nodeTo = TKwOverflowNode(call, callable) and
       nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
     )
+    or
+    // If expressions
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {

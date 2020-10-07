@@ -245,24 +245,30 @@ Sign ssaDefSign(SsaVariable v) {
 /** Gets a possible sign for `e`. */
 cached
 Sign exprSign(Expr e) {
-  result = certainExprSign(e)
-  or
-  not exists(certainExprSign(e)) and
-  (
-    unknownSign(e)
+  exists(Sign s |
+    s = certainExprSign(e)
     or
-    exists(SsaVariable v | getARead(v) = e | result = ssaVariableSign(v, e))
-    or
-    e =
-      any(VarAccess access |
-        not exists(SsaVariable v | getARead(v) = access) and
-        (
-          result = fieldSign(getField(access.(FieldAccess))) or
-          not access instanceof FieldAccess
+    not exists(certainExprSign(e)) and
+    (
+      unknownSign(e)
+      or
+      exists(SsaVariable v | getARead(v) = e | s = ssaVariableSign(v, e))
+      or
+      e =
+        any(VarAccess access |
+          not exists(SsaVariable v | getARead(v) = access) and
+          (
+            s = fieldSign(getField(access.(FieldAccess))) or
+            not access instanceof FieldAccess
+          )
         )
-      )
-    or
-    result = specificSubExprSign(e)
+      or
+      s = specificSubExprSign(e)
+    )
+  |
+    if e.getType() instanceof UnsignedNumericType and s = TNeg()
+    then result = TPos()
+    else result = s
   )
 }
 

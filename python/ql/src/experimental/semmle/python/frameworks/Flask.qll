@@ -52,16 +52,35 @@ private module Flask {
   }
 
   private module FlaskRequestTracking {
-    private DataFlow::Node tainted_methods(string attr_name, DataFlow::TypeTracker t) {
-      attr_name in ["get_data", "get_json"] and
-      t.startInAttr(attr_name) and
+    /** Gets a reference to the `get_data` attribute of a Flask request. */
+    private DataFlow::Node get_data(DataFlow::TypeTracker t) {
+      t.startInAttr("get_data") and
       result = flask::request()
       or
-      exists(DataFlow::TypeTracker t2 | result = tainted_methods(attr_name, t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = get_data(t2).track(t2, t))
     }
 
+    /** Gets a reference to the `get_data` attribute of a Flask request. */
+    DataFlow::Node get_data() { result = get_data(DataFlow::TypeTracker::end()) }
+
+    /** Gets a reference to the `get_json` attribute of a Flask request. */
+    private DataFlow::Node get_json(DataFlow::TypeTracker t) {
+      t.startInAttr("get_json") and
+      result = flask::request()
+      or
+      exists(DataFlow::TypeTracker t2 | result = get_json(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `get_json` attribute of a Flask request. */
+    DataFlow::Node get_json() { result = get_json(DataFlow::TypeTracker::end()) }
+
+    /** Gets a reference to either of the `get_json` or `get_data` attributes of a Flask request. */
     DataFlow::Node tainted_methods(string attr_name) {
-      result = tainted_methods(attr_name, DataFlow::TypeTracker::end())
+      result = get_data() and
+      attr_name = "get_data"
+      or
+      result = get_json() and
+      attr_name = "get_json"
     }
   }
 

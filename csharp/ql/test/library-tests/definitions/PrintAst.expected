@@ -8,9 +8,13 @@ definitions.cs:
 #    9|       4: [BlockStmt] {...}
 #   13|   2: [Enum] Enumeration
 #   15|     5: [Field] e1
-#   15|       1: [MemberConstantAccess] access to constant e1
+#   15|       1: [AssignExpr] ... = ...
+#   15|         0: [IntLiteral] 1
+#   15|         1: [MemberConstantAccess] access to constant e1
 #   15|     6: [Field] e2
-#   15|       1: [MemberConstantAccess] access to constant e2
+#   15|       1: [AssignExpr] ... = ...
+#   15|         0: [IntLiteral] 2
+#   15|         1: [MemberConstantAccess] access to constant e2
 #   15|     7: [Field] e3
 #   18|   3: [Class] C1
 #   20|     4: [InstanceConstructor] C1

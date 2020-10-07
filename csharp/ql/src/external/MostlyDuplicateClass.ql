@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Duplicate class
  * @description More than 80% of the methods in this class are duplicated in another class. Create a common supertype to improve code sharing.
  * @kind problem

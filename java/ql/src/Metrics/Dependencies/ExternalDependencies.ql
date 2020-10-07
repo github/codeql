@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name External dependencies
  * @description Count the number of dependencies a Java source file has on jar files.
  * @kind treemap

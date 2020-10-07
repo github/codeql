@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Duplicated lines in files
  * @description The number of lines in a file (including code, comment and whitespace lines)
  *              occurring in a block of lines that is duplicated at least once somewhere else.

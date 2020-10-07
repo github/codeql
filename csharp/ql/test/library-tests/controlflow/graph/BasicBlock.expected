@@ -725,7 +725,7 @@
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:13:7:22 | ... is ... | 14 |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; | 1 |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | exit M | 4 |
-| VarDecls.cs:5:18:5:19 | enter M1 | VarDecls.cs:5:18:5:19 | exit M1 | 16 |
+| VarDecls.cs:5:18:5:19 | enter M1 | VarDecls.cs:5:18:5:19 | exit M1 | 18 |
 | VarDecls.cs:13:12:13:13 | enter M2 | VarDecls.cs:13:12:13:13 | exit M2 | 12 |
 | VarDecls.cs:19:7:19:8 | enter M3 | VarDecls.cs:25:20:25:20 | access to parameter b | 12 |
 | VarDecls.cs:25:13:25:29 | return ...; | VarDecls.cs:19:7:19:8 | exit M3 | 2 |

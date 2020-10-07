@@ -539,8 +539,6 @@ uniqueNodeLocation
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
@@ -1418,7 +1416,7 @@ uniqueNodeLocation
 | whilestmt.c:39:6:39:11 | ReturnVoid | Node should have one location but has 4. |
 | whilestmt.c:39:6:39:11 | SideEffect | Node should have one location but has 4. |
 missingLocation
-| Nodes without location: 36 |
+| Nodes without location: 34 |
 uniqueNodeToString
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |

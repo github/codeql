@@ -84,7 +84,7 @@ def test_imagnumber_literal():
 
 # 6.2.3. Parenthesized forms
 def test_parenthesized_form():
-    x = SOURCE
+    x = (SOURCE)
     SINK(x)
 
 
@@ -345,6 +345,8 @@ def test_subscription_mapping():
 
 
 # overriding __getitem__ should be tested by the class coverage tests
+
+
 # 6.3.3. Slicings
 l = [SOURCE]
 
@@ -415,11 +417,19 @@ def test_assignment_expression():
 
 # 6.13. Conditional expressions
 def test_conditional_true():
-    SINK(SOURCE if True else NONSOURCE)  # Flow missing
+    SINK(SOURCE if True else NONSOURCE)
+
+
+def test_conditional_true_guards():
+    SINK_F(NONSOURCE if True else SOURCE)
 
 
 def test_conditional_false():
-    SINK(NONSOURCE if False else SOURCE)  # Flow missing
+    SINK(NONSOURCE if False else SOURCE)
+
+
+def test_conditional_false_guards():
+    SINK_F(SOURCE if False else NONSOURCE)
 
 
 # Condition is evaluated first, so x is SOURCE once chosen
@@ -487,7 +497,7 @@ def test_lambda_extra_keyword():
     SINK(f_extra_keyword(NONSOURCE, b=SOURCE))
 
 
-# call the function with our source as the name of the keyword arguemnt
+# call the function with our source as the name of the keyword argument
 def test_lambda_extra_keyword_flow():
     # return the name of the first extra keyword argument
     f_extra_keyword_flow = lambda **a: [*a][0]

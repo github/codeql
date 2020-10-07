@@ -30,7 +30,7 @@ edges
 | datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] | datamodel.py:159:6:159:17 | ControlFlowNode for Attribute |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:42:21:42:26 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:55:9:55:14 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:87:9:87:14 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:87:10:87:15 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:93:10:93:15 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:103:10:103:15 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:108:22:108:27 | ControlFlowNode for SOURCE |
@@ -47,18 +47,20 @@ edges
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:336:11:336:16 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:340:11:340:16 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:344:16:344:21 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:365:28:365:33 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:373:30:373:35 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:381:36:381:41 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:389:33:389:38 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:397:39:397:44 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:442:12:442:17 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:449:28:449:33 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:463:30:463:35 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:477:36:477:41 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:482:33:482:38 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:487:39:487:44 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:499:9:499:14 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:367:28:367:33 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:375:30:375:35 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:383:36:383:41 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:391:33:391:38 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:399:39:399:44 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:420:10:420:15 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:428:34:428:39 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:452:12:452:17 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:459:28:459:33 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:473:30:473:35 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:487:36:487:41 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:492:33:492:38 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:497:39:497:44 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:509:9:509:14 | ControlFlowNode for SOURCE |
 | test.py:20:1:20:6 | GSSA Variable SOURCE | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test |
 | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:20:1:20:6 | GSSA Variable SOURCE |
 | test.py:42:10:42:26 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:43:9:43:9 | ControlFlowNode for x [Tuple element at index 1] |
@@ -70,7 +72,7 @@ edges
 | test.py:66:9:66:17 | ControlFlowNode for Str | test.py:67:10:67:10 | ControlFlowNode for x |
 | test.py:71:9:71:10 | ControlFlowNode for IntegerLiteral | test.py:72:10:72:10 | ControlFlowNode for x |
 | test.py:76:9:76:12 | ControlFlowNode for FloatLiteral | test.py:77:10:77:10 | ControlFlowNode for x |
-| test.py:87:9:87:14 | ControlFlowNode for SOURCE | test.py:88:10:88:10 | ControlFlowNode for x |
+| test.py:87:10:87:15 | ControlFlowNode for SOURCE | test.py:88:10:88:10 | ControlFlowNode for x |
 | test.py:93:9:93:16 | ControlFlowNode for List [List element] | test.py:94:10:94:10 | ControlFlowNode for x [List element] |
 | test.py:93:10:93:15 | ControlFlowNode for SOURCE | test.py:93:9:93:16 | ControlFlowNode for List [List element] |
 | test.py:94:10:94:10 | ControlFlowNode for x [List element] | test.py:94:10:94:13 | ControlFlowNode for Subscript |
@@ -154,27 +156,29 @@ edges
 | test.py:340:11:340:16 | ControlFlowNode for SOURCE | test.py:340:10:340:17 | ControlFlowNode for List [List element] |
 | test.py:344:10:344:22 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:344:10:344:27 | ControlFlowNode for Subscript |
 | test.py:344:16:344:21 | ControlFlowNode for SOURCE | test.py:344:10:344:22 | ControlFlowNode for Dict [Dictionary element at key s] |
-| test.py:365:28:365:33 | ControlFlowNode for SOURCE | test.py:365:10:365:34 | ControlFlowNode for second() |
-| test.py:373:30:373:35 | ControlFlowNode for SOURCE | test.py:373:10:373:36 | ControlFlowNode for second() |
-| test.py:381:10:381:43 | KwUnpacked b | test.py:381:10:381:43 | ControlFlowNode for second() |
-| test.py:381:30:381:42 | ControlFlowNode for Dict [Dictionary element at key b] | test.py:381:10:381:43 | KwUnpacked b |
-| test.py:381:36:381:41 | ControlFlowNode for SOURCE | test.py:381:30:381:42 | ControlFlowNode for Dict [Dictionary element at key b] |
-| test.py:389:10:389:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:389:10:389:39 | ControlFlowNode for f_extra_pos() |
-| test.py:389:33:389:38 | ControlFlowNode for SOURCE | test.py:389:10:389:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
-| test.py:397:10:397:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:397:10:397:45 | ControlFlowNode for f_extra_keyword() |
-| test.py:397:39:397:44 | ControlFlowNode for SOURCE | test.py:397:10:397:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
-| test.py:442:12:442:17 | ControlFlowNode for SOURCE | test.py:442:10:442:18 | ControlFlowNode for f() |
-| test.py:449:28:449:33 | ControlFlowNode for SOURCE | test.py:449:10:449:34 | ControlFlowNode for second() |
-| test.py:463:30:463:35 | ControlFlowNode for SOURCE | test.py:463:10:463:36 | ControlFlowNode for second() |
-| test.py:477:10:477:43 | KwUnpacked b | test.py:477:10:477:43 | ControlFlowNode for second() |
-| test.py:477:30:477:42 | ControlFlowNode for Dict [Dictionary element at key b] | test.py:477:10:477:43 | KwUnpacked b |
-| test.py:477:36:477:41 | ControlFlowNode for SOURCE | test.py:477:30:477:42 | ControlFlowNode for Dict [Dictionary element at key b] |
-| test.py:482:10:482:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:482:10:482:39 | ControlFlowNode for f_extra_pos() |
-| test.py:482:33:482:38 | ControlFlowNode for SOURCE | test.py:482:10:482:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
-| test.py:487:10:487:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:487:10:487:45 | ControlFlowNode for f_extra_keyword() |
-| test.py:487:39:487:44 | ControlFlowNode for SOURCE | test.py:487:10:487:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
-| test.py:499:9:499:14 | ControlFlowNode for SOURCE | test.py:501:10:501:10 | ControlFlowNode for a |
-| test.py:499:9:499:14 | ControlFlowNode for SOURCE | test.py:506:10:506:10 | ControlFlowNode for b |
+| test.py:367:28:367:33 | ControlFlowNode for SOURCE | test.py:367:10:367:34 | ControlFlowNode for second() |
+| test.py:375:30:375:35 | ControlFlowNode for SOURCE | test.py:375:10:375:36 | ControlFlowNode for second() |
+| test.py:383:10:383:43 | KwUnpacked b | test.py:383:10:383:43 | ControlFlowNode for second() |
+| test.py:383:30:383:42 | ControlFlowNode for Dict [Dictionary element at key b] | test.py:383:10:383:43 | KwUnpacked b |
+| test.py:383:36:383:41 | ControlFlowNode for SOURCE | test.py:383:30:383:42 | ControlFlowNode for Dict [Dictionary element at key b] |
+| test.py:391:10:391:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:391:10:391:39 | ControlFlowNode for f_extra_pos() |
+| test.py:391:33:391:38 | ControlFlowNode for SOURCE | test.py:391:10:391:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
+| test.py:399:10:399:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:399:10:399:45 | ControlFlowNode for f_extra_keyword() |
+| test.py:399:39:399:44 | ControlFlowNode for SOURCE | test.py:399:10:399:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
+| test.py:420:10:420:15 | ControlFlowNode for SOURCE | test.py:420:10:420:38 | ControlFlowNode for IfExp |
+| test.py:428:34:428:39 | ControlFlowNode for SOURCE | test.py:428:10:428:39 | ControlFlowNode for IfExp |
+| test.py:452:12:452:17 | ControlFlowNode for SOURCE | test.py:452:10:452:18 | ControlFlowNode for f() |
+| test.py:459:28:459:33 | ControlFlowNode for SOURCE | test.py:459:10:459:34 | ControlFlowNode for second() |
+| test.py:473:30:473:35 | ControlFlowNode for SOURCE | test.py:473:10:473:36 | ControlFlowNode for second() |
+| test.py:487:10:487:43 | KwUnpacked b | test.py:487:10:487:43 | ControlFlowNode for second() |
+| test.py:487:30:487:42 | ControlFlowNode for Dict [Dictionary element at key b] | test.py:487:10:487:43 | KwUnpacked b |
+| test.py:487:36:487:41 | ControlFlowNode for SOURCE | test.py:487:30:487:42 | ControlFlowNode for Dict [Dictionary element at key b] |
+| test.py:492:10:492:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | test.py:492:10:492:39 | ControlFlowNode for f_extra_pos() |
+| test.py:492:33:492:38 | ControlFlowNode for SOURCE | test.py:492:10:492:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
+| test.py:497:10:497:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | test.py:497:10:497:45 | ControlFlowNode for f_extra_keyword() |
+| test.py:497:39:497:44 | ControlFlowNode for SOURCE | test.py:497:10:497:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
+| test.py:509:9:509:14 | ControlFlowNode for SOURCE | test.py:511:10:511:10 | ControlFlowNode for a |
+| test.py:509:9:509:14 | ControlFlowNode for SOURCE | test.py:516:10:516:10 | ControlFlowNode for b |
 nodes
 | datamodel.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module datamodel | semmle.label | ModuleVariableNode for Global Variable SOURCE in Module datamodel |
 | datamodel.py:13:1:13:6 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
@@ -213,7 +217,7 @@ nodes
 | test.py:72:10:72:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:76:9:76:12 | ControlFlowNode for FloatLiteral | semmle.label | ControlFlowNode for FloatLiteral |
 | test.py:77:10:77:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:87:9:87:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:87:10:87:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:88:10:88:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:93:9:93:16 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
 | test.py:93:10:93:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -314,39 +318,43 @@ nodes
 | test.py:344:10:344:22 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
 | test.py:344:10:344:27 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:344:16:344:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:365:10:365:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
-| test.py:365:28:365:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:373:10:373:36 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
-| test.py:373:30:373:35 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:381:10:381:43 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
-| test.py:381:10:381:43 | KwUnpacked b | semmle.label | KwUnpacked b |
-| test.py:381:30:381:42 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
-| test.py:381:36:381:41 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:389:10:389:39 | ControlFlowNode for f_extra_pos() | semmle.label | ControlFlowNode for f_extra_pos() |
-| test.py:389:10:389:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | semmle.label | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
-| test.py:389:33:389:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:397:10:397:45 | ControlFlowNode for f_extra_keyword() | semmle.label | ControlFlowNode for f_extra_keyword() |
-| test.py:397:10:397:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | semmle.label | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
-| test.py:397:39:397:44 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:442:10:442:18 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
-| test.py:442:12:442:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:449:10:449:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
-| test.py:449:28:449:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:463:10:463:36 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
-| test.py:463:30:463:35 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:477:10:477:43 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
-| test.py:477:10:477:43 | KwUnpacked b | semmle.label | KwUnpacked b |
-| test.py:477:30:477:42 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
-| test.py:477:36:477:41 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:482:10:482:39 | ControlFlowNode for f_extra_pos() | semmle.label | ControlFlowNode for f_extra_pos() |
-| test.py:482:10:482:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | semmle.label | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
-| test.py:482:33:482:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:487:10:487:45 | ControlFlowNode for f_extra_keyword() | semmle.label | ControlFlowNode for f_extra_keyword() |
-| test.py:487:10:487:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | semmle.label | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
-| test.py:487:39:487:44 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:499:9:499:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:501:10:501:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
-| test.py:506:10:506:10 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:367:10:367:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:367:28:367:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:375:10:375:36 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:375:30:375:35 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:383:10:383:43 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:383:10:383:43 | KwUnpacked b | semmle.label | KwUnpacked b |
+| test.py:383:30:383:42 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
+| test.py:383:36:383:41 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:391:10:391:39 | ControlFlowNode for f_extra_pos() | semmle.label | ControlFlowNode for f_extra_pos() |
+| test.py:391:10:391:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | semmle.label | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
+| test.py:391:33:391:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:399:10:399:45 | ControlFlowNode for f_extra_keyword() | semmle.label | ControlFlowNode for f_extra_keyword() |
+| test.py:399:10:399:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | semmle.label | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
+| test.py:399:39:399:44 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:420:10:420:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:420:10:420:38 | ControlFlowNode for IfExp | semmle.label | ControlFlowNode for IfExp |
+| test.py:428:10:428:39 | ControlFlowNode for IfExp | semmle.label | ControlFlowNode for IfExp |
+| test.py:428:34:428:39 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:452:10:452:18 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
+| test.py:452:12:452:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:459:10:459:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:459:28:459:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:473:10:473:36 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:473:30:473:35 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:487:10:487:43 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:487:10:487:43 | KwUnpacked b | semmle.label | KwUnpacked b |
+| test.py:487:30:487:42 | ControlFlowNode for Dict [Dictionary element at key b] | semmle.label | ControlFlowNode for Dict [Dictionary element at key b] |
+| test.py:487:36:487:41 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:492:10:492:39 | ControlFlowNode for f_extra_pos() | semmle.label | ControlFlowNode for f_extra_pos() |
+| test.py:492:10:492:39 | PosOverflowNode for f_extra_pos() [Tuple element at index 0] | semmle.label | PosOverflowNode for f_extra_pos() [Tuple element at index 0] |
+| test.py:492:33:492:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:497:10:497:45 | ControlFlowNode for f_extra_keyword() | semmle.label | ControlFlowNode for f_extra_keyword() |
+| test.py:497:10:497:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] | semmle.label | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
+| test.py:497:39:497:44 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:509:9:509:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:511:10:511:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:516:10:516:10 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
 #select
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:38:6:38:17 | ControlFlowNode for f() | Flow found |
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | Flow found |
@@ -381,7 +389,7 @@ nodes
 | test.py:72:10:72:10 | ControlFlowNode for x | test.py:71:9:71:10 | ControlFlowNode for IntegerLiteral | test.py:72:10:72:10 | ControlFlowNode for x | Flow found |
 | test.py:77:10:77:10 | ControlFlowNode for x | test.py:76:9:76:12 | ControlFlowNode for FloatLiteral | test.py:77:10:77:10 | ControlFlowNode for x | Flow found |
 | test.py:88:10:88:10 | ControlFlowNode for x | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:88:10:88:10 | ControlFlowNode for x | Flow found |
-| test.py:88:10:88:10 | ControlFlowNode for x | test.py:87:9:87:14 | ControlFlowNode for SOURCE | test.py:88:10:88:10 | ControlFlowNode for x | Flow found |
+| test.py:88:10:88:10 | ControlFlowNode for x | test.py:87:10:87:15 | ControlFlowNode for SOURCE | test.py:88:10:88:10 | ControlFlowNode for x | Flow found |
 | test.py:94:10:94:13 | ControlFlowNode for Subscript | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:94:10:94:13 | ControlFlowNode for Subscript | Flow found |
 | test.py:94:10:94:13 | ControlFlowNode for Subscript | test.py:93:10:93:15 | ControlFlowNode for SOURCE | test.py:94:10:94:13 | ControlFlowNode for Subscript | Flow found |
 | test.py:104:10:104:13 | ControlFlowNode for Subscript | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:104:10:104:13 | ControlFlowNode for Subscript | Flow found |
@@ -414,29 +422,33 @@ nodes
 | test.py:340:10:340:20 | ControlFlowNode for Subscript | test.py:340:11:340:16 | ControlFlowNode for SOURCE | test.py:340:10:340:20 | ControlFlowNode for Subscript | Flow found |
 | test.py:344:10:344:27 | ControlFlowNode for Subscript | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:344:10:344:27 | ControlFlowNode for Subscript | Flow found |
 | test.py:344:10:344:27 | ControlFlowNode for Subscript | test.py:344:16:344:21 | ControlFlowNode for SOURCE | test.py:344:10:344:27 | ControlFlowNode for Subscript | Flow found |
-| test.py:365:10:365:34 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:365:10:365:34 | ControlFlowNode for second() | Flow found |
-| test.py:365:10:365:34 | ControlFlowNode for second() | test.py:365:28:365:33 | ControlFlowNode for SOURCE | test.py:365:10:365:34 | ControlFlowNode for second() | Flow found |
-| test.py:373:10:373:36 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:373:10:373:36 | ControlFlowNode for second() | Flow found |
-| test.py:373:10:373:36 | ControlFlowNode for second() | test.py:373:30:373:35 | ControlFlowNode for SOURCE | test.py:373:10:373:36 | ControlFlowNode for second() | Flow found |
-| test.py:381:10:381:43 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:381:10:381:43 | ControlFlowNode for second() | Flow found |
-| test.py:381:10:381:43 | ControlFlowNode for second() | test.py:381:36:381:41 | ControlFlowNode for SOURCE | test.py:381:10:381:43 | ControlFlowNode for second() | Flow found |
-| test.py:389:10:389:39 | ControlFlowNode for f_extra_pos() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:389:10:389:39 | ControlFlowNode for f_extra_pos() | Flow found |
-| test.py:389:10:389:39 | ControlFlowNode for f_extra_pos() | test.py:389:33:389:38 | ControlFlowNode for SOURCE | test.py:389:10:389:39 | ControlFlowNode for f_extra_pos() | Flow found |
-| test.py:397:10:397:45 | ControlFlowNode for f_extra_keyword() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:397:10:397:45 | ControlFlowNode for f_extra_keyword() | Flow found |
-| test.py:397:10:397:45 | ControlFlowNode for f_extra_keyword() | test.py:397:39:397:44 | ControlFlowNode for SOURCE | test.py:397:10:397:45 | ControlFlowNode for f_extra_keyword() | Flow found |
-| test.py:442:10:442:18 | ControlFlowNode for f() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:442:10:442:18 | ControlFlowNode for f() | Flow found |
-| test.py:442:10:442:18 | ControlFlowNode for f() | test.py:442:12:442:17 | ControlFlowNode for SOURCE | test.py:442:10:442:18 | ControlFlowNode for f() | Flow found |
-| test.py:449:10:449:34 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:449:10:449:34 | ControlFlowNode for second() | Flow found |
-| test.py:449:10:449:34 | ControlFlowNode for second() | test.py:449:28:449:33 | ControlFlowNode for SOURCE | test.py:449:10:449:34 | ControlFlowNode for second() | Flow found |
-| test.py:463:10:463:36 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:463:10:463:36 | ControlFlowNode for second() | Flow found |
-| test.py:463:10:463:36 | ControlFlowNode for second() | test.py:463:30:463:35 | ControlFlowNode for SOURCE | test.py:463:10:463:36 | ControlFlowNode for second() | Flow found |
-| test.py:477:10:477:43 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:477:10:477:43 | ControlFlowNode for second() | Flow found |
-| test.py:477:10:477:43 | ControlFlowNode for second() | test.py:477:36:477:41 | ControlFlowNode for SOURCE | test.py:477:10:477:43 | ControlFlowNode for second() | Flow found |
-| test.py:482:10:482:39 | ControlFlowNode for f_extra_pos() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:482:10:482:39 | ControlFlowNode for f_extra_pos() | Flow found |
-| test.py:482:10:482:39 | ControlFlowNode for f_extra_pos() | test.py:482:33:482:38 | ControlFlowNode for SOURCE | test.py:482:10:482:39 | ControlFlowNode for f_extra_pos() | Flow found |
-| test.py:487:10:487:45 | ControlFlowNode for f_extra_keyword() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:487:10:487:45 | ControlFlowNode for f_extra_keyword() | Flow found |
-| test.py:487:10:487:45 | ControlFlowNode for f_extra_keyword() | test.py:487:39:487:44 | ControlFlowNode for SOURCE | test.py:487:10:487:45 | ControlFlowNode for f_extra_keyword() | Flow found |
-| test.py:501:10:501:10 | ControlFlowNode for a | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:501:10:501:10 | ControlFlowNode for a | Flow found |
-| test.py:501:10:501:10 | ControlFlowNode for a | test.py:499:9:499:14 | ControlFlowNode for SOURCE | test.py:501:10:501:10 | ControlFlowNode for a | Flow found |
-| test.py:506:10:506:10 | ControlFlowNode for b | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:506:10:506:10 | ControlFlowNode for b | Flow found |
-| test.py:506:10:506:10 | ControlFlowNode for b | test.py:499:9:499:14 | ControlFlowNode for SOURCE | test.py:506:10:506:10 | ControlFlowNode for b | Flow found |
+| test.py:367:10:367:34 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:367:10:367:34 | ControlFlowNode for second() | Flow found |
+| test.py:367:10:367:34 | ControlFlowNode for second() | test.py:367:28:367:33 | ControlFlowNode for SOURCE | test.py:367:10:367:34 | ControlFlowNode for second() | Flow found |
+| test.py:375:10:375:36 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:375:10:375:36 | ControlFlowNode for second() | Flow found |
+| test.py:375:10:375:36 | ControlFlowNode for second() | test.py:375:30:375:35 | ControlFlowNode for SOURCE | test.py:375:10:375:36 | ControlFlowNode for second() | Flow found |
+| test.py:383:10:383:43 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:383:10:383:43 | ControlFlowNode for second() | Flow found |
+| test.py:383:10:383:43 | ControlFlowNode for second() | test.py:383:36:383:41 | ControlFlowNode for SOURCE | test.py:383:10:383:43 | ControlFlowNode for second() | Flow found |
+| test.py:391:10:391:39 | ControlFlowNode for f_extra_pos() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:391:10:391:39 | ControlFlowNode for f_extra_pos() | Flow found |
+| test.py:391:10:391:39 | ControlFlowNode for f_extra_pos() | test.py:391:33:391:38 | ControlFlowNode for SOURCE | test.py:391:10:391:39 | ControlFlowNode for f_extra_pos() | Flow found |
+| test.py:399:10:399:45 | ControlFlowNode for f_extra_keyword() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:399:10:399:45 | ControlFlowNode for f_extra_keyword() | Flow found |
+| test.py:399:10:399:45 | ControlFlowNode for f_extra_keyword() | test.py:399:39:399:44 | ControlFlowNode for SOURCE | test.py:399:10:399:45 | ControlFlowNode for f_extra_keyword() | Flow found |
+| test.py:420:10:420:38 | ControlFlowNode for IfExp | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:420:10:420:38 | ControlFlowNode for IfExp | Flow found |
+| test.py:420:10:420:38 | ControlFlowNode for IfExp | test.py:420:10:420:15 | ControlFlowNode for SOURCE | test.py:420:10:420:38 | ControlFlowNode for IfExp | Flow found |
+| test.py:428:10:428:39 | ControlFlowNode for IfExp | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:428:10:428:39 | ControlFlowNode for IfExp | Flow found |
+| test.py:428:10:428:39 | ControlFlowNode for IfExp | test.py:428:34:428:39 | ControlFlowNode for SOURCE | test.py:428:10:428:39 | ControlFlowNode for IfExp | Flow found |
+| test.py:452:10:452:18 | ControlFlowNode for f() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:452:10:452:18 | ControlFlowNode for f() | Flow found |
+| test.py:452:10:452:18 | ControlFlowNode for f() | test.py:452:12:452:17 | ControlFlowNode for SOURCE | test.py:452:10:452:18 | ControlFlowNode for f() | Flow found |
+| test.py:459:10:459:34 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:459:10:459:34 | ControlFlowNode for second() | Flow found |
+| test.py:459:10:459:34 | ControlFlowNode for second() | test.py:459:28:459:33 | ControlFlowNode for SOURCE | test.py:459:10:459:34 | ControlFlowNode for second() | Flow found |
+| test.py:473:10:473:36 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:473:10:473:36 | ControlFlowNode for second() | Flow found |
+| test.py:473:10:473:36 | ControlFlowNode for second() | test.py:473:30:473:35 | ControlFlowNode for SOURCE | test.py:473:10:473:36 | ControlFlowNode for second() | Flow found |
+| test.py:487:10:487:43 | ControlFlowNode for second() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:487:10:487:43 | ControlFlowNode for second() | Flow found |
+| test.py:487:10:487:43 | ControlFlowNode for second() | test.py:487:36:487:41 | ControlFlowNode for SOURCE | test.py:487:10:487:43 | ControlFlowNode for second() | Flow found |
+| test.py:492:10:492:39 | ControlFlowNode for f_extra_pos() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:492:10:492:39 | ControlFlowNode for f_extra_pos() | Flow found |
+| test.py:492:10:492:39 | ControlFlowNode for f_extra_pos() | test.py:492:33:492:38 | ControlFlowNode for SOURCE | test.py:492:10:492:39 | ControlFlowNode for f_extra_pos() | Flow found |
+| test.py:497:10:497:45 | ControlFlowNode for f_extra_keyword() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:497:10:497:45 | ControlFlowNode for f_extra_keyword() | Flow found |
+| test.py:497:10:497:45 | ControlFlowNode for f_extra_keyword() | test.py:497:39:497:44 | ControlFlowNode for SOURCE | test.py:497:10:497:45 | ControlFlowNode for f_extra_keyword() | Flow found |
+| test.py:511:10:511:10 | ControlFlowNode for a | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:511:10:511:10 | ControlFlowNode for a | Flow found |
+| test.py:511:10:511:10 | ControlFlowNode for a | test.py:509:9:509:14 | ControlFlowNode for SOURCE | test.py:511:10:511:10 | ControlFlowNode for a | Flow found |
+| test.py:516:10:516:10 | ControlFlowNode for b | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:516:10:516:10 | ControlFlowNode for b | Flow found |
+| test.py:516:10:516:10 | ControlFlowNode for b | test.py:509:9:509:14 | ControlFlowNode for SOURCE | test.py:516:10:516:10 | ControlFlowNode for b | Flow found |
