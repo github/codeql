@@ -16,12 +16,12 @@ private import experimental.semmle.python.Frameworks
  * extend `SystemCommandExecution::Range` instead.
  */
 class SystemCommandExecution extends DataFlow::Node {
-  SystemCommandExecution::Range self;
+  SystemCommandExecution::Range range;
 
-  SystemCommandExecution() { this = self }
+  SystemCommandExecution() { this = range }
 
   /** Gets the argument that specifies the command to be executed. */
-  DataFlow::Node getCommand() { result = self.getCommand() }
+  DataFlow::Node getCommand() { result = range.getCommand() }
 }
 
 /** Provides a class for modeling new system-command execution APIs. */
