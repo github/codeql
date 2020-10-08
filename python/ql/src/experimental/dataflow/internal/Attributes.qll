@@ -137,12 +137,7 @@ private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
   override ExprNode getAttributeNameExpr() { result.asCfgNode() = node.getName() }
 
   override string getAttributeName() {
-    // TODO track this back using local flow
-    exists(StrConst s, Node nodeFrom |
-      s = nodeFrom.asExpr() and
-      simpleLocalFlowStep*(nodeFrom, this.getAttributeNameExpr()) and
-      result = s.getText()
-    )
+    result = this.getAttributeNameExpr().asExpr().(StrConst).getText()
   }
 }
 
@@ -220,10 +215,6 @@ private class GetAttrCallAsAttrRead extends AttrRead, CfgNode {
   override ExprNode getAttributeNameExpr() { result.asCfgNode() = node.getName() }
 
   override string getAttributeName() {
-    exists(StrConst s, Node nodeFrom |
-      s = nodeFrom.asExpr() and
-      simpleLocalFlowStep*(nodeFrom, this.getAttributeNameExpr()) and
-      result = s.getText()
-    )
+    result = this.getAttributeNameExpr().asExpr().(StrConst).getText()
   }
 }
