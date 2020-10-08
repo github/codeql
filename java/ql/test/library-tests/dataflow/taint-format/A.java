@@ -14,6 +14,7 @@ class A {
         good.formatted("a", bad, "b", good);
         String.format("%s%s", bad, good);
         String.format("%s", good);
+        String.format("%s %s %s %s %s %s %s %s %s %s ", "a", "a", "a", "a", "a", "a", "a", "a", "a", bad);
     }
 
     public static void test2() {

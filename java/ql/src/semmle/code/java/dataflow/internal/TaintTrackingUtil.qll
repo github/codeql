@@ -257,10 +257,23 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
   )
 }
 
+/**
+ * Converts an argument index to a formal parameter index.
+ * This is relevant for varadic methods.
+ */
+private int argToParam(MethodAccess ma, int arg) {
+  exists(ma.getArgument(arg)) and
+  exists(Method m | m = ma.getMethod() |
+    if m.isVarargs() and arg >= m.getNumberOfParameters()
+    then result = m.getNumberOfParameters() - 2
+    else result = arg
+  )
+}
+
 /** Access to a method that passes taint from qualifier to argument. */
 private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
   exists(MethodAccess ma, int arg |
-    taintPreservingQualifierToArgument(ma.getMethod(), arg) and
+    taintPreservingQualifierToArgument(ma.getMethod(), argToParam(ma, arg)) and
     tracked = ma.getQualifier() and
     sink = ma.getArgument(arg)
   )
@@ -394,7 +407,7 @@ private predicate unsafeEscape(MethodAccess ma) {
 private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
   exists(Method m, int i |
     m = sink.getMethod() and
-    taintPreservingArgumentToMethod(m, i) and
+    taintPreservingArgumentToMethod(m, argToParam(sink, i)) and
     tracked = sink.getArgument(i)
   )
   or
@@ -519,7 +532,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
  */
 private predicate argToArgStep(Expr tracked, Expr sink) {
   exists(MethodAccess ma, Method method, int input, int output |
-    taintPreservingArgToArg(method, input, output) and
+    taintPreservingArgToArg(method, argToParam(ma, input), argToParam(ma, output)) and
     ma.getMethod() = method and
     ma.getArgument(input) = tracked and
     ma.getArgument(output) = sink
@@ -567,7 +580,7 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
  */
 private predicate argToQualifierStep(Expr tracked, Expr sink) {
   exists(Method m, int i, MethodAccess ma |
-    taintPreservingArgumentToQualifier(m, i) and
+    taintPreservingArgumentToQualifier(m, argToParam(ma, i)) and
     ma.getMethod() = m and
     tracked = ma.getArgument(i) and
     sink = ma.getQualifier()
