@@ -565,7 +565,7 @@ abstract class DataFlowCall extends TDataFlowCall {
 }
 
 /**
- * Represents a call to a callable (currently only callable values).
+ * Represents a call to a function/lambda.
  * This excludes calls to bound methods, classes, and special methods.
  * Bound method calls and class calls insert an argument for the explicit
  * `self` parameter, and special method calls have special argument passing.
