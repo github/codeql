@@ -17,7 +17,7 @@ abstract class AttrRef extends Node {
   abstract Node getObject();
 
   /**
-   * Gets the expression control flow node that defines the attribute being accessed. This is
+   * Gets the expression node that defines the attribute being accessed, if any. This is
    * usually an identifier or literal.
    */
   abstract ExprNode getAttributeNameExpr();
