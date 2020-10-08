@@ -4,6 +4,10 @@ This folder contains a runable django application generated with `django-admin s
 
 To run the development server, install django (in venv), and run `python manage.py runserver`
 
+To understand how things work, see
+- https://docs.djangoproject.com/en/3.1/intro/tutorial01/#creating-a-project
+- https://docs.djangoproject.com/en/3.1/intro/tutorial02/#activating-models
+
 ---
 
 Note that from [Django 2.0 only Python 3 is supported](https://docs.djangoproject.com/en/stable/releases/2.0/#python-compatibility) (enforced by `options` file).
