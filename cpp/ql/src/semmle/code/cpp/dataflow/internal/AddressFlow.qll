@@ -81,6 +81,8 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
   or
   pointerIn.getConversion() = pointerOut.(ParenthesisExpr)
   or
+  pointerIn.getConversion() = pointerOut.(TemporaryObjectExpr)
+  or
   pointerIn = pointerOut.(ConditionalExpr).getThen().getFullyConverted()
   or
   pointerIn = pointerOut.(ConditionalExpr).getElse().getFullyConverted()
