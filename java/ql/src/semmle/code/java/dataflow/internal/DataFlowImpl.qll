@@ -535,6 +535,7 @@ private predicate nodeCand1(Node node, Configuration config) { nodeCand1(node, _
 
 private predicate throughFlowNodeCand1(Node node, Configuration config) {
   nodeCand1(node, true, config) and
+  nodeCandFwd1(node, true, config) and
   not fullBarrier(node, config) and
   not inBarrier(node, config) and
   not outBarrier(node, config)
@@ -2045,15 +2046,17 @@ private predicate flow(Node n, Configuration config) { flow(n, _, _, _, config) 
 
 pragma[noinline]
 private predicate parameterFlow(
-  ParameterNode p, AccessPathApprox apa, DataFlowCallable c, Configuration config
+  ParameterNode p, AccessPathApprox apa, AccessPathApprox apa0, DataFlowCallable c,
+  Configuration config
 ) {
-  flow(p, true, _, apa, config) and
+  flow(p, true, TAccessPathApproxSome(apa0), apa, config) and
   c = p.getEnclosingCallable()
 }
 
-private predicate parameterMayFlowThrough(ParameterNode p, AccessPathApprox apa) {
+private predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, AccessPathApprox apa) {
   exists(ReturnNodeExt ret, Configuration config, AccessPathApprox apa0 |
-    parameterFlow(p, apa, ret.getEnclosingCallable(), config) and
+    parameterFlow(p, apa, apa0, c, config) and
+    c = ret.getEnclosingCallable() and
     flow(ret, true, TAccessPathApproxSome(_), apa0, config) and
     flowFwd(ret, any(CallContextCall ccc), TAccessPathApproxSome(apa), _, apa0, config)
   )
@@ -2061,7 +2064,7 @@ private predicate parameterMayFlowThrough(ParameterNode p, AccessPathApprox apa)
 
 private newtype TSummaryCtx =
   TSummaryCtxNone() or
-  TSummaryCtxSome(ParameterNode p, AccessPath ap) { parameterMayFlowThrough(p, ap.getApprox()) }
+  TSummaryCtxSome(ParameterNode p, AccessPath ap) { parameterMayFlowThrough(p, _, ap.getApprox()) }
 
 /**
  * A context for generating flow summaries. This represents flow entry through
