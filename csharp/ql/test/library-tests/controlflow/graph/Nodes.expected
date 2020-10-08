@@ -160,6 +160,14 @@ booleanNode
 | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString | Field2 (line 129): true |
 | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; | Field1 (line 129): true |
 | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; | Field2 (line 129): true |
+| Conditions.cs:145:13:145:29 | [b (line 143): false] String s = ... | b (line 143): false |
+| Conditions.cs:145:13:145:29 | [b (line 143): true] String s = ... | b (line 143): true |
+| Conditions.cs:145:21:145:23 | [b (line 143): true] "a" | b (line 143): true |
+| Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | b (line 143): false |
+| Conditions.cs:146:9:149:49 | [b (line 143): false] if (...) ... | b (line 143): false |
+| Conditions.cs:146:9:149:49 | [b (line 143): true] if (...) ... | b (line 143): true |
+| Conditions.cs:146:13:146:13 | [b (line 143): false] access to parameter b | b (line 143): false |
+| Conditions.cs:146:13:146:13 | [b (line 143): true] access to parameter b | b (line 143): true |
 | Finally.cs:180:21:180:43 | [b1 (line 176): true] throw ...; | b1 (line 176): true |
 | Finally.cs:180:27:180:42 | [b1 (line 176): true] object creation of type ExceptionA | b1 (line 176): true |
 | Finally.cs:183:9:192:9 | [b1 (line 176): false] {...} | b1 (line 176): false |
@@ -678,6 +686,7 @@ entryPoint
 | Conditions.cs:102:12:102:13 | M8 | Conditions.cs:103:5:111:5 | {...} |
 | Conditions.cs:113:10:113:11 | M9 | Conditions.cs:114:5:124:5 | {...} |
 | Conditions.cs:129:10:129:12 | M10 | Conditions.cs:130:5:141:5 | {...} |
+| Conditions.cs:143:10:143:12 | M11 | Conditions.cs:144:5:150:5 | {...} |
 | ExitMethods.cs:7:10:7:11 | M1 | ExitMethods.cs:8:5:11:5 | {...} |
 | ExitMethods.cs:13:10:13:11 | M2 | ExitMethods.cs:14:5:17:5 | {...} |
 | ExitMethods.cs:19:10:19:11 | M3 | ExitMethods.cs:20:5:23:5 | {...} |
@@ -821,6 +830,7 @@ entryPoint
 | Switch.cs:129:12:129:14 | M12 | Switch.cs:130:5:132:5 | {...} |
 | Switch.cs:134:9:134:11 | M13 | Switch.cs:135:5:142:5 | {...} |
 | Switch.cs:144:9:144:11 | M14 | Switch.cs:145:5:152:5 | {...} |
+| Switch.cs:154:10:154:12 | M15 | Switch.cs:155:5:161:5 | {...} |
 | TypeAccesses.cs:3:10:3:10 | M | TypeAccesses.cs:4:5:9:5 | {...} |
 | VarDecls.cs:5:18:5:19 | M1 | VarDecls.cs:6:5:11:5 | {...} |
 | VarDecls.cs:13:12:13:13 | M2 | VarDecls.cs:14:5:17:5 | {...} |
