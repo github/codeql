@@ -63,7 +63,7 @@ class StdMapEmplace extends TaintFunction {
     // flow from any parameter to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameterDeref(_) and
+    input.isParameterDeref([0 .. getNumberOfParameters() - 1]) and
     (
       output.isQualifierObject() or
       output.isReturnValue()
@@ -81,7 +81,7 @@ class StdMapTryEmplace extends TaintFunction {
     // flow from any parameter apart from the key to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
     // (where the return value is a pair, this should really flow just to the first part of it)
-    exists(int arg |
+    exists(int arg | arg = [0 .. getNumberOfParameters() - 1] |
       (
         getUnspecifiedType() instanceof Iterator and arg != 1
         or
