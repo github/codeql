@@ -229,30 +229,31 @@ private class ContentProviderUpdateMethod extends SQLiteRunner {
 }
 
 private class QueryBuilderBuildMethod extends TaintPreservingMethod {
+  int argument;
+
   QueryBuilderBuildMethod() {
-    this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
+    this.getDeclaringType().getASourceSupertype*() instanceof Class and
     // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
     // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
     // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
     // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
     // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
     // static buildQueryString(boolean distinct, String tables, String[] columns, String where, String groupBy, String having, String orderBy, String limit)
-    this.hasName(["buildQuery", "buildUnionQuery", "buildUnionSubQuery", "buildQueryString"])
-  }
-
-  override predicate returnsTaint(int arg) {
-    arg = -1
+    this.hasName(["buildQuery", "buildUnionQuery", "buildUnionSubQuery"]) and
+    argument = -1
     or
     hasName(["buildQuery", "buildUnionQuery"]) and
-    arg = [0 .. getNumberOfParameters()]
+    argument = [0 .. getNumberOfParameters()]
     or
     hasName("buildQueryString") and
-    arg = [1 .. getNumberOfParameters()]
+    argument = [1 .. getNumberOfParameters()]
     or
     hasName("buildUnionSubQuery") and
-    arg = [0 .. getNumberOfParameters()] and
-    arg != 3
+    argument = [0 .. getNumberOfParameters()] and
+    argument != 3
   }
+
+  override predicate returnsTaint(int arg) { argument = arg }
 }
 
 private class QueryBuilderAppendMethod extends TaintTransferringMethod {

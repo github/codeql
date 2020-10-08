@@ -265,7 +265,7 @@ private int argToParam(MethodAccess ma, int arg) {
   exists(ma.getArgument(arg)) and
   exists(Method m | m = ma.getMethod() |
     if m.isVarargs() and arg >= m.getNumberOfParameters()
-    then result = m.getNumberOfParameters() - 2
+    then result = m.getNumberOfParameters() - 1
     else result = arg
   )
 }
