@@ -743,7 +743,7 @@ private module Cached {
       viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
       paramNode.getDefinition() = param and
       param.getARead() = guard and
-      guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs)
+      guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs, _)
     )
   }
 
