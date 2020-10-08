@@ -74,7 +74,7 @@ private class BuiltInCallNode extends CallNode {
   string name;
 
   BuiltInCallNode() {
-    // TODO disallow instances where `setattr` may refer to an in-scope variable of that name.
+    // TODO disallow instances where the name of the built-in may refer to an in-scope variable of that name.
     exists(NameNode id | this.getFunction() = id and id.getId() = name and id.isGlobal()) and
     name = any(Builtin b).getName()
   }
@@ -85,14 +85,10 @@ private class BuiltInCallNode extends CallNode {
 
 /**
  * Represents a call to the built-ins that handle dynamic inspection and modification of
- * attributes: `getattr`, `setattr`, and `hasattr`.
+ * attributes: `getattr`, `setattr`, `hasattr`, and `delattr`.
  */
 private class BuiltinAttrCallNode extends BuiltInCallNode {
-  BuiltinAttrCallNode() {
-    name = "setattr" or
-    name = "getattr" or
-    name = "hasattr"
-  }
+  BuiltinAttrCallNode() { name in ["setattr", "getattr", "hasattr", "delattr"] }
 
   /** Gets the control flow node for object on which the attribute is accessed. */
   ControlFlowNode getObject() { result in [this.getArg(0), this.getArgByName("object")] }
