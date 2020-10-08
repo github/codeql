@@ -29,7 +29,7 @@ module ClientSideUrlRedirect {
    * A flow label for values that represent the URL of the current document, and
    * hence are only partially user-controlled.
    */
-  class DocumentUrl extends DataFlow::FlowLabel {
+  abstract class DocumentUrl extends DataFlow::FlowLabel {
     DocumentUrl() { this = "document.url" }
   }
 

@@ -12,6 +12,11 @@ import javascript
 module PostMessageStar {
   import PostMessageStarCustomizations::PostMessageStar
 
+  // Materialize flow labels
+  private class ConcretePartiallyTaintedObject extends PartiallyTaintedObject {
+    ConcretePartiallyTaintedObject() { this = this }
+  }
+
   /**
    * A taint tracking configuration for cross-window communication with unrestricted origin.
    *
