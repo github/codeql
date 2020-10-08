@@ -47,15 +47,24 @@ abstract class AttrWrite extends AttrRef {
   abstract Node getValue();
 }
 
+/**
+ * Represents a control flow node for a simple attribute assignment. That is,
+ * ```python
+ * object.attr = value
+ * ```
+ * Also gives access to the `value` being written, by extending `DefinitionNode`.
+ */
+private class AttributeAssignmentNode extends DefinitionNode, AttrNode, DataFlowCfgNode {
+  override ControlFlowNode getValue() { result = DefinitionNode.super.getValue() }
+}
+
 /** A simple attribute assignment: `object.attr = value`. */
 private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
-  DefinitionNode attr_node;
+  override AttributeAssignmentNode node;
 
-  AttributeAssignmentAsAttrWrite() { this = TCfgNode(attr_node) and attr_node instanceof AttrNode }
+  override Node getValue() { result.asCfgNode() = node.getValue() }
 
-  override Node getValue() { result = TCfgNode(attr_node.(DefinitionNode).getValue()) }
-
-  override Node getObject() { result = TCfgNode(attr_node.(AttrNode).getObject()) }
+  override Node getObject() { result.asCfgNode() = node.getObject() }
 
   override ExprNode getAttributeNameExpr() {
     // Attribute names don't exist as `Node`s in the control flow graph, as they can only ever be
@@ -64,13 +73,13 @@ private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
     none()
   }
 
-  override string getAttributeName() { result = attr_node.(AttrNode).getName() }
+  override string getAttributeName() { result = node.getName() }
 }
 
 import semmle.python.types.Builtins
 
 /** Represents `CallNode`s that may refer to calls to built-in functions or classes. */
-private class BuiltInCallNode extends CallNode {
+private class BuiltInCallNode extends CallNode, DataFlowCfgNode {
   string name;
 
   BuiltInCallNode() {
@@ -119,15 +128,13 @@ private class GetAttrCallNode extends BuiltinAttrCallNode {
 
 /** An attribute assignment using `setattr`, e.g. `setattr(object, attr, value)` */
 private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
-  SetAttrCallNode setattr_call;
+  override SetAttrCallNode node;
 
-  SetAttrCallAsAttrWrite() { this = TCfgNode(setattr_call) }
+  override Node getValue() { result.asCfgNode() = node.getValue() }
 
-  override Node getValue() { result = TCfgNode(setattr_call.getValue()) }
+  override Node getObject() { result.asCfgNode() = node.getObject() }
 
-  override Node getObject() { result = TCfgNode(setattr_call.getObject()) }
-
-  override ExprNode getAttributeNameExpr() { result = TCfgNode(setattr_call.getName()) }
+  override ExprNode getAttributeNameExpr() { result.asCfgNode() = node.getName() }
 
   override string getAttributeName() {
     // TODO track this back using local flow
@@ -140,6 +147,18 @@ private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
 }
 
 /**
+ * Represents an attribute of a class that is assigned statically during class definition. For instance
+ * ```python
+ * class MyClass:
+ *     attr = value
+ *     ...
+ * ```
+ * Instances of this class correspond to the `NameNode` for `attr`, and also gives access to `value` by
+ * virtue of being a `DefinitionNode`.
+ */
+private class ClassAttributeAssignmentNode extends DefinitionNode, NameNode, DataFlowCfgNode { }
+
+/**
  * An attribute assignment via a class field, e.g.
  * ```python
  * class MyClass:
@@ -147,23 +166,19 @@ private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
  * ```
  * is treated as equivalent to `MyClass.attr = value`.
  */
-private class ClassDefinitionAsAttrWrite extends AttrWrite, Node {
+private class ClassDefinitionAsAttrWrite extends AttrWrite, CfgNode {
   ClassExpr cls;
-  DefinitionNode attr_node;
+  override ClassAttributeAssignmentNode node;
 
-  ClassDefinitionAsAttrWrite() {
-    attr_node instanceof NameNode and
-    this.asCfgNode() = attr_node and
-    attr_node.getScope() = cls.getInnerScope()
-  }
+  ClassDefinitionAsAttrWrite() { node.getScope() = cls.getInnerScope() }
 
-  override Node getValue() { result = TCfgNode(attr_node.getValue()) }
+  override Node getValue() { result.asCfgNode() = node.getValue() }
 
-  override Node getObject() { result = TCfgNode(cls.getAFlowNode()) }
+  override Node getObject() { result.asCfgNode() = cls.getAFlowNode() }
 
   override ExprNode getAttributeNameExpr() { none() }
 
-  override string getAttributeName() { result = attr_node.(NameNode).getId() }
+  override string getAttributeName() { result = node.getId() }
 }
 
 /**
@@ -174,13 +189,17 @@ private class ClassDefinitionAsAttrWrite extends AttrWrite, Node {
  */
 abstract class AttrRead extends AttrRef, Node { }
 
+/**
+ * A convenience class for embedding `AttrNode` into `DataFlowCfgNode`, as the former is not
+ * obviously a subtype of the latter.
+ */
+private class DataFlowAttrNode extends AttrNode, DataFlowCfgNode { }
+
 /** A simple attribute read, e.g. `object.attr` */
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {
-  AttrNode attr_node;
+  override DataFlowAttrNode node;
 
-  AttributeReadAsAttrRead() { this = TCfgNode(attr_node) }
-
-  override Node getObject() { result = TCfgNode(attr_node.getObject()) }
+  override Node getObject() { result.asCfgNode() = node.getObject() }
 
   override ExprNode getAttributeNameExpr() {
     // Attribute names don't exist as `Node`s in the control flow graph, as they can only ever be
@@ -189,18 +208,16 @@ private class AttributeReadAsAttrRead extends AttrRead, CfgNode {
     none()
   }
 
-  override string getAttributeName() { result = attr_node.getName() }
+  override string getAttributeName() { result = node.getName() }
 }
 
 /** An attribute read using `getattr`: `getattr(object, attr)` */
 private class GetAttrCallAsAttrRead extends AttrRead, CfgNode {
-  GetAttrCallNode getattr_call;
+  override GetAttrCallNode node;
 
-  GetAttrCallAsAttrRead() { this.asCfgNode() = getattr_call }
+  override Node getObject() { result.asCfgNode() = node.getObject() }
 
-  override Node getObject() { result = TCfgNode(getattr_call.getObject()) }
-
-  override ExprNode getAttributeNameExpr() { result = TCfgNode(getattr_call.getName()) }
+  override ExprNode getAttributeNameExpr() { result.asCfgNode() = node.getName() }
 
   override string getAttributeName() {
     exists(StrConst s, Node nodeFrom |
