@@ -535,6 +535,7 @@ private predicate nodeCand1(Node node, Configuration config) { nodeCand1(node, _
 
 private predicate throughFlowNodeCand1(Node node, Configuration config) {
   nodeCand1(node, true, config) and
+  nodeCandFwd1(node, true, config) and
   not fullBarrier(node, config) and
   not inBarrier(node, config) and
   not outBarrier(node, config)
@@ -1523,11 +1524,50 @@ private predicate flowCandIsReturned(
   )
 }
 
+/**
+ * Holds if `argApf` is recorded as the summary context for flow reaching `node`
+ * and remains relevant for the following pruning stage.
+ */
+private predicate flowCandSummaryCtx(Node node, AccessPathFront argApf, Configuration config) {
+  exists(AccessPathFront apf |
+    flowCand(node, true, _, apf, config) and
+    flowCandFwd(node, true, TAccessPathFrontSome(argApf), apf, config)
+  )
+}
+
+/**
+ * Holds if a length 2 access path approximation with the head `tc` is expected
+ * to be expensive.
+ */
+private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) {
+  exists(int tails, int nodes, int apLimit, int tupleLimit |
+    tails = strictcount(AccessPathFront apf | flowCandConsCand(tc, apf, config)) and
+    nodes =
+      strictcount(Node n |
+        flowCand(n, _, _, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), config)
+        or
+        flowCandSummaryCtx(n, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), _)
+      ) and
+    accessPathApproxCostLimits(apLimit, tupleLimit) and
+    apLimit < tails and
+    tupleLimit < (tails - 1) * nodes
+  )
+}
+
 private newtype TAccessPathApprox =
   TNil(DataFlowType t) or
-  TConsNil(TypedContent tc, DataFlowType t) { flowCandConsCand(tc, TFrontNil(t), _) } or
+  TConsNil(TypedContent tc, DataFlowType t) {
+    flowCandConsCand(tc, TFrontNil(t), _) and
+    not expensiveLen2unfolding(tc, _)
+  } or
   TConsCons(TypedContent tc1, TypedContent tc2, int len) {
-    flowCandConsCand(tc1, TFrontHead(tc2), _) and len in [2 .. accessPathLimit()]
+    flowCandConsCand(tc1, TFrontHead(tc2), _) and
+    len in [2 .. accessPathLimit()] and
+    not expensiveLen2unfolding(tc1, _)
+  } or
+  TCons1(TypedContent tc, int len) {
+    len in [1 .. accessPathLimit()] and
+    expensiveLen2unfolding(tc, _)
   }
 
 /**
@@ -1622,6 +1662,49 @@ private class AccessPathApproxConsCons extends AccessPathApproxCons, TConsCons {
       or
       len = 2 and
       result = TConsNil(tc2, _)
+      or
+      result = TCons1(tc2, len - 1)
+    )
+  }
+}
+
+private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
+  private TypedContent tc;
+  private int len;
+
+  AccessPathApproxCons1() { this = TCons1(tc, len) }
+
+  override string toString() {
+    if len = 1
+    then result = "[" + tc.toString() + "]"
+    else result = "[" + tc.toString() + ", ... (" + len.toString() + ")]"
+  }
+
+  override TypedContent getHead() { result = tc }
+
+  override int len() { result = len }
+
+  override DataFlowType getType() { result = tc.getContainerType() }
+
+  override AccessPathFront getFront() { result = TFrontHead(tc) }
+
+  override AccessPathApprox pop(TypedContent head) {
+    head = tc and
+    (
+      exists(TypedContent tc2 | flowCandConsCand(tc, TFrontHead(tc2), _) |
+        result = TConsCons(tc2, _, len - 1)
+        or
+        len = 2 and
+        result = TConsNil(tc2, _)
+        or
+        result = TCons1(tc2, len - 1)
+      )
+      or
+      exists(DataFlowType t |
+        len = 1 and
+        flowCandConsCand(tc, TFrontNil(t), _) and
+        result = TNil(t)
+      )
     )
   }
 }
@@ -2045,23 +2128,33 @@ private predicate flow(Node n, Configuration config) { flow(n, _, _, _, config) 
 
 pragma[noinline]
 private predicate parameterFlow(
-  ParameterNode p, AccessPathApprox apa, DataFlowCallable c, Configuration config
+  ParameterNode p, AccessPathApprox apa, AccessPathApprox apa0, DataFlowCallable c,
+  Configuration config
 ) {
-  flow(p, true, _, apa, config) and
+  flow(p, true, TAccessPathApproxSome(apa0), apa, config) and
   c = p.getEnclosingCallable()
 }
 
-private predicate parameterMayFlowThrough(ParameterNode p, AccessPathApprox apa) {
+private predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, AccessPathApprox apa) {
   exists(ReturnNodeExt ret, Configuration config, AccessPathApprox apa0 |
-    parameterFlow(p, apa, ret.getEnclosingCallable(), config) and
+    parameterFlow(p, apa, apa0, c, config) and
+    c = ret.getEnclosingCallable() and
     flow(ret, true, TAccessPathApproxSome(_), apa0, config) and
     flowFwd(ret, any(CallContextCall ccc), TAccessPathApproxSome(apa), _, apa0, config)
   )
 }
 
+private predicate nodeMayUseSummary(Node n, AccessPathApprox apa) {
+  exists(DataFlowCallable c, AccessPathApprox apa0 |
+    parameterMayFlowThrough(_, c, apa) and
+    flow(n, true, _, apa0, _) and
+    flowFwd(n, any(CallContextCall ccc), TAccessPathApproxSome(apa), _, apa0, _)
+  )
+}
+
 private newtype TSummaryCtx =
   TSummaryCtxNone() or
-  TSummaryCtxSome(ParameterNode p, AccessPath ap) { parameterMayFlowThrough(p, ap.getApprox()) }
+  TSummaryCtxSome(ParameterNode p, AccessPath ap) { parameterMayFlowThrough(p, _, ap.getApprox()) }
 
 /**
  * A context for generating flow summaries. This represents flow entry through
@@ -2096,9 +2189,118 @@ private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
   }
 }
 
+/**
+ * Gets the number of length 2 access path approximations that correspond to `apa`.
+ */
+private int count1to2unfold(AccessPathApproxCons1 apa, Configuration config) {
+  exists(TypedContent tc, int len |
+    tc = apa.getHead() and
+    len = apa.len() and
+    result =
+      strictcount(AccessPathFront apf |
+        flowConsCand(tc, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1),
+          config)
+      )
+  )
+}
+
+/**
+ * Holds if a length 2 access path approximation matching `apa` is expected
+ * to be expensive.
+ */
+private predicate expensiveLen1to2unfolding(AccessPathApproxCons1 apa, Configuration config) {
+  exists(int aps, int nodes, int apLimit, int tupleLimit |
+    aps = count1to2unfold(apa, config) and
+    nodes =
+      strictcount(Node n |
+        flow(n, _, _, apa, config)
+        or
+        nodeMayUseSummary(n, apa)
+      ) and
+    accessPathCostLimits(apLimit, tupleLimit) and
+    apLimit < aps and
+    tupleLimit < (aps - 1) * nodes
+  )
+}
+
+private AccessPathApprox getATail(AccessPathApprox apa, Configuration config) {
+  exists(TypedContent head |
+    apa.pop(head) = result and
+    flowConsCand(head, result, config)
+  )
+}
+
+/**
+ * Holds with `unfold = false` if a precise head-tail representation of `apa` is
+ * expected to be expensive. Holds with `unfold = true` otherwise.
+ */
+private predicate evalUnfold(AccessPathApprox apa, boolean unfold, Configuration config) {
+  exists(int aps, int nodes, int apLimit, int tupleLimit |
+    aps = countPotentialAps(apa, config) and
+    nodes =
+      strictcount(Node n |
+        flow(n, _, _, apa, _)
+        or
+        nodeMayUseSummary(n, apa)
+      ) and
+    accessPathCostLimits(apLimit, tupleLimit) and
+    if apLimit < aps and tupleLimit < (aps - 1) * nodes then unfold = false else unfold = true
+  )
+}
+
+/**
+ * Gets the number of `AccessPath`s that correspond to `apa`.
+ */
+private int countAps(AccessPathApprox apa, Configuration config) {
+  evalUnfold(apa, false, config) and
+  result = 1 and
+  (not apa instanceof AccessPathApproxCons1 or expensiveLen1to2unfolding(apa, config))
+  or
+  evalUnfold(apa, false, config) and
+  result = count1to2unfold(apa, config) and
+  not expensiveLen1to2unfolding(apa, config)
+  or
+  evalUnfold(apa, true, config) and
+  result = countPotentialAps(apa, config)
+}
+
+/**
+ * Gets the number of `AccessPath`s that would correspond to `apa` assuming
+ * that it is expanded to a precise head-tail representation.
+ */
+language[monotonicAggregates]
+private int countPotentialAps(AccessPathApprox apa, Configuration config) {
+  apa instanceof AccessPathApproxNil and result = 1
+  or
+  result = strictsum(AccessPathApprox tail | tail = getATail(apa, config) | countAps(tail, config))
+}
+
 private newtype TAccessPath =
   TAccessPathNil(DataFlowType t) or
-  TAccessPathCons(TypedContent head, AccessPath tail) { flowConsCand(head, tail.getApprox(), _) }
+  TAccessPathCons(TypedContent head, AccessPath tail) {
+    exists(AccessPathApproxCons apa |
+      not evalUnfold(apa, false, _) and
+      head = apa.getHead() and
+      tail.getApprox() = getATail(apa, _)
+    )
+  } or
+  TAccessPathCons2(TypedContent head1, TypedContent head2, int len) {
+    exists(AccessPathApproxCons apa |
+      evalUnfold(apa, false, _) and
+      not expensiveLen1to2unfolding(apa, _) and
+      apa.len() = len and
+      head1 = apa.getHead() and
+      head2 = getATail(apa, _).getHead()
+    )
+  } or
+  TAccessPathCons1(TypedContent head, int len) {
+    exists(AccessPathApproxCons apa |
+      evalUnfold(apa, false, _) and
+      expensiveLen1to2unfolding(apa, _) and
+      apa.len() = len and
+      head = apa.getHead()
+    )
+  }
 
 private newtype TPathNode =
   TPathNodeMid(Node node, CallContext cc, SummaryCtx sc, AccessPath ap, Configuration config) {
@@ -2202,20 +2404,96 @@ private class AccessPathCons extends AccessPath, TAccessPathCons {
     result = TConsNil(head, tail.(AccessPathNil).getType())
     or
     result = TConsCons(head, tail.getHead(), this.length())
+    or
+    result = TCons1(head, this.length())
   }
 
   override int length() { result = 1 + tail.length() }
 
-  private string toStringImpl() {
+  private string toStringImpl(boolean needsSuffix) {
     exists(DataFlowType t |
       tail = TAccessPathNil(t) and
+      needsSuffix = false and
       result = head.toString() + "]" + concat(" : " + ppReprType(t))
     )
     or
-    result = head + ", " + tail.(AccessPathCons).toStringImpl()
+    result = head + ", " + tail.(AccessPathCons).toStringImpl(needsSuffix)
+    or
+    exists(TypedContent tc2, TypedContent tc3, int len | tail = TAccessPathCons2(tc2, tc3, len) |
+      result = head + ", " + tc2 + ", " + tc3 + ", ... (" and len > 2 and needsSuffix = true
+      or
+      result = head + ", " + tc2 + ", " + tc3 + "]" and len = 2 and needsSuffix = false
+    )
+    or
+    exists(TypedContent tc2, int len | tail = TAccessPathCons1(tc2, len) |
+      result = head + ", " + tc2 + ", ... (" and len > 1 and needsSuffix = true
+      or
+      result = head + ", " + tc2 + "]" and len = 1 and needsSuffix = false
+    )
   }
 
-  override string toString() { result = "[" + this.toStringImpl() }
+  override string toString() {
+    result = "[" + this.toStringImpl(true) + length().toString() + ")]"
+    or
+    result = "[" + this.toStringImpl(false)
+  }
+}
+
+private class AccessPathCons2 extends AccessPath, TAccessPathCons2 {
+  private TypedContent head1;
+  private TypedContent head2;
+  private int len;
+
+  AccessPathCons2() { this = TAccessPathCons2(head1, head2, len) }
+
+  override TypedContent getHead() { result = head1 }
+
+  override AccessPath getTail() {
+    flowConsCand(head1, result.getApprox(), _) and
+    result.getHead() = head2 and
+    result.length() = len - 1
+  }
+
+  override AccessPathFrontHead getFront() { result = TFrontHead(head1) }
+
+  override AccessPathApproxCons getApprox() {
+    result = TConsCons(head1, head2, len) or
+    result = TCons1(head1, len)
+  }
+
+  override int length() { result = len }
+
+  override string toString() {
+    if len = 2
+    then result = "[" + head1.toString() + ", " + head2.toString() + "]"
+    else
+      result = "[" + head1.toString() + ", " + head2.toString() + ", ... (" + len.toString() + ")]"
+  }
+}
+
+private class AccessPathCons1 extends AccessPath, TAccessPathCons1 {
+  private TypedContent head;
+  private int len;
+
+  AccessPathCons1() { this = TAccessPathCons1(head, len) }
+
+  override TypedContent getHead() { result = head }
+
+  override AccessPath getTail() {
+    flowConsCand(head, result.getApprox(), _) and result.length() = len - 1
+  }
+
+  override AccessPathFrontHead getFront() { result = TFrontHead(head) }
+
+  override AccessPathApproxCons getApprox() { result = TCons1(head, len) }
+
+  override int length() { result = len }
+
+  override string toString() {
+    if len = 1
+    then result = "[" + head.toString() + "]"
+    else result = "[" + head.toString() + ", ... (" + len.toString() + ")]"
+  }
 }
 
 /**
