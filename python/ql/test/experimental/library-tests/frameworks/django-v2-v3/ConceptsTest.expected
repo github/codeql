@@ -1,0 +1,4 @@
+| testapp/urls.py:6:31:6:50 | Comment # $routeSetup="foo/" | Missing result:routeSetup="foo/" |
+| testapp/urls.py:10:43:10:67 | Comment # $routeSetup=r"^ba[rz]/" | Missing result:routeSetup=r"^ba[rz]/" |
+| testapp/views.py:3:33:3:47 | Comment # $routeHandler | Missing result:routeHandler= |
+| testapp/views.py:6:37:6:51 | Comment # $routeHandler | Missing result:routeHandler= |
