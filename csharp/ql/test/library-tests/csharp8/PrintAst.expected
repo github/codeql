@@ -52,7 +52,7 @@ AsyncStreams.cs:
 #-----|     1: (Type parameters)
 #   39|       0: [TypeParameter] T
 #-----|     3: (Base types)
-#   39|       1: [Interface] IAsyncDisposable
+#-----|       1: [Interface] IAsyncDisposable
 #   41|     4: [Property] Current
 #   41|       3: [Getter] get_Current
 #   42|     5: [Method] MoveNextAsync
@@ -82,7 +82,7 @@ DefaultInterfaceMethods.cs:
 #   17|   8: [Method] Greet
 #   20| [Class] Person
 #-----|   3: (Base types)
-#   20|     1: [Interface] IPerson
+#-----|     1: [Interface] IPerson
 #   22|   5: [IndexerProperty] Name
 #   22|     3: [Getter] get_Name
 #   22|       4: [StringLiteral] "Petra"

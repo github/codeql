@@ -679,7 +679,7 @@ expressions.cs:
 #  124|               1: [LocalVariableAccess] access to local variable e
 #  129|     21: [Class] Nested
 #-----|       3: (Base types)
-#  129|         0: [Class] Class
+#-----|         0: [Class] Class
 #  133|       4: [InstanceConstructor] Nested
 #-----|         2: (Parameters)
 #  133|           0: [Parameter] i

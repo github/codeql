@@ -15,7 +15,7 @@ nestedtypes.cs:
 #   22|     9: [Class] C
 #   26|   2: [Class] Derived
 #-----|     3: (Base types)
-#   26|       0: [Class] Base
+#-----|       0: [Class] Base
 #   29|     5: [Class] Nested
 #   32|       5: [Method] G
 #   33|         4: [BlockStmt] {...}

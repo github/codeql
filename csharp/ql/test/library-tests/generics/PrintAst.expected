@@ -531,7 +531,7 @@ generics.cs:
 #-----|     1: (Type parameters)
 #  178|       0: [TypeParameter] T
 #-----|     3: (Base types)
-#  178|       1: [Interface] Interface<T>
+#-----|       1: [Interface] Interface<T>
 #  180|     5: [Method] set
 #-----|       2: (Parameters)
 #  180|         0: [Parameter] t

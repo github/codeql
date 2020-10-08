@@ -198,7 +198,7 @@ arguments.cs:
 #   69|     4: [BlockStmt] {...}
 #   72| [Class] MyAttribute
 #-----|   3: (Base types)
-#   72|     0: [Class] Attribute
+#-----|     0: [Class] Attribute
 #   74|   4: [Field] x
 #   75|   5: [IndexerProperty] y
 #   75|     3: [Getter] get_y

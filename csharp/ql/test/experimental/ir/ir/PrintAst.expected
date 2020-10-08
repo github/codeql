@@ -151,7 +151,7 @@ casts.cs:
 #    1| [Class] Casts_A
 #    5| [Class] Casts_B
 #-----|   3: (Base types)
-#    5|     0: [Class] Casts_A
+#-----|     0: [Class] Casts_A
 #    9| [Class] Casts
 #   11|   5: [Method] Main
 #   12|     4: [BlockStmt] {...}
@@ -218,7 +218,7 @@ constructor_init.cs:
 #   11|           1: [FieldAccess] access to field num
 #   15| [Class] DerivedClass
 #-----|   3: (Base types)
-#   15|     0: [Class] BaseClass
+#-----|     0: [Class] BaseClass
 #   17|   4: [InstanceConstructor] DerivedClass
 #   17|     3: [ConstructorInitializer] call to constructor BaseClass
 #   18|     4: [BlockStmt] {...}
@@ -471,10 +471,10 @@ inheritance_polymorphism.cs:
 #    5|         0: [IntLiteral] 0
 #    9| [Class] B
 #-----|   3: (Base types)
-#    9|     0: [Class] A
+#-----|     0: [Class] A
 #   13| [Class] C
 #-----|   3: (Base types)
-#   13|     0: [Class] B
+#-----|     0: [Class] B
 #   15|   5: [Method] function
 #   16|     4: [BlockStmt] {...}
 #   17|       0: [ReturnStmt] return ...;
@@ -1094,7 +1094,7 @@ using.cs:
 #    3| [Class] UsingStmt
 #    5|   5: [Class] MyDisposable
 #-----|     3: (Base types)
-#    5|       1: [Interface] IDisposable
+#-----|       1: [Interface] IDisposable
 #    7|     4: [InstanceConstructor] MyDisposable
 #    7|       4: [BlockStmt] {...}
 #    8|     5: [Method] DoSomething

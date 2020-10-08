@@ -608,7 +608,7 @@ final class BaseTypeNode extends PrintAstNode, TBaseTypeNode {
 
   override string toString() { result = getQlClass(base) + base.toString() }
 
-  override Location getLocation() { result = derived.getLocation() }
+  override Location getLocation() { none() }
 
   override BaseTypeNode getChild(int childIndex) { none() }
 
