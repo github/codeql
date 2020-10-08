@@ -116,7 +116,7 @@ predicate returnStep(ReturnNode nodeFrom, Node nodeTo) {
  */
 predicate basicStoreStep(Node nodeFrom, Node nodeTo, string attr) {
   exists(AttrWrite a |
-    a.getAttributeName() = attr and
+    a.mayHaveAttributeName(attr) and
     nodeFrom = a.getValue() and
     simpleLocalFlowStep*(nodeTo, a.getObject())
   )
@@ -127,7 +127,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, string attr) {
  */
 predicate basicLoadStep(Node nodeFrom, Node nodeTo, string attr) {
   exists(AttrRead a |
-    attr = a.getAttributeName() and
+    a.mayHaveAttributeName(attr) and
     nodeFrom = a.getObject() and
     nodeTo = a
   )

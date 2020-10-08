@@ -1,5 +1,6 @@
 /** This module provides an API for attribute reads and writes. */
 
+import DataFlowUtil
 import DataFlowPublic
 private import DataFlowPrivate
 
@@ -22,7 +23,14 @@ abstract class AttrRef extends Node {
   abstract ExprNode getAttributeNameExpr();
 
   /** Holds if this attribute reference may access an attribute named `attrName`. */
-  predicate mayHaveAttributeName(string attrName) { none() }
+  predicate mayHaveAttributeName(string attrName) {
+    attrName = this.getAttributeName()
+    or
+    exists(Node nodeFrom |
+      localFlow(nodeFrom, this.getAttributeNameExpr()) and
+      attrName = nodeFrom.asExpr().(StrConst).getText()
+    )
+  }
 
   /** Gets the name of the attribute being read or written, if it can be determined statically. */
   abstract string getAttributeName();
