@@ -14,11 +14,19 @@ arg6 = "source6"
 arg7 = "source7"
 
 
-def SINK(x, expected=arg):
-    if x == expected:
+def SINK_TEST(x, test):
+    if test(x):
         print("OK")
     else:
         print("Unexpected flow", x)
+
+
+def SINK(x, expected=arg):
+    SINK_TEST(x, test=lambda x: x == expected)
+
+
+def SINK_F(x, unexpected=arg):
+    SINK_TEST(x, test=lambda x: x != unexpected)
 
 
 def SINK1(x):
@@ -27,6 +35,10 @@ def SINK1(x):
 
 def SINK2(x):
     SINK(x, expected=arg2)
+
+
+def SINK2_F(x):
+    SINK_F(x, unexpected=arg2)
 
 
 def SINK3(x):
@@ -66,13 +78,17 @@ def argument_passing(
     SINK4(d)
     SINK5(e)
     SINK6(f)
-    SINK7(g["g"])
+    try:
+        SINK7(g["g"])
+    except:
+        print("OK")
 
 
 @expects(7)
 def test_argument_passing1():
     argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})
-    
+
+
 @expects(7)
 def test_argument_passing2():
     argument_passing(arg1, arg2, arg3, f=arg6)
@@ -123,10 +139,12 @@ def grab_foo_bar_baz(foo, **kwargs):
     grab_bar_baz(**kwargs)
 
 
+# It is not possible to pass `bar` into `kwargs`,
+# since `bar` is a valid keyword argument.
 def grab_bar_baz(bar, **kwargs):
     SINK2(bar)
     try:
-        SINK2(kwargs["bar"])
+        SINK2_F(kwargs["bar"])
     except:
         print("OK")
     grab_baz(**kwargs)
