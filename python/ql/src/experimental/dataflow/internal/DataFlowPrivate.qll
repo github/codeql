@@ -315,7 +315,10 @@ private Node update(Node node) {
  */
 module ArgumentPassing {
   /**
-   * Holds if `call` is a call to `callable`.
+   * Holds if `call` represents a `DataFlowCall` to a `DataFlowCallable` represented by `callable`.
+   *
+   * It _may not_ be the case that `call = callable.getACall()`, i.e. if `call` represents a `ClassCall`.
+   *
    * Used to limit the size of predicates.
    */
   predicate connects(CallNode call, CallableValue callable) {
@@ -352,38 +355,45 @@ module ArgumentPassing {
   }
 
   /**
-   * Gets the argument to `call` that is passed to the parameter at position `paramNr` in `callable`.
-   * If it is a positional argument, it must appear at position `argNr` in `call`.
-   * `argNr` will differ from `paramNr` for method- or constructor calls, where the first parameter
+   * Gets the node representing the argument to `call` that is passed to the parameter at
+   * (zero-based) index `paramN` in `callable`. If this is a positional argument, it must appear
+   * at index `argN` in `call`.
+   *
+   * `argN` will differ from `paramN` for method- or constructor calls, where the first parameter
    * is `self` and the first positional argument is passed to the second positional parameter.
+   * Similarly for classmethod calls, where the first parameter is `cls`.
+   *
+   * NOT SUPPORTED: Keyword-only parameters.
    */
-  Node getArg(CallNode call, int argNr, CallableValue callable, int paramNr) {
+  Node getArg(CallNode call, int argN, CallableValue callable, int paramN) {
     connects(call, callable) and
-    paramNr - argNr in [0, 1] and // constrain for now to limit the size of the predicate; we only use it to insert one argument (self).
+    paramN - argN in [0, 1] and // constrain for now to limit the size of the predicate; we only use it to insert one argument (self).
     (
       // positional argument
-      result = TCfgNode(call.getArg(argNr))
+      result = TCfgNode(call.getArg(argN))
       or
       // keyword argument
+      // TODO: Since `getArgName` have no results for keyword-only parameters,
+      // these are currently not supported.
       exists(Function f, string argName |
         f = callable.getScope() and
-        f.getArgName(paramNr) = argName and
+        f.getArgName(paramN) = argName and
         result = TCfgNode(call.getArgByName(argName))
       )
       or
       // a synthezised argument passed to the starred parameter (at position -1)
       callable.getScope().hasVarArg() and
-      paramNr = -1 and
+      paramN = -1 and
       result = TPosOverflowNode(call, callable)
       or
       // a synthezised argument passed to the doubly starred parameter (at position -2)
       callable.getScope().hasKwArg() and
-      paramNr = -2 and
+      paramN = -2 and
       result = TKwOverflowNode(call, callable)
       or
       // argument unpacked from dict
       exists(string name |
-        call_unpacks(call, argNr, callable, name, paramNr) and
+        call_unpacks(call, argN, callable, name, paramN) and
         result = TKwUnpacked(call, callable, name)
       )
     )
@@ -425,6 +435,7 @@ module ArgumentPassing {
       not exists(call.getArg(argNr)) and // no positional arguement available
       name = f.getArgName(n) and
       // not exists(call.getArgByName(name)) and // only matches keyword arguments not preceded by **
+      // TODO: make the below logic respect control flow splitting (by not going to the AST).
       not call.getNode().getANamedArg().(Keyword).getArg() = name and // no keyword argument available
       n >= 0 and
       n < f.getPositionalParameterCount() + f.getKeywordOnlyParameterCount() and
@@ -519,6 +530,8 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
  * as the class call will synthesize an argument node to be mapped to the `self` parameter.
  *
  * A call corresponding to a special method call is handled by the corresponding `SpecialMethodCallNode`.
+ *
+ * TODO: Add `TClassMethodCall` mapping `cls` appropriately.
  */
 newtype TDataFlowCall =
   TFunctionCall(CallNode call) { call = any(FunctionValue f).getAFunctionCall() } or
