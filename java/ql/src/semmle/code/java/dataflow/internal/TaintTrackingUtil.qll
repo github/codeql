@@ -296,7 +296,7 @@ private predicate taintPreservingQualifierToArgument(Method m, int arg) {
   m.hasName("read") and
   arg = 0
   or
-  m.(TaintTransferringMethod).transfersTaint(-1, arg)
+  m.(TaintPreservingMethod).transfersTaint(-1, arg)
 }
 
 /** Access to a method that passes taint from the qualifier. */
@@ -571,7 +571,7 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   input = 0 and
   output = 2
   or
-  method.(TaintTransferringMethod).transfersTaint(input, output)
+  method.(TaintPreservingMethod).transfersTaint(input, output)
 }
 
 /**
@@ -610,7 +610,7 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
     append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
   )
   or
-  method.(TaintTransferringMethod).transfersTaint(arg, -1)
+  method.(TaintPreservingMethod).transfersTaint(arg, -1)
 }
 
 /** A comparison or equality test with a constant. */
@@ -734,7 +734,7 @@ private class TypeFormatter extends Class {
   TypeFormatter() { this.hasQualifiedName("java.util", "Formatter") }
 }
 
-private class FormatterMethod extends TaintPreservingMethod, TaintTransferringMethod {
+private class FormatterMethod extends TaintPreservingMethod {
   FormatterMethod() {
     getDeclaringType() instanceof TypeFormatter and
     hasName(["format", "out", "toString"])

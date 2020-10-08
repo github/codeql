@@ -32,31 +32,23 @@ class AdditionalTaintStep extends Unit {
 }
 
 /**
- * A method that returns tainted data when one of its inputs (an argument or the qualifier) is tainted.
+ * A method that preserves taint.
  *
- * Extend this class to add additional taint steps through a method that should
- * apply to all taint configurations.
+ * Extend this class and override at least one of `returnsTaint` or `transfersTaint`
+ * to add additional taint steps through a method that should apply to all taint configurations.
  */
 abstract class TaintPreservingMethod extends Method {
   /**
    * Holds if this method returns tainted data when `arg` tainted.
    * `arg` is a parameter index, or is -1 to indicate the qualifier.
    */
-  abstract predicate returnsTaint(int arg);
-}
+  predicate returnsTaint(int arg) { none() }
 
-/**
- * A method that transfers taint from one of its inputs (an argument or the qualifier) to another.
- *
- * Extend this class to add additional taint steps through a method that should
- * apply to all taint configurations.
- */
-abstract class TaintTransferringMethod extends Method {
   /**
    * Holds if this method writes tainted data to `sink` when `src` is tainted.
    * `src` and `sink` are parameter indices, or -1 to indicate the qualifier.
    */
-  abstract predicate transfersTaint(int src, int sink);
+  predicate transfersTaint(int src, int sink) { none() }
 }
 
 private class StringTaintPreservingMethod extends TaintPreservingMethod {

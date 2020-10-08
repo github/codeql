@@ -28,7 +28,7 @@ abstract class JacksonSerializableType extends Type { }
  * A method used for serializing objects using Jackson. The final parameter is the object to be
  * serialized.
  */
-library class JacksonWriteValueMethod extends TaintPreservingMethod, TaintTransferringMethod {
+library class JacksonWriteValueMethod extends TaintPreservingMethod {
   JacksonWriteValueMethod() {
     (
       getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectWriter") or

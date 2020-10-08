@@ -256,7 +256,7 @@ private class QueryBuilderBuildMethod extends TaintPreservingMethod {
   override predicate returnsTaint(int arg) { argument = arg }
 }
 
-private class QueryBuilderAppendMethod extends TaintTransferringMethod {
+private class QueryBuilderAppendMethod extends TaintPreservingMethod {
   QueryBuilderAppendMethod() {
     this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
     // setProjectionMap(Map<String, String> columnMap)
