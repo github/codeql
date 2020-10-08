@@ -1,6 +1,6 @@
 Tests for Django in version 2.x and 3.x.
 
-This folder contains a runable django application generated with `django-admin startproject testproj`
+This folder contains a runable django application generated with `django-admin startproject testproj` and `django-admin startapp testapp`.
 
 To run the development server, install django (in venv), and run `python manage.py runserver`
 
