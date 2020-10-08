@@ -18,24 +18,24 @@ properties.cs:
 #   20|             1: [BlockStmt] {...}
 #   21|               0: [ExprStmt] ...;
 #   21|                 0: [AssignExpr] ... = ...
-#   21|                   0: [ParameterAccess] access to parameter value
-#   21|                   1: [FieldAccess] access to field caption
+#   21|                   0: [FieldAccess] access to field caption
+#   21|                   1: [ParameterAccess] access to parameter value
 #   26|     7: [Method] Paint
 #   27|       4: [BlockStmt] {...}
 #   28|         0: [LocalVariableDeclStmt] ... ...;
 #   28|           0: [LocalVariableDeclAndInitExpr] Button okButton = ...
-#   28|             0: [ObjectCreation] object creation of type Button
-#   28|             1: [LocalVariableAccess] access to local variable okButton
+#   28|             0: [LocalVariableAccess] access to local variable okButton
+#   28|             1: [ObjectCreation] object creation of type Button
 #   29|         1: [ExprStmt] ...;
 #   29|           0: [AssignExpr] ... = ...
-#   29|             0: [StringLiteral] "OK"
-#   29|             1: [PropertyCall] access to property Caption
+#   29|             0: [PropertyCall] access to property Caption
 #   29|               -1: [LocalVariableAccess] access to local variable okButton
+#   29|             1: [StringLiteral] "OK"
 #   30|         2: [LocalVariableDeclStmt] ... ...;
 #   30|           0: [LocalVariableDeclAndInitExpr] String s = ...
-#   30|             0: [PropertyCall] access to property Caption
+#   30|             0: [LocalVariableAccess] access to local variable s
+#   30|             1: [PropertyCall] access to property Caption
 #   30|               -1: [LocalVariableAccess] access to local variable okButton
-#   30|             1: [LocalVariableAccess] access to local variable s
 #   34|   2: [Class] Counter
 #   37|     5: [Field] next
 #   39|     6: [Property] Next
@@ -73,12 +73,12 @@ properties.cs:
 #   60|       4: [BlockStmt] {...}
 #   61|         0: [ExprStmt] ...;
 #   61|           0: [AssignExpr] ... = ...
-#   61|             0: [ParameterAccess] access to parameter x
-#   61|             1: [PropertyCall] access to property X
+#   61|             0: [PropertyCall] access to property X
+#   61|             1: [ParameterAccess] access to parameter x
 #   62|         1: [ExprStmt] ...;
 #   62|           0: [AssignExpr] ... = ...
-#   62|             0: [ParameterAccess] access to parameter y
-#   62|             1: [PropertyCall] access to property Y
+#   62|             0: [PropertyCall] access to property Y
+#   62|             1: [ParameterAccess] access to parameter y
 #   67|   5: [Class] A
 #   69|     5: [Field] y
 #   70|     6: [Property] X
@@ -97,8 +97,8 @@ properties.cs:
 #   74|         4: [BlockStmt] {...}
 #   74|           0: [ExprStmt] ...;
 #   74|             0: [AssignExpr] ... = ...
-#   74|               0: [ParameterAccess] access to parameter value
-#   74|               1: [FieldAccess] access to field y
+#   74|               0: [FieldAccess] access to field y
+#   74|               1: [ParameterAccess] access to parameter value
 #   76|     8: [Property] Z
 #   76|       3: [Getter] get_Z
 #   76|       4: [Setter] set_Z
@@ -123,14 +123,14 @@ properties.cs:
 #   83|         4: [BlockStmt] {...}
 #   83|           0: [ExprStmt] ...;
 #   83|             0: [AssignExpr] ... = ...
-#   83|               0: [ConditionalExpr] ... ? ... : ...
+#   83|               0: [PropertyCall] access to property Y
+#   83|                 -1: [BaseAccess] base access
+#   83|               1: [ConditionalExpr] ... ? ... : ...
 #   83|                 0: [LTExpr] ... < ...
 #   83|                   0: [ParameterAccess] access to parameter value
 #   83|                   1: [IntLiteral] 0
 #   83|                 1: [IntLiteral] 0
 #   83|                 2: [ParameterAccess] access to parameter value
-#   83|               1: [PropertyCall] access to property Y
-#   83|                 -1: [BaseAccess] base access
 #   84|     8: [Property] Z
 #   86|       3: [Getter] get_Z
 #   86|         4: [BlockStmt] {...}
@@ -142,8 +142,8 @@ properties.cs:
 #   87|         4: [BlockStmt] {...}
 #   87|           0: [ExprStmt] ...;
 #   87|             0: [AssignExpr] ... = ...
-#   87|               0: [ParameterAccess] access to parameter value
-#   87|               1: [FieldAccess] access to field z
+#   87|               0: [FieldAccess] access to field z
+#   87|               1: [ParameterAccess] access to parameter value
 #   91|   7: [Class] Test
 #   93|     5: [Property] Init
 #   93|       3: [Setter] set_Init
@@ -154,12 +154,12 @@ properties.cs:
 #   95|       4: [BlockStmt] {...}
 #   96|         0: [LocalVariableDeclStmt] ... ...;
 #   96|           0: [LocalVariableDeclAndInitExpr] List<Double> ds = ...
-#   96|             0: [ObjectCreation] object creation of type List<Double>
-#   96|             1: [LocalVariableAccess] access to local variable ds
+#   96|             0: [LocalVariableAccess] access to local variable ds
+#   96|             1: [ObjectCreation] object creation of type List<Double>
 #   97|         1: [LocalVariableDeclStmt] ... ...;
 #   97|           0: [LocalVariableDeclAndInitExpr] List<Object> os = ...
-#   97|             0: [ObjectCreation] object creation of type List<Object>
-#   97|             1: [LocalVariableAccess] access to local variable os
+#   97|             0: [LocalVariableAccess] access to local variable os
+#   97|             1: [ObjectCreation] object creation of type List<Object>
 #   98|         2: [IfStmt] if (...) ...
 #   98|           0: [EQExpr] ... == ...
 #   98|             0: [PropertyCall] access to property Count

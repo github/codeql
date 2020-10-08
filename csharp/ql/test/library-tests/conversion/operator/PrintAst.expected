@@ -12,6 +12,6 @@ Operator.cs:
 #   12|     4: [BlockStmt] {...}
 #   13|       0: [ExprStmt] ...;
 #   13|         0: [AssignExpr] ... = ...
-#   13|           0: [OperatorCall] call to operator implicit conversion
+#   13|           0: [FieldAccess] access to field x2
+#   13|           1: [OperatorCall] call to operator implicit conversion
 #   13|             0: [FieldAccess] access to field x1
-#   13|           1: [FieldAccess] access to field x2

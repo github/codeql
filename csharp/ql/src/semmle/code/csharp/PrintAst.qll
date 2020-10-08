@@ -284,6 +284,24 @@ final class LocalFunctionStmtNode extends ControlFlowElementNode {
 }
 
 /**
+ * A node representing an `Assignment`.
+ * Left and right children are shown in this order.
+ */
+final class AssignmentNode extends ControlFlowElementNode {
+  Assignment assignment;
+
+  AssignmentNode() { assignment = element }
+
+  override ElementNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.getElement() = assignment.getLValue()
+    or
+    childIndex = 1 and
+    result.getElement() = assignment.getRValue()
+  }
+}
+
+/**
  * A node representing a `Callable`, such as method declaration.
  */
 final class CallableNode extends ElementNode {

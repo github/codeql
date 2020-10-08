@@ -29,8 +29,8 @@ events.cs:
 #   22|       4: [BlockStmt] {...}
 #   23|         0: [ExprStmt] ...;
 #   23|           0: [AssignExpr] ... = ...
-#   23|             0: [NullLiteral] null
-#   23|             1: [EventAccess,EventCall] access to event Click
+#   23|             0: [EventAccess,EventCall] access to event Click
+#   23|             1: [NullLiteral] null
 #   27|   3: [Class] LoginDialog
 #   30|     4: [Field] OkButton
 #   31|     5: [Field] CancelButton
@@ -38,24 +38,24 @@ events.cs:
 #   34|       4: [BlockStmt] {...}
 #   35|         0: [ExprStmt] ...;
 #   35|           0: [AssignExpr] ... = ...
-#   35|             0: [ObjectCreation] object creation of type Button
-#   35|             1: [FieldAccess] access to field OkButton
+#   35|             0: [FieldAccess] access to field OkButton
+#   35|             1: [ObjectCreation] object creation of type Button
 #   36|         1: [ExprStmt] ...;
 #   36|           0: [AddEventExpr] ... += ...
-#   36|             0: [ExplicitDelegateCreation] delegate creation of type EventHandler
-#   36|               0: [MethodAccess] access to method OkButtonClick
-#   36|             1: [EventAccess,EventCall] access to event Click
+#   36|             0: [EventAccess,EventCall] access to event Click
 #   36|               -1: [FieldAccess] access to field OkButton
+#   36|             1: [ExplicitDelegateCreation] delegate creation of type EventHandler
+#   36|               0: [MethodAccess] access to method OkButtonClick
 #   37|         2: [ExprStmt] ...;
 #   37|           0: [AssignExpr] ... = ...
-#   37|             0: [ObjectCreation] object creation of type Button
-#   37|             1: [FieldAccess] access to field CancelButton
+#   37|             0: [FieldAccess] access to field CancelButton
+#   37|             1: [ObjectCreation] object creation of type Button
 #   38|         3: [ExprStmt] ...;
 #   38|           0: [RemoveEventExpr] ... -= ...
-#   38|             0: [ExplicitDelegateCreation] delegate creation of type EventHandler
-#   38|               0: [MethodAccess] access to method CancelButtonClick
-#   38|             1: [EventAccess,EventCall] access to event Click
+#   38|             0: [EventAccess,EventCall] access to event Click
 #   38|               -1: [FieldAccess] access to field CancelButton
+#   38|             1: [ExplicitDelegateCreation] delegate creation of type EventHandler
+#   38|               0: [MethodAccess] access to method CancelButtonClick
 #   41|     7: [Method] OkButtonClick
 #-----|       2: (Parameters)
 #   41|         0: [Parameter] sender
@@ -69,12 +69,12 @@ events.cs:
 #   51|   4: [Class] Control
 #   54|     6: [Field] mouseDownEventKey
 #   54|       1: [AssignExpr] ... = ...
-#   54|         0: [ObjectCreation] object creation of type Object
-#   54|         1: [FieldAccess] access to field mouseDownEventKey
+#   54|         0: [FieldAccess] access to field mouseDownEventKey
+#   54|         1: [ObjectCreation] object creation of type Object
 #   55|     7: [Field] mouseUpEventKey
 #   55|       1: [AssignExpr] ... = ...
-#   55|         0: [ObjectCreation] object creation of type Object
-#   55|         1: [FieldAccess] access to field mouseUpEventKey
+#   55|         0: [FieldAccess] access to field mouseUpEventKey
+#   55|         1: [ObjectCreation] object creation of type Object
 #   58|     8: [Method] GetEventHandler
 #-----|       2: (Parameters)
 #   58|         0: [Parameter] key
@@ -133,11 +133,11 @@ events.cs:
 #   83|           0: [LocalVariableDeclExpr] EventHandler handler
 #   84|         1: [ExprStmt] ...;
 #   84|           0: [AssignExpr] ... = ...
-#   84|             0: [CastExpr] (...) ...
+#   84|             0: [LocalVariableAccess] access to local variable handler
+#   84|             1: [CastExpr] (...) ...
 #   84|               0: [MethodCall] call to method GetEventHandler
 #   84|                 0: [FieldAccess] access to field mouseUpEventKey
 #   84|               1: [TypeAccess] access to type EventHandler
-#   84|             1: [LocalVariableAccess] access to local variable handler
 #   85|         2: [IfStmt] if (...) ...
 #   85|           0: [OperatorCall] call to operator !=
 #   85|             0: [LocalVariableAccess] access to local variable handler

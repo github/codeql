@@ -2,8 +2,8 @@ csharp6.cs:
 #   10| [Class] TestCSharp6
 #   12|   6: [Property] Value
 #   15|     2: [AssignExpr] ... = ...
-#   15|       0: [IntLiteral] 20
-#   12|       1: [PropertyCall] access to property Value
+#   12|       0: [PropertyCall] access to property Value
+#   15|       1: [IntLiteral] 20
 #   14|     3: [Getter] get_Value
 #   17|   7: [Method] Fn
 #-----|     2: (Parameters)
@@ -16,12 +16,12 @@ csharp6.cs:
 #   22|         0: [BlockStmt] {...}
 #   23|           0: [LocalVariableDeclStmt] ... ...;
 #   23|             0: [LocalVariableDeclAndInitExpr] String foo = ...
-#   23|               0: [NameOfExpr] nameof(...)
+#   23|               0: [LocalVariableAccess] access to local variable foo
+#   23|               1: [NameOfExpr] nameof(...)
 #   23|                 0: [TypeAccess] access to type TestCSharp6
-#   23|               1: [LocalVariableAccess] access to local variable foo
 #   23|             1: [LocalVariableDeclAndInitExpr] String bar = ...
-#   23|               0: [NullLiteral] null
-#   23|               1: [LocalVariableAccess] access to local variable bar
+#   23|               0: [LocalVariableAccess] access to local variable bar
+#   23|               1: [NullLiteral] null
 #   25|           1: [ExprStmt] ...;
 #   25|             0: [MethodCall] call to method WriteLine
 #   25|               0: [InterpolatedStringExpr] $"..."
@@ -54,12 +54,13 @@ csharp6.cs:
 #   27|                   1: [IntLiteral] 0
 #   29|           3: [LocalVariableDeclStmt] ... ...;
 #   29|             0: [LocalVariableDeclAndInitExpr] Nullable<Boolean> anythingInBar = ...
-#   29|               0: [MethodCall] call to method Any
+#   29|               0: [LocalVariableAccess] access to local variable anythingInBar
+#   29|               1: [MethodCall] call to method Any
 #   29|                 -1: [LocalVariableAccess] access to local variable bar
-#   29|               1: [LocalVariableAccess] access to local variable anythingInBar
 #   30|           4: [LocalVariableDeclStmt] ... ...;
 #   30|             0: [LocalVariableDeclAndInitExpr] Nullable<Int32> countTInFoo = ...
-#   30|               0: [MethodCall] call to method Count
+#   30|               0: [LocalVariableAccess] access to local variable countTInFoo
+#   30|               1: [MethodCall] call to method Count
 #   30|                 -1: [MethodCall] call to method Select
 #   30|                   -1: [MethodCall] call to method ToUpper
 #   30|                     -1: [LocalVariableAccess] access to local variable foo
@@ -71,15 +72,14 @@ csharp6.cs:
 #   30|                         0: [ParameterAccess] access to parameter c
 #   30|                       1: [CastExpr] (...) ...
 #   30|                         0: [CharLiteral] T
-#   30|               1: [LocalVariableAccess] access to local variable countTInFoo
 #   32|           5: [LocalVariableDeclStmt] ... ...;
 #   32|             0: [LocalVariableDeclAndInitExpr] Nullable<Char> testElementBinding = ...
-#   32|               0: [IndexerCall] access to indexer
+#   32|               0: [LocalVariableAccess] access to local variable testElementBinding
+#   32|               1: [IndexerCall] access to indexer
 #   32|                 -1: [IndexerCall] access to indexer
 #   32|                   -1: [ObjectCreation] object creation of type Dictionary<Int32,String>
 #   32|                   0: [IntLiteral] 2
 #   32|                 0: [IntLiteral] 1
-#   32|               1: [LocalVariableAccess] access to local variable testElementBinding
 #   34|         1: [SpecificCatchClause] catch (...) {...}
 #   35|           1: [BlockStmt] {...}
 #   34|           2: [EQExpr] ... == ...
@@ -136,101 +136,101 @@ csharp6.cs:
 #   66|     4: [BlockStmt] {...}
 #   68|       0: [LocalVariableDeclStmt] ... ...;
 #   68|         0: [LocalVariableDeclAndInitExpr] Dictionary<Int32,String> dict = ...
-#   68|           0: [ObjectCreation] object creation of type Dictionary<Int32,String>
+#   68|           0: [LocalVariableAccess] access to local variable dict
+#   68|           1: [ObjectCreation] object creation of type Dictionary<Int32,String>
 #   68|             -1: [ObjectInitializer] { ..., ... }
 #   68|               0: [MemberInitializer] ... = ...
-#   68|                 0: [StringLiteral] "Zero"
-#   68|                 1: [IndexerCall] access to indexer
+#   68|                 0: [IndexerCall] access to indexer
 #   68|                   0: [IntLiteral] 0
+#   68|                 1: [StringLiteral] "Zero"
 #   68|               1: [MemberInitializer] ... = ...
-#   68|                 0: [StringLiteral] "One"
-#   68|                 1: [IndexerCall] access to indexer
+#   68|                 0: [IndexerCall] access to indexer
 #   68|                   0: [IntLiteral] 1
+#   68|                 1: [StringLiteral] "One"
 #   68|               2: [MemberInitializer] ... = ...
-#   68|                 0: [StringLiteral] "Two"
-#   68|                 1: [IndexerCall] access to indexer
+#   68|                 0: [IndexerCall] access to indexer
 #   68|                   0: [IntLiteral] 2
-#   68|           1: [LocalVariableAccess] access to local variable dict
+#   68|                 1: [StringLiteral] "Two"
 #   71|       1: [LocalVariableDeclStmt] ... ...;
 #   71|         0: [LocalVariableDeclAndInitExpr] Compound compound = ...
-#   71|           0: [ObjectCreation] object creation of type Compound
+#   71|           0: [LocalVariableAccess] access to local variable compound
+#   71|           1: [ObjectCreation] object creation of type Compound
 #   72|             -1: [ObjectInitializer] { ..., ... }
 #   73|               0: [MemberInitializer] ... = ...
-#   73|                 0: [ObjectInitializer] { ..., ... }
+#   73|                 0: [FieldAccess] access to field DictionaryField
+#   73|                 1: [ObjectInitializer] { ..., ... }
 #   73|                   0: [MemberInitializer] ... = ...
-#   73|                     0: [StringLiteral] "Zero"
-#   73|                     1: [IndexerCall] access to indexer
+#   73|                     0: [IndexerCall] access to indexer
 #   73|                       0: [IntLiteral] 0
+#   73|                     1: [StringLiteral] "Zero"
 #   73|                   1: [MemberInitializer] ... = ...
-#   73|                     0: [StringLiteral] "One"
-#   73|                     1: [IndexerCall] access to indexer
+#   73|                     0: [IndexerCall] access to indexer
 #   73|                       0: [IntLiteral] 1
+#   73|                     1: [StringLiteral] "One"
 #   73|                   2: [MemberInitializer] ... = ...
-#   73|                     0: [StringLiteral] "Two"
-#   73|                     1: [IndexerCall] access to indexer
+#   73|                     0: [IndexerCall] access to indexer
 #   73|                       0: [IntLiteral] 2
-#   73|                 1: [FieldAccess] access to field DictionaryField
+#   73|                     1: [StringLiteral] "Two"
 #   74|               1: [MemberInitializer] ... = ...
-#   74|                 0: [ObjectInitializer] { ..., ... }
+#   74|                 0: [PropertyCall] access to property DictionaryProperty
+#   74|                 1: [ObjectInitializer] { ..., ... }
 #   74|                   0: [MemberInitializer] ... = ...
-#   74|                     0: [StringLiteral] "Three"
-#   74|                     1: [IndexerCall] access to indexer
+#   74|                     0: [IndexerCall] access to indexer
 #   74|                       0: [IntLiteral] 3
+#   74|                     1: [StringLiteral] "Three"
 #   74|                   1: [MemberInitializer] ... = ...
-#   74|                     0: [StringLiteral] "Two"
-#   74|                     1: [IndexerCall] access to indexer
+#   74|                     0: [IndexerCall] access to indexer
 #   74|                       0: [IntLiteral] 2
+#   74|                     1: [StringLiteral] "Two"
 #   74|                   2: [MemberInitializer] ... = ...
-#   74|                     0: [StringLiteral] "One"
-#   74|                     1: [IndexerCall] access to indexer
+#   74|                     0: [IndexerCall] access to indexer
 #   74|                       0: [IntLiteral] 1
-#   74|                 1: [PropertyCall] access to property DictionaryProperty
+#   74|                     1: [StringLiteral] "One"
 #   75|               2: [MemberInitializer] ... = ...
-#   75|                 0: [ObjectInitializer] { ..., ... }
+#   75|                 0: [FieldAccess] access to field ArrayField
+#   75|                 1: [ObjectInitializer] { ..., ... }
 #   75|                   0: [MemberInitializer] ... = ...
-#   75|                     0: [StringLiteral] "Zero"
-#   75|                     1: [ArrayAccess] access to array element
+#   75|                     0: [ArrayAccess] access to array element
 #   75|                       0: [IntLiteral] 0
+#   75|                     1: [StringLiteral] "Zero"
 #   75|                   1: [MemberInitializer] ... = ...
-#   75|                     0: [StringLiteral] "One"
-#   75|                     1: [ArrayAccess] access to array element
+#   75|                     0: [ArrayAccess] access to array element
 #   75|                       0: [IntLiteral] 1
-#   75|                 1: [FieldAccess] access to field ArrayField
+#   75|                     1: [StringLiteral] "One"
 #   76|               3: [MemberInitializer] ... = ...
-#   76|                 0: [ObjectInitializer] { ..., ... }
+#   76|                 0: [FieldAccess] access to field ArrayField2
+#   76|                 1: [ObjectInitializer] { ..., ... }
 #   76|                   0: [MemberInitializer] ... = ...
-#   76|                     0: [StringLiteral] "i"
-#   76|                     1: [ArrayAccess] access to array element
+#   76|                     0: [ArrayAccess] access to array element
 #   76|                       0: [IntLiteral] 0
 #   76|                       1: [IntLiteral] 1
+#   76|                     1: [StringLiteral] "i"
 #   76|                   1: [MemberInitializer] ... = ...
-#   76|                     0: [StringLiteral] "1"
-#   76|                     1: [ArrayAccess] access to array element
+#   76|                     0: [ArrayAccess] access to array element
 #   76|                       0: [IntLiteral] 1
 #   76|                       1: [IntLiteral] 0
-#   76|                 1: [FieldAccess] access to field ArrayField2
+#   76|                     1: [StringLiteral] "1"
 #   77|               4: [MemberInitializer] ... = ...
-#   77|                 0: [ObjectInitializer] { ..., ... }
+#   77|                 0: [PropertyCall] access to property ArrayProperty
+#   77|                 1: [ObjectInitializer] { ..., ... }
 #   77|                   0: [MemberInitializer] ... = ...
-#   77|                     0: [StringLiteral] "One"
-#   77|                     1: [ArrayAccess] access to array element
+#   77|                     0: [ArrayAccess] access to array element
 #   77|                       0: [IntLiteral] 1
+#   77|                     1: [StringLiteral] "One"
 #   77|                   1: [MemberInitializer] ... = ...
-#   77|                     0: [StringLiteral] "Two"
-#   77|                     1: [ArrayAccess] access to array element
+#   77|                     0: [ArrayAccess] access to array element
 #   77|                       0: [IntLiteral] 2
-#   77|                 1: [PropertyCall] access to property ArrayProperty
+#   77|                     1: [StringLiteral] "Two"
 #   78|               5: [MemberInitializer] ... = ...
-#   78|                 0: [ObjectInitializer] { ..., ... }
+#   78|                 0: [PropertyCall] access to property ArrayProperty2
+#   78|                 1: [ObjectInitializer] { ..., ... }
 #   78|                   0: [MemberInitializer] ... = ...
-#   78|                     0: [StringLiteral] "i"
-#   78|                     1: [ArrayAccess] access to array element
+#   78|                     0: [ArrayAccess] access to array element
 #   78|                       0: [IntLiteral] 0
 #   78|                       1: [IntLiteral] 1
+#   78|                     1: [StringLiteral] "i"
 #   78|                   1: [MemberInitializer] ... = ...
-#   78|                     0: [StringLiteral] "1"
-#   78|                     1: [ArrayAccess] access to array element
+#   78|                     0: [ArrayAccess] access to array element
 #   78|                       0: [IntLiteral] 1
 #   78|                       1: [IntLiteral] 0
-#   78|                 1: [PropertyCall] access to property ArrayProperty2
-#   71|           1: [LocalVariableAccess] access to local variable compound
+#   78|                     1: [StringLiteral] "1"

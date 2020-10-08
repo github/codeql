@@ -8,25 +8,25 @@ methods.cs:
 #   10|       4: [BlockStmt] {...}
 #   11|         0: [LocalVariableDeclStmt] ... ...;
 #   11|           0: [LocalVariableDeclAndInitExpr] Int32 temp = ...
-#   11|             0: [ParameterAccess] access to parameter x
-#   11|             1: [LocalVariableAccess] access to local variable temp
+#   11|             0: [LocalVariableAccess] access to local variable temp
+#   11|             1: [ParameterAccess] access to parameter x
 #   12|         1: [ExprStmt] ...;
 #   12|           0: [AssignExpr] ... = ...
-#   12|             0: [ParameterAccess] access to parameter y
-#   12|             1: [ParameterAccess] access to parameter x
+#   12|             0: [ParameterAccess] access to parameter x
+#   12|             1: [ParameterAccess] access to parameter y
 #   13|         2: [ExprStmt] ...;
 #   13|           0: [AssignExpr] ... = ...
-#   13|             0: [LocalVariableAccess] access to local variable temp
-#   13|             1: [ParameterAccess] access to parameter y
+#   13|             0: [ParameterAccess] access to parameter y
+#   13|             1: [LocalVariableAccess] access to local variable temp
 #   16|     6: [Method] Main
 #   17|       4: [BlockStmt] {...}
 #   18|         0: [LocalVariableDeclStmt] ... ...;
 #   18|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   18|             0: [IntLiteral] 1
-#   18|             1: [LocalVariableAccess] access to local variable i
+#   18|             0: [LocalVariableAccess] access to local variable i
+#   18|             1: [IntLiteral] 1
 #   18|           1: [LocalVariableDeclAndInitExpr] Int32 j = ...
-#   18|             0: [IntLiteral] 2
-#   18|             1: [LocalVariableAccess] access to local variable j
+#   18|             0: [LocalVariableAccess] access to local variable j
+#   18|             1: [IntLiteral] 2
 #   19|         1: [ExprStmt] ...;
 #   19|           0: [MethodCall] call to method Swap
 #   19|             0: [LocalVariableAccess] access to local variable i
@@ -57,16 +57,16 @@ methods.cs:
 #   29|       4: [BlockStmt] {...}
 #   30|         0: [ExprStmt] ...;
 #   30|           0: [AssignExpr] ... = ...
-#   30|             0: [DivExpr] ... / ...
+#   30|             0: [ParameterAccess] access to parameter result
+#   30|             1: [DivExpr] ... / ...
 #   30|               0: [ParameterAccess] access to parameter x
 #   30|               1: [ParameterAccess] access to parameter y
-#   30|             1: [ParameterAccess] access to parameter result
 #   31|         1: [ExprStmt] ...;
 #   31|           0: [AssignExpr] ... = ...
-#   31|             0: [RemExpr] ... % ...
+#   31|             0: [ParameterAccess] access to parameter remainder
+#   31|             1: [RemExpr] ... % ...
 #   31|               0: [ParameterAccess] access to parameter x
 #   31|               1: [ParameterAccess] access to parameter y
-#   31|             1: [ParameterAccess] access to parameter remainder
 #   34|     6: [Method] Main
 #   35|       4: [BlockStmt] {...}
 #   36|         0: [LocalVariableDeclStmt] ... ...;
@@ -224,9 +224,9 @@ methods.cs:
 #  112|             0: [ObjectCreation] object creation of type ArgumentException
 #  113|         1: [LocalVariableDeclStmt] ... ...;
 #  113|           0: [LocalVariableDeclAndInitExpr] T[] result = ...
-#  113|             0: [ArrayCreation] array creation of type T[]
+#  113|             0: [LocalVariableAccess] access to local variable result
+#  113|             1: [ArrayCreation] array creation of type T[]
 #  113|               0: [ParameterAccess] access to parameter count
-#  113|             1: [LocalVariableAccess] access to local variable result
 #  114|         2: [ExprStmt] ...;
 #  114|           0: [MethodCall] call to method Copy
 #  114|             -1: [TypeAccess] access to type Array
@@ -245,13 +245,13 @@ methods.cs:
 #  125|       4: [BlockStmt] {...}
 #  126|         0: [LocalVariableDeclStmt] ... ...;
 #  126|           0: [LocalVariableDeclAndInitExpr] String[] strings = ...
-#  126|             0: [ArrayCreation] array creation of type String[]
+#  126|             0: [LocalVariableAccess] access to local variable strings
+#  126|             1: [ArrayCreation] array creation of type String[]
 #  126|               -1: [ArrayInitializer] { ..., ... }
 #  126|                 0: [StringLiteral] "1"
 #  126|                 1: [StringLiteral] "22"
 #  126|                 2: [StringLiteral] "333"
 #  126|                 3: [StringLiteral] "4444"
-#  126|             1: [LocalVariableAccess] access to local variable strings
 #  127|         1: [ForeachStmt] foreach (... ... in ...) ...
 #  127|           0: [LocalVariableDeclExpr] String s
 #  127|           1: [MethodCall] call to method Slice

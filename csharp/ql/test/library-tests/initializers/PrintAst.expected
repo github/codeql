@@ -36,14 +36,14 @@ initializers.cs:
 #   21|         0: [ObjectCreation] object creation of type S1
 #   21|           -1: [ObjectInitializer] { ..., ... }
 #   21|             0: [MemberInitializer] ... = ...
-#   21|               0: [IntLiteral] 1
-#   21|               1: [FieldAccess] access to field P1
+#   21|               0: [FieldAccess] access to field P1
+#   21|               1: [IntLiteral] 1
 #   21|             1: [MemberInitializer] ... = ...
-#   21|               0: [IntLiteral] 2
-#   21|               1: [PropertyCall] access to property P2
+#   21|               0: [PropertyCall] access to property P2
+#   21|               1: [IntLiteral] 2
 #   21|             2: [MemberInitializer] ... = ...
-#   21|               0: [IntLiteral] 3
-#   21|               1: [PropertyCall] access to property P3
+#   21|               0: [PropertyCall] access to property P3
+#   21|               1: [IntLiteral] 3
 #   22|       1: [ExprStmt] ...;
 #   22|         0: [ObjectCreation] object creation of type S2
 #   22|           -1: [CollectionInitializer] { ..., ... }

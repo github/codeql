@@ -63,8 +63,8 @@ exceptions.cs:
 #   76|           0: [EmptyStmt] ;
 #   77|           1: [LocalVariableDeclStmt] ... ...;
 #   77|             0: [LocalVariableDeclAndInitExpr] Class1 v = ...
-#   77|               0: [ObjectCreation] object creation of type Class1
-#   77|               1: [LocalVariableAccess] access to local variable v
+#   77|               0: [LocalVariableAccess] access to local variable v
+#   77|               1: [ObjectCreation] object creation of type Class1
 #   79|         1: [SpecificCatchClause] catch (...) {...}
 #   79|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #   80|           1: [BlockStmt] {...}
@@ -92,10 +92,10 @@ exceptions.cs:
 #  105|           0: [EmptyStmt] ;
 #  106|           1: [LocalVariableDeclStmt] ... ...;
 #  106|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  106|               0: [AddExpr] ... + ...
+#  106|               0: [LocalVariableAccess] access to local variable v
+#  106|               1: [AddExpr] ... + ...
 #  106|                 0: [IntLiteral] 1
 #  106|                 1: [IntLiteral] 2
-#  106|               1: [LocalVariableAccess] access to local variable v
 #  108|         1: [SpecificCatchClause] catch (...) {...}
 #  108|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  109|           1: [BlockStmt] {...}
@@ -123,10 +123,10 @@ exceptions.cs:
 #  134|           0: [EmptyStmt] ;
 #  135|           1: [LocalVariableDeclStmt] ... ...;
 #  135|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  135|               0: [SubExpr] ... - ...
+#  135|               0: [LocalVariableAccess] access to local variable v
+#  135|               1: [SubExpr] ... - ...
 #  135|                 0: [IntLiteral] 1
 #  135|                 1: [IntLiteral] 2
-#  135|               1: [LocalVariableAccess] access to local variable v
 #  137|         1: [SpecificCatchClause] catch (...) {...}
 #  137|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  138|           1: [BlockStmt] {...}
@@ -154,10 +154,10 @@ exceptions.cs:
 #  163|           0: [EmptyStmt] ;
 #  164|           1: [LocalVariableDeclStmt] ... ...;
 #  164|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  164|               0: [MulExpr] ... * ...
+#  164|               0: [LocalVariableAccess] access to local variable v
+#  164|               1: [MulExpr] ... * ...
 #  164|                 0: [IntLiteral] 1
 #  164|                 1: [IntLiteral] 2
-#  164|               1: [LocalVariableAccess] access to local variable v
 #  166|         1: [SpecificCatchClause] catch (...) {...}
 #  166|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  167|           1: [BlockStmt] {...}
@@ -185,8 +185,8 @@ exceptions.cs:
 #  192|           0: [EmptyStmt] ;
 #  193|           1: [LocalVariableDeclStmt] ... ...;
 #  193|             0: [LocalVariableDeclAndInitExpr] String v = ...
-#  193|               0: [StringLiteral] ""
-#  193|               1: [LocalVariableAccess] access to local variable v
+#  193|               0: [LocalVariableAccess] access to local variable v
+#  193|               1: [StringLiteral] ""
 #  195|         1: [SpecificCatchClause] catch (...) {...}
 #  195|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  196|           1: [BlockStmt] {...}
@@ -213,15 +213,15 @@ exceptions.cs:
 #  220|         0: [BlockStmt] {...}
 #  221|           0: [LocalVariableDeclStmt] ... ...;
 #  221|             0: [LocalVariableDeclAndInitExpr] String s = ...
-#  221|               0: [StringLiteral] ""
-#  221|               1: [LocalVariableAccess] access to local variable s
+#  221|               0: [LocalVariableAccess] access to local variable s
+#  221|               1: [StringLiteral] ""
 #  222|           1: [EmptyStmt] ;
 #  223|           2: [LocalVariableDeclStmt] ... ...;
 #  223|             0: [LocalVariableDeclAndInitExpr] String v = ...
-#  223|               0: [AddExpr] ... + ...
+#  223|               0: [LocalVariableAccess] access to local variable v
+#  223|               1: [AddExpr] ... + ...
 #  223|                 0: [LocalVariableAccess] access to local variable s
 #  223|                 1: [LocalVariableAccess] access to local variable s
-#  223|               1: [LocalVariableAccess] access to local variable v
 #  225|         1: [SpecificCatchClause] catch (...) {...}
 #  225|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  226|           1: [BlockStmt] {...}
@@ -249,10 +249,10 @@ exceptions.cs:
 #  251|           0: [EmptyStmt] ;
 #  252|           1: [LocalVariableDeclStmt] ... ...;
 #  252|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  252|               0: [DivExpr] ... / ...
+#  252|               0: [LocalVariableAccess] access to local variable v
+#  252|               1: [DivExpr] ... / ...
 #  252|                 0: [IntLiteral] 1
 #  252|                 1: [IntLiteral] 2
-#  252|               1: [LocalVariableAccess] access to local variable v
 #  254|         1: [SpecificCatchClause] catch (...) {...}
 #  254|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  255|           1: [BlockStmt] {...}
@@ -280,10 +280,10 @@ exceptions.cs:
 #  280|           0: [EmptyStmt] ;
 #  281|           1: [LocalVariableDeclStmt] ... ...;
 #  281|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  281|               0: [RemExpr] ... % ...
+#  281|               0: [LocalVariableAccess] access to local variable v
+#  281|               1: [RemExpr] ... % ...
 #  281|                 0: [IntLiteral] 1
 #  281|                 1: [IntLiteral] 2
-#  281|               1: [LocalVariableAccess] access to local variable v
 #  283|         1: [SpecificCatchClause] catch (...) {...}
 #  283|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  284|           1: [BlockStmt] {...}
@@ -311,9 +311,9 @@ exceptions.cs:
 #  309|           0: [EmptyStmt] ;
 #  310|           1: [LocalVariableDeclStmt] ... ...;
 #  310|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  310|               0: [FieldAccess] access to field p
+#  310|               0: [LocalVariableAccess] access to local variable v
+#  310|               1: [FieldAccess] access to field p
 #  310|                 -1: [ThisAccess] this access
-#  310|               1: [LocalVariableAccess] access to local variable v
 #  312|         1: [SpecificCatchClause] catch (...) {...}
 #  312|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  313|           1: [BlockStmt] {...}
@@ -341,10 +341,10 @@ exceptions.cs:
 #  338|           0: [EmptyStmt] ;
 #  339|           1: [LocalVariableDeclStmt] ... ...;
 #  339|             0: [LocalVariableDeclAndInitExpr] Int16 v = ...
-#  339|               0: [CastExpr] (...) ...
+#  339|               0: [LocalVariableAccess] access to local variable v
+#  339|               1: [CastExpr] (...) ...
 #  339|                 0: [IntLiteral] 1
 #  339|                 1: [TypeAccess] access to type Int16
-#  339|               1: [LocalVariableAccess] access to local variable v
 #  341|         1: [SpecificCatchClause] catch (...) {...}
 #  341|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  342|           1: [BlockStmt] {...}
@@ -371,8 +371,8 @@ exceptions.cs:
 #  366|         0: [BlockStmt] {...}
 #  367|           0: [LocalVariableDeclStmt] ... ...;
 #  367|             0: [LocalVariableDeclAndInitExpr] DivideByZeroException e = ...
-#  367|               0: [ObjectCreation] object creation of type DivideByZeroException
-#  367|               1: [LocalVariableAccess] access to local variable e
+#  367|               0: [LocalVariableAccess] access to local variable e
+#  367|               1: [ObjectCreation] object creation of type DivideByZeroException
 #  368|           1: [EmptyStmt] ;
 #  369|           2: [ThrowStmt] throw ...;
 #  369|             0: [LocalVariableAccess] access to local variable e
@@ -402,8 +402,8 @@ exceptions.cs:
 #  396|         0: [BlockStmt] {...}
 #  397|           0: [LocalVariableDeclStmt] ... ...;
 #  397|             0: [LocalVariableDeclAndInitExpr] Int32 a = ...
-#  397|               0: [IntLiteral] 1
-#  397|               1: [LocalVariableAccess] access to local variable a
+#  397|               0: [LocalVariableAccess] access to local variable a
+#  397|               1: [IntLiteral] 1
 #  398|           1: [EmptyStmt] ;
 #  399|           2: [ExprStmt] ...;
 #  399|             0: [PreIncrExpr] ++...
@@ -451,15 +451,15 @@ exceptions.cs:
 #  449|         0: [BlockStmt] {...}
 #  450|           0: [LocalVariableDeclStmt] ... ...;
 #  450|             0: [LocalVariableDeclAndInitExpr] Object o = ...
-#  450|               0: [NullLiteral] null
-#  450|               1: [LocalVariableAccess] access to local variable o
+#  450|               0: [LocalVariableAccess] access to local variable o
+#  450|               1: [NullLiteral] null
 #  451|           1: [EmptyStmt] ;
 #  452|           2: [LocalVariableDeclStmt] ... ...;
 #  452|             0: [LocalVariableDeclAndInitExpr] Class1 p = ...
-#  452|               0: [CastExpr] (...) ...
+#  452|               0: [LocalVariableAccess] access to local variable p
+#  452|               1: [CastExpr] (...) ...
 #  452|                 0: [LocalVariableAccess] access to local variable o
 #  452|                 1: [TypeAccess] access to type Class1
-#  452|               1: [LocalVariableAccess] access to local variable p
 #  454|         1: [SpecificCatchClause] catch (...) {...}
 #  454|           0: [LocalVariableDeclExpr] InvalidCastException ex
 #  455|           1: [BlockStmt] {...}
@@ -477,10 +477,10 @@ exceptions.cs:
 #  468|           0: [EmptyStmt] ;
 #  469|           1: [LocalVariableDeclStmt] ... ...;
 #  469|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  469|               0: [DivExpr] ... / ...
+#  469|               0: [LocalVariableAccess] access to local variable v
+#  469|               1: [DivExpr] ... / ...
 #  469|                 0: [IntLiteral] 1
 #  469|                 1: [ParameterAccess] access to parameter i
-#  469|               1: [LocalVariableAccess] access to local variable v
 #  471|         1: [SpecificCatchClause] catch (...) {...}
 #  471|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  472|           1: [BlockStmt] {...}

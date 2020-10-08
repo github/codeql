@@ -4,38 +4,38 @@ fixed.cs:
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Byte[] buffer = ...
-#    7|           0: [ArrayCreation] array creation of type Byte[]
+#    7|           0: [LocalVariableAccess] access to local variable buffer
+#    7|           1: [ArrayCreation] array creation of type Byte[]
 #    7|             0: [IntLiteral] 10
-#    7|           1: [LocalVariableAccess] access to local variable buffer
 #    9|       1: [FixedStmt] fixed(...) { ... }
 #    9|         -1: [LocalVariableDeclAndInitExpr] Byte* pinned_buffer = ...
-#    9|           0: [AddressOfExpr] &...
+#    9|           0: [LocalVariableAccess] access to local variable pinned_buffer
+#    9|           1: [AddressOfExpr] &...
 #    9|             0: [ArrayAccess] access to array element
 #    9|               -1: [LocalVariableAccess] access to local variable buffer
 #    9|               0: [IntLiteral] 0
-#    9|           1: [LocalVariableAccess] access to local variable pinned_buffer
 #   10|         0: [BlockStmt] {...}
 #   11|           0: [LocalVariableDeclStmt] ... ...;
 #   11|             0: [LocalVariableDeclAndInitExpr] Byte* t = ...
-#   11|               0: [LocalVariableAccess] access to local variable pinned_buffer
-#   11|               1: [LocalVariableAccess] access to local variable t
+#   11|               0: [LocalVariableAccess] access to local variable t
+#   11|               1: [LocalVariableAccess] access to local variable pinned_buffer
 #   12|           1: [ExprStmt] ...;
 #   12|             0: [MethodCall] call to method fixed1
 #   15|       2: [FixedStmt] fixed(...) { ... }
 #   15|         -1: [LocalVariableDeclAndInitExpr] Byte* pinned_buffer = ...
-#   15|           0: [AddressOfExpr] &...
+#   15|           0: [LocalVariableAccess] access to local variable pinned_buffer
+#   15|           1: [AddressOfExpr] &...
 #   15|             0: [ArrayAccess] access to array element
 #   15|               -1: [LocalVariableAccess] access to local variable buffer
 #   15|               0: [IntLiteral] 0
-#   15|           1: [LocalVariableAccess] access to local variable pinned_buffer
 #   16|         0: [BlockStmt] {...}
 #   19|       3: [FixedStmt] fixed(...) { ... }
 #   19|         -1: [LocalVariableDeclAndInitExpr] Byte* pinned_buffer = ...
-#   19|           0: [AddressOfExpr] &...
+#   19|           0: [LocalVariableAccess] access to local variable pinned_buffer
+#   19|           1: [AddressOfExpr] &...
 #   19|             0: [ArrayAccess] access to array element
 #   19|               -1: [LocalVariableAccess] access to local variable buffer
 #   19|               0: [IntLiteral] 0
-#   19|           1: [LocalVariableAccess] access to local variable pinned_buffer
 #   19|         0: [EmptyStmt] ;
 statements.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
@@ -51,8 +51,8 @@ statements.cs:
 #   24|       4: [BlockStmt] {...}
 #   25|         0: [LocalVariableDeclStmt] ... ...;
 #   25|           0: [LocalVariableDeclAndInitExpr] Class c = ...
-#   25|             0: [ObjectCreation] object creation of type Class
-#   25|             1: [LocalVariableAccess] access to local variable c
+#   25|             0: [LocalVariableAccess] access to local variable c
+#   25|             1: [ObjectCreation] object creation of type Class
 #   26|         1: [EmptyStmt] ;
 #   26|         2: [EmptyStmt] ;
 #   26|         3: [EmptyStmt] ;
@@ -65,15 +65,15 @@ statements.cs:
 #   32|           0: [LocalVariableDeclExpr] Int32 a
 #   33|         1: [LocalVariableDeclStmt] ... ...;
 #   33|           0: [LocalVariableDeclAndInitExpr] Int32 b = ...
-#   33|             0: [IntLiteral] 2
-#   33|             1: [LocalVariableAccess] access to local variable b
+#   33|             0: [LocalVariableAccess] access to local variable b
+#   33|             1: [IntLiteral] 2
 #   33|           1: [LocalVariableDeclAndInitExpr] Int32 c = ...
-#   33|             0: [IntLiteral] 3
-#   33|             1: [LocalVariableAccess] access to local variable c
+#   33|             0: [LocalVariableAccess] access to local variable c
+#   33|             1: [IntLiteral] 3
 #   34|         2: [ExprStmt] ...;
 #   34|           0: [AssignExpr] ... = ...
-#   34|             0: [IntLiteral] 1
-#   34|             1: [LocalVariableAccess] access to local variable a
+#   34|             0: [LocalVariableAccess] access to local variable a
+#   34|             1: [IntLiteral] 1
 #   35|         3: [ExprStmt] ...;
 #   35|           0: [MethodCall] call to method WriteLine
 #   35|             -1: [TypeAccess] access to type Console
@@ -84,24 +84,24 @@ statements.cs:
 #   35|               1: [LocalVariableAccess] access to local variable c
 #   36|         4: [LocalVariableDeclStmt] ... ...;
 #   36|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   36|             0: [IntLiteral] 45
-#   36|             1: [LocalVariableAccess] access to local variable x
+#   36|             0: [LocalVariableAccess] access to local variable x
+#   36|             1: [IntLiteral] 45
 #   37|         5: [LocalVariableDeclStmt] ... ...;
 #   37|           0: [LocalVariableDeclAndInitExpr] String y = ...
-#   37|             0: [StringLiteral] "test"
-#   37|             1: [LocalVariableAccess] access to local variable y
+#   37|             0: [LocalVariableAccess] access to local variable y
+#   37|             1: [StringLiteral] "test"
 #   40|     8: [Method] MainLocalConstDecl
 #   41|       4: [BlockStmt] {...}
 #   42|         0: [LocalConstantDeclStmt] const ... ...;
 #   42|           0: [LocalVariableDeclAndInitExpr] Single pi = ...
-#   42|             0: [FloatLiteral] 3.1415927
-#   42|             1: [LocalVariableAccess] access to local variable pi
+#   42|             0: [LocalVariableAccess] access to local variable pi
+#   42|             1: [FloatLiteral] 3.1415927
 #   43|         1: [LocalConstantDeclStmt] const ... ...;
 #   43|           0: [LocalVariableDeclAndInitExpr] Int32 r = ...
-#   43|             0: [AddExpr] ... + ...
+#   43|             0: [LocalVariableAccess] access to local variable r
+#   43|             1: [AddExpr] ... + ...
 #   43|               0: [IntLiteral] 5
 #   43|               1: [IntLiteral] 20
-#   43|             1: [LocalVariableAccess] access to local variable r
 #   44|         2: [ExprStmt] ...;
 #   44|           0: [MethodCall] call to method WriteLine
 #   44|             -1: [TypeAccess] access to type Console
@@ -118,8 +118,8 @@ statements.cs:
 #   49|           0: [LocalVariableDeclExpr] Int32 i
 #   50|         1: [ExprStmt] ...;
 #   50|           0: [AssignExpr] ... = ...
-#   50|             0: [IntLiteral] 123
-#   50|             1: [LocalVariableAccess] access to local variable i
+#   50|             0: [LocalVariableAccess] access to local variable i
+#   50|             1: [IntLiteral] 123
 #   51|         2: [ExprStmt] ...;
 #   51|           0: [MethodCall] call to method WriteLine
 #   51|             -1: [TypeAccess] access to type Console
@@ -156,9 +156,9 @@ statements.cs:
 #   70|       4: [BlockStmt] {...}
 #   71|         0: [LocalVariableDeclStmt] ... ...;
 #   71|           0: [LocalVariableDeclAndInitExpr] Int32 n = ...
-#   71|             0: [PropertyCall] access to property Length
+#   71|             0: [LocalVariableAccess] access to local variable n
+#   71|             1: [PropertyCall] access to property Length
 #   71|               -1: [ParameterAccess] access to parameter args
-#   71|             1: [LocalVariableAccess] access to local variable n
 #   72|         1: [SwitchStmt] switch (...) {...}
 #   72|           0: [LocalVariableAccess] access to local variable n
 #   74|           0: [ConstCase] case ...:
@@ -231,8 +231,8 @@ statements.cs:
 #  112|       4: [BlockStmt] {...}
 #  113|         0: [LocalVariableDeclStmt] ... ...;
 #  113|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  113|             0: [IntLiteral] 0
-#  113|             1: [LocalVariableAccess] access to local variable i
+#  113|             0: [LocalVariableAccess] access to local variable i
+#  113|             1: [IntLiteral] 0
 #  114|         1: [WhileStmt] while (...) ...
 #  114|           0: [LTExpr] ... < ...
 #  114|             0: [LocalVariableAccess] access to local variable i
@@ -259,9 +259,9 @@ statements.cs:
 #  125|           1: [BlockStmt] {...}
 #  126|             0: [ExprStmt] ...;
 #  126|               0: [AssignExpr] ... = ...
-#  126|                 0: [MethodCall] call to method ReadLine
+#  126|                 0: [LocalVariableAccess] access to local variable s
+#  126|                 1: [MethodCall] call to method ReadLine
 #  126|                   -1: [TypeAccess] access to type Console
-#  126|                 1: [LocalVariableAccess] access to local variable s
 #  127|             1: [IfStmt] if (...) ...
 #  127|               0: [NEExpr] ... != ...
 #  127|                 0: [LocalVariableAccess] access to local variable s
@@ -276,8 +276,8 @@ statements.cs:
 #  132|       4: [BlockStmt] {...}
 #  133|         0: [ForStmt] for (...;...;...) ...
 #  133|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  133|             0: [IntLiteral] 0
-#  133|             1: [LocalVariableAccess] access to local variable i
+#  133|             0: [LocalVariableAccess] access to local variable i
+#  133|             1: [IntLiteral] 0
 #  133|           0: [LTExpr] ... < ...
 #  133|             0: [LocalVariableAccess] access to local variable i
 #  133|             1: [PropertyCall] access to property Length
@@ -310,9 +310,9 @@ statements.cs:
 #  151|           1: [BlockStmt] {...}
 #  152|             0: [LocalVariableDeclStmt] ... ...;
 #  152|               0: [LocalVariableDeclAndInitExpr] String s = ...
-#  152|                 0: [MethodCall] call to method ReadLine
+#  152|                 0: [LocalVariableAccess] access to local variable s
+#  152|                 1: [MethodCall] call to method ReadLine
 #  152|                   -1: [TypeAccess] access to type Console
-#  152|                 1: [LocalVariableAccess] access to local variable s
 #  153|             1: [IfStmt] if (...) ...
 #  153|               0: [EQExpr] ... == ...
 #  153|                 0: [LocalVariableAccess] access to local variable s
@@ -328,8 +328,8 @@ statements.cs:
 #  159|       4: [BlockStmt] {...}
 #  160|         0: [ForStmt] for (...;...;...) ...
 #  160|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  160|             0: [IntLiteral] 0
-#  160|             1: [LocalVariableAccess] access to local variable i
+#  160|             0: [LocalVariableAccess] access to local variable i
+#  160|             1: [IntLiteral] 0
 #  160|           0: [LTExpr] ... < ...
 #  160|             0: [LocalVariableAccess] access to local variable i
 #  160|             1: [PropertyCall] access to property Length
@@ -356,8 +356,8 @@ statements.cs:
 #  168|       4: [BlockStmt] {...}
 #  169|         0: [LocalVariableDeclStmt] ... ...;
 #  169|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  169|             0: [IntLiteral] 0
-#  169|             1: [LocalVariableAccess] access to local variable i
+#  169|             0: [LocalVariableAccess] access to local variable i
+#  169|             1: [IntLiteral] 0
 #  170|         1: [GotoLabelStmt] goto ...;
 #  171|         2: [LabelStmt] loop:
 #  171|         3: [ExprStmt] ...;
@@ -399,8 +399,8 @@ statements.cs:
 #  186|       4: [BlockStmt] {...}
 #  187|         0: [ForStmt] for (...;...;...) ...
 #  187|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  187|             0: [ParameterAccess] access to parameter from
-#  187|             1: [LocalVariableAccess] access to local variable i
+#  187|             0: [LocalVariableAccess] access to local variable i
+#  187|             1: [ParameterAccess] access to parameter from
 #  187|           0: [LTExpr] ... < ...
 #  187|             0: [LocalVariableAccess] access to local variable i
 #  187|             1: [ParameterAccess] access to parameter to
@@ -461,20 +461,20 @@ statements.cs:
 #  212|                     0: [StringLiteral] "Two numbers required"
 #  214|             1: [LocalVariableDeclStmt] ... ...;
 #  214|               0: [LocalVariableDeclAndInitExpr] Double x = ...
-#  214|                 0: [MethodCall] call to method Parse
+#  214|                 0: [LocalVariableAccess] access to local variable x
+#  214|                 1: [MethodCall] call to method Parse
 #  214|                   -1: [TypeAccess] access to type Double
 #  214|                   0: [ArrayAccess] access to array element
 #  214|                     -1: [ParameterAccess] access to parameter args
 #  214|                     0: [IntLiteral] 0
-#  214|                 1: [LocalVariableAccess] access to local variable x
 #  215|             2: [LocalVariableDeclStmt] ... ...;
 #  215|               0: [LocalVariableDeclAndInitExpr] Double y = ...
-#  215|                 0: [MethodCall] call to method Parse
+#  215|                 0: [LocalVariableAccess] access to local variable y
+#  215|                 1: [MethodCall] call to method Parse
 #  215|                   -1: [TypeAccess] access to type Double
 #  215|                   0: [ArrayAccess] access to array element
 #  215|                     -1: [ParameterAccess] access to parameter args
 #  215|                     0: [IntLiteral] 1
-#  215|                 1: [LocalVariableAccess] access to local variable y
 #  216|             3: [ExprStmt] ...;
 #  216|               0: [MethodCall] call to method WriteLine
 #  216|                 -1: [TypeAccess] access to type Console
@@ -499,9 +499,9 @@ statements.cs:
 #  233|       4: [BlockStmt] {...}
 #  234|         0: [LocalVariableDeclStmt] ... ...;
 #  234|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  234|             0: [MemberConstantAccess] access to constant MaxValue
+#  234|             0: [LocalVariableAccess] access to local variable i
+#  234|             1: [MemberConstantAccess] access to constant MaxValue
 #  234|               -1: [TypeAccess] access to type Int32
-#  234|             1: [LocalVariableAccess] access to local variable i
 #  235|         1: [CheckedStmt] checked {...}
 #  236|           0: [BlockStmt] {...}
 #  237|             0: [ExprStmt] ...;
@@ -537,16 +537,16 @@ statements.cs:
 #  254|                       0: [StringLiteral] "Insufficient funds"
 #  256|               1: [ExprStmt] ...;
 #  256|                 0: [AssignSubExpr] ... -= ...
-#  256|                   0: [ParameterAccess] access to parameter amount
-#  256|                   1: [FieldAccess] access to field balance
+#  256|                   0: [FieldAccess] access to field balance
+#  256|                   1: [ParameterAccess] access to parameter amount
 #  261|     28: [Method] MainUsing
 #  262|       4: [BlockStmt] {...}
 #  263|         0: [UsingBlockStmt] using (...) {...}
 #  263|           -1: [LocalVariableDeclAndInitExpr] TextWriter w = ...
-#  263|             0: [MethodCall] call to method CreateText
+#  263|             0: [LocalVariableAccess] access to local variable w
+#  263|             1: [MethodCall] call to method CreateText
 #  263|               -1: [TypeAccess] access to type File
 #  263|               0: [StringLiteral] "test.txt"
-#  263|             1: [LocalVariableAccess] access to local variable w
 #  264|           1: [BlockStmt] {...}
 #  265|             0: [ExprStmt] ...;
 #  265|               0: [MethodCall] call to method WriteLine
@@ -571,9 +571,9 @@ statements.cs:
 #  277|         1: [LabelStmt] Label:
 #  278|         2: [LocalVariableDeclStmt] ... ...;
 #  278|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#  278|             0: [IntLiteral] 23
-#  278|             1: [LocalVariableAccess] access to local variable x
+#  278|             0: [LocalVariableAccess] access to local variable x
+#  278|             1: [IntLiteral] 23
 #  279|         3: [ExprStmt] ...;
 #  279|           0: [AssignExpr] ... = ...
-#  279|             0: [IntLiteral] 9
-#  279|             1: [LocalVariableAccess] access to local variable x
+#  279|             0: [LocalVariableAccess] access to local variable x
+#  279|             1: [IntLiteral] 9
