@@ -4,10 +4,10 @@
  */
 
 import javascript
-private import semmle.javascript.PackageExports as Exports
 
 /**
  * Provides classes and predicates for working with serverless handlers.
+ * In particular a `RemoteFlowSource` is added for AWS and Alibaba serverless.
  */
 private module ServerLess {
   /**
@@ -47,11 +47,13 @@ private module ServerLess {
 
   /**
    * Gets a path to a file from a `codeURI` property and a file name from a serverless configuration.
+   *
+   * For example if `codeURI` is "function/." and `file` is "index", then the result becomes "function/index.js".
    */
   bindingset[codeURI, file]
   private string getPathFromHandlerProperties(string codeURI, string file) {
     exists(string folder | folder = removeLeadingDotSlash(removeTrailingDot(codeURI)) |
-      if folder.regexpMatch(".*\\..+") then result = folder else result = folder + file + ".js"
+      result = folder + file + ".js"
     )
   }
 
@@ -61,7 +63,9 @@ private module ServerLess {
   private predicate hasServerlessHandler(File file, string func) {
     exists(File ymlFile, string handler, string codeURI, string fileName |
       hasServerlessHandler(ymlFile, handler, codeURI) and
+      // Captures everything right of the dot in `handler`. E.g. if `handler` is "index.foo" then `func` is "foo".
       func = handler.regexpCapture(".*\\.(.*)", 1) and
+      // Captures everything left of the dot in `handler`. E.g. if `handler` is "index.foo" then `fileName` is "index".
       fileName = handler.regexpCapture("([^.]+).*", 1)
     |
       file.getAbsolutePath() =
@@ -72,6 +76,21 @@ private module ServerLess {
 
   /**
    * Gets a function that is a serverless request handler.
+   *
+   * For example: if an AWS serverless resource contains the following properties (in the "template.yml" file):
+   * ```
+   * Handler: mylibrary.handler
+   * Runtime: nodejs12.x
+   * CodeUri: backend/src/
+   * ```
+   *
+   * And a file "mylibrary.js" exists in the folder "backend/src" (relative to the "template.yml" file).
+   * Then the result of this predicate is a function exported as "handler" from "mylibrary.js".
+   * The "mylibrary.js" file could for example look like:
+   *
+   * ```JavaScript
+   * module.exports.handler = function (event) { ... }
+   * ```
    */
   private DataFlow::FunctionNode getAServerlessHandler() {
     exists(File file, string handler, Module mod | hasServerlessHandler(file, handler) |
