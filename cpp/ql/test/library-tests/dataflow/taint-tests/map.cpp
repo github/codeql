@@ -7,11 +7,14 @@ char *source();
 
 void sink(char *);
 void sink(const char *);
+
 void sink(std::pair<char *, char *>);
 void sink(std::map<char *, char *>);
 void sink(std::map<char *, char *>::iterator);
 void sink(std::unordered_map<char *, char *>);
 void sink(std::unordered_map<char *, char *>::iterator);
+
+
 
 void test_pair()
 {
@@ -388,8 +391,10 @@ void test_unordered_map()
 	// try_emplace
 	std::unordered_map<char *, char *> m26, m27;
 	sink(m26.try_emplace("abc", "def").first);
+
 	sink(m26);
 	sink(m26.try_emplace("abc", source()).first); // tainted [NOT DETECTED]
+
 	sink(m26); // tainted [NOT DETECTED]
 	sink(m27.try_emplace(m27.begin(), "abc", "def"));
 	sink(m27);
