@@ -218,3 +218,31 @@ private class GetAttrCallAsAttrRead extends AttrRead, CfgNode {
     result = this.getAttributeNameExpr().asExpr().(StrConst).getText()
   }
 }
+
+/**
+ * A convenience class for embedding `ImportMemberNode` into `DataFlowCfgNode`, as the former is not
+ * obviously a subtype of the latter.
+ */
+private class DataFlowImportMemberNode extends ImportMemberNode, DataFlowCfgNode { }
+
+/**
+ * Represents a named import as an attribute read. That is,
+ * ```python
+ * from module import attr as attr_ref
+ * ```
+ * is treated as if it is a read of the attribute `module.attr`, even if `module` is not imported directly.
+ */
+private class ModuleAttributeImportAsAttrRead extends AttrRead, CfgNode {
+  override DataFlowImportMemberNode node;
+
+  override Node getObject() { result.asCfgNode() = node.getModule(_) }
+
+  override ExprNode getAttributeNameExpr() {
+    // The name of an imported attribute doesn't exist as a `Node` in the control flow graph, as it
+    // can only ever be an identifier, and is therefore represented directly as a string.
+    // Use `getAttributeName` to access the name of the attribute.
+    none()
+  }
+
+  override string getAttributeName() { exists(node.getModule(result)) }
+}

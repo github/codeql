@@ -36,7 +36,7 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
  *
  * Also see `DataFlow::importMember`
  */
-EssaNode importModule(string name) {
+Node importModule(string name) {
   exists(Variable var, Import imp, Alias alias |
     alias = imp.getAName() and
     alias.getAsname() = var.getAStore() and
@@ -45,8 +45,14 @@ EssaNode importModule(string name) {
       or
       name = alias.getValue().(ImportExpr).getImportedModuleName()
     ) and
-    result.getVar().(AssignmentDefinition).getSourceVariable() = var
+    result.(EssaNode).getVar().(AssignmentDefinition).getSourceVariable() = var
   )
+  or
+  // In `from module import attr`, we want to consider `module` to be an expression that refers to a
+  // module of that name, as this allows us to refer to attributes of this module, even if it's
+  // never imported directly. Note that there crucially isn't any _flow_ from `module` to references
+  // to that same identifier.
+  result.asCfgNode().getNode() = any(ImportExpr i | i.getAnImportedModuleName() = name)
 }
 
 /**
