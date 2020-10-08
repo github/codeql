@@ -97,7 +97,7 @@ class StdMapTryEmplace extends TaintFunction {
 }
 
 /**
- * The standard map `swap` functions.
+ * The standard map `swap` function.
  */
 class StdMapSwap extends TaintFunction {
   StdMapSwap() { this.hasQualifiedName("std", ["map", "unordered_map"], "swap") }
@@ -113,7 +113,7 @@ class StdMapSwap extends TaintFunction {
 }
 
 /**
- * The standard map `merge` functions.
+ * The standard map `merge` function.
  */
 class StdMapMerge extends TaintFunction {
   StdMapMerge() { this.hasQualifiedName("std", ["map", "unordered_map"], "merge") }
