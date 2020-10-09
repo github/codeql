@@ -119,9 +119,6 @@ class StdMapMerge extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // container1.merge(container2)
-    input.isQualifierObject() and
-    output.isParameterDeref(0)
-    or
     input.isParameterDeref(0) and
     output.isQualifierObject()
   }

@@ -214,7 +214,7 @@ void test_map()
 	m19.merge(m20);
 	m21.merge(m22);
 	sink(m19); // tainted
-	sink(m20); // tainted
+	sink(m20);
 	sink(m21); // tainted
 	sink(m22); // tainted
 
@@ -363,7 +363,7 @@ void test_unordered_map()
 	m19.merge(m20);
 	m21.merge(m22);
 	sink(m19); // tainted
-	sink(m20); // tainted
+	sink(m20);
 	sink(m21); // tainted
 	sink(m22); // tainted
 
