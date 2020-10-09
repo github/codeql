@@ -31,11 +31,7 @@ predicate sets(int mask, int fields) { mask.bitAnd(fields) != 0 }
  * one of the `umask` family of functions.
  */
 private int umask(FunctionCall fc) {
-  exists(string name | name = fc.getTarget().getName() |
-    name = "umask" or
-    name = "_umask" or
-    name = "_umask_s"
-  ) and
+  fc.getTarget().getName() = ["umask", "_umask", "_umask_s"] and
   result = fc.getArgument(0).getValue().toInt()
 }
 
@@ -89,11 +85,7 @@ abstract class FileCreationExpr extends FunctionCall {
 
 class OpenCreationExpr extends FileCreationExpr {
   OpenCreationExpr() {
-    exists(string name | name = this.getTarget().getName() |
-      name = "open" or
-      name = "_open" or
-      name = "_wopen"
-    ) and
+    this.getTarget().getName() = ["open", "_open", "_wopen"] and
     sets(this.getArgument(1).getValue().toInt(), o_creat())
   }
 
@@ -134,14 +126,9 @@ private int fopenMode() {
 
 class FopenCreationExpr extends FileCreationExpr {
   FopenCreationExpr() {
-    exists(string name | name = this.getTarget().getName() |
-      name = "fopen" or
-      name = "_wfopen" or
-      name = "fsopen" or
-      name = "_wfsopen"
-    ) and
+    this.getTarget().getName() = ["fopen", "_wfopen", "fsopen", "_wfsopen"] and
     exists(string mode |
-      (mode = "w" or mode = "a") and
+      mode = ["w", "a"] and
       this.getArgument(1).getValue().matches(mode + "%")
     )
   }
