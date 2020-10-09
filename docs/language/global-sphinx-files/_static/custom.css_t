@@ -29,6 +29,7 @@ code {
 
 div.body {
     max-width: 100%;
+    min-width: unset;
 }
 
 div.body li {
