@@ -63,10 +63,12 @@ private module ServerLess {
   private predicate hasServerlessHandler(File file, string func) {
     exists(File ymlFile, string handler, string codeURI, string fileName |
       hasServerlessHandler(ymlFile, handler, codeURI) and
-      // Captures everything right of the dot in `handler`. E.g. if `handler` is "index.foo" then `func` is "foo".
-      func = handler.regexpCapture(".*\\.(.*)", 1) and
-      // Captures everything left of the dot in `handler`. E.g. if `handler` is "index.foo" then `fileName` is "index".
-      fileName = handler.regexpCapture("([^.]+).*", 1)
+      // Splits a `handler` into two components. The `fileName` to the left of the dot, and the `func` to the right.
+      // E.g. if `handler` is "index.foo", then `fileName` is "index" and `func` is "foo".
+      exists(string pattern | pattern = "(.*)\\.(.*)" |
+        fileName = handler.regexpCapture(pattern, 1) and
+        func = handler.regexpCapture(pattern, 2)
+      )
     |
       file.getAbsolutePath() =
         ymlFile.getParentContainer().getAbsolutePath() + "/" +
