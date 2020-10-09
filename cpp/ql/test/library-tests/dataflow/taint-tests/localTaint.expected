@@ -1111,16 +1111,12 @@
 | map.cpp:233:7:233:9 | ref arg m24 | map.cpp:235:7:235:9 | m24 |  |
 | map.cpp:233:7:233:9 | ref arg m24 | map.cpp:236:7:236:9 | m24 |  |
 | map.cpp:233:7:233:9 | ref arg m24 | map.cpp:252:1:252:1 | m24 |  |
-| map.cpp:233:19:233:23 | abc | map.cpp:233:7:233:9 | ref arg m24 | TAINT |
-| map.cpp:233:19:233:23 | abc | map.cpp:233:11:233:17 | call to emplace | TAINT |
 | map.cpp:233:26:233:30 | def | map.cpp:233:7:233:9 | ref arg m24 | TAINT |
 | map.cpp:233:26:233:30 | def | map.cpp:233:11:233:17 | call to emplace | TAINT |
 | map.cpp:233:33:233:37 | first | map.cpp:233:7:233:37 | call to iterator |  |
 | map.cpp:234:7:234:9 | m24 | map.cpp:234:7:234:9 | call to map |  |
 | map.cpp:235:7:235:9 | ref arg m24 | map.cpp:236:7:236:9 | m24 |  |
 | map.cpp:235:7:235:9 | ref arg m24 | map.cpp:252:1:252:1 | m24 |  |
-| map.cpp:235:19:235:23 | abc | map.cpp:235:7:235:9 | ref arg m24 | TAINT |
-| map.cpp:235:19:235:23 | abc | map.cpp:235:11:235:17 | call to emplace | TAINT |
 | map.cpp:235:26:235:31 | call to source | map.cpp:235:7:235:9 | ref arg m24 | TAINT |
 | map.cpp:235:26:235:31 | call to source | map.cpp:235:11:235:17 | call to emplace | TAINT |
 | map.cpp:235:36:235:40 | first | map.cpp:235:7:235:40 | call to iterator |  |
@@ -1137,11 +1133,7 @@
 | map.cpp:237:24:237:26 | ref arg m25 | map.cpp:239:24:239:26 | m25 |  |
 | map.cpp:237:24:237:26 | ref arg m25 | map.cpp:240:7:240:9 | m25 |  |
 | map.cpp:237:24:237:26 | ref arg m25 | map.cpp:252:1:252:1 | m25 |  |
-| map.cpp:237:24:237:34 | call to iterator | map.cpp:237:7:237:9 | ref arg m25 | TAINT |
-| map.cpp:237:24:237:34 | call to iterator | map.cpp:237:11:237:22 | call to emplace_hint | TAINT |
 | map.cpp:237:28:237:32 | call to begin | map.cpp:237:24:237:34 | call to iterator | TAINT |
-| map.cpp:237:37:237:41 | abc | map.cpp:237:7:237:9 | ref arg m25 | TAINT |
-| map.cpp:237:37:237:41 | abc | map.cpp:237:11:237:22 | call to emplace_hint | TAINT |
 | map.cpp:237:44:237:48 | def | map.cpp:237:7:237:9 | ref arg m25 | TAINT |
 | map.cpp:237:44:237:48 | def | map.cpp:237:11:237:22 | call to emplace_hint | TAINT |
 | map.cpp:238:7:238:9 | m25 | map.cpp:238:7:238:9 | call to map |  |
@@ -1151,11 +1143,7 @@
 | map.cpp:239:24:239:26 | ref arg m25 | map.cpp:239:7:239:9 | m25 |  |
 | map.cpp:239:24:239:26 | ref arg m25 | map.cpp:240:7:240:9 | m25 |  |
 | map.cpp:239:24:239:26 | ref arg m25 | map.cpp:252:1:252:1 | m25 |  |
-| map.cpp:239:24:239:34 | call to iterator | map.cpp:239:7:239:9 | ref arg m25 | TAINT |
-| map.cpp:239:24:239:34 | call to iterator | map.cpp:239:11:239:22 | call to emplace_hint | TAINT |
 | map.cpp:239:28:239:32 | call to begin | map.cpp:239:24:239:34 | call to iterator | TAINT |
-| map.cpp:239:37:239:41 | abc | map.cpp:239:7:239:9 | ref arg m25 | TAINT |
-| map.cpp:239:37:239:41 | abc | map.cpp:239:11:239:22 | call to emplace_hint | TAINT |
 | map.cpp:239:44:239:49 | call to source | map.cpp:239:7:239:9 | ref arg m25 | TAINT |
 | map.cpp:239:44:239:49 | call to source | map.cpp:239:11:239:22 | call to emplace_hint | TAINT |
 | map.cpp:240:7:240:9 | m25 | map.cpp:240:7:240:9 | call to map |  |
@@ -1755,16 +1743,12 @@
 | map.cpp:382:7:382:9 | ref arg m24 | map.cpp:384:7:384:9 | m24 |  |
 | map.cpp:382:7:382:9 | ref arg m24 | map.cpp:385:7:385:9 | m24 |  |
 | map.cpp:382:7:382:9 | ref arg m24 | map.cpp:438:1:438:1 | m24 |  |
-| map.cpp:382:19:382:23 | abc | map.cpp:382:7:382:9 | ref arg m24 | TAINT |
-| map.cpp:382:19:382:23 | abc | map.cpp:382:11:382:17 | call to emplace | TAINT |
 | map.cpp:382:26:382:30 | def | map.cpp:382:7:382:9 | ref arg m24 | TAINT |
 | map.cpp:382:26:382:30 | def | map.cpp:382:11:382:17 | call to emplace | TAINT |
 | map.cpp:382:33:382:37 | first | map.cpp:382:7:382:37 | call to iterator |  |
 | map.cpp:383:7:383:9 | m24 | map.cpp:383:7:383:9 | call to unordered_map |  |
 | map.cpp:384:7:384:9 | ref arg m24 | map.cpp:385:7:385:9 | m24 |  |
 | map.cpp:384:7:384:9 | ref arg m24 | map.cpp:438:1:438:1 | m24 |  |
-| map.cpp:384:19:384:23 | abc | map.cpp:384:7:384:9 | ref arg m24 | TAINT |
-| map.cpp:384:19:384:23 | abc | map.cpp:384:11:384:17 | call to emplace | TAINT |
 | map.cpp:384:26:384:31 | call to source | map.cpp:384:7:384:9 | ref arg m24 | TAINT |
 | map.cpp:384:26:384:31 | call to source | map.cpp:384:11:384:17 | call to emplace | TAINT |
 | map.cpp:384:36:384:40 | first | map.cpp:384:7:384:40 | call to iterator |  |
@@ -1781,11 +1765,7 @@
 | map.cpp:386:24:386:26 | ref arg m25 | map.cpp:388:24:388:26 | m25 |  |
 | map.cpp:386:24:386:26 | ref arg m25 | map.cpp:389:7:389:9 | m25 |  |
 | map.cpp:386:24:386:26 | ref arg m25 | map.cpp:438:1:438:1 | m25 |  |
-| map.cpp:386:24:386:34 | call to iterator | map.cpp:386:7:386:9 | ref arg m25 | TAINT |
-| map.cpp:386:24:386:34 | call to iterator | map.cpp:386:11:386:22 | call to emplace_hint | TAINT |
 | map.cpp:386:28:386:32 | call to begin | map.cpp:386:24:386:34 | call to iterator | TAINT |
-| map.cpp:386:37:386:41 | abc | map.cpp:386:7:386:9 | ref arg m25 | TAINT |
-| map.cpp:386:37:386:41 | abc | map.cpp:386:11:386:22 | call to emplace_hint | TAINT |
 | map.cpp:386:44:386:48 | def | map.cpp:386:7:386:9 | ref arg m25 | TAINT |
 | map.cpp:386:44:386:48 | def | map.cpp:386:11:386:22 | call to emplace_hint | TAINT |
 | map.cpp:387:7:387:9 | m25 | map.cpp:387:7:387:9 | call to unordered_map |  |
@@ -1795,11 +1775,7 @@
 | map.cpp:388:24:388:26 | ref arg m25 | map.cpp:388:7:388:9 | m25 |  |
 | map.cpp:388:24:388:26 | ref arg m25 | map.cpp:389:7:389:9 | m25 |  |
 | map.cpp:388:24:388:26 | ref arg m25 | map.cpp:438:1:438:1 | m25 |  |
-| map.cpp:388:24:388:34 | call to iterator | map.cpp:388:7:388:9 | ref arg m25 | TAINT |
-| map.cpp:388:24:388:34 | call to iterator | map.cpp:388:11:388:22 | call to emplace_hint | TAINT |
 | map.cpp:388:28:388:32 | call to begin | map.cpp:388:24:388:34 | call to iterator | TAINT |
-| map.cpp:388:37:388:41 | abc | map.cpp:388:7:388:9 | ref arg m25 | TAINT |
-| map.cpp:388:37:388:41 | abc | map.cpp:388:11:388:22 | call to emplace_hint | TAINT |
 | map.cpp:388:44:388:49 | call to source | map.cpp:388:7:388:9 | ref arg m25 | TAINT |
 | map.cpp:388:44:388:49 | call to source | map.cpp:388:11:388:22 | call to emplace_hint | TAINT |
 | map.cpp:389:7:389:9 | m25 | map.cpp:389:7:389:9 | call to unordered_map |  |
@@ -1973,8 +1949,6 @@
 | map.cpp:424:37:424:39 | call to unordered_map | map.cpp:438:1:438:1 | m33 |  |
 | map.cpp:425:7:425:9 | ref arg m33 | map.cpp:426:7:426:9 | m33 |  |
 | map.cpp:425:7:425:9 | ref arg m33 | map.cpp:438:1:438:1 | m33 |  |
-| map.cpp:425:19:425:24 | call to source | map.cpp:425:7:425:9 | ref arg m33 | TAINT |
-| map.cpp:425:19:425:24 | call to source | map.cpp:425:11:425:17 | call to emplace | TAINT |
 | map.cpp:425:29:425:33 | def | map.cpp:425:7:425:9 | ref arg m33 | TAINT |
 | map.cpp:425:29:425:33 | def | map.cpp:425:11:425:17 | call to emplace | TAINT |
 | map.cpp:425:36:425:40 | first | map.cpp:425:7:425:40 | call to iterator |  |
@@ -2015,13 +1989,11 @@
 | map.cpp:433:24:433:26 | m34 | map.cpp:433:28:433:32 | call to begin | TAINT |
 | map.cpp:433:24:433:26 | ref arg m34 | map.cpp:433:7:433:9 | m34 |  |
 | map.cpp:433:24:433:26 | ref arg m34 | map.cpp:438:1:438:1 | m34 |  |
-| map.cpp:433:24:433:34 | call to iterator | map.cpp:433:7:433:9 | ref arg m34 | TAINT |
-| map.cpp:433:24:433:34 | call to iterator | map.cpp:433:11:433:22 | call to emplace_hint | TAINT |
 | map.cpp:433:28:433:32 | call to begin | map.cpp:433:24:433:34 | call to iterator | TAINT |
-| map.cpp:433:37:433:41 | abc | map.cpp:433:7:433:9 | ref arg m34 | TAINT |
-| map.cpp:433:37:433:41 | abc | map.cpp:433:11:433:22 | call to emplace_hint | TAINT |
 | map.cpp:433:44:433:48 | def | map.cpp:433:7:433:9 | ref arg m34 | TAINT |
 | map.cpp:433:44:433:48 | def | map.cpp:433:11:433:22 | call to emplace_hint | TAINT |
+| map.cpp:434:7:434:9 | m35 | map.cpp:434:7:434:9 | ref arg m35 | TAINT |
+| map.cpp:434:7:434:9 | m35 | map.cpp:434:11:434:17 | call to emplace | TAINT |
 | map.cpp:434:7:434:9 | ref arg m35 | map.cpp:435:7:435:9 | m35 |  |
 | map.cpp:434:7:434:9 | ref arg m35 | map.cpp:436:7:436:9 | m35 |  |
 | map.cpp:434:7:434:9 | ref arg m35 | map.cpp:437:7:437:9 | m35 |  |

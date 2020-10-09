@@ -125,9 +125,7 @@
 | map.cpp:401:11:401:21 | call to try_emplace | map.cpp:401:43:401:48 | call to source |
 | map.cpp:416:7:416:41 | call to pair | map.cpp:416:30:416:35 | call to source |
 | map.cpp:419:7:419:41 | call to pair | map.cpp:419:33:419:38 | call to source |
-| map.cpp:425:7:425:40 | call to iterator | map.cpp:425:19:425:24 | call to source |
 | map.cpp:431:7:431:67 | call to iterator | map.cpp:431:52:431:57 | call to source |
-| map.cpp:433:11:433:22 | call to emplace_hint | map.cpp:431:52:431:57 | call to source |
 | movableclass.cpp:44:8:44:9 | s1 | movableclass.cpp:39:21:39:26 | call to source |
 | movableclass.cpp:45:8:45:9 | s2 | movableclass.cpp:40:23:40:28 | call to source |
 | movableclass.cpp:46:8:46:9 | s3 | movableclass.cpp:42:8:42:13 | call to source |

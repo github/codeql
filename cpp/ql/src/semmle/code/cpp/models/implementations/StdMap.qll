@@ -60,10 +60,11 @@ class StdMapEmplace extends TaintFunction {
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from any parameter to qualifier and return value
-    // (here we assume taint flow from any constructor parameter to the constructed object)
+    // flow from the last parameter (which may be the value part used to
+    // construct a pair, or a pair to be copied / moved) to the qualifier and
+    // return value.
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameterDeref([0 .. getNumberOfParameters() - 1]) and
+    input.isParameterDeref(getNumberOfParameters() - 1) and
     (
       output.isQualifierObject() or
       output.isReturnValue()
