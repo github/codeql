@@ -245,10 +245,10 @@ class C
             i = 1;
         }
 
-        void CaptureAndRef(ref int i)
+        void CaptureAndRef(ref int j)
         {
             CaptureWrite();
-            i = 2;
+            j = 2;
         }
 
         CaptureAndRef(ref i); // explicit definition only (no call definition)
