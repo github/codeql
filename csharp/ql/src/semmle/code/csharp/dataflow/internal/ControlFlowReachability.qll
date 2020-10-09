@@ -1,6 +1,4 @@
 import csharp
-private import DataFlowPrivate
-private import DataFlowPublic
 
 private class ControlFlowScope extends ControlFlowElement {
   private boolean exactScope;
@@ -89,21 +87,21 @@ abstract class ControlFlowReachabilityConfiguration extends string {
 
   pragma[nomagic]
   private predicate reachesBasicBlockExprBase(
-    Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor,
-    ControlFlow::Nodes::ElementNode cfn1, int i, ControlFlow::BasicBlock bb
+    Expr e1, Expr e2, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfn1, int i,
+    ControlFlow::BasicBlock bb
   ) {
-    this.candidate(e1, e2, scope, exactScope, isSuccessor) and
+    this.candidate(e1, e2, _, _, isSuccessor) and
     cfn1 = e1.getAControlFlowNode() and
     bb.getNode(i) = cfn1
   }
 
   pragma[nomagic]
   private predicate reachesBasicBlockExprRec(
-    Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor,
-    ControlFlow::Nodes::ElementNode cfn1, ControlFlow::BasicBlock bb
+    Expr e1, Expr e2, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfn1,
+    ControlFlow::BasicBlock bb
   ) {
     exists(ControlFlow::BasicBlock mid |
-      this.reachesBasicBlockExpr(e1, e2, scope, exactScope, isSuccessor, cfn1, mid)
+      this.reachesBasicBlockExpr(e1, e2, isSuccessor, cfn1, mid)
     |
       isSuccessor = true and
       bb = mid.getASuccessor()
@@ -115,36 +113,35 @@ abstract class ControlFlowReachabilityConfiguration extends string {
 
   pragma[nomagic]
   private predicate reachesBasicBlockExpr(
-    Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor,
-    ControlFlow::Nodes::ElementNode cfn1, ControlFlow::BasicBlock bb
+    Expr e1, Expr e2, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfn1,
+    ControlFlow::BasicBlock bb
   ) {
-    this.reachesBasicBlockExprBase(e1, e2, scope, exactScope, isSuccessor, cfn1, _, bb)
+    this.reachesBasicBlockExprBase(e1, e2, isSuccessor, cfn1, _, bb)
     or
-    this.candidate(e1, e2, scope, exactScope, isSuccessor) and
-    exists(ControlFlowElement scope0, boolean exactScope0 |
-      this.reachesBasicBlockExprRec(e1, e2, scope0, exactScope0, isSuccessor, cfn1, bb)
-    |
-      bb = getABasicBlockInScope(scope0, exactScope0)
+    exists(ControlFlowElement scope, boolean exactScope |
+      this.candidate(e1, e2, scope, exactScope, isSuccessor) and
+      this.reachesBasicBlockExprRec(e1, e2, isSuccessor, cfn1, bb) and
+      bb = getABasicBlockInScope(scope, exactScope)
     )
   }
 
   pragma[nomagic]
   private predicate reachesBasicBlockDefinitionBase(
-    Expr e, AssignableDefinition def, ControlFlowElement scope, boolean exactScope,
-    boolean isSuccessor, ControlFlow::Nodes::ElementNode cfn, int i, ControlFlow::BasicBlock bb
+    Expr e, AssignableDefinition def, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfn,
+    int i, ControlFlow::BasicBlock bb
   ) {
-    this.candidateDef(e, def, scope, exactScope, isSuccessor) and
+    this.candidateDef(e, def, _, _, isSuccessor) and
     cfn = e.getAControlFlowNode() and
     bb.getNode(i) = cfn
   }
 
   pragma[nomagic]
   private predicate reachesBasicBlockDefinitionRec(
-    Expr e, AssignableDefinition def, ControlFlowElement scope, boolean exactScope,
-    boolean isSuccessor, ControlFlow::Nodes::ElementNode cfn, ControlFlow::BasicBlock bb
+    Expr e, AssignableDefinition def, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfn,
+    ControlFlow::BasicBlock bb
   ) {
     exists(ControlFlow::BasicBlock mid |
-      this.reachesBasicBlockDefinition(e, def, scope, exactScope, isSuccessor, cfn, mid)
+      this.reachesBasicBlockDefinition(e, def, isSuccessor, cfn, mid)
     |
       isSuccessor = true and
       bb = mid.getASuccessor()
@@ -156,16 +153,15 @@ abstract class ControlFlowReachabilityConfiguration extends string {
 
   pragma[nomagic]
   private predicate reachesBasicBlockDefinition(
-    Expr e, AssignableDefinition def, ControlFlowElement scope, boolean exactScope,
-    boolean isSuccessor, ControlFlow::Nodes::ElementNode cfn, ControlFlow::BasicBlock bb
+    Expr e, AssignableDefinition def, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfn,
+    ControlFlow::BasicBlock bb
   ) {
-    this.reachesBasicBlockDefinitionBase(e, def, scope, exactScope, isSuccessor, cfn, _, bb)
+    this.reachesBasicBlockDefinitionBase(e, def, isSuccessor, cfn, _, bb)
     or
-    this.candidateDef(e, def, scope, exactScope, isSuccessor) and
-    exists(ControlFlowElement scope0, boolean exactScope0 |
-      this.reachesBasicBlockDefinitionRec(e, def, scope0, exactScope0, isSuccessor, cfn, bb)
-    |
-      bb = getABasicBlockInScope(scope0, exactScope0)
+    exists(ControlFlowElement scope, boolean exactScope |
+      this.candidateDef(e, def, scope, exactScope, isSuccessor) and
+      this.reachesBasicBlockDefinitionRec(e, def, isSuccessor, cfn, bb) and
+      bb = getABasicBlockInScope(scope, exactScope)
     )
   }
 
@@ -176,7 +172,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
   pragma[nomagic]
   predicate hasExprPath(Expr e1, ControlFlow::Node cfn1, Expr e2, ControlFlow::Node cfn2) {
     exists(ControlFlow::BasicBlock bb, boolean isSuccessor, int i, int j |
-      this.reachesBasicBlockExprBase(e1, e2, _, _, isSuccessor, cfn1, i, bb) and
+      this.reachesBasicBlockExprBase(e1, e2, isSuccessor, cfn1, i, bb) and
       cfn2 = bb.getNode(j) and
       cfn2 = e2.getAControlFlowNode()
     |
@@ -186,7 +182,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
     )
     or
     exists(ControlFlow::BasicBlock bb |
-      this.reachesBasicBlockExprRec(e1, e2, _, _, _, cfn1, bb) and
+      this.reachesBasicBlockExprRec(e1, e2, _, cfn1, bb) and
       cfn2 = bb.getANode() and
       cfn2 = e2.getAControlFlowNode()
     )
@@ -201,7 +197,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
     Expr e, ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef
   ) {
     exists(ControlFlow::BasicBlock bb, boolean isSuccessor, int i, int j |
-      this.reachesBasicBlockDefinitionBase(e, def, _, _, isSuccessor, cfn, i, bb) and
+      this.reachesBasicBlockDefinitionBase(e, def, isSuccessor, cfn, i, bb) and
       cfnDef = bb.getNode(j) and
       def.getAControlFlowNode() = cfnDef
     |
@@ -211,35 +207,9 @@ abstract class ControlFlowReachabilityConfiguration extends string {
     )
     or
     exists(ControlFlow::BasicBlock bb |
-      this.reachesBasicBlockDefinitionRec(e, def, _, _, _, cfn, bb) and
+      this.reachesBasicBlockDefinitionRec(e, def, _, cfn, bb) and
       def.getAControlFlowNode() = cfnDef and
       cfnDef = bb.getANode()
-    )
-  }
-
-  /**
-   * Holds if there is a control-flow path from `n1` to `n2`. `n2` is either an
-   * expression node or an SSA definition node.
-   */
-  pragma[nomagic]
-  predicate hasNodePath(ExprNode n1, Node n2) {
-    exists(Expr e1, ControlFlow::Node cfn1, Expr e2, ControlFlow::Node cfn2 |
-      this.hasExprPath(e1, cfn1, e2, cfn2)
-    |
-      cfn1 = n1.getControlFlowNode() and
-      cfn2 = n2.(ExprNode).getControlFlowNode()
-    )
-    or
-    exists(
-      Expr e, ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef,
-      Ssa::ExplicitDefinition ssaDef
-    |
-      this.hasDefPath(e, cfn, def, cfnDef)
-    |
-      cfn = n1.getControlFlowNode() and
-      ssaDef.getADefinition() = def and
-      ssaDef.getControlFlowNode() = cfnDef and
-      n2.(SsaDefinitionNode).getDefinition() = ssaDef
     )
   }
 }
