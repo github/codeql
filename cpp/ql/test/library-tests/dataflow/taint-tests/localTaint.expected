@@ -1199,8 +1199,6 @@
 | map.cpp:248:23:248:25 | ref arg m27 | map.cpp:250:23:250:25 | m27 |  |
 | map.cpp:248:23:248:25 | ref arg m27 | map.cpp:251:7:251:9 | m27 |  |
 | map.cpp:248:23:248:25 | ref arg m27 | map.cpp:252:1:252:1 | m27 |  |
-| map.cpp:248:23:248:33 | call to iterator | map.cpp:248:7:248:9 | ref arg m27 | TAINT |
-| map.cpp:248:23:248:33 | call to iterator | map.cpp:248:11:248:21 | call to try_emplace | TAINT |
 | map.cpp:248:27:248:31 | call to begin | map.cpp:248:23:248:33 | call to iterator | TAINT |
 | map.cpp:248:43:248:47 | def | map.cpp:248:7:248:9 | ref arg m27 | TAINT |
 | map.cpp:248:43:248:47 | def | map.cpp:248:11:248:21 | call to try_emplace | TAINT |
@@ -1211,8 +1209,6 @@
 | map.cpp:250:23:250:25 | ref arg m27 | map.cpp:250:7:250:9 | m27 |  |
 | map.cpp:250:23:250:25 | ref arg m27 | map.cpp:251:7:251:9 | m27 |  |
 | map.cpp:250:23:250:25 | ref arg m27 | map.cpp:252:1:252:1 | m27 |  |
-| map.cpp:250:23:250:33 | call to iterator | map.cpp:250:7:250:9 | ref arg m27 | TAINT |
-| map.cpp:250:23:250:33 | call to iterator | map.cpp:250:11:250:21 | call to try_emplace | TAINT |
 | map.cpp:250:27:250:31 | call to begin | map.cpp:250:23:250:33 | call to iterator | TAINT |
 | map.cpp:250:43:250:48 | call to source | map.cpp:250:7:250:9 | ref arg m27 | TAINT |
 | map.cpp:250:43:250:48 | call to source | map.cpp:250:11:250:21 | call to try_emplace | TAINT |
@@ -1872,8 +1868,6 @@
 | map.cpp:399:23:399:25 | ref arg m27 | map.cpp:401:23:401:25 | m27 |  |
 | map.cpp:399:23:399:25 | ref arg m27 | map.cpp:402:7:402:9 | m27 |  |
 | map.cpp:399:23:399:25 | ref arg m27 | map.cpp:422:1:422:1 | m27 |  |
-| map.cpp:399:23:399:33 | call to iterator | map.cpp:399:7:399:9 | ref arg m27 | TAINT |
-| map.cpp:399:23:399:33 | call to iterator | map.cpp:399:11:399:21 | call to try_emplace | TAINT |
 | map.cpp:399:27:399:31 | call to begin | map.cpp:399:23:399:33 | call to iterator | TAINT |
 | map.cpp:399:43:399:47 | def | map.cpp:399:7:399:9 | ref arg m27 | TAINT |
 | map.cpp:399:43:399:47 | def | map.cpp:399:11:399:21 | call to try_emplace | TAINT |
@@ -1884,8 +1878,6 @@
 | map.cpp:401:23:401:25 | ref arg m27 | map.cpp:401:7:401:9 | m27 |  |
 | map.cpp:401:23:401:25 | ref arg m27 | map.cpp:402:7:402:9 | m27 |  |
 | map.cpp:401:23:401:25 | ref arg m27 | map.cpp:422:1:422:1 | m27 |  |
-| map.cpp:401:23:401:33 | call to iterator | map.cpp:401:7:401:9 | ref arg m27 | TAINT |
-| map.cpp:401:23:401:33 | call to iterator | map.cpp:401:11:401:21 | call to try_emplace | TAINT |
 | map.cpp:401:27:401:31 | call to begin | map.cpp:401:23:401:33 | call to iterator | TAINT |
 | map.cpp:401:43:401:48 | call to source | map.cpp:401:7:401:9 | ref arg m27 | TAINT |
 | map.cpp:401:43:401:48 | call to source | map.cpp:401:11:401:21 | call to try_emplace | TAINT |
@@ -1902,8 +1894,6 @@
 | map.cpp:403:23:403:25 | ref arg m28 | map.cpp:405:23:405:25 | m28 |  |
 | map.cpp:403:23:403:25 | ref arg m28 | map.cpp:406:7:406:9 | m28 |  |
 | map.cpp:403:23:403:25 | ref arg m28 | map.cpp:422:1:422:1 | m28 |  |
-| map.cpp:403:23:403:33 | call to iterator | map.cpp:403:7:403:9 | ref arg m28 | TAINT |
-| map.cpp:403:23:403:33 | call to iterator | map.cpp:403:11:403:21 | call to try_emplace | TAINT |
 | map.cpp:403:27:403:31 | call to begin | map.cpp:403:23:403:33 | call to iterator | TAINT |
 | map.cpp:403:43:403:47 | def | map.cpp:403:7:403:9 | ref arg m28 | TAINT |
 | map.cpp:403:43:403:47 | def | map.cpp:403:11:403:21 | call to try_emplace | TAINT |
@@ -1914,8 +1904,6 @@
 | map.cpp:405:23:405:25 | ref arg m28 | map.cpp:405:7:405:9 | m28 |  |
 | map.cpp:405:23:405:25 | ref arg m28 | map.cpp:406:7:406:9 | m28 |  |
 | map.cpp:405:23:405:25 | ref arg m28 | map.cpp:422:1:422:1 | m28 |  |
-| map.cpp:405:23:405:33 | call to iterator | map.cpp:405:7:405:9 | ref arg m28 | TAINT |
-| map.cpp:405:23:405:33 | call to iterator | map.cpp:405:11:405:21 | call to try_emplace | TAINT |
 | map.cpp:405:27:405:31 | call to begin | map.cpp:405:23:405:33 | call to iterator | TAINT |
 | map.cpp:405:46:405:50 | def | map.cpp:405:7:405:9 | ref arg m28 | TAINT |
 | map.cpp:405:46:405:50 | def | map.cpp:405:11:405:21 | call to try_emplace | TAINT |

@@ -81,11 +81,10 @@ class StdMapTryEmplace extends TaintFunction {
     // flow from any parameter apart from the key to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
     // (where the return value is a pair, this should really flow just to the first part of it)
-    exists(int arg | arg = [0 .. getNumberOfParameters() - 1] |
+    exists(int arg | arg = [1 .. getNumberOfParameters() - 1] |
       (
-        getUnspecifiedType() instanceof Iterator and arg != 1
-        or
-        not getUnspecifiedType() instanceof Iterator and arg != 0
+        not getUnspecifiedType() instanceof Iterator or
+        arg != 1
       ) and
       input.isParameterDeref(arg)
     ) and
