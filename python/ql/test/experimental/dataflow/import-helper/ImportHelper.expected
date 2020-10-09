@@ -1,4 +1,3 @@
-importModule
 | test1.py:1:8:1:12 | ControlFlowNode for ImportExpr | mypkg |
 | test1.py:1:8:1:12 | GSSA Variable mypkg | mypkg |
 | test2.py:1:6:1:10 | ControlFlowNode for ImportExpr | mypkg |
@@ -32,9 +31,3 @@ importModule
 | test7.py:5:8:5:16 | GSSA Variable mypkg | mypkg |
 | test7.py:9:6:9:10 | ControlFlowNode for ImportExpr | mypkg |
 | test7.py:9:19:9:21 | GSSA Variable foo | mypkg.foo |
-importMember
-| test2.py:1:19:1:21 | GSSA Variable foo | mypkg | foo |
-| test2.py:1:24:1:26 | GSSA Variable bar | mypkg | bar |
-| test5.py:9:26:9:29 | GSSA Variable _bar | mypkg | bar |
-| test7.py:1:19:1:21 | GSSA Variable foo | mypkg | foo |
-| test7.py:9:19:9:21 | GSSA Variable foo | mypkg | foo |

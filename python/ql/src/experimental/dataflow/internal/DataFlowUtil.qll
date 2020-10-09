@@ -36,10 +36,8 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
  *   Example: If `mypkg/__init__.py` contains `foo = 42`, then `from mypkg import foo` will not import the module
  *   `mypkg/foo.py` but the variable `foo` containing `42` -- however, `import mypkg.foo` will always cause `mypkg.foo`
  *   to refer to the module.
- *
- * Also see `DataFlow::importMember`
  */
-Node importModule(string name) {
+Node importNode(string name) {
   exists(Variable var, Import imp, Alias alias |
     alias = imp.getAName() and
     alias.getAsname() = var.getAStore() and
@@ -71,21 +69,4 @@ Node importModule(string name) {
   // is interpreted as if it was an assignment `baz = foo.bar`, which means `baz` gets tracked as a
   // reference to `foo.bar`, as desired.
   result.asCfgNode().getNode() = any(ImportExpr i | i.getAnImportedModuleName() = name)
-}
-
-/**
- * Gets a EssaNode that holds the value imported by using fully qualified name in
- *`from <moduleName> import <memberName>`.
- *
- * Also see `DataFlow::importModule`.
- */
-EssaNode importMember(string moduleName, string memberName) {
-  exists(Variable var, Import imp, Alias alias, ImportMember member |
-    alias = imp.getAName() and
-    member = alias.getValue() and
-    moduleName = member.getModule().(ImportExpr).getImportedModuleName() and
-    memberName = member.getName() and
-    alias.getAsname() = var.getAStore() and
-    result.getVar().(AssignmentDefinition).getSourceVariable() = var
-  )
 }

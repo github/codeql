@@ -4,7 +4,7 @@ import experimental.dataflow.TypeTracker
 
 DataFlow::Node module_tracker(TypeTracker t) {
   t.start() and
-  result = DataFlow::importModule("module")
+  result = DataFlow::importNode("module")
   or
   exists(TypeTracker t2 | result = module_tracker(t2).track(t2, t))
 }
