@@ -32,3 +32,20 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
     )
   }
 }
+
+class DeserializationSinkTest extends InlineExpectationsTest {
+  DeserializationSinkTest() { this = "DeserializationSinkTest" }
+
+  override string getARelevantTag() { result = "getData" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(DeserializationSink ds, DataFlow::Node data |
+      exists(location.getFile().getRelativePath()) and
+      data = ds.getData() and
+      location = data.getLocation() and
+      element = data.toString() and
+      value = value_from_expr(data.asExpr()) and
+      tag = "getData"
+    )
+  }
+}

@@ -38,3 +38,33 @@ module SystemCommandExecution {
     abstract DataFlow::Node getCommand();
   }
 }
+
+/**
+ * A data-flow node that performs deserialization in a potentially unsafe way.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `DeserializationSink::Range` instead.
+ */
+class DeserializationSink extends DataFlow::Node {
+  DeserializationSink::Range self;
+
+  DeserializationSink() { this = self }
+
+  /** Gets the argument that specifies the command to be executed. */
+  DataFlow::Node getData() { result = self.getData() }
+}
+
+/** Provides a class for modeling new system-command execution APIs. */
+module DeserializationSink {
+  /**
+   * A data-flow node that executes an operating system command,
+   * for instance by spawning a new process.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `DeserializationSink` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the command to be executed. */
+    abstract DataFlow::Node getData();
+  }
+}
