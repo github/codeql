@@ -59,7 +59,7 @@ class ProtobufMessageLite extends Interface {
 private class TaintPreservingGetterMethod extends TaintPreservingMethod {
   TaintPreservingGetterMethod() { this = any(ProtobufMessageLite p).getAGetterMethod() }
 
-  override predicate returnsTaint(int arg) { arg = -1 }
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
 
 private class TaintPreservingParseFromMethod extends TaintPreservingMethod {
@@ -69,5 +69,5 @@ private class TaintPreservingParseFromMethod extends TaintPreservingMethod {
     exists(ProtobufMessageLite m | this = m.getAParseFromMethod())
   }
 
-  override predicate returnsTaint(int arg) { arg = 0 }
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
 }

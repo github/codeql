@@ -40,5 +40,5 @@ class IntentGetExtraMethod extends Method, TaintPreservingMethod {
     getDeclaringType() instanceof TypeIntent
   }
 
-  override predicate returnsTaint(int arg) { arg = -1 }
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
 }

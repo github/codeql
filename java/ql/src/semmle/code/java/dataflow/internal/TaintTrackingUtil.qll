@@ -378,7 +378,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     )
   )
   or
-  m.(TaintPreservingMethod).returnsTaint(-1)
+  m.(TaintPreservingMethod).returnsTaintFrom(-1)
 }
 
 private class StringReplaceMethod extends TaintPreservingMethod {
@@ -391,7 +391,7 @@ private class StringReplaceMethod extends TaintPreservingMethod {
     )
   }
 
-  override predicate returnsTaint(int arg) { arg = 1 }
+  override predicate returnsTaintFrom(int arg) { arg = 1 }
 }
 
 private predicate unsafeEscape(MethodAccess ma) {
@@ -523,7 +523,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method.hasName("append") and
   arg = 0
   or
-  method.(TaintPreservingMethod).returnsTaint(arg)
+  method.(TaintPreservingMethod).returnsTaintFrom(arg)
 }
 
 /**
@@ -740,7 +740,7 @@ private class FormatterMethod extends TaintPreservingMethod {
     hasName(["format", "out", "toString"])
   }
 
-  override predicate returnsTaint(int arg) { arg = [-1 .. getNumberOfParameters()] }
+  override predicate returnsTaintFrom(int arg) { arg = [-1 .. getNumberOfParameters()] }
 
   override predicate transfersTaint(int src, int sink) {
     sink = -1 and

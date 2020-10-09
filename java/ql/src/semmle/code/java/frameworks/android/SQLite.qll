@@ -253,7 +253,7 @@ private class QueryBuilderBuildMethod extends TaintPreservingMethod {
     argument != 3
   }
 
-  override predicate returnsTaint(int arg) { argument = arg }
+  override predicate returnsTaintFrom(int arg) { argument = arg }
 }
 
 private class QueryBuilderAppendMethod extends TaintPreservingMethod {
@@ -282,7 +282,7 @@ private class UnsafeAppendUtilMethod extends TaintPreservingMethod {
     this.hasName(["appendSelectionArgs", "concatenateWhere"])
   }
 
-  override predicate returnsTaint(int arg) { arg = [0 .. getNumberOfParameters()] }
+  override predicate returnsTaintFrom(int arg) { arg = [0 .. getNumberOfParameters()] }
 }
 
 private class TaintPreservingQueryMethod extends TaintPreservingMethod {
@@ -296,5 +296,5 @@ private class TaintPreservingQueryMethod extends TaintPreservingMethod {
     this.hasName("query")
   }
 
-  override predicate returnsTaint(int arg) { arg = 0 }
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
 }

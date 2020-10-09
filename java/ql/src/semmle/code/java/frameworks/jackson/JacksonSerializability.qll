@@ -38,7 +38,7 @@ library class JacksonWriteValueMethod extends TaintPreservingMethod {
     getParameter(getNumberOfParameters() - 1).getType() instanceof TypeObject
   }
 
-  override predicate returnsTaint(int arg) {
+  override predicate returnsTaintFrom(int arg) {
     getNumberOfParameters() = 1 and
     arg = 0
   }

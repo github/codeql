@@ -34,7 +34,7 @@ class AdditionalTaintStep extends Unit {
 /**
  * A method that preserves taint.
  *
- * Extend this class and override at least one of `returnsTaint` or `transfersTaint`
+ * Extend this class and override at least one of `returnsTaintFrom` or `transfersTaint`
  * to add additional taint steps through a method that should apply to all taint configurations.
  */
 abstract class TaintPreservingMethod extends Method {
@@ -42,7 +42,7 @@ abstract class TaintPreservingMethod extends Method {
    * Holds if this method returns tainted data when `arg` tainted.
    * `arg` is a parameter index, or is -1 to indicate the qualifier.
    */
-  predicate returnsTaint(int arg) { none() }
+  predicate returnsTaintFrom(int arg) { none() }
 
   /**
    * Holds if this method writes tainted data to `sink` when `src` is tainted.
@@ -61,7 +61,7 @@ private class StringTaintPreservingMethod extends TaintPreservingMethod {
               "trim"])
   }
 
-  override predicate returnsTaint(int arg) {
+  override predicate returnsTaintFrom(int arg) {
     arg = -1
     or
     this.hasName(["concat", "copyValueOf"]) and arg = 0
