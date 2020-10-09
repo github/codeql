@@ -78,7 +78,7 @@ private module ServerLess {
    * Gets a function that is a serverless request handler.
    *
    * For example: if an AWS serverless resource contains the following properties (in the "template.yml" file):
-   * ```
+   * ```yaml
    * Handler: mylibrary.handler
    * Runtime: nodejs12.x
    * CodeUri: backend/src/
