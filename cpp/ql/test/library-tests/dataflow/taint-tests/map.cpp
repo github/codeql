@@ -430,7 +430,7 @@ void test_unordered_map()
 	sink(m34);
 	sink(m34.emplace(std::pair<char *, char *>("abc", source())).first); // tainted
 	sink(m34); // tainted
-	sink(m34.emplace_hint(m34.begin(), "abc", "def")); // tainted [NOT DETECTED]
+	sink(m34.emplace_hint(m34.begin(), "abc", "def")); // tainted
 	sink(m35.emplace().first);
 	sink(m35);
 	sink(m35.emplace(std::pair<char *, char *>(source(), "def")).first); // tainted [NOT DETECTED]

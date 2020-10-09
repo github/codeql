@@ -69,6 +69,9 @@ class StdMapEmplace extends TaintFunction {
       output.isQualifierObject() or
       output.isReturnValue()
     )
+    or
+    input.isQualifierObject() and
+    output.isReturnValue()
   }
 }
 
@@ -93,6 +96,9 @@ class StdMapTryEmplace extends TaintFunction {
       output.isQualifierObject() or
       output.isReturnValue()
     )
+    or
+    input.isQualifierObject() and
+    output.isReturnValue()
   }
 }
 
