@@ -18,6 +18,7 @@ module InsecureDownload {
   private class ConcreteSensitiveInsecureURL extends Label::SensitiveInsecureURL {
     ConcreteSensitiveInsecureURL() { this = this }
   }
+
   private class ConcreteInsecureURL extends Label::InsecureURL {
     ConcreteInsecureURL() { this = this }
   }

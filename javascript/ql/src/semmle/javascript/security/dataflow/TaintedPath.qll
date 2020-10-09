@@ -16,6 +16,7 @@ module TaintedPath {
   private class ConcretePosixPath extends Label::PosixPath {
     ConcretePosixPath() { this = this }
   }
+
   private class ConcreteSplitPath extends Label::SplitPath {
     ConcreteSplitPath() { this = this }
   }

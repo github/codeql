@@ -13,9 +13,7 @@ private import semmle.javascript.DynamicPropertyAccess
  */
 module Angular2 {
   /** Gets a reference to a `Router` object. */
-  DataFlow::SourceNode router() {
-    result.hasUnderlyingType("@angular/router", "Router")
-  }
+  DataFlow::SourceNode router() { result.hasUnderlyingType("@angular/router", "Router") }
 
   /** Gets a reference to a `RouterState` object. */
   DataFlow::SourceNode routerState() {
@@ -60,13 +58,15 @@ module Angular2 {
     result = activatedRouteSnapshot().getAPropertyRead("data").getAPropertyRead(name)
     or
     // this.route.foo.subscribe(foo => { ... })
-    result = activatedRoute().getAPropertyRead(name).getAMethodCall("subscribe").getABoundCallbackParameter(0, 0)
+    result =
+      activatedRoute()
+          .getAPropertyRead(name)
+          .getAMethodCall("subscribe")
+          .getABoundCallbackParameter(0, 0)
   }
 
   /** Gets an array of URL segments matched by some route. */
-  private DataFlow::SourceNode urlSegmentArray() {
-    result = activatedRouteProp("url")
-  }
+  private DataFlow::SourceNode urlSegmentArray() { result = activatedRouteProp("url") }
 
   /** Gets a data flow node referring to a `UrlSegment` object matched by some route. */
   DataFlow::SourceNode urlSegment() {
@@ -115,9 +115,7 @@ module Angular2 {
       this = routerStateSnapshot().getAPropertyRead("url")
     }
 
-    override string getSourceType() {
-      result = "Angular route parameter"
-    }
+    override string getSourceType() { result = "Angular route parameter" }
   }
 
   /** Gets a reference to a `DomSanitizer` object. */
@@ -127,12 +125,19 @@ module Angular2 {
 
   /** A value that is about to be promoted to a trusted HTML or CSS value. */
   private class AngularXssSink extends DomBasedXss::Sink {
-    AngularXssSink() { this = domSanitizer().getAMethodCall(["bypassSecurityTrustHtml", "bypassSecurityTrustStyle"]).getArgument(0) }
+    AngularXssSink() {
+      this =
+        domSanitizer()
+            .getAMethodCall(["bypassSecurityTrustHtml", "bypassSecurityTrustStyle"])
+            .getArgument(0)
+    }
   }
 
   /** A value that is about to be promoted to a trusted script value. */
   private class AngularCodeInjectionSink extends CodeInjection::Sink {
-    AngularCodeInjectionSink() { this = domSanitizer().getAMethodCall(["bypassSecurityTrustScript"]).getArgument(0) }
+    AngularCodeInjectionSink() {
+      this = domSanitizer().getAMethodCall(["bypassSecurityTrustScript"]).getArgument(0)
+    }
   }
 
   /**
@@ -140,7 +145,12 @@ module Angular2 {
    */
   private class AngularUrlSink extends ClientSideUrlRedirect::Sink {
     // We mark this as a client URL redirect sink for precision reasons, though its description can be a bit confusing.
-    AngularUrlSink() { this = domSanitizer().getAMethodCall(["bypassSecurityTrustUrl", "bypassSecurityTrustResourceUrl"]).getArgument(0) }
+    AngularUrlSink() {
+      this =
+        domSanitizer()
+            .getAMethodCall(["bypassSecurityTrustUrl", "bypassSecurityTrustResourceUrl"])
+            .getArgument(0)
+    }
   }
 
   private predicate taintStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -155,13 +165,9 @@ module Angular2 {
   }
 
   private class AngularTaintStep extends TaintTracking::AdditionalTaintStep {
-    AngularTaintStep() {
-      taintStep(_, this)
-    }
+    AngularTaintStep() { taintStep(_, this) }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      taintStep(pred, succ)
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { taintStep(pred, succ) }
   }
 
   /** Gets a reference to an `HttpClient` object. */
@@ -180,13 +186,9 @@ module Angular2 {
       argumentOffset = 0
     }
 
-    override DataFlow::Node getUrl() {
-      result = getArgument(argumentOffset)
-    }
+    override DataFlow::Node getUrl() { result = getArgument(argumentOffset) }
 
-    override DataFlow::Node getHost() {
-      none()
-    }
+    override DataFlow::Node getHost() { none() }
 
     override DataFlow::Node getADataNode() {
       getMethodName() = ["patch", "post", "put"] and
@@ -207,8 +209,6 @@ module Angular2 {
 
   /** A reference to the DOM location obtained through `DomAdapter.getLocation()`. */
   private class DomAdapterLocation extends DOM::LocationSource::Range {
-    DomAdapterLocation() {
-      this = domAdapter().getAMethodCall("getLocation")
-    }
+    DomAdapterLocation() { this = domAdapter().getAMethodCall("getLocation") }
   }
 }

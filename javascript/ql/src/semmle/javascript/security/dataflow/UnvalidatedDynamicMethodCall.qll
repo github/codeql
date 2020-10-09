@@ -21,6 +21,7 @@ module UnvalidatedDynamicMethodCall {
   private class ConcreteMaybeNonFunction extends MaybeNonFunction {
     ConcreteMaybeNonFunction() { this = this }
   }
+
   private class ConcreteMaybeFromProto extends MaybeFromProto {
     ConcreteMaybeFromProto() { this = this }
   }
