@@ -405,7 +405,7 @@ void test_unordered_map()
 	sink(m28.try_emplace(m28.begin(), source(), "def")); // tainted [NOT DETECTED]
 	sink(m28); // tainted [NOT DETECTED]
 
-	// additional emplace test cases
+	// additional try_emplace test cases
 	std::unordered_map<char *, std::pair<int, int>> m29, m30, m31, m32;
 	sink(m29.try_emplace("abc", 1, 2));
 	sink(m29);
@@ -419,4 +419,20 @@ void test_unordered_map()
 	sink(m32.try_emplace("abc", 1, source())); // tainted
 	sink(m32); // tainted
 	sink(m32["abc"]); // tainted
+
+	// additional emplace test cases
+	std::unordered_map<char *, char *> m33;
+	sink(m33.emplace(source(), "def").first); // tainted
+	sink(m33); // tainted
+
+	std::unordered_map<char *, char *> m34, m35;
+	sink(m34.emplace(std::pair<char *, char *>("abc", "def")).first);
+	sink(m34);
+	sink(m34.emplace(std::pair<char *, char *>("abc", source())).first); // tainted
+	sink(m34); // tainted
+	sink(m34.emplace_hint(m34.begin(), "abc", "def")); // tainted
+	sink(m35.emplace().first);
+	sink(m35);
+	sink(m35.emplace(std::pair<char *, char *>(source(), "def")).first); // tainted [NOT DETECTED]
+	sink(m35); // tainted [NOT DETECTED]
 }
