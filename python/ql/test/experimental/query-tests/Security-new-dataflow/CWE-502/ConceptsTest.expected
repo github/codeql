@@ -1,4 +1,0 @@
-| unsafe_deserialization.py:12:28:12:45 | Comment # $getData=payload | Missing result:getData=payload |
-| unsafe_deserialization.py:13:25:13:42 | Comment # $getData=payload | Missing result:getData=payload |
-| unsafe_deserialization.py:14:29:14:46 | Comment # $getData=payload | Missing result:getData=payload |
-| unsafe_deserialization.py:16:26:16:43 | Comment # $getData=payload | Missing result:getData=payload |
