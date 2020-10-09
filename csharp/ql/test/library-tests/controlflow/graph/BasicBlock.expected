@@ -13,8 +13,8 @@
 | AccessorCalls.cs:66:10:66:11 | enter M9 | AccessorCalls.cs:66:10:66:11 | exit M9 | 57 |
 | ArrayCreation.cs:3:11:3:12 | enter M1 | ArrayCreation.cs:3:11:3:12 | exit M1 | 4 |
 | ArrayCreation.cs:5:12:5:13 | enter M2 | ArrayCreation.cs:5:12:5:13 | exit M2 | 5 |
-| ArrayCreation.cs:7:11:7:12 | enter M3 | ArrayCreation.cs:7:11:7:12 | exit M3 | 6 |
-| ArrayCreation.cs:9:12:9:13 | enter M4 | ArrayCreation.cs:9:12:9:13 | exit M4 | 10 |
+| ArrayCreation.cs:7:11:7:12 | enter M3 | ArrayCreation.cs:7:11:7:12 | exit M3 | 7 |
+| ArrayCreation.cs:9:12:9:13 | enter M4 | ArrayCreation.cs:9:12:9:13 | exit M4 | 12 |
 | Assert.cs:7:10:7:11 | enter M1 | Assert.cs:9:20:9:20 | access to parameter b | 5 |
 | Assert.cs:7:10:7:11 | exit M1 | Assert.cs:7:10:7:11 | exit M1 | 1 |
 | Assert.cs:9:16:9:32 | String s = ... | Assert.cs:10:22:10:30 | ... != ... | 5 |
@@ -535,7 +535,7 @@
 | Foreach.cs:38:26:38:26 | String x | Foreach.cs:39:11:39:11 | ; | 4 |
 | Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | exit Initializers | 14 |
 | Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | exit Initializers | 14 |
-| Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | exit M | 20 |
+| Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | exit M | 21 |
 | Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:20 | ... = ... | 2 |
 | Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | exit NoConstructor | 8 |
 | Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 11 |
@@ -547,7 +547,7 @@
 | LoopUnrolling.cs:10:13:10:19 | return ...; | LoopUnrolling.cs:10:13:10:19 | return ...; | 1 |
 | LoopUnrolling.cs:11:22:11:24 | String arg | LoopUnrolling.cs:11:9:12:35 | foreach (... ... in ...) ... | 5 |
 | LoopUnrolling.cs:11:29:11:32 | access to parameter args | LoopUnrolling.cs:11:9:12:35 | [unroll (line 11)] foreach (... ... in ...) ... | 2 |
-| LoopUnrolling.cs:15:10:15:11 | enter M2 | LoopUnrolling.cs:18:9:19:33 | [unroll (line 18)] foreach (... ... in ...) ... | 11 |
+| LoopUnrolling.cs:15:10:15:11 | enter M2 | LoopUnrolling.cs:18:9:19:33 | [unroll (line 18)] foreach (... ... in ...) ... | 12 |
 | LoopUnrolling.cs:15:10:15:11 | exit M2 | LoopUnrolling.cs:15:10:15:11 | exit M2 | 1 |
 | LoopUnrolling.cs:18:22:18:22 | String x | LoopUnrolling.cs:18:9:19:33 | foreach (... ... in ...) ... | 5 |
 | LoopUnrolling.cs:22:10:22:11 | enter M3 | LoopUnrolling.cs:24:29:24:32 | access to parameter args | 3 |
@@ -556,14 +556,14 @@
 | LoopUnrolling.cs:24:22:24:24 | Char arg | LoopUnrolling.cs:25:13:26:40 | [unroll (line 25)] foreach (... ... in ...) ... | 3 |
 | LoopUnrolling.cs:25:26:25:29 | Char arg0 | LoopUnrolling.cs:25:13:26:40 | foreach (... ... in ...) ... | 5 |
 | LoopUnrolling.cs:29:10:29:11 | enter M4 | LoopUnrolling.cs:29:10:29:11 | exit M4 | 9 |
-| LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:40:9:42:41 | [unroll (line 40)] foreach (... ... in ...) ... | 18 |
+| LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:40:9:42:41 | [unroll (line 40)] foreach (... ... in ...) ... | 20 |
 | LoopUnrolling.cs:36:10:36:11 | exit M5 | LoopUnrolling.cs:36:10:36:11 | exit M5 | 1 |
 | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | 1 |
 | LoopUnrolling.cs:40:22:40:22 | String x | LoopUnrolling.cs:41:13:42:41 | [unroll (line 41)] foreach (... ... in ...) ... | 3 |
 | LoopUnrolling.cs:41:26:41:26 | String y | LoopUnrolling.cs:41:13:42:41 | foreach (... ... in ...) ... | 7 |
-| LoopUnrolling.cs:45:10:45:11 | enter M6 | LoopUnrolling.cs:49:9:52:9 | {...} | 13 |
+| LoopUnrolling.cs:45:10:45:11 | enter M6 | LoopUnrolling.cs:49:9:52:9 | {...} | 14 |
 | LoopUnrolling.cs:50:9:50:13 | Label: | LoopUnrolling.cs:51:13:51:23 | goto ...; | 5 |
-| LoopUnrolling.cs:55:10:55:11 | enter M7 | LoopUnrolling.cs:60:17:60:17 | access to parameter b | 15 |
+| LoopUnrolling.cs:55:10:55:11 | enter M7 | LoopUnrolling.cs:60:17:60:17 | access to parameter b | 16 |
 | LoopUnrolling.cs:55:10:55:11 | exit M7 | LoopUnrolling.cs:55:10:55:11 | exit M7 | 1 |
 | LoopUnrolling.cs:58:22:58:22 | [b (line 55): false] String x | LoopUnrolling.cs:60:17:60:17 | [b (line 55): false] access to parameter b | 4 |
 | LoopUnrolling.cs:58:22:58:22 | [b (line 55): true] String x | LoopUnrolling.cs:60:17:60:17 | [b (line 55): true] access to parameter b | 4 |
