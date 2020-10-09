@@ -232,7 +232,7 @@ private class QueryBuilderBuildMethod extends TaintPreservingMethod {
   int argument;
 
   QueryBuilderBuildMethod() {
-    this.getDeclaringType().getASourceSupertype*() instanceof Class and
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
     // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
     // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
     // buildUnionQuery(String[] subQueries, String sortOrder, String limit)

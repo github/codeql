@@ -53,11 +53,12 @@ abstract class TaintPreservingMethod extends Method {
 
 private class StringTaintPreservingMethod extends TaintPreservingMethod {
   StringTaintPreservingMethod() {
-    getDeclaringType() instanceof TypeString and
-    hasName(["concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent",
-          "intern", "join", "repeat", "split", "strip", "stripIndent", "stripLeading",
-          "stripTrailing", "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase",
-          "trim"])
+    this.getDeclaringType() instanceof TypeString and
+    this
+        .hasName(["concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent",
+              "intern", "join", "repeat", "split", "strip", "stripIndent", "stripLeading",
+              "stripTrailing", "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase",
+              "trim"])
   }
 
   override predicate returnsTaint(int arg) {
