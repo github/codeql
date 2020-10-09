@@ -77,8 +77,20 @@ private module Stdlib {
 
   /** Provides models for the `os` module. */
   module os {
+    /** Gets a reference to a direct import of the `os.path` module. */
+    private DataFlow::Node pathDirectImport(DataFlow::TypeTracker t) {
+      t.start() and
+      result = DataFlow::importModule("os.path")
+      or
+      exists(DataFlow::TypeTracker t2 | result = pathDirectImport(t2).track(t2, t))
+    }
+
     /** Gets a reference to the `os.path` module. */
-    DataFlow::Node path() { result = os_attr("path") }
+    DataFlow::Node path() {
+      result = os_attr("path")
+      or
+      result = pathDirectImport(DataFlow::TypeTracker::end())
+    }
 
     /** Provides models for the `os.path` module */
     module path {
