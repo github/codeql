@@ -37,4 +37,5 @@
 | out | Capture.cs:139:13:139:13 | d | Capture.cs:142:13:142:17 | SSA def(d) | Capture.cs:144:9:144:12 | SSA call def(d) | Capture.cs:144:9:144:12 | call to local function M4 | false |
 | out | Capture.cs:168:13:168:13 | h | Capture.cs:174:17:174:21 | SSA def(h) | Capture.cs:176:13:176:16 | SSA call def(h) | Capture.cs:176:13:176:16 | call to local function M9 | false |
 | out | Capture.cs:229:13:229:13 | i | Capture.cs:235:21:235:25 | SSA def(i) | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:236:9:236:12 | call to local function M3 | false |
+| out | Capture.cs:242:13:242:13 | i | Capture.cs:245:13:245:17 | SSA def(i) | Capture.cs:254:9:254:28 | SSA call def(i) | Capture.cs:254:9:254:28 | call to local function CaptureAndRef | true |
 | out | DefUse.cs:167:23:167:23 | i | DefUse.cs:173:13:173:17 | SSA def(i) | DefUse.cs:181:9:181:11 | SSA call def(i) | DefUse.cs:181:9:181:11 | delegate call | false |
