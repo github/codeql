@@ -104,4 +104,32 @@
 | ModulusAnalysis.java:49:25:49:25 | 3 | 0 | 3 | 0 |
 | ModulusAnalysis.java:50:32:50:32 | x | 0 | 3 | 16 |
 | ModulusAnalysis.java:50:32:50:32 | x | SSA init(x) | 0 | 0 |
-| ModulusAnalysis.java:54:38:54:39 | 42 | 0 | 42 | 0 |
+| ModulusAnalysis.java:56:22:56:22 | 0 | 0 | 0 | 0 |
+| ModulusAnalysis.java:56:25:56:25 | i | SSA phi(i) | 0 | 0 |
+| ModulusAnalysis.java:56:29:56:31 | cap | SSA init(cap) | 0 | 0 |
+| ModulusAnalysis.java:56:34:56:34 | i | SSA phi(i) | 0 | 0 |
+| ModulusAnalysis.java:56:34:56:36 | ...++ | SSA phi(i) | 0 | 0 |
+| ModulusAnalysis.java:57:32:57:32 | i | SSA phi(i) | 0 | 0 |
+| ModulusAnalysis.java:59:22:59:22 | 0 | 0 | 0 | 0 |
+| ModulusAnalysis.java:59:25:59:25 | j | SSA phi(j) | 0 | 0 |
+| ModulusAnalysis.java:59:29:59:31 | cap | SSA init(cap) | 0 | 0 |
+| ModulusAnalysis.java:59:34:59:34 | j | SSA phi(j) | 0 | 0 |
+| ModulusAnalysis.java:59:34:59:39 | ...+=... | SSA phi(j) | 1 | 0 |
+| ModulusAnalysis.java:59:39:59:39 | 1 | 0 | 1 | 0 |
+| ModulusAnalysis.java:60:32:60:32 | j | SSA phi(j) | 0 | 0 |
+| ModulusAnalysis.java:62:22:62:22 | 0 | 0 | 0 | 0 |
+| ModulusAnalysis.java:62:25:62:25 | k | 0 | 0 | 3 |
+| ModulusAnalysis.java:62:25:62:25 | k | SSA def(k) | 0 | 3 |
+| ModulusAnalysis.java:62:25:62:25 | k | SSA phi(k) | 0 | 0 |
+| ModulusAnalysis.java:62:29:62:31 | cap | SSA init(cap) | 0 | 0 |
+| ModulusAnalysis.java:62:34:62:34 | k | 0 | 0 | 3 |
+| ModulusAnalysis.java:62:34:62:34 | k | SSA def(k) | 0 | 3 |
+| ModulusAnalysis.java:62:34:62:34 | k | SSA phi(k) | 0 | 0 |
+| ModulusAnalysis.java:62:34:62:39 | ...+=... | 0 | 0 | 3 |
+| ModulusAnalysis.java:62:34:62:39 | ...+=... | SSA def(k) | 0 | 3 |
+| ModulusAnalysis.java:62:34:62:39 | ...+=... | SSA phi(k) | 3 | 0 |
+| ModulusAnalysis.java:62:39:62:39 | 3 | 0 | 3 | 0 |
+| ModulusAnalysis.java:63:32:63:32 | k | 0 | 0 | 3 |
+| ModulusAnalysis.java:63:32:63:32 | k | SSA def(k) | 0 | 3 |
+| ModulusAnalysis.java:63:32:63:32 | k | SSA phi(k) | 0 | 0 |
+| ModulusAnalysis.java:66:38:66:39 | 42 | 0 | 42 | 0 |
