@@ -539,8 +539,6 @@ private module PrettyPrinting {
       or
       result = "`" + a.(Repr).getValue() + "`"
       or
-      result = "b' " + a.(Bytes).getS() + "'"
-      or
       a instanceof Ellipsis and result = "..."
       or
       result = a.(Num).toString()
