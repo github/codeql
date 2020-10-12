@@ -117,12 +117,12 @@ void test_set()
 	std::set<char *> s21, s22;
 	sink(s21.emplace("abc").first);
 	sink(s21);
-	sink(s21.emplace(source()).first); // tainted [NOT DETECTED]
-	sink(s21); // tainted [NOT DETECTED]
+	sink(s21.emplace(source()).first); // tainted
+	sink(s21); // tainted
 	sink(s22.emplace_hint(s22.begin(), "abc"));
 	sink(s22);
-	sink(s22.emplace_hint(s22.begin(), source())); // tainted [NOT DETECTED]
-	sink(s22); // tainted [NOT DETECTED]
+	sink(s22.emplace_hint(s22.begin(), source())); // tainted
+	sink(s22); // tainted
 }
 
 void test_unordered_set()
@@ -229,10 +229,10 @@ void test_unordered_set()
 	std::unordered_set<char *> s21, s22;
 	sink(s21.emplace("abc").first);
 	sink(s21);
-	sink(s21.emplace(source()).first); // tainted [NOT DETECTED]
-	sink(s21); // tainted [NOT DETECTED]
+	sink(s21.emplace(source()).first); // tainted
+	sink(s21); // tainted
 	sink(s22.emplace_hint(s22.begin(), "abc"));
 	sink(s22);
-	sink(s22.emplace_hint(s22.begin(), source())); // tainted [NOT DETECTED]
-	sink(s22); // tainted [NOT DETECTED]
+	sink(s22.emplace_hint(s22.begin(), source())); // tainted
+	sink(s22); // tainted
 }

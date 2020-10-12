@@ -179,6 +179,9 @@
 | set.cpp:112:7:112:9 | call to set | set.cpp:109:13:109:18 | call to source |
 | set.cpp:114:7:114:9 | call to set | set.cpp:108:13:108:18 | call to source |
 | set.cpp:114:7:114:9 | call to set | set.cpp:109:13:109:18 | call to source |
+| set.cpp:121:7:121:9 | call to set | set.cpp:120:19:120:24 | call to source |
+| set.cpp:124:11:124:22 | call to emplace_hint | set.cpp:124:37:124:42 | call to source |
+| set.cpp:125:7:125:9 | call to set | set.cpp:124:37:124:42 | call to source |
 | set.cpp:136:10:136:15 | call to insert | set.cpp:136:29:136:34 | call to source |
 | set.cpp:140:7:140:8 | call to unordered_set | set.cpp:134:17:134:22 | call to source |
 | set.cpp:142:7:142:8 | call to unordered_set | set.cpp:136:29:136:34 | call to source |
@@ -214,6 +217,9 @@
 | set.cpp:224:7:224:9 | call to unordered_set | set.cpp:221:13:221:18 | call to source |
 | set.cpp:226:7:226:9 | call to unordered_set | set.cpp:220:13:220:18 | call to source |
 | set.cpp:226:7:226:9 | call to unordered_set | set.cpp:221:13:221:18 | call to source |
+| set.cpp:233:7:233:9 | call to unordered_set | set.cpp:232:19:232:24 | call to source |
+| set.cpp:236:11:236:22 | call to emplace_hint | set.cpp:236:37:236:42 | call to source |
+| set.cpp:237:7:237:9 | call to unordered_set | set.cpp:236:37:236:42 | call to source |
 | smart_pointer.cpp:12:10:12:10 | call to operator* | smart_pointer.cpp:11:52:11:57 | call to source |
 | smart_pointer.cpp:13:10:13:10 | p | smart_pointer.cpp:11:52:11:57 | call to source |
 | smart_pointer.cpp:24:10:24:10 | call to operator* | smart_pointer.cpp:23:52:23:57 | call to source |

@@ -134,6 +134,9 @@
 | set.cpp:112:7:112:9 | set.cpp:109:13:109:18 | AST only |
 | set.cpp:114:7:114:9 | set.cpp:108:13:108:18 | AST only |
 | set.cpp:114:7:114:9 | set.cpp:109:13:109:18 | AST only |
+| set.cpp:120:7:120:33 | set.cpp:120:19:120:24 | IR only |
+| set.cpp:121:7:121:9 | set.cpp:120:19:120:24 | AST only |
+| set.cpp:125:7:125:9 | set.cpp:124:37:124:42 | AST only |
 | set.cpp:134:7:134:31 | set.cpp:134:17:134:22 | IR only |
 | set.cpp:140:7:140:8 | set.cpp:134:17:134:22 | AST only |
 | set.cpp:142:7:142:8 | set.cpp:136:29:136:34 | AST only |
@@ -164,6 +167,9 @@
 | set.cpp:224:7:224:9 | set.cpp:221:13:221:18 | AST only |
 | set.cpp:226:7:226:9 | set.cpp:220:13:220:18 | AST only |
 | set.cpp:226:7:226:9 | set.cpp:221:13:221:18 | AST only |
+| set.cpp:232:7:232:33 | set.cpp:232:19:232:24 | IR only |
+| set.cpp:233:7:233:9 | set.cpp:232:19:232:24 | AST only |
+| set.cpp:237:7:237:9 | set.cpp:236:37:236:42 | AST only |
 | smart_pointer.cpp:12:10:12:10 | smart_pointer.cpp:11:52:11:57 | AST only |
 | smart_pointer.cpp:24:10:24:10 | smart_pointer.cpp:23:52:23:57 | AST only |
 | standalone_iterators.cpp:41:10:41:10 | standalone_iterators.cpp:39:45:39:51 | AST only |
