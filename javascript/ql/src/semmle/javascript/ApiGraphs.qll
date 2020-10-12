@@ -368,13 +368,25 @@ module API {
       } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
+      /**
+       * A TypeScript canonical name that is defined somewhere, and that isn't a module root.
+       * (Module roots are represented by `MkModuleExport` nodes instead.)
+       *
+       * For most purposes, you probably want to use the `mkCanonicalNameDef` predicate instead of
+       * this constructor.
+       */
       MkCanonicalNameDef(CanonicalName n) {
-        // module roots are represented by `MkModuleExport` nodes
         not n.isRoot() and
         isDefined(n)
       } or
+      /**
+       * A TypeScript canonical name that is used somewhere, and that isn't a module root.
+       * (Module roots are represented by `MkModuleImport` nodes instead.)
+       *
+       * For most purposes, you probably want to use the `mkCanonicalNameUse` predicate instead of
+       * this constructor.
+       */
       MkCanonicalNameUse(CanonicalName n) {
-        // module roots are represented by `MkModuleImport` nodes
         not n.isRoot() and
         isUsed(n)
       }
@@ -421,12 +433,14 @@ module API {
       )
     }
 
+    /** An API-graph node representing definitions of the canonical name `cn`. */
     private TApiNode mkCanonicalNameDef(CanonicalName cn) {
       if cn.isModuleRoot()
       then result = MkModuleExport(cn.getExternalModuleName())
       else result = MkCanonicalNameDef(cn)
     }
 
+    /** An API-graph node representing uses of the canonical name `cn`. */
     private TApiNode mkCanonicalNameUse(CanonicalName cn) {
       if cn.isModuleRoot()
       then result = MkModuleImport(cn.getExternalModuleName())
