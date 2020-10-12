@@ -333,5 +333,5 @@ function id(x) {
 module.exports.id = id;
 
 module.exports.unproblematic = function() {
-	cp.exec("rm -rf " + id("test")); // OK [INCONSISTENCY]
+	cp.exec("rm -rf " + id("test")); // OK
 };
