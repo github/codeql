@@ -180,6 +180,11 @@ nodes
 | lib/lib.js:324:40:324:42 | arg |
 | lib/lib.js:325:49:325:51 | arg |
 | lib/lib.js:325:49:325:51 | arg |
+| lib/lib.js:329:13:329:13 | x |
+| lib/lib.js:329:13:329:13 | x |
+| lib/lib.js:330:9:330:9 | x |
+| lib/lib.js:336:22:336:31 | id("test") |
+| lib/lib.js:336:22:336:31 | id("test") |
 edges
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
@@ -396,6 +401,10 @@ edges
 | lib/lib.js:324:40:324:42 | arg | lib/lib.js:325:49:325:51 | arg |
 | lib/lib.js:324:40:324:42 | arg | lib/lib.js:325:49:325:51 | arg |
 | lib/lib.js:324:40:324:42 | arg | lib/lib.js:325:49:325:51 | arg |
+| lib/lib.js:329:13:329:13 | x | lib/lib.js:330:9:330:9 | x |
+| lib/lib.js:329:13:329:13 | x | lib/lib.js:330:9:330:9 | x |
+| lib/lib.js:330:9:330:9 | x | lib/lib.js:336:22:336:31 | id("test") |
+| lib/lib.js:330:9:330:9 | x | lib/lib.js:336:22:336:31 | id("test") |
 #select
 | lib/lib2.js:4:10:4:25 | "rm -rf " + name | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | $@ based on library input is later used in $@. | lib/lib2.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/lib2.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:8:10:8:25 | "rm -rf " + name | lib/lib2.js:7:32:7:35 | name | lib/lib2.js:8:22:8:25 | name | $@ based on library input is later used in $@. | lib/lib2.js:8:10:8:25 | "rm -rf " + name | String concatenation | lib/lib2.js:8:2:8:26 | cp.exec ... + name) | shell command |
