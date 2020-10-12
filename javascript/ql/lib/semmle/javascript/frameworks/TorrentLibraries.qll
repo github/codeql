@@ -36,25 +36,8 @@ module ParseTorrent {
   /**
    * An access to user-controlled torrent information.
    */
-  class UserControlledTorrentInfo extends RemoteFlowSource instanceof DataFlow::PropRead {
-    UserControlledTorrentInfo() {
-      exists(API::Node read |
-        read = any(ParsedTorrent t).asApiNode().getAMember() and
-        this = read.asSource()
-      |
-        exists(string prop |
-          not (
-            prop = "private" or
-            prop = "infoHash" or
-            prop = "length"
-            // "pieceLength" and "lastPieceLength" are not guaranteed to be numbers as of commit ae3ad15d
-          ) and
-          super.getPropertyName() = prop
-        )
-        or
-        not exists(super.getPropertyName())
-      )
-    }
+  class UserControlledTorrentInfo extends RemoteFlowSource {
+    UserControlledTorrentInfo() { none() }
 
     override string getSourceType() { result = "torrent information" }
   }
