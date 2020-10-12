@@ -45,10 +45,14 @@ namespace Semmle.Extraction.Tests
             Directory.SetCurrentDirectory(tmpDir);
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                // `Directory.SetCurrentDirectory()` doesn't seem to work on macOS,
-                // so disable this test on macOS, for now
+                // `Directory.SetCurrentDirectory()` seems to slightly change the path on macOS,
+                // so adjusting it:
                 Assert.NotEqual(Directory.GetCurrentDirectory(), tmpDir);
-                return;
+                tmpDir = "/private" + tmpDir;
+                // Remove trailing slash:
+                Assert.Equal('/', tmpDir[tmpDir.Length - 1]);
+                tmpDir = tmpDir.Substring(0, tmpDir.Length - 1);
+                Assert.Equal(Directory.GetCurrentDirectory(), tmpDir);
             }
             var f1 = project!.GetTrapPath(Logger, new TransformedPathStub("foo.cs"), TrapWriter.CompressionMode.Gzip);
             var g1 = TrapWriter.NestPaths(Logger, tmpDir, "foo.cs.trap.gz");

@@ -1,5 +1,5 @@
-| /query-tests/Metrics/Dependencies/ExternalDependencies/File1.cs<\|>System.Data.Common<\|>4.2.1.0 | File1.cs:0:0:0:0 | File1.cs |
-| /query-tests/Metrics/Dependencies/ExternalDependencies/File1.cs<\|>System.Net.Http<\|>4.2.1.0 | File1.cs:0:0:0:0 | File1.cs |
-| /query-tests/Metrics/Dependencies/ExternalDependencies/File1.cs<\|>System.Private.DataContractSerialization<\|>4.1.4.0 | File1.cs:0:0:0:0 | File1.cs |
-| /query-tests/Metrics/Dependencies/ExternalDependencies/File1.cs<\|>System.Private.Xml<\|>4.0.1.0 | File1.cs:0:0:0:0 | File1.cs |
-| /query-tests/Metrics/Dependencies/ExternalDependencies/File2.cs<\|>System.Net.Http<\|>4.2.1.0 | File2.cs:0:0:0:0 | File2.cs |
+| /query-tests/Metrics/Dependencies/ExternalDependencies/File1.cs<\|>System.Data.Common<\|>4.2.2.0 | File1.cs:0:0:0:0 | File1.cs |
+| /query-tests/Metrics/Dependencies/ExternalDependencies/File1.cs<\|>System.Net.Http<\|>4.2.2.0 | File1.cs:0:0:0:0 | File1.cs |
+| /query-tests/Metrics/Dependencies/ExternalDependencies/File1.cs<\|>System.Private.DataContractSerialization<\|>4.1.5.0 | File1.cs:0:0:0:0 | File1.cs |
+| /query-tests/Metrics/Dependencies/ExternalDependencies/File1.cs<\|>System.Private.Xml<\|>4.0.2.0 | File1.cs:0:0:0:0 | File1.cs |
+| /query-tests/Metrics/Dependencies/ExternalDependencies/File2.cs<\|>System.Net.Http<\|>4.2.2.0 | File2.cs:0:0:0:0 | File2.cs |

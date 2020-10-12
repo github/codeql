@@ -38,4 +38,7 @@ class SystemThreadingTasksTaskTClass extends SystemThreadingTasksUnboundGenericC
     result.hasName("Result") and
     result.getType() = this.getTypeParameter(0)
   }
+
+  /** Gets the `GetAwaiter` method. */
+  Method getGetAwaiterMethod() { result = this.getAMethod("GetAwaiter") }
 }

@@ -170,6 +170,9 @@ module EssaFlow {
       nodeTo.(EssaNode).getVar() = p.getVariable() and
       nodeFrom.(EssaNode).getVar() = p.getAnInput()
     )
+    or
+    // If expressions
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {

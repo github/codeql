@@ -34,3 +34,4 @@
 | dependency-kinds.js:98:33:98:63 | functio ... ency){} | animationDependency |
 | dependency-kinds.js:111:17:117:9 | functio ...       } | $routeProvider |
 | dependency-kinds.js:114:33:115:21 | functio ...       } | routeControllerDependency |
+| dependency-kinds.js:121:14:123:10 | ['modul ...      }] | moduleRunService |

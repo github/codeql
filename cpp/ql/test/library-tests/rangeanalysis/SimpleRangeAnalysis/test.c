@@ -640,6 +640,14 @@ void two_bounds_from_one_test(short ss, unsigned short us) {
   }
 }
 
+void widen_recursive_expr() {
+  int s;
+  for (s = 0; s < 10; s++) {
+    int result = s + s; // 0 .. 9 [BUG: upper bound is 15 due to widening]
+    out(result); // 0 .. 18 [BUG: upper bound is 127 due to double widening]
+  }
+}
+
 void guard_bound_out_of_range(void) {
   int i = 0;
   if (i < 0) {
