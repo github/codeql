@@ -639,3 +639,11 @@ void two_bounds_from_one_test(short ss, unsigned short us) {
     out(ss); // -1 .. 2
   }
 }
+
+void widen_recursive_expr() {
+  int s;
+  for (s = 0; s < 10; s++) {
+    int result = s + s; // 0 .. 9 [BUG: upper bound is 15 due to widening]
+    out(result); // 0 .. 18 [BUG: upper bound is 30 due to widening]
+  }
+}
