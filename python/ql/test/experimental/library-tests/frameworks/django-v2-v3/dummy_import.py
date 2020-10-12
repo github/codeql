@@ -4,3 +4,7 @@
 
 from testproj import *
 from testapp import *
+
+import os.path as pth
+
+pth.join("foo", "bar")

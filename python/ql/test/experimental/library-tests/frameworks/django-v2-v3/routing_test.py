@@ -46,17 +46,17 @@ def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $routeHandler $ro
 
 
 urlpatterns = [
-    re_path(r"^url_match/(?P<foo>[^/]+)/(?P<bar>[^/]+)", url_match_xss),  # $routeSetup=r"^url_match/(?P<foo>[^/]+)/(?P<bar>[^/]+)"
-    re_path(r"^get_params", get_params_xss),  # $routeSetup=r"^get_params"
-    re_path(r"^post_params", post_params_xss),  # $routeSetup=r"^post_params"
-    re_path(r"^http_resp_write", http_resp_write),  # $routeSetup=r"^http_resp_write"
-    re_path(r"^class_view/(?P<untrusted>.+)", ClassView.as_view()),  # $routeSetup=r"^class_view/(?P<untrusted>.+)"
+    re_path(r"^url_match/(?P<foo>[^/]+)/(?P<bar>[^/]+)", url_match_xss),  # $routeSetup="^url_match/(?P<foo>[^/]+)/(?P<bar>[^/]+)"
+    re_path(r"^get_params", get_params_xss),  # $routeSetup="^get_params"
+    re_path(r"^post_params", post_params_xss),  # $routeSetup="^post_params"
+    re_path(r"^http_resp_write", http_resp_write),  # $routeSetup="^http_resp_write"
+    re_path(r"^class_view/(?P<untrusted>.+)", ClassView.as_view()),  # $routeSetup="^class_view/(?P<untrusted>.+)"
 
     # one pattern to support `articles/page-<n>` and ensuring that articles/ goes to page-1
-    re_path(r"articles/^(?:page-(?P<page_number>\d+)/)?", show_articles),  # $routeSetup=r"articles/^(?:page-(?P<page_number>\d+)/)?"
+    re_path(r"articles/^(?:page-(?P<page_number>\d+)/)?", show_articles),  # $routeSetup="articles/^(?:page-(?P<page_number>\d+)/)?"
     # passing as positional argument is not the recommended way of doing things, but it is certainly
     # possible
-    re_path(r"^([^/]+)/(?:foo|bar)/([^/]+)", xxs_positional_arg, name='xxs_positional_arg'),  # $routeSetup=r"^([^/]+)/(?:foo|bar)/([^/]+)"
+    re_path(r"^([^/]+)/(?:foo|bar)/([^/]+)", xxs_positional_arg, name='xxs_positional_arg'),  # $routeSetup="^([^/]+)/(?:foo|bar)/([^/]+)"
 ]
 
 
@@ -67,7 +67,7 @@ def re_path_kwargs(request):  # $routeHandler
 
 
 urlpatterns = [
-    re_path(view=re_path_kwargs, regex=r"^specifying-as-kwargs-is-not-a-problem")  # $routeSetup=r"^specifying-as-kwargs-is-not-a-problem"
+    re_path(view=re_path_kwargs, regex=r"^specifying-as-kwargs-is-not-a-problem")  # $routeSetup="^specifying-as-kwargs-is-not-a-problem"
 ]
 
 ################################################################################
