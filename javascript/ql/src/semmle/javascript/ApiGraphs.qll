@@ -286,6 +286,17 @@ module API {
   /** Gets a node corresponding to an export of module `m`. */
   Node moduleExport(string m) { result = Impl::MkModuleDef(m).(Node).getMember("exports") }
 
+  /** Provides helper predicates for accessing API-graph nodes. */
+  module Node {
+    /** Gets a node whose type has the given qualified name. */
+    Node ofType(string moduleName, string exportedName) {
+      exists(TypeName tn |
+        tn.hasQualifiedName(moduleName, exportedName) and
+        result = Impl::MkCanonicalNameUse(tn).(Node).getInstance()
+      )
+    }
+  }
+
   /**
    * An API entry point.
    *
@@ -301,9 +312,6 @@ module API {
 
     /** Gets a data-flow node that defines this entry point. */
     abstract DataFlow::Node getARhs();
-
-    /** Gets an API-graph node for this entry point. */
-    API::Node getNode() { result = root().getASuccessor(this) }
   }
 
   /**
@@ -346,16 +354,42 @@ module API {
             exists(SSA::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
           )
         )
+        or
+        m = any(CanonicalName n | isDefined(n)).getExternalModuleName()
       } or
-      MkModuleImport(string m) { imports(_, m) } or
+      MkModuleImport(string m) {
+        imports(_, m)
+        or
+        m = any(CanonicalName n | isUsed(n)).getExternalModuleName()
+      } or
       MkClassInstance(DataFlow::ClassNode cls) { cls = trackDefNode(_) and hasSemantics(cls) } or
       MkAsyncFuncResult(DataFlow::FunctionNode f) {
         f = trackDefNode(_) and f.getFunction().isAsync() and hasSemantics(f)
       } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
-      MkCanonicalNameDef(CanonicalName n) { isDefined(n) } or
-      MkCanonicalNameUse(CanonicalName n) { isUsed(n) }
+      /**
+       * A TypeScript canonical name that is defined somewhere, and that isn't a module root.
+       * (Module roots are represented by `MkModuleExport` nodes instead.)
+       *
+       * For most purposes, you probably want to use the `mkCanonicalNameDef` predicate instead of
+       * this constructor.
+       */
+      MkCanonicalNameDef(CanonicalName n) {
+        not n.isRoot() and
+        isDefined(n)
+      } or
+      /**
+       * A TypeScript canonical name that is used somewhere, and that isn't a module root.
+       * (Module roots are represented by `MkModuleImport` nodes instead.)
+       *
+       * For most purposes, you probably want to use the `mkCanonicalNameUse` predicate instead of
+       * this constructor.
+       */
+      MkCanonicalNameUse(CanonicalName n) {
+        not n.isRoot() and
+        isUsed(n)
+      }
 
     class TDef = MkModuleDef or TNonModuleDef;
 
@@ -397,6 +431,20 @@ module API {
       |
         not def.isAmbient()
       )
+    }
+
+    /** An API-graph node representing definitions of the canonical name `cn`. */
+    private TApiNode mkCanonicalNameDef(CanonicalName cn) {
+      if cn.isModuleRoot()
+      then result = MkModuleExport(cn.getExternalModuleName())
+      else result = MkCanonicalNameDef(cn)
+    }
+
+    /** An API-graph node representing uses of the canonical name `cn`. */
+    private TApiNode mkCanonicalNameUse(CanonicalName cn) {
+      if cn.isModuleRoot()
+      then result = MkModuleImport(cn.getExternalModuleName())
+      else result = MkCanonicalNameUse(cn)
     }
 
     /**
@@ -713,20 +761,11 @@ module API {
         succ = MkClassInstance(trackDefNode(def))
       )
       or
-      exists(CanonicalName cn |
-        pred = MkRoot() and
-        lbl = Label::mod(cn.getExternalModuleName())
-      |
-        succ = MkCanonicalNameUse(cn) or
-        succ = MkCanonicalNameDef(cn)
-      )
-      or
-      exists(CanonicalName cn1, CanonicalName cn2 |
-        cn2 = cn1.getAChild() and
-        lbl = Label::member(cn2.getName())
-      |
-        (pred = MkCanonicalNameDef(cn1) or pred = MkCanonicalNameUse(cn1)) and
-        (succ = MkCanonicalNameDef(cn2) or succ = MkCanonicalNameUse(cn2))
+      exists(CanonicalName cn1, string n, CanonicalName cn2 |
+        pred in [mkCanonicalNameDef(cn1), mkCanonicalNameUse(cn1)] and
+        cn2 = cn1.getChild(n) and
+        lbl = Label::member(n) and
+        succ in [mkCanonicalNameDef(cn2), mkCanonicalNameUse(cn2)]
       )
       or
       exists(DataFlow::Node nd, DataFlow::FunctionNode f |
