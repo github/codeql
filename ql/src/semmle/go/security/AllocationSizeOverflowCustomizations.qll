@@ -178,12 +178,6 @@ module AllocationSizeOverflow {
    * or through an arithmetic operation (other than remainder).
    */
   predicate additionalStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::CallNode c |
-      c = Builtin::len().getACall() and
-      pred = c.getArgument(0) and
-      succ = c
-    )
-    or
     succ.asExpr().(ArithmeticExpr).getAnOperand() = pred.asExpr() and
     not succ.asExpr() instanceof RemExpr
   }
