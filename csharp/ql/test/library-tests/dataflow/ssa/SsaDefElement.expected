@@ -82,6 +82,9 @@
 | Capture.cs:232:9:232:13 | SSA def(i) | Capture.cs:232:9:232:13 | ... = ... |
 | Capture.cs:235:21:235:25 | SSA def(i) | Capture.cs:235:21:235:25 | ... = ... |
 | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:236:9:236:12 | call to local function M3 |
+| Capture.cs:242:13:242:17 | SSA def(i) | Capture.cs:242:13:242:17 | Int32 i = ... |
+| Capture.cs:251:13:251:17 | SSA def(j) | Capture.cs:251:13:251:17 | ... = ... |
+| Capture.cs:254:27:254:27 | SSA def(i) | Capture.cs:254:9:254:28 | call to local function CaptureAndRef |
 | Consistency.cs:7:25:7:25 | SSA param(b) | Consistency.cs:7:25:7:25 | b |
 | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
 | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |

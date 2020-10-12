@@ -93,6 +93,9 @@
 | Capture.cs:229:13:229:13 | i | Capture.cs:235:21:235:25 | SSA def(i) | Capture.cs:235:21:235:25 | SSA def(i) |
 | Capture.cs:229:13:229:13 | i | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:232:9:232:13 | SSA def(i) |
 | Capture.cs:229:13:229:13 | i | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:236:9:236:12 | SSA call def(i) |
+| Capture.cs:242:13:242:13 | i | Capture.cs:242:13:242:17 | SSA def(i) | Capture.cs:242:13:242:17 | SSA def(i) |
+| Capture.cs:242:13:242:13 | i | Capture.cs:254:27:254:27 | SSA def(i) | Capture.cs:254:27:254:27 | SSA def(i) |
+| Capture.cs:248:36:248:36 | j | Capture.cs:251:13:251:17 | SSA def(j) | Capture.cs:251:13:251:17 | SSA def(j) |
 | Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | SSA param(b) | Consistency.cs:7:25:7:25 | SSA param(b) |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:15:17:15:21 | SSA def(i) |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) |
