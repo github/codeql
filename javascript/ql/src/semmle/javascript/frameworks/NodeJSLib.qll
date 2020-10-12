@@ -447,10 +447,10 @@ module NodeJSLib {
    */
   module FS {
     /**
-     * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
+     * A member `member` from module `fs`.
      */
     DataFlow::SourceNode moduleMember(string member) {
-      exists(string moduleName | moduleName = ["fs-extra", "graceful-fs", "fs"] |
+      exists(string moduleName | moduleName = ["fs"] |
         result = DataFlow::moduleMember(moduleName, member)
       )
     }

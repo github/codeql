@@ -1843,40 +1843,6 @@ nodes
 | other-fs-libraries.js:11:19:11:22 | path |
 | other-fs-libraries.js:11:19:11:22 | path |
 | other-fs-libraries.js:11:19:11:22 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:13:24:13:27 | path |
 | tainted-access-paths.js:6:7:6:48 | path |
 | tainted-access-paths.js:6:7:6:48 | path |
 | tainted-access-paths.js:6:7:6:48 | path |
@@ -2705,26 +2671,6 @@ nodes
 | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
 | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
 | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
-| torrents.js:5:6:5:38 | name |
-| torrents.js:5:6:5:38 | name |
-| torrents.js:5:6:5:38 | name |
-| torrents.js:5:13:5:38 | parseTo ... t).name |
-| torrents.js:5:13:5:38 | parseTo ... t).name |
-| torrents.js:5:13:5:38 | parseTo ... t).name |
-| torrents.js:5:13:5:38 | parseTo ... t).name |
-| torrents.js:6:6:6:45 | loc |
-| torrents.js:6:6:6:45 | loc |
-| torrents.js:6:6:6:45 | loc |
-| torrents.js:6:12:6:45 | dir + " ... t.data" |
-| torrents.js:6:12:6:45 | dir + " ... t.data" |
-| torrents.js:6:12:6:45 | dir + " ... t.data" |
-| torrents.js:6:24:6:27 | name |
-| torrents.js:6:24:6:27 | name |
-| torrents.js:6:24:6:27 | name |
-| torrents.js:7:25:7:27 | loc |
-| torrents.js:7:25:7:27 | loc |
-| torrents.js:7:25:7:27 | loc |
-| torrents.js:7:25:7:27 | loc |
 | typescript.ts:9:7:9:48 | path |
 | typescript.ts:9:7:9:48 | path |
 | typescript.ts:9:7:9:48 | path |
@@ -5488,70 +5434,6 @@ edges
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:11:19:11:22 | path |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:11:19:11:22 | path |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:11:19:11:22 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path |
 | other-fs-libraries.js:9:14:9:37 | url.par ... , true) | other-fs-libraries.js:9:14:9:43 | url.par ... ).query |
 | other-fs-libraries.js:9:14:9:37 | url.par ... , true) | other-fs-libraries.js:9:14:9:43 | url.par ... ).query |
 | other-fs-libraries.js:9:14:9:37 | url.par ... , true) | other-fs-libraries.js:9:14:9:43 | url.par ... ).query |
@@ -6777,27 +6659,6 @@ edges
 | tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
 | tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
 | tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
-| torrents.js:5:6:5:38 | name | torrents.js:6:24:6:27 | name |
-| torrents.js:5:6:5:38 | name | torrents.js:6:24:6:27 | name |
-| torrents.js:5:6:5:38 | name | torrents.js:6:24:6:27 | name |
-| torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:5:6:5:38 | name |
-| torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:5:6:5:38 | name |
-| torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:5:6:5:38 | name |
-| torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:5:6:5:38 | name |
-| torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:5:6:5:38 | name |
-| torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:5:6:5:38 | name |
-| torrents.js:6:6:6:45 | loc | torrents.js:7:25:7:27 | loc |
-| torrents.js:6:6:6:45 | loc | torrents.js:7:25:7:27 | loc |
-| torrents.js:6:6:6:45 | loc | torrents.js:7:25:7:27 | loc |
-| torrents.js:6:6:6:45 | loc | torrents.js:7:25:7:27 | loc |
-| torrents.js:6:6:6:45 | loc | torrents.js:7:25:7:27 | loc |
-| torrents.js:6:6:6:45 | loc | torrents.js:7:25:7:27 | loc |
-| torrents.js:6:12:6:45 | dir + " ... t.data" | torrents.js:6:6:6:45 | loc |
-| torrents.js:6:12:6:45 | dir + " ... t.data" | torrents.js:6:6:6:45 | loc |
-| torrents.js:6:12:6:45 | dir + " ... t.data" | torrents.js:6:6:6:45 | loc |
-| torrents.js:6:24:6:27 | name | torrents.js:6:12:6:45 | dir + " ... t.data" |
-| torrents.js:6:24:6:27 | name | torrents.js:6:12:6:45 | dir + " ... t.data" |
-| torrents.js:6:24:6:27 | name | torrents.js:6:12:6:45 | dir + " ... t.data" |
 | typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
 | typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
 | typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
@@ -7199,8 +7060,6 @@ edges
 | normalizedPaths.js:356:19:356:22 | path | normalizedPaths.js:354:14:354:27 | req.query.path | normalizedPaths.js:356:19:356:22 | path | This path depends on $@. | normalizedPaths.js:354:14:354:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:363:21:363:31 | requestPath | normalizedPaths.js:354:14:354:27 | req.query.path | normalizedPaths.js:363:21:363:31 | requestPath | This path depends on $@. | normalizedPaths.js:354:14:354:27 | req.query.path | a user-provided value |
 | other-fs-libraries.js:11:19:11:22 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:11:19:11:22 | path | This path depends on $@. | other-fs-libraries.js:9:24:9:30 | req.url | a user-provided value |
-| other-fs-libraries.js:12:27:12:30 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:12:27:12:30 | path | This path depends on $@. | other-fs-libraries.js:9:24:9:30 | req.url | a user-provided value |
-| other-fs-libraries.js:13:24:13:27 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:13:24:13:27 | path | This path depends on $@. | other-fs-libraries.js:9:24:9:30 | req.url | a user-provided value |
 | tainted-access-paths.js:8:19:8:22 | path | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:8:19:8:22 | path | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
 | tainted-access-paths.js:12:19:12:25 | obj.sub | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:12:19:12:25 | obj.sub | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
 | tainted-access-paths.js:26:19:26:26 | obj.sub3 | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:26:19:26:26 | obj.sub3 | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
@@ -7222,7 +7081,6 @@ edges
 | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
 | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
 | tainted-string-steps.js:27:18:27:36 | path.split(unknown) | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:27:18:27:36 | path.split(unknown) | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
-| torrents.js:7:25:7:27 | loc | torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:7:25:7:27 | loc | This path depends on $@. | torrents.js:5:13:5:38 | parseTo ... t).name | a user-provided value |
 | typescript.ts:12:29:12:32 | path | typescript.ts:9:24:9:30 | req.url | typescript.ts:12:29:12:32 | path | This path depends on $@. | typescript.ts:9:24:9:30 | req.url | a user-provided value |
 | typescript.ts:21:39:21:43 | path3 | typescript.ts:9:24:9:30 | req.url | typescript.ts:21:39:21:43 | path3 | This path depends on $@. | typescript.ts:9:24:9:30 | req.url | a user-provided value |
 | typescript.ts:24:39:24:43 | path4 | typescript.ts:9:24:9:30 | req.url | typescript.ts:24:39:24:43 | path4 | This path depends on $@. | typescript.ts:9:24:9:30 | req.url | a user-provided value |

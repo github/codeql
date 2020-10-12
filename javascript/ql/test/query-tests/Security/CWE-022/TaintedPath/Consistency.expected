@@ -1,4 +1,6 @@
 | query-tests/Security/CWE-022/TaintedPath/TaintedPath.js:138 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-022/TaintedPath/other-fs-libraries.js:12 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-022/TaintedPath/other-fs-libraries.js:13 | expected an alert, but found none | NOT OK |  |
 | query-tests/Security/CWE-022/TaintedPath/other-fs-libraries.js:14 | expected an alert, but found none | NOT OK |  |
 | query-tests/Security/CWE-022/TaintedPath/other-fs-libraries.js:16 | expected an alert, but found none | NOT OK |  |
 | query-tests/Security/CWE-022/TaintedPath/other-fs-libraries.js:17 | expected an alert, but found none | NOT OK |  |
@@ -12,3 +14,4 @@
 | query-tests/Security/CWE-022/TaintedPath/tainted-sendFile.js:17 | expected an alert, but found none | BAD: doesn't help if user controls root |  |
 | query-tests/Security/CWE-022/TaintedPath/tainted-sendFile.js:24 | expected an alert, but found none | NOT OK |  |
 | query-tests/Security/CWE-022/TaintedPath/tainted-sendFile.js:25 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-022/TaintedPath/torrents.js:7 | expected an alert, but found none | NOT OK |  |

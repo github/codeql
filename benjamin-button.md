@@ -10,6 +10,15 @@ Sinks added between 2020-01-01 and 2020-10-06 have been removed. Found by lookin
 - the commit titles of https://github.com/github/codeql/commits/main/javascript/ql/test/query-tests/Security/CWE-022/TaintedPath/TaintedPath.expected
 - the PR titles of https://github.com/github/codeql/pulls?page=2&q=is%3Apr+label%3AJS+is%3Aclosed+sink
 
+Sinks added between 2018-08-02 and 2020-01-01 have been removed. Found by looking at:
+
+- the commit titles of https://github.com/github/codeql/commits/main/javascript/ql/test/query-tests/Security/CWE-022/TaintedPath/TaintedPath.expected
+- the PR titles of https://github.com/github/codeql/pulls?page=2&q=is%3Apr+label%3AJS+is%3Aclosed+sink
+- the PR titles of https://github.com/github/codeql/pulls?page=2&q=is%3Apr+label%3AJS+is%3Aclosed+pathinjection
+- the PR titles of https://github.com/github/codeql/pulls?page=2&q=is%3Apr+label%3AJS+is%3Aclosed+tainted-path
+
+Sinks from the "graceful-fs" and "fs-extra" (added before the open-sourcing squash).
+
 ## Xss.ql
 
 Sinks added between 2020-01-01 and 2020-10-06 have been removed. Found by looking at:

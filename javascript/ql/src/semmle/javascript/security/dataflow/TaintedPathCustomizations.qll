@@ -584,8 +584,6 @@ module TaintedPath {
       (
         this = fileSystemAccess.getAPathArgument() and
         not exists(fileSystemAccess.getRootPathArgument())
-        or
-        this = fileSystemAccess.getRootPathArgument()
       ) and
       not this = any(ResolvingPathCall call).getInput()
     }
