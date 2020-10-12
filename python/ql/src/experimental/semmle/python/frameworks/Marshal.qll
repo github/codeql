@@ -9,7 +9,7 @@ private import experimental.semmle.python.Concepts
 
 private module Marshal {
   /** Gets a reference to the `marshal` module. */
-  DataFlow::Node marshal(DataFlow::TypeTracker t) {
+  private DataFlow::Node marshal(DataFlow::TypeTracker t) {
     t.start() and
     result = DataFlow::importModule("marshal")
     or
@@ -38,7 +38,7 @@ private module Marshal {
 
 /**
  * A call to `marshal.loads`
- * See https://docs.python.org/2/library/marshal.html#marshal.load
+ * See https://docs.python.org/3/library/marshal.html#marshal.loads
  */
 private class MarshalDeserialization extends DeserializationSink::Range {
   MarshalDeserialization() {

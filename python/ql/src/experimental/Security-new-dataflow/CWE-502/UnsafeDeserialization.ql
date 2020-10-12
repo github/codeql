@@ -19,7 +19,7 @@ import experimental.dataflow.RemoteFlowSources
 import DataFlow::PathGraph
 
 class UnsafeDeserializationConfiguration extends TaintTracking::Configuration {
-  UnsafeDeserializationConfiguration() { this = "Unsafe deserialization configuration" }
+  UnsafeDeserializationConfiguration() { this = "UnsafeDeserializationConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
