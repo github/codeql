@@ -37,9 +37,9 @@ abstract class AttrRef extends Node {
   }
 
   /**
-   * Gets the name of the attribute being read or written. Only holds if the attribute name has
-   * been uniquely determined statically. For attributes that are computed dynamically,
-   * consider using `mayHaveAttributeName` instead.
+   * Gets the name of the attribute being read or written. For dynamic attribute accesses, this
+   * method is not guaranteed to return a result. For such cases, using `mayHaveAttributeName` may yield
+   * better results.
    */
   abstract string getAttributeName();
 }
