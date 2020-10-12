@@ -192,11 +192,6 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
       or
       s = "java.util.zip.GZIPInputStream" and argi = 0
       or
-      // string builders and buffers
-      s = "java.lang.StringBuilder" and argi = 0
-      or
-      s = "java.lang.StringBuffer" and argi = 0
-      or
       // a cookie with tainted ingredients is tainted
       s = "javax.servlet.http.Cookie" and argi = 0
       or
@@ -219,11 +214,6 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
       or
       s = "java.io.File" and argi = 1
     )
-    or
-    exists(RefType t | t.getQualifiedName() = "java.lang.Number" |
-      hasSubtype*(t, sink.getConstructedType())
-    ) and
-    argi = 0
     or
     // wrappers constructed by extension
     exists(Constructor c, Parameter p, SuperConstructorInvocationStmt sup |
@@ -310,13 +300,6 @@ private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
 private predicate taintPreservingQualifierToMethod(Method m) {
   m instanceof CloneMethod
   or
-  exists(Class c | c.getQualifiedName() = "java.lang.Number" | hasSubtype*(c, m.getDeclaringType())) and
-  (
-    m.getName().matches("to%String") or
-    m.getName() = "toByteArray" or
-    m.getName().matches("%Value")
-  )
-  or
   m.getDeclaringType().getASupertype*().hasQualifiedName("java.io", "Reader") and
   (
     m.getName() = "read" and m.getNumberOfParameters() = 0
@@ -339,13 +322,6 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   m.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
   m.getName().matches("read%")
-  or
-  (
-    m.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
-    m.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer") or
-    m.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
-  ) and
-  (m.getName() = "toString" or m.getName() = "append")
   or
   m.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
   m.hasName("getInputSource")
@@ -432,29 +408,6 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  * `arg`th argument is tainted.
  */
 private predicate taintPreservingArgumentToMethod(Method method, int arg) {
-  exists(Class c | c.getQualifiedName() = "java.lang.Number" |
-    hasSubtype*(c, method.getDeclaringType())
-  ) and
-  (
-    method.getName().matches("parse%") and arg = 0
-    or
-    method.getName().matches("valueOf%") and arg = 0
-    or
-    method.getName().matches("to%String") and arg = 0
-  )
-  or
-  (
-    method.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
-    method.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer")
-  ) and
-  (
-    method.getName() = "append" and arg = 0
-    or
-    method.getName() = "insert" and arg = 1
-    or
-    method.getName() = "replace" and arg = 2
-  )
-  or
   (
     method.getDeclaringType().hasQualifiedName("java.util", "Base64$Encoder") or
     method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder") or
@@ -516,10 +469,6 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   or
   method.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
   method.hasName("sourceToInputSource") and
-  arg = 0
-  or
-  method.getDeclaringType().hasQualifiedName("java.io", "StringWriter") and
-  method.hasName("append") and
   arg = 0
   or
   method.(TaintPreservingCallable).returnsTaintFrom(arg)
@@ -599,17 +548,6 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
       write.getDeclaringType().hasQualifiedName("java.io", "OutputStream")
       or
       write.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
-    )
-  )
-  or
-  exists(Method append |
-    method.overrides*(append) and
-    append.hasName("append") and
-    arg = 0 and
-    (
-      append.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
-      append.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer") or
-      append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
     )
   )
   or

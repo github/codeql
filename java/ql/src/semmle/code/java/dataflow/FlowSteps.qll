@@ -69,3 +69,59 @@ private class StringTaintPreservingCallable extends TaintPreservingCallable {
     this.hasName(["format", "formatted", "join"]) and arg = [0 .. getNumberOfParameters()]
   }
 }
+
+private class NumberTaintPreservingCallable extends TaintPreservingCallable {
+  int argument;
+
+  NumberTaintPreservingCallable() {
+    this.getDeclaringType().getASupertype*().hasQualifiedName("java.lang", "Number") and
+    (
+      this instanceof Constructor and
+      argument = 0
+      or
+      this.getName().matches(["to%String", "toByteArray", "%Value"]) and
+      argument = -1
+      or
+      this.getName().matches(["parse%", "valueOf%", "to%String", "decode"]) and
+      argument = 0
+    )
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = argument }
+}
+
+private class StringBuilderTaintPreservingCallable extends TaintPreservingCallable {
+  StringBuilderTaintPreservingCallable() {
+    exists(Class c | c = this.getDeclaringType().getASourceSupertype*() |
+      (
+        c.hasQualifiedName("java.lang", "StringBuilder") or
+        c.hasQualifiedName("java.lang", "StringBuffer") or
+        c.hasQualifiedName("java.io", "StringWriter")
+      ) and
+      (
+        this.hasName(["append", "insert", "replace", "toString"])
+        or
+        this.(Constructor).getParameterType(0) instanceof TypeString and
+        c = this.getDeclaringType()
+      )
+    )
+  }
+
+  override predicate returnsTaintFrom(int arg) {
+    arg = -1
+    or
+    this instanceof Constructor and arg = 0
+    or
+    this.hasName("append") and arg = 0
+    or
+    this.hasName("insert") and arg = 1
+    or
+    this.hasName("replace") and arg = 2
+  }
+
+  override predicate transfersTaint(int src, int sink) {
+    returnsTaintFrom(src) and
+    sink = -1 and
+    src != -1
+  }
+}
