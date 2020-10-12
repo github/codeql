@@ -233,24 +233,23 @@ private class QueryBuilderBuildMethod extends TaintPreservingMethod {
 
   QueryBuilderBuildMethod() {
     this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
-    // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
-    // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
-    // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
-    // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
-    // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
-    // static buildQueryString(boolean distinct, String tables, String[] columns, String where, String groupBy, String having, String orderBy, String limit)
-    this.hasName(["buildQuery", "buildUnionQuery", "buildUnionSubQuery"]) and
-    argument = -1
-    or
-    hasName(["buildQuery", "buildUnionQuery"]) and
-    argument = [0 .. getNumberOfParameters()]
-    or
-    hasName("buildQueryString") and
-    argument = [1 .. getNumberOfParameters()]
-    or
-    hasName("buildUnionSubQuery") and
-    argument = [0 .. getNumberOfParameters()] and
-    argument != 3
+    (
+      // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
+      // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
+      // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
+      this.hasName(["buildQuery", "buildUnionQuery"]) and
+      argument = [-1 .. getNumberOfParameters()]
+      or
+      // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
+      // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
+      this.hasName("buildUnionSubQuery") and
+      argument = [-1 .. getNumberOfParameters()] and
+      argument != 3
+      or
+      // static buildQueryString(boolean distinct, String tables, String[] columns, String where, String groupBy, String having, String orderBy, String limit)
+      hasName("buildQueryString") and
+      argument = [1 .. getNumberOfParameters()]
+    )
   }
 
   override predicate returnsTaintFrom(int arg) { argument = arg }

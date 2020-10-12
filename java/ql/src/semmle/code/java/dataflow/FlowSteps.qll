@@ -62,7 +62,7 @@ private class StringTaintPreservingMethod extends TaintPreservingMethod {
   }
 
   override predicate returnsTaintFrom(int arg) {
-    arg = -1
+    arg = -1 and not this.isStatic()
     or
     this.hasName(["concat", "copyValueOf"]) and arg = 0
     or
