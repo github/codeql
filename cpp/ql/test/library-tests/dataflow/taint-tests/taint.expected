@@ -158,6 +158,8 @@
 | set.cpp:50:10:50:13 | call to find | set.cpp:20:17:20:22 | call to source |
 | set.cpp:51:11:51:14 | call to find | set.cpp:20:17:20:22 | call to source |
 | set.cpp:61:8:61:8 | call to operator* | set.cpp:20:17:20:22 | call to source |
+| set.cpp:69:11:69:21 | call to lower_bound | set.cpp:67:13:67:18 | call to source |
+| set.cpp:70:11:70:21 | call to upper_bound | set.cpp:67:13:67:18 | call to source |
 | set.cpp:78:7:78:9 | call to set | set.cpp:76:13:76:18 | call to source |
 | set.cpp:81:7:81:9 | call to set | set.cpp:77:13:77:18 | call to source |
 | set.cpp:84:7:84:9 | call to set | set.cpp:76:13:76:18 | call to source |

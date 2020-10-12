@@ -66,10 +66,10 @@ void test_set()
 	s11.insert("a");
 	s11.insert(source());
 	s11.insert("c");
-	sink(s11.lower_bound("b")); // tainted [NOT DETECTED]
-	sink(s11.upper_bound("b")); // tainted [NOT DETECTED]
-	sink(s11.equal_range("b").first); // tainted [NOT DETECTED]
-	sink(s11.equal_range("b").second); // tainted [NOT DETECTED]
+	sink(s11.lower_bound("b")); // tainted
+	sink(s11.upper_bound("b")); // tainted
+	sink(s11.equal_range("b").first); // tainted
+	sink(s11.equal_range("b").second); // tainted
 
 	// swap
 	std::set<char *> s12, s13, s14, s15;
@@ -180,8 +180,8 @@ void test_unordered_set()
 	s11.insert("a");
 	s11.insert(source());
 	s11.insert("c");
-	sink(s11.equal_range("b").first); // tainted [NOT DETECTED]
-	sink(s11.equal_range("b").second); // tainted [NOT DETECTED]
+	sink(s11.equal_range("b").first); // tainted
+	sink(s11.equal_range("b").second); // tainted
 
 	// swap
 	std::unordered_set<char *> s12, s13, s14, s15;

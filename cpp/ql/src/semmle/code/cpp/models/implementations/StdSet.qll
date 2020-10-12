@@ -103,3 +103,20 @@ class StdSetErase extends TaintFunction {
     output.isReturnValue()
   }
 }
+
+/**
+ * The standard set `lower_bound`, `upper_bound` and `equal_range` functions.
+ */
+class StdSetEqualRange extends TaintFunction {
+  StdSetEqualRange() {
+    this
+        .hasQualifiedName("std", ["set", "unordered_set"],
+          ["lower_bound", "upper_bound", "equal_range"])
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}

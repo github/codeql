@@ -115,6 +115,8 @@
 | set.cpp:48:10:48:13 | set.cpp:20:17:20:22 | AST only |
 | set.cpp:49:10:49:13 | set.cpp:20:17:20:22 | AST only |
 | set.cpp:61:8:61:11 | set.cpp:20:17:20:22 | IR only |
+| set.cpp:71:7:71:32 | set.cpp:67:13:67:18 | IR only |
+| set.cpp:72:7:72:33 | set.cpp:67:13:67:18 | IR only |
 | set.cpp:78:7:78:9 | set.cpp:76:13:76:18 | AST only |
 | set.cpp:81:7:81:9 | set.cpp:77:13:77:18 | AST only |
 | set.cpp:84:7:84:9 | set.cpp:76:13:76:18 | AST only |
@@ -143,6 +145,8 @@
 | set.cpp:162:10:162:13 | set.cpp:134:17:134:22 | AST only |
 | set.cpp:163:10:163:13 | set.cpp:134:17:134:22 | AST only |
 | set.cpp:175:8:175:11 | set.cpp:134:17:134:22 | IR only |
+| set.cpp:183:7:183:32 | set.cpp:181:13:181:18 | IR only |
+| set.cpp:184:7:184:33 | set.cpp:181:13:181:18 | IR only |
 | set.cpp:190:7:190:9 | set.cpp:188:13:188:18 | AST only |
 | set.cpp:193:7:193:9 | set.cpp:189:13:189:18 | AST only |
 | set.cpp:196:7:196:9 | set.cpp:188:13:188:18 | AST only |
