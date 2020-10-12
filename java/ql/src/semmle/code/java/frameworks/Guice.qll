@@ -35,7 +35,7 @@ class GuiceProvider extends Interface {
   }
 }
 
-private class OverridingGetMethod extends TaintPreservingMethod {
+private class OverridingGetMethod extends TaintPreservingCallable {
   OverridingGetMethod() { this = any(GuiceProvider gp).getAnOverridingGetMethod() }
 
   override predicate returnsTaintFrom(int arg) { arg = -1 }

@@ -1,7 +1,7 @@
 import java.util.Formatter;
 import java.lang.StringBuilder;
-import java.lang.System;
-import java.io.Console;
+
+
 
 class A {
     public static String taint() { return "tainted"; }
@@ -38,9 +38,10 @@ class A {
 
     public static void test4() {
         String bad = taint();
-        Console c = System.console();
+        StringBuilder sb = new StringBuilder();
 
-        c.format(bad);
-        c.readLine("Enter something: %s", bad);
+        sb.append(bad);
+
+        new Formatter(sb).format("ok").toString();
     }
 }

@@ -228,7 +228,7 @@ private class ContentProviderUpdateMethod extends SQLiteRunner {
   override int sqlIndex() { result = 2 }
 }
 
-private class QueryBuilderBuildMethod extends TaintPreservingMethod {
+private class QueryBuilderBuildMethod extends TaintPreservingCallable {
   int argument;
 
   QueryBuilderBuildMethod() {
@@ -255,7 +255,7 @@ private class QueryBuilderBuildMethod extends TaintPreservingMethod {
   override predicate returnsTaintFrom(int arg) { argument = arg }
 }
 
-private class QueryBuilderAppendMethod extends TaintPreservingMethod {
+private class QueryBuilderAppendMethod extends TaintPreservingCallable {
   QueryBuilderAppendMethod() {
     this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
     // setProjectionMap(Map<String, String> columnMap)
@@ -273,7 +273,7 @@ private class QueryBuilderAppendMethod extends TaintPreservingMethod {
   }
 }
 
-private class UnsafeAppendUtilMethod extends TaintPreservingMethod {
+private class UnsafeAppendUtilMethod extends TaintPreservingCallable {
   UnsafeAppendUtilMethod() {
     this.getDeclaringType() instanceof TypeDatabaseUtils and
     // String[] appendSelectionArgs(String[] originalValues, String[] newValues)
@@ -284,7 +284,7 @@ private class UnsafeAppendUtilMethod extends TaintPreservingMethod {
   override predicate returnsTaintFrom(int arg) { arg = [0 .. getNumberOfParameters()] }
 }
 
-private class TaintPreservingQueryMethod extends TaintPreservingMethod {
+private class TaintPreservingQueryMethod extends TaintPreservingCallable {
   TaintPreservingQueryMethod() {
     (
       this.getDeclaringType() instanceof AndroidContentProvider or

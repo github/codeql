@@ -34,7 +34,7 @@ class ContextStartActivityMethod extends Method {
   }
 }
 
-class IntentGetExtraMethod extends Method, TaintPreservingMethod {
+class IntentGetExtraMethod extends Method, TaintPreservingCallable {
   IntentGetExtraMethod() {
     (getName().regexpMatch("get\\w+Extra") or hasName("getExtras")) and
     getDeclaringType() instanceof TypeIntent

@@ -162,9 +162,6 @@ private predicate inputStreamWrapper(Constructor c, int argi) {
 private predicate constructorStep(Expr tracked, ConstructorCall sink) {
   exists(int argi | sink.getArgument(argi) = tracked |
     exists(string s | sink.getConstructedType().getQualifiedName() = s |
-      // String constructor does nothing to data
-      s = "java.lang.String" and argi = 0
-      or
       // some readers preserve the content of streams
       s = "java.io.InputStreamReader" and argi = 0
       or
@@ -254,6 +251,8 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
       argi = 0 and
       tracked.getType() instanceof TypeString
     )
+    or
+    sink.getConstructor().(TaintPreservingCallable).returnsTaintFrom(argToParam(sink, argi))
   )
 }
 
@@ -261,11 +260,11 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
  * Converts an argument index to a formal parameter index.
  * This is relevant for varadic methods.
  */
-private int argToParam(MethodAccess ma, int arg) {
-  exists(ma.getArgument(arg)) and
-  exists(Method m | m = ma.getMethod() |
-    if m.isVarargs() and arg >= m.getNumberOfParameters()
-    then result = m.getNumberOfParameters() - 1
+private int argToParam(Call call, int arg) {
+  exists(call.getArgument(arg)) and
+  exists(Callable c | c = call.getCallee() |
+    if c.isVarargs() and arg >= c.getNumberOfParameters()
+    then result = c.getNumberOfParameters() - 1
     else result = arg
   )
 }
@@ -296,7 +295,7 @@ private predicate taintPreservingQualifierToArgument(Method m, int arg) {
   m.hasName("read") and
   arg = 0
   or
-  m.(TaintPreservingMethod).transfersTaint(-1, arg)
+  m.(TaintPreservingCallable).transfersTaint(-1, arg)
 }
 
 /** Access to a method that passes taint from the qualifier. */
@@ -378,10 +377,10 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     )
   )
   or
-  m.(TaintPreservingMethod).returnsTaintFrom(-1)
+  m.(TaintPreservingCallable).returnsTaintFrom(-1)
 }
 
-private class StringReplaceMethod extends TaintPreservingMethod {
+private class StringReplaceMethod extends TaintPreservingCallable {
   StringReplaceMethod() {
     getDeclaringType() instanceof TypeString and
     (
@@ -523,7 +522,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method.hasName("append") and
   arg = 0
   or
-  method.(TaintPreservingMethod).returnsTaintFrom(arg)
+  method.(TaintPreservingCallable).returnsTaintFrom(arg)
 }
 
 /**
@@ -571,7 +570,7 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   input = 0 and
   output = 2
   or
-  method.(TaintPreservingMethod).transfersTaint(input, output)
+  method.(TaintPreservingCallable).transfersTaint(input, output)
 }
 
 /**
@@ -607,10 +606,14 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
     method.overrides*(append) and
     append.hasName("append") and
     arg = 0 and
-    append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
+    (
+      append.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
+      append.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer") or
+      append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
+    )
   )
   or
-  method.(TaintPreservingMethod).transfersTaint(arg, -1)
+  method.(TaintPreservingCallable).transfersTaint(arg, -1)
 }
 
 /** A comparison or equality test with a constant. */
@@ -734,15 +737,27 @@ private class TypeFormatter extends Class {
   TypeFormatter() { this.hasQualifiedName("java.util", "Formatter") }
 }
 
-private class FormatterMethod extends TaintPreservingMethod {
-  FormatterMethod() {
-    getDeclaringType() instanceof TypeFormatter and
-    hasName(["format", "out", "toString"])
+private class FormatterCallable extends TaintPreservingCallable {
+  FormatterCallable() {
+    this.getDeclaringType() instanceof TypeFormatter and
+    (
+      this.hasName(["format", "out", "toString"])
+      or
+      this
+          .(Constructor)
+          .getParameterType(0)
+          .(RefType)
+          .getASourceSupertype*()
+          .hasQualifiedName("java.lang", "Appendable")
+    )
   }
 
-  override predicate returnsTaintFrom(int arg) { arg = [-1 .. getNumberOfParameters()] }
+  override predicate returnsTaintFrom(int arg) {
+    if this instanceof Constructor then arg = 0 else arg = [-1 .. getNumberOfParameters()]
+  }
 
   override predicate transfersTaint(int src, int sink) {
+    this.hasName("format") and
     sink = -1 and
     src = [0 .. getNumberOfParameters()]
   }

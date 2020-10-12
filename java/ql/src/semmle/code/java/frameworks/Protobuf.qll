@@ -56,13 +56,13 @@ class ProtobufMessageLite extends Interface {
   }
 }
 
-private class TaintPreservingGetterMethod extends TaintPreservingMethod {
+private class TaintPreservingGetterMethod extends TaintPreservingCallable {
   TaintPreservingGetterMethod() { this = any(ProtobufMessageLite p).getAGetterMethod() }
 
   override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
 
-private class TaintPreservingParseFromMethod extends TaintPreservingMethod {
+private class TaintPreservingParseFromMethod extends TaintPreservingCallable {
   TaintPreservingParseFromMethod() {
     exists(ProtobufParser p | this = p.getAParseFromMethod())
     or

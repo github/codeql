@@ -32,39 +32,39 @@ class AdditionalTaintStep extends Unit {
 }
 
 /**
- * A method that preserves taint.
+ * A method or constructor that preserves taint.
  *
  * Extend this class and override at least one of `returnsTaintFrom` or `transfersTaint`
  * to add additional taint steps through a method that should apply to all taint configurations.
  */
-abstract class TaintPreservingMethod extends Method {
+abstract class TaintPreservingCallable extends Callable {
   /**
-   * Holds if this method returns tainted data when `arg` tainted.
+   * Holds if this callable returns tainted data when `arg` tainted.
    * `arg` is a parameter index, or is -1 to indicate the qualifier.
    */
   predicate returnsTaintFrom(int arg) { none() }
 
   /**
-   * Holds if this method writes tainted data to `sink` when `src` is tainted.
+   * Holds if this callable writes tainted data to `sink` when `src` is tainted.
    * `src` and `sink` are parameter indices, or -1 to indicate the qualifier.
    */
   predicate transfersTaint(int src, int sink) { none() }
 }
 
-private class StringTaintPreservingMethod extends TaintPreservingMethod {
-  StringTaintPreservingMethod() {
+private class StringTaintPreservingCallable extends TaintPreservingCallable {
+  StringTaintPreservingCallable() {
     this.getDeclaringType() instanceof TypeString and
     this
         .hasName(["concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent",
               "intern", "join", "repeat", "split", "strip", "stripIndent", "stripLeading",
               "stripTrailing", "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase",
-              "trim"])
+              "trim", "String"])
   }
 
   override predicate returnsTaintFrom(int arg) {
     arg = -1 and not this.isStatic()
     or
-    this.hasName(["concat", "copyValueOf"]) and arg = 0
+    this.hasName(["concat", "copyValueOf", "String"]) and arg = 0
     or
     this.hasName(["format", "formatted", "join"]) and arg = [0 .. getNumberOfParameters()]
   }
