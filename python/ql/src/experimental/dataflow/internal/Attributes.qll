@@ -22,7 +22,11 @@ abstract class AttrRef extends Node {
    */
   abstract ExprNode getAttributeNameExpr();
 
-  /** Holds if this attribute reference may access an attribute named `attrName`. */
+  /**
+   * Holds if this attribute reference may access an attribute named `attrName`.
+   * Uses local data flow to track potential attribute names, which may lead to imprecision. If more
+   * precision is needed, consider using `getAttributeName` instead.
+   */
   predicate mayHaveAttributeName(string attrName) {
     attrName = this.getAttributeName()
     or
@@ -32,7 +36,11 @@ abstract class AttrRef extends Node {
     )
   }
 
-  /** Gets the name of the attribute being read or written, if it can be determined statically. */
+  /**
+   * Gets the name of the attribute being read or written. Only holds if the attribute name has
+   * been uniquely determined statically. For attributes that are computed dynamically,
+   * consider using `mayHaveAttributeName` instead.
+   */
   abstract string getAttributeName();
 }
 
