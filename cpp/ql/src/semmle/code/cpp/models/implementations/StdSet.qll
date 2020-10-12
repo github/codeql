@@ -66,6 +66,19 @@ class StdSetSwap extends TaintFunction {
 }
 
 /**
+ * The standard set `merge` function.
+ */
+class StdSetMerge extends TaintFunction {
+  StdSetMerge() { this.hasQualifiedName("std", ["set", "unordered_set"], "merge") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // container1.merge(container2)
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+/**
  * The standard set `find` function.
  */
 class StdSetFind extends TaintFunction {

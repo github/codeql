@@ -99,8 +99,8 @@ void test_set()
 	s16.merge(s17);
 	s18.merge(s19);
 	sink(s16); // tainted
-	sink(s17); // tainted [NOT DETECTED]
-	sink(s18); // tainted [NOT DETECTED]
+	sink(s17);
+	sink(s18); // tainted
 	sink(s19); // tainted
 
 	// erase, clear
@@ -211,8 +211,8 @@ void test_unordered_set()
 	s16.merge(s17);
 	s18.merge(s19);
 	sink(s16); // tainted
-	sink(s17); // tainted [NOT DETECTED]
-	sink(s18); // tainted [NOT DETECTED]
+	sink(s17);
+	sink(s18); // tainted
 	sink(s19); // tainted
 
 	// erase, clear

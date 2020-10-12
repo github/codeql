@@ -2224,10 +2224,12 @@
 | set.cpp:99:2:99:4 | ref arg s16 | set.cpp:126:1:126:1 | s16 |  |
 | set.cpp:99:12:99:14 | ref arg s17 | set.cpp:102:7:102:9 | s17 |  |
 | set.cpp:99:12:99:14 | ref arg s17 | set.cpp:126:1:126:1 | s17 |  |
+| set.cpp:99:12:99:14 | s17 | set.cpp:99:2:99:4 | ref arg s16 | TAINT |
 | set.cpp:100:2:100:4 | ref arg s18 | set.cpp:103:7:103:9 | s18 |  |
 | set.cpp:100:2:100:4 | ref arg s18 | set.cpp:126:1:126:1 | s18 |  |
 | set.cpp:100:12:100:14 | ref arg s19 | set.cpp:104:7:104:9 | s19 |  |
 | set.cpp:100:12:100:14 | ref arg s19 | set.cpp:126:1:126:1 | s19 |  |
+| set.cpp:100:12:100:14 | s19 | set.cpp:100:2:100:4 | ref arg s18 | TAINT |
 | set.cpp:101:7:101:9 | s16 | set.cpp:101:7:101:9 | call to set |  |
 | set.cpp:102:7:102:9 | s17 | set.cpp:102:7:102:9 | call to set |  |
 | set.cpp:103:7:103:9 | s18 | set.cpp:103:7:103:9 | call to set |  |
@@ -2685,10 +2687,12 @@
 | set.cpp:211:2:211:4 | ref arg s16 | set.cpp:238:1:238:1 | s16 |  |
 | set.cpp:211:12:211:14 | ref arg s17 | set.cpp:214:7:214:9 | s17 |  |
 | set.cpp:211:12:211:14 | ref arg s17 | set.cpp:238:1:238:1 | s17 |  |
+| set.cpp:211:12:211:14 | s17 | set.cpp:211:2:211:4 | ref arg s16 | TAINT |
 | set.cpp:212:2:212:4 | ref arg s18 | set.cpp:215:7:215:9 | s18 |  |
 | set.cpp:212:2:212:4 | ref arg s18 | set.cpp:238:1:238:1 | s18 |  |
 | set.cpp:212:12:212:14 | ref arg s19 | set.cpp:216:7:216:9 | s19 |  |
 | set.cpp:212:12:212:14 | ref arg s19 | set.cpp:238:1:238:1 | s19 |  |
+| set.cpp:212:12:212:14 | s19 | set.cpp:212:2:212:4 | ref arg s18 | TAINT |
 | set.cpp:213:7:213:9 | s16 | set.cpp:213:7:213:9 | call to unordered_set |  |
 | set.cpp:214:7:214:9 | s17 | set.cpp:214:7:214:9 | call to unordered_set |  |
 | set.cpp:215:7:215:9 | s18 | set.cpp:215:7:215:9 | call to unordered_set |  |
