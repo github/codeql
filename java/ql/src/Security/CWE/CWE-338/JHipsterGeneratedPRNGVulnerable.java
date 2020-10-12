@@ -16,7 +16,7 @@ public final class RandomUtil {
      * @return the generated password.
      */
     public static String generatePassword() {
-        return RandomStringUtils.randomAlphanumeric(DEF_COUNT); // BAD: RandomStringUtils oes not use SecureRandom
+        return RandomStringUtils.randomAlphanumeric(DEF_COUNT); // BAD: RandomStringUtils does not use SecureRandom
     }
 
     /**
@@ -25,7 +25,7 @@ public final class RandomUtil {
      * @return the generated activation key.
      */
     public static String generateActivationKey() {
-        return RandomStringUtils.randomNumeric(DEF_COUNT); // BAD: RandomStringUtils oes not use SecureRandom
+        return RandomStringUtils.randomNumeric(DEF_COUNT); // BAD: RandomStringUtils does not use SecureRandom
     }
 
     /**
@@ -34,7 +34,7 @@ public final class RandomUtil {
      * @return the generated reset key.
      */
     public static String generateResetKey() {
-        return RandomStringUtils.randomNumeric(DEF_COUNT); // BAD: RandomStringUtils oes not use SecureRandom
+        return RandomStringUtils.randomNumeric(DEF_COUNT); // BAD: RandomStringUtils does not use SecureRandom
     }
 
     /**
@@ -44,7 +44,7 @@ public final class RandomUtil {
      * @return the generated series data.
      */
     public static String generateSeriesData() {
-        return RandomStringUtils.randomAlphanumeric(DEF_COUNT); // BAD: RandomStringUtils oes not use SecureRandom
+        return RandomStringUtils.randomAlphanumeric(DEF_COUNT); // BAD: RandomStringUtils does not use SecureRandom
     }
 
     /**
@@ -53,6 +53,6 @@ public final class RandomUtil {
      * @return the generated token data.
      */
     public static String generateTokenData() {
-        return RandomStringUtils.randomAlphanumeric(DEF_COUNT); // BAD: RandomStringUtils oes not use SecureRandom
+        return RandomStringUtils.randomAlphanumeric(DEF_COUNT); // BAD: RandomStringUtils does not use SecureRandom
     }
 }
