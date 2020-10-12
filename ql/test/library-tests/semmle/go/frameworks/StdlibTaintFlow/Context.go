@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	oldcontext "golang.org/x/net/context"
 	"time"
 )
 
@@ -49,6 +50,48 @@ func TaintStepTest_ContextContextValue_B0I0O0(sourceCQL interface{}) interface{}
 	return intoInterface584
 }
 
+func TaintStepTest_OldContextWithCancel_B0I0O0(sourceCQL interface{}) interface{} {
+	fromContext656 := sourceCQL.(oldcontext.Context)
+	intoContext414, _ := oldcontext.WithCancel(fromContext656)
+	return intoContext414
+}
+
+func TaintStepTest_OldContextWithDeadline_B0I0O0(sourceCQL interface{}) interface{} {
+	fromContext518 := sourceCQL.(oldcontext.Context)
+	intoContext650, _ := oldcontext.WithDeadline(fromContext518, time.Time{})
+	return intoContext650
+}
+
+func TaintStepTest_OldContextWithTimeout_B0I0O0(sourceCQL interface{}) interface{} {
+	fromContext784 := sourceCQL.(oldcontext.Context)
+	intoContext957, _ := oldcontext.WithTimeout(fromContext784, 0)
+	return intoContext957
+}
+
+func TaintStepTest_OldContextWithValue_B0I0O0(sourceCQL interface{}) interface{} {
+	fromContext520 := sourceCQL.(oldcontext.Context)
+	intoContext443 := oldcontext.WithValue(fromContext520, nil, nil)
+	return intoContext443
+}
+
+func TaintStepTest_OldContextWithValue_B0I1O0(sourceCQL interface{}) interface{} {
+	fromInterface127 := sourceCQL.(interface{})
+	intoContext483 := oldcontext.WithValue(nil, fromInterface127, nil)
+	return intoContext483
+}
+
+func TaintStepTest_OldContextWithValue_B0I2O0(sourceCQL interface{}) interface{} {
+	fromInterface989 := sourceCQL.(interface{})
+	intoContext982 := oldcontext.WithValue(nil, nil, fromInterface989)
+	return intoContext982
+}
+
+func TaintStepTest_OldContextContextValue_B0I0O0(sourceCQL interface{}) interface{} {
+	fromContext417 := sourceCQL.(oldcontext.Context)
+	intoInterface584 := fromContext417.Value(nil)
+	return intoInterface584
+}
+
 func RunAllTaints_Context() {
 	{
 		source := newSource(0)
@@ -84,5 +127,40 @@ func RunAllTaints_Context() {
 		source := newSource(6)
 		out := TaintStepTest_ContextContextValue_B0I0O0(source)
 		sink(6, out)
+	}
+	{
+		source := newSource(7)
+		out := TaintStepTest_OldContextWithCancel_B0I0O0(source)
+		sink(7, out)
+	}
+	{
+		source := newSource(8)
+		out := TaintStepTest_OldContextWithDeadline_B0I0O0(source)
+		sink(8, out)
+	}
+	{
+		source := newSource(9)
+		out := TaintStepTest_OldContextWithTimeout_B0I0O0(source)
+		sink(9, out)
+	}
+	{
+		source := newSource(10)
+		out := TaintStepTest_OldContextWithValue_B0I0O0(source)
+		sink(10, out)
+	}
+	{
+		source := newSource(11)
+		out := TaintStepTest_OldContextWithValue_B0I1O0(source)
+		sink(11, out)
+	}
+	{
+		source := newSource(12)
+		out := TaintStepTest_OldContextWithValue_B0I2O0(source)
+		sink(12, out)
+	}
+	{
+		source := newSource(13)
+		out := TaintStepTest_OldContextContextValue_B0I0O0(source)
+		sink(13, out)
 	}
 }
