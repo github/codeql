@@ -53,6 +53,7 @@ namespace Semmle.Autobuild.Shared
                             RunCommand(nuget).
                             Argument("restore").
                             QuoteArgument(projectOrSolution.FullPath).
+                            Argument("-DisableParallelProcessing").
                             Script;
                     var nugetRestore = GetNugetRestoreScript();
                     var msbuildRestoreCommand = new CommandBuilder(builder.Actions).

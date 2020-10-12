@@ -6,6 +6,7 @@ private import semmle.code.java.dataflow.DefUse
 private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.Validation
 private import semmle.code.java.frameworks.android.Intent
+private import semmle.code.java.frameworks.android.SQLite
 private import semmle.code.java.frameworks.Guice
 private import semmle.code.java.frameworks.Protobuf
 private import semmle.code.java.frameworks.spring.SpringController
@@ -124,6 +125,8 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   stringBuilderStep(src, sink)
   or
   serializationStep(src, sink)
+  or
+  formatStep(src, sink)
 }
 
 /**
@@ -387,6 +390,17 @@ private predicate taintPreservingQualifierToMethod(Method m) {
       stringlist.getTypeArgument(0) instanceof TypeString
     )
   )
+  or
+  m.getDeclaringType() instanceof TypeFormatter and
+  m.hasName(["format", "out"])
+  or
+  m.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
+  // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
+  // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
+  // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
+  // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
+  // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
+  m.hasName(["buildQuery", "buildUnionQuery", "buildUnionSubQuery"])
 }
 
 private class StringReplaceMethod extends Method {
@@ -447,6 +461,20 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
 private predicate taintPreservingArgumentToMethod(Method method) {
   method.getDeclaringType() instanceof TypeString and
   (method.hasName("format") or method.hasName("formatted") or method.hasName("join"))
+  or
+  method.getDeclaringType() instanceof TypeFormatter and
+  method.hasName("format")
+  or
+  method.getDeclaringType() instanceof TypeDatabaseUtils and
+  // String[] appendSelectionArgs(String[] originalValues, String[] newValues)
+  // String concatenateWhere(String a, String b)
+  method.hasName(["appendSelectionArgs", "concatenateWhere"])
+  or
+  method.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
+  // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
+  // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
+  // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
+  method.hasName(["buildQuery", "buildUnionQuery"])
 }
 
 /**
@@ -560,6 +588,27 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method.getDeclaringType().hasQualifiedName("java.io", "StringWriter") and
   method.hasName("append") and
   arg = 0
+  or
+  method.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
+  (
+    // static buildQueryString(boolean distinct, String tables, String[] columns, String where, String groupBy, String having, String orderBy, String limit)
+    method.hasName("buildQueryString") and arg = [1 .. method.getNumberOfParameters()]
+    or
+    // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
+    // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
+    method.hasName("buildUnionSubQuery") and
+    arg = [0 .. method.getNumberOfParameters()] and
+    arg != 3
+  )
+  or
+  (
+    method.getDeclaringType() instanceof AndroidContentProvider or
+    method.getDeclaringType() instanceof AndroidContentResolver
+  ) and
+  // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder, CancellationSignal cancellationSignal)
+  // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
+  method.hasName("query") and
+  arg = 0
 }
 
 /**
@@ -612,6 +661,12 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   method.getNumberOfParameters() > 1 and
   input = method.getNumberOfParameters() - 1 and
   output = 0
+  or
+  method.getDeclaringType() instanceof TypeSQLiteQueryBuilder and
+  // static appendColumns(StringBuilder s, String[] columns)
+  method.hasName("appendColumns") and
+  input = 1 and
+  output = 0
 }
 
 /**
@@ -625,6 +680,20 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
     tracked = ma.getArgument(i) and
     sink = ma.getQualifier()
   )
+  or
+  exists(MethodAccess ma |
+    taintPreservingArgumentToQualifier(ma.getMethod()) and
+    tracked = ma.getAnArgument() and
+    sink = ma.getQualifier()
+  )
+}
+
+/**
+ * Holds if `method` is a method that transfers taint from any of its arguments to its qualifier.
+ */
+private predicate taintPreservingArgumentToQualifier(Method method) {
+  method.getDeclaringType() instanceof TypeFormatter and
+  method.hasName("format")
 }
 
 /**
@@ -649,6 +718,14 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
     arg = 0 and
     append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
   )
+  or
+  method.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
+  // setProjectionMap(Map<String, String> columnMap)
+  // setTables(String inTables)
+  // appendWhere(CharSequence inWhere)
+  // appendWhereStandalone(CharSequence inWhere)
+  method.hasName(["setProjectionMap", "setTables", "appendWhere", "appendWhereStandalone"]) and
+  arg = 0
 }
 
 /** A comparison or equality test with a constant. */
@@ -720,6 +797,56 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getQualifier() = getAnAccess() and
     result.getMethod().hasName("writeObject")
   }
+}
+
+/** Flow through string formatting. */
+private predicate formatStep(Expr tracked, Expr sink) {
+  exists(FormatterVar v, VariableAssign def |
+    def = v.getADef() and
+    exists(MethodAccess ma, RValue use |
+      ma.getAnArgument() = tracked and
+      ma = v.getAFormatMethodAccess() and
+      use = ma.getQualifier() and
+      defUsePair(def, use)
+    ) and
+    exists(RValue output, ClassInstanceExpr cie |
+      cie = def.getSource() and
+      output = cie.getArgument(0) and
+      adjacentUseUse(output, sink) and
+      exists(RefType t | output.getType().(RefType).getASourceSupertype*() = t |
+        t.hasQualifiedName("java.io", "OutputStream") or
+        t.hasQualifiedName("java.lang", "Appendable")
+      )
+    )
+  )
+}
+
+/**
+ * A local variable that is assigned a `Formatter`.
+ * Writing tainted data to such a formatter causes the underlying
+ * `OutputStream` or `Appendable` to be tainted.
+ */
+private class FormatterVar extends LocalVariableDecl {
+  FormatterVar() {
+    exists(ClassInstanceExpr cie | cie = this.getAnAssignedValue() |
+      cie.getType() instanceof TypeFormatter
+    )
+  }
+
+  VariableAssign getADef() {
+    result.getSource().(ClassInstanceExpr).getType() instanceof TypeFormatter and
+    result.getDestVar() = this
+  }
+
+  MethodAccess getAFormatMethodAccess() {
+    result.getQualifier() = getAnAccess() and
+    result.getMethod().hasName("format")
+  }
+}
+
+/** The class `java.util.Formatter`. */
+private class TypeFormatter extends Class {
+  TypeFormatter() { this.hasQualifiedName("java.util", "Formatter") }
 }
 
 private import StringBuilderVarModule

@@ -253,21 +253,20 @@ module HTTP {
   private predicate isDecoratedCall(DataFlow::CallNode call, DataFlow::FunctionNode decoratee) {
     // indirect route-handler `result` is given to function `outer`, which returns function `inner` which calls the function `pred`.
     exists(int i, DataFlow::FunctionNode outer, HTTP::RouteHandlerCandidate inner |
+      inner = outer.getAReturn().getALocalSource() and
       decoratee = call.getArgument(i).getALocalSource() and
       outer.getFunction() = call.getACallee() and
-      returnsRouteHandler(outer, inner) and
-      isAForwardingRouteHandlerCall(outer.getParameter(i), inner)
+      hasForwardingHandlerParameter(i, outer, inner)
     )
   }
 
   /**
-   * Holds if `fun` returns the route-handler-candidate `routeHandler`.
+   * Holds if the `i`th parameter of `outer` has a call that `inner` forwards its parameters to.
    */
-  pragma[noinline]
-  private predicate returnsRouteHandler(
-    DataFlow::FunctionNode fun, HTTP::RouteHandlerCandidate routeHandler
+  private predicate hasForwardingHandlerParameter(
+    int i, DataFlow::FunctionNode outer, HTTP::RouteHandlerCandidate inner
   ) {
-    routeHandler = fun.getAReturn().getALocalSource()
+    isAForwardingRouteHandlerCall(outer.getParameter(i), inner)
   }
 
   /**
@@ -470,6 +469,23 @@ module HTTP {
        * Gets the server on which this route setup sets up routes.
        */
       abstract Expr getServer();
+    }
+
+    /**
+     * A parameter containing data received by a NodeJS HTTP server.
+     * E.g. `chunk` in: `http.createServer().on('request', (req, res) => req.on("data", (chunk) => ...))`.
+     */
+    private class ServerRequestDataEvent extends RemoteFlowSource, DataFlow::ParameterNode {
+      RequestSource req;
+
+      ServerRequestDataEvent() {
+        exists(DataFlow::MethodCallNode mcn | mcn = req.ref().getAMethodCall(EventEmitter::on()) |
+          mcn.getArgument(0).mayHaveStringValue("data") and
+          this = mcn.getABoundCallbackParameter(1, 0)
+        )
+      }
+
+      override string getSourceType() { result = "NodeJS HTTP server data event" }
     }
   }
 

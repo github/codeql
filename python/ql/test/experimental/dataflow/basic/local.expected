@@ -47,4 +47,4 @@
 | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() |
 | test.py:7:5:7:20 | GSSA Variable a | test.py:7:5:7:20 | GSSA Variable a |
 | test.py:7:19:7:19 | ControlFlowNode for a | test.py:7:19:7:19 | ControlFlowNode for a |
-| test.py:7:19:7:19 | [post] ControlFlowNode for a | test.py:7:19:7:19 | [post] ControlFlowNode for a |
+| test.py:7:19:7:19 | [post arg] ControlFlowNode for a | test.py:7:19:7:19 | [post arg] ControlFlowNode for a |

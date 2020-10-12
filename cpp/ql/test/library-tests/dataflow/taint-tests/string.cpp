@@ -18,6 +18,7 @@ void sink(const char *s);
 void sink(const std::string &s);
 void sink(const char *filename, const char *mode);
 void sink(char);
+void sink(std::string::iterator);
 
 void test_string()
 {
@@ -349,6 +350,7 @@ void test_string_data_more()
 	sink(str); // tainted
 	sink(str.data()); // tainted
 }
+
 void test_string_iterators() {
 	// string append
 	{
@@ -389,7 +391,7 @@ void test_string_iterators() {
 		string::iterator i1 = s1.begin();
 
 		string::iterator i2 = s2.begin();
-		string::iterator i3, i4, i5, i6, i7, i8, i9;
+		string::iterator i3, i4, i5, i6, i7, i8, i9, i10, i11;
 
 		sink(*(i2+1)); //tainted
 		sink(*(i2-1)); // tainted
@@ -411,6 +413,13 @@ void test_string_iterators() {
 		i9 = s2.end();
 		--i9;
 		sink(*i9); // tainted
+
+		i10 = i2;
+		sink(*(i10++)); // tainted
+		sink(i10); // tainted
+		i11 = i2;
+		sink(*(i11--)); // tainted
+		sink(i11); // tainted
 	}
 }
 
@@ -427,8 +436,6 @@ void test_string_insert_more()
 	sink(s2.insert(0, cs2)); // tainted
 	sink(s2); // tainted
 }
-
-void sink(std::string::iterator);
 
 void test_string_iterator_methods()
 {

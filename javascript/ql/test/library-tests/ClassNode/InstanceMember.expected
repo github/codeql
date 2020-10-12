@@ -1,4 +1,4 @@
-| fields.ts:2:16:2:32 | (x: string) => {} | Foo.m | method |
+| fields.ts:12:16:12:32 | (x: string) => {} | Foo.m | method |
 | namespace.js:5:32:5:44 | function() {} | Baz.method | method |
 | tst2.js:6:9:9:3 | () {\\n   ... .x;\\n  } | C.method | method |
 | tst2.js:11:13:13:3 | () {\\n   ... .x;\\n  } | C.getter | getter |

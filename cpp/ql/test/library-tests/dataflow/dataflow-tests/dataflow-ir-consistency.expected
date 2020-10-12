@@ -31,3 +31,23 @@ uniquePostUpdate
 postIsInSameCallable
 reverseRead
 argHasPostUpdate
+postWithInFlow
+| clang.cpp:49:25:49:30 | Chi | PostUpdateNode should not be the target of local flow. |
+| clang.cpp:49:35:49:40 | Chi | PostUpdateNode should not be the target of local flow. |
+| clang.cpp:50:3:50:26 | Chi | PostUpdateNode should not be the target of local flow. |
+| lambdas.cpp:43:3:43:14 | Chi | PostUpdateNode should not be the target of local flow. |
+| ref.cpp:11:5:11:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ref.cpp:20:5:20:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ref.cpp:22:7:22:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ref.cpp:24:7:24:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ref.cpp:29:5:29:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| ref.cpp:31:7:31:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ref.cpp:39:7:39:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ref.cpp:44:5:44:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| ref.cpp:46:7:46:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ref.cpp:48:7:48:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| test.cpp:91:3:91:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| test.cpp:115:3:115:17 | Chi | PostUpdateNode should not be the target of local flow. |
+| test.cpp:120:3:120:10 | Chi | PostUpdateNode should not be the target of local flow. |
+| test.cpp:125:3:125:11 | Chi | PostUpdateNode should not be the target of local flow. |
+| test.cpp:465:3:465:15 | Chi | PostUpdateNode should not be the target of local flow. |

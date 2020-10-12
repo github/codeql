@@ -155,3 +155,12 @@ reverseRead
 | struct_init.c:27:7:27:16 | Store | Origin of readStep is missing a PostUpdateNode. |
 | struct_init.c:27:21:27:21 | Store | Origin of readStep is missing a PostUpdateNode. |
 argHasPostUpdate
+postWithInFlow
+| aliasing.cpp:106:3:106:20 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:5:18:5:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:5:21:5:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:6:3:6:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:14:18:14:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| arrays.cpp:14:21:14:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:92:3:92:20 | Chi | PostUpdateNode should not be the target of local flow. |
+| by_reference.cpp:96:3:96:19 | Chi | PostUpdateNode should not be the target of local flow. |

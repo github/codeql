@@ -68,3 +68,9 @@ function getArrowHandler() {
     return (req,res) => f();
 }
 http.createServer(getArrowHandler());
+
+http.createServer(function (req, res) {
+  req.on("data", chunk => { // RemoteFlowSource
+    res.send(chunk); 
+  })
+});

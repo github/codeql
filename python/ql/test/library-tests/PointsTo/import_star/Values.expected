@@ -1,4 +1,4 @@
 | nested/__init__.py:1:6:1:12 | ControlFlowNode for ImportExpr | import | nested/nested.py:0:0:0:0 | Module nested.nested |
 | nested/nested.py:1:1:1:13 | ControlFlowNode for FunctionExpr | import | nested/nested.py:1:1:1:13 | Function nested |
-| test.py:1:6:1:11 | ControlFlowNode for ImportExpr | import | file://:0:0:0:0 | Package nested |
+| test.py:1:6:1:11 | ControlFlowNode for ImportExpr | import | nested:0:0:0:0 | Package nested |
 | test.py:2:1:2:6 | ControlFlowNode for nested | import | nested/nested.py:1:1:1:13 | Function nested |

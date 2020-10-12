@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Mostly duplicate class
  * @description Classes in which most of the methods are duplicated in another class make code more
  *              difficult to understand and introduce a risk of changes being made to only one copy.

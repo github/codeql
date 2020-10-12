@@ -133,6 +133,30 @@ nodes
 | tst.js:6:34:6:50 | document.location |
 | tst.js:6:34:6:50 | document.location |
 | tst.js:6:34:6:55 | documen ... on.href |
+| tst.js:10:19:10:81 | new Reg ... n.href) |
+| tst.js:10:19:10:84 | new Reg ... ref)[1] |
+| tst.js:10:19:10:84 | new Reg ... ref)[1] |
+| tst.js:10:59:10:75 | document.location |
+| tst.js:10:59:10:75 | document.location |
+| tst.js:10:59:10:80 | documen ... on.href |
+| tst.js:14:20:14:56 | indirec ... n.href) |
+| tst.js:14:20:14:59 | indirec ... ref)[1] |
+| tst.js:14:20:14:59 | indirec ... ref)[1] |
+| tst.js:14:34:14:50 | document.location |
+| tst.js:14:34:14:50 | document.location |
+| tst.js:14:34:14:55 | documen ... on.href |
+| tst.js:18:19:18:81 | new Reg ... n.href) |
+| tst.js:18:19:18:84 | new Reg ... ref)[1] |
+| tst.js:18:19:18:84 | new Reg ... ref)[1] |
+| tst.js:18:59:18:75 | document.location |
+| tst.js:18:59:18:75 | document.location |
+| tst.js:18:59:18:80 | documen ... on.href |
+| tst.js:22:20:22:56 | indirec ... n.href) |
+| tst.js:22:20:22:59 | indirec ... ref)[1] |
+| tst.js:22:20:22:59 | indirec ... ref)[1] |
+| tst.js:22:34:22:50 | document.location |
+| tst.js:22:34:22:50 | document.location |
+| tst.js:22:34:22:55 | documen ... on.href |
 edges
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
@@ -260,6 +284,26 @@ edges
 | tst.js:6:34:6:50 | document.location | tst.js:6:34:6:55 | documen ... on.href |
 | tst.js:6:34:6:50 | document.location | tst.js:6:34:6:55 | documen ... on.href |
 | tst.js:6:34:6:55 | documen ... on.href | tst.js:6:20:6:56 | indirec ... n.href) |
+| tst.js:10:19:10:81 | new Reg ... n.href) | tst.js:10:19:10:84 | new Reg ... ref)[1] |
+| tst.js:10:19:10:81 | new Reg ... n.href) | tst.js:10:19:10:84 | new Reg ... ref)[1] |
+| tst.js:10:59:10:75 | document.location | tst.js:10:59:10:80 | documen ... on.href |
+| tst.js:10:59:10:75 | document.location | tst.js:10:59:10:80 | documen ... on.href |
+| tst.js:10:59:10:80 | documen ... on.href | tst.js:10:19:10:81 | new Reg ... n.href) |
+| tst.js:14:20:14:56 | indirec ... n.href) | tst.js:14:20:14:59 | indirec ... ref)[1] |
+| tst.js:14:20:14:56 | indirec ... n.href) | tst.js:14:20:14:59 | indirec ... ref)[1] |
+| tst.js:14:34:14:50 | document.location | tst.js:14:34:14:55 | documen ... on.href |
+| tst.js:14:34:14:50 | document.location | tst.js:14:34:14:55 | documen ... on.href |
+| tst.js:14:34:14:55 | documen ... on.href | tst.js:14:20:14:56 | indirec ... n.href) |
+| tst.js:18:19:18:81 | new Reg ... n.href) | tst.js:18:19:18:84 | new Reg ... ref)[1] |
+| tst.js:18:19:18:81 | new Reg ... n.href) | tst.js:18:19:18:84 | new Reg ... ref)[1] |
+| tst.js:18:59:18:75 | document.location | tst.js:18:59:18:80 | documen ... on.href |
+| tst.js:18:59:18:75 | document.location | tst.js:18:59:18:80 | documen ... on.href |
+| tst.js:18:59:18:80 | documen ... on.href | tst.js:18:19:18:81 | new Reg ... n.href) |
+| tst.js:22:20:22:56 | indirec ... n.href) | tst.js:22:20:22:59 | indirec ... ref)[1] |
+| tst.js:22:20:22:56 | indirec ... n.href) | tst.js:22:20:22:59 | indirec ... ref)[1] |
+| tst.js:22:34:22:50 | document.location | tst.js:22:34:22:55 | documen ... on.href |
+| tst.js:22:34:22:50 | document.location | tst.js:22:34:22:55 | documen ... on.href |
+| tst.js:22:34:22:55 | documen ... on.href | tst.js:22:20:22:56 | indirec ... n.href) |
 #select
 | sanitizer.js:4:27:4:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:4:27:4:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:16:27:16:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:16:27:16:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
@@ -296,3 +340,7 @@ edges
 | tst13.js:53:28:53:28 | e | tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e | Untrusted URL redirection due to $@. | tst13.js:52:34:52:34 | e | user-provided value |
 | tst.js:2:19:2:72 | /.*redi ... ref)[1] | tst.js:2:47:2:63 | document.location | tst.js:2:19:2:72 | /.*redi ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:2:47:2:63 | document.location | user-provided value |
 | tst.js:6:20:6:59 | indirec ... ref)[1] | tst.js:6:34:6:50 | document.location | tst.js:6:20:6:59 | indirec ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:6:34:6:50 | document.location | user-provided value |
+| tst.js:10:19:10:84 | new Reg ... ref)[1] | tst.js:10:59:10:75 | document.location | tst.js:10:19:10:84 | new Reg ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:10:59:10:75 | document.location | user-provided value |
+| tst.js:14:20:14:59 | indirec ... ref)[1] | tst.js:14:34:14:50 | document.location | tst.js:14:20:14:59 | indirec ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:14:34:14:50 | document.location | user-provided value |
+| tst.js:18:19:18:84 | new Reg ... ref)[1] | tst.js:18:59:18:75 | document.location | tst.js:18:19:18:84 | new Reg ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:18:59:18:75 | document.location | user-provided value |
+| tst.js:22:20:22:59 | indirec ... ref)[1] | tst.js:22:34:22:50 | document.location | tst.js:22:20:22:59 | indirec ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:22:34:22:50 | document.location | user-provided value |
