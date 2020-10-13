@@ -649,8 +649,12 @@ private predicate flowIntoCallNodeCand1(
  */
 private int branch(Node n1, Configuration conf) {
   result =
-    strictcount(Node n |
-      flowOutOfCallNodeCand1(_, n1, n, conf) or flowIntoCallNodeCand1(_, n1, n, conf)
+    strictcount(DataFlowCallable callable |
+      exists(Node n |
+        flowOutOfCallNodeCand1(_, n1, n, conf) or flowIntoCallNodeCand1(_, n1, n, conf)
+      |
+        callable = n.getEnclosingCallable()
+      )
     )
 }
 
@@ -661,8 +665,12 @@ private int branch(Node n1, Configuration conf) {
  */
 private int join(Node n2, Configuration conf) {
   result =
-    strictcount(Node n |
-      flowOutOfCallNodeCand1(_, n, n2, conf) or flowIntoCallNodeCand1(_, n, n2, conf)
+    strictcount(DataFlowCallable callable |
+      exists(Node n |
+        flowOutOfCallNodeCand1(_, n, n2, conf) or flowIntoCallNodeCand1(_, n, n2, conf)
+      |
+        callable = n.getEnclosingCallable()
+      )
     )
 }
 
