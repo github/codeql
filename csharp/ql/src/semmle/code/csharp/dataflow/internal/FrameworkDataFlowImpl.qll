@@ -126,6 +126,19 @@ abstract class FrameworkDataFlow extends string {
   /**
    * Holds if data may flow from `input` to `output` when calling `c`.
    *
+   * `preservesValue` indicates whether this is a value-preserving step
+   * or a taint-step.
+   */
+  pragma[nomagic]
+  predicate hasSummary(
+    FrameworkCallable c, SummaryInput input, SummaryOutput output, boolean preservesValue
+  ) {
+    none()
+  }
+
+  /**
+   * Holds if data may flow from `input` to `output` when calling `c`.
+   *
    * `inputContents` describes the contents that is popped from the access
    * path from the input and `outputContents` describes the contents that
    * is pushed onto the resulting access path.
