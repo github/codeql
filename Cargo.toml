@@ -1,0 +1,9 @@
+[package]
+name = "codeql-ruby"
+version = "0.1.0"
+authors = ["Nick Rolfe <nickrolfe@github.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
