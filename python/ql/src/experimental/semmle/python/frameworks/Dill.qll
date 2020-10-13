@@ -20,6 +20,7 @@ private module Dill {
   /** Gets a reference to the `dill` module. */
   DataFlow::Node dill() { result = dill(DataFlow::TypeTracker::end()) }
 
+  /** Provides models for the `dill` module. */
   module dill {
     /** Gets a reference to the `dill.loads` function. */
     private DataFlow::Node loads(DataFlow::TypeTracker t) {
@@ -55,5 +56,10 @@ private class DillDeserialization extends UnmarshalingFunction::Range {
 
   override DataFlow::Node getOutput() { result = this }
 
-  override string getFormat() { none() }
+  override string getFormat() {
+    result = this.asCfgNode().(CallNode).getArgByName("encoding").(NameNode).getId()
+    or
+    not exists(this.asCfgNode().(CallNode).getArgByName("encoding")) and
+    result = "ASCII"
+  }
 }

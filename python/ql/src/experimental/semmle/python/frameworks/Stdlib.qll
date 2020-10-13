@@ -342,6 +342,7 @@ private module Stdlib {
   /** Gets a reference to the `marshal` module. */
   DataFlow::Node marshal() { result = marshal(DataFlow::TypeTracker::end()) }
 
+  /** Provides models for the `marshal` module. */
   module marshal {
     /** Gets a reference to the `marshal.loads` function. */
     private DataFlow::Node loads(DataFlow::TypeTracker t) {
@@ -394,6 +395,7 @@ private module Stdlib {
   /** Gets a reference to the `pickle` module. */
   DataFlow::Node pickle() { result = pickle(DataFlow::TypeTracker::end()) }
 
+  /** Provides models for the `pickle` module. */
   module pickle {
     /** Gets a reference to the `pickle.loads` function. */
     private DataFlow::Node loads(DataFlow::TypeTracker t) {
@@ -429,6 +431,9 @@ private module Stdlib {
 
     override string getFormat() {
       result = this.asCfgNode().(CallNode).getArgByName("encoding").(NameNode).getId()
+      or
+      not exists(this.asCfgNode().(CallNode).getArgByName("encoding")) and
+      result = "ASCII"
     }
   }
 }

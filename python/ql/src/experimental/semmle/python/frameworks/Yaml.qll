@@ -20,6 +20,7 @@ private module Yaml {
   /** Gets a reference to the `yaml` module. */
   DataFlow::Node yaml() { result = yaml(DataFlow::TypeTracker::end()) }
 
+  /** Provides models for the `yaml` module. */
   module yaml {
     /** Gets a reference to the `yaml.load` function. */
     private DataFlow::Node load(DataFlow::TypeTracker t) {

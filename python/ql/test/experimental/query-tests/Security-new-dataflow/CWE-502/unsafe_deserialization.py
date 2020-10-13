@@ -12,10 +12,10 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     payload = request.args.get("payload")
-    pickle.loads(payload)  # $UNSAFE_getAnInput=payload $UNSAFE_getOutput=Attribute()
-    yaml.load(payload)  # $UNSAFE_getAnInput=payload $UNSAFE_getOutput=Attribute()
-    yaml.load(payload, Loader=SafeLoader)  # $getAnInput=payload $getOutput=Attribute()
-    marshal.loads(payload)  # $UNSAFE_getAnInput=payload $UNSAFE_getOutput=Attribute()
+    pickle.loads(payload)
+    yaml.load(payload)
+    yaml.load(payload, Loader=SafeLoader)
+    marshal.loads(payload)
 
     import dill
-    dill.loads(payload)  # $UNSAFE_getAnInput=payload $UNSAFE_getOutput=Attribute()
+    dill.loads(payload)
