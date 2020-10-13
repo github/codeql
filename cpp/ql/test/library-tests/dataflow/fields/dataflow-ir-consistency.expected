@@ -148,10 +148,24 @@ postIsInSameCallable
 reverseRead
 | E.cpp:19:27:19:27 | *p | Origin of readStep is missing a PostUpdateNode. |
 | E.cpp:27:12:27:12 | Uninitialized | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:174:6:174:7 | Uninitialized | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:180:6:180:7 | Uninitialized | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:186:6:186:7 | Uninitialized | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:193:6:193:7 | Uninitialized | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:199:34:199:36 | *ps2 | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:204:51:204:53 | *ps2 | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:224:6:224:7 | Uninitialized | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:231:6:231:7 | Uninitialized | Origin of readStep is missing a PostUpdateNode. |
 | by_reference.cpp:102:21:102:39 | Chi | Origin of readStep is missing a PostUpdateNode. |
 | by_reference.cpp:106:21:106:41 | Chi | Origin of readStep is missing a PostUpdateNode. |
 | by_reference.cpp:122:21:122:38 | Chi | Origin of readStep is missing a PostUpdateNode. |
 | by_reference.cpp:126:21:126:40 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:40:17:40:17 | *b | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:51:16:51:16 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:57:9:57:10 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:58:9:58:10 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:59:9:59:10 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:64:12:64:12 | Chi | Origin of readStep is missing a PostUpdateNode. |
 | struct_init.c:27:7:27:16 | Store | Origin of readStep is missing a PostUpdateNode. |
 | struct_init.c:27:21:27:21 | Store | Origin of readStep is missing a PostUpdateNode. |
 argHasPostUpdate
