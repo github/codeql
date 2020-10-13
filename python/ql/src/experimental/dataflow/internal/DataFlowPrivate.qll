@@ -261,7 +261,7 @@ private Node update(Node node) {
  * When a call contains an iterable unpacking argument, such as `func(*args)`, it is expanded into positional arguments.
  *
  * CURRENTLY NOT SUPPORTED:
- * When a call contains an iterable unpacking argument, such as `func(*args)`, and the callee contains a starred argument, any extra
+ * If a call contains an iterable unpacking argument, such as `func(*args)`, and the callee contains a starred argument, any extra
  * positional arguments are passed to the starred argument.
  *
  * When a call contains keyword arguments that do not correspond to keyword parameters, these
@@ -313,7 +313,7 @@ private Node update(Node node) {
  * `y`. There is a dataflow step from `**{"y": 1, "a": 3}` to `[**d]` to transfer the content and
  * a clearing of content at key `y` for node `[**d]`, since that value has been unpacked.
  */
-module ArgumentPassing {
+private module ArgumentPassing {
   /**
    * Holds if `call` represents a `DataFlowCall` to a `DataFlowCallable` represented by `callable`.
    *
@@ -355,22 +355,56 @@ module ArgumentPassing {
   }
 
   /**
+   * A type representing a mapping from argument indices to parameter indices.
+   * We currently use two mappings: NoShift, the identity, used for ordinary
+   * function calls, and ShiftOne which is used for calls where an extra argument
+   * is inserted. These include method calls, constructor calls and class calls.
+   * In these calls, the argument at index `n` is mapped to the parameter at position `n+1`.
+   */
+  newtype TArgParamMapping =
+    TNoShift() or
+    TShiftOne()
+
+  /** A mapping used for parameter passing. */
+  abstract class ArgParamMapping extends TArgParamMapping {
+    bindingset[result]
+    abstract int getArgN(int paramN);
+
+    string toString() { none() }
+  }
+
+  /** A mapping that passes argument `n` to parameter `n`. */
+  class NoShift extends ArgParamMapping, TNoShift {
+    NoShift() { this = TNoShift() }
+
+    bindingset[result]
+    override int getArgN(int paramN) { result = paramN }
+  }
+
+  /** A mapping that passes argument `n` to parameter `n+1`. */
+  class ShiftOne extends ArgParamMapping, TShiftOne {
+    ShiftOne() { this = TShiftOne() }
+
+    bindingset[result]
+    override int getArgN(int paramN) { result = paramN - 1 }
+  }
+
+  /**
    * Gets the node representing the argument to `call` that is passed to the parameter at
    * (zero-based) index `paramN` in `callable`. If this is a positional argument, it must appear
-   * at index `argN` in `call`.
+   * at index `mapping.getArgN(paramN)` in `call`.
    *
-   * `argN` will differ from `paramN` for method- or constructor calls, where the first parameter
+   * `mapping.getArgN(paramN)` will differ from `paramN` for method- or constructor calls, where the first parameter
    * is `self` and the first positional argument is passed to the second positional parameter.
    * Similarly for classmethod calls, where the first parameter is `cls`.
    *
    * NOT SUPPORTED: Keyword-only parameters.
    */
-  Node getArg(CallNode call, int argN, CallableValue callable, int paramN) {
+  Node getArg(CallNode call, ArgParamMapping mapping, CallableValue callable, int paramN) {
     connects(call, callable) and
-    paramN - argN in [0, 1] and // constrain for now to limit the size of the predicate; we only use it to insert one argument (self).
     (
       // positional argument
-      result = TCfgNode(call.getArg(argN))
+      result = TCfgNode(call.getArg(mapping.getArgN(paramN)))
       or
       // keyword argument
       // TODO: Since `getArgName` have no results for keyword-only parameters,
@@ -393,7 +427,7 @@ module ArgumentPassing {
       or
       // argument unpacked from dict
       exists(string name |
-        call_unpacks(call, argN, callable, name, paramN) and
+        call_unpacks(call, mapping, callable, name, paramN) and
         result = TKwUnpacked(call, callable, name)
       )
     )
@@ -425,20 +459,21 @@ module ArgumentPassing {
 
   /**
    * Holds if `call` unpacks a dictionary argument in order to pass it via `name`.
-   * It will then be passed to the `n`th parameter of `callable`.
+   * It will then be passed to the parameter of `callable` at index `paramN`.
    */
-  predicate call_unpacks(CallNode call, int argNr, CallableValue callable, string name, int n) {
+  predicate call_unpacks(
+    CallNode call, ArgParamMapping mapping, CallableValue callable, string name, int paramN
+  ) {
     connects(call, callable) and
-    n - argNr in [0, 1] and
     exists(Function f |
       f = callable.getScope() and
-      not exists(call.getArg(argNr)) and // no positional arguement available
-      name = f.getArgName(n) and
+      not exists(call.getArg(mapping.getArgN(paramN))) and // no positional argument available
+      name = f.getArgName(paramN) and
       // not exists(call.getArgByName(name)) and // only matches keyword arguments not preceded by **
       // TODO: make the below logic respect control flow splitting (by not going to the AST).
       not call.getNode().getANamedArg().(Keyword).getArg() = name and // no keyword argument available
-      n >= 0 and
-      n < f.getPositionalParameterCount() + f.getKeywordOnlyParameterCount() and
+      paramN >= 0 and
+      paramN < f.getPositionalParameterCount() + f.getKeywordOnlyParameterCount() and
       exists(call.getNode().getKwargs()) // dict argument available
     )
   }
@@ -581,7 +616,7 @@ class FunctionCall extends DataFlowCall, TFunctionCall {
 
   override string toString() { result = call.toString() }
 
-  override Node getArg(int n) { result = getArg(call, n, callable.getCallableValue(), n) }
+  override Node getArg(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
 
   override ControlFlowNode getNode() { result = call }
 
@@ -608,7 +643,7 @@ class MethodCall extends DataFlowCall, TMethodCall {
   override string toString() { result = call.toString() }
 
   override Node getArg(int n) {
-    n > 0 and result = getArg(call, n - 1, this.getCallableValue(), n)
+    n > 0 and result = getArg(call, TShiftOne(), this.getCallableValue(), n)
     or
     n = 0 and result = TCfgNode(call.getFunction().(AttrNode).getObject())
   }
@@ -640,7 +675,7 @@ class ClassCall extends DataFlowCall, TClassCall {
   override string toString() { result = call.toString() }
 
   override Node getArg(int n) {
-    n > 0 and result = getArg(call, n - 1, this.getCallableValue(), n)
+    n > 0 and result = getArg(call, TShiftOne(), this.getCallableValue(), n)
     or
     n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
   }

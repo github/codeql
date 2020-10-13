@@ -117,6 +117,7 @@ def test_multiple_kw_args():
     with_multiple_kw_args(b=arg2, c=arg3, a=arg1)
     with_multiple_kw_args(arg1, *(arg2,), arg3)
     with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)
+    with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})
 
 
 def with_default_arguments(a=arg1, b=arg2, c=arg3):
