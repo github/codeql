@@ -86,6 +86,9 @@ module CodeInjection {
       |
         this = c.getArgument(index)
       )
+      or
+      // node-serialize is not intended to be safe for untrusted inputs
+      this = DataFlow::moduleMember("node-serialize", "unserialize").getACall().getArgument(0)
     }
   }
 

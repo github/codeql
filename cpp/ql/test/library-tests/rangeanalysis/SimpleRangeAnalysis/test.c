@@ -647,3 +647,15 @@ void widen_recursive_expr() {
     out(result); // 0 .. 18 [BUG: upper bound is 127 due to double widening]
   }
 }
+
+void guard_bound_out_of_range(void) {
+  int i = 0;
+  if (i < 0) {
+    out(i); // unreachable [BUG: is -max .. +max]
+  }
+
+  unsigned int u = 0;
+  if (u < 0) {
+    out(u); // unreachable [BUG: is 0 .. +max]
+  }
+}

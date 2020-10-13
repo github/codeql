@@ -3,6 +3,8 @@
 ## General improvements
 
 * Support for the following frameworks and libraries has been improved:
+  - [AWS Serverless](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)
+  - [Alibaba Serverless](https://www.alibabacloud.com/help/doc-detail/156876.htm)
   - [bluebird](https://www.npmjs.com/package/bluebird)
   - [express](https://www.npmjs.com/package/express)
   - [fast-json-stable-stringify](https://www.npmjs.com/package/fast-json-stable-stringify)

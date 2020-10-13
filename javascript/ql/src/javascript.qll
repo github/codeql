@@ -94,6 +94,7 @@ import semmle.javascript.frameworks.PropertyProjection
 import semmle.javascript.frameworks.React
 import semmle.javascript.frameworks.ReactNative
 import semmle.javascript.frameworks.Request
+import semmle.javascript.frameworks.ServerLess
 import semmle.javascript.frameworks.ShellJS
 import semmle.javascript.frameworks.SystemCommandExecutors
 import semmle.javascript.frameworks.SQL
