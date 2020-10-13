@@ -6,25 +6,33 @@ import go
 
 /** Provides models of commonly used functions in the `context` package. */
 module Context {
+  /**
+   * Gets the package name `context` or `golang.org/x/net/context`.
+   *
+   * The two packages are identical; before Go 1.7 it was only available
+   * under `golang.org/x`; as of Go 1.7 it is included in the standard library.
+   */
+  private string packagePath() { result = ["context", "golang.org/x/net/context"] }
+
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
 
     FunctionModels() {
       // signature: func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
-      hasQualifiedName("context", "WithCancel") and
+      hasQualifiedName(packagePath(), "WithCancel") and
       (inp.isParameter(0) and outp.isResult(0))
       or
       // signature: func WithDeadline(parent Context, d time.Time) (Context, CancelFunc)
-      hasQualifiedName("context", "WithDeadline") and
+      hasQualifiedName(packagePath(), "WithDeadline") and
       (inp.isParameter(0) and outp.isResult(0))
       or
       // signature: func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
-      hasQualifiedName("context", "WithTimeout") and
+      hasQualifiedName(packagePath(), "WithTimeout") and
       (inp.isParameter(0) and outp.isResult(0))
       or
       // signature: func WithValue(parent Context, key interface{}, val interface{}) Context
-      hasQualifiedName("context", "WithValue") and
+      hasQualifiedName(packagePath(), "WithValue") and
       (inp.isParameter(_) and outp.isResult())
     }
 
@@ -39,7 +47,7 @@ module Context {
 
     MethodModels() {
       // signature: func (Context).Value(key interface{}) interface{}
-      implements("context", "Context", "Value") and
+      implements(packagePath(), "Context", "Value") and
       (inp.isReceiver() and outp.isResult())
     }
 
