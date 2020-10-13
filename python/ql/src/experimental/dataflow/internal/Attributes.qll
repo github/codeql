@@ -62,7 +62,7 @@ abstract class AttrWrite extends AttrRef {
  * ```
  * Also gives access to the `value` being written, by extending `DefinitionNode`.
  */
-private class AttributeAssignmentNode extends DefinitionNode, AttrNode, DataFlowCfgNode {
+private class AttributeAssignmentNode extends DefinitionNode, AttrNode {
   override ControlFlowNode getValue() { result = DefinitionNode.super.getValue() }
 }
 
@@ -87,7 +87,7 @@ private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
 import semmle.python.types.Builtins
 
 /** Represents `CallNode`s that may refer to calls to built-in functions or classes. */
-private class BuiltInCallNode extends CallNode, DataFlowCfgNode {
+private class BuiltInCallNode extends CallNode {
   string name;
 
   BuiltInCallNode() {
@@ -159,7 +159,7 @@ private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
  * Instances of this class correspond to the `NameNode` for `attr`, and also gives access to `value` by
  * virtue of being a `DefinitionNode`.
  */
-private class ClassAttributeAssignmentNode extends DefinitionNode, NameNode, DataFlowCfgNode { }
+private class ClassAttributeAssignmentNode extends DefinitionNode, NameNode { }
 
 /**
  * An attribute assignment via a class field, e.g.
@@ -192,15 +192,9 @@ private class ClassDefinitionAsAttrWrite extends AttrWrite, CfgNode {
  */
 abstract class AttrRead extends AttrRef, Node { }
 
-/**
- * A convenience class for embedding `AttrNode` into `DataFlowCfgNode`, as the former is not
- * obviously a subtype of the latter.
- */
-private class DataFlowAttrNode extends AttrNode, DataFlowCfgNode { }
-
 /** A simple attribute read, e.g. `object.attr` */
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {
-  override DataFlowAttrNode node;
+  override AttrNode node;
 
   override Node getObject() { result.asCfgNode() = node.getObject() }
 
@@ -228,12 +222,6 @@ private class GetAttrCallAsAttrRead extends AttrRead, CfgNode {
 }
 
 /**
- * A convenience class for embedding `ImportMemberNode` into `DataFlowCfgNode`, as the former is not
- * obviously a subtype of the latter.
- */
-private class DataFlowImportMemberNode extends ImportMemberNode, DataFlowCfgNode { }
-
-/**
  * Represents a named import as an attribute read. That is,
  * ```python
  * from module import attr as attr_ref
@@ -241,7 +229,7 @@ private class DataFlowImportMemberNode extends ImportMemberNode, DataFlowCfgNode
  * is treated as if it is a read of the attribute `module.attr`, even if `module` is not imported directly.
  */
 private class ModuleAttributeImportAsAttrRead extends AttrRead, CfgNode {
-  override DataFlowImportMemberNode node;
+  override ImportMemberNode node;
 
   override Node getObject() { result.asCfgNode() = node.getModule(_) }
 
