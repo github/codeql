@@ -200,7 +200,7 @@ FieldNode getFieldNodeForFieldInstruction(Instruction instr) {
   result.getFieldInstruction() = skipCopyInstructions(instr)
 }
 
-predicate isUsedForStore(Operand op) {
+private predicate isUsedForStore(Operand op) {
   exists(StoreInstruction store | store.getDestinationAddressOperand() = op)
   or
   exists(WriteSideEffectInstruction write | write.getDestinationAddressOperand() = op)
@@ -255,14 +255,6 @@ class FieldNode extends Node, TFieldNode {
    */
   FieldNode getObjectNode() { result = TFieldNode(_, field.getObjectAddressOperand()) }
 
-  Node getRootNode() {
-    exists(ChiInstruction chi, AddressOperand addressOperand |
-      getFieldNodeForFieldInstruction(addressOperand.getDef()) = this.getNextNode*() and
-      chi.getPartial().getAnOperand() = addressOperand and
-      result.asOperand() = chi.getTotalOperand()
-    )
-  }
-
   /**
    * Gets the `FieldNode` that has this `FieldNode` as parent, if any.
    *
@@ -298,7 +290,11 @@ class PostUpdateFieldNode extends FieldNode, PartialDefinitionNode {
     result = this.getObjectNode()
     or
     not exists(this.getObjectNode()) and
-    result = this.getRootNode()
+    exists(ChiInstruction chi, AddressOperand addressOperand |
+      getFieldNodeForFieldInstruction(addressOperand.getDef()) = this.getNextNode*() and
+      chi.getPartial().getAnOperand() = addressOperand and
+      result.asOperand() = chi.getTotalOperand()
+    )
   }
 
   override Expr getDefinedExpr() {
@@ -671,11 +667,19 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
 
 private predicate simpleFieldNodeLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // flow from the "innermost" field to the load of that field.
-  exists(FieldNode fieldNode, LoadInstruction load |
-    nodeFrom = fieldNode and
-    nodeTo.asInstruction() = load and
+  exists(FieldNode fieldNode | nodeFrom = fieldNode |
     not exists(fieldNode.getNextNode()) and
-    fieldNode = getFieldNodeForFieldInstruction(load.getSourceAddress())
+    (
+      exists(LoadInstruction load |
+        nodeTo.asInstruction() = load and
+        fieldNode = getFieldNodeForFieldInstruction(load.getSourceAddress())
+      )
+      or
+      exists(ReadSideEffectInstruction read |
+        nodeTo.asOperand() = read.getSideEffectOperand() and
+        fieldNode = getFieldNodeForFieldInstruction(read.getArgumentDef())
+      )
+    )
   )
   or
   // flow from the "outermost" field to the `ChiInstruction`, or `StoreInstruction`

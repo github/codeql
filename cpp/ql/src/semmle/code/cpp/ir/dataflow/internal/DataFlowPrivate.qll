@@ -289,7 +289,7 @@ private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode n
  * For instance in `a.b.c = source();`, where they will be a `nestedFieldStore` from
  * the `FieldNode` of `c` to the `FieldNode` of `b`.
  */
-predicate nestedFieldStore(PostUpdateNode node1, FieldContent f, FieldNode node2) {
+private predicate nestedFieldStore(PostUpdateNode node1, FieldContent f, FieldNode node2) {
   node2 = node1.getPreUpdateNode() and
   f.getADirectField() = node2.getField()
 }
@@ -418,13 +418,20 @@ private predicate nestedFieldRead(Node node1, FieldContent f, FieldNode node2) {
 
 /** Step from the value loaded by a `LoadInstruction` to the "outermost" loaded field. */
 private predicate instrToFieldNodeReadStep(Node node1, FieldContent f, FieldNode node2) {
-  exists(LoadInstruction load |
-    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
-    not node1.asInstruction().isResultConflated() and
-    not exists(node2.getObjectNode()) and
-    node2.getNextNode*() = getFieldNodeForFieldInstruction(load.getSourceAddress()) and
-    f.getADirectField() = node2.getField()
-  )
+  (
+    exists(LoadInstruction load |
+      node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
+      node2.getNextNode*() = getFieldNodeForFieldInstruction(load.getSourceAddress())
+    )
+    or
+    exists(ReadSideEffectInstruction read |
+      node1.asInstruction() = read.getSideEffectOperand().getAnyDef() and
+      node2.getNextNode*() = getFieldNodeForFieldInstruction(read.getArgumentDef())
+    )
+  ) and
+  not node1.asInstruction().isResultConflated() and
+  not exists(node2.getObjectNode()) and
+  f.getADirectField() = node2.getField()
 }
 
 pragma[noinline]
