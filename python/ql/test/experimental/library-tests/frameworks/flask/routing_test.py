@@ -10,7 +10,6 @@ def some_route():  # $routeHandler
     return make_response("some_route")
 
 
-# TODO: We should be able to handle this one
 def index():  # $routeHandler
     return make_response("index")
 app.add_url_rule('/index', 'index', index)  # $routeSetup="/index"
