@@ -232,7 +232,11 @@ private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array content" }
 }
 
-/** A store step from the value of a store instruction to the "innermost" field of the destination. */
+/**
+ * A store step from the value of a `StoreInstruction` to the "innermost" field of the destination.
+ * This predicate only holds when there is no `ChiInsturction` that merges the result of the
+ * `StoreInstruction` into a larger memory.
+ */
 private predicate instrToFieldNodeStoreStepNoChi(Node node1, FieldContent f, FieldNode node2) {
   exists(StoreInstruction store |
     not exists(ChiInstruction chi | chi.getPartial() = store) and
@@ -243,8 +247,9 @@ private predicate instrToFieldNodeStoreStepNoChi(Node node1, FieldContent f, Fie
 }
 
 /**
- * A store step from a `StoreInstruction` or `WriteSideEffectInstruction` to the "depest" field
- * of the destination
+ * A store step from a `StoreInstruction` or `WriteSideEffectInstruction` to the "innermost" field
+ * of the destination. This predicate only holds when there exists a `ChiInstruction` that merges the
+ * result of the `StoreInstruction` into a larger memory.
  */
 private predicate instrToFieldNodeStoreStepChi(Node node1, FieldContent f, FieldNode node2) {
   exists(Instruction store, ChiInstruction chi |
