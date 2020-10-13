@@ -11,7 +11,7 @@ app = Flask(__name__)
 def python2_specific():
     """
     These tests are mostly included to check for extra paths that can be generated if
-    we can track flow into the implementation of stdlib function, and then to an other sink.
+    we can track flow into the implementation of a stdlib function, and then to another sink.
     See comment in query for more details.
     """
 
