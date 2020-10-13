@@ -253,7 +253,7 @@ private Node update(Node node) {
  *
  * When a call contains more positional arguments than there are positional parameters,
  * the extra positional arguments are passed as a tuple to a starred parameter. This is
- * achieved by synthesising a node `TPosOverflowNode(call, callable)`
+ * achieved by synthesizing a node `TPosOverflowNode(call, callable)`
  * that represents the tuple of extra positional arguments. There is a store step from each
  * extra positional argument to this node.
  *
@@ -266,7 +266,7 @@ private Node update(Node node) {
  *
  * When a call contains keyword arguments that do not correspond to keyword parameters, these
  * extra keyword arguments are passed as a dictionary to a doubly starred parameter. This is
- * achieved by synthesising a node `TKwOverflowNode(call, callable)`
+ * achieved by synthesizing a node `TKwOverflowNode(call, callable)`
  * that represents the dictionary of extra keyword arguments. There is a store step from each
  * extra keyword argument to this node.
  *
@@ -295,7 +295,7 @@ private Node update(Node node) {
  * ```python
  * f(0, 1, [*t], [**d])
  * ```
- * where `[` and `]` denotes synthesisezed nodes, so `[*t]` is the synthesized tuple argument
+ * where `[` and `]` denotes synthesized nodes, so `[*t]` is the synthesized tuple argument
  * `TPosOverflowNode` and `[**d]` is the synthesized dictionary argument `TKwOverflowNode`.
  * There will be a store step from `2` to `[*t]` at pos `0` and one from `3` to `[**d]` at key
  * `a`.
@@ -304,11 +304,11 @@ private Node update(Node node) {
  * ```python
  * f(0, **{"y": 1, "a": 3})
  * ```
- * no tuple arguemnt is synthesized. It is modelled as
+ * no tuple argument is synthesized. It is modelled as
  * ```python
  * f(0, [y=1], [**d])
  * ```
- * where `[y=1]` is the synthesised unpacked argument `TKwUnpacked` (with `name` = `y`). There is
+ * where `[y=1]` is the synthesized unpacked argument `TKwUnpacked` (with `name` = `y`). There is
  * a read step from `**{"y": 1, "a": 3}` to `[y=1]` at key `y` to get the value passed to the parameter
  * `y`. There is a dataflow step from `**{"y": 1, "a": 3}` to `[**d]` to transfer the content and
  * a clearing of content at key `y` for node `[**d]`, since that value has been unpacked.
