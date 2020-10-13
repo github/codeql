@@ -285,6 +285,16 @@ private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode n
 }
 
 /**
+ * A store step from one `FieldNode` that is used in a `storeStep` to another `FieldNode`.
+ * For instance in `a.b.c = source();`, where they will be a `nestedFieldStore` from
+ * the `FieldNode` of `c` to the `FieldNode` of `b`.
+ */
+predicate nestedFieldStore(PostUpdateNode node1, FieldContent f, FieldNode node2) {
+  node2 = node1.getPreUpdateNode() and
+  f.getADirectField() = node2.getField()
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
@@ -293,7 +303,8 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
   instrToFieldNodeStoreStepNoChi(node1, f, node2) or
   instrToFieldNodeStoreStepChi(node1, f, node2) or
   arrayStoreStepChi(node1, f, node2) or
-  fieldStoreStepAfterArraySuppression(node1, f, node2)
+  fieldStoreStepAfterArraySuppression(node1, f, node2) or
+  nestedFieldStore(node1, f, node2)
 }
 
 /**
@@ -396,22 +407,12 @@ private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
 }
 
 /**
- * Given two nodes `node1` and `node2`, the shared dataflow library infers a store step
- * from `node1` to `node2` if there is a read step from the the pre update node of `node2` to the
- * the pre update node of `node1`. This ensures that a field assignment such as
- * ```cpp
- * x.y.z = source();
- * ```
- * generates the access path `[z, y, x]`. This predicate ensures that there's a read step from
- * `x` (the pre update node of `y`) to `y` (the pre update node of `z`), which means that the
- * shared dataflow library will infer a store step from `z` to `y`.
+ * A read step that reads from a nested `FieldNode` in cases such as
+ * `x = a.b.c;`. In this case, there is a `nestedFieldReap` read step from the `FieldNode` of `b`
+ * to the `FieldNode` of `c`.
  */
-private predicate reverseReadStep(Node node1, FieldContent f, FieldNode node2) {
-  (
-    node1 = node2.getObjectNode()
-    or
-    not exists(node2.getObjectNode()) and node1 = node2.getRootNode()
-  ) and
+private predicate nestedFieldRead(Node node1, FieldContent f, FieldNode node2) {
+  node1 = node2.getObjectNode() and
   f.getADirectField() = node2.getField()
 }
 
@@ -455,7 +456,7 @@ predicate readStep(Node node1, Content f, Node node2) {
   arrayReadStep(node1, f, node2) or
   exactReadStep(node1, f, node2) or
   suppressArrayRead(node1, f, node2) or
-  reverseReadStep(node1, f, node2) or
+  nestedFieldRead(node1, f, node2) or
   instrToFieldNodeReadStep(node1, f, node2)
 }
 
