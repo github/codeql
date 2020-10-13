@@ -90,6 +90,7 @@
 | defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:8:88:32 | (reference dereference) |
 | defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:18:88:23 | call to getenv |
 | defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:18:88:30 | (reference to) |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:18:88:30 | temporary object |
 | defaulttainttracking.cpp:88:18:88:23 | call to getenv | shared.h:5:23:5:31 | sinkparam |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:91:42:91:44 | arg |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:92:12:92:14 | arg |
@@ -174,6 +175,7 @@
 | globals.cpp:23:15:23:20 | call to getenv | globals.cpp:23:15:23:20 | call to getenv |
 | stl.cpp:62:25:62:30 | call to getenv | shared.h:5:23:5:31 | sinkparam |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:21:29:21:29 | s |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:21:70:21:70 | s |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:43:78:43:104 | p#0 |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:43:114:43:118 | p#1 |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:62:25:62:30 | call to getenv |
@@ -221,6 +223,7 @@
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:129:10:129:19 | call to user_input |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:129:10:129:21 | (const char *)... |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:129:10:129:21 | call to basic_string |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:129:10:129:21 | temporary object |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:130:7:130:11 | (const basic_string<char, char_traits<char>, allocator<char>>)... |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:130:7:130:11 | path2 |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:132:15:132:24 | call to user_input |
