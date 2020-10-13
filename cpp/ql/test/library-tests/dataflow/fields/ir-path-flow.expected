@@ -146,6 +146,15 @@ edges
 | aliasing.cpp:226:12:226:12 | s [m1] | aliasing.cpp:226:12:226:12 | Store [m1] |
 | aliasing.cpp:226:12:226:12 | s [m1] | aliasing.cpp:226:12:226:12 | Store [m1] |
 | aliasing.cpp:227:10:227:11 | m1 | aliasing.cpp:227:10:227:11 | m1 |
+| aliasing.cpp:249:26:249:26 | *p [e] | aliasing.cpp:250:11:250:11 | e |
+| aliasing.cpp:250:11:250:11 | e | aliasing.cpp:250:11:250:11 | e |
+| aliasing.cpp:256:10:256:19 | call to user_input | aliasing.cpp:257:3:257:13 | Store |
+| aliasing.cpp:257:3:257:13 | Store | aliasing.cpp:257:6:257:6 | e [e] |
+| aliasing.cpp:257:6:257:6 | e [e] | aliasing.cpp:249:26:249:26 | *p [e] |
+| aliasing.cpp:266:3:266:21 | Store | aliasing.cpp:266:6:266:6 | c [c] |
+| aliasing.cpp:266:6:266:6 | c [c] | aliasing.cpp:267:37:267:37 | multiple_loads_from_a_same_memory output argument [e] |
+| aliasing.cpp:266:10:266:19 | call to user_input | aliasing.cpp:266:3:266:21 | Store |
+| aliasing.cpp:267:37:267:37 | multiple_loads_from_a_same_memory output argument [e] | aliasing.cpp:249:26:249:26 | *p [e] |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... |
@@ -625,6 +634,16 @@ nodes
 | aliasing.cpp:226:12:226:12 | s [m1] | semmle.label | s [m1] |
 | aliasing.cpp:227:10:227:11 | m1 | semmle.label | m1 |
 | aliasing.cpp:227:10:227:11 | m1 | semmle.label | m1 |
+| aliasing.cpp:249:26:249:26 | *p [e] | semmle.label | *p [e] |
+| aliasing.cpp:250:11:250:11 | e | semmle.label | e |
+| aliasing.cpp:250:11:250:11 | e | semmle.label | e |
+| aliasing.cpp:256:10:256:19 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:257:3:257:13 | Store | semmle.label | Store |
+| aliasing.cpp:257:6:257:6 | e [e] | semmle.label | e [e] |
+| aliasing.cpp:266:3:266:21 | Store | semmle.label | Store |
+| aliasing.cpp:266:6:266:6 | c [c] | semmle.label | c [c] |
+| aliasing.cpp:266:10:266:19 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:267:37:267:37 | multiple_loads_from_a_same_memory output argument [e] | semmle.label | multiple_loads_from_a_same_memory output argument [e] |
 | arrays.cpp:6:12:6:21 | call to user_input | semmle.label | call to user_input |
 | arrays.cpp:7:8:7:13 | access to array | semmle.label | access to array |
 | arrays.cpp:9:8:9:11 | * ... | semmle.label | * ... |
@@ -917,6 +936,8 @@ nodes
 | aliasing.cpp:201:15:201:16 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:201:15:201:16 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
 | aliasing.cpp:213:10:213:11 | m1 | aliasing.cpp:211:13:211:22 | call to user_input | aliasing.cpp:213:10:213:11 | m1 | m1 flows from $@ | aliasing.cpp:211:13:211:22 | call to user_input | call to user_input |
 | aliasing.cpp:227:10:227:11 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:227:10:227:11 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
+| aliasing.cpp:250:11:250:11 | e | aliasing.cpp:256:10:256:19 | call to user_input | aliasing.cpp:250:11:250:11 | e | e flows from $@ | aliasing.cpp:256:10:256:19 | call to user_input | call to user_input |
+| aliasing.cpp:250:11:250:11 | e | aliasing.cpp:266:10:266:19 | call to user_input | aliasing.cpp:250:11:250:11 | e | e flows from $@ | aliasing.cpp:266:10:266:19 | call to user_input | call to user_input |
 | arrays.cpp:7:8:7:13 | access to array | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array | access to array flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
 | arrays.cpp:9:8:9:11 | * ... | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... | * ... flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
 | arrays.cpp:10:8:10:15 | * ... | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... | * ... flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |

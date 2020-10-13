@@ -232,6 +232,17 @@
 | aliasing.cpp:232:15:232:22 | & ... |
 | aliasing.cpp:232:16:232:17 | s2 |
 | aliasing.cpp:232:19:232:19 | s |
+| aliasing.cpp:256:3:256:3 | p |
+| aliasing.cpp:256:6:256:6 | c |
+| aliasing.cpp:257:3:257:3 | p |
+| aliasing.cpp:257:6:257:6 | e |
+| aliasing.cpp:258:20:258:20 | p |
+| aliasing.cpp:261:48:261:48 | p |
+| aliasing.cpp:261:51:261:51 | e |
+| aliasing.cpp:266:3:266:3 | p |
+| aliasing.cpp:266:6:266:6 | c |
+| aliasing.cpp:267:37:267:37 | p |
+| aliasing.cpp:268:20:268:20 | p |
 | arrays.cpp:6:3:6:8 | access to array |
 | arrays.cpp:15:3:15:10 | * ... |
 | arrays.cpp:36:3:36:3 | o |

@@ -133,6 +133,13 @@
 | aliasing.cpp:218:8:218:9 | m1 | AST only |
 | aliasing.cpp:225:15:225:22 | & ... | AST only |
 | aliasing.cpp:232:15:232:22 | & ... | AST only |
+| aliasing.cpp:256:6:256:6 | c | AST only |
+| aliasing.cpp:257:6:257:6 | e | AST only |
+| aliasing.cpp:258:20:258:20 | p | AST only |
+| aliasing.cpp:261:51:261:51 | e | AST only |
+| aliasing.cpp:266:6:266:6 | c | AST only |
+| aliasing.cpp:267:37:267:37 | p | AST only |
+| aliasing.cpp:268:20:268:20 | p | AST only |
 | arrays.cpp:6:3:6:8 | access to array | AST only |
 | arrays.cpp:6:3:6:23 | arr | IR only |
 | arrays.cpp:15:3:15:10 | * ... | AST only |

@@ -103,6 +103,10 @@
 | aliasing.cpp:225:19:225:19 | s |
 | aliasing.cpp:232:16:232:17 | s2 |
 | aliasing.cpp:232:19:232:19 | s |
+| aliasing.cpp:256:3:256:3 | p |
+| aliasing.cpp:257:3:257:3 | p |
+| aliasing.cpp:261:48:261:48 | p |
+| aliasing.cpp:266:3:266:3 | p |
 | arrays.cpp:6:3:6:5 | arr |
 | arrays.cpp:36:3:36:3 | o |
 | arrays.cpp:36:3:36:17 | access to array |

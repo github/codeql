@@ -233,3 +233,37 @@ void test_deep_struct_fields_taint_through_call_no_flow() {
   S s = s2.s;
   sink(s.m2);
 }
+
+struct B {
+  int a;
+  int c;
+  int d;
+  int e;
+};
+
+struct A {
+  B b;
+  int y;
+};
+
+void call_sink_with_B(B* p) {
+  sink(p->e); // $ir=256:10 $ir=266:10 $ast $f-:ast=266:10
+}
+
+void test_multiple_loads_from_a_same_memory_1() {
+  A a;
+  B *p = &a.b;
+  p->c = user_input();
+  p->e = p->c;
+  call_sink_with_B(p);
+}
+
+void multiple_loads_from_a_same_memory(B* p) { p->e = p->c; }
+
+void test_multiple_loads_from_a_same_memory_2() {
+  A a;
+  B *p = &a.b;
+  p->c = user_input();
+  multiple_loads_from_a_same_memory(p);
+  call_sink_with_B(p);
+}
