@@ -200,10 +200,17 @@
 | set.cpp:237:7:237:9 | set.cpp:236:37:236:42 | AST only |
 | smart_pointer.cpp:12:10:12:10 | smart_pointer.cpp:11:52:11:57 | AST only |
 | smart_pointer.cpp:24:10:24:10 | smart_pointer.cpp:23:52:23:57 | AST only |
+| smart_pointer.cpp:38:10:38:10 | smart_pointer.cpp:37:10:37:15 | AST only |
+| smart_pointer.cpp:39:10:39:10 | smart_pointer.cpp:37:10:37:15 | AST only |
+| smart_pointer.cpp:46:10:46:10 | smart_pointer.cpp:45:10:45:15 | AST only |
+| smart_pointer.cpp:47:10:47:10 | smart_pointer.cpp:45:10:45:15 | AST only |
 | standalone_iterators.cpp:41:10:41:10 | standalone_iterators.cpp:39:45:39:51 | AST only |
 | standalone_iterators.cpp:42:10:42:10 | standalone_iterators.cpp:39:45:39:51 | AST only |
 | standalone_iterators.cpp:47:10:47:10 | standalone_iterators.cpp:45:39:45:45 | AST only |
 | standalone_iterators.cpp:48:10:48:10 | standalone_iterators.cpp:45:39:45:45 | AST only |
+| standalone_iterators.cpp:52:10:52:10 | standalone_iterators.cpp:51:37:51:43 | AST only |
+| standalone_iterators.cpp:53:10:53:10 | standalone_iterators.cpp:51:37:51:43 | AST only |
+| standalone_iterators.cpp:54:10:54:10 | standalone_iterators.cpp:51:37:51:43 | AST only |
 | string.cpp:33:9:33:13 | string.cpp:27:16:27:21 | AST only |
 | string.cpp:39:13:39:17 | string.cpp:14:10:14:15 | AST only |
 | string.cpp:43:13:43:17 | string.cpp:14:10:14:15 | AST only |
@@ -383,3 +390,5 @@
 | vector.cpp:409:7:409:9 | vector.cpp:408:11:408:16 | AST only |
 | vector.cpp:414:7:414:9 | vector.cpp:413:11:413:16 | AST only |
 | vector.cpp:422:8:422:10 | vector.cpp:417:33:417:45 | AST only |
+| vector.cpp:429:8:429:10 | vector.cpp:417:33:417:45 | AST only |
+| vector.cpp:436:8:436:10 | vector.cpp:435:11:435:16 | AST only |
