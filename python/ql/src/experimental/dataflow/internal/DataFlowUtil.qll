@@ -18,7 +18,7 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**
- * Gets an EssaNode that holds the module imported by `name`.
+ * Gets a `Node` that refers to the module referenced by `name`.
  * Note that for the statement `import pkg.mod`, the new variable introduced is `pkg` that is a
  * reference to the module `pkg`.
  *
@@ -26,6 +26,9 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
  * 1. `import <name>`
  * 2. `from <package> import <module>` when `<name> = <package> + "." + <module>`
  * 3. `from <module> import <member>` when `<name> = <module> + "." + <member>`
+ *
+ * Finally, in `from <module> import <member>` we consider the `ImportExpr` corresponding to
+ * `<module>` to be a reference to that module.
  *
  * Note:
  * While it is technically possible that `import mypkg.foo` and `from mypkg import foo` can give different values,
@@ -36,7 +39,7 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
  *
  * Also see `DataFlow::importMember`
  */
-EssaNode importModule(string name) {
+Node importModule(string name) {
   exists(Variable var, Import imp, Alias alias |
     alias = imp.getAName() and
     alias.getAsname() = var.getAStore() and
@@ -45,8 +48,29 @@ EssaNode importModule(string name) {
       or
       name = alias.getValue().(ImportExpr).getImportedModuleName()
     ) and
-    result.getVar().(AssignmentDefinition).getSourceVariable() = var
+    result.(EssaNode).getVar().(AssignmentDefinition).getSourceVariable() = var
   )
+  or
+  // Although it may seem superfluous to consider the `foo` part of `from foo import bar as baz` to
+  // be a reference to a module (since that reference only makes sense locally within the `import`
+  // statement), it's important for our use of type trackers to consider this local reference to
+  // also refer to the `foo` module. That way, if one wants to track references to the `bar`
+  // attribute using a type tracker, one can simply write
+  //
+  // ```ql
+  // DataFlow::Node bar_attr_tracker(TypeTracker t) {
+  //   t.startInAttr("bar") and
+  //   result = foo_module_tracker()
+  //   or
+  //   exists(TypeTracker t2 | result = bar_attr_tracker(t2).track(t2, t))
+  // }
+  // ```
+  //
+  // Where `foo_module_tracker` is a type tracker that tracks references to the `foo` module.
+  // Because named imports are modelled as `AttrRead`s, the statement `from foo import bar as baz`
+  // is interpreted as if it was an assignment `baz = foo.bar`, which means `baz` gets tracked as a
+  // reference to `foo.bar`, as desired.
+  result.asCfgNode().getNode() = any(ImportExpr i | i.getAnImportedModuleName() = name)
 }
 
 /**
