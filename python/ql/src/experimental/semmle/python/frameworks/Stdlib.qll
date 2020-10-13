@@ -327,4 +327,108 @@ private module Stdlib {
       )
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // marshal
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `marshal` module. */
+  private DataFlow::Node marshal(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importModule("marshal")
+    or
+    exists(DataFlow::TypeTracker t2 | result = marshal(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `marshal` module. */
+  DataFlow::Node marshal() { result = marshal(DataFlow::TypeTracker::end()) }
+
+  module marshal {
+    /** Gets a reference to the `marshal.loads` function. */
+    private DataFlow::Node loads(DataFlow::TypeTracker t) {
+      t.start() and
+      result = DataFlow::importMember("marshal", "loads")
+      or
+      t.startInAttr("loads") and
+      result = marshal()
+      or
+      exists(DataFlow::TypeTracker t2 | result = loads(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `marshal.loads` function. */
+    DataFlow::Node loads() { result = loads(DataFlow::TypeTracker::end()) }
+  }
+
+  /**
+   * A call to `marshal.loads`
+   * See https://docs.python.org/3/library/marshal.html#marshal.loads
+   */
+  private class MarshalDeserialization extends UnmarshalingFunction::Range {
+    MarshalDeserialization() {
+      this.asCfgNode().(CallNode).getFunction() = marshal::loads().asCfgNode()
+    }
+
+    override predicate unsafe() { any() }
+
+    override DataFlow::Node getAnInput() {
+      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { none() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // pickle
+  // ---------------------------------------------------------------------------
+  private string pickleModuleName() { result in ["pickle", "cPickle"] }
+
+  /** Gets a reference to the `pickle` module. */
+  private DataFlow::Node pickle(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importModule(pickleModuleName())
+    or
+    exists(DataFlow::TypeTracker t2 | result = pickle(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `pickle` module. */
+  DataFlow::Node pickle() { result = pickle(DataFlow::TypeTracker::end()) }
+
+  module pickle {
+    /** Gets a reference to the `pickle.loads` function. */
+    private DataFlow::Node loads(DataFlow::TypeTracker t) {
+      t.start() and
+      result = DataFlow::importMember(pickleModuleName(), "loads")
+      or
+      t.startInAttr("loads") and
+      result = pickle()
+      or
+      exists(DataFlow::TypeTracker t2 | result = loads(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `pickle.loads` function. */
+    DataFlow::Node loads() { result = loads(DataFlow::TypeTracker::end()) }
+  }
+
+  /**
+   * A call to `pickle.loads`
+   * See https://docs.python.org/3/library/pickle.html#pickle.loads
+   */
+  private class PickleDeserialization extends UnmarshalingFunction::Range {
+    PickleDeserialization() {
+      this.asCfgNode().(CallNode).getFunction() = pickle::loads().asCfgNode()
+    }
+
+    override predicate unsafe() { any() }
+
+    override DataFlow::Node getAnInput() {
+      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() {
+      result = this.asCfgNode().(CallNode).getArgByName("encoding").(NameNode).getId()
+    }
+  }
 }

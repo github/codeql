@@ -33,19 +33,41 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
   }
 }
 
-class DeserializationSinkTest extends InlineExpectationsTest {
-  DeserializationSinkTest() { this = "DeserializationSinkTest" }
+class UnmarshalingFunctionTest extends InlineExpectationsTest {
+  UnmarshalingFunctionTest() { this = "UnmarshalingFunctionTest" }
 
   override string getARelevantTag() { result = "getData" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DeserializationSink ds, DataFlow::Node data |
-      exists(location.getFile().getRelativePath()) and
-      data = ds.getData() and
-      location = data.getLocation() and
-      element = data.toString() and
-      value = value_from_expr(data.asExpr()) and
-      tag = "getData"
+    exists(location.getFile().getRelativePath()) and
+    exists(UnmarshalingFunction ds, string unsafe |
+      (
+        ds.unsafe() and unsafe = "UNSAFE_"
+        or
+        not ds.unsafe() and unsafe = ""
+      ) and
+      (
+        exists(DataFlow::Node data |
+          location = data.getLocation() and
+          element = data.toString() and
+          value = value_from_expr(data.asExpr()) and
+          (
+            data = ds.getAnInput() and
+            tag = unsafe + "getAnInput"
+            or
+            data = ds.getOutput() and
+            tag = unsafe + "getOutput"
+          )
+        )
+        or
+        exists(string format |
+          location = ds.getLocation() and
+          element = format and
+          value = format and
+          format = ds.getFormat() and
+          tag = unsafe + "getFormat"
+        )
+      )
     )
   }
 }

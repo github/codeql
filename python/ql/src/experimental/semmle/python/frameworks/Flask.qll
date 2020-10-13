@@ -13,7 +13,7 @@ private import experimental.semmle.python.frameworks.Werkzeug
 // https://github.com/github/codeql/blob/9f95212e103c68d0c1dfa4b6f30fb5d53954ccef/python/ql/src/semmle/python/web/flask/Request.qll
 private module Flask {
   /** Gets a reference to the `flask` module. */
-  DataFlow::Node flask(DataFlow::TypeTracker t) {
+  private DataFlow::Node flask(DataFlow::TypeTracker t) {
     t.start() and
     result = DataFlow::importModule("flask")
     or
@@ -25,18 +25,18 @@ private module Flask {
 
   module flask {
     /** Gets a reference to the `flask.request` object. */
-    DataFlow::Node request(DataFlow::TypeTracker t) {
+    private DataFlow::Node request(DataFlow::TypeTracker t) {
       t.start() and
       result = DataFlow::importMember("flask", "request")
       or
       t.startInAttr("request") and
       result = flask()
       or
-      exists(DataFlow::TypeTracker t2 | result = flask::request(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = request(t2).track(t2, t))
     }
 
     /** Gets a reference to the `flask.request` object. */
-    DataFlow::Node request() { result = flask::request(DataFlow::TypeTracker::end()) }
+    DataFlow::Node request() { result = request(DataFlow::TypeTracker::end()) }
   }
 
   // TODO: Do we even need this class? :|
