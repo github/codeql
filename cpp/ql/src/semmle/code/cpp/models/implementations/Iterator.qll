@@ -278,7 +278,7 @@ class IteratorArrayMemberOperator extends MemberFunction, TaintFunction, Iterato
  * A `begin` or `end` member function, or a related member function, that
  * returns an iterator.
  */
-class BeginOrEndFunction extends MemberFunction, TaintFunction {
+class BeginOrEndFunction extends MemberFunction, TaintFunction, GetIteratorFunction {
   BeginOrEndFunction() {
     this
         .hasName(["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend",
@@ -288,6 +288,23 @@ class BeginOrEndFunction extends MemberFunction, TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
+    output.isReturnValue()
+  }
+
+  override predicate getsIterator(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}
+
+class InserterIteratorFunction extends GetIteratorFunction {
+  InserterIteratorFunction() {
+    this.hasName(["front_inserter", "inserter", "back_inserter"]) and
+    this.getNamespace().hasName("std")
+  }
+
+  override predicate getsIterator(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref(0) and
     output.isReturnValue()
   }
 }

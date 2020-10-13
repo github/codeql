@@ -801,9 +801,25 @@ module FlowVar_internal {
   }
 
   Expr getAnIteratorAccess(Variable collection) {
-    exists(Call c, SsaDefinition def, Variable iterator |
-      c.getQualifier() = collection.getAnAccess() and
-      c.getTarget() instanceof BeginOrEndFunction and
+    exists(
+      Call c, SsaDefinition def, Variable iterator, FunctionInput input, FunctionOutput output
+    |
+      c.getTarget().(GetIteratorFunction).getsIterator(input, output) and
+      (
+        (
+          input.isQualifierObject() or
+          input.isQualifierAddress()
+        ) and
+        c.getQualifier() = collection.getAnAccess()
+        or
+        exists(int index |
+          input.isParameter(index) or
+          input.isParameterDeref(index)
+        |
+          c.getArgument(index) = collection.getAnAccess()
+        )
+      ) and
+      output.isReturnValue() and
       def.getAnUltimateDefiningValue(iterator) = c and
       result = def.getAUse(iterator)
     )
