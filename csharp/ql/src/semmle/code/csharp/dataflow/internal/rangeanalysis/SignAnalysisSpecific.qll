@@ -2,10 +2,12 @@
  * Provides C#-specific definitions for use in sign analysis.
  */
 module Private {
-  private import SsaUtils as SU
   private import csharp as CS
+  private import SsaUtils as SU
   private import ConstantUtils as CU
+  private import RangeUtils as RU
   private import semmle.code.csharp.controlflow.Guards as G
+  private import Sign
   import Impl
 
   class Guard = G::Guard;
@@ -32,7 +34,85 @@ module Private {
 
   class Expr = CS::Expr;
 
+  class VariableUpdate = CS::AssignableDefinition;
+
+  class Field = CS::Field;
+
+  class RealLiteral = CS::RealLiteral;
+
+  class DivExpr = CS::DivExpr;
+
+  /** Class to represent unary operation. */
+  class UnaryOperation extends Expr {
+    UnaryOperation() {
+      this instanceof CS::PreIncrExpr or
+      this instanceof CS::PreDecrExpr or
+      this instanceof CS::UnaryMinusExpr or
+      this instanceof CS::ComplementExpr
+    }
+
+    /** Returns the operand of this expression. */
+    Expr getOperand() {
+      result = this.(CS::PreIncrExpr).getOperand() or
+      result = this.(CS::PreDecrExpr).getOperand() or
+      result = this.(CS::UnaryMinusExpr).getOperand() or
+      result = this.(CS::ComplementExpr).getOperand()
+    }
+
+    /** Returns the operation representing this expression. */
+    TUnarySignOperation getOp() {
+      this instanceof CS::PreIncrExpr and result = TIncOp()
+      or
+      this instanceof CS::PreDecrExpr and result = TDecOp()
+      or
+      this instanceof CS::UnaryMinusExpr and result = TNegOp()
+      or
+      this instanceof CS::ComplementExpr and result = TBitNotOp()
+    }
+  }
+
+  /** Class to represent binary operation. */
+  class BinaryOperation extends CS::BinaryOperation {
+    BinaryOperation() {
+      this instanceof CS::AddExpr or
+      this instanceof CS::SubExpr or
+      this instanceof CS::MulExpr or
+      this instanceof CS::DivExpr or
+      this instanceof CS::RemExpr or
+      this instanceof CS::BitwiseAndExpr or
+      this instanceof CS::BitwiseOrExpr or
+      this instanceof CS::BitwiseXorExpr or
+      this instanceof CS::LShiftExpr or
+      this instanceof CS::RShiftExpr
+    }
+
+    /** Returns the operation representing this expression. */
+    TBinarySignOperation getOp() {
+      this instanceof CS::AddExpr and result = TAddOp()
+      or
+      this instanceof CS::SubExpr and result = TSubOp()
+      or
+      this instanceof CS::MulExpr and result = TMulOp()
+      or
+      this instanceof CS::DivExpr and result = TDivOp()
+      or
+      this instanceof CS::RemExpr and result = TRemOp()
+      or
+      this instanceof CS::BitwiseAndExpr and result = TBitAndOp()
+      or
+      this instanceof CS::BitwiseOrExpr and result = TBitOrOp()
+      or
+      this instanceof CS::BitwiseXorExpr and result = TBitXorOp()
+      or
+      this instanceof CS::LShiftExpr and result = TLShiftOp()
+      or
+      this instanceof CS::RShiftExpr and result = TRShiftOp()
+    }
+  }
+
   predicate ssaRead = SU::ssaRead/2;
+
+  predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
 }
 
 private module Impl {
@@ -48,6 +128,10 @@ private module Impl {
 
   private class BooleanValue = AbstractValues::BooleanValue;
 
+  /** Gets the character value of expression `e`. */
+  string getCharValue(Expr e) { result = e.getValue() and e.getType() instanceof CharType }
+
+  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expressions. */
   float getNonIntegerValue(Expr e) {
     exists(string s |
       s = e.getValue() and
@@ -56,8 +140,10 @@ private module Impl {
     )
   }
 
-  string getCharValue(Expr e) { result = e.getValue() and e.getType() instanceof CharType }
-
+  /**
+   * Holds if `e` is an access to the size of a container (`string`, `Array`,
+   * `IEnumerable`, or `ICollection`).
+   */
   predicate containerSizeAccess(Expr e) {
     exists(Property p | p = e.(PropertyAccess).getTarget() |
       propertyOverrides(p, "System.Collections.Generic.IEnumerable<>", "Count") or
@@ -69,6 +155,7 @@ private module Impl {
     e instanceof CountCall
   }
 
+  /** Holds if `e` is by definition strictly positive. */
   predicate positiveExpression(Expr e) { e instanceof SizeofExpr }
 
   abstract class NumericOrCharType extends Type { }
@@ -97,46 +184,67 @@ private module Impl {
     }
   }
 
-  Sign explicitSsaDefSign(Ssa::ExplicitDefinition v) {
-    exists(AssignableDefinition def | def = v.getADefinition() |
-      result = exprSign(def.getSource())
-      or
-      not exists(def.getSource()) and
-      not def.getElement() instanceof MutatorOperation
-      or
-      result = exprSign(def.getElement().(IncrementOperation).getOperand()).inc()
-      or
-      result = exprSign(def.getElement().(DecrementOperation).getOperand()).dec()
-    )
+  /** Returns the underlying variable update of the explicit SSA variable `v`. */
+  AssignableDefinition getExplicitSsaAssignment(Ssa::ExplicitDefinition v) {
+    result = v.getADefinition()
   }
 
-  Sign implicitSsaDefSign(Ssa::ImplicitDefinition v) {
-    result = fieldSign(v.getSourceVariable().getAssignable()) or
-    not v.getSourceVariable().getAssignable() instanceof Field
+  /** Returns the assignment of the variable update `def`. */
+  Expr getExprFromSsaAssignment(AssignableDefinition def) { result = def.getSource() }
+
+  /** Holds if `def` can have any sign. */
+  predicate explicitSsaDefWithAnySign(AssignableDefinition def) {
+    not exists(def.getSource()) and
+    not def.getElement() instanceof MutatorOperation
   }
 
+  /** Returns the operand of the operation if `def` is a decrement. */
+  Expr getDecrementOperand(AssignableDefinition def) {
+    result = def.getElement().(DecrementOperation).getOperand()
+  }
+
+  /** Returns the operand of the operation if `def` is an increment. */
+  Expr getIncrementOperand(AssignableDefinition def) {
+    result = def.getElement().(IncrementOperation).getOperand()
+  }
+
+  /** Gets the variable underlying the implicit SSA variable `v`. */
+  Declaration getImplicitSsaDeclaration(Ssa::ImplicitDefinition v) {
+    result = v.getSourceVariable().getAssignable()
+  }
+
+  /** Holds if the variable underlying the implicit SSA variable `v` is not a field. */
+  predicate nonFieldImplicitSsaDefinition(Ssa::ImplicitDefinition v) {
+    not getImplicitSsaDeclaration(v) instanceof Field
+  }
+
+  /** Returned an expression that is assigned to `f`. */
+  Expr getAssignedValueToField(Field f) {
+    result = f.getAnAssignedValue() or
+    result = any(AssignOperation a | a.getLValue() = f.getAnAccess())
+  }
+
+  /** Holds if `f` can have any sign. */
+  predicate fieldWithUnknownSign(Field f) { not f.fromSource() or not f.isEffectivelyPrivate() }
+
+  /** Holds if `f` is accessed in an increment operation. */
+  predicate fieldIncrementOperationOperand(Field f) {
+    any(IncrementOperation inc).getOperand() = f.getAnAccess()
+  }
+
+  /** Holds if `f` is accessed in a decrement operation. */
+  predicate fieldDecrementOperationOperand(Field f) {
+    any(DecrementOperation dec).getOperand() = f.getAnAccess()
+  }
+
+  /** Returns possible signs of `f` based on the declaration. */
   pragma[inline]
-  Sign ssaVariableSign(Ssa::Definition v, Expr e) {
-    result = ssaSign(v, any(SsaReadPositionBlock bb | getAnExpression(bb) = e))
-  }
+  Sign specificFieldSign(Field f) { not exists(f.getInitializer()) and result = TZero() }
 
-  /** Gets a possible sign for `f`. */
-  Sign fieldSign(Field f) {
-    if f.fromSource() and f.isEffectivelyPrivate()
-    then
-      result = exprSign(f.getAnAssignedValue())
-      or
-      any(IncrementOperation inc).getOperand() = f.getAnAccess() and result = fieldSign(f).inc()
-      or
-      any(DecrementOperation dec).getOperand() = f.getAnAccess() and result = fieldSign(f).dec()
-      or
-      exists(AssignOperation a | a.getLValue() = f.getAnAccess() | result = exprSign(a))
-      or
-      not exists(f.getInitializer()) and result = TZero()
-    else any()
-  }
-
-  predicate unknownIntegerAccess(Expr e) {
+  /**
+   * Holds if `e` has type `NumericOrCharType`, but the sign of `e` is unknown.
+   */
+  predicate numericExprWithUnknownSign(Expr e) {
     e.getType() instanceof NumericOrCharType and
     not e = getARead(_) and
     not e instanceof FieldAccess and
@@ -171,79 +279,20 @@ private module Impl {
     not e instanceof NullCoalescingExpr
   }
 
-  Sign specificSubExprSign(Expr e) {
-    // The expression types that are handled here should be excluded in `unknownIntegerAccess`.
-    // Keep them in sync.
-    result = exprSign(e.(AssignExpr).getRValue())
-    or
-    result = exprSign(e.(AssignOperation).getExpandedAssignment())
-    or
-    result = exprSign(e.(UnaryPlusExpr).getOperand())
-    or
-    result = exprSign(e.(PostIncrExpr).getOperand())
-    or
-    result = exprSign(e.(PostDecrExpr).getOperand())
-    or
-    result = exprSign(e.(PreIncrExpr).getOperand()).inc()
-    or
-    result = exprSign(e.(PreDecrExpr).getOperand()).dec()
-    or
-    result = exprSign(e.(UnaryMinusExpr).getOperand()).neg()
-    or
-    result = exprSign(e.(ComplementExpr).getOperand()).bitnot()
-    or
-    e =
-      any(DivExpr div |
-        result = exprSign(div.getLeftOperand()) and
-        result != TZero() and
-        div.getRightOperand().(RealLiteral).getValue().toFloat() = 0
-      )
-    or
-    exists(Sign s1, Sign s2 | binaryOpSigns(e, s1, s2) |
-      e instanceof AddExpr and result = s1.add(s2)
-      or
-      e instanceof SubExpr and result = s1.add(s2.neg())
-      or
-      e instanceof MulExpr and result = s1.mul(s2)
-      or
-      e instanceof DivExpr and result = s1.div(s2)
-      or
-      e instanceof RemExpr and result = s1.rem(s2)
-      or
-      e instanceof BitwiseAndExpr and result = s1.bitand(s2)
-      or
-      e instanceof BitwiseOrExpr and result = s1.bitor(s2)
-      or
-      e instanceof BitwiseXorExpr and result = s1.bitxor(s2)
-      or
-      e instanceof LShiftExpr and result = s1.lshift(s2)
-      or
-      e instanceof RShiftExpr and result = s1.rshift(s2)
-    )
-    or
-    result = exprSign(e.(ConditionalExpr).getAChild())
-    or
-    result = exprSign(e.(NullCoalescingExpr).getAChild())
-    or
-    result = exprSign(e.(SwitchExpr).getACase().getBody())
-    or
-    result = exprSign(e.(CastExpr).getExpr())
-    or
-    result = exprSign(e.(SwitchCaseExpr).getBody())
-    or
-    result = exprSign(e.(LocalVariableDeclAndInitExpr).getInitializer())
-    or
-    result = exprSign(e.(RefExpr).getExpr())
-  }
-
-  private Sign binaryOpLhsSign(BinaryOperation e) { result = exprSign(e.getLeftOperand()) }
-
-  private Sign binaryOpRhsSign(BinaryOperation e) { result = exprSign(e.getRightOperand()) }
-
-  pragma[noinline]
-  private predicate binaryOpSigns(Expr e, Sign lhs, Sign rhs) {
-    lhs = binaryOpLhsSign(e) and
-    rhs = binaryOpRhsSign(e)
+  /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
+  Expr getASubExprWithSameSign(Expr e) {
+    result = e.(AssignExpr).getRValue() or
+    result = e.(AssignOperation).getExpandedAssignment() or
+    result = e.(UnaryPlusExpr).getOperand() or
+    result = e.(PostIncrExpr).getOperand() or
+    result = e.(PostDecrExpr).getOperand() or
+    result = e.(ConditionalExpr).getAChild() or
+    result = e.(NullCoalescingExpr).getAChild() or
+    result = e.(SwitchExpr).getACase().getBody() or
+    result = e.(SwitchCaseExpr).getBody() or
+    result = e.(LocalVariableDeclAndInitExpr).getInitializer() or
+    result = e.(RefExpr).getExpr() or
+    result = e.(CastExpr).getExpr()
   }
 
   Expr getARead(Ssa::Definition v) { result = v.getARead() }
@@ -253,15 +302,6 @@ private module Impl {
   Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode().getElement() }
 
   Guard getComparisonGuard(ComparisonExpr ce) { result = ce.getExpr() }
-
-  /**
-   * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
-   */
-  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    exists(BooleanValue b | b.getValue() = testIsTrue |
-      guard.controlsBasicBlock(controlled.(SsaReadPositionBlock).getBlock(), b)
-    )
-  }
 
   /** A relational comparison */
   class ComparisonExpr extends ComparisonTest {

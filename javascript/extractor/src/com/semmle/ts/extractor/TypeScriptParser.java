@@ -1,4 +1,4 @@
-package com.semmle.js.parser;
+package com.semmle.ts.extractor;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -32,8 +32,9 @@ import com.semmle.js.extractor.DependencyInstallationResult;
 import com.semmle.js.extractor.EnvironmentVariables;
 import com.semmle.js.extractor.ExtractionMetrics;
 import com.semmle.js.extractor.VirtualSourceRoot;
+import com.semmle.js.parser.JSParser;
+import com.semmle.js.parser.ParsedProject;
 import com.semmle.js.parser.JSParser.Result;
-import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.data.UnitParser;
 import com.semmle.util.exception.CatastrophicError;

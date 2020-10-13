@@ -5,6 +5,7 @@
 private import python
 private import DataFlowPrivate
 import experimental.dataflow.TypeTracker
+import Attributes
 private import semmle.python.essa.SsaCompute
 
 /**
@@ -22,7 +23,7 @@ newtype TNode =
   /** A node corresponding to an SSA variable. */
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
-  TCfgNode(DataFlowCfgNode node) or
+  TCfgNode(ControlFlowNode node) { isExpressionNode(node) } or
   /** A synthetic node representing the value of an object before a state change */
   TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
   /** A synthetic node representing the value of an object after a state change */
@@ -103,7 +104,7 @@ class EssaNode extends Node, TEssaNode {
 }
 
 class CfgNode extends Node, TCfgNode {
-  DataFlowCfgNode node;
+  ControlFlowNode node;
 
   CfgNode() { this = TCfgNode(node) }
 

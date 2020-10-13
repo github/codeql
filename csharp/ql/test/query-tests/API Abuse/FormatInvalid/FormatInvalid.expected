@@ -48,7 +48,7 @@ nodes
 | FormatInvalid.cs:108:23:108:25 | "}" | semmle.label | "}" |
 | FormatInvalid.cs:109:23:109:25 | "}" | semmle.label | "}" |
 | FormatInvalid.cs:110:23:110:25 | "}" | semmle.label | "}" |
-| FormatInvalid.cs:115:56:115:58 | "}" | semmle.label | "}" |
+| FormatInvalid.cs:115:56:115:58 | [assertion success] "}" | semmle.label | [assertion success] "}" |
 | FormatInvalid.cs:116:18:116:20 | "}" | semmle.label | "}" |
 | FormatInvalid.cs:117:40:117:42 | "}" | semmle.label | "}" |
 | FormatInvalidBad.cs:7:30:7:44 | "class {0} { }" | semmle.label | "class {0} { }" |
@@ -93,7 +93,7 @@ edges
 | FormatInvalid.cs:108:24:108:25 | "}" | FormatInvalid.cs:108:23:108:25 | "}" | FormatInvalid.cs:108:23:108:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:108:9:108:32 | call to method Write | this |
 | FormatInvalid.cs:109:24:109:25 | "}" | FormatInvalid.cs:109:23:109:25 | "}" | FormatInvalid.cs:109:23:109:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:109:9:109:35 | call to method Write | this |
 | FormatInvalid.cs:110:24:110:25 | "}" | FormatInvalid.cs:110:23:110:25 | "}" | FormatInvalid.cs:110:23:110:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:110:9:110:38 | call to method Write | this |
-| FormatInvalid.cs:115:57:115:58 | "}" | FormatInvalid.cs:115:56:115:58 | "}" | FormatInvalid.cs:115:56:115:58 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:115:9:115:63 | call to method Assert | this |
+| FormatInvalid.cs:115:57:115:58 | "}" | FormatInvalid.cs:115:56:115:58 | [assertion success] "}" | FormatInvalid.cs:115:56:115:58 | [assertion success] "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:115:9:115:63 | call to method Assert | this |
 | FormatInvalid.cs:116:19:116:20 | "}" | FormatInvalid.cs:116:18:116:20 | "}" | FormatInvalid.cs:116:18:116:20 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:116:9:116:24 | call to method Write | this |
 | FormatInvalid.cs:117:41:117:42 | "}" | FormatInvalid.cs:117:40:117:42 | "}" | FormatInvalid.cs:117:40:117:42 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:117:9:117:47 | call to method Print | this |
 | FormatInvalidBad.cs:7:41:7:44 | "class {0} { }" | FormatInvalidBad.cs:7:30:7:44 | "class {0} { }" | FormatInvalidBad.cs:7:30:7:44 | "class {0} { }" | Invalid format string used in $@ formatting call. | FormatInvalidBad.cs:7:16:7:45 | call to method Format | this |

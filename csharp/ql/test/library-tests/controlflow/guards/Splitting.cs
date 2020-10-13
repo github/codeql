@@ -125,6 +125,7 @@ public class Splitting
         object? o = null;
         do
         {
+            o.GetHashCode(); // not null guarded
             if (o != null)
             {
                 if (b)

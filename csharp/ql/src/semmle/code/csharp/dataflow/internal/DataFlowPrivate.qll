@@ -171,6 +171,10 @@ module LocalFlow {
         e1 = e2.(ArrayCreation).getInitializer() and
         scope = e2 and
         isSuccessor = false
+        or
+        e1 = e2.(SwitchExpr).getACase().getBody() and
+        scope = e2 and
+        isSuccessor = false
       )
     }
 
@@ -739,7 +743,7 @@ private module Cached {
       viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
       paramNode.getDefinition() = param and
       param.getARead() = guard and
-      guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs)
+      guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs, _)
     )
   }
 

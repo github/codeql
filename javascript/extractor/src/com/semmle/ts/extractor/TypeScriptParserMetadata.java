@@ -1,4 +1,4 @@
-package com.semmle.js.parser;
+package com.semmle.ts.extractor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

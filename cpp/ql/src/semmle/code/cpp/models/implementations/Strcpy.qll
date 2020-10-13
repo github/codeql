@@ -13,43 +13,24 @@ import semmle.code.cpp.models.interfaces.SideEffect
  */
 class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, SideEffectFunction {
   StrcpyFunction() {
-    exists(string name | name = getName() |
-      // strcpy(dst, src)
-      name = "strcpy"
-      or
-      // wcscpy(dst, src)
-      name = "wcscpy"
-      or
-      // _mbscpy(dst, src)
-      name = "_mbscpy"
-      or
-      (
-        name = "strcpy_s" or // strcpy_s(dst, max_amount, src)
-        name = "wcscpy_s" or // wcscpy_s(dst, max_amount, src)
-        name = "_mbscpy_s" // _mbscpy_s(dst, max_amount, src)
-      ) and
-      // exclude the 2-parameter template versions
-      // that find the size of a fixed size destination buffer.
-      getNumberOfParameters() = 3
-      or
-      // strncpy(dst, src, max_amount)
-      name = "strncpy"
-      or
-      // _strncpy_l(dst, src, max_amount, locale)
-      name = "_strncpy_l"
-      or
-      // wcsncpy(dst, src, max_amount)
-      name = "wcsncpy"
-      or
-      // _wcsncpy_l(dst, src, max_amount, locale)
-      name = "_wcsncpy_l"
-      or
-      // _mbsncpy(dst, src, max_amount)
-      name = "_mbsncpy"
-      or
-      // _mbsncpy_l(dst, src, max_amount, locale)
-      name = "_mbsncpy_l"
-    )
+    getName() =
+      ["strcpy", // strcpy(dst, src)
+          "wcscpy", // wcscpy(dst, src)
+          "_mbscpy", // _mbscpy(dst, src)
+          "strncpy", // strncpy(dst, src, max_amount)
+          "_strncpy_l", // _strncpy_l(dst, src, max_amount, locale)
+          "wcsncpy", // wcsncpy(dst, src, max_amount)
+          "_wcsncpy_l", // _wcsncpy_l(dst, src, max_amount, locale)
+          "_mbsncpy", // _mbsncpy(dst, src, max_amount)
+          "_mbsncpy_l"] // _mbsncpy_l(dst, src, max_amount, locale)
+    or
+    getName() =
+      ["strcpy_s", // strcpy_s(dst, max_amount, src)
+          "wcscpy_s", // wcscpy_s(dst, max_amount, src)
+          "_mbscpy_s"] and // _mbscpy_s(dst, max_amount, src)
+    // exclude the 2-parameter template versions
+    // that find the size of a fixed size destination buffer.
+    getNumberOfParameters() = 3
   }
 
   /**
