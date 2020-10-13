@@ -51,23 +51,29 @@ abstract class TaintPreservingCallable extends Callable {
   predicate transfersTaint(int src, int sink) { none() }
 }
 
-private class StringTaintPreservingCallable extends TaintPreservingCallable {
-  StringTaintPreservingCallable() {
+private class StringTaintPreservingMethod extends TaintPreservingCallable {
+  StringTaintPreservingMethod() {
     this.getDeclaringType() instanceof TypeString and
     this
         .hasName(["concat", "copyValueOf", "endsWith", "format", "formatted", "getBytes", "indent",
               "intern", "join", "repeat", "split", "strip", "stripIndent", "stripLeading",
               "stripTrailing", "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase",
-              "trim", "String"])
+              "trim"])
   }
 
   override predicate returnsTaintFrom(int arg) {
     arg = -1 and not this.isStatic()
     or
-    this.hasName(["concat", "copyValueOf", "String"]) and arg = 0
+    this.hasName(["concat", "copyValueOf"]) and arg = 0
     or
     this.hasName(["format", "formatted", "join"]) and arg = [0 .. getNumberOfParameters()]
   }
+}
+
+private class StringTaintPreservingConstructor extends Constructor, TaintPreservingCallable {
+  StringTaintPreservingConstructor() { this.getDeclaringType() instanceof TypeString }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
 }
 
 private class NumberTaintPreservingCallable extends TaintPreservingCallable {
@@ -90,25 +96,28 @@ private class NumberTaintPreservingCallable extends TaintPreservingCallable {
   override predicate returnsTaintFrom(int arg) { arg = argument }
 }
 
+/** Holds for the types `StringBuilder`, `StringBuffer`, and `StringWriter`. */
+private predicate stringBuilderType(RefType t) {
+  t.hasQualifiedName("java.lang", "StringBuilder") or
+  t.hasQualifiedName("java.lang", "StringBuffer") or
+  t.hasQualifiedName("java.io", "StringWriter")
+}
+
 private class StringBuilderTaintPreservingCallable extends TaintPreservingCallable {
   StringBuilderTaintPreservingCallable() {
-    exists(Class c | c = this.getDeclaringType().getASourceSupertype*() |
-      (
-        c.hasQualifiedName("java.lang", "StringBuilder") or
-        c.hasQualifiedName("java.lang", "StringBuffer") or
-        c.hasQualifiedName("java.io", "StringWriter")
-      ) and
-      (
-        this.hasName(["append", "insert", "replace", "toString"])
-        or
-        this.(Constructor).getParameterType(0) instanceof TypeString and
-        c = this.getDeclaringType()
-      )
+    exists(Method m |
+      this.(Method).overrides*(m) and
+      stringBuilderType(m.getDeclaringType()) and
+      m.hasName(["append", "insert", "replace", "toString", "write"])
     )
+    or
+    this.(Constructor).getParameterType(0) instanceof RefType and
+    stringBuilderType(this.getDeclaringType())
   }
 
   override predicate returnsTaintFrom(int arg) {
-    arg = -1
+    arg = -1 and
+    not this instanceof Constructor
     or
     this instanceof Constructor and arg = 0
     or
@@ -122,6 +131,11 @@ private class StringBuilderTaintPreservingCallable extends TaintPreservingCallab
   override predicate transfersTaint(int src, int sink) {
     returnsTaintFrom(src) and
     sink = -1 and
-    src != -1
+    src != -1 and
+    not this instanceof Constructor
+    or
+    this.hasName("write") and
+    src = 0 and
+    sink = -1
   }
 }

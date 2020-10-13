@@ -544,11 +544,7 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
     method.overrides*(write) and
     write.hasName("write") and
     arg = 0 and
-    (
-      write.getDeclaringType().hasQualifiedName("java.io", "OutputStream")
-      or
-      write.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
-    )
+    write.getDeclaringType().hasQualifiedName("java.io", "OutputStream")
   )
   or
   method.(TaintPreservingCallable).transfersTaint(arg, -1)
