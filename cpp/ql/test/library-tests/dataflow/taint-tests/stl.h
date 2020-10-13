@@ -84,11 +84,11 @@ namespace std {
 		using container_type = Container;
 		constexpr back_insert_iterator() noexcept = default;
 		constexpr explicit back_insert_iterator(Container& x);
-		constexpr back_insert_iterator& operator=(const typename Container::value_type& value);
-		constexpr back_insert_iterator& operator=(typename Container::value_type&& value);
-		constexpr back_insert_iterator& operator*();
-		constexpr back_insert_iterator& operator++();
-		constexpr back_insert_iterator operator++(int);
+		back_insert_iterator& operator=(const typename Container::value_type& value);
+		back_insert_iterator& operator=(typename Container::value_type&& value);
+		back_insert_iterator& operator*();
+		back_insert_iterator& operator++();
+		back_insert_iterator operator++(int);
 	};
 
 	template<class Container>
