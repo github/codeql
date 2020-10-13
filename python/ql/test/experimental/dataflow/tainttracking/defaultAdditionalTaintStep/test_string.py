@@ -152,12 +152,14 @@ def binary_decode_encode():
 
 def test_os_path_join():
     import os
+    import os.path as ospath_alias
     print("\n# test_os_path_join")
     ts = TAINTED_STRING
     ensure_tainted(
         os.path.join(ts, "foo", "bar"),
         os.path.join(ts),
         os.path.join("foo", "bar", ts),
+        ospath_alias.join("foo", "bar", ts),
     )
 
 
