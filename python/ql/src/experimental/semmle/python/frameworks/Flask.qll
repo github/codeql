@@ -157,14 +157,7 @@ private module Flask {
     }
 
     override DataFlow::Node getUrlPatternArg() {
-      exists(ControlFlowNode pattern_arg |
-        (
-          pattern_arg = call.getArg(0)
-          or
-          pattern_arg = call.getArgByName("rule")
-        ) and
-        result.asCfgNode() = pattern_arg
-      )
+      result.asCfgNode() in [call.getArg(0), call.getArgByName("rule")]
     }
 
     override Function getARouteHandler() { result.getADecorator() = call.getNode() }
@@ -184,23 +177,13 @@ private module Flask {
     }
 
     override DataFlow::Node getUrlPatternArg() {
-      exists(ControlFlowNode pattern_arg |
-        (
-          pattern_arg = call.getArg(0)
-          or
-          pattern_arg = call.getArgByName("rule")
-        ) and
-        result.asCfgNode() = pattern_arg
-      )
+      result.asCfgNode() in [call.getArg(0), call.getArgByName("rule")]
     }
 
     override Function getARouteHandler() {
-      exists(ControlFlowNode view_func_arg, DataFlow::Node func_src |
-        view_func_arg = call.getArg(2)
-        or
-        view_func_arg = call.getArgByName("view_func")
-      |
-        DataFlow::localFlow(func_src, any(DataFlow::Node dest | dest.asCfgNode() = view_func_arg)) and
+      exists(DataFlow::Node view_func_arg, DataFlow::Node func_src |
+        view_func_arg.asCfgNode() in [call.getArg(2), call.getArgByName("view_func")] and
+        DataFlow::localFlow(func_src, view_func_arg) and
         func_src.asExpr().(CallableExpr) = result.getDefinition()
       )
     }
