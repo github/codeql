@@ -75,7 +75,7 @@ private module Invoke {
       /** Provides models for the `invoke.context.Context` class */
       module Context {
         /** Gets a reference to the `invoke.context.Context` class. */
-        private DataFlow::Node class_(DataFlow::TypeTracker t) {
+        private DataFlow::Node classRef(DataFlow::TypeTracker t) {
           t.start() and
           result = DataFlow::importMember("invoke.context", "Context")
           or
@@ -85,17 +85,17 @@ private module Invoke {
           t.start() and
           result = invoke_attr("Context")
           or
-          exists(DataFlow::TypeTracker t2 | result = class_(t2).track(t2, t))
+          exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
         }
 
         /** Gets a reference to the `invoke.context.Context` class. */
-        DataFlow::Node class_() { result = class_(DataFlow::TypeTracker::end()) }
+        DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
         /** Gets a reference to an instance of `invoke.context.Context`. */
         private DataFlow::Node instance(DataFlow::TypeTracker t) {
           t.start() and
           result.asCfgNode().(CallNode).getFunction() =
-            invoke::context::Context::class_().asCfgNode()
+            invoke::context::Context::classRef().asCfgNode()
           or
           t.start() and
           exists(Function func |
