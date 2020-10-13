@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CIL
                     entity = new MethodSpecificationMethod(gc, (MethodSpecificationHandle)handle);
                     break;
                 case HandleKind.FieldDefinition:
-                    entity = new DefinitionField(gc, (FieldDefinitionHandle)handle);
+                    entity = new DefinitionField(gc.Cx, (FieldDefinitionHandle)handle);
                     break;
                 case HandleKind.TypeReference:
                     var tr = new TypeReferenceType(this, (TypeReferenceHandle)handle);
