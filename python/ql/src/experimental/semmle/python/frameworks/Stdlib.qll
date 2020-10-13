@@ -211,7 +211,7 @@ private module Stdlib {
       result = DataFlow::importNode("subprocess." + attr_name)
       or
       t.startInAttr(attr_name) and
-      result = DataFlow::importNode("subprocess")
+      result = subprocess()
     )
     or
     // Due to bad performance when using normal setup with `subprocess_attr(t2, attr_name).track(t2, t)`
