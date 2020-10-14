@@ -659,3 +659,5 @@
 | vector.cpp:422:8:422:10 | out | vector.cpp:417:33:417:45 | source_string |
 | vector.cpp:429:8:429:10 | out | vector.cpp:417:33:417:45 | source_string |
 | vector.cpp:436:8:436:10 | out | vector.cpp:435:11:435:16 | call to source |
+| vector.cpp:443:8:443:10 | out | vector.cpp:417:33:417:45 | source_string |
+| vector.cpp:450:8:450:10 | out | vector.cpp:449:11:449:16 | call to source |

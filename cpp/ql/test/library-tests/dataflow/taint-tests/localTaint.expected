@@ -7113,6 +7113,7 @@
 | vector.cpp:414:7:414:9 | ref arg v14 | vector.cpp:415:1:415:1 | v14 |  |
 | vector.cpp:417:33:417:45 | source_string | vector.cpp:421:23:421:35 | source_string |  |
 | vector.cpp:417:33:417:45 | source_string | vector.cpp:428:23:428:35 | source_string |  |
+| vector.cpp:417:33:417:45 | source_string | vector.cpp:442:23:442:35 | source_string |  |
 | vector.cpp:419:28:419:30 | call to vector | vector.cpp:420:13:420:15 | out |  |
 | vector.cpp:419:28:419:30 | call to vector | vector.cpp:422:8:422:10 | out |  |
 | vector.cpp:419:28:419:30 | call to vector | vector.cpp:423:2:423:2 | out |  |
@@ -7158,3 +7159,32 @@
 | vector.cpp:435:6:435:6 | ref arg call to operator++ | vector.cpp:435:4:435:5 | ref arg it |  |
 | vector.cpp:435:11:435:16 | call to source | vector.cpp:435:3:435:3 | ref arg call to operator* | TAINT |
 | vector.cpp:436:8:436:10 | ref arg out | vector.cpp:437:2:437:2 | out |  |
+| vector.cpp:440:28:440:30 | call to vector | vector.cpp:441:32:441:34 | out |  |
+| vector.cpp:440:28:440:30 | call to vector | vector.cpp:443:8:443:10 | out |  |
+| vector.cpp:440:28:440:30 | call to vector | vector.cpp:444:2:444:2 | out |  |
+| vector.cpp:441:13:441:30 | call to back_inserter | vector.cpp:442:6:442:7 | it |  |
+| vector.cpp:441:32:441:34 | ref arg out | vector.cpp:443:8:443:10 | out |  |
+| vector.cpp:441:32:441:34 | ref arg out | vector.cpp:444:2:444:2 | out |  |
+| vector.cpp:442:3:442:3 | ref arg call to operator* | vector.cpp:442:4:442:4 | ref arg call to operator++ | TAINT |
+| vector.cpp:442:3:442:3 | ref arg call to operator* | vector.cpp:443:8:443:10 | out |  |
+| vector.cpp:442:3:442:3 | ref arg call to operator* | vector.cpp:444:2:444:2 | out |  |
+| vector.cpp:442:4:442:4 | call to operator++ | vector.cpp:442:3:442:3 | call to operator* | TAINT |
+| vector.cpp:442:4:442:4 | ref arg call to operator++ | vector.cpp:442:6:442:7 | ref arg it |  |
+| vector.cpp:442:6:442:7 | it | vector.cpp:442:4:442:4 | call to operator++ |  |
+| vector.cpp:442:11:442:36 | call to basic_string | vector.cpp:442:3:442:3 | ref arg call to operator* | TAINT |
+| vector.cpp:442:23:442:35 | source_string | vector.cpp:442:11:442:36 | call to basic_string | TAINT |
+| vector.cpp:443:8:443:10 | ref arg out | vector.cpp:444:2:444:2 | out |  |
+| vector.cpp:447:20:447:22 | call to vector | vector.cpp:448:32:448:34 | out |  |
+| vector.cpp:447:20:447:22 | call to vector | vector.cpp:450:8:450:10 | out |  |
+| vector.cpp:447:20:447:22 | call to vector | vector.cpp:451:2:451:2 | out |  |
+| vector.cpp:448:13:448:30 | call to back_inserter | vector.cpp:449:6:449:7 | it |  |
+| vector.cpp:448:32:448:34 | ref arg out | vector.cpp:450:8:450:10 | out |  |
+| vector.cpp:448:32:448:34 | ref arg out | vector.cpp:451:2:451:2 | out |  |
+| vector.cpp:449:3:449:3 | ref arg call to operator* | vector.cpp:449:4:449:4 | ref arg call to operator++ | TAINT |
+| vector.cpp:449:3:449:3 | ref arg call to operator* | vector.cpp:450:8:450:10 | out |  |
+| vector.cpp:449:3:449:3 | ref arg call to operator* | vector.cpp:451:2:451:2 | out |  |
+| vector.cpp:449:4:449:4 | call to operator++ | vector.cpp:449:3:449:3 | call to operator* | TAINT |
+| vector.cpp:449:4:449:4 | ref arg call to operator++ | vector.cpp:449:6:449:7 | ref arg it |  |
+| vector.cpp:449:6:449:7 | it | vector.cpp:449:4:449:4 | call to operator++ |  |
+| vector.cpp:449:11:449:16 | call to source | vector.cpp:449:3:449:3 | ref arg call to operator* | TAINT |
+| vector.cpp:450:8:450:10 | ref arg out | vector.cpp:451:2:451:2 | out |  |
