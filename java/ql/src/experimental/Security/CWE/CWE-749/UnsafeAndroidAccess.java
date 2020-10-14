@@ -3,7 +3,7 @@ public class UnsafeAndroidAccess extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.webview);
 
-		// BAD: Have both JavaScript and universal resource access enabled in webview while
+		// BAD: Have both JavaScript and cross-origin resource access enabled in webview while
 		// taking remote user inputs
 		{
 			WebView wv = (WebView) findViewById(R.id.my_webview);
@@ -24,7 +24,7 @@ public class UnsafeAndroidAccess extends Activity {
 			wv.loadUrl(thisUrl);
 		}
 
-		// BAD: Have both JavaScript and universal resource access enabled in webview while
+		// BAD: Have both JavaScript and cross-origin resource access enabled in webview while
 		// taking remote user inputs
 		{
 			WebView wv = (WebView) findViewById(R.id.my_webview);
@@ -45,7 +45,7 @@ public class UnsafeAndroidAccess extends Activity {
 			wv.loadUrl(thisUrl);
 		}
 
-		// GOOD: Have JavaScript and universal resource access disabled by default on modern Android (Jellybean+) while taking remote user inputs
+		// GOOD: Have JavaScript and cross-origin resource access disabled by default on modern Android (Jellybean+) while taking remote user inputs
 		{
 			WebView wv = (WebView) findViewById(-1);
 			WebSettings webSettings = wv.getSettings();

@@ -13,7 +13,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.dataflow.FlowSources
 
 /**
- * Methods allowing any-local-file and universal access in the WebSettings class
+ * Methods allowing any-local-file and cross-origin access in the WebSettings class
  */
 class CrossOriginAccessMethod extends Method {
   CrossOriginAccessMethod() {
@@ -36,12 +36,11 @@ class AllowJavaScriptMethod extends Method {
 }
 
 /**
- * Holds if `ma` is a method invocation against `va` and `va.setJavaScriptEnabled(true)` occurs elsewhere in the program
+ * Holds if a call to `v.setJavaScriptEnabled(true)` exists
  */
 predicate isJSEnabled(Variable v) {
-  exists(VarAccess va, MethodAccess jsa |
-    v.getAnAccess() = va and
-    jsa.getQualifier() = v.getAnAccess() and
+  exists(MethodAccess jsa |
+    v.getAnAccess() = jsa.getQualifier() and
     jsa.getMethod() instanceof AllowJavaScriptMethod and
     jsa.getArgument(0).(BooleanLiteral).getBooleanValue() = true
   )
@@ -53,10 +52,7 @@ predicate isJSEnabled(Variable v) {
 class FetchResourceMethodAccess extends MethodAccess {
   FetchResourceMethodAccess() {
     this.getMethod().getDeclaringType() instanceof TypeWebView and
-    (
-      this.getMethod().hasName("loadUrl") or
-      this.getMethod().hasName("postUrl")
-    )
+    this.getMethod().hasName(["loadUrl", "postUrl"])
   }
 }
 
@@ -84,19 +80,7 @@ class UntrustedResourceSource extends RemoteFlowSource {
     )
   }
 
-  override string getSourceType() {
-    result = "user input vulnerable to XSS and sensitive resource disclosure attacks" and
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof CrossOriginAccessMethod and //High precision match of unsafe resource fetching
-      ma.getArgument(0).(BooleanLiteral).getBooleanValue() = true
-    )
-    or
-    result = "user input potentially vulnerable to XSS and sensitive resource disclosure attacks" and
-    not exists(MethodAccess ma |
-      ma.getMethod() instanceof CrossOriginAccessMethod and //High precision match of unsafe resource fetching
-      ma.getArgument(0).(BooleanLiteral).getBooleanValue() = true
-    )
-  }
+  override string getSourceType() { result = "UntrustedIntentExtraSource" }
 }
 
 /**
@@ -111,6 +95,23 @@ class UrlResourceSink extends DataFlow::ExprNode {
   UrlResourceSink() { fetchResource(_, this.getExpr()) }
 
   FetchResourceMethodAccess getMethodAccess() { fetchResource(result, this.getExpr()) }
+
+  predicate crossOriginAccessEnabled() {
+    exists(MethodAccess ma, MethodAccess getSettingsMa |
+      ma.getMethod() instanceof CrossOriginAccessMethod and // Unsafe resource fetching of more severe vulnerabilities
+      ma.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
+      ma.getQualifier().(VarAccess).getVariable().getAnAssignedValue() = getSettingsMa and
+      getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
+      getSettingsMa.getQualifier().(VarAccess).getVariable().getAnAccess() =
+        getMethodAccess().getQualifier()
+    )
+  }
+
+  string getSinkType() {
+    if crossOriginAccessEnabled()
+    then result = "user input vulnerable to cross-origin and sensitive resource disclosure attacks"
+    else result = "user input vulnerable to XSS attacks"
+  }
 }
 
 class FetchUntrustedResourceConfiguration extends TaintTracking::Configuration {
@@ -118,18 +119,20 @@ class FetchUntrustedResourceConfiguration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedResourceSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UrlResourceSink }
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof UrlResourceSink and
+    exists(VarAccess webviewVa, MethodAccess getSettingsMa, Variable v |
+      sink.(UrlResourceSink).getMethodAccess().getQualifier() = webviewVa and
+      getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
+      webviewVa.getVariable().getAnAccess() = getSettingsMa.getQualifier() and
+      v.getAnAssignedValue() = getSettingsMa and
+      isJSEnabled(v)
+    )
+  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, FetchUntrustedResourceConfiguration conf
-where
-  exists(VarAccess webviewVa, MethodAccess getSettingsMa, Variable v |
-    conf.hasFlowPath(source, sink) and
-    sink.getNode().(UrlResourceSink).getMethodAccess().getQualifier() = webviewVa and
-    webviewVa.getVariable().getAnAccess() = getSettingsMa.getQualifier() and
-    v.getAnAssignedValue() = getSettingsMa and
-    isJSEnabled(v)
-  )
+where conf.hasFlowPath(source, sink)
 select sink.getNode().(UrlResourceSink).getMethodAccess(), source, sink,
   "Unsafe resource fetching in Android webview due to $@.", source.getNode(),
-  source.getNode().(UntrustedResourceSource).getSourceType()
+  sink.getNode().(UrlResourceSink).getSinkType()

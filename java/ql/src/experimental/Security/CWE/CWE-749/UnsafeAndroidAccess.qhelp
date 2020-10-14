@@ -8,12 +8,12 @@
     <p>This query detects the following two scenarios:</p>
     <ol>
       <li>Vulnerability introduced by WebViews with JavaScript enabled and remote inputs allowed.</li>
-      <li>High precision vulnerability when allowing universal resource access is also enabled. The setting was just deprecated in API level 30 (Android 11) thus most devices are still affected given that Android phones don't get timely version updates like iPhones.</li>
+      <li>A more severe vulnerability when allowing cross-origin resource access is also enabled. The setting was deprecated in API level 30 (Android 11), but most devices are still affected, especially given that some Android phones are updated slowly or no longer updated at all.</li>
     </ol>
   </overview>
 
   <recommendation>
-    <p>Only allow trusted web content to be displayed in WebViews when JavaScript is enabled. Disallow universal resource access in WebSetting to reduce the attack surface .</p>
+    <p>Only allow trusted web content to be displayed in WebViews when JavaScript is enabled. Disallow cross-origin resource access in WebSetting to reduce the attack surface .</p>
   </recommendation>
 
   <example>
