@@ -446,11 +446,13 @@ methods.cs:
 #  170|             1: [ParameterAccess] access to parameter right
 #  173|     5: [ExtensionMethod] SkipTwo
 #  173|       -1: [TypeMention] IEnumerable<T>
+#  173|         1: [TypeMention] T
 #-----|       1: (Type parameters)
 #  173|         0: [TypeParameter] T
 #-----|       2: (Parameters)
 #  173|         0: [Parameter] list
 #  173|           -1: [TypeMention] IEnumerable<T>
+#  173|             1: [TypeMention] T
 #  173|         1: [Parameter] i
 #  173|           -1: [TypeMention] Int32
 #  173|           1: [IntLiteral] 1
@@ -459,9 +461,11 @@ methods.cs:
 #  175|           0: [ParameterAccess] access to parameter list
 #  178|     7: [ExtensionMethod] SkipTwoInt
 #  178|       -1: [TypeMention] IEnumerable<Int32>
+#  178|         1: [TypeMention] Int32
 #-----|       2: (Parameters)
 #  178|         0: [Parameter] list
 #  178|           -1: [TypeMention] IEnumerable<Int32>
+#  178|             1: [TypeMention] Int32
 #  178|         1: [Parameter] i
 #  178|           -1: [TypeMention] Int32
 #  178|           1: [IntLiteral] 1

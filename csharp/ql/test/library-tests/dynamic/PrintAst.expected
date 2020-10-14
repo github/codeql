@@ -66,6 +66,8 @@ dynamic.cs:
 #   19|       7: [ExprStmt] ...;
 #   19|         0: [DynamicObjectCreation] dynamic object creation of type KeyValuePair<String,dynamic>
 #   19|           -1: [TypeMention] KeyValuePair<String,dynamic>
+#   19|             1: [TypeMention] String
+#   19|             2: [TypeMention] dynamic
 #   19|           0: [StringLiteral] ""
 #   19|           1: [LocalVariableAccess] access to local variable d
 #   22|       8: [ExprStmt] ...;

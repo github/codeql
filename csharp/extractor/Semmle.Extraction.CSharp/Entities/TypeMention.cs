@@ -85,16 +85,11 @@ namespace Semmle.Extraction.CSharp.Entities
                     cx.PopulateLater(() => gns.TypeArgumentList.Arguments.Zip(type.TypeMentions, (s, t) => Create(cx, s, this, t)).Enumerate());
                     return;
                 case SyntaxKind.QualifiedName:
-                    if (type.ContainingType == null)
-                    {
-                        // namespace qualifier
-                        Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
-                    }
-                    else
+                    var qns = (QualifiedNameSyntax)syntax;
+                    var right = Create(cx, qns.Right, parent, type);
+                    if (type.ContainingType is object)
                     {
                         // Type qualifier
-                        var qns = (QualifiedNameSyntax)syntax;
-                        var right = Create(cx, qns.Right, parent, type);
                         Create(cx, qns.Left, right, type.ContainingType);
                     }
                     return;
