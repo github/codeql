@@ -311,7 +311,8 @@ class SubscriptedTypeInternal extends ObjectInternal, TSubscriptedType {
   override string getName() { result = this.getGeneric().getName() }
 
   override string toString() {
-    result = this.getGeneric().toString() + "[" + this.getSpecializer().toString() + "]"
+    result =
+      bounded_toString(this.getGeneric()) + "[" + bounded_toString(this.getSpecializer()) + "]"
   }
 
   override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
