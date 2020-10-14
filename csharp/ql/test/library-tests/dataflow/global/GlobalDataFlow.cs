@@ -456,6 +456,15 @@ public class DataFlow
         var nonSink = sb.ToString();
         Check(nonSink);
     }
+
+    void TestStringFlow()
+    {
+        var sink44 = string.Join(",", "whatever", "taint source");
+        Check(sink44);
+
+        var nonSink = string.Join(",", "whatever", "not tainted");
+        Check(nonSink);
+    }
 }
 
 static class IEnumerableExtensions

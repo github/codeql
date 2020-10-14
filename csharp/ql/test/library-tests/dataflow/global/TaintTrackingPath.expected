@@ -239,6 +239,8 @@ edges
 | GlobalDataFlow.cs:451:35:451:48 | "taint source" : String | GlobalDataFlow.cs:451:31:451:32 | [post] access to local variable sb [[]] : String |
 | GlobalDataFlow.cs:452:22:452:23 | access to local variable sb [[]] : String | GlobalDataFlow.cs:452:22:452:34 | call to method ToString : String |
 | GlobalDataFlow.cs:452:22:452:34 | call to method ToString : String | GlobalDataFlow.cs:453:15:453:20 | access to local variable sink43 |
+| GlobalDataFlow.cs:462:22:462:65 | call to method Join : String | GlobalDataFlow.cs:463:15:463:20 | access to local variable sink44 |
+| GlobalDataFlow.cs:462:51:462:64 | "taint source" : String | GlobalDataFlow.cs:462:22:462:65 | call to method Join : String |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
@@ -465,6 +467,9 @@ nodes
 | GlobalDataFlow.cs:452:22:452:23 | access to local variable sb [[]] : String | semmle.label | access to local variable sb [[]] : String |
 | GlobalDataFlow.cs:452:22:452:34 | call to method ToString : String | semmle.label | call to method ToString : String |
 | GlobalDataFlow.cs:453:15:453:20 | access to local variable sink43 | semmle.label | access to local variable sink43 |
+| GlobalDataFlow.cs:462:22:462:65 | call to method Join : String | semmle.label | call to method Join : String |
+| GlobalDataFlow.cs:462:51:462:64 | "taint source" : String | semmle.label | "taint source" : String |
+| GlobalDataFlow.cs:463:15:463:20 | access to local variable sink44 | semmle.label | access to local variable sink44 |
 | Splitting.cs:3:28:3:34 | tainted : String | semmle.label | tainted : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return : String | semmle.label | [b (line 3): false] call to method Return : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return : String | semmle.label | [b (line 3): true] call to method Return : String |
@@ -551,6 +556,7 @@ nodes
 | GlobalDataFlow.cs:401:15:401:20 | access to local variable sink11 | GlobalDataFlow.cs:398:39:398:45 | tainted : String | GlobalDataFlow.cs:401:15:401:20 | access to local variable sink11 | access to local variable sink11 |
 | GlobalDataFlow.cs:424:41:424:46 | access to local variable sink20 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:424:41:424:46 | access to local variable sink20 | access to local variable sink20 |
 | GlobalDataFlow.cs:453:15:453:20 | access to local variable sink43 | GlobalDataFlow.cs:451:35:451:48 | "taint source" : String | GlobalDataFlow.cs:453:15:453:20 | access to local variable sink43 | access to local variable sink43 |
+| GlobalDataFlow.cs:463:15:463:20 | access to local variable sink44 | GlobalDataFlow.cs:462:51:462:64 | "taint source" : String | GlobalDataFlow.cs:463:15:463:20 | access to local variable sink44 | access to local variable sink44 |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:11:19:11:19 | access to local variable x | access to local variable x |

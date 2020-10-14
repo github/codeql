@@ -1715,21 +1715,21 @@ module Summaries {
     exists(
       SourceDeclarationCallable sdc, CallableFlowSource source, AccessPath sourceAp,
       CallableFlowSink sink, AccessPath sinkAp, boolean preservesValue,
-      SummaryInternalNodeState predState, AccessPath ap
+      SummaryInternalNodeState predState, AccessPath predAp
     |
-      predState = TSummaryInternalNodeBeforeStoreState(ap) and
+      predState = TSummaryInternalNodeBeforeStoreState(predAp) and
       pred = TSummaryInternalNode(sdc, source, sourceAp, sink, sinkAp, preservesValue, predState) and
-      c = ap.getHead()
+      c = predAp.getHead()
     |
       // More stores needed
       exists(SummaryInternalNodeState succState |
         succState =
-          TSummaryInternalNodeBeforeStoreState(any(AccessPath succAp | succAp.getTail() = ap)) and
+          TSummaryInternalNodeBeforeStoreState(any(AccessPath succAp | succAp.getTail() = predAp)) and
         succ = TSummaryInternalNode(sdc, source, sourceAp, sink, sinkAp, preservesValue, succState)
       )
       or
       // Last store
-      ap = sinkAp and
+      predAp = sinkAp and
       succ = getSinkNode(sdc, sink)
     )
   }
@@ -1742,20 +1742,20 @@ module Summaries {
     exists(
       SourceDeclarationCallable sdc, CallableFlowSource source, AccessPath sourceAp,
       CallableFlowSink sink, AccessPath sinkAp, boolean preservesValue,
-      SummaryInternalNodeState succState, AccessPath ap
+      SummaryInternalNodeState succState, AccessPath succAp
     |
-      succState = TSummaryInternalNodeAfterReadState(ap) and
+      succState = TSummaryInternalNodeAfterReadState(succAp) and
       succ = TSummaryInternalNode(sdc, source, sourceAp, sink, sinkAp, preservesValue, succState) and
-      c = ap.getHead()
+      c = succAp.getHead()
     |
       // First read
-      ap = sourceAp and
+      succAp = sourceAp and
       pred = getSourceNode(sdc, source)
       or
       // Subsequent reads
       exists(SummaryInternalNodeState predState, AccessPath predAp |
         predState = TSummaryInternalNodeAfterReadState(predAp) and
-        predAp.getTail() = ap and
+        predAp.getTail() = succAp and
         pred = TSummaryInternalNode(sdc, source, sourceAp, sink, sinkAp, preservesValue, predState)
       )
     )

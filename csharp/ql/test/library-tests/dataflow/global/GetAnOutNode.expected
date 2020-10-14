@@ -189,7 +189,9 @@
 | GlobalDataFlow.cs:455:9:455:18 | call to method Clear | return | GlobalDataFlow.cs:455:9:455:18 | call to method Clear |
 | GlobalDataFlow.cs:456:23:456:35 | call to method ToString | qualifier | GlobalDataFlow.cs:456:23:456:24 | [post] access to local variable sb |
 | GlobalDataFlow.cs:456:23:456:35 | call to method ToString | return | GlobalDataFlow.cs:456:23:456:35 | call to method ToString |
-| GlobalDataFlow.cs:468:44:468:47 | delegate call | return | GlobalDataFlow.cs:468:44:468:47 | delegate call |
+| GlobalDataFlow.cs:462:22:462:65 | call to method Join | return | GlobalDataFlow.cs:462:22:462:65 | call to method Join |
+| GlobalDataFlow.cs:465:23:465:65 | call to method Join | return | GlobalDataFlow.cs:465:23:465:65 | call to method Join |
+| GlobalDataFlow.cs:477:44:477:47 | delegate call | return | GlobalDataFlow.cs:477:44:477:47 | delegate call |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return | return | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return | return | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return |
 | Splitting.cs:20:22:20:30 | call to method Return | return | Splitting.cs:20:22:20:30 | call to method Return |

@@ -9,7 +9,9 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 
 /**
- * Gets a source declaration of callable `c` that has a body.
+ * Gets a source declaration of callable `c` that has a body or has
+ * a flow summary.
+ *
  * If the callable has both CIL and source code, return only the source
  * code version.
  */
@@ -141,7 +143,7 @@ private module DispatchImpl {
    * call is a delegate call, or if the qualifier accesses a parameter of
    * the enclosing callable `c` (including the implicit `this` parameter).
    */
-  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
+  predicate mayBenefitFromCallContext(DataFlowCall call, Callable c) {
     c = call.getEnclosingCallable() and
     (
       exists(CallContext cc | exists(viableDelegateCallable(call, cc)) |
