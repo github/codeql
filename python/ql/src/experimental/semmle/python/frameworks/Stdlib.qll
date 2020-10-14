@@ -363,10 +363,8 @@ private module Stdlib {
    * A call to `marshal.loads`
    * See https://docs.python.org/3/library/marshal.html#marshal.loads
    */
-  private class MarshalLoadsCall extends UnmarshalingFunction::Range {
-    MarshalLoadsCall() {
-      this.asCfgNode().(CallNode).getFunction() = marshal::loads().asCfgNode()
-    }
+  private class MarshalLoadsCall extends Decoding::Range {
+    MarshalLoadsCall() { this.asCfgNode().(CallNode).getFunction() = marshal::loads().asCfgNode() }
 
     override predicate unsafe() { any() }
 
@@ -416,10 +414,8 @@ private module Stdlib {
    * A call to `pickle.loads`
    * See https://docs.python.org/3/library/pickle.html#pickle.loads
    */
-  private class PickleLoadsCall extends UnmarshalingFunction::Range {
-    PickleLoadsCall() {
-      this.asCfgNode().(CallNode).getFunction() = pickle::loads().asCfgNode()
-    }
+  private class PickleLoadsCall extends Decoding::Range {
+    PickleLoadsCall() { this.asCfgNode().(CallNode).getFunction() = pickle::loads().asCfgNode() }
 
     override predicate unsafe() { any() }
 

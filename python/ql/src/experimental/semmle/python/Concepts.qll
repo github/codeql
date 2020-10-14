@@ -40,17 +40,20 @@ module SystemCommandExecution {
 }
 
 /**
- * A function that decodes data from a binary or textual format.
+ * A data-flow node that decodes data from a binary or textual format. This
+ * is intended to include deserialization, unmarshalling, decoding, unpickling,
+ * unzipping, decrypting, parsing etc.
+ *
  * Doing so should normally preserve taint, but it can also be a problem
- * in itself, e.g. if it performs deserialization in a potentially unsafe way.
+ * in itself, e.g. if it allows code execution or could result in deinal-of-service.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `UnmarshalingFunction::Range` instead.
+ * extend `Decoding::Range` instead.
  */
-class UnmarshalingFunction extends DataFlow::Node {
-  UnmarshalingFunction::Range self;
+class Decoding extends DataFlow::Node {
+  Decoding::Range self;
 
-  UnmarshalingFunction() { this = self }
+  Decoding() { this = self }
 
   /** Holds if this call is unsafe, e.g. if it may execute arbitrary code. */
   predicate unsafe() { self.unsafe() }
@@ -65,15 +68,18 @@ class UnmarshalingFunction extends DataFlow::Node {
   string getFormat() { result = self.getFormat() }
 }
 
-/** Provides a class for modeling new unmarshaling/decoding/deserialization functions. */
-module UnmarshalingFunction {
+/** Provides a class for modeling new decoding mechanisms. */
+module Decoding {
   /**
-   * A function that decodes data from a binary or textual format.
-   * Doing so should normally preserve taint, but it can oalso be a problem
-   * in itself, e.g. if it performs deserialization in a potentially unsafe way.
+   * A data-flow node that decodes data from a binary or textual format. This
+   * is intended to include deserialization, unmarshalling, decoding, unpickling,
+   * unzipping, decrypting, parsing etc.
+   *
+   * Doing so should normally preserve taint, but it can also be a problem
+   * in itself, e.g. if it allows code execution or could result in deinal-of-service.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `UnmarshalingFunction` instead.
+   * extend `Decoding` instead.
    */
   abstract class Range extends DataFlow::Node {
     /** Holds if this call is unsafe, e.g. if it may execute arbitrary code. */

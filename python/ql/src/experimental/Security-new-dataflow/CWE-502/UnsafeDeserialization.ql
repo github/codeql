@@ -24,7 +24,7 @@ class UnsafeDeserializationConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(UnmarshalingFunction d |
+    exists(Decoding d |
       d.unsafe() and
       sink = d.getAnInput()
     )

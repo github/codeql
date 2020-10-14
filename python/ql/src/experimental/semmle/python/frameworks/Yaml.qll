@@ -45,10 +45,8 @@ private module Yaml {
  * This function was briefly thought safe until new exploits were found in 2020,
  * see https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation for details.
  */
-private class YamlDeserialization extends UnmarshalingFunction::Range {
-  YamlDeserialization() {
-    this.asCfgNode().(CallNode).getFunction() = Yaml::yaml::load().asCfgNode()
-  }
+private class YamlLoadCall extends Decoding::Range {
+  YamlLoadCall() { this.asCfgNode().(CallNode).getFunction() = Yaml::yaml::load().asCfgNode() }
 
   override predicate unsafe() {
     // If the `Loader` is not set to either `SafeLoader` or `BaseLoader` or not set at all,

@@ -33,18 +33,18 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
   }
 }
 
-class UnmarshalingFunctionTest extends InlineExpectationsTest {
-  UnmarshalingFunctionTest() { this = "UnmarshalingFunctionTest" }
+class DecodingTest extends InlineExpectationsTest {
+  DecodingTest() { this = "DecodingTest" }
 
   override string getARelevantTag() { result in ["getAnInput", "getOutput", "getFormat"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(UnmarshalingFunction ds, string unsafe |
+    exists(Decoding d, string unsafe |
       (
-        ds.unsafe() and unsafe = "UNSAFE_"
+        d.unsafe() and unsafe = "UNSAFE_"
         or
-        not ds.unsafe() and unsafe = ""
+        not d.unsafe() and unsafe = ""
       ) and
       (
         exists(DataFlow::Node data |
@@ -52,19 +52,19 @@ class UnmarshalingFunctionTest extends InlineExpectationsTest {
           element = data.toString() and
           value = value_from_expr(data.asExpr()) and
           (
-            data = ds.getAnInput() and
+            data = d.getAnInput() and
             tag = unsafe + "getAnInput"
             or
-            data = ds.getOutput() and
+            data = d.getOutput() and
             tag = unsafe + "getOutput"
           )
         )
         or
         exists(string format |
-          location = ds.getLocation() and
+          location = d.getLocation() and
           element = format and
           value = format and
-          format = ds.getFormat() and
+          format = d.getFormat() and
           tag = unsafe + "getFormat"
         )
       )

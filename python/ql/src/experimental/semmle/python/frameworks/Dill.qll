@@ -43,10 +43,8 @@ private module Dill {
  * See https://pypi.org/project/dill/ (which currently refers you
  * to https://docs.python.org/3/library/pickle.html#pickle.loads)
  */
-private class DillLoadsCall extends UnmarshalingFunction::Range {
-  DillLoadsCall() {
-    this.asCfgNode().(CallNode).getFunction() = Dill::dill::loads().asCfgNode()
-  }
+private class DillLoadsCall extends Decoding::Range {
+  DillLoadsCall() { this.asCfgNode().(CallNode).getFunction() = Dill::dill::loads().asCfgNode() }
 
   override predicate unsafe() { any() }
 
