@@ -3,41 +3,55 @@ arguments.cs:
 #    5|   4: [InstanceConstructor] ArgumentsTest
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] x
+#    5|         -1: [TypeMention] Int32
 #    5|         1: [IntLiteral] 0
 #    5|       1: [Parameter] y
+#    5|         -1: [TypeMention] Int32
 #    5|         1: [IntLiteral] 0
 #    6|     4: [BlockStmt] {...}
 #    9|   5: [InstanceConstructor] ArgumentsTest
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] x
+#    9|         -1: [TypeMention] Int32
 #    9|       1: [Parameter] y
+#    9|         -1: [TypeMention] Int32
 #    9|       2: [Parameter] z
+#    9|         -1: [TypeMention] Int32
 #   10|     4: [BlockStmt] {...}
 #   11|       0: [ExprStmt] ...;
 #   11|         0: [AssignExpr] ... = ...
 #   11|           0: [ParameterAccess] access to parameter y
 #   11|           1: [ParameterAccess] access to parameter x
 #   14|   6: [Method] f1
+#   14|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   14|       0: [Parameter] x
+#   14|         -1: [TypeMention] Int32
 #   14|         1: [IntLiteral] 1
 #   14|       1: [Parameter] y
+#   14|         -1: [TypeMention] Int32
 #   14|         1: [IntLiteral] 2
 #   15|     4: [BlockStmt] {...}
 #   18|   7: [Method] f2
+#   18|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   18|       0: [Parameter] x
+#   18|         -1: [TypeMention] Int32
 #   18|       1: [Parameter] y
+#   18|         -1: [TypeMention] Int32
 #   18|       2: [Parameter] z
+#   18|         -1: [TypeMention] Int32
 #   19|     4: [BlockStmt] {...}
 #   20|       0: [ExprStmt] ...;
 #   20|         0: [AssignExpr] ... = ...
 #   20|           0: [ParameterAccess] access to parameter y
 #   20|           1: [ParameterAccess] access to parameter x
 #   23|   8: [Method] f
+#   23|     -1: [TypeMention] Void
 #   24|     4: [BlockStmt] {...}
 #   25|       0: [LocalVariableDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   25|           -1: [TypeMention] Int32
 #   25|           0: [LocalVariableAccess] access to local variable x
 #   25|           1: [IntLiteral] 1
 #   27|       1: [ExprStmt] ...;
@@ -50,17 +64,23 @@ arguments.cs:
 #   28|           2: [LocalVariableAccess] access to local variable x
 #   29|       3: [ExprStmt] ...;
 #   29|         0: [ObjectCreation] object creation of type ArgumentsTest
+#   29|           -1: [TypeMention] ArgumentsTest
 #   29|           0: [LocalVariableAccess] access to local variable x
 #   29|           1: [LocalVariableAccess] access to local variable x
 #   29|           2: [LocalVariableAccess] access to local variable x
 #   30|       4: [ExprStmt] ...;
 #   30|         0: [ObjectCreation] object creation of type ArgumentsTest
+#   30|           -1: [TypeMention] ArgumentsTest
 #   30|           0: [IntLiteral] 10
 #   30|           1: [IntLiteral] 5
 #   33|   9: [Method] f3
+#   33|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   33|       0: [Parameter] o
+#   33|         -1: [TypeMention] Int32
 #   33|       1: [Parameter] args
+#   33|         -1: [TypeMention] Int32[]
+#   33|           1: [TypeMention] Int32
 #   34|     4: [BlockStmt] {...}
 #   35|       0: [ExprStmt] ...;
 #   35|         0: [MethodCall] call to method f3
@@ -94,8 +114,11 @@ arguments.cs:
 #   40|               1: [IntLiteral] 2
 #   40|           1: [IntLiteral] 0
 #   43|   10: [Method] f4
+#   43|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   43|       0: [Parameter] args
+#   43|         -1: [TypeMention] Object[]
+#   43|           1: [TypeMention] Object
 #   44|     4: [BlockStmt] {...}
 #   45|       0: [ExprStmt] ...;
 #   45|         0: [MethodCall] call to method f4
@@ -104,14 +127,18 @@ arguments.cs:
 #   45|               0: [NullLiteral] null
 #   45|           1: [NullLiteral] null
 #   48|   11: [Property] Prop
+#   48|     -1: [TypeMention] Int32
 #   48|     3: [Getter] get_Prop
 #   48|     4: [Setter] set_Prop
 #-----|       2: (Parameters)
 #   48|         0: [Parameter] value
 #   50|   12: [Indexer] Item
+#   50|     -1: [TypeMention] Int32
 #-----|     1: (Parameters)
 #   50|       0: [Parameter] a
+#   50|         -1: [TypeMention] Int32
 #   50|       1: [Parameter] b
+#   50|         -1: [TypeMention] Int32
 #   50|     3: [Getter] get_Item
 #-----|       2: (Parameters)
 #   50|         0: [Parameter] a
@@ -126,6 +153,7 @@ arguments.cs:
 #   50|         2: [Parameter] value
 #   50|       4: [BlockStmt] {...}
 #   52|   13: [Method] f5
+#   52|     -1: [TypeMention] Void
 #   53|     4: [BlockStmt] {...}
 #   54|       0: [ExprStmt] ...;
 #   54|         0: [AssignExpr] ... = ...
@@ -171,6 +199,7 @@ arguments.cs:
 #   60|           1: [IntLiteral] 12
 #   61|       7: [LocalVariableDeclStmt] ... ...;
 #   61|         0: [LocalVariableDeclAndInitExpr] (Int32,Int32) tuple = ...
+#   61|           -1: [TypeMention] (Int32,Int32)
 #   61|           0: [LocalVariableAccess] access to local variable tuple
 #   61|           1: [TupleExpr] (..., ...)
 #   61|             0: [IntLiteral] 13
@@ -185,22 +214,28 @@ arguments.cs:
 #   62|               1: [IntLiteral] 16
 #   62|           1: [LocalVariableAccess] access to local variable tuple
 #   66|   14: [Method] f6
+#   66|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #   65|       1: [Attribute] [My(...)]
+#   65|         -1: [TypeMention] MyAttribute
 #   65|         0: [BoolLiteral] false
 #   66|     4: [BlockStmt] {...}
 #   69|   15: [Method] f7
+#   69|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #   68|       1: [Attribute] [My(...)]
+#   68|         -1: [TypeMention] MyAttribute
 #   68|         0: [BoolLiteral] true
 #   68|         1: [StringLiteral] ""
 #   68|         2: [IntLiteral] 0
 #   69|     4: [BlockStmt] {...}
 #   72| [Class] MyAttribute
 #-----|   3: (Base types)
-#-----|     0: [Class] Attribute
+#   72|     0: [TypeMention] Attribute
 #   74|   4: [Field] x
+#   74|     -1: [TypeMention] Int32
 #   75|   5: [IndexerProperty] y
+#   75|     -1: [TypeMention] String
 #   75|     3: [Getter] get_y
 #   75|     4: [Setter] set_y
 #-----|       2: (Parameters)
@@ -208,4 +243,5 @@ arguments.cs:
 #   76|   6: [InstanceConstructor] MyAttribute
 #-----|     2: (Parameters)
 #   76|       0: [Parameter] b
+#   76|         -1: [TypeMention] Boolean
 #   76|     4: [BlockStmt] {...}

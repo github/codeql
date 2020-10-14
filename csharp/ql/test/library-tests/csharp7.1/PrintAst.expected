@@ -1,16 +1,20 @@
 csharp71.cs:
 #    3| [Class] DefaultLiterals
 #    5|   5: [Method] f
+#    5|     -1: [TypeMention] Void
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#    7|           -1: [TypeMention] Int32
 #    7|           0: [LocalVariableAccess] access to local variable x
 #    7|           1: [CastExpr] (...) ...
 #    7|             0: [DefaultValueExpr] default
 #    7|         1: [LocalVariableDeclAndInitExpr] Int32 y = ...
+#    7|           -1: [TypeMention] Int32
 #    7|           0: [LocalVariableAccess] access to local variable y
 #    7|           1: [DefaultValueExpr] default(...)
 #    7|             0: [TypeAccess] access to type Int32
+#    7|               0: [TypeMention] Int32
 #    8|       1: [IfStmt] if (...) ...
 #    8|         0: [EQExpr] ... == ...
 #    8|           0: [LocalVariableAccess] access to local variable x
@@ -29,29 +33,35 @@ csharp71.cs:
 #   14|             0: [DefaultValueExpr] default
 #   15|       4: [LocalVariableDeclStmt] ... ...;
 #   15|         0: [LocalVariableDeclAndInitExpr] String s = ...
+#   15|           -1: [TypeMention] String
 #   15|           0: [LocalVariableAccess] access to local variable s
 #   15|           1: [CastExpr] (...) ...
 #   15|             0: [DefaultValueExpr] default
 #   16|       5: [LocalVariableDeclStmt] ... ...;
 #   16|         0: [LocalVariableDeclAndInitExpr] Boolean b = ...
+#   16|           -1: [TypeMention] Boolean
 #   16|           0: [LocalVariableAccess] access to local variable b
 #   16|           1: [CastExpr] (...) ...
 #   16|             0: [DefaultValueExpr] default
 #   17|       6: [LocalVariableDeclStmt] ... ...;
 #   17|         0: [LocalVariableDeclAndInitExpr] Double d = ...
+#   17|           -1: [TypeMention] Double
 #   17|           0: [LocalVariableAccess] access to local variable d
 #   17|           1: [CastExpr] (...) ...
 #   17|             0: [DefaultValueExpr] default
 #   21| [Class] IsConstants
 #   23|   5: [Method] f
+#   23|     -1: [TypeMention] Void
 #   24|     4: [BlockStmt] {...}
 #   25|       0: [LocalVariableDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclExpr] Boolean b
+#   25|           0: [TypeMention] Boolean
 #   26|       1: [ExprStmt] ...;
 #   26|         0: [AssignExpr] ... = ...
 #   26|           0: [LocalVariableAccess] access to local variable b
 #   26|           1: [IsExpr] ... is ...
 #   26|             0: [ObjectCreation] object creation of type Object
+#   26|               0: [TypeMention] Object
 #   26|             1: [ConstantPatternExpr,StringLiteral] "abc"
 #   27|       2: [ExprStmt] ...;
 #   27|         0: [AssignExpr] ... = ...

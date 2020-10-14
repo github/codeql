@@ -1,6 +1,7 @@
 goto.cs:
 #    2| [Class] Goto
 #    4|   5: [Method] Main
+#    4|     -1: [TypeMention] Void
 #    5|     4: [BlockStmt] {...}
 #    6|       0: [BlockStmt] {...}
 #    7|         0: [LabelStmt] s1:
@@ -8,6 +9,7 @@ goto.cs:
 #    9|       1: [LabelStmt] s2:
 #    9|       2: [LocalVariableDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] String s = ...
+#    9|           -1: [TypeMention] String
 #    9|           0: [LocalVariableAccess] access to local variable s
 #    9|           1: [StringLiteral] "5"
 #   10|       3: [SwitchStmt] switch (...) {...}

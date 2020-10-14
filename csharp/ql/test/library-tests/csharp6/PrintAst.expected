@@ -1,25 +1,32 @@
 csharp6.cs:
 #   10| [Class] TestCSharp6
 #   12|   6: [Property] Value
+#   12|     -1: [TypeMention] Int32
 #   15|     2: [AssignExpr] ... = ...
 #   12|       0: [PropertyCall] access to property Value
 #   15|       1: [IntLiteral] 20
 #   14|     3: [Getter] get_Value
 #   17|   7: [Method] Fn
+#   17|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] x
+#   17|         -1: [TypeMention] String
 #   17|     4: [MethodCall] call to method WriteLine
 #   17|       0: [ParameterAccess] access to parameter x
 #   19|   8: [Method] Main
+#   19|     -1: [TypeMention] Void
 #   20|     4: [BlockStmt] {...}
 #   21|       0: [TryStmt] try {...} ...
 #   22|         0: [BlockStmt] {...}
 #   23|           0: [LocalVariableDeclStmt] ... ...;
 #   23|             0: [LocalVariableDeclAndInitExpr] String foo = ...
+#   23|               -1: [TypeMention] String
 #   23|               0: [LocalVariableAccess] access to local variable foo
 #   23|               1: [NameOfExpr] nameof(...)
 #   23|                 0: [TypeAccess] access to type TestCSharp6
+#   23|                   0: [TypeMention] TestCSharp6
 #   23|             1: [LocalVariableDeclAndInitExpr] String bar = ...
+#   23|               -1: [TypeMention] String
 #   23|               0: [LocalVariableAccess] access to local variable bar
 #   23|               1: [NullLiteral] null
 #   25|           1: [ExprStmt] ...;
@@ -54,11 +61,14 @@ csharp6.cs:
 #   27|                   1: [IntLiteral] 0
 #   29|           3: [LocalVariableDeclStmt] ... ...;
 #   29|             0: [LocalVariableDeclAndInitExpr] Nullable<Boolean> anythingInBar = ...
+#   29|               -1: [TypeMention] Nullable<Boolean>
+#   29|                 1: [TypeMention] Boolean
 #   29|               0: [LocalVariableAccess] access to local variable anythingInBar
 #   29|               1: [MethodCall] call to method Any
 #   29|                 -1: [LocalVariableAccess] access to local variable bar
 #   30|           4: [LocalVariableDeclStmt] ... ...;
 #   30|             0: [LocalVariableDeclAndInitExpr] Nullable<Int32> countTInFoo = ...
+#   30|               -1: [TypeMention] Nullable<Int32>
 #   30|               0: [LocalVariableAccess] access to local variable countTInFoo
 #   30|               1: [MethodCall] call to method Count
 #   30|                 -1: [MethodCall] call to method Select
@@ -74,10 +84,14 @@ csharp6.cs:
 #   30|                         0: [CharLiteral] T
 #   32|           5: [LocalVariableDeclStmt] ... ...;
 #   32|             0: [LocalVariableDeclAndInitExpr] Nullable<Char> testElementBinding = ...
+#   32|               -1: [TypeMention] Nullable<Char>
 #   32|               0: [LocalVariableAccess] access to local variable testElementBinding
 #   32|               1: [IndexerCall] access to indexer
 #   32|                 -1: [IndexerCall] access to indexer
 #   32|                   -1: [ObjectCreation] object creation of type Dictionary<Int32,String>
+#   32|                     0: [TypeMention] Dictionary<Int32,String>
+#   32|                       1: [TypeMention] Int32
+#   32|                       2: [TypeMention] String
 #   32|                   0: [IntLiteral] 2
 #   32|                 0: [IntLiteral] 1
 #   34|         1: [SpecificCatchClause] catch (...) {...}
@@ -93,21 +107,30 @@ csharp6.cs:
 #   40|         3: [GeneralCatchClause] catch {...}
 #   41|           1: [BlockStmt] {...}
 #   45|   9: [EQOperator] ==
+#   45|     -1: [TypeMention] Boolean
 #-----|     2: (Parameters)
 #   45|       0: [Parameter] t1
+#   45|         -1: [TypeMention] TestCSharp6
 #   45|       1: [Parameter] t2
+#   45|         -1: [TypeMention] TestCSharp6
 #   45|     4: [BoolLiteral] true
 #   46|   10: [NEOperator] !=
+#   46|     -1: [TypeMention] Boolean
 #-----|     2: (Parameters)
 #   46|       0: [Parameter] t1
+#   46|         -1: [TypeMention] TestCSharp6
 #   46|       1: [Parameter] t2
+#   46|         -1: [TypeMention] TestCSharp6
 #   46|     4: [BoolLiteral] false
 #   48|   11: [Property] ExprProperty
+#   48|     -1: [TypeMention] Int32
 #   48|     3: [Getter] get_ExprProperty
 #   48|       4: [IntLiteral] 3
 #   50|   12: [Indexer] Item
+#   50|     -1: [TypeMention] Int32
 #-----|     1: (Parameters)
 #   50|       0: [Parameter] i
+#   50|         -1: [TypeMention] Int32
 #   50|     3: [Getter] get_Item
 #-----|       2: (Parameters)
 #   50|         0: [Parameter] i
@@ -115,29 +138,48 @@ csharp6.cs:
 #   53| [Class] IndexInitializers
 #   55|   5: [Class] Compound
 #   57|     5: [Field] DictionaryField
+#   57|       -1: [TypeMention] Dictionary<Int32,String>
+#   57|         1: [TypeMention] Int32
+#   57|         2: [TypeMention] String
 #   58|     6: [IndexerProperty] DictionaryProperty
+#   58|       -1: [TypeMention] Dictionary<Int32,String>
+#   58|         1: [TypeMention] Int32
+#   58|         2: [TypeMention] String
 #   58|       3: [Getter] get_DictionaryProperty
 #   58|       4: [Setter] set_DictionaryProperty
 #-----|         2: (Parameters)
 #   58|           0: [Parameter] value
 #   59|     7: [Field] ArrayField
+#   59|       -1: [TypeMention] String[]
+#   59|         1: [TypeMention] String
 #   60|     8: [Property] ArrayProperty
+#   60|       -1: [TypeMention] String[]
+#   60|         1: [TypeMention] String
 #   60|       3: [Getter] get_ArrayProperty
 #   60|       4: [Setter] set_ArrayProperty
 #-----|         2: (Parameters)
 #   60|           0: [Parameter] value
 #   61|     9: [Field] ArrayField2
+#   61|       -1: [TypeMention] String[,]
+#   61|         1: [TypeMention] String
 #   62|     10: [Property] ArrayProperty2
+#   62|       -1: [TypeMention] String[,]
+#   62|         1: [TypeMention] String
 #   62|       3: [Getter] get_ArrayProperty2
 #   62|       4: [Setter] set_ArrayProperty2
 #-----|         2: (Parameters)
 #   62|           0: [Parameter] value
 #   65|   6: [Method] Test
+#   65|     -1: [TypeMention] Void
 #   66|     4: [BlockStmt] {...}
 #   68|       0: [LocalVariableDeclStmt] ... ...;
 #   68|         0: [LocalVariableDeclAndInitExpr] Dictionary<Int32,String> dict = ...
+#   68|           -1: [TypeMention] Dictionary<Int32,String>
 #   68|           0: [LocalVariableAccess] access to local variable dict
 #   68|           1: [ObjectCreation] object creation of type Dictionary<Int32,String>
+#   68|             -2: [TypeMention] Dictionary<Int32,String>
+#   68|               1: [TypeMention] Int32
+#   68|               2: [TypeMention] String
 #   68|             -1: [ObjectInitializer] { ..., ... }
 #   68|               0: [MemberInitializer] ... = ...
 #   68|                 0: [IndexerCall] access to indexer
@@ -153,8 +195,10 @@ csharp6.cs:
 #   68|                 1: [StringLiteral] "Two"
 #   71|       1: [LocalVariableDeclStmt] ... ...;
 #   71|         0: [LocalVariableDeclAndInitExpr] Compound compound = ...
+#   71|           -1: [TypeMention] Compound
 #   71|           0: [LocalVariableAccess] access to local variable compound
 #   71|           1: [ObjectCreation] object creation of type Compound
+#   71|             -2: [TypeMention] Compound
 #   72|             -1: [ObjectInitializer] { ..., ... }
 #   73|               0: [MemberInitializer] ... = ...
 #   73|                 0: [FieldAccess] access to field DictionaryField

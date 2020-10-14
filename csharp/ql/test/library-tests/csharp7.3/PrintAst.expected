@@ -1,9 +1,11 @@
 csharp73.cs:
 #    5| [Class] StackAllocs
 #    7|   5: [Method] Fn
+#    7|     -1: [TypeMention] Void
 #    8|     4: [BlockStmt] {...}
 #    9|       0: [LocalVariableDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] Char* arr1 = ...
+#    9|           -1: [TypeMention] Char*
 #    9|           0: [LocalVariableAccess] access to local variable arr1
 #    9|           1: [Stackalloc] array creation of type Char*
 #    9|             -1: [ArrayInitializer] { ..., ... }
@@ -11,6 +13,7 @@ csharp73.cs:
 #    9|               1: [CharLiteral] y
 #   10|       1: [LocalVariableDeclStmt] ... ...;
 #   10|         0: [LocalVariableDeclAndInitExpr] Char* arr2 = ...
+#   10|           -1: [TypeMention] Char*
 #   10|           0: [LocalVariableAccess] access to local variable arr2
 #   10|           1: [Stackalloc] array creation of type Char*
 #   10|             -1: [ArrayInitializer] { ..., ... }
@@ -18,22 +21,26 @@ csharp73.cs:
 #   10|             0: [IntLiteral] 1
 #   11|       2: [LocalVariableDeclStmt] ... ...;
 #   11|         0: [LocalVariableDeclAndInitExpr] Char[] arr3 = ...
+#   11|           -1: [TypeMention] Char[]
 #   11|           0: [LocalVariableAccess] access to local variable arr3
 #   11|           1: [ArrayCreation] array creation of type Char[]
 #   11|             -1: [ArrayInitializer] { ..., ... }
 #   11|               0: [CharLiteral] x
 #   12|       3: [LocalVariableDeclStmt] ... ...;
 #   12|         0: [LocalVariableDeclAndInitExpr] Char* arr4 = ...
+#   12|           -1: [TypeMention] Char*
 #   12|           0: [LocalVariableAccess] access to local variable arr4
 #   12|           1: [Stackalloc] array creation of type Char*
 #   12|             0: [IntLiteral] 10
 #   13|       4: [LocalVariableDeclStmt] ... ...;
 #   13|         0: [LocalVariableDeclAndInitExpr] Char[] arr5 = ...
+#   13|           -1: [TypeMention] Char[]
 #   13|           0: [LocalVariableAccess] access to local variable arr5
 #   13|           1: [ArrayCreation] array creation of type Char[]
 #   13|             0: [IntLiteral] 10
 #   14|       5: [LocalVariableDeclStmt] ... ...;
 #   14|         0: [LocalVariableDeclAndInitExpr] Int32* arr6 = ...
+#   14|           -1: [TypeMention] Int32*
 #   14|           0: [LocalVariableAccess] access to local variable arr6
 #   14|           1: [Stackalloc] array creation of type Int32*
 #   14|             -1: [ArrayInitializer] { ..., ... }
@@ -42,9 +49,12 @@ csharp73.cs:
 #   14|               2: [IntLiteral] 3
 #   18| [Class] PinnedReference
 #   20|   5: [Method] F
+#   20|     -1: [TypeMention] Void
 #   21|     4: [BlockStmt] {...}
 #   22|       0: [LocalVariableDeclStmt] ... ...;
 #   22|         0: [LocalVariableDeclAndInitExpr] Span<Int32> t = ...
+#   22|           -1: [TypeMention] Span<Int32>
+#   22|             1: [TypeMention] Int32
 #   22|           0: [LocalVariableAccess] access to local variable t
 #   22|           1: [OperatorCall] call to operator implicit conversion
 #   22|             0: [ArrayCreation] array creation of type Int32[]
@@ -63,6 +73,7 @@ csharp73.cs:
 #   44|   4: [InstanceConstructor] ExpressionVariables
 #-----|     2: (Parameters)
 #   44|       0: [Parameter] x
+#   44|         -1: [TypeMention] Int32
 #   45|     4: [BlockStmt] {...}
 #   46|       0: [ExprStmt] ...;
 #   46|         0: [AssignExpr] ... = ...
@@ -75,6 +86,7 @@ csharp73.cs:
 #   51|       0: [ExprStmt] ...;
 #   51|         0: [MethodCall] call to method WriteLine
 #   51|           -1: [TypeAccess] access to type Console
+#   51|             0: [TypeMention] Console
 #   51|           0: [InterpolatedStringExpr] $"..."
 #   51|             0: [StringLiteral] "x is "
 #   51|             1: [LocalVariableAccess] access to local variable x
