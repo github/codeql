@@ -266,17 +266,11 @@ private module Stdlib {
     }
 
     /** Gets the ControlFlowNode for the `args` argument, if any. */
-    private ControlFlowNode get_args_arg() {
-      result = node.getArg(0)
-      or
-      result = node.getArgByName("args")
-    }
+    private ControlFlowNode get_args_arg() { result in [node.getArg(0), node.getArgByName("args")] }
 
     /** Gets the ControlFlowNode for the `shell` argument, if any. */
     private ControlFlowNode get_shell_arg() {
-      result = node.getArg(8)
-      or
-      result = node.getArgByName("shell")
+      result in [node.getArg(8), node.getArgByName("shell")]
     }
 
     private boolean get_shell_arg_value() {
@@ -298,9 +292,7 @@ private module Stdlib {
 
     /** Gets the ControlFlowNode for the `executable` argument, if any. */
     private ControlFlowNode get_executable_arg() {
-      result = node.getArg(2)
-      or
-      result = node.getArgByName("executable")
+      result in [node.getArg(2), node.getArgByName("executable")]
     }
 
     override DataFlow::Node getCommand() {
