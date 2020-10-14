@@ -131,11 +131,11 @@ private module Invoke {
    * - `invoke.run` or `invoke.sudo` functions (http://docs.pyinvoke.org/en/stable/api/__init__.html)
    * - `run` or `sudo` methods on a `invoke.context.Context` instance (http://docs.pyinvoke.org/en/stable/api/context.html#invoke.context.Context.run)
    */
-  private class InvokeRunCommandCall extends SystemCommandExecution::Range {
+  private class InvokeRunCommandCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
     InvokeRunCommandCall() {
-      exists(DataFlow::Node callFunction |
-        this.asCfgNode().(CallNode).getFunction() = callFunction.asCfgNode()
-      |
+      exists(DataFlow::Node callFunction | node.getFunction() = callFunction.asCfgNode() |
         callFunction = invoke_attr(["run", "sudo"])
         or
         callFunction = invoke::context::Context::instanceRunMethods()
@@ -143,9 +143,7 @@ private module Invoke {
     }
 
     override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-      or
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArgByName("command")
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("command")]
     }
   }
 }
