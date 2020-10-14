@@ -1,10 +1,10 @@
 uniqueEnclosingCallable
 uniqueType
 uniqueNodeLocation
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
 missingLocation
 | Nodes without location: 4 |
 uniqueNodeToString

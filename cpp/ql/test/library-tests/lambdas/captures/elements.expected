@@ -208,6 +208,25 @@
 | file://:0:0:0:0 |  |
 | file://:0:0:0:0 | (global namespace) |
 | file://:0:0:0:0 | (reference to) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
 | file://:0:0:0:0 | ..()(..) |
 | file://:0:0:0:0 | ..()(..) |
 | file://:0:0:0:0 | ..(*)(..) |
@@ -289,24 +308,5 @@
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | overflow_arg_area |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | reg_save_area |
 | file://:0:0:0:0 | void * |
