@@ -41,16 +41,20 @@ private module Yaml {
 /**
  * A call to `yaml.load`
  * See https://pyyaml.org/wiki/PyYAMLDocumentation (you will have to scroll down).
- *
- * This function was briefly thought safe until new exploits were found in 2020,
- * see https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation for details.
  */
 private class YamlLoadCall extends Decoding::Range {
   YamlLoadCall() { this.asCfgNode().(CallNode).getFunction() = Yaml::yaml::load().asCfgNode() }
 
+  /**
+   * This function was thought safe from the 5.1 release in 2017, when the default loader was changed to `FullLoader`.
+   * In 2020 new exploits were found, meaning it's not safe. The Current plan is to change the default to `SafeLoader` in release 6.0
+   * (as explained in https://github.com/yaml/pyyaml/issues/420#issuecomment-696752389).
+   * Until 6.0 is released, we will mark `yaml.load` as possibly leading to arbitrary code execution.
+   * See https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation for more details.
+   */
   override predicate unsafe() {
     // If the `Loader` is not set to either `SafeLoader` or `BaseLoader` or not set at all,
-    // then the default `Loader` will be used, which is not safe.
+    // then the default loader will be used, which is not safe.
     not this.asCfgNode().(CallNode).getArgByName("Loader").(NameNode).getId() in ["SafeLoader",
           "BaseLoader"]
   }
