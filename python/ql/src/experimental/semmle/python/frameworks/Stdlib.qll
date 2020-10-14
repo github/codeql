@@ -407,9 +407,7 @@ private module Stdlib {
     }
 
     override DataFlow::Node getCommand() {
-      result.asCfgNode() = node.getArg(0)
-      or
-      result.asCfgNode() = node.getArgByName("cmd")
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("cmd")]
     }
   }
 
@@ -476,9 +474,7 @@ private module Stdlib {
     PlatformPopenCall() { node.getFunction() = platform_attr("popen").asCfgNode() }
 
     override DataFlow::Node getCommand() {
-      result.asCfgNode() = node.getArg(0)
-      or
-      result.asCfgNode() = node.getArgByName("cmd")
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("cmd")]
     }
   }
 }
