@@ -44,7 +44,9 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 case ArrayType at:
                     return GetElementType(at.ElementType.Type);
-                case NamedType nt when nt.symbol.IsBoundNullable():
+                case NamedType nt when nt.symbol.IsBoundNullable() ||
+                                       nt.symbol.IsBoundSpan() ||
+                                       nt.symbol.IsBoundReadOnlySpan():
                     return nt.TypeArguments.Single();
                 case PointerType pt:
                     return GetElementType(pt.PointedAtType);
