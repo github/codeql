@@ -31,6 +31,8 @@ namespace Semmle.Extraction.CSharp.Entities
                     return GetElementType(ats.ElementType);
                 case NullableTypeSyntax nts:
                     return GetElementType(nts.ElementType);
+                case PointerTypeSyntax pts:
+                    return GetElementType(pts.ElementType);
                 default:
                     return type;
             }
@@ -44,6 +46,8 @@ namespace Semmle.Extraction.CSharp.Entities
                     return GetElementType(at.ElementType.Type);
                 case NamedType nt when nt.symbol.IsBoundNullable():
                     return nt.TypeArguments.Single();
+                case PointerType pt:
+                    return GetElementType(pt.PointedAtType);
                 default:
                     return type;
             }
