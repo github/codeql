@@ -9,6 +9,8 @@ fixed.cs:
 #    7|             1: [TypeMention] Byte
 #    7|           0: [LocalVariableAccess] access to local variable buffer
 #    7|           1: [ArrayCreation] array creation of type Byte[]
+#    7|             -1: [TypeMention] Byte[]
+#    7|               1: [TypeMention] Byte
 #    7|             0: [IntLiteral] 10
 #    9|       1: [FixedStmt] fixed(...) { ... }
 #    9|         -1: [LocalVariableDeclAndInitExpr] Byte* pinned_buffer = ...

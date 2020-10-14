@@ -1231,6 +1231,8 @@ ranges.cs:
 #    9|           -1: [TypeMention] Int32[]
 #    9|           0: [LocalVariableAccess] access to local variable array
 #    9|           1: [ArrayCreation] array creation of type Int32[]
+#    9|             -2: [TypeMention] Int32[]
+#    9|               1: [TypeMention] Int32
 #    9|             -1: [ArrayInitializer] { ..., ... }
 #    9|               0: [IntLiteral] 1
 #    9|               1: [IntLiteral] 2

@@ -91,6 +91,8 @@ arguments.cs:
 #   36|         0: [MethodCall] call to method f3
 #   36|           0: [IntLiteral] 0
 #   36|           1: [ArrayCreation] array creation of type Int32[]
+#   36|             -2: [TypeMention] Int32[]
+#   36|               1: [TypeMention] Int32
 #   36|             -1: [ArrayInitializer] { ..., ... }
 #   36|               0: [IntLiteral] 1
 #   36|               1: [IntLiteral] 2
@@ -109,6 +111,8 @@ arguments.cs:
 #   40|       5: [ExprStmt] ...;
 #   40|         0: [MethodCall] call to method f3
 #   40|           0: [ArrayCreation] array creation of type Int32[]
+#   40|             -2: [TypeMention] Int32[]
+#   40|               1: [TypeMention] Int32
 #   40|             -1: [ArrayInitializer] { ..., ... }
 #   40|               0: [IntLiteral] 1
 #   40|               1: [IntLiteral] 2
@@ -123,6 +127,8 @@ arguments.cs:
 #   45|       0: [ExprStmt] ...;
 #   45|         0: [MethodCall] call to method f4
 #   45|           0: [ArrayCreation] array creation of type Object[]
+#   45|             -2: [TypeMention] Object[]
+#   45|               1: [TypeMention] Object
 #   45|             -1: [ArrayInitializer] { ..., ... }
 #   45|               0: [NullLiteral] null
 #   45|           1: [NullLiteral] null

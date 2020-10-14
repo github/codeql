@@ -22,6 +22,8 @@ indexers.cs:
 #   18|           0: [AssignExpr] ... = ...
 #   18|             0: [FieldAccess] access to field bits
 #   18|             1: [ArrayCreation] array creation of type Int32[]
+#   18|               -1: [TypeMention] Int32[]
+#   18|                 1: [TypeMention] Int32
 #   18|               0: [AddExpr] ... + ...
 #   18|                 0: [RShiftExpr] ... >> ...
 #   18|                   0: [SubExpr] ... - ...
@@ -226,6 +228,8 @@ indexers.cs:
 #   87|       1: [AssignExpr] ... = ...
 #   87|         0: [FieldAccess] access to field cells
 #   87|         1: [ArrayCreation] array creation of type Int32[,]
+#   87|           -1: [TypeMention] Int32[,]
+#   87|             1: [TypeMention] Int32
 #   87|           0: [MemberConstantAccess] access to constant NumRows
 #   87|           1: [MemberConstantAccess] access to constant NumCols
 #   89|     8: [Indexer] Item

@@ -19,6 +19,8 @@ unsafe.cs:
 #    8|               1: [TypeMention] Int32
 #    8|             0: [LocalVariableAccess] access to local variable ia
 #    8|             1: [ArrayCreation] array creation of type Int32[]
+#    8|               -1: [TypeMention] Int32[]
+#    8|                 1: [TypeMention] Int32
 #    8|               0: [IntLiteral] 2
 #    9|         2: [ExprStmt] ...;
 #    9|           0: [AssignExpr] ... = ...
@@ -125,6 +127,8 @@ unsafe.cs:
 #   36|                 -1: [TypeMention] Int32[]
 #   36|                 0: [LocalVariableAccess] access to local variable data
 #   36|                 1: [ArrayCreation] array creation of type Int32[]
+#   36|                   -1: [TypeMention] Int32[]
+#   36|                     1: [TypeMention] Int32
 #   36|                   0: [IntLiteral] 10
 #   37|             1: [FixedStmt] fixed(...) { ... }
 #   37|               -1: [LocalVariableDeclAndInitExpr] Int32* p = ...

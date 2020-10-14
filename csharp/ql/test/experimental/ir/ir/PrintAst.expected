@@ -66,6 +66,8 @@ array.cs:
 #   16|             1: [TypeMention] Int32
 #   16|           0: [LocalVariableAccess] access to local variable b
 #   16|           1: [ArrayCreation] array creation of type Int32[,]
+#   16|             -1: [TypeMention] Int32[,]
+#   16|               1: [TypeMention] Int32
 #   16|             0: [IntLiteral] 5
 #   16|             1: [IntLiteral] 5
 #   17|       2: [LocalVariableDeclStmt] ... ...;
@@ -74,6 +76,8 @@ array.cs:
 #   17|             1: [TypeMention] Int32
 #   17|           0: [LocalVariableAccess] access to local variable c
 #   17|           1: [ArrayCreation] array creation of type Int32[,]
+#   17|             -2: [TypeMention] Int32[,]
+#   17|               1: [TypeMention] Int32
 #   17|             -1: [ArrayInitializer] { ..., ... }
 #   17|               0: [ArrayInitializer] { ..., ... }
 #   17|                 0: [IntLiteral] 100
@@ -89,6 +93,8 @@ array.cs:
 #   18|             1: [TypeMention] Int32
 #   18|           0: [LocalVariableAccess] access to local variable d
 #   18|           1: [ArrayCreation] array creation of type Int32[,]
+#   18|             -2: [TypeMention] Int32[,]
+#   18|               1: [TypeMention] Int32
 #   18|             -1: [ArrayInitializer] { ..., ... }
 #   18|               0: [ArrayInitializer] { ..., ... }
 #   18|                 0: [IntLiteral] 100
@@ -448,6 +454,8 @@ foreach.cs:
 #    5|             1: [TypeMention] Int32
 #    5|           0: [LocalVariableAccess] access to local variable a_array
 #    5|           1: [ArrayCreation] array creation of type Int32[]
+#    5|             -2: [TypeMention] Int32[]
+#    5|               1: [TypeMention] Int32
 #    5|             -1: [ArrayInitializer] { ..., ... }
 #    5|               0: [IntLiteral] 1
 #    5|               1: [IntLiteral] 2
@@ -496,6 +504,8 @@ indexers.cs:
 #    5|       1: [AssignExpr] ... = ...
 #    5|         0: [FieldAccess] access to field address
 #    5|         1: [ArrayCreation] array creation of type String[]
+#    5|           -1: [TypeMention] String[]
+#    5|             1: [TypeMention] String
 #    5|           0: [IntLiteral] 2
 #    6|     6: [Indexer] Item
 #    6|       -1: [TypeMention] String

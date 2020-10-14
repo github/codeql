@@ -598,6 +598,8 @@ CSharp7.cs:
 #  194|           -1: [TypeMention] Int32[]
 #  194|           0: [LocalVariableAccess] access to local variable array
 #  194|           1: [ArrayCreation] array creation of type Int32[]
+#  194|             -1: [TypeMention] Int32[]
+#  194|               1: [TypeMention] Int32
 #  194|             0: [IntLiteral] 10
 #  195|       3: [ExprStmt] ...;
 #  195|         0: [AssignExpr] ... = ...

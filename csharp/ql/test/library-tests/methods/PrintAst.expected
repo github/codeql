@@ -290,6 +290,8 @@ methods.cs:
 #  113|               1: [TypeMention] T
 #  113|             0: [LocalVariableAccess] access to local variable result
 #  113|             1: [ArrayCreation] array creation of type T[]
+#  113|               -1: [TypeMention] T[]
+#  113|                 1: [TypeMention] T
 #  113|               0: [ParameterAccess] access to parameter count
 #  114|         2: [ExprStmt] ...;
 #  114|           0: [MethodCall] call to method Copy

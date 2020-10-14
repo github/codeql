@@ -958,6 +958,8 @@ expressions.cs:
 #  168|               1: [TypeMention] Object
 #  168|             0: [LocalVariableAccess] access to local variable os
 #  168|             1: [ArrayCreation] array creation of type Object[]
+#  168|               -2: [TypeMention] Object[]
+#  168|                 1: [TypeMention] Object
 #  168|               -1: [ArrayInitializer] { ..., ... }
 #  168|                 0: [CastExpr] (...) ...
 #  168|                   1: [ParameterAccess] access to parameter i
@@ -1662,6 +1664,8 @@ expressions.cs:
 #  409|             -1: [TypeMention] Int32[,]
 #  409|             0: [LocalVariableAccess] access to local variable is1
 #  409|             1: [ArrayCreation] array creation of type Int32[,]
+#  409|               -2: [TypeMention] Int32[,]
+#  409|                 1: [TypeMention] Int32
 #  409|               -1: [ArrayInitializer] { ..., ... }
 #  409|                 0: [ArrayInitializer] { ..., ... }
 #  409|                   0: [IntLiteral] 0
@@ -1677,6 +1681,8 @@ expressions.cs:
 #  410|             -1: [TypeMention] Int32[,]
 #  410|             0: [LocalVariableAccess] access to local variable is2
 #  410|             1: [ArrayCreation] array creation of type Int32[,]
+#  410|               -2: [TypeMention] Int32[,]
+#  410|                 1: [TypeMention] Int32
 #  410|               -1: [ArrayInitializer] { ..., ... }
 #  410|                 0: [ArrayInitializer] { ..., ... }
 #  410|                   0: [IntLiteral] 0
@@ -1695,6 +1701,8 @@ expressions.cs:
 #  411|               1: [TypeMention] Int32
 #  411|             0: [LocalVariableAccess] access to local variable is3
 #  411|             1: [ArrayCreation] array creation of type Int32[][]
+#  411|               -1: [TypeMention] Int32[][]
+#  411|                 1: [TypeMention] Int32
 #  411|               0: [IntLiteral] 100
 #  412|         8: [LocalVariableDeclStmt] ... ...;
 #  412|           0: [LocalVariableDeclAndInitExpr] Int32[,] is4 = ...
@@ -1702,6 +1710,8 @@ expressions.cs:
 #  412|               1: [TypeMention] Int32
 #  412|             0: [LocalVariableAccess] access to local variable is4
 #  412|             1: [ArrayCreation] array creation of type Int32[,]
+#  412|               -1: [TypeMention] Int32[,]
+#  412|                 1: [TypeMention] Int32
 #  412|               0: [IntLiteral] 100
 #  412|               1: [IntLiteral] 5
 #  413|         9: [LocalVariableDeclStmt] ... ...;
@@ -1823,6 +1833,8 @@ expressions.cs:
 #  437|             -1: [TypeMention] Object
 #  437|             0: [LocalVariableAccess] access to local variable o
 #  437|             1: [ArrayCreation] array creation of type Int32[,]
+#  437|               -2: [TypeMention] Int32[,]
+#  437|                 1: [TypeMention] Int32
 #  437|               -1: [ArrayInitializer] { ..., ... }
 #  437|                 0: [ArrayInitializer] { ..., ... }
 #  437|                   0: [IntLiteral] 1
@@ -1837,6 +1849,8 @@ expressions.cs:
 #  438|           0: [AssignExpr] ... = ...
 #  438|             0: [LocalVariableAccess] access to local variable o
 #  438|             1: [ArrayCreation] array creation of type Int32[,,]
+#  438|               -2: [TypeMention] Int32[,,]
+#  438|                 1: [TypeMention] Int32
 #  438|               -1: [ArrayInitializer] { ..., ... }
 #  438|                 0: [ArrayInitializer] { ..., ... }
 #  438|                   0: [ArrayInitializer] { ..., ... }
@@ -1860,9 +1874,13 @@ expressions.cs:
 #  439|           0: [AssignExpr] ... = ...
 #  439|             0: [LocalVariableAccess] access to local variable o
 #  439|             1: [ArrayCreation] array creation of type Int32[,][,]
+#  439|               -2: [TypeMention] Int32[,][,]
+#  439|                 1: [TypeMention] Int32
 #  440|               -1: [ArrayInitializer] { ..., ... }
 #  441|                 0: [ArrayInitializer] { ..., ... }
 #  441|                   0: [ArrayCreation] array creation of type Int32[,]
+#  441|                     -2: [TypeMention] Int32[,]
+#  441|                       1: [TypeMention] Int32
 #  441|                     -1: [ArrayInitializer] { ..., ... }
 #  441|                       0: [ArrayInitializer] { ..., ... }
 #  441|                         0: [IntLiteral] 1
@@ -1871,6 +1889,8 @@ expressions.cs:
 #  441|                         0: [IntLiteral] 5
 #  441|                         1: [IntLiteral] 7
 #  441|                   1: [ArrayCreation] array creation of type Int32[,]
+#  441|                     -2: [TypeMention] Int32[,]
+#  441|                       1: [TypeMention] Int32
 #  441|                     -1: [ArrayInitializer] { ..., ... }
 #  441|                       0: [ArrayInitializer] { ..., ... }
 #  441|                         0: [IntLiteral] 0
@@ -1882,6 +1902,8 @@ expressions.cs:
 #  441|                         0: [IntLiteral] 8
 #  441|                         1: [IntLiteral] 10
 #  441|                   2: [ArrayCreation] array creation of type Int32[,]
+#  441|                     -2: [TypeMention] Int32[,]
+#  441|                       1: [TypeMention] Int32
 #  441|                     -1: [ArrayInitializer] { ..., ... }
 #  441|                       0: [ArrayInitializer] { ..., ... }
 #  441|                         0: [IntLiteral] 11
@@ -1894,6 +1916,8 @@ expressions.cs:
 #  441|                         1: [IntLiteral] 9
 #  442|                 1: [ArrayInitializer] { ..., ... }
 #  442|                   0: [ArrayCreation] array creation of type Int32[,]
+#  442|                     -2: [TypeMention] Int32[,]
+#  442|                       1: [TypeMention] Int32
 #  442|                     -1: [ArrayInitializer] { ..., ... }
 #  442|                       0: [ArrayInitializer] { ..., ... }
 #  442|                         0: [IntLiteral] 1
@@ -1902,6 +1926,8 @@ expressions.cs:
 #  442|                         0: [IntLiteral] 5
 #  442|                         1: [IntLiteral] 7
 #  442|                   1: [ArrayCreation] array creation of type Int32[,]
+#  442|                     -2: [TypeMention] Int32[,]
+#  442|                       1: [TypeMention] Int32
 #  442|                     -1: [ArrayInitializer] { ..., ... }
 #  442|                       0: [ArrayInitializer] { ..., ... }
 #  442|                         0: [IntLiteral] 0
@@ -1913,6 +1939,8 @@ expressions.cs:
 #  442|                         0: [IntLiteral] 8
 #  442|                         1: [IntLiteral] 10
 #  442|                   2: [ArrayCreation] array creation of type Int32[,]
+#  442|                     -2: [TypeMention] Int32[,]
+#  442|                       1: [TypeMention] Int32
 #  442|                     -1: [ArrayInitializer] { ..., ... }
 #  442|                       0: [ArrayInitializer] { ..., ... }
 #  442|                         0: [IntLiteral] 11
@@ -1927,13 +1955,19 @@ expressions.cs:
 #  444|           0: [AssignExpr] ... = ...
 #  444|             0: [LocalVariableAccess] access to local variable o
 #  444|             1: [ArrayCreation] array creation of type Int32[,][]
+#  444|               -2: [TypeMention] Int32[,][]
+#  444|                 1: [TypeMention] Int32
 #  444|               -1: [ArrayInitializer] { ..., ... }
 #  444|                 0: [ArrayCreation] array creation of type Int32[,]
+#  444|                   -2: [TypeMention] Int32[,]
+#  444|                     1: [TypeMention] Int32
 #  444|                   -1: [ArrayInitializer] { ..., ... }
 #  444|                     0: [ArrayInitializer] { ..., ... }
 #  444|                       0: [IntLiteral] 1
 #  444|                       1: [IntLiteral] 2
 #  444|                 1: [ArrayCreation] array creation of type Int32[,]
+#  444|                   -2: [TypeMention] Int32[,]
+#  444|                     1: [TypeMention] Int32
 #  444|                   -1: [ArrayInitializer] { ..., ... }
 #  444|                     0: [ArrayInitializer] { ..., ... }
 #  444|                       0: [IntLiteral] 1
