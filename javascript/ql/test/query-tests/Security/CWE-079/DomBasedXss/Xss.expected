@@ -72,6 +72,26 @@ nodes
 | jquery.js:8:18:8:34 | "XSS: " + tainted |
 | jquery.js:8:18:8:34 | "XSS: " + tainted |
 | jquery.js:8:28:8:34 | tainted |
+| jquery.js:10:5:10:40 | "<b>" + ...  "</b>" |
+| jquery.js:10:5:10:40 | "<b>" + ...  "</b>" |
+| jquery.js:10:13:10:20 | location |
+| jquery.js:10:13:10:20 | location |
+| jquery.js:10:13:10:31 | location.toString() |
+| jquery.js:14:19:14:58 | decodeU ... n.hash) |
+| jquery.js:14:19:14:58 | decodeU ... n.hash) |
+| jquery.js:14:38:14:52 | window.location |
+| jquery.js:14:38:14:52 | window.location |
+| jquery.js:14:38:14:57 | window.location.hash |
+| jquery.js:15:19:15:60 | decodeU ... search) |
+| jquery.js:15:19:15:60 | decodeU ... search) |
+| jquery.js:15:38:15:52 | window.location |
+| jquery.js:15:38:15:52 | window.location |
+| jquery.js:15:38:15:59 | window. ... .search |
+| jquery.js:16:19:16:64 | decodeU ... ring()) |
+| jquery.js:16:19:16:64 | decodeU ... ring()) |
+| jquery.js:16:38:16:52 | window.location |
+| jquery.js:16:38:16:52 | window.location |
+| jquery.js:16:38:16:63 | window. ... tring() |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message |
@@ -598,6 +618,22 @@ edges
 | jquery.js:7:20:7:26 | tainted | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
 | jquery.js:8:28:8:34 | tainted | jquery.js:8:18:8:34 | "XSS: " + tainted |
 | jquery.js:8:28:8:34 | tainted | jquery.js:8:18:8:34 | "XSS: " + tainted |
+| jquery.js:10:13:10:20 | location | jquery.js:10:13:10:31 | location.toString() |
+| jquery.js:10:13:10:20 | location | jquery.js:10:13:10:31 | location.toString() |
+| jquery.js:10:13:10:31 | location.toString() | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" |
+| jquery.js:10:13:10:31 | location.toString() | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" |
+| jquery.js:14:38:14:52 | window.location | jquery.js:14:38:14:57 | window.location.hash |
+| jquery.js:14:38:14:52 | window.location | jquery.js:14:38:14:57 | window.location.hash |
+| jquery.js:14:38:14:57 | window.location.hash | jquery.js:14:19:14:58 | decodeU ... n.hash) |
+| jquery.js:14:38:14:57 | window.location.hash | jquery.js:14:19:14:58 | decodeU ... n.hash) |
+| jquery.js:15:38:15:52 | window.location | jquery.js:15:38:15:59 | window. ... .search |
+| jquery.js:15:38:15:52 | window.location | jquery.js:15:38:15:59 | window. ... .search |
+| jquery.js:15:38:15:59 | window. ... .search | jquery.js:15:19:15:60 | decodeU ... search) |
+| jquery.js:15:38:15:59 | window. ... .search | jquery.js:15:19:15:60 | decodeU ... search) |
+| jquery.js:16:38:16:52 | window.location | jquery.js:16:38:16:63 | window. ... tring() |
+| jquery.js:16:38:16:52 | window.location | jquery.js:16:38:16:63 | window. ... tring() |
+| jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
+| jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
@@ -1038,6 +1074,10 @@ edges
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:33 | document.location | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:40 | documen ... .search | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:33 | document.location | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
+| jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | jquery.js:10:13:10:20 | location | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | Cross-site scripting vulnerability due to $@. | jquery.js:10:13:10:20 | location | user-provided value |
+| jquery.js:14:19:14:58 | decodeU ... n.hash) | jquery.js:14:38:14:52 | window.location | jquery.js:14:19:14:58 | decodeU ... n.hash) | Cross-site scripting vulnerability due to $@. | jquery.js:14:38:14:52 | window.location | user-provided value |
+| jquery.js:15:19:15:60 | decodeU ... search) | jquery.js:15:38:15:52 | window.location | jquery.js:15:19:15:60 | decodeU ... search) | Cross-site scripting vulnerability due to $@. | jquery.js:15:38:15:52 | window.location | user-provided value |
+| jquery.js:16:19:16:64 | decodeU ... ring()) | jquery.js:16:38:16:52 | window.location | jquery.js:16:19:16:64 | decodeU ... ring()) | Cross-site scripting vulnerability due to $@. | jquery.js:16:38:16:52 | window.location | user-provided value |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | HTML injection vulnerability due to $@. | nodemailer.js:13:50:13:66 | req.query.message | user-provided value |
 | optionalSanitizer.js:17:20:17:20 | x | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:17:20:17:20 | x | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |
 | optionalSanitizer.js:32:18:32:25 | tainted2 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:32:18:32:25 | tainted2 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
