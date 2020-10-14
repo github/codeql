@@ -7,18 +7,18 @@ namespace Semmle.Extraction.Entities
 {
     public class File : CachedEntity<string>
     {
-        File(Context cx, string path)
+        private File(Context cx, string path)
             : base(cx, path)
         {
-            OriginalPath = path;
-            TransformedPathLazy = new Lazy<PathTransformer.ITransformedPath>(() => Context.Extractor.PathTransformer.Transform(OriginalPath));
+            originalPath = path;
+            transformedPathLazy = new Lazy<PathTransformer.ITransformedPath>(() => Context.Extractor.PathTransformer.Transform(originalPath));
         }
 
-        readonly string OriginalPath;
-        readonly Lazy<PathTransformer.ITransformedPath> TransformedPathLazy;
-        PathTransformer.ITransformedPath TransformedPath => TransformedPathLazy.Value;
+        private readonly string originalPath;
+        private readonly Lazy<PathTransformer.ITransformedPath> transformedPathLazy;
+        private PathTransformer.ITransformedPath TransformedPath => transformedPathLazy.Value;
 
-        public override bool NeedsPopulation => Context.DefinesFile(OriginalPath) || OriginalPath == Context.Extractor.OutputPath;
+        public override bool NeedsPopulation => Context.DefinesFile(originalPath) || originalPath == Context.Extractor.OutputPath;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -30,16 +30,17 @@ namespace Semmle.Extraction.Entities
             var fromSource = TransformedPath.Extension.ToLowerInvariant().Equals("cs");
             if (fromSource)
             {
-                foreach (var text in Context.Compilation.SyntaxTrees.
-                    Where(t => t.FilePath == OriginalPath).
-                    Select(tree => tree.GetText()))
+                foreach (var text in Context.Compilation.SyntaxTrees
+                    .Where(t => t.FilePath == originalPath)
+                    .Select(tree => tree.GetText()))
                 {
                     var rawText = text.ToString() ?? "";
                     var lineCounts = LineCounter.ComputeLineCounts(rawText);
-                    if (rawText.Length > 0 && rawText[rawText.Length - 1] != '\n') lineCounts.Total++;
+                    if (rawText.Length > 0 && rawText[rawText.Length - 1] != '\n')
+                        lineCounts.Total++;
 
                     trapFile.numlines(this, lineCounts);
-                    Context.TrapWriter.Archive(OriginalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default);
+                    Context.TrapWriter.Archive(originalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default);
                 }
             }
 
@@ -56,9 +57,9 @@ namespace Semmle.Extraction.Entities
 
         public static File CreateGenerated(Context cx) => GeneratedFile.Create(cx);
 
-        class GeneratedFile : File
+        private class GeneratedFile : File
         {
-            GeneratedFile(Context cx) : base(cx, "") { }
+            private GeneratedFile(Context cx) : base(cx, "") { }
 
             public override bool NeedsPopulation => true;
 
@@ -75,7 +76,7 @@ namespace Semmle.Extraction.Entities
             public static GeneratedFile Create(Context cx) =>
                 GeneratedFileFactory.Instance.CreateEntity(cx, typeof(GeneratedFile), null);
 
-            class GeneratedFileFactory : ICachedEntityFactory<string?, GeneratedFile>
+            private class GeneratedFileFactory : ICachedEntityFactory<string?, GeneratedFile>
             {
                 public static readonly GeneratedFileFactory Instance = new GeneratedFileFactory();
 
@@ -85,7 +86,7 @@ namespace Semmle.Extraction.Entities
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
-        class FileFactory : ICachedEntityFactory<string, File>
+        private class FileFactory : ICachedEntityFactory<string, File>
         {
             public static readonly FileFactory Instance = new FileFactory();
 

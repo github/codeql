@@ -14,11 +14,11 @@ namespace Semmle.Extraction.CIL.Driver
     /// Information about a single assembly.
     /// In particular, provides references between assemblies.
     /// </summary>
-    class AssemblyInfo
+    internal class AssemblyInfo
     {
         public override string ToString() => filename;
 
-        static AssemblyName CreateAssemblyName(MetadataReader mdReader, StringHandle name, System.Version version, StringHandle culture)
+        private static AssemblyName CreateAssemblyName(MetadataReader mdReader, StringHandle name, System.Version version, StringHandle culture)
         {
             var cultureString = mdReader.GetString(culture);
 
@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CIL.Driver
             return assemblyName;
         }
 
-        static AssemblyName CreateAssemblyName(MetadataReader mdReader, AssemblyReference ar)
+        private static AssemblyName CreateAssemblyName(MetadataReader mdReader, AssemblyReference ar)
         {
             var an = CreateAssemblyName(mdReader, ar.Name, ar.Version, ar.Culture);
             if (!ar.PublicKeyOrToken.IsNil)
@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CIL.Driver
             return an;
         }
 
-        static AssemblyName CreateAssemblyName(MetadataReader mdReader, AssemblyDefinition ad)
+        private static AssemblyName CreateAssemblyName(MetadataReader mdReader, AssemblyDefinition ad)
         {
             var an = CreateAssemblyName(mdReader, ad.Name, ad.Version, ad.Culture);
             if (!ad.PublicKey.IsNil)
@@ -62,32 +62,32 @@ namespace Semmle.Extraction.CIL.Driver
             filename = path;
 
             // Attempt to open the file and see if it's a valid assembly.
-            using (var stream = File.OpenRead(path))
-            using (var peReader = new PEReader(stream))
+            using var stream = File.OpenRead(path);
+            using var peReader = new PEReader(stream);
+            try
             {
-                try
-                {
-                    if (!peReader.HasMetadata) throw new InvalidAssemblyException();
-
-                    var mdReader = peReader.GetMetadataReader();
-
-                    if (!mdReader.IsAssembly) throw new InvalidAssemblyException();
-
-                    // Get our own assembly name
-                    name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());
-
-                    references = mdReader.AssemblyReferences.
-                        Select(r => mdReader.GetAssemblyReference(r)).
-                        Select(ar => CreateAssemblyName(mdReader, ar)).
-                        ToArray();
-                }
-                catch (System.BadImageFormatException)
-                {
-                    // This failed on one of the Roslyn tests that includes
-                    // a deliberately malformed assembly.
-                    // In this case, we just skip the extraction of this assembly.
+                if (!peReader.HasMetadata)
                     throw new InvalidAssemblyException();
-                }
+
+                var mdReader = peReader.GetMetadataReader();
+
+                if (!mdReader.IsAssembly)
+                    throw new InvalidAssemblyException();
+
+                // Get our own assembly name
+                name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());
+
+                references = mdReader.AssemblyReferences
+                    .Select(r => mdReader.GetAssemblyReference(r))
+                    .Select(ar => CreateAssemblyName(mdReader, ar))
+                    .ToArray();
+            }
+            catch (System.BadImageFormatException)
+            {
+                // This failed on one of the Roslyn tests that includes
+                // a deliberately malformed assembly.
+                // In this case, we just skip the extraction of this assembly.
+                throw new InvalidAssemblyException();
             }
         }
 
@@ -102,9 +102,9 @@ namespace Semmle.Extraction.CIL.Driver
     /// Resolves references between assemblies and determines which
     /// additional assemblies need to be extracted.
     /// </summary>
-    class AssemblyList
+    internal class AssemblyList
     {
-        class AssemblyNameComparer : IEqualityComparer<AssemblyName>
+        private class AssemblyNameComparer : IEqualityComparer<AssemblyName>
         {
             bool IEqualityComparer<AssemblyName>.Equals(AssemblyName? x, AssemblyName? y) =>
                 object.ReferenceEquals(x, y) ||
@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CIL.Driver
                 (obj.Name, obj.Version).GetHashCode();
         }
 
-        readonly Dictionary<AssemblyName, AssemblyInfo> assembliesRead = new Dictionary<AssemblyName, AssemblyInfo>(new AssemblyNameComparer());
+        private readonly Dictionary<AssemblyName, AssemblyInfo> assembliesRead = new Dictionary<AssemblyName, AssemblyInfo>(new AssemblyNameComparer());
 
         public void AddFile(string assemblyPath, bool extractAll)
         {
@@ -123,8 +123,10 @@ namespace Semmle.Extraction.CIL.Driver
                 filesAnalyzed.Add(assemblyPath);
                 try
                 {
-                    var info = new AssemblyInfo(assemblyPath);
-                    info.extract = extractAll;
+                    var info = new AssemblyInfo(assemblyPath)
+                    {
+                        extract = extractAll
+                    };
                     if (!assembliesRead.ContainsKey(info.name))
                         assembliesRead.Add(info.name, info);
                 }
@@ -135,7 +137,7 @@ namespace Semmle.Extraction.CIL.Driver
 
         public IEnumerable<AssemblyInfo> AssembliesToExtract => assembliesRead.Values.Where(info => info.extract);
 
-        IEnumerable<AssemblyName> AssembliesToReference => AssembliesToExtract.SelectMany(info => info.references);
+        private IEnumerable<AssemblyName> AssembliesToReference => AssembliesToExtract.SelectMany(info => info.references);
 
         public void ResolveReferences()
         {
@@ -144,7 +146,7 @@ namespace Semmle.Extraction.CIL.Driver
             while (assembliesToReference.Any())
             {
                 var item = assembliesToReference.Pop();
-                if (assembliesRead.TryGetValue(item, out AssemblyInfo? info))
+                if (assembliesRead.TryGetValue(item, out var info))
                 {
                     if (!info.extract)
                     {
@@ -160,16 +162,16 @@ namespace Semmle.Extraction.CIL.Driver
             }
         }
 
-        readonly HashSet<string> filesAnalyzed = new HashSet<string>();
+        private readonly HashSet<string> filesAnalyzed = new HashSet<string>();
         public readonly HashSet<AssemblyName> missingReferences = new HashSet<AssemblyName>();
     }
 
     /// <summary>
     /// Parses the command line and collates a list of DLLs/EXEs to extract.
     /// </summary>
-    class ExtractorOptions
+    internal class ExtractorOptions
     {
-        readonly AssemblyList assemblyList = new AssemblyList();
+        private readonly AssemblyList assemblyList = new AssemblyList();
 
         public ExtractorOptions(string[] args)
         {
@@ -196,7 +198,7 @@ namespace Semmle.Extraction.CIL.Driver
             }
         }
 
-        void AddFrameworkDirectories(bool extractAll)
+        private void AddFrameworkDirectories(bool extractAll)
         {
             AddDirectory(RuntimeEnvironment.GetRuntimeDirectory(), extractAll);
         }
@@ -207,13 +209,13 @@ namespace Semmle.Extraction.CIL.Driver
         public bool PDB { get; private set; }
         public TrapWriter.CompressionMode TrapCompression { get; private set; }
 
-        void AddFileOrDirectory(string path)
+        private void AddFileOrDirectory(string path)
         {
             path = Path.GetFullPath(path);
             if (File.Exists(path))
             {
                 assemblyList.AddFile(path, true);
-                string? directory = Path.GetDirectoryName(path);
+                var directory = Path.GetDirectoryName(path);
                 if (directory is null)
                 {
                     throw new InternalError($"Directory of path '{path}' is null");

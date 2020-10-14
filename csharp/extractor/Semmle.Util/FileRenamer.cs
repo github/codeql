@@ -10,8 +10,8 @@ namespace Semmle.Util
     /// </summary>
     public sealed class FileRenamer : IDisposable
     {
-        readonly string[] files;
-        const string suffix = ".codeqlhidden";
+        private readonly string[] files;
+        private const string suffix = ".codeqlhidden";
 
         public FileRenamer(IEnumerable<FileInfo> oldFiles)
         {

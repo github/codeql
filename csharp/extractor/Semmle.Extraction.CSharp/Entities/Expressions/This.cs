@@ -3,9 +3,9 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class This : Expression
+    internal class This : Expression
     {
-        This(IExpressionInfo info) : base(info) { }
+        private This(IExpressionInfo info) : base(info) { }
 
         public static This CreateImplicit(Context cx, Type @class, Extraction.Entities.Location loc, IExpressionParentEntity parent, int child) =>
             new This(new ExpressionInfo(cx, new AnnotatedType(@class, NullableAnnotation.None), loc, Kinds.ExprKind.THIS_ACCESS, parent, child, true, null));

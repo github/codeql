@@ -1,15 +1,14 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
-using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Kinds;
 using Microsoft.CodeAnalysis;
 using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Assignment : Expression<AssignmentExpressionSyntax>
+    internal class Assignment : Expression<AssignmentExpressionSyntax>
     {
-        Assignment(ExpressionNodeInfo info)
+        private Assignment(ExpressionNodeInfo info)
             : base(info.SetKind(GetKind(info.Context, (AssignmentExpressionSyntax)info.Node)))
         {
         }
@@ -46,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        static ExprKind GetAssignmentOperation(Context cx, AssignmentExpressionSyntax syntax)
+        private static ExprKind GetAssignmentOperation(Context cx, AssignmentExpressionSyntax syntax)
         {
             switch (syntax.OperatorToken.Kind())
             {
@@ -80,10 +79,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        static ExprKind GetKind(Context cx, AssignmentExpressionSyntax syntax)
+        private static ExprKind GetKind(Context cx, AssignmentExpressionSyntax syntax)
         {
-            var leftSymbol = cx.GetSymbolInfo(syntax.Left);
-            bool assignEvent = leftSymbol.Symbol != null && leftSymbol.Symbol is IEventSymbol;
             var kind = GetAssignmentOperation(cx, syntax);
             var leftType = cx.GetType(syntax.Left);
 
@@ -93,6 +90,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 // even though EVERY operator has an invocation in C#. (This is a flaw in the dbscheme and should be fixed).
                 return kind;
             }
+
+            var leftSymbol = cx.GetSymbolInfo(syntax.Left);
+            var assignEvent = leftSymbol.Symbol is IEventSymbol;
 
             if (kind == ExprKind.ASSIGN_ADD && assignEvent)
             {
@@ -112,7 +112,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// assignment is not an assignment operator). For example, the operator
         /// kind of `*=` is `*`.
         /// </summary>
-        ExprKind? OperatorKind
+        private ExprKind? OperatorKind
         {
             get
             {

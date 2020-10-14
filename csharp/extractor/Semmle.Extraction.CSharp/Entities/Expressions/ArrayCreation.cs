@@ -7,12 +7,14 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    abstract class ArrayCreation<SyntaxNode> : Expression<SyntaxNode> where SyntaxNode : ExpressionSyntax
+    internal abstract class ArrayCreation<TSyntaxNode> : Expression<TSyntaxNode>
+        where TSyntaxNode : ExpressionSyntax
     {
         protected ArrayCreation(ExpressionNodeInfo info) : base(info) { }
     }
 
-    abstract class ExplicitArrayCreation<SyntaxNode> : ArrayCreation<SyntaxNode> where SyntaxNode : ExpressionSyntax
+    internal abstract class ExplicitArrayCreation<TSyntaxNode> : ArrayCreation<TSyntaxNode>
+        where TSyntaxNode : ExpressionSyntax
     {
         protected ExplicitArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 
@@ -80,7 +82,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class NormalArrayCreation : ExplicitArrayCreation<ArrayCreationExpressionSyntax>
+    internal class NormalArrayCreation : ExplicitArrayCreation<ArrayCreationExpressionSyntax>
     {
         private NormalArrayCreation(ExpressionNodeInfo info) : base(info) { }
 
@@ -91,9 +93,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression Create(ExpressionNodeInfo info) => new NormalArrayCreation(info).TryPopulate();
     }
 
-    class StackAllocArrayCreation : ExplicitArrayCreation<StackAllocArrayCreationExpressionSyntax>
+    internal class StackAllocArrayCreation : ExplicitArrayCreation<StackAllocArrayCreationExpressionSyntax>
     {
-        StackAllocArrayCreation(ExpressionNodeInfo info) : base(info) { }
+        private StackAllocArrayCreation(ExpressionNodeInfo info) : base(info) { }
 
         protected override ArrayTypeSyntax TypeSyntax => Syntax.Type as ArrayTypeSyntax;
 
@@ -108,9 +110,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression Create(ExpressionNodeInfo info) => new StackAllocArrayCreation(info).TryPopulate();
     }
 
-    class ImplicitStackAllocArrayCreation : ArrayCreation<ImplicitStackAllocArrayCreationExpressionSyntax>
+    internal class ImplicitStackAllocArrayCreation : ArrayCreation<ImplicitStackAllocArrayCreationExpressionSyntax>
     {
-        ImplicitStackAllocArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
+        private ImplicitStackAllocArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new ImplicitStackAllocArrayCreation(info).TryPopulate();
 
@@ -122,9 +124,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class ImplicitArrayCreation : ArrayCreation<ImplicitArrayCreationExpressionSyntax>
+    internal class ImplicitArrayCreation : ArrayCreation<ImplicitArrayCreationExpressionSyntax>
     {
-        ImplicitArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
+        private ImplicitArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new ImplicitArrayCreation(info).TryPopulate();
 

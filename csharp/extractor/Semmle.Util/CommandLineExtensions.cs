@@ -19,9 +19,9 @@ namespace Semmle.Util
             foreach (var arg in commandLineArguments.Where(arg => arg.StartsWith('@')).Select(arg => arg.Substring(1)))
             {
                 string? line;
-                using (StreamReader file = new StreamReader(arg))
-                    while ((line = file.ReadLine()) != null)
-                        textWriter.WriteLine(line);
+                using var file = new StreamReader(arg);
+                while ((line = file.ReadLine()) != null)
+                    textWriter.WriteLine(line);
                 found = true;
             }
             return found;

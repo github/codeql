@@ -8,36 +8,36 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class NamespaceDeclaration : FreshEntity
+    internal class NamespaceDeclaration : FreshEntity
     {
-        private readonly NamespaceDeclaration Parent;
-        private readonly NamespaceDeclarationSyntax Node;
+        private readonly NamespaceDeclaration parent;
+        private readonly NamespaceDeclarationSyntax node;
 
         public NamespaceDeclaration(Context cx, NamespaceDeclarationSyntax node, NamespaceDeclaration parent)
             : base(cx)
         {
-            Node = node;
-            Parent = parent;
+            this.node = node;
+            this.parent = parent;
             TryPopulate();
         }
 
         protected override void Populate(TextWriter trapFile)
         {
-            var @namespace = (INamespaceSymbol)cx.GetModel(Node).GetSymbolInfo(Node.Name).Symbol;
+            var @namespace = (INamespaceSymbol)cx.GetModel(node).GetSymbolInfo(node.Name).Symbol;
             var ns = Namespace.Create(cx, @namespace);
             trapFile.namespace_declarations(this, ns);
-            trapFile.namespace_declaration_location(this, cx.Create(Node.Name.GetLocation()));
+            trapFile.namespace_declaration_location(this, cx.Create(node.Name.GetLocation()));
 
             var visitor = new Populators.TypeOrNamespaceVisitor(cx, trapFile, this);
 
-            foreach (var member in Node.Members.Cast<CSharpSyntaxNode>().Concat(Node.Usings))
+            foreach (var member in node.Members.Cast<CSharpSyntaxNode>().Concat(node.Usings))
             {
                 member.Accept(visitor);
             }
 
-            if (Parent != null)
+            if (parent != null)
             {
-                trapFile.parent_namespace_declaration(this, Parent);
+                trapFile.parent_namespace_declaration(this, parent);
             }
         }
 

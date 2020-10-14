@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class TypeAccess : Expression<ExpressionSyntax>
+    internal class TypeAccess : Expression<ExpressionSyntax>
     {
-        TypeAccess(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.TYPE_ACCESS)) { }
+        private TypeAccess(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.TYPE_ACCESS)) { }
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
@@ -36,4 +36,3 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression Create(ExpressionNodeInfo info) => new TypeAccess(info).TryPopulate();
     }
 }
-

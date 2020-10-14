@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Await : Expression<AwaitExpressionSyntax>
+    internal class Await : Expression<AwaitExpressionSyntax>
     {
-        Await(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.AWAIT)) { }
+        private Await(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.AWAIT)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new Await(info).TryPopulate();
 
