@@ -249,7 +249,9 @@ abstract class ElementNode extends PrintAstNode, TElementNode {
 abstract class TypeMentionNode extends PrintAstNode {
   TypeMention typeMention;
 
-  override string toString() { result = "[TypeMention] " + typeMention.getType().toString() }
+  override string toString() {
+    result = "[TypeMention] " + typeMention.getType().toStringWithTypes()
+  }
 
   override Location getLocation() { result = typeMention.getLocation() }
 

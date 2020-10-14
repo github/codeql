@@ -6,7 +6,7 @@ array.cs:
 #    4|       0: [LocalVariableDeclStmt] ... ...;
 #    4|         0: [LocalVariableDeclAndInitExpr] Int32[] one_dim = ...
 #    4|           -1: [TypeMention] Int32[]
-#    4|             1: [TypeMention] Int32
+#    4|             1: [TypeMention] int
 #    4|           0: [LocalVariableAccess] access to local variable one_dim
 #    4|           1: [ArrayCreation] array creation of type Int32[]
 #    4|             -1: [ArrayInitializer] { ..., ... }
@@ -35,7 +35,7 @@ array.cs:
 #    7|           1: [IntLiteral] 1003
 #    9|       4: [LocalVariableDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#    9|           -1: [TypeMention] Int32
+#    9|           -1: [TypeMention] int
 #    9|           0: [LocalVariableAccess] access to local variable i
 #    9|           1: [IntLiteral] 0
 #   10|       5: [ExprStmt] ...;
@@ -50,7 +50,7 @@ array.cs:
 #   15|       0: [LocalVariableDeclStmt] ... ...;
 #   15|         0: [LocalVariableDeclAndInitExpr] Int32[,] a = ...
 #   15|           -1: [TypeMention] Int32[,]
-#   15|             1: [TypeMention] Int32
+#   15|             1: [TypeMention] int
 #   15|           0: [LocalVariableAccess] access to local variable a
 #   15|           1: [ArrayCreation] array creation of type Int32[,]
 #   15|             -1: [ArrayInitializer] { ..., ... }
@@ -63,21 +63,21 @@ array.cs:
 #   16|       1: [LocalVariableDeclStmt] ... ...;
 #   16|         0: [LocalVariableDeclAndInitExpr] Int32[,] b = ...
 #   16|           -1: [TypeMention] Int32[,]
-#   16|             1: [TypeMention] Int32
+#   16|             1: [TypeMention] int
 #   16|           0: [LocalVariableAccess] access to local variable b
 #   16|           1: [ArrayCreation] array creation of type Int32[,]
 #   16|             -1: [TypeMention] Int32[,]
-#   16|               1: [TypeMention] Int32
+#   16|               1: [TypeMention] int
 #   16|             0: [IntLiteral] 5
 #   16|             1: [IntLiteral] 5
 #   17|       2: [LocalVariableDeclStmt] ... ...;
 #   17|         0: [LocalVariableDeclAndInitExpr] Int32[,] c = ...
 #   17|           -1: [TypeMention] Int32[,]
-#   17|             1: [TypeMention] Int32
+#   17|             1: [TypeMention] int
 #   17|           0: [LocalVariableAccess] access to local variable c
 #   17|           1: [ArrayCreation] array creation of type Int32[,]
 #   17|             -2: [TypeMention] Int32[,]
-#   17|               1: [TypeMention] Int32
+#   17|               1: [TypeMention] int
 #   17|             -1: [ArrayInitializer] { ..., ... }
 #   17|               0: [ArrayInitializer] { ..., ... }
 #   17|                 0: [IntLiteral] 100
@@ -90,11 +90,11 @@ array.cs:
 #   18|       3: [LocalVariableDeclStmt] ... ...;
 #   18|         0: [LocalVariableDeclAndInitExpr] Int32[,] d = ...
 #   18|           -1: [TypeMention] Int32[,]
-#   18|             1: [TypeMention] Int32
+#   18|             1: [TypeMention] int
 #   18|           0: [LocalVariableAccess] access to local variable d
 #   18|           1: [ArrayCreation] array creation of type Int32[,]
 #   18|             -2: [TypeMention] Int32[,]
-#   18|               1: [TypeMention] Int32
+#   18|               1: [TypeMention] int
 #   18|             -1: [ArrayInitializer] { ..., ... }
 #   18|               0: [ArrayInitializer] { ..., ... }
 #   18|                 0: [IntLiteral] 100
@@ -105,7 +105,7 @@ array.cs:
 #   19|       4: [LocalVariableDeclStmt] ... ...;
 #   19|         0: [LocalVariableDeclAndInitExpr] Int32[,] e = ...
 #   19|           -1: [TypeMention] Int32[,]
-#   19|             1: [TypeMention] Int32
+#   19|             1: [TypeMention] int
 #   19|           0: [LocalVariableAccess] access to local variable e
 #   19|           1: [LocalVariableAccess] access to local variable a
 #   20|       5: [ExprStmt] ...;
@@ -123,12 +123,12 @@ assignop.cs:
 #    4|     4: [BlockStmt] {...}
 #    5|       0: [LocalVariableDeclStmt] ... ...;
 #    5|         0: [LocalVariableDeclAndInitExpr] Int32 a = ...
-#    5|           -1: [TypeMention] Int32
+#    5|           -1: [TypeMention] int
 #    5|           0: [LocalVariableAccess] access to local variable a
 #    5|           1: [IntLiteral] 1
 #    6|       1: [LocalVariableDeclStmt] ... ...;
 #    6|         0: [LocalVariableDeclAndInitExpr] Int32 c = ...
-#    6|           -1: [TypeMention] Int32
+#    6|           -1: [TypeMention] int
 #    6|           0: [LocalVariableAccess] access to local variable c
 #    6|           1: [IntLiteral] 1
 #    8|       2: [ExprStmt] ...;
@@ -206,19 +206,19 @@ collections.cs:
 #    3| [Class] Collections
 #    5|   5: [Class] MyClass
 #    7|     5: [Field] a
-#    7|       -1: [TypeMention] String
+#    7|       -1: [TypeMention] string
 #    8|     6: [Field] b
-#    8|       -1: [TypeMention] String
+#    8|       -1: [TypeMention] string
 #   11|   6: [Method] Main
 #   11|     -1: [TypeMention] Void
 #   12|     4: [BlockStmt] {...}
 #   13|       0: [LocalVariableDeclStmt] ... ...;
 #   13|         0: [LocalVariableDeclAndInitExpr] Dictionary<Int32,MyClass> dict = ...
-#   13|           -1: [TypeMention] Dictionary<Int32,MyClass>
+#   13|           -1: [TypeMention] Dictionary<Int32, MyClass>
 #   13|           0: [LocalVariableAccess] access to local variable dict
 #   13|           1: [ObjectCreation] object creation of type Dictionary<Int32,MyClass>
-#   13|             -2: [TypeMention] Dictionary<Int32,MyClass>
-#   13|               1: [TypeMention] Int32
+#   13|             -2: [TypeMention] Dictionary<Int32, MyClass>
+#   13|               1: [TypeMention] int
 #   13|               2: [TypeMention] MyClass
 #   14|             -1: [CollectionInitializer] { ..., ... }
 #   15|               0: [ElementInitializer] call to method Add
@@ -246,13 +246,13 @@ collections.cs:
 constructor_init.cs:
 #    1| [Class] BaseClass
 #    3|   4: [Field] num
-#    3|     -1: [TypeMention] Int32
+#    3|     -1: [TypeMention] int
 #    5|   5: [InstanceConstructor] BaseClass
 #    6|     4: [BlockStmt] {...}
 #    9|   6: [InstanceConstructor] BaseClass
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] i
-#    9|         -1: [TypeMention] Int32
+#    9|         -1: [TypeMention] int
 #   10|     4: [BlockStmt] {...}
 #   11|       0: [ExprStmt] ...;
 #   11|         0: [AssignExpr] ... = ...
@@ -267,16 +267,16 @@ constructor_init.cs:
 #   21|   5: [InstanceConstructor] DerivedClass
 #-----|     2: (Parameters)
 #   21|       0: [Parameter] i
-#   21|         -1: [TypeMention] Int32
+#   21|         -1: [TypeMention] int
 #   21|     3: [ConstructorInitializer] call to constructor BaseClass
 #   21|       0: [ParameterAccess] access to parameter i
 #   22|     4: [BlockStmt] {...}
 #   25|   6: [InstanceConstructor] DerivedClass
 #-----|     2: (Parameters)
 #   25|       0: [Parameter] i
-#   25|         -1: [TypeMention] Int32
+#   25|         -1: [TypeMention] int
 #   25|       1: [Parameter] j
-#   25|         -1: [TypeMention] Int32
+#   25|         -1: [TypeMention] int
 #   25|     3: [ConstructorInitializer] call to constructor DerivedClass
 #   25|       0: [ParameterAccess] access to parameter i
 #   26|     4: [BlockStmt] {...}
@@ -311,24 +311,24 @@ crement.cs:
 #    4|     4: [BlockStmt] {...}
 #    5|       0: [LocalVariableDeclStmt] ... ...;
 #    5|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#    5|           -1: [TypeMention] Int32
+#    5|           -1: [TypeMention] int
 #    5|           0: [LocalVariableAccess] access to local variable x
 #    5|           1: [IntLiteral] 10
 #    6|       1: [LocalVariableDeclStmt] ... ...;
 #    6|         0: [LocalVariableDeclAndInitExpr] Int32 a = ...
-#    6|           -1: [TypeMention] Int32
+#    6|           -1: [TypeMention] int
 #    6|           0: [LocalVariableAccess] access to local variable a
 #    6|           1: [PostIncrExpr] ...++
 #    6|             0: [LocalVariableAccess] access to local variable x
 #    7|       2: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Int32 b = ...
-#    7|           -1: [TypeMention] Int32
+#    7|           -1: [TypeMention] int
 #    7|           0: [LocalVariableAccess] access to local variable b
 #    7|           1: [PreDecrExpr] --...
 #    7|             0: [LocalVariableAccess] access to local variable x
 #    8|       3: [LocalVariableDeclStmt] ... ...;
 #    8|         0: [LocalVariableDeclAndInitExpr] Int32 c = ...
-#    8|           -1: [TypeMention] Int32
+#    8|           -1: [TypeMention] int
 #    8|           0: [LocalVariableAccess] access to local variable c
 #    8|           1: [PreIncrExpr] ++...
 #    8|             0: [LocalVariableAccess] access to local variable x
@@ -342,12 +342,12 @@ delegates.cs:
 #    4|   5: [DelegateType] Del
 #-----|     2: (Parameters)
 #    4|       0: [Parameter] num
-#    4|         -1: [TypeMention] Int32
+#    4|         -1: [TypeMention] int
 #    6|   6: [Method] returns
-#    6|     -1: [TypeMention] Int32
+#    6|     -1: [TypeMention] int
 #-----|     2: (Parameters)
 #    6|       0: [Parameter] ret
-#    6|         -1: [TypeMention] Int32
+#    6|         -1: [TypeMention] int
 #    7|     4: [BlockStmt] {...}
 #    8|       0: [ReturnStmt] return ...;
 #    8|         0: [ParameterAccess] access to parameter ret
@@ -370,7 +370,7 @@ events.cs:
 #    3|   4: [DelegateType] MyDel
 #-----|     2: (Parameters)
 #    3|       0: [Parameter] str
-#    3|         -1: [TypeMention] String
+#    3|         -1: [TypeMention] string
 #    4|   5: [Field] Inst
 #    4|     -1: [TypeMention] MyDel
 #    6|   6: [Event] MyEvent
@@ -410,10 +410,10 @@ events.cs:
 #   20|           1: [FieldAccess] access to field Inst
 #   20|             -1: [ThisAccess] this access
 #   23|   10: [Method] Fun
-#   23|     -1: [TypeMention] String
+#   23|     -1: [TypeMention] string
 #-----|     2: (Parameters)
 #   23|       0: [Parameter] str
-#   23|         -1: [TypeMention] String
+#   23|         -1: [TypeMention] string
 #   24|     4: [BlockStmt] {...}
 #   25|       0: [ReturnStmt] return ...;
 #   25|         0: [ParameterAccess] access to parameter str
@@ -422,7 +422,7 @@ events.cs:
 #-----|     2: (Parameters)
 #   28|       0: [Parameter] args
 #   28|         -1: [TypeMention] String[]
-#   28|           1: [TypeMention] String
+#   28|           1: [TypeMention] string
 #   29|     4: [BlockStmt] {...}
 #   30|       0: [LocalVariableDeclStmt] ... ...;
 #   30|         0: [LocalVariableDeclAndInitExpr] Events obj = ...
@@ -435,7 +435,7 @@ events.cs:
 #   31|           -1: [LocalVariableAccess] access to local variable obj
 #   32|       2: [LocalVariableDeclStmt] ... ...;
 #   32|         0: [LocalVariableDeclAndInitExpr] String result = ...
-#   32|           -1: [TypeMention] String
+#   32|           -1: [TypeMention] string
 #   32|           0: [LocalVariableAccess] access to local variable result
 #   32|           1: [DelegateCall] delegate call
 #   32|             -1: [LocalVariableAccess] access to local variable obj
@@ -451,11 +451,11 @@ foreach.cs:
 #    5|       0: [LocalVariableDeclStmt] ... ...;
 #    5|         0: [LocalVariableDeclAndInitExpr] Int32[] a_array = ...
 #    5|           -1: [TypeMention] Int32[]
-#    5|             1: [TypeMention] Int32
+#    5|             1: [TypeMention] int
 #    5|           0: [LocalVariableAccess] access to local variable a_array
 #    5|           1: [ArrayCreation] array creation of type Int32[]
 #    5|             -2: [TypeMention] Int32[]
-#    5|               1: [TypeMention] Int32
+#    5|               1: [TypeMention] int
 #    5|             -1: [ArrayInitializer] { ..., ... }
 #    5|               0: [IntLiteral] 1
 #    5|               1: [IntLiteral] 2
@@ -465,31 +465,31 @@ foreach.cs:
 #    5|               5: [IntLiteral] 6
 #    5|               6: [IntLiteral] 7
 #    7|       1: [ForeachStmt] foreach (... ... in ...) ...
-#    7|         -1: [TypeMention] Int32
+#    7|         -1: [TypeMention] int
 #    7|         0: [LocalVariableDeclExpr] Int32 items
 #    7|         1: [LocalVariableAccess] access to local variable a_array
 #    8|         2: [BlockStmt] {...}
 #    9|           0: [LocalVariableDeclStmt] ... ...;
 #    9|             0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#    9|               -1: [TypeMention] Int32
+#    9|               -1: [TypeMention] int
 #    9|               0: [LocalVariableAccess] access to local variable x
 #    9|               1: [LocalVariableAccess] access to local variable items
 func_with_param_call.cs:
 #    3| [Class] test_call_with_param
 #    5|   5: [Method] f
-#    5|     -1: [TypeMention] Int32
+#    5|     -1: [TypeMention] int
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] x
-#    5|         -1: [TypeMention] Int32
+#    5|         -1: [TypeMention] int
 #    5|       1: [Parameter] y
-#    5|         -1: [TypeMention] Int32
+#    5|         -1: [TypeMention] int
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [ReturnStmt] return ...;
 #    7|         0: [AddExpr] ... + ...
 #    7|           0: [ParameterAccess] access to parameter x
 #    7|           1: [ParameterAccess] access to parameter y
 #   10|   6: [Method] g
-#   10|     -1: [TypeMention] Int32
+#   10|     -1: [TypeMention] int
 #   11|     4: [BlockStmt] {...}
 #   12|       0: [ReturnStmt] return ...;
 #   12|         0: [MethodCall] call to method f
@@ -500,18 +500,18 @@ indexers.cs:
 #    3|   5: [Class] MyClass
 #    5|     5: [Field] address
 #    5|       -1: [TypeMention] String[]
-#    5|         1: [TypeMention] String
+#    5|         1: [TypeMention] string
 #    5|       1: [AssignExpr] ... = ...
 #    5|         0: [FieldAccess] access to field address
 #    5|         1: [ArrayCreation] array creation of type String[]
 #    5|           -1: [TypeMention] String[]
-#    5|             1: [TypeMention] String
+#    5|             1: [TypeMention] string
 #    5|           0: [IntLiteral] 2
 #    6|     6: [Indexer] Item
-#    6|       -1: [TypeMention] String
+#    6|       -1: [TypeMention] string
 #-----|       1: (Parameters)
 #    6|         0: [Parameter] index
-#    6|           -1: [TypeMention] Int32
+#    6|           -1: [TypeMention] int
 #    8|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #    6|           0: [Parameter] index
@@ -563,7 +563,7 @@ indexers.cs:
 inheritance_polymorphism.cs:
 #    1| [Class] A
 #    3|   5: [Method] function
-#    3|     -1: [TypeMention] Int32
+#    3|     -1: [TypeMention] int
 #    4|     4: [BlockStmt] {...}
 #    5|       0: [ReturnStmt] return ...;
 #    5|         0: [IntLiteral] 0
@@ -574,7 +574,7 @@ inheritance_polymorphism.cs:
 #-----|   3: (Base types)
 #   13|     0: [TypeMention] B
 #   15|   5: [Method] function
-#   15|     -1: [TypeMention] Int32
+#   15|     -1: [TypeMention] int
 #   16|     4: [BlockStmt] {...}
 #   17|       0: [ReturnStmt] return ...;
 #   17|         0: [IntLiteral] 1
@@ -613,10 +613,10 @@ inheritance_polymorphism.cs:
 inoutref.cs:
 #    1| [Class] MyClass
 #    2|   5: [Field] fld
-#    2|     -1: [TypeMention] Int32
+#    2|     -1: [TypeMention] int
 #    5| [Struct] MyStruct
 #    6|   5: [Field] fld
-#    6|     -1: [TypeMention] Int32
+#    6|     -1: [TypeMention] int
 #    9| [Class] InOutRef
 #   11|   5: [Method] set
 #   11|     -1: [TypeMention] Void
@@ -634,7 +634,7 @@ inoutref.cs:
 #   16|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   16|       0: [Parameter] a
-#   16|         -1: [TypeMention] Int32
+#   16|         -1: [TypeMention] int
 #   16|       1: [Parameter] b
 #   16|         -1: [TypeMention] MyStruct
 #   16|       2: [Parameter] b1
@@ -677,7 +677,7 @@ inoutref.cs:
 #   30|     4: [BlockStmt] {...}
 #   31|       0: [LocalVariableDeclStmt] ... ...;
 #   31|         0: [LocalVariableDeclAndInitExpr] Int32 a = ...
-#   31|           -1: [TypeMention] Int32
+#   31|           -1: [TypeMention] int
 #   31|           0: [LocalVariableAccess] access to local variable a
 #   31|           1: [IntLiteral] 0
 #   32|       1: [LocalVariableDeclStmt] ... ...;
@@ -701,14 +701,14 @@ inoutref.cs:
 #   34|           4: [LocalVariableAccess] access to local variable c
 #   36|       4: [LocalVariableDeclStmt] ... ...;
 #   36|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   36|           -1: [TypeMention] Int32
+#   36|           -1: [TypeMention] int
 #   36|           0: [LocalVariableAccess] access to local variable x
 #   36|           1: [FieldAccess] access to field fld
 #   36|             -1: [LocalVariableAccess] access to local variable b
 isexpr.cs:
 #    1| [Class] Is_A
 #    3|   5: [Field] x
-#    3|     -1: [TypeMention] Int32
+#    3|     -1: [TypeMention] int
 #    6| [Class] IsExpr
 #    8|   5: [Method] Main
 #    8|     -1: [TypeMention] Void
@@ -720,7 +720,7 @@ isexpr.cs:
 #   10|           1: [NullLiteral] null
 #   12|       1: [LocalVariableDeclStmt] ... ...;
 #   12|         0: [LocalVariableDeclAndInitExpr] Object o = ...
-#   12|           -1: [TypeMention] Object
+#   12|           -1: [TypeMention] object
 #   12|           0: [LocalVariableAccess] access to local variable o
 #   12|           1: [LocalVariableAccess] access to local variable obj
 #   13|       2: [IfStmt] if (...) ...
@@ -731,7 +731,7 @@ isexpr.cs:
 #   14|         1: [BlockStmt] {...}
 #   15|           0: [LocalVariableDeclStmt] ... ...;
 #   15|             0: [LocalVariableDeclAndInitExpr] Int32 res = ...
-#   15|               -1: [TypeMention] Int32
+#   15|               -1: [TypeMention] int
 #   15|               0: [LocalVariableAccess] access to local variable res
 #   15|               1: [FieldAccess] access to field x
 #   15|                 -1: [LocalVariableAccess] access to local variable tmp
@@ -748,7 +748,7 @@ jumps.cs:
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [ForStmt] for (...;...;...) ...
 #    7|         -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#    7|           -1: [TypeMention] Int32
+#    7|           -1: [TypeMention] int
 #    7|           0: [LocalVariableAccess] access to local variable i
 #    7|           1: [IntLiteral] 1
 #    7|         0: [LEExpr] ... <= ...
@@ -774,7 +774,7 @@ jumps.cs:
 #   13|               0: [StringLiteral] "BreakAndContinue"
 #   16|       1: [ForStmt] for (...;...;...) ...
 #   16|         -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   16|           -1: [TypeMention] Int32
+#   16|           -1: [TypeMention] int
 #   16|           0: [LocalVariableAccess] access to local variable i
 #   16|           1: [IntLiteral] 0
 #   16|         0: [LTExpr] ... < ...
@@ -787,7 +787,7 @@ jumps.cs:
 #   19|           1: [ContinueStmt] continue;
 #   22|       2: [LocalVariableDeclStmt] ... ...;
 #   22|         0: [LocalVariableDeclAndInitExpr] Int32 a = ...
-#   22|           -1: [TypeMention] Int32
+#   22|           -1: [TypeMention] int
 #   22|           0: [LocalVariableAccess] access to local variable a
 #   22|           1: [IntLiteral] 0
 #   23|       3: [WhileStmt] while (...) ...
@@ -808,7 +808,7 @@ jumps.cs:
 #   29|             1: [BreakStmt] break;
 #   32|       4: [ForStmt] for (...;...;...) ...
 #   32|         -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   32|           -1: [TypeMention] Int32
+#   32|           -1: [TypeMention] int
 #   32|           0: [LocalVariableAccess] access to local variable i
 #   32|           1: [IntLiteral] 1
 #   32|         0: [LEExpr] ... <= ...
@@ -835,10 +835,10 @@ lock.cs:
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Object object = ...
-#    7|           -1: [TypeMention] Object
+#    7|           -1: [TypeMention] object
 #    7|           0: [LocalVariableAccess] access to local variable object
 #    7|           1: [ObjectCreation] object creation of type Object
-#    7|             0: [TypeMention] Object
+#    7|             0: [TypeMention] object
 #    8|       1: [LockStmt] lock (...) {...}
 #    8|         0: [LocalVariableAccess] access to local variable object
 #    9|         1: [BlockStmt] {...}
@@ -852,13 +852,13 @@ obj_creation.cs:
 #    1| [Class] ObjCreation
 #    3|   5: [Class] MyClass
 #    5|     4: [Field] x
-#    5|       -1: [TypeMention] Int32
+#    5|       -1: [TypeMention] int
 #    7|     5: [InstanceConstructor] MyClass
 #    8|       4: [BlockStmt] {...}
 #   11|     6: [InstanceConstructor] MyClass
 #-----|       2: (Parameters)
 #   11|         0: [Parameter] _x
-#   11|           -1: [TypeMention] Int32
+#   11|           -1: [TypeMention] int
 #   12|       4: [BlockStmt] {...}
 #   13|         0: [ExprStmt] ...;
 #   13|           0: [AssignExpr] ... = ...
@@ -892,7 +892,7 @@ obj_creation.cs:
 #   24|                 1: [IntLiteral] 101
 #   25|       2: [LocalVariableDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclAndInitExpr] Int32 a = ...
-#   25|           -1: [TypeMention] Int32
+#   25|           -1: [TypeMention] int
 #   25|           0: [LocalVariableAccess] access to local variable a
 #   25|           1: [FieldAccess] access to field x
 #   25|             -1: [LocalVariableAccess] access to local variable obj
@@ -908,31 +908,31 @@ pointers.cs:
 #-----|     2: (Parameters)
 #    3|       0: [Parameter] arr
 #    3|         -1: [TypeMention] Int32[]
-#    3|           1: [TypeMention] Int32
+#    3|           1: [TypeMention] int
 #    4|     4: [BlockStmt] {...}
 #    5|       0: [LocalVariableDeclStmt] ... ...;
 #    5|         0: [LocalVariableDeclAndInitExpr] Int32 length = ...
-#    5|           -1: [TypeMention] Int32
+#    5|           -1: [TypeMention] int
 #    5|           0: [LocalVariableAccess] access to local variable length
 #    5|           1: [PropertyCall] access to property Length
 #    5|             -1: [ParameterAccess] access to parameter arr
 #    6|       1: [FixedStmt] fixed(...) { ... }
 #    6|         -1: [LocalVariableDeclAndInitExpr] Int32* b = ...
-#    6|           -1: [TypeMention] Int32*
-#    6|             1: [TypeMention] Int32
+#    6|           -1: [TypeMention] int*
+#    6|             1: [TypeMention] int
 #    6|           0: [LocalVariableAccess] access to local variable b
 #    6|           1: [CastExpr] (...) ...
 #    6|             1: [ParameterAccess] access to parameter arr
 #    7|         0: [BlockStmt] {...}
 #    8|           0: [LocalVariableDeclStmt] ... ...;
 #    8|             0: [LocalVariableDeclAndInitExpr] Int32* p = ...
-#    8|               -1: [TypeMention] Int32*
-#    8|                 1: [TypeMention] Int32
+#    8|               -1: [TypeMention] int*
+#    8|                 1: [TypeMention] int
 #    8|               0: [LocalVariableAccess] access to local variable p
 #    8|               1: [LocalVariableAccess] access to local variable b
 #    9|           1: [ForStmt] for (...;...;...) ...
 #    9|             -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#    9|               -1: [TypeMention] Int32
+#    9|               -1: [TypeMention] int
 #    9|               0: [LocalVariableAccess] access to local variable i
 #    9|               1: [IntLiteral] 0
 #    9|             0: [LTExpr] ... < ...
@@ -948,12 +948,12 @@ pointers.cs:
 #   10|                 1: [IntLiteral] 1
 #   14|   6: [Class] MyClass
 #   16|     5: [Field] fld1
-#   16|       -1: [TypeMention] Int32
+#   16|       -1: [TypeMention] int
 #   17|     6: [Field] fld2
-#   17|       -1: [TypeMention] Int32
+#   17|       -1: [TypeMention] int
 #   20|   7: [Struct] MyStruct
 #   22|     5: [Field] fld
-#   22|       -1: [TypeMention] Int32
+#   22|       -1: [TypeMention] int
 #   25|   8: [Method] Main
 #   25|     -1: [TypeMention] Void
 #   25|     4: [BlockStmt] {...}
@@ -973,15 +973,15 @@ pointers.cs:
 #   29|         0: [BlockStmt] {...}
 #   30|           0: [FixedStmt] fixed(...) { ... }
 #   30|             -2: [LocalVariableDeclAndInitExpr] Int32* q = ...
-#   30|               -1: [TypeMention] Int32*
-#   30|                 1: [TypeMention] Int32
+#   30|               -1: [TypeMention] int*
+#   30|                 1: [TypeMention] int
 #   30|               0: [LocalVariableAccess] access to local variable q
 #   30|               1: [AddressOfExpr] &...
 #   30|                 0: [FieldAccess] access to field fld2
 #   30|                   -1: [LocalVariableAccess] access to local variable o
 #   30|             -1: [LocalVariableDeclAndInitExpr] Int32* p = ...
-#   30|               -1: [TypeMention] Int32*
-#   30|                 1: [TypeMention] Int32
+#   30|               -1: [TypeMention] int*
+#   30|                 1: [TypeMention] int
 #   30|               0: [LocalVariableAccess] access to local variable p
 #   30|               1: [AddressOfExpr] &...
 #   30|                 0: [FieldAccess] access to field fld1
@@ -1013,7 +1013,7 @@ pointers.cs:
 #   39|       3: [LocalVariableDeclStmt] ... ...;
 #   39|         0: [LocalVariableDeclAndInitExpr] Int32[] arr = ...
 #   39|           -1: [TypeMention] Int32[]
-#   39|             1: [TypeMention] Int32
+#   39|             1: [TypeMention] int
 #   39|           0: [LocalVariableAccess] access to local variable arr
 #   39|           1: [ArrayCreation] array creation of type Int32[]
 #   39|             -1: [ArrayInitializer] { ..., ... }
@@ -1026,9 +1026,9 @@ pointers.cs:
 prop.cs:
 #    1| [Class] PropClass
 #    3|   5: [Field] prop
-#    3|     -1: [TypeMention] Int32
+#    3|     -1: [TypeMention] int
 #    5|   6: [Property] Prop
-#    5|     -1: [TypeMention] Int32
+#    5|     -1: [TypeMention] int
 #    7|     3: [Getter] get_Prop
 #    8|       4: [BlockStmt] {...}
 #    9|         0: [ReturnStmt] return ...;
@@ -1042,7 +1042,7 @@ prop.cs:
 #   14|             0: [FieldAccess] access to field prop
 #   14|             1: [ParameterAccess] access to parameter value
 #   18|   7: [Method] func
-#   18|     -1: [TypeMention] Int32
+#   18|     -1: [TypeMention] int
 #   19|     4: [BlockStmt] {...}
 #   20|       0: [ReturnStmt] return ...;
 #   20|         0: [IntLiteral] 0
@@ -1063,36 +1063,36 @@ prop.cs:
 #   29|           1: [IntLiteral] 5
 #   30|       2: [LocalVariableDeclStmt] ... ...;
 #   30|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   30|           -1: [TypeMention] Int32
+#   30|           -1: [TypeMention] int
 #   30|           0: [LocalVariableAccess] access to local variable x
 #   30|           1: [PropertyCall] access to property Prop
 #   30|             -1: [LocalVariableAccess] access to local variable obj
 simple_call.cs:
 #    3| [Class] test_simple_call
 #    5|   5: [Method] f
-#    5|     -1: [TypeMention] Int32
+#    5|     -1: [TypeMention] int
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [ReturnStmt] return ...;
 #    7|         0: [IntLiteral] 0
 #   10|   6: [Method] g
-#   10|     -1: [TypeMention] Int32
+#   10|     -1: [TypeMention] int
 #   11|     4: [BlockStmt] {...}
 #   12|       0: [ReturnStmt] return ...;
 #   12|         0: [MethodCall] call to method f
 simple_function.cs:
 #    3| [Class] test_simple_function
 #    5|   5: [Method] f
-#    5|     -1: [TypeMention] Int32
+#    5|     -1: [TypeMention] int
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [ReturnStmt] return ...;
 #    7|         0: [IntLiteral] 0
 stmts.cs:
 #    3| [Class] test_stmts
 #    5|   5: [Method] ifStmt
-#    5|     -1: [TypeMention] Int32
+#    5|     -1: [TypeMention] int
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] x
-#    5|         -1: [TypeMention] Int32
+#    5|         -1: [TypeMention] int
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [IfStmt] if (...) ...
 #    7|         0: [EQExpr] ... == ...
@@ -1106,11 +1106,11 @@ stmts.cs:
 #   13|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   13|       0: [Parameter] x
-#   13|         -1: [TypeMention] Int32
+#   13|         -1: [TypeMention] int
 #   14|     4: [BlockStmt] {...}
 #   15|       0: [LocalVariableDeclStmt] ... ...;
 #   15|         0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   15|           -1: [TypeMention] Int32
+#   15|           -1: [TypeMention] int
 #   15|           0: [LocalVariableAccess] access to local variable i
 #   15|           1: [IntLiteral] 0
 #   16|       1: [WhileStmt] while (...) ...
@@ -1125,17 +1125,17 @@ stmts.cs:
 #   18|                 0: [ParameterAccess] access to parameter x
 #   18|                 1: [IntLiteral] 1
 #   22|   7: [Method] switchStmt
-#   22|     -1: [TypeMention] Int32
+#   22|     -1: [TypeMention] int
 #   23|     4: [BlockStmt] {...}
 #   24|       0: [LocalVariableDeclStmt] ... ...;
 #   24|         0: [LocalVariableDeclAndInitExpr] Object caseSwitch = ...
-#   24|           -1: [TypeMention] Object
+#   24|           -1: [TypeMention] object
 #   24|           0: [LocalVariableAccess] access to local variable caseSwitch
 #   24|           1: [ObjectCreation] object creation of type Object
-#   24|             0: [TypeMention] Object
+#   24|             0: [TypeMention] object
 #   25|       1: [LocalVariableDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclAndInitExpr] Int32 select = ...
-#   25|           -1: [TypeMention] Int32
+#   25|           -1: [TypeMention] int
 #   25|           0: [LocalVariableAccess] access to local variable select
 #   25|           1: [IntLiteral] 0
 #   27|       2: [SwitchStmt] switch (...) {...}
@@ -1173,7 +1173,7 @@ stmts.cs:
 #   47|     4: [BlockStmt] {...}
 #   48|       0: [LocalVariableDeclStmt] ... ...;
 #   48|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   48|           -1: [TypeMention] Int32
+#   48|           -1: [TypeMention] int
 #   48|           0: [LocalVariableAccess] access to local variable x
 #   48|           1: [IntLiteral] 5
 #   49|       1: [TryStmt] try {...} ...
@@ -1210,16 +1210,16 @@ stmts.cs:
 #   70|     4: [BlockStmt] {...}
 #   71|       0: [LocalVariableDeclStmt] ... ...;
 #   71|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   71|           -1: [TypeMention] Int32
+#   71|           -1: [TypeMention] int
 #   71|           0: [LocalVariableAccess] access to local variable x
 #   71|           1: [IntLiteral] 0
 #   72|       1: [ForStmt] for (...;...;...) ...
 #   72|         -2: [LocalVariableDeclAndInitExpr] Int32 j = ...
-#   72|           -1: [TypeMention] Int32
+#   72|           -1: [TypeMention] int
 #   72|           0: [LocalVariableAccess] access to local variable j
 #   72|           1: [IntLiteral] 10
 #   72|         -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   72|           -1: [TypeMention] Int32
+#   72|           -1: [TypeMention] int
 #   72|           0: [LocalVariableAccess] access to local variable i
 #   72|           1: [IntLiteral] 0
 #   72|         0: [LTExpr] ... < ...
@@ -1238,9 +1238,9 @@ stmts.cs:
 #   74|                 1: [IntLiteral] 1
 #   77|       2: [LocalVariableDeclStmt] ... ...;
 #   77|         0: [LocalVariableDeclExpr] Int32 a
-#   77|           0: [TypeMention] Int32
+#   77|           0: [TypeMention] int
 #   77|         1: [LocalVariableDeclAndInitExpr] Int32 b = ...
-#   77|           -1: [TypeMention] Int32
+#   77|           -1: [TypeMention] int
 #   77|           0: [LocalVariableAccess] access to local variable b
 #   77|           1: [IntLiteral] 10
 #   78|       3: [ForStmt] for (...;...;...) ...
@@ -1261,7 +1261,7 @@ stmts.cs:
 #   90|     4: [BlockStmt] {...}
 #   91|       0: [LocalVariableDeclStmt] ... ...;
 #   91|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   91|           -1: [TypeMention] Int32
+#   91|           -1: [TypeMention] int
 #   91|           0: [LocalVariableAccess] access to local variable x
 #   91|           1: [IntLiteral] 0
 #   92|       1: [DoStmt] do ... while (...);
@@ -1280,11 +1280,11 @@ stmts.cs:
 #  100|     4: [BlockStmt] {...}
 #  101|       0: [LocalVariableDeclStmt] ... ...;
 #  101|         0: [LocalVariableDeclAndInitExpr] Int32 num = ...
-#  101|           -1: [TypeMention] Int32
+#  101|           -1: [TypeMention] int
 #  101|           0: [LocalVariableAccess] access to local variable num
 #  101|           1: [MemberConstantAccess] access to constant MaxValue
 #  101|             -1: [TypeAccess] access to type Int32
-#  101|               0: [TypeMention] Int32
+#  101|               0: [TypeMention] int
 #  102|       1: [UncheckedStmt] unchecked {...}
 #  103|         0: [BlockStmt] {...}
 #  104|           0: [ExprStmt] ...;
@@ -1355,9 +1355,9 @@ variables.cs:
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclExpr] Int32 x
-#    7|           0: [TypeMention] Int32
+#    7|           0: [TypeMention] int
 #    7|         1: [LocalVariableDeclAndInitExpr] Int32 y = ...
-#    7|           -1: [TypeMention] Int32
+#    7|           -1: [TypeMention] int
 #    7|           0: [LocalVariableAccess] access to local variable y
 #    7|           1: [IntLiteral] 5
 #    8|       1: [ExprStmt] ...;
@@ -1370,6 +1370,6 @@ variables.cs:
 #    9|           1: [LocalVariableAccess] access to local variable y
 #   10|       3: [LocalVariableDeclStmt] ... ...;
 #   10|         0: [LocalVariableDeclAndInitExpr] Int32 z = ...
-#   10|           -1: [TypeMention] Int32
+#   10|           -1: [TypeMention] int
 #   10|           0: [LocalVariableAccess] access to local variable z
 #   10|           1: [LocalVariableAccess] access to local variable y

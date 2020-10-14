@@ -3,13 +3,13 @@ Members.cs:
 #    3|   1: [DelegateType] EventHandler
 #-----|     2: (Parameters)
 #    3|       0: [Parameter] sender
-#    3|         -1: [TypeMention] Object
+#    3|         -1: [TypeMention] object
 #    3|       1: [Parameter] e
-#    3|         -1: [TypeMention] Object
+#    3|         -1: [TypeMention] object
 #    6|   2: [Class] Class
 #    9|     5: [Class] NestedClass
 #   12|       5: [Method] Method
-#   12|         -1: [TypeMention] String
+#   12|         -1: [TypeMention] string
 #-----|         1: (Type parameters)
 #   12|           0: [TypeParameter] T
 #-----|         2: (Parameters)
@@ -18,10 +18,10 @@ Members.cs:
 #   12|         4: [MethodCall] call to method ToString
 #   12|           -1: [ParameterAccess] access to parameter t
 #   14|       6: [Indexer] Item
-#   14|         -1: [TypeMention] String
+#   14|         -1: [TypeMention] string
 #-----|         1: (Parameters)
 #   14|           0: [Parameter] i
-#   14|             -1: [TypeMention] Int32
+#   14|             -1: [TypeMention] int
 #   14|         3: [Getter] get_Item
 #-----|           2: (Parameters)
 #   14|             0: [Parameter] i
@@ -33,9 +33,9 @@ Members.cs:
 #   14|             1: [Parameter] value
 #   14|           4: [BlockStmt] {...}
 #   16|       7: [Field] Field
-#   16|         -1: [TypeMention] String
+#   16|         -1: [TypeMention] string
 #   18|       8: [IndexerProperty] Prop
-#   18|         -1: [TypeMention] String
+#   18|         -1: [TypeMention] string
 #   18|         3: [Getter] get_Prop
 #   18|         4: [Setter] set_Prop
 #-----|           2: (Parameters)
@@ -52,10 +52,10 @@ Members.cs:
 #   24|       -1: [TypeMention] Void
 #   24|       4: [BlockStmt] {...}
 #   26|     7: [Indexer] Item
-#   26|       -1: [TypeMention] String
+#   26|       -1: [TypeMention] string
 #-----|       1: (Parameters)
 #   26|         0: [Parameter] i
-#   26|           -1: [TypeMention] Int32
+#   26|           -1: [TypeMention] int
 #   26|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #   26|           0: [Parameter] i
@@ -67,9 +67,9 @@ Members.cs:
 #   26|           1: [Parameter] value
 #   26|         4: [BlockStmt] {...}
 #   28|     8: [Field] Field
-#   28|       -1: [TypeMention] String
+#   28|       -1: [TypeMention] string
 #   30|     9: [IndexerProperty] Prop
-#   30|       -1: [TypeMention] String
+#   30|       -1: [TypeMention] string
 #   30|       3: [Getter] get_Prop
 #   30|       4: [Setter] set_Prop
 #-----|         2: (Parameters)
@@ -85,7 +85,7 @@ Members.cs:
 #   35|   3: [Class] Class2
 #   37|     5: [Class] NestedClass2
 #   39|       5: [Method] Method
-#   39|         -1: [TypeMention] String
+#   39|         -1: [TypeMention] string
 #-----|         1: (Type parameters)
 #   39|           0: [TypeParameter] T
 #-----|         2: (Parameters)
@@ -94,10 +94,10 @@ Members.cs:
 #   39|         4: [MethodCall] call to method ToString
 #   39|           -1: [ParameterAccess] access to parameter t
 #   40|       6: [Indexer] Item
-#   40|         -1: [TypeMention] String
+#   40|         -1: [TypeMention] string
 #-----|         1: (Parameters)
 #   40|           0: [Parameter] i
-#   40|             -1: [TypeMention] Int32
+#   40|             -1: [TypeMention] int
 #   40|         3: [Getter] get_Item
 #-----|           2: (Parameters)
 #   40|             0: [Parameter] i
@@ -109,9 +109,9 @@ Members.cs:
 #   40|             1: [Parameter] value
 #   40|           4: [BlockStmt] {...}
 #   41|       7: [Field] Field
-#   41|         -1: [TypeMention] String
+#   41|         -1: [TypeMention] string
 #   42|       8: [IndexerProperty] Prop
-#   42|         -1: [TypeMention] String
+#   42|         -1: [TypeMention] string
 #   42|         3: [Getter] get_Prop
 #   42|         4: [Setter] set_Prop
 #-----|           2: (Parameters)
@@ -128,10 +128,10 @@ Members.cs:
 #   46|       -1: [TypeMention] Void
 #   46|       4: [BlockStmt] {...}
 #   47|     7: [Indexer] Item
-#   47|       -1: [TypeMention] String
+#   47|       -1: [TypeMention] string
 #-----|       1: (Parameters)
 #   47|         0: [Parameter] i
-#   47|           -1: [TypeMention] Int32
+#   47|           -1: [TypeMention] int
 #   47|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #   47|           0: [Parameter] i
@@ -143,9 +143,9 @@ Members.cs:
 #   47|           1: [Parameter] value
 #   47|         4: [BlockStmt] {...}
 #   48|     8: [Field] Field
-#   48|       -1: [TypeMention] String
+#   48|       -1: [TypeMention] string
 #   49|     9: [IndexerProperty] Prop
-#   49|       -1: [TypeMention] String
+#   49|       -1: [TypeMention] string
 #   49|       3: [Getter] get_Prop
 #   49|       4: [Setter] set_Prop
 #-----|         2: (Parameters)
@@ -162,10 +162,10 @@ Members.cs:
 #   56|     4: [Method] Method
 #   56|       -1: [TypeMention] Void
 #   57|     5: [Indexer] Item
-#   57|       -1: [TypeMention] String
+#   57|       -1: [TypeMention] string
 #-----|       1: (Parameters)
 #   57|         0: [Parameter] i
-#   57|           -1: [TypeMention] Int32
+#   57|           -1: [TypeMention] int
 #   57|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #   57|           0: [Parameter] i
@@ -174,7 +174,7 @@ Members.cs:
 #   57|           0: [Parameter] i
 #   57|           1: [Parameter] value
 #   58|     6: [IndexerProperty] Prop
-#   58|       -1: [TypeMention] String
+#   58|       -1: [TypeMention] string
 #   58|       3: [Getter] get_Prop
 #   58|       4: [Setter] set_Prop
 #-----|         2: (Parameters)
@@ -191,10 +191,10 @@ Members.cs:
 #   64|     4: [Method] Method
 #   64|       -1: [TypeMention] Void
 #   65|     5: [Indexer] Item
-#   65|       -1: [TypeMention] String
+#   65|       -1: [TypeMention] string
 #-----|       1: (Parameters)
 #   65|         0: [Parameter] i
-#   65|           -1: [TypeMention] Int32
+#   65|           -1: [TypeMention] int
 #   65|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #   65|           0: [Parameter] i
@@ -203,7 +203,7 @@ Members.cs:
 #   65|           0: [Parameter] i
 #   65|           1: [Parameter] value
 #   66|     6: [IndexerProperty] Prop
-#   66|       -1: [TypeMention] String
+#   66|       -1: [TypeMention] string
 #   66|       3: [Getter] get_Prop
 #   66|       4: [Setter] set_Prop
 #-----|         2: (Parameters)

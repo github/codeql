@@ -8,7 +8,7 @@ definitions.cs:
 #    8|           -1: [TypeMention] C1
 #    8|         1: [Parameter] args
 #    8|           -1: [TypeMention] Object[]
-#    8|             1: [TypeMention] Object
+#    8|             1: [TypeMention] object
 #    9|       4: [BlockStmt] {...}
 #   13|   2: [Enum] Enumeration
 #   15|     5: [Field] e1
@@ -25,12 +25,12 @@ definitions.cs:
 #-----|       2: (Parameters)
 #   20|         0: [Parameter] args
 #   20|           -1: [TypeMention] Int32[]
-#   20|             1: [TypeMention] Int32
+#   20|             1: [TypeMention] int
 #   20|       4: [BlockStmt] {...}
 #   22|     5: [Field] field1
-#   22|       -1: [TypeMention] Int32
+#   22|       -1: [TypeMention] int
 #   24|     6: [Property] property1
-#   24|       -1: [TypeMention] Int32
+#   24|       -1: [TypeMention] int
 #   26|       3: [Getter] get_property1
 #   26|         4: [BlockStmt] {...}
 #   26|           0: [ReturnStmt] return ...;
@@ -48,7 +48,7 @@ definitions.cs:
 #-----|       2: (Parameters)
 #   30|         0: [Parameter] args
 #   30|           -1: [TypeMention] Int32[]
-#   30|             1: [TypeMention] Int32
+#   30|             1: [TypeMention] int
 #   31|       4: [BlockStmt] {...}
 #   32|         0: [LocalVariableDeclStmt] ... ...;
 #   32|           0: [LocalVariableDeclAndInitExpr] C1 qualifier = ...
@@ -112,19 +112,19 @@ definitions.cs:
 #   53|             1: [IntLiteral] 2
 #   56|         15: [LocalVariableDeclStmt] ... ...;
 #   56|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   56|             -1: [TypeMention] Int32
+#   56|             -1: [TypeMention] int
 #   56|             0: [LocalVariableAccess] access to local variable x
 #   56|             1: [IntLiteral] 2
 #   56|           1: [LocalVariableDeclAndInitExpr] Int32 y = ...
-#   56|             -1: [TypeMention] Int32
+#   56|             -1: [TypeMention] int
 #   56|             0: [LocalVariableAccess] access to local variable y
 #   56|             1: [LocalVariableAccess] access to local variable x
 #   56|           2: [LocalVariableDeclAndInitExpr] Int32 z = ...
-#   56|             -1: [TypeMention] Int32
+#   56|             -1: [TypeMention] int
 #   56|             0: [LocalVariableAccess] access to local variable z
 #   56|             1: [FieldAccess] access to field field1
 #   56|           3: [LocalVariableDeclAndInitExpr] Int32 w = ...
-#   56|             -1: [TypeMention] Int32
+#   56|             -1: [TypeMention] int
 #   56|             0: [LocalVariableAccess] access to local variable w
 #   56|             1: [ArrayAccess] access to array element
 #   56|               -1: [ParameterAccess] access to parameter args
@@ -150,14 +150,14 @@ definitions.cs:
 #   63|             1: [NullLiteral] null
 #   64|         19: [LocalVariableDeclStmt] ... ...;
 #   64|           0: [LocalVariableDeclAndInitExpr] Nullable<S1> nullable = ...
-#   64|             -1: [TypeMention] Nullable<S1>
+#   64|             -1: [TypeMention] S1?
 #   64|               1: [TypeMention] S1
 #   64|             0: [LocalVariableAccess] access to local variable nullable
 #   64|             1: [NullLiteral] null
 #   67|         20: [LocalVariableDeclStmt] ... ...;
 #   67|           0: [LocalVariableDeclAndInitExpr] Action<Int32> m1 = ...
 #   67|             -1: [TypeMention] Action<Int32>
-#   67|               1: [TypeMention] Int32
+#   67|               1: [TypeMention] int
 #   67|             0: [LocalVariableAccess] access to local variable m1
 #   67|             1: [ImplicitDelegateCreation] delegate creation of type Action<Int32>
 #   67|               0: [MethodAccess] access to method GenericFn
@@ -192,7 +192,7 @@ definitions.cs:
 #   83|           0: [BlockStmt] {...}
 #   84|             0: [LocalVariableDeclStmt] ... ...;
 #   84|               0: [LocalVariableDeclAndInitExpr] String timestamp = ...
-#   84|                 -1: [TypeMention] String
+#   84|                 -1: [TypeMention] string
 #   84|                 0: [LocalVariableAccess] access to local variable timestamp
 #   84|                 1: [MethodCall] call to method ToString
 #   84|                   -1: [PropertyCall] access to property Now
@@ -260,7 +260,7 @@ definitions.cs:
 #  119|   8: [Interface] I3
 #-----|     3: (Base types)
 #  119|       1: [TypeMention] I2<Object>
-#  119|         1: [TypeMention] Object
+#  119|         1: [TypeMention] object
 #  121|   9: [Class] B<>
 #-----|     1: (Type parameters)
 #  121|       0: [TypeParameter] T
@@ -287,7 +287,7 @@ definitions.cs:
 #-----|       3: (Base types)
 #  130|         1: [TypeMention] I3
 #  132|     8: [Method] Tuple
-#  132|       -1: [TypeMention] (I1,B<A>)
+#  132|       -1: [TypeMention] (I1, B<A>)
 #  132|         1: [TypeMention] I1
 #  132|         2: [TypeMention] B<A>
 #  132|           1: [TypeMention] A
@@ -393,12 +393,12 @@ definitions.cs:
 #-----|       1: (Type parameters)
 #  158|         0: [TypeParameter] T
 #  160|       5: [Method] Create
-#  160|         -1: [TypeMention] Nested<>
+#  160|         -1: [TypeMention] Nested<T>
 #  160|           1: [TypeMention] T
 #  160|         4: [BlockStmt] {...}
 #  160|           0: [ReturnStmt] return ...;
 #  160|             0: [ObjectCreation] object creation of type Nested<>
-#  160|               0: [TypeMention] Nested<>
+#  160|               0: [TypeMention] Nested<T>
 #  160|                 1: [TypeMention] T
 #  164|   13: [Class] C5
 #  166|     5: [Field] f
@@ -447,7 +447,7 @@ definitions.cs:
 #  174|             1: [IntLiteral] 0
 #  175|         4: [LocalVariableDeclStmt] ... ...;
 #  175|           0: [LocalVariableDeclAndInitExpr] Boolean temp = ...
-#  175|             -1: [TypeMention] Boolean
+#  175|             -1: [TypeMention] bool
 #  175|             0: [LocalVariableAccess] access to local variable temp
 #  175|             1: [IsExpr] ... is ...
 #  175|               0: [LocalVariableAccess] access to local variable c5

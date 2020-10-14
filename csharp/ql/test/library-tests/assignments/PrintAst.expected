@@ -5,7 +5,7 @@ Assignments.cs:
 #    4|     4: [BlockStmt] {...}
 #    5|       0: [LocalVariableDeclStmt] ... ...;
 #    5|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#    5|           -1: [TypeMention] Int32
+#    5|           -1: [TypeMention] int
 #    5|           0: [LocalVariableAccess] access to local variable x
 #    5|           1: [IntLiteral] 0
 #    6|       1: [ExprStmt] ...;
@@ -53,9 +53,9 @@ Assignments.cs:
 #   22|   7: [DelegateType] EventHandler
 #-----|     2: (Parameters)
 #   22|       0: [Parameter] sender
-#   22|         -1: [TypeMention] Object
+#   22|         -1: [TypeMention] object
 #   22|       1: [Parameter] e
-#   22|         -1: [TypeMention] Object
+#   22|         -1: [TypeMention] object
 #   23|   8: [Event] Event
 #   23|     -1: [TypeMention] EventHandler
 #   23|     3: [AddEventAccessor] add_Event

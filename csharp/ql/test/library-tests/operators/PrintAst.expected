@@ -4,19 +4,19 @@ operators.cs:
 #   10|     4: [InstanceConstructor] IntVector
 #-----|       2: (Parameters)
 #   10|         0: [Parameter] length
-#   10|           -1: [TypeMention] Int32
+#   10|           -1: [TypeMention] int
 #   10|       4: [BlockStmt] {...}
 #   12|     5: [Property] Length
-#   12|       -1: [TypeMention] Int32
+#   12|       -1: [TypeMention] int
 #   12|       3: [Getter] get_Length
 #   12|         4: [BlockStmt] {...}
 #   12|           0: [ReturnStmt] return ...;
 #   12|             0: [IntLiteral] 4
 #   14|     6: [Indexer] Item
-#   14|       -1: [TypeMention] Int32
+#   14|       -1: [TypeMention] int
 #-----|       1: (Parameters)
 #   14|         0: [Parameter] index
-#   14|           -1: [TypeMention] Int32
+#   14|           -1: [TypeMention] int
 #   14|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #   14|           0: [Parameter] index
@@ -44,7 +44,7 @@ operators.cs:
 #   18|                 -1: [ParameterAccess] access to parameter iv
 #   19|         1: [ForStmt] for (...;...;...) ...
 #   19|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#   19|             -1: [TypeMention] Int32
+#   19|             -1: [TypeMention] int
 #   19|             0: [LocalVariableAccess] access to local variable i
 #   19|             1: [IntLiteral] 0
 #   19|           0: [LTExpr] ... < ...
@@ -91,11 +91,11 @@ operators.cs:
 #   34|               0: [LocalVariableAccess] access to local variable iv1
 #   39|   3: [Struct] Digit
 #   42|     5: [Field] value
-#   42|       -1: [TypeMention] Byte
+#   42|       -1: [TypeMention] byte
 #   44|     6: [InstanceConstructor] Digit
 #-----|       2: (Parameters)
 #   44|         0: [Parameter] value
-#   44|           -1: [TypeMention] Byte
+#   44|           -1: [TypeMention] byte
 #   45|       4: [BlockStmt] {...}
 #   46|         0: [IfStmt] if (...) ...
 #   46|           0: [LogicalOrExpr] ... || ...
@@ -116,7 +116,7 @@ operators.cs:
 #   48|               -1: [ThisAccess] this access
 #   48|             1: [ParameterAccess] access to parameter value
 #   51|     7: [ImplicitConversionOperator] implicit conversion
-#   51|       -1: [TypeMention] Byte
+#   51|       -1: [TypeMention] byte
 #-----|       2: (Parameters)
 #   51|         0: [Parameter] d
 #   51|           -1: [TypeMention] Digit
@@ -128,7 +128,7 @@ operators.cs:
 #   56|       -1: [TypeMention] Digit
 #-----|       2: (Parameters)
 #   56|         0: [Parameter] b
-#   56|           -1: [TypeMention] Byte
+#   56|           -1: [TypeMention] byte
 #   57|       4: [BlockStmt] {...}
 #   58|         0: [ReturnStmt] return ...;
 #   58|           0: [ObjectCreation] object creation of type Digit
@@ -148,7 +148,7 @@ operators.cs:
 #   68|                 1: [IntLiteral] 8
 #   69|         1: [LocalVariableDeclStmt] ... ...;
 #   69|           0: [LocalVariableDeclAndInitExpr] Byte b = ...
-#   69|             -1: [TypeMention] Byte
+#   69|             -1: [TypeMention] byte
 #   69|             0: [LocalVariableAccess] access to local variable b
 #   69|             1: [OperatorCall] call to operator implicit conversion
 #   69|               0: [LocalVariableAccess] access to local variable d

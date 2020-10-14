@@ -71,9 +71,9 @@ nestedtypes.cs:
 #   65|           0: [MethodCall] call to method F
 #   65|             -1: [TypeAccess] access to type Inner<String>
 #   65|               -2: [TypeMention] Inner<String>
-#   65|                 1: [TypeMention] String
+#   65|                 1: [TypeMention] string
 #   65|               -1: [TypeAccess] access to type Outer<>
-#   65|                 0: [TypeMention] Outer<>
+#   65|                 0: [TypeMention] Outer<T>
 #   65|                   1: [TypeMention] T
 #   65|             0: [ParameterAccess] access to parameter t
 #   65|             1: [StringLiteral] "abc"
@@ -81,10 +81,10 @@ nestedtypes.cs:
 #   68|           0: [MethodCall] call to method F
 #   68|             -1: [TypeAccess] access to type Inner<String>
 #   68|               -2: [TypeMention] Inner<String>
-#   68|                 1: [TypeMention] String
+#   68|                 1: [TypeMention] string
 #   68|               -1: [TypeAccess] access to type Outer<Int32>
 #   68|                 0: [TypeMention] Outer<Int32>
-#   68|                   1: [TypeMention] Int32
+#   68|                   1: [TypeMention] int
 #   68|             0: [IntLiteral] 3
 #   68|             1: [StringLiteral] "abc"
 #   69|         2: [LocalVariableDeclStmt] ... ...;
@@ -93,8 +93,8 @@ nestedtypes.cs:
 #   69|             0: [LocalVariableAccess] access to local variable type
 #   69|             1: [TypeofExpr] typeof(...)
 #   69|               0: [TypeAccess] access to type Inner<>
-#   69|                 0: [TypeMention] Inner<>
-#   69|                   1: [TypeMention] Outer<>
+#   69|                 0: [TypeMention] Inner<U>
+#   69|                   1: [TypeMention] Outer<T>
 #   74|   5: [Class] Outer2<>
 #-----|     1: (Type parameters)
 #   74|       0: [TypeParameter] T

@@ -69,7 +69,7 @@ enums.cs:
 #   51|                 -1: [TypeAccess] access to type SparseColor
 #   51|                   0: [TypeMention] SparseColor
 #   54|     6: [Method] StringFromColor
-#   54|       -1: [TypeMention] String
+#   54|       -1: [TypeMention] string
 #-----|       2: (Parameters)
 #   54|         0: [Parameter] c
 #   54|           -1: [TypeMention] SparseColor
@@ -83,12 +83,12 @@ enums.cs:
 #   58|           1: [ReturnStmt] return ...;
 #   58|             0: [MethodCall] call to method Format
 #   58|               -1: [TypeAccess] access to type String
-#   58|                 0: [TypeMention] String
+#   58|                 0: [TypeMention] string
 #   58|               0: [StringLiteral] "Red = {0}"
 #   58|               1: [CastExpr] (...) ...
 #   58|                 1: [CastExpr] (...) ...
 #   58|                   0: [TypeAccess] access to type Int32
-#   58|                     0: [TypeMention] Int32
+#   58|                     0: [TypeMention] int
 #   58|                   1: [ParameterAccess] access to parameter c
 #   59|           2: [ConstCase] case ...:
 #   59|             0: [ConstantPatternExpr,MemberConstantAccess] access to constant Green
@@ -97,12 +97,12 @@ enums.cs:
 #   59|           3: [ReturnStmt] return ...;
 #   59|             0: [MethodCall] call to method Format
 #   59|               -1: [TypeAccess] access to type String
-#   59|                 0: [TypeMention] String
+#   59|                 0: [TypeMention] string
 #   59|               0: [StringLiteral] "Green = {0}"
 #   59|               1: [CastExpr] (...) ...
 #   59|                 1: [CastExpr] (...) ...
 #   59|                   0: [TypeAccess] access to type Int32
-#   59|                     0: [TypeMention] Int32
+#   59|                     0: [TypeMention] int
 #   59|                   1: [ParameterAccess] access to parameter c
 #   60|           4: [ConstCase] case ...:
 #   60|             0: [ConstantPatternExpr,MemberConstantAccess] access to constant Blue
@@ -111,12 +111,12 @@ enums.cs:
 #   60|           5: [ReturnStmt] return ...;
 #   60|             0: [MethodCall] call to method Format
 #   60|               -1: [TypeAccess] access to type String
-#   60|                 0: [TypeMention] String
+#   60|                 0: [TypeMention] string
 #   60|               0: [StringLiteral] "Blue = {0}"
 #   60|               1: [CastExpr] (...) ...
 #   60|                 1: [CastExpr] (...) ...
 #   60|                   0: [TypeAccess] access to type Int32
-#   60|                     0: [TypeMention] Int32
+#   60|                     0: [TypeMention] int
 #   60|                   1: [ParameterAccess] access to parameter c
 #   61|           6: [DefaultCase] default:
 #   61|           7: [ReturnStmt] return ...;

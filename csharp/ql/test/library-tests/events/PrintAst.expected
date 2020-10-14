@@ -3,9 +3,9 @@ events.cs:
 #    7|   1: [DelegateType] EventHandler
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] sender
-#    7|         -1: [TypeMention] Object
+#    7|         -1: [TypeMention] object
 #    7|       1: [Parameter] e
-#    7|         -1: [TypeMention] Object
+#    7|         -1: [TypeMention] object
 #   10|   2: [Class] Button
 #   13|     5: [Event] Click
 #   13|       -1: [TypeMention] EventHandler
@@ -19,7 +19,7 @@ events.cs:
 #   15|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   15|         0: [Parameter] e
-#   15|           -1: [TypeMention] Object
+#   15|           -1: [TypeMention] object
 #   16|       4: [BlockStmt] {...}
 #   17|         0: [IfStmt] if (...) ...
 #   17|           0: [OperatorCall] call to operator !=
@@ -72,36 +72,36 @@ events.cs:
 #   41|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   41|         0: [Parameter] sender
-#   41|           -1: [TypeMention] Object
+#   41|           -1: [TypeMention] object
 #   41|         1: [Parameter] e
-#   41|           -1: [TypeMention] Object
+#   41|           -1: [TypeMention] object
 #   42|       4: [BlockStmt] {...}
 #   45|     8: [Method] CancelButtonClick
 #   45|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   45|         0: [Parameter] sender
-#   45|           -1: [TypeMention] Object
+#   45|           -1: [TypeMention] object
 #   45|         1: [Parameter] e
-#   45|           -1: [TypeMention] Object
+#   45|           -1: [TypeMention] object
 #   46|       4: [BlockStmt] {...}
 #   51|   4: [Class] Control
 #   54|     6: [Field] mouseDownEventKey
-#   54|       -1: [TypeMention] Object
+#   54|       -1: [TypeMention] object
 #   54|       1: [AssignExpr] ... = ...
 #   54|         0: [FieldAccess] access to field mouseDownEventKey
 #   54|         1: [ObjectCreation] object creation of type Object
-#   54|           0: [TypeMention] Object
+#   54|           0: [TypeMention] object
 #   55|     7: [Field] mouseUpEventKey
-#   55|       -1: [TypeMention] Object
+#   55|       -1: [TypeMention] object
 #   55|       1: [AssignExpr] ... = ...
 #   55|         0: [FieldAccess] access to field mouseUpEventKey
 #   55|         1: [ObjectCreation] object creation of type Object
-#   55|           0: [TypeMention] Object
+#   55|           0: [TypeMention] object
 #   58|     8: [Method] GetEventHandler
 #   58|       -1: [TypeMention] Delegate
 #-----|       2: (Parameters)
 #   58|         0: [Parameter] key
-#   58|           -1: [TypeMention] Object
+#   58|           -1: [TypeMention] object
 #   58|       4: [BlockStmt] {...}
 #   58|         0: [ReturnStmt] return ...;
 #   58|           0: [NullLiteral] null
@@ -109,7 +109,7 @@ events.cs:
 #   61|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   61|         0: [Parameter] key
-#   61|           -1: [TypeMention] Object
+#   61|           -1: [TypeMention] object
 #   61|         1: [Parameter] handler
 #   61|           -1: [TypeMention] Delegate
 #   61|       4: [BlockStmt] {...}
@@ -117,7 +117,7 @@ events.cs:
 #   64|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   64|         0: [Parameter] key
-#   64|           -1: [TypeMention] Object
+#   64|           -1: [TypeMention] object
 #   64|         1: [Parameter] handler
 #   64|           -1: [TypeMention] Delegate
 #   64|       4: [BlockStmt] {...}
@@ -159,7 +159,7 @@ events.cs:
 #   81|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   81|         0: [Parameter] args
-#   81|           -1: [TypeMention] Object
+#   81|           -1: [TypeMention] object
 #   82|       4: [BlockStmt] {...}
 #   83|         0: [LocalVariableDeclStmt] ... ...;
 #   83|           0: [LocalVariableDeclExpr] EventHandler handler

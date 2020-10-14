@@ -9,7 +9,7 @@ goto.cs:
 #    9|       1: [LabelStmt] s2:
 #    9|       2: [LocalVariableDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] String s = ...
-#    9|           -1: [TypeMention] String
+#    9|           -1: [TypeMention] string
 #    9|           0: [LocalVariableAccess] access to local variable s
 #    9|           1: [StringLiteral] "5"
 #   10|       3: [SwitchStmt] switch (...) {...}

@@ -3,31 +3,31 @@ delegates.cs:
 #    7|   1: [DelegateType] FooDelegate
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] param
-#    7|         -1: [TypeMention] String
+#    7|         -1: [TypeMention] string
 #    7|       1: [Parameter] condition
-#    7|         -1: [TypeMention] Boolean
+#    7|         -1: [TypeMention] bool
 #    7|       2: [Parameter] args
 #    7|         -1: [TypeMention] String[]
-#    7|           1: [TypeMention] String
+#    7|           1: [TypeMention] string
 #    9|   2: [DelegateType] D1
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] i
-#    9|         -1: [TypeMention] Int32
+#    9|         -1: [TypeMention] int
 #    9|       1: [Parameter] d
-#    9|         -1: [TypeMention] Double
+#    9|         -1: [TypeMention] double
 #   11|   3: [Class] A
 #   14|     5: [Method] M1
-#   14|       -1: [TypeMention] Int32
+#   14|       -1: [TypeMention] int
 #-----|       2: (Parameters)
 #   14|         0: [Parameter] a
-#   14|           -1: [TypeMention] Int32
+#   14|           -1: [TypeMention] int
 #   14|         1: [Parameter] b
-#   14|           -1: [TypeMention] Double
+#   14|           -1: [TypeMention] double
 #   14|       4: [BlockStmt] {...}
 #   14|         0: [ReturnStmt] return ...;
 #   14|           0: [CastExpr] (...) ...
 #   14|             0: [TypeAccess] access to type Int32
-#   14|               0: [TypeMention] Int32
+#   14|               0: [TypeMention] int
 #   14|             1: [AddExpr] ... + ...
 #   14|               0: [CastExpr] (...) ...
 #   14|                 1: [ParameterAccess] access to parameter a
@@ -36,37 +36,37 @@ delegates.cs:
 #   21|     5: [DelegateType] D2
 #-----|       2: (Parameters)
 #   21|         0: [Parameter] c
-#   21|           -1: [TypeMention] Int32
+#   21|           -1: [TypeMention] int
 #   21|         1: [Parameter] d
-#   21|           -1: [TypeMention] Double
+#   21|           -1: [TypeMention] double
 #   23|     6: [Method] M1
-#   23|       -1: [TypeMention] Int32
+#   23|       -1: [TypeMention] int
 #-----|       2: (Parameters)
 #   23|         0: [Parameter] f
-#   23|           -1: [TypeMention] Int32
+#   23|           -1: [TypeMention] int
 #   23|         1: [Parameter] g
-#   23|           -1: [TypeMention] Double
+#   23|           -1: [TypeMention] double
 #   23|       4: [BlockStmt] {...}
 #   23|         0: [ReturnStmt] return ...;
 #   23|           0: [SubExpr] ... - ...
 #   23|             0: [ParameterAccess] access to parameter f
 #   23|             1: [CastExpr] (...) ...
 #   23|               0: [TypeAccess] access to type Int32
-#   23|                 0: [TypeMention] Int32
+#   23|                 0: [TypeMention] int
 #   23|               1: [ParameterAccess] access to parameter g
 #   25|     7: [Method] M2
 #   25|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   25|         0: [Parameter] k
-#   25|           -1: [TypeMention] Int32
+#   25|           -1: [TypeMention] int
 #   25|         1: [Parameter] l
-#   25|           -1: [TypeMention] Double
+#   25|           -1: [TypeMention] double
 #   25|       4: [BlockStmt] {...}
 #   27|     8: [Method] M3
-#   27|       -1: [TypeMention] Int32
+#   27|       -1: [TypeMention] int
 #-----|       2: (Parameters)
 #   27|         0: [Parameter] g
-#   27|           -1: [TypeMention] Int32
+#   27|           -1: [TypeMention] int
 #   27|       4: [BlockStmt] {...}
 #   27|         0: [ReturnStmt] return ...;
 #   27|           0: [AddExpr] ... + ...
@@ -78,7 +78,7 @@ delegates.cs:
 #   29|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   29|         0: [Parameter] g
-#   29|           -1: [TypeMention] Int32
+#   29|           -1: [TypeMention] int
 #   29|       4: [BlockStmt] {...}
 #   33|   5: [DelegateType] Predicate<>
 #-----|     1: (Type parameters)
@@ -88,45 +88,45 @@ delegates.cs:
 #   33|         -1: [TypeMention] T
 #   35|   6: [Class] X
 #   38|     5: [Method] F
-#   38|       -1: [TypeMention] Boolean
+#   38|       -1: [TypeMention] bool
 #-----|       2: (Parameters)
 #   38|         0: [Parameter] i
-#   38|           -1: [TypeMention] Int32
+#   38|           -1: [TypeMention] int
 #   38|       4: [BlockStmt] {...}
 #   38|         0: [ReturnStmt] return ...;
 #   38|           0: [LTExpr] ... < ...
 #   38|             0: [ParameterAccess] access to parameter i
 #   38|             1: [IntLiteral] 2
 #   40|     6: [Method] G
-#   40|       -1: [TypeMention] Boolean
+#   40|       -1: [TypeMention] bool
 #-----|       2: (Parameters)
 #   40|         0: [Parameter] s
-#   40|           -1: [TypeMention] String
+#   40|           -1: [TypeMention] string
 #   40|       4: [BlockStmt] {...}
 #   40|         0: [ReturnStmt] return ...;
 #   40|           0: [BoolLiteral] false
 #   44|   7: [DelegateType] D
 #-----|     2: (Parameters)
 #   44|       0: [Parameter] x
-#   44|         -1: [TypeMention] Int32
+#   44|         -1: [TypeMention] int
 #   46|   8: [Class] C
 #   49|     5: [Method] M1
 #   49|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   49|         0: [Parameter] i
-#   49|           -1: [TypeMention] Int32
+#   49|           -1: [TypeMention] int
 #   49|       4: [BlockStmt] {...}
 #   50|     6: [Method] M2
 #   50|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   50|         0: [Parameter] i
-#   50|           -1: [TypeMention] Int32
+#   50|           -1: [TypeMention] int
 #   50|       4: [BlockStmt] {...}
 #   51|     7: [Method] M3
 #   51|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   51|         0: [Parameter] i
-#   51|           -1: [TypeMention] Int32
+#   51|           -1: [TypeMention] int
 #   51|       4: [BlockStmt] {...}
 #   55|   9: [Class] Test
 #   58|     5: [Method] Main
@@ -206,7 +206,7 @@ delegates.cs:
 #   72|               0: [IntLiteral] 40
 #   73|         11: [LocalVariableDeclStmt] ... ...;
 #   73|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   73|             -1: [TypeMention] Int32
+#   73|             -1: [TypeMention] int
 #   73|             0: [LocalVariableAccess] access to local variable x
 #   73|             1: [IntLiteral] 0
 #   74|         12: [ExprStmt] ...;
@@ -218,18 +218,18 @@ delegates.cs:
 #   76|         13: [LocalVariableDeclStmt] ... ...;
 #   76|           0: [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
 #   76|             -1: [TypeMention] Predicate<Int32>
-#   76|               1: [TypeMention] Int32
+#   76|               1: [TypeMention] int
 #   76|             0: [LocalVariableAccess] access to local variable pi
 #   76|             1: [ExplicitDelegateCreation] delegate creation of type Predicate<Int32>
 #   76|               -1: [TypeMention] Predicate<Int32>
-#   76|                 1: [TypeMention] Int32
+#   76|                 1: [TypeMention] int
 #   76|               0: [MethodAccess] access to method F
 #   76|                 -1: [TypeAccess] access to type X
 #   76|                   0: [TypeMention] X
 #   77|         14: [LocalVariableDeclStmt] ... ...;
 #   77|           0: [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
 #   77|             -1: [TypeMention] Predicate<String>
-#   77|               1: [TypeMention] String
+#   77|               1: [TypeMention] string
 #   77|             0: [LocalVariableAccess] access to local variable ps
 #   77|             1: [ImplicitDelegateCreation] delegate creation of type Predicate<String>
 #   77|               0: [MethodAccess] access to method G
@@ -237,7 +237,7 @@ delegates.cs:
 #   77|                   0: [TypeMention] X
 #   79|         15: [LocalVariableDeclStmt] ... ...;
 #   79|           0: [LocalVariableDeclAndInitExpr] Boolean b = ...
-#   79|             -1: [TypeMention] Boolean
+#   79|             -1: [TypeMention] bool
 #   79|             0: [LocalVariableAccess] access to local variable b
 #   79|             1: [BitwiseAndExpr] ... & ...
 #   79|               0: [DelegateCall] delegate call

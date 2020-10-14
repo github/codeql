@@ -4,7 +4,7 @@ exceptions.cs:
 #    5|     -1: [TypeMention] Void
 #    6|     4: [BlockStmt] {...}
 #    9|   6: [Field] p
-#    9|     -1: [TypeMention] Int32
+#    9|     -1: [TypeMention] int
 #   11|   7: [Method] TestNoThrow
 #   11|     -1: [TypeMention] Void
 #   12|     4: [BlockStmt] {...}
@@ -114,7 +114,7 @@ exceptions.cs:
 #  105|           0: [EmptyStmt] ;
 #  106|           1: [LocalVariableDeclStmt] ... ...;
 #  106|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  106|               -1: [TypeMention] Int32
+#  106|               -1: [TypeMention] int
 #  106|               0: [LocalVariableAccess] access to local variable v
 #  106|               1: [AddExpr] ... + ...
 #  106|                 0: [IntLiteral] 1
@@ -152,7 +152,7 @@ exceptions.cs:
 #  134|           0: [EmptyStmt] ;
 #  135|           1: [LocalVariableDeclStmt] ... ...;
 #  135|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  135|               -1: [TypeMention] Int32
+#  135|               -1: [TypeMention] int
 #  135|               0: [LocalVariableAccess] access to local variable v
 #  135|               1: [SubExpr] ... - ...
 #  135|                 0: [IntLiteral] 1
@@ -190,7 +190,7 @@ exceptions.cs:
 #  163|           0: [EmptyStmt] ;
 #  164|           1: [LocalVariableDeclStmt] ... ...;
 #  164|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  164|               -1: [TypeMention] Int32
+#  164|               -1: [TypeMention] int
 #  164|               0: [LocalVariableAccess] access to local variable v
 #  164|               1: [MulExpr] ... * ...
 #  164|                 0: [IntLiteral] 1
@@ -228,7 +228,7 @@ exceptions.cs:
 #  192|           0: [EmptyStmt] ;
 #  193|           1: [LocalVariableDeclStmt] ... ...;
 #  193|             0: [LocalVariableDeclAndInitExpr] String v = ...
-#  193|               -1: [TypeMention] String
+#  193|               -1: [TypeMention] string
 #  193|               0: [LocalVariableAccess] access to local variable v
 #  193|               1: [StringLiteral] ""
 #  195|         1: [SpecificCatchClause] catch (...) {...}
@@ -263,13 +263,13 @@ exceptions.cs:
 #  220|         0: [BlockStmt] {...}
 #  221|           0: [LocalVariableDeclStmt] ... ...;
 #  221|             0: [LocalVariableDeclAndInitExpr] String s = ...
-#  221|               -1: [TypeMention] String
+#  221|               -1: [TypeMention] string
 #  221|               0: [LocalVariableAccess] access to local variable s
 #  221|               1: [StringLiteral] ""
 #  222|           1: [EmptyStmt] ;
 #  223|           2: [LocalVariableDeclStmt] ... ...;
 #  223|             0: [LocalVariableDeclAndInitExpr] String v = ...
-#  223|               -1: [TypeMention] String
+#  223|               -1: [TypeMention] string
 #  223|               0: [LocalVariableAccess] access to local variable v
 #  223|               1: [AddExpr] ... + ...
 #  223|                 0: [LocalVariableAccess] access to local variable s
@@ -307,7 +307,7 @@ exceptions.cs:
 #  251|           0: [EmptyStmt] ;
 #  252|           1: [LocalVariableDeclStmt] ... ...;
 #  252|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  252|               -1: [TypeMention] Int32
+#  252|               -1: [TypeMention] int
 #  252|               0: [LocalVariableAccess] access to local variable v
 #  252|               1: [DivExpr] ... / ...
 #  252|                 0: [IntLiteral] 1
@@ -345,7 +345,7 @@ exceptions.cs:
 #  280|           0: [EmptyStmt] ;
 #  281|           1: [LocalVariableDeclStmt] ... ...;
 #  281|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  281|               -1: [TypeMention] Int32
+#  281|               -1: [TypeMention] int
 #  281|               0: [LocalVariableAccess] access to local variable v
 #  281|               1: [RemExpr] ... % ...
 #  281|                 0: [IntLiteral] 1
@@ -383,7 +383,7 @@ exceptions.cs:
 #  309|           0: [EmptyStmt] ;
 #  310|           1: [LocalVariableDeclStmt] ... ...;
 #  310|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  310|               -1: [TypeMention] Int32
+#  310|               -1: [TypeMention] int
 #  310|               0: [LocalVariableAccess] access to local variable v
 #  310|               1: [FieldAccess] access to field p
 #  310|                 -1: [ThisAccess] this access
@@ -420,11 +420,11 @@ exceptions.cs:
 #  338|           0: [EmptyStmt] ;
 #  339|           1: [LocalVariableDeclStmt] ... ...;
 #  339|             0: [LocalVariableDeclAndInitExpr] Int16 v = ...
-#  339|               -1: [TypeMention] Int16
+#  339|               -1: [TypeMention] short
 #  339|               0: [LocalVariableAccess] access to local variable v
 #  339|               1: [CastExpr] (...) ...
 #  339|                 0: [TypeAccess] access to type Int16
-#  339|                   0: [TypeMention] Int16
+#  339|                   0: [TypeMention] short
 #  339|                 1: [IntLiteral] 1
 #  341|         1: [SpecificCatchClause] catch (...) {...}
 #  341|           0: [LocalVariableDeclExpr] NullReferenceException ex
@@ -497,7 +497,7 @@ exceptions.cs:
 #  396|         0: [BlockStmt] {...}
 #  397|           0: [LocalVariableDeclStmt] ... ...;
 #  397|             0: [LocalVariableDeclAndInitExpr] Int32 a = ...
-#  397|               -1: [TypeMention] Int32
+#  397|               -1: [TypeMention] int
 #  397|               0: [LocalVariableAccess] access to local variable a
 #  397|               1: [IntLiteral] 1
 #  398|           1: [EmptyStmt] ;
@@ -555,7 +555,7 @@ exceptions.cs:
 #  449|         0: [BlockStmt] {...}
 #  450|           0: [LocalVariableDeclStmt] ... ...;
 #  450|             0: [LocalVariableDeclAndInitExpr] Object o = ...
-#  450|               -1: [TypeMention] Object
+#  450|               -1: [TypeMention] object
 #  450|               0: [LocalVariableAccess] access to local variable o
 #  450|               1: [NullLiteral] null
 #  451|           1: [EmptyStmt] ;
@@ -581,14 +581,14 @@ exceptions.cs:
 #  464|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #  464|       0: [Parameter] i
-#  464|         -1: [TypeMention] Int32
+#  464|         -1: [TypeMention] int
 #  465|     4: [BlockStmt] {...}
 #  466|       0: [TryStmt] try {...} ...
 #  467|         0: [BlockStmt] {...}
 #  468|           0: [EmptyStmt] ;
 #  469|           1: [LocalVariableDeclStmt] ... ...;
 #  469|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
-#  469|               -1: [TypeMention] Int32
+#  469|               -1: [TypeMention] int
 #  469|               0: [LocalVariableAccess] access to local variable v
 #  469|               1: [DivExpr] ... / ...
 #  469|                 0: [IntLiteral] 1

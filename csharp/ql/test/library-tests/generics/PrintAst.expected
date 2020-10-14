@@ -90,7 +90,7 @@ Nesting.cs:
 #   26|           0: [LocalVariableAccess] access to local variable a1
 #   26|           1: [ObjectCreation] object creation of type A<Int32>
 #   26|             0: [TypeMention] A<Int32>
-#   26|               1: [TypeMention] Int32
+#   26|               1: [TypeMention] int
 #   27|       1: [ExprStmt] ...;
 #   27|         0: [MethodCall] call to method MA1
 #   27|           -1: [LocalVariableAccess] access to local variable a1
@@ -106,7 +106,7 @@ Nesting.cs:
 #   30|           0: [LocalVariableAccess] access to local variable a2
 #   30|           1: [ObjectCreation] object creation of type A<String>
 #   30|             0: [TypeMention] A<String>
-#   30|               1: [TypeMention] String
+#   30|               1: [TypeMention] string
 #   31|       4: [ExprStmt] ...;
 #   31|         0: [MethodCall] call to method MA1
 #   31|           -1: [LocalVariableAccess] access to local variable a2
@@ -123,8 +123,8 @@ Nesting.cs:
 #   34|           1: [ObjectCreation] object creation of type B<String>
 #   34|             0: [TypeMention] B<String>
 #   34|               1: [TypeMention] A<Int32>
-#   34|                 1: [TypeMention] Int32
-#   34|               2: [TypeMention] String
+#   34|                 1: [TypeMention] int
+#   34|               2: [TypeMention] string
 #   35|       7: [ExprStmt] ...;
 #   35|         0: [MethodCall] call to method MB1
 #   35|           -1: [LocalVariableAccess] access to local variable b1
@@ -143,8 +143,8 @@ Nesting.cs:
 #   38|           1: [ObjectCreation] object creation of type B<Int32>
 #   38|             0: [TypeMention] B<Int32>
 #   38|               1: [TypeMention] A<String>
-#   38|                 1: [TypeMention] String
-#   38|               2: [TypeMention] Int32
+#   38|                 1: [TypeMention] string
+#   38|               2: [TypeMention] int
 #   39|       10: [ExprStmt] ...;
 #   39|         0: [MethodCall] call to method MB1
 #   39|           -1: [LocalVariableAccess] access to local variable b2
@@ -163,7 +163,7 @@ Nesting.cs:
 #   42|           1: [ObjectCreation] object creation of type C
 #   42|             0: [TypeMention] C
 #   42|               1: [TypeMention] A<Int32>
-#   42|                 1: [TypeMention] Int32
+#   42|                 1: [TypeMention] int
 #   43|       13: [ExprStmt] ...;
 #   43|         0: [MethodCall] call to method MC1
 #   43|           -1: [LocalVariableAccess] access to local variable c1
@@ -180,7 +180,7 @@ Nesting.cs:
 #   46|           1: [ObjectCreation] object creation of type C
 #   46|             0: [TypeMention] C
 #   46|               1: [TypeMention] A<String>
-#   46|                 1: [TypeMention] String
+#   46|                 1: [TypeMention] string
 #   47|       16: [ExprStmt] ...;
 #   47|         0: [MethodCall] call to method MC1
 #   47|           -1: [LocalVariableAccess] access to local variable c2
@@ -198,8 +198,8 @@ Nesting.cs:
 #   50|             0: [TypeMention] D<Boolean>
 #   50|               1: [TypeMention] C
 #   50|                 1: [TypeMention] A<Int32>
-#   50|                   1: [TypeMention] Int32
-#   50|               2: [TypeMention] Boolean
+#   50|                   1: [TypeMention] int
+#   50|               2: [TypeMention] bool
 #   51|       19: [ExprStmt] ...;
 #   51|         0: [MethodCall] call to method MD1
 #   51|           -1: [LocalVariableAccess] access to local variable d1
@@ -219,8 +219,8 @@ Nesting.cs:
 #   54|             0: [TypeMention] D<Decimal>
 #   54|               1: [TypeMention] C
 #   54|                 1: [TypeMention] A<String>
-#   54|                   1: [TypeMention] String
-#   54|               2: [TypeMention] Decimal
+#   54|                   1: [TypeMention] string
+#   54|               2: [TypeMention] decimal
 #   55|       22: [ExprStmt] ...;
 #   55|         0: [MethodCall] call to method MD1
 #   55|           -1: [LocalVariableAccess] access to local variable d2
@@ -264,7 +264,7 @@ generics.cs:
 #   18|       4: [BlockStmt] {...}
 #   18|         0: [LocalVariableDeclStmt] ... ...;
 #   18|           0: [LocalVariableDeclExpr] A<> a
-#   18|             0: [TypeMention] A<>
+#   18|             0: [TypeMention] A<T>
 #   18|               1: [TypeMention] T
 #   18|         1: [ReturnStmt] return ...;
 #   18|           0: [ParameterAccess] access to parameter t
@@ -275,7 +275,7 @@ generics.cs:
 #   25|       -1: [TypeMention] A<T>
 #   25|         1: [TypeMention] T
 #   27|     6: [Field] name
-#   27|       -1: [TypeMention] String
+#   27|       -1: [TypeMention] string
 #   29|     7: [Method] foo
 #   29|       -1: [TypeMention] Void
 #   29|       4: [BlockStmt] {...}
@@ -290,7 +290,7 @@ generics.cs:
 #   33|       -1: [TypeMention] Void
 #   33|       4: [BlockStmt] {...}
 #   35|     10: [IndexerProperty] Name
-#   35|       -1: [TypeMention] String
+#   35|       -1: [TypeMention] string
 #   35|       3: [Getter] get_Name
 #   35|         4: [BlockStmt] {...}
 #   35|           0: [ReturnStmt] return ...;
@@ -313,16 +313,16 @@ generics.cs:
 #-----|         2: (Parameters)
 #   37|           0: [Parameter] value
 #   39|     12: [IncrementOperator] ++
-#   39|       -1: [TypeMention] B<>
+#   39|       -1: [TypeMention] B<T>
 #   39|         1: [TypeMention] T
 #-----|       2: (Parameters)
 #   39|         0: [Parameter] a
-#   39|           -1: [TypeMention] B<>
+#   39|           -1: [TypeMention] B<T>
 #   39|             1: [TypeMention] T
 #   40|       4: [BlockStmt] {...}
 #   41|         0: [ReturnStmt] return ...;
 #   41|           0: [ObjectCreation] object creation of type B<>
-#   41|             0: [TypeMention] B<>
+#   41|             0: [TypeMention] B<T>
 #   41|               1: [TypeMention] T
 #   44|     13: [Destructor] ~B
 #   44|       4: [BlockStmt] {...}
@@ -344,19 +344,19 @@ generics.cs:
 #   54|       5: [Field] t
 #   54|         -1: [TypeMention] T
 #   55|       6: [Field] myFunc
-#   55|         -1: [TypeMention] Func<U,T>
+#   55|         -1: [TypeMention] Func<U, T>
 #   55|           1: [TypeMention] U
 #   55|           2: [TypeMention] T
 #   60|   6: [Class] Grid<>
 #-----|     1: (Type parameters)
 #   60|       0: [TypeParameter] T
 #   63|     5: [Field] NumRows
-#   63|       -1: [TypeMention] Int32
+#   63|       -1: [TypeMention] int
 #   63|       1: [AssignExpr] ... = ...
 #   63|         0: [MemberConstantAccess] access to constant NumRows
 #   63|         1: [IntLiteral] 26
 #   64|     6: [Field] NumCols
-#   64|       -1: [TypeMention] Int32
+#   64|       -1: [TypeMention] int
 #   64|       1: [AssignExpr] ... = ...
 #   64|         0: [MemberConstantAccess] access to constant NumCols
 #   64|         1: [IntLiteral] 10
@@ -371,10 +371,10 @@ generics.cs:
 #   66|           0: [MemberConstantAccess] access to constant NumRows
 #   66|           1: [MemberConstantAccess] access to constant NumCols
 #   68|     8: [Indexer] Item
-#   68|       -1: [TypeMention] Int32
+#   68|       -1: [TypeMention] int
 #-----|       1: (Parameters)
 #   68|         0: [Parameter] i
-#   68|           -1: [TypeMention] Int32
+#   68|           -1: [TypeMention] int
 #   70|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #   68|           0: [Parameter] i
@@ -385,9 +385,9 @@ generics.cs:
 #   73|       -1: [TypeMention] T
 #-----|       1: (Parameters)
 #   73|         0: [Parameter] c
-#   73|           -1: [TypeMention] Char
+#   73|           -1: [TypeMention] char
 #   73|         1: [Parameter] col
-#   73|           -1: [TypeMention] Int32
+#   73|           -1: [TypeMention] int
 #   75|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #   73|           0: [Parameter] c
@@ -398,7 +398,7 @@ generics.cs:
 #   77|               0: [ParameterAccess] access to parameter c
 #   77|               1: [MethodCall] call to method ToUpper
 #   77|                 -1: [TypeAccess] access to type Char
-#   77|                   0: [TypeMention] Char
+#   77|                   0: [TypeMention] char
 #   77|                 0: [ParameterAccess] access to parameter c
 #   78|           1: [IfStmt] if (...) ...
 #   78|             0: [LogicalOrExpr] ... || ...
@@ -448,7 +448,7 @@ generics.cs:
 #   90|               0: [ParameterAccess] access to parameter c
 #   90|               1: [MethodCall] call to method ToUpper
 #   90|                 -1: [TypeAccess] access to type Char
-#   90|                   0: [TypeMention] Char
+#   90|                   0: [TypeMention] char
 #   90|                 0: [ParameterAccess] access to parameter c
 #   91|           1: [IfStmt] if (...) ...
 #   91|             0: [LogicalOrExpr] ... || ...
@@ -496,18 +496,18 @@ generics.cs:
 #  110|         0: [LocalVariableDeclStmt] ... ...;
 #  110|           0: [LocalVariableDeclAndInitExpr] B<String> bs = ...
 #  110|             -1: [TypeMention] B<String>
-#  110|               1: [TypeMention] String
+#  110|               1: [TypeMention] string
 #  110|             0: [LocalVariableAccess] access to local variable bs
 #  110|             1: [ObjectCreation] object creation of type B<String>
 #  110|               0: [TypeMention] B<String>
-#  110|                 1: [TypeMention] String
+#  110|                 1: [TypeMention] string
 #  111|         1: [ExprStmt] ...;
 #  111|           0: [AssignExpr] ... = ...
 #  111|             0: [FieldAccess] access to field at
 #  111|               -1: [LocalVariableAccess] access to local variable bs
 #  111|             1: [ObjectCreation] object creation of type A<String>
 #  111|               0: [TypeMention] A<String>
-#  111|                 1: [TypeMention] String
+#  111|                 1: [TypeMention] string
 #  112|         2: [ExprStmt] ...;
 #  112|           0: [MethodCall] call to method foo
 #  112|             -1: [LocalVariableAccess] access to local variable bs
@@ -520,7 +520,7 @@ generics.cs:
 #  115|           0: [MethodCall] call to method staticFoo
 #  115|             -1: [TypeAccess] access to type B<Object>
 #  115|               0: [TypeMention] B<Object>
-#  115|                 1: [TypeMention] Object
+#  115|                 1: [TypeMention] object
 #  117|         5: [ExprStmt] ...;
 #  117|           0: [AssignExpr] ... = ...
 #  117|             0: [PropertyCall] access to property Name
@@ -532,7 +532,7 @@ generics.cs:
 #  118|               -1: [LocalVariableAccess] access to local variable bs
 #  118|             1: [ExplicitDelegateCreation] delegate creation of type GenericDelegate<String>
 #  118|               -1: [TypeMention] GenericDelegate<String>
-#  118|                 1: [TypeMention] String
+#  118|                 1: [TypeMention] string
 #  118|               0: [MethodAccess] access to method f
 #  119|         7: [ExprStmt] ...;
 #  119|           0: [OperatorCall] call to operator ++
@@ -540,14 +540,14 @@ generics.cs:
 #  121|         8: [LocalVariableDeclStmt] ... ...;
 #  121|           0: [LocalVariableDeclAndInitExpr] Grid<Int32> g = ...
 #  121|             -1: [TypeMention] Grid<Int32>
-#  121|               1: [TypeMention] Int32
+#  121|               1: [TypeMention] int
 #  121|             0: [LocalVariableAccess] access to local variable g
 #  121|             1: [ObjectCreation] object creation of type Grid<Int32>
 #  121|               0: [TypeMention] Grid<Int32>
-#  121|                 1: [TypeMention] Int32
+#  121|                 1: [TypeMention] int
 #  122|         9: [LocalVariableDeclStmt] ... ...;
 #  122|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
-#  122|             -1: [TypeMention] Int32
+#  122|             -1: [TypeMention] int
 #  122|             0: [LocalVariableAccess] access to local variable j
 #  122|             1: [IndexerCall] access to indexer
 #  122|               -1: [LocalVariableAccess] access to local variable g
@@ -559,30 +559,30 @@ generics.cs:
 #  124|               -1: [ObjectCreation] object creation of type Inner<String>
 #  124|                 0: [TypeMention] Inner<String>
 #  124|                   1: [TypeMention] Outer<Object>
-#  124|                     1: [TypeMention] Object
-#  124|                   2: [TypeMention] String
+#  124|                     1: [TypeMention] object
+#  124|                   2: [TypeMention] string
 #  124|             1: [CastExpr] (...) ...
 #  124|               1: [IntLiteral] 3
 #  126|         11: [ExprStmt] ...;
 #  126|           0: [MethodCall] call to method bar
 #  126|             -1: [ObjectCreation] object creation of type A<String>
 #  126|               0: [TypeMention] A<String>
-#  126|                 1: [TypeMention] String
+#  126|                 1: [TypeMention] string
 #  126|             0: [IntLiteral] 2
 #  126|             1: [StringLiteral] ""
 #  127|         12: [ExprStmt] ...;
 #  127|           0: [MethodCall] call to method bar
 #  127|             -1: [ObjectCreation] object creation of type A<Int32>
 #  127|               0: [TypeMention] A<Int32>
-#  127|                 1: [TypeMention] Int32
+#  127|                 1: [TypeMention] int
 #  127|             0: [ObjectCreation] object creation of type Test
 #  127|               0: [TypeMention] Test
 #  127|             1: [IntLiteral] 2
 #  130|     6: [Method] f
-#  130|       -1: [TypeMention] String
+#  130|       -1: [TypeMention] string
 #-----|       2: (Parameters)
 #  130|         0: [Parameter] s
-#  130|           -1: [TypeMention] String
+#  130|           -1: [TypeMention] string
 #  130|       4: [BlockStmt] {...}
 #  130|         0: [ReturnStmt] return ...;
 #  130|           0: [ParameterAccess] access to parameter s
@@ -593,7 +593,7 @@ generics.cs:
 #  137|         0: [TypeParameter] X
 #-----|       2: (Parameters)
 #  137|         0: [Parameter] i
-#  137|           -1: [TypeMention] Int32
+#  137|           -1: [TypeMention] int
 #  137|       4: [BlockStmt] {...}
 #  139|     6: [Method] fs
 #  139|       -1: [TypeMention] Void
@@ -601,15 +601,15 @@ generics.cs:
 #  139|         0: [TypeParameter] X
 #-----|       2: (Parameters)
 #  139|         0: [Parameter] i
-#  139|           -1: [TypeMention] Int32
+#  139|           -1: [TypeMention] int
 #  139|         1: [Parameter] j
-#  139|           -1: [TypeMention] Int32
+#  139|           -1: [TypeMention] int
 #  139|       4: [BlockStmt] {...}
 #  141|     7: [Method] fs
 #  141|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  141|         0: [Parameter] i
-#  141|           -1: [TypeMention] Int32
+#  141|           -1: [TypeMention] int
 #  141|       4: [BlockStmt] {...}
 #  145|   9: [Class] Param<>
 #-----|     1: (Type parameters)
@@ -667,14 +667,14 @@ generics.cs:
 #  168|           0: [MethodCall] call to method CM3
 #  168|             -1: [ObjectCreation] object creation of type Class<Int32>
 #  168|               0: [TypeMention] Class<Int32>
-#  168|                 1: [TypeMention] Int32
+#  168|                 1: [TypeMention] int
 #  168|             0: [DoubleLiteral] 1
 #  168|             1: [IntLiteral] 2
 #  169|         5: [ExprStmt] ...;
 #  169|           0: [MethodCall] call to method CM3
 #  169|             -1: [ObjectCreation] object creation of type Class<Double>
 #  169|               0: [TypeMention] Class<Double>
-#  169|                 1: [TypeMention] Double
+#  169|                 1: [TypeMention] double
 #  169|             0: [DoubleLiteral] 1
 #  169|             1: [DoubleLiteral] 2
 #  173|   11: [Interface] Interface<>
@@ -700,7 +700,7 @@ generics.cs:
 #  183|   13: [Class] InheritanceTest
 #  185|     5: [Field] member
 #  185|       -1: [TypeMention] Inheritance<Int32>
-#  185|         1: [TypeMention] Int32
+#  185|         1: [TypeMention] int
 #  188|   14: [Interface] Interface2<,>
 #-----|     1: (Type parameters)
 #  188|       0: [TypeParameter] T1

@@ -21,9 +21,9 @@ csharp72.cs:
 #   18|           0: [LocalVariableAccess] access to local variable s
 #   22| [Class] RefReadonlyReturns
 #   24|   5: [Field] s
-#   24|     -1: [TypeMention] Int32
+#   24|     -1: [TypeMention] int
 #   26|   6: [Method] F
-#   26|     -1: [TypeMention] Int32
+#   26|     -1: [TypeMention] int
 #   27|     4: [BlockStmt] {...}
 #   28|       0: [ReturnStmt] return ...;
 #   28|         0: [RefExpr] ref ...
@@ -34,13 +34,13 @@ csharp72.cs:
 #   42| [Struct] ReadonlyRefStruct
 #   46| [Class] NumericLiterals
 #   48|   5: [Field] binaryValue
-#   48|     -1: [TypeMention] Int32
+#   48|     -1: [TypeMention] int
 #   48|     1: [AssignExpr] ... = ...
 #   48|       0: [FieldAccess] access to field binaryValue
 #   48|       1: [IntLiteral] 85
 #   51| [Class] PrivateProtected
 #   53|   5: [Field] X
-#   53|     -1: [TypeMention] Int32
+#   53|     -1: [TypeMention] int
 #   53|     1: [AssignExpr] ... = ...
 #   53|       0: [FieldAccess] access to field X
 #   53|       1: [IntLiteral] 1

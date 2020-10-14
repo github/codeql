@@ -3,20 +3,20 @@ arguments.cs:
 #    5|   4: [InstanceConstructor] ArgumentsTest
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] x
-#    5|         -1: [TypeMention] Int32
+#    5|         -1: [TypeMention] int
 #    5|         1: [IntLiteral] 0
 #    5|       1: [Parameter] y
-#    5|         -1: [TypeMention] Int32
+#    5|         -1: [TypeMention] int
 #    5|         1: [IntLiteral] 0
 #    6|     4: [BlockStmt] {...}
 #    9|   5: [InstanceConstructor] ArgumentsTest
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] x
-#    9|         -1: [TypeMention] Int32
+#    9|         -1: [TypeMention] int
 #    9|       1: [Parameter] y
-#    9|         -1: [TypeMention] Int32
+#    9|         -1: [TypeMention] int
 #    9|       2: [Parameter] z
-#    9|         -1: [TypeMention] Int32
+#    9|         -1: [TypeMention] int
 #   10|     4: [BlockStmt] {...}
 #   11|       0: [ExprStmt] ...;
 #   11|         0: [AssignExpr] ... = ...
@@ -26,21 +26,21 @@ arguments.cs:
 #   14|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   14|       0: [Parameter] x
-#   14|         -1: [TypeMention] Int32
+#   14|         -1: [TypeMention] int
 #   14|         1: [IntLiteral] 1
 #   14|       1: [Parameter] y
-#   14|         -1: [TypeMention] Int32
+#   14|         -1: [TypeMention] int
 #   14|         1: [IntLiteral] 2
 #   15|     4: [BlockStmt] {...}
 #   18|   7: [Method] f2
 #   18|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   18|       0: [Parameter] x
-#   18|         -1: [TypeMention] Int32
+#   18|         -1: [TypeMention] int
 #   18|       1: [Parameter] y
-#   18|         -1: [TypeMention] Int32
+#   18|         -1: [TypeMention] int
 #   18|       2: [Parameter] z
-#   18|         -1: [TypeMention] Int32
+#   18|         -1: [TypeMention] int
 #   19|     4: [BlockStmt] {...}
 #   20|       0: [ExprStmt] ...;
 #   20|         0: [AssignExpr] ... = ...
@@ -51,7 +51,7 @@ arguments.cs:
 #   24|     4: [BlockStmt] {...}
 #   25|       0: [LocalVariableDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   25|           -1: [TypeMention] Int32
+#   25|           -1: [TypeMention] int
 #   25|           0: [LocalVariableAccess] access to local variable x
 #   25|           1: [IntLiteral] 1
 #   27|       1: [ExprStmt] ...;
@@ -77,10 +77,10 @@ arguments.cs:
 #   33|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   33|       0: [Parameter] o
-#   33|         -1: [TypeMention] Int32
+#   33|         -1: [TypeMention] int
 #   33|       1: [Parameter] args
 #   33|         -1: [TypeMention] Int32[]
-#   33|           1: [TypeMention] Int32
+#   33|           1: [TypeMention] int
 #   34|     4: [BlockStmt] {...}
 #   35|       0: [ExprStmt] ...;
 #   35|         0: [MethodCall] call to method f3
@@ -92,7 +92,7 @@ arguments.cs:
 #   36|           0: [IntLiteral] 0
 #   36|           1: [ArrayCreation] array creation of type Int32[]
 #   36|             -2: [TypeMention] Int32[]
-#   36|               1: [TypeMention] Int32
+#   36|               1: [TypeMention] int
 #   36|             -1: [ArrayInitializer] { ..., ... }
 #   36|               0: [IntLiteral] 1
 #   36|               1: [IntLiteral] 2
@@ -112,7 +112,7 @@ arguments.cs:
 #   40|         0: [MethodCall] call to method f3
 #   40|           0: [ArrayCreation] array creation of type Int32[]
 #   40|             -2: [TypeMention] Int32[]
-#   40|               1: [TypeMention] Int32
+#   40|               1: [TypeMention] int
 #   40|             -1: [ArrayInitializer] { ..., ... }
 #   40|               0: [IntLiteral] 1
 #   40|               1: [IntLiteral] 2
@@ -122,29 +122,29 @@ arguments.cs:
 #-----|     2: (Parameters)
 #   43|       0: [Parameter] args
 #   43|         -1: [TypeMention] Object[]
-#   43|           1: [TypeMention] Object
+#   43|           1: [TypeMention] object
 #   44|     4: [BlockStmt] {...}
 #   45|       0: [ExprStmt] ...;
 #   45|         0: [MethodCall] call to method f4
 #   45|           0: [ArrayCreation] array creation of type Object[]
 #   45|             -2: [TypeMention] Object[]
-#   45|               1: [TypeMention] Object
+#   45|               1: [TypeMention] object
 #   45|             -1: [ArrayInitializer] { ..., ... }
 #   45|               0: [NullLiteral] null
 #   45|           1: [NullLiteral] null
 #   48|   11: [Property] Prop
-#   48|     -1: [TypeMention] Int32
+#   48|     -1: [TypeMention] int
 #   48|     3: [Getter] get_Prop
 #   48|     4: [Setter] set_Prop
 #-----|       2: (Parameters)
 #   48|         0: [Parameter] value
 #   50|   12: [Indexer] Item
-#   50|     -1: [TypeMention] Int32
+#   50|     -1: [TypeMention] int
 #-----|     1: (Parameters)
 #   50|       0: [Parameter] a
-#   50|         -1: [TypeMention] Int32
+#   50|         -1: [TypeMention] int
 #   50|       1: [Parameter] b
-#   50|         -1: [TypeMention] Int32
+#   50|         -1: [TypeMention] int
 #   50|     3: [Getter] get_Item
 #-----|       2: (Parameters)
 #   50|         0: [Parameter] a
@@ -205,7 +205,7 @@ arguments.cs:
 #   60|           1: [IntLiteral] 12
 #   61|       7: [LocalVariableDeclStmt] ... ...;
 #   61|         0: [LocalVariableDeclAndInitExpr] (Int32,Int32) tuple = ...
-#   61|           -1: [TypeMention] (Int32,Int32)
+#   61|           -1: [TypeMention] (int, int)
 #   61|           0: [LocalVariableAccess] access to local variable tuple
 #   61|           1: [TupleExpr] (..., ...)
 #   61|             0: [IntLiteral] 13
@@ -239,9 +239,9 @@ arguments.cs:
 #-----|   3: (Base types)
 #   72|     0: [TypeMention] Attribute
 #   74|   4: [Field] x
-#   74|     -1: [TypeMention] Int32
+#   74|     -1: [TypeMention] int
 #   75|   5: [IndexerProperty] y
-#   75|     -1: [TypeMention] String
+#   75|     -1: [TypeMention] string
 #   75|     3: [Getter] get_y
 #   75|     4: [Setter] set_y
 #-----|       2: (Parameters)
@@ -249,5 +249,5 @@ arguments.cs:
 #   76|   6: [InstanceConstructor] MyAttribute
 #-----|     2: (Parameters)
 #   76|       0: [Parameter] b
-#   76|         -1: [TypeMention] Boolean
+#   76|         -1: [TypeMention] bool
 #   76|     4: [BlockStmt] {...}
