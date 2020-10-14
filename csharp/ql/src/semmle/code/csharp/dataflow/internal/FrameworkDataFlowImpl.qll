@@ -174,11 +174,11 @@ abstract class FrameworkDataFlow extends string {
   pragma[nomagic]
   predicate clearsContent(FrameworkCallable c, SummaryInput input, Content content) { none() }
 
-  /** Holds if `n` is a flow source of type `source. */
+  /** Holds if output of type `output` from `c` is a flow source of type `source`. */
   pragma[nomagic]
-  predicate hasSource(Node n, FlowSource source) { none() }
+  predicate hasSource(FrameworkCallable c, SummaryOutput output, FlowSource source) { none() }
 
-  /** Holds if `n` is a flow sink of type `sink. */
+  /** Holds if input of type `input` to `c` is a flow sink of type `sink`. */
   pragma[nomagic]
-  predicate hasSink(Node n, FlowSink sink) { none() }
+  predicate hasSink(FrameworkCallable c, SummaryInput input, FlowSink sink) { none() }
 }
