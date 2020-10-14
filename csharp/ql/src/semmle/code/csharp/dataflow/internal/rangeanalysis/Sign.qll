@@ -3,6 +3,25 @@ newtype TSign =
   TZero() or
   TPos()
 
+newtype TUnarySignOperation =
+  TNegOp() or
+  TIncOp() or
+  TDecOp() or
+  TBitNotOp()
+
+newtype TBinarySignOperation =
+  TAddOp() or
+  TSubOp() or
+  TMulOp() or
+  TDivOp() or
+  TRemOp() or
+  TBitAndOp() or
+  TBitOrOp() or
+  TBitXorOp() or
+  TLShiftOp() or
+  TRShiftOp() or
+  TURShiftOp()
+
 /** Class representing expression signs (+, -, 0). */
 class Sign extends TSign {
   /** Gets the string representation of this sign. */
@@ -66,6 +85,12 @@ class Sign extends TSign {
     or
     this = TNeg() and s = TPos()
   }
+
+  /**
+   * Gets a possible sign after subtracting an expression with sign `s` from an expression
+   * that has this sign.
+   */
+  Sign sub(Sign s) { result = add(s.neg()) }
 
   /**
    * Gets a possible sign after multiplying an expression with sign `s` to an expression
@@ -215,5 +240,41 @@ class Sign extends TSign {
     result != TZero() and this = TNeg() and s != TZero()
     or
     result != TNeg() and this = TPos() and s != TZero()
+  }
+
+  /** Perform `op` on this sign. */
+  Sign applyUnaryOp(TUnarySignOperation op) {
+    op = TIncOp() and result = inc()
+    or
+    op = TDecOp() and result = dec()
+    or
+    op = TNegOp() and result = neg()
+    or
+    op = TBitNotOp() and result = bitnot()
+  }
+
+  /** Perform `op` on this sign and sign `s`. */
+  Sign applyBinaryOp(Sign s, TBinarySignOperation op) {
+    op = TAddOp() and result = add(s)
+    or
+    op = TSubOp() and result = sub(s)
+    or
+    op = TMulOp() and result = mul(s)
+    or
+    op = TDivOp() and result = div(s)
+    or
+    op = TRemOp() and result = rem(s)
+    or
+    op = TBitAndOp() and result = bitand(s)
+    or
+    op = TBitOrOp() and result = bitor(s)
+    or
+    op = TBitXorOp() and result = bitxor(s)
+    or
+    op = TLShiftOp() and result = lshift(s)
+    or
+    op = TRShiftOp() and result = rshift(s)
+    or
+    op = TURShiftOp() and result = urshift(s)
   }
 }

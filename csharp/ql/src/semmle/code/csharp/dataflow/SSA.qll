@@ -1430,7 +1430,14 @@ module Ssa {
     ) {
       possiblyLiveAtAllNodes(bb, v) and
       callAt(bb, i, call) and
-      relevantDefinition(_, v.getAssignable(), _)
+      exists(Assignable a |
+        a = v.getAssignable() and
+        relevantDefinition(_, a, _) and
+        not exists(AssignableDefinitions::OutRefDefinition def |
+          def.getCall() = call and
+          def.getTarget() = a
+        )
+      )
     }
 
     /**

@@ -6,7 +6,7 @@ private import internal.DataFlowPrivate
 
 /** Any string that may appear as the name of an attribute or access path. */
 class AttributeName extends string {
-  AttributeName() { this = any(Attribute a).getName() }
+  AttributeName() { this = any(AttrRef a).getAttributeName() }
 }
 
 /** Either an attribute name, or the empty string (representing no attribute). */
@@ -115,11 +115,10 @@ predicate returnStep(ReturnNode nodeFrom, Node nodeTo) {
  * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
  */
 predicate basicStoreStep(Node nodeFrom, Node nodeTo, string attr) {
-  exists(AttributeAssignment a, Node var |
-    a.getName() = attr and
-    simpleLocalFlowStep*(nodeTo, var) and
-    var.asVar() = a.getInput() and
-    nodeFrom.asCfgNode() = a.getValue()
+  exists(AttrWrite a |
+    a.mayHaveAttributeName(attr) and
+    nodeFrom = a.getValue() and
+    simpleLocalFlowStep*(nodeTo, a.getObject())
   )
 }
 
@@ -127,7 +126,11 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, string attr) {
  * Holds if `nodeTo` is the result of accessing the `attr` attribute of `nodeFrom`.
  */
 predicate basicLoadStep(Node nodeFrom, Node nodeTo, string attr) {
-  exists(AttrNode s | nodeTo.asCfgNode() = s and s.getObject(attr) = nodeFrom.asCfgNode())
+  exists(AttrRead a |
+    a.mayHaveAttributeName(attr) and
+    nodeFrom = a.getObject() and
+    nodeTo = a
+  )
 }
 
 /**

@@ -1,4 +1,4 @@
-package com.semmle.js.parser;
+package com.semmle.ts.extractor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -113,6 +113,7 @@ import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
 import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.js.parser.JSParser.Result;
+import com.semmle.js.parser.ParseError;
 import com.semmle.ts.ast.ArrayTypeExpr;
 import com.semmle.ts.ast.ConditionalTypeExpr;
 import com.semmle.ts.ast.DecoratorList;

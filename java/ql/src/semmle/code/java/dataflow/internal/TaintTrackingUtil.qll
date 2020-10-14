@@ -234,6 +234,11 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
       or
       //a URI constructed from a tainted string is tainted.
       s = "java.net.URI" and argi = 0 and sink.getNumArgument() = 1
+      or
+      //a File constructed from a tainted string is tainted.
+      s = "java.io.File" and argi = 0
+      or
+      s = "java.io.File" and argi = 1
     )
     or
     exists(RefType t | t.getQualifiedName() = "java.lang.Number" |
@@ -371,6 +376,12 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   m.getDeclaringType().hasQualifiedName("java.nio", "ByteBuffer") and
   m.hasName("get")
+  or
+  m.getDeclaringType().hasQualifiedName("java.io", "File") and
+  m.hasName("toURI")
+  or
+  m.getDeclaringType().hasQualifiedName("java.net", "URI") and
+  m.hasName("toURL")
   or
   m = any(GuiceProvider gp).getAnOverridingGetMethod()
   or

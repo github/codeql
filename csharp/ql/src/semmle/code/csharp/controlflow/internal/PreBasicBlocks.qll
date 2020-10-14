@@ -89,10 +89,14 @@ class PreBasicBlock extends ControlFlowElement {
   private predicate dominatesPredecessor(PreBasicBlock df) { this.dominates(df.getAPredecessor()) }
 }
 
+private Completion getConditionalCompletion(ConditionalCompletion cc) {
+  result.getInnerCompletion() = cc
+}
+
 class ConditionBlock extends PreBasicBlock {
   ConditionBlock() {
     strictcount(Completion c |
-      c.getInnerCompletion() instanceof ConditionalCompletion and
+      c = getConditionalCompletion(_) and
       (
         exists(succ(this.getLastElement(), c))
         or
@@ -102,9 +106,20 @@ class ConditionBlock extends PreBasicBlock {
   }
 
   private predicate immediatelyControls(PreBasicBlock succ, ConditionalCompletion cc) {
-    succ = succ(this.getLastElement(), any(Completion c | c.getInnerCompletion() = cc)) and
-    forall(PreBasicBlock pred | pred = succ.getAPredecessor() and pred != this |
-      succ.dominates(pred)
+    exists(ControlFlowElement last, Completion c |
+      last = this.getLastElement() and
+      c = getConditionalCompletion(cc) and
+      succ = succ(last, c) and
+      // In the pre-CFG, we need to account for case where one predecessor node has
+      // two edges to the same successor node. Assertion expressions are examples of
+      // such nodes.
+      not exists(Completion other |
+        succ = succ(last, other) and
+        other != c
+      ) and
+      forall(PreBasicBlock pred | pred = succ.getAPredecessor() and pred != this |
+        succ.dominates(pred)
+      )
     )
   }
 
