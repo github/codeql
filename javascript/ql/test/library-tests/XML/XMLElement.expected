@@ -1,2 +1,0 @@
-| tst.xml:2:1:5:8 | root | root | tst.xml | 0 | tst.xml:0:0:0:0 | tst.xml |
-| tst.xml:3:3:3:37 | child | child | root | 0 | tst.xml:0:0:0:0 | tst.xml |
