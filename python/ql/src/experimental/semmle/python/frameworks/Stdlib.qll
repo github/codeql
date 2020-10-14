@@ -346,7 +346,7 @@ private module Stdlib {
   /** Gets a reference to the `popen2` module (only available in Python 2). */
   private DataFlow::Node popen2(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule("popen2")
+    result = DataFlow::importNode("popen2")
     or
     exists(DataFlow::TypeTracker t2 | result = popen2(t2).track(t2, t))
   }
@@ -364,10 +364,10 @@ private module Stdlib {
           "Popen3", "Popen4"] and
     (
       t.start() and
-      result = DataFlow::importMember("popen2", attr_name)
+      result = DataFlow::importNode("popen2." + attr_name)
       or
       t.startInAttr(attr_name) and
-      result = DataFlow::importModule("popen2")
+      result = DataFlow::importNode("popen2")
     )
     or
     // Due to bad performance when using normal setup with `popen2_attr(t2, attr_name).track(t2, t)`
@@ -420,7 +420,7 @@ private module Stdlib {
   /** Gets a reference to the `platform` module. */
   private DataFlow::Node platform(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule("platform")
+    result = DataFlow::importNode("platform")
     or
     exists(DataFlow::TypeTracker t2 | result = platform(t2).track(t2, t))
   }
@@ -436,10 +436,10 @@ private module Stdlib {
     attr_name in ["popen"] and
     (
       t.start() and
-      result = DataFlow::importMember("platform", attr_name)
+      result = DataFlow::importNode("platform." + attr_name)
       or
       t.startInAttr(attr_name) and
-      result = DataFlow::importModule("platform")
+      result = DataFlow::importNode("platform")
     )
     or
     // Due to bad performance when using normal setup with `platform_attr(t2, attr_name).track(t2, t)`
