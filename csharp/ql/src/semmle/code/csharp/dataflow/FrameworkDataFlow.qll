@@ -21,12 +21,12 @@ module ContentList {
   /** Gets the singleton "element content" content list. */
   ContentList element() { result = singleton(any(ElementContent c)) }
 
-  /** Gets a singleton property content stack. */
+  /** Gets a singleton property content list. */
   ContentList property(Property p) {
     result = singleton(any(PropertyContent c | c.getProperty() = p.getSourceDeclaration()))
   }
 
-  /** Gets a singleton field content stack. */
+  /** Gets a singleton field content list. */
   ContentList field(Field f) {
     result = singleton(any(FieldContent c | c.getField() = f.getSourceDeclaration()))
   }
@@ -39,16 +39,10 @@ module SummaryInput {
   private import semmle.code.csharp.frameworks.system.Collections
 
   /**
-   * Gets an input specification that specifies the qualifier in a call as
-   * the input.
+   * Gets an input specification that specifies the `i`th parameter as
+   * the input (`i = -1` corresponds to the implicit `this` parameter).
    */
-  SummaryInput qualifier() { result = TQualifierSummaryInput() }
-
-  /**
-   * Gets an input specification that specifies the `i`th argument in a call as
-   * the input.
-   */
-  SummaryInput argument(int i) { result = TArgumentSummaryInput(i) }
+  SummaryInput parameter(int i) { result = TParameterSummaryInput(i) }
 
   private predicate isCollectionType(ValueOrRefType t) {
     t.getABaseType*() instanceof SystemCollectionsIEnumerableInterface and
@@ -56,30 +50,38 @@ module SummaryInput {
   }
 
   /**
-   * Gets an input specification that specifies the `i`th argument as the input.
+   * Gets an input specification that specifies the `i`th parameter as
+   * the input (`i = -1` corresponds to the implicit `this` parameter).
    *
-   * `inputStack` is either empty or a singleton element content stack, depending
-   * on whether the type of the `i`th parameter of `c` is a collection type.
+   * `inputContents` is either empty or a singleton element content list,
+   * depending on whether the type of the `i`th parameter of `c` is a
+   * collection type.
    */
-  SummaryInput argument(FrameworkCallable c, int i, ContentList inputStack) {
-    result = argument(i) and
+  SummaryInput parameter(FrameworkCallable c, int i, ContentList inputContents) {
+    result = parameter(i) and
     exists(Parameter p |
       p = c.getParameter(i) and
       if isCollectionType(p.getType())
-      then inputStack = ContentList::element()
-      else inputStack = ContentList::empty()
+      then inputContents = ContentList::element()
+      else inputContents = ContentList::empty()
     )
   }
 
   /**
+   * Gets an input specification that specifies the implicit `this` parameter
+   * as the input.
+   */
+  SummaryInput thisParameter() { result = TParameterSummaryInput(-1) }
+
+  /**
    * Gets an input specification that specifies output from the delegate at
-   * argument `i` as the input.
+   * parameter `i` as the input.
    */
   SummaryInput delegate(int i) { result = TDelegateSummaryInput(i) }
 
   /**
    * Gets an input specification that specifies output from the delegate at
-   * argument `i` as the input.
+   * parameter `i` as the input.
    *
    * `c` must be a compatible callable, that is, a callable where the `i`th
    * parameter is a delegate.
@@ -95,26 +97,26 @@ class SummaryOutput = Impl::SummaryOutput;
 /** Provides predicates for constructing flow-summary output specifications. */
 module SummaryOutput {
   /**
-   * Gets an output specification that specifies the qualifier in a call as
-   * the output.
-   */
-  SummaryOutput qualifier() { result = TQualifierSummaryOutput() }
-
-  /**
    * Gets an output specification that specifies the return value from a call as
    * the output.
    */
   SummaryOutput return() { result = TReturnSummaryOutput() }
 
   /**
-   * Gets an output specification that specifies the `i`th argument in a call as
-   * the output.
+   * Gets an output specification that specifies the `i`th parameter as the
+   * output (`i = -1` corresponds to the implicit `this` parameter).
    */
-  SummaryOutput argument(int i) { result = TArgumentSummaryOutput(i) }
+  SummaryOutput parameter(int i) { result = TParameterSummaryOutput(i) }
+
+  /**
+   * Gets an output specification that specifies the implicit `this` parameter
+   * as the output.
+   */
+  SummaryOutput thisParameter() { result = TParameterSummaryOutput(-1) }
 
   /**
    * Gets an output specification that specifies parameter `j` of the delegate at
-   * argument `i` as the output.
+   * parameter `i` as the output.
    */
   SummaryOutput delegate(FrameworkCallable callable, int i, int j) {
     result = TDelegateSummaryOutput(i, j) and
@@ -200,36 +202,36 @@ module Examples {
     private SystemTextStringBuilderClass getClass() { any() }
 
     private predicate constructorFlow(
-      Constructor c, SummaryInput input, ContentList inputAp, SummaryOutput output,
-      ContentList outputAp
+      Constructor c, SummaryInput input, ContentList inputContents, SummaryOutput output,
+      ContentList outputContents
     ) {
       c = this.getClass().getAMember() and
       c.getParameter(0).getType() instanceof StringType and
-      input = TArgumentSummaryInput(0) and
-      inputAp = ContentList::empty() and
-      output = TReturnSummaryOutput() and
-      outputAp = ContentList::element()
+      input = SummaryInput::parameter(0) and
+      inputContents = ContentList::empty() and
+      output = SummaryOutput::thisParameter() and
+      outputContents = ContentList::element()
     }
 
     private predicate methodFlow(
-      FrameworkMethod m, SummaryInput input, ContentList inputAp, SummaryOutput output,
-      ContentList outputAp, boolean preservesValue
+      FrameworkMethod m, SummaryInput input, ContentList inputContents, SummaryOutput output,
+      ContentList outputContents, boolean preservesValue
     ) {
       exists(string name | m = this.getClass().getAMethod(name) |
         name = "ToString" and
-        input = TQualifierSummaryInput() and
-        inputAp = ContentList::element() and
-        output = TReturnSummaryOutput() and
-        outputAp = ContentList::empty() and
+        input = SummaryInput::thisParameter() and
+        inputContents = ContentList::element() and
+        output = SummaryOutput::thisParameter() and
+        outputContents = ContentList::empty() and
         preservesValue = false
         or
         exists(int i, Type t |
           name.regexpMatch("Append(Format|Line)?") and
           t = m.getParameter(i).getType() and
-          input = TArgumentSummaryInput(i) and
-          inputAp = ContentList::empty() and
-          output = [TQualifierSummaryOutput().(TSummaryOutput), TReturnSummaryOutput()] and
-          outputAp = ContentList::element() and
+          input = SummaryInput::parameter(i) and
+          inputContents = ContentList::empty() and
+          output = [SummaryOutput::thisParameter(), SummaryOutput::return()] and
+          outputContents = ContentList::element() and
           preservesValue = true
         |
           t instanceof StringType or
@@ -239,20 +241,20 @@ module Examples {
     }
 
     override predicate hasSummary(
-      FrameworkCallable c, SummaryInput input, ContentList inputStack, SummaryOutput output,
-      ContentList outputStack, boolean preservesValue
+      FrameworkCallable c, SummaryInput input, ContentList inputContents, SummaryOutput output,
+      ContentList outputContents, boolean preservesValue
     ) {
       (
-        this.constructorFlow(c, input, inputStack, output, outputStack) and
+        this.constructorFlow(c, input, inputContents, output, outputContents) and
         preservesValue = true
         or
-        this.methodFlow(c, input, inputStack, output, outputStack, preservesValue)
+        this.methodFlow(c, input, inputContents, output, outputContents, preservesValue)
       )
     }
 
     override predicate clearsContent(FrameworkCallable c, SummaryInput input, Content content) {
       c = this.getClass().getAMethod("Clear") and
-      input = TQualifierSummaryInput() and
+      input = SummaryInput::thisParameter() and
       content instanceof ElementContent
     }
   }
@@ -266,25 +268,25 @@ module Examples {
     private SystemLazyClass getClass() { any() }
 
     override predicate hasSummary(
-      FrameworkCallable c, SummaryInput input, ContentList inputStack, SummaryOutput output,
-      ContentList outputStack, boolean preservesValue
+      FrameworkCallable c, SummaryInput input, ContentList inputContents, SummaryOutput output,
+      ContentList outputContents, boolean preservesValue
     ) {
       preservesValue = true and
       exists(SystemFuncDelegateType t, int i | t.getNumberOfTypeParameters() = 1 |
         c.(Constructor).getDeclaringType() = this.getClass() and
         c.getParameter(i).getType().getSourceDeclaration() = t and
         input = SummaryInput::delegate(c, i) and
-        inputStack = ContentList::empty() and
-        output = TReturnSummaryOutput() and
-        outputStack = ContentList::property(this.getClass().getValueProperty())
+        inputContents = ContentList::empty() and
+        output = SummaryOutput::thisParameter() and
+        outputContents = ContentList::property(this.getClass().getValueProperty())
       )
       or
       preservesValue = false and
       c = this.getClass().getValueProperty().getGetter() and
-      input = TQualifierSummaryInput() and
-      inputStack = ContentList::empty() and
-      output = TReturnSummaryOutput() and
-      outputStack = ContentList::empty()
+      input = SummaryInput::thisParameter() and
+      inputContents = ContentList::empty() and
+      output = SummaryOutput::thisParameter() and
+      outputContents = ContentList::empty()
     }
   }
 
@@ -294,19 +296,22 @@ module Examples {
   class SqlClientDataFlow extends FrameworkDataFlow {
     SqlClientDataFlow() { this = "SqlClientDataFlow" }
 
-    override predicate hasSink(Node n, FlowSink sink) {
+    override predicate hasSink(FrameworkCallable c, SummaryInput input, FlowSink sink) {
       sink = FlowSink::sql() and
       (
         exists(Property p, SystemDataIDbCommandInterface i, Property text |
           text = i.getCommandTextProperty() and
           p.overridesOrImplementsOrEquals(text) and
-          n.(ParameterNode).getParameter() = p.getSetter().getAParameter()
+          c = p.getSetter() and
+          input = SummaryInput::parameter(0)
         )
         or
-        exists(InstanceConstructor ic | ic = n.asExpr().(ObjectCreation).getTarget() |
-          ic.getDeclaringType().getABaseType*() instanceof SystemDataIDbCommandInterface and
-          ic.getParameter(0).getType() instanceof StringType
-        )
+        c =
+          any(InstanceConstructor ic |
+            ic.getDeclaringType().getABaseType*() instanceof SystemDataIDbCommandInterface and
+            ic.getParameter(0).getType() instanceof StringType and
+            input = SummaryInput::parameter(0)
+          )
       )
     }
   }
