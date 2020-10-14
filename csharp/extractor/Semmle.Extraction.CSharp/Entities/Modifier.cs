@@ -142,7 +142,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class ModifierFactory : ICachedEntityFactory<string, Modifier>
         {
-            public static readonly ModifierFactory Instance = new ModifierFactory();
+            public static ModifierFactory Instance { get; } = new ModifierFactory();
 
             public Modifier Create(Context cx, string init) => new Modifier(cx, init);
         }

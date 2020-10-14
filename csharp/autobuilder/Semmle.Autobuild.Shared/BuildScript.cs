@@ -232,13 +232,13 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// The empty build script that always returns exit code 0.
         /// </summary>
-        public static readonly BuildScript Success = Create(actions => successCode);
+        public static BuildScript Success { get; } = Create(actions => successCode);
 
         private const int failureCode = 1;
         /// <summary>
         /// The empty build script that always returns exit code 1.
         /// </summary>
-        public static readonly BuildScript Failure = Create(actions => failureCode);
+        public static BuildScript Failure { get; } = Create(actions => failureCode);
 
         private static bool Succeeded(int i) => i == successCode;
 

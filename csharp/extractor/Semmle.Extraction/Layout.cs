@@ -171,7 +171,7 @@ namespace Semmle.Extraction
     {
         private readonly List<FilePattern> filePatterns = new List<FilePattern>();
 
-        public readonly Layout.SubProject Directories;
+        public Layout.SubProject Directories { get; }
 
         private static string? ReadVariable(string name, string line)
         {

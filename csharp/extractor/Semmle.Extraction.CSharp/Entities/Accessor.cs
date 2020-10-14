@@ -83,7 +83,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class AccessorFactory : ICachedEntityFactory<IMethodSymbol, Accessor>
         {
-            public static readonly AccessorFactory Instance = new AccessorFactory();
+            public static AccessorFactory Instance { get; } = new AccessorFactory();
 
             public Accessor Create(Context cx, IMethodSymbol init) => new Accessor(cx, init);
         }

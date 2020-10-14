@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class NamespaceFactory : ICachedEntityFactory<INamespaceSymbol, Namespace>
         {
-            public static readonly NamespaceFactory Instance = new NamespaceFactory();
+            public static NamespaceFactory Instance { get; } = new NamespaceFactory();
 
             public Namespace Create(Context cx, INamespaceSymbol init) => new Namespace(cx, init);
         }

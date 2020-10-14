@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CIL.Entities
         /// <summary>
         /// For each Payload, how many additional bytes in the bytestream need to be read.
         /// </summary>
-        internal static readonly int[] payloadSizes = {
+        private static readonly int[] payloadSizes = {
             0, 4, 4, 1, 4,
             4, 1, 1, 4, 1,
             2, 4, 8, 4, 8,
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CIL.Entities
             4, 2, 1, 4, 2, 4 };
 
         // Maps opcodes to payloads for each instruction.
-        public static readonly Dictionary<ILOpCode, Payload> opPayload = new Dictionary<ILOpCode, Payload>()
+        private static readonly Dictionary<ILOpCode, Payload> opPayload = new Dictionary<ILOpCode, Payload>()
         {
             { ILOpCode.Nop, Payload.None },
             { ILOpCode.Break, Payload.None },
@@ -268,10 +268,10 @@ namespace Semmle.Extraction.CIL.Entities
             { ILOpCode.Readonly, Payload.None }
         };
 
-        public readonly DefinitionMethod Method;
-        public readonly ILOpCode OpCode;
-        public readonly int Offset;
-        public readonly int Index;
+        public DefinitionMethod Method { get; }
+        public ILOpCode OpCode { get; }
+        public int Offset { get; }
+        public int Index { get; }
         private readonly int payloadValue;
         private readonly uint unsignedPayloadValue;
 

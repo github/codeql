@@ -12,11 +12,11 @@ namespace Semmle.Extraction.CSharp.Standalone
     {
         public Extraction(string directory)
         {
-            this.directory = directory;
+            Directory = directory;
         }
 
-        public readonly string directory;
-        public readonly List<string> Sources = new List<string>();
+        public string Directory { get; }
+        public List<string> Sources { get; } = new List<string>();
     };
 
     /// <summary>

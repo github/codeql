@@ -187,7 +187,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
         {
-            public static readonly UserOperatorFactory Instance = new UserOperatorFactory();
+            public static UserOperatorFactory Instance { get; } = new UserOperatorFactory();
 
             public UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
         }
