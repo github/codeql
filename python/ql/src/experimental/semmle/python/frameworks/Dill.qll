@@ -43,8 +43,8 @@ private module Dill {
  * See https://pypi.org/project/dill/ (which currently refers you
  * to https://docs.python.org/3/library/pickle.html#pickle.loads)
  */
-private class DillDeserialization extends UnmarshalingFunction::Range {
-  DillDeserialization() {
+private class DillLoadsCall extends UnmarshalingFunction::Range {
+  DillLoadsCall() {
     this.asCfgNode().(CallNode).getFunction() = Dill::dill::loads().asCfgNode()
   }
 
@@ -56,10 +56,5 @@ private class DillDeserialization extends UnmarshalingFunction::Range {
 
   override DataFlow::Node getOutput() { result = this }
 
-  override string getFormat() {
-    result = this.asCfgNode().(CallNode).getArgByName("encoding").(NameNode).getId()
-    or
-    not exists(this.asCfgNode().(CallNode).getArgByName("encoding")) and
-    result = "ASCII"
-  }
+  override string getFormat() { result = "dill" }
 }

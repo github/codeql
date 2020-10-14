@@ -363,8 +363,8 @@ private module Stdlib {
    * A call to `marshal.loads`
    * See https://docs.python.org/3/library/marshal.html#marshal.loads
    */
-  private class MarshalDeserialization extends UnmarshalingFunction::Range {
-    MarshalDeserialization() {
+  private class MarshalLoadsCall extends UnmarshalingFunction::Range {
+    MarshalLoadsCall() {
       this.asCfgNode().(CallNode).getFunction() = marshal::loads().asCfgNode()
     }
 
@@ -376,13 +376,13 @@ private module Stdlib {
 
     override DataFlow::Node getOutput() { result = this }
 
-    override string getFormat() { none() }
+    override string getFormat() { result = "marshal" }
   }
 
   // ---------------------------------------------------------------------------
   // pickle
   // ---------------------------------------------------------------------------
-  private string pickleModuleName() { result in ["pickle", "cPickle"] }
+  private string pickleModuleName() { result in ["pickle", "cPickle", "_pickle"] }
 
   /** Gets a reference to the `pickle` module. */
   private DataFlow::Node pickle(DataFlow::TypeTracker t) {
@@ -416,8 +416,8 @@ private module Stdlib {
    * A call to `pickle.loads`
    * See https://docs.python.org/3/library/pickle.html#pickle.loads
    */
-  private class PickleDeserialization extends UnmarshalingFunction::Range {
-    PickleDeserialization() {
+  private class PickleLoadsCall extends UnmarshalingFunction::Range {
+    PickleLoadsCall() {
       this.asCfgNode().(CallNode).getFunction() = pickle::loads().asCfgNode()
     }
 
@@ -429,11 +429,6 @@ private module Stdlib {
 
     override DataFlow::Node getOutput() { result = this }
 
-    override string getFormat() {
-      result = this.asCfgNode().(CallNode).getArgByName("encoding").(NameNode).getId()
-      or
-      not exists(this.asCfgNode().(CallNode).getArgByName("encoding")) and
-      result = "ASCII"
-    }
+    override string getFormat() { result = "pickle" }
   }
 }

@@ -60,5 +60,5 @@ private class YamlDeserialization extends UnmarshalingFunction::Range {
 
   override DataFlow::Node getOutput() { result = this }
 
-  override string getFormat() { none() }
+  override string getFormat() { result = "YAML" }
 }
