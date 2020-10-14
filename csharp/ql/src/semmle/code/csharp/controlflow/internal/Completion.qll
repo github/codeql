@@ -20,6 +20,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.Constants
 private import semmle.code.csharp.frameworks.System
 private import NonReturning
@@ -97,6 +98,13 @@ class Completion extends TCompletion {
     or
     cfe instanceof ThrowElement and
     this = TThrowCompletion(cfe.(ThrowElement).getThrownExceptionType())
+    or
+    exists(AssertMethod m | assertion(cfe, m, _) |
+      this = TThrowCompletion(m.getExceptionClass())
+      or
+      not exists(m.getExceptionClass()) and
+      this = TExitCompletion()
+    )
     or
     completionIsValidForStmt(cfe, this)
     or
@@ -382,6 +390,11 @@ private predicate invalidCastCandidate(CastExpr ce) {
   ce.getType() = ce.getExpr().getType().(ValueOrRefType).getASubType+()
 }
 
+private predicate assertion(Assertion a, AssertMethod am, Expr e) {
+  e = a.getExpr() and
+  am = a.getAssertMethod()
+}
+
 /**
  * Holds if a normal completion of `e` must be a Boolean completion.
  */
@@ -408,6 +421,9 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
   exists(Case c | c.getCondition() = e | isBooleanCompletionForParent = false)
   or
   exists(SpecificCatchClause scc | scc.getFilterClause() = e | isBooleanCompletionForParent = false)
+  or
+  assertion(_, [any(AssertTrueMethod m).(AssertMethod), any(AssertFalseMethod m)], e) and
+  isBooleanCompletionForParent = false
   or
   exists(LogicalNotExpr lne | lne.getAnOperand() = e |
     inBooleanContext(lne, _) and
@@ -478,6 +494,9 @@ private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParen
     e = qe.getChildExpr(-1) and
     isNullnessCompletionForParent = false
   )
+  or
+  assertion(_, [any(AssertNullMethod m).(AssertMethod), any(AssertNonNullMethod m)], e) and
+  isNullnessCompletionForParent = false
   or
   exists(ConditionalExpr ce | inNullnessContext(ce, _) |
     (e = ce.getThen() or e = ce.getElse()) and

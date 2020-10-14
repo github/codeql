@@ -289,7 +289,7 @@ class SignAnalysis
     void Assert(int i, bool b)
     {
         Debug.Assert(i > 0);
-        System.Console.WriteLine(i); // strictly positive [MISSING]
+        System.Console.WriteLine(i); // strictly positive
 
         if (b)
             System.Console.WriteLine(i); // strictly positive

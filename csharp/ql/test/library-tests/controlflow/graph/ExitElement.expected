@@ -307,6 +307,516 @@
 | ArrayCreation.cs:9:43:9:50 | { ..., ... } | ArrayCreation.cs:9:43:9:50 | { ..., ... } | normal |
 | ArrayCreation.cs:9:45:9:45 | 2 | ArrayCreation.cs:9:45:9:45 | 2 | normal |
 | ArrayCreation.cs:9:48:9:48 | 3 | ArrayCreation.cs:9:48:9:48 | 3 | normal |
+| Assert.cs:8:5:12:5 | {...} | Assert.cs:10:9:10:31 | call to method Assert | exit |
+| Assert.cs:8:5:12:5 | {...} | Assert.cs:11:9:11:35 | call to method WriteLine | normal |
+| Assert.cs:9:9:9:33 | ... ...; | Assert.cs:9:16:9:32 | String s = ... | normal |
+| Assert.cs:9:16:9:32 | String s = ... | Assert.cs:9:16:9:32 | String s = ... | normal |
+| Assert.cs:9:20:9:20 | access to parameter b | Assert.cs:9:20:9:20 | access to parameter b | false |
+| Assert.cs:9:20:9:20 | access to parameter b | Assert.cs:9:20:9:20 | access to parameter b | true |
+| Assert.cs:9:20:9:32 | ... ? ... : ... | Assert.cs:9:24:9:27 | null | normal |
+| Assert.cs:9:20:9:32 | ... ? ... : ... | Assert.cs:9:31:9:32 | "" | normal |
+| Assert.cs:9:24:9:27 | null | Assert.cs:9:24:9:27 | null | normal |
+| Assert.cs:9:31:9:32 | "" | Assert.cs:9:31:9:32 | "" | normal |
+| Assert.cs:10:9:10:31 | call to method Assert | Assert.cs:10:9:10:31 | call to method Assert | exit |
+| Assert.cs:10:9:10:31 | call to method Assert | Assert.cs:10:9:10:31 | call to method Assert | normal |
+| Assert.cs:10:9:10:32 | ...; | Assert.cs:10:9:10:31 | call to method Assert | exit |
+| Assert.cs:10:9:10:32 | ...; | Assert.cs:10:9:10:31 | call to method Assert | normal |
+| Assert.cs:10:22:10:22 | access to local variable s | Assert.cs:10:22:10:22 | access to local variable s | normal |
+| Assert.cs:10:22:10:30 | ... != ... | Assert.cs:10:22:10:30 | ... != ... | false |
+| Assert.cs:10:22:10:30 | ... != ... | Assert.cs:10:22:10:30 | ... != ... | true |
+| Assert.cs:10:27:10:30 | null | Assert.cs:10:27:10:30 | null | normal |
+| Assert.cs:11:9:11:35 | call to method WriteLine | Assert.cs:11:9:11:35 | call to method WriteLine | normal |
+| Assert.cs:11:9:11:36 | ...; | Assert.cs:11:9:11:35 | call to method WriteLine | normal |
+| Assert.cs:11:27:11:27 | access to local variable s | Assert.cs:11:27:11:27 | access to local variable s | normal |
+| Assert.cs:11:27:11:34 | access to property Length | Assert.cs:11:27:11:34 | access to property Length | normal |
+| Assert.cs:15:5:19:5 | {...} | Assert.cs:17:9:17:24 | call to method IsNull | throw(AssertFailedException) |
+| Assert.cs:15:5:19:5 | {...} | Assert.cs:18:9:18:35 | call to method WriteLine | normal |
+| Assert.cs:16:9:16:33 | ... ...; | Assert.cs:16:16:16:32 | String s = ... | normal |
+| Assert.cs:16:16:16:32 | String s = ... | Assert.cs:16:16:16:32 | String s = ... | normal |
+| Assert.cs:16:20:16:20 | access to parameter b | Assert.cs:16:20:16:20 | access to parameter b | false |
+| Assert.cs:16:20:16:20 | access to parameter b | Assert.cs:16:20:16:20 | access to parameter b | true |
+| Assert.cs:16:20:16:32 | ... ? ... : ... | Assert.cs:16:24:16:27 | null | normal |
+| Assert.cs:16:20:16:32 | ... ? ... : ... | Assert.cs:16:31:16:32 | "" | normal |
+| Assert.cs:16:24:16:27 | null | Assert.cs:16:24:16:27 | null | normal |
+| Assert.cs:16:31:16:32 | "" | Assert.cs:16:31:16:32 | "" | normal |
+| Assert.cs:17:9:17:24 | call to method IsNull | Assert.cs:17:9:17:24 | call to method IsNull | normal |
+| Assert.cs:17:9:17:24 | call to method IsNull | Assert.cs:17:9:17:24 | call to method IsNull | throw(AssertFailedException) |
+| Assert.cs:17:9:17:25 | ...; | Assert.cs:17:9:17:24 | call to method IsNull | normal |
+| Assert.cs:17:9:17:25 | ...; | Assert.cs:17:9:17:24 | call to method IsNull | throw(AssertFailedException) |
+| Assert.cs:17:23:17:23 | access to local variable s | Assert.cs:17:23:17:23 | access to local variable s | non-null |
+| Assert.cs:17:23:17:23 | access to local variable s | Assert.cs:17:23:17:23 | access to local variable s | null |
+| Assert.cs:18:9:18:35 | call to method WriteLine | Assert.cs:18:9:18:35 | call to method WriteLine | normal |
+| Assert.cs:18:9:18:36 | ...; | Assert.cs:18:9:18:35 | call to method WriteLine | normal |
+| Assert.cs:18:27:18:27 | access to local variable s | Assert.cs:18:27:18:27 | access to local variable s | normal |
+| Assert.cs:18:27:18:34 | access to property Length | Assert.cs:18:27:18:34 | access to property Length | normal |
+| Assert.cs:22:5:26:5 | {...} | Assert.cs:24:9:24:27 | call to method IsNotNull | throw(AssertFailedException) |
+| Assert.cs:22:5:26:5 | {...} | Assert.cs:25:9:25:35 | call to method WriteLine | normal |
+| Assert.cs:23:9:23:33 | ... ...; | Assert.cs:23:16:23:32 | String s = ... | normal |
+| Assert.cs:23:16:23:32 | String s = ... | Assert.cs:23:16:23:32 | String s = ... | normal |
+| Assert.cs:23:20:23:20 | access to parameter b | Assert.cs:23:20:23:20 | access to parameter b | false |
+| Assert.cs:23:20:23:20 | access to parameter b | Assert.cs:23:20:23:20 | access to parameter b | true |
+| Assert.cs:23:20:23:32 | ... ? ... : ... | Assert.cs:23:24:23:27 | null | normal |
+| Assert.cs:23:20:23:32 | ... ? ... : ... | Assert.cs:23:31:23:32 | "" | normal |
+| Assert.cs:23:24:23:27 | null | Assert.cs:23:24:23:27 | null | normal |
+| Assert.cs:23:31:23:32 | "" | Assert.cs:23:31:23:32 | "" | normal |
+| Assert.cs:24:9:24:27 | call to method IsNotNull | Assert.cs:24:9:24:27 | call to method IsNotNull | normal |
+| Assert.cs:24:9:24:27 | call to method IsNotNull | Assert.cs:24:9:24:27 | call to method IsNotNull | throw(AssertFailedException) |
+| Assert.cs:24:9:24:28 | ...; | Assert.cs:24:9:24:27 | call to method IsNotNull | normal |
+| Assert.cs:24:9:24:28 | ...; | Assert.cs:24:9:24:27 | call to method IsNotNull | throw(AssertFailedException) |
+| Assert.cs:24:26:24:26 | access to local variable s | Assert.cs:24:26:24:26 | access to local variable s | non-null |
+| Assert.cs:24:26:24:26 | access to local variable s | Assert.cs:24:26:24:26 | access to local variable s | null |
+| Assert.cs:25:9:25:35 | call to method WriteLine | Assert.cs:25:9:25:35 | call to method WriteLine | normal |
+| Assert.cs:25:9:25:36 | ...; | Assert.cs:25:9:25:35 | call to method WriteLine | normal |
+| Assert.cs:25:27:25:27 | access to local variable s | Assert.cs:25:27:25:27 | access to local variable s | normal |
+| Assert.cs:25:27:25:34 | access to property Length | Assert.cs:25:27:25:34 | access to property Length | normal |
+| Assert.cs:29:5:33:5 | {...} | Assert.cs:31:9:31:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:29:5:33:5 | {...} | Assert.cs:32:9:32:35 | call to method WriteLine | normal |
+| Assert.cs:30:9:30:33 | ... ...; | Assert.cs:30:16:30:32 | String s = ... | normal |
+| Assert.cs:30:16:30:32 | String s = ... | Assert.cs:30:16:30:32 | String s = ... | normal |
+| Assert.cs:30:20:30:20 | access to parameter b | Assert.cs:30:20:30:20 | access to parameter b | false |
+| Assert.cs:30:20:30:20 | access to parameter b | Assert.cs:30:20:30:20 | access to parameter b | true |
+| Assert.cs:30:20:30:32 | ... ? ... : ... | Assert.cs:30:24:30:27 | null | normal |
+| Assert.cs:30:20:30:32 | ... ? ... : ... | Assert.cs:30:31:30:32 | "" | normal |
+| Assert.cs:30:24:30:27 | null | Assert.cs:30:24:30:27 | null | normal |
+| Assert.cs:30:31:30:32 | "" | Assert.cs:30:31:30:32 | "" | normal |
+| Assert.cs:31:9:31:32 | call to method IsTrue | Assert.cs:31:9:31:32 | call to method IsTrue | normal |
+| Assert.cs:31:9:31:32 | call to method IsTrue | Assert.cs:31:9:31:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:31:9:31:33 | ...; | Assert.cs:31:9:31:32 | call to method IsTrue | normal |
+| Assert.cs:31:9:31:33 | ...; | Assert.cs:31:9:31:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:31:23:31:23 | access to local variable s | Assert.cs:31:23:31:23 | access to local variable s | normal |
+| Assert.cs:31:23:31:31 | ... == ... | Assert.cs:31:23:31:31 | ... == ... | false |
+| Assert.cs:31:23:31:31 | ... == ... | Assert.cs:31:23:31:31 | ... == ... | true |
+| Assert.cs:31:28:31:31 | null | Assert.cs:31:28:31:31 | null | normal |
+| Assert.cs:32:9:32:35 | call to method WriteLine | Assert.cs:32:9:32:35 | call to method WriteLine | normal |
+| Assert.cs:32:9:32:36 | ...; | Assert.cs:32:9:32:35 | call to method WriteLine | normal |
+| Assert.cs:32:27:32:27 | access to local variable s | Assert.cs:32:27:32:27 | access to local variable s | normal |
+| Assert.cs:32:27:32:34 | access to property Length | Assert.cs:32:27:32:34 | access to property Length | normal |
+| Assert.cs:36:5:40:5 | {...} | Assert.cs:38:9:38:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:36:5:40:5 | {...} | Assert.cs:39:9:39:35 | call to method WriteLine | normal |
+| Assert.cs:37:9:37:33 | ... ...; | Assert.cs:37:16:37:32 | String s = ... | normal |
+| Assert.cs:37:16:37:32 | String s = ... | Assert.cs:37:16:37:32 | String s = ... | normal |
+| Assert.cs:37:20:37:20 | access to parameter b | Assert.cs:37:20:37:20 | access to parameter b | false |
+| Assert.cs:37:20:37:20 | access to parameter b | Assert.cs:37:20:37:20 | access to parameter b | true |
+| Assert.cs:37:20:37:32 | ... ? ... : ... | Assert.cs:37:24:37:27 | null | normal |
+| Assert.cs:37:20:37:32 | ... ? ... : ... | Assert.cs:37:31:37:32 | "" | normal |
+| Assert.cs:37:24:37:27 | null | Assert.cs:37:24:37:27 | null | normal |
+| Assert.cs:37:31:37:32 | "" | Assert.cs:37:31:37:32 | "" | normal |
+| Assert.cs:38:9:38:32 | call to method IsTrue | Assert.cs:38:9:38:32 | call to method IsTrue | normal |
+| Assert.cs:38:9:38:32 | call to method IsTrue | Assert.cs:38:9:38:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:38:9:38:33 | ...; | Assert.cs:38:9:38:32 | call to method IsTrue | normal |
+| Assert.cs:38:9:38:33 | ...; | Assert.cs:38:9:38:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:38:23:38:23 | access to local variable s | Assert.cs:38:23:38:23 | access to local variable s | normal |
+| Assert.cs:38:23:38:31 | ... != ... | Assert.cs:38:23:38:31 | ... != ... | false |
+| Assert.cs:38:23:38:31 | ... != ... | Assert.cs:38:23:38:31 | ... != ... | true |
+| Assert.cs:38:28:38:31 | null | Assert.cs:38:28:38:31 | null | normal |
+| Assert.cs:39:9:39:35 | call to method WriteLine | Assert.cs:39:9:39:35 | call to method WriteLine | normal |
+| Assert.cs:39:9:39:36 | ...; | Assert.cs:39:9:39:35 | call to method WriteLine | normal |
+| Assert.cs:39:27:39:27 | access to local variable s | Assert.cs:39:27:39:27 | access to local variable s | normal |
+| Assert.cs:39:27:39:34 | access to property Length | Assert.cs:39:27:39:34 | access to property Length | normal |
+| Assert.cs:43:5:47:5 | {...} | Assert.cs:45:9:45:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:43:5:47:5 | {...} | Assert.cs:46:9:46:35 | call to method WriteLine | normal |
+| Assert.cs:44:9:44:33 | ... ...; | Assert.cs:44:16:44:32 | String s = ... | normal |
+| Assert.cs:44:16:44:32 | String s = ... | Assert.cs:44:16:44:32 | String s = ... | normal |
+| Assert.cs:44:20:44:20 | access to parameter b | Assert.cs:44:20:44:20 | access to parameter b | false |
+| Assert.cs:44:20:44:20 | access to parameter b | Assert.cs:44:20:44:20 | access to parameter b | true |
+| Assert.cs:44:20:44:32 | ... ? ... : ... | Assert.cs:44:24:44:27 | null | normal |
+| Assert.cs:44:20:44:32 | ... ? ... : ... | Assert.cs:44:31:44:32 | "" | normal |
+| Assert.cs:44:24:44:27 | null | Assert.cs:44:24:44:27 | null | normal |
+| Assert.cs:44:31:44:32 | "" | Assert.cs:44:31:44:32 | "" | normal |
+| Assert.cs:45:9:45:33 | call to method IsFalse | Assert.cs:45:9:45:33 | call to method IsFalse | normal |
+| Assert.cs:45:9:45:33 | call to method IsFalse | Assert.cs:45:9:45:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:45:9:45:34 | ...; | Assert.cs:45:9:45:33 | call to method IsFalse | normal |
+| Assert.cs:45:9:45:34 | ...; | Assert.cs:45:9:45:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:45:24:45:24 | access to local variable s | Assert.cs:45:24:45:24 | access to local variable s | normal |
+| Assert.cs:45:24:45:32 | ... != ... | Assert.cs:45:24:45:32 | ... != ... | false |
+| Assert.cs:45:24:45:32 | ... != ... | Assert.cs:45:24:45:32 | ... != ... | true |
+| Assert.cs:45:29:45:32 | null | Assert.cs:45:29:45:32 | null | normal |
+| Assert.cs:46:9:46:35 | call to method WriteLine | Assert.cs:46:9:46:35 | call to method WriteLine | normal |
+| Assert.cs:46:9:46:36 | ...; | Assert.cs:46:9:46:35 | call to method WriteLine | normal |
+| Assert.cs:46:27:46:27 | access to local variable s | Assert.cs:46:27:46:27 | access to local variable s | normal |
+| Assert.cs:46:27:46:34 | access to property Length | Assert.cs:46:27:46:34 | access to property Length | normal |
+| Assert.cs:50:5:54:5 | {...} | Assert.cs:52:9:52:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:50:5:54:5 | {...} | Assert.cs:53:9:53:35 | call to method WriteLine | normal |
+| Assert.cs:51:9:51:33 | ... ...; | Assert.cs:51:16:51:32 | String s = ... | normal |
+| Assert.cs:51:16:51:32 | String s = ... | Assert.cs:51:16:51:32 | String s = ... | normal |
+| Assert.cs:51:20:51:20 | access to parameter b | Assert.cs:51:20:51:20 | access to parameter b | false |
+| Assert.cs:51:20:51:20 | access to parameter b | Assert.cs:51:20:51:20 | access to parameter b | true |
+| Assert.cs:51:20:51:32 | ... ? ... : ... | Assert.cs:51:24:51:27 | null | normal |
+| Assert.cs:51:20:51:32 | ... ? ... : ... | Assert.cs:51:31:51:32 | "" | normal |
+| Assert.cs:51:24:51:27 | null | Assert.cs:51:24:51:27 | null | normal |
+| Assert.cs:51:31:51:32 | "" | Assert.cs:51:31:51:32 | "" | normal |
+| Assert.cs:52:9:52:33 | call to method IsFalse | Assert.cs:52:9:52:33 | call to method IsFalse | normal |
+| Assert.cs:52:9:52:33 | call to method IsFalse | Assert.cs:52:9:52:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:52:9:52:34 | ...; | Assert.cs:52:9:52:33 | call to method IsFalse | normal |
+| Assert.cs:52:9:52:34 | ...; | Assert.cs:52:9:52:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:52:24:52:24 | access to local variable s | Assert.cs:52:24:52:24 | access to local variable s | normal |
+| Assert.cs:52:24:52:32 | ... == ... | Assert.cs:52:24:52:32 | ... == ... | false |
+| Assert.cs:52:24:52:32 | ... == ... | Assert.cs:52:24:52:32 | ... == ... | true |
+| Assert.cs:52:29:52:32 | null | Assert.cs:52:29:52:32 | null | normal |
+| Assert.cs:53:9:53:35 | call to method WriteLine | Assert.cs:53:9:53:35 | call to method WriteLine | normal |
+| Assert.cs:53:9:53:36 | ...; | Assert.cs:53:9:53:35 | call to method WriteLine | normal |
+| Assert.cs:53:27:53:27 | access to local variable s | Assert.cs:53:27:53:27 | access to local variable s | normal |
+| Assert.cs:53:27:53:34 | access to property Length | Assert.cs:53:27:53:34 | access to property Length | normal |
+| Assert.cs:57:5:61:5 | {...} | Assert.cs:59:9:59:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:57:5:61:5 | {...} | Assert.cs:60:9:60:35 | call to method WriteLine | normal |
+| Assert.cs:58:9:58:33 | ... ...; | Assert.cs:58:16:58:32 | String s = ... | normal |
+| Assert.cs:58:16:58:32 | String s = ... | Assert.cs:58:16:58:32 | String s = ... | normal |
+| Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | false |
+| Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | true |
+| Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:58:24:58:27 | null | normal |
+| Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:58:31:58:32 | "" | normal |
+| Assert.cs:58:24:58:27 | null | Assert.cs:58:24:58:27 | null | normal |
+| Assert.cs:58:31:58:32 | "" | Assert.cs:58:31:58:32 | "" | normal |
+| Assert.cs:59:9:59:37 | call to method IsTrue | Assert.cs:59:9:59:37 | call to method IsTrue | normal |
+| Assert.cs:59:9:59:37 | call to method IsTrue | Assert.cs:59:9:59:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:59:9:59:38 | ...; | Assert.cs:59:9:59:37 | call to method IsTrue | normal |
+| Assert.cs:59:9:59:38 | ...; | Assert.cs:59:9:59:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:59:23:59:23 | access to local variable s | Assert.cs:59:23:59:23 | access to local variable s | normal |
+| Assert.cs:59:23:59:31 | ... != ... | Assert.cs:59:23:59:31 | ... != ... | false |
+| Assert.cs:59:23:59:31 | ... != ... | Assert.cs:59:23:59:31 | ... != ... | true |
+| Assert.cs:59:23:59:36 | ... && ... | Assert.cs:59:23:59:31 | ... != ... | false |
+| Assert.cs:59:23:59:36 | ... && ... | Assert.cs:59:36:59:36 | access to parameter b | false |
+| Assert.cs:59:23:59:36 | ... && ... | Assert.cs:59:36:59:36 | access to parameter b | true |
+| Assert.cs:59:28:59:31 | null | Assert.cs:59:28:59:31 | null | normal |
+| Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:59:36:59:36 | access to parameter b | false |
+| Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:59:36:59:36 | access to parameter b | true |
+| Assert.cs:60:9:60:35 | call to method WriteLine | Assert.cs:60:9:60:35 | call to method WriteLine | normal |
+| Assert.cs:60:9:60:36 | ...; | Assert.cs:60:9:60:35 | call to method WriteLine | normal |
+| Assert.cs:60:27:60:27 | access to local variable s | Assert.cs:60:27:60:27 | access to local variable s | normal |
+| Assert.cs:60:27:60:34 | access to property Length | Assert.cs:60:27:60:34 | access to property Length | normal |
+| Assert.cs:64:5:68:5 | {...} | Assert.cs:66:9:66:38 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:64:5:68:5 | {...} | Assert.cs:67:9:67:35 | call to method WriteLine | normal |
+| Assert.cs:65:9:65:33 | ... ...; | Assert.cs:65:16:65:32 | String s = ... | normal |
+| Assert.cs:65:16:65:32 | String s = ... | Assert.cs:65:16:65:32 | String s = ... | normal |
+| Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | false |
+| Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | true |
+| Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:65:24:65:27 | null | normal |
+| Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:65:31:65:32 | "" | normal |
+| Assert.cs:65:24:65:27 | null | Assert.cs:65:24:65:27 | null | normal |
+| Assert.cs:65:31:65:32 | "" | Assert.cs:65:31:65:32 | "" | normal |
+| Assert.cs:66:9:66:38 | call to method IsFalse | Assert.cs:66:9:66:38 | call to method IsFalse | normal |
+| Assert.cs:66:9:66:38 | call to method IsFalse | Assert.cs:66:9:66:38 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:66:9:66:39 | ...; | Assert.cs:66:9:66:38 | call to method IsFalse | normal |
+| Assert.cs:66:9:66:39 | ...; | Assert.cs:66:9:66:38 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:66:24:66:24 | access to local variable s | Assert.cs:66:24:66:24 | access to local variable s | normal |
+| Assert.cs:66:24:66:32 | ... == ... | Assert.cs:66:24:66:32 | ... == ... | false |
+| Assert.cs:66:24:66:32 | ... == ... | Assert.cs:66:24:66:32 | ... == ... | true |
+| Assert.cs:66:24:66:37 | ... \|\| ... | Assert.cs:66:24:66:32 | ... == ... | true |
+| Assert.cs:66:24:66:37 | ... \|\| ... | Assert.cs:66:37:66:37 | access to parameter b | false |
+| Assert.cs:66:24:66:37 | ... \|\| ... | Assert.cs:66:37:66:37 | access to parameter b | true |
+| Assert.cs:66:29:66:32 | null | Assert.cs:66:29:66:32 | null | normal |
+| Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:66:37:66:37 | access to parameter b | false |
+| Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:66:37:66:37 | access to parameter b | true |
+| Assert.cs:67:9:67:35 | call to method WriteLine | Assert.cs:67:9:67:35 | call to method WriteLine | normal |
+| Assert.cs:67:9:67:36 | ...; | Assert.cs:67:9:67:35 | call to method WriteLine | normal |
+| Assert.cs:67:27:67:27 | access to local variable s | Assert.cs:67:27:67:27 | access to local variable s | normal |
+| Assert.cs:67:27:67:34 | access to property Length | Assert.cs:67:27:67:34 | access to property Length | normal |
+| Assert.cs:71:5:75:5 | {...} | Assert.cs:73:9:73:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:71:5:75:5 | {...} | Assert.cs:74:9:74:35 | call to method WriteLine | normal |
+| Assert.cs:72:9:72:33 | ... ...; | Assert.cs:72:16:72:32 | String s = ... | normal |
+| Assert.cs:72:16:72:32 | String s = ... | Assert.cs:72:16:72:32 | String s = ... | normal |
+| Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | false |
+| Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | true |
+| Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:72:24:72:27 | null | normal |
+| Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:72:31:72:32 | "" | normal |
+| Assert.cs:72:24:72:27 | null | Assert.cs:72:24:72:27 | null | normal |
+| Assert.cs:72:31:72:32 | "" | Assert.cs:72:31:72:32 | "" | normal |
+| Assert.cs:73:9:73:37 | call to method IsTrue | Assert.cs:73:9:73:37 | call to method IsTrue | normal |
+| Assert.cs:73:9:73:37 | call to method IsTrue | Assert.cs:73:9:73:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:73:9:73:38 | ...; | Assert.cs:73:9:73:37 | call to method IsTrue | normal |
+| Assert.cs:73:9:73:38 | ...; | Assert.cs:73:9:73:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:73:23:73:23 | access to local variable s | Assert.cs:73:23:73:23 | access to local variable s | normal |
+| Assert.cs:73:23:73:31 | ... == ... | Assert.cs:73:23:73:31 | ... == ... | false |
+| Assert.cs:73:23:73:31 | ... == ... | Assert.cs:73:23:73:31 | ... == ... | true |
+| Assert.cs:73:23:73:36 | ... && ... | Assert.cs:73:23:73:31 | ... == ... | false |
+| Assert.cs:73:23:73:36 | ... && ... | Assert.cs:73:36:73:36 | access to parameter b | false |
+| Assert.cs:73:23:73:36 | ... && ... | Assert.cs:73:36:73:36 | access to parameter b | true |
+| Assert.cs:73:28:73:31 | null | Assert.cs:73:28:73:31 | null | normal |
+| Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:73:36:73:36 | access to parameter b | false |
+| Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:73:36:73:36 | access to parameter b | true |
+| Assert.cs:74:9:74:35 | call to method WriteLine | Assert.cs:74:9:74:35 | call to method WriteLine | normal |
+| Assert.cs:74:9:74:36 | ...; | Assert.cs:74:9:74:35 | call to method WriteLine | normal |
+| Assert.cs:74:27:74:27 | access to local variable s | Assert.cs:74:27:74:27 | access to local variable s | normal |
+| Assert.cs:74:27:74:34 | access to property Length | Assert.cs:74:27:74:34 | access to property Length | normal |
+| Assert.cs:78:5:82:5 | {...} | Assert.cs:80:9:80:38 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:78:5:82:5 | {...} | Assert.cs:81:9:81:35 | call to method WriteLine | normal |
+| Assert.cs:79:9:79:33 | ... ...; | Assert.cs:79:16:79:32 | String s = ... | normal |
+| Assert.cs:79:16:79:32 | String s = ... | Assert.cs:79:16:79:32 | String s = ... | normal |
+| Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | false |
+| Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | true |
+| Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:24:79:27 | null | normal |
+| Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:31:79:32 | "" | normal |
+| Assert.cs:79:24:79:27 | null | Assert.cs:79:24:79:27 | null | normal |
+| Assert.cs:79:31:79:32 | "" | Assert.cs:79:31:79:32 | "" | normal |
+| Assert.cs:80:9:80:38 | call to method IsFalse | Assert.cs:80:9:80:38 | call to method IsFalse | normal |
+| Assert.cs:80:9:80:38 | call to method IsFalse | Assert.cs:80:9:80:38 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:80:9:80:39 | ...; | Assert.cs:80:9:80:38 | call to method IsFalse | normal |
+| Assert.cs:80:9:80:39 | ...; | Assert.cs:80:9:80:38 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:80:24:80:24 | access to local variable s | Assert.cs:80:24:80:24 | access to local variable s | normal |
+| Assert.cs:80:24:80:32 | ... != ... | Assert.cs:80:24:80:32 | ... != ... | false |
+| Assert.cs:80:24:80:32 | ... != ... | Assert.cs:80:24:80:32 | ... != ... | true |
+| Assert.cs:80:24:80:37 | ... \|\| ... | Assert.cs:80:24:80:32 | ... != ... | true |
+| Assert.cs:80:24:80:37 | ... \|\| ... | Assert.cs:80:37:80:37 | access to parameter b | false |
+| Assert.cs:80:24:80:37 | ... \|\| ... | Assert.cs:80:37:80:37 | access to parameter b | true |
+| Assert.cs:80:29:80:32 | null | Assert.cs:80:29:80:32 | null | normal |
+| Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:80:37:80:37 | access to parameter b | false |
+| Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:80:37:80:37 | access to parameter b | true |
+| Assert.cs:81:9:81:35 | call to method WriteLine | Assert.cs:81:9:81:35 | call to method WriteLine | normal |
+| Assert.cs:81:9:81:36 | ...; | Assert.cs:81:9:81:35 | call to method WriteLine | normal |
+| Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:81:27:81:27 | access to local variable s | normal |
+| Assert.cs:81:27:81:34 | access to property Length | Assert.cs:81:27:81:34 | access to property Length | normal |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:87:9:87:31 | call to method Assert | exit |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:91:9:91:24 | call to method IsNull | throw(AssertFailedException) |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:95:9:95:27 | call to method IsNotNull | throw(AssertFailedException) |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:99:9:99:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:103:9:103:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:107:9:107:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:111:9:111:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:115:9:115:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:119:9:119:39 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:123:9:123:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:127:9:127:39 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:128:9:128:35 | call to method WriteLine | normal |
+| Assert.cs:86:9:86:33 | ... ...; | Assert.cs:86:16:86:32 | String s = ... | normal |
+| Assert.cs:86:16:86:32 | String s = ... | Assert.cs:86:16:86:32 | String s = ... | normal |
+| Assert.cs:86:20:86:20 | access to parameter b | Assert.cs:86:20:86:20 | access to parameter b | false |
+| Assert.cs:86:20:86:20 | access to parameter b | Assert.cs:86:20:86:20 | access to parameter b | true |
+| Assert.cs:86:20:86:32 | ... ? ... : ... | Assert.cs:86:24:86:27 | null | normal |
+| Assert.cs:86:20:86:32 | ... ? ... : ... | Assert.cs:86:31:86:32 | "" | normal |
+| Assert.cs:86:24:86:27 | null | Assert.cs:86:24:86:27 | null | normal |
+| Assert.cs:86:31:86:32 | "" | Assert.cs:86:31:86:32 | "" | normal |
+| Assert.cs:87:9:87:31 | call to method Assert | Assert.cs:87:9:87:31 | call to method Assert | exit |
+| Assert.cs:87:9:87:31 | call to method Assert | Assert.cs:87:9:87:31 | call to method Assert | normal |
+| Assert.cs:87:9:87:32 | ...; | Assert.cs:87:9:87:31 | call to method Assert | exit |
+| Assert.cs:87:9:87:32 | ...; | Assert.cs:87:9:87:31 | call to method Assert | normal |
+| Assert.cs:87:22:87:22 | access to local variable s | Assert.cs:87:22:87:22 | access to local variable s | normal |
+| Assert.cs:87:22:87:30 | ... != ... | Assert.cs:87:22:87:30 | ... != ... | false |
+| Assert.cs:87:22:87:30 | ... != ... | Assert.cs:87:22:87:30 | ... != ... | true |
+| Assert.cs:87:27:87:30 | null | Assert.cs:87:27:87:30 | null | normal |
+| Assert.cs:88:9:88:35 | call to method WriteLine | Assert.cs:88:9:88:35 | call to method WriteLine | normal |
+| Assert.cs:88:9:88:36 | ...; | Assert.cs:88:9:88:35 | call to method WriteLine | normal |
+| Assert.cs:88:27:88:27 | access to local variable s | Assert.cs:88:27:88:27 | access to local variable s | normal |
+| Assert.cs:88:27:88:34 | access to property Length | Assert.cs:88:27:88:34 | access to property Length | normal |
+| Assert.cs:90:9:90:25 | ... = ... | Assert.cs:90:9:90:25 | ... = ... | normal |
+| Assert.cs:90:9:90:26 | ...; | Assert.cs:90:9:90:25 | ... = ... | normal |
+| Assert.cs:90:13:90:13 | access to parameter b | Assert.cs:90:13:90:13 | access to parameter b | false |
+| Assert.cs:90:13:90:13 | access to parameter b | Assert.cs:90:13:90:13 | access to parameter b | true |
+| Assert.cs:90:13:90:25 | ... ? ... : ... | Assert.cs:90:17:90:20 | null | normal |
+| Assert.cs:90:13:90:25 | ... ? ... : ... | Assert.cs:90:24:90:25 | "" | normal |
+| Assert.cs:90:17:90:20 | null | Assert.cs:90:17:90:20 | null | normal |
+| Assert.cs:90:24:90:25 | "" | Assert.cs:90:24:90:25 | "" | normal |
+| Assert.cs:91:9:91:24 | call to method IsNull | Assert.cs:91:9:91:24 | call to method IsNull | normal |
+| Assert.cs:91:9:91:24 | call to method IsNull | Assert.cs:91:9:91:24 | call to method IsNull | throw(AssertFailedException) |
+| Assert.cs:91:9:91:25 | ...; | Assert.cs:91:9:91:24 | call to method IsNull | normal |
+| Assert.cs:91:9:91:25 | ...; | Assert.cs:91:9:91:24 | call to method IsNull | throw(AssertFailedException) |
+| Assert.cs:91:23:91:23 | access to local variable s | Assert.cs:91:23:91:23 | access to local variable s | non-null |
+| Assert.cs:91:23:91:23 | access to local variable s | Assert.cs:91:23:91:23 | access to local variable s | null |
+| Assert.cs:92:9:92:35 | call to method WriteLine | Assert.cs:92:9:92:35 | call to method WriteLine | normal |
+| Assert.cs:92:9:92:36 | ...; | Assert.cs:92:9:92:35 | call to method WriteLine | normal |
+| Assert.cs:92:27:92:27 | access to local variable s | Assert.cs:92:27:92:27 | access to local variable s | normal |
+| Assert.cs:92:27:92:34 | access to property Length | Assert.cs:92:27:92:34 | access to property Length | normal |
+| Assert.cs:94:9:94:25 | ... = ... | Assert.cs:94:9:94:25 | ... = ... | normal |
+| Assert.cs:94:9:94:26 | ...; | Assert.cs:94:9:94:25 | ... = ... | normal |
+| Assert.cs:94:13:94:13 | access to parameter b | Assert.cs:94:13:94:13 | access to parameter b | false |
+| Assert.cs:94:13:94:13 | access to parameter b | Assert.cs:94:13:94:13 | access to parameter b | true |
+| Assert.cs:94:13:94:25 | ... ? ... : ... | Assert.cs:94:17:94:20 | null | normal |
+| Assert.cs:94:13:94:25 | ... ? ... : ... | Assert.cs:94:24:94:25 | "" | normal |
+| Assert.cs:94:17:94:20 | null | Assert.cs:94:17:94:20 | null | normal |
+| Assert.cs:94:24:94:25 | "" | Assert.cs:94:24:94:25 | "" | normal |
+| Assert.cs:95:9:95:27 | call to method IsNotNull | Assert.cs:95:9:95:27 | call to method IsNotNull | normal |
+| Assert.cs:95:9:95:27 | call to method IsNotNull | Assert.cs:95:9:95:27 | call to method IsNotNull | throw(AssertFailedException) |
+| Assert.cs:95:9:95:28 | ...; | Assert.cs:95:9:95:27 | call to method IsNotNull | normal |
+| Assert.cs:95:9:95:28 | ...; | Assert.cs:95:9:95:27 | call to method IsNotNull | throw(AssertFailedException) |
+| Assert.cs:95:26:95:26 | access to local variable s | Assert.cs:95:26:95:26 | access to local variable s | non-null |
+| Assert.cs:95:26:95:26 | access to local variable s | Assert.cs:95:26:95:26 | access to local variable s | null |
+| Assert.cs:96:9:96:35 | call to method WriteLine | Assert.cs:96:9:96:35 | call to method WriteLine | normal |
+| Assert.cs:96:9:96:36 | ...; | Assert.cs:96:9:96:35 | call to method WriteLine | normal |
+| Assert.cs:96:27:96:27 | access to local variable s | Assert.cs:96:27:96:27 | access to local variable s | normal |
+| Assert.cs:96:27:96:34 | access to property Length | Assert.cs:96:27:96:34 | access to property Length | normal |
+| Assert.cs:98:9:98:25 | ... = ... | Assert.cs:98:9:98:25 | ... = ... | normal |
+| Assert.cs:98:9:98:26 | ...; | Assert.cs:98:9:98:25 | ... = ... | normal |
+| Assert.cs:98:13:98:13 | access to parameter b | Assert.cs:98:13:98:13 | access to parameter b | false |
+| Assert.cs:98:13:98:13 | access to parameter b | Assert.cs:98:13:98:13 | access to parameter b | true |
+| Assert.cs:98:13:98:25 | ... ? ... : ... | Assert.cs:98:17:98:20 | null | normal |
+| Assert.cs:98:13:98:25 | ... ? ... : ... | Assert.cs:98:24:98:25 | "" | normal |
+| Assert.cs:98:17:98:20 | null | Assert.cs:98:17:98:20 | null | normal |
+| Assert.cs:98:24:98:25 | "" | Assert.cs:98:24:98:25 | "" | normal |
+| Assert.cs:99:9:99:32 | call to method IsTrue | Assert.cs:99:9:99:32 | call to method IsTrue | normal |
+| Assert.cs:99:9:99:32 | call to method IsTrue | Assert.cs:99:9:99:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:99:9:99:33 | ...; | Assert.cs:99:9:99:32 | call to method IsTrue | normal |
+| Assert.cs:99:9:99:33 | ...; | Assert.cs:99:9:99:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:99:23:99:23 | access to local variable s | Assert.cs:99:23:99:23 | access to local variable s | normal |
+| Assert.cs:99:23:99:31 | ... == ... | Assert.cs:99:23:99:31 | ... == ... | false |
+| Assert.cs:99:23:99:31 | ... == ... | Assert.cs:99:23:99:31 | ... == ... | true |
+| Assert.cs:99:28:99:31 | null | Assert.cs:99:28:99:31 | null | normal |
+| Assert.cs:100:9:100:35 | call to method WriteLine | Assert.cs:100:9:100:35 | call to method WriteLine | normal |
+| Assert.cs:100:9:100:36 | ...; | Assert.cs:100:9:100:35 | call to method WriteLine | normal |
+| Assert.cs:100:27:100:27 | access to local variable s | Assert.cs:100:27:100:27 | access to local variable s | normal |
+| Assert.cs:100:27:100:34 | access to property Length | Assert.cs:100:27:100:34 | access to property Length | normal |
+| Assert.cs:102:9:102:25 | ... = ... | Assert.cs:102:9:102:25 | ... = ... | normal |
+| Assert.cs:102:9:102:26 | ...; | Assert.cs:102:9:102:25 | ... = ... | normal |
+| Assert.cs:102:13:102:13 | access to parameter b | Assert.cs:102:13:102:13 | access to parameter b | false |
+| Assert.cs:102:13:102:13 | access to parameter b | Assert.cs:102:13:102:13 | access to parameter b | true |
+| Assert.cs:102:13:102:25 | ... ? ... : ... | Assert.cs:102:17:102:20 | null | normal |
+| Assert.cs:102:13:102:25 | ... ? ... : ... | Assert.cs:102:24:102:25 | "" | normal |
+| Assert.cs:102:17:102:20 | null | Assert.cs:102:17:102:20 | null | normal |
+| Assert.cs:102:24:102:25 | "" | Assert.cs:102:24:102:25 | "" | normal |
+| Assert.cs:103:9:103:32 | call to method IsTrue | Assert.cs:103:9:103:32 | call to method IsTrue | normal |
+| Assert.cs:103:9:103:32 | call to method IsTrue | Assert.cs:103:9:103:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:103:9:103:33 | ...; | Assert.cs:103:9:103:32 | call to method IsTrue | normal |
+| Assert.cs:103:9:103:33 | ...; | Assert.cs:103:9:103:32 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:103:23:103:23 | access to local variable s | Assert.cs:103:23:103:23 | access to local variable s | normal |
+| Assert.cs:103:23:103:31 | ... != ... | Assert.cs:103:23:103:31 | ... != ... | false |
+| Assert.cs:103:23:103:31 | ... != ... | Assert.cs:103:23:103:31 | ... != ... | true |
+| Assert.cs:103:28:103:31 | null | Assert.cs:103:28:103:31 | null | normal |
+| Assert.cs:104:9:104:35 | call to method WriteLine | Assert.cs:104:9:104:35 | call to method WriteLine | normal |
+| Assert.cs:104:9:104:36 | ...; | Assert.cs:104:9:104:35 | call to method WriteLine | normal |
+| Assert.cs:104:27:104:27 | access to local variable s | Assert.cs:104:27:104:27 | access to local variable s | normal |
+| Assert.cs:104:27:104:34 | access to property Length | Assert.cs:104:27:104:34 | access to property Length | normal |
+| Assert.cs:106:9:106:25 | ... = ... | Assert.cs:106:9:106:25 | ... = ... | normal |
+| Assert.cs:106:9:106:26 | ...; | Assert.cs:106:9:106:25 | ... = ... | normal |
+| Assert.cs:106:13:106:13 | access to parameter b | Assert.cs:106:13:106:13 | access to parameter b | false |
+| Assert.cs:106:13:106:13 | access to parameter b | Assert.cs:106:13:106:13 | access to parameter b | true |
+| Assert.cs:106:13:106:25 | ... ? ... : ... | Assert.cs:106:17:106:20 | null | normal |
+| Assert.cs:106:13:106:25 | ... ? ... : ... | Assert.cs:106:24:106:25 | "" | normal |
+| Assert.cs:106:17:106:20 | null | Assert.cs:106:17:106:20 | null | normal |
+| Assert.cs:106:24:106:25 | "" | Assert.cs:106:24:106:25 | "" | normal |
+| Assert.cs:107:9:107:33 | call to method IsFalse | Assert.cs:107:9:107:33 | call to method IsFalse | normal |
+| Assert.cs:107:9:107:33 | call to method IsFalse | Assert.cs:107:9:107:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:107:9:107:34 | ...; | Assert.cs:107:9:107:33 | call to method IsFalse | normal |
+| Assert.cs:107:9:107:34 | ...; | Assert.cs:107:9:107:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:107:24:107:24 | access to local variable s | Assert.cs:107:24:107:24 | access to local variable s | normal |
+| Assert.cs:107:24:107:32 | ... != ... | Assert.cs:107:24:107:32 | ... != ... | false |
+| Assert.cs:107:24:107:32 | ... != ... | Assert.cs:107:24:107:32 | ... != ... | true |
+| Assert.cs:107:29:107:32 | null | Assert.cs:107:29:107:32 | null | normal |
+| Assert.cs:108:9:108:35 | call to method WriteLine | Assert.cs:108:9:108:35 | call to method WriteLine | normal |
+| Assert.cs:108:9:108:36 | ...; | Assert.cs:108:9:108:35 | call to method WriteLine | normal |
+| Assert.cs:108:27:108:27 | access to local variable s | Assert.cs:108:27:108:27 | access to local variable s | normal |
+| Assert.cs:108:27:108:34 | access to property Length | Assert.cs:108:27:108:34 | access to property Length | normal |
+| Assert.cs:110:9:110:25 | ... = ... | Assert.cs:110:9:110:25 | ... = ... | normal |
+| Assert.cs:110:9:110:26 | ...; | Assert.cs:110:9:110:25 | ... = ... | normal |
+| Assert.cs:110:13:110:13 | access to parameter b | Assert.cs:110:13:110:13 | access to parameter b | false |
+| Assert.cs:110:13:110:13 | access to parameter b | Assert.cs:110:13:110:13 | access to parameter b | true |
+| Assert.cs:110:13:110:25 | ... ? ... : ... | Assert.cs:110:17:110:20 | null | normal |
+| Assert.cs:110:13:110:25 | ... ? ... : ... | Assert.cs:110:24:110:25 | "" | normal |
+| Assert.cs:110:17:110:20 | null | Assert.cs:110:17:110:20 | null | normal |
+| Assert.cs:110:24:110:25 | "" | Assert.cs:110:24:110:25 | "" | normal |
+| Assert.cs:111:9:111:33 | call to method IsFalse | Assert.cs:111:9:111:33 | call to method IsFalse | normal |
+| Assert.cs:111:9:111:33 | call to method IsFalse | Assert.cs:111:9:111:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:111:9:111:34 | ...; | Assert.cs:111:9:111:33 | call to method IsFalse | normal |
+| Assert.cs:111:9:111:34 | ...; | Assert.cs:111:9:111:33 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:111:24:111:24 | access to local variable s | Assert.cs:111:24:111:24 | access to local variable s | normal |
+| Assert.cs:111:24:111:32 | ... == ... | Assert.cs:111:24:111:32 | ... == ... | false |
+| Assert.cs:111:24:111:32 | ... == ... | Assert.cs:111:24:111:32 | ... == ... | true |
+| Assert.cs:111:29:111:32 | null | Assert.cs:111:29:111:32 | null | normal |
+| Assert.cs:112:9:112:35 | call to method WriteLine | Assert.cs:112:9:112:35 | call to method WriteLine | normal |
+| Assert.cs:112:9:112:36 | ...; | Assert.cs:112:9:112:35 | call to method WriteLine | normal |
+| Assert.cs:112:27:112:27 | access to local variable s | Assert.cs:112:27:112:27 | access to local variable s | normal |
+| Assert.cs:112:27:112:34 | access to property Length | Assert.cs:112:27:112:34 | access to property Length | normal |
+| Assert.cs:114:9:114:25 | ... = ... | Assert.cs:114:9:114:25 | ... = ... | normal |
+| Assert.cs:114:9:114:26 | ...; | Assert.cs:114:9:114:25 | ... = ... | normal |
+| Assert.cs:114:13:114:13 | access to parameter b | Assert.cs:114:13:114:13 | access to parameter b | false |
+| Assert.cs:114:13:114:13 | access to parameter b | Assert.cs:114:13:114:13 | access to parameter b | true |
+| Assert.cs:114:13:114:25 | ... ? ... : ... | Assert.cs:114:17:114:20 | null | normal |
+| Assert.cs:114:13:114:25 | ... ? ... : ... | Assert.cs:114:24:114:25 | "" | normal |
+| Assert.cs:114:17:114:20 | null | Assert.cs:114:17:114:20 | null | normal |
+| Assert.cs:114:24:114:25 | "" | Assert.cs:114:24:114:25 | "" | normal |
+| Assert.cs:115:9:115:37 | call to method IsTrue | Assert.cs:115:9:115:37 | call to method IsTrue | normal |
+| Assert.cs:115:9:115:37 | call to method IsTrue | Assert.cs:115:9:115:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:115:9:115:38 | ...; | Assert.cs:115:9:115:37 | call to method IsTrue | normal |
+| Assert.cs:115:9:115:38 | ...; | Assert.cs:115:9:115:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:115:23:115:23 | access to local variable s | Assert.cs:115:23:115:23 | access to local variable s | normal |
+| Assert.cs:115:23:115:31 | ... != ... | Assert.cs:115:23:115:31 | ... != ... | false |
+| Assert.cs:115:23:115:31 | ... != ... | Assert.cs:115:23:115:31 | ... != ... | true |
+| Assert.cs:115:23:115:36 | ... && ... | Assert.cs:115:23:115:31 | ... != ... | false |
+| Assert.cs:115:23:115:36 | ... && ... | Assert.cs:115:36:115:36 | access to parameter b | false |
+| Assert.cs:115:23:115:36 | ... && ... | Assert.cs:115:36:115:36 | access to parameter b | true |
+| Assert.cs:115:28:115:31 | null | Assert.cs:115:28:115:31 | null | normal |
+| Assert.cs:115:36:115:36 | access to parameter b | Assert.cs:115:36:115:36 | access to parameter b | false |
+| Assert.cs:115:36:115:36 | access to parameter b | Assert.cs:115:36:115:36 | access to parameter b | true |
+| Assert.cs:116:9:116:35 | call to method WriteLine | Assert.cs:116:9:116:35 | call to method WriteLine | normal |
+| Assert.cs:116:9:116:36 | ...; | Assert.cs:116:9:116:35 | call to method WriteLine | normal |
+| Assert.cs:116:27:116:27 | access to local variable s | Assert.cs:116:27:116:27 | access to local variable s | normal |
+| Assert.cs:116:27:116:34 | access to property Length | Assert.cs:116:27:116:34 | access to property Length | normal |
+| Assert.cs:118:9:118:25 | ... = ... | Assert.cs:118:9:118:25 | ... = ... | normal |
+| Assert.cs:118:9:118:26 | ...; | Assert.cs:118:9:118:25 | ... = ... | normal |
+| Assert.cs:118:13:118:13 | access to parameter b | Assert.cs:118:13:118:13 | access to parameter b | false |
+| Assert.cs:118:13:118:13 | access to parameter b | Assert.cs:118:13:118:13 | access to parameter b | true |
+| Assert.cs:118:13:118:25 | ... ? ... : ... | Assert.cs:118:17:118:20 | null | normal |
+| Assert.cs:118:13:118:25 | ... ? ... : ... | Assert.cs:118:24:118:25 | "" | normal |
+| Assert.cs:118:17:118:20 | null | Assert.cs:118:17:118:20 | null | normal |
+| Assert.cs:118:24:118:25 | "" | Assert.cs:118:24:118:25 | "" | normal |
+| Assert.cs:119:9:119:39 | call to method IsFalse | Assert.cs:119:9:119:39 | call to method IsFalse | normal |
+| Assert.cs:119:9:119:39 | call to method IsFalse | Assert.cs:119:9:119:39 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:119:9:119:40 | ...; | Assert.cs:119:9:119:39 | call to method IsFalse | normal |
+| Assert.cs:119:9:119:40 | ...; | Assert.cs:119:9:119:39 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:119:24:119:24 | access to local variable s | Assert.cs:119:24:119:24 | access to local variable s | normal |
+| Assert.cs:119:24:119:32 | ... == ... | Assert.cs:119:24:119:32 | ... == ... | false |
+| Assert.cs:119:24:119:32 | ... == ... | Assert.cs:119:24:119:32 | ... == ... | true |
+| Assert.cs:119:24:119:38 | ... \|\| ... | Assert.cs:119:24:119:32 | ... == ... | true |
+| Assert.cs:119:24:119:38 | ... \|\| ... | Assert.cs:119:38:119:38 | access to parameter b | false [true] |
+| Assert.cs:119:24:119:38 | ... \|\| ... | Assert.cs:119:38:119:38 | access to parameter b | true [false] |
+| Assert.cs:119:29:119:32 | null | Assert.cs:119:29:119:32 | null | normal |
+| Assert.cs:119:37:119:38 | !... | Assert.cs:119:38:119:38 | access to parameter b | false [true] |
+| Assert.cs:119:37:119:38 | !... | Assert.cs:119:38:119:38 | access to parameter b | true [false] |
+| Assert.cs:119:38:119:38 | access to parameter b | Assert.cs:119:38:119:38 | access to parameter b | false |
+| Assert.cs:119:38:119:38 | access to parameter b | Assert.cs:119:38:119:38 | access to parameter b | true |
+| Assert.cs:120:9:120:35 | call to method WriteLine | Assert.cs:120:9:120:35 | call to method WriteLine | normal |
+| Assert.cs:120:9:120:36 | ...; | Assert.cs:120:9:120:35 | call to method WriteLine | normal |
+| Assert.cs:120:27:120:27 | access to local variable s | Assert.cs:120:27:120:27 | access to local variable s | normal |
+| Assert.cs:120:27:120:34 | access to property Length | Assert.cs:120:27:120:34 | access to property Length | normal |
+| Assert.cs:122:9:122:25 | ... = ... | Assert.cs:122:9:122:25 | ... = ... | normal |
+| Assert.cs:122:9:122:26 | ...; | Assert.cs:122:9:122:25 | ... = ... | normal |
+| Assert.cs:122:13:122:13 | access to parameter b | Assert.cs:122:13:122:13 | access to parameter b | false |
+| Assert.cs:122:13:122:13 | access to parameter b | Assert.cs:122:13:122:13 | access to parameter b | true |
+| Assert.cs:122:13:122:25 | ... ? ... : ... | Assert.cs:122:17:122:20 | null | normal |
+| Assert.cs:122:13:122:25 | ... ? ... : ... | Assert.cs:122:24:122:25 | "" | normal |
+| Assert.cs:122:17:122:20 | null | Assert.cs:122:17:122:20 | null | normal |
+| Assert.cs:122:24:122:25 | "" | Assert.cs:122:24:122:25 | "" | normal |
+| Assert.cs:123:9:123:37 | call to method IsTrue | Assert.cs:123:9:123:37 | call to method IsTrue | normal |
+| Assert.cs:123:9:123:37 | call to method IsTrue | Assert.cs:123:9:123:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:123:9:123:38 | ...; | Assert.cs:123:9:123:37 | call to method IsTrue | normal |
+| Assert.cs:123:9:123:38 | ...; | Assert.cs:123:9:123:37 | call to method IsTrue | throw(AssertFailedException) |
+| Assert.cs:123:23:123:23 | access to local variable s | Assert.cs:123:23:123:23 | access to local variable s | normal |
+| Assert.cs:123:23:123:31 | ... == ... | Assert.cs:123:23:123:31 | ... == ... | false |
+| Assert.cs:123:23:123:31 | ... == ... | Assert.cs:123:23:123:31 | ... == ... | true |
+| Assert.cs:123:23:123:36 | ... && ... | Assert.cs:123:23:123:31 | ... == ... | false |
+| Assert.cs:123:23:123:36 | ... && ... | Assert.cs:123:36:123:36 | access to parameter b | false |
+| Assert.cs:123:23:123:36 | ... && ... | Assert.cs:123:36:123:36 | access to parameter b | true |
+| Assert.cs:123:28:123:31 | null | Assert.cs:123:28:123:31 | null | normal |
+| Assert.cs:123:36:123:36 | access to parameter b | Assert.cs:123:36:123:36 | access to parameter b | false |
+| Assert.cs:123:36:123:36 | access to parameter b | Assert.cs:123:36:123:36 | access to parameter b | true |
+| Assert.cs:124:9:124:35 | call to method WriteLine | Assert.cs:124:9:124:35 | call to method WriteLine | normal |
+| Assert.cs:124:9:124:36 | ...; | Assert.cs:124:9:124:35 | call to method WriteLine | normal |
+| Assert.cs:124:27:124:27 | access to local variable s | Assert.cs:124:27:124:27 | access to local variable s | normal |
+| Assert.cs:124:27:124:34 | access to property Length | Assert.cs:124:27:124:34 | access to property Length | normal |
+| Assert.cs:126:9:126:25 | ... = ... | Assert.cs:126:9:126:25 | ... = ... | normal |
+| Assert.cs:126:9:126:26 | ...; | Assert.cs:126:9:126:25 | ... = ... | normal |
+| Assert.cs:126:13:126:13 | access to parameter b | Assert.cs:126:13:126:13 | access to parameter b | false |
+| Assert.cs:126:13:126:13 | access to parameter b | Assert.cs:126:13:126:13 | access to parameter b | true |
+| Assert.cs:126:13:126:25 | ... ? ... : ... | Assert.cs:126:17:126:20 | null | normal |
+| Assert.cs:126:13:126:25 | ... ? ... : ... | Assert.cs:126:24:126:25 | "" | normal |
+| Assert.cs:126:17:126:20 | null | Assert.cs:126:17:126:20 | null | normal |
+| Assert.cs:126:24:126:25 | "" | Assert.cs:126:24:126:25 | "" | normal |
+| Assert.cs:127:9:127:39 | call to method IsFalse | Assert.cs:127:9:127:39 | call to method IsFalse | normal |
+| Assert.cs:127:9:127:39 | call to method IsFalse | Assert.cs:127:9:127:39 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:127:9:127:40 | ...; | Assert.cs:127:9:127:39 | call to method IsFalse | normal |
+| Assert.cs:127:9:127:40 | ...; | Assert.cs:127:9:127:39 | call to method IsFalse | throw(AssertFailedException) |
+| Assert.cs:127:24:127:24 | access to local variable s | Assert.cs:127:24:127:24 | access to local variable s | normal |
+| Assert.cs:127:24:127:32 | ... != ... | Assert.cs:127:24:127:32 | ... != ... | false |
+| Assert.cs:127:24:127:32 | ... != ... | Assert.cs:127:24:127:32 | ... != ... | true |
+| Assert.cs:127:24:127:38 | ... \|\| ... | Assert.cs:127:24:127:32 | ... != ... | true |
+| Assert.cs:127:24:127:38 | ... \|\| ... | Assert.cs:127:38:127:38 | access to parameter b | false [true] |
+| Assert.cs:127:24:127:38 | ... \|\| ... | Assert.cs:127:38:127:38 | access to parameter b | true [false] |
+| Assert.cs:127:29:127:32 | null | Assert.cs:127:29:127:32 | null | normal |
+| Assert.cs:127:37:127:38 | !... | Assert.cs:127:38:127:38 | access to parameter b | false [true] |
+| Assert.cs:127:37:127:38 | !... | Assert.cs:127:38:127:38 | access to parameter b | true [false] |
+| Assert.cs:127:38:127:38 | access to parameter b | Assert.cs:127:38:127:38 | access to parameter b | false |
+| Assert.cs:127:38:127:38 | access to parameter b | Assert.cs:127:38:127:38 | access to parameter b | true |
+| Assert.cs:128:9:128:35 | call to method WriteLine | Assert.cs:128:9:128:35 | call to method WriteLine | normal |
+| Assert.cs:128:9:128:36 | ...; | Assert.cs:128:9:128:35 | call to method WriteLine | normal |
+| Assert.cs:128:27:128:27 | access to local variable s | Assert.cs:128:27:128:27 | access to local variable s | normal |
+| Assert.cs:128:27:128:34 | access to property Length | Assert.cs:128:27:128:34 | access to property Length | normal |
 | Assignments.cs:4:5:15:5 | {...} | Assignments.cs:14:9:14:35 | ... += ... | normal |
 | Assignments.cs:5:9:5:18 | ... ...; | Assignments.cs:5:13:5:17 | Int32 x = ... | normal |
 | Assignments.cs:5:13:5:17 | Int32 x = ... | Assignments.cs:5:13:5:17 | Int32 x = ... | normal |
@@ -783,10 +1293,10 @@
 | Conditions.cs:79:17:79:25 | ... = ... | Conditions.cs:79:17:79:25 | ... = ... | normal |
 | Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:25 | ... = ... | normal |
 | Conditions.cs:79:21:79:25 | false | Conditions.cs:79:21:79:25 | false | normal |
-| Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:81:12:81:12 | access to local variable b | false |
+| Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:81:13:81:13 | access to local variable b | false |
 | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:82:13:82:15 | ...++ | normal |
-| Conditions.cs:81:12:81:12 | access to local variable b | Conditions.cs:81:12:81:12 | access to local variable b | false |
-| Conditions.cs:81:12:81:12 | access to local variable b | Conditions.cs:81:12:81:12 | access to local variable b | true |
+| Conditions.cs:81:13:81:13 | access to local variable b | Conditions.cs:81:13:81:13 | access to local variable b | false |
+| Conditions.cs:81:13:81:13 | access to local variable b | Conditions.cs:81:13:81:13 | access to local variable b | true |
 | Conditions.cs:82:13:82:13 | access to local variable x | Conditions.cs:82:13:82:13 | access to local variable x | normal |
 | Conditions.cs:82:13:82:15 | ...++ | Conditions.cs:82:13:82:15 | ...++ | normal |
 | Conditions.cs:82:13:82:16 | ...; | Conditions.cs:82:13:82:15 | ...++ | normal |
@@ -869,20 +1379,20 @@
 | Conditions.cs:109:22:109:23 | "" | Conditions.cs:109:22:109:23 | "" | normal |
 | Conditions.cs:110:9:110:17 | return ...; | Conditions.cs:110:9:110:17 | return ...; | return |
 | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:110:16:110:16 | access to local variable x | normal |
-| Conditions.cs:114:5:124:5 | {...} | Conditions.cs:116:24:116:38 | ... < ... | false |
+| Conditions.cs:114:5:124:5 | {...} | Conditions.cs:116:25:116:39 | ... < ... | false |
 | Conditions.cs:115:9:115:24 | ... ...; | Conditions.cs:115:16:115:23 | String s = ... | normal |
 | Conditions.cs:115:16:115:23 | String s = ... | Conditions.cs:115:16:115:23 | String s = ... | normal |
 | Conditions.cs:115:20:115:23 | null | Conditions.cs:115:20:115:23 | null | normal |
-| Conditions.cs:116:9:123:9 | for (...;...;...) ... | Conditions.cs:116:24:116:38 | ... < ... | false |
-| Conditions.cs:116:17:116:21 | Int32 i = ... | Conditions.cs:116:17:116:21 | Int32 i = ... | normal |
-| Conditions.cs:116:21:116:21 | 0 | Conditions.cs:116:21:116:21 | 0 | normal |
-| Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:24:116:24 | access to local variable i | normal |
-| Conditions.cs:116:24:116:38 | ... < ... | Conditions.cs:116:24:116:38 | ... < ... | false |
-| Conditions.cs:116:24:116:38 | ... < ... | Conditions.cs:116:24:116:38 | ... < ... | true |
-| Conditions.cs:116:28:116:31 | access to parameter args | Conditions.cs:116:28:116:31 | access to parameter args | normal |
-| Conditions.cs:116:28:116:38 | access to property Length | Conditions.cs:116:28:116:38 | access to property Length | normal |
-| Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:116:41:116:41 | access to local variable i | normal |
-| Conditions.cs:116:41:116:43 | ...++ | Conditions.cs:116:41:116:43 | ...++ | normal |
+| Conditions.cs:116:9:123:9 | for (...;...;...) ... | Conditions.cs:116:25:116:39 | ... < ... | false |
+| Conditions.cs:116:18:116:22 | Int32 i = ... | Conditions.cs:116:18:116:22 | Int32 i = ... | normal |
+| Conditions.cs:116:22:116:22 | 0 | Conditions.cs:116:22:116:22 | 0 | normal |
+| Conditions.cs:116:25:116:25 | access to local variable i | Conditions.cs:116:25:116:25 | access to local variable i | normal |
+| Conditions.cs:116:25:116:39 | ... < ... | Conditions.cs:116:25:116:39 | ... < ... | false |
+| Conditions.cs:116:25:116:39 | ... < ... | Conditions.cs:116:25:116:39 | ... < ... | true |
+| Conditions.cs:116:29:116:32 | access to parameter args | Conditions.cs:116:29:116:32 | access to parameter args | normal |
+| Conditions.cs:116:29:116:39 | access to property Length | Conditions.cs:116:29:116:39 | access to property Length | normal |
+| Conditions.cs:116:42:116:42 | access to local variable i | Conditions.cs:116:42:116:42 | access to local variable i | normal |
+| Conditions.cs:116:42:116:44 | ...++ | Conditions.cs:116:42:116:44 | ...++ | normal |
 | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:121:17:121:20 | access to local variable last | false |
 | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:122:17:122:24 | ... = ... | normal |
 | Conditions.cs:118:13:118:44 | ... ...; | Conditions.cs:118:17:118:43 | Boolean last = ... | normal |
@@ -931,6 +1441,30 @@
 | Conditions.cs:137:21:137:26 | this access | Conditions.cs:137:21:137:26 | this access | normal |
 | Conditions.cs:137:21:137:37 | call to method ToString | Conditions.cs:137:21:137:37 | call to method ToString | normal |
 | Conditions.cs:137:21:137:38 | ...; | Conditions.cs:137:21:137:37 | call to method ToString | normal |
+| Conditions.cs:144:5:150:5 | {...} | Conditions.cs:147:13:147:48 | call to method WriteLine | normal |
+| Conditions.cs:144:5:150:5 | {...} | Conditions.cs:149:13:149:48 | call to method WriteLine | normal |
+| Conditions.cs:145:9:145:30 | ... ...; | Conditions.cs:145:13:145:29 | String s = ... | normal |
+| Conditions.cs:145:13:145:29 | String s = ... | Conditions.cs:145:13:145:29 | String s = ... | normal |
+| Conditions.cs:145:17:145:17 | access to parameter b | Conditions.cs:145:17:145:17 | access to parameter b | false |
+| Conditions.cs:145:17:145:17 | access to parameter b | Conditions.cs:145:17:145:17 | access to parameter b | true |
+| Conditions.cs:145:17:145:29 | ... ? ... : ... | Conditions.cs:145:21:145:23 | "a" | normal |
+| Conditions.cs:145:17:145:29 | ... ? ... : ... | Conditions.cs:145:27:145:29 | "b" | normal |
+| Conditions.cs:145:21:145:23 | "a" | Conditions.cs:145:21:145:23 | "a" | normal |
+| Conditions.cs:145:27:145:29 | "b" | Conditions.cs:145:27:145:29 | "b" | normal |
+| Conditions.cs:146:9:149:49 | if (...) ... | Conditions.cs:147:13:147:48 | call to method WriteLine | normal |
+| Conditions.cs:146:9:149:49 | if (...) ... | Conditions.cs:149:13:149:48 | call to method WriteLine | normal |
+| Conditions.cs:146:13:146:13 | access to parameter b | Conditions.cs:146:13:146:13 | access to parameter b | false |
+| Conditions.cs:146:13:146:13 | access to parameter b | Conditions.cs:146:13:146:13 | access to parameter b | true |
+| Conditions.cs:147:13:147:48 | call to method WriteLine | Conditions.cs:147:13:147:48 | call to method WriteLine | normal |
+| Conditions.cs:147:13:147:49 | ...; | Conditions.cs:147:13:147:48 | call to method WriteLine | normal |
+| Conditions.cs:147:38:147:47 | $"..." | Conditions.cs:147:38:147:47 | $"..." | normal |
+| Conditions.cs:147:40:147:43 | "a = " | Conditions.cs:147:40:147:43 | "a = " | normal |
+| Conditions.cs:147:45:147:45 | access to local variable s | Conditions.cs:147:45:147:45 | access to local variable s | normal |
+| Conditions.cs:149:13:149:48 | call to method WriteLine | Conditions.cs:149:13:149:48 | call to method WriteLine | normal |
+| Conditions.cs:149:13:149:49 | ...; | Conditions.cs:149:13:149:48 | call to method WriteLine | normal |
+| Conditions.cs:149:38:149:47 | $"..." | Conditions.cs:149:38:149:47 | $"..." | normal |
+| Conditions.cs:149:40:149:43 | "b = " | Conditions.cs:149:40:149:43 | "b = " | normal |
+| Conditions.cs:149:45:149:45 | access to local variable s | Conditions.cs:149:45:149:45 | access to local variable s | normal |
 | ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:10:9:10:15 | return ...; | return |
 | ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | normal |
 | ExitMethods.cs:9:9:9:25 | ...; | ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | normal |
@@ -1065,7 +1599,7 @@
 | ExitMethods.cs:120:5:123:5 | {...} | ExitMethods.cs:122:13:122:17 | Int32 x = ... | normal |
 | ExitMethods.cs:121:9:121:28 | call to method IsTrue | ExitMethods.cs:121:9:121:28 | call to method IsTrue | throw(AssertFailedException) |
 | ExitMethods.cs:121:9:121:29 | ...; | ExitMethods.cs:121:9:121:28 | call to method IsTrue | throw(AssertFailedException) |
-| ExitMethods.cs:121:23:121:27 | false | ExitMethods.cs:121:23:121:27 | false | normal |
+| ExitMethods.cs:121:23:121:27 | false | ExitMethods.cs:121:23:121:27 | false | false |
 | ExitMethods.cs:122:9:122:18 | ... ...; | ExitMethods.cs:122:13:122:17 | Int32 x = ... | normal |
 | ExitMethods.cs:122:13:122:17 | Int32 x = ... | ExitMethods.cs:122:13:122:17 | Int32 x = ... | normal |
 | ExitMethods.cs:122:17:122:17 | 0 | ExitMethods.cs:122:17:122:17 | 0 | normal |
@@ -1078,13 +1612,15 @@
 | ExitMethods.cs:128:13:128:17 | Int32 x = ... | ExitMethods.cs:128:13:128:17 | Int32 x = ... | normal |
 | ExitMethods.cs:128:17:128:17 | 0 | ExitMethods.cs:128:17:128:17 | 0 | normal |
 | ExitMethods.cs:131:33:131:49 | call to method IsFalse | ExitMethods.cs:131:33:131:49 | call to method IsFalse | normal |
-| ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:48:131:48 | access to parameter b | normal |
+| ExitMethods.cs:131:33:131:49 | call to method IsFalse | ExitMethods.cs:131:33:131:49 | call to method IsFalse | throw(AssertFailedException) |
+| ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:48:131:48 | access to parameter b | false |
+| ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:48:131:48 | access to parameter b | true |
 | ExitMethods.cs:134:5:137:5 | {...} | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | throw(AssertFailedException) |
 | ExitMethods.cs:134:5:137:5 | {...} | ExitMethods.cs:136:13:136:17 | Int32 x = ... | normal |
 | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | throw(AssertFailedException) |
 | ExitMethods.cs:135:9:135:25 | this access | ExitMethods.cs:135:9:135:25 | this access | normal |
 | ExitMethods.cs:135:9:135:26 | ...; | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | throw(AssertFailedException) |
-| ExitMethods.cs:135:21:135:24 | true | ExitMethods.cs:135:21:135:24 | true | normal |
+| ExitMethods.cs:135:21:135:24 | true | ExitMethods.cs:135:21:135:24 | true | true |
 | ExitMethods.cs:136:9:136:18 | ... ...; | ExitMethods.cs:136:13:136:17 | Int32 x = ... | normal |
 | ExitMethods.cs:136:13:136:17 | Int32 x = ... | ExitMethods.cs:136:13:136:17 | Int32 x = ... | normal |
 | ExitMethods.cs:136:17:136:17 | 0 | ExitMethods.cs:136:17:136:17 | 0 | normal |
@@ -2487,11 +3023,11 @@
 | Switch.cs:26:17:26:23 | return ...; | Switch.cs:26:17:26:23 | return ...; | return |
 | Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | Double d | no-match |
 | Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:32:27:38 | call to method Throw | throw(Exception) |
-| Switch.cs:27:13:27:39 | case ...: | Switch.cs:28:17:28:21 | Label: | normal |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:28:13:28:17 | Label: | normal |
 | Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d | match |
 | Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d | no-match |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw | throw(Exception) |
-| Switch.cs:28:17:28:21 | Label: | Switch.cs:28:17:28:21 | Label: | normal |
+| Switch.cs:28:13:28:17 | Label: | Switch.cs:28:13:28:17 | Label: | normal |
 | Switch.cs:29:17:29:23 | return ...; | Switch.cs:29:17:29:23 | return ...; | return |
 | Switch.cs:30:13:30:20 | default: | Switch.cs:31:17:31:27 | goto ...; | goto(Label) |
 | Switch.cs:31:17:31:27 | goto ...; | Switch.cs:31:17:31:27 | goto ...; | goto(Label) |
@@ -2526,138 +3062,138 @@
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:50:30:50:38 | ... != ... | true |
 | Switch.cs:50:35:50:38 | null | Switch.cs:50:35:50:38 | null | normal |
 | Switch.cs:51:17:51:22 | break; | Switch.cs:51:17:51:22 | break; | break |
-| Switch.cs:56:5:64:5 | {...} | Switch.cs:60:15:60:20 | break; | normal (break) |
-| Switch.cs:56:5:64:5 | {...} | Switch.cs:62:15:62:20 | break; | normal (break) |
-| Switch.cs:57:9:63:9 | switch (...) {...} | Switch.cs:60:15:60:20 | break; | normal (break) |
-| Switch.cs:57:9:63:9 | switch (...) {...} | Switch.cs:62:15:62:20 | break; | normal (break) |
+| Switch.cs:56:5:64:5 | {...} | Switch.cs:60:17:60:22 | break; | normal (break) |
+| Switch.cs:56:5:64:5 | {...} | Switch.cs:62:17:62:22 | break; | normal (break) |
+| Switch.cs:57:9:63:9 | switch (...) {...} | Switch.cs:60:17:60:22 | break; | normal (break) |
+| Switch.cs:57:9:63:9 | switch (...) {...} | Switch.cs:62:17:62:22 | break; | normal (break) |
 | Switch.cs:57:17:57:17 | 1 | Switch.cs:57:17:57:17 | 1 | normal |
 | Switch.cs:57:17:57:21 | ... + ... | Switch.cs:57:17:57:21 | ... + ... | normal |
 | Switch.cs:57:21:57:21 | 2 | Switch.cs:57:21:57:21 | 2 | normal |
-| Switch.cs:59:13:59:20 | case ...: | Switch.cs:59:18:59:18 | 2 | no-match |
-| Switch.cs:59:13:59:20 | case ...: | Switch.cs:60:15:60:20 | break; | break |
+| Switch.cs:59:13:59:19 | case ...: | Switch.cs:59:18:59:18 | 2 | no-match |
+| Switch.cs:59:13:59:19 | case ...: | Switch.cs:60:17:60:22 | break; | break |
 | Switch.cs:59:18:59:18 | 2 | Switch.cs:59:18:59:18 | 2 | no-match |
-| Switch.cs:60:15:60:20 | break; | Switch.cs:60:15:60:20 | break; | break |
-| Switch.cs:61:13:61:20 | case ...: | Switch.cs:62:15:62:20 | break; | break |
+| Switch.cs:60:17:60:22 | break; | Switch.cs:60:17:60:22 | break; | break |
+| Switch.cs:61:13:61:19 | case ...: | Switch.cs:62:17:62:22 | break; | break |
 | Switch.cs:61:18:61:18 | 3 | Switch.cs:61:18:61:18 | 3 | match |
-| Switch.cs:62:15:62:20 | break; | Switch.cs:62:15:62:20 | break; | break |
-| Switch.cs:67:5:75:5 | {...} | Switch.cs:71:15:71:20 | break; | normal (break) |
+| Switch.cs:62:17:62:22 | break; | Switch.cs:62:17:62:22 | break; | break |
+| Switch.cs:67:5:75:5 | {...} | Switch.cs:71:17:71:22 | break; | normal (break) |
 | Switch.cs:67:5:75:5 | {...} | Switch.cs:72:18:72:19 | "" | no-match |
-| Switch.cs:67:5:75:5 | {...} | Switch.cs:73:15:73:20 | break; | normal (break) |
-| Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:71:15:71:20 | break; | normal (break) |
+| Switch.cs:67:5:75:5 | {...} | Switch.cs:73:17:73:22 | break; | normal (break) |
+| Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:71:17:71:22 | break; | normal (break) |
 | Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:72:18:72:19 | "" | no-match |
-| Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:73:15:73:20 | break; | normal (break) |
+| Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:73:17:73:22 | break; | normal (break) |
 | Switch.cs:68:17:68:25 | (...) ... | Switch.cs:68:17:68:25 | (...) ... | normal |
 | Switch.cs:68:25:68:25 | access to parameter s | Switch.cs:68:25:68:25 | access to parameter s | normal |
-| Switch.cs:70:13:70:24 | case ...: | Switch.cs:70:18:70:20 | access to type Int32 | no-match |
-| Switch.cs:70:13:70:24 | case ...: | Switch.cs:71:15:71:20 | break; | break |
+| Switch.cs:70:13:70:23 | case ...: | Switch.cs:70:18:70:20 | access to type Int32 | no-match |
+| Switch.cs:70:13:70:23 | case ...: | Switch.cs:71:17:71:22 | break; | break |
 | Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:70:18:70:20 | access to type Int32 | no-match |
-| Switch.cs:71:15:71:20 | break; | Switch.cs:71:15:71:20 | break; | break |
-| Switch.cs:72:13:72:21 | case ...: | Switch.cs:72:18:72:19 | "" | no-match |
-| Switch.cs:72:13:72:21 | case ...: | Switch.cs:73:15:73:20 | break; | break |
+| Switch.cs:71:17:71:22 | break; | Switch.cs:71:17:71:22 | break; | break |
+| Switch.cs:72:13:72:20 | case ...: | Switch.cs:72:18:72:19 | "" | no-match |
+| Switch.cs:72:13:72:20 | case ...: | Switch.cs:73:17:73:22 | break; | break |
 | Switch.cs:72:18:72:19 | "" | Switch.cs:72:18:72:19 | "" | match |
 | Switch.cs:72:18:72:19 | "" | Switch.cs:72:18:72:19 | "" | no-match |
-| Switch.cs:73:15:73:20 | break; | Switch.cs:73:15:73:20 | break; | break |
-| Switch.cs:78:5:89:5 | {...} | Switch.cs:82:15:82:26 | return ...; | return |
-| Switch.cs:78:5:89:5 | {...} | Switch.cs:86:15:86:26 | return ...; | return |
+| Switch.cs:73:17:73:22 | break; | Switch.cs:73:17:73:22 | break; | break |
+| Switch.cs:78:5:89:5 | {...} | Switch.cs:82:17:82:28 | return ...; | return |
+| Switch.cs:78:5:89:5 | {...} | Switch.cs:86:17:86:28 | return ...; | return |
 | Switch.cs:78:5:89:5 | {...} | Switch.cs:88:9:88:21 | return ...; | return |
-| Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:82:15:82:26 | return ...; | return |
+| Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:82:17:82:28 | return ...; | return |
 | Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:83:18:83:18 | 2 | no-match |
-| Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:85:17:85:22 | break; | normal (break) |
-| Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:86:15:86:26 | return ...; | return |
+| Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:85:21:85:26 | break; | normal (break) |
+| Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:86:17:86:28 | return ...; | return |
 | Switch.cs:79:17:79:17 | access to parameter i | Switch.cs:79:17:79:17 | access to parameter i | normal |
-| Switch.cs:81:13:81:20 | case ...: | Switch.cs:81:18:81:18 | 1 | no-match |
-| Switch.cs:81:13:81:20 | case ...: | Switch.cs:82:15:82:26 | return ...; | return |
+| Switch.cs:81:13:81:19 | case ...: | Switch.cs:81:18:81:18 | 1 | no-match |
+| Switch.cs:81:13:81:19 | case ...: | Switch.cs:82:17:82:28 | return ...; | return |
 | Switch.cs:81:18:81:18 | 1 | Switch.cs:81:18:81:18 | 1 | match |
 | Switch.cs:81:18:81:18 | 1 | Switch.cs:81:18:81:18 | 1 | no-match |
-| Switch.cs:82:15:82:26 | return ...; | Switch.cs:82:15:82:26 | return ...; | return |
-| Switch.cs:82:22:82:25 | true | Switch.cs:82:22:82:25 | true | normal |
-| Switch.cs:83:13:83:20 | case ...: | Switch.cs:83:18:83:18 | 2 | no-match |
-| Switch.cs:83:13:83:20 | case ...: | Switch.cs:84:19:84:23 | ... > ... | false |
-| Switch.cs:83:13:83:20 | case ...: | Switch.cs:85:17:85:22 | break; | break |
+| Switch.cs:82:17:82:28 | return ...; | Switch.cs:82:17:82:28 | return ...; | return |
+| Switch.cs:82:24:82:27 | true | Switch.cs:82:24:82:27 | true | normal |
+| Switch.cs:83:13:83:19 | case ...: | Switch.cs:83:18:83:18 | 2 | no-match |
+| Switch.cs:83:13:83:19 | case ...: | Switch.cs:84:21:84:25 | ... > ... | false |
+| Switch.cs:83:13:83:19 | case ...: | Switch.cs:85:21:85:26 | break; | break |
 | Switch.cs:83:18:83:18 | 2 | Switch.cs:83:18:83:18 | 2 | match |
 | Switch.cs:83:18:83:18 | 2 | Switch.cs:83:18:83:18 | 2 | no-match |
-| Switch.cs:84:15:85:22 | if (...) ... | Switch.cs:84:19:84:23 | ... > ... | false |
-| Switch.cs:84:15:85:22 | if (...) ... | Switch.cs:85:17:85:22 | break; | break |
-| Switch.cs:84:19:84:19 | access to parameter j | Switch.cs:84:19:84:19 | access to parameter j | normal |
-| Switch.cs:84:19:84:23 | ... > ... | Switch.cs:84:19:84:23 | ... > ... | false |
-| Switch.cs:84:19:84:23 | ... > ... | Switch.cs:84:19:84:23 | ... > ... | true |
-| Switch.cs:84:23:84:23 | 2 | Switch.cs:84:23:84:23 | 2 | normal |
-| Switch.cs:85:17:85:22 | break; | Switch.cs:85:17:85:22 | break; | break |
-| Switch.cs:86:15:86:26 | return ...; | Switch.cs:86:15:86:26 | return ...; | return |
-| Switch.cs:86:22:86:25 | true | Switch.cs:86:22:86:25 | true | normal |
+| Switch.cs:84:17:85:26 | if (...) ... | Switch.cs:84:21:84:25 | ... > ... | false |
+| Switch.cs:84:17:85:26 | if (...) ... | Switch.cs:85:21:85:26 | break; | break |
+| Switch.cs:84:21:84:21 | access to parameter j | Switch.cs:84:21:84:21 | access to parameter j | normal |
+| Switch.cs:84:21:84:25 | ... > ... | Switch.cs:84:21:84:25 | ... > ... | false |
+| Switch.cs:84:21:84:25 | ... > ... | Switch.cs:84:21:84:25 | ... > ... | true |
+| Switch.cs:84:25:84:25 | 2 | Switch.cs:84:25:84:25 | 2 | normal |
+| Switch.cs:85:21:85:26 | break; | Switch.cs:85:21:85:26 | break; | break |
+| Switch.cs:86:17:86:28 | return ...; | Switch.cs:86:17:86:28 | return ...; | return |
+| Switch.cs:86:24:86:27 | true | Switch.cs:86:24:86:27 | true | normal |
 | Switch.cs:88:9:88:21 | return ...; | Switch.cs:88:9:88:21 | return ...; | return |
 | Switch.cs:88:16:88:20 | false | Switch.cs:88:16:88:20 | false | normal |
-| Switch.cs:92:5:99:5 | {...} | Switch.cs:96:15:96:26 | return ...; | return |
+| Switch.cs:92:5:99:5 | {...} | Switch.cs:96:17:96:28 | return ...; | return |
 | Switch.cs:92:5:99:5 | {...} | Switch.cs:98:9:98:21 | return ...; | return |
 | Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:95:18:95:20 | access to type Int32 | no-match |
-| Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:96:15:96:26 | return ...; | return |
+| Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:96:17:96:28 | return ...; | return |
 | Switch.cs:93:17:93:17 | access to parameter o | Switch.cs:93:17:93:17 | access to parameter o | normal |
-| Switch.cs:95:13:95:24 | case ...: | Switch.cs:95:18:95:20 | access to type Int32 | no-match |
-| Switch.cs:95:13:95:24 | case ...: | Switch.cs:96:15:96:26 | return ...; | return |
+| Switch.cs:95:13:95:23 | case ...: | Switch.cs:95:18:95:20 | access to type Int32 | no-match |
+| Switch.cs:95:13:95:23 | case ...: | Switch.cs:96:17:96:28 | return ...; | return |
 | Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:95:18:95:20 | access to type Int32 | match |
 | Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:95:18:95:20 | access to type Int32 | no-match |
-| Switch.cs:96:15:96:26 | return ...; | Switch.cs:96:15:96:26 | return ...; | return |
-| Switch.cs:96:22:96:25 | true | Switch.cs:96:22:96:25 | true | normal |
+| Switch.cs:96:17:96:28 | return ...; | Switch.cs:96:17:96:28 | return ...; | return |
+| Switch.cs:96:24:96:27 | true | Switch.cs:96:24:96:27 | true | normal |
 | Switch.cs:98:9:98:21 | return ...; | Switch.cs:98:9:98:21 | return ...; | return |
 | Switch.cs:98:16:98:20 | false | Switch.cs:98:16:98:20 | false | normal |
-| Switch.cs:102:5:109:5 | {...} | Switch.cs:105:22:105:30 | return ...; | return |
-| Switch.cs:102:5:109:5 | {...} | Switch.cs:106:22:106:30 | return ...; | return |
+| Switch.cs:102:5:109:5 | {...} | Switch.cs:105:21:105:29 | return ...; | return |
+| Switch.cs:102:5:109:5 | {...} | Switch.cs:106:21:106:29 | return ...; | return |
 | Switch.cs:102:5:109:5 | {...} | Switch.cs:108:9:108:18 | return ...; | return |
-| Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:105:22:105:30 | return ...; | return |
+| Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:105:21:105:29 | return ...; | return |
 | Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:106:18:106:18 | 1 | no-match |
-| Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:106:22:106:30 | return ...; | return |
+| Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:106:21:106:29 | return ...; | return |
 | Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:103:17:103:17 | access to parameter s | non-null |
 | Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:103:17:103:17 | access to parameter s | null |
 | Switch.cs:103:19:103:25 | access to property Length | Switch.cs:103:17:103:17 | access to parameter s | null |
 | Switch.cs:103:19:103:25 | access to property Length | Switch.cs:103:19:103:25 | access to property Length | normal |
-| Switch.cs:105:13:105:20 | case ...: | Switch.cs:105:18:105:18 | 0 | no-match |
-| Switch.cs:105:13:105:20 | case ...: | Switch.cs:105:22:105:30 | return ...; | return |
+| Switch.cs:105:13:105:19 | case ...: | Switch.cs:105:18:105:18 | 0 | no-match |
+| Switch.cs:105:13:105:19 | case ...: | Switch.cs:105:21:105:29 | return ...; | return |
 | Switch.cs:105:18:105:18 | 0 | Switch.cs:105:18:105:18 | 0 | match |
 | Switch.cs:105:18:105:18 | 0 | Switch.cs:105:18:105:18 | 0 | no-match |
-| Switch.cs:105:22:105:30 | return ...; | Switch.cs:105:22:105:30 | return ...; | return |
-| Switch.cs:105:29:105:29 | 0 | Switch.cs:105:29:105:29 | 0 | normal |
-| Switch.cs:106:13:106:20 | case ...: | Switch.cs:106:18:106:18 | 1 | no-match |
-| Switch.cs:106:13:106:20 | case ...: | Switch.cs:106:22:106:30 | return ...; | return |
+| Switch.cs:105:21:105:29 | return ...; | Switch.cs:105:21:105:29 | return ...; | return |
+| Switch.cs:105:28:105:28 | 0 | Switch.cs:105:28:105:28 | 0 | normal |
+| Switch.cs:106:13:106:19 | case ...: | Switch.cs:106:18:106:18 | 1 | no-match |
+| Switch.cs:106:13:106:19 | case ...: | Switch.cs:106:21:106:29 | return ...; | return |
 | Switch.cs:106:18:106:18 | 1 | Switch.cs:106:18:106:18 | 1 | match |
 | Switch.cs:106:18:106:18 | 1 | Switch.cs:106:18:106:18 | 1 | no-match |
-| Switch.cs:106:22:106:30 | return ...; | Switch.cs:106:22:106:30 | return ...; | return |
-| Switch.cs:106:29:106:29 | 1 | Switch.cs:106:29:106:29 | 1 | normal |
+| Switch.cs:106:21:106:29 | return ...; | Switch.cs:106:21:106:29 | return ...; | return |
+| Switch.cs:106:28:106:28 | 1 | Switch.cs:106:28:106:28 | 1 | normal |
 | Switch.cs:108:9:108:18 | return ...; | Switch.cs:108:9:108:18 | return ...; | return |
 | Switch.cs:108:16:108:17 | -... | Switch.cs:108:16:108:17 | -... | normal |
 | Switch.cs:108:17:108:17 | 1 | Switch.cs:108:17:108:17 | 1 | normal |
 | Switch.cs:111:28:111:48 | throw ... | Switch.cs:111:28:111:48 | throw ... | throw(Exception) |
 | Switch.cs:111:34:111:48 | object creation of type Exception | Switch.cs:111:34:111:48 | object creation of type Exception | normal |
-| Switch.cs:114:5:121:5 | {...} | Switch.cs:117:36:117:44 | return ...; | return |
-| Switch.cs:114:5:121:5 | {...} | Switch.cs:118:35:118:43 | return ...; | return |
+| Switch.cs:114:5:121:5 | {...} | Switch.cs:117:37:117:45 | return ...; | return |
+| Switch.cs:114:5:121:5 | {...} | Switch.cs:118:36:118:44 | return ...; | return |
 | Switch.cs:114:5:121:5 | {...} | Switch.cs:120:9:120:18 | return ...; | return |
-| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:117:36:117:44 | return ...; | return |
+| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:117:37:117:45 | return ...; | return |
 | Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:118:18:118:18 | 2 | no-match |
-| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:118:25:118:31 | ... == ... | false |
-| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:118:35:118:43 | return ...; | return |
+| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:118:25:118:33 | ... == ... | false |
+| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:118:36:118:44 | return ...; | return |
 | Switch.cs:115:17:115:17 | access to parameter s | Switch.cs:115:17:115:17 | access to parameter s | normal |
 | Switch.cs:115:17:115:24 | access to property Length | Switch.cs:115:17:115:24 | access to property Length | normal |
-| Switch.cs:117:13:117:34 | case ...: | Switch.cs:117:18:117:18 | 3 | no-match |
-| Switch.cs:117:13:117:34 | case ...: | Switch.cs:117:25:117:32 | ... == ... | false |
-| Switch.cs:117:13:117:34 | case ...: | Switch.cs:117:36:117:44 | return ...; | return |
+| Switch.cs:117:13:117:35 | case ...: | Switch.cs:117:18:117:18 | 3 | no-match |
+| Switch.cs:117:13:117:35 | case ...: | Switch.cs:117:25:117:34 | ... == ... | false |
+| Switch.cs:117:13:117:35 | case ...: | Switch.cs:117:37:117:45 | return ...; | return |
 | Switch.cs:117:18:117:18 | 3 | Switch.cs:117:18:117:18 | 3 | match |
 | Switch.cs:117:18:117:18 | 3 | Switch.cs:117:18:117:18 | 3 | no-match |
 | Switch.cs:117:25:117:25 | access to parameter s | Switch.cs:117:25:117:25 | access to parameter s | normal |
-| Switch.cs:117:25:117:32 | ... == ... | Switch.cs:117:25:117:32 | ... == ... | false |
-| Switch.cs:117:25:117:32 | ... == ... | Switch.cs:117:25:117:32 | ... == ... | true |
-| Switch.cs:117:28:117:32 | "foo" | Switch.cs:117:28:117:32 | "foo" | normal |
-| Switch.cs:117:36:117:44 | return ...; | Switch.cs:117:36:117:44 | return ...; | return |
-| Switch.cs:117:43:117:43 | 1 | Switch.cs:117:43:117:43 | 1 | normal |
-| Switch.cs:118:13:118:33 | case ...: | Switch.cs:118:18:118:18 | 2 | no-match |
-| Switch.cs:118:13:118:33 | case ...: | Switch.cs:118:25:118:31 | ... == ... | false |
-| Switch.cs:118:13:118:33 | case ...: | Switch.cs:118:35:118:43 | return ...; | return |
+| Switch.cs:117:25:117:34 | ... == ... | Switch.cs:117:25:117:34 | ... == ... | false |
+| Switch.cs:117:25:117:34 | ... == ... | Switch.cs:117:25:117:34 | ... == ... | true |
+| Switch.cs:117:30:117:34 | "foo" | Switch.cs:117:30:117:34 | "foo" | normal |
+| Switch.cs:117:37:117:45 | return ...; | Switch.cs:117:37:117:45 | return ...; | return |
+| Switch.cs:117:44:117:44 | 1 | Switch.cs:117:44:117:44 | 1 | normal |
+| Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:18:118:18 | 2 | no-match |
+| Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:25:118:33 | ... == ... | false |
+| Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:36:118:44 | return ...; | return |
 | Switch.cs:118:18:118:18 | 2 | Switch.cs:118:18:118:18 | 2 | match |
 | Switch.cs:118:18:118:18 | 2 | Switch.cs:118:18:118:18 | 2 | no-match |
 | Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:118:25:118:25 | access to parameter s | normal |
-| Switch.cs:118:25:118:31 | ... == ... | Switch.cs:118:25:118:31 | ... == ... | false |
-| Switch.cs:118:25:118:31 | ... == ... | Switch.cs:118:25:118:31 | ... == ... | true |
-| Switch.cs:118:28:118:31 | "fu" | Switch.cs:118:28:118:31 | "fu" | normal |
-| Switch.cs:118:35:118:43 | return ...; | Switch.cs:118:35:118:43 | return ...; | return |
-| Switch.cs:118:42:118:42 | 2 | Switch.cs:118:42:118:42 | 2 | normal |
+| Switch.cs:118:25:118:33 | ... == ... | Switch.cs:118:25:118:33 | ... == ... | false |
+| Switch.cs:118:25:118:33 | ... == ... | Switch.cs:118:25:118:33 | ... == ... | true |
+| Switch.cs:118:30:118:33 | "fu" | Switch.cs:118:30:118:33 | "fu" | normal |
+| Switch.cs:118:36:118:44 | return ...; | Switch.cs:118:36:118:44 | return ...; | return |
+| Switch.cs:118:43:118:43 | 2 | Switch.cs:118:43:118:43 | 2 | normal |
 | Switch.cs:120:9:120:18 | return ...; | Switch.cs:120:9:120:18 | return ...; | return |
 | Switch.cs:120:16:120:17 | -... | Switch.cs:120:16:120:17 | -... | normal |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:17:120:17 | 1 | normal |
@@ -2747,6 +3283,41 @@
 | Switch.cs:150:18:150:18 | 2 | Switch.cs:150:18:150:18 | 2 | no-match |
 | Switch.cs:150:21:150:29 | return ...; | Switch.cs:150:21:150:29 | return ...; | return |
 | Switch.cs:150:28:150:28 | 2 | Switch.cs:150:28:150:28 | 2 | normal |
+| Switch.cs:155:5:161:5 | {...} | Switch.cs:156:41:156:45 | false | throw(InvalidOperationException) [no-match] |
+| Switch.cs:155:5:161:5 | {...} | Switch.cs:158:13:158:48 | call to method WriteLine | normal |
+| Switch.cs:155:5:161:5 | {...} | Switch.cs:160:13:160:48 | call to method WriteLine | normal |
+| Switch.cs:156:9:156:55 | ... ...; | Switch.cs:156:13:156:54 | String s = ... | normal |
+| Switch.cs:156:9:156:55 | ... ...; | Switch.cs:156:41:156:45 | false | throw(InvalidOperationException) [no-match] |
+| Switch.cs:156:13:156:54 | String s = ... | Switch.cs:156:13:156:54 | String s = ... | normal |
+| Switch.cs:156:13:156:54 | String s = ... | Switch.cs:156:41:156:45 | false | throw(InvalidOperationException) [no-match] |
+| Switch.cs:156:17:156:17 | access to parameter b | Switch.cs:156:17:156:17 | access to parameter b | normal |
+| Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:156:36:156:38 | "a" | normal |
+| Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:156:41:156:45 | false | throw(InvalidOperationException) [no-match] |
+| Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:156:50:156:52 | "b" | normal |
+| Switch.cs:156:28:156:31 | true | Switch.cs:156:28:156:31 | true | match |
+| Switch.cs:156:28:156:31 | true | Switch.cs:156:28:156:31 | true | no-match |
+| Switch.cs:156:28:156:38 | ... => ... | Switch.cs:156:28:156:31 | true | no-match |
+| Switch.cs:156:28:156:38 | ... => ... | Switch.cs:156:36:156:38 | "a" | normal |
+| Switch.cs:156:36:156:38 | "a" | Switch.cs:156:36:156:38 | "a" | normal |
+| Switch.cs:156:41:156:45 | false | Switch.cs:156:41:156:45 | false | match |
+| Switch.cs:156:41:156:45 | false | Switch.cs:156:41:156:45 | false | no-match |
+| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:41:156:45 | false | no-match |
+| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:50:156:52 | "b" | normal |
+| Switch.cs:156:50:156:52 | "b" | Switch.cs:156:50:156:52 | "b" | normal |
+| Switch.cs:157:9:160:49 | if (...) ... | Switch.cs:158:13:158:48 | call to method WriteLine | normal |
+| Switch.cs:157:9:160:49 | if (...) ... | Switch.cs:160:13:160:48 | call to method WriteLine | normal |
+| Switch.cs:157:13:157:13 | access to parameter b | Switch.cs:157:13:157:13 | access to parameter b | false |
+| Switch.cs:157:13:157:13 | access to parameter b | Switch.cs:157:13:157:13 | access to parameter b | true |
+| Switch.cs:158:13:158:48 | call to method WriteLine | Switch.cs:158:13:158:48 | call to method WriteLine | normal |
+| Switch.cs:158:13:158:49 | ...; | Switch.cs:158:13:158:48 | call to method WriteLine | normal |
+| Switch.cs:158:38:158:47 | $"..." | Switch.cs:158:38:158:47 | $"..." | normal |
+| Switch.cs:158:40:158:43 | "a = " | Switch.cs:158:40:158:43 | "a = " | normal |
+| Switch.cs:158:45:158:45 | access to local variable s | Switch.cs:158:45:158:45 | access to local variable s | normal |
+| Switch.cs:160:13:160:48 | call to method WriteLine | Switch.cs:160:13:160:48 | call to method WriteLine | normal |
+| Switch.cs:160:13:160:49 | ...; | Switch.cs:160:13:160:48 | call to method WriteLine | normal |
+| Switch.cs:160:38:160:47 | $"..." | Switch.cs:160:38:160:47 | $"..." | normal |
+| Switch.cs:160:40:160:43 | "b = " | Switch.cs:160:40:160:43 | "b = " | normal |
+| Switch.cs:160:45:160:45 | access to local variable s | Switch.cs:160:45:160:45 | access to local variable s | normal |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:13:5:25 | String s = ... | normal |
 | TypeAccesses.cs:5:13:5:25 | String s = ... | TypeAccesses.cs:5:13:5:25 | String s = ... | normal |

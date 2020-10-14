@@ -461,6 +461,39 @@ private predicate isRecursiveDef(RangeSsaDefinition def, StackVariable v) {
 }
 
 /**
+ * Holds if the bounds of `e` depend on a recursive definition, meaning that
+ * `e` is likely to have many candidate bounds during the main recursion.
+ */
+private predicate isRecursiveExpr(Expr e) {
+  exists(RangeSsaDefinition def, StackVariable v | exprDependsOnDef(e, def, v) |
+    isRecursiveDef(def, v)
+  )
+}
+
+/**
+ * Holds if `binop` is a binary operation that's likely to be assigned a
+ * quadratic (or more) number of candidate bounds during the analysis. This can
+ * happen when two conditions are satisfied:
+ * 1. It is likely there are many more candidate bounds for `binop` than for
+ *    its operands. For example, the number of candidate bounds for `x + y`,
+ *    denoted here nbounds(`x + y`), will be O(nbounds(`x`) * nbounds(`y`)).
+ *    In contrast, nbounds(`b ? x : y`) is only O(nbounds(`x`) + nbounds(`y`)).
+ * 2. Both operands of `binop` are recursively determined and are therefore
+ *    likely to have a large number of candidate bounds.
+ */
+private predicate isRecursiveBinary(BinaryOperation binop) {
+  (
+    binop instanceof UnsignedMulExpr
+    or
+    binop instanceof AddExpr
+    or
+    binop instanceof SubExpr
+  ) and
+  isRecursiveExpr(binop.getLeftOperand()) and
+  isRecursiveExpr(binop.getRightOperand())
+}
+
+/**
  * We distinguish 3 kinds of RangeSsaDefinition:
  *
  * 1. Definitions with a defining value.
@@ -581,7 +614,16 @@ private float getTruncatedLowerBounds(Expr expr) {
       // overflow, so we replace invalid bounds with exprMinVal.
       exists(float newLB | newLB = normalizeFloatUp(getLowerBoundsImpl(expr)) |
         if exprMinVal(expr) <= newLB and newLB <= exprMaxVal(expr)
-        then result = newLB
+        then
+          // Apply widening where we might get a combinatorial explosion.
+          if isRecursiveBinary(expr)
+          then
+            result =
+              max(float widenLB |
+                widenLB = wideningLowerBounds(expr.getUnspecifiedType()) and
+                not widenLB > newLB
+              )
+          else result = newLB
         else result = exprMinVal(expr)
       )
       or
@@ -628,7 +670,16 @@ private float getTruncatedUpperBounds(Expr expr) {
       // `exprMaxVal`.
       exists(float newUB | newUB = normalizeFloatUp(getUpperBoundsImpl(expr)) |
         if exprMinVal(expr) <= newUB and newUB <= exprMaxVal(expr)
-        then result = newUB
+        then
+          // Apply widening where we might get a combinatorial explosion.
+          if isRecursiveBinary(expr)
+          then
+            result =
+              min(float widenUB |
+                widenUB = wideningUpperBounds(expr.getUnspecifiedType()) and
+                not widenUB < newUB
+              )
+          else result = newUB
         else result = exprMaxVal(expr)
       )
       or
