@@ -42,7 +42,7 @@ module SystemCommandExecution {
 /**
  * A data-flow node that decodes data from a binary or textual format. This
  * is intended to include deserialization, unmarshalling, decoding, unpickling,
- * unzipping, decrypting, parsing etc.
+ * decompressing, decrypting, parsing etc.
  *
  * Doing so should normally preserve taint, but it can also be a problem
  * in itself, e.g. if it allows code execution or could result in deinal-of-service.
