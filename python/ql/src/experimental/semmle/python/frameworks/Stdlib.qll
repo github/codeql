@@ -334,7 +334,7 @@ private module Stdlib {
   /** Gets a reference to the `builtins` module (called `__builtin__` in Python 2). */
   private DataFlow::Node builtins(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule(["builtins", "__builtin__"])
+    result = DataFlow::importNode(["builtins", "__builtin__"])
     or
     exists(DataFlow::TypeTracker t2 | result = builtins(t2).track(t2, t))
   }
@@ -350,10 +350,10 @@ private module Stdlib {
     attr_name in ["exec", "eval", "compile"] and
     (
       t.start() and
-      result = DataFlow::importMember(["builtins", "__builtin__"], attr_name)
+      result = DataFlow::importNode(["builtins", "__builtin__"] + "." + attr_name)
       or
       t.startInAttr(attr_name) and
-      result = DataFlow::importModule(["builtins", "__builtin__"])
+      result = DataFlow::importNode(["builtins", "__builtin__"])
       or
       // special handling of builtins, that are in scope without any imports
       // TODO: Take care of overrides, either `def eval: ...`, `eval = ...`, or `builtins.eval = ...`
