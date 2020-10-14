@@ -7135,8 +7135,13 @@
 | vector.cpp:427:13:427:30 | call to back_inserter | vector.cpp:428:4:428:5 | it |  |
 | vector.cpp:427:32:427:34 | ref arg out | vector.cpp:429:8:429:10 | out |  |
 | vector.cpp:427:32:427:34 | ref arg out | vector.cpp:430:2:430:2 | out |  |
+| vector.cpp:428:3:428:3 | ref arg call to operator* | vector.cpp:428:6:428:6 | ref arg call to operator++ | TAINT |
+| vector.cpp:428:3:428:3 | ref arg call to operator* | vector.cpp:429:8:429:10 | out |  |
+| vector.cpp:428:3:428:3 | ref arg call to operator* | vector.cpp:430:2:430:2 | out |  |
 | vector.cpp:428:4:428:5 | it | vector.cpp:428:6:428:6 | call to operator++ |  |
 | vector.cpp:428:6:428:6 | call to operator++ | vector.cpp:428:3:428:3 | call to operator* | TAINT |
+| vector.cpp:428:6:428:6 | ref arg call to operator++ | vector.cpp:428:4:428:5 | ref arg it |  |
+| vector.cpp:428:11:428:36 | call to basic_string | vector.cpp:428:3:428:3 | ref arg call to operator* | TAINT |
 | vector.cpp:428:23:428:35 | source_string | vector.cpp:428:11:428:36 | call to basic_string | TAINT |
 | vector.cpp:429:8:429:10 | ref arg out | vector.cpp:430:2:430:2 | out |  |
 | vector.cpp:433:20:433:22 | call to vector | vector.cpp:434:32:434:34 | out |  |
@@ -7145,6 +7150,11 @@
 | vector.cpp:434:13:434:30 | call to back_inserter | vector.cpp:435:4:435:5 | it |  |
 | vector.cpp:434:32:434:34 | ref arg out | vector.cpp:436:8:436:10 | out |  |
 | vector.cpp:434:32:434:34 | ref arg out | vector.cpp:437:2:437:2 | out |  |
+| vector.cpp:435:3:435:3 | ref arg call to operator* | vector.cpp:435:6:435:6 | ref arg call to operator++ | TAINT |
+| vector.cpp:435:3:435:3 | ref arg call to operator* | vector.cpp:436:8:436:10 | out |  |
+| vector.cpp:435:3:435:3 | ref arg call to operator* | vector.cpp:437:2:437:2 | out |  |
 | vector.cpp:435:4:435:5 | it | vector.cpp:435:6:435:6 | call to operator++ |  |
 | vector.cpp:435:6:435:6 | call to operator++ | vector.cpp:435:3:435:3 | call to operator* | TAINT |
+| vector.cpp:435:6:435:6 | ref arg call to operator++ | vector.cpp:435:4:435:5 | ref arg it |  |
+| vector.cpp:435:11:435:16 | call to source | vector.cpp:435:3:435:3 | ref arg call to operator* | TAINT |
 | vector.cpp:436:8:436:10 | ref arg out | vector.cpp:437:2:437:2 | out |  |

@@ -78,6 +78,20 @@ private FunctionInput getIteratorArgumentInput(Operator op, int index) {
   )
 }
 
+private FunctionOutput getIteratorArgumentOutput(Operator op, int index) {
+  exists(Type t |
+    t =
+      op
+          .getACallToThisFunction()
+          .getArgument(index)
+          .getExplicitlyConverted()
+          .getType()
+          .stripTopLevelSpecifiers()
+  |
+    result.isParameterDeref(index) // TODO: does this work with an rvalue reference?
+  )
+}
+
 /**
  * A non-member prefix `operator*` function for an iterator type.
  */
@@ -92,6 +106,9 @@ class IteratorPointerDereferenceOperator extends Operator, TaintFunction, Iterat
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input = iteratorInput and
     output.isReturnValue()
+    or
+    input.isReturnValueDeref() and
+    output = getIteratorArgumentOutput(this, 0)
   }
 }
 
@@ -180,6 +197,9 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValue()
+    or
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 
@@ -271,6 +291,27 @@ class IteratorArrayMemberOperator extends MemberFunction, TaintFunction, Iterato
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValue()
+  }
+}
+
+/**
+ * An `operator=` member function of an iterator class that is not a copy or move assignment
+ * operator.
+ * 
+ * The `hasTaintFlow` override provides flow through output iterators that return themselves with
+ * `operator*` and use their own `operator=` to assign to the container.
+ */
+class IteratorAssignmentMemberOperator extends MemberFunction, TaintFunction {
+  IteratorAssignmentMemberOperator() {
+    this.hasName("operator=") and
+    this.getDeclaringType() instanceof Iterator and
+    not this instanceof CopyAssignmentOperator and
+    not this instanceof MoveAssignmentOperator
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameter(0) and
+    output.isQualifierObject()
   }
 }
 
