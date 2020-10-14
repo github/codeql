@@ -17,12 +17,12 @@ private import experimental.dataflow.RemoteFlowSources
  * extend `SystemCommandExecution::Range` instead.
  */
 class SystemCommandExecution extends DataFlow::Node {
-  SystemCommandExecution::Range self;
+  SystemCommandExecution::Range range;
 
-  SystemCommandExecution() { this = self }
+  SystemCommandExecution() { this = range }
 
   /** Gets the argument that specifies the command to be executed. */
-  DataFlow::Node getCommand() { result = self.getCommand() }
+  DataFlow::Node getCommand() { result = range.getCommand() }
 }
 
 /** Provides a class for modeling new system-command execution APIs. */
@@ -52,21 +52,21 @@ module SystemCommandExecution {
  * extend `Decoding::Range` instead.
  */
 class Decoding extends DataFlow::Node {
-  Decoding::Range self;
+  Decoding::Range range;
 
-  Decoding() { this = self }
+  Decoding() { this = range }
 
   /** Holds if this call is unsafe, e.g. if it may execute arbitrary code. */
-  predicate unsafe() { self.unsafe() }
+  predicate unsafe() { range.unsafe() }
 
   /** Gets an input that is decoded by this function. */
-  DataFlow::Node getAnInput() { result = self.getAnInput() }
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
 
   /** Gets the output that contains the decoded data produced by this function. */
-  DataFlow::Node getOutput() { result = self.getOutput() }
+  DataFlow::Node getOutput() { result = range.getOutput() }
 
   /** Gets an identifier for the format this function decodes from, such as "JSON". */
-  string getFormat() { result = self.getFormat() }
+  string getFormat() { result = range.getFormat() }
 }
 
 /** Provides a class for modeling new decoding mechanisms. */
