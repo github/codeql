@@ -113,6 +113,10 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
  */
 private newtype TPrintAstNode =
   TElementNode(Element el) { shouldPrint(el, _) } or
+  TForInitNode(ForStmt fs) { shouldPrint(fs, _) and exists(fs.getAnInit()) } or
+  TLocalVarDeclNode(LocalVariableDeclExpr lvde) {
+    shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
+  } or
   TAnnotationsNode(Annotatable ann) {
     shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)
   } or
@@ -221,6 +225,24 @@ abstract class ElementNode extends PrintAstNode, TElementNode {
   final Element getElement() { result = element }
 }
 
+/**
+ * A node representing an `Expr` or a `Stmt`.
+ */
+class ExprStmtNode extends ElementNode {
+  ExprStmtNode() { element instanceof ExprOrStmt }
+
+  override PrintAstNode getChild(int childIndex) {
+    exists(Element el | result.(ElementNode).getElement() = el |
+      el.(Expr).isNthChildOf(element, childIndex)
+      or
+      el.(Stmt).isNthChildOf(element, childIndex)
+    )
+  }
+}
+
+/**
+ * Holds if the given expression is part of an annotation.
+ */
 private predicate partOfAnnotation(Expr e) {
   e instanceof Annotation
   or
@@ -228,49 +250,123 @@ private predicate partOfAnnotation(Expr e) {
   partOfAnnotation(e.getParent())
 }
 
-private Expr getAnAnnotationChild(Expr e) {
-  partOfAnnotation(e) and
-  (
-    result = e.(Annotation).getValue(_)
+/**
+ * A node representing an `Expr` that is part of an annotation.
+ */
+final class AnnotationPartNode extends ExprStmtNode {
+  AnnotationPartNode() { partOfAnnotation(element) }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement() =
+      rank[childIndex](Element ch, string file, int line, int column |
+        ch = getAnAnnotationChild() and locationSortKeys(ch, file, line, column)
+      |
+        ch order by file, line, column
+      )
+  }
+
+  private Expr getAnAnnotationChild() {
+    result = element.(Annotation).getValue(_)
     or
-    result = e.(ArrayInit).getAnInit()
+    result = element.(ArrayInit).getAnInit()
     or
-    result = e.(ArrayInit).(Annotatable).getAnAnnotation()
-  )
+    result = element.(ArrayInit).(Annotatable).getAnAnnotation()
+  }
 }
 
 /**
- * An node representing an `Expr` or a `Stmt`.
+ * A node representing a `LocalVariableDeclExpr`.
  */
-final class ExprStmtNode extends ElementNode {
-  ExprStmtNode() { element instanceof ExprOrStmt }
+final class LocalVarDeclExprNode extends ExprStmtNode {
+  LocalVarDeclExprNode() { element instanceof LocalVariableDeclExpr }
 
   override PrintAstNode getChild(int childIndex) {
-    exists(Element el | result.(ElementNode).getElement() = el |
-      el.(Expr).isNthChildOf(element, childIndex) and
-      not partOfAnnotation(element)
-      or
-      el.(Stmt).isNthChildOf(element, childIndex)
-      or
-      childIndex = -4 and
-      el = element.(ClassInstanceExpr).getAnonymousClass()
-      or
-      childIndex = 0 and
-      el = element.(LocalClassDeclStmt).getLocalClass()
-      or
-      partOfAnnotation(element) and
-      el =
-        rank[childIndex](Element ch, string file, int line, int column |
-          ch = getAnAnnotationChild(element) and locationSortKeys(ch, file, line, column)
-        |
-          ch order by file, line, column
-        )
-    )
+    result = super.getChild(childIndex)
     or
-    exists(Element el | result.(AnnotationsNode).getAnnotated() = el |
-      childIndex = -2 and
-      el = element.(LocalVariableDeclExpr).getVariable()
-    )
+    childIndex = -2 and
+    result.(AnnotationsNode).getAnnotated() = element.(LocalVariableDeclExpr).getVariable()
+  }
+}
+
+/**
+ * A node representing a `ClassInstanceExpr`.
+ */
+final class ClassInstanceExprNode extends ExprStmtNode {
+  ClassInstanceExprNode() { element instanceof ClassInstanceExpr }
+
+  override ElementNode getChild(int childIndex) {
+    result = super.getChild(childIndex)
+    or
+    childIndex = -4 and
+    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass()
+  }
+}
+
+/**
+ * A node representing a `LocalClassDeclStmt`.
+ */
+final class LocalClassDeclStmtNode extends ExprStmtNode {
+  LocalClassDeclStmtNode() { element instanceof LocalClassDeclStmt }
+
+  override ElementNode getChild(int childIndex) {
+    result = super.getChild(childIndex)
+    or
+    childIndex = 0 and
+    result.getElement() = element.(LocalClassDeclStmt).getLocalClass()
+  }
+}
+
+/**
+ * A node representing a `ForStmt`.
+ */
+final class ForStmtNode extends ExprStmtNode {
+  ForStmtNode() { element instanceof ForStmt }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex >= 1 and
+    result = super.getChild(childIndex)
+    or
+    childIndex = 0 and
+    result.(ForInitNode).getForStmt() = element
+  }
+}
+
+/**
+ * An element that can be the parent of up to one `LocalVariableDeclExpr` for which we want
+ * to use a synthetic node to hold the variable declaration and its `TypeAccess`.
+ */
+private class SingleLocalVarDeclParent extends ExprOrStmt {
+  SingleLocalVarDeclParent() {
+    this instanceof EnhancedForStmt or
+    this instanceof CatchClause or
+    this.(InstanceOfExpr).isPattern()
+  }
+
+  /** Gets the variable declaration that this element contains */
+  LocalVariableDeclExpr getVariable() { result.getParent() = this }
+
+  /** Gets the type access of the variable */
+  Expr getTypeAccess() { result = getVariable().getTypeAccess() }
+}
+
+/**
+ * A node representing an element that can be the parent of up to one `LocalVariableDeclExpr` for which we
+ * want to use a synthetic node to variable declaration and its type access.
+ *
+ * Excludes `LocalVariableDeclStmt` and `ForStmt`, as they can hold multiple declarations.
+ * For these cases, either a synthetic node is not necassary or a different synthetic node is used.
+ */
+final class SingleLocalVarDeclParentNode extends ExprStmtNode {
+  SingleLocalVarDeclParent lvdp;
+
+  SingleLocalVarDeclParentNode() { lvdp = element }
+
+  override PrintAstNode getChild(int childIndex) {
+    result = super.getChild(childIndex) and
+    not result.(ElementNode).getElement() = [lvdp.getVariable(), lvdp.getTypeAccess()]
+    or
+    childIndex = lvdp.getVariable().getIndex() and
+    result.(LocalVarDeclSynthNode).getVariable() = lvdp.getVariable()
   }
 }
 
@@ -430,6 +526,51 @@ final class TypeVariableNode extends ElementNode {
   override ElementNode getChild(int childIndex) {
     result.getElement().(Expr).isNthChildOf(element, childIndex)
   }
+}
+
+/**
+ * A node representing the initializers of a `ForStmt`.
+ */
+final class ForInitNode extends PrintAstNode, TForInitNode {
+  ForStmt fs;
+
+  ForInitNode() { this = TForInitNode(fs) }
+
+  override string toString() { result = "(For Initializers) " }
+
+  override ElementNode getChild(int childIndex) {
+    childIndex >= 0 and
+    result.getElement().(Expr).isNthChildOf(fs, -childIndex)
+  }
+
+  /**
+   * Gets the underlying `ForStmt`.
+   */
+  ForStmt getForStmt() { result = fs }
+}
+
+/**
+ * A synthetic node holding a `LocalVariableDeclExpr` and its type access.
+ */
+final class LocalVarDeclSynthNode extends PrintAstNode, TLocalVarDeclNode {
+  LocalVariableDeclExpr lvde;
+
+  LocalVarDeclSynthNode() { this = TLocalVarDeclNode(lvde) }
+
+  override string toString() { result = "(Single Local Variable Declaration)" }
+
+  override ElementNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.getElement() = lvde.getTypeAccess()
+    or
+    childIndex = 1 and
+    result.getElement() = lvde
+  }
+
+  /**
+   * Gets the underlying `LocalVariableDeclExpr`
+   */
+  LocalVariableDeclExpr getVariable() { result = lvde }
 }
 
 /**

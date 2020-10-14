@@ -56,7 +56,7 @@ class VarargsFunction extends Function {
   }
 
   string normalTerminator(int cnt) {
-    (result = "0" or result = "-1") and
+    result = ["0", "-1"] and
     cnt = trailingArgValueCount(result) and
     2 * cnt > totalCount() and
     not exists(FunctionCall fc, int index |

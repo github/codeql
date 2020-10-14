@@ -3,9 +3,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class NullType : Type
+    internal class NullType : Type
     {
-        NullType(Context cx)
+        private NullType(Context cx)
             : base(cx, null) { }
 
         public override void Populate(TextWriter trapFile)
@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static AnnotatedType Create(Context cx) => new AnnotatedType(NullTypeFactory.Instance.CreateEntity(cx, typeof(NullType), null), NullableAnnotation.None);
 
-        class NullTypeFactory : ICachedEntityFactory<ITypeSymbol, NullType>
+        private class NullTypeFactory : ICachedEntityFactory<ITypeSymbol, NullType>
         {
             public static readonly NullTypeFactory Instance = new NullTypeFactory();
 

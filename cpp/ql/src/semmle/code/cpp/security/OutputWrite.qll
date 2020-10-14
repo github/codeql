@@ -48,10 +48,7 @@ private predicate outputFile(Expr e) {
       name = e.(VariableAccess).getTarget().(GlobalVariable).toString() or
       name = e.findRootCause().(Macro).getName()
     ) and
-    (
-      name = "stdout" or
-      name = "stderr"
-    )
+    name = ["stdout", "stderr"]
   )
 }
 

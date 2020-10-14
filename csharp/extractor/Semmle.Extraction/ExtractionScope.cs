@@ -34,8 +34,8 @@ namespace Semmle.Extraction
     /// </summary>
     public class AssemblyScope : IExtractionScope
     {
-        readonly IAssemblySymbol assembly;
-        readonly string filepath;
+        private readonly IAssemblySymbol assembly;
+        private readonly string filepath;
 
         public AssemblyScope(IAssemblySymbol symbol, string path, bool isOutput)
         {
@@ -60,7 +60,7 @@ namespace Semmle.Extraction
     /// </summary>
     public class SourceScope : IExtractionScope
     {
-        readonly SyntaxTree sourceTree;
+        private readonly SyntaxTree sourceTree;
 
         public SourceScope(SyntaxTree tree)
         {

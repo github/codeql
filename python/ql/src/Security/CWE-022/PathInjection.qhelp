@@ -55,7 +55,7 @@ known prefix. This ensures that regardless of the user input, the resulting path
 </example>
 
 <references>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Path_traversal">Path Traversal</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.</li>
 <li>npm: <a href="http://werkzeug.pocoo.org/docs/utils/#werkzeug.utils.secure_filename">werkzeug.utils.secure_filename</a>.</li>
 </references>
 </qhelp>

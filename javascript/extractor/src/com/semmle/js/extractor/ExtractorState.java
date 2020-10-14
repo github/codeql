@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.Optional;
 
-import com.semmle.js.parser.TypeScriptParser;
+import com.semmle.ts.extractor.TypeScriptParser;
 
 /**
  * Contains the state to be shared between extractions of different files.

@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name External dependencies
  * @description Count the number of dependencies that a Python source file has on external packages.
  * @kind treemap

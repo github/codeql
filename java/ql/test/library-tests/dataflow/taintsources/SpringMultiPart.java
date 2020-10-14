@@ -1,4 +1,5 @@
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 public class SpringMultiPart {
 	MultipartFile file;
@@ -11,5 +12,14 @@ public class SpringMultiPart {
 		file.getName();
 		file.getContentType();
 		file.getOriginalFilename();
+	}
+	
+	public void test(MultipartRequest request) {
+		request.getFile("name");
+		request.getFileMap();
+		request.getFileNames();
+		request.getFiles("name");
+		request.getMultiFileMap();
+		request.getMultipartContentType("name");
 	}
 }

@@ -9,10 +9,10 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public abstract class Method : CachedSymbol<IMethodSymbol>, IExpressionParentEntity, IStatementParentEntity
     {
-        public Method(Context cx, IMethodSymbol init)
+        protected Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        protected void PopulateParameters(TextWriter trapFile)
+        protected void PopulateParameters()
         {
             var originalMethod = OriginalDefinition;
             IEnumerable<IParameterSymbol> parameters = symbol.Parameters;
@@ -62,7 +62,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // so there's nothing to extract.
         }
 
-        void PopulateMethodBody(TextWriter trapFile)
+        private void PopulateMethodBody(TextWriter trapFile)
         {
             if (!IsSourceDeclaration)
                 return;
@@ -71,30 +71,34 @@ namespace Semmle.Extraction.CSharp.Entities
             var expr = ExpressionBody;
 
             if (block != null || expr != null)
+            {
                 Context.PopulateLater(
-                    () =>
-                    {
-                        ExtractInitializers(trapFile);
-                        if (block != null)
-                            Statements.Block.Create(Context, block, this, 0);
-                        else
-                            Expression.Create(Context, expr, this, 0);
+                   () =>
+                   {
+                       ExtractInitializers(trapFile);
+                       if (block != null)
+                           Statements.Block.Create(Context, block, this, 0);
+                       else
+                           Expression.Create(Context, expr, this, 0);
 
-                        Context.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
-                    });
+                       Context.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
+                   });
+            }
         }
 
         public void Overrides(TextWriter trapFile)
         {
-            foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.
-                Where(sym => sym.MethodKind == MethodKind.Ordinary).
-                Select(impl => Type.Create(Context, impl.ContainingType)))
+            foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations
+                .Where(sym => sym.MethodKind == MethodKind.Ordinary)
+                .Select(impl => Type.Create(Context, impl.ContainingType)))
             {
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 if (IsSourceDeclaration)
+                {
                     foreach (var syntax in symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
                         TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
+                }
             }
 
             if (symbol.OverriddenMethod != null)
@@ -169,7 +173,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
         {
             trapFile.Write('(');
-            int index = 0;
+            var index = 0;
 
             var @params = method.MethodKind == MethodKind.ReducedExtension
                 ? method.ReducedFrom.Parameters
@@ -217,7 +221,8 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns></returns>
         public static Method Create(Context cx, IMethodSymbol methodDecl)
         {
-            if (methodDecl == null) return null;
+            if (methodDecl == null)
+                return null;
 
             var methodKind = methodDecl.MethodKind;
 
@@ -240,7 +245,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     return Destructor.Create(cx, methodDecl);
                 case MethodKind.PropertyGet:
                 case MethodKind.PropertySet:
-                    return methodDecl.AssociatedSymbol is null ? OrdinaryMethod.Create(cx, methodDecl) : (Method)Accessor.Create(cx, methodDecl);
+                    return Accessor.GetPropertySymbol(methodDecl) is null ? OrdinaryMethod.Create(cx, methodDecl) : (Method)Accessor.Create(cx, methodDecl);
                 case MethodKind.EventAdd:
                 case MethodKind.EventRemove:
                     return EventAccessor.Create(cx, methodDecl);
@@ -279,7 +284,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public bool IsBoundGeneric => IsGeneric && !IsUnboundGeneric;
 
-        bool IsReducedExtension => symbol.MethodKind == MethodKind.ReducedExtension;
+        private bool IsReducedExtension => symbol.MethodKind == MethodKind.ReducedExtension;
 
         protected IMethodSymbol ConstructedFromSymbol => symbol.ConstructedFrom.ReducedFrom ?? symbol.ConstructedFrom;
 
@@ -293,7 +298,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (IsGeneric)
             {
-                int child = 0;
+                var child = 0;
 
                 if (isFullyConstructed)
                 {
@@ -332,7 +337,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Common population code for all callables
             BindComments();
             PopulateAttributes();
-            PopulateParameters(trapFile);
+            PopulateParameters();
             PopulateMethodBody(trapFile);
             PopulateGenerics(trapFile);
             PopulateMetadataHandle(trapFile);

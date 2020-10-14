@@ -1,5 +1,5 @@
 import javascript
 
-from Module m, string name, ASTNode export
-where m.exports(name, export)
-select m, name, export
+from Module m, string name, DataFlow::Node exportValue
+where exportValue = m.getAnExportedValue(name)
+select m, name, exportValue

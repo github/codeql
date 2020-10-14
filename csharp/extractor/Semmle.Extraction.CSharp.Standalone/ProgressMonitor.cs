@@ -6,7 +6,7 @@ namespace Semmle.BuildAnalyser
     /// <summary>
     /// Callback for various events that may happen during the build analysis.
     /// </summary>
-    interface IProgressMonitor
+    internal interface IProgressMonitor
     {
         void FindingFiles(string dir);
         void UnresolvedReference(string id, string project);
@@ -23,9 +23,9 @@ namespace Semmle.BuildAnalyser
         void MissingNuGet();
     }
 
-    class ProgressMonitor : IProgressMonitor
+    internal class ProgressMonitor : IProgressMonitor
     {
-        readonly ILogger logger;
+        private readonly ILogger logger;
 
         public ProgressMonitor(ILogger logger)
         {

@@ -20,4 +20,8 @@ MyOtherStream.prototype.write = function (data) { /* use (instance (member MyOth
     return this;
 };
 
+MyOtherStream.prototype.instanceProp = 1; /* def (member instanceProp (instance (member MyOtherStream (member exports (module classes))))) */
+
+MyOtherStream.classProp = 1; /* def (member classProp (member MyOtherStream (member exports (module classes)))) */
+
 module.exports.MyOtherStream = MyOtherStream;

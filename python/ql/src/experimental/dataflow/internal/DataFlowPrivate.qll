@@ -11,11 +11,6 @@ private import semmle.python.essa.SsaCompute
 //--------
 predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
 
-/** A control flow node which is also a dataflow node */
-class DataFlowCfgNode extends ControlFlowNode {
-  DataFlowCfgNode() { isExpressionNode(this) }
-}
-
 /** A data flow node for which we should synthesise an associated pre-update node. */
 abstract class NeedsSyntheticPreUpdateNode extends Node {
   /** A label for this kind of node. This will figure in the textual representation of the synthesized pre-update node. */
@@ -155,21 +150,8 @@ module EssaFlow {
     //   nodeTo is `y` on second line, cfg node
     useToNextUse(nodeFrom.asCfgNode(), nodeTo.asCfgNode())
     or
-    // Refinements
-    exists(EssaEdgeRefinement r |
-      nodeTo.(EssaNode).getVar() = r.getVariable() and
-      nodeFrom.(EssaNode).getVar() = r.getInput()
-    )
-    or
-    exists(EssaNodeRefinement r |
-      nodeTo.(EssaNode).getVar() = r.getVariable() and
-      nodeFrom.(EssaNode).getVar() = r.getInput()
-    )
-    or
-    exists(PhiFunction p |
-      nodeTo.(EssaNode).getVar() = p.getVariable() and
-      nodeFrom.(EssaNode).getVar() = p.getAnInput()
-    )
+    // If expressions
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {

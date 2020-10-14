@@ -235,15 +235,17 @@ public class DataFlow
     public async void M3()
     {
         // async await, tainted
-        var sink41 = Task.Run(() => "taint source");
+        var task = Task.Run(() => "taint source");
+        var sink41 = task.Result;
         Check(sink41);
-        var sink42 = await sink41;
+        var sink42 = await task;
         Check(sink42);
 
         // async await, not tainted
-        var nonSink0 = Task.Run(() => "");
+        task = Task.Run(() => "");
+        var nonSink0 = task.Result;
         Check(nonSink0);
-        var nonSink1 = await nonSink0;
+        var nonSink1 = await task;
         Check(nonSink1);
     }
 

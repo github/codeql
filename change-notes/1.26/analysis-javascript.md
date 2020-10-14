@@ -3,6 +3,8 @@
 ## General improvements
 
 * Support for the following frameworks and libraries has been improved:
+  - [AWS Serverless](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)
+  - [Alibaba Serverless](https://www.alibabacloud.com/help/doc-detail/156876.htm)
   - [bluebird](https://www.npmjs.com/package/bluebird)
   - [express](https://www.npmjs.com/package/express)
   - [fast-json-stable-stringify](https://www.npmjs.com/package/fast-json-stable-stringify)
@@ -14,6 +16,7 @@
   - [json-stringify-safe](https://www.npmjs.com/package/json-stringify-safe)
   - [json3](https://www.npmjs.com/package/json3)
   - [lodash](https://www.npmjs.com/package/lodash)
+  - [needle](https://www.npmjs.com/package/needle)
   - [object-inspect](https://www.npmjs.com/package/object-inspect)
   - [pretty-format](https://www.npmjs.com/package/pretty-format)
   - [stringify-object](https://www.npmjs.com/package/stringify-object)
@@ -39,6 +42,7 @@
 | Unsafe shell command constructed from library input (`js/shell-command-constructed-from-input`) | More results | This query now recognizes more commands where colon, dash, and underscore are used. |
 | Unsafe jQuery plugin (`js/unsafe-jquery-plugin`) | More results | This query now detects more unsafe uses of nested option properties. |
 | Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | More results | This query now recognizes some unsafe uses of `importScripts()` inside WebWorkers. |
+| Missing CSRF middleware (`js/missing-token-validation`) | More results | This query now recognizes writes to cookie and session variables as potentially vulnerable to CSRF attacks. |
 
 
 ## Changes to libraries

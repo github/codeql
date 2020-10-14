@@ -48,7 +48,7 @@ namespace Semmle.Autobuild.Shared
         /// by distance in ascending order.
         /// </summary>
         public IEnumerable<(string, int)> Paths => pathsLazy.Value;
-        readonly Lazy<IEnumerable<(string, int)>> pathsLazy;
+        private readonly Lazy<IEnumerable<(string, int)>> pathsLazy;
 
         /// <summary>
         /// Gets a list of paths matching a set of extensions (including the "."),
@@ -91,7 +91,7 @@ namespace Semmle.Autobuild.Shared
         /// <returns>True iff the path was found.</returns>
         public bool HasPath(string path) => Paths.Any(p => path == p.Item1);
 
-        void FindFiles(string dir, int depth, int maxDepth, IList<(string, int)> results)
+        private void FindFiles(string dir, int depth, int maxDepth, IList<(string, int)> results)
         {
             foreach (var f in Actions.EnumerateFiles(dir))
             {
@@ -110,7 +110,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// The root of the source directory.
         /// </summary>
-        string RootDirectory => Options.RootDirectory;
+        private string RootDirectory => Options.RootDirectory;
 
         /// <summary>
         /// Gets the supplied build configuration.
@@ -123,12 +123,12 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         public IBuildActions Actions { get; }
 
-        IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
+        private IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
         {
-            var matchingFiles = GetExtensions(extension).
-                Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2)).
-                Where(p => p.ProjectOrSolution.HasLanguage(this.Options.Language)).
-                ToArray();
+            var matchingFiles = GetExtensions(extension)
+                .Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2))
+                .Where(p => p.ProjectOrSolution.HasLanguage(this.Options.Language))
+                .ToArray();
 
             if (matchingFiles.Length == 0)
                 return null;
@@ -136,9 +136,9 @@ namespace Semmle.Autobuild.Shared
             if (Options.AllSolutions)
                 return matchingFiles.Select(p => p.ProjectOrSolution);
 
-            return matchingFiles.
-                Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot).
-                Select(f => f.ProjectOrSolution);
+            return matchingFiles
+                .Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot)
+                .Select(f => f.ProjectOrSolution);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Semmle.Autobuild.Shared
         /// solution file and tools.
         /// </summary>
         /// <param name="options">The command line options.</param>
-        public Autobuilder(IBuildActions actions, AutobuildOptions options)
+        protected Autobuilder(IBuildActions actions, AutobuildOptions options)
         {
             Actions = actions;
             Options = options;
@@ -209,7 +209,7 @@ namespace Semmle.Autobuild.Shared
 
         protected string SourceArchiveDir { get; }
 
-        readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
+        private readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
 
         /// <summary>
         /// Log a given build event to the console.

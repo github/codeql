@@ -22,7 +22,7 @@ def str_methods():
 
 
 def binary_decode_encode():
-    print("\n#percent_fmt")
+    print("\n# binary_decode_encode")
     tb = TAINTED_BYTES
     import base64
 
@@ -42,7 +42,7 @@ def binary_decode_encode():
 
 
 def f_strings():
-    print("\n#f_strings")
+    print("\n# f_strings")
     ts = TAINTED_STRING
 
     ensure_tainted(f"foo {ts} bar")

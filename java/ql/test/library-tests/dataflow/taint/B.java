@@ -129,6 +129,9 @@ public class B {
     String[][][] taintedArray3 = new String[][][] { { { s } } };
     sink(taintedArray3);
 
+    // Tainted file path and URI
+    sink(new java.io.File(s).toURI().toURL());
+
     return;
   }
 
