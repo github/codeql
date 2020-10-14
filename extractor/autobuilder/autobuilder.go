@@ -48,7 +48,7 @@ func checkExtractorRun() bool {
 		}
 		return true
 	} else {
-		log.Fatalf("No source directory set.")
+		log.Fatalf("No source directory set.\nThis binary should not be run manually; instead, use the CodeQL CLI or VSCode extension. See https://securitylab.github.com/tools/codeql.")
 		return false
 	}
 }
