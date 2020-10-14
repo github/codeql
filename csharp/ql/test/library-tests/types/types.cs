@@ -25,6 +25,10 @@ namespace Types
         public abstract Delegate DelegateType();
         unsafe public abstract byte* PointerType();
         unsafe public abstract byte** PointerPointerType();
+        unsafe public abstract byte*[][] PointerArrayArrayType();
+        public abstract byte?[] NullableArrayType();
+        public abstract byte?[][] NullableArrayArrayType();
+        public abstract System.Nullable<byte>[][] NullableArrayArrayType2();
         public abstract Map<string, Class> Map();
         Class Null()
         {
