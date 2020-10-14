@@ -357,6 +357,24 @@ final class AssignmentNode extends ControlFlowElementNode {
 }
 
 /**
+ * A node representing a `CastExpr`.
+ * Type access and casted expression children are shown in this order.
+ */
+final class CastExprNode extends ControlFlowElementNode {
+  CastExpr cast;
+
+  CastExprNode() { cast = element }
+
+  override ElementNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.getElement() = cast.getTypeAccess()
+    or
+    childIndex = 1 and
+    result.getElement() = cast.getExpr()
+  }
+}
+
+/**
  * A node representing a `Callable`, such as method declaration.
  */
 final class CallableNode extends ElementNode {

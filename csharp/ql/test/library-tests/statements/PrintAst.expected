@@ -134,9 +134,9 @@ statements.cs:
 #   44|               0: [MulExpr] ... * ...
 #   44|                 0: [LocalVariableAccess] access to local variable pi
 #   44|                 1: [CastExpr] (...) ...
-#   44|                   0: [LocalVariableAccess] access to local variable r
+#   44|                   1: [LocalVariableAccess] access to local variable r
 #   44|               1: [CastExpr] (...) ...
-#   44|                 0: [LocalVariableAccess] access to local variable r
+#   44|                 1: [LocalVariableAccess] access to local variable r
 #   47|     9: [Method] MainExpr
 #   47|       -1: [TypeMention] Void
 #   48|       4: [BlockStmt] {...}
@@ -222,7 +222,7 @@ statements.cs:
 #   81|                 0: [TypeMention] Console
 #   81|               0: [StringLiteral] "{0} arguments"
 #   81|               1: [CastExpr] (...) ...
-#   81|                 0: [LocalVariableAccess] access to local variable n
+#   81|                 1: [LocalVariableAccess] access to local variable n
 #   82|           8: [BreakStmt] break;
 #   86|     12: [Method] StringSwitch
 #   86|       -1: [TypeMention] Int32
@@ -524,7 +524,7 @@ statements.cs:
 #  203|           0: [EQExpr] ... == ...
 #  203|             0: [ParameterAccess] access to parameter y
 #  203|             1: [CastExpr] (...) ...
-#  203|               0: [IntLiteral] 0
+#  203|               1: [IntLiteral] 0
 #  203|           1: [ThrowStmt] throw ...;
 #  203|             0: [ObjectCreation] object creation of type DivideByZeroException
 #  203|               0: [TypeMention] DivideByZeroException

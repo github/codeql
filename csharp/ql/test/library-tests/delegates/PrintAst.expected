@@ -26,12 +26,12 @@ delegates.cs:
 #   14|       4: [BlockStmt] {...}
 #   14|         0: [ReturnStmt] return ...;
 #   14|           0: [CastExpr] (...) ...
-#   14|             0: [AddExpr] ... + ...
-#   14|               0: [CastExpr] (...) ...
-#   14|                 0: [ParameterAccess] access to parameter a
-#   14|               1: [ParameterAccess] access to parameter b
-#   14|             1: [TypeAccess] access to type Int32
+#   14|             0: [TypeAccess] access to type Int32
 #   14|               0: [TypeMention] Int32
+#   14|             1: [AddExpr] ... + ...
+#   14|               0: [CastExpr] (...) ...
+#   14|                 1: [ParameterAccess] access to parameter a
+#   14|               1: [ParameterAccess] access to parameter b
 #   18|   4: [Class] B
 #   21|     5: [DelegateType] D2
 #-----|       2: (Parameters)
@@ -51,9 +51,9 @@ delegates.cs:
 #   23|           0: [SubExpr] ... - ...
 #   23|             0: [ParameterAccess] access to parameter f
 #   23|             1: [CastExpr] (...) ...
-#   23|               0: [ParameterAccess] access to parameter g
-#   23|               1: [TypeAccess] access to type Int32
+#   23|               0: [TypeAccess] access to type Int32
 #   23|                 0: [TypeMention] Int32
+#   23|               1: [ParameterAccess] access to parameter g
 #   25|     7: [Method] M2
 #   25|       -1: [TypeMention] Void
 #-----|       2: (Parameters)

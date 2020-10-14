@@ -83,14 +83,14 @@ definitions.cs:
 #   44|           0: [MethodCall] call to method ExtensionMethod
 #   44|             -1: [ThisAccess] this access
 #   44|             0: [CastExpr] (...) ...
-#   44|               0: [IntLiteral] 1
+#   44|               1: [IntLiteral] 1
 #   45|         9: [ExprStmt] ...;
 #   45|           0: [MethodCall] call to method ExtensionMethod
 #   45|             -1: [ThisAccess] this access
 #   45|             0: [CastExpr] (...) ...
-#   45|               0: [IntLiteral] 1
+#   45|               1: [IntLiteral] 1
 #   45|             1: [CastExpr] (...) ...
-#   45|               0: [IntLiteral] 2
+#   45|               1: [IntLiteral] 2
 #   47|         10: [ExprStmt] ...;
 #   47|           0: [MethodCall] call to method GenericFn
 #   47|             0: [IntLiteral] 1
@@ -385,9 +385,9 @@ definitions.cs:
 #  156|         4: [BlockStmt] {...}
 #  156|           0: [ReturnStmt] return ...;
 #  156|             0: [CastExpr] (...) ...
-#  156|               0: [ObjectCreation] object creation of type S1
+#  156|               0: [TypeAccess] access to type S1
 #  156|                 0: [TypeMention] S1
-#  156|               1: [TypeAccess] access to type S1
+#  156|               1: [ObjectCreation] object creation of type S1
 #  156|                 0: [TypeMention] S1
 #  158|     9: [Class] Nested<>
 #-----|       1: (Type parameters)

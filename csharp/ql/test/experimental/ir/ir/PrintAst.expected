@@ -185,9 +185,9 @@ casts.cs:
 #   14|           -1: [TypeMention] Casts_B
 #   14|           0: [LocalVariableAccess] access to local variable bobjCE
 #   14|           1: [CastExpr] (...) ...
-#   14|             0: [LocalVariableAccess] access to local variable Aobj
-#   14|             1: [TypeAccess] access to type Casts_B
+#   14|             0: [TypeAccess] access to type Casts_B
 #   14|               0: [TypeMention] Casts_B
+#   14|             1: [LocalVariableAccess] access to local variable Aobj
 #   15|       2: [LocalVariableDeclStmt] ... ...;
 #   15|         0: [LocalVariableDeclAndInitExpr] Casts_B bobjAS = ...
 #   15|           -1: [TypeMention] Casts_B
@@ -912,7 +912,7 @@ pointers.cs:
 #    6|             1: [TypeMention] Int32
 #    6|           0: [LocalVariableAccess] access to local variable b
 #    6|           1: [CastExpr] (...) ...
-#    6|             0: [ParameterAccess] access to parameter arr
+#    6|             1: [ParameterAccess] access to parameter arr
 #    7|         0: [BlockStmt] {...}
 #    8|           0: [LocalVariableDeclStmt] ... ...;
 #    8|             0: [LocalVariableDeclAndInitExpr] Int32* p = ...

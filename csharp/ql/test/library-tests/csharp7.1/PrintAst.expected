@@ -8,7 +8,7 @@ csharp71.cs:
 #    7|           -1: [TypeMention] Int32
 #    7|           0: [LocalVariableAccess] access to local variable x
 #    7|           1: [CastExpr] (...) ...
-#    7|             0: [DefaultValueExpr] default
+#    7|             1: [DefaultValueExpr] default
 #    7|         1: [LocalVariableDeclAndInitExpr] Int32 y = ...
 #    7|           -1: [TypeMention] Int32
 #    7|           0: [LocalVariableAccess] access to local variable y
@@ -19,7 +19,7 @@ csharp71.cs:
 #    8|         0: [EQExpr] ... == ...
 #    8|           0: [LocalVariableAccess] access to local variable x
 #    8|           1: [CastExpr] (...) ...
-#    8|             0: [DefaultValueExpr] default
+#    8|             1: [DefaultValueExpr] default
 #    9|         1: [EmptyStmt] ;
 #   10|       2: [SwitchStmt] switch (...) {...}
 #   10|         0: [LocalVariableAccess] access to local variable x
@@ -30,25 +30,25 @@ csharp71.cs:
 #   14|         0: [AssignExpr] ... = ...
 #   14|           0: [LocalVariableAccess] access to local variable x
 #   14|           1: [CastExpr] (...) ...
-#   14|             0: [DefaultValueExpr] default
+#   14|             1: [DefaultValueExpr] default
 #   15|       4: [LocalVariableDeclStmt] ... ...;
 #   15|         0: [LocalVariableDeclAndInitExpr] String s = ...
 #   15|           -1: [TypeMention] String
 #   15|           0: [LocalVariableAccess] access to local variable s
 #   15|           1: [CastExpr] (...) ...
-#   15|             0: [DefaultValueExpr] default
+#   15|             1: [DefaultValueExpr] default
 #   16|       5: [LocalVariableDeclStmt] ... ...;
 #   16|         0: [LocalVariableDeclAndInitExpr] Boolean b = ...
 #   16|           -1: [TypeMention] Boolean
 #   16|           0: [LocalVariableAccess] access to local variable b
 #   16|           1: [CastExpr] (...) ...
-#   16|             0: [DefaultValueExpr] default
+#   16|             1: [DefaultValueExpr] default
 #   17|       6: [LocalVariableDeclStmt] ... ...;
 #   17|         0: [LocalVariableDeclAndInitExpr] Double d = ...
 #   17|           -1: [TypeMention] Double
 #   17|           0: [LocalVariableAccess] access to local variable d
 #   17|           1: [CastExpr] (...) ...
-#   17|             0: [DefaultValueExpr] default
+#   17|             1: [DefaultValueExpr] default
 #   21| [Class] IsConstants
 #   23|   5: [Method] f
 #   23|     -1: [TypeMention] Void

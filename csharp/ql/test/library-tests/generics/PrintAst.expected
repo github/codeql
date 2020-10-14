@@ -402,14 +402,14 @@ generics.cs:
 #   78|             0: [LogicalOrExpr] ... || ...
 #   78|               0: [LTExpr] ... < ...
 #   78|                 0: [CastExpr] (...) ...
-#   78|                   0: [ParameterAccess] access to parameter c
+#   78|                   1: [ParameterAccess] access to parameter c
 #   78|                 1: [CastExpr] (...) ...
-#   78|                   0: [CharLiteral] A
+#   78|                   1: [CharLiteral] A
 #   78|               1: [GTExpr] ... > ...
 #   78|                 0: [CastExpr] (...) ...
-#   78|                   0: [ParameterAccess] access to parameter c
+#   78|                   1: [ParameterAccess] access to parameter c
 #   78|                 1: [CastExpr] (...) ...
-#   78|                   0: [CharLiteral] Z
+#   78|                   1: [CharLiteral] Z
 #   79|             1: [BlockStmt] {...}
 #   80|               0: [ThrowStmt] throw ...;
 #   80|                 0: [ObjectCreation] object creation of type ArgumentException
@@ -431,9 +431,9 @@ generics.cs:
 #   86|               -1: [FieldAccess] access to field cells
 #   86|               0: [SubExpr] ... - ...
 #   86|                 0: [CastExpr] (...) ...
-#   86|                   0: [ParameterAccess] access to parameter c
+#   86|                   1: [ParameterAccess] access to parameter c
 #   86|                 1: [CastExpr] (...) ...
-#   86|                   0: [CharLiteral] A
+#   86|                   1: [CharLiteral] A
 #   86|               1: [ParameterAccess] access to parameter col
 #   88|       4: [Setter] set_Item
 #-----|         2: (Parameters)
@@ -452,14 +452,14 @@ generics.cs:
 #   91|             0: [LogicalOrExpr] ... || ...
 #   91|               0: [LTExpr] ... < ...
 #   91|                 0: [CastExpr] (...) ...
-#   91|                   0: [ParameterAccess] access to parameter c
+#   91|                   1: [ParameterAccess] access to parameter c
 #   91|                 1: [CastExpr] (...) ...
-#   91|                   0: [CharLiteral] A
+#   91|                   1: [CharLiteral] A
 #   91|               1: [GTExpr] ... > ...
 #   91|                 0: [CastExpr] (...) ...
-#   91|                   0: [ParameterAccess] access to parameter c
+#   91|                   1: [ParameterAccess] access to parameter c
 #   91|                 1: [CastExpr] (...) ...
-#   91|                   0: [CharLiteral] Z
+#   91|                   1: [CharLiteral] Z
 #   92|             1: [BlockStmt] {...}
 #   93|               0: [ThrowStmt] throw ...;
 #   93|                 0: [ObjectCreation] object creation of type ArgumentException
@@ -482,9 +482,9 @@ generics.cs:
 #   99|                 -1: [FieldAccess] access to field cells
 #   99|                 0: [SubExpr] ... - ...
 #   99|                   0: [CastExpr] (...) ...
-#   99|                     0: [ParameterAccess] access to parameter c
+#   99|                     1: [ParameterAccess] access to parameter c
 #   99|                   1: [CastExpr] (...) ...
-#   99|                     0: [CharLiteral] A
+#   99|                     1: [CharLiteral] A
 #   99|                 1: [ParameterAccess] access to parameter col
 #   99|               1: [ParameterAccess] access to parameter value
 #  105|   7: [Class] Test
@@ -560,7 +560,7 @@ generics.cs:
 #  124|                     1: [TypeMention] Object
 #  124|                   2: [TypeMention] String
 #  124|             1: [CastExpr] (...) ...
-#  124|               0: [IntLiteral] 3
+#  124|               1: [IntLiteral] 3
 #  126|         11: [ExprStmt] ...;
 #  126|           0: [MethodCall] call to method bar
 #  126|             -1: [ObjectCreation] object creation of type A<String>

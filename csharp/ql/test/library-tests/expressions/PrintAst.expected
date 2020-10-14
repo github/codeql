@@ -25,21 +25,21 @@ FoldedLiterals.cs:
 #   11|           0: [LocalVariableAccess] access to local variable c1
 #   11|           1: [UnaryPlusExpr] +...
 #   11|             0: [CastExpr] (...) ...
-#   11|               0: [CharLiteral]  
+#   11|               1: [CharLiteral]  
 #   12|       4: [LocalVariableDeclStmt] ... ...;
 #   12|         0: [LocalVariableDeclAndInitExpr] Int32 c2 = ...
 #   12|           -1: [TypeMention] Int32
 #   12|           0: [LocalVariableAccess] access to local variable c2
 #   12|           1: [UnaryMinusExpr] -...
 #   13|             0: [CastExpr] (...) ...
-#   13|               0: [CharLiteral]  
+#   13|               1: [CharLiteral]  
 #   14|       5: [LocalVariableDeclStmt] ... ...;
 #   14|         0: [LocalVariableDeclAndInitExpr] Int32 c3 = ...
 #   14|           -1: [TypeMention] Int32
 #   14|           0: [LocalVariableAccess] access to local variable c3
 #   14|           1: [ComplementExpr] ~...
 #   14|             0: [CastExpr] (...) ...
-#   14|               0: [CharLiteral]  
+#   14|               1: [CharLiteral]  
 #   15|       6: [LocalVariableDeclStmt] ... ...;
 #   15|         0: [LocalVariableDeclAndInitExpr] Char c4 = ...
 #   15|           -1: [TypeMention] Char
@@ -50,153 +50,153 @@ FoldedLiterals.cs:
 #   18|           -1: [TypeMention] SByte
 #   18|           0: [LocalVariableAccess] access to local variable sb0
 #   18|           1: [CastExpr] (...) ...
-#   18|             0: [IntLiteral] 1
-#   18|             1: [TypeAccess] access to type SByte
+#   18|             0: [TypeAccess] access to type SByte
 #   18|               0: [TypeMention] SByte
+#   18|             1: [IntLiteral] 1
 #   19|       8: [LocalVariableDeclStmt] ... ...;
 #   19|         0: [LocalVariableDeclAndInitExpr] Int32 sb1 = ...
 #   19|           -1: [TypeMention] Int32
 #   19|           0: [LocalVariableAccess] access to local variable sb1
 #   19|           1: [UnaryPlusExpr] +...
 #   19|             0: [CastExpr] (...) ...
-#   19|               0: [CastExpr] (...) ...
-#   19|                 0: [IntLiteral] 1
-#   19|                 1: [TypeAccess] access to type SByte
+#   19|               1: [CastExpr] (...) ...
+#   19|                 0: [TypeAccess] access to type SByte
 #   19|                   0: [TypeMention] SByte
+#   19|                 1: [IntLiteral] 1
 #   20|       9: [LocalVariableDeclStmt] ... ...;
 #   20|         0: [LocalVariableDeclAndInitExpr] Int32 sb2 = ...
 #   20|           -1: [TypeMention] Int32
 #   20|           0: [LocalVariableAccess] access to local variable sb2
 #   20|           1: [UnaryMinusExpr] -...
 #   20|             0: [CastExpr] (...) ...
-#   20|               0: [CastExpr] (...) ...
-#   20|                 0: [IntLiteral] 1
-#   20|                 1: [TypeAccess] access to type SByte
+#   20|               1: [CastExpr] (...) ...
+#   20|                 0: [TypeAccess] access to type SByte
 #   20|                   0: [TypeMention] SByte
+#   20|                 1: [IntLiteral] 1
 #   21|       10: [LocalVariableDeclStmt] ... ...;
 #   21|         0: [LocalVariableDeclAndInitExpr] Int32 sb3 = ...
 #   21|           -1: [TypeMention] Int32
 #   21|           0: [LocalVariableAccess] access to local variable sb3
 #   21|           1: [ComplementExpr] ~...
 #   21|             0: [CastExpr] (...) ...
-#   21|               0: [CastExpr] (...) ...
-#   21|                 0: [IntLiteral] 1
-#   21|                 1: [TypeAccess] access to type SByte
+#   21|               1: [CastExpr] (...) ...
+#   21|                 0: [TypeAccess] access to type SByte
 #   21|                   0: [TypeMention] SByte
+#   21|                 1: [IntLiteral] 1
 #   24|       11: [LocalVariableDeclStmt] ... ...;
 #   24|         0: [LocalVariableDeclAndInitExpr] Byte ub0 = ...
 #   24|           -1: [TypeMention] Byte
 #   24|           0: [LocalVariableAccess] access to local variable ub0
 #   24|           1: [CastExpr] (...) ...
-#   24|             0: [IntLiteral] 2
-#   24|             1: [TypeAccess] access to type Byte
+#   24|             0: [TypeAccess] access to type Byte
 #   24|               0: [TypeMention] Byte
+#   24|             1: [IntLiteral] 2
 #   25|       12: [LocalVariableDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclAndInitExpr] Int32 ub1 = ...
 #   25|           -1: [TypeMention] Int32
 #   25|           0: [LocalVariableAccess] access to local variable ub1
 #   25|           1: [UnaryPlusExpr] +...
 #   25|             0: [CastExpr] (...) ...
-#   25|               0: [CastExpr] (...) ...
-#   25|                 0: [IntLiteral] 2
-#   25|                 1: [TypeAccess] access to type Byte
+#   25|               1: [CastExpr] (...) ...
+#   25|                 0: [TypeAccess] access to type Byte
 #   25|                   0: [TypeMention] Byte
+#   25|                 1: [IntLiteral] 2
 #   26|       13: [LocalVariableDeclStmt] ... ...;
 #   26|         0: [LocalVariableDeclAndInitExpr] Int32 ub2 = ...
 #   26|           -1: [TypeMention] Int32
 #   26|           0: [LocalVariableAccess] access to local variable ub2
 #   26|           1: [UnaryMinusExpr] -...
 #   26|             0: [CastExpr] (...) ...
-#   26|               0: [CastExpr] (...) ...
-#   26|                 0: [IntLiteral] 2
-#   26|                 1: [TypeAccess] access to type Byte
+#   26|               1: [CastExpr] (...) ...
+#   26|                 0: [TypeAccess] access to type Byte
 #   26|                   0: [TypeMention] Byte
+#   26|                 1: [IntLiteral] 2
 #   27|       14: [LocalVariableDeclStmt] ... ...;
 #   27|         0: [LocalVariableDeclAndInitExpr] Int32 ub3 = ...
 #   27|           -1: [TypeMention] Int32
 #   27|           0: [LocalVariableAccess] access to local variable ub3
 #   27|           1: [ComplementExpr] ~...
 #   27|             0: [CastExpr] (...) ...
-#   27|               0: [CastExpr] (...) ...
-#   27|                 0: [IntLiteral] 2
-#   27|                 1: [TypeAccess] access to type Byte
+#   27|               1: [CastExpr] (...) ...
+#   27|                 0: [TypeAccess] access to type Byte
 #   27|                   0: [TypeMention] Byte
+#   27|                 1: [IntLiteral] 2
 #   30|       15: [LocalVariableDeclStmt] ... ...;
 #   30|         0: [LocalVariableDeclAndInitExpr] Int16 ss0 = ...
 #   30|           -1: [TypeMention] Int16
 #   30|           0: [LocalVariableAccess] access to local variable ss0
 #   30|           1: [CastExpr] (...) ...
-#   30|             0: [IntLiteral] 3
-#   30|             1: [TypeAccess] access to type Int16
+#   30|             0: [TypeAccess] access to type Int16
 #   30|               0: [TypeMention] Int16
+#   30|             1: [IntLiteral] 3
 #   31|       16: [LocalVariableDeclStmt] ... ...;
 #   31|         0: [LocalVariableDeclAndInitExpr] Int32 ss1 = ...
 #   31|           -1: [TypeMention] Int32
 #   31|           0: [LocalVariableAccess] access to local variable ss1
 #   31|           1: [UnaryPlusExpr] +...
 #   31|             0: [CastExpr] (...) ...
-#   31|               0: [CastExpr] (...) ...
-#   31|                 0: [IntLiteral] 3
-#   31|                 1: [TypeAccess] access to type Int16
+#   31|               1: [CastExpr] (...) ...
+#   31|                 0: [TypeAccess] access to type Int16
 #   31|                   0: [TypeMention] Int16
+#   31|                 1: [IntLiteral] 3
 #   32|       17: [LocalVariableDeclStmt] ... ...;
 #   32|         0: [LocalVariableDeclAndInitExpr] Int32 ss2 = ...
 #   32|           -1: [TypeMention] Int32
 #   32|           0: [LocalVariableAccess] access to local variable ss2
 #   32|           1: [UnaryMinusExpr] -...
 #   32|             0: [CastExpr] (...) ...
-#   32|               0: [CastExpr] (...) ...
-#   32|                 0: [IntLiteral] 3
-#   32|                 1: [TypeAccess] access to type Int16
+#   32|               1: [CastExpr] (...) ...
+#   32|                 0: [TypeAccess] access to type Int16
 #   32|                   0: [TypeMention] Int16
+#   32|                 1: [IntLiteral] 3
 #   33|       18: [LocalVariableDeclStmt] ... ...;
 #   33|         0: [LocalVariableDeclAndInitExpr] Int32 ss3 = ...
 #   33|           -1: [TypeMention] Int32
 #   33|           0: [LocalVariableAccess] access to local variable ss3
 #   33|           1: [ComplementExpr] ~...
 #   33|             0: [CastExpr] (...) ...
-#   33|               0: [CastExpr] (...) ...
-#   33|                 0: [IntLiteral] 3
-#   33|                 1: [TypeAccess] access to type Int16
+#   33|               1: [CastExpr] (...) ...
+#   33|                 0: [TypeAccess] access to type Int16
 #   33|                   0: [TypeMention] Int16
+#   33|                 1: [IntLiteral] 3
 #   36|       19: [LocalVariableDeclStmt] ... ...;
 #   36|         0: [LocalVariableDeclAndInitExpr] UInt16 us0 = ...
 #   36|           -1: [TypeMention] UInt16
 #   36|           0: [LocalVariableAccess] access to local variable us0
 #   36|           1: [CastExpr] (...) ...
-#   36|             0: [IntLiteral] 4
-#   36|             1: [TypeAccess] access to type UInt16
+#   36|             0: [TypeAccess] access to type UInt16
 #   36|               0: [TypeMention] UInt16
+#   36|             1: [IntLiteral] 4
 #   37|       20: [LocalVariableDeclStmt] ... ...;
 #   37|         0: [LocalVariableDeclAndInitExpr] Int32 us1 = ...
 #   37|           -1: [TypeMention] Int32
 #   37|           0: [LocalVariableAccess] access to local variable us1
 #   37|           1: [UnaryPlusExpr] +...
 #   37|             0: [CastExpr] (...) ...
-#   37|               0: [CastExpr] (...) ...
-#   37|                 0: [IntLiteral] 4
-#   37|                 1: [TypeAccess] access to type UInt16
+#   37|               1: [CastExpr] (...) ...
+#   37|                 0: [TypeAccess] access to type UInt16
 #   37|                   0: [TypeMention] UInt16
+#   37|                 1: [IntLiteral] 4
 #   38|       21: [LocalVariableDeclStmt] ... ...;
 #   38|         0: [LocalVariableDeclAndInitExpr] Int32 us2 = ...
 #   38|           -1: [TypeMention] Int32
 #   38|           0: [LocalVariableAccess] access to local variable us2
 #   38|           1: [UnaryMinusExpr] -...
 #   38|             0: [CastExpr] (...) ...
-#   38|               0: [CastExpr] (...) ...
-#   38|                 0: [IntLiteral] 4
-#   38|                 1: [TypeAccess] access to type UInt16
+#   38|               1: [CastExpr] (...) ...
+#   38|                 0: [TypeAccess] access to type UInt16
 #   38|                   0: [TypeMention] UInt16
+#   38|                 1: [IntLiteral] 4
 #   39|       22: [LocalVariableDeclStmt] ... ...;
 #   39|         0: [LocalVariableDeclAndInitExpr] Int32 us3 = ...
 #   39|           -1: [TypeMention] Int32
 #   39|           0: [LocalVariableAccess] access to local variable us3
 #   39|           1: [ComplementExpr] ~...
 #   39|             0: [CastExpr] (...) ...
-#   39|               0: [CastExpr] (...) ...
-#   39|                 0: [IntLiteral] 4
-#   39|                 1: [TypeAccess] access to type UInt16
+#   39|               1: [CastExpr] (...) ...
+#   39|                 0: [TypeAccess] access to type UInt16
 #   39|                   0: [TypeMention] UInt16
+#   39|                 1: [IntLiteral] 4
 #   42|       23: [LocalVariableDeclStmt] ... ...;
 #   42|         0: [LocalVariableDeclAndInitExpr] Int32 i0 = ...
 #   42|           -1: [TypeMention] Int32
@@ -225,7 +225,7 @@ FoldedLiterals.cs:
 #   48|           -1: [TypeMention] UInt32
 #   48|           0: [LocalVariableAccess] access to local variable ui0
 #   48|           1: [CastExpr] (...) ...
-#   48|             0: [IntLiteral] 6
+#   48|             1: [IntLiteral] 6
 #   49|       28: [LocalVariableDeclStmt] ... ...;
 #   49|         0: [LocalVariableDeclAndInitExpr] Int32 ui1 = ...
 #   49|           -1: [TypeMention] Int32
@@ -699,13 +699,13 @@ expressions.cs:
 #   86|             1: [ArrayCreation] array creation of type Int32[]
 #   86|               -1: [ArrayInitializer] { ..., ... }
 #   86|                 0: [CastExpr] (...) ...
-#   86|                   0: [ULongLiteral] 4
-#   86|                   1: [TypeAccess] access to type Int32
+#   86|                   0: [TypeAccess] access to type Int32
 #   86|                     0: [TypeMention] Int32
+#   86|                   1: [ULongLiteral] 4
 #   86|                 1: [CastExpr] (...) ...
-#   86|                   0: [LongLiteral] 3
-#   86|                   1: [TypeAccess] access to type Int32
+#   86|                   0: [TypeAccess] access to type Int32
 #   86|                     0: [TypeMention] Int32
+#   86|                   1: [LongLiteral] 3
 #   87|         6: [ExprStmt] ...;
 #   87|           0: [AssignExpr] ... = ...
 #   87|             0: [ArrayAccess] access to array element
@@ -741,23 +741,23 @@ expressions.cs:
 #   96|                 -1: [TypeMention] Class
 #   96|                 0: [LocalVariableAccess] access to local variable d
 #   96|                 1: [CastExpr] (...) ...
-#   96|                   0: [ParameterAccess] access to parameter p
-#   96|                   1: [TypeAccess] access to type Class
+#   96|                   0: [TypeAccess] access to type Class
 #   96|                     0: [TypeMention] Class
+#   96|                   1: [ParameterAccess] access to parameter p
 #   98|         1: [LocalVariableDeclStmt] ... ...;
 #   98|           0: [LocalVariableDeclAndInitExpr] Class x = ...
 #   98|             -1: [TypeMention] Class
 #   98|             0: [LocalVariableAccess] access to local variable x
 #   98|             1: [CastExpr] (...) ...
-#   98|               0: [AsExpr] ... as ...
+#   98|               0: [TypeAccess] access to type Class
+#   98|                 0: [TypeMention] Class
+#   98|               1: [AsExpr] ... as ...
 #   98|                 0: [CastExpr] (...) ...
-#   98|                   0: [ParameterAccess] access to parameter o
-#   98|                   1: [TypeAccess] access to type Class
+#   98|                   0: [TypeAccess] access to type Class
 #   98|                     0: [TypeMention] Class
+#   98|                   1: [ParameterAccess] access to parameter o
 #   98|                 1: [TypeAccess] access to type Object
 #   98|                   0: [TypeMention] Object
-#   98|               1: [TypeAccess] access to type Class
-#   98|                 0: [TypeMention] Class
 #   99|         2: [LocalVariableDeclStmt] ... ...;
 #   99|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
 #   99|             -1: [TypeMention] Int32
@@ -773,7 +773,7 @@ expressions.cs:
 #  100|                 0: [ParameterAccess] access to parameter s
 #  100|                 1: [StringLiteral] " "
 #  100|               1: [CastExpr] (...) ...
-#  100|                 0: [LocalVariableAccess] access to local variable i
+#  100|                 1: [LocalVariableAccess] access to local variable i
 #  103|     18: [Class] Y<,>
 #-----|       1: (Type parameters)
 #  103|         0: [TypeParameter] T
@@ -857,13 +857,13 @@ expressions.cs:
 #  138|               -1: [BaseAccess] base access
 #  138|               0: [ThisAccess] this access
 #  138|               1: [CastExpr] (...) ...
-#  138|                 0: [IntLiteral] 1
+#  138|                 1: [IntLiteral] 1
 #  138|               2: [CastExpr] (...) ...
-#  138|                 0: [IntLiteral] 2
+#  138|                 1: [IntLiteral] 2
 #  138|               3: [CastExpr] (...) ...
-#  138|                 0: [IntLiteral] 3
+#  138|                 1: [IntLiteral] 3
 #  138|               4: [CastExpr] (...) ...
-#  138|                 0: [IntLiteral] 4
+#  138|                 1: [IntLiteral] 4
 #  138|               5: [StringLiteral] ""
 #  143|     22: [Method] MainLocalVarDecl
 #  143|       -1: [TypeMention] Void
@@ -926,9 +926,9 @@ expressions.cs:
 #  157|               0: [MulExpr] ... * ...
 #  157|                 0: [LocalVariableAccess] access to local variable pi
 #  157|                 1: [CastExpr] (...) ...
-#  157|                   0: [LocalVariableAccess] access to local variable r
+#  157|                   1: [LocalVariableAccess] access to local variable r
 #  157|               1: [CastExpr] (...) ...
-#  157|                 0: [LocalVariableAccess] access to local variable r
+#  157|                 1: [LocalVariableAccess] access to local variable r
 #  160|     24: [Method] MainChecked
 #  160|       -1: [TypeMention] Void
 #  161|       4: [BlockStmt] {...}
@@ -960,7 +960,7 @@ expressions.cs:
 #  168|             1: [ArrayCreation] array creation of type Object[]
 #  168|               -1: [ArrayInitializer] { ..., ... }
 #  168|                 0: [CastExpr] (...) ...
-#  168|                   0: [ParameterAccess] access to parameter i
+#  168|                   1: [ParameterAccess] access to parameter i
 #  171|     26: [Method] MainDelegateAndMethodAccesses
 #  171|       -1: [TypeMention] Void
 #  172|       4: [BlockStmt] {...}
@@ -1349,11 +1349,11 @@ expressions.cs:
 #  312|           0: [LogicalOrExpr] ... || ...
 #  312|             0: [LTExpr] ... < ...
 #  312|               0: [CastExpr] (...) ...
-#  312|                 0: [ParameterAccess] access to parameter value
+#  312|                 1: [ParameterAccess] access to parameter value
 #  312|               1: [IntLiteral] 0
 #  312|             1: [GTExpr] ... > ...
 #  312|               0: [CastExpr] (...) ...
-#  312|                 0: [ParameterAccess] access to parameter value
+#  312|                 1: [ParameterAccess] access to parameter value
 #  312|               1: [IntLiteral] 9
 #  313|           1: [ThrowStmt] throw ...;
 #  313|             0: [ObjectCreation] object creation of type ArgumentException
@@ -1393,7 +1393,7 @@ expressions.cs:
 #  334|             1: [OperatorCall] call to operator explicit conversion
 #  334|               -1: [TypeMention] Digit
 #  334|               0: [CastExpr] (...) ...
-#  334|                 0: [IntLiteral] 8
+#  334|                 1: [IntLiteral] 8
 #  335|         1: [LocalVariableDeclStmt] ... ...;
 #  335|           0: [LocalVariableDeclAndInitExpr] Byte b = ...
 #  335|             -1: [TypeMention] Byte
@@ -1721,10 +1721,10 @@ expressions.cs:
 #  414|             1: [ArrayCreation] array creation of type Double[]
 #  414|               -1: [ArrayInitializer] { ..., ... }
 #  414|                 0: [CastExpr] (...) ...
-#  414|                   0: [IntLiteral] 1
+#  414|                   1: [IntLiteral] 1
 #  414|                 1: [DoubleLiteral] 1.5
 #  414|                 2: [CastExpr] (...) ...
-#  414|                   0: [IntLiteral] 2
+#  414|                   1: [IntLiteral] 2
 #  414|                 3: [DoubleLiteral] 2.5
 #  415|         11: [LocalVariableDeclStmt] ... ...;
 #  415|           0: [LocalVariableDeclAndInitExpr] String[,] is7 = ...
@@ -1962,12 +1962,12 @@ expressions.cs:
 #  449|             0: [LocalVariableAccess] access to local variable f1
 #  449|             1: [LambdaExpr] (...) => ...
 #  449|               0: [CastExpr] (...) ...
-#  449|                 0: [AddExpr] ... + ...
-#  449|                   0: [CastExpr] (...) ...
-#  449|                     0: [ParameterAccess] access to parameter x
-#  449|                   1: [IntLiteral] 1
-#  449|                 1: [TypeAccess] access to type Byte
+#  449|                 0: [TypeAccess] access to type Byte
 #  449|                   0: [TypeMention] Byte
+#  449|                 1: [AddExpr] ... + ...
+#  449|                   0: [CastExpr] (...) ...
+#  449|                     1: [ParameterAccess] access to parameter x
+#  449|                   1: [IntLiteral] 1
 #-----|               2: (Parameters)
 #  449|                 0: [Parameter] x
 #  450|         1: [LocalVariableDeclStmt] ... ...;
@@ -1980,7 +1980,7 @@ expressions.cs:
 #  450|               0: [BlockStmt] {...}
 #  450|                 0: [ReturnStmt] return ...;
 #  450|                   0: [CastExpr] (...) ...
-#  450|                     0: [AddExpr] ... + ...
+#  450|                     1: [AddExpr] ... + ...
 #  450|                       0: [ParameterAccess] access to parameter x
 #  450|                       1: [IntLiteral] 1
 #-----|               2: (Parameters)
@@ -2009,7 +2009,7 @@ expressions.cs:
 #  452|                 0: [ReturnStmt] return ...;
 #  452|                   0: [AddExpr] ... + ...
 #  452|                     0: [CastExpr] (...) ...
-#  452|                       0: [ParameterAccess] access to parameter x
+#  452|                       1: [ParameterAccess] access to parameter x
 #  452|                     1: [StringLiteral] ""
 #-----|               2: (Parameters)
 #  452|                 0: [Parameter] x

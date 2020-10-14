@@ -17,7 +17,7 @@ Assignments.cs:
 #    8|           -1: [TypeMention] dynamic
 #    8|           0: [LocalVariableAccess] access to local variable d
 #    8|           1: [CastExpr] (...) ...
-#    8|             0: [IntLiteral] 0
+#    8|             1: [IntLiteral] 0
 #    9|       3: [ExprStmt] ...;
 #    9|         0: [AssignSubExpr] ... -= ...
 #    9|           0: [LocalVariableAccess] access to local variable d

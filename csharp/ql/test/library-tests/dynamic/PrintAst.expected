@@ -40,7 +40,7 @@ dynamic.cs:
 #   13|           -1: [TypeMention] dynamic
 #   13|           0: [LocalVariableAccess] access to local variable d
 #   13|           1: [CastExpr] (...) ...
-#   13|             0: [IntLiteral] 0
+#   13|             1: [IntLiteral] 0
 #   16|       4: [ExprStmt] ...;
 #   16|         0: [DynamicObjectCreation] dynamic object creation of type DynamicTest
 #   16|           -1: [TypeMention] DynamicTest
@@ -52,7 +52,7 @@ dynamic.cs:
 #   17|             0: [MemberInitializer] ... = ...
 #   17|               0: [FieldAccess] access to field Field
 #   17|               1: [CastExpr] (...) ...
-#   17|                 0: [LocalVariableAccess] access to local variable d
+#   17|                 1: [LocalVariableAccess] access to local variable d
 #   17|           0: [LocalVariableAccess] access to local variable d
 #   18|       6: [ExprStmt] ...;
 #   18|         0: [DynamicObjectCreation] dynamic object creation of type KeyValuePair<String,dynamic>
@@ -77,7 +77,7 @@ dynamic.cs:
 #   23|             0: [MemberInitializer] ... = ...
 #   23|               0: [FieldAccess] access to field Field
 #   23|               1: [CastExpr] (...) ...
-#   23|                 0: [LocalVariableAccess] access to local variable d
+#   23|                 1: [LocalVariableAccess] access to local variable d
 #   23|           0: [IntLiteral] 0
 #   26|       10: [ExprStmt] ...;
 #   26|         0: [DynamicMethodCall] dynamic call to method Bar
@@ -97,7 +97,7 @@ dynamic.cs:
 #   34|         0: [AssignExpr] ... = ...
 #   34|           0: [LocalVariableAccess] access to local variable d
 #   34|           1: [CastExpr] (...) ...
-#   34|             0: [IntLiteral] 0
+#   34|             1: [IntLiteral] 0
 #   35|       15: [ExprStmt] ...;
 #   35|         0: [AssignExpr] ... = ...
 #   35|           0: [LocalVariableAccess] access to local variable d
@@ -186,21 +186,21 @@ dynamic.cs:
 #   66|         0: [AssignExpr] ... = ...
 #   66|           0: [LocalVariableAccess] access to local variable d
 #   66|           1: [CastExpr] (...) ...
-#   66|             0: [IntLiteral] 0
+#   66|             1: [IntLiteral] 0
 #   67|       33: [ExprStmt] ...;
 #   67|         0: [AssignExpr] ... = ...
 #   67|           0: [IndexerCall] access to indexer
 #   67|             -1: [LocalVariableAccess] access to local variable dt
 #   67|             0: [IntLiteral] 0
 #   67|           1: [CastExpr] (...) ...
-#   67|             0: [IndexerCall] access to indexer
+#   67|             1: [IndexerCall] access to indexer
 #   67|               -1: [LocalVariableAccess] access to local variable dt
 #   67|               0: [LocalVariableAccess] access to local variable d
 #   68|       34: [ExprStmt] ...;
 #   68|         0: [AssignExpr] ... = ...
 #   68|           0: [LocalVariableAccess] access to local variable d
 #   68|           1: [CastExpr] (...) ...
-#   68|             0: [IndexerCall] access to indexer
+#   68|             1: [IndexerCall] access to indexer
 #   68|               -1: [LocalVariableAccess] access to local variable dt
 #   68|               0: [IntLiteral] 0
 #   69|       35: [ExprStmt] ...;
@@ -211,12 +211,12 @@ dynamic.cs:
 #   69|           1: [ArrayAccess] access to array element
 #   69|             -1: [LocalVariableAccess] access to local variable array
 #   69|             0: [CastExpr] (...) ...
-#   69|               0: [LocalVariableAccess] access to local variable d
+#   69|               1: [LocalVariableAccess] access to local variable d
 #   70|       36: [ExprStmt] ...;
 #   70|         0: [AssignExpr] ... = ...
 #   70|           0: [LocalVariableAccess] access to local variable d
 #   70|           1: [CastExpr] (...) ...
-#   70|             0: [ArrayAccess] access to array element
+#   70|             1: [ArrayAccess] access to array element
 #   70|               -1: [LocalVariableAccess] access to local variable array
 #   70|               0: [IntLiteral] 0
 #   73|       37: [ExprStmt] ...;

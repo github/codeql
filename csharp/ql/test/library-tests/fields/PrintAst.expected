@@ -116,11 +116,11 @@ fields.cs:
 #   53|         1: [ObjectCreation] object creation of type Color
 #   53|           -1: [TypeMention] Color
 #   53|           0: [CastExpr] (...) ...
-#   53|             0: [IntLiteral] 0
+#   53|             1: [IntLiteral] 0
 #   53|           1: [CastExpr] (...) ...
-#   53|             0: [IntLiteral] 0
+#   53|             1: [IntLiteral] 0
 #   53|           2: [CastExpr] (...) ...
-#   53|             0: [IntLiteral] 0
+#   53|             1: [IntLiteral] 0
 #   54|     6: [Field] White
 #   54|       -1: [TypeMention] Color
 #   54|       1: [AssignExpr] ... = ...
@@ -128,11 +128,11 @@ fields.cs:
 #   54|         1: [ObjectCreation] object creation of type Color
 #   54|           -1: [TypeMention] Color
 #   54|           0: [CastExpr] (...) ...
-#   54|             0: [IntLiteral] 255
+#   54|             1: [IntLiteral] 255
 #   54|           1: [CastExpr] (...) ...
-#   54|             0: [IntLiteral] 255
+#   54|             1: [IntLiteral] 255
 #   54|           2: [CastExpr] (...) ...
-#   54|             0: [IntLiteral] 255
+#   54|             1: [IntLiteral] 255
 #   56|     7: [InstanceConstructor] Color
 #-----|       2: (Parameters)
 #   56|         0: [Parameter] r
@@ -198,13 +198,13 @@ fields.cs:
 #   89|           0: [AssignExpr] ... = ...
 #   89|             0: [FieldAccess] access to field x
 #   89|             1: [CastExpr] (...) ...
-#   89|               0: [MemberConstantAccess] access to constant Foo
+#   89|               1: [MemberConstantAccess] access to constant Foo
 #   90|         1: [LocalVariableDeclStmt] ... ...;
 #   90|           0: [LocalVariableDeclAndInitExpr] dynamic dyn = ...
 #   90|             -1: [TypeMention] dynamic
 #   90|             0: [LocalVariableAccess] access to local variable dyn
 #   90|             1: [CastExpr] (...) ...
-#   90|               0: [MemberConstantAccess] access to constant Foo
+#   90|               1: [MemberConstantAccess] access to constant Foo
 #   91|         2: [LocalVariableDeclStmt] ... ...;
 #   91|           0: [LocalVariableDeclAndInitExpr] D d = ...
 #   91|             -1: [TypeMention] D
@@ -221,7 +221,7 @@ fields.cs:
 #   92|                 0: [MemberInitializer] ... = ...
 #   92|                   0: [FieldAccess] access to field x
 #   92|                   1: [CastExpr] (...) ...
-#   92|                     0: [MemberConstantAccess] access to constant Foo
+#   92|                     1: [MemberConstantAccess] access to constant Foo
 #   96|   4: [Class] D
 #   98|     4: [InstanceConstructor] D
 #-----|       2: (Parameters)

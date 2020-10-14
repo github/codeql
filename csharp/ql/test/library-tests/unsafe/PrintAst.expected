@@ -132,6 +132,6 @@ unsafe.cs:
 #   37|                   1: [TypeMention] Int32
 #   37|                 0: [LocalVariableAccess] access to local variable p
 #   37|                 1: [CastExpr] (...) ...
-#   37|                   0: [LocalVariableAccess] access to local variable data
+#   37|                   1: [LocalVariableAccess] access to local variable data
 #   38|               0: [BlockStmt] {...}
 #   44|   2: [Class] SafeClass

@@ -168,10 +168,10 @@ events.cs:
 #   84|           0: [AssignExpr] ... = ...
 #   84|             0: [LocalVariableAccess] access to local variable handler
 #   84|             1: [CastExpr] (...) ...
-#   84|               0: [MethodCall] call to method GetEventHandler
-#   84|                 0: [FieldAccess] access to field mouseUpEventKey
-#   84|               1: [TypeAccess] access to type EventHandler
+#   84|               0: [TypeAccess] access to type EventHandler
 #   84|                 0: [TypeMention] EventHandler
+#   84|               1: [MethodCall] call to method GetEventHandler
+#   84|                 0: [FieldAccess] access to field mouseUpEventKey
 #   85|         2: [IfStmt] if (...) ...
 #   85|           0: [OperatorCall] call to operator !=
 #   85|             0: [LocalVariableAccess] access to local variable handler

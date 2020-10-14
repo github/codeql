@@ -758,7 +758,7 @@ patterns.cs:
 #    7|           -1: [TypeMention] Object
 #    7|           0: [LocalVariableAccess] access to local variable o
 #    7|           1: [CastExpr] (...) ...
-#    7|             0: [ObjectCreation] object creation of type MyStruct
+#    7|             1: [ObjectCreation] object creation of type MyStruct
 #    7|               -2: [TypeMention] MyStruct
 #    7|               -1: [ObjectInitializer] { ..., ... }
 #    7|                 0: [MemberInitializer] ... = ...
@@ -970,7 +970,7 @@ patterns.cs:
 #   78|               1: [VariablePatternExpr] Single y
 #   78|           1: [LTExpr] ... < ...
 #   78|             0: [CastExpr] (...) ...
-#   78|               0: [LocalVariableAccess] access to local variable x
+#   78|               1: [LocalVariableAccess] access to local variable x
 #   78|             1: [LocalVariableAccess] access to local variable y
 #   79|         1: [BreakStmt] break;
 #   80|         2: [CaseStmt] case ...:

@@ -423,9 +423,9 @@ exceptions.cs:
 #  339|               -1: [TypeMention] Int16
 #  339|               0: [LocalVariableAccess] access to local variable v
 #  339|               1: [CastExpr] (...) ...
-#  339|                 0: [IntLiteral] 1
-#  339|                 1: [TypeAccess] access to type Int16
+#  339|                 0: [TypeAccess] access to type Int16
 #  339|                   0: [TypeMention] Int16
+#  339|                 1: [IntLiteral] 1
 #  341|         1: [SpecificCatchClause] catch (...) {...}
 #  341|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #  341|             0: [TypeMention] NullReferenceException
@@ -564,9 +564,9 @@ exceptions.cs:
 #  452|               -1: [TypeMention] Class1
 #  452|               0: [LocalVariableAccess] access to local variable p
 #  452|               1: [CastExpr] (...) ...
-#  452|                 0: [LocalVariableAccess] access to local variable o
-#  452|                 1: [TypeAccess] access to type Class1
+#  452|                 0: [TypeAccess] access to type Class1
 #  452|                   0: [TypeMention] Class1
+#  452|                 1: [LocalVariableAccess] access to local variable o
 #  454|         1: [SpecificCatchClause] catch (...) {...}
 #  454|           0: [LocalVariableDeclExpr] InvalidCastException ex
 #  454|             0: [TypeMention] InvalidCastException

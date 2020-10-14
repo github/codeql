@@ -44,18 +44,18 @@ methods.cs:
 #   20|               0: [TypeMention] Console
 #   20|             0: [StringLiteral] "{0} {1}"
 #   20|             1: [CastExpr] (...) ...
-#   20|               0: [LocalVariableAccess] access to local variable i
+#   20|               1: [LocalVariableAccess] access to local variable i
 #   20|             2: [CastExpr] (...) ...
-#   20|               0: [LocalVariableAccess] access to local variable j
+#   20|               1: [LocalVariableAccess] access to local variable j
 #   21|         3: [ExprStmt] ...;
 #   21|           0: [MethodCall] call to method WriteLine
 #   21|             -1: [TypeAccess] access to type Console
 #   21|               0: [TypeMention] Console
 #   21|             0: [StringLiteral] "{0} {1}"
 #   21|             1: [CastExpr] (...) ...
-#   21|               0: [LocalVariableAccess] access to local variable i
+#   21|               1: [LocalVariableAccess] access to local variable i
 #   21|             2: [CastExpr] (...) ...
-#   21|               0: [LocalVariableAccess] access to local variable j
+#   21|               1: [LocalVariableAccess] access to local variable j
 #   25|   2: [Class] TestOut
 #   28|     5: [Method] Divide
 #   28|       -1: [TypeMention] Void
@@ -101,9 +101,9 @@ methods.cs:
 #   38|               0: [TypeMention] Console
 #   38|             0: [StringLiteral] "{0} {1}"
 #   38|             1: [CastExpr] (...) ...
-#   38|               0: [LocalVariableAccess] access to local variable res
+#   38|               1: [LocalVariableAccess] access to local variable res
 #   38|             2: [CastExpr] (...) ...
-#   38|               0: [LocalVariableAccess] access to local variable rem
+#   38|               1: [LocalVariableAccess] access to local variable rem
 #   42|   3: [Class] Console
 #   45|     5: [Method] Write
 #   45|       -1: [TypeMention] Void
@@ -208,24 +208,24 @@ methods.cs:
 #   88|         4: [ExprStmt] ...;
 #   88|           0: [MethodCall] call to method F
 #   88|             0: [CastExpr] (...) ...
-#   88|               0: [IntLiteral] 1
-#   88|               1: [TypeAccess] access to type Double
+#   88|               0: [TypeAccess] access to type Double
 #   88|                 0: [TypeMention] Double
+#   88|               1: [IntLiteral] 1
 #   89|         5: [ExprStmt] ...;
 #   89|           0: [MethodCall] call to method F
 #   89|             0: [CastExpr] (...) ...
-#   89|               0: [IntLiteral] 1
-#   89|               1: [TypeAccess] access to type Object
+#   89|               0: [TypeAccess] access to type Object
 #   89|                 0: [TypeMention] Object
+#   89|               1: [IntLiteral] 1
 #   90|         6: [ExprStmt] ...;
 #   90|           0: [MethodCall] call to method F
 #   90|             0: [IntLiteral] 1
 #   91|         7: [ExprStmt] ...;
 #   91|           0: [MethodCall] call to method F
 #   91|             0: [CastExpr] (...) ...
-#   91|               0: [IntLiteral] 1
+#   91|               1: [IntLiteral] 1
 #   91|             1: [CastExpr] (...) ...
-#   91|               0: [IntLiteral] 1
+#   91|               1: [IntLiteral] 1
 #   96|   5: [Class] Extensions
 #   99|     4: [ExtensionMethod] ToInt32
 #   99|       -1: [TypeMention] Int32

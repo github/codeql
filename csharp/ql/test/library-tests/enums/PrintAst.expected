@@ -14,17 +14,17 @@ enums.cs:
 #   28|       1: [AssignExpr] ... = ...
 #   28|         0: [MemberConstantAccess] access to constant OneRed
 #   28|         1: [CastExpr] (...) ...
-#   28|           0: [IntLiteral] 1
+#   28|           1: [IntLiteral] 1
 #   29|     6: [Field] TwoGreen
 #   29|       1: [AssignExpr] ... = ...
 #   29|         0: [MemberConstantAccess] access to constant TwoGreen
 #   29|         1: [CastExpr] (...) ...
-#   29|           0: [IntLiteral] 2
+#   29|           1: [IntLiteral] 2
 #   30|     7: [Field] FourBlue
 #   30|       1: [AssignExpr] ... = ...
 #   30|         0: [MemberConstantAccess] access to constant FourBlue
 #   30|         1: [CastExpr] (...) ...
-#   30|           0: [IntLiteral] 4
+#   30|           1: [IntLiteral] 4
 #   34|   5: [Enum] SparseColor
 #   37|     5: [Field] Red
 #   38|     6: [Field] Green
@@ -37,9 +37,9 @@ enums.cs:
 #   40|         0: [MemberConstantAccess] access to constant AnotherBlue
 #   40|         1: [AddExpr] ... + ...
 #   40|           0: [CastExpr] (...) ...
-#   40|             0: [MemberConstantAccess] access to constant Blue
+#   40|             1: [MemberConstantAccess] access to constant Blue
 #   40|           1: [CastExpr] (...) ...
-#   40|             0: [MemberConstantAccess] access to constant Red
+#   40|             1: [MemberConstantAccess] access to constant Red
 #   44|   6: [Class] Test
 #   47|     5: [Method] Main
 #   47|       -1: [TypeMention] Void
@@ -86,10 +86,10 @@ enums.cs:
 #   58|                 0: [TypeMention] String
 #   58|               0: [StringLiteral] "Red = {0}"
 #   58|               1: [CastExpr] (...) ...
-#   58|                 0: [CastExpr] (...) ...
-#   58|                   0: [ParameterAccess] access to parameter c
-#   58|                   1: [TypeAccess] access to type Int32
+#   58|                 1: [CastExpr] (...) ...
+#   58|                   0: [TypeAccess] access to type Int32
 #   58|                     0: [TypeMention] Int32
+#   58|                   1: [ParameterAccess] access to parameter c
 #   59|           2: [ConstCase] case ...:
 #   59|             0: [ConstantPatternExpr,MemberConstantAccess] access to constant Green
 #   59|               -1: [TypeAccess] access to type SparseColor
@@ -100,10 +100,10 @@ enums.cs:
 #   59|                 0: [TypeMention] String
 #   59|               0: [StringLiteral] "Green = {0}"
 #   59|               1: [CastExpr] (...) ...
-#   59|                 0: [CastExpr] (...) ...
-#   59|                   0: [ParameterAccess] access to parameter c
-#   59|                   1: [TypeAccess] access to type Int32
+#   59|                 1: [CastExpr] (...) ...
+#   59|                   0: [TypeAccess] access to type Int32
 #   59|                     0: [TypeMention] Int32
+#   59|                   1: [ParameterAccess] access to parameter c
 #   60|           4: [ConstCase] case ...:
 #   60|             0: [ConstantPatternExpr,MemberConstantAccess] access to constant Blue
 #   60|               -1: [TypeAccess] access to type SparseColor
@@ -114,10 +114,10 @@ enums.cs:
 #   60|                 0: [TypeMention] String
 #   60|               0: [StringLiteral] "Blue = {0}"
 #   60|               1: [CastExpr] (...) ...
-#   60|                 0: [CastExpr] (...) ...
-#   60|                   0: [ParameterAccess] access to parameter c
-#   60|                   1: [TypeAccess] access to type Int32
+#   60|                 1: [CastExpr] (...) ...
+#   60|                   0: [TypeAccess] access to type Int32
 #   60|                     0: [TypeMention] Int32
+#   60|                   1: [ParameterAccess] access to parameter c
 #   61|           6: [DefaultCase] default:
 #   61|           7: [ReturnStmt] return ...;
 #   61|             0: [StringLiteral] "Invalid color"

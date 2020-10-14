@@ -206,9 +206,9 @@ indexers.cs:
 #   76|               0: [TypeMention] Console
 #   76|             0: [StringLiteral] "Found {0} primes between 1 and {1}"
 #   76|             1: [CastExpr] (...) ...
-#   76|               0: [LocalVariableAccess] access to local variable count
+#   76|               1: [LocalVariableAccess] access to local variable count
 #   76|             2: [CastExpr] (...) ...
-#   76|               0: [LocalVariableAccess] access to local variable max
+#   76|               1: [LocalVariableAccess] access to local variable max
 #   81|   3: [Class] Grid
 #   84|     5: [Field] NumRows
 #   84|       -1: [TypeMention] Int32
@@ -251,14 +251,14 @@ indexers.cs:
 #   94|             0: [LogicalOrExpr] ... || ...
 #   94|               0: [LTExpr] ... < ...
 #   94|                 0: [CastExpr] (...) ...
-#   94|                   0: [ParameterAccess] access to parameter c
+#   94|                   1: [ParameterAccess] access to parameter c
 #   94|                 1: [CastExpr] (...) ...
-#   94|                   0: [CharLiteral] A
+#   94|                   1: [CharLiteral] A
 #   94|               1: [GTExpr] ... > ...
 #   94|                 0: [CastExpr] (...) ...
-#   94|                   0: [ParameterAccess] access to parameter c
+#   94|                   1: [ParameterAccess] access to parameter c
 #   94|                 1: [CastExpr] (...) ...
-#   94|                   0: [CharLiteral] Z
+#   94|                   1: [CharLiteral] Z
 #   95|             1: [BlockStmt] {...}
 #   96|               0: [ThrowStmt] throw ...;
 #   96|                 0: [ObjectCreation] object creation of type ArgumentException
@@ -280,9 +280,9 @@ indexers.cs:
 #  102|               -1: [FieldAccess] access to field cells
 #  102|               0: [SubExpr] ... - ...
 #  102|                 0: [CastExpr] (...) ...
-#  102|                   0: [ParameterAccess] access to parameter c
+#  102|                   1: [ParameterAccess] access to parameter c
 #  102|                 1: [CastExpr] (...) ...
-#  102|                   0: [CharLiteral] A
+#  102|                   1: [CharLiteral] A
 #  102|               1: [ParameterAccess] access to parameter col
 #  104|       4: [Setter] set_Item
 #-----|         2: (Parameters)
@@ -301,14 +301,14 @@ indexers.cs:
 #  107|             0: [LogicalOrExpr] ... || ...
 #  107|               0: [LTExpr] ... < ...
 #  107|                 0: [CastExpr] (...) ...
-#  107|                   0: [ParameterAccess] access to parameter c
+#  107|                   1: [ParameterAccess] access to parameter c
 #  107|                 1: [CastExpr] (...) ...
-#  107|                   0: [CharLiteral] A
+#  107|                   1: [CharLiteral] A
 #  107|               1: [GTExpr] ... > ...
 #  107|                 0: [CastExpr] (...) ...
-#  107|                   0: [ParameterAccess] access to parameter c
+#  107|                   1: [ParameterAccess] access to parameter c
 #  107|                 1: [CastExpr] (...) ...
-#  107|                   0: [CharLiteral] Z
+#  107|                   1: [CharLiteral] Z
 #  108|             1: [BlockStmt] {...}
 #  109|               0: [ThrowStmt] throw ...;
 #  109|                 0: [ObjectCreation] object creation of type ArgumentException
@@ -331,9 +331,9 @@ indexers.cs:
 #  115|                 -1: [FieldAccess] access to field cells
 #  115|                 0: [SubExpr] ... - ...
 #  115|                   0: [CastExpr] (...) ...
-#  115|                     0: [ParameterAccess] access to parameter c
+#  115|                     1: [ParameterAccess] access to parameter c
 #  115|                   1: [CastExpr] (...) ...
-#  115|                     0: [CharLiteral] A
+#  115|                     1: [CharLiteral] A
 #  115|                 1: [ParameterAccess] access to parameter col
 #  115|               1: [ParameterAccess] access to parameter value
 #  121|   4: [Class] DuplicateIndexerSignatures
