@@ -29,8 +29,6 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 case ArrayTypeSyntax ats:
                     return GetElementType(ats.ElementType);
-                case NullableTypeSyntax nts:
-                    return GetElementType(nts.ElementType);
                 case PointerTypeSyntax pts:
                     return GetElementType(pts.ElementType);
                 default:
@@ -44,8 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 case ArrayType at:
                     return GetElementType(at.ElementType.Type);
-                case NamedType nt when nt.symbol.IsBoundNullable() ||
-                                       nt.symbol.IsBoundSpan() ||
+                case NamedType nt when nt.symbol.IsBoundSpan() ||
                                        nt.symbol.IsBoundReadOnlySpan():
                     return nt.TypeArguments.Single();
                 case PointerType pt:
@@ -60,6 +57,7 @@ namespace Semmle.Extraction.CSharp.Entities
             switch (syntax.Kind())
             {
                 case SyntaxKind.ArrayType:
+                case SyntaxKind.PointerType:
                     Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
                     Create(cx, GetElementType(syntax), this, GetElementType(type));
                     return;
@@ -80,12 +78,6 @@ namespace Semmle.Extraction.CSharp.Entities
                     var tt = (TupleType)type;
                     Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
                     tts.Elements.Zip(tt.TupleElements, (s, t) => Create(cx, s.Type, this, t.Type)).Enumerate();
-                    return;
-                case SyntaxKind.PointerType:
-                    var pts = (PointerTypeSyntax)syntax;
-                    var pt = (PointerType)type;
-                    Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
-                    Create(cx, pts.ElementType, this, pt.PointedAtType);
                     return;
                 case SyntaxKind.GenericName:
                     var gns = (GenericNameSyntax)syntax;
