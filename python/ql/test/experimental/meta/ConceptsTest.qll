@@ -36,16 +36,13 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
 class DecodingTest extends InlineExpectationsTest {
   DecodingTest() { this = "DecodingTest" }
 
-  override string getARelevantTag() { result in ["getAnInput", "getOutput", "getFormat"] }
+  override string getARelevantTag() {
+    result in ["decodeInput", "decodeOutput", "decodeFormat", "decodeUnsafe"]
+  }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(Decoding d, string unsafe |
-      (
-        d.unsafe() and unsafe = "UNSAFE_"
-        or
-        not d.unsafe() and unsafe = ""
-      ) and
+    exists(Decoding d |
       (
         exists(DataFlow::Node data |
           location = data.getLocation() and
@@ -53,10 +50,10 @@ class DecodingTest extends InlineExpectationsTest {
           value = value_from_expr(data.asExpr()) and
           (
             data = d.getAnInput() and
-            tag = unsafe + "getAnInput"
+            tag = "decodeInput"
             or
             data = d.getOutput() and
-            tag = unsafe + "getOutput"
+            tag = "decodeOutput"
           )
         )
         or
@@ -65,8 +62,14 @@ class DecodingTest extends InlineExpectationsTest {
           element = format and
           value = format and
           format = d.getFormat() and
-          tag = unsafe + "getFormat"
+          tag = "decodeFormat"
         )
+        or
+        d.unsafe() and
+        location = d.getLocation() and
+        element = d.toString() and
+        value = "" and
+        tag = "decodeUnsafe"
       )
     )
   }
