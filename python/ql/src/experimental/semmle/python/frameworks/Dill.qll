@@ -12,7 +12,7 @@ private module Dill {
   /** Gets a reference to the `dill` module. */
   private DataFlow::Node dill(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule("dill")
+    result = DataFlow::importNode("dill")
     or
     exists(DataFlow::TypeTracker t2 | result = dill(t2).track(t2, t))
   }
@@ -25,7 +25,7 @@ private module Dill {
     /** Gets a reference to the `dill.loads` function. */
     private DataFlow::Node loads(DataFlow::TypeTracker t) {
       t.start() and
-      result = DataFlow::importMember("dill", "loads")
+      result = DataFlow::importNode("dill.loads")
       or
       t.startInAttr("loads") and
       result = dill()

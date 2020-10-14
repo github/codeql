@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Accessor : Method
+    internal class Accessor : Method
     {
         protected Accessor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
@@ -16,8 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static IPropertySymbol GetPropertySymbol(IMethodSymbol symbol)
         {
             // Usually, the property/indexer can be fetched from the associated symbol
-            var prop = symbol.AssociatedSymbol as IPropertySymbol;
-            if (prop != null)
+            if (symbol.AssociatedSymbol is IPropertySymbol prop)
                 return prop;
 
             // But for properties/indexers that implement explicit interfaces, Roslyn
@@ -30,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Gets the property symbol associated with this accessor.
         /// </summary>
-        IPropertySymbol PropertySymbol => GetPropertySymbol(symbol);
+        private IPropertySymbol PropertySymbol => GetPropertySymbol(symbol);
 
         public new Accessor OriginalDefinition => Create(Context, symbol.OriginalDefinition);
 
@@ -79,10 +78,10 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public new static Accessor Create(Context cx, IMethodSymbol symbol) =>
+        public static new Accessor Create(Context cx, IMethodSymbol symbol) =>
             AccessorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class AccessorFactory : ICachedEntityFactory<IMethodSymbol, Accessor>
+        private class AccessorFactory : ICachedEntityFactory<IMethodSymbol, Accessor>
         {
             public static readonly AccessorFactory Instance = new AccessorFactory();
 

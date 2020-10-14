@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Try : Statement<TryStatementSyntax>
+    internal class Try : Statement<TryStatementSyntax>
     {
-        Try(Context cx, TryStatementSyntax node, IStatementParentEntity parent, int child)
+        private Try(Context cx, TryStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.TRY, parent, child) { }
 
         public static Try Create(Context cx, TryStatementSyntax node, IStatementParentEntity parent, int child)

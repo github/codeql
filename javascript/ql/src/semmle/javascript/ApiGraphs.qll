@@ -286,6 +286,17 @@ module API {
   /** Gets a node corresponding to an export of module `m`. */
   Node moduleExport(string m) { result = Impl::MkModuleDef(m).(Node).getMember("exports") }
 
+  /** Provides helper predicates for accessing API-graph nodes. */
+  module Node {
+    /** Gets a node whose type has the given qualified name. */
+    Node ofType(string moduleName, string exportedName) {
+      exists(TypeName tn |
+        tn.hasQualifiedName(moduleName, exportedName) and
+        result = Impl::MkCanonicalNameUse(tn).(Node).getInstance()
+      )
+    }
+  }
+
   /**
    * An API entry point.
    *
@@ -301,9 +312,6 @@ module API {
 
     /** Gets a data-flow node that defines this entry point. */
     abstract DataFlow::Node getARhs();
-
-    /** Gets an API-graph node for this entry point. */
-    API::Node getNode() { result = root().getASuccessor(this) }
   }
 
   /**
@@ -346,16 +354,42 @@ module API {
             exists(SSA::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
           )
         )
+        or
+        m = any(CanonicalName n | isDefined(n)).getExternalModuleName()
       } or
-      MkModuleImport(string m) { imports(_, m) } or
+      MkModuleImport(string m) {
+        imports(_, m)
+        or
+        m = any(CanonicalName n | isUsed(n)).getExternalModuleName()
+      } or
       MkClassInstance(DataFlow::ClassNode cls) { cls = trackDefNode(_) and hasSemantics(cls) } or
       MkAsyncFuncResult(DataFlow::FunctionNode f) {
         f = trackDefNode(_) and f.getFunction().isAsync() and hasSemantics(f)
       } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
-      MkCanonicalNameDef(CanonicalName n) { isDefined(n) } or
-      MkCanonicalNameUse(CanonicalName n) { isUsed(n) }
+      /**
+       * A TypeScript canonical name that is defined somewhere, and that isn't a module root.
+       * (Module roots are represented by `MkModuleExport` nodes instead.)
+       *
+       * For most purposes, you probably want to use the `mkCanonicalNameDef` predicate instead of
+       * this constructor.
+       */
+      MkCanonicalNameDef(CanonicalName n) {
+        not n.isRoot() and
+        isDefined(n)
+      } or
+      /**
+       * A TypeScript canonical name that is used somewhere, and that isn't a module root.
+       * (Module roots are represented by `MkModuleImport` nodes instead.)
+       *
+       * For most purposes, you probably want to use the `mkCanonicalNameUse` predicate instead of
+       * this constructor.
+       */
+      MkCanonicalNameUse(CanonicalName n) {
+        not n.isRoot() and
+        isUsed(n)
+      }
 
     class TDef = MkModuleDef or TNonModuleDef;
 
@@ -399,6 +433,20 @@ module API {
       )
     }
 
+    /** An API-graph node representing definitions of the canonical name `cn`. */
+    private TApiNode mkCanonicalNameDef(CanonicalName cn) {
+      if cn.isModuleRoot()
+      then result = MkModuleExport(cn.getExternalModuleName())
+      else result = MkCanonicalNameDef(cn)
+    }
+
+    /** An API-graph node representing uses of the canonical name `cn`. */
+    private TApiNode mkCanonicalNameUse(CanonicalName cn) {
+      if cn.isModuleRoot()
+      then result = MkModuleImport(cn.getExternalModuleName())
+      else result = MkCanonicalNameUse(cn)
+    }
+
     /**
      * Holds if `rhs` is the right-hand side of a definition of a node that should have an
      * incoming edge from `base` labeled `lbl` in the API graph.
@@ -419,9 +467,18 @@ module API {
         exists(DataFlow::Node def, DataFlow::SourceNode pred |
           rhs(base, def) and pred = trackDefNode(def)
         |
+          // from `x` to a definition of `x.prop`
           exists(DataFlow::PropWrite pw | pw = pred.getAPropertyWrite() |
             lbl = Label::memberFromRef(pw) and
             rhs = pw.getRhs()
+          )
+          or
+          // special case: from `require('m')` to an export of `prop` in `m`
+          exists(Import imp, Module m, string prop |
+            pred = imp.getImportedModuleNode() and
+            m = imp.getImportedModule() and
+            lbl = Label::member(prop) and
+            rhs = m.getAnExportedValue(prop)
           )
           or
           exists(DataFlow::FunctionNode fn | fn = pred |
@@ -561,15 +618,11 @@ module API {
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
-        ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getModuleVariable()))
-        or
-        ref = DataFlow::parameterNode(mod.(AmdModule).getDefine().getModuleParameter())
+        ref.(ModuleAsSourceNode).getModule() = mod
       )
       or
       exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
-        ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getExportsVariable()))
-        or
-        ref = DataFlow::parameterNode(mod.(AmdModule).getDefine().getExportsParameter())
+        ref.(ExportsAsSourceNode).getModule() = mod
         or
         exists(DataFlow::Node base | use(MkModuleDef(m), base) |
           ref = trackUseNode(base).getAPropertyRead("exports")
@@ -640,6 +693,16 @@ module API {
       rhs(_, nd) and
       result = nd.getALocalSource()
       or
+      // additional backwards step from `require('m')` to `exports` or `module.exports` in m
+      exists(Import imp | imp.getImportedModuleNode() = trackDefNode(nd, t.continue()) |
+        result.(ExportsAsSourceNode).getModule() = imp.getImportedModule()
+        or
+        exists(ModuleAsSourceNode mod |
+          mod.getModule() = imp.getImportedModule() and
+          result = mod.(DataFlow::SourceNode).getAPropertyRead("exports")
+        )
+      )
+      or
       exists(DataFlow::TypeBackTracker t2 | result = trackDefNode(nd, t2).backtrack(t2, t))
     }
 
@@ -698,20 +761,11 @@ module API {
         succ = MkClassInstance(trackDefNode(def))
       )
       or
-      exists(CanonicalName cn |
-        pred = MkRoot() and
-        lbl = Label::mod(cn.getExternalModuleName())
-      |
-        succ = MkCanonicalNameUse(cn) or
-        succ = MkCanonicalNameDef(cn)
-      )
-      or
-      exists(CanonicalName cn1, CanonicalName cn2 |
-        cn2 = cn1.getAChild() and
-        lbl = Label::member(cn2.getName())
-      |
-        (pred = MkCanonicalNameDef(cn1) or pred = MkCanonicalNameUse(cn1)) and
-        (succ = MkCanonicalNameDef(cn2) or succ = MkCanonicalNameUse(cn2))
+      exists(CanonicalName cn1, string n, CanonicalName cn2 |
+        pred in [mkCanonicalNameDef(cn1), mkCanonicalNameUse(cn1)] and
+        cn2 = cn1.getChild(n) and
+        lbl = Label::member(n) and
+        succ in [mkCanonicalNameDef(cn2), mkCanonicalNameUse(cn2)]
       )
       or
       exists(DataFlow::Node nd, DataFlow::FunctionNode f |
@@ -796,13 +850,31 @@ private module Label {
 }
 
 /**
- * A CommonJS `module` or `exports` variable, considered as a source node.
+ * A CommonJS/AMD `module` variable, considered as a source node.
  */
-private class AdditionalSourceNode extends DataFlow::SourceNode::Range {
-  AdditionalSourceNode() {
-    exists(NodeModule m, Variable v |
-      v in [m.getModuleVariable(), m.getExportsVariable()] and
-      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v))
-    )
+private class ModuleAsSourceNode extends DataFlow::SourceNode::Range {
+  Module m;
+
+  ModuleAsSourceNode() {
+    this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getModuleVariable()))
+    or
+    this = DataFlow::parameterNode(m.(AmdModule).getDefine().getModuleParameter())
   }
+
+  Module getModule() { result = m }
+}
+
+/**
+ * A CommonJS/AMD `exports` variable, considered as a source node.
+ */
+private class ExportsAsSourceNode extends DataFlow::SourceNode::Range {
+  Module m;
+
+  ExportsAsSourceNode() {
+    this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getExportsVariable()))
+    or
+    this = DataFlow::parameterNode(m.(AmdModule).getDefine().getExportsParameter())
+  }
+
+  Module getModule() { result = m }
 }

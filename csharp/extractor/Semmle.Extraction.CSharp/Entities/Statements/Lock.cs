@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Lock : Statement<LockStatementSyntax>
+    internal class Lock : Statement<LockStatementSyntax>
     {
-        Lock(Context cx, LockStatementSyntax @lock, IStatementParentEntity parent, int child)
+        private Lock(Context cx, LockStatementSyntax @lock, IStatementParentEntity parent, int child)
             : base(cx, @lock, StmtKind.LOCK, parent, child) { }
 
         public static Lock Create(Context cx, LockStatementSyntax node, IStatementParentEntity parent, int child)

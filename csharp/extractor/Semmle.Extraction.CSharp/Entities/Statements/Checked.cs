@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Checked : Statement<CheckedStatementSyntax>
+    internal class Checked : Statement<CheckedStatementSyntax>
     {
-        Checked(Context cx, CheckedStatementSyntax stmt, IStatementParentEntity parent, int child)
+        private Checked(Context cx, CheckedStatementSyntax stmt, IStatementParentEntity parent, int child)
             : base(cx, stmt, StmtKind.CHECKED, parent, child) { }
 
         public static Checked Create(Context cx, CheckedStatementSyntax node, IStatementParentEntity parent, int child)

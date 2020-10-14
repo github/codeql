@@ -40,11 +40,11 @@ namespace Semmle.Autobuild.Shared
     /// <summary>
     /// A solution file on the filesystem, read using Microsoft.Build.
     /// </summary>
-    class Solution : ProjectOrSolution, ISolution
+    internal class Solution : ProjectOrSolution, ISolution
     {
-        readonly SolutionFile? solution;
+        private readonly SolutionFile? solution;
 
-        readonly IEnumerable<Project> includedProjects;
+        private readonly IEnumerable<Project> includedProjects;
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjects;
 
         public IEnumerable<SolutionConfigurationInSolution> Configurations =>
@@ -73,19 +73,18 @@ namespace Semmle.Autobuild.Shared
                 }
 
                 builder.Log(Severity.Info, $"Unable to read solution file {path}.");
-                includedProjects = new Project[0];
+                includedProjects = Array.Empty<Project>();
                 return;
             }
 
-            includedProjects =
-                solution.ProjectsInOrder.
-                Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat).
-                Select(p => builder.Actions.PathCombine(DirectoryName, builder.Actions.PathCombine(p.RelativePath.Split('\\', StringSplitOptions.RemoveEmptyEntries)))).
-                Select(p => new Project(builder, p)).
-                ToArray();
+            includedProjects = solution.ProjectsInOrder
+                .Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat)
+                .Select(p => builder.Actions.PathCombine(DirectoryName, builder.Actions.PathCombine(p.RelativePath.Split('\\', StringSplitOptions.RemoveEmptyEntries))))
+                .Select(p => new Project(builder, p))
+                .ToArray();
         }
 
-        IEnumerable<Version> ToolsVersions => includedProjects.Where(p => p.ValidToolsVersion).Select(p => p.ToolsVersion);
+        private IEnumerable<Version> ToolsVersions => includedProjects.Where(p => p.ValidToolsVersion).Select(p => p.ToolsVersion);
 
         public Version ToolsVersion => ToolsVersions.Any() ? ToolsVersions.Max() : new Version();
     }

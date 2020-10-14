@@ -17,7 +17,7 @@ private module Stdlib {
   /** Gets a reference to the `os` module. */
   private DataFlow::Node os(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule("os")
+    result = DataFlow::importNode("os")
     or
     exists(DataFlow::TypeTracker t2 | result = os(t2).track(t2, t))
   }
@@ -42,10 +42,10 @@ private module Stdlib {
           "path"] and
     (
       t.start() and
-      result = DataFlow::importMember("os", attr_name)
+      result = DataFlow::importNode("os." + attr_name)
       or
       t.startInAttr(attr_name) and
-      result = DataFlow::importModule("os")
+      result = DataFlow::importNode("os")
     )
     or
     // Due to bad performance when using normal setup with `os_attr(t2, attr_name).track(t2, t)`
@@ -85,7 +85,7 @@ private module Stdlib {
       /** Gets a reference to the `os.path.join` function. */
       private DataFlow::Node join(DataFlow::TypeTracker t) {
         t.start() and
-        result = DataFlow::importMember("os.path", "join")
+        result = DataFlow::importNode("os.path.join")
         or
         t.startInAttr("join") and
         result = os::path()
@@ -190,7 +190,7 @@ private module Stdlib {
   /** Gets a reference to the `subprocess` module. */
   private DataFlow::Node subprocess(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule("subprocess")
+    result = DataFlow::importNode("subprocess")
     or
     exists(DataFlow::TypeTracker t2 | result = subprocess(t2).track(t2, t))
   }
@@ -208,10 +208,10 @@ private module Stdlib {
     attr_name in ["Popen", "call", "check_call", "check_output", "run"] and
     (
       t.start() and
-      result = DataFlow::importMember("subprocess", attr_name)
+      result = DataFlow::importNode("subprocess." + attr_name)
       or
       t.startInAttr(attr_name) and
-      result = DataFlow::importModule("subprocess")
+      result = subprocess()
     )
     or
     // Due to bad performance when using normal setup with `subprocess_attr(t2, attr_name).track(t2, t)`
@@ -334,7 +334,7 @@ private module Stdlib {
   /** Gets a reference to the `marshal` module. */
   private DataFlow::Node marshal(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule("marshal")
+    result = DataFlow::importNode("marshal")
     or
     exists(DataFlow::TypeTracker t2 | result = marshal(t2).track(t2, t))
   }
@@ -347,7 +347,7 @@ private module Stdlib {
     /** Gets a reference to the `marshal.loads` function. */
     private DataFlow::Node loads(DataFlow::TypeTracker t) {
       t.start() and
-      result = DataFlow::importMember("marshal", "loads")
+      result = DataFlow::importNode("marshal.loads")
       or
       t.startInAttr("loads") and
       result = marshal()
@@ -385,7 +385,7 @@ private module Stdlib {
   /** Gets a reference to the `pickle` module. */
   private DataFlow::Node pickle(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule(pickleModuleName())
+    result = DataFlow::importNode(pickleModuleName())
     or
     exists(DataFlow::TypeTracker t2 | result = pickle(t2).track(t2, t))
   }
@@ -398,7 +398,7 @@ private module Stdlib {
     /** Gets a reference to the `pickle.loads` function. */
     private DataFlow::Node loads(DataFlow::TypeTracker t) {
       t.start() and
-      result = DataFlow::importMember(pickleModuleName(), "loads")
+      result = DataFlow::importNode(pickleModuleName() + ".loads")
       or
       t.startInAttr("loads") and
       result = pickle()

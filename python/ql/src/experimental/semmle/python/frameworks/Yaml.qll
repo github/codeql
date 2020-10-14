@@ -12,7 +12,7 @@ private module Yaml {
   /** Gets a reference to the `yaml` module. */
   private DataFlow::Node yaml(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule("yaml")
+    result = DataFlow::importNode("yaml")
     or
     exists(DataFlow::TypeTracker t2 | result = yaml(t2).track(t2, t))
   }
@@ -25,7 +25,7 @@ private module Yaml {
     /** Gets a reference to the `yaml.load` function. */
     private DataFlow::Node load(DataFlow::TypeTracker t) {
       t.start() and
-      result = DataFlow::importMember("yaml", "load")
+      result = DataFlow::importNode("yaml.load")
       or
       t.startInAttr("load") and
       result = yaml()

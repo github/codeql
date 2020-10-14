@@ -40,9 +40,7 @@ class DateStructModifiedFieldAccess extends LeapYearFieldAccess {
  */
 class SafeTimeGatheringFunction extends Function {
   SafeTimeGatheringFunction() {
-    this.getQualifiedName() = "GetFileTime" or
-    this.getQualifiedName() = "GetSystemTime" or
-    this.getQualifiedName() = "NtQuerySystemTime"
+    this.getQualifiedName() = ["GetFileTime", "GetSystemTime", "NtQuerySystemTime"]
   }
 }
 
@@ -51,15 +49,11 @@ class SafeTimeGatheringFunction extends Function {
  */
 class TimeConversionFunction extends Function {
   TimeConversionFunction() {
-    this.getQualifiedName() = "FileTimeToSystemTime" or
-    this.getQualifiedName() = "SystemTimeToFileTime" or
-    this.getQualifiedName() = "SystemTimeToTzSpecificLocalTime" or
-    this.getQualifiedName() = "SystemTimeToTzSpecificLocalTimeEx" or
-    this.getQualifiedName() = "TzSpecificLocalTimeToSystemTime" or
-    this.getQualifiedName() = "TzSpecificLocalTimeToSystemTimeEx" or
-    this.getQualifiedName() = "RtlLocalTimeToSystemTime" or
-    this.getQualifiedName() = "RtlTimeToSecondsSince1970" or
-    this.getQualifiedName() = "_mkgmtime"
+    this.getQualifiedName() =
+      ["FileTimeToSystemTime", "SystemTimeToFileTime", "SystemTimeToTzSpecificLocalTime",
+          "SystemTimeToTzSpecificLocalTimeEx", "TzSpecificLocalTimeToSystemTime",
+          "TzSpecificLocalTimeToSystemTimeEx", "RtlLocalTimeToSystemTime",
+          "RtlTimeToSecondsSince1970", "_mkgmtime"]
   }
 }
 
