@@ -23,10 +23,7 @@ import semmle.code.cpp.security.TaintTracking
  * ```
  */
 predicate sourceSized(FunctionCall fc, Expr src) {
-  exists(string name |
-    (name = "strncpy" or name = "strncat" or name = "memcpy" or name = "memmove") and
-    fc.getTarget().hasGlobalOrStdName(name)
-  ) and
+  fc.getTarget().hasGlobalOrStdName(["strncpy", "strncat", "memcpy", "memmove"]) and
   exists(Expr dest, Expr size, Variable v |
     fc.getArgument(0) = dest and
     fc.getArgument(1) = src and

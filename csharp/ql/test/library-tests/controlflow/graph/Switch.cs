@@ -25,7 +25,7 @@ class Switch
                 Console.WriteLine(s);
                 return;
             case double d when Throw():
-                Label:
+            Label:
                 return;
             default:
                 goto Label;
@@ -56,10 +56,10 @@ class Switch
     {
         switch (1 + 2)
         {
-            case 2 :
-              break;
-            case 3 :
-              break;
+            case 2:
+                break;
+            case 3:
+                break;
         }
     }
 
@@ -67,10 +67,10 @@ class Switch
     {
         switch ((object)s)
         {
-            case int _ :
-              break;
-            case "" :
-              break;
+            case int _:
+                break;
+            case "":
+                break;
         }
     }
 
@@ -78,12 +78,12 @@ class Switch
     {
         switch (i)
         {
-            case 1 :
-              return true;
-            case 2 :
-              if (j > 2)
-                break;
-              return true;
+            case 1:
+                return true;
+            case 2:
+                if (j > 2)
+                    break;
+                return true;
         }
         return false;
     }
@@ -92,8 +92,8 @@ class Switch
     {
         switch (o)
         {
-            case int _ :
-              return true;
+            case int _:
+                return true;
         }
         return false;
     }
@@ -102,8 +102,8 @@ class Switch
     {
         switch (s?.Length)
         {
-            case 0 : return 0;
-            case 1 : return 1;
+            case 0: return 0;
+            case 1: return 1;
         }
         return -1;
     }
@@ -114,8 +114,8 @@ class Switch
     {
         switch (s.Length)
         {
-            case 3 when s=="foo" : return 1;
-            case 2 when s=="fu" : return 2;
+            case 3 when s == "foo": return 1;
+            case 2 when s == "fu": return 2;
         }
         return -1;
     }
@@ -149,5 +149,14 @@ class Switch
             default: return -1;
             case 2: return 2;
         }
+    }
+
+    void M15(bool b)
+    {
+        var s = b switch { true => "a", false => "b" };
+        if (b)
+            System.Console.WriteLine($"a = {s}");
+        else
+            System.Console.WriteLine($"b = {s}");
     }
 }

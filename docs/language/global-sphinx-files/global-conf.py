@@ -38,7 +38,7 @@ extensions = [
 ]
 
 # The encoding of source files.
-#source_encoding = 'utf-8-sig'
+source_encoding = 'utf-8-sig'
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -86,10 +86,9 @@ html_theme_options = {'font_size': '16px',
                       'body_text': '#333', 
                       'link': '#2F1695',
                       'link_hover': '#2F1695',
-                      'font_family': 'Lato, sans-serif',
-                      'head_font_family': 'Moderat, sans-serif',
                       'show_powered_by': False,
                       'nosidebar':True,
+                      'head_font_family': '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
                       }
 
 # Add any paths that contain templates here, relative to this directory.

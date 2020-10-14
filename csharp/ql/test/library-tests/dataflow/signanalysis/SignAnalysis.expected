@@ -156,6 +156,7 @@
 | SignAnalysis.cs:278:42:278:42 | access to parameter k | positive |
 | SignAnalysis.cs:280:21:280:21 | access to parameter k | positive |
 | SignAnalysis.cs:280:26:280:26 | 5 | strictlyPositive |
+| SignAnalysis.cs:292:34:292:34 | access to parameter i | strictlyPositive |
 | SignAnalysis.cs:295:38:295:38 | access to parameter i | strictlyPositive |
 | SignAnalysis.cs:300:27:300:28 | -... | strictlyNegative |
 | SignAnalysis.cs:300:28:300:28 | 1 | strictlyPositive |

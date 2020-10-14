@@ -48,20 +48,6 @@ private module MongoDB {
     not result.getAnImmediateUse().(DataFlow::ParameterNode).getName() = "client" // mongodb v3 provides a `Mongoclient` here
   }
 
-  /**
-   * A collection based on the type `mongodb.Collection`.
-   *
-   * Note that this also covers `mongoose` models since they are subtypes
-   * of `mongodb.Collection`.
-   */
-  private class TypedMongoCollection extends API::EntryPoint {
-    TypedMongoCollection() { this = "TypedMongoCollection" }
-
-    override DataFlow::SourceNode getAUse() { result.hasUnderlyingType("mongodb", "Collection") }
-
-    override DataFlow::Node getARhs() { none() }
-  }
-
   /** Gets a data flow node referring to a MongoDB collection. */
   private API::Node getACollection() {
     // A collection resulting from calling `Db.collection(...)`.
@@ -71,7 +57,8 @@ private module MongoDB {
       result = collection.getParameter(1).getParameter(0)
     )
     or
-    result = any(TypedMongoCollection c).getNode()
+    // note that this also covers `mongoose` models since they are subtypes of `mongodb.Collection`
+    result = API::Node::ofType("mongodb", "Collection")
   }
 
   /** A call to a MongoDB query method. */
@@ -226,17 +213,6 @@ private module Mongoose {
     }
 
     /**
-     * A Mongoose collection based on the type `mongoose.Model`.
-     */
-    private class TypedMongooseModel extends API::EntryPoint {
-      TypedMongooseModel() { this = "TypedMongooseModel" }
-
-      override DataFlow::SourceNode getAUse() { result.hasUnderlyingType("mongoose", "Model") }
-
-      override DataFlow::Node getARhs() { none() }
-    }
-
-    /**
      * Gets a API-graph node referring to a Mongoose Model object.
      */
     private API::Node getModelObject() {
@@ -247,7 +223,7 @@ private module Mongoose {
         result = conn.getMember("models").getAMember()
       )
       or
-      result = any(TypedMongooseModel c).getNode()
+      result = API::Node::ofType("mongoose", "Model")
     }
 
     /**
@@ -342,23 +318,12 @@ private module Mongoose {
     }
 
     /**
-     * A Mongoose query.
-     */
-    private class TypedMongooseQuery extends API::EntryPoint {
-      TypedMongooseQuery() { this = "TypedMongooseQuery" }
-
-      override DataFlow::SourceNode getAUse() { result.hasUnderlyingType("mongoose", "Query") }
-
-      override DataFlow::Node getARhs() { none() }
-    }
-
-    /**
      * Gets a data flow node referring to a Mongoose query object.
      */
     API::Node getAMongooseQuery() {
       result = any(MongooseFunction f).getQueryReturn()
       or
-      result = any(TypedMongooseQuery c).getNode()
+      result = API::Node::ofType("mongoose", "Query")
       or
       result =
         getAMongooseQuery()
@@ -561,22 +526,13 @@ private module Mongoose {
     }
 
     /**
-     * A Mongoose document.
-     */
-    private class TypedMongooseDocument extends API::EntryPoint {
-      TypedMongooseDocument() { this = "TypedMongooseDocument" }
-
-      override DataFlow::SourceNode getAUse() { result.hasUnderlyingType("mongoose", "Document") }
-
-      override DataFlow::Node getARhs() { none() }
-    }
-
-    /**
      * Gets a data flow node referring to a Mongoose Document object.
      */
     private API::Node getAMongooseDocument() {
-      result instanceof RetrievedDocument or
-      result = any(TypedMongooseDocument c).getNode() or
+      result instanceof RetrievedDocument
+      or
+      result = API::Node::ofType("mongoose", "Document")
+      or
       result =
         getAMongooseDocument()
             .getMember(any(string name | MethodSignatures::returnsDocument(name)))

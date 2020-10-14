@@ -52,7 +52,58 @@ class StdMapInsert extends TaintFunction {
 }
 
 /**
- * The standard map `swap` functions.
+ * The standard map `emplace` and `emplace_hint` functions.
+ */
+class StdMapEmplace extends TaintFunction {
+  StdMapEmplace() {
+    this.hasQualifiedName("std", ["map", "unordered_map"], ["emplace", "emplace_hint"])
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from the last parameter (which may be the value part used to
+    // construct a pair, or a pair to be copied / moved) to the qualifier and
+    // return value.
+    // (where the return value is a pair, this should really flow just to the first part of it)
+    input.isParameterDeref(getNumberOfParameters() - 1) and
+    (
+      output.isQualifierObject() or
+      output.isReturnValue()
+    )
+    or
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}
+
+/**
+ * The standard map `try_emplace` function.
+ */
+class StdMapTryEmplace extends TaintFunction {
+  StdMapTryEmplace() { this.hasQualifiedName("std", ["map", "unordered_map"], "try_emplace") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from any parameter apart from the key to qualifier and return value
+    // (here we assume taint flow from any constructor parameter to the constructed object)
+    // (where the return value is a pair, this should really flow just to the first part of it)
+    exists(int arg | arg = [1 .. getNumberOfParameters() - 1] |
+      (
+        not getUnspecifiedType() instanceof Iterator or
+        arg != 1
+      ) and
+      input.isParameterDeref(arg)
+    ) and
+    (
+      output.isQualifierObject() or
+      output.isReturnValue()
+    )
+    or
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}
+
+/**
+ * The standard map `swap` function.
  */
 class StdMapSwap extends TaintFunction {
   StdMapSwap() { this.hasQualifiedName("std", ["map", "unordered_map"], "swap") }
@@ -62,6 +113,19 @@ class StdMapSwap extends TaintFunction {
     input.isQualifierObject() and
     output.isParameterDeref(0)
     or
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The standard map `merge` function.
+ */
+class StdMapMerge extends TaintFunction {
+  StdMapMerge() { this.hasQualifiedName("std", ["map", "unordered_map"], "merge") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // container1.merge(container2)
     input.isParameterDeref(0) and
     output.isQualifierObject()
   }
@@ -105,6 +169,23 @@ class StdMapErase extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to iterator return value
     getType().getUnderlyingType() instanceof Iterator and
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}
+
+/**
+ * The standard map `lower_bound`, `upper_bound` and `equal_range` functions.
+ */
+class StdMapEqualRange extends TaintFunction {
+  StdMapEqualRange() {
+    this
+        .hasQualifiedName("std", ["map", "unordered_map"],
+          ["lower_bound", "upper_bound", "equal_range"])
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value
     input.isQualifierObject() and
     output.isReturnValue()
   }
