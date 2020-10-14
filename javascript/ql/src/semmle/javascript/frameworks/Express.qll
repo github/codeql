@@ -718,7 +718,7 @@ module Express {
   /**
    * An invocation of the `cookie` method on an HTTP response object.
    */
-  private class SetCookie extends HTTP::CookieDefinition, MethodCallExpr {
+  class SetCookie extends HTTP::CookieDefinition, MethodCallExpr {
     RouteHandler rh;
 
     SetCookie() { calls(rh.getAResponseExpr(), "cookie") }
