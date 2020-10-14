@@ -163,9 +163,9 @@ private module PartialDefinitions {
         valueToUpdate(convertedInner, this.getFullyConverted(), node) and
         innerDefinedExpr = convertedInner.getUnconverted() and
         (
-          innerDefinedExpr.(Call).getQualifier() = getCrementedExpr*(getAnIteratorAccess(collection))
+          innerDefinedExpr.(Call).getQualifier() = getAnIteratorAccess(collection)
           or
-          innerDefinedExpr.(Call).getQualifier() = getCrementedExpr*(collection.getAnAccess()) and
+          innerDefinedExpr.(Call).getQualifier() = collection.getAnAccess() and
           collection instanceof IteratorParameter
         ) and
         innerDefinedExpr.(Call).getTarget() instanceof IteratorPointerDereferenceMemberOperator
@@ -823,12 +823,10 @@ module FlowVar_internal {
       def.getAnUltimateDefiningValue(iterator) = c and
       result = def.getAUse(iterator)
     )
-  }
-
-  Expr getCrementedExpr(Expr e) {
+    or
     exists(Call crement |
       crement = result and
-      [crement.getQualifier(), crement.getArgument(0)] = e and
+      [crement.getQualifier(), crement.getArgument(0)] = getAnIteratorAccess(collection) and
       crement.getTarget().getName() = ["operator++", "operator--"]
     )
   }

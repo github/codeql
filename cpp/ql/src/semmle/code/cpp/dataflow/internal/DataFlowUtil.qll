@@ -585,23 +585,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr() = call and
     nodeTo.asDefiningArgument() = call.getQualifier()
   )
-  or
-  // Iterators that have a user-defined `operator=`. Take flow from the RHS to
-  // the post-update node for the iterator.
-  // The built-in `=` case is handled by FlowVar, other user-defined `operator=`
-  // will be handled by interprocedural flow.
-  exists(IteratorPartialDefinitionNode postUpdate, Call opEquals |
-    postUpdate = nodeTo and
-    opEquals.getTarget().hasName("operator=") and
-    if opEquals.getTarget() instanceof MemberFunction
-    then
-      opEquals.getQualifier() = postUpdate.getPreUpdateNode().asExpr() and
-      opEquals.getArgument(0) = nodeFrom.asExpr()
-    else (
-      opEquals.getArgument(0) = postUpdate.getPreUpdateNode().asExpr() and
-      opEquals.getArgument(1) = nodeFrom.asExpr()
-    )
-  )
 }
 
 /**

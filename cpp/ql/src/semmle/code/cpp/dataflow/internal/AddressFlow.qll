@@ -52,17 +52,6 @@ private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
   or
   // C++ only
   lvalueIn = lvalueOut.(Assignment).getLValue().getFullyConverted()
-  or
-  // C++ only
-  exists(Call c |
-    lvalueOut = c and
-    c.getTarget().hasName(["operator*", "operator++"]) and
-    (
-      c.getQualifier() = lvalueIn or
-      not c.getTarget() instanceof MemberFunction and
-      c.getArgument(0) = lvalueIn
-    )
-  )
 }
 
 private predicate pointerToLvalueStep(Expr pointerIn, Expr lvalueOut) {
@@ -103,17 +92,6 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
 
 private predicate lvalueToReferenceStep(Expr lvalueIn, Expr referenceOut) {
   lvalueIn.getConversion() = referenceOut.(ReferenceToExpr)
-  or
-  // C++ only
-  exists(Call c |
-    referenceOut = c and
-    c.getTarget().hasName(["operator*", "operator++"]) and
-    (
-      c.getQualifier() = lvalueIn or
-      not c.getTarget() instanceof MemberFunction and
-      c.getArgument(0) = lvalueIn
-    )
-  )
 }
 
 private predicate referenceToLvalueStep(Expr referenceIn, Expr lvalueOut) {

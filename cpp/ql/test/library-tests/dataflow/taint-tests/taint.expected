@@ -250,10 +250,6 @@
 | smart_pointer.cpp:13:10:13:10 | p | smart_pointer.cpp:11:52:11:57 | call to source |
 | smart_pointer.cpp:24:10:24:10 | call to operator* | smart_pointer.cpp:23:52:23:57 | call to source |
 | smart_pointer.cpp:25:10:25:10 | p | smart_pointer.cpp:23:52:23:57 | call to source |
-| smart_pointer.cpp:38:10:38:10 | p | smart_pointer.cpp:37:10:37:15 | call to source |
-| smart_pointer.cpp:39:10:39:10 | call to operator* | smart_pointer.cpp:37:10:37:15 | call to source |
-| smart_pointer.cpp:46:10:46:10 | p | smart_pointer.cpp:45:10:45:15 | call to source |
-| smart_pointer.cpp:47:10:47:10 | call to operator* | smart_pointer.cpp:45:10:45:15 | call to source |
 | smart_pointer.cpp:52:12:52:14 | call to get | smart_pointer.cpp:51:52:51:57 | call to source |
 | smart_pointer.cpp:57:12:57:14 | call to get | smart_pointer.cpp:56:52:56:57 | call to source |
 | standalone_iterators.cpp:40:10:40:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
@@ -262,9 +258,6 @@
 | standalone_iterators.cpp:46:10:46:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
 | standalone_iterators.cpp:47:10:47:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
 | standalone_iterators.cpp:48:10:48:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
-| standalone_iterators.cpp:52:10:52:10 | call to operator* | standalone_iterators.cpp:51:37:51:43 | source1 |
-| standalone_iterators.cpp:53:10:53:10 | call to operator* | standalone_iterators.cpp:51:37:51:43 | source1 |
-| standalone_iterators.cpp:54:10:54:10 | call to operator* | standalone_iterators.cpp:51:37:51:43 | source1 |
 | string.cpp:29:7:29:7 | a | string.cpp:25:12:25:17 | call to source |
 | string.cpp:31:7:31:7 | c | string.cpp:27:16:27:21 | call to source |
 | string.cpp:33:9:33:13 | call to c_str | string.cpp:27:16:27:21 | call to source |
@@ -664,5 +657,3 @@
 | vector.cpp:409:7:409:9 | v13 | vector.cpp:408:11:408:16 | call to source |
 | vector.cpp:414:7:414:9 | v14 | vector.cpp:413:11:413:16 | call to source |
 | vector.cpp:422:8:422:10 | out | vector.cpp:417:33:417:45 | source_string |
-| vector.cpp:429:8:429:10 | out | vector.cpp:417:33:417:45 | source_string |
-| vector.cpp:436:8:436:10 | out | vector.cpp:435:11:435:16 | call to source |
