@@ -80,9 +80,12 @@ namespace Semmle.Extraction.CSharp.Entities
                     tts.Elements.Zip(tt.TupleElements, (s, t) => Create(cx, s.Type, this, t.Type)).Enumerate();
                     return;
                 case SyntaxKind.GenericName:
-                    var gns = (GenericNameSyntax)syntax;
-                    Emit(trapFile, loc ?? gns.Identifier.GetLocation(), parent, type);
-                    cx.PopulateLater(() => gns.TypeArgumentList.Arguments.Zip(type.TypeMentions, (s, t) => Create(cx, s, this, t)).Enumerate());
+                    Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
+                    cx.PopulateLater(() =>
+                        ((GenericNameSyntax)syntax)
+                            .TypeArgumentList
+                            .Arguments
+                            .Zip(type.TypeMentions, (s, t) => Create(cx, s, this, t)).Enumerate());
                     return;
                 case SyntaxKind.QualifiedName:
                     var qns = (QualifiedNameSyntax)syntax;
