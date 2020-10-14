@@ -29,5 +29,26 @@ class TypeResolutionAssertion extends TupleTypeExpr, Violation {
   }
 }
 
-from Violation violation
-select violation, violation.reason()
+query predicate checkResolution(Violation violation, string reason) { violation.reason() = reason }
+
+query predicate namespaceAccess(NamespaceAccess acc) { any() }
+
+query predicate noDeclaration(LocalTypeName name, Scope scope, string msg) {
+  not exists(name.getADeclaration()) and
+  name.getScope() = scope and
+  msg = name.toString() + " has no declaration"
+}
+
+query predicate noLocalName(LocalTypeAccess type) { not exists(type.getLocalTypeName()) }
+
+query predicate resolveNamespaceNames(
+  LocalNamespaceName name, Identifier acc, LocalNamespaceDecl decl
+) {
+  acc = name.getAnAccess() and
+  decl = name.getADeclaration()
+}
+
+query predicate resolveTypeNames(LocalTypeName name, Identifier acc, LocalNamespaceDecl decl) {
+  acc = name.getAnAccess() and
+  decl = name.getADeclaration()
+}
