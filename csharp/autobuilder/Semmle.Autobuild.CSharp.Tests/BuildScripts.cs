@@ -710,9 +710,9 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestWindowCSharpMsBuild()
         {
-            Actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test1.sln"] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test1.sln -DisableParallelProcessing"] = 0;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test1.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
-            Actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test2.sln"] = 0;
+            Actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test2.sln -DisableParallelProcessing"] = 0;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test2.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
@@ -741,9 +741,9 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestWindowCSharpMsBuildMultipleSolutions()
         {
-            Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test1.csproj"] = 0;
+            Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test1.csproj -DisableParallelProcessing"] = 0;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test1.csproj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
-            Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test2.csproj"] = 0;
+            Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test2.csproj -DisableParallelProcessing"] = 0;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test2.csproj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists[@"C:\Project\test1.csproj"] = true;
@@ -786,7 +786,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestWindowCSharpMsBuildFailed()
         {
-            Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test1.sln"] = 0;
+            Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test1.sln -DisableParallelProcessing"] = 0;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test1.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 1;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
@@ -994,8 +994,8 @@ Microsoft.NETCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestDirsProjWindows()
         {
-            Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\dirs.proj"] = 1;
-            Actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\dirs.proj"] = 0;
+            Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\dirs.proj -DisableParallelProcessing"] = 1;
+            Actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\dirs.proj -DisableParallelProcessing"] = 0;
             Actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\dirs.proj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists[@"C:\Project\a\test.csproj"] = true;
@@ -1038,8 +1038,8 @@ Microsoft.NETCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestDirsProjLinux()
         {
-            Actions.RunProcess[@"nuget restore C:\Project/dirs.proj"] = 1;
-            Actions.RunProcess[@"mono C:\Project/.nuget/nuget.exe restore C:\Project/dirs.proj"] = 0;
+            Actions.RunProcess[@"nuget restore C:\Project/dirs.proj -DisableParallelProcessing"] = 1;
+            Actions.RunProcess[@"mono C:\Project/.nuget/nuget.exe restore C:\Project/dirs.proj -DisableParallelProcessing"] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --auto msbuild C:\Project/dirs.proj /p:UseSharedCompilation=false /t:rebuild /p:MvcBuildViews=true"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists[@"C:\Project/a/test.csproj"] = true;

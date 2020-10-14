@@ -15,7 +15,7 @@ private module Flask {
   /** Gets a reference to the `flask` module. */
   DataFlow::Node flask(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule("flask")
+    result = DataFlow::importNode("flask")
     or
     exists(DataFlow::TypeTracker t2 | result = flask(t2).track(t2, t))
   }
@@ -27,7 +27,7 @@ private module Flask {
     /** Gets a reference to the `flask.request` object. */
     DataFlow::Node request(DataFlow::TypeTracker t) {
       t.start() and
-      result = DataFlow::importMember("flask", "request")
+      result = DataFlow::importNode("flask.request")
       or
       t.startInAttr("request") and
       result = flask()
