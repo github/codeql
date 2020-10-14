@@ -41,6 +41,9 @@ private module Yaml {
 /**
  * A call to `yaml.load`
  * See https://pyyaml.org/wiki/PyYAMLDocumentation (you will have to scroll down).
+ *
+ * This function was briefly thought safe until new exploits were found in 2020,
+ * see https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation for details.
  */
 private class YamlDeserialization extends UnmarshalingFunction::Range {
   YamlDeserialization() {

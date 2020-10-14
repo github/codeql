@@ -36,7 +36,7 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
 class UnmarshalingFunctionTest extends InlineExpectationsTest {
   UnmarshalingFunctionTest() { this = "UnmarshalingFunctionTest" }
 
-  override string getARelevantTag() { result = "getData" }
+  override string getARelevantTag() { result in ["getAnInput", "getOutput", "getFormat"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
