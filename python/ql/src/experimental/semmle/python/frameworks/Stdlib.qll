@@ -420,11 +420,7 @@ private module Stdlib {
       exists(CallNode call |
         nodeTo.asCfgNode() = call and
         call.getFunction() = builtins_attr("compile").asCfgNode() and
-        (
-          call.getArg(0) = nodeFrom.asCfgNode()
-          or
-          call.getArgByName("source") = nodeFrom.asCfgNode()
-        )
+        nodeFrom.asCfgNode() in [call.getArg(0), call.getArgByName("source")]
       )
     }
   }
