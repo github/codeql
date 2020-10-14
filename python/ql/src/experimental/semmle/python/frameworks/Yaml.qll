@@ -22,19 +22,48 @@ private module Yaml {
 
   /** Provides models for the `yaml` module. */
   module yaml {
-    /** Gets a reference to the `yaml.load` function. */
-    private DataFlow::Node load(DataFlow::TypeTracker t) {
-      t.start() and
-      result = DataFlow::importNode("yaml.load")
+    /**
+     * Gets a reference to the attribute `attr_name` of the `yaml` module.
+     * WARNING: Only holds for a few predefined attributes.
+     *
+     * For example, using `attr_name = "load"` will get all uses of `yaml.load`.
+     */
+    private DataFlow::Node yaml_attr(DataFlow::TypeTracker t, string attr_name) {
+      attr_name in ["load", "SafeLoader", "BaseLoader"] and
+      (
+        t.start() and
+        result = DataFlow::importNode("yaml." + attr_name)
+        or
+        t.startInAttr(attr_name) and
+        result = yaml()
+      )
       or
-      t.startInAttr("load") and
-      result = yaml()
-      or
-      exists(DataFlow::TypeTracker t2 | result = load(t2).track(t2, t))
+      // Due to bad performance when using normal setup with `yaml_attr(t2, attr_name).track(t2, t)`
+      // we have inlined that code and forced a join
+      exists(DataFlow::TypeTracker t2 |
+        exists(DataFlow::StepSummary summary |
+          yaml_attr_first_join(t2, attr_name, result, summary) and
+          t = t2.append(summary)
+        )
+      )
     }
 
-    /** Gets a reference to the `yaml.load` function. */
-    DataFlow::Node load() { result = load(DataFlow::TypeTracker::end()) }
+    pragma[nomagic]
+    private predicate yaml_attr_first_join(
+      DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+    ) {
+      DataFlow::StepSummary::step(yaml_attr(t2, attr_name), res, summary)
+    }
+
+    /**
+     * Gets a reference to the attribute `attr_name` of the `yaml` module.
+     * WARNING: Only holds for a few predefined attributes.
+     *
+     * For example, using `attr_name = "load"` will get all uses of `yaml.load`.
+     */
+    DataFlow::Node yaml_attr(string attr_name) {
+      result = yaml_attr(DataFlow::TypeTracker::end(), attr_name)
+    }
   }
 }
 
@@ -42,8 +71,10 @@ private module Yaml {
  * A call to `yaml.load`
  * See https://pyyaml.org/wiki/PyYAMLDocumentation (you will have to scroll down).
  */
-private class YamlLoadCall extends Decoding::Range {
-  YamlLoadCall() { this.asCfgNode().(CallNode).getFunction() = Yaml::yaml::load().asCfgNode() }
+private class YamlLoadCall extends Decoding::Range, DataFlow::CfgNode {
+  override CallNode node;
+
+  YamlLoadCall() { node.getFunction() = Yaml::yaml::yaml_attr("load").asCfgNode() }
 
   /**
    * This function was thought safe from the 5.1 release in 2017, when the default loader was changed to `FullLoader`.
@@ -55,13 +86,11 @@ private class YamlLoadCall extends Decoding::Range {
   override predicate unsafe() {
     // If the `Loader` is not set to either `SafeLoader` or `BaseLoader` or not set at all,
     // then the default loader will be used, which is not safe.
-    not this.asCfgNode().(CallNode).getArgByName("Loader").(NameNode).getId() in ["SafeLoader",
-          "BaseLoader"]
+    not node.getArgByName("Loader") =
+      Yaml::yaml::yaml_attr(["SafeLoader", "BaseLoader"]).asCfgNode()
   }
 
-  override DataFlow::Node getAnInput() {
-    result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-  }
+  override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
 
   override DataFlow::Node getOutput() { result = this }
 
