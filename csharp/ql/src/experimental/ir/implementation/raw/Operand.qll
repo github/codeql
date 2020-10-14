@@ -152,6 +152,11 @@ class Operand extends TOperand {
   string getDumpLabel() { result = "" }
 
   /**
+   * Gets a string that uniquely identifies this operand on its use instruction.
+   */
+  string getDumpId() { result = "" }
+
+  /**
    * Gets a string describing this operand, suitable for display in IR dumps. This consists of the
    * result ID of the instruction consumed by the operand, plus a label identifying the operand
    * kind.
@@ -279,6 +284,8 @@ class NonPhiOperand extends Operand {
   final override Instruction getUse() { result = useInstr }
 
   final override string getDumpLabel() { result = tag.getLabel() }
+
+  final override string getDumpId() { result = tag.getId() }
 
   final override int getDumpSortOrder() { result = tag.getSortOrder() }
 
@@ -475,6 +482,10 @@ class PhiInputOperand extends MemoryOperand, PhiOperandBase {
 
   final override string getDumpLabel() {
     result = "from " + getPredecessorBlock().getDisplayIndex().toString() + ":"
+  }
+
+  final override string getDumpId() {
+    result = getPredecessorBlock().getDisplayIndex().toString()
   }
 
   /**
