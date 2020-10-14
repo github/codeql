@@ -47,7 +47,7 @@ private module Flask {
     /** Gets a reference to the `flask.Flask` class. */
     private DataFlow::Node classFlask(DataFlow::TypeTracker t) {
       t.start() and
-      result = DataFlow::importMember("flask", "Flask")
+      result = DataFlow::importNode("flask.Flask")
       or
       t.startInAttr("Flask") and
       result = flask()
