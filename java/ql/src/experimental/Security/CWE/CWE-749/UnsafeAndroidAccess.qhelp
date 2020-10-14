@@ -2,9 +2,9 @@
 <qhelp>
 
   <overview>
-    <p>Android WebViews that allow loading urls controlled by external inputs and whose JavaScript interface is enabled are potentially vulnerable to cross-site scripting and sensitive resource disclosure attacks.</p>
-    <p>WebSettings of WebViews with setAllowFileAccessFromFileURLs or setAllowUniversalAccessFromFileURLs enabled must not load any untrusted web content.</p>
-    <p>Enabling this setting allows malicious scripts loaded in a file:// context to launch cross-site scripting attacks, either accessing arbitrary local files including WebView cookies, session tokens, private app data or even credentials used on arbitrary web sites.</p>
+    <p>Android WebViews that allow loading URLs controlled by external inputs and whose JavaScript interface is enabled are potentially vulnerable to cross-site scripting and sensitive resource disclosure attacks.</p>
+    <p>A <code>WebView</code> whose <code>WebSettings</code> object has <code>setAllowFileAccessFromFileURLs(true)</code> or <code>setAllowUniversalAccessFromFileURLs(true)</code> called must not load any untrusted web content.</p>
+    <p>Enabling these settings allows malicious scripts loaded in a <code>file://</code> context to launch cross-site scripting attacks, either accessing arbitrary local files including WebView cookies, session tokens, private app data or even credentials used on arbitrary web sites.</p>
     <p>This query detects the following two scenarios:</p>
     <ol>
       <li>Vulnerability introduced by WebViews with JavaScript enabled and remote inputs allowed.</li>
@@ -13,11 +13,11 @@
   </overview>
 
   <recommendation>
-    <p>Only allow trusted web contents to be displayed in WebViews when JavaScript is enabled. And disallow universal resource access in WebSettings to reduce the attack surface.</p>
+    <p>Only allow trusted web content to be displayed in WebViews when JavaScript is enabled. Disallow universal resource access in WebSetting to reduce the attack surface .</p>
   </recommendation>
 
   <example>
-    <p>The following example shows both 'BAD' and 'GOOD' configurations. In the 'BAD' configuration, universal resource access is enabled and JavaScript is enabled while urls are loaded from externally controlled inputs. In the 'GOOD' configuration, JavaScript is disabled or only trusted web contents are allowed to be loaded.</p>
+    <p>The following example shows both 'BAD' and 'GOOD' configurations. In the 'BAD' configuration, setting is enabled and JavaScript is enabled while URLs are loaded from externally controlled inputs. In the 'GOOD' configuration, JavaScript is disabled or only trusted web content is allowed to be loaded.</p>
     <sample src="UnsafeAndroidAccess.java" />
   </example>
 
