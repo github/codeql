@@ -338,6 +338,10 @@ class BeginOrEndFunction extends MemberFunction, TaintFunction, GetIteratorFunct
   }
 }
 
+/**
+ * The `std::front_inserter`, `std::inserter`, and `std::back_inserter`
+ * functions.
+ */
 class InserterIteratorFunction extends GetIteratorFunction {
   InserterIteratorFunction() {
     this.hasName(["front_inserter", "inserter", "back_inserter"]) and
