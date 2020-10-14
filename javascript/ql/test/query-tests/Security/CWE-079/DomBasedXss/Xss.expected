@@ -60,11 +60,12 @@ nodes
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
 | jquery.js:2:7:2:40 | tainted |
+| jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
 | jquery.js:2:17:2:33 | document.location |
 | jquery.js:2:17:2:40 | documen ... .search |
-| jquery.js:4:5:4:11 | tainted |
-| jquery.js:4:5:4:11 | tainted |
+| jquery.js:2:17:2:40 | documen ... .search |
+| jquery.js:2:17:2:40 | documen ... .search |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
 | jquery.js:7:20:7:26 | tainted |
@@ -223,8 +224,11 @@ nodes
 | tst3.js:10:38:10:43 | data.p |
 | tst3.js:10:38:10:43 | data.p |
 | tst.js:2:7:2:39 | target |
+| tst.js:2:7:2:39 | target |
 | tst.js:2:16:2:32 | document.location |
 | tst.js:2:16:2:32 | document.location |
+| tst.js:2:16:2:39 | documen ... .search |
+| tst.js:2:16:2:39 | documen ... .search |
 | tst.js:2:16:2:39 | documen ... .search |
 | tst.js:5:18:5:23 | target |
 | tst.js:5:18:5:23 | target |
@@ -444,6 +448,7 @@ nodes
 | tst.js:332:18:332:35 | params.get('name') |
 | tst.js:341:20:341:36 | document.location |
 | tst.js:341:20:341:36 | document.location |
+| tst.js:343:5:343:17 | getUrl().hash |
 | tst.js:343:5:343:30 | getUrl( ... ring(1) |
 | tst.js:343:5:343:30 | getUrl( ... ring(1) |
 | tst.js:348:7:348:39 | target |
@@ -495,18 +500,22 @@ nodes
 | tst.js:416:7:416:46 | payload |
 | tst.js:416:17:416:31 | window.location |
 | tst.js:416:17:416:31 | window.location |
+| tst.js:416:17:416:36 | window.location.hash |
 | tst.js:416:17:416:46 | window. ... bstr(1) |
 | tst.js:417:18:417:24 | payload |
 | tst.js:417:18:417:24 | payload |
 | tst.js:419:7:419:55 | match |
 | tst.js:419:15:419:29 | window.location |
 | tst.js:419:15:419:29 | window.location |
+| tst.js:419:15:419:34 | window.location.hash |
 | tst.js:419:15:419:55 | window. ... (\\w+)/) |
 | tst.js:421:20:421:24 | match |
 | tst.js:421:20:421:27 | match[1] |
 | tst.js:421:20:421:27 | match[1] |
 | tst.js:424:18:424:32 | window.location |
 | tst.js:424:18:424:32 | window.location |
+| tst.js:424:18:424:37 | window.location.hash |
+| tst.js:424:18:424:48 | window. ... it('#') |
 | tst.js:424:18:424:51 | window. ... '#')[1] |
 | tst.js:424:18:424:51 | window. ... '#')[1] |
 | typeahead.js:20:13:20:45 | target |
@@ -574,10 +583,16 @@ edges
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:2:12:2:28 | document.location | exception-xss.js:2:6:2:28 | foo |
+| exception-xss.js:2:12:2:28 | document.location | exception-xss.js:2:6:2:28 | foo |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
 | jquery.js:2:17:2:33 | document.location | jquery.js:2:17:2:40 | documen ... .search |
 | jquery.js:2:17:2:33 | document.location | jquery.js:2:17:2:40 | documen ... .search |
+| jquery.js:2:17:2:40 | documen ... .search | jquery.js:2:7:2:40 | tainted |
+| jquery.js:2:17:2:40 | documen ... .search | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | jquery.js:2:7:2:40 | tainted |
 | jquery.js:7:20:7:26 | tainted | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
 | jquery.js:7:20:7:26 | tainted | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
@@ -730,6 +745,8 @@ edges
 | tst.js:2:7:2:39 | target | tst.js:20:42:20:47 | target |
 | tst.js:2:16:2:32 | document.location | tst.js:2:16:2:39 | documen ... .search |
 | tst.js:2:16:2:32 | document.location | tst.js:2:16:2:39 | documen ... .search |
+| tst.js:2:16:2:39 | documen ... .search | tst.js:2:7:2:39 | target |
+| tst.js:2:16:2:39 | documen ... .search | tst.js:2:7:2:39 | target |
 | tst.js:2:16:2:39 | documen ... .search | tst.js:2:7:2:39 | target |
 | tst.js:8:37:8:53 | document.location | tst.js:8:37:8:58 | documen ... on.href |
 | tst.js:8:37:8:53 | document.location | tst.js:8:37:8:58 | documen ... on.href |
@@ -916,10 +933,10 @@ edges
 | tst.js:327:18:327:34 | document.location | tst.js:332:18:332:35 | params.get('name') |
 | tst.js:327:18:327:34 | document.location | tst.js:332:18:332:35 | params.get('name') |
 | tst.js:327:18:327:34 | document.location | tst.js:332:18:332:35 | params.get('name') |
-| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:30 | getUrl( ... ring(1) |
-| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:30 | getUrl( ... ring(1) |
-| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:30 | getUrl( ... ring(1) |
-| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:30 | getUrl( ... ring(1) |
+| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:17 | getUrl().hash |
+| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:17 | getUrl().hash |
+| tst.js:343:5:343:17 | getUrl().hash | tst.js:343:5:343:30 | getUrl( ... ring(1) |
+| tst.js:343:5:343:17 | getUrl().hash | tst.js:343:5:343:30 | getUrl( ... ring(1) |
 | tst.js:348:7:348:39 | target | tst.js:349:12:349:17 | target |
 | tst.js:348:7:348:39 | target | tst.js:349:12:349:17 | target |
 | tst.js:348:16:348:32 | document.location | tst.js:348:16:348:39 | documen ... .search |
@@ -964,19 +981,22 @@ edges
 | tst.js:408:19:408:31 | target.taint8 | tst.js:409:18:409:30 | target.taint8 |
 | tst.js:416:7:416:46 | payload | tst.js:417:18:417:24 | payload |
 | tst.js:416:7:416:46 | payload | tst.js:417:18:417:24 | payload |
-| tst.js:416:17:416:31 | window.location | tst.js:416:17:416:46 | window. ... bstr(1) |
-| tst.js:416:17:416:31 | window.location | tst.js:416:17:416:46 | window. ... bstr(1) |
+| tst.js:416:17:416:31 | window.location | tst.js:416:17:416:36 | window.location.hash |
+| tst.js:416:17:416:31 | window.location | tst.js:416:17:416:36 | window.location.hash |
+| tst.js:416:17:416:36 | window.location.hash | tst.js:416:17:416:46 | window. ... bstr(1) |
 | tst.js:416:17:416:46 | window. ... bstr(1) | tst.js:416:7:416:46 | payload |
 | tst.js:419:7:419:55 | match | tst.js:421:20:421:24 | match |
-| tst.js:419:15:419:29 | window.location | tst.js:419:15:419:55 | window. ... (\\w+)/) |
-| tst.js:419:15:419:29 | window.location | tst.js:419:15:419:55 | window. ... (\\w+)/) |
+| tst.js:419:15:419:29 | window.location | tst.js:419:15:419:34 | window.location.hash |
+| tst.js:419:15:419:29 | window.location | tst.js:419:15:419:34 | window.location.hash |
+| tst.js:419:15:419:34 | window.location.hash | tst.js:419:15:419:55 | window. ... (\\w+)/) |
 | tst.js:419:15:419:55 | window. ... (\\w+)/) | tst.js:419:7:419:55 | match |
 | tst.js:421:20:421:24 | match | tst.js:421:20:421:27 | match[1] |
 | tst.js:421:20:421:24 | match | tst.js:421:20:421:27 | match[1] |
-| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:51 | window. ... '#')[1] |
-| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:51 | window. ... '#')[1] |
-| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:51 | window. ... '#')[1] |
-| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:51 | window. ... '#')[1] |
+| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:37 | window.location.hash |
+| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:37 | window.location.hash |
+| tst.js:424:18:424:37 | window.location.hash | tst.js:424:18:424:48 | window. ... it('#') |
+| tst.js:424:18:424:48 | window. ... it('#') | tst.js:424:18:424:51 | window. ... '#')[1] |
+| tst.js:424:18:424:48 | window. ... it('#') | tst.js:424:18:424:51 | window. ... '#')[1] |
 | typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target |
 | typeahead.js:20:22:20:38 | document.location | typeahead.js:20:22:20:45 | documen ... .search |
 | typeahead.js:20:22:20:38 | document.location | typeahead.js:20:22:20:45 | documen ... .search |
@@ -1013,18 +1033,20 @@ edges
 | angular2-client.ts:35:44:35:91 | this.ro ... arams.x | angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x | Cross-site scripting vulnerability due to $@. | angular2-client.ts:35:44:35:89 | this.ro ... .params | user-provided value |
 | angular2-client.ts:37:44:37:58 | this.router.url | angular2-client.ts:37:44:37:58 | this.router.url | angular2-client.ts:37:44:37:58 | this.router.url | Cross-site scripting vulnerability due to $@. | angular2-client.ts:37:44:37:58 | this.router.url | user-provided value |
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') | Cross-site scripting vulnerability due to $@. | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') | user-provided value |
+| exception-xss.js:86:17:86:19 | foo | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:86:17:86:19 | foo | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
 | jquery.js:4:5:4:11 | tainted | jquery.js:2:17:2:33 | document.location | jquery.js:4:5:4:11 | tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:33 | document.location | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
+| jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:40 | documen ... .search | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:33 | document.location | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | HTML injection vulnerability due to $@. | nodemailer.js:13:50:13:66 | req.query.message | user-provided value |
-| optionalSanitizer.js:6:18:6:23 | target | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:6:18:6:23 | target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |
-| optionalSanitizer.js:9:18:9:24 | tainted | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:9:18:9:24 | tainted | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |
 | optionalSanitizer.js:17:20:17:20 | x | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:17:20:17:20 | x | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |
 | optionalSanitizer.js:32:18:32:25 | tainted2 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:32:18:32:25 | tainted2 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
 | optionalSanitizer.js:36:18:36:25 | tainted2 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:36:18:36:25 | tainted2 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
 | optionalSanitizer.js:39:18:39:25 | tainted3 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:39:18:39:25 | tainted3 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
 | optionalSanitizer.js:43:18:43:25 | tainted3 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:43:18:43:25 | tainted3 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
 | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
+| optionalSanitizer.js:6:18:6:23 | target | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:6:18:6:23 | target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |
+| optionalSanitizer.js:9:18:9:24 | tainted | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:9:18:9:24 | tainted | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |
 | react-native.js:8:18:8:24 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:18:8:24 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | react-native.js:9:27:9:33 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:9:27:9:33 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:16:17:16:27 | window.name | user-provided value |
@@ -1051,7 +1073,7 @@ edges
 | tst3.js:10:38:10:43 | data.p | tst3.js:2:42:2:56 | window.location | tst3.js:10:38:10:43 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:56 | window.location | user-provided value |
 | tst.js:5:18:5:23 | target | tst.js:2:16:2:32 | document.location | tst.js:5:18:5:23 | target | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:32 | document.location | user-provided value |
 | tst.js:8:18:8:126 | "<OPTIO ... PTION>" | tst.js:8:37:8:53 | document.location | tst.js:8:18:8:126 | "<OPTIO ... PTION>" | Cross-site scripting vulnerability due to $@. | tst.js:8:37:8:53 | document.location | user-provided value |
-| tst.js:12:5:12:42 | '<div s ...  'px">' | tst.js:2:16:2:32 | document.location | tst.js:12:5:12:42 | '<div s ...  'px">' | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:32 | document.location | user-provided value |
+| tst.js:12:5:12:42 | '<div s ...  'px">' | tst.js:2:16:2:39 | documen ... .search | tst.js:12:5:12:42 | '<div s ...  'px">' | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:39 | documen ... .search | user-provided value |
 | tst.js:18:18:18:35 | params.get('name') | tst.js:17:25:17:41 | document.location | tst.js:18:18:18:35 | params.get('name') | Cross-site scripting vulnerability due to $@. | tst.js:17:25:17:41 | document.location | user-provided value |
 | tst.js:21:18:21:41 | searchP ... 'name') | tst.js:2:16:2:32 | document.location | tst.js:21:18:21:41 | searchP ... 'name') | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:32 | document.location | user-provided value |
 | tst.js:26:18:26:23 | target | tst.js:28:5:28:21 | document.location | tst.js:26:18:26:23 | target | Cross-site scripting vulnerability due to $@. | tst.js:28:5:28:21 | document.location | user-provided value |
