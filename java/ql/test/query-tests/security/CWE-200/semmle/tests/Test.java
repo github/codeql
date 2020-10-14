@@ -1,6 +1,9 @@
 
+import java.util.Arrays;
 import java.io.File;
-import com.google.common.io.Files;
+import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.StandardOpenOption;
 
 public class Test {
 
@@ -39,12 +42,23 @@ public class Test {
     }
 
     void vulnerableGuavaFilesCreateTempDir() {
-        File tempDir = Files.createTempDir();
+        File tempDir = com.google.common.io.Files.createTempDir();
     }
 
     void vulnerableFileCreateTempFileMkdirTainted() {
         File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child");
         tempDirChild.mkdir();
     }
+
+    void vulnerableFileCreateTempFilesWrite1() {
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child");
+        Files.write(tempDirChild.toPath(), Arrays.asList("secret"), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
+    }
     
+    void vulnerableFileCreateTempFilesWrite2() {
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child");
+        String secret = "secret";
+        byte[] byteArrray = secret.getBytes();
+        Files.write(tempDirChild.toPath(), byteArrray, StandardOpenOption.CREATE);
+    }
 }
