@@ -18,7 +18,7 @@ private module Invoke {
   /** Gets a reference to the `invoke` module. */
   private DataFlow::Node invoke(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importModule("invoke")
+    result = DataFlow::importNode("invoke")
     or
     exists(DataFlow::TypeTracker t2 | result = invoke(t2).track(t2, t))
   }
@@ -34,10 +34,10 @@ private module Invoke {
     attr_name in ["run", "sudo", "context", "Context", "task"] and
     (
       t.start() and
-      result = DataFlow::importMember("invoke", attr_name)
+      result = DataFlow::importNode("invoke." + attr_name)
       or
       t.startInAttr(attr_name) and
-      result = DataFlow::importModule("invoke")
+      result = DataFlow::importNode("invoke")
     )
     or
     // Due to bad performance when using normal setup with `invoke_attr(t2, attr_name).track(t2, t)`
@@ -77,11 +77,12 @@ private module Invoke {
         /** Gets a reference to the `invoke.context.Context` class. */
         private DataFlow::Node classRef(DataFlow::TypeTracker t) {
           t.start() and
-          result = DataFlow::importMember("invoke.context", "Context")
+          result = DataFlow::importNode("invoke.context.Context")
           or
           t.startInAttr("Context") and
           result = invoke::context()
           or
+          // handle invoke.Context alias
           t.start() and
           result = invoke_attr("Context")
           or
