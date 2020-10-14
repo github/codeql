@@ -148,19 +148,16 @@ private module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.route
    */
-  private class FlaskAppRouteCall extends FlaskRouteSetup {
-    CallNode call;
+  private class FlaskAppRouteCall extends FlaskRouteSetup, DataFlow::CfgNode {
+    override CallNode node;
 
-    FlaskAppRouteCall() {
-      call.getFunction() = app_attr("route").asCfgNode() and
-      this.asCfgNode() = call
-    }
+    FlaskAppRouteCall() { node.getFunction() = app_attr("route").asCfgNode() }
 
     override DataFlow::Node getUrlPatternArg() {
-      result.asCfgNode() in [call.getArg(0), call.getArgByName("rule")]
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
     }
 
-    override Function getARouteHandler() { result.getADecorator() = call.getNode() }
+    override Function getARouteHandler() { result.getADecorator().getAFlowNode() = node }
   }
 
   /**
@@ -168,21 +165,18 @@ private module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.add_url_rule
    */
-  private class FlaskAppAddUrlRule extends FlaskRouteSetup {
-    CallNode call;
+  private class FlaskAppAddUrlRule extends FlaskRouteSetup, DataFlow::CfgNode {
+    override CallNode node;
 
-    FlaskAppAddUrlRule() {
-      call.getFunction() = app_attr("add_url_rule").asCfgNode() and
-      this.asCfgNode() = call
-    }
+    FlaskAppAddUrlRule() { node.getFunction() = app_attr("add_url_rule").asCfgNode() }
 
     override DataFlow::Node getUrlPatternArg() {
-      result.asCfgNode() in [call.getArg(0), call.getArgByName("rule")]
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
     }
 
     override Function getARouteHandler() {
       exists(DataFlow::Node view_func_arg, DataFlow::Node func_src |
-        view_func_arg.asCfgNode() in [call.getArg(2), call.getArgByName("view_func")] and
+        view_func_arg.asCfgNode() in [node.getArg(2), node.getArgByName("view_func")] and
         DataFlow::localFlow(func_src, view_func_arg) and
         func_src.asExpr().(CallableExpr) = result.getDefinition()
       )
