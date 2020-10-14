@@ -1,5 +1,4 @@
 using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp.Populators;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
@@ -10,9 +9,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Field : CachedSymbol<IFieldSymbol>, IExpressionParentEntity
+    internal class Field : CachedSymbol<IFieldSymbol>, IExpressionParentEntity
     {
-        Field(Context cx, IFieldSymbol init)
+        private Field(Context cx, IFieldSymbol init)
             : base(cx, init)
         {
             type = new Lazy<AnnotatedType>(() => Entities.Type.Create(cx, symbol.GetAnnotatedType()));
@@ -32,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType.PopulateGenerics();
             PopulateNullability(trapFile, symbol.GetAnnotatedType());
 
-            Field unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
+            var unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
             trapFile.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey);
 
             PopulateModifiers(trapFile);
@@ -58,12 +57,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
             Context.BindComments(this, Location.symbol);
 
-            int child = 0;
-            foreach (var initializer in
-                symbol.DeclaringSyntaxReferences.
-                Select(n => n.GetSyntax()).
-                OfType<VariableDeclaratorSyntax>().
-                Where(n => n.Initializer != null))
+            var child = 0;
+            foreach (var initializer in symbol.DeclaringSyntaxReferences
+                .Select(n => n.GetSyntax())
+                .OfType<VariableDeclaratorSyntax>()
+                .Where(n => n.Initializer != null))
             {
                 Context.PopulateLater(() =>
                 {
@@ -78,10 +76,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 });
             }
 
-            foreach (var initializer in symbol.DeclaringSyntaxReferences.
-                Select(n => n.GetSyntax()).
-                OfType<EnumMemberDeclarationSyntax>().
-                Where(n => n.EqualsValue != null))
+            foreach (var initializer in symbol.DeclaringSyntaxReferences
+                .Select(n => n.GetSyntax())
+                .OfType<EnumMemberDeclarationSyntax>()
+                .Where(n => n.EqualsValue != null))
             {
                 // Mark fields that have explicit initializers.
                 var constValue = symbol.HasConstantValue
@@ -94,10 +92,16 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             if (IsSourceDeclaration)
-                foreach (var syntax in symbol.DeclaringSyntaxReferences.
-                    Select(d => d.GetSyntax()).OfType<VariableDeclaratorSyntax>().
-                    Select(d => d.Parent).OfType<VariableDeclarationSyntax>())
+            {
+                foreach (var syntax in symbol.DeclaringSyntaxReferences
+                  .Select(d => d.GetSyntax())
+                  .OfType<VariableDeclaratorSyntax>()
+                  .Select(d => d.Parent)
+                  .OfType<VariableDeclarationSyntax>())
+                {
                     TypeMention.Create(Context, syntax.Type, this, Type);
+                }
+            }
         }
 
         private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Extraction.Entities.Location loc,
@@ -110,7 +114,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return access;
         }
 
-        readonly Lazy<AnnotatedType> type;
+        private readonly Lazy<AnnotatedType> type;
         public AnnotatedType Type => type.Value;
 
         public override void WriteId(TextWriter trapFile)
@@ -125,7 +129,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        class FieldFactory : ICachedEntityFactory<IFieldSymbol, Field>
+        private class FieldFactory : ICachedEntityFactory<IFieldSymbol, Field>
         {
             public static readonly FieldFactory Instance = new FieldFactory();
 

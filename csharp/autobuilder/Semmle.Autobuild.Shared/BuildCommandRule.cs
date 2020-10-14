@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Semmle.Autobuild.Shared
+﻿namespace Semmle.Autobuild.Shared
 {
     /// <summary>
     /// Execute the build_command rule.

@@ -2368,13 +2368,17 @@
 | set.cpp:69:7:69:9 | ref arg s11 | set.cpp:71:7:71:9 | s11 |  |
 | set.cpp:69:7:69:9 | ref arg s11 | set.cpp:72:7:72:9 | s11 |  |
 | set.cpp:69:7:69:9 | ref arg s11 | set.cpp:126:1:126:1 | s11 |  |
+| set.cpp:69:7:69:9 | s11 | set.cpp:69:11:69:21 | call to lower_bound | TAINT |
 | set.cpp:70:7:70:9 | ref arg s11 | set.cpp:71:7:71:9 | s11 |  |
 | set.cpp:70:7:70:9 | ref arg s11 | set.cpp:72:7:72:9 | s11 |  |
 | set.cpp:70:7:70:9 | ref arg s11 | set.cpp:126:1:126:1 | s11 |  |
+| set.cpp:70:7:70:9 | s11 | set.cpp:70:11:70:21 | call to upper_bound | TAINT |
 | set.cpp:71:7:71:9 | ref arg s11 | set.cpp:72:7:72:9 | s11 |  |
 | set.cpp:71:7:71:9 | ref arg s11 | set.cpp:126:1:126:1 | s11 |  |
+| set.cpp:71:7:71:9 | s11 | set.cpp:71:11:71:21 | call to equal_range | TAINT |
 | set.cpp:71:28:71:32 | first | set.cpp:71:7:71:32 | call to iterator |  |
 | set.cpp:72:7:72:9 | ref arg s11 | set.cpp:126:1:126:1 | s11 |  |
+| set.cpp:72:7:72:9 | s11 | set.cpp:72:11:72:21 | call to equal_range | TAINT |
 | set.cpp:72:28:72:33 | second | set.cpp:72:7:72:33 | call to iterator |  |
 | set.cpp:75:19:75:21 | call to set | set.cpp:76:2:76:4 | s12 |  |
 | set.cpp:75:19:75:21 | call to set | set.cpp:78:7:78:9 | s12 |  |
@@ -2478,10 +2482,12 @@
 | set.cpp:99:2:99:4 | ref arg s16 | set.cpp:126:1:126:1 | s16 |  |
 | set.cpp:99:12:99:14 | ref arg s17 | set.cpp:102:7:102:9 | s17 |  |
 | set.cpp:99:12:99:14 | ref arg s17 | set.cpp:126:1:126:1 | s17 |  |
+| set.cpp:99:12:99:14 | s17 | set.cpp:99:2:99:4 | ref arg s16 | TAINT |
 | set.cpp:100:2:100:4 | ref arg s18 | set.cpp:103:7:103:9 | s18 |  |
 | set.cpp:100:2:100:4 | ref arg s18 | set.cpp:126:1:126:1 | s18 |  |
 | set.cpp:100:12:100:14 | ref arg s19 | set.cpp:104:7:104:9 | s19 |  |
 | set.cpp:100:12:100:14 | ref arg s19 | set.cpp:126:1:126:1 | s19 |  |
+| set.cpp:100:12:100:14 | s19 | set.cpp:100:2:100:4 | ref arg s18 | TAINT |
 | set.cpp:101:7:101:9 | s16 | set.cpp:101:7:101:9 | call to set |  |
 | set.cpp:102:7:102:9 | s17 | set.cpp:102:7:102:9 | call to set |  |
 | set.cpp:103:7:103:9 | s18 | set.cpp:103:7:103:9 | call to set |  |
@@ -2546,10 +2552,16 @@
 | set.cpp:118:7:118:9 | ref arg s21 | set.cpp:120:7:120:9 | s21 |  |
 | set.cpp:118:7:118:9 | ref arg s21 | set.cpp:121:7:121:9 | s21 |  |
 | set.cpp:118:7:118:9 | ref arg s21 | set.cpp:126:1:126:1 | s21 |  |
+| set.cpp:118:7:118:9 | s21 | set.cpp:118:11:118:17 | call to emplace | TAINT |
+| set.cpp:118:19:118:23 | abc | set.cpp:118:7:118:9 | ref arg s21 | TAINT |
+| set.cpp:118:19:118:23 | abc | set.cpp:118:11:118:17 | call to emplace | TAINT |
 | set.cpp:118:26:118:30 | first | set.cpp:118:7:118:30 | call to iterator |  |
 | set.cpp:119:7:119:9 | s21 | set.cpp:119:7:119:9 | call to set |  |
 | set.cpp:120:7:120:9 | ref arg s21 | set.cpp:121:7:121:9 | s21 |  |
 | set.cpp:120:7:120:9 | ref arg s21 | set.cpp:126:1:126:1 | s21 |  |
+| set.cpp:120:7:120:9 | s21 | set.cpp:120:11:120:17 | call to emplace | TAINT |
+| set.cpp:120:19:120:24 | call to source | set.cpp:120:7:120:9 | ref arg s21 | TAINT |
+| set.cpp:120:19:120:24 | call to source | set.cpp:120:11:120:17 | call to emplace | TAINT |
 | set.cpp:120:29:120:33 | first | set.cpp:120:7:120:33 | call to iterator |  |
 | set.cpp:121:7:121:9 | s21 | set.cpp:121:7:121:9 | call to set |  |
 | set.cpp:122:7:122:9 | ref arg s22 | set.cpp:123:7:123:9 | s22 |  |
@@ -2557,6 +2569,7 @@
 | set.cpp:122:7:122:9 | ref arg s22 | set.cpp:124:24:124:26 | s22 |  |
 | set.cpp:122:7:122:9 | ref arg s22 | set.cpp:125:7:125:9 | s22 |  |
 | set.cpp:122:7:122:9 | ref arg s22 | set.cpp:126:1:126:1 | s22 |  |
+| set.cpp:122:7:122:9 | s22 | set.cpp:122:11:122:22 | call to emplace_hint | TAINT |
 | set.cpp:122:24:122:26 | ref arg s22 | set.cpp:122:7:122:9 | s22 |  |
 | set.cpp:122:24:122:26 | ref arg s22 | set.cpp:123:7:123:9 | s22 |  |
 | set.cpp:122:24:122:26 | ref arg s22 | set.cpp:124:7:124:9 | s22 |  |
@@ -2564,15 +2577,24 @@
 | set.cpp:122:24:122:26 | ref arg s22 | set.cpp:125:7:125:9 | s22 |  |
 | set.cpp:122:24:122:26 | ref arg s22 | set.cpp:126:1:126:1 | s22 |  |
 | set.cpp:122:24:122:26 | s22 | set.cpp:122:28:122:32 | call to begin | TAINT |
+| set.cpp:122:24:122:34 | call to iterator | set.cpp:122:7:122:9 | ref arg s22 | TAINT |
+| set.cpp:122:24:122:34 | call to iterator | set.cpp:122:11:122:22 | call to emplace_hint | TAINT |
 | set.cpp:122:28:122:32 | call to begin | set.cpp:122:24:122:34 | call to iterator | TAINT |
+| set.cpp:122:37:122:41 | abc | set.cpp:122:7:122:9 | ref arg s22 | TAINT |
+| set.cpp:122:37:122:41 | abc | set.cpp:122:11:122:22 | call to emplace_hint | TAINT |
 | set.cpp:123:7:123:9 | s22 | set.cpp:123:7:123:9 | call to set |  |
 | set.cpp:124:7:124:9 | ref arg s22 | set.cpp:125:7:125:9 | s22 |  |
 | set.cpp:124:7:124:9 | ref arg s22 | set.cpp:126:1:126:1 | s22 |  |
+| set.cpp:124:7:124:9 | s22 | set.cpp:124:11:124:22 | call to emplace_hint | TAINT |
 | set.cpp:124:24:124:26 | ref arg s22 | set.cpp:124:7:124:9 | s22 |  |
 | set.cpp:124:24:124:26 | ref arg s22 | set.cpp:125:7:125:9 | s22 |  |
 | set.cpp:124:24:124:26 | ref arg s22 | set.cpp:126:1:126:1 | s22 |  |
 | set.cpp:124:24:124:26 | s22 | set.cpp:124:28:124:32 | call to begin | TAINT |
+| set.cpp:124:24:124:34 | call to iterator | set.cpp:124:7:124:9 | ref arg s22 | TAINT |
+| set.cpp:124:24:124:34 | call to iterator | set.cpp:124:11:124:22 | call to emplace_hint | TAINT |
 | set.cpp:124:28:124:32 | call to begin | set.cpp:124:24:124:34 | call to iterator | TAINT |
+| set.cpp:124:37:124:42 | call to source | set.cpp:124:7:124:9 | ref arg s22 | TAINT |
+| set.cpp:124:37:124:42 | call to source | set.cpp:124:11:124:22 | call to emplace_hint | TAINT |
 | set.cpp:125:7:125:9 | s22 | set.cpp:125:7:125:9 | call to set |  |
 | set.cpp:131:29:131:30 | call to unordered_set | set.cpp:133:7:133:8 | s1 |  |
 | set.cpp:131:29:131:30 | call to unordered_set | set.cpp:137:12:137:13 | s1 |  |
@@ -2834,8 +2856,10 @@
 | set.cpp:182:13:182:15 | c | set.cpp:182:6:182:11 | call to insert | TAINT |
 | set.cpp:183:7:183:9 | ref arg s11 | set.cpp:184:7:184:9 | s11 |  |
 | set.cpp:183:7:183:9 | ref arg s11 | set.cpp:238:1:238:1 | s11 |  |
+| set.cpp:183:7:183:9 | s11 | set.cpp:183:11:183:21 | call to equal_range | TAINT |
 | set.cpp:183:28:183:32 | first | set.cpp:183:7:183:32 | call to iterator |  |
 | set.cpp:184:7:184:9 | ref arg s11 | set.cpp:238:1:238:1 | s11 |  |
+| set.cpp:184:7:184:9 | s11 | set.cpp:184:11:184:21 | call to equal_range | TAINT |
 | set.cpp:184:28:184:33 | second | set.cpp:184:7:184:33 | call to iterator |  |
 | set.cpp:187:29:187:31 | call to unordered_set | set.cpp:188:2:188:4 | s12 |  |
 | set.cpp:187:29:187:31 | call to unordered_set | set.cpp:190:7:190:9 | s12 |  |
@@ -2939,10 +2963,12 @@
 | set.cpp:211:2:211:4 | ref arg s16 | set.cpp:238:1:238:1 | s16 |  |
 | set.cpp:211:12:211:14 | ref arg s17 | set.cpp:214:7:214:9 | s17 |  |
 | set.cpp:211:12:211:14 | ref arg s17 | set.cpp:238:1:238:1 | s17 |  |
+| set.cpp:211:12:211:14 | s17 | set.cpp:211:2:211:4 | ref arg s16 | TAINT |
 | set.cpp:212:2:212:4 | ref arg s18 | set.cpp:215:7:215:9 | s18 |  |
 | set.cpp:212:2:212:4 | ref arg s18 | set.cpp:238:1:238:1 | s18 |  |
 | set.cpp:212:12:212:14 | ref arg s19 | set.cpp:216:7:216:9 | s19 |  |
 | set.cpp:212:12:212:14 | ref arg s19 | set.cpp:238:1:238:1 | s19 |  |
+| set.cpp:212:12:212:14 | s19 | set.cpp:212:2:212:4 | ref arg s18 | TAINT |
 | set.cpp:213:7:213:9 | s16 | set.cpp:213:7:213:9 | call to unordered_set |  |
 | set.cpp:214:7:214:9 | s17 | set.cpp:214:7:214:9 | call to unordered_set |  |
 | set.cpp:215:7:215:9 | s18 | set.cpp:215:7:215:9 | call to unordered_set |  |
@@ -3007,10 +3033,16 @@
 | set.cpp:230:7:230:9 | ref arg s21 | set.cpp:232:7:232:9 | s21 |  |
 | set.cpp:230:7:230:9 | ref arg s21 | set.cpp:233:7:233:9 | s21 |  |
 | set.cpp:230:7:230:9 | ref arg s21 | set.cpp:238:1:238:1 | s21 |  |
+| set.cpp:230:7:230:9 | s21 | set.cpp:230:11:230:17 | call to emplace | TAINT |
+| set.cpp:230:19:230:23 | abc | set.cpp:230:7:230:9 | ref arg s21 | TAINT |
+| set.cpp:230:19:230:23 | abc | set.cpp:230:11:230:17 | call to emplace | TAINT |
 | set.cpp:230:26:230:30 | first | set.cpp:230:7:230:30 | call to iterator |  |
 | set.cpp:231:7:231:9 | s21 | set.cpp:231:7:231:9 | call to unordered_set |  |
 | set.cpp:232:7:232:9 | ref arg s21 | set.cpp:233:7:233:9 | s21 |  |
 | set.cpp:232:7:232:9 | ref arg s21 | set.cpp:238:1:238:1 | s21 |  |
+| set.cpp:232:7:232:9 | s21 | set.cpp:232:11:232:17 | call to emplace | TAINT |
+| set.cpp:232:19:232:24 | call to source | set.cpp:232:7:232:9 | ref arg s21 | TAINT |
+| set.cpp:232:19:232:24 | call to source | set.cpp:232:11:232:17 | call to emplace | TAINT |
 | set.cpp:232:29:232:33 | first | set.cpp:232:7:232:33 | call to iterator |  |
 | set.cpp:233:7:233:9 | s21 | set.cpp:233:7:233:9 | call to unordered_set |  |
 | set.cpp:234:7:234:9 | ref arg s22 | set.cpp:235:7:235:9 | s22 |  |
@@ -3018,6 +3050,7 @@
 | set.cpp:234:7:234:9 | ref arg s22 | set.cpp:236:24:236:26 | s22 |  |
 | set.cpp:234:7:234:9 | ref arg s22 | set.cpp:237:7:237:9 | s22 |  |
 | set.cpp:234:7:234:9 | ref arg s22 | set.cpp:238:1:238:1 | s22 |  |
+| set.cpp:234:7:234:9 | s22 | set.cpp:234:11:234:22 | call to emplace_hint | TAINT |
 | set.cpp:234:24:234:26 | ref arg s22 | set.cpp:234:7:234:9 | s22 |  |
 | set.cpp:234:24:234:26 | ref arg s22 | set.cpp:235:7:235:9 | s22 |  |
 | set.cpp:234:24:234:26 | ref arg s22 | set.cpp:236:7:236:9 | s22 |  |
@@ -3025,15 +3058,24 @@
 | set.cpp:234:24:234:26 | ref arg s22 | set.cpp:237:7:237:9 | s22 |  |
 | set.cpp:234:24:234:26 | ref arg s22 | set.cpp:238:1:238:1 | s22 |  |
 | set.cpp:234:24:234:26 | s22 | set.cpp:234:28:234:32 | call to begin | TAINT |
+| set.cpp:234:24:234:34 | call to iterator | set.cpp:234:7:234:9 | ref arg s22 | TAINT |
+| set.cpp:234:24:234:34 | call to iterator | set.cpp:234:11:234:22 | call to emplace_hint | TAINT |
 | set.cpp:234:28:234:32 | call to begin | set.cpp:234:24:234:34 | call to iterator | TAINT |
+| set.cpp:234:37:234:41 | abc | set.cpp:234:7:234:9 | ref arg s22 | TAINT |
+| set.cpp:234:37:234:41 | abc | set.cpp:234:11:234:22 | call to emplace_hint | TAINT |
 | set.cpp:235:7:235:9 | s22 | set.cpp:235:7:235:9 | call to unordered_set |  |
 | set.cpp:236:7:236:9 | ref arg s22 | set.cpp:237:7:237:9 | s22 |  |
 | set.cpp:236:7:236:9 | ref arg s22 | set.cpp:238:1:238:1 | s22 |  |
+| set.cpp:236:7:236:9 | s22 | set.cpp:236:11:236:22 | call to emplace_hint | TAINT |
 | set.cpp:236:24:236:26 | ref arg s22 | set.cpp:236:7:236:9 | s22 |  |
 | set.cpp:236:24:236:26 | ref arg s22 | set.cpp:237:7:237:9 | s22 |  |
 | set.cpp:236:24:236:26 | ref arg s22 | set.cpp:238:1:238:1 | s22 |  |
 | set.cpp:236:24:236:26 | s22 | set.cpp:236:28:236:32 | call to begin | TAINT |
+| set.cpp:236:24:236:34 | call to iterator | set.cpp:236:7:236:9 | ref arg s22 | TAINT |
+| set.cpp:236:24:236:34 | call to iterator | set.cpp:236:11:236:22 | call to emplace_hint | TAINT |
 | set.cpp:236:28:236:32 | call to begin | set.cpp:236:24:236:34 | call to iterator | TAINT |
+| set.cpp:236:37:236:42 | call to source | set.cpp:236:7:236:9 | ref arg s22 | TAINT |
+| set.cpp:236:37:236:42 | call to source | set.cpp:236:11:236:22 | call to emplace_hint | TAINT |
 | set.cpp:237:7:237:9 | s22 | set.cpp:237:7:237:9 | call to unordered_set |  |
 | smart_pointer.cpp:11:30:11:50 | call to make_shared | smart_pointer.cpp:12:11:12:11 | p |  |
 | smart_pointer.cpp:11:30:11:50 | call to make_shared | smart_pointer.cpp:13:10:13:10 | p |  |

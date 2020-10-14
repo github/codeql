@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Using : Statement<UsingStatementSyntax>
+    internal class Using : Statement<UsingStatementSyntax>
     {
-        Using(Context cx, UsingStatementSyntax node, IStatementParentEntity parent, int child)
+        private Using(Context cx, UsingStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.USING, parent, child) { }
 
         public static Using Create(Context cx, UsingStatementSyntax node, IStatementParentEntity parent, int child)

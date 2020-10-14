@@ -30,10 +30,14 @@ namespace Semmle.Util
         /// <returns>The original StringBuilder (fluent interface).</returns>
         public static StringBuilder BuildList<T>(this StringBuilder builder, string separator, IEnumerable<T> items, Action<T, StringBuilder> action)
         {
-            bool first = true;
+            var first = true;
             foreach (var item in items)
             {
-                if (first) first = false; else builder.Append(separator);
+                if (first)
+                    first = false;
+                else
+                    builder.Append(separator);
+
                 action(item, builder);
             }
             return builder;

@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class TypeOf : Expression<TypeOfExpressionSyntax>
+    internal class TypeOf : Expression<TypeOfExpressionSyntax>
     {
-        TypeOf(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.TYPEOF)) { }
+        private TypeOf(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.TYPEOF)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new TypeOf(info).TryPopulate();
 
