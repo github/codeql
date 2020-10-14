@@ -394,30 +394,24 @@ private module Stdlib {
    * A call to the builtin `exec` function.
    * See https://docs.python.org/3/library/functions.html#exec
    */
-  private class BuiltinsExecCall extends CodeExecution::Range {
-    CallNode call;
+  private class BuiltinsExecCall extends CodeExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-    BuiltinsExecCall() {
-      this.asCfgNode() = call and
-      call.getFunction() = builtins_attr("exec").asCfgNode()
-    }
+    BuiltinsExecCall() { node.getFunction() = builtins_attr("exec").asCfgNode() }
 
-    override DataFlow::Node getCode() { result.asCfgNode() = call.getArg(0) }
+    override DataFlow::Node getCode() { result.asCfgNode() = node.getArg(0) }
   }
 
   /**
    * A call to the builtin `eval` function.
    * See https://docs.python.org/3/library/functions.html#eval
    */
-  private class BuiltinsEvalCall extends CodeExecution::Range {
-    CallNode call;
+  private class BuiltinsEvalCall extends CodeExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-    BuiltinsEvalCall() {
-      this.asCfgNode() = call and
-      call.getFunction() = builtins_attr("eval").asCfgNode()
-    }
+    BuiltinsEvalCall() { node.getFunction() = builtins_attr("eval").asCfgNode() }
 
-    override DataFlow::Node getCode() { result.asCfgNode() = call.getArg(0) }
+    override DataFlow::Node getCode() { result.asCfgNode() = node.getArg(0) }
   }
 
   /** An additional taint step for calls to the builtin function `compile` */
