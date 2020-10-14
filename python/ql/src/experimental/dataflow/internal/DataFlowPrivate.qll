@@ -372,12 +372,14 @@ private module ArgumentPassing {
     abstract int getParamN(int argN);
 
     /** Gets a textual representation of this element. */
-    string toString() { result = "ArgParamMapping" }
+    abstract string toString();
   }
 
   /** A mapping that passes argument `n` to parameter `n`. */
   class NoShift extends ArgParamMapping, TNoShift {
     NoShift() { this = TNoShift() }
+
+    override string toString() { result = "NoShift [n -> n]" }
 
     bindingset[argN]
     override int getParamN(int argN) { result = argN }
@@ -386,6 +388,8 @@ private module ArgumentPassing {
   /** A mapping that passes argument `n` to parameter `n+1`. */
   class ShiftOneUp extends ArgParamMapping, TShiftOneUp {
     ShiftOneUp() { this = TShiftOneUp() }
+
+    override string toString() { result = "ShiftOneUp [n -> n+1]" }
 
     bindingset[argN]
     override int getParamN(int argN) { result = argN + 1 }
