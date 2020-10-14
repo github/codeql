@@ -102,12 +102,12 @@ private module Stdlib {
    * A call to `os.system`.
    * See https://docs.python.org/3/library/os.html#os.system
    */
-  private class OsSystemCall extends SystemCommandExecution::Range {
-    OsSystemCall() { this.asCfgNode().(CallNode).getFunction() = os_attr("system").asCfgNode() }
+  private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    OsSystemCall() { node.getFunction() = os_attr("system").asCfgNode() }
+
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
 
   /**
@@ -118,19 +118,20 @@ private module Stdlib {
    * Although deprecated since version 2.6, they still work in 2.7.
    * See https://docs.python.org/2.7/library/os.html#os.popen2
    */
-  private class OsPopenCall extends SystemCommandExecution::Range {
+  private class OsPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
     string name;
 
     OsPopenCall() {
       name in ["popen", "popen2", "popen3", "popen4"] and
-      this.asCfgNode().(CallNode).getFunction() = os_attr(name).asCfgNode()
+      node.getFunction() = os_attr(name).asCfgNode()
     }
 
     override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+      result.asCfgNode() = node.getArg(0)
       or
       not name = "popen" and
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArgByName("cmd")
+      result.asCfgNode() = node.getArgByName("cmd")
     }
   }
 
@@ -138,50 +139,47 @@ private module Stdlib {
    * A call to any of the `os.exec*` functions
    * See https://docs.python.org/3.8/library/os.html#os.execl
    */
-  private class OsExecCall extends SystemCommandExecution::Range {
+  private class OsExecCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
     OsExecCall() {
       exists(string name |
         name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
-        this.asCfgNode().(CallNode).getFunction() = os_attr(name).asCfgNode()
+        node.getFunction() = os_attr(name).asCfgNode()
       )
     }
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
 
   /**
    * A call to any of the `os.spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.spawnl
    */
-  private class OsSpawnCall extends SystemCommandExecution::Range {
+  private class OsSpawnCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
     OsSpawnCall() {
       exists(string name |
         name in ["spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp",
               "spawnvpe"] and
-        this.asCfgNode().(CallNode).getFunction() = os_attr(name).asCfgNode()
+        node.getFunction() = os_attr(name).asCfgNode()
       )
     }
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(1)
-    }
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(1) }
   }
 
   /**
    * A call to any of the `os.posix_spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.posix_spawn
    */
-  private class OsPosixSpawnCall extends SystemCommandExecution::Range {
-    OsPosixSpawnCall() {
-      this.asCfgNode().(CallNode).getFunction() =
-        os_attr(["posix_spawn", "posix_spawnp"]).asCfgNode()
-    }
+  private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    OsPosixSpawnCall() { node.getFunction() = os_attr(["posix_spawn", "posix_spawnp"]).asCfgNode() }
+
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
 
   /** An additional taint step for calls to `os.path.join` */
@@ -257,29 +255,28 @@ private module Stdlib {
    * A call to `subprocess.Popen` or helper functions (call, check_call, check_output, run)
    * See https://docs.python.org/3.8/library/subprocess.html#subprocess.Popen
    */
-  private class SubprocessPopenCall extends SystemCommandExecution::Range {
-    CallNode call;
+  private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
     SubprocessPopenCall() {
-      call = this.asCfgNode() and
       exists(string name |
         name in ["Popen", "call", "check_call", "check_output", "run"] and
-        call.getFunction() = subprocess_attr(name).asCfgNode()
+        node.getFunction() = subprocess_attr(name).asCfgNode()
       )
     }
 
     /** Gets the ControlFlowNode for the `args` argument, if any. */
     private ControlFlowNode get_args_arg() {
-      result = call.getArg(0)
+      result = node.getArg(0)
       or
-      result = call.getArgByName("args")
+      result = node.getArgByName("args")
     }
 
     /** Gets the ControlFlowNode for the `shell` argument, if any. */
     private ControlFlowNode get_shell_arg() {
-      result = call.getArg(8)
+      result = node.getArg(8)
       or
-      result = call.getArgByName("shell")
+      result = node.getArgByName("shell")
     }
 
     private boolean get_shell_arg_value() {
@@ -301,9 +298,9 @@ private module Stdlib {
 
     /** Gets the ControlFlowNode for the `executable` argument, if any. */
     private ControlFlowNode get_executable_arg() {
-      result = call.getArg(2)
+      result = node.getArg(2)
       or
-      result = call.getArgByName("executable")
+      result = node.getArgByName("executable")
     }
 
     override DataFlow::Node getCommand() {
@@ -399,18 +396,20 @@ private module Stdlib {
    * A call to any of the `popen.popen*` functions, or instantiation of a `popen.Popen*` class.
    * See https://docs.python.org/2.7/library/popen2.html
    */
-  private class Popen2PopenCall extends SystemCommandExecution::Range {
+  private class Popen2PopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
     Popen2PopenCall() {
       exists(string name |
         name in ["popen2", "popen3", "popen4", "Popen3", "Popen4"] and
-        this.asCfgNode().(CallNode).getFunction() = popen2_attr(name).asCfgNode()
+        node.getFunction() = popen2_attr(name).asCfgNode()
       )
     }
 
     override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+      result.asCfgNode() = node.getArg(0)
       or
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArgByName("cmd")
+      result.asCfgNode() = node.getArgByName("cmd")
     }
   }
 
@@ -471,15 +470,15 @@ private module Stdlib {
    * A call to the `platform.popen` function.
    * See https://docs.python.org/2.7/library/platform.html#platform.popen
    */
-  private class PlatformPopenCall extends SystemCommandExecution::Range {
-    PlatformPopenCall() {
-      this.asCfgNode().(CallNode).getFunction() = platform_attr("popen").asCfgNode()
-    }
+  private class PlatformPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    PlatformPopenCall() { node.getFunction() = platform_attr("popen").asCfgNode() }
 
     override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+      result.asCfgNode() = node.getArg(0)
       or
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArgByName("cmd")
+      result.asCfgNode() = node.getArgByName("cmd")
     }
   }
 }
