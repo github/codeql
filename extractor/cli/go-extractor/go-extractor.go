@@ -55,7 +55,7 @@ func parseFlags(args []string, mimic bool) ([]string, []string) {
 						os.Exit(0)
 					}
 				} else {
-					log.Fatalf("Invalid --mimic: no compiler specified")
+					log.Fatalf("--mimic requires an argument, e.g. --mimic go")
 				}
 			}
 		}
