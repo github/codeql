@@ -809,6 +809,8 @@ class NullableType extends ValueType, DotNet::ConstructedGeneric, @nullable_type
    */
   Type getUnderlyingType() { nullable_underlying_type(this, getTypeRef(result)) }
 
+  override string toString() { result = getUnderlyingType().toStringWithTypes() + "?" }
+
   override string toStringWithTypes() { result = getUnderlyingType().toStringWithTypes() + "?" }
 
   override Type getChild(int n) { result = getUnderlyingType() and n = 0 }
