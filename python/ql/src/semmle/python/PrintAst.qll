@@ -297,8 +297,6 @@ class StmtListNode extends PrintAstNode, TStmtListNode {
 
   override string toString() { result = "(StmtList) " + getLabel() }
 
-  override Location getLocation() { result = list.getItem(0).getLocation() }
-
   override PrintAstNode getChild(int childIndex) {
     exists(AstNode el | result.(AstElementNode).getAstNode() = el | el = list.getItem(childIndex))
   }
@@ -357,8 +355,6 @@ class FunctionParamsNode extends PrintAstNode, TFunctionParamsNode {
   Function getFunction() { result = func }
 
   override string toString() { result = "(parameters)" }
-
-  override Location getLocation() { result = func.getLocation() }
 
   override PrintAstNode getChild(int childIndex) {
     // everything that is not a stmt is a parameter.
