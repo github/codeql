@@ -1,5 +1,6 @@
 /** Definitions related to the Apache Commons Lang library. */
-import semmle.code.java.Type
+
+import java
 
 /*--- Types ---*/
 /** The class `org.apache.commons.lang.RandomStringUtils` or `org.apache.commons.lang3.RandomStringUtils`. */
