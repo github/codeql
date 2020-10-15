@@ -1,30 +1,14 @@
-| routing_test.py:7:55:7:111 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routeHandler= |
 | routing_test.py:7:55:7:111 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=bar |
 | routing_test.py:7:55:7:111 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=foo |
-| routing_test.py:11:31:11:45 | Comment # $routeHandler | Missing result:routeHandler= |
-| routing_test.py:15:32:15:46 | Comment # $routeHandler | Missing result:routeHandler= |
-| routing_test.py:19:32:19:46 | Comment # $routeHandler | Missing result:routeHandler= |
-| routing_test.py:29:42:29:83 | Comment # $routeHandler $routedParameter=untrusted | Missing result:routeHandler= |
-| routing_test.py:29:42:29:83 | Comment # $routeHandler $routedParameter=untrusted | Missing result:routedParameter=untrusted |
-| routing_test.py:35:41:35:82 | Comment # $routeHandler $routedParameter=untrusted | Missing result:routeHandler= |
-| routing_test.py:35:41:35:82 | Comment # $routeHandler $routedParameter=untrusted | Missing result:routedParameter=untrusted |
-| routing_test.py:39:45:39:88 | Comment # $routeHandler $routedParameter=page_number | Missing result:routeHandler= |
 | routing_test.py:39:45:39:88 | Comment # $routeHandler $routedParameter=page_number | Missing result:routedParameter=page_number |
-| routing_test.py:44:62:44:120 | Comment # $routeHandler $routedParameter=arg0 $routedParameter=arg1 | Missing result:routeHandler= |
 | routing_test.py:44:62:44:120 | Comment # $routeHandler $routedParameter=arg0 $routedParameter=arg1 | Missing result:routedParameter=arg0 |
 | routing_test.py:44:62:44:120 | Comment # $routeHandler $routedParameter=arg0 $routedParameter=arg1 | Missing result:routedParameter=arg1 |
-| routing_test.py:65:31:65:45 | Comment # $routeHandler | Missing result:routeHandler= |
-| routing_test.py:78:43:78:86 | Comment # $routeHandler $routedParameter=page_number | Missing result:routeHandler= |
 | routing_test.py:78:43:78:86 | Comment # $routeHandler $routedParameter=page_number | Missing result:routedParameter=page_number |
-| routing_test.py:81:43:81:120 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar $routedParameter=baz | Missing result:routeHandler= |
 | routing_test.py:81:43:81:120 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar $routedParameter=baz | Missing result:routedParameter=bar |
 | routing_test.py:81:43:81:120 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar $routedParameter=baz | Missing result:routedParameter=baz |
 | routing_test.py:81:43:81:120 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar $routedParameter=baz | Missing result:routedParameter=foo |
-| routing_test.py:84:38:84:94 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routeHandler= |
 | routing_test.py:84:38:84:94 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=bar |
 | routing_test.py:84:38:84:94 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=foo |
-| routing_test.py:87:37:87:51 | Comment # $routeHandler | Missing result:routeHandler= |
-| taint_test.py:6:60:6:116 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routeHandler= |
 | taint_test.py:6:60:6:116 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=bar |
 | taint_test.py:6:60:6:116 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=foo |
 | testapp/views.py:3:33:3:47 | Comment # $routeHandler | Missing result:routeHandler= |

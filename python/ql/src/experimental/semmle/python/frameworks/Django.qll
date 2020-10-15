@@ -133,10 +133,42 @@ private module Django {
     }
   }
 
-  private class DjangoPathRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
+  /**
+   * Gets a reference to the Function `func`.
+   *
+   * The idea is that this function should be used as a route handler when setting up a
+   * route, but currently it just tracks all functions, since we can't do type-tracking
+   * backwards yet (TODO).
+   */
+  private DataFlow::Node djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker t, Function func) {
+    t.start() and
+    result = DataFlow::exprNode(func.getDefinition())
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = djangoRouteHandlerFunctionTracker(t2, func).track(t2, t)
+    )
+  }
+
+  /**
+   * Gets a reference to the Function `func`.
+   *
+   * The idea is that this function should be used as a route handler when setting up a
+   * route, but currently it just tracks all functions, since we can't do type-tracking
+   * backwards yet (TODO).
+   */
+  private DataFlow::Node djangoRouteHandlerFunctionTracker(Function func) {
+    result = djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func)
+  }
+
+  /**
+   * A call to `django.urls.path`.
+   *
+   * See https://docs.djangoproject.com/en/3.0/ref/urls/#path
+   */
+  private class DjangoUrlsPathCall extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
     override CallNode node;
 
-    DjangoPathRouteSetup() { node.getFunction() = django::urls::path().asCfgNode() }
+    DjangoUrlsPathCall() { node.getFunction() = django::urls::path().asCfgNode() }
 
     override string getUrlPattern() {
       exists(StrConst str, ControlFlowNode urlPatternArg |
@@ -148,15 +180,25 @@ private module Django {
       )
     }
 
-    override Function getARouteHandler() { none() }
+    override Function getARouteHandler() {
+      exists(DataFlow::Node viewArg |
+        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
+        djangoRouteHandlerFunctionTracker(result) = viewArg
+      )
+    }
 
     override Parameter getARoutedParameter() { none() }
   }
 
-  private class DjangoRePathRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
+  /**
+   * A call to `django.urls.re_path`.
+   *
+   * See https://docs.djangoproject.com/en/3.0/ref/urls/#re_path
+   */
+  private class DjangoUrlsRePathCall extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
     override CallNode node;
 
-    DjangoRePathRouteSetup() { node.getFunction() = django::urls::re_path().asCfgNode() }
+    DjangoUrlsRePathCall() { node.getFunction() = django::urls::re_path().asCfgNode() }
 
     override string getUrlPattern() {
       exists(StrConst str, ControlFlowNode urlPatternArg |
@@ -168,7 +210,12 @@ private module Django {
       )
     }
 
-    override Function getARouteHandler() { none() }
+    override Function getARouteHandler() {
+      exists(DataFlow::Node viewArg |
+        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
+        djangoRouteHandlerFunctionTracker(result) = viewArg
+      )
+    }
 
     override Parameter getARoutedParameter() { none() }
   }

@@ -26,13 +26,13 @@ class Foo(object):
     # Note: since Foo is used as the super type in a class view, it will be able to handle requests.
 
 
-    def post(self, request, untrusted):  # $routeHandler $routedParameter=untrusted
+    def post(self, request, untrusted):  # $f-:routeHandler $f-:routedParameter=untrusted
         return HttpResponse('Foo post: {}'.format(untrusted))
 
 
 class ClassView(View, Foo):
 
-    def get(self, request, untrusted):  # $routeHandler $routedParameter=untrusted
+    def get(self, request, untrusted):  # $f-:routeHandler $f-:routedParameter=untrusted
         return HttpResponse('ClassView get: {}'.format(untrusted))
 
 
