@@ -376,8 +376,6 @@ private module PrintJavaScript {
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = n.getAttribute(childIndex)
     }
-
-    override Location getLocation() { result = n.getLocation() }
   }
 
   /**
@@ -398,8 +396,6 @@ private module PrintJavaScript {
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = n.getBodyElement(childIndex)
     }
-
-    override Location getLocation() { result = n.getLocation() }
   }
 
   /**
@@ -719,7 +715,7 @@ module PrintHTML {
   }
 
   /**
-   * A print node representing the code inside a `<script>` element.
+   * A print node representing the code inside an attribute.
    */
   class HTMLCodeInAttr extends PrintAstNode, THTMLCodeInAttr {
     CodeInAttribute attr;
@@ -763,8 +759,6 @@ module PrintHTML {
     override PrintAstNode getChild(int childIndex) {
       result.(HTMLAttributeNode).getAttribute() = element.getAttribute(childIndex)
     }
-
-    override Location getLocation() { result = element.getLocation() }
   }
 
   /**
