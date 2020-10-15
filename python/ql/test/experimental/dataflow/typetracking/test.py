@@ -38,10 +38,11 @@ def quux():
 g = None
 
 def write_g(x): # $tracked
+    global g
     g = x # $tracked
 
 def use_g():
-    do_stuff(g) # $f-:tracked // no global flow for now.
+    do_stuff(g) # $tracked
 
 def global_var_write_test():
     x = tracked # $tracked

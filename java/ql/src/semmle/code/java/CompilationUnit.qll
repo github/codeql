@@ -30,4 +30,6 @@ class CompilationUnit extends Element, File {
    * Gets the module associated with this compilation unit, if any.
    */
   Module getModule() { cumodule(this, result) }
+
+  override string getAPrimaryQlClass() { result = "CompilationUnit" }
 }

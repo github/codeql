@@ -1,6 +1,8 @@
 | src/RouterExample.js:4:65:10:1 | (req, r ... ;\\n  }\\n} |
 | src/app-in-property.js:6:13:6:32 | function(req, res){} |
 | src/app-in-property.js:14:21:14:40 | function(req, res){} |
+| src/bound-handler.js:4:1:4:28 | functio ...  res){} |
+| src/bound-handler.js:9:12:9:31 | function(req, res){} |
 | src/connect.js:5:9:5:27 | function(req,res){} |
 | src/connect.js:8:12:8:31 | function(req, res){} |
 | src/connect.js:12:9:12:27 | function(req,res){} |

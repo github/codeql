@@ -31,7 +31,7 @@ predicate isStringSplitOrReplace(MethodCallExpr mce) {
     mce.getMethodName() = name and
     mce.getNumArgument() = arity
   |
-    name = "replace" and arity = 2
+    name = ["replace", "replaceAll"] and arity = 2
     or
     name = "split" and
     (arity = 1 or arity = 2)

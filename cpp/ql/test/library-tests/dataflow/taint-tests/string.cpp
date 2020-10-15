@@ -14,10 +14,10 @@ char *user_input() {
   return source();
 }
 
-void sink(const char *s) {};
-void sink(const std::string &s) {};
+void sink(const char *s);
+void sink(const std::string &s);
 void sink(const char *filename, const char *mode);
-void sink(char) {}
+void sink(char);
 
 void test_string()
 {

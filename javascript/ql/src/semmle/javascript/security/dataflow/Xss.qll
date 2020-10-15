@@ -33,11 +33,10 @@ module Shared {
    * The XSS queries do not attempt to reason about correctness or completeness of sanitizers,
    * so any such replacement stops taint propagation.
    */
-  class MetacharEscapeSanitizer extends Sanitizer, DataFlow::MethodCallNode {
+  class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
-      getMethodName() = "replace" and
       exists(RegExpConstant c |
-        c.getLiteral() = getArgument(0).getALocalSource().asExpr() and
+        c.getLiteral() = getRegExp().asExpr() and
         c.getValue().regexpMatch("['\"&<>]")
       )
     }

@@ -31,24 +31,27 @@ private module MySql {
   /** Gets the package name `mysql` or `mysql2`. */
   API::Node mysql() { result = API::moduleImport(["mysql", "mysql2"]) }
 
-  /** Gets a call to `mysql.createConnection`. */
-  API::Node createConnection() { result = mysql().getMember("createConnection").getReturn() }
+  /** Gets a reference to `mysql.createConnection`. */
+  API::Node createConnection() { result = mysql().getMember("createConnection") }
 
-  /** Gets a call to `mysql.createPool`. */
-  API::Node createPool() { result = mysql().getMember("createPool").getReturn() }
+  /** Gets a reference to `mysql.createPool`. */
+  API::Node createPool() { result = mysql().getMember("createPool") }
+
+  /** Gets a node that contains a MySQL pool created using `mysql.createPool()`. */
+  API::Node pool() { result = createPool().getReturn() }
 
   /** Gets a data flow node that contains a freshly created MySQL connection instance. */
   API::Node connection() {
-    result = createConnection()
+    result = createConnection().getReturn()
     or
-    result = createPool().getMember("getConnection").getParameter(0).getParameter(1)
+    result = pool().getMember("getConnection").getParameter(0).getParameter(1)
   }
 
   /** A call to the MySql `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      exists(API::Node recv | recv = createPool() or recv = connection() |
-        this = recv.getMember("query").getReturn().getAUse()
+      exists(API::Node recv | recv = pool() or recv = connection() |
+        this = recv.getMember("query").getACall()
       )
     }
 
@@ -63,12 +66,7 @@ private module MySql {
   /** A call to the `escape` or `escapeId` method that performs SQL sanitization. */
   class EscapingSanitizer extends SQL::SqlSanitizer, MethodCallExpr {
     EscapingSanitizer() {
-      this =
-        [mysql(), createPool(), connection()]
-            .getMember(["escape", "escapeId"])
-            .getReturn()
-            .getAUse()
-            .asExpr() and
+      this = [mysql(), pool(), connection()].getMember(["escape", "escapeId"]).getACall().asExpr() and
       input = this.getArgument(0) and
       output = this
     }
@@ -79,9 +77,9 @@ private module MySql {
     string kind;
 
     Credentials() {
-      exists(API::Node call, string prop |
-        call in [createConnection(), createPool()] and
-        call.getAUse().asExpr().(CallExpr).hasOptionArgument(0, prop, this) and
+      exists(API::Node callee, string prop |
+        callee in [createConnection(), createPool()] and
+        this = callee.getParameter(0).getMember(prop).getARhs().asExpr() and
         (
           prop = "user" and kind = "user name"
           or
@@ -98,29 +96,32 @@ private module MySql {
  * Provides classes modelling the `pg` package.
  */
 private module Postgres {
-  /** Gets an expression of the form `new require('pg').Client()`. */
-  API::Node newClient() { result = API::moduleImport("pg").getMember("Client").getInstance() }
+  /** Gets a reference to the `Client` constructor in the `pg` package, for example `require('pg').Client`. */
+  API::Node newClient() { result = API::moduleImport("pg").getMember("Client") }
 
-  /** Gets a data flow node that holds a freshly created Postgres client instance. */
+  /** Gets a freshly created Postgres client instance. */
   API::Node client() {
-    result = newClient()
+    result = newClient().getInstance()
     or
     // pool.connect(function(err, client) { ... })
-    result = newPool().getMember("connect").getParameter(0).getParameter(1)
+    result = pool().getMember("connect").getParameter(0).getParameter(1)
+  }
+
+  /** Gets a constructor that when invoked constructs a new connection pool. */
+  API::Node newPool() {
+    // new require('pg').Pool()
+    result = API::moduleImport("pg").getMember("Pool")
+    or
+    // new require('pg-pool')
+    result = API::moduleImport("pg-pool")
   }
 
   /** Gets an expression that constructs a new connection pool. */
-  API::Node newPool() {
-    // new require('pg').Pool()
-    result = API::moduleImport("pg").getMember("Pool").getInstance()
-    or
-    // new require('pg-pool')
-    result = API::moduleImport("pg-pool").getInstance()
-  }
+  API::Node pool() { result = newPool().getInstance() }
 
   /** A call to the Postgres `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = [client(), newPool()].getMember("query").getReturn().getAUse() }
+    QueryCall() { this = [client(), pool()].getMember("query").getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -135,9 +136,8 @@ private module Postgres {
     string kind;
 
     Credentials() {
-      exists(DataFlow::InvokeNode call, string prop |
-        call = [client(), newPool()].getAUse() and
-        this = call.getOptionArgument(0, prop).asExpr() and
+      exists(string prop |
+        this = [newClient(), newPool()].getParameter(0).getMember(prop).getARhs().asExpr() and
         (
           prop = "user" and kind = "user name"
           or
@@ -178,7 +178,7 @@ private module Sqlite {
         meth = "prepare" or
         meth = "run"
       |
-        this = newDb().getMember(meth).getReturn().getAUse()
+        this = newDb().getMember(meth).getACall()
       )
     }
 
@@ -222,7 +222,7 @@ private module MsSql {
 
   /** A call to a MsSql query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = request().getMember(["query", "batch"]).getReturn().getAUse() }
+    QueryCall() { this = request().getMember(["query", "batch"]).getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -250,13 +250,13 @@ private module MsSql {
     string kind;
 
     Credentials() {
-      exists(DataFlow::InvokeNode call, string prop |
+      exists(API::Node callee, string prop |
         (
-          call = mssql().getMember("connect").getReturn().getAUse()
+          callee = mssql().getMember("connect")
           or
-          call = mssql().getMember("ConnectionPool").getInstance().getAUse()
+          callee = mssql().getMember("ConnectionPool")
         ) and
-        this = call.getOptionArgument(0, prop).asExpr() and
+        this = callee.getParameter(0).getMember(prop).getARhs().asExpr() and
         (
           prop = "user" and kind = "user name"
           or
@@ -281,7 +281,7 @@ private module Sequelize {
 
   /** A call to `Sequelize.query`. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = newSequelize().getMember("query").getReturn().getAUse() }
+    QueryCall() { this = newSequelize().getMember("query").getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -300,7 +300,7 @@ private module Sequelize {
 
     Credentials() {
       exists(NewExpr ne, string prop |
-        ne = newSequelize().getAUse().asExpr() and
+        ne = sequelize().getAnInstantiation().asExpr() and
         (
           this = ne.getArgument(1) and prop = "username"
           or
@@ -378,8 +378,7 @@ private module Spanner {
    */
   class DatabaseRunCall extends SqlExecution {
     DatabaseRunCall() {
-      this =
-        database().getMember(["run", "runPartitionedUpdate", "runStream"]).getReturn().getAUse()
+      this = database().getMember(["run", "runPartitionedUpdate", "runStream"]).getACall()
     }
   }
 
@@ -388,7 +387,7 @@ private module Spanner {
    */
   class TransactionRunCall extends SqlExecution {
     TransactionRunCall() {
-      this = transaction().getMember(["run", "runStream", "runUpdate"]).getReturn().getAUse()
+      this = transaction().getMember(["run", "runStream", "runUpdate"]).getACall()
     }
   }
 
@@ -397,8 +396,7 @@ private module Spanner {
    */
   class ExecuteSqlCall extends SqlExecution {
     ExecuteSqlCall() {
-      this =
-        v1SpannerClient().getMember(["executeSql", "executeStreamingSql"]).getReturn().getAUse()
+      this = v1SpannerClient().getMember(["executeSql", "executeStreamingSql"]).getACall()
     }
 
     override DataFlow::Node getAQueryArgument() {

@@ -199,6 +199,11 @@ class PostMessageEventHandler extends Function {
       addEventListener.getArgument(0).mayHaveStringValue("message") and
       addEventListener.getArgument(1).getABoundFunctionValue(paramIndex).getFunction() = this
     )
+    or
+    exists(DataFlow::Node rhs |
+      rhs = DataFlow::globalObjectRef().getAPropertyWrite("onmessage").getRhs() and
+      rhs.getABoundFunctionValue(paramIndex).getFunction() = this
+    )
   }
 
   /**

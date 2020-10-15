@@ -1421,8 +1421,19 @@ public class TypeScriptASTConverter {
         importStart = advance(importStart, m.group(0));
       }
     }
+
+    Node rawPath = convertChild(node, "argument");
+    ITypeExpression path;
+    if (rawPath instanceof ITypeExpression) {
+      path = (ITypeExpression)rawPath;
+    } else if (rawPath instanceof TemplateLiteral) {
+      // this is a type-error, so we just fall back to some behavior that does not crash the extractor.
+      path = new Literal(rawPath.getLoc(), TokenType.string, ((TemplateLiteral)rawPath).getQuasis().stream().map(q -> q.getRaw()).collect(Collectors.joining("")));
+    } else {
+      throw new ParseError("Unsupported syntax in import", getSourceLocation(node).getStart());
+    }
+    
     // Find the ending parenthesis in `import(path)` by skipping whitespace after `path`.
-    ITypeExpression path = convertChild(node, "argument");
     String endSrc =
         loc.getSource().substring(path.getLoc().getEnd().getOffset() - loc.getStart().getOffset());
     Matcher m = WHITESPACE_END_PAREN.matcher(endSrc);

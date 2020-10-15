@@ -86,6 +86,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 return new ImplicitCast(info);
             }
 
+            if (conversion.IsIdentity && conversion.IsImplicit &&
+                convertedType.Symbol is IPointerTypeSymbol &&
+                !(resolvedType.Symbol is IPointerTypeSymbol))
+            {
+                // int[] -> int*
+                // string -> char*
+                return new ImplicitCast(info);
+            }
+
             // Default: Just create the expression without a conversion.
             return Factory.Create(info);
         }

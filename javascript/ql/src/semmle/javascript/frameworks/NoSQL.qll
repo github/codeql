@@ -13,10 +13,22 @@ module NoSQL {
 }
 
 /**
+ * Gets a reference to an object where the "$where" property has been assigned to`rhs`.
+ */
+DataFlow::SourceNode getADollarWherePropertyValueSource(DataFlow::TypeTracker t, DataFlow::Node rhs) {
+  t.start() and
+  rhs = result.getAPropertyWrite("$where").getRhs()
+  or
+  exists(DataFlow::TypeTracker t2 |
+    result = getADollarWherePropertyValueSource(t2, rhs).track(t2, t)
+  )
+}
+
+/**
  * Gets the value of a `$where` property of an object that flows to `n`.
  */
 private DataFlow::Node getADollarWherePropertyValue(DataFlow::Node n) {
-  result = n.getALocalSource().getAPropertyWrite("$where").getRhs()
+  getADollarWherePropertyValueSource(DataFlow::TypeTracker::end(), result).flowsTo(n)
 }
 
 /**

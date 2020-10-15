@@ -59,6 +59,12 @@ class MemoryLocation extends TMemoryLocation {
   final string getUniqueId() { result = var.getUniqueId() }
 }
 
+/**
+ * Represents a set of `MemoryLocation`s that cannot overlap with
+ * `MemoryLocation`s outside of the set. The `VirtualVariable` will be
+ * represented by a `MemoryLocation` that totally overlaps all other
+ * `MemoryLocations` in the set.
+ */
 class VirtualVariable extends MemoryLocation { }
 
 /** A virtual variable that groups all escaped memory within a function. */

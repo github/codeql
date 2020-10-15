@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -22,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             Extraction.Entities.Assembly.CreateOutputAssembly(cx);
 
-            trapFile.compilations(this, Extraction.Entities.File.PathAsDatabaseString(cwd));
+            trapFile.compilations(this, FileUtils.ConvertToUnix(cwd));
 
             // Arguments
             int index = 0;

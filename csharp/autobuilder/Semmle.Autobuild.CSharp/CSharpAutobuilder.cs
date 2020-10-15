@@ -85,10 +85,7 @@ namespace Semmle.Autobuild.CSharp
                     break;
             }
 
-            return
-                attempt &
-                (() => new AspBuildRule().Analyse(this, false)) &
-                (() => new XmlBuildRule().Analyse(this, false));
+            return attempt;
         }
 
         /// <summary>

@@ -65,7 +65,7 @@ module ClientSideUrlRedirect {
     or
     exists(MethodCallExpr mce |
       queryAccess.asExpr() = mce and
-      mce = any(RegExpLiteral re).flow().(DataFlow::SourceNode).getAMethodCall("exec").asExpr() and
+      mce = any(DataFlow::RegExpCreationNode re).getAMethodCall("exec").asExpr() and
       nd.asExpr() = mce.getArgument(0)
     )
   }
@@ -129,6 +129,15 @@ module ClientSideUrlRedirect {
   class WebWorkerScriptUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
     WebWorkerScriptUrlSink() {
       this = DataFlow::globalVarRef("Worker").getAnInstantiation().getArgument(0)
+    }
+  }
+
+  /**
+   * An argument to `importScripts(..)` - which is used inside `WebWorker`s to import new scripts - viewed as a `ScriptUrlSink`.
+   */
+  class ImportScriptsSink extends ScriptUrlSink {
+    ImportScriptsSink() {
+      this = DataFlow::globalVarRef("importScripts").getACall().getAnArgument()
     }
   }
 

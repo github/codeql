@@ -2568,11 +2568,13 @@ dominance
 | VarDecls.cs:7:9:10:9 | fixed(...) { ... } | VarDecls.cs:7:27:7:33 | access to parameter strings |
 | VarDecls.cs:7:22:7:36 | Char* c1 = ... | VarDecls.cs:7:44:7:50 | access to parameter strings |
 | VarDecls.cs:7:27:7:33 | access to parameter strings | VarDecls.cs:7:35:7:35 | 0 |
-| VarDecls.cs:7:27:7:36 | access to array element | VarDecls.cs:7:22:7:36 | Char* c1 = ... |
+| VarDecls.cs:7:27:7:36 | (...) ... | VarDecls.cs:7:22:7:36 | Char* c1 = ... |
+| VarDecls.cs:7:27:7:36 | access to array element | VarDecls.cs:7:27:7:36 | (...) ... |
 | VarDecls.cs:7:35:7:35 | 0 | VarDecls.cs:7:27:7:36 | access to array element |
 | VarDecls.cs:7:39:7:53 | Char* c2 = ... | VarDecls.cs:8:9:10:9 | {...} |
 | VarDecls.cs:7:44:7:50 | access to parameter strings | VarDecls.cs:7:52:7:52 | 1 |
-| VarDecls.cs:7:44:7:53 | access to array element | VarDecls.cs:7:39:7:53 | Char* c2 = ... |
+| VarDecls.cs:7:44:7:53 | (...) ... | VarDecls.cs:7:39:7:53 | Char* c2 = ... |
+| VarDecls.cs:7:44:7:53 | access to array element | VarDecls.cs:7:44:7:53 | (...) ... |
 | VarDecls.cs:7:52:7:52 | 1 | VarDecls.cs:7:44:7:53 | access to array element |
 | VarDecls.cs:8:9:10:9 | {...} | VarDecls.cs:9:27:9:28 | access to local variable c1 |
 | VarDecls.cs:9:13:9:29 | return ...; | VarDecls.cs:5:18:5:19 | exit M1 |
@@ -5703,12 +5705,14 @@ postDominance
 | VarDecls.cs:5:18:5:19 | exit M1 | VarDecls.cs:9:13:9:29 | return ...; |
 | VarDecls.cs:6:5:11:5 | {...} | VarDecls.cs:5:18:5:19 | enter M1 |
 | VarDecls.cs:7:9:10:9 | fixed(...) { ... } | VarDecls.cs:6:5:11:5 | {...} |
-| VarDecls.cs:7:22:7:36 | Char* c1 = ... | VarDecls.cs:7:27:7:36 | access to array element |
+| VarDecls.cs:7:22:7:36 | Char* c1 = ... | VarDecls.cs:7:27:7:36 | (...) ... |
 | VarDecls.cs:7:27:7:33 | access to parameter strings | VarDecls.cs:7:9:10:9 | fixed(...) { ... } |
+| VarDecls.cs:7:27:7:36 | (...) ... | VarDecls.cs:7:27:7:36 | access to array element |
 | VarDecls.cs:7:27:7:36 | access to array element | VarDecls.cs:7:35:7:35 | 0 |
 | VarDecls.cs:7:35:7:35 | 0 | VarDecls.cs:7:27:7:33 | access to parameter strings |
-| VarDecls.cs:7:39:7:53 | Char* c2 = ... | VarDecls.cs:7:44:7:53 | access to array element |
+| VarDecls.cs:7:39:7:53 | Char* c2 = ... | VarDecls.cs:7:44:7:53 | (...) ... |
 | VarDecls.cs:7:44:7:50 | access to parameter strings | VarDecls.cs:7:22:7:36 | Char* c1 = ... |
+| VarDecls.cs:7:44:7:53 | (...) ... | VarDecls.cs:7:44:7:53 | access to array element |
 | VarDecls.cs:7:44:7:53 | access to array element | VarDecls.cs:7:52:7:52 | 1 |
 | VarDecls.cs:7:52:7:52 | 1 | VarDecls.cs:7:44:7:50 | access to parameter strings |
 | VarDecls.cs:8:9:10:9 | {...} | VarDecls.cs:7:39:7:53 | Char* c2 = ... |

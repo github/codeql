@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Mostly duplicate method
  * @description There is another method that shares a lot of the code with this method. Extract the code to a common superclass or delegate to improve sharing.
  * @kind problem

@@ -14,6 +14,7 @@
 import semmle.code.java.Expr
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.ExternalProcess
+import semmle.code.java.security.CommandArguments
 import DataFlow::PathGraph
 
 class LocalUserInputToArgumentToExecFlowConfig extends TaintTracking::Configuration {
@@ -24,12 +25,16 @@ class LocalUserInputToArgumentToExecFlowConfig extends TaintTracking::Configurat
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+    node.getType() instanceof PrimitiveType
+    or
+    node.getType() instanceof BoxedType
+    or
+    isSafeCommandArgument(node.asExpr())
   }
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, StringArgumentToExec execArg,
+  DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg,
   LocalUserInputToArgumentToExecFlowConfig conf
 where conf.hasFlowPath(source, sink) and sink.getNode().asExpr() = execArg
 select execArg, source, sink, "$@ flows to here and is used in a command.", source.getNode(),

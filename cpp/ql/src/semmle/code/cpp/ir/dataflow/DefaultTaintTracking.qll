@@ -264,9 +264,6 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
     t instanceof Union
     or
     t instanceof ArrayType
-    or
-    // Buffers of unknown size
-    t instanceof UnknownType
   )
   or
   exists(BinaryInstruction bin |

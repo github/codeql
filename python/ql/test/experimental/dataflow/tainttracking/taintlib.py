@@ -3,6 +3,8 @@ TAINTED_BYTES = b"TAINTED_BYTES"
 TAINTED_LIST = ["tainted-{}".format(i) for i in range(5)]
 TAINTED_DICT = {"name": TAINTED_STRING, "some key": "foo"}
 
+NOT_TAINTED = "NOT_TAINTED"
+
 def ensure_tainted(*args):
     print("- ensure_tainted")
     for i, arg in enumerate(args):

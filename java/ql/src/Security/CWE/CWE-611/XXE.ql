@@ -8,6 +8,8 @@
  * @id java/xxe
  * @tags security
  *       external/cwe/cwe-611
+ *       external/cwe/cwe-776
+ *       external/cwe/cwe-827
  */
 
 import java

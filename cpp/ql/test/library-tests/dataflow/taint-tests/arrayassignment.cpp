@@ -14,7 +14,7 @@ void test_pointer_deref_assignment()
 	*p_x = source();
 
 	sink(x); // tainted [DETECTED BY IR ONLY]
-	sink(*p_x); // tainted [DETECTED BY IR ONLY]
+	sink(*p_x); // tainted
 	sink(*p2_x); // tainted [DETECTED BY IR ONLY]
 	sink(r_x); // tainted [DETECTED BY IR ONLY]
 }
@@ -137,11 +137,11 @@ void test_array_reference_assignment()
 
 	ptr2 = &(arr2[5]);
 	*ptr2 = source();
-	sink(*ptr2); // tainted [DETECTED BY IR ONLY]
+	sink(*ptr2); // tainted
 	sink(arr2[5]); // tainted [DETECTED BY IR ONLY]
 
 	ptr3 = arr3;
 	ptr3[5] = source();
-	sink(ptr3[5]); // tainted [DETECTED BY IR ONLY]
+	sink(ptr3[5]); // tainted
 	sink(arr3[5]); // tainted [DETECTED BY IR ONLY]
 }
