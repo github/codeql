@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class LocalVariableFactory : ICachedEntityFactory<ISymbol, LocalVariable>
         {
-            public static readonly LocalVariableFactory Instance = new LocalVariableFactory();
+            public static LocalVariableFactory Instance { get; } = new LocalVariableFactory();
 
             public LocalVariable Create(Context cx, ISymbol init) => new LocalVariable(cx, init);
         }

@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class LocalFunctionFactory : ICachedEntityFactory<IMethodSymbol, LocalFunction>
         {
-            public static readonly LocalFunctionFactory Instance = new LocalFunctionFactory();
+            public static LocalFunctionFactory Instance { get; } = new LocalFunctionFactory();
 
             public LocalFunction Create(Context cx, IMethodSymbol init) => new LocalFunction(cx, init);
         }

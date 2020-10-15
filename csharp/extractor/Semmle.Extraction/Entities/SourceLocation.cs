@@ -58,7 +58,7 @@ namespace Semmle.Extraction.Entities
 
         private class SourceLocationFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location, SourceLocation>
         {
-            public static readonly SourceLocationFactory Instance = new SourceLocationFactory();
+            public static SourceLocationFactory Instance { get; } = new SourceLocationFactory();
 
             public SourceLocation Create(Context cx, Microsoft.CodeAnalysis.Location init) => new NonGeneratedSourceLocation(cx, init);
         }

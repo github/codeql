@@ -139,7 +139,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class CommentLineFactory : ICachedEntityFactory<(Microsoft.CodeAnalysis.Location, CommentLineType, string, string), CommentLine>
         {
-            public static readonly CommentLineFactory Instance = new CommentLineFactory();
+            public static CommentLineFactory Instance { get; } = new CommentLineFactory();
 
             public CommentLine Create(Context cx, (Microsoft.CodeAnalysis.Location, CommentLineType, string, string) init) =>
                 new CommentLine(cx, init.Item1, init.Item2, init.Item3, init.Item4);

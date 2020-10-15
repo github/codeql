@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class ArrayTypeFactory : ICachedEntityFactory<IArrayTypeSymbol, ArrayType>
         {
-            public static readonly ArrayTypeFactory Instance = new ArrayTypeFactory();
+            public static ArrayTypeFactory Instance { get; } = new ArrayTypeFactory();
 
             public ArrayType Create(Context cx, IArrayTypeSymbol init) => new ArrayType(cx, init);
         }

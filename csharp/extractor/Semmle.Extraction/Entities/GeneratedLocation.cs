@@ -32,7 +32,7 @@ namespace Semmle.Extraction.Entities
 
         private class GeneratedLocationFactory : ICachedEntityFactory<string?, GeneratedLocation>
         {
-            public static readonly GeneratedLocationFactory Instance = new GeneratedLocationFactory();
+            public static GeneratedLocationFactory Instance { get; } = new GeneratedLocationFactory();
 
             public GeneratedLocation Create(Context cx, string? init) => new GeneratedLocation(cx);
         }

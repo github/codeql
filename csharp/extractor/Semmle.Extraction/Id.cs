@@ -116,7 +116,7 @@ namespace Semmle.Extraction
 
         public int Value { get; private set; }
 
-        public static readonly Label InvalidLabel = new Label(0);
+        public static Label InvalidLabel { get; } = new Label(0);
 
         public bool Valid => Value > 0;
 

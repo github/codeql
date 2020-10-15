@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class NullTypeFactory : ICachedEntityFactory<ITypeSymbol, NullType>
         {
-            public static readonly NullTypeFactory Instance = new NullTypeFactory();
+            public static NullTypeFactory Instance { get; } = new NullTypeFactory();
 
             public NullType Create(Context cx, ITypeSymbol init) => new NullType(cx);
         }

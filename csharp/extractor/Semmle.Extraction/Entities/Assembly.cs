@@ -53,7 +53,7 @@ namespace Semmle.Extraction.Entities
 
         private class AssemblyConstructorFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
         {
-            public static readonly AssemblyConstructorFactory Instance = new AssemblyConstructorFactory();
+            public static AssemblyConstructorFactory Instance { get; } = new AssemblyConstructorFactory();
 
             public Assembly Create(Context cx, Microsoft.CodeAnalysis.Location? init) => new Assembly(cx, init);
         }

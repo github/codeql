@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class EventAccessorFactory : ICachedEntityFactory<IMethodSymbol, EventAccessor>
         {
-            public static readonly EventAccessorFactory Instance = new EventAccessorFactory();
+            public static EventAccessorFactory Instance { get; } = new EventAccessorFactory();
 
             public EventAccessor Create(Context cx, IMethodSymbol init) => new EventAccessor(cx, init);
         }
