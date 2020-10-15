@@ -71,16 +71,10 @@ class IntentGetExtraMethodAccess extends MethodAccess {
 }
 
 /**
- * Source of fetching URLs
+ * Source of fetching URLs from intent extras
  */
-class UntrustedResourceSource extends RemoteFlowSource {
-  UntrustedResourceSource() {
-    exists(IntentGetExtraMethodAccess ma |
-      this.asExpr().(VarAccess).getVariable().getAnAssignedValue() = ma
-    )
-  }
-
-  override string getSourceType() { result = "UntrustedIntentExtraSource" }
+class UntrustedResourceSource extends DataFlow::ExprNode {
+  UntrustedResourceSource() { this.asExpr() instanceof IntentGetExtraMethodAccess }
 }
 
 /**
