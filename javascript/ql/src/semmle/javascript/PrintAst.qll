@@ -210,16 +210,20 @@ private module PrintJavaScript {
      * Either the result is `ASTNode::toString`, or a custom made string representation of `element`.
      */
     string print(ASTNode element) {
-      result = element.toString().regexpReplaceAll("(\\\\n|\\\\r|\\\\t| )+", " ") and
-      not exists(repr(element))
-      or
-      result = repr(element)
+      shouldPrint(element, _) and
+      (
+        result = element.toString().regexpReplaceAll("(\\\\n|\\\\r|\\\\t| )+", " ") and
+        not exists(repr(element))
+        or
+        result = repr(element)
+      )
     }
 
     /**
      * Gets a string representing `a`.
      */
     private string repr(ASTNode a) {
+      shouldPrint(a, _) and
       exists(DeclStmt decl | decl = a |
         result =
           getDeclarationKeyword(decl) + " " +
@@ -506,7 +510,7 @@ private module PrintJSON {
 
     JSONNode() { this = TJSONNode(value) }
 
-    override string toString() { result = getQlClass(value) + value.toString() }
+    override string toString() { result = getQlClass(value) + PrettyPrinting::print(value) }
 
     override Location getLocation() { result = value.getLocation() }
 
@@ -518,6 +522,47 @@ private module PrintJSON {
     override PrintAstNode getChild(int childIndex) {
       exists(JSONValue child | result.(JSONNode).getValue() = child |
         child = value.getChild(childIndex)
+      )
+    }
+  }
+
+  /** Provied predicates for pretty printing JSON. */
+  private module PrettyPrinting {
+    /**
+     * Gets a string representation of `n`.
+     * Either using the default `JSONValue::toString`, or a custom printing of the JSON value.
+     */
+    string print(JSONValue n) {
+      shouldPrint(n, _) and
+      (
+        result = n.toString().regexpReplaceAll("(\\\\n|\\\\r|\\\\t| )+", " ") and
+        not exists(repr(n))
+        or
+        result = repr(n)
+      )
+    }
+
+    /** Gets a string representing `n`. */
+    private string repr(JSONValue n) {
+      shouldPrint(n, _) and
+      (
+        exists(JSONObject obj, string name, JSONValue prop | obj = n |
+          prop = obj.getPropValue(name) and
+          prop = obj.getChild(0) and
+          result = "{" + name + ": ...}"
+        )
+        or
+        n instanceof JSONObject and not exists(n.getChild(_)) and result = "{}"
+        or
+        result = n.(JSONPrimitiveValue).getRawValue()
+        or
+        exists(JSONArray arr | arr = n |
+          result = "[]" and not exists(arr.getChild(_))
+          or
+          result = "[" + repr(arr.getChild(0)) + "]" and not exists(arr.getChild(1))
+          or
+          result = "[" + repr(arr.getChild(0)) + ", ...]" and exists(arr.getChild(1))
+        )
       )
     }
   }
