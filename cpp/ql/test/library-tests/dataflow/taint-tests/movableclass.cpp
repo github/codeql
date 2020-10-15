@@ -22,7 +22,7 @@ public:
 MyMovableClass   getUnTainted() { return MyMovableClass(1); }
 MyMovableClass   getTainted() { return MyMovableClass(source()); }
 
-void test_copyableclass()
+void test_movableclass()
 {
 	{
 		MyMovableClass s1(1);

@@ -13,7 +13,7 @@ namespace std
     template <class T>
     T &&move(T &t) noexcept { return static_cast<T &&>(t); } // simplified signature (and implementation)
 } // namespace std
-
+namespace Swap1 {
 namespace IntWrapper
 {
     struct Class
@@ -143,4 +143,6 @@ void test_move_assignment_method()
 
     sink(y.data1); // tainted
     sink(x.data1); // tainted
+}
+
 }

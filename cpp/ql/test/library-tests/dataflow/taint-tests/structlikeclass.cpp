@@ -1,6 +1,6 @@
 
 int source();
-void sink(...) {};
+void sink(...);
 
 class StructLikeClass {
 public:

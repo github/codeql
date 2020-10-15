@@ -499,7 +499,7 @@ void test_string_iterator_methods()
 	}
 }
 
-void test_constructors_more() {
+void test_string_constructors_more() {
 	char *cs1 = "abc";
 	char *cs2 = source();
 	std::string s1(cs1);
