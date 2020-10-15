@@ -587,8 +587,6 @@ module PrintYAML {
       index = i
     }
 
-    override Location getLocation() { result = mapping.getKeyNode(i).getLocation() }
-
     override PrintAstNode getChild(int childIndex) {
       childIndex = 0 and result.(YAMLNodeNode).getValue() = mapping.getKeyNode(i)
       or
