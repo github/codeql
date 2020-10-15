@@ -331,6 +331,19 @@ class FunctionNode extends AstElementNode {
 }
 
 /**
+ * A print node for a `FunctionDef`.
+ */
+class FunctionDefNode extends AstElementNode {
+  override FunctionDef element;
+
+  override AstNode getChildNode(int childIndex) {
+    childIndex = 0 and result = element.getTarget(0)
+    or
+    childIndex = 1 and result = element.getValue()
+  }
+}
+
+/**
  * A print node for the parameters in `func`.
  */
 class FunctionParamsNode extends PrintAstNode, TFunctionParamsNode {
