@@ -181,7 +181,7 @@ private module PrintJavaScript {
       not element instanceof CodeInAttribute // Handled in module `PrintHTML`
     }
 
-    override string toString() { result = getQlClass(element) + element.toString() }
+    override string toString() { result = getQlClass(element) + PrettyPrinting::print(element) }
 
     override Location getLocation() { result = element.getLocation() }
 
@@ -201,6 +201,46 @@ private module PrintJavaScript {
      * Can be overriden in subclasses to get more specific behavior for `getChild()`.
      */
     ASTNode getChildNode(int childIndex) { result = getLocationSortedChild(element, childIndex) }
+  }
+
+  /** Provides predicates for pretty printing `ASTNode`s. */
+  private module PrettyPrinting {
+    /**
+     * Gets a pretty string representation of `element`.
+     * Either the result is `ASTNode::toString`, or a custom made string representation of `element`.
+     */
+    string print(ASTNode element) {
+      result = element.toString().regexpReplaceAll("(\\\\n|\\\\r|\\\\t| )+", " ") and
+      not exists(repr(element))
+      or
+      result = repr(element)
+    }
+
+    /**
+     * Gets a string representing `a`.
+     */
+    private string repr(ASTNode a) {
+      exists(DeclStmt decl | decl = a |
+        result =
+          getDeclarationKeyword(decl) + " " +
+            strictconcat(string name, int i |
+              name = decl.getDecl(i).getBindingPattern().getName()
+            |
+              name, ", " order by i
+            ) + " = ..."
+      )
+    }
+
+    /**
+     * Gets "var" or "const" or "let" depending on what type of declaration `decl` is.
+     */
+    private string getDeclarationKeyword(DeclStmt decl) {
+      decl instanceof VarDeclStmt and result = "var"
+      or
+      decl instanceof ConstDeclStmt and result = "const"
+      or
+      decl instanceof LetStmt and result = "let"
+    }
   }
 
   private ASTNode getLocationSortedChild(ASTNode parent, int i) {
