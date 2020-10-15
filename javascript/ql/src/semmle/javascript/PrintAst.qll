@@ -224,14 +224,24 @@ private module PrintJavaScript {
      */
     private string repr(ASTNode a) {
       shouldPrint(a, _) and
-      exists(DeclStmt decl | decl = a |
-        result =
-          getDeclarationKeyword(decl) + " " +
-            strictconcat(string name, int i |
-              name = decl.getDecl(i).getBindingPattern().getName()
-            |
-              name, ", " order by i
-            ) + " = ..."
+      (
+        exists(DeclStmt decl | decl = a |
+          result =
+            getDeclarationKeyword(decl) + " " +
+              strictconcat(string name, int i |
+                name = decl.getDecl(i).getBindingPattern().getName()
+              |
+                name, ", " order by i
+              ) + " = ..."
+        )
+        or
+        exists(ObjectExpr obj | obj = a | result = "{" + obj.getProperty(0).getName() + ": ...}")
+        or
+        result = a.(Property).getName() + ": " + repr(a.(Property).getInit())
+        or
+        result = a.(Literal).getRawValue()
+        or
+        result = a.(Identifier).getName()
       )
     }
 
