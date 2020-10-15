@@ -199,27 +199,13 @@ class CallableFlowSink extends TCallableFlowSink {
 
   /** Gets the sink of flow for call `c`, if any. */
   Expr getSink(Call c) { none() }
-
-  /**
-   * Gets the type of the sink for call `c`. Unlike `getSink()`, this is defined
-   * for all flow sink specifications.
-   */
-  Type getSinkType(Call c) { result = this.getSink(c).getType() }
 }
 
 /** A flow sink specification: (method call) qualifier. */
 class CallableFlowSinkQualifier extends CallableFlowSink, TCallableFlowSinkQualifier {
   override string toString() { result = "qualifier" }
 
-  override Expr getSink(Call c) {
-    result = c.getChild(-1)
-    or
-    // E.g. `new Dictionary<int, string>{ {0, "a"}, {1, "b"} }`
-    result.(CollectionInitializer).getAnElementInitializer() = c
-    or
-    // E.g. `new Dictionary<int, string>() { [0] = "a", [1] = "b" }`
-    result.(ObjectInitializer).getAMemberInitializer().getLValue() = c
-  }
+  override Expr getSink(Call c) { result = c.getChild(-1) }
 }
 
 /** A flow sink specification: return value. */
@@ -253,8 +239,6 @@ class CallableFlowSinkArg extends CallableFlowSink, TCallableFlowSinkArg {
     // The uses of the `i`th argument are the actual sinks
     none()
   }
-
-  override Type getSinkType(Call c) { result = this.getArgument(c).getType() }
 }
 
 private predicate isCollectionType(ValueOrRefType t) {
@@ -311,16 +295,6 @@ class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDel
   override Expr getSink(Call c) {
     // The uses of the `j`th parameter are the actual sinks
     none()
-  }
-
-  override Type getSinkType(Call c) {
-    result =
-      c
-          .getArgument(delegateIndex)
-          .(DelegateArgumentToLibraryCallable)
-          .getDelegateType()
-          .getParameter(parameterIndex)
-          .getType()
   }
 }
 
