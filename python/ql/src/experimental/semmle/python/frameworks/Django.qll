@@ -7,6 +7,7 @@ private import python
 private import experimental.dataflow.DataFlow
 private import experimental.dataflow.RemoteFlowSources
 private import experimental.semmle.python.Concepts
+import semmle.python.regex
 
 /**
  * Provides models for the `django` PyPI package.
@@ -230,6 +231,22 @@ private module Django {
   }
 
   /**
+   * A regex that is used in a call to `django.urls.re_path`.
+   *
+   * Needs this subclass to be considered a RegexString.
+   */
+  private class DjangoUrlsRePathRegex extends RegexString {
+    DjangoUrlsRePathCall rePathCall;
+
+    DjangoUrlsRePathRegex() {
+      this instanceof StrConst and
+      DataFlow::localFlow(DataFlow::exprNode(this), rePathCall.getUrlPatternArg())
+    }
+
+    DjangoUrlsRePathCall getRePathCall() { result = rePathCall }
+  }
+
+  /**
    * A call to `django.urls.re_path`.
    *
    * See https://docs.djangoproject.com/en/3.0/ref/urls/#re_path
@@ -250,6 +267,29 @@ private module Django {
       )
     }
 
-    override Parameter getARoutedParameter() { none() }
+    override Parameter getARoutedParameter() {
+      // If we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARouteHandler() |
+        not exists(this.getUrlPattern()) and
+        result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
+        not result = any(int i | i <= routeHandler.getRequestParamIndex() | routeHandler.getArg(i))
+      )
+      or
+      exists(DjangoRouteHandler routeHandler, DjangoUrlsRePathRegex regex |
+        routeHandler = this.getARouteHandler() and
+        regex.getRePathCall() = this
+      |
+        // either using named capture groups (passed as keyword arguments) or using
+        // unnamed capture groups (passed as positional arguments)
+        not exists(regex.getGroupName(_, _)) and
+        // first group will have group number 1
+        result =
+          routeHandler.getArg(routeHandler.getRequestParamIndex() + regex.getGroupNumber(_, _))
+        or
+        result = routeHandler.getArgByName(regex.getGroupName(_, _))
+      )
+    }
   }
 }

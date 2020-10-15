@@ -1,7 +1,2 @@
-| routing_test.py:7:55:7:111 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=bar |
-| routing_test.py:7:55:7:111 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=foo |
-| routing_test.py:39:45:39:88 | Comment # $routeHandler $routedParameter=page_number | Missing result:routedParameter=page_number |
-| routing_test.py:44:62:44:120 | Comment # $routeHandler $routedParameter=arg0 $routedParameter=arg1 | Missing result:routedParameter=arg0 |
-| routing_test.py:44:62:44:120 | Comment # $routeHandler $routedParameter=arg0 $routedParameter=arg1 | Missing result:routedParameter=arg1 |
 | testapp/views.py:3:33:3:47 | Comment # $routeHandler | Missing result:routeHandler= |
 | testapp/views.py:6:37:6:51 | Comment # $routeHandler | Missing result:routeHandler= |
