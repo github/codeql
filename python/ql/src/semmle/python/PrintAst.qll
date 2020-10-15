@@ -409,7 +409,7 @@ private module PrettyPrinting {
   string getQlClass(AstNode a) {
     not exists(getQlCustomClass(a)) and result = a.toString()
     or
-    result = getQlCustomClass(a)
+    result = strictconcat(getQlCustomClass(a), " | ")
   }
 
   /**
@@ -418,7 +418,8 @@ private module PrettyPrinting {
   string getQlCustomClass(AstNode a) {
     a instanceof Name and
     result = "Name" and
-    not a instanceof Parameter
+    not a instanceof Parameter and 
+    not a instanceof NameConstant
     or
     a instanceof Parameter and result = "Parameter"
     or
