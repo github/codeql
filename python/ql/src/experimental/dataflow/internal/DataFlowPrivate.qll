@@ -155,6 +155,13 @@ module EssaFlow {
     or
     // If expressions
     nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
+    or
+    // Overflow keyword argument
+    exists(CallNode call, CallableValue callable |
+      call = callable.getACall() and
+      nodeTo = TKwOverflowNode(call, callable) and
+      nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
+    )
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
