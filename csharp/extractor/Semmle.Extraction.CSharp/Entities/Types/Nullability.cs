@@ -129,7 +129,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class NullabilityFactory : ICachedEntityFactory<Nullability, NullabilityEntity>
         {
-            public static readonly NullabilityFactory Instance = new NullabilityFactory();
+            public static NullabilityFactory Instance { get; } = new NullabilityFactory();
 
             public NullabilityEntity Create(Context cx, Nullability init) => new NullabilityEntity(cx, init);
         }

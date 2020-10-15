@@ -67,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class EventFactory : ICachedEntityFactory<IEventSymbol, Event>
         {
-            public static readonly EventFactory Instance = new EventFactory();
+            public static EventFactory Instance { get; } = new EventFactory();
 
             public Event Create(Context cx, IEventSymbol init) => new Event(cx, init);
         }

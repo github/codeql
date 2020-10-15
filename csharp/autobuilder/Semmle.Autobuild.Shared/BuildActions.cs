@@ -227,6 +227,6 @@ namespace Semmle.Autobuild.Shared
         public void DownloadFile(string address, string fileName) =>
             DownloadFileAsync(address, fileName).Wait();
 
-        public static readonly IBuildActions Instance = new SystemBuildActions();
+        public static IBuildActions Instance { get; } = new SystemBuildActions();
     }
 }

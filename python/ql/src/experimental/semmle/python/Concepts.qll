@@ -97,6 +97,35 @@ module Decoding {
   }
 }
 
+/**
+ * A data-flow node that dynamically executes Python code.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CodeExecution::Range` instead.
+ */
+class CodeExecution extends DataFlow::Node {
+  CodeExecution::Range range;
+
+  CodeExecution() { this = range }
+
+  /** Gets the argument that specifies the code to be executed. */
+  DataFlow::Node getCode() { result = range.getCode() }
+}
+
+/** Provides a class for modeling new dynamic code execution APIs. */
+module CodeExecution {
+  /**
+   * A data-flow node that dynamically executes Python code.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CodeExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the code to be executed. */
+    abstract DataFlow::Node getCode();
+  }
+}
+
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
   /** Provides classes for modeling HTTP servers. */

@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class OrdinaryMethodFactory : ICachedEntityFactory<IMethodSymbol, OrdinaryMethod>
         {
-            public static readonly OrdinaryMethodFactory Instance = new OrdinaryMethodFactory();
+            public static OrdinaryMethodFactory Instance { get; } = new OrdinaryMethodFactory();
 
             public OrdinaryMethod Create(Context cx, IMethodSymbol init) => new OrdinaryMethod(cx, init);
         }

@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class ConversionFactory : ICachedEntityFactory<IMethodSymbol, Conversion>
         {
-            public static readonly ConversionFactory Instance = new ConversionFactory();
+            public static ConversionFactory Instance { get; } = new ConversionFactory();
 
             public Conversion Create(Context cx, IMethodSymbol init) => new Conversion(cx, init);
         }

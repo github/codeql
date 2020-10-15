@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class CommentBlockFactory : ICachedEntityFactory<ICommentBlock, CommentBlock>
         {
-            public static readonly CommentBlockFactory Instance = new CommentBlockFactory();
+            public static CommentBlockFactory Instance { get; } = new CommentBlockFactory();
 
             public CommentBlock Create(Context cx, ICommentBlock init) => new CommentBlock(cx, init);
         }

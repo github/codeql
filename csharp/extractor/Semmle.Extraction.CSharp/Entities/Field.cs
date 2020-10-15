@@ -131,7 +131,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class FieldFactory : ICachedEntityFactory<IFieldSymbol, Field>
         {
-            public static readonly FieldFactory Instance = new FieldFactory();
+            public static FieldFactory Instance { get; } = new FieldFactory();
 
             public Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
         }

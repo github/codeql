@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class DynamicTypeFactory : ICachedEntityFactory<IDynamicTypeSymbol, DynamicType>
         {
-            public static readonly DynamicTypeFactory Instance = new DynamicTypeFactory();
+            public static DynamicTypeFactory Instance { get; } = new DynamicTypeFactory();
 
             public DynamicType Create(Context cx, IDynamicTypeSymbol init) => new DynamicType(cx, init);
         }

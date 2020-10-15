@@ -129,7 +129,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class TypeParameterFactory : ICachedEntityFactory<ITypeParameterSymbol, TypeParameter>
         {
-            public static readonly TypeParameterFactory Instance = new TypeParameterFactory();
+            public static TypeParameterFactory Instance { get; } = new TypeParameterFactory();
 
             public TypeParameter Create(Context cx, ITypeParameterSymbol init) => new TypeParameter(cx, init);
         }

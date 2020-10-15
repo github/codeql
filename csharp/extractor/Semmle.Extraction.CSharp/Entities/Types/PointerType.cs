@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class PointerTypeFactory : ICachedEntityFactory<IPointerTypeSymbol, PointerType>
         {
-            public static readonly PointerTypeFactory Instance = new PointerTypeFactory();
+            public static PointerTypeFactory Instance { get; } = new PointerTypeFactory();
 
             public PointerType Create(Context cx, IPointerTypeSymbol init) => new PointerType(cx, init);
         }

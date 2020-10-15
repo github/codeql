@@ -305,7 +305,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             private class DelegateTypeParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), DelegateTypeParameter>
             {
-                public static readonly DelegateTypeParameterFactory Instance = new DelegateTypeParameterFactory();
+                public static DelegateTypeParameterFactory Instance { get; } = new DelegateTypeParameterFactory();
 
                 public DelegateTypeParameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) =>
                     new DelegateTypeParameter(cx, init.Item1, init.Item2, init.Item3);
