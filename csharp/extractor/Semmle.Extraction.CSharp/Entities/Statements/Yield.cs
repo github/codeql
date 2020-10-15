@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Yield : Statement<YieldStatementSyntax>
+    internal class Yield : Statement<YieldStatementSyntax>
     {
-        Yield(Context cx, YieldStatementSyntax node, IStatementParentEntity parent, int child)
+        private Yield(Context cx, YieldStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.YIELD, parent, child) { }
 
         public static Yield Create(Context cx, YieldStatementSyntax node, IStatementParentEntity parent, int child)

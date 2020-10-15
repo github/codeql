@@ -71,7 +71,8 @@ module StepSummary {
 /** Holds if it's reasonable to expect the data flow step from `nodeFrom` to `nodeTo` to preserve types. */
 private predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
   EssaFlow::essaFlowStep(nodeFrom, nodeTo) or
-  jumpStep(nodeFrom, nodeTo)
+  jumpStep(nodeFrom, nodeTo) or
+  nodeFrom = nodeTo.(PostUpdateNode).getPreUpdateNode()
 }
 
 /** Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call. */

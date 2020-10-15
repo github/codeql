@@ -1,18 +1,17 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Discard : Expression
+    internal class Discard : Expression
     {
         public Discard(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.DISCARD))
         {
         }
 
-        Discard(Context cx, CSharpSyntaxNode syntax, IExpressionParentEntity parent, int child) :
+        private Discard(Context cx, CSharpSyntaxNode syntax, IExpressionParentEntity parent, int child) :
             base(new ExpressionInfo(cx, Entities.Type.Create(cx, cx.GetType(syntax)), cx.Create(syntax.GetLocation()), ExprKind.DISCARD, parent, child, false, null))
         {
         }

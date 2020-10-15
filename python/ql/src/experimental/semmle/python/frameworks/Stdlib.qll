@@ -469,4 +469,115 @@ private module Stdlib {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("cmd")]
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // builtins
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `builtins` module (called `__builtin__` in Python 2). */
+  private DataFlow::Node builtins(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode(["builtins", "__builtin__"])
+    or
+    exists(DataFlow::TypeTracker t2 | result = builtins(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `builtins` module. */
+  DataFlow::Node builtins() { result = builtins(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `builtins` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node builtins_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["exec", "eval", "compile"] and
+    (
+      t.start() and
+      result = DataFlow::importNode(["builtins", "__builtin__"] + "." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = DataFlow::importNode(["builtins", "__builtin__"])
+      or
+      // special handling of builtins, that are in scope without any imports
+      // TODO: Take care of overrides, either `def eval: ...`, `eval = ...`, or `builtins.eval = ...`
+      t.start() and
+      exists(NameNode ref | result.asCfgNode() = ref |
+        ref.isGlobal() and
+        ref.getId() = attr_name and
+        ref.isLoad()
+      )
+    )
+    or
+    // Due to bad performance when using normal setup with `builtins_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        builtins_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate builtins_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(builtins_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `builtins` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node builtins_attr(string attr_name) {
+    result = builtins_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  /**
+   * A call to the builtin `exec` function.
+   * See https://docs.python.org/3/library/functions.html#exec
+   */
+  private class BuiltinsExecCall extends CodeExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    BuiltinsExecCall() { node.getFunction() = builtins_attr("exec").asCfgNode() }
+
+    override DataFlow::Node getCode() { result.asCfgNode() = node.getArg(0) }
+  }
+
+  /**
+   * A call to the builtin `eval` function.
+   * See https://docs.python.org/3/library/functions.html#eval
+   */
+  private class BuiltinsEvalCall extends CodeExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    BuiltinsEvalCall() { node.getFunction() = builtins_attr("eval").asCfgNode() }
+
+    override DataFlow::Node getCode() { result.asCfgNode() = node.getArg(0) }
+  }
+
+  /** An additional taint step for calls to the builtin function `compile` */
+  private class BuiltinsCompileCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(CallNode call |
+        nodeTo.asCfgNode() = call and
+        call.getFunction() = builtins_attr("compile").asCfgNode() and
+        nodeFrom.asCfgNode() in [call.getArg(0), call.getArgByName("source")]
+      )
+    }
+  }
+}
+
+/**
+ * An exec statement (only Python 2).
+ * Se ehttps://docs.python.org/2/reference/simple_stmts.html#the-exec-statement.
+ */
+private class ExecStatement extends CodeExecution::Range {
+  ExecStatement() {
+    // since there are no DataFlow::Nodes for a Statement, we can't do anything like
+    // `this = any(Exec exec)`
+    this.asExpr() = any(Exec exec).getBody()
+  }
+
+  override DataFlow::Node getCode() { result = this }
 }

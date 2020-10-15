@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class If : Statement<IfStatementSyntax>
+    internal class If : Statement<IfStatementSyntax>
     {
-        If(Context cx, IfStatementSyntax node, IStatementParentEntity parent, int child)
+        private If(Context cx, IfStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.IF, parent, child) { }
 
         public static If Create(Context cx, IfStatementSyntax node, IStatementParentEntity parent, int child)

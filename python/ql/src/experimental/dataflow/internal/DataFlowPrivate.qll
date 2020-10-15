@@ -150,22 +150,6 @@ module EssaFlow {
     //   nodeTo is `y` on second line, cfg node
     useToNextUse(nodeFrom.asCfgNode(), nodeTo.asCfgNode())
     or
-    // Refinements
-    exists(EssaEdgeRefinement r |
-      nodeTo.(EssaNode).getVar() = r.getVariable() and
-      nodeFrom.(EssaNode).getVar() = r.getInput()
-    )
-    or
-    exists(EssaNodeRefinement r |
-      nodeTo.(EssaNode).getVar() = r.getVariable() and
-      nodeFrom.(EssaNode).getVar() = r.getInput()
-    )
-    or
-    exists(PhiFunction p |
-      nodeTo.(EssaNode).getVar() = p.getVariable() and
-      nodeFrom.(EssaNode).getVar() = p.getAnInput()
-    )
-    or
     // If expressions
     nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
   }

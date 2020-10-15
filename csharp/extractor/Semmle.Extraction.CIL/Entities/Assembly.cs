@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CIL.Entities
     {
     }
 
-    interface IAssembly : ILocation
+    internal interface IAssembly : ILocation
     {
     }
 
@@ -22,30 +22,32 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public class Assembly : LabelledEntity, IAssembly
     {
-        readonly File file;
-        readonly AssemblyName assemblyName;
+        private readonly File file;
+        private readonly AssemblyName assemblyName;
 
         public Assembly(Context cx) : base(cx)
         {
-            cx.assembly = this;
-            var def = cx.mdReader.GetAssemblyDefinition();
+            cx.Assembly = this;
+            var def = cx.MdReader.GetAssemblyDefinition();
 
-            assemblyName = new AssemblyName();
-            assemblyName.Name = cx.mdReader.GetString(def.Name);
-            assemblyName.Version = def.Version;
-            assemblyName.CultureInfo = new CultureInfo(cx.mdReader.GetString(def.Culture));
+            assemblyName = new AssemblyName
+            {
+                Name = cx.MdReader.GetString(def.Name),
+                Version = def.Version,
+                CultureInfo = new CultureInfo(cx.MdReader.GetString(def.Culture))
+            };
 
             if (!def.PublicKey.IsNil)
-                assemblyName.SetPublicKey(cx.mdReader.GetBlobBytes(def.PublicKey));
+                assemblyName.SetPublicKey(cx.MdReader.GetBlobBytes(def.PublicKey));
 
-            file = new File(cx, cx.assemblyPath);
+            file = new File(cx, cx.AssemblyPath);
         }
 
         public override void WriteId(TextWriter trapFile)
         {
             trapFile.Write(FullName);
             trapFile.Write("#file:///");
-            trapFile.Write(cx.assemblyPath.Replace("\\", "/"));
+            trapFile.Write(Cx.AssemblyPath.Replace("\\", "/"));
         }
 
         public override bool Equals(object? obj)
@@ -57,7 +59,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string IdSuffix => ";assembly";
 
-        string FullName => assemblyName.GetPublicKey() is null ? assemblyName.FullName + ", PublicKeyToken=null" : assemblyName.FullName;
+        private string FullName => assemblyName.GetPublicKey() is null ? assemblyName.FullName + ", PublicKeyToken=null" : assemblyName.FullName;
 
         public override IEnumerable<IExtractionProduct> Contents
         {
@@ -66,24 +68,24 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return file;
                 yield return Tuples.assemblies(this, file, FullName, assemblyName.Name ?? string.Empty, assemblyName.Version?.ToString() ?? string.Empty);
 
-                if (cx.pdb != null)
+                if (Cx.Pdb != null)
                 {
-                    foreach (var f in cx.pdb.SourceFiles)
+                    foreach (var f in Cx.Pdb.SourceFiles)
                     {
-                        yield return cx.CreateSourceFile(f);
+                        yield return Cx.CreateSourceFile(f);
                     }
                 }
 
-                foreach (var handle in cx.mdReader.TypeDefinitions)
+                foreach (var handle in Cx.MdReader.TypeDefinitions)
                 {
                     IExtractionProduct? product = null;
                     try
                     {
-                        product = cx.Create(handle);
+                        product = Cx.Create(handle);
                     }
                     catch (InternalError e)
                     {
-                        cx.cx.ExtractionError("Error processing type definition", e.Message, GeneratedLocation.Create(cx.cx), e.StackTrace);
+                        Cx.Cx.ExtractionError("Error processing type definition", e.Message, GeneratedLocation.Create(Cx.Cx), e.StackTrace);
                     }
 
                     // Limitation of C#: Cannot yield return inside a try-catch.
@@ -91,16 +93,16 @@ namespace Semmle.Extraction.CIL.Entities
                         yield return product;
                 }
 
-                foreach (var handle in cx.mdReader.MethodDefinitions)
+                foreach (var handle in Cx.MdReader.MethodDefinitions)
                 {
                     IExtractionProduct? product = null;
                     try
                     {
-                        product = cx.Create(handle);
+                        product = Cx.Create(handle);
                     }
                     catch (InternalError e)
                     {
-                        cx.cx.ExtractionError("Error processing bytecode", e.Message, GeneratedLocation.Create(cx.cx), e.StackTrace);
+                        Cx.Cx.ExtractionError("Error processing bytecode", e.Message, GeneratedLocation.Create(Cx.Cx), e.StackTrace);
                     }
 
                     if (product != null)
@@ -109,13 +111,11 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        static void ExtractCIL(Extraction.Context cx, string assemblyPath, bool extractPdbs)
+        private static void ExtractCIL(Extraction.Context cx, string assemblyPath, bool extractPdbs)
         {
-            using (var cilContext = new Context(cx, assemblyPath, extractPdbs))
-            {
-                cilContext.Populate(new Assembly(cilContext));
-                cilContext.cx.PopulateAll();
-            }
+            using var cilContext = new Context(cx, assemblyPath, extractPdbs);
+            cilContext.Populate(new Assembly(cilContext));
+            cilContext.Cx.PopulateAll();
         }
 
         /// <summary>
@@ -140,15 +140,13 @@ namespace Semmle.Extraction.CIL.Entities
                 var extractor = new Extractor(false, assemblyPath, logger, pathTransformer);
                 var transformedAssemblyPath = pathTransformer.Transform(assemblyPath);
                 var project = layout.LookupProjectOrDefault(transformedAssemblyPath);
-                using (var trapWriter = project.CreateTrapWriter(logger, transformedAssemblyPath.WithSuffix(".cil"), true, trapCompression))
+                using var trapWriter = project.CreateTrapWriter(logger, transformedAssemblyPath.WithSuffix(".cil"), true, trapCompression);
+                trapFile = trapWriter.TrapFile;
+                if (nocache || !System.IO.File.Exists(trapFile))
                 {
-                    trapFile = trapWriter.TrapFile;
-                    if (nocache || !System.IO.File.Exists(trapFile))
-                    {
-                        var cx = extractor.CreateContext(null, trapWriter, null, false);
-                        ExtractCIL(cx, assemblyPath, extractPdbs);
-                        extracted = true;
-                    }
+                    var cx = extractor.CreateContext(null, trapWriter, null, false);
+                    ExtractCIL(cx, assemblyPath, extractPdbs);
+                    extracted = true;
                 }
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]

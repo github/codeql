@@ -6,7 +6,7 @@ namespace Semmle.Extraction
     /// <summary>
     /// Methods for creating DB tuples.
     /// </summary>
-    static class Tuples
+    internal static class Tuples
     {
         public static void assemblies(this System.IO.TextWriter trapFile, Assembly assembly, File file, string identifier, string name, string version)
         {

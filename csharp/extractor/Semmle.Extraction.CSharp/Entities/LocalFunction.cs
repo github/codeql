@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class LocalFunction : Method
+    internal class LocalFunction : Method
     {
-        LocalFunction(Context cx, IMethodSymbol init) : base(cx, init)
+        private LocalFunction(Context cx, IMethodSymbol init) : base(cx, init)
         {
         }
 
@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static new LocalFunction Create(Context cx, IMethodSymbol field) => LocalFunctionFactory.Instance.CreateEntityFromSymbol(cx, field);
 
-        class LocalFunctionFactory : ICachedEntityFactory<IMethodSymbol, LocalFunction>
+        private class LocalFunctionFactory : ICachedEntityFactory<IMethodSymbol, LocalFunction>
         {
             public static readonly LocalFunctionFactory Instance = new LocalFunctionFactory();
 

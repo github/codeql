@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class ArgList : Expression<ExpressionSyntax>
+    internal class ArgList : Expression<ExpressionSyntax>
     {
-        ArgList(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.UNKNOWN)) { }
+        private ArgList(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.UNKNOWN)) { }
 
         protected override void PopulateExpression(TextWriter trapFile)
         {

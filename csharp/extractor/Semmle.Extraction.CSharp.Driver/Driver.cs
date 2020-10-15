@@ -5,7 +5,7 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public class Driver
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             return (int)Extractor.Run(args);
         }

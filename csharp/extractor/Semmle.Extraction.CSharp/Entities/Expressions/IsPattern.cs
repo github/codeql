@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    static class PatternExtensions
+    internal static class PatternExtensions
     {
         public static Expression CreatePattern(this Context cx, PatternSyntax syntax, IExpressionParentEntity parent, int child)
         {
@@ -50,10 +50,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                                 return VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), true, parent, child);
                             }
-                            else
-                            {
-                                throw new InternalError(varPattern, "Unable to get the declared symbol of the var pattern designation.");
-                            }
+
+                            throw new InternalError(varPattern, "Unable to get the declared symbol of the var pattern designation.");
                         default:
                             throw new InternalError("var pattern designation is unhandled");
                     }
@@ -67,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class PropertyPattern : Expression
+    internal class PropertyPattern : Expression
     {
         internal PropertyPattern(Context cx, PropertyPatternClauseSyntax pp, IExpressionParentEntity parent, int child) :
             base(new ExpressionInfo(cx, Entities.NullType.Create(cx), cx.Create(pp.GetLocation()), ExprKind.PROPERTY_PATTERN, parent, child, false, null))
@@ -82,7 +80,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class PositionalPattern : Expression
+    internal class PositionalPattern : Expression
     {
         internal PositionalPattern(Context cx, PositionalPatternClauseSyntax posPc, IExpressionParentEntity parent, int child) :
             base(new ExpressionInfo(cx, Entities.NullType.Create(cx), cx.Create(posPc.GetLocation()), ExprKind.POSITIONAL_PATTERN, parent, child, false, null))
@@ -95,7 +93,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class RecursivePattern : Expression
+    internal class RecursivePattern : Expression
     {
         /// <summary>
         /// Creates and populates a recursive pattern.
@@ -132,7 +130,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class IsPattern : Expression<IsPatternExpressionSyntax>
+    internal class IsPattern : Expression<IsPatternExpressionSyntax>
     {
         private IsPattern(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.IS))
         {
