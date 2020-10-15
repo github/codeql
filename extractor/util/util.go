@@ -28,9 +28,14 @@ func Getenv(key string, aliases ...string) string {
 // runGoList is a helper function for running go list with format `format` and flags `flags` on
 // package `pkgpath`.
 func runGoList(format string, pkgpath string, flags ...string) (string, error) {
+	return runGoListWithEnv(format, pkgpath, nil, flags...)
+}
+
+func runGoListWithEnv(format string, pkgpath string, additionalEnv []string, flags ...string) (string, error) {
 	args := append([]string{"list", "-e", "-f", format}, flags...)
 	args = append(args, pkgpath)
 	cmd := exec.Command("go", args...)
+	cmd.Env = append(os.Environ(), additionalEnv...)
 	out, err := cmd.Output()
 
 	if err != nil {
@@ -48,13 +53,15 @@ func runGoList(format string, pkgpath string, flags ...string) (string, error) {
 // GetModDir gets the absolute directory of the module containing the package with path
 // `pkgpath`. It passes the `go list` the flags specified by `flags`.
 func GetModDir(pkgpath string, flags ...string) string {
-	mod, err := runGoList("{{.Module}}", pkgpath, flags...)
+	// enable module mode so that we can find a module root if it exists, even if go module support is
+	// disabled by a build
+	mod, err := runGoListWithEnv("{{.Module}}", pkgpath, []string{"GO111MODULE=on"}, flags...)
 	if err != nil || mod == "<nil>" {
 		// if the command errors or modules aren't being used, return the empty string
 		return ""
 	}
 
-	modDir, err := runGoList("{{.Module.Dir}}", pkgpath, flags...)
+	modDir, err := runGoListWithEnv("{{.Module.Dir}}", pkgpath, []string{"GO111MODULE=on"}, flags...)
 	if err != nil {
 		return ""
 	}
@@ -99,4 +106,23 @@ func DirExists(filename string) bool {
 		log.Printf("Unable to stat %s: %s\n", filename, err.Error())
 	}
 	return err == nil && info.IsDir()
+}
+
+func RunCmd(cmd *exec.Cmd) bool {
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	in, _ := cmd.StdinPipe()
+	err := cmd.Start()
+	if err != nil {
+		log.Printf("Running %s failed, continuing anyway: %s\n", cmd.Path, err.Error())
+		return false
+	}
+	in.Close()
+	err = cmd.Wait()
+	if err != nil {
+		log.Printf("Running %s failed, continuing anyway: %s\n", cmd.Path, err.Error())
+		return false
+	}
+
+	return true
 }
