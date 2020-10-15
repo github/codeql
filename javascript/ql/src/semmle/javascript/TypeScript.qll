@@ -230,6 +230,8 @@ class ExternalModuleReference extends Expr, Import, @external_module_reference {
   }
 
   override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
+
+  override string getAPrimaryQlClass() { result = "ExternalModuleReference" }
 }
 
 /** A literal path expression appearing in an external module reference. */
