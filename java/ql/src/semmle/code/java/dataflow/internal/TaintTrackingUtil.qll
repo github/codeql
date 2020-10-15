@@ -377,7 +377,13 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getDeclaringType().hasQualifiedName("java.nio", "ByteBuffer") and
   m.hasName("get")
   or
-  m.getDeclaringType().hasQualifiedName("java.io", "File") and
+  m.getDeclaringType() instanceof TypeFile and
+  m.hasName("toPath")
+  or
+  m.getDeclaringType() instanceof TypePath and
+  m.hasName("toFile")
+  or
+  m.getDeclaringType() instanceof TypeFile and
   m.hasName("toURI")
   or
   m.getDeclaringType().hasQualifiedName("java.net", "URI") and
