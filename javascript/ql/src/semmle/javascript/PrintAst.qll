@@ -200,7 +200,18 @@ private module PrintJavaScript {
      * Gets the `i`th child of `element`.
      * Can be overriden in subclasses to get more specific behavior for `getChild()`.
      */
-    ASTNode getChildNode(int childIndex) { result = element.getChild(childIndex) }
+    ASTNode getChildNode(int childIndex) { result = getLocationSortedChild(element, childIndex) }
+  }
+
+  private ASTNode getLocationSortedChild(ASTNode parent, int i) {
+    result =
+      rank[i](ASTNode child, int childIndex |
+        child = parent.getChild(childIndex)
+      |
+        child
+        order by
+          child.getLocation().getStartLine(), child.getLocation().getStartColumn(), childIndex
+      )
   }
 
   /**
