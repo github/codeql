@@ -163,8 +163,16 @@ module HTTP {
        * extend `RouteSetup` instead.
        */
       abstract class Range extends DataFlow::Node {
+        /** Gets the argument used to set the URL pattern. */
+        abstract DataFlow::Node getUrlPatternArg();
+
         /** Gets the URL pattern for this route, if it can be statically determined. */
-        abstract string getUrlPattern();
+        string getUrlPattern() {
+          exists(StrConst str |
+            DataFlow::localFlow(DataFlow::exprNode(str), this.getUrlPatternArg()) and
+            result = str.getText()
+          )
+        }
 
         /** Gets a function that will handle incoming requests for this route, if any. */
         abstract Function getARouteHandler();

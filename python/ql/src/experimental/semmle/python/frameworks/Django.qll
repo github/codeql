@@ -170,14 +170,8 @@ private module Django {
 
     DjangoUrlsPathCall() { node.getFunction() = django::urls::path().asCfgNode() }
 
-    override string getUrlPattern() {
-      exists(StrConst str, ControlFlowNode urlPatternArg |
-        urlPatternArg = [node.getArg(0), node.getArgByName("route")]
-      |
-        DataFlow::localFlow(DataFlow::exprNode(str),
-          any(DataFlow::Node n | n.asCfgNode() = urlPatternArg)) and
-        result = str.getText()
-      )
+    override DataFlow::Node getUrlPatternArg() {
+      result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
     }
 
     override Function getARouteHandler() {
@@ -200,14 +194,8 @@ private module Django {
 
     DjangoUrlsRePathCall() { node.getFunction() = django::urls::re_path().asCfgNode() }
 
-    override string getUrlPattern() {
-      exists(StrConst str, ControlFlowNode urlPatternArg |
-        urlPatternArg = [node.getArg(0), node.getArgByName("route")]
-      |
-        DataFlow::localFlow(DataFlow::exprNode(str),
-          any(DataFlow::Node n | n.asCfgNode() = urlPatternArg)) and
-        result = str.getText()
-      )
+    override DataFlow::Node getUrlPatternArg() {
+      result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
     }
 
     override Function getARouteHandler() {
