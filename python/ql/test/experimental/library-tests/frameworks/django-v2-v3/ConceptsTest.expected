@@ -1,3 +1,42 @@
+| routing_test.py:7:55:7:111 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routeHandler= |
+| routing_test.py:7:55:7:111 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=bar |
+| routing_test.py:7:55:7:111 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=foo |
+| routing_test.py:11:31:11:45 | Comment # $routeHandler | Missing result:routeHandler= |
+| routing_test.py:15:32:15:46 | Comment # $routeHandler | Missing result:routeHandler= |
+| routing_test.py:19:32:19:46 | Comment # $routeHandler | Missing result:routeHandler= |
+| routing_test.py:29:42:29:83 | Comment # $routeHandler $routedParameter=untrusted | Missing result:routeHandler= |
+| routing_test.py:29:42:29:83 | Comment # $routeHandler $routedParameter=untrusted | Missing result:routedParameter=untrusted |
+| routing_test.py:35:41:35:82 | Comment # $routeHandler $routedParameter=untrusted | Missing result:routeHandler= |
+| routing_test.py:35:41:35:82 | Comment # $routeHandler $routedParameter=untrusted | Missing result:routedParameter=untrusted |
+| routing_test.py:39:45:39:88 | Comment # $routeHandler $routedParameter=page_number | Missing result:routeHandler= |
+| routing_test.py:39:45:39:88 | Comment # $routeHandler $routedParameter=page_number | Missing result:routedParameter=page_number |
+| routing_test.py:44:62:44:120 | Comment # $routeHandler $routedParameter=arg0 $routedParameter=arg1 | Missing result:routeHandler= |
+| routing_test.py:44:62:44:120 | Comment # $routeHandler $routedParameter=arg0 $routedParameter=arg1 | Missing result:routedParameter=arg0 |
+| routing_test.py:44:62:44:120 | Comment # $routeHandler $routedParameter=arg0 $routedParameter=arg1 | Missing result:routedParameter=arg1 |
+| routing_test.py:49:75:49:131 | Comment # $routeSetup=r"^url_match/(?P<foo>[^/]+)/(?P<bar>[^/]+)" | Missing result:routeSetup=r"^url_match/(?P<foo>[^/]+)/(?P<bar>[^/]+)" |
+| routing_test.py:50:47:50:74 | Comment # $routeSetup=r"^get_params" | Missing result:routeSetup=r"^get_params" |
+| routing_test.py:51:49:51:77 | Comment # $routeSetup=r"^post_params" | Missing result:routeSetup=r"^post_params" |
+| routing_test.py:52:53:52:85 | Comment # $routeSetup=r"^http_resp_write" | Missing result:routeSetup=r"^http_resp_write" |
+| routing_test.py:53:70:53:115 | Comment # $routeSetup=r"^class_view/(?P<untrusted>.+)" | Missing result:routeSetup=r"^class_view/(?P<untrusted>.+)" |
+| routing_test.py:56:76:56:133 | Comment # $routeSetup=r"articles/^(?:page-(?P<page_number>\\d+)/)?" | Missing result:routeSetup=r"articles/^(?:page-(?P<page_number>\\d+)/)?" |
+| routing_test.py:59:95:59:139 | Comment # $routeSetup=r"^([^/]+)/(?:foo\|bar)/([^/]+)" | Missing result:routeSetup=r"^([^/]+)/(?:foo\|bar)/([^/]+)" |
+| routing_test.py:65:31:65:45 | Comment # $routeHandler | Missing result:routeHandler= |
+| routing_test.py:70:84:70:138 | Comment # $routeSetup=r"^specifying-as-kwargs-is-not-a-problem" | Missing result:routeSetup=r"^specifying-as-kwargs-is-not-a-problem" |
+| routing_test.py:78:43:78:86 | Comment # $routeHandler $routedParameter=page_number | Missing result:routeHandler= |
+| routing_test.py:78:43:78:86 | Comment # $routeHandler $routedParameter=page_number | Missing result:routedParameter=page_number |
+| routing_test.py:81:43:81:120 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar $routedParameter=baz | Missing result:routeHandler= |
+| routing_test.py:81:43:81:120 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar $routedParameter=baz | Missing result:routedParameter=bar |
+| routing_test.py:81:43:81:120 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar $routedParameter=baz | Missing result:routedParameter=baz |
+| routing_test.py:81:43:81:120 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar $routedParameter=baz | Missing result:routedParameter=foo |
+| routing_test.py:84:38:84:94 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routeHandler= |
+| routing_test.py:84:38:84:94 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=bar |
+| routing_test.py:84:38:84:94 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=foo |
+| routing_test.py:87:37:87:51 | Comment # $routeHandler | Missing result:routeHandler= |
+| routing_test.py:91:38:91:62 | Comment # $routeSetup="articles/" | Missing result:routeSetup="articles/" |
+| routing_test.py:92:60:92:106 | Comment # $routeSetup="articles/page-<int:page_number>" | Missing result:routeSetup="articles/page-<int:page_number>" |
+| routing_test.py:93:74:93:114 | Comment # $routeSetup="<int:foo>/<str:bar>/<baz>" | Missing result:routeSetup="<int:foo>/<str:bar>/<baz>" |
+| routing_test.py:95:51:95:77 | Comment # $routeSetup="<foo>/<bar>" | Missing result:routeSetup="<foo>/<bar>" |
+| routing_test.py:98:60:98:97 | Comment # $routeSetup="not_valid/<not_valid!>" | Missing result:routeSetup="not_valid/<not_valid!>" |
 | testapp/urls.py:6:31:6:50 | Comment # $routeSetup="foo/" | Missing result:routeSetup="foo/" |
 | testapp/urls.py:10:43:10:67 | Comment # $routeSetup=r"^ba[rz]/" | Missing result:routeSetup=r"^ba[rz]/" |
 | testapp/views.py:3:33:3:47 | Comment # $routeHandler | Missing result:routeHandler= |
