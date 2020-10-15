@@ -83,7 +83,7 @@ private class YamlLoadCall extends Decoding::Range, DataFlow::CfgNode {
    * Until 6.0 is released, we will mark `yaml.load` as possibly leading to arbitrary code execution.
    * See https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation for more details.
    */
-  override predicate unsafe() {
+  override predicate mayExecuteInput() {
     // If the `Loader` is not set to either `SafeLoader` or `BaseLoader` or not set at all,
     // then the default loader will be used, which is not safe.
     not node.getArgByName("Loader") =

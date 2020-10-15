@@ -56,8 +56,8 @@ class Decoding extends DataFlow::Node {
 
   Decoding() { this = range }
 
-  /** Holds if this call is unsafe, e.g. if it may execute arbitrary code. */
-  predicate unsafe() { range.unsafe() }
+  /** Holds if this call may execute code embedded in its input. */
+  predicate mayExecuteInput() { range.mayExecuteInput() }
 
   /** Gets an input that is decoded by this function. */
   DataFlow::Node getAnInput() { result = range.getAnInput() }
@@ -83,8 +83,8 @@ module Decoding {
    * extend `Decoding` instead.
    */
   abstract class Range extends DataFlow::Node {
-    /** Holds if this call is unsafe, e.g. if it may execute arbitrary code. */
-    abstract predicate unsafe();
+    /** Holds if this call may execute code embedded in its input. */
+    abstract predicate mayExecuteInput();
 
     /** Gets an input that is decoded by this function. */
     abstract DataFlow::Node getAnInput();

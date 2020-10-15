@@ -37,7 +37,7 @@ class DecodingTest extends InlineExpectationsTest {
   DecodingTest() { this = "DecodingTest" }
 
   override string getARelevantTag() {
-    result in ["decodeInput", "decodeOutput", "decodeFormat", "decodeUnsafe"]
+    result in ["decodeInput", "decodeOutput", "decodeFormat", "decodeMayExecuteInput"]
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -64,11 +64,11 @@ class DecodingTest extends InlineExpectationsTest {
         tag = "decodeFormat"
       )
       or
-      d.unsafe() and
+      d.mayExecuteInput() and
       location = d.getLocation() and
       element = d.toString() and
       value = "" and
-      tag = "decodeUnsafe"
+      tag = "decodeMayExecuteInput"
     )
   }
 }

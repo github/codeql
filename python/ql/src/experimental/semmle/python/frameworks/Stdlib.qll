@@ -365,7 +365,7 @@ private module Stdlib {
 
     MarshalLoadsCall() { node.getFunction() = marshal::loads().asCfgNode() }
 
-    override predicate unsafe() { any() }
+    override predicate mayExecuteInput() { any() }
 
     override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
 
@@ -416,7 +416,7 @@ private module Stdlib {
 
     PickleLoadsCall() { node.getFunction() = pickle::loads().asCfgNode() }
 
-    override predicate unsafe() { any() }
+    override predicate mayExecuteInput() { any() }
 
     override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
 

@@ -25,7 +25,7 @@ class UnsafeDeserializationConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(Decoding d |
-      d.unsafe() and
+      d.mayExecuteInput() and
       sink = d.getAnInput()
     )
   }

@@ -46,7 +46,7 @@ private module Dill {
 private class DillLoadsCall extends Decoding::Range {
   DillLoadsCall() { this.asCfgNode().(CallNode).getFunction() = Dill::dill::loads().asCfgNode() }
 
-  override predicate unsafe() { any() }
+  override predicate mayExecuteInput() { any() }
 
   override DataFlow::Node getAnInput() {
     result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
