@@ -3,15 +3,15 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class EventAccessor : Accessor
+    internal class EventAccessor : Accessor
     {
-        EventAccessor(Context cx, IMethodSymbol init)
+        private EventAccessor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
         /// <summary>
         /// Gets the event symbol associated with this accessor.
         /// </summary>
-        IEventSymbol EventSymbol => symbol.AssociatedSymbol as IEventSymbol;
+        private IEventSymbol EventSymbol => symbol.AssociatedSymbol as IEventSymbol;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -52,10 +52,10 @@ namespace Semmle.Extraction.CSharp.Entities
             Overrides(trapFile);
         }
 
-        public new static EventAccessor Create(Context cx, IMethodSymbol symbol) =>
+        public static new EventAccessor Create(Context cx, IMethodSymbol symbol) =>
             EventAccessorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class EventAccessorFactory : ICachedEntityFactory<IMethodSymbol, EventAccessor>
+        private class EventAccessorFactory : ICachedEntityFactory<IMethodSymbol, EventAccessor>
         {
             public static readonly EventAccessorFactory Instance = new EventAccessorFactory();
 

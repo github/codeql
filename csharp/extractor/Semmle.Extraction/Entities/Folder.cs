@@ -2,9 +2,9 @@ using System.IO;
 
 namespace Semmle.Extraction.Entities
 {
-    sealed class Folder : CachedEntity<PathTransformer.ITransformedPath>
+    internal sealed class Folder : CachedEntity<PathTransformer.ITransformedPath>
     {
-        Folder(Context cx, PathTransformer.ITransformedPath init) : base(cx, init) { }
+        private Folder(Context cx, PathTransformer.ITransformedPath init) : base(cx, init) { }
 
         public override void Populate(TextWriter trapFile)
         {
@@ -26,7 +26,7 @@ namespace Semmle.Extraction.Entities
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
-        class FolderFactory : ICachedEntityFactory<PathTransformer.ITransformedPath, Folder>
+        private class FolderFactory : ICachedEntityFactory<PathTransformer.ITransformedPath, Folder>
         {
             public static readonly FolderFactory Instance = new FolderFactory();
 

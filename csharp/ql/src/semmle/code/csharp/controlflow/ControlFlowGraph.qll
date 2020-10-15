@@ -659,13 +659,12 @@ module ControlFlow {
         or
         cfe =
           any(ArrayCreation ac |
-            if ac.isImplicitlySized()
-            then
-              // No length argument: element itself
-              result = ac
-            else
-              // First element of first length argument
-              result = first(ac.getLengthArgument(0))
+            // First element of first length argument
+            result = first(ac.getLengthArgument(0))
+            or
+            // No length argument: element itself
+            not exists(ac.getLengthArgument(0)) and
+            result = ac
           )
         or
         cfe =

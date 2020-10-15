@@ -3,9 +3,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class PointerType : Type<IPointerTypeSymbol>
+    internal class PointerType : Type<IPointerTypeSymbol>
     {
-        PointerType(Context cx, IPointerTypeSymbol init)
+        private PointerType(Context cx, IPointerTypeSymbol init)
             : base(cx, init)
         {
             PointedAtType = Create(cx, symbol.PointedAtType);
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static PointerType Create(Context cx, IPointerTypeSymbol symbol) => PointerTypeFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class PointerTypeFactory : ICachedEntityFactory<IPointerTypeSymbol, PointerType>
+        private class PointerTypeFactory : ICachedEntityFactory<IPointerTypeSymbol, PointerType>
         {
             public static readonly PointerTypeFactory Instance = new PointerTypeFactory();
 

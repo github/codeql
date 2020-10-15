@@ -79,7 +79,7 @@ predicate isAPropertyRead(Expr e, string name) {
  * Holds if `e` is a property write of a property `name`.
  */
 predicate isAPropertyWrite(ControlFlowNode e, string name) {
-  exists(DataFlow::PropWrite write | write.getWriteNode() = e and write.getPropertyName() = name) // TODO: umambi?
+  exists(DataFlow::PropWrite write | write.getWriteNode() = e and write.getPropertyName() = name)
 }
 
 /**

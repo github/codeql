@@ -33,8 +33,10 @@ namespace Semmle.Util
 
         public override bool Equals(object? other)
         {
-            var rhs = other as LineCounts;
-            return rhs != null && Total == rhs.Total && Code == rhs.Code && Comment == rhs.Comment;
+            return other is LineCounts rhs &&
+                Total == rhs.Total &&
+                Code == rhs.Code &&
+                Comment == rhs.Comment;
         }
 
         public override int GetHashCode()
@@ -194,7 +196,8 @@ namespace Semmle.Util
             // If we reached the end of a line (as opposed to reaching the end of the text),
             // put the '\n' back so that it can be handled by the normal newline processing
             // code.
-            if (IsNewLine(c)) --context.CurIndex;
+            if (IsNewLine(c))
+                --context.CurIndex;
         }
 
         /// <summary>
@@ -240,11 +243,13 @@ namespace Semmle.Util
         private static void ReadRestOfString(string input, Context context)
         {
             char? cur = '\0';
-            int numSlashes = 0;
+            var numSlashes = 0;
             while (cur != null && ((cur = GetNext(input, context)) != '"' || (numSlashes % 2 != 0)))
             {
-                if (cur == '\\') ++numSlashes;
-                else numSlashes = 0;
+                if (cur == '\\')
+                    ++numSlashes;
+                else
+                    numSlashes = 0;
             }
         }
 

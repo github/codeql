@@ -1,0 +1,4 @@
+| CodeExecution.py:35 | ok   | test_additional_taint | src |
+| CodeExecution.py:36 | ok   | test_additional_taint | cmd1 |
+| CodeExecution.py:37 | ok   | test_additional_taint | cmd2 |
+| CodeExecution.py:38 | ok   | test_additional_taint | cmd3 |

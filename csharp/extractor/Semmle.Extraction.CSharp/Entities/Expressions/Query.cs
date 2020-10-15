@@ -4,12 +4,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Linq;
 using Semmle.Extraction.Kinds;
 using System.Collections.Generic;
-using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    static class Query
+    internal static class Query
     {
         /// <summary>
         /// An expression representing a call in a LINQ query.
@@ -35,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// <summary>
         /// Represents a chain of method calls (the operand being recursive).
         /// </summary>
-        abstract class Clause
+        private abstract class Clause
         {
             protected readonly IMethodSymbol method;
             protected readonly List<ExpressionSyntax> arguments = new List<ExpressionSyntax>();
@@ -82,7 +81,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     }
                 }
                 else
+                {
                     declType = type;
+                }
 
                 var decl = VariableDeclaration.Create(cx,
                     variableSymbol,
@@ -114,10 +115,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             public abstract Expression Populate(Context cx, IExpressionParentEntity parent, int child);
         }
 
-        class RangeClause : Clause
+        private class RangeClause : Clause
         {
-            readonly ISymbol declaration;
-            readonly SyntaxToken name;
+            private readonly ISymbol declaration;
+            private readonly SyntaxToken name;
 
             public RangeClause(IMethodSymbol method, SyntaxNode node, ISymbol declaration, SyntaxToken name) : base(method, node)
             {
@@ -129,12 +130,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 DeclareRangeVariable(cx, parent, child, true, declaration, name);
         }
 
-        class LetClause : Clause
+        private class LetClause : Clause
         {
-            readonly Clause operand;
-            readonly ISymbol declaration;
-            readonly SyntaxToken name;
-            ISymbol intoDeclaration;
+            private readonly Clause operand;
+            private readonly ISymbol declaration;
+            private readonly SyntaxToken name;
+            private ISymbol intoDeclaration;
 
             public LetClause(Clause operand, IMethodSymbol method, SyntaxNode node, ISymbol declaration, SyntaxToken name) : base(method, node)
             {
@@ -149,7 +150,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 return this;
             }
 
-            void DeclareIntoVariable(Context cx, IExpressionParentEntity parent, int intoChild, bool getElement)
+            private void DeclareIntoVariable(Context cx, IExpressionParentEntity parent, int intoChild, bool getElement)
             {
                 if (intoDeclaration != null)
                     DeclareRangeVariable(cx, parent, intoChild, getElement, intoDeclaration, name);
@@ -169,9 +170,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        class CallClause : Clause
+        private class CallClause : Clause
         {
-            readonly Clause operand;
+            private readonly Clause operand;
 
             public CallClause(Clause operand, IMethodSymbol method, SyntaxNode node) : base(method, node)
             {
@@ -194,12 +195,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// <param name="cx">The extraction context.</param>
         /// <param name="node">The query expression.</param>
         /// <returns>A "syntax tree" of the query.</returns>
-        static Clause ConstructQueryExpression(Context cx, QueryExpressionSyntax node)
+        private static Clause ConstructQueryExpression(Context cx, QueryExpressionSyntax node)
         {
             var info = cx.GetModel(node).GetQueryClauseInfo(node.FromClause);
             var method = info.OperationInfo.Symbol as IMethodSymbol;
 
-            Clause clauseExpr = new RangeClause(method, node.FromClause, cx.GetModel(node).GetDeclaredSymbol(node.FromClause), node.FromClause.Identifier).AddArgument(node.FromClause.Expression);
+            var clauseExpr = new RangeClause(method, node.FromClause, cx.GetModel(node).GetDeclaredSymbol(node.FromClause), node.FromClause.Identifier).AddArgument(node.FromClause.Expression);
 
             foreach (var qc in node.Body.Clauses)
             {

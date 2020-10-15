@@ -1,0 +1,13 @@
+edges
+| code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:7:10:7:13 | ControlFlowNode for code |
+| code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:8:10:8:13 | ControlFlowNode for code |
+| code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:10:10:10:12 | ControlFlowNode for cmd |
+nodes
+| code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| code_injection.py:7:10:7:13 | ControlFlowNode for code | semmle.label | ControlFlowNode for code |
+| code_injection.py:8:10:8:13 | ControlFlowNode for code | semmle.label | ControlFlowNode for code |
+| code_injection.py:10:10:10:12 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+#select
+| code_injection.py:7:10:7:13 | ControlFlowNode for code | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:7:10:7:13 | ControlFlowNode for code | $@ flows to here and is interpreted as code. | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | A user-provided value |
+| code_injection.py:8:10:8:13 | ControlFlowNode for code | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:8:10:8:13 | ControlFlowNode for code | $@ flows to here and is interpreted as code. | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | A user-provided value |
+| code_injection.py:10:10:10:12 | ControlFlowNode for cmd | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:10:10:10:12 | ControlFlowNode for cmd | $@ flows to here and is interpreted as code. | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | A user-provided value |

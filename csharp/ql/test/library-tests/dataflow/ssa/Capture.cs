@@ -236,4 +236,22 @@ class C
         M3();
         System.Console.WriteLine(i);
     }
+
+    void M2()
+    {
+        int i = 0;
+        void CaptureWrite()
+        {
+            i = 1;
+        }
+
+        void CaptureAndRef(ref int j)
+        {
+            CaptureWrite();
+            j = 2;
+        }
+
+        CaptureAndRef(ref i); // explicit definition only (no call definition)
+        System.Console.WriteLine(i);
+    }
 }

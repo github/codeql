@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class LocalDeclaration : Statement<LocalDeclarationStatementSyntax>
+    internal class LocalDeclaration : Statement<LocalDeclarationStatementSyntax>
     {
-        static StmtKind GetKind(LocalDeclarationStatementSyntax declStmt)
+        private static StmtKind GetKind(LocalDeclarationStatementSyntax declStmt)
         {
             if (declStmt.UsingKeyword.RawKind != 0)
                 return StmtKind.USING_DECL;
@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             return StmtKind.VAR_DECL;
         }
 
-        LocalDeclaration(Context cx, LocalDeclarationStatementSyntax declStmt, IStatementParentEntity parent, int child)
+        private LocalDeclaration(Context cx, LocalDeclarationStatementSyntax declStmt, IStatementParentEntity parent, int child)
             : base(cx, declStmt, GetKind(declStmt), parent, child) { }
 
         public static LocalDeclaration Create(Context cx, LocalDeclarationStatementSyntax node, IStatementParentEntity parent, int child)
