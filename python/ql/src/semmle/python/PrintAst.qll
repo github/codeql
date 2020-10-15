@@ -550,7 +550,7 @@ private module PrettyPrinting {
       or
       a instanceof Ellipsis and result = "..."
       or
-      result = a.(Num).toString()
+      result = a.(Num).getText()
       or
       result = a.(NegativeIntegerLiteral).getValue().toString()
       or
