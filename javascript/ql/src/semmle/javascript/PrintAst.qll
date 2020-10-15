@@ -245,8 +245,6 @@ private module PrintJavaScript {
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = invk.getArgument(childIndex)
     }
-
-    override Location getLocation() { result = invk.getLocation() }
   }
 
   /**
@@ -269,8 +267,6 @@ private module PrintJavaScript {
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = invk.getTypeArgument(childIndex)
     }
-
-    override Location getLocation() { result = invk.getLocation() }
   }
 
   /**
@@ -424,8 +420,6 @@ private module PrintJavaScript {
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = f.getParameter(childIndex)
     }
-
-    override Location getLocation() { result = f.getLocation() }
   }
 
   /**
@@ -446,8 +440,6 @@ private module PrintJavaScript {
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = f.getTypeParameter(childIndex)
     }
-
-    override Location getLocation() { result = f.getLocation() }
   }
 }
 
