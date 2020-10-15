@@ -573,7 +573,11 @@ module PrintYAML {
 
     YAMLMappingMapNode() { this = TYAMLMappingNode(mapping, i) }
 
-    override string toString() { result = "(Mapping " + i + ")" }
+    override string toString() {
+      result = "(Mapping " + i + ")" and not exists(mapping.getKeyNode(i).(YAMLScalar).getValue())
+      or
+      result = "(Mapping " + i + ") " + mapping.getKeyNode(i).(YAMLScalar).getValue() + ":"
+    }
 
     /**
      * Holds if this print node represents the `index`th mapping of `m`.
