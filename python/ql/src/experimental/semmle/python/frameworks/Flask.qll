@@ -18,7 +18,7 @@ private import experimental.semmle.python.frameworks.Werkzeug
  */
 private module Flask {
   /** Gets a reference to the `flask` module. */
-  DataFlow::Node flask(DataFlow::TypeTracker t) {
+  private DataFlow::Node flask(DataFlow::TypeTracker t) {
     t.start() and
     result = DataFlow::importNode("flask")
     or
@@ -31,7 +31,7 @@ private module Flask {
   /** Provides models for the `flask` module. */
   module flask {
     /** Gets a reference to the `flask.request` object. */
-    DataFlow::Node request(DataFlow::TypeTracker t) {
+    private DataFlow::Node request(DataFlow::TypeTracker t) {
       t.start() and
       result = DataFlow::importNode("flask.request")
       or

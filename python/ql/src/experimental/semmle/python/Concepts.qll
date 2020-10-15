@@ -41,6 +41,63 @@ module SystemCommandExecution {
 }
 
 /**
+ * A data-flow node that decodes data from a binary or textual format. This
+ * is intended to include deserialization, unmarshalling, decoding, unpickling,
+ * decompressing, decrypting, parsing etc.
+ *
+ * Doing so should normally preserve taint, but it can also be a problem
+ * in itself, e.g. if it allows code execution or could result in denial-of-service.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Decoding::Range` instead.
+ */
+class Decoding extends DataFlow::Node {
+  Decoding::Range range;
+
+  Decoding() { this = range }
+
+  /** Holds if this call may execute code embedded in its input. */
+  predicate mayExecuteInput() { range.mayExecuteInput() }
+
+  /** Gets an input that is decoded by this function. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+
+  /** Gets the output that contains the decoded data produced by this function. */
+  DataFlow::Node getOutput() { result = range.getOutput() }
+
+  /** Gets an identifier for the format this function decodes from, such as "JSON". */
+  string getFormat() { result = range.getFormat() }
+}
+
+/** Provides a class for modeling new decoding mechanisms. */
+module Decoding {
+  /**
+   * A data-flow node that decodes data from a binary or textual format. This
+   * is intended to include deserialization, unmarshalling, decoding, unpickling,
+   * decompressing, decrypting, parsing etc.
+   *
+   * Doing so should normally preserve taint, but it can also be a problem
+   * in itself, e.g. if it allows code execution or could result in denial-of-service.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Decoding` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Holds if this call may execute code embedded in its input. */
+    abstract predicate mayExecuteInput();
+
+    /** Gets an input that is decoded by this function. */
+    abstract DataFlow::Node getAnInput();
+
+    /** Gets the output that contains the decoded data produced by this function. */
+    abstract DataFlow::Node getOutput();
+
+    /** Gets an identifier for the format this function decodes from, such as "JSON". */
+    abstract string getFormat();
+  }
+}
+
+/**
  * A data-flow node that dynamically executes Python code.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,

@@ -33,6 +33,46 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
   }
 }
 
+class DecodingTest extends InlineExpectationsTest {
+  DecodingTest() { this = "DecodingTest" }
+
+  override string getARelevantTag() {
+    result in ["decodeInput", "decodeOutput", "decodeFormat", "decodeMayExecuteInput"]
+  }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Decoding d |
+      exists(DataFlow::Node data |
+        location = data.getLocation() and
+        element = data.toString() and
+        value = value_from_expr(data.asExpr()) and
+        (
+          data = d.getAnInput() and
+          tag = "decodeInput"
+          or
+          data = d.getOutput() and
+          tag = "decodeOutput"
+        )
+      )
+      or
+      exists(string format |
+        location = d.getLocation() and
+        element = format and
+        value = format and
+        format = d.getFormat() and
+        tag = "decodeFormat"
+      )
+      or
+      d.mayExecuteInput() and
+      location = d.getLocation() and
+      element = d.toString() and
+      value = "" and
+      tag = "decodeMayExecuteInput"
+    )
+  }
+}
+
 class CodeExecutionTest extends InlineExpectationsTest {
   CodeExecutionTest() { this = "CodeExecutionTest" }
 
