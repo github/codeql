@@ -5,18 +5,14 @@
 import java
 
 /**
- * The class `com.alibaba.fastjson.JSON` or `com.alibaba.fastjson.JSONObject`.
+ * The class `com.alibaba.fastjson.JSON`.
  */
 class FastJson extends RefType {
-  FastJson() {
-    this.hasQualifiedName("com.alibaba.fastjson", "JSON") or
-    this.hasQualifiedName("com.alibaba.fastjson", "JSONObject")
-  }
+  FastJson() { this.hasQualifiedName("com.alibaba.fastjson", "JSON") }
 }
 
 /**
- * A FastJson parse method. This is either `parse` or `parseObject` on either
- * `com.alibaba.fastjson.JSON` or `com.alibaba.fastjson.JSONObject`.
+ * A FastJson parse method. This is either `JSON.parse` or `JSON.parseObject`.
  */
 class FastJsonParseMethod extends Method {
   FastJsonParseMethod() {
