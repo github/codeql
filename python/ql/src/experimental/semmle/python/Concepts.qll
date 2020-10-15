@@ -46,7 +46,7 @@ module SystemCommandExecution {
  * decompressing, decrypting, parsing etc.
  *
  * Doing so should normally preserve taint, but it can also be a problem
- * in itself, e.g. if it allows code execution or could result in deinal-of-service.
+ * in itself, e.g. if it allows code execution or could result in denial-of-service.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `Decoding::Range` instead.
@@ -77,7 +77,7 @@ module Decoding {
    * decompressing, decrypting, parsing etc.
    *
    * Doing so should normally preserve taint, but it can also be a problem
-   * in itself, e.g. if it allows code execution or could result in deinal-of-service.
+   * in itself, e.g. if it allows code execution or could result in denial-of-service.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `Decoding` instead.
