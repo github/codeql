@@ -24,5 +24,8 @@
 | routing_test.py:84:38:84:94 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=bar |
 | routing_test.py:84:38:84:94 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=foo |
 | routing_test.py:87:37:87:51 | Comment # $routeHandler | Missing result:routeHandler= |
+| taint_test.py:6:60:6:116 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routeHandler= |
+| taint_test.py:6:60:6:116 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=bar |
+| taint_test.py:6:60:6:116 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar | Missing result:routedParameter=foo |
 | testapp/views.py:3:33:3:47 | Comment # $routeHandler | Missing result:routeHandler= |
 | testapp/views.py:6:37:6:51 | Comment # $routeHandler | Missing result:routeHandler= |
