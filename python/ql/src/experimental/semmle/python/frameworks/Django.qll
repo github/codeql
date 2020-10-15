@@ -161,6 +161,34 @@ private module Django {
   }
 
   /**
+   * A function that is used as a django route handler.
+   */
+  private class DjangoRouteHandler extends Function {
+    DjangoRouteHandler() { exists(djangoRouteHandlerFunctionTracker(this)) }
+
+    /** Gets the index of the request parameter. */
+    int getRequestParamIndex() {
+      not this.isMethod() and
+      result = 0
+      or
+      this.isMethod() and
+      result = 1
+    }
+
+    /** Gets the request parameter. */
+    Parameter getRequestParam() { result = this.getArg(this.getRequestParamIndex()) }
+  }
+
+  /**
+   * Gets the regex that is used by django to find routed parameters when using `django.urls.path`.
+   *
+   * Taken from https://github.com/django/django/blob/7d1bf29977bb368d7c28e7c6eb146db3b3009ae7/django/urls/resolvers.py#L199
+   */
+  private string pathRoutedParameterRegex() {
+    result = "<(?:(?<converter>[^>:]+):)?(?<parameter>\\w+)>"
+  }
+
+  /**
    * A call to `django.urls.path`.
    *
    * See https://docs.djangoproject.com/en/3.0/ref/urls/#path
@@ -174,14 +202,31 @@ private module Django {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
     }
 
-    override Function getARouteHandler() {
+    override DjangoRouteHandler getARouteHandler() {
       exists(DataFlow::Node viewArg |
         viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
         djangoRouteHandlerFunctionTracker(result) = viewArg
       )
     }
 
-    override Parameter getARoutedParameter() { none() }
+    override Parameter getARoutedParameter() {
+      // If we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARouteHandler() |
+        not exists(this.getUrlPattern()) and
+        result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
+        not result = any(int i | i <= routeHandler.getRequestParamIndex() | routeHandler.getArg(i))
+      )
+      or
+      exists(string name |
+        result = this.getARouteHandler().getArgByName(name) and
+        exists(string match |
+          match = this.getUrlPattern().regexpFind(pathRoutedParameterRegex(), _, _) and
+          name = match.regexpCapture(pathRoutedParameterRegex(), 2)
+        )
+      )
+    }
   }
 
   /**
@@ -198,7 +243,7 @@ private module Django {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
     }
 
-    override Function getARouteHandler() {
+    override DjangoRouteHandler getARouteHandler() {
       exists(DataFlow::Node viewArg |
         viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
         djangoRouteHandlerFunctionTracker(result) = viewArg

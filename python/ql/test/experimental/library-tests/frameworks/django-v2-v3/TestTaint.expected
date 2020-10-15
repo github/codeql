@@ -1,5 +1,5 @@
-| taint_test.py:7 | fail | test_taint | bar |
-| taint_test.py:7 | fail | test_taint | foo |
+| taint_test.py:7 | ok   | test_taint | bar |
+| taint_test.py:7 | ok   | test_taint | foo |
 | taint_test.py:8 | ok   | test_taint | baz |
 | taint_test.py:14 | fail | test_taint | request |
 | taint_test.py:16 | fail | test_taint | request.body |
