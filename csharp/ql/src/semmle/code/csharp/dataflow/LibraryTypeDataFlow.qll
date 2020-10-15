@@ -22,71 +22,31 @@ private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 // import `LibraryTypeDataFlow` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.JsonNET
-
-private newtype TAccessPath =
-  TNilAccessPath() or
-  TConsAccessPath(Content head, AccessPath tail) {
-    tail = TNilAccessPath()
-    or
-    exists(LibraryTypeDataFlow ltdf |
-      ltdf.requiresAccessPath(head, tail) and
-      tail.length() < accessPathLimit()
-    )
-    or
-    tail = AccessPath::singleton(_) and
-    head instanceof ElementContent
-    or
-    tail = AccessPath::element()
-  }
+private import internal.FrameworkDataFlowImpl as FrameworkDataFlowImpl
+private import FrameworkDataFlow
 
 /** An access path. */
-class AccessPath extends TAccessPath {
+class AccessPath extends FrameworkDataFlowImpl::ContentList {
   /** Gets the head of this access path, if any. */
-  Content getHead() { this = TConsAccessPath(result, _) }
+  Content getHead() { result = this.head() }
 
   /** Gets the tail of this access path, if any. */
-  AccessPath getTail() { this = TConsAccessPath(_, result) }
-
-  /** Gets the length of this access path. */
-  int length() {
-    this = TNilAccessPath() and result = 0
-    or
-    result = 1 + this.getTail().length()
-  }
+  AccessPath getTail() { result = this.tail() }
 
   /** Gets the access path obtained by dropping the first `i` elements, if any. */
-  AccessPath drop(int i) {
-    i = 0 and result = this
-    or
-    result = this.getTail().drop(i - 1)
-  }
-
-  /** Holds if this access path contains content `c`. */
-  predicate contains(Content c) { c = this.drop(_).getHead() }
-
-  /** Gets a textual representation of this access path. */
-  string toString() {
-    exists(Content head, AccessPath tail |
-      head = this.getHead() and
-      tail = this.getTail() and
-      if tail.length() = 0 then result = head.toString() else result = head + ", " + tail
-    )
-    or
-    this = TNilAccessPath() and
-    result = "<empty>"
-  }
+  override AccessPath drop(int i) { result = super.drop(i) }
 }
 
 /** Provides predicates for constructing access paths. */
 module AccessPath {
   /** Gets the empty access path. */
-  AccessPath empty() { result = TNilAccessPath() }
+  AccessPath empty() { result = ContentList::empty() }
 
   /** Gets a singleton access path containing `c`. */
-  AccessPath singleton(Content c) { result = TConsAccessPath(c, TNilAccessPath()) }
+  AccessPath singleton(Content c) { result = ContentList::singleton(c) }
 
   /** Gets the access path obtained by concatenating `head` onto `tail`. */
-  AccessPath cons(Content head, AccessPath tail) { result = TConsAccessPath(head, tail) }
+  AccessPath cons(Content head, AccessPath tail) { result = ContentList::cons(head, tail) }
 
   /** Gets the singleton "element content" access path. */
   AccessPath element() { result = singleton(any(ElementContent c)) }
@@ -102,7 +62,9 @@ module AccessPath {
   }
 
   /** Gets an access path representing a property inside a collection. */
-  AccessPath properties(Property p) { result = TConsAccessPath(any(ElementContent c), property(p)) }
+  AccessPath properties(Property p) {
+    result = ContentList::cons(any(ElementContent c), property(p))
+  }
 }
 
 /** An unbound callable. */
@@ -350,6 +312,72 @@ abstract class LibraryTypeDataFlow extends Type {
     CallableFlowSource source, Content content, SourceDeclarationCallable callable
   ) {
     none()
+  }
+}
+
+private CallableFlowSource toCallableFlowSource(SummaryInput input) {
+  result = TCallableFlowSourceQualifier() and
+  input = SummaryInput::parameter(-1)
+  or
+  exists(int i |
+    result = TCallableFlowSourceArg(i) and
+    input = SummaryInput::parameter(i)
+  )
+  or
+  exists(int i |
+    result = TCallableFlowSourceDelegateArg(i) and
+    input = SummaryInput::delegate(i)
+  )
+}
+
+private CallableFlowSink toCallableFlowSink(SummaryOutput output) {
+  result = TCallableFlowSinkQualifier() and
+  output = SummaryOutput::parameter(-1)
+  or
+  result = TCallableFlowSinkReturn() and
+  output = SummaryOutput::return()
+  or
+  exists(int i |
+    result = TCallableFlowSinkArg(i) and
+    output = SummaryOutput::parameter(i)
+  )
+  or
+  exists(int i, int j |
+    result = TCallableFlowSinkDelegateArg(i, j) and
+    output = SummaryOutput::delegate(i, j)
+  )
+}
+
+private class FrameworkDataFlowAdaptor extends FrameworkDataFlow {
+  FrameworkDataFlowAdaptor() { this = "FrameworkDataFlowAdaptor" }
+
+  override predicate hasSummary(
+    FrameworkCallable c, SummaryInput input, SummaryOutput output, boolean preservesValue
+  ) {
+    any(LibraryTypeDataFlow ltdf)
+        .callableFlow(toCallableFlowSource(input), toCallableFlowSink(output), c, preservesValue)
+  }
+
+  override predicate hasSummary(
+    FrameworkCallable c, SummaryInput input, ContentList inputContents, SummaryOutput output,
+    ContentList outputContents, boolean preservesValue
+  ) {
+    any(LibraryTypeDataFlow ltdf)
+        .callableFlow(toCallableFlowSource(input), inputContents, toCallableFlowSink(output),
+          outputContents, c, preservesValue)
+  }
+
+  override predicate requiresContentList(Content head, ContentList tail) {
+    any(LibraryTypeDataFlow ltdf).requiresAccessPath(head, tail)
+    or
+    head instanceof ElementContent and
+    tail = ContentList::singleton(_)
+    or
+    tail = ContentList::element()
+  }
+
+  override predicate clearsContent(FrameworkCallable c, SummaryInput input, Content content) {
+    any(LibraryTypeDataFlow ltdf).clearsContent(toCallableFlowSource(input), content, c)
   }
 }
 

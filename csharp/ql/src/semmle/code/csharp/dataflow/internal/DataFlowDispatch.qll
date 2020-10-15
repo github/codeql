@@ -3,7 +3,8 @@ private import cil
 private import dotnet
 private import DataFlowPrivate
 private import DelegateDataFlow
-private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+private import FrameworkDataFlowImpl as FrameworkDataFlowImpl
+private import semmle.code.csharp.dataflow.FrameworkDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
@@ -18,7 +19,11 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
 DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
   exists(DotNet::Callable sourceDecl | sourceDecl = c.getSourceDeclaration() |
     result = sourceDecl and
-    Summaries::summary(result, _, _, _, _, _)
+    (
+      FrameworkDataFlowImpl::Compilation::summary(result, _, _, _, _, _)
+      or
+      any(FrameworkDataFlow fdf).clearsContent(result, _, _)
+    )
     or
     result.hasBody() and
     if sourceDecl.getFile().fromSource()
@@ -107,15 +112,15 @@ private module Cached {
       // No need to include calls that are compiled from source
       not call.getImplementation().getMethod().compiledFromSource()
     } or
-    TSummaryDelegateCall(SourceDeclarationCallable c, int pos) {
-      exists(CallableFlowSourceDelegateArg source |
-        Summaries::summary(c, source, _, _, _, _) and
-        pos = source.getArgumentIndex()
+    TSummaryDelegateCall(FrameworkCallable c, int pos) {
+      exists(SummaryInput input |
+        FrameworkDataFlowImpl::Compilation::summary(c, input, _, _, _, _) and
+        input = SummaryInput::delegate(pos)
       )
       or
-      exists(CallableFlowSinkDelegateArg sink |
-        Summaries::summary(c, _, _, sink, _, _) and
-        pos = sink.getDelegateIndex()
+      exists(SummaryOutput output |
+        FrameworkDataFlowImpl::Compilation::summary(c, _, _, output, _, _) and
+        output = SummaryOutput::delegate(pos, _)
       )
     }
 
@@ -381,7 +386,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
  * the method `Select`.
  */
 class SummaryDelegateCall extends DelegateDataFlowCall, TSummaryDelegateCall {
-  private SourceDeclarationCallable c;
+  private FrameworkCallable c;
   private int pos;
 
   SummaryDelegateCall() { this = TSummaryDelegateCall(c, pos) }

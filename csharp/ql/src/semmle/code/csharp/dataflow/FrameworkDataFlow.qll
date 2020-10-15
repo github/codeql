@@ -5,7 +5,9 @@
 import csharp
 private import internal.FrameworkDataFlowImpl as Impl
 private import internal.FrameworkDataFlowSpecific::Private
-private import internal.DataFlowPublic
+private import internal.DataFlowPublic as DataFlowPublic
+// import all instances below
+private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 
 class FrameworkCallable = Impl::FrameworkCallable;
 
@@ -19,16 +21,18 @@ module ContentList {
   import Impl::ContentList
 
   /** Gets the singleton "element content" content list. */
-  ContentList element() { result = singleton(any(ElementContent c)) }
+  ContentList element() { result = singleton(any(DataFlowPublic::ElementContent c)) }
 
   /** Gets a singleton property content list. */
   ContentList property(Property p) {
-    result = singleton(any(PropertyContent c | c.getProperty() = p.getSourceDeclaration()))
+    result =
+      singleton(any(DataFlowPublic::PropertyContent c | c.getProperty() = p.getSourceDeclaration()))
   }
 
   /** Gets a singleton field content list. */
   ContentList field(Field f) {
-    result = singleton(any(FieldContent c | c.getField() = f.getSourceDeclaration()))
+    result =
+      singleton(any(DataFlowPublic::FieldContent c | c.getField() = f.getSourceDeclaration()))
   }
 }
 
@@ -113,6 +117,12 @@ module SummaryOutput {
    * as the output.
    */
   SummaryOutput thisParameter() { result = TParameterSummaryOutput(-1) }
+
+  /**
+   * Gets an output specification that specifies parameter `j` of the delegate at
+   * parameter `i` as the output.
+   */
+  SummaryOutput delegate(int i, int j) { result = TDelegateSummaryOutput(i, j) }
 
   /**
    * Gets an output specification that specifies parameter `j` of the delegate at
@@ -221,7 +231,7 @@ module Examples {
         name = "ToString" and
         input = SummaryInput::thisParameter() and
         inputContents = ContentList::element() and
-        output = SummaryOutput::thisParameter() and
+        output = SummaryOutput::return() and
         outputContents = ContentList::empty() and
         preservesValue = false
         or
@@ -255,7 +265,7 @@ module Examples {
     override predicate clearsContent(FrameworkCallable c, SummaryInput input, Content content) {
       c = this.getClass().getAMethod("Clear") and
       input = SummaryInput::thisParameter() and
-      content instanceof ElementContent
+      content instanceof DataFlowPublic::ElementContent
     }
   }
 
