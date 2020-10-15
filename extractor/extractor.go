@@ -178,6 +178,23 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 			}
 
 			extractPackage(pkg, &wg, goroutineSem, fdSem)
+
+			if pkgRoots[pkg.PkgPath] != "" {
+				modPath := filepath.Join(pkgRoots[pkg.PkgPath], "go.mod")
+				if util.FileExists(modPath) {
+					log.Printf("Extracting %s", modPath)
+					start := time.Now()
+
+					err := extractGoMod(modPath)
+					if err != nil {
+						log.Printf("Failed to extract go.mod: %s", err.Error())
+					}
+
+					end := time.Since(start)
+					log.Printf("Done extracting %s (%dms)", modPath, end.Nanoseconds()/1000000)
+				}
+			}
+
 			return
 		}
 
@@ -187,46 +204,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	wg.Wait()
 
 	log.Println("Done extracting packages.")
-	log.Println("Starting to extract go.mod files.")
-
-	cwd, err := os.Getwd()
-	if err != nil {
-		log.Printf("Warning: unable to get working directory: %s", err.Error())
-		log.Println("Skipping go.mod extraction")
-	}
-	rcwd, err := filepath.EvalSymlinks(cwd)
-	if err == nil {
-		cwd = rcwd
-	}
-
-	goModPaths := make([]string, 0, 10)
-
-	filepath.Walk(cwd, func(path string, info os.FileInfo, err error) error {
-		if filepath.Base(path) == "go.mod" && info != nil && info.Mode().IsRegular() {
-			if err != nil {
-				log.Printf("Found go.mod with path %s, but encountered error %s", path, err.Error())
-			}
-
-			goModPaths = append(goModPaths, path)
-		}
-
-		return nil
-	})
-
-	for _, path := range goModPaths {
-		log.Printf("Extracting %s", path)
-		start := time.Now()
-
-		err := extractGoMod(path)
-		if err != nil {
-			log.Printf("Failed to extract go.mod: %s", err.Error())
-		}
-
-		end := time.Since(start)
-		log.Printf("Done extracting %s (%dms)", path, end.Nanoseconds()/1000000)
-	}
-
-	log.Println("Done extracting go.mod files.")
 
 	return nil
 }
