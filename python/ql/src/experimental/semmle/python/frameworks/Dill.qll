@@ -45,13 +45,12 @@ private module Dill {
  */
 private class DillLoadsCall extends Decoding::Range, DataFlow::CfgNode {
   override CallNode node;
+
   DillLoadsCall() { node.getFunction() = Dill::dill::loads().asCfgNode() }
 
   override predicate mayExecuteInput() { any() }
 
-  override DataFlow::Node getAnInput() {
-    result.asCfgNode() = node.getArg(0)
-  }
+  override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
 
   override DataFlow::Node getOutput() { result = this }
 
