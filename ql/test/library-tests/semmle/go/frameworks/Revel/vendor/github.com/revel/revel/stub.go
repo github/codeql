@@ -55,6 +55,12 @@ func (_ *ActionDefinition) String() string {
 
 type ContentDisposition string
 
+var (
+	NoDisposition ContentDisposition = ""
+	Attachment    ContentDisposition = "attachment"
+	Inline        ContentDisposition = "inline"
+)
+
 type Controller struct {
 	Name          string
 	Type          *ControllerType

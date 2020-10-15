@@ -35,6 +35,14 @@ module OpenUrlRedirect {
   abstract class BarrierGuard extends DataFlow::BarrierGuard { }
 
   /**
+   * An additional taint propagation step specific to this query.
+   */
+  bindingset[this]
+  abstract class AdditionalStep extends string {
+    abstract predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ);
+  }
+
+  /**
    * A source of third-party user input, considered as a flow source for URL redirects.
    */
   class UntrustedFlowAsSource extends Source, UntrustedFlowSource {
