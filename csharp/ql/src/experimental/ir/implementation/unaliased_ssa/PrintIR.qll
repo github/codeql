@@ -62,7 +62,12 @@ private string getAdditionalOperandProperty(Operand operand, string key) {
  * operand has no properties, this predicate has no result.
  */
 private string getOperandPropertyListString(Operand operand) {
-  result = strictconcat(string key, string value | value = getAdditionalOperandProperty(operand, key) | key + ":" + value, ", ")
+  result =
+    strictconcat(string key, string value |
+      value = getAdditionalOperandProperty(operand, key)
+    |
+      key + ":" + value, ", "
+    )
 }
 
 /**
@@ -247,7 +252,9 @@ private class PrintableInstruction extends PrintableIRNode, TPrintableInstructio
       concat(Operand operand |
         operand = instr.getAnOperand()
       |
-        operand.getDumpString() + getOperandPropertyString(operand), ", " order by operand.getDumpSortOrder()
+        operand.getDumpString() + getOperandPropertyString(operand), ", "
+        order by
+          operand.getDumpSortOrder()
       )
   }
 }

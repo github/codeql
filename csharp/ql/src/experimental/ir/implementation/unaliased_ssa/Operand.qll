@@ -484,9 +484,7 @@ class PhiInputOperand extends MemoryOperand, PhiOperandBase {
     result = "from " + getPredecessorBlock().getDisplayIndex().toString() + ":"
   }
 
-  final override string getDumpId() {
-    result = getPredecessorBlock().getDisplayIndex().toString()
-  }
+  final override string getDumpId() { result = getPredecessorBlock().getDisplayIndex().toString() }
 
   /**
    * Gets the predecessor block from which this value comes.
