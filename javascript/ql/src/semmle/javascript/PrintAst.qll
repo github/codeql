@@ -662,7 +662,7 @@ module PrintHTML {
 
     HTMLElementNode() { this = THTMLElementNode(element) }
 
-    override string toString() { result = getQlClass(element) + element.toString() }
+    override string toString() { result = getQlClass(element) + "<" + element.getName() + " ..." }
 
     override Location getLocation() { result = element.getLocation() }
 
