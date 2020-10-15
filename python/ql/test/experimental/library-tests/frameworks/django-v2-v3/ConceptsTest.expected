@@ -14,8 +14,6 @@
 | routing_test.py:44:62:44:120 | Comment # $routeHandler $routedParameter=arg0 $routedParameter=arg1 | Missing result:routedParameter=arg0 |
 | routing_test.py:44:62:44:120 | Comment # $routeHandler $routedParameter=arg0 $routedParameter=arg1 | Missing result:routedParameter=arg1 |
 | routing_test.py:65:31:65:45 | Comment # $routeHandler | Missing result:routeHandler= |
-| routing_test.py:70:5:70:81 | ControlFlowNode for re_path() | Unexpected result: routeSetup= |
-| routing_test.py:70:84:70:137 | Comment # $routeSetup="^specifying-as-kwargs-is-not-a-problem" | Missing result:routeSetup="^specifying-as-kwargs-is-not-a-problem" |
 | routing_test.py:78:43:78:86 | Comment # $routeHandler $routedParameter=page_number | Missing result:routeHandler= |
 | routing_test.py:78:43:78:86 | Comment # $routeHandler $routedParameter=page_number | Missing result:routedParameter=page_number |
 | routing_test.py:81:43:81:120 | Comment # $routeHandler $routedParameter=foo $routedParameter=bar $routedParameter=baz | Missing result:routeHandler= |
