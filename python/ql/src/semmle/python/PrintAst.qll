@@ -46,7 +46,8 @@ private predicate isNotNeeded(AstNode el) {
  */
 private newtype TPrintAstNode =
   TElementNode(AstNode el) { shouldPrint(el, _) and not isNotNeeded(el) } or
-  TFunctionParamsNode(AstNode f) { shouldPrint(f, _) and not isNotNeeded(f) } or
+  TFunctionParamsNode(Function f) { shouldPrint(f, _) and not isNotNeeded(f) } or
+  TCallArgumentsNode(Call c) { shouldPrint(c, _) and not isNotNeeded(c) } or
   TStmtListNode(StmtList list) {
     shouldPrint(list.getAnItem(), _) and
     not list = any(Module mod).getBody() and
@@ -303,6 +304,42 @@ class StmtListNode extends PrintAstNode, TStmtListNode {
 }
 
 /**
+ * A print node for a `Call`.
+ *
+ * The arguments to this call are aggregated into a `CallArgumentsNode`.
+ */
+class CallPrintNode extends AstElementNode {
+  override Call element;
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = 0 and result.(AstElementNode).getAstNode() = element.getFunc()
+    or
+    childIndex = 1 and result.(CallArgumentsNode).getCall() = element
+  }
+}
+
+/**
+ * A synthetic print node for the arguments to `call`.
+ */
+class CallArgumentsNode extends PrintAstNode, TCallArgumentsNode {
+  Call call;
+
+  CallArgumentsNode() { this = TCallArgumentsNode(call) }
+
+  /**
+   * Gets the call for which this print node represents the arguments.
+   */
+  Call getCall() { result = call }
+
+  override string toString() { result = "(arguments)" }
+
+  override PrintAstNode getChild(int childIndex) {
+    result.(AstElementNode).getAstNode() = getChild(call, childIndex) and
+    not result.(AstElementNode).getAstNode() = call.getFunc()
+  }
+}
+
+/**
  * A print node for a `Function`.
  */
 class FunctionNode extends AstElementNode {
@@ -418,7 +455,7 @@ private module PrettyPrinting {
   string getQlCustomClass(AstNode a) {
     a instanceof Name and
     result = "Name" and
-    not a instanceof Parameter and 
+    not a instanceof Parameter and
     not a instanceof NameConstant
     or
     a instanceof Parameter and result = "Parameter"
