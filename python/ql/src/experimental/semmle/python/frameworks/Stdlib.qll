@@ -102,74 +102,71 @@ private module Stdlib {
    * A call to `os.system`.
    * See https://docs.python.org/3/library/os.html#os.system
    */
-  private class OsSystemCall extends SystemCommandExecution::Range {
-    OsSystemCall() { this.asCfgNode().(CallNode).getFunction() = os_attr("system").asCfgNode() }
+  private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    OsSystemCall() { node.getFunction() = os_attr("system").asCfgNode() }
+
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
 
   /**
    * A call to `os.popen`
    * See https://docs.python.org/3/library/os.html#os.popen
    */
-  private class OsPopenCall extends SystemCommandExecution::Range {
-    OsPopenCall() { this.asCfgNode().(CallNode).getFunction() = os_attr("popen").asCfgNode() }
+  private class OsPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    OsPopenCall() { node.getFunction() = os_attr("popen").asCfgNode() }
+
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
 
   /**
    * A call to any of the `os.exec*` functions
    * See https://docs.python.org/3.8/library/os.html#os.execl
    */
-  private class OsExecCall extends SystemCommandExecution::Range {
+  private class OsExecCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
     OsExecCall() {
       exists(string name |
         name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
-        this.asCfgNode().(CallNode).getFunction() = os_attr(name).asCfgNode()
+        node.getFunction() = os_attr(name).asCfgNode()
       )
     }
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
 
   /**
    * A call to any of the `os.spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.spawnl
    */
-  private class OsSpawnCall extends SystemCommandExecution::Range {
+  private class OsSpawnCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
     OsSpawnCall() {
       exists(string name |
         name in ["spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp",
               "spawnvpe"] and
-        this.asCfgNode().(CallNode).getFunction() = os_attr(name).asCfgNode()
+        node.getFunction() = os_attr(name).asCfgNode()
       )
     }
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(1)
-    }
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(1) }
   }
 
   /**
    * A call to any of the `os.posix_spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.posix_spawn
    */
-  private class OsPosixSpawnCall extends SystemCommandExecution::Range {
-    OsPosixSpawnCall() {
-      this.asCfgNode().(CallNode).getFunction() =
-        os_attr(["posix_spawn", "posix_spawnp"]).asCfgNode()
-    }
+  private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    OsPosixSpawnCall() { node.getFunction() = os_attr(["posix_spawn", "posix_spawnp"]).asCfgNode() }
+
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
 
   /** An additional taint step for calls to `os.path.join` */
@@ -363,14 +360,14 @@ private module Stdlib {
    * A call to `marshal.loads`
    * See https://docs.python.org/3/library/marshal.html#marshal.loads
    */
-  private class MarshalLoadsCall extends Decoding::Range {
-    MarshalLoadsCall() { this.asCfgNode().(CallNode).getFunction() = marshal::loads().asCfgNode() }
+  private class MarshalLoadsCall extends Decoding::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    MarshalLoadsCall() { node.getFunction() = marshal::loads().asCfgNode() }
 
     override predicate unsafe() { any() }
 
-    override DataFlow::Node getAnInput() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
 
     override DataFlow::Node getOutput() { result = this }
 
@@ -414,14 +411,14 @@ private module Stdlib {
    * A call to `pickle.loads`
    * See https://docs.python.org/3/library/pickle.html#pickle.loads
    */
-  private class PickleLoadsCall extends Decoding::Range {
-    PickleLoadsCall() { this.asCfgNode().(CallNode).getFunction() = pickle::loads().asCfgNode() }
+  private class PickleLoadsCall extends Decoding::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    PickleLoadsCall() { node.getFunction() = pickle::loads().asCfgNode() }
 
     override predicate unsafe() { any() }
 
-    override DataFlow::Node getAnInput() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
 
     override DataFlow::Node getOutput() { result = this }
 
