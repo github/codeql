@@ -43,13 +43,14 @@ private module Dill {
  * See https://pypi.org/project/dill/ (which currently refers you
  * to https://docs.python.org/3/library/pickle.html#pickle.loads)
  */
-private class DillLoadsCall extends Decoding::Range {
-  DillLoadsCall() { this.asCfgNode().(CallNode).getFunction() = Dill::dill::loads().asCfgNode() }
+private class DillLoadsCall extends Decoding::Range, DataFlow::CfgNode {
+  override CallNode node;
+  DillLoadsCall() { node.getFunction() = Dill::dill::loads().asCfgNode() }
 
   override predicate mayExecuteInput() { any() }
 
   override DataFlow::Node getAnInput() {
-    result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+    result.asCfgNode() = node.getArg(0)
   }
 
   override DataFlow::Node getOutput() { result = this }
