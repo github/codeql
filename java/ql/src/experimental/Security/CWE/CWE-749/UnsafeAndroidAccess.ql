@@ -71,7 +71,7 @@ class IntentGetExtraMethodAccess extends MethodAccess {
 }
 
 /**
- * Source of fetching urls
+ * Source of fetching URLs
  */
 class UntrustedResourceSource extends RemoteFlowSource {
   UntrustedResourceSource() {
@@ -84,21 +84,28 @@ class UntrustedResourceSource extends RemoteFlowSource {
 }
 
 /**
- * Holds if `ma` loads url `sink`
+ * Holds if `ma` loads URL `sink`
  */
 predicate fetchResource(FetchResourceMethodAccess ma, Expr sink) { sink = ma.getArgument(0) }
 
 /**
- * Sink of fetching urls
+ * A URL argument to a `loadUrl` or `postUrl` call, considered as a sink.
  */
 class UrlResourceSink extends DataFlow::ExprNode {
   UrlResourceSink() { fetchResource(_, this.getExpr()) }
 
+  /** Gets the fetch method that fetches this sink URL. */
   FetchResourceMethodAccess getMethodAccess() { fetchResource(result, this.getExpr()) }
 
+  /**
+   * Holds if cross-origin access is enabled for this resource fetch.
+   *
+   * Specifically this looks for code like
+   * `webView.getSettings().setAllow[File|Universal]AccessFromFileURLs(true);`
+   */
   predicate crossOriginAccessEnabled() {
     exists(MethodAccess ma, MethodAccess getSettingsMa |
-      ma.getMethod() instanceof CrossOriginAccessMethod and // Unsafe resource fetching of more severe vulnerabilities
+      ma.getMethod() instanceof CrossOriginAccessMethod and
       ma.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
       ma.getQualifier().(VarAccess).getVariable().getAnAssignedValue() = getSettingsMa and
       getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
@@ -107,6 +114,10 @@ class UrlResourceSink extends DataFlow::ExprNode {
     )
   }
 
+  /**
+   * Returns a description of this vulnerability, assuming Javascript is enabled and
+   * the fetched URL is attacker-controlled.
+   */
   string getSinkType() {
     if crossOriginAccessEnabled()
     then result = "user input vulnerable to cross-origin and sensitive resource disclosure attacks"
@@ -114,6 +125,9 @@ class UrlResourceSink extends DataFlow::ExprNode {
   }
 }
 
+/**
+ * Taint configuration tracking flow from untrusted inputs to `loadUrl` or `postUrl` calls.
+ */
 class FetchUntrustedResourceConfiguration extends TaintTracking::Configuration {
   FetchUntrustedResourceConfiguration() { this = "FetchUntrustedResourceConfiguration" }
 

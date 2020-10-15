@@ -13,7 +13,7 @@
   </overview>
 
   <recommendation>
-    <p>Only allow trusted web content to be displayed in WebViews when JavaScript is enabled. Disallow cross-origin resource access in WebSetting to reduce the attack surface .</p>
+    <p>Only allow trusted web content to be displayed in WebViews when JavaScript is enabled. Disallow cross-origin resource access in WebSetting to reduce the attack surface.</p>
   </recommendation>
 
   <example>
