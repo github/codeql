@@ -324,7 +324,7 @@ public abstract class Context {
      * <p>
      * Starting from {@link android.os.Build.VERSION_CODES#N},
      * {@link android.Manifest.permission#READ_EXTERNAL_STORAGE} permission is not
-     * required, so don’t ask for this permission at runtime. To handle both cases,
+     * required, so don't ask for this permission at runtime. To handle both cases,
      * your app must first try to read the OBB file, and if it fails, you must
      * request {@link android.Manifest.permission#READ_EXTERNAL_STORAGE} permission
      * at runtime.
