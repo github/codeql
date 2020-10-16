@@ -62,8 +62,10 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override string toStringImpl() {
     result = this.getControlFlowNode().toString()
     or
-    this = TCilExprNode(_) and
-    result = "CIL expression"
+    exists(CIL::Expr e |
+      this = TCilExprNode(e) and
+      result = e.toString()
+    )
   }
 }
 
