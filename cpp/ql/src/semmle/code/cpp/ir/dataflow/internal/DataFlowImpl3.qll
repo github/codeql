@@ -1546,7 +1546,7 @@ private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) 
       strictcount(Node n |
         flowCand(n, _, _, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), config)
         or
-        flowCandSummaryCtx(n, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), _)
+        flowCandSummaryCtx(n, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), config)
       ) and
     accessPathApproxCostLimits(apLimit, tupleLimit) and
     apLimit < tails and
@@ -2144,11 +2144,12 @@ private predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, A
   )
 }
 
-private predicate nodeMayUseSummary(Node n, AccessPathApprox apa) {
+private predicate nodeMayUseSummary(Node n, AccessPathApprox apa, Configuration config) {
   exists(DataFlowCallable c, AccessPathApprox apa0 |
     parameterMayFlowThrough(_, c, apa) and
-    flow(n, true, _, apa0, _) and
-    flowFwd(n, any(CallContextCall ccc), TAccessPathApproxSome(apa), _, apa0, _)
+    flow(n, true, _, apa0, config) and
+    flowFwd(n, any(CallContextCall ccc), TAccessPathApproxSome(apa), _, apa0, config) and
+    n.getEnclosingCallable() = c
   )
 }
 
@@ -2204,6 +2205,10 @@ private int count1to2unfold(AccessPathApproxCons1 apa, Configuration config) {
   )
 }
 
+private int countNodesUsingAccessPath(AccessPathApprox apa, Configuration config) {
+  result = strictcount(Node n | flow(n, _, _, apa, config) or nodeMayUseSummary(n, apa, config))
+}
+
 /**
  * Holds if a length 2 access path approximation matching `apa` is expected
  * to be expensive.
@@ -2211,12 +2216,7 @@ private int count1to2unfold(AccessPathApproxCons1 apa, Configuration config) {
 private predicate expensiveLen1to2unfolding(AccessPathApproxCons1 apa, Configuration config) {
   exists(int aps, int nodes, int apLimit, int tupleLimit |
     aps = count1to2unfold(apa, config) and
-    nodes =
-      strictcount(Node n |
-        flow(n, _, _, apa, config)
-        or
-        nodeMayUseSummary(n, apa)
-      ) and
+    nodes = countNodesUsingAccessPath(apa, config) and
     accessPathCostLimits(apLimit, tupleLimit) and
     apLimit < aps and
     tupleLimit < (aps - 1) * nodes
@@ -2237,12 +2237,7 @@ private AccessPathApprox getATail(AccessPathApprox apa, Configuration config) {
 private predicate evalUnfold(AccessPathApprox apa, boolean unfold, Configuration config) {
   exists(int aps, int nodes, int apLimit, int tupleLimit |
     aps = countPotentialAps(apa, config) and
-    nodes =
-      strictcount(Node n |
-        flow(n, _, _, apa, _)
-        or
-        nodeMayUseSummary(n, apa)
-      ) and
+    nodes = countNodesUsingAccessPath(apa, config) and
     accessPathCostLimits(apLimit, tupleLimit) and
     if apLimit < aps and tupleLimit < (aps - 1) * nodes then unfold = false else unfold = true
   )
