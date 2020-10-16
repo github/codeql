@@ -140,23 +140,23 @@ class FlowSource = Impl::FlowSource;
 module FlowSource {
   class Range = Impl::FlowSource::Range;
 
-  private class RemoteFlowSource extends Range {
-    RemoteFlowSource() { this = "remote" }
+  private class RemoteFlowSourceRange extends Range {
+    RemoteFlowSourceRange() { this = "remote" }
   }
 
-  FlowSource remote() { result = any(RemoteFlowSource s).toFlowSource() }
+  FlowSource remote() { result = any(RemoteFlowSourceRange s).toFlowSource() }
 
-  private class LocalFlowSource extends Range {
-    LocalFlowSource() { this = "local" }
+  private class LocalFlowSourceRange extends Range {
+    LocalFlowSourceRange() { this = "local" }
   }
 
-  FlowSource local() { result = any(LocalFlowSource s).toFlowSource() }
+  FlowSource local() { result = any(LocalFlowSourceRange s).toFlowSource() }
 
-  private class StoredFlowSource extends Range {
-    StoredFlowSource() { this = "stored" }
+  private class StoredFlowSourceRange extends Range {
+    StoredFlowSourceRange() { this = "stored" }
   }
 
-  FlowSource stored() { result = any(StoredFlowSource s).toFlowSource() }
+  FlowSource stored() { result = any(StoredFlowSourceRange s).toFlowSource() }
 }
 
 class FlowSink = Impl::FlowSink;
@@ -165,39 +165,36 @@ class FlowSink = Impl::FlowSink;
 module FlowSink {
   class Range = Impl::FlowSink::Range;
 
-  private class RemoteFlowSink extends Range {
-    RemoteFlowSink() { this = "remote" }
+  abstract private class RemoteFlowSinkRange extends Range {
+    bindingset[this]
+    RemoteFlowSinkRange() { any() }
   }
 
-  FlowSink remote() { result = any(RemoteFlowSink s).toFlowSink() }
+  FlowSink remote() { result = any(RemoteFlowSinkRange s).toFlowSink() }
 
-  private class HtmlFlowSink extends Range {
-    HtmlFlowSink() { this = "html" }
-
-    override predicate isSubsetOf(FlowSink fs) { fs = remote() }
+  private class HtmlFlowSinkRange extends RemoteFlowSinkRange {
+    HtmlFlowSinkRange() { this = "html" }
   }
 
-  FlowSink html() { result = any(HtmlFlowSink s).toFlowSink() }
+  FlowSink html() { result = any(HtmlFlowSinkRange s).toFlowSink() }
 
-  private class EmailFlowSink extends Range {
-    EmailFlowSink() { this = "email" }
-
-    override predicate isSubsetOf(FlowSink fs) { fs = remote() }
+  private class EmailFlowSinkRange extends RemoteFlowSinkRange {
+    EmailFlowSinkRange() { this = "email" }
   }
 
-  FlowSink email() { result = any(EmailFlowSink s).toFlowSink() }
+  FlowSink email() { result = any(EmailFlowSinkRange s).toFlowSink() }
 
-  private class SqlFlowSink extends Range {
-    SqlFlowSink() { this = "sql" }
+  private class SqlFlowSinkRange extends Range {
+    SqlFlowSinkRange() { this = "sql" }
   }
 
-  FlowSink sql() { result = any(SqlFlowSink s).toFlowSink() }
+  FlowSink sql() { result = any(SqlFlowSinkRange s).toFlowSink() }
 
-  private class CommandFlowSink extends Range {
-    CommandFlowSink() { this = "command" }
+  private class CommandFlowSinkRange extends Range {
+    CommandFlowSinkRange() { this = "command" }
   }
 
-  FlowSink command() { result = any(CommandFlowSink s).toFlowSink() }
+  FlowSink command() { result = any(CommandFlowSinkRange s).toFlowSink() }
 }
 
 class FrameworkDataFlow = Impl::FrameworkDataFlow;

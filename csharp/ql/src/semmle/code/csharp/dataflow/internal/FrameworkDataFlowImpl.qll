@@ -2,7 +2,7 @@
  * Provides classes and predicates for definining data-flow through frameworks.
  *
  * The definitions in this file are language-independant, and language-specific
- * definitions are passed in via the `FrameworkDataFlowSpecific::Public` module.
+ * definitions are passed in via the `FrameworkDataFlowSpecific` module.
  */
 
 import FrameworkDataFlowSpecific::Public
@@ -77,8 +77,6 @@ class FlowSource extends MkFlowSource {
 
   FlowSource() { this = MkFlowSource(r) }
 
-  predicate isSubsetOf(FlowSource fs) { r.isSubsetOf(fs) }
-
   string toString() { result = r }
 }
 
@@ -86,8 +84,6 @@ module FlowSource {
   abstract class Range extends string {
     bindingset[this]
     Range() { any() }
-
-    predicate isSubsetOf(FlowSource fs) { none() }
 
     FlowSource toFlowSource() { result = MkFlowSource(this) }
   }
@@ -101,8 +97,6 @@ class FlowSink extends MkFlowSink {
 
   FlowSink() { this = MkFlowSink(r) }
 
-  predicate isSubsetOf(FlowSink fs) { r.isSubsetOf(fs) }
-
   string toString() { result = r }
 }
 
@@ -110,8 +104,6 @@ module FlowSink {
   abstract class Range extends string {
     bindingset[this]
     Range() { any() }
-
-    predicate isSubsetOf(FlowSink fs) { none() }
 
     FlowSink toFlowSink() { result = MkFlowSink(this) }
   }
