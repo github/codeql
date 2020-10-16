@@ -1,9 +1,14 @@
-/**
- * Definitions for tracking taint steps through the methods of `com.google.common.base.Joiner`.
- */
+/** Definitions of flow steps through the various string utility fenctions in the Guava framework. */
 
 import java
 import semmle.code.java.dataflow.FlowSteps
+
+/**
+ * The class `com.google.common.base.Strings`.
+ */
+class TypeGuavaStrings extends Class {
+  TypeGuavaStrings() { this.hasQualifiedName("com.google.common.base", "Strings") }
+}
 
 /**
  * The class `com.google.common.base.Joiner`.
@@ -23,12 +28,52 @@ class TypeGuavaMapJoiner extends NestedClass {
 }
 
 /**
+ * The class `com.google.common.base.Splitter`.
+ */
+class TypeGuavaSplitter extends Class {
+  TypeGuavaSplitter() { this.hasQualifiedName("com.google.common.base", "Splitter") }
+}
+
+/**
+ * The nested class `Splitter.MapSplitter`.
+ */
+class TypeGuavaMapSplitter extends NestedClass {
+  TypeGuavaMapSplitter() {
+    this.getEnclosingType() instanceof TypeGuavaSplitter and
+    this.hasName("MapSplitter")
+  }
+}
+
+/**
+ * A taint preserving method on `com.google.common.base.Strings`.
+ */
+private class GuavaStringsTaintPreservingMethod extends TaintPreservingCallable {
+  GuavaStringsTaintPreservingMethod() {
+    this.getDeclaringType() instanceof TypeGuavaStrings and
+    // static String emptyToNull(String string)
+    // static String emptyToNull(String string)
+    // static String padEnd(String string, int minLength, char padChar)
+    // static String padStart(String string, int minLength, char padChar)
+    // static String repeat(String string, int count)
+    // static String lenientFormat(String template, Object ... args)
+    this.hasName(["emptyToNull", "nullToEmpty", "padStart", "padEnd", "repeat", "lenientFormat"])
+  }
+
+  override predicate returnsTaintFrom(int src) {
+    src = 0
+    or
+    this.hasName("lenientFormat") and
+    src = [0 .. getNumberOfParameters()]
+  }
+}
+
+/**
  * A method of `Joiner` or `MapJoiner`.
  */
 private class GuavaJoinerMethod extends Method {
   GuavaJoinerMethod() {
-    this.getDeclaringType() instanceof TypeGuavaJoiner or
-    this.getDeclaringType() instanceof TypeGuavaMapJoiner
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeGuavaJoiner or
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeGuavaMapJoiner
   }
 }
 
@@ -54,7 +99,7 @@ private class GuavaJoinerBuilderMethod extends GuavaJoinerMethod, TaintPreservin
 }
 
 /**
- * An `appendTo` method on `Joiner` or `MapJoiner`
+ * An `appendTo` method on `Joiner` or `MapJoiner`.
  */
 private class GuavaJoinerAppendToMethod extends GuavaJoinerMethod, TaintPreservingCallable {
   GuavaJoinerAppendToMethod() {
@@ -85,7 +130,7 @@ private class GuavaJoinerAppendToMethod extends GuavaJoinerMethod, TaintPreservi
 }
 
 /**
- * A `join` method on `Joiner` or `MapJoiner`
+ * A `join` method on `Joiner` or `MapJoiner`.
  */
 private class GuavaJoinMethod extends GuavaJoinerMethod, TaintPreservingCallable {
   GuavaJoinMethod() {
@@ -100,4 +145,24 @@ private class GuavaJoinMethod extends GuavaJoinerMethod, TaintPreservingCallable
   }
 
   override predicate returnsTaintFrom(int src) { src = [-1 .. getNumberOfParameters()] }
+}
+
+/**
+ * A method of `Splitter` or `MapSplitter` that splits its input string.
+ */
+private class GuavaSplitMethod extends TaintPreservingCallable {
+  GuavaSplitMethod() {
+    (
+      this.getDeclaringType() instanceof TypeGuavaSplitter
+      or
+      this.getDeclaringType() instanceof TypeGuavaMapSplitter
+    ) and
+    // Iterable<String> split(CharSequence sequence)
+    // List<String> splitToList(CharSequence sequence)
+    // Stream<String> splitToStream(CharSequence sequence)
+    // Map<String,String> split(CharSequence sequence) [on MapSplitter]
+    this.hasName(["split", "splitToList", "splitToStream"])
+  }
+
+  override predicate returnsTaintFrom(int src) { src = 0 }
 }

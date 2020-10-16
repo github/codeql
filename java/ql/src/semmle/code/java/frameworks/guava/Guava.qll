@@ -1,8 +1,6 @@
 /**
- * Definitions for tracking taint steps throught the Guava framework.
+ * Definitions for tracking taint steps through the Guava framework.
  */
 
 import java
-private import Strings
-private import Splitter
-private import Joiner
+private import StringUtils
