@@ -17,6 +17,12 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
+
+  /**
+   * This prevents the argument from one call to reach the sink
+   * via a different call, by flowing to an argument of that.
+   */
+  override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 from DataFlow::Node source, DataFlow::Node sink
