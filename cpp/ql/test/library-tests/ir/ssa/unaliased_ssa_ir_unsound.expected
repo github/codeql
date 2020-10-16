@@ -334,7 +334,7 @@ ssa.cpp:
 #   97|     r97_2(glval<Point>)   = VariableAddress[a]           : 
 #   97|     r97_3(Point *)        = CopyValue                    : r97_2
 #   97|     r97_4(void *)         = Convert                      : r97_3
-#   97|     v97_5(void)           = Call                         : func:r97_1, 0:r97_4
+#   97|     v97_5(void)           = Call[Escape]                 : func:r97_1, 0:r97_4
 #   97|     mu97_6(unknown)       = ^CallSideEffect              : ~m?
 #   97|     v97_7(void)           = ^BufferReadSideEffect[0]     : &:r97_4, ~m?
 #   97|     mu97_8(unknown)       = ^BufferMayWriteSideEffect[0] : &:r97_4
@@ -386,7 +386,7 @@ ssa.cpp:
 #  108|     r108_2(glval<Point>)   = VariableAddress[a]           : 
 #  108|     r108_3(Point *)        = CopyValue                    : r108_2
 #  108|     r108_4(void *)         = Convert                      : r108_3
-#  108|     v108_5(void)           = Call                         : func:r108_1, 0:r108_4
+#  108|     v108_5(void)           = Call[Escape]                 : func:r108_1, 0:r108_4
 #  108|     mu108_6(unknown)       = ^CallSideEffect              : ~m?
 #  108|     v108_7(void)           = ^BufferReadSideEffect[0]     : &:r108_4, ~m?
 #  108|     mu108_8(unknown)       = ^BufferMayWriteSideEffect[0] : &:r108_4
@@ -450,7 +450,7 @@ ssa.cpp:
 #  119|     r119_2(glval<Point>)   = VariableAddress[a]           : 
 #  119|     r119_3(Point *)        = CopyValue                    : r119_2
 #  119|     r119_4(void *)         = Convert                      : r119_3
-#  119|     v119_5(void)           = Call                         : func:r119_1, 0:r119_4
+#  119|     v119_5(void)           = Call[Escape]                 : func:r119_1, 0:r119_4
 #  119|     mu119_6(unknown)       = ^CallSideEffect              : ~m?
 #  119|     v119_7(void)           = ^BufferReadSideEffect[0]     : &:r119_4, ~m?
 #  119|     mu119_8(unknown)       = ^BufferMayWriteSideEffect[0] : &:r119_4
@@ -789,7 +789,7 @@ ssa.cpp:
 #  199|     r199_6(glval<char *>)  = VariableAddress[str2]       : 
 #  199|     r199_7(char *)         = Load                        : &:r199_6, m198_9
 #  199|     r199_8(char *)         = Convert                     : r199_7
-#  199|     r199_9(int)            = Call                        : func:r199_2, 0:r199_5, 1:r199_8
+#  199|     r199_9(int)            = Call[strcmp]                : func:r199_2, 0:r199_5, 1:r199_8
 #  199|     v199_10(void)          = ^BufferReadSideEffect[0]    : &:r199_5, ~m?
 #  199|     v199_11(void)          = ^BufferReadSideEffect[1]    : &:r199_8, ~m?
 #  199|     m199_12(int)           = Store                       : &:r199_1, r199_9
@@ -797,7 +797,7 @@ ssa.cpp:
 #  200|     r200_2(glval<char *>)  = VariableAddress[str1]       : 
 #  200|     r200_3(char *)         = Load                        : &:r200_2, m198_5
 #  200|     r200_4(char *)         = Convert                     : r200_3
-#  200|     r200_5(int)            = Call                        : func:r200_1, 0:r200_4
+#  200|     r200_5(int)            = Call[strlen]                : func:r200_1, 0:r200_4
 #  200|     v200_6(void)           = ^BufferReadSideEffect[0]    : &:r200_4, ~m?
 #  200|     r200_7(glval<int>)     = VariableAddress[ret]        : 
 #  200|     r200_8(int)            = Load                        : &:r200_7, m199_12
@@ -806,7 +806,7 @@ ssa.cpp:
 #  201|     r201_1(glval<unknown>) = FunctionAddress[abs]        : 
 #  201|     r201_2(glval<int>)     = VariableAddress[x]          : 
 #  201|     r201_3(int)            = Load                        : &:r201_2, m198_13
-#  201|     r201_4(int)            = Call                        : func:r201_1, 0:r201_3
+#  201|     r201_4(int)            = Call[abs]                   : func:r201_1, 0:r201_3
 #  201|     r201_5(glval<int>)     = VariableAddress[ret]        : 
 #  201|     r201_6(int)            = Load                        : &:r201_5, m200_10
 #  201|     r201_7(int)            = Add                         : r201_6, r201_4
@@ -839,7 +839,7 @@ ssa.cpp:
 #  209|     r209_6(int *)          = CopyValue                          : r209_5
 #  209|     r209_7(void *)         = Convert                            : r209_6
 #  209|     r209_8(int)            = Constant[4]                        : 
-#  209|     r209_9(void *)         = Call                               : func:r209_1, 0:r209_4, 1:r209_7, 2:r209_8
+#  209|     r209_9(void *)         = Call[memcpy]                       : func:r209_1, 0:r209_4, 1:r209_7, 2:r209_8
 #  209|     v209_10(void)          = ^SizedBufferReadSideEffect[1]      : &:r209_7, r209_8, ~m?
 #  209|     mu209_11(unknown)      = ^SizedBufferMustWriteSideEffect[0] : &:r209_4, r209_8
 #  210|     r210_1(glval<int>)     = VariableAddress[#return]           : 
@@ -917,7 +917,7 @@ ssa.cpp:
 #  226|     mu226_2(unknown)       = AliasedDefinition             : 
 #  226|     mu226_3(unknown)       = InitializeNonLocal            : 
 #  227|     r227_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
-#  227|     v227_2(void)           = Call                          : func:r227_1
+#  227|     v227_2(void)           = Call[ExternalFunc]            : func:r227_1
 #  227|     mu227_3(unknown)       = ^CallSideEffect               : ~m?
 #  229|     r229_1(glval<char *>)  = VariableAddress[s]            : 
 #  229|     r229_2(glval<char[8]>) = StringConstant["Literal"]     : 
@@ -976,18 +976,18 @@ ssa.cpp:
 #  240|     mu240_2(Constructible)       = Uninitialized[c]                : &:r240_1
 #  240|     r240_3(glval<unknown>)       = FunctionAddress[Constructible]  : 
 #  240|     r240_4(int)                  = Constant[1]                     : 
-#  240|     v240_5(void)                 = Call                            : func:r240_3, this:r240_1, 0:r240_4
+#  240|     v240_5(void)                 = Call[Constructible]             : func:r240_3, this:r240_1, 0:r240_4
 #  240|     mu240_6(unknown)             = ^CallSideEffect                 : ~m?
 #  240|     mu240_7(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r240_1
 #  241|     r241_1(glval<Constructible>) = VariableAddress[c]              : 
 #  241|     r241_2(glval<unknown>)       = FunctionAddress[g]              : 
-#  241|     v241_3(void)                 = Call                            : func:r241_2, this:r241_1
+#  241|     v241_3(void)                 = Call[g]                         : func:r241_2, this:r241_1
 #  241|     mu241_4(unknown)             = ^CallSideEffect                 : ~m?
 #  241|     v241_5(void)                 = ^BufferReadSideEffect[-1]       : &:r241_1, ~m?
 #  241|     mu241_6(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r241_1
 #  242|     r242_1(glval<Constructible>) = VariableAddress[c]              : 
 #  242|     r242_2(glval<unknown>)       = FunctionAddress[g]              : 
-#  242|     v242_3(void)                 = Call                            : func:r242_2, this:r242_1
+#  242|     v242_3(void)                 = Call[g]                         : func:r242_2, this:r242_1
 #  242|     mu242_4(unknown)             = ^CallSideEffect                 : ~m?
 #  242|     v242_5(void)                 = ^BufferReadSideEffect[-1]       : &:r242_1, ~m?
 #  242|     mu242_6(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r242_1
@@ -995,12 +995,12 @@ ssa.cpp:
 #  243|     mu243_2(Constructible)       = Uninitialized[c2]               : &:r243_1
 #  243|     r243_3(glval<unknown>)       = FunctionAddress[Constructible]  : 
 #  243|     r243_4(int)                  = Constant[2]                     : 
-#  243|     v243_5(void)                 = Call                            : func:r243_3, this:r243_1, 0:r243_4
+#  243|     v243_5(void)                 = Call[Constructible]             : func:r243_3, this:r243_1, 0:r243_4
 #  243|     mu243_6(unknown)             = ^CallSideEffect                 : ~m?
 #  243|     mu243_7(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r243_1
 #  244|     r244_1(glval<Constructible>) = VariableAddress[c2]             : 
 #  244|     r244_2(glval<unknown>)       = FunctionAddress[g]              : 
-#  244|     v244_3(void)                 = Call                            : func:r244_2, this:r244_1
+#  244|     v244_3(void)                 = Call[g]                         : func:r244_2, this:r244_1
 #  244|     mu244_4(unknown)             = ^CallSideEffect                 : ~m?
 #  244|     v244_5(void)                 = ^BufferReadSideEffect[-1]       : &:r244_1, ~m?
 #  244|     mu244_6(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r244_1
@@ -1027,7 +1027,7 @@ ssa.cpp:
 #  248|     r248_5(unsigned long)  = Convert                            : r248_4
 #  248|     r248_6(unsigned long)  = Constant[1]                        : 
 #  248|     r248_7(unsigned long)  = Mul                                : r248_5, r248_6
-#  248|     r248_8(void *)         = Call                               : func:r248_2, 0:r248_7
+#  248|     r248_8(void *)         = Call[operator new[]]               : func:r248_2, 0:r248_7
 #  248|     mu248_9(unknown)       = ^CallSideEffect                    : ~m?
 #  248|     mu248_10(unknown)      = ^InitializeDynamicAllocation       : &:r248_8
 #  248|     r248_11(char *)        = Convert                            : r248_8
@@ -1046,7 +1046,7 @@ ssa.cpp:
 #  250|     r250_7(void *)         = Convert                            : r250_6
 #  250|     r250_8(glval<int>)     = VariableAddress[size]              : 
 #  250|     r250_9(int)            = Load                               : &:r250_8, m247_9
-#  250|     r250_10(void *)        = Call                               : func:r250_1, 0:r250_4, 1:r250_7, 2:r250_9
+#  250|     r250_10(void *)        = Call[memcpy]                       : func:r250_1, 0:r250_4, 1:r250_7, 2:r250_9
 #  250|     v250_11(void)          = ^SizedBufferReadSideEffect[1]      : &:r250_7, r250_9, ~m?
 #  250|     mu250_12(unknown)      = ^SizedBufferMustWriteSideEffect[0] : &:r250_4, r250_9
 #  251|     r251_1(glval<char *>)  = VariableAddress[#return]           : 
@@ -1074,13 +1074,13 @@ ssa.cpp:
 
 #  256|   Block 1
 #  256|     r256_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
-#  256|     v256_2(void)           = Call                          : func:r256_1
+#  256|     v256_2(void)           = Call[ExternalFunc]            : func:r256_1
 #  256|     mu256_3(unknown)       = ^CallSideEffect               : ~m?
 #-----|   Goto -> Block 3
 
 #  259|   Block 2
 #  259|     r259_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
-#  259|     v259_2(void)           = Call                          : func:r259_1
+#  259|     v259_2(void)           = Call[ExternalFunc]            : func:r259_1
 #  259|     mu259_3(unknown)       = ^CallSideEffect               : ~m?
 #-----|   Goto -> Block 3
 
@@ -1116,7 +1116,7 @@ ssa.cpp:
 #  269|     r269_2(glval<unknown>) = FunctionAddress[malloc]            : 
 #  269|     r269_3(glval<int>)     = VariableAddress[size]              : 
 #  269|     r269_4(int)            = Load                               : &:r269_3, m268_9
-#  269|     r269_5(void *)         = Call                               : func:r269_2, 0:r269_4
+#  269|     r269_5(void *)         = Call[malloc]                       : func:r269_2, 0:r269_4
 #  269|     mu269_6(unknown)       = ^CallSideEffect                    : ~m?
 #  269|     mu269_7(unknown)       = ^InitializeDynamicAllocation       : &:r269_5
 #  269|     m269_8(void *)         = Store                              : &:r269_1, r269_5
@@ -1127,7 +1127,7 @@ ssa.cpp:
 #  270|     r270_5(void *)         = Load                               : &:r270_4, m268_5
 #  270|     r270_6(glval<int>)     = VariableAddress[size]              : 
 #  270|     r270_7(int)            = Load                               : &:r270_6, m268_9
-#  270|     r270_8(void *)         = Call                               : func:r270_1, 0:r270_3, 1:r270_5, 2:r270_7
+#  270|     r270_8(void *)         = Call[memcpy]                       : func:r270_1, 0:r270_3, 1:r270_5, 2:r270_7
 #  270|     v270_9(void)           = ^SizedBufferReadSideEffect[1]      : &:r270_5, r270_7, ~m?
 #  270|     mu270_10(unknown)      = ^SizedBufferMustWriteSideEffect[0] : &:r270_3, r270_7
 #  271|     r271_1(glval<void *>)  = VariableAddress[#return]           : 
@@ -1250,7 +1250,7 @@ ssa.cpp:
 #  292|     r292_1(glval<Point *>)  = VariableAddress[p]              : 
 #  292|     r292_2(glval<unknown>)  = FunctionAddress[operator new]   : 
 #  292|     r292_3(unsigned long)   = Constant[8]                     : 
-#  292|     r292_4(void *)          = Call                            : func:r292_2, 0:r292_3
+#  292|     r292_4(void *)          = Call[operator new]              : func:r292_2, 0:r292_3
 #  292|     mu292_5(unknown)        = ^CallSideEffect                 : ~m?
 #  292|     mu292_6(unknown)        = ^InitializeDynamicAllocation    : &:r292_4
 #  292|     r292_7(Point *)         = Convert                         : r292_4
@@ -1258,7 +1258,7 @@ ssa.cpp:
 #  293|     r293_1(glval<Point *>)  = VariableAddress[q]              : 
 #  293|     r293_2(glval<unknown>)  = FunctionAddress[operator new]   : 
 #  293|     r293_3(unsigned long)   = Constant[8]                     : 
-#  293|     r293_4(void *)          = Call                            : func:r293_2, 0:r293_3
+#  293|     r293_4(void *)          = Call[operator new]              : func:r293_2, 0:r293_3
 #  293|     mu293_5(unknown)        = ^CallSideEffect                 : ~m?
 #  293|     mu293_6(unknown)        = ^InitializeDynamicAllocation    : &:r293_4
 #  293|     r293_7(Point *)         = Convert                         : r293_4
@@ -1266,24 +1266,24 @@ ssa.cpp:
 #  294|     r294_1(glval<int>)      = VariableAddress[j]              : 
 #  294|     r294_2(glval<unknown>)  = FunctionAddress[operator new]   : 
 #  294|     r294_3(unsigned long)   = Constant[4]                     : 
-#  294|     r294_4(void *)          = Call                            : func:r294_2, 0:r294_3
+#  294|     r294_4(void *)          = Call[operator new]              : func:r294_2, 0:r294_3
 #  294|     mu294_5(unknown)        = ^CallSideEffect                 : ~m?
 #  294|     mu294_6(unknown)        = ^InitializeDynamicAllocation    : &:r294_4
 #  294|     r294_7(A *)             = Convert                         : r294_4
 #  294|     r294_8(glval<unknown>)  = FunctionAddress[A]              : 
 #  294|     r294_9(glval<unknown>)  = FunctionAddress[operator new]   : 
 #  294|     r294_10(unsigned long)  = Constant[4]                     : 
-#  294|     r294_11(void *)         = Call                            : func:r294_9, 0:r294_10
+#  294|     r294_11(void *)         = Call[operator new]              : func:r294_9, 0:r294_10
 #  294|     mu294_12(unknown)       = ^CallSideEffect                 : ~m?
 #  294|     mu294_13(unknown)       = ^InitializeDynamicAllocation    : &:r294_11
 #  294|     r294_14(A *)            = Convert                         : r294_11
 #  294|     r294_15(glval<unknown>) = FunctionAddress[A]              : 
 #  294|     r294_16(glval<int>)     = VariableAddress[x]              : 
 #  294|     r294_17(int)            = Load                            : &:r294_16, m291_5
-#  294|     v294_18(void)           = Call                            : func:r294_15, this:r294_14, 0:r294_17
+#  294|     v294_18(void)           = Call[A]                         : func:r294_15, this:r294_14, 0:r294_17
 #  294|     mu294_19(unknown)       = ^CallSideEffect                 : ~m?
 #  294|     mu294_20(A)             = ^IndirectMayWriteSideEffect[-1] : &:r294_14
-#  294|     v294_21(void)           = Call                            : func:r294_8, this:r294_7, 0:r294_14
+#  294|     v294_21(void)           = Call[A]                         : func:r294_8, this:r294_7, 0:r294_14
 #  294|     mu294_22(unknown)       = ^CallSideEffect                 : ~m?
 #  294|     mu294_23(A)             = ^IndirectMayWriteSideEffect[-1] : &:r294_7
 #  294|     v294_24(void)           = ^BufferReadSideEffect[0]        : &:r294_14, ~m?
@@ -1294,12 +1294,12 @@ ssa.cpp:
 #  295|     r295_1(glval<A *>)      = VariableAddress[a]              : 
 #  295|     r295_2(glval<unknown>)  = FunctionAddress[operator new]   : 
 #  295|     r295_3(unsigned long)   = Constant[4]                     : 
-#  295|     r295_4(void *)          = Call                            : func:r295_2, 0:r295_3
+#  295|     r295_4(void *)          = Call[operator new]              : func:r295_2, 0:r295_3
 #  295|     mu295_5(unknown)        = ^CallSideEffect                 : ~m?
 #  295|     mu295_6(unknown)        = ^InitializeDynamicAllocation    : &:r295_4
 #  295|     r295_7(A *)             = Convert                         : r295_4
 #  295|     r295_8(glval<unknown>)  = FunctionAddress[A]              : 
-#  295|     v295_9(void)            = Call                            : func:r295_8, this:r295_7
+#  295|     v295_9(void)            = Call[A]                         : func:r295_8, this:r295_7
 #  295|     mu295_10(unknown)       = ^CallSideEffect                 : ~m?
 #  295|     mu295_11(A)             = ^IndirectMayWriteSideEffect[-1] : &:r295_7
 #  295|     m295_12(A *)            = Store                           : &:r295_1, r295_7
@@ -1328,7 +1328,7 @@ ssa.cpp:
 #  302|     r302_3(int)            = Load                             : &:r302_2, m301_5
 #  302|     r302_4(glval<char **>) = VariableAddress[argv]            : 
 #  302|     r302_5(char **)        = Load                             : &:r302_4, m301_7
-#  302|     v302_6(void)           = Call                             : func:r302_1, 0:r302_3, 1:r302_5
+#  302|     v302_6(void)           = Call[unknownFunction]            : func:r302_1, 0:r302_3, 1:r302_5
 #  302|     mu302_7(unknown)       = ^CallSideEffect                  : ~m?
 #  302|     v302_8(void)           = ^BufferReadSideEffect[1]         : &:r302_5, ~m?
 #  302|     mu302_9(unknown)       = ^BufferMayWriteSideEffect[1]     : &:r302_5
@@ -1337,7 +1337,7 @@ ssa.cpp:
 #  303|     r303_3(int)            = Load                             : &:r303_2, m301_5
 #  303|     r303_4(glval<char **>) = VariableAddress[argv]            : 
 #  303|     r303_5(char **)        = Load                             : &:r303_4, m301_7
-#  303|     v303_6(void)           = Call                             : func:r303_1, 0:r303_3, 1:r303_5
+#  303|     v303_6(void)           = Call[unknownFunction]            : func:r303_1, 0:r303_3, 1:r303_5
 #  303|     mu303_7(unknown)       = ^CallSideEffect                  : ~m?
 #  303|     v303_8(void)           = ^BufferReadSideEffect[1]         : &:r303_5, ~m?
 #  303|     mu303_9(unknown)       = ^BufferMayWriteSideEffect[1]     : &:r303_5
