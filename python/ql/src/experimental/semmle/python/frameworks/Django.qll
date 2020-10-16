@@ -6,8 +6,9 @@
 private import python
 private import experimental.dataflow.DataFlow
 private import experimental.dataflow.RemoteFlowSources
+private import experimental.dataflow.TaintTracking
 private import experimental.semmle.python.Concepts
-import semmle.python.regex
+private import semmle.python.regex
 
 /**
  * Provides models for the `django` PyPI package.
@@ -455,4 +456,32 @@ private module Django {
     override string getSourceType() { result = "django.http.request.HttpRequest" }
   }
 
+  private class DjangoHttpRequstAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      nodeFrom = django::http::request::HttpRequest::instance() and
+      exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
+        read.getAttributeName() in ["body",
+              // str / bytes
+              "path", "path_info", "method", "encoding", "content_type",
+              // django.http.QueryDict
+              // TODO: Model QueryDict
+              "GET", "POST",
+              // dict[str, str]
+              "content_params", "COOKIES",
+              // dict[str, Any]
+              "META",
+              // HttpHeaders (case insensitive dict-like)
+              "headers",
+              // MultiValueDict[str, UploadedFile]
+              // TODO: Model MultiValueDict
+              // TODO: Model UploadedFile
+              "FILES",
+              // django.urls.ResolverMatch
+              // TODO: Model ResolverMatch
+              "resolver_match"]
+        // TODO: Handle calls to methods
+        // TODO: Handle that a HttpRequest is iterable
+      )
+    }
+  }
 }
