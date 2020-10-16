@@ -5,6 +5,7 @@ using Semmle.Extraction.CSharp.Entities;
 using Semmle.Extraction.Entities;
 using Semmle.Util.Logging;
 using System.IO;
+using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
@@ -57,10 +58,16 @@ namespace Semmle.Extraction.CSharp.Populators
                 return;
 
             var outputAssembly = Assembly.CreateOutputAssembly(cx);
+            var attributeDatas = cx.Compilation.Assembly.GetAttributes().ToList();
+            attributeDatas.AddRange(cx.Compilation.Assembly.Modules.SelectMany(m => m.GetAttributes()));
             foreach (var attribute in node.Attributes)
             {
-                var ae = new Attribute(cx, attribute, outputAssembly);
-                cx.BindComments(ae, attribute.GetLocation());
+                var attributeData = attributeDatas.Single(ad => ad.ApplicationSyntaxReference?.GetSyntax() == attribute);
+                if (attributeData is object)
+                {
+                    var ae = new Attribute(cx, attributeData, outputAssembly);
+                    cx.BindComments(ae, attribute.GetLocation());
+                }
             }
         }
     }

@@ -35,6 +35,21 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 }
             }
         }
+
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent)
+        {
+            var info = new ExpressionInfo(
+                cx,
+                NullType.Create(cx),
+                GeneratedLocation.Create(cx),
+                ExprKind.ARRAY_INIT,
+                parent,
+                NormalArrayCreation.InitializerIndex,
+                true,
+                null);
+
+            return new Expression(info);
+        }
     }
 
     // Array initializer { ..., ... }.

@@ -1,5 +1,28 @@
 arguments
+| Class1 | 0 | 3 |
+| Class1 | 1 | array creation of type Int32[] |
+| Class1 | 2 | null |
+| Class1 | 3 | (...) ... |
+| Class1 | 4 | null |
+| Class1 | 5 | array creation of type Object[] |
+| Method1 | 0 | 42 |
+| Method1 | 1 | array creation of type Int32[] |
+| Method1 | 2 | typeof(...) |
+| Method1 | 3 | (...) ... |
+| Method1 | 4 | array creation of type Int32[] |
+| Method1 | 5 | array creation of type Object[] |
 literals
+| 3 | Int32 | 3 |
+| 42 | Int32 | 42 |
+| null | null | null |
 enums
+| (...) ... | 12 | access to type Enum1 | 12 |
+| (...) ... | 43 | access to type Enum1 | 43 |
 typeof
+| typeof(...) | access to type Class1 |
 array
+| array creation of type Int32[] | 3 | 0 | 1 |
+| array creation of type Int32[] | 3 | 1 | 2 |
+| array creation of type Int32[] | 3 | 2 | 3 |
+| array creation of type Object[] | 2 | 0 | 1 |
+| array creation of type Object[] | 2 | 1 | typeof(...) |

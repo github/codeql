@@ -34,5 +34,20 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         public static Expression Create(ExpressionNodeInfo info) => new TypeAccess(info).TryPopulate();
+
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type)
+        {
+            var typeAccessInfo = new ExpressionInfo(
+                cx,
+                new AnnotatedType(Entities.Type.Create(cx, type), Microsoft.CodeAnalysis.NullableAnnotation.None),
+                Extraction.Entities.GeneratedLocation.Create(cx),
+                ExprKind.TYPE_ACCESS,
+                parent,
+                childIndex,
+                true,
+                null);
+
+            return new Expression(typeAccessInfo);
+        }
     }
 }
