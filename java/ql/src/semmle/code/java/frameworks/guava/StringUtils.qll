@@ -1,7 +1,7 @@
 /** Definitions of flow steps through the various string utility fenctions in the Guava framework. */
 
 import java
-import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The class `com.google.common.base.Strings`.
