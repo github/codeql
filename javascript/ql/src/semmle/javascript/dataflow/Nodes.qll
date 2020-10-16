@@ -1391,9 +1391,7 @@ module PartialInvokeNode {
       (
         this = LodashUnderscore::member(["throttle", "debounce", "once", "memoize"]).getACall()
         or
-        this =
-          DataFlow::moduleImport(["call-limit", "debounce"])
-              .getACall()
+        this = DataFlow::moduleImport(["call-limit", "debounce"]).getACall()
       )
       or
       callbackIndex = 1 and
