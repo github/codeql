@@ -423,6 +423,7 @@ class ParameterNode extends AstElementNode {
  * Gets the `i`th child from `node` ordered by location.
  */
 private AstNode getChild(AstNode node, int i) {
+  shouldPrint(node, _) and
   result =
     rank[i](AstNode child |
       child = node.getAChildNode()
@@ -444,31 +445,37 @@ private module PrettyPrinting {
    * These exceptions are handled in the `getQlCustomClass` predicate.
    */
   string getQlClass(AstNode a) {
-    not exists(getQlCustomClass(a)) and result = a.toString()
-    or
-    result = strictconcat(getQlCustomClass(a), " | ")
+    shouldPrint(a, _) and
+    (
+      not exists(getQlCustomClass(a)) and result = a.toString()
+      or
+      result = strictconcat(getQlCustomClass(a), " | ")
+    )
   }
 
   /**
    * Gets the QL class for `a` for the `AstNode`s where the toString method does not print the QL class.
    */
   string getQlCustomClass(AstNode a) {
-    a instanceof Name and
-    result = "Name" and
-    not a instanceof Parameter and
-    not a instanceof NameConstant
-    or
-    a instanceof Parameter and result = "Parameter"
-    or
-    a instanceof PlaceHolder and result = "PlaceHolder"
-    or
-    a instanceof Function and result = "Function"
-    or
-    a instanceof Class and result = "Class"
-    or
-    a instanceof Call and result = "Call"
-    or
-    a instanceof NameConstant and result = "NameConstant"
+    shouldPrint(a, _) and
+    (
+      a instanceof Name and
+      result = "Name" and
+      not a instanceof Parameter and
+      not a instanceof NameConstant
+      or
+      a instanceof Parameter and result = "Parameter"
+      or
+      a instanceof PlaceHolder and result = "PlaceHolder"
+      or
+      a instanceof Function and result = "Function"
+      or
+      a instanceof Class and result = "Class"
+      or
+      a instanceof Call and result = "Call"
+      or
+      a instanceof NameConstant and result = "NameConstant"
+    )
   }
 
   /**
@@ -477,12 +484,15 @@ private module PrettyPrinting {
    * Has one and only result for every AstNode.
    */
   string prettyPrint(AstNode a) {
-    // this strictconcat should not be needed.
-    // However, the printAst feature breaks if this predicate has more than one result for an `AstNode`, so the strictconcat stays.
-    result = strictconcat(reprRec(a), " | ")
-    or
-    not exists(reprRec(a)) and
-    result = ""
+    shouldPrint(a, _) and
+    (
+      // this strictconcat should not be needed.
+      // However, the printAst feature breaks if this predicate has more than one result for an `AstNode`, so the strictconcat stays.
+      result = strictconcat(reprRec(a), " | ")
+      or
+      not exists(reprRec(a)) and
+      result = ""
+    )
   }
 
   /**
