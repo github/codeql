@@ -66,33 +66,44 @@ types.cs:
 #   30|       -1: [TypeMention] Nullable<Byte>[][]
 #   30|         1: [TypeMention] byte?
 #   30|           1: [TypeMention] byte
-#   31|     31: [Method] NullableArrayArrayType2
-#   31|       -1: [TypeMention] Nullable<Byte>[][]
-#   31|         1: [TypeMention] byte?
-#   31|           1: [TypeMention] byte
-#   32|     32: [Method] Map
-#   32|       -1: [TypeMention] Map<String, Class>
-#   32|         1: [TypeMention] string
-#   32|         2: [TypeMention] Class
-#   33|     33: [Method] Null
-#   33|       -1: [TypeMention] Class
-#   34|       4: [BlockStmt] {...}
-#   35|         0: [ReturnStmt] return ...;
-#   35|           0: [NullLiteral] null
-#   38|   2: [Enum] Enum
-#   41|   3: [Struct] Struct
-#   44|   4: [Interface] Interface
-#   47|   5: [DelegateType] Delegate
-#   48|   6: [Class] GenericClass<>
+#   32|     31: [Method] ArrayNullArrayType1
+#   32|       -1: [TypeMention] Byte[][]
+#   32|         1: [TypeMention] byte
+#   33|     32: [Method] ArrayNullArrayType2
+#   33|       -1: [TypeMention] Object[][]
+#   33|         1: [TypeMention] object
+#   34|     33: [Method] ArrayNullableRefType
+#   34|       -1: [TypeMention] Object[]
+#   34|         1: [TypeMention] object
+#   35|     34: [Method] NullableRefType
+#   35|       -1: [TypeMention] object
+#   37|     35: [Method] NullableArrayArrayType2
+#   37|       -1: [TypeMention] Nullable<Byte>[][]
+#   37|         1: [TypeMention] byte?
+#   37|           1: [TypeMention] byte
+#   38|     36: [Method] Map
+#   38|       -1: [TypeMention] Map<String, Class>
+#   38|         1: [TypeMention] string
+#   38|         2: [TypeMention] Class
+#   39|     37: [Method] Null
+#   39|       -1: [TypeMention] Class
+#   40|       4: [BlockStmt] {...}
+#   41|         0: [ReturnStmt] return ...;
+#   41|           0: [NullLiteral] null
+#   44|   2: [Enum] Enum
+#   47|   3: [Struct] Struct
+#   50|   4: [Interface] Interface
+#   53|   5: [DelegateType] Delegate
+#   54|   6: [Class] GenericClass<>
 #-----|     1: (Type parameters)
-#   48|       0: [TypeParameter] T
-#   49|   7: [Interface] GenericInterface<>
+#   54|       0: [TypeParameter] T
+#   55|   7: [Interface] GenericInterface<>
 #-----|     1: (Type parameters)
-#   49|       0: [TypeParameter] T
-#   50|   8: [Struct] GenericStruct<>
+#   55|       0: [TypeParameter] T
+#   56|   8: [Struct] GenericStruct<>
 #-----|     1: (Type parameters)
-#   50|       0: [TypeParameter] T
-#   51|   9: [Class] Map<,>
+#   56|       0: [TypeParameter] T
+#   57|   9: [Class] Map<,>
 #-----|     1: (Type parameters)
-#   51|       0: [TypeParameter] U
-#   51|       1: [TypeParameter] V
+#   57|       0: [TypeParameter] U
+#   57|       1: [TypeParameter] V

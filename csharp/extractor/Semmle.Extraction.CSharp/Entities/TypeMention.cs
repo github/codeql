@@ -23,30 +23,36 @@ namespace Semmle.Extraction.CSharp.Entities
             this.loc = loc;
         }
 
-        private static TypeSyntax GetElementType(TypeSyntax type)
+        private TypeSyntax GetArrayElementType(TypeSyntax type)
         {
             switch (type)
             {
                 case ArrayTypeSyntax ats:
-                    return GetElementType(ats.ElementType);
+                    return GetArrayElementType(ats.ElementType);
+                case NullableTypeSyntax nts:
+                    // int[]? -> int[] -> int
+                    // int?   -> int?
+                    return cx.GetTypeInfo(nts.ElementType).Type.IsReferenceType
+                        ? GetArrayElementType(nts.ElementType)
+                        : nts;
                 case PointerTypeSyntax pts:
-                    return GetElementType(pts.ElementType);
+                    return GetArrayElementType(pts.ElementType);
                 default:
                     return type;
             }
         }
 
-        private static Type GetElementType(Type type)
+        private static Type GetArrayElementType(Type type)
         {
             switch (type)
             {
                 case ArrayType at:
-                    return GetElementType(at.ElementType.Type);
+                    return GetArrayElementType(at.ElementType.Type);
                 case NamedType nt when nt.symbol.IsBoundSpan() ||
                                        nt.symbol.IsBoundReadOnlySpan():
                     return nt.TypeArguments.Single();
                 case PointerType pt:
-                    return GetElementType(pt.PointedAtType);
+                    return GetArrayElementType(pt.PointedAtType);
                 default:
                     return type;
             }
@@ -59,18 +65,25 @@ namespace Semmle.Extraction.CSharp.Entities
                 case SyntaxKind.ArrayType:
                 case SyntaxKind.PointerType:
                     Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
-                    Create(cx, GetElementType(syntax), this, GetElementType(type));
+                    Create(cx, GetArrayElementType(syntax), this, GetArrayElementType(type));
                     return;
                 case SyntaxKind.NullableType:
                     var nts = (NullableTypeSyntax)syntax;
                     if (type is NamedType nt)
                     {
-                        Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
-                        Create(cx, nts.ElementType, this, nt.symbol.IsReferenceType ? nt : nt.TypeArguments[0]);
+                        if (!nt.symbol.IsReferenceType)
+                        {
+                            Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
+                            Create(cx, nts.ElementType, this, nt.TypeArguments[0]);
+                        }
+                        else
+                        {
+                            Create(cx, nts.ElementType, parent, type);
+                        }
                     }
                     else if (type is ArrayType array)
                     {
-                        Create(cx, nts.ElementType, parent, array);
+                        Create(cx, nts.ElementType, parent, type);
                     }
                     return;
                 case SyntaxKind.TupleType:

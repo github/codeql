@@ -28,6 +28,12 @@ namespace Types
         unsafe public abstract byte*[][] PointerArrayArrayType();
         public abstract byte?[] NullableArrayType();
         public abstract byte?[][] NullableArrayArrayType();
+#nullable enable
+        public abstract byte[]?[] ArrayNullArrayType1();
+        public abstract object[]?[] ArrayNullArrayType2();
+        public abstract object?[] ArrayNullableRefType();
+        public abstract object? NullableRefType();
+#nullable restore
         public abstract System.Nullable<byte>[][] NullableArrayArrayType2();
         public abstract Map<string, Class> Map();
         Class Null()
