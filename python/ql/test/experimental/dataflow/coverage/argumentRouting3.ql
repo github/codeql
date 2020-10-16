@@ -1,5 +1,10 @@
+/**
+ * @kind path-problem
+ */
+
 import python
 import experimental.dataflow.DataFlow
+import DataFlow::PathGraph
 
 /**
  * A configuration to check routing of arguments through magic methods.
@@ -25,9 +30,9 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
   override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-from DataFlow::Node source, DataFlow::Node sink
+from DataFlow::PathNode source, DataFlow::PathNode sink
 where
-  source.getLocation().getFile().getBaseName() in ["classes.py", "argumentPassing.py"] and
-  sink.getLocation().getFile().getBaseName() in ["classes.py", "argumentPassing.py"] and
-  exists(ArgumentRoutingConfig cfg | cfg.hasFlow(source, sink))
-select source, sink
+  source.getNode().getLocation().getFile().getBaseName() in ["classes.py", "argumentPassing.py"] and
+  sink.getNode().getLocation().getFile().getBaseName() in ["classes.py", "argumentPassing.py"] and
+  exists(ArgumentRoutingConfig cfg | cfg.hasFlowPath(source, sink))
+select source.getNode(), source, sink, "Flow found"

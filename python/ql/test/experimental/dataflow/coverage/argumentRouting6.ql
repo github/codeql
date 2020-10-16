@@ -13,12 +13,12 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
   ArgumentRoutingConfig() { this = "ArgumentRoutingConfig" }
 
   override predicate isSource(DataFlow::Node node) {
-    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "arg2"
+    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "arg6"
   }
 
   override predicate isSink(DataFlow::Node node) {
     exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "SINK2" and
+      call.getFunction().(NameNode).getId() = "SINK6" and
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
