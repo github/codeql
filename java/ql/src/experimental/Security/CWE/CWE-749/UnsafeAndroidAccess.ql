@@ -1,5 +1,6 @@
 /**
  * @name Unsafe resource fetching in Android webview
+ * @id java/android/unsafe-android-webview-fetch
  * @description JavaScript rendered inside WebViews can access any protected application file and web resource from any origin
  * @kind path-problem
  * @tags security
@@ -11,6 +12,7 @@ import java
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.dataflow.FlowSources
+import DataFlow::PathGraph
 
 /**
  * Methods allowing any-local-file and cross-origin access in the WebSettings class
