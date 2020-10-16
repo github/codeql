@@ -1501,6 +1501,12 @@ class SwitchInstruction extends Instruction {
 class CallInstruction extends Instruction {
   CallInstruction() { getOpcode() instanceof Opcode::Call }
 
+  final override string getImmediateString() {
+    result = getStaticCallTarget().toString()
+    or
+    not exists(getStaticCallTarget()) and result = "?"
+  }
+
   /**
    * Gets the operand the specifies the target function of the call.
    */
