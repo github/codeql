@@ -60,7 +60,9 @@ class Tainted extends TaintType, TTaintedValue { }
 private predicate localExactStep(DataFlowNode src, DataFlowNode sink) {
   src = sink.(Opcodes::Dup).getAnOperand()
   or
-  defUse(_, src, sink)
+  exists(VariableUpdate vu | src = vu.getSource() | variableUpdateAdjacentUse(_, vu, sink))
+  or
+  adjacentUseUse(src, sink)
   or
   src = sink.(ParameterReadAccess).getTarget()
   or
@@ -87,7 +89,6 @@ private predicate localTaintStep(DataFlowNode src, DataFlowNode sink) {
   src = sink.(UnaryBitwiseOperation).getOperand()
 }
 
-cached
 module DefUse {
   /**
    * A classification of variable references into reads and writes.
@@ -121,6 +122,9 @@ module DefUse {
     ref(bb, i, v, k)
   }
 
+  /** Gets the maximum rank index for the given variable and basic block. */
+  private int lastRank(StackVariable v, BasicBlock bb) { result = max(refRank(bb, _, v, _)) }
+
   /**
    * Holds if stack variable `v` is live at the beginning of basic block `bb`.
    */
@@ -130,7 +134,7 @@ module DefUse {
     or
     // There is no reference to `v` inside `bb`, but `v` is live at entry
     // to a successor basic block of `bb`
-    not exists(refRank(bb, _, v, _)) and
+    not ref(bb, _, v, _) and
     liveAtExit(bb, v)
   }
 
@@ -155,52 +159,96 @@ module DefUse {
     rankix = refRank(bb, _, v, Read())
   }
 
+  /** Holds if `v` is defined or used in `bb`. */
+  private predicate varOccursInBlock(StackVariable v, BasicBlock bb) {
+    exists(refRank(bb, _, v, _))
+  }
+
+  /** Holds if `v` occurs in `bb` or one of `bb`'s transitive successors. */
+  private predicate blockPrecedesVar(StackVariable v, BasicBlock bb) {
+    varOccursInBlock(v, bb)
+    or
+    liveAtExit(bb, v)
+  }
+
   /**
-   * Holds if the variable update `vu` of stack variable `v` reaches the
-   * end of a basic block `bb`, at which point it is still live, without
-   * crossing another update.
+   * Holds if `bb2` is a transitive successor of `bb1` and `v` occurs in `bb1` and
+   * in `bb2` or one of its transitive successors but not in any block on the path
+   * between `bb1` and `bb2`.
    */
-  private predicate defReachesEndOfBlock(BasicBlock bb, VariableUpdate vu, StackVariable v) {
-    liveAtExit(bb, v) and
-    (
-      exists(int last | last = max(refRank(bb, _, v, _)) | defReachesRank(bb, vu, last, v))
-      or
-      exists(BasicBlock pred |
-        pred = bb.getAPredecessor() and
-        defReachesEndOfBlock(pred, vu, v) and
-        not exists(refRank(bb, _, v, Write()))
-      )
+  private predicate varBlockReaches(StackVariable v, BasicBlock bb1, BasicBlock bb2) {
+    varOccursInBlock(v, bb1) and
+    bb2 = bb1.getASuccessor() and
+    blockPrecedesVar(v, bb2)
+    or
+    exists(BasicBlock mid |
+      varBlockReaches(v, bb1, mid) and
+      bb2 = mid.getASuccessor() and
+      not varOccursInBlock(v, mid) and
+      blockPrecedesVar(v, bb2)
     )
   }
 
   /**
-   * Holds if the variable update `vu` of stack variable `v` reaches `read` in the
-   * same basic block without crossing another update of `v`.
+   * Holds if `bb2` is a transitive successor of `bb1` and `v` occurs in `bb1` and
+   * `bb2` but not in any block on the path between `bb1` and `bb2`.
    */
-  private predicate defReachesReadWithinBlock(StackVariable v, VariableUpdate vu, ReadAccess read) {
-    exists(BasicBlock bb, int rankix, int i |
-      defReachesRank(bb, vu, rankix, v) and
-      rankix = refRank(bb, i, v, Read()) and
-      read = bb.getNode(i)
-    )
+  private predicate varBlockStep(StackVariable v, BasicBlock bb1, BasicBlock bb2) {
+    varBlockReaches(v, bb1, bb2) and
+    varOccursInBlock(v, bb2)
   }
+
+  /**
+   * Holds if `v` occurs at index `i1` in `bb1` and at index `i2` in `bb2` and
+   * there is a path between them without any occurrence of `v`.
+   */
+  private predicate adjacentVarRefs(StackVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2) {
+    exists(int rankix |
+      bb1 = bb2 and
+      rankix = refRank(bb1, i1, v, _) and
+      rankix + 1 = refRank(bb2, i2, v, _)
+    )
+    or
+    lastRank(v, bb1) = refRank(bb1, i1, v, _) and
+    varBlockStep(v, bb1, bb2) and
+    1 = refRank(bb2, i2, v, _)
+  }
+
+  cached
+  private module Cached {
+    /** Holds if the variable update `vu` can be used at the adjacent read `use`. */
+    cached
+    predicate variableUpdateAdjacentUse(StackVariable v, VariableUpdate vu, ReadAccess use) {
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        adjacentVarRefs(v, bb1, i1, bb2, i2) and
+        vu = bb1.getNode(i1) and
+        use = bb2.getNode(i2)
+      )
+    }
+
+    /** Holds if `use1` and `use2` are adjacent reads of the same variable. */
+    cached
+    predicate adjacentUseUse(ReadAccess use1, ReadAccess use2) {
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        adjacentVarRefs(_, bb1, i1, bb2, i2) and
+        use1 = bb1.getNode(i1) and
+        use2 = bb2.getNode(i2)
+      )
+    }
+  }
+
+  import Cached
 
   /** Holds if the variable update `vu` can be used at the read `use`. */
-  cached
-  predicate variableUpdateUse(StackVariable target, VariableUpdate vu, ReadAccess use) {
-    defReachesReadWithinBlock(target, vu, use)
-    or
-    exists(BasicBlock bb, int i |
-      exists(refRank(bb, i, target, Read())) and
-      use = bb.getNode(i) and
-      defReachesEndOfBlock(bb.getAPredecessor(), vu, target) and
-      not defReachesReadWithinBlock(target, _, use)
+  deprecated predicate variableUpdateUse(StackVariable target, VariableUpdate vu, ReadAccess use) {
+    exists(ReadAccess ra |
+      variableUpdateAdjacentUse(target, vu, ra) and
+      adjacentUseUse*(ra, use)
     )
   }
 
   /** Holds if the update `def` can be used at the read `use`. */
-  cached
-  predicate defUse(StackVariable target, Expr def, ReadAccess use) {
+  deprecated predicate defUse(StackVariable target, Expr def, ReadAccess use) {
     exists(VariableUpdate vu | def = vu.getSource() | variableUpdateUse(target, vu, use))
   }
 }
