@@ -3,7 +3,7 @@
  */
 
 import java
-import Guava
+import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The class `com.google.common.base.Strings`.
@@ -13,31 +13,24 @@ class TypeGuavaStrings extends Class {
 }
 
 /**
- * A Guava string utility method that preserves taint from its first argument.
+ * A Guava string utility method that preserves taint.
  */
-private class GuavaStringsTaintPropagationMethod extends GuavaTaintPropagationMethodToReturn {
-  GuavaStringsTaintPropagationMethod() {
+private class GuavaStringsTaintPreservingMethod extends TaintPreservingCallable {
+  GuavaStringsTaintPreservingMethod() {
     this.getDeclaringType() instanceof TypeGuavaStrings and
     // static String emptyToNull(String string)
     // static String emptyToNull(String string)
     // static String padEnd(String string, int minLength, char padChar)
     // static String padStart(String string, int minLength, char padChar)
     // static String repeat(String string, int count)
-    this.hasName(["emptyToNull", "nullToEmpty", "padStart", "padEnd", "repeat"])
-  }
-
-  override predicate propagatesTaint(int src) { src = 0 }
-}
-
-/**
- * The method `Strings.lenientFormat`.
- */
-private class GuavaStringsFormatMethod extends GuavaTaintPropagationMethodToReturn {
-  GuavaStringsFormatMethod() {
-    this.getDeclaringType() instanceof TypeGuavaStrings and
     // static String lenientFormat(String template, Object ... args)
-    this.hasName("lenientFormat")
+    this.hasName(["emptyToNull", "nullToEmpty", "padStart", "padEnd", "repeat", "lenientFormat"])
   }
 
-  override predicate propagatesTaint(int src) { src in [0 .. getNumberOfParameters()] }
+  override predicate returnsTaintFrom(int src) {
+    src = 0
+    or
+    this.hasName("lenientFormat") and
+    src = [0 .. getNumberOfParameters()]
+  }
 }

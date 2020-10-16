@@ -3,7 +3,7 @@
  */
 
 import java
-import Guava
+import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The class `com.google.common.base.Joiner`.
@@ -35,8 +35,7 @@ private class GuavaJoinerMethod extends Method {
 /**
  * A method that builds a `Joiner` or `MapJoiner`.
  */
-private class GuavaJoinerBuilderMethod extends GuavaJoinerMethod,
-  GuavaTaintPropagationMethodToReturn {
+private class GuavaJoinerBuilderMethod extends GuavaJoinerMethod, TaintPreservingCallable {
   GuavaJoinerBuilderMethod() {
     // static Joiner on(char separator)
     // static Joiner on(String separator)
@@ -47,13 +46,17 @@ private class GuavaJoinerBuilderMethod extends GuavaJoinerMethod,
     this.hasName(["on", "skipNulls", "useForNull", "withKeyValueSeparator"])
   }
 
-  override predicate propagatesTaint(int src) { src = [-1, 0] }
+  override predicate returnsTaintFrom(int src) {
+    src = 0
+    or
+    src = -1 and not isStatic()
+  }
 }
 
 /**
  * An `appendTo` method on `Joiner` or `MapJoiner`
  */
-private class GuavaJoinerAppendToMethod extends GuavaJoinerMethod, GuavaTaintPropagationMethod {
+private class GuavaJoinerAppendToMethod extends GuavaJoinerMethod, TaintPreservingCallable {
   GuavaJoinerAppendToMethod() {
     // <A extends Appendable> A appendTo(A appendable, Iterable<?> parts)
     // <A extends Appendable> A appendTo(A appendable, Iterator<?> parts)
@@ -72,17 +75,19 @@ private class GuavaJoinerAppendToMethod extends GuavaJoinerMethod, GuavaTaintPro
     this.hasName("appendTo")
   }
 
-  override predicate propagatesTaint(int src, int sink) {
+  override predicate transfersTaint(int src, int sink) {
     src = [-1 .. getNumberOfParameters()] and
     src != sink and
-    sink = [-2, 0]
+    sink = 0
   }
+
+  override predicate returnsTaintFrom(int src) { src = [-1 .. getNumberOfParameters()] }
 }
 
 /**
  * A `join` method on `Joiner` or `MapJoiner`
  */
-private class GuavaJoinMethod extends GuavaJoinerMethod, GuavaTaintPropagationMethodToReturn {
+private class GuavaJoinMethod extends GuavaJoinerMethod, TaintPreservingCallable {
   GuavaJoinMethod() {
     // String join(Iterable<?> parts)
     // String join(Iterator<?> parts)
@@ -94,5 +99,5 @@ private class GuavaJoinMethod extends GuavaJoinerMethod, GuavaTaintPropagationMe
     this.hasName("join")
   }
 
-  override predicate propagatesTaint(int src) { src = [-1 .. getNumberOfParameters()] }
+  override predicate returnsTaintFrom(int src) { src = [-1 .. getNumberOfParameters()] }
 }

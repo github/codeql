@@ -3,7 +3,7 @@
  */
 
 import java
-import Guava
+import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The class `com.google.common.base.Splitter`.
@@ -25,7 +25,7 @@ class TypeGuavaMapSplitter extends NestedClass {
 /**
  * A method of `Splitter` or `MapSplitter` that splits its input string.
  */
-private class GuavaSplitMethod extends GuavaTaintPropagationMethodToReturn {
+private class GuavaSplitMethod extends TaintPreservingCallable {
   GuavaSplitMethod() {
     (
       this.getDeclaringType() instanceof TypeGuavaSplitter
@@ -39,5 +39,5 @@ private class GuavaSplitMethod extends GuavaTaintPropagationMethodToReturn {
     this.hasName(["split", "splitToList", "splitToStream"])
   }
 
-  override predicate propagatesTaint(int src) { src = 0 }
+  override predicate returnsTaintFrom(int src) { src = 0 }
 }
