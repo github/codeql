@@ -103,10 +103,11 @@ DataFlow::CallNode csrfMiddlewareCreation() {
  */
 private DataFlow::SourceNode nodeLeadingToCsrfWrite(DataFlow::TypeBackTracker t) {
   t.start() and
-  exists(DataFlow::PropRef value |
-    value = result.getAPropertyRead(cookieProperty()).getAPropertyWrite() and
-    value.getPropertyName().regexpMatch("(?i).*(csrf|xsrf).*")
-  )
+  result
+      .getAPropertyRead(cookieProperty())
+      .getAPropertyWrite()
+      .getPropertyName()
+      .regexpMatch("(?i).*(csrf|xsrf).*")
   or
   exists(DataFlow::TypeBackTracker t2 | result = nodeLeadingToCsrfWrite(t2).backtrack(t2, t))
 }
