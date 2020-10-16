@@ -126,7 +126,7 @@ private Express::RouteHandler getAHandlerSettingCsrfCookie() {
  * This is indicated either by the request parameter having a CSRF related write to a session variable.
  * Or by the response parameter setting a CSRF related cookie.
  */
-predicate isACsrfProtectionRouteHandler(Express::RouteHandler handler) {
+predicate isCsrfProtectionRouteHandler(Express::RouteHandler handler) {
   DataFlow::parameterNode(handler.getRequestParameter()) =
     nodeLeadingToCsrfWrite(DataFlow::TypeBackTracker::end())
   or
@@ -136,7 +136,7 @@ predicate isACsrfProtectionRouteHandler(Express::RouteHandler handler) {
 /** Gets a data flow node refering to a route handler that is protecting against CSRF. */
 private DataFlow::SourceNode getACsrfProtectionRouteHandler(DataFlow::TypeTracker t) {
   t.start() and
-  isACsrfProtectionRouteHandler(result)
+  isCsrfProtectionRouteHandler(result)
   or
   exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred |
     pred = getACsrfProtectionRouteHandler(t2)
@@ -150,7 +150,7 @@ private DataFlow::SourceNode getACsrfProtectionRouteHandler(DataFlow::TypeTracke
 
 /**
  * Gets an express route handler expression that is either a custom CSRF protection middleware,
- * or a CSFR protecting library.
+ * or a CSRF protecting library.
  */
 Express::RouteHandlerExpr getACsrfMiddleware() {
   csrfMiddlewareCreation().flowsToExpr(result)
