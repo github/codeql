@@ -33,7 +33,7 @@ private module Django {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node django_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["urls"] and
+    attr_name in ["urls", "http"] and
     (
       t.start() and
       result = DataFlow::importNode("django" + "." + attr_name)
@@ -69,12 +69,12 @@ private module Django {
 
   /** Provides models for the `django` module. */
   module django {
-    /** Gets a reference to the `django.urls` module. */
-    DataFlow::Node urls() { result = django_attr("urls") }
-
     // -------------------------------------------------------------------------
     // django.urls
     // -------------------------------------------------------------------------
+    /** Gets a reference to the `django.urls` module. */
+    DataFlow::Node urls() { result = django_attr("urls") }
+
     /** Provides models for the `django.urls` module */
     module urls {
       /**
@@ -132,8 +132,154 @@ private module Django {
        */
       DataFlow::Node re_path() { result = urls_attr("re_path") }
     }
+
+    // -------------------------------------------------------------------------
+    // django.http
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `django.http` module. */
+    DataFlow::Node http() { result = django_attr("http") }
+
+    /** Provides models for the `django.http` module */
+    module http {
+      /**
+       * Gets a reference to the attribute `attr_name` of the `django.http` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node http_attr(DataFlow::TypeTracker t, string attr_name) {
+        attr_name in ["request", "HttpRequest"] and
+        (
+          t.start() and
+          result = DataFlow::importNode("django.http" + "." + attr_name)
+          or
+          t.startInAttr(attr_name) and
+          result = django::http()
+        )
+        or
+        // Due to bad performance when using normal setup with `http_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            http_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate http_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(http_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of the `django.http` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node http_attr(string attr_name) {
+        result = http_attr(DataFlow::TypeTracker::end(), attr_name)
+      }
+
+      // ---------------------------------------------------------------------------
+      // django.http.request
+      // ---------------------------------------------------------------------------
+      /** Gets a reference to the `django.http.request` module. */
+      DataFlow::Node request() { result = http_attr("request") }
+
+      /** Provides models for the `django.http.request` module. */
+      module request {
+        /**
+         * Gets a reference to the attribute `attr_name` of the `django.http.request` module.
+         * WARNING: Only holds for a few predefined attributes.
+         */
+        private DataFlow::Node request_attr(DataFlow::TypeTracker t, string attr_name) {
+          attr_name in ["HttpRequest"] and
+          (
+            t.start() and
+            result = DataFlow::importNode("django.http.request" + "." + attr_name)
+            or
+            t.startInAttr(attr_name) and
+            result = django::http::request()
+          )
+          or
+          // Due to bad performance when using normal setup with `request_attr(t2, attr_name).track(t2, t)`
+          // we have inlined that code and forced a join
+          exists(DataFlow::TypeTracker t2 |
+            exists(DataFlow::StepSummary summary |
+              request_attr_first_join(t2, attr_name, result, summary) and
+              t = t2.append(summary)
+            )
+          )
+        }
+
+        pragma[nomagic]
+        private predicate request_attr_first_join(
+          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+          DataFlow::StepSummary summary
+        ) {
+          DataFlow::StepSummary::step(request_attr(t2, attr_name), res, summary)
+        }
+
+        /**
+         * Gets a reference to the attribute `attr_name` of the `django.http.request` module.
+         * WARNING: Only holds for a few predefined attributes.
+         */
+        private DataFlow::Node request_attr(string attr_name) {
+          result = request_attr(DataFlow::TypeTracker::end(), attr_name)
+        }
+
+        /**
+         * Provides models for the `django.http.request.HttpRequest` class
+         *
+         * See https://docs.djangoproject.com/en/3.0/ref/request-response/#httprequest-objects
+         */
+        module HttpRequest {
+          /** Gets a reference to the `django.http.request.HttpRequest` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = request_attr("HttpRequest")
+            or
+            // handle django.http.HttpRequest alias
+            t.start() and
+            result = http_attr("HttpRequest")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.request.HttpRequest` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.request.HttpRequest`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `django::http::request::HttpRequest::instance()` predicate to get
+           * references to instances of `django.http.request.HttpRequest`.
+           */
+          abstract class InstanceSource extends DataFlow::Node { }
+
+          /** Gets a reference to an instance of `django.http.request.HttpRequest`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.request.HttpRequest`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+      }
+    }
   }
 
+  // ---------------------------------------------------------------------------
+  // routing modeling
+  // ---------------------------------------------------------------------------
   /**
    * Gets a reference to the Function `func`.
    *
@@ -180,6 +326,10 @@ private module Django {
     Parameter getRequestParam() { result = this.getArg(this.getRequestParamIndex()) }
   }
 
+  abstract private class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
+    abstract override DjangoRouteHandler getARouteHandler();
+  }
+
   /**
    * Gets the regex that is used by django to find routed parameters when using `django.urls.path`.
    *
@@ -194,7 +344,7 @@ private module Django {
    *
    * See https://docs.djangoproject.com/en/3.0/ref/urls/#path
    */
-  private class DjangoUrlsPathCall extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
+  private class DjangoUrlsPathCall extends DjangoRouteSetup {
     override CallNode node;
 
     DjangoUrlsPathCall() { node.getFunction() = django::urls::path().asCfgNode() }
@@ -251,7 +401,7 @@ private module Django {
    *
    * See https://docs.djangoproject.com/en/3.0/ref/urls/#re_path
    */
-  private class DjangoUrlsRePathCall extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
+  private class DjangoUrlsRePathCall extends DjangoRouteSetup {
     override CallNode node;
 
     DjangoUrlsRePathCall() { node.getFunction() = django::urls::re_path().asCfgNode() }
@@ -292,4 +442,17 @@ private module Django {
       )
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // HttpRequest taint modeling
+  // ---------------------------------------------------------------------------
+  class DjangoRouteHandlerRequestParam extends django::http::request::HttpRequest::InstanceSource,
+    RemoteFlowSource::Range, DataFlow::ParameterNode {
+    DjangoRouteHandlerRequestParam() {
+      this.getParameter() = any(DjangoRouteSetup setup).getARouteHandler().getRequestParam()
+    }
+
+    override string getSourceType() { result = "django.http.request.HttpRequest" }
+  }
+
 }

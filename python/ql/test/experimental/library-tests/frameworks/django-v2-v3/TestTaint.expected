@@ -1,7 +1,7 @@
 | taint_test.py:7 | ok   | test_taint | bar |
 | taint_test.py:7 | ok   | test_taint | foo |
 | taint_test.py:8 | ok   | test_taint | baz |
-| taint_test.py:14 | fail | test_taint | request |
+| taint_test.py:14 | ok   | test_taint | request |
 | taint_test.py:16 | fail | test_taint | request.body |
 | taint_test.py:17 | fail | test_taint | request.path |
 | taint_test.py:18 | fail | test_taint | request.path_info |
