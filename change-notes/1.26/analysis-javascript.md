@@ -5,7 +5,9 @@
 * Support for the following frameworks and libraries has been improved:
   - [AWS Serverless](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)
   - [Alibaba Serverless](https://www.alibabacloud.com/help/doc-detail/156876.htm)
+  - [debounce](https://www.npmjs.com/package/debounce)
   - [bluebird](https://www.npmjs.com/package/bluebird)
+  - [call-limit](https://www.npmjs.com/package/call-limit)
   - [express](https://www.npmjs.com/package/express)
   - [fast-json-stable-stringify](https://www.npmjs.com/package/fast-json-stable-stringify)
   - [fast-safe-stringify](https://www.npmjs.com/package/fast-safe-stringify)
@@ -15,11 +17,15 @@
   - [json-stable-stringify](https://www.npmjs.com/package/json-stable-stringify)
   - [json-stringify-safe](https://www.npmjs.com/package/json-stringify-safe)
   - [json3](https://www.npmjs.com/package/json3)
+  - [jQuery throttle / debounce](https://github.com/cowboy/jquery-throttle-debounce)
   - [lodash](https://www.npmjs.com/package/lodash)
+  - [lodash.debounce](https://www.npmjs.com/package/lodash.debounce)
+  - [lodash.throttle](https://www.npmjs.com/package/lodash.throttle)
   - [needle](https://www.npmjs.com/package/needle)
   - [object-inspect](https://www.npmjs.com/package/object-inspect)
   - [pretty-format](https://www.npmjs.com/package/pretty-format)
   - [stringify-object](https://www.npmjs.com/package/stringify-object)
+  - [throttle-debounce](https://www.npmjs.com/package/throttle-debounce)
   - [underscore](https://www.npmjs.com/package/underscore)
 
 * Analyzing files with the ".cjs" extension is now supported.
