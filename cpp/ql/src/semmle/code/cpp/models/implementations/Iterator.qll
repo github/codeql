@@ -78,20 +78,6 @@ private FunctionInput getIteratorArgumentInput(Operator op, int index) {
   )
 }
 
-private FunctionOutput getIteratorArgumentOutput(Operator op, int index) {
-  exists(Type t |
-    t =
-      op
-          .getACallToThisFunction()
-          .getArgument(index)
-          .getExplicitlyConverted()
-          .getType()
-          .stripTopLevelSpecifiers()
-  |
-    result.isParameterDeref(index) // TODO: does this work with an rvalue reference?
-  )
-}
-
 /**
  * A non-member prefix `operator*` function for an iterator type.
  */
@@ -108,7 +94,7 @@ class IteratorPointerDereferenceOperator extends Operator, TaintFunction, Iterat
     output.isReturnValue()
     or
     input.isReturnValueDeref() and
-    output = getIteratorArgumentOutput(this, 0)
+    output.isParameterDeref(0)
   }
 }
 
@@ -310,7 +296,7 @@ class IteratorAssignmentMemberOperator extends MemberFunction, TaintFunction {
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(0) and
+    input.isParameterDeref(0) and
     output.isQualifierObject()
   }
 }
@@ -344,8 +330,7 @@ class BeginOrEndFunction extends MemberFunction, TaintFunction, GetIteratorFunct
  */
 class InserterIteratorFunction extends GetIteratorFunction {
   InserterIteratorFunction() {
-    this.hasName(["front_inserter", "inserter", "back_inserter"]) and
-    this.getNamespace().hasName("std")
+    this.hasQualifiedName("std", ["front_inserter", "inserter", "back_inserter"])
   }
 
   override predicate getsIterator(FunctionInput input, FunctionOutput output) {
