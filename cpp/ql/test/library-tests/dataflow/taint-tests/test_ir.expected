@@ -26,6 +26,7 @@
 | copyableclass.cpp:67:11:67:21 | (reference dereference) | copyableclass.cpp:67:13:67:18 | call to source |
 | copyableclass_declonly.cpp:40:8:40:9 | s1 | copyableclass_declonly.cpp:34:30:34:35 | call to source |
 | copyableclass_declonly.cpp:41:8:41:9 | s2 | copyableclass_declonly.cpp:35:32:35:37 | call to source |
+| copyableclass_declonly.cpp:42:8:42:9 | s3 | copyableclass_declonly.cpp:34:30:34:35 | call to source |
 | copyableclass_declonly.cpp:43:8:43:9 | s4 | copyableclass_declonly.cpp:38:8:38:13 | call to source |
 | copyableclass_declonly.cpp:65:8:65:9 | s1 | copyableclass_declonly.cpp:60:56:60:61 | call to source |
 | copyableclass_declonly.cpp:66:8:66:9 | s2 | copyableclass_declonly.cpp:63:32:63:37 | call to source |
@@ -179,9 +180,13 @@
 | string.cpp:130:8:130:8 | c | string.cpp:120:16:120:21 | call to source |
 | string.cpp:135:8:135:8 | (reference dereference) | string.cpp:133:28:133:33 | call to source |
 | string.cpp:135:8:135:8 | c | string.cpp:133:28:133:33 | call to source |
+| string.cpp:145:8:145:14 | Argument 0 indirection | string.cpp:142:18:142:23 | call to source |
 | string.cpp:145:11:145:11 | call to operator+ | string.cpp:142:18:142:23 | call to source |
+| string.cpp:146:8:146:14 | Argument 0 indirection | string.cpp:142:18:142:23 | call to source |
 | string.cpp:146:11:146:11 | call to operator+ | string.cpp:142:18:142:23 | call to source |
+| string.cpp:147:8:147:14 | Argument 0 indirection | string.cpp:142:18:142:23 | call to source |
 | string.cpp:147:11:147:11 | call to operator+ | string.cpp:142:18:142:23 | call to source |
+| string.cpp:150:8:150:20 | Argument 0 indirection | string.cpp:150:13:150:18 | call to source |
 | string.cpp:150:11:150:11 | call to operator+ | string.cpp:150:13:150:18 | call to source |
 | string.cpp:159:8:159:9 | Argument 0 indirection | string.cpp:155:18:155:23 | call to source |
 | string.cpp:163:8:163:9 | Argument 0 indirection | string.cpp:155:18:155:23 | call to source |
@@ -210,6 +215,7 @@
 | string.cpp:295:7:295:8 | Argument 0 indirection | string.cpp:291:17:291:22 | call to source |
 | string.cpp:301:7:301:8 | Argument 0 indirection | string.cpp:289:17:289:22 | call to source |
 | string.cpp:303:7:303:8 | Argument 0 indirection | string.cpp:291:17:291:22 | call to source |
+| string.cpp:323:7:323:29 | Argument 0 indirection | string.cpp:320:16:320:21 | call to source |
 | string.cpp:323:9:323:14 | call to substr | string.cpp:320:16:320:21 | call to source |
 | string.cpp:364:8:364:9 | Argument 0 indirection | string.cpp:358:18:358:23 | call to source |
 | string.cpp:382:8:382:8 | call to operator* | string.cpp:374:18:374:23 | call to source |
@@ -222,6 +228,8 @@
 | string.cpp:407:8:407:11 | (reference dereference) | string.cpp:389:18:389:23 | call to source |
 | string.cpp:415:8:415:8 | call to operator* | string.cpp:389:18:389:23 | call to source |
 | string.cpp:415:8:415:11 | (reference dereference) | string.cpp:389:18:389:23 | call to source |
+| string.cpp:419:8:419:10 | call to iterator | string.cpp:389:18:389:23 | call to source |
+| string.cpp:422:8:422:10 | call to iterator | string.cpp:389:18:389:23 | call to source |
 | string.cpp:437:7:437:8 | Argument 0 indirection | string.cpp:431:14:431:19 | call to source |
 | string.cpp:450:8:450:8 | Argument 0 indirection | string.cpp:449:32:449:46 | call to source |
 | string.cpp:463:8:463:8 | Argument 0 indirection | string.cpp:457:18:457:23 | call to source |
@@ -244,13 +252,16 @@
 | stringstream.cpp:34:23:34:31 | (reference dereference) | stringstream.cpp:34:14:34:19 | call to source |
 | stringstream.cpp:38:7:38:9 | Argument 0 indirection | stringstream.cpp:32:14:32:19 | call to source |
 | stringstream.cpp:40:7:40:9 | Argument 0 indirection | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:43:7:43:15 | Argument 0 indirection | stringstream.cpp:32:14:32:19 | call to source |
 | stringstream.cpp:43:11:43:13 | call to str | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:45:7:45:15 | Argument 0 indirection | stringstream.cpp:34:14:34:19 | call to source |
 | stringstream.cpp:45:11:45:13 | call to str | stringstream.cpp:34:14:34:19 | call to source |
 | stringstream.cpp:52:7:52:9 | Argument 0 indirection | stringstream.cpp:49:10:49:15 | call to source |
 | stringstream.cpp:53:7:53:9 | Argument 0 indirection | stringstream.cpp:50:10:50:15 | call to source |
 | stringstream.cpp:59:7:59:9 | Argument 0 indirection | stringstream.cpp:56:15:56:29 | call to source |
 | stringstream.cpp:66:7:66:10 | Argument 0 indirection | stringstream.cpp:63:18:63:23 | call to source |
 | stringstream.cpp:81:7:81:9 | Argument 0 indirection | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:83:7:83:15 | Argument 0 indirection | stringstream.cpp:70:32:70:37 | source |
 | stringstream.cpp:83:11:83:13 | call to str | stringstream.cpp:70:32:70:37 | source |
 | stringstream.cpp:85:7:85:8 | v2 | stringstream.cpp:70:32:70:37 | source |
 | stringstream.cpp:103:7:103:9 | Argument 0 indirection | stringstream.cpp:91:19:91:24 | call to source |
@@ -264,10 +275,15 @@
 | stringstream.cpp:143:11:143:22 | (reference dereference) | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:149:7:149:8 | Argument 0 indirection | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:150:7:150:8 | Argument 0 indirection | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:157:7:157:8 | Argument 0 indirection | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:157:7:157:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:158:7:158:8 | Argument 0 indirection | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:158:7:158:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:168:7:168:8 | Argument 0 indirection | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:168:7:168:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:170:7:170:8 | Argument 0 indirection | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:170:7:170:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:172:7:172:9 | Argument 0 indirection | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:172:7:172:9 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:175:7:175:20 | ... = ... | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:177:7:177:21 | ... = ... | stringstream.cpp:143:14:143:19 | call to source |
@@ -275,16 +291,22 @@
 | stringstream.cpp:183:7:183:8 | c4 | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:185:7:185:8 | c6 | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:197:10:197:12 | call to get | stringstream.cpp:196:18:196:32 | call to source |
+| stringstream.cpp:219:7:219:8 | Argument 0 indirection | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:219:7:219:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:220:7:220:8 | Argument 0 indirection | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:220:7:220:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:227:7:227:8 | Argument 0 indirection | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:227:7:227:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:228:7:228:8 | Argument 0 indirection | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:228:7:228:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:231:7:231:8 | Argument 0 indirection | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:231:7:231:8 | call to basic_string | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:239:7:239:8 | Argument 0 indirection | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:240:7:240:8 | Argument 0 indirection | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:247:7:247:8 | Argument 0 indirection | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:248:7:248:8 | Argument 0 indirection | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:251:7:251:8 | Argument 0 indirection | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:263:7:263:8 | Argument 0 indirection | stringstream.cpp:257:24:257:29 | call to source |
 | stringstream.cpp:263:7:263:8 | call to basic_string | stringstream.cpp:257:24:257:29 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
@@ -297,6 +319,7 @@
 | swap1.cpp:78:12:78:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
 | swap1.cpp:79:12:79:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
 | swap1.cpp:83:13:83:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
+| swap1.cpp:87:13:87:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
 | swap1.cpp:88:13:88:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
 | swap1.cpp:97:12:97:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
 | swap1.cpp:102:12:102:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
@@ -313,6 +336,7 @@
 | swap2.cpp:78:12:78:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
 | swap2.cpp:79:12:79:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
 | swap2.cpp:83:13:83:17 | data1 | swap2.cpp:82:16:82:21 | call to source |
+| swap2.cpp:87:13:87:17 | data1 | swap2.cpp:82:16:82:21 | call to source |
 | swap2.cpp:88:13:88:17 | data1 | swap2.cpp:82:16:82:21 | call to source |
 | swap2.cpp:97:12:97:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
 | swap2.cpp:102:12:102:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
@@ -398,6 +422,7 @@
 | vector.cpp:258:8:258:9 | Argument 0 indirection | vector.cpp:239:15:239:20 | call to source |
 | vector.cpp:259:8:259:9 | Argument 0 indirection | vector.cpp:239:15:239:20 | call to source |
 | vector.cpp:260:8:260:9 | Argument 0 indirection | vector.cpp:239:15:239:20 | call to source |
+| vector.cpp:261:8:261:9 | Argument 0 indirection | vector.cpp:239:15:239:20 | call to source |
 | vector.cpp:273:8:273:9 | Argument 0 indirection | vector.cpp:269:18:269:31 | call to source |
 | vector.cpp:274:8:274:9 | Argument 0 indirection | vector.cpp:270:18:270:35 | call to source |
 | vector.cpp:275:8:275:9 | Argument 0 indirection | vector.cpp:271:18:271:34 | call to source |
