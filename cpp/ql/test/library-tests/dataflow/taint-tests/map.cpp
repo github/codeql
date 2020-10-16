@@ -2,9 +2,9 @@
 #include "stl.h"
 
 using namespace std;
-
+namespace {
 char *source();
-
+}
 void sink(char *);
 void sink(const char *);
 void sink(bool);
