@@ -130,6 +130,19 @@ private string getNodeProperty(DataFlow::Node node, string key) {
     |
       kind, ", "
     )
+  or
+  key = "pflow" and
+  result =
+    strictconcat(DataFlow::PartialPathNode sourceNode, DataFlow::PartialPathNode destNode, int dist,
+      int order1, int order2 |
+      any(DataFlow::Configuration cfg).hasPartialFlow(sourceNode, destNode, dist) and
+      destNode.getNode() = node and
+      sourceNode.getNode().getEnclosingCallable() = node.getEnclosingCallable()
+    |
+      nodeId(sourceNode.getNode(), order1, order2) + "+" + dist.toString(), ", "
+      order by
+        order1, order2, dist desc
+    )
 }
 
 /**
