@@ -43,7 +43,10 @@ class ArgumentPreUpdateNode extends NeedsSyntheticPostUpdateNode, ArgumentNode {
   // Certain arguments, such as implicit self arguments are already post-update nodes
   // and should not have an extra node synthesised.
   ArgumentPreUpdateNode() {
-    this = any(CallNodeCall c).getArg(_)
+    this = any(FunctionCall c).getArg(_)
+    or
+    // Avoid argument 0 of method calls as those have read post-update nodes.
+    exists(MethodCall c, int n | n > 0 | this = c.getArg(n))
     or
     this = any(SpecialCall c).getArg(_)
     or
@@ -150,24 +153,15 @@ module EssaFlow {
     //   nodeTo is `y` on second line, cfg node
     useToNextUse(nodeFrom.asCfgNode(), nodeTo.asCfgNode())
     or
-    // Refinements
-    exists(EssaEdgeRefinement r |
-      nodeTo.(EssaNode).getVar() = r.getVariable() and
-      nodeFrom.(EssaNode).getVar() = r.getInput()
-    )
-    or
-    exists(EssaNodeRefinement r |
-      nodeTo.(EssaNode).getVar() = r.getVariable() and
-      nodeFrom.(EssaNode).getVar() = r.getInput()
-    )
-    or
-    exists(PhiFunction p |
-      nodeTo.(EssaNode).getVar() = p.getVariable() and
-      nodeFrom.(EssaNode).getVar() = p.getAnInput()
-    )
-    or
     // If expressions
     nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
+    or
+    // Overflow keyword argument
+    exists(CallNode call, CallableValue callable |
+      call = callable.getACall() and
+      nodeTo = TKwOverflowNode(call, callable) and
+      nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
+    )
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
@@ -234,13 +228,259 @@ private Node update(Node node) {
 //--------
 //
 /**
+ * Computes routing of arguments to parameters
+ *
+ * When a call contains more positional arguments than there are positional parameters,
+ * the extra positional arguments are passed as a tuple to a starred parameter. This is
+ * achieved by synthesizing a node `TPosOverflowNode(call, callable)`
+ * that represents the tuple of extra positional arguments. There is a store step from each
+ * extra positional argument to this node.
+ *
+ * CURRENTLY NOT SUPPORTED:
+ * When a call contains an iterable unpacking argument, such as `func(*args)`, it is expanded into positional arguments.
+ *
+ * CURRENTLY NOT SUPPORTED:
+ * If a call contains an iterable unpacking argument, such as `func(*args)`, and the callee contains a starred argument, any extra
+ * positional arguments are passed to the starred argument.
+ *
+ * When a call contains keyword arguments that do not correspond to keyword parameters, these
+ * extra keyword arguments are passed as a dictionary to a doubly starred parameter. This is
+ * achieved by synthesizing a node `TKwOverflowNode(call, callable)`
+ * that represents the dictionary of extra keyword arguments. There is a store step from each
+ * extra keyword argument to this node.
+ *
+ * When a call contains a dictionary unpacking argument, such as `func(**kwargs)`, with entries corresponding to a keyword parameter,
+ * the value at such a key is unpacked and passed to the parameter. This is achieved
+ * by synthesizing an argument node `TKwUnpacked(call, callable, name)` representing the unpacked
+ * value. This node is used as the argument passed to the matching keyword parameter. There is a read
+ * step from the dictionary argument to the synthesized argument node.
+ *
+ * When a call contains a dictionary unpacking argument, such as `func(**kwargs)`, and the callee contains a doubly starred parameter,
+ * entries which are not unpacked are passed to the doubly starred parameter. This is achieved by
+ * adding a dataflow step from the dictionary argument to `TKwOverflowNode(call, callable)` and a
+ * step to clear content of that node at any unpacked keys.
+ *
+ * ## Examples:
+ * Assume that we have the callable
+ * ```python
+ * def f(x, y, *t, **d):
+ *   pass
+ * ```
+ * Then the call
+ * ```python
+ * f(0, 1, 2, a=3)
+ * ```
+ * will be modelled as
+ * ```python
+ * f(0, 1, [*t], [**d])
+ * ```
+ * where `[` and `]` denotes synthesized nodes, so `[*t]` is the synthesized tuple argument
+ * `TPosOverflowNode` and `[**d]` is the synthesized dictionary argument `TKwOverflowNode`.
+ * There will be a store step from `2` to `[*t]` at pos `0` and one from `3` to `[**d]` at key
+ * `a`.
+ *
+ * For the call
+ * ```python
+ * f(0, **{"y": 1, "a": 3})
+ * ```
+ * no tuple argument is synthesized. It is modelled as
+ * ```python
+ * f(0, [y=1], [**d])
+ * ```
+ * where `[y=1]` is the synthesized unpacked argument `TKwUnpacked` (with `name` = `y`). There is
+ * a read step from `**{"y": 1, "a": 3}` to `[y=1]` at key `y` to get the value passed to the parameter
+ * `y`. There is a dataflow step from `**{"y": 1, "a": 3}` to `[**d]` to transfer the content and
+ * a clearing of content at key `y` for node `[**d]`, since that value has been unpacked.
+ */
+private module ArgumentPassing {
+  /**
+   * Holds if `call` represents a `DataFlowCall` to a `DataFlowCallable` represented by `callable`.
+   *
+   * It _may not_ be the case that `call = callable.getACall()`, i.e. if `call` represents a `ClassCall`.
+   *
+   * Used to limit the size of predicates.
+   */
+  predicate connects(CallNode call, CallableValue callable) {
+    exists(DataFlowCall c |
+      call = c.getNode() and
+      callable = c.getCallable().getCallableValue()
+    )
+  }
+
+  /**
+   * Gets the `n`th parameter of `callable`.
+   * If the callable has a starred parameter, say `*tuple`, that is matched with `n=-1`.
+   * If the callable has a doubly starred parameter, say `**dict`, that is matched with `n=-2`.
+   * Note that, unlike other languages, we do _not_ use -1 for the position of `self` in Python,
+   * as it is an explicit parameter at position 0.
+   */
+  NameNode getParameter(CallableValue callable, int n) {
+    // positional parameter
+    result = callable.getParameter(n)
+    or
+    // starred parameter, `*tuple`
+    exists(Function f |
+      f = callable.getScope() and
+      n = -1 and
+      result = f.getVararg().getAFlowNode()
+    )
+    or
+    // doubly starred parameter, `**dict`
+    exists(Function f |
+      f = callable.getScope() and
+      n = -2 and
+      result = f.getKwarg().getAFlowNode()
+    )
+  }
+
+  /**
+   * A type representing a mapping from argument indices to parameter indices.
+   * We currently use two mappings: NoShift, the identity, used for ordinary
+   * function calls, and ShiftOneUp which is used for calls where an extra argument
+   * is inserted. These include method calls, constructor calls and class calls.
+   * In these calls, the argument at index `n` is mapped to the parameter at position `n+1`.
+   */
+  newtype TArgParamMapping =
+    TNoShift() or
+    TShiftOneUp()
+
+  /** A mapping used for parameter passing. */
+  abstract class ArgParamMapping extends TArgParamMapping {
+    /** Gets the index of the parameter that corresponds to the argument at index `argN`. */
+    bindingset[argN]
+    abstract int getParamN(int argN);
+
+    /** Gets a textual representation of this element. */
+    abstract string toString();
+  }
+
+  /** A mapping that passes argument `n` to parameter `n`. */
+  class NoShift extends ArgParamMapping, TNoShift {
+    NoShift() { this = TNoShift() }
+
+    override string toString() { result = "NoShift [n -> n]" }
+
+    bindingset[argN]
+    override int getParamN(int argN) { result = argN }
+  }
+
+  /** A mapping that passes argument `n` to parameter `n+1`. */
+  class ShiftOneUp extends ArgParamMapping, TShiftOneUp {
+    ShiftOneUp() { this = TShiftOneUp() }
+
+    override string toString() { result = "ShiftOneUp [n -> n+1]" }
+
+    bindingset[argN]
+    override int getParamN(int argN) { result = argN + 1 }
+  }
+
+  /**
+   * Gets the node representing the argument to `call` that is passed to the parameter at
+   * (zero-based) index `paramN` in `callable`. If this is a positional argument, it must appear
+   * at an index, `argN`, in `call` wich satisfies `paramN = mapping.getParamN(argN)`.
+   *
+   * `mapping` will be the identity for function calls, but not for method- or constructor calls,
+   * where the first parameter is `self` and the first positional argument is passed to the second positional parameter.
+   * Similarly for classmethod calls, where the first parameter is `cls`.
+   *
+   * NOT SUPPORTED: Keyword-only parameters.
+   */
+  Node getArg(CallNode call, ArgParamMapping mapping, CallableValue callable, int paramN) {
+    connects(call, callable) and
+    (
+      // positional argument
+      exists(int argN |
+        paramN = mapping.getParamN(argN) and
+        result = TCfgNode(call.getArg(argN))
+      )
+      or
+      // keyword argument
+      // TODO: Since `getArgName` have no results for keyword-only parameters,
+      // these are currently not supported.
+      exists(Function f, string argName |
+        f = callable.getScope() and
+        f.getArgName(paramN) = argName and
+        result = TCfgNode(call.getArgByName(argName))
+      )
+      or
+      // a synthezised argument passed to the starred parameter (at position -1)
+      callable.getScope().hasVarArg() and
+      paramN = -1 and
+      result = TPosOverflowNode(call, callable)
+      or
+      // a synthezised argument passed to the doubly starred parameter (at position -2)
+      callable.getScope().hasKwArg() and
+      paramN = -2 and
+      result = TKwOverflowNode(call, callable)
+      or
+      // argument unpacked from dict
+      exists(string name |
+        call_unpacks(call, mapping, callable, name, paramN) and
+        result = TKwUnpacked(call, callable, name)
+      )
+    )
+  }
+
+  /** Gets the control flow node that is passed as the `n`th overflow positional argument. */
+  ControlFlowNode getPositionalOverflowArg(CallNode call, CallableValue callable, int n) {
+    connects(call, callable) and
+    exists(Function f, int posCount, int argNr |
+      f = callable.getScope() and
+      f.hasVarArg() and
+      posCount = f.getPositionalParameterCount() and
+      result = call.getArg(argNr) and
+      argNr >= posCount and
+      argNr = posCount + n
+    )
+  }
+
+  /** Gets the control flow node that is passed as the overflow keyword argument with key `key`. */
+  ControlFlowNode getKeywordOverflowArg(CallNode call, CallableValue callable, string key) {
+    connects(call, callable) and
+    exists(Function f |
+      f = callable.getScope() and
+      f.hasKwArg() and
+      not exists(f.getArgByName(key)) and
+      result = call.getArgByName(key)
+    )
+  }
+
+  /**
+   * Holds if `call` unpacks a dictionary argument in order to pass it via `name`.
+   * It will then be passed to the parameter of `callable` at index `paramN`.
+   */
+  predicate call_unpacks(
+    CallNode call, ArgParamMapping mapping, CallableValue callable, string name, int paramN
+  ) {
+    connects(call, callable) and
+    exists(Function f |
+      f = callable.getScope() and
+      not exists(int argN | paramN = mapping.getParamN(argN) | exists(call.getArg(argN))) and // no positional argument available
+      name = f.getArgName(paramN) and
+      // not exists(call.getArgByName(name)) and // only matches keyword arguments not preceded by **
+      // TODO: make the below logic respect control flow splitting (by not going to the AST).
+      not call.getNode().getANamedArg().(Keyword).getArg() = name and // no keyword argument available
+      paramN >= 0 and
+      paramN < f.getPositionalParameterCount() + f.getKeywordOnlyParameterCount() and
+      exists(call.getNode().getKwargs()) // dict argument available
+    )
+  }
+}
+
+import ArgumentPassing
+
+/**
  * IPA type for DataFlowCallable.
  *
- * A callable is either a callable value or a module (for enclosing `ModuleVariableNode`s).
+ * A callable is either a function value, a class value, or a module (for enclosing `ModuleVariableNode`s).
  * A module has no calls.
  */
 newtype TDataFlowCallable =
-  TCallableValue(CallableValue callable) or
+  TCallableValue(CallableValue callable) {
+    callable instanceof FunctionValue
+    or
+    callable instanceof ClassValue
+  } or
   TModule(Module m)
 
 /** Represents a callable. */
@@ -259,6 +499,9 @@ abstract class DataFlowCallable extends TDataFlowCallable {
 
   /** Gets the name of this callable. */
   abstract string getName();
+
+  /** Gets a callable value for this callable, if one exists. */
+  abstract CallableValue getCallableValue();
 }
 
 /** A class representing a callable value. */
@@ -273,9 +516,11 @@ class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
 
   override Scope getScope() { result = callable.getScope() }
 
-  override NameNode getParameter(int n) { result = callable.getParameter(n) }
+  override NameNode getParameter(int n) { result = getParameter(callable, n) }
 
   override string getName() { result = callable.getName() }
+
+  override CallableValue getCallableValue() { result = callable }
 }
 
 /** A class representing the scope in which a `ModuleVariableNode` appears. */
@@ -293,6 +538,8 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
   override NameNode getParameter(int n) { none() }
 
   override string getName() { result = mod.getName() }
+
+  override CallableValue getCallableValue() { none() }
 }
 
 /**
@@ -306,9 +553,13 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
  * as the class call will synthesize an argument node to be mapped to the `self` parameter.
  *
  * A call corresponding to a special method call is handled by the corresponding `SpecialMethodCallNode`.
+ *
+ * TODO: Add `TClassMethodCall` mapping `cls` appropriately.
  */
 newtype TDataFlowCall =
-  TCallNode(CallNode call) { call = any(CallableValue c).getACall() } or
+  TFunctionCall(CallNode call) { call = any(FunctionValue f).getAFunctionCall() } or
+  /** Bound methods need to make room for the explicit self parameter */
+  TMethodCall(CallNode call) { call = any(FunctionValue f).getAMethodCall() } or
   TClassCall(CallNode call) { call = any(ClassValue c).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
@@ -320,7 +571,10 @@ abstract class DataFlowCall extends TDataFlowCall {
   /** Get the callable to which this call goes. */
   abstract DataFlowCallable getCallable();
 
-  /** Get the specified argument to this call. */
+  /**
+   * Gets the argument to this call that will be sent
+   * to the `n`th parameter of the callable.
+   */
   abstract Node getArg(int n);
 
   /** Get the control flow node representing this call. */
@@ -328,21 +582,29 @@ abstract class DataFlowCall extends TDataFlowCall {
 
   /** Gets the enclosing callable of this call. */
   abstract DataFlowCallable getEnclosingCallable();
+
+  /** Gets the location of this dataflow call. */
+  Location getLocation() { result = this.getNode().getLocation() }
 }
 
-/** Represents a call to a callable (currently only callable values). */
-class CallNodeCall extends DataFlowCall, TCallNode {
+/**
+ * Represents a call to a function/lambda.
+ * This excludes calls to bound methods, classes, and special methods.
+ * Bound method calls and class calls insert an argument for the explicit
+ * `self` parameter, and special method calls have special argument passing.
+ */
+class FunctionCall extends DataFlowCall, TFunctionCall {
   CallNode call;
   DataFlowCallable callable;
 
-  CallNodeCall() {
-    this = TCallNode(call) and
+  FunctionCall() {
+    this = TFunctionCall(call) and
     call = callable.getACall()
   }
 
   override string toString() { result = call.toString() }
 
-  override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
+  override Node getArg(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
 
   override ControlFlowNode getNode() { result = call }
 
@@ -351,7 +613,42 @@ class CallNodeCall extends DataFlowCall, TCallNode {
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
 }
 
-/** Represents a call to a class. */
+/**
+ * Represents a call to a bound method call.
+ * The node representing the instance is inserted as argument to the `self` parameter.
+ */
+class MethodCall extends DataFlowCall, TMethodCall {
+  CallNode call;
+  FunctionValue bm;
+
+  MethodCall() {
+    this = TMethodCall(call) and
+    call = bm.getACall()
+  }
+
+  private CallableValue getCallableValue() { result = bm }
+
+  override string toString() { result = call.toString() }
+
+  override Node getArg(int n) {
+    n > 0 and result = getArg(call, TShiftOneUp(), this.getCallableValue(), n)
+    or
+    n = 0 and result = TCfgNode(call.getFunction().(AttrNode).getObject())
+  }
+
+  override ControlFlowNode getNode() { result = call }
+
+  override DataFlowCallable getCallable() { result = TCallableValue(this.getCallableValue()) }
+
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
+}
+
+/**
+ * Represents a call to a class.
+ * The pre-update node for the call is inserted as argument to the `self` parameter.
+ * That makes the call node be the post-update node holding the value of the object
+ * after the constructor has run.
+ */
 class ClassCall extends DataFlowCall, TClassCall {
   CallNode call;
   ClassValue c;
@@ -361,22 +658,19 @@ class ClassCall extends DataFlowCall, TClassCall {
     call = c.getACall()
   }
 
+  private CallableValue getCallableValue() { c.getScope().getInitMethod() = result.getScope() }
+
   override string toString() { result = call.toString() }
 
   override Node getArg(int n) {
-    n > 0 and result = TCfgNode(call.getArg(n - 1))
+    n > 0 and result = getArg(call, TShiftOneUp(), this.getCallableValue(), n)
     or
     n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
   }
 
   override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getCallable() {
-    exists(CallableValue callable |
-      result = TCallableValue(callable) and
-      c.getScope().getInitMethod() = callable.getScope()
-    )
-  }
+  override DataFlowCallable getCallable() { result = TCallableValue(this.getCallableValue()) }
 
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
 }
@@ -525,6 +819,10 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   comprehensionStoreStep(nodeFrom, c, nodeTo)
   or
   attributeStoreStep(nodeFrom, c, nodeTo)
+  or
+  posOverflowStoreStep(nodeFrom, c, nodeTo)
+  or
+  kwOverflowStoreStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from an element of a list to the list. */
@@ -621,6 +919,30 @@ predicate attributeStoreStep(CfgNode nodeFrom, AttributeContent c, PostUpdateNod
 }
 
 /**
+ * Holds if `nodeFrom` flows into the synthezised positional overflow argument (`nodeTo`)
+ * at the position indicated by `c`.
+ */
+predicate posOverflowStoreStep(CfgNode nodeFrom, TupleElementContent c, Node nodeTo) {
+  exists(CallNode call, CallableValue callable, int n |
+    nodeFrom.asCfgNode() = getPositionalOverflowArg(call, callable, n) and
+    nodeTo = TPosOverflowNode(call, callable) and
+    c.getIndex() = n
+  )
+}
+
+/**
+ * Holds if `nodeFrom` flows into the synthezised keyword overflow argument (`nodeTo`)
+ * at the key indicated by `c`.
+ */
+predicate kwOverflowStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
+  exists(CallNode call, CallableValue callable, string key |
+    nodeFrom.asCfgNode() = getKeywordOverflowArg(call, callable, key) and
+    nodeTo = TKwOverflowNode(call, callable) and
+    c.getKey() = key
+  )
+}
+
+/**
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
@@ -631,6 +953,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   comprehensionReadStep(nodeFrom, c, nodeTo)
   or
   attributeReadStep(nodeFrom, c, nodeTo)
+  or
+  kwUnpackReadStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -736,12 +1060,30 @@ predicate attributeReadStep(CfgNode nodeFrom, AttributeContent c, CfgNode nodeTo
 }
 
 /**
+ * Holds if `nodeFrom` is a dictionary argument being unpacked and `nodeTo` is the
+ * synthezised unpacked argument with the name indicated by `c`.
+ */
+predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
+  exists(CallNode call, CallableValue callable, string name |
+    nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode() and
+    nodeTo = TKwUnpacked(call, callable, name) and
+    name = c.getKey()
+  )
+}
+
+/**
  * Holds if values stored inside content `c` are cleared at node `n`. For example,
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
 cached
-predicate clearsContent(Node n, Content c) { none() }
+predicate clearsContent(Node n, Content c) {
+  exists(CallNode call, CallableValue callable, string name |
+    call_unpacks(call, _, callable, name, _) and
+    n = TKwOverflowNode(call, callable) and
+    c.(DictionaryElementContent).getKey() = name
+  )
+}
 
 //--------
 // Fancy context-sensitive guards

@@ -150,7 +150,7 @@ namespace Semmle.Autobuild.Shared
 
         bool IBuildActions.FileExists(string file) => File.Exists(file);
 
-        ProcessStartInfo GetProcessStartInfo(string exe, string arguments, string? workingDirectory, IDictionary<string, string>? environment, bool redirectStandardOutput)
+        private static ProcessStartInfo GetProcessStartInfo(string exe, string arguments, string? workingDirectory, IDictionary<string, string>? environment, bool redirectStandardOutput)
         {
             var pi = new ProcessStartInfo(exe, arguments)
             {
@@ -169,11 +169,9 @@ namespace Semmle.Autobuild.Shared
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment)
         {
             var pi = GetProcessStartInfo(cmd, args, workingDirectory, environment, false);
-            using (var p = Process.Start(pi))
-            {
-                p.WaitForExit();
-                return p.ExitCode;
-            }
+            using var p = Process.Start(pi);
+            p.WaitForExit();
+            return p.ExitCode;
         }
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment, out IList<string> stdOut)
@@ -217,7 +215,7 @@ namespace Semmle.Autobuild.Shared
 
         public string EnvironmentExpandEnvironmentVariables(string s) => Environment.ExpandEnvironmentVariables(s);
 
-        static async Task DownloadFileAsync(string address, string filename)
+        private static async Task DownloadFileAsync(string address, string filename)
         {
             using var httpClient = new HttpClient();
             using var request = new HttpRequestMessage(HttpMethod.Get, address);
@@ -229,6 +227,6 @@ namespace Semmle.Autobuild.Shared
         public void DownloadFile(string address, string fileName) =>
             DownloadFileAsync(address, fileName).Wait();
 
-        public static readonly IBuildActions Instance = new SystemBuildActions();
+        public static IBuildActions Instance { get; } = new SystemBuildActions();
     }
 }

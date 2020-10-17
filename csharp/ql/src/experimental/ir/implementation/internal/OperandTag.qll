@@ -40,9 +40,7 @@ abstract class OperandTag extends TOperandTag {
   /**
    * Gets a label that will appear before the operand when the IR is printed.
    */
-  final string getLabel() {
-    if alwaysPrintLabel() then result = getId() + ":" else result = ""
-  }
+  final string getLabel() { if alwaysPrintLabel() then result = getId() + ":" else result = "" }
 
   /**
    * Gets an identifier that uniquely identifies this operand within its instruction.

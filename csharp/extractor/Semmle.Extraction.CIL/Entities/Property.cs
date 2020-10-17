@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection.Metadata;
-using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.IO;
 
@@ -9,26 +8,26 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A property.
     /// </summary>
-    interface IProperty : IExtractedEntity
+    internal interface IProperty : IExtractedEntity
     {
     }
 
     /// <summary>
     /// A property.
     /// </summary>
-    sealed class Property : LabelledEntity, IProperty
+    internal sealed class Property : LabelledEntity, IProperty
     {
-        readonly Handle handle;
-        readonly Type type;
-        readonly PropertyDefinition pd;
+        private readonly Handle handle;
+        private readonly Type type;
+        private readonly PropertyDefinition pd;
         public override string IdSuffix => ";cil-property";
-        readonly GenericContext gc;
+        private readonly GenericContext gc;
 
-        public Property(GenericContext gc, Type type, PropertyDefinitionHandle handle) : base(gc.cx)
+        public Property(GenericContext gc, Type type, PropertyDefinitionHandle handle) : base(gc.Cx)
         {
             this.gc = gc;
             this.handle = handle;
-            pd = cx.mdReader.GetPropertyDefinition(handle);
+            pd = Cx.MdReader.GetPropertyDefinition(handle);
             this.type = type;
         }
 
@@ -36,9 +35,9 @@ namespace Semmle.Extraction.CIL.Entities
         {
             trapFile.WriteSubId(type);
             trapFile.Write('.');
-            trapFile.Write(cx.GetString(pd.Name));
+            trapFile.Write(Cx.GetString(pd.Name));
             trapFile.Write("(");
-            int index = 0;
+            var index = 0;
             var signature = pd.DecodeSignature(new SignatureDecoder(), gc);
             foreach (var param in signature.ParameterTypes)
             {
@@ -59,27 +58,27 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.metadata_handle(this, cx.assembly, MetadataTokens.GetToken(handle));
-                var sig = pd.DecodeSignature(cx.TypeSignatureDecoder, type);
+                yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
+                var sig = pd.DecodeSignature(Cx.TypeSignatureDecoder, type);
 
-                yield return Tuples.cil_property(this, type, cx.ShortName(pd.Name), sig.ReturnType);
+                yield return Tuples.cil_property(this, type, Cx.ShortName(pd.Name), sig.ReturnType);
 
                 var accessors = pd.GetAccessors();
                 if (!accessors.Getter.IsNil)
                 {
-                    var getter = (Method)cx.CreateGeneric(type, accessors.Getter);
+                    var getter = (Method)Cx.CreateGeneric(type, accessors.Getter);
                     yield return getter;
                     yield return Tuples.cil_getter(this, getter);
                 }
 
                 if (!accessors.Setter.IsNil)
                 {
-                    var setter = (Method)cx.CreateGeneric(type, accessors.Setter);
+                    var setter = (Method)Cx.CreateGeneric(type, accessors.Setter);
                     yield return setter;
                     yield return Tuples.cil_setter(this, setter);
                 }
 
-                foreach (var c in Attribute.Populate(cx, this, pd.GetCustomAttributes()))
+                foreach (var c in Attribute.Populate(Cx, this, pd.GetCustomAttributes()))
                     yield return c;
             }
         }

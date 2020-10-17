@@ -3,12 +3,14 @@ namespace Semmle.Extraction.Entities
 {
     public abstract class Location : CachedEntity<Microsoft.CodeAnalysis.Location?>
     {
-        public Location(Context cx, Microsoft.CodeAnalysis.Location? init)
+        protected Location(Context cx, Microsoft.CodeAnalysis.Location? init)
             : base(cx, init) { }
 
         public static Location Create(Context cx, Microsoft.CodeAnalysis.Location? loc) =>
-            (loc == null || loc.Kind == Microsoft.CodeAnalysis.LocationKind.None) ? GeneratedLocation.Create(cx)
-                    : loc.IsInSource ? NonGeneratedSourceLocation.Create(cx, loc)
+            (loc == null || loc.Kind == Microsoft.CodeAnalysis.LocationKind.None)
+                ? GeneratedLocation.Create(cx)
+                : loc.IsInSource
+                    ? NonGeneratedSourceLocation.Create(cx, loc)
                     : Assembly.Create(cx, loc);
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => symbol;

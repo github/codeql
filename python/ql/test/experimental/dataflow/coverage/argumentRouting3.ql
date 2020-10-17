@@ -21,7 +21,7 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
 
 from DataFlow::Node source, DataFlow::Node sink
 where
-  source.getLocation().getFile().getBaseName() = "classes.py" and
-  sink.getLocation().getFile().getBaseName() = "classes.py" and
+  source.getLocation().getFile().getBaseName() in ["classes.py", "argumentPassing.py"] and
+  sink.getLocation().getFile().getBaseName() in ["classes.py", "argumentPassing.py"] and
   exists(ArgumentRoutingConfig cfg | cfg.hasFlow(source, sink))
 select source, sink

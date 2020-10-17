@@ -51,14 +51,14 @@ edges
 | A.cpp:160:29:160:29 | b | A.cpp:160:18:160:60 | call to MyList [head] |
 | A.cpp:161:18:161:40 | call to MyList [next, head] | A.cpp:162:38:162:39 | l2 [next, head] |
 | A.cpp:161:38:161:39 | l1 [head] | A.cpp:161:18:161:40 | call to MyList [next, head] |
-| A.cpp:162:18:162:40 | call to MyList [next, next, ... (3)] | A.cpp:165:10:165:11 | l3 [next, next, ... (3)] |
-| A.cpp:162:18:162:40 | call to MyList [next, next, ... (3)] | A.cpp:167:44:167:44 | l [next, next, ... (3)] |
-| A.cpp:162:38:162:39 | l2 [next, head] | A.cpp:162:18:162:40 | call to MyList [next, next, ... (3)] |
-| A.cpp:165:10:165:11 | l3 [next, next, ... (3)] | A.cpp:165:14:165:17 | next [next, head] |
+| A.cpp:162:18:162:40 | call to MyList [next, next, head] | A.cpp:165:10:165:11 | l3 [next, next, head] |
+| A.cpp:162:18:162:40 | call to MyList [next, next, head] | A.cpp:167:44:167:44 | l [next, next, head] |
+| A.cpp:162:38:162:39 | l2 [next, head] | A.cpp:162:18:162:40 | call to MyList [next, next, head] |
+| A.cpp:165:10:165:11 | l3 [next, next, head] | A.cpp:165:14:165:17 | next [next, head] |
 | A.cpp:165:14:165:17 | next [next, head] | A.cpp:165:20:165:23 | next [head] |
 | A.cpp:165:20:165:23 | next [head] | A.cpp:165:26:165:29 | head |
 | A.cpp:167:44:167:44 | l [next, head] | A.cpp:167:47:167:50 | next [head] |
-| A.cpp:167:44:167:44 | l [next, next, ... (3)] | A.cpp:167:47:167:50 | next [next, head] |
+| A.cpp:167:44:167:44 | l [next, next, head] | A.cpp:167:47:167:50 | next [next, head] |
 | A.cpp:167:47:167:50 | next [head] | A.cpp:169:12:169:12 | l [head] |
 | A.cpp:167:47:167:50 | next [next, head] | A.cpp:167:44:167:44 | l [next, head] |
 | A.cpp:169:12:169:12 | l [head] | A.cpp:169:15:169:18 | head |
@@ -113,14 +113,14 @@ edges
 | D.cpp:51:27:51:27 | e | D.cpp:51:8:51:14 | ref arg call to getBox1 [elem] |
 | D.cpp:52:14:52:14 | b [box, elem] | D.cpp:21:30:21:31 | b2 [box, elem] |
 | D.cpp:56:15:56:24 | new | D.cpp:58:5:58:27 | ... = ... |
-| D.cpp:58:5:58:12 | boxfield [post update] [box, elem] | D.cpp:58:5:58:12 | this [post update] [boxfield, box, ... (3)] |
-| D.cpp:58:5:58:12 | this [post update] [boxfield, box, ... (3)] | D.cpp:59:5:59:7 | this [boxfield, box, ... (3)] |
+| D.cpp:58:5:58:12 | boxfield [post update] [box, elem] | D.cpp:58:5:58:12 | this [post update] [boxfield, box, elem] |
+| D.cpp:58:5:58:12 | this [post update] [boxfield, box, elem] | D.cpp:59:5:59:7 | this [boxfield, box, elem] |
 | D.cpp:58:5:58:27 | ... = ... | D.cpp:58:15:58:17 | box [post update] [elem] |
 | D.cpp:58:15:58:17 | box [post update] [elem] | D.cpp:58:5:58:12 | boxfield [post update] [box, elem] |
-| D.cpp:59:5:59:7 | this [boxfield, box, ... (3)] | D.cpp:63:8:63:10 | this [boxfield, box, ... (3)] |
-| D.cpp:63:8:63:10 | this [boxfield, box, ... (3)] | D.cpp:64:10:64:17 | this [boxfield, box, ... (3)] |
+| D.cpp:59:5:59:7 | this [boxfield, box, elem] | D.cpp:63:8:63:10 | this [boxfield, box, elem] |
+| D.cpp:63:8:63:10 | this [boxfield, box, elem] | D.cpp:64:10:64:17 | this [boxfield, box, elem] |
 | D.cpp:64:10:64:17 | boxfield [box, elem] | D.cpp:64:20:64:22 | box [elem] |
-| D.cpp:64:10:64:17 | this [boxfield, box, ... (3)] | D.cpp:64:10:64:17 | boxfield [box, elem] |
+| D.cpp:64:10:64:17 | this [boxfield, box, elem] | D.cpp:64:10:64:17 | boxfield [box, elem] |
 | D.cpp:64:20:64:22 | box [elem] | D.cpp:64:25:64:28 | elem |
 | E.cpp:19:27:19:27 | p [data, buffer] | E.cpp:21:10:21:10 | p [data, buffer] |
 | E.cpp:21:10:21:10 | p [data, buffer] | E.cpp:21:13:21:16 | data [buffer] |
@@ -193,33 +193,33 @@ edges
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... |
 | arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:16:8:16:13 | access to array |
 | arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:17:8:17:13 | access to array |
-| arrays.cpp:36:3:36:3 | o [post update] [nested, arr, ... (3)] | arrays.cpp:37:8:37:8 | o [nested, arr, ... (3)] |
-| arrays.cpp:36:3:36:3 | o [post update] [nested, arr, ... (3)] | arrays.cpp:38:8:38:8 | o [nested, arr, ... (3)] |
+| arrays.cpp:36:3:36:3 | o [post update] [nested, arr, data] | arrays.cpp:37:8:37:8 | o [nested, arr, data] |
+| arrays.cpp:36:3:36:3 | o [post update] [nested, arr, data] | arrays.cpp:38:8:38:8 | o [nested, arr, data] |
 | arrays.cpp:36:3:36:17 | access to array [post update] [data] | arrays.cpp:36:12:36:14 | arr [inner post update] [data] |
 | arrays.cpp:36:3:36:37 | ... = ... | arrays.cpp:36:3:36:17 | access to array [post update] [data] |
-| arrays.cpp:36:5:36:10 | nested [post update] [arr, data] | arrays.cpp:36:3:36:3 | o [post update] [nested, arr, ... (3)] |
+| arrays.cpp:36:5:36:10 | nested [post update] [arr, data] | arrays.cpp:36:3:36:3 | o [post update] [nested, arr, data] |
 | arrays.cpp:36:12:36:14 | arr [inner post update] [data] | arrays.cpp:36:5:36:10 | nested [post update] [arr, data] |
 | arrays.cpp:36:26:36:35 | call to user_input | arrays.cpp:36:3:36:37 | ... = ... |
-| arrays.cpp:37:8:37:8 | o [nested, arr, ... (3)] | arrays.cpp:37:10:37:15 | nested [arr, data] |
+| arrays.cpp:37:8:37:8 | o [nested, arr, data] | arrays.cpp:37:10:37:15 | nested [arr, data] |
 | arrays.cpp:37:8:37:22 | access to array [data] | arrays.cpp:37:24:37:27 | data |
 | arrays.cpp:37:10:37:15 | nested [arr, data] | arrays.cpp:37:17:37:19 | arr [data] |
 | arrays.cpp:37:17:37:19 | arr [data] | arrays.cpp:37:8:37:22 | access to array [data] |
-| arrays.cpp:38:8:38:8 | o [nested, arr, ... (3)] | arrays.cpp:38:10:38:15 | nested [arr, data] |
+| arrays.cpp:38:8:38:8 | o [nested, arr, data] | arrays.cpp:38:10:38:15 | nested [arr, data] |
 | arrays.cpp:38:8:38:22 | access to array [data] | arrays.cpp:38:24:38:27 | data |
 | arrays.cpp:38:10:38:15 | nested [arr, data] | arrays.cpp:38:17:38:19 | arr [data] |
 | arrays.cpp:38:17:38:19 | arr [data] | arrays.cpp:38:8:38:22 | access to array [data] |
-| arrays.cpp:42:3:42:3 | o [post update] [indirect, arr, ... (3)] | arrays.cpp:43:8:43:8 | o [indirect, arr, ... (3)] |
-| arrays.cpp:42:3:42:3 | o [post update] [indirect, arr, ... (3)] | arrays.cpp:44:8:44:8 | o [indirect, arr, ... (3)] |
+| arrays.cpp:42:3:42:3 | o [post update] [indirect, arr, data] | arrays.cpp:43:8:43:8 | o [indirect, arr, data] |
+| arrays.cpp:42:3:42:3 | o [post update] [indirect, arr, data] | arrays.cpp:44:8:44:8 | o [indirect, arr, data] |
 | arrays.cpp:42:3:42:20 | access to array [post update] [data] | arrays.cpp:42:15:42:17 | arr [inner post update] [data] |
 | arrays.cpp:42:3:42:40 | ... = ... | arrays.cpp:42:3:42:20 | access to array [post update] [data] |
-| arrays.cpp:42:5:42:12 | indirect [post update] [arr, data] | arrays.cpp:42:3:42:3 | o [post update] [indirect, arr, ... (3)] |
+| arrays.cpp:42:5:42:12 | indirect [post update] [arr, data] | arrays.cpp:42:3:42:3 | o [post update] [indirect, arr, data] |
 | arrays.cpp:42:15:42:17 | arr [inner post update] [data] | arrays.cpp:42:5:42:12 | indirect [post update] [arr, data] |
 | arrays.cpp:42:29:42:38 | call to user_input | arrays.cpp:42:3:42:40 | ... = ... |
-| arrays.cpp:43:8:43:8 | o [indirect, arr, ... (3)] | arrays.cpp:43:10:43:17 | indirect [arr, data] |
+| arrays.cpp:43:8:43:8 | o [indirect, arr, data] | arrays.cpp:43:10:43:17 | indirect [arr, data] |
 | arrays.cpp:43:8:43:25 | access to array [data] | arrays.cpp:43:27:43:30 | data |
 | arrays.cpp:43:10:43:17 | indirect [arr, data] | arrays.cpp:43:20:43:22 | arr [data] |
 | arrays.cpp:43:20:43:22 | arr [data] | arrays.cpp:43:8:43:25 | access to array [data] |
-| arrays.cpp:44:8:44:8 | o [indirect, arr, ... (3)] | arrays.cpp:44:10:44:17 | indirect [arr, data] |
+| arrays.cpp:44:8:44:8 | o [indirect, arr, data] | arrays.cpp:44:10:44:17 | indirect [arr, data] |
 | arrays.cpp:44:8:44:25 | access to array [data] | arrays.cpp:44:27:44:30 | data |
 | arrays.cpp:44:10:44:17 | indirect [arr, data] | arrays.cpp:44:20:44:22 | arr [data] |
 | arrays.cpp:44:20:44:22 | arr [data] | arrays.cpp:44:8:44:25 | access to array [data] |
@@ -308,33 +308,34 @@ edges
 | by_reference.cpp:135:8:135:13 | pouter [inner_ptr, a] | by_reference.cpp:135:16:135:24 | inner_ptr [a] |
 | by_reference.cpp:135:16:135:24 | inner_ptr [a] | by_reference.cpp:135:27:135:27 | a |
 | by_reference.cpp:136:8:136:13 | pouter [a] | by_reference.cpp:136:16:136:16 | a |
-| complex.cpp:40:17:40:17 | b [inner, f, ... (3)] | complex.cpp:51:8:51:8 | b [inner, f, ... (3)] |
-| complex.cpp:40:17:40:17 | b [inner, f, ... (3)] | complex.cpp:52:8:52:8 | b [inner, f, ... (3)] |
-| complex.cpp:51:8:51:8 | b [inner, f, ... (3)] | complex.cpp:51:10:51:14 | inner [f, a_] |
-| complex.cpp:51:10:51:14 | inner [f, a_] | complex.cpp:51:16:51:16 | f [a_] |
-| complex.cpp:51:16:51:16 | f [a_] | complex.cpp:51:18:51:18 | call to a |
-| complex.cpp:52:8:52:8 | b [inner, f, ... (3)] | complex.cpp:52:10:52:14 | inner [f, b_] |
-| complex.cpp:52:10:52:14 | inner [f, b_] | complex.cpp:52:16:52:16 | f [b_] |
-| complex.cpp:52:16:52:16 | f [b_] | complex.cpp:52:18:52:18 | call to b |
-| complex.cpp:62:3:62:4 | b1 [post update] [inner, f, ... (3)] | complex.cpp:68:7:68:8 | b1 [inner, f, ... (3)] |
-| complex.cpp:62:6:62:10 | inner [post update] [f, a_] | complex.cpp:62:3:62:4 | b1 [post update] [inner, f, ... (3)] |
-| complex.cpp:62:12:62:12 | ref arg f [a_] | complex.cpp:62:6:62:10 | inner [post update] [f, a_] |
-| complex.cpp:62:19:62:28 | call to user_input | complex.cpp:62:12:62:12 | ref arg f [a_] |
-| complex.cpp:63:3:63:4 | b2 [post update] [inner, f, ... (3)] | complex.cpp:71:7:71:8 | b2 [inner, f, ... (3)] |
-| complex.cpp:63:6:63:10 | inner [post update] [f, b_] | complex.cpp:63:3:63:4 | b2 [post update] [inner, f, ... (3)] |
-| complex.cpp:63:12:63:12 | ref arg f [b_] | complex.cpp:63:6:63:10 | inner [post update] [f, b_] |
-| complex.cpp:63:19:63:28 | call to user_input | complex.cpp:63:12:63:12 | ref arg f [b_] |
-| complex.cpp:64:3:64:4 | b3 [post update] [inner, f, ... (3)] | complex.cpp:74:7:74:8 | b3 [inner, f, ... (3)] |
-| complex.cpp:64:6:64:10 | inner [post update] [f, a_] | complex.cpp:64:3:64:4 | b3 [post update] [inner, f, ... (3)] |
-| complex.cpp:64:12:64:12 | ref arg f [a_] | complex.cpp:64:6:64:10 | inner [post update] [f, a_] |
-| complex.cpp:64:19:64:28 | call to user_input | complex.cpp:64:12:64:12 | ref arg f [a_] |
-| complex.cpp:65:3:65:4 | b3 [post update] [inner, f, ... (3)] | complex.cpp:74:7:74:8 | b3 [inner, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [post update] [f, b_] | complex.cpp:65:3:65:4 | b3 [post update] [inner, f, ... (3)] |
-| complex.cpp:65:12:65:12 | ref arg f [b_] | complex.cpp:65:6:65:10 | inner [post update] [f, b_] |
-| complex.cpp:65:19:65:28 | call to user_input | complex.cpp:65:12:65:12 | ref arg f [b_] |
-| complex.cpp:68:7:68:8 | b1 [inner, f, ... (3)] | complex.cpp:40:17:40:17 | b [inner, f, ... (3)] |
-| complex.cpp:71:7:71:8 | b2 [inner, f, ... (3)] | complex.cpp:40:17:40:17 | b [inner, f, ... (3)] |
-| complex.cpp:74:7:74:8 | b3 [inner, f, ... (3)] | complex.cpp:40:17:40:17 | b [inner, f, ... (3)] |
+| complex.cpp:40:17:40:17 | b [inner, f, a_] | complex.cpp:42:8:42:8 | b [inner, f, a_] |
+| complex.cpp:40:17:40:17 | b [inner, f, b_] | complex.cpp:43:8:43:8 | b [inner, f, b_] |
+| complex.cpp:42:8:42:8 | b [inner, f, a_] | complex.cpp:42:10:42:14 | inner [f, a_] |
+| complex.cpp:42:10:42:14 | inner [f, a_] | complex.cpp:42:16:42:16 | f [a_] |
+| complex.cpp:42:16:42:16 | f [a_] | complex.cpp:42:18:42:18 | call to a |
+| complex.cpp:43:8:43:8 | b [inner, f, b_] | complex.cpp:43:10:43:14 | inner [f, b_] |
+| complex.cpp:43:10:43:14 | inner [f, b_] | complex.cpp:43:16:43:16 | f [b_] |
+| complex.cpp:43:16:43:16 | f [b_] | complex.cpp:43:18:43:18 | call to b |
+| complex.cpp:53:3:53:4 | b1 [post update] [inner, f, a_] | complex.cpp:59:7:59:8 | b1 [inner, f, a_] |
+| complex.cpp:53:6:53:10 | inner [post update] [f, a_] | complex.cpp:53:3:53:4 | b1 [post update] [inner, f, a_] |
+| complex.cpp:53:12:53:12 | ref arg f [a_] | complex.cpp:53:6:53:10 | inner [post update] [f, a_] |
+| complex.cpp:53:19:53:28 | call to user_input | complex.cpp:53:12:53:12 | ref arg f [a_] |
+| complex.cpp:54:3:54:4 | b2 [post update] [inner, f, b_] | complex.cpp:62:7:62:8 | b2 [inner, f, b_] |
+| complex.cpp:54:6:54:10 | inner [post update] [f, b_] | complex.cpp:54:3:54:4 | b2 [post update] [inner, f, b_] |
+| complex.cpp:54:12:54:12 | ref arg f [b_] | complex.cpp:54:6:54:10 | inner [post update] [f, b_] |
+| complex.cpp:54:19:54:28 | call to user_input | complex.cpp:54:12:54:12 | ref arg f [b_] |
+| complex.cpp:55:3:55:4 | b3 [post update] [inner, f, a_] | complex.cpp:65:7:65:8 | b3 [inner, f, a_] |
+| complex.cpp:55:6:55:10 | inner [post update] [f, a_] | complex.cpp:55:3:55:4 | b3 [post update] [inner, f, a_] |
+| complex.cpp:55:12:55:12 | ref arg f [a_] | complex.cpp:55:6:55:10 | inner [post update] [f, a_] |
+| complex.cpp:55:19:55:28 | call to user_input | complex.cpp:55:12:55:12 | ref arg f [a_] |
+| complex.cpp:56:3:56:4 | b3 [post update] [inner, f, b_] | complex.cpp:65:7:65:8 | b3 [inner, f, b_] |
+| complex.cpp:56:6:56:10 | inner [post update] [f, b_] | complex.cpp:56:3:56:4 | b3 [post update] [inner, f, b_] |
+| complex.cpp:56:12:56:12 | ref arg f [b_] | complex.cpp:56:6:56:10 | inner [post update] [f, b_] |
+| complex.cpp:56:19:56:28 | call to user_input | complex.cpp:56:12:56:12 | ref arg f [b_] |
+| complex.cpp:59:7:59:8 | b1 [inner, f, a_] | complex.cpp:40:17:40:17 | b [inner, f, a_] |
+| complex.cpp:62:7:62:8 | b2 [inner, f, b_] | complex.cpp:40:17:40:17 | b [inner, f, b_] |
+| complex.cpp:65:7:65:8 | b3 [inner, f, a_] | complex.cpp:40:17:40:17 | b [inner, f, a_] |
+| complex.cpp:65:7:65:8 | b3 [inner, f, b_] | complex.cpp:40:17:40:17 | b [inner, f, b_] |
 | constructors.cpp:26:15:26:15 | f [a_] | constructors.cpp:28:10:28:10 | f [a_] |
 | constructors.cpp:26:15:26:15 | f [b_] | constructors.cpp:29:10:29:10 | f [b_] |
 | constructors.cpp:28:10:28:10 | f [a_] | constructors.cpp:28:12:28:12 | call to a |
@@ -386,16 +387,16 @@ edges
 | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:47:5:47:42 | ... = ... |
 | qualifiers.cpp:48:10:48:14 | outer [inner, a] | qualifiers.cpp:48:16:48:20 | inner [a] |
 | qualifiers.cpp:48:16:48:20 | inner [a] | qualifiers.cpp:48:23:48:23 | a |
-| realistic.cpp:53:9:53:11 | foo [post update] [bar, baz, ... (4)] | realistic.cpp:61:21:61:23 | foo [bar, baz, ... (4)] |
-| realistic.cpp:53:9:53:18 | access to array [post update] [baz, userInput, ... (3)] | realistic.cpp:53:13:53:15 | bar [inner post update] [baz, userInput, ... (3)] |
+| realistic.cpp:53:9:53:11 | foo [post update] [bar, baz, userInput, bufferLen] | realistic.cpp:61:21:61:23 | foo [bar, baz, userInput, bufferLen] |
+| realistic.cpp:53:9:53:18 | access to array [post update] [baz, userInput, bufferLen] | realistic.cpp:53:13:53:15 | bar [inner post update] [baz, userInput, bufferLen] |
 | realistic.cpp:53:9:53:66 | ... = ... | realistic.cpp:53:25:53:33 | userInput [post update] [bufferLen] |
-| realistic.cpp:53:13:53:15 | bar [inner post update] [baz, userInput, ... (3)] | realistic.cpp:53:9:53:11 | foo [post update] [bar, baz, ... (4)] |
-| realistic.cpp:53:20:53:22 | baz [post update] [userInput, bufferLen] | realistic.cpp:53:9:53:18 | access to array [post update] [baz, userInput, ... (3)] |
+| realistic.cpp:53:13:53:15 | bar [inner post update] [baz, userInput, bufferLen] | realistic.cpp:53:9:53:11 | foo [post update] [bar, baz, userInput, bufferLen] |
+| realistic.cpp:53:20:53:22 | baz [post update] [userInput, bufferLen] | realistic.cpp:53:9:53:18 | access to array [post update] [baz, userInput, bufferLen] |
 | realistic.cpp:53:25:53:33 | userInput [post update] [bufferLen] | realistic.cpp:53:20:53:22 | baz [post update] [userInput, bufferLen] |
 | realistic.cpp:53:55:53:64 | call to user_input | realistic.cpp:53:9:53:66 | ... = ... |
-| realistic.cpp:61:21:61:23 | foo [bar, baz, ... (4)] | realistic.cpp:61:25:61:27 | bar [baz, userInput, ... (3)] |
-| realistic.cpp:61:21:61:30 | access to array [baz, userInput, ... (3)] | realistic.cpp:61:32:61:34 | baz [userInput, bufferLen] |
-| realistic.cpp:61:25:61:27 | bar [baz, userInput, ... (3)] | realistic.cpp:61:21:61:30 | access to array [baz, userInput, ... (3)] |
+| realistic.cpp:61:21:61:23 | foo [bar, baz, userInput, bufferLen] | realistic.cpp:61:25:61:27 | bar [baz, userInput, bufferLen] |
+| realistic.cpp:61:21:61:30 | access to array [baz, userInput, bufferLen] | realistic.cpp:61:32:61:34 | baz [userInput, bufferLen] |
+| realistic.cpp:61:25:61:27 | bar [baz, userInput, bufferLen] | realistic.cpp:61:21:61:30 | access to array [baz, userInput, bufferLen] |
 | realistic.cpp:61:32:61:34 | baz [userInput, bufferLen] | realistic.cpp:61:37:61:45 | userInput [bufferLen] |
 | realistic.cpp:61:37:61:45 | userInput [bufferLen] | realistic.cpp:61:47:61:55 | bufferLen |
 | simple.cpp:26:15:26:15 | f [a_] | simple.cpp:28:10:28:10 | f [a_] |
@@ -517,14 +518,14 @@ nodes
 | A.cpp:160:29:160:29 | b | semmle.label | b |
 | A.cpp:161:18:161:40 | call to MyList [next, head] | semmle.label | call to MyList [next, head] |
 | A.cpp:161:38:161:39 | l1 [head] | semmle.label | l1 [head] |
-| A.cpp:162:18:162:40 | call to MyList [next, next, ... (3)] | semmle.label | call to MyList [next, next, ... (3)] |
+| A.cpp:162:18:162:40 | call to MyList [next, next, head] | semmle.label | call to MyList [next, next, head] |
 | A.cpp:162:38:162:39 | l2 [next, head] | semmle.label | l2 [next, head] |
-| A.cpp:165:10:165:11 | l3 [next, next, ... (3)] | semmle.label | l3 [next, next, ... (3)] |
+| A.cpp:165:10:165:11 | l3 [next, next, head] | semmle.label | l3 [next, next, head] |
 | A.cpp:165:14:165:17 | next [next, head] | semmle.label | next [next, head] |
 | A.cpp:165:20:165:23 | next [head] | semmle.label | next [head] |
 | A.cpp:165:26:165:29 | head | semmle.label | head |
 | A.cpp:167:44:167:44 | l [next, head] | semmle.label | l [next, head] |
-| A.cpp:167:44:167:44 | l [next, next, ... (3)] | semmle.label | l [next, next, ... (3)] |
+| A.cpp:167:44:167:44 | l [next, next, head] | semmle.label | l [next, next, head] |
 | A.cpp:167:47:167:50 | next [head] | semmle.label | next [head] |
 | A.cpp:167:47:167:50 | next [next, head] | semmle.label | next [next, head] |
 | A.cpp:169:12:169:12 | l [head] | semmle.label | l [head] |
@@ -586,13 +587,13 @@ nodes
 | D.cpp:52:14:52:14 | b [box, elem] | semmle.label | b [box, elem] |
 | D.cpp:56:15:56:24 | new | semmle.label | new |
 | D.cpp:58:5:58:12 | boxfield [post update] [box, elem] | semmle.label | boxfield [post update] [box, elem] |
-| D.cpp:58:5:58:12 | this [post update] [boxfield, box, ... (3)] | semmle.label | this [post update] [boxfield, box, ... (3)] |
+| D.cpp:58:5:58:12 | this [post update] [boxfield, box, elem] | semmle.label | this [post update] [boxfield, box, elem] |
 | D.cpp:58:5:58:27 | ... = ... | semmle.label | ... = ... |
 | D.cpp:58:15:58:17 | box [post update] [elem] | semmle.label | box [post update] [elem] |
-| D.cpp:59:5:59:7 | this [boxfield, box, ... (3)] | semmle.label | this [boxfield, box, ... (3)] |
-| D.cpp:63:8:63:10 | this [boxfield, box, ... (3)] | semmle.label | this [boxfield, box, ... (3)] |
+| D.cpp:59:5:59:7 | this [boxfield, box, elem] | semmle.label | this [boxfield, box, elem] |
+| D.cpp:63:8:63:10 | this [boxfield, box, elem] | semmle.label | this [boxfield, box, elem] |
 | D.cpp:64:10:64:17 | boxfield [box, elem] | semmle.label | boxfield [box, elem] |
-| D.cpp:64:10:64:17 | this [boxfield, box, ... (3)] | semmle.label | this [boxfield, box, ... (3)] |
+| D.cpp:64:10:64:17 | this [boxfield, box, elem] | semmle.label | this [boxfield, box, elem] |
 | D.cpp:64:20:64:22 | box [elem] | semmle.label | box [elem] |
 | D.cpp:64:25:64:28 | elem | semmle.label | elem |
 | E.cpp:19:27:19:27 | p [data, buffer] | semmle.label | p [data, buffer] |
@@ -675,34 +676,34 @@ nodes
 | arrays.cpp:15:14:15:23 | call to user_input | semmle.label | call to user_input |
 | arrays.cpp:16:8:16:13 | access to array | semmle.label | access to array |
 | arrays.cpp:17:8:17:13 | access to array | semmle.label | access to array |
-| arrays.cpp:36:3:36:3 | o [post update] [nested, arr, ... (3)] | semmle.label | o [post update] [nested, arr, ... (3)] |
+| arrays.cpp:36:3:36:3 | o [post update] [nested, arr, data] | semmle.label | o [post update] [nested, arr, data] |
 | arrays.cpp:36:3:36:17 | access to array [post update] [data] | semmle.label | access to array [post update] [data] |
 | arrays.cpp:36:3:36:37 | ... = ... | semmle.label | ... = ... |
 | arrays.cpp:36:5:36:10 | nested [post update] [arr, data] | semmle.label | nested [post update] [arr, data] |
 | arrays.cpp:36:12:36:14 | arr [inner post update] [data] | semmle.label | arr [inner post update] [data] |
 | arrays.cpp:36:26:36:35 | call to user_input | semmle.label | call to user_input |
-| arrays.cpp:37:8:37:8 | o [nested, arr, ... (3)] | semmle.label | o [nested, arr, ... (3)] |
+| arrays.cpp:37:8:37:8 | o [nested, arr, data] | semmle.label | o [nested, arr, data] |
 | arrays.cpp:37:8:37:22 | access to array [data] | semmle.label | access to array [data] |
 | arrays.cpp:37:10:37:15 | nested [arr, data] | semmle.label | nested [arr, data] |
 | arrays.cpp:37:17:37:19 | arr [data] | semmle.label | arr [data] |
 | arrays.cpp:37:24:37:27 | data | semmle.label | data |
-| arrays.cpp:38:8:38:8 | o [nested, arr, ... (3)] | semmle.label | o [nested, arr, ... (3)] |
+| arrays.cpp:38:8:38:8 | o [nested, arr, data] | semmle.label | o [nested, arr, data] |
 | arrays.cpp:38:8:38:22 | access to array [data] | semmle.label | access to array [data] |
 | arrays.cpp:38:10:38:15 | nested [arr, data] | semmle.label | nested [arr, data] |
 | arrays.cpp:38:17:38:19 | arr [data] | semmle.label | arr [data] |
 | arrays.cpp:38:24:38:27 | data | semmle.label | data |
-| arrays.cpp:42:3:42:3 | o [post update] [indirect, arr, ... (3)] | semmle.label | o [post update] [indirect, arr, ... (3)] |
+| arrays.cpp:42:3:42:3 | o [post update] [indirect, arr, data] | semmle.label | o [post update] [indirect, arr, data] |
 | arrays.cpp:42:3:42:20 | access to array [post update] [data] | semmle.label | access to array [post update] [data] |
 | arrays.cpp:42:3:42:40 | ... = ... | semmle.label | ... = ... |
 | arrays.cpp:42:5:42:12 | indirect [post update] [arr, data] | semmle.label | indirect [post update] [arr, data] |
 | arrays.cpp:42:15:42:17 | arr [inner post update] [data] | semmle.label | arr [inner post update] [data] |
 | arrays.cpp:42:29:42:38 | call to user_input | semmle.label | call to user_input |
-| arrays.cpp:43:8:43:8 | o [indirect, arr, ... (3)] | semmle.label | o [indirect, arr, ... (3)] |
+| arrays.cpp:43:8:43:8 | o [indirect, arr, data] | semmle.label | o [indirect, arr, data] |
 | arrays.cpp:43:8:43:25 | access to array [data] | semmle.label | access to array [data] |
 | arrays.cpp:43:10:43:17 | indirect [arr, data] | semmle.label | indirect [arr, data] |
 | arrays.cpp:43:20:43:22 | arr [data] | semmle.label | arr [data] |
 | arrays.cpp:43:27:43:30 | data | semmle.label | data |
-| arrays.cpp:44:8:44:8 | o [indirect, arr, ... (3)] | semmle.label | o [indirect, arr, ... (3)] |
+| arrays.cpp:44:8:44:8 | o [indirect, arr, data] | semmle.label | o [indirect, arr, data] |
 | arrays.cpp:44:8:44:25 | access to array [data] | semmle.label | access to array [data] |
 | arrays.cpp:44:10:44:17 | indirect [arr, data] | semmle.label | indirect [arr, data] |
 | arrays.cpp:44:20:44:22 | arr [data] | semmle.label | arr [data] |
@@ -796,34 +797,36 @@ nodes
 | by_reference.cpp:135:27:135:27 | a | semmle.label | a |
 | by_reference.cpp:136:8:136:13 | pouter [a] | semmle.label | pouter [a] |
 | by_reference.cpp:136:16:136:16 | a | semmle.label | a |
-| complex.cpp:40:17:40:17 | b [inner, f, ... (3)] | semmle.label | b [inner, f, ... (3)] |
-| complex.cpp:51:8:51:8 | b [inner, f, ... (3)] | semmle.label | b [inner, f, ... (3)] |
-| complex.cpp:51:10:51:14 | inner [f, a_] | semmle.label | inner [f, a_] |
-| complex.cpp:51:16:51:16 | f [a_] | semmle.label | f [a_] |
-| complex.cpp:51:18:51:18 | call to a | semmle.label | call to a |
-| complex.cpp:52:8:52:8 | b [inner, f, ... (3)] | semmle.label | b [inner, f, ... (3)] |
-| complex.cpp:52:10:52:14 | inner [f, b_] | semmle.label | inner [f, b_] |
-| complex.cpp:52:16:52:16 | f [b_] | semmle.label | f [b_] |
-| complex.cpp:52:18:52:18 | call to b | semmle.label | call to b |
-| complex.cpp:62:3:62:4 | b1 [post update] [inner, f, ... (3)] | semmle.label | b1 [post update] [inner, f, ... (3)] |
-| complex.cpp:62:6:62:10 | inner [post update] [f, a_] | semmle.label | inner [post update] [f, a_] |
-| complex.cpp:62:12:62:12 | ref arg f [a_] | semmle.label | ref arg f [a_] |
-| complex.cpp:62:19:62:28 | call to user_input | semmle.label | call to user_input |
-| complex.cpp:63:3:63:4 | b2 [post update] [inner, f, ... (3)] | semmle.label | b2 [post update] [inner, f, ... (3)] |
-| complex.cpp:63:6:63:10 | inner [post update] [f, b_] | semmle.label | inner [post update] [f, b_] |
-| complex.cpp:63:12:63:12 | ref arg f [b_] | semmle.label | ref arg f [b_] |
-| complex.cpp:63:19:63:28 | call to user_input | semmle.label | call to user_input |
-| complex.cpp:64:3:64:4 | b3 [post update] [inner, f, ... (3)] | semmle.label | b3 [post update] [inner, f, ... (3)] |
-| complex.cpp:64:6:64:10 | inner [post update] [f, a_] | semmle.label | inner [post update] [f, a_] |
-| complex.cpp:64:12:64:12 | ref arg f [a_] | semmle.label | ref arg f [a_] |
-| complex.cpp:64:19:64:28 | call to user_input | semmle.label | call to user_input |
-| complex.cpp:65:3:65:4 | b3 [post update] [inner, f, ... (3)] | semmle.label | b3 [post update] [inner, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [post update] [f, b_] | semmle.label | inner [post update] [f, b_] |
-| complex.cpp:65:12:65:12 | ref arg f [b_] | semmle.label | ref arg f [b_] |
-| complex.cpp:65:19:65:28 | call to user_input | semmle.label | call to user_input |
-| complex.cpp:68:7:68:8 | b1 [inner, f, ... (3)] | semmle.label | b1 [inner, f, ... (3)] |
-| complex.cpp:71:7:71:8 | b2 [inner, f, ... (3)] | semmle.label | b2 [inner, f, ... (3)] |
-| complex.cpp:74:7:74:8 | b3 [inner, f, ... (3)] | semmle.label | b3 [inner, f, ... (3)] |
+| complex.cpp:40:17:40:17 | b [inner, f, a_] | semmle.label | b [inner, f, a_] |
+| complex.cpp:40:17:40:17 | b [inner, f, b_] | semmle.label | b [inner, f, b_] |
+| complex.cpp:42:8:42:8 | b [inner, f, a_] | semmle.label | b [inner, f, a_] |
+| complex.cpp:42:10:42:14 | inner [f, a_] | semmle.label | inner [f, a_] |
+| complex.cpp:42:16:42:16 | f [a_] | semmle.label | f [a_] |
+| complex.cpp:42:18:42:18 | call to a | semmle.label | call to a |
+| complex.cpp:43:8:43:8 | b [inner, f, b_] | semmle.label | b [inner, f, b_] |
+| complex.cpp:43:10:43:14 | inner [f, b_] | semmle.label | inner [f, b_] |
+| complex.cpp:43:16:43:16 | f [b_] | semmle.label | f [b_] |
+| complex.cpp:43:18:43:18 | call to b | semmle.label | call to b |
+| complex.cpp:53:3:53:4 | b1 [post update] [inner, f, a_] | semmle.label | b1 [post update] [inner, f, a_] |
+| complex.cpp:53:6:53:10 | inner [post update] [f, a_] | semmle.label | inner [post update] [f, a_] |
+| complex.cpp:53:12:53:12 | ref arg f [a_] | semmle.label | ref arg f [a_] |
+| complex.cpp:53:19:53:28 | call to user_input | semmle.label | call to user_input |
+| complex.cpp:54:3:54:4 | b2 [post update] [inner, f, b_] | semmle.label | b2 [post update] [inner, f, b_] |
+| complex.cpp:54:6:54:10 | inner [post update] [f, b_] | semmle.label | inner [post update] [f, b_] |
+| complex.cpp:54:12:54:12 | ref arg f [b_] | semmle.label | ref arg f [b_] |
+| complex.cpp:54:19:54:28 | call to user_input | semmle.label | call to user_input |
+| complex.cpp:55:3:55:4 | b3 [post update] [inner, f, a_] | semmle.label | b3 [post update] [inner, f, a_] |
+| complex.cpp:55:6:55:10 | inner [post update] [f, a_] | semmle.label | inner [post update] [f, a_] |
+| complex.cpp:55:12:55:12 | ref arg f [a_] | semmle.label | ref arg f [a_] |
+| complex.cpp:55:19:55:28 | call to user_input | semmle.label | call to user_input |
+| complex.cpp:56:3:56:4 | b3 [post update] [inner, f, b_] | semmle.label | b3 [post update] [inner, f, b_] |
+| complex.cpp:56:6:56:10 | inner [post update] [f, b_] | semmle.label | inner [post update] [f, b_] |
+| complex.cpp:56:12:56:12 | ref arg f [b_] | semmle.label | ref arg f [b_] |
+| complex.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
+| complex.cpp:59:7:59:8 | b1 [inner, f, a_] | semmle.label | b1 [inner, f, a_] |
+| complex.cpp:62:7:62:8 | b2 [inner, f, b_] | semmle.label | b2 [inner, f, b_] |
+| complex.cpp:65:7:65:8 | b3 [inner, f, a_] | semmle.label | b3 [inner, f, a_] |
+| complex.cpp:65:7:65:8 | b3 [inner, f, b_] | semmle.label | b3 [inner, f, b_] |
 | constructors.cpp:26:15:26:15 | f [a_] | semmle.label | f [a_] |
 | constructors.cpp:26:15:26:15 | f [b_] | semmle.label | f [b_] |
 | constructors.cpp:28:10:28:10 | f [a_] | semmle.label | f [a_] |
@@ -883,16 +886,16 @@ nodes
 | qualifiers.cpp:48:10:48:14 | outer [inner, a] | semmle.label | outer [inner, a] |
 | qualifiers.cpp:48:16:48:20 | inner [a] | semmle.label | inner [a] |
 | qualifiers.cpp:48:23:48:23 | a | semmle.label | a |
-| realistic.cpp:53:9:53:11 | foo [post update] [bar, baz, ... (4)] | semmle.label | foo [post update] [bar, baz, ... (4)] |
-| realistic.cpp:53:9:53:18 | access to array [post update] [baz, userInput, ... (3)] | semmle.label | access to array [post update] [baz, userInput, ... (3)] |
+| realistic.cpp:53:9:53:11 | foo [post update] [bar, baz, userInput, bufferLen] | semmle.label | foo [post update] [bar, baz, userInput, bufferLen] |
+| realistic.cpp:53:9:53:18 | access to array [post update] [baz, userInput, bufferLen] | semmle.label | access to array [post update] [baz, userInput, bufferLen] |
 | realistic.cpp:53:9:53:66 | ... = ... | semmle.label | ... = ... |
-| realistic.cpp:53:13:53:15 | bar [inner post update] [baz, userInput, ... (3)] | semmle.label | bar [inner post update] [baz, userInput, ... (3)] |
+| realistic.cpp:53:13:53:15 | bar [inner post update] [baz, userInput, bufferLen] | semmle.label | bar [inner post update] [baz, userInput, bufferLen] |
 | realistic.cpp:53:20:53:22 | baz [post update] [userInput, bufferLen] | semmle.label | baz [post update] [userInput, bufferLen] |
 | realistic.cpp:53:25:53:33 | userInput [post update] [bufferLen] | semmle.label | userInput [post update] [bufferLen] |
 | realistic.cpp:53:55:53:64 | call to user_input | semmle.label | call to user_input |
-| realistic.cpp:61:21:61:23 | foo [bar, baz, ... (4)] | semmle.label | foo [bar, baz, ... (4)] |
-| realistic.cpp:61:21:61:30 | access to array [baz, userInput, ... (3)] | semmle.label | access to array [baz, userInput, ... (3)] |
-| realistic.cpp:61:25:61:27 | bar [baz, userInput, ... (3)] | semmle.label | bar [baz, userInput, ... (3)] |
+| realistic.cpp:61:21:61:23 | foo [bar, baz, userInput, bufferLen] | semmle.label | foo [bar, baz, userInput, bufferLen] |
+| realistic.cpp:61:21:61:30 | access to array [baz, userInput, bufferLen] | semmle.label | access to array [baz, userInput, bufferLen] |
+| realistic.cpp:61:25:61:27 | bar [baz, userInput, bufferLen] | semmle.label | bar [baz, userInput, bufferLen] |
 | realistic.cpp:61:32:61:34 | baz [userInput, bufferLen] | semmle.label | baz [userInput, bufferLen] |
 | realistic.cpp:61:37:61:45 | userInput [bufferLen] | semmle.label | userInput [bufferLen] |
 | realistic.cpp:61:47:61:55 | bufferLen | semmle.label | bufferLen |
@@ -1021,14 +1024,10 @@ nodes
 | by_reference.cpp:134:29:134:29 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:134:29:134:29 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | by_reference.cpp:135:27:135:27 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:135:27:135:27 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | by_reference.cpp:136:16:136:16 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:136:16:136:16 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
-| complex.cpp:51:18:51:18 | call to a | complex.cpp:62:19:62:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | call to a flows from $@ | complex.cpp:62:19:62:28 | call to user_input | call to user_input |
-| complex.cpp:51:18:51:18 | call to a | complex.cpp:63:19:63:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | call to a flows from $@ | complex.cpp:63:19:63:28 | call to user_input | call to user_input |
-| complex.cpp:51:18:51:18 | call to a | complex.cpp:64:19:64:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | call to a flows from $@ | complex.cpp:64:19:64:28 | call to user_input | call to user_input |
-| complex.cpp:51:18:51:18 | call to a | complex.cpp:65:19:65:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | call to a flows from $@ | complex.cpp:65:19:65:28 | call to user_input | call to user_input |
-| complex.cpp:52:18:52:18 | call to b | complex.cpp:62:19:62:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | call to b flows from $@ | complex.cpp:62:19:62:28 | call to user_input | call to user_input |
-| complex.cpp:52:18:52:18 | call to b | complex.cpp:63:19:63:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | call to b flows from $@ | complex.cpp:63:19:63:28 | call to user_input | call to user_input |
-| complex.cpp:52:18:52:18 | call to b | complex.cpp:64:19:64:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | call to b flows from $@ | complex.cpp:64:19:64:28 | call to user_input | call to user_input |
-| complex.cpp:52:18:52:18 | call to b | complex.cpp:65:19:65:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | call to b flows from $@ | complex.cpp:65:19:65:28 | call to user_input | call to user_input |
+| complex.cpp:42:18:42:18 | call to a | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:53:19:53:28 | call to user_input | call to user_input |
+| complex.cpp:42:18:42:18 | call to a | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:55:19:55:28 | call to user_input | call to user_input |
+| complex.cpp:43:18:43:18 | call to b | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:54:19:54:28 | call to user_input | call to user_input |
+| complex.cpp:43:18:43:18 | call to b | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:56:19:56:28 | call to user_input | call to user_input |
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:34:11:34:20 | call to user_input | call to user_input |
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:36:11:36:20 | call to user_input | call to user_input |
 | constructors.cpp:29:12:29:12 | call to b | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:35:14:35:23 | call to user_input | call to user_input |

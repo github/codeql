@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class DynamicType : Type<IDynamicTypeSymbol>
+    internal class DynamicType : Type<IDynamicTypeSymbol>
     {
-        DynamicType(Context cx, IDynamicTypeSymbol init)
+        private DynamicType(Context cx, IDynamicTypeSymbol init)
             : base(cx, init) { }
 
         public static DynamicType Create(Context cx, IDynamicTypeSymbol type) => DynamicTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
@@ -27,9 +27,9 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write("dynamic;type");
         }
 
-        class DynamicTypeFactory : ICachedEntityFactory<IDynamicTypeSymbol, DynamicType>
+        private class DynamicTypeFactory : ICachedEntityFactory<IDynamicTypeSymbol, DynamicType>
         {
-            public static readonly DynamicTypeFactory Instance = new DynamicTypeFactory();
+            public static DynamicTypeFactory Instance { get; } = new DynamicTypeFactory();
 
             public DynamicType Create(Context cx, IDynamicTypeSymbol init) => new DynamicType(cx, init);
         }

@@ -68,5 +68,5 @@ Node importNode(string name) {
   // Because named imports are modelled as `AttrRead`s, the statement `from foo import bar as baz`
   // is interpreted as if it was an assignment `baz = foo.bar`, which means `baz` gets tracked as a
   // reference to `foo.bar`, as desired.
-  result.asCfgNode().getNode() = any(ImportExpr i | i.getAnImportedModuleName() = name)
+  result.asCfgNode().getNode() = any(ImportExpr i | i.getName() = name)
 }

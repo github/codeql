@@ -1,22 +1,28 @@
-﻿using Semmle.Autobuild.Shared;
+﻿using System.Linq;
+using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp
 {
     /// <summary>
     /// Build using standalone extraction.
     /// </summary>
-    class StandaloneBuildRule : IBuildRule
+    internal class StandaloneBuildRule : IBuildRule
     {
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {
             BuildScript GetCommand(string? solution)
             {
                 string standalone;
-                if (builder.CodeQLExtractorLangRoot is object && builder.CodeQlPlatform is object) {
+                if (builder.CodeQLExtractorLangRoot is object && builder.CodeQlPlatform is object)
+                {
                     standalone = builder.Actions.PathCombine(builder.CodeQLExtractorLangRoot, "tools", builder.CodeQlPlatform, "Semmle.Extraction.CSharp.Standalone");
-                } else if (builder.SemmlePlatformTools is object) {
+                }
+                else if (builder.SemmlePlatformTools is object)
+                {
                     standalone = builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "Semmle.Extraction.CSharp.Standalone");
-                } else {
+                }
+                else
+                {
                     return BuildScript.Failure;
                 }
 
@@ -39,9 +45,7 @@ namespace Semmle.Autobuild.CSharp
             if (!builder.Options.Buildless)
                 return BuildScript.Failure;
 
-            var solutions = builder.Options.Solution.Length;
-
-            if (solutions == 0)
+            if (!builder.Options.Solution.Any())
                 return GetCommand(null);
 
             var script = BuildScript.Success;

@@ -3,23 +3,23 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    interface IFileOrFolder : IEntity
+    internal interface IFileOrFolder : IEntity
     {
     }
 
-    interface IFile : IFileOrFolder
+    internal interface IFile : IFileOrFolder
     {
     }
 
     public class File : LabelledEntity, IFile
     {
-        protected readonly string OriginalPath;
-        protected readonly PathTransformer.ITransformedPath TransformedPath;
+        protected string OriginalPath { get; }
+        protected PathTransformer.ITransformedPath TransformedPath { get; }
 
         public File(Context cx, string path) : base(cx)
         {
             this.OriginalPath = path;
-            TransformedPath = cx.cx.Extractor.PathTransformer.Transform(OriginalPath);
+            TransformedPath = cx.Cx.Extractor.PathTransformer.Transform(OriginalPath);
         }
 
         public override void WriteId(TextWriter trapFile)
@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 if (TransformedPath.ParentDirectory is PathTransformer.ITransformedPath dir)
                 {
-                    var parent = cx.CreateFolder(dir);
+                    var parent = Cx.CreateFolder(dir);
                     yield return parent;
                     yield return Tuples.containerparent(parent, this);
                 }
@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CIL.Entities
 
     public class PdbSourceFile : File
     {
-        readonly PDB.ISourceFile file;
+        private readonly PDB.ISourceFile file;
 
         public PdbSourceFile(Context cx, PDB.ISourceFile file) : base(cx, file.Path)
         {
@@ -70,9 +70,9 @@ namespace Semmle.Extraction.CIL.Entities
                 var text = file.Contents;
 
                 if (text == null)
-                    cx.cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, string.Format("PDB source file {0} could not be found", OriginalPath));
+                    Cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, string.Format("PDB source file {0} could not be found", OriginalPath));
                 else
-                    cx.cx.TrapWriter.Archive(TransformedPath, text);
+                    Cx.Cx.TrapWriter.Archive(TransformedPath, text);
 
                 yield return Tuples.file_extraction_mode(this, 2);
             }

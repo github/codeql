@@ -9,9 +9,9 @@ namespace Semmle.Extraction.CIL
     /// <summary>
     /// Provides methods for creating and caching various entities.
     /// </summary>
-    public partial class Context
+    public sealed partial class Context
     {
-        readonly Dictionary<object, Label> ids = new Dictionary<object, Label>();
+        private readonly Dictionary<object, Label> ids = new Dictionary<object, Label>();
 
         public T Populate<T>(T e) where T : IExtractedEntity
         {
@@ -27,28 +27,26 @@ namespace Semmle.Extraction.CIL
             }
             else
             {
-                e.Label = cx.GetNewLabel();
-                cx.DefineLabel(e, cx.TrapWriter.Writer, cx.Extractor);
+                e.Label = Cx.GetNewLabel();
+                Cx.DefineLabel(e, Cx.TrapWriter.Writer, Cx.Extractor);
                 ids.Add(e, e.Label);
-                cx.PopulateLater(() =>
+                Cx.PopulateLater(() =>
                 {
                     foreach (var c in e.Contents)
                         c.Extract(this);
                 });
 #if DEBUG_LABELS
-                using (var writer = new StringWriter())
-                {
-                    e.WriteId(writer);
-                    var id = writer.ToString();
+                using var writer = new StringWriter();
+                e.WriteId(writer);
+                var id = writer.ToString();
 
-                    if (debugLabels.TryGetValue(id, out IExtractedEntity? previousEntity))
-                    {
-                        cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
-                    }
-                    else
-                    {
-                        debugLabels.Add(id, e);
-                    }
+                if (debugLabels.TryGetValue(id, out var previousEntity))
+                {
+                    Cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
+                }
+                else
+                {
+                    debugLabels.Add(id, e);
                 }
 #endif
             }
@@ -70,13 +68,15 @@ namespace Semmle.Extraction.CIL
 
         public PrimitiveType Create(PrimitiveTypeCode code)
         {
-            PrimitiveType e = primitiveTypes[(int)code];
+            var e = primitiveTypes[(int)code];
 
             if (e is null)
             {
-                e = new PrimitiveType(this, code);
-                e.Label = cx.GetNewLabel();
-                cx.DefineLabel(e, cx.TrapWriter.Writer, cx.Extractor);
+                e = new PrimitiveType(this, code)
+                {
+                    Label = Cx.GetNewLabel()
+                };
+                Cx.DefineLabel(e, Cx.TrapWriter.Writer, Cx.Extractor);
                 primitiveTypes[(int)code] = e;
             }
 
@@ -97,9 +97,9 @@ namespace Semmle.Extraction.CIL
         /// <returns></returns>
         public IExtractedEntity CreateGeneric(GenericContext genericContext, Handle h) => genericHandleFactory[genericContext, h];
 
-        readonly GenericContext defaultGenericContext;
+        private readonly GenericContext defaultGenericContext;
 
-        IExtractedEntity CreateGenericHandle(GenericContext gc, Handle handle)
+        private IExtractedEntity CreateGenericHandle(GenericContext gc, Handle handle)
         {
             IExtractedEntity entity;
             switch (handle.Kind)
@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CIL
                     entity = new MethodSpecificationMethod(gc, (MethodSpecificationHandle)handle);
                     break;
                 case HandleKind.FieldDefinition:
-                    entity = new DefinitionField(gc, (FieldDefinitionHandle)handle);
+                    entity = new DefinitionField(gc.Cx, (FieldDefinitionHandle)handle);
                     break;
                 case HandleKind.TypeReference:
                     var tr = new TypeReferenceType(this, (TypeReferenceHandle)handle);
@@ -136,9 +136,9 @@ namespace Semmle.Extraction.CIL
             return entity;
         }
 
-        IExtractedEntity Create(GenericContext gc, MemberReferenceHandle handle)
+        private IExtractedEntity Create(GenericContext gc, MemberReferenceHandle handle)
         {
-            var mr = mdReader.GetMemberReference(handle);
+            var mr = MdReader.GetMemberReference(handle);
             switch (mr.GetKind())
             {
                 case MemberReferenceKind.Method:
@@ -155,15 +155,15 @@ namespace Semmle.Extraction.CIL
         /// </summary>
         /// <param name="h">The string handle.</param>
         /// <returns>The string.</returns>
-        public string GetString(StringHandle h) => mdReader.GetString(h);
+        public string GetString(StringHandle h) => MdReader.GetString(h);
 
         #region Namespaces
 
-        readonly CachedFunction<StringHandle, Namespace> namespaceFactory;
+        private readonly CachedFunction<StringHandle, Namespace> namespaceFactory;
 
         public Namespace CreateNamespace(StringHandle fqn) => namespaceFactory[fqn];
 
-        readonly Lazy<Namespace> globalNamespace, systemNamespace;
+        private readonly Lazy<Namespace> globalNamespace, systemNamespace;
 
         /// <summary>
         /// The entity representing the global namespace.
@@ -180,9 +180,9 @@ namespace Semmle.Extraction.CIL
         /// </summary>
         /// <param name="fqn">The fully-qualified namespace name.</param>
         /// <returns>The namespace entity.</returns>
-        Namespace CreateNamespace(string fqn) => Populate(new Namespace(this, fqn));
+        private Namespace CreateNamespace(string fqn) => Populate(new Namespace(this, fqn));
 
-        readonly CachedFunction<NamespaceDefinitionHandle, Namespace> namespaceDefinitionFactory;
+        private readonly CachedFunction<NamespaceDefinitionHandle, Namespace> namespaceDefinitionFactory;
 
         /// <summary>
         /// Creates a namespace from a namespace handle.
@@ -191,18 +191,19 @@ namespace Semmle.Extraction.CIL
         /// <returns>The namespace entity.</returns>
         public Namespace Create(NamespaceDefinitionHandle handle) => namespaceDefinitionFactory[handle];
 
-        Namespace CreateNamespace(NamespaceDefinitionHandle handle)
+        private Namespace CreateNamespace(NamespaceDefinitionHandle handle)
         {
-            if (handle.IsNil) return GlobalNamespace;
-            NamespaceDefinition nd = mdReader.GetNamespaceDefinition(handle);
+            if (handle.IsNil)
+                return GlobalNamespace;
+            var nd = MdReader.GetNamespaceDefinition(handle);
             return Populate(new Namespace(this, GetString(nd.Name), Create(nd.Parent)));
         }
         #endregion
 
         #region Locations
-        readonly CachedFunction<PDB.ISourceFile, PdbSourceFile> sourceFiles;
-        readonly CachedFunction<PathTransformer.ITransformedPath, Folder> folders;
-        readonly CachedFunction<PDB.Location, PdbSourceLocation> sourceLocations;
+        private readonly CachedFunction<PDB.ISourceFile, PdbSourceFile> sourceFiles;
+        private readonly CachedFunction<PathTransformer.ITransformedPath, Folder> folders;
+        private readonly CachedFunction<PDB.Location, PdbSourceLocation> sourceLocations;
 
         /// <summary>
         /// Creates a source file entity from a PDB source file.
@@ -227,7 +228,7 @@ namespace Semmle.Extraction.CIL
 
         #endregion
 
-        readonly CachedFunction<GenericContext, Handle, IExtractedEntity> genericHandleFactory;
+        private readonly CachedFunction<GenericContext, Handle, IExtractedEntity> genericHandleFactory;
 
         /// <summary>
         /// Gets the short name of a member, without the preceding interface qualifier.
@@ -236,9 +237,11 @@ namespace Semmle.Extraction.CIL
         /// <returns>The short name.</returns>
         public string ShortName(StringHandle handle)
         {
-            string str = mdReader.GetString(handle);
-            if (str.EndsWith(".ctor")) return ".ctor";
-            if (str.EndsWith(".cctor")) return ".cctor";
+            var str = MdReader.GetString(handle);
+            if (str.EndsWith(".ctor"))
+                return ".ctor";
+            if (str.EndsWith(".cctor"))
+                return ".cctor";
             var dot = str.LastIndexOf('.');
             return dot == -1 ? str : str.Substring(dot + 1);
         }

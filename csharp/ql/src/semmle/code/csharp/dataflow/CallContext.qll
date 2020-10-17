@@ -11,10 +11,7 @@ cached
 private newtype TCallContext =
   TEmptyCallContext() or
   TArgNonDelegateCallContext(Expr arg) { exists(DispatchCall dc | arg = dc.getArgument(_)) } or
-  TArgDelegateCallContext(DelegateCall dc, int i) { exists(dc.getArgument(i)) } or
-  TDelegateToLibraryCallableArgCallContext(DelegateArgumentToLibraryCallable arg, int i) {
-    exists(arg.getDelegateType().getParameter(i))
-  }
+  TArgDelegateCallContext(DelegateCall dc, int i) { exists(dc.getArgument(i)) }
 
 /**
  * A call context.
@@ -78,32 +75,4 @@ class DelegateCallArgumentCallContext extends ArgumentCallContext, TArgDelegateC
   override string toString() { result = dc.getArgument(arg).toString() }
 
   override Location getLocation() { result = dc.getArgument(arg).getLocation() }
-}
-
-/**
- * An argument of a call to a delegate supplied to a library callable,
- * identified by the delegate argument itself.
- *
- * For example, in `x.Select(y => y)` the call to the supplied delegate
- * that happens inside the library callable `Select` is not available
- * in the database, so the delegate argument `y => y` is used to
- * represent the call.
- */
-class DelegateArgumentToLibraryCallableArgumentContext extends ArgumentCallContext,
-  TDelegateToLibraryCallableArgCallContext {
-  Expr delegate;
-  int arg;
-
-  DelegateArgumentToLibraryCallableArgumentContext() {
-    this = TDelegateToLibraryCallableArgCallContext(delegate, arg)
-  }
-
-  override predicate isArgument(Expr call, int i) {
-    call = delegate and
-    i = arg
-  }
-
-  override string toString() { result = "argument " + arg + " of " + delegate.toString() }
-
-  override Location getLocation() { result = delegate.getLocation() }
 }

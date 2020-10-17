@@ -3,7 +3,8 @@ edges
 | InappropriateEncoding.cs:15:28:15:40 | call to method Encode : String | InappropriateEncoding.cs:20:46:20:51 | access to local variable query1 |
 | InappropriateEncoding.cs:36:28:36:55 | call to method UrlEncode : String | InappropriateEncoding.cs:37:32:37:43 | access to local variable encodedValue |
 | InappropriateEncoding.cs:36:28:36:55 | call to method UrlEncode : String | InappropriateEncoding.cs:38:22:38:59 | ... + ... |
-| InappropriateEncoding.cs:36:28:36:55 | call to method UrlEncode : String | InappropriateEncoding.cs:39:22:39:71 | call to method Format |
+| InappropriateEncoding.cs:36:28:36:55 | call to method UrlEncode : String | InappropriateEncoding.cs:39:59:39:70 | access to local variable encodedValue : String |
+| InappropriateEncoding.cs:39:59:39:70 | access to local variable encodedValue : String | InappropriateEncoding.cs:39:22:39:71 | call to method Format |
 | InappropriateEncoding.cs:57:28:57:56 | call to method HtmlEncode : String | InappropriateEncoding.cs:58:31:58:42 | access to local variable encodedValue |
 | InappropriateEncoding.cs:68:16:68:42 | call to method Replace : String | InappropriateEncoding.cs:15:28:15:40 | call to method Encode : String |
 | SqlEncode.cs:16:62:16:87 | call to method Replace : String | SqlEncode.cs:17:46:17:50 | access to local variable query |
@@ -20,6 +21,7 @@ nodes
 | InappropriateEncoding.cs:37:32:37:43 | access to local variable encodedValue | semmle.label | access to local variable encodedValue |
 | InappropriateEncoding.cs:38:22:38:59 | ... + ... | semmle.label | ... + ... |
 | InappropriateEncoding.cs:39:22:39:71 | call to method Format | semmle.label | call to method Format |
+| InappropriateEncoding.cs:39:59:39:70 | access to local variable encodedValue : String | semmle.label | access to local variable encodedValue : String |
 | InappropriateEncoding.cs:57:28:57:56 | call to method HtmlEncode : String | semmle.label | call to method HtmlEncode : String |
 | InappropriateEncoding.cs:58:31:58:42 | access to local variable encodedValue | semmle.label | access to local variable encodedValue |
 | InappropriateEncoding.cs:68:16:68:42 | call to method Replace : String | semmle.label | call to method Replace : String |
