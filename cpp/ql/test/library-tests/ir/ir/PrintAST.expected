@@ -7260,22 +7260,16 @@ ir.cpp:
 #  850|       0: [VariableDeclarationEntry] definition of b
 #  850|           Type = [Struct] PolymorphicBase
 #  850|         init: [Initializer] initializer for b
-#-----|           expr: [TemporaryObjectExpr] temporary object
-#-----|               Type = [Struct] PolymorphicBase
-#-----|               ValueCategory = prvalue(load)
-#-----|             expr: [ConstructorCall] call to PolymorphicBase
-#-----|                 Type = [VoidType] void
-#-----|                 ValueCategory = prvalue
+#  850|           expr: [ConstructorCall] call to PolymorphicBase
+#  850|               Type = [VoidType] void
+#  850|               ValueCategory = prvalue
 #  851|     1: [DeclStmt] declaration
 #  851|       0: [VariableDeclarationEntry] definition of d
 #  851|           Type = [Struct] PolymorphicDerived
 #  851|         init: [Initializer] initializer for d
-#-----|           expr: [TemporaryObjectExpr] temporary object
-#-----|               Type = [Struct] PolymorphicDerived
-#-----|               ValueCategory = prvalue(load)
-#-----|             expr: [ConstructorCall] call to PolymorphicDerived
-#-----|                 Type = [VoidType] void
-#-----|                 ValueCategory = prvalue
+#  851|           expr: [ConstructorCall] call to PolymorphicDerived
+#  851|               Type = [VoidType] void
+#  851|               ValueCategory = prvalue
 #  853|     2: [DeclStmt] declaration
 #  853|       0: [VariableDeclarationEntry] definition of pb
 #  853|           Type = [PointerType] PolymorphicBase *

@@ -864,7 +864,7 @@ ssa.cpp:
 #  200|     m200_10(int)           = Store[ret]                  : &:r200_7, r200_9
 #  201|     r201_1(glval<unknown>) = FunctionAddress[abs]        : 
 #  201|     r201_2(glval<int>)     = VariableAddress[x]          : 
-#  201|     r201_3(int)            = Load                        : &:r201_2, m198_14
+#  201|     r201_3(int)            = Load[x]                     : &:r201_2, m198_14
 #  201|     r201_4(int)            = Call[abs]                   : func:r201_1, 0:r201_3
 #  201|     r201_5(glval<int>)     = VariableAddress[ret]        : 
 #  201|     r201_6(int)            = Load[ret]                   : &:r201_5, m200_10
@@ -1135,7 +1135,7 @@ ssa.cpp:
 #  250|     r250_6(char *)         = Load[src]                          : &:r250_5, m247_6
 #  250|     r250_7(void *)         = Convert                            : r250_6
 #  250|     r250_8(glval<int>)     = VariableAddress[size]              : 
-#  250|     r250_9(int)            = Load                               : &:r250_8, m247_11
+#  250|     r250_9(int)            = Load[size]                         : &:r250_8, m247_11
 #  250|     r250_10(void *)        = Call[memcpy]                       : func:r250_1, 0:r250_4, 1:r250_7, 2:r250_9
 #  250|     v250_11(void)          = ^SizedBufferReadSideEffect[1]      : &:r250_7, r250_9, ~m249_6
 #  250|     m250_12(unknown)       = ^SizedBufferMustWriteSideEffect[0] : &:r250_4, r250_9
@@ -1212,7 +1212,7 @@ ssa.cpp:
 #  269|     r269_1(glval<void *>)  = VariableAddress[buf]               : 
 #  269|     r269_2(glval<unknown>) = FunctionAddress[malloc]            : 
 #  269|     r269_3(glval<int>)     = VariableAddress[size]              : 
-#  269|     r269_4(int)            = Load                               : &:r269_3, m268_11
+#  269|     r269_4(int)            = Load[size]                         : &:r269_3, m268_11
 #  269|     r269_5(void *)         = Call[malloc]                       : func:r269_2, 0:r269_4
 #  269|     m269_6(unknown)        = ^CallSideEffect                    : ~m268_9
 #  269|     m269_7(unknown)        = Chi                                : total:m268_9, partial:m269_6
@@ -1225,7 +1225,7 @@ ssa.cpp:
 #  270|     r270_4(glval<void *>)  = VariableAddress[s]                 : 
 #  270|     r270_5(void *)         = Load[s]                            : &:r270_4, m268_6
 #  270|     r270_6(glval<int>)     = VariableAddress[size]              : 
-#  270|     r270_7(int)            = Load                               : &:r270_6, m268_11
+#  270|     r270_7(int)            = Load[size]                         : &:r270_6, m268_11
 #  270|     r270_8(void *)         = Call[memcpy]                       : func:r270_1, 0:r270_3, 1:r270_5, 2:r270_7
 #  270|     v270_9(void)           = ^SizedBufferReadSideEffect[1]      : &:r270_5, r270_7, ~m269_7
 #  270|     m270_10(unknown)       = ^SizedBufferMustWriteSideEffect[0] : &:r270_3, r270_7
@@ -1395,7 +1395,7 @@ ssa.cpp:
 #  294|     r294_16(A *)            = Convert                         : r294_12
 #  294|     r294_17(glval<unknown>) = FunctionAddress[A]              : 
 #  294|     r294_18(glval<int>)     = VariableAddress[x]              : 
-#  294|     r294_19(int)            = Load                            : &:r294_18, m291_6
+#  294|     r294_19(int)            = Load[x]                         : &:r294_18, m291_6
 #  294|     v294_20(void)           = Call[A]                         : func:r294_17, this:r294_16, 0:r294_19
 #  294|     m294_21(unknown)        = ^CallSideEffect                 : ~m294_14
 #  294|     m294_22(unknown)        = Chi                             : total:m294_14, partial:m294_21
@@ -1453,7 +1453,7 @@ ssa.cpp:
 #  302|     r302_2(glval<int>)     = VariableAddress[argc]            : 
 #  302|     r302_3(int)            = Load[argc]                       : &:r302_2, m301_6
 #  302|     r302_4(glval<char **>) = VariableAddress[argv]            : 
-#  302|     r302_5(char **)        = Load                             : &:r302_4, m301_8
+#  302|     r302_5(char **)        = Load[argv]                       : &:r302_4, m301_8
 #  302|     v302_6(void)           = Call[unknownFunction]            : func:r302_1, 0:r302_3, 1:r302_5
 #  302|     m302_7(unknown)        = ^CallSideEffect                  : ~m301_11
 #  302|     m302_8(unknown)        = Chi                              : total:m301_11, partial:m302_7
@@ -1464,7 +1464,7 @@ ssa.cpp:
 #  303|     r303_2(glval<int>)     = VariableAddress[argc]            : 
 #  303|     r303_3(int)            = Load[argc]                       : &:r303_2, m301_6
 #  303|     r303_4(glval<char **>) = VariableAddress[argv]            : 
-#  303|     r303_5(char **)        = Load                             : &:r303_4, m301_8
+#  303|     r303_5(char **)        = Load[argv]                       : &:r303_4, m301_8
 #  303|     v303_6(void)           = Call[unknownFunction]            : func:r303_1, 0:r303_3, 1:r303_5
 #  303|     m303_7(unknown)        = ^CallSideEffect                  : ~m302_11
 #  303|     m303_8(unknown)        = Chi                              : total:m302_11, partial:m303_7
