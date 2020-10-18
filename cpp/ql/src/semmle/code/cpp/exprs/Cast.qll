@@ -842,7 +842,7 @@ class ArrayToPointerConversion extends Conversion, @array_to_pointer {
 
 /**
  * A node representing a temporary object created as part of an expression.
- * 
+ *
  * This is most commonly seen in the following cases (from [class.temporary]/2):
  * - when binding a reference to a prvalue
  * - when performing member access on a class prvalue
@@ -850,7 +850,7 @@ class ArrayToPointerConversion extends Conversion, @array_to_pointer {
  * - when initializing an object of type std::initializer_list from a braced-init-list
  * - for certain unevaluated operands
  * - when a prvalue that has type other than cv void appears as a discarded-value expression
- * 
+ *
  * This node will only exist if the object is of class type, and even then only if either the
  * object's initialization or destruction is non-trivial.
  */
