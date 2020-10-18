@@ -256,7 +256,8 @@ private predicate ignoreLoad(Expr expr) {
 private predicate needsLoadForParentExpr(Expr expr) {
   exists(CrementOperation crement | expr = crement.getOperand().getFullyConverted())
   or
-  exists(AssignOperation ao | expr = ao.getLValue().getFullyConverted()) or
+  exists(AssignOperation ao | expr = ao.getLValue().getFullyConverted())
+  or
   // For arguments that are passed by value but require a constructor call, the extractor emits a
   // `TemporaryObjectExpr` as the argument, and marks it as a glvalue. This is roughly how a code-
   // generating compiler would implement this, passing the address of the temporary so that the
