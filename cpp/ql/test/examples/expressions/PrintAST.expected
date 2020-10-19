@@ -1,18 +1,18 @@
 #-----| [CopyAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
 #-----|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const __va_list_tag &
 #-----| [MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
 #-----|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] __va_list_tag &&
 #-----| [Operator,TopLevelFunction] void operator delete(void*)
 #-----|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [VoidPointerType] void *
 #-----| [Operator,TopLevelFunction] void* operator new(unsigned long)
 #-----|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LongType] unsigned long
 AddressOf.c:
 #    1| [TopLevelFunction] void AddressOf(int)
@@ -114,19 +114,19 @@ ConditionDecl.cpp:
 ConstructorCall.cpp:
 #    1| [CopyAssignmentOperator] C& C::operator=(C const&)
 #    1|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #    1| [MoveAssignmentOperator] C& C::operator=(C&&)
 #    1|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #    1| [CopyConstructor] void C::C(C const&)
 #    1|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #    1| [MoveConstructor] void C::C(C&&)
 #    1|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #    3| [ConversionConstructor] void C::C(int)
 #    3|   params: 
@@ -137,19 +137,19 @@ ConstructorCall.cpp:
 #    4|     0: [ReturnStmt] return ...
 #    7| [CopyAssignmentOperator] D& D::operator=(D const&)
 #    7|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const D &
 #    7| [MoveAssignmentOperator] D& D::operator=(D&&)
 #    7|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] D &&
 #    7| [CopyConstructor] void D::D(D const&)
 #    7|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const D &
 #    7| [MoveConstructor] void D::D(D&&)
 #    7|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] D &&
 #    9| [Constructor] void D::D()
 #    9|   params: 
@@ -158,11 +158,11 @@ ConstructorCall.cpp:
 #   10|     0: [ReturnStmt] return ...
 #   13| [CopyAssignmentOperator] E& E::operator=(E const&)
 #   13|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const E &
 #   13| [MoveAssignmentOperator] E& E::operator=(E&&)
 #   13|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] E &&
 #   17| [TopLevelFunction] void ConstructorCall(C*, D*, E*)
 #   17|   params: 
@@ -385,7 +385,7 @@ DestructorCall.cpp:
 DynamicCast.cpp:
 #    1| [CopyAssignmentOperator] Base& Base::operator=(Base const&)
 #    1|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Base &
 #-----|   body: [BlockStmt] { ... }
 #-----|     0: [ReturnStmt] return ...
@@ -400,17 +400,17 @@ DynamicCast.cpp:
 #-----|               ValueCategory = prvalue(load)
 #    1| [MoveAssignmentOperator] Base& Base::operator=(Base&&)
 #    1|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Base &&
 #    1| [Constructor] void Base::Base()
 #    1|   params: 
 #    1| [CopyConstructor] void Base::Base(Base const&)
 #    1|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Base &
 #    1| [MoveConstructor] void Base::Base(Base&&)
 #    1|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Base &&
 #    2| [VirtualFunction] void Base::f()
 #    2|   params: 
@@ -418,7 +418,7 @@ DynamicCast.cpp:
 #    2|     0: [ReturnStmt] return ...
 #    4| [CopyAssignmentOperator] Derived& Derived::operator=(Derived const&)
 #    4|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Derived &
 #-----|   body: [BlockStmt] { ... }
 #-----|     0: [ExprStmt] ExprStmt
@@ -451,7 +451,7 @@ DynamicCast.cpp:
 #-----|                   0: [ReferenceDereferenceExpr] (reference dereference)
 #-----|                       Type = [SpecifiedType] const Derived
 #-----|                       ValueCategory = lvalue
-#    4|                     expr: [VariableAccess] p#0
+#    4|                     expr: [VariableAccess] (unnamed parameter 0)
 #    4|                         Type = [LValueReferenceType] const Derived &
 #    4|                         ValueCategory = prvalue(load)
 #-----|     1: [ReturnStmt] return ...
@@ -466,17 +466,17 @@ DynamicCast.cpp:
 #-----|               ValueCategory = prvalue(load)
 #    4| [MoveAssignmentOperator] Derived& Derived::operator=(Derived&&)
 #    4|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Derived &&
 #    4| [Constructor] void Derived::Derived()
 #    4|   params: 
 #    4| [CopyConstructor] void Derived::Derived(Derived const&)
 #    4|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Derived &
 #    4| [MoveConstructor] void Derived::Derived(Derived&&)
 #    4|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Derived &&
 #    5| [VirtualFunction] void Derived::f()
 #    5|   params: 
@@ -690,11 +690,11 @@ StatementExpr.c:
 StaticMemberAccess.cpp:
 #    1| [CopyAssignmentOperator] X& X::operator=(X const&)
 #    1|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const X &
 #    1| [MoveAssignmentOperator] X& X::operator=(X&&)
 #    1|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] X &&
 #    5| [TopLevelFunction] void StaticMemberAccess(int, X&)
 #    5|   params: 
@@ -749,19 +749,19 @@ Subscript.c:
 Throw.cpp:
 #    2| [CopyAssignmentOperator] F& F::operator=(F const&)
 #    2|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const F &
 #    2| [MoveAssignmentOperator] F& F::operator=(F&&)
 #    2|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] F &&
 #    2| [CopyConstructor] void F::F(F const&)
 #    2|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const F &
 #    2| [MoveConstructor] void F::F(F&&)
 #    2|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] F &&
 #    2|   initializations: 
 #    2|   body: [BlockStmt] { ... }
@@ -810,11 +810,11 @@ Throw.cpp:
 Typeid.cpp:
 #    4| [CopyAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info const&)
 #    4|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const type_info &
 #    4| [MoveAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info&&)
 #    4|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] type_info &&
 #    7| [ConstMemberFunction] char const* std::type_info::name() const
 #    7|   params: 
@@ -1203,11 +1203,11 @@ macro_etc.c:
 union_etc.cpp:
 #    2| [CopyAssignmentOperator] S& S::operator=(S const&)
 #    2|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const S &
 #    2| [MoveAssignmentOperator] S& S::operator=(S&&)
 #    2|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] S &&
 #    2| [Constructor] void S::S()
 #    2|   params: 
@@ -1216,27 +1216,27 @@ union_etc.cpp:
 #    2|     0: [ReturnStmt] return ...
 #    2| [CopyConstructor] void S::S(S const&)
 #    2|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const S &
 #    2| [MoveConstructor] void S::S(S&&)
 #    2|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] S &&
 #    3| [CopyAssignmentOperator] S::U& S::U::operator=(S::U const public&)
 #    3|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const U &
 #    3| [MoveAssignmentOperator] S::U& S::U::operator=(S::U&&)
 #    3|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] U &&
 #    4| [CopyAssignmentOperator] S::C& S::C::operator=(S::C const public&)
 #    4|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #    4| [MoveAssignmentOperator] S::C& S::C::operator=(S::C&&)
 #    4|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #    6| [VirtualFunction] void S::set_q(int)
 #    6|   params: 
@@ -1259,51 +1259,51 @@ union_etc.cpp:
 #    6|     1: [ReturnStmt] return ...
 #    9| [CopyAssignmentOperator] C& C::operator=(C const&)
 #    9|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #    9| [MoveAssignmentOperator] C& C::operator=(C&&)
 #    9|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #   11| [CopyAssignmentOperator] C::S& C::S::operator=(C::S const public&)
 #   11|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const S &
 #   11| [MoveAssignmentOperator] C::S& C::S::operator=(C::S&&)
 #   11|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] S &&
 #   12| [CopyAssignmentOperator] C::U& C::U::operator=(C::U const public&)
 #   12|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const U &
 #   12| [MoveAssignmentOperator] C::U& C::U::operator=(C::U&&)
 #   12|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] U &&
 #   16| [CopyAssignmentOperator] U& U::operator=(U const&)
 #   16|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const U &
 #   16| [MoveAssignmentOperator] U& U::operator=(U&&)
 #   16|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] U &&
 #   17| [CopyAssignmentOperator] U::S& U::S::operator=(U::S const public&)
 #   17|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const S &
 #   17| [MoveAssignmentOperator] U::S& U::S::operator=(U::S&&)
 #   17|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] S &&
 #   18| [CopyAssignmentOperator] U::C& U::C::operator=(U::C const public&)
 #   18|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #   18| [MoveAssignmentOperator] U::C& U::C::operator=(U::C&&)
 #   18|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #   22| [TopLevelFunction] int foo()
 #   22|   params: 
@@ -1405,21 +1405,21 @@ union_etc.cpp:
 #   28|             ValueCategory = lvalue
 #   31| [CopyAssignmentOperator] T& T::operator=(T const&)
 #   31|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const T &
 #   31| [MoveAssignmentOperator] T& T::operator=(T&&)
 #   31|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] T &&
 #   31| [Constructor] void T::T()
 #   31|   params: 
 #   31| [CopyConstructor] void T::T(T const&)
 #   31|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const T &
 #   31| [MoveConstructor] void T::T(T&&)
 #   31|   params: 
-#-----|     0: [Parameter] p#0
+#-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] T &&
 #   33| [VirtualFunction] void T::set_q(int)
 #   33|   params: 

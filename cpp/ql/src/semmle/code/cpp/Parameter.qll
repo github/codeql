@@ -36,7 +36,7 @@ class Parameter extends LocalScopeVariable, @parameter {
    *  1. The name given to the parameter at the function's definition or
    *     (for catch block parameters) at the catch block.
    *  2. A name given to the parameter at a function declaration.
-   *  3. The name "p#i" where i is the index of the parameter.
+   *  3. The name "(unnamed parameter i)" where i is the index of the parameter.
    */
   override string getName() {
     exists(VariableDeclarationEntry vde |
@@ -46,7 +46,7 @@ class Parameter extends LocalScopeVariable, @parameter {
     )
     or
     not exists(getANamedDeclarationEntry()) and
-    result = "p#" + this.getIndex().toString()
+    result = "(unnamed parameter " + this.getIndex().toString() + ")"
   }
 
   override string getAPrimaryQlClass() { result = "Parameter" }
@@ -111,7 +111,8 @@ class Parameter extends LocalScopeVariable, @parameter {
    * Holds if this parameter has a name.
    *
    * In other words, this predicate holds precisely when the result of
-   * `getName()` is not "p#i" (where `i` is the index of the parameter).
+   * `getName()` is not "(unnamed parameter i)" (where `i` is the index
+   * of the parameter).
    */
   predicate isNamed() { exists(getANamedDeclarationEntry()) }
 
