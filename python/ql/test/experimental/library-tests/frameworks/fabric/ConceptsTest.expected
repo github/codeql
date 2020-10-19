@@ -4,5 +4,3 @@
 | fabric_v2_test.py:41:69:41:94 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
 | fabric_v2_test.py:44:25:44:50 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
 | fabric_v2_test.py:47:65:47:90 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v2_test.py:58:26:58:51 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v2_test.py:64:26:64:51 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |

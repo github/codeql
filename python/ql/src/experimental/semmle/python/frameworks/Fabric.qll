@@ -357,5 +357,42 @@ private module FabricV2 {
         result.asCfgNode() = [node.getArg(0), node.getArgByName("command")]
       }
     }
+
+    // -------------------------------------------------------------------------
+    // fabric.tasks
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `fabric.tasks` module. */
+    DataFlow::Node tasks() { result = fabric_attr("tasks") }
+
+    /** Provides models for the `fabric.tasks` module */
+    module tasks {
+      /** Gets a reference to the `fabric.tasks.task` decorator. */
+      private DataFlow::Node task(DataFlow::TypeTracker t) {
+        t.start() and
+        result = DataFlow::importNode("fabric.tasks.task")
+        or
+        t.startInAttr("task") and
+        result = tasks()
+        or
+        // Handle `fabric.task` alias
+        t.startInAttr("task") and
+        result = fabric()
+        or
+        exists(DataFlow::TypeTracker t2 | result = task(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the `fabric.tasks.task` decorator. */
+      DataFlow::Node task() { result = task(DataFlow::TypeTracker::end()) }
+    }
+
+    class FabricTaskFirstParamConnectionInstance extends fabric::connection::Connection::InstanceSource,
+      DataFlow::ParameterNode {
+      FabricTaskFirstParamConnectionInstance() {
+        exists(Function func |
+          func.getADecorator() = fabric::tasks::task().asExpr() and
+          this.getParameter() = func.getArg(0)
+        )
+      }
+    }
   }
 }
