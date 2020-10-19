@@ -55,7 +55,3 @@ def not_into_sink_impl():
     subprocess.call(command)
     subprocess.check_call(command)
     subprocess.run(command)
-
-
-# TODO: popen2 module for Python 2 only https://devdocs.io/python~2.7/library/popen2
-# (deprecated since Python 2.6, but still functional in Python 2.7.17)

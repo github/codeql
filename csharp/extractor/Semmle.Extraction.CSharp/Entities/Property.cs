@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Property : CachedSymbol<IPropertySymbol>, IExpressionParentEntity
+    internal class Property : CachedSymbol<IPropertySymbol>, IExpressionParentEntity
     {
         protected Property(Context cx, IPropertySymbol init)
             : base(cx, init)
@@ -17,8 +17,9 @@ namespace Semmle.Extraction.CSharp.Entities
             type = new Lazy<Type>(() => Type.Create(Context, symbol.Type));
         }
 
-        readonly Lazy<Type> type;
-        Type Type => type.Value;
+        private readonly Lazy<Type> type;
+
+        private Type Type => type.Value;
 
         public override void WriteId(TextWriter trapFile)
         {
@@ -76,10 +77,10 @@ namespace Semmle.Extraction.CSharp.Entities
                     Context.PopulateLater(() => Expression.Create(Context, expressionBody, this, 0));
                 }
 
-                int child = 1;
-                foreach (var initializer in declSyntaxReferences.
-                    Select(n => n.Initializer).
-                    Where(i => i != null))
+                var child = 1;
+                foreach (var initializer in declSyntaxReferences
+                    .Select(n => n.Initializer)
+                    .Where(i => i != null))
                 {
                     Context.PopulateLater(() =>
                     {
@@ -105,14 +106,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return
-                    symbol.
-                    DeclaringSyntaxReferences.
-                    Select(r => r.GetSyntax()).
-                    OfType<PropertyDeclarationSyntax>().
-                    Select(s => s.GetLocation()).
-                    Concat(symbol.Locations).
-                    First();
+                return symbol.DeclaringSyntaxReferences
+                    .Select(r => r.GetSyntax())
+                    .OfType<PropertyDeclarationSyntax>()
+                    .Select(s => s.GetLocation())
+                    .Concat(symbol.Locations)
+                    .First();
             }
         }
 
@@ -120,18 +119,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Property Create(Context cx, IPropertySymbol prop)
         {
-            bool isIndexer = prop.IsIndexer || prop.Parameters.Any();
+            var isIndexer = prop.IsIndexer || prop.Parameters.Any();
 
             return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntityFromSymbol(cx, prop);
         }
 
-        public void VisitDeclaration(Context cx, PropertyDeclarationSyntax p)
+        private class PropertyFactory : ICachedEntityFactory<IPropertySymbol, Property>
         {
-        }
-
-        class PropertyFactory : ICachedEntityFactory<IPropertySymbol, Property>
-        {
-            public static readonly PropertyFactory Instance = new PropertyFactory();
+            public static PropertyFactory Instance { get; } = new PropertyFactory();
 
             public Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
         }

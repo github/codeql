@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Conditional : Expression<ConditionalExpressionSyntax>
+    internal class Conditional : Expression<ConditionalExpressionSyntax>
     {
-        Conditional(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.CONDITIONAL)) { }
+        private Conditional(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.CONDITIONAL)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new Conditional(info).TryPopulate();
 

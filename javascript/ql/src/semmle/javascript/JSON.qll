@@ -40,6 +40,8 @@ class JSONValue extends @json_value, Locatable {
       result = loc.getFile()
     )
   }
+
+  override string getAPrimaryQlClass() { result = "JSONValue" }
 }
 
 /**
@@ -72,7 +74,9 @@ abstract class JSONPrimitiveValue extends JSONValue {
  * null
  * ```
  */
-class JSONNull extends @json_null, JSONPrimitiveValue { }
+class JSONNull extends @json_null, JSONPrimitiveValue {
+  override string getAPrimaryQlClass() { result = "JSONNull" }
+}
 
 /**
  * A JSON-encoded Boolean value.
@@ -84,7 +88,9 @@ class JSONNull extends @json_null, JSONPrimitiveValue { }
  * false
  * ```
  */
-class JSONBoolean extends @json_boolean, JSONPrimitiveValue { }
+class JSONBoolean extends @json_boolean, JSONPrimitiveValue {
+  override string getAPrimaryQlClass() { result = "JSONBoolean" }
+}
 
 /**
  * A JSON-encoded number.
@@ -96,7 +102,9 @@ class JSONBoolean extends @json_boolean, JSONPrimitiveValue { }
  * 1.0
  * ```
  */
-class JSONNumber extends @json_number, JSONPrimitiveValue { }
+class JSONNumber extends @json_number, JSONPrimitiveValue {
+  override string getAPrimaryQlClass() { result = "JSONNumber" }
+}
 
 /**
  * A JSON-encoded string value.
@@ -107,7 +115,9 @@ class JSONNumber extends @json_number, JSONPrimitiveValue { }
  * "a string"
  * ```
  */
-class JSONString extends @json_string, JSONPrimitiveValue { }
+class JSONString extends @json_string, JSONPrimitiveValue {
+  override string getAPrimaryQlClass() { result = "JSONString" }
+}
 
 /**
  * A JSON-encoded array.
@@ -124,6 +134,8 @@ class JSONArray extends @json_array, JSONValue {
 
   /** Gets the string value of the `i`th element of this array. */
   string getElementStringValue(int i) { result = getElementValue(i).(JSONString).getValue() }
+
+  override string getAPrimaryQlClass() { result = "JSONArray" }
 }
 
 /**
@@ -141,6 +153,8 @@ class JSONObject extends @json_object, JSONValue {
 
   /** Gets the string value of property `name` of this object. */
   string getPropStringValue(string name) { result = getPropValue(name).(JSONString).getValue() }
+
+  override string getAPrimaryQlClass() { result = "JSONObject" }
 }
 
 /**

@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class PointerMemberAccess : Expression<MemberAccessExpressionSyntax>
+    internal class PointerMemberAccess : Expression<MemberAccessExpressionSyntax>
     {
-        PointerMemberAccess(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.POINTER_INDIRECTION)) { }
+        private PointerMemberAccess(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.POINTER_INDIRECTION)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new PointerMemberAccess(info).TryPopulate();
 

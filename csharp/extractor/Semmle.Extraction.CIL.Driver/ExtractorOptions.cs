@@ -14,11 +14,11 @@ namespace Semmle.Extraction.CIL.Driver
     /// Information about a single assembly.
     /// In particular, provides references between assemblies.
     /// </summary>
-    class AssemblyInfo
+    internal class AssemblyInfo
     {
-        public override string ToString() => filename;
+        public override string ToString() => Filename;
 
-        static AssemblyName CreateAssemblyName(MetadataReader mdReader, StringHandle name, System.Version version, StringHandle culture)
+        private static AssemblyName CreateAssemblyName(MetadataReader mdReader, StringHandle name, System.Version version, StringHandle culture)
         {
             var cultureString = mdReader.GetString(culture);
 
@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CIL.Driver
             return assemblyName;
         }
 
-        static AssemblyName CreateAssemblyName(MetadataReader mdReader, AssemblyReference ar)
+        private static AssemblyName CreateAssemblyName(MetadataReader mdReader, AssemblyReference ar)
         {
             var an = CreateAssemblyName(mdReader, ar.Name, ar.Version, ar.Culture);
             if (!ar.PublicKeyOrToken.IsNil)
@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CIL.Driver
             return an;
         }
 
-        static AssemblyName CreateAssemblyName(MetadataReader mdReader, AssemblyDefinition ad)
+        private static AssemblyName CreateAssemblyName(MetadataReader mdReader, AssemblyDefinition ad)
         {
             var an = CreateAssemblyName(mdReader, ad.Name, ad.Version, ad.Culture);
             if (!ad.PublicKey.IsNil)
@@ -59,42 +59,42 @@ namespace Semmle.Extraction.CIL.Driver
         /// </exception>
         public AssemblyInfo(string path)
         {
-            filename = path;
+            Filename = path;
 
             // Attempt to open the file and see if it's a valid assembly.
-            using (var stream = File.OpenRead(path))
-            using (var peReader = new PEReader(stream))
+            using var stream = File.OpenRead(path);
+            using var peReader = new PEReader(stream);
+            try
             {
-                try
-                {
-                    if (!peReader.HasMetadata) throw new InvalidAssemblyException();
-
-                    var mdReader = peReader.GetMetadataReader();
-
-                    if (!mdReader.IsAssembly) throw new InvalidAssemblyException();
-
-                    // Get our own assembly name
-                    name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());
-
-                    references = mdReader.AssemblyReferences.
-                        Select(r => mdReader.GetAssemblyReference(r)).
-                        Select(ar => CreateAssemblyName(mdReader, ar)).
-                        ToArray();
-                }
-                catch (System.BadImageFormatException)
-                {
-                    // This failed on one of the Roslyn tests that includes
-                    // a deliberately malformed assembly.
-                    // In this case, we just skip the extraction of this assembly.
+                if (!peReader.HasMetadata)
                     throw new InvalidAssemblyException();
-                }
+
+                var mdReader = peReader.GetMetadataReader();
+
+                if (!mdReader.IsAssembly)
+                    throw new InvalidAssemblyException();
+
+                // Get our own assembly name
+                Name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());
+
+                References = mdReader.AssemblyReferences
+                    .Select(r => mdReader.GetAssemblyReference(r))
+                    .Select(ar => CreateAssemblyName(mdReader, ar))
+                    .ToArray();
+            }
+            catch (System.BadImageFormatException)
+            {
+                // This failed on one of the Roslyn tests that includes
+                // a deliberately malformed assembly.
+                // In this case, we just skip the extraction of this assembly.
+                throw new InvalidAssemblyException();
             }
         }
 
-        public readonly AssemblyName name;
-        public readonly string filename;
-        public bool extract;
-        public readonly AssemblyName[] references;
+        public AssemblyName Name { get; }
+        public string Filename { get; }
+        public bool Extract { get; set; }
+        public AssemblyName[] References { get; }
     }
 
     /// <summary>
@@ -102,9 +102,9 @@ namespace Semmle.Extraction.CIL.Driver
     /// Resolves references between assemblies and determines which
     /// additional assemblies need to be extracted.
     /// </summary>
-    class AssemblyList
+    internal class AssemblyList
     {
-        class AssemblyNameComparer : IEqualityComparer<AssemblyName>
+        private class AssemblyNameComparer : IEqualityComparer<AssemblyName>
         {
             bool IEqualityComparer<AssemblyName>.Equals(AssemblyName? x, AssemblyName? y) =>
                 object.ReferenceEquals(x, y) ||
@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CIL.Driver
                 (obj.Name, obj.Version).GetHashCode();
         }
 
-        readonly Dictionary<AssemblyName, AssemblyInfo> assembliesRead = new Dictionary<AssemblyName, AssemblyInfo>(new AssemblyNameComparer());
+        private readonly Dictionary<AssemblyName, AssemblyInfo> assembliesRead = new Dictionary<AssemblyName, AssemblyInfo>(new AssemblyNameComparer());
 
         public void AddFile(string assemblyPath, bool extractAll)
         {
@@ -123,19 +123,21 @@ namespace Semmle.Extraction.CIL.Driver
                 filesAnalyzed.Add(assemblyPath);
                 try
                 {
-                    var info = new AssemblyInfo(assemblyPath);
-                    info.extract = extractAll;
-                    if (!assembliesRead.ContainsKey(info.name))
-                        assembliesRead.Add(info.name, info);
+                    var info = new AssemblyInfo(assemblyPath)
+                    {
+                        Extract = extractAll
+                    };
+                    if (!assembliesRead.ContainsKey(info.Name))
+                        assembliesRead.Add(info.Name, info);
                 }
                 catch (InvalidAssemblyException)
                 { }
             }
         }
 
-        public IEnumerable<AssemblyInfo> AssembliesToExtract => assembliesRead.Values.Where(info => info.extract);
+        public IEnumerable<AssemblyInfo> AssembliesToExtract => assembliesRead.Values.Where(info => info.Extract);
 
-        IEnumerable<AssemblyName> AssembliesToReference => AssembliesToExtract.SelectMany(info => info.references);
+        private IEnumerable<AssemblyName> AssembliesToReference => AssembliesToExtract.SelectMany(info => info.References);
 
         public void ResolveReferences()
         {
@@ -144,32 +146,32 @@ namespace Semmle.Extraction.CIL.Driver
             while (assembliesToReference.Any())
             {
                 var item = assembliesToReference.Pop();
-                if (assembliesRead.TryGetValue(item, out AssemblyInfo? info))
+                if (assembliesRead.TryGetValue(item, out var info))
                 {
-                    if (!info.extract)
+                    if (!info.Extract)
                     {
-                        info.extract = true;
-                        foreach (var reference in info.references)
+                        info.Extract = true;
+                        foreach (var reference in info.References)
                             assembliesToReference.Push(reference);
                     }
                 }
                 else
                 {
-                    missingReferences.Add(item);
+                    MissingReferences.Add(item);
                 }
             }
         }
 
-        readonly HashSet<string> filesAnalyzed = new HashSet<string>();
-        public readonly HashSet<AssemblyName> missingReferences = new HashSet<AssemblyName>();
+        private readonly HashSet<string> filesAnalyzed = new HashSet<string>();
+        public HashSet<AssemblyName> MissingReferences {get;} = new HashSet<AssemblyName>();
     }
 
     /// <summary>
     /// Parses the command line and collates a list of DLLs/EXEs to extract.
     /// </summary>
-    class ExtractorOptions
+    internal class ExtractorOptions
     {
-        readonly AssemblyList assemblyList = new AssemblyList();
+        private readonly AssemblyList assemblyList = new AssemblyList();
 
         public ExtractorOptions(string[] args)
         {
@@ -196,7 +198,7 @@ namespace Semmle.Extraction.CIL.Driver
             }
         }
 
-        void AddFrameworkDirectories(bool extractAll)
+        private void AddFrameworkDirectories(bool extractAll)
         {
             AddDirectory(RuntimeEnvironment.GetRuntimeDirectory(), extractAll);
         }
@@ -207,13 +209,13 @@ namespace Semmle.Extraction.CIL.Driver
         public bool PDB { get; private set; }
         public TrapWriter.CompressionMode TrapCompression { get; private set; }
 
-        void AddFileOrDirectory(string path)
+        private void AddFileOrDirectory(string path)
         {
             path = Path.GetFullPath(path);
             if (File.Exists(path))
             {
                 assemblyList.AddFile(path, true);
-                string? directory = Path.GetDirectoryName(path);
+                var directory = Path.GetDirectoryName(path);
                 if (directory is null)
                 {
                     throw new InternalError($"Directory of path '{path}' is null");
@@ -233,7 +235,7 @@ namespace Semmle.Extraction.CIL.Driver
         /// extracted. This is not an error, it just means that the database is not
         /// as complete as it could be.
         /// </summary>
-        public IEnumerable<AssemblyName> MissingReferences => assemblyList.missingReferences;
+        public IEnumerable<AssemblyName> MissingReferences => assemblyList.MissingReferences;
 
         private void ParseArgs(string[] args)
         {

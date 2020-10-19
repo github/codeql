@@ -7,23 +7,23 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class TypeMention : FreshEntity
+    internal class TypeMention : FreshEntity
     {
-        readonly TypeSyntax Syntax;
-        readonly IEntity Parent;
-        readonly Type Type;
-        readonly Microsoft.CodeAnalysis.Location Loc;
+        private readonly TypeSyntax syntax;
+        private readonly IEntity parent;
+        private readonly Type type;
+        private readonly Microsoft.CodeAnalysis.Location loc;
 
-        TypeMention(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)
+        private TypeMention(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)
             : base(cx)
         {
-            Syntax = syntax;
-            Parent = parent;
-            Type = type;
-            Loc = loc;
+            this.syntax = syntax;
+            this.parent = parent;
+            this.type = type;
+            this.loc = loc;
         }
 
-        static TypeSyntax GetElementType(TypeSyntax type)
+        private static TypeSyntax GetElementType(TypeSyntax type)
         {
             switch (type)
             {
@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        static Type GetElementType(Type type)
+        private static Type GetElementType(Type type)
         {
             switch (type)
             {
@@ -51,62 +51,62 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
-            switch (Syntax.Kind())
+            switch (syntax.Kind())
             {
                 case SyntaxKind.ArrayType:
-                    Emit(trapFile, Loc ?? Syntax.GetLocation(), Parent, Type);
-                    Create(cx, GetElementType(Syntax), this, GetElementType(Type));
+                    Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
+                    Create(cx, GetElementType(syntax), this, GetElementType(type));
                     return;
                 case SyntaxKind.NullableType:
-                    var nts = (NullableTypeSyntax)Syntax;
-                    if (Type is NamedType nt)
+                    var nts = (NullableTypeSyntax)syntax;
+                    if (type is NamedType nt)
                     {
-                        Emit(trapFile, Loc ?? Syntax.GetLocation(), Parent, Type);
+                        Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
                         Create(cx, nts.ElementType, this, nt.symbol.IsReferenceType ? nt : nt.TypeArguments[0]);
                     }
-                    else if (Type is ArrayType array)
+                    else if (type is ArrayType array)
                     {
-                        Create(cx, nts.ElementType, Parent, array);
+                        Create(cx, nts.ElementType, parent, array);
                     }
                     return;
                 case SyntaxKind.TupleType:
-                    var tts = (TupleTypeSyntax)Syntax;
-                    var tt = (TupleType)Type;
-                    Emit(trapFile, Loc ?? Syntax.GetLocation(), Parent, Type);
+                    var tts = (TupleTypeSyntax)syntax;
+                    var tt = (TupleType)type;
+                    Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
                     tts.Elements.Zip(tt.TupleElements, (s, t) => Create(cx, s.Type, this, t.Type)).Enumerate();
                     return;
                 case SyntaxKind.PointerType:
-                    var pts = (PointerTypeSyntax)Syntax;
-                    var pt = (PointerType)Type;
-                    Emit(trapFile, Loc ?? Syntax.GetLocation(), Parent, Type);
+                    var pts = (PointerTypeSyntax)syntax;
+                    var pt = (PointerType)type;
+                    Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
                     Create(cx, pts.ElementType, this, pt.PointedAtType);
                     return;
                 case SyntaxKind.GenericName:
-                    var gns = (GenericNameSyntax)Syntax;
-                    Emit(trapFile, Loc ?? gns.Identifier.GetLocation(), Parent, Type);
-                    cx.PopulateLater(() => gns.TypeArgumentList.Arguments.Zip(Type.TypeMentions, (s, t) => Create(cx, s, this, t)).Enumerate());
+                    var gns = (GenericNameSyntax)syntax;
+                    Emit(trapFile, loc ?? gns.Identifier.GetLocation(), parent, type);
+                    cx.PopulateLater(() => gns.TypeArgumentList.Arguments.Zip(type.TypeMentions, (s, t) => Create(cx, s, this, t)).Enumerate());
                     return;
                 case SyntaxKind.QualifiedName:
-                    if (Type.ContainingType == null)
+                    if (type.ContainingType == null)
                     {
                         // namespace qualifier
-                        Emit(trapFile, Loc ?? Syntax.GetLocation(), Parent, Type);
+                        Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
                     }
                     else
                     {
                         // Type qualifier
-                        var qns = (QualifiedNameSyntax)Syntax;
-                        var right = Create(cx, qns.Right, Parent, Type);
-                        Create(cx, qns.Left, right, Type.ContainingType);
+                        var qns = (QualifiedNameSyntax)syntax;
+                        var right = Create(cx, qns.Right, parent, type);
+                        Create(cx, qns.Left, right, type.ContainingType);
                     }
                     return;
                 default:
-                    Emit(trapFile, Loc ?? Syntax.GetLocation(), Parent, Type);
+                    Emit(trapFile, loc ?? syntax.GetLocation(), parent, type);
                     return;
             }
         }
 
-        void Emit(TextWriter trapFile, Microsoft.CodeAnalysis.Location loc, IEntity parent, Type type)
+        private void Emit(TextWriter trapFile, Microsoft.CodeAnalysis.Location loc, IEntity parent, Type type)
         {
             trapFile.type_mention(this, type.TypeRef, parent);
             trapFile.type_mention_location(this, cx.Create(loc));

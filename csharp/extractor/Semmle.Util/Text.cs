@@ -41,14 +41,12 @@ namespace Semmle.Util
         /// <returns>The whole text.</returns>
         public string GetAll()
         {
-            using (var sw = new StringWriter())
+            using var sw = new StringWriter();
+            foreach (var s in lines)
             {
-                foreach (string s in lines)
-                {
-                    sw.WriteLine(s);
-                }
-                return sw.ToString();
+                sw.WriteLine(s);
             }
+            return sw.ToString();
         }
 
         /// <summary>
@@ -70,38 +68,36 @@ namespace Semmle.Util
                 );
             }
 
-            using (var sw = new StringWriter())
+            using var sw = new StringWriter();
+            string line;
+
+            for (var i = startRow; i <= endRow; ++i)
             {
-                string line;
-
-                for (int i = startRow; i <= endRow; ++i)
+                if (i == startRow && i == endRow)
                 {
-                    if (i == startRow && i == endRow)
-                    {
-                        // This is a single-line range, so take the bit between "startColumn" and "endColumn".
-                        line = startColumn <= lines[i].Length ? lines[i].Substring(startColumn, endColumn - startColumn) : "";
-                    }
-                    else if (i == startRow)
-                    {
-                        // This is the first line of a multi-line range, so take the bit from "startColumn" onwards.
-                        line = startColumn <= lines[i].Length ? lines[i].Substring(startColumn) : "";
-                    }
-                    else if (i == endRow)
-                    {
-                        // This is the last line of a multi-line range, so take the bit up to "endColumn".
-                        line = endColumn <= lines[i].Length ? lines[i].Substring(0, endColumn) : lines[i];
-                    }
-                    else
-                    {
-                        // This is a line in the middle of a multi-line range, so take the whole line.
-                        line = lines[i];
-                    }
-
-                    sw.WriteLine(line);
+                    // This is a single-line range, so take the bit between "startColumn" and "endColumn".
+                    line = startColumn <= lines[i].Length ? lines[i].Substring(startColumn, endColumn - startColumn) : "";
+                }
+                else if (i == startRow)
+                {
+                    // This is the first line of a multi-line range, so take the bit from "startColumn" onwards.
+                    line = startColumn <= lines[i].Length ? lines[i].Substring(startColumn) : "";
+                }
+                else if (i == endRow)
+                {
+                    // This is the last line of a multi-line range, so take the bit up to "endColumn".
+                    line = endColumn <= lines[i].Length ? lines[i].Substring(0, endColumn) : lines[i];
+                }
+                else
+                {
+                    // This is a line in the middle of a multi-line range, so take the whole line.
+                    line = lines[i];
                 }
 
-                return sw.ToString();
+                sw.WriteLine(line);
             }
+
+            return sw.ToString();
         }
 
         #endregion

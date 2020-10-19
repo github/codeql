@@ -86,6 +86,9 @@ module CodeInjection {
       |
         this = c.getArgument(index)
       )
+      or
+      // node-serialize is not intended to be safe for untrusted inputs
+      this = DataFlow::moduleMember("node-serialize", "unserialize").getACall().getArgument(0)
     }
   }
 
@@ -123,5 +126,16 @@ module CodeInjection {
    */
   class NoSQLCodeInjectionSink extends Sink {
     NoSQLCodeInjectionSink() { any(NoSQL::Query q).getACodeOperator() = this }
+  }
+
+  /**
+   * The first argument to `Module.prototype._compile` from the Node.js built-in module `module`,
+   * considered as a code-injection sink.
+   */
+  class ModuleCompileSink extends Sink {
+    ModuleCompileSink() {
+      this =
+        API::moduleImport("module").getInstance().getMember("_compile").getACall().getArgument(0)
+    }
   }
 }

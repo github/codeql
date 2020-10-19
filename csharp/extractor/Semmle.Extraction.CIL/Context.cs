@@ -12,35 +12,35 @@ namespace Semmle.Extraction.CIL
     /// Adds additional context that is specific for CIL extraction.
     /// One context = one DLL/EXE.
     /// </summary>
-    partial class Context : IDisposable
+    public sealed partial class Context : IDisposable
     {
-        readonly FileStream stream;
-        Entities.Assembly? assemblyNull;
+        private readonly FileStream stream;
+        private Entities.Assembly? assemblyNull;
 
-        public Extraction.Context cx { get; }
-        public MetadataReader mdReader { get; }
-        public PEReader peReader { get; }
-        public string assemblyPath { get; }
-        public Entities.Assembly assembly
+        public Extraction.Context Cx { get; }
+        public MetadataReader MdReader { get; }
+        public PEReader PeReader { get; }
+        public string AssemblyPath { get; }
+        public Entities.Assembly Assembly
         {
             get { return assemblyNull!; }
             set { assemblyNull = value; }
         }
-        public PDB.IPdb? pdb { get; }
+        public PDB.IPdb? Pdb { get; }
 
         public Context(Extraction.Context cx, string assemblyPath, bool extractPdbs)
         {
-            this.cx = cx;
-            this.assemblyPath = assemblyPath;
+            this.Cx = cx;
+            this.AssemblyPath = assemblyPath;
             stream = File.OpenRead(assemblyPath);
-            peReader = new PEReader(stream, PEStreamOptions.PrefetchEntireImage);
-            mdReader = peReader.GetMetadataReader();
+            PeReader = new PEReader(stream, PEStreamOptions.PrefetchEntireImage);
+            MdReader = PeReader.GetMetadataReader();
             TypeSignatureDecoder = new Entities.TypeSignatureDecoder(this);
 
             globalNamespace = new Lazy<Entities.Namespace>(() => Populate(new Entities.Namespace(this, "", null)));
             systemNamespace = new Lazy<Entities.Namespace>(() => Populate(new Entities.Namespace(this, "System")));
             genericHandleFactory = new CachedFunction<GenericContext, Handle, IExtractedEntity>(CreateGenericHandle);
-            namespaceFactory = new CachedFunction<StringHandle, Entities.Namespace>(n => CreateNamespace(mdReader.GetString(n)));
+            namespaceFactory = new CachedFunction<StringHandle, Entities.Namespace>(n => CreateNamespace(MdReader.GetString(n)));
             namespaceDefinitionFactory = new CachedFunction<NamespaceDefinitionHandle, Entities.Namespace>(CreateNamespace);
             sourceFiles = new CachedFunction<PDB.ISourceFile, Entities.PdbSourceFile>(path => new Entities.PdbSourceFile(this, path));
             folders = new CachedFunction<PathTransformer.ITransformedPath, Entities.Folder>(path => new Entities.Folder(this, path));
@@ -50,19 +50,19 @@ namespace Semmle.Extraction.CIL
 
             if (extractPdbs)
             {
-                pdb = PDB.PdbReader.Create(assemblyPath, peReader);
-                if (pdb != null)
+                Pdb = PDB.PdbReader.Create(assemblyPath, PeReader);
+                if (Pdb != null)
                 {
                     cx.Extractor.Logger.Log(Util.Logging.Severity.Info, string.Format("Found PDB information for {0}", assemblyPath));
                 }
             }
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
-            if (pdb != null)
-                pdb.Dispose();
-            peReader.Dispose();
+            if (Pdb != null)
+                Pdb.Dispose();
+            PeReader.Dispose();
             stream.Dispose();
         }
 
@@ -80,14 +80,14 @@ namespace Semmle.Extraction.CIL
 
         public void WriteAssemblyPrefix(TextWriter trapFile)
         {
-            var def = mdReader.GetAssemblyDefinition();
+            var def = MdReader.GetAssemblyDefinition();
             trapFile.Write(GetString(def.Name));
             trapFile.Write('_');
             trapFile.Write(def.Version.ToString());
             trapFile.Write("::");
         }
 
-        public readonly Entities.TypeSignatureDecoder TypeSignatureDecoder;
+        public Entities.TypeSignatureDecoder TypeSignatureDecoder { get; }
 
         /// <summary>
         /// A type used to signify something we can't handle yet.
@@ -113,7 +113,7 @@ namespace Semmle.Extraction.CIL
         /// <returns>The debugging information, or null if the information could not be located.</returns>
         public PDB.IMethod? GetMethodDebugInformation(MethodDefinitionHandle handle)
         {
-            return pdb == null ? null : pdb.GetMethod(handle.ToDebugInformationHandle());
+            return Pdb?.GetMethod(handle.ToDebugInformationHandle());
         }
     }
 
@@ -123,11 +123,11 @@ namespace Semmle.Extraction.CIL
     /// </summary>
     public abstract class GenericContext
     {
-        public Context cx;
+        public Context Cx { get; }
 
-        public GenericContext(Context cx)
+        protected GenericContext(Context cx)
         {
-            this.cx = cx;
+            this.Cx = cx;
         }
 
         /// <summary>

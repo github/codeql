@@ -293,12 +293,15 @@
 | ArrayCreation.cs:5:20:5:32 | array creation of type Int32[,] | ArrayCreation.cs:5:12:5:13 | exit M2 | semmle.label | successor |
 | ArrayCreation.cs:5:28:5:28 | 0 | ArrayCreation.cs:5:31:5:31 | 1 | semmle.label | successor |
 | ArrayCreation.cs:5:31:5:31 | 1 | ArrayCreation.cs:5:20:5:32 | array creation of type Int32[,] | semmle.label | successor |
-| ArrayCreation.cs:7:11:7:12 | enter M3 | ArrayCreation.cs:7:19:7:36 | array creation of type Int32[] | semmle.label | successor |
+| ArrayCreation.cs:7:11:7:12 | enter M3 | ArrayCreation.cs:7:19:7:36 | 2 | semmle.label | successor |
+| ArrayCreation.cs:7:19:7:36 | 2 | ArrayCreation.cs:7:19:7:36 | array creation of type Int32[] | semmle.label | successor |
 | ArrayCreation.cs:7:19:7:36 | array creation of type Int32[] | ArrayCreation.cs:7:31:7:31 | 0 | semmle.label | successor |
 | ArrayCreation.cs:7:29:7:36 | { ..., ... } | ArrayCreation.cs:7:11:7:12 | exit M3 | semmle.label | successor |
 | ArrayCreation.cs:7:31:7:31 | 0 | ArrayCreation.cs:7:34:7:34 | 1 | semmle.label | successor |
 | ArrayCreation.cs:7:34:7:34 | 1 | ArrayCreation.cs:7:29:7:36 | { ..., ... } | semmle.label | successor |
-| ArrayCreation.cs:9:12:9:13 | enter M4 | ArrayCreation.cs:9:20:9:52 | array creation of type Int32[,] | semmle.label | successor |
+| ArrayCreation.cs:9:12:9:13 | enter M4 | ArrayCreation.cs:9:20:9:52 | 2 | semmle.label | successor |
+| ArrayCreation.cs:9:20:9:52 | 2 | ArrayCreation.cs:9:20:9:52 | 2 | semmle.label | successor |
+| ArrayCreation.cs:9:20:9:52 | 2 | ArrayCreation.cs:9:20:9:52 | array creation of type Int32[,] | semmle.label | successor |
 | ArrayCreation.cs:9:20:9:52 | array creation of type Int32[,] | ArrayCreation.cs:9:35:9:35 | 0 | semmle.label | successor |
 | ArrayCreation.cs:9:31:9:52 | { ..., ... } | ArrayCreation.cs:9:12:9:13 | exit M4 | semmle.label | successor |
 | ArrayCreation.cs:9:33:9:40 | { ..., ... } | ArrayCreation.cs:9:45:9:45 | 2 | semmle.label | successor |
@@ -2532,8 +2535,9 @@
 | Initializers.cs:14:47:14:47 | access to property G | Initializers.cs:14:47:14:51 | ... = ... | semmle.label | successor |
 | Initializers.cs:14:47:14:51 | ... = ... | Initializers.cs:14:38:14:53 | { ..., ... } | semmle.label | successor |
 | Initializers.cs:14:51:14:51 | 1 | Initializers.cs:14:47:14:47 | access to property G | semmle.label | successor |
-| Initializers.cs:15:9:15:64 | ... ...; | Initializers.cs:15:18:15:63 | array creation of type Initializers[] | semmle.label | successor |
+| Initializers.cs:15:9:15:64 | ... ...; | Initializers.cs:15:18:15:63 | 2 | semmle.label | successor |
 | Initializers.cs:15:13:15:63 | Initializers[] iz = ... | Initializers.cs:12:10:12:10 | exit M | semmle.label | successor |
+| Initializers.cs:15:18:15:63 | 2 | Initializers.cs:15:18:15:63 | array creation of type Initializers[] | semmle.label | successor |
 | Initializers.cs:15:18:15:63 | array creation of type Initializers[] | Initializers.cs:15:39:15:39 | access to local variable i | semmle.label | successor |
 | Initializers.cs:15:37:15:63 | { ..., ... } | Initializers.cs:15:13:15:63 | Initializers[] iz = ... | semmle.label | successor |
 | Initializers.cs:15:39:15:39 | access to local variable i | Initializers.cs:15:59:15:60 | "" | semmle.label | successor |
@@ -2703,8 +2707,9 @@
 | LoopUnrolling.cs:12:31:12:33 | access to local variable arg | LoopUnrolling.cs:12:13:12:34 | call to method WriteLine | semmle.label | successor |
 | LoopUnrolling.cs:15:10:15:11 | enter M2 | LoopUnrolling.cs:16:5:20:5 | {...} | semmle.label | successor |
 | LoopUnrolling.cs:16:5:20:5 | {...} | LoopUnrolling.cs:17:9:17:48 | ... ...; | semmle.label | successor |
-| LoopUnrolling.cs:17:9:17:48 | ... ...; | LoopUnrolling.cs:17:18:17:47 | array creation of type String[] | semmle.label | successor |
+| LoopUnrolling.cs:17:9:17:48 | ... ...; | LoopUnrolling.cs:17:18:17:47 | 3 | semmle.label | successor |
 | LoopUnrolling.cs:17:13:17:47 | String[] xs = ... | LoopUnrolling.cs:18:27:18:28 | access to local variable xs | semmle.label | successor |
+| LoopUnrolling.cs:17:18:17:47 | 3 | LoopUnrolling.cs:17:18:17:47 | array creation of type String[] | semmle.label | successor |
 | LoopUnrolling.cs:17:18:17:47 | array creation of type String[] | LoopUnrolling.cs:17:33:17:35 | "a" | semmle.label | successor |
 | LoopUnrolling.cs:17:31:17:47 | { ..., ... } | LoopUnrolling.cs:17:13:17:47 | String[] xs = ... | semmle.label | successor |
 | LoopUnrolling.cs:17:33:17:35 | "a" | LoopUnrolling.cs:17:38:17:40 | "b" | semmle.label | successor |
@@ -2742,15 +2747,17 @@
 | LoopUnrolling.cs:32:27:32:28 | access to local variable xs | LoopUnrolling.cs:32:9:33:33 | [skip (line 32)] foreach (... ... in ...) ... | semmle.label | successor |
 | LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:37:5:43:5 | {...} | semmle.label | successor |
 | LoopUnrolling.cs:37:5:43:5 | {...} | LoopUnrolling.cs:38:9:38:48 | ... ...; | semmle.label | successor |
-| LoopUnrolling.cs:38:9:38:48 | ... ...; | LoopUnrolling.cs:38:18:38:47 | array creation of type String[] | semmle.label | successor |
+| LoopUnrolling.cs:38:9:38:48 | ... ...; | LoopUnrolling.cs:38:18:38:47 | 3 | semmle.label | successor |
 | LoopUnrolling.cs:38:13:38:47 | String[] xs = ... | LoopUnrolling.cs:39:9:39:48 | ... ...; | semmle.label | successor |
+| LoopUnrolling.cs:38:18:38:47 | 3 | LoopUnrolling.cs:38:18:38:47 | array creation of type String[] | semmle.label | successor |
 | LoopUnrolling.cs:38:18:38:47 | array creation of type String[] | LoopUnrolling.cs:38:33:38:35 | "a" | semmle.label | successor |
 | LoopUnrolling.cs:38:31:38:47 | { ..., ... } | LoopUnrolling.cs:38:13:38:47 | String[] xs = ... | semmle.label | successor |
 | LoopUnrolling.cs:38:33:38:35 | "a" | LoopUnrolling.cs:38:38:38:40 | "b" | semmle.label | successor |
 | LoopUnrolling.cs:38:38:38:40 | "b" | LoopUnrolling.cs:38:43:38:45 | "c" | semmle.label | successor |
 | LoopUnrolling.cs:38:43:38:45 | "c" | LoopUnrolling.cs:38:31:38:47 | { ..., ... } | semmle.label | successor |
-| LoopUnrolling.cs:39:9:39:48 | ... ...; | LoopUnrolling.cs:39:18:39:47 | array creation of type String[] | semmle.label | successor |
+| LoopUnrolling.cs:39:9:39:48 | ... ...; | LoopUnrolling.cs:39:18:39:47 | 3 | semmle.label | successor |
 | LoopUnrolling.cs:39:13:39:47 | String[] ys = ... | LoopUnrolling.cs:40:27:40:28 | access to local variable xs | semmle.label | successor |
+| LoopUnrolling.cs:39:18:39:47 | 3 | LoopUnrolling.cs:39:18:39:47 | array creation of type String[] | semmle.label | successor |
 | LoopUnrolling.cs:39:18:39:47 | array creation of type String[] | LoopUnrolling.cs:39:33:39:35 | "0" | semmle.label | successor |
 | LoopUnrolling.cs:39:31:39:47 | { ..., ... } | LoopUnrolling.cs:39:13:39:47 | String[] ys = ... | semmle.label | successor |
 | LoopUnrolling.cs:39:33:39:35 | "0" | LoopUnrolling.cs:39:38:39:40 | "1" | semmle.label | successor |
@@ -2773,8 +2780,9 @@
 | LoopUnrolling.cs:42:39:42:39 | access to local variable y | LoopUnrolling.cs:42:35:42:39 | ... + ... | semmle.label | successor |
 | LoopUnrolling.cs:45:10:45:11 | enter M6 | LoopUnrolling.cs:46:5:53:5 | {...} | semmle.label | successor |
 | LoopUnrolling.cs:46:5:53:5 | {...} | LoopUnrolling.cs:47:9:47:48 | ... ...; | semmle.label | successor |
-| LoopUnrolling.cs:47:9:47:48 | ... ...; | LoopUnrolling.cs:47:18:47:47 | array creation of type String[] | semmle.label | successor |
+| LoopUnrolling.cs:47:9:47:48 | ... ...; | LoopUnrolling.cs:47:18:47:47 | 3 | semmle.label | successor |
 | LoopUnrolling.cs:47:13:47:47 | String[] xs = ... | LoopUnrolling.cs:48:27:48:28 | access to local variable xs | semmle.label | successor |
+| LoopUnrolling.cs:47:18:47:47 | 3 | LoopUnrolling.cs:47:18:47:47 | array creation of type String[] | semmle.label | successor |
 | LoopUnrolling.cs:47:18:47:47 | array creation of type String[] | LoopUnrolling.cs:47:33:47:35 | "a" | semmle.label | successor |
 | LoopUnrolling.cs:47:31:47:47 | { ..., ... } | LoopUnrolling.cs:47:13:47:47 | String[] xs = ... | semmle.label | successor |
 | LoopUnrolling.cs:47:33:47:35 | "a" | LoopUnrolling.cs:47:38:47:40 | "b" | semmle.label | successor |
@@ -2791,8 +2799,9 @@
 | LoopUnrolling.cs:51:13:51:23 | goto ...; | LoopUnrolling.cs:50:9:50:13 | Label: | semmle.label | goto(Label) |
 | LoopUnrolling.cs:55:10:55:11 | enter M7 | LoopUnrolling.cs:56:5:65:5 | {...} | semmle.label | successor |
 | LoopUnrolling.cs:56:5:65:5 | {...} | LoopUnrolling.cs:57:9:57:48 | ... ...; | semmle.label | successor |
-| LoopUnrolling.cs:57:9:57:48 | ... ...; | LoopUnrolling.cs:57:18:57:47 | array creation of type String[] | semmle.label | successor |
+| LoopUnrolling.cs:57:9:57:48 | ... ...; | LoopUnrolling.cs:57:18:57:47 | 3 | semmle.label | successor |
 | LoopUnrolling.cs:57:13:57:47 | String[] xs = ... | LoopUnrolling.cs:58:27:58:28 | access to local variable xs | semmle.label | successor |
+| LoopUnrolling.cs:57:18:57:47 | 3 | LoopUnrolling.cs:57:18:57:47 | array creation of type String[] | semmle.label | successor |
 | LoopUnrolling.cs:57:18:57:47 | array creation of type String[] | LoopUnrolling.cs:57:33:57:35 | "a" | semmle.label | successor |
 | LoopUnrolling.cs:57:31:57:47 | { ..., ... } | LoopUnrolling.cs:57:13:57:47 | String[] xs = ... | semmle.label | successor |
 | LoopUnrolling.cs:57:33:57:35 | "a" | LoopUnrolling.cs:57:38:57:40 | "b" | semmle.label | successor |

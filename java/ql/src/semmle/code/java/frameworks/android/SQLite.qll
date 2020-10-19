@@ -1,5 +1,6 @@
 import java
 import Android
+import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The class `android.database.sqlite.SQLiteDatabase`.
@@ -225,4 +226,74 @@ private class ContentProviderUpdateMethod extends SQLiteRunner {
   }
 
   override int sqlIndex() { result = 2 }
+}
+
+private class QueryBuilderBuildMethod extends TaintPreservingCallable {
+  int argument;
+
+  QueryBuilderBuildMethod() {
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
+    (
+      // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
+      // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
+      // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
+      this.hasName(["buildQuery", "buildUnionQuery"]) and
+      argument = [-1 .. getNumberOfParameters()]
+      or
+      // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
+      // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
+      this.hasName("buildUnionSubQuery") and
+      argument = [-1 .. getNumberOfParameters()] and
+      argument != 3
+      or
+      // static buildQueryString(boolean distinct, String tables, String[] columns, String where, String groupBy, String having, String orderBy, String limit)
+      hasName("buildQueryString") and
+      argument = [1 .. getNumberOfParameters()]
+    )
+  }
+
+  override predicate returnsTaintFrom(int arg) { argument = arg }
+}
+
+private class QueryBuilderAppendMethod extends TaintPreservingCallable {
+  QueryBuilderAppendMethod() {
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
+    // setProjectionMap(Map<String, String> columnMap)
+    // setTables(String inTables)
+    // appendWhere(CharSequence inWhere)
+    // appendWhereStandalone(CharSequence inWhere)
+    // static appendColumns(StringBuilder s, String[] columns)
+    this
+        .hasName(["setProjectionMap", "setTables", "appendWhere", "appendWhereStandalone",
+              "appendColumns"])
+  }
+
+  override predicate transfersTaint(int src, int sink) {
+    if hasName("appendColumns") then (src = 1 and sink = 0) else (src = 0 and sink = -1)
+  }
+}
+
+private class UnsafeAppendUtilMethod extends TaintPreservingCallable {
+  UnsafeAppendUtilMethod() {
+    this.getDeclaringType() instanceof TypeDatabaseUtils and
+    // String[] appendSelectionArgs(String[] originalValues, String[] newValues)
+    // String concatenateWhere(String a, String b)
+    this.hasName(["appendSelectionArgs", "concatenateWhere"])
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = [0 .. getNumberOfParameters()] }
+}
+
+private class TaintPreservingQueryMethod extends TaintPreservingCallable {
+  TaintPreservingQueryMethod() {
+    (
+      this.getDeclaringType() instanceof AndroidContentProvider or
+      this.getDeclaringType() instanceof AndroidContentResolver
+    ) and
+    // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder, CancellationSignal cancellationSignal)
+    // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
+    this.hasName("query")
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
 }

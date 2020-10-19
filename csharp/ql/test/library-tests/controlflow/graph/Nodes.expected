@@ -986,8 +986,8 @@ entryPoint
 | AccessorCalls.cs:66:10:66:11 | M9 | AccessorCalls.cs:67:5:74:5 | {...} |
 | ArrayCreation.cs:3:11:3:12 | M1 | ArrayCreation.cs:3:27:3:27 | 0 |
 | ArrayCreation.cs:5:12:5:13 | M2 | ArrayCreation.cs:5:28:5:28 | 0 |
-| ArrayCreation.cs:7:11:7:12 | M3 | ArrayCreation.cs:7:19:7:36 | array creation of type Int32[] |
-| ArrayCreation.cs:9:12:9:13 | M4 | ArrayCreation.cs:9:20:9:52 | array creation of type Int32[,] |
+| ArrayCreation.cs:7:11:7:12 | M3 | ArrayCreation.cs:7:19:7:36 | 2 |
+| ArrayCreation.cs:9:12:9:13 | M4 | ArrayCreation.cs:9:20:9:52 | 2 |
 | Assert.cs:7:10:7:11 | M1 | Assert.cs:8:5:12:5 | {...} |
 | Assert.cs:14:10:14:11 | M2 | Assert.cs:15:5:19:5 | {...} |
 | Assert.cs:21:10:21:11 | M3 | Assert.cs:22:5:26:5 | {...} |

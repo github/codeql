@@ -7,9 +7,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class InterpolatedString : Expression<InterpolatedStringExpressionSyntax>
+    internal class InterpolatedString : Expression<InterpolatedStringExpressionSyntax>
     {
-        InterpolatedString(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.INTERPOLATED_STRING)) { }
+        private InterpolatedString(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.INTERPOLATED_STRING)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new InterpolatedString(info).TryPopulate();
 

@@ -28,6 +28,8 @@ class TaggedTemplateExpr extends Expr, @tagged_template_expr {
   int getNumTypeArgument() { result = count(getATypeArgument()) }
 
   override predicate isImpure() { any() }
+
+  override string getAPrimaryQlClass() { result = "TaggedTemplateExpr" }
 }
 
 /**
@@ -57,6 +59,8 @@ class TemplateLiteral extends Expr, @template_literal {
   int getNumElement() { result = count(getAnElement()) }
 
   override predicate isImpure() { getAnElement().isImpure() }
+
+  override string getAPrimaryQlClass() { result = "TemplateLiteral" }
 }
 
 /**
@@ -94,4 +98,6 @@ class TemplateElement extends Expr, @template_element {
   string getRawValue() { literals(_, result, this) }
 
   override predicate isImpure() { none() }
+
+  override string getAPrimaryQlClass() { result = "TemplateElement" }
 }

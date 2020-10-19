@@ -1,4 +1,5 @@
 import java
+import semmle.code.java.dataflow.FlowSteps
 
 class TypeIntent extends Class {
   TypeIntent() { hasQualifiedName("android.content", "Intent") }
@@ -33,9 +34,11 @@ class ContextStartActivityMethod extends Method {
   }
 }
 
-class IntentGetExtraMethod extends Method {
+class IntentGetExtraMethod extends Method, TaintPreservingCallable {
   IntentGetExtraMethod() {
     (getName().regexpMatch("get\\w+Extra") or hasName("getExtras")) and
     getDeclaringType() instanceof TypeIntent
   }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
 }

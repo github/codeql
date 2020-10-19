@@ -6,9 +6,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class ForEach : Statement<ForEachStatementSyntax>
+    internal class ForEach : Statement<ForEachStatementSyntax>
     {
-        ForEach(Context cx, ForEachStatementSyntax stmt, IStatementParentEntity parent, int child)
+        private ForEach(Context cx, ForEachStatementSyntax stmt, IStatementParentEntity parent, int child)
             : base(cx, stmt, StmtKind.FOREACH, parent, child) { }
 
         public static ForEach Create(Context cx, ForEachStatementSyntax node, IStatementParentEntity parent, int child)
@@ -33,9 +33,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         }
     }
 
-    class ForEachVariable : Statement<ForEachVariableStatementSyntax>
+    internal class ForEachVariable : Statement<ForEachVariableStatementSyntax>
     {
-        ForEachVariable(Context cx, ForEachVariableStatementSyntax stmt, IStatementParentEntity parent, int child)
+        private ForEachVariable(Context cx, ForEachVariableStatementSyntax stmt, IStatementParentEntity parent, int child)
             : base(cx, stmt, StmtKind.FOREACH, parent, child) { }
 
         public static ForEachVariable Create(Context cx, ForEachVariableStatementSyntax node, IStatementParentEntity parent, int child)
