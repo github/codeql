@@ -108,6 +108,9 @@ nodes
 | express.js:21:19:21:48 | req.par ... ntext") |
 | express.js:21:19:21:48 | req.par ... ntext") |
 | express.js:21:19:21:48 | req.par ... ntext") |
+| module.js:9:16:9:29 | req.query.code |
+| module.js:9:16:9:29 | req.query.code |
+| module.js:9:16:9:29 | req.query.code |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") |
 | react-native.js:7:17:7:33 | req.param("code") |
@@ -246,6 +249,7 @@ edges
 | express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") |
 | express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") |
 | express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") |
+| module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |
@@ -308,6 +312,7 @@ edges
 | express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") | $@ flows to here and is interpreted as code. | express.js:17:30:17:53 | req.par ... cript") | User-provided value |
 | express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") | $@ flows to here and is interpreted as code. | express.js:19:37:19:70 | req.par ... odule") | User-provided value |
 | express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") | $@ flows to here and is interpreted as code. | express.js:21:19:21:48 | req.par ... ntext") | User-provided value |
+| module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | $@ flows to here and is interpreted as code. | module.js:9:16:9:29 | req.query.code | User-provided value |
 | react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | $@ flows to here and is interpreted as code. | react-native.js:7:17:7:33 | req.param("code") | User-provided value |
 | react-native.js:10:23:10:29 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:10:23:10:29 | tainted | $@ flows to here and is interpreted as code. | react-native.js:7:17:7:33 | req.param("code") | User-provided value |
 | tst.js:2:6:2:83 | documen ... t=")+8) | tst.js:2:6:2:22 | document.location | tst.js:2:6:2:83 | documen ... t=")+8) | $@ flows to here and is interpreted as code. | tst.js:2:6:2:22 | document.location | User-provided value |
