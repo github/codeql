@@ -114,8 +114,8 @@ nodes
 | tst.ts:12:5:12:16 | [VarDecl] literalFalse | semmle.label | [VarDecl] literalFalse |
 | tst.ts:12:5:12:23 | [VariableDeclarator] literalFalse: false | semmle.label | [VariableDeclarator] literalFalse: false |
 | tst.ts:12:19:12:23 | [LiteralTypeExpr] false | semmle.label | [LiteralTypeExpr] false |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | semmle.label | [InterfaceDefinition,TypeDefinition] interfa ... ace); } |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | semmle.order | 13 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | semmle.order | 13 |
 | tst.ts:14:11:14:19 | [Identifier] Interface | semmle.label | [Identifier] Interface |
 | tst.ts:15:3:15:13 | [Label] numberField | semmle.label | [Label] numberField |
 | tst.ts:15:3:15:22 | [FieldDeclaration] numberField: number; | semmle.label | [FieldDeclaration] numberField: number; |
@@ -295,13 +295,13 @@ nodes
 | tst.ts:49:5:49:30 | [VariableDeclarator] keyofTy ... terface | semmle.label | [VariableDeclarator] keyofTy ... terface |
 | tst.ts:49:16:49:30 | [KeyofTypeExpr] keyof Interface | semmle.label | [KeyofTypeExpr] keyof Interface |
 | tst.ts:49:22:49:30 | [LocalTypeAccess] Interface | semmle.label | [LocalTypeAccess] Interface |
-| tst.ts:51:1:51:23 | [InterfaceDefinition,TypeDefinition] interfa ... c<T> {} | semmle.label | [InterfaceDefinition,TypeDefinition] interfa ... c<T> {} |
-| tst.ts:51:1:51:23 | [InterfaceDefinition,TypeDefinition] interfa ... c<T> {} | semmle.order | 33 |
+| tst.ts:51:1:51:23 | [InterfaceDeclaration,TypeDefinition] interfa ... c<T> {} | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... c<T> {} |
+| tst.ts:51:1:51:23 | [InterfaceDeclaration,TypeDefinition] interfa ... c<T> {} | semmle.order | 33 |
 | tst.ts:51:11:51:17 | [Identifier] Generic | semmle.label | [Identifier] Generic |
 | tst.ts:51:19:51:19 | [Identifier] T | semmle.label | [Identifier] T |
 | tst.ts:51:19:51:19 | [TypeParameter] T | semmle.label | [TypeParameter] T |
-| tst.ts:52:1:52:34 | [InterfaceDefinition,TypeDefinition] interfa ... , U> {} | semmle.label | [InterfaceDefinition,TypeDefinition] interfa ... , U> {} |
-| tst.ts:52:1:52:34 | [InterfaceDefinition,TypeDefinition] interfa ... , U> {} | semmle.order | 34 |
+| tst.ts:52:1:52:34 | [InterfaceDeclaration,TypeDefinition] interfa ... , U> {} | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... , U> {} |
+| tst.ts:52:1:52:34 | [InterfaceDeclaration,TypeDefinition] interfa ... , U> {} | semmle.order | 34 |
 | tst.ts:52:11:52:22 | [Identifier] ManyTypeArgs | semmle.label | [Identifier] ManyTypeArgs |
 | tst.ts:52:24:52:24 | [Identifier] S | semmle.label | [Identifier] S |
 | tst.ts:52:24:52:24 | [TypeParameter] S | semmle.label | [TypeParameter] S |
@@ -313,10 +313,10 @@ nodes
 | tst.ts:53:1:61:1 | [NamespaceDeclaration] namespa ... = 5; } | semmle.order | 35 |
 | tst.ts:53:11:53:11 | [VarDecl] N | semmle.label | [VarDecl] N |
 | tst.ts:54:3:54:23 | [ExportDeclaration] export ... ce I {} | semmle.label | [ExportDeclaration] export ... ce I {} |
-| tst.ts:54:10:54:23 | [InterfaceDefinition,TypeDefinition] interface I {} | semmle.label | [InterfaceDefinition,TypeDefinition] interface I {} |
+| tst.ts:54:10:54:23 | [InterfaceDeclaration,TypeDefinition] interface I {} | semmle.label | [InterfaceDeclaration,TypeDefinition] interface I {} |
 | tst.ts:54:20:54:20 | [Identifier] I | semmle.label | [Identifier] I |
 | tst.ts:55:3:55:38 | [ExportDeclaration] export ... 1<T> {} | semmle.label | [ExportDeclaration] export ... 1<T> {} |
-| tst.ts:55:10:55:38 | [InterfaceDefinition,TypeDefinition] interfa ... 1<T> {} | semmle.label | [InterfaceDefinition,TypeDefinition] interfa ... 1<T> {} |
+| tst.ts:55:10:55:38 | [InterfaceDeclaration,TypeDefinition] interfa ... 1<T> {} | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... 1<T> {} |
 | tst.ts:55:20:55:32 | [Identifier] InnerGeneric1 | semmle.label | [Identifier] InnerGeneric1 |
 | tst.ts:55:34:55:34 | [Identifier] T | semmle.label | [Identifier] T |
 | tst.ts:55:34:55:34 | [TypeParameter] T | semmle.label | [TypeParameter] T |
@@ -324,10 +324,10 @@ nodes
 | tst.ts:56:10:59:3 | [NamespaceDeclaration] namespa ... {} } | semmle.label | [NamespaceDeclaration] namespa ... {} } |
 | tst.ts:56:20:56:20 | [VarDecl] M | semmle.label | [VarDecl] M |
 | tst.ts:57:5:57:25 | [ExportDeclaration] export ... ce J {} | semmle.label | [ExportDeclaration] export ... ce J {} |
-| tst.ts:57:12:57:25 | [InterfaceDefinition,TypeDefinition] interface J {} | semmle.label | [InterfaceDefinition,TypeDefinition] interface J {} |
+| tst.ts:57:12:57:25 | [InterfaceDeclaration,TypeDefinition] interface J {} | semmle.label | [InterfaceDeclaration,TypeDefinition] interface J {} |
 | tst.ts:57:22:57:22 | [Identifier] J | semmle.label | [Identifier] J |
 | tst.ts:58:5:58:40 | [ExportDeclaration] export ... 2<T> {} | semmle.label | [ExportDeclaration] export ... 2<T> {} |
-| tst.ts:58:12:58:40 | [InterfaceDefinition,TypeDefinition] interfa ... 2<T> {} | semmle.label | [InterfaceDefinition,TypeDefinition] interfa ... 2<T> {} |
+| tst.ts:58:12:58:40 | [InterfaceDeclaration,TypeDefinition] interfa ... 2<T> {} | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... 2<T> {} |
 | tst.ts:58:22:58:34 | [Identifier] InnerGeneric2 | semmle.label | [Identifier] InnerGeneric2 |
 | tst.ts:58:36:58:36 | [Identifier] T | semmle.label | [Identifier] T |
 | tst.ts:58:36:58:36 | [TypeParameter] T | semmle.label | [TypeParameter] T |
@@ -419,8 +419,8 @@ nodes
 | tst.ts:72:5:72:35 | [VariableDeclarator] typeofV ... fiedVar | semmle.label | [VariableDeclarator] typeofV ... fiedVar |
 | tst.ts:72:17:72:35 | [TypeofTypeExpr] typeof qualifiedVar | semmle.label | [TypeofTypeExpr] typeof qualifiedVar |
 | tst.ts:72:24:72:35 | [LocalVarTypeAccess] qualifiedVar | semmle.label | [LocalVarTypeAccess] qualifiedVar |
-| tst.ts:74:1:77:1 | [InterfaceDefinition,TypeDefinition] interfa ... Leaf; } | semmle.label | [InterfaceDefinition,TypeDefinition] interfa ... Leaf; } |
-| tst.ts:74:1:77:1 | [InterfaceDefinition,TypeDefinition] interfa ... Leaf; } | semmle.order | 46 |
+| tst.ts:74:1:77:1 | [InterfaceDeclaration,TypeDefinition] interfa ... Leaf; } | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... Leaf; } |
+| tst.ts:74:1:77:1 | [InterfaceDeclaration,TypeDefinition] interfa ... Leaf; } | semmle.order | 46 |
 | tst.ts:74:11:74:14 | [Identifier] Node | semmle.label | [Identifier] Node |
 | tst.ts:75:3:75:12 | [Label] isThisLeaf | semmle.label | [Label] isThisLeaf |
 | tst.ts:75:3:75:29 | [FunctionExpr] isThisL ... s Leaf; | semmle.label | [FunctionExpr] isThisL ... s Leaf; |
@@ -435,8 +435,8 @@ nodes
 | tst.ts:76:21:76:24 | [LocalVarTypeAccess] that | semmle.label | [LocalVarTypeAccess] that |
 | tst.ts:76:21:76:32 | [IsTypeExpr] that is Leaf | semmle.label | [IsTypeExpr] that is Leaf |
 | tst.ts:76:29:76:32 | [LocalTypeAccess] Leaf | semmle.label | [LocalTypeAccess] Leaf |
-| tst.ts:78:1:78:17 | [InterfaceDefinition,TypeDefinition] interface Leaf {} | semmle.label | [InterfaceDefinition,TypeDefinition] interface Leaf {} |
-| tst.ts:78:1:78:17 | [InterfaceDefinition,TypeDefinition] interface Leaf {} | semmle.order | 47 |
+| tst.ts:78:1:78:17 | [InterfaceDeclaration,TypeDefinition] interface Leaf {} | semmle.label | [InterfaceDeclaration,TypeDefinition] interface Leaf {} |
+| tst.ts:78:1:78:17 | [InterfaceDeclaration,TypeDefinition] interface Leaf {} | semmle.order | 47 |
 | tst.ts:78:11:78:14 | [Identifier] Leaf | semmle.label | [Identifier] Leaf |
 | tst.ts:80:1:80:73 | [FunctionDeclStmt] functio ... alse; } | semmle.label | [FunctionDeclStmt] functio ... alse; } |
 | tst.ts:80:1:80:73 | [FunctionDeclStmt] functio ... alse; } | semmle.order | 48 |
@@ -706,8 +706,8 @@ nodes
 | tst.ts:116:46:116:46 | [SimpleParameter] y | semmle.label | [SimpleParameter] y |
 | tst.ts:116:49:116:54 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
 | tst.ts:116:57:116:58 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
-| tst.ts:118:1:120:1 | [InterfaceDefinition,TypeDefinition] interfa ... ram); } | semmle.label | [InterfaceDefinition,TypeDefinition] interfa ... ram); } |
-| tst.ts:118:1:120:1 | [InterfaceDefinition,TypeDefinition] interfa ... ram); } | semmle.order | 76 |
+| tst.ts:118:1:120:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ram); } | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... ram); } |
+| tst.ts:118:1:120:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ram); } | semmle.order | 76 |
 | tst.ts:118:11:118:32 | [Identifier] InterfaceWithThisParam | semmle.label | [Identifier] InterfaceWithThisParam |
 | tst.ts:119:3:119:14 | [Label] hasThisParam | semmle.label | [Label] hasThisParam |
 | tst.ts:119:3:119:45 | [FunctionExpr] hasThis ... Param); | semmle.label | [FunctionExpr] hasThis ... Param); |
@@ -1224,28 +1224,28 @@ edges
 | tst.ts:12:5:12:23 | [VariableDeclarator] literalFalse: false | tst.ts:12:5:12:16 | [VarDecl] literalFalse | semmle.order | 1 |
 | tst.ts:12:5:12:23 | [VariableDeclarator] literalFalse: false | tst.ts:12:19:12:23 | [LiteralTypeExpr] false | semmle.label | 2 |
 | tst.ts:12:5:12:23 | [VariableDeclarator] literalFalse: false | tst.ts:12:19:12:23 | [LiteralTypeExpr] false | semmle.order | 2 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:14:11:14:19 | [Identifier] Interface | semmle.label | 1 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:14:11:14:19 | [Identifier] Interface | semmle.order | 1 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:15:3:15:22 | [FieldDeclaration] numberField: number; | semmle.label | 2 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:15:3:15:22 | [FieldDeclaration] numberField: number; | semmle.order | 2 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:16:3:16:22 | [FieldDeclaration] stringField: string; | semmle.label | 3 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:16:3:16:22 | [FieldDeclaration] stringField: string; | semmle.order | 3 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:17:3:17:28 | [FieldDeclaration] interfa ... erface; | semmle.label | 4 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:17:3:17:28 | [FieldDeclaration] interfa ... erface; | semmle.order | 4 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:18:3:18:18 | [FieldDeclaration] thisField: this; | semmle.label | 5 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:18:3:18:18 | [FieldDeclaration] thisField: this; | semmle.order | 5 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:20:3:20:31 | [MethodSignature] returnN ... number; | semmle.label | 6 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:20:3:20:31 | [MethodSignature] returnN ... number; | semmle.order | 6 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:21:3:21:27 | [MethodSignature] returnV ... : void; | semmle.label | 7 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:21:3:21:27 | [MethodSignature] returnV ... : void; | semmle.order | 7 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:22:3:22:27 | [MethodSignature] returnN ... : null; | semmle.label | 8 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:22:3:22:27 | [MethodSignature] returnN ... : null; | semmle.order | 8 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:23:3:23:27 | [MethodSignature] returnT ... : this; | semmle.label | 9 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:23:3:23:27 | [MethodSignature] returnT ... : this; | semmle.order | 9 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:24:3:24:46 | [MethodSignature] takeNum ... umber); | semmle.label | 10 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:24:3:24:46 | [MethodSignature] takeNum ... umber); | semmle.order | 10 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:25:3:25:55 | [MethodSignature] takeInt ... rface); | semmle.label | 11 |
-| tst.ts:14:1:26:1 | [InterfaceDefinition,TypeDefinition] interfa ... ace); } | tst.ts:25:3:25:55 | [MethodSignature] takeInt ... rface); | semmle.order | 11 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:14:11:14:19 | [Identifier] Interface | semmle.label | 1 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:14:11:14:19 | [Identifier] Interface | semmle.order | 1 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:15:3:15:22 | [FieldDeclaration] numberField: number; | semmle.label | 2 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:15:3:15:22 | [FieldDeclaration] numberField: number; | semmle.order | 2 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:16:3:16:22 | [FieldDeclaration] stringField: string; | semmle.label | 3 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:16:3:16:22 | [FieldDeclaration] stringField: string; | semmle.order | 3 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:17:3:17:28 | [FieldDeclaration] interfa ... erface; | semmle.label | 4 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:17:3:17:28 | [FieldDeclaration] interfa ... erface; | semmle.order | 4 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:18:3:18:18 | [FieldDeclaration] thisField: this; | semmle.label | 5 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:18:3:18:18 | [FieldDeclaration] thisField: this; | semmle.order | 5 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:20:3:20:31 | [MethodSignature] returnN ... number; | semmle.label | 6 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:20:3:20:31 | [MethodSignature] returnN ... number; | semmle.order | 6 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:21:3:21:27 | [MethodSignature] returnV ... : void; | semmle.label | 7 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:21:3:21:27 | [MethodSignature] returnV ... : void; | semmle.order | 7 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:22:3:22:27 | [MethodSignature] returnN ... : null; | semmle.label | 8 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:22:3:22:27 | [MethodSignature] returnN ... : null; | semmle.order | 8 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:23:3:23:27 | [MethodSignature] returnT ... : this; | semmle.label | 9 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:23:3:23:27 | [MethodSignature] returnT ... : this; | semmle.order | 9 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:24:3:24:46 | [MethodSignature] takeNum ... umber); | semmle.label | 10 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:24:3:24:46 | [MethodSignature] takeNum ... umber); | semmle.order | 10 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:25:3:25:55 | [MethodSignature] takeInt ... rface); | semmle.label | 11 |
+| tst.ts:14:1:26:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ace); } | tst.ts:25:3:25:55 | [MethodSignature] takeInt ... rface); | semmle.order | 11 |
 | tst.ts:15:3:15:22 | [FieldDeclaration] numberField: number; | tst.ts:15:3:15:13 | [Label] numberField | semmle.label | 1 |
 | tst.ts:15:3:15:22 | [FieldDeclaration] numberField: number; | tst.ts:15:3:15:13 | [Label] numberField | semmle.order | 1 |
 | tst.ts:15:3:15:22 | [FieldDeclaration] numberField: number; | tst.ts:15:16:15:21 | [KeywordTypeExpr] number | semmle.label | 2 |
@@ -1504,16 +1504,16 @@ edges
 | tst.ts:49:5:49:30 | [VariableDeclarator] keyofTy ... terface | tst.ts:49:16:49:30 | [KeyofTypeExpr] keyof Interface | semmle.order | 2 |
 | tst.ts:49:16:49:30 | [KeyofTypeExpr] keyof Interface | tst.ts:49:22:49:30 | [LocalTypeAccess] Interface | semmle.label | 1 |
 | tst.ts:49:16:49:30 | [KeyofTypeExpr] keyof Interface | tst.ts:49:22:49:30 | [LocalTypeAccess] Interface | semmle.order | 1 |
-| tst.ts:51:1:51:23 | [InterfaceDefinition,TypeDefinition] interfa ... c<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
-| tst.ts:51:1:51:23 | [InterfaceDefinition,TypeDefinition] interfa ... c<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
-| tst.ts:51:1:51:23 | [InterfaceDefinition,TypeDefinition] interfa ... c<T> {} | tst.ts:51:11:51:17 | [Identifier] Generic | semmle.label | 1 |
-| tst.ts:51:1:51:23 | [InterfaceDefinition,TypeDefinition] interfa ... c<T> {} | tst.ts:51:11:51:17 | [Identifier] Generic | semmle.order | 1 |
+| tst.ts:51:1:51:23 | [InterfaceDeclaration,TypeDefinition] interfa ... c<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
+| tst.ts:51:1:51:23 | [InterfaceDeclaration,TypeDefinition] interfa ... c<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
+| tst.ts:51:1:51:23 | [InterfaceDeclaration,TypeDefinition] interfa ... c<T> {} | tst.ts:51:11:51:17 | [Identifier] Generic | semmle.label | 1 |
+| tst.ts:51:1:51:23 | [InterfaceDeclaration,TypeDefinition] interfa ... c<T> {} | tst.ts:51:11:51:17 | [Identifier] Generic | semmle.order | 1 |
 | tst.ts:51:19:51:19 | [TypeParameter] T | tst.ts:51:19:51:19 | [Identifier] T | semmle.label | 1 |
 | tst.ts:51:19:51:19 | [TypeParameter] T | tst.ts:51:19:51:19 | [Identifier] T | semmle.order | 1 |
-| tst.ts:52:1:52:34 | [InterfaceDefinition,TypeDefinition] interfa ... , U> {} | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
-| tst.ts:52:1:52:34 | [InterfaceDefinition,TypeDefinition] interfa ... , U> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
-| tst.ts:52:1:52:34 | [InterfaceDefinition,TypeDefinition] interfa ... , U> {} | tst.ts:52:11:52:22 | [Identifier] ManyTypeArgs | semmle.label | 1 |
-| tst.ts:52:1:52:34 | [InterfaceDefinition,TypeDefinition] interfa ... , U> {} | tst.ts:52:11:52:22 | [Identifier] ManyTypeArgs | semmle.order | 1 |
+| tst.ts:52:1:52:34 | [InterfaceDeclaration,TypeDefinition] interfa ... , U> {} | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
+| tst.ts:52:1:52:34 | [InterfaceDeclaration,TypeDefinition] interfa ... , U> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
+| tst.ts:52:1:52:34 | [InterfaceDeclaration,TypeDefinition] interfa ... , U> {} | tst.ts:52:11:52:22 | [Identifier] ManyTypeArgs | semmle.label | 1 |
+| tst.ts:52:1:52:34 | [InterfaceDeclaration,TypeDefinition] interfa ... , U> {} | tst.ts:52:11:52:22 | [Identifier] ManyTypeArgs | semmle.order | 1 |
 | tst.ts:52:24:52:24 | [TypeParameter] S | tst.ts:52:24:52:24 | [Identifier] S | semmle.label | 1 |
 | tst.ts:52:24:52:24 | [TypeParameter] S | tst.ts:52:24:52:24 | [Identifier] S | semmle.order | 1 |
 | tst.ts:52:27:52:27 | [TypeParameter] T | tst.ts:52:27:52:27 | [Identifier] T | semmle.label | 1 |
@@ -1530,16 +1530,16 @@ edges
 | tst.ts:53:1:61:1 | [NamespaceDeclaration] namespa ... = 5; } | tst.ts:56:3:59:3 | [ExportDeclaration] export ... {} } | semmle.order | 4 |
 | tst.ts:53:1:61:1 | [NamespaceDeclaration] namespa ... = 5; } | tst.ts:60:3:60:19 | [ExportDeclaration] export var x = 5; | semmle.label | 5 |
 | tst.ts:53:1:61:1 | [NamespaceDeclaration] namespa ... = 5; } | tst.ts:60:3:60:19 | [ExportDeclaration] export var x = 5; | semmle.order | 5 |
-| tst.ts:54:3:54:23 | [ExportDeclaration] export ... ce I {} | tst.ts:54:10:54:23 | [InterfaceDefinition,TypeDefinition] interface I {} | semmle.label | 1 |
-| tst.ts:54:3:54:23 | [ExportDeclaration] export ... ce I {} | tst.ts:54:10:54:23 | [InterfaceDefinition,TypeDefinition] interface I {} | semmle.order | 1 |
-| tst.ts:54:10:54:23 | [InterfaceDefinition,TypeDefinition] interface I {} | tst.ts:54:20:54:20 | [Identifier] I | semmle.label | 1 |
-| tst.ts:54:10:54:23 | [InterfaceDefinition,TypeDefinition] interface I {} | tst.ts:54:20:54:20 | [Identifier] I | semmle.order | 1 |
-| tst.ts:55:3:55:38 | [ExportDeclaration] export ... 1<T> {} | tst.ts:55:10:55:38 | [InterfaceDefinition,TypeDefinition] interfa ... 1<T> {} | semmle.label | 1 |
-| tst.ts:55:3:55:38 | [ExportDeclaration] export ... 1<T> {} | tst.ts:55:10:55:38 | [InterfaceDefinition,TypeDefinition] interfa ... 1<T> {} | semmle.order | 1 |
-| tst.ts:55:10:55:38 | [InterfaceDefinition,TypeDefinition] interfa ... 1<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
-| tst.ts:55:10:55:38 | [InterfaceDefinition,TypeDefinition] interfa ... 1<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
-| tst.ts:55:10:55:38 | [InterfaceDefinition,TypeDefinition] interfa ... 1<T> {} | tst.ts:55:20:55:32 | [Identifier] InnerGeneric1 | semmle.label | 1 |
-| tst.ts:55:10:55:38 | [InterfaceDefinition,TypeDefinition] interfa ... 1<T> {} | tst.ts:55:20:55:32 | [Identifier] InnerGeneric1 | semmle.order | 1 |
+| tst.ts:54:3:54:23 | [ExportDeclaration] export ... ce I {} | tst.ts:54:10:54:23 | [InterfaceDeclaration,TypeDefinition] interface I {} | semmle.label | 1 |
+| tst.ts:54:3:54:23 | [ExportDeclaration] export ... ce I {} | tst.ts:54:10:54:23 | [InterfaceDeclaration,TypeDefinition] interface I {} | semmle.order | 1 |
+| tst.ts:54:10:54:23 | [InterfaceDeclaration,TypeDefinition] interface I {} | tst.ts:54:20:54:20 | [Identifier] I | semmle.label | 1 |
+| tst.ts:54:10:54:23 | [InterfaceDeclaration,TypeDefinition] interface I {} | tst.ts:54:20:54:20 | [Identifier] I | semmle.order | 1 |
+| tst.ts:55:3:55:38 | [ExportDeclaration] export ... 1<T> {} | tst.ts:55:10:55:38 | [InterfaceDeclaration,TypeDefinition] interfa ... 1<T> {} | semmle.label | 1 |
+| tst.ts:55:3:55:38 | [ExportDeclaration] export ... 1<T> {} | tst.ts:55:10:55:38 | [InterfaceDeclaration,TypeDefinition] interfa ... 1<T> {} | semmle.order | 1 |
+| tst.ts:55:10:55:38 | [InterfaceDeclaration,TypeDefinition] interfa ... 1<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
+| tst.ts:55:10:55:38 | [InterfaceDeclaration,TypeDefinition] interfa ... 1<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
+| tst.ts:55:10:55:38 | [InterfaceDeclaration,TypeDefinition] interfa ... 1<T> {} | tst.ts:55:20:55:32 | [Identifier] InnerGeneric1 | semmle.label | 1 |
+| tst.ts:55:10:55:38 | [InterfaceDeclaration,TypeDefinition] interfa ... 1<T> {} | tst.ts:55:20:55:32 | [Identifier] InnerGeneric1 | semmle.order | 1 |
 | tst.ts:55:34:55:34 | [TypeParameter] T | tst.ts:55:34:55:34 | [Identifier] T | semmle.label | 1 |
 | tst.ts:55:34:55:34 | [TypeParameter] T | tst.ts:55:34:55:34 | [Identifier] T | semmle.order | 1 |
 | tst.ts:56:3:59:3 | [ExportDeclaration] export ... {} } | tst.ts:56:10:59:3 | [NamespaceDeclaration] namespa ... {} } | semmle.label | 1 |
@@ -1550,16 +1550,16 @@ edges
 | tst.ts:56:10:59:3 | [NamespaceDeclaration] namespa ... {} } | tst.ts:57:5:57:25 | [ExportDeclaration] export ... ce J {} | semmle.order | 2 |
 | tst.ts:56:10:59:3 | [NamespaceDeclaration] namespa ... {} } | tst.ts:58:5:58:40 | [ExportDeclaration] export ... 2<T> {} | semmle.label | 3 |
 | tst.ts:56:10:59:3 | [NamespaceDeclaration] namespa ... {} } | tst.ts:58:5:58:40 | [ExportDeclaration] export ... 2<T> {} | semmle.order | 3 |
-| tst.ts:57:5:57:25 | [ExportDeclaration] export ... ce J {} | tst.ts:57:12:57:25 | [InterfaceDefinition,TypeDefinition] interface J {} | semmle.label | 1 |
-| tst.ts:57:5:57:25 | [ExportDeclaration] export ... ce J {} | tst.ts:57:12:57:25 | [InterfaceDefinition,TypeDefinition] interface J {} | semmle.order | 1 |
-| tst.ts:57:12:57:25 | [InterfaceDefinition,TypeDefinition] interface J {} | tst.ts:57:22:57:22 | [Identifier] J | semmle.label | 1 |
-| tst.ts:57:12:57:25 | [InterfaceDefinition,TypeDefinition] interface J {} | tst.ts:57:22:57:22 | [Identifier] J | semmle.order | 1 |
-| tst.ts:58:5:58:40 | [ExportDeclaration] export ... 2<T> {} | tst.ts:58:12:58:40 | [InterfaceDefinition,TypeDefinition] interfa ... 2<T> {} | semmle.label | 1 |
-| tst.ts:58:5:58:40 | [ExportDeclaration] export ... 2<T> {} | tst.ts:58:12:58:40 | [InterfaceDefinition,TypeDefinition] interfa ... 2<T> {} | semmle.order | 1 |
-| tst.ts:58:12:58:40 | [InterfaceDefinition,TypeDefinition] interfa ... 2<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
-| tst.ts:58:12:58:40 | [InterfaceDefinition,TypeDefinition] interfa ... 2<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
-| tst.ts:58:12:58:40 | [InterfaceDefinition,TypeDefinition] interfa ... 2<T> {} | tst.ts:58:22:58:34 | [Identifier] InnerGeneric2 | semmle.label | 1 |
-| tst.ts:58:12:58:40 | [InterfaceDefinition,TypeDefinition] interfa ... 2<T> {} | tst.ts:58:22:58:34 | [Identifier] InnerGeneric2 | semmle.order | 1 |
+| tst.ts:57:5:57:25 | [ExportDeclaration] export ... ce J {} | tst.ts:57:12:57:25 | [InterfaceDeclaration,TypeDefinition] interface J {} | semmle.label | 1 |
+| tst.ts:57:5:57:25 | [ExportDeclaration] export ... ce J {} | tst.ts:57:12:57:25 | [InterfaceDeclaration,TypeDefinition] interface J {} | semmle.order | 1 |
+| tst.ts:57:12:57:25 | [InterfaceDeclaration,TypeDefinition] interface J {} | tst.ts:57:22:57:22 | [Identifier] J | semmle.label | 1 |
+| tst.ts:57:12:57:25 | [InterfaceDeclaration,TypeDefinition] interface J {} | tst.ts:57:22:57:22 | [Identifier] J | semmle.order | 1 |
+| tst.ts:58:5:58:40 | [ExportDeclaration] export ... 2<T> {} | tst.ts:58:12:58:40 | [InterfaceDeclaration,TypeDefinition] interfa ... 2<T> {} | semmle.label | 1 |
+| tst.ts:58:5:58:40 | [ExportDeclaration] export ... 2<T> {} | tst.ts:58:12:58:40 | [InterfaceDeclaration,TypeDefinition] interfa ... 2<T> {} | semmle.order | 1 |
+| tst.ts:58:12:58:40 | [InterfaceDeclaration,TypeDefinition] interfa ... 2<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
+| tst.ts:58:12:58:40 | [InterfaceDeclaration,TypeDefinition] interfa ... 2<T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
+| tst.ts:58:12:58:40 | [InterfaceDeclaration,TypeDefinition] interfa ... 2<T> {} | tst.ts:58:22:58:34 | [Identifier] InnerGeneric2 | semmle.label | 1 |
+| tst.ts:58:12:58:40 | [InterfaceDeclaration,TypeDefinition] interfa ... 2<T> {} | tst.ts:58:22:58:34 | [Identifier] InnerGeneric2 | semmle.order | 1 |
 | tst.ts:58:36:58:36 | [TypeParameter] T | tst.ts:58:36:58:36 | [Identifier] T | semmle.label | 1 |
 | tst.ts:58:36:58:36 | [TypeParameter] T | tst.ts:58:36:58:36 | [Identifier] T | semmle.order | 1 |
 | tst.ts:60:3:60:19 | [ExportDeclaration] export var x = 5; | tst.ts:60:10:60:19 | [DeclStmt] var x = ... | semmle.label | 1 |
@@ -1696,12 +1696,12 @@ edges
 | tst.ts:72:5:72:35 | [VariableDeclarator] typeofV ... fiedVar | tst.ts:72:17:72:35 | [TypeofTypeExpr] typeof qualifiedVar | semmle.order | 2 |
 | tst.ts:72:17:72:35 | [TypeofTypeExpr] typeof qualifiedVar | tst.ts:72:24:72:35 | [LocalVarTypeAccess] qualifiedVar | semmle.label | 1 |
 | tst.ts:72:17:72:35 | [TypeofTypeExpr] typeof qualifiedVar | tst.ts:72:24:72:35 | [LocalVarTypeAccess] qualifiedVar | semmle.order | 1 |
-| tst.ts:74:1:77:1 | [InterfaceDefinition,TypeDefinition] interfa ... Leaf; } | tst.ts:74:11:74:14 | [Identifier] Node | semmle.label | 1 |
-| tst.ts:74:1:77:1 | [InterfaceDefinition,TypeDefinition] interfa ... Leaf; } | tst.ts:74:11:74:14 | [Identifier] Node | semmle.order | 1 |
-| tst.ts:74:1:77:1 | [InterfaceDefinition,TypeDefinition] interfa ... Leaf; } | tst.ts:75:3:75:29 | [MethodSignature] isThisL ... s Leaf; | semmle.label | 2 |
-| tst.ts:74:1:77:1 | [InterfaceDefinition,TypeDefinition] interfa ... Leaf; } | tst.ts:75:3:75:29 | [MethodSignature] isThisL ... s Leaf; | semmle.order | 2 |
-| tst.ts:74:1:77:1 | [InterfaceDefinition,TypeDefinition] interfa ... Leaf; } | tst.ts:76:3:76:33 | [MethodSignature] isThatL ... s Leaf; | semmle.label | 3 |
-| tst.ts:74:1:77:1 | [InterfaceDefinition,TypeDefinition] interfa ... Leaf; } | tst.ts:76:3:76:33 | [MethodSignature] isThatL ... s Leaf; | semmle.order | 3 |
+| tst.ts:74:1:77:1 | [InterfaceDeclaration,TypeDefinition] interfa ... Leaf; } | tst.ts:74:11:74:14 | [Identifier] Node | semmle.label | 1 |
+| tst.ts:74:1:77:1 | [InterfaceDeclaration,TypeDefinition] interfa ... Leaf; } | tst.ts:74:11:74:14 | [Identifier] Node | semmle.order | 1 |
+| tst.ts:74:1:77:1 | [InterfaceDeclaration,TypeDefinition] interfa ... Leaf; } | tst.ts:75:3:75:29 | [MethodSignature] isThisL ... s Leaf; | semmle.label | 2 |
+| tst.ts:74:1:77:1 | [InterfaceDeclaration,TypeDefinition] interfa ... Leaf; } | tst.ts:75:3:75:29 | [MethodSignature] isThisL ... s Leaf; | semmle.order | 2 |
+| tst.ts:74:1:77:1 | [InterfaceDeclaration,TypeDefinition] interfa ... Leaf; } | tst.ts:76:3:76:33 | [MethodSignature] isThatL ... s Leaf; | semmle.label | 3 |
+| tst.ts:74:1:77:1 | [InterfaceDeclaration,TypeDefinition] interfa ... Leaf; } | tst.ts:76:3:76:33 | [MethodSignature] isThatL ... s Leaf; | semmle.order | 3 |
 | tst.ts:75:3:75:29 | [FunctionExpr] isThisL ... s Leaf; | tst.ts:75:17:75:28 | [IsTypeExpr] this is Leaf | semmle.label | 4 |
 | tst.ts:75:3:75:29 | [FunctionExpr] isThisL ... s Leaf; | tst.ts:75:17:75:28 | [IsTypeExpr] this is Leaf | semmle.order | 4 |
 | tst.ts:75:3:75:29 | [MethodSignature] isThisL ... s Leaf; | tst.ts:75:3:75:12 | [Label] isThisLeaf | semmle.label | 1 |
@@ -1724,8 +1724,8 @@ edges
 | tst.ts:76:21:76:32 | [IsTypeExpr] that is Leaf | tst.ts:76:21:76:24 | [LocalVarTypeAccess] that | semmle.order | 1 |
 | tst.ts:76:21:76:32 | [IsTypeExpr] that is Leaf | tst.ts:76:29:76:32 | [LocalTypeAccess] Leaf | semmle.label | 2 |
 | tst.ts:76:21:76:32 | [IsTypeExpr] that is Leaf | tst.ts:76:29:76:32 | [LocalTypeAccess] Leaf | semmle.order | 2 |
-| tst.ts:78:1:78:17 | [InterfaceDefinition,TypeDefinition] interface Leaf {} | tst.ts:78:11:78:14 | [Identifier] Leaf | semmle.label | 1 |
-| tst.ts:78:1:78:17 | [InterfaceDefinition,TypeDefinition] interface Leaf {} | tst.ts:78:11:78:14 | [Identifier] Leaf | semmle.order | 1 |
+| tst.ts:78:1:78:17 | [InterfaceDeclaration,TypeDefinition] interface Leaf {} | tst.ts:78:11:78:14 | [Identifier] Leaf | semmle.label | 1 |
+| tst.ts:78:1:78:17 | [InterfaceDeclaration,TypeDefinition] interface Leaf {} | tst.ts:78:11:78:14 | [Identifier] Leaf | semmle.order | 1 |
 | tst.ts:80:1:80:73 | [FunctionDeclStmt] functio ... alse; } | file://:0:0:0:0 | (Parameters) | semmle.label | 1 |
 | tst.ts:80:1:80:73 | [FunctionDeclStmt] functio ... alse; } | file://:0:0:0:0 | (Parameters) | semmle.order | 1 |
 | tst.ts:80:1:80:73 | [FunctionDeclStmt] functio ... alse; } | tst.ts:80:10:80:22 | [VarDecl] complexIsType | semmle.label | 0 |
@@ -2136,10 +2136,10 @@ edges
 | tst.ts:116:35:116:35 | [SimpleParameter] x | tst.ts:116:38:116:43 | [KeywordTypeExpr] number | semmle.order | 0 |
 | tst.ts:116:46:116:46 | [SimpleParameter] y | tst.ts:116:49:116:54 | [KeywordTypeExpr] string | semmle.label | 0 |
 | tst.ts:116:46:116:46 | [SimpleParameter] y | tst.ts:116:49:116:54 | [KeywordTypeExpr] string | semmle.order | 0 |
-| tst.ts:118:1:120:1 | [InterfaceDefinition,TypeDefinition] interfa ... ram); } | tst.ts:118:11:118:32 | [Identifier] InterfaceWithThisParam | semmle.label | 1 |
-| tst.ts:118:1:120:1 | [InterfaceDefinition,TypeDefinition] interfa ... ram); } | tst.ts:118:11:118:32 | [Identifier] InterfaceWithThisParam | semmle.order | 1 |
-| tst.ts:118:1:120:1 | [InterfaceDefinition,TypeDefinition] interfa ... ram); } | tst.ts:119:3:119:45 | [MethodSignature] hasThis ... Param); | semmle.label | 2 |
-| tst.ts:118:1:120:1 | [InterfaceDefinition,TypeDefinition] interfa ... ram); } | tst.ts:119:3:119:45 | [MethodSignature] hasThis ... Param); | semmle.order | 2 |
+| tst.ts:118:1:120:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ram); } | tst.ts:118:11:118:32 | [Identifier] InterfaceWithThisParam | semmle.label | 1 |
+| tst.ts:118:1:120:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ram); } | tst.ts:118:11:118:32 | [Identifier] InterfaceWithThisParam | semmle.order | 1 |
+| tst.ts:118:1:120:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ram); } | tst.ts:119:3:119:45 | [MethodSignature] hasThis ... Param); | semmle.label | 2 |
+| tst.ts:118:1:120:1 | [InterfaceDeclaration,TypeDefinition] interfa ... ram); } | tst.ts:119:3:119:45 | [MethodSignature] hasThis ... Param); | semmle.order | 2 |
 | tst.ts:119:3:119:45 | [FunctionExpr] hasThis ... Param); | tst.ts:119:22:119:43 | [LocalTypeAccess] InterfaceWithThisParam | semmle.label | 3 |
 | tst.ts:119:3:119:45 | [FunctionExpr] hasThis ... Param); | tst.ts:119:22:119:43 | [LocalTypeAccess] InterfaceWithThisParam | semmle.order | 3 |
 | tst.ts:119:3:119:45 | [MethodSignature] hasThis ... Param); | tst.ts:119:3:119:14 | [Label] hasThisParam | semmle.label | 1 |

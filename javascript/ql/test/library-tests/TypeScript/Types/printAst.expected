@@ -462,8 +462,8 @@ nodes
 | type_definitions.ts:1:8:1:17 | [ImportSpecifier] * as dummy | semmle.label | [ImportSpecifier] * as dummy |
 | type_definitions.ts:1:13:1:17 | [VarDecl] dummy | semmle.label | [VarDecl] dummy |
 | type_definitions.ts:1:24:1:32 | [Literal] "./dummy" | semmle.label | [Literal] "./dummy" |
-| type_definitions.ts:3:1:5:1 | [InterfaceDefinition,TypeDefinition] interfa ... x: S; } | semmle.label | [InterfaceDefinition,TypeDefinition] interfa ... x: S; } |
-| type_definitions.ts:3:1:5:1 | [InterfaceDefinition,TypeDefinition] interfa ... x: S; } | semmle.order | 61 |
+| type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | semmle.label | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } |
+| type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | semmle.order | 61 |
 | type_definitions.ts:3:11:3:11 | [Identifier] I | semmle.label | [Identifier] I |
 | type_definitions.ts:3:13:3:13 | [Identifier] S | semmle.label | [Identifier] S |
 | type_definitions.ts:3:13:3:13 | [TypeParameter] S | semmle.label | [TypeParameter] S |
@@ -1221,12 +1221,12 @@ edges
 | type_definitions.ts:1:1:1:33 | [ImportDeclaration] import ... dummy"; | type_definitions.ts:1:24:1:32 | [Literal] "./dummy" | semmle.order | 2 |
 | type_definitions.ts:1:8:1:17 | [ImportSpecifier] * as dummy | type_definitions.ts:1:13:1:17 | [VarDecl] dummy | semmle.label | 1 |
 | type_definitions.ts:1:8:1:17 | [ImportSpecifier] * as dummy | type_definitions.ts:1:13:1:17 | [VarDecl] dummy | semmle.order | 1 |
-| type_definitions.ts:3:1:5:1 | [InterfaceDefinition,TypeDefinition] interfa ... x: S; } | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
-| type_definitions.ts:3:1:5:1 | [InterfaceDefinition,TypeDefinition] interfa ... x: S; } | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
-| type_definitions.ts:3:1:5:1 | [InterfaceDefinition,TypeDefinition] interfa ... x: S; } | type_definitions.ts:3:11:3:11 | [Identifier] I | semmle.label | 1 |
-| type_definitions.ts:3:1:5:1 | [InterfaceDefinition,TypeDefinition] interfa ... x: S; } | type_definitions.ts:3:11:3:11 | [Identifier] I | semmle.order | 1 |
-| type_definitions.ts:3:1:5:1 | [InterfaceDefinition,TypeDefinition] interfa ... x: S; } | type_definitions.ts:4:3:4:7 | [FieldDeclaration] x: S; | semmle.label | 3 |
-| type_definitions.ts:3:1:5:1 | [InterfaceDefinition,TypeDefinition] interfa ... x: S; } | type_definitions.ts:4:3:4:7 | [FieldDeclaration] x: S; | semmle.order | 3 |
+| type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
+| type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
+| type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | type_definitions.ts:3:11:3:11 | [Identifier] I | semmle.label | 1 |
+| type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | type_definitions.ts:3:11:3:11 | [Identifier] I | semmle.order | 1 |
+| type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | type_definitions.ts:4:3:4:7 | [FieldDeclaration] x: S; | semmle.label | 3 |
+| type_definitions.ts:3:1:5:1 | [InterfaceDeclaration,TypeDefinition] interfa ... x: S; } | type_definitions.ts:4:3:4:7 | [FieldDeclaration] x: S; | semmle.order | 3 |
 | type_definitions.ts:3:13:3:13 | [TypeParameter] S | type_definitions.ts:3:13:3:13 | [Identifier] S | semmle.label | 1 |
 | type_definitions.ts:3:13:3:13 | [TypeParameter] S | type_definitions.ts:3:13:3:13 | [Identifier] S | semmle.order | 1 |
 | type_definitions.ts:4:3:4:7 | [FieldDeclaration] x: S; | type_definitions.ts:4:3:4:3 | [Label] x | semmle.label | 1 |
