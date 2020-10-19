@@ -322,7 +322,7 @@ class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interface_declara
    */
   override TypeExpr getASuperInterface() { result = InterfaceDefinition.super.getASuperInterface() }
 
-  override string getAPrimaryQlClass() { result = "InterfaceDefinition" }
+  override string getAPrimaryQlClass() { result = "InterfaceDeclaration" }
 }
 
 /** An inline TypeScript interface type, such as `{x: number; y: number}`. */
