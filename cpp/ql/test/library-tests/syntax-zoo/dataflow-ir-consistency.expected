@@ -518,7 +518,31 @@ uniqueNodeLocation
 | fieldaccess.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | SideEffect | Node should have one location but has 14. |
-| file://:0:0:0:0 | *p#2 | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 3) | Node should have one location but has 0. |
+| file://:0:0:0:0 | *(unnamed parameter 2) | Node should have one location but has 0. |
 | file://:0:0:0:0 | Address | Node should have one location but has 0. |
 | file://:0:0:0:0 | Address | Node should have one location but has 0. |
 | file://:0:0:0:0 | Address | Node should have one location but has 0. |
@@ -528,30 +552,6 @@ uniqueNodeLocation
 | file://:0:0:0:0 | ReturnIndirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | SideEffect | Node should have one location but has 0. |
 | file://:0:0:0:0 | VariableAddress | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#3 | Node should have one location but has 0. |
 | forstmt.cpp:1:6:1:7 | AliasedDefinition | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | AliasedUse | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | Chi | Node should have one location but has 2. |
