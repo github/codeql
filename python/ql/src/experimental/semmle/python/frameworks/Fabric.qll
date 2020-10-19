@@ -144,3 +144,218 @@ private module FabricV1 {
     }
   }
 }
+
+/**
+ * Provides classes modeling security-relevant aspects of the `fabric` PyPI package, for
+ * version 2.x.
+ *
+ * See http://docs.fabfile.org/en/2.5/getting-st  arted.html.
+ */
+private module FabricV2 {
+  /** Gets a reference to the `fabric` module. */
+  private DataFlow::Node fabric(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("fabric")
+    or
+    exists(DataFlow::TypeTracker t2 | result = fabric(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `fabric` module. */
+  DataFlow::Node fabric() { result = fabric(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `fabric` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node fabric_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["connection",
+          // connection.py
+          "Connection",
+          // group.py
+          "group", "SerialGroup", "ThreadingGroup",
+          // tasks.py
+          "tasks", "task"] and
+    (
+      t.start() and
+      result = DataFlow::importNode("fabric" + "." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = fabric()
+    )
+    or
+    // Due to bad performance when using normal setup with `fabric_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        fabric_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate fabric_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(fabric_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `fabric` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node fabric_attr(string attr_name) {
+    result = fabric_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  /** Provides models for the `fabric` module. */
+  module fabric {
+    // -------------------------------------------------------------------------
+    // fabric.connection
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `fabric.connection` module. */
+    DataFlow::Node connection() { result = fabric_attr("connection") }
+
+    /** Provides models for the `fabric.connection` module */
+    module connection {
+      /**
+       * Gets a reference to the attribute `attr_name` of the `fabric.connection` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node connection_attr(DataFlow::TypeTracker t, string attr_name) {
+        attr_name in ["Connection"] and
+        (
+          t.start() and
+          result = DataFlow::importNode("fabric.connection" + "." + attr_name)
+          or
+          t.startInAttr(attr_name) and
+          result = connection()
+        )
+        or
+        // Due to bad performance when using normal setup with `connection_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            connection_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate connection_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(connection_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of the `fabric.connection` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node connection_attr(string attr_name) {
+        result = connection_attr(DataFlow::TypeTracker::end(), attr_name)
+      }
+
+      /**
+       * Provides models for the `fabric.connection.Connection` class
+       *
+       * See https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.
+       */
+      module Connection {
+        /** Gets a reference to the `fabric.connection.Connection` class. */
+        private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+          t.start() and
+          result = connection_attr("Connection")
+          or
+          // handle `fabric.Connection` alias
+          t.start() and
+          result = fabric_attr("Connection")
+          or
+          exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `fabric.connection.Connection` class. */
+        DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+        /**
+         * A source of an instance of `fabric.connection.Connection`.
+         *
+         * This can include instantiation of the class, return value from function
+         * calls, or a special parameter that will be set when functions are call by external
+         * library.
+         *
+         * Use `Connection::instance()` predicate to get references to instances of `fabric.connection.Connection`.
+         */
+        abstract class InstanceSource extends DataFlow::Node { }
+
+        private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+          override CallNode node;
+
+          ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+        }
+
+        /** Gets a reference to an instance of `fabric.connection.Connection`. */
+        private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          t.start() and
+          result instanceof InstanceSource
+          or
+          exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+        }
+
+        /** Gets a reference to an instance of `fabric.connection.Connection`. */
+        DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+
+        /**
+         * Gets a reference to either `run`, `sudo`, or `local` method on a
+         * `fabric.connection.Connection` instance.
+         *
+         * See
+         * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.run
+         * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.sudo
+         * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.local
+         */
+        private DataFlow::Node instanceRunMethods(DataFlow::TypeTracker t) {
+          t.startInAttr(["run", "sudo", "local"]) and
+          result = instance()
+          or
+          exists(DataFlow::TypeTracker t2 | result = instanceRunMethods(t2).track(t2, t))
+        }
+
+        /**
+         * Gets a reference to either `run`, `sudo`, or `local` method on a
+         * `fabric.connection.Connection` instance.
+         *
+         * See
+         * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.run
+         * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.sudo
+         * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.local
+         */
+        DataFlow::Node instanceRunMethods() {
+          result = instanceRunMethods(DataFlow::TypeTracker::end())
+        }
+      }
+    }
+
+    /**
+     * A call to either `run`, `sudo`, or `local` on a `fabric.connection.Connection` instance.
+     * See
+     * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.run
+     * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.sudo
+     * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.local
+     */
+    private class FabricConnectionRunSudoLocalCall extends SystemCommandExecution::Range,
+      DataFlow::CfgNode {
+      override CallNode node;
+
+      FabricConnectionRunSudoLocalCall() {
+        node.getFunction() = fabric::connection::Connection::instanceRunMethods().asCfgNode()
+      }
+
+      override DataFlow::Node getCommand() {
+        result.asCfgNode() = [node.getArg(0), node.getArgByName("command")]
+      }
+    }
+  }
+}
