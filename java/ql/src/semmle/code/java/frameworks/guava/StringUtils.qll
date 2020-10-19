@@ -1,4 +1,4 @@
-/** Definitions of flow steps through the various string utility fenctions in the Guava framework. */
+/** Definitions of flow steps through the various string utility functions in the Guava framework. */
 
 import java
 private import semmle.code.java.dataflow.FlowSteps
@@ -51,9 +51,9 @@ private class GuavaStringsTaintPreservingMethod extends TaintPreservingCallable 
   GuavaStringsTaintPreservingMethod() {
     this.getDeclaringType() instanceof TypeGuavaStrings and
     // static String emptyToNull(String string)
-    // static String emptyToNull(String string)
-    // static String padEnd(String string, int minLength, char padChar)
+    // static String nullToEmpty(String string)
     // static String padStart(String string, int minLength, char padChar)
+    // static String padEnd(String string, int minLength, char padChar)
     // static String repeat(String string, int count)
     // static String lenientFormat(String template, Object ... args)
     this.hasName(["emptyToNull", "nullToEmpty", "padStart", "padEnd", "repeat", "lenientFormat"])
@@ -86,6 +86,7 @@ private class GuavaJoinerBuilderMethod extends GuavaJoinerMethod, TaintPreservin
     // static Joiner on(String separator)
     // Joiner skipNulls()
     // Joiner useForNull(String nullText)
+    // Joiner.MapJoiner withKeyValueSeparator(char keyValueSeparator)
     // Joiner.MapJoiner withKeyValueSeparator(String keyValueSeparator)
     // Joiner.MapJoiner useForNull(String nullText) [on MapJoiner]
     this.hasName(["on", "skipNulls", "useForNull", "withKeyValueSeparator"])
