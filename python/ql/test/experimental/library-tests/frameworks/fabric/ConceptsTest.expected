@@ -1,9 +1,3 @@
-| fabric_v1_test.py:8:22:8:47 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v1_test.py:9:20:9:45 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v1_test.py:10:21:10:46 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v1_test.py:12:30:12:55 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v1_test.py:13:28:13:53 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v1_test.py:14:29:14:54 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
 | fabric_v2_test.py:13:22:13:47 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
 | fabric_v2_test.py:14:24:14:49 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
 | fabric_v2_test.py:15:23:15:48 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
