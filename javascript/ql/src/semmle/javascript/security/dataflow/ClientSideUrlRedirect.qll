@@ -14,6 +14,11 @@ import UrlConcatenation
 module ClientSideUrlRedirect {
   import ClientSideUrlRedirectCustomizations::ClientSideUrlRedirect
 
+  // Materialize flow labels
+  private class ConcreteDocumentUrl extends DocumentUrl {
+    ConcreteDocumentUrl() { this = this }
+  }
+
   /**
    * A taint-tracking configuration for reasoning about unvalidated URL redirections.
    */
