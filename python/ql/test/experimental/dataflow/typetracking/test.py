@@ -51,7 +51,7 @@ def global_var_write_test():
 
 def test_import():
     import mymodule
-    mymodule.x # $f-:tracked
+    mymodule.x # $tracked
     y = mymodule.func() # $tracked
     y # $tracked
 
