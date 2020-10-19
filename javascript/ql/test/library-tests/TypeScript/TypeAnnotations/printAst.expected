@@ -589,11 +589,19 @@ nodes
 | tst.ts:98:1:98:14 | [ClassDefinition,TypeDefinition] class C1<S> {} | semmle.label | [ClassDefinition,TypeDefinition] class C1<S> {} |
 | tst.ts:98:1:98:14 | [ClassDefinition,TypeDefinition] class C1<S> {} | semmle.order | 62 |
 | tst.ts:98:7:98:8 | [VarDecl] C1 | semmle.label | [VarDecl] C1 |
+| tst.ts:98:9:98:8 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
+| tst.ts:98:9:98:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | [ClassInitializedMember,ConstructorDefinition] constructor() {} |
+| tst.ts:98:9:98:8 | [FunctionExpr] () {} | semmle.label | [FunctionExpr] () {} |
+| tst.ts:98:9:98:8 | [Label] constructor | semmle.label | [Label] constructor |
 | tst.ts:98:10:98:10 | [Identifier] S | semmle.label | [Identifier] S |
 | tst.ts:98:10:98:10 | [TypeParameter] S | semmle.label | [TypeParameter] S |
 | tst.ts:99:1:99:16 | [ClassDefinition,TypeDefinition] class C2<S,T> {} | semmle.label | [ClassDefinition,TypeDefinition] class C2<S,T> {} |
 | tst.ts:99:1:99:16 | [ClassDefinition,TypeDefinition] class C2<S,T> {} | semmle.order | 63 |
 | tst.ts:99:7:99:8 | [VarDecl] C2 | semmle.label | [VarDecl] C2 |
+| tst.ts:99:9:99:8 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
+| tst.ts:99:9:99:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | [ClassInitializedMember,ConstructorDefinition] constructor() {} |
+| tst.ts:99:9:99:8 | [FunctionExpr] () {} | semmle.label | [FunctionExpr] () {} |
+| tst.ts:99:9:99:8 | [Label] constructor | semmle.label | [Label] constructor |
 | tst.ts:99:10:99:10 | [Identifier] S | semmle.label | [Identifier] S |
 | tst.ts:99:10:99:10 | [TypeParameter] S | semmle.label | [TypeParameter] S |
 | tst.ts:99:12:99:12 | [Identifier] T | semmle.label | [Identifier] T |
@@ -601,6 +609,10 @@ nodes
 | tst.ts:100:1:100:29 | [ClassDefinition,TypeDefinition] class C ... ber> {} | semmle.label | [ClassDefinition,TypeDefinition] class C ... ber> {} |
 | tst.ts:100:1:100:29 | [ClassDefinition,TypeDefinition] class C ... ber> {} | semmle.order | 64 |
 | tst.ts:100:7:100:8 | [VarDecl] C3 | semmle.label | [VarDecl] C3 |
+| tst.ts:100:9:100:8 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
+| tst.ts:100:9:100:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | [ClassInitializedMember,ConstructorDefinition] constructor() {} |
+| tst.ts:100:9:100:8 | [FunctionExpr] () {} | semmle.label | [FunctionExpr] () {} |
+| tst.ts:100:9:100:8 | [Label] constructor | semmle.label | [Label] constructor |
 | tst.ts:100:10:100:10 | [Identifier] S | semmle.label | [Identifier] S |
 | tst.ts:100:10:100:25 | [TypeParameter] S extends number | semmle.label | [TypeParameter] S extends number |
 | tst.ts:100:20:100:25 | [KeywordTypeExpr] number | semmle.label | [KeywordTypeExpr] number |
@@ -1954,12 +1966,28 @@ edges
 | tst.ts:98:1:98:14 | [ClassDefinition,TypeDefinition] class C1<S> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
 | tst.ts:98:1:98:14 | [ClassDefinition,TypeDefinition] class C1<S> {} | tst.ts:98:7:98:8 | [VarDecl] C1 | semmle.label | 1 |
 | tst.ts:98:1:98:14 | [ClassDefinition,TypeDefinition] class C1<S> {} | tst.ts:98:7:98:8 | [VarDecl] C1 | semmle.order | 1 |
+| tst.ts:98:1:98:14 | [ClassDefinition,TypeDefinition] class C1<S> {} | tst.ts:98:9:98:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | 2 |
+| tst.ts:98:1:98:14 | [ClassDefinition,TypeDefinition] class C1<S> {} | tst.ts:98:9:98:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.order | 2 |
+| tst.ts:98:9:98:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:98:9:98:8 | [FunctionExpr] () {} | semmle.label | 2 |
+| tst.ts:98:9:98:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:98:9:98:8 | [FunctionExpr] () {} | semmle.order | 2 |
+| tst.ts:98:9:98:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:98:9:98:8 | [Label] constructor | semmle.label | 1 |
+| tst.ts:98:9:98:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:98:9:98:8 | [Label] constructor | semmle.order | 1 |
+| tst.ts:98:9:98:8 | [FunctionExpr] () {} | tst.ts:98:9:98:8 | [BlockStmt] {} | semmle.label | 5 |
+| tst.ts:98:9:98:8 | [FunctionExpr] () {} | tst.ts:98:9:98:8 | [BlockStmt] {} | semmle.order | 5 |
 | tst.ts:98:10:98:10 | [TypeParameter] S | tst.ts:98:10:98:10 | [Identifier] S | semmle.label | 1 |
 | tst.ts:98:10:98:10 | [TypeParameter] S | tst.ts:98:10:98:10 | [Identifier] S | semmle.order | 1 |
 | tst.ts:99:1:99:16 | [ClassDefinition,TypeDefinition] class C2<S,T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.label | -100 |
 | tst.ts:99:1:99:16 | [ClassDefinition,TypeDefinition] class C2<S,T> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
 | tst.ts:99:1:99:16 | [ClassDefinition,TypeDefinition] class C2<S,T> {} | tst.ts:99:7:99:8 | [VarDecl] C2 | semmle.label | 1 |
 | tst.ts:99:1:99:16 | [ClassDefinition,TypeDefinition] class C2<S,T> {} | tst.ts:99:7:99:8 | [VarDecl] C2 | semmle.order | 1 |
+| tst.ts:99:1:99:16 | [ClassDefinition,TypeDefinition] class C2<S,T> {} | tst.ts:99:9:99:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | 2 |
+| tst.ts:99:1:99:16 | [ClassDefinition,TypeDefinition] class C2<S,T> {} | tst.ts:99:9:99:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.order | 2 |
+| tst.ts:99:9:99:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:99:9:99:8 | [FunctionExpr] () {} | semmle.label | 2 |
+| tst.ts:99:9:99:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:99:9:99:8 | [FunctionExpr] () {} | semmle.order | 2 |
+| tst.ts:99:9:99:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:99:9:99:8 | [Label] constructor | semmle.label | 1 |
+| tst.ts:99:9:99:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:99:9:99:8 | [Label] constructor | semmle.order | 1 |
+| tst.ts:99:9:99:8 | [FunctionExpr] () {} | tst.ts:99:9:99:8 | [BlockStmt] {} | semmle.label | 5 |
+| tst.ts:99:9:99:8 | [FunctionExpr] () {} | tst.ts:99:9:99:8 | [BlockStmt] {} | semmle.order | 5 |
 | tst.ts:99:10:99:10 | [TypeParameter] S | tst.ts:99:10:99:10 | [Identifier] S | semmle.label | 1 |
 | tst.ts:99:10:99:10 | [TypeParameter] S | tst.ts:99:10:99:10 | [Identifier] S | semmle.order | 1 |
 | tst.ts:99:12:99:12 | [TypeParameter] T | tst.ts:99:12:99:12 | [Identifier] T | semmle.label | 1 |
@@ -1968,6 +1996,14 @@ edges
 | tst.ts:100:1:100:29 | [ClassDefinition,TypeDefinition] class C ... ber> {} | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
 | tst.ts:100:1:100:29 | [ClassDefinition,TypeDefinition] class C ... ber> {} | tst.ts:100:7:100:8 | [VarDecl] C3 | semmle.label | 1 |
 | tst.ts:100:1:100:29 | [ClassDefinition,TypeDefinition] class C ... ber> {} | tst.ts:100:7:100:8 | [VarDecl] C3 | semmle.order | 1 |
+| tst.ts:100:1:100:29 | [ClassDefinition,TypeDefinition] class C ... ber> {} | tst.ts:100:9:100:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | 2 |
+| tst.ts:100:1:100:29 | [ClassDefinition,TypeDefinition] class C ... ber> {} | tst.ts:100:9:100:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.order | 2 |
+| tst.ts:100:9:100:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:100:9:100:8 | [FunctionExpr] () {} | semmle.label | 2 |
+| tst.ts:100:9:100:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:100:9:100:8 | [FunctionExpr] () {} | semmle.order | 2 |
+| tst.ts:100:9:100:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:100:9:100:8 | [Label] constructor | semmle.label | 1 |
+| tst.ts:100:9:100:8 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:100:9:100:8 | [Label] constructor | semmle.order | 1 |
+| tst.ts:100:9:100:8 | [FunctionExpr] () {} | tst.ts:100:9:100:8 | [BlockStmt] {} | semmle.label | 5 |
+| tst.ts:100:9:100:8 | [FunctionExpr] () {} | tst.ts:100:9:100:8 | [BlockStmt] {} | semmle.order | 5 |
 | tst.ts:100:10:100:25 | [TypeParameter] S extends number | tst.ts:100:10:100:10 | [Identifier] S | semmle.label | 1 |
 | tst.ts:100:10:100:25 | [TypeParameter] S extends number | tst.ts:100:10:100:10 | [Identifier] S | semmle.order | 1 |
 | tst.ts:100:10:100:25 | [TypeParameter] S extends number | tst.ts:100:20:100:25 | [KeywordTypeExpr] number | semmle.label | 2 |

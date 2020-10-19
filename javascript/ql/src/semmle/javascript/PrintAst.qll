@@ -30,21 +30,11 @@ private predicate shouldPrint(Locatable e, Location l) {
   exists(PrintAstConfiguration config | config.shouldPrint(e, l))
 }
 
-/** Holds if the given element does not need to be rendered in the AST, due to being compiler-generated or being a `TopLevel`. */
+/** Holds if the given element does not need to be rendered in the AST, due to being the `TopLevel` for a file. */
 private predicate isNotNeeded(Locatable el) {
-  exists(ClassDefinition c, ConstructorDeclaration constructor |
-    constructor = c.getConstructor() and
-    constructor.isSynthetic() and
-    el = constructor
-  )
-  or
   el instanceof TopLevel and
   el.getLocation().getStartLine() = 0 and
   el.getLocation().getStartColumn() = 0
-  or
-  exists(ASTNode parent | isNotNeeded(parent) and not parent instanceof TopLevel |
-    el = parent.getAChild()
-  )
   or
   // relaxing aggresive type inference.
   none()

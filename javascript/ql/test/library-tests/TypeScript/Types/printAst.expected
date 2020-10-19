@@ -429,6 +429,10 @@ nodes
 | type_definition_objects.ts:3:1:3:17 | [ExportDeclaration] export class C {} | semmle.order | 54 |
 | type_definition_objects.ts:3:8:3:17 | [ClassDefinition,TypeDefinition] class C {} | semmle.label | [ClassDefinition,TypeDefinition] class C {} |
 | type_definition_objects.ts:3:14:3:14 | [VarDecl] C | semmle.label | [VarDecl] C |
+| type_definition_objects.ts:3:16:3:15 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
+| type_definition_objects.ts:3:16:3:15 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | [ClassInitializedMember,ConstructorDefinition] constructor() {} |
+| type_definition_objects.ts:3:16:3:15 | [FunctionExpr] () {} | semmle.label | [FunctionExpr] () {} |
+| type_definition_objects.ts:3:16:3:15 | [Label] constructor | semmle.label | [Label] constructor |
 | type_definition_objects.ts:4:1:4:17 | [DeclStmt] let classObj = ... | semmle.label | [DeclStmt] let classObj = ... |
 | type_definition_objects.ts:4:1:4:17 | [DeclStmt] let classObj = ... | semmle.order | 55 |
 | type_definition_objects.ts:4:5:4:12 | [VarDecl] classObj | semmle.label | [VarDecl] classObj |
@@ -476,6 +480,10 @@ nodes
 | type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | semmle.label | [ClassDefinition,TypeDefinition] class C ... x: T } |
 | type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | semmle.order | 63 |
 | type_definitions.ts:8:7:8:7 | [VarDecl] C | semmle.label | [VarDecl] C |
+| type_definitions.ts:8:8:8:7 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
+| type_definitions.ts:8:8:8:7 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | [ClassInitializedMember,ConstructorDefinition] constructor() {} |
+| type_definitions.ts:8:8:8:7 | [FunctionExpr] () {} | semmle.label | [FunctionExpr] () {} |
+| type_definitions.ts:8:8:8:7 | [Label] constructor | semmle.label | [Label] constructor |
 | type_definitions.ts:8:9:8:9 | [Identifier] T | semmle.label | [Identifier] T |
 | type_definitions.ts:8:9:8:9 | [TypeParameter] T | semmle.label | [TypeParameter] T |
 | type_definitions.ts:9:3:9:3 | [Label] x | semmle.label | [Label] x |
@@ -1171,6 +1179,14 @@ edges
 | type_definition_objects.ts:3:1:3:17 | [ExportDeclaration] export class C {} | type_definition_objects.ts:3:8:3:17 | [ClassDefinition,TypeDefinition] class C {} | semmle.order | 1 |
 | type_definition_objects.ts:3:8:3:17 | [ClassDefinition,TypeDefinition] class C {} | type_definition_objects.ts:3:14:3:14 | [VarDecl] C | semmle.label | 1 |
 | type_definition_objects.ts:3:8:3:17 | [ClassDefinition,TypeDefinition] class C {} | type_definition_objects.ts:3:14:3:14 | [VarDecl] C | semmle.order | 1 |
+| type_definition_objects.ts:3:8:3:17 | [ClassDefinition,TypeDefinition] class C {} | type_definition_objects.ts:3:16:3:15 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | 2 |
+| type_definition_objects.ts:3:8:3:17 | [ClassDefinition,TypeDefinition] class C {} | type_definition_objects.ts:3:16:3:15 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.order | 2 |
+| type_definition_objects.ts:3:16:3:15 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | type_definition_objects.ts:3:16:3:15 | [FunctionExpr] () {} | semmle.label | 2 |
+| type_definition_objects.ts:3:16:3:15 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | type_definition_objects.ts:3:16:3:15 | [FunctionExpr] () {} | semmle.order | 2 |
+| type_definition_objects.ts:3:16:3:15 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | type_definition_objects.ts:3:16:3:15 | [Label] constructor | semmle.label | 1 |
+| type_definition_objects.ts:3:16:3:15 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | type_definition_objects.ts:3:16:3:15 | [Label] constructor | semmle.order | 1 |
+| type_definition_objects.ts:3:16:3:15 | [FunctionExpr] () {} | type_definition_objects.ts:3:16:3:15 | [BlockStmt] {} | semmle.label | 5 |
+| type_definition_objects.ts:3:16:3:15 | [FunctionExpr] () {} | type_definition_objects.ts:3:16:3:15 | [BlockStmt] {} | semmle.order | 5 |
 | type_definition_objects.ts:4:1:4:17 | [DeclStmt] let classObj = ... | type_definition_objects.ts:4:5:4:16 | [VariableDeclarator] classObj = C | semmle.label | 1 |
 | type_definition_objects.ts:4:1:4:17 | [DeclStmt] let classObj = ... | type_definition_objects.ts:4:5:4:16 | [VariableDeclarator] classObj = C | semmle.order | 1 |
 | type_definition_objects.ts:4:5:4:16 | [VariableDeclarator] classObj = C | type_definition_objects.ts:4:5:4:12 | [VarDecl] classObj | semmle.label | 1 |
@@ -1231,8 +1247,16 @@ edges
 | type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | file://:0:0:0:0 | (TypeParameters) | semmle.order | -100 |
 | type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | type_definitions.ts:8:7:8:7 | [VarDecl] C | semmle.label | 1 |
 | type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | type_definitions.ts:8:7:8:7 | [VarDecl] C | semmle.order | 1 |
+| type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | type_definitions.ts:8:8:8:7 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | 2 |
+| type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | type_definitions.ts:8:8:8:7 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.order | 2 |
 | type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | type_definitions.ts:9:3:9:6 | [FieldDeclaration] x: T | semmle.label | 4 |
 | type_definitions.ts:8:1:10:1 | [ClassDefinition,TypeDefinition] class C ... x: T } | type_definitions.ts:9:3:9:6 | [FieldDeclaration] x: T | semmle.order | 4 |
+| type_definitions.ts:8:8:8:7 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | type_definitions.ts:8:8:8:7 | [FunctionExpr] () {} | semmle.label | 2 |
+| type_definitions.ts:8:8:8:7 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | type_definitions.ts:8:8:8:7 | [FunctionExpr] () {} | semmle.order | 2 |
+| type_definitions.ts:8:8:8:7 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | type_definitions.ts:8:8:8:7 | [Label] constructor | semmle.label | 1 |
+| type_definitions.ts:8:8:8:7 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | type_definitions.ts:8:8:8:7 | [Label] constructor | semmle.order | 1 |
+| type_definitions.ts:8:8:8:7 | [FunctionExpr] () {} | type_definitions.ts:8:8:8:7 | [BlockStmt] {} | semmle.label | 5 |
+| type_definitions.ts:8:8:8:7 | [FunctionExpr] () {} | type_definitions.ts:8:8:8:7 | [BlockStmt] {} | semmle.order | 5 |
 | type_definitions.ts:8:9:8:9 | [TypeParameter] T | type_definitions.ts:8:9:8:9 | [Identifier] T | semmle.label | 1 |
 | type_definitions.ts:8:9:8:9 | [TypeParameter] T | type_definitions.ts:8:9:8:9 | [Identifier] T | semmle.order | 1 |
 | type_definitions.ts:9:3:9:6 | [FieldDeclaration] x: T | type_definitions.ts:9:3:9:3 | [Label] x | semmle.label | 1 |
