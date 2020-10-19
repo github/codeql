@@ -53,6 +53,7 @@
 | Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | More results | This query now recognizes some unsafe uses of `importScripts()` inside WebWorkers. |
 | Missing CSRF middleware (`js/missing-token-validation`) | More results | This query now recognizes writes to cookie and session variables as potentially vulnerable to CSRF attacks. |
 | Missing CSRF middleware (`js/missing-token-validation`) | Fewer results | This query now recognizes more ways of protecting against CSRF attacks. |
+| Client-side cross-site scripting (`js/xss`) | More results | This query now tracks data flow from `location.hash` more precisely. |
 
 
 ## Changes to libraries
