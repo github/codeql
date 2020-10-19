@@ -73,3 +73,20 @@ var passport = require('passport');
         let newEmail = req.cookies["newEmail"];
     })
 });
+
+(function () {
+
+    var app = express()
+
+    app.use(cookieParser())
+    app.use(passport.authorize({ session: true }))
+
+    // Assume token is being set somewhere
+    app.use(express.csrf({ value: function (request) {
+        return request.headers['x-xsrf-token'];
+    }}));
+
+    app.post('/changeEmail', function (req, res) {
+        let newEmail = req.cookies["newEmail"];
+    })
+});

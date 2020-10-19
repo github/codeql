@@ -94,6 +94,8 @@ DataFlow::CallNode csrfMiddlewareCreation() {
     exists(result.getOptionArgument(0, "csrf"))
     or
     callee = DataFlow::moduleMember("lusca", "csrf")
+    or
+    callee = DataFlow::moduleMember("express", "csrf")
   )
 }
 
