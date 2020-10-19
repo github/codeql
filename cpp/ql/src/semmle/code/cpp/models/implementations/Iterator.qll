@@ -283,7 +283,7 @@ class IteratorArrayMemberOperator extends MemberFunction, TaintFunction, Iterato
 /**
  * An `operator=` member function of an iterator class that is not a copy or move assignment
  * operator.
- * 
+ *
  * The `hasTaintFlow` override provides flow through output iterators that return themselves with
  * `operator*` and use their own `operator=` to assign to the container.
  */
