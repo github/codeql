@@ -1,0 +1,24 @@
+edges
+| SensitiveBroadcast.java:11:34:11:38 | token : String | SensitiveBroadcast.java:13:31:13:36 | intent |
+| SensitiveBroadcast.java:12:41:12:52 | refreshToken : String | SensitiveBroadcast.java:13:31:13:36 | intent |
+| SensitiveBroadcast.java:23:33:23:40 | username : String | SensitiveBroadcast.java:25:31:25:36 | intent |
+| SensitiveBroadcast.java:24:32:24:39 | password : String | SensitiveBroadcast.java:25:31:25:36 | intent |
+| SensitiveBroadcast.java:36:40:36:47 | username : String | SensitiveBroadcast.java:39:31:39:36 | intent |
+| SensitiveBroadcast.java:37:39:37:46 | password : String | SensitiveBroadcast.java:39:31:39:36 | intent |
+nodes
+| SensitiveBroadcast.java:11:34:11:38 | token : String | semmle.label | token : String |
+| SensitiveBroadcast.java:12:41:12:52 | refreshToken : String | semmle.label | refreshToken : String |
+| SensitiveBroadcast.java:13:31:13:36 | intent | semmle.label | intent |
+| SensitiveBroadcast.java:23:33:23:40 | username : String | semmle.label | username : String |
+| SensitiveBroadcast.java:24:32:24:39 | password : String | semmle.label | password : String |
+| SensitiveBroadcast.java:25:31:25:36 | intent | semmle.label | intent |
+| SensitiveBroadcast.java:36:40:36:47 | username : String | semmle.label | username : String |
+| SensitiveBroadcast.java:37:39:37:46 | password : String | semmle.label | password : String |
+| SensitiveBroadcast.java:39:31:39:36 | intent | semmle.label | intent |
+#select
+| SensitiveBroadcast.java:13:31:13:36 | intent | SensitiveBroadcast.java:11:34:11:38 | token : String | SensitiveBroadcast.java:13:31:13:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:11:34:11:38 | token | sensitive information |
+| SensitiveBroadcast.java:13:31:13:36 | intent | SensitiveBroadcast.java:12:41:12:52 | refreshToken : String | SensitiveBroadcast.java:13:31:13:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:12:41:12:52 | refreshToken | sensitive information |
+| SensitiveBroadcast.java:25:31:25:36 | intent | SensitiveBroadcast.java:23:33:23:40 | username : String | SensitiveBroadcast.java:25:31:25:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:23:33:23:40 | username | sensitive information |
+| SensitiveBroadcast.java:25:31:25:36 | intent | SensitiveBroadcast.java:24:32:24:39 | password : String | SensitiveBroadcast.java:25:31:25:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:24:32:24:39 | password | sensitive information |
+| SensitiveBroadcast.java:39:31:39:36 | intent | SensitiveBroadcast.java:36:40:36:47 | username : String | SensitiveBroadcast.java:39:31:39:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:36:40:36:47 | username | sensitive information |
+| SensitiveBroadcast.java:39:31:39:36 | intent | SensitiveBroadcast.java:37:39:37:46 | password : String | SensitiveBroadcast.java:39:31:39:36 | intent | Sending $@ to broadcast. | SensitiveBroadcast.java:37:39:37:46 | password | sensitive information |

@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Broadcasted intents in an Android application are visible to all applications installed on the same mobile device, exposing all sensitive information they contain.</p>
+<p>Broadcasts are vulnerable to passive eavesdropping or active denial of service attacks when an intent is broadcasted without specifying any receiver permission or receiver application.</p>
+</overview>
+
+<recommendation>
+<p>Specify receiver permission or specify receiver application in broadcasted intents, or switch to <code>LocalBroadcastManager</code> or the latest <code>LiveData</code> library.</p>
+</recommendation>
+
+<example>
+<p>The following example shows two ways of broadcasting intents. In the 'BAD' case, no "receiver permission" is specified. In the 'GOOD' case, "receiver permission" is specified.</p>
+<sample src="SensitiveBroadcast.java" />
+</example>
+
+<references>
+<li>
+<a href="https://cwe.mitre.org/data/definitions/927.html">CWE-927: Use of Implicit Intent for Sensitive Communication</a>
+</li>
+</references>
+</qhelp>
