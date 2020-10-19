@@ -514,7 +514,7 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
- * Holds if the module `m` defines a name `name` that by assigning `defn` to it. This is an
+ * Holds if the module `m` defines a name `name` by assigning `defn` to it. This is an
  * overapproximation, as `name` may not in fact be exported (e.g. by defining an `__all__` that does
  * not include `name`).
  */
