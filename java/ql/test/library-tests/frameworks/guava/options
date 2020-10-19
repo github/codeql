@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/guava-29.0
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/guava-30.0
