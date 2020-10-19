@@ -272,6 +272,13 @@ private predicate additionalJumpStep(Node node1, Node node2, Configuration confi
 private predicate useFieldFlow(Configuration config) { config.fieldFlowBranchLimit() >= 1 }
 
 private module Stage1 {
+  class ApApprox = Unit;
+
+  class Ap = Unit;
+
+  // class ApOption = UnitOption;
+  class Cc = boolean;
+
   /**
    * Holds if `node` is reachable from a source in the configuration `config`.
    *
@@ -731,33 +738,41 @@ private predicate flowIntoCallNodeCand1(
 }
 
 private module Stage2 {
+  class ApApprox = Stage1::Ap;
+
+  class Ap = boolean;
+
+  class ApOption = BooleanOption;
+
+  class Cc = boolean;
+
   /**
    * Holds if `node` is reachable from a source in the configuration `config`.
    * The Boolean `stored` records whether the tracked value is stored into a
    * field of `node`.
    *
    * The Boolean `fromArg` records whether the node is reached through an
-   * argument in a call, and if so, `argStored` records whether the tracked
+   * argument in a call, and if so, `argAp` records whether the tracked
    * value was stored into a field of the argument.
    */
   private predicate fwdFlow(
-    Node node, boolean fromArg, BooleanOption argStored, boolean stored, Configuration config
+    Node node, boolean fromArg, ApOption argAp, boolean stored, Configuration config
   ) {
     Stage1::revFlow(node, config) and
     config.isSource(node) and
     fromArg = false and
-    argStored = TBooleanNone() and
+    argAp = TBooleanNone() and
     stored = false
     or
     Stage1::revFlow(node, unbind(config)) and
     (
       exists(Node mid |
-        fwdFlow(mid, fromArg, argStored, stored, config) and
+        fwdFlow(mid, fromArg, argAp, stored, config) and
         localFlowStepNodeCand1(mid, node, config)
       )
       or
       exists(Node mid |
-        fwdFlow(mid, fromArg, argStored, stored, config) and
+        fwdFlow(mid, fromArg, argAp, stored, config) and
         additionalLocalFlowStepNodeCand1(mid, node, config) and
         stored = false
       )
@@ -766,27 +781,27 @@ private module Stage2 {
         fwdFlow(mid, _, _, stored, config) and
         jumpStep(mid, node, config) and
         fromArg = false and
-        argStored = TBooleanNone()
+        argAp = TBooleanNone()
       )
       or
       exists(Node mid |
         fwdFlow(mid, _, _, stored, config) and
         additionalJumpStep(mid, node, config) and
         fromArg = false and
-        argStored = TBooleanNone() and
+        argAp = TBooleanNone() and
         stored = false
       )
       or
       // store
       exists(Node mid |
-        fwdFlow(mid, fromArg, argStored, _, config) and
+        fwdFlow(mid, fromArg, argAp, _, config) and
         storeCand1(mid, _, node, config) and
         stored = true
       )
       or
       // read
       exists(Content c |
-        fwdFlowRead(c, node, fromArg, argStored, config) and
+        fwdFlowRead(c, node, fromArg, argAp, config) and
         fwdFlowIsStored(c, stored, config)
       )
       or
@@ -794,17 +809,17 @@ private module Stage2 {
       fwdFlowIn(_, node, _, _, stored, config) and
       fromArg = true and
       if parameterThroughFlowNodeCand1(node, config)
-      then argStored = TBooleanSome(stored)
-      else argStored = TBooleanNone()
+      then argAp = TBooleanSome(stored)
+      else argAp = TBooleanNone()
       or
       // flow out of a callable
       exists(DataFlowCall call |
-        fwdFlowOut(call, node, fromArg, argStored, stored, config) and
+        fwdFlowOut(call, node, fromArg, argAp, stored, config) and
         fromArg = false
         or
         exists(boolean argStored0 |
           fwdFlowOutFromArg(call, node, argStored0, stored, config) and
-          fwdFlowIsEntered(call, fromArg, argStored, argStored0, config)
+          fwdFlowIsEntered(call, fromArg, argAp, argStored0, config)
         )
       )
     )
@@ -825,21 +840,21 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowRead(
-    Content c, Node node, boolean fromArg, BooleanOption argStored, Configuration config
+    Content c, Node node, boolean fromArg, ApOption argAp, Configuration config
   ) {
     exists(Node mid |
-      fwdFlow(mid, fromArg, argStored, true, config) and
+      fwdFlow(mid, fromArg, argAp, true, config) and
       read(mid, c, node, config)
     )
   }
 
   pragma[nomagic]
   private predicate fwdFlowIn(
-    DataFlowCall call, ParameterNode p, boolean fromArg, BooleanOption argStored, boolean stored,
+    DataFlowCall call, ParameterNode p, boolean fromArg, ApOption argAp, boolean stored,
     Configuration config
   ) {
     exists(ArgumentNode arg, boolean allowsFieldFlow |
-      fwdFlow(arg, fromArg, argStored, stored, config) and
+      fwdFlow(arg, fromArg, argAp, stored, config) and
       flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config)
     |
       stored = false or allowsFieldFlow = true
@@ -848,11 +863,11 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node out, boolean fromArg, BooleanOption argStored, boolean stored,
+    DataFlowCall call, Node out, boolean fromArg, ApOption argAp, boolean stored,
     Configuration config
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow |
-      fwdFlow(ret, fromArg, argStored, stored, config) and
+      fwdFlow(ret, fromArg, argAp, stored, config) and
       flowOutOfCallNodeCand1(call, ret, out, allowsFieldFlow, config)
     |
       stored = false or allowsFieldFlow = true
@@ -861,9 +876,9 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowOutFromArg(
-    DataFlowCall call, Node out, boolean argStored, boolean stored, Configuration config
+    DataFlowCall call, Node out, boolean argAp, boolean stored, Configuration config
   ) {
-    fwdFlowOut(call, out, true, TBooleanSome(argStored), stored, config)
+    fwdFlowOut(call, out, true, TBooleanSome(argAp), stored, config)
   }
 
   /**
@@ -871,11 +886,10 @@ private module Stage2 {
    */
   pragma[nomagic]
   private predicate fwdFlowIsEntered(
-    DataFlowCall call, boolean fromArg, BooleanOption argStored, boolean stored,
-    Configuration config
+    DataFlowCall call, boolean fromArg, ApOption argAp, boolean stored, Configuration config
   ) {
     exists(ParameterNode p |
-      fwdFlowIn(call, p, fromArg, argStored, stored, config) and
+      fwdFlowIn(call, p, fromArg, argAp, stored, config) and
       parameterThroughFlowNodeCand1(p, config)
     )
   }
@@ -886,28 +900,28 @@ private module Stage2 {
    * value must be read from a field of `node` in order to reach a sink.
    *
    * The Boolean `toReturn` records whether the node must be returned from
-   * the enclosing callable in order to reach a sink, and if so, `returnRead`
+   * the enclosing callable in order to reach a sink, and if so, `returnAp`
    * records whether a field must be read from the returned value.
    */
   predicate revFlow(
-    Node node, boolean toReturn, BooleanOption returnRead, boolean read, Configuration config
+    Node node, boolean toReturn, ApOption returnAp, boolean read, Configuration config
   ) {
     fwdFlow(node, _, _, false, config) and
     config.isSink(node) and
     toReturn = false and
-    returnRead = TBooleanNone() and
+    returnAp = TBooleanNone() and
     read = false
     or
     fwdFlow(node, _, _, unbindBool(read), unbind(config)) and
     (
       exists(Node mid |
         localFlowStepNodeCand1(node, mid, config) and
-        revFlow(mid, toReturn, returnRead, read, config)
+        revFlow(mid, toReturn, returnAp, read, config)
       )
       or
       exists(Node mid |
         additionalLocalFlowStepNodeCand1(node, mid, config) and
-        revFlow(mid, toReturn, returnRead, read, config) and
+        revFlow(mid, toReturn, returnAp, read, config) and
         read = false
       )
       or
@@ -915,20 +929,20 @@ private module Stage2 {
         jumpStep(node, mid, config) and
         revFlow(mid, _, _, read, config) and
         toReturn = false and
-        returnRead = TBooleanNone()
+        returnAp = TBooleanNone()
       )
       or
       exists(Node mid |
         additionalJumpStep(node, mid, config) and
         revFlow(mid, _, _, read, config) and
         toReturn = false and
-        returnRead = TBooleanNone() and
+        returnAp = TBooleanNone() and
         read = false
       )
       or
       // store
       exists(Content c |
-        revFlowStore(c, node, toReturn, returnRead, read, config) and
+        revFlowStore(c, node, toReturn, returnAp, read, config) and
         revFlowIsRead(c, read, config)
       )
       or
@@ -936,18 +950,18 @@ private module Stage2 {
       exists(Node mid, Content c, boolean read0 |
         read(node, c, mid, config) and
         fwdFlowIsStored(c, unbindBool(read0), unbind(config)) and
-        revFlow(mid, toReturn, returnRead, read0, config) and
+        revFlow(mid, toReturn, returnAp, read0, config) and
         read = true
       )
       or
       // flow into a callable
       exists(DataFlowCall call |
-        revFlowIn(call, node, toReturn, returnRead, read, config) and
+        revFlowIn(call, node, toReturn, returnAp, read, config) and
         toReturn = false
         or
-        exists(boolean returnRead0 |
-          revFlowInToReturn(call, node, returnRead0, read, config) and
-          revFlowIsReturned(call, toReturn, returnRead, returnRead0, config)
+        exists(boolean returnAp0 |
+          revFlowInToReturn(call, node, returnAp0, read, config) and
+          revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
         )
       )
       or
@@ -955,8 +969,8 @@ private module Stage2 {
       revFlowOut(_, node, _, _, read, config) and
       toReturn = true and
       if fwdFlow(node, true, TBooleanSome(_), unbindBool(read), config)
-      then returnRead = TBooleanSome(read)
-      else returnRead = TBooleanNone()
+      then returnAp = TBooleanSome(read)
+      else returnAp = TBooleanNone()
     )
   }
 
@@ -976,12 +990,12 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate revFlowStore(
-    Content c, Node node, boolean toReturn, BooleanOption returnRead, boolean stored,
+    Content c, Node node, boolean toReturn, ApOption returnAp, boolean stored,
     Configuration config
   ) {
     exists(Node mid |
       storeCand1(node, c, mid, config) and
-      revFlow(mid, toReturn, returnRead, true, config) and
+      revFlow(mid, toReturn, returnAp, true, config) and
       fwdFlow(node, _, _, stored, unbind(config))
     )
   }
@@ -1011,11 +1025,11 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate revFlowOut(
-    DataFlowCall call, ReturnNodeExt ret, boolean toReturn, BooleanOption returnRead, boolean read,
+    DataFlowCall call, ReturnNodeExt ret, boolean toReturn, ApOption returnAp, boolean read,
     Configuration config
   ) {
     exists(Node out, boolean allowsFieldFlow |
-      revFlow(out, toReturn, returnRead, read, config) and
+      revFlow(out, toReturn, returnAp, read, config) and
       flowOutOfCallNodeCand1(call, ret, out, allowsFieldFlow, config)
     |
       read = false or allowsFieldFlow = true
@@ -1024,11 +1038,11 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate revFlowIn(
-    DataFlowCall call, ArgumentNode arg, boolean toReturn, BooleanOption returnRead, boolean read,
+    DataFlowCall call, ArgumentNode arg, boolean toReturn, ApOption returnAp, boolean read,
     Configuration config
   ) {
     exists(ParameterNode p, boolean allowsFieldFlow |
-      revFlow(p, toReturn, returnRead, read, config) and
+      revFlow(p, toReturn, returnAp, read, config) and
       flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config)
     |
       read = false or allowsFieldFlow = true
@@ -1037,9 +1051,9 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate revFlowInToReturn(
-    DataFlowCall call, ArgumentNode arg, boolean returnRead, boolean read, Configuration config
+    DataFlowCall call, ArgumentNode arg, boolean returnAp, boolean read, Configuration config
   ) {
-    revFlowIn(call, arg, true, TBooleanSome(returnRead), read, config)
+    revFlowIn(call, arg, true, TBooleanSome(returnAp), read, config)
   }
 
   /**
@@ -1047,11 +1061,10 @@ private module Stage2 {
    */
   pragma[nomagic]
   private predicate revFlowIsReturned(
-    DataFlowCall call, boolean toReturn, BooleanOption returnRead, boolean read,
-    Configuration config
+    DataFlowCall call, boolean toReturn, ApOption returnAp, boolean read, Configuration config
   ) {
     exists(ReturnNodeExt ret |
-      revFlowOut(call, ret, toReturn, returnRead, read, config) and
+      revFlowOut(call, ret, toReturn, returnAp, read, config) and
       fwdFlow(ret, true, TBooleanSome(_), read, config)
     )
   }
@@ -1216,51 +1229,53 @@ private predicate storeCand2(
 }
 
 private module Stage3 {
+  class ApApprox = Stage2::Ap;
+
+  class Ap = AccessPathFront;
+
+  class ApOption = AccessPathFrontOption;
+
+  class Cc = boolean;
+
   /**
-   * Holds if `node` is reachable with access path front `apf` from a
+   * Holds if `node` is reachable with access path front `ap` from a
    * source in the configuration `config`.
    *
    * The Boolean `fromArg` records whether the node is reached through an
-   * argument in a call, and if so, `argApf` records the front of the
+   * argument in a call, and if so, `argAp` records the front of the
    * access path of that argument.
    */
   pragma[nomagic]
-  predicate fwdFlow(
-    Node node, boolean fromArg, AccessPathFrontOption argApf, AccessPathFront apf,
-    Configuration config
-  ) {
-    fwdFlow0(node, fromArg, argApf, apf, config) and
-    not apf.isClearedAt(node) and
-    if node instanceof CastingNode then compatibleTypes(getNodeType(node), apf.getType()) else any()
+  predicate fwdFlow(Node node, boolean fromArg, ApOption argAp, Ap ap, Configuration config) {
+    fwdFlow0(node, fromArg, argAp, ap, config) and
+    not ap.isClearedAt(node) and
+    if node instanceof CastingNode then compatibleTypes(getNodeType(node), ap.getType()) else any()
   }
 
   pragma[nomagic]
-  private predicate fwdFlow0(
-    Node node, boolean fromArg, AccessPathFrontOption argApf, AccessPathFront apf,
-    Configuration config
-  ) {
+  private predicate fwdFlow0(Node node, boolean fromArg, ApOption argAp, Ap ap, Configuration config) {
     Stage2::revFlow(node, _, _, false, config) and
     config.isSource(node) and
     fromArg = false and
-    argApf = TAccessPathFrontNone() and
-    apf = TFrontNil(getNodeType(node))
+    argAp = TAccessPathFrontNone() and
+    ap = TFrontNil(getNodeType(node))
     or
     exists(Node mid |
-      fwdFlow(mid, fromArg, argApf, apf, config) and
+      fwdFlow(mid, fromArg, argAp, ap, config) and
       localFlowBigStep(mid, node, true, _, config, _)
     )
     or
     exists(Node mid, AccessPathFrontNil nil |
-      fwdFlow(mid, fromArg, argApf, nil, config) and
-      localFlowBigStep(mid, node, false, apf, config, _)
+      fwdFlow(mid, fromArg, argAp, nil, config) and
+      localFlowBigStep(mid, node, false, ap, config, _)
     )
     or
     exists(Node mid |
-      fwdFlow(mid, _, _, apf, config) and
+      fwdFlow(mid, _, _, ap, config) and
       Stage2::revFlow(node, unbind(config)) and
       jumpStep(mid, node, config) and
       fromArg = false and
-      argApf = TAccessPathFrontNone()
+      argAp = TAccessPathFrontNone()
     )
     or
     exists(Node mid, AccessPathFrontNil nil |
@@ -1268,103 +1283,101 @@ private module Stage3 {
       Stage2::revFlow(node, unbind(config)) and
       additionalJumpStep(mid, node, config) and
       fromArg = false and
-      argApf = TAccessPathFrontNone() and
-      apf = TFrontNil(getNodeType(node))
+      argAp = TAccessPathFrontNone() and
+      ap = TFrontNil(getNodeType(node))
     )
     or
     // store
-    exists(Node mid, TypedContent tc, AccessPathFront apf0, DataFlowType contentType |
-      fwdFlow(mid, fromArg, argApf, apf0, config) and
+    exists(Node mid, TypedContent tc, Ap ap0, DataFlowType contentType |
+      fwdFlow(mid, fromArg, argAp, ap0, config) and
       storeCand2(mid, tc, node, contentType, config) and
       Stage2::revFlow(node, _, _, true, unbind(config)) and
-      apf.headUsesContent(tc) and
-      compatibleTypes(apf0.getType(), contentType)
+      ap.headUsesContent(tc) and
+      compatibleTypes(ap0.getType(), contentType)
     )
     or
     // read
     exists(TypedContent tc |
-      fwdFlowRead(tc, node, fromArg, argApf, config) and
-      fwdFlowConsCand(tc, apf, config) and
-      Stage2::revFlow(node, _, _, unbindBool(apf.toBoolNonEmpty()), unbind(config))
+      fwdFlowRead(tc, node, fromArg, argAp, config) and
+      fwdFlowConsCand(tc, ap, config) and
+      Stage2::revFlow(node, _, _, unbindBool(ap.toBoolNonEmpty()), unbind(config))
     )
     or
     // flow into a callable
-    fwdFlowIn(_, node, _, _, apf, config) and
+    fwdFlowIn(_, node, _, _, ap, config) and
     fromArg = true and
-    if Stage2::revFlow(node, true, _, unbindBool(apf.toBoolNonEmpty()), config)
-    then argApf = TAccessPathFrontSome(apf)
-    else argApf = TAccessPathFrontNone()
+    if Stage2::revFlow(node, true, _, unbindBool(ap.toBoolNonEmpty()), config)
+    then argAp = TAccessPathFrontSome(ap)
+    else argAp = TAccessPathFrontNone()
     or
     // flow out of a callable
     exists(DataFlowCall call |
-      fwdFlowOut(call, node, fromArg, argApf, apf, config) and
+      fwdFlowOut(call, node, fromArg, argAp, ap, config) and
       fromArg = false
       or
-      exists(AccessPathFront argApf0 |
-        fwdFlowOutFromArg(call, node, argApf0, apf, config) and
-        fwdFlowIsEntered(call, fromArg, argApf, argApf0, config)
+      exists(Ap argApf0 |
+        fwdFlowOutFromArg(call, node, argApf0, ap, config) and
+        fwdFlowIsEntered(call, fromArg, argAp, argApf0, config)
       )
     )
   }
 
   pragma[nomagic]
-  private predicate fwdFlowConsCand(TypedContent tc, AccessPathFront apf, Configuration config) {
+  private predicate fwdFlowConsCand(TypedContent tc, Ap ap, Configuration config) {
     exists(Node mid, Node n, DataFlowType contentType |
-      fwdFlow(mid, _, _, apf, config) and
+      fwdFlow(mid, _, _, ap, config) and
       storeCand2(mid, tc, n, contentType, config) and
       Stage2::revFlow(n, _, _, true, unbind(config)) and
-      compatibleTypes(apf.getType(), contentType)
+      compatibleTypes(ap.getType(), contentType)
     )
   }
 
   pragma[nomagic]
   private predicate fwdFlowRead0(
-    Node node1, TypedContent tc, Content c, Node node2, boolean fromArg,
-    AccessPathFrontOption argApf, AccessPathFrontHead apf, Configuration config
+    Node node1, TypedContent tc, Content c, Node node2, boolean fromArg, ApOption argAp,
+    AccessPathFrontHead ap, Configuration config
   ) {
-    fwdFlow(node1, fromArg, argApf, apf, config) and
+    fwdFlow(node1, fromArg, argAp, ap, config) and
     readCand2(node1, c, node2, config) and
-    apf.headUsesContent(tc)
+    ap.headUsesContent(tc)
   }
 
   pragma[nomagic]
   private predicate fwdFlowRead(
-    TypedContent tc, Node node, boolean fromArg, AccessPathFrontOption argApf, Configuration config
+    TypedContent tc, Node node, boolean fromArg, ApOption argAp, Configuration config
   ) {
-    fwdFlowRead0(_, tc, tc.getContent(), node, fromArg, argApf, _, config)
+    fwdFlowRead0(_, tc, tc.getContent(), node, fromArg, argAp, _, config)
   }
 
   pragma[nomagic]
   private predicate fwdFlowIn(
-    DataFlowCall call, ParameterNode p, boolean fromArg, AccessPathFrontOption argApf,
-    AccessPathFront apf, Configuration config
+    DataFlowCall call, ParameterNode p, boolean fromArg, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ArgumentNode arg, boolean allowsFieldFlow |
-      fwdFlow(arg, fromArg, argApf, apf, config) and
+      fwdFlow(arg, fromArg, argAp, ap, config) and
       flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
     |
-      apf instanceof AccessPathFrontNil or allowsFieldFlow = true
+      ap instanceof AccessPathFrontNil or allowsFieldFlow = true
     )
   }
 
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node node, boolean fromArg, AccessPathFrontOption argApf,
-    AccessPathFront apf, Configuration config
+    DataFlowCall call, Node node, boolean fromArg, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow |
-      fwdFlow(ret, fromArg, argApf, apf, config) and
+      fwdFlow(ret, fromArg, argAp, ap, config) and
       flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config)
     |
-      apf instanceof AccessPathFrontNil or allowsFieldFlow = true
+      ap instanceof AccessPathFrontNil or allowsFieldFlow = true
     )
   }
 
   pragma[nomagic]
   private predicate fwdFlowOutFromArg(
-    DataFlowCall call, Node node, AccessPathFront argApf, AccessPathFront apf, Configuration config
+    DataFlowCall call, Node node, Ap argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, node, true, TAccessPathFrontSome(argApf), apf, config)
+    fwdFlowOut(call, node, true, TAccessPathFrontSome(argAp), ap, config)
   }
 
   /**
@@ -1372,170 +1385,161 @@ private module Stage3 {
    */
   pragma[nomagic]
   private predicate fwdFlowIsEntered(
-    DataFlowCall call, boolean fromArg, AccessPathFrontOption argApf, AccessPathFront apf,
-    Configuration config
+    DataFlowCall call, boolean fromArg, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ParameterNode p |
-      fwdFlowIn(call, p, fromArg, argApf, apf, config) and
-      Stage2::revFlow(p, true, TBooleanSome(_), unbindBool(apf.toBoolNonEmpty()), config)
+      fwdFlowIn(call, p, fromArg, argAp, ap, config) and
+      Stage2::revFlow(p, true, TBooleanSome(_), unbindBool(ap.toBoolNonEmpty()), config)
     )
   }
 
   /**
-   * Holds if `node` with access path front `apf` is part of a path from a
+   * Holds if `node` with access path front `ap` is part of a path from a
    * source to a sink in the configuration `config`.
    *
    * The Boolean `toReturn` records whether the node must be returned from
-   * the enclosing callable in order to reach a sink, and if so, `returnApf`
+   * the enclosing callable in order to reach a sink, and if so, `returnAp`
    * records the front of the access path of the returned value.
    */
   pragma[nomagic]
-  predicate revFlow(
-    Node node, boolean toReturn, AccessPathFrontOption returnApf, AccessPathFront apf,
-    Configuration config
-  ) {
-    revFlow0(node, toReturn, returnApf, apf, config) and
-    fwdFlow(node, _, _, apf, config)
+  predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
+    revFlow0(node, toReturn, returnAp, ap, config) and
+    fwdFlow(node, _, _, ap, config)
   }
 
   pragma[nomagic]
   private predicate revFlow0(
-    Node node, boolean toReturn, AccessPathFrontOption returnApf, AccessPathFront apf,
-    Configuration config
+    Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
-    fwdFlow(node, _, _, apf, config) and
+    fwdFlow(node, _, _, ap, config) and
     config.isSink(node) and
     toReturn = false and
-    returnApf = TAccessPathFrontNone() and
-    apf instanceof AccessPathFrontNil
+    returnAp = TAccessPathFrontNone() and
+    ap instanceof AccessPathFrontNil
     or
     exists(Node mid |
       localFlowBigStep(node, mid, true, _, config, _) and
-      revFlow(mid, toReturn, returnApf, apf, config)
+      revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
     exists(Node mid, AccessPathFrontNil nil |
-      fwdFlow(node, _, _, apf, config) and
+      fwdFlow(node, _, _, ap, config) and
       localFlowBigStep(node, mid, false, _, config, _) and
-      revFlow(mid, toReturn, returnApf, nil, config) and
-      apf instanceof AccessPathFrontNil
+      revFlow(mid, toReturn, returnAp, nil, config) and
+      ap instanceof AccessPathFrontNil
     )
     or
     exists(Node mid |
       jumpStep(node, mid, config) and
-      revFlow(mid, _, _, apf, config) and
+      revFlow(mid, _, _, ap, config) and
       toReturn = false and
-      returnApf = TAccessPathFrontNone()
+      returnAp = TAccessPathFrontNone()
     )
     or
     exists(Node mid, AccessPathFrontNil nil |
-      fwdFlow(node, _, _, apf, config) and
+      fwdFlow(node, _, _, ap, config) and
       additionalJumpStep(node, mid, config) and
       revFlow(mid, _, _, nil, config) and
       toReturn = false and
-      returnApf = TAccessPathFrontNone() and
-      apf instanceof AccessPathFrontNil
+      returnAp = TAccessPathFrontNone() and
+      ap instanceof AccessPathFrontNil
     )
     or
     // store
     exists(TypedContent tc |
-      revFlowStore(node, tc, apf, toReturn, returnApf, config) and
-      revFlowConsCand(tc, apf, config)
+      revFlowStore(node, tc, ap, toReturn, returnAp, config) and
+      revFlowConsCand(tc, ap, config)
     )
     or
     // read
-    exists(TypedContent tc, AccessPathFront apf0 |
-      revFlowRead(node, tc, apf, toReturn, returnApf, apf0, config) and
-      fwdFlowConsCand(tc, apf0, config)
+    exists(TypedContent tc, Ap ap0 |
+      revFlowRead(node, tc, ap, toReturn, returnAp, ap0, config) and
+      fwdFlowConsCand(tc, ap0, config)
     )
     or
     // flow into a callable
     exists(DataFlowCall call |
-      revFlowIn(call, node, toReturn, returnApf, apf, config) and
+      revFlowIn(call, node, toReturn, returnAp, ap, config) and
       toReturn = false
       or
-      exists(AccessPathFront returnApf0 |
-        revFlowInToReturn(call, node, returnApf0, apf, config) and
-        revFlowIsReturned(call, toReturn, returnApf, returnApf0, config)
+      exists(Ap returnAp0 |
+        revFlowInToReturn(call, node, returnAp0, ap, config) and
+        revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
       )
     )
     or
     // flow out of a callable
-    revFlowOut(_, node, _, _, apf, config) and
+    revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, true, _, apf, config)
-    then returnApf = TAccessPathFrontSome(apf)
-    else returnApf = TAccessPathFrontNone()
+    if fwdFlow(node, true, _, ap, config)
+    then returnAp = TAccessPathFrontSome(ap)
+    else returnAp = TAccessPathFrontNone()
   }
 
   pragma[nomagic]
-  predicate readCandFwd(
-    Node node1, TypedContent tc, AccessPathFront apf, Node node2, Configuration config
-  ) {
-    fwdFlowRead0(node1, tc, tc.getContent(), node2, _, _, apf, config)
+  predicate readCandFwd(Node node1, TypedContent tc, Ap ap, Node node2, Configuration config) {
+    fwdFlowRead0(node1, tc, tc.getContent(), node2, _, _, ap, config)
   }
 
   pragma[nomagic]
   private predicate revFlowRead(
-    Node node, TypedContent tc, AccessPathFront apf, boolean toReturn,
-    AccessPathFrontOption returnApf, AccessPathFront apf0, Configuration config
+    Node node, TypedContent tc, Ap ap, boolean toReturn, ApOption returnAp, Ap apf0,
+    Configuration config
   ) {
     exists(Node mid |
-      readCandFwd(node, tc, apf, mid, config) and
-      revFlow(mid, toReturn, returnApf, apf0, config)
+      readCandFwd(node, tc, ap, mid, config) and
+      revFlow(mid, toReturn, returnAp, apf0, config)
     )
   }
 
   pragma[nomagic]
   private predicate revFlowStore(
-    Node node, TypedContent tc, AccessPathFront apf, boolean toReturn,
-    AccessPathFrontOption returnApf, Configuration config
+    Node node, TypedContent tc, Ap ap, boolean toReturn, ApOption returnAp, Configuration config
   ) {
     exists(Node mid |
-      fwdFlow(node, _, _, apf, config) and
+      fwdFlow(node, _, _, ap, config) and
       storeCand2(node, tc, mid, _, unbind(config)) and
-      revFlow(mid, toReturn, returnApf, TFrontHead(tc), unbind(config))
+      revFlow(mid, toReturn, returnAp, TFrontHead(tc), unbind(config))
     )
   }
 
   pragma[nomagic]
-  predicate revFlowConsCand(TypedContent tc, AccessPathFront apf, Configuration config) {
-    fwdFlowConsCand(tc, apf, config) and
-    revFlowRead(_, tc, _, _, _, apf, config)
+  predicate revFlowConsCand(TypedContent tc, Ap ap, Configuration config) {
+    fwdFlowConsCand(tc, ap, config) and
+    revFlowRead(_, tc, _, _, _, ap, config)
   }
 
   pragma[nomagic]
   private predicate revFlowOut(
-    DataFlowCall call, ReturnNodeExt ret, boolean toReturn, AccessPathFrontOption returnApf,
-    AccessPathFront apf, Configuration config
+    DataFlowCall call, ReturnNodeExt ret, boolean toReturn, ApOption returnAp, Ap ap,
+    Configuration config
   ) {
     exists(Node out, boolean allowsFieldFlow |
-      revFlow(out, toReturn, returnApf, apf, config) and
+      revFlow(out, toReturn, returnAp, ap, config) and
       flowOutOfCallNodeCand2(call, ret, out, allowsFieldFlow, config)
     |
-      apf instanceof AccessPathFrontNil or allowsFieldFlow = true
+      ap instanceof AccessPathFrontNil or allowsFieldFlow = true
     )
   }
 
   pragma[nomagic]
   private predicate revFlowIn(
-    DataFlowCall call, ArgumentNode arg, boolean toReturn, AccessPathFrontOption returnApf,
-    AccessPathFront apf, Configuration config
+    DataFlowCall call, ArgumentNode arg, boolean toReturn, ApOption returnAp, Ap ap,
+    Configuration config
   ) {
     exists(ParameterNode p, boolean allowsFieldFlow |
-      revFlow(p, toReturn, returnApf, apf, config) and
+      revFlow(p, toReturn, returnAp, ap, config) and
       flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
     |
-      apf instanceof AccessPathFrontNil or allowsFieldFlow = true
+      ap instanceof AccessPathFrontNil or allowsFieldFlow = true
     )
   }
 
   pragma[nomagic]
   private predicate revFlowInToReturn(
-    DataFlowCall call, ArgumentNode arg, AccessPathFront returnApf, AccessPathFront apf,
-    Configuration config
+    DataFlowCall call, ArgumentNode arg, Ap returnAp, Ap ap, Configuration config
   ) {
-    revFlowIn(call, arg, true, TAccessPathFrontSome(returnApf), apf, config)
+    revFlowIn(call, arg, true, TAccessPathFrontSome(returnAp), ap, config)
   }
 
   /**
@@ -1543,12 +1547,11 @@ private module Stage3 {
    */
   pragma[nomagic]
   private predicate revFlowIsReturned(
-    DataFlowCall call, boolean toReturn, AccessPathFrontOption returnApf, AccessPathFront apf,
-    Configuration config
+    DataFlowCall call, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
     exists(ReturnNodeExt ret |
-      revFlowOut(call, ret, toReturn, returnApf, apf, config) and
-      fwdFlow(ret, true, TAccessPathFrontSome(_), apf, config)
+      revFlowOut(call, ret, toReturn, returnAp, ap, config) and
+      fwdFlow(ret, true, TAccessPathFrontSome(_), ap, config)
     )
   }
 }
@@ -1757,109 +1760,115 @@ private class AccessPathApproxOption extends TAccessPathApproxOption {
 }
 
 private module Stage4 {
+  class ApApprox = Stage3::Ap;
+
+  class Ap = AccessPathApprox;
+
+  class ApOption = AccessPathApproxOption;
+
+  class Cc = CallContext;
+
   /**
-   * Holds if `node` is reachable with approximate access path `apa` from a source
+   * Holds if `node` is reachable with approximate access path `ap` from a source
    * in the configuration `config`.
    *
    * The call context `cc` records whether the node is reached through an
-   * argument in a call, and if so, `argApa` records the approximate access path
+   * argument in a call, and if so, `argAp` records the approximate access path
    * of that argument.
    */
   predicate fwdFlow(
-    Node node, CallContext cc, AccessPathApproxOption argApa, AccessPathFront apf,
-    AccessPathApprox apa, Configuration config
+    Node node, CallContext cc, ApOption argAp, AccessPathFront apf, Ap ap, Configuration config
   ) {
-    fwdFlow0(node, cc, argApa, apf, apa, config) and
+    fwdFlow0(node, cc, argAp, apf, ap, config) and
     Stage3::revFlow(node, _, _, apf, config)
   }
 
   private predicate fwdFlow0(
-    Node node, CallContext cc, AccessPathApproxOption argApa, AccessPathFront apf,
-    AccessPathApprox apa, Configuration config
+    Node node, CallContext cc, ApOption argAp, AccessPathFront apf, Ap ap, Configuration config
   ) {
     Stage3::revFlow(node, _, _, _, config) and
     config.isSource(node) and
     cc instanceof CallContextAny and
-    argApa = TAccessPathApproxNone() and
-    apa = TNil(getNodeType(node)) and
-    apf = apa.(AccessPathApproxNil).getFront()
+    argAp = TAccessPathApproxNone() and
+    ap = TNil(getNodeType(node)) and
+    apf = ap.(AccessPathApproxNil).getFront()
     or
     Stage3::revFlow(node, _, _, _, unbind(config)) and
     (
       exists(Node mid, LocalCallContext localCC |
-        fwdFlowLocalEntry(mid, cc, argApa, apf, apa, localCC, config) and
+        fwdFlowLocalEntry(mid, cc, argAp, apf, ap, localCC, config) and
         localFlowBigStep(mid, node, true, _, config, localCC)
       )
       or
       exists(Node mid, AccessPathApproxNil nil, LocalCallContext localCC |
-        fwdFlowLocalEntry(mid, cc, argApa, _, nil, localCC, config) and
+        fwdFlowLocalEntry(mid, cc, argAp, _, nil, localCC, config) and
         localFlowBigStep(mid, node, false, apf, config, localCC) and
-        apf = apa.(AccessPathApproxNil).getFront()
+        apf = ap.(AccessPathApproxNil).getFront()
       )
       or
       exists(Node mid |
-        fwdFlow(mid, _, _, apf, apa, config) and
+        fwdFlow(mid, _, _, apf, ap, config) and
         jumpStep(mid, node, config) and
         cc instanceof CallContextAny and
-        argApa = TAccessPathApproxNone()
+        argAp = TAccessPathApproxNone()
       )
       or
       exists(Node mid, AccessPathApproxNil nil |
         fwdFlow(mid, _, _, _, nil, config) and
         additionalJumpStep(mid, node, config) and
         cc instanceof CallContextAny and
-        argApa = TAccessPathApproxNone() and
-        apa = TNil(getNodeType(node)) and
-        apf = apa.(AccessPathApproxNil).getFront()
+        argAp = TAccessPathApproxNone() and
+        ap = TNil(getNodeType(node)) and
+        apf = ap.(AccessPathApproxNil).getFront()
       )
     )
     or
     // store
-    exists(TypedContent tc | fwdFlowStore(node, tc, pop(tc, apa), apf, cc, argApa, config))
+    exists(TypedContent tc | fwdFlowStore(node, tc, pop(tc, ap), apf, cc, argAp, config))
     or
     // read
     exists(TypedContent tc |
-      fwdFlowRead(node, _, push(tc, apa), apf, cc, argApa, config) and
-      fwdFlowConsCand(tc, apf, apa, config)
+      fwdFlowRead(node, _, push(tc, ap), apf, cc, argAp, config) and
+      fwdFlowConsCand(tc, apf, ap, config)
     )
     or
     // flow into a callable
-    fwdFlowIn(_, node, _, cc, _, apf, apa, config) and
+    fwdFlowIn(_, node, _, cc, _, apf, ap, config) and
     if Stage3::revFlow(node, true, _, apf, config)
-    then argApa = TAccessPathApproxSome(apa)
-    else argApa = TAccessPathApproxNone()
+    then argAp = TAccessPathApproxSome(ap)
+    else argAp = TAccessPathApproxNone()
     or
     // flow out of a callable
     exists(DataFlowCall call |
       exists(DataFlowCallable c |
-        fwdFlowOut(call, node, any(CallContextNoCall innercc), c, argApa, apf, apa, config) and
+        fwdFlowOut(call, node, any(CallContextNoCall innercc), c, argAp, apf, ap, config) and
         if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
       )
       or
-      exists(AccessPathApprox argApa0 |
-        fwdFlowOutFromArg(call, node, argApa0, apf, apa, config) and
-        fwdFlowIsEntered(call, cc, argApa, argApa0, config)
+      exists(Ap argAp0 |
+        fwdFlowOutFromArg(call, node, argAp0, apf, ap, config) and
+        fwdFlowIsEntered(call, cc, argAp, argAp0, config)
       )
     )
   }
 
   pragma[nomagic]
   private predicate fwdFlowLocalEntry(
-    Node node, CallContext cc, AccessPathApproxOption argApa, AccessPathFront apf,
-    AccessPathApprox apa, LocalCallContext localCC, Configuration config
+    Node node, CallContext cc, ApOption argAp, AccessPathFront apf, Ap ap, LocalCallContext localCC,
+    Configuration config
   ) {
-    fwdFlow(node, cc, argApa, apf, apa, config) and
+    fwdFlow(node, cc, argAp, apf, ap, config) and
     localFlowEntry(node, config) and
     localCC = getLocalCallContext(cc, node.getEnclosingCallable())
   }
 
   pragma[nomagic]
   private predicate fwdFlowStore(
-    Node node, TypedContent tc, AccessPathApprox apa0, AccessPathFront apf, CallContext cc,
-    AccessPathApproxOption argApa, Configuration config
+    Node node, TypedContent tc, Ap ap0, AccessPathFront apf, CallContext cc, ApOption argAp,
+    Configuration config
   ) {
     exists(Node mid, AccessPathFront apf0 |
-      fwdFlow(mid, cc, argApa, apf0, apa0, config) and
+      fwdFlow(mid, cc, argAp, apf0, ap0, config) and
       fwdFlowStore0(mid, tc, node, apf0, apf, config)
     )
   }
@@ -1886,20 +1895,20 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate fwdFlowRead0(
-    Node node1, TypedContent tc, AccessPathFrontHead apf0, AccessPathApprox apa0, Node node2,
-    CallContext cc, AccessPathApproxOption argApa, Configuration config
+    Node node1, TypedContent tc, AccessPathFrontHead apf0, Ap ap0, Node node2, CallContext cc,
+    ApOption argAp, Configuration config
   ) {
-    fwdFlow(node1, cc, argApa, apf0, apa0, config) and
+    fwdFlow(node1, cc, argAp, apf0, ap0, config) and
     Stage3::readCandFwd(node1, tc, apf0, node2, config)
   }
 
   pragma[nomagic]
   private predicate fwdFlowRead(
-    Node node, AccessPathFrontHead apf0, AccessPathApprox apa0, AccessPathFront apf, CallContext cc,
-    AccessPathApproxOption argApa, Configuration config
+    Node node, AccessPathFrontHead apf0, Ap ap0, AccessPathFront apf, CallContext cc,
+    ApOption argAp, Configuration config
   ) {
     exists(Node mid, TypedContent tc |
-      fwdFlowRead0(mid, tc, apf0, apa0, node, cc, argApa, config) and
+      fwdFlowRead0(mid, tc, apf0, ap0, node, cc, argAp, config) and
       Stage3::revFlow(node, _, _, apf, unbind(config)) and
       Stage3::revFlowConsCand(tc, apf, unbind(config))
     )
@@ -1907,21 +1916,21 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate fwdFlowConsCand(
-    TypedContent tc, AccessPathFront apf, AccessPathApprox apa, Configuration config
+    TypedContent tc, AccessPathFront apf, Ap ap, Configuration config
   ) {
     exists(Node n |
-      fwdFlow(n, _, _, apf, apa, config) and
+      fwdFlow(n, _, _, apf, ap, config) and
       fwdFlowStore0(n, tc, _, apf, _, config)
     )
   }
 
   pragma[nomagic]
   private predicate fwdFlowIn(
-    DataFlowCall call, ParameterNode p, CallContext outercc, CallContext innercc,
-    AccessPathApproxOption argApa, AccessPathFront apf, AccessPathApprox apa, Configuration config
+    DataFlowCall call, ParameterNode p, CallContext outercc, CallContext innercc, ApOption argAp,
+    AccessPathFront apf, Ap ap, Configuration config
   ) {
     exists(ArgumentNode arg, boolean allowsFieldFlow, DataFlowCallable c |
-      fwdFlow(arg, outercc, argApa, apf, apa, config) and
+      fwdFlow(arg, outercc, argAp, apf, ap, config) and
       flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
       c = p.getEnclosingCallable() and
       c = resolveCall(call, outercc) and
@@ -1930,17 +1939,17 @@ private module Stage4 {
       then innercc = TSpecificCall(call)
       else innercc = TSomeCall()
     |
-      apa instanceof AccessPathApproxNil or allowsFieldFlow = true
+      ap instanceof AccessPathApproxNil or allowsFieldFlow = true
     )
   }
 
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node node, CallContext innercc, DataFlowCallable innerc,
-    AccessPathApproxOption argApa, AccessPathFront apf, AccessPathApprox apa, Configuration config
+    DataFlowCall call, Node node, CallContext innercc, DataFlowCallable innerc, ApOption argAp,
+    AccessPathFront apf, Ap ap, Configuration config
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow |
-      fwdFlow(ret, innercc, argApa, apf, apa, config) and
+      fwdFlow(ret, innercc, argAp, apf, ap, config) and
       flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
       innerc = ret.getEnclosingCallable() and
       Stage3::revFlow(node, _, _, _, unbind(config)) and
@@ -1950,16 +1959,15 @@ private module Stage4 {
         innercc.(CallContextCall).matchesCall(call)
       )
     |
-      apa instanceof AccessPathApproxNil or allowsFieldFlow = true
+      ap instanceof AccessPathApproxNil or allowsFieldFlow = true
     )
   }
 
   pragma[nomagic]
   private predicate fwdFlowOutFromArg(
-    DataFlowCall call, Node node, AccessPathApprox argApa, AccessPathFront apf,
-    AccessPathApprox apa, Configuration config
+    DataFlowCall call, Node node, Ap argAp, AccessPathFront apf, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, node, any(CallContextCall ccc), _, TAccessPathApproxSome(argApa), apf, apa,
+    fwdFlowOut(call, node, any(CallContextCall ccc), _, TAccessPathApproxSome(argAp), apf, ap,
       config)
   }
 
@@ -1968,174 +1976,165 @@ private module Stage4 {
    */
   pragma[nomagic]
   private predicate fwdFlowIsEntered(
-    DataFlowCall call, CallContext cc, AccessPathApproxOption argApa, AccessPathApprox apa,
-    Configuration config
+    DataFlowCall call, CallContext cc, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ParameterNode p, AccessPathFront apf |
-      fwdFlowIn(call, p, cc, _, argApa, apf, apa, config) and
+      fwdFlowIn(call, p, cc, _, argAp, apf, ap, config) and
       Stage3::revFlow(p, true, TAccessPathFrontSome(_), apf, config)
     )
   }
 
   /**
-   * Holds if `node` with approximate access path `apa` is part of a path from a
+   * Holds if `node` with approximate access path `ap` is part of a path from a
    * source to a sink in the configuration `config`.
    *
    * The Boolean `toReturn` records whether the node must be returned from
-   * the enclosing callable in order to reach a sink, and if so, `returnApa`
+   * the enclosing callable in order to reach a sink, and if so, `returnAp`
    * records the approximate access path of the returned value.
    */
-  predicate revFlow(
-    Node node, boolean toReturn, AccessPathApproxOption returnApa, AccessPathApprox apa,
-    Configuration config
-  ) {
-    revFlow0(node, toReturn, returnApa, apa, config) and
-    fwdFlow(node, _, _, _, apa, config)
+  predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
+    revFlow0(node, toReturn, returnAp, ap, config) and
+    fwdFlow(node, _, _, _, ap, config)
   }
 
   private predicate revFlow0(
-    Node node, boolean toReturn, AccessPathApproxOption returnApa, AccessPathApprox apa,
-    Configuration config
+    Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
-    fwdFlow(node, _, _, _, apa, config) and
+    fwdFlow(node, _, _, _, ap, config) and
     config.isSink(node) and
     toReturn = false and
-    returnApa = TAccessPathApproxNone() and
-    apa instanceof AccessPathApproxNil
+    returnAp = TAccessPathApproxNone() and
+    ap instanceof AccessPathApproxNil
     or
     exists(Node mid |
       localFlowBigStep(node, mid, true, _, config, _) and
-      revFlow(mid, toReturn, returnApa, apa, config)
+      revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
     exists(Node mid, AccessPathApproxNil nil |
-      fwdFlow(node, _, _, _, apa, config) and
+      fwdFlow(node, _, _, _, ap, config) and
       localFlowBigStep(node, mid, false, _, config, _) and
-      revFlow(mid, toReturn, returnApa, nil, config) and
-      apa instanceof AccessPathApproxNil
+      revFlow(mid, toReturn, returnAp, nil, config) and
+      ap instanceof AccessPathApproxNil
     )
     or
     exists(Node mid |
       jumpStep(node, mid, config) and
-      revFlow(mid, _, _, apa, config) and
+      revFlow(mid, _, _, ap, config) and
       toReturn = false and
-      returnApa = TAccessPathApproxNone()
+      returnAp = TAccessPathApproxNone()
     )
     or
     exists(Node mid, AccessPathApproxNil nil |
-      fwdFlow(node, _, _, _, apa, config) and
+      fwdFlow(node, _, _, _, ap, config) and
       additionalJumpStep(node, mid, config) and
       revFlow(mid, _, _, nil, config) and
       toReturn = false and
-      returnApa = TAccessPathApproxNone() and
-      apa instanceof AccessPathApproxNil
+      returnAp = TAccessPathApproxNone() and
+      ap instanceof AccessPathApproxNil
     )
     or
     // store
     exists(TypedContent tc |
-      revFlowStore(tc, node, toReturn, returnApa, apa, config) and
-      revFlowConsCand(tc, apa, config)
+      revFlowStore(tc, node, toReturn, returnAp, ap, config) and
+      revFlowConsCand(tc, ap, config)
     )
     or
     // read
-    exists(Node mid, AccessPathApprox apa0 |
-      readFlowFwd(node, _, mid, apa, apa0, config) and
-      revFlow(mid, toReturn, returnApa, apa0, config)
+    exists(Node mid, Ap ap0 |
+      readFlowFwd(node, _, mid, ap, ap0, config) and
+      revFlow(mid, toReturn, returnAp, ap0, config)
     )
     or
     // flow into a callable
     exists(DataFlowCall call |
-      revFlowIn(call, node, toReturn, returnApa, apa, config) and
+      revFlowIn(call, node, toReturn, returnAp, ap, config) and
       toReturn = false
       or
-      exists(AccessPathApprox returnApa0 |
-        revFlowInToReturn(call, node, returnApa0, apa, config) and
-        revFlowIsReturned(call, toReturn, returnApa, returnApa0, config)
+      exists(Ap returnApa0 |
+        revFlowInToReturn(call, node, returnApa0, ap, config) and
+        revFlowIsReturned(call, toReturn, returnAp, returnApa0, config)
       )
     )
     or
     // flow out of a callable
-    revFlowOut(_, node, _, _, apa, config) and
+    revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, any(CallContextCall ccc), TAccessPathApproxSome(_), _, apa, config)
-    then returnApa = TAccessPathApproxSome(apa)
-    else returnApa = TAccessPathApproxNone()
+    if fwdFlow(node, any(CallContextCall ccc), TAccessPathApproxSome(_), _, ap, config)
+    then returnAp = TAccessPathApproxSome(ap)
+    else returnAp = TAccessPathApproxNone()
   }
 
   pragma[nomagic]
   private predicate storeFlowFwd(
-    Node node1, TypedContent tc, Node node2, AccessPathApprox apa, AccessPathApprox apa0,
-    Configuration config
+    Node node1, TypedContent tc, Node node2, Ap ap, Ap ap0, Configuration config
   ) {
     storeCand2(node1, tc, node2, _, config) and
-    fwdFlowStore(node2, tc, apa, _, _, _, config) and
-    apa0 = push(tc, apa)
+    fwdFlowStore(node2, tc, ap, _, _, _, config) and
+    ap0 = push(tc, ap)
   }
 
   pragma[nomagic]
   private predicate revFlowStore(
-    TypedContent tc, Node node, boolean toReturn, AccessPathApproxOption returnApa,
-    AccessPathApprox apa, Configuration config
+    TypedContent tc, Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
-    exists(Node mid, AccessPathApprox apa0 |
-      storeFlowFwd(node, tc, mid, apa, apa0, config) and
-      revFlow(mid, toReturn, returnApa, apa0, config)
+    exists(Node mid, Ap ap0 |
+      storeFlowFwd(node, tc, mid, ap, ap0, config) and
+      revFlow(mid, toReturn, returnAp, ap0, config)
     )
   }
 
   pragma[nomagic]
   private predicate readFlowFwd(
-    Node node1, TypedContent tc, Node node2, AccessPathApprox apa, AccessPathApprox apa0,
-    Configuration config
+    Node node1, TypedContent tc, Node node2, Ap ap, Ap ap0, Configuration config
   ) {
     exists(AccessPathFrontHead apf |
       Stage3::readCandFwd(node1, tc, apf, node2, config) and
-      fwdFlowRead(node2, apf, apa, _, _, _, config) and
-      apa0 = pop(tc, apa) and
-      fwdFlowConsCand(tc, _, apa0, unbind(config))
+      fwdFlowRead(node2, apf, ap, _, _, _, config) and
+      ap0 = pop(tc, ap) and
+      fwdFlowConsCand(tc, _, ap0, unbind(config))
     )
   }
 
   pragma[nomagic]
-  predicate revFlowConsCand(TypedContent tc, AccessPathApprox apa, Configuration config) {
+  predicate revFlowConsCand(TypedContent tc, Ap ap, Configuration config) {
     exists(Node n, Node mid |
-      revFlow(mid, _, _, apa, config) and
-      readFlowFwd(n, tc, mid, _, apa, config)
+      revFlow(mid, _, _, ap, config) and
+      readFlowFwd(n, tc, mid, _, ap, config)
     )
   }
 
   pragma[nomagic]
   private predicate revFlowOut(
-    DataFlowCall call, ReturnNodeExt ret, boolean toReturn, AccessPathApproxOption returnApa,
-    AccessPathApprox apa, Configuration config
+    DataFlowCall call, ReturnNodeExt ret, boolean toReturn, ApOption returnAp, Ap ap,
+    Configuration config
   ) {
     exists(Node out, boolean allowsFieldFlow |
-      revFlow(out, toReturn, returnApa, apa, config) and
+      revFlow(out, toReturn, returnAp, ap, config) and
       flowOutOfCallNodeCand2(call, ret, out, allowsFieldFlow, config)
     |
-      apa instanceof AccessPathApproxNil or allowsFieldFlow = true
+      ap instanceof AccessPathApproxNil or allowsFieldFlow = true
     )
   }
 
   pragma[nomagic]
   private predicate revFlowIn(
-    DataFlowCall call, ArgumentNode arg, boolean toReturn, AccessPathApproxOption returnApa,
-    AccessPathApprox apa, Configuration config
+    DataFlowCall call, ArgumentNode arg, boolean toReturn, ApOption returnAp, Ap ap,
+    Configuration config
   ) {
     exists(ParameterNode p, boolean allowsFieldFlow |
-      revFlow(p, toReturn, returnApa, apa, config) and
+      revFlow(p, toReturn, returnAp, ap, config) and
       flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
     |
-      apa instanceof AccessPathApproxNil or allowsFieldFlow = true
+      ap instanceof AccessPathApproxNil or allowsFieldFlow = true
     )
   }
 
   pragma[nomagic]
   private predicate revFlowInToReturn(
-    DataFlowCall call, ArgumentNode arg, AccessPathApprox returnApa, AccessPathApprox apa,
-    Configuration config
+    DataFlowCall call, ArgumentNode arg, Ap returnAp, Ap ap, Configuration config
   ) {
-    revFlowIn(call, arg, true, TAccessPathApproxSome(returnApa), apa, config)
+    revFlowIn(call, arg, true, TAccessPathApproxSome(returnAp), ap, config)
   }
 
   /**
@@ -2143,12 +2142,11 @@ private module Stage4 {
    */
   pragma[nomagic]
   private predicate revFlowIsReturned(
-    DataFlowCall call, boolean toReturn, AccessPathApproxOption returnApa, AccessPathApprox apa,
-    Configuration config
+    DataFlowCall call, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
     exists(ReturnNodeExt ret, CallContextCall ccc |
-      revFlowOut(call, ret, toReturn, returnApa, apa, config) and
-      fwdFlow(ret, ccc, TAccessPathApproxSome(_), _, apa, config) and
+      revFlowOut(call, ret, toReturn, returnAp, ap, config) and
+      fwdFlow(ret, ccc, TAccessPathApproxSome(_), _, ap, config) and
       ccc.matchesCall(call)
     )
   }
