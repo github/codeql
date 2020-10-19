@@ -132,6 +132,12 @@ public class B {
     // Tainted file path and URI
     sink(new java.io.File(s).toURI().toURL());
 
+    // Tainted file to Path
+    sink(new java.io.File(s).toPath());
+
+    // Tainted File to Path to File
+    sink(new java.io.File(s).toPath().toFile());
+
     return;
   }
 

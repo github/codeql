@@ -1018,7 +1018,7 @@ module Ssa {
     private predicate intraInstanceCallEdge(Callable c1, InstanceCallable c2) {
       exists(Call c |
         c.getEnclosingCallable() = c1 and
-        c2 = getARuntimeTarget(c) and
+        c2 = getARuntimeTarget(c, _) and
         c.(QualifiableExpr).targetIsLocalInstance()
       )
     }
@@ -1034,15 +1034,28 @@ module Ssa {
      *     the SSA library and `Call.getARuntimeTarget()` mutually recursive), and
      *
      * (3) indirect calls to delegates via calls to library callables are included.
+     *
+     * The Boolean `libraryDelegateCall` indicates whether `c` is a call to a library
+     * method and the result is a delegate passed to `c`. For example, in
+     *
+     * ```csharp
+     * Lazy<int> M1()
+     * {
+     *     return new Lazy<int>(M2);
+     * }
+     * ```
+     *
+     * the constructor call `new Lazy<int>(M2)` includes `M2` as a target.
      */
-    Callable getARuntimeTarget(Call c) {
+    Callable getARuntimeTarget(Call c, boolean libraryDelegateCall) {
       // Non-delegate call: use dispatch library
       exists(DispatchCall dc | dc.getCall() = c |
-        result = dc.getADynamicTarget().getSourceDeclaration()
+        result = dc.getADynamicTarget().getSourceDeclaration() and
+        libraryDelegateCall = false
       )
       or
       // Delegate call: use simple analysis
-      result = SimpleDelegateAnalysis::getARuntimeDelegateTarget(c)
+      result = SimpleDelegateAnalysis::getARuntimeDelegateTarget(c, libraryDelegateCall)
     }
 
     private module SimpleDelegateAnalysis {
@@ -1055,12 +1068,14 @@ module Ssa {
        * Either `c` is a delegate call and `e` is the qualifier, or `c` is a call to
        * a library callable and `e` is a delegate argument.
        */
-      private predicate delegateCall(Call c, Expr e) {
-        c = any(DelegateCall dc | e = dc.getDelegateExpr())
+      private predicate delegateCall(Call c, Expr e, boolean libraryDelegateCall) {
+        c = any(DelegateCall dc | e = dc.getDelegateExpr()) and
+        libraryDelegateCall = false
         or
         c.getTarget().fromLibrary() and
         e = c.getAnArgument() and
-        e.getType() instanceof SystemLinqExpressions::DelegateExtType
+        e.getType() instanceof SystemLinqExpressions::DelegateExtType and
+        libraryDelegateCall = true
       }
 
       /** Holds if expression `e` is a delegate creation for callable `c` of type `t`. */
@@ -1090,7 +1105,7 @@ module Ssa {
           callable = call.getTarget() or
           callable = call.getTarget().(Method).getAnOverrider+() or
           callable = call.getTarget().(Method).getAnUltimateImplementor() or
-          callable = getARuntimeDelegateTarget(call)
+          callable = getARuntimeDelegateTarget(call, false)
         )
         or
         pred = succ.(DelegateCreation).getArgument()
@@ -1110,7 +1125,7 @@ module Ssa {
       }
 
       private predicate reachesDelegateCall(Expr e) {
-        delegateCall(_, e)
+        delegateCall(_, e, _)
         or
         exists(Expr mid | reachesDelegateCall(mid) | delegateFlowStep(e, mid))
       }
@@ -1128,12 +1143,14 @@ module Ssa {
       }
 
       /** Gets a run-time target for the delegate call `c`. */
-      Callable getARuntimeDelegateTarget(Call c) { delegateCall(c, delegateCallSource(result)) }
+      Callable getARuntimeDelegateTarget(Call c, boolean libraryDelegateCall) {
+        delegateCall(c, delegateCallSource(result), libraryDelegateCall)
+      }
     }
 
     /** Holds if `(c1,c2)` is an edge in the call graph. */
     predicate callEdge(Callable c1, Callable c2) {
-      exists(Call c | c.getEnclosingCallable() = c1 | getARuntimeTarget(c) = c2)
+      exists(Call c | c.getEnclosingCallable() = c1 and c2 = getARuntimeTarget(c, _))
     }
 
     /**
@@ -1179,7 +1196,7 @@ module Ssa {
     pragma[noinline]
     predicate callAt(BasicBlock bb, int i, Call call) {
       bb.getNode(i) = call.getAControlFlowNode() and
-      getARuntimeTarget(call).hasBody()
+      getARuntimeTarget(call, _).hasBody()
     }
 
     /**
@@ -1201,7 +1218,7 @@ module Ssa {
     private predicate pruneFromLeft(Callable c) {
       exists(Call call, TrackedFieldOrProp f |
         updateCandidate(_, _, f, call) and
-        c = getARuntimeTarget(call) and
+        c = getARuntimeTarget(call, _) and
         generalSetter(_, f.getAssignable(), _)
       )
       or
@@ -1238,7 +1255,7 @@ module Ssa {
       updateCandidate(_, _, tfp, call) and
       fp = tfp.getAssignable() and
       generalSetter(_, fp, _) and
-      c1 = getARuntimeTarget(call)
+      c1 = getARuntimeTarget(call, _)
     }
 
     pragma[noinline]
@@ -1279,7 +1296,7 @@ module Ssa {
       Call call, TrackedFieldOrProp tfp, Callable setter
     ) {
       updateCandidate(_, _, tfp, call) and
-      setsOwnFieldOrPropTransitive(getARuntimeTarget(call), tfp.getAssignable(), setter)
+      setsOwnFieldOrPropTransitive(getARuntimeTarget(call, _), tfp.getAssignable(), setter)
     }
 
     private predicate updatesNamedFieldOrPropPossiblyLive(
@@ -1447,7 +1464,7 @@ module Ssa {
     private predicate pruneFromLeft(Callable c) {
       exists(Call call, CapturedWrittenLocalScopeSourceVariable v |
         updateCandidate(_, _, v, call) and
-        c = getARuntimeTarget(call) and
+        c = getARuntimeTarget(call, _) and
         relevantDefinition(_, v.getAssignable(), _)
       )
       or
@@ -1485,12 +1502,12 @@ module Ssa {
     pragma[noinline]
     private predicate updatesCapturedVariablePrefix(
       Call call, CapturedWrittenLocalScopeSourceVariable v, PrunedCallable c,
-      CapturedWrittenLocalScopeVariable captured
+      CapturedWrittenLocalScopeVariable captured, boolean libraryDelegateCall
     ) {
       updateCandidate(_, _, v, call) and
       captured = v.getAssignable() and
       relevantDefinitionProj(_, captured) and
-      c = getARuntimeTarget(call)
+      c = getARuntimeTarget(call, libraryDelegateCall)
     }
 
     /**
@@ -1505,11 +1522,13 @@ module Ssa {
       Call call, CapturedWrittenLocalScopeSourceVariable v, PrunedCallable writer,
       boolean additionalCalls
     ) {
-      exists(PrunedCallable c, CapturedWrittenLocalScopeVariable captured |
-        updatesCapturedVariablePrefix(call, v, c, captured) and
+      exists(
+        PrunedCallable c, CapturedWrittenLocalScopeVariable captured, boolean libraryDelegateCall
+      |
+        updatesCapturedVariablePrefix(call, v, c, captured, libraryDelegateCall) and
         relevantDefinitionProj(writer, captured) and
         (
-          c = writer and additionalCalls = false
+          c = writer and additionalCalls = libraryDelegateCall
           or
           callEdgePrunedPlus(c, writer) and additionalCalls = true
         )
@@ -1667,7 +1686,7 @@ module Ssa {
     private predicate pruneFromLeft(Callable c) {
       exists(Call call, CapturedReadLocalScopeSourceVariable v |
         implicitReadCandidate(_, _, call.getAControlFlowNode(), v) and
-        c = getARuntimeTarget(call)
+        c = getARuntimeTarget(call, _)
       )
       or
       exists(Callable mid | pruneFromLeft(mid) | callEdge(mid, c))
@@ -1702,12 +1721,12 @@ module Ssa {
     pragma[noinline]
     private predicate readsCapturedVariablePrefix(
       ControlFlow::Node call, CapturedReadLocalScopeSourceVariable v, PrunedCallable c,
-      CapturedReadLocalScopeVariable captured
+      CapturedReadLocalScopeVariable captured, boolean libraryDelegateCall
     ) {
       implicitReadCandidate(_, _, call, v) and
       captured = v.getAssignable() and
       capturerReads(_, captured) and
-      c = getARuntimeTarget(call.getElement())
+      c = getARuntimeTarget(call.getElement(), libraryDelegateCall)
     }
 
     /**
@@ -1722,11 +1741,13 @@ module Ssa {
       ControlFlow::Nodes::ElementNode call, CapturedReadLocalScopeSourceVariable v, Callable reader,
       boolean additionalCalls
     ) {
-      exists(PrunedCallable c, CapturedReadLocalScopeVariable captured |
-        readsCapturedVariablePrefix(call, v, c, captured) and
+      exists(
+        PrunedCallable c, CapturedReadLocalScopeVariable captured, boolean libraryDelegateCall
+      |
+        readsCapturedVariablePrefix(call, v, c, captured, libraryDelegateCall) and
         capturerReads(reader, captured) and
         (
-          c = reader and additionalCalls = false
+          c = reader and additionalCalls = libraryDelegateCall
           or
           callEdgePrunedPlus(c, reader) and additionalCalls = true
         )
@@ -1765,7 +1786,6 @@ module Ssa {
         def.getSourceVariable().getAssignable() = lsv
       |
         lsv = v.getAssignable() and
-        adef = def.getAPossibleDefinition() and
         bb.getNode(i) = adef.getAControlFlowNode() and
         updatesCapturedVariable(def.getCall(), _, adef, additionalCalls)
       )

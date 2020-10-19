@@ -1,0 +1,16 @@
+edges
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload |
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload |
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload |
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload |
+nodes
+| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+| unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+| unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+| unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+#select
+| unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | Deserializing of $@. | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | untrusted input |
+| unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | Deserializing of $@. | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | untrusted input |
+| unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | Deserializing of $@. | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | untrusted input |
+| unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | Deserializing of $@. | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | untrusted input |

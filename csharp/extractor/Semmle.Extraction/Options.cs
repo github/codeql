@@ -12,7 +12,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// The specified number of threads, or the default if unspecified.
         /// </summary>
-        public int Threads { get; private set; } = Extractor.DefaultNumberOfThreads;
+        public int Threads { get; private set; } = System.Environment.ProcessorCount;
 
         /// <summary>
         /// The verbosity used in output and logging.

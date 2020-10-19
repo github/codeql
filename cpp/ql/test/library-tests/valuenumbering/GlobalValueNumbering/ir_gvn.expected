@@ -202,7 +202,7 @@ test.cpp:
 #   29|         valnum = m29_10, r29_8
 #   30|     r30_1(glval<unknown>)       = FunctionAddress[change_global02] : 
 #   30|         valnum = unique
-#   30|     v30_2(void)                 = Call                             : func:r30_1
+#   30|     v30_2(void)                 = Call[change_global02]            : func:r30_1
 #   30|     m30_3(unknown)              = ^CallSideEffect                  : ~m25_4
 #   30|         valnum = unique
 #   30|     m30_4(unknown)              = Chi                              : total:m25_4, partial:m30_3
@@ -538,7 +538,7 @@ test.cpp:
 #   77|         valnum = r77_1, r79_1, r80_6
 #   77|     r77_2(glval<unknown>)       = FunctionAddress[getAValue]  : 
 #   77|         valnum = unique
-#   77|     r77_3(int)                  = Call                        : func:r77_2
+#   77|     r77_3(int)                  = Call[getAValue]             : func:r77_2
 #   77|         valnum = unique
 #   77|     m77_4(unknown)              = ^CallSideEffect             : ~m75_4
 #   77|         valnum = unique
@@ -585,7 +585,7 @@ test.cpp:
 #   80|   Block 1
 #   80|     r80_1(glval<unknown>)      = FunctionAddress[getAValue] : 
 #   80|         valnum = unique
-#   80|     r80_2(int)                 = Call                       : func:r80_1
+#   80|     r80_2(int)                 = Call[getAValue]            : func:r80_1
 #   80|         valnum = unique
 #   80|     m80_3(unknown)             = ^CallSideEffect            : ~m77_5
 #   80|         valnum = unique

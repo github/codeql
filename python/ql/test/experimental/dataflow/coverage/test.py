@@ -6,8 +6,14 @@
 #
 # Functions whose name ends with "_with_local_flow" will also be tested for local flow.
 #
-# All functions starting with "test_" should run and execute `print("OK")` one or more times.
+# All functions starting with "test_" should run and execute `print("OK")` exactly once.
 # This can be checked by running validTest.py.
+
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname((__file__))))
+from testlib import *
 
 # These are defined so that we can evaluate the test code.
 NONSOURCE = "not a source"
@@ -366,7 +372,7 @@ def test_call_positional_negative():
 
 
 def test_call_keyword():
-    SINK(second(NONSOURCE, b=SOURCE))  # Flow missing
+    SINK(second(NONSOURCE, b=SOURCE))
 
 
 def test_call_unpack_iterable():
@@ -374,7 +380,7 @@ def test_call_unpack_iterable():
 
 
 def test_call_unpack_mapping():
-    SINK(second(NONSOURCE, **{"b": SOURCE}))  # Flow missing
+    SINK(second(NONSOURCE, **{"b": SOURCE}))
 
 
 def f_extra_pos(a, *b):
@@ -382,7 +388,7 @@ def f_extra_pos(a, *b):
 
 
 def test_call_extra_pos():
-    SINK(f_extra_pos(NONSOURCE, SOURCE))  # Flow missing
+    SINK(f_extra_pos(NONSOURCE, SOURCE))
 
 
 def f_extra_keyword(a, **b):
@@ -390,7 +396,7 @@ def f_extra_keyword(a, **b):
 
 
 def test_call_extra_keyword():
-    SINK(f_extra_keyword(NONSOURCE, b=SOURCE))  # Flow missing
+    SINK(f_extra_keyword(NONSOURCE, b=SOURCE))
 
 
 # return the name of the first extra keyword argument
@@ -464,7 +470,7 @@ def test_lambda_keyword():
     def second(a, b):
         return b
 
-    SINK(second(NONSOURCE, b=SOURCE))  # Flow missing
+    SINK(second(NONSOURCE, b=SOURCE))
 
 
 def test_lambda_unpack_iterable():
@@ -478,26 +484,27 @@ def test_lambda_unpack_mapping():
     def second(a, b):
         return b
 
-    SINK(second(NONSOURCE, **{"b": SOURCE}))  # Flow missing
+    SINK(second(NONSOURCE, **{"b": SOURCE}))
 
 
 def test_lambda_extra_pos():
     f_extra_pos = lambda a, *b: b[0]
-    SINK(f_extra_pos(NONSOURCE, SOURCE))  # Flow missing
+    SINK(f_extra_pos(NONSOURCE, SOURCE))
 
 
 def test_lambda_extra_keyword():
     f_extra_keyword = lambda a, **b: b["b"]
-    SINK(f_extra_keyword(NONSOURCE, b=SOURCE))  # Flow missing
+    SINK(f_extra_keyword(NONSOURCE, b=SOURCE))
 
 
-# call the function with our source as the name of the keyword arguemnt
+# call the function with our source as the name of the keyword argument
 def test_lambda_extra_keyword_flow():
     # return the name of the first extra keyword argument
     f_extra_keyword_flow = lambda **a: [*a][0]
     SINK(f_extra_keyword_flow(**{SOURCE: None}))  # Flow missing
 
 
+@expects(4)
 def test_swap():
     a = SOURCE
     b = NONSOURCE
@@ -534,6 +541,7 @@ def test_deep_callgraph():
     SINK(x)  # Flow missing
 
 
+@expects(2)
 def test_dynamic_tuple_creation_1():
     tup = tuple()
     tup += (SOURCE,)
@@ -543,6 +551,7 @@ def test_dynamic_tuple_creation_1():
     SINK_F(tup[1])
 
 
+@expects(2)
 def test_dynamic_tuple_creation_2():
     tup = ()
     tup += (SOURCE,)
@@ -552,6 +561,7 @@ def test_dynamic_tuple_creation_2():
     SINK_F(tup[1])
 
 
+@expects(2)
 def test_dynamic_tuple_creation_3():
     tup1 = (SOURCE,)
     tup2 = (NONSOURCE,)
@@ -562,6 +572,7 @@ def test_dynamic_tuple_creation_3():
 
 
 # Inspired by FP-report https://github.com/github/codeql/issues/4239
+@expects(2)
 def test_dynamic_tuple_creation_4():
     tup = ()
     for item in [SOURCE, NONSOURCE]:

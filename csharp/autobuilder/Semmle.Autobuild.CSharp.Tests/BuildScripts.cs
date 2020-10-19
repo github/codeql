@@ -20,15 +20,15 @@ namespace Semmle.Autobuild.CSharp.Tests
         /// <summary>
         /// List of strings passed to FileDelete.
         /// </summary>
-        public readonly IList<string> FileDeleteIn = new List<string>();
+        public IList<string> FileDeleteIn { get; } = new List<string>();
 
         void IBuildActions.FileDelete(string file)
         {
             FileDeleteIn.Add(file);
         }
 
-        public readonly IList<string> FileExistsIn = new List<string>();
-        public readonly IDictionary<string, bool> FileExists = new Dictionary<string, bool>();
+        public IList<string> FileExistsIn { get; } = new List<string>();
+        public IDictionary<string, bool> FileExists { get; } = new Dictionary<string, bool>();
 
         bool IBuildActions.FileExists(string file)
         {
@@ -42,12 +42,12 @@ namespace Semmle.Autobuild.CSharp.Tests
             throw new ArgumentException("Missing FileExists " + file);
         }
 
-        public readonly IList<string> RunProcessIn = new List<string>();
-        public readonly IDictionary<string, int> RunProcess = new Dictionary<string, int>();
-        public readonly IDictionary<string, string> RunProcessOut = new Dictionary<string, string>();
-        public readonly IDictionary<string, string> RunProcessWorkingDirectory = new Dictionary<string, string>();
-        public readonly HashSet<string> CreateDirectories = new HashSet<string>();
-        public readonly HashSet<(string, string)> DownloadFiles = new HashSet<(string, string)>();
+        public IList<string> RunProcessIn { get; } = new List<string>();
+        public IDictionary<string, int> RunProcess { get; } = new Dictionary<string, int>();
+        public IDictionary<string, string> RunProcessOut { get; } = new Dictionary<string, string>();
+        public IDictionary<string, string> RunProcessWorkingDirectory { get; } = new Dictionary<string, string>();
+        public HashSet<string> CreateDirectories { get; } = new HashSet<string>();
+        public HashSet<(string, string)> DownloadFiles { get; } = new HashSet<(string, string)>();
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env, out IList<string> stdOut)
         {
@@ -85,14 +85,14 @@ namespace Semmle.Autobuild.CSharp.Tests
             return ret;
         }
 
-        public readonly IList<string> DirectoryDeleteIn = new List<string>();
+        public IList<string> DirectoryDeleteIn { get; } = new List<string>();
 
         void IBuildActions.DirectoryDelete(string dir, bool recursive)
         {
             DirectoryDeleteIn.Add(dir);
         }
 
-        public readonly IDictionary<string, bool> DirectoryExists = new Dictionary<string, bool>();
+        public IDictionary<string, bool> DirectoryExists { get; } = new Dictionary<string, bool>();
 
         bool IBuildActions.DirectoryExists(string dir)
         {
@@ -102,7 +102,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             return ret;
         }
 
-        public readonly IDictionary<string, string?> GetEnvironmentVariable = new Dictionary<string, string?>();
+        public IDictionary<string, string?> GetEnvironmentVariable { get; } = new Dictionary<string, string?>();
 
         string? IBuildActions.GetEnvironmentVariable(string name)
         {
@@ -112,14 +112,14 @@ namespace Semmle.Autobuild.CSharp.Tests
             return ret;
         }
 
-        public string GetCurrentDirectory = "";
+        public string GetCurrentDirectory { get; set; } = "";
 
         string IBuildActions.GetCurrentDirectory()
         {
             return GetCurrentDirectory;
         }
 
-        public readonly IDictionary<string, string> EnumerateFiles = new Dictionary<string, string>();
+        public IDictionary<string, string> EnumerateFiles { get; } = new Dictionary<string, string>();
 
         IEnumerable<string> IBuildActions.EnumerateFiles(string dir)
         {
@@ -129,7 +129,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             return str.Split("\n").Select(p => PathCombine(dir, p));
         }
 
-        public readonly IDictionary<string, string> EnumerateDirectories = new Dictionary<string, string>();
+        public IDictionary<string, string> EnumerateDirectories { get; } = new Dictionary<string, string>();
 
         IEnumerable<string> IBuildActions.EnumerateDirectories(string dir)
         {
@@ -141,7 +141,7 @@ namespace Semmle.Autobuild.CSharp.Tests
                 : str.Split("\n").Select(p => PathCombine(dir, p));
         }
 
-        public bool IsWindows;
+        public bool IsWindows { get; set; }
 
         bool IBuildActions.IsWindows() => IsWindows;
 
@@ -164,7 +164,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
         }
 
-        public readonly IDictionary<string, XmlDocument> LoadXml = new Dictionary<string, XmlDocument>();
+        public IDictionary<string, XmlDocument> LoadXml { get; } = new Dictionary<string, XmlDocument>();
 
         XmlDocument IBuildActions.LoadXml(string filename)
         {

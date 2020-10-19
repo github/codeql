@@ -100,7 +100,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class IndexerFactory : ICachedEntityFactory<IPropertySymbol, Indexer>
         {
-            public static readonly IndexerFactory Instance = new IndexerFactory();
+            public static IndexerFactory Instance { get; } = new IndexerFactory();
 
             public Indexer Create(Context cx, IPropertySymbol init) => new Indexer(cx, init);
         }

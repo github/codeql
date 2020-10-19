@@ -147,7 +147,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class ConstructorFactory : ICachedEntityFactory<IMethodSymbol, Constructor>
         {
-            public static readonly ConstructorFactory Instance = new ConstructorFactory();
+            public static ConstructorFactory Instance { get; } = new ConstructorFactory();
 
             public Constructor Create(Context cx, IMethodSymbol init) => new Constructor(cx, init);
         }

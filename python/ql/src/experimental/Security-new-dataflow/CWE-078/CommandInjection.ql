@@ -46,15 +46,16 @@ class CommandInjectionConfiguration extends TaintTracking::Configuration {
     // os.system(cmd)
     // ```
     //
-    // Best solution I could come up with is to exclude all sinks inside the `os` and
-    // `subprocess` modules. This does have a downside: If we have overlooked a function
-    // in any of these, that internally runs a command, we no longer give an alert :|
+    // Best solution I could come up with is to exclude all sinks inside the modules of
+    // known sinks. This does have a downside: If we have overlooked a function in any
+    // of these, that internally runs a command, we no longer give an alert :| -- and we
+    // need to keep them updated (which is hard to remember)
     //
     // This does not only affect `os.popen`, but also the helper functions in
     // `subprocess`. See:
     // https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/os.py#L974
     // https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/subprocess.py#L341
-    not sink.getScope().getEnclosingModule().getName() in ["os", "subprocess"]
+    not sink.getScope().getEnclosingModule().getName() in ["os", "subprocess", "platform", "popen2"]
   }
 }
 

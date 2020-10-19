@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class DestructorFactory : ICachedEntityFactory<IMethodSymbol, Destructor>
         {
-            public static readonly DestructorFactory Instance = new DestructorFactory();
+            public static DestructorFactory Instance { get; } = new DestructorFactory();
 
             public Destructor Create(Context cx, IMethodSymbol init) => new Destructor(cx, init);
         }

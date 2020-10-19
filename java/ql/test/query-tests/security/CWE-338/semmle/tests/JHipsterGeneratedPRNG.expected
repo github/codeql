@@ -1,0 +1,5 @@
+| vulnerable/RandomUtil.java:20:26:20:41 | generatePassword | Weak random number generator used in security sensitive method (JHipster CVE-2019-16303). |
+| vulnerable/RandomUtil.java:29:26:29:46 | generateActivationKey | Weak random number generator used in security sensitive method (JHipster CVE-2019-16303). |
+| vulnerable/RandomUtil.java:38:26:38:41 | generateResetKey | Weak random number generator used in security sensitive method (JHipster CVE-2019-16303). |
+| vulnerable/RandomUtil.java:48:26:48:43 | generateSeriesData | Weak random number generator used in security sensitive method (JHipster CVE-2019-16303). |
+| vulnerable/RandomUtil.java:57:26:57:42 | generateTokenData | Weak random number generator used in security sensitive method (JHipster CVE-2019-16303). |

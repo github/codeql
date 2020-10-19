@@ -32,7 +32,7 @@ private module Stdlib {
    * For example, using `attr_name = "system"` will get all uses of `os.system`.
    */
   private DataFlow::Node os_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["system", "popen",
+    attr_name in ["system", "popen", "popen2", "popen3", "popen4",
           // exec
           "execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe",
           // spawn
@@ -102,23 +102,36 @@ private module Stdlib {
    * A call to `os.system`.
    * See https://docs.python.org/3/library/os.html#os.system
    */
-  private class OsSystemCall extends SystemCommandExecution::Range {
-    OsSystemCall() { this.asCfgNode().(CallNode).getFunction() = os_attr("system").asCfgNode() }
+  private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    OsSystemCall() { node.getFunction() = os_attr("system").asCfgNode() }
+
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
 
   /**
-   * A call to `os.popen`
+   * A call to any of the `os.popen*` functions
    * See https://docs.python.org/3/library/os.html#os.popen
+   *
+   * Note that in Python 2, there are also `popen2`, `popen3`, and `popen4` functions.
+   * Although deprecated since version 2.6, they still work in 2.7.
+   * See https://docs.python.org/2.7/library/os.html#os.popen2
    */
-  private class OsPopenCall extends SystemCommandExecution::Range {
-    OsPopenCall() { this.asCfgNode().(CallNode).getFunction() = os_attr("popen").asCfgNode() }
+  private class OsPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+    string name;
+
+    OsPopenCall() {
+      name in ["popen", "popen2", "popen3", "popen4"] and
+      node.getFunction() = os_attr(name).asCfgNode()
+    }
 
     override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+      result.asCfgNode() = node.getArg(0)
+      or
+      not name = "popen" and
+      result.asCfgNode() = node.getArgByName("cmd")
     }
   }
 
@@ -126,50 +139,47 @@ private module Stdlib {
    * A call to any of the `os.exec*` functions
    * See https://docs.python.org/3.8/library/os.html#os.execl
    */
-  private class OsExecCall extends SystemCommandExecution::Range {
+  private class OsExecCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
     OsExecCall() {
       exists(string name |
         name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
-        this.asCfgNode().(CallNode).getFunction() = os_attr(name).asCfgNode()
+        node.getFunction() = os_attr(name).asCfgNode()
       )
     }
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
 
   /**
    * A call to any of the `os.spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.spawnl
    */
-  private class OsSpawnCall extends SystemCommandExecution::Range {
+  private class OsSpawnCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
     OsSpawnCall() {
       exists(string name |
         name in ["spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp",
               "spawnvpe"] and
-        this.asCfgNode().(CallNode).getFunction() = os_attr(name).asCfgNode()
+        node.getFunction() = os_attr(name).asCfgNode()
       )
     }
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(1)
-    }
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(1) }
   }
 
   /**
    * A call to any of the `os.posix_spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.posix_spawn
    */
-  private class OsPosixSpawnCall extends SystemCommandExecution::Range {
-    OsPosixSpawnCall() {
-      this.asCfgNode().(CallNode).getFunction() =
-        os_attr(["posix_spawn", "posix_spawnp"]).asCfgNode()
-    }
+  private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
-    }
+    OsPosixSpawnCall() { node.getFunction() = os_attr(["posix_spawn", "posix_spawnp"]).asCfgNode() }
+
+    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
 
   /** An additional taint step for calls to `os.path.join` */
@@ -245,29 +255,22 @@ private module Stdlib {
    * A call to `subprocess.Popen` or helper functions (call, check_call, check_output, run)
    * See https://docs.python.org/3.8/library/subprocess.html#subprocess.Popen
    */
-  private class SubprocessPopenCall extends SystemCommandExecution::Range {
-    CallNode call;
+  private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
 
     SubprocessPopenCall() {
-      call = this.asCfgNode() and
       exists(string name |
         name in ["Popen", "call", "check_call", "check_output", "run"] and
-        call.getFunction() = subprocess_attr(name).asCfgNode()
+        node.getFunction() = subprocess_attr(name).asCfgNode()
       )
     }
 
     /** Gets the ControlFlowNode for the `args` argument, if any. */
-    private ControlFlowNode get_args_arg() {
-      result = call.getArg(0)
-      or
-      result = call.getArgByName("args")
-    }
+    private ControlFlowNode get_args_arg() { result in [node.getArg(0), node.getArgByName("args")] }
 
     /** Gets the ControlFlowNode for the `shell` argument, if any. */
     private ControlFlowNode get_shell_arg() {
-      result = call.getArg(8)
-      or
-      result = call.getArgByName("shell")
+      result in [node.getArg(8), node.getArgByName("shell")]
     }
 
     private boolean get_shell_arg_value() {
@@ -289,9 +292,7 @@ private module Stdlib {
 
     /** Gets the ControlFlowNode for the `executable` argument, if any. */
     private ControlFlowNode get_executable_arg() {
-      result = call.getArg(2)
-      or
-      result = call.getArgByName("executable")
+      result in [node.getArg(2), node.getArgByName("executable")]
     }
 
     override DataFlow::Node getCommand() {
@@ -325,6 +326,247 @@ private module Stdlib {
           result.asCfgNode() = arg_args
         )
       )
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // marshal
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `marshal` module. */
+  private DataFlow::Node marshal(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("marshal")
+    or
+    exists(DataFlow::TypeTracker t2 | result = marshal(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `marshal` module. */
+  DataFlow::Node marshal() { result = marshal(DataFlow::TypeTracker::end()) }
+
+  /** Provides models for the `marshal` module. */
+  module marshal {
+    /** Gets a reference to the `marshal.loads` function. */
+    private DataFlow::Node loads(DataFlow::TypeTracker t) {
+      t.start() and
+      result = DataFlow::importNode("marshal.loads")
+      or
+      t.startInAttr("loads") and
+      result = marshal()
+      or
+      exists(DataFlow::TypeTracker t2 | result = loads(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `marshal.loads` function. */
+    DataFlow::Node loads() { result = loads(DataFlow::TypeTracker::end()) }
+  }
+
+  /**
+   * A call to `marshal.loads`
+   * See https://docs.python.org/3/library/marshal.html#marshal.loads
+   */
+  private class MarshalLoadsCall extends Decoding::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    MarshalLoadsCall() { node.getFunction() = marshal::loads().asCfgNode() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "marshal" }
+  }
+
+  // ---------------------------------------------------------------------------
+  // pickle
+  // ---------------------------------------------------------------------------
+  private string pickleModuleName() { result in ["pickle", "cPickle", "_pickle"] }
+
+  /** Gets a reference to the `pickle` module. */
+  private DataFlow::Node pickle(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode(pickleModuleName())
+    or
+    exists(DataFlow::TypeTracker t2 | result = pickle(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `pickle` module. */
+  DataFlow::Node pickle() { result = pickle(DataFlow::TypeTracker::end()) }
+
+  /** Provides models for the `pickle` module. */
+  module pickle {
+    /** Gets a reference to the `pickle.loads` function. */
+    private DataFlow::Node loads(DataFlow::TypeTracker t) {
+      t.start() and
+      result = DataFlow::importNode(pickleModuleName() + ".loads")
+      or
+      t.startInAttr("loads") and
+      result = pickle()
+      or
+      exists(DataFlow::TypeTracker t2 | result = loads(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `pickle.loads` function. */
+    DataFlow::Node loads() { result = loads(DataFlow::TypeTracker::end()) }
+  }
+
+  /**
+   * A call to `pickle.loads`
+   * See https://docs.python.org/3/library/pickle.html#pickle.loads
+   */
+  private class PickleLoadsCall extends Decoding::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    PickleLoadsCall() { node.getFunction() = pickle::loads().asCfgNode() }
+
+    override predicate mayExecuteInput() { any() }
+
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "pickle" }
+  }
+
+  // ---------------------------------------------------------------------------
+  // popen2
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `popen2` module (only available in Python 2). */
+  private DataFlow::Node popen2(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("popen2")
+    or
+    exists(DataFlow::TypeTracker t2 | result = popen2(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `popen2` module (only available in Python 2). */
+  DataFlow::Node popen2() { result = popen2(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `popen2` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node popen2_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["popen2", "popen3", "popen4",
+          // classes
+          "Popen3", "Popen4"] and
+    (
+      t.start() and
+      result = DataFlow::importNode("popen2." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = DataFlow::importNode("popen2")
+    )
+    or
+    // Due to bad performance when using normal setup with `popen2_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        popen2_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate popen2_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(popen2_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `popen2` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node popen2_attr(string attr_name) {
+    result = popen2_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  /**
+   * A call to any of the `popen.popen*` functions, or instantiation of a `popen.Popen*` class.
+   * See https://docs.python.org/2.7/library/popen2.html
+   */
+  private class Popen2PopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    Popen2PopenCall() {
+      exists(string name |
+        name in ["popen2", "popen3", "popen4", "Popen3", "Popen4"] and
+        node.getFunction() = popen2_attr(name).asCfgNode()
+      )
+    }
+
+    override DataFlow::Node getCommand() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("cmd")]
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // platform
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `platform` module. */
+  private DataFlow::Node platform(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("platform")
+    or
+    exists(DataFlow::TypeTracker t2 | result = platform(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `platform` module. */
+  DataFlow::Node platform() { result = platform(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `platform` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node platform_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["popen"] and
+    (
+      t.start() and
+      result = DataFlow::importNode("platform." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = DataFlow::importNode("platform")
+    )
+    or
+    // Due to bad performance when using normal setup with `platform_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        platform_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate platform_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(platform_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `platform` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node platform_attr(string attr_name) {
+    result = platform_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  /**
+   * A call to the `platform.popen` function.
+   * See https://docs.python.org/2.7/library/platform.html#platform.popen
+   */
+  private class PlatformPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    PlatformPopenCall() { node.getFunction() = platform_attr("popen").asCfgNode() }
+
+    override DataFlow::Node getCommand() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("cmd")]
     }
   }
 

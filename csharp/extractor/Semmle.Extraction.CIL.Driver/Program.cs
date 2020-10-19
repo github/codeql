@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CIL.Driver
             using var logger = new ConsoleLogger(options.Verbosity);
 
             var actions = options.AssembliesToExtract
-                .Select(asm => asm.filename)
+                .Select(asm => asm.Filename)
                 .Select<string, Action>(filename =>
                     () => ExtractAssembly(layout, filename, logger, options.NoCache, options.PDB, options.TrapCompression))
                 .ToArray();

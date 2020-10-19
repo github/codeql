@@ -171,7 +171,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class ParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>
         {
-            public static readonly ParameterFactory Instance = new ParameterFactory();
+            public static ParameterFactory Instance { get; } = new ParameterFactory();
 
             public Parameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
         }
@@ -212,7 +212,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class VarargsTypeFactory : ICachedEntityFactory<string, VarargsType>
         {
-            public static readonly VarargsTypeFactory Instance = new VarargsTypeFactory();
+            public static VarargsTypeFactory Instance { get; } = new VarargsTypeFactory();
 
             public VarargsType Create(Context cx, string init) => new VarargsType(cx);
         }
@@ -247,7 +247,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class VarargsParamFactory : ICachedEntityFactory<Method, VarargsParam>
         {
-            public static readonly VarargsParamFactory Instance = new VarargsParamFactory();
+            public static VarargsParamFactory Instance { get; } = new VarargsParamFactory();
 
             public VarargsParam Create(Context cx, Method init) => new VarargsParam(cx, init);
         }
@@ -275,7 +275,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class ExtensionParamFactory : ICachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
         {
-            public static readonly ExtensionParamFactory Instance = new ExtensionParamFactory();
+            public static ExtensionParamFactory Instance { get; } = new ExtensionParamFactory();
 
             public ConstructedExtensionParameter Create(Context cx, (Method, Parameter) init) =>
                 new ConstructedExtensionParameter(cx, init.Item1, init.Item2);

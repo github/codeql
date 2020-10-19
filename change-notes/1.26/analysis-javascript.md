@@ -2,7 +2,10 @@
 
 ## General improvements
 
+* Angular-specific taint sources and sinks are now recognized by the security queries.
+
 * Support for the following frameworks and libraries has been improved:
+  - [@angular/*](https://www.npmjs.com/package/@angular/core)
   - [AWS Serverless](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)
   - [Alibaba Serverless](https://www.alibabacloud.com/help/doc-detail/156876.htm)
   - [bluebird](https://www.npmjs.com/package/bluebird)

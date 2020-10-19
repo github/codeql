@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class TupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, TupleType>
         {
-            public static readonly TupleTypeFactory Instance = new TupleTypeFactory();
+            public static TupleTypeFactory Instance { get; } = new TupleTypeFactory();
 
             public TupleType Create(Context cx, INamedTypeSymbol init) => new TupleType(cx, init);
         }
