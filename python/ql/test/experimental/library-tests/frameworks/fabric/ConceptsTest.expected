@@ -1,6 +1,0 @@
-| fabric_v2_test.py:29:66:29:91 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v2_test.py:32:25:32:50 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v2_test.py:35:62:35:87 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v2_test.py:41:69:41:94 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v2_test.py:44:25:44:50 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
-| fabric_v2_test.py:47:65:47:90 | Comment # $getCommand="cmd1; cmd2" | Missing result:getCommand="cmd1; cmd2" |
