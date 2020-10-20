@@ -10,8 +10,8 @@ import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.Taint
 
 /**
- * The standard functions `memcpy` and `memmove`, and the gcc variant
- * `__builtin___memcpy_chk`
+ * The standard functions `memcpy`, `memmove` and `bcopy`; and the gcc variant
+ * `__builtin___memcpy_chk`.
  */
 class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction {
   MemcpyFunction() {
