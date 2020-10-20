@@ -27,3 +27,4 @@
 | query-tests/Security/CWE-089/untyped/redis.js:39 | expected an alert, but found none | NOT OK |  |
 | query-tests/Security/CWE-089/untyped/redis.js:43 | expected an alert, but found none | NOT OK |  |
 | query-tests/Security/CWE-089/untyped/redis.js:46 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-089/untyped/tst2.js:8 | expected an alert, but found none | NOT OK |  |

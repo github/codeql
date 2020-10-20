@@ -17,8 +17,6 @@
 | mongoose.js:99:2:99:50 | Documen ... query)) |
 | mongoose.js:113:2:113:53 | Documen ... () { }) |
 | socketio.js:11:5:11:54 | db.run( ... ndle}`) |
-| tst2.js:7:3:7:62 | sql.que ... ms.id}` |
-| tst2.js:9:3:9:85 | new sql ...  + "'") |
 | tst3.js:9:3:11:4 | pool.qu ... ts\\n  }) |
 | tst3.js:16:3:18:4 | pool.qu ... ts\\n  }) |
 | tst4.js:8:3:8:67 | db.get( ...  + '"') |
