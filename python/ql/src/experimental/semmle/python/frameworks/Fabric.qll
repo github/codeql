@@ -502,7 +502,7 @@ private module FabricV2 {
       }
 
       /**
-       * A call to `run`, `sudo` on an instance of a subclass of `fabric.group.Group`.
+       * A call to `run` on an instance of a subclass of `fabric.group.Group`.
        *
        * See https://docs.fabfile.org/en/2.5/api/group.html#fabric.group.Group.run
        */
