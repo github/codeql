@@ -134,7 +134,7 @@ class TopLevelPrintAstNode extends PrintAstNode {
  *
  * This class can be overwriten to define more specific behavior for some `AstNode`s.
  * The `getChildNode` and `getStmtList` methods can be overwritten to easily set up a child-parent relation between different `AstElementNode`s.
- * Be very carefull about overridding `getChild`, as `getChildNode` and `getStmtList` depends on the default beavior of `getChild`.
+ * Be very carefull about overriding `getChild`, as `getChildNode` and `getStmtList` depends on the default beavior of `getChild`.
  */
 class AstElementNode extends PrintAstNode, TElementNode {
   AstNode element;
