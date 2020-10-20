@@ -26,7 +26,7 @@ module PostMessageStar {
   /**
    * A flow label representing an object with at least one tainted property.
    */
-  class PartiallyTaintedObject extends DataFlow::FlowLabel {
+  abstract class PartiallyTaintedObject extends DataFlow::FlowLabel {
     PartiallyTaintedObject() { this = "partially tainted object" }
   }
 

@@ -43,7 +43,7 @@ module UnvalidatedDynamicMethodCall {
    * A flow label describing values read from a user-controlled property that
    * may not be functions.
    */
-  class MaybeNonFunction extends DataFlow::FlowLabel {
+  abstract class MaybeNonFunction extends DataFlow::FlowLabel {
     MaybeNonFunction() { this = "MaybeNonFunction" }
   }
 
@@ -51,7 +51,7 @@ module UnvalidatedDynamicMethodCall {
    * A flow label describing values read from a user-controlled property that
    * may originate from a prototype object.
    */
-  class MaybeFromProto extends DataFlow::FlowLabel {
+  abstract class MaybeFromProto extends DataFlow::FlowLabel {
     MaybeFromProto() { this = "MaybeFromProto" }
   }
 

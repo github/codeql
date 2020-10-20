@@ -126,7 +126,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class PropertyFactory : ICachedEntityFactory<IPropertySymbol, Property>
         {
-            public static readonly PropertyFactory Instance = new PropertyFactory();
+            public static PropertyFactory Instance { get; } = new PropertyFactory();
 
             public Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
         }

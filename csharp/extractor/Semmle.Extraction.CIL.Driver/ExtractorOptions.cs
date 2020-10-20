@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CIL.Driver
     /// </summary>
     internal class AssemblyInfo
     {
-        public override string ToString() => filename;
+        public override string ToString() => Filename;
 
         private static AssemblyName CreateAssemblyName(MetadataReader mdReader, StringHandle name, System.Version version, StringHandle culture)
         {
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CIL.Driver
         /// </exception>
         public AssemblyInfo(string path)
         {
-            filename = path;
+            Filename = path;
 
             // Attempt to open the file and see if it's a valid assembly.
             using var stream = File.OpenRead(path);
@@ -75,9 +75,9 @@ namespace Semmle.Extraction.CIL.Driver
                     throw new InvalidAssemblyException();
 
                 // Get our own assembly name
-                name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());
+                Name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());
 
-                references = mdReader.AssemblyReferences
+                References = mdReader.AssemblyReferences
                     .Select(r => mdReader.GetAssemblyReference(r))
                     .Select(ar => CreateAssemblyName(mdReader, ar))
                     .ToArray();
@@ -91,10 +91,10 @@ namespace Semmle.Extraction.CIL.Driver
             }
         }
 
-        public readonly AssemblyName name;
-        public readonly string filename;
-        public bool extract;
-        public readonly AssemblyName[] references;
+        public AssemblyName Name { get; }
+        public string Filename { get; }
+        public bool Extract { get; set; }
+        public AssemblyName[] References { get; }
     }
 
     /// <summary>
@@ -125,19 +125,19 @@ namespace Semmle.Extraction.CIL.Driver
                 {
                     var info = new AssemblyInfo(assemblyPath)
                     {
-                        extract = extractAll
+                        Extract = extractAll
                     };
-                    if (!assembliesRead.ContainsKey(info.name))
-                        assembliesRead.Add(info.name, info);
+                    if (!assembliesRead.ContainsKey(info.Name))
+                        assembliesRead.Add(info.Name, info);
                 }
                 catch (InvalidAssemblyException)
                 { }
             }
         }
 
-        public IEnumerable<AssemblyInfo> AssembliesToExtract => assembliesRead.Values.Where(info => info.extract);
+        public IEnumerable<AssemblyInfo> AssembliesToExtract => assembliesRead.Values.Where(info => info.Extract);
 
-        private IEnumerable<AssemblyName> AssembliesToReference => AssembliesToExtract.SelectMany(info => info.references);
+        private IEnumerable<AssemblyName> AssembliesToReference => AssembliesToExtract.SelectMany(info => info.References);
 
         public void ResolveReferences()
         {
@@ -148,22 +148,22 @@ namespace Semmle.Extraction.CIL.Driver
                 var item = assembliesToReference.Pop();
                 if (assembliesRead.TryGetValue(item, out var info))
                 {
-                    if (!info.extract)
+                    if (!info.Extract)
                     {
-                        info.extract = true;
-                        foreach (var reference in info.references)
+                        info.Extract = true;
+                        foreach (var reference in info.References)
                             assembliesToReference.Push(reference);
                     }
                 }
                 else
                 {
-                    missingReferences.Add(item);
+                    MissingReferences.Add(item);
                 }
             }
         }
 
         private readonly HashSet<string> filesAnalyzed = new HashSet<string>();
-        public readonly HashSet<AssemblyName> missingReferences = new HashSet<AssemblyName>();
+        public HashSet<AssemblyName> MissingReferences {get;} = new HashSet<AssemblyName>();
     }
 
     /// <summary>
@@ -235,7 +235,7 @@ namespace Semmle.Extraction.CIL.Driver
         /// extracted. This is not an error, it just means that the database is not
         /// as complete as it could be.
         /// </summary>
-        public IEnumerable<AssemblyName> MissingReferences => assemblyList.missingReferences;
+        public IEnumerable<AssemblyName> MissingReferences => assemblyList.MissingReferences;
 
         private void ParseArgs(string[] args)
         {

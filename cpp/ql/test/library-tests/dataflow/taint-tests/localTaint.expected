@@ -251,15 +251,15 @@
 | copyableclass_declonly.cpp:67:13:67:18 | call to source | copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | TAINT |
 | copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:67:8:67:9 | ref arg s3 | TAINT |
 | copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:67:11:67:11 | call to operator= | TAINT |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
 | format.cpp:16:21:16:21 | s | format.cpp:22:22:22:22 | s |  |
 | format.cpp:16:31:16:31 | n | format.cpp:22:25:22:25 | n |  |
 | format.cpp:16:46:16:51 | format | format.cpp:22:28:22:33 | format |  |
@@ -5507,8 +5507,6 @@
 | taint.cpp:194:10:194:10 | x | taint.cpp:194:9:194:10 | & ... |  |
 | taint.cpp:194:13:194:18 | source | taint.cpp:194:2:194:7 | call to memcpy | TAINT |
 | taint.cpp:194:13:194:18 | source | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
-| taint.cpp:194:21:194:31 | sizeof(int) | taint.cpp:194:2:194:7 | call to memcpy | TAINT |
-| taint.cpp:194:21:194:31 | sizeof(int) | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:207:2:207:13 | ... = ... |  |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:210:7:210:7 | x |  |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:213:12:213:12 | x |  |

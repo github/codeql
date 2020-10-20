@@ -99,5 +99,13 @@ class DelegateFlow
         M2(LocalFunction);
     }
 
+    public void M15()
+    {
+        Func<int> f = () => 42;
+        new Lazy<int>(f);
+        f = () => 43;
+        new Lazy<int>(f);
+    }
+
     public delegate void MyDelegate();
 }

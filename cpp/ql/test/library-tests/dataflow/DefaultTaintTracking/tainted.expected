@@ -23,7 +23,7 @@
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | shared.h:5:23:5:31 | sinkparam |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | shared.h:10:38:10:39 | s2 |
 | defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:31:40:31:53 | dotted_address |
-| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:32:11:32:26 | p#0 |
+| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:32:11:32:26 | (unnamed parameter 0) |
 | defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:38:11:38:21 | env_pointer |
 | defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:38:25:38:30 | call to getenv |
 | defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:38:25:38:37 | (void *)... |
@@ -32,7 +32,7 @@
 | defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:39:36:39:61 | (const char *)... |
 | defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:39:50:39:61 | & ... |
 | defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:40:10:40:10 | a |
-| defaulttainttracking.cpp:64:10:64:15 | call to getenv | defaulttainttracking.cpp:45:20:45:29 | p#0 |
+| defaulttainttracking.cpp:64:10:64:15 | call to getenv | defaulttainttracking.cpp:45:20:45:29 | (unnamed parameter 0) |
 | defaulttainttracking.cpp:64:10:64:15 | call to getenv | defaulttainttracking.cpp:52:24:52:24 | p |
 | defaulttainttracking.cpp:64:10:64:15 | call to getenv | defaulttainttracking.cpp:57:24:57:24 | p |
 | defaulttainttracking.cpp:64:10:64:15 | call to getenv | defaulttainttracking.cpp:58:14:58:14 | p |
@@ -63,7 +63,7 @@
 | defaulttainttracking.cpp:69:33:69:38 | call to getenv | defaulttainttracking.cpp:69:33:69:38 | call to getenv |
 | defaulttainttracking.cpp:69:33:69:38 | call to getenv | defaulttainttracking.cpp:69:33:69:45 | (const char *)... |
 | defaulttainttracking.cpp:69:33:69:38 | call to getenv | shared.h:5:23:5:31 | sinkparam |
-| defaulttainttracking.cpp:72:11:72:16 | call to getenv | defaulttainttracking.cpp:45:20:45:29 | p#0 |
+| defaulttainttracking.cpp:72:11:72:16 | call to getenv | defaulttainttracking.cpp:45:20:45:29 | (unnamed parameter 0) |
 | defaulttainttracking.cpp:72:11:72:16 | call to getenv | defaulttainttracking.cpp:52:24:52:24 | p |
 | defaulttainttracking.cpp:72:11:72:16 | call to getenv | defaulttainttracking.cpp:72:11:72:16 | call to getenv |
 | defaulttainttracking.cpp:72:11:72:16 | call to getenv | defaulttainttracking.cpp:72:11:72:23 | (const char *)... |
@@ -174,8 +174,8 @@
 | globals.cpp:23:15:23:20 | call to getenv | globals.cpp:23:15:23:20 | call to getenv |
 | stl.cpp:62:25:62:30 | call to getenv | shared.h:5:23:5:31 | sinkparam |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:21:29:21:29 | s |
-| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:43:78:43:104 | p#0 |
-| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:43:114:43:118 | p#1 |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:43:78:43:104 | (unnamed parameter 0) |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:43:114:43:118 | (unnamed parameter 1) |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:62:25:62:30 | call to getenv |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:64:36:64:36 | s |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:68:8:68:8 | a |
@@ -271,19 +271,19 @@
 | test_diff.cpp:104:12:104:15 | argv | test_diff.cpp:104:12:104:15 | argv |
 | test_diff.cpp:104:12:104:15 | argv | test_diff.cpp:104:12:104:19 | ... + ... |
 | test_diff.cpp:108:10:108:13 | argv | shared.h:5:23:5:31 | sinkparam |
-| test_diff.cpp:108:10:108:13 | argv | test_diff.cpp:24:20:24:29 | p#0 |
+| test_diff.cpp:108:10:108:13 | argv | test_diff.cpp:24:20:24:29 | (unnamed parameter 0) |
 | test_diff.cpp:108:10:108:13 | argv | test_diff.cpp:29:24:29:24 | p |
 | test_diff.cpp:108:10:108:13 | argv | test_diff.cpp:30:14:30:14 | p |
 | test_diff.cpp:108:10:108:13 | argv | test_diff.cpp:108:10:108:13 | argv |
 | test_diff.cpp:108:10:108:13 | argv | test_diff.cpp:108:10:108:16 | (const char *)... |
 | test_diff.cpp:108:10:108:13 | argv | test_diff.cpp:108:10:108:16 | access to array |
-| test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:24:20:24:29 | p#0 |
+| test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:24:20:24:29 | (unnamed parameter 0) |
 | test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:36:24:36:24 | p |
 | test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:111:10:111:13 | argv |
 | test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:111:10:111:16 | (const char *)... |
 | test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:111:10:111:16 | access to array |
 | test_diff.cpp:115:11:115:14 | argv | shared.h:5:23:5:31 | sinkparam |
-| test_diff.cpp:115:11:115:14 | argv | test_diff.cpp:24:20:24:29 | p#0 |
+| test_diff.cpp:115:11:115:14 | argv | test_diff.cpp:24:20:24:29 | (unnamed parameter 0) |
 | test_diff.cpp:115:11:115:14 | argv | test_diff.cpp:41:24:41:24 | p |
 | test_diff.cpp:115:11:115:14 | argv | test_diff.cpp:42:14:42:14 | p |
 | test_diff.cpp:115:11:115:14 | argv | test_diff.cpp:52:24:52:24 | p |
@@ -306,7 +306,7 @@
 | test_diff.cpp:121:23:121:26 | argv | test_diff.cpp:121:23:121:29 | (const char *)... |
 | test_diff.cpp:121:23:121:26 | argv | test_diff.cpp:121:23:121:29 | access to array |
 | test_diff.cpp:124:19:124:22 | argv | shared.h:5:23:5:31 | sinkparam |
-| test_diff.cpp:124:19:124:22 | argv | test_diff.cpp:24:20:24:29 | p#0 |
+| test_diff.cpp:124:19:124:22 | argv | test_diff.cpp:24:20:24:29 | (unnamed parameter 0) |
 | test_diff.cpp:124:19:124:22 | argv | test_diff.cpp:76:24:76:24 | p |
 | test_diff.cpp:124:19:124:22 | argv | test_diff.cpp:81:24:81:24 | p |
 | test_diff.cpp:124:19:124:22 | argv | test_diff.cpp:82:14:82:14 | p |

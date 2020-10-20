@@ -20,9 +20,9 @@ namespace Semmle.Extraction.CSharp.Entities
     internal class Expression : FreshEntity, IExpressionParentEntity
     {
         private readonly IExpressionInfo info;
-        public readonly AnnotatedType Type;
-        public readonly Extraction.Entities.Location Location;
-        public readonly ExprKind Kind;
+        public AnnotatedType Type { get; }
+        public Extraction.Entities.Location Location { get; }
+        public ExprKind Kind { get; }
 
         internal Expression(IExpressionInfo info)
             : base(info.Context)
@@ -294,7 +294,7 @@ namespace Semmle.Extraction.CSharp.Entities
     internal abstract class Expression<TExpressionSyntax> : Expression
         where TExpressionSyntax : ExpressionSyntax
     {
-        public readonly TExpressionSyntax Syntax;
+        public TExpressionSyntax Syntax { get; }
 
         protected Expression(ExpressionNodeInfo info)
             : base(info)

@@ -101,11 +101,6 @@ namespace Semmle.Extraction
     /// </summary>
     public class Extractor : IExtractor
     {
-        /// <summary>
-        /// The default number of threads to use for extraction.
-        /// </summary>
-        public static readonly int DefaultNumberOfThreads = Environment.ProcessorCount;
-
         public bool Standalone
         {
             get; private set;

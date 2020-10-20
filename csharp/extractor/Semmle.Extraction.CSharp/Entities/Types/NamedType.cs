@@ -176,14 +176,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class NamedTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
         {
-            public static readonly NamedTypeFactory Instance = new NamedTypeFactory();
+            public static NamedTypeFactory Instance { get; } = new NamedTypeFactory();
 
             public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, false);
         }
 
         private class UnderlyingTupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
         {
-            public static readonly UnderlyingTupleTypeFactory Instance = new UnderlyingTupleTypeFactory();
+            public static UnderlyingTupleTypeFactory Instance { get; } = new UnderlyingTupleTypeFactory();
 
             public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, true);
         }
@@ -213,7 +213,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private class NamedTypeRefFactory : ICachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
         {
-            public static readonly NamedTypeRefFactory Instance = new NamedTypeRefFactory();
+            public static NamedTypeRefFactory Instance { get; } = new NamedTypeRefFactory();
 
             public NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
         }

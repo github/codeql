@@ -78,7 +78,7 @@ namespace Semmle.Extraction.Entities
 
             private class GeneratedFileFactory : ICachedEntityFactory<string?, GeneratedFile>
             {
-                public static readonly GeneratedFileFactory Instance = new GeneratedFileFactory();
+                public static GeneratedFileFactory Instance { get; } = new GeneratedFileFactory();
 
                 public GeneratedFile Create(Context cx, string? init) => new GeneratedFile(cx);
             }
@@ -88,7 +88,7 @@ namespace Semmle.Extraction.Entities
 
         private class FileFactory : ICachedEntityFactory<string, File>
         {
-            public static readonly FileFactory Instance = new FileFactory();
+            public static FileFactory Instance { get; } = new FileFactory();
 
             public File Create(Context cx, string init) => new File(cx, init);
         }

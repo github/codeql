@@ -28,7 +28,7 @@ namespace Semmle.Extraction.Entities
 
         private class FolderFactory : ICachedEntityFactory<PathTransformer.ITransformedPath, Folder>
         {
-            public static readonly FolderFactory Instance = new FolderFactory();
+            public static FolderFactory Instance { get; } = new FolderFactory();
 
             public Folder Create(Context cx, PathTransformer.ITransformedPath init) => new Folder(cx, init);
         }
