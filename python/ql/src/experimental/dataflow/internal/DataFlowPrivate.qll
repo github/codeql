@@ -798,6 +798,29 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
   or
   // Module variable write
   nodeFrom = nodeTo.(ModuleVariableNode).getAWrite()
+  or
+  // Read of module attribute:
+  exists(AttrRead r, ModuleValue mv |
+    r.getObject().asCfgNode().pointsTo(mv) and
+    module_export(mv.getScope(), r.getAttributeName(), nodeFrom) and
+    nodeTo = r
+  )
+}
+
+/**
+ * Holds if the module `m` defines a name `name` by assigning `defn` to it. This is an
+ * overapproximation, as `name` may not in fact be exported (e.g. by defining an `__all__` that does
+ * not include `name`).
+ */
+private predicate module_export(Module m, string name, CfgNode defn) {
+  exists(EssaVariable v |
+    v.getName() = name and
+    v.getAUse() = m.getANormalExit()
+  |
+    defn.getNode() = v.getDefinition().(AssignmentDefinition).getValue()
+    or
+    defn.getNode() = v.getDefinition().(ArgumentRefinement).getArgument()
+  )
 }
 
 //--------
