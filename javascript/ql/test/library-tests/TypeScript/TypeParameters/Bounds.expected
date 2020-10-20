@@ -1,7 +1,0 @@
-| tst.ts:13:16:13:30 | T extends Array | tst.ts:13:26:13:30 | Array |
-| tst.ts:14:18:14:32 | T extends Array | tst.ts:14:28:14:32 | Array |
-| tst.ts:17:18:17:28 | T extends S | tst.ts:17:28:17:28 | S |
-| tst.ts:17:31:17:41 | U extends S | tst.ts:17:41:17:41 | S |
-| tst.ts:24:28:24:38 | T extends S | tst.ts:24:38:24:38 | S |
-| tst.ts:24:41:24:51 | U extends S | tst.ts:24:51:24:51 | S |
-| tst.ts:45:20:45:42 | K in ke ... Decl<K> | tst.ts:45:25:45:42 | keyof ClassDecl<K> |
