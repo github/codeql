@@ -5481,8 +5481,6 @@
 | taint.cpp:194:10:194:10 | x | taint.cpp:194:9:194:10 | & ... |  |
 | taint.cpp:194:13:194:18 | source | taint.cpp:194:2:194:7 | call to memcpy | TAINT |
 | taint.cpp:194:13:194:18 | source | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
-| taint.cpp:194:21:194:31 | sizeof(int) | taint.cpp:194:2:194:7 | call to memcpy | TAINT |
-| taint.cpp:194:21:194:31 | sizeof(int) | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:207:2:207:13 | ... = ... |  |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:210:7:210:7 | x |  |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:213:12:213:12 | x |  |
