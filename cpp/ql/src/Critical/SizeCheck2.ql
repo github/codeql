@@ -58,7 +58,8 @@ where
   not exists(int size | base.getSize() = size |
     size = 0 or
     (allocated / size) * size = allocated
-  ) 
+  ) and
+  not basesize > allocated // covered by SizeCheck.ql
 select alloc,
   "Allocated memory (" + allocated.toString() + " bytes) is not a multiple of the size of '" +
     base.getName() + "' (" + basesize.toString() + " bytes)."
