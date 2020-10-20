@@ -1,0 +1,188 @@
+isBarrier
+isLabeledBarrier
+| ExampleConfiguration | tst.js:6:14:6:14 | v | taint |
+| ExampleConfiguration | tst.js:14:14:14:14 | v | taint |
+| ExampleConfiguration | tst.js:24:14:24:14 | v | taint |
+| ExampleConfiguration | tst.js:36:14:36:14 | v | taint |
+| ExampleConfiguration | tst.js:50:14:50:14 | v | taint |
+| ExampleConfiguration | tst.js:56:14:56:14 | v | taint |
+| ExampleConfiguration | tst.js:60:14:60:14 | v | taint |
+| ExampleConfiguration | tst.js:74:14:74:14 | v | taint |
+| ExampleConfiguration | tst.js:80:14:80:14 | v | taint |
+| ExampleConfiguration | tst.js:84:14:84:14 | v | taint |
+| ExampleConfiguration | tst.js:96:14:96:14 | v | taint |
+| ExampleConfiguration | tst.js:108:14:108:14 | v | taint |
+| ExampleConfiguration | tst.js:120:14:120:14 | v | taint |
+| ExampleConfiguration | tst.js:132:14:132:14 | v | taint |
+| ExampleConfiguration | tst.js:134:14:134:16 | v.p | taint |
+| ExampleConfiguration | tst.js:136:14:136:18 | v.p.q | taint |
+| ExampleConfiguration | tst.js:148:9:148:27 | v | taint |
+| ExampleConfiguration | tst.js:149:14:149:14 | v | taint |
+| ExampleConfiguration | tst.js:154:9:154:27 | v | taint |
+| ExampleConfiguration | tst.js:157:14:157:14 | v | taint |
+| ExampleConfiguration | tst.js:160:9:160:30 | v | taint |
+| ExampleConfiguration | tst.js:160:35:160:56 | v | taint |
+| ExampleConfiguration | tst.js:167:14:167:14 | v | taint |
+| ExampleConfiguration | tst.js:176:18:176:18 | v | taint |
+| ExampleConfiguration | tst.js:185:14:185:14 | v | taint |
+| ExampleConfiguration | tst.js:193:14:193:14 | v | taint |
+| ExampleConfiguration | tst.js:205:14:205:14 | v | taint |
+| ExampleConfiguration | tst.js:209:14:209:14 | v | taint |
+| ExampleConfiguration | tst.js:217:14:217:14 | v | taint |
+| ExampleConfiguration | tst.js:221:14:221:14 | v | taint |
+| ExampleConfiguration | tst.js:229:14:229:14 | v | taint |
+| ExampleConfiguration | tst.js:237:14:237:14 | v | taint |
+| ExampleConfiguration | tst.js:241:14:241:14 | v | taint |
+| ExampleConfiguration | tst.js:255:14:255:14 | v | taint |
+| ExampleConfiguration | tst.js:265:14:265:14 | v | taint |
+| ExampleConfiguration | tst.js:284:14:284:14 | v | taint |
+| ExampleConfiguration | tst.js:331:14:331:14 | v | taint |
+| ExampleConfiguration | tst.js:350:14:350:14 | v | taint |
+| ExampleConfiguration | tst.js:356:16:356:27 | x10 | taint |
+| ExampleConfiguration | tst.js:356:32:356:34 | x10 | taint |
+| ExampleConfiguration | tst.js:361:14:361:14 | v | taint |
+| ExampleConfiguration | tst.js:371:14:371:16 | o.p | taint |
+| ExampleConfiguration | tst.js:378:14:378:17 | o[p] | taint |
+isSanitizer
+| ExampleConfiguration | tst.js:176:18:176:18 | v |
+sanitizingGuard
+| tst.js:5:9:5:21 | /^x$/.test(v) | tst.js:5:20:5:20 | v | true |
+| tst.js:11:9:11:25 | v.match(/[^a-z]/) | tst.js:11:9:11:9 | v | false |
+| tst.js:23:9:23:27 | o.hasOwnProperty(v) | tst.js:23:26:23:26 | v | true |
+| tst.js:35:9:35:14 | v in o | tst.js:35:9:35:9 | v | true |
+| tst.js:47:6:47:22 | o[v] == undefined | tst.js:47:6:47:9 | o[v] | true |
+| tst.js:47:6:47:22 | o[v] == undefined | tst.js:47:8:47:8 | v | false |
+| tst.js:47:6:47:22 | o[v] == undefined | tst.js:47:14:47:22 | undefined | true |
+| tst.js:53:9:53:26 | undefined === o[v] | tst.js:53:9:53:17 | undefined | true |
+| tst.js:53:9:53:26 | undefined === o[v] | tst.js:53:23:53:26 | o[v] | true |
+| tst.js:53:9:53:26 | undefined === o[v] | tst.js:53:25:53:25 | v | false |
+| tst.js:59:9:59:26 | o[v] !== undefined | tst.js:59:9:59:12 | o[v] | false |
+| tst.js:59:9:59:26 | o[v] !== undefined | tst.js:59:11:59:11 | v | true |
+| tst.js:59:9:59:26 | o[v] !== undefined | tst.js:59:18:59:26 | undefined | false |
+| tst.js:71:9:71:26 | o.indexOf(v) == -1 | tst.js:71:9:71:20 | o.indexOf(v) | true |
+| tst.js:71:9:71:26 | o.indexOf(v) == -1 | tst.js:71:19:71:19 | v | false |
+| tst.js:71:9:71:26 | o.indexOf(v) == -1 | tst.js:71:25:71:26 | -1 | true |
+| tst.js:77:9:77:27 | -1 === o.indexOf(v) | tst.js:77:9:77:10 | -1 | true |
+| tst.js:77:9:77:27 | -1 === o.indexOf(v) | tst.js:77:16:77:27 | o.indexOf(v) | true |
+| tst.js:77:9:77:27 | -1 === o.indexOf(v) | tst.js:77:26:77:26 | v | false |
+| tst.js:83:9:83:27 | o.indexOf(v) !== -1 | tst.js:83:9:83:20 | o.indexOf(v) | false |
+| tst.js:83:9:83:27 | o.indexOf(v) !== -1 | tst.js:83:19:83:19 | v | true |
+| tst.js:83:9:83:27 | o.indexOf(v) !== -1 | tst.js:83:26:83:27 | -1 | false |
+| tst.js:95:9:95:21 | o.contains(v) | tst.js:95:20:95:20 | v | true |
+| tst.js:107:9:107:16 | o.has(v) | tst.js:107:15:107:15 | v | true |
+| tst.js:119:9:119:21 | o.includes(v) | tst.js:119:20:119:20 | v | true |
+| tst.js:131:9:131:27 | o.hasOwnProperty(v) | tst.js:131:26:131:26 | v | true |
+| tst.js:133:16:133:36 | o.hasOw ... ty(v.p) | tst.js:133:33:133:35 | v.p | true |
+| tst.js:135:16:135:38 | o.hasOw ... (v.p.q) | tst.js:135:33:135:37 | v.p.q | true |
+| tst.js:137:16:137:36 | o.hasOw ... ty(v.p) | tst.js:137:33:137:35 | v.p | true |
+| tst.js:139:16:139:41 | o.hasOw ... "p.q"]) | tst.js:139:33:139:40 | v["p.q"] | true |
+| tst.js:148:9:148:27 | v == "white-listed" | tst.js:148:9:148:9 | v | true |
+| tst.js:148:9:148:27 | v == "white-listed" | tst.js:148:14:148:27 | "white-listed" | true |
+| tst.js:154:9:154:27 | "white-listed" != v | tst.js:154:9:154:22 | "white-listed" | false |
+| tst.js:154:9:154:27 | "white-listed" != v | tst.js:154:27:154:27 | v | false |
+| tst.js:160:9:160:30 | v === " ... sted-1" | tst.js:160:9:160:9 | v | true |
+| tst.js:160:9:160:30 | v === " ... sted-1" | tst.js:160:15:160:30 | "white-listed-1" | true |
+| tst.js:160:35:160:56 | v === " ... sted-2" | tst.js:160:35:160:35 | v | true |
+| tst.js:160:35:160:56 | v === " ... sted-2" | tst.js:160:41:160:56 | "white-listed-2" | true |
+| tst.js:166:9:166:16 | v == !!0 | tst.js:166:9:166:9 | v | true |
+| tst.js:166:9:166:16 | v == !!0 | tst.js:166:14:166:16 | !!0 | true |
+| tst.js:184:9:184:21 | ~o.indexOf(v) | tst.js:184:20:184:20 | v | true |
+| tst.js:190:10:190:22 | ~o.indexOf(v) | tst.js:190:21:190:21 | v | true |
+| tst.js:202:9:202:26 | o.indexOf(v) <= -1 | tst.js:202:19:202:19 | v | false |
+| tst.js:208:9:208:25 | o.indexOf(v) >= 0 | tst.js:208:19:208:19 | v | true |
+| tst.js:214:9:214:24 | o.indexOf(v) < 0 | tst.js:214:19:214:19 | v | false |
+| tst.js:220:9:220:25 | o.indexOf(v) > -1 | tst.js:220:19:220:19 | v | true |
+| tst.js:226:9:226:26 | -1 >= o.indexOf(v) | tst.js:226:25:226:25 | v | false |
+| tst.js:236:9:236:24 | isWhitelisted(v) | tst.js:236:23:236:23 | v | true |
+| tst.js:240:9:240:28 | config.allowValue(v) | tst.js:240:27:240:27 | v | true |
+| tst.js:252:16:252:36 | whiteli ... ains(x) | tst.js:252:35:252:35 | x | true |
+| tst.js:261:25:261:45 | whiteli ... ains(y) | tst.js:261:44:261:44 | y | true |
+| tst.js:271:25:271:45 | whiteli ... ains(z) | tst.js:271:44:271:44 | z | true |
+| tst.js:281:16:281:25 | x2 != null | tst.js:281:16:281:17 | x2 | false |
+| tst.js:281:16:281:25 | x2 != null | tst.js:281:22:281:25 | null | false |
+| tst.js:281:30:281:51 | whiteli ... ins(x2) | tst.js:281:49:281:50 | x2 | true |
+| tst.js:290:16:290:25 | x3 == null | tst.js:290:16:290:17 | x3 | true |
+| tst.js:290:16:290:25 | x3 == null | tst.js:290:22:290:25 | null | true |
+| tst.js:290:30:290:51 | whiteli ... ins(x3) | tst.js:290:49:290:50 | x3 | true |
+| tst.js:299:17:299:38 | whiteli ... ins(x4) | tst.js:299:36:299:37 | x4 | true |
+| tst.js:308:18:308:39 | whiteli ... ins(x5) | tst.js:308:37:308:38 | x5 | true |
+| tst.js:317:26:317:47 | whiteli ... ins(x6) | tst.js:317:45:317:46 | x6 | true |
+| tst.js:327:25:327:34 | x7 != null | tst.js:327:25:327:26 | x7 | false |
+| tst.js:327:25:327:34 | x7 != null | tst.js:327:31:327:34 | null | false |
+| tst.js:327:39:327:60 | whiteli ... ins(x7) | tst.js:327:58:327:59 | x7 | true |
+| tst.js:337:25:337:46 | whiteli ... ins(x8) | tst.js:337:44:337:45 | x8 | true |
+| tst.js:338:16:338:25 | x8 != null | tst.js:338:16:338:17 | x8 | false |
+| tst.js:338:16:338:25 | x8 != null | tst.js:338:22:338:25 | null | false |
+| tst.js:347:29:347:50 | whiteli ... ins(x9) | tst.js:347:48:347:49 | x9 | true |
+| tst.js:356:16:356:27 | x10 !== null | tst.js:356:16:356:18 | x10 | false |
+| tst.js:356:16:356:27 | x10 !== null | tst.js:356:24:356:27 | null | false |
+| tst.js:356:32:356:48 | x10 !== undefined | tst.js:356:32:356:34 | x10 | false |
+| tst.js:356:32:356:48 | x10 !== undefined | tst.js:356:40:356:48 | undefined | false |
+| tst.js:370:9:370:29 | o.p ==  ... listed" | tst.js:370:9:370:11 | o.p | true |
+| tst.js:370:9:370:29 | o.p ==  ... listed" | tst.js:370:16:370:29 | "white-listed" | true |
+| tst.js:377:11:377:32 | o[p] == ... listed" | tst.js:377:11:377:14 | o[p] | true |
+| tst.js:377:11:377:32 | o[p] == ... listed" | tst.js:377:19:377:32 | "white-listed" | true |
+taintedSink
+| tst.js:2:13:2:20 | SOURCE() | tst.js:3:10:3:10 | v |
+| tst.js:2:13:2:20 | SOURCE() | tst.js:8:14:8:14 | v |
+| tst.js:2:13:2:20 | SOURCE() | tst.js:12:14:12:14 | v |
+| tst.js:20:13:20:20 | SOURCE() | tst.js:21:10:21:10 | v |
+| tst.js:20:13:20:20 | SOURCE() | tst.js:26:14:26:14 | v |
+| tst.js:32:13:32:20 | SOURCE() | tst.js:33:10:33:10 | v |
+| tst.js:32:13:32:20 | SOURCE() | tst.js:38:14:38:14 | v |
+| tst.js:44:13:44:20 | SOURCE() | tst.js:45:10:45:10 | v |
+| tst.js:44:13:44:20 | SOURCE() | tst.js:48:14:48:14 | v |
+| tst.js:44:13:44:20 | SOURCE() | tst.js:54:14:54:14 | v |
+| tst.js:44:13:44:20 | SOURCE() | tst.js:62:14:62:14 | v |
+| tst.js:68:13:68:20 | SOURCE() | tst.js:69:10:69:10 | v |
+| tst.js:68:13:68:20 | SOURCE() | tst.js:72:14:72:14 | v |
+| tst.js:68:13:68:20 | SOURCE() | tst.js:78:14:78:14 | v |
+| tst.js:68:13:68:20 | SOURCE() | tst.js:86:14:86:14 | v |
+| tst.js:92:13:92:20 | SOURCE() | tst.js:93:10:93:10 | v |
+| tst.js:92:13:92:20 | SOURCE() | tst.js:98:14:98:14 | v |
+| tst.js:104:13:104:20 | SOURCE() | tst.js:105:10:105:10 | v |
+| tst.js:104:13:104:20 | SOURCE() | tst.js:110:14:110:14 | v |
+| tst.js:116:13:116:20 | SOURCE() | tst.js:117:10:117:10 | v |
+| tst.js:116:13:116:20 | SOURCE() | tst.js:122:14:122:14 | v |
+| tst.js:128:13:128:20 | SOURCE() | tst.js:129:10:129:14 | v.p.q |
+| tst.js:128:13:128:20 | SOURCE() | tst.js:138:14:138:14 | v |
+| tst.js:128:13:128:20 | SOURCE() | tst.js:140:14:140:18 | v.p.q |
+| tst.js:145:13:145:20 | SOURCE() | tst.js:146:10:146:10 | v |
+| tst.js:145:13:145:20 | SOURCE() | tst.js:151:14:151:14 | v |
+| tst.js:145:13:145:20 | SOURCE() | tst.js:155:14:155:14 | v |
+| tst.js:145:13:145:20 | SOURCE() | tst.js:163:14:163:14 | v |
+| tst.js:145:13:145:20 | SOURCE() | tst.js:169:14:169:14 | v |
+| tst.js:181:13:181:20 | SOURCE() | tst.js:182:10:182:10 | v |
+| tst.js:181:13:181:20 | SOURCE() | tst.js:187:14:187:14 | v |
+| tst.js:181:13:181:20 | SOURCE() | tst.js:191:14:191:14 | v |
+| tst.js:199:13:199:20 | SOURCE() | tst.js:200:10:200:10 | v |
+| tst.js:199:13:199:20 | SOURCE() | tst.js:203:14:203:14 | v |
+| tst.js:199:13:199:20 | SOURCE() | tst.js:211:14:211:14 | v |
+| tst.js:199:13:199:20 | SOURCE() | tst.js:215:14:215:14 | v |
+| tst.js:199:13:199:20 | SOURCE() | tst.js:223:14:223:14 | v |
+| tst.js:199:13:199:20 | SOURCE() | tst.js:227:14:227:14 | v |
+| tst.js:235:13:235:20 | SOURCE() | tst.js:239:14:239:14 | v |
+| tst.js:235:13:235:20 | SOURCE() | tst.js:243:14:243:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:249:10:249:10 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:257:14:257:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:267:14:267:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:275:14:275:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:277:14:277:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:286:14:286:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:293:14:293:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:295:14:295:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:302:14:302:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:304:14:304:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:311:14:311:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:313:14:313:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:321:14:321:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:323:14:323:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:333:14:333:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:341:14:341:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:343:14:343:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:352:14:352:14 | v |
+| tst.js:248:13:248:20 | SOURCE() | tst.js:359:14:359:14 | v |
+| tst.js:367:13:367:20 | SOURCE() | tst.js:368:10:368:12 | o.p |
+| tst.js:367:13:367:20 | SOURCE() | tst.js:373:14:373:16 | o.p |
+| tst.js:367:13:367:20 | SOURCE() | tst.js:380:14:380:17 | o[p] |
+| tst.js:367:13:367:20 | SOURCE() | tst.js:382:14:382:17 | o[p] |
