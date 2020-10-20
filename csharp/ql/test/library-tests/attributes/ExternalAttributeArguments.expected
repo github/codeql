@@ -1,4 +1,10 @@
 arguments
+| Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 0 | 1 |
+| Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 1 | array creation of type Object[] |
+| Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 2 | typeof(...) |
+| Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 3 | (...) ... |
+| Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 4 | null |
+| Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 5 | array creation of type Object[] |
 | Class1 | 0 | 3 |
 | Class1 | 1 | array creation of type Int32[] |
 | Class1 | 2 | null |
@@ -12,6 +18,7 @@ arguments
 | Method1 | 4 | array creation of type Int32[] |
 | Method1 | 5 | array creation of type Object[] |
 literals
+| 1 | Int32 | 1 |
 | 3 | Int32 | 3 |
 | 42 | Int32 | 42 |
 | null | null | null |
@@ -20,9 +27,13 @@ enums
 | (...) ... | 43 | access to type Enum1 | 43 |
 typeof
 | typeof(...) | access to type Class1 |
+| typeof(...) | access to type CustomAttribute |
 array
 | array creation of type Int32[] | 3 | 0 | 1 |
 | array creation of type Int32[] | 3 | 1 | 2 |
 | array creation of type Int32[] | 3 | 2 | 3 |
 | array creation of type Object[] | 2 | 0 | 1 |
 | array creation of type Object[] | 2 | 1 | typeof(...) |
+| array creation of type Object[] | 3 | 0 | 1 |
+| array creation of type Object[] | 3 | 1 | 2 |
+| array creation of type Object[] | 3 | 2 | null |
