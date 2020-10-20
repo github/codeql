@@ -100,18 +100,21 @@ DataFlow::CallNode csrfMiddlewareCreation() {
 }
 
 /**
- * Gets a data flow node that flows to the base of a write to `cookies`, `session`, or `user`,
- * where the written property has `csrf` or `xsrf` in its name.
+ * Gets a data flow node that flows to the base of a reference to `cookies`, `session`, or `user`,
+ * where the references property has `csrf` or `xsrf` in its name,
+ * and a property is either written or part of a comparison.
  */
-private DataFlow::SourceNode nodeLeadingToCsrfWrite(DataFlow::TypeBackTracker t) {
+private DataFlow::SourceNode nodeLeadingToCsrfWriteOrCheck(DataFlow::TypeBackTracker t) {
   t.start() and
-  result
-      .getAPropertyRead(cookieProperty())
-      .getAPropertyWrite()
-      .getPropertyName()
-      .regexpMatch("(?i).*(csrf|xsrf).*")
+  exists(DataFlow::PropRef ref |
+    ref = result.getAPropertyRead(cookieProperty()).getAPropertyReference() and
+    ref.getPropertyName().regexpMatch("(?i).*(csrf|xsrf).*")
+  |
+    ref instanceof DataFlow::PropWrite or
+    ref.(DataFlow::PropRead).asExpr() = any(EqualityTest c).getAnOperand()
+  )
   or
-  exists(DataFlow::TypeBackTracker t2 | result = nodeLeadingToCsrfWrite(t2).backtrack(t2, t))
+  exists(DataFlow::TypeBackTracker t2 | result = nodeLeadingToCsrfWriteOrCheck(t2).backtrack(t2, t))
 }
 
 /**
@@ -131,7 +134,7 @@ private Express::RouteHandler getAHandlerSettingCsrfCookie() {
  */
 predicate isCsrfProtectionRouteHandler(Express::RouteHandler handler) {
   DataFlow::parameterNode(handler.getRequestParameter()) =
-    nodeLeadingToCsrfWrite(DataFlow::TypeBackTracker::end())
+    nodeLeadingToCsrfWriteOrCheck(DataFlow::TypeBackTracker::end())
   or
   handler = getAHandlerSettingCsrfCookie()
 }

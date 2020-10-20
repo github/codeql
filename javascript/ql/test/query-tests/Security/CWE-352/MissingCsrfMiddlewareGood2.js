@@ -90,3 +90,30 @@ var passport = require('passport');
         let newEmail = req.cookies["newEmail"];
     })
 });
+
+
+(function () {
+    var app = express()
+
+    app.use(cookieParser())
+    app.use(passport.authorize({ session: true }))
+
+    function checkToken(req) {
+        if (req.headers.xsrfToken !== req.session.xsrfToken) {
+            throw new Error("Halt and catch fire!")
+        }
+    }
+
+    function setCsrfToken(req, response, next) {
+        req.session.xsrfToken = req.csrfToken();
+        next();
+    }
+
+    app.use(checkToken);
+
+    app.post('/changeEmail', function (req, res) {
+        let newEmail = req.cookies["newEmail"];
+    });
+
+    app.use(setCsrfToken); // There is nothing wrong with setting the token late, as long as it is checked early.
+});
