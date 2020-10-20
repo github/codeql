@@ -146,7 +146,7 @@ private module Django {
           ClassModelSubclass() { node.getId() = any(ClassModelSubclassDef cd).getName() }
         }
 
-        /** Gets a reference to the `objects` object of a model. */
+        /** Gets a reference to the `objects` object of a django model. */
         private DataFlow::Node objects(DataFlow::TypeTracker t) {
           t.startInAttr("objects") and
           result instanceof ClassModelSubclass
