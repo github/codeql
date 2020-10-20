@@ -142,3 +142,41 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
     )
   }
 }
+
+class HttpServerHttpResponseTest extends InlineExpectationsTest {
+  HttpServerHttpResponseTest() { this = "HttpServerHttpResponseTest" }
+
+  override string getARelevantTag() {
+    result in ["HttpResponse", "responseBody", "contentType", "statusCode"]
+  }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(HTTP::Server::HttpResponse response |
+      location = response.getLocation() and
+      element = response.toString() and
+      value = "" and
+      tag = "HttpResponse"
+    )
+    or
+    exists(HTTP::Server::HttpResponse response |
+      location = response.getLocation() and
+      element = response.toString() and
+      value = value_from_expr(response.getBody().asExpr()) and
+      tag = "responseBody"
+    )
+    or
+    exists(HTTP::Server::HttpResponse response |
+      location = response.getLocation() and
+      element = response.toString() and
+      value = response.getContentType() and
+      tag = "contentType"
+    )
+    or
+    exists(HTTP::Server::HttpResponse response |
+      location = response.getLocation() and
+      element = response.toString() and
+      value = response.getStatusCode().toString() and
+      tag = "statusCode"
+    )
+  }
+}

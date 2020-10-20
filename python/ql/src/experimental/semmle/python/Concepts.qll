@@ -219,5 +219,68 @@ module HTTP {
 
       override string getSourceType() { result = "RoutedParameter" }
     }
+
+    /**
+     * A data-flow node that creates a HTTP response on a server.
+     *
+     * Note: we don't require that this response must be sent to a client (a kind of
+     * "if a tree falls in a forest and nobody hears it" situation).
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HttpResponse::Range` instead.
+     */
+    class HttpResponse extends DataFlow::Node {
+      HttpResponse::Range range;
+
+      HttpResponse() { this = range }
+
+      /** Gets the data-flow node that specifies the body of this HTTP response. */
+      DataFlow::Node getBody() { result = range.getBody() }
+
+      /** Gets the content-type of this HTTP response, if it can be statically determined. */
+      string getContentType() { result = range.getContentType() }
+
+      /** Gets the status code of this HTTP response, if it can be statically determined. */
+      int getStatusCode() { result = range.getStatusCode() }
+    }
+
+    /** Provides a class for modeling new HTTP response APIs. */
+    module HttpResponse {
+      /**
+       * A data-flow node that creates a HTTP response on a server.
+       *
+       * Note: we don't require that this response must be sent to a client (a kind of
+       * "if a tree falls in a forest and nobody hears it" situation).
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HttpResponse` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the data-flow node that specifies the body of this HTTP response. */
+        abstract DataFlow::Node getBody();
+
+        /** Gets the data-flow node that specifies the content-type of this HTTP response, if any. */
+        abstract DataFlow::Node getContentTypeArg();
+
+        /** Gets the content-type of this HTTP response, if it can be statically determined. */
+        string getContentType() {
+          exists(StrConst str |
+            DataFlow::localFlow(DataFlow::exprNode(str), this.getContentTypeArg()) and
+            result = str.getText()
+          )
+        }
+
+        /** Gets the data-flow node that specifies the status code of this HTTP response, if any. */
+        abstract DataFlow::Node getStatusCodeArg();
+
+        /** Gets the status code of this HTTP response, if it can be statically determined. */
+        int getStatusCode() {
+          exists(IntegerLiteral i |
+            DataFlow::localFlow(DataFlow::exprNode(i), this.getStatusCodeArg()) and
+            result = i.getValue()
+          )
+        }
+      }
+    }
   }
 }
