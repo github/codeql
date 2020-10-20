@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 
-def foo(request: HttpRequest):  # $f-:routeHandler
+def foo(request: HttpRequest):  # $routeHandler
     return HttpResponse("foo")
 
-def bar_baz(request: HttpRequest):  # $f-:routeHandler
+def bar_baz(request: HttpRequest):  # $routeHandler
     return HttpResponse("bar_baz")
