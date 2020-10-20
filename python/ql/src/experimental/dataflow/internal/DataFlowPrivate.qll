@@ -292,7 +292,7 @@ private Node update(Node node) {
  * `y`. There is a dataflow step from `**{"y": 1, "a": 3}` to `[**d]` to transfer the content and
  * a clearing of content at key `y` for node `[**d]`, since that value has been unpacked.
  */
-private module ArgumentPassing {
+module ArgumentPassing {
   /**
    * Holds if `call` represents a `DataFlowCall` to a `DataFlowCallable` represented by `callable`.
    *
