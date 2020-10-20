@@ -8471,15 +8471,15 @@ ir.cpp:
 # 1038|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1038, col. 12 &
-# 1038| [CopyConstructor] void (lambda [] type at line 1038, col. 12)::(constructor)((lambda [] type at line 1038, col. 12) const&)
+# 1038| [CopyConstructor] void (lambda [] type at line 1038, col. 12)::(unnamed constructor)((lambda [] type at line 1038, col. 12) const&)
 # 1038|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1038, col. 12 &
-# 1038| [MoveConstructor] void (lambda [] type at line 1038, col. 12)::(constructor)((lambda [] type at line 1038, col. 12)&&)
+# 1038| [MoveConstructor] void (lambda [] type at line 1038, col. 12)::(unnamed constructor)((lambda [] type at line 1038, col. 12)&&)
 # 1038|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1038, col. 12 &&
-# 1038| [Constructor] void (lambda [] type at line 1038, col. 12)::(constructor)()
+# 1038| [Constructor] void (lambda [] type at line 1038, col. 12)::(unnamed constructor)()
 # 1038|   params: 
 # 1038| [MemberFunction] void (lambda [] type at line 1038, col. 12)::_FUN()
 # 1038|   params: 
@@ -8801,15 +8801,15 @@ ir.cpp:
 # 1041|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1041, col. 23 &
-# 1041| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23) const&)
+# 1041| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23) const&)
 # 1041|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1041, col. 23 &
-# 1041| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)&&)
+# 1041| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)&&)
 # 1041|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1041, col. 23 &&
-# 1041| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(constructor)()
+# 1041| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(unnamed constructor)()
 # 1041|   params: 
 # 1041| [MemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::_FUN(float)
 # 1041|   params: 
@@ -8836,15 +8836,15 @@ ir.cpp:
 # 1043|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1043, col. 21 &
-# 1043| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21) const&)
+# 1043| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21) const&)
 # 1043|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1043, col. 21 &
-# 1043| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)&&)
+# 1043| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)&&)
 # 1043|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1043, col. 21 &&
-# 1043| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::(constructor)()
+# 1043| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::(unnamed constructor)()
 # 1043|   params: 
 # 1043| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::operator()(float) const
 # 1043|   params: 
@@ -8880,15 +8880,15 @@ ir.cpp:
 # 1045|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1045, col. 21 &
-# 1045| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21) const&)
+# 1045| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21) const&)
 # 1045|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1045, col. 21 &
-# 1045| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)&&)
+# 1045| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)&&)
 # 1045|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1045, col. 21 &&
-# 1045| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::(constructor)()
+# 1045| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::(unnamed constructor)()
 # 1045|   params: 
 # 1045| [Destructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::~<unnamed>()
 # 1045|   params: 
@@ -8932,15 +8932,15 @@ ir.cpp:
 # 1047|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1047, col. 30 &
-# 1047| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30) const&)
+# 1047| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30) const&)
 # 1047|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1047, col. 30 &
-# 1047| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)&&)
+# 1047| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)&&)
 # 1047|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1047, col. 30 &&
-# 1047| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::(constructor)()
+# 1047| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::(unnamed constructor)()
 # 1047|   params: 
 # 1047| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::operator()(float) const
 # 1047|   params: 
@@ -8971,15 +8971,15 @@ ir.cpp:
 # 1049|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1049, col. 30 &
-# 1049| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30) const&)
+# 1049| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30) const&)
 # 1049|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1049, col. 30 &
-# 1049| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)&&)
+# 1049| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)&&)
 # 1049|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1049, col. 30 &&
-# 1049| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::(constructor)()
+# 1049| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::(unnamed constructor)()
 # 1049|   params: 
 # 1049| [Destructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::~<unnamed>()
 # 1049|   params: 
@@ -9021,15 +9021,15 @@ ir.cpp:
 # 1051|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1051, col. 32 &
-# 1051| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32) const&)
+# 1051| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32) const&)
 # 1051|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1051, col. 32 &
-# 1051| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)&&)
+# 1051| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)&&)
 # 1051|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1051, col. 32 &&
-# 1051| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::(constructor)()
+# 1051| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::(unnamed constructor)()
 # 1051|   params: 
 # 1051| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::operator()(float) const
 # 1051|   params: 
@@ -9062,15 +9062,15 @@ ir.cpp:
 # 1054|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1054, col. 23 &
-# 1054| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23) const&)
+# 1054| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23) const&)
 # 1054|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1054, col. 23 &
-# 1054| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)&&)
+# 1054| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)&&)
 # 1054|   params: 
 #-----|     0: [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1054, col. 23 &&
-# 1054| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::(constructor)()
+# 1054| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::(unnamed constructor)()
 # 1054|   params: 
 # 1054| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::operator()(float) const
 # 1054|   params: 
