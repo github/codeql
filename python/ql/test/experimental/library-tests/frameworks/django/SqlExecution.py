@@ -10,6 +10,7 @@ def test_plain():
 def test_context():
     with connection.cursor() as cursor:
         cursor.execute("some sql")  # $getSql="some sql"
+        cursor.execute(sql="some sql")  # $getSql="some sql"
 
 
 class User(models.Model):

@@ -9,9 +9,12 @@ private import experimental.semmle.python.Concepts
 
 /**
  * Provides models for the `django` PyPI package.
- * See https://django.palletsprojects.com/en/1.1.x/.
+ * See https://www.djangoproject.com/.
  */
 private module Django {
+  // ---------------------------------------------------------------------------
+  // django
+  // ---------------------------------------------------------------------------
   /** Gets a reference to the `django` module. */
   private DataFlow::Node django(DataFlow::TypeTracker t) {
     t.start() and
@@ -23,21 +26,52 @@ private module Django {
   /** Gets a reference to the `django` module. */
   DataFlow::Node django() { result = django(DataFlow::TypeTracker::end()) }
 
+  /**
+   * Gets a reference to the attribute `attr_name` of the `django` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node django_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["db"] and
+    (
+      t.start() and
+      result = DataFlow::importNode("django" + "." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = DataFlow::importNode("django")
+    )
+    or
+    // Due to bad performance when using normal setup with `django_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        django_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate django_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(django_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `django` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node django_attr(string attr_name) {
+    result = django_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
   /** Provides models for the `django` module. */
   module django {
+    // -------------------------------------------------------------------------
+    // django.db
+    // -------------------------------------------------------------------------
     /** Gets a reference to the `django.db` module. */
-    private DataFlow::Node db(DataFlow::TypeTracker t) {
-      t.start() and
-      result = DataFlow::importNode("django.db")
-      or
-      t.startInAttr("db") and
-      result = django()
-      or
-      exists(DataFlow::TypeTracker t2 | result = db(t2).track(t2, t))
-    }
-
-    /** Gets a reference to the `django.db` module. */
-    DataFlow::Node db() { result = db(DataFlow::TypeTracker::end()) }
+    DataFlow::Node db() { result = django_attr("db") }
 
     /** Provides models for the `django.db` module. */
     module db {
@@ -242,7 +276,9 @@ private module Django {
 
     DbConnectionExecute() { node.getFunction() = django::db::execute().asCfgNode() }
 
-    override DataFlow::Node getSql() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getSql() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("sql")]
+    }
   }
 
   /** A call to the `annotate` function on a model using a `RawSQL` argument. */
