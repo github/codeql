@@ -123,7 +123,8 @@ class ParameterNode extends Node {
     this.(SsaDefinitionNode).getDefinition() instanceof
       ImplicitCapturedParameterNodeImpl::SsaCapturedEntryDefinition or
     this = TInstanceParameterNode(_) or
-    this = TCilParameterNode(_)
+    this = TCilParameterNode(_) or
+    this = TSummaryParameterNode(_, _)
   }
 
   /** Gets the parameter corresponding to this node, if any. */

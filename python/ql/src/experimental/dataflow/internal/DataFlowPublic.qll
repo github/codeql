@@ -26,10 +26,40 @@ newtype TNode =
   TCfgNode(ControlFlowNode node) { isExpressionNode(node) } or
   /** A synthetic node representing the value of an object before a state change */
   TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
-  /** A synthetic node representing the value of an object after a state change */
+  /** A synthetic node representing the value of an object after a state change. */
   TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
-  /** A node representing a global (module-level) variable in a specific module */
-  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() }
+  /** A node representing a global (module-level) variable in a specific module. */
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() } or
+  /**
+   * A node representing the overflow positional arguments to a call.
+   * That is, `call` contains more positional arguments than there are
+   * positional parameters in `callable`. The extra ones are passed as
+   * a tuple to a starred parameter; this synthetic node represents that tuple.
+   */
+  TPosOverflowNode(CallNode call, CallableValue callable) {
+    exists(getPositionalOverflowArg(call, callable, _))
+  } or
+  /**
+   * A node representing the overflow keyword arguments to a call.
+   * That is, `call` contains keyword arguments for keys that do not have
+   * keyword parameters in `callable`. These extra ones are passed as
+   * a dictionary to a doubly starred parameter; this synthetic node
+   * represents that dictionary.
+   */
+  TKwOverflowNode(CallNode call, CallableValue callable) {
+    exists(getKeywordOverflowArg(call, callable, _))
+    or
+    exists(call.getNode().getKwargs()) and
+    callable.getScope().hasKwArg()
+  } or
+  /**
+   * A node representing an unpacked element of a dictionary argument.
+   * That is, `call` contains argument `**{"foo": bar}` which is passed
+   * to parameter `foo` of `callable`.
+   */
+  TKwUnpacked(CallNode call, CallableValue callable, string name) {
+    call_unpacks(call, _, callable, name, _)
+  }
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
@@ -152,6 +182,9 @@ class ParameterNode extends EssaNode {
   }
 
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+
+  /** Gets the `Parameter` this `ParameterNode` represents. */
+  Parameter getParameter() { result = var.(ParameterDefinition).getParameter() }
 }
 
 /**
@@ -235,6 +268,49 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }
 
   override Location getLocation() { result = mod.getLocation() }
+}
+
+/**
+ * The node holding the extra positional arguments to a call. This node is passed as a tuple
+ * to the starred parameter of the callable.
+ */
+class PosOverflowNode extends Node, TPosOverflowNode {
+  CallNode call;
+
+  PosOverflowNode() { this = TPosOverflowNode(call, _) }
+
+  override string toString() { result = "PosOverflowNode for " + call.getNode().toString() }
+
+  override Location getLocation() { result = call.getLocation() }
+}
+
+/**
+ * The node holding the extra keyword arguments to a call. This node is passed as a dictionary
+ * to the doubly starred parameter of the callable.
+ */
+class KwOverflowNode extends Node, TKwOverflowNode {
+  CallNode call;
+
+  KwOverflowNode() { this = TKwOverflowNode(call, _) }
+
+  override string toString() { result = "KwOverflowNode for " + call.getNode().toString() }
+
+  override Location getLocation() { result = call.getLocation() }
+}
+
+/**
+ * The node representing the synthetic argument of a call that is unpacked from a dictionary
+ * argument.
+ */
+class KwUnpacked extends Node, TKwUnpacked {
+  CallNode call;
+  string name;
+
+  KwUnpacked() { this = TKwUnpacked(call, _, name) }
+
+  override string toString() { result = "KwUnpacked " + name }
+
+  override Location getLocation() { result = call.getLocation() }
 }
 
 /**

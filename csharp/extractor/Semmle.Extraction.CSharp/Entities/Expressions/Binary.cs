@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Binary : Expression<BinaryExpressionSyntax>
+    internal class Binary : Expression<BinaryExpressionSyntax>
     {
-        Binary(ExpressionNodeInfo info)
+        private Binary(ExpressionNodeInfo info)
             : base(info.SetKind(GetKind(info.Context, (BinaryExpressionSyntax)info.Node)))
         {
         }
@@ -21,13 +21,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             CreateDeferred(cx, Syntax.Right, this, 1);
         }
 
-        static ExprKind GetKind(Context cx, BinaryExpressionSyntax node)
+        private static ExprKind GetKind(Context cx, BinaryExpressionSyntax node)
         {
             var k = GetBinaryTokenKind(cx, node.OperatorToken.Kind());
             return GetCallType(cx, node).AdjustKind(k);
         }
 
-        static ExprKind GetBinaryTokenKind(Context cx, SyntaxKind kind)
+        private static ExprKind GetBinaryTokenKind(Context cx, SyntaxKind kind)
         {
             switch (kind)
             {

@@ -8,9 +8,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
     /// <summary>
     /// A goto, goto case or goto default.
     /// </summary>
-    class Goto : Statement<GotoStatementSyntax>
+    internal class Goto : Statement<GotoStatementSyntax>
     {
-        static StmtKind GetKind(GotoStatementSyntax node)
+        private static StmtKind GetKind(GotoStatementSyntax node)
         {
             switch (node.CaseOrDefaultKeyword.Kind())
             {
@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             }
         }
 
-        Goto(Context cx, GotoStatementSyntax node, IStatementParentEntity parent, int child)
+        private Goto(Context cx, GotoStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, GetKind(node), parent, child) { }
 
         public static Goto Create(Context cx, GotoStatementSyntax node, IStatementParentEntity parent, int child)

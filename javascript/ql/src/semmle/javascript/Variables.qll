@@ -235,6 +235,8 @@ class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
   override predicate isImpure() { none() }
 
   override Expr getUnderlyingReference() { result = this }
+
+  override string getAPrimaryQlClass() { result = "VarRef" }
 }
 
 /**
@@ -395,7 +397,7 @@ class BindingPattern extends @pattern, Expr {
    *
    * Only the outermost part of a binding pattern can have a type annotation.
    * For instance, in the declaration,
-   * <pre>
+   *<pre>
    * var {x}: Point
    * </pre>
    * the variable `x` has no type annotation, whereas the pattern `{x}` has the type
@@ -450,6 +452,8 @@ class VarDecl extends @var_decl, VarRef, LexicalDecl {
     or
     exists(BindingPattern p | this = p.getABindingVarRef() and p.isLValue())
   }
+
+  override string getAPrimaryQlClass() { result = "VarDecl" }
 }
 
 /**
@@ -520,6 +524,8 @@ class ArrayPattern extends DestructuringPattern, @array_pattern {
   override VarRef getABindingVarRef() {
     result = getAnElement().(BindingPattern).getABindingVarRef()
   }
+
+  override string getAPrimaryQlClass() { result = "ArrayPattern" }
 }
 
 /**
@@ -559,6 +565,8 @@ class ObjectPattern extends DestructuringPattern, @object_pattern {
     result = getAPropertyPattern().getValuePattern().(BindingPattern).getABindingVarRef() or
     result = getRest().(BindingPattern).getABindingVarRef()
   }
+
+  override string getAPrimaryQlClass() { result = "ObjectPattern" }
 }
 
 /**
@@ -617,6 +625,8 @@ class PropertyPattern extends @property, ASTNode {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getNameExpr().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "PropertyPattern" }
 }
 
 /**
@@ -653,6 +663,8 @@ class VariableDeclarator extends Expr, @var_declarator {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getBindingPattern().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "VariableDeclarator" }
 }
 
 /**
@@ -783,6 +795,8 @@ class Parameter extends BindingPattern {
    * ```
    */
   predicate isDeclaredOptional() { is_optional_parameter_declaration(this) }
+
+  override string getAPrimaryQlClass() { result = "Parameter" }
 }
 
 /**
@@ -824,6 +838,8 @@ class SimpleParameter extends Parameter, VarDecl {
       paramName <= tagName
     )
   }
+
+  override string getAPrimaryQlClass() { result = "SimpleParameter" }
 }
 
 /**
@@ -844,6 +860,8 @@ class FieldParameter extends SimpleParameter {
 
   /** Gets the field induced by this parameter. */
   ParameterField getField() { result.getParameter() = this }
+
+  override string getAPrimaryQlClass() { result = "FieldParameter" }
 }
 
 /**

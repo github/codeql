@@ -379,7 +379,8 @@ private predicate cls_descriptor(ClassObjectInternal cls, string name, ObjectInt
 /** A class representing an instance of the `super` class */
 class SuperInstance extends TSuperInstance, ObjectInternal {
   override string toString() {
-    result = "super(" + this.getStartClass().toString() + ", " + this.getSelf().toString() + ")"
+    result =
+      "super(" + this.getStartClass().toString() + ", " + bounded_toString(this.getSelf()) + ")"
   }
 
   override boolean booleanValue() { result = true }

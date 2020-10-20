@@ -1,7 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 using System.IO;
@@ -9,27 +8,28 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    abstract class ObjectCreation<SyntaxNode> : Expression<SyntaxNode> where SyntaxNode : ExpressionSyntax
+    internal abstract class ObjectCreation<TExpressionSyntax> : Expression<TExpressionSyntax>
+        where TExpressionSyntax : ExpressionSyntax
     {
         protected ObjectCreation(ExpressionNodeInfo info)
             : base(info) { }
     }
 
     // new Foo(...) { ... }.
-    class ExplicitObjectCreation : ObjectCreation<ObjectCreationExpressionSyntax>
+    internal class ExplicitObjectCreation : ObjectCreation<ObjectCreationExpressionSyntax>
     {
-        static bool IsDynamicObjectCreation(Context cx, ObjectCreationExpressionSyntax node)
+        private static bool IsDynamicObjectCreation(Context cx, ObjectCreationExpressionSyntax node)
         {
             return node.ArgumentList != null && node.ArgumentList.Arguments.Any(arg => IsDynamic(cx, arg.Expression));
         }
 
-        static ExprKind GetKind(Context cx, ObjectCreationExpressionSyntax node)
+        private static ExprKind GetKind(Context cx, ObjectCreationExpressionSyntax node)
         {
             var si = cx.GetModel(node).GetSymbolInfo(node.Type);
             return Entities.Type.IsDelegate(si.Symbol as INamedTypeSymbol) ? ExprKind.EXPLICIT_DELEGATE_CREATION : ExprKind.OBJECT_CREATION;
         }
 
-        ExplicitObjectCreation(ExpressionNodeInfo info)
+        private ExplicitObjectCreation(ExpressionNodeInfo info)
             : base(info.SetKind(GetKind(info.Context, (ObjectCreationExpressionSyntax)info.Node))) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new ExplicitObjectCreation(info).TryPopulate();
@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             TypeMention.Create(cx, Syntax.Type, this, Type);
         }
 
-        static SyntaxToken? GetDynamicName(CSharpSyntaxNode name)
+        private static SyntaxToken? GetDynamicName(CSharpSyntaxNode name)
         {
             switch (name.Kind())
             {
@@ -94,7 +94,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class ImplicitObjectCreation : ObjectCreation<AnonymousObjectCreationExpressionSyntax>
+    internal class ImplicitObjectCreation : ObjectCreation<AnonymousObjectCreationExpressionSyntax>
     {
         public ImplicitObjectCreation(ExpressionNodeInfo info)
             : base(info.SetKind(ExprKind.OBJECT_CREATION)) { }
@@ -113,7 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
             var child = 0;
 
-            Expression objectInitializer = Syntax.Initializers.Any() ?
+            var objectInitializer = Syntax.Initializers.Any() ?
                 new Expression(new ExpressionInfo(cx, Type, Location, ExprKind.OBJECT_INIT, this, -1, false, null)) :
                 null;
 

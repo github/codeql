@@ -7,22 +7,30 @@
 | A.java:10:22:10:28 | taint(...) | A.java:15:9:15:40 | format(...) |
 | A.java:10:22:10:28 | taint(...) | A.java:15:9:15:40 | new ..[] { .. } |
 | A.java:10:22:10:28 | taint(...) | A.java:15:31:15:33 | bad |
-| A.java:20:22:20:28 | taint(...) | A.java:20:22:20:28 | taint(...) |
-| A.java:20:22:20:28 | taint(...) | A.java:24:9:24:9 | f [post update] |
-| A.java:20:22:20:28 | taint(...) | A.java:24:9:24:27 | format(...) |
-| A.java:20:22:20:28 | taint(...) | A.java:24:9:24:27 | new ..[] { .. } |
-| A.java:20:22:20:28 | taint(...) | A.java:24:24:24:26 | bad |
-| A.java:20:22:20:28 | taint(...) | A.java:25:9:25:9 | f |
-| A.java:29:22:29:28 | taint(...) | A.java:29:22:29:28 | taint(...) |
-| A.java:29:22:29:28 | taint(...) | A.java:33:9:33:10 | sb |
-| A.java:29:22:29:28 | taint(...) | A.java:33:9:33:21 | toString(...) |
-| A.java:29:22:29:28 | taint(...) | A.java:34:9:34:9 | f [post update] |
-| A.java:29:22:29:28 | taint(...) | A.java:34:9:34:27 | format(...) |
-| A.java:29:22:29:28 | taint(...) | A.java:34:9:34:27 | new ..[] { .. } |
-| A.java:29:22:29:28 | taint(...) | A.java:34:24:34:26 | bad |
-| A.java:29:22:29:28 | taint(...) | A.java:35:9:35:10 | sb |
-| A.java:29:22:29:28 | taint(...) | A.java:35:9:35:21 | toString(...) |
-| A.java:39:22:39:28 | taint(...) | A.java:39:22:39:28 | taint(...) |
-| A.java:39:22:39:28 | taint(...) | A.java:42:18:42:20 | bad |
-| A.java:39:22:39:28 | taint(...) | A.java:43:9:43:46 | new ..[] { .. } |
-| A.java:39:22:39:28 | taint(...) | A.java:43:43:43:45 | bad |
+| A.java:10:22:10:28 | taint(...) | A.java:17:9:17:105 | format(...) |
+| A.java:10:22:10:28 | taint(...) | A.java:17:9:17:105 | new ..[] { .. } |
+| A.java:10:22:10:28 | taint(...) | A.java:17:102:17:104 | bad |
+| A.java:21:22:21:28 | taint(...) | A.java:21:22:21:28 | taint(...) |
+| A.java:21:22:21:28 | taint(...) | A.java:25:9:25:9 | f [post update] |
+| A.java:21:22:21:28 | taint(...) | A.java:25:9:25:27 | format(...) |
+| A.java:21:22:21:28 | taint(...) | A.java:25:9:25:27 | new ..[] { .. } |
+| A.java:21:22:21:28 | taint(...) | A.java:25:24:25:26 | bad |
+| A.java:21:22:21:28 | taint(...) | A.java:26:9:26:9 | f |
+| A.java:21:22:21:28 | taint(...) | A.java:26:9:26:20 | toString(...) |
+| A.java:30:22:30:28 | taint(...) | A.java:30:22:30:28 | taint(...) |
+| A.java:30:22:30:28 | taint(...) | A.java:34:9:34:10 | sb |
+| A.java:30:22:30:28 | taint(...) | A.java:34:9:34:21 | toString(...) |
+| A.java:30:22:30:28 | taint(...) | A.java:35:9:35:9 | f [post update] |
+| A.java:30:22:30:28 | taint(...) | A.java:35:9:35:27 | format(...) |
+| A.java:30:22:30:28 | taint(...) | A.java:35:9:35:27 | new ..[] { .. } |
+| A.java:30:22:30:28 | taint(...) | A.java:35:24:35:26 | bad |
+| A.java:30:22:30:28 | taint(...) | A.java:36:9:36:10 | sb |
+| A.java:30:22:30:28 | taint(...) | A.java:36:9:36:21 | toString(...) |
+| A.java:40:22:40:28 | taint(...) | A.java:40:22:40:28 | taint(...) |
+| A.java:40:22:40:28 | taint(...) | A.java:43:9:43:10 | sb [post update] |
+| A.java:40:22:40:28 | taint(...) | A.java:43:9:43:22 | append(...) |
+| A.java:40:22:40:28 | taint(...) | A.java:43:19:43:21 | bad |
+| A.java:40:22:40:28 | taint(...) | A.java:45:9:45:25 | new Formatter(...) |
+| A.java:40:22:40:28 | taint(...) | A.java:45:9:45:38 | format(...) |
+| A.java:40:22:40:28 | taint(...) | A.java:45:9:45:49 | toString(...) |
+| A.java:40:22:40:28 | taint(...) | A.java:45:23:45:24 | sb |

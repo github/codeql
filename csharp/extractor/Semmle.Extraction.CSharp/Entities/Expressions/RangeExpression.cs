@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class RangeExpression : Expression<RangeExpressionSyntax>
+    internal class RangeExpression : Expression<RangeExpressionSyntax>
     {
         private RangeExpression(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.RANGE))
         {

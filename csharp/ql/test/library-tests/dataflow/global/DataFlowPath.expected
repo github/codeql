@@ -228,7 +228,8 @@ edges
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return : String | Splitting.cs:11:19:11:19 | access to local variable x |
 | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return : String |
 | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return : String |
-| Splitting.cs:21:9:21:11 | value : String | Splitting.cs:21:28:21:32 | access to parameter value |
+| Splitting.cs:21:9:21:11 | value : String | Splitting.cs:21:28:21:32 | access to parameter value : String |
+| Splitting.cs:21:28:21:32 | access to parameter value : String | Splitting.cs:21:21:21:33 | call to method Return |
 | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:30:17:30:23 | [b (line 24): false] access to parameter tainted : String |
 | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:30:17:30:23 | [b (line 24): true] access to parameter tainted : String |
 | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:31:19:31:25 | [b (line 24): false] access to parameter tainted : String |
@@ -436,7 +437,8 @@ nodes
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | semmle.label | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x | semmle.label | access to local variable x |
 | Splitting.cs:21:9:21:11 | value : String | semmle.label | value : String |
-| Splitting.cs:21:28:21:32 | access to parameter value | semmle.label | access to parameter value |
+| Splitting.cs:21:21:21:33 | call to method Return | semmle.label | call to method Return |
+| Splitting.cs:21:28:21:32 | access to parameter value : String | semmle.label | access to parameter value : String |
 | Splitting.cs:24:28:24:34 | tainted : String | semmle.label | tainted : String |
 | Splitting.cs:30:17:30:23 | [b (line 24): false] access to parameter tainted : String | semmle.label | [b (line 24): false] access to parameter tainted : String |
 | Splitting.cs:30:17:30:23 | [b (line 24): true] access to parameter tainted : String | semmle.label | [b (line 24): true] access to parameter tainted : String |
@@ -516,5 +518,5 @@ nodes
 | GlobalDataFlow.cs:287:15:287:24 | access to parameter sinkParam7 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:287:15:287:24 | access to parameter sinkParam7 | access to parameter sinkParam7 |
 | GlobalDataFlow.cs:314:15:314:24 | access to parameter sinkParam8 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:314:15:314:24 | access to parameter sinkParam8 | access to parameter sinkParam8 |
 | GlobalDataFlow.cs:320:15:320:24 | access to parameter sinkParam9 | GlobalDataFlow.cs:208:46:208:59 | "taint source" : String | GlobalDataFlow.cs:320:15:320:24 | access to parameter sinkParam9 | access to parameter sinkParam9 |
-| Splitting.cs:21:28:21:32 | access to parameter value | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:21:28:21:32 | access to parameter value | access to parameter value |
 | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 | access to property SinkProperty0 |
+| Splitting.cs:21:21:21:33 | call to method Return | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:21:21:21:33 | call to method Return | call to method Return |

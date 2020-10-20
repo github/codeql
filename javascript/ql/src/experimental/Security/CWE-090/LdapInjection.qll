@@ -14,5 +14,12 @@ module LdapInjection {
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(LdapjsParseFilter filter |
+        pred = filter.getArgument(0) and
+        succ = filter
+      )
+    }
   }
 }

@@ -30,7 +30,7 @@ namespace Semmle.Extraction
         /// Writes the unique identifier of this entitiy to a trap file.
         /// </summary>
         /// <param name="trapFile">The trapfile to write to.</param>
-        void WriteId(TextWriter writrapFileter);
+        void WriteId(TextWriter trapFile);
 
         /// <summary>
         /// Writes the quoted identifier of this entity,
@@ -98,13 +98,13 @@ namespace Semmle.Extraction
     /// <summary>
     /// A factory for creating cached entities.
     /// </summary>
-    /// <typeparam name="Initializer">The type of the initializer.</typeparam>
-    public interface ICachedEntityFactory<Initializer, Entity> where Entity : ICachedEntity
+    /// <typeparam name="TInit">The type of the initializer.</typeparam>
+    public interface ICachedEntityFactory<in TInit, out TEntity> where TEntity : ICachedEntity
     {
         /// <summary>
         /// Initializes the entity, but does not generate any trap code.
         /// </summary>
-        Entity Create(Context cx, Initializer init);
+        TEntity Create(Context cx, TInit init);
     }
 
     public static class ICachedEntityFactoryExtensions
@@ -113,29 +113,29 @@ namespace Semmle.Extraction
         /// Creates and populates a new entity, or returns the existing one from the cache,
         /// based on the supplied cache key.
         /// </summary>
-        /// <typeparam name="Type">The type used to construct the entity.</typeparam>
-        /// <typeparam name="Entity">The type of the entity to create.</typeparam>
+        /// <typeparam name="TInit">The type used to construct the entity.</typeparam>
+        /// <typeparam name="TEntity">The type of the entity to create.</typeparam>
         /// <param name="factory">The factory used to construct the entity.</param>
         /// <param name="cx">The extractor context.</param>
         /// <param name="cacheKey">The key used for caching.</param>
         /// <param name="init">The initializer for the entity.</param>
         /// <returns>The entity.</returns>
-        public static Entity CreateEntity<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, object cacheKey, Type init)
-            where Entity : ICachedEntity => cx.CreateEntity(factory, cacheKey, init);
+        public static TEntity CreateEntity<TInit, TEntity>(this ICachedEntityFactory<TInit, TEntity> factory, Context cx, object cacheKey, TInit init)
+            where TEntity : ICachedEntity => cx.CreateEntity(factory, cacheKey, init);
 
         /// <summary>
         /// Creates and populates a new entity from an `ISymbol`, or returns the existing one
         /// from the cache.
         /// </summary>
-        /// <typeparam name="Type">The type used to construct the entity.</typeparam>
-        /// <typeparam name="Entity">The type of the entity to create.</typeparam>
+        /// <typeparam name="TSymbol">The type used to construct the entity.</typeparam>
+        /// <typeparam name="TEntity">The type of the entity to create.</typeparam>
         /// <param name="factory">The factory used to construct the entity.</param>
         /// <param name="cx">The extractor context.</param>
         /// <param name="init">The initializer for the entity.</param>
         /// <returns>The entity.</returns>
-        public static Entity CreateEntityFromSymbol<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
-            where Type : ISymbol
-            where Entity : ICachedEntity => cx.CreateEntityFromSymbol(factory, init);
+        public static TEntity CreateEntityFromSymbol<TSymbol, TEntity>(this ICachedEntityFactory<TSymbol, TEntity> factory, Context cx, TSymbol init)
+            where TSymbol : ISymbol
+            where TEntity : ICachedEntity => cx.CreateEntityFromSymbol(factory, init);
 
         public static void DefineLabel(this IEntity entity, TextWriter trapFile, IExtractor extractor)
         {
@@ -166,13 +166,11 @@ namespace Semmle.Extraction
         /// <returns>The debug string.</returns>
         public static string GetDebugLabel(this IEntity entity)
         {
-            using (var writer = new StringWriter())
-            {
-                writer.WriteLabel(entity.Label.Value);
-                writer.Write('=');
-                entity.WriteQuotedId(writer);
-                return writer.ToString();
-            }
+            using var writer = new StringWriter();
+            writer.WriteLabel(entity.Label.Value);
+            writer.Write('=');
+            entity.WriteQuotedId(writer);
+            return writer.ToString();
         }
 
     }

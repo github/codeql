@@ -63,12 +63,12 @@ namespace Semmle.Extraction.CIL
             cx2.Extract(this);
         }
 
-        public readonly Context cx;
+        public Context Cx { get; }
 
         protected UnlabelledEntity(Context cx)
         {
-            this.cx = cx;
-            cx.cx.AddFreshLabel(this);
+            this.Cx = cx;
+            cx.Cx.AddFreshLabel(this);
         }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
@@ -101,20 +101,18 @@ namespace Semmle.Extraction.CIL
             cx2.Populate(this);
         }
 
-        public readonly Context cx;
+        public Context Cx { get; }
 
         protected LabelledEntity(Context cx)
         {
-            this.cx = cx;
+            this.Cx = cx;
         }
 
         public override string ToString()
         {
-            using (var writer = new StringWriter())
-            {
-                WriteQuotedId(writer);
-                return writer.ToString();
-            }
+            using var writer = new StringWriter();
+            WriteQuotedId(writer);
+            return writer.ToString();
         }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
@@ -123,9 +121,9 @@ namespace Semmle.Extraction.CIL
     /// <summary>
     /// A tuple that is an extraction product.
     /// </summary>
-    class Tuple : IExtractionProduct
+    internal class Tuple : IExtractionProduct
     {
-        readonly Extraction.Tuple tuple;
+        private readonly Extraction.Tuple tuple;
 
         public Tuple(string name, params object[] args)
         {
@@ -134,7 +132,7 @@ namespace Semmle.Extraction.CIL
 
         public void Extract(Context cx)
         {
-            cx.cx.Emit(tuple);
+            cx.Cx.Emit(tuple);
         }
 
         public override string ToString() => tuple.ToString();

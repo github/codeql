@@ -7,9 +7,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class LocalFunction : Statement<LocalFunctionStatementSyntax>
+    internal class LocalFunction : Statement<LocalFunctionStatementSyntax>
     {
-        LocalFunction(Context cx, LocalFunctionStatementSyntax node, IStatementParentEntity parent, int child)
+        private LocalFunction(Context cx, LocalFunctionStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.LOCAL_FUNCTION, parent, child, cx.Create(node.GetLocation())) { }
 
         public static LocalFunction Create(Context cx, LocalFunctionStatementSyntax node, IStatementParentEntity parent, int child)
@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         /// <summary>
         /// Gets the IMethodSymbol for this local function statement.
         /// </summary>
-        IMethodSymbol Symbol
+        private IMethodSymbol Symbol
         {
             get
             {
@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         /// <summary>
         /// Gets the function defined by this local statement.
         /// </summary>
-        Entities.LocalFunction Function => Entities.LocalFunction.Create(cx, Symbol);
+        private Entities.LocalFunction Function => Entities.LocalFunction.Create(cx, Symbol);
 
         protected override void PopulateStatement(TextWriter trapFile)
         {

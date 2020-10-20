@@ -5,20 +5,20 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Switch : Statement<SwitchStatementSyntax>
+    internal class Switch : Statement<SwitchStatementSyntax>
     {
-        static readonly object NullLabel = new object();
-        public static readonly object DefaultLabel = new object();
+        private static readonly object nullLabel = new object();
+        public static object DefaultLabel { get; } = new object();
 
         // Sometimes, the literal "null" is used as a label.
         // This is inconveniently represented by the "null" object.
         // This cannot be stored in a Dictionary<>, so substitute an object which can be.
         public static object LabelForValue(object label)
         {
-            return label ?? NullLabel;
+            return label ?? nullLabel;
         }
 
-        Switch(Context cx, SwitchStatementSyntax node, IStatementParentEntity parent, int child)
+        private Switch(Context cx, SwitchStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.SWITCH, parent, child) { }
 
         public static Switch Create(Context cx, SwitchStatementSyntax node, IStatementParentEntity parent, int child)
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         protected override void PopulateStatement(TextWriter trapFile)
         {
             Expression.Create(cx, Stmt.Expression, this, 0);
-            int childIndex = 0;
+            var childIndex = 0;
 
             foreach (var section in Stmt.Sections)
             {

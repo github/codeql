@@ -79,6 +79,8 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
 
   /** Holds if this is declared with the `type` keyword, so it only imports types. */
   predicate isTypeOnly() { has_type_keyword(this) }
+
+  override string getAPrimaryQlClass() { result = "ImportDeclaration" }
 }
 
 /** A literal path expression appearing in an `import` declaration. */
@@ -129,6 +131,8 @@ class ImportSpecifier extends Expr, @import_specifier {
 
   /** Gets the local variable into which this specifier imports. */
   VarDecl getLocal() { result = getChildExpr(1) }
+
+  override string getAPrimaryQlClass() { result = "ImportSpecifier" }
 }
 
 /**
@@ -262,6 +266,8 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
 
   /** Holds if is declared with the `type` keyword, so only types are exported. */
   predicate isTypeOnly() { has_type_keyword(this) }
+
+  override string getAPrimaryQlClass() { result = "ExportDeclaration" }
 }
 
 /**
@@ -511,6 +517,8 @@ class ExportSpecifier extends Expr, @exportspecifier {
    * an exported name since it does not export a unique symbol.
    */
   string getExportedName() { result = getExported().getName() }
+
+  override string getAPrimaryQlClass() { result = "ExportSpecifier" }
 }
 
 /**
