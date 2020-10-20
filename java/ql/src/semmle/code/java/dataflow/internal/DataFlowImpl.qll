@@ -280,6 +280,7 @@ private module Stage1 {
 
   class Cc = boolean;
 
+  /* Begin: Stage 1 logic. */
   /**
    * Holds if `node` is reachable from a source in the configuration `config`.
    *
@@ -303,13 +304,13 @@ private module Stage1 {
       )
       or
       exists(Node mid |
-        fwdFlow(mid, config) and
+        fwdFlow(mid, _, config) and
         jumpStep(mid, node, config) and
         cc = false
       )
       or
       exists(Node mid |
-        fwdFlow(mid, config) and
+        fwdFlow(mid, _, config) and
         additionalJumpStep(mid, node, config) and
         cc = false
       )
@@ -331,7 +332,7 @@ private module Stage1 {
       or
       // flow into a callable
       exists(Node arg |
-        fwdFlow(arg, config) and
+        fwdFlow(arg, _, config) and
         viableParamArg(_, node, arg) and
         cc = true
       )
@@ -559,6 +560,7 @@ private module Stage1 {
 
   pragma[nomagic]
   predicate revFlow(Node node, Configuration config) { revFlow(node, _, config) }
+  /* End: Stage 1 logic. */
 }
 
 bindingset[result, b]
@@ -747,6 +749,7 @@ private module Stage2 {
 
   class Cc = boolean;
 
+  /* Begin: Stage 2 logic. */
   /**
    * Holds if `node` is reachable from a source in the configuration `config`.
    * The Boolean `ap` records whether the tracked value is stored into a
@@ -756,9 +759,7 @@ private module Stage2 {
    * argument in a call, and if so, `argAp` records whether the tracked
    * value was stored into a field of the argument.
    */
-  private predicate fwdFlow(
-    Node node, Cc cc, ApOption argAp, Ap ap, Configuration config
-  ) {
+  private predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     Stage1::revFlow(node, config) and
     config.isSource(node) and
     cc = false and
@@ -840,9 +841,7 @@ private module Stage2 {
   }
 
   pragma[nomagic]
-  private predicate fwdFlowRead(
-    Content c, Node node, Cc cc, ApOption argAp, Configuration config
-  ) {
+  private predicate fwdFlowRead(Content c, Node node, Cc cc, ApOption argAp, Configuration config) {
     exists(Node mid |
       fwdFlow(mid, cc, argAp, true, config) and
       read(mid, c, node, config)
@@ -851,8 +850,7 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowIn(
-    DataFlowCall call, ParameterNode p, Cc cc, ApOption argAp, Ap ap,
-    Configuration config
+    DataFlowCall call, ParameterNode p, Cc cc, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ArgumentNode arg, boolean allowsFieldFlow |
       fwdFlow(arg, cc, argAp, ap, config) and
@@ -864,8 +862,7 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node out, Cc cc, ApOption argAp, Ap ap,
-    Configuration config
+    DataFlowCall call, Node out, Cc cc, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow |
       fwdFlow(ret, cc, argAp, ap, config) and
@@ -904,9 +901,7 @@ private module Stage2 {
    * the enclosing callable in order to reach a sink, and if so, `returnAp`
    * records whether a field must be read from the returned value.
    */
-  predicate revFlow(
-    Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
-  ) {
+  predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
     fwdFlow(node, _, _, false, config) and
     config.isSink(node) and
     toReturn = false and
@@ -1070,6 +1065,7 @@ private module Stage2 {
   }
 
   predicate revFlow(Node node, Configuration config) { revFlow(node, _, _, _, config) }
+  /* End: Stage 2 logic. */
 }
 
 pragma[nomagic]
@@ -1237,6 +1233,7 @@ private module Stage3 {
 
   class Cc = boolean;
 
+  /* Begin: Stage 3 logic. */
   /**
    * Holds if `node` is reachable with access path front `ap` from a
    * source in the configuration `config`.
@@ -1554,6 +1551,7 @@ private module Stage3 {
       fwdFlow(ret, true, TAccessPathFrontSome(_), ap, config)
     )
   }
+  /* End: Stage 3 logic. */
 }
 
 /**
@@ -1768,6 +1766,7 @@ private module Stage4 {
 
   class Cc = CallContext;
 
+  /* Begin: Stage 4 logic. */
   /**
    * Holds if `node` is reachable with approximate access path `ap` from a source
    * in the configuration `config`.
@@ -1904,8 +1903,8 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate fwdFlowRead(
-    Node node, AccessPathFrontHead apf0, Ap ap0, AccessPathFront apf, Cc cc,
-    ApOption argAp, Configuration config
+    Node node, AccessPathFrontHead apf0, Ap ap0, AccessPathFront apf, Cc cc, ApOption argAp,
+    Configuration config
   ) {
     exists(Node mid, TypedContent tc |
       fwdFlowRead0(mid, tc, apf0, ap0, node, cc, argAp, config) and
@@ -1926,8 +1925,8 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate fwdFlowIn(
-    DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp,
-    AccessPathFront apf, Ap ap, Configuration config
+    DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp, AccessPathFront apf,
+    Ap ap, Configuration config
   ) {
     exists(ArgumentNode arg, boolean allowsFieldFlow, DataFlowCallable c |
       fwdFlow(arg, outercc, argAp, apf, ap, config) and
@@ -2152,6 +2151,7 @@ private module Stage4 {
   }
 
   predicate revFlow(Node n, Configuration config) { revFlow(n, _, _, _, config) }
+  /* End: Stage 4 logic. */
 }
 
 bindingset[conf, result]
