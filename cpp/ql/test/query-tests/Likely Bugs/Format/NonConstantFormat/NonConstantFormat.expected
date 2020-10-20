@@ -18,3 +18,4 @@
 | test.cpp:87:12:87:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | test.cpp:92:12:92:18 | ++ ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | test.cpp:109:12:109:24 | new[] | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:129:20:129:26 | access to array | The format string argument to sprintf should be constant to prevent security issues and other potential errors. |
