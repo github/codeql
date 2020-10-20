@@ -1,3 +1,11 @@
+capitalize
+| X | X |
+| X | x |
+| XX | XX |
+| XX | xX |
+| Xx | Xx |
+| Xx | xx |
+describeExpression
 | tst.js:1:1:15:2 | (functi ... !'';\\n}) | expression |
 | tst.js:1:2:15:1 | functio ...  !'';\\n} | expression |
 | tst.js:2:5:2:5 | v | use of variable 'v' |
@@ -34,3 +42,10 @@
 | tst.js:13:7:13:9 | 'x' | expression |
 | tst.js:14:5:14:7 | !'' | negation |
 | tst.js:14:6:14:7 | '' | expression |
+test_pluralize
+| x | 1 |
+| xs | 0 |
+| xs | 2 |
+| xs | -1 |
+#select
+| y |  | X | XX | XXy |
