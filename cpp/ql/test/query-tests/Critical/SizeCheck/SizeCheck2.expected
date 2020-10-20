@@ -6,3 +6,4 @@
 | test.c:17:20:17:25 | call to malloc | Allocated memory (5 bytes) is not a multiple of the size of 'double' (8 bytes). |
 | test.c:32:19:32:24 | call to malloc | Allocated memory (2 bytes) is not a multiple of the size of 'float' (4 bytes). |
 | test.c:33:20:33:25 | call to malloc | Allocated memory (4 bytes) is not a multiple of the size of 'double' (8 bytes). |
+| test.c:59:15:59:20 | call to malloc | Allocated memory (8 bytes) is not a multiple of the size of 'MyUnion' (128 bytes). |
