@@ -10941,14 +10941,27 @@ ir.cpp:
 # 1398|           expr: [FunctionCall] call to returnValue
 # 1398|               Type = [Class] copy_constructor
 # 1398|               ValueCategory = prvalue
-# 1400|     7: [ExprStmt] ExprStmt
-# 1400|       0: [TemporaryObjectExpr] temporary object
-# 1400|           Type = [Class] copy_constructor
-# 1400|           ValueCategory = prvalue(load)
-# 1400|         expr: [FunctionCall] call to defaultConstruct
-# 1400|             Type = [Class] copy_constructor
-# 1400|             ValueCategory = prvalue
-# 1401|     8: [ReturnStmt] return ...
+# 1399|     7: [ExprStmt] ExprStmt
+# 1399|       0: [TemporaryObjectExpr] temporary object
+# 1399|           Type = [Class] copy_constructor
+# 1399|           ValueCategory = prvalue(load)
+# 1399|         expr: [FunctionCall] call to defaultConstruct
+# 1399|             Type = [Class] copy_constructor
+# 1399|             ValueCategory = prvalue
+# 1401|     8: [DeclStmt] declaration
+# 1401|       0: [VariableDeclarationEntry] definition of y
+# 1401|           Type = [IntType] int
+# 1401|         init: [Initializer] initializer for y
+# 1401|           expr: [ValueFieldAccess] y
+# 1401|               Type = [IntType] int
+# 1401|               ValueCategory = prvalue
+# 1401|             -1: [TemporaryObjectExpr] temporary object
+# 1401|                 Type = [Class] copy_constructor
+# 1401|                 ValueCategory = prvalue(load)
+# 1401|               expr: [FunctionCall] call to returnValue
+# 1401|                   Type = [Class] copy_constructor
+# 1401|                   ValueCategory = prvalue
+# 1402|     9: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

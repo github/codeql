@@ -21,6 +21,15 @@ notMarkedAsConflated
 wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
+fieldAddressOnNonPointer
+| ir.cpp:1401:45:1401:45 | FieldAddress: y | FieldAddress instruction 'FieldAddress: y' has an object address operand that is not an address, in function '$@'. | ir.cpp:1391:6:1391:31 | void temporary_copy_constructor() | void temporary_copy_constructor() |
+thisArgumentIsNonPointer
+| ir.cpp:1373:14:1373:18 | Call: call to c_str | Call instruction 'Call: call to c_str' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:1365:6:1365:21 | void temporary_string() | void temporary_string() |
+| ir.cpp:1374:27:1374:31 | Call: call to c_str | Call instruction 'Call: call to c_str' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:1365:6:1365:21 | void temporary_string() | void temporary_string() |
+| ir.cpp:1385:23:1385:28 | Call: call to method | Call instruction 'Call: call to method' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:1379:6:1379:30 | void temporary_destructor_only() | void temporary_destructor_only() |
+| ir.cpp:1386:36:1386:41 | Call: call to method | Call instruction 'Call: call to method' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:1379:6:1379:30 | void temporary_destructor_only() | void temporary_destructor_only() |
+| ir.cpp:1397:24:1397:29 | Call: call to method | Call instruction 'Call: call to method' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:1391:6:1391:31 | void temporary_copy_constructor() | void temporary_copy_constructor() |
+| ir.cpp:1398:37:1398:42 | Call: call to method | Call instruction 'Call: call to method' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:1391:6:1391:31 | void temporary_copy_constructor() | void temporary_copy_constructor() |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

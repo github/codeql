@@ -1328,7 +1328,7 @@ T defaultConstruct() {
 }
 
 class constructor_only {
-private:
+public:
     int x;
 
 public:
@@ -1336,7 +1336,7 @@ public:
 };
 
 class copy_constructor {
-private:
+public:
     int y;
 
 public:
@@ -1396,8 +1396,9 @@ void temporary_copy_constructor() {
     acceptValue(d);
     copy_constructor().method();
     returnValue<copy_constructor>().method();
-
     defaultConstruct<copy_constructor>();
+
+    int y = returnValue<copy_constructor>().y;
 }
 
 // semmle-extractor-options: -std=c++17 --clang
