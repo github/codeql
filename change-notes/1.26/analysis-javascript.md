@@ -58,3 +58,5 @@
 
 ## Changes to libraries
 * The predicate `TypeAnnotation.hasQualifiedName` now works in more cases when the imported library was not present during extraction.
+* The class `DomBasedXss::Configuration` has been deprecated, as it has been split into `DomBasedXss::HtmlInjectionConfiguration` and `DomBasedXss::JQueryHtmlOrSelectorInjectionConfiguration`. Unless specifically working with jQuery sinks, uses of that
+class should be replaced with `HtmlInjectionConfiguration`.
