@@ -7,3 +7,4 @@
 | tst.js:22:15:22:19 | thing | Missing await. The value 'thing' is always a promise. |
 | tst.js:25:13:25:17 | thing | Missing await. The value 'thing' is always a promise. |
 | tst.js:48:12:48:16 | thing | Missing await. The value 'thing' is always a promise. |
+| tst.js:71:16:71:25 | getThing() | Missing await. The call to 'getThing' always returns a promise. |
