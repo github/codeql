@@ -44,16 +44,21 @@ predicate baseType(Allocation alloc, Type base) {
   )
 }
 
+predicate decideOnSize(Type t, int size) {
+  // If the codebase has more than one type with the same name, it can have more than one size.
+  size = min(t.getSize())
+}
+
 from Allocation alloc, Type base, int basesize, int allocated
 where
   baseType(alloc, base) and
   allocated = alloc.getSize() and
+  decideOnSize(base, basesize) and
   // If the codebase has more than one type with the same name, check if any matches
   not exists(int size | base.getSize() = size |
     size = 0 or
     (allocated / size) * size = allocated
-  ) and
-  basesize = min(base.getSize())
+  ) 
 select alloc,
   "Allocated memory (" + allocated.toString() + " bytes) is not a multiple of the size of '" +
     base.getName() + "' (" + basesize.toString() + " bytes)."
