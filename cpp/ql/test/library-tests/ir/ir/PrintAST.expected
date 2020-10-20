@@ -6010,10 +6010,13 @@ ir.cpp:
 #  715|         Type = [TemplateParameter] V
 #  715|   body: [BlockStmt] { ... }
 #  716|     0: [ReturnStmt] return ...
-#  716|       0: [Literal] 0
+#  716|       0: [TemporaryObjectExpr] temporary object
 #  716|           Type = [TemplateParameter] T
-#  716|           Value = [Literal] 0
-#  716|           ValueCategory = prvalue
+#  716|           ValueCategory = prvalue(load)
+#  716|         expr: [Literal] 0
+#  716|             Type = [TemplateParameter] T
+#  716|             Value = [Literal] 0
+#  716|             ValueCategory = prvalue
 #  715| [MemberFunction,TemplateFunction] long Outer<long>::Func<U, V>(U, V)
 #  715|   params: 
 #  715|     0: [Parameter] x
@@ -10524,6 +10527,14 @@ ir.cpp:
 # 1322|                 Type = [IntPointerType] int *
 # 1322|                 ValueCategory = prvalue(load)
 # 1323|     1: [ReturnStmt] return ...
+# 1326| [FunctionTemplateInstantiation,TopLevelFunction] Point defaultConstruct<Point>()
+# 1326|   params: 
+# 1326|   body: [BlockStmt] { ... }
+# 1327|     0: [ReturnStmt] return ...
+# 1327|       0: [Literal] 0
+# 1327|           Type = [Struct] Point
+# 1327|           Value = [Literal] 0
+# 1327|           ValueCategory = prvalue
 # 1326| [FunctionTemplateInstantiation,TopLevelFunction] String defaultConstruct<String>()
 # 1326|   params: 
 # 1326|   body: [BlockStmt] { ... }
@@ -10535,10 +10546,13 @@ ir.cpp:
 # 1326|   params: 
 # 1326|   body: [BlockStmt] { ... }
 # 1327|     0: [ReturnStmt] return ...
-# 1327|       0: [Literal] 0
+# 1327|       0: [TemporaryObjectExpr] temporary object
 # 1327|           Type = [TemplateParameter] T
-# 1327|           Value = [Literal] 0
-# 1327|           ValueCategory = prvalue
+# 1327|           ValueCategory = prvalue(load)
+# 1327|         expr: [Literal] 0
+# 1327|             Type = [TemplateParameter] T
+# 1327|             Value = [Literal] 0
+# 1327|             ValueCategory = prvalue
 # 1326| [FunctionTemplateInstantiation,TopLevelFunction] copy_constructor defaultConstruct<copy_constructor>()
 # 1326|   params: 
 # 1326|   body: [BlockStmt] { ... }
@@ -10596,6 +10610,10 @@ ir.cpp:
 # 1351|   params: 
 # 1353| [MemberFunction] void destructor_only::method()
 # 1353|   params: 
+# 1357| [FunctionTemplateInstantiation,TopLevelFunction] void acceptRef<Point>(Point const&)
+# 1357|   params: 
+# 1357|     0: [Parameter] v
+# 1357|         Type = [LValueReferenceType] const Point &
 # 1357| [FunctionTemplateInstantiation,TopLevelFunction] void acceptRef<String>(String const&)
 # 1357|   params: 
 # 1357|     0: [Parameter] v
@@ -10612,6 +10630,10 @@ ir.cpp:
 # 1357|   params: 
 # 1357|     0: [Parameter] v
 # 1357|         Type = [LValueReferenceType] const destructor_only &
+# 1360| [FunctionTemplateInstantiation,TopLevelFunction] void acceptValue<Point>(Point)
+# 1360|   params: 
+# 1360|     0: [Parameter] v
+# 1360|         Type = [Struct] Point
 # 1360| [FunctionTemplateInstantiation,TopLevelFunction] void acceptValue<String>(String)
 # 1360|   params: 
 # 1360|     0: [Parameter] v
@@ -10628,6 +10650,8 @@ ir.cpp:
 # 1360|   params: 
 # 1360|     0: [Parameter] v
 # 1360|         Type = [Class] destructor_only
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] Point returnValue<Point>()
+# 1363|   params: 
 # 1363| [FunctionTemplateInstantiation,TopLevelFunction] String returnValue<String>()
 # 1363|   params: 
 # 1363| [TemplateFunction,TopLevelFunction] T returnValue<T>()
@@ -10962,6 +10986,81 @@ ir.cpp:
 # 1401|                   Type = [Class] copy_constructor
 # 1401|                   ValueCategory = prvalue
 # 1402|     9: [ReturnStmt] return ...
+# 1404| [TopLevelFunction] void temporary_point()
+# 1404|   params: 
+# 1404|   body: [BlockStmt] { ... }
+# 1405|     0: [DeclStmt] declaration
+# 1405|       0: [VariableDeclarationEntry] definition of p
+# 1405|           Type = [Struct] Point
+# 1405|         init: [Initializer] initializer for p
+# 1405|           expr: [FunctionCall] call to returnValue
+# 1405|               Type = [Struct] Point
+# 1405|               ValueCategory = prvalue
+# 1406|     1: [DeclStmt] declaration
+# 1406|       0: [VariableDeclarationEntry] definition of rp
+# 1406|           Type = [LValueReferenceType] const Point &
+# 1406|         init: [Initializer] initializer for rp
+# 1406|           expr: [ReferenceToExpr] (reference to)
+# 1406|               Type = [LValueReferenceType] const Point &
+# 1406|               ValueCategory = prvalue
+# 1406|             expr: [CStyleCast] (const Point)...
+# 1406|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1406|                 Type = [SpecifiedType] const Point
+# 1406|                 ValueCategory = lvalue
+# 1406|               expr: [TemporaryObjectExpr] temporary object
+# 1406|                   Type = [Struct] Point
+# 1406|                   ValueCategory = lvalue
+# 1406|                 expr: [FunctionCall] call to returnValue
+# 1406|                     Type = [Struct] Point
+# 1406|                     ValueCategory = prvalue
+# 1408|     2: [ExprStmt] ExprStmt
+# 1408|       0: [FunctionCall] call to acceptRef
+# 1408|           Type = [VoidType] void
+# 1408|           ValueCategory = prvalue
+# 1408|         0: [ReferenceToExpr] (reference to)
+# 1408|             Type = [LValueReferenceType] const Point &
+# 1408|             ValueCategory = prvalue
+# 1408|           expr: [CStyleCast] (const Point)...
+# 1408|               Conversion = [GlvalueConversion] glvalue conversion
+# 1408|               Type = [SpecifiedType] const Point
+# 1408|               ValueCategory = lvalue
+# 1408|             expr: [VariableAccess] p
+# 1408|                 Type = [Struct] Point
+# 1408|                 ValueCategory = lvalue
+# 1409|     3: [ExprStmt] ExprStmt
+# 1409|       0: [FunctionCall] call to acceptValue
+# 1409|           Type = [VoidType] void
+# 1409|           ValueCategory = prvalue
+# 1409|         0: [VariableAccess] p
+# 1409|             Type = [Struct] Point
+# 1409|             ValueCategory = prvalue(load)
+# 1410|     4: [ExprStmt] ExprStmt
+# 1410|       0: [ValueFieldAccess] x
+# 1410|           Type = [IntType] int
+# 1410|           Value = [ValueFieldAccess] 0
+# 1410|           ValueCategory = prvalue
+# 1410|         -1: [TemporaryObjectExpr] temporary object
+# 1410|             Type = [Struct] Point
+# 1410|             ValueCategory = prvalue(load)
+# 1410|           expr: [Literal] 0
+# 1410|               Type = [Struct] Point
+# 1410|               Value = [Literal] 0
+# 1410|               ValueCategory = prvalue
+# 1411|     5: [DeclStmt] declaration
+# 1411|       0: [VariableDeclarationEntry] definition of y
+# 1411|           Type = [IntType] int
+# 1411|         init: [Initializer] initializer for y
+# 1411|           expr: [ValueFieldAccess] y
+# 1411|               Type = [IntType] int
+# 1411|               ValueCategory = prvalue
+# 1411|             -1: [FunctionCall] call to returnValue
+# 1411|                 Type = [Struct] Point
+# 1411|                 ValueCategory = prvalue
+# 1413|     6: [ExprStmt] ExprStmt
+# 1413|       0: [FunctionCall] call to defaultConstruct
+# 1413|           Type = [Struct] Point
+# 1413|           ValueCategory = prvalue
+# 1414|     7: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

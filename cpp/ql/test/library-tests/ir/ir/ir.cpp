@@ -1401,4 +1401,16 @@ void temporary_copy_constructor() {
     int y = returnValue<copy_constructor>().y;
 }
 
+void temporary_point() {
+    Point p = returnValue<Point>();  // No temporary
+    const Point& rp = returnValue<Point>();  // Binding a reference variable to a temporary
+
+    acceptRef(p);  // No temporary
+    acceptValue(p);
+    Point().x;
+    int y = returnValue<Point>().y;
+
+    defaultConstruct<Point>();
+}
+
 // semmle-extractor-options: -std=c++17 --clang

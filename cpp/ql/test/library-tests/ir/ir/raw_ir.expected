@@ -7441,6 +7441,19 @@ ir.cpp:
 # 1320|     v1320_10(void)          = AliasedUse                    : ~m?
 # 1320|     v1320_11(void)          = ExitFunction                  : 
 
+# 1326| Point defaultConstruct<Point>()
+# 1326|   Block 0
+# 1326|     v1326_1(void)         = EnterFunction            : 
+# 1326|     mu1326_2(unknown)     = AliasedDefinition        : 
+# 1326|     mu1326_3(unknown)     = InitializeNonLocal       : 
+# 1327|     r1327_1(glval<Point>) = VariableAddress[#return] : 
+# 1327|     r1327_2(Point)        = Constant[0]              : 
+# 1327|     mu1327_3(Point)       = Store[#return]           : &:r1327_1, r1327_2
+# 1326|     r1326_4(glval<Point>) = VariableAddress[#return] : 
+# 1326|     v1326_5(void)         = ReturnValue              : &:r1326_4, ~m?
+# 1326|     v1326_6(void)         = AliasedUse               : ~m?
+# 1326|     v1326_7(void)         = ExitFunction             : 
+
 # 1326| String defaultConstruct<String>()
 # 1326|   Block 0
 # 1326|     v1326_1(void)           = EnterFunction                   : 
@@ -7745,6 +7758,53 @@ ir.cpp:
 # 1391|     v1391_4(void)                      = ReturnVoid                        : 
 # 1391|     v1391_5(void)                      = AliasedUse                        : ~m?
 # 1391|     v1391_6(void)                      = ExitFunction                      : 
+
+# 1404| void temporary_point()
+# 1404|   Block 0
+# 1404|     v1404_1(void)           = EnterFunction                     : 
+# 1404|     mu1404_2(unknown)       = AliasedDefinition                 : 
+# 1404|     mu1404_3(unknown)       = InitializeNonLocal                : 
+# 1405|     r1405_1(glval<Point>)   = VariableAddress[p]                : 
+# 1405|     r1405_2(glval<unknown>) = FunctionAddress[returnValue]      : 
+# 1405|     r1405_3(Point)          = Call[returnValue]                 : func:r1405_2
+# 1405|     mu1405_4(unknown)       = ^CallSideEffect                   : ~m?
+# 1405|     mu1405_5(Point)         = Store[p]                          : &:r1405_1, r1405_3
+# 1406|     r1406_1(glval<Point &>) = VariableAddress[rp]               : 
+# 1406|     r1406_2(glval<Point>)   = VariableAddress[#temp1406:23]     : 
+# 1406|     r1406_3(glval<unknown>) = FunctionAddress[returnValue]      : 
+# 1406|     r1406_4(Point)          = Call[returnValue]                 : func:r1406_3
+# 1406|     mu1406_5(unknown)       = ^CallSideEffect                   : ~m?
+# 1406|     mu1406_6(Point)         = Store[#temp1406:23]               : &:r1406_2, r1406_4
+# 1406|     r1406_7(glval<Point>)   = Convert                           : r1406_2
+# 1406|     r1406_8(Point &)        = CopyValue                         : r1406_7
+# 1406|     mu1406_9(Point &)       = Store[rp]                         : &:r1406_1, r1406_8
+# 1408|     r1408_1(glval<unknown>) = FunctionAddress[acceptRef]        : 
+# 1408|     r1408_2(glval<Point>)   = VariableAddress[p]                : 
+# 1408|     r1408_3(glval<Point>)   = Convert                           : r1408_2
+# 1408|     r1408_4(Point &)        = CopyValue                         : r1408_3
+# 1408|     v1408_5(void)           = Call[acceptRef]                   : func:r1408_1, 0:r1408_4
+# 1408|     mu1408_6(unknown)       = ^CallSideEffect                   : ~m?
+# 1408|     v1408_7(void)           = ^BufferReadSideEffect[0]          : &:r1408_4, ~m?
+# 1408|     mu1408_8(unknown)       = ^BufferMayWriteSideEffect[0]      : &:r1408_4
+# 1409|     r1409_1(glval<unknown>) = FunctionAddress[acceptValue]      : 
+# 1409|     r1409_2(glval<Point>)   = VariableAddress[p]                : 
+# 1409|     r1409_3(Point)          = Load[p]                           : &:r1409_2, ~m?
+# 1409|     v1409_4(void)           = Call[acceptValue]                 : func:r1409_1, 0:r1409_3
+# 1409|     mu1409_5(unknown)       = ^CallSideEffect                   : ~m?
+# 1410|     r1410_1(int)            = Constant[0]                       : 
+# 1411|     r1411_1(glval<int>)     = VariableAddress[y]                : 
+# 1411|     r1411_2(glval<unknown>) = FunctionAddress[returnValue]      : 
+# 1411|     r1411_3(Point)          = Call[returnValue]                 : func:r1411_2
+# 1411|     mu1411_4(unknown)       = ^CallSideEffect                   : ~m?
+# 1411|     r1411_5(glval<int>)     = FieldAddress[y]                   : r1411_3
+# 1411|     mu1411_6(int)           = Store[y]                          : &:r1411_1, r1411_5
+# 1413|     r1413_1(glval<unknown>) = FunctionAddress[defaultConstruct] : 
+# 1413|     r1413_2(Point)          = Call[defaultConstruct]            : func:r1413_1
+# 1413|     mu1413_3(unknown)       = ^CallSideEffect                   : ~m?
+# 1414|     v1414_1(void)           = NoOp                              : 
+# 1404|     v1404_4(void)           = ReturnVoid                        : 
+# 1404|     v1404_5(void)           = AliasedUse                        : ~m?
+# 1404|     v1404_6(void)           = ExitFunction                      : 
 
 perf-regression.cpp:
 #    6| void Big::Big()
