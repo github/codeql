@@ -55,35 +55,38 @@ private module Django {
       /** Gets a reference to the `django.db.connection` object. */
       DataFlow::Node connection() { result = connection(DataFlow::TypeTracker::end()) }
 
-      /** Gets a reference to the `django.db.connection.cursor` class. */
-      private DataFlow::Node classCursor(DataFlow::TypeTracker t) {
-        t.start() and
-        result = DataFlow::importNode("django.db.connection.cursor")
-        or
-        t.startInAttr("cursor") and
-        result = connection()
-        or
-        exists(DataFlow::TypeTracker t2 | result = classCursor(t2).track(t2, t))
+      /** Provides models for the `django.db.connection.cursor` method. */
+      module cursor {
+        /** Gets a reference to the `django.db.connection.cursor` metod. */
+        private DataFlow::Node methodRef(DataFlow::TypeTracker t) {
+          t.start() and
+          result = DataFlow::importNode("django.db.connection.cursor")
+          or
+          t.startInAttr("cursor") and
+          result = connection()
+          or
+          exists(DataFlow::TypeTracker t2 | result = methodRef(t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `django.db.connection.cursor` metod. */
+        DataFlow::Node methodRef() { result = methodRef(DataFlow::TypeTracker::end()) }
+
+        /** Gets a reference to a result of calling `django.db.connection.cursor`. */
+        private DataFlow::Node methodResult(DataFlow::TypeTracker t) {
+          t.start() and
+          result.asCfgNode().(CallNode).getFunction() = methodRef().asCfgNode()
+          or
+          exists(DataFlow::TypeTracker t2 | result = methodResult(t2).track(t2, t))
+        }
+
+        /** Gets a reference to a result of calling `django.db.connection.cursor`. */
+        DataFlow::Node methodResult() { result = methodResult(DataFlow::TypeTracker::end()) }
       }
-
-      /** Gets a reference to the `django.db.connection.cursor` class. */
-      DataFlow::Node classCursor() { result = classCursor(DataFlow::TypeTracker::end()) }
-
-      /** Gets a reference to an instance of `django.db.connection.cursor`. */
-      private DataFlow::Node cursor(DataFlow::TypeTracker t) {
-        t.start() and
-        result.asCfgNode().(CallNode).getFunction() = classCursor().asCfgNode()
-        or
-        exists(DataFlow::TypeTracker t2 | result = cursor(t2).track(t2, t))
-      }
-
-      /** Gets a reference to an instance of `django.db.connection.cursor`. */
-      DataFlow::Node cursor() { result = cursor(DataFlow::TypeTracker::end()) }
 
       /** Gets a reference to the `django.db.connection.cursor.execute` function. */
       private DataFlow::Node execute(DataFlow::TypeTracker t) {
         t.startInAttr("execute") and
-        result = cursor()
+        result = cursor::methodResult()
         or
         exists(DataFlow::TypeTracker t2 | result = execute(t2).track(t2, t))
       }
@@ -107,49 +110,59 @@ private module Django {
 
       /** Provides models for the `django.db.models` module. */
       module models {
-        /** Gets a reference to the `django.db.models.Model` class. */
-        private DataFlow::Node classModel(DataFlow::TypeTracker t) {
-          t.start() and
-          result = DataFlow::importNode("django.db.models.Model")
-          or
-          t.startInAttr("Model") and
-          result = models()
-          or
-          exists(DataFlow::TypeTracker t2 | result = classModel(t2).track(t2, t))
-        }
-
-        /** Gets a reference to the `django.db.models.Model` class. */
-        DataFlow::Node classModel() { result = classModel(DataFlow::TypeTracker::end()) }
-
-        /** Gets a definition of a subclass the `django.db.models.Model` class. */
-        class ClassModelSubclassDef extends ControlFlowNode {
-          string name;
-
-          ClassModelSubclassDef() {
-            exists(ClassExpr ce |
-              this.getNode() = ce and
-              ce.getABase() = classModel().asExpr() and
-              ce.getName() = name
-            )
+        /** Provides models for the `django.db.models.Model` class. */
+        module Model {
+          /** Gets a reference to the `django.db.models.Model` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = DataFlow::importNode("django.db.models.Model")
+            or
+            t.startInAttr("Model") and
+            result = models()
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
 
-          string getName() { result = name }
-        }
+          /** Gets a reference to the `django.db.models.Model` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
-        /**
-         * A reference to a class that is a subclass of the `django.db.models.Model` class.
-         * This is quite an approximation, since it simply matches identifiers.
-         */
-        class ClassModelSubclass extends DataFlow::CfgNode {
-          override NameNode node;
+          /** Gets a definition of a subclass the `django.db.models.Model` class. */
+          class SubclassDef extends ControlFlowNode {
+            string name;
 
-          ClassModelSubclass() { node.getId() = any(ClassModelSubclassDef cd).getName() }
+            SubclassDef() {
+              exists(ClassExpr ce |
+                this.getNode() = ce and
+                ce.getABase() = classRef().asExpr() and
+                ce.getName() = name
+              )
+            }
+
+            string getName() { result = name }
+          }
+
+          /**
+           * A reference to a class that is a subclass of the `django.db.models.Model` class.
+           * This is an approximation, since it simply matches identifiers.
+           */
+          private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result.asCfgNode().(NameNode).getId() = any(SubclassDef cd).getName()
+            or
+            exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
+          }
+
+          /**
+           * A reference to a class that is a subclass of the `django.db.models.Model` class.
+           * This is an approximation, since it simply matches identifiers.
+           */
+          DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
         }
 
         /** Gets a reference to the `objects` object of a django model. */
         private DataFlow::Node objects(DataFlow::TypeTracker t) {
           t.startInAttr("objects") and
-          result instanceof ClassModelSubclass
+          result = Model::subclassRef()
           or
           exists(DataFlow::TypeTracker t2 | result = objects(t2).track(t2, t))
         }
@@ -239,7 +252,7 @@ private module Django {
 
     ObjectsAnnotate() {
       node.getFunction() = django::db::models::objects_attr("annotate").asCfgNode() and
-      raw = node.getArg(0) and
+      raw in [node.getArg(0), node.getArgByName(_)] and
       raw.getFunction() = django::db::models::classRawSQL().asCfgNode()
     }
 
@@ -261,6 +274,10 @@ private module Django {
 
     ObjectsExtra() { node.getFunction() = django::db::models::objects_attr("extra").asCfgNode() }
 
-    override DataFlow::Node getSql() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getSql() {
+      result.asCfgNode() =
+        [node.getArg([0 .. 5]),
+            node.getArgByName(["select", "where", "params", "tables", "order_by", "select_params"])]
+    }
   }
 }
