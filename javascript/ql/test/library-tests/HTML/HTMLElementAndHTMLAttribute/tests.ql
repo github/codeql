@@ -17,5 +17,5 @@ query predicate htmlElement_getChild(HTML::Element elt, int i, HTML::Element chi
 query predicate htmlElement_getName(HTML::Element elt, string name) { name = elt.getName() }
 
 query predicate htmlElement_getParent(HTML::Element elt, HTML::Element parent) {
-    parent = elt.getParent()
+  parent = elt.getParent()
 }

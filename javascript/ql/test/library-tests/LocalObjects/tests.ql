@@ -11,7 +11,11 @@ query predicate methodCallTypeInference(DataFlow::MethodCallNode call, string ty
   types = call.analyze().ppTypes()
 }
 
-query predicate methodCallTypeInferenceUsage(DataFlow::MethodCallNode call, DataFlow::Node use, AbstractValue val) {
-    call.flowsTo(use) and use != call and not exists(use.getASuccessor()) and
-    val = use.analyze().getAValue()
+query predicate methodCallTypeInferenceUsage(
+  DataFlow::MethodCallNode call, DataFlow::Node use, AbstractValue val
+) {
+  call.flowsTo(use) and
+  use != call and
+  not exists(use.getASuccessor()) and
+  val = use.analyze().getAValue()
 }

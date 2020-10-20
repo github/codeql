@@ -31,7 +31,7 @@ query predicate tupleTypes(Expr e, TupleType tuple, int n, Type element, int min
   rest = getRest(tuple)
 }
 
-query predicate unknownType(Expr e,Type type) {
-    type = e.getType() and
-    e.getType() instanceof UnknownType
+query predicate unknownType(Expr e, Type type) {
+  type = e.getType() and
+  e.getType() instanceof UnknownType
 }
