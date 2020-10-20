@@ -1,2 +1,0 @@
-| testapp/views.py:3:33:3:47 | Comment # $routeHandler | Missing result:routeHandler= |
-| testapp/views.py:6:37:6:51 | Comment # $routeHandler | Missing result:routeHandler= |
