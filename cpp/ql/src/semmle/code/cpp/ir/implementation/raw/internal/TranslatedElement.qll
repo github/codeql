@@ -234,15 +234,45 @@ private predicate usedAsCondition(Expr expr) {
  * AST as an lvalue-to-rvalue conversion, but the IR represents both a function
  * lvalue and a function pointer prvalue the same.
  */
-private predicate ignoreLoad(Expr expr) {
+predicate ignoreLoad(Expr expr) {
   expr.hasLValueToRValueConversion() and
   (
-    expr instanceof ThisExpr or
-    expr instanceof FunctionAccess or
+    expr instanceof ThisExpr
+    or
+    expr instanceof FunctionAccess
+    or
     expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().getUnspecifiedType()
-      instanceof FunctionPointerType or
+      instanceof FunctionPointerType
+    or
     expr.(ReferenceDereferenceExpr).getExpr().getType().getUnspecifiedType() instanceof
       FunctionReferenceType
+    or
+    // The extractor represents the qualifier of a field access or member function call as a load of
+    // the temporary object if the original qualifier was a prvalue. For IR purposes, we always want
+    // to use the address of the temporary object as the base of a field access or the `this`
+    // argument to a member function call.
+    exists(Expr qualifier |
+      exists(FieldAccess access | qualifier = access.getQualifier().getFullyConverted())
+      or
+      exists(Call call | qualifier = call.getQualifier().getFullyConverted())
+    |
+      // The qualifier has a class type.
+      qualifier.getUnspecifiedType() instanceof Class and
+      (
+        expr = qualifier
+        or
+        // If the qualifier is a prvalue adjustment conversion, the load will be on the operand of
+        // that conversion. For example:
+        // ```c++
+        // std::string("s").c_str();
+        // ```
+        // The temporary object for the qualifier is a prvalue(load) of type `std::string`, but the
+        // actual fully converted qualifier of the call to `c_str()` is a prvalue adjustment
+        // conversion that converts the type to `const std::string` to match the type of the `this`
+        // pointer of the member function.
+        expr = qualifier.(PrvalueAdjustmentConversion).getExpr()
+      )
+    )
   )
 }
 

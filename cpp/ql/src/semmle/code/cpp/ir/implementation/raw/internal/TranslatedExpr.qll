@@ -997,6 +997,14 @@ class TranslatedSimpleConversion extends TranslatedSingleInstructionConversion {
   }
 
   override Opcode getOpcode() { result instanceof Opcode::Convert }
+
+  override predicate isResultGLValue() {
+    super.isResultGLValue()
+    or
+    // If this is a prvalue adjustment, the result is a treated as a glvalue if the source was also
+    // treated as a glvalue. See the comment in `ignoreLoad()` for more details.
+    expr instanceof PrvalueAdjustmentConversion and ignoreLoad(expr.getExpr())
+  }
 }
 
 /**
