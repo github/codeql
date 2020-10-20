@@ -2053,7 +2053,7 @@ class AssignAndExpr extends @assign_and_expr, CompoundAssignExpr { }
  * x ||= y
  * ```
  */
-class AssignLogOrExpr extends @assignlogandexpr, CompoundAssignExpr { }
+class AssignLogOrExpr extends @assignlogorexpr, CompoundAssignExpr { }
 
 /**
  * A logical-'and'-assign expression.
@@ -2064,7 +2064,7 @@ class AssignLogOrExpr extends @assignlogandexpr, CompoundAssignExpr { }
  * x &&= y
  * ```
  */
-class AssignLogAndExpr extends @assignlogorexpr, CompoundAssignExpr { }
+class AssignLogAndExpr extends @assignlogandexpr, CompoundAssignExpr { }
 
 /**
  * A 'nullish-coalescing'-assign expression.
