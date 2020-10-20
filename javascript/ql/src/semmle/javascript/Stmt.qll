@@ -128,7 +128,9 @@ class LoopStmt extends TLoopStmt, ControlStmt {
  * ;
  * ```
  */
-class EmptyStmt extends @empty_stmt, Stmt { }
+class EmptyStmt extends @empty_stmt, Stmt {
+  override string getAPrimaryQlClass() { result = "EmptyStmt" }
+}
 
 /**
  * A block of statements.
@@ -153,6 +155,8 @@ class BlockStmt extends @block_stmt, Stmt {
 
   /** Holds if this block is a function body. */
   predicate isFunctionBody() { this.getParent() instanceof Function }
+
+  override string getAPrimaryQlClass() { result = "BlockStmt" }
 }
 
 /**
@@ -192,6 +196,8 @@ class ExprStmt extends @expr_stmt, Stmt {
       f = assgn.getRhs()
     )
   }
+
+  override string getAPrimaryQlClass() { result = "ExprStmt" }
 }
 
 /**
@@ -432,6 +438,8 @@ class IfStmt extends @if_stmt, ControlStmt {
 
   /** Holds if this `if` statement is an `else if` of an outer `if` statement. */
   predicate isElseIf() { exists(IfStmt outer | outer.getElse() = this) }
+
+  override string getAPrimaryQlClass() { result = "IfStmt" }
 }
 
 /**
@@ -455,6 +463,8 @@ class LabeledStmt extends @labeled_stmt, Stmt {
 
   /** Gets the labeled statement of this statement. */
   Stmt getStmt() { result = getChildStmt(1) }
+
+  override string getAPrimaryQlClass() { result = "LabeledStmt" }
 }
 
 private class TJumpStmt = TBreakOrContinueStmt or @return_stmt or @throw_stmt;
@@ -524,7 +534,9 @@ class BreakOrContinueStmt extends TBreakOrContinueStmt, JumpStmt {
  * break;
  * ```
  */
-class BreakStmt extends @break_stmt, BreakOrContinueStmt { }
+class BreakStmt extends @break_stmt, BreakOrContinueStmt {
+  override string getAPrimaryQlClass() { result = "BreakStmt" }
+}
 
 /**
  * A `continue` statement.
@@ -536,7 +548,9 @@ class BreakStmt extends @break_stmt, BreakOrContinueStmt { }
  * continue;
  * ```
  */
-class ContinueStmt extends @continue_stmt, BreakOrContinueStmt { }
+class ContinueStmt extends @continue_stmt, BreakOrContinueStmt {
+  override string getAPrimaryQlClass() { result = "ContinueStmt" }
+}
 
 /**
  * A `with` statement.
@@ -570,6 +584,8 @@ class WithStmt extends @with_stmt, ControlStmt {
   }
 
   override Stmt getAControlledStmt() { result = getBody() }
+
+  override string getAPrimaryQlClass() { result = "WithStmt" }
 }
 
 /**
@@ -604,6 +620,8 @@ class SwitchStmt extends @switch_stmt, ControlStmt {
   int getNumCase() { result = count(getACase()) }
 
   override Case getAControlledStmt() { result = getACase() }
+
+  override string getAPrimaryQlClass() { result = "SwitchStmt" }
 }
 
 /**
@@ -628,6 +646,8 @@ class ReturnStmt extends @return_stmt, JumpStmt {
   }
 
   override predicate isSubjectToSemicolonInsertion() { any() }
+
+  override string getAPrimaryQlClass() { result = "ReturnStmt" }
 }
 
 /**
@@ -661,6 +681,8 @@ class ThrowStmt extends @throw_stmt, JumpStmt {
   }
 
   override predicate isSubjectToSemicolonInsertion() { any() }
+
+  override string getAPrimaryQlClass() { result = "ThrowStmt" }
 }
 
 /**
@@ -710,6 +732,8 @@ class TryStmt extends @try_stmt, ControlStmt {
 
   /** Gets the `finally` block of this `try` statement, if any. */
   BlockStmt getFinally() { result = getChildStmt(-1) }
+
+  override string getAPrimaryQlClass() { result = "TryStmt" }
 }
 
 /**
@@ -730,6 +754,8 @@ class WhileStmt extends @while_stmt, LoopStmt {
   override Expr getTest() { result = getExpr() }
 
   override Stmt getBody() { result = getChildStmt(1) }
+
+  override string getAPrimaryQlClass() { result = "WhileStmt" }
 }
 
 /**
@@ -752,6 +778,8 @@ class DoWhileStmt extends @do_while_stmt, LoopStmt {
   override Stmt getBody() { result = getChildStmt(0) }
 
   override predicate isSubjectToSemicolonInsertion() { any() }
+
+  override string getAPrimaryQlClass() { result = "DoWhileStmt" }
 }
 
 /**
@@ -795,6 +823,8 @@ class ForStmt extends @for_stmt, LoopStmt {
   Expr getUpdate() { result = getChildExpr(2) }
 
   override Stmt getBody() { result = getChildStmt(3) }
+
+  override string getAPrimaryQlClass() { result = "ForStmt" }
 }
 
 /**
@@ -878,7 +908,9 @@ class EnhancedForLoop extends TEnhancedForLoop, LoopStmt {
  * }
  * ```
  */
-class ForInStmt extends @for_in_stmt, EnhancedForLoop { }
+class ForInStmt extends @for_in_stmt, EnhancedForLoop {
+  override string getAPrimaryQlClass() { result = "ForInStmt" }
+}
 
 /**
  * A `for`-`of` loop.
@@ -896,6 +928,8 @@ class ForOfStmt extends @for_of_stmt, EnhancedForLoop {
    * Holds if this is a `for-await-of` statement.
    */
   predicate isAwait() { is_for_await_of(this) }
+
+  override string getAPrimaryQlClass() { result = "ForOfStmt" }
 }
 
 /**
@@ -909,7 +943,9 @@ class ForOfStmt extends @for_of_stmt, EnhancedForLoop {
  * }
  * ```
  */
-class ForEachStmt extends @for_each_stmt, EnhancedForLoop { }
+class ForEachStmt extends @for_each_stmt, EnhancedForLoop {
+  override string getAPrimaryQlClass() { result = "ForEachStmt" }
+}
 
 /**
  * A `debugger` statement.
@@ -922,6 +958,8 @@ class ForEachStmt extends @for_each_stmt, EnhancedForLoop { }
  */
 class DebuggerStmt extends @debugger_stmt, Stmt {
   override predicate isSubjectToSemicolonInsertion() { any() }
+
+  override string getAPrimaryQlClass() { result = "DebuggerStmt" }
 }
 
 /**
@@ -937,6 +975,8 @@ class DebuggerStmt extends @debugger_stmt, Stmt {
  */
 class FunctionDeclStmt extends @function_decl_stmt, Stmt, Function {
   override Stmt getEnclosingStmt() { result = this }
+
+  override string getAPrimaryQlClass() { result = "FunctionDeclStmt" }
 }
 
 /**
@@ -962,6 +1002,8 @@ class DeclStmt extends @decl_stmt, Stmt {
     // exclude variable declarations in the init part of for/for-in/for-of loops
     not exists(LoopStmt for | this = for.getAChildStmt() and this != for.getBody())
   }
+
+  override string getAPrimaryQlClass() { result = "DeclStmt" }
 }
 
 /**
@@ -1043,6 +1085,8 @@ class Case extends @case, Stmt {
 
   /** Gets the `switch` statement to which this clause belongs. */
   SwitchStmt getSwitch() { result = getParent() }
+
+  override string getAPrimaryQlClass() { result = "Case" }
 }
 
 /**
@@ -1067,4 +1111,6 @@ class CatchClause extends @catch_clause, ControlStmt, Parameterized {
 
   /** Gets the scope induced by this `catch` clause. */
   CatchScope getScope() { result.getCatchClause() = this }
+
+  override string getAPrimaryQlClass() { result = "CatchClause" }
 }

@@ -805,10 +805,24 @@ class CopyValueInstruction extends CopyInstruction, UnaryInstruction {
 }
 
 /**
+ * Gets a string describing the location pointed to by the specified address operand.
+ */
+private string getAddressOperandDescription(AddressOperand operand) {
+  result = operand.getDef().(VariableAddressInstruction).getIRVariable().toString()
+  or
+  not operand.getDef() instanceof VariableAddressInstruction and
+  result = "?"
+}
+
+/**
  * An instruction that returns a register result containing a copy of its memory operand.
  */
 class LoadInstruction extends CopyInstruction {
   LoadInstruction() { getOpcode() instanceof Opcode::Load }
+
+  final override string getImmediateString() {
+    result = getAddressOperandDescription(getSourceAddressOperand())
+  }
 
   /**
    * Gets the operand that provides the address of the value being loaded.
@@ -828,6 +842,10 @@ class LoadInstruction extends CopyInstruction {
  */
 class StoreInstruction extends CopyInstruction {
   StoreInstruction() { getOpcode() instanceof Opcode::Store }
+
+  final override string getImmediateString() {
+    result = getAddressOperandDescription(getDestinationAddressOperand())
+  }
 
   /**
    * Gets the operand that provides the address of the location to which the value will be stored.
@@ -1500,6 +1518,12 @@ class SwitchInstruction extends Instruction {
  */
 class CallInstruction extends Instruction {
   CallInstruction() { getOpcode() instanceof Opcode::Call }
+
+  final override string getImmediateString() {
+    result = getStaticCallTarget().toString()
+    or
+    not exists(getStaticCallTarget()) and result = "?"
+  }
 
   /**
    * Gets the operand the specifies the target function of the call.
