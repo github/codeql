@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -8,7 +7,7 @@ using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class Attribute : FreshEntity, IExpressionParentEntity
+    internal class Attribute : CachedEntity<(AttributeData, IEntity)>, IExpressionParentEntity
     {
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
@@ -16,31 +15,54 @@ namespace Semmle.Extraction.CSharp.Entities
         private readonly AttributeSyntax attributeSyntax;
         private readonly IEntity entity;
 
-        public Attribute(Context cx, AttributeData attributeData, IEntity entity)
-            : base(cx)
+        private Attribute(Context cx, AttributeData attributeData, IEntity entity)
+            : base(cx, (attributeData, entity))
         {
             this.attributeData = attributeData;
             this.attributeSyntax = attributeData.ApplicationSyntaxReference?.GetSyntax() as AttributeSyntax;
             this.entity = entity;
-
-            TryPopulate();
         }
 
-        protected override void Populate(TextWriter trapFile)
+        public override void WriteId(TextWriter trapFile)
         {
-            var type = Type.Create(cx, attributeData.AttributeClass);
+            if (ReportingLocation?.IsInSource == true)
+            {
+                trapFile.WriteSubId(Context.Create(ReportingLocation));
+                trapFile.Write(";attribute");
+            }
+            else
+            {
+                trapFile.Write('*');
+            }
+        }
+
+        public override void WriteQuotedId(TextWriter trapFile)
+        {
+            if (ReportingLocation?.IsInSource == true)
+            {
+                base.WriteQuotedId(trapFile);
+            }
+            else
+            {
+                trapFile.Write('*');
+            }
+        }
+
+        public override void Populate(TextWriter trapFile)
+        {
+            var type = Type.Create(Context, attributeData.AttributeClass);
             trapFile.attributes(this, type.TypeRef, entity);
 
             if (attributeSyntax is object)
             {
-                trapFile.attribute_location(this, cx.Create(attributeSyntax.Name.GetLocation()));
+                trapFile.attribute_location(this, Context.Create(attributeSyntax.Name.GetLocation()));
 
-                if (cx.Extractor.OutputPath != null)
+                if (Context.Extractor.OutputPath != null)
                 {
-                    trapFile.attribute_location(this, Assembly.CreateOutputAssembly(cx));
+                    trapFile.attribute_location(this, Assembly.CreateOutputAssembly(Context));
                 }
 
-                TypeMention.Create(cx, attributeSyntax.Name, this, type);
+                TypeMention.Create(Context, attributeSyntax.Name, this, type);
             }
 
             ExtractArguments(trapFile);
@@ -80,7 +102,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (syntax is object)
             {
-                return Expression.Create(cx, syntax, parent, childIndex);
+                return Expression.Create(Context, syntax, parent, childIndex);
             }
 
             return CreateGeneratedExpressionFromArgument(constant, parent, childIndex);
@@ -91,25 +113,25 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (constant.IsNull)
             {
-                return Literal.CreateGeneratedNullLiteral(cx, parent, childIndex);
+                return Literal.CreateGeneratedNullLiteral(Context, parent, childIndex);
             }
 
             switch (constant.Kind)
             {
                 case TypedConstantKind.Primitive:
-                    return Literal.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Value);
+                    return Literal.CreateGenerated(Context, parent, childIndex, constant.Type, constant.Value);
                 case TypedConstantKind.Enum:
                     // Enum value is generated in the following format: (Enum)value
 
-                    var cast = Cast.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Value);
-                    Literal.CreateGenerated(cx, cast, Cast.ExpressionIndex, ((INamedTypeSymbol)constant.Type).EnumUnderlyingType, constant.Value);
-                    TypeAccess.CreateGenerated(cx, cast, Cast.TypeAccessIndex, constant.Type);
+                    var cast = Cast.CreateGenerated(Context, parent, childIndex, constant.Type, constant.Value);
+                    Literal.CreateGenerated(Context, cast, Cast.ExpressionIndex, ((INamedTypeSymbol)constant.Type).EnumUnderlyingType, constant.Value);
+                    TypeAccess.CreateGenerated(Context, cast, Cast.TypeAccessIndex, constant.Type);
 
                     return cast;
                 case TypedConstantKind.Type:
                     var type = ((ITypeSymbol)constant.Value).OriginalDefinition;
-                    var t = TypeOf.CreateGenerated(cx, parent, childIndex, type);
-                    TypeAccess.CreateGenerated(cx, t, TypeOf.TypeAccessIndex, type);
+                    var t = TypeOf.CreateGenerated(Context, parent, childIndex, type);
+                    TypeAccess.CreateGenerated(Context, t, TypeOf.TypeAccessIndex, type);
                     return t;
                 case TypedConstantKind.Array:
                     {
@@ -119,11 +141,11 @@ namespace Semmle.Extraction.CSharp.Entities
                         //
                         // itemI is generated recursively.
 
-                        var arrayCreation = NormalArrayCreation.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Values.Length);
+                        var arrayCreation = NormalArrayCreation.CreateGenerated(Context, parent, childIndex, constant.Type, constant.Values.Length);
 
                         if (constant.Values.Length > 0)
                         {
-                            var arrayInit = ArrayInitializer.CreateGenerated(cx, arrayCreation);
+                            var arrayInit = ArrayInitializer.CreateGenerated(Context, arrayCreation);
 
                             constant.Values
                                 .Select((constantItem, itemIndex) => CreateGeneratedExpressionFromArgument(constantItem, arrayInit, itemIndex))
@@ -134,19 +156,37 @@ namespace Semmle.Extraction.CSharp.Entities
                         return arrayCreation;
                     }
                 default:
-                    cx.ExtractionError("Couldn't extract constant in attribute", entity.ToString(), cx.Create(entity.ReportingLocation));
+                    Context.ExtractionError("Couldn't extract constant in attribute", entity.ToString(), Context.Create(entity.ReportingLocation));
                     return null;
             }
         }
+
+        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
+
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => attributeSyntax?.Name.GetLocation();
+
+        public override bool NeedsPopulation => true;
 
         public static void ExtractAttributes(Context cx, ISymbol symbol, IEntity entity)
         {
             foreach (var attribute in symbol.GetAttributes())
             {
-                new Attribute(cx, attribute, entity);
+                Create(cx, attribute, entity);
             }
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
+        public static Attribute Create(Context cx, AttributeData attributeData, IEntity entity)
+        {
+            var init = (attributeData, entity);
+            return AttributeFactory.Instance.CreateEntity(cx, init, init);
+        }
+
+        private class AttributeFactory : ICachedEntityFactory<(AttributeData attributeData, IEntity receiver), Attribute>
+        {
+            public static readonly AttributeFactory Instance = new AttributeFactory();
+
+            public Attribute Create(Context cx, (AttributeData attributeData, IEntity receiver) init) =>
+                new Attribute(cx, init.attributeData, init.receiver);
+        }
     }
 }

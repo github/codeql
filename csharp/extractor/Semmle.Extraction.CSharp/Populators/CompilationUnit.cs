@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Populators
                 var attributeData = attributeDatas.Single(ad => ad.ApplicationSyntaxReference?.GetSyntax() == attribute);
                 if (attributeData is object)
                 {
-                    var ae = new Attribute(cx, attributeData, outputAssembly);
+                    var ae = Attribute.Create(cx, attributeData, outputAssembly);
                     cx.BindComments(ae, attribute.GetLocation());
                 }
             }
