@@ -54,6 +54,7 @@ def test_import():
     mymodule.x # $tracked
     y = mymodule.func() # $tracked
     y # $tracked
+    mymodule.z # $tracked
 
 # ------------------------------------------------------------------------------
 
