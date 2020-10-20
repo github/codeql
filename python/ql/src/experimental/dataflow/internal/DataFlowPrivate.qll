@@ -521,8 +521,11 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
 private predicate module_export(Module m, string name, CfgNode defn) {
   exists(EssaVariable v |
     v.getName() = name and
-    v.getAUse() = m.getANormalExit() and
+    v.getAUse() = m.getANormalExit()
+  |
     defn.getNode() = v.getDefinition().(AssignmentDefinition).getValue()
+    or
+    defn.getNode() = v.getDefinition().(ArgumentRefinement).getArgument()
   )
 }
 
