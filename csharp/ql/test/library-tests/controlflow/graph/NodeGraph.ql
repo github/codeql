@@ -4,7 +4,10 @@ import Common
 query predicate edges(
   SourceControlFlowNode node, SourceControlFlowNode successor, string attr, string val
 ) {
-  exists(ControlFlow::SuccessorType t | successor = node.getASuccessorByType(t) |
+  exists(ControlFlow::SuccessorType t |
+    successor = node.getASuccessorByType(t) and
+    (node.getElement().fromSource() or successor.getElement().fromSource())
+  |
     attr = "semmle.label" and
     val = t.toString()
   )

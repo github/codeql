@@ -136,6 +136,7 @@ private newtype TPrintAstNode =
   TAttributesNode(Attributable attributable) {
     shouldPrint(attributable, _) and
     exists(attributable.getAnAttribute()) and
+    exists(Attribute a | a = attributable.getAnAttribute() | shouldPrint(a, _)) and
     not isNotNeeded(attributable)
   } or
   TTypeParametersNode(UnboundGeneric unboundGeneric) {
@@ -298,7 +299,10 @@ class ControlFlowElementNode extends ElementNode {
           controlFlowElement.getParent*()
       )
     ) and
-    not isNotNeeded(element.getParent+())
+    not isNotNeeded(element.getParent+()) and
+    // LambdaExpr is both a Callable and a ControlFlowElement,
+    // print it with the more specific CallableNode
+    not element instanceof Callable
   }
 
   override PrintAstNode getChild(int childIndex) {
