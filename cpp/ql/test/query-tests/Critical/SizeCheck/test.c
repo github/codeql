@@ -43,5 +43,18 @@ void good1(void) {
     free(dptr);
 }
 
+typedef struct _myStruct
+{
+	int x, y;
+} MyStruct;
 
+typedef union _myUnion
+{
+	MyStruct ms;
+	char data[128];
+} MyUnion;
 
+void test_union() {
+	MyUnion *a = malloc(sizeof(MyUnion)); // GOOD
+	MyUnion *b = malloc(sizeof(MyStruct)); // BAD (too small)
+}
