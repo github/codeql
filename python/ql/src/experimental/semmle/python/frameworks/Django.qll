@@ -264,7 +264,13 @@ private module Django {
           exists(DataFlow::TypeTracker t2 | result = classRawSQL(t2).track(t2, t))
         }
 
-        /** Gets a reference to the `django.db.models.expressions.RawSQL` class. */
+        /**
+         * Gets a reference to the `django.db.models.expressions.RawSQL` class.
+         *
+         * See
+         * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#executing-custom-sql-directly
+         * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#connections-and-cursors
+         */
         DataFlow::Node classRawSQL() { result = classRawSQL(DataFlow::TypeTracker::end()) }
       }
     }
@@ -281,7 +287,11 @@ private module Django {
     }
   }
 
-  /** A call to the `annotate` function on a model using a `RawSQL` argument. */
+  /**
+   * A call to the `annotate` function on a model using a `RawSQL` argument.
+   *
+   * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/#annotate
+   */
   private class ObjectsAnnotate extends SqlExecution::Range, DataFlow::CfgNode {
     override CallNode node;
     CallNode raw;
@@ -295,10 +305,10 @@ private module Django {
     override DataFlow::Node getSql() { result.asCfgNode() = raw.getArg(0) }
   }
 
-  /** 
-   * A call to the `raw` function on a model. 
+  /**
+   * A call to the `raw` function on a model.
    *
-   * See 
+   * See
    * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#django.db.models.Manager.raw
    * - https://docs.djangoproject.com/en/3.1/ref/models/querysets/#raw
    */
@@ -310,8 +320,8 @@ private module Django {
     override DataFlow::Node getSql() { result.asCfgNode() = node.getArg(0) }
   }
 
-  /** 
-   * A call to the `extra` function on a model. 
+  /**
+   * A call to the `extra` function on a model.
    *
    * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/#extra
    */
