@@ -41,6 +41,37 @@ module SystemCommandExecution {
 }
 
 /**
+ * A data-flow node that performs a file system access, including reading and writing data,
+ * creating and deleting files and folders, checking and updating permissions, and so on.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemAccess::Range` instead.
+ */
+class FileSystemAccess extends DataFlow::Node {
+  FileSystemAccess::Range self;
+
+  FileSystemAccess() { this = self }
+
+  /** Gets an argument to this file system access that is interpreted as a path. */
+  DataFlow::Node getAPathArgument() { result = self.getAPathArgument() }
+}
+
+/** Provides a class for modeling new file-system access APIs. */
+module FileSystemAccess {
+  /**
+   * A data-flow node that performs a file system access, including reading and writing data,
+   * creating and deleting files and folders, checking and updating permissions, and so on.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemAccess` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an argument to this file system access that is interpreted as a path. */
+    abstract DataFlow::Node getAPathArgument();
+  }
+}
+
+/**
  * A data-flow node that decodes data from a binary or textual format. This
  * is intended to include deserialization, unmarshalling, decoding, unpickling,
  * decompressing, decrypting, parsing etc.
