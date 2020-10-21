@@ -99,7 +99,7 @@ class SqlExecutionTest extends InlineExpectationsTest {
     exists(SqlExecution e, DataFlow::Node sql |
       exists(location.getFile().getRelativePath()) and
       sql = e.getSql() and
-      location = sql.getLocation() and
+      location = e.getLocation() and
       element = sql.toString() and
       value = value_from_expr(sql.asExpr()) and
       tag = "getSql"

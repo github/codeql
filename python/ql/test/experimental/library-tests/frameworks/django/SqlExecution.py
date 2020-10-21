@@ -24,5 +24,5 @@ def test_model():
     User.objects.extra("some sql")  # $getSql="some sql"
     User.objects.extra(select="select", where="where", tables="tables", order_by="order_by")  # $getSql="select" $getSql="where" $getSql="tables" $getSql="order_by"
 
-    raw = RawSQL("so raw")  # $getSql="so raw"
-    User.objects.annotate(val=raw)
+    raw = RawSQL("so raw")
+    User.objects.annotate(val=raw)  # $getSql="so raw"
