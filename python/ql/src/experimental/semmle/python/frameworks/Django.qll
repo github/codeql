@@ -239,7 +239,7 @@ private module Django {
           result = objects_attr(DataFlow::TypeTracker::end(), attr_name)
         }
 
-        /** Gets a reference to the `django.db.models.expressions` object. */
+        /** Gets a reference to the `django.db.models.expressions` module. */
         private DataFlow::Node expressions(DataFlow::TypeTracker t) {
           t.start() and
           result = DataFlow::importNode("django.db.models.expressions")
@@ -250,28 +250,37 @@ private module Django {
           exists(DataFlow::TypeTracker t2 | result = expressions(t2).track(t2, t))
         }
 
-        /** Gets a reference to the `django.db.models.expressions` object. */
+        /** Gets a reference to the `django.db.models.expressions` module. */
         DataFlow::Node expressions() { result = expressions(DataFlow::TypeTracker::end()) }
 
-        /** Gets a reference to the `django.db.models.expressions.RawSQL` class. */
-        private DataFlow::Node classRawSQL(DataFlow::TypeTracker t) {
-          t.start() and
-          result = DataFlow::importNode("django.db.models.expressions.RawSQL")
-          or
-          t.startInAttr("RawSQL") and
-          result = expressions()
-          or
-          exists(DataFlow::TypeTracker t2 | result = classRawSQL(t2).track(t2, t))
-        }
+        /** Provides models for the `django.db.models.expressions` module. */
+        module expressions {
+          /** Provides models for the `django.db.models.expressions.RawSQL` class. */
+          module RawSQL {
+            /** Gets a reference to the `django.db.models.expressions.RawSQL` class. */
+            private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+              t.start() and
+              result = DataFlow::importNode("django.db.models.expressions.RawSQL")
+              or
+              t.start() and
+              result = DataFlow::importNode("django.db.models.RawSQL") // Commonly used alias
+              or
+              t.startInAttr("RawSQL") and
+              result = expressions()
+              or
+              exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            }
 
-        /**
-         * Gets a reference to the `django.db.models.expressions.RawSQL` class.
-         *
-         * See
-         * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#executing-custom-sql-directly
-         * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#connections-and-cursors
-         */
-        DataFlow::Node classRawSQL() { result = classRawSQL(DataFlow::TypeTracker::end()) }
+            /**
+             * Gets a reference to the `django.db.models.expressions.RawSQL` class.
+             *
+             * See
+             * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#executing-custom-sql-directly
+             * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#connections-and-cursors
+             */
+            DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          }
+        }
       }
     }
   }
@@ -299,7 +308,7 @@ private module Django {
     ObjectsAnnotate() {
       node.getFunction() = django::db::models::objects_attr("annotate").asCfgNode() and
       raw in [node.getArg(0), node.getArgByName(_)] and
-      raw.getFunction() = django::db::models::classRawSQL().asCfgNode()
+      raw.getFunction() = django::db::models::expressions::RawSQL::classRef().asCfgNode()
     }
 
     override DataFlow::Node getSql() { result.asCfgNode() = raw.getArg(0) }
