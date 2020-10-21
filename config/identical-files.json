@@ -41,7 +41,8 @@
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking5/TaintTrackingImpl.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
-    "python/ql/src/experimental/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
+    "python/ql/src/experimental/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
+    "python/ql/src/experimental/dataflow/internal/tainttracking2/TaintTrackingImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Consistency checks": [
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
