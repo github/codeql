@@ -11,7 +11,7 @@ pub enum Entry {
 pub struct Table {
     pub name: String,
     pub columns: Vec<Column>,
-    pub keysets: Vec<Vec<String>>,
+    pub keysets: Option<Vec<String>>,
 }
 
 /// A column in a table.

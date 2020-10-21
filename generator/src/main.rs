@@ -107,10 +107,10 @@ fn add_field(
             ],
             // In addition to the field being unique, the combination of
             // parent+index is unique, so add a keyset for them.
-            keysets: vec![vec![
+            keysets: Some(vec![
                 dbscheme::escape_name(parent_name),
                 "index".to_string(),
-            ]],
+            ]),
         };
         entries.push(dbscheme::Entry::Table(field_table));
     } else {
@@ -159,7 +159,7 @@ fn convert_nodes(nodes: &[NodeInfo]) -> Vec<dbscheme::Entry> {
                     ql_type: dbscheme::QlColumnType::Custom(dbscheme::escape_name(&name)),
                     ql_type_is_ref: false,
                 }],
-                keysets: vec![],
+                keysets: None,
             };
             top_members.push(dbscheme::escape_name(&name));
 
@@ -232,7 +232,7 @@ fn write_dbscheme(entries: &[dbscheme::Entry]) -> std::io::Result<()> {
 fn create_location_entry() -> dbscheme::Entry {
     dbscheme::Entry::Table(dbscheme::Table {
         name: "location".to_string(),
-        keysets: Vec::new(),
+        keysets: None,
         columns: vec![
             dbscheme::Column {
                 unique: true,
@@ -283,7 +283,7 @@ fn create_location_entry() -> dbscheme::Entry {
 fn create_source_location_prefix_entry() -> dbscheme::Entry {
     dbscheme::Entry::Table(dbscheme::Table {
         name: "sourceLocationPrefix".to_string(),
-        keysets: Vec::new(),
+        keysets: None,
         columns: vec![dbscheme::Column {
             unique: false,
             db_type: dbscheme::DbColumnType::String,
