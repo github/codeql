@@ -1,6 +1,6 @@
 /**
  * @name Code injection
- * @description Interpreting unsanitized user input as code allows a malicious user arbitrary
+ * @description Interpreting unsanitized user input as code allows a malicious user to perform arbitrary
  *              code execution.
  * @kind path-problem
  * @problem.severity error
@@ -15,23 +15,21 @@
  */
 
 import python
-import semmle.python.security.Paths
-/* Sources */
-import semmle.python.web.HttpRequest
-/* Sinks */
-import semmle.python.security.injection.Exec
+import experimental.dataflow.DataFlow
+import experimental.dataflow.TaintTracking
+import experimental.semmle.python.Concepts
+import experimental.dataflow.RemoteFlowSources
+import DataFlow::PathGraph
 
 class CodeInjectionConfiguration extends TaintTracking::Configuration {
-  CodeInjectionConfiguration() { this = "Code injection configuration" }
+  CodeInjectionConfiguration() { this = "CodeInjectionConfiguration" }
 
-  override predicate isSource(TaintTracking::Source source) {
-    source instanceof HttpRequestTaintSource
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(TaintTracking::Sink sink) { sink instanceof StringEvaluationNode }
+  override predicate isSink(DataFlow::Node sink) { sink = any(CodeExecution e).getCode() }
 }
 
-from CodeInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
-where config.hasFlowPath(src, sink)
-select sink.getSink(), src, sink, "$@ flows to here and is interpreted as code.", src.getSource(),
-  "A user-provided value"
+from CodeInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "$@ flows to here and is interpreted as code.",
+  source.getNode(), "A user-provided value"

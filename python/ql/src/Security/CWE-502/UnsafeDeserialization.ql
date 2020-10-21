@@ -12,26 +12,25 @@
  */
 
 import python
-import semmle.python.security.Paths
-// Sources -- Any untrusted input
-import semmle.python.web.HttpRequest
-// Flow -- untrusted string
-import semmle.python.security.strings.Untrusted
-// Sink -- Unpickling and other deserialization formats.
-import semmle.python.security.injection.Pickle
-import semmle.python.security.injection.Marshal
-import semmle.python.security.injection.Yaml
+import experimental.dataflow.DataFlow
+import experimental.dataflow.TaintTracking
+import experimental.semmle.python.Concepts
+import experimental.dataflow.RemoteFlowSources
+import DataFlow::PathGraph
 
 class UnsafeDeserializationConfiguration extends TaintTracking::Configuration {
-  UnsafeDeserializationConfiguration() { this = "Unsafe deserialization configuration" }
+  UnsafeDeserializationConfiguration() { this = "UnsafeDeserializationConfiguration" }
 
-  override predicate isSource(TaintTracking::Source source) {
-    source instanceof HttpRequestTaintSource
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(Decoding d |
+      d.mayExecuteInput() and
+      sink = d.getAnInput()
+    )
   }
-
-  override predicate isSink(TaintTracking::Sink sink) { sink instanceof DeserializationSink }
 }
 
-from UnsafeDeserializationConfiguration config, TaintedPathSource src, TaintedPathSink sink
-where config.hasFlowPath(src, sink)
-select sink.getSink(), src, sink, "Deserializing of $@.", src.getSource(), "untrusted input"
+from UnsafeDeserializationConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Deserializing of $@.", source.getNode(), "untrusted input"
