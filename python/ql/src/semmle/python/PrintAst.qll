@@ -20,8 +20,8 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
   string toString() { result = "PrintAstConfiguration" }
 
   /**
-   * Controls whether the `Element` should be considered for AST printing.
-   * By default it checks whether the `Element` `e` belongs to `Location` `l`.
+   * Controls whether the `AstNode` should be considered for AST printing.
+   * By default it checks whether the `AstNode` `e` belongs to `Location` `l`.
    */
   predicate shouldPrint(AstNode e, Location l) { l = e.getLocation() }
 }
@@ -132,9 +132,9 @@ class TopLevelPrintAstNode extends PrintAstNode {
 /**
  * An `AstNode` printed in the print-viewer.
  *
- * This class can be overwriten to define more specific behavior for some `AstNode`s.
- * The `getChildNode` and `getStmtList` methods can be overwritten to easily set up a child-parent relation between different `AstElementNode`s.
- * Be very carefull about overriding `getChild`, as `getChildNode` and `getStmtList` depends on the default beavior of `getChild`.
+ * This class can be overridden to define more specific behavior for some `AstNode`s.
+ * The `getChildNode` and `getStmtList` methods can be overridden to easily set up a child-parent relation between different `AstElementNode`s.
+ * Be very careful about overriding `getChild`, as `getChildNode` and `getStmtList` depend on the default behavior of `getChild`.
  */
 class AstElementNode extends PrintAstNode, TElementNode {
   AstNode element;
@@ -276,8 +276,8 @@ class WhilePrintNode extends AstElementNode {
 
 /**
  * A print node for `StmtList`.
- * A `StmtListNode` is always a child of a `AstElementNode`,
- * and the child-parent relation is decided by the `getStmtList` predicate in `AstElementNode.
+ * A `StmtListNode` is always a child of an `AstElementNode`,
+ * and the child-parent relation is defined by the `getStmtList` predicate in `AstElementNode`.
  *
  * The label for a `StmtList` is decided based on the result from the `getStmtList` predicate in `AstElementNode`.
  */
@@ -440,7 +440,7 @@ private AstNode getChild(AstNode node, int i) {
  */
 private module PrettyPrinting {
   /**
-   * Gets the QL class for `a`.
+   * Gets the QL class for the `AstNode` `a`.
    * Most `AstNode`s print their QL class in the `toString()` method, however there are exceptions.
    * These exceptions are handled in the `getQlCustomClass` predicate.
    */
@@ -454,7 +454,7 @@ private module PrettyPrinting {
   }
 
   /**
-   * Gets the QL class for `a` for the `AstNode`s where the toString method does not print the QL class.
+   * Gets the QL class for `AstNode`s where the `toString` method does not print the QL class.
    */
   string getQlCustomClass(AstNode a) {
     shouldPrint(a, _) and
@@ -481,7 +481,7 @@ private module PrettyPrinting {
   /**
    * Gets a human-readable representation of the `AstNode` `a`, or the empty string.
    *
-   * Has one and only result for every AstNode.
+   * Has exactly one result for every `AstNode`.
    */
   string prettyPrint(AstNode a) {
     shouldPrint(a, _) and
@@ -572,7 +572,7 @@ private module PrettyPrinting {
 
   /**
    * Gets a human-readable representation of the given `AstNode`.
-   * Is only defined for the an `AstNode` where a human-readable representation can be created without using recursion.
+   * Is only defined for `AstNode`s for which a human-readable representation can be created without using recursion.
    */
   private string reprBase(AstNode a) {
     shouldPrint(a, _) and
