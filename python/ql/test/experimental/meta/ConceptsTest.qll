@@ -90,6 +90,23 @@ class CodeExecutionTest extends InlineExpectationsTest {
   }
 }
 
+class SqlExecutionTest extends InlineExpectationsTest {
+  SqlExecutionTest() { this = "SqlExecutionTest" }
+
+  override string getARelevantTag() { result = "getSql" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(SqlExecution e, DataFlow::Node sql |
+      exists(location.getFile().getRelativePath()) and
+      sql = e.getSql() and
+      location = e.getLocation() and
+      element = sql.toString() and
+      value = value_from_expr(sql.asExpr()) and
+      tag = "getSql"
+    )
+  }
+}
+
 class HttpServerRouteSetupTest extends InlineExpectationsTest {
   HttpServerRouteSetupTest() { this = "HttpServerRouteSetupTest" }
 
