@@ -10656,6 +10656,8 @@ ir.cpp:
 # 1363|   params: 
 # 1363| [TemplateFunction,TopLevelFunction] T returnValue<T>()
 # 1363|   params: 
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] UnusualFields returnValue<UnusualFields>()
+# 1363|   params: 
 # 1363| [FunctionTemplateInstantiation,TopLevelFunction] copy_constructor returnValue<copy_constructor>()
 # 1363|   params: 
 # 1363| [FunctionTemplateInstantiation,TopLevelFunction] destructor_only returnValue<destructor_only>()
@@ -11061,6 +11063,104 @@ ir.cpp:
 # 1413|           Type = [Struct] Point
 # 1413|           ValueCategory = prvalue
 # 1414|     7: [ReturnStmt] return ...
+# 1416| [CopyAssignmentOperator] UnusualFields& UnusualFields::operator=(UnusualFields const&)
+# 1416|   params: 
+#-----|     0: [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const UnusualFields &
+# 1416| [Constructor] void UnusualFields::UnusualFields()
+# 1416|   params: 
+# 1416| [CopyConstructor] void UnusualFields::UnusualFields(UnusualFields const&)
+# 1416|   params: 
+#-----|     0: [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const UnusualFields &
+# 1416| [MoveConstructor] void UnusualFields::UnusualFields(UnusualFields&&)
+# 1416|   params: 
+#-----|     0: [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] UnusualFields &&
+# 1421| [TopLevelFunction] void temporary_unusual_fields()
+# 1421|   params: 
+# 1421|   body: [BlockStmt] { ... }
+# 1422|     0: [DeclStmt] declaration
+# 1422|       0: [VariableDeclarationEntry] definition of rx
+# 1422|           Type = [LValueReferenceType] const int &
+# 1422|         init: [Initializer] initializer for rx
+# 1422|           expr: [ReferenceToExpr] (reference to)
+# 1422|               Type = [LValueReferenceType] const int &
+# 1422|               ValueCategory = prvalue
+# 1422|             expr: [CStyleCast] (const int)...
+# 1422|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1422|                 Type = [SpecifiedType] const int
+# 1422|                 ValueCategory = lvalue
+# 1422|               expr: [ReferenceDereferenceExpr] (reference dereference)
+# 1422|                   Type = [IntType] int
+# 1422|                   ValueCategory = lvalue
+# 1422|                 expr: [ValueFieldAccess] r
+# 1422|                     Type = [LValueReferenceType] int &
+# 1422|                     ValueCategory = prvalue
+# 1422|                   -1: [FunctionCall] call to returnValue
+# 1422|                       Type = [Struct] UnusualFields
+# 1422|                       ValueCategory = prvalue
+# 1423|     1: [DeclStmt] declaration
+# 1423|       0: [VariableDeclarationEntry] definition of x
+# 1423|           Type = [IntType] int
+# 1423|         init: [Initializer] initializer for x
+# 1423|           expr: [ReferenceDereferenceExpr] (reference dereference)
+# 1423|               Type = [IntType] int
+# 1423|               ValueCategory = prvalue(load)
+# 1423|             expr: [ValueFieldAccess] r
+# 1423|                 Type = [LValueReferenceType] int &
+# 1423|                 ValueCategory = prvalue
+# 1423|               -1: [FunctionCall] call to returnValue
+# 1423|                   Type = [Struct] UnusualFields
+# 1423|                   ValueCategory = prvalue
+# 1425|     2: [DeclStmt] declaration
+# 1425|       0: [VariableDeclarationEntry] definition of rf
+# 1425|           Type = [LValueReferenceType] const float &
+# 1425|         init: [Initializer] initializer for rf
+# 1425|           expr: [ReferenceToExpr] (reference to)
+# 1425|               Type = [LValueReferenceType] const float &
+# 1425|               ValueCategory = prvalue
+# 1425|             expr: [CStyleCast] (const float)...
+# 1425|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1425|                 Type = [SpecifiedType] const float
+# 1425|                 ValueCategory = lvalue
+# 1425|               expr: [ArrayExpr] access to array
+# 1425|                   Type = [FloatType] float
+# 1425|                   ValueCategory = lvalue
+# 1425|                 0: [ArrayToPointerConversion] array to pointer conversion
+# 1425|                     Type = [PointerType] float *
+# 1425|                     ValueCategory = prvalue
+# 1425|                   expr: [ValueFieldAccess] a
+# 1425|                       Type = [ArrayType] float[10]
+# 1425|                       ValueCategory = prvalue
+# 1425|                     -1: [FunctionCall] call to returnValue
+# 1425|                         Type = [Struct] UnusualFields
+# 1425|                         ValueCategory = prvalue
+# 1425|                 1: [Literal] 3
+# 1425|                     Type = [IntType] int
+# 1425|                     Value = [Literal] 3
+# 1425|                     ValueCategory = prvalue
+# 1426|     3: [DeclStmt] declaration
+# 1426|       0: [VariableDeclarationEntry] definition of f
+# 1426|           Type = [FloatType] float
+# 1426|         init: [Initializer] initializer for f
+# 1426|           expr: [ArrayExpr] access to array
+# 1426|               Type = [FloatType] float
+# 1426|               ValueCategory = prvalue(load)
+# 1426|             0: [ArrayToPointerConversion] array to pointer conversion
+# 1426|                 Type = [PointerType] float *
+# 1426|                 ValueCategory = prvalue
+# 1426|               expr: [ValueFieldAccess] a
+# 1426|                   Type = [ArrayType] float[10]
+# 1426|                   ValueCategory = prvalue
+# 1426|                 -1: [FunctionCall] call to returnValue
+# 1426|                     Type = [Struct] UnusualFields
+# 1426|                     ValueCategory = prvalue
+# 1426|             1: [Literal] 5
+# 1426|                 Type = [IntType] int
+# 1426|                 Value = [Literal] 5
+# 1426|                 ValueCategory = prvalue
+# 1427|     4: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

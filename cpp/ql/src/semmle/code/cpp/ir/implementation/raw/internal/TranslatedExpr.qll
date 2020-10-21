@@ -110,9 +110,10 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
   }
 
   final override predicate producesExprResult() {
-    // If there's no load, then this is the only TranslatedExpr for this
+    // If there's no load or temp object, then this is the only TranslatedExpr for this
     // expression.
     not hasTranslatedLoad(expr) and
+    not hasTranslatedSyntheticTemporaryObject(expr) and
     // If there's a result copy, then this expression's result is the copy.
     not exprNeedsCopyIfNotLoaded(expr)
   }
@@ -247,17 +248,33 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
 }
 
 /**
+ * The IR translation of a node synthesized to adjust the value category of its operand.
+ * One of:
+ * - `TranslatedLoad` - Convert from glvalue to prvalue by loading from the location.
+ * - `TranslatedSyntheticTemporaryObject` - Convert from prvalue to glvalue by storing to a
+ *   temporary variable.
+ */
+abstract class TranslatedValueCategoryAdjustment extends TranslatedExpr {
+  final override Instruction getFirstInstruction() { result = getOperand().getFirstInstruction() }
+
+  final override TranslatedElement getChild(int id) { id = 0 and result = getOperand() }
+
+  final override predicate producesExprResult() {
+    // A temp object always produces the result of the expression.
+    any()
+  }
+
+  final TranslatedCoreExpr getOperand() { result.getExpr() = expr }
+}
+
+/**
  * IR translation of an implicit lvalue-to-rvalue conversion on the result of
  * an expression.
  */
-class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
+class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad {
   TranslatedLoad() { this = TTranslatedLoad(expr) }
 
   override string toString() { result = "Load of " + expr.toString() }
-
-  override Instruction getFirstInstruction() { result = getOperand().getFirstInstruction() }
-
-  override TranslatedElement getChild(int id) { id = 0 and result = getOperand() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = LoadTag() and
@@ -286,18 +303,75 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
       result = getOperand().getResult()
     )
   }
-
-  final override predicate producesExprResult() {
-    // A load always produces the result of the expression.
-    any()
-  }
-
-  TranslatedCoreExpr getOperand() { result.getExpr() = expr }
 }
 
 /**
- * IR translation of an implicit lvalue-to-rvalue conversion on the result of
- * an expression.
+ * The IR translation of a temporary object synthesized by the IR to hold a class prvalue on which
+ * a member access is going to be performed. This differs from `TranslatedTemporaryObjectExpr` in
+ * that instances of `TranslatedSyntheticTemporaryObject` are synthesized during IR construction,
+ * whereas `TranslatedTemporaryObjectExpr` instances are created from `TemporaryObjectExpr` nodes
+ * from the AST.
+ */
+class TranslatedSyntheticTemporaryObject extends TranslatedValueCategoryAdjustment,
+  TTranslatedSyntheticTemporaryObject {
+  TranslatedSyntheticTemporaryObject() { this = TTranslatedSyntheticTemporaryObject(expr) }
+
+  override string toString() { result = "Temporary materialization of " + expr.toString() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = InitializerVariableAddressTag() and
+    opcode instanceof Opcode::VariableAddress and
+    resultType = getTypeForGLValue(expr.getType())
+    or
+    tag = InitializerStoreTag() and
+    opcode instanceof Opcode::Store and
+    resultType = getTypeForPRValue(expr.getType())
+  }
+
+  override predicate isResultGLValue() { any() }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = InitializerVariableAddressTag() and
+    result = getInstruction(InitializerStoreTag()) and
+    kind instanceof GotoEdge
+    or
+    tag = InitializerStoreTag() and
+    result = getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getOperand() and result = getInstruction(InitializerVariableAddressTag())
+  }
+
+  override Instruction getResult() { result = getInstruction(InitializerVariableAddressTag()) }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = InitializerStoreTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = getInstruction(InitializerVariableAddressTag())
+      or
+      operandTag instanceof StoreValueOperandTag and
+      result = getOperand().getResult()
+    )
+  }
+
+  final override predicate hasTempVariable(TempVariableTag tag, CppType type) {
+    tag = TempObjectTempVar() and
+    type = getTypeForPRValue(expr.getType())
+  }
+
+  final override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = InitializerVariableAddressTag() and
+    result = getIRTempVariable(expr, TempObjectTempVar())
+  }
+}
+
+/**
+ * IR translation of an expression that simply returns its result. We generate an otherwise useless
+ * `CopyValue` instruction for these expressions so that there is at least one instruction
+ * associated with the expression.
  */
 class TranslatedResultCopy extends TranslatedExpr, TTranslatedResultCopy {
   TranslatedResultCopy() { this = TTranslatedResultCopy(expr) }

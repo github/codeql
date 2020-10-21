@@ -1413,4 +1413,17 @@ void temporary_point() {
     defaultConstruct<Point>();
 }
 
+struct UnusualFields {
+    int& r;
+    float a[10];
+};
+
+void temporary_unusual_fields() {
+    const int& rx = returnValue<UnusualFields>().r;
+    int x = returnValue<UnusualFields>().r;
+
+    const float& rf = returnValue<UnusualFields>().a[3];
+    float f = returnValue<UnusualFields>().a[5];
+}
+
 // semmle-extractor-options: -std=c++17 --clang

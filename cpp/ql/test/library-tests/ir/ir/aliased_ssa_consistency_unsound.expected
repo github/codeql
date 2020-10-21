@@ -22,7 +22,6 @@ wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
-| ir.cpp:1411:34:1411:34 | FieldAddress: y | FieldAddress instruction 'FieldAddress: y' has an object address operand that is not an address, in function '$@'. | ir.cpp:1404:6:1404:20 | void temporary_point() | void temporary_point() |
 thisArgumentIsNonPointer
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes

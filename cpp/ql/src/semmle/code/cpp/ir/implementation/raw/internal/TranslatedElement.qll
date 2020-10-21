@@ -228,6 +228,49 @@ private predicate usedAsCondition(Expr expr) {
 }
 
 /**
+ * Holds if `expr` is the result of a field access whose qualifier was a prvalue and whose result is
+ * a prvalue. These accesses are not marked as having loads, but we do need a load in the IR.
+ */
+private predicate isPRValueFieldAccessWithImplicitLoad(Expr expr) {
+  expr instanceof ValueFieldAccess and
+  expr.isPRValueCategory() and
+  // No need to do a load if we're replacing the result with a constant anyway.
+  not isIRConstant(expr) and
+  // Model an array prvalue as the address of the array, just like an array glvalue.
+  not expr.getUnspecifiedType() instanceof ArrayType
+}
+
+/**
+ * Holds if `expr` is a prvalue of class type that is used directly as the qualifier for a member
+ * access, or is used after undergoing a prvalue adjustment conversion.
+ */
+private predicate isClassPRValueForMemberAccessQualifier(Expr expr) {
+  exists(Expr qualifier |
+    exists(FieldAccess access | qualifier = access.getQualifier().getFullyConverted())
+    or
+    exists(Call call | qualifier = call.getQualifier().getFullyConverted())
+  |
+    // The qualifier is a prvalue of class type.
+    qualifier.getUnspecifiedType() instanceof Class and
+    qualifier.isPRValueCategory() and
+    (
+      expr = qualifier and not expr instanceof PrvalueAdjustmentConversion
+      or
+      // If the qualifier is a prvalue adjustment conversion, the actual object with be provided by
+      // the operand of that conversion. For example:
+      // ```c++
+      // std::string("s").c_str();
+      // ```
+      // The object for the qualifier is a prvalue(load) of type `std::string`, but the actual
+      // fully-converted qualifier of the call to `c_str()` is a prvalue adjustment conversion that
+      // converts the type to `const std::string` to match the type of the `this` pointer of the
+      // member function.
+      expr = qualifier.(PrvalueAdjustmentConversion).getExpr()
+    )
+  )
+}
+
+/**
  * Holds if `expr` has an lvalue-to-rvalue conversion that should be ignored
  * when generating IR. This occurs for conversion from an lvalue of function type
  * to an rvalue of function pointer type. The conversion is represented in the
@@ -249,30 +292,9 @@ predicate ignoreLoad(Expr expr) {
     or
     // The extractor represents the qualifier of a field access or member function call as a load of
     // the temporary object if the original qualifier was a prvalue. For IR purposes, we always want
-    // to use the address of the temporary object as the base of a field access or the `this`
+    // to use the address of the temporary object as the qualifier of a field access or the `this`
     // argument to a member function call.
-    exists(Expr qualifier |
-      exists(FieldAccess access | qualifier = access.getQualifier().getFullyConverted())
-      or
-      exists(Call call | qualifier = call.getQualifier().getFullyConverted())
-    |
-      // The qualifier has a class type.
-      qualifier.getUnspecifiedType() instanceof Class and
-      (
-        expr = qualifier
-        or
-        // If the qualifier is a prvalue adjustment conversion, the load will be on the operand of
-        // that conversion. For example:
-        // ```c++
-        // std::string("s").c_str();
-        // ```
-        // The temporary object for the qualifier is a prvalue(load) of type `std::string`, but the
-        // actual fully converted qualifier of the call to `c_str()` is a prvalue adjustment
-        // conversion that converts the type to `const std::string` to match the type of the `this`
-        // pointer of the member function.
-        expr = qualifier.(PrvalueAdjustmentConversion).getExpr()
-      )
-    )
+    isClassPRValueForMemberAccessQualifier(expr)
   )
 }
 
@@ -308,11 +330,23 @@ predicate hasTranslatedLoad(Expr expr) {
     expr.hasLValueToRValueConversion()
     or
     needsLoadForParentExpr(expr)
+    or
+    isPRValueFieldAccessWithImplicitLoad(expr)
   ) and
   not ignoreExpr(expr) and
   not isNativeCondition(expr) and
   not isFlexibleCondition(expr) and
   not ignoreLoad(expr)
+}
+
+/**
+ * Holds if `expr` should have a `TranslatedSyntheticTemporaryObject` on it.
+ */
+predicate hasTranslatedSyntheticTemporaryObject(Expr expr) {
+  not ignoreExpr(expr) and
+  isClassPRValueForMemberAccessQualifier(expr) and
+  // If it's a load, we'll just ignore the load in `ignoreLoad()`.
+  not expr.hasLValueToRValueConversion()
 }
 
 /**
@@ -345,6 +379,9 @@ newtype TTranslatedElement =
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) { hasTranslatedLoad(expr) } or
+  // A temporary object that we had to synthesize ourselves, so that we could do a field access or
+  // method call on a prvalue.
+  TTranslatedSyntheticTemporaryObject(Expr expr) { hasTranslatedSyntheticTemporaryObject(expr) } or
   // For expressions that would not otherwise generate an instruction.
   TTranslatedResultCopy(Expr expr) {
     not ignoreExpr(expr) and

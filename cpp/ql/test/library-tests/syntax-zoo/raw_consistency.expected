@@ -4,9 +4,6 @@ missingOperand
 | condition_decls.cpp:41:9:41:23 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
 | condition_decls.cpp:48:39:48:53 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:47:6:47:18 | void for_decl_bind(int) | void for_decl_bind(int) |
 | misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | void misc3() | void misc3() |
-| misc.c:220:3:223:3 | Store: ... = ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
-| misc.c:220:9:223:3 | FieldAddress: {...} | Instruction 'FieldAddress' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
-| misc.c:220:9:223:3 | FieldAddress: {...} | Instruction 'FieldAddress' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
 | try_catch.cpp:23:5:23:18 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | try_catch.cpp:19:6:19:23 | void throw_from_nonstmt(int) | void throw_from_nonstmt(int) |
 unexpectedOperand
 duplicateOperand
@@ -34,9 +31,6 @@ instructionWithoutSuccessor
 | misc.c:174:17:174:22 | CallSideEffect: call to getInt | Instruction 'CallSideEffect: call to getInt' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
 | misc.c:174:30:174:35 | CallSideEffect: call to getInt | Instruction 'CallSideEffect: call to getInt' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
 | misc.c:174:55:174:60 | Store: (char ****)... | Instruction 'Store: (char ****)...' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
-| misc.c:219:47:219:48 | InitializeIndirection: sp | Instruction 'InitializeIndirection: sp' has no successors in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
-| misc.c:221:10:221:10 | Store: 1 | Instruction 'Store: 1' has no successors in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
-| misc.c:222:10:222:10 | Store: 2 | Instruction 'Store: 2' has no successors in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
 | ms_try_except.cpp:3:9:3:9 | Uninitialized: definition of x | Instruction 'Uninitialized: definition of x' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
 | ms_try_except.cpp:7:13:7:17 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
 | ms_try_except.cpp:9:19:9:19 | Load: j | Instruction 'Load: j' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
@@ -150,8 +144,6 @@ wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
-| misc.c:220:9:223:3 | FieldAddress: {...} | FieldAddress instruction 'FieldAddress: {...}' has an object address operand that is not an address, in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
-| misc.c:220:9:223:3 | FieldAddress: {...} | FieldAddress instruction 'FieldAddress: {...}' has an object address operand that is not an address, in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
 thisArgumentIsNonPointer
 | pmcallexpr.cpp:8:2:8:15 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
 | pointer_to_member.cpp:23:5:23:54 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
