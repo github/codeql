@@ -5,7 +5,6 @@
 import python
 import experimental.dataflow.DataFlow
 import DataFlow::PathGraph
-private import experimental.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * A configuration to check routing of arguments through magic methods.
@@ -14,19 +13,12 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
   ArgumentRoutingConfig() { this = "ArgumentRoutingConfig" }
 
   override predicate isSource(DataFlow::Node node) {
-    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "arg1"
-    or
-    exists(AssignmentDefinition def, DataFlowPrivate::DataFlowCall call |
-      def.getVariable() = node.(DataFlow::EssaNode).getVar() and
-      def.getValue() = call.getNode() and
-      call.getNode().(CallNode).getFunction().(NameNode).getId().matches("With\\_%")
-    ) and
-    node.(DataFlow::EssaNode).getVar().getName().matches("with\\_%")
+    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "arg7"
   }
 
   override predicate isSink(DataFlow::Node node) {
     exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "SINK1" and
+      call.getFunction().(NameNode).getId() = "SINK7" and
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
