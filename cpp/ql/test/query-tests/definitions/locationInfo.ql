@@ -4,7 +4,7 @@ import definitions
  * An element that is the source of a jump-to-definition link.
  */
 class Link extends Top {
-  Link() { exists(definitionOf(this, _)) }
+  Link() { exists(definitionOf(this, _, false)) }
 }
 
 /**
@@ -31,7 +31,7 @@ predicate linkLocationInfo(Link e, string filepath, int begin, int end) {
  * Gets a string describing a problem with a `Link`.
  */
 string issues(Link e) {
-  strictcount(Top def | def = definitionOf(e, _)) > 1 and
+  strictcount(Top def | def = definitionOf(e, _, false)) > 1 and
   result = "has more than one definition"
   or
   exists(string filepath1, int begin1, int end1, Link e2, string filepath2, int begin2, int end2 |

@@ -9,5 +9,5 @@
 import definitions
 
 from Top e, Top def, string kind
-where def = definitionOf(e, kind)
+where def = definitionOf(e, kind, false)
 select e, def, kind
