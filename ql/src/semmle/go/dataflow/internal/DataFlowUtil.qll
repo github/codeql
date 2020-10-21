@@ -896,6 +896,26 @@ class TypeCastNode extends ExprNode {
 abstract class FunctionModel extends Function {
   /** Holds if data flows through this function from `input` to `output`. */
   abstract predicate hasDataFlow(FunctionInput input, FunctionOutput output);
+
+  /** Gets an input node for this model for the call `c`. */
+  DataFlow::Node getAnInputNode(DataFlow::CallNode c) { this.flowStepForCall(result, _, c) }
+
+  /** Gets an output node for this model for the call `c`. */
+  DataFlow::Node getAnOutputNode(DataFlow::CallNode c) { this.flowStepForCall(_, result, c) }
+
+  /** Holds if this function model causes data to flow from `pred` to `succ` for the call `c`. */
+  predicate flowStepForCall(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode c) {
+    c = this.getACall() and
+    exists(FunctionInput inp, FunctionOutput outp | this.hasDataFlow(inp, outp) |
+      pred = inp.getNode(c) and
+      succ = outp.getNode(c)
+    )
+  }
+
+  /** Holds if this function model causes data to flow from `pred` to `succ`. */
+  predicate flowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    this.flowStepForCall(pred, succ, _)
+  }
 }
 
 /**
@@ -1006,12 +1026,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   basicLocalFlowStep(nodeFrom, nodeTo)
   or
   // step through function model
-  exists(FunctionModel m, CallNode c, FunctionInput inp, FunctionOutput outp |
-    c = m.getACall() and
-    m.hasDataFlow(inp, outp) and
-    nodeFrom = inp.getNode(c) and
-    nodeTo = outp.getNode(c)
-  )
+  any(FunctionModel m).flowStep(nodeFrom, nodeTo)
 }
 
 /**

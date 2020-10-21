@@ -16,6 +16,6 @@ class ReaderReset extends TaintTracking::FunctionModel, Method {
   }
 }
 
-from Function fn, DataFlow::Node pred, DataFlow::Node succ
-where TaintTracking::functionModelStep(fn, pred, succ)
+from TaintTracking::FunctionModel fn, DataFlow::Node pred, DataFlow::Node succ
+where fn.taintStep(pred, succ)
 select fn, pred, succ

@@ -101,7 +101,7 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     TaintTracking::referenceStep(pred, succ)
     or
     // Propagate across Sprintf and similar calls
-    TaintTracking::functionModelStep(any(Fmt::Sprinter s), pred, succ)
+    any(Fmt::Sprinter s).taintStep(pred, succ)
   }
 
   predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {
