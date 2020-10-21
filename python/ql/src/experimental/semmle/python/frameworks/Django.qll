@@ -295,7 +295,13 @@ private module Django {
     override DataFlow::Node getSql() { result.asCfgNode() = raw.getArg(0) }
   }
 
-  /** A call to the `raw` function on a model. */
+  /** 
+   * A call to the `raw` function on a model. 
+   *
+   * See 
+   * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#django.db.models.Manager.raw
+   * - https://docs.djangoproject.com/en/3.1/ref/models/querysets/#raw
+   */
   private class ObjectsRaw extends SqlExecution::Range, DataFlow::CfgNode {
     override CallNode node;
 
@@ -304,7 +310,11 @@ private module Django {
     override DataFlow::Node getSql() { result.asCfgNode() = node.getArg(0) }
   }
 
-  /** A call to the `raw` function on a model. */
+  /** 
+   * A call to the `extra` function on a model. 
+   *
+   * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/#extra
+   */
   private class ObjectsExtra extends SqlExecution::Range, DataFlow::CfgNode {
     override CallNode node;
 
