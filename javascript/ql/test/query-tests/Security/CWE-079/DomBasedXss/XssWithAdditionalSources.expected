@@ -60,17 +60,38 @@ nodes
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
 | jquery.js:2:7:2:40 | tainted |
+| jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
 | jquery.js:2:17:2:33 | document.location |
 | jquery.js:2:17:2:40 | documen ... .search |
-| jquery.js:4:5:4:11 | tainted |
-| jquery.js:4:5:4:11 | tainted |
+| jquery.js:2:17:2:40 | documen ... .search |
+| jquery.js:2:17:2:40 | documen ... .search |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
 | jquery.js:7:20:7:26 | tainted |
 | jquery.js:8:18:8:34 | "XSS: " + tainted |
 | jquery.js:8:18:8:34 | "XSS: " + tainted |
 | jquery.js:8:28:8:34 | tainted |
+| jquery.js:10:5:10:40 | "<b>" + ...  "</b>" |
+| jquery.js:10:5:10:40 | "<b>" + ...  "</b>" |
+| jquery.js:10:13:10:20 | location |
+| jquery.js:10:13:10:20 | location |
+| jquery.js:10:13:10:31 | location.toString() |
+| jquery.js:14:19:14:58 | decodeU ... n.hash) |
+| jquery.js:14:19:14:58 | decodeU ... n.hash) |
+| jquery.js:14:38:14:52 | window.location |
+| jquery.js:14:38:14:52 | window.location |
+| jquery.js:14:38:14:57 | window.location.hash |
+| jquery.js:15:19:15:60 | decodeU ... search) |
+| jquery.js:15:19:15:60 | decodeU ... search) |
+| jquery.js:15:38:15:52 | window.location |
+| jquery.js:15:38:15:52 | window.location |
+| jquery.js:15:38:15:59 | window. ... .search |
+| jquery.js:16:19:16:64 | decodeU ... ring()) |
+| jquery.js:16:19:16:64 | decodeU ... ring()) |
+| jquery.js:16:38:16:52 | window.location |
+| jquery.js:16:38:16:52 | window.location |
+| jquery.js:16:38:16:63 | window. ... tring() |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message |
@@ -223,8 +244,11 @@ nodes
 | tst3.js:10:38:10:43 | data.p |
 | tst3.js:10:38:10:43 | data.p |
 | tst.js:2:7:2:39 | target |
+| tst.js:2:7:2:39 | target |
 | tst.js:2:16:2:32 | document.location |
 | tst.js:2:16:2:32 | document.location |
+| tst.js:2:16:2:39 | documen ... .search |
+| tst.js:2:16:2:39 | documen ... .search |
 | tst.js:2:16:2:39 | documen ... .search |
 | tst.js:5:18:5:23 | target |
 | tst.js:5:18:5:23 | target |
@@ -444,6 +468,7 @@ nodes
 | tst.js:332:18:332:35 | params.get('name') |
 | tst.js:341:20:341:36 | document.location |
 | tst.js:341:20:341:36 | document.location |
+| tst.js:343:5:343:17 | getUrl().hash |
 | tst.js:343:5:343:30 | getUrl( ... ring(1) |
 | tst.js:343:5:343:30 | getUrl( ... ring(1) |
 | tst.js:348:7:348:39 | target |
@@ -495,18 +520,22 @@ nodes
 | tst.js:416:7:416:46 | payload |
 | tst.js:416:17:416:31 | window.location |
 | tst.js:416:17:416:31 | window.location |
+| tst.js:416:17:416:36 | window.location.hash |
 | tst.js:416:17:416:46 | window. ... bstr(1) |
 | tst.js:417:18:417:24 | payload |
 | tst.js:417:18:417:24 | payload |
 | tst.js:419:7:419:55 | match |
 | tst.js:419:15:419:29 | window.location |
 | tst.js:419:15:419:29 | window.location |
+| tst.js:419:15:419:34 | window.location.hash |
 | tst.js:419:15:419:55 | window. ... (\\w+)/) |
 | tst.js:421:20:421:24 | match |
 | tst.js:421:20:421:27 | match[1] |
 | tst.js:421:20:421:27 | match[1] |
 | tst.js:424:18:424:32 | window.location |
 | tst.js:424:18:424:32 | window.location |
+| tst.js:424:18:424:37 | window.location.hash |
+| tst.js:424:18:424:48 | window. ... it('#') |
 | tst.js:424:18:424:51 | window. ... '#')[1] |
 | tst.js:424:18:424:51 | window. ... '#')[1] |
 | typeahead.js:9:28:9:30 | loc |
@@ -576,17 +605,33 @@ edges
 | angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
 | angular2-client.ts:37:44:37:58 | this.router.url | angular2-client.ts:37:44:37:58 | this.router.url |
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
-| jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
-| jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
 | jquery.js:2:17:2:33 | document.location | jquery.js:2:17:2:40 | documen ... .search |
 | jquery.js:2:17:2:33 | document.location | jquery.js:2:17:2:40 | documen ... .search |
 | jquery.js:2:17:2:40 | documen ... .search | jquery.js:2:7:2:40 | tainted |
+| jquery.js:2:17:2:40 | documen ... .search | jquery.js:2:7:2:40 | tainted |
+| jquery.js:2:17:2:40 | documen ... .search | jquery.js:2:7:2:40 | tainted |
 | jquery.js:7:20:7:26 | tainted | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
 | jquery.js:7:20:7:26 | tainted | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
 | jquery.js:8:28:8:34 | tainted | jquery.js:8:18:8:34 | "XSS: " + tainted |
 | jquery.js:8:28:8:34 | tainted | jquery.js:8:18:8:34 | "XSS: " + tainted |
+| jquery.js:10:13:10:20 | location | jquery.js:10:13:10:31 | location.toString() |
+| jquery.js:10:13:10:20 | location | jquery.js:10:13:10:31 | location.toString() |
+| jquery.js:10:13:10:31 | location.toString() | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" |
+| jquery.js:10:13:10:31 | location.toString() | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" |
+| jquery.js:14:38:14:52 | window.location | jquery.js:14:38:14:57 | window.location.hash |
+| jquery.js:14:38:14:52 | window.location | jquery.js:14:38:14:57 | window.location.hash |
+| jquery.js:14:38:14:57 | window.location.hash | jquery.js:14:19:14:58 | decodeU ... n.hash) |
+| jquery.js:14:38:14:57 | window.location.hash | jquery.js:14:19:14:58 | decodeU ... n.hash) |
+| jquery.js:15:38:15:52 | window.location | jquery.js:15:38:15:59 | window. ... .search |
+| jquery.js:15:38:15:52 | window.location | jquery.js:15:38:15:59 | window. ... .search |
+| jquery.js:15:38:15:59 | window. ... .search | jquery.js:15:19:15:60 | decodeU ... search) |
+| jquery.js:15:38:15:59 | window. ... .search | jquery.js:15:19:15:60 | decodeU ... search) |
+| jquery.js:16:38:16:52 | window.location | jquery.js:16:38:16:63 | window. ... tring() |
+| jquery.js:16:38:16:52 | window.location | jquery.js:16:38:16:63 | window. ... tring() |
+| jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
+| jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
@@ -734,6 +779,8 @@ edges
 | tst.js:2:7:2:39 | target | tst.js:20:42:20:47 | target |
 | tst.js:2:16:2:32 | document.location | tst.js:2:16:2:39 | documen ... .search |
 | tst.js:2:16:2:32 | document.location | tst.js:2:16:2:39 | documen ... .search |
+| tst.js:2:16:2:39 | documen ... .search | tst.js:2:7:2:39 | target |
+| tst.js:2:16:2:39 | documen ... .search | tst.js:2:7:2:39 | target |
 | tst.js:2:16:2:39 | documen ... .search | tst.js:2:7:2:39 | target |
 | tst.js:8:37:8:53 | document.location | tst.js:8:37:8:58 | documen ... on.href |
 | tst.js:8:37:8:53 | document.location | tst.js:8:37:8:58 | documen ... on.href |
@@ -920,10 +967,10 @@ edges
 | tst.js:327:18:327:34 | document.location | tst.js:332:18:332:35 | params.get('name') |
 | tst.js:327:18:327:34 | document.location | tst.js:332:18:332:35 | params.get('name') |
 | tst.js:327:18:327:34 | document.location | tst.js:332:18:332:35 | params.get('name') |
-| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:30 | getUrl( ... ring(1) |
-| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:30 | getUrl( ... ring(1) |
-| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:30 | getUrl( ... ring(1) |
-| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:30 | getUrl( ... ring(1) |
+| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:17 | getUrl().hash |
+| tst.js:341:20:341:36 | document.location | tst.js:343:5:343:17 | getUrl().hash |
+| tst.js:343:5:343:17 | getUrl().hash | tst.js:343:5:343:30 | getUrl( ... ring(1) |
+| tst.js:343:5:343:17 | getUrl().hash | tst.js:343:5:343:30 | getUrl( ... ring(1) |
 | tst.js:348:7:348:39 | target | tst.js:349:12:349:17 | target |
 | tst.js:348:7:348:39 | target | tst.js:349:12:349:17 | target |
 | tst.js:348:16:348:32 | document.location | tst.js:348:16:348:39 | documen ... .search |
@@ -968,19 +1015,22 @@ edges
 | tst.js:408:19:408:31 | target.taint8 | tst.js:409:18:409:30 | target.taint8 |
 | tst.js:416:7:416:46 | payload | tst.js:417:18:417:24 | payload |
 | tst.js:416:7:416:46 | payload | tst.js:417:18:417:24 | payload |
-| tst.js:416:17:416:31 | window.location | tst.js:416:17:416:46 | window. ... bstr(1) |
-| tst.js:416:17:416:31 | window.location | tst.js:416:17:416:46 | window. ... bstr(1) |
+| tst.js:416:17:416:31 | window.location | tst.js:416:17:416:36 | window.location.hash |
+| tst.js:416:17:416:31 | window.location | tst.js:416:17:416:36 | window.location.hash |
+| tst.js:416:17:416:36 | window.location.hash | tst.js:416:17:416:46 | window. ... bstr(1) |
 | tst.js:416:17:416:46 | window. ... bstr(1) | tst.js:416:7:416:46 | payload |
 | tst.js:419:7:419:55 | match | tst.js:421:20:421:24 | match |
-| tst.js:419:15:419:29 | window.location | tst.js:419:15:419:55 | window. ... (\\w+)/) |
-| tst.js:419:15:419:29 | window.location | tst.js:419:15:419:55 | window. ... (\\w+)/) |
+| tst.js:419:15:419:29 | window.location | tst.js:419:15:419:34 | window.location.hash |
+| tst.js:419:15:419:29 | window.location | tst.js:419:15:419:34 | window.location.hash |
+| tst.js:419:15:419:34 | window.location.hash | tst.js:419:15:419:55 | window. ... (\\w+)/) |
 | tst.js:419:15:419:55 | window. ... (\\w+)/) | tst.js:419:7:419:55 | match |
 | tst.js:421:20:421:24 | match | tst.js:421:20:421:27 | match[1] |
 | tst.js:421:20:421:24 | match | tst.js:421:20:421:27 | match[1] |
-| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:51 | window. ... '#')[1] |
-| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:51 | window. ... '#')[1] |
-| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:51 | window. ... '#')[1] |
-| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:51 | window. ... '#')[1] |
+| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:37 | window.location.hash |
+| tst.js:424:18:424:32 | window.location | tst.js:424:18:424:37 | window.location.hash |
+| tst.js:424:18:424:37 | window.location.hash | tst.js:424:18:424:48 | window. ... it('#') |
+| tst.js:424:18:424:48 | window. ... it('#') | tst.js:424:18:424:51 | window. ... '#')[1] |
+| tst.js:424:18:424:48 | window. ... it('#') | tst.js:424:18:424:51 | window. ... '#')[1] |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

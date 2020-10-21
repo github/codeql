@@ -53,7 +53,9 @@
 | Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | More results | This query now recognizes some unsafe uses of `importScripts()` inside WebWorkers. |
 | Missing CSRF middleware (`js/missing-token-validation`) | More results | This query now recognizes writes to cookie and session variables as potentially vulnerable to CSRF attacks. |
 | Missing CSRF middleware (`js/missing-token-validation`) | Fewer results | This query now recognizes more ways of protecting against CSRF attacks. |
+| Client-side cross-site scripting (`js/xss`) | More results | This query now tracks data flow from `location.hash` more precisely. |
 
 
 ## Changes to libraries
 * The predicate `TypeAnnotation.hasQualifiedName` now works in more cases when the imported library was not present during extraction.
+* The class `DomBasedXss::Configuration` has been deprecated, as it has been split into `DomBasedXss::HtmlInjectionConfiguration` and `DomBasedXss::JQueryHtmlOrSelectorInjectionConfiguration`. Unless specifically working with jQuery sinks, subclasses should instead be based on `HtmlInjectionConfiguration`. To use both configurations in a query, see [Xss.ql](https://github.com/github/codeql/blob/main/javascript/ql/src/Security/CWE-079/Xss.ql) for an example.
