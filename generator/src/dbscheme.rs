@@ -1,10 +1,12 @@
+use std::fmt;
+
 /// Represents a distinct entry in the database schema.
 pub enum Entry {
     /// An entry defining a database table.
     Table(Table),
 
     /// An entry defining type that is a union of other types.
-    Union { name: String, members: Vec<String> },
+    Union(Union),
 }
 
 /// A table in the database schema.
@@ -12,6 +14,12 @@ pub struct Table {
     pub name: String,
     pub columns: Vec<Column>,
     pub keysets: Option<Vec<String>>,
+}
+
+/// A union in the database schema.
+pub struct Union {
+    pub name: String,
+    pub members: Vec<String>,
 }
 
 /// A column in a table.
@@ -101,6 +109,69 @@ pub fn escape_name(name: &str) -> String {
     result
 }
 
+impl fmt::Display for Table {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        for keyset in &self.keysets {
+            write!(f, "#keyset[")?;
+            for (key_index, key) in keyset.iter().enumerate() {
+                if key_index > 0 {
+                    write!(f, ", ")?;
+                }
+                write!(f, "{}", key)?;
+            }
+            write!(f, "]\n")?;
+        }
+
+        write!(f, "{}(\n", self.name)?;
+        for (column_index, column) in self.columns.iter().enumerate() {
+            write!(f, "  ")?;
+            if column.unique {
+                write!(f, "unique ")?;
+            }
+            write!(
+                f,
+                "{} ",
+                match column.db_type {
+                    DbColumnType::Int => "int",
+                    DbColumnType::String => "string",
+                }
+            )?;
+            write!(f, "{}: ", column.name)?;
+            match &column.ql_type {
+                QlColumnType::Int => write!(f, "int")?,
+                QlColumnType::String => write!(f, "string")?,
+                QlColumnType::Custom(name) => write!(f, "@{}", name)?,
+            }
+            if column.ql_type_is_ref {
+                write!(f, " ref")?;
+            }
+            if column_index + 1 != self.columns.len() {
+                write!(f, ",")?;
+            }
+            write!(f, "\n")?;
+        }
+        write!(f, ");")?;
+
+        Ok(())
+    }
+}
+
+impl fmt::Display for Union {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "@{} = ", self.name)?;
+        let mut first = true;
+        for member in &self.members {
+            if first {
+                first = false;
+            } else {
+                write!(f, " | ")?;
+            }
+            write!(f, "@{}", member)?;
+        }
+        Ok(())
+    }
+}
+
 /// Generates the dbscheme by writing the given dbscheme `entries` to the `file`.
 pub fn write(
     language_name: &str,
@@ -115,61 +186,8 @@ pub fn write(
 
     for entry in entries {
         match entry {
-            Entry::Table(table) => {
-                for keyset in &table.keysets {
-                    write!(file, "#keyset[")?;
-                    for (key_index, key) in keyset.iter().enumerate() {
-                        if key_index > 0 {
-                            write!(file, ", ")?;
-                        }
-                        write!(file, "{}", key)?;
-                    }
-                    write!(file, "]\n")?;
-                }
-
-                write!(file, "{}(\n", table.name)?;
-                for (column_index, column) in table.columns.iter().enumerate() {
-                    write!(file, "  ")?;
-                    if column.unique {
-                        write!(file, "unique ")?;
-                    }
-                    write!(
-                        file,
-                        "{} ",
-                        match column.db_type {
-                            DbColumnType::Int => "int",
-                            DbColumnType::String => "string",
-                        }
-                    )?;
-                    write!(file, "{}: ", column.name)?;
-                    match &column.ql_type {
-                        QlColumnType::Int => write!(file, "int")?,
-                        QlColumnType::String => write!(file, "string")?,
-                        QlColumnType::Custom(name) => write!(file, "@{}", name)?,
-                    }
-                    if column.ql_type_is_ref {
-                        write!(file, " ref")?;
-                    }
-                    if column_index + 1 != table.columns.len() {
-                        write!(file, ",")?;
-                    }
-                    write!(file, "\n")?;
-                }
-                write!(file, ");\n\n")?;
-            }
-            Entry::Union { name, members } => {
-                write!(file, "@{} = ", name)?;
-                let mut first = true;
-                for member in members {
-                    if first {
-                        first = false;
-                    } else {
-                        write!(file, " | ")?;
-                    }
-                    write!(file, "@{}", member)?;
-                }
-                write!(file, "\n\n")?;
-            }
+            Entry::Table(table) => write!(file, "{}\n\n", table)?,
+            Entry::Union(union) => write!(file, "{}\n\n", union)?,
         }
     }
 

@@ -57,10 +57,10 @@ fn make_field_type(
                 field_type.named,
             )));
         }
-        entries.push(dbscheme::Entry::Union {
+        entries.push(dbscheme::Entry::Union(dbscheme::Union {
             name: field_union_name.clone(),
             members,
-        });
+        }));
         field_union_name
     }
 }
@@ -144,10 +144,10 @@ fn convert_nodes(nodes: &[NodeInfo]) -> Vec<dbscheme::Entry> {
                     subtype.named,
                 )))
             }
-            entries.push(dbscheme::Entry::Union {
+            entries.push(dbscheme::Entry::Union(dbscheme::Union {
                 name: dbscheme::escape_name(&node_type_name(&node.kind, node.named)),
                 members,
-            });
+            }));
         } else {
             // It's a product type, defined by a table.
             let name = node_type_name(&node.kind, node.named);
@@ -207,10 +207,10 @@ fn convert_nodes(nodes: &[NodeInfo]) -> Vec<dbscheme::Entry> {
     }
 
     // Create a union of all database types.
-    entries.push(dbscheme::Entry::Union {
+    entries.push(dbscheme::Entry::Union(dbscheme::Union {
         name: "top".to_string(),
         members: top_members,
-    });
+    }));
 
     entries
 }
