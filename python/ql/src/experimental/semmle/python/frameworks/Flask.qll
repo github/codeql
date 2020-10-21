@@ -325,7 +325,7 @@ private module Flask_Private {
     RequestInputFiles() { attr_name = "files" }
   }
   // TODO: Somehow specify that elements of `RequestInputFiles` are
-  // Werkzeug::Datastructures::FileStorage and should have those additional taint steps
+  // Werkzeug::werkzeug::datastructures::FileStorage and should have those additional taint steps
   // AND that the 0-indexed argument to its' save method is a sink for path-injection.
   // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
 }

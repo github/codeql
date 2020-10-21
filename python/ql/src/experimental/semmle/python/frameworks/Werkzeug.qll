@@ -58,6 +58,35 @@ module Werkzeug {
          */
         DataFlow::Node getlist() { result = getlist(DataFlow::TypeTracker::end()) }
       }
+
+      /**
+       * Provides models for the `werkzeug.datastrctures.FileStorage` class
+       *
+       * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.
+       */
+      module FileStorage {
+        /**
+         * A source of an instance of `werkzeug.datastrctures.FileStorage`.
+         *
+         * This can include instantiation of the class, return value from function
+         * calls, or a special parameter that will be set when functions are call by external
+         * library.
+         *
+         * Use `FileStorage::instance()` predicate to get references to instances of `werkzeug.datastrctures.FileStorage`.
+         */
+        abstract class InstanceSource extends DataFlow::Node { }
+
+        /** Gets a reference to an instance of `werkzeug.datastrctures.FileStorage`. */
+        private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          t.start() and
+          result instanceof InstanceSource
+          or
+          exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+        }
+
+        /** Gets a reference to an instance of `werkzeug.datastrctures.FileStorage`. */
+        DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+      }
     }
   }
 
@@ -76,34 +105,21 @@ module Werkzeug {
     }
   }
 
-  module Datastructures {
-    // ---------------------------------------------------------------------- //
-    // FileStorage                                                              //
-    // ---------------------------------------------------------------------- //
-    /**
-     * A Node representing an instance of a werkzeug.datastructures.FileStorage
-     *
-     * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
-     */
-    abstract class FileStorage extends DataFlow::Node { }
-
-    private class FileStorageAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // TODO: should be `nodeFrom = tracked(any(FileStorage fs))`
-        nodeFrom instanceof FileStorage and
-        exists(string name |
-          name in ["filename",
-                // str
-                "name", "content_type", "mimetype",
-                // file-like
-                "stream",
-                // TODO: werkzeug.datastructures.Headers
-                "headers",
-                // dict[str, str]
-                "mimetype_params"] and
-          nodeTo.asCfgNode().(AttrNode).getObject(name) = nodeFrom.asCfgNode()
-        )
-      }
+  private class FileStorageAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      nodeFrom = werkzeug::datastructures::FileStorage::instance() and
+      exists(DataFlow::AttrRead read | nodeTo = read |
+        read.getAttributeName() in ["filename",
+              // str
+              "name", "content_type", "mimetype",
+              // file-like
+              "stream",
+              // TODO: werkzeug.datastructures.Headers
+              "headers",
+              // dict[str, str]
+              "mimetype_params"] and
+        read.getObject() = nodeFrom
+      )
     }
   }
 }
