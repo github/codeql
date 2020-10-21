@@ -443,8 +443,6 @@ module InstructionConsistency {
 
   private predicate shouldBeConflated(Instruction instr) {
     isOnAliasedDefinitionChain(instr)
-    or
-    instr.getOpcode() instanceof Opcode::InitializeNonLocal
   }
 
   query predicate notMarkedAsConflated(

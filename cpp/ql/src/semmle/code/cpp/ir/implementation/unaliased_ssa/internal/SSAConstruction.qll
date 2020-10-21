@@ -68,8 +68,6 @@ private module Cached {
   predicate hasConflatedMemoryResult(Instruction instruction) {
     instruction instanceof AliasedDefinitionInstruction
     or
-    instruction.getOpcode() instanceof Opcode::InitializeNonLocal
-    or
     // Chi instructions track virtual variables, and therefore a chi instruction is
     // conflated if it's associated with the aliased virtual variable.
     exists(OldInstruction oldInstruction | instruction = getChi(oldInstruction) |

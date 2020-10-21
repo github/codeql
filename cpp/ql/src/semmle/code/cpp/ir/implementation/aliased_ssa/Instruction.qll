@@ -575,16 +575,6 @@ class InitializeParameterInstruction extends VariableInstruction {
 }
 
 /**
- * An instruction that initializes all memory that existed before this function was called.
- *
- * This instruction provides a definition for memory that, because it was actually allocated and
- * initialized elsewhere, would not otherwise have a definition in this function.
- */
-class InitializeNonLocalInstruction extends Instruction {
-  InitializeNonLocalInstruction() { getOpcode() instanceof Opcode::InitializeNonLocal }
-}
-
-/**
  * An instruction that initializes the memory pointed to by a parameter of the enclosing function
  * with the value of that memory on entry to the function.
  */
