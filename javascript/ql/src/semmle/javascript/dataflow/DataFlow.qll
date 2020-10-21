@@ -96,9 +96,7 @@ module DataFlow {
 
     /** Holds if this node may evaluate to the string `s`, possibly through local data flow. */
     predicate mayHaveStringValue(string s) {
-      getAPredecessor().mayHaveStringValue(s)
-      or
-      s = getStringValue()
+      s = getALocalSource().getStringValue()
     }
 
     /** Gets the string value of this node, if it is a string literal or constant string concatenation. */
