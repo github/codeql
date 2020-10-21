@@ -102,8 +102,12 @@ pub fn escape_name(name: &str) -> String {
 }
 
 /// Generates the dbscheme by writing the given dbscheme `entries` to the `file`.
-pub fn write(file: &mut dyn std::io::Write, entries: &[Entry]) -> std::io::Result<()> {
-    write!(file, "// CodeQL database schema for Ruby\n")?;
+pub fn write(
+    language_name: &str,
+    file: &mut dyn std::io::Write,
+    entries: &[Entry],
+) -> std::io::Result<()> {
+    write!(file, "// CodeQL database schema for {}\n", language_name)?;
     write!(
         file,
         "// Automatically generated from the tree-sitter grammar; do not edit\n\n"

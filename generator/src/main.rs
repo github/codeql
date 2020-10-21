@@ -1,14 +1,15 @@
+mod dbscheme;
+mod language;
+mod node_types;
+
+use language::Language;
+use node_types::{FieldInfo, NodeInfo};
 use std::fs::File;
 use std::io::LineWriter;
-use std::path::Path;
+use std::path::PathBuf;
 
-mod dbscheme;
-mod node_types;
-use node_types::{FieldInfo, NodeInfo};
-
-fn read_node_types() -> Option<Vec<NodeInfo>> {
-    let json_data = match std::fs::read_to_string(Path::new("tree-sitter-ruby/src/node-types.json"))
-    {
+fn read_node_types(language: &Language) -> Option<Vec<NodeInfo>> {
+    let json_data = match std::fs::read_to_string(&language.node_types_path) {
         Ok(s) => s,
         Err(_) => return None,
     };
@@ -214,19 +215,17 @@ fn convert_nodes(nodes: &[NodeInfo]) -> Vec<dbscheme::Entry> {
     entries
 }
 
-fn write_dbscheme(entries: &[dbscheme::Entry]) -> std::io::Result<()> {
-    // TODO: figure out proper output path and/or take it from the command line.
-    let path = Path::new("ruby.dbscheme");
+fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::Result<()> {
     println!(
         "Writing to '{}'",
-        match path.to_str() {
+        match language.dbscheme_path.to_str() {
             None => "<undisplayable>",
             Some(p) => p,
         }
     );
-    let file = File::create(path)?;
+    let file = File::create(&language.dbscheme_path)?;
     let mut file = LineWriter::new(file);
-    dbscheme::write(&mut file, &entries)
+    dbscheme::write(&language.name, &mut file, &entries)
 }
 
 fn create_location_entry() -> dbscheme::Entry {
@@ -295,7 +294,14 @@ fn create_source_location_prefix_entry() -> dbscheme::Entry {
 }
 
 fn main() {
-    match read_node_types() {
+    // TODO: figure out proper dbscheme output path and/or take it from the
+    // command line.
+    let ruby = Language {
+        name: "Ruby".to_string(),
+        node_types_path: PathBuf::from("tree-sitter-ruby/src/node-types.json"),
+        dbscheme_path: PathBuf::from("ruby.dbscheme"),
+    };
+    match read_node_types(&ruby) {
         None => {
             println!("Failed to read node types");
             std::process::exit(1);
@@ -304,7 +310,7 @@ fn main() {
             let mut dbscheme_entries = convert_nodes(&nodes);
             dbscheme_entries.push(create_location_entry());
             dbscheme_entries.push(create_source_location_prefix_entry());
-            match write_dbscheme(&dbscheme_entries) {
+            match write_dbscheme(&ruby, &dbscheme_entries) {
                 Err(e) => {
                     println!("Failed to write dbscheme: {}", e);
                     std::process::exit(2);
