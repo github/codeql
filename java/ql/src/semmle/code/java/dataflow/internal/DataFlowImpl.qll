@@ -747,6 +747,10 @@ private module Stage2 {
 
   class ApOption = BooleanOption;
 
+  ApOption apNone() { result = TBooleanNone() }
+
+  ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
+
   class Cc = boolean;
 
   /* Begin: Stage 2 logic. */
@@ -763,7 +767,7 @@ private module Stage2 {
     Stage1::revFlow(node, config) and
     config.isSource(node) and
     cc = false and
-    argAp = TBooleanNone() and
+    argAp = apNone() and
     ap = false
     or
     Stage1::revFlow(node, unbind(config)) and
@@ -783,14 +787,14 @@ private module Stage2 {
         fwdFlow(mid, _, _, ap, config) and
         jumpStep(mid, node, config) and
         cc = false and
-        argAp = TBooleanNone()
+        argAp = apNone()
       )
       or
       exists(Node mid |
         fwdFlow(mid, _, _, ap, config) and
         additionalJumpStep(mid, node, config) and
         cc = false and
-        argAp = TBooleanNone() and
+        argAp = apNone() and
         ap = false
       )
       or
@@ -810,9 +814,7 @@ private module Stage2 {
       // flow into a callable
       fwdFlowIn(_, node, _, _, ap, config) and
       cc = true and
-      if parameterThroughFlowNodeCand1(node, config)
-      then argAp = TBooleanSome(ap)
-      else argAp = TBooleanNone()
+      if parameterThroughFlowNodeCand1(node, config) then argAp = apSome(ap) else argAp = apNone()
       or
       // flow out of a callable
       exists(DataFlowCall call |
@@ -876,7 +878,7 @@ private module Stage2 {
   private predicate fwdFlowOutFromArg(
     DataFlowCall call, Node out, boolean argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, out, true, TBooleanSome(argAp), ap, config)
+    fwdFlowOut(call, out, true, apSome(argAp), ap, config)
   }
 
   /**
@@ -905,7 +907,7 @@ private module Stage2 {
     fwdFlow(node, _, _, false, config) and
     config.isSink(node) and
     toReturn = false and
-    returnAp = TBooleanNone() and
+    returnAp = apNone() and
     ap = false
     or
     fwdFlow(node, _, _, unbindBool(ap), unbind(config)) and
@@ -925,14 +927,14 @@ private module Stage2 {
         jumpStep(node, mid, config) and
         revFlow(mid, _, _, ap, config) and
         toReturn = false and
-        returnAp = TBooleanNone()
+        returnAp = apNone()
       )
       or
       exists(Node mid |
         additionalJumpStep(node, mid, config) and
         revFlow(mid, _, _, ap, config) and
         toReturn = false and
-        returnAp = TBooleanNone() and
+        returnAp = apNone() and
         ap = false
       )
       or
@@ -964,9 +966,9 @@ private module Stage2 {
       // flow out of a callable
       revFlowOut(_, node, _, _, ap, config) and
       toReturn = true and
-      if fwdFlow(node, true, TBooleanSome(_), unbindBool(ap), config)
-      then returnAp = TBooleanSome(ap)
-      else returnAp = TBooleanNone()
+      if fwdFlow(node, true, apSome(_), unbindBool(ap), config)
+      then returnAp = apSome(ap)
+      else returnAp = apNone()
     )
   }
 
@@ -1048,7 +1050,7 @@ private module Stage2 {
   private predicate revFlowInToReturn(
     DataFlowCall call, ArgumentNode arg, boolean returnAp, Ap ap, Configuration config
   ) {
-    revFlowIn(call, arg, true, TBooleanSome(returnAp), ap, config)
+    revFlowIn(call, arg, true, apSome(returnAp), ap, config)
   }
 
   /**
@@ -1060,7 +1062,7 @@ private module Stage2 {
   ) {
     exists(ReturnNodeExt ret |
       revFlowOut(call, ret, toReturn, returnAp, ap, config) and
-      fwdFlow(ret, true, TBooleanSome(_), ap, config)
+      fwdFlow(ret, true, apSome(_), ap, config)
     )
   }
 
@@ -1231,6 +1233,10 @@ private module Stage3 {
 
   class ApOption = AccessPathFrontOption;
 
+  ApOption apNone() { result = TAccessPathFrontNone() }
+
+  ApOption apSome(Ap ap) { result = TAccessPathFrontSome(ap) }
+
   class Cc = boolean;
 
   /* Begin: Stage 3 logic. */
@@ -1254,7 +1260,7 @@ private module Stage3 {
     Stage2::revFlow(node, _, _, false, config) and
     config.isSource(node) and
     cc = false and
-    argAp = TAccessPathFrontNone() and
+    argAp = apNone() and
     ap = TFrontNil(getNodeType(node))
     or
     exists(Node mid |
@@ -1272,7 +1278,7 @@ private module Stage3 {
       Stage2::revFlow(node, unbind(config)) and
       jumpStep(mid, node, config) and
       cc = false and
-      argAp = TAccessPathFrontNone()
+      argAp = apNone()
     )
     or
     exists(Node mid, AccessPathFrontNil nil |
@@ -1280,7 +1286,7 @@ private module Stage3 {
       Stage2::revFlow(node, unbind(config)) and
       additionalJumpStep(mid, node, config) and
       cc = false and
-      argAp = TAccessPathFrontNone() and
+      argAp = apNone() and
       ap = TFrontNil(getNodeType(node))
     )
     or
@@ -1304,8 +1310,8 @@ private module Stage3 {
     fwdFlowIn(_, node, _, _, ap, config) and
     cc = true and
     if Stage2::revFlow(node, true, _, unbindBool(ap.toBoolNonEmpty()), config)
-    then argAp = TAccessPathFrontSome(ap)
-    else argAp = TAccessPathFrontNone()
+    then argAp = apSome(ap)
+    else argAp = apNone()
     or
     // flow out of a callable
     exists(DataFlowCall call |
@@ -1374,7 +1380,7 @@ private module Stage3 {
   private predicate fwdFlowOutFromArg(
     DataFlowCall call, Node node, Ap argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, node, true, TAccessPathFrontSome(argAp), ap, config)
+    fwdFlowOut(call, node, true, apSome(argAp), ap, config)
   }
 
   /**
@@ -1411,7 +1417,7 @@ private module Stage3 {
     fwdFlow(node, _, _, ap, config) and
     config.isSink(node) and
     toReturn = false and
-    returnAp = TAccessPathFrontNone() and
+    returnAp = apNone() and
     ap instanceof AccessPathFrontNil
     or
     exists(Node mid |
@@ -1430,7 +1436,7 @@ private module Stage3 {
       jumpStep(node, mid, config) and
       revFlow(mid, _, _, ap, config) and
       toReturn = false and
-      returnAp = TAccessPathFrontNone()
+      returnAp = apNone()
     )
     or
     exists(Node mid, AccessPathFrontNil nil |
@@ -1438,7 +1444,7 @@ private module Stage3 {
       additionalJumpStep(node, mid, config) and
       revFlow(mid, _, _, nil, config) and
       toReturn = false and
-      returnAp = TAccessPathFrontNone() and
+      returnAp = apNone() and
       ap instanceof AccessPathFrontNil
     )
     or
@@ -1468,9 +1474,7 @@ private module Stage3 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, true, _, ap, config)
-    then returnAp = TAccessPathFrontSome(ap)
-    else returnAp = TAccessPathFrontNone()
+    if fwdFlow(node, true, _, ap, config) then returnAp = apSome(ap) else returnAp = apNone()
   }
 
   pragma[nomagic]
@@ -1536,7 +1540,7 @@ private module Stage3 {
   private predicate revFlowInToReturn(
     DataFlowCall call, ArgumentNode arg, Ap returnAp, Ap ap, Configuration config
   ) {
-    revFlowIn(call, arg, true, TAccessPathFrontSome(returnAp), ap, config)
+    revFlowIn(call, arg, true, apSome(returnAp), ap, config)
   }
 
   /**
@@ -1548,7 +1552,7 @@ private module Stage3 {
   ) {
     exists(ReturnNodeExt ret |
       revFlowOut(call, ret, toReturn, returnAp, ap, config) and
-      fwdFlow(ret, true, TAccessPathFrontSome(_), ap, config)
+      fwdFlow(ret, true, apSome(_), ap, config)
     )
   }
   /* End: Stage 3 logic. */
@@ -1764,6 +1768,10 @@ private module Stage4 {
 
   class ApOption = AccessPathApproxOption;
 
+  ApOption apNone() { result = TAccessPathApproxNone() }
+
+  ApOption apSome(Ap ap) { result = TAccessPathApproxSome(ap) }
+
   class Cc = CallContext;
 
   /* Begin: Stage 4 logic. */
@@ -1784,7 +1792,7 @@ private module Stage4 {
     Stage3::revFlow(node, _, _, _, config) and
     config.isSource(node) and
     cc instanceof CallContextAny and
-    argAp = TAccessPathApproxNone() and
+    argAp = apNone() and
     ap = TNil(getNodeType(node))
     or
     Stage3::revFlow(node, _, _, _, unbind(config)) and
@@ -1804,14 +1812,14 @@ private module Stage4 {
         fwdFlow(mid, _, _, ap, config) and
         jumpStep(mid, node, config) and
         cc instanceof CallContextAny and
-        argAp = TAccessPathApproxNone()
+        argAp = apNone()
       )
       or
       exists(Node mid, AccessPathApproxNil nil |
         fwdFlow(mid, _, _, nil, config) and
         additionalJumpStep(mid, node, config) and
         cc instanceof CallContextAny and
-        argAp = TAccessPathApproxNone() and
+        argAp = apNone() and
         ap = TNil(getNodeType(node))
       )
     )
@@ -1829,9 +1837,7 @@ private module Stage4 {
     exists(ApApprox apa |
       fwdFlowIn(_, node, _, cc, _, ap, config) and
       apa = ap.getFront() and
-      if Stage3::revFlow(node, true, _, apa, config)
-      then argAp = TAccessPathApproxSome(ap)
-      else argAp = TAccessPathApproxNone()
+      if Stage3::revFlow(node, true, _, apa, config) then argAp = apSome(ap) else argAp = apNone()
     )
     or
     // flow out of a callable
@@ -1961,7 +1967,7 @@ private module Stage4 {
   private predicate fwdFlowOutFromArg(
     DataFlowCall call, Node node, Ap argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, node, any(CallContextCall ccc), _, TAccessPathApproxSome(argAp), ap, config)
+    fwdFlowOut(call, node, any(CallContextCall ccc), _, apSome(argAp), ap, config)
   }
 
   /**
@@ -1996,7 +2002,7 @@ private module Stage4 {
     fwdFlow(node, _, _, ap, config) and
     config.isSink(node) and
     toReturn = false and
-    returnAp = TAccessPathApproxNone() and
+    returnAp = apNone() and
     ap instanceof AccessPathApproxNil
     or
     exists(Node mid |
@@ -2015,7 +2021,7 @@ private module Stage4 {
       jumpStep(node, mid, config) and
       revFlow(mid, _, _, ap, config) and
       toReturn = false and
-      returnAp = TAccessPathApproxNone()
+      returnAp = apNone()
     )
     or
     exists(Node mid, AccessPathApproxNil nil |
@@ -2023,7 +2029,7 @@ private module Stage4 {
       additionalJumpStep(node, mid, config) and
       revFlow(mid, _, _, nil, config) and
       toReturn = false and
-      returnAp = TAccessPathApproxNone() and
+      returnAp = apNone() and
       ap instanceof AccessPathApproxNil
     )
     or
@@ -2053,9 +2059,9 @@ private module Stage4 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, any(CallContextCall ccc), TAccessPathApproxSome(_), ap, config)
-    then returnAp = TAccessPathApproxSome(ap)
-    else returnAp = TAccessPathApproxNone()
+    if fwdFlow(node, any(CallContextCall ccc), apSome(_), ap, config)
+    then returnAp = apSome(ap)
+    else returnAp = apNone()
   }
 
   pragma[nomagic]
@@ -2128,7 +2134,7 @@ private module Stage4 {
   private predicate revFlowInToReturn(
     DataFlowCall call, ArgumentNode arg, Ap returnAp, Ap ap, Configuration config
   ) {
-    revFlowIn(call, arg, true, TAccessPathApproxSome(returnAp), ap, config)
+    revFlowIn(call, arg, true, apSome(returnAp), ap, config)
   }
 
   /**
@@ -2140,7 +2146,7 @@ private module Stage4 {
   ) {
     exists(ReturnNodeExt ret, CallContextCall ccc |
       revFlowOut(call, ret, toReturn, returnAp, ap, config) and
-      fwdFlow(ret, ccc, TAccessPathApproxSome(_), ap, config) and
+      fwdFlow(ret, ccc, apSome(_), ap, config) and
       ccc.matchesCall(call)
     )
   }
