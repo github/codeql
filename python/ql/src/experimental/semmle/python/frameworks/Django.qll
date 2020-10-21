@@ -273,10 +273,6 @@ private module Django {
 
             /**
              * Gets a reference to the `django.db.models.expressions.RawSQL` class.
-             *
-             * See
-             * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#executing-custom-sql-directly
-             * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#connections-and-cursors
              */
             DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
           }
@@ -285,7 +281,13 @@ private module Django {
     }
   }
 
-  /** A call to the `django.db.connection.cursor.execute` function. */
+  /**
+   * A call to the `django.db.connection.cursor.execute` function.
+   *
+   * See
+   * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#executing-custom-sql-directly
+   * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#connections-and-cursors
+   */
   private class DbConnectionExecute extends SqlExecution::Range, DataFlow::CfgNode {
     override CallNode node;
 
