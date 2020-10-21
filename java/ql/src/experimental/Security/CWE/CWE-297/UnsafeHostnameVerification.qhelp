@@ -22,10 +22,10 @@ no validation is performed thus any certificate is trusted. In the 'GOOD' case, 
 
 <references>
 <li>
-<a href="https://cwe.mitre.org/data/definitions/273.html">CWE-273</a>
+<a href="https://cwe.mitre.org/data/definitions/297.html">CWE-297</a>
 </li>
 <li>
-<a href="https://support.google.com/faqs/answer/6346016?hl=en">How to fix apps containing an unsafe implementation of TrustManager</a>
+<a href="https://support.google.com/faqs/answer/7188426?hl=en">How to resolve Insecure HostnameVerifier</a>
 </li>
 <li>
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md">Testing Endpoint Identify Verification (MSTG-NETWORK-3)</a>
