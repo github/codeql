@@ -48,12 +48,12 @@ module SystemCommandExecution {
  * extend `FileSystemAccess::Range` instead.
  */
 class FileSystemAccess extends DataFlow::Node {
-  FileSystemAccess::Range self;
+  FileSystemAccess::Range range;
 
-  FileSystemAccess() { this = self }
+  FileSystemAccess() { this = range }
 
   /** Gets an argument to this file system access that is interpreted as a path. */
-  DataFlow::Node getAPathArgument() { result = self.getAPathArgument() }
+  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
 }
 
 /** Provides a class for modeling new file-system access APIs. */
@@ -69,6 +69,44 @@ module FileSystemAccess {
     /** Gets an argument to this file system access that is interpreted as a path. */
     abstract DataFlow::Node getAPathArgument();
   }
+}
+
+/**
+ * A data-flow node that performs path normlization. This is often needed in oder
+ * to safely access paths.
+ */
+class PathNormalization extends DataFlow::Node {
+  PathNormalization::Range range;
+
+  PathNormalization() { this = range }
+}
+
+/** Provides a class for modeling new path normalization APIs. */
+module PathNormalization {
+  /**
+   * A data-flow node that performs path normlization. This is often needed in oder
+   * to safely access paths.
+   */
+  abstract class Range extends DataFlow::Node { }
+}
+
+/**
+ * A data-flow node that checks validates a path, for instance checking that it exists
+ * or that it is safe to access.
+ */
+class PathCheck extends DataFlow::Node {
+  PathCheck::Range range;
+
+  PathCheck() { this = range }
+}
+
+/** Provides a class for modeling new path normalization APIs. */
+module PathCheck {
+  /**
+   * A data-flow node that checks validates a path, for instance checking that it exists
+   * or that it is safe to access.
+   */
+  abstract class Range extends DataFlow::Node { }
 }
 
 /**
