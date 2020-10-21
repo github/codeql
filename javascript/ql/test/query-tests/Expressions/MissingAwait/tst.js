@@ -65,3 +65,11 @@ function useThingPossiblySync(b) {
 function useThingInVoid() {
     void getThing(); // OK
 }
+
+function useThing() {
+    if (random()) {
+        return getThing() ?? null; // NOT OK
+    } else {
+        return getThing?.() ?? null; // OK
+    }
+}

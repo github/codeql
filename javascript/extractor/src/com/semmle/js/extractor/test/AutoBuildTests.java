@@ -608,4 +608,19 @@ public class AutoBuildTests {
     addFile(false, LGTM_SRC, "db/foo.js");
     runTest();
   }
+
+  @Test
+  public void hiddenGitHubFoldersAreIncluded() throws IOException {
+    Path tst_yml = addFile(true, LGTM_SRC, ".github", "workflows", "test.yml");
+    hide(tst_yml.getParent().getParent());
+    runTest();
+  }
+
+  @Test
+  public void hiddenGitHubFoldersCanBeExcluded() throws IOException {
+    envVars.put("LGTM_INDEX_FILTERS", "exclude:**/.github");
+    Path tst_yml = addFile(false, LGTM_SRC, ".github", "workflows", "test.yml");
+    hide(tst_yml.getParent().getParent());
+    runTest();
+  }
 }

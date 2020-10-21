@@ -131,16 +131,6 @@ private module Flask {
         )
       )
     }
-
-    /** Gets the argument used to pass in the URL pattern. */
-    abstract DataFlow::Node getUrlPatternArg();
-
-    override string getUrlPattern() {
-      exists(StrConst str |
-        DataFlow::localFlow(DataFlow::exprNode(str), this.getUrlPatternArg()) and
-        result = str.getText()
-      )
-    }
   }
 
   /**
