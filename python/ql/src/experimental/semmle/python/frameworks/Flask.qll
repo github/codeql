@@ -317,7 +317,7 @@ private module Flask_Private {
   }
 
   private class RequestInputMultiDict extends RequestInputAccess,
-    Werkzeug::Datastructures::MultiDict {
+    Werkzeug::werkzeug::datastructures::MultiDict::InstanceSource {
     RequestInputMultiDict() { attr_name in ["args", "values", "form", "files"] }
   }
 
