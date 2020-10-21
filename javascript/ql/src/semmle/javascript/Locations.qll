@@ -131,6 +131,11 @@ class Locatable extends @locatable {
     // to be overridden by subclasses
     none()
   }
+
+  /**
+   * Gets the primary QL class for the Locatable.
+   */
+  string getAPrimaryQlClass() { result = "???" }
 }
 
 /**

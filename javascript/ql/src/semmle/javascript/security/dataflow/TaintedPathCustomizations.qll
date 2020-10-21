@@ -55,7 +55,7 @@ module TaintedPath {
      * There are currently four flow labels, representing the different combinations of
      * normalization and absoluteness.
      */
-    class PosixPath extends DataFlow::FlowLabel {
+    abstract class PosixPath extends DataFlow::FlowLabel {
       Normalization normalization;
       Relativeness relativeness;
 
@@ -113,7 +113,7 @@ module TaintedPath {
     /**
      * A flow label representing an array of path elements that may include "..".
      */
-    class SplitPath extends DataFlow::FlowLabel {
+    abstract class SplitPath extends DataFlow::FlowLabel {
       SplitPath() { this = "splitPath" }
     }
   }

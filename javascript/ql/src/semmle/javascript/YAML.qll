@@ -83,6 +83,8 @@ class YAMLNode extends @yaml_node, Locatable {
    * Gets the YAML value this node corresponds to after resolving aliases and includes.
    */
   YAMLValue eval() { result = this }
+
+  override string getAPrimaryQlClass() { result = "YAMLNode" }
 }
 
 /**
@@ -142,6 +144,8 @@ class YAMLScalar extends YAMLValue, @yaml_scalar_node {
    * Gets the value of this scalar, as a string.
    */
   string getValue() { yaml_scalars(this, _, result) }
+
+  override string getAPrimaryQlClass() { result = "YAMLScalar" }
 }
 
 /**
@@ -304,7 +308,9 @@ class YAMLInclude extends YAMLScalar {
  * - -blue
  * ```
  */
-class YAMLCollection extends YAMLValue, @yaml_collection_node { }
+class YAMLCollection extends YAMLValue, @yaml_collection_node {
+  override string getAPrimaryQlClass() { result = "YAMLCollection" }
+}
 
 /**
  * A YAML mapping.
@@ -356,6 +362,8 @@ class YAMLMapping extends YAMLCollection, @yaml_mapping_node {
    * Gets the value that this mapping maps `key` to.
    */
   YAMLValue lookup(string key) { exists(YAMLScalar s | s.getValue() = key | maps(s, result)) }
+
+  override string getAPrimaryQlClass() { result = "YAMLMapping" }
 }
 
 /**
@@ -379,6 +387,8 @@ class YAMLSequence extends YAMLCollection, @yaml_sequence_node {
    * Gets the `i`th element in this sequence, as a YAML value.
    */
   YAMLValue getElement(int i) { result = getElementNode(i).eval() }
+
+  override string getAPrimaryQlClass() { result = "YAMLSequence" }
 }
 
 /**
@@ -400,6 +410,8 @@ class YAMLAliasNode extends YAMLNode, @yaml_alias_node {
    * Gets the target anchor this alias refers to.
    */
   string getTarget() { yaml_aliases(this, result) }
+
+  override string getAPrimaryQlClass() { result = "YAMLAliasNode" }
 }
 
 /**

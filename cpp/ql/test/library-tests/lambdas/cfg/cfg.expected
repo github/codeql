@@ -1,103 +1,103 @@
-| <no scope> | false | 154 | 154 | (constructor) |
-| <no scope> | false | 157 | 157 | (constructor) |
-| <no scope> | false | 164 | 164 | return ... |
-| <no scope> | false | 166 | 166 | { ... } |
-| <no scope> | false | 167 | 167 | operator= |
-| <no scope> | false | 173 | 173 | (constructor) |
-| <no scope> | false | 175 | 175 | _FUN |
-| <no scope> | false | 184 | 184 | operator auto (*)(int, int)->int |
-| <no scope> | false | 190 | 190 | _FUN |
-| <no scope> | false | 192 | 192 | return ... |
-| <no scope> | false | 194 | 194 | { ... } |
-| <no scope> | false | 195 | 195 | operator() |
-| <no scope> | false | 206 | 206 | declaration |
-| <no scope> | false | 212 | 212 | call to printf |
-| <no scope> | false | 220 | 220 | Running with %d and %d\n |
-| <no scope> | false | 221 | 221 | array to pointer conversion |
-| <no scope> | false | 222 | 222 | (char *)... |
-| <no scope> | false | 223 | 223 | x |
-| <no scope> | false | 225 | 225 | y |
-| <no scope> | false | 227 | 227 | ExprStmt |
-| <no scope> | false | 232 | 232 | z |
-| <no scope> | false | 234 | 234 | x |
-| <no scope> | false | 236 | 236 | y |
-| <no scope> | false | 238 | 238 | ... + ... |
-| <no scope> | false | 240 | 240 | ... = ... |
-| <no scope> | false | 242 | 242 | ExprStmt |
-| <no scope> | false | 244 | 244 | call to printf |
-| <no scope> | false | 250 | 250 | Returning %d %d\n |
-| <no scope> | false | 251 | 251 | array to pointer conversion |
-| <no scope> | false | 252 | 252 | (char *)... |
-| <no scope> | false | 253 | 253 | z |
-| <no scope> | false | 255 | 255 | z |
-| <no scope> | false | 257 | 257 | ExprStmt |
-| <no scope> | false | 259 | 259 | z |
-| <no scope> | false | 261 | 261 | return ... |
-| <no scope> | false | 263 | 263 | { ... } |
-| <no scope> | true | 164 | 157 |  |
-| <no scope> | true | 166 | 164 |  |
-| <no scope> | true | 190 | 184 |  |
-| <no scope> | true | 192 | 190 |  |
-| <no scope> | true | 194 | 192 |  |
-| <no scope> | true | 206 | 227 |  |
-| <no scope> | true | 212 | 242 |  |
-| <no scope> | true | 220 | 223 |  |
-| <no scope> | true | 223 | 225 |  |
-| <no scope> | true | 225 | 212 |  |
-| <no scope> | true | 227 | 220 |  |
-| <no scope> | true | 232 | 240 |  |
-| <no scope> | true | 234 | 236 |  |
-| <no scope> | true | 236 | 238 |  |
-| <no scope> | true | 238 | 232 |  |
-| <no scope> | true | 240 | 257 |  |
-| <no scope> | true | 242 | 234 |  |
-| <no scope> | true | 244 | 261 |  |
-| <no scope> | true | 250 | 253 |  |
-| <no scope> | true | 253 | 255 |  |
-| <no scope> | true | 255 | 244 |  |
-| <no scope> | true | 257 | 250 |  |
-| <no scope> | true | 259 | 195 |  |
-| <no scope> | true | 261 | 259 |  |
-| <no scope> | true | 263 | 206 |  |
-| __va_list_tag::operator= | false | 92 | 92 | operator= |
-| __va_list_tag::operator= | false | 99 | 99 | operator= |
-| main | false | 147 | 147 | main |
-| main | false | 269 | 269 | declaration |
-| main | false | 271 | 271 | call to printf |
-| main | false | 277 | 277 | Some results: %d %d\n |
-| main | false | 278 | 278 | array to pointer conversion |
-| main | false | 279 | 279 | (char *)... |
-| main | false | 282 | 282 | call to operator() |
-| main | false | 285 | 285 | [...](...){...} |
-| main | false | 287 | 287 | initializer for myLambda |
-| main | false | 291 | 291 | myLambda |
-| main | false | 293 | 293 | (const lambda [] type at line 12, col. 21)... |
-| main | false | 296 | 296 | 5 |
-| main | false | 299 | 299 | 6 |
-| main | false | 300 | 300 | call to operator() |
-| main | false | 302 | 302 | myLambda |
-| main | false | 304 | 304 | (const lambda [] type at line 12, col. 21)... |
-| main | false | 307 | 307 | 7 |
-| main | false | 310 | 310 | 8 |
-| main | false | 311 | 311 | ExprStmt |
-| main | false | 315 | 315 | 0 |
-| main | false | 316 | 316 | return ... |
-| main | false | 318 | 318 | { ... } |
-| main | true | 269 | 287 |  |
-| main | true | 271 | 316 |  |
-| main | true | 277 | 296 |  |
-| main | true | 282 | 307 |  |
-| main | true | 285 | 311 |  |
-| main | true | 287 | 285 |  |
-| main | true | 291 | 282 |  |
-| main | true | 296 | 299 |  |
-| main | true | 299 | 291 |  |
-| main | true | 300 | 271 |  |
-| main | true | 302 | 300 |  |
-| main | true | 307 | 310 |  |
-| main | true | 310 | 302 |  |
-| main | true | 311 | 277 |  |
-| main | true | 315 | 147 |  |
-| main | true | 316 | 315 |  |
-| main | true | 318 | 269 |  |
-| printf | false | 209 | 209 | printf |
+| <no scope> | false | 132 | 132 | (unnamed constructor) |
+| <no scope> | false | 134 | 134 | (unnamed constructor) |
+| <no scope> | false | 143 | 143 | return ... |
+| <no scope> | false | 145 | 145 | { ... } |
+| <no scope> | false | 146 | 146 | operator= |
+| <no scope> | false | 154 | 154 | (unnamed constructor) |
+| <no scope> | false | 156 | 156 | _FUN |
+| <no scope> | false | 165 | 165 | operator auto (*)(int, int)->int |
+| <no scope> | false | 172 | 172 | return ... |
+| <no scope> | false | 174 | 174 | _FUN |
+| <no scope> | false | 176 | 176 | { ... } |
+| <no scope> | false | 180 | 180 | operator() |
+| <no scope> | false | 188 | 188 | declaration |
+| <no scope> | false | 193 | 193 | ExprStmt |
+| <no scope> | false | 199 | 199 | call to printf |
+| <no scope> | false | 203 | 203 | Running with %d and %d\n |
+| <no scope> | false | 208 | 208 | array to pointer conversion |
+| <no scope> | false | 209 | 209 | (char *)... |
+| <no scope> | false | 210 | 210 | x |
+| <no scope> | false | 212 | 212 | y |
+| <no scope> | false | 214 | 214 | ExprStmt |
+| <no scope> | false | 216 | 216 | z |
+| <no scope> | false | 218 | 218 | x |
+| <no scope> | false | 220 | 220 | y |
+| <no scope> | false | 222 | 222 | ... + ... |
+| <no scope> | false | 224 | 224 | ... = ... |
+| <no scope> | false | 226 | 226 | ExprStmt |
+| <no scope> | false | 228 | 228 | call to printf |
+| <no scope> | false | 232 | 232 | Returning %d %d\n |
+| <no scope> | false | 235 | 235 | array to pointer conversion |
+| <no scope> | false | 236 | 236 | (char *)... |
+| <no scope> | false | 237 | 237 | z |
+| <no scope> | false | 239 | 239 | z |
+| <no scope> | false | 241 | 241 | return ... |
+| <no scope> | false | 243 | 243 | z |
+| <no scope> | false | 245 | 245 | { ... } |
+| <no scope> | true | 143 | 134 |  |
+| <no scope> | true | 145 | 143 |  |
+| <no scope> | true | 172 | 174 |  |
+| <no scope> | true | 174 | 165 |  |
+| <no scope> | true | 176 | 172 |  |
+| <no scope> | true | 188 | 193 |  |
+| <no scope> | true | 193 | 203 |  |
+| <no scope> | true | 199 | 214 |  |
+| <no scope> | true | 203 | 210 |  |
+| <no scope> | true | 210 | 212 |  |
+| <no scope> | true | 212 | 199 |  |
+| <no scope> | true | 214 | 218 |  |
+| <no scope> | true | 216 | 224 |  |
+| <no scope> | true | 218 | 220 |  |
+| <no scope> | true | 220 | 222 |  |
+| <no scope> | true | 222 | 216 |  |
+| <no scope> | true | 224 | 226 |  |
+| <no scope> | true | 226 | 232 |  |
+| <no scope> | true | 228 | 241 |  |
+| <no scope> | true | 232 | 237 |  |
+| <no scope> | true | 237 | 239 |  |
+| <no scope> | true | 239 | 228 |  |
+| <no scope> | true | 241 | 243 |  |
+| <no scope> | true | 243 | 180 |  |
+| <no scope> | true | 245 | 188 |  |
+| __va_list_tag::operator= | false | 57 | 57 | operator= |
+| __va_list_tag::operator= | false | 63 | 63 | operator= |
+| main | false | 126 | 126 | main |
+| main | false | 251 | 251 | declaration |
+| main | false | 254 | 254 | [...](...){...} |
+| main | false | 256 | 256 | initializer for myLambda |
+| main | false | 260 | 260 | ExprStmt |
+| main | false | 262 | 262 | call to printf |
+| main | false | 266 | 266 | Some results: %d %d\n |
+| main | false | 269 | 269 | array to pointer conversion |
+| main | false | 270 | 270 | (char *)... |
+| main | false | 273 | 273 | call to operator() |
+| main | false | 275 | 275 | myLambda |
+| main | false | 277 | 277 | (const lambda [] type at line 12, col. 21)... |
+| main | false | 280 | 280 | 5 |
+| main | false | 283 | 283 | 6 |
+| main | false | 284 | 284 | call to operator() |
+| main | false | 286 | 286 | myLambda |
+| main | false | 288 | 288 | (const lambda [] type at line 12, col. 21)... |
+| main | false | 291 | 291 | 7 |
+| main | false | 294 | 294 | 8 |
+| main | false | 295 | 295 | return ... |
+| main | false | 299 | 299 | 0 |
+| main | false | 300 | 300 | { ... } |
+| main | true | 251 | 256 |  |
+| main | true | 254 | 260 |  |
+| main | true | 256 | 254 |  |
+| main | true | 260 | 266 |  |
+| main | true | 262 | 295 |  |
+| main | true | 266 | 280 |  |
+| main | true | 273 | 291 |  |
+| main | true | 275 | 273 |  |
+| main | true | 280 | 283 |  |
+| main | true | 283 | 275 |  |
+| main | true | 284 | 262 |  |
+| main | true | 286 | 284 |  |
+| main | true | 291 | 294 |  |
+| main | true | 294 | 286 |  |
+| main | true | 295 | 299 |  |
+| main | true | 299 | 126 |  |
+| main | true | 300 | 251 |  |
+| printf | false | 196 | 196 | printf |
