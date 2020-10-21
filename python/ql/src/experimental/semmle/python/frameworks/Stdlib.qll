@@ -82,20 +82,63 @@ private module Stdlib {
 
     /** Provides models for the `os.path` module */
     module path {
-      /** Gets a reference to the `os.path.join` function. */
-      private DataFlow::Node join(DataFlow::TypeTracker t) {
-        t.start() and
-        result = DataFlow::importNode("os.path.join")
+      /**
+       * Gets a reference to the attribute `attr_name` of the `os.path` module.
+       * WARNING: Only holds for a few predefined attributes.
+       *
+       * For example, using `attr_name = "join"` will get all uses of `os.path.join`.
+       */
+      private DataFlow::Node path_attr(DataFlow::TypeTracker t, string attr_name) {
+        attr_name in ["join", "normpath"] and
+        (
+          t.start() and
+          result = DataFlow::importNode("os.path." + attr_name)
+          or
+          t.startInAttr(attr_name) and
+          result = os::path()
+        )
         or
-        t.startInAttr("join") and
-        result = os::path()
-        or
-        exists(DataFlow::TypeTracker t2 | result = join(t2).track(t2, t))
+        // Due to bad performance when using normal setup with `path_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            path_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate path_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(path_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of the `os.path` module.
+       * WARNING: Only holds for a few predefined attributes.
+       *
+       * For example, using `attr_name = "join"` will get all uses of `os.path.join`.
+       */
+      DataFlow::Node path_attr(string attr_name) {
+        result = path_attr(DataFlow::TypeTracker::end(), attr_name)
       }
 
       /** Gets a reference to the `os.path.join` function. */
-      DataFlow::Node join() { result = join(DataFlow::TypeTracker::end()) }
+      DataFlow::Node join() { result = path_attr("join") }
     }
+  }
+
+  /**
+   * A call to `os.path.normpath`.
+   * See https://docs.python.org/3/library/os.path.html#os.path.normpath
+   */
+  private class NormpathCall extends PathNormalization::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    NormpathCall() { node.getFunction() = os::path::path_attr("normpath").asCfgNode() }
   }
 
   /**
