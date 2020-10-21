@@ -681,3 +681,13 @@ private class ExecStatement extends CodeExecution::Range {
 
   override DataFlow::Node getCode() { result = this }
 }
+
+private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
+  override CallNode node;
+
+  OpenCall() { node.getFunction().(NameNode).getId() = "open" }
+
+  override DataFlow::Node getAPathArgument() {
+    result.asCfgNode() in [node.getArg(0), node.getArgByName("file")]
+  }
+}
