@@ -22,3 +22,6 @@ def test_model():
     User.objects.annotate(RawSQL("some sql"))  # $getSql="some sql"
     User.objects.annotate(val=RawSQL("some sql"))  # $getSql="some sql"
     User.objects.extra("some sql")  # $getSql="some sql"
+
+    raw = RawSQL("so raw")
+    Users.objects.annotate(val=raw)  # $f-:getSql="so raw"
