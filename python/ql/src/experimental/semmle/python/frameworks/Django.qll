@@ -319,6 +319,8 @@ private module Django {
     /**
      * A call to the `annotate` function on a model using a `RawSQL` argument.
      *
+     * TODO: Consider reworking this to use taint tracking.
+     *
      * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/#annotate
      */
     private class ObjectsAnnotate extends SqlExecution::Range, DataFlow::CfgNode {
