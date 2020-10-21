@@ -31,6 +31,13 @@ public class UnsafeHostnameVerification {
 	}
 
 	/**
+	 * Test the implementation of trusting all hostnames as a lambda.
+	 */
+	public void testTrustAllHostnameLambda() {
+		HttpsURLConnection.setDefaultHostnameVerifier((name, s) -> true);
+	}
+
+	/**
 	 * Test the implementation of trusting all hostnames as a variable
 	 */
 	public void testTrustAllHostnameOfVariable() {

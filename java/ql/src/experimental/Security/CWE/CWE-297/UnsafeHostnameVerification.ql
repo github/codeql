@@ -9,39 +9,30 @@
 
 import java
 import semmle.code.java.security.Encryption
+import semmle.code.java.dataflow.DataFlow
+
+/** A return statement that returns `true`. */
+private class TrueReturnStmt extends ReturnStmt {
+  TrueReturnStmt() { getResult().(CompileTimeConstantExpr).getBooleanValue() = true }
+}
 
 /**
- * HostnameVerifier class that allows a certificate whose CN (Common Name) does not match the host name in the URL
+ * Holds if `m` always returns `true` ignoring any exceptional flow.
+ */
+private predicate alwaysReturnsTrue(HostnameVerifierVerify m) {
+  forex(ReturnStmt rs | rs.getEnclosingCallable() = m | rs instanceof TrueReturnStmt)
+}
+
+/**
+ * A class that overrides the `javax.net.ssl.HostnameVerifier.verify` method and **always** returns `true`, thus
+ * accepting any certificate despite a hostname mismatch.
  */
 class TrustAllHostnameVerifier extends RefType {
   TrustAllHostnameVerifier() {
     this.getASupertype*() instanceof HostnameVerifier and
-    exists(Method m, ReturnStmt rt |
+    exists(HostnameVerifierVerify m |
       m.getDeclaringType() = this and
-      m.hasName("verify") and
-      rt.getEnclosingCallable() = m and
-      rt.getResult().(BooleanLiteral).getBooleanValue() = true
-    )
-  }
-}
-
-/**
- * The setDefaultHostnameVerifier method of HttpsURLConnection with the trust all configuration
- */
-class TrustAllHostnameVerify extends MethodAccess {
-  TrustAllHostnameVerify() {
-    this.getMethod().hasName("setDefaultHostnameVerifier") and
-    this.getMethod().getDeclaringType() instanceof HttpsURLConnection and //httpsURLConnection.setDefaultHostnameVerifier method
-    (
-      exists(NestedClass nc |
-        nc.getASupertype*() instanceof TrustAllHostnameVerifier and
-        this.getArgument(0).getType() = nc //Scenario of HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {...});
-      )
-      or
-      exists(Variable v |
-        this.getArgument(0).(VarAccess).getVariable() = v and
-        v.getInitializer().getType() instanceof TrustAllHostnameVerifier //Scenario of HttpsURLConnection.setDefaultHostnameVerifier(verifier);
-      )
+      alwaysReturnsTrue(m)
     )
   }
 }
@@ -60,6 +51,26 @@ class SocketFactory extends RefType {
 
 class SSLSocket extends RefType {
   SSLSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
+}
+
+/**
+ * A configuration to model the flow of a `TrustAllHostnameVerifier` to a `set(Default)HostnameVerifier` call.
+ */
+class TrustAllHostnameVerifierConfiguration extends DataFlow::Configuration {
+  TrustAllHostnameVerifierConfiguration() { this = "TrustAllHostnameVerifierConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof TrustAllHostnameVerifier
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma, Method m |
+      (m instanceof SetDefaultHostnameVerifierMethod or m instanceof SetHostnameVerifierMethod) and
+      ma.getMethod() = m
+    |
+      ma.getArgument(0) = sink.asExpr()
+    )
+  }
 }
 
 /**
@@ -194,9 +205,11 @@ class RabbitMQEnableHostnameVerificationNotSet extends MethodAccess {
   }
 }
 
-from MethodAccess aa
+//from MethodAccess aa
+from DataFlow::Node source, DataFlow::Node sink, TrustAllHostnameVerifierConfiguration cfg
 where
-  aa instanceof TrustAllHostnameVerify or
-  aa instanceof SSLEndpointIdentificationNotSet or
-  aa instanceof RabbitMQEnableHostnameVerificationNotSet
-select aa, "Unsafe configuration of trusted certificates"
+cfg.hasFlow(source, sink)
+  //aa instanceof TrustAllHostnameVerify or
+  //aa instanceof SSLEndpointIdentificationNotSet or
+  //aa instanceof RabbitMQEnableHostnameVerificationNotSet
+select sink, "Unsafe configuration of trusted certificates"

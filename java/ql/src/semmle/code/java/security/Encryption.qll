@@ -67,6 +67,13 @@ class SetConnectionFactoryMethod extends Method {
   }
 }
 
+class SetDefaultHostnameVerifierMethod extends Method {
+  SetDefaultHostnameVerifierMethod() {
+    hasName("setDefaultHostnameVerifier") and
+    getDeclaringType().getASupertype*() instanceof HttpsURLConnection
+  }
+}
+
 class SetHostnameVerifierMethod extends Method {
   SetHostnameVerifierMethod() {
     hasName("setHostnameVerifier") and
