@@ -6,8 +6,6 @@ private import python
 private import experimental.dataflow.DataFlow
 private import experimental.dataflow.TaintTracking
 
-// for old impl see
-// https://github.com/github/codeql/blob/9f95212e103c68d0c1dfa4b6f30fb5d53954ccef/python/ql/src/semmle/python/libraries/Werkzeug.qll
 module Werkzeug {
   module Datastructures {
     // ---------------------------------------------------------------------- //

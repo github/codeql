@@ -10,8 +10,6 @@ private import experimental.dataflow.TaintTracking
 private import experimental.semmle.python.Concepts
 private import experimental.semmle.python.frameworks.Werkzeug
 
-// for old improved impl see
-// https://github.com/github/codeql/blob/9f95212e103c68d0c1dfa4b6f30fb5d53954ccef/python/ql/src/semmle/python/web/flask/Request.qll
 /**
  * Provides models for the `flask` PyPI package.
  * See https://flask.palletsprojects.com/en/1.1.x/.
