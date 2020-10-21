@@ -400,7 +400,7 @@ module ArgumentPassing {
       exists(Function f, string argName |
         f = callable.getScope() and
         f.getArgName(paramN) = argName and
-        result = TCfgNode(call.getArgByName(argName))
+        result = TCfgNode(call.getArgByName(unbind_string(argName)))
       )
       or
       // a synthezised argument passed to the starred parameter (at position -1)
@@ -420,6 +420,10 @@ module ArgumentPassing {
       )
     )
   }
+
+  /** Currently required in `getArg` in order to prevent a bad join. */
+  bindingset[result, s]
+  private string unbind_string(string s) { result <= s and s <= result }
 
   /** Gets the control flow node that is passed as the `n`th overflow positional argument. */
   ControlFlowNode getPositionalOverflowArg(CallNode call, CallableValue callable, int n) {
