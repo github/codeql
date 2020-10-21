@@ -275,6 +275,22 @@ private module Django {
              * Gets a reference to the `django.db.models.expressions.RawSQL` class.
              */
             DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+            /** Gets an instance of the `django.db.models.expressions.RawSQL` class. */
+            private DataFlow::Node classInstance(DataFlow::TypeTracker t, ControlFlowNode sql) {
+              t.start() and
+              exists(CallNode c | result.asCfgNode() = c |
+                c.getFunction() = classRef().asCfgNode() and
+                c.getArg(0) = sql
+              )
+              or
+              exists(DataFlow::TypeTracker t2 | result = classInstance(t2, sql).track(t2, t))
+            }
+
+            /** Gets an instance of the `django.db.models.expressions.RawSQL` class. */
+            DataFlow::Node classInstance(ControlFlowNode sql) {
+              result = classInstance(DataFlow::TypeTracker::end(), sql)
+            }
           }
         }
       }
@@ -305,15 +321,15 @@ private module Django {
    */
   private class ObjectsAnnotate extends SqlExecution::Range, DataFlow::CfgNode {
     override CallNode node;
-    CallNode raw;
+    ControlFlowNode sql;
 
     ObjectsAnnotate() {
       node.getFunction() = django::db::models::objects_attr("annotate").asCfgNode() and
-      raw in [node.getArg(_), node.getArgByName(_)] and
-      raw.getFunction() = django::db::models::expressions::RawSQL::classRef().asCfgNode()
+      django::db::models::expressions::RawSQL::classInstance(sql).asCfgNode() in [node.getArg(_),
+            node.getArgByName(_)]
     }
 
-    override DataFlow::Node getSql() { result.asCfgNode() = raw.getArg(0) }
+    override DataFlow::Node getSql() { result.asCfgNode() = sql }
   }
 
   /**
