@@ -341,8 +341,7 @@ private module Django {
 
     override DataFlow::Node getSql() {
       result.asCfgNode() =
-        [node.getArg([0 .. 5]),
-            node.getArgByName(["select", "where", "params", "tables", "order_by", "select_params"])]
+        [node.getArg([0 .. 5]), node.getArgByName(["select", "where", "tables", "order_by"])]
     }
   }
 }
