@@ -307,7 +307,7 @@ private module Django {
 
     ObjectsAnnotate() {
       node.getFunction() = django::db::models::objects_attr("annotate").asCfgNode() and
-      raw in [node.getArg(0), node.getArgByName(_)] and
+      raw in [node.getArg(_), node.getArgByName(_)] and
       raw.getFunction() = django::db::models::expressions::RawSQL::classRef().asCfgNode()
     }
 
