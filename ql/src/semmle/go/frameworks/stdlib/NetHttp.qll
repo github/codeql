@@ -135,33 +135,31 @@ module NetHttp {
   }
 
   private class ResponseBody extends HTTP::ResponseBody::Range, DataFlow::ArgumentNode {
-    int arg;
+    DataFlow::Node responseWriter;
 
     ResponseBody() {
       exists(DataFlow::CallNode call |
+        // A direct call to ResponseWriter.Write, conveying taint from the argument to the receiver
         call.getTarget().(Method).implements("net/http", "ResponseWriter", "Write") and
-        arg = 0
-        or
-        (
-          call.getTarget().hasQualifiedName("fmt", "Fprintf")
-          or
-          call.getTarget().hasQualifiedName("io", "WriteString")
-        ) and
-        call.getArgument(0).getType().hasQualifiedName("net/http", "ResponseWriter") and
-        arg >= 1
+        this = call.getArgument(0) and
+        responseWriter = call.(DataFlow::MethodCallNode).getReceiver()
+      )
+      or
+      exists(
+        TaintTracking::FunctionModel model, FunctionOutput modelOutput, FunctionInput modelInput,
+        DataFlow::CallNode call
       |
-        this = call.getArgument(arg)
+        // A modelled function conveying taint from some input to the response writer,
+        // e.g. `io.Copy(responseWriter, someTaintedReader)`
+        call = model.getACall() and
+        model.hasTaintFlow(modelInput, modelOutput) and
+        this = modelInput.getNode(call) and
+        responseWriter = modelOutput.getNode(call).(DataFlow::PostUpdateNode).getPreUpdateNode() and
+        responseWriter.getType().implements("net/http", "ResponseWriter")
       )
     }
 
-    override HTTP::ResponseWriter getResponseWriter() {
-      // the response writer is the receiver of this call
-      result.getANode() = this.getCall().(DataFlow::MethodCallNode).getReceiver()
-      or
-      // the response writer is an argument to Fprintf or WriteString
-      arg >= 1 and
-      result.getANode() = this.getCall().getArgument(0)
-    }
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = responseWriter }
   }
 
   private class RedirectCall extends HTTP::Redirect::Range, DataFlow::CallNode {

@@ -25,6 +25,8 @@ func test(request *http.Request, writer http.ResponseWriter) {
 	nodes2, _ := html.ParseFragmentWithOptions(request.Body, nil)
 	writer.Write([]byte(nodes2[0].Data)) // BAD: writing unescaped HTML data
 
+	html.Render(writer, node) // BAD: rendering untrusted HTML to `writer`
+
 	tokenizer := html.NewTokenizer(request.Body)
 	writer.Write(tokenizer.Buffered()) // BAD: writing unescaped HTML data
 	writer.Write(tokenizer.Raw())      // BAD: writing unescaped HTML data
