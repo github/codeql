@@ -62,6 +62,14 @@ newtype TNode =
     call_unpacks(call, _, callable, name, _)
   }
 
+/** Helper for `Node::getEnclosingCallable`. */
+private DataFlowCallable getCallableScope(Scope s) {
+  result.getScope() = s
+  or
+  not exists(DataFlowCallable c | c.getScope() = s) and
+  result = getCallableScope(s.getEnclosingScope())
+}
+
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
  * (`EssaNode`) or a control flow node (`CfgNode`).
@@ -72,13 +80,6 @@ class Node extends TNode {
 
   /** Gets the scope of this node. */
   Scope getScope() { none() }
-
-  private DataFlowCallable getCallableScope(Scope s) {
-    result.getScope() = s
-    or
-    not exists(DataFlowCallable c | c.getScope() = s) and
-    result = getCallableScope(s.getEnclosingScope())
-  }
 
   /** Gets the enclosing callable of this node. */
   DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
