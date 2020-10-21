@@ -78,9 +78,12 @@ func (c myAppController) accessingParamsJSONIsUnsafe() {
 }
 
 func accessingRequestDirectlyIsUnsafe(c *revel.Controller) {
-	useURLValues(c.Request.GetQuery())          // NOT OK
-	useURLValues(c.Request.Form)                // NOT OK
-	useURLValues(c.Request.MultipartForm.Value) // NOT OK
+	useURLValues(c.Request.GetQuery())               // NOT OK
+	useURLValues(c.Request.Form)                     // NOT OK
+	useURLValues(c.Request.MultipartForm.Value)      // NOT OK
+	useString(c.Request.ContentType)                 // NOT OK
+	useString(c.Request.AcceptLanguages[0].Language) // NOT OK
+	useString(c.Request.Locale)                      // NOT OK
 
 	form, _ := c.Request.GetForm() // NOT OK
 	useURLValues(form)
@@ -95,12 +98,26 @@ func accessingRequestDirectlyIsUnsafe(c *revel.Controller) {
 
 	json, _ := ioutil.ReadAll(c.Request.GetBody()) // NOT OK
 	useJSON(json)
+
+	cookie, _ := c.Request.Cookie("abc")
+	useString(cookie.GetValue()) // NOT OK
+
+	useString(c.Request.GetHttpHeader("headername")) // NOT OK
+
+	useString(c.Request.GetRequestURI()) // NOT OK
+
+	reader, _ := c.Request.MultipartReader()
+	part, _ := reader.NextPart()
+	partbody := make([]byte, 100)
+	part.Read(partbody)
+	useString(string(partbody)) // NOT OK
+
+	useString(c.Request.Referer()) // NOT OK
+
+	useString(c.Request.UserAgent()) // NOT OK
 }
 
 func accessingServerRequest(c *revel.Controller) {
-	query, _ := c.Request.In.Get(revel.HTTP_QUERY) // NOT OK
-	useURLValues(query.(url.Values))
-
 	var message string
 	c.Request.WebSocket.MessageReceive(&message) // NOT OK
 	useString(message)

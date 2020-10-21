@@ -21,14 +21,21 @@
 | Revel.go:82:15:82:28 | selection of Form : Values | Revel.go:33:12:33:23 | call to Get | 82 |
 | Revel.go:83:15:83:37 | selection of MultipartForm : pointer type | Revel.go:32:12:32:22 | index expression | 83 |
 | Revel.go:83:15:83:37 | selection of MultipartForm : pointer type | Revel.go:33:12:33:23 | call to Get | 83 |
-| Revel.go:85:13:85:31 | call to GetForm : tuple type | Revel.go:32:12:32:22 | index expression | 85 |
-| Revel.go:85:13:85:31 | call to GetForm : tuple type | Revel.go:33:12:33:23 | call to Get | 85 |
-| Revel.go:88:13:88:40 | call to GetMultipartForm : tuple type | Revel.go:32:12:32:22 | index expression | 88 |
-| Revel.go:88:13:88:40 | call to GetMultipartForm : tuple type | Revel.go:33:12:33:23 | call to Get | 88 |
-| Revel.go:91:13:91:40 | call to GetMultipartForm : tuple type | Revel.go:92:11:92:35 | index expression | 91 |
-| Revel.go:94:11:94:33 | selection of MultipartForm : pointer type | Revel.go:94:11:94:48 | index expression | 94 |
-| Revel.go:96:28:96:46 | call to GetBody : Reader | Revel.go:97:10:97:13 | json | 96 |
-| Revel.go:101:14:101:25 | selection of In : ServerRequest | Revel.go:32:12:32:22 | index expression | 101 |
-| Revel.go:101:14:101:25 | selection of In : ServerRequest | Revel.go:33:12:33:23 | call to Get | 101 |
-| Revel.go:105:37:105:44 | &... : pointer type | Revel.go:106:12:106:18 | message | 105 |
-| Revel.go:109:41:109:42 | &... : pointer type | Revel.go:110:12:110:12 | p | 109 |
+| Revel.go:84:12:84:32 | selection of ContentType | Revel.go:84:12:84:32 | selection of ContentType | 84 |
+| Revel.go:85:12:85:36 | selection of AcceptLanguages : AcceptLanguages | Revel.go:85:12:85:48 | selection of Language | 85 |
+| Revel.go:86:12:86:27 | selection of Locale | Revel.go:86:12:86:27 | selection of Locale | 86 |
+| Revel.go:88:13:88:31 | call to GetForm : tuple type | Revel.go:32:12:32:22 | index expression | 88 |
+| Revel.go:88:13:88:31 | call to GetForm : tuple type | Revel.go:33:12:33:23 | call to Get | 88 |
+| Revel.go:91:13:91:40 | call to GetMultipartForm : tuple type | Revel.go:32:12:32:22 | index expression | 91 |
+| Revel.go:91:13:91:40 | call to GetMultipartForm : tuple type | Revel.go:33:12:33:23 | call to Get | 91 |
+| Revel.go:94:13:94:40 | call to GetMultipartForm : tuple type | Revel.go:95:11:95:35 | index expression | 94 |
+| Revel.go:97:11:97:33 | selection of MultipartForm : pointer type | Revel.go:97:11:97:48 | index expression | 97 |
+| Revel.go:99:28:99:46 | call to GetBody : Reader | Revel.go:100:10:100:13 | json | 99 |
+| Revel.go:102:15:102:37 | call to Cookie : tuple type | Revel.go:103:12:103:28 | call to GetValue | 102 |
+| Revel.go:105:12:105:48 | call to GetHttpHeader | Revel.go:105:12:105:48 | call to GetHttpHeader | 105 |
+| Revel.go:107:12:107:36 | call to GetRequestURI | Revel.go:107:12:107:36 | call to GetRequestURI | 107 |
+| Revel.go:109:15:109:41 | call to MultipartReader : tuple type | Revel.go:113:12:113:27 | type conversion | 109 |
+| Revel.go:115:12:115:30 | call to Referer | Revel.go:115:12:115:30 | call to Referer | 115 |
+| Revel.go:117:12:117:32 | call to UserAgent | Revel.go:117:12:117:32 | call to UserAgent | 117 |
+| Revel.go:122:37:122:44 | &... : pointer type | Revel.go:123:12:123:18 | message | 122 |
+| Revel.go:126:41:126:42 | &... : pointer type | Revel.go:127:12:127:12 | p | 126 |

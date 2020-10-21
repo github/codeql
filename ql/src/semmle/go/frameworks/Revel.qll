@@ -70,7 +70,8 @@ module Revel {
       exists(string fieldName |
         this.getField().hasQualifiedName(packagePath(), "Request", fieldName)
       |
-        fieldName in ["In", "Header", "URL", "Form", "MultipartForm"]
+        fieldName in ["Header", "ContentType", "AcceptLanguages", "Locale", "URL", "Form",
+              "MultipartForm"]
       )
     }
   }
@@ -81,35 +82,27 @@ module Revel {
       this
           .getTarget()
           .hasQualifiedName(packagePath(), "Request",
-            ["FormValue", "PostFormValue", "GetQuery", "GetForm", "GetMultipartForm", "GetBody"])
+            ["FormValue", "PostFormValue", "GetQuery", "GetForm", "GetMultipartForm", "GetBody",
+                "Cookie", "GetHttpHeader", "GetRequestURI", "MultipartReader", "Referer",
+                "UserAgent"])
+    }
+  }
+
+  private class ServerCookieGetValue extends TaintTracking::FunctionModel, Method {
+    ServerCookieGetValue() { this.hasQualifiedName(packagePath(), "ServerCookie", "GetValue") }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isReceiver() and outp.isResult()
     }
   }
 
   private class ServerMultipartFormGetFiles extends TaintTracking::FunctionModel, Method {
     ServerMultipartFormGetFiles() {
-      this.hasQualifiedName(packagePath(), "ServerMultipartForm", "GetFiles")
+      this.hasQualifiedName(packagePath(), "ServerMultipartForm", ["GetFiles", "GetValues"])
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult()
-    }
-  }
-
-  private class ServerMultipartFormGetValues extends TaintTracking::FunctionModel, Method {
-    ServerMultipartFormGetValues() {
-      this.hasQualifiedName(packagePath(), "ServerMultipartForm", "GetValues")
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isResult()
-    }
-  }
-
-  private class ServerRequestGet extends TaintTracking::FunctionModel, Method {
-    ServerRequestGet() { this.hasQualifiedName(packagePath(), "ServerRequest", "Get") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isResult(0)
     }
   }
 
@@ -183,8 +176,8 @@ module Revel {
    * We extend FileSystemAccess rather than HTTP::ResponseBody as this will usually mean exposing a user-controlled
    * file rather than the actual contents being user-controlled.
    */
-  private class IoUtilFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
-    IoUtilFileSystemAccess() {
+  private class RenderFileNameCall extends FileSystemAccess::Range, DataFlow::CallNode {
+    RenderFileNameCall() {
       this =
         any(Method m | m.hasQualifiedName(packagePath(), "Controller", "RenderFileName")).getACall()
     }
@@ -195,8 +188,8 @@ module Revel {
   /**
    * The `revel.Controller.Redirect` method.
    *
-   * For now I assume that in the context `Redirect(url, value)`, where Revel will `Sprintf(url, value)` internally,
-   * it is very likely `url` imposes some mandatory prefix, so `value` isn't truly an open redirect opportunity.
+   * It is currently assumed that a tainted `value` in `Redirect(url, value)`, which calls `Sprintf(url, value)`
+   * internally, cannot lead to an open redirect vulnerability.
    */
   private class ControllerRedirectMethod extends HTTP::Redirect::Range, DataFlow::CallNode {
     ControllerRedirectMethod() {
