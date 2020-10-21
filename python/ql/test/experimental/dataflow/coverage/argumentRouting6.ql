@@ -24,8 +24,10 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
   }
 
   /**
-   * This prevents the argument from one call to reach the sink
-   * via a different call, by flowing to an argument of that.
+   * We want to be able to use `arg` in a sequence of calls such as `func(kw=arg); ... ; func(arg)`.
+   * Use-use flow lets the argument to the first call reach the sink inside the second call,
+   * making it seem like we handle all cases even if we only handle the last one.
+   * We make the test honest by preventing flow into source nodes.
    */
   override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
