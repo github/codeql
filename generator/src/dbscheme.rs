@@ -111,7 +111,7 @@ pub fn escape_name(name: &str) -> String {
 
 impl fmt::Display for Table {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        for keyset in &self.keysets {
+        if let Some(keyset) = &self.keysets {
             write!(f, "#keyset[")?;
             for (key_index, key) in keyset.iter().enumerate() {
                 if key_index > 0 {
