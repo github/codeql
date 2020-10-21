@@ -79,11 +79,24 @@ predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
       )
       or
       ma.getMethod().hasName("sendBroadcastWithMultiplePermissions") and
-      ma.getArgument(1) instanceof NullLiteral // sendBroadcastWithMultiplePermissions(Intent intent, String[] receiverPermissions)
+      (
+        ma.getArgument(1).(ArrayCreationExpr).getFirstDimensionSize() = 0 // sendBroadcastWithMultiplePermissions(Intent intent, String[] receiverPermissions)
+        or
+        exists(Variable v |
+          v.getAnAccess() = ma.getArgument(1) and
+          v.getAnAssignedValue().(ArrayCreationExpr).getFirstDimensionSize() = 0
+        )
+      )
       or
       //Method calls of `sendOrderedBroadcast` whose second argument is always `receiverPermission`
       ma.getMethod().hasName("sendOrderedBroadcast") and
-      ma.getArgument(1) instanceof NullLiteral
+      (
+        ma.getArgument(1) instanceof NullLiteral and ma.getNumArgument() <=7
+        or
+        ma.getArgument(1) instanceof NullLiteral and
+        ma.getArgument(2) instanceof NullLiteral and
+        ma.getNumArgument() = 8
+      )
       or
       //Method call of `sendOrderedBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)`
       ma.getMethod().hasName("sendOrderedBroadcastAsUser") and
