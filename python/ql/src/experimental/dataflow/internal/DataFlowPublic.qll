@@ -49,6 +49,7 @@ newtype TNode =
   TKwOverflowNode(CallNode call, CallableValue callable) {
     exists(getKeywordOverflowArg(call, callable, _))
     or
+    ArgumentPassing::connects(call, callable) and
     exists(call.getNode().getKwargs()) and
     callable.getScope().hasKwArg()
   } or
