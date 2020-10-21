@@ -131,6 +131,12 @@ private module Django {
       /** Gets a reference to the `django.db.connection.cursor.execute` function. */
       DataFlow::Node execute() { result = execute(DataFlow::TypeTracker::end()) }
 
+      // -------------------------------------------------------------------------
+      // django.db.models
+      // -------------------------------------------------------------------------
+      // NOTE: The modelling of django models is currently fairly incomplete.
+      // It does not fully take `Model`s, `Manager`s, `and QuerySet`s into account.
+      // It simply identifies some common dangerous cases.
       /** Gets a reference to the `django.db.models` module. */
       private DataFlow::Node models(DataFlow::TypeTracker t) {
         t.start() and
