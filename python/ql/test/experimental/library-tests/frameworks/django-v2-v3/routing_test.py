@@ -60,7 +60,7 @@ urlpatterns = [
 ]
 
 
-# Show we understand the keyword arguments to from django.urls.re_path
+# Show we understand the keyword arguments to django.urls.re_path
 
 def re_path_kwargs(request):  # $routeHandler
     return HttpResponse('re_path_kwargs')
