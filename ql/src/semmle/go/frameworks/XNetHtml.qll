@@ -30,6 +30,10 @@ module XNetHtml {
             "NewTokenizer", "NewTokenizerFragment"] and
       input.isParameter(0) and
       output.isResult(0)
+      or
+      getName() = ["AppendChild", "InsertBefore"] and
+      input.isParameter(0) and
+      output.isReceiver()
     }
   }
 
