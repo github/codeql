@@ -102,7 +102,7 @@ pub fn escape_name(name: &str) -> String {
 }
 
 /// Generates the dbscheme by writing the given dbscheme `entries` to the `file`.
-pub fn write(file: &mut dyn std::io::Write, entries: &[Entry]) -> Result<(), std::io::Error> {
+pub fn write(file: &mut dyn std::io::Write, entries: &[Entry]) -> std::io::Result<()> {
     write!(file, "// CodeQL database schema for Ruby\n")?;
     write!(
         file,
