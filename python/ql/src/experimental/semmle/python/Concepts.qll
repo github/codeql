@@ -262,16 +262,25 @@ module HTTP {
         /** Gets the data-flow node that specifies the content-type of this HTTP response, if any. */
         abstract DataFlow::Node getContentTypeArg();
 
+        /** Gets the default content-type that should be used if `getContentTypeArg` has no results. */
+        abstract string getContentTypeDefault();
+
         /** Gets the content-type of this HTTP response, if it can be statically determined. */
         string getContentType() {
           exists(StrConst str |
             DataFlow::localFlow(DataFlow::exprNode(str), this.getContentTypeArg()) and
             result = str.getText()
           )
+          or
+          not exists(this.getContentTypeArg()) and
+          result = this.getContentTypeDefault()
         }
 
         /** Gets the data-flow node that specifies the status code of this HTTP response, if any. */
         abstract DataFlow::Node getStatusCodeArg();
+
+        /** Gets the default status code that should be used if `getStatusCodeArg` has no results. */
+        abstract int getStatusCodeDefault();
 
         /** Gets the status code of this HTTP response, if it can be statically determined. */
         int getStatusCode() {
@@ -279,6 +288,9 @@ module HTTP {
             DataFlow::localFlow(DataFlow::exprNode(i), this.getStatusCodeArg()) and
             result = i.getValue()
           )
+          or
+          not exists(this.getStatusCodeArg()) and
+          result = this.getStatusCodeDefault()
         }
       }
     }
