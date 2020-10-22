@@ -66,7 +66,9 @@ class FirstNormalization extends DataFlow2::PathNode {
 class UncheckedNormalizedConfiguration extends TaintTracking::Configuration {
   UncheckedNormalizedConfiguration() { this = "UncheckedNormalizedConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof PathNormalization }
+  override predicate isSource(DataFlow::Node source) {
+    source = any(FirstNormalization n).getNode()
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     sink = any(FileSystemAccess e).getAPathArgument()
