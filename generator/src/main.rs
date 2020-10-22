@@ -8,19 +8,6 @@ use std::fs::File;
 use std::io::LineWriter;
 use std::path::PathBuf;
 
-fn read_node_types(language: &Language) -> Option<Vec<NodeInfo>> {
-    let json_data = match std::fs::read_to_string(&language.node_types_path) {
-        Ok(s) => s,
-        Err(_) => return None,
-    };
-    let nodes: Vec<NodeInfo> = match serde_json::from_str(&json_data) {
-        Ok(n) => n,
-        Err(_) => return None,
-    };
-
-    Some(nodes)
-}
-
 /// Given a tree-sitter node type's (kind, named) pair, returns a single string
 /// representing the (unescaped) name we'll use to refer to corresponding QL
 /// type.
@@ -301,12 +288,19 @@ fn main() {
         node_types_path: PathBuf::from("tree-sitter-ruby/src/node-types.json"),
         dbscheme_path: PathBuf::from("ruby.dbscheme"),
     };
-    match read_node_types(&ruby) {
-        None => {
-            println!("Failed to read node types");
+    match node_types::read(&ruby.node_types_path) {
+        Err(e) => {
+            println!(
+                "Failed to read '{}': {}",
+                match ruby.node_types_path.to_str() {
+                    None => "<undisplayable>",
+                    Some(p) => p,
+                },
+                e
+            );
             std::process::exit(1);
         }
-        Some(nodes) => {
+        Ok(nodes) => {
             let mut dbscheme_entries = convert_nodes(&nodes);
             dbscheme_entries.push(create_location_entry());
             dbscheme_entries.push(create_source_location_prefix_entry());
