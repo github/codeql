@@ -34,7 +34,7 @@ private module FlaskModel {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node flask_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["request"] and
+    attr_name in ["request", "make_response"] and
     (
       t.start() and
       result = DataFlow::importNode("flask" + "." + attr_name)
@@ -72,6 +72,9 @@ private module FlaskModel {
   module flask {
     /** Gets a reference to the `flask.request` object. */
     DataFlow::Node request() { result = flask_attr("request") }
+
+    /** Gets a reference to the `flask.make_response` function. */
+    DataFlow::Node make_response() { result = flask_attr("make_response") }
 
     /**
      * Provides models for the `flask.Flask` class
@@ -355,8 +358,32 @@ private module FlaskModel {
   private class RequestInputFiles extends RequestInputMultiDict {
     RequestInputFiles() { attr_name = "files" }
   }
+
   // TODO: Somehow specify that elements of `RequestInputFiles` are
   // Werkzeug::werkzeug::datastructures::FileStorage and should have those additional taint steps
   // AND that the 0-indexed argument to its' save method is a sink for path-injection.
   // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
+  // ---------------------------------------------------------------------------
+  // Response modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to the `flask.make_response` function.
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response
+   */
+  private class FlaskMakeResponseCall extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    FlaskMakeResponseCall() { node.getFunction() = flask::make_response().asCfgNode() }
+
+    override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
+
+    override string getContentTypeDefault() { result = "text/html" }
+
+    override DataFlow::Node getContentTypeArg() { none() }
+
+    override int getStatusCodeDefault() { result = 200 }
+
+    override DataFlow::Node getStatusCodeArg() { result.asCfgNode() = node.getArg(1) }
+  }
 }

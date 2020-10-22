@@ -15,7 +15,7 @@ def html2():  # $routeHandler
     # note that response saved in a variable intentionally -- we wan the annotations to
     # show that we recognize the response creation, and not the return (hopefully). (and
     # do the same in the following of the file)
-    resp = make_response("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $statusCode=200 $responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -65,14 +65,14 @@ def jsonify_route():  # $routeHandler
 
 @app.route("/content-type/response-modification1")  # $routeSetup="/content-type/response-modification1"
 def response_modification1():  # $routeHandler
-    resp = make_response("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $statusCode=200 $responseBody="<h1>hello</h1>"
     resp.content_type = "text/plain"  # $f-:HttpResponse $f-:contentType=text/plain
     return resp
 
 
 @app.route("/content-type/response-modification2")  # $routeSetup="/content-type/response-modification2"
 def response_modification2():  # $routeHandler
-    resp = make_response("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $statusCode=200 $responseBody="<h1>hello</h1>"
     resp.headers["content-type"] = "text/plain"  # $f-:HttpResponse $f-:contentType=text/plain
     return resp
 
