@@ -320,46 +320,31 @@ class AndroidIntentInput extends DataFlow::Node {
   }
 }
 
-/** Method access to external inputs of `android.content.Intent` object. */
+/** Method access to external inputs of `android.content.Intent` or `android.os.BaseBundle` object. */
 class IntentGetExtraMethodAccess extends MethodAccess {
   IntentGetExtraMethodAccess() {
     exists(AndroidComponent ac |
-      this.getEnclosingCallable().getDeclaringType() = ac and ac.isExported()
-    ) and
-    (
+      this.getEnclosingCallable().getDeclaringType() = ac and
+      ac.isExported() and
       this.getMethod().getName().regexpMatch("get\\w+Extra") and
       this.getMethod().getDeclaringType() instanceof TypeIntent
-      or
-      this.getMethod().getName().regexpMatch("get\\w+") and
-      this.getQualifier().(MethodAccess).getMethod().hasName("getExtras") and
-      this.getQualifier().(MethodAccess).getMethod().getDeclaringType() instanceof TypeIntent
     )
+    or
+    this.getMethod().getName().regexpMatch("get\\w+") and
+    this
+        .getMethod()
+        .getDeclaringType()
+        .getASupertype*()
+        .hasQualifiedName("android.os", "BaseBundle")
   }
 }
 
 /** Android intent extra source. */
 private class AndroidIntentExtraSource extends RemoteFlowSource {
   AndroidIntentExtraSource() {
-    exists(MethodAccess ma |
-      ma instanceof IntentGetExtraMethodAccess and
-      this.asExpr() = ma and
-      exists(AndroidIntentInput inode |
-        (
-          ma.getQualifier() = inode.asExpr() or // extra from intent
-          ma.getQualifier() = inode.asParameter().getAnAccess()
-        )
-        or
-        exists(
-          MethodAccess ema // extra from extras bundle of intent
-        |
-          ema.getMethod().hasName("getExtras") and
-          ma.getQualifier() = ema and
-          (
-            ema.getQualifier() = inode.asExpr() or
-            ema.getQualifier() = inode.asParameter().getAnAccess()
-          )
-        )
-      )
+    exists(AndroidIntentInput inode |
+      this.asExpr() = inode.asExpr() or
+      this.asExpr() = inode.asParameter().getAnAccess()
     )
   }
 

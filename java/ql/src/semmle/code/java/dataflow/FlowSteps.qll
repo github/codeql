@@ -4,6 +4,7 @@
 
 private import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSources
 
 /**
  * A module importing the frameworks that implement additional flow steps,
@@ -137,5 +138,33 @@ private class StringBuilderTaintPreservingCallable extends TaintPreservingCallab
     this.hasName("write") and
     src = 0 and
     sink = -1
+  }
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step between the extra getter method and its caller Android `Intent` or `Bundle`.
+ */
+private predicate intentExtraStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
+  exists(IntentGetExtraMethodAccess ma |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step from Android `Intent` to its `getExtras` method.
+ */
+private predicate bundleExtraStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
+  exists(MethodAccess ma | ma.getMethod().hasName("getExtras") |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma
+  )
+}
+
+/** A set of additional taint steps to consider when taint tracking Android intent extra related data flows. */
+class AndroidExtraSourceAdditionalTaintStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    intentExtraStep(node1, node2) or
+    bundleExtraStep(node1, node2)
   }
 }
