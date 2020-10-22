@@ -812,7 +812,7 @@ private module Stage2 {
       // read
       exists(Content c |
         fwdFlowRead(c, node, cc, argAp, config) and
-        fwdFlowIsStored(c, ap, config)
+        fwdFlowConsCand(c, ap, config)
       )
       or
       // flow into a callable
@@ -837,7 +837,7 @@ private module Stage2 {
    * Holds if `c` is the target of a store in the flow covered by `fwdFlow`.
    */
   pragma[noinline]
-  private predicate fwdFlowIsStored(Content c, Ap ap, Configuration config) {
+  private predicate fwdFlowConsCand(Content c, Ap ap, Configuration config) {
     exists(Node mid, Node node |
       useFieldFlow(config) and
       Stage1::revFlow(node, unbind(config)) and
@@ -954,13 +954,13 @@ private module Stage2 {
     // store
     exists(Content c |
       revFlowStore(c, node, toReturn, returnAp, ap, config) and
-      revFlowIsRead(c, ap, config)
+      revFlowConsCand(c, ap, config)
     )
     or
     // read
     exists(Node mid, Content c, Ap ap0 |
       read(node, c, mid, config) and
-      fwdFlowIsStored(c, unbindBool(ap0), unbind(config)) and
+      fwdFlowConsCand(c, unbindBool(ap0), unbind(config)) and
       revFlow(mid, toReturn, returnAp, ap0, config) and
       ap = true
     )
@@ -988,12 +988,12 @@ private module Stage2 {
    * Holds if `c` is the target of a read in the flow covered by `revFlow`.
    */
   pragma[noinline]
-  private predicate revFlowIsRead(Content c, Ap ap, Configuration config) {
+  private predicate revFlowConsCand(Content c, Ap ap, Configuration config) {
     exists(Node mid, Node node |
       useFieldFlow(config) and
       fwdFlow(node, _, _, true, unbind(config)) and
       read(node, c, mid, config) and
-      fwdFlowIsStored(c, unbindBool(ap), unbind(config)) and
+      fwdFlowConsCand(c, unbindBool(ap), unbind(config)) and
       revFlow(mid, _, _, ap, config)
     )
   }
@@ -1028,7 +1028,7 @@ private module Stage2 {
   predicate revFlowIsReadAndStored(Content c, Configuration conf) {
     exists(boolean apNonEmpty |
       revFlowIsStored(c, apNonEmpty, conf) and
-      revFlowIsRead(c, apNonEmpty, conf)
+      revFlowConsCand(c, apNonEmpty, conf)
     )
   }
 
