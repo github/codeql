@@ -734,3 +734,12 @@ private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
     result.asCfgNode() in [node.getArg(0), node.getArgByName("file")]
   }
 }
+
+private class StartswithCall extends PathCheck::Range {
+  StartswithCall() { this.(CallNode).getFunction().(AttrNode).getName() = "startswith" }
+
+  override predicate checks(ControlFlowNode node, boolean branch) {
+    node = this.(CallNode).getFunction().(AttrNode).getObject() and
+    branch = true
+  }
+}
