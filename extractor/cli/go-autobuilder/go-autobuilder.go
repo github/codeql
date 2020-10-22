@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"golang.org/x/mod/semver"
 	"io/ioutil"
@@ -204,6 +205,51 @@ func checkVendor() bool {
 	}
 
 	return true
+}
+
+func getOsToolsSubdir() (string, error) {
+	switch runtime.GOOS {
+	case "darwin":
+		return "osx64", nil
+	case "linux":
+		return "linux64", nil
+	case "windows":
+		return "win64", nil
+	}
+	return "", errors.New("Unknown OS: " + runtime.GOOS)
+}
+
+func getExtractorDir() (string, error) {
+	mypath, err := os.Executable()
+	if err == nil {
+		return filepath.Dir(mypath), nil
+	}
+	log.Printf("Could not determine path of autobuilder: %v.\n", err)
+
+	// Fall back to rebuilding our own path from the extractor root:
+	extractorRoot := os.Getenv("CODEQL_EXTRACTOR_GO_ROOT")
+	if extractorRoot == "" {
+		return "", errors.New("CODEQL_EXTRACTOR_GO_ROOT not set")
+	}
+
+	osSubdir, err := getOsToolsSubdir()
+	if err != nil {
+		return "", err
+	}
+
+	return filepath.Join(extractorRoot, "tools", osSubdir), nil
+}
+
+func getExtractorPath() (string, error) {
+	dirname, err := getExtractorDir()
+	if err != nil {
+		return "", err
+	}
+	extractor := filepath.Join(dirname, "go-extractor")
+	if runtime.GOOS == "windows" {
+		extractor = extractor + ".exe"
+	}
+	return extractor, nil
 }
 
 func main() {
@@ -507,13 +553,9 @@ func main() {
 	}
 
 	// extract
-	mypath, err := os.Executable()
+	extractor, err := getExtractorPath()
 	if err != nil {
-		log.Fatalf("Could not determine path of autobuilder: %v.\n", err)
-	}
-	extractor := filepath.Join(filepath.Dir(mypath), "go-extractor")
-	if runtime.GOOS == "windows" {
-		extractor = extractor + ".exe"
+		log.Fatalf("Could not determine path of extractor: %v.\n", err)
 	}
 
 	cwd, err := os.Getwd()
