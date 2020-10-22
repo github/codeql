@@ -15,8 +15,9 @@ private import TranslatedStmt
 import TranslatedCall
 
 /**
- * Gets the TranslatedExpr for the specified expression. If `expr` is a load,
- * the result is the TranslatedExpr for the load portion.
+ * Gets the TranslatedExpr for the specified expression. If `expr` is a load or synthesized
+ * temporary object, the result is the TranslatedExpr for the load or synthetic temporary object
+ * portion.
  */
 TranslatedExpr getTranslatedExpr(Expr expr) {
   result.getExpr() = expr and

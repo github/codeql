@@ -67,7 +67,10 @@
 | map.cpp:79:9:79:13 | first | map.cpp:66:37:66:42 | call to source |
 | map.cpp:80:9:80:14 | second | map.cpp:66:37:66:42 | call to source |
 | map.cpp:81:7:81:7 | l | map.cpp:66:37:66:42 | call to source |
+| map.cpp:87:34:87:38 | first | map.cpp:87:17:87:22 | call to source |
 | map.cpp:89:7:89:32 | call to pair | map.cpp:89:24:89:29 | call to source |
+| map.cpp:90:34:90:38 | first | map.cpp:90:24:90:29 | call to source |
+| map.cpp:91:34:91:39 | second | map.cpp:91:24:91:29 | call to source |
 | map.cpp:108:7:108:54 | call to iterator | map.cpp:108:39:108:44 | call to source |
 | map.cpp:110:10:110:15 | call to insert | map.cpp:110:62:110:67 | call to source |
 | map.cpp:111:7:111:48 | call to iterator | map.cpp:111:34:111:39 | call to source |
