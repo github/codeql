@@ -825,9 +825,9 @@ private module Stage2 {
         fwdFlowOut(call, node, cc, argAp, ap, config) and
         cc = false
         or
-        exists(boolean argStored0 |
-          fwdFlowOutFromArg(call, node, argStored0, ap, config) and
-          fwdFlowIsEntered(call, cc, argAp, argStored0, config)
+        exists(Ap argAp0 |
+          fwdFlowOutFromArg(call, node, argAp0, ap, config) and
+          fwdFlowIsEntered(call, cc, argAp, argAp0, config)
         )
       )
     )
@@ -868,11 +868,11 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node out, Cc cc, ApOption argAp, Ap ap, Configuration config
+    DataFlowCall call, Node node, Cc cc, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow |
       fwdFlow(ret, cc, argAp, ap, config) and
-      flowOutOfCallNodeCand1(call, ret, out, allowsFieldFlow, config)
+      flowOutOfCallNodeCand1(call, ret, node, allowsFieldFlow, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -880,9 +880,9 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowOutFromArg(
-    DataFlowCall call, Node out, boolean argAp, Ap ap, Configuration config
+    DataFlowCall call, Node node, Ap argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, out, true, apSome(argAp), ap, config)
+    fwdFlowOut(call, node, true, apSome(argAp), ap, config)
   }
 
   /**
@@ -1026,9 +1026,9 @@ private module Stage2 {
    */
   pragma[noinline]
   predicate revFlowIsReadAndStored(Content c, Configuration conf) {
-    exists(boolean apNonEmpty |
-      revFlowIsStored(c, apNonEmpty, conf) and
-      revFlowConsCand(c, apNonEmpty, conf)
+    exists(Ap ap |
+      revFlowIsStored(c, ap, conf) and
+      revFlowConsCand(c, ap, conf)
     )
   }
 
@@ -1332,9 +1332,9 @@ private module Stage3 {
       fwdFlowOut(call, node, cc, argAp, ap, config) and
       cc = false
       or
-      exists(Ap argApf0 |
-        fwdFlowOutFromArg(call, node, argApf0, ap, config) and
-        fwdFlowIsEntered(call, cc, argAp, argApf0, config)
+      exists(Ap argAp0 |
+        fwdFlowOutFromArg(call, node, argAp0, ap, config) and
+        fwdFlowIsEntered(call, cc, argAp, argAp0, config)
       )
     )
   }
@@ -2066,9 +2066,9 @@ private module Stage4 {
       revFlowIn(call, node, toReturn, returnAp, ap, config) and
       toReturn = false
       or
-      exists(Ap returnApa0 |
-        revFlowInToReturn(call, node, returnApa0, ap, config) and
-        revFlowIsReturned(call, toReturn, returnAp, returnApa0, config)
+      exists(Ap returnAp0 |
+        revFlowInToReturn(call, node, returnAp0, ap, config) and
+        revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
       )
     )
     or
