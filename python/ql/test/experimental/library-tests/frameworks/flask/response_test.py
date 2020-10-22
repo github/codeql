@@ -119,6 +119,16 @@ def Response5():  # $routeHandler
     return resp
 
 
+@app.route("/content-type/Response6")  # $routeSetup="/content-type/Response6"
+def Response6():  # $routeHandler
+    # mimetype argument takes priority over header (and result is text/plain)
+    # note: capitalization of Content-Type does not matter
+    resp = Response(
+        "<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, mimetype="text/plain"
+    )  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
+    return resp
+
+
 @app.route("/content-type/Flask-response-class")  # $routeSetup="/content-type/Flask-response-class"
 def Flask_response_class():  # $routeHandler
     # note: flask.Flask.response_class is set to `flask.Response` by default.
