@@ -39,7 +39,7 @@ def html4():  # $routeHandler
 def html5():  # $routeHandler
     # note: flask.Flask.response_class is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
-    resp = Flask.response_class("<h1>hello</h1>")  # $f-:HttpResponse $f-:mimetype=text/html $f-:responseBody="<h1>hello</h1>"
+    resp = Flask.response_class("<h1>hello</h1>")  # $HttpResponse $mimetype=text/html $responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -47,7 +47,7 @@ def html5():  # $routeHandler
 def html6():  # $routeHandler
     # note: app.response_class (flask.Flask.response_class) is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
-    resp = app.response_class("<h1>hello</h1>")  # $f-:HttpResponse $f-:mimetype=text/html $f-:responseBody="<h1>hello</h1>"
+    resp = app.response_class("<h1>hello</h1>")  # $HttpResponse $mimetype=text/html $responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -127,7 +127,7 @@ def Response6():  # $routeHandler
 def Flask_response_class():  # $routeHandler
     # note: flask.Flask.response_class is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
-    resp = Flask.response_class("<h1>hello</h1>", mimetype="text/plain")  # $f-:HttpResponse $f-:mimetype=text/plain $f-:responseBody="<h1>hello</h1>"
+    resp = Flask.response_class("<h1>hello</h1>", mimetype="text/plain")  # $HttpResponse $mimetype=text/plain $responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -135,7 +135,7 @@ def Flask_response_class():  # $routeHandler
 def app_response_class():  # $routeHandler
     # note: app.response_class (flask.Flask.response_class) is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
-    resp = app.response_class("<h1>hello</h1>", mimetype="text/plain")  # $f-:HttpResponse $f-:mimetype=text/plain $f-:responseBody="<h1>hello</h1>"
+    resp = app.response_class("<h1>hello</h1>", mimetype="text/plain")  # $HttpResponse $mimetype=text/plain $responseBody="<h1>hello</h1>"
     return resp
 
 

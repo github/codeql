@@ -171,6 +171,21 @@ private module FlaskModel {
       // completely disallowed in QL. I added an underscore to move thing forwards for
       // now :(
       DataFlow::Node make_response_() { result = instance_attr("make_response") }
+
+      /** Gets a reference to the `response_class` attribute on the `flask.Flask` class or an instance. */
+      private DataFlow::Node response_class(DataFlow::TypeTracker t) {
+        t.startInAttr("response_class") and
+        result in [classRef(), instance()]
+        or
+        exists(DataFlow::TypeTracker t2 | result = response_class(t2).track(t2, t))
+      }
+
+      /**
+       * Gets a reference to the `response_class` attribute on the `flask.Flask` class or an instance.
+       *
+       * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.response_class
+       */
+      DataFlow::Node response_class() { result = response_class(DataFlow::TypeTracker::end()) }
     }
   }
 
@@ -183,7 +198,7 @@ private module FlaskModel {
     /** Gets a reference to the `flask.Response` class. */
     private DataFlow::Node classRef(DataFlow::TypeTracker t) {
       t.start() and
-      result = flask_attr("Response")
+      result in [flask_attr("Response"), flask::Flask::response_class()]
       or
       exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
     }
