@@ -15,6 +15,9 @@ private import experimental.semmle.python.frameworks.Werkzeug
  * See https://flask.palletsprojects.com/en/1.1.x/.
  */
 private module FlaskModel {
+  // ---------------------------------------------------------------------------
+  // flask
+  // ---------------------------------------------------------------------------
   /** Gets a reference to the `flask` module. */
   private DataFlow::Node flask(DataFlow::TypeTracker t) {
     t.start() and
@@ -26,21 +29,49 @@ private module FlaskModel {
   /** Gets a reference to the `flask` module. */
   DataFlow::Node flask() { result = flask(DataFlow::TypeTracker::end()) }
 
+  /**
+   * Gets a reference to the attribute `attr_name` of the `flask` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node flask_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["request"] and
+    (
+      t.start() and
+      result = DataFlow::importNode("flask" + "." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = flask()
+    )
+    or
+    // Due to bad performance when using normal setup with `flask_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        flask_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate flask_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(flask_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `flask` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node flask_attr(string attr_name) {
+    result = flask_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
   /** Provides models for the `flask` module. */
   module flask {
     /** Gets a reference to the `flask.request` object. */
-    private DataFlow::Node request(DataFlow::TypeTracker t) {
-      t.start() and
-      result = DataFlow::importNode("flask.request")
-      or
-      t.startInAttr("request") and
-      result = flask()
-      or
-      exists(DataFlow::TypeTracker t2 | result = request(t2).track(t2, t))
-    }
-
-    /** Gets a reference to the `flask.request` object. */
-    DataFlow::Node request() { result = request(DataFlow::TypeTracker::end()) }
+    DataFlow::Node request() { result = flask_attr("request") }
 
     /**
      * Provides models for the `flask.Flask` class
