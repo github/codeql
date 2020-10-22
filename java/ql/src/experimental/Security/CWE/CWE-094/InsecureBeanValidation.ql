@@ -32,23 +32,6 @@ class BeanValidationSource extends RemoteFlowSource {
   override string getSourceType() { result = "BeanValidation source" }
 }
 
-class ExceptionTaintStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(Call call, TryStmt t, CatchClause c, MethodAccess gm |
-      call.getEnclosingStmt().getEnclosingStmt*() = t.getBlock() and
-      t.getACatchClause() = c and
-      (
-        call.getCallee().getAThrownExceptionType().getASubtype*() = c.getACaughtType() or
-        c.getACaughtType().getASupertype*() instanceof TypeRuntimeException
-      ) and
-      c.getVariable().getAnAccess() = gm.getQualifier() and
-      gm.getMethod().getName().regexpMatch("get(Localized)?Message|toString") and
-      n1.asExpr() = call.getAnArgument() and
-      n2.asExpr() = gm
-    )
-  }
-}
-
 class BuildConstraintViolationWithTemplateMethod extends Method {
   BuildConstraintViolationWithTemplateMethod() {
     getDeclaringType()
