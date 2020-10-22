@@ -21,7 +21,7 @@ def html2():  # $routeHandler
 
 @app.route("/html3")  # $routeSetup="/html3"
 def html3():  # $routeHandler
-    resp = app.make_response("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = app.make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $statusCode=200 $responseBody="<h1>hello</h1>"
     return resp
 
 

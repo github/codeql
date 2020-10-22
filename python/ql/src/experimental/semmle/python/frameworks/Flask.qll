@@ -130,7 +130,7 @@ private module FlaskModel {
        * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node instance_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["route", "add_url_rule"] and
+        attr_name in ["route", "add_url_rule", "make_response"] and
         t.startInAttr(attr_name) and
         result = flask::Flask::instance()
         or
@@ -165,6 +165,12 @@ private module FlaskModel {
 
       /** Gets a reference to the `add_url_rule` method on an instance of `flask.Flask`. */
       DataFlow::Node add_url_rule() { result = instance_attr("add_url_rule") }
+
+      /** Gets a reference to the `make_response` method on an instance of `flask.Flask`. */
+      // HACK: We can't call this predicate `make_response` since shadowing is
+      // completely disallowed in QL. I added an underscore to move thing forwards for
+      // now :(
+      DataFlow::Node make_response_() { result = instance_attr("make_response") }
     }
   }
 
@@ -367,14 +373,21 @@ private module FlaskModel {
   // Response modeling
   // ---------------------------------------------------------------------------
   /**
-   * A call to the `flask.make_response` function.
+   * A call to either `flask.make_response` function, or the `make_response` method on
+   * an instance of `flask.Flask`.
    *
-   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response
+   * See
+   * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.make_response
+   * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response
    */
   private class FlaskMakeResponseCall extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
     override CallNode node;
 
-    FlaskMakeResponseCall() { node.getFunction() = flask::make_response().asCfgNode() }
+    FlaskMakeResponseCall() {
+      node.getFunction() = flask::make_response().asCfgNode()
+      or
+      node.getFunction() = flask::Flask::make_response_().asCfgNode()
+    }
 
     override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
 
