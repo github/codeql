@@ -31,7 +31,7 @@ def html3():  # $routeHandler
 
 @app.route("/html4")  # $routeSetup="/html4"
 def html4():  # $routeHandler
-    resp = Response("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -83,29 +83,27 @@ def response_modification2():  # $routeHandler
 
 @app.route("/content-type/Response1")  # $routeSetup="/content-type/Response1"
 def Response1():  # $routeHandler
-    resp = Response("<h1>hello</h1>", mimetype="text/plain")  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", mimetype="text/plain")  # $HttpResponse $contentType=text/plain $responseBody="<h1>hello</h1>"
     return resp
 
 
 @app.route("/content-type/Response2")  # $routeSetup="/content-type/Response2"
 def Response2():  # $routeHandler
-    resp = Response("<h1>hello</h1>", content_type="text/plain; charset=utf-8")  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", content_type="text/plain; charset=utf-8")  # $HttpResponse $f-:contentType=text/plain $responseBody="<h1>hello</h1>"
     return resp
 
 
 @app.route("/content-type/Response3")  # $routeSetup="/content-type/Response3"
 def Response3():  # $routeHandler
     # content_type argument takes priority (and result is text/plain)
-    resp = Response(
-        "<h1>hello</h1>", content_type="text/plain; charset=utf-8", mimetype="text/html"
-    )  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", content_type="text/plain; charset=utf-8", mimetype="text/html")  # $HttpResponse $f-:contentType=text/plain $responseBody="<h1>hello</h1>"
     return resp
 
 
 @app.route("/content-type/Response4")  # $routeSetup="/content-type/Response4"
 def Response4():  # $routeHandler
     # note: capitalization of Content-Type does not matter
-    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/plain"})  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/plain"})  # $HttpResponse $f+:contentType=text/html $f-:contentType=text/plain $responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -113,9 +111,7 @@ def Response4():  # $routeHandler
 def Response5():  # $routeHandler
     # content_type argument takes priority (and result is text/plain)
     # note: capitalization of Content-Type does not matter
-    resp = Response(
-        "<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, content_type="text/plain; charset=utf-8"
-    )  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, content_type="text/plain; charset=utf-8")  # $HttpResponse $f-:contentType=text/plain $responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -123,9 +119,7 @@ def Response5():  # $routeHandler
 def Response6():  # $routeHandler
     # mimetype argument takes priority over header (and result is text/plain)
     # note: capitalization of Content-Type does not matter
-    resp = Response(
-        "<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, mimetype="text/plain"
-    )  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, mimetype="text/plain")  # $HttpResponse $contentType=text/plain $responseBody="<h1>hello</h1>"
     return resp
 
 
