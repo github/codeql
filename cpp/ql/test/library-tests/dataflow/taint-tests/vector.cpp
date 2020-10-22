@@ -399,3 +399,16 @@ void test_vector_output_iterator(int b) {
 	vector_iterator_assign_wrapper(i11, source());
 	sink(v11); // tainted [NOT DETECTED by IR]
 }
+
+void *memcpy(void *s1, const void *s2, size_t n);
+
+void test_vector_memcpy()
+{
+	std::vector<int> v(100);
+	int s = source();
+	int i = 0;
+
+	sink(v);
+	memcpy(&v[i], &s, sizeof(int));
+	sink(v); // tainted [NOT DETECTED by IR]
+}
