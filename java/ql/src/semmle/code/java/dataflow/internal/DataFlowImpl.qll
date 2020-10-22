@@ -745,6 +745,10 @@ private module Stage2 {
 
   class Ap = boolean;
 
+  class ApNil extends Ap {
+    ApNil() { this = false }
+  }
+
   class ApOption = BooleanOption;
 
   ApOption apNone() { result = TBooleanNone() }
@@ -858,7 +862,7 @@ private module Stage2 {
       fwdFlow(arg, cc, argAp, ap, config) and
       flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config)
     |
-      ap = false or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
@@ -870,7 +874,7 @@ private module Stage2 {
       fwdFlow(ret, cc, argAp, ap, config) and
       flowOutOfCallNodeCand1(call, ret, out, allowsFieldFlow, config)
     |
-      ap = false or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
@@ -903,6 +907,7 @@ private module Stage2 {
    * the enclosing callable in order to reach a sink, and if so, `returnAp`
    * records whether a field must be read from the returned value.
    */
+  pragma[nomagic]
   predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
     revFlow0(node, toReturn, returnAp, ap, config) and
     fwdFlow(node, _, _, ap, config)
@@ -916,17 +921,18 @@ private module Stage2 {
     config.isSink(node) and
     toReturn = false and
     returnAp = apNone() and
-    ap = false
+    ap instanceof ApNil
     or
     exists(Node mid |
       localFlowStepNodeCand1(node, mid, config) and
       revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
-    exists(Node mid |
+    exists(Node mid, ApNil nil |
+      fwdFlow(node, _, _, ap, config) and
       additionalLocalFlowStepNodeCand1(node, mid, config) and
-      revFlow(mid, toReturn, returnAp, ap, config) and
-      ap = false
+      revFlow(mid, toReturn, returnAp, nil, config) and
+      ap instanceof ApNil
     )
     or
     exists(Node mid |
@@ -936,12 +942,13 @@ private module Stage2 {
       returnAp = apNone()
     )
     or
-    exists(Node mid |
+    exists(Node mid, ApNil nil |
+      fwdFlow(node, _, _, ap, config) and
       additionalJumpStep(node, mid, config) and
-      revFlow(mid, _, _, ap, config) and
+      revFlow(mid, _, _, nil, config) and
       toReturn = false and
       returnAp = apNone() and
-      ap = false
+      ap instanceof ApNil
     )
     or
     // store
@@ -963,7 +970,7 @@ private module Stage2 {
       revFlowIn(call, node, toReturn, returnAp, ap, config) and
       toReturn = false
       or
-      exists(boolean returnAp0 |
+      exists(Ap returnAp0 |
         revFlowInToReturn(call, node, returnAp0, ap, config) and
         revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
       )
@@ -1034,7 +1041,7 @@ private module Stage2 {
       revFlow(out, toReturn, returnAp, ap, config) and
       flowOutOfCallNodeCand1(call, ret, out, allowsFieldFlow, config)
     |
-      ap = false or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
@@ -1047,13 +1054,13 @@ private module Stage2 {
       revFlow(p, toReturn, returnAp, ap, config) and
       flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config)
     |
-      ap = false or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
   pragma[nomagic]
   private predicate revFlowInToReturn(
-    DataFlowCall call, ArgumentNode arg, boolean returnAp, Ap ap, Configuration config
+    DataFlowCall call, ArgumentNode arg, Ap returnAp, Ap ap, Configuration config
   ) {
     revFlowIn(call, arg, true, apSome(returnAp), ap, config)
   }
@@ -1236,6 +1243,8 @@ private module Stage3 {
 
   class Ap = AccessPathFront;
 
+  class ApNil = AccessPathFrontNil;
+
   class ApOption = AccessPathFrontOption;
 
   ApOption apNone() { result = TAccessPathFrontNone() }
@@ -1273,7 +1282,7 @@ private module Stage3 {
       localFlowBigStep(mid, node, true, _, config, _)
     )
     or
-    exists(Node mid, AccessPathFrontNil nil |
+    exists(Node mid, ApNil nil |
       fwdFlow(mid, cc, argAp, nil, config) and
       localFlowBigStep(mid, node, false, ap, config, _)
     )
@@ -1286,7 +1295,7 @@ private module Stage3 {
       argAp = apNone()
     )
     or
-    exists(Node mid, AccessPathFrontNil nil |
+    exists(Node mid, ApNil nil |
       fwdFlow(mid, _, _, nil, config) and
       Stage2::revFlow(node, unbind(config)) and
       additionalJumpStep(mid, node, config) and
@@ -1365,7 +1374,7 @@ private module Stage3 {
       fwdFlow(arg, cc, argAp, ap, config) and
       flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
     |
-      ap instanceof AccessPathFrontNil or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
@@ -1377,7 +1386,7 @@ private module Stage3 {
       fwdFlow(ret, cc, argAp, ap, config) and
       flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config)
     |
-      ap instanceof AccessPathFrontNil or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
@@ -1423,18 +1432,18 @@ private module Stage3 {
     config.isSink(node) and
     toReturn = false and
     returnAp = apNone() and
-    ap instanceof AccessPathFrontNil
+    ap instanceof ApNil
     or
     exists(Node mid |
       localFlowBigStep(node, mid, true, _, config, _) and
       revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
-    exists(Node mid, AccessPathFrontNil nil |
+    exists(Node mid, ApNil nil |
       fwdFlow(node, _, _, ap, config) and
       localFlowBigStep(node, mid, false, _, config, _) and
       revFlow(mid, toReturn, returnAp, nil, config) and
-      ap instanceof AccessPathFrontNil
+      ap instanceof ApNil
     )
     or
     exists(Node mid |
@@ -1444,13 +1453,13 @@ private module Stage3 {
       returnAp = apNone()
     )
     or
-    exists(Node mid, AccessPathFrontNil nil |
+    exists(Node mid, ApNil nil |
       fwdFlow(node, _, _, ap, config) and
       additionalJumpStep(node, mid, config) and
       revFlow(mid, _, _, nil, config) and
       toReturn = false and
       returnAp = apNone() and
-      ap instanceof AccessPathFrontNil
+      ap instanceof ApNil
     )
     or
     // store
@@ -1524,7 +1533,7 @@ private module Stage3 {
       revFlow(out, toReturn, returnAp, ap, config) and
       flowOutOfCallNodeCand2(call, ret, out, allowsFieldFlow, config)
     |
-      ap instanceof AccessPathFrontNil or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
@@ -1537,7 +1546,7 @@ private module Stage3 {
       revFlow(p, toReturn, returnAp, ap, config) and
       flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
     |
-      ap instanceof AccessPathFrontNil or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
@@ -1771,6 +1780,8 @@ private module Stage4 {
 
   class Ap = AccessPathApprox;
 
+  class ApNil = AccessPathApproxNil;
+
   class ApOption = AccessPathApproxOption;
 
   ApOption apNone() { result = TAccessPathApproxNone() }
@@ -1807,10 +1818,10 @@ private module Stage4 {
         localFlowBigStep(mid, node, true, _, config, localCC)
       )
       or
-      exists(Node mid, AccessPathApproxNil nil, LocalCallContext localCC, AccessPathFront apf |
+      exists(Node mid, ApNil nil, LocalCallContext localCC, AccessPathFront apf |
         fwdFlowLocalEntry(mid, cc, argAp, nil, localCC, config) and
         localFlowBigStep(mid, node, false, apf, config, localCC) and
-        apf = ap.(AccessPathApproxNil).getFront()
+        apf = ap.(ApNil).getFront()
       )
       or
       exists(Node mid |
@@ -1820,7 +1831,7 @@ private module Stage4 {
         argAp = apNone()
       )
       or
-      exists(Node mid, AccessPathApproxNil nil |
+      exists(Node mid, ApNil nil |
         fwdFlow(mid, _, _, nil, config) and
         additionalJumpStep(mid, node, config) and
         cc instanceof CallContextAny and
@@ -1944,7 +1955,7 @@ private module Stage4 {
       then innercc = TSpecificCall(call)
       else innercc = TSomeCall()
     |
-      ap instanceof AccessPathApproxNil or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
@@ -1964,7 +1975,7 @@ private module Stage4 {
         innercc.(CallContextCall).matchesCall(call)
       )
     |
-      ap instanceof AccessPathApproxNil or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
@@ -2008,18 +2019,18 @@ private module Stage4 {
     config.isSink(node) and
     toReturn = false and
     returnAp = apNone() and
-    ap instanceof AccessPathApproxNil
+    ap instanceof ApNil
     or
     exists(Node mid |
       localFlowBigStep(node, mid, true, _, config, _) and
       revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
-    exists(Node mid, AccessPathApproxNil nil |
+    exists(Node mid, ApNil nil |
       fwdFlow(node, _, _, ap, config) and
       localFlowBigStep(node, mid, false, _, config, _) and
       revFlow(mid, toReturn, returnAp, nil, config) and
-      ap instanceof AccessPathApproxNil
+      ap instanceof ApNil
     )
     or
     exists(Node mid |
@@ -2029,13 +2040,13 @@ private module Stage4 {
       returnAp = apNone()
     )
     or
-    exists(Node mid, AccessPathApproxNil nil |
+    exists(Node mid, ApNil nil |
       fwdFlow(node, _, _, ap, config) and
       additionalJumpStep(node, mid, config) and
       revFlow(mid, _, _, nil, config) and
       toReturn = false and
       returnAp = apNone() and
-      ap instanceof AccessPathApproxNil
+      ap instanceof ApNil
     )
     or
     // store
@@ -2118,7 +2129,7 @@ private module Stage4 {
       revFlow(out, toReturn, returnAp, ap, config) and
       flowOutOfCallNodeCand2(call, ret, out, allowsFieldFlow, config)
     |
-      ap instanceof AccessPathApproxNil or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
@@ -2131,7 +2142,7 @@ private module Stage4 {
       revFlow(p, toReturn, returnAp, ap, config) and
       flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
     |
-      ap instanceof AccessPathApproxNil or allowsFieldFlow = true
+      ap instanceof ApNil or allowsFieldFlow = true
     )
   }
 
