@@ -394,9 +394,5 @@ private module FlaskModel {
     override string getContentTypeDefault() { result = "text/html" }
 
     override DataFlow::Node getContentTypeArg() { none() }
-
-    override int getStatusCodeDefault() { result = 200 }
-
-    override DataFlow::Node getStatusCodeArg() { result.asCfgNode() = node.getArg(1) }
   }
 }

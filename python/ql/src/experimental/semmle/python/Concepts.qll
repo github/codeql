@@ -239,9 +239,6 @@ module HTTP {
 
       /** Gets the content-type of this HTTP response, if it can be statically determined. */
       string getContentType() { result = range.getContentType() }
-
-      /** Gets the status code of this HTTP response, if it can be statically determined. */
-      int getStatusCode() { result = range.getStatusCode() }
     }
 
     /** Provides a class for modeling new HTTP response APIs. */
@@ -274,23 +271,6 @@ module HTTP {
           or
           not exists(this.getContentTypeArg()) and
           result = this.getContentTypeDefault()
-        }
-
-        /** Gets the data-flow node that specifies the status code of this HTTP response, if any. */
-        abstract DataFlow::Node getStatusCodeArg();
-
-        /** Gets the default status code that should be used if `getStatusCodeArg` has no results. */
-        abstract int getStatusCodeDefault();
-
-        /** Gets the status code of this HTTP response, if it can be statically determined. */
-        int getStatusCode() {
-          exists(IntegerLiteral i |
-            DataFlow::localFlow(DataFlow::exprNode(i), this.getStatusCodeArg()) and
-            result = i.getValue()
-          )
-          or
-          not exists(this.getStatusCodeArg()) and
-          result = this.getStatusCodeDefault()
         }
       }
     }

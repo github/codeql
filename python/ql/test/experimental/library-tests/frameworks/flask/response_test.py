@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/html1")  # $routeSetup="/html1"
 def html1():  # $routeHandler
-    return "<h1>hello</h1>"  # $f-:HttpResponse $f-:contentType=text/html $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    return "<h1>hello</h1>"  # $f-:HttpResponse $f-:contentType=text/html $f-:responseBody="<h1>hello</h1>"
 
 
 @app.route("/html2")  # $routeSetup="/html2"
@@ -15,13 +15,13 @@ def html2():  # $routeHandler
     # note that response saved in a variable intentionally -- we wan the annotations to
     # show that we recognize the response creation, and not the return (hopefully). (and
     # do the same in the following of the file)
-    resp = make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $statusCode=200 $responseBody="<h1>hello</h1>"
+    resp = make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $responseBody="<h1>hello</h1>"
     return resp
 
 
 @app.route("/html3")  # $routeSetup="/html3"
 def html3():  # $routeHandler
-    resp = app.make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $statusCode=200 $responseBody="<h1>hello</h1>"
+    resp = app.make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -31,7 +31,7 @@ def html3():  # $routeHandler
 
 @app.route("/html4")  # $routeSetup="/html4"
 def html4():  # $routeHandler
-    resp = Response("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -39,7 +39,7 @@ def html4():  # $routeHandler
 def html5():  # $routeHandler
     # note: flask.Flask.response_class is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
-    resp = Flask.response_class("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = Flask.response_class("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -47,14 +47,14 @@ def html5():  # $routeHandler
 def html6():  # $routeHandler
     # note: app.response_class (flask.Flask.response_class) is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
-    resp = app.response_class("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = app.response_class("<h1>hello</h1>")  # $f-:HttpResponse $f-:contentType=text/html $f-:responseBody="<h1>hello</h1>"
     return resp
 
 
 @app.route("/jsonify")  # $routeSetup="/jsonify"
 def jsonify_route():  # $routeHandler
     data = {"foo": "bar"}
-    response = jsonify(data)  # $f-:HttpResponse $f-:contentType=application/json $f-:statusCode=200 $f-:responseBody=data
+    response = jsonify(data)  # $f-:HttpResponse $f-:contentType=application/json $f-:responseBody=data
     return response
 
 
@@ -65,14 +65,14 @@ def jsonify_route():  # $routeHandler
 
 @app.route("/content-type/response-modification1")  # $routeSetup="/content-type/response-modification1"
 def response_modification1():  # $routeHandler
-    resp = make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $statusCode=200 $responseBody="<h1>hello</h1>"
+    resp = make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $responseBody="<h1>hello</h1>"
     resp.content_type = "text/plain"  # $f-:HttpResponse $f-:contentType=text/plain
     return resp
 
 
 @app.route("/content-type/response-modification2")  # $routeSetup="/content-type/response-modification2"
 def response_modification2():  # $routeHandler
-    resp = make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $statusCode=200 $responseBody="<h1>hello</h1>"
+    resp = make_response("<h1>hello</h1>")  # $HttpResponse $contentType=text/html $responseBody="<h1>hello</h1>"
     resp.headers["content-type"] = "text/plain"  # $f-:HttpResponse $f-:contentType=text/plain
     return resp
 
@@ -83,13 +83,13 @@ def response_modification2():  # $routeHandler
 
 @app.route("/content-type/Response1")  # $routeSetup="/content-type/Response1"
 def Response1():  # $routeHandler
-    resp = Response("<h1>hello</h1>", mimetype="text/plain")  # $f-:HttpResponse $f-:contentType=text/plain $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", mimetype="text/plain")  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
     return resp
 
 
 @app.route("/content-type/Response2")  # $routeSetup="/content-type/Response2"
 def Response2():  # $routeHandler
-    resp = Response("<h1>hello</h1>", content_type="text/plain; charset=utf-8")  # $f-:HttpResponse $f-:contentType=text/plain $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", content_type="text/plain; charset=utf-8")  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -98,14 +98,14 @@ def Response3():  # $routeHandler
     # content_type argument takes priority (and result is text/plain)
     resp = Response(
         "<h1>hello</h1>", content_type="text/plain; charset=utf-8", mimetype="text/html"
-    )  # $f-:HttpResponse $f-:contentType=text/plain $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    )  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
     return resp
 
 
 @app.route("/content-type/Response4")  # $routeSetup="/content-type/Response4"
 def Response4():  # $routeHandler
     # note: capitalization of Content-Type does not matter
-    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/plain"})  # $f-:HttpResponse $f-:contentType=text/plain $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/plain"})  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -115,7 +115,7 @@ def Response5():  # $routeHandler
     # note: capitalization of Content-Type does not matter
     resp = Response(
         "<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, content_type="text/plain; charset=utf-8"
-    )  # $f-:HttpResponse $f-:contentType=text/plain $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    )  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -123,7 +123,7 @@ def Response5():  # $routeHandler
 def Flask_response_class():  # $routeHandler
     # note: flask.Flask.response_class is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
-    resp = Flask.response_class("<h1>hello</h1>", mimetype="text/plain")  # $f-:HttpResponse $f-:contentType=text/plain $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = Flask.response_class("<h1>hello</h1>", mimetype="text/plain")  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
     return resp
 
 
@@ -131,8 +131,9 @@ def Flask_response_class():  # $routeHandler
 def app_response_class():  # $routeHandler
     # note: app.response_class (flask.Flask.response_class) is set to `flask.Response` by default.
     # it can be overridden, but we don't try to handle that right now.
-    resp = app.response_class("<h1>hello</h1>", mimetype="text/plain")  # $f-:HttpResponse $f-:contentType=text/plain $f-:statusCode=200 $f-:responseBody="<h1>hello</h1>"
+    resp = app.response_class("<h1>hello</h1>", mimetype="text/plain")  # $f-:HttpResponse $f-:contentType=text/plain $f-:responseBody="<h1>hello</h1>"
     return resp
+
 
 # TODO: add tests for setting status code
 # TODO: add test that manually creates a redirect by setting status code and suitable header.
