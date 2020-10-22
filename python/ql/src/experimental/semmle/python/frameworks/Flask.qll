@@ -34,7 +34,7 @@ private module FlaskModel {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node flask_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["request", "make_response"] and
+    attr_name in ["request", "make_response", "Response"] and
     (
       t.start() and
       result = DataFlow::importNode("flask" + "." + attr_name)
@@ -172,6 +172,79 @@ private module FlaskModel {
       // now :(
       DataFlow::Node make_response_() { result = instance_attr("make_response") }
     }
+  }
+
+  /**
+   * Provides models for the `flask.Response` class
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Response.
+   */
+  module Response {
+    /** Gets a reference to the `flask.Response` class. */
+    private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+      t.start() and
+      result = flask_attr("Response")
+      or
+      exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `flask.Response` class. */
+    DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+    /**
+     * A source of an instance of `flask.Response`.
+     *
+     * This can include instantiation of the class, return value from function
+     * calls, or a special parameter that will be set when functions are call by external
+     * library.
+     *
+     * Use `Response::instance()` predicate to get references to instances of `flask.Response`.
+     */
+    abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node { }
+
+    /** A direct instantiation of `flask.Response`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+      override CallNode node;
+
+      ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+      override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
+
+      override string getContentTypeDefault() { result = "text/html" }
+
+      /** Gets the argument passed to the `mimetype` parameter, if any. */
+      private DataFlow::Node getMimetypeArg() {
+        result.asCfgNode() in [node.getArg(3), node.getArgByName("mimetype")]
+      }
+
+      /**
+       * Gets the actual argument passed to the `content_type` parameter, if any.
+       * This helper method exists since `getContentTypeArg` is the method exposed by
+       * `HttpResponse::Range`)
+       */
+      private DataFlow::Node actualContentTypeArg() {
+        result.asCfgNode() in [node.getArg(4), node.getArgByName("content_type")]
+      }
+
+      override DataFlow::Node getContentTypeArg() {
+        result = this.actualContentTypeArg()
+        or
+        // content_type argument takes priority over mimetype argument
+        not exists(this.actualContentTypeArg()) and
+        result = this.getMimetypeArg()
+      }
+    }
+
+    /** Gets a reference to an instance of `flask.Response`. */
+    private DataFlow::Node instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `flask.Response`. */
+    DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
   }
 
   // ---------------------------------------------------------------------------
