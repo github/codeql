@@ -127,7 +127,7 @@ private class SpringMultipartRequestSource extends RemoteFlowSource {
 class PlayParameterSource extends RemoteFlowSource {
   PlayParameterSource() {
     exists(PlayActionMethodQueryParameter p | p = this.asParameter()) or
-    exists(PlayMVCHTTPRequestHeaderMethods m | m.getQueryString().getAnArgument() = this.asExpr())
+    exists(PlayMVCHTTPRequestHeaderMethods m | m.getQueryString() = this.asExpr())
   }
 
   override string getSourceType() { result = "Play Query Parameters" }
