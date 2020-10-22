@@ -4,7 +4,9 @@
 <qhelp>
 
 <overview>
-<p>When building custom constraint violation error messages, it is important to understand that they support different types of interpolation, including [Java EL expressions](https://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-message-interpolation.html#section-interpolation-with-message-expressions). Therefore if an attacker can inject arbitrary data in the error message template being passed to `ConstraintValidatorContext.buildConstraintViolationWithTemplate()` argument, he will be able to run arbitrary Java code. Unfortunately, it is common that validated (and therefore, normally untrusted) bean properties flow into the custom error message.</p>
+<p>Bean validation custom constraint error messages support different types of interpolation, including [Java EL expressions](https://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-message-interpolation.html#section-interpolation-with-message-expressions).
+Controlling part of the error message template being passed to `ConstraintValidatorContext.buildConstraintViolationWithTemplate()` argument will lead to arbitrary Java code execution.
+Unfortunately, it is common that validated (and therefore, normally untrusted) bean properties flow into the custom error message.</p>
 </overview>
 
 <recommendation>
@@ -35,5 +37,6 @@ Validator validator = Validation.byDefaultProvider()
 
 <references>
 <li>https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#_the_code_constraintvalidatorcontext_code</li>
+<li>https://securitylab.github.com/research/bean-validation-RCE</li>
 </references>
 </qhelp>
