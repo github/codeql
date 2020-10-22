@@ -21,8 +21,7 @@ class BeanValidationSource extends RemoteFlowSource {
       m.getParameter(0) = v and
       m
           .getDeclaringType()
-          .getASupertype+()
-          .getSourceDeclaration()
+          .getASourceSupertype+()
           .hasQualifiedName("javax.validation", "ConstraintValidator") and
       m.hasName("isValid") and
       m.fromSource()
@@ -34,10 +33,10 @@ class BeanValidationSource extends RemoteFlowSource {
 
 class BuildConstraintViolationWithTemplateMethod extends Method {
   BuildConstraintViolationWithTemplateMethod() {
-    getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .hasQualifiedName("javax.validation", "ConstraintValidatorContext") and
-    hasName("buildConstraintViolationWithTemplate")
+    this.hasName("buildConstraintViolationWithTemplate")
   }
 }
 
