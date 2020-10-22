@@ -7038,24 +7038,52 @@
 | vector.cpp:399:33:399:35 | i11 [post update] | vector.cpp:400:7:400:9 | v11 |  |
 | vector.cpp:399:33:399:35 | i11 [post update] | vector.cpp:401:1:401:1 | v11 |  |
 | vector.cpp:400:7:400:9 | ref arg v11 | vector.cpp:401:1:401:1 | v11 |  |
-| vector.cpp:407:21:407:24 | call to vector | vector.cpp:411:7:411:7 | v |  |
-| vector.cpp:407:21:407:24 | call to vector | vector.cpp:412:10:412:10 | v |  |
-| vector.cpp:407:21:407:24 | call to vector | vector.cpp:413:7:413:7 | v |  |
-| vector.cpp:407:21:407:24 | call to vector | vector.cpp:414:1:414:1 | v |  |
-| vector.cpp:408:10:408:15 | call to source | vector.cpp:412:17:412:17 | s |  |
-| vector.cpp:409:9:409:10 | 0 | vector.cpp:412:12:412:12 | i |  |
-| vector.cpp:411:7:411:7 | ref arg v | vector.cpp:412:10:412:10 | v |  |
-| vector.cpp:411:7:411:7 | ref arg v | vector.cpp:413:7:413:7 | v |  |
-| vector.cpp:411:7:411:7 | ref arg v | vector.cpp:414:1:414:1 | v |  |
-| vector.cpp:412:9:412:13 | & ... | vector.cpp:412:2:412:7 | call to memcpy |  |
-| vector.cpp:412:9:412:13 | ref arg & ... | vector.cpp:412:11:412:11 | call to operator[] [inner post update] |  |
-| vector.cpp:412:10:412:10 | ref arg v | vector.cpp:413:7:413:7 | v |  |
-| vector.cpp:412:10:412:10 | ref arg v | vector.cpp:414:1:414:1 | v |  |
-| vector.cpp:412:10:412:10 | v | vector.cpp:412:11:412:11 | call to operator[] | TAINT |
-| vector.cpp:412:11:412:11 | call to operator[] | vector.cpp:412:9:412:13 | & ... |  |
-| vector.cpp:412:11:412:11 | call to operator[] [inner post update] | vector.cpp:412:10:412:10 | ref arg v | TAINT |
-| vector.cpp:412:16:412:17 | & ... | vector.cpp:412:2:412:7 | call to memcpy | TAINT |
-| vector.cpp:412:16:412:17 | & ... | vector.cpp:412:9:412:13 | ref arg & ... | TAINT |
-| vector.cpp:412:17:412:17 | s | vector.cpp:412:9:412:13 | ref arg & ... |  |
-| vector.cpp:412:17:412:17 | s | vector.cpp:412:16:412:17 | & ... |  |
-| vector.cpp:413:7:413:7 | ref arg v | vector.cpp:414:1:414:1 | v |  |
+| vector.cpp:416:22:416:25 | call to vector | vector.cpp:420:8:420:8 | v |  |
+| vector.cpp:416:22:416:25 | call to vector | vector.cpp:421:11:421:11 | v |  |
+| vector.cpp:416:22:416:25 | call to vector | vector.cpp:422:8:422:8 | v |  |
+| vector.cpp:416:22:416:25 | call to vector | vector.cpp:423:2:423:2 | v |  |
+| vector.cpp:417:11:417:16 | call to source | vector.cpp:421:18:421:18 | s |  |
+| vector.cpp:418:10:418:11 | 0 | vector.cpp:421:13:421:13 | i |  |
+| vector.cpp:420:8:420:8 | ref arg v | vector.cpp:421:11:421:11 | v |  |
+| vector.cpp:420:8:420:8 | ref arg v | vector.cpp:422:8:422:8 | v |  |
+| vector.cpp:420:8:420:8 | ref arg v | vector.cpp:423:2:423:2 | v |  |
+| vector.cpp:421:10:421:14 | & ... | vector.cpp:421:3:421:8 | call to memcpy |  |
+| vector.cpp:421:10:421:14 | ref arg & ... | vector.cpp:421:12:421:12 | call to operator[] [inner post update] |  |
+| vector.cpp:421:11:421:11 | ref arg v | vector.cpp:422:8:422:8 | v |  |
+| vector.cpp:421:11:421:11 | ref arg v | vector.cpp:423:2:423:2 | v |  |
+| vector.cpp:421:11:421:11 | v | vector.cpp:421:12:421:12 | call to operator[] | TAINT |
+| vector.cpp:421:12:421:12 | call to operator[] | vector.cpp:421:10:421:14 | & ... |  |
+| vector.cpp:421:12:421:12 | call to operator[] [inner post update] | vector.cpp:421:11:421:11 | ref arg v | TAINT |
+| vector.cpp:421:17:421:18 | & ... | vector.cpp:421:3:421:8 | call to memcpy | TAINT |
+| vector.cpp:421:17:421:18 | & ... | vector.cpp:421:10:421:14 | ref arg & ... | TAINT |
+| vector.cpp:421:18:421:18 | s | vector.cpp:421:10:421:14 | ref arg & ... |  |
+| vector.cpp:421:18:421:18 | s | vector.cpp:421:17:421:18 | & ... |  |
+| vector.cpp:422:8:422:8 | ref arg v | vector.cpp:423:2:423:2 | v |  |
+| vector.cpp:426:24:426:27 | call to vector | vector.cpp:432:8:432:9 | cs |  |
+| vector.cpp:426:24:426:27 | call to vector | vector.cpp:433:11:433:12 | cs |  |
+| vector.cpp:426:24:426:27 | call to vector | vector.cpp:435:8:435:9 | cs |  |
+| vector.cpp:426:24:426:27 | call to vector | vector.cpp:436:2:436:2 | cs |  |
+| vector.cpp:427:21:427:37 | call to source | vector.cpp:429:22:429:24 | src |  |
+| vector.cpp:427:21:427:37 | call to source | vector.cpp:431:8:431:10 | src |  |
+| vector.cpp:427:21:427:37 | call to source | vector.cpp:433:25:433:27 | src |  |
+| vector.cpp:427:21:427:37 | call to source | vector.cpp:434:8:434:10 | src |  |
+| vector.cpp:428:23:428:24 | 10 | vector.cpp:433:14:433:17 | offs |  |
+| vector.cpp:429:26:429:31 | call to length | vector.cpp:433:38:433:40 | len |  |
+| vector.cpp:431:8:431:10 | ref arg src | vector.cpp:433:25:433:27 | src |  |
+| vector.cpp:431:8:431:10 | ref arg src | vector.cpp:434:8:434:10 | src |  |
+| vector.cpp:432:8:432:9 | ref arg cs | vector.cpp:433:11:433:12 | cs |  |
+| vector.cpp:432:8:432:9 | ref arg cs | vector.cpp:435:8:435:9 | cs |  |
+| vector.cpp:432:8:432:9 | ref arg cs | vector.cpp:436:2:436:2 | cs |  |
+| vector.cpp:433:10:433:22 | & ... | vector.cpp:433:3:433:8 | call to memcpy |  |
+| vector.cpp:433:10:433:22 | ref arg & ... | vector.cpp:433:13:433:13 | call to operator[] [inner post update] |  |
+| vector.cpp:433:11:433:12 | cs | vector.cpp:433:13:433:13 | call to operator[] | TAINT |
+| vector.cpp:433:11:433:12 | ref arg cs | vector.cpp:435:8:435:9 | cs |  |
+| vector.cpp:433:11:433:12 | ref arg cs | vector.cpp:436:2:436:2 | cs |  |
+| vector.cpp:433:13:433:13 | call to operator[] | vector.cpp:433:10:433:22 | & ... |  |
+| vector.cpp:433:13:433:13 | call to operator[] [inner post update] | vector.cpp:433:11:433:12 | ref arg cs | TAINT |
+| vector.cpp:433:14:433:17 | offs | vector.cpp:433:14:433:21 | ... + ... | TAINT |
+| vector.cpp:433:21:433:21 | 1 | vector.cpp:433:14:433:21 | ... + ... | TAINT |
+| vector.cpp:433:25:433:27 | src | vector.cpp:433:29:433:33 | call to c_str | TAINT |
+| vector.cpp:433:29:433:33 | call to c_str | vector.cpp:433:3:433:8 | call to memcpy | TAINT |
+| vector.cpp:433:29:433:33 | call to c_str | vector.cpp:433:10:433:22 | ref arg & ... | TAINT |
+| vector.cpp:435:8:435:9 | ref arg cs | vector.cpp:436:2:436:2 | cs |  |
