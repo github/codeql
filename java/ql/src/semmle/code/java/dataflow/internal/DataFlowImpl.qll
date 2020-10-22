@@ -904,72 +904,77 @@ private module Stage2 {
    * records whether a field must be read from the returned value.
    */
   predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
-    fwdFlow(node, _, _, false, config) and
+    revFlow0(node, toReturn, returnAp, ap, config) and
+    fwdFlow(node, _, _, ap, config)
+  }
+
+  pragma[nomagic]
+  private predicate revFlow0(
+    Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+  ) {
+    fwdFlow(node, _, _, ap, config) and
     config.isSink(node) and
     toReturn = false and
     returnAp = apNone() and
     ap = false
     or
-    fwdFlow(node, _, _, unbindBool(ap), unbind(config)) and
-    (
-      exists(Node mid |
-        localFlowStepNodeCand1(node, mid, config) and
-        revFlow(mid, toReturn, returnAp, ap, config)
-      )
-      or
-      exists(Node mid |
-        additionalLocalFlowStepNodeCand1(node, mid, config) and
-        revFlow(mid, toReturn, returnAp, ap, config) and
-        ap = false
-      )
-      or
-      exists(Node mid |
-        jumpStep(node, mid, config) and
-        revFlow(mid, _, _, ap, config) and
-        toReturn = false and
-        returnAp = apNone()
-      )
-      or
-      exists(Node mid |
-        additionalJumpStep(node, mid, config) and
-        revFlow(mid, _, _, ap, config) and
-        toReturn = false and
-        returnAp = apNone() and
-        ap = false
-      )
-      or
-      // store
-      exists(Content c |
-        revFlowStore(c, node, toReturn, returnAp, ap, config) and
-        revFlowIsRead(c, ap, config)
-      )
-      or
-      // read
-      exists(Node mid, Content c, Ap ap0 |
-        read(node, c, mid, config) and
-        fwdFlowIsStored(c, unbindBool(ap0), unbind(config)) and
-        revFlow(mid, toReturn, returnAp, ap0, config) and
-        ap = true
-      )
-      or
-      // flow into a callable
-      exists(DataFlowCall call |
-        revFlowIn(call, node, toReturn, returnAp, ap, config) and
-        toReturn = false
-        or
-        exists(boolean returnAp0 |
-          revFlowInToReturn(call, node, returnAp0, ap, config) and
-          revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
-        )
-      )
-      or
-      // flow out of a callable
-      revFlowOut(_, node, _, _, ap, config) and
-      toReturn = true and
-      if fwdFlow(node, true, apSome(_), unbindBool(ap), config)
-      then returnAp = apSome(ap)
-      else returnAp = apNone()
+    exists(Node mid |
+      localFlowStepNodeCand1(node, mid, config) and
+      revFlow(mid, toReturn, returnAp, ap, config)
     )
+    or
+    exists(Node mid |
+      additionalLocalFlowStepNodeCand1(node, mid, config) and
+      revFlow(mid, toReturn, returnAp, ap, config) and
+      ap = false
+    )
+    or
+    exists(Node mid |
+      jumpStep(node, mid, config) and
+      revFlow(mid, _, _, ap, config) and
+      toReturn = false and
+      returnAp = apNone()
+    )
+    or
+    exists(Node mid |
+      additionalJumpStep(node, mid, config) and
+      revFlow(mid, _, _, ap, config) and
+      toReturn = false and
+      returnAp = apNone() and
+      ap = false
+    )
+    or
+    // store
+    exists(Content c |
+      revFlowStore(c, node, toReturn, returnAp, ap, config) and
+      revFlowIsRead(c, ap, config)
+    )
+    or
+    // read
+    exists(Node mid, Content c, Ap ap0 |
+      read(node, c, mid, config) and
+      fwdFlowIsStored(c, unbindBool(ap0), unbind(config)) and
+      revFlow(mid, toReturn, returnAp, ap0, config) and
+      ap = true
+    )
+    or
+    // flow into a callable
+    exists(DataFlowCall call |
+      revFlowIn(call, node, toReturn, returnAp, ap, config) and
+      toReturn = false
+      or
+      exists(boolean returnAp0 |
+        revFlowInToReturn(call, node, returnAp0, ap, config) and
+        revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
+      )
+    )
+    or
+    // flow out of a callable
+    revFlowOut(_, node, _, _, ap, config) and
+    toReturn = true and
+    if fwdFlow(node, true, apSome(_), unbindBool(ap), config)
+    then returnAp = apSome(ap)
+    else returnAp = apNone()
   }
 
   /**
