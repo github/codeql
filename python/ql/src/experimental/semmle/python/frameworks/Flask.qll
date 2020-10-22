@@ -479,4 +479,19 @@ private module FlaskModel {
 
     override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
   }
+
+  private class FlaskRouteHandlerReturn extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
+    FlaskRouteHandlerReturn() {
+      exists(Function routeHandler |
+        routeHandler = any(FlaskRouteSetup rs).getARouteHandler() and
+        node = routeHandler.getAReturnValueFlowNode()
+      )
+    }
+
+    override DataFlow::Node getBody() { result = this }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { result = "text/html" }
+  }
 }

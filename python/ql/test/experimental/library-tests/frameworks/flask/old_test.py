@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")  # $routeSetup="/"
 def hello_world():  # $routeHandler
-    return "Hello World!"
+    return "Hello World!"  # $HttpResponse
 
 from flask.views import MethodView
 
@@ -26,14 +26,14 @@ app.add_url_rule('/the/', defaults={'user_id': None},  # $routeSetup="/the/"
 
 @app.route("/dangerous")  # $routeSetup="/dangerous"
 def dangerous():  # $routeHandler
-    return request.args.get('payload')
+    return request.args.get('payload')  # $HttpResponse
 
 @app.route("/dangerous-with-cfg-split")  # $routeSetup="/dangerous-with-cfg-split"
 def dangerous2():  # $routeHandler
     x = request.form['param0']
     if request.method == "POST":
-        return request.form['param1']
-    return None
+        return request.form['param1']  # $HttpResponse
+    return None  # $f+:HttpResponse
 
 @app.route("/unsafe")  # $routeSetup="/unsafe"
 def unsafe():  # $routeHandler

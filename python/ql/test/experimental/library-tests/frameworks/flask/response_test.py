@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/html1")  # $routeSetup="/html1"
 def html1():  # $routeHandler
-    return "<h1>hello</h1>"  # $f-:HttpResponse $f-:mimetype=text/html $f-:responseBody="<h1>hello</h1>"
+    return "<h1>hello</h1>"  # $HttpResponse $mimetype=text/html $responseBody="<h1>hello</h1>"
 
 
 @app.route("/html2")  # $routeSetup="/html2"
