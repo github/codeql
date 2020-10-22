@@ -108,6 +108,7 @@ private class MessageBodyReaderParameterSource extends RemoteFlowSource {
   override string getSourceType() { result = "MessageBodyReader parameter" }
 }
 
+<<<<<<< HEAD
 private class SpringMultipartRequestSource extends RemoteFlowSource {
   SpringMultipartRequestSource() {
     exists(MethodAccess ma, Method m |
@@ -126,11 +127,17 @@ private class SpringMultipartRequestSource extends RemoteFlowSource {
 
 class PlayParameterSource extends RemoteFlowSource {
   PlayParameterSource() {
+    exists(PlayActionMethodQueryParameter p | p = this.asParameter()) or
+    exists(PlayMVCHTTPRequestHeaderMethods m | m.getQueryString().getAnArgument() = this.asExpr())
+=======
+class PlayParameterSource extends RemoteFlowSource {
+  PlayParameterSource() {
     exists(PlayActionQueryParameter p | p = this.asParameter())
     or
     exists(PlayHTTPRequestHeaderMethods m |
       m.hasName("getQueryString") and m.getAParameter() = this.asParameter()
     )
+>>>>>>> fa523e456f96493dcc08b819ad4bd620cca789b8
   }
 
   override string getSourceType() { result = "Play Query Parameters" }
@@ -279,10 +286,17 @@ private class RemoteTaintedMethod extends Method {
   }
 }
 
+<<<<<<< HEAD
+private class PlayRequestGetMethod extends Method {
+  PlayRequestGetMethod() {
+    this.getDeclaringType() instanceof PlayMVCHTTPRequestHeader and
+    this.hasName(["header", "getHeader"])
+=======
 private class PlayRequestGetMethod extends PlayHTTPRequestHeaderMethods {
   PlayRequestGetMethod() {
     this.hasName("Header") or
     this.hasName("getQueryString")
+>>>>>>> fa523e456f96493dcc08b819ad4bd620cca789b8
   }
 }
 
