@@ -27,7 +27,7 @@ and IDE support than macros.</p>
 <references>
 
 <li>
-  <a href="https://docs.microsoft.com/en-us/cpp/preprocessor/macros-c-cpp">Macros</a>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/preprocessor/macros-c-cpp">Macros (C/C++)</a>
 </li>
 <li>
   <a href="http://www.stroustrup.com/icsm-2012-demacro.pdf">Rejuvenating C++ Programs through
