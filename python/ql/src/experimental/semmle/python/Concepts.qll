@@ -237,8 +237,8 @@ module HTTP {
       /** Gets the data-flow node that specifies the body of this HTTP response. */
       DataFlow::Node getBody() { result = range.getBody() }
 
-      /** Gets the content-type of this HTTP response, if it can be statically determined. */
-      string getContentType() { result = range.getContentType() }
+      /** Gets the mimetype of this HTTP response, if it can be statically determined. */
+      string getMimetype() { result = range.getMimetype() }
     }
 
     /** Provides a class for modeling new HTTP response APIs. */
@@ -256,21 +256,21 @@ module HTTP {
         /** Gets the data-flow node that specifies the body of this HTTP response. */
         abstract DataFlow::Node getBody();
 
-        /** Gets the data-flow node that specifies the content-type of this HTTP response, if any. */
-        abstract DataFlow::Node getContentTypeArg();
+        /** Gets the data-flow node that specifies the content-type/mimetype of this HTTP response, if any. */
+        abstract DataFlow::Node getMimetypeOrContentTypeArg();
 
-        /** Gets the default content-type that should be used if `getContentTypeArg` has no results. */
-        abstract string getContentTypeDefault();
+        /** Gets the default mimetype that should be used if `getMimetypeOrContentTypeArg` has no results. */
+        abstract string getMimetypeDefault();
 
-        /** Gets the content-type of this HTTP response, if it can be statically determined. */
-        string getContentType() {
+        /** Gets the mimetype of this HTTP response, if it can be statically determined. */
+        string getMimetype() {
           exists(StrConst str |
-            DataFlow::localFlow(DataFlow::exprNode(str), this.getContentTypeArg()) and
-            result = str.getText()
+            DataFlow::localFlow(DataFlow::exprNode(str), this.getMimetypeOrContentTypeArg()) and
+            result = str.getText().splitAt(";", 0)
           )
           or
-          not exists(this.getContentTypeArg()) and
-          result = this.getContentTypeDefault()
+          not exists(this.getMimetypeOrContentTypeArg()) and
+          result = this.getMimetypeDefault()
         }
       }
     }

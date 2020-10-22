@@ -210,27 +210,23 @@ private module FlaskModel {
 
       override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
 
-      override string getContentTypeDefault() { result = "text/html" }
+      override string getMimetypeDefault() { result = "text/html" }
 
       /** Gets the argument passed to the `mimetype` parameter, if any. */
       private DataFlow::Node getMimetypeArg() {
         result.asCfgNode() in [node.getArg(3), node.getArgByName("mimetype")]
       }
 
-      /**
-       * Gets the actual argument passed to the `content_type` parameter, if any.
-       * This helper method exists since `getContentTypeArg` is the method exposed by
-       * `HttpResponse::Range`)
-       */
-      private DataFlow::Node actualContentTypeArg() {
+      /** Gets the argument passed to the `content_type` parameter, if any. */
+      private DataFlow::Node getContentTypeArg() {
         result.asCfgNode() in [node.getArg(4), node.getArgByName("content_type")]
       }
 
-      override DataFlow::Node getContentTypeArg() {
-        result = this.actualContentTypeArg()
+      override DataFlow::Node getMimetypeOrContentTypeArg() {
+        result = this.getContentTypeArg()
         or
         // content_type argument takes priority over mimetype argument
-        not exists(this.actualContentTypeArg()) and
+        not exists(this.getContentTypeArg()) and
         result = this.getMimetypeArg()
       }
     }
@@ -464,8 +460,8 @@ private module FlaskModel {
 
     override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
 
-    override string getContentTypeDefault() { result = "text/html" }
+    override string getMimetypeDefault() { result = "text/html" }
 
-    override DataFlow::Node getContentTypeArg() { none() }
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
   }
 }

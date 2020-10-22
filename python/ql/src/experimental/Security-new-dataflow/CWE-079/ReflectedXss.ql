@@ -26,7 +26,7 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(HTTP::Server::HttpResponse response |
-      response.getContentType().toLowerCase().matches("text/html%") and
+      response.getMimetype().toLowerCase() = "text/html" and
       sink = response.getBody()
     )
   }

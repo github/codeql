@@ -148,7 +148,7 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
 
   HttpServerHttpResponseTest() { this = "HttpServerHttpResponseTest: " + file }
 
-  override string getARelevantTag() { result in ["HttpResponse", "responseBody", "contentType"] }
+  override string getARelevantTag() { result in ["HttpResponse", "responseBody", "mimetype"] }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     // By adding `file` as a class field, and these two restrictions, it's possible to
@@ -175,8 +175,8 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
       exists(HTTP::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
-        value = response.getContentType() and
-        tag = "contentType"
+        value = response.getMimetype() and
+        tag = "mimetype"
       )
     )
   }
