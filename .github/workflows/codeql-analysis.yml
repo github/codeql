@@ -1,0 +1,33 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [main, lgtm.com, rc/1.21, rc/1.23, rc/1.24, rc/1.25]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [main]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['go']
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+
+    - run: make
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
