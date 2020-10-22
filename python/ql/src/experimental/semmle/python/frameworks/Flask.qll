@@ -14,7 +14,7 @@ private import experimental.semmle.python.frameworks.Werkzeug
  * Provides models for the `flask` PyPI package.
  * See https://flask.palletsprojects.com/en/1.1.x/.
  */
-private module Flask_Private {
+private module FlaskModel {
   /** Gets a reference to the `flask` module. */
   private DataFlow::Node flask(DataFlow::TypeTracker t) {
     t.start() and
