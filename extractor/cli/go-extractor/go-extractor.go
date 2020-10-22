@@ -108,13 +108,14 @@ func main() {
 	}
 
 	if len(patterns) == 0 {
-		log.Println("Nothing to extract.")
-	} else {
-		log.Printf("Build flags: '%s'; patterns: '%s'\n", strings.Join(buildFlags, " "), strings.Join(patterns, " "))
-		err := extractor.ExtractWithFlags(buildFlags, patterns)
-		if err != nil {
-			log.Fatalf("Error running go tooling: %s\n", err.Error())
-		}
+		log.Println("No packages explicitly provided, adding '.'")
+		patterns = []string{"."}
+	}
+
+	log.Printf("Build flags: '%s'; patterns: '%s'\n", strings.Join(buildFlags, " "), strings.Join(patterns, " "))
+	err := extractor.ExtractWithFlags(buildFlags, patterns)
+	if err != nil {
+		log.Fatalf("Error running go tooling: %s\n", err.Error())
 	}
 
 	if memprofile != "" {
