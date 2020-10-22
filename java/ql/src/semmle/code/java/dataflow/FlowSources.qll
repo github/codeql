@@ -276,17 +276,10 @@ private class RemoteTaintedMethod extends Method {
   }
 }
 
-<<<<<<< HEAD
 private class PlayRequestGetMethod extends Method {
   PlayRequestGetMethod() {
     this.getDeclaringType() instanceof PlayMVCHTTPRequestHeader and
     this.hasName(["header", "getHeader"])
-=======
-private class PlayRequestGetMethod extends PlayHTTPRequestHeaderMethods {
-  PlayRequestGetMethod() {
-    this.hasName("Header") or
-    this.hasName("getQueryString")
->>>>>>> fa523e456f96493dcc08b819ad4bd620cca789b8
   }
 }
 
