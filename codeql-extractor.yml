@@ -1,0 +1,9 @@
+name: "ruby"
+display_name: "Ruby"
+version: 0.1
+column_kind: "utf8"
+file_types:
+  - name: ruby
+    display_name: Ruby files
+    extensions:
+      - .rb
