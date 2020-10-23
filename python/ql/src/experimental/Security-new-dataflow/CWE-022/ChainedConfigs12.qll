@@ -24,8 +24,8 @@ private predicate crossoverNode(DataFlow::Node n) {
  */
 private newtype TCustomPathNode =
   Config1Node(DataFlow::PathNode node1) { not crossoverNode(node1.getNode()) } or
-  Config2Node(DataFlow2::PathNode node1) { not crossoverNode(node1.getNode()) } or
-  CrossoverNode(DataFlow::Node e) { crossoverNode(e) }
+  Config2Node(DataFlow2::PathNode node2) { not crossoverNode(node2.getNode()) } or
+  CrossoverNode(DataFlow::Node node) { crossoverNode(node) }
 
 /**
  * A class representing the set of all the path nodes in either config.

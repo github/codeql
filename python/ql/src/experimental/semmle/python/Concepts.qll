@@ -86,7 +86,7 @@ module Path {
   /** Provides a class for modeling new path normalization APIs. */
   module PathNormalization {
     /**
-     * A data-flow node that performs path normlization. This is often needed in oder
+     * A data-flow node that performs path normalization. This is often needed in order
      * to safely access paths.
      */
     abstract class Range extends DataFlow::Node { }
