@@ -97,3 +97,13 @@ urlpatterns = [
     # We should not report there is a request parameter called `not_valid!`
     path("not_valid/<not_valid!>", not_valid_identifier),  # $routeSetup="not_valid/<not_valid!>"
 ]
+
+# This version 1.x way of defining urls is deprecated in Django 3.1, but still works
+from django.conf.urls import url
+
+def deprecated(request):  # $f-:routeHandler
+    return HttpResponse('deprecated')
+
+urlpatterns = [
+    url(r"^deprecated/", deprecated),  # $f-:routeSetup="^deprecated/"
+]
