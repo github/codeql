@@ -12,7 +12,7 @@ def fp_manual_json_response(request):
     return HttpResponse(json_data, content_type="application/json")
 
 # Not an XSS sink, since the Content-Type is not "text/html"
-def fp_manual_content_type(reuqest):
+def fp_manual_content_type(request):
     return HttpResponse('<img src="0" onerror="alert(1)">', content_type="text/plain")
 
 # XSS FP reported in https://github.com/github/codeql/issues/3466
