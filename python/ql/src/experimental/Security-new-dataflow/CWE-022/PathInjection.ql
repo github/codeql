@@ -10,7 +10,7 @@
  *     This is detected by finding the earliest normalization and then ensure that
  *     no checks happen later. Since we start from the earliest normalization,
  *     we know that the absence of checks means that no normalization has a
- *     chek after it. (No checks after a second normalization would be ok if
+ *     check after it. (No checks after a second normalization would be ok if
  *     there was a check between the first and the second.)
  *
  * Note that one could make the dual split on whether the file path is ever checked. This does

@@ -41,7 +41,7 @@ module SystemCommandExecution {
 }
 
 /**
- * A data-flow node that performs a file system access, including reading and writing data,
+ * A data flow node that performs a file system access, including reading and writing data,
  * creating and deleting files and folders, checking and updating permissions, and so on.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
@@ -56,7 +56,7 @@ class FileSystemAccess extends DataFlow::Node {
   DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
 }
 
-/** Provides a class for modeling new file-system access APIs. */
+/** Provides a class for modeling new file system access APIs. */
 module FileSystemAccess {
   /**
    * A data-flow node that performs a file system access, including reading and writing data,
@@ -74,7 +74,7 @@ module FileSystemAccess {
 /** Provides classes for modeling path-related APIs. */
 module Path {
   /**
-   * A data-flow node that performs path normlization. This is often needed in oder
+   * A data-flow node that performs path normalization. This is often needed in order
    * to safely access paths.
    */
   class PathNormalization extends DataFlow::Node {
