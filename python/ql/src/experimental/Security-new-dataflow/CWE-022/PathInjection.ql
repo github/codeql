@@ -1,5 +1,5 @@
 /**
- * The query detects the case where a path is not both normalized and _afterwards_ checked.
+ * The query detects cases where a user-controlled path is used in an unsafe manner, meaning it is not both normalized and _afterwards_ checked.
  *
  * It does so by dividing the problematic situation into two cases:
  *  1. The path is never normalized.
