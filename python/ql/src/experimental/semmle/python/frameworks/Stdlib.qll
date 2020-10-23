@@ -135,10 +135,24 @@ private module Stdlib {
    * A call to `os.path.normpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.normpath
    */
-  private class NormpathCall extends Path::PathNormalization::Range, DataFlow::CfgNode {
+  private class OsPathNormpathCall extends Path::PathNormalization::Range, DataFlow::CfgNode {
     override CallNode node;
 
-    NormpathCall() { node.getFunction() = os::path::path_attr("normpath").asCfgNode() }
+    OsPathNormpathCall() { node.getFunction() = os::path::path_attr("normpath").asCfgNode() }
+
+    DataFlow::Node getPathArg() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
+    }
+  }
+
+  /** An additional taint step for calls to `os.path.normpath` */
+  private class OsPathNormpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(OsPathNormpathCall call |
+        nodeTo = call and
+        nodeFrom = call.getPathArg()
+      )
+    }
   }
 
   /**
