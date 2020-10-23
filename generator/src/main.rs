@@ -1,6 +1,5 @@
 mod dbscheme;
 mod language;
-mod node_types;
 
 use language::Language;
 use node_types::{FieldInfo, NodeInfo};
