@@ -558,7 +558,7 @@ private module Django {
            * A source of an instance of `django.http.request.HttpRequest`.
            *
            * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
            * Use `django::http::request::HttpRequest::instance()` predicate to get
