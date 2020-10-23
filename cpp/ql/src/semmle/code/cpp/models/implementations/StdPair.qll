@@ -20,8 +20,7 @@ class StdPairCopyishConstructor extends Constructor, TaintFunction {
   StdPairCopyishConstructor() {
     this.getDeclaringType() instanceof StdPairClass and
     this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType()
-      instanceof StdPairClass
+    this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType() instanceof StdPairClass
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
