@@ -1,0 +1,13 @@
+edges
+| path_injection.py:9:12:9:23 | ControlFlowNode for Attribute | path_injection.py:10:14:10:44 | ControlFlowNode for Attribute() |
+| path_injection.py:16:13:16:61 | ControlFlowNode for Attribute() | path_injection.py:17:14:17:18 | ControlFlowNode for npath |
+| path_injection.py:25:13:25:61 | ControlFlowNode for Attribute() | path_injection.py:28:14:28:18 | ControlFlowNode for npath |
+nodes
+| path_injection.py:9:12:9:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:10:14:10:44 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| path_injection.py:16:13:16:61 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| path_injection.py:17:14:17:18 | ControlFlowNode for npath | semmle.label | ControlFlowNode for npath |
+| path_injection.py:25:13:25:61 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| path_injection.py:28:14:28:18 | ControlFlowNode for npath | semmle.label | ControlFlowNode for npath |
+#select
+| path_injection.py:10:14:10:44 | ControlFlowNode for Attribute() | path_injection.py:9:12:9:23 | ControlFlowNode for Attribute | path_injection.py:10:14:10:44 | ControlFlowNode for Attribute() | This path depends on $@. | path_injection.py:9:12:9:23 | ControlFlowNode for Attribute | a user-provided value |
