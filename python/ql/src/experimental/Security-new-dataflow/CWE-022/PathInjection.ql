@@ -56,7 +56,7 @@ class PathNotNormalizedConfiguration extends TaintTracking::Configuration {
     sink = any(FileSystemAccess e).getAPathArgument()
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof PathNormalization }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof Path::PathNormalization }
 }
 
 predicate pathNotNormalized(CustomPathNode source, CustomPathNode sink) {
@@ -72,22 +72,24 @@ class FirstNormalizationConfiguration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof PathNormalization }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof Path::PathNormalization }
 
-  override predicate isSanitizerOut(DataFlow::Node node) { node instanceof PathNormalization }
+  override predicate isSanitizerOut(DataFlow::Node node) { node instanceof Path::PathNormalization }
 }
 
 /** Configuration to find paths from normalizations to sinks that do not go through a check. */
 class NormalizedPathNotCheckedConfiguration extends TaintTracking2::Configuration {
   NormalizedPathNotCheckedConfiguration() { this = "NormalizedPathNotCheckedConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof PathNormalization }
+  override predicate isSource(DataFlow::Node source) { source instanceof Path::PathNormalization }
 
   override predicate isSink(DataFlow::Node sink) {
     sink = any(FileSystemAccess e).getAPathArgument()
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { guard instanceof PathCheck }
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof Path::SafeAccessCheck
+  }
 }
 
 predicate pathNotCheckedAfterNormalization(CustomPathNode source, CustomPathNode sink) {

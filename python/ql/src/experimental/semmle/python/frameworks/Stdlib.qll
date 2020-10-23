@@ -135,7 +135,7 @@ private module Stdlib {
    * A call to `os.path.normpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.normpath
    */
-  private class NormpathCall extends PathNormalization::Range, DataFlow::CfgNode {
+  private class NormpathCall extends Path::PathNormalization::Range, DataFlow::CfgNode {
     override CallNode node;
 
     NormpathCall() { node.getFunction() = os::path::path_attr("normpath").asCfgNode() }
@@ -735,7 +735,7 @@ private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
   }
 }
 
-private class StartswithCall extends PathCheck::Range {
+private class StartswithCall extends Path::SafeAccessCheck::Range {
   StartswithCall() { this.(CallNode).getFunction().(AttrNode).getName() = "startswith" }
 
   override predicate checks(ControlFlowNode node, boolean branch) {

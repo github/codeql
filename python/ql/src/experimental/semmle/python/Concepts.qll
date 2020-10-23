@@ -71,44 +71,41 @@ module FileSystemAccess {
   }
 }
 
-/**
- * A data-flow node that performs path normlization. This is often needed in oder
- * to safely access paths.
- */
-class PathNormalization extends DataFlow::Node {
-  PathNormalization::Range range;
-
-  PathNormalization() { this = range }
-}
-
-/** Provides a class for modeling new path normalization APIs. */
-module PathNormalization {
+/** Provides classes for modeling path-related APIs. */
+module Path {
   /**
    * A data-flow node that performs path normlization. This is often needed in oder
    * to safely access paths.
    */
-  abstract class Range extends DataFlow::Node { }
-}
+  class PathNormalization extends DataFlow::Node {
+    PathNormalization::Range range;
 
-/**
- * A data-flow node that checks validates a path, for instance checking that it exists
- * or that it is safe to access.
- */
-class PathCheck extends DataFlow::BarrierGuard {
-  PathCheck::Range range;
+    PathNormalization() { this = range }
+  }
 
-  PathCheck() { this = range }
+  /** Provides a class for modeling new path normalization APIs. */
+  module PathNormalization {
+    /**
+     * A data-flow node that performs path normlization. This is often needed in oder
+     * to safely access paths.
+     */
+    abstract class Range extends DataFlow::Node { }
+  }
 
-  override predicate checks(ControlFlowNode node, boolean branch) { range.checks(node, branch) }
-}
+  /** A data-flow node that checks that a path is safe to access. */
+  class SafeAccessCheck extends DataFlow::BarrierGuard {
+    SafeAccessCheck::Range range;
 
-/** Provides a class for modeling new path normalization APIs. */
-module PathCheck {
-  /**
-   * A data-flow node that checks validates a path, for instance checking that it exists
-   * or that it is safe to access.
-   */
-  abstract class Range extends DataFlow::BarrierGuard { }
+    SafeAccessCheck() { this = range }
+
+    override predicate checks(ControlFlowNode node, boolean branch) { range.checks(node, branch) }
+  }
+
+  /** Provides a class for modeling new path safety checks. */
+  module SafeAccessCheck {
+    /** A data-flow node that checks that a path is safe to access. */
+    abstract class Range extends DataFlow::BarrierGuard { }
+  }
 }
 
 /**
