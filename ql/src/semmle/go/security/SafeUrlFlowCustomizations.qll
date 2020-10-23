@@ -25,6 +25,6 @@ module SafeUrlFlow {
 
   /** A function model step using `UnsafeUrlMethod`, considered as a sanitizer for safe URL flow. */
   private class UnsafeUrlMethodEdge extends SanitizerEdge {
-    UnsafeUrlMethodEdge() { TaintTracking::functionModelStep(any(UnsafeUrlMethod um), this, _) }
+    UnsafeUrlMethodEdge() { this = any(UnsafeUrlMethod um).getAnInputNode(_) }
   }
 }
