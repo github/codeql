@@ -1,0 +1,25 @@
+#!/bin/bash -e
+# Check directories and file structure
+test -d ~/local/codeql-js-goof-workshop || exit 1
+test -d ~/local/db/js-goof-9300e9a || exit 2
+
+# Make the zip file, add workshop
+cd ~/local
+rm -f codeql-js-goof-workshop.zip
+zip codeql-js-goof-workshop.zip \
+    codeql-js-goof-workshop/GoofPrototypePollution-*.ql \
+    codeql-js-goof-workshop/PrototypePollution-*.ql \
+    codeql-js-goof-workshop/flow-query-*.ql \
+    codeql-js-goof-workshop/l3style.css \
+    codeql-js-goof-workshop/qlpack.yml \
+    codeql-js-goof-workshop/queries.xml \
+    codeql-js-goof-workshop/workshop.html
+
+# Add database
+cd ~/local/db/
+zip -r ~/local/codeql-js-goof-workshop.zip js-goof-9300e9a
+
+# Check content
+echo "zip file:      ~/local/codeql-js-goof-workshop.zip"
+echo "list content:  unzip -l ~/local/codeql-js-goof-workshop.zip"
+

