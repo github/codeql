@@ -1,2 +1,6 @@
 [workspace]
-members = ["extractor", "generator"]
+members = [
+    "extractor",
+    "generator",
+    "node-types",
+]

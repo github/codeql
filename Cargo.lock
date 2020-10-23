@@ -19,8 +19,7 @@ checksum = "ed67cbde08356238e75fc4656be4749481eeffb09e19f320a25237d5221c985d"
 name = "generator"
 version = "0.1.0"
 dependencies = [
- "serde",
- "serde_json",
+ "node-types",
 ]
 
 [[package]]
@@ -40,6 +39,14 @@ name = "memchr"
 version = "2.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3728d817d99e5ac407411fa471ff9800a778d88a24685968b36824eaf4bee400"
+
+[[package]]
+name = "node-types"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "proc-macro2"
@@ -93,18 +100,18 @@ checksum = "71d301d4193d031abdd79ff7e3dd721168a9572ef3fe51a1517aba235bd8f86e"
 
 [[package]]
 name = "serde"
-version = "1.0.116"
+version = "1.0.117"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "96fe57af81d28386a513cbc6858332abc6117cfdb5999647c6444b8f43a370a5"
+checksum = "b88fa983de7720629c9387e9f517353ed404164b1e482c970a90c1a4aaf7dc1a"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.116"
+version = "1.0.117"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f630a6370fd8e457873b4bd2ffdae75408bc291ba72be773772a4c2a065d9ae8"
+checksum = "cbd1ae72adb44aab48f325a02444a5fc079349a8d804c1fc922aed3f7454c74e"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -124,9 +131,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.44"
+version = "1.0.46"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e03e57e4fcbfe7749842d53e24ccb9aa12b7252dbe5e91d2acad31834c8b8fdd"
+checksum = "5ad5de3220ea04da322618ded2c42233d02baca219d6f160a3e9c87cda16c942"
 dependencies = [
  "proc-macro2",
  "quote",
