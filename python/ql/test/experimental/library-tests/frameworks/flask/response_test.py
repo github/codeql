@@ -51,6 +51,13 @@ def html6():  # $routeHandler
     return resp  # $f+:HttpResponse $f+:mimetype=text/html $f+:responseBody=resp
 
 
+@app.route("/html7")  # $routeSetup="/html7"
+def html7():  # $routeHandler
+    resp = make_response()  # $HttpResponse $mimetype=text/html
+    resp.set_data("<h1>hello</h1>")  # $f-:responseBody="<h1>hello</h1>"
+    return resp  # $f+:HttpResponse $f+:mimetype=text/html $f+:responseBody=resp
+
+
 @app.route("/jsonify")  # $routeSetup="/jsonify"
 def jsonify_route():  # $routeHandler
     data = {"foo": "bar"}
