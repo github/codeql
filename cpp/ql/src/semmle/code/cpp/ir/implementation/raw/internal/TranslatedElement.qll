@@ -228,6 +228,24 @@ private predicate usedAsCondition(Expr expr) {
 }
 
 /**
+ * Holds if `conv` is an `InheritanceConversion` that requires a `TranslatedLoad`, despite not being
+ * marked as having an lvalue-to-rvalue conversion.
+ *
+ * This is necessary for an `InheritanceConversion` that is originally modeled as a
+ * prvalue-to-prvalue conversion, since we transform it into a glvalue-to-glvalue conversion. If it
+ * is actually consumed as a prvalue, such as on the right hand side of an assignment, we need to
+ * load the resulting glvalue.
+ */
+private predicate isInheritanceConversionWithImplicitLoad(InheritanceConversion conv) {
+  // Must have originally been a prvalue-to-prvalue conversion.
+  isClassPRValue(conv.getExpr()) and
+  not conv.hasLValueToRValueConversion() and
+  // Exclude that case where this will be consumed as a glvalue, such as when used as the qualifier
+  // of a field access.
+  not isPRValueConversionOnGLValue(conv)
+}
+
+/**
  * Holds if `expr` is the result of a field access whose qualifier was a prvalue and whose result is
  * a prvalue. These accesses are not marked as having loads, but we do need a load in the IR.
  */
@@ -241,32 +259,90 @@ private predicate isPRValueFieldAccessWithImplicitLoad(Expr expr) {
 }
 
 /**
- * Holds if `expr` is a prvalue of class type that is used directly as the qualifier for a member
- * access, or is used after undergoing a prvalue adjustment conversion.
+ * Holds if `expr` is a prvalue of class type.
+ *
+ * This same test is used in several places.
  */
-private predicate isClassPRValueForMemberAccessQualifier(Expr expr) {
-  exists(Expr qualifier |
-    exists(FieldAccess access | qualifier = access.getQualifier().getFullyConverted())
+pragma[inline]
+private predicate isClassPRValue(Expr expr) {
+  expr.isPRValueCategory() and
+  expr.getUnspecifiedType() instanceof Class
+}
+
+/**
+ * Holds if `expr` is consumed as a glvalue by its parent. If `expr` is actually a prvalue, it will
+ * have any lvalue-to-rvalue conversion ignored. If it does not have an lvalue-to-rvalue conversion,
+ * it will be materialized into a temporary object.
+ */
+private predicate consumedAsGLValue(Expr expr) {
+  isClassPRValue(expr) and
+  (
+    // Qualifier of a field access.
+    expr = any(FieldAccess a).getQualifier().getFullyConverted()
     or
-    exists(Call call | qualifier = call.getQualifier().getFullyConverted())
-  |
-    // The qualifier is a prvalue of class type.
-    qualifier.getUnspecifiedType() instanceof Class and
-    qualifier.isPRValueCategory() and
+    // Qualifier of a member function call.
+    expr = any(Call c).getQualifier().getFullyConverted()
+    or
+    // The operand of an inheritance conversion.
+    expr = any(InheritanceConversion c).getExpr()
+  )
+}
+
+/**
+ * Holds if `expr` is a conversion that is originally a prvalue-to-prvalue conversion, but which is
+ * applied to a prvalue that will actually be consumed as a glvalue.
+ */
+predicate isPRValueConversionOnGLValue(Conversion conv) {
+  exists(Expr consumed |
+    consumedAsGLValue(consumed) and
+    isClassPRValue(conv.getExpr()) and
     (
-      expr = qualifier and not expr instanceof PrvalueAdjustmentConversion
+      // Example: The conversion of `std::string` to `const std::string` when evaluating
+      // `std::string("foo").c_str()`.
+      conv instanceof PrvalueAdjustmentConversion
       or
-      // If the qualifier is a prvalue adjustment conversion, the actual object with be provided by
-      // the operand of that conversion. For example:
-      // ```c++
-      // std::string("s").c_str();
-      // ```
-      // The object for the qualifier is a prvalue(load) of type `std::string`, but the actual
-      // fully-converted qualifier of the call to `c_str()` is a prvalue adjustment conversion that
-      // converts the type to `const std::string` to match the type of the `this` pointer of the
-      // member function.
-      expr = qualifier.(PrvalueAdjustmentConversion).getExpr()
+      // Parentheses are transparent.
+      conv instanceof ParenthesisExpr
+      or
+      // Example: The base class conversion in `f().m()`, when `m` is member function of a base
+      // class of the return type of `f()`.
+      conv instanceof InheritanceConversion
+    ) and
+    (
+      // Base case: The conversion is consumed directly.
+      conv = consumed
+      or
+      // Recursive case: The conversion is the operand of another prvalue conversion.
+      isPRValueConversionOnGLValue(conv.getConversion())
     )
+  )
+}
+
+/**
+ * Holds if `expr` is a prvalue of class type that is used in a context that requires a glvalue.
+ *
+ * Any conversions between `expr` and the ancestor that consumes the glvalue will also be treated
+ * as glvalues, but are not part of this relation.
+ *
+ * For example:
+ * ```c++
+ * std::string("s").c_str();
+ * ```
+ * The object for the qualifier is a prvalue(load) of type `std::string`, but the actual
+ * fully-converted qualifier of the call to `c_str()` is a prvalue adjustment conversion that
+ * converts the type to `const std::string` to match the type of the `this` pointer of the
+ * member function. In this case, `mustTransformToGLValue()` will hold for the temporary
+ * `std::string` object, but not the prvalue adjustment on top of it.
+ * `isPRValueConversionOnGLValue()` would hold for the prvalue adjustment.
+ */
+private predicate mustTransformToGLValue(Expr expr) {
+  not isPRValueConversionOnGLValue(expr) and
+  (
+    // The expression is the fully converted qualifier, with no prvalue adjustments on top.
+    consumedAsGLValue(expr)
+    or
+    // The expression has conversions on top, but they are all prvalue adjustments.
+    isPRValueConversionOnGLValue(expr.getConversion())
   )
 }
 
@@ -294,7 +370,7 @@ predicate ignoreLoad(Expr expr) {
     // the temporary object if the original qualifier was a prvalue. For IR purposes, we always want
     // to use the address of the temporary object as the qualifier of a field access or the `this`
     // argument to a member function call.
-    isClassPRValueForMemberAccessQualifier(expr)
+    mustTransformToGLValue(expr)
   )
 }
 
@@ -332,6 +408,8 @@ predicate hasTranslatedLoad(Expr expr) {
     needsLoadForParentExpr(expr)
     or
     isPRValueFieldAccessWithImplicitLoad(expr)
+    or
+    isInheritanceConversionWithImplicitLoad(expr)
   ) and
   not ignoreExpr(expr) and
   not isNativeCondition(expr) and
@@ -344,7 +422,7 @@ predicate hasTranslatedLoad(Expr expr) {
  */
 predicate hasTranslatedSyntheticTemporaryObject(Expr expr) {
   not ignoreExpr(expr) and
-  isClassPRValueForMemberAccessQualifier(expr) and
+  mustTransformToGLValue(expr) and
   // If it's a load, we'll just ignore the load in `ignoreLoad()`.
   not expr.hasLValueToRValueConversion()
 }

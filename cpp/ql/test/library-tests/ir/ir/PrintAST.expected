@@ -10650,6 +10650,10 @@ ir.cpp:
 # 1360|   params: 
 # 1360|     0: [Parameter] v
 # 1360|         Type = [Class] destructor_only
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] POD_Derived returnValue<POD_Derived>()
+# 1363|   params: 
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] POD_Middle returnValue<POD_Middle>()
+# 1363|   params: 
 # 1363| [FunctionTemplateInstantiation,TopLevelFunction] Point returnValue<Point>()
 # 1363|   params: 
 # 1363| [FunctionTemplateInstantiation,TopLevelFunction] String returnValue<String>()
@@ -11161,6 +11165,114 @@ ir.cpp:
 # 1426|                 Value = [Literal] 5
 # 1426|                 ValueCategory = prvalue
 # 1427|     4: [ReturnStmt] return ...
+# 1429| [CopyAssignmentOperator] POD_Base& POD_Base::operator=(POD_Base const&)
+# 1429|   params: 
+#-----|     0: [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const POD_Base &
+# 1429| [MoveAssignmentOperator] POD_Base& POD_Base::operator=(POD_Base&&)
+# 1429|   params: 
+#-----|     0: [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] POD_Base &&
+# 1432| [ConstMemberFunction] float POD_Base::f() const
+# 1432|   params: 
+# 1435| [CopyAssignmentOperator] POD_Middle& POD_Middle::operator=(POD_Middle const&)
+# 1435|   params: 
+#-----|     0: [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const POD_Middle &
+# 1435| [MoveAssignmentOperator] POD_Middle& POD_Middle::operator=(POD_Middle&&)
+# 1435|   params: 
+#-----|     0: [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] POD_Middle &&
+# 1435| [Constructor] void POD_Middle::POD_Middle()
+# 1435|   params: 
+# 1439| [CopyAssignmentOperator] POD_Derived& POD_Derived::operator=(POD_Derived const&)
+# 1439|   params: 
+#-----|     0: [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const POD_Derived &
+# 1439| [MoveAssignmentOperator] POD_Derived& POD_Derived::operator=(POD_Derived&&)
+# 1439|   params: 
+#-----|     0: [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] POD_Derived &&
+# 1439| [Constructor] void POD_Derived::POD_Derived()
+# 1439|   params: 
+# 1443| [TopLevelFunction] void temporary_hierarchy()
+# 1443|   params: 
+# 1443|   body: [BlockStmt] { ... }
+# 1444|     0: [DeclStmt] declaration
+# 1444|       0: [VariableDeclarationEntry] definition of b
+# 1444|           Type = [Struct] POD_Base
+# 1444|         init: [Initializer] initializer for b
+# 1444|           expr: [CStyleCast] (POD_Base)...
+# 1444|               Conversion = [BaseClassConversion] base class conversion
+# 1444|               Type = [Struct] POD_Base
+# 1444|               ValueCategory = prvalue
+# 1444|             expr: [FunctionCall] call to returnValue
+# 1444|                 Type = [Struct] POD_Middle
+# 1444|                 ValueCategory = prvalue
+# 1445|     1: [ExprStmt] ExprStmt
+# 1445|       0: [AssignExpr] ... = ...
+# 1445|           Type = [Struct] POD_Base
+# 1445|           ValueCategory = lvalue
+# 1445|         0: [VariableAccess] b
+# 1445|             Type = [Struct] POD_Base
+# 1445|             ValueCategory = lvalue
+# 1445|         1: [CStyleCast] (POD_Base)...
+# 1445|             Conversion = [BaseClassConversion] base class conversion
+# 1445|             Type = [Struct] POD_Base
+# 1445|             ValueCategory = prvalue(load)
+# 1445|           expr: [CStyleCast] (POD_Middle)...
+# 1445|               Conversion = [BaseClassConversion] base class conversion
+# 1445|               Type = [Struct] POD_Middle
+# 1445|               ValueCategory = lvalue
+# 1445|             expr: [TemporaryObjectExpr] temporary object
+# 1445|                 Type = [Struct] POD_Derived
+# 1445|                 ValueCategory = lvalue
+# 1445|               expr: [ParenthesisExpr] (...)
+# 1445|                   Type = [Struct] POD_Derived
+# 1445|                   ValueCategory = prvalue
+# 1445|                 expr: [FunctionCall] call to returnValue
+# 1445|                     Type = [Struct] POD_Derived
+# 1445|                     ValueCategory = prvalue
+# 1446|     2: [DeclStmt] declaration
+# 1446|       0: [VariableDeclarationEntry] definition of x
+# 1446|           Type = [IntType] int
+# 1446|         init: [Initializer] initializer for x
+# 1446|           expr: [ValueFieldAccess] x
+# 1446|               Type = [IntType] int
+# 1446|               ValueCategory = prvalue
+# 1446|             -1: [CStyleCast] (POD_Base)...
+# 1446|                 Conversion = [BaseClassConversion] base class conversion
+# 1446|                 Type = [Struct] POD_Base
+# 1446|                 ValueCategory = prvalue
+# 1446|               expr: [CStyleCast] (POD_Middle)...
+# 1446|                   Conversion = [BaseClassConversion] base class conversion
+# 1446|                   Type = [Struct] POD_Middle
+# 1446|                   ValueCategory = prvalue
+# 1446|                 expr: [FunctionCall] call to returnValue
+# 1446|                     Type = [Struct] POD_Derived
+# 1446|                     ValueCategory = prvalue
+# 1447|     3: [DeclStmt] declaration
+# 1447|       0: [VariableDeclarationEntry] definition of f
+# 1447|           Type = [FloatType] float
+# 1447|         init: [Initializer] initializer for f
+# 1447|           expr: [FunctionCall] call to f
+# 1447|               Type = [FloatType] float
+# 1447|               ValueCategory = prvalue
+# 1447|             -1: [CStyleCast] (const POD_Base)...
+# 1447|                 Conversion = [BaseClassConversion] base class conversion
+# 1447|                 Type = [SpecifiedType] const POD_Base
+# 1447|                 ValueCategory = prvalue
+# 1447|               expr: [CStyleCast] (POD_Middle)...
+# 1447|                   Conversion = [BaseClassConversion] base class conversion
+# 1447|                   Type = [Struct] POD_Middle
+# 1447|                   ValueCategory = prvalue
+# 1447|                 expr: [ParenthesisExpr] (...)
+# 1447|                     Type = [Struct] POD_Derived
+# 1447|                     ValueCategory = prvalue
+# 1447|                   expr: [FunctionCall] call to returnValue
+# 1447|                       Type = [Struct] POD_Derived
+# 1447|                       ValueCategory = prvalue
+# 1448|     4: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

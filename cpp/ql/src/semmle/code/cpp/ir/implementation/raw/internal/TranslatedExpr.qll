@@ -108,6 +108,10 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
     // If this TranslatedExpr doesn't produce the result, then it must represent
     // a glvalue that is then loaded by a TranslatedLoad.
     hasTranslatedLoad(expr)
+    or
+    // The expression should be treated as a glvalue because its operand was forced to be a glvalue,
+    // such as for the qualifier of a member access.
+    isPRValueConversionOnGLValue(expr)
   }
 
   final override predicate producesExprResult() {
@@ -1072,14 +1076,6 @@ class TranslatedSimpleConversion extends TranslatedSingleInstructionConversion {
   }
 
   override Opcode getOpcode() { result instanceof Opcode::Convert }
-
-  override predicate isResultGLValue() {
-    super.isResultGLValue()
-    or
-    // If this is a prvalue adjustment, the result is a treated as a glvalue if the source was also
-    // treated as a glvalue. See the comment in `ignoreLoad()` for more details.
-    expr instanceof PrvalueAdjustmentConversion and ignoreLoad(expr.getExpr())
-  }
 }
 
 /**

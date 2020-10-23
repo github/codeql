@@ -1426,4 +1426,25 @@ void temporary_unusual_fields() {
     float f = returnValue<UnusualFields>().a[5];
 }
 
+struct POD_Base {
+    int x;
+
+    float f() const;
+};
+
+struct POD_Middle : POD_Base {
+    int y;
+};
+
+struct POD_Derived : POD_Middle {
+    int z;
+};
+
+void temporary_hierarchy() {
+    POD_Base b = returnValue<POD_Middle>();
+    b = (returnValue<POD_Derived>());  // Multiple conversions plus parens
+    int x = returnValue<POD_Derived>().x;
+    float f = (returnValue<POD_Derived>()).f();
+}
+
 // semmle-extractor-options: -std=c++17 --clang

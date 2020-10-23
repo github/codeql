@@ -106,8 +106,8 @@
 | string.cpp:363:11:363:16 | string.cpp:358:18:358:23 | AST only |
 | string.cpp:382:8:382:14 | string.cpp:374:18:374:23 | IR only |
 | string.cpp:383:13:383:15 | string.cpp:374:18:374:23 | IR only |
-| string.cpp:396:8:396:8 | string.cpp:389:18:389:23 | AST only |
-| string.cpp:397:8:397:8 | string.cpp:389:18:389:23 | AST only |
+| string.cpp:396:8:396:15 | string.cpp:389:18:389:23 | IR only |
+| string.cpp:397:8:397:15 | string.cpp:389:18:389:23 | IR only |
 | string.cpp:399:8:399:8 | string.cpp:389:18:389:23 | AST only |
 | string.cpp:401:8:401:8 | string.cpp:389:18:389:23 | AST only |
 | string.cpp:404:8:404:11 | string.cpp:389:18:389:23 | IR only |
