@@ -101,9 +101,9 @@ urlpatterns = [
 # This version 1.x way of defining urls is deprecated in Django 3.1, but still works
 from django.conf.urls import url
 
-def deprecated(request):  # $f-:routeHandler
+def deprecated(request):  # $routeHandler
     return HttpResponse('deprecated')
 
 urlpatterns = [
-    url(r"^deprecated/", deprecated),  # $f-:routeSetup="^deprecated/"
+    url(r"^deprecated/", deprecated),  # $routeSetup="^deprecated/"
 ]

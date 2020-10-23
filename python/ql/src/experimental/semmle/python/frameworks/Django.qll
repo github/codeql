@@ -34,7 +34,7 @@ private module Django {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node django_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["db", "urls", "http"] and
+    attr_name in ["db", "urls", "http", "conf"] and
     (
       t.start() and
       result = DataFlow::importNode("django" + "." + attr_name)
@@ -438,6 +438,55 @@ private module Django {
     }
 
     // -------------------------------------------------------------------------
+    // django.conf
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `django.conf` module. */
+    DataFlow::Node conf() { result = django_attr("conf") }
+
+    /** Provides models for the `django.conf` module */
+    module conf {
+      // -------------------------------------------------------------------------
+      // django.conf.urls
+      // -------------------------------------------------------------------------
+      /** Gets a reference to the `django.conf.urls` module. */
+      private DataFlow::Node urls(DataFlow::TypeTracker t) {
+        t.start() and
+        result = DataFlow::importNode("django.conf.urls")
+        or
+        t.startInAttr("urls") and
+        result = conf()
+        or
+        exists(DataFlow::TypeTracker t2 | result = urls(t2).track(t2, t))
+      }
+
+      // NOTE: had to rename due to shadowing rules in QL
+      /** Gets a reference to the `django.conf.urls` module. */
+      DataFlow::Node conf_urls() { result = urls(DataFlow::TypeTracker::end()) }
+
+      // NOTE: had to rename due to shadowing rules in QL
+      /** Provides models for the `django.conf.urls` module */
+      module conf_urls {
+        /** Gets a reference to the `django.conf.urls.url` function. */
+        private DataFlow::Node url(DataFlow::TypeTracker t) {
+          t.start() and
+          result = DataFlow::importNode("django.conf.urls.url")
+          or
+          t.startInAttr("url") and
+          result = conf_urls()
+          or
+          exists(DataFlow::TypeTracker t2 | result = url(t2).track(t2, t))
+        }
+
+        /**
+         * Gets a reference to the `django.conf.urls.url` function.
+         *
+         * See https://docs.djangoproject.com/en/1.11/ref/urls/#django.conf.urls.url
+         */
+        DataFlow::Node url() { result = url(DataFlow::TypeTracker::end()) }
+      }
+    }
+
+    // -------------------------------------------------------------------------
     // django.http
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.http` module. */
@@ -684,20 +733,48 @@ private module Django {
     }
   }
 
+  /** A Django route setup that uses a Regex to specify route (and routed parameters). */
+  abstract private class DjangoRegexRouteSetup extends DjangoRouteSetup {
+    override Parameter getARoutedParameter() {
+      // If we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARouteHandler() |
+        not exists(this.getUrlPattern()) and
+        result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
+        not result = any(int i | i <= routeHandler.getRequestParamIndex() | routeHandler.getArg(i))
+      )
+      or
+      exists(DjangoRouteHandler routeHandler, DjangoRouteRegex regex |
+        routeHandler = this.getARouteHandler() and
+        regex.getRouteSetup() = this
+      |
+        // either using named capture groups (passed as keyword arguments) or using
+        // unnamed capture groups (passed as positional arguments)
+        not exists(regex.getGroupName(_, _)) and
+        // first group will have group number 1
+        result =
+          routeHandler.getArg(routeHandler.getRequestParamIndex() + regex.getGroupNumber(_, _))
+        or
+        result = routeHandler.getArgByName(regex.getGroupName(_, _))
+      )
+    }
+  }
+
   /**
-   * A regex that is used in a call to `django.urls.re_path`.
+   * A regex that is used to set up a route.
    *
    * Needs this subclass to be considered a RegexString.
    */
-  private class DjangoUrlsRePathRegex extends RegexString {
-    DjangoUrlsRePathCall rePathCall;
+  private class DjangoRouteRegex extends RegexString {
+    DjangoRegexRouteSetup rePathCall;
 
-    DjangoUrlsRePathRegex() {
+    DjangoRouteRegex() {
       this instanceof StrConst and
       DataFlow::localFlow(DataFlow::exprNode(this), rePathCall.getUrlPatternArg())
     }
 
-    DjangoUrlsRePathCall getRePathCall() { result = rePathCall }
+    DjangoRegexRouteSetup getRouteSetup() { result = rePathCall }
   }
 
   /**
@@ -705,7 +782,7 @@ private module Django {
    *
    * See https://docs.djangoproject.com/en/3.0/ref/urls/#re_path
    */
-  private class DjangoUrlsRePathCall extends DjangoRouteSetup {
+  private class DjangoUrlsRePathCall extends DjangoRegexRouteSetup {
     override CallNode node;
 
     DjangoUrlsRePathCall() { node.getFunction() = django::urls::re_path().asCfgNode() }
@@ -720,29 +797,26 @@ private module Django {
         djangoRouteHandlerFunctionTracker(result) = viewArg
       )
     }
+  }
 
-    override Parameter getARoutedParameter() {
-      // If we don't know the URL pattern, we simply mark all parameters as a routed
-      // parameter. This should give us more RemoteFlowSources but could also lead to
-      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
-      exists(DjangoRouteHandler routeHandler | routeHandler = this.getARouteHandler() |
-        not exists(this.getUrlPattern()) and
-        result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
-        not result = any(int i | i <= routeHandler.getRequestParamIndex() | routeHandler.getArg(i))
-      )
-      or
-      exists(DjangoRouteHandler routeHandler, DjangoUrlsRePathRegex regex |
-        routeHandler = this.getARouteHandler() and
-        regex.getRePathCall() = this
-      |
-        // either using named capture groups (passed as keyword arguments) or using
-        // unnamed capture groups (passed as positional arguments)
-        not exists(regex.getGroupName(_, _)) and
-        // first group will have group number 1
-        result =
-          routeHandler.getArg(routeHandler.getRequestParamIndex() + regex.getGroupNumber(_, _))
-        or
-        result = routeHandler.getArgByName(regex.getGroupName(_, _))
+  /**
+   * A call to `django.conf.urls.url`.
+   *
+   * See https://docs.djangoproject.com/en/1.11/ref/urls/#django.conf.urls.url
+   */
+  private class DjangoConfUrlsUrlCall extends DjangoRegexRouteSetup {
+    override CallNode node;
+
+    DjangoConfUrlsUrlCall() { node.getFunction() = django::conf::conf_urls::url().asCfgNode() }
+
+    override DataFlow::Node getUrlPatternArg() {
+      result.asCfgNode() = [node.getArg(0), node.getArgByName("regex")]
+    }
+
+    override DjangoRouteHandler getARouteHandler() {
+      exists(DataFlow::Node viewArg |
+        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
+        djangoRouteHandlerFunctionTracker(result) = viewArg
       )
     }
   }

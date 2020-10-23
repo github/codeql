@@ -11,5 +11,5 @@ urlpatterns = [
     # inline expectation tests (which thinks the `$` would mark the beginning of a new
     # line)
     re_path(r"^ba[rz]/", views.bar_baz),  # $routeSetup="^ba[rz]/"
-    url(r"^deprecated/", views.deprecated),  # $f-routeSetup="^deprecated/"
+    url(r"^deprecated/", views.deprecated),  # $routeSetup="^deprecated/"
 ]
