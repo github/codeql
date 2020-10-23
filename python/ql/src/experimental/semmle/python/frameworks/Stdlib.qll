@@ -739,6 +739,10 @@ private class ExecStatement extends CodeExecution::Range {
   override DataFlow::Node getCode() { result = this }
 }
 
+/**
+ * A call to the builtin `open` function.
+ * See https://docs.python.org/3/library/functions.html#open
+ */
 private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
   override CallNode node;
 
@@ -749,6 +753,10 @@ private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
   }
 }
 
+/**
+ * A call to the `startswith` method on a string.
+ * See https://docs.python.org/3.9/library/stdtypes.html#str.startswith
+ */
 private class StartswithCall extends Path::SafeAccessCheck::Range {
   StartswithCall() { this.(CallNode).getFunction().(AttrNode).getName() = "startswith" }
 
