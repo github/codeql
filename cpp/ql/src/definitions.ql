@@ -9,5 +9,7 @@
 import definitions
 
 from Top e, Top def, string kind
-where def = definitionOf(e, kind, false)
+where
+  def = definitionOf(e, kind) and
+  not e.isFromTemplateInstantiation(_)
 select e, def, kind

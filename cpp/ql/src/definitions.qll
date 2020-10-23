@@ -77,9 +77,9 @@ predicate hasLocationInfo_Include(Include i, string path, int sl, int sc, int el
 
 /** Holds if `e` is a source or a target of jump-to-definition. */
 predicate interestingElement(Element e) {
-  exists(definitionOf(e, _, true))
+  exists(definitionOf(e, _))
   or
-  e = definitionOf(_, _, true)
+  e = definitionOf(_, _)
 }
 
 /**
@@ -124,10 +124,7 @@ private predicate constructorCallTypeMention(ConstructorCall cc, TypeMention tm)
 
 /**
  * Gets an element, of kind `kind`, that element `e` uses, if any.
- * If `includeTemplateInstantiations` is set, include information for
- * elements `e` that are inside of template instantiations.
- * Doing so yields multiple definitions for a single location, which can be
- * undesirably. For example, lgtm.com does not support that.
+ * Attention: This predicate yields multiple definitions for a single location.
  *
  * The `kind` is a string representing what kind of use it is:
  *  - `"M"` for function and method calls
@@ -137,7 +134,7 @@ private predicate constructorCallTypeMention(ConstructorCall cc, TypeMention tm)
  *  - `"I"` for import / include directives
  */
 cached
-Top definitionOf(Top e, string kind, boolean includeTemplateInstantiations) {
+Top definitionOf(Top e, string kind) {
   (
     // call -> function called
     kind = "M" and
@@ -200,13 +197,7 @@ Top definitionOf(Top e, string kind, boolean includeTemplateInstantiations) {
     not e.(Element).isInMacroExpansion() and
     // exclude nested macro invocations, as they will overlap with
     // the top macro invocation.
-    not exists(e.(MacroAccess).getParentInvocation()) and
-    (
-      includeTemplateInstantiations = true
-      or
-      includeTemplateInstantiations = false and
-      not e.isFromTemplateInstantiation(_)
-    )
+    not exists(e.(MacroAccess).getParentInvocation())
   ) and
   // Some entities have many locations. This can arise for an external
   // function that is frequently declared but not defined, or perhaps

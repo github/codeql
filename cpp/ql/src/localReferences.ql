@@ -12,5 +12,5 @@ import definitions
 external string selectedSourceFile();
 
 from Top e, Top def, string kind
-where def = definitionOf(e, kind, true) and def.getFile() = getEncodedFile(selectedSourceFile())
+where def = definitionOf(e, kind) and def.getFile() = getEncodedFile(selectedSourceFile())
 select e, def, kind
