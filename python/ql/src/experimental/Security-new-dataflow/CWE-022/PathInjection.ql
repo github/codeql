@@ -1,21 +1,23 @@
 /**
- * The query detects cases where a user-controlled path is used in an unsafe manner, meaning it is not both normalized and _afterwards_ checked.
+ * The query detects cases where a user-controlled path is used in an unsafe manner,
+ * meaning it is not both normalized and _afterwards_ checked.
  *
  * It does so by dividing the problematic situation into two cases:
- *  1. The path is never normalized.
+ *  1. The file path is never normalized.
  *     This is easily detected by using normalization as a sanitizer.
  *
- *  2. The path is normalized at least once, but never checked afterwards.
- *     This is detected by finding the first normalization and then ensure that
- *     no checks happen after. Since we start from the first normalization,
+ *  2. The file path is normalized at least once, but never checked afterwards.
+ *     This is detected by finding the earliest normalization and then ensure that
+ *     no checks happen later. Since we start from the earliest normalization,
  *     we know that the absence of checks means that no normalization has a
  *     chek after it. (No checks after a second normalization would be ok if
  *     there was a check between the first and the second.)
  *
- * Note that one could make the dual split on whether the path is ever checked. This does
+ * Note that one could make the dual split on whether the file path is ever checked. This does
  * not work as nicely, however, since checking is modelled as a `BarrierGuard` rather than
- * as a `Sanitizer`. That means that only some paths out of a check will be removed, and so
- * identifying the last check is not possible simply by finding a path from it to a sink.
+ * as a `Sanitizer`. That means that only some dataflow paths out of a check will be removed,
+ * and so identifying the last check is not possible simply by finding a dataflow path from it
+ * to a sink.
  *
  * @name Uncontrolled data used in path expression
  * @description Accessing paths influenced by users can allow an attacker to access unexpected resources.
