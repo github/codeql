@@ -16,15 +16,9 @@ namespace std
 	
 	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
 	class basic_string {
-	private:
-		const char* p;
-
 	public:
 		explicit basic_string(const Allocator& a = Allocator());
-		basic_string(const charT* s, const Allocator& a = Allocator()) :
-			p(s) 
-		{
-		}
+		basic_string(const charT* s, const Allocator& a = Allocator());
 
 		const charT* c_str() const;
 	};
