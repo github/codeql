@@ -1776,6 +1776,8 @@ callableFlowAccessPath
 | System.Resources.ResourceReader.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Resources.ResourceSet.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Runtime.CompilerServices.ConditionalWeakTable<,>.GetEnumerator() | qualifier [[]] -> return [Current] | true |
+| System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.ConfiguredTaskAwaiter.GetResult() | qualifier [m_task, Result] -> return [<empty>] | true |
+| System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.GetAwaiter() | qualifier [m_configuredTaskAwaiter] -> return [<empty>] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.Add(T) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.Add(object) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
@@ -1927,6 +1929,7 @@ callableFlowAccessPath
 | System.Threading.Tasks.Task.WhenAll<TResult>(params Task<TResult>[]) | argument 0 [[], Result] -> return [Result, []] | true |
 | System.Threading.Tasks.Task.WhenAny<TResult>(IEnumerable<Task<TResult>>) | argument 0 [[], Result] -> return [Result, []] | true |
 | System.Threading.Tasks.Task.WhenAny<TResult>(params Task<TResult>[]) | argument 0 [[], Result] -> return [Result, []] | true |
+| System.Threading.Tasks.Task<>.ConfigureAwait(bool) | qualifier [<empty>] -> return [m_configuredTaskAwaiter, m_task] | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | output from argument 0 [<empty>] -> return [Result] | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
