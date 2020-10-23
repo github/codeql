@@ -12,24 +12,20 @@ import experimental.dataflow.TaintTracking
 import experimental.dataflow.TaintTracking2
 
 /**
- * A `ControlFlowNode` that appears as a sink in Config1 and a source in Config2.
+ * A `DataFlow::Node` that appears as a sink in Config1 and a source in Config2.
  */
-private predicate crossoverNode(ControlFlowNode n) {
-  exists(DataFlow::Node n1, DataFlow2::Node n2 |
-    any(TaintTracking::Configuration t1).isSink(n1) and
-    any(TaintTracking2::Configuration t2).isSource(n2) and
-    n = n1.asCfgNode() and
-    n = n2.asCfgNode()
-  )
+private predicate crossoverNode(DataFlow::Node n) {
+  any(TaintTracking::Configuration t1).isSink(n) and
+  any(TaintTracking2::Configuration t2).isSource(n)
 }
 
 /**
  * A new type which represents the union of the two sets of nodes.
  */
 private newtype TCustomPathNode =
-  Config1Node(DataFlow::PathNode node1) { not crossoverNode(node1.getNode().asCfgNode()) } or
-  Config2Node(DataFlow2::PathNode node1) { not crossoverNode(node1.getNode().asCfgNode()) } or
-  CrossoverNode(ControlFlowNode e) { crossoverNode(e) }
+  Config1Node(DataFlow::PathNode node1) { not crossoverNode(node1.getNode()) } or
+  Config2Node(DataFlow2::PathNode node1) { not crossoverNode(node1.getNode()) } or
+  CrossoverNode(DataFlow::Node e) { crossoverNode(e) }
 
 /**
  * A class representing the set of all the path nodes in either config.
@@ -37,12 +33,12 @@ private newtype TCustomPathNode =
 class CustomPathNode extends TCustomPathNode {
   /** Gets the PathNode if it is in Config1. */
   DataFlow::PathNode asNode1() {
-    this = Config1Node(result) or this = CrossoverNode(result.getNode().asCfgNode())
+    this = Config1Node(result) or this = CrossoverNode(result.getNode())
   }
 
   /** Gets the PathNode if it is in Config2. */
   DataFlow2::PathNode asNode2() {
-    this = Config2Node(result) or this = CrossoverNode(result.getNode().asCfgNode())
+    this = Config2Node(result) or this = CrossoverNode(result.getNode())
   }
 
   predicate hasLocationInfo(
