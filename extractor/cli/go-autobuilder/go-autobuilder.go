@@ -216,7 +216,7 @@ func getOsToolsSubdir() (string, error) {
 	case "windows":
 		return "win64", nil
 	}
-	return "", errors.New("Unknown OS: " + runtime.GOOS)
+	return "", errors.New("Unsupported OS: " + runtime.GOOS)
 }
 
 func getExtractorDir() (string, error) {
@@ -229,7 +229,7 @@ func getExtractorDir() (string, error) {
 	// Fall back to rebuilding our own path from the extractor root:
 	extractorRoot := os.Getenv("CODEQL_EXTRACTOR_GO_ROOT")
 	if extractorRoot == "" {
-		return "", errors.New("CODEQL_EXTRACTOR_GO_ROOT not set")
+		return "", errors.New("CODEQL_EXTRACTOR_GO_ROOT not set.\nThis binary should not be run manually; instead, use the CodeQL CLI or VSCode extension. See https://securitylab.github.com/tools/codeql")
 	}
 
 	osSubdir, err := getOsToolsSubdir()
