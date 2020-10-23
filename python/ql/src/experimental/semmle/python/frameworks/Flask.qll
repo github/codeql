@@ -164,7 +164,7 @@ private module FlaskModel {
   }
 
   /**
-   * A call the `route` method on an instance of `flask.Flask`.
+   * A call to the `route` method on an instance of `flask.Flask`.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.route
    */
@@ -181,7 +181,7 @@ private module FlaskModel {
   }
 
   /**
-   * A call the `add_url_rule` method on an instance of `flask.Flask`.
+   * A call to the `add_url_rule` method on an instance of `flask.Flask`.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.add_url_rule
    */

@@ -60,23 +60,23 @@ module Werkzeug {
       }
 
       /**
-       * Provides models for the `werkzeug.datastrctures.FileStorage` class
+       * Provides models for the `werkzeug.datastructures.FileStorage` class
        *
        * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.
        */
       module FileStorage {
         /**
-         * A source of an instance of `werkzeug.datastrctures.FileStorage`.
+         * A source of an instance of `werkzeug.datastructures.FileStorage`.
          *
          * This can include instantiation of the class, return value from function
-         * calls, or a special parameter that will be set when functions are call by external
+         * calls, or a special parameter that will be set when functions are called by an external
          * library.
          *
-         * Use `FileStorage::instance()` predicate to get references to instances of `werkzeug.datastrctures.FileStorage`.
+         * Use `FileStorage::instance()` predicate to get references to instances of `werkzeug.datastructures.FileStorage`.
          */
         abstract class InstanceSource extends DataFlow::Node { }
 
-        /** Gets a reference to an instance of `werkzeug.datastrctures.FileStorage`. */
+        /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
         private DataFlow::Node instance(DataFlow::TypeTracker t) {
           t.start() and
           result instanceof InstanceSource
@@ -84,7 +84,7 @@ module Werkzeug {
           exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
         }
 
-        /** Gets a reference to an instance of `werkzeug.datastrctures.FileStorage`. */
+        /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
         DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
       }
     }
