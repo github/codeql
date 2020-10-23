@@ -662,3 +662,7 @@
 | vector.cpp:436:8:436:10 | out | vector.cpp:435:11:435:16 | call to source |
 | vector.cpp:443:8:443:10 | out | vector.cpp:417:33:417:45 | source_string |
 | vector.cpp:450:8:450:10 | out | vector.cpp:449:11:449:16 | call to source |
+| vector.cpp:473:8:473:8 | v | vector.cpp:468:11:468:16 | call to source |
+| vector.cpp:482:8:482:10 | src | vector.cpp:478:21:478:37 | call to source |
+| vector.cpp:485:8:485:10 | src | vector.cpp:478:21:478:37 | call to source |
+| vector.cpp:486:8:486:9 | cs | vector.cpp:478:21:478:37 | call to source |

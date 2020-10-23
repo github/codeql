@@ -10,13 +10,11 @@ private import experimental.dataflow.TaintTracking
 private import experimental.semmle.python.Concepts
 private import experimental.semmle.python.frameworks.Werkzeug
 
-// for old improved impl see
-// https://github.com/github/codeql/blob/9f95212e103c68d0c1dfa4b6f30fb5d53954ccef/python/ql/src/semmle/python/web/flask/Request.qll
 /**
  * Provides models for the `flask` PyPI package.
  * See https://flask.palletsprojects.com/en/1.1.x/.
  */
-private module Flask {
+private module FlaskModel {
   /** Gets a reference to the `flask` module. */
   private DataFlow::Node flask(DataFlow::TypeTracker t) {
     t.start() and
@@ -44,69 +42,101 @@ private module Flask {
     /** Gets a reference to the `flask.request` object. */
     DataFlow::Node request() { result = request(DataFlow::TypeTracker::end()) }
 
-    /** Gets a reference to the `flask.Flask` class. */
-    private DataFlow::Node classFlask(DataFlow::TypeTracker t) {
-      t.start() and
-      result = DataFlow::importNode("flask.Flask")
-      or
-      t.startInAttr("Flask") and
-      result = flask()
-      or
-      exists(DataFlow::TypeTracker t2 | result = classFlask(t2).track(t2, t))
+    /**
+     * Provides models for the `flask.Flask` class
+     *
+     * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.
+     */
+    module Flask {
+      /** Gets a reference to the `flask.Flask` class. */
+      private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+        t.start() and
+        result = DataFlow::importNode("flask.Flask")
+        or
+        t.startInAttr("Flask") and
+        result = flask()
+        or
+        exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the `flask.Flask` class. */
+      DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+      /**
+       * A source of an instance of `flask.Flask`.
+       *
+       * This can include instantiation of the class, return value from function
+       * calls, or a special parameter that will be set when functions are call by external
+       * library.
+       *
+       * Use `Flask::instance()` predicate to get references to instances of `flask.Flask`.
+       */
+      abstract class InstanceSource extends DataFlow::Node { }
+
+      /** A direct instantiation of `flask.Flask`. */
+      private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+        override CallNode node;
+
+        ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+      }
+
+      /** Gets a reference to an instance of `flask.Flask` (a flask application). */
+      private DataFlow::Node instance(DataFlow::TypeTracker t) {
+        t.start() and
+        result instanceof InstanceSource
+        or
+        exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+      }
+
+      /** Gets a reference to an instance of `flask.Flask` (a flask application). */
+      DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of an instance of `flask.Flask` (a flask application).
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node instance_attr(DataFlow::TypeTracker t, string attr_name) {
+        attr_name in ["route", "add_url_rule"] and
+        t.startInAttr(attr_name) and
+        result = flask::Flask::instance()
+        or
+        // Due to bad performance when using normal setup with `instance_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            instance_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate instance_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(instance_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of an instance of `flask.Flask` (a flask application).
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node instance_attr(string attr_name) {
+        result = instance_attr(DataFlow::TypeTracker::end(), attr_name)
+      }
+
+      /** Gets a reference to the `route` method on an instance of `flask.Flask`. */
+      DataFlow::Node route() { result = instance_attr("route") }
+
+      /** Gets a reference to the `add_url_rule` method on an instance of `flask.Flask`. */
+      DataFlow::Node add_url_rule() { result = instance_attr("add_url_rule") }
     }
-
-    /** Gets a reference to the `flask.Flask` class. */
-    DataFlow::Node classFlask() { result = classFlask(DataFlow::TypeTracker::end()) }
-
-    /** Gets a reference to an instance of `flask.Flask` (a Flask application). */
-    private DataFlow::Node app(DataFlow::TypeTracker t) {
-      t.start() and
-      result.asCfgNode().(CallNode).getFunction() = flask::classFlask().asCfgNode()
-      or
-      exists(DataFlow::TypeTracker t2 | result = app(t2).track(t2, t))
-    }
-
-    /** Gets a reference to an instance of `flask.Flask` (a flask application). */
-    DataFlow::Node app() { result = app(DataFlow::TypeTracker::end()) }
   }
 
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------
-  /**
-   * Gets a reference to the attribute `attr_name` of a flask application.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node app_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["route", "add_url_rule"] and
-    t.startInAttr(attr_name) and
-    result = flask::app()
-    or
-    // Due to bad performance when using normal setup with `app_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        app_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate app_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(app_attr(t2, attr_name), res, summary)
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of a flask application.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node app_attr(string attr_name) {
-    result = app_attr(DataFlow::TypeTracker::end(), attr_name)
-  }
-
   private string werkzeug_rule_re() {
     // since flask uses werkzeug internally, we are using its routing rules from
     // https://github.com/pallets/werkzeug/blob/4dc8d6ab840d4b78cbd5789cef91b01e3bde01d5/src/werkzeug/routing.py#L138-L151
@@ -131,27 +161,17 @@ private module Flask {
         )
       )
     }
-
-    /** Gets the argument used to pass in the URL pattern. */
-    abstract DataFlow::Node getUrlPatternArg();
-
-    override string getUrlPattern() {
-      exists(StrConst str |
-        DataFlow::localFlow(DataFlow::exprNode(str), this.getUrlPatternArg()) and
-        result = str.getText()
-      )
-    }
   }
 
   /**
-   * A call to `flask.Flask.route`.
+   * A call to the `route` method on an instance of `flask.Flask`.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.route
    */
   private class FlaskAppRouteCall extends FlaskRouteSetup, DataFlow::CfgNode {
     override CallNode node;
 
-    FlaskAppRouteCall() { node.getFunction() = app_attr("route").asCfgNode() }
+    FlaskAppRouteCall() { node.getFunction() = flask::Flask::route().asCfgNode() }
 
     override DataFlow::Node getUrlPatternArg() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
@@ -161,14 +181,14 @@ private module Flask {
   }
 
   /**
-   * A call to `flask.Flask.add_url_rule`.
+   * A call to the `add_url_rule` method on an instance of `flask.Flask`.
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.add_url_rule
    */
-  private class FlaskAppAddUrlRule extends FlaskRouteSetup, DataFlow::CfgNode {
+  private class FlaskAppAddUrlRuleCall extends FlaskRouteSetup, DataFlow::CfgNode {
     override CallNode node;
 
-    FlaskAppAddUrlRule() { node.getFunction() = app_attr("add_url_rule").asCfgNode() }
+    FlaskAppAddUrlRuleCall() { node.getFunction() = flask::Flask::add_url_rule().asCfgNode() }
 
     override DataFlow::Node getUrlPatternArg() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("rule")]
@@ -297,7 +317,7 @@ private module Flask {
   }
 
   private class RequestInputMultiDict extends RequestInputAccess,
-    Werkzeug::Datastructures::MultiDict {
+    Werkzeug::werkzeug::datastructures::MultiDict::InstanceSource {
     RequestInputMultiDict() { attr_name in ["args", "values", "form", "files"] }
   }
 
@@ -305,7 +325,7 @@ private module Flask {
     RequestInputFiles() { attr_name = "files" }
   }
   // TODO: Somehow specify that elements of `RequestInputFiles` are
-  // Werkzeug::Datastructures::FileStorage and should have those additional taint steps
+  // Werkzeug::werkzeug::datastructures::FileStorage and should have those additional taint steps
   // AND that the 0-indexed argument to its' save method is a sink for path-injection.
   // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
 }

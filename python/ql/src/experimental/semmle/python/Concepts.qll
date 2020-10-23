@@ -126,6 +126,35 @@ module CodeExecution {
   }
 }
 
+/**
+ * A data-flow node that executes SQL statements.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `SqlExecution::Range` instead.
+ */
+class SqlExecution extends DataFlow::Node {
+  SqlExecution::Range range;
+
+  SqlExecution() { this = range }
+
+  /** Gets the argument that specifies the SQL statements to be executed. */
+  DataFlow::Node getSql() { result = range.getSql() }
+}
+
+/** Provides a class for modeling new SQL execution APIs. */
+module SqlExecution {
+  /**
+   * A data-flow node that executes SQL statements.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `SqlExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the SQL statements to be executed. */
+    abstract DataFlow::Node getSql();
+  }
+}
+
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
   /** Provides classes for modeling HTTP servers. */
@@ -163,8 +192,16 @@ module HTTP {
        * extend `RouteSetup` instead.
        */
       abstract class Range extends DataFlow::Node {
+        /** Gets the argument used to set the URL pattern. */
+        abstract DataFlow::Node getUrlPatternArg();
+
         /** Gets the URL pattern for this route, if it can be statically determined. */
-        abstract string getUrlPattern();
+        string getUrlPattern() {
+          exists(StrConst str |
+            DataFlow::localFlow(DataFlow::exprNode(str), this.getUrlPatternArg()) and
+            result = str.getText()
+          )
+        }
 
         /** Gets a function that will handle incoming requests for this route, if any. */
         abstract Function getARouteHandler();

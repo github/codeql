@@ -450,3 +450,39 @@ void test_vector_inserter(char *source_string) {
 		sink(out); // tainted [NOT DETECTED by IR]
 	}
 }
+
+void *memcpy(void *s1, const void *s2, size_t n);
+
+namespace ns_string
+{
+	std::string source();
+}
+
+void sink(std::vector<char> &);
+void sink(std::string &);
+
+void test_vector_memcpy()
+{
+	{
+		std::vector<int> v(100);
+		int s = source();
+		int i = 0;
+
+		sink(v);
+		memcpy(&v[i], &s, sizeof(int));
+		sink(v); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<char> cs(100);
+		std::string src = ns_string::source();
+		const size_t offs = 10;
+		const size_t len = src.length();
+
+		sink(src); // tainted
+		sink(cs);
+		memcpy(&cs[offs + 1], src.c_str(), len);
+		sink(src); // tainted
+		sink(cs); // tainted [NOT DETECTED by IR]
+	}
+}
