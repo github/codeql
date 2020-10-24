@@ -17,8 +17,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.WebSocket
 import semmle.code.java.frameworks.android.Intent
-import semmle.code.java.frameworks.play.PlayController
-import semmle.code.java.frameworks.play.PlayHTTPRequestHeader
+import semmle.code.java.frameworks.play.Play
 import semmle.code.java.frameworks.spring.SpringWeb
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringWebClient
@@ -279,7 +278,7 @@ private class RemoteTaintedMethod extends Method {
 private class PlayRequestGetMethod extends Method {
   PlayRequestGetMethod() {
     this.getDeclaringType() instanceof PlayMVCHTTPRequestHeader and
-    this.hasName(["header", "getHeader"])
+    this.hasName(["queryString","getQueryString","header", "getHeader"])
   }
 }
 
