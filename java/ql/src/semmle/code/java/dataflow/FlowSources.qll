@@ -305,48 +305,22 @@ class ReverseDNSMethod extends Method {
   }
 }
 
-/** Android `Intent` that may have come from a hostile application. */
-class AndroidIntentInput extends DataFlow::Node {
+/** Exported Android `Intent` that may have come from a hostile application. */
+class AndroidIntentInput extends RemoteFlowSource {
   AndroidIntentInput() {
-    exists(MethodAccess ma, AndroidGetIntentMethod m |
-      ma.getMethod().overrides*(m) and
-      this.asExpr() = ma
-    )
-    or
-    exists(Method m, AndroidReceiveIntentMethod rI |
-      m.overrides*(rI) and
-      this.asParameter() = m.getParameter(1)
-    )
-  }
-}
-
-/** Method access to external inputs of `android.content.Intent` or `android.os.BaseBundle` object. */
-class IntentGetExtraMethodAccess extends MethodAccess {
-  IntentGetExtraMethodAccess() {
-    exists(AndroidComponent ac |
-      this.getEnclosingCallable().getDeclaringType() = ac and
-      ac.isExported() and
-      this.getMethod().getName().regexpMatch("get\\w+Extra") and
-      this.getMethod().getDeclaringType() instanceof TypeIntent
-    )
-    or
-    this.getMethod().getName().regexpMatch("get\\w+") and
-    this
-        .getMethod()
-        .getDeclaringType()
-        .getASupertype*()
-        .hasQualifiedName("android.os", "BaseBundle")
-  }
-}
-
-/** Android intent extra source. */
-private class AndroidIntentExtraSource extends RemoteFlowSource {
-  AndroidIntentExtraSource() {
-    exists(AndroidIntentInput inode |
-      this.asExpr() = inode.asExpr() or
-      this.asExpr() = inode.asParameter().getAnAccess()
+    this.getEnclosingCallable().getDeclaringType().(AndroidComponent).isExported() and
+    (
+      exists(MethodAccess ma, AndroidGetIntentMethod m |
+        ma.getMethod().overrides*(m) and
+        this.asExpr() = ma
+      )
+      or
+      exists(Method m, AndroidReceiveIntentMethod rI |
+        m.overrides*(rI) and
+        this.asParameter() = m.getParameter(1)
+      )
     )
   }
 
-  override string getSourceType() { result = "Android intent extra" }
+  override string getSourceType() { result = "Android intent source" }
 }
