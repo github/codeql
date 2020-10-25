@@ -1,5 +1,5 @@
 /**
- * @name Use of Implicit Intent for Sensitive Communication
+ * @name Broadcasting sensitive data to all Android applicationss
  * @id java/sensitive-broadcast
  * @description An Android application uses implicit intents to broadcast sensitive data to all applications without specifying any receiver permission.
  * @kind path-problem
@@ -10,33 +10,37 @@
 import java
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.dataflow.TaintTracking
-import DataFlow
-import PathGraph
 
 /**
- * Gets a regular expression for matching names of variables that indicate the value being held contains sensitive information.
+ * Gets a regular expression for matching common names of variables that indicate the value being held contains sensitive information.
  */
-private string getSensitiveInfoRegex() {
+private string getCommonSensitiveInfoRegex() {
   result = "(?i).*challenge|pass(wd|word|code|phrase)(?!.*question).*" or
-  result = "(?i).*(token|email|phone|username|userid|ticket).*"
+  result = "(?i).*(token|username|userid|secret).*"
 }
 
 /**
- * Method call to pass information to the `Intent` object either directly through intent extra or indirectly through intent extra bundle.
+ * Gets regular expression for matching names of Android variables that indicate the value being held contains sensitive information.
  */
-class PutExtraMethodAccess extends MethodAccess {
-  PutExtraMethodAccess() {
+private string getAndroidSensitiveInfoRegex() { result = "(?i).*(email|phone|ticket).*" }
+
+/**
+ * Method call to pass information to the `Intent` object.
+ */
+class PutIntentExtraMethodAccess extends MethodAccess {
+  PutIntentExtraMethodAccess() {
     getMethod().getName().regexpMatch("put\\w*Extra(s*)") and
-    getMethod().getDeclaringType() instanceof TypeIntent and
-    not exists(
-      MethodAccess setPackageVa // Intent without specifying receiving package name of the 3rd party app
-    |
-      setPackageVa.getMethod().hasName(["setPackage", "setClass", "setClassName", "setComponent"]) and
-      setPackageVa.getQualifier().(VarAccess).getVariable().getAnAccess() = getQualifier()
-    )
-    or
+    getMethod().getDeclaringType() instanceof TypeIntent
+  }
+}
+
+/**
+ * Method call to pass information to the intent extra bundle object.
+ */
+class PutBundleExtraMethodAccess extends MethodAccess {
+  PutBundleExtraMethodAccess() {
     getMethod().getName().regexpMatch("put\\w+") and
-    getMethod().getDeclaringType().hasQualifiedName("android.os", "Bundle")
+    getMethod().getDeclaringType().getASupertype*().hasQualifiedName("android.os", "BaseBundle")
   }
 }
 
@@ -44,7 +48,10 @@ class PutExtraMethodAccess extends MethodAccess {
 class SensitiveInfoExpr extends Expr {
   SensitiveInfoExpr() {
     exists(Variable v | this = v.getAnAccess() |
-      v.getName().toLowerCase().regexpMatch(getSensitiveInfoRegex())
+      (
+        v.getName().toLowerCase().regexpMatch(getCommonSensitiveInfoRegex()) or
+        v.getName().toLowerCase().regexpMatch(getAndroidSensitiveInfoRegex())
+      )
     )
   }
 }
@@ -59,6 +66,24 @@ class SendBroadcastMethodAccess extends MethodAccess {
   }
 }
 
+private class NullArgFlowConfig extends DataFlow2::Configuration {
+  NullArgFlowConfig() { this = "Flow configuration with a null argument" }
+
+  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof NullLiteral }
+
+  override predicate isSink(DataFlow::Node sink) { any() }
+}
+
+private class EmptyArrayArgFlowConfig extends DataFlow2::Configuration {
+  EmptyArrayArgFlowConfig() { this = "Flow configuration with an empty array argument" }
+
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr().(ArrayCreationExpr).getFirstDimensionSize() = 0
+  }
+
+  override predicate isSink(DataFlow::Node sink) { any() }
+}
+
 /**
  * Holds if a `sendBroadcast` call doesn't specify receiver permission.
  */
@@ -68,47 +93,47 @@ predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
     (
       ma.getMethod().hasName("sendBroadcast") and
       (
-        ma.getNumArgument() = 1 or // sendBroadcast(Intent intent)
-        ma.getArgument(1) instanceof NullLiteral // sendBroadcast(Intent intent, String receiverPermission)
+        ma.getNumArgument() = 1 // sendBroadcast(Intent intent)
+        or
+        // sendBroadcast(Intent intent, String receiverPermission)
+        exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(1))))
       )
       or
       ma.getMethod().hasName("sendBroadcastAsUser") and
       (
         ma.getNumArgument() = 2 or // sendBroadcastAsUser(Intent intent, UserHandle user)
-        ma.getArgument(2) instanceof NullLiteral // sendBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission)
+        exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(2)))) // sendBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission)
       )
       or
       ma.getMethod().hasName("sendBroadcastWithMultiplePermissions") and
-      (
-        ma.getArgument(1).(ArrayCreationExpr).getFirstDimensionSize() = 0 // sendBroadcastWithMultiplePermissions(Intent intent, String[] receiverPermissions)
-        or
-        exists(Variable v |
-          v.getAnAccess() = ma.getArgument(1) and
-          v.getAnAssignedValue().(ArrayCreationExpr).getFirstDimensionSize() = 0
-        )
+      exists(EmptyArrayArgFlowConfig config |
+        config.hasFlow(_, DataFlow::exprNode(ma.getArgument(1))) // sendBroadcastWithMultiplePermissions(Intent intent, String[] receiverPermissions)
       )
       or
       //Method calls of `sendOrderedBroadcast` whose second argument is always `receiverPermission`
       ma.getMethod().hasName("sendOrderedBroadcast") and
       (
-        ma.getArgument(1) instanceof NullLiteral and ma.getNumArgument() <=7
+        // sendOrderedBroadcast(Intent intent, String receiverPermission) or sendOrderedBroadcast(Intent intent, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
+        exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(1)))) and
+        ma.getNumArgument() <= 7
         or
-        ma.getArgument(1) instanceof NullLiteral and
-        ma.getArgument(2) instanceof NullLiteral and
+        // sendOrderedBroadcast(Intent intent, String receiverPermission, String receiverAppOp, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
+        exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(1)))) and
+        exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(2)))) and
         ma.getNumArgument() = 8
       )
       or
       //Method call of `sendOrderedBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)`
       ma.getMethod().hasName("sendOrderedBroadcastAsUser") and
-      ma.getArgument(2) instanceof NullLiteral
+      exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(2))))
     )
   )
 }
 
 /**
- * Taint configuration tracking flow from variables containing sensitive information to broadcasted intents.
+ * Taint configuration tracking flow from variables containing sensitive information to broadcast intents.
  */
-class SensitiveBroadcastConfig extends DataFlow::Configuration {
+class SensitiveBroadcastConfig extends TaintTracking::Configuration {
   SensitiveBroadcastConfig() { this = "Sensitive Broadcast Configuration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -118,11 +143,25 @@ class SensitiveBroadcastConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { isSensitiveBroadcastSink(sink) }
 
   /**
-   * Holds if there is an additional flow step from `PutExtraMethodAccess` to a broadcasted intent.
+   * Holds if there is an additional flow step from `PutIntentExtraMethodAccess` or `PutBundleExtraMethodAccess` to a broadcast intent.
    */
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(PutExtraMethodAccess pa |
-      node1.asExpr() = pa.getAnArgument() and node2.asExpr() = pa.getQualifier()
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(PutIntentExtraMethodAccess pia |
+      node1.asExpr() = pia.getAnArgument() and node2.asExpr() = pia.getQualifier()
+    )
+    or
+    exists(PutBundleExtraMethodAccess pba |
+      node1.asExpr() = pba.getAnArgument() and node2.asExpr() = pba.getQualifier()
+    )
+  }
+
+  /**
+   * Holds if broadcast doesn't specify receiving package name of the 3rd party app
+   */
+  override predicate isSanitizer(DataFlow::Node node) {
+    exists(MethodAccess setReceiverMa |
+      setReceiverMa.getMethod().hasName(["setPackage", "setClass", "setClassName", "setComponent"]) and
+      setReceiverMa.getQualifier().(VarAccess).getVariable().getAnAccess() = node.asExpr()
     )
   }
 }

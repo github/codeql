@@ -39,7 +39,7 @@ class SensitiveBroadcast {
         context.sendBroadcast(intent);
     }    
 
-    //Tests broadcast of sensitive user information with permission.
+    //Tests broadcast of sensitive user information with permission using string literal.
     public void sendBroadcast4(Context context) {
         String username = "test123";
         String password = "abc12345";
@@ -51,8 +51,21 @@ class SensitiveBroadcast {
         context.sendBroadcast(intent, "com.example.user_permission");
     }
 
-    //Tests broadcast of sensitive user information to a specific application.
+    //Tests broadcast of sensitive user information with permission using string object.
     public void sendBroadcast5(Context context) {
+        String username = "test123";
+        String password = "abc12345";
+    
+        Intent intent = new Intent();
+        intent.setAction("com.example.custom_action");
+        intent.putExtra("name", username);
+        intent.putExtra("pwd", password);
+        String perm = "com.example.user_permission";
+        context.sendBroadcast(intent, perm);
+    }
+
+    //Tests broadcast of sensitive user information to a specific application.
+    public void sendBroadcast6(Context context) {
         String username = "test123";
         String password = "abc12345";
     
@@ -63,4 +76,55 @@ class SensitiveBroadcast {
         intent.putExtra("pwd", password);
         context.sendBroadcast(intent);
     }    
+
+    //Tests broadcast of sensitive user information with multiple permissions using direct empty array initialization.
+    public void sendBroadcast7(Context context) {
+        String username = "test123";
+        String password = "abc12345";
+    
+        Intent intent = new Intent();
+        intent.setAction("com.example.custom_action");
+        intent.putExtra("name", username);
+        intent.putExtra("pwd", password);
+        context.sendBroadcastWithMultiplePermissions(intent, new String[]{});
+    }    
+
+    //Tests broadcast of sensitive user information with multiple permissions using empty array initialization through a variable.
+    public void sendBroadcast8(Context context) {
+        String username = "test123";
+        String password = "abc12345";
+    
+        Intent intent = new Intent();
+        intent.setAction("com.example.custom_action");
+        intent.putExtra("name", username);
+        intent.putExtra("pwd", password);
+        String[] perms = new String[0];
+        context.sendBroadcastWithMultiplePermissions(intent, perms);
+    }    
+
+    //Tests broadcast of sensitive user information with multiple permissions using empty array initialization through two variables.
+    public void sendBroadcast9(Context context) {
+        String username = "test123";
+        String password = "abc12345";
+    
+        Intent intent = new Intent();
+        intent.setAction("com.example.custom_action");
+        intent.putExtra("name", username);
+        intent.putExtra("pwd", password);
+        String[] perms = new String[0];
+        String[] perms2 = perms;
+        context.sendBroadcastWithMultiplePermissions(intent, perms2);
+    }    
+
+    //Tests broadcast of sensitive user information with ordered broadcast.
+    public void sendBroadcast10(Context context) {
+        String username = "test123";
+        String password = "abc12345";
+    
+        Intent intent = new Intent();
+        intent.setAction("com.example.custom_action");
+        intent.putExtra("name", username);
+        intent.putExtra("pwd", password);
+        context.sendOrderedBroadcast(intent, "com.example.USER_PERM");
+    }        
 }
