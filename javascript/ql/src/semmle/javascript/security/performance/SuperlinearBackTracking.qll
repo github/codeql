@@ -124,10 +124,20 @@ class PolynomialBackTrackingTerm extends InfiniteRepetitionQuantifier {
       forall(RegExpTerm pred | pred = this.getPredecessor+() | matchesEpsilon(pred)) and
       reason = "it can start matching anywhere"
       or
-      exists(InfiniteRepetitionQuantifier pred |
-        pred = getAMatchPredecessor(this.getPredecessor()) and
-        compatible(pred.getAChild(), this.getAChild())
+      exists(RegExpTerm pred |
+        pred instanceof InfiniteRepetitionQuantifier
+        or
+        forall(RegExpTerm predpred | predpred = pred.getPredecessor+() | matchesEpsilon(predpred))
       |
+        pred = getAMatchPredecessor(this.getPredecessor()) and
+        (
+          // compatible children
+          compatible(pred.getAChild(), this.getAChild())
+          or
+          // or `this` is compatible with everything (and the predecessor is something)
+          unique( | | this.getAChild()) instanceof RegExpDot and
+          exists([pred, pred.getAChild()].getAMatchedString())
+        ) and
         reason =
           "it can start matching anywhere after the start of the preceeding '" + pred.toString() +
             "'"

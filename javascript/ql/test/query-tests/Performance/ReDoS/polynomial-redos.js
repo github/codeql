@@ -33,9 +33,9 @@ app.use(function(req, res) {
 	tainted.match(/(.)*solve\/challenges\/server-side(.)*/); // NOT OK
 	tainted.match(/<head>(?![\s\S]*<head>)/i); // OK
 
-	tainted.match(/<.*class="([^"]+)".*>/); // NOT OK - but not flagged
-	tainted.match(/<.*style="([^"]+)".*>/); // NOT OK - but not flagged
-	tainted.match(/<.*href="([^"]+)".*>/); // NOT OK - but not flagged
+	tainted.match(/<.*class="([^"]+)".*>/); // NOT OK
+	tainted.match(/<.*style="([^"]+)".*>/); // NOT OK
+	tainted.match(/<.*href="([^"]+)".*>/); // NOT OK
 
 	tainted.match(/^([^-]+)-([A-Za-z0-9+/]+(?:=?=?))([?\x21-\x7E]*)$/); // NOT OK - but not flagged
 	tainted.match(/^([^-]+)-([A-Za-z0-9+/=]{44,88})(\?[\x21-\x7E]*)*$/); // NOT OK (it is a fix for the above, but it introduces exponential complexity elsewhere)
@@ -46,4 +46,23 @@ app.use(function(req, res) {
 	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/); // NOT OK - but not flagged
 	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/); // OK
 	tainted.replaceAll(/\s*\n\s*/g, ' '); // NOT OK
+
+	/Y.*X/.test(tainted); // NOT OK
+	/B?(YH|K)(YH|J)*X/.test(tainted) // NOT OK
+	(/B?(YH|K).*X/.test(tainted)); // NOT OK
+	/(B|Y)+(Y)*X/.test(tainted) // NOT OK
+	(/(B|Y)+(.)*X/.test(tainted)) // NOT OK
+	(/f(B|Y)+(Y)*X/.test(tainted)); // NOT OK
+	/f(B|Y)+(Y)*X/.test(tainted) // NOT OK
+	(/f(B|Y)+(Y|K)*X/.test(tainted)) // NOT OK
+	(/f(B|Y)+.*X/.test(tainted)) // NOT OK
+	(/f(B|Y)+(.)*X/.test(tainted)) // NOT OK - but not flagged
+	(/^(.)*X/.test(tainted)); // OK
+	(/^Y(Y)*X/.test(tainted)); // OK
+	(/^Y*Y*X/.test(tainted)); // NOT OK
+	(/^(K|Y)+Y*X/.test(tainted)); // NOT OK
+	(/^foo(K|Y)+Y*X/.test(tainted)); // NOT OK
+	(/^foo(K|Y)+.*X/.test(tainted)); // NOT OK
+	(/(K|Y).*X/.test(tainted)); // NOT OK
+	(/[^Y].*X/.test(tainted)); // NOT OK
 });
