@@ -1,5 +1,5 @@
 /**
- * @name Broadcasting sensitive data to all Android applicationss
+ * @name Broadcasting sensitive data to all Android applications
  * @id java/sensitive-broadcast
  * @description An Android application uses implicit intents to broadcast sensitive data to all applications without specifying any receiver permission.
  * @kind path-problem
@@ -29,7 +29,7 @@ private string getAndroidSensitiveInfoRegex() { result = "(?i).*(email|phone|tic
  */
 class PutIntentExtraMethodAccess extends MethodAccess {
   PutIntentExtraMethodAccess() {
-    getMethod().getName().regexpMatch("put\\w*Extra(s*)") and
+    getMethod().getName().regexpMatch("put\\w*Extra(s?)") and
     getMethod().getDeclaringType() instanceof TypeIntent
   }
 }
