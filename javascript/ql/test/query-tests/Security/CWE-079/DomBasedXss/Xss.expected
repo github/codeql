@@ -144,6 +144,33 @@ nodes
 | react-native.js:8:18:8:24 | tainted |
 | react-native.js:9:27:9:33 | tainted |
 | react-native.js:9:27:9:33 | tainted |
+| react-use-context.js:10:22:10:32 | window.name |
+| react-use-context.js:10:22:10:32 | window.name |
+| react-use-context.js:10:22:10:32 | window.name |
+| react-use-state.js:4:9:4:49 | state |
+| react-use-state.js:4:10:4:14 | state |
+| react-use-state.js:4:38:4:48 | window.name |
+| react-use-state.js:4:38:4:48 | window.name |
+| react-use-state.js:5:51:5:55 | state |
+| react-use-state.js:5:51:5:55 | state |
+| react-use-state.js:9:9:9:43 | state |
+| react-use-state.js:9:10:9:14 | state |
+| react-use-state.js:10:14:10:24 | window.name |
+| react-use-state.js:10:14:10:24 | window.name |
+| react-use-state.js:11:51:11:55 | state |
+| react-use-state.js:11:51:11:55 | state |
+| react-use-state.js:15:9:15:43 | state |
+| react-use-state.js:15:10:15:14 | state |
+| react-use-state.js:16:20:16:30 | window.name |
+| react-use-state.js:16:20:16:30 | window.name |
+| react-use-state.js:17:51:17:55 | state |
+| react-use-state.js:17:51:17:55 | state |
+| react-use-state.js:21:10:21:14 | state |
+| react-use-state.js:22:14:22:17 | prev |
+| react-use-state.js:23:35:23:38 | prev |
+| react-use-state.js:23:35:23:38 | prev |
+| react-use-state.js:25:20:25:30 | window.name |
+| react-use-state.js:25:20:25:30 | window.name |
 | sanitiser.js:16:7:16:27 | tainted |
 | sanitiser.js:16:17:16:27 | window.name |
 | sanitiser.js:16:17:16:27 | window.name |
@@ -683,6 +710,27 @@ edges
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name |
+| react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
+| react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
+| react-use-state.js:4:10:4:14 | state | react-use-state.js:4:9:4:49 | state |
+| react-use-state.js:4:38:4:48 | window.name | react-use-state.js:4:10:4:14 | state |
+| react-use-state.js:4:38:4:48 | window.name | react-use-state.js:4:10:4:14 | state |
+| react-use-state.js:9:9:9:43 | state | react-use-state.js:11:51:11:55 | state |
+| react-use-state.js:9:9:9:43 | state | react-use-state.js:11:51:11:55 | state |
+| react-use-state.js:9:10:9:14 | state | react-use-state.js:9:9:9:43 | state |
+| react-use-state.js:10:14:10:24 | window.name | react-use-state.js:9:10:9:14 | state |
+| react-use-state.js:10:14:10:24 | window.name | react-use-state.js:9:10:9:14 | state |
+| react-use-state.js:15:9:15:43 | state | react-use-state.js:17:51:17:55 | state |
+| react-use-state.js:15:9:15:43 | state | react-use-state.js:17:51:17:55 | state |
+| react-use-state.js:15:10:15:14 | state | react-use-state.js:15:9:15:43 | state |
+| react-use-state.js:16:20:16:30 | window.name | react-use-state.js:15:10:15:14 | state |
+| react-use-state.js:16:20:16:30 | window.name | react-use-state.js:15:10:15:14 | state |
+| react-use-state.js:21:10:21:14 | state | react-use-state.js:22:14:22:17 | prev |
+| react-use-state.js:22:14:22:17 | prev | react-use-state.js:23:35:23:38 | prev |
+| react-use-state.js:22:14:22:17 | prev | react-use-state.js:23:35:23:38 | prev |
+| react-use-state.js:25:20:25:30 | window.name | react-use-state.js:21:10:21:14 | state |
+| react-use-state.js:25:20:25:30 | window.name | react-use-state.js:21:10:21:14 | state |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:23:29:23:35 | tainted |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:30:29:30:35 | tainted |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:33:29:33:35 | tainted |
@@ -1080,6 +1128,11 @@ edges
 | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
 | react-native.js:8:18:8:24 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:18:8:24 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | react-native.js:9:27:9:33 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:9:27:9:33 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
+| react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name | Cross-site scripting vulnerability due to $@. | react-use-context.js:10:22:10:32 | window.name | user-provided value |
+| react-use-state.js:5:51:5:55 | state | react-use-state.js:4:38:4:48 | window.name | react-use-state.js:5:51:5:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:4:38:4:48 | window.name | user-provided value |
+| react-use-state.js:11:51:11:55 | state | react-use-state.js:10:14:10:24 | window.name | react-use-state.js:11:51:11:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:10:14:10:24 | window.name | user-provided value |
+| react-use-state.js:17:51:17:55 | state | react-use-state.js:16:20:16:30 | window.name | react-use-state.js:17:51:17:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:16:20:16:30 | window.name | user-provided value |
+| react-use-state.js:23:35:23:38 | prev | react-use-state.js:25:20:25:30 | window.name | react-use-state.js:23:35:23:38 | prev | Cross-site scripting vulnerability due to $@. | react-use-state.js:25:20:25:30 | window.name | user-provided value |
 | sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:16:17:16:27 | window.name | user-provided value |
 | sanitiser.js:30:21:30:44 | '<b>' + ...  '</b>' | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:30:21:30:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:16:17:16:27 | window.name | user-provided value |
 | sanitiser.js:33:21:33:44 | '<b>' + ...  '</b>' | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:33:21:33:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:16:17:16:27 | window.name | user-provided value |
