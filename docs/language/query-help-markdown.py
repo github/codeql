@@ -6,7 +6,7 @@ import sys
 import os
 
 # Define which languages and query packs to consider
-languages = ["cpp", "csharp", "go", "java", "javascript", "python"]
+languages = ["go"]
 
 # Running generate query-help with "security-and-quality.qls" generates errors, so just use these two suites for now
 packs = ["code-scanning", "security-extended"]
@@ -96,7 +96,7 @@ except Exception as e:
 #
 # (and assumes the codeql-go repo is in a similar location)
 
-# codeql_search_path = "./ql" or "./codeql-go"  # will be extended further down
+codeql_search_path = "./codeql:./codeql-go"  # will be extended further down
 
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
@@ -105,7 +105,7 @@ try:
 
     # Current working directory is in a Git repo. Add it to the search path, just in case it's the CodeQL repo
     #git_toplevel_dir = git_toplevel_dir.stdout.strip()
-    #codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "/../codeql-go"
+    codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "/../codeql-go"
     codeql_search_path = git_toplevel_dir = git_toplevel_dir.stdout.strip()
 except:
     # git rev-parse --show-toplevel exited with non-zero exit code. We're not in a Git repo
