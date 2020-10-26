@@ -349,6 +349,44 @@ Conversion4.c:
 #    2|                 Value = [Literal] 7
 #    2|                 ValueCategory = prvalue
 #    3|     1: [ReturnStmt] return ...
+#    5| [TopLevelFunction] char* retfn(void*)
+#    5|   params: 
+#    5|     0: [Parameter] v
+#    5|         Type = [VoidPointerType] void *
+#    5|   body: [BlockStmt] { ... }
+#    6|     0: [ReturnStmt] return ...
+#    6|       0: [CStyleCast] (char *)...
+#    6|           Conversion = [PointerConversion] pointer conversion
+#    6|           Type = [CharPointerType] char *
+#    6|           ValueCategory = prvalue
+#    6|         expr: [CStyleCast] (void *)...
+#    6|             Conversion = [PointerConversion] pointer conversion
+#    6|             Type = [VoidPointerType] void *
+#    6|             ValueCategory = prvalue
+#    6|           expr: [CStyleCast] (int *)...
+#    6|               Conversion = [PointerConversion] pointer conversion
+#    6|               Type = [IntPointerType] int *
+#    6|               ValueCategory = prvalue
+#    6|             expr: [VariableAccess] v
+#    6|                 Type = [VoidPointerType] void *
+#    6|                 ValueCategory = prvalue(load)
+#    9| [TopLevelFunction] void Conversion4_vardecl(int)
+#    9|   params: 
+#    9|     0: [Parameter] x
+#    9|         Type = [IntType] int
+#    9|   body: [BlockStmt] { ... }
+#   10|     0: [DeclStmt] declaration
+#   10|       0: [VariableDeclarationEntry] definition of y
+#   10|           Type = [LongType] long
+#   10|         init: [Initializer] initializer for y
+#   10|           expr: [CStyleCast] (long)...
+#   10|               Conversion = [IntegralConversion] integral conversion
+#   10|               Type = [LongType] long
+#   10|               ValueCategory = prvalue
+#   10|             expr: [VariableAccess] x
+#   10|                 Type = [IntType] int
+#   10|                 ValueCategory = prvalue(load)
+#   11|     1: [ReturnStmt] return ...
 DestructorCall.cpp:
 #    1| [Constructor] void C::C()
 #    1|   params: 
