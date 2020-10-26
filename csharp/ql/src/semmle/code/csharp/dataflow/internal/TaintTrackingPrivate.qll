@@ -105,7 +105,7 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
 
 private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   Stages::DataFlowStage::forceCachingInSameStage() and
-  any(LocalTaintExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
+  hasNodePath(any(LocalTaintExprStepConfiguration x), nodeFrom, nodeTo)
   or
   localTaintStepCil(nodeFrom, nodeTo)
 }

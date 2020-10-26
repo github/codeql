@@ -51,5 +51,17 @@ class ModulusAnalysis
         }
     }
 
+    void loops(int cap)
+    {
+        for (int i = 0; i < cap; i++)
+            System.out.println(i);
+
+        for (int j = 0; j < cap; j += 1)
+            System.out.println(j);
+
+        for (int k = 0; k < cap; k += 3)
+            System.out.println(k); // congruent 0 mod 3
+    }
+
     int[] getArray(){ return new int[42]; }
 }

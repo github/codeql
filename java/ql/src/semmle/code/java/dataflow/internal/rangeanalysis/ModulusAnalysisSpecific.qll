@@ -4,6 +4,7 @@ module Private {
   private import semmle.code.java.dataflow.RangeUtils as RU
   private import semmle.code.java.controlflow.Guards as G
   private import semmle.code.java.controlflow.BasicBlocks as BB
+  private import SsaReadPositionCommon
 
   class BasicBlock = BB::BasicBlock;
 
@@ -115,5 +116,19 @@ module Private {
 
   private predicate idOf(BasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
 
-  int getId(BasicBlock bb) { idOf(bb, result) }
+  private int getId(BasicBlock bb) { idOf(bb, result) }
+
+  /**
+   * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`
+   * in an arbitrary 1-based numbering of the input edges to `phi`.
+   */
+  predicate rankedPhiInput(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, int r) {
+    edge.phiInput(phi, inp) and
+    edge =
+      rank[r](SsaReadPositionPhiInputEdge e |
+        e.phiInput(phi, _)
+      |
+        e order by getId(e.getOrigBlock())
+      )
+  }
 }
