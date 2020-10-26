@@ -1,7 +1,7 @@
 /**
  * @name Jump-to-definition links
  * @description Generates use-definition pairs that provide the data
- *              for jump-to-definition in the code viewer.
+ *              for jump-to-definition in the code viewer of LGTM.
  * @kind definitions
  * @id cpp/jump-to-definition
  */
