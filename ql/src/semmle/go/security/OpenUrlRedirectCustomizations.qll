@@ -128,3 +128,20 @@ private class UnsafeFieldReadSanitizer extends SafeUrlFlow::SanitizerEdge {
     )
   }
 }
+
+/**
+ * Reinstate the usual field propagation rules for fields, which the OpenURLRedirect
+ * query usually excludes, for fields of `Params` other than `Params.Fixed`.
+ */
+private class PropagateParamsFields extends OpenUrlRedirect::AdditionalStep {
+  PropagateParamsFields() { this = "PropagateParamsFields" }
+
+  override predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(Field f, string field |
+      f.hasQualifiedName(Revel::packagePath(), "Params", field) and
+      field != "Fixed"
+    |
+      succ.(Read).readsField(pred, f)
+    )
+  }
+}
