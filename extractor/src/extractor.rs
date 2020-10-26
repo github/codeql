@@ -76,14 +76,33 @@ struct Visitor<'a> {
 
 impl Visitor<'_> {
     fn enter_node(&mut self, node: Node) {
+        if node.is_error() {
+            println!(
+                "error: {}:{}: parse error",
+                &self.path,
+                node.start_position().row,
+            );
+            return;
+        }
+        if node.is_missing() {
+            println!(
+                "error: {}:{}: parse error: expecting '{}'",
+                &self.path,
+                node.start_position().row,
+                node.kind()
+            );
+            return;
+        }
+
         if node.is_extra() {
             return;
         }
+
         self.stack.push(Vec::new());
     }
 
     fn leave_node(&mut self, field_name: Option<&'static str>, node: Node) {
-        if node.is_extra() {
+        if node.is_extra() || node.is_error() || node.is_missing() {
             return;
         }
         let child_nodes = self.stack.pop().expect("Vistor: empty stack");
@@ -103,7 +122,7 @@ impl Visitor<'_> {
             if fields.is_empty() {
                 args = Some(vec![sliced_source_arg(self.source, node)]);
             } else {
-                args = self.complex_node(fields, child_nodes, id);
+                args = self.complex_node(&node, fields, child_nodes, id);
             }
             if let Some(args) = args {
                 self.program
@@ -120,12 +139,17 @@ impl Visitor<'_> {
                 ))
             };
         } else {
-            panic!(format!("Unknown table type: '{}'", node.kind()))
+            println!(
+                "error: {}:{}: unknown table type: '{}'",
+                &self.path,
+                node.start_position().row,
+                node.kind()
+            );
         }
     }
-
     fn complex_node(
         &mut self,
+        node: &Node,
         fields: &Vec<Field>,
         child_nodes: Vec<(Option<&str>, Id, TypeName)>,
         parent_id: Id,
@@ -141,15 +165,26 @@ impl Visitor<'_> {
                     values.push(child_id);
                 } else if field.name.is_some() {
                     println!(
-                        "Type mismatch for field {:?} with type {:?} != {:?}",
-                        child_field, child_type, field.types
+                        "error: {}:{}: type mismatch for field {}::{} with type {:?} != {:?}",
+                        &self.path,
+                        node.start_position().row,
+                        node.kind(),
+                        child_field.unwrap_or("child"),
+                        child_type,
+                        field.types
                     )
                 }
             } else {
-                println!(
-                    "Value for unknown field: {:?} and type {:?}",
-                    &child_field, &child_type
-                );
+                if child_field.is_some() || child_type.named {
+                    println!(
+                        "error: {}:{}: value for unknown field: {}::{} and type {:?}",
+                        &self.path,
+                        node.start_position().row,
+                        node.kind(),
+                        &child_field.unwrap_or("child"),
+                        &child_type
+                    );
+                }
             }
         }
         let mut args = Vec::new();
@@ -162,7 +197,21 @@ impl Visitor<'_> {
                         args.push(Arg::IdArg(*child_ids.first().unwrap()));
                     } else {
                         is_valid = false;
-                        println!("Argument count mismatch for field {:?}", field.name);
+                        println!(
+                            "error: {}:{}: {} for field: {}::{}",
+                            &self.path,
+                            node.start_position().row,
+                            if child_ids.is_empty() {
+                                "missing value"
+                            } else {
+                                "too many values"
+                            },
+                            node.kind(),
+                            match field.name.as_ref() {
+                                Some(x) => x,
+                                None => "child",
+                            }
+                        )
                     }
                 }
                 Storage::Table { parent, index } => {
