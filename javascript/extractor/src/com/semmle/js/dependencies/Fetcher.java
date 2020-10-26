@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+
 import com.semmle.js.dependencies.packument.Packument;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -84,7 +86,13 @@ public class Fetcher {
         }
         System.out.println("Fetching package metadata for " + packageName);
         try (Reader reader = new BufferedReader(new InputStreamReader(fetch("https://registry.npmjs.org/" + packageName)))) {
-            return new Gson().fromJson(reader, Packument.class);
+            Packument packument = new Gson().fromJson(reader, Packument.class);
+            if (packument == null) {
+                throw new IOException("Malformed packument for " + packageName);
+            }
+            return packument;
+        } catch (JsonParseException ex) {
+            throw new IOException("Malformed packument for " + packageName, ex);
         }
     }
 
