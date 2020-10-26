@@ -76,11 +76,12 @@ Discard.cs:
 #-----| 0 -> [LocalVariableDeclStmt] ... ...;
 #-----| 1 -> [ExprStmt] ...;
 #-----| 2 -> [ExprStmt] ...;
+#-----| 3 -> [ExprStmt] ...;
 
 #    7| [LocalVariableDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Func<Int32,Int32> i = ...
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Func<Int32,Int32,Int32> i = ...
 
-#    7| [LocalVariableDeclAndInitExpr] Func<Int32,Int32> i = ...
+#    7| [LocalVariableDeclAndInitExpr] Func<Int32,Int32,Int32> i = ...
 #-----| 0 -> [LambdaExpr] (...) => ...
 #-----| 1 -> [LocalVariableAccess] access to local variable i
 
@@ -107,32 +108,57 @@ Discard.cs:
 #-----| 0 -> [AssignExpr] ... = ...
 
 #    9| [AssignExpr] ... = ...
-#-----| 0 -> [AnonymousMethodExpr] delegate(...) { ... }
+#-----| 0 -> [LambdaExpr] (...) => ...
 #-----| 1 -> [LocalVariableAccess] access to local variable i
 
 #    9| [LocalVariableAccess] access to local variable i
 
-#    9| [AnonymousMethodExpr] delegate(...) { ... }
+#    9| [LambdaExpr] (...) => ...
+#-----| 2 -> (Parameters)
+#-----| 4 -> [IntLiteral] 42
+
+#   10| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#   10| [AssignExpr] ... = ...
+#-----| 0 -> [AnonymousMethodExpr] delegate(...) { ... }
+#-----| 1 -> [LocalVariableAccess] access to local variable i
+
+#   10| [LocalVariableAccess] access to local variable i
+
+#   10| [AnonymousMethodExpr] delegate(...) { ... }
 #-----| 2 -> (Parameters)
 #-----| 4 -> [BlockStmt] {...}
 
-#    7| [Parameter] _
+#    7| [Parameter] a
+
+#    7| [Parameter] b
 
 #    7| [IntLiteral] 42
 
 #    8| [Parameter] _
 
+#    8| [Parameter] _`1
+
 #    8| [IntLiteral] 42
 
 #    9| [Parameter] _
 
-#    9| [BlockStmt] {...}
+#    9| [Parameter] _`1
+
+#    9| [IntLiteral] 42
+
+#   10| [Parameter] _
+
+#   10| [Parameter] _`1
+
+#   10| [BlockStmt] {...}
 #-----| 0 -> [ReturnStmt] return ...;
 
-#    9| [ReturnStmt] return ...;
+#   10| [ReturnStmt] return ...;
 #-----| 0 -> [IntLiteral] 0
 
-#    9| [IntLiteral] 0
+#   10| [IntLiteral] 0
 
 ForeachExtension.cs:
 #    6| [ExtensionMethod] GetEnumerator
@@ -1288,13 +1314,20 @@ TargetType.cs:
 #-----| 1 -> [Interface] IEquatable<Student>
 
 #-----| (Parameters)
-#-----| 0 -> [Parameter] _
+#-----| 0 -> [Parameter] a
+#-----| 1 -> [Parameter] b
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] _
+#-----| 1 -> [Parameter] _`1
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] _
+#-----| 1 -> [Parameter] _`1
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] _
+#-----| 1 -> [Parameter] _`1
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] enumerator

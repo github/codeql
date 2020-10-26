@@ -4,8 +4,9 @@ public class Class1
 {
     public void M1()
     {
-        Func<int, int> i = (_) => 42;
-        i = (int _) => 42;
-        i = delegate (int _) { return 0; };
+        Func<int, int, int> i = (int a, int b) => 42;
+        i = (_, _) => 42;
+        i = (int _, int _) => 42;
+        i = delegate (int _, int _) { return 0; };
     }
 }
