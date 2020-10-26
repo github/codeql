@@ -119,17 +119,20 @@ class PrintASTNode extends TPrintASTNode {
   abstract PrintASTNode getChildInternal(int childIndex);
 
   /**
-   * Gets the child node at index  `childIndex`.
+   * Gets the child node at index `childIndex`.
    * Adds edges to fully converted expressions, that are not part of the
    * regular parent/child relation traversal.
    */
   PrintASTNode getChild(int childIndex) {
     result = getChildInternal(childIndex)
     or
-    exists(int nonConvertedIndex, int nextIdx, Expr expr |
-      nextIdx = max(int idx | exists(this.getChildInternal(idx))) + 1 and
-      exists(getChild(nonConvertedIndex)) and
-      childIndex - nextIdx = nonConvertedIndex and
+    // We first compute the first available child index that is not used by
+    // `getChildInternal`, then we synthesize the child for fully converted
+    // expressions at `nextAvailableIndex` plus the childIndex of the non-converted
+    // expression. This ensures that both disjuncts are disjoint.
+    exists(int nonConvertedIndex, int nextAvailableIndex, Expr expr |
+      nextAvailableIndex = max(int idx | exists(this.getChildInternal(idx))) + 1 and
+      childIndex - nextAvailableIndex = nonConvertedIndex and
       expr = getChild(nonConvertedIndex).(ASTNode).getAST()
     |
       expr.getFullyConverted() instanceof Conversion and
@@ -189,9 +192,9 @@ class PrintASTNode extends TPrintASTNode {
     or
     not exists(getChildInternal(childIndex)) and
     exists(getChild(childIndex)) and
-    exists(int nonConvertedIndex, int nextIdx |
-      nextIdx = max(int idx | exists(this.getChildInternal(idx))) + 1 and
-      childIndex - nextIdx = nonConvertedIndex
+    exists(int nonConvertedIndex, int nextAvailableIndex |
+      nextAvailableIndex = max(int idx | exists(this.getChildInternal(idx))) + 1 and
+      childIndex - nextAvailableIndex = nonConvertedIndex
     |
       result = getChildEdgeLabelInternal(nonConvertedIndex) + " converted"
     )
