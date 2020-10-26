@@ -114,9 +114,29 @@ class PrintASTNode extends TPrintASTNode {
 
   /**
    * Gets the child node at index `childIndex`. Child indices must be unique,
-   * but need not be contiguous (but see `getChildByRank`).
+   * but need not be contiguous.
    */
-  abstract PrintASTNode getChild(int childIndex);
+  abstract PrintASTNode getChildInternal(int childIndex);
+
+  /**
+   * Gets the child node at index  `childIndex`.
+   * Adds edges to fully converted expressions, that are not part of the
+   * regular parent/child relation traversal.
+   */
+  PrintASTNode getChild(int childIndex) {
+    result = getChildInternal(childIndex)
+    or
+    exists(int nonConvertedIndex, int nextIdx, Expr expr |
+      nextIdx = max(int idx | exists(this.getChildInternal(idx))) + 1 and
+      exists(getChild(nonConvertedIndex)) and
+      childIndex - nextIdx = nonConvertedIndex and
+      expr = getChild(nonConvertedIndex).(ASTNode).getAST()
+    |
+      expr.getFullyConverted() instanceof Conversion and
+      result.(ASTNode).getAST() = expr.getFullyConverted() and
+      not expr instanceof Conversion
+    )
+  }
 
   /**
    * Holds if this node should be printed in the output. By default, all nodes
@@ -154,9 +174,27 @@ class PrintASTNode extends TPrintASTNode {
    * default, this is just the index of the child, but subclasses can override
    * this.
    */
-  string getChildEdgeLabel(int childIndex) {
+  string getChildEdgeLabelInternal(int childIndex) {
     exists(getChild(childIndex)) and
     result = childIndex.toString()
+  }
+
+  /**
+   * Gets the label for the edge from this node to the specified child,
+   * including labels for edges to nodes that represent conversions.
+   */
+  string getChildEdgeLabel(int childIndex) {
+    exists(getChildInternal(childIndex)) and
+    result = getChildEdgeLabelInternal(childIndex)
+    or
+    not exists(getChildInternal(childIndex)) and
+    exists(getChild(childIndex)) and
+    exists(int nonConvertedIndex, int nextIdx |
+      nextIdx = max(int idx | exists(this.getChildInternal(idx))) + 1 and
+      childIndex - nextIdx = nonConvertedIndex
+    |
+      result = getChildEdgeLabelInternal(nonConvertedIndex) + " converted"
+    )
   }
 
   /**
@@ -205,9 +243,7 @@ class ExprNode extends ASTNode {
 
   ExprNode() { expr = ast }
 
-  override ASTNode getChild(int childIndex) {
-    result.getAST() = expr.getChild(childIndex).getFullyConverted()
-  }
+  override ASTNode getChildInternal(int childIndex) { result.getAST() = expr.getChild(childIndex) }
 
   override string getProperty(string key) {
     result = super.getProperty(key)
@@ -249,10 +285,11 @@ class ConversionNode extends ExprNode {
 
   override ASTNode getChild(int childIndex) {
     childIndex = 0 and
-    result.getAST() = conv.getExpr()
+    result.getAST() = conv.getExpr() and
+    conv.getExpr() instanceof Conversion
   }
 
-  override string getChildEdgeLabel(int childIndex) { childIndex = 0 and result = "expr" }
+  override string getChildEdgeLabelInternal(int childIndex) { childIndex = 0 and result = "expr" }
 }
 
 /**
@@ -280,7 +317,7 @@ class DeclarationEntryNode extends BaseASTNode, TDeclarationEntryNode {
 
   DeclarationEntryNode() { this = TDeclarationEntryNode(declStmt, ast) }
 
-  override PrintASTNode getChild(int childIndex) { none() }
+  override PrintASTNode getChildInternal(int childIndex) { none() }
 
   override string getProperty(string key) {
     result = BaseASTNode.super.getProperty(key)
@@ -296,12 +333,12 @@ class DeclarationEntryNode extends BaseASTNode, TDeclarationEntryNode {
 class VariableDeclarationEntryNode extends DeclarationEntryNode {
   override VariableDeclarationEntry ast;
 
-  override ASTNode getChild(int childIndex) {
+  override ASTNode getChildInternal(int childIndex) {
     childIndex = 0 and
     result.getAST() = ast.getVariable().getInitializer()
   }
 
-  override string getChildEdgeLabel(int childIndex) { childIndex = 0 and result = "init" }
+  override string getChildEdgeLabelInternal(int childIndex) { childIndex = 0 and result = "init" }
 }
 
 /**
@@ -312,11 +349,11 @@ class StmtNode extends ASTNode {
 
   StmtNode() { stmt = ast }
 
-  override BaseASTNode getChild(int childIndex) {
+  override BaseASTNode getChildInternal(int childIndex) {
     exists(Locatable child |
       child = stmt.getChild(childIndex) and
       (
-        result.getAST() = child.(Expr).getFullyConverted() or
+        result.getAST() = child.(Expr) or
         result.getAST() = child.(Stmt)
       )
     )
@@ -331,7 +368,7 @@ class DeclStmtNode extends StmtNode {
 
   DeclStmtNode() { declStmt = stmt }
 
-  override DeclarationEntryNode getChild(int childIndex) {
+  override DeclarationEntryNode getChildInternal(int childIndex) {
     exists(DeclarationEntry entry |
       declStmt.getDeclarationEntry(childIndex) = entry and
       result = TDeclarationEntryNode(declStmt, entry)
@@ -347,7 +384,7 @@ class ParameterNode extends ASTNode {
 
   ParameterNode() { param = ast }
 
-  final override PrintASTNode getChild(int childIndex) { none() }
+  final override PrintASTNode getChildInternal(int childIndex) { none() }
 
   final override string getProperty(string key) {
     result = super.getProperty(key)
@@ -365,12 +402,12 @@ class InitializerNode extends ASTNode {
 
   InitializerNode() { init = ast }
 
-  override ASTNode getChild(int childIndex) {
+  override ASTNode getChildInternal(int childIndex) {
     childIndex = 0 and
-    result.getAST() = init.getExpr().getFullyConverted()
+    result.getAST() = init.getExpr()
   }
 
-  override string getChildEdgeLabel(int childIndex) {
+  override string getChildEdgeLabelInternal(int childIndex) {
     childIndex = 0 and
     result = "expr"
   }
@@ -388,7 +425,9 @@ class ParametersNode extends PrintASTNode, TParametersNode {
 
   final override Location getLocation() { result = getRepresentativeLocation(func) }
 
-  override ASTNode getChild(int childIndex) { result.getAST() = func.getParameter(childIndex) }
+  override ASTNode getChildInternal(int childIndex) {
+    result.getAST() = func.getParameter(childIndex)
+  }
 
   /**
    * Gets the `Function` for which this node represents the parameters.
@@ -408,7 +447,7 @@ class ConstructorInitializersNode extends PrintASTNode, TConstructorInitializers
 
   final override Location getLocation() { result = getRepresentativeLocation(ctor) }
 
-  final override ASTNode getChild(int childIndex) {
+  final override ASTNode getChildInternal(int childIndex) {
     result.getAST() = ctor.getInitializer(childIndex)
   }
 
@@ -430,7 +469,7 @@ class DestructorDestructionsNode extends PrintASTNode, TDestructorDestructionsNo
 
   final override Location getLocation() { result = getRepresentativeLocation(dtor) }
 
-  final override ASTNode getChild(int childIndex) {
+  final override ASTNode getChildInternal(int childIndex) {
     result.getAST() = dtor.getDestruction(childIndex)
   }
 
@@ -450,7 +489,7 @@ class FunctionNode extends ASTNode {
 
   override string toString() { result = qlClass(func) + getIdentityString(func) }
 
-  override PrintASTNode getChild(int childIndex) {
+  override PrintASTNode getChildInternal(int childIndex) {
     childIndex = 0 and
     result.(ParametersNode).getFunction() = func
     or
@@ -464,7 +503,7 @@ class FunctionNode extends ASTNode {
     result.(DestructorDestructionsNode).getDestructor() = func
   }
 
-  override string getChildEdgeLabel(int childIndex) {
+  override string getChildEdgeLabelInternal(int childIndex) {
     childIndex = 0 and result = "params"
     or
     childIndex = 1 and result = "initializations"
@@ -504,7 +543,7 @@ class ClassAggregateLiteralNode extends ExprNode {
 
   ClassAggregateLiteralNode() { list = ast }
 
-  override string getChildEdgeLabel(int childIndex) {
+  override string getChildEdgeLabelInternal(int childIndex) {
     exists(Field field |
       list.getFieldExpr(field) = list.getChild(childIndex) and
       result = "." + field.getName()
@@ -520,7 +559,7 @@ class ArrayAggregateLiteralNode extends ExprNode {
 
   ArrayAggregateLiteralNode() { list = ast }
 
-  override string getChildEdgeLabel(int childIndex) {
+  override string getChildEdgeLabelInternal(int childIndex) {
     exists(int elementIndex |
       list.getElementExpr(elementIndex) = list.getChild(childIndex) and
       result = "[" + elementIndex.toString() + "]"
