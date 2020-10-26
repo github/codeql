@@ -39,3 +39,5 @@
 | Revel.go:117:12:117:32 | call to UserAgent | Revel.go:117:12:117:32 | call to UserAgent | 117 |
 | Revel.go:122:37:122:44 | &... : pointer type | Revel.go:123:12:123:18 | message | 122 |
 | Revel.go:126:41:126:42 | &... : pointer type | Revel.go:127:12:127:12 | p | 126 |
+| Revel.go:131:13:131:28 | selection of Header : pointer type | Revel.go:132:12:132:18 | tainted | 131 |
+| Revel.go:134:14:134:29 | selection of Header : pointer type | Revel.go:135:12:135:22 | index expression | 134 |

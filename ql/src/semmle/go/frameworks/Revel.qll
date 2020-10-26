@@ -185,4 +185,34 @@ module Revel {
 
     override HTTP::ResponseWriter getResponseWriter() { none() }
   }
+
+  /**
+   * The getter and setter methods of `revel.RevelHeader`.
+   *
+   * Note we currently don't implement `HeaderWrite` and related concepts, as they are currently only used
+   * to track content-type, and directly setting headers does not seem to be the usual way to set the response
+   * content-type for this framework. If and when the `HeaderWrite` concept has a more abstract idea of the
+   * relationship between header-writes and HTTP responses than looking for a particular `http.ResponseWriter`
+   * instance connecting the two, then we may implement it here for completeness.
+   */
+  private class RevelHeaderMethods extends TaintTracking::FunctionModel {
+    FunctionInput input;
+    FunctionOutput output;
+    string name;
+
+    RevelHeaderMethods() {
+      this.(Method).hasQualifiedName(packagePath(), "RevelHeader", name) and
+      (
+        name = ["Add", "Set"] and input.isParameter([0, 1]) and output.isReceiver()
+        or
+        name = ["Get", "GetAll"] and input.isReceiver() and output.isResult()
+        or
+        name = "SetCookie" and input.isParameter(0) and output.isReceiver()
+      )
+    }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp = input and outp = output
+    }
+  }
 }

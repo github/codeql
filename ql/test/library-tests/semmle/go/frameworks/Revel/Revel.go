@@ -126,3 +126,11 @@ func accessingServerRequest(c *revel.Controller) {
 	c.Request.WebSocket.MessageReceiveJSON(&p) // NOT OK
 	usePerson(p)
 }
+
+func accessingHeaders(c *revel.Controller) {
+	tainted := c.Request.Header.Get("somekey") // NOT OK
+	useString(tainted)
+
+	tainted2 := c.Request.Header.GetAll("somekey") // NOT OK
+	useString(tainted2[0])
+}
