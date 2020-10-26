@@ -13,4 +13,4 @@ external string selectedSourceFile();
 
 from Top e, Top def, string kind
 where def = definitionOf(e, kind) and e.getFile() = getEncodedFile(selectedSourceFile())
-select e.getLocation(), def.getLocation(), kind
+select e, def, kind
