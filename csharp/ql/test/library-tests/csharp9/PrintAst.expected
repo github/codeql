@@ -567,6 +567,7 @@ LocalFunction.cs:
 #    6| [BlockStmt] {...}
 #-----| 0 -> [LocalFunctionStmt] dup(...)
 #-----| 1 -> [ExprStmt] ...;
+#-----| 2 -> [LocalFunctionStmt] localExtern(...)
 
 #    7| [LocalFunctionStmt] dup(...)
 #-----| 0 -> [LocalFunction] dup
@@ -602,6 +603,11 @@ LocalFunction.cs:
 #-----| 0 -> [IntLiteral] 42
 
 #   13| [IntLiteral] 42
+
+#   15| [LocalFunctionStmt] localExtern(...)
+#-----| 0 -> [LocalFunction] localExtern
+
+#   15| [LocalFunction] localExtern
 
 #    8| [BoolLiteral] true
 

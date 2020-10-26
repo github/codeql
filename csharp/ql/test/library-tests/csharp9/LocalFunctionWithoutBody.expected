@@ -1,0 +1,8 @@
+noBody
+| LocalFunction.cs:15:9:15:41 | localExtern |
+localFunctionModifier
+| LocalFunction.cs:7:9:11:9 | dup | private |
+| LocalFunction.cs:15:9:15:41 | localExtern | extern |
+| LocalFunction.cs:15:9:15:41 | localExtern | private |
+| LocalFunction.cs:15:9:15:41 | localExtern | static |
+| StaticLambda.cs:7:9:7:36 | m | private |
