@@ -481,7 +481,6 @@ private module Stage1 {
   pragma[nomagic]
   private predicate revFlowIsRead(Content c, Configuration config) {
     exists(Node mid, Node node |
-      useFieldFlow(config) and
       fwdFlow(node, unbind(config)) and
       read(node, c, mid) and
       fwdFlowIsStored(c, unbind(config)) and
@@ -839,8 +838,6 @@ private module Stage2 {
   pragma[noinline]
   private predicate fwdFlowConsCand(Content c, Ap ap, Configuration config) {
     exists(Node mid, Node node |
-      useFieldFlow(config) and
-      Stage1::revFlow(node, unbind(config)) and
       fwdFlow(mid, _, _, ap, config) and
       storeCand1(mid, c, node, config)
     )
@@ -990,7 +987,6 @@ private module Stage2 {
   pragma[noinline]
   private predicate revFlowConsCand(Content c, Ap ap, Configuration config) {
     exists(Node mid, Node node |
-      useFieldFlow(config) and
       fwdFlow(node, _, _, true, unbind(config)) and
       read(node, c, mid, config) and
       fwdFlowConsCand(c, unbindBool(ap), unbind(config)) and
@@ -1305,12 +1301,9 @@ private module Stage3 {
     )
     or
     // store
-    exists(Node mid, TypedContent tc, Ap ap0, DataFlowType contentType |
-      fwdFlow(mid, cc, argAp, ap0, config) and
-      storeCand2(mid, tc, node, contentType, config) and
-      Stage2::revFlow(node, _, _, true, unbind(config)) and
-      ap.headUsesContent(tc) and
-      compatibleTypes(ap0.getType(), contentType)
+    exists(TypedContent tc |
+      fwdFlowStore(node, tc, _, cc, argAp, config) and
+      ap.headUsesContent(tc)
     )
     or
     // read
@@ -1340,13 +1333,21 @@ private module Stage3 {
   }
 
   pragma[nomagic]
-  private predicate fwdFlowConsCand(TypedContent tc, Ap ap, Configuration config) {
-    exists(Node mid, Node n, DataFlowType contentType |
-      fwdFlow(mid, _, _, ap, config) and
-      storeCand2(mid, tc, n, contentType, config) and
-      Stage2::revFlow(n, _, _, true, unbind(config)) and
-      compatibleTypes(ap.getType(), contentType)
+  private predicate fwdFlowStore(
+    Node node, TypedContent tc, Ap ap0, Cc cc, ApOption argAp, Configuration config
+  ) {
+    exists(Node mid, DataFlowType contentType |
+      fwdFlow(mid, cc, argAp, ap0, config) and
+      storeCand2(mid, tc, node, contentType, config) and
+      // We need to typecheck stores here, since reverse flow through a getter
+      // might have a different type here compared to inside the getter.
+      compatibleTypes(ap0.getType(), contentType)
     )
+  }
+
+  pragma[nomagic]
+  private predicate fwdFlowConsCand(TypedContent tc, Ap ap, Configuration config) {
+    fwdFlowStore(_, tc, ap, _, _, config)
   }
 
   pragma[nomagic]
@@ -1890,6 +1891,14 @@ private module Stage4 {
   }
 
   pragma[nomagic]
+  private predicate fwdFlowConsCand(
+    TypedContent tc, AccessPathFront apf, Ap ap, Configuration config
+  ) {
+    fwdFlowStore(_, tc, ap, _, _, config) and
+    apf = ap.getFront()
+  }
+
+  pragma[nomagic]
   private predicate storeCand(
     Node mid, TypedContent tc, Node node, AccessPathFront apf0, AccessPathFront apf,
     Configuration config
@@ -1926,17 +1935,6 @@ private module Stage4 {
       fwdFlowRead0(mid, tc, ap0, node, cc, argAp, config) and
       Stage3::revFlow(node, _, _, apf, unbind(config)) and
       Stage3::revFlowConsCand(tc, apf, unbind(config))
-    )
-  }
-
-  pragma[nomagic]
-  private predicate fwdFlowConsCand(
-    TypedContent tc, AccessPathFront apf, Ap ap, Configuration config
-  ) {
-    exists(Node n |
-      fwdFlow(n, _, _, ap, config) and
-      apf = ap.getFront() and
-      fwdFlowStore0(n, tc, _, apf, config)
     )
   }
 
