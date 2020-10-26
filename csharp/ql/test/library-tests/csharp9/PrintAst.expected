@@ -1281,25 +1281,6 @@ TargetType.cs:
 #-----| 0 -> [Class] Person
 #-----| 1 -> [Interface] IEquatable<Student>
 
-CovariantReturn.cs:
-#    9| [Class] Class1
-
-InitOnlySetter.cs:
-#   10| [Class] Base
-
-Record.cs:
-#    3| [Interface] IEquatable<Person>
-
-#   19| [Class] Person
-
-#   19| [Interface] IEquatable<Student>
-
-#-----| (Type parameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (Type parameters)
-#-----| 0 -> [TypeParameter] T
-
 #-----| (Parameters)
 #-----| 0 -> [Parameter] _
 
@@ -1379,6 +1360,25 @@ Record.cs:
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] t
+
+#-----| (Type parameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (Type parameters)
+#-----| 0 -> [TypeParameter] T
+
+CovariantReturn.cs:
+#    9| [Class] Class1
+
+InitOnlySetter.cs:
+#   10| [Class] Base
+
+Record.cs:
+#    3| [Interface] IEquatable<Person>
+
+#   19| [Class] Person
+
+#   19| [Interface] IEquatable<Student>
 
 CovariantReturn.cs:
 #    9| [Class] Class2

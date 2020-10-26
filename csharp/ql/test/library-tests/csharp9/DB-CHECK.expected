@@ -1,5 +1,3 @@
-[VALUE_NOT_IN_TYPE] predicate attributes(@attribute id, @type_or_ref type_id, @attributable target): Value 810 of field target is not in type @attributable. The value is however in type @local_function. Appears in tuple (806,809,810)
-	Relevant element: Full ID for 809: @"(808);typeRef". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.ObsoleteAttribute : {@"{@"(38).System;namespace"}.Attribute;type"};type"};typeRef"
 [VALUE_NOT_IN_TYPE] predicate type_nullability(@has_type_annotation id, @nullability nullability): Value 513 of field id is not in type @has_type_annotation. Appears in tuple (513,57)
 	Relevant element: Full ID for 513: @"<null> (512).pointer;field". The ID may expand to @"<null> {@"{@"{@";namespace"}.Class1;type"}.Program;type"}.pointer;field"
 	Relevant element: Full ID for 513: @"<null> (512).pointer;field". The ID may expand to @"<null> {@"{@"{@";namespace"}.Class1;type"}.Program;type"}.pointer;field"
