@@ -75,14 +75,14 @@ struct Visitor<'a> {
 }
 
 impl Visitor<'_> {
-    fn enter_node(&mut self, node: Node) {
+    fn enter_node(&mut self, node: Node) -> bool {
         if node.is_error() {
             println!(
                 "error: {}:{}: parse error",
                 &self.path,
                 node.start_position().row,
             );
-            return;
+            return false;
         }
         if node.is_missing() {
             println!(
@@ -91,14 +91,15 @@ impl Visitor<'_> {
                 node.start_position().row,
                 node.kind()
             );
-            return;
+            return false;
         }
 
         if node.is_extra() {
-            return;
+            return false;
         }
 
         self.stack.push(Vec::new());
+        return true;
     }
 
     fn leave_node(&mut self, field_name: Option<&'static str>, node: Node) {
@@ -281,13 +282,12 @@ fn traverse(tree: &Tree, visitor: &mut Visitor) {
     let mut recurse = true;
     loop {
         if recurse && cursor.goto_first_child() {
-            visitor.enter_node(cursor.node());
+            recurse = visitor.enter_node(cursor.node());
         } else {
             visitor.leave_node(cursor.field_name(), cursor.node());
 
             if cursor.goto_next_sibling() {
-                recurse = true;
-                visitor.enter_node(cursor.node());
+                recurse = visitor.enter_node(cursor.node());
             } else if cursor.goto_parent() {
                 recurse = false;
             } else {
