@@ -21,7 +21,7 @@ string before converting it to SQL.</p>
 </example>
 <references>
 
-<li>Microsoft Developer Network: <a href="http://msdn.microsoft.com/en-us/library/ms161953.aspx">SQL Injection</a>.</li>
+<li>MSDN Library: <a href="https://docs.microsoft.com/en-us/sql/relational-databases/security/sql-injection">SQL Injection</a>.</li>
 
 
 <!--  LocalWords:  SQL CWE
