@@ -680,7 +680,7 @@ optional_parameter_def(
 
 pair_def(
   unique int id: @pair,
-  int key: @pair_key_type ref,
+  int key__: @pair_key_type ref,
   int value: @underscore_arg ref,
   int loc: @location ref
 );
