@@ -12,17 +12,16 @@ untrusted) bean properties flow into the custom error message.</p>
 
 <recommendation>
 <p>There are different approaches to remediate the issue:</p>
-<ul>
-<li>Do not include validated bean properties in the custom error message.</li>
-<li>Use parameterized messages instead of string concatenation. E.g:</li>
+- Do not include validated bean properties in the custom error message.
+- Use parameterized messages instead of string concatenation. E.g:
 ``` java
 HibernateConstraintValidatorContext context = constraintValidatorContext.unwrap( HibernateConstraintValidatorContext.class );
 context.addMessageParameter( "foo", "bar" );
 context.buildConstraintViolationWithTemplate( "My violation message contains a parameter {foo}").addConstraintViolation();
 ```
-<li>Sanitize the validated bean properties to make sure that there are no EL expressions. An example of valid sanitization 
-logic can be found <a href="https://github.com/hibernate/hibernate-validator/blob/master/engine/src/main/java/org/hibernate/validator/internal/engine/messageinterpolation/util/InterpolationHelper.java#L17">here</a>.
-- Disable the EL interpolation and only use `ParameterMessageInterpolator`:</li>
+- Sanitize the validated bean properties to make sure that there are no EL expressions. 
+  An example of valid sanitization logic can be found <a href="https://github.com/hibernate/hibernate-validator/blob/master/engine/src/main/java/org/hibernate/validator/internal/engine/messageinterpolation/util/InterpolationHelper.java#L17">here</a>.
+- Disable the EL interpolation and only use `ParameterMessageInterpolator`:
 ``` java
 Validator validator = Validation.byDefaultProvider()
    .configure()
@@ -30,9 +29,8 @@ Validator validator = Validation.byDefaultProvider()
    .buildValidatorFactory()
    .getValidator();
 ```
-<li>Replace Hibernate-Validator with Apache BVal which in its latest version does not interpolate EL expressions by default.
-Note that this replacement may not be a simple drop-in replacement.</li>
-<ul>
+- Replace Hibernate-Validator with Apache BVal which in its latest version does not interpolate EL expressions by default.
+  Note that this replacement may not be a simple drop-in replacement.
 </recommendation>
 
 <example>
