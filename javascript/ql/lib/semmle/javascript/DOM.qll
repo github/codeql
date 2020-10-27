@@ -392,11 +392,6 @@ module DOM {
     or
     t.start() and
     result = domValueRef().getAMethodCall(["item", "namedItem"])
-    or
-    t.startInProp("target") and
-    result = domEventSource()
-    or
-    exists(DataFlow::TypeTracker t2 | result = domValueRef(t2).track(t2, t))
   }
 
   /** Gets a data flow node that may refer to a value from the DOM. */
