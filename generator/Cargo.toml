@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 node-types = { path = "../node-types" }
+tracing = "0.1"
+tracing-subscriber = { version = "0.2", features = ["env-filter"] }

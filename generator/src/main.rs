@@ -7,6 +7,7 @@ use std::collections::BTreeSet as Set;
 use std::fs::File;
 use std::io::LineWriter;
 use std::path::PathBuf;
+use tracing::{error, info};
 
 /// Given the name of the parent node, and its field information, returns the
 /// name of the field's type. This may be an ad-hoc union of all the possible
@@ -198,7 +199,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
 }
 
 fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::Result<()> {
-    println!(
+    info!(
         "Writing to '{}'",
         match language.dbscheme_path.to_str() {
             None => "<undisplayable>",
@@ -276,6 +277,13 @@ fn create_source_location_prefix_entry() -> dbscheme::Entry {
 }
 
 fn main() {
+    tracing_subscriber::fmt()
+        .with_target(false)
+        .without_time()
+        .with_level(true)
+        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+        .init();
+
     // TODO: figure out proper dbscheme output path and/or take it from the
     // command line.
     let ruby = Language {
@@ -285,7 +293,7 @@ fn main() {
     };
     match node_types::read_node_types(&ruby.node_types_path) {
         Err(e) => {
-            println!("Failed to read '{}': {}", ruby.node_types_path.display(), e);
+            error!("Failed to read '{}': {}", ruby.node_types_path.display(), e);
             std::process::exit(1);
         }
         Ok(nodes) => {
@@ -294,7 +302,7 @@ fn main() {
             dbscheme_entries.push(create_source_location_prefix_entry());
             match write_dbscheme(&ruby, &dbscheme_entries) {
                 Err(e) => {
-                    println!("Failed to write dbscheme: {}", e);
+                    error!("Failed to write dbscheme: {}", e);
                     std::process::exit(2);
                 }
                 Ok(()) => {}

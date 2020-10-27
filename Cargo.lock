@@ -101,6 +101,8 @@ name = "generator"
 version = "0.1.0"
 dependencies = [
  "node-types",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
