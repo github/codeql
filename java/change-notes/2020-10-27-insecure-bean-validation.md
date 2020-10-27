@@ -1,6 +1,5 @@
 lgtm,codescanning
-* New query "Insecure Bean Validation" (java/insecure-bean-validation) added. This query 
-  finds Server-Side Template Injections caused by untrusted data flowing from a Bean 
-  property being validated into a custom constraint violation error message. This 
-  vulnerability leads to arbitrary code execution.
-
+* A new query "Insecure Bean Validation" (`java/insecure-bean-validation`) has been added. This query 
+  finds server-side template injections caused by untrusted data flowing from a bean 
+  property into a custom error message for a constraint validator. This 
+  vulnerability can lead to arbitrary code execution.
