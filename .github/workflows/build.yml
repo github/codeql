@@ -49,7 +49,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: ruby.dbscheme
-          path: codeql-ruby/ruby
+          path: ruby
       - uses: actions/download-artifact@v2
         with:
           name: extractor-ubuntu-latest
@@ -63,14 +63,16 @@ jobs:
           name: extractor-macos-latest
           path: osx64
       - run: |
-          mkdir -p codeql-ruby/ruby
-          cp -r codeql-extractor.yml tools codeql-ruby/ruby/
-          mkdir -p codeql-ruby/ruby/tools/{linux64,osx64,win64}
-          cp linux64/ruby-extractor codeql-ruby/ruby/tools/linux64/extractor
-          cp osx64/ruby-extractor codeql-ruby/ruby/tools/osx64/extractor
-          cp win64/ruby-extractor.exe codeql-ruby/ruby/tools/win64/extractor.exe
+          mkdir -p ruby
+          cp -r codeql-extractor.yml tools ruby/
+          mkdir -p ruby/tools/{linux64,osx64,win64}
+          cp linux64/ruby-extractor ruby/tools/linux64/extractor
+          cp osx64/ruby-extractor ruby/tools/osx64/extractor
+          cp win64/ruby-extractor.exe ruby/tools/win64/extractor.exe
+          chmod +x ruby/tools/{linux64,osx64}/extractor
+          zip -rq codeql-ruby.zip ruby
       - uses: actions/upload-artifact@v2
         with:
-          name: codeql-ruby
-          path: codeql-ruby
+          name: codeql-ruby-pack
+          path: codeql-ruby.zip
           retention-days: 1
