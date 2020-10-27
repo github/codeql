@@ -2,9 +2,9 @@ name: Rust
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
   CARGO_TERM_COLOR: always
@@ -13,16 +13,64 @@ jobs:
   build:
     strategy:
       fail-fast: false
-      matrix: 
-        os: [ubuntu-latest, osx-latest, windows-latest ]
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build
+        run: cargo build --verbose
+      - name: Generate dbscheme
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: target/debug/generator
+      - uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        with:
+          name: ruby.dbscheme
+          path: ruby.dbscheme
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extractor-${{ matrix.os }}
+          path: |
+            target/debug/ruby-extractor
+            target/debug/ruby-extractor.exe
+          retention-days: 1
+      - name: Run tests
+        run: cargo test --verbose
+  package:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: ruby.dbscheme
+          path: codeql-ruby/ruby
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-ubuntu-latest
+          path: linux64
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-windows-latest
+          path: win64
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-macos-latest
+          path: osx64
+      - run: |
+          mkdir -p codeql-ruby/ruby
+          cp -r codeql-extractor.yml tools codeql-ruby/ruby/
+          mkdir -p codeql-ruby/ruby/tools/{linux64,osx64,win64}
+          cp linux64/ruby-extractor codeql-ruby/ruby/tools/linux64/extractor
+          cp osx64/ruby-extractor codeql-ruby/ruby/tools/osx64/extractor
+          cp win64/ruby-extractor.exe codeql-ruby/ruby/tools/win64/extractor.exe
+      - uses: actions/upload-artifact@v2
+        with:
+          name: codeql-ruby
+          path: codeql-ruby
+          retention-days: 1
