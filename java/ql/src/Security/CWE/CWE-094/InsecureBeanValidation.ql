@@ -14,23 +14,6 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
-class BeanValidationSource extends RemoteFlowSource {
-  BeanValidationSource() {
-    exists(Method m, Parameter v |
-      this.asParameter() = v and
-      m.getParameter(0) = v and
-      m
-          .getDeclaringType()
-          .getASourceSupertype+()
-          .hasQualifiedName("javax.validation", "ConstraintValidator") and
-      m.hasName("isValid") and
-      m.fromSource()
-    )
-  }
-
-  override string getSourceType() { result = "BeanValidation source" }
-}
-
 class BuildConstraintViolationWithTemplateMethod extends Method {
   BuildConstraintViolationWithTemplateMethod() {
     this.getDeclaringType()
