@@ -1,3 +1,4 @@
+use crate::ql;
 use std::fmt;
 
 /// Represents a distinct entry in the database schema.
@@ -27,7 +28,7 @@ pub struct Column {
     pub db_type: DbColumnType,
     pub name: String,
     pub unique: bool,
-    pub ql_type: QlColumnType,
+    pub ql_type: ql::Type,
     pub ql_type_is_ref: bool,
 }
 
@@ -35,18 +36,6 @@ pub struct Column {
 pub enum DbColumnType {
     Int,
     String,
-}
-
-// The QL type of a column.
-pub enum QlColumnType {
-    /// Primitive `int` type.
-    Int,
-
-    /// Primitive `string` type.
-    String,
-
-    /// A custom type, defined elsewhere by a table or union.
-    Custom(String),
 }
 
 impl fmt::Display for Table {
@@ -76,12 +65,7 @@ impl fmt::Display for Table {
                     DbColumnType::String => "string",
                 }
             )?;
-            write!(f, "{}: ", column.name)?;
-            match &column.ql_type {
-                QlColumnType::Int => write!(f, "int")?,
-                QlColumnType::String => write!(f, "string")?,
-                QlColumnType::Custom(name) => write!(f, "@{}", name)?,
-            }
+            write!(f, "{}: {}", column.name, column.ql_type)?;
             if column.ql_type_is_ref {
                 write!(f, " ref")?;
             }

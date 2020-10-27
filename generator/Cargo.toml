@@ -1,5 +1,5 @@
 [package]
-name = "generator"
+name = "ruby-generator"
 version = "0.1.0"
 authors = ["GitHub"]
 edition = "2018"

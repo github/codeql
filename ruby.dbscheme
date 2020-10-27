@@ -1,6 +1,19 @@
 // CodeQL database schema for Ruby
 // Automatically generated from the tree-sitter grammar; do not edit
 
+location(
+  unique int id: @location,
+  string file_path: string ref,
+  int start_line: int ref,
+  int start_column: int ref,
+  int end_line: int ref,
+  int end_column: int ref
+);
+
+sourceLocationPrefix(
+  string prefix: string ref
+);
+
 @underscore_arg = @underscore_primary | @assignment | @binary | @conditional | @operator_assignment | @range | @unary
 
 @underscore_lhs = @underscore_variable | @call | @element_reference | @false | @method_call | @nil | @scope_resolution | @true
@@ -1848,17 +1861,4 @@ tilde_unnamed_def(
 );
 
 @top = @alias | @argument_list | @array | @assignment | @bare_string | @bare_symbol | @begin | @begin_block | @binary | @block | @block_argument | @block_parameter | @block_parameters | @break | @call | @case__ | @chained_string | @class | @conditional | @destructured_left_assignment | @destructured_parameter | @do | @do_block | @element_reference | @else | @elsif | @empty_statement | @end_block | @ensure | @exception_variable | @exceptions | @for | @hash | @hash_splat_argument | @hash_splat_parameter | @if | @if_modifier | @in | @interpolation | @keyword_parameter | @lambda | @lambda_parameters | @left_assignment_list | @method | @method_call | @method_parameters | @module | @next | @operator | @operator_assignment | @optional_parameter | @pair | @parenthesized_statements | @pattern | @program | @range | @rational | @redo | @regex | @rescue | @rescue_modifier | @rest_assignment | @retry | @return | @right_assignment_list | @scope_resolution | @setter | @singleton_class | @singleton_method | @splat_argument | @splat_parameter | @string__ | @string_array | @subshell | @superclass | @symbol | @symbol_array | @then | @unary | @undef | @unless | @unless_modifier | @until | @until_modifier | @when | @while | @while_modifier | @yield | @bang_unnamed | @bangequal_unnamed | @bangtilde_unnamed | @dquote_unnamed | @hashlbrace_unnamed | @percent_unnamed | @percentequal_unnamed | @percentilparen_unnamed | @percentwlparen_unnamed | @ampersand_unnamed | @ampersandampersand_unnamed | @ampersandampersandequal_unnamed | @ampersanddot_unnamed | @ampersandequal_unnamed | @lparen_unnamed | @rparen_unnamed | @star_unnamed | @starstar_unnamed | @starstarequal_unnamed | @starequal_unnamed | @plus_unnamed | @plusequal_unnamed | @plusat_unnamed | @comma_unnamed | @minus_unnamed | @minusequal_unnamed | @minusrangle_unnamed | @minusat_unnamed | @dot_unnamed | @dotdot_unnamed | @dotdotdot_unnamed | @slash_unnamed | @slashequal_unnamed | @colon_unnamed | @colondquote_unnamed | @coloncolon_unnamed | @semicolon_unnamed | @langle_unnamed | @langlelangle_unnamed | @langlelangleequal_unnamed | @langleequal_unnamed | @langleequalrangle_unnamed | @equal_unnamed | @equalequal_unnamed | @equalequalequal_unnamed | @equalrangle_unnamed | @equaltilde_unnamed | @rangle_unnamed | @rangleequal_unnamed | @ranglerangle_unnamed | @ranglerangleequal_unnamed | @question_unnamed | @b_e_g_i_n__unnamed | @e_n_d__unnamed | @lbracket_unnamed | @lbracketrbracket_unnamed | @lbracketrbracketequal_unnamed | @rbracket_unnamed | @caret_unnamed | @caretequal_unnamed | @underscore__e_n_d____unnamed | @backtick_unnamed | @alias_unnamed | @and_unnamed | @begin_unnamed | @break_unnamed | @case_unnamed | @character | @class_unnamed | @class_variable | @complex | @constant | @def_unnamed | @definedquestion_unnamed | @do_unnamed | @else_unnamed | @elsif_unnamed | @end_unnamed | @ensure_unnamed | @escape_sequence | @false | @float__ | @for_unnamed | @global_variable | @heredoc_beginning | @heredoc_end | @identifier | @if_unnamed | @in_unnamed | @instance_variable | @integer | @module_unnamed | @next_unnamed | @nil | @not_unnamed | @or_unnamed | @r_unnamed | @redo_unnamed | @rescue_unnamed | @retry_unnamed | @return_unnamed | @self | @super | @then_unnamed | @true | @undef_unnamed | @uninterpreted | @unless_unnamed | @until_unnamed | @when_unnamed | @while_unnamed | @yield_unnamed | @lbrace_unnamed | @pipe_unnamed | @pipeequal_unnamed | @pipepipe_unnamed | @pipepipeequal_unnamed | @rbrace_unnamed | @tilde_unnamed
-
-location(
-  unique int id: @location,
-  string file_path: string ref,
-  int start_line: int ref,
-  int start_column: int ref,
-  int end_line: int ref,
-  int end_column: int ref
-);
-
-sourceLocationPrefix(
-  string prefix: string ref
-);
 

@@ -1,8 +1,9 @@
 mod dbscheme;
 mod language;
+mod ql;
+mod ql_gen;
 
 use language::Language;
-use node_types;
 use std::collections::BTreeSet as Set;
 use std::fs::File;
 use std::io::LineWriter;
@@ -27,13 +28,10 @@ fn make_field_type(
         // type to represent them.
         let field_union_name = format!("{}_{}_type", parent_name, field_name);
         let field_union_name = node_types::escape_name(&field_union_name);
-        let mut members: Vec<String> = Vec::new();
-        for field_type in types {
-            members.push(node_types::escape_name(&node_types::node_type_name(
-                &field_type.kind,
-                field_type.named,
-            )));
-        }
+        let members: Vec<String> = types
+            .iter()
+            .map(|t| node_types::escape_name(&node_types::node_type_name(&t.kind, t.named)))
+            .collect();
         entries.push(dbscheme::Entry::Union(dbscheme::Union {
             name: field_union_name.clone(),
             members,
@@ -67,9 +65,7 @@ fn add_field(
                         unique: false,
                         db_type: dbscheme::DbColumnType::Int,
                         name: node_types::escape_name(&parent_name),
-                        ql_type: dbscheme::QlColumnType::Custom(node_types::escape_name(
-                            &parent_name,
-                        )),
+                        ql_type: ql::Type::AtType(node_types::escape_name(&parent_name)),
                         ql_type_is_ref: true,
                     },
                     // Then an index column.
@@ -77,7 +73,7 @@ fn add_field(
                         unique: false,
                         db_type: dbscheme::DbColumnType::Int,
                         name: "index".to_string(),
-                        ql_type: dbscheme::QlColumnType::Int,
+                        ql_type: ql::Type::Int,
                         ql_type_is_ref: true,
                     },
                     // And then the field
@@ -85,7 +81,7 @@ fn add_field(
                         unique: true,
                         db_type: dbscheme::DbColumnType::Int,
                         name: node_types::escape_name(&field_type),
-                        ql_type: dbscheme::QlColumnType::Custom(field_type),
+                        ql_type: ql::Type::AtType(field_type),
                         ql_type_is_ref: true,
                     },
                 ],
@@ -106,7 +102,7 @@ fn add_field(
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: node_types::escape_name(&field_name),
-                ql_type: dbscheme::QlColumnType::Custom(field_type),
+                ql_type: ql::Type::AtType(field_type),
                 ql_type_is_ref: true,
             });
         }
@@ -115,7 +111,10 @@ fn add_field(
 
 /// Converts the given tree-sitter node types into CodeQL dbscheme entries.
 fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
-    let mut entries: Vec<dbscheme::Entry> = Vec::new();
+    let mut entries: Vec<dbscheme::Entry> = vec![
+        create_location_table(),
+        create_source_location_prefix_table(),
+    ];
     let mut top_members: Vec<String> = Vec::new();
 
     for node in nodes {
@@ -150,7 +149,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
                         db_type: dbscheme::DbColumnType::Int,
                         name: "id".to_string(),
                         unique: true,
-                        ql_type: dbscheme::QlColumnType::Custom(node_types::escape_name(&name)),
+                        ql_type: ql::Type::AtType(node_types::escape_name(&name)),
                         ql_type_is_ref: false,
                     }],
                     keysets: None,
@@ -170,7 +169,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
                         unique: false,
                         db_type: dbscheme::DbColumnType::String,
                         name: "text".to_string(),
-                        ql_type: dbscheme::QlColumnType::String,
+                        ql_type: ql::Type::String,
                         ql_type_is_ref: true,
                     });
                 }
@@ -180,7 +179,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
                     unique: false,
                     db_type: dbscheme::DbColumnType::Int,
                     name: "loc".to_string(),
-                    ql_type: dbscheme::QlColumnType::Custom("location".to_string()),
+                    ql_type: ql::Type::AtType("location".to_string()),
                     ql_type_is_ref: true,
                 });
 
@@ -200,7 +199,8 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
 
 fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::Result<()> {
     info!(
-        "Writing to '{}'",
+        "Writing database schema for {} to '{}'",
+        &language.name,
         match language.dbscheme_path.to_str() {
             None => "<undisplayable>",
             Some(p) => p,
@@ -211,7 +211,7 @@ fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::
     dbscheme::write(&language.name, &mut file, &entries)
 }
 
-fn create_location_entry() -> dbscheme::Entry {
+fn create_location_table() -> dbscheme::Entry {
     dbscheme::Entry::Table(dbscheme::Table {
         name: "location".to_string(),
         keysets: None,
@@ -220,49 +220,49 @@ fn create_location_entry() -> dbscheme::Entry {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "id".to_string(),
-                ql_type: dbscheme::QlColumnType::Custom("location".to_string()),
+                ql_type: ql::Type::AtType("location".to_string()),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::String,
                 name: "file_path".to_string(),
-                ql_type: dbscheme::QlColumnType::String,
+                ql_type: ql::Type::String,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "start_line".to_string(),
-                ql_type: dbscheme::QlColumnType::Int,
+                ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "start_column".to_string(),
-                ql_type: dbscheme::QlColumnType::Int,
+                ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "end_line".to_string(),
-                ql_type: dbscheme::QlColumnType::Int,
+                ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "end_column".to_string(),
-                ql_type: dbscheme::QlColumnType::Int,
+                ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
         ],
     })
 }
 
-fn create_source_location_prefix_entry() -> dbscheme::Entry {
+fn create_source_location_prefix_table() -> dbscheme::Entry {
     dbscheme::Entry::Table(dbscheme::Table {
         name: "sourceLocationPrefix".to_string(),
         keysets: None,
@@ -270,7 +270,7 @@ fn create_source_location_prefix_entry() -> dbscheme::Entry {
             unique: false,
             db_type: dbscheme::DbColumnType::String,
             name: "prefix".to_string(),
-            ql_type: dbscheme::QlColumnType::String,
+            ql_type: ql::Type::String,
             ql_type_is_ref: true,
         }],
     })
@@ -290,6 +290,7 @@ fn main() {
         name: "Ruby".to_string(),
         node_types_path: PathBuf::from("tree-sitter-ruby/src/node-types.json"),
         dbscheme_path: PathBuf::from("ruby.dbscheme"),
+        ql_library_path: PathBuf::from("ruby_ast.qll"),
     };
     match node_types::read_node_types(&ruby.node_types_path) {
         Err(e) => {
@@ -297,13 +298,22 @@ fn main() {
             std::process::exit(1);
         }
         Ok(nodes) => {
-            let mut dbscheme_entries = convert_nodes(&nodes);
-            dbscheme_entries.push(create_location_entry());
-            dbscheme_entries.push(create_source_location_prefix_entry());
+            let dbscheme_entries = convert_nodes(&nodes);
+
             match write_dbscheme(&ruby, &dbscheme_entries) {
                 Err(e) => {
                     error!("Failed to write dbscheme: {}", e);
                     std::process::exit(2);
+                }
+                Ok(()) => {}
+            }
+
+            let classes = ql_gen::convert_nodes(&nodes);
+
+            match ql_gen::write(&ruby, &classes) {
+                Err(e) => {
+                    println!("Failed to write QL library: {}", e);
+                    std::process::exit(3);
                 }
                 Ok(()) => {}
             }

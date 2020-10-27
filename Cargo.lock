@@ -98,15 +98,6 @@ dependencies = [
 
 [[package]]
 name = "generator"
-version = "0.1.0"
-dependencies = [
- "node-types",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "generator"
 version = "0.6.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8cdc09201b2e8ca1b19290cf7e65de2246b8e91fb6874279722189c4de7b94dc"
@@ -161,7 +152,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a0e8460f2f2121162705187214720353c517b97bdfb3494c0b1e33d83ebe4bed"
 dependencies = [
  "cfg-if",
- "generator 0.6.23",
+ "generator",
  "scoped-tls",
  "serde",
  "serde_json",
@@ -271,6 +262,15 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "tree-sitter",
+]
+
+[[package]]
+name = "ruby-generator"
+version = "0.1.0"
+dependencies = [
+ "node-types",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
