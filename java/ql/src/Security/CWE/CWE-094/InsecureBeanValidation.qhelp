@@ -36,7 +36,7 @@ Note that this replacement may not be a simple drop-in replacement.</li>
 </recommendation>
 
 <example>
-<p>The following Validator could result in arbitrary Java code execution:</p>
+<p>The following validator could result in arbitrary Java code execution:</p>
 <sample src="InsecureBeanValidation.java" />
 </example>
 
