@@ -134,6 +134,26 @@
 | defaulttainttracking.cpp:208:27:208:32 | call to getenv | defaulttainttracking.cpp:208:27:208:32 | call to getenv |
 | defaulttainttracking.cpp:208:27:208:32 | call to getenv | defaulttainttracking.cpp:208:27:208:42 | (int)... |
 | defaulttainttracking.cpp:208:27:208:32 | call to getenv | defaulttainttracking.cpp:208:27:208:42 | access to array |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:218:8:218:8 | s |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:218:12:218:17 | call to getenv |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:224:2:224:7 | call to memcpy |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:224:17:224:17 | (const void *)... |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:224:17:224:17 | s |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:228:7:228:12 | (const char *)... |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:228:7:228:12 | array to pointer conversion |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:228:7:228:12 | buffer |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:229:7:229:10 | (const char *)... |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:229:7:229:10 | ptr1 |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:232:7:232:10 | (const char *)... |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:232:7:232:10 | ptr3 |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | shared.h:5:23:5:31 | sinkparam |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | shared.h:17:36:17:37 | s2 |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:240:8:240:8 | s |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:240:12:240:17 | call to getenv |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:246:2:246:7 | call to memcpy |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:246:16:246:16 | (const void *)... |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:246:16:246:16 | s |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | shared.h:17:36:17:37 | s2 |
 | dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:24:28:27 | call to atoi |
 | dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:29:28:34 | call to getenv |
 | dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:29:28:45 | (const char *)... |
