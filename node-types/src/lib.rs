@@ -216,7 +216,11 @@ pub fn escape_name(name: &str) -> String {
             '+' => result.push_str("plus"),
             '-' => result.push_str("minus"),
             '@' => result.push_str("at"),
-            _ => result.push_str(&c.to_lowercase().to_string()),
+            _ if c.is_uppercase() => {
+                result.push_str(&c.to_lowercase().to_string());
+                result.push('_')
+            }
+            _ => result.push(c),
         }
     }
 
