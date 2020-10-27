@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+  A custom deserialization method may be expected to be run on an untrusted data stream. 
+  If so, care should be taken when allocating resources such as memory based on a number within that stream. 
+  Otherwise, an an attacker may be able to cause a DoS (Denial of Service) attack by providing the application with a malicously crafted
+  data stream causing it to consume an unbounded amount of memory.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+ If a deserialization method for a class is intended to be used on untrusted data, avoid allocating memory up front during deserialization, 
+ instead consider using a structure such as <code>ArrayList</code> that grows proportionally to the size of the input stream. 
+ Alternatively, a maximum size may be enforced.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example allocates an array of a size provided by the input stream, making it vulnerable to a DoS attack:
+</p>
+
+<sample src="UnboundedAllocationDeserializationBad.java" />
+
+<p>
+The following example uses an <code>ArrayList</code> to only allocate as much memory as needed, within a constanat factor:
+</p>
+
+<sample src="UnboundedAllocationDeserializationGood.java" />
+
+</example>
+<references>
+
+<li>Example in the Guava framework: <a href="https://github.com/google/guava/wiki/CVE-2018-10237">CVE-2018-10237</a>, patched by <a href="https://github.com/google/guava/commit/f89ece5721b2f637fe754937ff1f3c86d80bb196">this commit</a>.</li>
+</references>
+</qhelp>
