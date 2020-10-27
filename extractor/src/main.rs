@@ -57,10 +57,20 @@ fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
     let mut result = PathBuf::from(dir);
     for component in path.components() {
         match component {
-            std::path::Component::Prefix(_) => {
-                // skip for now
-                // TODO: handle this properly for Windows
-            }
+            std::path::Component::Prefix(prefix) => match prefix.kind() {
+                std::path::Prefix::Disk(letter) | std::path::Prefix::VerbatimDisk(letter) => {
+                    result.push(format!("{}_", letter as char))
+                }
+                std::path::Prefix::Verbatim(x) | std::path::Prefix::DeviceNS(x) => {
+                    result.push(x);
+                }
+                std::path::Prefix::UNC(server, share)
+                | std::path::Prefix::VerbatimUNC(server, share) => {
+                    result.push("unc");
+                    result.push(server);
+                    result.push(share);
+                }
+            },
             std::path::Component::RootDir => {
                 // skip
             }
