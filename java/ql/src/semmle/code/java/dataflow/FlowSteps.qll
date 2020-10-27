@@ -140,32 +140,3 @@ private class StringBuilderTaintPreservingCallable extends TaintPreservingCallab
     sink = -1
   }
 }
-
-/** Method access to external inputs of `android.os.BaseBundle` object. */
-class GetBundleExtraMethodAccess extends MethodAccess {
-  GetBundleExtraMethodAccess() {
-    this.getMethod().getName().regexpMatch("get\\w+") and
-    this
-        .getMethod()
-        .getDeclaringType()
-        .getASupertype*()
-        .hasQualifiedName("android.os", "BaseBundle")
-  }
-}
-
-/**
- * Holds if `n1` to `n2` is a dataflow step between the extra getter method and its caller `Bundle`.
- */
-private predicate bundleExtraStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(GetBundleExtraMethodAccess ma |
-    n1.asExpr() = ma.getQualifier() and
-    n2.asExpr() = ma
-  )
-}
-
-/** Additional taint step to consider when taint tracking Android intent extra related data flows. */
-class AndroidExtraSourceAdditionalTaintStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    bundleExtraStep(node1, node2)
-  }
-}

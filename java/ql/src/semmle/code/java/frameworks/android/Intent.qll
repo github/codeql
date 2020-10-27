@@ -42,3 +42,12 @@ class IntentGetExtraMethod extends Method, TaintPreservingCallable {
 
   override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
+
+class BundleGetterMethods extends Method, TaintPreservingCallable {
+  BundleGetterMethods() {
+    getDeclaringType().hasQualifiedName("android.os", ["BaseBundle", "Bundle"]) and
+    getName().matches("get%")
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
