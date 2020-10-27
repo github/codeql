@@ -49,6 +49,11 @@ pub fn read_node_types(node_types_path: &Path) -> std::io::Result<Vec<Entry>> {
     Ok(convert_nodes(node_types))
 }
 
+pub fn read_node_types_str(node_types_json: &str) -> std::io::Result<Vec<Entry>> {
+    let node_types = serde_json::from_str(node_types_json)?;
+    Ok(convert_nodes(node_types))
+}
+
 fn convert_type(node_type: &NodeType) -> TypeName {
     TypeName {
         kind: node_type.kind.to_string(),

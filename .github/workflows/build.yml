@@ -1,0 +1,80 @@
+name: Rust
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
+      - name: Release build
+        run: cargo build --release
+      - name: Generate dbscheme
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: target/release/generator
+      - uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        with:
+          name: ruby.dbscheme
+          path: ruby.dbscheme
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extractor-${{ matrix.os }}
+          path: |
+            target/release/ruby-extractor
+            target/release/ruby-extractor.exe
+          retention-days: 1
+  package:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: ruby.dbscheme
+          path: ruby
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-ubuntu-latest
+          path: linux64
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-windows-latest
+          path: win64
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-macos-latest
+          path: osx64
+      - run: |
+          mkdir -p ruby
+          cp -r codeql-extractor.yml tools ruby/
+          mkdir -p ruby/tools/{linux64,osx64,win64}
+          cp linux64/ruby-extractor ruby/tools/linux64/extractor
+          cp osx64/ruby-extractor ruby/tools/osx64/extractor
+          cp win64/ruby-extractor.exe ruby/tools/win64/extractor.exe
+          chmod +x ruby/tools/{linux64,osx64}/extractor
+          zip -rq codeql-ruby.zip ruby
+      - uses: actions/upload-artifact@v2
+        with:
+          name: codeql-ruby-pack
+          path: codeql-ruby.zip
+          retention-days: 1
