@@ -84,7 +84,7 @@ fn add_field(
                     dbscheme::Column {
                         unique: true,
                         db_type: dbscheme::DbColumnType::Int,
-                        name: field_type.clone(),
+                        name: node_types::escape_name(&field_type),
                         ql_type: dbscheme::QlColumnType::Custom(field_type),
                         ql_type_is_ref: true,
                     },
@@ -105,7 +105,7 @@ fn add_field(
             main_table.columns.push(dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: field_name,
+                name: node_types::escape_name(&field_name),
                 ql_type: dbscheme::QlColumnType::Custom(field_type),
                 ql_type_is_ref: true,
             });
