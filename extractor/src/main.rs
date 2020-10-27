@@ -12,6 +12,13 @@ fn main() -> std::io::Result<()> {
         fn tree_sitter_ruby() -> Language;
     }
 
+    tracing_subscriber::fmt()
+        .with_target(false)
+        .without_time()
+        .with_level(true)
+        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+        .init();
+
     let matches = clap::App::new("Ruby extractor")
         .version("1.0")
         .author("GitHub")

@@ -4,6 +4,7 @@ use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
 use std::path::Path;
+use tracing::{error, info, span, Level};
 use tree_sitter::{Language, Node, Parser, Tree};
 
 pub struct Extractor {
@@ -19,6 +20,16 @@ pub fn create(language: Language, schema: Vec<Entry>) -> Extractor {
 }
 impl Extractor {
     pub fn extract<'a>(&'a mut self, path: &Path) -> std::io::Result<Program> {
+        let span = span!(
+            Level::TRACE,
+            "extract",
+            file = &path.display().to_string()[..]
+        );
+
+        let _enter = span.enter();
+
+        info!("extracting: {}", path.display());
+
         let source = std::fs::read(&path)?;
         let tree = &self
             .parser
@@ -88,16 +99,16 @@ struct Visitor<'a> {
 impl Visitor<'_> {
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_error() {
-            println!(
-                "error: {}:{}: parse error",
+            error!(
+                "{}:{}: parse error",
                 &self.path,
                 node.start_position().row,
             );
             return false;
         }
         if node.is_missing() {
-            println!(
-                "error: {}:{}: parse error: expecting '{}'",
+            error!(
+                "{}:{}: parse expecting '{}'",
                 &self.path,
                 node.start_position().row,
                 node.kind()
@@ -151,8 +162,8 @@ impl Visitor<'_> {
                 ))
             };
         } else {
-            println!(
-                "error: {}:{}: unknown table type: '{}'",
+            error!(
+                "{}:{}: unknown table type: '{}'",
                 &self.path,
                 node.start_position().row,
                 node.kind()
@@ -176,8 +187,8 @@ impl Visitor<'_> {
                 if self.type_matches(&child_type, &field.types) {
                     values.push(child_id);
                 } else if field.name.is_some() {
-                    println!(
-                        "error: {}:{}: type mismatch for field {}::{} with type {:?} != {:?}",
+                    error!(
+                        "{}:{}: type mismatch for field {}::{} with type {:?} != {:?}",
                         &self.path,
                         node.start_position().row,
                         node.kind(),
@@ -188,8 +199,8 @@ impl Visitor<'_> {
                 }
             } else {
                 if child_field.is_some() || child_type.named {
-                    println!(
-                        "error: {}:{}: value for unknown field: {}::{} and type {:?}",
+                    error!(
+                        "{}:{}: value for unknown field: {}::{} and type {:?}",
                         &self.path,
                         node.start_position().row,
                         node.kind(),
@@ -209,8 +220,8 @@ impl Visitor<'_> {
                         args.push(Arg::Label(*child_ids.first().unwrap()));
                     } else {
                         is_valid = false;
-                        println!(
-                            "error: {}:{}: {} for field: {}::{}",
+                        error!(
+                            "{}:{}: {} for field: {}::{}",
                             &self.path,
                             node.start_position().row,
                             if child_ids.is_empty() {
