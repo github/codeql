@@ -30,3 +30,16 @@ def normalize_check_normalize():
     if y.startswith("subfolder/"):
         z = normalize(y)  # <--- ...can jump to here, resulting in FP
         open(z)  # OK
+
+
+# The problem does not manifest if we simply define an alias
+normpath = os.path.normpath
+
+
+@app.route("/path")
+def normalize_check_normalize_alias():
+    x = source()
+    y = normpath(x)
+    if y.startswith("subfolder/"):
+        z = normpath(y)
+        open(z)  # OK
