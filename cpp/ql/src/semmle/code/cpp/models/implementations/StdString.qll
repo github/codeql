@@ -217,23 +217,6 @@ class StdStringAssign extends TaintFunction {
 }
 
 /**
- * The standard functions `std::string.begin` and `std::string.end` and their
- * variants.
- */
-class StdStringBeginEnd extends TaintFunction {
-  StdStringBeginEnd() {
-    this
-        .hasQualifiedName("std", "basic_string",
-          ["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend"])
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
-  }
-}
-
-/**
  * The standard function `std::string.copy`.
  */
 class StdStringCopy extends TaintFunction {

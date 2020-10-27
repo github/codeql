@@ -24,11 +24,13 @@ module PrototypePollution {
    * }
    * ```
    */
-  module TaintedObjectWrapper {
-    private class TaintedObjectWrapper extends DataFlow::FlowLabel {
-      TaintedObjectWrapper() { this = "tainted-object-wrapper" }
-    }
+  abstract class TaintedObjectWrapper extends DataFlow::FlowLabel {
+    TaintedObjectWrapper() { this = "tainted-object-wrapper" }
+  }
 
+  /** Companion module to the `TaintedObjectWrapper` class. */
+  module TaintedObjectWrapper {
+    /** Gets the instance of the `TaintedObjectWrapper` label. */
     TaintedObjectWrapper label() { any() }
   }
 

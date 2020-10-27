@@ -1,22 +1,21 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
-using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Catch : Statement<CatchClauseSyntax>
+    internal class Catch : Statement<CatchClauseSyntax>
     {
-        static readonly string SystemExceptionName = typeof(System.Exception).ToString();
+        private static readonly string systemExceptionName = typeof(System.Exception).ToString();
 
-        Catch(Context cx, CatchClauseSyntax node, Try parent, int child)
+        private Catch(Context cx, CatchClauseSyntax node, Try parent, int child)
             : base(cx, node, StmtKind.CATCH, parent, child, cx.Create(node.GetLocation())) { }
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            bool isSpecificCatchClause = Stmt.Declaration != null;
-            bool hasVariableDeclaration = isSpecificCatchClause && Stmt.Declaration.Identifier.RawKind != 0;
+            var isSpecificCatchClause = Stmt.Declaration != null;
+            var hasVariableDeclaration = isSpecificCatchClause && Stmt.Declaration.Identifier.RawKind != 0;
 
             if (hasVariableDeclaration) // A catch clause of the form 'catch(Ex ex) { ... }'
             {
@@ -29,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             }
             else // A catch clause of the form 'catch { ... }'
             {
-                var exception = Type.Create(cx, cx.Compilation.GetTypeByMetadataName(SystemExceptionName));
+                var exception = Type.Create(cx, cx.Compilation.GetTypeByMetadataName(systemExceptionName));
                 trapFile.catch_type(this, exception, false);
             }
 

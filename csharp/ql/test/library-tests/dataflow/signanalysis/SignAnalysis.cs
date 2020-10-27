@@ -289,7 +289,7 @@ class SignAnalysis
     void Assert(int i, bool b)
     {
         Debug.Assert(i > 0);
-        System.Console.WriteLine(i); // strictly positive [MISSING]
+        System.Console.WriteLine(i); // strictly positive
 
         if (b)
             System.Console.WriteLine(i); // strictly positive
@@ -437,7 +437,7 @@ class SignAnalysis
 
     unsafe void PointerCast(byte* src, byte* dst)
     {
-        var x = (int)(src-dst);
+        var x = (int)(src - dst);
         if (x < 0)
         {
             System.Console.WriteLine(x); // strictly negative
@@ -449,6 +449,42 @@ class SignAnalysis
         {
             System.Console.WriteLine((int)to);
         }
+    }
+
+    uint Unsigned() { return 1; }
+    void UnsignedCheck(int i)
+    {
+        long l = Unsigned();
+        if (l != 0)
+        {
+            System.Console.WriteLine(l); // strictly positive
+        }
+
+        uint x = (uint)i;
+        x++;
+        System.Console.WriteLine(x); // strictly positive
+    }
+
+    void Splitting1(bool b)
+    {
+        var x = b ? 1 : -1;
+        if (b)
+            System.Console.WriteLine(x); // strictly positive [MISSING]
+        else
+            System.Console.WriteLine(x); // strictly negative [MISSING]
+    }
+
+    void Splitting2(bool b)
+    {
+        int x;
+        if (b) x = 1; else x = -1;
+
+        System.Console.WriteLine(x); // strictly positive (b = true) or strictly negative (b = false)
+
+        if (b)
+            System.Console.WriteLine(x); // strictly positive
+        else
+            System.Console.WriteLine(x); // strictly negative
     }
 }
 

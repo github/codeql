@@ -11,7 +11,7 @@ private import SsaReadPositionCommon
 private import Sign
 
 /** Gets the sign of `e` if this can be directly determined. */
-Sign certainExprSign(Expr e) {
+private Sign certainExprSign(Expr e) {
   exists(int i | e.(ConstantIntegerExpr).getIntValue() = i |
     i < 0 and result = TNeg()
     or
@@ -42,7 +42,7 @@ Sign certainExprSign(Expr e) {
 }
 
 /** Holds if the sign of `e` is too complicated to determine. */
-predicate unknownSign(Expr e) {
+private predicate unknownSign(Expr e) {
   not exists(certainExprSign(e)) and
   (
     exists(IntegerLiteral lit | lit = e and not exists(lit.getValue().toInt()))
@@ -51,11 +51,11 @@ predicate unknownSign(Expr e) {
     or
     exists(CastExpr cast, Type fromtyp |
       cast = e and
-      fromtyp = cast.getExpr().getType() and
+      fromtyp = cast.getSourceType() and
       not fromtyp instanceof NumericOrCharType
     )
     or
-    unknownIntegerAccess(e)
+    numericExprWithUnknownSign(e)
   )
 }
 
@@ -185,29 +185,32 @@ private predicate hasGuard(SsaVariable v, SsaReadPosition pos, Sign s) {
   s = TZero() and zeroBound(_, v, pos)
 }
 
+/**
+ * Gets a possible sign of `v` at `pos` based on its definition, where the sign
+ * might be ruled out by a guard.
+ */
 pragma[noinline]
 private Sign guardedSsaSign(SsaVariable v, SsaReadPosition pos) {
-  // SSA variable can have sign `result`
   result = ssaDefSign(v) and
   pos.hasReadOfVar(v) and
-  // there are guards at this position on `v` that might restrict it to be sign `result`.
-  // (So we need to check if they are satisfied)
   hasGuard(v, pos, result)
 }
 
+/**
+ * Gets a possible sign of `v` at `pos` based on its definition, where no guard
+ * can rule it out.
+ */
 pragma[noinline]
 private Sign unguardedSsaSign(SsaVariable v, SsaReadPosition pos) {
-  // SSA variable can have sign `result`
   result = ssaDefSign(v) and
   pos.hasReadOfVar(v) and
-  // there's no guard at this position on `v` that might restrict it to be sign `result`.
   not hasGuard(v, pos, result)
 }
 
 /**
- * Gets the sign of `v` at read position `pos`, when there's at least one guard
- * on `v` at position `pos`. Each bound corresponding to a given sign must be met
- * in order for `v` to be of that sign.
+ * Gets a possible sign of `v` at read position `pos`, where a guard could have
+ * ruled out the sign but does not.
+ * This does not check that the definition of `v` also allows the sign.
  */
 private Sign guardedSsaSignOk(SsaVariable v, SsaReadPosition pos) {
   result = TPos() and
@@ -221,7 +224,7 @@ private Sign guardedSsaSignOk(SsaVariable v, SsaReadPosition pos) {
 }
 
 /** Gets a possible sign for `v` at `pos`. */
-Sign ssaSign(SsaVariable v, SsaReadPosition pos) {
+private Sign ssaSign(SsaVariable v, SsaReadPosition pos) {
   result = unguardedSsaSign(v, pos)
   or
   result = guardedSsaSign(v, pos) and
@@ -230,7 +233,7 @@ Sign ssaSign(SsaVariable v, SsaReadPosition pos) {
 
 /** Gets a possible sign for `v`. */
 pragma[nomagic]
-Sign ssaDefSign(SsaVariable v) {
+private Sign ssaDefSign(SsaVariable v) {
   result = explicitSsaDefSign(v)
   or
   result = implicitSsaDefSign(v)
@@ -242,29 +245,109 @@ Sign ssaDefSign(SsaVariable v) {
   )
 }
 
+/** Returns the sign of explicit SSA definition `v`. */
+private Sign explicitSsaDefSign(SsaVariable v) {
+  exists(VariableUpdate def | def = getExplicitSsaAssignment(v) |
+    result = exprSign(getExprFromSsaAssignment(def))
+    or
+    anySign(result) and explicitSsaDefWithAnySign(def)
+    or
+    result = exprSign(getIncrementOperand(def)).inc()
+    or
+    result = exprSign(getDecrementOperand(def)).dec()
+  )
+}
+
+/** Returns the sign of implicit SSA definition `v`. */
+private Sign implicitSsaDefSign(SsaVariable v) {
+  result = fieldSign(getImplicitSsaDeclaration(v))
+  or
+  anySign(result) and nonFieldImplicitSsaDefinition(v)
+}
+
+/** Gets a possible sign for `f`. */
+private Sign fieldSign(Field f) {
+  if not fieldWithUnknownSign(f)
+  then
+    result = exprSign(getAssignedValueToField(f))
+    or
+    fieldIncrementOperationOperand(f) and result = fieldSign(f).inc()
+    or
+    fieldDecrementOperationOperand(f) and result = fieldSign(f).dec()
+    or
+    result = specificFieldSign(f)
+  else anySign(result)
+}
+
 /** Gets a possible sign for `e`. */
 cached
 Sign exprSign(Expr e) {
-  result = certainExprSign(e)
-  or
-  not exists(certainExprSign(e)) and
-  (
-    unknownSign(e)
+  exists(Sign s |
+    s = certainExprSign(e)
     or
-    exists(SsaVariable v | getARead(v) = e | result = ssaVariableSign(v, e))
-    or
-    e =
-      any(VarAccess access |
+    not exists(certainExprSign(e)) and
+    (
+      anySign(s) and unknownSign(e)
+      or
+      exists(SsaVariable v | getARead(v) = e |
+        s = ssaSign(v, any(SsaReadPositionBlock bb | getAnExpression(bb) = e))
+        or
+        not exists(SsaReadPositionBlock bb | getAnExpression(bb) = e) and
+        s = ssaDefSign(v)
+      )
+      or
+      exists(VarAccess access | access = e |
         not exists(SsaVariable v | getARead(v) = access) and
         (
-          result = fieldSign(getField(access.(FieldAccess))) or
-          not access instanceof FieldAccess
+          s = fieldSign(getField(access.(FieldAccess)))
+          or
+          anySign(s) and not access instanceof FieldAccess
         )
       )
-    or
-    result = specificSubExprSign(e)
+      or
+      s = specificSubExprSign(e)
+    )
+  |
+    if e.getType() instanceof UnsignedNumericType and s = TNeg()
+    then result = TPos()
+    else result = s
   )
 }
+
+/** Gets a possible sign for `e` from the signs of its child nodes. */
+private Sign specificSubExprSign(Expr e) {
+  result = exprSign(getASubExprWithSameSign(e))
+  or
+  exists(DivExpr div | div = e |
+    result = exprSign(div.getLeftOperand()) and
+    result != TZero() and
+    div.getRightOperand().(RealLiteral).getValue().toFloat() = 0
+  )
+  or
+  exists(UnaryOperation unary | unary = e |
+    result = exprSign(unary.getOperand()).applyUnaryOp(unary.getOp())
+  )
+  or
+  exists(Sign s1, Sign s2 | binaryOpSigns(e, s1, s2) |
+    result = s1.applyBinaryOp(s2, e.(BinaryOperation).getOp())
+  )
+}
+
+pragma[noinline]
+private predicate binaryOpSigns(Expr e, Sign lhs, Sign rhs) {
+  lhs = binaryOpLhsSign(e) and
+  rhs = binaryOpRhsSign(e)
+}
+
+private Sign binaryOpLhsSign(BinaryOperation e) { result = exprSign(e.getLeftOperand()) }
+
+private Sign binaryOpRhsSign(BinaryOperation e) { result = exprSign(e.getRightOperand()) }
+
+/**
+ * Dummy predicate that holds for any sign. This is added to improve readability
+ * of cases where the sign is unrestricted.
+ */
+predicate anySign(Sign s) { any() }
 
 /** Holds if `e` can be positive and cannot be negative. */
 predicate positive(Expr e) {

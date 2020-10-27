@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Mostly duplicate file
  * @description Files in which most of the lines are duplicated in another file make code more
  *              difficult to understand and introduce a risk of changes being made to only one copy.

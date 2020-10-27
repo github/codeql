@@ -21,8 +21,8 @@ import cpp
  */
 class WarningLateTemplateSpecialization extends CompilerWarning {
   WarningLateTemplateSpecialization() {
-    this.getTag() = "partial_spec_after_instantiation" or
-    this.getTag() = "partial_spec_after_instantiation_ambiguous"
+    this.getTag() =
+      ["partial_spec_after_instantiation", "partial_spec_after_instantiation_ambiguous"]
   }
 }
 

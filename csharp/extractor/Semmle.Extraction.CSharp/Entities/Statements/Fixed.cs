@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Fixed : Statement<FixedStatementSyntax>
+    internal class Fixed : Statement<FixedStatementSyntax>
     {
-        Fixed(Context cx, FixedStatementSyntax @fixed, IStatementParentEntity parent, int child)
+        private Fixed(Context cx, FixedStatementSyntax @fixed, IStatementParentEntity parent, int child)
             : base(cx, @fixed, StmtKind.FIXED, parent, child) { }
 
         public static Fixed Create(Context cx, FixedStatementSyntax node, IStatementParentEntity parent, int child)

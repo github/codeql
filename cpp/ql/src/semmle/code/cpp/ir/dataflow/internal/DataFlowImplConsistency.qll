@@ -167,4 +167,9 @@ module Consistency {
     not isImmutableOrUnobservable(n) and
     msg = "ArgumentNode is missing PostUpdateNode."
   }
+
+  query predicate postWithInFlow(PostUpdateNode n, string msg) {
+    simpleLocalFlowStep(_, n) and
+    msg = "PostUpdateNode should not be the target of local flow."
+  }
 }

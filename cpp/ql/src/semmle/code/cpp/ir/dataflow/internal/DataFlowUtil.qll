@@ -684,10 +684,6 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
   or
   iTo.(PhiInstruction).getAnInputOperand() = opFrom
   or
-  // A read side effect is almost never exact since we don't know exactly how
-  // much memory the callee will read.
-  iTo.(ReadSideEffectInstruction).getSideEffectOperand() = opFrom
-  or
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnaryOperand() = opFrom
   or

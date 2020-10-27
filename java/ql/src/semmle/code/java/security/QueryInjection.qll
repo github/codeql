@@ -34,7 +34,9 @@ private class SqlInjectionSink extends QueryInjectionSink {
     or
     exists(MethodAccess ma, Method m, int index |
       ma.getMethod() = m and
-      ma.getArgument(index) = this.asExpr()
+      if index = -1
+      then this.asExpr() = ma.getQualifier()
+      else ma.getArgument(index) = this.asExpr()
     |
       index = m.(SQLiteRunner).sqlIndex()
       or

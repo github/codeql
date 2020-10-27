@@ -1,4 +1,17 @@
 import cpp
+private import PrintAST
+
+/**
+ * Print function declarations only if there is a `PrintASTConfiguration`
+ * that requests that function, or no `PrintASTConfiguration` exists.
+ */
+private predicate shouldPrintDeclaration(Declaration decl) {
+  not decl instanceof Function
+  or
+  not exists(PrintASTConfiguration c)
+  or
+  exists(PrintASTConfiguration config | config.shouldPrintFunction(decl))
+}
 
 /**
  * Gets a string containing the scope in which this declaration is declared.
@@ -48,6 +61,8 @@ private string getTemplateArgumentString(Declaration d, int i) {
  * A `Declaration` extended to add methods for generating strings useful only for dumps and debugging.
  */
 abstract private class DumpDeclaration extends Declaration {
+  DumpDeclaration() { shouldPrintDeclaration(this) }
+
   /**
    * Gets a string that uniquely identifies this declaration, suitable for use when debugging queries. Only holds for
    * functions, user-defined types, global and namespace-scope variables, and member variables.

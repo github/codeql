@@ -1,2 +1,0 @@
-| tst5.mjs:13:12:13:20 | source(0) | tst5.mjs:18:6:18:9 | flow |
-| tst5.mjs:15:8:15:19 | source(flow) | tst5.mjs:16:13:16:16 | flow |

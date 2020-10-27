@@ -25,13 +25,10 @@ class TestAllocationConfig extends TaintTracking::Configuration {
       sink.(DataFlow::ExprNode).getConvertedExpr() instanceof ReferenceDereferenceExpr
     )
     or
-    sink
-        .asInstruction()
-        .(ReadSideEffectInstruction)
-        .getPrimaryInstruction()
-        .(CallInstruction)
-        .getStaticCallTarget()
-        .hasName("sink")
+    exists(ReadSideEffectInstruction read |
+      read.getSideEffectOperand() = sink.asOperand() and
+      read.getPrimaryInstruction().(CallInstruction).getStaticCallTarget().hasName("sink")
+    )
   }
 
   override predicate isSanitizer(DataFlow::Node barrier) {

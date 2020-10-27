@@ -32,7 +32,7 @@ abstractValue
 | 0 | Guards.cs:322:18:322:18 | 0 |
 | 0 | Guards.cs:329:17:329:19 | access to constant A |
 | 0 | Guards.cs:334:20:334:20 | 0 |
-| 0 | Splitting.cs:136:20:136:20 | 0 |
+| 0 | Splitting.cs:137:20:137:20 | 0 |
 | 1 | Collections.cs:13:28:13:28 | 1 |
 | 1 | Collections.cs:15:28:15:28 | 1 |
 | 1 | Collections.cs:18:28:18:28 | 1 |
@@ -365,6 +365,9 @@ abstractValue
 | non-null | Guards.cs:281:17:281:17 | access to local variable a |
 | non-null | Guards.cs:283:17:283:17 | access to parameter o |
 | non-null | Guards.cs:287:17:287:17 | access to parameter o |
+| non-null | Guards.cs:341:31:341:32 | "" |
+| non-null | Guards.cs:343:13:343:19 | access to type Console |
+| non-null | Guards.cs:343:31:343:31 | access to local variable s |
 | non-null | Splitting.cs:13:17:13:17 | access to parameter o |
 | non-null | Splitting.cs:23:24:23:24 | access to parameter o |
 | non-null | Splitting.cs:33:24:33:25 | "" |
@@ -384,12 +387,13 @@ abstractValue
 | non-null | Splitting.cs:117:9:117:9 | access to parameter o |
 | non-null | Splitting.cs:119:13:119:13 | access to parameter o |
 | non-null | Splitting.cs:120:16:120:16 | access to parameter o |
-| non-null | Splitting.cs:132:17:132:17 | access to local variable o |
-| non-null | Splitting.cs:132:17:132:29 | ... = ... |
-| non-null | Splitting.cs:132:21:132:29 | call to method M11 |
-| non-null | Splitting.cs:132:21:132:29 | this access |
-| non-null | Splitting.cs:132:28:132:28 | access to local variable o |
+| non-null | Splitting.cs:129:17:129:17 | access to local variable o |
 | non-null | Splitting.cs:133:17:133:17 | access to local variable o |
+| non-null | Splitting.cs:133:17:133:29 | ... = ... |
+| non-null | Splitting.cs:133:21:133:29 | call to method M11 |
+| non-null | Splitting.cs:133:21:133:29 | this access |
+| non-null | Splitting.cs:133:28:133:28 | access to local variable o |
+| non-null | Splitting.cs:134:17:134:17 | access to local variable o |
 | null | Assert.cs:9:24:9:27 | null |
 | null | Assert.cs:10:27:10:30 | null |
 | null | Assert.cs:16:24:16:27 | null |
@@ -438,6 +442,8 @@ abstractValue
 | null | Guards.cs:181:39:181:42 | null |
 | null | Guards.cs:185:43:185:46 | null |
 | null | Guards.cs:203:18:203:21 | null |
+| null | Guards.cs:341:24:341:27 | null |
+| null | Guards.cs:342:18:342:21 | null |
 | null | Splitting.cs:12:22:12:25 | null |
 | null | Splitting.cs:22:22:22:25 | null |
 | null | Splitting.cs:32:22:32:25 | null |
@@ -450,7 +456,7 @@ abstractValue
 | null | Splitting.cs:105:27:105:30 | null |
 | null | Splitting.cs:116:27:116:30 | null |
 | null | Splitting.cs:125:21:125:24 | null |
-| null | Splitting.cs:128:22:128:25 | null |
+| null | Splitting.cs:129:22:129:25 | null |
 | true | Guards.cs:177:20:177:23 | true |
 | true | Guards.cs:181:46:181:49 | true |
 | true | Guards.cs:185:50:185:53 | true |

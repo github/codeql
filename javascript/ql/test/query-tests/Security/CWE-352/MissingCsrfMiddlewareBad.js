@@ -41,4 +41,8 @@ app.post('/changeEmail', function (req, res) {
     app.post('/changeEmail', errorCatch(async function (req, res) {
         let newEmail = req.cookies["newEmail"];
     }));
+
+    app.post('/doLoginStuff', errorCatch(async function (req, res) {
+        req.session.user = loginStuff(req);
+    }));
 })

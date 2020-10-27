@@ -1,0 +1,5 @@
+| test.c:16:19:16:24 | call to malloc | Type 'float' is 4 bytes, but only 3 bytes are allocated. |
+| test.c:17:20:17:25 | call to malloc | Type 'double' is 8 bytes, but only 5 bytes are allocated. |
+| test.c:32:19:32:24 | call to malloc | Type 'float' is 4 bytes, but only 2 bytes are allocated. |
+| test.c:33:20:33:25 | call to malloc | Type 'double' is 8 bytes, but only 4 bytes are allocated. |
+| test.c:59:15:59:20 | call to malloc | Type 'MyUnion' is 128 bytes, but only 8 bytes are allocated. |

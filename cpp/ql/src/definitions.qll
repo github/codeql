@@ -124,6 +124,7 @@ private predicate constructorCallTypeMention(ConstructorCall cc, TypeMention tm)
 
 /**
  * Gets an element, of kind `kind`, that element `e` uses, if any.
+ * Attention: This predicate yields multiple definitions for a single location.
  *
  * The `kind` is a string representing what kind of use it is:
  *  - `"M"` for function and method calls
@@ -196,15 +197,7 @@ Top definitionOf(Top e, string kind) {
     not e.(Element).isInMacroExpansion() and
     // exclude nested macro invocations, as they will overlap with
     // the top macro invocation.
-    not exists(e.(MacroAccess).getParentInvocation()) and
-    // exclude results from template instantiations, as:
-    // (1) these dependencies will often be caused by a choice of
-    // template parameter, which is non-local to this part of code; and
-    // (2) overlapping results pointing to different locations will
-    // be very common.
-    // It's possible we could allow a subset of these dependencies
-    // in future, if we're careful to ensure the above don't apply.
-    not e.isFromTemplateInstantiation(_)
+    not exists(e.(MacroAccess).getParentInvocation())
   ) and
   // Some entities have many locations. This can arise for an external
   // function that is frequently declared but not defined, or perhaps

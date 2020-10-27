@@ -1,13 +1,9 @@
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Kinds;
-using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class ImplicitCast : Expression
+    internal class ImplicitCast : Expression
     {
         public Expression Expr
         {
@@ -50,12 +46,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (conversion.MethodSymbol != null)
             {
-                bool convertedToDelegate = Entities.Type.IsDelegate(convertedType.Symbol);
+                var convertedToDelegate = Entities.Type.IsDelegate(convertedType.Symbol);
 
                 if (convertedToDelegate)
                 {
-                    var objectCreation = info.Parent as ExplicitObjectCreation;
-                    bool isExplicitConversion = objectCreation != null && objectCreation.Kind == ExprKind.EXPLICIT_DELEGATE_CREATION;
+                    var isExplicitConversion =
+                        info.Parent is ExplicitObjectCreation objectCreation &&
+                        objectCreation.Kind == ExprKind.EXPLICIT_DELEGATE_CREATION;
 
                     if (!isExplicitConversion)
                     {
@@ -72,7 +69,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return new ImplicitCast(info, conversion.MethodSymbol);
             }
 
-            bool implicitUpcast = conversion.IsImplicit &&
+            var implicitUpcast = conversion.IsImplicit &&
                 convertedType.Symbol != null &&
                 !conversion.IsBoxing &&
                 (
@@ -83,6 +80,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (!conversion.IsIdentity && !implicitUpcast)
             {
+                return new ImplicitCast(info);
+            }
+
+            if (conversion.IsIdentity && conversion.IsImplicit &&
+                convertedType.Symbol is IPointerTypeSymbol &&
+                !(resolvedType.Symbol is IPointerTypeSymbol))
+            {
+                // int[] -> int*
+                // string -> char*
                 return new ImplicitCast(info);
             }
 

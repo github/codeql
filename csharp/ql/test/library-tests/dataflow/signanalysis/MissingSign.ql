@@ -1,9 +1,10 @@
 import csharp
-import semmle.code.csharp.dataflow.SignAnalysis
+import semmle.code.csharp.dataflow.internal.rangeanalysis.SignAnalysisCommon
 
-from Expr e
+from ControlFlow::Nodes::ExprNode e
 where
   not exists(exprSign(e)) and
+  not e.getExpr() instanceof TypeAccess and
   (
     e.getType() instanceof CharType or
     e.getType() instanceof IntegralType or

@@ -995,6 +995,13 @@ class ClassNode extends DataFlow::SourceNode {
   predicate hasQualifiedName(string name) {
     getAClassReference().flowsTo(AccessPath::getAnAssignmentTo(name))
   }
+
+  /**
+   * Gets the type annotation for the field `fieldName`, if any.
+   */
+  TypeAnnotation getFieldTypeAnnotation(string fieldName) {
+    result = impl.getFieldTypeAnnotation(fieldName)
+  }
 }
 
 module ClassNode {
@@ -1047,6 +1054,11 @@ module ClassNode {
      * of this node.
      */
     abstract DataFlow::Node getASuperClassNode();
+
+    /**
+     * Gets the type annotation for the field `fieldName`, if any.
+     */
+    TypeAnnotation getFieldTypeAnnotation(string fieldName) { none() }
   }
 
   /**
@@ -1106,6 +1118,14 @@ module ClassNode {
     }
 
     override DataFlow::Node getASuperClassNode() { result = astNode.getSuperClass().flow() }
+
+    override TypeAnnotation getFieldTypeAnnotation(string fieldName) {
+      exists(FieldDeclaration field |
+        field.getDeclaringClass() = astNode and
+        fieldName = field.getName() and
+        result = field.getTypeAnnotation()
+      )
+    }
   }
 
   private DataFlow::PropRef getAPrototypeReferenceInFile(string name, File f) {
@@ -1355,6 +1375,46 @@ module PartialInvokeNode {
     override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
       callback = getArgument(0) and
       boundArgs = getNumArgument() - 1 and
+      result = this
+    }
+  }
+
+  /**
+   * A partial call that behaves like a throttle call, like `require("call-limit")(fs, limit)` or `_.memoize`.
+   * Seen as a partial invocation that binds no arguments.
+   */
+  private class ThrottleLikePartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
+    int callbackIndex;
+
+    ThrottleLikePartialCall() {
+      callbackIndex = 0 and
+      (
+        this = LodashUnderscore::member(["throttle", "debounce", "once", "memoize"]).getACall()
+        or
+        this = DataFlow::moduleImport(["call-limit", "debounce"]).getACall()
+      )
+      or
+      callbackIndex = 1 and
+      (
+        this = LodashUnderscore::member(["after", "before"]).getACall()
+        or
+        // not jQuery: https://github.com/cowboy/jquery-throttle-debounce
+        this = DataFlow::globalVarRef("$").getAMemberCall(["throttle", "debounce"])
+      )
+      or
+      callbackIndex = -1 and
+      this = DataFlow::moduleMember("throttle-debounce", ["debounce", "throttle"]).getACall()
+    }
+
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      (
+        callbackIndex >= 0 and
+        callback = getArgument(callbackIndex)
+        or
+        callbackIndex = -1 and
+        callback = getLastArgument()
+      ) and
+      boundArgs = 0 and
       result = this
     }
   }

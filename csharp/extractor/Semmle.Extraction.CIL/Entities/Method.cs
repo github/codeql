@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
@@ -14,20 +13,20 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A method entity.
     /// </summary>
-    interface IMethod : IMember
+    internal interface IMethod : IMember
     {
     }
 
     /// <summary>
     /// A method entity.
     /// </summary>
-    abstract class Method : TypeContainer, IMethod
+    internal abstract class Method : TypeContainer, IMethod
     {
         protected MethodTypeParameter[]? genericParams;
         protected GenericContext gc;
         protected MethodSignature<ITypeSignature> signature;
 
-        protected Method(GenericContext gc) : base(gc.cx)
+        protected Method(GenericContext gc) : base(gc.Cx)
         {
             this.gc = gc;
         }
@@ -51,7 +50,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public abstract string NameLabel { get; }
 
-        internal protected void WriteMethodId(TextWriter trapFile, Type parent, string methodName)
+        protected internal void WriteMethodId(TextWriter trapFile, Type parent, string methodName)
         {
             signature.ReturnType.WriteId(trapFile, this);
             trapFile.Write(' ');
@@ -65,7 +64,7 @@ namespace Semmle.Extraction.CIL.Entities
                 trapFile.Write(signature.GenericParameterCount);
             }
             trapFile.Write('(');
-            int index = 0;
+            var index = 0;
             foreach (var param in signature.ParameterTypes)
             {
                 trapFile.WriteSeparator(",", ref index);
@@ -89,22 +88,22 @@ namespace Semmle.Extraction.CIL.Entities
 
         protected IEnumerable<Parameter> MakeParameters(IEnumerable<Type> parameterTypes)
         {
-            int i = 0;
+            var i = 0;
 
             if (!IsStatic)
             {
-                yield return cx.Populate(new Parameter(cx, this, i++, DeclaringType));
+                yield return Cx.Populate(new Parameter(Cx, this, i++, DeclaringType));
             }
 
             foreach (var p in parameterTypes)
-                yield return cx.Populate(new Parameter(cx, this, i++, p));
+                yield return Cx.Populate(new Parameter(Cx, this, i++, p));
         }
     }
 
     /// <summary>
     /// A method implementation entity.
     /// </summary>
-    interface IMethodImplementation : IExtractedEntity
+    internal interface IMethodImplementation : IExtractedEntity
     {
     }
 
@@ -112,11 +111,11 @@ namespace Semmle.Extraction.CIL.Entities
     /// A method implementation entity.
     /// In the database, the same method could in principle have multiple implementations.
     /// </summary>
-    class MethodImplementation : UnlabelledEntity, IMethodImplementation
+    internal class MethodImplementation : UnlabelledEntity, IMethodImplementation
     {
-        readonly Method m;
+        private readonly Method m;
 
-        public MethodImplementation(Method m) : base(m.cx)
+        public MethodImplementation(Method m) : base(m.Cx)
         {
             this.m = m;
         }
@@ -125,7 +124,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.cil_method_implementation(this, m, cx.assembly);
+                yield return Tuples.cil_method_implementation(this, m, Cx.Assembly);
             }
         }
     }
@@ -134,15 +133,15 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A definition method - a method defined in the current assembly.
     /// </summary>
-    sealed class DefinitionMethod : Method, IMember
+    internal sealed class DefinitionMethod : Method, IMember
     {
-        readonly Handle handle;
-        readonly MethodDefinition md;
-        readonly PDB.IMethod? methodDebugInformation;
-        readonly Type declaringType;
+        private readonly Handle handle;
+        private readonly MethodDefinition md;
+        private readonly PDB.IMethod? methodDebugInformation;
+        private readonly Type declaringType;
 
-        readonly string name;
-        LocalVariable[]? locals;
+        private readonly string name;
+        private LocalVariable[]? locals;
 
         public MethodImplementation? Implementation { get; private set; }
 
@@ -150,16 +149,16 @@ namespace Semmle.Extraction.CIL.Entities
 
         public DefinitionMethod(GenericContext gc, MethodDefinitionHandle handle) : base(gc)
         {
-            md = cx.mdReader.GetMethodDefinition(handle);
+            md = Cx.MdReader.GetMethodDefinition(handle);
             this.gc = gc;
             this.handle = handle;
-            name = cx.GetString(md.Name);
+            name = Cx.GetString(md.Name);
 
-            declaringType = (Type)cx.CreateGeneric(this, md.GetDeclaringType());
+            declaringType = (Type)Cx.CreateGeneric(this, md.GetDeclaringType());
 
             signature = md.DecodeSignature(new SignatureDecoder(), this);
 
-            methodDebugInformation = cx.GetMethodDebugInformation(handle);
+            methodDebugInformation = Cx.GetMethodDebugInformation(handle);
         }
 
         public override bool Equals(object? obj)
@@ -173,7 +172,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Type DeclaringType => declaringType;
 
-        public override string Name => cx.ShortName(md.Name);
+        public override string Name => Cx.ShortName(md.Name);
 
         public override string NameLabel => name;
 
@@ -191,15 +190,15 @@ namespace Semmle.Extraction.CIL.Entities
                     // We need to perform a 2-phase population because some type parameters can
                     // depend on other type parameters (as a constraint).
                     genericParams = new MethodTypeParameter[md.GetGenericParameters().Count];
-                    for (int i = 0; i < genericParams.Length; ++i)
-                        genericParams[i] = cx.Populate(new MethodTypeParameter(this, this, i));
-                    for (int i = 0; i < genericParams.Length; ++i)
-                        genericParams[i].PopulateHandle(this, md.GetGenericParameters()[i]);
+                    for (var i = 0; i < genericParams.Length; ++i)
+                        genericParams[i] = Cx.Populate(new MethodTypeParameter(this, this, i));
+                    for (var i = 0; i < genericParams.Length; ++i)
+                        genericParams[i].PopulateHandle(md.GetGenericParameters()[i]);
                     foreach (var p in genericParams)
                         yield return p;
                 }
 
-                var typeSignature = md.DecodeSignature(cx.TypeSignatureDecoder, this);
+                var typeSignature = md.DecodeSignature(Cx.TypeSignatureDecoder, this);
 
                 Parameters = MakeParameters(typeSignature.ParameterTypes).ToArray();
 
@@ -209,38 +208,38 @@ namespace Semmle.Extraction.CIL.Entities
                 foreach (var c in PopulateFlags)
                     yield return c;
 
-                foreach (var p in md.GetParameters().Select(h => cx.mdReader.GetParameter(h)).Where(p => p.SequenceNumber > 0))
+                foreach (var p in md.GetParameters().Select(h => Cx.MdReader.GetParameter(h)).Where(p => p.SequenceNumber > 0))
                 {
                     var pe = Parameters[IsStatic ? p.SequenceNumber - 1 : p.SequenceNumber];
                     if (p.Attributes.HasFlag(ParameterAttributes.Out))
                         yield return Tuples.cil_parameter_out(pe);
                     if (p.Attributes.HasFlag(ParameterAttributes.In))
                         yield return Tuples.cil_parameter_in(pe);
-                    Attribute.Populate(cx, pe, p.GetCustomAttributes());
+                    Attribute.Populate(Cx, pe, p.GetCustomAttributes());
                 }
 
-                yield return Tuples.metadata_handle(this, cx.assembly, MetadataTokens.GetToken(handle));
+                yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
                 yield return Tuples.cil_method(this, Name, declaringType, typeSignature.ReturnType);
                 yield return Tuples.cil_method_source_declaration(this, this);
-                yield return Tuples.cil_method_location(this, cx.assembly);
+                yield return Tuples.cil_method_location(this, Cx.Assembly);
 
                 if (HasBytecode)
                 {
                     Implementation = new MethodImplementation(this);
                     yield return Implementation;
 
-                    var body = cx.peReader.GetMethodBody(md.RelativeVirtualAddress);
+                    var body = Cx.PeReader.GetMethodBody(md.RelativeVirtualAddress);
 
                     if (!body.LocalSignature.IsNil)
                     {
-                        var locals = cx.mdReader.GetStandaloneSignature(body.LocalSignature);
-                        var localVariableTypes = locals.DecodeLocalSignature(cx.TypeSignatureDecoder, this);
+                        var locals = Cx.MdReader.GetStandaloneSignature(body.LocalSignature);
+                        var localVariableTypes = locals.DecodeLocalSignature(Cx.TypeSignatureDecoder, this);
 
                         this.locals = new LocalVariable[localVariableTypes.Length];
 
-                        for (int l = 0; l < this.locals.Length; ++l)
+                        for (var l = 0; l < this.locals.Length; ++l)
                         {
-                            this.locals[l] = cx.Populate(new LocalVariable(cx, Implementation, l, localVariableTypes[l]));
+                            this.locals[l] = Cx.Populate(new LocalVariable(Cx, Implementation, l, localVariableTypes[l]));
                             yield return this.locals[l];
                         }
                     }
@@ -250,7 +249,7 @@ namespace Semmle.Extraction.CIL.Entities
                     foreach (var c in Decode(body.GetILBytes(), jump_table))
                         yield return c;
 
-                    int filter_index = 0;
+                    var filter_index = 0;
                     foreach (var region in body.ExceptionRegions)
                     {
                         yield return new ExceptionRegion(this, Implementation, filter_index++, region, jump_table);
@@ -260,7 +259,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                     if (methodDebugInformation != null)
                     {
-                        var sourceLocation = cx.CreateSourceLocation(methodDebugInformation.Location);
+                        var sourceLocation = Cx.CreateSourceLocation(methodDebugInformation.Location);
                         yield return sourceLocation;
                         yield return Tuples.cil_method_location(this, sourceLocation);
                     }
@@ -299,11 +298,11 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return Tuples.cil_newslot(this);
 
                 // Populate attributes
-                Attribute.Populate(cx, this, md.GetCustomAttributes());
+                Attribute.Populate(Cx, this, md.GetCustomAttributes());
             }
         }
 
-        IEnumerable<IExtractionProduct> Decode(byte[] ilbytes, Dictionary<int, IInstruction> jump_table)
+        private IEnumerable<IExtractionProduct> Decode(byte[] ilbytes, Dictionary<int, IInstruction> jump_table)
         {
             // Sequence points are stored in order of offset.
             // We use an enumerator to locate the correct sequence point for each instruction.
@@ -318,7 +317,7 @@ namespace Semmle.Extraction.CIL.Entities
                 nextSequencePoint = methodDebugInformation.SequencePoints.GetEnumerator();
                 if (nextSequencePoint.MoveNext())
                 {
-                    instructionLocation = cx.CreateSourceLocation(nextSequencePoint.Current.Location);
+                    instructionLocation = Cx.CreateSourceLocation(nextSequencePoint.Current.Location);
                     yield return instructionLocation;
                 }
                 else
@@ -327,15 +326,15 @@ namespace Semmle.Extraction.CIL.Entities
                 }
             }
 
-            int child = 0;
-            for (int offset = 0; offset < ilbytes.Length;)
+            var child = 0;
+            for (var offset = 0; offset < ilbytes.Length;)
             {
-                var instruction = new Instruction(cx, this, ilbytes, offset, child++);
+                var instruction = new Instruction(Cx, this, ilbytes, offset, child++);
                 yield return instruction;
 
                 if (nextSequencePoint != null && offset >= nextSequencePoint.Current.Offset)
                 {
-                    instructionLocation = cx.CreateSourceLocation(nextSequencePoint.Current.Location);
+                    instructionLocation = Cx.CreateSourceLocation(nextSequencePoint.Current.Location);
                     yield return instructionLocation;
                     if (!nextSequencePoint.MoveNext())
                         nextSequencePoint = null;
@@ -365,17 +364,17 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 if (md.ImplAttributes == MethodImplAttributes.IL && md.RelativeVirtualAddress != 0)
                 {
-                    var body = cx.peReader.GetMethodBody(md.RelativeVirtualAddress);
+                    var body = Cx.PeReader.GetMethodBody(md.RelativeVirtualAddress);
 
                     var ilbytes = body.GetILBytes();
 
-                    int child = 0;
-                    for (int offset = 0; offset < ilbytes.Length;)
+                    var child = 0;
+                    for (var offset = 0; offset < ilbytes.Length;)
                     {
                         Instruction decoded;
                         try
                         {
-                            decoded = new Instruction(cx, this, ilbytes, offset, child++);
+                            decoded = new Instruction(Cx, this, ilbytes, offset, child++);
                             offset += decoded.Width;
                         }
                         catch  // lgtm[cs/catch-of-all-exceptions]
@@ -392,33 +391,33 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// This is a late-bound reference to a method.
     /// </summary>
-    sealed class MemberReferenceMethod : Method
+    internal sealed class MemberReferenceMethod : Method
     {
-        readonly MemberReferenceHandle handle;
-        readonly MemberReference mr;
-        readonly Type declaringType;
-        readonly GenericContext parent;
-        readonly Method? sourceDeclaration;
+        private readonly MemberReferenceHandle handle;
+        private readonly MemberReference mr;
+        private readonly Type declaringType;
+        private readonly GenericContext parent;
+        private readonly Method? sourceDeclaration;
 
         public MemberReferenceMethod(GenericContext gc, MemberReferenceHandle handle) : base(gc)
         {
             this.handle = handle;
             this.gc = gc;
-            mr = cx.mdReader.GetMemberReference(handle);
+            mr = Cx.MdReader.GetMemberReference(handle);
 
             signature = mr.DecodeMethodSignature(new SignatureDecoder(), gc);
 
-            parent = (GenericContext)cx.CreateGeneric(gc, mr.Parent);
+            parent = (GenericContext)Cx.CreateGeneric(gc, mr.Parent);
 
-            var parentMethod = parent as Method;
-
-            var declType = parentMethod is null ? parent as Type : parentMethod.DeclaringType;
+            var declType = parent is Method parentMethod
+                ? parentMethod.DeclaringType
+                : parent as Type;
 
             if (declType is null)
                 throw new InternalError("Parent context of method is not a type");
 
             declaringType = declType;
-            nameLabel = cx.GetString(mr.Name);
+            nameLabel = Cx.GetString(mr.Name);
 
             var typeSourceDeclaration = declaringType.SourceDeclaration;
             sourceDeclaration = typeSourceDeclaration == declaringType ? (Method)this : typeSourceDeclaration.LookupMethod(mr.Name, mr.Signature);
@@ -444,7 +443,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Type DeclaringType => declaringType;
 
-        public override string Name => cx.ShortName(mr.Name);
+        public override string Name => Cx.ShortName(mr.Name);
 
         public override IEnumerable<Type> TypeParameters => parent.TypeParameters.Concat(gc.TypeParameters);
 
@@ -453,13 +452,13 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 genericParams = new MethodTypeParameter[signature.GenericParameterCount];
-                for (int p = 0; p < genericParams.Length; ++p)
-                    genericParams[p] = cx.Populate(new MethodTypeParameter(this, this, p));
+                for (var p = 0; p < genericParams.Length; ++p)
+                    genericParams[p] = Cx.Populate(new MethodTypeParameter(this, this, p));
 
                 foreach (var p in genericParams)
                     yield return p;
 
-                var typeSignature = mr.DecodeMethodSignature(cx.TypeSignatureDecoder, this);
+                var typeSignature = mr.DecodeMethodSignature(Cx.TypeSignatureDecoder, this);
 
                 Parameters = MakeParameters(typeSignature.ParameterTypes).ToArray();
                 foreach (var p in Parameters) yield return p;
@@ -477,28 +476,26 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A constructed method.
     /// </summary>
-    sealed class MethodSpecificationMethod : Method
+    internal sealed class MethodSpecificationMethod : Method
     {
-        readonly MethodSpecificationHandle handle;
-        readonly MethodSpecification ms;
-        readonly Method unboundMethod;
-        readonly ImmutableArray<Type> typeParams;
-        readonly Type declaringType;
+        private readonly MethodSpecificationHandle handle;
+        private readonly MethodSpecification ms;
+        private readonly Method unboundMethod;
+        private readonly ImmutableArray<Type> typeParams;
 
         public MethodSpecificationMethod(GenericContext gc, MethodSpecificationHandle handle) : base(gc)
         {
             this.handle = handle;
-            ms = cx.mdReader.GetMethodSpecification(handle);
-            typeParams = ms.DecodeSignature(cx.TypeSignatureDecoder, gc);
-            unboundMethod = (Method)cx.CreateGeneric(gc, ms.Method);
-            declaringType = unboundMethod.DeclaringType;
+            ms = Cx.MdReader.GetMethodSpecification(handle);
+            typeParams = ms.DecodeSignature(Cx.TypeSignatureDecoder, gc);
+            unboundMethod = (Method)Cx.CreateGeneric(gc, ms.Method);
         }
 
         public override void WriteId(TextWriter trapFile)
         {
             unboundMethod.WriteId(trapFile);
             trapFile.Write('<');
-            int index = 0;
+            var index = 0;
             foreach (var param in typeParams)
             {
                 trapFile.WriteSeparator(",", ref index);
@@ -534,12 +531,12 @@ namespace Semmle.Extraction.CIL.Entities
                 switch (ms.Method.Kind)
                 {
                     case HandleKind.MemberReference:
-                        var mr = cx.mdReader.GetMemberReference((MemberReferenceHandle)ms.Method);
-                        constructedTypeSignature = mr.DecodeMethodSignature(cx.TypeSignatureDecoder, this);
+                        var mr = Cx.MdReader.GetMemberReference((MemberReferenceHandle)ms.Method);
+                        constructedTypeSignature = mr.DecodeMethodSignature(Cx.TypeSignatureDecoder, this);
                         break;
                     case HandleKind.MethodDefinition:
-                        var md = cx.mdReader.GetMethodDefinition((MethodDefinitionHandle)ms.Method);
-                        constructedTypeSignature = md.DecodeSignature(cx.TypeSignatureDecoder, this);
+                        var md = Cx.MdReader.GetMethodDefinition((MethodDefinitionHandle)ms.Method);
+                        constructedTypeSignature = md.DecodeSignature(Cx.TypeSignatureDecoder, this);
                         break;
                     default:
                         throw new InternalError($"Unexpected constructed method handle kind {ms.Method.Kind}");
@@ -555,10 +552,10 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return Tuples.cil_method(this, Name, DeclaringType, constructedTypeSignature.ReturnType);
                 yield return Tuples.cil_method_source_declaration(this, SourceDeclaration);
 
-                if (typeParams.Count() != unboundMethod.GenericParameterCount)
+                if (typeParams.Length != unboundMethod.GenericParameterCount)
                     throw new InternalError("Method type parameter mismatch");
 
-                for (int p = 0; p < typeParams.Length; ++p)
+                for (var p = 0; p < typeParams.Length; ++p)
                 {
                     yield return Tuples.cil_type_argument(this, p, typeParams[p]);
                 }

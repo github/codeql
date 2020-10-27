@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class UserOperator : Method
+    internal class UserOperator : Method
     {
         protected UserOperator(Context cx, IMethodSymbol init)
             : base(cx, init) { }
@@ -55,13 +55,14 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         /// <param name="containingType">The type containing this operator.</param>
         /// <returns></returns>
-        bool IsImplicitOperator(out ITypeSymbol containingType)
+        private bool IsImplicitOperator(out ITypeSymbol containingType)
         {
             containingType = symbol.ContainingType;
             if (containingType != null)
             {
                 var containingNamedType = containingType as INamedTypeSymbol;
-                return containingNamedType == null || !containingNamedType.GetMembers(symbol.Name).Contains(symbol);
+                return containingNamedType == null ||
+                    !containingNamedType.GetMembers(symbol.Name).Contains(symbol);
             }
 
             var pointerType = symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();
@@ -177,17 +178,16 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns>The converted name.</returns>
         public static string OperatorSymbol(Context cx, string methodName)
         {
-            string result;
-            if (!OperatorSymbol(methodName, out result))
+            if (!OperatorSymbol(methodName, out var result))
                 cx.ModelError($"Unhandled operator name in OperatorSymbol(): '{methodName}'");
             return result;
         }
 
-        public new static UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
+        public static new UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
+        private class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
         {
-            public static readonly UserOperatorFactory Instance = new UserOperatorFactory();
+            public static UserOperatorFactory Instance { get; } = new UserOperatorFactory();
 
             public UserOperator Create(Context cx, IMethodSymbol init) => new UserOperator(cx, init);
         }

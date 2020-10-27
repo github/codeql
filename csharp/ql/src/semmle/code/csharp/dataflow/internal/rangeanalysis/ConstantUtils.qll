@@ -4,17 +4,16 @@
 
 private import csharp
 private import Ssa
+private import SsaUtils
+private import RangeUtils
+
+private class ExprNode = ControlFlow::Nodes::ExprNode;
 
 /**
- * Holds if property `p` matches `property` in `baseClass` or any overrides.
+ * Holds if `pa` is an access to the `Length` property of an array.
  */
-predicate propertyOverrides(Property p, string baseClass, string property) {
-  exists(Property p2 |
-    p2.getSourceDeclaration().getDeclaringType().hasQualifiedName(baseClass) and
-    p2.hasName(property)
-  |
-    p.overridesOrImplementsOrEquals(p2)
-  )
+predicate systemArrayLengthAccess(PropertyAccess pa) {
+  propertyOverrides(pa.getTarget(), "System.Array", "Length")
 }
 
 /**
@@ -23,40 +22,42 @@ predicate propertyOverrides(Property p, string baseClass, string property) {
  * - a read of a compile time constant with integer value `val`, or
  * - a read of the `Length` of an array with `val` lengths.
  */
-private predicate constantIntegerExpr(Expr e, int val) {
+private predicate constantIntegerExpr(ExprNode e, int val) {
   e.getValue().toInt() = val
   or
-  exists(ExplicitDefinition v, Expr src |
-    e = v.getARead() and
-    src = v.getADefinition().getSource() and
+  exists(ExprNode src |
+    e = getAnExplicitDefinitionRead(src) and
     constantIntegerExpr(src, val)
   )
   or
   isArrayLengthAccess(e, val)
 }
 
-private int getArrayLength(ArrayCreation arrCreation, int index) {
-  constantIntegerExpr(arrCreation.getLengthArgument(index), result)
+private int getArrayLength(ExprNode e, int index) {
+  exists(ArrayCreation arrCreation, ExprNode length |
+    hasChild(arrCreation, arrCreation.getLengthArgument(index), e, length) and
+    constantIntegerExpr(length, result)
+  )
 }
 
-private int getArrayLengthRec(ArrayCreation arrCreation, int index) {
+private int getArrayLengthRec(ExprNode arrCreation, int index) {
   index = 0 and result = getArrayLength(arrCreation, 0)
   or
   index > 0 and
   result = getArrayLength(arrCreation, index) * getArrayLengthRec(arrCreation, index - 1)
 }
 
-private predicate isArrayLengthAccess(PropertyAccess pa, int length) {
-  propertyOverrides(pa.getTarget(), "System.Array", "Length") and
-  exists(ExplicitDefinition arr, ArrayCreation arrCreation |
-    getArrayLengthRec(arrCreation, arrCreation.getNumberOfLengthArguments() - 1) = length and
-    arrCreation = arr.getADefinition().getSource() and
-    pa.getQualifier() = arr.getARead()
+private predicate isArrayLengthAccess(ExprNode e, int length) {
+  exists(PropertyAccess pa, ExprNode arrCreation |
+    systemArrayLengthAccess(pa) and
+    getArrayLengthRec(arrCreation,
+      arrCreation.getExpr().(ArrayCreation).getNumberOfLengthArguments() - 1) = length and
+    hasChild(pa, pa.getQualifier(), e, getAnExplicitDefinitionRead(arrCreation))
   )
 }
 
 /** An expression that always has the same integer value. */
-class ConstantIntegerExpr extends Expr {
+class ConstantIntegerExpr extends ExprNode {
   ConstantIntegerExpr() { constantIntegerExpr(this, _) }
 
   /** Gets the integer value of this expression. */

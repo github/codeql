@@ -6,10 +6,10 @@ namespace Semmle.Extraction
     /// <summary>
     /// An abstract symbol, which encapsulates a data type (such as a C# symbol).
     /// </summary>
-    /// <typeparam name="Initializer">The type of the symbol.</typeparam>
-    public abstract class CachedEntity<Initializer> : ICachedEntity
+    /// <typeparam name="TSymbol">The type of the symbol.</typeparam>
+    public abstract class CachedEntity<TSymbol> : ICachedEntity
     {
-        public CachedEntity(Context context, Initializer init)
+        protected CachedEntity(Context context, TSymbol init)
         {
             Context = context;
             symbol = init;
@@ -30,11 +30,9 @@ namespace Semmle.Extraction
         {
             get
             {
-                using (var trap = new StringWriter())
-                {
-                    Populate(trap);
-                    return trap.ToString();
-                }
+                using var trap = new StringWriter();
+                Populate(trap);
+                return trap.ToString();
             }
         }
 
@@ -43,14 +41,14 @@ namespace Semmle.Extraction
             get;
         }
 
-        public Initializer symbol
+        public TSymbol symbol
         {
             get;
         }
 
         object? ICachedEntity.UnderlyingObject => symbol;
 
-        public Initializer UnderlyingObject => symbol;
+        public TSymbol UnderlyingObject => symbol;
 
         public abstract void WriteId(System.IO.TextWriter trapFile);
 
@@ -70,7 +68,7 @@ namespace Semmle.Extraction
 
         public override bool Equals(object? obj)
         {
-            var other = obj as CachedEntity<Initializer>;
+            var other = obj as CachedEntity<TSymbol>;
             return other?.GetType() == GetType() && Equals(other.symbol, symbol);
         }
 

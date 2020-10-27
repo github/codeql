@@ -1,7 +1,7 @@
 /**
  * @name Jump-to-definition links
  * @description Generates use-definition pairs that provide the data
- *              for jump-to-definition in the code viewer.
+ *              for jump-to-definition in the code viewer of VSCode.
  * @kind definitions
  * @id cpp/ide-jump-to-definition
  * @tags ide-contextual-queries/local-definitions

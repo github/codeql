@@ -15,6 +15,11 @@ import semmle.javascript.dependencies.SemVer
 module PrototypePollution {
   import PrototypePollutionCustomizations::PrototypePollution
 
+  // Materialize flow labels
+  private class ConcreteTaintedObjectWrapper extends TaintedObjectWrapper {
+    ConcreteTaintedObjectWrapper() { this = this }
+  }
+
   /**
    * A taint tracking configuration for user-controlled objects flowing into deep `extend` calls,
    * leading to prototype pollution.

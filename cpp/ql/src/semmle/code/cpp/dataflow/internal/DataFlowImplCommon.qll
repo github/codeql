@@ -2,6 +2,30 @@ private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 import Cached
 
+/**
+ * The cost limits for the `AccessPathFront` to `AccessPathApprox` expansion.
+ *
+ * `apLimit` bounds the acceptable fan-out, and `tupleLimit` bounds the
+ * estimated per-`AccessPathFront` tuple cost. Access paths exceeding both of
+ * these limits are represented with lower precision during pruning.
+ */
+predicate accessPathApproxCostLimits(int apLimit, int tupleLimit) {
+  apLimit = 10 and
+  tupleLimit = 10000
+}
+
+/**
+ * The cost limits for the `AccessPathApprox` to `AccessPath` expansion.
+ *
+ * `apLimit` bounds the acceptable fan-out, and `tupleLimit` bounds the
+ * estimated per-`AccessPathApprox` tuple cost. Access paths exceeding both of
+ * these limits are represented with lower precision.
+ */
+predicate accessPathCostLimits(int apLimit, int tupleLimit) {
+  apLimit = 5 and
+  tupleLimit = 1000
+}
+
 cached
 private module Cached {
   /**

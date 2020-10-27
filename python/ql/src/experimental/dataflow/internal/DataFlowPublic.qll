@@ -5,6 +5,7 @@
 private import python
 private import DataFlowPrivate
 import experimental.dataflow.TypeTracker
+import Attributes
 private import semmle.python.essa.SsaCompute
 
 /**
@@ -22,11 +23,52 @@ newtype TNode =
   /** A node corresponding to an SSA variable. */
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
-  TCfgNode(DataFlowCfgNode node) or
-  /** A node representing the value of an object after a state change */
-  TPostUpdateNode(PreUpdateNode pre) or
-  /** A node representing a global (module-level) variable in a specific module */
-  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() }
+  TCfgNode(ControlFlowNode node) { isExpressionNode(node) } or
+  /** A synthetic node representing the value of an object before a state change */
+  TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
+  /** A synthetic node representing the value of an object after a state change. */
+  TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
+  /** A node representing a global (module-level) variable in a specific module. */
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() } or
+  /**
+   * A node representing the overflow positional arguments to a call.
+   * That is, `call` contains more positional arguments than there are
+   * positional parameters in `callable`. The extra ones are passed as
+   * a tuple to a starred parameter; this synthetic node represents that tuple.
+   */
+  TPosOverflowNode(CallNode call, CallableValue callable) {
+    exists(getPositionalOverflowArg(call, callable, _))
+  } or
+  /**
+   * A node representing the overflow keyword arguments to a call.
+   * That is, `call` contains keyword arguments for keys that do not have
+   * keyword parameters in `callable`. These extra ones are passed as
+   * a dictionary to a doubly starred parameter; this synthetic node
+   * represents that dictionary.
+   */
+  TKwOverflowNode(CallNode call, CallableValue callable) {
+    exists(getKeywordOverflowArg(call, callable, _))
+    or
+    ArgumentPassing::connects(call, callable) and
+    exists(call.getNode().getKwargs()) and
+    callable.getScope().hasKwArg()
+  } or
+  /**
+   * A node representing an unpacked element of a dictionary argument.
+   * That is, `call` contains argument `**{"foo": bar}` which is passed
+   * to parameter `foo` of `callable`.
+   */
+  TKwUnpacked(CallNode call, CallableValue callable, string name) {
+    call_unpacks(call, _, callable, name, _)
+  }
+
+/** Helper for `Node::getEnclosingCallable`. */
+private DataFlowCallable getCallableScope(Scope s) {
+  result.getScope() = s
+  or
+  not exists(DataFlowCallable c | c.getScope() = s) and
+  result = getCallableScope(s.getEnclosingScope())
+}
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
@@ -38,13 +80,6 @@ class Node extends TNode {
 
   /** Gets the scope of this node. */
   Scope getScope() { none() }
-
-  private DataFlowCallable getCallableScope(Scope s) {
-    result.getScope() = s
-    or
-    not exists(DataFlowCallable c | c.getScope() = s) and
-    result = getCallableScope(s.getEnclosingScope())
-  }
 
   /** Gets the enclosing callable of this node. */
   DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
@@ -101,7 +136,7 @@ class EssaNode extends Node, TEssaNode {
 }
 
 class CfgNode extends Node, TCfgNode {
-  DataFlowCfgNode node;
+  ControlFlowNode node;
 
   CfgNode() { this = TCfgNode(node) }
 
@@ -149,6 +184,26 @@ class ParameterNode extends EssaNode {
   }
 
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+
+  /** Gets the `Parameter` this `ParameterNode` represents. */
+  Parameter getParameter() { result = var.(ParameterDefinition).getParameter() }
+}
+
+/**
+ * A node associated with an object after an operation that might have
+ * changed its state.
+ *
+ * This can be either the argument to a callable after the callable returns
+ * (which might have mutated the argument), or the qualifier of a field after
+ * an update to the field.
+ *
+ * Nodes corresponding to AST elements, for example `ExprNode`s, usually refer
+ * to the value before the update with the exception of `ObjectCreationNode`s,
+ * which represents the value _after_ the constructor has run.
+ */
+abstract class PostUpdateNode extends Node {
+  /** Gets the node before the state update. */
+  abstract Node getPreUpdateNode();
 }
 
 /**
@@ -218,6 +273,49 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 }
 
 /**
+ * The node holding the extra positional arguments to a call. This node is passed as a tuple
+ * to the starred parameter of the callable.
+ */
+class PosOverflowNode extends Node, TPosOverflowNode {
+  CallNode call;
+
+  PosOverflowNode() { this = TPosOverflowNode(call, _) }
+
+  override string toString() { result = "PosOverflowNode for " + call.getNode().toString() }
+
+  override Location getLocation() { result = call.getLocation() }
+}
+
+/**
+ * The node holding the extra keyword arguments to a call. This node is passed as a dictionary
+ * to the doubly starred parameter of the callable.
+ */
+class KwOverflowNode extends Node, TKwOverflowNode {
+  CallNode call;
+
+  KwOverflowNode() { this = TKwOverflowNode(call, _) }
+
+  override string toString() { result = "KwOverflowNode for " + call.getNode().toString() }
+
+  override Location getLocation() { result = call.getLocation() }
+}
+
+/**
+ * The node representing the synthetic argument of a call that is unpacked from a dictionary
+ * argument.
+ */
+class KwUnpacked extends Node, TKwUnpacked {
+  CallNode call;
+  string name;
+
+  KwUnpacked() { this = TKwUnpacked(call, _, name) }
+
+  override string toString() { result = "KwUnpacked " + name }
+
+  override Location getLocation() { result = call.getLocation() }
+}
+
+/**
  * A node that controls whether other nodes are evaluated.
  */
 class GuardNode extends ControlFlowNode {
@@ -270,7 +368,9 @@ newtype TContent =
     key = any(Keyword kw).getArg()
   } or
   /** An element of a dictionary at any key. */
-  TDictionaryElementAnyContent()
+  TDictionaryElementAnyContent() or
+  /** An object attribute. */
+  TAttributeContent(string attr) { attr = any(Attribute a).getName() }
 
 class Content extends TContent {
   /** Gets a textual representation of this element. */
@@ -278,12 +378,10 @@ class Content extends TContent {
 }
 
 class ListElementContent extends TListElementContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "List element" }
 }
 
 class SetElementContent extends TSetElementContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Set element" }
 }
 
@@ -292,10 +390,9 @@ class TupleElementContent extends TTupleElementContent, Content {
 
   TupleElementContent() { this = TTupleElementContent(index) }
 
-  /** Gets the index for this tuple element */
+  /** Gets the index for this tuple element. */
   int getIndex() { result = index }
 
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Tuple element at index " + index.toString() }
 }
 
@@ -304,14 +401,23 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
 
   DictionaryElementContent() { this = TDictionaryElementContent(key) }
 
-  /** Gets the index for this tuple element */
+  /** Gets the key for this dictionary element. */
   string getKey() { result = key }
 
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Dictionary element at key " + key }
 }
 
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Any dictionary element" }
+}
+
+class AttributeContent extends TAttributeContent, Content {
+  private string attr;
+
+  AttributeContent() { this = TAttributeContent(attr) }
+
+  /** Gets the name of the attribute under which this content is stored. */
+  string getAttribute() { result = attr }
+
+  override string toString() { result = "Attribute " + attr }
 }

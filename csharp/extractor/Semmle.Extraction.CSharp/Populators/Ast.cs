@@ -5,11 +5,11 @@ using Semmle.Extraction.CSharp.Entities;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
-    class Ast : CSharpSyntaxVisitor
+    internal class Ast : CSharpSyntaxVisitor
     {
-        readonly Context cx;
-        readonly IExpressionParentEntity parent;
-        readonly int child;
+        private readonly Context cx;
+        private readonly IExpressionParentEntity parent;
+        private readonly int child;
 
         public Ast(Context cx, IExpressionParentEntity parent, int child)
         {
@@ -23,15 +23,9 @@ namespace Semmle.Extraction.CSharp.Populators
             cx.ModelError(node, $"Unhandled syntax node {node.Kind()}");
         }
 
-        public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
-        {
-            ((Property)parent).VisitDeclaration(cx, node);
-        }
-
-
         public override void VisitArgumentList(ArgumentListSyntax node)
         {
-            int c = 0;
+            var c = 0;
             foreach (var m in node.Arguments)
             {
                 cx.Extract(m, parent, c++);

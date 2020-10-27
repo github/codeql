@@ -30,7 +30,7 @@ private class DelegateFlowSource extends DataFlow::ExprNode {
 }
 
 /** A sink of flow for a delegate expression. */
-abstract private class DelegateFlowSink extends DataFlow::ExprNode {
+abstract private class DelegateFlowSink extends DataFlow::Node {
   /**
    * Gets an actual run-time target of this delegate call in the given call
    * context, if any. The call context records the *last* call required to
@@ -92,7 +92,7 @@ abstract private class DelegateFlowSink extends DataFlow::ExprNode {
 }
 
 /** A delegate call expression. */
-library class DelegateCallExpr extends DelegateFlowSink {
+class DelegateCallExpr extends DelegateFlowSink, DataFlow::ExprNode {
   DelegateCall dc;
 
   DelegateCallExpr() { this.getExpr() = dc.getDelegateExpr() }
@@ -101,50 +101,15 @@ library class DelegateCallExpr extends DelegateFlowSink {
   DelegateCall getDelegateCall() { result = dc }
 }
 
-/** A delegate expression that is passed as the argument to a library callable. */
-library class DelegateArgumentToLibraryCallable extends Expr {
-  DelegateType dt;
-  Call call;
-
-  DelegateArgumentToLibraryCallable() {
-    exists(Callable callable, Parameter p |
-      this = call.getArgumentForParameter(p) and
-      callable = call.getTarget() and
-      callable.fromLibrary() and
-      dt = p.getType().(SystemLinqExpressions::DelegateExtType).getDelegateType()
-    )
-  }
-
-  /** Gets the call that this argument belongs to. */
-  Call getCall() { result = call }
-
-  /** Gets the index of this delegate argument in the call. */
-  int getArgumentIndex() { this = this.getCall().getArgument(result) }
-
-  /** Gets the delegate type of this argument. */
-  DelegateType getDelegateType() { result = dt }
-
-  /**
-   * Gets an actual run-time target of this delegate call in the given call
-   * context, if any. The call context records the *last* call required to
-   * resolve the target, if any. Example:
-   */
-  Callable getARuntimeTarget(CallContext context) {
-    exists(DelegateArgumentToLibraryCallableSink sink | sink.getExpr() = this |
-      result = sink.getARuntimeTarget(context)
-    )
-  }
-}
-
-/** A delegate expression that is passed as the argument to a library callable. */
-private class DelegateArgumentToLibraryCallableSink extends DelegateFlowSink {
-  DelegateArgumentToLibraryCallableSink() {
-    this.getExpr() instanceof DelegateArgumentToLibraryCallable
+/** A parameter of delegate type belonging to a callable with a flow summary. */
+class SummaryDelegateParameterSink extends DelegateFlowSink, SummaryParameterNode {
+  SummaryDelegateParameterSink() {
+    this.getType() instanceof SystemLinqExpressions::DelegateExtType
   }
 }
 
 /** A delegate expression that is added to an event. */
-library class AddEventSource extends DelegateFlowSink {
+class AddEventSource extends DelegateFlowSink, DataFlow::ExprNode {
   AddEventExpr ae;
 
   AddEventSource() { this.getExpr() = ae.getRValue() }
@@ -192,7 +157,13 @@ private predicate flowsFrom(
   or
   // Local flow
   exists(DataFlow::Node mid | flowsFrom(sink, mid, isReturned, lastCall) |
-    DataFlow::localFlowStep(node, mid) or
+    LocalFlow::localFlowStepCommon(node, mid)
+    or
+    exists(Ssa::Definition def |
+      LocalFlow::localSsaFlowStep(def, node, mid) and
+      LocalFlow::usesInstanceField(def)
+    )
+    or
     node.asExpr() = mid.asExpr().(DelegateCreation).getArgument()
   )
   or
@@ -205,7 +176,7 @@ private predicate flowsFrom(
   )
   or
   // Flow into a callable (non-delegate call)
-  exists(ExplicitParameterNode mid, CallContext prevLastCall, NonDelegateCall call, Parameter p |
+  exists(ParameterNode mid, CallContext prevLastCall, NonDelegateCall call, Parameter p |
     flowsFrom(sink, mid, isReturned, prevLastCall) and
     isReturned = false and
     p = mid.getParameter() and
@@ -215,8 +186,7 @@ private predicate flowsFrom(
   or
   // Flow into a callable (delegate call)
   exists(
-    ExplicitParameterNode mid, CallContext prevLastCall, DelegateCall call, Callable c, Parameter p,
-    int i
+    ParameterNode mid, CallContext prevLastCall, DelegateCall call, Callable c, Parameter p, int i
   |
     flowsFrom(sink, mid, isReturned, prevLastCall) and
     isReturned = false and

@@ -8,14 +8,13 @@ import cpp
  */
 class StrcatFunction extends Function {
   StrcatFunction() {
-    exists(string name | name = getName() |
-      name = "strcat" or // strcat(dst, src)
-      name = "strncat" or // strncat(dst, src, max_amount)
-      name = "wcscat" or // wcscat(dst, src)
-      name = "_mbscat" or // _mbscat(dst, src)
-      name = "wcsncat" or // wcsncat(dst, src, max_amount)
-      name = "_mbsncat" or // _mbsncat(dst, src, max_amount)
-      name = "_mbsncat_l" // _mbsncat_l(dst, src, max_amount, locale)
-    )
+    getName() =
+      ["strcat", // strcat(dst, src)
+          "strncat", // strncat(dst, src, max_amount)
+          "wcscat", // wcscat(dst, src)
+          "_mbscat", // _mbscat(dst, src)
+          "wcsncat", // wcsncat(dst, src, max_amount)
+          "_mbsncat", // _mbsncat(dst, src, max_amount)
+          "_mbsncat_l"] // _mbsncat_l(dst, src, max_amount, locale)
   }
 }

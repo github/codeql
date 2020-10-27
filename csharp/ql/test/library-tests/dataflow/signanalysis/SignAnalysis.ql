@@ -1,7 +1,7 @@
 import csharp
 import semmle.code.csharp.dataflow.SignAnalysis
 
-string getASignString(Expr e) {
+string getASignString(ControlFlow::Nodes::ExprNode e) {
   positive(e) and
   not strictlyPositive(e) and
   result = "positive"
@@ -17,5 +17,5 @@ string getASignString(Expr e) {
   result = "strictlyNegative"
 }
 
-from Expr e
+from ControlFlow::Nodes::ExprNode e
 select e, strictconcat(string s | s = getASignString(e) | s, " ")

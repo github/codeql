@@ -109,7 +109,8 @@ unsafe.cs:
 #   36|                 1: [LocalVariableAccess] access to local variable data
 #   37|             1: [FixedStmt] fixed(...) { ... }
 #   37|               -1: [LocalVariableDeclAndInitExpr] Int32* p = ...
-#   37|                 0: [LocalVariableAccess] access to local variable data
+#   37|                 0: [CastExpr] (...) ...
+#   37|                   0: [LocalVariableAccess] access to local variable data
 #   37|                 1: [LocalVariableAccess] access to local variable p
 #   38|               0: [BlockStmt] {...}
 #   44|   2: [Class] SafeClass

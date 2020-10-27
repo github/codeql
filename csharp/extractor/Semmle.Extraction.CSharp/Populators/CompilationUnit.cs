@@ -10,9 +10,9 @@ namespace Semmle.Extraction.CSharp.Populators
 {
     public class TypeContainerVisitor : CSharpSyntaxVisitor
     {
-        protected readonly Context cx;
-        protected readonly IEntity parent;
-        protected readonly TextWriter trapFile;
+        protected Context cx { get; }
+        protected IEntity parent { get; }
+        protected TextWriter trapFile { get; }
 
         public TypeContainerVisitor(Context cx, TextWriter trapFile, IEntity parent)
         {
@@ -53,7 +53,8 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitAttributeList(AttributeListSyntax node)
         {
-            if (cx.Extractor.Standalone) return;
+            if (cx.Extractor.Standalone)
+                return;
 
             var outputAssembly = Assembly.CreateOutputAssembly(cx);
             foreach (var attribute in node.Attributes)
@@ -64,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Populators
         }
     }
 
-    class TypeOrNamespaceVisitor : TypeContainerVisitor
+    internal class TypeOrNamespaceVisitor : TypeContainerVisitor
     {
         public TypeOrNamespaceVisitor(Context cx, TextWriter trapFile, IEntity parent)
             : base(cx, trapFile, parent) { }
@@ -82,7 +83,7 @@ namespace Semmle.Extraction.CSharp.Populators
         }
     }
 
-    class CompilationUnitVisitor : TypeOrNamespaceVisitor
+    internal class CompilationUnitVisitor : TypeOrNamespaceVisitor
     {
         public CompilationUnitVisitor(Context cx)
             : base(cx, cx.TrapWriter.Writer, null) { }
@@ -101,7 +102,7 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             // Gather comments:
-            foreach (SyntaxTrivia trivia in compilationUnit.DescendantTrivia(compilationUnit.Span))
+            foreach (var trivia in compilationUnit.DescendantTrivia(compilationUnit.Span))
             {
                 CommentLine.Extract(cx, trivia);
             }

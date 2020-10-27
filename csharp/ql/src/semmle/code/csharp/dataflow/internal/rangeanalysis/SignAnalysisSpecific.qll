@@ -2,13 +2,14 @@
  * Provides C#-specific definitions for use in sign analysis.
  */
 module Private {
-  private import SsaUtils as SU
   private import csharp as CS
+  private import SsaUtils as SU
   private import ConstantUtils as CU
-  private import semmle.code.csharp.controlflow.Guards as G
+  private import RangeUtils as RU
+  private import Sign
   import Impl
 
-  class Guard = G::Guard;
+  class Guard = RU::Guard;
 
   class ConstantIntegerExpr = CU::ConstantIntegerExpr;
 
@@ -16,39 +17,57 @@ module Private {
 
   class SsaPhiNode = CS::Ssa::PhiNode;
 
-  class VarAccess = CS::AssignableAccess;
+  class VarAccess = RU::ExprNode::AssignableAccess;
 
-  class FieldAccess = CS::FieldAccess;
+  class FieldAccess = RU::ExprNode::FieldAccess;
 
-  class CharacterLiteral = CS::CharLiteral;
+  class CharacterLiteral = RU::ExprNode::CharLiteral;
 
-  class IntegerLiteral = CS::IntegerLiteral;
+  class IntegerLiteral = RU::ExprNode::IntegerLiteral;
 
-  class LongLiteral = CS::LongLiteral;
+  class LongLiteral = RU::ExprNode::LongLiteral;
 
-  class CastExpr = CS::CastExpr;
+  class CastExpr = RU::ExprNode::CastExpr;
 
   class Type = CS::Type;
 
-  class Expr = CS::Expr;
+  class Expr = CS::ControlFlow::Nodes::ExprNode;
+
+  class VariableUpdate = CS::Ssa::ExplicitDefinition;
+
+  class Field = CS::Field;
+
+  class RealLiteral = RU::ExprNode::RealLiteral;
+
+  class DivExpr = RU::ExprNode::DivExpr;
+
+  class UnaryOperation = RU::ExprNode::UnaryOperation;
+
+  class BinaryOperation = RU::ExprNode::BinaryOperation;
 
   predicate ssaRead = SU::ssaRead/2;
+
+  predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
 }
 
 private module Impl {
   private import csharp
   private import SsaUtils
+  private import RangeUtils
   private import ConstantUtils
-  private import semmle.code.csharp.controlflow.Guards
   private import Linq.Helpers
   private import Sign
   private import SignAnalysisCommon
   private import SsaReadPositionCommon
   private import semmle.code.csharp.commons.ComparisonTest
 
-  private class BooleanValue = AbstractValues::BooleanValue;
+  private class ExprNode = ControlFlow::Nodes::ExprNode;
 
-  float getNonIntegerValue(Expr e) {
+  /** Gets the character value of expression `e`. */
+  string getCharValue(ExprNode e) { result = e.getValue() and e.getType() instanceof CharType }
+
+  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expressions. */
+  float getNonIntegerValue(ExprNode e) {
     exists(string s |
       s = e.getValue() and
       result = s.toFloat() and
@@ -56,203 +75,187 @@ private module Impl {
     )
   }
 
-  string getCharValue(Expr e) { result = e.getValue() and e.getType() instanceof CharType }
-
-  predicate containerSizeAccess(Expr e) {
-    exists(Property p | p = e.(PropertyAccess).getTarget() |
+  /**
+   * Holds if `e` is an access to the size of a container (`string`, `Array`,
+   * `IEnumerable`, or `ICollection`).
+   */
+  predicate containerSizeAccess(ExprNode e) {
+    exists(Property p | p = e.getExpr().(PropertyAccess).getTarget() |
       propertyOverrides(p, "System.Collections.Generic.IEnumerable<>", "Count") or
       propertyOverrides(p, "System.Collections.ICollection", "Count") or
       propertyOverrides(p, "System.String", "Length") or
       propertyOverrides(p, "System.Array", "Length")
     )
     or
-    e instanceof CountCall
+    e.getExpr() instanceof CountCall
   }
 
-  predicate positiveExpression(Expr e) { e instanceof SizeofExpr }
+  /** Holds if `e` is by definition strictly positive. */
+  predicate positiveExpression(ExprNode e) { e.getExpr() instanceof SizeofExpr }
 
-  class NumericOrCharType extends Type {
-    NumericOrCharType() {
-      this instanceof CharType or
-      this instanceof IntegralType or
-      this instanceof FloatingPointType or
-      this instanceof DecimalType or
-      this instanceof Enum or
-      this instanceof PointerType // should be similar to unsigned integers
+  abstract class NumericOrCharType extends Type { }
+
+  class UnsignedNumericType extends NumericOrCharType {
+    UnsignedNumericType() {
+      this instanceof CharType
+      or
+      this instanceof UnsignedIntegralType
+      or
+      this instanceof PointerType
+      or
+      this instanceof Enum and this.(Enum).getUnderlyingType() instanceof UnsignedIntegralType
     }
   }
 
-  Sign explicitSsaDefSign(Ssa::ExplicitDefinition v) {
-    exists(AssignableDefinition def | def = v.getADefinition() |
-      result = exprSign(def.getSource())
+  class SignedNumericType extends NumericOrCharType {
+    SignedNumericType() {
+      this instanceof SignedIntegralType
       or
-      not exists(def.getSource()) and
-      not def.getElement() instanceof MutatorOperation
+      this instanceof FloatingPointType
       or
-      result = exprSign(def.getElement().(IncrementOperation).getOperand()).inc()
+      this instanceof DecimalType
       or
-      result = exprSign(def.getElement().(DecrementOperation).getOperand()).dec()
+      this instanceof Enum and this.(Enum).getUnderlyingType() instanceof SignedIntegralType
+    }
+  }
+
+  /** Returns the underlying variable update of the explicit SSA variable `v`. */
+  Ssa::ExplicitDefinition getExplicitSsaAssignment(Ssa::ExplicitDefinition v) { result = v }
+
+  /** Returns the assignment of the variable update `def`. */
+  ExprNode getExprFromSsaAssignment(Ssa::ExplicitDefinition def) {
+    exists(AssignableDefinition adef |
+      adef = def.getADefinition() and
+      hasChild(adef.getExpr(), adef.getSource(), def.getControlFlowNode(), result)
     )
   }
 
-  Sign implicitSsaDefSign(Ssa::ImplicitDefinition v) {
-    result = fieldSign(v.getSourceVariable().getAssignable()) or
-    not v.getSourceVariable().getAssignable() instanceof Field
+  /** Holds if `def` can have any sign. */
+  predicate explicitSsaDefWithAnySign(Ssa::ExplicitDefinition def) {
+    not exists(def.getADefinition().getSource()) and
+    not def.getElement() instanceof MutatorOperation
   }
 
+  /** Returns the operand of the operation if `def` is a decrement. */
+  ExprNode getDecrementOperand(Ssa::ExplicitDefinition def) {
+    hasChild(def.getElement(), def.getElement().(DecrementOperation).getOperand(),
+      def.getControlFlowNode(), result)
+  }
+
+  /** Returns the operand of the operation if `def` is an increment. */
+  ExprNode getIncrementOperand(Ssa::ExplicitDefinition def) {
+    hasChild(def.getElement(), def.getElement().(IncrementOperation).getOperand(),
+      def.getControlFlowNode(), result)
+  }
+
+  /** Gets the variable underlying the implicit SSA variable `def`. */
+  Declaration getImplicitSsaDeclaration(Ssa::ImplicitDefinition def) {
+    result = def.getSourceVariable().getAssignable()
+  }
+
+  /** Holds if the variable underlying the implicit SSA variable `def` is not a field. */
+  predicate nonFieldImplicitSsaDefinition(Ssa::ImplicitDefinition def) {
+    not getImplicitSsaDeclaration(def) instanceof Field
+  }
+
+  /** Returned an expression that is assigned to `f`. */
+  ExprNode getAssignedValueToField(Field f) {
+    result.getExpr() in [f.getAnAssignedValue(),
+          any(AssignOperation a | a.getLValue() = f.getAnAccess())]
+  }
+
+  /** Holds if `f` can have any sign. */
+  predicate fieldWithUnknownSign(Field f) { not f.fromSource() or not f.isEffectivelyPrivate() }
+
+  /** Holds if `f` is accessed in an increment operation. */
+  predicate fieldIncrementOperationOperand(Field f) {
+    any(IncrementOperation inc).getOperand() = f.getAnAccess()
+  }
+
+  /** Holds if `f` is accessed in a decrement operation. */
+  predicate fieldDecrementOperationOperand(Field f) {
+    any(DecrementOperation dec).getOperand() = f.getAnAccess()
+  }
+
+  /** Returns possible signs of `f` based on the declaration. */
   pragma[inline]
-  Sign ssaVariableSign(Ssa::Definition v, Expr e) {
-    result = ssaSign(v, any(SsaReadPositionBlock bb | getAnExpression(bb) = e))
-  }
+  Sign specificFieldSign(Field f) { not exists(f.getInitializer()) and result = TZero() }
 
-  /** Gets a possible sign for `f`. */
-  Sign fieldSign(Field f) {
-    if f.fromSource() and f.isEffectivelyPrivate()
-    then
-      result = exprSign(f.getAnAssignedValue())
-      or
-      any(IncrementOperation inc).getOperand() = f.getAnAccess() and result = fieldSign(f).inc()
-      or
-      any(DecrementOperation dec).getOperand() = f.getAnAccess() and result = fieldSign(f).dec()
-      or
-      exists(AssignOperation a | a.getLValue() = f.getAnAccess() | result = exprSign(a))
-      or
-      not exists(f.getInitializer()) and result = TZero()
-    else any()
-  }
-
-  predicate unknownIntegerAccess(Expr e) {
+  /**
+   * Holds if `e` has type `NumericOrCharType`, but the sign of `e` is unknown.
+   */
+  predicate numericExprWithUnknownSign(ExprNode e) {
     e.getType() instanceof NumericOrCharType and
     not e = getARead(_) and
-    not e instanceof FieldAccess and
+    not e.getExpr() instanceof FieldAccess and
+    not e.getExpr() instanceof TypeAccess and
     // The expression types that are listed here are the ones handled in `specificSubExprSign`.
     // Keep them in sync.
-    not e instanceof AssignExpr and
-    not e instanceof AssignOperation and
-    not e instanceof UnaryPlusExpr and
-    not e instanceof PostIncrExpr and
-    not e instanceof PostDecrExpr and
-    not e instanceof PreIncrExpr and
-    not e instanceof PreDecrExpr and
-    not e instanceof UnaryMinusExpr and
-    not e instanceof ComplementExpr and
-    not e instanceof AddExpr and
-    not e instanceof SubExpr and
-    not e instanceof MulExpr and
-    not e instanceof DivExpr and
-    not e instanceof RemExpr and
-    not e instanceof BitwiseAndExpr and
-    not e instanceof BitwiseOrExpr and
-    not e instanceof BitwiseXorExpr and
-    not e instanceof LShiftExpr and
-    not e instanceof RShiftExpr and
-    not e instanceof ConditionalExpr and
-    not e instanceof RefExpr and
-    not e instanceof LocalVariableDeclAndInitExpr and
-    not e instanceof SwitchCaseExpr and
-    not e instanceof CastExpr and
-    not e instanceof SwitchExpr and
-    not e instanceof NullCoalescingExpr
+    not e.getExpr() instanceof AssignExpr and
+    not e.getExpr() instanceof AssignOperation and
+    not e.getExpr() instanceof UnaryPlusExpr and
+    not e.getExpr() instanceof PostIncrExpr and
+    not e.getExpr() instanceof PostDecrExpr and
+    not e.getExpr() instanceof PreIncrExpr and
+    not e.getExpr() instanceof PreDecrExpr and
+    not e.getExpr() instanceof UnaryMinusExpr and
+    not e.getExpr() instanceof ComplementExpr and
+    not e.getExpr() instanceof AddExpr and
+    not e.getExpr() instanceof SubExpr and
+    not e.getExpr() instanceof MulExpr and
+    not e.getExpr() instanceof DivExpr and
+    not e.getExpr() instanceof RemExpr and
+    not e.getExpr() instanceof BitwiseAndExpr and
+    not e.getExpr() instanceof BitwiseOrExpr and
+    not e.getExpr() instanceof BitwiseXorExpr and
+    not e.getExpr() instanceof LShiftExpr and
+    not e.getExpr() instanceof RShiftExpr and
+    not e.getExpr() instanceof ConditionalExpr and
+    not e.getExpr() instanceof RefExpr and
+    not e.getExpr() instanceof LocalVariableDeclAndInitExpr and
+    not e.getExpr() instanceof SwitchCaseExpr and
+    not e.getExpr() instanceof CastExpr and
+    not e.getExpr() instanceof SwitchExpr and
+    not e.getExpr() instanceof NullCoalescingExpr
   }
 
-  Sign specificSubExprSign(Expr e) {
-    // The expression types that are handled here should be excluded in `unknownIntegerAccess`.
-    // Keep them in sync.
-    result = exprSign(e.(AssignExpr).getRValue())
-    or
-    result = exprSign(e.(AssignOperation).getExpandedAssignment())
-    or
-    result = exprSign(e.(UnaryPlusExpr).getOperand())
-    or
-    result = exprSign(e.(PostIncrExpr).getOperand())
-    or
-    result = exprSign(e.(PostDecrExpr).getOperand())
-    or
-    result = exprSign(e.(PreIncrExpr).getOperand()).inc()
-    or
-    result = exprSign(e.(PreDecrExpr).getOperand()).dec()
-    or
-    result = exprSign(e.(UnaryMinusExpr).getOperand()).neg()
-    or
-    result = exprSign(e.(ComplementExpr).getOperand()).bitnot()
-    or
-    e =
-      any(DivExpr div |
-        result = exprSign(div.getLeftOperand()) and
-        result != TZero() and
-        div.getRightOperand().(RealLiteral).getValue().toFloat() = 0
-      )
-    or
-    exists(Sign s1, Sign s2 | binaryOpSigns(e, s1, s2) |
-      e instanceof AddExpr and result = s1.add(s2)
-      or
-      e instanceof SubExpr and result = s1.add(s2.neg())
-      or
-      e instanceof MulExpr and result = s1.mul(s2)
-      or
-      e instanceof DivExpr and result = s1.div(s2)
-      or
-      e instanceof RemExpr and result = s1.rem(s2)
-      or
-      e instanceof BitwiseAndExpr and result = s1.bitand(s2)
-      or
-      e instanceof BitwiseOrExpr and result = s1.bitor(s2)
-      or
-      e instanceof BitwiseXorExpr and result = s1.bitxor(s2)
-      or
-      e instanceof LShiftExpr and result = s1.lshift(s2)
-      or
-      e instanceof RShiftExpr and result = s1.rshift(s2)
+  /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
+  ExprNode getASubExprWithSameSign(ExprNode e) {
+    exists(Expr e_, Expr child | hasChild(e_, child, e, result) |
+      child = e_.(AssignExpr).getRValue() or
+      child = e_.(UnaryPlusExpr).getOperand() or
+      child = e_.(PostIncrExpr).getOperand() or
+      child = e_.(PostDecrExpr).getOperand() or
+      child = e_.(ConditionalExpr).getAChild() or
+      child = e_.(NullCoalescingExpr).getAChild() or
+      child = e_.(SwitchExpr).getACase() or
+      child = e_.(SwitchCaseExpr).getBody() or
+      child = e_.(LocalVariableDeclAndInitExpr).getInitializer() or
+      child = e_.(RefExpr).getExpr() or
+      child = e_.(CastExpr).getExpr()
     )
-    or
-    result = exprSign(e.(ConditionalExpr).getAChild())
-    or
-    result = exprSign(e.(NullCoalescingExpr).getAChild())
-    or
-    result = exprSign(e.(SwitchExpr).getACase().getBody())
-    or
-    result = exprSign(e.(CastExpr).getExpr())
-    or
-    result = exprSign(e.(SwitchCaseExpr).getBody())
-    or
-    result = exprSign(e.(LocalVariableDeclAndInitExpr).getInitializer())
-    or
-    result = exprSign(e.(RefExpr).getExpr())
   }
 
-  private Sign binaryOpLhsSign(BinaryOperation e) { result = exprSign(e.getLeftOperand()) }
+  ExprNode getARead(Ssa::Definition v) { exists(v.getAReadAtNode(result)) }
 
-  private Sign binaryOpRhsSign(BinaryOperation e) { result = exprSign(e.getRightOperand()) }
+  Field getField(ExprNode fa) { result = fa.getExpr().(FieldAccess).getTarget() }
 
-  pragma[noinline]
-  private predicate binaryOpSigns(Expr e, Sign lhs, Sign rhs) {
-    lhs = binaryOpLhsSign(e) and
-    rhs = binaryOpRhsSign(e)
-  }
-
-  Expr getARead(Ssa::Definition v) { result = v.getARead() }
-
-  Field getField(FieldAccess fa) { result = fa.getTarget() }
-
-  Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode().getElement() }
+  ExprNode getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode() }
 
   Guard getComparisonGuard(ComparisonExpr ce) { result = ce.getExpr() }
 
-  /**
-   * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
-   */
-  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    exists(BooleanValue b | b.getValue() = testIsTrue |
-      guard.controlsBasicBlock(controlled.(SsaReadPositionBlock).getBlock(), b)
-    )
-  }
+  private newtype TComparisonExpr =
+    MkComparisonExpr(ComparisonTest ct, ExprNode e) { e = ct.getExpr().getAControlFlowNode() }
 
   /** A relational comparison */
-  class ComparisonExpr extends ComparisonTest {
+  class ComparisonExpr extends MkComparisonExpr {
+    private ComparisonTest ct;
+    private ExprNode e;
     private boolean strict;
 
     ComparisonExpr() {
-      this.getComparisonKind() =
+      this = MkComparisonExpr(ct, e) and
+      ct.getComparisonKind() =
         any(ComparisonKind ck |
           ck.isLessThan() and strict = true
           or
@@ -261,13 +264,22 @@ private module Impl {
         )
     }
 
+    /** Gets the underlying expression. */
+    Expr getExpr() { result = ct.getExpr() }
+
+    /** Gets a textual representation of this comparison test. */
+    string toString() { result = ct.toString() }
+
+    /** Gets the location of this comparison test. */
+    Location getLocation() { result = ct.getLocation() }
+
     /**
      * Gets the operand on the "greater" (or "greater-or-equal") side
      * of this relational expression, that is, the side that is larger
      * if the overall expression evaluates to `true`; for example on
      * `x <= 20` this is the `20`, and on `y > 0` it is `y`.
      */
-    Expr getGreaterOperand() { result = this.getSecondArgument() }
+    ExprNode getGreaterOperand() { hasChild(ct.getExpr(), ct.getSecondArgument(), e, result) }
 
     /**
      * Gets the operand on the "lesser" (or "lesser-or-equal") side
@@ -275,7 +287,7 @@ private module Impl {
      * if the overall expression evaluates to `true`; for example on
      * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
      */
-    Expr getLesserOperand() { result = this.getFirstArgument() }
+    ExprNode getLesserOperand() { hasChild(ct.getExpr(), ct.getFirstArgument(), e, result) }
 
     /** Holds if this comparison is strict, i.e. `<` or `>`. */
     predicate isStrict() { strict = true }

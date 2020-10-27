@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Semmle.Extraction.Tests
 {
-    class PathCacheStub : IPathCache
+    internal class PathCacheStub : IPathCache
     {
         public string GetCanonicalPath(string path) => path;
     }

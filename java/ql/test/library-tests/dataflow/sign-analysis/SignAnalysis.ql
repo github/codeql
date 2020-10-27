@@ -18,4 +18,5 @@ string getASignString(Expr e) {
 }
 
 from Expr e
+where e.getEnclosingCallable().fromSource()
 select e, strictconcat(string s | s = getASignString(e) | s, " ")

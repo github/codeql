@@ -26,7 +26,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// List of blocks in the layout file.
         /// </summary>
-        readonly List<LayoutBlock> blocks;
+        private readonly List<LayoutBlock> blocks;
 
         /// <summary>
         /// A subproject in the layout file.
@@ -36,12 +36,12 @@ namespace Semmle.Extraction
             /// <summary>
             /// The trap folder, or null for current directory.
             /// </summary>
-            public readonly string? TRAP_FOLDER;
+            public string? TRAP_FOLDER { get; }
 
             /// <summary>
             /// The source archive, or null to skip.
             /// </summary>
-            public readonly string? SOURCE_ARCHIVE;
+            public string? SOURCE_ARCHIVE { get; }
 
             public SubProject(string? traps, string? archive)
             {
@@ -66,7 +66,7 @@ namespace Semmle.Extraction
                 new TrapWriter(logger, srcFile, TRAP_FOLDER, SOURCE_ARCHIVE, discardDuplicates, trapCompression);
         }
 
-        readonly SubProject DefaultProject;
+        private readonly SubProject defaultProject;
 
         /// <summary>
         /// Finds the suitable directories for a given source file.
@@ -76,12 +76,13 @@ namespace Semmle.Extraction
         /// <returns>The relevant subproject, or null if not found.</returns>
         public SubProject? LookupProjectOrNull(PathTransformer.ITransformedPath sourceFile)
         {
-            if (!useLayoutFile) return DefaultProject;
+            if (!useLayoutFile)
+                return defaultProject;
 
-            return blocks.
-                Where(block => block.Matches(sourceFile)).
-                Select(block => block.Directories).
-                FirstOrDefault();
+            return blocks
+                .Where(block => block.Matches(sourceFile))
+                .Select(block => block.Directories)
+                .FirstOrDefault();
         }
 
         /// <summary>
@@ -92,10 +93,10 @@ namespace Semmle.Extraction
         /// <returns>The relevant subproject, or DefaultProject if not found.</returns>
         public SubProject LookupProjectOrDefault(PathTransformer.ITransformedPath sourceFile)
         {
-            return LookupProjectOrNull(sourceFile) ?? DefaultProject;
+            return LookupProjectOrNull(sourceFile) ?? defaultProject;
         }
 
-        readonly bool useLayoutFile;
+        private readonly bool useLayoutFile;
 
         /// <summary>
         /// Default constructor reads parameters from the environment.
@@ -122,11 +123,11 @@ namespace Semmle.Extraction
             if (useLayoutFile)
             {
                 ReadLayoutFile(layout!);
-                DefaultProject = blocks[0].Directories;
+                defaultProject = blocks[0].Directories;
             }
             else
             {
-                DefaultProject = new SubProject(traps, archive);
+                defaultProject = new SubProject(traps, archive);
             }
         }
 
@@ -137,18 +138,18 @@ namespace Semmle.Extraction
         /// <returns>True iff there is no layout file or the layout file specifies the file.</returns>
         public bool FileInLayout(PathTransformer.ITransformedPath path) => LookupProjectOrNull(path) != null;
 
-        void ReadLayoutFile(string layout)
+        private void ReadLayoutFile(string layout)
         {
             try
             {
                 var lines = File.ReadAllLines(layout);
 
-                int i = 0;
+                var i = 0;
                 while (!lines[i].StartsWith("#"))
                     i++;
                 while (i < lines.Length)
                 {
-                    LayoutBlock block = new LayoutBlock(lines, ref i);
+                    var block = new LayoutBlock(lines, ref i);
                     blocks.Add(block);
                 }
 
@@ -166,15 +167,15 @@ namespace Semmle.Extraction
         }
     }
 
-    sealed class LayoutBlock
+    internal sealed class LayoutBlock
     {
         private readonly List<FilePattern> filePatterns = new List<FilePattern>();
 
-        public readonly Layout.SubProject Directories;
+        public Layout.SubProject Directories { get; }
 
-        string? ReadVariable(string name, string line)
+        private static string? ReadVariable(string name, string line)
         {
-            string prefix = name + "=";
+            var prefix = name + "=";
             if (!line.StartsWith(prefix))
                 return null;
             return line.Substring(prefix.Length).Trim();
@@ -184,12 +185,12 @@ namespace Semmle.Extraction
         {
             // first line: #name
             i++;
-            string? TRAP_FOLDER = ReadVariable("TRAP_FOLDER", lines[i++]);
+            var trapFolder = ReadVariable("TRAP_FOLDER", lines[i++]);
             // Don't care about ODASA_DB.
             ReadVariable("ODASA_DB", lines[i++]);
-            string? SOURCE_ARCHIVE = ReadVariable("SOURCE_ARCHIVE", lines[i++]);
+            var sourceArchive = ReadVariable("SOURCE_ARCHIVE", lines[i++]);
 
-            Directories = new Layout.SubProject(TRAP_FOLDER, SOURCE_ARCHIVE);
+            Directories = new Layout.SubProject(trapFolder, sourceArchive);
             // Don't care about ODASA_BUILD_ERROR_DIR.
             ReadVariable("ODASA_BUILD_ERROR_DIR", lines[i++]);
             while (i < lines.Length && !lines[i].StartsWith("#"))

@@ -79,7 +79,8 @@ private PhiOperandBase phiOperand(
 }
 
 /**
- * A source operand of an `Instruction`. The operand represents a value consumed by the instruction.
+ * An operand of an `Instruction`. The operand represents a use of the result of one instruction
+ * (the defining instruction) in another instruction (the use instruction)
  */
 class Operand extends TOperand {
   /** Gets a textual representation of this element. */
@@ -149,6 +150,11 @@ class Operand extends TOperand {
    * Gets a prefix to use when dumping the operand in an operand list.
    */
   string getDumpLabel() { result = "" }
+
+  /**
+   * Gets a string that uniquely identifies this operand on its use instruction.
+   */
+  string getDumpId() { result = "" }
 
   /**
    * Gets a string describing this operand, suitable for display in IR dumps. This consists of the
@@ -278,6 +284,8 @@ class NonPhiOperand extends Operand {
   final override Instruction getUse() { result = useInstr }
 
   final override string getDumpLabel() { result = tag.getLabel() }
+
+  final override string getDumpId() { result = tag.getId() }
 
   final override int getDumpSortOrder() { result = tag.getSortOrder() }
 
@@ -475,6 +483,8 @@ class PhiInputOperand extends MemoryOperand, PhiOperandBase {
   final override string getDumpLabel() {
     result = "from " + getPredecessorBlock().getDisplayIndex().toString() + ":"
   }
+
+  final override string getDumpId() { result = getPredecessorBlock().getDisplayIndex().toString() }
 
   /**
    * Gets the predecessor block from which this value comes.

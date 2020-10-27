@@ -49,6 +49,15 @@ def global_var_write_test():
     write_g(x) # $tracked
     use_g()
 
+def test_import():
+    import mymodule
+    mymodule.x # $tracked
+    y = mymodule.func() # $tracked
+    y # $tracked
+    mymodule.z # $tracked
+
+# ------------------------------------------------------------------------------
+
 def expects_int(x): # $int
     do_int_stuff(x) # $int
 

@@ -1,0 +1,51 @@
+capitalize
+| X | X |
+| X | x |
+| XX | XX |
+| XX | xX |
+| Xx | Xx |
+| Xx | xx |
+describeExpression
+| tst.js:1:1:15:2 | (functi ... !'';\\n}) | expression |
+| tst.js:1:2:15:1 | functio ...  !'';\\n} | expression |
+| tst.js:2:5:2:5 | v | use of variable 'v' |
+| tst.js:3:5:3:5 | o | use of variable 'o' |
+| tst.js:3:5:3:7 | o.m | use of property 'm' |
+| tst.js:3:5:3:9 | o.m() | method call to m |
+| tst.js:3:7:3:7 | m | expression |
+| tst.js:4:5:4:5 | f | use of variable 'f' |
+| tst.js:4:5:4:7 | f() | call to f |
+| tst.js:5:5:5:5 | x | use of variable 'x' |
+| tst.js:5:5:5:10 | x == y | comparison |
+| tst.js:5:10:5:10 | y | use of variable 'y' |
+| tst.js:6:5:6:5 | o | use of variable 'o' |
+| tst.js:6:5:6:7 | o.p | use of property 'p' |
+| tst.js:6:7:6:7 | p | expression |
+| tst.js:7:5:7:11 | new K() | constructor call to K |
+| tst.js:7:9:7:9 | K | use of variable 'K' |
+| tst.js:8:5:8:5 | a | use of variable 'a' |
+| tst.js:8:5:8:9 | a + b | expression |
+| tst.js:8:9:8:9 | b | use of variable 'b' |
+| tst.js:9:5:9:10 | new "" | constructor call |
+| tst.js:9:9:9:10 | "" | expression |
+| tst.js:10:5:10:6 | "" | expression |
+| tst.js:10:5:10:8 | ""() | call |
+| tst.js:11:5:11:5 | o | use of variable 'o' |
+| tst.js:11:5:11:8 | o[x] | expression |
+| tst.js:11:7:11:7 | x | use of variable 'x' |
+| tst.js:12:5:12:5 | o | use of variable 'o' |
+| tst.js:12:5:12:10 | o['x'] | use of property 'x' |
+| tst.js:12:7:12:9 | 'x' | expression |
+| tst.js:13:5:13:5 | o | use of variable 'o' |
+| tst.js:13:5:13:10 | o['x'] | use of property 'x' |
+| tst.js:13:5:13:12 | o['x']() | method call to x |
+| tst.js:13:7:13:9 | 'x' | expression |
+| tst.js:14:5:14:7 | !'' | negation |
+| tst.js:14:6:14:7 | '' | expression |
+test_pluralize
+| x | 1 |
+| xs | 0 |
+| xs | 2 |
+| xs | -1 |
+#select
+| y |  | X | XX | XXy |
