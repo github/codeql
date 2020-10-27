@@ -592,7 +592,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
           isMayAccess)
       or
       kind instanceof EscapedMemoryAccess and
-      result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess, isMayAccess)
+      result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess, false)
       or
       kind instanceof EscapedInitializationMemoryAccess and
       result = TAllAliasedMemory(instr.getEnclosingIRFunction(), false, true)

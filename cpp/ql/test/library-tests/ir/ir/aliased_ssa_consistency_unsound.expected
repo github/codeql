@@ -22,6 +22,7 @@ backEdgeCountMismatch
 useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
+| ir.cpp:1237:5:1237:25 | Phi: return ... | Instruction 'Phi: return ...' should be marked as having a conflated result in function '$@'. | ir.cpp:1231:5:1231:19 | int staticLocalInit(int) | int staticLocalInit(int) |
 wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
