@@ -22,7 +22,7 @@ impl Extractor {
         let span = span!(
             Level::TRACE,
             "extract",
-            file = &path.display().to_string()[..]
+            file = %path.display()
         );
 
         let _enter = span.enter();
@@ -98,11 +98,7 @@ struct Visitor<'a> {
 impl Visitor<'_> {
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_error() {
-            error!(
-                "{}:{}: parse error",
-                &self.path,
-                node.start_position().row,
-            );
+            error!("{}:{}: parse error", &self.path, node.start_position().row);
             return false;
         }
         if node.is_missing() {
