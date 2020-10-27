@@ -136,6 +136,29 @@ abstract class Configuration extends string {
     partialFlow(source, node, this) and
     dist = node.getSourceDistance()
   }
+
+  /**
+   * Holds if there is a partial data flow path from `node` to `sink`. The
+   * approximate distance between `node` and the closest sink is `dist` and
+   * is restricted to be less than or equal to `explorationLimit()`. This
+   * predicate completely disregards source definitions.
+   *
+   * This predicate is intended for dataflow exploration and debugging and may
+   * perform poorly if the number of sources is too big and/or the exploration
+   * limit is set too high without using barriers.
+   *
+   * This predicate is disabled (has no results) by default. Override
+   * `explorationLimit()` with a suitable number to enable this predicate.
+   *
+   * To use this in a `path-problem` query, import the module `PartialPathGraph`.
+   *
+   * Note that reverse flow has slightly lower precision than the corresponding
+   * forward flow, as reverse flow disregards type pruning among other features.
+   */
+  final predicate hasRevPartialFlow(PartialPathNode node, PartialPathNode sink, int dist) {
+    revPartialFlow(node, sink, this) and
+    dist = node.getSinkDistance()
+  }
 }
 
 /**
@@ -2943,11 +2966,25 @@ private module FlowExploration {
     )
   }
 
+  private predicate interestingCallableSink(DataFlowCallable c, Configuration config) {
+    exists(Node n | config.isSink(n) and c = n.getEnclosingCallable())
+    or
+    exists(DataFlowCallable mid |
+      interestingCallableSink(mid, config) and callableStep(c, mid, config)
+    )
+  }
+
   private newtype TCallableExt =
-    TCallable(DataFlowCallable c, Configuration config) { interestingCallableSrc(c, config) } or
-    TCallableSrc()
+    TCallable(DataFlowCallable c, Configuration config) {
+      interestingCallableSrc(c, config) or
+      interestingCallableSink(c, config)
+    } or
+    TCallableSrc() or
+    TCallableSink()
 
   private predicate callableExtSrc(TCallableSrc src) { any() }
+
+  private predicate callableExtSink(TCallableSink sink) { any() }
 
   private predicate callableExtStepFwd(TCallableExt ce1, TCallableExt ce2) {
     exists(DataFlowCallable c1, DataFlowCallable c2, Configuration config |
@@ -2961,13 +2998,30 @@ private module FlowExploration {
       config.isSource(n) and
       ce2 = TCallable(n.getEnclosingCallable(), config)
     )
+    or
+    exists(Node n, Configuration config |
+      ce2 = TCallableSink() and
+      config.isSink(n) and
+      ce1 = TCallable(n.getEnclosingCallable(), config)
+    )
+  }
+
+  private predicate callableExtStepRev(TCallableExt ce1, TCallableExt ce2) {
+    callableExtStepFwd(ce2, ce1)
   }
 
   private int distSrcExt(TCallableExt c) =
     shortestDistances(callableExtSrc/1, callableExtStepFwd/2)(_, c, result)
 
+  private int distSinkExt(TCallableExt c) =
+    shortestDistances(callableExtSink/1, callableExtStepRev/2)(_, c, result)
+
   private int distSrc(DataFlowCallable c, Configuration config) {
     result = distSrcExt(TCallable(c, config)) - 1
+  }
+
+  private int distSink(DataFlowCallable c, Configuration config) {
+    result = distSinkExt(TCallable(c, config)) - 1
   }
 
   private newtype TPartialAccessPath =
@@ -2997,17 +3051,11 @@ private module FlowExploration {
       or
       exists(TypedContent head | this = TPartialCons(head, _) | result = head.getContainerType())
     }
-
-    abstract AccessPathFront getFront();
   }
 
   private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
     override string toString() {
       exists(DataFlowType t | this = TPartialNil(t) | result = concat(": " + ppReprType(t)))
-    }
-
-    override AccessPathFront getFront() {
-      exists(DataFlowType t | this = TPartialNil(t) | result = TFrontNil(t))
     }
   }
 
@@ -3019,9 +3067,39 @@ private module FlowExploration {
         else result = "[" + tc.toString() + ", ... (" + len.toString() + ")]"
       )
     }
+  }
 
-    override AccessPathFront getFront() {
-      exists(TypedContent tc | this = TPartialCons(tc, _) | result = TFrontHead(tc))
+  private newtype TRevPartialAccessPath =
+    TRevPartialNil() or
+    TRevPartialCons(Content c, int len) { len in [1 .. accessPathLimit()] }
+
+  /**
+   * Conceptually a list of `Content`s, but only the first
+   * element of the list and its length are tracked.
+   */
+  private class RevPartialAccessPath extends TRevPartialAccessPath {
+    abstract string toString();
+
+    Content getHead() { this = TRevPartialCons(result, _) }
+
+    int len() {
+      this = TRevPartialNil() and result = 0
+      or
+      this = TRevPartialCons(_, result)
+    }
+  }
+
+  private class RevPartialAccessPathNil extends RevPartialAccessPath, TRevPartialNil {
+    override string toString() { result = "" }
+  }
+
+  private class RevPartialAccessPathCons extends RevPartialAccessPath, TRevPartialCons {
+    override string toString() {
+      exists(Content c, int len | this = TRevPartialCons(c, len) |
+        if len = 1
+        then result = "[" + c.toString() + "]"
+        else result = "[" + c.toString() + ", ... (" + len.toString() + ")]"
+      )
     }
   }
 
@@ -3033,8 +3111,16 @@ private module FlowExploration {
     TSummaryCtx2None() or
     TSummaryCtx2Some(PartialAccessPath ap)
 
+  private newtype TRevSummaryCtx1 =
+    TRevSummaryCtx1None() or
+    TRevSummaryCtx1Some(ReturnPosition pos)
+
+  private newtype TRevSummaryCtx2 =
+    TRevSummaryCtx2None() or
+    TRevSummaryCtx2Some(RevPartialAccessPath ap)
+
   private newtype TPartialPathNode =
-    TPartialPathNodeMk(
+    TPartialPathNodeFwd(
       Node node, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, PartialAccessPath ap,
       Configuration config
     ) {
@@ -3048,6 +3134,23 @@ private module FlowExploration {
       or
       partialPathNodeMk0(node, cc, sc1, sc2, ap, config) and
       distSrc(node.getEnclosingCallable(), config) <= config.explorationLimit()
+    } or
+    TPartialPathNodeRev(
+      Node node, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2, RevPartialAccessPath ap,
+      Configuration config
+    ) {
+      config.isSink(node) and
+      sc1 = TRevSummaryCtx1None() and
+      sc2 = TRevSummaryCtx2None() and
+      ap = TRevPartialNil() and
+      not fullBarrier(node, config) and
+      exists(config.explorationLimit())
+      or
+      exists(PartialPathNodeRev mid |
+        revPartialPathStep(mid, node, sc1, sc2, ap, config) and
+        not fullBarrier(node, config) and
+        distSink(node.getEnclosingCallable(), config) <= config.explorationLimit()
+      )
     }
 
   pragma[nomagic]
@@ -3055,7 +3158,7 @@ private module FlowExploration {
     Node node, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, PartialAccessPath ap,
     Configuration config
   ) {
-    exists(PartialPathNode mid |
+    exists(PartialPathNodeFwd mid |
       partialPathStep(mid, node, cc, sc1, sc2, ap, config) and
       not fullBarrier(node, config) and
       if node instanceof CastingNode
@@ -3107,15 +3210,30 @@ private module FlowExploration {
       result = distSrc(this.getNode().getEnclosingCallable(), this.getConfiguration())
     }
 
+    /**
+     * Gets the approximate distance to the nearest source measured in number
+     * of interprocedural steps.
+     */
+    int getSinkDistance() {
+      result = distSink(this.getNode().getEnclosingCallable(), this.getConfiguration())
+    }
+
     private string ppAp() {
-      exists(string s | s = this.(PartialPathNodePriv).getAp().toString() |
+      exists(string s |
+        s = this.(PartialPathNodeFwd).getAp().toString() or
+        s = this.(PartialPathNodeRev).getAp().toString()
+      |
         if s = "" then result = "" else result = " " + s
       )
     }
 
     private string ppCtx() {
-      result = " <" + this.(PartialPathNodePriv).getCallContext().toString() + ">"
+      result = " <" + this.(PartialPathNodeFwd).getCallContext().toString() + ">"
     }
+
+    predicate isFwdSource() { this.(PartialPathNodeFwd).isSource() }
+
+    predicate isRevSink() { this.(PartialPathNodeRev).isSink() }
   }
 
   /**
@@ -3126,7 +3244,7 @@ private module FlowExploration {
     query predicate edges(PartialPathNode a, PartialPathNode b) { a.getASuccessor() = b }
   }
 
-  private class PartialPathNodePriv extends PartialPathNode {
+  private class PartialPathNodeFwd extends PartialPathNode, TPartialPathNodeFwd {
     Node node;
     CallContext cc;
     TSummaryCtx1 sc1;
@@ -3134,7 +3252,7 @@ private module FlowExploration {
     PartialAccessPath ap;
     Configuration config;
 
-    PartialPathNodePriv() { this = TPartialPathNodeMk(node, cc, sc1, sc2, ap, config) }
+    PartialPathNodeFwd() { this = TPartialPathNodeFwd(node, cc, sc1, sc2, ap, config) }
 
     override Node getNode() { result = node }
 
@@ -3148,14 +3266,54 @@ private module FlowExploration {
 
     override Configuration getConfiguration() { result = config }
 
-    override PartialPathNodePriv getASuccessor() {
+    override PartialPathNodeFwd getASuccessor() {
       partialPathStep(this, result.getNode(), result.getCallContext(), result.getSummaryCtx1(),
         result.getSummaryCtx2(), result.getAp(), result.getConfiguration())
+    }
+
+    predicate isSource() {
+      config.isSource(node) and
+      cc instanceof CallContextAny and
+      sc1 = TSummaryCtx1None() and
+      sc2 = TSummaryCtx2None() and
+      ap instanceof TPartialNil
+    }
+  }
+
+  private class PartialPathNodeRev extends PartialPathNode, TPartialPathNodeRev {
+    Node node;
+    TRevSummaryCtx1 sc1;
+    TRevSummaryCtx2 sc2;
+    RevPartialAccessPath ap;
+    Configuration config;
+
+    PartialPathNodeRev() { this = TPartialPathNodeRev(node, sc1, sc2, ap, config) }
+
+    override Node getNode() { result = node }
+
+    TRevSummaryCtx1 getSummaryCtx1() { result = sc1 }
+
+    TRevSummaryCtx2 getSummaryCtx2() { result = sc2 }
+
+    RevPartialAccessPath getAp() { result = ap }
+
+    override Configuration getConfiguration() { result = config }
+
+    override PartialPathNodeRev getASuccessor() {
+      revPartialPathStep(result, this.getNode(), this.getSummaryCtx1(), this.getSummaryCtx2(),
+        this.getAp(), this.getConfiguration())
+    }
+
+    predicate isSink() {
+      config.isSink(node) and
+      sc1 = TRevSummaryCtx1None() and
+      sc2 = TRevSummaryCtx2None() and
+      ap = TRevPartialNil()
     }
   }
 
   private predicate partialPathStep(
-    PartialPathNodePriv mid, Node node, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
+    PartialPathNodeFwd mid, Node node, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
     PartialAccessPath ap, Configuration config
   ) {
     not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall()) and
@@ -3221,8 +3379,7 @@ private module FlowExploration {
 
   pragma[inline]
   private predicate partialPathStoreStep(
-    PartialPathNodePriv mid, PartialAccessPath ap1, TypedContent tc, Node node,
-    PartialAccessPath ap2
+    PartialPathNodeFwd mid, PartialAccessPath ap1, TypedContent tc, Node node, PartialAccessPath ap2
   ) {
     exists(Node midNode, DataFlowType contentType |
       midNode = mid.getNode() and
@@ -3238,7 +3395,7 @@ private module FlowExploration {
   private predicate apConsFwd(
     PartialAccessPath ap1, TypedContent tc, PartialAccessPath ap2, Configuration config
   ) {
-    exists(PartialPathNodePriv mid |
+    exists(PartialPathNodeFwd mid |
       partialPathStoreStep(mid, ap1, tc, _, ap2) and
       config = mid.getConfiguration()
     )
@@ -3246,7 +3403,7 @@ private module FlowExploration {
 
   pragma[nomagic]
   private predicate partialPathReadStep(
-    PartialPathNodePriv mid, PartialAccessPath ap, TypedContent tc, Node node, CallContext cc,
+    PartialPathNodeFwd mid, PartialAccessPath ap, TypedContent tc, Node node, CallContext cc,
     Configuration config
   ) {
     exists(Node midNode |
@@ -3260,7 +3417,7 @@ private module FlowExploration {
   }
 
   private predicate partialPathOutOfCallable0(
-    PartialPathNodePriv mid, ReturnPosition pos, CallContext innercc, PartialAccessPath ap,
+    PartialPathNodeFwd mid, ReturnPosition pos, CallContext innercc, PartialAccessPath ap,
     Configuration config
   ) {
     pos = getReturnPosition(mid.getNode()) and
@@ -3272,7 +3429,7 @@ private module FlowExploration {
 
   pragma[nomagic]
   private predicate partialPathOutOfCallable1(
-    PartialPathNodePriv mid, DataFlowCall call, ReturnKindExt kind, CallContext cc,
+    PartialPathNodeFwd mid, DataFlowCall call, ReturnKindExt kind, CallContext cc,
     PartialAccessPath ap, Configuration config
   ) {
     exists(ReturnPosition pos, DataFlowCallable c, CallContext innercc |
@@ -3286,7 +3443,7 @@ private module FlowExploration {
   }
 
   private predicate partialPathOutOfCallable(
-    PartialPathNodePriv mid, Node out, CallContext cc, PartialAccessPath ap, Configuration config
+    PartialPathNodeFwd mid, Node out, CallContext cc, PartialAccessPath ap, Configuration config
   ) {
     exists(ReturnKindExt kind, DataFlowCall call |
       partialPathOutOfCallable1(mid, call, kind, cc, ap, config)
@@ -3297,7 +3454,7 @@ private module FlowExploration {
 
   pragma[noinline]
   private predicate partialPathIntoArg(
-    PartialPathNodePriv mid, int i, CallContext cc, DataFlowCall call, PartialAccessPath ap,
+    PartialPathNodeFwd mid, int i, CallContext cc, DataFlowCall call, PartialAccessPath ap,
     Configuration config
   ) {
     exists(ArgumentNode arg |
@@ -3311,7 +3468,7 @@ private module FlowExploration {
 
   pragma[nomagic]
   private predicate partialPathIntoCallable0(
-    PartialPathNodePriv mid, DataFlowCallable callable, int i, CallContext outercc,
+    PartialPathNodeFwd mid, DataFlowCallable callable, int i, CallContext outercc,
     DataFlowCall call, PartialAccessPath ap, Configuration config
   ) {
     partialPathIntoArg(mid, i, outercc, call, ap, config) and
@@ -3319,7 +3476,7 @@ private module FlowExploration {
   }
 
   private predicate partialPathIntoCallable(
-    PartialPathNodePriv mid, ParameterNode p, CallContext outercc, CallContextCall innercc,
+    PartialPathNodeFwd mid, ParameterNode p, CallContext outercc, CallContextCall innercc,
     TSummaryCtx1 sc1, TSummaryCtx2 sc2, DataFlowCall call, PartialAccessPath ap,
     Configuration config
   ) {
@@ -3340,7 +3497,7 @@ private module FlowExploration {
     ReturnKindExt kind, CallContextCall cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
     PartialAccessPath ap, Configuration config
   ) {
-    exists(PartialPathNodePriv mid, ReturnNodeExt ret |
+    exists(PartialPathNodeFwd mid, ReturnNodeExt ret |
       mid.getNode() = ret and
       kind = ret.getKind() and
       cc = mid.getCallContext() and
@@ -3353,7 +3510,7 @@ private module FlowExploration {
 
   pragma[noinline]
   private predicate partialPathThroughCallable0(
-    DataFlowCall call, PartialPathNodePriv mid, ReturnKindExt kind, CallContext cc,
+    DataFlowCall call, PartialPathNodeFwd mid, ReturnKindExt kind, CallContext cc,
     PartialAccessPath ap, Configuration config
   ) {
     exists(ParameterNode p, CallContext innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2 |
@@ -3363,11 +3520,162 @@ private module FlowExploration {
   }
 
   private predicate partialPathThroughCallable(
-    PartialPathNodePriv mid, Node out, CallContext cc, PartialAccessPath ap, Configuration config
+    PartialPathNodeFwd mid, Node out, CallContext cc, PartialAccessPath ap, Configuration config
   ) {
     exists(DataFlowCall call, ReturnKindExt kind |
       partialPathThroughCallable0(call, mid, kind, cc, ap, config) and
       out = kind.getAnOutNode(call)
+    )
+  }
+
+  private predicate revPartialPathStep(
+    PartialPathNodeRev mid, Node node, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
+    RevPartialAccessPath ap, Configuration config
+  ) {
+    localFlowStep(node, mid.getNode(), config) and
+    sc1 = mid.getSummaryCtx1() and
+    sc2 = mid.getSummaryCtx2() and
+    ap = mid.getAp() and
+    config = mid.getConfiguration()
+    or
+    additionalLocalFlowStep(node, mid.getNode(), config) and
+    sc1 = mid.getSummaryCtx1() and
+    sc2 = mid.getSummaryCtx2() and
+    mid.getAp() instanceof RevPartialAccessPathNil and
+    ap = TRevPartialNil() and
+    config = mid.getConfiguration()
+    or
+    jumpStep(node, mid.getNode(), config) and
+    sc1 = TRevSummaryCtx1None() and
+    sc2 = TRevSummaryCtx2None() and
+    ap = mid.getAp() and
+    config = mid.getConfiguration()
+    or
+    additionalJumpStep(node, mid.getNode(), config) and
+    sc1 = TRevSummaryCtx1None() and
+    sc2 = TRevSummaryCtx2None() and
+    mid.getAp() instanceof RevPartialAccessPathNil and
+    ap = TRevPartialNil() and
+    config = mid.getConfiguration()
+    or
+    revPartialPathReadStep(mid, _, _, node, ap) and
+    sc1 = mid.getSummaryCtx1() and
+    sc2 = mid.getSummaryCtx2() and
+    config = mid.getConfiguration()
+    or
+    exists(RevPartialAccessPath ap0, Content c |
+      revPartialPathStoreStep(mid, ap0, c, node, config) and
+      sc1 = mid.getSummaryCtx1() and
+      sc2 = mid.getSummaryCtx2() and
+      apConsRev(ap, c, ap0, config)
+    )
+    or
+    exists(ParameterNode p |
+      mid.getNode() = p and
+      viableParamArg(_, p, node) and
+      sc1 = mid.getSummaryCtx1() and
+      sc2 = mid.getSummaryCtx2() and
+      sc1 = TRevSummaryCtx1None() and
+      sc2 = TRevSummaryCtx2None() and
+      ap = mid.getAp() and
+      config = mid.getConfiguration()
+    )
+    or
+    exists(ReturnPosition pos |
+      revPartialPathIntoReturn(mid, pos, sc1, sc2, _, ap, config) and
+      pos = getReturnPosition(node)
+    )
+    or
+    revPartialPathThroughCallable(mid, node, ap, config) and
+    sc1 = mid.getSummaryCtx1() and
+    sc2 = mid.getSummaryCtx2()
+  }
+
+  pragma[inline]
+  private predicate revPartialPathReadStep(
+    PartialPathNodeRev mid, RevPartialAccessPath ap1, Content c, Node node, RevPartialAccessPath ap2
+  ) {
+    exists(Node midNode |
+      midNode = mid.getNode() and
+      ap1 = mid.getAp() and
+      read(node, c, midNode) and
+      ap2.getHead() = c and
+      ap2.len() = unbindInt(ap1.len() + 1)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate apConsRev(
+    RevPartialAccessPath ap1, Content c, RevPartialAccessPath ap2, Configuration config
+  ) {
+    exists(PartialPathNodeRev mid |
+      revPartialPathReadStep(mid, ap1, c, _, ap2) and
+      config = mid.getConfiguration()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate revPartialPathStoreStep(
+    PartialPathNodeRev mid, RevPartialAccessPath ap, Content c, Node node, Configuration config
+  ) {
+    exists(Node midNode, TypedContent tc |
+      midNode = mid.getNode() and
+      ap = mid.getAp() and
+      store(node, tc, midNode, _) and
+      ap.getHead() = c and
+      config = mid.getConfiguration() and
+      tc.getContent() = c
+    )
+  }
+
+  pragma[nomagic]
+  private predicate revPartialPathIntoReturn(
+    PartialPathNodeRev mid, ReturnPosition pos, TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2,
+    DataFlowCall call, RevPartialAccessPath ap, Configuration config
+  ) {
+    exists(Node out |
+      mid.getNode() = out and
+      viableReturnPosOut(call, pos, out) and
+      sc1 = TRevSummaryCtx1Some(pos) and
+      sc2 = TRevSummaryCtx2Some(ap) and
+      ap = mid.getAp() and
+      config = mid.getConfiguration()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate revPartialPathFlowsThrough(
+    int pos, TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2, RevPartialAccessPath ap,
+    Configuration config
+  ) {
+    exists(PartialPathNodeRev mid, ParameterNode p |
+      mid.getNode() = p and
+      p.isParameterOf(_, pos) and
+      sc1 = mid.getSummaryCtx1() and
+      sc2 = mid.getSummaryCtx2() and
+      ap = mid.getAp() and
+      config = mid.getConfiguration()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate revPartialPathThroughCallable0(
+    DataFlowCall call, PartialPathNodeRev mid, int pos, RevPartialAccessPath ap,
+    Configuration config
+  ) {
+    exists(TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2 |
+      revPartialPathIntoReturn(mid, _, sc1, sc2, call, _, config) and
+      revPartialPathFlowsThrough(pos, sc1, sc2, ap, config)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate revPartialPathThroughCallable(
+    PartialPathNodeRev mid, ArgumentNode node, RevPartialAccessPath ap, Configuration config
+  ) {
+    exists(DataFlowCall call, int pos |
+      revPartialPathThroughCallable0(call, mid, pos, ap, config) and
+      node.argumentOf(call, pos)
     )
   }
 }
@@ -3378,6 +3686,14 @@ private predicate partialFlow(
   PartialPathNode source, PartialPathNode node, Configuration configuration
 ) {
   source.getConfiguration() = configuration and
-  configuration.isSource(source.getNode()) and
+  source.isFwdSource() and
   node = source.getASuccessor+()
+}
+
+private predicate revPartialFlow(
+  PartialPathNode node, PartialPathNode sink, Configuration configuration
+) {
+  sink.getConfiguration() = configuration and
+  sink.isRevSink() and
+  node.getASuccessor+() = sink
 }
