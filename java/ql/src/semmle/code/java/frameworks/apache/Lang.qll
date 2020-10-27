@@ -10,3 +10,13 @@ class TypeApacheRandomStringUtils extends Class {
     hasQualifiedName("org.apache.commons.lang3", "RandomStringUtils")
   }
 }
+
+class MethodApacheSerializationUtilsDeserialize extends Method {
+  MethodApacheSerializationUtilsDeserialize() {
+    (
+      this.getDeclaringType().hasQualifiedName("org.apache.commons.lang", "SerializationUtils") or
+      this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "SerializationUtils")
+    ) and
+    this.hasName("deserialize")
+  }
+}
