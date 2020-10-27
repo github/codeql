@@ -265,12 +265,12 @@ checksum = "8cab7a364d15cde1e505267766a2d3c4e22a843e1a601f0fa7564c0f82ced11c"
 name = "ruby-extractor"
 version = "0.1.0"
 dependencies = [
- "cc",
  "clap",
  "node-types",
  "tracing",
  "tracing-subscriber",
  "tree-sitter",
+ "tree-sitter-ruby",
 ]
 
 [[package]]
@@ -485,6 +485,16 @@ checksum = "70ee7370fec3aecde3862a7d64c571048f70a7298daef1815e8fc68b9de54b5c"
 dependencies = [
  "cc",
  "regex",
+]
+
+[[package]]
+name = "tree-sitter-ruby"
+version = "0.16.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "50dfb5eb364529287bc6007e1d0f2908b831b1102db3082398ae03da0f35d617"
+dependencies = [
+ "cc",
+ "tree-sitter",
 ]
 
 [[package]]
