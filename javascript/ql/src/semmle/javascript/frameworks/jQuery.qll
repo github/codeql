@@ -498,8 +498,6 @@ module JQuery {
   private DataFlow::SourceNode dollar(DataFlow::TypeTracker t) {
     t.start() and
     result = dollarSource()
-    or
-    exists(DataFlow::TypeTracker t2 | result = dollar(t2).track(t2, t))
   }
 
   /**
