@@ -30,7 +30,7 @@ Validator validator = Validation.byDefaultProvider()
    .buildValidatorFactory()
    .getValidator();
 </pre></li>
-<li>Replace Hibernate-Validator with Apache BVal which in its latest version does not interpolate EL expressions by default.
+<li>Replace Hibernate Validator with Apache BVal which in its latest version does not interpolate EL expressions by default.
 Note that this replacement may not be a simple drop-in replacement.</li>
 </ul>
 </recommendation>
