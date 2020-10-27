@@ -4,15 +4,8 @@ use clap;
 use std::fs;
 use std::io::BufRead;
 use std::path::{Path, PathBuf};
-use tree_sitter::Language;
-
-const NODE_TYPES: &'static str = include_str!("../../tree-sitter-ruby/src/node-types.json");
 
 fn main() -> std::io::Result<()> {
-    extern "C" {
-        fn tree_sitter_ruby() -> Language;
-    }
-
     tracing_subscriber::fmt()
         .with_target(false)
         .without_time()
@@ -43,8 +36,8 @@ fn main() -> std::io::Result<()> {
     let file_list = matches.value_of("file-list").expect("missing --file-list");
     let file_list = fs::File::open(file_list)?;
 
-    let language = unsafe { tree_sitter_ruby() };
-    let schema = node_types::read_node_types_str(NODE_TYPES)?;
+    let language = tree_sitter_ruby::language();
+    let schema = node_types::read_node_types_str(tree_sitter_ruby::NODE_TYPES)?;
     let mut extractor = extractor::create(language, schema);
     for line in std::io::BufReader::new(file_list).lines() {
         let path = PathBuf::from(line?);
