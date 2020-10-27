@@ -1,10 +1,10 @@
 /**
- * @name Insecure Bean validation
+ * @name Insecure Bean Validation
  * @description User-controlled data may be evaluated as a Java EL expressions, leading to arbitrary code execution.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/unsafe-eval
+ * @id java/insecure-bean-validation
  * @tags security
  *       external/cwe/cwe-094
  */
