@@ -407,7 +407,7 @@ class Stackalloc extends ArrayCreation {
  * An anonymous function. Either a lambda expression (`LambdaExpr`) or an
  * anonymous method expression (`AnonymousMethodExpr`).
  */
-class AnonymousFunctionExpr extends Expr, Callable, @anonymous_function_expr {
+class AnonymousFunctionExpr extends Expr, Callable, Modifiable, @anonymous_function_expr {
   override string getName() { result = "<anonymous>" }
 
   override Type getReturnType() {

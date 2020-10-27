@@ -48,25 +48,15 @@ Discard.cs:
 #-----| 4 -> [BlockStmt] {...}
 #-----| 4 -> [BlockStmt] {...}
 #-----| 4 -> [BlockStmt] {...}
-#-----| 4 -> [BlockStmt] {...}
 
 LocalFunction.cs:
 #    5| [Method] M1
 #-----| 4 -> [BlockStmt] {...}
 #-----| 4 -> [BlockStmt] {...}
 #-----| 4 -> [BlockStmt] {...}
-#-----| 4 -> [BlockStmt] {...}
 
 NativeInt.cs:
 #    5| [Method] M1
-#-----| 4 -> [BlockStmt] {...}
-#-----| 4 -> [BlockStmt] {...}
-#-----| 4 -> [BlockStmt] {...}
-#-----| 4 -> [BlockStmt] {...}
-
-StaticLambda.cs:
-#    5| [Method] M1
-#-----| 4 -> [BlockStmt] {...}
 #-----| 4 -> [BlockStmt] {...}
 #-----| 4 -> [BlockStmt] {...}
 #-----| 4 -> [BlockStmt] {...}
@@ -582,6 +572,144 @@ InitOnlySetter.cs:
 
 #    5| [ParameterAccess] access to parameter value
 
+LambdaModifier.cs:
+#    6| [Method] M1
+#-----| 4 -> [BlockStmt] {...}
+
+#   11| [ParameterAccess] access to parameter x
+
+#   11| [LocalVariableAccess] access to local variable z
+
+#   12| [ParameterAccess] access to parameter x
+
+#   12| [LocalVariableAccess] access to local variable z
+
+#   13| [ParameterAccess] access to parameter x
+
+#   13| [LocalVariableAccess] access to local variable z
+
+#    7| [BlockStmt] {...}
+#-----| 0 -> [LocalFunctionStmt] m(...)
+#-----| 1 -> [LocalConstantDeclStmt] const ... ...;
+#-----| 2 -> [ExprStmt] ...;
+#-----| 3 -> [ExprStmt] ...;
+#-----| 4 -> [ExprStmt] ...;
+#-----| 5 -> [ExprStmt] ...;
+
+#    8| [LocalFunctionStmt] m(...)
+#-----| 0 -> [LocalFunction] m
+
+#    8| [LocalFunction] m
+#-----| 2 -> (Parameters)
+#-----| 4 -> [BlockStmt] {...}
+
+#    8| [Parameter] f
+
+#   10| [LocalConstantDeclStmt] const ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 z = ...
+
+#   10| [LocalVariableDeclAndInitExpr] Int32 z = ...
+#-----| 0 -> [IntLiteral] 10
+#-----| 1 -> [LocalVariableAccess] access to local variable z
+
+#   10| [IntLiteral] 10
+
+#   10| [LocalVariableAccess] access to local variable z
+
+#   11| [ExprStmt] ...;
+#-----| 0 -> [LocalFunctionCall] call to local function m
+
+#   11| [LocalFunctionCall] call to local function m
+#-----| -1 -> [LocalFunctionAccess] access to local function m
+#-----| 0 -> [LambdaExpr] (...) => ...
+
+#   11| [LocalFunctionAccess] access to local function m
+
+#   11| [LambdaExpr] (...) => ...
+#-----| 2 -> (Parameters)
+#-----| 4 -> [AddExpr] ... + ...
+
+#   12| [ExprStmt] ...;
+#-----| 0 -> [LocalFunctionCall] call to local function m
+
+#   12| [LocalFunctionCall] call to local function m
+#-----| -1 -> [LocalFunctionAccess] access to local function m
+#-----| 0 -> [LambdaExpr] (...) => ...
+
+#   12| [LocalFunctionAccess] access to local function m
+
+#   12| [LambdaExpr] (...) => ...
+#-----| 2 -> (Parameters)
+#-----| 4 -> [AddExpr] ... + ...
+
+#   13| [ExprStmt] ...;
+#-----| 0 -> [LocalFunctionCall] call to local function m
+
+#   13| [LocalFunctionCall] call to local function m
+#-----| -1 -> [LocalFunctionAccess] access to local function m
+#-----| 0 -> [AnonymousMethodExpr] delegate(...) { ... }
+
+#   13| [LocalFunctionAccess] access to local function m
+
+#   13| [AnonymousMethodExpr] delegate(...) { ... }
+#-----| 2 -> (Parameters)
+#-----| 4 -> [BlockStmt] {...}
+
+#   15| [ExprStmt] ...;
+#-----| 0 -> [AwaitExpr] await ...
+
+#   15| [AwaitExpr] await ...
+#-----| 0 -> [MethodCall] call to method Run
+
+#   15| [MethodCall] call to method Run
+#-----| -1 -> [TypeAccess] access to type Task
+#-----| 0 -> [LambdaExpr] (...) => ...
+
+#   15| [TypeAccess] access to type Task
+
+#   15| [LambdaExpr] (...) => ...
+#-----| 4 -> [BlockStmt] {...}
+
+#    8| [BlockStmt] {...}
+
+#   11| [Parameter] x
+
+#   11| [AddExpr] ... + ...
+#-----| 0 -> [ParameterAccess] access to parameter x
+#-----| 1 -> [LocalVariableAccess] access to local variable z
+
+#   12| [Parameter] x
+
+#   12| [AddExpr] ... + ...
+#-----| 0 -> [ParameterAccess] access to parameter x
+#-----| 1 -> [LocalVariableAccess] access to local variable z
+
+#   13| [Parameter] x
+
+#   13| [BlockStmt] {...}
+#-----| 0 -> [ReturnStmt] return ...;
+
+#   13| [ReturnStmt] return ...;
+#-----| 0 -> [AddExpr] ... + ...
+
+#   13| [AddExpr] ... + ...
+#-----| 0 -> [ParameterAccess] access to parameter x
+#-----| 1 -> [LocalVariableAccess] access to local variable z
+
+#   15| [BlockStmt] {...}
+#-----| 0 -> [ExprStmt] ...;
+
+#   15| [ExprStmt] ...;
+#-----| 0 -> [AwaitExpr] await ...
+
+#   15| [AwaitExpr] await ...
+#-----| 0 -> [PropertyCall] access to property CompletedTask
+
+#   15| [PropertyCall] access to property CompletedTask
+#-----| -1 -> [TypeAccess] access to type Task
+
+#   15| [TypeAccess] access to type Task
+
 LocalFunction.cs:
 #   10| [CastExpr] (...) ...
 #-----| 0 -> [IntLiteral] 2
@@ -1059,57 +1187,6 @@ Record.cs:
 
 #   78| [LocalVariableAccess] access to local variable brother
 
-StaticLambda.cs:
-#   10| [ParameterAccess] access to parameter x
-
-#   10| [LocalVariableAccess] access to local variable z
-
-#    6| [BlockStmt] {...}
-#-----| 0 -> [LocalFunctionStmt] m(...)
-#-----| 1 -> [LocalConstantDeclStmt] const ... ...;
-#-----| 2 -> [ExprStmt] ...;
-
-#    7| [LocalFunctionStmt] m(...)
-#-----| 0 -> [LocalFunction] m
-
-#    7| [LocalFunction] m
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#    7| [Parameter] f
-
-#    9| [LocalConstantDeclStmt] const ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 z = ...
-
-#    9| [LocalVariableDeclAndInitExpr] Int32 z = ...
-#-----| 0 -> [IntLiteral] 10
-#-----| 1 -> [LocalVariableAccess] access to local variable z
-
-#    9| [IntLiteral] 10
-
-#    9| [LocalVariableAccess] access to local variable z
-
-#   10| [ExprStmt] ...;
-#-----| 0 -> [LocalFunctionCall] call to local function m
-
-#   10| [LocalFunctionCall] call to local function m
-#-----| -1 -> [LocalFunctionAccess] access to local function m
-#-----| 0 -> [LambdaExpr] (...) => ...
-
-#   10| [LocalFunctionAccess] access to local function m
-
-#   10| [LambdaExpr] (...) => ...
-#-----| 2 -> (Parameters)
-#-----| 4 -> [AddExpr] ... + ...
-
-#    7| [BlockStmt] {...}
-
-#   10| [Parameter] x
-
-#   10| [AddExpr] ... + ...
-#-----| 0 -> [ParameterAccess] access to parameter x
-#-----| 1 -> [LocalVariableAccess] access to local variable z
-
 TargetType.cs:
 #    9| [Method] M1
 #-----| 2 -> (Parameters)
@@ -1354,6 +1431,18 @@ TargetType.cs:
 #-----| 0 -> [Parameter] value
 
 #-----| (Parameters)
+#-----| 0 -> [Parameter] f
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
 #-----| 0 -> [Parameter] b
 #-----| 1 -> [Parameter] i
 
@@ -1390,12 +1479,6 @@ TargetType.cs:
 #-----| (Parameters)
 #-----| 0 -> [Parameter] r1
 #-----| 1 -> [Parameter] r2
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] f
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] t
@@ -1435,6 +1518,61 @@ ForeachExtension.cs:
 #-----| 5 -> [Method] Main
 #-----| 6 -> [Method] GetAsyncEnumerator
 
+CovariantReturn.cs:
+#    3| [Class] Class1
+#-----| 5 -> [Method] M1
+#-----| 6 -> [Method] M2
+#-----| 7 -> [Method] M1
+#-----| 7 -> [Method] M1
+#-----| 7 -> [Method] M1
+#-----| 8 -> [Class] Program
+#-----| 9 -> [Method] M1
+#-----| 12 -> [Enum] E
+
+Discard.cs:
+#    3| [Class] Class1
+#-----| 5 -> [Method] M1
+#-----| 6 -> [Method] M2
+#-----| 7 -> [Method] M1
+#-----| 7 -> [Method] M1
+#-----| 7 -> [Method] M1
+#-----| 8 -> [Class] Program
+#-----| 9 -> [Method] M1
+#-----| 12 -> [Enum] E
+
+FunctionPointer.cs:
+#    3| [Class] Class1
+#-----| 5 -> [Method] M1
+#-----| 6 -> [Method] M2
+#-----| 7 -> [Method] M1
+#-----| 7 -> [Method] M1
+#-----| 7 -> [Method] M1
+#-----| 8 -> [Class] Program
+#-----| 9 -> [Method] M1
+#-----| 12 -> [Enum] E
+
+LocalFunction.cs:
+#    3| [Class] Class1
+#-----| 5 -> [Method] M1
+#-----| 6 -> [Method] M2
+#-----| 7 -> [Method] M1
+#-----| 7 -> [Method] M1
+#-----| 7 -> [Method] M1
+#-----| 8 -> [Class] Program
+#-----| 9 -> [Method] M1
+#-----| 12 -> [Enum] E
+
+NativeInt.cs:
+#    3| [Class] Class1
+#-----| 5 -> [Method] M1
+#-----| 6 -> [Method] M2
+#-----| 7 -> [Method] M1
+#-----| 7 -> [Method] M1
+#-----| 7 -> [Method] M1
+#-----| 8 -> [Class] Program
+#-----| 9 -> [Method] M1
+#-----| 12 -> [Enum] E
+
 InitOnlySetter.cs:
 #    3| [Class] Base
 #-----| 5 -> [Property] Prop0
@@ -1473,72 +1611,6 @@ Record.cs:
 #-----| 12 -> [EQOperator] ==
 #-----| 15 -> [Property] Level
 #-----| 16 -> [InstanceConstructor] Student
-
-CovariantReturn.cs:
-#    3| [Class] Class1
-#-----| 5 -> [Method] M1
-#-----| 6 -> [Method] M2
-#-----| 8 -> [Class] Program
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 11 -> [Enum] E
-
-Discard.cs:
-#    3| [Class] Class1
-#-----| 5 -> [Method] M1
-#-----| 6 -> [Method] M2
-#-----| 8 -> [Class] Program
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 11 -> [Enum] E
-
-FunctionPointer.cs:
-#    3| [Class] Class1
-#-----| 5 -> [Method] M1
-#-----| 6 -> [Method] M2
-#-----| 8 -> [Class] Program
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 11 -> [Enum] E
-
-LocalFunction.cs:
-#    3| [Class] Class1
-#-----| 5 -> [Method] M1
-#-----| 6 -> [Method] M2
-#-----| 8 -> [Class] Program
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 11 -> [Enum] E
-
-NativeInt.cs:
-#    3| [Class] Class1
-#-----| 5 -> [Method] M1
-#-----| 6 -> [Method] M2
-#-----| 8 -> [Class] Program
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 11 -> [Enum] E
-
-StaticLambda.cs:
-#    3| [Class] Class1
-#-----| 5 -> [Method] M1
-#-----| 6 -> [Method] M2
-#-----| 8 -> [Class] Program
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 9 -> [Method] M1
-#-----| 11 -> [Enum] E
 
 TargetType.cs:
 #    5| [Class] TargetType
