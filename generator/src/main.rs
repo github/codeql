@@ -2,21 +2,11 @@ mod dbscheme;
 mod language;
 
 use language::Language;
-use node_types::{FieldInfo, NodeInfo};
+use node_types;
+use std::collections::BTreeSet as Set;
 use std::fs::File;
 use std::io::LineWriter;
 use std::path::PathBuf;
-
-/// Given a tree-sitter node type's (kind, named) pair, returns a single string
-/// representing the (unescaped) name we'll use to refer to corresponding QL
-/// type.
-fn node_type_name(kind: &str, named: bool) -> String {
-    if named {
-        kind.to_string()
-    } else {
-        format!("{}_unnamed", kind)
-    }
-}
 
 /// Given the name of the parent node, and its field information, returns the
 /// name of the field's type. This may be an ad-hoc union of all the possible
@@ -24,21 +14,21 @@ fn node_type_name(kind: &str, named: bool) -> String {
 fn make_field_type(
     parent_name: &str,
     field_name: &str,
-    field_info: &FieldInfo,
+    types: &Set<node_types::TypeName>,
     entries: &mut Vec<dbscheme::Entry>,
 ) -> String {
-    if field_info.types.len() == 1 {
+    if types.len() == 1 {
         // This field can only have a single type.
-        let t = &field_info.types[0];
-        dbscheme::escape_name(&node_type_name(&t.kind, t.named))
+        let t = types.iter().next().unwrap();
+        node_types::escape_name(&node_types::node_type_name(&t.kind, t.named))
     } else {
         // This field can have one of several types. Create an ad-hoc QL union
         // type to represent them.
         let field_union_name = format!("{}_{}_type", parent_name, field_name);
-        let field_union_name = dbscheme::escape_name(&field_union_name);
+        let field_union_name = node_types::escape_name(&field_union_name);
         let mut members: Vec<String> = Vec::new();
-        for field_type in &field_info.types {
-            members.push(dbscheme::escape_name(&node_type_name(
+        for field_type in types {
+            members.push(node_types::escape_name(&node_types::node_type_name(
                 &field_type.kind,
                 field_type.named,
             )));
@@ -55,140 +45,146 @@ fn make_field_type(
 /// column on `main_table`, or as an auxiliary table.
 fn add_field(
     main_table: &mut dbscheme::Table,
-    parent_name: &str,
-    field_name: &str,
-    field_info: &FieldInfo,
+    field: &node_types::Field,
     entries: &mut Vec<dbscheme::Entry>,
 ) {
-    if field_info.multiple || !field_info.required {
-        // This field can appear zero or multiple times, so put
-        // it in an auxiliary table.
-        let field_type = make_field_type(parent_name, field_name, field_info, entries);
-        let field_table = dbscheme::Table {
-            name: format!("{}_{}", parent_name, field_name),
-            columns: vec![
-                // First column is a reference to the parent.
-                dbscheme::Column {
-                    unique: false,
-                    db_type: dbscheme::DbColumnType::Int,
-                    name: dbscheme::escape_name(parent_name),
-                    ql_type: dbscheme::QlColumnType::Custom(dbscheme::escape_name(parent_name)),
-                    ql_type_is_ref: true,
-                },
-                // Then an index column.
-                dbscheme::Column {
-                    unique: false,
-                    db_type: dbscheme::DbColumnType::Int,
-                    name: "index".to_string(),
-                    ql_type: dbscheme::QlColumnType::Int,
-                    ql_type_is_ref: true,
-                },
-                // And then the field
-                dbscheme::Column {
-                    unique: true,
-                    db_type: dbscheme::DbColumnType::Int,
-                    name: field_type.clone(),
-                    ql_type: dbscheme::QlColumnType::Custom(field_type),
-                    ql_type_is_ref: true,
-                },
-            ],
-            // In addition to the field being unique, the combination of
-            // parent+index is unique, so add a keyset for them.
-            keysets: Some(vec![
-                dbscheme::escape_name(parent_name),
-                "index".to_string(),
-            ]),
-        };
-        entries.push(dbscheme::Entry::Table(field_table));
-    } else {
-        // This field must appear exactly once, so we add it as
-        // a column to the main table for the node type.
-        let field_type = make_field_type(parent_name, field_name, field_info, entries);
-        main_table.columns.push(dbscheme::Column {
-            unique: false,
-            db_type: dbscheme::DbColumnType::Int,
-            name: String::from(field_name),
-            ql_type: dbscheme::QlColumnType::Custom(field_type),
-            ql_type_is_ref: true,
-        });
+    let field_name = match &field.name {
+        None => "child".to_owned(),
+        Some(x) => x.to_owned(),
+    };
+    let parent_name = node_types::node_type_name(&field.parent.kind, field.parent.named);
+    match field.storage {
+        node_types::Storage::Table { .. } => {
+            // This field can appear zero or multiple times, so put
+            // it in an auxiliary table.
+            let field_type = make_field_type(&parent_name, &field_name, &field.types, entries);
+            let field_table = dbscheme::Table {
+                name: format!("{}_{}", parent_name, field_name),
+                columns: vec![
+                    // First column is a reference to the parent.
+                    dbscheme::Column {
+                        unique: false,
+                        db_type: dbscheme::DbColumnType::Int,
+                        name: node_types::escape_name(&parent_name),
+                        ql_type: dbscheme::QlColumnType::Custom(node_types::escape_name(
+                            &parent_name,
+                        )),
+                        ql_type_is_ref: true,
+                    },
+                    // Then an index column.
+                    dbscheme::Column {
+                        unique: false,
+                        db_type: dbscheme::DbColumnType::Int,
+                        name: "index".to_string(),
+                        ql_type: dbscheme::QlColumnType::Int,
+                        ql_type_is_ref: true,
+                    },
+                    // And then the field
+                    dbscheme::Column {
+                        unique: true,
+                        db_type: dbscheme::DbColumnType::Int,
+                        name: field_type.clone(),
+                        ql_type: dbscheme::QlColumnType::Custom(field_type),
+                        ql_type_is_ref: true,
+                    },
+                ],
+                // In addition to the field being unique, the combination of
+                // parent+index is unique, so add a keyset for them.
+                keysets: Some(vec![
+                    node_types::escape_name(&parent_name),
+                    "index".to_string(),
+                ]),
+            };
+            entries.push(dbscheme::Entry::Table(field_table));
+        }
+        node_types::Storage::Column => {
+            // This field must appear exactly once, so we add it as
+            // a column to the main table for the node type.
+            let field_type = make_field_type(&parent_name, &field_name, &field.types, entries);
+            main_table.columns.push(dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: field_name,
+                ql_type: dbscheme::QlColumnType::Custom(field_type),
+                ql_type_is_ref: true,
+            });
+        }
     }
 }
 
 /// Converts the given tree-sitter node types into CodeQL dbscheme entries.
-fn convert_nodes(nodes: &[NodeInfo]) -> Vec<dbscheme::Entry> {
+fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
     let mut entries: Vec<dbscheme::Entry> = Vec::new();
     let mut top_members: Vec<String> = Vec::new();
 
     for node in nodes {
-        if let Some(subtypes) = &node.subtypes {
-            // It's a tree-sitter supertype node, for which we create a union
-            // type.
-            let mut members: Vec<String> = Vec::new();
-            for subtype in subtypes {
-                members.push(dbscheme::escape_name(&node_type_name(
-                    &subtype.kind,
-                    subtype.named,
-                )))
-            }
-            entries.push(dbscheme::Entry::Union(dbscheme::Union {
-                name: dbscheme::escape_name(&node_type_name(&node.kind, node.named)),
-                members,
-            }));
-        } else {
-            // It's a product type, defined by a table.
-            let name = node_type_name(&node.kind, node.named);
-            let mut main_table = dbscheme::Table {
-                name: dbscheme::escape_name(&(format!("{}_def", name))),
-                columns: vec![dbscheme::Column {
-                    db_type: dbscheme::DbColumnType::Int,
-                    name: "id".to_string(),
-                    unique: true,
-                    ql_type: dbscheme::QlColumnType::Custom(dbscheme::escape_name(&name)),
-                    ql_type_is_ref: false,
-                }],
-                keysets: None,
-            };
-            top_members.push(dbscheme::escape_name(&name));
-
-            let mut is_leaf = true;
-
-            // If the type also has fields or children, then we create either
-            // auxiliary tables or columns in the defining table for them.
-            if let Some(fields) = &node.fields {
-                for (field_name, field_info) in fields {
-                    is_leaf = false;
-                    add_field(&mut main_table, &name, field_name, field_info, &mut entries);
+        match &node {
+            node_types::Entry::Union {
+                type_name,
+                members: n_members,
+            } => {
+                // It's a tree-sitter supertype node, for which we create a union
+                // type.
+                let mut members: Vec<String> = Vec::new();
+                for n_member in n_members {
+                    members.push(node_types::escape_name(&node_types::node_type_name(
+                        &n_member.kind,
+                        n_member.named,
+                    )))
                 }
+                entries.push(dbscheme::Entry::Union(dbscheme::Union {
+                    name: node_types::escape_name(&node_types::node_type_name(
+                        &type_name.kind,
+                        type_name.named,
+                    )),
+                    members,
+                }));
             }
-            if let Some(children) = &node.children {
-                is_leaf = false;
+            node_types::Entry::Table { type_name, fields } => {
+                // It's a product type, defined by a table.
+                let name = node_types::node_type_name(&type_name.kind, type_name.named);
+                let mut main_table = dbscheme::Table {
+                    name: node_types::escape_name(&(format!("{}_def", name))),
+                    columns: vec![dbscheme::Column {
+                        db_type: dbscheme::DbColumnType::Int,
+                        name: "id".to_string(),
+                        unique: true,
+                        ql_type: dbscheme::QlColumnType::Custom(node_types::escape_name(&name)),
+                        ql_type_is_ref: false,
+                    }],
+                    keysets: None,
+                };
+                top_members.push(node_types::escape_name(&name));
 
-                // Treat children as if they were a field called 'child'.
-                add_field(&mut main_table, &name, "child", children, &mut entries);
-            }
+                // If the type also has fields or children, then we create either
+                // auxiliary tables or columns in the defining table for them.
+                for field in fields {
+                    add_field(&mut main_table, &field, &mut entries);
+                }
 
-            if is_leaf {
-                // There were no fields and no children, so it's a leaf node in
-                // the TS grammar. Add a column for the node text.
+                if fields.is_empty() {
+                    // There were no fields and no children, so it's a leaf node in
+                    // the TS grammar. Add a column for the node text.
+                    main_table.columns.push(dbscheme::Column {
+                        unique: false,
+                        db_type: dbscheme::DbColumnType::String,
+                        name: "text".to_string(),
+                        ql_type: dbscheme::QlColumnType::String,
+                        ql_type_is_ref: true,
+                    });
+                }
+
+                // Finally, the type's defining table also includes the location.
                 main_table.columns.push(dbscheme::Column {
                     unique: false,
-                    db_type: dbscheme::DbColumnType::String,
-                    name: "text".to_string(),
-                    ql_type: dbscheme::QlColumnType::String,
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "loc".to_string(),
+                    ql_type: dbscheme::QlColumnType::Custom("location".to_string()),
                     ql_type_is_ref: true,
                 });
+
+                entries.push(dbscheme::Entry::Table(main_table));
             }
-
-            // Finally, the type's defining table also includes the location.
-            main_table.columns.push(dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "loc".to_string(),
-                ql_type: dbscheme::QlColumnType::Custom("location".to_string()),
-                ql_type_is_ref: true,
-            });
-
-            entries.push(dbscheme::Entry::Table(main_table));
         }
     }
 
@@ -287,16 +283,9 @@ fn main() {
         node_types_path: PathBuf::from("tree-sitter-ruby/src/node-types.json"),
         dbscheme_path: PathBuf::from("ruby.dbscheme"),
     };
-    match node_types::read(&ruby.node_types_path) {
+    match node_types::read_node_types(&ruby.node_types_path) {
         Err(e) => {
-            println!(
-                "Failed to read '{}': {}",
-                match ruby.node_types_path.to_str() {
-                    None => "<undisplayable>",
-                    Some(p) => p,
-                },
-                e
-            );
+            println!("Failed to read '{}': {}", ruby.node_types_path.display(), e);
             std::process::exit(1);
         }
         Ok(nodes) => {
