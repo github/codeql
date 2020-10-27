@@ -14,7 +14,7 @@ untrusted) bean properties flow into the custom error message.</p>
 <p>There are different approaches to remediate the issue:</p>
 <ul>
 <li>Do not include validated bean properties in the custom error message.</li>
-<li>Use parameterized messages instead of string concatenation. E.g:
+<li>Use parameterized messages instead of string concatenation. For example:
 <pre>
 HibernateConstraintValidatorContext context = constraintValidatorContext.unwrap( HibernateConstraintValidatorContext.class );
 context.addMessageParameter( "foo", "bar" );
