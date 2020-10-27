@@ -11,7 +11,7 @@ namespace ns_int
 }
 
 void sink(int);
-void sink(std::vector<int> &);
+template<typename T> void sink(std::vector<T> &);
 
 void test_range_based_for_loop_vector(int source1) {
 	std::vector<int> v(100, source1);
@@ -335,7 +335,7 @@ void vector_iterator_assign_wrapper(std::vector<int>::iterator iter, int i) {
 }
 
 void test_vector_output_iterator(int b) {
-	std::vector<int> v1(10), v2(10), v3(10), v4(10), v5(10), v6(10), v7(10), v8(10), v9(10), v10(10), v11(10);
+	std::vector<int> v1(10), v2(10), v3(10), v4(10), v5(10), v6(10), v7(10), v8(10), v9(10), v10(10), v11(10), v12(10), v13(10), v14(10);
 
 	std::vector<int>::iterator i1 = v1.begin();
 	*i1 = source();
@@ -398,6 +398,57 @@ void test_vector_output_iterator(int b) {
 	std::vector<int>::iterator i11 = v11.begin();
 	vector_iterator_assign_wrapper(i11, source());
 	sink(v11); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i12 = v12.begin();
+	*i12++ = 0;
+	*i12 = source();
+	sink(v12); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i13 = v13.begin();
+	*i13++ = source();
+	sink(v13); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i14 = v14.begin();
+	i14++;
+	*i14++ = source();
+	sink(v14); // tainted [NOT DETECTED by IR]
+}
+
+void test_vector_inserter(char *source_string) {
+	{
+		std::vector<std::string> out;
+		auto it = out.end();
+		*it++ = std::string(source_string);
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<std::string> out;
+		auto it = std::back_inserter(out);
+		*it++ = std::string(source_string);
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<int> out;
+		auto it = std::back_inserter(out);
+		*it++ = source();
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<std::string> out;
+		auto it = std::back_inserter(out);
+		*++it = std::string(source_string);
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<int> out;
+		auto it = std::back_inserter(out);
+		*++it = source();
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
 }
 
 void *memcpy(void *s1, const void *s2, size_t n);
