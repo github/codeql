@@ -41,7 +41,7 @@ Note that this replacement may not be a simple drop-in replacement.</li>
 </example>
 
 <references>
-<li>https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#_the_code_constraintvalidatorcontext_code</li>
-<li>https://securitylab.github.com/research/bean-validation-RCE</li>
+<li>Hibernate Reference Guide:<a href="https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#_the_code_constraintvalidatorcontext_code">ConstraintValidatorContext</a>.</li>
+<li>GitHub Security Lab research: <a href="https://securitylab.github.com/research/bean-validation-RCE">Bean validation</a>.</li>
 </references>
 </qhelp>
