@@ -26,6 +26,8 @@ Sinks added between 2020-01-01 and 2020-10-06 have been removed. Found by lookin
 - the commit titles of https://github.com/github/codeql/commits/main/javascript/ql/test/query-tests/Security/CWE-079/Xss.expected
 - the PR titles of https://github.com/github/codeql/pulls?page=2&q=is%3Apr+label%3AJS+is%3Aclosed+sink
 
+- recursive type tracking for `jQuery::dollar`, `DOM::domValueRef`.
+
 ## SqlInjection.ql
 
 Sinks added between 2020-01-01 and 2020-10-06 have been removed. Found by looking at:
