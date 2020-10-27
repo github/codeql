@@ -103,6 +103,7 @@ dependencies = [
  "node-types",
  "tracing",
  "tracing-subscriber",
+ "tree-sitter-ruby",
 ]
 
 [[package]]

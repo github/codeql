@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
-pub struct Language {
+pub struct Language<'a> {
     pub name: String,
-    pub node_types_path: PathBuf,
+    pub node_types: &'a str,
     pub dbscheme_path: PathBuf,
 }

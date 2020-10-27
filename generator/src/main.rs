@@ -288,12 +288,12 @@ fn main() {
     // command line.
     let ruby = Language {
         name: "Ruby".to_string(),
-        node_types_path: PathBuf::from("tree-sitter-ruby/src/node-types.json"),
+        node_types: tree_sitter_ruby::NODE_TYPES,
         dbscheme_path: PathBuf::from("ruby.dbscheme"),
     };
-    match node_types::read_node_types(&ruby.node_types_path) {
+    match node_types::read_node_types_str(&ruby.node_types) {
         Err(e) => {
-            error!("Failed to read '{}': {}", ruby.node_types_path.display(), e);
+            error!("Failed to read node-types JSON for {}: {}", ruby.name, e);
             std::process::exit(1);
         }
         Ok(nodes) => {
