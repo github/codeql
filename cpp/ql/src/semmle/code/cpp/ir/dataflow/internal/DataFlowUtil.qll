@@ -513,8 +513,13 @@ class DefinitionByReferenceNode extends InstructionNode {
 /**
  * A node representing the memory pointed to by a function argument.
  */
-class ArgumentIndirectionNode extends InstructionNode {
-  override ReadSideEffectInstruction instr;
+class ArgumentIndirectionNode extends OperandNode {
+  override SideEffectOperand op;
+  ReadSideEffectInstruction instr;
+
+  ArgumentIndirectionNode() {
+    op.getUse() = instr
+  }
 
   Expr getArgument() { result = instr.getArgumentDef().getUnconvertedResultExpression() }
 
