@@ -1,5 +1,12 @@
 | query-tests/Security/CWE-079/DomBasedXss/express.js:6 | expected an alert, but found none | NOT OK |  |
 | query-tests/Security/CWE-079/DomBasedXss/jwt-server.js:10 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/DomBasedXss/react-use-context.js:10 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/DomBasedXss/react-use-context.js:16 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/DomBasedXss/tst3.js:4 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/DomBasedXss/tst3.js:5 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/DomBasedXss/tst3.js:7 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/DomBasedXss/tst3.js:9 | expected an alert, but found none | NOT OK |  |
+| query-tests/Security/CWE-079/DomBasedXss/tst3.js:10 | expected an alert, but found none | NOT OK |  |
 | query-tests/Security/CWE-079/DomBasedXss/tst.js:349 | expected an alert, but found none | NOT OK |  |
 | query-tests/Security/CWE-079/DomBasedXss/tst.js:356 | expected an alert, but found none | NOT OK. (this is a jQuery object) |  |
 | query-tests/Security/CWE-079/DomBasedXss/tst.js:360 | expected an alert, but found none | NOT OK. (this is a DOM-node); |  |

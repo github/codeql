@@ -203,12 +203,6 @@ nodes
 | react-native.js:8:18:8:24 | tainted |
 | react-native.js:9:27:9:33 | tainted |
 | react-native.js:9:27:9:33 | tainted |
-| react-use-context.js:10:22:10:32 | window.name |
-| react-use-context.js:10:22:10:32 | window.name |
-| react-use-context.js:10:22:10:32 | window.name |
-| react-use-context.js:16:26:16:36 | window.name |
-| react-use-context.js:16:26:16:36 | window.name |
-| react-use-context.js:16:26:16:36 | window.name |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:10:4:14 | state |
 | react-use-state.js:4:38:4:48 | window.name |
@@ -311,27 +305,6 @@ nodes
 | translate.js:7:42:7:60 | target.substring(1) |
 | translate.js:9:27:9:50 | searchP ... 'term') |
 | translate.js:9:27:9:50 | searchP ... 'term') |
-| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) |
-| tst3.js:2:23:2:74 | decodeU ... str(1)) |
-| tst3.js:2:42:2:56 | window.location |
-| tst3.js:2:42:2:56 | window.location |
-| tst3.js:2:42:2:63 | window. ... .search |
-| tst3.js:2:42:2:73 | window. ... bstr(1) |
-| tst3.js:4:25:4:28 | data |
-| tst3.js:4:25:4:32 | data.src |
-| tst3.js:4:25:4:32 | data.src |
-| tst3.js:5:26:5:29 | data |
-| tst3.js:5:26:5:31 | data.p |
-| tst3.js:5:26:5:31 | data.p |
-| tst3.js:7:32:7:35 | data |
-| tst3.js:7:32:7:37 | data.p |
-| tst3.js:7:32:7:37 | data.p |
-| tst3.js:9:37:9:40 | data |
-| tst3.js:9:37:9:42 | data.p |
-| tst3.js:9:37:9:42 | data.p |
-| tst3.js:10:38:10:41 | data |
-| tst3.js:10:38:10:43 | data.p |
-| tst3.js:10:38:10:43 | data.p |
 | tst.js:2:7:2:39 | target |
 | tst.js:2:7:2:39 | target |
 | tst.js:2:16:2:32 | document.location |
@@ -851,8 +824,6 @@ edges
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
-| react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name |
-| react-use-context.js:16:26:16:36 | window.name | react-use-context.js:16:26:16:36 | window.name |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:10:4:14 | state | react-use-state.js:4:9:4:49 | state |
@@ -939,26 +910,6 @@ edges
 | translate.js:7:42:7:47 | target | translate.js:7:42:7:60 | target.substring(1) |
 | translate.js:7:42:7:60 | target.substring(1) | translate.js:9:27:9:50 | searchP ... 'term') |
 | translate.js:7:42:7:60 | target.substring(1) | translate.js:9:27:9:50 | searchP ... 'term') |
-| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:4:25:4:28 | data |
-| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:5:26:5:29 | data |
-| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:7:32:7:35 | data |
-| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:9:37:9:40 | data |
-| tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:10:38:10:41 | data |
-| tst3.js:2:23:2:74 | decodeU ... str(1)) | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) |
-| tst3.js:2:42:2:56 | window.location | tst3.js:2:42:2:63 | window. ... .search |
-| tst3.js:2:42:2:56 | window.location | tst3.js:2:42:2:63 | window. ... .search |
-| tst3.js:2:42:2:63 | window. ... .search | tst3.js:2:42:2:73 | window. ... bstr(1) |
-| tst3.js:2:42:2:73 | window. ... bstr(1) | tst3.js:2:23:2:74 | decodeU ... str(1)) |
-| tst3.js:4:25:4:28 | data | tst3.js:4:25:4:32 | data.src |
-| tst3.js:4:25:4:28 | data | tst3.js:4:25:4:32 | data.src |
-| tst3.js:5:26:5:29 | data | tst3.js:5:26:5:31 | data.p |
-| tst3.js:5:26:5:29 | data | tst3.js:5:26:5:31 | data.p |
-| tst3.js:7:32:7:35 | data | tst3.js:7:32:7:37 | data.p |
-| tst3.js:7:32:7:35 | data | tst3.js:7:32:7:37 | data.p |
-| tst3.js:9:37:9:40 | data | tst3.js:9:37:9:42 | data.p |
-| tst3.js:9:37:9:40 | data | tst3.js:9:37:9:42 | data.p |
-| tst3.js:10:38:10:41 | data | tst3.js:10:38:10:43 | data.p |
-| tst3.js:10:38:10:41 | data | tst3.js:10:38:10:43 | data.p |
 | tst.js:2:7:2:39 | target | tst.js:5:18:5:23 | target |
 | tst.js:2:7:2:39 | target | tst.js:5:18:5:23 | target |
 | tst.js:2:7:2:39 | target | tst.js:12:28:12:33 | target |
