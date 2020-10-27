@@ -1,5 +1,4 @@
-use super::nodes_types::{Entry, Field, Storage, TypeName};
-
+use node_types::{escape_name, node_type_name, Entry, Field, Storage, TypeName};
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
@@ -23,7 +22,7 @@ impl Extractor {
         let span = span!(
             Level::TRACE,
             "extract",
-            file = &path.display().to_string()[..]
+            file = %path.display()
         );
 
         let _enter = span.enter();
@@ -99,11 +98,7 @@ struct Visitor<'a> {
 impl Visitor<'_> {
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_error() {
-            error!(
-                "{}:{}: parse error",
-                &self.path,
-                node.start_position().row,
-            );
+            error!("{}:{}: parse error", &self.path, node.start_position().row);
             return false;
         }
         if node.is_missing() {
@@ -237,10 +232,10 @@ impl Visitor<'_> {
                         )
                     }
                 }
-                Storage::Table { parent, index } => {
+                Storage::Table { index } => {
                     for child_id in child_ids {
                         self.trap_output.push(TrapEntry::ChildOf(
-                            node_type_name(&parent.kind, parent.named),
+                            node_type_name(&field.parent.kind, field.parent.named),
                             parent_id,
                             match &field.name {
                                 Some(name) => name.to_owned(),
@@ -425,76 +420,5 @@ impl fmt::Display for Arg {
             Arg::Int(x) => write!(f, "{}", x),
             Arg::String(x) => write!(f, "\"{}\"", x.replace("\"", "\"\"")),
         }
-    }
-}
-
-const RESERVED_KEYWORDS: [&'static str; 14] = [
-    "boolean", "case", "date", "float", "int", "key", "of", "order", "ref", "string", "subtype",
-    "type", "unique", "varchar",
-];
-
-/// Returns a string that's a copy of `name` but suitably escaped to be a valid
-/// QL identifier.
-pub fn escape_name(name: &str) -> String {
-    let mut result = String::new();
-
-    // If there's a leading underscore, replace it with 'underscore_'.
-    if let Some(c) = name.chars().next() {
-        if c == '_' {
-            result.push_str("underscore");
-        }
-    }
-    for c in name.chars() {
-        match c {
-            '{' => result.push_str("lbrace"),
-            '}' => result.push_str("rbrace"),
-            '<' => result.push_str("langle"),
-            '>' => result.push_str("rangle"),
-            '[' => result.push_str("lbracket"),
-            ']' => result.push_str("rbracket"),
-            '(' => result.push_str("lparen"),
-            ')' => result.push_str("rparen"),
-            '|' => result.push_str("pipe"),
-            '=' => result.push_str("equal"),
-            '~' => result.push_str("tilde"),
-            '?' => result.push_str("question"),
-            '`' => result.push_str("backtick"),
-            '^' => result.push_str("caret"),
-            '!' => result.push_str("bang"),
-            '#' => result.push_str("hash"),
-            '%' => result.push_str("percent"),
-            '&' => result.push_str("ampersand"),
-            '.' => result.push_str("dot"),
-            ',' => result.push_str("comma"),
-            '/' => result.push_str("slash"),
-            ':' => result.push_str("colon"),
-            ';' => result.push_str("semicolon"),
-            '"' => result.push_str("dquote"),
-            '*' => result.push_str("star"),
-            '+' => result.push_str("plus"),
-            '-' => result.push_str("minus"),
-            '@' => result.push_str("at"),
-            _ => result.push_str(&c.to_lowercase().to_string()),
-        }
-    }
-
-    for &keyword in &RESERVED_KEYWORDS {
-        if result == keyword {
-            result.push_str("__");
-            break;
-        }
-    }
-
-    result
-}
-
-/// Given a tree-sitter node type's (kind, named) pair, returns a single string
-/// representing the (unescaped) name we'll use to refer to corresponding QL
-/// type.
-fn node_type_name(kind: &str, named: bool) -> String {
-    if named {
-        kind.to_string()
-    } else {
-        format!("{}_unnamed", kind)
     }
 }

@@ -1,5 +1,4 @@
 mod extractor;
-mod nodes_types;
 
 use clap;
 use std::fs;
@@ -44,7 +43,7 @@ fn main() -> std::io::Result<()> {
 
     let node_types_path = PathBuf::from("tree-sitter-ruby/src/node-types.json");
     let language = unsafe { tree_sitter_ruby() };
-    let schema = nodes_types::read_node_types(&node_types_path)?;
+    let schema = node_types::read_node_types(&node_types_path)?;
     let mut extractor = extractor::create(language, schema);
     for line in std::io::BufReader::new(file_list).lines() {
         let path = PathBuf::from(line?);

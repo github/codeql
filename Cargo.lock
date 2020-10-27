@@ -101,6 +101,8 @@ name = "generator"
 version = "0.1.0"
 dependencies = [
  "node-types",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
@@ -265,8 +267,7 @@ version = "0.1.0"
 dependencies = [
  "cc",
  "clap",
- "serde",
- "serde_json",
+ "node-types",
  "tracing",
  "tracing-subscriber",
  "tree-sitter",

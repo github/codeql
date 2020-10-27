@@ -49,66 +49,6 @@ pub enum QlColumnType {
     Custom(String),
 }
 
-const RESERVED_KEYWORDS: [&'static str; 14] = [
-    "boolean", "case", "date", "float", "int", "key", "of", "order", "ref", "string", "subtype",
-    "type", "unique", "varchar",
-];
-
-/// Returns a string that's a copy of `name` but suitably escaped to be a valid
-/// QL identifier.
-pub fn escape_name(name: &str) -> String {
-    let mut result = String::new();
-
-    // If there's a leading underscore, replace it with 'underscore_'.
-    if let Some(c) = name.chars().next() {
-        if c == '_' {
-            result.push_str("underscore");
-        }
-    }
-    for c in name.chars() {
-        match c {
-            '{' => result.push_str("lbrace"),
-            '}' => result.push_str("rbrace"),
-            '<' => result.push_str("langle"),
-            '>' => result.push_str("rangle"),
-            '[' => result.push_str("lbracket"),
-            ']' => result.push_str("rbracket"),
-            '(' => result.push_str("lparen"),
-            ')' => result.push_str("rparen"),
-            '|' => result.push_str("pipe"),
-            '=' => result.push_str("equal"),
-            '~' => result.push_str("tilde"),
-            '?' => result.push_str("question"),
-            '`' => result.push_str("backtick"),
-            '^' => result.push_str("caret"),
-            '!' => result.push_str("bang"),
-            '#' => result.push_str("hash"),
-            '%' => result.push_str("percent"),
-            '&' => result.push_str("ampersand"),
-            '.' => result.push_str("dot"),
-            ',' => result.push_str("comma"),
-            '/' => result.push_str("slash"),
-            ':' => result.push_str("colon"),
-            ';' => result.push_str("semicolon"),
-            '"' => result.push_str("dquote"),
-            '*' => result.push_str("star"),
-            '+' => result.push_str("plus"),
-            '-' => result.push_str("minus"),
-            '@' => result.push_str("at"),
-            _ => result.push_str(&c.to_lowercase().to_string()),
-        }
-    }
-
-    for &keyword in &RESERVED_KEYWORDS {
-        if result == keyword {
-            result.push_str("__");
-            break;
-        }
-    }
-
-    result
-}
-
 impl fmt::Display for Table {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if let Some(keyset) = &self.keysets {
