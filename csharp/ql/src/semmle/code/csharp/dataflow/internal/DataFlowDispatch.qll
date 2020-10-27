@@ -391,7 +391,7 @@ class SummaryDelegateCall extends DelegateDataFlowCall, TSummaryDelegateCall {
 
   override DataFlowCallable getARuntimeTarget(CallContext::CallContext cc) {
     exists(SummaryDelegateParameterSink p |
-      p = TSummaryParameterNode(c, pos) and
+      p.isParameterOf(c, pos) and
       result = p.getARuntimeTarget(cc)
     )
   }
