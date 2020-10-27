@@ -16,7 +16,8 @@ import DataFlow::PathGraph
 
 class BuildConstraintViolationWithTemplateMethod extends Method {
   BuildConstraintViolationWithTemplateMethod() {
-    this.getDeclaringType()
+    this
+        .getDeclaringType()
         .getASupertype*()
         .hasQualifiedName("javax.validation", "ConstraintValidatorContext") and
     this.hasName("buildConstraintViolationWithTemplate")

@@ -2,17 +2,17 @@
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
 <qhelp>
-
 <overview>
 <p>Bean validation custom constraint error messages support different types of interpolation, 
 including <a href="https://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-message-interpolation.html#section-interpolation-with-message-expressions">Java EL expressions</a>.
-Controlling part of the message template being passed to `ConstraintValidatorContext.buildConstraintViolationWithTemplate()`
+Controlling part of the message template being passed to <code>ConstraintValidatorContext.buildConstraintViolationWithTemplate()</code>
 argument will lead to arbitrary Java code execution. Unfortunately, it is common that validated (and therefore, normally 
 untrusted) bean properties flow into the custom error message.</p>
 </overview>
 
 <recommendation>
 <p>There are different approaches to remediate the issue:</p>
+<ul>
 <li>Do not include validated bean properties in the custom error message.</li>
 <li>Use parameterized messages instead of string concatenation. E.g:</li>
 ``` java
@@ -32,6 +32,7 @@ Validator validator = Validation.byDefaultProvider()
 ```
 <li>Replace Hibernate-Validator with Apache BVal which in its latest version does not interpolate EL expressions by default.
 Note that this replacement may not be a simple drop-in replacement.</li>
+<ul>
 </recommendation>
 
 <example>
