@@ -1,0 +1,11 @@
+- description: Standard LGTM queries for Ruby, including ones not displayed by default
+- qlpack: codeql-ruby
+- apply: lgtm-selectors.yml
+  from: codeql-suite-helpers
+# These are only for IDE use.
+- exclude:
+    tags contain:
+      - ide-contextual-queries/local-definitions
+      - ide-contextual-queries/local-references
+- query: Metrics/FLinesOfCode.ql
+

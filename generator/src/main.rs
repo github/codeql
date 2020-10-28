@@ -286,8 +286,8 @@ fn main() {
     let ruby = Language {
         name: "Ruby".to_string(),
         node_types: tree_sitter_ruby::NODE_TYPES,
-        dbscheme_path: PathBuf::from("ruby.dbscheme"),
-        ql_library_path: PathBuf::from("ruby_ast.qll"),
+        dbscheme_path: PathBuf::from("ql/src/ruby.dbscheme"),
+        ql_library_path: PathBuf::from("ql/src/codeql_ruby/ast.qll"),
     };
     match node_types::read_node_types_str(&ruby.node_types) {
         Err(e) => {

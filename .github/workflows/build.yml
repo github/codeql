@@ -45,12 +45,12 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: ruby.dbscheme
-          path: ruby.dbscheme
+          path: ql/src/ruby.dbscheme
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: ruby_ast.qll
-          path: ruby_ast.qll
+          path: ql/src/codeql_ruby/ast.qll
       - uses: actions/upload-artifact@v2
         with:
           name: extractor-${{ matrix.os }}
@@ -81,7 +81,7 @@ jobs:
           path: osx64
       - run: |
           mkdir -p ruby
-          cp -r codeql-extractor.yml tools ruby/
+          cp -r codeql-extractor.yml tools ql/src/ruby.dbscheme.stats ruby/
           mkdir -p ruby/tools/{linux64,osx64,win64}
           cp linux64/ruby-extractor ruby/tools/linux64/extractor
           cp osx64/ruby-extractor ruby/tools/osx64/extractor

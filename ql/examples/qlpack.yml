@@ -1,0 +1,3 @@
+name: codeql-ruby-examples
+version: 0.0.0
+libraryPathDependencies: codeql-ruby
