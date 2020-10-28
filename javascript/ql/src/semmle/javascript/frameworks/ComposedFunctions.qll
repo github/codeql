@@ -58,7 +58,7 @@ module FunctionCompositionCall {
    *
    * For simplicity, we model every composition function as if it supported this.
    */
-  private abstract class WithArrayOverloading extends Range {
+  abstract private class WithArrayOverloading extends Range {
     /** Gets the `i`th argument to the call or the `i`th array element passed into the call. */
     DataFlow::Node getEffectiveArgument(int i) {
       result = getArgument(0).(DataFlow::ArrayCreationNode).getElement(i)
@@ -85,9 +85,7 @@ module FunctionCompositionCall {
       this = LodashUnderscore::member("flowRight").getACall()
     }
 
-    override DataFlow::Node getOperandNode(int i) {
-      result = getEffectiveArgument(i)
-    }
+    override DataFlow::Node getOperandNode(int i) { result = getEffectiveArgument(i) }
   }
 
   /** A call whose arguments are functions `f,g,h` which are composed into `f(g(h(...))` */

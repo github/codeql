@@ -58,9 +58,7 @@ class SSTINunjucksSink extends ServerSideTemplateInjectionSink {
 }
 
 class LodashTemplateSink extends ServerSideTemplateInjectionSink {
-  LodashTemplateSink() {
-    this = LodashUnderscore::member("template").getACall().getArgument(0)
-  }
+  LodashTemplateSink() { this = LodashUnderscore::member("template").getACall().getArgument(0) }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, ServerSideTemplateInjectionConfiguration c

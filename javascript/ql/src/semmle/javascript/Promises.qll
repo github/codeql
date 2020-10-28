@@ -650,7 +650,7 @@ private module DynamicImportSteps {
    * ```js
    * // foo.js
    * export default Foo
-   * 
+   *
    * // bar.js
    * let Foo = await import('./foo');
    * ```

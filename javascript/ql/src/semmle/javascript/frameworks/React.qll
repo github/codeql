@@ -668,9 +668,7 @@ private DataFlow::CallNode getAContextOutput(DataFlow::CallNode createContext) {
  */
 private class UseMemoStep extends PreCallGraphStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::CallNode call |
-      call = react().getAMemberCall("useMemo")
-    |
+    exists(DataFlow::CallNode call | call = react().getAMemberCall("useMemo") |
       pred = call.getCallback(0).getReturnNode() and
       succ = call
     )
@@ -688,9 +686,7 @@ private class ReactRouterSource extends RemoteFlowSource {
     this = reactRouterDom().getAMemberCall("useRouteMatch").getAPropertyRead(["params", "url"])
   }
 
-  override string getSourceType() {
-    result = "react-router path parameters"
-  }
+  override string getSourceType() { result = "react-router path parameters" }
 }
 
 /**
@@ -711,7 +707,7 @@ private predicate dependsOnReactRouter(Module mod) {
  * For example:
  * ```js
  * let location = useLocation();
- * 
+ *
  * function MyComponent(props) {
  *   props.location;
  * }
