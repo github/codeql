@@ -869,6 +869,25 @@
 | Assert.cs:128:9:128:36 | ...; | Assert.cs:128:27:128:27 | access to local variable s | semmle.label | successor |
 | Assert.cs:128:27:128:27 | access to local variable s | Assert.cs:128:27:128:34 | access to property Length | semmle.label | successor |
 | Assert.cs:128:27:128:34 | access to property Length | Assert.cs:128:9:128:35 | call to method WriteLine | semmle.label | successor |
+| Assert.cs:131:18:131:32 | enter AssertTrueFalse | Assert.cs:135:5:136:5 | {...} | semmle.label | successor |
+| Assert.cs:135:5:136:5 | {...} | Assert.cs:131:18:131:32 | exit AssertTrueFalse | semmle.label | successor |
+| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:139:5:142:5 | {...} | semmle.label | successor |
+| Assert.cs:139:5:142:5 | {...} | Assert.cs:140:9:140:36 | ...; | semmle.label | successor |
+| Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | Assert.cs:138:10:138:12 | exit M13 | semmle.label | exception(Exception) |
+| Assert.cs:140:9:140:35 | [assertion success] call to method AssertTrueFalse | Assert.cs:141:9:141:15 | return ...; | semmle.label | successor |
+| Assert.cs:140:9:140:35 | this access | Assert.cs:140:25:140:26 | access to parameter b1 | semmle.label | successor |
+| Assert.cs:140:9:140:36 | ...; | Assert.cs:140:9:140:35 | this access | semmle.label | successor |
+| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | semmle.label | false |
+| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | semmle.label | true |
+| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | semmle.label | false |
+| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | semmle.label | true |
+| Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | semmle.label | false |
+| Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | semmle.label | true |
+| Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | semmle.label | false |
+| Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | semmle.label | true |
+| Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | semmle.label | successor |
+| Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | Assert.cs:140:9:140:35 | [assertion success] call to method AssertTrueFalse | semmle.label | successor |
+| Assert.cs:141:9:141:15 | return ...; | Assert.cs:138:10:138:12 | exit M13 | semmle.label | return |
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:4:5:15:5 | {...} | semmle.label | successor |
 | Assignments.cs:4:5:15:5 | {...} | Assignments.cs:5:9:5:18 | ... ...; | semmle.label | successor |
 | Assignments.cs:5:9:5:18 | ... ...; | Assignments.cs:5:17:5:17 | 0 | semmle.label | successor |
