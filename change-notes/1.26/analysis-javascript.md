@@ -4,6 +4,10 @@
 
 * Angular-specific taint sources and sinks are now recognized by the security queries.
 
+* Support for React has improved, with better handling of react hooks, react-router path parameters, lazy-loaded components, and components transformed using `react-redux` and/or `styled-components`.
+
+* Dynamic imports are now analyzed more precisely.
+
 * Support for the following frameworks and libraries has been improved:
   - [@angular/*](https://www.npmjs.com/package/@angular/core)
   - [AWS Serverless](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)
@@ -27,7 +31,11 @@
   - [needle](https://www.npmjs.com/package/needle)
   - [object-inspect](https://www.npmjs.com/package/object-inspect)
   - [pretty-format](https://www.npmjs.com/package/pretty-format)
+  - [react](https://www.npmjs.com/package/react)
+  - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
+  - [react-redux](https://www.npmjs.com/package/react-redux)
   - [stringify-object](https://www.npmjs.com/package/stringify-object)
+  - [styled-components](https://www.npmjs.com/package/styled-components)
   - [throttle-debounce](https://www.npmjs.com/package/throttle-debounce)
   - [underscore](https://www.npmjs.com/package/underscore)
 
