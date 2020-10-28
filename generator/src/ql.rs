@@ -4,8 +4,7 @@ pub struct Class {
     pub name: String,
     pub is_abstract: bool,
     pub supertypes: Vec<Type>,
-    pub fields: Vec<Field>,
-    pub characteristic_predicate: Option<Term>,
+    pub characteristic_predicate: Option<Expression>,
     pub predicates: Vec<Predicate>,
 }
 
@@ -22,10 +21,6 @@ impl fmt::Display for Class {
             write!(f, "{}", supertype)?;
         }
         write!(f, " {{ \n")?;
-
-        for field in &self.fields {
-            write!(f, "  {}\n", &field)?;
-        }
 
         if let Some(charpred) = &self.characteristic_predicate {
             write!(
@@ -79,39 +74,12 @@ impl fmt::Display for Type {
 }
 
 #[derive(Clone)]
-pub struct Field {
-    pub name: String,
-    pub r#type: Type,
-}
-
-impl fmt::Display for Field {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} {};", self.r#type, self.name)
-    }
-}
-
-#[derive(Clone)]
-pub enum Term {
-    Expr(Expression),
-    Or(Box<Term>, Box<Term>),
-    Equals(Expression, Expression),
-}
-
-impl fmt::Display for Term {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Term::Expr(e) => write!(f, "{}", e),
-            Term::Or(a, b) => write!(f, "({}) or ({})", a, b),
-            Term::Equals(a, b) => write!(f, "{} = {}", a, b),
-        }
-    }
-}
-
-#[derive(Clone)]
 pub enum Expression {
     Var(String),
     String(String),
     Pred(String, Vec<Expression>),
+    Or(Vec<Expression>),
+    Equals(Box<Expression>, Box<Expression>),
 }
 
 impl fmt::Display for Expression {
@@ -129,6 +97,20 @@ impl fmt::Display for Expression {
                 }
                 write!(f, ")")
             }
+            Expression::Or(disjuncts) => {
+                if disjuncts.is_empty() {
+                    write!(f, "none()")
+                } else {
+                    for (index, disjunct) in disjuncts.iter().enumerate() {
+                        if index > 0 {
+                            write!(f, " or ")?;
+                        }
+                        write!(f, "{}", disjunct)?;
+                    }
+                    Ok(())
+                }
+            }
+            Expression::Equals(a, b) => write!(f, "{} = {}", a, b),
         }
     }
 }
@@ -139,7 +121,7 @@ pub struct Predicate {
     pub overridden: bool,
     pub return_type: Option<Type>,
     pub formal_parameters: Vec<FormalParameter>,
-    pub body: Term,
+    pub body: Expression,
 }
 
 impl fmt::Display for Predicate {

@@ -134,7 +134,6 @@ fn create_top_class() -> ql::Class {
         is_abstract: false,
         supertypes: vec![ql::Type::AtType("top".to_owned())],
         characteristic_predicate: None,
-        fields: vec![],
         predicates: vec![to_string, get_location, get_a_field_or_child],
     }
 }
@@ -151,7 +150,7 @@ fn create_none_predicate(
         overridden,
         return_type,
         formal_parameters,
-        body: ql::Term::Expr(ql::Expression::Pred("none".to_owned(), vec![])),
+        body: ql::Expression::Pred("none".to_owned(), vec![]),
     }
 }
 
@@ -162,9 +161,9 @@ fn create_location_class() -> ql::Class {
         overridden: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
-        body: ql::Term::Equals(
-            ql::Expression::Var("result".to_owned()),
-            ql::Expression::String("Location".to_owned()),
+        body: ql::Expression::Equals(
+            Box::new(ql::Expression::Var("result".to_owned())),
+            Box::new(ql::Expression::String("Location".to_owned())),
         ),
     };
     let has_location_info = ql::Predicate {
@@ -193,7 +192,7 @@ fn create_location_class() -> ql::Class {
                 r#type: ql::Type::Int,
             },
         ],
-        body: ql::Term::Expr(ql::Expression::Pred(
+        body: ql::Expression::Pred(
             "location".to_owned(),
             vec![
                 ql::Expression::Var("this".to_owned()),
@@ -203,13 +202,12 @@ fn create_location_class() -> ql::Class {
                 ql::Expression::Var("endLine".to_owned()),
                 ql::Expression::Var("endColumn".to_owned()),
             ],
-        )),
+        ),
     };
     ql::Class {
         name: "Location".to_owned(),
         supertypes: vec![ql::Type::AtType("location".to_owned())],
         is_abstract: false,
-        fields: vec![],
         characteristic_predicate: None,
         predicates: vec![to_string, has_location_info],
     }
@@ -250,7 +248,6 @@ fn create_field_class(
                 get_base_classes(&class_name, &supertype_map),
             ]
             .concat(),
-            fields: vec![],
             characteristic_predicate: None,
             predicates: vec![],
         });
@@ -288,9 +285,9 @@ fn create_to_string_predicate(text: &str) -> ql::Predicate {
         overridden: true,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
-        body: ql::Term::Equals(
-            ql::Expression::Var("result".to_owned()),
-            ql::Expression::String(text.to_owned()),
+        body: ql::Expression::Equals(
+            Box::new(ql::Expression::Var("result".to_owned())),
+            Box::new(ql::Expression::String(text.to_owned())),
         ),
     }
 }
@@ -308,7 +305,7 @@ fn create_get_location_predicate(def_table: &str, arity: usize) -> ql::Predicate
         return_type: Some(ql::Type::Normal("Location".to_owned())),
         formal_parameters: vec![],
         // body of the form: foo_bar_def(_, _, ..., result)
-        body: ql::Term::Expr(ql::Expression::Pred(
+        body: ql::Expression::Pred(
             def_table.to_owned(),
             [
                 vec![ql::Expression::Var("this".to_owned())],
@@ -316,7 +313,7 @@ fn create_get_location_predicate(def_table: &str, arity: usize) -> ql::Predicate
                 vec![ql::Expression::Var("result".to_owned())],
             ]
             .concat(),
-        )),
+        ),
     }
 }
 
@@ -331,14 +328,14 @@ fn create_get_text_predicate(def_table: &str) -> ql::Predicate {
         overridden: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
-        body: ql::Term::Expr(ql::Expression::Pred(
+        body: ql::Expression::Pred(
             def_table.to_owned(),
             vec![
                 ql::Expression::Var("this".to_owned()),
                 ql::Expression::Var("result".to_owned()),
                 ql::Expression::Var("_".to_owned()),
             ],
-        )),
+        ),
     }
 }
 
@@ -407,7 +404,7 @@ fn create_field_getters(
     parent_name: &str,
     field: &node_types::Field,
     field_type: &str,
-) -> (ql::Predicate, ql::Term) {
+) -> (ql::Predicate, ql::Expression) {
     let field_name = match &field.name {
         Some(name) => &name,
         None => "child",
@@ -423,17 +420,17 @@ fn create_field_getters(
                     overridden: false,
                     return_type: Some(ql::Type::Normal(dbscheme_name_to_class_name(field_type))),
                     formal_parameters: vec![],
-                    body: ql::Term::Expr(create_get_field_expr_for_column_storage(
+                    body: create_get_field_expr_for_column_storage(
                         &main_table_name,
                         *main_table_column_index,
                         main_table_arity,
-                    )),
+                    ),
                 },
-                ql::Term::Expr(create_get_field_expr_for_column_storage(
+                create_get_field_expr_for_column_storage(
                     &main_table_name,
                     *main_table_column_index,
                     main_table_arity,
-                )),
+                ),
             );
             *main_table_column_index += 1;
             result
@@ -459,29 +456,11 @@ fn create_field_getters(
                         name: "i".to_owned(),
                         r#type: ql::Type::Int,
                     }],
-                    body: ql::Term::Expr(create_get_field_expr_for_table_storage(
-                        &field_table_name,
-                        "i",
-                    )),
+                    body: create_get_field_expr_for_table_storage(&field_table_name, "i"),
                 },
-                ql::Term::Expr(create_get_field_expr_for_table_storage(
-                    &field_table_name,
-                    "_",
-                )),
+                create_get_field_expr_for_table_storage(&field_table_name, "_"),
             )
         }
-    }
-}
-
-/// Returns a QL disjunction of the given (non-empty) vector of terms.
-fn disjunction(disjuncts: &[ql::Term]) -> ql::Term {
-    match disjuncts.len() {
-        0 => panic!("unexpected empty disjunction"), //ql::Term::Expr(ql::Expression::Pred("none".to_owned(), vec![])),
-        1 => disjuncts[0].clone(),
-        _ => ql::Term::Or(
-            Box::new(disjuncts[0].clone()),
-            Box::new(disjunction(&disjuncts[1..])),
-        ),
     }
 }
 
@@ -511,7 +490,6 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::Class> {
                         get_base_classes(&class_name, &supertype_map),
                     ]
                     .concat(),
-                    fields: vec![],
                     characteristic_predicate: None,
                     predicates: vec![],
                 });
@@ -545,7 +523,6 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::Class> {
                         get_base_classes(&main_class_name, &supertype_map),
                     ]
                     .concat(),
-                    fields: vec![],
                     characteristic_predicate: None,
                     predicates: vec![
                         create_to_string_predicate(&main_class_name),
@@ -559,7 +536,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::Class> {
                         .push(create_get_text_predicate(&main_table_name));
                 } else {
                     let mut main_table_column_index: usize = 1;
-                    let mut get_child_exprs: Vec<ql::Term> = Vec::new();
+                    let mut get_child_exprs: Vec<ql::Expression> = Vec::new();
 
                     // Iterate through the fields, creating:
                     // - classes to wrap union types if fields need them,
@@ -585,7 +562,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::Class> {
                         overridden: true,
                         return_type: Some(ql::Type::Normal("Top".to_owned())),
                         formal_parameters: vec![],
-                        body: disjunction(&get_child_exprs),
+                        body: ql::Expression::Or(get_child_exprs),
                     });
                 }
 

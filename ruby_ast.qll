@@ -164,9 +164,9 @@ class Binary extends @binary, Top, UnderscoreArg, UnderscoreStatement {
   BinaryRightType getRight() { binary_def(this, _, _, result, _) }
 
   override Top getAFieldOrChild() {
-    binary_def(this, result, _, _, _)
-    or
-    (binary_def(this, _, result, _, _) or binary_def(this, _, _, result, _))
+    binary_def(this, result, _, _, _) or
+    binary_def(this, _, result, _, _) or
+    binary_def(this, _, _, result, _)
   }
 }
 
@@ -302,9 +302,9 @@ class Conditional extends @conditional, Top, UnderscoreArg {
   UnderscoreArg getConsequence() { conditional_def(this, _, _, result, _) }
 
   override Top getAFieldOrChild() {
-    conditional_def(this, result, _, _, _)
-    or
-    (conditional_def(this, _, result, _, _) or conditional_def(this, _, _, result, _))
+    conditional_def(this, result, _, _, _) or
+    conditional_def(this, _, result, _, _) or
+    conditional_def(this, _, _, result, _)
   }
 }
 
@@ -406,9 +406,9 @@ class Elsif extends @elsif, Top, ElsifAlternativeType, IfAlternativeType, Unless
   Then getConsequence(int i) { elsif_consequence(this, i, result) }
 
   override Top getAFieldOrChild() {
-    elsif_alternative(this, _, result)
-    or
-    (elsif_def(this, result, _) or elsif_consequence(this, _, result))
+    elsif_alternative(this, _, result) or
+    elsif_def(this, result, _) or
+    elsif_consequence(this, _, result)
   }
 }
 
@@ -484,9 +484,7 @@ class For extends @for, Top, UnderscorePrimary {
   In getValue() { for_def(this, _, result, _) }
 
   override Top getAFieldOrChild() {
-    for_def(this, result, _, _)
-    or
-    (for_pattern(this, _, result) or for_def(this, _, result, _))
+    for_def(this, result, _, _) or for_pattern(this, _, result) or for_def(this, _, result, _)
   }
 }
 
@@ -538,9 +536,7 @@ class If extends @if, Top, UnderscorePrimary {
   Then getConsequence(int i) { if_consequence(this, i, result) }
 
   override Top getAFieldOrChild() {
-    if_alternative(this, _, result)
-    or
-    (if_def(this, result, _) or if_consequence(this, _, result))
+    if_alternative(this, _, result) or if_def(this, result, _) or if_consequence(this, _, result)
   }
 }
 
@@ -650,9 +646,9 @@ class Method extends @method, Top, UnderscorePrimary {
   MethodChildType getChild(int i) { method_child(this, i, result) }
 
   override Top getAFieldOrChild() {
-    method_def(this, result, _)
-    or
-    (method_parameters(this, _, result) or method_child(this, _, result))
+    method_def(this, result, _) or
+    method_parameters(this, _, result) or
+    method_child(this, _, result)
   }
 }
 
@@ -676,9 +672,9 @@ class MethodCall extends @method_call, Top, ArgumentListChildType, ArrayChildTyp
   MethodCallMethodType getMethod() { method_call_def(this, result, _) }
 
   override Top getAFieldOrChild() {
-    method_call_arguments(this, _, result)
-    or
-    (method_call_block(this, _, result) or method_call_def(this, result, _))
+    method_call_arguments(this, _, result) or
+    method_call_block(this, _, result) or
+    method_call_def(this, result, _)
   }
 }
 
@@ -872,9 +868,9 @@ class Rescue extends @rescue, Top, BeginChildType, ClassChildType, DoBlockChildT
   ExceptionVariable getVariable(int i) { rescue_variable(this, i, result) }
 
   override Top getAFieldOrChild() {
-    rescue_body(this, _, result)
-    or
-    (rescue_exceptions(this, _, result) or rescue_variable(this, _, result))
+    rescue_body(this, _, result) or
+    rescue_exceptions(this, _, result) or
+    rescue_variable(this, _, result)
   }
 }
 
@@ -1002,13 +998,10 @@ class SingletonMethod extends @singleton_method, Top, UnderscorePrimary {
   SingletonMethodChildType getChild(int i) { singleton_method_child(this, i, result) }
 
   override Top getAFieldOrChild() {
-    singleton_method_def(this, result, _, _)
-    or
-    (
-      singleton_method_def(this, _, result, _)
-      or
-      (singleton_method_parameters(this, _, result) or singleton_method_child(this, _, result))
-    )
+    singleton_method_def(this, result, _, _) or
+    singleton_method_def(this, _, result, _) or
+    singleton_method_parameters(this, _, result) or
+    singleton_method_child(this, _, result)
   }
 }
 
@@ -1151,9 +1144,9 @@ class Unless extends @unless, Top, UnderscorePrimary {
   Then getConsequence(int i) { unless_consequence(this, i, result) }
 
   override Top getAFieldOrChild() {
-    unless_alternative(this, _, result)
-    or
-    (unless_def(this, result, _) or unless_consequence(this, _, result))
+    unless_alternative(this, _, result) or
+    unless_def(this, result, _) or
+    unless_consequence(this, _, result)
   }
 }
 
