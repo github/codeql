@@ -6,7 +6,7 @@ import sys
 import os
 
 # Define which languages and query packs to consider
-languages = ["go"]
+languages = [ "cpp", "csharp", "go", "java", "javascript", "python"]
 
 # Running generate query-help with "security-and-quality.qls" generates errors, so just use these two suites for now
 packs = ["code-scanning", "security-extended"]
