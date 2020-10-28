@@ -45,12 +45,12 @@ project = u'CodeQL query help'
 
 # Add md parser to process query help markdown files 
 
-#source_parsers = {
-#   '.md': 'recommonmark.parser.CommonMarkParser',
-#}
+extensions =['recommonmark']
 
-source_suffix = ['.rst']
-
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 
 # -- Project-specifc options for HTML output ----------------------------------------------
 
