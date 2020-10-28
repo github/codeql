@@ -149,12 +149,12 @@ impl fmt::Display for Predicate {
 #[derive(Clone)]
 pub struct FormalParameter {
     pub name: String,
-    pub r#type: Type,
+    pub param_type: Type,
 }
 
 impl fmt::Display for FormalParameter {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} {}", self.r#type, self.name)
+        write!(f, "{} {}", self.param_type, self.name)
     }
 }
 

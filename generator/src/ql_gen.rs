@@ -149,23 +149,23 @@ fn create_location_class() -> ql::Class {
         formal_parameters: vec![
             ql::FormalParameter {
                 name: "filePath".to_owned(),
-                r#type: ql::Type::String,
+                param_type: ql::Type::String,
             },
             ql::FormalParameter {
                 name: "startLine".to_owned(),
-                r#type: ql::Type::Int,
+                param_type: ql::Type::Int,
             },
             ql::FormalParameter {
                 name: "startColumn".to_owned(),
-                r#type: ql::Type::Int,
+                param_type: ql::Type::Int,
             },
             ql::FormalParameter {
                 name: "endLine".to_owned(),
-                r#type: ql::Type::Int,
+                param_type: ql::Type::Int,
             },
             ql::FormalParameter {
                 name: "endColumn".to_owned(),
-                r#type: ql::Type::Int,
+                param_type: ql::Type::Int,
             },
         ],
         body: ql::Expression::Pred(
@@ -412,7 +412,7 @@ fn create_field_getters(
                     return_type: Some(ql::Type::Normal(dbscheme_name_to_class_name(field_type))),
                     formal_parameters: vec![ql::FormalParameter {
                         name: "i".to_owned(),
-                        r#type: ql::Type::Int,
+                        param_type: ql::Type::Int,
                     }],
                     body: create_get_field_expr_for_table_storage(&field_table_name, "i"),
                 },
