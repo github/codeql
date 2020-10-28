@@ -41,7 +41,15 @@ class FunctionCompositionCall extends DataFlow::CallNode {
   int getNumOperand() { result = range.getNumOperand() }
 }
 
+/**
+ * Companion module to the `FunctionCompositionCall` class.
+ */
 module FunctionCompositionCall {
+  /**
+   * Class that determines the set of values in `FunctionCompositionCall`.
+   *
+   * May be subclassed to classify more calls as function compositions.
+   */
   abstract class Range extends DataFlow::CallNode {
     /**
      * Gets the function flowing into the `i`th function in the composition `f(g(h(...)))`.
