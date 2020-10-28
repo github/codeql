@@ -38,7 +38,7 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Set up query help docs folder  
       run: |
-        mkdir query-help ; cp -r codeql/docs/language/query-help/ query-help/ 
+        mkdir query-help ; cp -r codeql/docs/language/query-help/ . 
     - name: Check docs folder prescript 
       working-directory: '${{ github.workspace }}/query-help'  
       run: ls -la
