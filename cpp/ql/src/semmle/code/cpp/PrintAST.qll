@@ -546,17 +546,8 @@ class FunctionNode extends ASTNode {
   }
 
   override string getChildAccessorPredicate(int childIndex) {
-    childIndex = 0 and
-    result = "..."
-    or
-    childIndex = 1 and
-    result = "..."
-    or
     childIndex = 2 and
     result = "getEntryPoint()"
-    or
-    childIndex = 3 and
-    result = "..."
   }
 
   override string getChildEdgeLabelInternal(int childIndex) {
@@ -642,7 +633,7 @@ string getChildAccessor(Locatable parent, Element child) {
   )
 }
 
-predicate namedStmtChildPredicates(Locatable s, Element e, string pred) {
+private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) {
   shouldPrintFunction(getEnclosingFunction(s)) and
   (
     exists(int n | s.(BlockStmt).getStmt(n) = e and pred = "getStmt(" + n + ")")
@@ -724,7 +715,7 @@ predicate namedStmtChildPredicates(Locatable s, Element e, string pred) {
   )
 }
 
-predicate namedExprChildPredicates(Expr expr, Element ele, string pred) {
+private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) {
   shouldPrintFunction(expr.getEnclosingFunction()) and
   (
     expr.(Access).getTarget() = ele and pred = "getTarget()"
