@@ -186,7 +186,7 @@ for lang in languages:
             index_file_dictionary[query_name_meta] = lang + "/" + query_name
 
             # Make paths for output of the form: query-help-markdown/<lang>/<queryfile>.md
-            docs_dir = 'codeql/docs/language/query-help'
+            docs_dir = 'query-help'
             md_dir_path = os.path.join(docs_dir, lang)
             md_file_path = os.path.join(md_dir_path, query_name + ".md")
 
