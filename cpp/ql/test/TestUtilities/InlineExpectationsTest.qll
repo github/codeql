@@ -43,15 +43,15 @@
  * There is no need to write a `select` clause or query predicate. All of the differences between
  * expected results and actual results will be reported in the `failures()` query predicate.
  *
- * To annotate the test source code with an expected result, place a comment on the
+ * To annotate the test source code with an expected result, place a comment starting with a `$` on the
  * same line as the expected result, with text of the following format as the body of the comment:
  *
- * `$tag=expected-value`
+ * `tag=expected-value`
  *
  * Where `tag` is the value of the `tag` parameter from `hasActualResult()`, and `expected-value` is
  * the value of the `value` parameter from `hasActualResult()`. The `=expected-value` portion may be
  * omitted, in which case `expected-value` is treated as the empty string. Multiple expectations may
- * be placed in the same comment, as long as each is prefixed by a `$`. Any actual result that
+ * be placed in the same comment. Any actual result that
  * appears on a line that does not contain a matching expected result comment will be reported with
  * a message of the form "Unexpected result: tag=value". Any expected result comment for which there
  * is no matching actual result will be reported with a message of the form
@@ -60,30 +60,33 @@
  * Example:
  * ```cpp
  * int i = x + 5;  // $const=5
- * int j = y + (7 - 3)  // $const=7 $const=3 $const=4  // The result of the subtraction is a constant.
+ * int j = y + (7 - 3)  // $const=7 const=3 const=4  // The result of the subtraction is a constant.
  * ```
  *
- * For tests that contain known false positives and false negatives, it is possible to further
- * annotate that a particular expected result is known to be a false positive, or that a particular
- * missing result is known to be a false negative:
+ * For tests that contain known missing and spurious results, it is possible to further
+ * annotate that a particular expected result is known to be spurious, or that a particular
+ * missing result is known to be missing:
  *
- * `$f+:tag=expected-value`  // False positive
- * `$f-:tag=expected-value`  // False negative
+ * `$ SPURIOUS: tag=expected-value`  // Spurious result
+ * `$ MISSING: tag=expected-value`  // Missing result
  *
- * A false positive expectation is treated as any other expected result, except that if there is no
- * matching actual result, the message will be of the form "Fixed false positive: tag=value". A
- * false negative expectation is treated as if there were no expected result, except that if a
+ * A spurious expectation is treated as any other expected result, except that if there is no
+ * matching actual result, the message will be of the form "Fixed spurious result: tag=value". A
+ * missing expectation is treated as if there were no expected result, except that if a
  * matching expected result is found, the message will be of the form
- * "Fixed false negative: tag=value".
+ * "Fixed missing result: tag=value".
+ *
+ * A single line can contain all the expected, spurious and missing results of that line. For instance:
+ * `$ tag1=value1 SPURIOUS: tag2=value2 MISSING: tag3=value3`.
  *
  * If the same result value is expected for two or more tags on the same line, there is a shorthand
  * notation available:
  *
- * `$tag1,tag2=expected-value`
+ * `tag1,tag2=expected-value`
  *
  * is equivalent to:
  *
- * `$tag1=expected-value $tag2=expected-value`
+ * `tag1=expected-value tag2=expected-value`
  */
 
 private import InlineExpectationsTestPrivate
@@ -126,7 +129,7 @@ abstract class InlineExpectationsTest extends string {
       (
         exists(FalseNegativeExpectation falseNegative |
           falseNegative.matchesActualResult(actualResult) and
-          message = "Fixed false negative:" + falseNegative.getExpectationText()
+          message = "Fixed missing result:" + falseNegative.getExpectationText()
         )
         or
         not exists(ValidExpectation expectation | expectation.matchesActualResult(actualResult)) and
@@ -143,7 +146,7 @@ abstract class InlineExpectationsTest extends string {
         message = "Missing result:" + expectation.getExpectationText()
         or
         expectation instanceof FalsePositiveExpectation and
-        message = "Fixed false positive:" + expectation.getExpectationText()
+        message = "Fixed spurious result:" + expectation.getExpectationText()
       )
     )
     or
