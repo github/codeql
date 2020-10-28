@@ -295,9 +295,11 @@ conditionBlock
 | Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | true |
 | Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | Assert.cs:127:37:127:38 | [b (line 84): true] !... | false |
 | Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | false |
-| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | true |
-| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | false |
-| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | true |
+| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:29:140:30 | access to parameter b2 | true |
+| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | true |
+| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | true |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | true |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | false |
 | BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | BreakInTry.cs:7:26:7:28 | String arg | false |
 | BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | BreakInTry.cs:10:21:10:26 | break; | false |
 | BreakInTry.cs:7:26:7:28 | String arg | BreakInTry.cs:10:21:10:26 | break; | true |
@@ -1212,13 +1214,11 @@ conditionFlow
 | Assert.cs:127:24:127:32 | [b (line 84): true] ... != ... | Assert.cs:127:37:127:38 | [b (line 84): true] !... | false |
 | Assert.cs:127:38:127:38 | [b (line 84): true] access to parameter b | Assert.cs:127:9:127:39 | [assertion success] call to method IsFalse | true |
 | Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | false |
-| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | true |
-| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | false |
-| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | true |
+| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | access to parameter b2 | true |
 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | false |
 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | true |
-| Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | false |
-| Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | true |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | true |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | false |
 | BreakInTry.cs:9:21:9:31 | ... == ... | BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | false |
 | BreakInTry.cs:9:21:9:31 | ... == ... | BreakInTry.cs:10:21:10:26 | break; | true |
 | BreakInTry.cs:15:17:15:28 | ... == ... | BreakInTry.cs:3:10:3:11 | exit M1 | false |

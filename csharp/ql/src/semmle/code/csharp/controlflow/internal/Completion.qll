@@ -99,12 +99,7 @@ class Completion extends TCompletion {
     cfe instanceof ThrowElement and
     this = TThrowCompletion(cfe.(ThrowElement).getThrownExceptionType())
     or
-    exists(AssertMethod m | assertion(cfe, m, _) |
-      this = TThrowCompletion(m.getExceptionClass())
-      or
-      not exists(m.getExceptionClass()) and
-      this = TExitCompletion()
-    )
+    this = assertionCompletion(cfe, _)
     or
     completionIsValidForStmt(cfe, this)
     or
@@ -390,9 +385,20 @@ private predicate invalidCastCandidate(CastExpr ce) {
   ce.getType() = ce.getExpr().getType().(ValueOrRefType).getASubType+()
 }
 
-private predicate assertion(Assertion a, AssertMethod am, Expr e) {
-  e = a.getAnExpr() and
+private predicate assertion(Assertion a, int i, AssertMethod am, Expr e) {
+  e = a.getExpr(i) and
   am = a.getAssertMethod()
+}
+
+/** Gets a valid completion when argument `i` fails in assertion `a`. */
+Completion assertionCompletion(Assertion a, int i) {
+  exists(AssertMethod am | am = a.getAssertMethod() |
+    result = TThrowCompletion(am.getExceptionClass(i))
+    or
+    i = am.getAnAssertionIndex() and
+    not exists(am.getExceptionClass(i)) and
+    result = TExitCompletion()
+  )
 }
 
 /**
@@ -422,8 +428,11 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
   or
   exists(SpecificCatchClause scc | scc.getFilterClause() = e | isBooleanCompletionForParent = false)
   or
-  assertion(_, [any(AssertTrueMethod m).(AssertMethod), any(AssertFalseMethod m)], e) and
-  isBooleanCompletionForParent = false
+  exists(BooleanAssertMethod m, int i |
+    assertion(_, i, m, e) and
+    i = m.getAnAssertionIndex(_) and
+    isBooleanCompletionForParent = false
+  )
   or
   exists(LogicalNotExpr lne | lne.getAnOperand() = e |
     inBooleanContext(lne, _) and
@@ -495,8 +504,11 @@ private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParen
     isNullnessCompletionForParent = false
   )
   or
-  assertion(_, [any(AssertNullMethod m).(AssertMethod), any(AssertNonNullMethod m)], e) and
-  isNullnessCompletionForParent = false
+  exists(NullnessAssertMethod m, int i |
+    assertion(_, i, m, e) and
+    i = m.getAnAssertionIndex(_) and
+    isNullnessCompletionForParent = false
+  )
   or
   exists(ConditionalExpr ce | inNullnessContext(ce, _) |
     (e = ce.getThen() or e = ce.getElse()) and

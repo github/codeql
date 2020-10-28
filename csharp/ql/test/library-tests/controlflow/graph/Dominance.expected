@@ -809,9 +809,11 @@ dominance
 | Assert.cs:140:9:140:35 | this access | Assert.cs:140:25:140:26 | access to parameter b1 |
 | Assert.cs:140:9:140:36 | ...; | Assert.cs:140:9:140:35 | this access |
 | Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 |
-| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 |
+| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | access to parameter b2 |
 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 |
-| Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 |
+| Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse |
 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse |
 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | Assert.cs:140:9:140:35 | [assertion success] call to method AssertTrueFalse |
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:4:5:15:5 | {...} |
@@ -4550,15 +4552,16 @@ postDominance
 | Assert.cs:131:18:131:32 | exit AssertTrueFalse | Assert.cs:135:5:136:5 | {...} |
 | Assert.cs:135:5:136:5 | {...} | Assert.cs:131:18:131:32 | enter AssertTrueFalse |
 | Assert.cs:138:10:138:12 | exit M13 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse |
+| Assert.cs:138:10:138:12 | exit M13 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse |
 | Assert.cs:138:10:138:12 | exit M13 | Assert.cs:141:9:141:15 | return ...; |
 | Assert.cs:139:5:142:5 | {...} | Assert.cs:138:10:138:12 | enter M13 |
+| Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 |
 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 |
 | Assert.cs:140:9:140:35 | [assertion success] call to method AssertTrueFalse | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 |
 | Assert.cs:140:9:140:35 | this access | Assert.cs:140:9:140:36 | ...; |
 | Assert.cs:140:9:140:36 | ...; | Assert.cs:139:5:142:5 | {...} |
 | Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:9:140:35 | this access |
 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 |
-| Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 |
 | Assert.cs:141:9:141:15 | return ...; | Assert.cs:140:9:140:35 | [assertion success] call to method AssertTrueFalse |
 | Assignments.cs:3:10:3:10 | exit M | Assignments.cs:14:9:14:35 | ... += ... |
 | Assignments.cs:4:5:15:5 | {...} | Assignments.cs:3:10:3:10 | enter M |
@@ -7910,10 +7913,16 @@ blockDominance
 | Assert.cs:138:10:138:12 | enter M13 | Assert.cs:138:10:138:12 | enter M13 |
 | Assert.cs:138:10:138:12 | enter M13 | Assert.cs:138:10:138:12 | exit M13 |
 | Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 |
-| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 |
+| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:29:140:30 | access to parameter b2 |
+| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 |
+| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 |
 | Assert.cs:138:10:138:12 | exit M13 | Assert.cs:138:10:138:12 | exit M13 |
 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 |
-| Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:29:140:30 | access to parameter b2 |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 |
+| Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 |
+| Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 |
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:3:10:3:10 | enter M |
 | Assignments.cs:14:18:14:35 | enter (...) => ... | Assignments.cs:14:18:14:35 | enter (...) => ... |
 | Assignments.cs:17:40:17:40 | enter + | Assignments.cs:17:40:17:40 | enter + |
@@ -10667,9 +10676,13 @@ postBlockDominance
 | Assert.cs:138:10:138:12 | exit M13 | Assert.cs:138:10:138:12 | enter M13 |
 | Assert.cs:138:10:138:12 | exit M13 | Assert.cs:138:10:138:12 | exit M13 |
 | Assert.cs:138:10:138:12 | exit M13 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 |
-| Assert.cs:138:10:138:12 | exit M13 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 |
+| Assert.cs:138:10:138:12 | exit M13 | Assert.cs:140:29:140:30 | access to parameter b2 |
+| Assert.cs:138:10:138:12 | exit M13 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 |
+| Assert.cs:138:10:138:12 | exit M13 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 |
 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 |
-| Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:29:140:30 | access to parameter b2 |
+| Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 |
+| Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 |
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:3:10:3:10 | enter M |
 | Assignments.cs:14:18:14:35 | enter (...) => ... | Assignments.cs:14:18:14:35 | enter (...) => ... |
 | Assignments.cs:17:40:17:40 | enter + | Assignments.cs:17:40:17:40 | enter + |

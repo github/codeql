@@ -874,17 +874,17 @@
 | Assert.cs:138:10:138:12 | enter M13 | Assert.cs:139:5:142:5 | {...} | semmle.label | successor |
 | Assert.cs:139:5:142:5 | {...} | Assert.cs:140:9:140:36 | ...; | semmle.label | successor |
 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | Assert.cs:138:10:138:12 | exit M13 | semmle.label | exception(Exception) |
+| Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | Assert.cs:138:10:138:12 | exit M13 | semmle.label | exception(Exception) |
 | Assert.cs:140:9:140:35 | [assertion success] call to method AssertTrueFalse | Assert.cs:141:9:141:15 | return ...; | semmle.label | successor |
 | Assert.cs:140:9:140:35 | this access | Assert.cs:140:25:140:26 | access to parameter b1 | semmle.label | successor |
 | Assert.cs:140:9:140:36 | ...; | Assert.cs:140:9:140:35 | this access | semmle.label | successor |
 | Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | semmle.label | false |
-| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | semmle.label | true |
-| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | semmle.label | false |
-| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | semmle.label | true |
+| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:29:140:30 | access to parameter b2 | semmle.label | true |
 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | semmle.label | false |
 | Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | semmle.label | true |
-| Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | semmle.label | false |
-| Assert.cs:140:29:140:30 | [assertion success] access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | semmle.label | true |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | semmle.label | true |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | semmle.label | false |
+| Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | semmle.label | successor |
 | Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | semmle.label | successor |
 | Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | Assert.cs:140:9:140:35 | [assertion success] call to method AssertTrueFalse | semmle.label | successor |
 | Assert.cs:141:9:141:15 | return ...; | Assert.cs:138:10:138:12 | exit M13 | semmle.label | return |
