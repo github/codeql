@@ -305,15 +305,29 @@ class ReverseDNSMethod extends Method {
   }
 }
 
-/** Exported Android `Intent` that may have come from a hostile application. */
-class AndroidIntentInput extends RemoteFlowSource {
+/** Android `Intent` that may have come from a hostile application. */
+class AndroidIntentInput extends DataFlow::Node {
   AndroidIntentInput() {
-    exists(AndroidComponent exportedType |
-      exportedType.isExported() |
+    exists(MethodAccess ma, AndroidGetIntentMethod m |
+      ma.getMethod().overrides*(m) and
+      this.asExpr() = ma
+    )
+    or
+    exists(Method m, AndroidReceiveIntentMethod rI |
+      m.overrides*(rI) and
+      this.asParameter() = m.getParameter(1)
+    )
+  }
+}
+
+/** Exported Android `Intent` that may have come from a hostile application. */
+class ExportedAndroidIntentInput extends RemoteFlowSource {
+  ExportedAndroidIntentInput() {
+    exists(ExportableAndroidComponent exportedType | exportedType.isExported() |
       exists(MethodAccess ma, AndroidGetIntentMethod m |
         ma.getMethod().overrides*(m) and
         this.asExpr() = ma and
-        exportedType = ma.getReceiverType()
+        exportedType = ma.getEnclosingCallable().getDeclaringType()
       )
       or
       exists(Method m, AndroidReceiveIntentMethod rI |
