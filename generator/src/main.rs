@@ -300,22 +300,16 @@ fn main() {
         Ok(nodes) => {
             let dbscheme_entries = convert_nodes(&nodes);
 
-            match write_dbscheme(&ruby, &dbscheme_entries) {
-                Err(e) => {
-                    error!("Failed to write dbscheme: {}", e);
-                    std::process::exit(2);
-                }
-                Ok(()) => {}
+            if let Err(e) = write_dbscheme(&ruby, &dbscheme_entries) {
+                error!("Failed to write dbscheme: {}", e);
+                std::process::exit(2);
             }
 
             let classes = ql_gen::convert_nodes(&nodes);
 
-            match ql_gen::write(&ruby, &classes) {
-                Err(e) => {
-                    println!("Failed to write QL library: {}", e);
-                    std::process::exit(3);
-                }
-                Ok(()) => {}
+            if let Err(e) = ql_gen::write(&ruby, &classes) {
+                println!("Failed to write QL library: {}", e);
+                std::process::exit(3);
             }
         }
     }
