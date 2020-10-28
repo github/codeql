@@ -546,6 +546,8 @@ class FunctionNode extends ASTNode {
   }
 
   override string getChildAccessorPredicate(int childIndex) {
+    // all other children of this node are not reachable via the AST `getChild` relation
+    // or other getters. Thus, this predicate does not hold for them.
     childIndex = 2 and
     result = "getEntryPoint()"
   }
