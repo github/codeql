@@ -40,11 +40,11 @@ jobs:
       run: |
         mkdir query-help ; cp -r codeql/docs/language/query-help/ query-help/ 
     - name: Build site assets  
-      working-directory: '${{ github.workspace }}/codeql/docs/language'  
+      working-directory: '${{ github.workspace }}'  
       run: ls -la
     - name: Query help to markdown
       run: |
-        PATH="$PATH:codeql-cli/codeql" python query-help-markdown.py
+        PATH="$PATH:codeql-cli/codeql" python codeql/docs/language/query-help-markdown.py
     - name: Copy sphinx files into query help folder
       run: |
         cp codeql/docs/language/query-help/conf.py query-help/conf.py; 
