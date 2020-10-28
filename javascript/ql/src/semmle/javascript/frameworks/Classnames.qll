@@ -4,7 +4,7 @@
 
 import javascript
 
-DataFlow::SourceNode classnames() {
+private DataFlow::SourceNode classnames() {
   result = DataFlow::moduleImport(["classnames", "classnames/dedupe", "classnames/bind"])
 }
 
