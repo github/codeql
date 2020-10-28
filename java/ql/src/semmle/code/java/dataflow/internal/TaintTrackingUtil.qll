@@ -415,14 +415,6 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  */
 private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   (
-    method.getDeclaringType().hasQualifiedName("org.apache.wicket.util.crypt", "Base64") and
-    (
-      method.getName().matches("decode%") and arg = 0 or
-      method.getName().matches("encode%") and arg = 0
-    )
-  )
-  or
-  (
     method.getDeclaringType().hasQualifiedName("java.util", "Base64$Encoder") or
     method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder") or
     method
