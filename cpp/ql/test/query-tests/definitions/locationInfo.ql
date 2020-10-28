@@ -40,7 +40,9 @@ string issues(Link e) {
     filepath1 = filepath2 and
     not end1 < begin2 and
     not begin1 > end2 and
-    e != e2
+    e != e2 and
+    not e.isFromTemplateInstantiation(_) and
+    not e2.isFromTemplateInstantiation(_)
   ) and
   result = "overlaps another link"
 }

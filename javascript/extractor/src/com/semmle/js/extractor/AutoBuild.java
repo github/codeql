@@ -117,7 +117,7 @@ import com.semmle.util.trap.TrapWriter;
  * or "metadata" becomes an exclude path. Note that there are no implicit exclude paths.
  *
  * <p>The walking phase starts at each include path in turn and recursively traverses folders and
- * files. Symlinks and hidden folders are skipped, but not hidden files. If it encounters a
+ * files. Symlinks and most hidden folders are skipped, but not hidden files. If it encounters a
  * sub-folder whose path is excluded, traversal stops. If it encounters a file, that file becomes a
  * candidate, unless its path is excluded. If the path of a file is both an include path and an
  * exclude path, the inclusion takes precedence, and the file becomes a candidate after all.
@@ -746,6 +746,9 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       if (file.getFileName().toString().equals("package.json")) {
         try {
           PackageJson packageJson = new Gson().fromJson(new WholeIO().read(file), PackageJson.class);
+          if (packageJson == null) {
+            continue;
+          }
           file = file.toAbsolutePath();
           if (tryRelativize(sourceRoot, file) == null) {
             continue; // Ignore package.json files outside the source root.
@@ -1010,10 +1013,19 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             return super.visitFile(file, attrs);
           }
 
+          /**
+           * Returns {@code true} if {@code dir} is a hidden directory
+           * that should be skipped by default.
+           */
+          private boolean isSkippedHiddenDirectory(Path dir) {
+            // Allow .github folders as they may contain YAML files relevant to GitHub repositories.
+            return dir.toFile().isHidden() && !dir.getFileName().toString().equals(".github");
+          }
+
           @Override
           public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
               throws IOException {
-            if (!dir.equals(currentRoot[0]) && (excludes.contains(dir) || dir.toFile().isHidden()))
+            if (!dir.equals(currentRoot[0]) && (excludes.contains(dir) || isSkippedHiddenDirectory(dir)))
               return FileVisitResult.SKIP_SUBTREE;
             if (Files.exists(dir.resolve("codeql-database.yml"))) {
               return FileVisitResult.SKIP_SUBTREE;

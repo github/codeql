@@ -23,7 +23,7 @@ As a result, this check incorrectly considers all negative numbers as even.
 <references>
 
 <li>
-  MSDN Library: <a href="http://msdn.microsoft.com/en-us/library/ty2ax9z9%28v=vs.71%29.aspx">Multiplicative Operators: *, /, and %</a>.
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/multiplicative-operators-and-the-modulus-operator">Multiplicative Operators and the Modulus Operator</a>.
 </li>
 <li>
   Wikipedia: <a href="http://en.wikipedia.org/wiki/Modulo_operation#Common_pitfalls">Modulo Operation - Common pitfalls</a>.

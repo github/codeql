@@ -23,7 +23,7 @@ the latter occupies eight bytes on a 64-bit machine.</p>
 <references>
 
 <li>
-  MSDN Library: <a href="http://msdn.microsoft.com/en-us/library/hh279667.aspx">Type Conversions and Type Safety (Modern C++)</a>.
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/type-conversions-and-type-safety-modern-cpp">Type Conversions and Type Safety</a>.
 </li>
 <li>
   Cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/typecasting/">Type conversions</a>.

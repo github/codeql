@@ -350,6 +350,10 @@
     "csharp/ql/src/experimental/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
     "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll"
   ],
+  "C# ControlFlowReachability": [
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/ControlFlowReachability.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/rangeanalysis/ControlFlowReachability.qll"
+  ],
   "Inline Test Expectations": [
     "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "python/ql/test/TestUtilities/InlineExpectationsTest.qll"

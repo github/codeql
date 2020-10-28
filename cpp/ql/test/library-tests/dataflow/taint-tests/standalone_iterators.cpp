@@ -53,3 +53,40 @@ void test_non_iterator(non_iterator source1) {
     sink(*(source1++));
     sink(*(++source1));
 }
+
+int source();
+
+class insert_iterator_by_trait {
+public:
+    insert_iterator_by_trait &operator++();
+    insert_iterator_by_trait operator++(int);
+    insert_iterator_by_trait &operator--();
+    insert_iterator_by_trait operator--(int);
+    insert_iterator_by_trait operator*();
+    insert_iterator_by_trait operator=(int x);
+};
+
+template<>
+struct std::iterator_traits<insert_iterator_by_trait> {
+    typedef output_iterator_tag iterator_category;
+};
+
+class container {
+public:
+    container();
+    insert_iterator_by_trait begin();
+};
+
+void sink(container);
+
+void test_insert_iterator() {
+    container c1, c2;
+
+    insert_iterator_by_trait i1 = c1.begin();
+    *i1-- = source();
+    sink(c1);
+
+    insert_iterator_by_trait i2 = c2.begin();
+    *i2-- = 0;
+    sink(c2);
+}

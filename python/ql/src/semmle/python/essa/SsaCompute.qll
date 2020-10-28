@@ -432,15 +432,39 @@ private module SsaComputeImpl {
     }
 
     /**
+     * Holds if `use1` is a use of the variable `v`, and there exists an adjacent reference to `v`
+     * in basic block `b1` at index `i1`.
+     *
+     * A helper predicate for `adjacentUseUseSameVar`, to prevent the first join from being between
+     * the two instances of `variableSourceUse` in
+     * ```ql
+     * exists(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
+     *     adjacentVarRefs(v, b1, i1, b2, i2) and
+     *     variableSourceUse(v, use1, b1, i1) and
+     *     variableSourceUse(v, use2, b2, i2)
+     * )
+     * ```
+     */
+    pragma[nomagic]
+    cached
+    private predicate adjacentRefUse(
+      SsaSourceVariable v, BasicBlock b2, int i2, ControlFlowNode use1
+    ) {
+      exists(BasicBlock b1, int i1 |
+        adjacentVarRefs(v, b1, i1, b2, i2) and
+        variableSourceUse(v, use1, b1, i1)
+      )
+    }
+
+    /**
      * Holds if `use1` and `use2` form an adjacent use-use-pair of the same SSA
      * variable, that is, the value read in `use1` can reach `use2` without passing
      * through any other use or any SSA definition of the variable.
      */
     cached
     predicate adjacentUseUseSameVar(ControlFlowNode use1, ControlFlowNode use2) {
-      exists(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
-        adjacentVarRefs(v, b1, i1, b2, i2) and
-        variableSourceUse(v, use1, b1, i1) and
+      exists(SsaSourceVariable v, BasicBlock b2, int i2 |
+        adjacentRefUse(v, b2, i2, use1) and
         variableSourceUse(v, use2, b2, i2)
       )
     }
