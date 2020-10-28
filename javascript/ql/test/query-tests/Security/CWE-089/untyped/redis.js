@@ -44,4 +44,10 @@ app.post('/documents/find', (req, res) => {
 
     client.setAsync = promisify(client.set);
     const foo2 = client.setAsync(key, "value"); // NOT OK
+
+    client.unrelated = promisify(() => {});
+    const foo3 = client.unrelated(key, "value"); // OK
+
+    const unrelated = promisify(client.foobar).bind(client);
+    const foo4 = unrelated(key, "value"); // OK
 });
