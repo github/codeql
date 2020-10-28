@@ -1,6 +1,7 @@
 /**
  * Provides taint steps modeling flow through the `classnames` and `clsx` libraries.
  */
+
 import javascript
 
 DataFlow::SourceNode classnames() {
