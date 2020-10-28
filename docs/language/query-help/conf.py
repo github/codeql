@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Learn CodeQL documentation build configuration file, created by
-# on Tuesday Nov 13 2018.
+# CodeQL query help configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -14,16 +13,6 @@
 
 # For details of all possible config values, 
 # see https://www.sphinx-doc.org/en/master/usage/configuration.html
-
-#################################################################################
-#
-# Modified 22052019. 
-
-# The configuration values below are specific to the learning ql project
-# To amend html_theme_options, update version/release number, or add more sphinx extensions,
-# refer to  code/documentation/ql-documentation/global-sphinx-files/global-conf.py
-#
-##################################################################################
 
 # -- Project-specific configuration -----------------------------------
 
@@ -44,7 +33,6 @@ master_doc = 'index'
 project = u'CodeQL query help'
 
 # Add md parser to process query help markdown files 
-
 extensions =['recommonmark']
 
 source_suffix = {
@@ -82,4 +70,5 @@ source_suffix = {
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['toc-*']
+
+exclude_patterns = ['toc-*'] # ignore toc-<lang>.rst files as they are 'included' in index pages

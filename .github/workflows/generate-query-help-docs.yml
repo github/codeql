@@ -1,4 +1,4 @@
-name: Generate CodeQL documentation using Sphinx
+name: Generate CodeQL query help documentation using Sphinx
 
 on:
   push:
