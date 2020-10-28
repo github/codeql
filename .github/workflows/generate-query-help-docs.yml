@@ -49,8 +49,8 @@ jobs:
     #    pre-build-command: "python -m pip install --upgrade recommonmark"
     #    build-command: "sphinx-build -b html . query-help-build"  
     #- name: Upload HTML artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: query-help-html
-        path: query-help
+    #  uses: actions/upload-artifact@v2
+    #  with:
+    #    name: query-help-html
+    #    path: query-help
     
