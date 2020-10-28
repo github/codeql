@@ -20,6 +20,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Install rustfmt
+        run: rustup component add rustfmt --toolchain stable-x86_64-apple-darwin
+        if: ${{ matrix.os == 'macos-latest' }}
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build
         run: cargo build --verbose
       - name: Run tests
