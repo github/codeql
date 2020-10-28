@@ -8,16 +8,10 @@
  */
 
 import java
-import semmle.code.java.frameworks.android.Intent
+import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.TaintTracking
-
-/**
- * Gets a regular expression for matching common names of variables that indicate the value being held contains sensitive information.
- */
-private string getCommonSensitiveInfoRegex() {
-  result = "(?i).*challenge|pass(wd|word|code|phrase)(?!.*question).*" or
-  result = "(?i).*(token|username|userid|secret).*"
-}
+import semmle.code.java.frameworks.android.Intent
+import semmle.code.java.security.SensitiveActions
 
 /**
  * Gets regular expression for matching names of Android variables that indicate the value being held contains sensitive information.
@@ -48,16 +42,13 @@ class PutBundleExtraMethodAccess extends MethodAccess {
 class SensitiveInfoExpr extends Expr {
   SensitiveInfoExpr() {
     exists(Variable v | this = v.getAnAccess() |
-      (
-        v.getName().toLowerCase().regexpMatch(getCommonSensitiveInfoRegex()) or
-        v.getName().toLowerCase().regexpMatch(getAndroidSensitiveInfoRegex())
-      )
+      v.getName().regexpMatch([getCommonSensitiveInfoRegex(), getAndroidSensitiveInfoRegex()])
     )
   }
 }
 
 /**
- * The method access of `context.sendBroadcast`.
+ * A method access of the `context.sendBroadcast` family.
  */
 class SendBroadcastMethodAccess extends MethodAccess {
   SendBroadcastMethodAccess() {
@@ -71,17 +62,21 @@ private class NullArgFlowConfig extends DataFlow2::Configuration {
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof NullLiteral }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
+  override predicate isSink(DataFlow::Node sink) {
+    exists(SendBroadcastMethodAccess ma | sink.asExpr() = ma.getAnArgument())
+  }
 }
 
-private class EmptyArrayArgFlowConfig extends DataFlow2::Configuration {
+private class EmptyArrayArgFlowConfig extends DataFlow3::Configuration {
   EmptyArrayArgFlowConfig() { this = "Flow configuration with an empty array argument" }
 
   override predicate isSource(DataFlow::Node src) {
     src.asExpr().(ArrayCreationExpr).getFirstDimensionSize() = 0
   }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
+  override predicate isSink(DataFlow::Node sink) {
+    exists(SendBroadcastMethodAccess ma | sink.asExpr() = ma.getAnArgument())
+  }
 }
 
 /**
@@ -110,7 +105,7 @@ predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
         config.hasFlow(_, DataFlow::exprNode(ma.getArgument(1))) // sendBroadcastWithMultiplePermissions(Intent intent, String[] receiverPermissions)
       )
       or
-      //Method calls of `sendOrderedBroadcast` whose second argument is always `receiverPermission`
+      // Method calls of `sendOrderedBroadcast` whose second argument is always `receiverPermission`
       ma.getMethod().hasName("sendOrderedBroadcast") and
       (
         // sendOrderedBroadcast(Intent intent, String receiverPermission) or sendOrderedBroadcast(Intent intent, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)
@@ -123,7 +118,7 @@ predicate isSensitiveBroadcastSink(DataFlow::Node sink) {
         ma.getNumArgument() = 8
       )
       or
-      //Method call of `sendOrderedBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)`
+      // Method call of `sendOrderedBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission, BroadcastReceiver resultReceiver, Handler scheduler, int initialCode, String initialData, Bundle initialExtras)`
       ma.getMethod().hasName("sendOrderedBroadcastAsUser") and
       exists(NullArgFlowConfig conf | conf.hasFlow(_, DataFlow::exprNode(ma.getArgument(2))))
     )

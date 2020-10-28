@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 class SensitiveBroadcast {
 
-    //Tests broadcast of access token with intent extra.
+    // BAD - Tests broadcast of access token with intent extra.
     public void sendBroadcast1(Context context, String token, String refreshToken) {
         Intent intent = new Intent();
         intent.setAction("com.example.custom_action");
@@ -13,34 +13,44 @@ class SensitiveBroadcast {
         context.sendBroadcast(intent);
     }
 
-    //Tests broadcast of sensitive user information with intent extra.
+    // BAD - Tests broadcast of sensitive user information with intent extra.
     public void sendBroadcast2(Context context) {
-        String username = "test123";
+        String userName = "test123";
         String password = "abc12345";
 
         Intent intent = new Intent();
         intent.setAction("com.example.custom_action");
-        intent.putExtra("name", username);
+        intent.putExtra("name", userName);
         intent.putExtra("pwd", password);
         context.sendBroadcast(intent);
     }
 
-    //Tests broadcast of sensitive user information with extra bundle.
+    // BAD - Tests broadcast of email information with extra bundle.
     public void sendBroadcast3(Context context) {
+        String email = "user123@example.com";
+    
+        Intent intent = new Intent();
+        intent.setAction("com.example.custom_action");
+        Bundle bundle = new Bundle();
+        bundle.putCharSequence("email", email);
+        intent.putExtras(bundle);
+        context.sendBroadcast(intent);
+    }    
+
+    // BAD - Tests broadcast of sensitive user information with null permission.
+    public void sendBroadcast4(Context context) {
         String username = "test123";
         String password = "abc12345";
     
         Intent intent = new Intent();
         intent.setAction("com.example.custom_action");
-        Bundle bundle = new Bundle();
-        bundle.putCharSequence("name", username);
-        bundle.putCharSequence("pwd", password);
-        intent.putExtras(bundle);
-        context.sendBroadcast(intent);
-    }    
+        intent.putExtra("name", username);
+        intent.putExtra("pwd", password);
+        context.sendBroadcast(intent, null);
+    }
 
-    //Tests broadcast of sensitive user information with permission using string literal.
-    public void sendBroadcast4(Context context) {
+    // GOOD - Tests broadcast of sensitive user information with permission using string literal.
+    public void sendBroadcast5(Context context) {
         String username = "test123";
         String password = "abc12345";
     
@@ -51,21 +61,19 @@ class SensitiveBroadcast {
         context.sendBroadcast(intent, "com.example.user_permission");
     }
 
-    //Tests broadcast of sensitive user information with permission using string object.
-    public void sendBroadcast5(Context context) {
-        String username = "test123";
-        String password = "abc12345";
+    // GOOD - Tests broadcast of access ticket with permission using string object.
+    public void sendBroadcast6(Context context) {
+        String ticket = "Tk9UIFNlY3VyZSBUaWNrZXQ=";
     
         Intent intent = new Intent();
         intent.setAction("com.example.custom_action");
-        intent.putExtra("name", username);
-        intent.putExtra("pwd", password);
+        intent.putExtra("ticket", ticket);
         String perm = "com.example.user_permission";
         context.sendBroadcast(intent, perm);
     }
 
-    //Tests broadcast of sensitive user information to a specific application.
-    public void sendBroadcast6(Context context) {
+    // GOOD - Tests broadcast of sensitive user information to a specific application.
+    public void sendBroadcast7(Context context) {
         String username = "test123";
         String password = "abc12345";
     
@@ -77,20 +85,18 @@ class SensitiveBroadcast {
         context.sendBroadcast(intent);
     }    
 
-    //Tests broadcast of sensitive user information with multiple permissions using direct empty array initialization.
-    public void sendBroadcast7(Context context) {
-        String username = "test123";
-        String password = "abc12345";
+    // BAD - Tests broadcast of access ticket with multiple permissions using direct empty array initialization.
+    public void sendBroadcast8(Context context) {
+        String ticket = "Tk9UIFNlY3VyZSBUaWNrZXQ=";
     
         Intent intent = new Intent();
         intent.setAction("com.example.custom_action");
-        intent.putExtra("name", username);
-        intent.putExtra("pwd", password);
+        intent.putExtra("ticket", ticket);
         context.sendBroadcastWithMultiplePermissions(intent, new String[]{});
     }    
 
-    //Tests broadcast of sensitive user information with multiple permissions using empty array initialization through a variable.
-    public void sendBroadcast8(Context context) {
+    // BAD - Tests broadcast of sensitive user information with multiple permissions using empty array initialization through a variable.
+    public void sendBroadcast9(Context context) {
         String username = "test123";
         String password = "abc12345";
     
@@ -102,22 +108,39 @@ class SensitiveBroadcast {
         context.sendBroadcastWithMultiplePermissions(intent, perms);
     }    
 
-    //Tests broadcast of sensitive user information with multiple permissions using empty array initialization through two variables.
-    public void sendBroadcast9(Context context) {
+     // GOOD - Tests broadcast of sensitive user information with multiple permissions.
+     public void sendBroadcast10(Context context) {
         String username = "test123";
         String password = "abc12345";
     
         Intent intent = new Intent();
         intent.setAction("com.example.custom_action");
-        intent.putExtra("name", username);
-        intent.putExtra("pwd", password);
+        Bundle bundle = new Bundle();
+        bundle.putCharSequence("name", username);
+        bundle.putCharSequence("pwd", password);
+        intent.putExtras(bundle);
+        String[] perms = new String[]{"com.example.custom_action", "com.example.custom_action2"};
+        context.sendBroadcastWithMultiplePermissions(intent, perms);
+    }    
+   
+    // BAD - Tests broadcast of sensitive user information with multiple permissions using empty array initialization through two variables.
+    public void sendBroadcast11(Context context) {
+        String username = "test123";
+        String password = "abc12345";
+    
+        Intent intent = new Intent();
+        intent.setAction("com.example.custom_action");
+        Bundle bundle = new Bundle();
+        bundle.putCharSequence("name", username);
+        bundle.putCharSequence("pwd", password);
+        intent.putExtras(bundle);
         String[] perms = new String[0];
         String[] perms2 = perms;
         context.sendBroadcastWithMultiplePermissions(intent, perms2);
     }    
 
-    //Tests broadcast of sensitive user information with ordered broadcast.
-    public void sendBroadcast10(Context context) {
+    // GOOD - Tests broadcast of sensitive user information with ordered broadcast.
+    public void sendBroadcast12(Context context) {
         String username = "test123";
         String password = "abc12345";
     
