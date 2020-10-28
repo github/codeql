@@ -103,7 +103,7 @@ impl Visitor<'_> {
         }
         if node.is_missing() {
             error!(
-                "{}:{}: parse expecting '{}'",
+                "{}:{}: parse error: expecting '{}'",
                 &self.path,
                 node.start_position().row,
                 node.kind()
@@ -134,7 +134,8 @@ impl Visitor<'_> {
             let loc = Label::Location(self.counter);
             self.trap_output.push(TrapEntry::New(id));
             self.trap_output.push(TrapEntry::New(loc));
-            self.trap_output.push(location_for(&self.path, loc, node));
+            self.trap_output
+                .push(location_for(&self.source, &self.path, loc, node));
             let table_name = node_type_name(node.kind(), node.is_named());
             let args: Option<Vec<Arg>>;
             if fields.is_empty() {
@@ -272,11 +273,50 @@ fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
 }
 
 // Emit a 'Located' TrapEntry for the provided node, appropriately calibrated.
-fn location_for<'a>(fp: &String, label: Label, n: Node) -> TrapEntry {
-    let start_line = n.start_position().row;
-    let start_col = n.start_position().column;
-    let end_line = n.end_position().row;
-    let end_col = n.end_position().column;
+fn location_for<'a>(source: &Vec<u8>, fp: &String, label: Label, n: Node) -> TrapEntry {
+    // Tree-sitter row, column values are 0-based while CodeQL starts
+    // counting at 1. In addition Tree-sitter's row and column for the
+    // end position are exclusive while CodeQL's end positions are inclusive.
+    // This means that all values should be incremented by 1 and in addition the
+    // end position needs to be shift 1 to the left. In most cases this means
+    // simply incrementing all values except the end column except in cases where
+    // the end column is 0 (start of a line). In such cases the end position must be
+    // set to the end of the previous line.
+    let start_line = n.start_position().row + 1;
+    let start_col = n.start_position().column + 1;
+    let mut end_line = n.end_position().row + 1;
+    let mut end_col = n.end_position().column;
+    if end_col == 0 {
+        if start_line >= end_line {
+            // the range is empty, clip it to sensible values
+            end_line = start_line;
+            end_col = start_col - 1;
+        } else {
+            let mut index = n.end_byte();
+            // end_col = 0 means that we are the start of a line
+            // unfortunately 0 is invalid as column number, therefore
+            // we should update the end location to be the end of the
+            // previous line
+            if index > 0 && index <= source.len() {
+                index -= 1;
+                if source[index] != b'\n' {
+                    error!("expecting a line break symbol, but none found while correcting end column value");
+                }
+                end_line -= 1;
+                end_col = 1;
+                while index > 0 && source[index - 1] != b'\n' {
+                    index -= 1;
+                    end_col += 1;
+                }
+            } else {
+                error!(
+                    "cannot correct end column value: end_byte index {} is not in range [0,{}]",
+                    index,
+                    source.len()
+                );
+            }
+        }
+    }
     TrapEntry::Located(vec![
         Arg::Label(label),
         Arg::String(fp.to_owned()),
