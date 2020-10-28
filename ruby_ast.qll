@@ -18,7 +18,7 @@ class Top extends @top {
 
   Location getLocation() { none() }
 
-  Top getAFieldOrChild(int i) { none() }
+  Top getAFieldOrChild() { none() }
 }
 
 class UnderscoreArg extends @underscore_arg, Top, ArgumentListChildType, ArrayChildType,
