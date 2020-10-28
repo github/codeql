@@ -517,10 +517,11 @@ class ArgumentIndirectionNode extends OperandNode {
   override SideEffectOperand op;
   ReadSideEffectInstruction instr;
 
-  ArgumentIndirectionNode() {
-    op.getUse() = instr
-  }
+  ArgumentIndirectionNode() { op.getUse() = instr }
 
+  /**
+   * Gets the function argument expression which points to the memory this node represents.
+   */
   Expr getArgument() { result = instr.getArgumentDef().getUnconvertedResultExpression() }
 
   override string toString() { result = "Argument " + instr.getIndex() + " indirection" }
