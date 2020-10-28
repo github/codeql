@@ -38,7 +38,7 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Query help to markdown
       run: |
-        PATH="$PATH:codeql-cli/codeql" python codeql/docs/language/query-help-markdown.py
+        PATH="$PATH:codeql-cli/codeql" python query-help-markdown.py
       working-directory: 'codeql/docs/language/'
     - name: Build site assets  
       working-directory: '${{ github.workspace }}/codeql/docs/language'  
