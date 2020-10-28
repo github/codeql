@@ -40,7 +40,7 @@ jobs:
       run: |
         PATH="$PATH:codeql-cli/codeql" python codeql/docs/language/query-help-markdown.py
     - name: Build site assets  
-      working-directory: '${{ github.workspace }}'  
+      working-directory: '${{ github.workspace }}/codeql/docs/language'  
       run: ls -la
     #- name: Run Sphinx for query help
     #  uses: ammaraskar/sphinx-action@master
