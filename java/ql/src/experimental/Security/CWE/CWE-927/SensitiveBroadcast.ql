@@ -12,6 +12,7 @@ import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.security.SensitiveActions
+import DataFlow::PathGraph
 
 /**
  * Gets regular expression for matching names of Android variables that indicate the value being held contains sensitive information.
@@ -23,7 +24,10 @@ private string getAndroidSensitiveInfoRegex() { result = "(?i).*(email|phone|tic
  */
 class PutIntentExtraMethodAccess extends MethodAccess {
   PutIntentExtraMethodAccess() {
-    getMethod().getName().regexpMatch("put\\w*Extra(s?)") and
+    (
+      getMethod().getName().matches("put%Extra") or
+      getMethod().hasName("putExtras")
+    ) and
     getMethod().getDeclaringType() instanceof TypeIntent
   }
 }
@@ -138,7 +142,7 @@ class SensitiveBroadcastConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { isSensitiveBroadcastSink(sink) }
 
   /**
-   * Holds if there is an additional flow step from `PutIntentExtraMethodAccess` or `PutBundleExtraMethodAccess` to a broadcast intent.
+   * Holds if there is an additional flow step from `PutIntentExtraMethodAccess` or `PutBundleExtraMethodAccess` that taints the `Intent` or its extras `Bundle`.
    */
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(PutIntentExtraMethodAccess pia |
