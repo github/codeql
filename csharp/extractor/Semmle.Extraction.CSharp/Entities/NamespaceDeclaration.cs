@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class NamespaceDeclaration : CachedEntity<NamespaceDeclarationSyntax>
+    internal class NamespaceDeclaration : CachedEntity<NamespaceDeclarationSyntax>
     {
         private readonly NamespaceDeclaration parent;
         private readonly NamespaceDeclarationSyntax node;
@@ -49,10 +49,10 @@ namespace Semmle.Extraction.CSharp.Entities
         public static NamespaceDeclaration Create(Context cx, NamespaceDeclarationSyntax decl, NamespaceDeclaration parent)
         {
             var init = (decl, parent);
-            return NamespaceDeclarationFactory.Instance.CreateEntity(cx, init, init);
+            return NamespaceDeclarationFactory.Instance.CreateEntity(cx, decl, init);
         }
 
-        class NamespaceDeclarationFactory : ICachedEntityFactory<(NamespaceDeclarationSyntax decl, NamespaceDeclaration parent), NamespaceDeclaration>
+        private class NamespaceDeclarationFactory : ICachedEntityFactory<(NamespaceDeclarationSyntax decl, NamespaceDeclaration parent), NamespaceDeclaration>
         {
             public static readonly NamespaceDeclarationFactory Instance = new NamespaceDeclarationFactory();
 
