@@ -48,12 +48,6 @@ jobs:
         docs-folder: "query-help/"
         pre-build-command: "python -m pip install --upgrade recommonmark"
         build-command: "sphinx-build -b html . _build" 
-    - name: Check docs folder postscript 1
-      working-directory: '${{ github.workspace }}/query-help'  
-      run: ls -la  
-    - name: Check docs folder postscript 2
-      working-directory: '${{ github.workspace }}/query-help/_build'  
-      run: ls -la 
     - name: Upload HTML artifacts
       uses: actions/upload-artifact@v2
       with:
