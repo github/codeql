@@ -160,20 +160,84 @@ abstract class InlineExpectationsTest extends string {
  * is treated as part of the expected results, except that the comment may contain a `//` sequence
  * to treat the remainder of the line as a regular (non-interpreted) comment.
  */
-private string expectationCommentPattern() { result = "\\s*(\\$(?:[^/]|/[^/])*)(?://.*)?" }
+private string expectationCommentPattern() { result = "\\s*\\$((?:[^/]|/[^/])*)(?://.*)?" }
 
 /**
- * RegEx pattern to match a single expected result, not including the leading `$`. It starts with an
- * optional `f+:` or `f-:`, followed by one or more comma-separated tags containing only letters,
- * `-`, and `_`, optionally followed by `=` and the expected value.
+ * The possible columns in an expectation comment. The `TDefaultColumn` branch represents the first
+ * column in a comment. This column is not precedeeded by a name. `TNamedColumn(name)` represents a
+ * column containing expected results preceeded by the string `name:`.
  */
-private string expectationPattern() {
-  result = "(?:(f(?:\\+|-)):)?((?:[A-Za-z-_]+)(?:\\s*,\\s*[A-Za-z-_]+)*)(?:=(.*))?"
+private newtype TColumn =
+  TDefaultColumn() or
+  TNamedColumn(string name) { name = ["MISSING", "SPURIOUS"] }
+
+bindingset[start, content]
+private int getEndOfColumnPosition(int start, string content) {
+  result =
+    min(string name, int cand |
+      exists(TNamedColumn(name)) and
+      cand = content.indexOf(name + ":") and
+      cand > start
+    |
+      cand
+    )
+  or
+  not exists(string name |
+    exists(TNamedColumn(name)) and
+    content.indexOf(name + ":") > start
+  ) and
+  result = content.length()
 }
 
-private string getAnExpectation(LineComment comment) {
-  result = comment.getContents().regexpCapture(expectationCommentPattern(), 1).splitAt("$").trim() and
-  result != ""
+private string getAnExpectation(LineComment comment, TColumn column) {
+  exists(string content |
+    content = comment.getContents().regexpCapture(expectationCommentPattern(), 1) and
+    (
+      column = TDefaultColumn() and
+      exists(int end |
+        end = getEndOfColumnPosition(0, content) and
+        result = content.prefix(end).splitAt(" ").trim()
+      )
+      or
+      exists(string name, int start, int end |
+        column = TNamedColumn(name) and
+        start = content.indexOf(name + ":") + name.length() + 1 and
+        end = getEndOfColumnPosition(start, content) and
+        result = content.substring(start, end).splitAt(" ").trim()
+      )
+    ) and
+    result != ""
+  )
+}
+
+bindingset[expectation]
+private string getATag(string expectation) {
+  (
+    result = expectation.prefix(expectation.indexOf("=")).splitAt(",").trim()
+    or
+    not exists(expectation.indexOf("=")) and
+    result = expectation.splitAt(",").trim()
+  )
+}
+
+bindingset[expectation]
+private string getValueForTag(string expectation) {
+  result = expectation.suffix(expectation.indexOf("=") + 1)
+}
+
+private string getColumnString(TColumn column) {
+  column = TDefaultColumn() and result = ""
+  or
+  column = TNamedColumn(result)
+}
+
+/**
+ * RegEx pattern to match a single expected result, not including the leading `$`. It consists of one or
+ * more comma-separated tags containing only letters, `-`, and `_`, optionally followed by `=` and the
+ * expected value.
+ */
+private string expectationPattern() {
+  result = "((?:[A-Za-z-_]+)(?:\\s*,\\s*[A-Za-z-_]+)*)(?:=(.*))?"
 }
 
 private newtype TFailureLocatable =
@@ -183,24 +247,19 @@ private newtype TFailureLocatable =
     test.hasActualResult(location, element, tag, value)
   } or
   TValidExpectation(LineComment comment, string tag, string value, string knownFailure) {
-    exists(string expectation |
-      expectation = getAnExpectation(comment) and
-      expectation.regexpMatch(expectationPattern()) and
-      tag = expectation.regexpCapture(expectationPattern(), 2).splitAt(",").trim() and
+    exists(string expectation, TColumn column |
+      expectation = getAnExpectation(comment, column) and
+      tag = getATag(expectation) and
       (
-        if exists(expectation.regexpCapture(expectationPattern(), 3))
-        then value = expectation.regexpCapture(expectationPattern(), 3)
+        if exists(getValueForTag(expectation))
+        then value = getValueForTag(expectation)
         else value = ""
       ) and
-      (
-        if exists(expectation.regexpCapture(expectationPattern(), 1))
-        then knownFailure = expectation.regexpCapture(expectationPattern(), 1)
-        else knownFailure = ""
-      )
+      knownFailure = getColumnString(column)
     )
   } or
   TInvalidExpectation(LineComment comment, string expectation) {
-    expectation = getAnExpectation(comment) and
+    expectation = getAnExpectation(comment, _) and
     not expectation.regexpMatch(expectationPattern())
   }
 
@@ -265,16 +324,17 @@ private class ValidExpectation extends Expectation, TValidExpectation {
   }
 }
 
+/* Note: These next three classes correspond to all the possible values of type `TColumn`. */
 class GoodExpectation extends ValidExpectation {
   GoodExpectation() { getKnownFailure() = "" }
 }
 
 class FalsePositiveExpectation extends ValidExpectation {
-  FalsePositiveExpectation() { getKnownFailure() = "f+" }
+  FalsePositiveExpectation() { getKnownFailure() = "SPURIOUS" }
 }
 
 class FalseNegativeExpectation extends ValidExpectation {
-  FalseNegativeExpectation() { getKnownFailure() = "f-" }
+  FalseNegativeExpectation() { getKnownFailure() = "MISSING" }
 }
 
 class InvalidExpectation extends Expectation, TInvalidExpectation {
