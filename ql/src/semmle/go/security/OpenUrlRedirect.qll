@@ -33,6 +33,9 @@ module OpenUrlRedirect {
       // taint steps that do not include flow through fields
       TaintTracking::localTaintStep(pred, succ) and not TaintTracking::fieldReadStep(pred, succ)
       or
+      // explicit extra taint steps for this query
+      any(AdditionalStep s).hasTaintStep(pred, succ)
+      or
       // propagate to a URL when its host is assigned to
       exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
         w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()

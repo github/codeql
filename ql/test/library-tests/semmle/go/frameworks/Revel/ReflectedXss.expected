@@ -1,0 +1,23 @@
+edges
+| EndToEnd.go:36:18:36:25 | implicit dereference : Params | EndToEnd.go:36:18:36:25 | implicit dereference : Params |
+| EndToEnd.go:36:18:36:25 | implicit dereference : Params | EndToEnd.go:36:18:36:25 | selection of Params : pointer type |
+| EndToEnd.go:36:18:36:25 | implicit dereference : Params | EndToEnd.go:37:24:37:26 | buf |
+| EndToEnd.go:36:18:36:25 | selection of Params : pointer type | EndToEnd.go:36:18:36:25 | implicit dereference : Params |
+| EndToEnd.go:36:18:36:25 | selection of Params : pointer type | EndToEnd.go:36:18:36:25 | selection of Params : pointer type |
+| EndToEnd.go:36:18:36:25 | selection of Params : pointer type | EndToEnd.go:37:24:37:26 | buf |
+| EndToEnd.go:69:22:69:29 | implicit dereference : Params | EndToEnd.go:69:22:69:29 | implicit dereference : Params |
+| EndToEnd.go:69:22:69:29 | implicit dereference : Params | EndToEnd.go:69:22:69:29 | selection of Params : pointer type |
+| EndToEnd.go:69:22:69:29 | implicit dereference : Params | EndToEnd.go:69:22:69:51 | call to Get |
+| EndToEnd.go:69:22:69:29 | selection of Params : pointer type | EndToEnd.go:69:22:69:29 | implicit dereference : Params |
+| EndToEnd.go:69:22:69:29 | selection of Params : pointer type | EndToEnd.go:69:22:69:29 | selection of Params : pointer type |
+| EndToEnd.go:69:22:69:29 | selection of Params : pointer type | EndToEnd.go:69:22:69:51 | call to Get |
+nodes
+| EndToEnd.go:36:18:36:25 | implicit dereference : Params | semmle.label | implicit dereference : Params |
+| EndToEnd.go:36:18:36:25 | selection of Params : pointer type | semmle.label | selection of Params : pointer type |
+| EndToEnd.go:37:24:37:26 | buf | semmle.label | buf |
+| EndToEnd.go:69:22:69:29 | implicit dereference : Params | semmle.label | implicit dereference : Params |
+| EndToEnd.go:69:22:69:29 | selection of Params : pointer type | semmle.label | selection of Params : pointer type |
+| EndToEnd.go:69:22:69:51 | call to Get | semmle.label | call to Get |
+#select
+| EndToEnd.go:37:24:37:26 | buf | EndToEnd.go:36:18:36:25 | selection of Params : pointer type | EndToEnd.go:37:24:37:26 | buf | Cross-site scripting vulnerability due to $@. | EndToEnd.go:36:18:36:25 | selection of Params | user-provided value |
+| EndToEnd.go:69:22:69:51 | call to Get | EndToEnd.go:69:22:69:29 | selection of Params : pointer type | EndToEnd.go:69:22:69:51 | call to Get | Cross-site scripting vulnerability due to $@. | EndToEnd.go:69:22:69:29 | selection of Params | user-provided value |
