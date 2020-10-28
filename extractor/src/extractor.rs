@@ -274,6 +274,14 @@ fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
 
 // Emit a 'Located' TrapEntry for the provided node, appropriately calibrated.
 fn location_for<'a>(source: &Vec<u8>, fp: &String, label: Label, n: Node) -> TrapEntry {
+    // Tree-sitter row, column values are 0-based while CodeQL starts
+    // counting at 1. In addition Tree-sitter's row and column for the
+    // end position are exclusive while CodeQL's end positions are inclusive.
+    // This means that all values should be incremented by 1 and in addition the
+    // end position needs to be shift 1 to the left. In most cases this means
+    // simply incrementing all values except the end column except in cases where
+    // the end column is 0 (start of a line). In such cases the end position must be
+    // set to the end of the previous line.
     let start_line = n.start_position().row + 1;
     let start_col = n.start_position().column + 1;
     let mut end_line = n.end_position().row + 1;
