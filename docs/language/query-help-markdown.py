@@ -148,7 +148,8 @@ for lang in languages:
                 query_help = subprocess_run(
                     ["codeql", "generate", "query-help", "--format=markdown", "--warnings=hide", queryfile]).stdout.strip()
             except:
-                print("Failed to generate query help for '%s'" % (queryfile))
+                # Print a message if generate query help fails
+                print("Failed to generate query help for '%s'" % (queryfile_nwo))
                 continue
 
             # Pull out relevant query metadata properties that we want to display in the query help
