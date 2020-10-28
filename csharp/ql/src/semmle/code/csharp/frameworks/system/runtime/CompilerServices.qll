@@ -44,16 +44,10 @@ class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct extends System
   }
 }
 
-/** An unbound generic struct in the `System.Runtime.CompilerServices` namespace. */
-class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStructStruct extends Struct {
-  SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStructStruct() {
-    this = any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct n).getANestedType()
-  }
-}
-
 /** The `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.ConfiguredTaskAwaiter` struct. */
-class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct extends SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStructStruct {
+class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct extends Struct {
   SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct() {
+    this = any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct n).getANestedType() and
     this.hasName("ConfiguredTaskAwaiter")
   }
 
