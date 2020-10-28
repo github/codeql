@@ -260,10 +260,15 @@ abstract class TypeMentionNode extends PrintAstNode {
    */
   final TypeMention getTypeMention() { result = typeMention }
 
+  /**
+   * Gets the `Element` targetted by the `TypeMention`.
+   */
+  final Element getTarget() { result = typeMention.getTarget() }
+
   override NestedTypeMentionNode getChild(int childIndex) {
     result.getTypeMention() =
       rank[childIndex](TypeMention t, Location l |
-        t = any(TypeMention tm | tm.getParent() = typeMention) and
+        t.getParent() = typeMention and
         l = t.getLocation()
       |
         t order by l.getFile().toString(), l.getStartLine(), l.getStartColumn()
@@ -316,7 +321,7 @@ class ControlFlowElementNode extends ElementNode {
       or
       not exists(controlFlowElement.getAChild()) and childIndex = 0
     ) and
-    result.(TopLevelTypeMentionNode).getTypeMention().getTarget() = controlFlowElement
+    result.(TopLevelTypeMentionNode).getTarget() = controlFlowElement
     or
     result.(ElementNode).getElement() = controlFlowElement.getChild(childIndex)
   }
@@ -348,7 +353,7 @@ final class AssignmentNode extends ControlFlowElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -1 and
-    result.(TopLevelTypeMentionNode).getTypeMention().getTarget() = controlFlowElement
+    result.(TopLevelTypeMentionNode).getTarget() = controlFlowElement
     or
     childIndex = 0 and
     result.(ElementNode).getElement() = assignment.getLValue()
@@ -389,7 +394,7 @@ final class CallableNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -1 and
-    result.(TopLevelTypeMentionNode).getTypeMention().getTarget() = callable
+    result.(TopLevelTypeMentionNode).getTarget() = callable
     or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = callable
@@ -421,7 +426,7 @@ final class DeclarationWithAccessorsNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -1 and
-    result.(TopLevelTypeMentionNode).getTypeMention().getTarget() = declaration
+    result.(TopLevelTypeMentionNode).getTarget() = declaration
     or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = declaration
@@ -457,7 +462,7 @@ final class FieldNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -1 and
-    result.(TopLevelTypeMentionNode).getTypeMention().getTarget() = field
+    result.(TopLevelTypeMentionNode).getTarget() = field
     or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = field
@@ -499,7 +504,7 @@ final class ParameterNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -1 and
-    result.(TopLevelTypeMentionNode).getTypeMention().getTarget() = param
+    result.(TopLevelTypeMentionNode).getTarget() = param
     or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = param
@@ -526,7 +531,7 @@ final class AttributeNode extends ElementNode {
       or
       not exists(attr.getAChild()) and childIndex = 0
     ) and
-    result.(TopLevelTypeMentionNode).getTypeMention().getTarget() = attr
+    result.(TopLevelTypeMentionNode).getTarget() = attr
     or
     result.(ElementNode).getElement() = attr.getChild(childIndex)
   }
@@ -693,14 +698,12 @@ final class BaseTypesNode extends PrintAstNode, TBaseTypesNode {
   override TopLevelTypeMentionNode getChild(int childIndex) {
     childIndex = 0 and
     result.getTypeMention().getType() = valueOrRefType.getBaseClass() and
-    result.getTypeMention().getTarget() = valueOrRefType
+    result.getTarget() = valueOrRefType
     or
     result.getTypeMention() =
       rank[childIndex](TypeMention t, Location l |
-        t =
-          any(TypeMention tm |
-            tm.getType() = valueOrRefType.getABaseInterface() and tm.getTarget() = valueOrRefType
-          ) and
+        t.getType() = valueOrRefType.getABaseInterface() and
+        t.getTarget() = valueOrRefType and
         l = t.getLocation()
       |
         t order by l.getFile().toString(), l.getStartLine(), l.getStartColumn()
