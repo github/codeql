@@ -39,6 +39,7 @@ jobs:
     - name: Query help to markdown
       run: |
         PATH="$PATH:codeql-cli/codeql" python codeql/docs/language/query-help-markdown.py
+      working-directory: 'codeql/docs/language/'
     - name: Build site assets  
       working-directory: '${{ github.workspace }}/codeql/docs/language'  
       run: ls -la
