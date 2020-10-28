@@ -6,7 +6,7 @@ import sys
 import os
 
 # Define which languages and query packs to consider
-languages = [ "cpp", "csharp", "go", "java", "javascript", "python"]
+languages = ["java"]
 
 # Running generate query-help with "security-and-quality.qls" generates errors, so just use these two suites for now
 packs = ["code-scanning", "security-extended"]
@@ -144,8 +144,12 @@ for lang in languages:
             queryfile_nwo = prefix_repo_nwo(queryfile)
 
             # Generate the query help for each query
-            query_help = subprocess_run(
-                ["codeql", "generate", "query-help", "--format=markdown", "--warnings=hide", queryfile]).stdout.strip()
+            try:
+                query_help = subprocess_run(
+                    ["codeql", "generate", "query-help", "--format=markdown", "--warnings=hide", queryfile]).stdout.strip()
+            except:
+                print("Failed to generate query help for '%s'" % (queryfile))
+                continue
 
             # Pull out relevant query metadata properties that we want to display in the query help
             query_name_meta = get_query_metadata('name', meta, queryfile)
