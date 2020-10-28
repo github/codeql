@@ -792,7 +792,7 @@ private module Redis {
      * Thereby the method is vulnerable if parameter `argIndex` is unexpectedly an array instead of a string, as an attacker can control arguments to Redis that the attacker was not supposed to control.
      *
      * Only setters and similar methods are included.
-     * For getter like methods it is not generally possible to gain access "outside" of where you are supposed to have access,
+     * For getter-like methods it is not generally possible to gain access "outside" of where you are supposed to have access,
      * it is at most possible to get a Redis call to return more results than expected (e.g. by adding more members to [`geohash`](https://redis.io/commands/geohash)).
      */
     bindingset[argIndex]
