@@ -81,7 +81,7 @@ jobs:
           path: osx64
       - run: |
           mkdir -p ruby
-          cp -r codeql-extractor.yml tools ruby/
+          cp -r codeql-extractor.yml tools ql/src/ruby.dbscheme.stats ruby/
           mkdir -p ruby/tools/{linux64,osx64,win64}
           cp linux64/ruby-extractor ruby/tools/linux64/extractor
           cp osx64/ruby-extractor ruby/tools/osx64/extractor
