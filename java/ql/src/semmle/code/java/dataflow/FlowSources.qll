@@ -307,36 +307,26 @@ class ReverseDNSMethod extends Method {
 
 /** Android `Intent` that may have come from a hostile application. */
 class AndroidIntentInput extends DataFlow::Node {
+  Type receiverType;
+
   AndroidIntentInput() {
     exists(MethodAccess ma, AndroidGetIntentMethod m |
       ma.getMethod().overrides*(m) and
-      this.asExpr() = ma
+      this.asExpr() = ma and
+      receiverType = ma.getEnclosingCallable().getDeclaringType()
     )
     or
     exists(Method m, AndroidReceiveIntentMethod rI |
       m.overrides*(rI) and
-      this.asParameter() = m.getParameter(1)
+      this.asParameter() = m.getParameter(1) and
+      receiverType = m.getDeclaringType()
     )
   }
 }
 
 /** Exported Android `Intent` that may have come from a hostile application. */
-class ExportedAndroidIntentInput extends RemoteFlowSource {
-  ExportedAndroidIntentInput() {
-    exists(ExportableAndroidComponent exportedType | exportedType.isExported() |
-      exists(MethodAccess ma, AndroidGetIntentMethod m |
-        ma.getMethod().overrides*(m) and
-        this.asExpr() = ma and
-        exportedType = ma.getEnclosingCallable().getDeclaringType()
-      )
-      or
-      exists(Method m, AndroidReceiveIntentMethod rI |
-        m.overrides*(rI) and
-        this.asParameter() = m.getParameter(1) and
-        exportedType = m.getDeclaringType()
-      )
-    )
-  }
+class ExportedAndroidIntentInput extends RemoteFlowSource, AndroidIntentInput {
+  ExportedAndroidIntentInput() { receiverType.(ExportableAndroidComponent).isExported() }
 
-  override string getSourceType() { result = "Android intent source" }
+  override string getSourceType() { result = "Exported Android intent source" }
 }

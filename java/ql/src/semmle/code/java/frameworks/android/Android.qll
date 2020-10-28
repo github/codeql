@@ -31,7 +31,7 @@ class AndroidComponent extends Class {
 }
 
 /**
- * An Android component that is explicitly or implicitly exported.
+ * An Android component that can be explicitly or implicitly exported.
  */
 class ExportableAndroidComponent extends AndroidComponent {
   /** Holds if this Android component is configured as `exported` or has intent filters configured without `exported` explicitly disabled in an `AndroidManifest.xml` file. */
