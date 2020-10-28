@@ -303,8 +303,6 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
     )
   or
   // Flow from input argument to output argument
-  // TODO: This won't work in practice as long as all aliased memory is tracked
-  // together in a single virtual variable.
   // TODO: Will this work on the test for `TaintedPath.ql`, where the output arg
   // is a pointer addition expression?
   i2 =
