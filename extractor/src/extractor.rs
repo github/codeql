@@ -229,13 +229,13 @@ impl Visitor<'_> {
                         )
                     }
                 }
-                Storage::Table { index } => {
-                    for child_id in child_ids {
+                Storage::Table => {
+                    for (index, child_id) in child_ids.iter().enumerate() {
                         self.trap_output.push(TrapEntry::ChildOf(
                             node_type_name(&field.parent.kind, field.parent.named),
                             parent_id,
                             field.get_name(),
-                            Index(*index),
+                            Index(index),
                             *child_id,
                         ));
                     }

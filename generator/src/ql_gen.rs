@@ -400,7 +400,7 @@ fn create_field_getters(
             *main_table_column_index += 1;
             result
         }
-        node_types::Storage::Table { index: _ } => {
+        node_types::Storage::Table => {
             let field_table_name = format!("{}_{}", parent_name, &field.get_name());
             (
                 ql::Predicate {
