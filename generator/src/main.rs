@@ -47,10 +47,7 @@ fn add_field(
     field: &node_types::Field,
     entries: &mut Vec<dbscheme::Entry>,
 ) {
-    let field_name = match &field.name {
-        None => "child".to_owned(),
-        Some(x) => x.to_owned(),
-    };
+    let field_name = field.get_name();
     let parent_name = node_types::node_type_name(&field.parent.kind, field.parent.named);
     match field.storage {
         node_types::Storage::Table { .. } => {

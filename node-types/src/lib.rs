@@ -33,6 +33,15 @@ pub struct Field {
     pub storage: Storage,
 }
 
+impl Field {
+    pub fn get_name(&self) -> String {
+        match &self.name {
+            Some(name) => name.clone(),
+            None => "child".to_owned(),
+        }
+    }
+}
+
 #[derive(Debug)]
 pub enum Storage {
     /// the field is stored as a column in the parent table

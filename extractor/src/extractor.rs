@@ -225,10 +225,7 @@ impl Visitor<'_> {
                                 "too many values"
                             },
                             node.kind(),
-                            match field.name.as_ref() {
-                                Some(x) => x,
-                                None => "child",
-                            }
+                            &field.get_name()
                         )
                     }
                 }
@@ -237,10 +234,7 @@ impl Visitor<'_> {
                         self.trap_output.push(TrapEntry::ChildOf(
                             node_type_name(&field.parent.kind, field.parent.named),
                             parent_id,
-                            match &field.name {
-                                Some(name) => name.to_owned(),
-                                None => "child".to_owned(),
-                            },
+                            field.get_name(),
                             Index(*index),
                             *child_id,
                         ));

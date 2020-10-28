@@ -54,14 +54,7 @@ fn create_supertype_map(nodes: &[node_types::Entry]) -> SupertypeMap {
                         // This field can have one of several types. Since we create an ad-hoc
                         // QL union type to represent them, the class wrapping that union type
                         // will be a supertype of all its members.
-                        let field_union_name = format!(
-                            "{}_{}_type",
-                            &node_name,
-                            match &field.name {
-                                Some(name) => &name,
-                                None => "child",
-                            }
-                        );
+                        let field_union_name = format!("{}_{}_type", &node_name, &field.get_name());
                         let field_union_name = node_types::escape_name(&field_union_name);
                         let supertype_name = dbscheme_name_to_class_name(&field_union_name);
                         for field_type in &field.types {
@@ -213,14 +206,7 @@ fn create_field_class(
     } else {
         // This field can have one of several types. The dbscheme contains a
         // union type, so we create a QL class to wrap that.
-        let field_union_name = format!(
-            "{}_{}_type",
-            parent_name,
-            match &field.name {
-                Some(name) => &name,
-                None => "child",
-            }
-        );
+        let field_union_name = format!("{}_{}_type", parent_name, &field.get_name());
         let field_union_name = node_types::escape_name(&field_union_name);
         let class_name = dbscheme_name_to_class_name(&field_union_name);
         classes.push(ql::Class {
@@ -388,17 +374,13 @@ fn create_field_getters(
     field: &node_types::Field,
     field_type: &str,
 ) -> (ql::Predicate, ql::Expression) {
-    let field_name = match &field.name {
-        Some(name) => &name,
-        None => "child",
-    };
     match &field.storage {
         node_types::Storage::Column => {
             let result = (
                 ql::Predicate {
                     name: format!(
                         "get{}",
-                        dbscheme_name_to_class_name(&node_types::escape_name(field_name))
+                        dbscheme_name_to_class_name(&node_types::escape_name(&field.get_name()))
                     ),
                     overridden: false,
                     return_type: Some(ql::Type::Normal(dbscheme_name_to_class_name(field_type))),
@@ -419,19 +401,12 @@ fn create_field_getters(
             result
         }
         node_types::Storage::Table { index: _ } => {
-            let field_table_name = format!(
-                "{}_{}",
-                parent_name,
-                match &field.name {
-                    Some(name) => &name,
-                    None => "child",
-                }
-            );
+            let field_table_name = format!("{}_{}", parent_name, &field.get_name());
             (
                 ql::Predicate {
                     name: format!(
                         "get{}",
-                        dbscheme_name_to_class_name(&node_types::escape_name(field_name))
+                        dbscheme_name_to_class_name(&node_types::escape_name(&field.get_name()))
                     ),
                     overridden: false,
                     return_type: Some(ql::Type::Normal(dbscheme_name_to_class_name(field_type))),
