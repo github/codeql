@@ -4,7 +4,10 @@ private import CIL
 
 /** An instruction. */
 class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instruction {
-  override string toString() { result = getIndex() + ": " + getOpcodeName() + getExtraStr() }
+  override string toString() { result = getOpcodeName() }
+
+  /** Gets a more verbose textual representation of this instruction. */
+  string toStringExtra() { result = getIndex() + ": " + getOpcodeName() + getExtraStr() }
 
   /** Gets the method containing this instruction. */
   override MethodImplementation getImplementation() { cil_instruction(this, _, _, result) }

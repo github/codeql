@@ -27,7 +27,7 @@ predicate used_as_regex(Expr s, string mode) {
   (s instanceof Bytes or s instanceof Unicode) and
   /* Call to re.xxx(regex, ... [mode]) */
   exists(CallNode call, string name |
-    call.getArg(0).refersTo(_, _, s.getAFlowNode()) and
+    call.getArg(0).pointsTo(_, _, s.getAFlowNode()) and
     call.getFunction().pointsTo(Module::named("re").attr(name)) and
     not name = "escape"
   |
