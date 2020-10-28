@@ -816,17 +816,19 @@ private module Redis {
       exists(string method, int argIndex |
         QuerySignatures::argumentIsAmbiguousKey(method, argIndex)
       |
-        this = promisify(redis().getMember(method)).getACall().getArgument(argIndex).asExpr()
+        this =
+          [promisify(redis().getMember(method)), redis().getMember(method)]
+              .getACall()
+              .getArgument(argIndex)
+              .asExpr()
       )
     }
   }
 
   /**
-   * Gets a possibly promisified version of `method`.
+   * Gets a promisified version of `method`.
    */
   private API::Node promisify(API::Node method) {
-    result = method
-    or
     exists(API::Node promisify |
       promisify = API::moduleImport(["util", "bluebird"]).getMember("promisify").getReturn() and
       method
