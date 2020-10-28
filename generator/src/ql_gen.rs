@@ -124,10 +124,7 @@ fn create_top_class() -> ql::Class {
         "getAFieldOrChild",
         false,
         Some(ql::Type::Normal("Top".to_owned())),
-        vec![ql::FormalParameter {
-            name: "i".to_owned(),
-            r#type: ql::Type::Int,
-        }],
+        vec![],
     );
     ql::Class {
         name: "Top".to_owned(),
