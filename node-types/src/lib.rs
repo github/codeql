@@ -38,9 +38,7 @@ pub enum Storage {
     /// the field is stored as a column in the parent table
     Column,
     // the field is store in a link table
-    Table {
-        index: usize,
-    },
+    Table,
 }
 
 pub fn read_node_types(node_types_path: &Path) -> std::io::Result<Vec<Entry>> {
@@ -123,9 +121,7 @@ fn add_field(
     } else {
         // This field can appear zero or multiple times, so put
         // it in an auxiliary table.
-        storage = Storage::Table {
-            index: fields.len(),
-        };
+        storage = Storage::Table;
     }
     fields.push(Field {
         parent: TypeName {
