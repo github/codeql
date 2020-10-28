@@ -35,6 +35,11 @@ jobs:
           name: ruby.dbscheme
           path: ruby.dbscheme
       - uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        with:
+          name: ruby_ast.qll
+          path: ruby_ast.qll
+      - uses: actions/upload-artifact@v2
         with:
           name: extractor-${{ matrix.os }}
           path: |
