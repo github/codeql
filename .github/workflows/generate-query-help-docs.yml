@@ -39,18 +39,14 @@ jobs:
     - name: Set up query help docs folder  
       run: |
         mkdir query-help ; cp -r codeql/docs/language/query-help/ query-help/ 
-    - name: Build site assets  
-      working-directory: '${{ github.workspace }}'  
+    - name: Check docs folder prescript 
+      working-directory: '${{ github.workspace }}/query-help'  
       run: ls -la
     - name: Query help to markdown
       run: |
         PATH="$PATH:codeql-cli/codeql" python codeql/docs/language/query-help-markdown.py
-    - name: Copy sphinx files into query help folder
-      run: |
-        cp codeql/docs/language/query-help/conf.py query-help/conf.py; 
-        cp codeql/docs/language/query-help/*.rst query-help/*.rst;
-    - name: Check workspace  
-      working-directory: '${{ github.workspace }}/codeql/docs/language'  
+    - name: Check docs folder postscript 
+      working-directory: '${{ github.workspace }}/query-help'  
       run: ls -la
     #- name: Run Sphinx for query help
     #  uses: ammaraskar/sphinx-action@master
@@ -58,9 +54,9 @@ jobs:
     #    docs-folder: "codeql/docs/language/query-help/"
     #    pre-build-command: "python -m pip install --upgrade recommonmark"
     #    build-command: "sphinx-build -b html . query-help-build"  
-    - name: Upload HTML artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: query-help-html
-        path: query-help
+    #- name: Upload HTML artifacts
+    #  uses: actions/upload-artifact@v2
+    #  with:
+    #    name: query-help-html
+    #    path: query-help
     
