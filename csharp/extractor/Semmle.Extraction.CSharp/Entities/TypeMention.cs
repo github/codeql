@@ -81,7 +81,7 @@ namespace Semmle.Extraction.CSharp.Entities
                             Create(cx, nts.ElementType, parent, type);
                         }
                     }
-                    else if (type is ArrayType array)
+                    else if (type is ArrayType)
                     {
                         Create(cx, nts.ElementType, parent, type);
                     }
