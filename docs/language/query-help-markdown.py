@@ -5,11 +5,24 @@ import csv
 import sys
 import os
 
+"""
+This script collects CodeQL queries that are part of code scanning query packs,
+renders the accompanying query help as markdown, inserts some useful metadata
+into the help, and adds a link to the query in the CodeQL repo.
+
+This script requires that 'git' and 'codeql' commands
+are on the PATH. It'll try to automatically set the CodeQL search path correctly,
+as long as you run the script from one of the following locations:
+ - anywhere from within a clone of the CodeQL Git repo
+ - from the parent directory of a clone of the CodeQL Git repo (assuming 'codeql' 
+   and 'codeql-go' directories both exist)
+"""
+
 # Define which languages and query packs to consider
 languages = [ "cpp", "csharp", "go", "java", "javascript", "python"]
 
-# Running generate query-help with "security-and-quality.qls" generates errors, so just use these two suites for now
-packs = ["code-scanning", "security-extended"]
+# generate query-help fails for some queries in these suites. Faliures generate an error message.
+packs = ["code-scanning", "security-and-quality", "security-extended"]
 
 
 def prefix_repo_nwo(filename):
