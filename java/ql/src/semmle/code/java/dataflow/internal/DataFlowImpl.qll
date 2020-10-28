@@ -1241,6 +1241,12 @@ private module Stage3 {
 
   class ApNil = AccessPathFrontNil;
 
+  bindingset[tc, tail]
+  private Ap apCons(TypedContent tc, Ap tail) { result.getHead() = tc and exists(tail) }
+
+  pragma[noinline]
+  private Content getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+
   class ApOption = AccessPathFrontOption;
 
   ApOption apNone() { result = TAccessPathFrontNone() }
@@ -1301,15 +1307,15 @@ private module Stage3 {
     )
     or
     // store
-    exists(TypedContent tc |
-      fwdFlowStore(node, tc, _, cc, argAp, config) and
-      ap.headUsesContent(tc)
+    exists(TypedContent tc, Ap ap0 |
+      fwdFlowStore(node, tc, ap0, cc, argAp, config) and
+      ap = apCons(tc, ap0)
     )
     or
     // read
-    exists(TypedContent tc |
-      fwdFlowRead(tc, node, cc, argAp, config) and
-      fwdFlowConsCand(tc, ap, config) and
+    exists(Ap ap0, Content c |
+      fwdFlowRead(ap0, c, _, node, cc, argAp, config) and
+      fwdFlowConsCand(ap0, c, ap, config) and
       Stage2::revFlow(node, _, _, unbindBool(ap.toBoolNonEmpty()), unbind(config))
     )
     or
@@ -1346,25 +1352,21 @@ private module Stage3 {
   }
 
   pragma[nomagic]
-  private predicate fwdFlowConsCand(TypedContent tc, Ap ap, Configuration config) {
-    fwdFlowStore(_, tc, ap, _, _, config)
-  }
-
-  pragma[nomagic]
-  private predicate fwdFlowRead0(
-    Node node1, TypedContent tc, Content c, Node node2, Cc cc, ApOption argAp,
-    AccessPathFrontHead ap, Configuration config
-  ) {
-    fwdFlow(node1, cc, argAp, ap, config) and
-    readCand2(node1, c, node2, config) and
-    ap.headUsesContent(tc)
+  private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+    exists(TypedContent tc |
+      fwdFlowStore(_, tc, tail, _, _, config) and
+      tc.getContent() = c and
+      cons = apCons(tc, tail)
+    )
   }
 
   pragma[nomagic]
   private predicate fwdFlowRead(
-    TypedContent tc, Node node, Cc cc, ApOption argAp, Configuration config
+    Ap ap, Content c, Node node1, Node node2, Cc cc, ApOption argAp, Configuration config
   ) {
-    fwdFlowRead0(_, tc, tc.getContent(), node, cc, argAp, _, config)
+    fwdFlow(node1, cc, argAp, ap, config) and
+    readCand2(node1, c, node2, config) and
+    getHeadContent(ap) = c
   }
 
   pragma[nomagic]
@@ -1409,6 +1411,11 @@ private module Stage3 {
       fwdFlowIn(call, p, cc, argAp, ap, config) and
       Stage2::revFlow(p, true, TBooleanSome(_), unbindBool(ap.toBoolNonEmpty()), config)
     )
+  }
+
+  private predicate readStepFwd(Node n1, Ap ap1, Content c, Node n2, Ap ap2, Configuration config) {
+    fwdFlowRead(ap1, c, n1, n2, _, _, config) and
+    fwdFlowConsCand(ap1, c, ap2, config)
   }
 
   /**
@@ -1464,15 +1471,15 @@ private module Stage3 {
     )
     or
     // store
-    exists(TypedContent tc |
-      revFlowStore(node, tc, ap, toReturn, returnAp, config) and
-      revFlowConsCand(tc, ap, config)
+    exists(Ap ap0, Content c |
+      revFlowStore(ap0, c, node, ap, toReturn, returnAp, config) and
+      revFlowConsCand(ap0, c, ap, config)
     )
     or
     // read
-    exists(TypedContent tc, Ap ap0 |
-      revFlowRead(node, tc, ap, toReturn, returnAp, ap0, config) and
-      fwdFlowConsCand(tc, ap0, config)
+    exists(Node mid, Ap ap0 |
+      revFlow(mid, toReturn, returnAp, ap0, config) and
+      readStepFwd(node, ap, _, mid, ap0, config)
     )
     or
     // flow into a callable
@@ -1494,35 +1501,29 @@ private module Stage3 {
 
   pragma[nomagic]
   predicate readCandFwd(Node node1, TypedContent tc, Ap ap, Node node2, Configuration config) {
-    fwdFlowRead0(node1, tc, tc.getContent(), node2, _, _, ap, config)
-  }
-
-  pragma[nomagic]
-  private predicate revFlowRead(
-    Node node, TypedContent tc, Ap ap, boolean toReturn, ApOption returnAp, Ap apf0,
-    Configuration config
-  ) {
-    exists(Node mid |
-      readCandFwd(node, tc, ap, mid, config) and
-      revFlow(mid, toReturn, returnAp, apf0, config)
-    )
+    fwdFlowRead(ap, _, node1, node2, _, _, config) and
+    ap.headUsesContent(tc)
   }
 
   pragma[nomagic]
   private predicate revFlowStore(
-    Node node, TypedContent tc, Ap ap, boolean toReturn, ApOption returnAp, Configuration config
+    Ap ap0, Content c, Node node, Ap ap, boolean toReturn, ApOption returnAp, Configuration config
   ) {
-    exists(Node mid |
+    exists(Node mid, TypedContent tc |
       fwdFlow(node, _, _, ap, config) and
       storeCand2(node, tc, mid, _, unbind(config)) and
-      revFlow(mid, toReturn, returnAp, TFrontHead(tc), unbind(config))
+      revFlow(mid, toReturn, returnAp, ap0, unbind(config)) and
+      ap0 = TFrontHead(tc) and
+      tc.getContent() = c
     )
   }
 
   pragma[nomagic]
-  predicate revFlowConsCand(TypedContent tc, Ap ap, Configuration config) {
-    fwdFlowConsCand(tc, ap, config) and
-    revFlowRead(_, tc, _, _, _, ap, config)
+  predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+    exists(Node mid |
+      revFlow(mid, _, _, tail, config) and
+      readStepFwd(_, cons, c, mid, tail, config)
+    )
   }
 
   pragma[nomagic]
@@ -1573,6 +1574,13 @@ private module Stage3 {
   /* End: Stage 3 logic. */
 }
 
+private predicate stage3consCand(TypedContent tc, AccessPathFront apf, Configuration config) {
+  exists(AccessPathFront apf0 |
+    Stage3::revFlowConsCand(apf0, _, apf, config) and
+    apf0.getHead() = tc
+  )
+}
+
 /**
  * Holds if `argApf` is recorded as the summary context for flow reaching `node`
  * and remains relevant for the following pruning stage.
@@ -1590,7 +1598,7 @@ private predicate flowCandSummaryCtx(Node node, AccessPathFront argApf, Configur
  */
 private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) {
   exists(int tails, int nodes, int apLimit, int tupleLimit |
-    tails = strictcount(AccessPathFront apf | Stage3::revFlowConsCand(tc, apf, config)) and
+    tails = strictcount(AccessPathFront apf | stage3consCand(tc, apf, config)) and
     nodes =
       strictcount(Node n |
         Stage3::revFlow(n, _, _, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), config)
@@ -1606,11 +1614,11 @@ private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) 
 private newtype TAccessPathApprox =
   TNil(DataFlowType t) or
   TConsNil(TypedContent tc, DataFlowType t) {
-    Stage3::revFlowConsCand(tc, TFrontNil(t), _) and
+    stage3consCand(tc, TFrontNil(t), _) and
     not expensiveLen2unfolding(tc, _)
   } or
   TConsCons(TypedContent tc1, TypedContent tc2, int len) {
-    Stage3::revFlowConsCand(tc1, TFrontHead(tc2), _) and
+    stage3consCand(tc1, TFrontHead(tc2), _) and
     len in [2 .. accessPathLimit()] and
     not expensiveLen2unfolding(tc1, _)
   } or
@@ -1740,7 +1748,7 @@ private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
   override AccessPathApprox pop(TypedContent head) {
     head = tc and
     (
-      exists(TypedContent tc2 | Stage3::revFlowConsCand(tc, TFrontHead(tc2), _) |
+      exists(TypedContent tc2 | stage3consCand(tc, TFrontHead(tc2), _) |
         result = TConsCons(tc2, _, len - 1)
         or
         len = 2 and
@@ -1751,7 +1759,7 @@ private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
       or
       exists(DataFlowType t |
         len = 1 and
-        Stage3::revFlowConsCand(tc, TFrontNil(t), _) and
+        stage3consCand(tc, TFrontNil(t), _) and
         result = TNil(t)
       )
     )
@@ -1914,7 +1922,7 @@ private module Stage4 {
   ) {
     exists(AccessPathFront apf |
       storeCand(mid, tc, node, apf0, apf, config) and
-      Stage3::revFlowConsCand(tc, apf0, config) and
+      stage3consCand(tc, apf0, config) and
       Stage3::revFlow(node, _, _, apf, unbind(config))
     )
   }
@@ -1934,7 +1942,7 @@ private module Stage4 {
     exists(Node mid, TypedContent tc |
       fwdFlowRead0(mid, tc, ap0, node, cc, argAp, config) and
       Stage3::revFlow(node, _, _, apf, unbind(config)) and
-      Stage3::revFlowConsCand(tc, apf, unbind(config))
+      stage3consCand(tc, apf, unbind(config))
     )
   }
 
