@@ -120,15 +120,13 @@ private predicate isInterestingBaseType(ValueOrRefType base) {
  */
 private newtype TPrintAstNode =
   TElementNode(Element element) { shouldPrint(element, _) } or
-  TTopLevelTypeMentionNode(TypeMention typeMention) {
-    shouldPrint(typeMention.getTarget(), _) and
-    not isNotNeeded(typeMention.getTarget().getParent*()) and
-    not typeMention.getTarget().getParent*() instanceof TypeParameter
-  } or
-  TNestedTypeMentionNode(TypeMention typeMention) {
-    shouldPrint(typeMention.getParent+().getTarget(), _) and
-    not isNotNeeded(typeMention.getParent+().getTarget().getParent*()) and
-    not typeMention.getParent+().getTarget().getParent*() instanceof TypeParameter
+  TTypeMentionNode(TypeMention typeMention) {
+    exists(Element target |
+      target = typeMention.getParent*().getTarget() and
+      shouldPrint(target, _) and
+      not isNotNeeded(target.getParent*()) and
+      not target.getParent*() instanceof TypeParameter
+    )
   } or
   TParametersNode(Parameterizable parameterizable) {
     shouldPrint(parameterizable, _) and
@@ -246,8 +244,10 @@ abstract class ElementNode extends PrintAstNode, TElementNode {
 /**
  * A node representing an AST node with an underlying `TypeMention`.
  */
-abstract class TypeMentionNode extends PrintAstNode {
+class TypeMentionNode extends PrintAstNode, TTypeMentionNode {
   TypeMention typeMention;
+
+  TypeMentionNode() { this = TTypeMentionNode(typeMention) }
 
   override string toString() {
     result = "[TypeMention] " + typeMention.getType().toStringWithTypes()
@@ -265,7 +265,7 @@ abstract class TypeMentionNode extends PrintAstNode {
    */
   final Element getTarget() { result = typeMention.getTarget() }
 
-  override NestedTypeMentionNode getChild(int childIndex) {
+  override TypeMentionNode getChild(int childIndex) {
     result.getTypeMention() =
       rank[childIndex](TypeMention t, Location l |
         t.getParent() = typeMention and
@@ -274,20 +274,6 @@ abstract class TypeMentionNode extends PrintAstNode {
         t order by l.getFile().toString(), l.getStartLine(), l.getStartColumn()
       )
   }
-}
-
-/**
- * A node representing a top-level `TypeMention`, which has a target `Element`.
- */
-class TopLevelTypeMentionNode extends TypeMentionNode, TTopLevelTypeMentionNode {
-  TopLevelTypeMentionNode() { this = TTopLevelTypeMentionNode(typeMention) }
-}
-
-/**
- * A node representing a nested `TypeMention`, whose parent is also a `TypeMention`.
- */
-class NestedTypeMentionNode extends TypeMentionNode, TNestedTypeMentionNode {
-  NestedTypeMentionNode() { this = TNestedTypeMentionNode(typeMention) }
 }
 
 /**
@@ -321,7 +307,7 @@ class ControlFlowElementNode extends ElementNode {
       or
       not exists(controlFlowElement.getAChild()) and childIndex = 0
     ) and
-    result.(TopLevelTypeMentionNode).getTarget() = controlFlowElement
+    result.(TypeMentionNode).getTarget() = controlFlowElement
     or
     result.(ElementNode).getElement() = controlFlowElement.getChild(childIndex)
   }
@@ -353,7 +339,7 @@ final class AssignmentNode extends ControlFlowElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -1 and
-    result.(TopLevelTypeMentionNode).getTarget() = controlFlowElement
+    result.(TypeMentionNode).getTarget() = controlFlowElement
     or
     childIndex = 0 and
     result.(ElementNode).getElement() = assignment.getLValue()
@@ -394,7 +380,7 @@ final class CallableNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -1 and
-    result.(TopLevelTypeMentionNode).getTarget() = callable
+    result.(TypeMentionNode).getTarget() = callable
     or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = callable
@@ -426,7 +412,7 @@ final class DeclarationWithAccessorsNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -1 and
-    result.(TopLevelTypeMentionNode).getTarget() = declaration
+    result.(TypeMentionNode).getTarget() = declaration
     or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = declaration
@@ -462,7 +448,7 @@ final class FieldNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -1 and
-    result.(TopLevelTypeMentionNode).getTarget() = field
+    result.(TypeMentionNode).getTarget() = field
     or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = field
@@ -504,7 +490,7 @@ final class ParameterNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -1 and
-    result.(TopLevelTypeMentionNode).getTarget() = param
+    result.(TypeMentionNode).getTarget() = param
     or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = param
@@ -531,7 +517,7 @@ final class AttributeNode extends ElementNode {
       or
       not exists(attr.getAChild()) and childIndex = 0
     ) and
-    result.(TopLevelTypeMentionNode).getTarget() = attr
+    result.(TypeMentionNode).getTarget() = attr
     or
     result.(ElementNode).getElement() = attr.getChild(childIndex)
   }
@@ -695,7 +681,7 @@ final class BaseTypesNode extends PrintAstNode, TBaseTypesNode {
 
   override Location getLocation() { none() }
 
-  override TopLevelTypeMentionNode getChild(int childIndex) {
+  override TypeMentionNode getChild(int childIndex) {
     childIndex = 0 and
     result.getTypeMention().getType() = valueOrRefType.getBaseClass() and
     result.getTarget() = valueOrRefType
