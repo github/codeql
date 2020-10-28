@@ -59,6 +59,36 @@ nodes
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
+| classnames.js:7:31:7:82 | `<span  ... <span>` |
+| classnames.js:7:31:7:82 | `<span  ... <span>` |
+| classnames.js:7:46:7:68 | classNa ... w.name) |
+| classnames.js:7:57:7:67 | window.name |
+| classnames.js:7:57:7:67 | window.name |
+| classnames.js:8:31:8:83 | `<span  ... <span>` |
+| classnames.js:8:31:8:83 | `<span  ... <span>` |
+| classnames.js:8:46:8:69 | classNa ... w.name) |
+| classnames.js:8:58:8:68 | window.name |
+| classnames.js:8:58:8:68 | window.name |
+| classnames.js:9:31:9:83 | `<span  ... <span>` |
+| classnames.js:9:31:9:83 | `<span  ... <span>` |
+| classnames.js:9:46:9:69 | classNa ... w.name) |
+| classnames.js:9:58:9:68 | window.name |
+| classnames.js:9:58:9:68 | window.name |
+| classnames.js:10:45:10:55 | window.name |
+| classnames.js:10:45:10:55 | window.name |
+| classnames.js:11:31:11:77 | `<span  ... <span>` |
+| classnames.js:11:31:11:77 | `<span  ... <span>` |
+| classnames.js:11:46:11:63 | unsafeStyle('foo') |
+| classnames.js:13:31:13:81 | `<span  ... <span>` |
+| classnames.js:13:31:13:81 | `<span  ... <span>` |
+| classnames.js:13:46:13:67 | safeSty ... w.name) |
+| classnames.js:13:56:13:66 | window.name |
+| classnames.js:13:56:13:66 | window.name |
+| classnames.js:15:31:15:76 | `<span  ... <span>` |
+| classnames.js:15:31:15:76 | `<span  ... <span>` |
+| classnames.js:15:46:15:62 | clsx(window.name) |
+| classnames.js:15:51:15:61 | window.name |
+| classnames.js:15:51:15:61 | window.name |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
@@ -605,6 +635,30 @@ edges
 | angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
 | angular2-client.ts:37:44:37:58 | this.router.url | angular2-client.ts:37:44:37:58 | this.router.url |
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
+| classnames.js:7:46:7:68 | classNa ... w.name) | classnames.js:7:31:7:82 | `<span  ... <span>` |
+| classnames.js:7:46:7:68 | classNa ... w.name) | classnames.js:7:31:7:82 | `<span  ... <span>` |
+| classnames.js:7:57:7:67 | window.name | classnames.js:7:46:7:68 | classNa ... w.name) |
+| classnames.js:7:57:7:67 | window.name | classnames.js:7:46:7:68 | classNa ... w.name) |
+| classnames.js:8:46:8:69 | classNa ... w.name) | classnames.js:8:31:8:83 | `<span  ... <span>` |
+| classnames.js:8:46:8:69 | classNa ... w.name) | classnames.js:8:31:8:83 | `<span  ... <span>` |
+| classnames.js:8:58:8:68 | window.name | classnames.js:8:46:8:69 | classNa ... w.name) |
+| classnames.js:8:58:8:68 | window.name | classnames.js:8:46:8:69 | classNa ... w.name) |
+| classnames.js:9:46:9:69 | classNa ... w.name) | classnames.js:9:31:9:83 | `<span  ... <span>` |
+| classnames.js:9:46:9:69 | classNa ... w.name) | classnames.js:9:31:9:83 | `<span  ... <span>` |
+| classnames.js:9:58:9:68 | window.name | classnames.js:9:46:9:69 | classNa ... w.name) |
+| classnames.js:9:58:9:68 | window.name | classnames.js:9:46:9:69 | classNa ... w.name) |
+| classnames.js:10:45:10:55 | window.name | classnames.js:11:46:11:63 | unsafeStyle('foo') |
+| classnames.js:10:45:10:55 | window.name | classnames.js:11:46:11:63 | unsafeStyle('foo') |
+| classnames.js:11:46:11:63 | unsafeStyle('foo') | classnames.js:11:31:11:77 | `<span  ... <span>` |
+| classnames.js:11:46:11:63 | unsafeStyle('foo') | classnames.js:11:31:11:77 | `<span  ... <span>` |
+| classnames.js:13:46:13:67 | safeSty ... w.name) | classnames.js:13:31:13:81 | `<span  ... <span>` |
+| classnames.js:13:46:13:67 | safeSty ... w.name) | classnames.js:13:31:13:81 | `<span  ... <span>` |
+| classnames.js:13:56:13:66 | window.name | classnames.js:13:46:13:67 | safeSty ... w.name) |
+| classnames.js:13:56:13:66 | window.name | classnames.js:13:46:13:67 | safeSty ... w.name) |
+| classnames.js:15:46:15:62 | clsx(window.name) | classnames.js:15:31:15:76 | `<span  ... <span>` |
+| classnames.js:15:46:15:62 | clsx(window.name) | classnames.js:15:31:15:76 | `<span  ... <span>` |
+| classnames.js:15:51:15:61 | window.name | classnames.js:15:46:15:62 | clsx(window.name) |
+| classnames.js:15:51:15:61 | window.name | classnames.js:15:46:15:62 | clsx(window.name) |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
 | jquery.js:2:17:2:33 | document.location | jquery.js:2:17:2:40 | documen ... .search |
