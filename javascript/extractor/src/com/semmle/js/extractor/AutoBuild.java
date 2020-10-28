@@ -746,6 +746,9 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       if (file.getFileName().toString().equals("package.json")) {
         try {
           PackageJson packageJson = new Gson().fromJson(new WholeIO().read(file), PackageJson.class);
+          if (packageJson == null) {
+            continue;
+          }
           file = file.toAbsolutePath();
           if (tryRelativize(sourceRoot, file) == null) {
             continue; // Ignore package.json files outside the source root.

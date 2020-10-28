@@ -5,3 +5,6 @@ def foo(request: HttpRequest):  # $routeHandler
 
 def bar_baz(request: HttpRequest):  # $routeHandler
     return HttpResponse("bar_baz")
+
+def deprecated(request: HttpRequest):  # $routeHandler
+    return HttpResponse("deprecated")

@@ -192,7 +192,7 @@ void *memcpy(void *dest, void *src, int len);
 void test_memcpy(int *source) {
 	int x;
 	memcpy(&x, source, sizeof(int));
-	sink(x);
+	sink(x); // tainted
 }
 
 // --- std::swap ---

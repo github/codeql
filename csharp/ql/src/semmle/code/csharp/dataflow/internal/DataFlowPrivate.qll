@@ -62,8 +62,10 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override string toStringImpl() {
     result = this.getControlFlowNode().toString()
     or
-    this = TCilExprNode(_) and
-    result = "CIL expression"
+    exists(CIL::Expr e |
+      this = TCilExprNode(e) and
+      result = e.toString()
+    )
   }
 }
 
@@ -120,6 +122,32 @@ private module ThisFlow {
       thisRank(n2, bb2, 1)
     )
   }
+}
+
+/**
+ * Holds if there is a control-flow path from `n1` to `n2`. `n2` is either an
+ * expression node or an SSA definition node.
+ */
+pragma[nomagic]
+predicate hasNodePath(ControlFlowReachabilityConfiguration conf, ExprNode n1, Node n2) {
+  exists(Expr e1, ControlFlow::Node cfn1, Expr e2, ControlFlow::Node cfn2 |
+    conf.hasExprPath(e1, cfn1, e2, cfn2)
+  |
+    cfn1 = n1.getControlFlowNode() and
+    cfn2 = n2.(ExprNode).getControlFlowNode()
+  )
+  or
+  exists(
+    Expr e, ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef,
+    Ssa::ExplicitDefinition ssaDef
+  |
+    conf.hasDefPath(e, cfn, def, cfnDef)
+  |
+    cfn = n1.getControlFlowNode() and
+    ssaDef.getADefinition() = def and
+    ssaDef.getControlFlowNode() = cfnDef and
+    n2.(SsaDefinitionNode).getDefinition() = ssaDef
+  )
 }
 
 /** Provides predicates related to local data flow. */
@@ -307,7 +335,7 @@ module LocalFlow {
       not usesInstanceField(def)
     )
     or
-    any(LocalExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
+    hasNodePath(any(LocalExprStepConfiguration x), nodeFrom, nodeTo)
     or
     ThisFlow::adjacentThisRefs(nodeFrom, nodeTo)
     or
@@ -669,7 +697,7 @@ private module Cached {
   cached
   predicate storeStepImpl(Node node1, Content c, Node node2) {
     exists(StoreStepConfiguration x, ExprNode node, boolean postUpdate |
-      x.hasNodePath(node1, node) and
+      hasNodePath(x, node1, node) and
       if postUpdate = true then node = node2.(PostUpdateNode).getPreUpdateNode() else node = node2
     |
       fieldOrPropertyStore(_, c, node1.asExpr(), node.getExpr(), postUpdate)
@@ -704,10 +732,10 @@ private module Cached {
   cached
   predicate readStepImpl(Node node1, Content c, Node node2) {
     exists(ReadStepConfiguration x |
-      x.hasNodePath(node1, node2) and
+      hasNodePath(x, node1, node2) and
       fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
       or
-      x.hasNodePath(node1, node2) and
+      hasNodePath(x, node1, node2) and
       arrayRead(node1.asExpr(), node2.asExpr()) and
       c instanceof ElementContent
       or
@@ -719,7 +747,7 @@ private module Cached {
         c instanceof ElementContent
       )
       or
-      x.hasNodePath(node1, node2) and
+      hasNodePath(x, node1, node2) and
       node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
       c = getResultContent()
     )

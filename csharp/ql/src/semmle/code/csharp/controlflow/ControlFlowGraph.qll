@@ -310,6 +310,22 @@ module ControlFlow {
       Split getASplit() { result = splits.getASplit() }
     }
 
+    /** A control-flow node for an expression. */
+    class ExprNode extends ElementNode {
+      Expr e;
+
+      ExprNode() { e = unique(Expr e_ | e_ = this.getElement() | e_) }
+
+      /** Gets the expression that this control-flow node belongs to. */
+      Expr getExpr() { result = e }
+
+      /** Gets the value of this expression node, if any. */
+      string getValue() { result = e.getValue() }
+
+      /** Gets the type of this expression node. */
+      Type getType() { result = e.getType() }
+    }
+
     class Split = SplitImpl;
 
     class FinallySplit = FinallySplitting::FinallySplitImpl;

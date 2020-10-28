@@ -451,6 +451,30 @@ namespace Semmle.Extraction.CSharp
             type.SpecialType == SpecialType.System_Nullable_T;
 
         /// <summary>
+        /// Holds if this type is <code>System.Span<T></code>.
+        /// </summary>
+        public static bool IsUnboundSpan(this ITypeSymbol type) =>
+            type.ToString() == "System.Span<T>";
+
+        /// <summary>
+        /// Holds if this type is of the form <code>System.Span<byte></code>.
+        /// </summary>
+        public static bool IsBoundSpan(this ITypeSymbol type) =>
+            type.SpecialType == SpecialType.None && type.OriginalDefinition.IsUnboundSpan();
+
+        /// <summary>
+        /// Holds if this type is <code>System.ReadOnlySpan<T></code>.
+        /// </summary>
+        public static bool IsUnboundReadOnlySpan(this ITypeSymbol type) =>
+            type.ToString() == "System.ReadOnlySpan<T>";
+
+        /// <summary>
+        /// Holds if this type is of the form <code>System.ReadOnlySpan<byte></code>.
+        /// </summary>
+        public static bool IsBoundReadOnlySpan(this ITypeSymbol type) =>
+            type.SpecialType == SpecialType.None && type.OriginalDefinition.IsUnboundReadOnlySpan();
+
+        /// <summary>
         /// Gets the parameters of a method or property.
         /// </summary>
         /// <returns>The list of parameters, or an empty list.</returns>

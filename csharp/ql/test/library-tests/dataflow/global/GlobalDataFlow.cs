@@ -465,6 +465,15 @@ public class DataFlow
         var nonSink = string.Join(",", "whatever", "not tainted");
         Check(nonSink);
     }
+
+    public void M4()
+    {
+        var task = Task.Run(() => "taint source");
+        var awaitable = task.ConfigureAwait(false);
+        var awaiter = awaitable.GetAwaiter();
+        var sink45 = awaiter.GetResult();
+        Check(sink45);
+    }
 }
 
 static class IEnumerableExtensions

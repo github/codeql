@@ -14,7 +14,7 @@ class Attribute extends Element, @cil_attribute {
   /** Gets the type of this attribute. */
   Type getType() { result = getConstructor().getDeclaringType() }
 
-  override string toString() { result = "[" + getType().toString() + "(...)]" }
+  override string toString() { result = "[" + getType().getName() + "(...)]" }
 
   /** Gets the value of the `i`th argument of this attribute. */
   string getArgument(int i) { cil_attribute_positional_argument(this, i, result) }

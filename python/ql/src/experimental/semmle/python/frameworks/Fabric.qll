@@ -459,7 +459,7 @@ private module FabricV2 {
          * A source of an instance of a subclass of `fabric.group.Group`
          *
          * This can include instantiation of a class, return value from function
-         * calls, or a special parameter that will be set when functions are call by external
+         * calls, or a special parameter that will be set when functions are called by an external
          * library.
          *
          * Use `Group::subclassInstance()` predicate to get references to an instance of a subclass of `fabric.group.Group`.
