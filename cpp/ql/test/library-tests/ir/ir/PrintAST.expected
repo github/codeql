@@ -1,23 +1,23 @@
 #-----| [CopyAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const __va_list_tag &
 #-----| [MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] __va_list_tag &&
 #-----| [Operator,TopLevelFunction] void operator delete(void*)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [VoidPointerType] void *
 #-----| [Operator,TopLevelFunction] void operator delete(void*, unsigned long)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [VoidPointerType] void *
 #-----|     getParameter(1): [Parameter] (unnamed parameter 1)
 #-----|         Type = [LongType] unsigned long
 #-----| [Operator,TopLevelFunction] void operator delete(void*, unsigned long, std::align_val_t)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [VoidPointerType] void *
 #-----|     getParameter(1): [Parameter] (unnamed parameter 1)
@@ -25,13 +25,13 @@
 #-----|     getParameter(2): [Parameter] (unnamed parameter 2)
 #-----|         Type = [ScopedEnum] align_val_t
 #-----| [Operator,TopLevelFunction] void operator delete[](void*, unsigned long)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [VoidPointerType] void *
 #-----|     getParameter(1): [Parameter] (unnamed parameter 1)
 #-----|         Type = [LongType] unsigned long
 #-----| [Operator,TopLevelFunction] void operator delete[](void*, unsigned long, std::align_val_t)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [VoidPointerType] void *
 #-----|     getParameter(1): [Parameter] (unnamed parameter 1)
@@ -39,36 +39,36 @@
 #-----|     getParameter(2): [Parameter] (unnamed parameter 2)
 #-----|         Type = [ScopedEnum] align_val_t
 #-----| [Operator,TopLevelFunction] void* operator new(unsigned long)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LongType] unsigned long
 #-----| [Operator,TopLevelFunction] void* operator new(unsigned long, std::align_val_t)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LongType] unsigned long
 #-----|     getParameter(1): [Parameter] (unnamed parameter 1)
 #-----|         Type = [ScopedEnum] align_val_t
 #-----| [Operator,TopLevelFunction] void* operator new[](unsigned long)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LongType] unsigned long
 #-----| [Operator,TopLevelFunction] void* operator new[](unsigned long, std::align_val_t)
-#-----|   ...: 
+#-----|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LongType] unsigned long
 #-----|     getParameter(1): [Parameter] (unnamed parameter 1)
 #-----|         Type = [ScopedEnum] align_val_t
 bad_asts.cpp:
 #    5| [CopyAssignmentOperator] Bad::S& Bad::S::operator=(Bad::S const&)
-#    5|   ...: 
+#    5|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const S &
 #    5| [MoveAssignmentOperator] Bad::S& Bad::S::operator=(Bad::S&&)
-#    5|   ...: 
+#    5|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] S &&
 #    9| [FunctionTemplateInstantiation,MemberFunction] int Bad::S::MemberFunction<int 6>(int)
-#    9|   ...: 
+#    9|   : 
 #    9|     getParameter(0): [Parameter] y
 #    9|         Type = [IntType] int
 #    9|   getEntryPoint(): [BlockStmt] { ... }
@@ -93,7 +93,7 @@ bad_asts.cpp:
 #   10|             Type = [IntType] int
 #   10|             ValueCategory = prvalue(load)
 #    9| [MemberFunction,TemplateFunction] int Bad::S::MemberFunction<int t>(int)
-#    9|   ...: 
+#    9|   : 
 #    9|     getParameter(0): [Parameter] y
 #    9|         Type = [IntType] int
 #    9|   getEntryPoint(): [BlockStmt] { ... }
@@ -118,7 +118,7 @@ bad_asts.cpp:
 #   10|             Type = [IntType] int
 #   10|             ValueCategory = prvalue(load)
 #   14| [TopLevelFunction] void Bad::CallBadMemberFunction()
-#   14|   ...: 
+#   14|   : 
 #   14|   getEntryPoint(): [BlockStmt] { ... }
 #   15|     getStmt(0): [DeclStmt] declaration
 #   15|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
@@ -140,18 +140,18 @@ bad_asts.cpp:
 #   16|             ValueCategory = prvalue
 #   17|     getStmt(2): [ReturnStmt] return ...
 #   19| [CopyAssignmentOperator] Bad::Point& Bad::Point::operator=(Bad::Point const&)
-#   19|   ...: 
+#   19|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Point &
 #   19| [MoveAssignmentOperator] Bad::Point& Bad::Point::operator=(Bad::Point&&)
-#   19|   ...: 
+#   19|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Point &&
 #   19| [CopyConstructor] void Bad::Point::Point(Bad::Point const&)
-#   19|   ...: 
+#   19|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Point &
-#   19|   ...: 
+#   19|   : 
 #   19|     getInitializer(0): [ConstructorFieldInit] constructor init of field x
 #   19|         Type = [IntType] int
 #   19|         ValueCategory = prvalue
@@ -167,16 +167,16 @@ bad_asts.cpp:
 #   19|   getEntryPoint(): [BlockStmt] { ... }
 #   19|     getStmt(0): [ReturnStmt] return ...
 #   19| [MoveConstructor] void Bad::Point::Point(Bad::Point&&)
-#   19|   ...: 
+#   19|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Point &&
 #   22| [Constructor] void Bad::Point::Point()
-#   22|   ...: 
-#   22|   ...: 
+#   22|   : 
+#   22|   : 
 #   22|   getEntryPoint(): [BlockStmt] { ... }
 #   23|     getStmt(0): [ReturnStmt] return ...
 #   26| [TopLevelFunction] void Bad::CallCopyConstructor(Bad::Point const&)
-#   26|   ...: 
+#   26|   : 
 #   26|     getParameter(0): [Parameter] a
 #   26|         Type = [LValueReferenceType] const Point &
 #   26|   getEntryPoint(): [BlockStmt] { ... }
@@ -196,7 +196,7 @@ bad_asts.cpp:
 #   27|                 ValueCategory = lvalue
 #   28|     getStmt(1): [ReturnStmt] return ...
 #   30| [TopLevelFunction] void Bad::errorExpr()
-#   30|   ...: 
+#   30|   : 
 #   30|   getEntryPoint(): [BlockStmt] { ... }
 #   31|     getStmt(0): [DeclStmt] declaration
 #   31|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of intref
@@ -225,7 +225,7 @@ bad_asts.cpp:
 #   34|     getStmt(3): [ReturnStmt] return ...
 clang.cpp:
 #    5| [TopLevelFunction] int* globalIntAddress()
-#    5|   ...: 
+#    5|   : 
 #    5|   getEntryPoint(): [BlockStmt] { ... }
 #    6|     getStmt(0): [ReturnStmt] return ...
 #    6|       getExpr(): [BuiltInOperationBuiltInAddressOf] __builtin_addressof ...
@@ -236,7 +236,7 @@ clang.cpp:
 #    6|             ValueCategory = lvalue
 complex.c:
 #    1| [TopLevelFunction] void complex_literals()
-#    1|   ...: 
+#    1|   : 
 #    1|   getEntryPoint(): [BlockStmt] { ... }
 #    2|     getStmt(0): [DeclStmt] declaration
 #    2|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of cf
@@ -353,7 +353,7 @@ complex.c:
 #   11|               ValueCategory = prvalue
 #   12|     getStmt(9): [ReturnStmt] return ...
 #   14| [TopLevelFunction] void complex_arithmetic()
-#   14|   ...: 
+#   14|   : 
 #   14|   getEntryPoint(): [BlockStmt] { ... }
 #   15|     getStmt(0): [DeclStmt] declaration
 #   15|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of f1
@@ -740,7 +740,7 @@ complex.c:
 #   55|               ValueCategory = prvalue(load)
 #   56|     getStmt(29): [ReturnStmt] return ...
 #   58| [TopLevelFunction] void complex_conversions()
-#   58|   ...: 
+#   58|   : 
 #   58|   getEntryPoint(): [BlockStmt] { ... }
 #   59|     getStmt(0): [DeclStmt] declaration
 #   59|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of f
@@ -1717,7 +1717,7 @@ complex.c:
 #  145|     getStmt(72): [ReturnStmt] return ...
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
-#    1|   ...: 
+#    1|   : 
 #    1|   getEntryPoint(): [BlockStmt] { ... }
 #    2|     getStmt(0): [DeclStmt] declaration
 #    2|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c_i
@@ -2034,7 +2034,7 @@ ir.cpp:
 #   40|               ValueCategory = prvalue
 #   41|     getStmt(28): [ReturnStmt] return ...
 #   43| [TopLevelFunction] void Foo()
-#   43|   ...: 
+#   43|   : 
 #   43|   getEntryPoint(): [BlockStmt] { ... }
 #   44|     getStmt(0): [DeclStmt] declaration
 #   44|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
@@ -2111,7 +2111,7 @@ ir.cpp:
 #   47|               ValueCategory = prvalue
 #   48|     getStmt(4): [ReturnStmt] return ...
 #   50| [TopLevelFunction] void IntegerOps(int, int)
-#   50|   ...: 
+#   50|   : 
 #   50|     getParameter(0): [Parameter] x
 #   50|         Type = [IntType] int
 #   50|     getParameter(1): [Parameter] y
@@ -2452,7 +2452,7 @@ ir.cpp:
 #   84|             ValueCategory = prvalue
 #   85|     getStmt(26): [ReturnStmt] return ...
 #   87| [TopLevelFunction] void IntegerCompare(int, int)
-#   87|   ...: 
+#   87|   : 
 #   87|     getParameter(0): [Parameter] x
 #   87|         Type = [IntType] int
 #   87|     getParameter(1): [Parameter] y
@@ -2559,7 +2559,7 @@ ir.cpp:
 #   95|               ValueCategory = prvalue(load)
 #   96|     getStmt(7): [ReturnStmt] return ...
 #   98| [TopLevelFunction] void IntegerCrement(int)
-#   98|   ...: 
+#   98|   : 
 #   98|     getParameter(0): [Parameter] x
 #   98|         Type = [IntType] int
 #   98|   getEntryPoint(): [BlockStmt] { ... }
@@ -2620,7 +2620,7 @@ ir.cpp:
 #  104|               ValueCategory = lvalue
 #  105|     getStmt(5): [ReturnStmt] return ...
 #  107| [TopLevelFunction] void IntegerCrement_LValue(int)
-#  107|   ...: 
+#  107|   : 
 #  107|     getParameter(0): [Parameter] x
 #  107|         Type = [IntType] int
 #  107|   getEntryPoint(): [BlockStmt] { ... }
@@ -2667,7 +2667,7 @@ ir.cpp:
 #  111|               ValueCategory = lvalue
 #  112|     getStmt(3): [ReturnStmt] return ...
 #  114| [TopLevelFunction] void FloatOps(double, double)
-#  114|   ...: 
+#  114|   : 
 #  114|     getParameter(0): [Parameter] x
 #  114|         Type = [DoubleType] double
 #  114|     getParameter(1): [Parameter] y
@@ -2818,7 +2818,7 @@ ir.cpp:
 #  130|               ValueCategory = prvalue(load)
 #  131|     getStmt(12): [ReturnStmt] return ...
 #  133| [TopLevelFunction] void FloatCompare(double, double)
-#  133|   ...: 
+#  133|   : 
 #  133|     getParameter(0): [Parameter] x
 #  133|         Type = [DoubleType] double
 #  133|     getParameter(1): [Parameter] y
@@ -2925,7 +2925,7 @@ ir.cpp:
 #  141|               ValueCategory = prvalue(load)
 #  142|     getStmt(7): [ReturnStmt] return ...
 #  144| [TopLevelFunction] void FloatCrement(float)
-#  144|   ...: 
+#  144|   : 
 #  144|     getParameter(0): [Parameter] x
 #  144|         Type = [FloatType] float
 #  144|   getEntryPoint(): [BlockStmt] { ... }
@@ -2986,7 +2986,7 @@ ir.cpp:
 #  150|               ValueCategory = lvalue
 #  151|     getStmt(5): [ReturnStmt] return ...
 #  153| [TopLevelFunction] void PointerOps(int*, int)
-#  153|   ...: 
+#  153|   : 
 #  153|     getParameter(0): [Parameter] p
 #  153|         Type = [IntPointerType] int *
 #  153|     getParameter(1): [Parameter] i
@@ -3129,7 +3129,7 @@ ir.cpp:
 #  168|               ValueCategory = prvalue
 #  169|     getStmt(11): [ReturnStmt] return ...
 #  171| [TopLevelFunction] void ArrayAccess(int*, int)
-#  171|   ...: 
+#  171|   : 
 #  171|     getParameter(0): [Parameter] p
 #  171|         Type = [IntPointerType] int *
 #  171|     getParameter(1): [Parameter] i
@@ -3283,7 +3283,7 @@ ir.cpp:
 #  184|             ValueCategory = prvalue(load)
 #  185|     getStmt(10): [ReturnStmt] return ...
 #  187| [TopLevelFunction] void StringLiteral(int)
-#  187|   ...: 
+#  187|   : 
 #  187|     getParameter(0): [Parameter] i
 #  187|         Type = [IntType] int
 #  187|   getEntryPoint(): [BlockStmt] { ... }
@@ -3334,7 +3334,7 @@ ir.cpp:
 #  190|                 ValueCategory = prvalue(load)
 #  191|     getStmt(3): [ReturnStmt] return ...
 #  193| [TopLevelFunction] void PointerCompare(int*, int*)
-#  193|   ...: 
+#  193|   : 
 #  193|     getParameter(0): [Parameter] p
 #  193|         Type = [IntPointerType] int *
 #  193|     getParameter(1): [Parameter] q
@@ -3441,7 +3441,7 @@ ir.cpp:
 #  201|               ValueCategory = prvalue(load)
 #  202|     getStmt(7): [ReturnStmt] return ...
 #  204| [TopLevelFunction] void PointerCrement(int*)
-#  204|   ...: 
+#  204|   : 
 #  204|     getParameter(0): [Parameter] p
 #  204|         Type = [IntPointerType] int *
 #  204|   getEntryPoint(): [BlockStmt] { ... }
@@ -3502,7 +3502,7 @@ ir.cpp:
 #  210|               ValueCategory = lvalue
 #  211|     getStmt(5): [ReturnStmt] return ...
 #  213| [TopLevelFunction] void CompoundAssignment()
-#  213|   ...: 
+#  213|   : 
 #  213|   getEntryPoint(): [BlockStmt] { ... }
 #  215|     getStmt(0): [DeclStmt] declaration
 #  215|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
@@ -3583,7 +3583,7 @@ ir.cpp:
 #  227|             ValueCategory = prvalue
 #  228|     getStmt(7): [ReturnStmt] return ...
 #  230| [TopLevelFunction] void UninitializedVariables()
-#  230|   ...: 
+#  230|   : 
 #  230|   getEntryPoint(): [BlockStmt] { ... }
 #  231|     getStmt(0): [DeclStmt] declaration
 #  231|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
@@ -3597,7 +3597,7 @@ ir.cpp:
 #  232|               ValueCategory = prvalue(load)
 #  233|     getStmt(2): [ReturnStmt] return ...
 #  235| [TopLevelFunction] int Parameters(int, int)
-#  235|   ...: 
+#  235|   : 
 #  235|     getParameter(0): [Parameter] x
 #  235|         Type = [IntType] int
 #  235|     getParameter(1): [Parameter] y
@@ -3614,7 +3614,7 @@ ir.cpp:
 #  236|             Type = [IntType] int
 #  236|             ValueCategory = prvalue(load)
 #  239| [TopLevelFunction] void IfStatements(bool, int, int)
-#  239|   ...: 
+#  239|   : 
 #  239|     getParameter(0): [Parameter] b
 #  239|         Type = [BoolType] bool
 #  239|     getParameter(1): [Parameter] x
@@ -3677,7 +3677,7 @@ ir.cpp:
 #  250|               ValueCategory = prvalue
 #  251|     getStmt(3): [ReturnStmt] return ...
 #  253| [TopLevelFunction] void WhileStatements(int)
-#  253|   ...: 
+#  253|   : 
 #  253|     getParameter(0): [Parameter] n
 #  253|         Type = [IntType] int
 #  253|   getEntryPoint(): [BlockStmt] { ... }
@@ -3706,7 +3706,7 @@ ir.cpp:
 #  255|                 ValueCategory = prvalue
 #  257|     getStmt(1): [ReturnStmt] return ...
 #  259| [TopLevelFunction] void DoStatements(int)
-#  259|   ...: 
+#  259|   : 
 #  259|     getParameter(0): [Parameter] n
 #  259|         Type = [IntType] int
 #  259|   getEntryPoint(): [BlockStmt] { ... }
@@ -3735,7 +3735,7 @@ ir.cpp:
 #  261|                 ValueCategory = prvalue
 #  263|     getStmt(1): [ReturnStmt] return ...
 #  265| [TopLevelFunction] void For_Empty()
-#  265|   ...: 
+#  265|   : 
 #  265|   getEntryPoint(): [BlockStmt] { ... }
 #  266|     getStmt(0): [DeclStmt] declaration
 #  266|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of j
@@ -3744,7 +3744,7 @@ ir.cpp:
 #  267|       getStmt(): [BlockStmt] { ... }
 #  268|         getStmt(0): [EmptyStmt] ;
 #  272| [TopLevelFunction] void For_Init()
-#  272|   ...: 
+#  272|   : 
 #  272|   getEntryPoint(): [BlockStmt] { ... }
 #  273|     getStmt(0): [ForStmt] for(...;...;...) ...
 #  273|       getInitialization(): [DeclStmt] declaration
@@ -3758,7 +3758,7 @@ ir.cpp:
 #  273|       getStmt(): [BlockStmt] { ... }
 #  274|         getStmt(0): [EmptyStmt] ;
 #  278| [TopLevelFunction] void For_Condition()
-#  278|   ...: 
+#  278|   : 
 #  278|   getEntryPoint(): [BlockStmt] { ... }
 #  279|     getStmt(0): [DeclStmt] declaration
 #  279|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
@@ -3783,7 +3783,7 @@ ir.cpp:
 #  281|         getStmt(0): [EmptyStmt] ;
 #  283|     getStmt(2): [ReturnStmt] return ...
 #  285| [TopLevelFunction] void For_Update()
-#  285|   ...: 
+#  285|   : 
 #  285|   getEntryPoint(): [BlockStmt] { ... }
 #  286|     getStmt(0): [DeclStmt] declaration
 #  286|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
@@ -3807,7 +3807,7 @@ ir.cpp:
 #  287|       getStmt(): [BlockStmt] { ... }
 #  288|         getStmt(0): [EmptyStmt] ;
 #  292| [TopLevelFunction] void For_InitCondition()
-#  292|   ...: 
+#  292|   : 
 #  292|   getEntryPoint(): [BlockStmt] { ... }
 #  293|     getStmt(0): [ForStmt] for(...;...;...) ...
 #  293|       getInitialization(): [DeclStmt] declaration
@@ -3832,7 +3832,7 @@ ir.cpp:
 #  294|         getStmt(0): [EmptyStmt] ;
 #  296|     getStmt(1): [ReturnStmt] return ...
 #  298| [TopLevelFunction] void For_InitUpdate()
-#  298|   ...: 
+#  298|   : 
 #  298|   getEntryPoint(): [BlockStmt] { ... }
 #  299|     getStmt(0): [ForStmt] for(...;...;...) ...
 #  299|       getInitialization(): [DeclStmt] declaration
@@ -3856,7 +3856,7 @@ ir.cpp:
 #  299|       getStmt(): [BlockStmt] { ... }
 #  300|         getStmt(0): [EmptyStmt] ;
 #  304| [TopLevelFunction] void For_ConditionUpdate()
-#  304|   ...: 
+#  304|   : 
 #  304|   getEntryPoint(): [BlockStmt] { ... }
 #  305|     getStmt(0): [DeclStmt] declaration
 #  305|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
@@ -3891,7 +3891,7 @@ ir.cpp:
 #  307|         getStmt(0): [EmptyStmt] ;
 #  309|     getStmt(2): [ReturnStmt] return ...
 #  311| [TopLevelFunction] void For_InitConditionUpdate()
-#  311|   ...: 
+#  311|   : 
 #  311|   getEntryPoint(): [BlockStmt] { ... }
 #  312|     getStmt(0): [ForStmt] for(...;...;...) ...
 #  312|       getInitialization(): [DeclStmt] declaration
@@ -3926,7 +3926,7 @@ ir.cpp:
 #  313|         getStmt(0): [EmptyStmt] ;
 #  315|     getStmt(1): [ReturnStmt] return ...
 #  317| [TopLevelFunction] void For_Break()
-#  317|   ...: 
+#  317|   : 
 #  317|   getEntryPoint(): [BlockStmt] { ... }
 #  318|     getStmt(0): [ForStmt] for(...;...;...) ...
 #  318|       getInitialization(): [DeclStmt] declaration
@@ -3974,7 +3974,7 @@ ir.cpp:
 #  322|     getStmt(1): [LabelStmt] label ...:
 #  323|     getStmt(2): [ReturnStmt] return ...
 #  325| [TopLevelFunction] void For_Continue_Update()
-#  325|   ...: 
+#  325|   : 
 #  325|   getEntryPoint(): [BlockStmt] { ... }
 #  326|     getStmt(0): [ForStmt] for(...;...;...) ...
 #  326|       getInitialization(): [DeclStmt] declaration
@@ -4022,7 +4022,7 @@ ir.cpp:
 #  326|         getStmt(1): [LabelStmt] label ...:
 #  331|     getStmt(1): [ReturnStmt] return ...
 #  333| [TopLevelFunction] void For_Continue_NoUpdate()
-#  333|   ...: 
+#  333|   : 
 #  333|   getEntryPoint(): [BlockStmt] { ... }
 #  334|     getStmt(0): [ForStmt] for(...;...;...) ...
 #  334|       getInitialization(): [DeclStmt] declaration
@@ -4060,7 +4060,7 @@ ir.cpp:
 #  334|         getStmt(1): [LabelStmt] label ...:
 #  339|     getStmt(1): [ReturnStmt] return ...
 #  341| [TopLevelFunction] int Dereference(int*)
-#  341|   ...: 
+#  341|   : 
 #  341|     getParameter(0): [Parameter] p
 #  341|         Type = [IntPointerType] int *
 #  341|   getEntryPoint(): [BlockStmt] { ... }
@@ -4086,7 +4086,7 @@ ir.cpp:
 #  343|             Type = [IntPointerType] int *
 #  343|             ValueCategory = prvalue(load)
 #  348| [TopLevelFunction] int* AddressOf()
-#  348|   ...: 
+#  348|   : 
 #  348|   getEntryPoint(): [BlockStmt] { ... }
 #  349|     getStmt(0): [ReturnStmt] return ...
 #  349|       getExpr(): [AddressOfExpr] & ...
@@ -4096,7 +4096,7 @@ ir.cpp:
 #  349|             Type = [IntType] int
 #  349|             ValueCategory = lvalue
 #  352| [TopLevelFunction] void Break(int)
-#  352|   ...: 
+#  352|   : 
 #  352|     getParameter(0): [Parameter] n
 #  352|         Type = [IntType] int
 #  352|   getEntryPoint(): [BlockStmt] { ... }
@@ -4138,7 +4138,7 @@ ir.cpp:
 #  357|     getStmt(1): [LabelStmt] label ...:
 #  358|     getStmt(2): [ReturnStmt] return ...
 #  360| [TopLevelFunction] void Continue(int)
-#  360|   ...: 
+#  360|   : 
 #  360|     getParameter(0): [Parameter] n
 #  360|         Type = [IntType] int
 #  360|   getEntryPoint(): [BlockStmt] { ... }
@@ -4181,15 +4181,15 @@ ir.cpp:
 #  361|         getStmt(2): [LabelStmt] label ...:
 #  367|     getStmt(1): [ReturnStmt] return ...
 #  369| [TopLevelFunction] void VoidFunc()
-#  369|   ...: 
+#  369|   : 
 #  370| [TopLevelFunction] int Add(int, int)
-#  370|   ...: 
+#  370|   : 
 #  370|     getParameter(0): [Parameter] x
 #  370|         Type = [IntType] int
 #  370|     getParameter(1): [Parameter] y
 #  370|         Type = [IntType] int
 #  372| [TopLevelFunction] void Call()
-#  372|   ...: 
+#  372|   : 
 #  372|   getEntryPoint(): [BlockStmt] { ... }
 #  373|     getStmt(0): [ExprStmt] ExprStmt
 #  373|       getExpr(): [FunctionCall] call to VoidFunc
@@ -4197,7 +4197,7 @@ ir.cpp:
 #  373|           ValueCategory = prvalue
 #  374|     getStmt(1): [ReturnStmt] return ...
 #  376| [TopLevelFunction] int CallAdd(int, int)
-#  376|   ...: 
+#  376|   : 
 #  376|     getParameter(0): [Parameter] x
 #  376|         Type = [IntType] int
 #  376|     getParameter(1): [Parameter] y
@@ -4214,7 +4214,7 @@ ir.cpp:
 #  377|             Type = [IntType] int
 #  377|             ValueCategory = prvalue(load)
 #  380| [TopLevelFunction] int Comma(int, int)
-#  380|   ...: 
+#  380|   : 
 #  380|     getParameter(0): [Parameter] x
 #  380|         Type = [IntType] int
 #  380|     getParameter(1): [Parameter] y
@@ -4237,7 +4237,7 @@ ir.cpp:
 #  381|               Type = [IntType] int
 #  381|               ValueCategory = prvalue(load)
 #  384| [TopLevelFunction] void Switch(int)
-#  384|   ...: 
+#  384|   : 
 #  384|     getParameter(0): [Parameter] x
 #  384|         Type = [IntType] int
 #  384|   getEntryPoint(): [BlockStmt] { ... }
@@ -4367,23 +4367,23 @@ ir.cpp:
 #  409|     getStmt(2): [LabelStmt] label ...:
 #  410|     getStmt(3): [ReturnStmt] return ...
 #  412| [CopyAssignmentOperator] Point& Point::operator=(Point const&)
-#  412|   ...: 
+#  412|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Point &
 #  412| [MoveAssignmentOperator] Point& Point::operator=(Point&&)
-#  412|   ...: 
+#  412|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Point &&
 #  417| [CopyAssignmentOperator] Rect& Rect::operator=(Rect const&)
-#  417|   ...: 
+#  417|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Rect &
 #  417| [MoveAssignmentOperator] Rect& Rect::operator=(Rect&&)
-#  417|   ...: 
+#  417|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Rect &&
 #  422| [TopLevelFunction] Point ReturnStruct(Point)
-#  422|   ...: 
+#  422|   : 
 #  422|     getParameter(0): [Parameter] pt
 #  422|         Type = [Struct] Point
 #  422|   getEntryPoint(): [BlockStmt] { ... }
@@ -4392,7 +4392,7 @@ ir.cpp:
 #  423|           Type = [Struct] Point
 #  423|           ValueCategory = prvalue(load)
 #  426| [TopLevelFunction] void FieldAccess()
-#  426|   ...: 
+#  426|   : 
 #  426|   getEntryPoint(): [BlockStmt] { ... }
 #  427|     getStmt(0): [DeclStmt] declaration
 #  427|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of pt
@@ -4442,7 +4442,7 @@ ir.cpp:
 #  430|                   ValueCategory = lvalue
 #  431|     getStmt(4): [ReturnStmt] return ...
 #  433| [TopLevelFunction] void LogicalOr(bool, bool)
-#  433|   ...: 
+#  433|   : 
 #  433|     getParameter(0): [Parameter] a
 #  433|         Type = [BoolType] bool
 #  433|     getParameter(1): [Parameter] b
@@ -4509,7 +4509,7 @@ ir.cpp:
 #  443|                 ValueCategory = prvalue
 #  445|     getStmt(3): [ReturnStmt] return ...
 #  447| [TopLevelFunction] void LogicalAnd(bool, bool)
-#  447|   ...: 
+#  447|   : 
 #  447|     getParameter(0): [Parameter] a
 #  447|         Type = [BoolType] bool
 #  447|     getParameter(1): [Parameter] b
@@ -4576,7 +4576,7 @@ ir.cpp:
 #  457|                 ValueCategory = prvalue
 #  459|     getStmt(3): [ReturnStmt] return ...
 #  461| [TopLevelFunction] void LogicalNot(bool, bool)
-#  461|   ...: 
+#  461|   : 
 #  461|     getParameter(0): [Parameter] a
 #  461|         Type = [BoolType] bool
 #  461|     getParameter(1): [Parameter] b
@@ -4646,7 +4646,7 @@ ir.cpp:
 #  471|                 ValueCategory = prvalue
 #  473|     getStmt(3): [ReturnStmt] return ...
 #  475| [TopLevelFunction] void ConditionValues(bool, bool)
-#  475|   ...: 
+#  475|   : 
 #  475|     getParameter(0): [Parameter] a
 #  475|         Type = [BoolType] bool
 #  475|     getParameter(1): [Parameter] b
@@ -4711,7 +4711,7 @@ ir.cpp:
 #  479|               ValueCategory = prvalue
 #  480|     getStmt(4): [ReturnStmt] return ...
 #  482| [TopLevelFunction] void Conditional(bool, int, int)
-#  482|   ...: 
+#  482|   : 
 #  482|     getParameter(0): [Parameter] a
 #  482|         Type = [BoolType] bool
 #  482|     getParameter(1): [Parameter] x
@@ -4737,7 +4737,7 @@ ir.cpp:
 #  483|                 ValueCategory = prvalue(load)
 #  484|     getStmt(1): [ReturnStmt] return ...
 #  486| [TopLevelFunction] void Conditional_LValue(bool)
-#  486|   ...: 
+#  486|   : 
 #  486|     getParameter(0): [Parameter] a
 #  486|         Type = [BoolType] bool
 #  486|   getEntryPoint(): [BlockStmt] { ... }
@@ -4772,7 +4772,7 @@ ir.cpp:
 #  489|             ValueCategory = lvalue
 #  490|     getStmt(3): [ReturnStmt] return ...
 #  492| [TopLevelFunction] void Conditional_Void(bool)
-#  492|   ...: 
+#  492|   : 
 #  492|     getParameter(0): [Parameter] a
 #  492|         Type = [BoolType] bool
 #  492|   getEntryPoint(): [BlockStmt] { ... }
@@ -4791,7 +4791,7 @@ ir.cpp:
 #  493|             ValueCategory = prvalue
 #  494|     getStmt(1): [ReturnStmt] return ...
 #  496| [TopLevelFunction] void Nullptr()
-#  496|   ...: 
+#  496|   : 
 #  496|   getEntryPoint(): [BlockStmt] { ... }
 #  497|     getStmt(0): [DeclStmt] declaration
 #  497|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of p
@@ -4853,7 +4853,7 @@ ir.cpp:
 #  500|             ValueCategory = prvalue
 #  501|     getStmt(4): [ReturnStmt] return ...
 #  503| [TopLevelFunction] void InitList(int, float)
-#  503|   ...: 
+#  503|   : 
 #  503|     getParameter(0): [Parameter] x
 #  503|         Type = [IntType] int
 #  503|     getParameter(1): [Parameter] f
@@ -4911,7 +4911,7 @@ ir.cpp:
 #  509|               ValueCategory = prvalue
 #  510|     getStmt(5): [ReturnStmt] return ...
 #  512| [TopLevelFunction] void NestedInitList(int, float)
-#  512|   ...: 
+#  512|   : 
 #  512|     getParameter(0): [Parameter] x
 #  512|         Type = [IntType] int
 #  512|     getParameter(1): [Parameter] f
@@ -4998,7 +4998,7 @@ ir.cpp:
 #  516|                   ValueCategory = prvalue(load)
 #  517|     getStmt(4): [ReturnStmt] return ...
 #  519| [TopLevelFunction] void ArrayInit(int, float)
-#  519|   ...: 
+#  519|   : 
 #  519|     getParameter(0): [Parameter] x
 #  519|         Type = [IntType] int
 #  519|     getParameter(1): [Parameter] f
@@ -5044,15 +5044,15 @@ ir.cpp:
 #  522|                 ValueCategory = prvalue(load)
 #  523|     getStmt(3): [ReturnStmt] return ...
 #  525| [CopyAssignmentOperator] U& U::operator=(U const&)
-#  525|   ...: 
+#  525|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const U &
 #  525| [MoveAssignmentOperator] U& U::operator=(U&&)
-#  525|   ...: 
+#  525|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] U &&
 #  530| [TopLevelFunction] void UnionInit(int, float)
-#  530|   ...: 
+#  530|   : 
 #  530|     getParameter(0): [Parameter] x
 #  530|         Type = [IntType] int
 #  530|     getParameter(1): [Parameter] f
@@ -5074,7 +5074,7 @@ ir.cpp:
 #  531|                 ValueCategory = prvalue
 #  533|     getStmt(1): [ReturnStmt] return ...
 #  535| [TopLevelFunction] void EarlyReturn(int, int)
-#  535|   ...: 
+#  535|   : 
 #  535|     getParameter(0): [Parameter] x
 #  535|         Type = [IntType] int
 #  535|     getParameter(1): [Parameter] y
@@ -5104,7 +5104,7 @@ ir.cpp:
 #  540|             ValueCategory = prvalue(load)
 #  541|     getStmt(2): [ReturnStmt] return ...
 #  543| [TopLevelFunction] int EarlyReturnValue(int, int)
-#  543|   ...: 
+#  543|   : 
 #  543|     getParameter(0): [Parameter] x
 #  543|         Type = [IntType] int
 #  543|     getParameter(1): [Parameter] y
@@ -5136,7 +5136,7 @@ ir.cpp:
 #  548|             Type = [IntType] int
 #  548|             ValueCategory = prvalue(load)
 #  551| [TopLevelFunction] int CallViaFuncPtr(int(*)(int))
-#  551|   ...: 
+#  551|   : 
 #  551|     getParameter(0): [Parameter] pfn
 #  551|         Type = [FunctionPointerType] ..(*)(..)
 #  551|   getEntryPoint(): [BlockStmt] { ... }
@@ -5152,7 +5152,7 @@ ir.cpp:
 #  552|             Value = [Literal] 5
 #  552|             ValueCategory = prvalue
 #  560| [TopLevelFunction] int EnumSwitch(E)
-#  560|   ...: 
+#  560|   : 
 #  560|     getParameter(0): [Parameter] e
 #  560|         Type = [CTypedefType] E
 #  560|   getEntryPoint(): [BlockStmt] { ... }
@@ -5206,7 +5206,7 @@ ir.cpp:
 #  561|           Type = [IntType] int
 #  561|           ValueCategory = prvalue
 #  571| [TopLevelFunction] void InitArray()
-#  571|   ...: 
+#  571|   : 
 #  571|   getEntryPoint(): [BlockStmt] { ... }
 #  572|     getStmt(0): [DeclStmt] declaration
 #  572|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a_pad
@@ -5301,11 +5301,11 @@ ir.cpp:
 #  579|                 ValueCategory = prvalue
 #  580|     getStmt(8): [ReturnStmt] return ...
 #  582| [TopLevelFunction] void VarArgFunction(char const*)
-#  582|   ...: 
+#  582|   : 
 #  582|     getParameter(0): [Parameter] s
 #  582|         Type = [PointerType] const char *
 #  584| [TopLevelFunction] void VarArgs()
-#  584|   ...: 
+#  584|   : 
 #  584|   getEntryPoint(): [BlockStmt] { ... }
 #  585|     getStmt(0): [ExprStmt] ExprStmt
 #  585|       getExpr(): [FunctionCall] call to VarArgFunction
@@ -5331,11 +5331,11 @@ ir.cpp:
 #  585|             ValueCategory = prvalue
 #  586|     getStmt(1): [ReturnStmt] return ...
 #  588| [TopLevelFunction] int FuncPtrTarget(int)
-#  588|   ...: 
+#  588|   : 
 #  588|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  588|         Type = [IntType] int
 #  590| [TopLevelFunction] void SetFuncPtr()
-#  590|   ...: 
+#  590|   : 
 #  590|   getEntryPoint(): [BlockStmt] { ... }
 #  591|     getStmt(0): [DeclStmt] declaration
 #  591|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of pfn
@@ -5394,33 +5394,33 @@ ir.cpp:
 #  594|                     ValueCategory = lvalue
 #  595|     getStmt(4): [ReturnStmt] return ...
 #  599| [CopyConstructor] void String::String(String const&)
-#  599|   ...: 
+#  599|   : 
 #  599|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  599|         Type = [LValueReferenceType] const String &
 #  600| [MoveConstructor] void String::String(String&&)
-#  600|   ...: 
+#  600|   : 
 #  600|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  600|         Type = [RValueReferenceType] String &&
 #  601| [ConversionConstructor] void String::String(char const*)
-#  601|   ...: 
+#  601|   : 
 #  601|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  601|         Type = [PointerType] const char *
 #  602| [Destructor] void String::~String()
-#  602|   ...: 
+#  602|   : 
 #  604| [CopyAssignmentOperator] String& String::operator=(String const&)
-#  604|   ...: 
+#  604|   : 
 #  604|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  604|         Type = [LValueReferenceType] const String &
 #  605| [MoveAssignmentOperator] String& String::operator=(String&&)
-#  605|   ...: 
+#  605|   : 
 #  605|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  605|         Type = [RValueReferenceType] String &&
 #  607| [ConstMemberFunction] char const* String::c_str() const
-#  607|   ...: 
+#  607|   : 
 #  613| [TopLevelFunction] String ReturnObject()
-#  613|   ...: 
+#  613|   : 
 #  615| [TopLevelFunction] void DeclareObject()
-#  615|   ...: 
+#  615|   : 
 #  615|   getEntryPoint(): [BlockStmt] { ... }
 #  616|     getStmt(0): [DeclStmt] declaration
 #  616|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s1
@@ -5466,7 +5466,7 @@ ir.cpp:
 #  619|                 ValueCategory = prvalue
 #  620|     getStmt(4): [ReturnStmt] return ...
 #  622| [TopLevelFunction] void CallMethods(String&, String*, String)
-#  622|   ...: 
+#  622|   : 
 #  622|     getParameter(0): [Parameter] r
 #  622|         Type = [LValueReferenceType] String &
 #  622|     getParameter(1): [Parameter] p
@@ -5512,26 +5512,26 @@ ir.cpp:
 #  625|             ValueCategory = lvalue
 #  626|     getStmt(3): [ReturnStmt] return ...
 #  628| [CopyAssignmentOperator] C& C::operator=(C const&)
-#  628|   ...: 
+#  628|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #  628| [MoveAssignmentOperator] C& C::operator=(C&&)
-#  628|   ...: 
+#  628|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #  628| [CopyConstructor] void C::C(C const&)
-#  628|   ...: 
+#  628|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #  628| [MoveConstructor] void C::C(C&&)
-#  628|   ...: 
+#  628|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #  628| [Destructor] void C::~C()
-#  628|   ...: 
+#  628|   : 
 #-----|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [ReturnStmt] return ...
-#  628|   ...: 
+#  628|   : 
 #  628|     getDestruction(0): [DestructorFieldDestruction] destructor field destruction of m_f
 #  628|         Type = [Struct] String
 #  628|         ValueCategory = prvalue
@@ -5551,7 +5551,7 @@ ir.cpp:
 #  628|             Type = [Struct] String
 #  628|             ValueCategory = lvalue
 #  630| [MemberFunction] int C::StaticMemberFunction(int)
-#  630|   ...: 
+#  630|   : 
 #  630|     getParameter(0): [Parameter] x
 #  630|         Type = [IntType] int
 #  630|   getEntryPoint(): [BlockStmt] { ... }
@@ -5560,7 +5560,7 @@ ir.cpp:
 #  631|           Type = [IntType] int
 #  631|           ValueCategory = prvalue(load)
 #  634| [MemberFunction] int C::InstanceMemberFunction(int)
-#  634|   ...: 
+#  634|   : 
 #  634|     getParameter(0): [Parameter] x
 #  634|         Type = [IntType] int
 #  634|   getEntryPoint(): [BlockStmt] { ... }
@@ -5569,7 +5569,7 @@ ir.cpp:
 #  635|           Type = [IntType] int
 #  635|           ValueCategory = prvalue(load)
 #  638| [VirtualFunction] int C::VirtualMemberFunction(int)
-#  638|   ...: 
+#  638|   : 
 #  638|     getParameter(0): [Parameter] x
 #  638|         Type = [IntType] int
 #  638|   getEntryPoint(): [BlockStmt] { ... }
@@ -5578,7 +5578,7 @@ ir.cpp:
 #  639|           Type = [IntType] int
 #  639|           ValueCategory = prvalue(load)
 #  642| [MemberFunction] void C::FieldAccess()
-#  642|   ...: 
+#  642|   : 
 #  642|   getEntryPoint(): [BlockStmt] { ... }
 #  643|     getStmt(0): [ExprStmt] ExprStmt
 #  643|       getExpr(): [AssignExpr] ... = ...
@@ -5678,7 +5678,7 @@ ir.cpp:
 #  649|               ValueCategory = prvalue(load)
 #  650|     getStmt(7): [ReturnStmt] return ...
 #  652| [MemberFunction] void C::MethodCalls()
-#  652|   ...: 
+#  652|   : 
 #  652|   getEntryPoint(): [BlockStmt] { ... }
 #  653|     getStmt(0): [ExprStmt] ExprStmt
 #  653|       getExpr(): [FunctionCall] call to InstanceMemberFunction
@@ -5721,8 +5721,8 @@ ir.cpp:
 #  655|             ValueCategory = prvalue
 #  656|     getStmt(3): [ReturnStmt] return ...
 #  658| [Constructor] void C::C()
-#  658|   ...: 
-#  658|   ...: 
+#  658|   : 
+#  658|   : 
 #  659|     getInitializer(0): [ConstructorFieldInit] constructor init of field m_a
 #  659|         Type = [IntType] int
 #  659|         ValueCategory = prvalue
@@ -5771,7 +5771,7 @@ ir.cpp:
 #  663|   getEntryPoint(): [BlockStmt] { ... }
 #  664|     getStmt(0): [ReturnStmt] return ...
 #  675| [TopLevelFunction] int DerefReference(int&)
-#  675|   ...: 
+#  675|   : 
 #  675|     getParameter(0): [Parameter] r
 #  675|         Type = [LValueReferenceType] int &
 #  675|   getEntryPoint(): [BlockStmt] { ... }
@@ -5783,7 +5783,7 @@ ir.cpp:
 #  676|           Type = [IntType] int
 #  676|           ValueCategory = prvalue(load)
 #  679| [TopLevelFunction] int& TakeReference()
-#  679|   ...: 
+#  679|   : 
 #  679|   getEntryPoint(): [BlockStmt] { ... }
 #  680|     getStmt(0): [ReturnStmt] return ...
 #  680|       getExpr(): [VariableAccess] g
@@ -5793,9 +5793,9 @@ ir.cpp:
 #  680|           Type = [LValueReferenceType] int &
 #  680|           ValueCategory = prvalue
 #  683| [TopLevelFunction] String& ReturnReference()
-#  683|   ...: 
+#  683|   : 
 #  685| [TopLevelFunction] void InitReference(int)
-#  685|   ...: 
+#  685|   : 
 #  685|     getParameter(0): [Parameter] x
 #  685|         Type = [IntType] int
 #  685|   getEntryPoint(): [BlockStmt] { ... }
@@ -5841,7 +5841,7 @@ ir.cpp:
 #  688|                   ValueCategory = lvalue
 #  689|     getStmt(3): [ReturnStmt] return ...
 #  691| [TopLevelFunction] void ArrayReferences()
-#  691|   ...: 
+#  691|   : 
 #  691|   getEntryPoint(): [BlockStmt] { ... }
 #  692|     getStmt(0): [DeclStmt] declaration
 #  692|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
@@ -5878,7 +5878,7 @@ ir.cpp:
 #  694|                   ValueCategory = lvalue
 #  695|     getStmt(3): [ReturnStmt] return ...
 #  697| [TopLevelFunction] void FunctionReferences()
-#  697|   ...: 
+#  697|   : 
 #  697|   getEntryPoint(): [BlockStmt] { ... }
 #  698|     getStmt(0): [DeclStmt] declaration
 #  698|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of rfn
@@ -5916,7 +5916,7 @@ ir.cpp:
 #  700|             ValueCategory = prvalue(load)
 #  701|     getStmt(3): [ReturnStmt] return ...
 #  704| [TemplateFunction,TopLevelFunction] T min<T>(T, T)
-#  704|   ...: 
+#  704|   : 
 #  704|     getParameter(0): [Parameter] x
 #  704|         Type = [TemplateParameter] T
 #  704|     getParameter(1): [Parameter] y
@@ -5949,7 +5949,7 @@ ir.cpp:
 #  705|               Type = [UnknownType] unknown
 #  705|               ValueCategory = prvalue
 #  704| [FunctionTemplateInstantiation,TopLevelFunction] int min<int>(int, int)
-#  704|   ...: 
+#  704|   : 
 #  704|     getParameter(0): [Parameter] x
 #  704|         Type = [IntType] int
 #  704|     getParameter(1): [Parameter] y
@@ -5978,7 +5978,7 @@ ir.cpp:
 #  705|             Type = [BoolType] bool
 #  705|             ValueCategory = prvalue
 #  708| [TopLevelFunction] int CallMin(int, int)
-#  708|   ...: 
+#  708|   : 
 #  708|     getParameter(0): [Parameter] x
 #  708|         Type = [IntType] int
 #  708|     getParameter(1): [Parameter] y
@@ -5995,15 +5995,15 @@ ir.cpp:
 #  709|             Type = [IntType] int
 #  709|             ValueCategory = prvalue(load)
 #  713| [CopyAssignmentOperator] Outer<long>& Outer<long>::operator=(Outer<long> const&)
-#  713|   ...: 
+#  713|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Outer<long> &
 #  713| [MoveAssignmentOperator] Outer<long>& Outer<long>::operator=(Outer<long>&&)
-#  713|   ...: 
+#  713|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Outer<long> &&
 #  715| [MemberFunction,TemplateFunction] T Outer<T>::Func<U, V>(U, V)
-#  715|   ...: 
+#  715|   : 
 #  715|     getParameter(0): [Parameter] x
 #  715|         Type = [TemplateParameter] U
 #  715|     getParameter(1): [Parameter] y
@@ -6015,13 +6015,13 @@ ir.cpp:
 #  716|           Value = [Literal] 0
 #  716|           ValueCategory = prvalue
 #  715| [MemberFunction,TemplateFunction] long Outer<long>::Func<U, V>(U, V)
-#  715|   ...: 
+#  715|   : 
 #  715|     getParameter(0): [Parameter] x
 #  715|         Type = [TemplateParameter] U
 #  715|     getParameter(1): [Parameter] y
 #  715|         Type = [TemplateParameter] V
 #  715| [FunctionTemplateInstantiation,MemberFunction] long Outer<long>::Func<void*, char>(void*, char)
-#  715|   ...: 
+#  715|   : 
 #  715|     getParameter(0): [Parameter] x
 #  715|         Type = [VoidPointerType] void *
 #  715|     getParameter(1): [Parameter] y
@@ -6033,7 +6033,7 @@ ir.cpp:
 #  716|           Value = [Literal] 0
 #  716|           ValueCategory = prvalue
 #  720| [TopLevelFunction] double CallNestedTemplateFunc()
-#  720|   ...: 
+#  720|   : 
 #  720|   getEntryPoint(): [BlockStmt] { ... }
 #  721|     getStmt(0): [ReturnStmt] return ...
 #  721|       getExpr(): [FunctionCall] call to Func
@@ -6057,7 +6057,7 @@ ir.cpp:
 #  721|           Type = [DoubleType] double
 #  721|           ValueCategory = prvalue
 #  724| [TopLevelFunction] void TryCatch(bool)
-#  724|   ...: 
+#  724|   : 
 #  724|     getParameter(0): [Parameter] b
 #  724|         Type = [BoolType] bool
 #  724|   getEntryPoint(): [BlockStmt] { ... }
@@ -6162,7 +6162,7 @@ ir.cpp:
 #  741|                 ValueCategory = prvalue
 #  743|     getStmt(1): [ReturnStmt] return ...
 #  745| [CopyAssignmentOperator] Base& Base::operator=(Base const&)
-#  745|   ...: 
+#  745|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Base &
 #-----|   getEntryPoint(): [BlockStmt] { ... }
@@ -6205,10 +6205,10 @@ ir.cpp:
 #-----|           Type = [LValueReferenceType] Base &
 #-----|           ValueCategory = prvalue
 #  745| [CopyConstructor] void Base::Base(Base const&)
-#  745|   ...: 
+#  745|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Base &
-#  745|   ...: 
+#  745|   : 
 #  745|     getInitializer(0): [ConstructorFieldInit] constructor init of field base_s
 #  745|         Type = [Struct] String
 #  745|         ValueCategory = prvalue
@@ -6218,8 +6218,8 @@ ir.cpp:
 #  745|   getEntryPoint(): [BlockStmt] { ... }
 #  745|     getStmt(0): [ReturnStmt] return ...
 #  748| [Constructor] void Base::Base()
-#  748|   ...: 
-#  748|   ...: 
+#  748|   : 
+#  748|   : 
 #  748|     getInitializer(0): [ConstructorFieldInit] constructor init of field base_s
 #  748|         Type = [Struct] String
 #  748|         ValueCategory = prvalue
@@ -6229,10 +6229,10 @@ ir.cpp:
 #  748|   getEntryPoint(): [BlockStmt] { ... }
 #  749|     getStmt(0): [ReturnStmt] return ...
 #  750| [Destructor] void Base::~Base()
-#  750|   ...: 
+#  750|   : 
 #  750|   getEntryPoint(): [BlockStmt] { ... }
 #  751|     getStmt(0): [ReturnStmt] return ...
-#  750|   ...: 
+#  750|   : 
 #  751|     getDestruction(0): [DestructorFieldDestruction] destructor field destruction of base_s
 #  751|         Type = [Struct] String
 #  751|         ValueCategory = prvalue
@@ -6243,7 +6243,7 @@ ir.cpp:
 #  751|             Type = [Struct] String
 #  751|             ValueCategory = lvalue
 #  754| [CopyAssignmentOperator] Middle& Middle::operator=(Middle const&)
-#  754|   ...: 
+#  754|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Middle &
 #-----|   getEntryPoint(): [BlockStmt] { ... }
@@ -6319,12 +6319,12 @@ ir.cpp:
 #-----|           Type = [LValueReferenceType] Middle &
 #-----|           ValueCategory = prvalue
 #  754| [CopyConstructor] void Middle::Middle(Middle const&)
-#  754|   ...: 
+#  754|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Middle &
 #  757| [Constructor] void Middle::Middle()
-#  757|   ...: 
-#  757|   ...: 
+#  757|   : 
+#  757|   : 
 #  757|     getInitializer(0): [ConstructorDirectInit] call to Base
 #  757|         Type = [VoidType] void
 #  757|         ValueCategory = prvalue
@@ -6337,10 +6337,10 @@ ir.cpp:
 #  757|   getEntryPoint(): [BlockStmt] { ... }
 #  758|     getStmt(0): [ReturnStmt] return ...
 #  759| [Destructor] void Middle::~Middle()
-#  759|   ...: 
+#  759|   : 
 #  759|   getEntryPoint(): [BlockStmt] { ... }
 #  760|     getStmt(0): [ReturnStmt] return ...
-#  759|   ...: 
+#  759|   : 
 #  760|     getDestruction(0): [DestructorFieldDestruction] destructor field destruction of middle_s
 #  760|         Type = [Struct] String
 #  760|         ValueCategory = prvalue
@@ -6354,7 +6354,7 @@ ir.cpp:
 #  760|         Type = [VoidType] void
 #  760|         ValueCategory = prvalue
 #  763| [CopyAssignmentOperator] Derived& Derived::operator=(Derived const&)
-#  763|   ...: 
+#  763|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Derived &
 #-----|   getEntryPoint(): [BlockStmt] { ... }
@@ -6430,12 +6430,12 @@ ir.cpp:
 #-----|           Type = [LValueReferenceType] Derived &
 #-----|           ValueCategory = prvalue
 #  763| [CopyConstructor] void Derived::Derived(Derived const&)
-#  763|   ...: 
+#  763|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Derived &
 #  766| [Constructor] void Derived::Derived()
-#  766|   ...: 
-#  766|   ...: 
+#  766|   : 
+#  766|   : 
 #  766|     getInitializer(0): [ConstructorDirectInit] call to Middle
 #  766|         Type = [VoidType] void
 #  766|         ValueCategory = prvalue
@@ -6448,10 +6448,10 @@ ir.cpp:
 #  766|   getEntryPoint(): [BlockStmt] { ... }
 #  767|     getStmt(0): [ReturnStmt] return ...
 #  768| [Destructor] void Derived::~Derived()
-#  768|   ...: 
+#  768|   : 
 #  768|   getEntryPoint(): [BlockStmt] { ... }
 #  769|     getStmt(0): [ReturnStmt] return ...
-#  768|   ...: 
+#  768|   : 
 #  769|     getDestruction(0): [DestructorFieldDestruction] destructor field destruction of derived_s
 #  769|         Type = [Struct] String
 #  769|         ValueCategory = prvalue
@@ -6465,16 +6465,16 @@ ir.cpp:
 #  769|         Type = [VoidType] void
 #  769|         ValueCategory = prvalue
 #  772| [CopyAssignmentOperator] MiddleVB1& MiddleVB1::operator=(MiddleVB1 const&)
-#  772|   ...: 
+#  772|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const MiddleVB1 &
 #  772| [CopyConstructor] void MiddleVB1::MiddleVB1(MiddleVB1 const&)
-#  772|   ...: 
+#  772|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const MiddleVB1 &
 #  775| [Constructor] void MiddleVB1::MiddleVB1()
-#  775|   ...: 
-#  775|   ...: 
+#  775|   : 
+#  775|   : 
 #  775|     getInitializer(0): [ConstructorVirtualInit] call to Base
 #  775|         Type = [VoidType] void
 #  775|         ValueCategory = prvalue
@@ -6487,10 +6487,10 @@ ir.cpp:
 #  775|   getEntryPoint(): [BlockStmt] { ... }
 #  776|     getStmt(0): [ReturnStmt] return ...
 #  777| [Destructor] void MiddleVB1::~MiddleVB1()
-#  777|   ...: 
+#  777|   : 
 #  777|   getEntryPoint(): [BlockStmt] { ... }
 #  778|     getStmt(0): [ReturnStmt] return ...
-#  777|   ...: 
+#  777|   : 
 #  778|     getDestruction(0): [DestructorFieldDestruction] destructor field destruction of middlevb1_s
 #  778|         Type = [Struct] String
 #  778|         ValueCategory = prvalue
@@ -6504,16 +6504,16 @@ ir.cpp:
 #  778|         Type = [VoidType] void
 #  778|         ValueCategory = prvalue
 #  781| [CopyAssignmentOperator] MiddleVB2& MiddleVB2::operator=(MiddleVB2 const&)
-#  781|   ...: 
+#  781|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const MiddleVB2 &
 #  781| [CopyConstructor] void MiddleVB2::MiddleVB2(MiddleVB2 const&)
-#  781|   ...: 
+#  781|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const MiddleVB2 &
 #  784| [Constructor] void MiddleVB2::MiddleVB2()
-#  784|   ...: 
-#  784|   ...: 
+#  784|   : 
+#  784|   : 
 #  784|     getInitializer(0): [ConstructorVirtualInit] call to Base
 #  784|         Type = [VoidType] void
 #  784|         ValueCategory = prvalue
@@ -6526,10 +6526,10 @@ ir.cpp:
 #  784|   getEntryPoint(): [BlockStmt] { ... }
 #  785|     getStmt(0): [ReturnStmt] return ...
 #  786| [Destructor] void MiddleVB2::~MiddleVB2()
-#  786|   ...: 
+#  786|   : 
 #  786|   getEntryPoint(): [BlockStmt] { ... }
 #  787|     getStmt(0): [ReturnStmt] return ...
-#  786|   ...: 
+#  786|   : 
 #  787|     getDestruction(0): [DestructorFieldDestruction] destructor field destruction of middlevb2_s
 #  787|         Type = [Struct] String
 #  787|         ValueCategory = prvalue
@@ -6543,16 +6543,16 @@ ir.cpp:
 #  787|         Type = [VoidType] void
 #  787|         ValueCategory = prvalue
 #  790| [CopyAssignmentOperator] DerivedVB& DerivedVB::operator=(DerivedVB const&)
-#  790|   ...: 
+#  790|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const DerivedVB &
 #  790| [CopyConstructor] void DerivedVB::DerivedVB(DerivedVB const&)
-#  790|   ...: 
+#  790|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const DerivedVB &
 #  793| [Constructor] void DerivedVB::DerivedVB()
-#  793|   ...: 
-#  793|   ...: 
+#  793|   : 
+#  793|   : 
 #  793|     getInitializer(0): [ConstructorVirtualInit] call to Base
 #  793|         Type = [VoidType] void
 #  793|         ValueCategory = prvalue
@@ -6571,10 +6571,10 @@ ir.cpp:
 #  793|   getEntryPoint(): [BlockStmt] { ... }
 #  794|     getStmt(0): [ReturnStmt] return ...
 #  795| [Destructor] void DerivedVB::~DerivedVB()
-#  795|   ...: 
+#  795|   : 
 #  795|   getEntryPoint(): [BlockStmt] { ... }
 #  796|     getStmt(0): [ReturnStmt] return ...
-#  795|   ...: 
+#  795|   : 
 #  796|     getDestruction(0): [DestructorFieldDestruction] destructor field destruction of derivedvb_s
 #  796|         Type = [Struct] String
 #  796|         ValueCategory = prvalue
@@ -6594,7 +6594,7 @@ ir.cpp:
 #  796|         Type = [VoidType] void
 #  796|         ValueCategory = prvalue
 #  799| [TopLevelFunction] void HierarchyConversions()
-#  799|   ...: 
+#  799|   : 
 #  799|   getEntryPoint(): [BlockStmt] { ... }
 #  800|     getStmt(0): [DeclStmt] declaration
 #  800|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
@@ -7195,54 +7195,54 @@ ir.cpp:
 #  839|             ValueCategory = prvalue
 #  840|     getStmt(34): [ReturnStmt] return ...
 #  842| [CopyAssignmentOperator] PolymorphicBase& PolymorphicBase::operator=(PolymorphicBase const&)
-#  842|   ...: 
+#  842|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const PolymorphicBase &
 #  842| [Constructor] void PolymorphicBase::PolymorphicBase()
-#  842|   ...: 
-#  842|   ...: 
+#  842|   : 
+#  842|   : 
 #  842|   getEntryPoint(): [BlockStmt] { ... }
 #  842|     getStmt(0): [ReturnStmt] return ...
 #  842| [CopyConstructor] void PolymorphicBase::PolymorphicBase(PolymorphicBase const&)
-#  842|   ...: 
+#  842|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const PolymorphicBase &
 #  843| [Destructor,VirtualFunction] void PolymorphicBase::~PolymorphicBase()
-#  843|   ...: 
+#  843|   : 
 #  846| [CopyAssignmentOperator] PolymorphicDerived& PolymorphicDerived::operator=(PolymorphicDerived const&)
-#  846|   ...: 
+#  846|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const PolymorphicDerived &
 #  846| [MoveAssignmentOperator] PolymorphicDerived& PolymorphicDerived::operator=(PolymorphicDerived&&)
-#  846|   ...: 
+#  846|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] PolymorphicDerived &&
 #  846| [Constructor] void PolymorphicDerived::PolymorphicDerived()
-#  846|   ...: 
-#  846|   ...: 
+#  846|   : 
+#  846|   : 
 #  846|     getInitializer(0): [ConstructorDirectInit] call to PolymorphicBase
 #  846|         Type = [VoidType] void
 #  846|         ValueCategory = prvalue
 #  846|   getEntryPoint(): [BlockStmt] { ... }
 #  846|     getStmt(0): [ReturnStmt] return ...
 #  846| [CopyConstructor] void PolymorphicDerived::PolymorphicDerived(PolymorphicDerived const&)
-#  846|   ...: 
+#  846|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const PolymorphicDerived &
 #  846| [MoveConstructor] void PolymorphicDerived::PolymorphicDerived(PolymorphicDerived&&)
-#  846|   ...: 
+#  846|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] PolymorphicDerived &&
 #  846| [Destructor,VirtualFunction] void PolymorphicDerived::~PolymorphicDerived()
-#  846|   ...: 
+#  846|   : 
 #-----|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [ReturnStmt] return ...
-#  846|   ...: 
+#  846|   : 
 #  846|     getDestruction(0): [DestructorDirectDestruction] call to ~PolymorphicBase
 #  846|         Type = [VoidType] void
 #  846|         ValueCategory = prvalue
 #  849| [TopLevelFunction] void DynamicCast()
-#  849|   ...: 
+#  849|   : 
 #  849|   getEntryPoint(): [BlockStmt] { ... }
 #  850|     getStmt(0): [DeclStmt] declaration
 #  850|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
@@ -7358,8 +7358,8 @@ ir.cpp:
 #  864|               ValueCategory = prvalue
 #  865|     getStmt(10): [ReturnStmt] return ...
 #  867| [Constructor] void String::String()
-#  867|   ...: 
-#  867|   ...: 
+#  867|   : 
+#  867|   : 
 #  868|     getInitializer(0): [ConstructorDelegationInit] call to String
 #  868|         Type = [VoidType] void
 #  868|         ValueCategory = prvalue
@@ -7373,7 +7373,7 @@ ir.cpp:
 #  868|   getEntryPoint(): [BlockStmt] { ... }
 #  869|     getStmt(0): [ReturnStmt] return ...
 #  871| [TopLevelFunction] void ArrayConversions()
-#  871|   ...: 
+#  871|   : 
 #  871|   getEntryPoint(): [BlockStmt] { ... }
 #  872|     getStmt(0): [DeclStmt] declaration
 #  872|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
@@ -7508,7 +7508,7 @@ ir.cpp:
 #  880|               ValueCategory = lvalue
 #  881|     getStmt(9): [ReturnStmt] return ...
 #  883| [TopLevelFunction] void FuncPtrConversions(int(*)(int), void*)
-#  883|   ...: 
+#  883|   : 
 #  883|     getParameter(0): [Parameter] pfn
 #  883|         Type = [FunctionPointerType] ..(*)(..)
 #  883|     getParameter(1): [Parameter] p
@@ -7544,7 +7544,7 @@ ir.cpp:
 #  885|             ValueCategory = prvalue
 #  886|     getStmt(2): [ReturnStmt] return ...
 #  888| [TopLevelFunction] void VAListUsage(int, __va_list_tag[1])
-#  888|   ...: 
+#  888|   : 
 #  888|     getParameter(0): [Parameter] x
 #  888|         Type = [IntType] int
 #  888|     getParameter(1): [Parameter] args
@@ -7602,7 +7602,7 @@ ir.cpp:
 #  893|             ValueCategory = prvalue
 #  894|     getStmt(5): [ReturnStmt] return ...
 #  896| [TopLevelFunction] void VarArgUsage(int)
-#  896|   ...: 
+#  896|   : 
 #  896|     getParameter(0): [Parameter] x
 #  896|         Type = [IntType] int
 #  896|   getEntryPoint(): [BlockStmt] { ... }
@@ -7706,7 +7706,7 @@ ir.cpp:
 #  906|             ValueCategory = prvalue
 #  907|     getStmt(9): [ReturnStmt] return ...
 #  909| [TopLevelFunction] void CastToVoid(int)
-#  909|   ...: 
+#  909|   : 
 #  909|     getParameter(0): [Parameter] x
 #  909|         Type = [IntType] int
 #  909|   getEntryPoint(): [BlockStmt] { ... }
@@ -7720,7 +7720,7 @@ ir.cpp:
 #  910|           ValueCategory = prvalue
 #  911|     getStmt(1): [ReturnStmt] return ...
 #  913| [TopLevelFunction] void ConstantConditions(int)
-#  913|   ...: 
+#  913|   : 
 #  913|     getParameter(0): [Parameter] x
 #  913|         Type = [IntType] int
 #  913|   getEntryPoint(): [BlockStmt] { ... }
@@ -7763,19 +7763,19 @@ ir.cpp:
 #  915|                 ValueCategory = prvalue
 #  916|     getStmt(2): [ReturnStmt] return ...
 #  924| [Operator,TopLevelFunction] void* operator new(size_t, float)
-#  924|   ...: 
+#  924|   : 
 #  924|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  924|         Type = [CTypedefType,Size_t] size_t
 #  924|     getParameter(1): [Parameter] (unnamed parameter 1)
 #  924|         Type = [FloatType] float
 #  925| [Operator,TopLevelFunction] void* operator new[](size_t, float)
-#  925|   ...: 
+#  925|   : 
 #  925|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  925|         Type = [CTypedefType,Size_t] size_t
 #  925|     getParameter(1): [Parameter] (unnamed parameter 1)
 #  925|         Type = [FloatType] float
 #  926| [Operator,TopLevelFunction] void* operator new(size_t, std::align_val_t, float)
-#  926|   ...: 
+#  926|   : 
 #  926|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  926|         Type = [CTypedefType,Size_t] size_t
 #  926|     getParameter(1): [Parameter] (unnamed parameter 1)
@@ -7783,7 +7783,7 @@ ir.cpp:
 #  926|     getParameter(2): [Parameter] (unnamed parameter 2)
 #  926|         Type = [FloatType] float
 #  927| [Operator,TopLevelFunction] void* operator new[](size_t, std::align_val_t, float)
-#  927|   ...: 
+#  927|   : 
 #  927|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  927|         Type = [CTypedefType,Size_t] size_t
 #  927|     getParameter(1): [Parameter] (unnamed parameter 1)
@@ -7791,19 +7791,19 @@ ir.cpp:
 #  927|     getParameter(2): [Parameter] (unnamed parameter 2)
 #  927|         Type = [FloatType] float
 #  928| [Operator,TopLevelFunction] void operator delete(void*, float)
-#  928|   ...: 
+#  928|   : 
 #  928|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  928|         Type = [VoidPointerType] void *
 #  928|     getParameter(1): [Parameter] (unnamed parameter 1)
 #  928|         Type = [FloatType] float
 #  929| [Operator,TopLevelFunction] void operator delete[](void*, float)
-#  929|   ...: 
+#  929|   : 
 #  929|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  929|         Type = [VoidPointerType] void *
 #  929|     getParameter(1): [Parameter] (unnamed parameter 1)
 #  929|         Type = [FloatType] float
 #  930| [Operator,TopLevelFunction] void operator delete(void*, std::align_val_t, float)
-#  930|   ...: 
+#  930|   : 
 #  930|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  930|         Type = [VoidPointerType] void *
 #  930|     getParameter(1): [Parameter] (unnamed parameter 1)
@@ -7811,7 +7811,7 @@ ir.cpp:
 #  930|     getParameter(2): [Parameter] (unnamed parameter 2)
 #  930|         Type = [FloatType] float
 #  931| [Operator,TopLevelFunction] void operator delete[](void*, std::align_val_t, float)
-#  931|   ...: 
+#  931|   : 
 #  931|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  931|         Type = [VoidPointerType] void *
 #  931|     getParameter(1): [Parameter] (unnamed parameter 1)
@@ -7819,63 +7819,63 @@ ir.cpp:
 #  931|     getParameter(2): [Parameter] (unnamed parameter 2)
 #  931|         Type = [FloatType] float
 #  933| [CopyAssignmentOperator] SizedDealloc& SizedDealloc::operator=(SizedDealloc const&)
-#  933|   ...: 
+#  933|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const SizedDealloc &
 #  933| [MoveAssignmentOperator] SizedDealloc& SizedDealloc::operator=(SizedDealloc&&)
-#  933|   ...: 
+#  933|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] SizedDealloc &&
 #  935| [MemberFunction] void* SizedDealloc::operator new(size_t)
-#  935|   ...: 
+#  935|   : 
 #  935|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  935|         Type = [CTypedefType,Size_t] size_t
 #  936| [MemberFunction] void* SizedDealloc::operator new[](size_t)
-#  936|   ...: 
+#  936|   : 
 #  936|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  936|         Type = [CTypedefType,Size_t] size_t
 #  937| [MemberFunction] void SizedDealloc::operator delete(void*, size_t)
-#  937|   ...: 
+#  937|   : 
 #  937|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  937|         Type = [VoidPointerType] void *
 #  937|     getParameter(1): [Parameter] (unnamed parameter 1)
 #  937|         Type = [CTypedefType,Size_t] size_t
 #  938| [MemberFunction] void SizedDealloc::operator delete[](void*, size_t)
-#  938|   ...: 
+#  938|   : 
 #  938|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  938|         Type = [VoidPointerType] void *
 #  938|     getParameter(1): [Parameter] (unnamed parameter 1)
 #  938|         Type = [CTypedefType,Size_t] size_t
 #  941| [CopyAssignmentOperator] Overaligned& Overaligned::operator=(Overaligned const&)
-#  941|   ...: 
+#  941|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Overaligned &
 #  941| [MoveAssignmentOperator] Overaligned& Overaligned::operator=(Overaligned&&)
-#  941|   ...: 
+#  941|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Overaligned &&
 #  945| [CopyAssignmentOperator] DefaultCtorWithDefaultParam& DefaultCtorWithDefaultParam::operator=(DefaultCtorWithDefaultParam const&)
-#  945|   ...: 
+#  945|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const DefaultCtorWithDefaultParam &
 #  945| [MoveAssignmentOperator] DefaultCtorWithDefaultParam& DefaultCtorWithDefaultParam::operator=(DefaultCtorWithDefaultParam&&)
-#  945|   ...: 
+#  945|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] DefaultCtorWithDefaultParam &&
 #  945| [CopyConstructor] void DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(DefaultCtorWithDefaultParam const&)
-#  945|   ...: 
+#  945|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const DefaultCtorWithDefaultParam &
 #  945| [MoveConstructor] void DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(DefaultCtorWithDefaultParam&&)
-#  945|   ...: 
+#  945|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] DefaultCtorWithDefaultParam &&
 #  946| [Constructor] void DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(double)
-#  946|   ...: 
+#  946|   : 
 #  946|     getParameter(0): [Parameter] d
 #  946|         Type = [DoubleType] double
 #  949| [TopLevelFunction] void OperatorNew()
-#  949|   ...: 
+#  949|   : 
 #  949|   getEntryPoint(): [BlockStmt] { ... }
 #  950|     getStmt(0): [ExprStmt] ExprStmt
 #  950|       getExpr(): [NewExpr] new
@@ -7966,7 +7966,7 @@ ir.cpp:
 #  956|             ValueCategory = prvalue
 #  957|     getStmt(7): [ReturnStmt] return ...
 #  959| [TopLevelFunction] void OperatorNewArray(int)
-#  959|   ...: 
+#  959|   : 
 #  959|     getParameter(0): [Parameter] n
 #  959|         Type = [IntType] int
 #  959|   getEntryPoint(): [BlockStmt] { ... }
@@ -8077,7 +8077,7 @@ ir.cpp:
 #  967|             ValueCategory = prvalue(load)
 #  968|     getStmt(8): [ReturnStmt] return ...
 #  970| [TopLevelFunction] int designatedInit()
-#  970|   ...: 
+#  970|   : 
 #  970|   getEntryPoint(): [BlockStmt] { ... }
 #  971|     getStmt(0): [DeclStmt] declaration
 #  971|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a1
@@ -8109,7 +8109,7 @@ ir.cpp:
 #  972|             Type = [IntPointerType] int *
 #  972|             ValueCategory = prvalue
 #  975| [TopLevelFunction] void IfStmtWithDeclaration(int, int)
-#  975|   ...: 
+#  975|   : 
 #  975|     getParameter(0): [Parameter] x
 #  975|         Type = [IntType] int
 #  975|     getParameter(1): [Parameter] y
@@ -8185,7 +8185,7 @@ ir.cpp:
 #  983|                     ValueCategory = prvalue
 #  985|     getStmt(1): [ReturnStmt] return ...
 #  987| [TopLevelFunction] void WhileStmtWithDeclaration(int, int)
-#  987|   ...: 
+#  987|   : 
 #  987|     getParameter(0): [Parameter] x
 #  987|         Type = [IntType] int
 #  987|     getParameter(1): [Parameter] y
@@ -8225,7 +8225,7 @@ ir.cpp:
 #  992|       getStmt(): [BlockStmt] { ... }
 #  994|     getStmt(3): [ReturnStmt] return ...
 #  996| [TopLevelFunction] int PointerDecay(int[], int(float))
-#  996|   ...: 
+#  996|   : 
 #  996|     getParameter(0): [Parameter] a
 #  996|         Type = [ArrayType] int[]
 #  996|     getParameter(1): [Parameter] fn
@@ -8261,7 +8261,7 @@ ir.cpp:
 #  997|               Value = [CStyleCast] 1.0
 #  997|               ValueCategory = prvalue
 # 1000| [TopLevelFunction] int ExprStmt(int, int, int)
-# 1000|   ...: 
+# 1000|   : 
 # 1000|     getParameter(0): [Parameter] b
 # 1000|         Type = [IntType] int
 # 1000|     getParameter(1): [Parameter] y
@@ -8281,7 +8281,7 @@ ir.cpp:
 # 1011|           Type = [IntType] int
 # 1011|           ValueCategory = prvalue
 # 1015| [TopLevelFunction] void OperatorDelete()
-# 1015|   ...: 
+# 1015|   : 
 # 1015|   getEntryPoint(): [BlockStmt] { ... }
 # 1016|     getStmt(0): [ExprStmt] ExprStmt
 # 1016|       getExpr(): [DeleteExpr] delete
@@ -8359,7 +8359,7 @@ ir.cpp:
 # 1020|               ValueCategory = prvalue
 # 1021|     getStmt(5): [ReturnStmt] return ...
 # 1024| [TopLevelFunction] void OperatorDeleteArray()
-# 1024|   ...: 
+# 1024|   : 
 # 1024|   getEntryPoint(): [BlockStmt] { ... }
 # 1025|     getStmt(0): [ExprStmt] ExprStmt
 # 1025|       getExpr(): [DeleteArrayExpr] delete[]
@@ -8437,15 +8437,15 @@ ir.cpp:
 # 1029|               ValueCategory = prvalue
 # 1030|     getStmt(5): [ReturnStmt] return ...
 # 1032| [CopyAssignmentOperator] EmptyStruct& EmptyStruct::operator=(EmptyStruct const&)
-# 1032|   ...: 
+# 1032|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const EmptyStruct &
 # 1032| [MoveAssignmentOperator] EmptyStruct& EmptyStruct::operator=(EmptyStruct&&)
-# 1032|   ...: 
+# 1032|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] EmptyStruct &&
 # 1034| [TopLevelFunction] void EmptyStructInit()
-# 1034|   ...: 
+# 1034|   : 
 # 1034|   getEntryPoint(): [BlockStmt] { ... }
 # 1035|     getStmt(0): [DeclStmt] declaration
 # 1035|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
@@ -8456,34 +8456,34 @@ ir.cpp:
 # 1035|               ValueCategory = prvalue
 # 1036|     getStmt(1): [ReturnStmt] return ...
 # 1038| [CopyAssignmentOperator] (lambda [] type at line 1038, col. 12)& (lambda [] type at line 1038, col. 12)::operator=((lambda [] type at line 1038, col. 12) const&)
-# 1038|   ...: 
+# 1038|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1038, col. 12 &
 # 1038| [CopyConstructor] void (lambda [] type at line 1038, col. 12)::(unnamed constructor)((lambda [] type at line 1038, col. 12) const&)
-# 1038|   ...: 
+# 1038|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1038, col. 12 &
 # 1038| [MoveConstructor] void (lambda [] type at line 1038, col. 12)::(unnamed constructor)((lambda [] type at line 1038, col. 12)&&)
-# 1038|   ...: 
+# 1038|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1038, col. 12 &&
 # 1038| [Constructor] void (lambda [] type at line 1038, col. 12)::(unnamed constructor)()
-# 1038|   ...: 
+# 1038|   : 
 # 1038| [MemberFunction] void (lambda [] type at line 1038, col. 12)::_FUN()
-# 1038|   ...: 
+# 1038|   : 
 # 1038| [ConstMemberFunction] void (lambda [] type at line 1038, col. 12)::operator()() const
-# 1038|   ...: 
+# 1038|   : 
 # 1038|   getEntryPoint(): [BlockStmt] { ... }
 # 1038|     getStmt(0): [ReturnStmt] return ...
 # 1038| [ConstMemberFunction,ConversionOperator] void(* (lambda [] type at line 1038, col. 12)::operator void (*)()() const)()
-# 1038|   ...: 
+# 1038|   : 
 #-----|   getEntryPoint(): [BlockStmt] { ... }
 # 1038|     getStmt(0): [ReturnStmt] return ...
 # 1038|       getExpr(): [FunctionAccess] _FUN
 # 1038|           Type = [FunctionPointerType] ..(*)(..)
 # 1038|           ValueCategory = prvalue(load)
 # 1040| [TopLevelFunction] void Lambda(int, String const&)
-# 1040|   ...: 
+# 1040|   : 
 # 1040|     getParameter(0): [Parameter] x
 # 1040|         Type = [IntType] int
 # 1040|     getParameter(1): [Parameter] s
@@ -8786,25 +8786,25 @@ ir.cpp:
 # 1055|             ValueCategory = prvalue
 # 1056|     getStmt(15): [ReturnStmt] return ...
 # 1041| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)& (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23) const&)
-# 1041|   ...: 
+# 1041|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1041, col. 23 &
 # 1041| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23) const&)
-# 1041|   ...: 
+# 1041|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1041, col. 23 &
 # 1041| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)&&)
-# 1041|   ...: 
+# 1041|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1041, col. 23 &&
 # 1041| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(unnamed constructor)()
-# 1041|   ...: 
+# 1041|   : 
 # 1041| [MemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::_FUN(float)
-# 1041|   ...: 
+# 1041|   : 
 # 1041|     getParameter(0): [Parameter] f
 # 1041|         Type = [FloatType] float
 # 1041| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::operator()(float) const
-# 1041|   ...: 
+# 1041|   : 
 # 1041|     getParameter(0): [Parameter] f
 # 1041|         Type = [FloatType] float
 # 1041|   getEntryPoint(): [BlockStmt] { ... }
@@ -8814,28 +8814,28 @@ ir.cpp:
 # 1041|           Value = [CharLiteral] 65
 # 1041|           ValueCategory = prvalue
 # 1041| [ConstMemberFunction,ConversionOperator] char(* (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::operator char (*)(float)() const)(float)
-# 1041|   ...: 
+# 1041|   : 
 #-----|   getEntryPoint(): [BlockStmt] { ... }
 # 1041|     getStmt(0): [ReturnStmt] return ...
 # 1041|       getExpr(): [FunctionAccess] _FUN
 # 1041|           Type = [FunctionPointerType] ..(*)(..)
 # 1041|           ValueCategory = prvalue(load)
 # 1043| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)& (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21) const&)
-# 1043|   ...: 
+# 1043|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1043, col. 21 &
 # 1043| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21) const&)
-# 1043|   ...: 
+# 1043|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1043, col. 21 &
 # 1043| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)&&)
-# 1043|   ...: 
+# 1043|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1043, col. 21 &&
 # 1043| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::(unnamed constructor)()
-# 1043|   ...: 
+# 1043|   : 
 # 1043| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::operator()(float) const
-# 1043|   ...: 
+# 1043|   : 
 # 1043|     getParameter(0): [Parameter] f
 # 1043|         Type = [FloatType] float
 # 1043|   getEntryPoint(): [BlockStmt] { ... }
@@ -8865,24 +8865,24 @@ ir.cpp:
 # 1043|             Type = [IntType] int
 # 1043|             ValueCategory = prvalue(load)
 # 1045| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)& (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21) const&)
-# 1045|   ...: 
+# 1045|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1045, col. 21 &
 # 1045| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21) const&)
-# 1045|   ...: 
+# 1045|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1045, col. 21 &
 # 1045| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)&&)
-# 1045|   ...: 
+# 1045|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1045, col. 21 &&
 # 1045| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::(unnamed constructor)()
-# 1045|   ...: 
+# 1045|   : 
 # 1045| [Destructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::~<unnamed>()
-# 1045|   ...: 
+# 1045|   : 
 #-----|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [ReturnStmt] return ...
-# 1045|   ...: 
+# 1045|   : 
 # 1045|     getDestruction(0): [DestructorFieldDestruction] destructor field destruction of s
 # 1045|         Type = [SpecifiedType] const String
 # 1045|         ValueCategory = prvalue
@@ -8893,7 +8893,7 @@ ir.cpp:
 # 1045|             Type = [SpecifiedType] const String
 # 1045|             ValueCategory = lvalue
 # 1045| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::operator()(float) const
-# 1045|   ...: 
+# 1045|   : 
 # 1045|     getParameter(0): [Parameter] f
 # 1045|         Type = [FloatType] float
 # 1045|   getEntryPoint(): [BlockStmt] { ... }
@@ -8917,21 +8917,21 @@ ir.cpp:
 # 1045|               Type = [PointerType] const lambda [] type at line 1045, col. 21 *
 # 1045|               ValueCategory = prvalue(load)
 # 1047| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)& (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30) const&)
-# 1047|   ...: 
+# 1047|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1047, col. 30 &
 # 1047| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30) const&)
-# 1047|   ...: 
+# 1047|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1047, col. 30 &
 # 1047| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)&&)
-# 1047|   ...: 
+# 1047|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1047, col. 30 &&
 # 1047| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::(unnamed constructor)()
-# 1047|   ...: 
+# 1047|   : 
 # 1047| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::operator()(float) const
-# 1047|   ...: 
+# 1047|   : 
 # 1047|     getParameter(0): [Parameter] f
 # 1047|         Type = [FloatType] float
 # 1047|   getEntryPoint(): [BlockStmt] { ... }
@@ -8956,24 +8956,24 @@ ir.cpp:
 # 1047|             Value = [Literal] 0
 # 1047|             ValueCategory = prvalue
 # 1049| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)& (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30) const&)
-# 1049|   ...: 
+# 1049|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1049, col. 30 &
 # 1049| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30) const&)
-# 1049|   ...: 
+# 1049|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1049, col. 30 &
 # 1049| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)&&)
-# 1049|   ...: 
+# 1049|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1049, col. 30 &&
 # 1049| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::(unnamed constructor)()
-# 1049|   ...: 
+# 1049|   : 
 # 1049| [Destructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::~<unnamed>()
-# 1049|   ...: 
+# 1049|   : 
 #-----|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [ReturnStmt] return ...
-# 1049|   ...: 
+# 1049|   : 
 # 1049|     getDestruction(0): [DestructorFieldDestruction] destructor field destruction of s
 # 1049|         Type = [SpecifiedType] const String
 # 1049|         ValueCategory = prvalue
@@ -8984,7 +8984,7 @@ ir.cpp:
 # 1049|             Type = [SpecifiedType] const String
 # 1049|             ValueCategory = lvalue
 # 1049| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::operator()(float) const
-# 1049|   ...: 
+# 1049|   : 
 # 1049|     getParameter(0): [Parameter] f
 # 1049|         Type = [FloatType] float
 # 1049|   getEntryPoint(): [BlockStmt] { ... }
@@ -9006,21 +9006,21 @@ ir.cpp:
 # 1049|             Value = [Literal] 0
 # 1049|             ValueCategory = prvalue
 # 1051| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)& (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32) const&)
-# 1051|   ...: 
+# 1051|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1051, col. 32 &
 # 1051| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32) const&)
-# 1051|   ...: 
+# 1051|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1051, col. 32 &
 # 1051| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)&&)
-# 1051|   ...: 
+# 1051|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1051, col. 32 &&
 # 1051| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::(unnamed constructor)()
-# 1051|   ...: 
+# 1051|   : 
 # 1051| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::operator()(float) const
-# 1051|   ...: 
+# 1051|   : 
 # 1051|     getParameter(0): [Parameter] f
 # 1051|         Type = [FloatType] float
 # 1051|   getEntryPoint(): [BlockStmt] { ... }
@@ -9047,21 +9047,21 @@ ir.cpp:
 # 1051|               Type = [PointerType] const lambda [] type at line 1051, col. 32 *
 # 1051|               ValueCategory = prvalue(load)
 # 1054| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)& (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23) const&)
-# 1054|   ...: 
+# 1054|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1054, col. 23 &
 # 1054| [CopyConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23) const&)
-# 1054|   ...: 
+# 1054|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1054, col. 23 &
 # 1054| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)&&)
-# 1054|   ...: 
+# 1054|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1054, col. 23 &&
 # 1054| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::(unnamed constructor)()
-# 1054|   ...: 
+# 1054|   : 
 # 1054| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::operator()(float) const
-# 1054|   ...: 
+# 1054|   : 
 # 1054|     getParameter(0): [Parameter] f
 # 1054|         Type = [FloatType] float
 # 1054|   getEntryPoint(): [BlockStmt] { ... }
@@ -9109,59 +9109,59 @@ ir.cpp:
 # 1054|               Type = [IntType] int
 # 1054|               ValueCategory = prvalue(load)
 # 1059| [CopyAssignmentOperator] vector<int>& vector<int>::operator=(vector<int> const&)
-# 1059|   ...: 
+# 1059|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const vector<int> &
 # 1059| [MoveAssignmentOperator] vector<int>& vector<int>::operator=(vector<int>&&)
-# 1059|   ...: 
+# 1059|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] vector<int> &&
 # 1060| [CopyAssignmentOperator] vector<int>::iterator& vector<int>::iterator::operator=(vector<int>::iterator const public&)
-# 1060|   ...: 
+# 1060|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const iterator &
 # 1060| [MoveAssignmentOperator] vector<int>::iterator& vector<int>::iterator::operator=(vector<int>::iterator&&)
-# 1060|   ...: 
+# 1060|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] iterator &&
 # 1062| [MemberFunction] vector<T>::iterator& vector<T>::iterator::operator++()
-# 1062|   ...: 
+# 1062|   : 
 # 1062| [MemberFunction] vector<int>::iterator& vector<int>::iterator::operator++()
-# 1062|   ...: 
+# 1062|   : 
 # 1063| [ConstMemberFunction] T& vector<T>::iterator::operator*() const
-# 1063|   ...: 
+# 1063|   : 
 # 1063| [ConstMemberFunction] int& vector<int>::iterator::operator*() const
-# 1063|   ...: 
+# 1063|   : 
 # 1065| [ConstMemberFunction] bool vector<T>::iterator::operator!=(vector<T>::iterator) const
-# 1065|   ...: 
+# 1065|   : 
 # 1065|     getParameter(0): [Parameter] right
 # 1065|         Type = [NestedClass,TemplateClass] iterator
 # 1065| [ConstMemberFunction] bool vector<int>::iterator::operator!=(vector<int>::iterator) const
-# 1065|   ...: 
+# 1065|   : 
 # 1065|     getParameter(0): [Parameter] right
 # 1065|         Type = [NestedStruct] iterator
 # 1068| [ConstMemberFunction] vector<T>::iterator vector<T>::begin() const
-# 1068|   ...: 
+# 1068|   : 
 # 1068| [ConstMemberFunction] vector<int>::iterator vector<int>::begin() const
-# 1068|   ...: 
+# 1068|   : 
 # 1069| [ConstMemberFunction] vector<T>::iterator vector<T>::end() const
-# 1069|   ...: 
+# 1069|   : 
 # 1069| [ConstMemberFunction] vector<int>::iterator vector<int>::end() const
-# 1069|   ...: 
+# 1069|   : 
 # 1073| [Operator,TemplateFunction,TopLevelFunction] bool operator==<T>(iterator, iterator)
-# 1073|   ...: 
+# 1073|   : 
 # 1073|     getParameter(0): [Parameter] left
 # 1073|         Type = [TemplateParameter] iterator
 # 1073|     getParameter(1): [Parameter] right
 # 1073|         Type = [TemplateParameter] iterator
 # 1075| [Operator,TemplateFunction,TopLevelFunction] bool operator!=<T>(iterator, iterator)
-# 1075|   ...: 
+# 1075|   : 
 # 1075|     getParameter(0): [Parameter] left
 # 1075|         Type = [TemplateParameter] iterator
 # 1075|     getParameter(1): [Parameter] right
 # 1075|         Type = [TemplateParameter] iterator
 # 1077| [TopLevelFunction] void RangeBasedFor(vector<int> const&)
-# 1077|   ...: 
+# 1077|   : 
 # 1077|     getParameter(0): [Parameter] v
 # 1077|         Type = [LValueReferenceType] const vector<int> &
 # 1077|   getEntryPoint(): [BlockStmt] { ... }
@@ -9252,7 +9252,7 @@ ir.cpp:
 # 1088|     getStmt(2): [LabelStmt] label ...:
 # 1089|     getStmt(3): [ReturnStmt] return ...
 # 1108| [TopLevelFunction] int AsmStmt(int)
-# 1108|   ...: 
+# 1108|   : 
 # 1108|     getParameter(0): [Parameter] x
 # 1108|         Type = [IntType] int
 # 1108|   getEntryPoint(): [BlockStmt] { ... }
@@ -9262,7 +9262,7 @@ ir.cpp:
 # 1110|           Type = [IntType] int
 # 1110|           ValueCategory = prvalue(load)
 # 1113| [TopLevelFunction] void AsmStmtWithOutputs(unsigned int&, unsigned int, unsigned int&, unsigned int)
-# 1113|   ...: 
+# 1113|   : 
 # 1113|     getParameter(0): [Parameter] a
 # 1113|         Type = [LValueReferenceType] unsigned int &
 # 1113|     getParameter(1): [Parameter] b
@@ -9293,7 +9293,7 @@ ir.cpp:
 # 1118|           ValueCategory = prvalue(load)
 # 1120|     getStmt(1): [ReturnStmt] return ...
 # 1122| [TopLevelFunction] void ExternDeclarations()
-# 1122|   ...: 
+# 1122|   : 
 # 1123|   getEntryPoint(): [BlockStmt] { ... }
 # 1124|     getStmt(0): [DeclStmt] declaration
 # 1124|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of g
@@ -9318,19 +9318,19 @@ ir.cpp:
 # 1128|           Type = [CTypedefType,LocalTypedefType] d
 # 1129|     getStmt(5): [ReturnStmt] return ...
 # 1126| [TopLevelFunction] int f(float)
-# 1126|   ...: 
+# 1126|   : 
 # 1126|     getParameter(0): [Parameter] (unnamed parameter 0)
 # 1126|         Type = [FloatType] float
 # 1127| [TopLevelFunction] int z(float)
-# 1127|   ...: 
+# 1127|   : 
 # 1127|     getParameter(0): [Parameter] (unnamed parameter 0)
 # 1127|         Type = [FloatType] float
 # 1127| [TopLevelFunction] int w(float)
-# 1127|   ...: 
+# 1127|   : 
 # 1127|     getParameter(0): [Parameter] (unnamed parameter 0)
 # 1127|         Type = [FloatType] float
 # 1137| [TopLevelFunction] void ExternDeclarationsInMacro()
-# 1137|   ...: 
+# 1137|   : 
 # 1138|   getEntryPoint(): [BlockStmt] { ... }
 # 1139|     getStmt(0): [DeclStmt] declaration
 # 1139|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of g
@@ -9367,7 +9367,7 @@ ir.cpp:
 # 1139|     getStmt(2): [EmptyStmt] ;
 # 1140|     getStmt(3): [ReturnStmt] return ...
 # 1142| [TopLevelFunction] void TryCatchNoCatchAny(bool)
-# 1142|   ...: 
+# 1142|   : 
 # 1142|     getParameter(0): [Parameter] b
 # 1142|         Type = [BoolType] bool
 # 1142|   getEntryPoint(): [BlockStmt] { ... }
@@ -9466,7 +9466,7 @@ ir.cpp:
 # 1156|         getBlock(): [CatchBlock] { ... }
 # 1158|     getStmt(1): [ReturnStmt] return ...
 # 1162| [TopLevelFunction] void VectorTypes(int)
-# 1162|   ...: 
+# 1162|   : 
 # 1162|     getParameter(0): [Parameter] i
 # 1162|         Type = [IntType] int
 # 1162|   getEntryPoint(): [BlockStmt] { ... }
@@ -9577,7 +9577,7 @@ ir.cpp:
 # 1167|               ValueCategory = prvalue(load)
 # 1168|     getStmt(5): [ReturnStmt] return ...
 # 1170| [TopLevelFunction] void* memcpy(void*, void*, int)
-# 1170|   ...: 
+# 1170|   : 
 # 1170|     getParameter(0): [Parameter] dst
 # 1170|         Type = [VoidPointerType] void *
 # 1170|     getParameter(1): [Parameter] src
@@ -9585,7 +9585,7 @@ ir.cpp:
 # 1170|     getParameter(2): [Parameter] size
 # 1170|         Type = [IntType] int
 # 1172| [TopLevelFunction] int ModeledCallTarget(int)
-# 1172|   ...: 
+# 1172|   : 
 # 1172|     getParameter(0): [Parameter] x
 # 1172|         Type = [IntType] int
 # 1172|   getEntryPoint(): [BlockStmt] { ... }
@@ -9630,7 +9630,7 @@ ir.cpp:
 # 1175|           Type = [IntType] int
 # 1175|           ValueCategory = prvalue(load)
 # 1178| [TopLevelFunction] String ReturnObjectImpl()
-# 1178|   ...: 
+# 1178|   : 
 # 1178|   getEntryPoint(): [BlockStmt] { ... }
 # 1179|     getStmt(0): [ReturnStmt] return ...
 # 1179|       getExpr(): [ConstructorCall] call to String
@@ -9644,7 +9644,7 @@ ir.cpp:
 # 1179|             Type = [PointerType] const char *
 # 1179|             ValueCategory = prvalue
 # 1182| [TopLevelFunction] void switch1Case(int)
-# 1182|   ...: 
+# 1182|   : 
 # 1182|     getParameter(0): [Parameter] x
 # 1182|         Type = [IntType] int
 # 1182|   getEntryPoint(): [BlockStmt] { ... }
@@ -9686,7 +9686,7 @@ ir.cpp:
 # 1188|               ValueCategory = prvalue(load)
 # 1189|     getStmt(3): [ReturnStmt] return ...
 # 1191| [TopLevelFunction] void switch2Case_fallthrough(int)
-# 1191|   ...: 
+# 1191|   : 
 # 1191|     getParameter(0): [Parameter] x
 # 1191|         Type = [IntType] int
 # 1191|   getEntryPoint(): [BlockStmt] { ... }
@@ -9744,7 +9744,7 @@ ir.cpp:
 # 1199|               ValueCategory = prvalue(load)
 # 1200|     getStmt(3): [ReturnStmt] return ...
 # 1202| [TopLevelFunction] void switch2Case(int)
-# 1202|   ...: 
+# 1202|   : 
 # 1202|     getParameter(0): [Parameter] x
 # 1202|         Type = [IntType] int
 # 1202|   getEntryPoint(): [BlockStmt] { ... }
@@ -9804,7 +9804,7 @@ ir.cpp:
 # 1211|               ValueCategory = prvalue(load)
 # 1212|     getStmt(4): [ReturnStmt] return ...
 # 1214| [TopLevelFunction] void switch2Case_default(int)
-# 1214|   ...: 
+# 1214|   : 
 # 1214|     getParameter(0): [Parameter] x
 # 1214|         Type = [IntType] int
 # 1214|   getEntryPoint(): [BlockStmt] { ... }
@@ -9877,7 +9877,7 @@ ir.cpp:
 # 1228|               ValueCategory = prvalue(load)
 # 1229|     getStmt(4): [ReturnStmt] return ...
 # 1231| [TopLevelFunction] int staticLocalInit(int)
-# 1231|   ...: 
+# 1231|   : 
 # 1231|     getParameter(0): [Parameter] x
 # 1231|         Type = [IntType] int
 # 1231|   getEntryPoint(): [BlockStmt] { ... }
@@ -9941,7 +9941,7 @@ ir.cpp:
 # 1237|             Type = [IntType] int
 # 1237|             ValueCategory = prvalue(load)
 # 1240| [TopLevelFunction] void staticLocalWithConstructor(char const*)
-# 1240|   ...: 
+# 1240|   : 
 # 1240|     getParameter(0): [Parameter] dynamic
 # 1240|         Type = [PointerType] const char *
 # 1240|   getEntryPoint(): [BlockStmt] { ... }
@@ -9978,19 +9978,19 @@ ir.cpp:
 # 1243|                 ValueCategory = prvalue(load)
 # 1244|     getStmt(3): [ReturnStmt] return ...
 # 1248| [TopLevelFunction] char* strcpy(char*, char const*)
-# 1248|   ...: 
+# 1248|   : 
 # 1248|     getParameter(0): [Parameter] destination
 # 1248|         Type = [CharPointerType] char *
 # 1248|     getParameter(1): [Parameter] source
 # 1248|         Type = [PointerType] const char *
 # 1249| [TopLevelFunction] char* strcat(char*, char const*)
-# 1249|   ...: 
+# 1249|   : 
 # 1249|     getParameter(0): [Parameter] destination
 # 1249|         Type = [CharPointerType] char *
 # 1249|     getParameter(1): [Parameter] source
 # 1249|         Type = [PointerType] const char *
 # 1251| [TopLevelFunction] void test_strings(char*, char*)
-# 1251|   ...: 
+# 1251|   : 
 # 1251|     getParameter(0): [Parameter] s1
 # 1251|         Type = [CharPointerType] char *
 # 1251|     getParameter(1): [Parameter] s2
@@ -10048,15 +10048,15 @@ ir.cpp:
 # 1255|             ValueCategory = prvalue
 # 1256|     getStmt(3): [ReturnStmt] return ...
 # 1258| [CopyAssignmentOperator] A& A::operator=(A const&)
-# 1258|   ...: 
+# 1258|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const A &
 # 1258| [MoveAssignmentOperator] A& A::operator=(A&&)
-# 1258|   ...: 
+# 1258|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] A &&
 # 1261| [MemberFunction] void A::static_member(A*, int)
-# 1261|   ...: 
+# 1261|   : 
 # 1261|     getParameter(0): [Parameter] a
 # 1261|         Type = [PointerType] A *
 # 1261|     getParameter(1): [Parameter] x
@@ -10077,11 +10077,11 @@ ir.cpp:
 # 1262|             ValueCategory = prvalue(load)
 # 1263|     getStmt(1): [ReturnStmt] return ...
 # 1265| [MemberFunction] void A::static_member_without_def()
-# 1265|   ...: 
+# 1265|   : 
 # 1268| [TopLevelFunction] A* getAnInstanceOfA()
-# 1268|   ...: 
+# 1268|   : 
 # 1270| [TopLevelFunction] void test_static_member_functions(int, A*)
-# 1270|   ...: 
+# 1270|   : 
 # 1270|     getParameter(0): [Parameter] int_arg
 # 1270|         Type = [IntType] int
 # 1270|     getParameter(1): [Parameter] a_arg
@@ -10232,7 +10232,7 @@ ir.cpp:
 # 1286|             ValueCategory = prvalue
 # 1287|     getStmt(12): [ReturnStmt] return ...
 # 1289| [TopLevelFunction] int missingReturnValue(bool, int)
-# 1289|   ...: 
+# 1289|   : 
 # 1289|     getParameter(0): [Parameter] b
 # 1289|         Type = [BoolType] bool
 # 1289|     getParameter(1): [Parameter] x
@@ -10249,7 +10249,7 @@ ir.cpp:
 # 1291|               ValueCategory = prvalue(load)
 # 1293|     getStmt(1): [ReturnStmt] return ...
 # 1295| [TopLevelFunction] void returnVoid(int, int)
-# 1295|   ...: 
+# 1295|   : 
 # 1295|     getParameter(0): [Parameter] x
 # 1295|         Type = [IntType] int
 # 1295|     getParameter(1): [Parameter] y
@@ -10266,7 +10266,7 @@ ir.cpp:
 # 1296|             Type = [IntType] int
 # 1296|             ValueCategory = prvalue(load)
 # 1299| [TopLevelFunction] void gccBinaryConditional(bool, int, long)
-# 1299|   ...: 
+# 1299|   : 
 # 1299|     getParameter(0): [Parameter] b
 # 1299|         Type = [BoolType] bool
 # 1299|     getParameter(1): [Parameter] x
@@ -10454,11 +10454,11 @@ ir.cpp:
 # 1308|               ValueCategory = prvalue
 # 1309|     getStmt(8): [ReturnStmt] return ...
 # 1311| [TopLevelFunction] bool predicateA()
-# 1311|   ...: 
+# 1311|   : 
 # 1312| [TopLevelFunction] bool predicateB()
-# 1312|   ...: 
+# 1312|   : 
 # 1314| [TopLevelFunction] int shortCircuitConditional(int, int)
-# 1314|   ...: 
+# 1314|   : 
 # 1314|     getParameter(0): [Parameter] x
 # 1314|         Type = [IntType] int
 # 1314|     getParameter(1): [Parameter] y
@@ -10484,13 +10484,13 @@ ir.cpp:
 # 1315|             Type = [IntType] int
 # 1315|             ValueCategory = prvalue(load)
 # 1318| [Operator,TopLevelFunction] void* operator new(size_t, void*)
-# 1318|   ...: 
+# 1318|   : 
 # 1318|     getParameter(0): [Parameter] (unnamed parameter 0)
 # 1318|         Type = [CTypedefType,Size_t] size_t
 # 1318|     getParameter(1): [Parameter] (unnamed parameter 1)
 # 1318|         Type = [VoidPointerType] void *
 # 1320| [TopLevelFunction] void f(int*)
-# 1320|   ...: 
+# 1320|   : 
 # 1320|     getParameter(0): [Parameter] p
 # 1320|         Type = [IntPointerType] int *
 # 1321|   getEntryPoint(): [BlockStmt] { ... }
@@ -10514,24 +10514,24 @@ ir.cpp:
 # 1323|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
-#    4|   ...: 
+#    4|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Big &
 #    4| [MoveAssignmentOperator] Big& Big::operator=(Big&&)
-#    4|   ...: 
+#    4|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Big &&
 #    4| [CopyConstructor] void Big::Big(Big const&)
-#    4|   ...: 
+#    4|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Big &
 #    4| [MoveConstructor] void Big::Big(Big&&)
-#    4|   ...: 
+#    4|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Big &&
 #    6| [Constructor] void Big::Big()
-#    6|   ...: 
-#    6|   ...: 
+#    6|   : 
+#    6|   : 
 #    6|     getInitializer(0): [ConstructorFieldInit] constructor init of field buffer
 #    6|         Type = [ArrayType] char[1073741824]
 #    6|         ValueCategory = prvalue
@@ -10541,7 +10541,7 @@ perf-regression.cpp:
 #    6|   getEntryPoint(): [BlockStmt] { ... }
 #    6|     getStmt(0): [ReturnStmt] return ...
 #    9| [TopLevelFunction] int main()
-#    9|   ...: 
+#    9|   : 
 #    9|   getEntryPoint(): [BlockStmt] { ... }
 #   10|     getStmt(0): [DeclStmt] declaration
 #   10|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of big
@@ -10560,23 +10560,23 @@ perf-regression.cpp:
 #   12|           ValueCategory = prvalue
 struct_init.cpp:
 #    1| [TopLevelFunction] int handler1(void*)
-#    1|   ...: 
+#    1|   : 
 #    1|     getParameter(0): [Parameter] p
 #    1|         Type = [VoidPointerType] void *
 #    2| [TopLevelFunction] int handler2(void*)
-#    2|   ...: 
+#    2|   : 
 #    2|     getParameter(0): [Parameter] p
 #    2|         Type = [VoidPointerType] void *
 #    4| [CopyAssignmentOperator] Info& Info::operator=(Info const&)
-#    4|   ...: 
+#    4|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Info &
 #    4| [MoveAssignmentOperator] Info& Info::operator=(Info&&)
-#    4|   ...: 
+#    4|   : 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Info &&
 #   16| [TopLevelFunction] void let_info_escape(Info*)
-#   16|   ...: 
+#   16|   : 
 #   16|     getParameter(0): [Parameter] info
 #   16|         Type = [PointerType] Info *
 #   16|   getEntryPoint(): [BlockStmt] { ... }
@@ -10592,7 +10592,7 @@ struct_init.cpp:
 #   17|             ValueCategory = prvalue(load)
 #   18|     getStmt(1): [ReturnStmt] return ...
 #   20| [TopLevelFunction] void declare_static_infos()
-#   20|   ...: 
+#   20|   : 
 #   20|   getEntryPoint(): [BlockStmt] { ... }
 #   21|     getStmt(0): [DeclStmt] declaration
 #   21|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of static_infos
@@ -10642,7 +10642,7 @@ struct_init.cpp:
 #   25|             ValueCategory = prvalue
 #   26|     getStmt(2): [ReturnStmt] return ...
 #   28| [TopLevelFunction] void declare_local_infos()
-#   28|   ...: 
+#   28|   : 
 #   28|   getEntryPoint(): [BlockStmt] { ... }
 #   29|     getStmt(0): [DeclStmt] declaration
 #   29|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of local_infos
@@ -10692,7 +10692,7 @@ struct_init.cpp:
 #   33|             ValueCategory = prvalue
 #   34|     getStmt(2): [ReturnStmt] return ...
 #   36| [TopLevelFunction] void declare_static_runtime_infos(char const*)
-#   36|   ...: 
+#   36|   : 
 #   36|     getParameter(0): [Parameter] name1
 #   36|         Type = [PointerType] const char *
 #   36|   getEntryPoint(): [BlockStmt] { ... }

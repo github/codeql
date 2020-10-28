@@ -182,6 +182,10 @@ class PrintASTNode extends TPrintASTNode {
     result = childIndex.toString()
   }
 
+  /**
+   * Gets the QL predicate that can be used to access the child at `childIndex`.
+   * May not hold for all children, see for example `FunctionNode`.
+   */
   abstract string getChildAccessorPredicate(int childIndex);
 
   /**
@@ -616,7 +620,7 @@ class ArrayAggregateLiteralNode extends ExprNode {
   }
 }
 
-string getChildAccessor(Locatable parent, Element child) {
+private string getChildAccessor(Locatable parent, Element child) {
   shouldPrintFunction(getEnclosingFunction(parent)) and
   (
     exists(Stmt s | s = parent.(Stmt) |
