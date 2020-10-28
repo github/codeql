@@ -42,16 +42,9 @@ fn create_supertype_map(nodes: &[node_types::Entry]) -> SupertypeMap {
                     let subtype_class_name = dbscheme_name_to_class_name(&node_types::escape_name(
                         &node_types::node_type_name(&n_member.kind, n_member.named),
                     ));
-                    match map.get_mut(&subtype_class_name) {
-                        Some(set) => {
-                            set.insert(supertype_class_name.clone());
-                        }
-                        None => {
-                            let mut set: BTreeSet<String> = BTreeSet::new();
-                            set.insert(supertype_class_name.clone());
-                            map.insert(subtype_class_name.clone(), set);
-                        }
-                    }
+                    map.entry(subtype_class_name)
+                        .or_insert_with(|| BTreeSet::new())
+                        .insert(supertype_class_name.clone());
                 }
             }
             node_types::Entry::Table { type_name, fields } => {
@@ -76,16 +69,9 @@ fn create_supertype_map(nodes: &[node_types::Entry]) -> SupertypeMap {
                                 node_types::node_type_name(&field_type.kind, field_type.named);
                             let member_class_name =
                                 dbscheme_name_to_class_name(&node_types::escape_name(&member_name));
-                            match map.get_mut(&member_class_name) {
-                                Some(set) => {
-                                    set.insert(supertype_name.clone());
-                                }
-                                None => {
-                                    let mut set: BTreeSet<String> = BTreeSet::new();
-                                    set.insert(supertype_name.clone());
-                                    map.insert(member_class_name.clone(), set);
-                                }
-                            }
+                            map.entry(member_class_name)
+                                .or_insert_with(|| BTreeSet::new())
+                                .insert(supertype_name.clone());
                         }
                     }
                 }
