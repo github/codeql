@@ -1663,9 +1663,14 @@ class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
   }
 
   private AccessPath getItemAccessPath(int i) {
-    i in [1 .. count(this.getAMember())] and
-    result in [AccessPath::field(this.getField("Item" + i)),
-          AccessPath::property(this.getProperty("Item" + i))]
+    result =
+      unique(AccessPath ap |
+        i in [1 .. count(this.getAMember())] and
+        ap in [AccessPath::field(this.getField("Item" + i)),
+              AccessPath::property(this.getProperty("Item" + i))]
+      |
+        ap
+      )
   }
 
   override predicate callableFlow(
