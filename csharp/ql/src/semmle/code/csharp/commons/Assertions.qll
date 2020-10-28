@@ -9,8 +9,22 @@ private import ControlFlow::BasicBlocks
 
 /** An assertion method. */
 abstract class AssertMethod extends Method {
+  /**
+   * DEPRECATED: renamed to `getAnAssertionIndex`.
+   *
+   * Gets the index of a parameter being asserted.
+   */
+  deprecated int getAssertionIndex() { result = getAnAssertionIndex() }
+
   /** Gets the index of a parameter being asserted. */
   abstract int getAnAssertionIndex();
+
+  /**
+   * DEPRECATED: renamed to `getAnAssertedParameter`.
+   *
+   * Gets a parameter being asserted.
+   */
+  deprecated Parameter getAssertedParameter() { result = getAnAssertedParameter() }
 
   /** Gets a parameter being asserted. */
   final Parameter getAnAssertedParameter() {
@@ -41,6 +55,13 @@ class Assertion extends MethodCall {
 
   /** Gets the assertion method targeted by this assertion. */
   AssertMethod getAssertMethod() { result = target }
+
+  /**
+   * DEPRECATED: renamed to `getAnExpr`.
+   *
+   * Gets an expression that this assertion pertains to.
+   */
+  deprecated Expr getExpr() { result = this.getAnExpr() }
 
   /** Gets an expression that this assertion pertains to. */
   Expr getAnExpr() { result = this.getArgumentForParameter(target.getAnAssertedParameter()) }
@@ -199,7 +220,7 @@ class SystemDiagnosticsContractAssertTrueMethod extends AssertTrueMethod {
 
 private predicate isDoesNotReturnIfAttributeParameter(Parameter p, boolean value) {
   exists(Attribute a | a = p.getAnAttribute() |
-    a.getType() = any(SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass c) and
+    a.getType() instanceof SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass and
     a.getConstructorArgument(0).(BoolLiteral).getBoolValue() = value
   )
 }
@@ -209,20 +230,15 @@ private predicate isDoesNotReturnIfAttributeParameter(Parameter p, boolean value
  * `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute(false)`.
  */
 class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod extends AssertTrueMethod {
+  private int i;
+
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod() {
-    this = any(Method m | isDoesNotReturnIfAttributeParameter(m.getAParameter(), false))
+    isDoesNotReturnIfAttributeParameter(this.getParameter(i), false)
   }
 
-  override int getAnAssertionIndex() {
-    exists(Parameter p |
-      this.getParameter(result) = p and isDoesNotReturnIfAttributeParameter(p, false)
-    )
-  }
+  override int getAnAssertionIndex() { result = i }
 
-  override Class getExceptionClass() {
-    // The user defines the thrown exception.
-    any()
-  }
+  override SystemExceptionClass getExceptionClass() { any() }
 }
 
 /**
@@ -230,20 +246,15 @@ class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod exte
  * `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute(true)`.
  */
 class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod extends AssertFalseMethod {
+  private int i;
+
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod() {
-    this = any(Method m | isDoesNotReturnIfAttributeParameter(m.getAParameter(), true))
+    isDoesNotReturnIfAttributeParameter(this.getParameter(i), true)
   }
 
-  override int getAnAssertionIndex() {
-    exists(Parameter p |
-      this.getParameter(result) = p and isDoesNotReturnIfAttributeParameter(p, true)
-    )
-  }
+  override int getAnAssertionIndex() { result = i }
 
-  override Class getExceptionClass() {
-    // The user defines the thrown exception.
-    any()
-  }
+  override SystemExceptionClass getExceptionClass() { any() }
 }
 
 /** A Visual Studio assertion method. */
