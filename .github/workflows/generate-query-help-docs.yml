@@ -39,13 +39,16 @@ jobs:
     - name: Query help to markdown
       run: |
         PATH="$PATH:codeql-cli/codeql" python codeql/docs/language/query-help-markdown.py
-    - name: Run Sphinx for query help
-      uses: ammaraskar/sphinx-action@master
-      with:
-        docs-folder: "codeql/docs/language/query-help/"
-        pre-build-command: "python -m pip install --upgrade recommonmark"
-        build-command: "sphinx-build -b html . query-help-build"  
-    - name: Upload HTML artifacts
+    - name: Build site assets  
+      working-directory: '${{ github.workspace }}'  
+      run: ls -la
+    #- name: Run Sphinx for query help
+    #  uses: ammaraskar/sphinx-action@master
+    #  with:
+    #    docs-folder: "codeql/docs/language/query-help/"
+    #    pre-build-command: "python -m pip install --upgrade recommonmark"
+    #    build-command: "sphinx-build -b html . query-help-build"  
+    #- name: Upload HTML artifacts
       uses: actions/upload-artifact@v2
       with:
         name: query-help-html
