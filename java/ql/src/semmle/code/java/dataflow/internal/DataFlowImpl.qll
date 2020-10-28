@@ -601,8 +601,8 @@ private predicate parameterThroughFlowNodeCand1(ParameterNode p, Configuration c
 }
 
 pragma[nomagic]
-private predicate storeCand1(Node n1, Content c, Node n2, Configuration config) {
-  exists(TypedContent tc |
+private predicate storeCand1(Node n1, TypedContent tc, Node n2, Configuration config) {
+  exists(Content c |
     Stage1::revFlowIsReadAndStored(c, config) and
     Stage1::revFlow(n2, unbind(config)) and
     store(n1, tc, n2, _) and
@@ -748,6 +748,12 @@ private module Stage2 {
     ApNil() { this = false }
   }
 
+  bindingset[tc, tail]
+  private Ap apCons(TypedContent tc, Ap tail) { result = true and exists(tc) and exists(tail) }
+
+  pragma[inline]
+  private Content getHeadContent(Ap ap) { exists(result) and ap = true }
+
   class ApOption = BooleanOption;
 
   ApOption apNone() { result = TBooleanNone() }
@@ -802,16 +808,15 @@ private module Stage2 {
       )
       or
       // store
-      exists(Node mid |
-        fwdFlow(mid, cc, argAp, _, config) and
-        storeCand1(mid, _, node, config) and
-        ap = true
+      exists(TypedContent tc, Ap ap0 |
+        fwdFlowStore(node, tc, ap0, cc, argAp, config) and
+        ap = apCons(tc, ap0)
       )
       or
       // read
-      exists(Content c |
-        fwdFlowRead(c, node, cc, argAp, config) and
-        fwdFlowConsCand(c, ap, config)
+      exists(Ap ap0, Content c |
+        fwdFlowRead(ap0, c, _, node, cc, argAp, config) and
+        fwdFlowConsCand(ap0, c, ap, config)
       )
       or
       // flow into a callable
@@ -832,23 +837,35 @@ private module Stage2 {
     )
   }
 
+  pragma[nomagic]
+  private predicate fwdFlowStore(
+    Node node, TypedContent tc, Ap ap0, Cc cc, ApOption argAp, Configuration config
+  ) {
+    exists(Node mid |
+      fwdFlow(mid, cc, argAp, ap0, config) and
+      storeCand1(mid, tc, node, config)
+    )
+  }
+
   /**
    * Holds if `c` is the target of a store in the flow covered by `fwdFlow`.
    */
-  pragma[noinline]
-  private predicate fwdFlowConsCand(Content c, Ap ap, Configuration config) {
-    exists(Node mid, Node node |
-      fwdFlow(mid, _, _, ap, config) and
-      storeCand1(mid, c, node, config)
+  pragma[nomagic]
+  private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+    exists(TypedContent tc |
+      fwdFlowStore(_, tc, tail, _, _, config) and
+      tc.getContent() = c and
+      cons = apCons(tc, tail)
     )
   }
 
   pragma[nomagic]
-  private predicate fwdFlowRead(Content c, Node node, Cc cc, ApOption argAp, Configuration config) {
-    exists(Node mid |
-      fwdFlow(mid, cc, argAp, true, config) and
-      read(mid, c, node, config)
-    )
+  private predicate fwdFlowRead(
+    Ap ap, Content c, Node node1, Node node2, Cc cc, ApOption argAp, Configuration config
+  ) {
+    fwdFlow(node1, cc, argAp, ap, config) and
+    read(node1, c, node2, config) and
+    getHeadContent(ap) = c
   }
 
   pragma[nomagic]
@@ -893,6 +910,11 @@ private module Stage2 {
       fwdFlowIn(call, p, cc, argAp, ap, config) and
       parameterThroughFlowNodeCand1(p, config)
     )
+  }
+
+  private predicate readStepFwd(Node n1, Ap ap1, Content c, Node n2, Ap ap2, Configuration config) {
+    fwdFlowRead(ap1, c, n1, n2, _, _, config) and
+    fwdFlowConsCand(ap1, c, ap2, config)
   }
 
   /**
@@ -949,17 +971,15 @@ private module Stage2 {
     )
     or
     // store
-    exists(Content c |
-      revFlowStore(c, node, toReturn, returnAp, ap, config) and
-      revFlowConsCand(c, ap, config)
+    exists(Ap ap0, Content c |
+      revFlowStore(ap0, c, node, toReturn, returnAp, ap, config) and
+      revFlowConsCand(ap0, c, ap, config)
     )
     or
     // read
-    exists(Node mid, Content c, Ap ap0 |
-      read(node, c, mid, config) and
-      fwdFlowConsCand(c, unbindBool(ap0), unbind(config)) and
+    exists(Node mid, Ap ap0 |
       revFlow(mid, toReturn, returnAp, ap0, config) and
-      ap = true
+      readStepFwd(node, ap, _, mid, ap0, config)
     )
     or
     // flow into a callable
@@ -984,23 +1004,23 @@ private module Stage2 {
   /**
    * Holds if `c` is the target of a read in the flow covered by `revFlow`.
    */
-  pragma[noinline]
-  private predicate revFlowConsCand(Content c, Ap ap, Configuration config) {
-    exists(Node mid, Node node |
-      fwdFlow(node, _, _, true, unbind(config)) and
-      read(node, c, mid, config) and
-      fwdFlowConsCand(c, unbindBool(ap), unbind(config)) and
-      revFlow(mid, _, _, ap, config)
+  pragma[nomagic]
+  private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+    exists(Node mid |
+      revFlow(mid, _, _, tail, config) and
+      readStepFwd(_, cons, c, mid, tail, config)
     )
   }
 
   pragma[nomagic]
   private predicate revFlowStore(
-    Content c, Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+    Ap ap0, Content c, Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
-    exists(Node mid |
-      storeCand1(node, c, mid, config) and
-      revFlow(mid, toReturn, returnAp, true, config) and
+    exists(Node mid, TypedContent tc |
+      storeCand1(node, tc, mid, config) and
+      tc.getContent() = c and
+      revFlow(mid, toReturn, returnAp, ap0, config) and
+      ap0 = true and
       fwdFlow(node, _, _, ap, unbind(config))
     )
   }
@@ -1011,7 +1031,7 @@ private module Stage2 {
   pragma[nomagic]
   private predicate revFlowIsStored(Content c, Ap ap, Configuration conf) {
     exists(Node node |
-      revFlowStore(c, node, _, _, ap, conf) and
+      revFlowStore(_, c, node, _, _, ap, conf) and
       revFlow(node, _, _, ap, conf)
     )
   }
@@ -1024,7 +1044,7 @@ private module Stage2 {
   predicate revFlowIsReadAndStored(Content c, Configuration conf) {
     exists(Ap ap |
       revFlowIsStored(c, ap, conf) and
-      revFlowConsCand(c, ap, conf)
+      revFlowConsCand(_, c, ap, conf)
     )
   }
 
