@@ -650,9 +650,12 @@ private DataFlow::Node getAContextInput(DataFlow::CallNode createContext) {
  * ```
  */
 pragma[nomagic]
-private DataFlow::CallNode getAContextOutput(DataFlow::CallNode createContext) {
-  result = react().getAMemberCall("useContext") and
-  getAContextRef(createContext).flowsTo(result.getArgument(0))
+private DataFlow::SourceNode getAContextOutput(DataFlow::CallNode createContext) {
+  exists(DataFlow::CallNode call |
+    call = react().getAMemberCall("useContext") and
+    getAContextRef(createContext).flowsTo(call.getArgument(0)) and
+    result = call
+  )
   or
   exists(DataFlow::ClassNode cls |
     getAContextRef(createContext).flowsTo(cls.getAPropertyWrite("contextType").getRhs()) and

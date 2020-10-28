@@ -147,6 +147,9 @@ nodes
 | react-use-context.js:10:22:10:32 | window.name |
 | react-use-context.js:10:22:10:32 | window.name |
 | react-use-context.js:10:22:10:32 | window.name |
+| react-use-context.js:16:26:16:36 | window.name |
+| react-use-context.js:16:26:16:36 | window.name |
+| react-use-context.js:16:26:16:36 | window.name |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:10:4:14 | state |
 | react-use-state.js:4:38:4:48 | window.name |
@@ -715,6 +718,7 @@ edges
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name |
+| react-use-context.js:16:26:16:36 | window.name | react-use-context.js:16:26:16:36 | window.name |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:10:4:14 | state | react-use-state.js:4:9:4:49 | state |
