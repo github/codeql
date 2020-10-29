@@ -17,7 +17,7 @@ import PathGraph
  * Gets a regular expression for matching names of variables that indicate the value being held may contain sensitive information
  */
 private string getACredentialRegex() {
-  result = "(?i)(.*uri|url).*"
+  result = "(?i)(url).*"
 }
 
 /** Variable keeps sensitive information judging by its name * */
