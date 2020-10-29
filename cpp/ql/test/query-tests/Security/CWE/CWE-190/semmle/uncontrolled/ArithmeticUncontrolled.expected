@@ -109,11 +109,11 @@ nodes
 | test.cpp:8:9:8:12 | call to rand | semmle.label | call to rand |
 | test.cpp:8:9:8:12 | call to rand | semmle.label | call to rand |
 | test.cpp:13:2:13:15 | Chi [array content] | semmle.label | Chi [array content] |
-| test.cpp:13:2:13:15 | StoreValue | semmle.label | StoreValue |
+| test.cpp:13:2:13:15 | ChiPartial | semmle.label | ChiPartial |
 | test.cpp:13:10:13:13 | call to rand | semmle.label | call to rand |
 | test.cpp:13:10:13:13 | call to rand | semmle.label | call to rand |
 | test.cpp:18:2:18:14 | Chi [array content] | semmle.label | Chi [array content] |
-| test.cpp:18:2:18:14 | StoreValue | semmle.label | StoreValue |
+| test.cpp:18:2:18:14 | ChiPartial | semmle.label | ChiPartial |
 | test.cpp:18:9:18:12 | call to rand | semmle.label | call to rand |
 | test.cpp:18:9:18:12 | call to rand | semmle.label | call to rand |
 | test.cpp:24:11:24:18 | call to get_rand | semmle.label | call to get_rand |

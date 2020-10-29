@@ -143,7 +143,7 @@ nodes
 | test.cpp:235:2:235:9 | Argument 0 | semmle.label | Argument 0 |
 | test.cpp:237:2:237:8 | Argument 0 | semmle.label | Argument 0 |
 | test.cpp:241:2:241:32 | Chi [array content] | semmle.label | Chi [array content] |
-| test.cpp:241:2:241:32 | StoreValue | semmle.label | StoreValue |
+| test.cpp:241:2:241:32 | ChiPartial | semmle.label | ChiPartial |
 | test.cpp:241:18:241:23 | call to getenv | semmle.label | call to getenv |
 | test.cpp:241:18:241:31 | (const char *)... | semmle.label | (const char *)... |
 | test.cpp:249:20:249:25 | call to getenv | semmle.label | call to getenv |

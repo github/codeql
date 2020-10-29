@@ -251,10 +251,10 @@ private predicate getWrittenField(Instruction instr, Field f, Class c) {
 }
 
 private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode node2) {
-  exists(StoreValueOperand operand, ChiInstruction chi |
+  exists(ChiPartialOperand operand, ChiInstruction chi |
+    chi.getPartialOperand() = operand and
     node1.asOperand() = operand and
     node2.asInstruction() = chi and
-    chi.getPartial() = operand.getUse() and
     exists(Class c |
       c = chi.getResultType() and
       exists(int startBit, int endBit |
@@ -262,7 +262,7 @@ private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode n
         f.hasOffset(c, startBit, endBit)
       )
       or
-      getWrittenField(operand.getUse(), f.getAField(), c) and
+      getWrittenField(operand.getDef(), f.getAField(), c) and
       f.hasOffset(c, _, _)
     )
   )
@@ -270,9 +270,13 @@ private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode n
 
 private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
   a = TArrayContent() and
-  exists(StoreValueOperand operand, StoreInstruction store |
-    store.getSourceValueOperand() = operand and
+  exists(ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store |
+    chi.getPartialOperand() = operand and
+    store = operand.getDef() and
     node1.asOperand() = operand and
+    // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
+    // and `PointerStoreNode` require it in their characteristic predicates.
+    node2.asInstruction() = chi and
     (
       // `x[i] = taint()`
       // This matches the characteristic predicate in `ArrayStoreNode`.
@@ -281,10 +285,7 @@ private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode n
       // `*p = taint()`
       // This matches the characteristic predicate in `PointerStoreNode`.
       store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
-    ) and
-    // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
-    // and `PointerStoreNode` require it in their characteristic predicates.
-    node2.asInstruction().(ChiInstruction).getPartial() = store
+    )
   )
 }
 
@@ -385,10 +386,10 @@ private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
   result = skipOneCopyValueInstructionRec(copy.getUnary())
 }
 
-private Instruction skipCopyValueInstructions(Instruction instr) {
-  not result instanceof CopyValueInstruction and result = instr
+private Instruction skipCopyValueInstructions(Operand op) {
+  not result instanceof CopyValueInstruction and result = op.getDef()
   or
-  result = skipOneCopyValueInstructionRec(instr)
+  result = skipOneCopyValueInstructionRec(op.getDef())
 }
 
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
@@ -398,7 +399,7 @@ private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
     operand.isDefinitionInexact() and
     node1.asInstruction() = operand.getAnyDef() and
     operand = node2.asOperand() and
-    address = skipCopyValueInstructions(operand.getUse().(LoadInstruction).getSourceAddress()) and
+    address = skipCopyValueInstructions(operand.getAddressOperand()) and
     (
       address instanceof LoadInstruction or
       address instanceof ArrayToPointerConvertInstruction or
@@ -419,7 +420,7 @@ private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
  * use(x);
  * ```
  * the load on `x` in `use(x)` will exactly overlap with its definition (in this case the definition
- * is a `BufferMayWriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
+ * is a `WriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
  * from the access path.
  */
 private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
