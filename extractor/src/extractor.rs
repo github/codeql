@@ -286,35 +286,33 @@ fn location_for<'a>(source: &Vec<u8>, fp: &String, label: Label, n: Node) -> Tra
     let start_col = n.start_position().column + 1;
     let mut end_line = n.end_position().row + 1;
     let mut end_col = n.end_position().column;
-    if end_col == 0 {
-        if start_line >= end_line {
-            // the range is empty, clip it to sensible values
-            end_line = start_line;
-            end_col = start_col - 1;
-        } else {
-            let mut index = n.end_byte();
-            // end_col = 0 means that we are the start of a line
-            // unfortunately 0 is invalid as column number, therefore
-            // we should update the end location to be the end of the
-            // previous line
-            if index > 0 && index <= source.len() {
-                index -= 1;
-                if source[index] != b'\n' {
-                    error!("expecting a line break symbol, but none found while correcting end column value");
-                }
-                end_line -= 1;
-                end_col = 1;
-                while index > 0 && source[index - 1] != b'\n' {
-                    index -= 1;
-                    end_col += 1;
-                }
-            } else {
-                error!(
-                    "cannot correct end column value: end_byte index {} is not in range [0,{}]",
-                    index,
-                    source.len()
-                );
+    if start_line > end_line || start_line == end_line && start_col > end_col {
+        // the range is empty, clip it to sensible values
+        end_line = start_line;
+        end_col = start_col - 1;
+    } else if end_col == 0 {
+        // end_col = 0 means that we are at the start of a line
+        // unfortunately 0 is invalid as column number, therefore
+        // we should update the end location to be the end of the
+        // previous line
+        let mut index = n.end_byte();
+        if index > 0 && index <= source.len() {
+            index -= 1;
+            if source[index] != b'\n' {
+                error!("expecting a line break symbol, but none found while correcting end column value");
             }
+            end_line -= 1;
+            end_col = 1;
+            while index > 0 && source[index - 1] != b'\n' {
+                index -= 1;
+                end_col += 1;
+            }
+        } else {
+            error!(
+                "cannot correct end column value: end_byte index {} is not in range [1,{}]",
+                index,
+                source.len()
+            );
         }
     }
     TrapEntry::Located(vec![
