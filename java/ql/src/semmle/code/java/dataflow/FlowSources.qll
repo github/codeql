@@ -313,7 +313,7 @@ class AndroidIntentInput extends DataFlow::Node {
     exists(MethodAccess ma, AndroidGetIntentMethod m |
       ma.getMethod().overrides*(m) and
       this.asExpr() = ma and
-      receiverType = ma.getEnclosingCallable().getDeclaringType()
+      receiverType = ma.getReceiverType()
     )
     or
     exists(Method m, AndroidReceiveIntentMethod rI |
