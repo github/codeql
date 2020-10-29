@@ -225,9 +225,9 @@ class Break extends @break, Top, ArgumentListChildType, ArrayChildType, Assignme
 
   override Location getLocation() { break_def(this, result) }
 
-  ArgumentList getChild(int i) { break_child(this, i, result) }
+  ArgumentList getChild() { break_child(this, result) }
 
-  override Top getAFieldOrChild() { break_child(this, _, result) }
+  override Top getAFieldOrChild() { break_child(this, result) }
 }
 
 class CallMethodType extends @call_method_type, Top { }
@@ -257,11 +257,11 @@ class Case extends @case__, Top, UnderscorePrimary {
 
   override Location getLocation() { case_def(this, result) }
 
-  UnderscoreStatement getValue(int i) { case_value(this, i, result) }
+  UnderscoreStatement getValue() { case_value(this, result) }
 
   CaseChildType getChild(int i) { case_child(this, i, result) }
 
-  override Top getAFieldOrChild() { case_value(this, _, result) or case_child(this, _, result) }
+  override Top getAFieldOrChild() { case_value(this, result) or case_child(this, _, result) }
 }
 
 class ChainedString extends @chained_string, Top, UnderscorePrimary {
@@ -385,11 +385,11 @@ class Else extends @else, Top, BeginChildType, CaseChildType, ClassChildType, Do
 
   override Location getLocation() { else_def(this, result) }
 
-  SemicolonUnnamed getCondition(int i) { else_condition(this, i, result) }
+  SemicolonUnnamed getCondition() { else_condition(this, result) }
 
   ElseChildType getChild(int i) { else_child(this, i, result) }
 
-  override Top getAFieldOrChild() { else_condition(this, _, result) or else_child(this, _, result) }
+  override Top getAFieldOrChild() { else_condition(this, result) or else_child(this, _, result) }
 }
 
 class ElsifAlternativeType extends @elsif_alternative_type, Top { }
@@ -399,16 +399,14 @@ class Elsif extends @elsif, Top, ElsifAlternativeType, IfAlternativeType, Unless
 
   override Location getLocation() { elsif_def(this, _, result) }
 
-  ElsifAlternativeType getAlternative(int i) { elsif_alternative(this, i, result) }
+  ElsifAlternativeType getAlternative() { elsif_alternative(this, result) }
 
   UnderscoreStatement getCondition() { elsif_def(this, result, _) }
 
-  Then getConsequence(int i) { elsif_consequence(this, i, result) }
+  Then getConsequence() { elsif_consequence(this, result) }
 
   override Top getAFieldOrChild() {
-    elsif_alternative(this, _, result) or
-    elsif_def(this, result, _) or
-    elsif_consequence(this, _, result)
+    elsif_alternative(this, result) or elsif_def(this, result, _) or elsif_consequence(this, result)
   }
 }
 
@@ -517,9 +515,9 @@ class HashSplatParameter extends @hash_splat_parameter, Top, BlockParametersChil
 
   override Location getLocation() { hash_splat_parameter_def(this, result) }
 
-  Identifier getName(int i) { hash_splat_parameter_name(this, i, result) }
+  Identifier getName() { hash_splat_parameter_name(this, result) }
 
-  override Top getAFieldOrChild() { hash_splat_parameter_name(this, _, result) }
+  override Top getAFieldOrChild() { hash_splat_parameter_name(this, result) }
 }
 
 class IfAlternativeType extends @if_alternative_type, Top { }
@@ -529,14 +527,14 @@ class If extends @if, Top, UnderscorePrimary {
 
   override Location getLocation() { if_def(this, _, result) }
 
-  IfAlternativeType getAlternative(int i) { if_alternative(this, i, result) }
+  IfAlternativeType getAlternative() { if_alternative(this, result) }
 
   UnderscoreStatement getCondition() { if_def(this, result, _) }
 
-  Then getConsequence(int i) { if_consequence(this, i, result) }
+  Then getConsequence() { if_consequence(this, result) }
 
   override Top getAFieldOrChild() {
-    if_alternative(this, _, result) or if_def(this, result, _) or if_consequence(this, _, result)
+    if_alternative(this, result) or if_def(this, result, _) or if_consequence(this, result)
   }
 }
 
@@ -585,10 +583,10 @@ class KeywordParameter extends @keyword_parameter, Top, BlockParametersChildType
 
   Identifier getName() { keyword_parameter_def(this, result, _) }
 
-  UnderscoreArg getValue(int i) { keyword_parameter_value(this, i, result) }
+  UnderscoreArg getValue() { keyword_parameter_value(this, result) }
 
   override Top getAFieldOrChild() {
-    keyword_parameter_def(this, result, _) or keyword_parameter_value(this, _, result)
+    keyword_parameter_def(this, result, _) or keyword_parameter_value(this, result)
   }
 }
 
@@ -601,11 +599,9 @@ class Lambda extends @lambda, Top, UnderscorePrimary {
 
   LambdaBodyType getBody() { lambda_def(this, result, _) }
 
-  LambdaParameters getParameters(int i) { lambda_parameters(this, i, result) }
+  LambdaParameters getParameters() { lambda_parameters(this, result) }
 
-  override Top getAFieldOrChild() {
-    lambda_def(this, result, _) or lambda_parameters(this, _, result)
-  }
+  override Top getAFieldOrChild() { lambda_def(this, result, _) or lambda_parameters(this, result) }
 }
 
 class LambdaParametersChildType extends @lambda_parameters_child_type, Top { }
@@ -641,14 +637,12 @@ class Method extends @method, Top, UnderscorePrimary {
 
   UnderscoreMethodName getName() { method_def(this, result, _) }
 
-  MethodParameters getParameters(int i) { method_parameters(this, i, result) }
+  MethodParameters getParameters() { method_parameters(this, result) }
 
   MethodChildType getChild(int i) { method_child(this, i, result) }
 
   override Top getAFieldOrChild() {
-    method_def(this, result, _) or
-    method_parameters(this, _, result) or
-    method_child(this, _, result)
+    method_def(this, result, _) or method_parameters(this, result) or method_child(this, _, result)
   }
 }
 
@@ -665,15 +659,15 @@ class MethodCall extends @method_call, Top, ArgumentListChildType, ArrayChildTyp
 
   override Location getLocation() { method_call_def(this, _, result) }
 
-  ArgumentList getArguments(int i) { method_call_arguments(this, i, result) }
+  ArgumentList getArguments() { method_call_arguments(this, result) }
 
-  MethodCallBlockType getBlock(int i) { method_call_block(this, i, result) }
+  MethodCallBlockType getBlock() { method_call_block(this, result) }
 
   MethodCallMethodType getMethod() { method_call_def(this, result, _) }
 
   override Top getAFieldOrChild() {
-    method_call_arguments(this, _, result) or
-    method_call_block(this, _, result) or
+    method_call_arguments(this, result) or
+    method_call_block(this, result) or
     method_call_def(this, result, _)
   }
 }
@@ -715,9 +709,9 @@ class Next extends @next, Top, ArgumentListChildType, ArrayChildType, Assignment
 
   override Location getLocation() { next_def(this, result) }
 
-  ArgumentList getChild(int i) { next_child(this, i, result) }
+  ArgumentList getChild() { next_child(this, result) }
 
-  override Top getAFieldOrChild() { next_child(this, _, result) }
+  override Top getAFieldOrChild() { next_child(this, result) }
 }
 
 class Operator extends @operator, Top, CallMethodType, UnderscoreMethodName {
@@ -838,9 +832,9 @@ class Redo extends @redo, Top, UnderscorePrimary {
 
   override Location getLocation() { redo_def(this, result) }
 
-  ArgumentList getChild(int i) { redo_child(this, i, result) }
+  ArgumentList getChild() { redo_child(this, result) }
 
-  override Top getAFieldOrChild() { redo_child(this, _, result) }
+  override Top getAFieldOrChild() { redo_child(this, result) }
 }
 
 class RegexChildType extends @regex_child_type, Top { }
@@ -861,16 +855,14 @@ class Rescue extends @rescue, Top, BeginChildType, ClassChildType, DoBlockChildT
 
   override Location getLocation() { rescue_def(this, result) }
 
-  Then getBody(int i) { rescue_body(this, i, result) }
+  Then getBody() { rescue_body(this, result) }
 
-  Exceptions getExceptions(int i) { rescue_exceptions(this, i, result) }
+  Exceptions getExceptions() { rescue_exceptions(this, result) }
 
-  ExceptionVariable getVariable(int i) { rescue_variable(this, i, result) }
+  ExceptionVariable getVariable() { rescue_variable(this, result) }
 
   override Top getAFieldOrChild() {
-    rescue_body(this, _, result) or
-    rescue_exceptions(this, _, result) or
-    rescue_variable(this, _, result)
+    rescue_body(this, result) or rescue_exceptions(this, result) or rescue_variable(this, result)
   }
 }
 
@@ -896,9 +888,9 @@ class RestAssignment extends @rest_assignment, Top, DestructuredLeftAssignmentCh
 
   override Location getLocation() { rest_assignment_def(this, result) }
 
-  UnderscoreLhs getChild(int i) { rest_assignment_child(this, i, result) }
+  UnderscoreLhs getChild() { rest_assignment_child(this, result) }
 
-  override Top getAFieldOrChild() { rest_assignment_child(this, _, result) }
+  override Top getAFieldOrChild() { rest_assignment_child(this, result) }
 }
 
 class Retry extends @retry, Top, UnderscorePrimary {
@@ -906,9 +898,9 @@ class Retry extends @retry, Top, UnderscorePrimary {
 
   override Location getLocation() { retry_def(this, result) }
 
-  ArgumentList getChild(int i) { retry_child(this, i, result) }
+  ArgumentList getChild() { retry_child(this, result) }
 
-  override Top getAFieldOrChild() { retry_child(this, _, result) }
+  override Top getAFieldOrChild() { retry_child(this, result) }
 }
 
 class Return extends @return, Top, ArgumentListChildType, ArrayChildType, AssignmentRightType,
@@ -920,9 +912,9 @@ class Return extends @return, Top, ArgumentListChildType, ArrayChildType, Assign
 
   override Location getLocation() { return_def(this, result) }
 
-  ArgumentList getChild(int i) { return_child(this, i, result) }
+  ArgumentList getChild() { return_child(this, result) }
 
-  override Top getAFieldOrChild() { return_child(this, _, result) }
+  override Top getAFieldOrChild() { return_child(this, result) }
 }
 
 class RightAssignmentListChildType extends @right_assignment_list_child_type, Top { }
@@ -947,10 +939,10 @@ class ScopeResolution extends @scope_resolution, Top, ClassNameType, MethodCallM
 
   ScopeResolutionNameType getName() { scope_resolution_def(this, result, _) }
 
-  UnderscorePrimary getScope(int i) { scope_resolution_scope(this, i, result) }
+  UnderscorePrimary getScope() { scope_resolution_scope(this, result) }
 
   override Top getAFieldOrChild() {
-    scope_resolution_def(this, result, _) or scope_resolution_scope(this, _, result)
+    scope_resolution_def(this, result, _) or scope_resolution_scope(this, result)
   }
 }
 
@@ -993,14 +985,14 @@ class SingletonMethod extends @singleton_method, Top, UnderscorePrimary {
 
   SingletonMethodObjectType getObject() { singleton_method_def(this, _, result, _) }
 
-  MethodParameters getParameters(int i) { singleton_method_parameters(this, i, result) }
+  MethodParameters getParameters() { singleton_method_parameters(this, result) }
 
   SingletonMethodChildType getChild(int i) { singleton_method_child(this, i, result) }
 
   override Top getAFieldOrChild() {
     singleton_method_def(this, result, _, _) or
     singleton_method_def(this, _, result, _) or
-    singleton_method_parameters(this, _, result) or
+    singleton_method_parameters(this, result) or
     singleton_method_child(this, _, result)
   }
 }
@@ -1023,9 +1015,9 @@ class SplatParameter extends @splat_parameter, Top, BlockParametersChildType,
 
   override Location getLocation() { splat_parameter_def(this, result) }
 
-  Identifier getName(int i) { splat_parameter_name(this, i, result) }
+  Identifier getName() { splat_parameter_name(this, result) }
 
-  override Top getAFieldOrChild() { splat_parameter_name(this, _, result) }
+  override Top getAFieldOrChild() { splat_parameter_name(this, result) }
 }
 
 class StringChildType extends @string_child_type, Top { }
@@ -1137,16 +1129,16 @@ class Unless extends @unless, Top, UnderscorePrimary {
 
   override Location getLocation() { unless_def(this, _, result) }
 
-  UnlessAlternativeType getAlternative(int i) { unless_alternative(this, i, result) }
+  UnlessAlternativeType getAlternative() { unless_alternative(this, result) }
 
   UnderscoreStatement getCondition() { unless_def(this, result, _) }
 
-  Then getConsequence(int i) { unless_consequence(this, i, result) }
+  Then getConsequence() { unless_consequence(this, result) }
 
   override Top getAFieldOrChild() {
-    unless_alternative(this, _, result) or
+    unless_alternative(this, result) or
     unless_def(this, result, _) or
-    unless_consequence(this, _, result)
+    unless_consequence(this, result)
   }
 }
 
@@ -1201,11 +1193,11 @@ class When extends @when, Top, CaseChildType {
 
   override Location getLocation() { when_def(this, result) }
 
-  Then getBody(int i) { when_body(this, i, result) }
+  Then getBody() { when_body(this, result) }
 
   WhenPatternType getPattern(int i) { when_pattern(this, i, result) }
 
-  override Top getAFieldOrChild() { when_body(this, _, result) or when_pattern(this, _, result) }
+  override Top getAFieldOrChild() { when_body(this, result) or when_pattern(this, _, result) }
 }
 
 class While extends @while, Top, UnderscorePrimary {
@@ -1245,9 +1237,9 @@ class Yield extends @yield, Top, ArgumentListChildType, ArrayChildType, Assignme
 
   override Location getLocation() { yield_def(this, result) }
 
-  ArgumentList getChild(int i) { yield_child(this, i, result) }
+  ArgumentList getChild() { yield_child(this, result) }
 
-  override Top getAFieldOrChild() { yield_child(this, _, result) }
+  override Top getAFieldOrChild() { yield_child(this, result) }
 }
 
 class BangUnnamed extends @bang_unnamed, Top {

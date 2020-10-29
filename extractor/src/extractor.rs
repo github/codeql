@@ -230,13 +230,19 @@ impl Visitor<'_> {
                         )
                     }
                 }
-                Storage::Table => {
+                Storage::Table(has_index) => {
                     for (index, child_id) in child_ids.iter().enumerate() {
+                        if !*has_index && index > 0 {
+                            error!(
+                                "saw multiple occurrences of field that should occur at most once"
+                            );
+                            break;
+                        }
                         self.trap_output.push(TrapEntry::ChildOf(
                             node_type_name(&field.parent.kind, field.parent.named),
                             parent_id,
                             field.get_name(),
-                            Index(index),
+                            if *has_index { Some(Index(index)) } else { None },
                             *child_id,
                         ));
                     }
@@ -364,7 +370,7 @@ enum TrapEntry {
     // @node_def(self, arg?, location)@
     Definition(String, Label, Vec<Arg>, Label),
     // @node_child(self, index, parent)@
-    ChildOf(String, Label, String, Index, Label),
+    ChildOf(String, Label, String, Option<Index>, Label),
     // @location(loc, path, r1, c1, r2, c2)
     Located(Vec<Arg>),
     Comment(String),
@@ -387,14 +393,23 @@ impl fmt::Display for TrapEntry {
                     loc
                 )
             }
-            TrapEntry::ChildOf(pname, id, fname, idx, p) => write!(
-                f,
-                "{}({}, {}, {})",
-                escape_name(&format!("{}_{}", &pname, &fname)),
-                id,
-                idx,
-                p
-            ),
+            TrapEntry::ChildOf(pname, id, fname, idx, p) => match idx {
+                Some(idx) => write!(
+                    f,
+                    "{}({}, {}, {})",
+                    escape_name(&format!("{}_{}", &pname, &fname)),
+                    id,
+                    idx,
+                    p
+                ),
+                None => write!(
+                    f,
+                    "{}({}, {})",
+                    escape_name(&format!("{}_{}", &pname, &fname)),
+                    id,
+                    p
+                ),
+            },
             TrapEntry::Located(args) => write!(
                 f,
                 "location({}, {}, {}, {}, {}, {})",
