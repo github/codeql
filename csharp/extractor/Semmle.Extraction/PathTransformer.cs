@@ -49,14 +49,7 @@ namespace Semmle.Extraction
                 get
                 {
                     var extension = Path.GetExtension(value);
-                    if (string.IsNullOrEmpty(extension))
-                    {
-                        return "";
-                    }
-                    else
-                    {
-                        return extension.Substring(1);
-                    }
+                    return string.IsNullOrEmpty(extension) ? "" : extension.Substring(1);
                 }
             }
 
