@@ -307,7 +307,7 @@
 | ArrayCreation.cs:9:43:9:50 | { ..., ... } | ArrayCreation.cs:9:43:9:50 | { ..., ... } | normal |
 | ArrayCreation.cs:9:45:9:45 | 2 | ArrayCreation.cs:9:45:9:45 | 2 | normal |
 | ArrayCreation.cs:9:48:9:48 | 3 | ArrayCreation.cs:9:48:9:48 | 3 | normal |
-| Assert.cs:8:5:12:5 | {...} | Assert.cs:10:9:10:31 | call to method Assert | exit |
+| Assert.cs:8:5:12:5 | {...} | Assert.cs:10:9:10:31 | call to method Assert | throw(Exception) |
 | Assert.cs:8:5:12:5 | {...} | Assert.cs:11:9:11:35 | call to method WriteLine | normal |
 | Assert.cs:9:9:9:33 | ... ...; | Assert.cs:9:16:9:32 | String s = ... | normal |
 | Assert.cs:9:16:9:32 | String s = ... | Assert.cs:9:16:9:32 | String s = ... | normal |
@@ -317,10 +317,10 @@
 | Assert.cs:9:20:9:32 | ... ? ... : ... | Assert.cs:9:31:9:32 | "" | normal |
 | Assert.cs:9:24:9:27 | null | Assert.cs:9:24:9:27 | null | normal |
 | Assert.cs:9:31:9:32 | "" | Assert.cs:9:31:9:32 | "" | normal |
-| Assert.cs:10:9:10:31 | call to method Assert | Assert.cs:10:9:10:31 | call to method Assert | exit |
 | Assert.cs:10:9:10:31 | call to method Assert | Assert.cs:10:9:10:31 | call to method Assert | normal |
-| Assert.cs:10:9:10:32 | ...; | Assert.cs:10:9:10:31 | call to method Assert | exit |
+| Assert.cs:10:9:10:31 | call to method Assert | Assert.cs:10:9:10:31 | call to method Assert | throw(Exception) |
 | Assert.cs:10:9:10:32 | ...; | Assert.cs:10:9:10:31 | call to method Assert | normal |
+| Assert.cs:10:9:10:32 | ...; | Assert.cs:10:9:10:31 | call to method Assert | throw(Exception) |
 | Assert.cs:10:22:10:22 | access to local variable s | Assert.cs:10:22:10:22 | access to local variable s | normal |
 | Assert.cs:10:22:10:30 | ... != ... | Assert.cs:10:22:10:30 | ... != ... | false |
 | Assert.cs:10:22:10:30 | ... != ... | Assert.cs:10:22:10:30 | ... != ... | true |
@@ -565,7 +565,7 @@
 | Assert.cs:81:9:81:36 | ...; | Assert.cs:81:9:81:35 | call to method WriteLine | normal |
 | Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:81:27:81:27 | access to local variable s | normal |
 | Assert.cs:81:27:81:34 | access to property Length | Assert.cs:81:27:81:34 | access to property Length | normal |
-| Assert.cs:85:5:129:5 | {...} | Assert.cs:87:9:87:31 | call to method Assert | exit |
+| Assert.cs:85:5:129:5 | {...} | Assert.cs:87:9:87:31 | call to method Assert | throw(Exception) |
 | Assert.cs:85:5:129:5 | {...} | Assert.cs:91:9:91:24 | call to method IsNull | throw(AssertFailedException) |
 | Assert.cs:85:5:129:5 | {...} | Assert.cs:95:9:95:27 | call to method IsNotNull | throw(AssertFailedException) |
 | Assert.cs:85:5:129:5 | {...} | Assert.cs:99:9:99:32 | call to method IsTrue | throw(AssertFailedException) |
@@ -585,10 +585,10 @@
 | Assert.cs:86:20:86:32 | ... ? ... : ... | Assert.cs:86:31:86:32 | "" | normal |
 | Assert.cs:86:24:86:27 | null | Assert.cs:86:24:86:27 | null | normal |
 | Assert.cs:86:31:86:32 | "" | Assert.cs:86:31:86:32 | "" | normal |
-| Assert.cs:87:9:87:31 | call to method Assert | Assert.cs:87:9:87:31 | call to method Assert | exit |
 | Assert.cs:87:9:87:31 | call to method Assert | Assert.cs:87:9:87:31 | call to method Assert | normal |
-| Assert.cs:87:9:87:32 | ...; | Assert.cs:87:9:87:31 | call to method Assert | exit |
+| Assert.cs:87:9:87:31 | call to method Assert | Assert.cs:87:9:87:31 | call to method Assert | throw(Exception) |
 | Assert.cs:87:9:87:32 | ...; | Assert.cs:87:9:87:31 | call to method Assert | normal |
+| Assert.cs:87:9:87:32 | ...; | Assert.cs:87:9:87:31 | call to method Assert | throw(Exception) |
 | Assert.cs:87:22:87:22 | access to local variable s | Assert.cs:87:22:87:22 | access to local variable s | normal |
 | Assert.cs:87:22:87:30 | ... != ... | Assert.cs:87:22:87:30 | ... != ... | false |
 | Assert.cs:87:22:87:30 | ... != ... | Assert.cs:87:22:87:30 | ... != ... | true |
