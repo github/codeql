@@ -302,12 +302,12 @@ Conversion3.cpp:
 #    2|               Type = [IntType] int
 #    2|               Value = [CStyleCast] 1
 #    2|               ValueCategory = prvalue
-#    2|             : [CStyleCast] (bool)...
+#    2|             expr: [CStyleCast] (bool)...
 #    2|                 Conversion = [BoolConversion] conversion to bool
 #    2|                 Type = [BoolType] bool
 #    2|                 Value = [CStyleCast] 1
 #    2|                 ValueCategory = prvalue
-#    2|               : [CStyleCast] (int)...
+#    2|               expr: [CStyleCast] (int)...
 #    2|                   Conversion = [IntegralConversion] integral conversion
 #    2|                   Type = [IntType] int
 #    2|                   Value = [CStyleCast] 1
@@ -316,7 +316,7 @@ Conversion3.cpp:
 #    2|               Type = [IntType] int
 #    2|               Value = [ParenthesisExpr] 7
 #    2|               ValueCategory = prvalue
-#    2|             : [CStyleCast] (int)...
+#    2|             expr: [CStyleCast] (int)...
 #    2|                 Conversion = [IntegralConversion] integral conversion
 #    2|                 Type = [IntType] int
 #    2|                 Value = [CStyleCast] 7
@@ -343,7 +343,7 @@ Conversion4.c:
 #    2|             Type = [IntType] int
 #    2|             Value = [ParenthesisExpr] 7
 #    2|             ValueCategory = prvalue
-#    2|           : [CStyleCast] (int)...
+#    2|           expr: [CStyleCast] (int)...
 #    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
 #    2|               Value = [CStyleCast] 7
@@ -362,11 +362,11 @@ Conversion4.c:
 #    6|           Conversion = [PointerConversion] pointer conversion
 #    6|           Type = [CharPointerType] char *
 #    6|           ValueCategory = prvalue
-#    6|         : [CStyleCast] (void *)...
+#    6|         expr: [CStyleCast] (void *)...
 #    6|             Conversion = [PointerConversion] pointer conversion
 #    6|             Type = [VoidPointerType] void *
 #    6|             ValueCategory = prvalue
-#    6|           : [CStyleCast] (int *)...
+#    6|           expr: [CStyleCast] (int *)...
 #    6|               Conversion = [PointerConversion] pointer conversion
 #    6|               Type = [IntPointerType] int *
 #    6|               ValueCategory = prvalue
@@ -565,15 +565,15 @@ DynamicCast.cpp:
 #   13|         0 converted: [ReferenceToExpr] (reference to)
 #   13|             Type = [LValueReferenceType] const Derived &
 #   13|             ValueCategory = prvalue
-#   13|           : [CStyleCast] (const Derived)...
+#   13|           expr: [CStyleCast] (const Derived)...
 #   13|               Conversion = [GlvalueConversion] glvalue conversion
 #   13|               Type = [SpecifiedType] const Derived
 #   13|               ValueCategory = lvalue
-#   13|             : [DynamicCast] dynamic_cast<Derived>...
+#   13|             expr: [DynamicCast] dynamic_cast<Derived>...
 #   13|                 Conversion = [DynamicCast] dynamic_cast
 #   13|                 Type = [Class] Derived
 #   13|                 ValueCategory = lvalue
-#   13|               : [ReferenceDereferenceExpr] (reference dereference)
+#   13|               expr: [ReferenceDereferenceExpr] (reference dereference)
 #   13|                   Type = [Class] Base
 #   13|                   ValueCategory = lvalue
 #   13|       0 converted: [ReferenceDereferenceExpr] (reference dereference)

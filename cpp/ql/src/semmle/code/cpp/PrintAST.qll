@@ -123,7 +123,7 @@ class PrintASTNode extends TPrintASTNode {
    * Adds edges to fully converted expressions, that are not part of the
    * regular parent/child relation traversal.
    */
-  PrintASTNode getChild(int childIndex) {
+  final PrintASTNode getChild(int childIndex) {
     result = getChildInternal(childIndex)
     or
     // We first compute the first available child index that is not used by
@@ -133,7 +133,7 @@ class PrintASTNode extends TPrintASTNode {
     exists(int nonConvertedIndex, int nextAvailableIndex, Expr expr |
       nextAvailableIndex = max(int idx | exists(this.getChildInternal(idx))) + 1 and
       childIndex - nextAvailableIndex = nonConvertedIndex and
-      expr = getChild(nonConvertedIndex).(ASTNode).getAST()
+      expr = getChildInternal(nonConvertedIndex).(ASTNode).getAST()
     |
       expr.getFullyConverted() instanceof Conversion and
       result.(ASTNode).getAST() = expr.getFullyConverted() and
@@ -186,7 +186,7 @@ class PrintASTNode extends TPrintASTNode {
    * Gets the label for the edge from this node to the specified child,
    * including labels for edges to nodes that represent conversions.
    */
-  string getChildEdgeLabel(int childIndex) {
+  final string getChildEdgeLabel(int childIndex) {
     exists(getChildInternal(childIndex)) and
     result = getChildEdgeLabelInternal(childIndex)
     or
@@ -286,7 +286,7 @@ class ConversionNode extends ExprNode {
 
   ConversionNode() { conv = expr }
 
-  override ASTNode getChild(int childIndex) {
+  override ASTNode getChildInternal(int childIndex) {
     childIndex = 0 and
     result.getAST() = conv.getExpr() and
     conv.getExpr() instanceof Conversion
