@@ -339,15 +339,21 @@ fn create_get_field_expr_for_column_storage(
 /// all indices.
 fn create_get_field_expr_for_table_storage(
     table_name: &str,
-    index_var_name: &str,
+    index_var_name: Option<&str>,
 ) -> ql::Expression {
     ql::Expression::Pred(
         table_name.to_owned(),
-        vec![
-            ql::Expression::Var("this".to_owned()),
-            ql::Expression::Var(index_var_name.to_owned()),
-            ql::Expression::Var("result".to_owned()),
-        ],
+        match index_var_name {
+            Some(index_var_name) => vec![
+                ql::Expression::Var("this".to_owned()),
+                ql::Expression::Var(index_var_name.to_owned()),
+                ql::Expression::Var("result".to_owned()),
+            ],
+            None => vec![
+                ql::Expression::Var("this".to_owned()),
+                ql::Expression::Var("result".to_owned()),
+            ],
+        },
     )
 }
 
@@ -400,7 +406,7 @@ fn create_field_getters(
             *main_table_column_index += 1;
             result
         }
-        node_types::Storage::Table => {
+        node_types::Storage::Table(has_index) => {
             let field_table_name = format!("{}_{}", parent_name, &field.get_name());
             (
                 ql::Predicate {
@@ -410,13 +416,23 @@ fn create_field_getters(
                     ),
                     overridden: false,
                     return_type: Some(ql::Type::Normal(dbscheme_name_to_class_name(field_type))),
-                    formal_parameters: vec![ql::FormalParameter {
-                        name: "i".to_owned(),
-                        param_type: ql::Type::Int,
-                    }],
-                    body: create_get_field_expr_for_table_storage(&field_table_name, "i"),
+                    formal_parameters: if *has_index {
+                        vec![ql::FormalParameter {
+                            name: "i".to_owned(),
+                            param_type: ql::Type::Int,
+                        }]
+                    } else {
+                        vec![]
+                    },
+                    body: create_get_field_expr_for_table_storage(
+                        &field_table_name,
+                        if *has_index { Some("i") } else { None },
+                    ),
                 },
-                create_get_field_expr_for_table_storage(&field_table_name, "_"),
+                create_get_field_expr_for_table_storage(
+                    &field_table_name,
+                    if *has_index { Some("_") } else { None },
+                ),
             )
         }
     }

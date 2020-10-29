@@ -49,45 +49,49 @@ fn add_field(
 ) {
     let field_name = field.get_name();
     let parent_name = node_types::node_type_name(&field.parent.kind, field.parent.named);
-    match field.storage {
-        node_types::Storage::Table { .. } => {
+    match &field.storage {
+        node_types::Storage::Table(has_index) => {
             // This field can appear zero or multiple times, so put
             // it in an auxiliary table.
             let field_type = make_field_type(&parent_name, &field_name, &field.types, entries);
+            let parent_column = dbscheme::Column {
+                unique: !*has_index,
+                db_type: dbscheme::DbColumnType::Int,
+                name: node_types::escape_name(&parent_name),
+                ql_type: ql::Type::AtType(node_types::escape_name(&parent_name)),
+                ql_type_is_ref: true,
+            };
+            let index_column = dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "index".to_string(),
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            };
+            let field_column = dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: node_types::escape_name(&field_type),
+                ql_type: ql::Type::AtType(field_type),
+                ql_type_is_ref: true,
+            };
             let field_table = dbscheme::Table {
                 name: format!("{}_{}", parent_name, field_name),
-                columns: vec![
-                    // First column is a reference to the parent.
-                    dbscheme::Column {
-                        unique: false,
-                        db_type: dbscheme::DbColumnType::Int,
-                        name: node_types::escape_name(&parent_name),
-                        ql_type: ql::Type::AtType(node_types::escape_name(&parent_name)),
-                        ql_type_is_ref: true,
-                    },
-                    // Then an index column.
-                    dbscheme::Column {
-                        unique: false,
-                        db_type: dbscheme::DbColumnType::Int,
-                        name: "index".to_string(),
-                        ql_type: ql::Type::Int,
-                        ql_type_is_ref: true,
-                    },
-                    // And then the field
-                    dbscheme::Column {
-                        unique: true,
-                        db_type: dbscheme::DbColumnType::Int,
-                        name: node_types::escape_name(&field_type),
-                        ql_type: ql::Type::AtType(field_type),
-                        ql_type_is_ref: true,
-                    },
-                ],
+                columns: if *has_index {
+                    vec![parent_column, index_column, field_column]
+                } else {
+                    vec![parent_column, field_column]
+                },
                 // In addition to the field being unique, the combination of
                 // parent+index is unique, so add a keyset for them.
-                keysets: Some(vec![
-                    node_types::escape_name(&parent_name),
-                    "index".to_string(),
-                ]),
+                keysets: if *has_index {
+                    Some(vec![
+                        node_types::escape_name(&parent_name),
+                        "index".to_string(),
+                    ])
+                } else {
+                    None
+                },
             };
             entries.push(dbscheme::Entry::Table(field_table));
         }

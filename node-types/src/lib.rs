@@ -46,8 +46,9 @@ impl Field {
 pub enum Storage {
     /// the field is stored as a column in the parent table
     Column,
-    // the field is store in a link table
-    Table,
+    /// the field is stored in a link table, and may or may not have an
+    /// associated index column
+    Table(bool),
 }
 
 pub fn read_node_types(node_types_path: &Path) -> std::io::Result<Vec<Entry>> {
@@ -122,16 +123,19 @@ fn add_field(
     field_info: &FieldInfo,
     fields: &mut Vec<Field>,
 ) {
-    let storage;
-    if !field_info.multiple && field_info.required {
+    let storage = if !field_info.multiple && field_info.required {
         // This field must appear exactly once, so we add it as
         // a column to the main table for the node type.
-        storage = Storage::Column;
+        Storage::Column
+    } else if !field_info.multiple {
+        // This field is optional but can occur at most once. Put it in an
+        // auxiliary table without an index.
+        Storage::Table(false)
     } else {
-        // This field can appear zero or multiple times, so put
-        // it in an auxiliary table.
-        storage = Storage::Table;
-    }
+        // This field can occur multiple times. Put it in an auxiliary table
+        // with an associated index.
+        Storage::Table(true)
+    };
     fields.push(Field {
         parent: TypeName {
             kind: parent_type_name.kind.to_string(),

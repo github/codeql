@@ -182,10 +182,8 @@ block_parameters_def(
   int loc: @location ref
 );
 
-#keyset[break, index]
 break_child(
-  int break: @break ref,
-  int index: int ref,
+  unique int break: @break ref,
   unique int argument_list: @argument_list ref
 );
 
@@ -205,10 +203,8 @@ call_def(
   int loc: @location ref
 );
 
-#keyset[case__, index]
 case_value(
-  int case__: @case__ ref,
-  int index: int ref,
+  unique int case__: @case__ ref,
   unique int underscore_statement: @underscore_statement ref
 );
 
@@ -334,10 +330,8 @@ element_reference_def(
   int loc: @location ref
 );
 
-#keyset[else, index]
 else_condition(
-  int else: @else ref,
-  int index: int ref,
+  unique int else: @else ref,
   unique int semicolon_unnamed: @semicolon_unnamed ref
 );
 
@@ -357,17 +351,13 @@ else_def(
 
 @elsif_alternative_type = @else | @elsif
 
-#keyset[elsif, index]
 elsif_alternative(
-  int elsif: @elsif ref,
-  int index: int ref,
+  unique int elsif: @elsif ref,
   unique int elsif_alternative_type: @elsif_alternative_type ref
 );
 
-#keyset[elsif, index]
 elsif_consequence(
-  int elsif: @elsif ref,
-  int index: int ref,
+  unique int elsif: @elsif ref,
   unique int then: @then ref
 );
 
@@ -467,10 +457,8 @@ hash_splat_argument_def(
   int loc: @location ref
 );
 
-#keyset[hash_splat_parameter, index]
 hash_splat_parameter_name(
-  int hash_splat_parameter: @hash_splat_parameter ref,
-  int index: int ref,
+  unique int hash_splat_parameter: @hash_splat_parameter ref,
   unique int identifier: @identifier ref
 );
 
@@ -481,17 +469,13 @@ hash_splat_parameter_def(
 
 @if_alternative_type = @else | @elsif
 
-#keyset[if, index]
 if_alternative(
-  int if: @if ref,
-  int index: int ref,
+  unique int if: @if ref,
   unique int if_alternative_type: @if_alternative_type ref
 );
 
-#keyset[if, index]
 if_consequence(
-  int if: @if ref,
-  int index: int ref,
+  unique int if: @if ref,
   unique int then: @then ref
 );
 
@@ -522,10 +506,8 @@ interpolation_def(
   int loc: @location ref
 );
 
-#keyset[keyword_parameter, index]
 keyword_parameter_value(
-  int keyword_parameter: @keyword_parameter ref,
-  int index: int ref,
+  unique int keyword_parameter: @keyword_parameter ref,
   unique int underscore_arg: @underscore_arg ref
 );
 
@@ -537,10 +519,8 @@ keyword_parameter_def(
 
 @lambda_body_type = @block | @do_block
 
-#keyset[lambda, index]
 lambda_parameters(
-  int lambda: @lambda ref,
-  int index: int ref,
+  unique int lambda: @lambda ref,
   unique int lambda_parameters: @lambda_parameters ref
 );
 
@@ -578,10 +558,8 @@ left_assignment_list_def(
   int loc: @location ref
 );
 
-#keyset[method, index]
 method_parameters(
-  int method: @method ref,
-  int index: int ref,
+  unique int method: @method ref,
   unique int method_parameters: @method_parameters ref
 );
 
@@ -600,19 +578,15 @@ method_def(
   int loc: @location ref
 );
 
-#keyset[method_call, index]
 method_call_arguments(
-  int method_call: @method_call ref,
-  int index: int ref,
+  unique int method_call: @method_call ref,
   unique int argument_list: @argument_list ref
 );
 
 @method_call_block_type = @block | @do_block
 
-#keyset[method_call, index]
 method_call_block(
-  int method_call: @method_call ref,
-  int index: int ref,
+  unique int method_call: @method_call ref,
   unique int method_call_block_type: @method_call_block_type ref
 );
 
@@ -655,10 +629,8 @@ module_def(
   int loc: @location ref
 );
 
-#keyset[next, index]
 next_child(
-  int next: @next ref,
-  int index: int ref,
+  unique int next: @next ref,
   unique int argument_list: @argument_list ref
 );
 
@@ -752,10 +724,8 @@ rational_def(
   int loc: @location ref
 );
 
-#keyset[redo, index]
 redo_child(
-  int redo: @redo ref,
-  int index: int ref,
+  unique int redo: @redo ref,
   unique int argument_list: @argument_list ref
 );
 
@@ -778,24 +748,18 @@ regex_def(
   int loc: @location ref
 );
 
-#keyset[rescue, index]
 rescue_body(
-  int rescue: @rescue ref,
-  int index: int ref,
+  unique int rescue: @rescue ref,
   unique int then: @then ref
 );
 
-#keyset[rescue, index]
 rescue_exceptions(
-  int rescue: @rescue ref,
-  int index: int ref,
+  unique int rescue: @rescue ref,
   unique int exceptions: @exceptions ref
 );
 
-#keyset[rescue, index]
 rescue_variable(
-  int rescue: @rescue ref,
-  int index: int ref,
+  unique int rescue: @rescue ref,
   unique int exception_variable: @exception_variable ref
 );
 
@@ -813,10 +777,8 @@ rescue_modifier_def(
   int loc: @location ref
 );
 
-#keyset[rest_assignment, index]
 rest_assignment_child(
-  int rest_assignment: @rest_assignment ref,
-  int index: int ref,
+  unique int rest_assignment: @rest_assignment ref,
   unique int underscore_lhs: @underscore_lhs ref
 );
 
@@ -825,10 +787,8 @@ rest_assignment_def(
   int loc: @location ref
 );
 
-#keyset[retry, index]
 retry_child(
-  int retry: @retry ref,
-  int index: int ref,
+  unique int retry: @retry ref,
   unique int argument_list: @argument_list ref
 );
 
@@ -837,10 +797,8 @@ retry_def(
   int loc: @location ref
 );
 
-#keyset[return, index]
 return_child(
-  int return: @return ref,
-  int index: int ref,
+  unique int return: @return ref,
   unique int argument_list: @argument_list ref
 );
 
@@ -865,10 +823,8 @@ right_assignment_list_def(
 
 @scope_resolution_name_type = @constant | @identifier
 
-#keyset[scope_resolution, index]
 scope_resolution_scope(
-  int scope_resolution: @scope_resolution ref,
-  int index: int ref,
+  unique int scope_resolution: @scope_resolution ref,
   unique int underscore_primary: @underscore_primary ref
 );
 
@@ -901,10 +857,8 @@ singleton_class_def(
 
 @singleton_method_object_type = @underscore_arg | @underscore_variable
 
-#keyset[singleton_method, index]
 singleton_method_parameters(
-  int singleton_method: @singleton_method ref,
-  int index: int ref,
+  unique int singleton_method: @singleton_method ref,
   unique int method_parameters: @method_parameters ref
 );
 
@@ -930,10 +884,8 @@ splat_argument_def(
   int loc: @location ref
 );
 
-#keyset[splat_parameter, index]
 splat_parameter_name(
-  int splat_parameter: @splat_parameter ref,
-  int index: int ref,
+  unique int splat_parameter: @splat_parameter ref,
   unique int identifier: @identifier ref
 );
 
@@ -1052,17 +1004,13 @@ undef_def(
 
 @unless_alternative_type = @else | @elsif
 
-#keyset[unless, index]
 unless_alternative(
-  int unless: @unless ref,
-  int index: int ref,
+  unique int unless: @unless ref,
   unique int unless_alternative_type: @unless_alternative_type ref
 );
 
-#keyset[unless, index]
 unless_consequence(
-  int unless: @unless ref,
-  int index: int ref,
+  unique int unless: @unless ref,
   unique int then: @then ref
 );
 
@@ -1097,10 +1045,8 @@ until_modifier_def(
   int loc: @location ref
 );
 
-#keyset[when, index]
 when_body(
-  int when: @when ref,
-  int index: int ref,
+  unique int when: @when ref,
   unique int then: @then ref
 );
 
@@ -1134,10 +1080,8 @@ while_modifier_def(
   int loc: @location ref
 );
 
-#keyset[yield, index]
 yield_child(
-  int yield: @yield ref,
-  int index: int ref,
+  unique int yield: @yield ref,
   unique int argument_list: @argument_list ref
 );
 
