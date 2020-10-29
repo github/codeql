@@ -1162,6 +1162,9 @@ entryPoint
 | NullCoalescing.cs:11:9:11:10 | M5 | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... |
 | NullCoalescing.cs:13:10:13:11 | M6 | NullCoalescing.cs:14:5:18:5 | {...} |
 | Patterns.cs:5:10:5:13 | Test | Patterns.cs:6:5:43:5 | {...} |
+| PostDominance.cs:5:10:5:11 | M1 | PostDominance.cs:6:5:8:5 | {...} |
+| PostDominance.cs:10:10:10:11 | M2 | PostDominance.cs:11:5:15:5 | {...} |
+| PostDominance.cs:17:10:17:11 | M3 | PostDominance.cs:18:5:22:5 | {...} |
 | Qualifiers.cs:7:16:7:21 | Method | Qualifiers.cs:7:28:7:31 | null |
 | Qualifiers.cs:8:23:8:34 | StaticMethod | Qualifiers.cs:8:41:8:44 | null |
 | Qualifiers.cs:10:10:10:10 | M | Qualifiers.cs:11:5:31:5 | {...} |

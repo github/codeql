@@ -771,6 +771,15 @@
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; | 1 |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:37:17:37:22 | break; | 5 |
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | exit Test | 3 |
+| PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | exit M1 | 6 |
+| PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:12:13:12:21 | ... is ... | 6 |
+| PostDominance.cs:10:10:10:11 | exit M2 | PostDominance.cs:10:10:10:11 | exit M2 | 1 |
+| PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:13:13:13:19 | return ...; | 1 |
+| PostDominance.cs:14:9:14:29 | ...; | PostDominance.cs:14:9:14:28 | call to method WriteLine | 3 |
+| PostDominance.cs:17:10:17:11 | enter M3 | PostDominance.cs:19:13:19:21 | ... is ... | 6 |
+| PostDominance.cs:17:10:17:11 | exit M3 | PostDominance.cs:17:10:17:11 | exit M3 | 1 |
+| PostDominance.cs:20:45:20:53 | nameof(...) | PostDominance.cs:20:13:20:55 | throw ...; | 3 |
+| PostDominance.cs:21:9:21:29 | ...; | PostDominance.cs:21:9:21:28 | call to method WriteLine | 3 |
 | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | exit Method | 3 |
 | Qualifiers.cs:8:23:8:34 | enter StaticMethod | Qualifiers.cs:8:23:8:34 | exit StaticMethod | 3 |
 | Qualifiers.cs:10:10:10:10 | enter M | Qualifiers.cs:10:10:10:10 | exit M | 57 |

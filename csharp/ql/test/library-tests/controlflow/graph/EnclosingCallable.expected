@@ -3193,6 +3193,36 @@ nodeEnclosing
 | Patterns.cs:37:17:37:22 | break; | Patterns.cs:5:10:5:13 | Test |
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | Test |
 | Patterns.cs:40:17:40:17 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
+| PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | M1 |
+| PostDominance.cs:5:10:5:11 | exit M1 | PostDominance.cs:5:10:5:11 | M1 |
+| PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:5:10:5:11 | M1 |
+| PostDominance.cs:7:9:7:28 | call to method WriteLine | PostDominance.cs:5:10:5:11 | M1 |
+| PostDominance.cs:7:9:7:29 | ...; | PostDominance.cs:5:10:5:11 | M1 |
+| PostDominance.cs:7:27:7:27 | access to parameter s | PostDominance.cs:5:10:5:11 | M1 |
+| PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:10:10:10:11 | exit M2 | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:11:5:15:5 | {...} | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:9:13:19 | if (...) ... | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:13:12:13 | access to parameter s | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:18:12:21 | null | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:14:9:14:28 | call to method WriteLine | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:14:9:14:29 | ...; | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:14:27:14:27 | access to parameter s | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:17:10:17:11 | enter M3 | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:17:10:17:11 | exit M3 | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:18:5:22:5 | {...} | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:9:20:55 | if (...) ... | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:13:19:13 | access to parameter s | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:18:19:21 | null | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:20:13:20:55 | throw ...; | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:20:19:20:54 | object creation of type ArgumentNullException | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:20:45:20:53 | nameof(...) | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:21:9:21:28 | call to method WriteLine | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:21:9:21:29 | ...; | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:21:27:21:27 | access to parameter s | PostDominance.cs:17:10:17:11 | M3 |
 | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | Method |
 | Qualifiers.cs:7:16:7:21 | exit Method | Qualifiers.cs:7:16:7:21 | Method |
 | Qualifiers.cs:7:28:7:31 | null | Qualifiers.cs:7:16:7:21 | Method |
@@ -5024,6 +5054,15 @@ blockEnclosing
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:5:10:5:13 | Test |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:5:10:5:13 | Test |
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | Test |
+| PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | M1 |
+| PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:10:10:10:11 | exit M2 | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:14:9:14:29 | ...; | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:17:10:17:11 | enter M3 | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:17:10:17:11 | exit M3 | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:20:45:20:53 | nameof(...) | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:21:9:21:29 | ...; | PostDominance.cs:17:10:17:11 | M3 |
 | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | Method |
 | Qualifiers.cs:8:23:8:34 | enter StaticMethod | Qualifiers.cs:8:23:8:34 | StaticMethod |
 | Qualifiers.cs:10:10:10:10 | enter M | Qualifiers.cs:10:10:10:10 | M |

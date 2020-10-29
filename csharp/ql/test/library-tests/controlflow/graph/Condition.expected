@@ -806,6 +806,10 @@ conditionBlock
 | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:35:13:35:20 | default: | false |
 | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:34:17:34:22 | break; | true |
 | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:35:13:35:20 | default: | false |
+| PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:13:13:13:19 | return ...; | true |
+| PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:14:9:14:29 | ...; | false |
+| PostDominance.cs:17:10:17:11 | enter M3 | PostDominance.cs:20:45:20:53 | nameof(...) | true |
+| PostDominance.cs:17:10:17:11 | enter M3 | PostDominance.cs:21:9:21:29 | ...; | false |
 | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:15:17:15:23 | return ...; | true |
 | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:16:13:16:19 | case ...: | false |
 | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:17:23:17:37 | object creation of type Exception | false |
@@ -1470,6 +1474,10 @@ conditionFlow
 | Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:20:9:38:9 | switch (...) {...} | false |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:25:17:25:52 | ...; | true |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:27:13:27:24 | case ...: | false |
+| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:13:13:13:19 | return ...; | true |
+| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:14:9:14:29 | ...; | false |
+| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:20:45:20:53 | nameof(...) | true |
+| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:21:9:21:29 | ...; | false |
 | Switch.cs:21:21:21:29 | ... == ... | Switch.cs:22:21:22:27 | return ...; | true |
 | Switch.cs:21:21:21:29 | ... == ... | Switch.cs:23:27:23:27 | 0 | false |
 | Switch.cs:24:32:24:43 | ... > ... | Switch.cs:24:48:24:48 | access to local variable s | true |
