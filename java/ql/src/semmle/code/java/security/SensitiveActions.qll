@@ -32,7 +32,7 @@ private string nonSuspicious() {
  */
 string getCommonSensitiveInfoRegex() {
   result = "(?i).*challenge|pass(wd|word|code|phrase)(?!.*question).*" or
-  result = "(?i).*(token|username|userid|secret).*"
+  result = "(?i).*(token|secret).*"
 }
 
 /** An expression that might contain sensitive data. */
