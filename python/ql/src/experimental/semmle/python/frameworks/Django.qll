@@ -499,7 +499,7 @@ private module Django {
        * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node http_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["request", "HttpRequest"] and
+        attr_name in ["request", "HttpRequest", "response", "HttpResponse"] and
         (
           t.start() and
           result = DataFlow::importNode("django.http" + "." + attr_name)
@@ -624,6 +624,119 @@ private module Django {
           }
 
           /** Gets a reference to an instance of `django.http.request.HttpRequest`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+      }
+
+      // -------------------------------------------------------------------------
+      // django.http.response
+      // -------------------------------------------------------------------------
+      /** Gets a reference to the `django.http.response` module. */
+      DataFlow::Node response() { result = http_attr("response") }
+
+      /** Provides models for the `django.http.response` module */
+      module response {
+        /**
+         * Gets a reference to the attribute `attr_name` of the `django.http.response` module.
+         * WARNING: Only holds for a few predefined attributes.
+         */
+        private DataFlow::Node response_attr(DataFlow::TypeTracker t, string attr_name) {
+          attr_name in ["HttpResponse"] and
+          (
+            t.start() and
+            result = DataFlow::importNode("django.http.response" + "." + attr_name)
+            or
+            t.startInAttr(attr_name) and
+            result = response()
+          )
+          or
+          // Due to bad performance when using normal setup with `response_attr(t2, attr_name).track(t2, t)`
+          // we have inlined that code and forced a join
+          exists(DataFlow::TypeTracker t2 |
+            exists(DataFlow::StepSummary summary |
+              response_attr_first_join(t2, attr_name, result, summary) and
+              t = t2.append(summary)
+            )
+          )
+        }
+
+        pragma[nomagic]
+        private predicate response_attr_first_join(
+          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+          DataFlow::StepSummary summary
+        ) {
+          DataFlow::StepSummary::step(response_attr(t2, attr_name), res, summary)
+        }
+
+        /**
+         * Gets a reference to the attribute `attr_name` of the `django.http.response` module.
+         * WARNING: Only holds for a few predefined attributes.
+         */
+        private DataFlow::Node response_attr(string attr_name) {
+          result = response_attr(DataFlow::TypeTracker::end(), attr_name)
+        }
+
+        /**
+         * Provides models for the `django.http.response.HttpResponse` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.
+         */
+        module HttpResponse {
+          /** Gets a reference to the `django.http.response.HttpResponse` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("HttpResponse")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.HttpResponse` alias
+            t.start() and
+            result = http_attr("HttpResponse")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.HttpResponse` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.HttpResponse`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `HttpResponse::instance()` predicate to get references to instances of `django.http.response.HttpResponse`.
+           */
+          abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
+          }
+
+          /** A direct instantiation of `django.http.response.HttpResponse`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() {
+              result.asCfgNode() in [node.getArg(1), node.getArgByName("content_type")]
+            }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponse`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponse`. */
           DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
         }
       }

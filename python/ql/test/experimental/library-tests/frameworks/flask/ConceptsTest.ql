@@ -1,12 +1,12 @@
 import python
 import experimental.meta.ConceptsTest
 
-class DedicatedFlaskResponseTest extends HttpServerHttpResponseTest {
-  DedicatedFlaskResponseTest() { file.getShortName() = "response_test.py" }
+class DedicatedResponseTest extends HttpServerHttpResponseTest {
+  DedicatedResponseTest() { file.getShortName() = "response_test.py" }
 }
 
-class OtherFlaskResponseTest extends HttpServerHttpResponseTest {
-  OtherFlaskResponseTest() { not this instanceof DedicatedFlaskResponseTest }
+class OtherResponseTest extends HttpServerHttpResponseTest {
+  OtherResponseTest() { not this instanceof DedicatedResponseTest }
 
   override string getARelevantTag() { result = "HttpResponse" }
 }
