@@ -83,7 +83,7 @@ private newtype TMemoryLocation =
   } or
   TAllAliasedMemory(IRFunction irFunc, boolean isMayAccess, boolean canDefineReadOnly) {
     isMayAccess = false and
-    (canDefineReadOnly = true or canDefineReadOnly = false)
+    canDefineReadOnly = [true, false]
     or
     isMayAccess = true and canDefineReadOnly = false
   }
@@ -287,7 +287,9 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
 
   final override string toStringInternal() { result = "{Unknown}" }
 
-  final override VirtualVariable getVirtualVariable() { result = TAllAliasedMemory(irFunc, false, true) }
+  final override VirtualVariable getVirtualVariable() {
+    result = TAllAliasedMemory(irFunc, false, true)
+  }
 
   final override Language::LanguageType getType() {
     result = any(IRUnknownType type).getCanonicalLanguageType()
@@ -328,13 +330,7 @@ class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
 
   final override predicate isMayAccess() { isMayAccess = true }
 
-  override predicate canDefineReadOnly() {
-    // A "must" access that defines all non-local memory appears only on the `InitializeNonLocal`
-    // instruction, which provides the initial definition for all memory outside of the current
-    // function's stack frame. This memory includes string literals and other read-only globals, so
-    // we allow such an access to be the definition for a use of a read-only location.
-    not isMayAccess()
-  }
+  override predicate canDefineReadOnly() { none() }
 }
 
 /**
@@ -359,12 +355,13 @@ class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
 
   final override string getUniqueId() { result = " " + toString() }
 
-  final override VirtualVariable getVirtualVariable() { result = TAllAliasedMemory(irFunc, false, true) }
+  final override VirtualVariable getVirtualVariable() {
+    result = TAllAliasedMemory(irFunc, false, true)
+  }
 
   final override predicate isMayAccess() { isMayAccess = true }
-  
-  final override predicate canDefineReadOnly() { canDefineReadOnly = true }
 
+  final override predicate canDefineReadOnly() { canDefineReadOnly = true }
 }
 
 /** A virtual variable that groups all escaped memory within a function. */
