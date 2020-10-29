@@ -234,7 +234,11 @@ impl Visitor<'_> {
                     for (index, child_id) in child_ids.iter().enumerate() {
                         if !*has_index && index > 0 {
                             error!(
-                                "saw multiple occurrences of field that should occur at most once"
+                                "{}:{}: too many values for field: {}::{}",
+                                &self.path,
+                                node.start_position().row,
+                                node.kind(),
+                                &field.get_name()
                             );
                             break;
                         }
