@@ -17,6 +17,4 @@ class UnknownLocalVariableDeclExpr extends LocalVariableDeclAndInitExpr {
   override string toString() { result = "(unknown type) " + this.getName() }
 }
 
-query predicate edges(ControlFlow::Node n1, ControlFlow::Node n2) {
-  n2 = n1.getASuccessor() and n1.getLocation().getFile().fromSource()
-}
+query predicate edges(ControlFlow::Node n1, ControlFlow::Node n2) { n2 = n1.getASuccessor() }
