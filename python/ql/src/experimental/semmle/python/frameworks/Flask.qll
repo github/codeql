@@ -15,6 +15,9 @@ private import experimental.semmle.python.frameworks.Werkzeug
  * See https://flask.palletsprojects.com/en/1.1.x/.
  */
 private module FlaskModel {
+  // ---------------------------------------------------------------------------
+  // flask
+  // ---------------------------------------------------------------------------
   /** Gets a reference to the `flask` module. */
   private DataFlow::Node flask(DataFlow::TypeTracker t) {
     t.start() and
@@ -26,21 +29,52 @@ private module FlaskModel {
   /** Gets a reference to the `flask` module. */
   DataFlow::Node flask() { result = flask(DataFlow::TypeTracker::end()) }
 
+  /**
+   * Gets a reference to the attribute `attr_name` of the `flask` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node flask_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["request", "make_response", "Response"] and
+    (
+      t.start() and
+      result = DataFlow::importNode("flask" + "." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = flask()
+    )
+    or
+    // Due to bad performance when using normal setup with `flask_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        flask_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate flask_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(flask_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `flask` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node flask_attr(string attr_name) {
+    result = flask_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
   /** Provides models for the `flask` module. */
   module flask {
     /** Gets a reference to the `flask.request` object. */
-    private DataFlow::Node request(DataFlow::TypeTracker t) {
-      t.start() and
-      result = DataFlow::importNode("flask.request")
-      or
-      t.startInAttr("request") and
-      result = flask()
-      or
-      exists(DataFlow::TypeTracker t2 | result = request(t2).track(t2, t))
-    }
+    DataFlow::Node request() { result = flask_attr("request") }
 
-    /** Gets a reference to the `flask.request` object. */
-    DataFlow::Node request() { result = request(DataFlow::TypeTracker::end()) }
+    /** Gets a reference to the `flask.make_response` function. */
+    DataFlow::Node make_response() { result = flask_attr("make_response") }
 
     /**
      * Provides models for the `flask.Flask` class
@@ -96,7 +130,7 @@ private module FlaskModel {
        * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node instance_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["route", "add_url_rule"] and
+        attr_name in ["route", "add_url_rule", "make_response"] and
         t.startInAttr(attr_name) and
         result = flask::Flask::instance()
         or
@@ -131,7 +165,97 @@ private module FlaskModel {
 
       /** Gets a reference to the `add_url_rule` method on an instance of `flask.Flask`. */
       DataFlow::Node add_url_rule() { result = instance_attr("add_url_rule") }
+
+      /** Gets a reference to the `make_response` method on an instance of `flask.Flask`. */
+      // HACK: We can't call this predicate `make_response` since shadowing is
+      // completely disallowed in QL. I added an underscore to move thing forwards for
+      // now :(
+      DataFlow::Node make_response_() { result = instance_attr("make_response") }
+
+      /** Gets a reference to the `response_class` attribute on the `flask.Flask` class or an instance. */
+      private DataFlow::Node response_class(DataFlow::TypeTracker t) {
+        t.startInAttr("response_class") and
+        result in [classRef(), instance()]
+        or
+        exists(DataFlow::TypeTracker t2 | result = response_class(t2).track(t2, t))
+      }
+
+      /**
+       * Gets a reference to the `response_class` attribute on the `flask.Flask` class or an instance.
+       *
+       * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.response_class
+       */
+      DataFlow::Node response_class() { result = response_class(DataFlow::TypeTracker::end()) }
     }
+  }
+
+  /**
+   * Provides models for the `flask.Response` class
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Response.
+   */
+  module Response {
+    /** Gets a reference to the `flask.Response` class. */
+    private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+      t.start() and
+      result in [flask_attr("Response"), flask::Flask::response_class()]
+      or
+      exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `flask.Response` class. */
+    DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+    /**
+     * A source of an instance of `flask.Response`.
+     *
+     * This can include instantiation of the class, return value from function
+     * calls, or a special parameter that will be set when functions are call by external
+     * library.
+     *
+     * Use `Response::instance()` predicate to get references to instances of `flask.Response`.
+     */
+    abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node { }
+
+    /** A direct instantiation of `flask.Response`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+      override CallNode node;
+
+      ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+      override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
+
+      override string getMimetypeDefault() { result = "text/html" }
+
+      /** Gets the argument passed to the `mimetype` parameter, if any. */
+      private DataFlow::Node getMimetypeArg() {
+        result.asCfgNode() in [node.getArg(3), node.getArgByName("mimetype")]
+      }
+
+      /** Gets the argument passed to the `content_type` parameter, if any. */
+      private DataFlow::Node getContentTypeArg() {
+        result.asCfgNode() in [node.getArg(4), node.getArgByName("content_type")]
+      }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() {
+        result = this.getContentTypeArg()
+        or
+        // content_type argument takes priority over mimetype argument
+        not exists(this.getContentTypeArg()) and
+        result = this.getMimetypeArg()
+      }
+    }
+
+    /** Gets a reference to an instance of `flask.Response`. */
+    private DataFlow::Node instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `flask.Response`. */
+    DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
   }
 
   // ---------------------------------------------------------------------------
@@ -324,8 +448,50 @@ private module FlaskModel {
   private class RequestInputFiles extends RequestInputMultiDict {
     RequestInputFiles() { attr_name = "files" }
   }
+
   // TODO: Somehow specify that elements of `RequestInputFiles` are
   // Werkzeug::werkzeug::datastructures::FileStorage and should have those additional taint steps
   // AND that the 0-indexed argument to its' save method is a sink for path-injection.
   // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
+  // ---------------------------------------------------------------------------
+  // Response modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to either `flask.make_response` function, or the `make_response` method on
+   * an instance of `flask.Flask`.
+   *
+   * See
+   * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.make_response
+   * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response
+   */
+  private class FlaskMakeResponseCall extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    FlaskMakeResponseCall() {
+      node.getFunction() = flask::make_response().asCfgNode()
+      or
+      node.getFunction() = flask::Flask::make_response_().asCfgNode()
+    }
+
+    override DataFlow::Node getBody() { result.asCfgNode() = node.getArg(0) }
+
+    override string getMimetypeDefault() { result = "text/html" }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+  }
+
+  private class FlaskRouteHandlerReturn extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
+    FlaskRouteHandlerReturn() {
+      exists(Function routeHandler |
+        routeHandler = any(FlaskRouteSetup rs).getARouteHandler() and
+        node = routeHandler.getAReturnValueFlowNode()
+      )
+    }
+
+    override DataFlow::Node getBody() { result = this }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { result = "text/html" }
+  }
 }
