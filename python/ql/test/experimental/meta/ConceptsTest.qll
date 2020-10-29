@@ -146,7 +146,10 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
 class HttpServerHttpResponseTest extends InlineExpectationsTest {
   File file;
 
-  HttpServerHttpResponseTest() { this = "HttpServerHttpResponseTest: " + file }
+  HttpServerHttpResponseTest() {
+    file.getExtension() = "py" and
+    this = "HttpServerHttpResponseTest: " + file
+  }
 
   override string getARelevantTag() { result in ["HttpResponse", "responseBody", "mimetype"] }
 
