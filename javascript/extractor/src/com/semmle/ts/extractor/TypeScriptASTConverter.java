@@ -145,6 +145,7 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
@@ -576,6 +577,8 @@ public class TypeScriptASTConverter {
       case "TemplateMiddle":
       case "TemplateTail":
         return convertTemplateElement(node, kind, loc);
+      case "TemplateLiteralType":
+        return convertTemplateLiteralType(node, loc);
       case "ThisKeyword":
         return convertThisKeyword(loc);
       case "ThisType":
@@ -2150,6 +2153,19 @@ public class TypeScriptASTConverter {
       quasis.add(convertChild(templateSpan, "literal"));
     }
     return new TemplateLiteral(loc, expressions, quasis);
+  }
+
+  private Node convertTemplateLiteralType(JsonObject node, SourceLocation loc) throws ParseError {
+    List<TemplateElement> quasis;
+    List<ITypeExpression> expressions = new ArrayList<>();
+    quasis = new ArrayList<>();
+    quasis.add(convertChild(node, "head"));
+    for (JsonElement elt : node.get("templateSpans").getAsJsonArray()) {
+      JsonObject templateSpan = (JsonObject) elt;
+      expressions.add(convertChildAsType(templateSpan, "type"));
+      quasis.add(convertChild(templateSpan, "literal"));
+    }
+    return new TemplateLiteralTypeExpr(loc, expressions, quasis);
   }
 
   private Node convertTemplateElement(JsonObject node, String kind, SourceLocation loc) {

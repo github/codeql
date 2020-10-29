@@ -39,6 +39,7 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
@@ -156,6 +157,8 @@ public interface Visitor<C, R> {
   public R visit(TemplateElement nd, C q);
 
   public R visit(TemplateLiteral nd, C q);
+
+  public R visit(TemplateLiteralTypeExpr nd, C q);
 
   public R visit(TaggedTemplateExpression nd, C q);
 
