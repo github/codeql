@@ -1,13 +1,45 @@
 // CodeQL database schema for Ruby
 // Automatically generated from the tree-sitter grammar; do not edit
 
-location(
-  unique int id: @location,
-  string file_path: string ref,
+@location = @location_default
+
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
   int start_line: int ref,
   int start_column: int ref,
   int end_line: int ref,
   int end_column: int ref
+);
+
+@sourceline = @file
+
+numlines(
+  int element_id: @sourceline ref,
+  int num_lines: int ref,
+  int num_code: int ref,
+  int num_comment: int ref
+);
+
+files(
+  unique int id: @file,
+  string name: string ref,
+  string simple: string ref,
+  string ext: string ref,
+  int fromSource: int ref
+);
+
+folders(
+  unique int id: @folder,
+  string name: string ref,
+  string simple: string ref
+);
+
+@container = @folder | @file
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
 );
 
 sourceLocationPrefix(

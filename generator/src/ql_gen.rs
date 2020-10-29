@@ -130,6 +130,48 @@ fn create_none_predicate(
     }
 }
 
+/// Creates the hard-coded `File` class.
+fn create_file_class() -> ql::Class {
+    let get_absolute_path = ql::Predicate {
+        name: "getAbsolutePath".to_owned(),
+        overridden: false,
+        return_type: Some(ql::Type::String),
+        formal_parameters: vec![],
+        //override string getAbsolutePath() { files(underlyingElement(this), result, _, _, _) }
+        body: ql::Expression::Pred(
+            "files".to_owned(),
+            vec![
+                ql::Expression::Var("this".to_owned()),
+                ql::Expression::Var("result".to_owned()),
+                ql::Expression::Var("_".to_owned()),
+                ql::Expression::Var("_".to_owned()),
+                ql::Expression::Var("_".to_owned()),
+            ],
+        ),
+    };
+    let to_string = ql::Predicate {
+        name: "toString".to_owned(),
+        overridden: false,
+        return_type: Some(ql::Type::String),
+        formal_parameters: vec![],
+        body: ql::Expression::Equals(
+            Box::new(ql::Expression::Var("result".to_owned())),
+            Box::new(ql::Expression::Dot(
+                Box::new(ql::Expression::Var("this".to_owned())),
+                "getAbsolutePath".to_owned(),
+                vec![],
+            )),
+        ),
+    };
+    ql::Class {
+        name: "File".to_owned(),
+        is_abstract: false,
+        supertypes: vec![ql::Type::AtType("file".to_owned())],
+        characteristic_predicate: None,
+        predicates: vec![get_absolute_path, to_string],
+    }
+}
+
 /// Creates the special `Location` class to wrap the location table.
 fn create_location_class() -> ql::Class {
     let to_string = ql::Predicate {
@@ -168,16 +210,32 @@ fn create_location_class() -> ql::Class {
                 param_type: ql::Type::Int,
             },
         ],
-        body: ql::Expression::Pred(
-            "location".to_owned(),
-            vec![
-                ql::Expression::Var("this".to_owned()),
-                ql::Expression::Var("filePath".to_owned()),
-                ql::Expression::Var("startLine".to_owned()),
-                ql::Expression::Var("startColumn".to_owned()),
-                ql::Expression::Var("endLine".to_owned()),
-                ql::Expression::Var("endColumn".to_owned()),
-            ],
+        body: ql::Expression::Exists(
+            vec![ql::FormalParameter {
+                param_type: ql::Type::Normal("File".to_owned()),
+                name: "f".to_owned(),
+            }],
+            Box::new(ql::Expression::And(vec![
+                ql::Expression::Pred(
+                    "locations_default".to_owned(),
+                    vec![
+                        ql::Expression::Var("this".to_owned()),
+                        ql::Expression::Var("f".to_owned()),
+                        ql::Expression::Var("startLine".to_owned()),
+                        ql::Expression::Var("startColumn".to_owned()),
+                        ql::Expression::Var("endLine".to_owned()),
+                        ql::Expression::Var("endColumn".to_owned()),
+                    ],
+                ),
+                ql::Expression::Equals(
+                    Box::new(ql::Expression::Var("filePath".to_owned())),
+                    Box::new(ql::Expression::Dot(
+                        Box::new(ql::Expression::Var("f".to_owned())),
+                        "getAbsolutePath".to_owned(),
+                        vec![],
+                    )),
+                ),
+            ])),
         ),
     };
     ql::Class {
@@ -441,7 +499,11 @@ fn create_field_getters(
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
 pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::Class> {
     let supertype_map = create_supertype_map(nodes);
-    let mut classes: Vec<ql::Class> = vec![create_location_class(), create_top_class()];
+    let mut classes: Vec<ql::Class> = vec![
+        create_file_class(),
+        create_location_class(),
+        create_top_class(),
+    ];
 
     for node in nodes {
         match &node {

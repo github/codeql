@@ -113,7 +113,14 @@ fn add_field(
 /// Converts the given tree-sitter node types into CodeQL dbscheme entries.
 fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
     let mut entries: Vec<dbscheme::Entry> = vec![
-        create_location_table(),
+        create_location_union(),
+        create_locations_default_table(),
+        create_sourceline_union(),
+        create_numlines_table(),
+        create_files_table(),
+        create_folders_table(),
+        create_container_union(),
+        create_containerparent_table(),
         create_source_location_prefix_table(),
     ];
     let mut top_members: Vec<String> = Vec::new();
@@ -212,23 +219,103 @@ fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::
     dbscheme::write(&language.name, &mut file, &entries)
 }
 
-fn create_location_table() -> dbscheme::Entry {
+fn create_location_union() -> dbscheme::Entry {
+    dbscheme::Entry::Union(dbscheme::Union {
+        name: "location".to_owned(),
+        members: vec!["location_default".to_owned()],
+    })
+}
+
+fn create_files_table() -> dbscheme::Entry {
     dbscheme::Entry::Table(dbscheme::Table {
-        name: "location".to_string(),
+        name: "files".to_owned(),
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id".to_owned(),
+                ql_type: ql::Type::AtType("file".to_owned()),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                db_type: dbscheme::DbColumnType::String,
+                name: "name".to_owned(),
+                unique: false,
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                db_type: dbscheme::DbColumnType::String,
+                name: "simple".to_owned(),
+                unique: false,
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                db_type: dbscheme::DbColumnType::String,
+                name: "ext".to_owned(),
+                unique: false,
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                db_type: dbscheme::DbColumnType::Int,
+                name: "fromSource".to_owned(),
+                unique: false,
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+        ],
+    })
+}
+fn create_folders_table() -> dbscheme::Entry {
+    dbscheme::Entry::Table(dbscheme::Table {
+        name: "folders".to_owned(),
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id".to_owned(),
+                ql_type: ql::Type::AtType("folder".to_owned()),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                db_type: dbscheme::DbColumnType::String,
+                name: "name".to_owned(),
+                unique: false,
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                db_type: dbscheme::DbColumnType::String,
+                name: "simple".to_owned(),
+                unique: false,
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+        ],
+    })
+}
+
+fn create_locations_default_table() -> dbscheme::Entry {
+    dbscheme::Entry::Table(dbscheme::Table {
+        name: "locations_default".to_string(),
         keysets: None,
         columns: vec![
             dbscheme::Column {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "id".to_string(),
-                ql_type: ql::Type::AtType("location".to_string()),
+                ql_type: ql::Type::AtType("location_default".to_string()),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
                 unique: false,
-                db_type: dbscheme::DbColumnType::String,
-                name: "file_path".to_string(),
-                ql_type: ql::Type::String,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "file".to_string(),
+                ql_type: ql::Type::AtType("file".to_owned()),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
@@ -260,6 +347,80 @@ fn create_location_table() -> dbscheme::Entry {
                 ql_type_is_ref: true,
             },
         ],
+    })
+}
+
+fn create_sourceline_union() -> dbscheme::Entry {
+    dbscheme::Entry::Union(dbscheme::Union {
+        name: "sourceline".to_owned(),
+        members: vec!["file".to_owned()],
+    })
+}
+
+fn create_numlines_table() -> dbscheme::Entry {
+    dbscheme::Entry::Table(dbscheme::Table {
+        name: "numlines".to_owned(),
+        columns: vec![
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "element_id".to_string(),
+                ql_type: ql::Type::AtType("sourceline".to_owned()),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "num_lines".to_string(),
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "num_code".to_string(),
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "num_comment".to_string(),
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+        ],
+        keysets: None,
+    })
+}
+
+fn create_container_union() -> dbscheme::Entry {
+    dbscheme::Entry::Union(dbscheme::Union {
+        name: "container".to_owned(),
+        members: vec!["folder".to_owned(), "file".to_owned()],
+    })
+}
+
+fn create_containerparent_table() -> dbscheme::Entry {
+    dbscheme::Entry::Table(dbscheme::Table {
+        name: "containerparent".to_owned(),
+        columns: vec![
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "parent".to_string(),
+                ql_type: ql::Type::AtType("container".to_owned()),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "child".to_string(),
+                ql_type: ql::Type::AtType("container".to_owned()),
+                ql_type_is_ref: true,
+            },
+        ],
+        keysets: None,
     })
 }
 

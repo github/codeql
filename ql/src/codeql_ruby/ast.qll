@@ -3,13 +3,22 @@
  * Automatically generated from the tree-sitter grammar; do not edit
  */
 
+class File extends @file {
+  string getAbsolutePath() { files(this, result, _, _, _) }
+
+  string toString() { result = this.getAbsolutePath() }
+}
+
 class Location extends @location {
   string toString() { result = "Location" }
 
   predicate hasLocationInfo(
     string filePath, int startLine, int startColumn, int endLine, int endColumn
   ) {
-    location(this, filePath, startLine, startColumn, endLine, endColumn)
+    exists(File f |
+      locations_default(this, f, startLine, startColumn, endLine, endColumn) and
+      filePath = f.getAbsolutePath()
+    )
   }
 }
 

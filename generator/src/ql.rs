@@ -79,7 +79,10 @@ pub enum Expression {
     String(String),
     Pred(String, Vec<Expression>),
     Or(Vec<Expression>),
+    And(Vec<Expression>),
     Equals(Box<Expression>, Box<Expression>),
+    Exists(Vec<FormalParameter>, Box<Expression>),
+    Dot(Box<Expression>, String, Vec<Expression>),
 }
 
 impl fmt::Display for Expression {
@@ -110,7 +113,40 @@ impl fmt::Display for Expression {
                     Ok(())
                 }
             }
+            Expression::And(conjuncts) => {
+                if conjuncts.is_empty() {
+                    write!(f, "any()")
+                } else {
+                    for (index, disjunct) in conjuncts.iter().enumerate() {
+                        if index > 0 {
+                            write!(f, " and ")?;
+                        }
+                        write!(f, "{}", disjunct)?;
+                    }
+                    Ok(())
+                }
+            }
             Expression::Equals(a, b) => write!(f, "{} = {}", a, b),
+            Expression::Exists(params, formula) => {
+                write!(f, "exists(")?;
+                for (index, param) in params.iter().enumerate() {
+                    if index > 0 {
+                        write!(f, ", ")?;
+                    }
+                    write!(f, "{}", param)?;
+                }
+                write!(f, " | {})", formula)
+            }
+            Expression::Dot(x, member_pred, args) => {
+                write!(f, "{}.{}(", x, member_pred)?;
+                for (index, arg) in args.iter().enumerate() {
+                    if index > 0 {
+                        write!(f, ", ")?;
+                    }
+                    write!(f, "{}", arg)?;
+                }
+                write!(f, ")")
+            }
         }
     }
 }

@@ -34,15 +34,31 @@ impl Extractor {
             .parser
             .parse(&source, None)
             .expect("Failed to parse file");
+        let mut counter = -1;
+        // Create a label for the current file and increment the counter so that
+        // label doesn't get redefined.
+        counter += 1;
+        let file_label = Label::Normal(counter);
         let mut visitor = Visitor {
             source: &source,
-            trap_output: vec![TrapEntry::Comment(format!(
-                "Auto-generated TRAP file for {}",
-                path.display()
-            ))],
-            counter: -1,
+            trap_output: vec![
+                TrapEntry::Comment(format!("Auto-generated TRAP file for {}", path.display())),
+                TrapEntry::New(file_label),
+                TrapEntry::GenericTuple(
+                    "files".to_owned(),
+                    vec![
+                        Arg::Label(file_label),
+                        Arg::String(format!("{}", path.canonicalize()?.display())),
+                        Arg::String(format!("{}", path.file_name().unwrap().to_string_lossy())),
+                        Arg::String(format!("{}", path.extension().unwrap().to_string_lossy())),
+                        Arg::Int(0), // 0 = unknown
+                    ],
+                ),
+            ],
+            counter,
             // TODO: should we handle path strings that are not valid UTF8 better?
             path: format!("{}", path.display()),
+            file_label,
             stack: Vec::new(),
             tables: build_schema_lookup(&self.schema),
             union_types: build_union_type_lookup(&self.schema),
@@ -77,6 +93,9 @@ fn build_union_type_lookup<'a>(schema: &'a Vec<Entry>) -> Map<&'a TypeName, &'a 
 struct Visitor<'a> {
     /// The file path of the source code (as string)
     path: String,
+    /// The label to use whenever we need to refer to the `@file` entity of this
+    /// source file.
+    file_label: Label,
     /// The source code as a UTF-8 byte array
     source: &'a Vec<u8>,
     /// The accumulated trap entries
@@ -135,7 +154,7 @@ impl Visitor<'_> {
             self.trap_output.push(TrapEntry::New(id));
             self.trap_output.push(TrapEntry::New(loc));
             self.trap_output
-                .push(location_for(&self.source, &self.path, loc, node));
+                .push(location_for(&self.source, &self.file_label, loc, node));
             let table_name = node_type_name(node.kind(), node.is_named());
             let args: Option<Vec<Arg>>;
             if fields.is_empty() {
@@ -283,7 +302,7 @@ fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
 }
 
 // Emit a 'Located' TrapEntry for the provided node, appropriately calibrated.
-fn location_for<'a>(source: &Vec<u8>, fp: &String, label: Label, n: Node) -> TrapEntry {
+fn location_for<'a>(source: &Vec<u8>, file_label: &Label, label: Label, n: Node) -> TrapEntry {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -327,7 +346,7 @@ fn location_for<'a>(source: &Vec<u8>, fp: &String, label: Label, n: Node) -> Tra
     }
     TrapEntry::Located(vec![
         Arg::Label(label),
-        Arg::String(fp.to_owned()),
+        Arg::Label(file_label.clone()),
         Arg::Int(start_line),
         Arg::Int(start_col),
         Arg::Int(end_line),
@@ -377,6 +396,8 @@ enum TrapEntry {
     ChildOf(String, Label, String, Option<Index>, Label),
     // @location(loc, path, r1, c1, r2, c2)
     Located(Vec<Arg>),
+    /// foo_bar(arg?)
+    GenericTuple(String, Vec<Arg>),
     Comment(String),
 }
 impl fmt::Display for TrapEntry {
@@ -424,6 +445,16 @@ impl fmt::Display for TrapEntry {
                 args.get(4).unwrap(),
                 args.get(5).unwrap(),
             ),
+            TrapEntry::GenericTuple(name, args) => {
+                write!(f, "{}(", name)?;
+                for (index, arg) in args.iter().enumerate() {
+                    if index > 0 {
+                        write!(f, ", ")?;
+                    }
+                    write!(f, "{}", arg)?;
+                }
+                write!(f, ")")
+            }
             TrapEntry::Comment(line) => write!(f, "// {}", line),
         }
     }
