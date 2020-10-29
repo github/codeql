@@ -144,7 +144,7 @@ abstract class Configuration extends string {
    * predicate completely disregards source definitions.
    *
    * This predicate is intended for dataflow exploration and debugging and may
-   * perform poorly if the number of sources is too big and/or the exploration
+   * perform poorly if the number of sinks is too big and/or the exploration
    * limit is set too high without using barriers.
    *
    * This predicate is disabled (has no results) by default. Override
