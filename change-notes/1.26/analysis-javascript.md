@@ -11,6 +11,8 @@
   - [debounce](https://www.npmjs.com/package/debounce)
   - [bluebird](https://www.npmjs.com/package/bluebird)
   - [call-limit](https://www.npmjs.com/package/call-limit)
+  - [classnames](https://www.npmjs.com/package/classnames)
+  - [clsx](https://www.npmjs.com/package/clsx)
   - [express](https://www.npmjs.com/package/express)
   - [fast-json-stable-stringify](https://www.npmjs.com/package/fast-json-stable-stringify)
   - [fast-safe-stringify](https://www.npmjs.com/package/fast-safe-stringify)

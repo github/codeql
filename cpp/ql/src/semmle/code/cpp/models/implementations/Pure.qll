@@ -5,32 +5,9 @@ import semmle.code.cpp.models.interfaces.SideEffect
 
 class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
   PureStrFunction() {
-    exists(string name |
-      hasGlobalOrStdName(name) and
-      (
-        name = "atof" or
-        name = "atoi" or
-        name = "atol" or
-        name = "atoll" or
-        name = "strcasestr" or
-        name = "strchnul" or
-        name = "strchr" or
-        name = "strchrnul" or
-        name = "strstr" or
-        name = "strpbrk" or
-        name = "strcmp" or
-        name = "strcspn" or
-        name = "strncmp" or
-        name = "strrchr" or
-        name = "strspn" or
-        name = "strtod" or
-        name = "strtof" or
-        name = "strtol" or
-        name = "strtoll" or
-        name = "strtoq" or
-        name = "strtoul"
-      )
-    )
+    hasGlobalOrStdName(["atof", "atoi", "atol", "atoll", "strcasestr", "strchnul", "strchr",
+          "strchrnul", "strstr", "strpbrk", "strcmp", "strcspn", "strncmp", "strrchr", "strspn",
+          "strtod", "strtof", "strtol", "strtoll", "strtoq", "strtoul"])
   }
 
   override predicate hasArrayInput(int bufParam) {
@@ -81,22 +58,9 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
 
 class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   StrLenFunction() {
-    exists(string name |
-      hasGlobalOrStdName(name) and
-      (
-        name = "strlen" or
-        name = "strnlen" or
-        name = "wcslen"
-      )
-      or
-      hasGlobalName(name) and
-      (
-        name = "_mbslen" or
-        name = "_mbslen_l" or
-        name = "_mbstrlen" or
-        name = "_mbstrlen_l"
-      )
-    )
+    hasGlobalOrStdName(["strlen", "strnlen", "wcslen"])
+    or
+    hasGlobalName(["_mbslen", "_mbslen_l", "_mbstrlen", "_mbstrlen_l"])
   }
 
   override predicate hasArrayInput(int bufParam) {
@@ -126,15 +90,7 @@ class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
 }
 
 class PureFunction extends TaintFunction, SideEffectFunction {
-  PureFunction() {
-    exists(string name |
-      hasGlobalOrStdName(name) and
-      (
-        name = "abs" or
-        name = "labs"
-      )
-    )
-  }
+  PureFunction() { hasGlobalOrStdName(["abs", "labs"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(ParameterIndex i |
