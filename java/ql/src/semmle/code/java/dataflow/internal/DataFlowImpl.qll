@@ -748,6 +748,8 @@ private module Stage2 {
     ApNil() { this = false }
   }
 
+  ApNil getApNil(Node node) { any() }
+
   bindingset[tc, tail]
   private Ap apCons(TypedContent tc, Ap tail) { result = true and exists(tc) and exists(tail) }
 
@@ -762,6 +764,8 @@ private module Stage2 {
 
   class Cc = boolean;
 
+  Cc ccAny() { result = false }
+
   /* Begin: Stage 2 logic. */
   /**
    * Holds if `node` is reachable from a source in the configuration `config`.
@@ -775,9 +779,9 @@ private module Stage2 {
   private predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     Stage1::revFlow(node, config) and
     config.isSource(node) and
-    cc = false and
+    cc = ccAny() and
     argAp = apNone() and
-    ap = false
+    ap = getApNil(node)
     or
     Stage1::revFlow(node, unbind(config)) and
     (
@@ -795,16 +799,16 @@ private module Stage2 {
       exists(Node mid |
         fwdFlow(mid, _, _, ap, config) and
         jumpStep(mid, node, config) and
-        cc = false and
+        cc = ccAny() and
         argAp = apNone()
       )
       or
-      exists(Node mid |
-        fwdFlow(mid, _, _, ap, config) and
+      exists(Node mid, ApNil nil |
+        fwdFlow(mid, _, _, nil, config) and
         additionalJumpStep(mid, node, config) and
-        cc = false and
+        cc = ccAny() and
         argAp = apNone() and
-        ap = false
+        ap = getApNil(node)
       )
       or
       // store
@@ -827,7 +831,7 @@ private module Stage2 {
       // flow out of a callable
       exists(DataFlowCall call |
         fwdFlowOut(call, node, cc, argAp, ap, config) and
-        cc = false
+        cc = ccAny()
         or
         exists(Ap argAp0 |
           fwdFlowOutFromArg(call, node, argAp0, ap, config) and
@@ -1001,6 +1005,19 @@ private module Stage2 {
     else returnAp = apNone()
   }
 
+  pragma[nomagic]
+  private predicate revFlowStore(
+    Ap ap0, Content c, Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+  ) {
+    exists(Node mid, TypedContent tc |
+      revFlow(mid, toReturn, returnAp, ap0, config) and
+      storeCand1(node, tc, mid, config) and
+      tc.getContent() = c and
+      ap0 = true and
+      fwdFlow(node, _, _, ap, unbind(config))
+    )
+  }
+
   /**
    * Holds if `c` is the target of a read in the flow covered by `revFlow`.
    */
@@ -1009,19 +1026,6 @@ private module Stage2 {
     exists(Node mid |
       revFlow(mid, _, _, tail, config) and
       readStepFwd(_, cons, c, mid, tail, config)
-    )
-  }
-
-  pragma[nomagic]
-  private predicate revFlowStore(
-    Ap ap0, Content c, Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
-  ) {
-    exists(Node mid, TypedContent tc |
-      storeCand1(node, tc, mid, config) and
-      tc.getContent() = c and
-      revFlow(mid, toReturn, returnAp, ap0, config) and
-      ap0 = true and
-      fwdFlow(node, _, _, ap, unbind(config))
     )
   }
 
@@ -1261,6 +1265,8 @@ private module Stage3 {
 
   class ApNil = AccessPathFrontNil;
 
+  ApNil getApNil(Node node) { result = TFrontNil(getNodeType(node)) }
+
   bindingset[tc, tail]
   private Ap apCons(TypedContent tc, Ap tail) { result.getHead() = tc and exists(tail) }
 
@@ -1274,6 +1280,8 @@ private module Stage3 {
   ApOption apSome(Ap ap) { result = TAccessPathFrontSome(ap) }
 
   class Cc = boolean;
+
+  Cc ccAny() { result = false }
 
   /* Begin: Stage 3 logic. */
   /**
@@ -1295,9 +1303,9 @@ private module Stage3 {
   private predicate fwdFlow0(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     Stage2::revFlow(node, _, _, false, config) and
     config.isSource(node) and
-    cc = false and
+    cc = ccAny() and
     argAp = apNone() and
-    ap = TFrontNil(getNodeType(node))
+    ap = getApNil(node)
     or
     exists(Node mid |
       fwdFlow(mid, cc, argAp, ap, config) and
@@ -1313,7 +1321,7 @@ private module Stage3 {
       fwdFlow(mid, _, _, ap, config) and
       Stage2::revFlow(node, unbind(config)) and
       jumpStep(mid, node, config) and
-      cc = false and
+      cc = ccAny() and
       argAp = apNone()
     )
     or
@@ -1321,9 +1329,9 @@ private module Stage3 {
       fwdFlow(mid, _, _, nil, config) and
       Stage2::revFlow(node, unbind(config)) and
       additionalJumpStep(mid, node, config) and
-      cc = false and
+      cc = ccAny() and
       argAp = apNone() and
-      ap = TFrontNil(getNodeType(node))
+      ap = getApNil(node)
     )
     or
     // store
@@ -1349,7 +1357,7 @@ private module Stage3 {
     // flow out of a callable
     exists(DataFlowCall call |
       fwdFlowOut(call, node, cc, argAp, ap, config) and
-      cc = false
+      cc = ccAny()
       or
       exists(Ap argAp0 |
         fwdFlowOutFromArg(call, node, argAp0, ap, config) and
@@ -1492,7 +1500,7 @@ private module Stage3 {
     or
     // store
     exists(Ap ap0, Content c |
-      revFlowStore(ap0, c, node, ap, toReturn, returnAp, config) and
+      revFlowStore(ap0, c, node, toReturn, returnAp, ap, config) and
       revFlowConsCand(ap0, c, ap, config)
     )
     or
@@ -1528,12 +1536,12 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate revFlowStore(
-    Ap ap0, Content c, Node node, Ap ap, boolean toReturn, ApOption returnAp, Configuration config
+    Ap ap0, Content c, Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
     exists(Node mid, TypedContent tc |
+      revFlow(mid, toReturn, returnAp, ap0, unbind(config)) and
       fwdFlow(node, _, _, ap, config) and
       storeCand2(node, tc, mid, _, unbind(config)) and
-      revFlow(mid, toReturn, returnAp, ap0, unbind(config)) and
       ap0 = TFrontHead(tc) and
       tc.getContent() = c
     )
@@ -1819,6 +1827,8 @@ private module Stage4 {
 
   class ApNil = AccessPathApproxNil;
 
+  ApNil getApNil(Node node) { result = TNil(getNodeType(node)) }
+
   bindingset[tc, tail]
   private Ap apCons(TypedContent tc, Ap tail) { result = push(tc, tail) }
 
@@ -1832,6 +1842,8 @@ private module Stage4 {
   ApOption apSome(Ap ap) { result = TAccessPathApproxSome(ap) }
 
   class Cc = CallContext;
+
+  Cc ccAny() { result instanceof CallContextAny }
 
   /* Begin: Stage 4 logic. */
   /**
@@ -1850,9 +1862,9 @@ private module Stage4 {
   private predicate fwdFlow0(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     Stage3::revFlow(node, _, _, _, config) and
     config.isSource(node) and
-    cc instanceof CallContextAny and
+    cc = ccAny() and
     argAp = apNone() and
-    ap = TNil(getNodeType(node))
+    ap = getApNil(node)
     or
     Stage3::revFlow(node, _, _, _, unbind(config)) and
     (
@@ -1870,16 +1882,16 @@ private module Stage4 {
       exists(Node mid |
         fwdFlow(mid, _, _, ap, config) and
         jumpStep(mid, node, config) and
-        cc instanceof CallContextAny and
+        cc = ccAny() and
         argAp = apNone()
       )
       or
       exists(Node mid, ApNil nil |
         fwdFlow(mid, _, _, nil, config) and
         additionalJumpStep(mid, node, config) and
-        cc instanceof CallContextAny and
+        cc = ccAny() and
         argAp = apNone() and
-        ap = TNil(getNodeType(node))
+        ap = getApNil(node)
       )
     )
     or
@@ -2135,8 +2147,8 @@ private module Stage4 {
     Ap ap0, Content c, Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
     exists(Node mid, TypedContent tc |
-      storeFlowFwd(node, tc, mid, ap, ap0, config) and
       revFlow(mid, toReturn, returnAp, ap0, config) and
+      storeFlowFwd(node, tc, mid, ap, ap0, config) and
       tc.getContent() = c
     )
   }
