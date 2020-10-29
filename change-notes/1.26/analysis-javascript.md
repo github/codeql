@@ -34,6 +34,8 @@
   - [react](https://www.npmjs.com/package/react)
   - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
   - [react-redux](https://www.npmjs.com/package/react-redux)
+  - [redis](https://www.npmjs.com/package/redis)
+  - [redux](https://www.npmjs.com/package/redux)
   - [stringify-object](https://www.npmjs.com/package/stringify-object)
   - [styled-components](https://www.npmjs.com/package/styled-components)
   - [throttle-debounce](https://www.npmjs.com/package/throttle-debounce)

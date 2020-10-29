@@ -596,6 +596,7 @@ private class UseStateStep extends PreCallGraphStep {
  * function Foo() {
  *   let succ = useContext(MyContext);
  * }
+ * ```
  */
 private class UseContextStep extends PreCallGraphStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
