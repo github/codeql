@@ -445,7 +445,7 @@ module AssertionSplitting {
 
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       exists(AssertMethod m |
-        pred = last(a.getExpr(), c) and
+        pred = last(a.getAnExpr(), c) and
         succ = succ(pred, c) and
         this.getAssertion() = a and
         m = a.getAssertMethod()

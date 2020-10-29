@@ -9,11 +9,27 @@ private import ControlFlow::BasicBlocks
 
 /** An assertion method. */
 abstract class AssertMethod extends Method {
-  /** Gets the index of the parameter being asserted. */
-  abstract int getAssertionIndex();
+  /**
+   * DEPRECATED: renamed to `getAnAssertionIndex`.
+   *
+   * Gets the index of a parameter being asserted.
+   */
+  deprecated int getAssertionIndex() { result = getAnAssertionIndex() }
 
-  /** Gets the parameter being asserted. */
-  final Parameter getAssertedParameter() { result = this.getParameter(this.getAssertionIndex()) }
+  /** Gets the index of a parameter being asserted. */
+  abstract int getAnAssertionIndex();
+
+  /**
+   * DEPRECATED: renamed to `getAnAssertedParameter`.
+   *
+   * Gets a parameter being asserted.
+   */
+  deprecated Parameter getAssertedParameter() { result = getAnAssertedParameter() }
+
+  /** Gets a parameter being asserted. */
+  final Parameter getAnAssertedParameter() {
+    result = this.getParameter(this.getAnAssertionIndex())
+  }
 
   /** Gets the exception being thrown if the assertion fails, if any. */
   abstract Class getExceptionClass();
@@ -40,8 +56,15 @@ class Assertion extends MethodCall {
   /** Gets the assertion method targeted by this assertion. */
   AssertMethod getAssertMethod() { result = target }
 
-  /** Gets the expression that this assertion pertains to. */
-  Expr getExpr() { result = this.getArgumentForParameter(target.getAssertedParameter()) }
+  /**
+   * DEPRECATED: renamed to `getAnExpr`.
+   *
+   * Gets an expression that this assertion pertains to.
+   */
+  deprecated Expr getExpr() { result = this.getAnExpr() }
+
+  /** Gets an expression that this assertion pertains to. */
+  Expr getAnExpr() { result = this.getArgumentForParameter(target.getAnAssertedParameter()) }
 
   /**
    * Holds if basic block `succ` is immediately dominated by this assertion.
@@ -144,7 +167,7 @@ class FailingAssertion extends Assertion {
   FailingAssertion() {
     exists(AssertMethod am, Expr e |
       am = this.getAssertMethod() and
-      e = this.getExpr()
+      e = this.getAnExpr()
     |
       am instanceof AssertTrueMethod and
       e.getValue() = "false"
@@ -163,7 +186,7 @@ class SystemDiagnosticsDebugAssertTrueMethod extends AssertTrueMethod {
     this = any(SystemDiagnosticsDebugClass c).getAssertMethod()
   }
 
-  override int getAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex() { result = 0 }
 
   override Class getExceptionClass() {
     // A failing assertion generates a message box, see
@@ -186,7 +209,7 @@ class SystemDiagnosticsContractAssertTrueMethod extends AssertTrueMethod {
     )
   }
 
-  override int getAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex() { result = 0 }
 
   override Class getExceptionClass() {
     // A failing assertion generates a message box, see
@@ -195,11 +218,50 @@ class SystemDiagnosticsContractAssertTrueMethod extends AssertTrueMethod {
   }
 }
 
+private predicate isDoesNotReturnIfAttributeParameter(Parameter p, boolean value) {
+  exists(Attribute a | a = p.getAnAttribute() |
+    a.getType() instanceof SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass and
+    a.getConstructorArgument(0).(BoolLiteral).getBoolValue() = value
+  )
+}
+
+/**
+ * A method with a parameter that is annotated with
+ * `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute(false)`.
+ */
+class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod extends AssertTrueMethod {
+  private int i;
+
+  SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod() {
+    isDoesNotReturnIfAttributeParameter(this.getParameter(i), false)
+  }
+
+  override int getAnAssertionIndex() { result = i }
+
+  override SystemExceptionClass getExceptionClass() { any() }
+}
+
+/**
+ * A method with a parameter that is annotated with
+ * `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute(true)`.
+ */
+class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod extends AssertFalseMethod {
+  private int i;
+
+  SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod() {
+    isDoesNotReturnIfAttributeParameter(this.getParameter(i), true)
+  }
+
+  override int getAnAssertionIndex() { result = i }
+
+  override SystemExceptionClass getExceptionClass() { any() }
+}
+
 /** A Visual Studio assertion method. */
 class VSTestAssertTrueMethod extends AssertTrueMethod {
   VSTestAssertTrueMethod() { this = any(VSTestAssertClass c).getIsTrueMethod() }
 
-  override int getAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex() { result = 0 }
 
   override AssertFailedExceptionClass getExceptionClass() { any() }
 }
@@ -208,7 +270,7 @@ class VSTestAssertTrueMethod extends AssertTrueMethod {
 class VSTestAssertFalseMethod extends AssertFalseMethod {
   VSTestAssertFalseMethod() { this = any(VSTestAssertClass c).getIsFalseMethod() }
 
-  override int getAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex() { result = 0 }
 
   override AssertFailedExceptionClass getExceptionClass() { any() }
 }
@@ -217,7 +279,7 @@ class VSTestAssertFalseMethod extends AssertFalseMethod {
 class VSTestAssertNullMethod extends AssertNullMethod {
   VSTestAssertNullMethod() { this = any(VSTestAssertClass c).getIsNullMethod() }
 
-  override int getAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex() { result = 0 }
 
   override AssertFailedExceptionClass getExceptionClass() { any() }
 }
@@ -226,14 +288,14 @@ class VSTestAssertNullMethod extends AssertNullMethod {
 class VSTestAssertNonNullMethod extends AssertNonNullMethod {
   VSTestAssertNonNullMethod() { this = any(VSTestAssertClass c).getIsNotNullMethod() }
 
-  override int getAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex() { result = 0 }
 
   override AssertFailedExceptionClass getExceptionClass() { any() }
 }
 
 /** An NUnit assertion method. */
 abstract class NUnitAssertMethod extends AssertMethod {
-  override int getAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex() { result = 0 }
 
   override AssertionExceptionClass getExceptionClass() { any() }
 }
@@ -292,11 +354,11 @@ class ForwarderAssertMethod extends AssertMethod {
     strictcount(AssignableDefinition def | def.getTarget() = p) = 1 and
     forex(ControlFlowElement body | body = this.getBody() |
       bodyAsserts(this, body, a) and
-      a.getExpr() = p.getAnAccess()
+      a.getAnExpr() = p.getAnAccess()
     )
   }
 
-  override int getAssertionIndex() { result = p.getPosition() }
+  override int getAnAssertionIndex() { result = p.getPosition() }
 
   override Class getExceptionClass() {
     result = this.getUnderlyingAssertMethod().getExceptionClass()
@@ -345,4 +407,4 @@ class ForwarderAssertNonNullMethod extends ForwarderAssertMethod, AssertNonNullM
 }
 
 /** Holds if expression `e` appears in an assertion. */
-predicate isExprInAssertion(Expr e) { e = any(Assertion a).getExpr().getAChildExpr*() }
+predicate isExprInAssertion(Expr e) { e = any(Assertion a).getAnExpr().getAChildExpr*() }

@@ -391,7 +391,7 @@ private predicate invalidCastCandidate(CastExpr ce) {
 }
 
 private predicate assertion(Assertion a, AssertMethod am, Expr e) {
-  e = a.getExpr() and
+  e = a.getAnExpr() and
   am = a.getAssertMethod()
 }
 
