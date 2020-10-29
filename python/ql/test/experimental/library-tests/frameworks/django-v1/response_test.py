@@ -4,7 +4,7 @@ from django.http.response import HttpResponse, HttpResponseRedirect, JsonRespons
 # FP reported in https://github.com/github/codeql-python-team/issues/38
 def fp_json_response(request):
     # implicitly sets Content-Type to "application/json"
-    return JsonResponse({"foo": request.GET.get("foo")})
+    return JsonResponse({"foo": request.GET.get("foo")})  # $f-:HttpResponse $f-:mimetype=application/json $f-:responseBody={"foo": request.GET.get("foo")}
 
 # Not an XSS sink, since the Content-Type is not "text/html"
 def fp_manual_json_response(request):
@@ -18,11 +18,11 @@ def fp_manual_content_type(request):
 # XSS FP reported in https://github.com/github/codeql/issues/3466
 # Note: This should be a open-redirect sink, but not a XSS sink.
 def fp_redirect(request):
-    return HttpResponseRedirect(request.GET.get("next"))
+    return HttpResponseRedirect(request.GET.get("next"))  # f-:HttpResponse
 
 # Ensure that simple subclasses are still vuln to XSS
 def tp_not_found(request):
-    return HttpResponseNotFound(request.GET.get("name"))
+    return HttpResponseNotFound(request.GET.get("name"))  # f-:HttpResponse
 
 # Ensure we still have a XSS sink when manually setting the content_type to HTML
 def tp_manual_response_type(request):
