@@ -11,7 +11,7 @@ from flask.views import MethodView
 
 class MyView(MethodView):
 
-    def get(self, user_id): # $f-:routeHandler
+    def get(self, user_id): # $ MISSING: routeHandler
         if user_id is None:
             # return a list of users
             pass
@@ -46,21 +46,21 @@ def safe():  # $routeHandler
     return make_response("Your name is " + escape(first_name))
 
 @app.route("/hello/<name>")  # $routeSetup="/hello/<name>"
-def hello(name):  # $routeHandler $routedParameter=name
+def hello(name):  # $routeHandler routedParameter=name
     return make_response("Your name is " + name)
 
 @app.route("/foo/<path:subpath>")  # $routeSetup="/foo/<path:subpath>"
-def foo(subpath):  # $routeHandler $routedParameter=subpath
+def foo(subpath):  # $routeHandler routedParameter=subpath
     return make_response("The subpath is " + subpath)
 
 @app.route("/multiple/")  # $routeSetup="/multiple/"
 @app.route("/multiple/foo/<foo>")  # $routeSetup="/multiple/foo/<foo>"
 @app.route("/multiple/bar/<bar>")  # $routeSetup="/multiple/bar/<bar>"
-def multiple(foo=None, bar=None):  # $routeHandler $routedParameter=foo $routedParameter=bar
+def multiple(foo=None, bar=None):  # $routeHandler routedParameter=foo routedParameter=bar
     return make_response("foo={!r} bar={!r}".format(foo, bar))
 
 @app.route("/complex/<string(length=2):lang_code>")  # $routeSetup="/complex/<string(length=2):lang_code>"
-def complex(lang_code):  # $routeHandler $routedParameter=lang_code
+def complex(lang_code):  # $routeHandler routedParameter=lang_code
     return make_response("lang_code {}".format(lang_code))
 
 if __name__ == "__main__":

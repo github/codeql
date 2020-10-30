@@ -2,7 +2,7 @@ from flask import Flask, request
 app = Flask(__name__)
 
 @app.route("/test_taint/<name>/<int:number>")  # $routeSetup="/test_taint/<name>/<int:number>"
-def test_taint(name = "World!", number="0", foo="foo"):  # $routeHandler $routedParameter=name $routedParameter=number
+def test_taint(name = "World!", number="0", foo="foo"):  # $routeHandler routedParameter=name routedParameter=number
     ensure_tainted(name, number)
     ensure_not_tainted(foo)
 
@@ -192,7 +192,7 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $routeHandler $routed
 
 
 @app.route("/debug/<foo>/<bar>", methods=['GET']) # $routeSetup="/debug/<foo>/<bar>"
-def debug(foo, bar):  # $routeHandler $routedParameter=foo $routedParameter=bar
+def debug(foo, bar):  # $routeHandler routedParameter=foo routedParameter=bar
     print("request.view_args", request.view_args)
 
     print("request.headers {!r}".format(request.headers))

@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpRe
 from django.views import View
 
 
-def url_match_xss(request, foo, bar, no_taint=None):  # $routeHandler $routedParameter=foo $routedParameter=bar
+def url_match_xss(request, foo, bar, no_taint=None):  # $routeHandler routedParameter=foo routedParameter=bar
     return HttpResponse('url_match_xss: {} {}'.format(foo, bar))
 
 
@@ -26,22 +26,22 @@ class Foo(object):
     # Note: since Foo is used as the super type in a class view, it will be able to handle requests.
 
 
-    def post(self, request, untrusted):  # $f-:routeHandler $f-:routedParameter=untrusted
+    def post(self, request, untrusted):  # $ MISSING: routeHandler routedParameter=untrusted
         return HttpResponse('Foo post: {}'.format(untrusted))
 
 
 class ClassView(View, Foo):
 
-    def get(self, request, untrusted):  # $f-:routeHandler $f-:routedParameter=untrusted
+    def get(self, request, untrusted):  #  $ MISSING: routeHandler routedParameter=untrusted
         return HttpResponse('ClassView get: {}'.format(untrusted))
 
 
-def show_articles(request, page_number=1):  # $routeHandler $routedParameter=page_number
+def show_articles(request, page_number=1):  # $routeHandler routedParameter=page_number
     page_number = int(page_number)
     return HttpResponse('articles page: {}'.format(page_number))
 
 
-def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $routeHandler $routedParameter=arg0 $routedParameter=arg1
+def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $routeHandler routedParameter=arg0 routedParameter=arg1
     return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))
 
 
@@ -75,13 +75,13 @@ urlpatterns = [
 ################################################################################
 
 # saying page_number is an externally controlled *string* is a bit strange, when we have an int converter :O
-def page_number(request, page_number=1):  # $routeHandler $routedParameter=page_number
+def page_number(request, page_number=1):  # $routeHandler routedParameter=page_number
     return HttpResponse('page_number: {}'.format(page_number))
 
-def foo_bar_baz(request, foo, bar, baz):  # $routeHandler $routedParameter=foo $routedParameter=bar $routedParameter=baz
+def foo_bar_baz(request, foo, bar, baz):  # $routeHandler routedParameter=foo routedParameter=bar routedParameter=baz
     return HttpResponse('foo_bar_baz: {} {} {}'.format(foo, bar, baz))
 
-def path_kwargs(request, foo, bar):  # $routeHandler $routedParameter=foo $routedParameter=bar
+def path_kwargs(request, foo, bar):  # $routeHandler routedParameter=foo routedParameter=bar
     return HttpResponse('path_kwargs: {} {} {}'.format(foo, bar))
 
 def not_valid_identifier(request):  # $routeHandler
