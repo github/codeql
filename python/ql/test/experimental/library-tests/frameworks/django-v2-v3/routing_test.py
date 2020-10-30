@@ -18,7 +18,7 @@ def post_params_xss(request):  # $routeHandler
 
 def http_resp_write(request):  # $routeHandler
     rsp = HttpResponse()  # $HttpResponse
-    rsp.write(request.GET.get("untrusted"))
+    rsp.write(request.GET.get("untrusted"))  # $HttpResponse
     return rsp
 
 
