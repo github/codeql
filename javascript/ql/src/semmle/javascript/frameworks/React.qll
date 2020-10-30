@@ -632,6 +632,7 @@ private DataFlow::SourceNode getAContextRef(DataFlow::CallNode createContext) {
  */
 pragma[nomagic]
 private DataFlow::Node getAContextInput(DataFlow::CallNode createContext) {
+  createContext = react().getAMemberCall("createContext") and
   result = createContext.getArgument(0) // initial value
   or
   exists(JSXElement provider |
