@@ -51,7 +51,7 @@ impl Extractor {
                         Arg::String(format!("{}", path.canonicalize()?.display())),
                         Arg::String(format!("{}", path.file_name().unwrap().to_string_lossy())),
                         Arg::String(format!("{}", path.extension().unwrap().to_string_lossy())),
-                        Arg::Int(0), // 0 = unknown
+                        Arg::Int(1), // 1 = from source
                     ],
                 ),
             ],
