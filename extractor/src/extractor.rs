@@ -483,7 +483,7 @@ impl fmt::Display for TrapEntry {
             },
             TrapEntry::Located(args) => write!(
                 f,
-                "location({}, {}, {}, {}, {}, {})",
+                "locations_default({}, {}, {}, {}, {}, {})",
                 args.get(0).unwrap(),
                 args.get(1).unwrap(),
                 args.get(2).unwrap(),
