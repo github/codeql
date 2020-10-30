@@ -41,16 +41,17 @@ impl Extractor {
         // label doesn't get redefined.
         counter += 1;
         let file_label = Label::Normal(counter);
+        let path_string = format!("{}", path.display());
         let mut visitor = Visitor {
             source: &source,
             trap_output: vec![
                 TrapEntry::Comment(format!("Auto-generated TRAP file for {}", path.display())),
-                TrapEntry::New(file_label),
+                TrapEntry::MapLabelToKey(file_label, path_string.clone()),
                 TrapEntry::GenericTuple(
                     "files".to_owned(),
                     vec![
                         Arg::Label(file_label),
-                        Arg::String(format!("{}", path.display())),
+                        Arg::String(path_string.clone()),
                         Arg::String(format!("{}", path.file_name().unwrap().to_string_lossy())),
                         Arg::String(format!("{}", path.extension().unwrap().to_string_lossy())),
                         Arg::Int(1), // 1 = from source
@@ -59,7 +60,7 @@ impl Extractor {
             ],
             counter,
             // TODO: should we handle path strings that are not valid UTF8 better?
-            path: format!("{}", path.display()),
+            path: path_string,
             file_label,
             stack: Vec::new(),
             tables: build_schema_lookup(&self.schema),
@@ -153,8 +154,8 @@ impl Visitor<'_> {
             self.counter += 1;
             let id = Label::Normal(self.counter);
             let loc = Label::Location(self.counter);
-            self.trap_output.push(TrapEntry::New(id));
-            self.trap_output.push(TrapEntry::New(loc));
+            self.trap_output.push(TrapEntry::FreshId(id));
+            self.trap_output.push(TrapEntry::FreshId(loc));
             self.trap_output
                 .push(location_for(&self.source, &self.file_label, loc, node));
             let table_name = node_type_name(node.kind(), node.is_named());
@@ -390,8 +391,10 @@ impl fmt::Display for Program {
 }
 
 enum TrapEntry {
-    // @id = *@
-    New(Label),
+    /// Maps the label to a fresh id, e.g. `#123 = *`.
+    FreshId(Label),
+    /// Maps the label to a key, e.g. `#7 = @"foo"`.
+    MapLabelToKey(Label, String),
     // @node_def(self, arg?, location)@
     Definition(String, Label, Vec<Arg>, Label),
     // @node_child(self, index, parent)@
@@ -405,7 +408,8 @@ enum TrapEntry {
 impl fmt::Display for TrapEntry {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            TrapEntry::New(id) => write!(f, "{} = *", id),
+            TrapEntry::FreshId(label) => write!(f, "{} = *", label),
+            TrapEntry::MapLabelToKey(label, key) => write!(f, "{} = @\"{}\"", label, key),
             TrapEntry::Definition(n, id, args, loc) => {
                 let mut args_str = String::new();
                 for arg in args {
