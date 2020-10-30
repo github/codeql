@@ -4,12 +4,13 @@ using System.Linq;
 
 public class TargetType
 {
+    public int Prop1 { get; set; }
     private List<TargetType> l = new();
 
     public TargetType M1(TargetType t)
     {
         this.M1(new());
-        return new();
+        return new() { Prop1 = 1 };
     }
 
     public void M2()
@@ -27,4 +28,10 @@ public class TargetType
 
         IEnumerable<int> xss = xs.ToList() ?? new[] { 1, 2 };
     }
+
+    delegate void D(int x);
+
+    void M(int x) { }
+
+    D GetM() { return new(M); }
 }

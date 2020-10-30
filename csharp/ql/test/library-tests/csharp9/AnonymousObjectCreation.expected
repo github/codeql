@@ -1,0 +1,10 @@
+implicitlyTypedObjectCreation
+| CovariantReturn.cs:5:41:5:45 | object creation of type Class1 |
+| CovariantReturn.cs:6:41:6:45 | object creation of type Class1 |
+| CovariantReturn.cs:11:42:11:46 | object creation of type Class1 |
+| CovariantReturn.cs:12:42:12:46 | object creation of type Class2 |
+| TargetType.cs:8:34:8:38 | object creation of type List<TargetType> |
+| TargetType.cs:12:17:12:21 | object creation of type TargetType |
+| TargetType.cs:13:16:13:34 | object creation of type TargetType |
+implicitlyTypedDelegateCreation
+| TargetType.cs:36:23:36:28 | delegate creation of type D |

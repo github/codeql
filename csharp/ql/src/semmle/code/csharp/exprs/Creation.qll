@@ -205,6 +205,9 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
    */
   ObjectOrCollectionInitializer getInitializer() { result = this.getChild(-1) }
 
+  /** Holds if the type of the created object is inferred. */
+  predicate isImplicitlyTyped() { implicitly_typed_object_creation(this) }
+
   override string toString() { result = "object creation of type " + this.getType().getName() }
 
   override Expr getRawArgument(int i) {
@@ -271,6 +274,9 @@ class DelegateCreation extends Expr, @delegate_creation_expr {
  */
 class ExplicitDelegateCreation extends DelegateCreation, @explicit_delegate_creation_expr {
   override string getAPrimaryQlClass() { result = "ExplicitDelegateCreation" }
+
+  /** Holds if the type of the created delegate is inferred. */
+  predicate isImplicitlyTyped() { implicitly_typed_object_creation(this) }
 }
 
 /**

@@ -6,9 +6,9 @@ CovariantReturn.cs:
 #-----| 0 -> [ReturnStmt] return ...;
 
 #    5| [ReturnStmt] return ...;
-#-----| 0 -> [???] Expression
+#-----| 0 -> [ObjectCreation] object creation of type Class1
 
-#    5| [???] Expression
+#    5| [ObjectCreation] object creation of type Class1
 
 #    6| [Method] M2
 #-----| 4 -> [BlockStmt] {...}
@@ -20,9 +20,9 @@ CovariantReturn.cs:
 #-----| 0 -> [ReturnStmt] return ...;
 
 #   11| [ReturnStmt] return ...;
-#-----| 0 -> [???] Expression
+#-----| 0 -> [ObjectCreation] object creation of type Class1
 
-#   11| [???] Expression
+#   11| [ObjectCreation] object creation of type Class1
 
 #   12| [Method] M2
 #-----| 4 -> [BlockStmt] {...}
@@ -31,17 +31,17 @@ CovariantReturn.cs:
 #-----| 0 -> [ReturnStmt] return ...;
 
 #    6| [ReturnStmt] return ...;
-#-----| 0 -> [???] Expression
+#-----| 0 -> [ObjectCreation] object creation of type Class1
 
-#    6| [???] Expression
+#    6| [ObjectCreation] object creation of type Class1
 
 #   12| [BlockStmt] {...}
 #-----| 0 -> [ReturnStmt] return ...;
 
 #   12| [ReturnStmt] return ...;
-#-----| 0 -> [???] Expression
+#-----| 0 -> [ObjectCreation] object creation of type Class2
 
-#   12| [???] Expression
+#   12| [ObjectCreation] object creation of type Class2
 
 Discard.cs:
 #    5| [Method] M1
@@ -1188,188 +1188,241 @@ Record.cs:
 #   78| [LocalVariableAccess] access to local variable brother
 
 TargetType.cs:
-#    9| [Method] M1
+#   10| [Method] M1
 #-----| 2 -> (Parameters)
 #-----| 4 -> [BlockStmt] {...}
 
-#    9| [Parameter] t
+#   10| [Parameter] t
 
-#   10| [BlockStmt] {...}
+#   11| [BlockStmt] {...}
 #-----| 0 -> [ExprStmt] ...;
 #-----| 1 -> [ReturnStmt] return ...;
 
-#   11| [ExprStmt] ...;
+#   12| [ExprStmt] ...;
 #-----| 0 -> [MethodCall] call to method M1
 
-#   11| [MethodCall] call to method M1
+#   12| [MethodCall] call to method M1
 #-----| -1 -> [ThisAccess] this access
-#-----| 0 -> [???] Expression
+#-----| 0 -> [ObjectCreation] object creation of type TargetType
 
-#   11| [ThisAccess] this access
+#   12| [ThisAccess] this access
 
-#   11| [???] Expression
+#   12| [ObjectCreation] object creation of type TargetType
 
-#   12| [ReturnStmt] return ...;
-#-----| 0 -> [???] Expression
+#   13| [ReturnStmt] return ...;
+#-----| 0 -> [ObjectCreation] object creation of type TargetType
 
-#   12| [???] Expression
+#   13| [ObjectCreation] object creation of type TargetType
+#-----| -1 -> [ObjectInitializer] { ..., ... }
 
-#    7| [Field] l
+#   13| [ObjectInitializer] { ..., ... }
+#-----| 0 -> [MemberInitializer] ... = ...
+
+#   13| [MemberInitializer] ... = ...
+#-----| 0 -> [IntLiteral] 1
+#-----| 1 -> [PropertyCall] access to property Prop1
+
+#   13| [IntLiteral] 1
+
+#   13| [PropertyCall] access to property Prop1
+
+#    8| [Field] l
 #-----| 1 -> [AssignExpr] ... = ...
 
-#   15| [Method] M2
+#    7| [Property] Prop1
+#-----| 3 -> [Getter] get_Prop1
+#-----| 4 -> [Setter] set_Prop1
+
+#   32| [DelegateType] D
+#-----| 2 -> (Parameters)
+
+#    7| [Getter] get_Prop1
+
+#    7| [Setter] set_Prop1
+#-----| 2 -> (Parameters)
+
+#    7| [Parameter] value
+
+#   16| [Method] M2
 #-----| 4 -> [BlockStmt] {...}
 
-#    7| [AssignExpr] ... = ...
-#-----| 0 -> [???] Expression
+#   32| [Parameter] x
+
+#   34| [Method] M
+#-----| 2 -> (Parameters)
+#-----| 4 -> [BlockStmt] {...}
+
+#   34| [Parameter] x
+
+#   36| [Method] GetM
+#-----| 4 -> [BlockStmt] {...}
+
+#    8| [AssignExpr] ... = ...
+#-----| 0 -> [ObjectCreation] object creation of type List<TargetType>
 #-----| 1 -> [FieldAccess] access to field l
 
-#    7| [???] Expression
+#    8| [ObjectCreation] object creation of type List<TargetType>
 
-#    7| [FieldAccess] access to field l
+#    8| [FieldAccess] access to field l
 
-#   16| [BlockStmt] {...}
+#   17| [BlockStmt] {...}
 #-----| 0 -> [LocalVariableDeclStmt] ... ...;
 #-----| 1 -> [LocalVariableDeclStmt] ... ...;
 #-----| 2 -> [LocalVariableDeclStmt] ... ...;
 #-----| 3 -> [LocalVariableDeclStmt] ... ...;
 #-----| 4 -> [LocalVariableDeclStmt] ... ...;
 
-#   17| [LocalVariableDeclStmt] ... ...;
+#   18| [LocalVariableDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] Random rand = ...
 
-#   17| [LocalVariableDeclAndInitExpr] Random rand = ...
+#   18| [LocalVariableDeclAndInitExpr] Random rand = ...
 #-----| 0 -> [ObjectCreation] object creation of type Random
 #-----| 1 -> [LocalVariableAccess] access to local variable rand
 
-#   17| [ObjectCreation] object creation of type Random
+#   18| [ObjectCreation] object creation of type Random
 
-#   17| [LocalVariableAccess] access to local variable rand
+#   18| [LocalVariableAccess] access to local variable rand
 
-#   18| [LocalVariableDeclStmt] ... ...;
+#   19| [LocalVariableDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] Boolean condition = ...
 
-#   18| [LocalVariableDeclAndInitExpr] Boolean condition = ...
+#   19| [LocalVariableDeclAndInitExpr] Boolean condition = ...
 #-----| 0 -> [GTExpr] ... > ...
 #-----| 1 -> [LocalVariableAccess] access to local variable condition
 
-#   18| [GTExpr] ... > ...
+#   19| [GTExpr] ... > ...
 #-----| 0 -> [MethodCall] call to method NextDouble
 #-----| 1 -> [DoubleLiteral] 0.5
 
-#   18| [LocalVariableAccess] access to local variable condition
+#   19| [LocalVariableAccess] access to local variable condition
 
-#   20| [LocalVariableDeclStmt] ... ...;
+#   21| [LocalVariableDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] Nullable<Int32> x = ...
 
-#   20| [LocalVariableDeclAndInitExpr] Nullable<Int32> x = ...
+#   21| [LocalVariableDeclAndInitExpr] Nullable<Int32> x = ...
 #-----| 0 -> [ConditionalExpr] ... ? ... : ...
 #-----| 1 -> [LocalVariableAccess] access to local variable x
 
-#   20| [ConditionalExpr] ... ? ... : ...
+#   21| [ConditionalExpr] ... ? ... : ...
 #-----| 0 -> [LocalVariableAccess] access to local variable condition
 #-----| 1 -> [CastExpr] (...) ...
 #-----| 2 -> [NullLiteral] null
 
-#   20| [LocalVariableAccess] access to local variable condition
+#   21| [LocalVariableAccess] access to local variable condition
 
-#   21| [CastExpr] (...) ...
+#   22| [CastExpr] (...) ...
 #-----| 0 -> [IntLiteral] 12
 
-#   21| [IntLiteral] 12
+#   22| [IntLiteral] 12
 
-#   22| [NullLiteral] null
+#   23| [NullLiteral] null
 
-#   20| [LocalVariableAccess] access to local variable x
+#   21| [LocalVariableAccess] access to local variable x
 
-#   24| [LocalVariableDeclStmt] ... ...;
+#   25| [LocalVariableDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs = ...
 
-#   24| [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs = ...
+#   25| [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs = ...
 #-----| 0 -> [ConditionalExpr] ... ? ... : ...
 #-----| 1 -> [LocalVariableAccess] access to local variable xs
 
-#   24| [ConditionalExpr] ... ? ... : ...
+#   25| [ConditionalExpr] ... ? ... : ...
 #-----| 0 -> [IsExpr] ... is ...
 #-----| 1 -> [ObjectCreation] object creation of type List<Int32>
 #-----| 2 -> [ArrayCreation] array creation of type Int32[]
 
-#   24| [IsExpr] ... is ...
+#   25| [IsExpr] ... is ...
 #-----| 0 -> [LocalVariableAccess] access to local variable x
 #-----| 1 -> [ConstantPatternExpr,NullLiteral] null
 
-#   24| [LocalVariableAccess] access to local variable x
+#   25| [LocalVariableAccess] access to local variable x
 
-#   24| [ConstantPatternExpr,NullLiteral] null
+#   25| [ConstantPatternExpr,NullLiteral] null
 
-#   25| [ObjectCreation] object creation of type List<Int32>
+#   26| [ObjectCreation] object creation of type List<Int32>
 #-----| -1 -> [CollectionInitializer] { ..., ... }
 
-#   25| [CollectionInitializer] { ..., ... }
+#   26| [CollectionInitializer] { ..., ... }
 #-----| 0 -> [ElementInitializer] call to method Add
 #-----| 1 -> [ElementInitializer] call to method Add
 
-#   25| [ElementInitializer] call to method Add
+#   26| [ElementInitializer] call to method Add
 #-----| 0 -> [IntLiteral] 0
 
-#   25| [IntLiteral] 0
+#   26| [IntLiteral] 0
 
-#   25| [ElementInitializer] call to method Add
+#   26| [ElementInitializer] call to method Add
 #-----| 0 -> [IntLiteral] 1
 
-#   25| [IntLiteral] 1
+#   26| [IntLiteral] 1
 
-#   26| [ArrayCreation] array creation of type Int32[]
+#   27| [ArrayCreation] array creation of type Int32[]
 #-----| -1 -> [ArrayInitializer] { ..., ... }
 
-#   26| [ArrayInitializer] { ..., ... }
+#   27| [ArrayInitializer] { ..., ... }
 #-----| 0 -> [IntLiteral] 2
 #-----| 1 -> [IntLiteral] 3
 
-#   26| [IntLiteral] 2
+#   27| [IntLiteral] 2
 
-#   26| [IntLiteral] 3
+#   27| [IntLiteral] 3
 
-#   24| [LocalVariableAccess] access to local variable xs
+#   25| [LocalVariableAccess] access to local variable xs
 
-#   28| [LocalVariableDeclStmt] ... ...;
+#   29| [LocalVariableDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xss = ...
 
-#   28| [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xss = ...
+#   29| [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xss = ...
 #-----| 0 -> [CastExpr] (...) ...
 #-----| 1 -> [LocalVariableAccess] access to local variable xss
 
-#   28| [CastExpr] (...) ...
+#   29| [CastExpr] (...) ...
 #-----| 0 -> [NullCoalescingExpr] ... ?? ...
 
-#   28| [NullCoalescingExpr] ... ?? ...
+#   29| [NullCoalescingExpr] ... ?? ...
 #-----| 0 -> [MethodCall] call to method ToList
 #-----| 1 -> [ArrayCreation] array creation of type Int32[]
 
-#   28| [LocalVariableAccess] access to local variable xss
+#   29| [LocalVariableAccess] access to local variable xss
 
-#   18| [MethodCall] call to method NextDouble
+#   34| [BlockStmt] {...}
+
+#   36| [BlockStmt] {...}
+#-----| 0 -> [ReturnStmt] return ...;
+
+#   36| [ReturnStmt] return ...;
+#-----| 0 -> [ExplicitDelegateCreation] delegate creation of type D
+
+#   36| [ExplicitDelegateCreation] delegate creation of type D
+#-----| 0 -> [ImplicitDelegateCreation] delegate creation of type D
+
+#   36| [ImplicitDelegateCreation] delegate creation of type D
+#-----| 0 -> [MethodAccess] access to method M
+
+#   36| [MethodAccess] access to method M
+
+#   19| [MethodCall] call to method NextDouble
 #-----| -1 -> [LocalVariableAccess] access to local variable rand
 
-#   18| [LocalVariableAccess] access to local variable rand
+#   19| [LocalVariableAccess] access to local variable rand
 
-#   18| [DoubleLiteral] 0.5
+#   19| [DoubleLiteral] 0.5
 
-#   28| [MethodCall] call to method ToList
+#   29| [MethodCall] call to method ToList
 #-----| -1 -> [LocalVariableAccess] access to local variable xs
 
-#   28| [LocalVariableAccess] access to local variable xs
+#   29| [LocalVariableAccess] access to local variable xs
 
-#   28| [ArrayCreation] array creation of type Int32[]
+#   29| [ArrayCreation] array creation of type Int32[]
 #-----| -1 -> [ArrayInitializer] { ..., ... }
 
-#   28| [ArrayInitializer] { ..., ... }
+#   29| [ArrayInitializer] { ..., ... }
 #-----| 0 -> [IntLiteral] 1
 #-----| 1 -> [IntLiteral] 2
 
-#   28| [IntLiteral] 1
+#   29| [IntLiteral] 1
 
-#   28| [IntLiteral] 2
+#   29| [IntLiteral] 2
 
 #-----| (Attributes)
 #-----| 1 -> [Attribute] [Obsolete(...)]
@@ -1482,6 +1535,15 @@ TargetType.cs:
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] t
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] value
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
 
 #-----| (Type parameters)
 #-----| 0 -> [TypeParameter] T
@@ -1614,6 +1676,10 @@ Record.cs:
 
 TargetType.cs:
 #    5| [Class] TargetType
-#-----| 5 -> [Field] l
-#-----| 6 -> [Method] M1
-#-----| 7 -> [Method] M2
+#-----| 5 -> [Property] Prop1
+#-----| 6 -> [Field] l
+#-----| 7 -> [Method] M1
+#-----| 8 -> [Method] M2
+#-----| 9 -> [DelegateType] D
+#-----| 10 -> [Method] M
+#-----| 11 -> [Method] GetM
