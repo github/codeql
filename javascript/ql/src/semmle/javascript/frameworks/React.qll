@@ -734,6 +734,8 @@ private class ReactRouterLocationSource extends DOM::LocationSource::Range {
  * version of that component, which we model as a direct reference to the underlying component.
  */
 private DataFlow::SourceNode higherOrderComponentBuilder() {
+  // `memo(f)` returns a function that behaves as `f` but caches results
+  // It is sometimes used to wrap an entire functional component.
   result = react().getAPropertyRead("memo")
   or
   result = DataFlow::moduleMember("react-redux", "connect").getACall()
@@ -760,8 +762,6 @@ private class HigherOrderComponentStep extends PreCallGraphStep {
   }
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    // `memo(f)` returns a function behaves as `f` but caches results
-    // It is sometimes used to wrap an entire functional component.
     exists(DataFlow::CallNode call |
       call = higherOrderComponentBuilder().getACall() and
       pred = call.getArgument(0) and

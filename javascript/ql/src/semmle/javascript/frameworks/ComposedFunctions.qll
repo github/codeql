@@ -124,11 +124,6 @@ private class ComposedFunctionTaintStep extends TaintTracking::AdditionalTaintSt
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(int fnIndex, DataFlow::FunctionNode fn | fn = composed.getOperandFunction(fnIndex) |
-      // flow out of the composed call
-      fnIndex = 0 and
-      pred = fn.getReturnNode() and
-      succ = this
-      or
       // flow into the first function
       fnIndex = composed.getNumOperand() - 1 and
       exists(int callArgIndex |
@@ -141,6 +136,11 @@ private class ComposedFunctionTaintStep extends TaintTracking::AdditionalTaintSt
         pred = predFn.getReturnNode() and
         succ = fn.getParameter(0)
       )
+      or
+      // flow out of the composed call
+      fnIndex = 0 and
+      pred = fn.getReturnNode() and
+      succ = this
     )
   }
 }
