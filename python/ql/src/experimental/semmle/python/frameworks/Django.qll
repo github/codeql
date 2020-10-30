@@ -710,6 +710,9 @@ private module Django {
             t.start() and
             result = http_attr("HttpResponse")
             or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
+            or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
 

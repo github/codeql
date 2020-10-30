@@ -43,4 +43,11 @@ class CustomResponse(HttpResponse):
         super().__init__(content, *args, content_type="text/html", **kwargs)
 
 def xss__custom_response(request):
-    return CustomResponse("ACME Responses", request.GET("name"))  # $f-:HttpResponse $f-:mimetype=text/html $f-:responseBody=Attribute()
+    return CustomResponse("ACME Responses", request.GET("name"))  # $HttpResponse $f-:mimetype=text/html $f-:responseBody=Attribute() $f+:responseBody="ACME Responses"
+
+class CustomJsonResponse(JsonResponse):
+    def __init__(self, banner, content, *args, **kwargs):
+        super().__init__(content, *args, content_type="text/html", **kwargs)
+
+def safe__custom_json_response(request):
+    return CustomJsonResponse("ACME Responses", {"foo": request.GET.get("foo")})  # $f-:HttpResponse $f-:mimetype=application/json $f-:responseBody=Dict
