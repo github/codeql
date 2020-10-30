@@ -36,14 +36,17 @@ private module Cached {
   cached
   newtype TSplit =
     TInitializerSplit(Constructor c) { InitializerSplitting::constructorInitializes(c, _) } or
-    TAssertionSplit(AssertionSplitting::Assertion a, boolean success) { success = [true, false] } or
+    TAssertionSplit(AssertionSplitting::Assertion a, int i, boolean success) {
+      exists(a.getExpr(i)) and
+      success in [false, true]
+    } or
     TFinallySplit(FinallySplitting::FinallySplitType type, int nestLevel) {
       nestLevel = FinallySplitting::nestLevel(_)
     } or
     TExceptionHandlerSplit(ExceptionClass ec) or
     TBooleanSplit(BooleanSplitting::BooleanSplitSubKind kind, boolean branch) {
       kind.startsSplit(_) and
-      (branch = true or branch = false)
+      branch in [false, true]
     } or
     TLoopSplit(LoopSplitting::AnalyzableLoopStmt loop)
 
@@ -414,8 +417,9 @@ module AssertionSplitting {
   class AssertionSplitImpl extends SplitImpl, TAssertionSplit {
     Assertion a;
     boolean success;
+    int i;
 
-    AssertionSplitImpl() { this = TAssertionSplit(a, success) }
+    AssertionSplitImpl() { this = TAssertionSplit(a, i, success) }
 
     /** Gets the assertion. */
     Assertion getAssertion() { result = a }
@@ -445,37 +449,29 @@ module AssertionSplitting {
 
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       exists(AssertMethod m |
-        pred = last(a.getAnExpr(), c) and
+        pred = last(a.getExpr(i), c) and
         succ = succ(pred, c) and
-        this.getAssertion() = a and
-        m = a.getAssertMethod()
+        m = a.getAssertMethod() and
+        // The assertion only succeeds when all asserted arguments succeeded, so
+        // we only enter a "success" state after the last argument has succeeded.
+        //
+        // The split is only entered if we are not already in a "failing" state
+        // for one of the previous arguments, which ensures that the "success"
+        // state is only entered when all arguments succeed. This also means
+        // that if multiple arguments fail, then the first failing argument
+        // will determine the exception being thrown by the assertion.
+        if success = true then i = max(int j | exists(a.getExpr(j))) else any()
       |
-        m instanceof AssertTrueMethod and
-        (
-          c instanceof TrueCompletion and success = true
+        exists(boolean b | i = m.(BooleanAssertMethod).getAnAssertionIndex(b) |
+          c instanceof TrueCompletion and success = b
           or
-          c instanceof FalseCompletion and success = false
+          c instanceof FalseCompletion and success = b.booleanNot()
         )
         or
-        m instanceof AssertFalseMethod and
-        (
-          c instanceof TrueCompletion and success = false
+        exists(boolean b | i = m.(NullnessAssertMethod).getAnAssertionIndex(b) |
+          c.(NullnessCompletion).isNull() and success = b
           or
-          c instanceof FalseCompletion and success = true
-        )
-        or
-        m instanceof AssertNullMethod and
-        (
-          c.(NullnessCompletion).isNull() and success = true
-          or
-          c.(NullnessCompletion).isNonNull() and success = false
-        )
-        or
-        m instanceof AssertNonNullMethod and
-        (
-          c.(NullnessCompletion).isNull() and success = false
-          or
-          c.(NullnessCompletion).isNonNull() and success = true
+          c.(NullnessCompletion).isNonNull() and success = b.booleanNot()
         )
       )
     }
@@ -491,7 +487,7 @@ module AssertionSplitting {
         c instanceof NormalCompletion
         or
         success = false and
-        not c instanceof NormalCompletion
+        c = assertionCompletion(a, i)
       )
     }
 
@@ -504,7 +500,7 @@ module AssertionSplitting {
         c instanceof NormalCompletion
         or
         success = false and
-        not c instanceof NormalCompletion
+        c = assertionCompletion(a, i)
       )
     }
 
@@ -1604,7 +1600,7 @@ private module SuccSplits {
 
   /**
    * Holds if `succSplits` should not inherit a split of kind `sk` from
-   * `predSplits, except possibly because of a split in `except`.
+   * `predSplits`, except possibly because of a split in `except`.
    *
    * The predicate is written using explicit recursion, as opposed to a `forall`,
    * to avoid negative recursion.
