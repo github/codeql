@@ -303,16 +303,12 @@ impl Visitor<'_> {
             return false;
         }
 
-        if node.is_extra() {
-            return false;
-        }
-
         self.stack.push(Vec::new());
         return true;
     }
 
     fn leave_node(&mut self, field_name: Option<&'static str>, node: Node) {
-        if node.is_extra() || node.is_error() || node.is_missing() {
+        if node.is_error() || node.is_missing() {
             return;
         }
         let child_nodes = self.stack.pop().expect("Vistor: empty stack");
@@ -347,16 +343,20 @@ impl Visitor<'_> {
                 all_args.push(Arg::Label(loc));
                 self.trap_writer.add_tuple(&table_name, all_args);
             }
-            if let Some(parent) = self.stack.last_mut() {
-                parent.push((
-                    field_name,
-                    id,
-                    TypeName {
-                        kind: node.kind().to_owned(),
-                        named: node.is_named(),
-                    },
-                ))
-            };
+            if !node.is_extra() {
+                // Extra nodes are independent root nodes and do not belong to the parent node
+                // Therefore we should not register them in the parent vector
+                if let Some(parent) = self.stack.last_mut() {
+                    parent.push((
+                        field_name,
+                        id,
+                        TypeName {
+                            kind: node.kind().to_owned(),
+                            named: node.is_named(),
+                        },
+                    ))
+                };
+            }
         } else {
             error!(
                 "{}:{}: unknown table type: '{}'",
@@ -366,6 +366,7 @@ impl Visitor<'_> {
             );
         }
     }
+
     fn complex_node(
         &mut self,
         node: &Node,
