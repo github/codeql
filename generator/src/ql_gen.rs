@@ -168,16 +168,32 @@ fn create_location_class() -> ql::Class {
                 param_type: ql::Type::Int,
             },
         ],
-        body: ql::Expression::Pred(
-            "location".to_owned(),
-            vec![
-                ql::Expression::Var("this".to_owned()),
-                ql::Expression::Var("filePath".to_owned()),
-                ql::Expression::Var("startLine".to_owned()),
-                ql::Expression::Var("startColumn".to_owned()),
-                ql::Expression::Var("endLine".to_owned()),
-                ql::Expression::Var("endColumn".to_owned()),
-            ],
+        body: ql::Expression::Exists(
+            vec![ql::FormalParameter {
+                param_type: ql::Type::Normal("File".to_owned()),
+                name: "f".to_owned(),
+            }],
+            Box::new(ql::Expression::And(vec![
+                ql::Expression::Pred(
+                    "locations_default".to_owned(),
+                    vec![
+                        ql::Expression::Var("this".to_owned()),
+                        ql::Expression::Var("f".to_owned()),
+                        ql::Expression::Var("startLine".to_owned()),
+                        ql::Expression::Var("startColumn".to_owned()),
+                        ql::Expression::Var("endLine".to_owned()),
+                        ql::Expression::Var("endColumn".to_owned()),
+                    ],
+                ),
+                ql::Expression::Equals(
+                    Box::new(ql::Expression::Var("filePath".to_owned())),
+                    Box::new(ql::Expression::Dot(
+                        Box::new(ql::Expression::Var("f".to_owned())),
+                        "getAbsolutePath".to_owned(),
+                        vec![],
+                    )),
+                ),
+            ])),
         ),
     };
     ql::Class {

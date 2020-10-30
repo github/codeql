@@ -17,7 +17,9 @@ pub fn create(language: Language, schema: Vec<Entry>) -> Extractor {
 
     Extractor { parser, schema }
 }
+
 impl Extractor {
+    /// Extracts the source file at `path`, which is assumed to be canonicalized.
     pub fn extract<'a>(&'a mut self, path: &Path) -> std::io::Result<Program> {
         let span = span!(
             Level::TRACE,
@@ -34,15 +36,37 @@ impl Extractor {
             .parser
             .parse(&source, None)
             .expect("Failed to parse file");
+        let mut counter = -1;
+        // Create a label for the current file and increment the counter so that
+        // label doesn't get redefined.
+        counter += 1;
+        let file_label = Label::Normal(counter);
         let mut visitor = Visitor {
             source: &source,
-            trap_output: vec![TrapEntry::Comment(format!(
-                "Auto-generated TRAP file for {}",
-                path.display()
-            ))],
-            counter: -1,
+            trap_output: vec![
+                TrapEntry::Comment(format!("Auto-generated TRAP file for {}", path.display())),
+                TrapEntry::MapLabelToKey(file_label, full_id_for_file(path)),
+                TrapEntry::GenericTuple(
+                    "files".to_owned(),
+                    vec![
+                        Arg::Label(file_label),
+                        Arg::String(normalize_path(path)),
+                        Arg::String(match path.file_name() {
+                            None => "".to_owned(),
+                            Some(file_name) => format!("{}", file_name.to_string_lossy()),
+                        }),
+                        Arg::String(match path.extension() {
+                            None => "".to_owned(),
+                            Some(ext) => format!("{}", ext.to_string_lossy()),
+                        }),
+                        Arg::Int(1), // 1 = from source
+                    ],
+                ),
+            ],
+            counter,
             // TODO: should we handle path strings that are not valid UTF8 better?
             path: format!("{}", path.display()),
+            file_label,
             stack: Vec::new(),
             tables: build_schema_lookup(&self.schema),
             union_types: build_union_type_lookup(&self.schema),
@@ -52,6 +76,49 @@ impl Extractor {
         &self.parser.reset();
         Ok(Program(visitor.trap_output))
     }
+}
+
+/// Normalizes the path according the common CodeQL specification. Assumes that
+/// `path` has already been canonicalized using `std::fs::canonicalize`.
+fn normalize_path(path: &Path) -> String {
+    if cfg!(windows) {
+        // The way Rust canonicalizes paths doesn't match the CodeQL spec, so we
+        // have to do a bit of work removing certain prefixes and replacing
+        // backslashes.
+        let mut components: Vec<String> = Vec::new();
+        for component in path.components() {
+            match component {
+                std::path::Component::Prefix(prefix) => match prefix.kind() {
+                    std::path::Prefix::Disk(letter) | std::path::Prefix::VerbatimDisk(letter) => {
+                        components.push(format!("{}:", letter as char));
+                    }
+                    std::path::Prefix::Verbatim(x) | std::path::Prefix::DeviceNS(x) => {
+                        components.push(x.to_string_lossy().to_string());
+                    }
+                    std::path::Prefix::UNC(server, share)
+                    | std::path::Prefix::VerbatimUNC(server, share) => {
+                        components.push(server.to_string_lossy().to_string());
+                        components.push(share.to_string_lossy().to_string());
+                    }
+                },
+                std::path::Component::Normal(n) => {
+                    components.push(n.to_string_lossy().to_string());
+                }
+                std::path::Component::RootDir => {}
+                std::path::Component::CurDir => {}
+                std::path::Component::ParentDir => {}
+            }
+        }
+        components.join("/")
+    } else {
+        // For other operating systems, we can use the canonicalized path
+        // without modifications.
+        format!("{}", path.display())
+    }
+}
+
+fn full_id_for_file(path: &Path) -> String {
+    format!("{};sourcefile", normalize_path(path))
 }
 
 fn build_schema_lookup<'a>(schema: &'a Vec<Entry>) -> Map<&'a TypeName, &'a Entry> {
@@ -77,6 +144,9 @@ fn build_union_type_lookup<'a>(schema: &'a Vec<Entry>) -> Map<&'a TypeName, &'a 
 struct Visitor<'a> {
     /// The file path of the source code (as string)
     path: String,
+    /// The label to use whenever we need to refer to the `@file` entity of this
+    /// source file.
+    file_label: Label,
     /// The source code as a UTF-8 byte array
     source: &'a Vec<u8>,
     /// The accumulated trap entries
@@ -132,10 +202,11 @@ impl Visitor<'_> {
             self.counter += 1;
             let id = Label::Normal(self.counter);
             let loc = Label::Location(self.counter);
-            self.trap_output.push(TrapEntry::New(id));
-            self.trap_output.push(TrapEntry::New(loc));
-            self.trap_output
-                .push(location_for(&self.source, &self.path, loc, node));
+            self.trap_output.push(TrapEntry::FreshId(id));
+            let (loc_label_def, loc_tuple) =
+                location_for(&self.source, &self.file_label, loc, node);
+            self.trap_output.push(loc_label_def);
+            self.trap_output.push(loc_tuple);
             let table_name = node_type_name(node.kind(), node.is_named());
             let args: Option<Vec<Arg>>;
             if fields.is_empty() {
@@ -282,8 +353,15 @@ fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
     ))
 }
 
-// Emit a 'Located' TrapEntry for the provided node, appropriately calibrated.
-fn location_for<'a>(source: &Vec<u8>, fp: &String, label: Label, n: Node) -> TrapEntry {
+// Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
+// The first is the location and label definition, and the second is the
+// 'Located' entry.
+fn location_for<'a>(
+    source: &Vec<u8>,
+    file_label: &Label,
+    label: Label,
+    n: Node,
+) -> (TrapEntry, TrapEntry) {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -325,14 +403,23 @@ fn location_for<'a>(source: &Vec<u8>, fp: &String, label: Label, n: Node) -> Tra
             );
         }
     }
-    TrapEntry::Located(vec![
-        Arg::Label(label),
-        Arg::String(fp.to_owned()),
-        Arg::Int(start_line),
-        Arg::Int(start_col),
-        Arg::Int(end_line),
-        Arg::Int(end_col),
-    ])
+    (
+        TrapEntry::MapLabelToKey(
+            label,
+            format!(
+                "loc,{{{}}},{},{},{},{}",
+                file_label, start_line, start_col, end_line, end_col
+            ),
+        ),
+        TrapEntry::Located(vec![
+            Arg::Label(label),
+            Arg::Label(file_label.clone()),
+            Arg::Int(start_line),
+            Arg::Int(start_col),
+            Arg::Int(end_line),
+            Arg::Int(end_col),
+        ]),
+    )
 }
 
 fn traverse(tree: &Tree, visitor: &mut Visitor) {
@@ -369,20 +456,25 @@ impl fmt::Display for Program {
 }
 
 enum TrapEntry {
-    // @id = *@
-    New(Label),
+    /// Maps the label to a fresh id, e.g. `#123 = *`.
+    FreshId(Label),
+    /// Maps the label to a key, e.g. `#7 = @"foo"`.
+    MapLabelToKey(Label, String),
     // @node_def(self, arg?, location)@
     Definition(String, Label, Vec<Arg>, Label),
     // @node_child(self, index, parent)@
     ChildOf(String, Label, String, Option<Index>, Label),
     // @location(loc, path, r1, c1, r2, c2)
     Located(Vec<Arg>),
+    /// foo_bar(arg*)
+    GenericTuple(String, Vec<Arg>),
     Comment(String),
 }
 impl fmt::Display for TrapEntry {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            TrapEntry::New(id) => write!(f, "{} = *", id),
+            TrapEntry::FreshId(label) => write!(f, "{} = *", label),
+            TrapEntry::MapLabelToKey(label, key) => write!(f, "{} = @\"{}\"", label, key),
             TrapEntry::Definition(n, id, args, loc) => {
                 let mut args_str = String::new();
                 for arg in args {
@@ -416,7 +508,7 @@ impl fmt::Display for TrapEntry {
             },
             TrapEntry::Located(args) => write!(
                 f,
-                "location({}, {}, {}, {}, {}, {})",
+                "locations_default({}, {}, {}, {}, {}, {})",
                 args.get(0).unwrap(),
                 args.get(1).unwrap(),
                 args.get(2).unwrap(),
@@ -424,6 +516,16 @@ impl fmt::Display for TrapEntry {
                 args.get(4).unwrap(),
                 args.get(5).unwrap(),
             ),
+            TrapEntry::GenericTuple(name, args) => {
+                write!(f, "{}(", name)?;
+                for (index, arg) in args.iter().enumerate() {
+                    if index > 0 {
+                        write!(f, ", ")?;
+                    }
+                    write!(f, "{}", arg)?;
+                }
+                write!(f, ")")
+            }
             TrapEntry::Comment(line) => write!(f, "// {}", line),
         }
     }

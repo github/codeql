@@ -40,7 +40,7 @@ fn main() -> std::io::Result<()> {
     let schema = node_types::read_node_types_str(tree_sitter_ruby::NODE_TYPES)?;
     let mut extractor = extractor::create(language, schema);
     for line in std::io::BufReader::new(file_list).lines() {
-        let path = PathBuf::from(line?);
+        let path = PathBuf::from(line?).canonicalize()?;
         let trap_file = path_for(&trap_dir, &path, ".trap");
         let src_archive_file = path_for(&src_archive_dir, &path, "");
         let trap = extractor.extract(&path)?;
