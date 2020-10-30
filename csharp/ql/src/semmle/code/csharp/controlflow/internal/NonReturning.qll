@@ -23,7 +23,7 @@ private class ExitingCall extends NonReturningCall {
   ExitingCall() {
     this.getTarget() instanceof ExitingCallable
     or
-    this = any(FailingAssertion fa | not exists(fa.getExceptionClass()))
+    this = any(FailingAssertion fa | fa.getAssertionFailure().isExit())
   }
 
   override ExitCompletion getACompletion() { not result instanceof NestedCompletion }
@@ -37,7 +37,7 @@ private class ThrowingCall extends NonReturningCall {
     (
       c = this.getTarget().(ThrowingCallable).getACallCompletion()
       or
-      c.getExceptionClass() = this.(FailingAssertion).getExceptionClass()
+      this.(FailingAssertion).getAssertionFailure().isException(c.getExceptionClass())
       or
       exists(CIL::Method m, CIL::Type ex |
         this.getTarget().matchesHandle(m) and
