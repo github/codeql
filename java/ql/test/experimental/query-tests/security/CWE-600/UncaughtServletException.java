@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
 class UncaughtServletException extends HttpServlet {
+	// BAD - Tests `doGet` without catching exceptions
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String ip = request.getParameter("srcIP");
 		InetAddress addr = InetAddress.getByName(ip); // BAD: getByName(String) throws UnknownHostException
@@ -16,6 +17,7 @@ class UncaughtServletException extends HttpServlet {
 		Integer.parseInt(userId); //BAD: Integer.parse(String) throws RuntimeException
 	}
 
+	// GOOD - Tests `doPost` with catching exceptions
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			String ip = request.getParameter("srcIP");
