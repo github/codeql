@@ -4,7 +4,7 @@ from django.http.response import HttpResponse, HttpResponseRedirect, JsonRespons
 # FP reported in https://github.com/github/codeql-python-team/issues/38
 def safe__json_response(request):
     # implicitly sets Content-Type to "application/json"
-    return JsonResponse({"foo": request.GET.get("foo")})  # $f-:HttpResponse $f-:mimetype=application/json $f-:responseBody={"foo": request.GET.get("foo")}
+    return JsonResponse({"foo": request.GET.get("foo")})  # $HttpResponse $mimetype=application/json $responseBody=Dict
 
 # Not an XSS sink, since the Content-Type is not "text/html"
 def safe__manual_json_response(request):

@@ -499,7 +499,7 @@ private module Django {
        * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node http_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["request", "HttpRequest", "response", "HttpResponse"] and
+        attr_name in ["request", "HttpRequest", "response", "HttpResponse", "JsonResponse"] and
         (
           t.start() and
           result = DataFlow::importNode("django.http" + "." + attr_name)
@@ -641,7 +641,7 @@ private module Django {
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node response_attr(DataFlow::TypeTracker t, string attr_name) {
-          attr_name in ["HttpResponse"] and
+          attr_name in ["HttpResponse", "JsonResponse"] and
           (
             t.start() and
             result = DataFlow::importNode("django.http.response" + "." + attr_name)
@@ -737,6 +737,71 @@ private module Django {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponse`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        // ---------------------------------------------------------------------------
+        // HttpResponse subclasses
+        // ---------------------------------------------------------------------------
+        /**
+         * Provides models for the `django.http.response.JsonResponse` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#jsonresponse-objects.
+         */
+        module JsonResponse {
+          /** Gets a reference to the `django.http.response.JsonResponse` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("JsonResponse")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.JsonResponse` alias
+            t.start() and
+            result = http_attr("JsonResponse")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.JsonResponse` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.JsonResponse`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `JsonResponse::instance()` predicate to get references to instances of `django.http.response.JsonResponse`.
+           */
+          abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
+          }
+
+          /** A direct instantiation of `django.http.response.JsonResponse`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "application/json" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.JsonResponse`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.JsonResponse`. */
           DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
         }
       }
