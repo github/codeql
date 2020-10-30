@@ -1,3 +1,50 @@
+AnonymousObjectCreation.cs:
+#    5| [Class] AnonObj
+#    7|   5: [Field] l
+#    7|     -1: [TypeMention] List<AnonObj>
+#    7|       1: [TypeMention] AnonObj
+#    7|     1: [AssignExpr] ... = ...
+#    7|       0: [FieldAccess] access to field l
+#    7|       1: [ObjectCreation] object creation of type List<AnonObj>
+#    9|   6: [Property] Prop1
+#    9|     -1: [TypeMention] int
+#    9|     3: [Getter] get_Prop1
+#    9|     4: [Setter] set_Prop1
+#-----|       2: (Parameters)
+#    9|         0: [Parameter] value
+#   11|   7: [Method] M1
+#   11|     -1: [TypeMention] AnonObj
+#-----|     2: (Parameters)
+#   11|       0: [Parameter] t
+#   11|         -1: [TypeMention] AnonObj
+#   12|     4: [BlockStmt] {...}
+#   13|       0: [ExprStmt] ...;
+#   13|         0: [MethodCall] call to method M1
+#   13|           -1: [ThisAccess] this access
+#   13|           0: [ObjectCreation] object creation of type AnonObj
+#   13|             -1: [ObjectInitializer] { ..., ... }
+#   13|               0: [MemberInitializer] ... = ...
+#   13|                 0: [PropertyCall] access to property Prop1
+#   13|                 1: [IntLiteral] 1
+#   14|       1: [ReturnStmt] return ...;
+#   14|         0: [ObjectCreation] object creation of type AnonObj
+#   17|   8: [DelegateType] D
+#-----|     2: (Parameters)
+#   17|       0: [Parameter] x
+#   17|         -1: [TypeMention] int
+#   19|   9: [Method] M2
+#   19|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] x
+#   19|         -1: [TypeMention] int
+#   19|     4: [BlockStmt] {...}
+#   21|   10: [Method] GetM
+#   21|     -1: [TypeMention] D
+#   21|     4: [BlockStmt] {...}
+#   21|       0: [ReturnStmt] return ...;
+#   21|         0: [ExplicitDelegateCreation] delegate creation of type D
+#   21|           0: [ImplicitDelegateCreation] delegate creation of type D
+#   21|             0: [MethodAccess] access to method M2
 Discard.cs:
 #    3| [Class] Discard
 #    5|   5: [Method] M1
