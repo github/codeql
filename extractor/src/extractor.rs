@@ -396,7 +396,7 @@ enum TrapEntry {
     ChildOf(String, Label, String, Option<Index>, Label),
     // @location(loc, path, r1, c1, r2, c2)
     Located(Vec<Arg>),
-    /// foo_bar(arg?)
+    /// foo_bar(arg*)
     GenericTuple(String, Vec<Arg>),
     Comment(String),
 }
