@@ -1495,6 +1495,44 @@ private module Django {
           /** Gets a reference to an instance of `django.http.response.FileResponse`. */
           DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
         }
+
+        /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
+        private DataFlow::Node write(
+          django::http::response::HttpResponse::InstanceSource instance, DataFlow::TypeTracker t
+        ) {
+          t.startInAttr("write") and
+          instance = django::http::response::HttpResponse::instance() and
+          result = instance
+          or
+          exists(DataFlow::TypeTracker t2 | result = write(instance, t2).track(t2, t))
+        }
+
+        /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
+        DataFlow::Node write(django::http::response::HttpResponse::InstanceSource instance) {
+          result = write(instance, DataFlow::TypeTracker::end())
+        }
+
+        /**
+         * A call to the `django.http.response.HttpResponse.write` function.
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.write
+         */
+        class HttpResponseWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
+          override CallNode node;
+          HTTP::Server::HttpResponse::Range instance;
+
+          HttpResponseWriteCall() { node.getFunction() = write(instance).asCfgNode() }
+
+          override DataFlow::Node getBody() {
+            result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+          }
+
+          override DataFlow::Node getMimetypeOrContentTypeArg() {
+            result = instance.getMimetypeOrContentTypeArg()
+          }
+
+          override string getMimetypeDefault() { result = instance.getMimetypeDefault() }
+        }
       }
     }
   }

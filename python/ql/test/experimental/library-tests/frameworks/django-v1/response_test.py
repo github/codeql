@@ -30,12 +30,12 @@ def xss__manual_response_type(request):
 
 def xss__write(request):
     response = HttpResponse()  # $HttpResponse $mimetype=text/html; charset=utf-8
-    response.write(request.GET.get("name"))  # $f-:HttpResponse $f-:mimetype=text/html; charset=utf-8 $f-:responseBody=Attribute()
+    response.write(request.GET.get("name"))  # $HttpResponse $mimetype=text/html; charset=utf-8 $responseBody=Attribute()
 
 # This is safe but probably a bug if the argument to `write` is not a result of `json.dumps` or similar.
 def safe__write_json(request):
     response = JsonResponse()  # $HttpResponse $mimetype=application/json
-    response.write(request.GET.get("name"))  # $f-:HttpResponse $f-:mimetype=application/json $f-:responseBody=Attribute()
+    response.write(request.GET.get("name"))  # $HttpResponse $mimetype=application/json $responseBody=Attribute()
 
 # Ensure manual subclasses are vulnerable
 class CustomResponse(HttpResponse):
