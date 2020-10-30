@@ -81,20 +81,39 @@ impl Extractor {
 /// Normalizes the path according the common CodeQL specification. Assumes that
 /// `path` has already been canonicalized using `std::fs::canonicalize`.
 fn normalize_path(path: &Path) -> String {
-    let result = format!("{}", path.display());
     if cfg!(windows) {
-        // Strip the Windows long path prefix, since std::fs::canonicalize adds it,
-        // but it's not part of the common CodeQL spec for file ids.
-        let win_long_path_prefix = r"\\?\";
-        let result = match result.strip_prefix(win_long_path_prefix) {
-            Some(s) => s.to_owned(),
-            None => result,
-        };
-
-        // And replace backslashes with forward slashes.
-        result.replace(r"\", "/")
+        // The way Rust canonicalizes paths doesn't match the CodeQL spec, so we
+        // have to do a bit of work removing certain prefixes and replacing
+        // backslashes.
+        let mut components: Vec<String> = Vec::new();
+        for component in path.components() {
+            match component {
+                std::path::Component::Prefix(prefix) => match prefix.kind() {
+                    std::path::Prefix::Disk(letter) | std::path::Prefix::VerbatimDisk(letter) => {
+                        components.push(format!("{}:", letter as char));
+                    }
+                    std::path::Prefix::Verbatim(x) | std::path::Prefix::DeviceNS(x) => {
+                        components.push(x.to_string_lossy().to_string());
+                    }
+                    std::path::Prefix::UNC(server, share)
+                    | std::path::Prefix::VerbatimUNC(server, share) => {
+                        components.push(server.to_string_lossy().to_string());
+                        components.push(share.to_string_lossy().to_string());
+                    }
+                },
+                std::path::Component::Normal(n) => {
+                    components.push(n.to_string_lossy().to_string());
+                }
+                std::path::Component::RootDir => {}
+                std::path::Component::CurDir => {}
+                std::path::Component::ParentDir => {}
+            }
+        }
+        components.join("/")
     } else {
-        result
+        // For other operating systems, we can use the canonicalized path
+        // without modifications.
+        format!("{}", path.display())
     }
 }
 
