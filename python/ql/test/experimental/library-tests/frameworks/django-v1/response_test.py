@@ -22,8 +22,16 @@ def or__redirect(request):
 
 # Ensure that simple subclasses are still vuln to XSS
 def xss__not_found(request):
-    return HttpResponseNotFound(request.GET.get("name"))  # $f-:HttpResponse
+    return HttpResponseNotFound(request.GET.get("name"))  # $f-:HttpResponse $f-:mimetype=text/html; charset=utf-8 $f-:responseBody=Attribute()
 
 # Ensure we still have an XSS sink when manually setting the content_type to HTML
 def xss__manual_response_type(request):
     return HttpResponse(request.GET.get("name"), content_type="text/html; charset=utf-8")  # $HttpResponse $mimetype=text/html $responseBody=Attribute()
+
+# Ensure manual subclasses are vulnerable
+class CustomResponse(HttpResponse):
+    def __init__(self, banner, content, *args, **kwargs):
+        super().__init__(content, *args, content_type="text/html", **kwargs)
+
+def xss__custom_response(request):
+    return CustomResponse("ACME Responses", request.GET("name"))  # $f-:HttpResponse $f-:mimetype=text/html $f-:responseBody=Attribute()
