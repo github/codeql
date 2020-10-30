@@ -143,6 +143,48 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
   }
 }
 
+class HttpServerHttpResponseTest extends InlineExpectationsTest {
+  File file;
+
+  HttpServerHttpResponseTest() {
+    file.getExtension() = "py" and
+    this = "HttpServerHttpResponseTest: " + file
+  }
+
+  override string getARelevantTag() { result in ["HttpResponse", "responseBody", "mimetype"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    // By adding `file` as a class field, and these two restrictions, it's possible to
+    // say that we only want to check _some_ tags for certain files. This helped make
+    // flask tests more readable since adding full annotations for HttpResponses in the
+    // the tests for routing setup is both annoying and not very useful.
+    location.getFile() = file and
+    tag = getARelevantTag() and
+    (
+      exists(HTTP::Server::HttpResponse response |
+        location = response.getLocation() and
+        element = response.toString() and
+        value = "" and
+        tag = "HttpResponse"
+      )
+      or
+      exists(HTTP::Server::HttpResponse response |
+        location = response.getLocation() and
+        element = response.toString() and
+        value = value_from_expr(response.getBody().asExpr()) and
+        tag = "responseBody"
+      )
+      or
+      exists(HTTP::Server::HttpResponse response |
+        location = response.getLocation() and
+        element = response.toString() and
+        value = response.getMimetype() and
+        tag = "mimetype"
+      )
+    )
+  }
+}
+
 class FileSystemAccessTest extends InlineExpectationsTest {
   FileSystemAccessTest() { this = "FileSystemAccessTest" }
 

@@ -228,7 +228,7 @@ module HTTP {
   /** Provides classes for modeling HTTP servers. */
   module Server {
     /**
-     * An data-flow node that sets up a route on a server.
+     * A data-flow node that sets up a route on a server.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `RouteSetup::Range` instead.
@@ -254,7 +254,7 @@ module HTTP {
     /** Provides a class for modeling new HTTP routing APIs. */
     module RouteSetup {
       /**
-       * An data-flow node that sets up a route on a server.
+       * A data-flow node that sets up a route on a server.
        *
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `RouteSetup` instead.
@@ -286,6 +286,61 @@ module HTTP {
       RoutedParameter() { this.getParameter() = any(RouteSetup setup).getARoutedParameter() }
 
       override string getSourceType() { result = "RoutedParameter" }
+    }
+
+    /**
+     * A data-flow node that creates a HTTP response on a server.
+     *
+     * Note: we don't require that this response must be sent to a client (a kind of
+     * "if a tree falls in a forest and nobody hears it" situation).
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HttpResponse::Range` instead.
+     */
+    class HttpResponse extends DataFlow::Node {
+      HttpResponse::Range range;
+
+      HttpResponse() { this = range }
+
+      /** Gets the data-flow node that specifies the body of this HTTP response. */
+      DataFlow::Node getBody() { result = range.getBody() }
+
+      /** Gets the mimetype of this HTTP response, if it can be statically determined. */
+      string getMimetype() { result = range.getMimetype() }
+    }
+
+    /** Provides a class for modeling new HTTP response APIs. */
+    module HttpResponse {
+      /**
+       * A data-flow node that creates a HTTP response on a server.
+       *
+       * Note: we don't require that this response must be sent to a client (a kind of
+       * "if a tree falls in a forest and nobody hears it" situation).
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HttpResponse` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the data-flow node that specifies the body of this HTTP response. */
+        abstract DataFlow::Node getBody();
+
+        /** Gets the data-flow node that specifies the content-type/mimetype of this HTTP response, if any. */
+        abstract DataFlow::Node getMimetypeOrContentTypeArg();
+
+        /** Gets the default mimetype that should be used if `getMimetypeOrContentTypeArg` has no results. */
+        abstract string getMimetypeDefault();
+
+        /** Gets the mimetype of this HTTP response, if it can be statically determined. */
+        string getMimetype() {
+          exists(StrConst str |
+            DataFlow::localFlow(DataFlow::exprNode(str), this.getMimetypeOrContentTypeArg()) and
+            result = str.getText().splitAt(";", 0)
+          )
+          or
+          not exists(this.getMimetypeOrContentTypeArg()) and
+          result = this.getMimetypeDefault()
+        }
+      }
     }
   }
 }
