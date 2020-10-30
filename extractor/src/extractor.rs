@@ -533,7 +533,9 @@ impl fmt::Display for TrapEntry {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             TrapEntry::FreshId(label) => write!(f, "{} = *", label),
-            TrapEntry::MapLabelToKey(label, key) => write!(f, "{} = @\"{}\"", label, key),
+            TrapEntry::MapLabelToKey(label, key) => {
+                write!(f, "{} = @\"{}\"", label, key.replace("\"", "\"\""))
+            }
             TrapEntry::GenericTuple(name, args) => {
                 write!(f, "{}(", name)?;
                 for (index, arg) in args.iter().enumerate() {
