@@ -37,6 +37,50 @@
 | defaulttainttracking.cpp:195:11:195:16 | call to getenv | defaulttainttracking.cpp:195:7:195:7 | x | AST only |
 | defaulttainttracking.cpp:201:13:201:18 | call to getenv | defaulttainttracking.cpp:201:9:201:9 | x | AST only |
 | defaulttainttracking.cpp:208:27:208:32 | call to getenv | defaulttainttracking.cpp:208:23:208:23 | x | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:213:11:213:14 | (unnamed parameter 0) | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:217:7:217:12 | buffer | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:219:8:219:11 | ptr1 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:219:16:219:19 | ptr2 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:220:8:220:11 | ptr3 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:220:16:220:19 | ptr4 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:222:2:222:5 | ptr1 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:222:9:222:14 | buffer | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:223:2:223:5 | ptr2 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:223:9:223:13 | & ... | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:223:10:223:13 | ptr1 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:224:9:224:14 | buffer | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:225:2:225:5 | ptr3 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:225:9:225:14 | buffer | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:226:2:226:5 | ptr4 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:226:9:226:13 | & ... | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:226:10:226:13 | ptr3 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:228:7:228:12 | (const char *)... | IR only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:228:7:228:12 | array to pointer conversion | IR only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:230:7:230:10 | ptr2 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:231:7:231:11 | (const char *)... | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:231:7:231:11 | * ... | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:231:8:231:11 | ptr2 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:233:7:233:10 | ptr4 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:234:7:234:11 | (const char *)... | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:234:7:234:11 | * ... | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | defaulttainttracking.cpp:234:8:234:11 | ptr4 | AST only |
+| defaulttainttracking.cpp:218:12:218:17 | call to getenv | shared.h:17:20:17:21 | s1 | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:213:11:213:14 | (unnamed parameter 0) | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:241:8:241:11 | ptr1 | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:241:16:241:19 | ptr2 | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:245:2:245:5 | ptr2 | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:245:9:245:13 | & ... | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:245:10:245:13 | ptr1 | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:246:9:246:13 | * ... | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:246:10:246:13 | ptr2 | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:251:7:251:10 | (const char *)... | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:251:7:251:10 | ptr1 | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:252:7:252:10 | ptr2 | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:253:7:253:11 | (const char *)... | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:253:7:253:11 | * ... | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | defaulttainttracking.cpp:253:8:253:11 | ptr2 | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | shared.h:5:23:5:31 | sinkparam | AST only |
+| defaulttainttracking.cpp:240:12:240:17 | call to getenv | shared.h:17:20:17:21 | s1 | AST only |
 | globals.cpp:13:15:13:20 | call to getenv | globals.cpp:13:5:13:11 | global1 | AST only |
 | globals.cpp:23:15:23:20 | call to getenv | globals.cpp:23:5:23:11 | global2 | AST only |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:43:78:43:104 | (unnamed parameter 0) | IR only |

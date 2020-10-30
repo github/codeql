@@ -127,4 +127,17 @@ class AssertTests
         Assert.IsFalse(s != null || !b);
         Console.WriteLine(s.Length);
     }
+
+    private void AssertTrueFalse(
+           [System.Diagnostics.CodeAnalysis.DoesNotReturnIf(false)] bool condition1,
+           [System.Diagnostics.CodeAnalysis.DoesNotReturnIf(true)] bool condition2,
+           bool nonCondition)
+    {
+    }
+
+    void M13(bool b1, bool b2, bool b3)
+    {
+        AssertTrueFalse(b1, b2, b3);
+        return;
+    }
 }

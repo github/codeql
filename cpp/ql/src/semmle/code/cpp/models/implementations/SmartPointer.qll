@@ -18,9 +18,9 @@ class MakeUniqueOrShared extends TaintFunction {
     // since these just take a size argument, which we don't want to propagate taint through.
     not this.isArray() and
     (
-      input.isParameter(_)
+      input.isParameter([0 .. getNumberOfParameters() - 1])
       or
-      input.isParameterDeref(_)
+      input.isParameterDeref([0 .. getNumberOfParameters() - 1])
     ) and
     output.isReturnValue()
   }

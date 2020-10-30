@@ -817,6 +817,22 @@
 | Assert.cs:128:9:128:36 | ...; | Assert.cs:128:9:128:35 | call to method WriteLine | normal |
 | Assert.cs:128:27:128:27 | access to local variable s | Assert.cs:128:27:128:27 | access to local variable s | normal |
 | Assert.cs:128:27:128:34 | access to property Length | Assert.cs:128:27:128:34 | access to property Length | normal |
+| Assert.cs:132:61:132:65 | false | Assert.cs:132:61:132:65 | false | normal |
+| Assert.cs:133:61:133:64 | true | Assert.cs:133:61:133:64 | true | normal |
+| Assert.cs:135:5:136:5 | {...} | Assert.cs:135:5:136:5 | {...} | normal |
+| Assert.cs:139:5:142:5 | {...} | Assert.cs:140:9:140:35 | call to method AssertTrueFalse | throw(Exception) |
+| Assert.cs:139:5:142:5 | {...} | Assert.cs:141:9:141:15 | return ...; | return |
+| Assert.cs:140:9:140:35 | call to method AssertTrueFalse | Assert.cs:140:9:140:35 | call to method AssertTrueFalse | normal |
+| Assert.cs:140:9:140:35 | call to method AssertTrueFalse | Assert.cs:140:9:140:35 | call to method AssertTrueFalse | throw(Exception) |
+| Assert.cs:140:9:140:35 | this access | Assert.cs:140:9:140:35 | this access | normal |
+| Assert.cs:140:9:140:36 | ...; | Assert.cs:140:9:140:35 | call to method AssertTrueFalse | normal |
+| Assert.cs:140:9:140:36 | ...; | Assert.cs:140:9:140:35 | call to method AssertTrueFalse | throw(Exception) |
+| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:25:140:26 | access to parameter b1 | false |
+| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:25:140:26 | access to parameter b1 | true |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:29:140:30 | access to parameter b2 | false |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:29:140:30 | access to parameter b2 | true |
+| Assert.cs:140:33:140:34 | access to parameter b3 | Assert.cs:140:33:140:34 | access to parameter b3 | normal |
+| Assert.cs:141:9:141:15 | return ...; | Assert.cs:141:9:141:15 | return ...; | return |
 | Assignments.cs:4:5:15:5 | {...} | Assignments.cs:14:9:14:35 | ... += ... | normal |
 | Assignments.cs:5:9:5:18 | ... ...; | Assignments.cs:5:13:5:17 | Int32 x = ... | normal |
 | Assignments.cs:5:13:5:17 | Int32 x = ... | Assignments.cs:5:13:5:17 | Int32 x = ... | normal |

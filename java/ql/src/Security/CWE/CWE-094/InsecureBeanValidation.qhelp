@@ -15,21 +15,25 @@ untrusted) bean properties flow into the custom error message.</p>
 <ul>
 <li>Do not include validated bean properties in the custom error message.</li>
 <li>Use parameterized messages instead of string concatenation. For example:
-<pre>
-HibernateConstraintValidatorContext context = constraintValidatorContext.unwrap( HibernateConstraintValidatorContext.class );
-context.addMessageParameter( "foo", "bar" );
-context.buildConstraintViolationWithTemplate( "My violation message contains a parameter {foo}").addConstraintViolation();
-</pre></li>
+</li>
+</ul>
+<pre>HibernateConstraintValidatorContext context =
+   constraintValidatorContext.unwrap(HibernateConstraintValidatorContext.class);
+context.addMessageParameter("foo", "bar");
+context.buildConstraintViolationWithTemplate("My violation message contains a parameter {foo}")
+   .addConstraintViolation();</pre>
+<ul>
 <li>Sanitize the validated bean properties to make sure that there are no EL expressions. 
 An example of valid sanitization logic can be found <a href="https://github.com/hibernate/hibernate-validator/blob/master/engine/src/main/java/org/hibernate/validator/internal/engine/messageinterpolation/util/InterpolationHelper.java#L17">here</a>.</li>
 <li>Disable the EL interpolation and only use <code>ParameterMessageInterpolator</code>:
-<pre>
-Validator validator = Validation.byDefaultProvider()
+</li>
+</ul>
+<pre>Validator validator = Validation.byDefaultProvider()
    .configure()
-   .messageInterpolator( new ParameterMessageInterpolator() )
+   .messageInterpolator(new ParameterMessageInterpolator())
    .buildValidatorFactory()
-   .getValidator();
-</pre></li>
+   .getValidator();</pre>
+<ul>
 <li>Replace Hibernate Validator with Apache BVal, which in its latest version does not interpolate EL expressions by default.
 Note that this replacement may not be a simple drop-in replacement.</li>
 </ul>

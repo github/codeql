@@ -37,7 +37,7 @@ class StdPairCopyishConstructor extends Constructor, TaintFunction {
 /**
  * Additional model for `std::pair` constructors.
  */
-class StdPairConstructor extends Constructor, TaintFunction {
+private class StdPairConstructor extends Constructor, TaintFunction {
   StdPairConstructor() { this.hasQualifiedName("std", "pair", "pair") }
 
   /**
@@ -64,7 +64,7 @@ class StdPairConstructor extends Constructor, TaintFunction {
 /**
  * The standard pair `swap` function.
  */
-class StdPairSwap extends TaintFunction {
+private class StdPairSwap extends TaintFunction {
   StdPairSwap() { this.hasQualifiedName("std", "pair", "swap") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
