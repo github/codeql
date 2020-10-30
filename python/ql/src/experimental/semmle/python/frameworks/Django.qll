@@ -781,6 +781,9 @@ private module Django {
             t.start() and
             result = http_attr("HttpResponseRedirect")
             or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
+            or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
 
@@ -841,6 +844,9 @@ private module Django {
             // Handle `http.HttpResponsePermanentRedirect` alias
             t.start() and
             result = http_attr("HttpResponsePermanentRedirect")
+            or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
             or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
@@ -903,6 +909,9 @@ private module Django {
             t.start() and
             result = http_attr("HttpResponseNotModified")
             or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
+            or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
 
@@ -961,6 +970,9 @@ private module Django {
             // Handle `http.HttpResponseBadRequest` alias
             t.start() and
             result = http_attr("HttpResponseBadRequest")
+            or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
             or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
@@ -1023,6 +1035,9 @@ private module Django {
             t.start() and
             result = http_attr("HttpResponseNotFound")
             or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
+            or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
 
@@ -1084,6 +1099,9 @@ private module Django {
             t.start() and
             result = http_attr("HttpResponseForbidden")
             or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
+            or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
 
@@ -1144,6 +1162,9 @@ private module Django {
             // Handle `http.HttpResponseNotAllowed` alias
             t.start() and
             result = http_attr("HttpResponseNotAllowed")
+            or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
             or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
@@ -1207,6 +1228,9 @@ private module Django {
             t.start() and
             result = http_attr("HttpResponseGone")
             or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
+            or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
 
@@ -1268,6 +1292,9 @@ private module Django {
             t.start() and
             result = http_attr("HttpResponseServerError")
             or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
+            or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
 
@@ -1328,6 +1355,9 @@ private module Django {
             // Handle `http.JsonResponse` alias
             t.start() and
             result = http_attr("JsonResponse")
+            or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
             or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
@@ -1393,6 +1423,9 @@ private module Django {
             t.start() and
             result = http_attr("StreamingHttpResponse")
             or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
+            or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
 
@@ -1453,6 +1486,9 @@ private module Django {
             // Handle `http.FileResponse` alias
             t.start() and
             result = http_attr("FileResponse")
+            or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
             or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }

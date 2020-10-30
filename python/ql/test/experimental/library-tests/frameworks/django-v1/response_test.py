@@ -50,4 +50,4 @@ class CustomJsonResponse(JsonResponse):
         super().__init__(content, *args, content_type="text/html", **kwargs)
 
 def safe__custom_json_response(request):
-    return CustomJsonResponse("ACME Responses", {"foo": request.GET.get("foo")})  # $f-:HttpResponse $f-:mimetype=application/json $f-:responseBody=Dict
+    return CustomJsonResponse("ACME Responses", {"foo": request.GET.get("foo")})  # $HttpResponse $mimetype=application/json $f-:responseBody=Dict $f+:responseBody="ACME Responses"
