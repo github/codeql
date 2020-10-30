@@ -192,40 +192,30 @@ private int getEndOfColumnPosition(int start, string content) {
   result = content.length()
 }
 
-private string getAnExpectation(LineComment comment, TColumn column) {
+private predicate getAnExpectation(
+  LineComment comment, TColumn column, string expectation, string tags, string value
+) {
   exists(string content |
     content = comment.getContents().regexpCapture(expectationCommentPattern(), 1) and
     (
       column = TDefaultColumn() and
       exists(int end |
         end = getEndOfColumnPosition(0, content) and
-        result = content.prefix(end).splitAt(" ").trim()
+        expectation = content.prefix(end).regexpFind(expectationPattern(), _, _).trim()
       )
       or
       exists(string name, int start, int end |
         column = TNamedColumn(name) and
         start = content.indexOf(name + ":") + name.length() + 1 and
         end = getEndOfColumnPosition(start, content) and
-        result = content.substring(start, end).splitAt(" ").trim()
+        expectation = content.substring(start, end).regexpFind(expectationPattern(), _, _).trim()
       )
-    ) and
-    result != ""
-  )
-}
-
-bindingset[expectation]
-private string getATag(string expectation) {
-  (
-    result = expectation.prefix(expectation.indexOf("=")).splitAt(",").trim()
-    or
-    not exists(expectation.indexOf("=")) and
-    result = expectation.splitAt(",").trim()
-  )
-}
-
-bindingset[expectation]
-private string getValueForTag(string expectation) {
-  result = expectation.suffix(expectation.indexOf("=") + 1)
+    )
+  ) and
+  tags = expectation.regexpCapture(expectationPattern(), 1) and
+  if exists(expectation.regexpCapture(expectationPattern(), 2))
+  then value = expectation.regexpCapture(expectationPattern(), 2)
+  else value = ""
 }
 
 private string getColumnString(TColumn column) {
@@ -236,11 +226,16 @@ private string getColumnString(TColumn column) {
 
 /**
  * RegEx pattern to match a single expected result, not including the leading `$`. It consists of one or
- * more comma-separated tags containing only letters, `-`, and `_`, optionally followed by `=` and the
- * expected value.
+ * more comma-separated tags containing only letters, digits, `-` and `_` (note that the first character
+ * must not be a digit), optionally followed by `=` and the expected value.
  */
 private string expectationPattern() {
-  result = "((?:[A-Za-z-_]+)(?:\\s*,\\s*[A-Za-z-_]+)*)(?:=(.*))?"
+  exists(string tag, string tags, string value |
+    tag = "[A-Za-z-_][A-Za-z-_0-9]*" and
+    tags = "((?:" + tag + ")(?:\\s*,\\s*" + tag + ")*)" and
+    value = "((?:\"[^\"]*\"|\\S+)*)" and
+    result = tags + "(?:=" + value + ")?"
+  )
 }
 
 private newtype TFailureLocatable =
@@ -250,19 +245,14 @@ private newtype TFailureLocatable =
     test.hasActualResult(location, element, tag, value)
   } or
   TValidExpectation(LineComment comment, string tag, string value, string knownFailure) {
-    exists(string expectation, TColumn column |
-      expectation = getAnExpectation(comment, column) and
-      tag = getATag(expectation) and
-      (
-        if exists(getValueForTag(expectation))
-        then value = getValueForTag(expectation)
-        else value = ""
-      ) and
+    exists(TColumn column, string tags |
+      getAnExpectation(comment, column, _, tags, value) and
+      tag = tags.splitAt(",") and
       knownFailure = getColumnString(column)
     )
   } or
   TInvalidExpectation(LineComment comment, string expectation) {
-    expectation = getAnExpectation(comment, _) and
+    getAnExpectation(comment, _, expectation, _, _) and
     not expectation.regexpMatch(expectationPattern())
   }
 
