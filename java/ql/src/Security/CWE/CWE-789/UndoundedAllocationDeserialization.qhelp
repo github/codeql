@@ -29,7 +29,7 @@ The following example allocates an array of a size provided by the input stream,
 <sample src="UnboundedAllocationDeserializationBad.java" />
 
 <p>
-The following example uses an <code>ArrayList</code> to only allocate as much memory as needed, within a constanat factor:
+The following example uses an <code>ArrayList</code> to only allocate as much memory as needed, within a constant factor:
 </p>
 
 <sample src="UnboundedAllocationDeserializationGood.java" />

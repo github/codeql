@@ -1,15 +1,14 @@
 public void processData(Socket sock) {
-    InputStream iStream = sock.getInputStream();
-    ObjectInpuStream oiStream = new ObjectInputStream(iStream);
+    ObjectInputStream stream = new ObjectInputStream(sock.getInputStream());
 
-    int size = oiStream.readInt();
+    int size = stream.readInt();
 
     if (size > 4096) {
-        throw new IllegalArgumentException("Size too large");
+        throw new IOException("Size too large");
     }
 
     // GOOD: There is an upper bound on memory consumption.
     byte[] buffer = new byte[size];
 
-    oiStream.readFully(buffer);
+    // ...
 }

@@ -1,0 +1,7 @@
+edges
+| Test.java:19:33:19:60 | in : ObjectInputStream | Test.java:23:31:23:36 | length |
+nodes
+| Test.java:19:33:19:60 | in : ObjectInputStream | semmle.label | in : ObjectInputStream |
+| Test.java:23:31:23:36 | length | semmle.label | length |
+#select
+| Test.java:23:31:23:36 | length | Test.java:19:33:19:60 | in : ObjectInputStream | Test.java:23:31:23:36 | length | Unbounded memory allocation from deserialization |

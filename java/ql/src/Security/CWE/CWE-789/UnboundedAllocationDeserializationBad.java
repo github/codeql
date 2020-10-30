@@ -16,7 +16,7 @@ class A implements Serializable{
         data = new Object[length];
 
         for (int i = 0; i < length; i++) {
-            data[i] = in.readObject()
+            data[i] = in.readObject();
         }
     }
 }

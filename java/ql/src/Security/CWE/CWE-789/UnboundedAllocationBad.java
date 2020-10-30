@@ -1,10 +1,9 @@
 public void processData(Socket sock) {
-    InputStream iStream = sock.getInputStream();
-    ObjectInpuStream oiStream = new ObjectInputStream(iStream);
+    ObjectInputStream stream = new ObjectInputStream(sock.getInputStream());
 
-    int size = oiStream.readInt();
+    int size = stream.readInt();
     // BAD: A user-controlled amount of memory is alocated
     byte[] buffer = new byte[size];
 
-    oiStream.readFully(buffer);
+    // ...
 }

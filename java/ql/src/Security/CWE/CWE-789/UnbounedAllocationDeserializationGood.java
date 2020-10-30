@@ -5,7 +5,7 @@ class A implements Serializable{
         out.writeInt(data.length);
 
         for (int i = 0; i < data.length; i++) {
-            out.writeLong(data[i]);
+            out.writeObject(data[i]);
         }
     }
 
