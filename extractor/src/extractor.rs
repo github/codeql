@@ -174,9 +174,10 @@ impl Visitor<'_> {
             let id = Label::Normal(self.counter);
             let loc = Label::Location(self.counter);
             self.trap_output.push(TrapEntry::FreshId(id));
-            self.trap_output.push(TrapEntry::FreshId(loc));
-            self.trap_output
-                .push(location_for(&self.source, &self.file_label, loc, node));
+            let (loc_label_def, loc_tuple) =
+                location_for(&self.source, &self.file_label, loc, node);
+            self.trap_output.push(loc_label_def);
+            self.trap_output.push(loc_tuple);
             let table_name = node_type_name(node.kind(), node.is_named());
             let args: Option<Vec<Arg>>;
             if fields.is_empty() {
@@ -323,8 +324,15 @@ fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
     ))
 }
 
-// Emit a 'Located' TrapEntry for the provided node, appropriately calibrated.
-fn location_for<'a>(source: &Vec<u8>, file_label: &Label, label: Label, n: Node) -> TrapEntry {
+// Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
+// The first is the location and label definition, and the second is the
+// 'Located' entry.
+fn location_for<'a>(
+    source: &Vec<u8>,
+    file_label: &Label,
+    label: Label,
+    n: Node,
+) -> (TrapEntry, TrapEntry) {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -366,14 +374,23 @@ fn location_for<'a>(source: &Vec<u8>, file_label: &Label, label: Label, n: Node)
             );
         }
     }
-    TrapEntry::Located(vec![
-        Arg::Label(label),
-        Arg::Label(file_label.clone()),
-        Arg::Int(start_line),
-        Arg::Int(start_col),
-        Arg::Int(end_line),
-        Arg::Int(end_col),
-    ])
+    (
+        TrapEntry::MapLabelToKey(
+            label,
+            format!(
+                "loc,{{{}}},{},{},{},{}",
+                file_label, start_line, start_col, end_line, end_col
+            ),
+        ),
+        TrapEntry::Located(vec![
+            Arg::Label(label),
+            Arg::Label(file_label.clone()),
+            Arg::Int(start_line),
+            Arg::Int(start_col),
+            Arg::Int(end_line),
+            Arg::Int(end_col),
+        ]),
+    )
 }
 
 fn traverse(tree: &Tree, visitor: &mut Visitor) {
