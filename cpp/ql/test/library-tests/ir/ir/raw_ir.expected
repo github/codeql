@@ -5540,7 +5540,7 @@ ir.cpp:
 #  996|     v996_13(void)            = AliasedUse               : ~m?
 #  996|     v996_14(void)            = ExitFunction             : 
 
-# 1000| int ExprStmt(int, int, int)
+# 1000| int StmtExpr(int, int, int)
 # 1000|   Block 0
 # 1000|     v1000_1(void)       = EnterFunction          : 
 # 1000|     mu1000_2(unknown)   = AliasedDefinition      : 

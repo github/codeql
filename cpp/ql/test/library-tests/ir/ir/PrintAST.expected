@@ -8263,7 +8263,7 @@ ir.cpp:
 #  997|               Type = [FloatType] float
 #  997|               Value = [CStyleCast] 1.0
 #  997|               ValueCategory = prvalue
-# 1000| [TopLevelFunction] int ExprStmt(int, int, int)
+# 1000| [TopLevelFunction] int StmtExpr(int, int, int)
 # 1000|   <params>: 
 # 1000|     getParameter(0): [Parameter] b
 # 1000|         Type = [IntType] int
@@ -8279,10 +8279,53 @@ ir.cpp:
 # 1001|           getExpr(): [StmtExpr] (statement expression)
 # 1001|               Type = [IntType] int
 # 1001|               ValueCategory = prvalue
+# 1001|             getStmt(): [BlockStmt] { ... }
+# 1002|               getStmt(0): [DeclStmt] declaration
+# 1002|                 getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 1002|                     Type = [IntType] int
+# 1003|               getStmt(1): [IfStmt] if (...) ... 
+# 1003|                 getCondition(): [VariableAccess] b
+# 1003|                     Type = [IntType] int
+# 1003|                     ValueCategory = prvalue(load)
+# 1003|                 getThen(): [BlockStmt] { ... }
+# 1004|                   getStmt(0): [ExprStmt] ExprStmt
+# 1004|                     getExpr(): [AssignExpr] ... = ...
+# 1004|                         Type = [IntType] int
+# 1004|                         ValueCategory = lvalue
+# 1004|                       getLValue(): [VariableAccess] w
+# 1004|                           Type = [IntType] int
+# 1004|                           ValueCategory = lvalue
+# 1004|                       getRValue(): [VariableAccess] y
+# 1004|                           Type = [IntType] int
+# 1004|                           ValueCategory = prvalue(load)
+# 1005|                 getElse(): [BlockStmt] { ... }
+# 1006|                   getStmt(0): [ExprStmt] ExprStmt
+# 1006|                     getExpr(): [AssignExpr] ... = ...
+# 1006|                         Type = [IntType] int
+# 1006|                         ValueCategory = lvalue
+# 1006|                       getLValue(): [VariableAccess] w
+# 1006|                           Type = [IntType] int
+# 1006|                           ValueCategory = lvalue
+# 1006|                       getRValue(): [VariableAccess] z
+# 1006|                           Type = [IntType] int
+# 1006|                           ValueCategory = prvalue(load)
+# 1003|                 getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 1003|                     Conversion = [BoolConversion] conversion to bool
+# 1003|                     Type = [BoolType] bool
+# 1003|                     ValueCategory = prvalue
+# 1008|               getStmt(2): [ExprStmt] ExprStmt
+# 1008|                 getExpr(): [VariableAccess] w
+# 1008|                     Type = [IntType] int
+# 1008|                     ValueCategory = prvalue(load)
 # 1011|     getStmt(1): [ReturnStmt] return ...
 # 1011|       getExpr(): [StmtExpr] (statement expression)
 # 1011|           Type = [IntType] int
 # 1011|           ValueCategory = prvalue
+# 1011|         getStmt(): [BlockStmt] { ... }
+# 1011|           getStmt(0): [ExprStmt] ExprStmt
+# 1011|             getExpr(): [VariableAccess] x
+# 1011|                 Type = [IntType] int
+# 1011|                 ValueCategory = prvalue(load)
 # 1015| [TopLevelFunction] void OperatorDelete()
 # 1015|   <params>: 
 # 1015|   getEntryPoint(): [BlockStmt] { ... }

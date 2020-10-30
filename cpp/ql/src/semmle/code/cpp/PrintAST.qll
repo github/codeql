@@ -342,6 +342,18 @@ class CastNode extends ConversionNode {
 }
 
 /**
+ * A node representing a `StmtExpr`.
+ */
+class StmtExprNode extends ExprNode {
+  override StmtExpr expr;
+
+  override ASTNode getChildInternal(int childIndex) {
+    childIndex = 0 and
+    result.getAST() = expr.getStmt()
+  }
+}
+
+/**
  * A node representing a `DeclarationEntry`.
  */
 class DeclarationEntryNode extends BaseASTNode, TDeclarationEntryNode {
