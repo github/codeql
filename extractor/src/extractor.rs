@@ -627,12 +627,37 @@ enum Arg {
     String(String),
 }
 
+const MAX_STRLEN: usize = 1048576;
+
 impl fmt::Display for Arg {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Arg::Label(x) => write!(f, "{}", x),
             Arg::Int(x) => write!(f, "{}", x),
-            Arg::String(x) => write!(f, "\"{}\"", x.replace("\"", "\"\"")),
+            Arg::String(x) => write!(
+                f,
+                "\"{}\"",
+                limit_string(x, MAX_STRLEN).replace("\"", "\"\"")
+            ),
         }
     }
+}
+
+fn limit_string(string: &String, max_size: usize) -> &str {
+    if string.len() <= max_size {
+        return string;
+    }
+    let p = string.as_ptr();
+    let mut index = max_size;
+    while index > 0 && unsafe { (*p.offset(index as isize) & 0b11000000) == 0b10000000 } {
+        index -= 1;
+    }
+    &string[0..index]
+}
+
+#[test]
+fn limit_string_test() {
+    assert_eq!("hello", limit_string(&"hello world".to_owned(), 5));
+    assert_eq!("hi ☹", limit_string(&"hi ☹☹".to_owned(), 6));
+    assert_eq!("hi ", limit_string(&"hi ☹☹".to_owned(), 5));
 }
