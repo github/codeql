@@ -124,19 +124,36 @@ class PrintASTNode extends TPrintASTNode {
    * regular parent/child relation traversal.
    */
   final PrintASTNode getChild(int childIndex) {
-    exists(int nonConvertedIndex, boolean isConverted |
-      mapIndex(childIndex, nonConvertedIndex, isConverted)
-    |
-      if isConverted = false
-      then result = getChildInternal(childIndex)
-      else
-        exists(Expr expr |
-          expr = getChildInternal(nonConvertedIndex).(ASTNode).getAST() and
-          expr.getFullyConverted() instanceof Conversion and
-          result.(ASTNode).getAST() = expr.getFullyConverted() and
-          not expr instanceof Conversion
-        )
+    // The exact value of `childIndex` doesn't matter, as long as we preserve the correct order.
+    result =
+      rank[childIndex](PrintASTNode child, int nonConvertedIndex, boolean isConverted |
+        childAndAccessorPredicate(child, _, nonConvertedIndex, isConverted)
+      |
+        // Unconverted children come first, then sort by original child index within each group.
+        child order by isConverted, nonConvertedIndex
+      )
+  }
+
+  /**
+   * Gets the node for the `.getFullyConverted()` version of the child originally at index
+   * `childIndex`, if that node has any conversions.
+   */
+  private PrintASTNode getConvertedChild(int childIndex) {
+    exists(Expr expr |
+      expr = getChildInternal(childIndex).(ASTNode).getAST() and
+      expr.getFullyConverted() instanceof Conversion and
+      result.(ASTNode).getAST() = expr.getFullyConverted() and
+      not expr instanceof Conversion
     )
+  }
+
+  /**
+   * Gets the child access predicate for the `.getFullyConverted()` version of the child originally
+   * at index `childIndex`, if that node has any conversions.
+   */
+  private string getConvertedChildAccessorPredicate(int childIndex) {
+    exists(getConvertedChild(childIndex)) and
+    result = getChildAccessorPredicateInternal(childIndex) + ".getFullyConverted()"
   }
 
   /**
@@ -171,18 +188,38 @@ class PrintASTNode extends TPrintASTNode {
   }
 
   /**
+   * Holds if there is a child node `child` for original child index `nonConvertedIndex` with
+   * predicate name `childPredicate`. If the original child at that index has any conversions, there
+   * will be two result tuples for this predicate: one with the original child and predicate, with
+   * `isConverted = false`, and the other with the `.getFullyConverted()` version of the child and
+   * predicate, with `isConverted = true`. For a child without any conversions, there will be only
+   * one result tuple, with `isConverted = false`.
+   */
+  private predicate childAndAccessorPredicate(
+    PrintASTNode child, string childPredicate, int nonConvertedIndex, boolean isConverted
+  ) {
+    child = getChildInternal(nonConvertedIndex) and
+    childPredicate = getChildAccessorPredicateInternal(nonConvertedIndex) and
+    isConverted = false
+    or
+    child = getConvertedChild(nonConvertedIndex) and
+    childPredicate = getConvertedChildAccessorPredicate(nonConvertedIndex) and
+    isConverted = true
+  }
+
+  /**
    * Gets the QL predicate that can be used to access the child at `childIndex`.
    * May not always return a QL predicate, see for example `FunctionNode`.
    */
   final string getChildAccessorPredicate(int childIndex) {
-    exists(getChild(childIndex)) and
-    exists(int nonConvertedIndex, boolean isConverted |
-      mapIndex(childIndex, nonConvertedIndex, isConverted)
-    |
-      if isConverted = false
-      then result = getChildAccessorPredicateInternal(childIndex)
-      else result = getChildAccessorPredicateInternal(nonConvertedIndex) + ".getFullyConverted()"
-    )
+    // The exact value of `childIndex` doesn't matter, as long as we preserve the correct order.
+    result =
+      rank[childIndex](string childPredicate, int nonConvertedIndex, boolean isConverted |
+        childAndAccessorPredicate(_, childPredicate, nonConvertedIndex, isConverted)
+      |
+        // Unconverted children come first, then sort by original child index within each group.
+        childPredicate order by isConverted, nonConvertedIndex
+      )
   }
 
   /**
@@ -190,40 +227,6 @@ class PrintASTNode extends TPrintASTNode {
    * INTERNAL DO NOT USE: Does not contain accessors for the synthesized nodes for conversions.
    */
   abstract string getChildAccessorPredicateInternal(int childIndex);
-
-  /**
-   * Holds either if a `childIndex` is a synthesized child coming from a conversion (`isConverted = true`)
-   * or if the child is a regular child node.
-   * In the former case, `nonConvertedIndex` is the index of the regular, unconverted child node.
-   * Note: This predicate contains the mapping between the converted and nonconverted indexes, but
-   * if `nonConvertedIndex` does not have conversions attached, there will be no node at `childIndex`.
-   */
-  final predicate mapIndex(int childIndex, int nonConvertedIndex, boolean isConverted) {
-    exists(getChildInternal(childIndex)) and
-    nonConvertedIndex = childIndex and
-    isConverted = false
-    or
-    not exists(getChildInternal(childIndex)) and
-    exists(getChildInternal(nonConvertedIndex)) and
-    isConverted = true and
-    // to get the desired order of the extended `childIndex`es (including the synthesized children for conversions)
-    // we keep the indexes in the following three disjoint intervals:
-    // [minIndex, maxIndex: original children, without conversion
-    // [|-1| + |maxIndex|, |minIndex| + |maxIndex|]: conversion children with negative `nonConvertedIndex`
-    // [0 + |maxIndex| + |minIndex| + 1, maxIndex + |maxIndex| + |minIndex| + 1]: for conversion children
-    //  with positive `nonConvertedIndex`
-    exists(int minIndex, int maxIndex |
-      minIndex = min(int n | exists(getChildInternal(n))) and
-      maxIndex = max(int n | exists(getChildInternal(n)))
-    |
-      if nonConvertedIndex < 0
-      then
-        // note that we swap the order of the negative indexes here, so that the conversion child for `-2`
-        // comes before the conversion child for `-1`
-        childIndex = (minIndex - 1 - nonConvertedIndex).abs() + maxIndex.abs()
-      else childIndex = nonConvertedIndex + maxIndex.abs() + minIndex.abs() + 1
-    )
-  }
 
   /**
    * Gets the `Function` that contains this node.
