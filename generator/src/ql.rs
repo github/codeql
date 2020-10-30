@@ -108,7 +108,7 @@ impl fmt::Display for Expression {
                         if index > 0 {
                             write!(f, " or ")?;
                         }
-                        write!(f, "{}", disjunct)?;
+                        write!(f, "({})", disjunct)?;
                     }
                     Ok(())
                 }
@@ -117,11 +117,11 @@ impl fmt::Display for Expression {
                 if conjuncts.is_empty() {
                     write!(f, "any()")
                 } else {
-                    for (index, disjunct) in conjuncts.iter().enumerate() {
+                    for (index, conjunct) in conjuncts.iter().enumerate() {
                         if index > 0 {
                             write!(f, " and ")?;
                         }
-                        write!(f, "{}", disjunct)?;
+                        write!(f, "{}", conjunct)?;
                     }
                     Ok(())
                 }
