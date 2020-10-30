@@ -124,20 +124,18 @@ class PrintASTNode extends TPrintASTNode {
    * regular parent/child relation traversal.
    */
   final PrintASTNode getChild(int childIndex) {
-    result = getChildInternal(childIndex)
-    or
-    // We first compute the first available child index that is not used by
-    // `getChildInternal`, then we synthesize the child for fully converted
-    // expressions at `nextAvailableIndex` plus the childIndex of the non-converted
-    // expression. This ensures that both disjuncts are disjoint.
-    exists(int nonConvertedIndex, int nextAvailableIndex, Expr expr |
-      nextAvailableIndex = max(int idx | exists(this.getChildInternal(idx))) + 1 and
-      childIndex - nextAvailableIndex = nonConvertedIndex and
-      expr = getChildInternal(nonConvertedIndex).(ASTNode).getAST()
+    exists(int nonConvertedIndex, boolean isConverted |
+      deconstructIndex(childIndex, nonConvertedIndex, isConverted)
     |
-      expr.getFullyConverted() instanceof Conversion and
-      result.(ASTNode).getAST() = expr.getFullyConverted() and
-      not expr instanceof Conversion
+      if isConverted = false
+      then result = getChildInternal(childIndex)
+      else
+        exists(Expr expr |
+          expr = getChildInternal(nonConvertedIndex).(ASTNode).getAST() and
+          expr.getFullyConverted() instanceof Conversion and
+          result.(ASTNode).getAST() = expr.getFullyConverted() and
+          not expr instanceof Conversion
+        )
     )
   }
 
@@ -173,36 +171,57 @@ class PrintASTNode extends TPrintASTNode {
   }
 
   /**
-   * Gets the label for the edge from this node to the specified child. By
-   * default, this is just the index of the child, but subclasses can override
-   * this.
+   * Gets the QL predicate that can be used to access the child at `childIndex`.
+   * May not always return a QL predicate, see for example `FunctionNode`.
    */
-  string getChildEdgeLabelInternal(int childIndex) {
+  final string getChildAccessorPredicate(int childIndex) {
     exists(getChild(childIndex)) and
-    result = childIndex.toString()
+    exists(int nonConvertedIndex, boolean isConverted |
+      deconstructIndex(childIndex, nonConvertedIndex, isConverted)
+    |
+      if isConverted = false
+      then result = getChildAccessorPredicateInternal(childIndex)
+      else result = getChildAccessorPredicateInternal(nonConvertedIndex) + ".getFullyConverted()"
+    )
   }
 
   /**
    * Gets the QL predicate that can be used to access the child at `childIndex`.
-   * May not hold for all children, see for example `FunctionNode`.
+   * INTERNAL DO NOT USE: Does not contain accessors for the synthesized nodes for conversions.
    */
-  abstract string getChildAccessorPredicate(int childIndex);
+  abstract string getChildAccessorPredicateInternal(int childIndex);
 
   /**
-   * Gets the label for the edge from this node to the specified child,
-   * including labels for edges to nodes that represent conversions.
+   * Holds either if a `childIndex` is a synthesized child coming from a conversion (`isConverted = true`)
+   * or if the child is a regular child node.
+   * In the former case, `nonConvertedIndex` is the index of the regular, unconverted child node.
+   * Note: This predicate contains the mapping between the converted and nonconverted indexes, but
+   * if `nonConvertedIndex` does not have conversions attached, there will be no node at `childIndex`.
    */
-  final string getChildEdgeLabel(int childIndex) {
+  final predicate deconstructIndex(int childIndex, int nonConvertedIndex, boolean isConverted) {
     exists(getChildInternal(childIndex)) and
-    result = getChildEdgeLabelInternal(childIndex)
+    nonConvertedIndex = childIndex and
+    isConverted = false
     or
     not exists(getChildInternal(childIndex)) and
-    exists(getChild(childIndex)) and
-    exists(int nonConvertedIndex, int nextAvailableIndex |
-      nextAvailableIndex = max(int idx | exists(this.getChildInternal(idx))) + 1 and
-      childIndex - nextAvailableIndex = nonConvertedIndex
+    exists(getChildInternal(nonConvertedIndex)) and
+    isConverted = true and
+    // to get the desired order of the extended `childIndex`es (including the synthesized children for conversions)
+    // we keep the indexes in the following three disjoint intervals:
+    // [minIndex, maxIndex: original children, without conversion
+    // [|-1| + |maxIndex|, |minIndex| + |maxIndex|]: conversion children with negative `nonConvertedIndex`
+    // [0 + |maxIndex| + |minIndex| + 1, maxIndex + |maxIndex| + |minIndex| + 1]: for conversion children
+    //  with positive `nonConvertedIndex`
+    exists(int minIndex, int maxIndex |
+      minIndex = min(int n | exists(getChildInternal(n))) and
+      maxIndex = max(int n | exists(getChildInternal(n)))
     |
-      result = getChildEdgeLabelInternal(nonConvertedIndex) + " converted"
+      if nonConvertedIndex < 0
+      then
+        // note that we swap the order of the negative indexes here, so that the conversion child for `-2`
+        // comes before the conversion child for `-1`
+        childIndex = (minIndex - 1 - nonConvertedIndex).abs() + maxIndex.abs()
+      else childIndex = nonConvertedIndex + maxIndex.abs() + minIndex.abs() + 1
     )
   }
 
@@ -267,8 +286,8 @@ class ExprNode extends ASTNode {
     result = expr.getValueCategoryString()
   }
 
-  override string getChildAccessorPredicate(int childIndex) {
-  result = getChildAccessor(ast, getChildInternal(childIndex).getAST())
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    result = getChildAccessorWithoutConversions(ast, getChildInternal(childIndex).getAST())
   }
 
   /**
@@ -301,8 +320,6 @@ class ConversionNode extends ExprNode {
     result.getAST() = conv.getExpr() and
     conv.getExpr() instanceof Conversion
   }
-
-  override string getChildEdgeLabelInternal(int childIndex) { childIndex = 0 and result = "expr" }
 }
 
 /**
@@ -332,7 +349,7 @@ class DeclarationEntryNode extends BaseASTNode, TDeclarationEntryNode {
 
   override PrintASTNode getChildInternal(int childIndex) { none() }
 
-  override string getChildAccessorPredicate(int childIndex) { none() }
+  override string getChildAccessorPredicateInternal(int childIndex) { none() }
 
   override string getProperty(string key) {
     result = BaseASTNode.super.getProperty(key)
@@ -353,12 +370,10 @@ class VariableDeclarationEntryNode extends DeclarationEntryNode {
     result.getAST() = ast.getVariable().getInitializer()
   }
 
-  override string getChildAccessorPredicate(int childIndex) {
+  override string getChildAccessorPredicateInternal(int childIndex) {
     childIndex = 0 and
     result = "getVariable().getInitializer()"
   }
-
-  override string getChildEdgeLabelInternal(int childIndex) { childIndex = 0 and result = "init" }
 }
 
 /**
@@ -379,8 +394,8 @@ class StmtNode extends ASTNode {
     )
   }
 
-  override string getChildAccessorPredicate(int childIndex) {
-    result = getChildAccessor(ast, getChildInternal(childIndex).getAST())
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    result = getChildAccessorWithoutConversions(ast, getChildInternal(childIndex).getAST())
   }
 }
 
@@ -410,7 +425,7 @@ class ParameterNode extends ASTNode {
 
   final override PrintASTNode getChildInternal(int childIndex) { none() }
 
-  final override string getChildAccessorPredicate(int childIndex) { none() }
+  final override string getChildAccessorPredicateInternal(int childIndex) { none() }
 
   final override string getProperty(string key) {
     result = super.getProperty(key)
@@ -433,14 +448,9 @@ class InitializerNode extends ASTNode {
     result.getAST() = init.getExpr()
   }
 
-  override string getChildAccessorPredicate(int childIndex) {
+  override string getChildAccessorPredicateInternal(int childIndex) {
     childIndex = 0 and
     result = "getExpr()"
-  }
-
-  override string getChildEdgeLabelInternal(int childIndex) {
-    childIndex = 0 and
-    result = "expr"
   }
 }
 
@@ -460,8 +470,8 @@ class ParametersNode extends PrintASTNode, TParametersNode {
     result.getAST() = func.getParameter(childIndex)
   }
 
-  override string getChildAccessorPredicate(int childIndex) {
-    exists(getChild(childIndex)) and
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    exists(getChildInternal(childIndex)) and
     result = "getParameter(" + childIndex.toString() + ")"
   }
 
@@ -487,8 +497,8 @@ class ConstructorInitializersNode extends PrintASTNode, TConstructorInitializers
     result.getAST() = ctor.getInitializer(childIndex)
   }
 
-  final override string getChildAccessorPredicate(int childIndex) {
-    exists(getChild(childIndex)) and
+  final override string getChildAccessorPredicateInternal(int childIndex) {
+    exists(getChildInternal(childIndex)) and
     result = "getInitializer(" + childIndex.toString() + ")"
   }
 
@@ -514,8 +524,8 @@ class DestructorDestructionsNode extends PrintASTNode, TDestructorDestructionsNo
     result.getAST() = dtor.getDestruction(childIndex)
   }
 
-  final override string getChildAccessorPredicate(int childIndex) {
-    exists(getChild(childIndex)) and
+  final override string getChildAccessorPredicateInternal(int childIndex) {
+    exists(getChildInternal(childIndex)) and
     result = "getDestruction(" + childIndex.toString() + ")"
   }
 
@@ -549,21 +559,14 @@ class FunctionNode extends ASTNode {
     result.(DestructorDestructionsNode).getDestructor() = func
   }
 
-  override string getChildAccessorPredicate(int childIndex) {
-    // all other children of this node are not reachable via the AST `getChild` relation
-    // or other getters. Thus, this predicate does not hold for them.
-    childIndex = 2 and
-    result = "getEntryPoint()"
-  }
-
-  override string getChildEdgeLabelInternal(int childIndex) {
-    childIndex = 0 and result = "params"
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    childIndex = 0 and result = "<params>"
     or
-    childIndex = 1 and result = "initializations"
+    childIndex = 1 and result = "<initializations>"
     or
-    childIndex = 2 and result = "body"
+    childIndex = 2 and result = "getEntryPoint()"
     or
-    childIndex = 3 and result = "destructions"
+    childIndex = 3 and result = "<destructions>"
   }
 
   private int getOrder() {
@@ -588,52 +591,20 @@ class FunctionNode extends ASTNode {
   final Function getFunction() { result = func }
 }
 
-/**
- * A node representing an `ClassAggregateLiteral`.
- */
-class ClassAggregateLiteralNode extends ExprNode {
-  ClassAggregateLiteral list;
-
-  ClassAggregateLiteralNode() { list = ast }
-
-  override string getChildEdgeLabelInternal(int childIndex) {
-    exists(Field field |
-      list.getFieldExpr(field) = list.getChild(childIndex) and
-      result = "." + field.getName()
-    )
-  }
-}
-
-/**
- * A node representing an `ArrayAggregateLiteral`.
- */
-class ArrayAggregateLiteralNode extends ExprNode {
-  ArrayAggregateLiteral list;
-
-  ArrayAggregateLiteralNode() { list = ast }
-
-  override string getChildEdgeLabelInternal(int childIndex) {
-    exists(int elementIndex |
-      list.getElementExpr(elementIndex) = list.getChild(childIndex) and
-      result = "[" + elementIndex.toString() + "]"
-    )
-  }
-}
-
-private string getChildAccessor(Locatable parent, Element child) {
+private string getChildAccessorWithoutConversions(Locatable parent, Element child) {
   shouldPrintFunction(getEnclosingFunction(parent)) and
   (
-    exists(Stmt s | s = parent.(Stmt) |
+    exists(Stmt s | s = parent |
       namedStmtChildPredicates(s, child, result)
       or
-      not exists(string p | namedStmtChildPredicates(s, child, p)) and
+      not namedStmtChildPredicates(s, child, _) and
       exists(int n | s.getChild(n) = child and result = "getChild(" + n + ")")
     )
     or
-    exists(Expr expr | expr = parent.(Expr) |
+    exists(Expr expr | expr = parent |
       namedExprChildPredicates(expr, child, result)
       or
-      not exists(string p | namedExprChildPredicates(expr, child, p)) and
+      not namedExprChildPredicates(expr, child, _) and
       exists(int n | expr.getChild(n) = child and result = "getChild(" + n + ")")
     )
   )
@@ -674,7 +645,7 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(ForStmt).getStmt() = e and pred = "getStmt()"
     or
-    s.(RangeBasedForStmt).getChild(0) = e and pred = "getChild(0)" // TODO: could be omitted
+    s.(RangeBasedForStmt).getChild(0) = e and pred = "getChild(0)"
     or
     s.(RangeBasedForStmt).getBeginEndDeclaration() = e and pred = "getBeginEndDeclaration()"
     or
@@ -682,7 +653,7 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(RangeBasedForStmt).getUpdate() = e and pred = "getUpdate()"
     or
-    s.(RangeBasedForStmt).getChild(4) = e and pred = "getChild(4)" // TODO: could be omitted
+    s.(RangeBasedForStmt).getChild(4) = e and pred = "getChild(4)"
     or
     s.(RangeBasedForStmt).getStmt() = e and pred = "getStmt()"
     or
@@ -845,8 +816,8 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(SizeofExprOperator).getExprOperand() = ele and pred = "getExprOperand()"
     or
-    //expr.(StmtExpr).getStmt() = ele and pred = "getStmt()" // TODO confirm via test that this is a/the child
-    //or
+    expr.(StmtExpr).getStmt() = ele and pred = "getStmt()"
+    or
     expr.(ThrowExpr).getExpr() = ele and pred = "getExpr()"
     or
     expr.(TypeidOperator).getExpr() = ele and pred = "getExpr()"
@@ -869,12 +840,9 @@ query predicate edges(PrintASTNode source, PrintASTNode target, string key, stri
     target.shouldPrint() and
     target = source.getChild(childIndex) and
     (
-      key = "semmle.label" and value = source.getChildAccessorPredicate(childIndex) //source.getChildEdgeLabel(childIndex)
+      key = "semmle.label" and value = source.getChildAccessorPredicate(childIndex)
       or
       key = "semmle.order" and value = childIndex.toString()
-      or
-      key = "semmle.predicate" and
-      value = source.getChildAccessorPredicate(childIndex)
     )
   )
 }

@@ -1,22 +1,22 @@
 #-----| [CopyAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
-#-----|   : 
+#-----|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const __va_list_tag &
 #-----| [MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
-#-----|   : 
+#-----|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] __va_list_tag &&
 #-----| [Operator,TopLevelFunction] void operator delete(void*)
-#-----|   : 
+#-----|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [VoidPointerType] void *
 #-----| [Operator,TopLevelFunction] void* operator new(unsigned long)
-#-----|   : 
+#-----|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LongType] unsigned long
 AddressOf.c:
 #    1| [TopLevelFunction] void AddressOf(int)
-#    1|   : 
+#    1|   <params>: 
 #    1|     getParameter(0): [Parameter] i
 #    1|         Type = [IntType] int
 #    1|   getEntryPoint(): [BlockStmt] { ... }
@@ -33,7 +33,7 @@ AddressOf.c:
 #    3|     getStmt(1): [ReturnStmt] return ...
 ArrayToPointer.c:
 #    5| [TopLevelFunction] void ArrayToPointer()
-#    5|   : 
+#    5|   <params>: 
 #    6|   getEntryPoint(): [BlockStmt] { ... }
 #    7|     getStmt(0): [DeclStmt] declaration
 #    7|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
@@ -59,13 +59,13 @@ ArrayToPointer.c:
 #    9|         getRValue(): [VariableAccess] c
 #    9|             Type = [ArrayType] char[6]
 #    9|             ValueCategory = lvalue
-#    9|         : [ArrayToPointerConversion] array to pointer conversion
+#    9|         getRValue().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #    9|             Type = [CharPointerType] char *
 #    9|             ValueCategory = prvalue
 #   10|     getStmt(3): [ReturnStmt] return ...
 Cast.c:
 #    1| [TopLevelFunction] void Cast(char*, void*)
-#    1|   : 
+#    1|   <params>: 
 #    1|     getParameter(0): [Parameter] c
 #    1|         Type = [CharPointerType] char *
 #    1|     getParameter(1): [Parameter] v
@@ -81,14 +81,14 @@ Cast.c:
 #    2|         getRValue(): [VariableAccess] v
 #    2|             Type = [VoidPointerType] void *
 #    2|             ValueCategory = prvalue(load)
-#    2|         : [CStyleCast] (char *)...
+#    2|         getRValue().getFullyConverted(): [CStyleCast] (char *)...
 #    2|             Conversion = [PointerConversion] pointer conversion
 #    2|             Type = [CharPointerType] char *
 #    2|             ValueCategory = prvalue
 #    3|     getStmt(1): [ReturnStmt] return ...
 ConditionDecl.cpp:
 #    1| [TopLevelFunction] void ConditionDecl()
-#    1|   : 
+#    1|   <params>: 
 #    1|   getEntryPoint(): [BlockStmt] { ... }
 #    2|     getStmt(0): [DeclStmt] declaration
 #    2|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of j
@@ -105,7 +105,7 @@ ConditionDecl.cpp:
 #    3|         getVariableAccess(): [VariableAccess] k
 #    3|             Type = [IntType] int
 #    3|             ValueCategory = prvalue(load)
-#    3|         : [CStyleCast] (bool)...
+#    3|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 #    3|             Conversion = [BoolConversion] conversion to bool
 #    3|             Type = [BoolType] bool
 #    3|             ValueCategory = prvalue
@@ -113,59 +113,59 @@ ConditionDecl.cpp:
 #    5|     getStmt(2): [ReturnStmt] return ...
 ConstructorCall.cpp:
 #    1| [CopyAssignmentOperator] C& C::operator=(C const&)
-#    1|   : 
+#    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #    1| [MoveAssignmentOperator] C& C::operator=(C&&)
-#    1|   : 
+#    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #    1| [CopyConstructor] void C::C(C const&)
-#    1|   : 
+#    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #    1| [MoveConstructor] void C::C(C&&)
-#    1|   : 
+#    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #    3| [ConversionConstructor] void C::C(int)
-#    3|   : 
+#    3|   <params>: 
 #    3|     getParameter(0): [Parameter] i
 #    3|         Type = [IntType] int
-#    3|   : 
+#    3|   <initializations>: 
 #    3|   getEntryPoint(): [BlockStmt] { ... }
 #    4|     getStmt(0): [ReturnStmt] return ...
 #    7| [CopyAssignmentOperator] D& D::operator=(D const&)
-#    7|   : 
+#    7|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const D &
 #    7| [MoveAssignmentOperator] D& D::operator=(D&&)
-#    7|   : 
+#    7|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] D &&
 #    7| [CopyConstructor] void D::D(D const&)
-#    7|   : 
+#    7|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const D &
 #    7| [MoveConstructor] void D::D(D&&)
-#    7|   : 
+#    7|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] D &&
 #    9| [Constructor] void D::D()
-#    9|   : 
-#    9|   : 
+#    9|   <params>: 
+#    9|   <initializations>: 
 #    9|   getEntryPoint(): [BlockStmt] { ... }
 #   10|     getStmt(0): [ReturnStmt] return ...
 #   13| [CopyAssignmentOperator] E& E::operator=(E const&)
-#   13|   : 
+#   13|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const E &
 #   13| [MoveAssignmentOperator] E& E::operator=(E&&)
-#   13|   : 
+#   13|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] E &&
 #   17| [TopLevelFunction] void ConstructorCall(C*, D*, E*)
-#   17|   : 
+#   17|   <params>: 
 #   17|     getParameter(0): [Parameter] c
 #   17|         Type = [PointerType] C *
 #   17|     getParameter(1): [Parameter] d
@@ -220,7 +220,7 @@ ConstructorCall.cpp:
 #   21|     getStmt(3): [ReturnStmt] return ...
 Conversion1.c:
 #    1| [TopLevelFunction] void Conversion1()
-#    1|   : 
+#    1|   <params>: 
 #    1|   getEntryPoint(): [BlockStmt] { ... }
 #    2|     getStmt(0): [DeclStmt] declaration
 #    2|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
@@ -230,7 +230,7 @@ Conversion1.c:
 #    2|               Type = [IntType] int
 #    2|               Value = [Literal] 1
 #    2|               ValueCategory = prvalue
-#    2|           : [CStyleCast] (int)...
+#    2|           getExpr().getFullyConverted(): [CStyleCast] (int)...
 #    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
 #    2|               Value = [CStyleCast] 1
@@ -238,7 +238,7 @@ Conversion1.c:
 #    3|     getStmt(1): [ReturnStmt] return ...
 Conversion2.c:
 #    1| [TopLevelFunction] void Conversion2(int)
-#    1|   : 
+#    1|   <params>: 
 #    1|     getParameter(0): [Parameter] x
 #    1|         Type = [IntType] int
 #    1|   getEntryPoint(): [BlockStmt] { ... }
@@ -261,12 +261,12 @@ Conversion2.c:
 #    2|               Type = [IntType] int
 #    2|               Value = [Literal] 7
 #    2|               ValueCategory = prvalue
-#    2|           : [CStyleCast] (int)...
+#    2|           getLeftOperand().getFullyConverted(): [CStyleCast] (int)...
 #    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
 #    2|               Value = [CStyleCast] 5
 #    2|               ValueCategory = prvalue
-#    2|           : [CStyleCast] (int)...
+#    2|           getRightOperand().getFullyConverted(): [CStyleCast] (int)...
 #    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
 #    2|               Value = [CStyleCast] 7
@@ -274,7 +274,7 @@ Conversion2.c:
 #    3|     getStmt(1): [ReturnStmt] return ...
 Conversion3.cpp:
 #    1| [TopLevelFunction] void Conversion3(int)
-#    1|   : 
+#    1|   <params>: 
 #    1|     getParameter(0): [Parameter] x
 #    1|         Type = [IntType] int
 #    1|   getEntryPoint(): [BlockStmt] { ... }
@@ -297,7 +297,7 @@ Conversion3.cpp:
 #    2|               Type = [IntType] int
 #    2|               Value = [Literal] 7
 #    2|               ValueCategory = prvalue
-#    2|           : [CStyleCast] (int)...
+#    2|           getLeftOperand().getFullyConverted(): [CStyleCast] (int)...
 #    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
 #    2|               Value = [CStyleCast] 1
@@ -312,7 +312,7 @@ Conversion3.cpp:
 #    2|                   Type = [IntType] int
 #    2|                   Value = [CStyleCast] 1
 #    2|                   ValueCategory = prvalue
-#    2|           : [ParenthesisExpr] (...)
+#    2|           getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 #    2|               Type = [IntType] int
 #    2|               Value = [ParenthesisExpr] 7
 #    2|               ValueCategory = prvalue
@@ -324,7 +324,7 @@ Conversion3.cpp:
 #    3|     getStmt(1): [ReturnStmt] return ...
 Conversion4.c:
 #    1| [TopLevelFunction] void Conversion4(int)
-#    1|   : 
+#    1|   <params>: 
 #    1|     getParameter(0): [Parameter] x
 #    1|         Type = [IntType] int
 #    1|   getEntryPoint(): [BlockStmt] { ... }
@@ -339,7 +339,7 @@ Conversion4.c:
 #    2|             Type = [IntType] int
 #    2|             Value = [Literal] 7
 #    2|             ValueCategory = prvalue
-#    2|         : [ParenthesisExpr] (...)
+#    2|         getRValue().getFullyConverted(): [ParenthesisExpr] (...)
 #    2|             Type = [IntType] int
 #    2|             Value = [ParenthesisExpr] 7
 #    2|             ValueCategory = prvalue
@@ -350,7 +350,7 @@ Conversion4.c:
 #    2|               ValueCategory = prvalue
 #    3|     getStmt(1): [ReturnStmt] return ...
 #    5| [TopLevelFunction] char* retfn(void*)
-#    5|   ...: 
+#    5|   <params>: 
 #    5|     getParameter(0): [Parameter] v
 #    5|         Type = [VoidPointerType] void *
 #    5|   getEntryPoint(): [BlockStmt] { ... }
@@ -358,7 +358,7 @@ Conversion4.c:
 #    6|       getExpr(): [VariableAccess] v
 #    6|           Type = [VoidPointerType] void *
 #    6|           ValueCategory = prvalue(load)
-#    6|       : [CStyleCast] (char *)...
+#    6|       getExpr().getFullyConverted(): [CStyleCast] (char *)...
 #    6|           Conversion = [PointerConversion] pointer conversion
 #    6|           Type = [CharPointerType] char *
 #    6|           ValueCategory = prvalue
@@ -371,7 +371,7 @@ Conversion4.c:
 #    6|               Type = [IntPointerType] int *
 #    6|               ValueCategory = prvalue
 #    9| [TopLevelFunction] void Conversion4_vardecl(int)
-#    9|   ...: 
+#    9|   <params>: 
 #    9|     getParameter(0): [Parameter] x
 #    9|         Type = [IntType] int
 #    9|   getEntryPoint(): [BlockStmt] { ... }
@@ -382,21 +382,21 @@ Conversion4.c:
 #   10|           getExpr(): [VariableAccess] x
 #   10|               Type = [IntType] int
 #   10|               ValueCategory = prvalue(load)
-#   10|           : [CStyleCast] (long)...
+#   10|           getExpr().getFullyConverted(): [CStyleCast] (long)...
 #   10|               Conversion = [IntegralConversion] integral conversion
 #   10|               Type = [LongType] long
 #   10|               ValueCategory = prvalue
 #   11|     getStmt(1): [ReturnStmt] return ...
 DestructorCall.cpp:
 #    1| [Constructor] void C::C()
-#    1|   : 
+#    1|   <params>: 
 #    3| [Destructor] void C::~C()
-#    3|   : 
+#    3|   <params>: 
 #    3|   getEntryPoint(): [BlockStmt] { ... }
 #    4|     getStmt(0): [ReturnStmt] return ...
-#    3|   : 
+#    3|   <destructions>: 
 #   11| [TopLevelFunction] void DestructorCall(C*, D*)
-#   11|   : 
+#   11|   <params>: 
 #   11|     getParameter(0): [Parameter] c
 #   11|         Type = [PointerType] C *
 #   11|     getParameter(1): [Parameter] d
@@ -422,7 +422,7 @@ DestructorCall.cpp:
 #   14|     getStmt(2): [ReturnStmt] return ...
 DynamicCast.cpp:
 #    1| [CopyAssignmentOperator] Base& Base::operator=(Base const&)
-#    1|   : 
+#    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Base &
 #-----|   getEntryPoint(): [BlockStmt] { ... }
@@ -433,29 +433,29 @@ DynamicCast.cpp:
 #-----|         getOperand(): [ThisExpr] this
 #-----|             Type = [PointerType] Base *
 #-----|             ValueCategory = prvalue(load)
-#-----|       : [ReferenceToExpr] (reference to)
+#-----|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|           Type = [LValueReferenceType] Base &
 #-----|           ValueCategory = prvalue
 #    1| [MoveAssignmentOperator] Base& Base::operator=(Base&&)
-#    1|   : 
+#    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Base &&
 #    1| [Constructor] void Base::Base()
-#    1|   : 
+#    1|   <params>: 
 #    1| [CopyConstructor] void Base::Base(Base const&)
-#    1|   : 
+#    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Base &
 #    1| [MoveConstructor] void Base::Base(Base&&)
-#    1|   : 
+#    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Base &&
 #    2| [VirtualFunction] void Base::f()
-#    2|   : 
+#    2|   <params>: 
 #    2|   getEntryPoint(): [BlockStmt] { ... }
 #    2|     getStmt(0): [ReturnStmt] return ...
 #    4| [CopyAssignmentOperator] Derived& Derived::operator=(Derived const&)
-#    4|   : 
+#    4|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Derived &
 #-----|   getEntryPoint(): [BlockStmt] { ... }
@@ -466,10 +466,6 @@ DynamicCast.cpp:
 #    4|         getQualifier(): [ThisExpr] this
 #    4|             Type = [PointerType] Derived *
 #    4|             ValueCategory = prvalue(load)
-#-----|         getArgument(0): [CStyleCast] (Base *)...
-#-----|             Conversion = [BaseClassConversion] base class conversion
-#-----|             Type = [PointerType] Base *
-#-----|             ValueCategory = prvalue
 #    4|         getArgument(0): [PointerDereferenceExpr] * ...
 #    4|             Type = [SpecifiedType] const Base
 #    4|             ValueCategory = lvalue
@@ -479,17 +475,21 @@ DynamicCast.cpp:
 #    4|             getOperand(): [VariableAccess] (unnamed parameter 0)
 #    4|                 Type = [LValueReferenceType] const Derived &
 #    4|                 ValueCategory = prvalue(load)
-#-----|             : [ReferenceDereferenceExpr] (reference dereference)
+#-----|             getOperand().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|                 Type = [SpecifiedType] const Derived
 #-----|                 ValueCategory = lvalue
-#-----|           : [CStyleCast] (const Base *)...
+#-----|           getOperand().getFullyConverted(): [CStyleCast] (const Base *)...
 #-----|               Conversion = [BaseClassConversion] base class conversion
 #-----|               Type = [PointerType] const Base *
 #-----|               ValueCategory = prvalue
-#-----|         : [ReferenceToExpr] (reference to)
+#-----|         getQualifier().getFullyConverted(): [CStyleCast] (Base *)...
+#-----|             Conversion = [BaseClassConversion] base class conversion
+#-----|             Type = [PointerType] Base *
+#-----|             ValueCategory = prvalue
+#-----|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|             Type = [LValueReferenceType] const Base &
 #-----|             ValueCategory = prvalue
-#-----|       : [ReferenceDereferenceExpr] (reference dereference)
+#-----|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|           Type = [Class] Base
 #-----|           ValueCategory = lvalue
 #-----|     getStmt(1): [ReturnStmt] return ...
@@ -499,29 +499,29 @@ DynamicCast.cpp:
 #-----|         getOperand(): [ThisExpr] this
 #-----|             Type = [PointerType] Derived *
 #-----|             ValueCategory = prvalue(load)
-#-----|       : [ReferenceToExpr] (reference to)
+#-----|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|           Type = [LValueReferenceType] Derived &
 #-----|           ValueCategory = prvalue
 #    4| [MoveAssignmentOperator] Derived& Derived::operator=(Derived&&)
-#    4|   : 
+#    4|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Derived &&
 #    4| [Constructor] void Derived::Derived()
-#    4|   : 
+#    4|   <params>: 
 #    4| [CopyConstructor] void Derived::Derived(Derived const&)
-#    4|   : 
+#    4|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Derived &
 #    4| [MoveConstructor] void Derived::Derived(Derived&&)
-#    4|   : 
+#    4|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] Derived &&
 #    5| [VirtualFunction] void Derived::f()
-#    5|   : 
+#    5|   <params>: 
 #    5|   getEntryPoint(): [BlockStmt] { ... }
 #    5|     getStmt(0): [ReturnStmt] return ...
 #    8| [TopLevelFunction] void DynamicCast(Base*, Derived*)
-#    8|   : 
+#    8|   <params>: 
 #    8|     getParameter(0): [Parameter] bp
 #    8|         Type = [PointerType] Base *
 #    8|     getParameter(1): [Parameter] d
@@ -537,13 +537,13 @@ DynamicCast.cpp:
 #    9|         getRValue(): [VariableAccess] bp
 #    9|             Type = [PointerType] Base *
 #    9|             ValueCategory = prvalue(load)
-#    9|         : [DynamicCast] dynamic_cast<Derived *>...
+#    9|         getRValue().getFullyConverted(): [DynamicCast] dynamic_cast<Derived *>...
 #    9|             Conversion = [DynamicCast] dynamic_cast
 #    9|             Type = [PointerType] Derived *
 #    9|             ValueCategory = prvalue
 #   10|     getStmt(1): [ReturnStmt] return ...
 #   12| [TopLevelFunction] void DynamicCastRef(Base&, Derived&)
-#   12|   : 
+#   12|   <params>: 
 #   12|     getParameter(0): [Parameter] bp
 #   12|         Type = [LValueReferenceType] Base &
 #   12|     getParameter(1): [Parameter] d
@@ -556,13 +556,13 @@ DynamicCast.cpp:
 #   13|         getQualifier(): [VariableAccess] d
 #   13|             Type = [LValueReferenceType] Derived &
 #   13|             ValueCategory = prvalue(load)
-#   13|         getArgument(0): [ReferenceDereferenceExpr] (reference dereference)
-#   13|             Type = [Class] Derived
-#   13|             ValueCategory = lvalue
 #   13|         getArgument(0): [VariableAccess] bp
 #   13|             Type = [LValueReferenceType] Base &
 #   13|             ValueCategory = prvalue(load)
-#   13|         : [ReferenceToExpr] (reference to)
+#   13|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#   13|             Type = [Class] Derived
+#   13|             ValueCategory = lvalue
+#   13|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #   13|             Type = [LValueReferenceType] const Derived &
 #   13|             ValueCategory = prvalue
 #   13|           getExpr(): [CStyleCast] (const Derived)...
@@ -576,13 +576,13 @@ DynamicCast.cpp:
 #   13|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
 #   13|                   Type = [Class] Base
 #   13|                   ValueCategory = lvalue
-#   13|       : [ReferenceDereferenceExpr] (reference dereference)
+#   13|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #   13|           Type = [Class] Derived
 #   13|           ValueCategory = lvalue
 #   14|     getStmt(1): [ReturnStmt] return ...
 Parenthesis.c:
 #    1| [TopLevelFunction] void Parenthesis(int)
-#    1|   : 
+#    1|   <params>: 
 #    1|     getParameter(0): [Parameter] i
 #    1|         Type = [IntType] int
 #    1|   getEntryPoint(): [BlockStmt] { ... }
@@ -610,13 +610,13 @@ Parenthesis.c:
 #    2|               Type = [IntType] int
 #    2|               Value = [Literal] 2
 #    2|               ValueCategory = prvalue
-#    2|           : [ParenthesisExpr] (...)
+#    2|           getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 #    2|               Type = [IntType] int
 #    2|               ValueCategory = prvalue
 #    3|     getStmt(1): [ReturnStmt] return ...
 PointerDereference.c:
 #    1| [TopLevelFunction] void PointerDereference(int*, int)
-#    1|   : 
+#    1|   <params>: 
 #    1|     getParameter(0): [Parameter] i
 #    1|         Type = [IntPointerType] int *
 #    1|     getParameter(1): [Parameter] j
@@ -638,7 +638,7 @@ PointerDereference.c:
 #    3|     getStmt(1): [ReturnStmt] return ...
 ReferenceDereference.cpp:
 #    4| [TopLevelFunction] void ReferenceDereference(int&, int)
-#    4|   : 
+#    4|   <params>: 
 #    4|     getParameter(0): [Parameter] i
 #    4|         Type = [LValueReferenceType] int &
 #    4|     getParameter(1): [Parameter] j
@@ -654,13 +654,13 @@ ReferenceDereference.cpp:
 #    5|         getRValue(): [VariableAccess] i
 #    5|             Type = [LValueReferenceType] int &
 #    5|             ValueCategory = prvalue(load)
-#    5|         : [ReferenceDereferenceExpr] (reference dereference)
+#    5|         getRValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #    5|             Type = [IntType] int
 #    5|             ValueCategory = prvalue(load)
 #    6|     getStmt(1): [ReturnStmt] return ...
 ReferenceTo.cpp:
 #    1| [TopLevelFunction] int& ReferenceTo(int*)
-#    1|   : 
+#    1|   <params>: 
 #    1|     getParameter(0): [Parameter] i
 #    1|         Type = [IntPointerType] int *
 #    1|   getEntryPoint(): [BlockStmt] { ... }
@@ -671,12 +671,12 @@ ReferenceTo.cpp:
 #    2|         getOperand(): [VariableAccess] i
 #    2|             Type = [IntPointerType] int *
 #    2|             ValueCategory = prvalue(load)
-#    2|       : [ReferenceToExpr] (reference to)
+#    2|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
 #    2|           Type = [LValueReferenceType] int &
 #    2|           ValueCategory = prvalue
 Sizeof.c:
 #    1| [TopLevelFunction] void Sizeof(int[])
-#    1|   : 
+#    1|   <params>: 
 #    1|     getParameter(0): [Parameter] array
 #    1|         Type = [ArrayType] int[]
 #    1|   getEntryPoint(): [BlockStmt] { ... }
@@ -688,7 +688,7 @@ Sizeof.c:
 #    2|               Type = [LongType] unsigned long
 #    2|               Value = [SizeofTypeOperator] 4
 #    2|               ValueCategory = prvalue
-#    2|           : [CStyleCast] (int)...
+#    2|           getExpr().getFullyConverted(): [CStyleCast] (int)...
 #    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
 #    2|               Value = [CStyleCast] 4
@@ -704,10 +704,10 @@ Sizeof.c:
 #    3|             getExprOperand(): [VariableAccess] array
 #    3|                 Type = [IntPointerType] int *
 #    3|                 ValueCategory = lvalue
-#    3|             : [ParenthesisExpr] (...)
+#    3|             getExprOperand().getFullyConverted(): [ParenthesisExpr] (...)
 #    3|                 Type = [IntPointerType] int *
 #    3|                 ValueCategory = lvalue
-#    3|           : [CStyleCast] (int)...
+#    3|           getExpr().getFullyConverted(): [CStyleCast] (int)...
 #    3|               Conversion = [IntegralConversion] integral conversion
 #    3|               Type = [IntType] int
 #    3|               Value = [CStyleCast] 8
@@ -715,7 +715,7 @@ Sizeof.c:
 #    4|     getStmt(2): [ReturnStmt] return ...
 StatementExpr.c:
 #    1| [TopLevelFunction] void StatementExpr()
-#    1|   : 
+#    1|   <params>: 
 #    1|   getEntryPoint(): [BlockStmt] { ... }
 #    2|     getStmt(0): [DeclStmt] declaration
 #    2|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of j
@@ -727,15 +727,15 @@ StatementExpr.c:
 #    3|     getStmt(1): [ReturnStmt] return ...
 StaticMemberAccess.cpp:
 #    1| [CopyAssignmentOperator] X& X::operator=(X const&)
-#    1|   : 
+#    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const X &
 #    1| [MoveAssignmentOperator] X& X::operator=(X&&)
-#    1|   : 
+#    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] X &&
 #    5| [TopLevelFunction] void StaticMemberAccess(int, X&)
-#    5|   : 
+#    5|   <params>: 
 #    5|     getParameter(0): [Parameter] i
 #    5|         Type = [IntType] int
 #    5|     getParameter(1): [Parameter] xref
@@ -754,13 +754,13 @@ StaticMemberAccess.cpp:
 #    7|           getQualifier(): [VariableAccess] xref
 #    7|               Type = [LValueReferenceType] X &
 #    7|               ValueCategory = prvalue(load)
-#    7|           getQualifier(): [ReferenceDereferenceExpr] (reference dereference)
+#    7|           getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #    7|               Type = [Struct] X
 #    7|               ValueCategory = lvalue
 #    9|     getStmt(1): [ReturnStmt] return ...
 Subscript.c:
 #    1| [TopLevelFunction] void Subscript(int[], int)
-#    1|   : 
+#    1|   <params>: 
 #    1|     getParameter(0): [Parameter] i
 #    1|         Type = [ArrayType] int[]
 #    1|     getParameter(1): [Parameter] j
@@ -786,31 +786,31 @@ Subscript.c:
 #    3|     getStmt(1): [ReturnStmt] return ...
 Throw.cpp:
 #    2| [CopyAssignmentOperator] F& F::operator=(F const&)
-#    2|   : 
+#    2|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const F &
 #    2| [MoveAssignmentOperator] F& F::operator=(F&&)
-#    2|   : 
+#    2|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] F &&
 #    2| [CopyConstructor] void F::F(F const&)
-#    2|   : 
+#    2|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const F &
 #    2| [MoveConstructor] void F::F(F&&)
-#    2|   : 
+#    2|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] F &&
-#    2|   : 
+#    2|   <initializations>: 
 #    2|   getEntryPoint(): [BlockStmt] { ... }
 #    2|     getStmt(0): [ReturnStmt] return ...
 #    4| [Constructor] void F::F()
-#    4|   : 
-#    4|   : 
+#    4|   <params>: 
+#    4|   <initializations>: 
 #    4|   getEntryPoint(): [BlockStmt] { ... }
 #    4|     getStmt(0): [ReturnStmt] return ...
 #    6| [TopLevelFunction] void Throw(int)
-#    6|   : 
+#    6|   <params>: 
 #    6|     getParameter(0): [Parameter] i
 #    6|         Type = [IntType] int
 #    6|   getEntryPoint(): [BlockStmt] { ... }
@@ -835,7 +835,7 @@ Throw.cpp:
 #   11|               getExpr(): [ConstructorCall] call to F
 #   11|                   Type = [VoidType] void
 #   11|                   ValueCategory = prvalue
-#    8|           : [CStyleCast] (bool)...
+#    8|           getCondition().getFullyConverted(): [CStyleCast] (bool)...
 #    8|               Conversion = [BoolConversion] conversion to bool
 #    8|               Type = [BoolType] bool
 #    8|               ValueCategory = prvalue
@@ -847,21 +847,21 @@ Throw.cpp:
 #   13|                 ValueCategory = prvalue
 Typeid.cpp:
 #    4| [CopyAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info const&)
-#    4|   : 
+#    4|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const type_info &
 #    4| [MoveAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info&&)
-#    4|   : 
+#    4|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] type_info &&
 #    7| [ConstMemberFunction] char const* std::type_info::name() const
-#    7|   : 
+#    7|   <params>: 
 #   13| [VirtualFunction] void Base::v()
-#   13|   : 
+#   13|   <params>: 
 #   13|   getEntryPoint(): [BlockStmt] { ... }
 #   13|     getStmt(0): [ReturnStmt] return ...
 #   18| [TopLevelFunction] void TypeId(Base*)
-#   18|   : 
+#   18|   <params>: 
 #   18|     getParameter(0): [Parameter] bp
 #   18|         Type = [PointerType] Base *
 #   18|   getEntryPoint(): [BlockStmt] { ... }
@@ -881,7 +881,7 @@ Typeid.cpp:
 #   20|     getStmt(1): [ReturnStmt] return ...
 VacuousDestructorCall.cpp:
 #    2| [TemplateFunction,TopLevelFunction] void CallDestructor<T>(T, T*)
-#    2|   : 
+#    2|   <params>: 
 #    2|     getParameter(0): [Parameter] x
 #    2|         Type = [TemplateParameter] T
 #    2|     getParameter(1): [Parameter] y
@@ -909,7 +909,7 @@ VacuousDestructorCall.cpp:
 #    4|               ValueCategory = prvalue(load)
 #    5|     getStmt(2): [ReturnStmt] return ...
 #    2| [FunctionTemplateInstantiation,TopLevelFunction] void CallDestructor<int>(int, int*)
-#    2|   : 
+#    2|   <params>: 
 #    2|     getParameter(0): [Parameter] x
 #    2|         Type = [IntType] int
 #    2|     getParameter(1): [Parameter] y
@@ -931,7 +931,7 @@ VacuousDestructorCall.cpp:
 #    4|             ValueCategory = prvalue(load)
 #    5|     getStmt(2): [ReturnStmt] return ...
 #    7| [TopLevelFunction] void Vacuous(int)
-#    7|   : 
+#    7|   <params>: 
 #    7|     getParameter(0): [Parameter] i
 #    7|         Type = [IntType] int
 #    7|   getEntryPoint(): [BlockStmt] { ... }
@@ -951,7 +951,7 @@ VacuousDestructorCall.cpp:
 #   11|     getStmt(1): [ReturnStmt] return ...
 Varargs.c:
 #    8| [TopLevelFunction] void VarArgs(char const*)
-#    8|   : 
+#    8|   <params>: 
 #    8|     getParameter(0): [Parameter] text
 #    8|         Type = [PointerType] const char *
 #    8|   getEntryPoint(): [BlockStmt] { ... }
@@ -968,7 +968,7 @@ Varargs.c:
 #   10|         getLastNamedParameter(): [VariableAccess] text
 #   10|             Type = [PointerType] const char *
 #   10|             ValueCategory = lvalue
-#   10|         : [ArrayToPointerConversion] array to pointer conversion
+#   10|         getVAList().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #   10|             Type = [PointerType] __va_list_tag *
 #   10|             ValueCategory = prvalue
 #   11|     getStmt(2): [ExprStmt] ExprStmt
@@ -978,13 +978,13 @@ Varargs.c:
 #   11|         getVAList(): [VariableAccess] args
 #   11|             Type = [CTypedefType] va_list
 #   11|             ValueCategory = lvalue
-#   11|         : [ArrayToPointerConversion] array to pointer conversion
+#   11|         getVAList().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #   11|             Type = [PointerType] __va_list_tag *
 #   11|             ValueCategory = prvalue
 #   12|     getStmt(3): [ReturnStmt] return ...
 macro_etc.c:
 #    3| [TopLevelFunction] int bar(int)
-#    3|   : 
+#    3|   <params>: 
 #    3|     getParameter(0): [Parameter] i
 #    3|         Type = [IntType] int
 #    3|   getEntryPoint(): [BlockStmt] { ... }
@@ -1036,7 +1036,7 @@ macro_etc.c:
 #   10|             Value = [Literal] 2
 #   10|             ValueCategory = prvalue
 #   22| [TopLevelFunction] int foo()
-#   22|   : 
+#   22|   <params>: 
 #   22|   getEntryPoint(): [BlockStmt] { ... }
 #   23|     getStmt(0): [DeclStmt] declaration
 #   23|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of t
@@ -1074,7 +1074,7 @@ macro_etc.c:
 #   27|               Type = [IntType] int
 #   27|               Value = [Literal] 0
 #   27|               ValueCategory = prvalue
-#   27|           : [CStyleCast] (char)...
+#   27|           getRValue().getFullyConverted(): [CStyleCast] (char)...
 #   27|               Conversion = [IntegralConversion] integral conversion
 #   27|               Type = [PlainCharType] char
 #   27|               Value = [CStyleCast] 0
@@ -1089,7 +1089,7 @@ macro_etc.c:
 #   27|             Type = [IntType] int
 #   27|             Value = [Literal] 6
 #   27|             ValueCategory = prvalue
-#   27|         : [CStyleCast] (int)...
+#   27|         getLesserOperand().getFullyConverted(): [CStyleCast] (int)...
 #   27|             Conversion = [IntegralConversion] integral conversion
 #   27|             Type = [IntType] int
 #   27|             ValueCategory = prvalue
@@ -1110,7 +1110,7 @@ macro_etc.c:
 #   27|             getRValue(): [VariableAccess] i
 #   27|                 Type = [PlainCharType] char
 #   27|                 ValueCategory = prvalue(load)
-#   27|             : [CStyleCast] (int)...
+#   27|             getRValue().getFullyConverted(): [CStyleCast] (int)...
 #   27|                 Conversion = [IntegralConversion] integral conversion
 #   27|                 Type = [IntType] int
 #   27|                 ValueCategory = prvalue
@@ -1126,7 +1126,7 @@ macro_etc.c:
 #   28|               Type = [IntType] int
 #   28|               Value = [Literal] 0
 #   28|               ValueCategory = prvalue
-#   28|           : [CStyleCast] (char)...
+#   28|           getRValue().getFullyConverted(): [CStyleCast] (char)...
 #   28|               Conversion = [IntegralConversion] integral conversion
 #   28|               Type = [PlainCharType] char
 #   28|               Value = [CStyleCast] 0
@@ -1141,7 +1141,7 @@ macro_etc.c:
 #   28|             Type = [IntType] int
 #   28|             Value = [Literal] 6
 #   28|             ValueCategory = prvalue
-#   28|         : [CStyleCast] (int)...
+#   28|         getLesserOperand().getFullyConverted(): [CStyleCast] (int)...
 #   28|             Conversion = [IntegralConversion] integral conversion
 #   28|             Type = [IntType] int
 #   28|             ValueCategory = prvalue
@@ -1162,7 +1162,7 @@ macro_etc.c:
 #   28|             getRValue(): [VariableAccess] i
 #   28|                 Type = [PlainCharType] char
 #   28|                 ValueCategory = prvalue(load)
-#   28|             : [CStyleCast] (int)...
+#   28|             getRValue().getFullyConverted(): [CStyleCast] (int)...
 #   28|                 Conversion = [IntegralConversion] integral conversion
 #   28|                 Type = [IntType] int
 #   28|                 ValueCategory = prvalue
@@ -1177,7 +1177,7 @@ macro_etc.c:
 #   29|             Type = [ArrayType] char[2]
 #   29|             Value = [StringLiteral] "b"
 #   29|             ValueCategory = lvalue
-#   29|         : [ArrayToPointerConversion] array to pointer conversion
+#   29|         getRValue().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #   29|             Type = [CharPointerType] char *
 #   29|             ValueCategory = prvalue
 #   30|     getStmt(9): [ExprStmt] ExprStmt
@@ -1194,13 +1194,13 @@ macro_etc.c:
 #   30|               Type = [IntType] int
 #   30|               Value = [Literal] 0
 #   30|               ValueCategory = prvalue
-#   30|           : [ArrayToPointerConversion] array to pointer conversion
+#   30|           getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #   30|               Type = [CharPointerType] char *
 #   30|               ValueCategory = prvalue
 #   30|         getRValue(): [VariableAccess] t
 #   30|             Type = [IntType] int
 #   30|             ValueCategory = prvalue(load)
-#   30|         : [CStyleCast] (char)...
+#   30|         getRValue().getFullyConverted(): [CStyleCast] (char)...
 #   30|             Conversion = [IntegralConversion] integral conversion
 #   30|             Type = [PlainCharType] char
 #   30|             ValueCategory = prvalue
@@ -1231,53 +1231,53 @@ macro_etc.c:
 #   32|               Type = [IntType] int
 #   32|               Value = [Literal] 1
 #   32|               ValueCategory = prvalue
-#   32|           : [ArrayToPointerConversion] array to pointer conversion
+#   32|           getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #   32|               Type = [CharPointerType] char *
 #   32|               ValueCategory = prvalue
-#   32|         : [CStyleCast] (int)...
+#   32|         getRightOperand().getFullyConverted(): [CStyleCast] (int)...
 #   32|             Conversion = [IntegralConversion] integral conversion
 #   32|             Type = [IntType] int
 #   32|             ValueCategory = prvalue
 union_etc.cpp:
 #    2| [CopyAssignmentOperator] S& S::operator=(S const&)
-#    2|   : 
+#    2|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const S &
 #    2| [MoveAssignmentOperator] S& S::operator=(S&&)
-#    2|   : 
+#    2|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] S &&
 #    2| [Constructor] void S::S()
-#    2|   : 
-#    2|   : 
+#    2|   <params>: 
+#    2|   <initializations>: 
 #    2|   getEntryPoint(): [BlockStmt] { ... }
 #    2|     getStmt(0): [ReturnStmt] return ...
 #    2| [CopyConstructor] void S::S(S const&)
-#    2|   : 
+#    2|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const S &
 #    2| [MoveConstructor] void S::S(S&&)
-#    2|   : 
+#    2|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] S &&
 #    3| [CopyAssignmentOperator] S::U& S::U::operator=(S::U const public&)
-#    3|   : 
+#    3|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const U &
 #    3| [MoveAssignmentOperator] S::U& S::U::operator=(S::U&&)
-#    3|   : 
+#    3|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] U &&
 #    4| [CopyAssignmentOperator] S::C& S::C::operator=(S::C const public&)
-#    4|   : 
+#    4|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #    4| [MoveAssignmentOperator] S::C& S::C::operator=(S::C&&)
-#    4|   : 
+#    4|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #    6| [VirtualFunction] void S::set_q(int)
-#    6|   : 
+#    6|   <params>: 
 #    6|     getParameter(0): [Parameter] val
 #    6|         Type = [IntType] int
 #    6|   getEntryPoint(): [BlockStmt] { ... }
@@ -1296,55 +1296,55 @@ union_etc.cpp:
 #    6|             ValueCategory = prvalue(load)
 #    6|     getStmt(1): [ReturnStmt] return ...
 #    9| [CopyAssignmentOperator] C& C::operator=(C const&)
-#    9|   : 
+#    9|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #    9| [MoveAssignmentOperator] C& C::operator=(C&&)
-#    9|   : 
+#    9|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #   11| [CopyAssignmentOperator] C::S& C::S::operator=(C::S const public&)
-#   11|   : 
+#   11|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const S &
 #   11| [MoveAssignmentOperator] C::S& C::S::operator=(C::S&&)
-#   11|   : 
+#   11|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] S &&
 #   12| [CopyAssignmentOperator] C::U& C::U::operator=(C::U const public&)
-#   12|   : 
+#   12|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const U &
 #   12| [MoveAssignmentOperator] C::U& C::U::operator=(C::U&&)
-#   12|   : 
+#   12|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] U &&
 #   16| [CopyAssignmentOperator] U& U::operator=(U const&)
-#   16|   : 
+#   16|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const U &
 #   16| [MoveAssignmentOperator] U& U::operator=(U&&)
-#   16|   : 
+#   16|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] U &&
 #   17| [CopyAssignmentOperator] U::S& U::S::operator=(U::S const public&)
-#   17|   : 
+#   17|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const S &
 #   17| [MoveAssignmentOperator] U::S& U::S::operator=(U::S&&)
-#   17|   : 
+#   17|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] S &&
 #   18| [CopyAssignmentOperator] U::C& U::C::operator=(U::C const public&)
-#   18|   : 
+#   18|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const C &
 #   18| [MoveAssignmentOperator] U::C& U::C::operator=(U::C&&)
-#   18|   : 
+#   18|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
 #   22| [TopLevelFunction] int foo()
-#   22|   : 
+#   22|   <params>: 
 #   22|   getEntryPoint(): [BlockStmt] { ... }
 #   23|     getStmt(0): [DeclStmt] declaration
 #   23|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
@@ -1431,7 +1431,7 @@ union_etc.cpp:
 #   27|             getQualifier(): [VariableAccess] u
 #   27|                 Type = [Union] U
 #   27|                 ValueCategory = lvalue
-#   27|         : [ParenthesisExpr] (...)
+#   27|         getRValue().getFullyConverted(): [ParenthesisExpr] (...)
 #   27|             Type = [IntType] int
 #   27|             ValueCategory = prvalue
 #   28|     getStmt(5): [ReturnStmt] return ...
@@ -1442,25 +1442,25 @@ union_etc.cpp:
 #   28|             Type = [Class] C
 #   28|             ValueCategory = lvalue
 #   31| [CopyAssignmentOperator] T& T::operator=(T const&)
-#   31|   : 
+#   31|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const T &
 #   31| [MoveAssignmentOperator] T& T::operator=(T&&)
-#   31|   : 
+#   31|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] T &&
 #   31| [Constructor] void T::T()
-#   31|   : 
+#   31|   <params>: 
 #   31| [CopyConstructor] void T::T(T const&)
-#   31|   : 
+#   31|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const T &
 #   31| [MoveConstructor] void T::T(T&&)
-#   31|   : 
+#   31|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] T &&
 #   33| [VirtualFunction] void T::set_q(int)
-#   33|   : 
+#   33|   <params>: 
 #   33|     getParameter(0): [Parameter] val
 #   33|         Type = [IntType] int
 #   33|   getEntryPoint(): [BlockStmt] { ... }
@@ -1479,7 +1479,7 @@ union_etc.cpp:
 #   33|             ValueCategory = prvalue(load)
 #   33|     getStmt(1): [ReturnStmt] return ...
 #   36| [TopLevelFunction] int bar()
-#   36|   : 
+#   36|   <params>: 
 #   36|   getEntryPoint(): [BlockStmt] { ... }
 #   37|     getStmt(0): [DeclStmt] declaration
 #   37|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
@@ -1491,7 +1491,7 @@ union_etc.cpp:
 #   37|             getOperand(): [VariableAccess] c
 #   37|                 Type = [Class] C
 #   37|                 ValueCategory = lvalue
-#   37|           : [CStyleCast] (const T *)...
+#   37|           getExpr().getFullyConverted(): [CStyleCast] (const T *)...
 #   37|               Conversion = [PointerConversion] pointer conversion
 #   37|               Type = [PointerType] const T *
 #   37|               ValueCategory = prvalue
@@ -1502,7 +1502,7 @@ union_etc.cpp:
 #   38|           getExpr(): [VariableAccess] s
 #   38|               Type = [PointerType] const T *
 #   38|               ValueCategory = prvalue(load)
-#   38|           : [StaticCast] static_cast<const S *>...
+#   38|           getExpr().getFullyConverted(): [StaticCast] static_cast<const S *>...
 #   38|               Conversion = [BaseClassConversion] base class conversion
 #   38|               Type = [PointerType] const S *
 #   38|               ValueCategory = prvalue
@@ -1513,7 +1513,7 @@ union_etc.cpp:
 #   39|           getExpr(): [VariableAccess] s
 #   39|               Type = [PointerType] const T *
 #   39|               ValueCategory = prvalue(load)
-#   39|           : [ConstCast] const_cast<T *>...
+#   39|           getExpr().getFullyConverted(): [ConstCast] const_cast<T *>...
 #   39|               Conversion = [PointerConversion] pointer conversion
 #   39|               Type = [PointerType] T *
 #   39|               ValueCategory = prvalue
@@ -1524,7 +1524,7 @@ union_etc.cpp:
 #   40|           getExpr(): [VariableAccess] t
 #   40|               Type = [PointerType] const S *
 #   40|               ValueCategory = prvalue(load)
-#   40|           : [DynamicCast] dynamic_cast<const T *>...
+#   40|           getExpr().getFullyConverted(): [DynamicCast] dynamic_cast<const T *>...
 #   40|               Conversion = [DynamicCast] dynamic_cast
 #   40|               Type = [PointerType] const T *
 #   40|               ValueCategory = prvalue
@@ -1538,7 +1538,7 @@ union_etc.cpp:
 #   41|             getOperand(): [VariableAccess] c
 #   41|                 Type = [Class] C
 #   41|                 ValueCategory = lvalue
-#   41|           : [ReinterpretCast] reinterpret_cast<S *>...
+#   41|           getExpr().getFullyConverted(): [ReinterpretCast] reinterpret_cast<S *>...
 #   41|               Conversion = [PointerConversion] pointer conversion
 #   41|               Type = [PointerType] S *
 #   41|               ValueCategory = prvalue
@@ -1552,7 +1552,7 @@ union_etc.cpp:
 #   42|           getQualifier(): [VariableAccess] x
 #   42|               Type = [PointerType] T *
 #   42|               ValueCategory = prvalue(load)
-#   42|           getQualifier(): [CStyleCast] (S *)...
+#   42|           getQualifier().getFullyConverted(): [CStyleCast] (S *)...
 #   42|               Conversion = [BaseClassConversion] base class conversion
 #   42|               Type = [PointerType] S *
 #   42|               ValueCategory = prvalue
