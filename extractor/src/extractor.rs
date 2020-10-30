@@ -46,7 +46,7 @@ impl Extractor {
             source: &source,
             trap_output: vec![
                 TrapEntry::Comment(format!("Auto-generated TRAP file for {}", path.display())),
-                TrapEntry::MapLabelToKey(file_label, path_string.clone()),
+                TrapEntry::MapLabelToKey(file_label, full_id_for_file(path)),
                 TrapEntry::GenericTuple(
                     "files".to_owned(),
                     vec![
@@ -70,6 +70,25 @@ impl Extractor {
 
         &self.parser.reset();
         Ok(Program(visitor.trap_output))
+    }
+}
+
+fn full_id_for_file(path: &Path) -> String {
+    let full_id = format!("{};sourcefile", path.display());
+
+    if cfg!(windows) {
+        // Strip the Windows long path prefix, since std::fs::canonicalize adds it,
+        // but it's not part of the common CodeQL spec for file ids.
+        let win_long_path_prefix = r"\\?\";
+        let full_id = match full_id.strip_prefix(win_long_path_prefix) {
+            Some(s) => s.to_owned(),
+            None => full_id,
+        };
+
+        // And replace backslashes with forward slashes.
+        full_id.replace(r"\", "/")
+    } else {
+        full_id
     }
 }
 
