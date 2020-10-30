@@ -499,7 +499,13 @@ private module Django {
        * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node http_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["request", "HttpRequest", "response", "HttpResponse", "JsonResponse"] and
+        attr_name in ["request",
+              // request
+              "HttpRequest",
+              // response
+              "response", "HttpResponse",
+              // HttpResponse subclasses
+              "HttpResponseRedirect", "JsonResponse"] and
         (
           t.start() and
           result = DataFlow::importNode("django.http" + "." + attr_name)
@@ -641,7 +647,7 @@ private module Django {
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node response_attr(DataFlow::TypeTracker t, string attr_name) {
-          attr_name in ["HttpResponse", "JsonResponse"] and
+          attr_name in ["HttpResponse", "HttpResponseRedirect", "JsonResponse"] and
           (
             t.start() and
             result = DataFlow::importNode("django.http.response" + "." + attr_name)
@@ -742,7 +748,70 @@ private module Django {
 
         // ---------------------------------------------------------------------------
         // HttpResponse subclasses
+        // see https://docs.djangoproject.com/en/3.1/ref/request-response/#httpresponse-subclasses
         // ---------------------------------------------------------------------------
+        /**
+         * Provides models for the `django.http.response.HttpResponseRedirect` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponseRedirect.
+         */
+        module HttpResponseRedirect {
+          /** Gets a reference to the `django.http.response.HttpResponseRedirect` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("HttpResponseRedirect")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.HttpResponseRedirect` alias
+            t.start() and
+            result = http_attr("HttpResponseRedirect")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.HttpResponseRedirect` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.HttpResponseRedirect`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `HttpResponseRedirect::instance()` predicate to get references to instances of `django.http.response.HttpResponseRedirect`.
+           */
+          abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
+          }
+
+          /** A direct instantiation of `django.http.response.HttpResponseRedirect`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseRedirect`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseRedirect`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
         /**
          * Provides models for the `django.http.response.JsonResponse` class
          *
