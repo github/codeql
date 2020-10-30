@@ -163,49 +163,20 @@ private module Django {
             t.startInAttr("Model") and
             result = models()
             or
+            // subclass
+            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
+            or
             exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
           }
 
           /** Gets a reference to the `django.db.models.Model` class. */
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
-
-          /** Gets a definition of a subclass the `django.db.models.Model` class. */
-          class SubclassDef extends ControlFlowNode {
-            string name;
-
-            SubclassDef() {
-              exists(ClassExpr ce |
-                this.getNode() = ce and
-                ce.getABase() = classRef().asExpr() and
-                ce.getName() = name
-              )
-            }
-
-            string getName() { result = name }
-          }
-
-          /**
-           * A reference to a class that is a subclass of the `django.db.models.Model` class.
-           * This is an approximation, since it simply matches identifiers.
-           */
-          private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result.asCfgNode().(NameNode).getId() = any(SubclassDef cd).getName()
-            or
-            exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
-          }
-
-          /**
-           * A reference to a class that is a subclass of the `django.db.models.Model` class.
-           * This is an approximation, since it simply matches identifiers.
-           */
-          DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
         }
 
         /** Gets a reference to the `objects` object of a django model. */
         private DataFlow::Node objects(DataFlow::TypeTracker t) {
           t.startInAttr("objects") and
-          result = Model::subclassRef()
+          result = Model::classRef()
           or
           exists(DataFlow::TypeTracker t2 | result = objects(t2).track(t2, t))
         }
