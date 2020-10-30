@@ -41,6 +41,74 @@ module SystemCommandExecution {
 }
 
 /**
+ * A data flow node that performs a file system access, including reading and writing data,
+ * creating and deleting files and folders, checking and updating permissions, and so on.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemAccess::Range` instead.
+ */
+class FileSystemAccess extends DataFlow::Node {
+  FileSystemAccess::Range range;
+
+  FileSystemAccess() { this = range }
+
+  /** Gets an argument to this file system access that is interpreted as a path. */
+  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
+}
+
+/** Provides a class for modeling new file system access APIs. */
+module FileSystemAccess {
+  /**
+   * A data-flow node that performs a file system access, including reading and writing data,
+   * creating and deleting files and folders, checking and updating permissions, and so on.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemAccess` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an argument to this file system access that is interpreted as a path. */
+    abstract DataFlow::Node getAPathArgument();
+  }
+}
+
+/** Provides classes for modeling path-related APIs. */
+module Path {
+  /**
+   * A data-flow node that performs path normalization. This is often needed in order
+   * to safely access paths.
+   */
+  class PathNormalization extends DataFlow::Node {
+    PathNormalization::Range range;
+
+    PathNormalization() { this = range }
+  }
+
+  /** Provides a class for modeling new path normalization APIs. */
+  module PathNormalization {
+    /**
+     * A data-flow node that performs path normalization. This is often needed in order
+     * to safely access paths.
+     */
+    abstract class Range extends DataFlow::Node { }
+  }
+
+  /** A data-flow node that checks that a path is safe to access. */
+  class SafeAccessCheck extends DataFlow::BarrierGuard {
+    SafeAccessCheck::Range range;
+
+    SafeAccessCheck() { this = range }
+
+    override predicate checks(ControlFlowNode node, boolean branch) { range.checks(node, branch) }
+  }
+
+  /** Provides a class for modeling new path safety checks. */
+  module SafeAccessCheck {
+    /** A data-flow node that checks that a path is safe to access. */
+    abstract class Range extends DataFlow::BarrierGuard { }
+  }
+}
+
+/**
  * A data-flow node that decodes data from a binary or textual format. This
  * is intended to include deserialization, unmarshalling, decoding, unpickling,
  * decompressing, decrypting, parsing etc.
