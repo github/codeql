@@ -26,6 +26,8 @@
 | Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:20:79:20 | access to parameter b | null |
 | Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:80:24:80:24 | access to local variable s | Assert.cs:80:24:80:24 | access to local variable s | null |
 | Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:80:24:80:32 | ... != ... | Assert.cs:80:24:80:24 | access to local variable s | false |
+| Assert.cs:94:16:94:17 | access to parameter b1 | Assert.cs:93:25:93:26 | access to parameter b1 | Assert.cs:93:25:93:26 | access to parameter b1 | true |
+| Assert.cs:94:23:94:24 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | false |
 | Collections.cs:52:17:52:20 | access to parameter args | Collections.cs:50:13:50:16 | access to parameter args | Collections.cs:50:13:50:16 | access to parameter args | non-empty |
 | Collections.cs:52:17:52:20 | access to parameter args | Collections.cs:50:13:50:27 | ... == ... | Collections.cs:50:13:50:16 | access to parameter args | false |
 | Collections.cs:53:9:53:12 | access to parameter args | Collections.cs:50:13:50:27 | ... == ... | Collections.cs:50:13:50:16 | access to parameter args | false |

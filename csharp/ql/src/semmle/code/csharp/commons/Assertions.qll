@@ -9,43 +9,114 @@ private import ControlFlow::BasicBlocks
 
 /** An assertion method. */
 abstract class AssertMethod extends Method {
-  /**
-   * DEPRECATED: renamed to `getAnAssertionIndex`.
-   *
-   * Gets the index of a parameter being asserted.
-   */
-  deprecated int getAssertionIndex() { result = getAnAssertionIndex() }
-
   /** Gets the index of a parameter being asserted. */
   abstract int getAnAssertionIndex();
 
   /**
-   * DEPRECATED: renamed to `getAnAssertedParameter`.
+   * DEPRECATED: Use `getAnAssertionIndex()` instead.
+   *
+   * Gets the index of a parameter being asserted.
+   */
+  deprecated final int getAssertionIndex() { result = getAnAssertionIndex() }
+
+  /** Gets the parameter at position `i` being asserted. */
+  final Parameter getAssertedParameter(int i) {
+    result = this.getParameter(i) and
+    i = this.getAnAssertionIndex()
+  }
+
+  /**
+   * DEPRECATED: Use `getAssertedParameter(_)` instead.
    *
    * Gets a parameter being asserted.
    */
-  deprecated Parameter getAssertedParameter() { result = getAnAssertedParameter() }
+  deprecated final Parameter getAssertedParameter() { result = getAssertedParameter(_) }
 
-  /** Gets a parameter being asserted. */
-  final Parameter getAnAssertedParameter() {
-    result = this.getParameter(this.getAnAssertionIndex())
-  }
+  /** Gets the exception being thrown if the assertion fails for argument `i`, if any. */
+  abstract Class getExceptionClass(int i);
 
-  /** Gets the exception being thrown if the assertion fails, if any. */
-  abstract Class getExceptionClass();
+  /**
+   * DEPRECATED: Use `getExceptionClass(_)` instead.
+   *
+   * Gets the exception being thrown if the assertion fails, if any.
+   */
+  deprecated final Class getExceptionClass() { result = this.getExceptionClass(_) }
+}
+
+/** A Boolean assertion method. */
+abstract class BooleanAssertMethod extends AssertMethod {
+  /** Gets the index of a parameter asserted to have value `b`. */
+  abstract int getAnAssertionIndex(boolean b);
+
+  override int getAnAssertionIndex() { result = this.getAnAssertionIndex(_) }
 }
 
 /** A positive assertion method. */
-abstract class AssertTrueMethod extends AssertMethod { }
+deprecated class AssertTrueMethod extends AssertMethod {
+  private BooleanAssertMethod m;
+
+  AssertTrueMethod() {
+    this = m and
+    exists(m.getAnAssertionIndex(true))
+  }
+
+  final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
+
+  final override Class getExceptionClass(int i) { result = m.getExceptionClass(i) }
+}
 
 /** A negated assertion method. */
-abstract class AssertFalseMethod extends AssertMethod { }
+deprecated class AssertFalseMethod extends AssertMethod {
+  private BooleanAssertMethod m;
+
+  AssertFalseMethod() {
+    this = m and
+    exists(m.getAnAssertionIndex(false))
+  }
+
+  final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
+
+  final override Class getExceptionClass(int i) { result = m.getExceptionClass(i) }
+}
+
+/** A nullness assertion method. */
+abstract class NullnessAssertMethod extends AssertMethod {
+  /**
+   * Gets the index of a parameter asserted to be `null` (`b = true`)
+   * or non-`null` (`b = false`).
+   */
+  abstract int getAnAssertionIndex(boolean b);
+
+  override int getAnAssertionIndex() { result = this.getAnAssertionIndex(_) }
+}
 
 /** A `null` assertion method. */
-abstract class AssertNullMethod extends AssertMethod { }
+deprecated class AssertNullMethod extends AssertMethod {
+  private NullnessAssertMethod m;
+
+  AssertNullMethod() {
+    this = m and
+    exists(m.getAnAssertionIndex(true))
+  }
+
+  final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
+
+  final override Class getExceptionClass(int i) { result = m.getExceptionClass(i) }
+}
 
 /** A non-`null` assertion method. */
-abstract class AssertNonNullMethod extends AssertMethod { }
+deprecated class AssertNonNullMethod extends AssertMethod {
+  private NullnessAssertMethod m;
+
+  AssertNonNullMethod() {
+    this = m and
+    exists(m.getAnAssertionIndex(false))
+  }
+
+  final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
+
+  final override Class getExceptionClass(int i) { result = m.getExceptionClass(i) }
+}
 
 /** An assertion, that is, a call to an assertion method. */
 class Assertion extends MethodCall {
@@ -56,15 +127,21 @@ class Assertion extends MethodCall {
   /** Gets the assertion method targeted by this assertion. */
   AssertMethod getAssertMethod() { result = target }
 
+  /** Gets an expression at argument position `i` that this assertion pertains to. */
+  Expr getExpr(int i) {
+    i = target.getAnAssertionIndex() and
+    exists(Parameter p |
+      p = target.getParameter(i) and
+      result = this.getArgumentForParameter(p)
+    )
+  }
+
   /**
-   * DEPRECATED: renamed to `getAnExpr`.
+   * DEPRECATED: Use `getExpr(_)` instead.
    *
    * Gets an expression that this assertion pertains to.
    */
-  deprecated Expr getExpr() { result = this.getAnExpr() }
-
-  /** Gets an expression that this assertion pertains to. */
-  Expr getAnExpr() { result = this.getArgumentForParameter(target.getAnAssertedParameter()) }
+  deprecated Expr getExpr() { result = this.getExpr(_) }
 
   /**
    * Holds if basic block `succ` is immediately dominated by this assertion.
@@ -164,31 +241,37 @@ class Assertion extends MethodCall {
 
 /** A trivially failing assertion, for example `Debug.Assert(false)`. */
 class FailingAssertion extends Assertion {
+  private int i;
+
   FailingAssertion() {
-    exists(AssertMethod am, Expr e |
+    exists(BooleanAssertMethod am, Expr e, boolean b |
       am = this.getAssertMethod() and
-      e = this.getAnExpr()
+      e = this.getExpr(i) and
+      i = am.getAnAssertionIndex(b)
     |
-      am instanceof AssertTrueMethod and
+      b = true and
       e.getValue() = "false"
       or
-      am instanceof AssertFalseMethod and
+      b = false and
       e.getValue() = "true"
     )
   }
+
+  /** Gets the exception being thrown by this failing assertion, if any. */
+  Class getExceptionClass() { result = this.getAssertMethod().getExceptionClass(i) }
 }
 
 /**
  * A `System.Diagnostics.Debug` assertion method.
  */
-class SystemDiagnosticsDebugAssertTrueMethod extends AssertTrueMethod {
+class SystemDiagnosticsDebugAssertTrueMethod extends BooleanAssertMethod {
   SystemDiagnosticsDebugAssertTrueMethod() {
     this = any(SystemDiagnosticsDebugClass c).getAssertMethod()
   }
 
-  override int getAnAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex(boolean b) { result = 0 and b = true }
 
-  override Class getExceptionClass() {
+  override Class getExceptionClass(int i) {
     // A failing assertion generates a message box, see
     // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debug.assert
     none()
@@ -198,7 +281,7 @@ class SystemDiagnosticsDebugAssertTrueMethod extends AssertTrueMethod {
 /**
  * A `System.Diagnostics.Contracts.Contract` assertion method.
  */
-class SystemDiagnosticsContractAssertTrueMethod extends AssertTrueMethod {
+class SystemDiagnosticsContractAssertTrueMethod extends BooleanAssertMethod {
   SystemDiagnosticsContractAssertTrueMethod() {
     exists(SystemDiagnosticsContractsContractClass c |
       this = c.getAnAssertMethod()
@@ -209,9 +292,9 @@ class SystemDiagnosticsContractAssertTrueMethod extends AssertTrueMethod {
     )
   }
 
-  override int getAnAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex(boolean b) { result = 0 and b = true }
 
-  override Class getExceptionClass() {
+  override Class getExceptionClass(int i) {
     // A failing assertion generates a message box, see
     // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.contracts.contract.assert
     none()
@@ -229,79 +312,82 @@ private predicate isDoesNotReturnIfAttributeParameter(Parameter p, boolean value
  * A method with a parameter that is annotated with
  * `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute(false)`.
  */
-class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod extends AssertTrueMethod {
-  private int i;
+class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod extends BooleanAssertMethod {
+  private int i_;
 
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod() {
-    isDoesNotReturnIfAttributeParameter(this.getParameter(i), false)
+    isDoesNotReturnIfAttributeParameter(this.getParameter(i_), false)
   }
 
-  override int getAnAssertionIndex() { result = i }
+  override int getAnAssertionIndex(boolean b) { result = i_ and b = true }
 
-  override SystemExceptionClass getExceptionClass() { any() }
+  override Class getExceptionClass(int i) { i = i_ and result instanceof SystemExceptionClass }
 }
 
 /**
  * A method with a parameter that is annotated with
  * `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute(true)`.
  */
-class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod extends AssertFalseMethod {
-  private int i;
+class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod extends BooleanAssertMethod {
+  private int i_;
 
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod() {
-    isDoesNotReturnIfAttributeParameter(this.getParameter(i), true)
+    isDoesNotReturnIfAttributeParameter(this.getParameter(i_), true)
   }
 
-  override int getAnAssertionIndex() { result = i }
+  override int getAnAssertionIndex(boolean b) {
+    result = i_ and
+    b = false
+  }
 
-  override SystemExceptionClass getExceptionClass() { any() }
+  override Class getExceptionClass(int i) { i = i_ and result instanceof SystemExceptionClass }
 }
 
 /** A Visual Studio assertion method. */
-class VSTestAssertTrueMethod extends AssertTrueMethod {
+class VSTestAssertTrueMethod extends BooleanAssertMethod {
   VSTestAssertTrueMethod() { this = any(VSTestAssertClass c).getIsTrueMethod() }
 
-  override int getAnAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex(boolean b) { result = 0 and b = true }
 
-  override AssertFailedExceptionClass getExceptionClass() { any() }
+  override Class getExceptionClass(int i) { i = 0 and result instanceof AssertFailedExceptionClass }
 }
 
 /** A Visual Studio negated assertion method. */
-class VSTestAssertFalseMethod extends AssertFalseMethod {
+class VSTestAssertFalseMethod extends BooleanAssertMethod {
   VSTestAssertFalseMethod() { this = any(VSTestAssertClass c).getIsFalseMethod() }
 
-  override int getAnAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex(boolean b) { result = 0 and b = false }
 
-  override AssertFailedExceptionClass getExceptionClass() { any() }
+  override Class getExceptionClass(int i) { i = 0 and result instanceof AssertFailedExceptionClass }
 }
 
 /** A Visual Studio `null` assertion method. */
-class VSTestAssertNullMethod extends AssertNullMethod {
+class VSTestAssertNullMethod extends NullnessAssertMethod {
   VSTestAssertNullMethod() { this = any(VSTestAssertClass c).getIsNullMethod() }
 
-  override int getAnAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex(boolean b) { result = 0 and b = true }
 
-  override AssertFailedExceptionClass getExceptionClass() { any() }
+  override Class getExceptionClass(int i) { i = 0 and result instanceof AssertFailedExceptionClass }
 }
 
 /** A Visual Studio non-`null` assertion method. */
-class VSTestAssertNonNullMethod extends AssertNonNullMethod {
+class VSTestAssertNonNullMethod extends NullnessAssertMethod {
   VSTestAssertNonNullMethod() { this = any(VSTestAssertClass c).getIsNotNullMethod() }
 
-  override int getAnAssertionIndex() { result = 0 }
+  override int getAnAssertionIndex(boolean b) { result = 0 and b = false }
 
-  override AssertFailedExceptionClass getExceptionClass() { any() }
+  override Class getExceptionClass(int i) { i = 0 and result instanceof AssertFailedExceptionClass }
 }
 
 /** An NUnit assertion method. */
 abstract class NUnitAssertMethod extends AssertMethod {
   override int getAnAssertionIndex() { result = 0 }
 
-  override AssertionExceptionClass getExceptionClass() { any() }
+  override Class getExceptionClass(int i) { i = 0 and result instanceof AssertionExceptionClass }
 }
 
 /** An NUnit assertion method. */
-class NUnitAssertTrueMethod extends AssertTrueMethod, NUnitAssertMethod {
+class NUnitAssertTrueMethod extends BooleanAssertMethod, NUnitAssertMethod {
   NUnitAssertTrueMethod() {
     exists(NUnitAssertClass c |
       this = c.getATrueMethod()
@@ -312,56 +398,77 @@ class NUnitAssertTrueMethod extends AssertTrueMethod, NUnitAssertMethod {
       this.getParameter(0).getType() instanceof BoolType
     )
   }
+
+  override int getAnAssertionIndex() { result = NUnitAssertMethod.super.getAnAssertionIndex() }
+
+  override int getAnAssertionIndex(boolean b) { result = this.getAnAssertionIndex() and b = true }
 }
 
 /** An NUnit negated assertion method. */
-class NUnitAssertFalseMethod extends AssertFalseMethod, NUnitAssertMethod {
+class NUnitAssertFalseMethod extends BooleanAssertMethod, NUnitAssertMethod {
   NUnitAssertFalseMethod() {
     exists(NUnitAssertClass c |
       this = c.getAFalseMethod() or
       this = c.getAnIsFalseMethod()
     )
   }
+
+  override int getAnAssertionIndex() { result = NUnitAssertMethod.super.getAnAssertionIndex() }
+
+  override int getAnAssertionIndex(boolean b) { result = this.getAnAssertionIndex() and b = false }
 }
 
 /** An NUnit `null` assertion method. */
-class NUnitAssertNullMethod extends AssertNullMethod, NUnitAssertMethod {
+class NUnitAssertNullMethod extends NullnessAssertMethod, NUnitAssertMethod {
   NUnitAssertNullMethod() {
     exists(NUnitAssertClass c |
       this = c.getANullMethod() or
       this = c.getAnIsNullMethod()
     )
   }
+
+  override int getAnAssertionIndex() { result = NUnitAssertMethod.super.getAnAssertionIndex() }
+
+  override int getAnAssertionIndex(boolean b) { result = this.getAnAssertionIndex() and b = true }
 }
 
 /** An NUnit non-`null` assertion method. */
-class NUnitAssertNonNullMethod extends AssertNonNullMethod, NUnitAssertMethod {
+class NUnitAssertNonNullMethod extends NullnessAssertMethod, NUnitAssertMethod {
   NUnitAssertNonNullMethod() {
     exists(NUnitAssertClass c |
       this = c.getANotNullMethod() or
       this = c.getAnIsNotNullMethod()
     )
   }
+
+  override int getAnAssertionIndex() { result = NUnitAssertMethod.super.getAnAssertionIndex() }
+
+  override int getAnAssertionIndex(boolean b) { result = this.getAnAssertionIndex() and b = false }
 }
 
 /** A method that forwards to another assertion method. */
 class ForwarderAssertMethod extends AssertMethod {
-  Assertion a;
-  Parameter p;
+  private Assertion a;
+  private Parameter p;
+  private int forwarderIndex;
 
   ForwarderAssertMethod() {
     p = this.getAParameter() and
     strictcount(AssignableDefinition def | def.getTarget() = p) = 1 and
     forex(ControlFlowElement body | body = this.getBody() |
       bodyAsserts(this, body, a) and
-      a.getAnExpr() = p.getAnAccess()
+      a.getExpr(forwarderIndex) = p.getAnAccess()
     )
   }
 
   override int getAnAssertionIndex() { result = p.getPosition() }
 
-  override Class getExceptionClass() {
-    result = this.getUnderlyingAssertMethod().getExceptionClass()
+  /** Gets the assertion index of the forwarded assertion, for assertion index `i`. */
+  int getAForwarderAssertionIndex(int i) { i = p.getPosition() and result = forwarderIndex }
+
+  override Class getExceptionClass(int i) {
+    i = p.getPosition() and
+    result = this.getUnderlyingAssertMethod().getExceptionClass(forwarderIndex)
   }
 
   /** Gets the underlying assertion method that is being forwarded to. */
@@ -386,25 +493,63 @@ private Stmt getAnAssertingStmt(Assertion a) {
   result.(BlockStmt).getFirstStmt() = getAnAssertingElement(a)
 }
 
+/** A method that forwards to a Boolean assertion method. */
+class ForwarderBooleanAssertMethod extends BooleanAssertMethod {
+  private ForwarderAssertMethod forwarder;
+  private BooleanAssertMethod underlying;
+
+  ForwarderBooleanAssertMethod() {
+    forwarder = this and
+    underlying = forwarder.getUnderlyingAssertMethod()
+  }
+
+  override int getAnAssertionIndex(boolean b) {
+    forwarder.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
+  }
+
+  override Class getExceptionClass(int i) {
+    result = underlying.getExceptionClass(forwarder.getAForwarderAssertionIndex(i))
+  }
+}
+
 /** A method that forwards to a positive assertion method. */
-class ForwarderAssertTrueMethod extends ForwarderAssertMethod, AssertTrueMethod {
-  ForwarderAssertTrueMethod() { this.getUnderlyingAssertMethod() instanceof AssertTrueMethod }
+deprecated class ForwarderAssertTrueMethod extends ForwarderBooleanAssertMethod {
+  ForwarderAssertTrueMethod() { exists(this.getAnAssertionIndex(true)) }
 }
 
 /** A method that forwards to a negated assertion method. */
-class ForwarderAssertFalseMethod extends ForwarderAssertMethod, AssertFalseMethod {
-  ForwarderAssertFalseMethod() { this.getUnderlyingAssertMethod() instanceof AssertFalseMethod }
+deprecated class ForwarderAssertFalseMethod extends ForwarderBooleanAssertMethod {
+  ForwarderAssertFalseMethod() { exists(this.getAnAssertionIndex(false)) }
+}
+
+/** A method that forwards to a nullness assertion method. */
+class ForwarderNullnessAssertMethod extends NullnessAssertMethod {
+  private ForwarderAssertMethod forwarder;
+  private NullnessAssertMethod underlying;
+
+  ForwarderNullnessAssertMethod() {
+    forwarder = this and
+    underlying = forwarder.getUnderlyingAssertMethod()
+  }
+
+  override int getAnAssertionIndex(boolean b) {
+    forwarder.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
+  }
+
+  override Class getExceptionClass(int i) {
+    result = underlying.getExceptionClass(forwarder.getAForwarderAssertionIndex(i))
+  }
 }
 
 /** A method that forwards to a `null` assertion method. */
-class ForwarderAssertNullMethod extends ForwarderAssertMethod, AssertNullMethod {
-  ForwarderAssertNullMethod() { this.getUnderlyingAssertMethod() instanceof AssertNullMethod }
+deprecated class ForwarderAssertNullMethod extends ForwarderNullnessAssertMethod {
+  ForwarderAssertNullMethod() { exists(this.getAnAssertionIndex(true)) }
 }
 
 /** A method that forwards to a non-`null` assertion method. */
-class ForwarderAssertNonNullMethod extends ForwarderAssertMethod, AssertNonNullMethod {
-  ForwarderAssertNonNullMethod() { this.getUnderlyingAssertMethod() instanceof AssertNonNullMethod }
+deprecated class ForwarderAssertNonNullMethod extends ForwarderNullnessAssertMethod {
+  ForwarderAssertNonNullMethod() { exists(this.getAnAssertionIndex(false)) }
 }
 
 /** Holds if expression `e` appears in an assertion. */
-predicate isExprInAssertion(Expr e) { e = any(Assertion a).getAnExpr().getAChildExpr*() }
+predicate isExprInAssertion(Expr e) { e = any(Assertion a).getExpr(_).getAChildExpr*() }

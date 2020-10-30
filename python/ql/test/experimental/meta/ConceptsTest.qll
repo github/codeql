@@ -184,3 +184,59 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
     )
   }
 }
+
+class FileSystemAccessTest extends InlineExpectationsTest {
+  FileSystemAccessTest() { this = "FileSystemAccessTest" }
+
+  override string getARelevantTag() { result = "getAPathArgument" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(FileSystemAccess a, DataFlow::Node path |
+      exists(location.getFile().getRelativePath()) and
+      path = a.getAPathArgument() and
+      location = a.getLocation() and
+      element = path.toString() and
+      value = value_from_expr(path.asExpr()) and
+      tag = "getAPathArgument"
+    )
+  }
+}
+
+class PathNormalizationTest extends InlineExpectationsTest {
+  PathNormalizationTest() { this = "PathNormalizationTest" }
+
+  override string getARelevantTag() { result = "pathNormalization" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(Path::PathNormalization n |
+      exists(location.getFile().getRelativePath()) and
+      location = n.getLocation() and
+      element = n.toString() and
+      value = "" and
+      tag = "pathNormalization"
+    )
+  }
+}
+
+class SafeAccessCheckTest extends InlineExpectationsTest {
+  SafeAccessCheckTest() { this = "SafeAccessCheckTest" }
+
+  override string getARelevantTag() { result in ["checks", "branch"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(Path::SafeAccessCheck c, DataFlow::Node checks, boolean branch |
+      exists(location.getFile().getRelativePath()) and
+      c.checks(checks.asCfgNode(), branch) and
+      location = c.getLocation() and
+      (
+        element = checks.toString() and
+        value = value_from_expr(checks.asExpr()) and
+        tag = "checks"
+        or
+        element = branch.toString() and
+        value = branch.toString() and
+        tag = "branch"
+      )
+    )
+  }
+}
