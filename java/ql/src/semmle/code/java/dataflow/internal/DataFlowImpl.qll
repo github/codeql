@@ -766,6 +766,10 @@ private module Stage2 {
 
   Cc ccAny() { result = false }
 
+  predicate flowCand(Node node, ApApprox apa, Configuration config) {
+    Stage1::revFlow(node, config) and exists(apa)
+  }
+
   /* Begin: Stage 2 logic. */
   /**
    * Holds if `node` is reachable from a source in the configuration `config`.
@@ -777,13 +781,13 @@ private module Stage2 {
    * value was stored into a field of the argument.
    */
   private predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
-    Stage1::revFlow(node, config) and
+    flowCand(node, _, config) and
     config.isSource(node) and
     cc = ccAny() and
     argAp = apNone() and
     ap = getApNil(node)
     or
-    Stage1::revFlow(node, unbind(config)) and
+    flowCand(node, _, unbind(config)) and
     (
       exists(Node mid |
         fwdFlow(mid, cc, argAp, ap, config) and
@@ -1265,6 +1269,9 @@ private module Stage3 {
 
   class ApNil = AccessPathFrontNil;
 
+  bindingset[result, ap]
+  ApApprox getApprox(Ap ap) { result = unbindBool(ap.toBoolNonEmpty()) }
+
   ApNil getApNil(Node node) { result = TFrontNil(getNodeType(node)) }
 
   bindingset[tc, tail]
@@ -1283,6 +1290,10 @@ private module Stage3 {
 
   Cc ccAny() { result = false }
 
+  predicate flowCand(Node node, ApApprox apa, Configuration config) {
+    Stage2::revFlow(node, _, _, apa, config)
+  }
+
   /* Begin: Stage 3 logic. */
   /**
    * Holds if `node` is reachable with access path front `ap` from a
@@ -1295,13 +1306,14 @@ private module Stage3 {
   pragma[nomagic]
   predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     fwdFlow0(node, cc, argAp, ap, config) and
+    flowCand(node, getApprox(ap), config) and
     not ap.isClearedAt(node) and
     if node instanceof CastingNode then compatibleTypes(getNodeType(node), ap.getType()) else any()
   }
 
   pragma[nomagic]
   private predicate fwdFlow0(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
-    Stage2::revFlow(node, _, _, false, config) and
+    flowCand(node, false, config) and
     config.isSource(node) and
     cc = ccAny() and
     argAp = apNone() and
@@ -1319,7 +1331,7 @@ private module Stage3 {
     or
     exists(Node mid |
       fwdFlow(mid, _, _, ap, config) and
-      Stage2::revFlow(node, unbind(config)) and
+      flowCand(node, _, unbind(config)) and
       jumpStep(mid, node, config) and
       cc = ccAny() and
       argAp = apNone()
@@ -1327,7 +1339,7 @@ private module Stage3 {
     or
     exists(Node mid, ApNil nil |
       fwdFlow(mid, _, _, nil, config) and
-      Stage2::revFlow(node, unbind(config)) and
+      flowCand(node, _, unbind(config)) and
       additionalJumpStep(mid, node, config) and
       cc = ccAny() and
       argAp = apNone() and
@@ -1344,7 +1356,7 @@ private module Stage3 {
     exists(Ap ap0, Content c |
       fwdFlowRead(ap0, c, _, node, cc, argAp, config) and
       fwdFlowConsCand(ap0, c, ap, config) and
-      Stage2::revFlow(node, _, _, unbindBool(ap.toBoolNonEmpty()), unbind(config))
+      flowCand(node, unbindBool(ap.toBoolNonEmpty()), unbind(config))
     )
     or
     // flow into a callable
@@ -1827,6 +1839,8 @@ private module Stage4 {
 
   class ApNil = AccessPathApproxNil;
 
+  ApApprox getApprox(Ap ap) { result = ap.getFront() }
+
   ApNil getApNil(Node node) { result = TNil(getNodeType(node)) }
 
   bindingset[tc, tail]
@@ -1845,6 +1859,10 @@ private module Stage4 {
 
   Cc ccAny() { result instanceof CallContextAny }
 
+  predicate flowCand(Node node, ApApprox apa, Configuration config) {
+    Stage3::revFlow(node, _, _, apa, config)
+  }
+
   /* Begin: Stage 4 logic. */
   /**
    * Holds if `node` is reachable with approximate access path `ap` from a source
@@ -1856,17 +1874,17 @@ private module Stage4 {
    */
   predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     fwdFlow0(node, cc, argAp, ap, config) and
-    Stage3::revFlow(node, _, _, ap.getFront(), config)
+    flowCand(node, getApprox(ap), config)
   }
 
   private predicate fwdFlow0(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
-    Stage3::revFlow(node, _, _, _, config) and
+    flowCand(node, _, config) and
     config.isSource(node) and
     cc = ccAny() and
     argAp = apNone() and
     ap = getApNil(node)
     or
-    Stage3::revFlow(node, _, _, _, unbind(config)) and
+    flowCand(node, _, unbind(config)) and
     (
       exists(Node mid, LocalCallContext localCC |
         fwdFlowLocalEntry(mid, cc, argAp, ap, localCC, config) and
@@ -1962,7 +1980,7 @@ private module Stage4 {
     Configuration config
   ) {
     storeCand2(mid, tc, node, _, config) and
-    Stage3::revFlow(mid, _, _, apf0, config) and
+    flowCand(mid, apf0, config) and
     apf.headUsesContent(tc)
   }
 
@@ -1973,7 +1991,7 @@ private module Stage4 {
     exists(AccessPathFront apf |
       storeCand(mid, tc, node, apf0, apf, config) and
       stage3consCand(tc, apf0, config) and
-      Stage3::revFlow(node, _, _, apf, unbind(config))
+      flowCand(node, apf, unbind(config))
     )
   }
 
@@ -1996,7 +2014,7 @@ private module Stage4 {
       flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
       c = p.getEnclosingCallable() and
       c = resolveCall(call, outercc) and
-      Stage3::revFlow(p, _, _, _, unbind(config)) and
+      flowCand(p, _, unbind(config)) and
       if recordDataFlowCallSite(call, c)
       then innercc = TSpecificCall(call)
       else innercc = TSomeCall()
@@ -2014,7 +2032,7 @@ private module Stage4 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
       innerc = ret.getEnclosingCallable() and
-      Stage3::revFlow(node, _, _, _, unbind(config)) and
+      flowCand(node, _, unbind(config)) and
       (
         resolveReturn(innercc, innerc, call)
         or
