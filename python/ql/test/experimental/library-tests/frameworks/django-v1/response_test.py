@@ -28,6 +28,15 @@ def xss__not_found(request):
 def xss__manual_response_type(request):
     return HttpResponse(request.GET.get("name"), content_type="text/html; charset=utf-8")  # $HttpResponse $mimetype=text/html $responseBody=Attribute()
 
+def xss__write(request):
+    response = HttpResponse()  # $HttpResponse $mimetype=text/html; charset=utf-8
+    response.write(request.GET.get("name"))  # $f-:HttpResponse $f-:mimetype=text/html; charset=utf-8 $f-:responseBody=Attribute()
+
+# This is safe but probably a bug if the argument to `write` is not a result of `json.dumps` or similar.
+def safe__write_json(request):
+    response = JsonResponse()  # $HttpResponse $mimetype=application/json
+    response.write(request.GET.get("name"))  # $f-:HttpResponse $f-:mimetype=application/json $f-:responseBody=Attribute()
+
 # Ensure manual subclasses are vulnerable
 class CustomResponse(HttpResponse):
     def __init__(self, banner, content, *args, **kwargs):
