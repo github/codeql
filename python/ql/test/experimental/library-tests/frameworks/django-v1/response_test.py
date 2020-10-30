@@ -22,7 +22,7 @@ def or__redirect(request):
 
 # Ensure that simple subclasses are still vuln to XSS
 def xss__not_found(request):
-    return HttpResponseNotFound(request.GET.get("name"))  # $f-:HttpResponse $f-:mimetype=text/html; charset=utf-8 $f-:responseBody=Attribute()
+    return HttpResponseNotFound(request.GET.get("name"))  # $HttpResponse $mimetype=text/html; charset=utf-8 $responseBody=Attribute()
 
 # Ensure we still have an XSS sink when manually setting the content_type to HTML
 def xss__manual_response_type(request):

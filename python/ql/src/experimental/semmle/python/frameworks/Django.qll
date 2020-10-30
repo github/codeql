@@ -505,7 +505,12 @@ private module Django {
               // response
               "response", "HttpResponse",
               // HttpResponse subclasses
-              "HttpResponseRedirect", "JsonResponse"] and
+              "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
+              "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
+              "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError",
+              "JsonResponse",
+              // HttpResponse-like classes
+              "StreamingHttpResponse", "FileResponse"] and
         (
           t.start() and
           result = DataFlow::importNode("django.http" + "." + attr_name)
@@ -647,7 +652,14 @@ private module Django {
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node response_attr(DataFlow::TypeTracker t, string attr_name) {
-          attr_name in ["HttpResponse", "HttpResponseRedirect", "JsonResponse"] and
+          attr_name in ["HttpResponse",
+                // HttpResponse subclasses
+                "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
+                "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
+                "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError",
+                "JsonResponse",
+                // HttpResponse-like classes
+                "StreamingHttpResponse", "FileResponse"] and
           (
             t.start() and
             result = DataFlow::importNode("django.http.response" + "." + attr_name)
@@ -781,8 +793,7 @@ private module Django {
            *
            * Use `HttpResponseRedirect::instance()` predicate to get references to instances of `django.http.response.HttpResponseRedirect`.
            */
-          abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
-          }
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseRedirect`. */
           private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
@@ -791,7 +802,7 @@ private module Django {
             ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
             }
 
             // How to support the `headers` argument here?
@@ -809,6 +820,493 @@ private module Django {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseRedirect`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        /**
+         * Provides models for the `django.http.response.HttpResponsePermanentRedirect` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponsePermanentRedirect.
+         */
+        module HttpResponsePermanentRedirect {
+          /** Gets a reference to the `django.http.response.HttpResponsePermanentRedirect` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("HttpResponsePermanentRedirect")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.HttpResponsePermanentRedirect` alias
+            t.start() and
+            result = http_attr("HttpResponsePermanentRedirect")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.HttpResponsePermanentRedirect` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.HttpResponsePermanentRedirect`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `HttpResponsePermanentRedirect::instance()` predicate to get references to instances of `django.http.response.HttpResponsePermanentRedirect`.
+           */
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+
+          /** A direct instantiation of `django.http.response.HttpResponsePermanentRedirect`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponsePermanentRedirect`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponsePermanentRedirect`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        /**
+         * Provides models for the `django.http.response.HttpResponseNotModified` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponseNotModified.
+         */
+        module HttpResponseNotModified {
+          /** Gets a reference to the `django.http.response.HttpResponseNotModified` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("HttpResponseNotModified")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.HttpResponseNotModified` alias
+            t.start() and
+            result = http_attr("HttpResponseNotModified")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.HttpResponseNotModified` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.HttpResponseNotModified`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `HttpResponseNotModified::instance()` predicate to get references to instances of `django.http.response.HttpResponseNotModified`.
+           */
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+
+          /** A direct instantiation of `django.http.response.HttpResponseNotModified`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() { none() }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { none() }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseNotModified`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseNotModified`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        /**
+         * Provides models for the `django.http.response.HttpResponseBadRequest` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponseBadRequest.
+         */
+        module HttpResponseBadRequest {
+          /** Gets a reference to the `django.http.response.HttpResponseBadRequest` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("HttpResponseBadRequest")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.HttpResponseBadRequest` alias
+            t.start() and
+            result = http_attr("HttpResponseBadRequest")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.HttpResponseBadRequest` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.HttpResponseBadRequest`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `HttpResponseBadRequest::instance()` predicate to get references to instances of `django.http.response.HttpResponseBadRequest`.
+           */
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+
+          /** A direct instantiation of `django.http.response.HttpResponseBadRequest`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseBadRequest`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseBadRequest`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        /**
+         * Provides models for the `django.http.response.HttpResponseNotFound` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponseNotFound.
+         */
+        module HttpResponseNotFound {
+          /** Gets a reference to the `django.http.response.HttpResponseNotFound` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("HttpResponseNotFound")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.HttpResponseNotFound` alias
+            t.start() and
+            result = http_attr("HttpResponseNotFound")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.HttpResponseNotFound` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.HttpResponseNotFound`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `HttpResponseNotFound::instance()` predicate to get references to instances of `django.http.response.HttpResponseNotFound`.
+           */
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+
+          /** A direct instantiation of `django.http.response.HttpResponseNotFound`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseNotFound`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseNotFound`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        /**
+         * Provides models for the `django.http.response.HttpResponseForbidden` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponseForbidden.
+         */
+        module HttpResponseForbidden {
+          /** Gets a reference to the `django.http.response.HttpResponseForbidden` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("HttpResponseForbidden")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.HttpResponseForbidden` alias
+            t.start() and
+            result = http_attr("HttpResponseForbidden")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.HttpResponseForbidden` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.HttpResponseForbidden`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `HttpResponseForbidden::instance()` predicate to get references to instances of `django.http.response.HttpResponseForbidden`.
+           */
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+
+          /** A direct instantiation of `django.http.response.HttpResponseForbidden`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseForbidden`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseForbidden`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        /**
+         * Provides models for the `django.http.response.HttpResponseNotAllowed` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponseNotAllowed.
+         */
+        module HttpResponseNotAllowed {
+          /** Gets a reference to the `django.http.response.HttpResponseNotAllowed` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("HttpResponseNotAllowed")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.HttpResponseNotAllowed` alias
+            t.start() and
+            result = http_attr("HttpResponseNotAllowed")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.HttpResponseNotAllowed` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.HttpResponseNotAllowed`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `HttpResponseNotAllowed::instance()` predicate to get references to instances of `django.http.response.HttpResponseNotAllowed`.
+           */
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+
+          /** A direct instantiation of `django.http.response.HttpResponseNotAllowed`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              // First argument is permitted methods
+              result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseNotAllowed`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseNotAllowed`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        /**
+         * Provides models for the `django.http.response.HttpResponseGone` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponseGone.
+         */
+        module HttpResponseGone {
+          /** Gets a reference to the `django.http.response.HttpResponseGone` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("HttpResponseGone")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.HttpResponseGone` alias
+            t.start() and
+            result = http_attr("HttpResponseGone")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.HttpResponseGone` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.HttpResponseGone`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `HttpResponseGone::instance()` predicate to get references to instances of `django.http.response.HttpResponseGone`.
+           */
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+
+          /** A direct instantiation of `django.http.response.HttpResponseGone`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseGone`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseGone`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        /**
+         * Provides models for the `django.http.response.HttpResponseServerError` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponseServerError.
+         */
+        module HttpResponseServerError {
+          /** Gets a reference to the `django.http.response.HttpResponseServerError` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("HttpResponseServerError")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.HttpResponseServerError` alias
+            t.start() and
+            result = http_attr("HttpResponseServerError")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.HttpResponseServerError` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.HttpResponseServerError`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `HttpResponseServerError::instance()` predicate to get references to instances of `django.http.response.HttpResponseServerError`.
+           */
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+
+          /** A direct instantiation of `django.http.response.HttpResponseServerError`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseServerError`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.HttpResponseServerError`. */
           DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
         }
 
@@ -843,8 +1341,7 @@ private module Django {
            *
            * Use `JsonResponse::instance()` predicate to get references to instances of `django.http.response.JsonResponse`.
            */
-          abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
-          }
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.JsonResponse`. */
           private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
@@ -853,7 +1350,7 @@ private module Django {
             ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("data")]
             }
 
             // How to support the `headers` argument here?
@@ -871,6 +1368,131 @@ private module Django {
           }
 
           /** Gets a reference to an instance of `django.http.response.JsonResponse`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        // ---------------------------------------------------------------------------
+        // HttpResponse-like classes
+        // ---------------------------------------------------------------------------
+        /**
+         * Provides models for the `django.http.response.StreamingHttpResponse` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#streaminghttpresponse-objects.
+         */
+        module StreamingHttpResponse {
+          /** Gets a reference to the `django.http.response.StreamingHttpResponse` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("StreamingHttpResponse")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.StreamingHttpResponse` alias
+            t.start() and
+            result = http_attr("StreamingHttpResponse")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.StreamingHttpResponse` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.StreamingHttpResponse`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `StreamingHttpResponse::instance()` predicate to get references to instances of `django.http.response.StreamingHttpResponse`.
+           */
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+
+          /** A direct instantiation of `django.http.response.StreamingHttpResponse`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("streaming_content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.StreamingHttpResponse`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.StreamingHttpResponse`. */
+          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        }
+
+        /**
+         * Provides models for the `django.http.response.FileResponse` class
+         *
+         * See https://docs.djangoproject.com/en/3.1/ref/request-response/#fileresponse-objects.
+         */
+        module FileResponse {
+          /** Gets a reference to the `django.http.response.FileResponse` class. */
+          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result = response_attr("FileResponse")
+            or
+            // TODO: remove/expand this part of the template as needed
+            // Handle `http.FileResponse` alias
+            t.start() and
+            result = http_attr("FileResponse")
+            or
+            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.http.response.FileResponse` class. */
+          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+          /**
+           * A source of an instance of `django.http.response.FileResponse`.
+           *
+           * This can include instantiation of the class, return value from function
+           * calls, or a special parameter that will be set when functions are call by external
+           * library.
+           *
+           * Use `FileResponse::instance()` predicate to get references to instances of `django.http.response.FileResponse`.
+           */
+          abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
+
+          /** A direct instantiation of `django.http.response.FileResponse`. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
+            override CallNode node;
+
+            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+            override DataFlow::Node getBody() {
+              result.asCfgNode() in [node.getArg(0), node.getArgByName("streaming_content")]
+            }
+
+            // How to support the `headers` argument here?
+            override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+          }
+
+          /** Gets a reference to an instance of `django.http.response.FileResponse`. */
+          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+            t.start() and
+            result instanceof InstanceSource
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+          }
+
+          /** Gets a reference to an instance of `django.http.response.FileResponse`. */
           DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
         }
       }
