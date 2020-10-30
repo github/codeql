@@ -41,7 +41,6 @@ impl Extractor {
         // label doesn't get redefined.
         counter += 1;
         let file_label = Label::Normal(counter);
-        let path_string = format!("{}", path.display());
         let mut visitor = Visitor {
             source: &source,
             trap_output: vec![
@@ -51,7 +50,7 @@ impl Extractor {
                     "files".to_owned(),
                     vec![
                         Arg::Label(file_label),
-                        Arg::String(path_string.clone()),
+                        Arg::String(normalize_path(path)),
                         Arg::String(format!("{}", path.file_name().unwrap().to_string_lossy())),
                         Arg::String(format!("{}", path.extension().unwrap().to_string_lossy())),
                         Arg::Int(1), // 1 = from source
@@ -60,7 +59,7 @@ impl Extractor {
             ],
             counter,
             // TODO: should we handle path strings that are not valid UTF8 better?
-            path: path_string,
+            path: format!("{}", path.display()),
             file_label,
             stack: Vec::new(),
             tables: build_schema_lookup(&self.schema),
@@ -73,23 +72,28 @@ impl Extractor {
     }
 }
 
-fn full_id_for_file(path: &Path) -> String {
-    let full_id = format!("{};sourcefile", path.display());
-
+/// Normalizes the path according the common CodeQL specification. Assumes that
+/// `path` has already been canonicalized using `std::fs::canonicalize`.
+fn normalize_path(path: &Path) -> String {
+    let result = format!("{}", path.display());
     if cfg!(windows) {
         // Strip the Windows long path prefix, since std::fs::canonicalize adds it,
         // but it's not part of the common CodeQL spec for file ids.
         let win_long_path_prefix = r"\\?\";
-        let full_id = match full_id.strip_prefix(win_long_path_prefix) {
+        let result = match result.strip_prefix(win_long_path_prefix) {
             Some(s) => s.to_owned(),
-            None => full_id,
+            None => result,
         };
 
         // And replace backslashes with forward slashes.
-        full_id.replace(r"\", "/")
+        result.replace(r"\", "/")
     } else {
-        full_id
+        result
     }
+}
+
+fn full_id_for_file(path: &Path) -> String {
+    format!("{};sourcefile", normalize_path(path))
 }
 
 fn build_schema_lookup<'a>(schema: &'a Vec<Entry>) -> Map<&'a TypeName, &'a Entry> {
