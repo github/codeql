@@ -168,7 +168,7 @@ private module FlaskModel {
 
       /** Gets a reference to the `make_response` method on an instance of `flask.Flask`. */
       // HACK: We can't call this predicate `make_response` since shadowing is
-      // completely disallowed in QL. I added an underscore to move thing forwards for
+      // completely disallowed in QL. I added an underscore to move things forward for
       // now :(
       DataFlow::Node make_response_() { result = instance_attr("make_response") }
 
