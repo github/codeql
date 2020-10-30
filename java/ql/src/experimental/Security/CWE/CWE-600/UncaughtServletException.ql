@@ -11,6 +11,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Servlets
+import semmle.code.xml.WebXML
 import DataFlow::PathGraph
 
 /** The type `java.io.IOException`. */
@@ -44,6 +45,11 @@ private predicate isServletMethod(Callable c) {
   )
 }
 
+/** Holds if `web.xml` has an error page configured. */
+private predicate hasErrorPage() {
+  exists(WebErrorPage wep | wep.getPageLocation().getValue() != "")
+}
+
 /** Sink of uncaught IO exceptions or runtime exceptions since other exception types must be explicitly caught. */
 class UncaughtServletExceptionSink extends DataFlow::ExprNode {
   UncaughtServletExceptionSink() {
@@ -74,6 +80,6 @@ class UncaughtServletExceptionConfiguration extends TaintTracking::Configuration
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UncaughtServletExceptionConfiguration c
-where c.hasFlowPath(source, sink)
+where c.hasFlowPath(source, sink) and not hasErrorPage()
 select sink.getNode(), source, sink, "$@ flows to here and can throw uncaught exception.",
   source.getNode(), "User-provided value"

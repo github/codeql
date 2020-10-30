@@ -10,7 +10,7 @@ Even though the signatures for methods in a servlet include <code>throws IOExcep
 
 <recommendation>
 <p>
-Handle method calls that throw IOExceptions and/or RuntimeExceptions and display custom error messages without stack traces and sensitive information.
+Handle method calls that throw IOExceptions and/or RuntimeExceptions and display custom error messages without stack traces and sensitive information, or configure an <code>error-page</code> in web.xml to display a generic user-friendly message for any uncaught exception.
 </p>
 </recommendation>
 
