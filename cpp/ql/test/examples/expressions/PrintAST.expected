@@ -724,6 +724,19 @@ StatementExpr.c:
 #    2|           getExpr(): [StmtExpr] (statement expression)
 #    2|               Type = [IntType] int
 #    2|               ValueCategory = prvalue
+#    2|             getStmt(): [BlockStmt] { ... }
+#    2|               getStmt(0): [DeclStmt] declaration
+#    2|                 getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#    2|                     Type = [IntType] int
+#    2|                   getVariable().getInitializer(): [Initializer] initializer for i
+#    2|                     getExpr(): [Literal] 5
+#    2|                         Type = [IntType] int
+#    2|                         Value = [Literal] 5
+#    2|                         ValueCategory = prvalue
+#    2|               getStmt(1): [ExprStmt] ExprStmt
+#    2|                 getExpr(): [VariableAccess] i
+#    2|                     Type = [IntType] int
+#    2|                     ValueCategory = prvalue(load)
 #    3|     getStmt(1): [ReturnStmt] return ...
 StaticMemberAccess.cpp:
 #    1| [CopyAssignmentOperator] X& X::operator=(X const&)
