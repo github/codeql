@@ -135,7 +135,6 @@ private newtype TPrintAstNode =
   } or
   TAttributesNode(Attributable attributable) {
     shouldPrint(attributable, _) and
-    exists(attributable.getAnAttribute()) and
     exists(Attribute a | a = attributable.getAnAttribute() | shouldPrint(a, _)) and
     not isNotNeeded(attributable)
   } or
