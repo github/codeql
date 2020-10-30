@@ -11,12 +11,15 @@ struct TrapWriter {
     trap_output: Vec<TrapEntry>,
     /// A counter for generating fresh labels
     counter: i32,
+    /// cache of global keys
+    global_keys: std::collections::HashMap<String, Label>,
 }
 
 fn new_trap_writer() -> TrapWriter {
     TrapWriter {
         counter: -1,
         trap_output: Vec::new(),
+        global_keys: std::collections::HashMap::new(),
     }
 }
 
@@ -37,12 +40,16 @@ impl TrapWriter {
         label
     }
 
-    fn global_id(&mut self, key: &str) -> Label {
+    fn global_id(&mut self, key: &str) -> (Label, bool) {
+        if let Some(label) = self.global_keys.get(key) {
+            return (*label, false);
+        }
         self.counter += 1;
         let label = Label(self.counter);
+        self.global_keys.insert(key.to_owned(), label);
         self.trap_output
             .push(TrapEntry::MapLabelToKey(label, key.to_owned()));
-        label
+        (label, true)
     }
 
     fn add_tuple(&mut self, table_name: &str, args: Vec<Arg>) {
@@ -51,32 +58,62 @@ impl TrapWriter {
     }
 
     fn populate_file(&mut self, absolute_path: &Path) -> Label {
-        let file_label = self.global_id(&full_id_for_file(absolute_path));
-        self.trap_output.push(TrapEntry::GenericTuple(
-            "files".to_owned(),
-            vec![
-                Arg::Label(file_label),
-                Arg::String(normalize_path(absolute_path)),
-                Arg::String(match absolute_path.file_name() {
-                    None => "".to_owned(),
-                    Some(file_name) => format!("{}", file_name.to_string_lossy()),
-                }),
-                Arg::String(match absolute_path.extension() {
-                    None => "".to_owned(),
-                    Some(ext) => format!("{}", ext.to_string_lossy()),
-                }),
-                Arg::Int(1), // 1 = from source
-            ],
-        ));
+        let (file_label, fresh) = self.global_id(&full_id_for_file(absolute_path));
+        if fresh {
+            self.add_tuple(
+                "files",
+                vec![
+                    Arg::Label(file_label),
+                    Arg::String(normalize_path(absolute_path)),
+                    Arg::String(match absolute_path.file_name() {
+                        None => "".to_owned(),
+                        Some(file_name) => format!("{}", file_name.to_string_lossy()),
+                    }),
+                    Arg::String(match absolute_path.extension() {
+                        None => "".to_owned(),
+                        Some(ext) => format!("{}", ext.to_string_lossy()),
+                    }),
+                    Arg::Int(1), // 1 = from source
+                ],
+            );
+            self.populate_parent_folders(file_label, absolute_path.parent());
+        }
         file_label
     }
 
-    // fn populate_unknown_file(&mut self) -> Label {
-    //     self.global_id("unknown;sourcefile")
-    // }
-    // fn populate_folder(&mut self, absolute_path: &str) -> Label {
-    //     self.global_id(&format!("{};folder", absolute_path))
-    // }
+    fn populate_parent_folders(&mut self, child_label: Label, path: Option<&Path>) {
+        let mut path = path;
+        let mut child_label = child_label;
+        loop {
+            match path {
+                None => break,
+                Some(folder) => {
+                    let (folder_label, fresh) = self.global_id(&full_id_for_folder(folder));
+                    self.add_tuple(
+                        "containerparent",
+                        vec![Arg::Label(folder_label), Arg::Label(child_label)],
+                    );
+                    if fresh {
+                        self.add_tuple(
+                            "folders",
+                            vec![
+                                Arg::Label(folder_label),
+                                Arg::String(normalize_path(folder)),
+                                Arg::String(match folder.file_name() {
+                                    None => "".to_owned(),
+                                    Some(file_name) => format!("{}", file_name.to_string_lossy()),
+                                }),
+                            ],
+                        );
+                        path = folder.parent();
+                        child_label = folder_label;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
     fn location(
         &mut self,
@@ -86,22 +123,23 @@ impl TrapWriter {
         end_line: usize,
         end_column: usize,
     ) -> Label {
-        let key = format!(
+        let (loc_label, fresh) = self.global_id(&format!(
             "loc,{{{}}},{},{},{},{}",
             file_label, start_line, start_column, end_line, end_column
-        );
-        let loc_label = self.global_id(&key);
-        self.add_tuple(
-            "locations_default",
-            vec![
-                Arg::Label(loc_label),
-                Arg::Label(file_label),
-                Arg::Int(start_line),
-                Arg::Int(start_column),
-                Arg::Int(end_line),
-                Arg::Int(end_column),
-            ],
-        );
+        ));
+        if fresh {
+            self.add_tuple(
+                "locations_default",
+                vec![
+                    Arg::Label(loc_label),
+                    Arg::Label(file_label),
+                    Arg::Int(start_line),
+                    Arg::Int(start_column),
+                    Arg::Int(end_line),
+                    Arg::Int(end_column),
+                ],
+            );
+        }
         loc_label
     }
 
@@ -201,6 +239,10 @@ fn normalize_path(path: &Path) -> String {
 
 fn full_id_for_file(path: &Path) -> String {
     format!("{};sourcefile", normalize_path(path))
+}
+
+fn full_id_for_folder(path: &Path) -> String {
+    format!("{};folder", normalize_path(path))
 }
 
 fn build_schema_lookup<'a>(schema: &'a Vec<Entry>) -> Map<&'a TypeName, &'a Entry> {
