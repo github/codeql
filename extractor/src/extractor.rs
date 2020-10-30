@@ -17,7 +17,9 @@ pub fn create(language: Language, schema: Vec<Entry>) -> Extractor {
 
     Extractor { parser, schema }
 }
+
 impl Extractor {
+    /// Extracts the source file at `path`, which is assumed to be canonicalized.
     pub fn extract<'a>(&'a mut self, path: &Path) -> std::io::Result<Program> {
         let span = span!(
             Level::TRACE,
@@ -48,7 +50,7 @@ impl Extractor {
                     "files".to_owned(),
                     vec![
                         Arg::Label(file_label),
-                        Arg::String(format!("{}", path.canonicalize()?.display())),
+                        Arg::String(format!("{}", path.display())),
                         Arg::String(format!("{}", path.file_name().unwrap().to_string_lossy())),
                         Arg::String(format!("{}", path.extension().unwrap().to_string_lossy())),
                         Arg::Int(1), // 1 = from source
