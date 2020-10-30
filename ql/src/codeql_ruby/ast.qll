@@ -513,6 +513,18 @@ class HashSplatParameter extends @hash_splat_parameter, Top, BlockParametersChil
   override Top getAFieldOrChild() { hash_splat_parameter_name(this, result) }
 }
 
+class HeredocBodyChildType extends @heredoc_body_child_type, Top { }
+
+class HeredocBody extends @heredoc_body, Top {
+  override string toString() { result = "HeredocBody" }
+
+  override Location getLocation() { heredoc_body_def(this, result) }
+
+  HeredocBodyChildType getChild(int i) { heredoc_body_child(this, i, result) }
+
+  override Top getAFieldOrChild() { heredoc_body_child(this, _, result) }
+}
+
 class IfAlternativeType extends @if_alternative_type, Top { }
 
 class If extends @if, Top, UnderscorePrimary {
@@ -558,7 +570,7 @@ class In extends @in, Top {
 }
 
 class Interpolation extends @interpolation, Top, BareStringChildType, BareSymbolChildType,
-  RegexChildType, StringChildType, SubshellChildType, SymbolChildType {
+  HeredocBodyChildType, RegexChildType, StringChildType, SubshellChildType, SymbolChildType {
   override string toString() { result = "Interpolation" }
 
   override Location getLocation() { interpolation_def(this, _, result) }
@@ -1795,6 +1807,14 @@ class ClassVariable extends @class_variable, Top, UnderscoreMethodName, Undersco
   string getText() { class_variable_def(this, result, _) }
 }
 
+class Comment extends @comment, Top {
+  override string toString() { result = "Comment" }
+
+  override Location getLocation() { comment_def(this, _, result) }
+
+  string getText() { comment_def(this, result, _) }
+}
+
 class Complex extends @complex, Top, UnderscorePrimary {
   override string toString() { result = "Complex" }
 
@@ -1869,7 +1889,7 @@ class EnsureUnnamed extends @ensure_unnamed, Top {
 }
 
 class EscapeSequence extends @escape_sequence, Top, BareStringChildType, BareSymbolChildType,
-  RegexChildType, StringChildType, SubshellChildType, SymbolChildType {
+  HeredocBodyChildType, RegexChildType, StringChildType, SubshellChildType, SymbolChildType {
   override string toString() { result = "EscapeSequence" }
 
   override Location getLocation() { escape_sequence_def(this, _, result) }
@@ -1917,7 +1937,7 @@ class HeredocBeginning extends @heredoc_beginning, Top, UnderscorePrimary {
   string getText() { heredoc_beginning_def(this, result, _) }
 }
 
-class HeredocEnd extends @heredoc_end, Top {
+class HeredocEnd extends @heredoc_end, Top, HeredocBodyChildType {
   override string toString() { result = "HeredocEnd" }
 
   override Location getLocation() { heredoc_end_def(this, _, result) }
