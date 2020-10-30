@@ -125,7 +125,7 @@ class PrintASTNode extends TPrintASTNode {
    */
   final PrintASTNode getChild(int childIndex) {
     exists(int nonConvertedIndex, boolean isConverted |
-      deconstructIndex(childIndex, nonConvertedIndex, isConverted)
+      mapIndex(childIndex, nonConvertedIndex, isConverted)
     |
       if isConverted = false
       then result = getChildInternal(childIndex)
@@ -177,7 +177,7 @@ class PrintASTNode extends TPrintASTNode {
   final string getChildAccessorPredicate(int childIndex) {
     exists(getChild(childIndex)) and
     exists(int nonConvertedIndex, boolean isConverted |
-      deconstructIndex(childIndex, nonConvertedIndex, isConverted)
+      mapIndex(childIndex, nonConvertedIndex, isConverted)
     |
       if isConverted = false
       then result = getChildAccessorPredicateInternal(childIndex)
@@ -198,7 +198,7 @@ class PrintASTNode extends TPrintASTNode {
    * Note: This predicate contains the mapping between the converted and nonconverted indexes, but
    * if `nonConvertedIndex` does not have conversions attached, there will be no node at `childIndex`.
    */
-  final predicate deconstructIndex(int childIndex, int nonConvertedIndex, boolean isConverted) {
+  final predicate mapIndex(int childIndex, int nonConvertedIndex, boolean isConverted) {
     exists(getChildInternal(childIndex)) and
     nonConvertedIndex = childIndex and
     isConverted = false
