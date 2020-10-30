@@ -51,8 +51,14 @@ impl Extractor {
                     vec![
                         Arg::Label(file_label),
                         Arg::String(normalize_path(path)),
-                        Arg::String(format!("{}", path.file_name().unwrap().to_string_lossy())),
-                        Arg::String(format!("{}", path.extension().unwrap().to_string_lossy())),
+                        Arg::String(match path.file_name() {
+                            None => "".to_owned(),
+                            Some(file_name) => format!("{}", file_name.to_string_lossy()),
+                        }),
+                        Arg::String(match path.extension() {
+                            None => "".to_owned(),
+                            Some(ext) => format!("{}", ext.to_string_lossy()),
+                        }),
                         Arg::Int(1), // 1 = from source
                     ],
                 ),
