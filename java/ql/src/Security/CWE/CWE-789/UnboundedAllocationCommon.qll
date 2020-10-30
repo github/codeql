@@ -1,8 +1,13 @@
+/**
+ * Common definitions for the unbounded allocation queries.
+ */
+
 import semmle.code.java.dataflow.RangeAnalysis
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 
+/** A sink where memory is allocated. */
 class AllocationSink extends DataFlow::Node {
   AllocationSink() {
     this.asExpr() = any(ArrayCreationExpr a).getADimension()
@@ -14,11 +19,13 @@ class AllocationSink extends DataFlow::Node {
   }
 }
 
+/** A callable that allocates memory. */
 abstract class AllocatingCallable extends Callable {
+  /** Returns the parameter index controlling the size of the allocated memory. */
   abstract int getParam();
 }
 
-class AtomicArrayConstructor extends AllocatingCallable, Constructor {
+private class AtomicArrayConstructor extends AllocatingCallable, Constructor {
   AtomicArrayConstructor() {
     this
         .getDeclaringType()
@@ -30,7 +37,7 @@ class AtomicArrayConstructor extends AllocatingCallable, Constructor {
   override int getParam() { result = 0 }
 }
 
-class ListConstructor extends AllocatingCallable, Constructor {
+private class ListConstructor extends AllocatingCallable, Constructor {
   ListConstructor() {
     this.getDeclaringType().hasQualifiedName("java.util", ["ArrayList", "Vector"]) and
     this.getParameterType(0) instanceof IntegralType
@@ -39,7 +46,7 @@ class ListConstructor extends AllocatingCallable, Constructor {
   override int getParam() { result = 0 }
 }
 
-class ReadMethod extends TaintPreservingCallable {
+private class ReadMethod extends TaintPreservingCallable {
   ReadMethod() {
     this.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
     this.getName().matches("read%")
@@ -48,7 +55,7 @@ class ReadMethod extends TaintPreservingCallable {
   override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
 
-class ArithmeticStep extends TaintTracking::AdditionalTaintStep {
+private class ArithmeticStep extends TaintTracking::AdditionalTaintStep {
   override predicate step(DataFlow::Node src, DataFlow::Node sink) {
     exists(BinaryExpr binex | sink.asExpr() = binex and src.asExpr() = binex.getAnOperand() |
       binex instanceof AddExpr
@@ -71,4 +78,5 @@ class ArithmeticStep extends TaintTracking::AdditionalTaintStep {
   }
 }
 
+/** Holds if `e` has a known upper bound. */
 predicate hasUpperBound(Expr e) { bounded(e, any(ZeroBound z), _, true, _) }

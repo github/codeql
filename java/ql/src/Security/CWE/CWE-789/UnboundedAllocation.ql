@@ -13,8 +13,8 @@ import UnboundedAllocationCommon
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
-class UnboundedDeserializationConfig extends TaintTracking::Configuration {
-  UnboundedDeserializationConfig() { this = "UnboundedDeserializationConfig" }
+class UnboundedAllocationConfig extends TaintTracking::Configuration {
+  UnboundedAllocationConfig() { this = "UnboundedAllocationConfig" }
 
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
@@ -23,6 +23,6 @@ class UnboundedDeserializationConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { hasUpperBound(node.asExpr()) }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, UnboundedDeserializationConfig config
+from DataFlow::PathNode source, DataFlow::PathNode sink, UnboundedAllocationConfig config
 where config.hasFlowPath(source, sink)
 select sink, source, sink, "Unbounded memory allocation"
