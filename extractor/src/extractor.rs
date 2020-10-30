@@ -6,11 +6,18 @@ use std::path::Path;
 use tracing::{error, info, span, Level};
 use tree_sitter::{Language, Node, Parser, Tree};
 
-pub struct TrapWriter {
+struct TrapWriter {
     /// The accumulated trap entries
     trap_output: Vec<TrapEntry>,
     /// A counter for generating fresh labels
     counter: i32,
+}
+
+fn new_trap_writer() -> TrapWriter {
+    TrapWriter {
+        counter: -1,
+        trap_output: Vec::new(),
+    }
 }
 
 impl TrapWriter {
@@ -97,6 +104,10 @@ impl TrapWriter {
         );
         loc_label
     }
+
+    fn comment(&mut self, text: String) {
+        self.trap_output.push(TrapEntry::Comment(text));
+    }
 }
 
 pub struct Extractor {
@@ -129,13 +140,8 @@ impl Extractor {
             .parser
             .parse(&source, None)
             .expect("Failed to parse file");
-        let mut trap_writer = TrapWriter {
-            counter: -1,
-            trap_output: vec![TrapEntry::Comment(format!(
-                "Auto-generated TRAP file for {}",
-                path.display()
-            ))],
-        };
+        let mut trap_writer = new_trap_writer();
+        trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
         let file_label = &trap_writer.populate_file(path);
         let mut visitor = Visitor {
             source: &source,
