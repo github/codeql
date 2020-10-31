@@ -1,0 +1,7 @@
+edges
+| reflected_xss.py:8:18:8:29 | ControlFlowNode for Attribute | reflected_xss.py:9:26:9:53 | ControlFlowNode for BinaryExpr |
+nodes
+| reflected_xss.py:8:18:8:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| reflected_xss.py:9:26:9:53 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+#select
+| reflected_xss.py:9:26:9:53 | ControlFlowNode for BinaryExpr | reflected_xss.py:8:18:8:29 | ControlFlowNode for Attribute | reflected_xss.py:9:26:9:53 | ControlFlowNode for BinaryExpr | Cross-site scripting vulnerability due to $@. | reflected_xss.py:8:18:8:29 | ControlFlowNode for Attribute | a user-provided value |

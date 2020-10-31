@@ -39,7 +39,7 @@ namespace Semmle.Extraction
 
         private readonly CompressionMode trapCompression;
 
-        public TrapWriter(ILogger logger, PathTransformer.ITransformedPath outputfile, string? trap, string? archive, bool discardDuplicates, CompressionMode trapCompression)
+        public TrapWriter(ILogger logger, PathTransformer.ITransformedPath outputfile, string? trap, string? archive, CompressionMode trapCompression, bool discardDuplicates)
         {
             this.logger = logger;
             this.trapCompression = trapCompression;

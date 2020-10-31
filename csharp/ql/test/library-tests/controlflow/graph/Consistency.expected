@@ -3,6 +3,8 @@ nonUniqueSetRepresentation
 breakInvariant2
 breakInvariant3
 breakInvariant4
+| Assert.cs:140:29:140:30 | access to parameter b2 | assertion failure | Assert.cs:140:33:140:34 | access to parameter b3 | assertion failure | assertion failure | true |
+| Assert.cs:140:29:140:30 | access to parameter b2 | assertion failure | Assert.cs:140:33:140:34 | access to parameter b3 | assertion failure | assertion success | false |
 breakInvariant5
 multipleSuccessors
 | ConditionalAccess.cs:30:28:30:32 | ... = ... | successor | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess |

@@ -5,20 +5,20 @@ from django.views import View
 
 
 def url_match_xss(request, foo, bar, no_taint=None):  # $routeHandler routedParameter=foo routedParameter=bar
-    return HttpResponse('url_match_xss: {} {}'.format(foo, bar))
+    return HttpResponse('url_match_xss: {} {}'.format(foo, bar))  # $HttpResponse
 
 
 def get_params_xss(request):  # $routeHandler
-    return HttpResponse(request.GET.get("untrusted"))
+    return HttpResponse(request.GET.get("untrusted"))  # $HttpResponse
 
 
 def post_params_xss(request):  # $routeHandler
-    return HttpResponse(request.POST.get("untrusted"))
+    return HttpResponse(request.POST.get("untrusted"))  # $HttpResponse
 
 
 def http_resp_write(request):  # $routeHandler
-    rsp = HttpResponse()
-    rsp.write(request.GET.get("untrusted"))
+    rsp = HttpResponse()  # $HttpResponse
+    rsp.write(request.GET.get("untrusted"))  # $HttpResponse
     return rsp
 
 
@@ -27,22 +27,22 @@ class Foo(object):
 
 
     def post(self, request, untrusted):  # $ MISSING: routeHandler routedParameter=untrusted
-        return HttpResponse('Foo post: {}'.format(untrusted))
+        return HttpResponse('Foo post: {}'.format(untrusted))  # $HttpResponse
 
 
 class ClassView(View, Foo):
 
-    def get(self, request, untrusted):  #  $ MISSING: routeHandler routedParameter=untrusted
-        return HttpResponse('ClassView get: {}'.format(untrusted))
+    def get(self, request, untrusted):  # $ MISSING: routeHandler routedParameter=untrusted
+        return HttpResponse('ClassView get: {}'.format(untrusted))  # $HttpResponse
 
 
 def show_articles(request, page_number=1):  # $routeHandler routedParameter=page_number
     page_number = int(page_number)
-    return HttpResponse('articles page: {}'.format(page_number))
+    return HttpResponse('articles page: {}'.format(page_number))  # $HttpResponse
 
 
 def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $routeHandler routedParameter=arg0 routedParameter=arg1
-    return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))
+    return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))  # $HttpResponse
 
 
 urlpatterns = [
@@ -63,7 +63,7 @@ urlpatterns = [
 # Show we understand the keyword arguments to django.urls.re_path
 
 def re_path_kwargs(request):  # $routeHandler
-    return HttpResponse('re_path_kwargs')
+    return HttpResponse('re_path_kwargs')  # $HttpResponse
 
 
 urlpatterns = [
@@ -76,16 +76,16 @@ urlpatterns = [
 
 # saying page_number is an externally controlled *string* is a bit strange, when we have an int converter :O
 def page_number(request, page_number=1):  # $routeHandler routedParameter=page_number
-    return HttpResponse('page_number: {}'.format(page_number))
+    return HttpResponse('page_number: {}'.format(page_number))  # $HttpResponse
 
-def foo_bar_baz(request, foo, bar, baz):  # $routeHandler routedParameter=foo routedParameter=bar routedParameter=baz
-    return HttpResponse('foo_bar_baz: {} {} {}'.format(foo, bar, baz))
+def foo_bar_baz(request, foo, bar, baz):  # $routeHandler $routedParameter=foo routedParameter=bar routedParameter=baz
+    return HttpResponse('foo_bar_baz: {} {} {}'.format(foo, bar, baz))  # $HttpResponse
 
 def path_kwargs(request, foo, bar):  # $routeHandler routedParameter=foo routedParameter=bar
-    return HttpResponse('path_kwargs: {} {} {}'.format(foo, bar))
+    return HttpResponse('path_kwargs: {} {} {}'.format(foo, bar))  # $HttpResponse
 
 def not_valid_identifier(request):  # $routeHandler
-    return HttpResponse('<foo!>')
+    return HttpResponse('<foo!>')  # $HttpResponse
 
 urlpatterns = [
     path("articles/", page_number),  # $routeSetup="articles/"
@@ -102,7 +102,7 @@ urlpatterns = [
 from django.conf.urls import url
 
 def deprecated(request):  # $routeHandler
-    return HttpResponse('deprecated')
+    return HttpResponse('deprecated')  # $HttpResponse
 
 urlpatterns = [
     url(r"^deprecated/", deprecated),  # $routeSetup="^deprecated/"

@@ -218,7 +218,7 @@ string getInstructionTagId(TInstructionTag tag) {
   or
   tag = DynamicInitializationFlagStoreTag() and result = "DynInitFlagStore"
   or
-  tag = ThisAddressTag() and result = "ThisAddres"
+  tag = ThisAddressTag() and result = "ThisAddress"
   or
   tag = ThisLoadTag() and result = "ThisLoad"
 }

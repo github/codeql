@@ -41,6 +41,74 @@ module SystemCommandExecution {
 }
 
 /**
+ * A data flow node that performs a file system access, including reading and writing data,
+ * creating and deleting files and folders, checking and updating permissions, and so on.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemAccess::Range` instead.
+ */
+class FileSystemAccess extends DataFlow::Node {
+  FileSystemAccess::Range range;
+
+  FileSystemAccess() { this = range }
+
+  /** Gets an argument to this file system access that is interpreted as a path. */
+  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
+}
+
+/** Provides a class for modeling new file system access APIs. */
+module FileSystemAccess {
+  /**
+   * A data-flow node that performs a file system access, including reading and writing data,
+   * creating and deleting files and folders, checking and updating permissions, and so on.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemAccess` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an argument to this file system access that is interpreted as a path. */
+    abstract DataFlow::Node getAPathArgument();
+  }
+}
+
+/** Provides classes for modeling path-related APIs. */
+module Path {
+  /**
+   * A data-flow node that performs path normalization. This is often needed in order
+   * to safely access paths.
+   */
+  class PathNormalization extends DataFlow::Node {
+    PathNormalization::Range range;
+
+    PathNormalization() { this = range }
+  }
+
+  /** Provides a class for modeling new path normalization APIs. */
+  module PathNormalization {
+    /**
+     * A data-flow node that performs path normalization. This is often needed in order
+     * to safely access paths.
+     */
+    abstract class Range extends DataFlow::Node { }
+  }
+
+  /** A data-flow node that checks that a path is safe to access. */
+  class SafeAccessCheck extends DataFlow::BarrierGuard {
+    SafeAccessCheck::Range range;
+
+    SafeAccessCheck() { this = range }
+
+    override predicate checks(ControlFlowNode node, boolean branch) { range.checks(node, branch) }
+  }
+
+  /** Provides a class for modeling new path safety checks. */
+  module SafeAccessCheck {
+    /** A data-flow node that checks that a path is safe to access. */
+    abstract class Range extends DataFlow::BarrierGuard { }
+  }
+}
+
+/**
  * A data-flow node that decodes data from a binary or textual format. This
  * is intended to include deserialization, unmarshalling, decoding, unpickling,
  * decompressing, decrypting, parsing etc.
@@ -160,7 +228,7 @@ module HTTP {
   /** Provides classes for modeling HTTP servers. */
   module Server {
     /**
-     * An data-flow node that sets up a route on a server.
+     * A data-flow node that sets up a route on a server.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `RouteSetup::Range` instead.
@@ -186,7 +254,7 @@ module HTTP {
     /** Provides a class for modeling new HTTP routing APIs. */
     module RouteSetup {
       /**
-       * An data-flow node that sets up a route on a server.
+       * A data-flow node that sets up a route on a server.
        *
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `RouteSetup` instead.
@@ -218,6 +286,61 @@ module HTTP {
       RoutedParameter() { this.getParameter() = any(RouteSetup setup).getARoutedParameter() }
 
       override string getSourceType() { result = "RoutedParameter" }
+    }
+
+    /**
+     * A data-flow node that creates a HTTP response on a server.
+     *
+     * Note: we don't require that this response must be sent to a client (a kind of
+     * "if a tree falls in a forest and nobody hears it" situation).
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HttpResponse::Range` instead.
+     */
+    class HttpResponse extends DataFlow::Node {
+      HttpResponse::Range range;
+
+      HttpResponse() { this = range }
+
+      /** Gets the data-flow node that specifies the body of this HTTP response. */
+      DataFlow::Node getBody() { result = range.getBody() }
+
+      /** Gets the mimetype of this HTTP response, if it can be statically determined. */
+      string getMimetype() { result = range.getMimetype() }
+    }
+
+    /** Provides a class for modeling new HTTP response APIs. */
+    module HttpResponse {
+      /**
+       * A data-flow node that creates a HTTP response on a server.
+       *
+       * Note: we don't require that this response must be sent to a client (a kind of
+       * "if a tree falls in a forest and nobody hears it" situation).
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HttpResponse` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the data-flow node that specifies the body of this HTTP response. */
+        abstract DataFlow::Node getBody();
+
+        /** Gets the data-flow node that specifies the content-type/mimetype of this HTTP response, if any. */
+        abstract DataFlow::Node getMimetypeOrContentTypeArg();
+
+        /** Gets the default mimetype that should be used if `getMimetypeOrContentTypeArg` has no results. */
+        abstract string getMimetypeDefault();
+
+        /** Gets the mimetype of this HTTP response, if it can be statically determined. */
+        string getMimetype() {
+          exists(StrConst str |
+            DataFlow::localFlow(DataFlow::exprNode(str), this.getMimetypeOrContentTypeArg()) and
+            result = str.getText().splitAt(";", 0)
+          )
+          or
+          not exists(this.getMimetypeOrContentTypeArg()) and
+          result = this.getMimetypeDefault()
+        }
+      }
     }
   }
 }

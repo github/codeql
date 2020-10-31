@@ -5,20 +5,20 @@ from django.views.generic import View
 
 
 def url_match_xss(request, foo, bar, no_taint=None):  # $routeHandler routedParameter=foo routedParameter=bar
-    return HttpResponse('url_match_xss: {} {}'.format(foo, bar))
+    return HttpResponse('url_match_xss: {} {}'.format(foo, bar))  # $HttpResponse
 
 
 def get_params_xss(request):  # $routeHandler
-    return HttpResponse(request.GET.get("untrusted"))
+    return HttpResponse(request.GET.get("untrusted"))  # $HttpResponse
 
 
 def post_params_xss(request):  # $routeHandler
-    return HttpResponse(request.POST.get("untrusted"))
+    return HttpResponse(request.POST.get("untrusted"))  # $HttpResponse
 
 
 def http_resp_write(request):  # $routeHandler
-    rsp = HttpResponse()
-    rsp.write(request.GET.get("untrusted"))
+    rsp = HttpResponse()  # $HttpResponse
+    rsp.write(request.GET.get("untrusted"))  # $HttpResponse
     return rsp
 
 
@@ -27,22 +27,22 @@ class Foo(object):
 
 
     def post(self, request, untrusted):  # $ MISSING: routeHandler routedParameter=untrusted
-        return HttpResponse('Foo post: {}'.format(untrusted))
+        return HttpResponse('Foo post: {}'.format(untrusted))  # $HttpResponse
 
 
 class ClassView(View, Foo):
 
     def get(self, request, untrusted):  # $ MISSING: routeHandler routedParameter=untrusted
-        return HttpResponse('ClassView get: {}'.format(untrusted))
+        return HttpResponse('ClassView get: {}'.format(untrusted))  # $HttpResponse
 
 
 def show_articles(request, page_number=1):  # $routeHandler routedParameter=page_number
     page_number = int(page_number)
-    return HttpResponse('articles page: {}'.format(page_number))
+    return HttpResponse('articles page: {}'.format(page_number))  # $HttpResponse
 
 
 def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $routeHandler routedParameter=arg0 routedParameter=arg1
-    return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))
+    return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))  # $HttpResponse
 
 
 urlpatterns = [
@@ -63,7 +63,7 @@ urlpatterns = [
 # Using patterns() for routing
 
 def show_user(request, username):  # $routeHandler routedParameter=username
-    return HttpResponse('show_user {}'.format(username))
+    return HttpResponse('show_user {}'.format(username))  # $HttpResponse
 
 
 urlpatterns = patterns(url(r"^users/(?P<username>[^/]+)", show_user))  # $routeSetup="^users/(?P<username>[^/]+)"
@@ -72,7 +72,7 @@ urlpatterns = patterns(url(r"^users/(?P<username>[^/]+)", show_user))  # $routeS
 # Show we understand the keyword arguments to django.conf.urls.url
 
 def kw_args(request):  # $routeHandler
-    return HttpResponse('kw_args')
+    return HttpResponse('kw_args')  # $HttpResponse
 
 urlpatterns = [
     url(view=kw_args, regex=r"^kw_args")  # $routeSetup="^kw_args"

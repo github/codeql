@@ -200,7 +200,7 @@ def debug(foo, bar):  # $routeHandler routedParameter=foo routedParameter=bar
 
     print("request.pragma {!r}".format(request.pragma))
 
-    return 'ok'
+    return 'ok'  # $HttpResponse
 
 @app.route("/stream", methods=['POST'])  # $routeSetup="/stream"
 def stream():  # $routeHandler
@@ -210,7 +210,7 @@ def stream():  # $routeHandler
     # just works :)
     print(s.read())
 
-    return 'ok'
+    return 'ok'  # $HttpResponse
 
 @app.route("/input_stream", methods=['POST'])  # $routeSetup="/input_stream"
 def input_stream():  # $routeHandler
@@ -221,14 +221,14 @@ def input_stream():  # $routeHandler
     # be handled manually
     print(s.read())
 
-    return 'ok'
+    return 'ok'  # $HttpResponse
 
 @app.route("/form", methods=['POST'])  # $routeSetup="/form"
 def form():  # $routeHandler
     print(request.path)
     print("request.form", request.form)
 
-    return 'ok'
+    return 'ok'  # $HttpResponse
 
 @app.route("/cache_control", methods=['POST'])  # $routeSetup="/cache_control"
 def cache_control():  # $routeHandler
@@ -237,7 +237,7 @@ def cache_control():  # $routeHandler
     print("request.cache_control.max_stale", request.cache_control.max_stale, type(request.cache_control.max_stale))
     print("request.cache_control.min_fresh", request.cache_control.min_fresh, type(request.cache_control.min_fresh))
 
-    return 'ok'
+    return 'ok'  # $HttpResponse
 
 @app.route("/file_upload", methods=['POST'])  # $routeSetup="/file_upload"
 def file_upload():  # $routeHandler
@@ -245,14 +245,14 @@ def file_upload():  # $routeHandler
     for k,v in request.files.items():
         print(k, v, v.name, v.filename, v.stream)
 
-    return 'ok'
+    return 'ok'  # $HttpResponse
 
 @app.route("/args", methods=['GET'])  # $routeSetup="/args"
 def args():  # $routeHandler
     print(request.path)
     print("request.args", request.args)
 
-    return 'ok'
+    return 'ok'  # $HttpResponse
 
 # curl --header "My-Header: some-value" http://localhost:5000/debug/fooval/barval
 # curl --header "Pragma: foo, bar" --header "Pragma: stuff, foo" http://localhost:5000/debug/fooval/barval

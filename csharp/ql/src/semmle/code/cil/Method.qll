@@ -54,7 +54,11 @@ class MethodImplementation extends EntryPoint, @cil_method_implementation {
   /** Gets a string representing the disassembly of this implementation. */
   string getDisassembly() {
     result =
-      concat(Instruction i | i = this.getAnInstruction() | i.toString(), ", " order by i.getIndex())
+      concat(Instruction i |
+        i = this.getAnInstruction()
+      |
+        i.toStringExtra(), ", " order by i.getIndex()
+      )
   }
 }
 
@@ -76,7 +80,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 
   override string getName() { cil_method(this, result, _, _) }
 
-  override string toString() { result = this.getQualifiedName() }
+  override string toString() { result = this.getName() }
 
   override Type getDeclaringType() { cil_method(this, _, result, _) }
 
