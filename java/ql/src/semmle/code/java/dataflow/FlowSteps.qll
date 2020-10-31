@@ -4,7 +4,6 @@
 
 private import java
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.FlowSources
 
 /**
  * A module importing the frameworks that implement additional flow steps,

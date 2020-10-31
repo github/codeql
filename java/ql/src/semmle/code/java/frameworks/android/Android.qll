@@ -34,11 +34,16 @@ class AndroidComponent extends Class {
  * An Android component that can be explicitly or implicitly exported.
  */
 class ExportableAndroidComponent extends AndroidComponent {
-  /** Holds if this Android component is configured as `exported` or has intent filters configured without `exported` explicitly disabled in an `AndroidManifest.xml` file. */
+  /**
+   * Holds if this Android component is configured as `exported` or has intent
+   * filters configured without `exported` explicitly disabled in an
+   * `AndroidManifest.xml` file.
+   */
   override predicate isExported() {
     getAndroidComponentXmlElement().isExported()
     or
-    not getAndroidComponentXmlElement().isNotExported() and hasIntentFilter()
+    hasIntentFilter() and
+    not getAndroidComponentXmlElement().isNotExported()
   }
 }
 
