@@ -454,11 +454,10 @@ string intersect(InputSymbol c, InputSymbol d) {
   )
   or
   exists(RegExpCharacterClass cc | c = InvertedCharClass(cc) and result = chooseFromInverted(cc) |
-    // TODO: Not done here - later commits will add more
-    //d = Dot() and
-    //not (result = "\n" or result = "\r")
-    //or
     d = InvertedCharClass(cc)
+    or
+    d = Dot() and
+    not (result = "\n" or result = "\r")
     or
     d = Any()
   )

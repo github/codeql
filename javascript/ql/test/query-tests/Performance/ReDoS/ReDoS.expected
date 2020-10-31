@@ -55,3 +55,4 @@
 | tst.js:89:25:89:32 | (a\|aa?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.js:95:15:95:25 | ([^]\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
 | tst.js:98:15:98:20 | [^"']+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '('. |
+| tst.js:101:15:101:23 | (.\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
