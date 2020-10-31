@@ -18,19 +18,19 @@ def safe__manual_content_type(request):
 # XSS FP reported in https://github.com/github/codeql/issues/3466
 # Note: This should be an open-redirect sink, but not an XSS sink.
 def or__redirect(request):
-    return HttpResponseRedirect(request.GET.get("next"))  # $HttpResponse mimetype=text/html; charset=utf-8 responseBody=Attribute()
+    return HttpResponseRedirect(request.GET.get("next"))  # $HttpResponse mimetype="text/html; charset=utf-8" responseBody=Attribute()
 
 # Ensure that simple subclasses are still vuln to XSS
 def xss__not_found(request):
-    return HttpResponseNotFound(request.GET.get("name"))  # $HttpResponse mimetype=text/html; charset=utf-8 responseBody=Attribute()
+    return HttpResponseNotFound(request.GET.get("name"))  # $HttpResponse mimetype="text/html; charset=utf-8" responseBody=Attribute()
 
 # Ensure we still have an XSS sink when manually setting the content_type to HTML
 def xss__manual_response_type(request):
     return HttpResponse(request.GET.get("name"), content_type="text/html; charset=utf-8")  # $HttpResponse mimetype=text/html responseBody=Attribute()
 
 def xss__write(request):
-    response = HttpResponse()  # $HttpResponse mimetype=text/html; charset=utf-8
-    response.write(request.GET.get("name"))  # $HttpResponse mimetype=text/html; charset=utf-8 responseBody=Attribute()
+    response = HttpResponse()  # $HttpResponse mimetype="text/html; charset=utf-8"
+    response.write(request.GET.get("name"))  # $HttpResponse mimetype="text/html; charset=utf-8" responseBody=Attribute()
 
 # This is safe but probably a bug if the argument to `write` is not a result of `json.dumps` or similar.
 def safe__write_json(request):
