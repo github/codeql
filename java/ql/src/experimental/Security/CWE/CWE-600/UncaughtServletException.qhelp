@@ -4,19 +4,19 @@
 <qhelp>
 <overview>
 <p>
-Even though the signatures for methods in a servlet include <code>throws IOException, ServletException</code>, it's a bad idea to let such exceptions be thrown. Failure to catch exceptions in a servlet could leave a system in a vulnerable state, possibly resulting in denial-of-service attacks, or the exposure of sensitive information because when a servlet throws an exception, the servlet container typically sends debugging information back to the user. And that information could be very valuable to an attacker.
+Even though the request-handling methods of <code>Servlet</code> are declared <code>throws IOException, ServletException</code>, it's a bad idea to let such exceptions be thrown. Failure to catch exceptions in a servlet could leave a system in an unexpected state, possibly resulting in denial-of-service attacks, or could lead to exposure of sensitive information because when a servlet throws an exception, the servlet container typically sends debugging information back to the user. That information could be valuable to an attacker.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Handle method calls that throw IOExceptions and/or RuntimeExceptions and display custom error messages without stack traces and sensitive information, or configure an <code>error-page</code> in web.xml to display a generic user-friendly message for any uncaught exception.
+Catch IOExceptions and/or RuntimeExceptions and display custom error messages without stack traces and sensitive information, or configure an <code>error-page</code> in web.xml to display a generic user-friendly message for any uncaught exception.
 </p>
 </recommendation>
 
 <example>
 <p>
-In the first and second examples, subclasses of IOException and RuntimeException are not caught, which disclose stack traces. 
+In the first and second examples, subclasses of IOException and RuntimeException are not caught, which disclose stack traces. Because user-controlled data is passed to methods that throw, there is an opportunity for an attacker to provoke a stack dump.
 </p>
 
 <p>
