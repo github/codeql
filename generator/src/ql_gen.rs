@@ -12,7 +12,7 @@ type SupertypeMap = HashMap<String, BTreeSet<String>>;
 ///
 /// `language` - the language for which we're generating a library
 /// `classes` - the list of classes to write.
-pub fn write(language: &Language, classes: &[ql::Class]) -> std::io::Result<()> {
+pub fn write(language: &Language, classes: &[ql::TopLevel]) -> std::io::Result<()> {
     println!(
         "Writing QL library for {} to '{}'",
         &language.name,
@@ -130,81 +130,6 @@ fn create_none_predicate(
     }
 }
 
-/// Creates the special `Location` class to wrap the location table.
-fn create_location_class() -> ql::Class {
-    let to_string = ql::Predicate {
-        name: "toString".to_owned(),
-        overridden: false,
-        return_type: Some(ql::Type::String),
-        formal_parameters: vec![],
-        body: ql::Expression::Equals(
-            Box::new(ql::Expression::Var("result".to_owned())),
-            Box::new(ql::Expression::String("Location".to_owned())),
-        ),
-    };
-    let has_location_info = ql::Predicate {
-        name: "hasLocationInfo".to_owned(),
-        overridden: false,
-        return_type: None,
-        formal_parameters: vec![
-            ql::FormalParameter {
-                name: "filePath".to_owned(),
-                param_type: ql::Type::String,
-            },
-            ql::FormalParameter {
-                name: "startLine".to_owned(),
-                param_type: ql::Type::Int,
-            },
-            ql::FormalParameter {
-                name: "startColumn".to_owned(),
-                param_type: ql::Type::Int,
-            },
-            ql::FormalParameter {
-                name: "endLine".to_owned(),
-                param_type: ql::Type::Int,
-            },
-            ql::FormalParameter {
-                name: "endColumn".to_owned(),
-                param_type: ql::Type::Int,
-            },
-        ],
-        body: ql::Expression::Exists(
-            vec![ql::FormalParameter {
-                param_type: ql::Type::Normal("File".to_owned()),
-                name: "f".to_owned(),
-            }],
-            Box::new(ql::Expression::And(vec![
-                ql::Expression::Pred(
-                    "locations_default".to_owned(),
-                    vec![
-                        ql::Expression::Var("this".to_owned()),
-                        ql::Expression::Var("f".to_owned()),
-                        ql::Expression::Var("startLine".to_owned()),
-                        ql::Expression::Var("startColumn".to_owned()),
-                        ql::Expression::Var("endLine".to_owned()),
-                        ql::Expression::Var("endColumn".to_owned()),
-                    ],
-                ),
-                ql::Expression::Equals(
-                    Box::new(ql::Expression::Var("filePath".to_owned())),
-                    Box::new(ql::Expression::Dot(
-                        Box::new(ql::Expression::Var("f".to_owned())),
-                        "getAbsolutePath".to_owned(),
-                        vec![],
-                    )),
-                ),
-            ])),
-        ),
-    };
-    ql::Class {
-        name: "Location".to_owned(),
-        supertypes: vec![ql::Type::AtType("location".to_owned())],
-        is_abstract: false,
-        characteristic_predicate: None,
-        predicates: vec![to_string, has_location_info],
-    }
-}
-
 /// Given the name of the parent node, and its field information, returns the
 /// name of the field's type. This may be an ad-hoc union of all the possible
 /// types the field can take, in which case we create a new class and push it to
@@ -212,7 +137,7 @@ fn create_location_class() -> ql::Class {
 fn create_field_class(
     parent_name: &str,
     field: &node_types::Field,
-    classes: &mut Vec<ql::Class>,
+    classes: &mut Vec<ql::TopLevel>,
     supertype_map: &SupertypeMap,
 ) -> String {
     if field.types.len() == 1 {
@@ -225,7 +150,7 @@ fn create_field_class(
         let field_union_name = format!("{}_{}_type", parent_name, &field.get_name());
         let field_union_name = node_types::escape_name(&field_union_name);
         let class_name = dbscheme_name_to_class_name(&field_union_name);
-        classes.push(ql::Class {
+        classes.push(ql::TopLevel::Class(ql::Class {
             name: class_name.clone(),
             is_abstract: false,
             supertypes: [
@@ -235,7 +160,7 @@ fn create_field_class(
             .concat(),
             characteristic_predicate: None,
             predicates: vec![],
-        });
+        }));
         field_union_name
     }
 }
@@ -455,9 +380,13 @@ fn create_field_getters(
 }
 
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
-pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::Class> {
+pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
     let supertype_map = create_supertype_map(nodes);
-    let mut classes: Vec<ql::Class> = vec![create_location_class(), create_top_class()];
+    let mut classes: Vec<ql::TopLevel> = vec![
+        ql::TopLevel::Import("codeql.files.FileSystem".to_owned()),
+        ql::TopLevel::Import("codeql.Locations".to_owned()),
+        ql::TopLevel::Class(create_top_class()),
+    ];
 
     for node in nodes {
         match &node {
@@ -472,7 +401,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::Class> {
                     type_name.named,
                 ));
                 let class_name = dbscheme_name_to_class_name(&union_name);
-                classes.push(ql::Class {
+                classes.push(ql::TopLevel::Class(ql::Class {
                     name: class_name.clone(),
                     is_abstract: false,
                     supertypes: [
@@ -482,7 +411,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::Class> {
                     .concat(),
                     characteristic_predicate: None,
                     predicates: vec![],
-                });
+                }));
             }
             node_types::Entry::Table { type_name, fields } => {
                 // Count how many columns there will be in the main table.
@@ -556,7 +485,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::Class> {
                     });
                 }
 
-                classes.push(main_class);
+                classes.push(ql::TopLevel::Class(main_class));
             }
         }
     }
