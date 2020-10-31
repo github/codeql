@@ -1,0 +1,10 @@
+| response_test.py:16:12:16:86 | ControlFlowNode for HttpResponse() | Unexpected result: responseBody='<img src="0" onerror="alert(1)">' |
+| response_test.py:16:89:16:171 | Comment # $HttpResponse mimetype=text/plain responseBody='<img src="0" onerror="alert(1)">' | Missing result:responseBody='<img |
+| response_test.py:21:12:21:56 | ControlFlowNode for HttpResponseRedirect() | Unexpected result: mimetype=text/html; charset=utf-8 |
+| response_test.py:21:59:21:132 | Comment # $HttpResponse mimetype=text/html; charset=utf-8 responseBody=Attribute() | Missing result:mimetype=text/html; |
+| response_test.py:25:12:25:56 | ControlFlowNode for HttpResponseNotFound() | Unexpected result: mimetype=text/html; charset=utf-8 |
+| response_test.py:25:59:25:132 | Comment # $HttpResponse mimetype=text/html; charset=utf-8 responseBody=Attribute() | Missing result:mimetype=text/html; |
+| response_test.py:32:16:32:29 | ControlFlowNode for HttpResponse() | Unexpected result: mimetype=text/html; charset=utf-8 |
+| response_test.py:32:32:32:80 | Comment # $HttpResponse mimetype=text/html; charset=utf-8 | Missing result:mimetype=text/html; |
+| response_test.py:33:5:33:43 | ControlFlowNode for Attribute() | Unexpected result: mimetype=text/html; charset=utf-8 |
+| response_test.py:33:46:33:119 | Comment # $HttpResponse mimetype=text/html; charset=utf-8 responseBody=Attribute() | Missing result:mimetype=text/html; |

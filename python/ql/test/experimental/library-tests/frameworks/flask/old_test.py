@@ -33,7 +33,7 @@ def dangerous2():  # $routeHandler
     x = request.form['param0']
     if request.method == "POST":
         return request.form['param1']  # $HttpResponse
-    return None  # $f+:HttpResponse
+    return None  # $ SPURIOUS: HttpResponse
 
 @app.route("/unsafe")  # $routeSetup="/unsafe"
 def unsafe():  # $routeHandler
