@@ -146,6 +146,15 @@ newtype TInputSymbol =
     not recc.isInverted() and
     not recc.isUniversalClass()
   } or
+  /**
+   * An input symbol representing all characters matched by
+   * the inverted (non-universal) character class `recc`.
+   */
+  InvertedCharClass(RegExpCharacterClass recc) {
+    getRoot(recc).isRelevant() and
+    recc.isInverted() and
+    not recc.isUniversalClass()
+  } or
   /** An input symbol representing all characters matched by `.`. */
   Dot() or
   /** An input symbol representing all characters. */
@@ -163,6 +172,8 @@ class InputSymbol extends TInputSymbol {
     this = Char(result)
     or
     result = any(RegExpCharacterClass recc | this = CharClass(recc)).toString()
+    or
+    result = any(RegExpCharacterClass recc | this = InvertedCharClass(recc)).toString()
     or
     this = Dot() and result = "."
     or
@@ -266,7 +277,9 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
   exists(RegExpCharacterClass cc |
     cc.isUniversalClass() and q1 = before(cc) and lbl = Any() and q2 = after(cc)
     or
-    q1 = before(cc) and lbl = CharClass(cc) and q2 = after(cc)
+    q1 = before(cc) and
+    (lbl = CharClass(cc) or lbl = InvertedCharClass(cc)) and
+    q2 = after(cc)
   )
   or
   exists(RegExpAlt alt | lbl = Epsilon() | q1 = before(alt) and q2 = before(alt.getAChild()))
@@ -440,6 +453,16 @@ string intersect(InputSymbol c, InputSymbol d) {
     d = Any()
   )
   or
+  exists(RegExpCharacterClass cc | c = InvertedCharClass(cc) and result = chooseFromInverted(cc) |
+    // TODO: Not done here - later commits will add more
+    //d = InvertedCharClass(cc)
+    //or
+    //d = Dot() and
+    //not (result = "\n" or result = "\r")
+    //or
+    d = Any()
+  )
+  or
   exists(RegExpCharacterClass cc | c = CharClass(cc) and result = choose(cc) |
     d = CharClass(cc)
     or
@@ -465,6 +488,7 @@ string intersect(InputSymbol c, InputSymbol d) {
  * Gets a character matched by character class `cc`.
  */
 string choose(RegExpCharacterClass cc) {
+  exists(CharClass(cc)) and
   result =
     min(string c |
       exists(RegExpTerm child | child = cc.getAChild() |
@@ -472,6 +496,39 @@ string choose(RegExpCharacterClass cc) {
         child.(RegExpCharacterRange).isRange(c, _)
       )
     )
+}
+
+/**
+ * Gets the char after `c` (from a simplified ASCII table).
+ */
+string nextChar(string c) { exists(int code | code = ascii(c) | code + 1 = ascii(result)) }
+
+/**
+ * Gets an approximation for the ASCII code for `char`.
+ * Only the easily printable chars are included (so no newline, tab, null, etc).
+ */
+int ascii(string char) {
+  char =
+    rank[result](string c |
+      c =
+        "! \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+            .charAt(_)
+    )
+}
+
+/**
+ * Chooses a char matched by the inverted char class `cc`.
+ */
+string chooseFromInverted(RegExpCharacterClass cc) {
+  exists(InvertedCharClass(cc)) and
+  // The next char after the max of the inverted charclass.
+  result =
+    nextChar(max(string c |
+        exists(RegExpTerm child | child = cc.getAChild() |
+          c = child.(RegExpConstant).getValue() or
+          child.(RegExpCharacterRange).isRange(_, c)
+        )
+      ))
 }
 
 /**

@@ -90,3 +90,7 @@ var bad17 = new RegExp('(a|aa?)*b');
 
 // GOOD - not used as regexp
 var good9 = '(a|aa?)*b';
+
+// NOT GOOD
+var bad18 = /(([^]|[^a])*)"/;
+
