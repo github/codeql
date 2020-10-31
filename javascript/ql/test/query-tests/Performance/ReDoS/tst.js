@@ -94,8 +94,17 @@ var good9 = '(a|aa?)*b';
 // NOT GOOD
 var bad18 = /(([^]|[^a])*)"/;
 
-// NOT GOOD
+// NOT GOOD - but not flagged
 var bad19 = /([^"']+)*/g;
 
 // NOT GOOD
 var bad20 = /((.|[^a])*)"/;
+
+// GOOD
+var good10 = /((a|[^a])*)"/;
+
+// NOT GOOD
+var bad21 = /((b|[^a])*)"/;
+
+// NOT GOOD
+var bad22 = /((G|[^a])*)"/;

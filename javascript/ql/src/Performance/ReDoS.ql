@@ -430,6 +430,20 @@ newtype Trace =
   }
 
 /**
+ * Holds if the character class `cc` has a child (constant or range) that matches `char`.
+ */
+bindingset[char]
+predicate charClassMatchesChar(RegExpCharacterClass cc, string char) {
+  exists(RegExpTerm child | child = cc.getAChild() |
+    char = child.(RegExpConstant).getValue()
+    or
+    exists(string lo, string hi | child.(RegExpCharacterRange).isRange(lo, hi) |
+      lo <= char and char <= hi
+    )
+  )
+}
+
+/**
  * Gets a character that is represented by both `c` and `d`.
  */
 string intersect(InputSymbol c, InputSymbol d) {
@@ -437,14 +451,10 @@ string intersect(InputSymbol c, InputSymbol d) {
   (
     d = Char(result)
     or
-    exists(RegExpCharacterClass cc | d = CharClass(cc) |
-      exists(RegExpTerm child | child = cc.getAChild() |
-        result = child.(RegExpConstant).getValue()
-        or
-        exists(string lo, string hi | child.(RegExpCharacterRange).isRange(lo, hi) |
-          lo <= result and result <= hi
-        )
-      )
+    exists(RegExpCharacterClass cc | d = CharClass(cc) | charClassMatchesChar(cc, result))
+    or
+    exists(RegExpCharacterClass cc | d = InvertedCharClass(cc) |
+      not charClassMatchesChar(cc, result)
     )
     or
     d = Dot() and
