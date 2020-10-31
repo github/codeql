@@ -6035,6 +6035,9 @@ ir.cpp:
 #  716|           Type = [LongType] long
 #  716|           Value = [Literal] 0
 #  716|           ValueCategory = prvalue
+#  716|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  716|           Type = [LongType] long
+#  716|           ValueCategory = prvalue(load)
 #  720| [TopLevelFunction] double CallNestedTemplateFunc()
 #  720|   <params>: 
 #  720|   getEntryPoint(): [BlockStmt] { ... }

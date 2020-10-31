@@ -3824,23 +3824,26 @@ ir.cpp:
 
 #  715| long Outer<long>::Func<void*, char>(void*, char)
 #  715|   Block 0
-#  715|     v715_1(void)          = EnterFunction            : 
-#  715|     mu715_2(unknown)      = AliasedDefinition        : 
-#  715|     mu715_3(unknown)      = InitializeNonLocal       : 
-#  715|     r715_4(glval<void *>) = VariableAddress[x]       : 
-#  715|     mu715_5(void *)       = InitializeParameter[x]   : &:r715_4
-#  715|     r715_6(void *)        = Load[x]                  : &:r715_4, ~m?
-#  715|     mu715_7(unknown)      = InitializeIndirection[x] : &:r715_6
-#  715|     r715_8(glval<char>)   = VariableAddress[y]       : 
-#  715|     mu715_9(char)         = InitializeParameter[y]   : &:r715_8
-#  716|     r716_1(glval<long>)   = VariableAddress[#return] : 
-#  716|     r716_2(long)          = Constant[0]              : 
-#  716|     mu716_3(long)         = Store[#return]           : &:r716_1, r716_2
-#  715|     v715_10(void)         = ReturnIndirection[x]     : &:r715_6, ~m?
-#  715|     r715_11(glval<long>)  = VariableAddress[#return] : 
-#  715|     v715_12(void)         = ReturnValue              : &:r715_11, ~m?
-#  715|     v715_13(void)         = AliasedUse               : ~m?
-#  715|     v715_14(void)         = ExitFunction             : 
+#  715|     v715_1(void)          = EnterFunction                : 
+#  715|     mu715_2(unknown)      = AliasedDefinition            : 
+#  715|     mu715_3(unknown)      = InitializeNonLocal           : 
+#  715|     r715_4(glval<void *>) = VariableAddress[x]           : 
+#  715|     mu715_5(void *)       = InitializeParameter[x]       : &:r715_4
+#  715|     r715_6(void *)        = Load[x]                      : &:r715_4, ~m?
+#  715|     mu715_7(unknown)      = InitializeIndirection[x]     : &:r715_6
+#  715|     r715_8(glval<char>)   = VariableAddress[y]           : 
+#  715|     mu715_9(char)         = InitializeParameter[y]       : &:r715_8
+#  716|     r716_1(glval<long>)   = VariableAddress[#return]     : 
+#  716|     r716_2(glval<long>)   = VariableAddress[#temp716:12] : 
+#  716|     r716_3(long)          = Constant[0]                  : 
+#  716|     mu716_4(long)         = Store[#temp716:12]           : &:r716_2, r716_3
+#  716|     r716_5(long)          = Load[#temp716:12]            : &:r716_2, ~m?
+#  716|     mu716_6(long)         = Store[#return]               : &:r716_1, r716_5
+#  715|     v715_10(void)         = ReturnIndirection[x]         : &:r715_6, ~m?
+#  715|     r715_11(glval<long>)  = VariableAddress[#return]     : 
+#  715|     v715_12(void)         = ReturnValue                  : &:r715_11, ~m?
+#  715|     v715_13(void)         = AliasedUse                   : ~m?
+#  715|     v715_14(void)         = ExitFunction                 : 
 
 #  720| double CallNestedTemplateFunc()
 #  720|   Block 0
