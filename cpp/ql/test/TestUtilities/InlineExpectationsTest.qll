@@ -233,7 +233,7 @@ private string expectationPattern() {
   exists(string tag, string tags, string value |
     tag = "[A-Za-z-_][A-Za-z-_0-9]*" and
     tags = "((?:" + tag + ")(?:\\s*,\\s*" + tag + ")*)" and
-    value = "((?:\"[^\"]*\"|\\S+)*)" and
+    value = "((?:\"[^\"]*\"|'[^']*'|\\S+)*)" and
     result = tags + "(?:=" + value + ")?"
   )
 }
