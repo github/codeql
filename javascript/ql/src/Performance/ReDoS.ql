@@ -170,82 +170,6 @@ class InputSymbol extends TInputSymbol {
   }
 }
 
-/**
- * Gets a lower bound on the characters matched by the given character class term.
- */
-string getCCLowerBound(RegExpTerm t) {
-  t.getParent() instanceof RegExpCharacterClass and
-  (
-    result = t.(RegExpConstant).getValue()
-    or
-    t.(RegExpCharacterRange).isRange(result, _)
-    or
-    exists(string name | name = t.(RegExpCharacterClassEscape).getValue() |
-      name = "w" and result = "0"
-      or
-      name = "W" and result = ""
-      or
-      name = "s" and result = ""
-      or
-      name = "S" and result = ""
-    )
-  )
-}
-
-/**
- * The highest character used in a regular expression. Used to represent intervals without an upper bound.
- */
-string highestCharacter() { result = max(RegExpConstant c | | c.getValue()) }
-
-/**
- * Gets an upper bound on the characters matched by the given character class term.
- */
-string getCCUpperBound(RegExpTerm t) {
-  t.getParent() instanceof RegExpCharacterClass and
-  (
-    result = t.(RegExpConstant).getValue()
-    or
-    t.(RegExpCharacterRange).isRange(_, result)
-    or
-    exists(string name | name = t.(RegExpCharacterClassEscape).getValue() |
-      name = "w" and result = "z"
-      or
-      name = "W" and result = highestCharacter()
-      or
-      name = "s" and result = highestCharacter()
-      or
-      name = "S" and result = highestCharacter()
-    )
-  )
-}
-
-/**
- * Holds if `s` belongs to `l` and is a character class whose set of matched characters is contained
- * in the interval `lo-hi`.
- */
-predicate hasBounds(RegExpRoot l, InputSymbol s, string lo, string hi) {
-  exists(RegExpCharacterClass cc | s = CharClass(cc) |
-    l = getRoot(cc) and
-    lo = min(getCCLowerBound(cc.getAChild())) and
-    hi = max(getCCUpperBound(cc.getAChild()))
-  )
-}
-
-/**
- * Holds if `s1` and `s2` possibly have a non-empty intersection.
- *
- * This predicate is over-approximate; it is only used for pruning the search space.
- */
-predicate compatible(InputSymbol s1, InputSymbol s2) {
-  exists(RegExpRoot l, string lo1, string lo2, string hi1, string hi2 |
-    hasBounds(l, s1, lo1, hi1) and
-    hasBounds(l, s2, lo2, hi2) and
-    max(string s | s = lo1 or s = lo2) <= min(string s | s = hi1 or s = hi2)
-  )
-  or
-  exists(intersect(s1, s2))
-}
-
 newtype TState =
   Match(RegExpTerm t, int i) {
     getRoot(t).isRelevant() and
@@ -447,7 +371,7 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
     // Use pragma[noopt] to prevent compatible(s1,s2) from being the starting point of the join.
     // From (s1,s2) it would find a huge number of intermediate state pairs (q1,q2) originating from different literals,
     // and discover at the end that no `q` can reach both `q1` and `q2` by epsilon transitions.
-    compatible(s1, s2)
+    exists(intersect(s1, s2))
   |
     s1 != s2
     or
@@ -473,7 +397,7 @@ predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, State r2) 
   exists(State q1, State q2 | q = MkStatePair(q1, q2) |
     deltaClosed(q1, s1, r1) and
     deltaClosed(q2, s2, r2) and
-    compatible(s1, s2)
+    exists(intersect(s1, s2))
   )
 }
 
