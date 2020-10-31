@@ -94,3 +94,5 @@ var good9 = '(a|aa?)*b';
 // NOT GOOD
 var bad18 = /(([^]|[^a])*)"/;
 
+// NOT GOOD
+var bad19 = /([^"']+)*/g;
