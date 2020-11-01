@@ -141,9 +141,14 @@ newtype TInputSymbol =
    * An input symbol representing all characters matched by
    * (non-universal) character class `recc`.
    */
-  CharClass(RegExpCharacterClass recc) {
+  CharClass(RegExpTerm recc) {
     getRoot(recc).isRelevant() and
-    not recc.isUniversalClass()
+    (
+      recc instanceof RegExpCharacterClass and
+      not recc.(RegExpCharacterClass).isUniversalClass()
+    )
+    or
+    recc instanceof RegExpCharacterClassEscape
   } or
   /** An input symbol representing all characters matched by `.`. */
   Dot() or
@@ -183,7 +188,7 @@ class InputSymbol extends TInputSymbol {
   string toString() {
     this = Char(result)
     or
-    result = any(RegExpCharacterClass recc | this = CharClass(recc)).toString()
+    result = any(RegExpTerm recc | this = CharClass(recc)).toString()
     or
     this = Dot() and result = "."
     or
@@ -297,7 +302,41 @@ private module CharacterClasses {
           ))
     }
   }
-  // TODO: Implementations for RegExpCharacterClassEscape
+
+  /**
+   * An implementation of `CharacterClass` for \d, \s, and \w.
+   */
+  private class PositiveCharacterClassEscape extends CharacterClass {
+    RegExpCharacterClassEscape cc;
+
+    PositiveCharacterClassEscape() { this = CharClass(cc) and cc.getValue() = ["d", "s", "w"] }
+
+    override string getARelevantChar() {
+      cc.getValue() = "d" and
+      result = ["0", "9"]
+      or
+      cc.getValue() = "s" and
+      result = [" "]
+      or
+      cc.getValue() = "w" and
+      result = ["a", "Z", "_", "0", "9"]
+    }
+
+    override predicate matches(string char) {
+      cc.getValue() = "d" and
+      char = "0123456789".charAt(_)
+      or
+      cc.getValue() = "s" and
+      // TODO: also supposed to match \f and vertical tab (\x0B).
+      char = [" ", "\t", "\r", "\n"]
+      or
+      cc.getValue() = "w" and
+      char = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".charAt(_)
+    }
+
+    override string choose() { result = min(string c | c = getARelevantChar()) }
+  }
+  // TODO: Implementations for inversed RegExpCharacterClassEscape
 }
 
 newtype TState =
@@ -401,7 +440,12 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     q2 = after(cc)
   )
   or
-  // TODO: Or exists(RegExpCharacterClassEscape
+  exists(RegExpCharacterClassEscape cc |
+    q1 = before(cc) and
+    lbl = CharClass(cc) and
+    q2 = after(cc)
+  )
+  or
   exists(RegExpAlt alt | lbl = Epsilon() | q1 = before(alt) and q2 = before(alt.getAChild()))
   or
   exists(RegExpSequence seq | lbl = Epsilon() | q1 = before(seq) and q2 = before(seq.getChild(0)))

@@ -134,4 +134,13 @@ var bad28 = /((\d|[0-9])*)"/;
 var bad29 = /((\s|\s)*)"/;
 
 // NOT GOOD
-var bad29 = /((\w|G)*)"/;
+var bad30 = /((\w|G)*)"/;
+
+// GOOD
+var good11 = /((\s|\d)*)"/;
+
+// NOT GOOD
+var bad31 = /((\d|\w)*)"/;
+
+// NOT GOOD
+var bad32 = /((\d|5)*)"/;
