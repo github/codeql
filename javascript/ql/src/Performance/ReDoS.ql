@@ -469,11 +469,10 @@ predicate charClassMatchesChar(RegExpCharacterClass cc, string char) {
 }
 
 /**
- * Gets the minimum char that is matched by both the positive char class `c` and the
- * negative char class `d`.
+ * Gets the minimum char that is matched by both the character classes `c` and `d`.
  */
 pragma[noinline]
-private string getMinOverlapBetweenCharacterClasses(CharClass c, InvertedCharClass d) {
+private string getMinOverlapBetweenCharacterClasses(TInputSymbol c, TInputSymbol d) {
   result = min(getAOverlapBetweenCharacterClasses(c, d))
 }
 
@@ -506,17 +505,35 @@ private string getARelevantCharClassChar(TInputSymbol symbol) {
 }
 
 /**
- * Gets a char that is matched by both the positive char class `c` and the
- * negative char class `d`.
+ * Gets a char that is matched by both the character classes `c` and `d`.
  */
-private string getAOverlapBetweenCharacterClasses(CharClass c, InvertedCharClass d) {
+private string getAOverlapBetweenCharacterClasses(TInputSymbol c, TInputSymbol d) {
   sharesRoot(c, d) and
   result = [getARelevantCharClassChar(c), getARelevantCharClassChar(d)] and
-  exists(RegExpCharacterClass negClass, RegExpCharacterClass posClass |
-    c = CharClass(posClass) and
-    d = InvertedCharClass(negClass) and
-    charClassMatchesChar(posClass, result) and
-    not charClassMatchesChar(negClass, result)
+  (
+    // pos-neg
+    exists(RegExpCharacterClass negClass, RegExpCharacterClass posClass |
+      c = CharClass(posClass) and
+      d = InvertedCharClass(negClass) and
+      charClassMatchesChar(posClass, result) and
+      not charClassMatchesChar(negClass, result)
+    )
+    or
+    // pos-pos
+    exists(RegExpCharacterClass class1, RegExpCharacterClass class2 | not class1 = class2 |
+      c = CharClass(class1) and
+      d = CharClass(class2) and
+      charClassMatchesChar(class1, result) and
+      charClassMatchesChar(class2, result)
+    )
+    or
+    // neg-neg
+    exists(RegExpCharacterClass class1, RegExpCharacterClass class2 | not class1 = class2 |
+      c = InvertedCharClass(class1) and
+      d = InvertedCharClass(class2) and
+      not charClassMatchesChar(class1, result) and
+      not charClassMatchesChar(class2, result)
+    )
   )
 }
 

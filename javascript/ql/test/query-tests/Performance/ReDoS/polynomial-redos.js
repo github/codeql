@@ -43,7 +43,7 @@ app.use(function(req, res) {
 	tainted.match(/^([a-z0-9-]+)[ \t]+([a-zA-Z0-9+\/]+[=]*)([\n \t]+([^\n]+))?$/); // NOT OK - but not flagged due to lack of support for inverted character classes
 	tainted.match(/^([a-z0-9-]+)[ \t]+([a-zA-Z0-9+\/]+[=]*)([ \t]+([^ \t][^\n]*[\n]*)?)?$/); // OK
 
-	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/); // NOT OK - but not flagged
+	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/); // NOT OK - but only flagged by js/redos
 	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/); // OK
 	tainted.replaceAll(/\s*\n\s*/g, ' '); // NOT OK
 

@@ -120,3 +120,9 @@ var bad25 = /"((?:\\[\x00-\x7f]|[^\x00-\x08\x0a-\x1f\x7f"])*)"/;
 
 // GOOD
 var bad26 = /"((?:\\[\x00-\x7f]|[^\x00-\x08\x0a-\x1f\x7f"\\])*)"/;
+
+// NOT GOOD
+var bad27 = /(([a-z]|[d-h])*)"/;
+
+// NOT GOOD
+var bad27 = /(([^a-z]|[^0-9])*)"/;
