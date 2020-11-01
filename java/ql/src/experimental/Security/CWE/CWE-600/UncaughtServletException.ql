@@ -14,17 +14,19 @@ import semmle.code.java.frameworks.Servlets
 import semmle.code.xml.WebXML
 import DataFlow::PathGraph
 
-/** The type `java.io.IOException`. */
-class IOException extends RefType {
-  IOException() { this.hasQualifiedName("java.io", "IOException") }
-}
-
 /** Holds if a given exception type is caught. */
 private predicate exceptionIsCaught(TryStmt t, RefType exType) {
   exists(CatchClause cc, LocalVariableDeclExpr v |
     t.getACatchClause() = cc and
     cc.getVariable() = v and
-    v.getType().(RefType).getASubtype*() = exType // Detect the case that a subclass exception is thrown but its parent class is declared in the catch clause.
+    v.getType().(RefType).getASubtype*() = exType and // Detect the case that a subclass exception is thrown but its parent class is declared in the catch clause.
+    not exists(
+      ThrowStmt ts, ClassInstanceExpr cie // Catch and rethrow an exception without processing, e.g. catch (UnknownHostException uhex) {throw new IOException(uhex);}
+    |
+      ts.getEnclosingStmt() = cc.getBlock() and
+      ts.getExpr() = cie and
+      cie.getArgument(0) = v.getAnAccess()
+    )
   )
 }
 

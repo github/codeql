@@ -49,7 +49,6 @@ class UncaughtServletException extends HttpServlet {
 	}
 
 	// BAD - Tests rethrowing caught exceptions with stack trace.
-	// Note this case is not yet detected by this query. 
 	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			String ip = request.getParameter("srcIP");
