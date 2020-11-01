@@ -139,20 +139,10 @@ newtype TInputSymbol =
   Char(string c) { c = any(RegExpConstant cc | getRoot(cc).isRelevant()).getValue().charAt(_) } or
   /**
    * An input symbol representing all characters matched by
-   * (positive, non-universal) character class `recc`.
+   * (non-universal) character class `recc`.
    */
   CharClass(RegExpCharacterClass recc) {
     getRoot(recc).isRelevant() and
-    not recc.isInverted() and
-    not recc.isUniversalClass()
-  } or
-  /**
-   * An input symbol representing all characters matched by
-   * the inverted (non-universal) character class `recc`.
-   */
-  InvertedCharClass(RegExpCharacterClass recc) {
-    getRoot(recc).isRelevant() and
-    recc.isInverted() and
     not recc.isUniversalClass()
   } or
   /** An input symbol representing all characters matched by `.`. */
@@ -166,7 +156,6 @@ newtype TInputSymbol =
  * Holds if `a` and `b` are input symbols from the same regexp.
  * (And not a `Dot()`, `Any()` or `Epsilon()`)
  */
-pragma[noinline]
 private predicate sharesRoot(TInputSymbol a, TInputSymbol b) {
   exists(RegExpRoot root |
     belongsTo(a, root) and
@@ -182,8 +171,6 @@ private predicate belongsTo(TInputSymbol a, RegExpRoot root) {
     a = Char(term.(RegExpConstant).getValue().charAt(_))
     or
     a = CharClass(term)
-    or
-    a = InvertedCharClass(term)
   )
 }
 
@@ -198,12 +185,119 @@ class InputSymbol extends TInputSymbol {
     or
     result = any(RegExpCharacterClass recc | this = CharClass(recc)).toString()
     or
-    result = any(RegExpCharacterClass recc | this = InvertedCharClass(recc)).toString()
-    or
     this = Dot() and result = "."
     or
     this = Any() and result = "[^]"
   }
+}
+
+/**
+ * An abstract input symbol that represents a character class.
+ */
+abstract class CharacterClass extends InputSymbol {
+  /**
+   * Gets a char that is likely relevant for the ReDoS analysis of this character class.
+   * That is: One of the endpoints to the character class,
+   * or a char that is off-by-one to one of the endpoints of the character class (if this is an inversed character class).
+   */
+  abstract string getARelevantChar();
+
+  /**
+   * Holds if this character class matches `char`.
+   */
+  bindingset[char]
+  abstract predicate matches(string char);
+
+  /**
+   * Gets a single character matched by this character class.
+   */
+  abstract string choose();
+}
+
+/**
+ * Provides implementations for `CharacterClass`.
+ */
+private module CharacterClasses {
+  /**
+   * Holds if the character class `cc` has a child (constant or range) that matches `char`.
+   */
+  bindingset[char]
+  predicate hasChildThatMatches(RegExpCharacterClass cc, string char) {
+    exists(RegExpTerm child | child = cc.getAChild() |
+      char = child.(RegExpConstant).getValue()
+      or
+      exists(string lo, string hi | child.(RegExpCharacterRange).isRange(lo, hi) |
+        lo <= char and char <= hi
+      )
+      // TODO: RegExpCharacterClassEscape.
+    )
+  }
+
+  /**
+   * Gets a char that is mentioned in the character class `c`.
+   */
+  private string getAMentionedChar(RegExpCharacterClass c) {
+    exists(RegExpTerm child | child = c.getAChild() |
+      result = child.(RegExpConstant).getValue()
+      or
+      child.(RegExpCharacterRange).isRange(result, _)
+      or
+      child.(RegExpCharacterRange).isRange(_, result)
+    )
+  }
+
+  /**
+   * An implementation of `CharacterClass` for positive (non inverted) character classes.
+   */
+  private class PositiveCharacterClass extends CharacterClass {
+    RegExpCharacterClass cc;
+
+    PositiveCharacterClass() { this = CharClass(cc) and not cc.isInverted() }
+
+    override string getARelevantChar() { result = getAMentionedChar(cc) }
+
+    bindingset[char]
+    override predicate matches(string char) { hasChildThatMatches(cc, char) }
+
+    override string choose() {
+      result =
+        min(string c |
+          exists(RegExpTerm child | child = cc.getAChild() |
+            c = child.(RegExpConstant).getValue() or
+            child.(RegExpCharacterRange).isRange(c, _)
+          )
+        )
+    }
+  }
+
+  /**
+   * An implementation of `CharacterClass` for inverted character classes.
+   */
+  private class InvertedCharacterClass extends CharacterClass {
+    RegExpCharacterClass cc;
+
+    InvertedCharacterClass() { this = CharClass(cc) and cc.isInverted() }
+
+    override string getARelevantChar() {
+      result = nextChar(getAMentionedChar(cc)) or
+      nextChar(result) = getAMentionedChar(cc)
+    }
+
+    bindingset[char]
+    override predicate matches(string char) { not hasChildThatMatches(cc, char) }
+
+    override string choose() {
+      // The next char after the max of the inverted charclass.
+      result =
+        nextChar(max(string c |
+            exists(RegExpTerm child | child = cc.getAChild() |
+              c = child.(RegExpConstant).getValue() or
+              child.(RegExpCharacterRange).isRange(_, c)
+            )
+          ))
+    }
+  }
+  // TODO: Implementations for RegExpCharacterClassEscape
 }
 
 newtype TState =
@@ -303,10 +397,11 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     cc.isUniversalClass() and q1 = before(cc) and lbl = Any() and q2 = after(cc)
     or
     q1 = before(cc) and
-    (lbl = CharClass(cc) or lbl = InvertedCharClass(cc)) and
+    lbl = CharClass(cc) and
     q2 = after(cc)
   )
   or
+  // TODO: Or exists(RegExpCharacterClassEscape
   exists(RegExpAlt alt | lbl = Epsilon() | q1 = before(alt) and q2 = before(alt.getAChild()))
   or
   exists(RegExpSequence seq | lbl = Epsilon() | q1 = before(seq) and q2 = before(seq.getChild(0)))
@@ -455,86 +550,22 @@ newtype Trace =
   }
 
 /**
- * Holds if the character class `cc` has a child (constant or range) that matches `char`.
- */
-bindingset[char]
-predicate charClassMatchesChar(RegExpCharacterClass cc, string char) {
-  exists(RegExpTerm child | child = cc.getAChild() |
-    char = child.(RegExpConstant).getValue()
-    or
-    exists(string lo, string hi | child.(RegExpCharacterRange).isRange(lo, hi) |
-      lo <= char and char <= hi
-    )
-  )
-}
-
-/**
  * Gets the minimum char that is matched by both the character classes `c` and `d`.
  */
-pragma[noinline]
-private string getMinOverlapBetweenCharacterClasses(TInputSymbol c, TInputSymbol d) {
+private string getMinOverlapBetweenCharacterClasses(CharacterClass c, CharacterClass d) {
   result = min(getAOverlapBetweenCharacterClasses(c, d))
 }
 
 /**
- * Gets a char that is mentioned in the character class `c`.
- */
-private string getAMentionedChar(RegExpCharacterClass c) {
-  exists(RegExpTerm child | child = c.getAChild() |
-    result = child.(RegExpConstant).getValue()
-    or
-    child.(RegExpCharacterRange).isRange(result, _)
-    or
-    child.(RegExpCharacterRange).isRange(_, result)
-  )
-}
-
-/**
- * Gets a char that is relevant for ReDoS analysis of `symbol`.
- * The result is either mentioned in the character class `symbol`,
- * or, if `symbol` is an inverted character class, then the result is the next/previous charcode.
- */
-pragma[noinline]
-private string getARelevantCharClassChar(TInputSymbol symbol) {
-  exists(RegExpCharacterClass cc | symbol = CharClass(cc) | result = getAMentionedChar(cc))
-  or
-  exists(RegExpCharacterClass cc | symbol = InvertedCharClass(cc) |
-    result = nextChar(getAMentionedChar(cc)) or
-    nextChar(result) = getAMentionedChar(cc)
-  )
-}
-
-/**
  * Gets a char that is matched by both the character classes `c` and `d`.
+ * And `c` and `d` is not the same character class.
  */
-private string getAOverlapBetweenCharacterClasses(TInputSymbol c, TInputSymbol d) {
+private string getAOverlapBetweenCharacterClasses(CharacterClass c, CharacterClass d) {
   sharesRoot(c, d) and
-  result = [getARelevantCharClassChar(c), getARelevantCharClassChar(d)] and
-  (
-    // pos-neg
-    exists(RegExpCharacterClass negClass, RegExpCharacterClass posClass |
-      c = CharClass(posClass) and
-      d = InvertedCharClass(negClass) and
-      charClassMatchesChar(posClass, result) and
-      not charClassMatchesChar(negClass, result)
-    )
-    or
-    // pos-pos
-    exists(RegExpCharacterClass class1, RegExpCharacterClass class2 | not class1 = class2 |
-      c = CharClass(class1) and
-      d = CharClass(class2) and
-      charClassMatchesChar(class1, result) and
-      charClassMatchesChar(class2, result)
-    )
-    or
-    // neg-neg
-    exists(RegExpCharacterClass class1, RegExpCharacterClass class2 | not class1 = class2 |
-      c = InvertedCharClass(class1) and
-      d = InvertedCharClass(class2) and
-      not charClassMatchesChar(class1, result) and
-      not charClassMatchesChar(class2, result)
-    )
-  )
+  result = [c.getARelevantChar(), d.getARelevantChar()] and
+  c.matches(result) and
+  d.matches(result) and
+  not c = d
 }
 
 /**
@@ -547,11 +578,7 @@ string intersect(InputSymbol c, InputSymbol d) {
     (
       d = Char(result)
       or
-      exists(RegExpCharacterClass cc | d = CharClass(cc) | charClassMatchesChar(cc, result))
-      or
-      exists(RegExpCharacterClass cc | d = InvertedCharClass(cc) |
-        not charClassMatchesChar(cc, result)
-      )
+      d.(CharacterClass).matches(result)
     )
     or
     d = Dot() and
@@ -562,17 +589,9 @@ string intersect(InputSymbol c, InputSymbol d) {
   or
   result = getMinOverlapBetweenCharacterClasses(c, d)
   or
-  exists(RegExpCharacterClass cc | c = InvertedCharClass(cc) and result = chooseFromInverted(cc) |
-    d = InvertedCharClass(cc) and sharesRoot(c, d)
-    or
-    d = Dot() and
-    not (result = "\n" or result = "\r")
-    or
-    d = Any()
-  )
-  or
-  exists(RegExpCharacterClass cc | c = CharClass(cc) and result = choose(cc) |
-    d = CharClass(cc) and sharesRoot(c, d)
+  result = c.(CharacterClass).choose() and
+  (
+    d = c
     or
     d = Dot() and
     not (result = "\n" or result = "\r")
@@ -593,20 +612,6 @@ string intersect(InputSymbol c, InputSymbol d) {
 }
 
 /**
- * Gets a character matched by character class `cc`.
- */
-string choose(RegExpCharacterClass cc) {
-  exists(CharClass(cc)) and
-  result =
-    min(string c |
-      exists(RegExpTerm child | child = cc.getAChild() |
-        c = child.(RegExpConstant).getValue() or
-        child.(RegExpCharacterRange).isRange(c, _)
-      )
-    )
-}
-
-/**
  * Gets the char after `c` (from a simplified ASCII table).
  */
 string nextChar(string c) { exists(int code | code = ascii(c) | code + 1 = ascii(result)) }
@@ -622,21 +627,6 @@ int ascii(string char) {
         "! \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
             .charAt(_)
     )
-}
-
-/**
- * Chooses a char matched by the inverted char class `cc`.
- */
-string chooseFromInverted(RegExpCharacterClass cc) {
-  exists(InvertedCharClass(cc)) and
-  // The next char after the max of the inverted charclass.
-  result =
-    nextChar(max(string c |
-        exists(RegExpTerm child | child = cc.getAChild() |
-          c = child.(RegExpConstant).getValue() or
-          child.(RegExpCharacterRange).isRange(_, c)
-        )
-      ))
 }
 
 /**

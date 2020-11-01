@@ -126,3 +126,12 @@ var bad27 = /(([a-z]|[d-h])*)"/;
 
 // NOT GOOD
 var bad27 = /(([^a-z]|[^0-9])*)"/;
+
+// NOT GOOD
+var bad28 = /((\d|[0-9])*)"/;
+
+// NOT GOOD
+var bad29 = /((\s|\s)*)"/;
+
+// NOT GOOD
+var bad29 = /((\w|G)*)"/;
