@@ -23,7 +23,7 @@ private DataFlow::Node connect(DataFlow::TypeTracker t) {
 DataFlow::Node connect() { result = connect(DataFlow::TypeTracker::end()) }
 
 /**
- * Provides models for the `db.Conection` class
+ * Provides models for the `db.Connection` class
  *
  * See https://www.python.org/dev/peps/pep-0249/#connection-objects.
  */
