@@ -5,10 +5,10 @@
  */
 
 import python
-private import experimental.dataflow.DataFlow
-private import experimental.dataflow.RemoteFlowSources
-private import experimental.dataflow.TaintTracking
-private import experimental.semmle.python.Frameworks
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.Frameworks
 
 /**
  * A data-flow node that executes an operating system command,

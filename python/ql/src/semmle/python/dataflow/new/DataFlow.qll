@@ -22,5 +22,5 @@ private import python
  * global (inter-procedural) data flow analyses.
  */
 module DataFlow {
-  import experimental.dataflow.internal.DataFlowImpl
+  import internal.DataFlowImpl
 }

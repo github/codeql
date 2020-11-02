@@ -1,8 +1,8 @@
 private import python
-private import experimental.dataflow.DataFlow
+private import semmle.python.dataflow.new.DataFlow
 // Need to import since frameworks can extend `RemoteFlowSource::Range`
-private import experimental.semmle.python.Frameworks
-private import experimental.semmle.python.Concepts
+private import semmle.python.Frameworks
+private import semmle.python.Concepts
 
 /**
  * A data flow source of remote user input.

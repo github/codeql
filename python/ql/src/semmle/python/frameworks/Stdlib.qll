@@ -4,10 +4,10 @@
  */
 
 private import python
-private import experimental.dataflow.DataFlow
-private import experimental.dataflow.TaintTracking
-private import experimental.dataflow.RemoteFlowSources
-private import experimental.semmle.python.Concepts
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.Concepts
 
 /** Provides models for the Python standard library. */
 private module Stdlib {

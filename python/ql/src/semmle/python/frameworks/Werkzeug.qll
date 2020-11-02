@@ -3,8 +3,8 @@
  */
 
 private import python
-private import experimental.dataflow.DataFlow
-private import experimental.dataflow.TaintTracking
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.TaintTracking
 
 module Werkzeug {
   /** Provides models for the `werkzeug` module. */

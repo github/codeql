@@ -4,9 +4,9 @@
  */
 
 private import python
-private import experimental.dataflow.DataFlow
-private import experimental.dataflow.RemoteFlowSources
-private import experimental.semmle.python.Concepts
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.Concepts
 
 /** A module implementing PEP 249. Extend this class for implementations. */
 abstract class PEP249Module extends DataFlow::Node { }

@@ -4,9 +4,9 @@
  */
 
 private import python
-private import experimental.dataflow.DataFlow
-private import experimental.dataflow.RemoteFlowSources
-private import experimental.semmle.python.Concepts
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.Concepts
 
 private module Dill {
   /** Gets a reference to the `dill` module. */

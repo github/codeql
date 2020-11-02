@@ -8,9 +8,9 @@
  */
 
 private import python
-private import experimental.dataflow.DataFlow
-private import experimental.dataflow.RemoteFlowSources
-private import experimental.semmle.python.Concepts
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.Concepts
 
 /**
  * Provides classes modeling security-relevant aspects of the `fabric` PyPI package, for

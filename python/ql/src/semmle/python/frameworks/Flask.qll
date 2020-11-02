@@ -4,11 +4,11 @@
  */
 
 private import python
-private import experimental.dataflow.DataFlow
-private import experimental.dataflow.RemoteFlowSources
-private import experimental.dataflow.TaintTracking
-private import experimental.semmle.python.Concepts
-private import experimental.semmle.python.frameworks.Werkzeug
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.Concepts
+private import semmle.python.frameworks.Werkzeug
 
 /**
  * Provides models for the `flask` PyPI package.

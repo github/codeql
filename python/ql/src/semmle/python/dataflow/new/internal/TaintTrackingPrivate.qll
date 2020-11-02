@@ -1,7 +1,7 @@
 private import python
-private import experimental.dataflow.DataFlow
-private import experimental.dataflow.internal.DataFlowPrivate
-private import experimental.dataflow.internal.TaintTrackingPublic
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowPrivate
+private import semmle.python.dataflow.new.internal.TaintTrackingPublic
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations

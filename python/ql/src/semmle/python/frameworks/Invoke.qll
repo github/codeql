@@ -4,8 +4,8 @@
  */
 
 private import python
-private import experimental.dataflow.DataFlow
-private import experimental.semmle.python.Concepts
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.Concepts
 
 /**
  * Provides models for the `invoke` PyPI package.
