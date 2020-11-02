@@ -1,4 +1,5 @@
 /** Provides taint steps modeling flow through date-manipulation libraries. */
+
 private import javascript
 
 private module DateFns {
@@ -36,8 +37,7 @@ private module DateFns {
   /**
    * Taint step of form: `f -> format(f)(date)`
    */
-  private class CurriedFormatStep extends TaintTracking::AdditionalTaintStep,
-    DataFlow::CallNode {
+  private class CurriedFormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
     CurriedFormatStep() { this = curriedFormatFunction().getACall() }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
@@ -63,9 +63,7 @@ private module Moment {
    * The format string can use backslash-escaping to include mostly arbitrary text.
    */
   private class MomentFormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    MomentFormatStep() {
-      this = moment().getMember("format").getACall()
-    }
+    MomentFormatStep() { this = moment().getMember("format").getACall() }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = getArgument(0) and
