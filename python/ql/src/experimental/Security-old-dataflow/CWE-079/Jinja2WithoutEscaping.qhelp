@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+
+Cross-site scripting (XSS) attacks can occur if untrusted input is not escaped. This applies to templates as well as code.
+The <code>jinja2</code> templates may be vulnerable to XSS if the environment has <code>autoescape</code> set to <code>False</code>.
+Unfortunately, <code>jinja2</code> sets <code>autoescape</code> to <code>False</code> by default.
+Explicitly setting <code>autoescape</code> to <code>True</code> when creating an <code>Environment</code> object will prevent this.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid setting jinja2 autoescape to False.
+Jinja2 provides the function <code>select_autoescape</code> to make sure that the correct auto-escaping is chosen.
+For example, it can be used when creating an environment <code>Environment(autoescape=select_autoescape(['html', 'xml'])</code>
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example is a minimal Flask app which shows a safe and an unsafe way to render the given name back to the page.
+The first view is unsafe as <code>first_name</code> is not escaped, leaving the page vulnerable to cross-site scripting attacks.
+The second view is safe as <code>first_name</code> is escaped, so it is not vulnerable to cross-site scripting attacks.
+</p>
+<sample src="examples/jinja2.py" />
+</example>
+
+<references>
+<li>
+Jinja2: <a href="http://jinja.pocoo.org/docs/2.10/api/">API</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+</li>
+<li>
+OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS (Cross Site Scripting) Prevention Cheat Sheet</a>.
+</li>
+</references>
+</qhelp>
