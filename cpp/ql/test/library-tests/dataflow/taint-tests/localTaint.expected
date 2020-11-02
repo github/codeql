@@ -7231,3 +7231,21 @@
 | vector.cpp:484:29:484:33 | call to c_str | vector.cpp:484:3:484:8 | call to memcpy | TAINT |
 | vector.cpp:484:29:484:33 | call to c_str | vector.cpp:484:10:484:22 | ref arg & ... | TAINT |
 | vector.cpp:486:8:486:9 | ref arg cs | vector.cpp:487:2:487:2 | cs |  |
+| vector.cpp:491:22:491:24 | call to vector | vector.cpp:493:2:493:3 | v1 |  |
+| vector.cpp:491:22:491:24 | call to vector | vector.cpp:494:7:494:8 | v1 |  |
+| vector.cpp:491:22:491:24 | call to vector | vector.cpp:498:1:498:1 | v1 |  |
+| vector.cpp:491:30:491:32 | call to vector | vector.cpp:496:2:496:3 | v2 |  |
+| vector.cpp:491:30:491:32 | call to vector | vector.cpp:496:13:496:14 | v2 |  |
+| vector.cpp:491:30:491:32 | call to vector | vector.cpp:497:7:497:8 | v2 |  |
+| vector.cpp:491:30:491:32 | call to vector | vector.cpp:498:1:498:1 | v2 |  |
+| vector.cpp:493:2:493:3 | ref arg v1 | vector.cpp:494:7:494:8 | v1 |  |
+| vector.cpp:493:2:493:3 | ref arg v1 | vector.cpp:498:1:498:1 | v1 |  |
+| vector.cpp:494:7:494:8 | ref arg v1 | vector.cpp:498:1:498:1 | v1 |  |
+| vector.cpp:496:2:496:3 | ref arg v2 | vector.cpp:497:7:497:8 | v2 |  |
+| vector.cpp:496:2:496:3 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
+| vector.cpp:496:13:496:14 | ref arg v2 | vector.cpp:496:2:496:3 | v2 |  |
+| vector.cpp:496:13:496:14 | ref arg v2 | vector.cpp:497:7:497:8 | v2 |  |
+| vector.cpp:496:13:496:14 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
+| vector.cpp:496:13:496:14 | v2 | vector.cpp:496:16:496:20 | call to begin | TAINT |
+| vector.cpp:496:16:496:20 | call to begin | vector.cpp:496:13:496:22 | call to iterator | TAINT |
+| vector.cpp:497:7:497:8 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
