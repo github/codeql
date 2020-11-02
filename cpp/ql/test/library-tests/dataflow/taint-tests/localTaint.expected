@@ -7240,6 +7240,7 @@
 | vector.cpp:491:30:491:32 | call to vector | vector.cpp:498:1:498:1 | v2 |  |
 | vector.cpp:493:2:493:3 | ref arg v1 | vector.cpp:494:7:494:8 | v1 |  |
 | vector.cpp:493:2:493:3 | ref arg v1 | vector.cpp:498:1:498:1 | v1 |  |
+| vector.cpp:493:18:493:23 | call to source | vector.cpp:493:2:493:3 | ref arg v1 | TAINT |
 | vector.cpp:494:7:494:8 | ref arg v1 | vector.cpp:498:1:498:1 | v1 |  |
 | vector.cpp:496:2:496:3 | ref arg v2 | vector.cpp:497:7:497:8 | v2 |  |
 | vector.cpp:496:2:496:3 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
@@ -7248,4 +7249,6 @@
 | vector.cpp:496:13:496:14 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
 | vector.cpp:496:13:496:14 | v2 | vector.cpp:496:16:496:20 | call to begin | TAINT |
 | vector.cpp:496:16:496:20 | call to begin | vector.cpp:496:13:496:22 | call to iterator | TAINT |
+| vector.cpp:496:25:496:30 | call to source | vector.cpp:496:2:496:3 | ref arg v2 | TAINT |
+| vector.cpp:496:25:496:30 | call to source | vector.cpp:496:5:496:11 | call to emplace | TAINT |
 | vector.cpp:497:7:497:8 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
