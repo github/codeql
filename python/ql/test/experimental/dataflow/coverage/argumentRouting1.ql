@@ -3,9 +3,9 @@
  */
 
 import python
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.DataFlow
 import DataFlow::PathGraph
-private import experimental.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * A configuration to check routing of arguments through magic methods.

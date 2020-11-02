@@ -1,6 +1,6 @@
 import python
-import experimental.dataflow.DataFlow
-import experimental.semmle.python.Concepts
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.Concepts
 import TestUtilities.InlineExpectationsTest
 
 string value_from_expr(Expr e) {
