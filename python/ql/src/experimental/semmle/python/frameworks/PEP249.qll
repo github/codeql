@@ -1,8 +1,14 @@
+/**
+ * Provides classes modeling PEP 249.
+ * See https://www.python.org/dev/peps/pep-0249/.
+ */
+
 private import python
 private import experimental.dataflow.DataFlow
 private import experimental.dataflow.RemoteFlowSources
 private import experimental.semmle.python.Concepts
 
+/** A module implementing PEP 249. Extend this class for implementations. */
 abstract class PEP249Module extends DataFlow::Node { }
 
 /** Gets a reference to a connect call. */
@@ -19,7 +25,7 @@ DataFlow::Node connect() { result = connect(DataFlow::TypeTracker::end()) }
 /**
  * Provides models for the `db.Conection` class
  *
- * See apiref.
+ * See https://www.python.org/dev/peps/pep-0249/#connection-objects.
  */
 module Connection {
   /**
@@ -30,6 +36,9 @@ module Connection {
    * library.
    *
    * Use `Conection::instance()` predicate to get references to instances of `db.Conection`.
+   *
+   * Extend this class if the module implementing PEP 249 offers more direct ways to obtain
+   * a connection than going through `connect`.
    */
   abstract class InstanceSource extends DataFlow::Node { }
 
@@ -52,9 +61,12 @@ module Connection {
   DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
 }
 
-/** Provides models for the `django.db.connection.cursor` method. */
+/**
+ * Provides models for the `db.connection.cursor` method.
+ * See https://www.python.org/dev/peps/pep-0249/#cursor.
+ */
 module cursor {
-  /** Gets a reference to the `django.db.connection.cursor` metod. */
+  /** Gets a reference to the `db.connection.cursor` metod. */
   private DataFlow::Node methodRef(DataFlow::TypeTracker t) {
     t.startInAttr("cursor") and
     result = Connection::instance()
@@ -62,10 +74,10 @@ module cursor {
     exists(DataFlow::TypeTracker t2 | result = methodRef(t2).track(t2, t))
   }
 
-  /** Gets a reference to the `django.db.connection.cursor` metod. */
+  /** Gets a reference to the `db.connection.cursor` metod. */
   DataFlow::Node methodRef() { result = methodRef(DataFlow::TypeTracker::end()) }
 
-  /** Gets a reference to a result of calling `django.db.connection.cursor`. */
+  /** Gets a reference to a result of calling `db.connection.cursor`. */
   private DataFlow::Node methodResult(DataFlow::TypeTracker t) {
     t.start() and
     result.asCfgNode().(CallNode).getFunction() = methodRef().asCfgNode()
@@ -73,11 +85,14 @@ module cursor {
     exists(DataFlow::TypeTracker t2 | result = methodResult(t2).track(t2, t))
   }
 
-  /** Gets a reference to a result of calling `django.db.connection.cursor`. */
+  /** Gets a reference to a result of calling `db.connection.cursor`. */
   DataFlow::Node methodResult() { result = methodResult(DataFlow::TypeTracker::end()) }
 }
 
-/** Gets a reference to the `django.db.connection.cursor.execute` function. */
+/**
+ * Gets a reference to the `db.connection.cursor.execute` function.
+ * See https://www.python.org/dev/peps/pep-0249/#id15.
+ */
 private DataFlow::Node execute(DataFlow::TypeTracker t) {
   t.startInAttr("execute") and
   result = cursor::methodResult()
@@ -85,7 +100,10 @@ private DataFlow::Node execute(DataFlow::TypeTracker t) {
   exists(DataFlow::TypeTracker t2 | result = execute(t2).track(t2, t))
 }
 
-/** Gets a reference to the `django.db.connection.cursor.execute` function. */
+/**
+ * Gets a reference to the `db.connection.cursor.execute` function.
+ * See https://www.python.org/dev/peps/pep-0249/#id15.
+ */
 DataFlow::Node execute() { result = execute(DataFlow::TypeTracker::end()) }
 
 private class DbConnectionExecute extends SqlExecution::Range, DataFlow::CfgNode {
