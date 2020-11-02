@@ -61,5 +61,6 @@ where
   not exists(Literal l |
     l.getEnclosingFunction() = f and
     not exists(l.getValue())
-  )
+  ) and
+  not any(ConditionDeclExpr cde).getEnclosingFunction() = f
 select v, "Variable " + v.getName() + " is not used"

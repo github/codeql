@@ -138,7 +138,7 @@ int test_lambdas2()
 
 void test_if_initializer()
 {
-	bool a = false, b = true; // GOOD: a, b are both used [FALSE POSITIVE]
+	bool a = false, b = true; // GOOD: a, b are both used
 
 	if (a = b; a)
 	{

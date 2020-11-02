@@ -7,7 +7,6 @@
 | code2.cpp:64:7:64:8 | v3 | Variable v3 is not used |
 | code2.cpp:108:11:108:12 | v2 | Variable v2 is not used |
 | code2.cpp:128:9:128:9 | b | Variable b is not used |
-| code2.cpp:141:18:141:18 | b | Variable b is not used |
 | code.c:10:18:10:18 | y | Variable y is not used |
 | code.c:11:18:11:18 | z | Variable z is not used |
 | code.c:18:7:18:7 | x | Variable x is not used |
