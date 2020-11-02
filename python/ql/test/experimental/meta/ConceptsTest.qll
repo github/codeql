@@ -73,6 +73,38 @@ class DecodingTest extends InlineExpectationsTest {
   }
 }
 
+class EncodingTest extends InlineExpectationsTest {
+  EncodingTest() { this = "EncodingTest" }
+
+  override string getARelevantTag() { result in ["encodeInput", "encodeOutput", "encodeFormat"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Encoding e |
+      exists(DataFlow::Node data |
+        location = data.getLocation() and
+        element = data.toString() and
+        value = value_from_expr(data.asExpr()) and
+        (
+          data = e.getAnInput() and
+          tag = "encodeInput"
+          or
+          data = e.getOutput() and
+          tag = "encodeOutput"
+        )
+      )
+      or
+      exists(string format |
+        location = e.getLocation() and
+        element = format and
+        value = format and
+        format = e.getFormat() and
+        tag = "encodeFormat"
+      )
+    )
+  }
+}
+
 class CodeExecutionTest extends InlineExpectationsTest {
   CodeExecutionTest() { this = "CodeExecutionTest" }
 
@@ -139,6 +171,104 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
       element = param.toString() and
       value = param.asName().getId() and
       tag = "routedParameter"
+    )
+  }
+}
+
+class HttpServerHttpResponseTest extends InlineExpectationsTest {
+  File file;
+
+  HttpServerHttpResponseTest() {
+    file.getExtension() = "py" and
+    this = "HttpServerHttpResponseTest: " + file
+  }
+
+  override string getARelevantTag() { result in ["HttpResponse", "responseBody", "mimetype"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    // By adding `file` as a class field, and these two restrictions, it's possible to
+    // say that we only want to check _some_ tags for certain files. This helped make
+    // flask tests more readable since adding full annotations for HttpResponses in the
+    // the tests for routing setup is both annoying and not very useful.
+    location.getFile() = file and
+    tag = getARelevantTag() and
+    (
+      exists(HTTP::Server::HttpResponse response |
+        location = response.getLocation() and
+        element = response.toString() and
+        value = "" and
+        tag = "HttpResponse"
+      )
+      or
+      exists(HTTP::Server::HttpResponse response |
+        location = response.getLocation() and
+        element = response.toString() and
+        value = value_from_expr(response.getBody().asExpr()) and
+        tag = "responseBody"
+      )
+      or
+      exists(HTTP::Server::HttpResponse response |
+        location = response.getLocation() and
+        element = response.toString() and
+        value = response.getMimetype() and
+        tag = "mimetype"
+      )
+    )
+  }
+}
+
+class FileSystemAccessTest extends InlineExpectationsTest {
+  FileSystemAccessTest() { this = "FileSystemAccessTest" }
+
+  override string getARelevantTag() { result = "getAPathArgument" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(FileSystemAccess a, DataFlow::Node path |
+      exists(location.getFile().getRelativePath()) and
+      path = a.getAPathArgument() and
+      location = a.getLocation() and
+      element = path.toString() and
+      value = value_from_expr(path.asExpr()) and
+      tag = "getAPathArgument"
+    )
+  }
+}
+
+class PathNormalizationTest extends InlineExpectationsTest {
+  PathNormalizationTest() { this = "PathNormalizationTest" }
+
+  override string getARelevantTag() { result = "pathNormalization" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(Path::PathNormalization n |
+      exists(location.getFile().getRelativePath()) and
+      location = n.getLocation() and
+      element = n.toString() and
+      value = "" and
+      tag = "pathNormalization"
+    )
+  }
+}
+
+class SafeAccessCheckTest extends InlineExpectationsTest {
+  SafeAccessCheckTest() { this = "SafeAccessCheckTest" }
+
+  override string getARelevantTag() { result in ["checks", "branch"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(Path::SafeAccessCheck c, DataFlow::Node checks, boolean branch |
+      exists(location.getFile().getRelativePath()) and
+      c.checks(checks.asCfgNode(), branch) and
+      location = c.getLocation() and
+      (
+        element = checks.toString() and
+        value = value_from_expr(checks.asExpr()) and
+        tag = "checks"
+        or
+        element = branch.toString() and
+        value = branch.toString() and
+        tag = "branch"
+      )
     )
   }
 }

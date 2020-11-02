@@ -5,31 +5,116 @@
 import javascript
 
 /**
- * A function composed from a collection of functions.
+ * A call to a function that constructs a function composition `f(g(h(...)))` from a
+ * series functions `f, g, h, ...`.
  */
-private class ComposedFunction extends DataFlow::CallNode {
-  ComposedFunction() {
-    exists(string name |
-      name = "just-compose" or
-      name = "compose-function"
-    |
-      this = DataFlow::moduleImport(name).getACall()
-    )
-    or
-    this = LodashUnderscore::member("flow").getACall()
+class FunctionCompositionCall extends DataFlow::CallNode {
+  FunctionCompositionCall::Range range;
+
+  FunctionCompositionCall() { this = range }
+
+  /**
+   * Gets the `i`th function in the composition `f(g(h(...)))`, counting from left to right.
+   *
+   * Note that this is the opposite of the order in which the function are invoked,
+   * that is, `g` occurs later than `f` in `f(g(...))` but is invoked before `f`.
+   */
+  DataFlow::Node getOperandNode(int i) { result = range.getOperandNode(i) }
+
+  /** Gets a node holding one of the functions to be composed. */
+  final DataFlow::Node getAnOperandNode() { result = getOperandNode(_) }
+
+  /**
+   * Gets the function flowing into the `i`th function in the composition `f(g(h(...)))`.
+   *
+   * Note that this is the opposite of the order in which the function are invoked,
+   * that is, `g` occurs later than `f` in `f(g(...))` but is invoked before `f`.
+   */
+  final DataFlow::FunctionNode getOperandFunction(int i) {
+    result = getOperandNode(i).getALocalSource()
+  }
+
+  /** Gets any of the functions being composed. */
+  final DataFlow::Node getAnOperandFunction() { result = getOperandFunction(_) }
+
+  /** Gets the number of functions being composed. */
+  int getNumOperand() { result = range.getNumOperand() }
+}
+
+/**
+ * Companion module to the `FunctionCompositionCall` class.
+ */
+module FunctionCompositionCall {
+  /**
+   * Class that determines the set of values in `FunctionCompositionCall`.
+   *
+   * May be subclassed to classify more calls as function compositions.
+   */
+  abstract class Range extends DataFlow::CallNode {
+    /**
+     * Gets the function flowing into the `i`th function in the composition `f(g(h(...)))`.
+     */
+    abstract DataFlow::Node getOperandNode(int i);
+
+    /** Gets the number of functions being composed. */
+    abstract int getNumOperand();
   }
 
   /**
-   * Gets the ith function in this composition.
+   * A function composition call that accepts its operands in an array or
+   * via the arguments list.
+   *
+   * For simplicity, we model every composition function as if it supported this.
    */
-  DataFlow::FunctionNode getFunction(int i) { result.flowsTo(getArgument(i)) }
+  abstract private class WithArrayOverloading extends Range {
+    /** Gets the `i`th argument to the call or the `i`th array element passed into the call. */
+    DataFlow::Node getEffectiveArgument(int i) {
+      result = getArgument(0).(DataFlow::ArrayCreationNode).getElement(i)
+      or
+      not getArgument(0) instanceof DataFlow::ArrayCreationNode and
+      result = getArgument(i)
+    }
+
+    override int getNumOperand() {
+      result = getArgument(0).(DataFlow::ArrayCreationNode).getSize()
+      or
+      not getArgument(0) instanceof DataFlow::ArrayCreationNode and
+      result = getNumArgument()
+    }
+  }
+
+  /** A call whose arguments are functions `f,g,h` which are composed into `f(g(h(...))` */
+  private class RightToLeft extends WithArrayOverloading {
+    RightToLeft() {
+      this = DataFlow::moduleImport(["compose-function"]).getACall()
+      or
+      this = DataFlow::moduleMember(["redux", "ramda"], "compose").getACall()
+      or
+      this = LodashUnderscore::member("flowRight").getACall()
+    }
+
+    override DataFlow::Node getOperandNode(int i) { result = getEffectiveArgument(i) }
+  }
+
+  /** A call whose arguments are functions `f,g,h` which are composed into `f(g(h(...))` */
+  private class LeftToRight extends WithArrayOverloading {
+    LeftToRight() {
+      this = DataFlow::moduleImport("just-compose").getACall()
+      or
+      this = LodashUnderscore::member("flow").getACall()
+    }
+
+    override DataFlow::Node getOperandNode(int i) {
+      result = getEffectiveArgument(getNumOperand() - i - 1)
+    }
+  }
 }
 
 /**
  * A taint step for a composed function.
  */
 private class ComposedFunctionTaintStep extends TaintTracking::AdditionalTaintStep {
-  ComposedFunction composed;
+  FunctionCompositionCall composed;
   DataFlow::CallNode call;
 
   ComposedFunctionTaintStep() {
@@ -38,25 +123,24 @@ private class ComposedFunctionTaintStep extends TaintTracking::AdditionalTaintSt
   }
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(int fnIndex, DataFlow::FunctionNode fn | fn = composed.getFunction(fnIndex) |
-      // flow out of the composed call
-      fnIndex = composed.getNumArgument() - 1 and
-      pred = fn.getAReturn() and
-      succ = this
+    exists(int fnIndex, DataFlow::FunctionNode fn | fn = composed.getOperandFunction(fnIndex) |
+      // flow into the first function
+      fnIndex = composed.getNumOperand() - 1 and
+      exists(int callArgIndex |
+        pred = call.getArgument(callArgIndex) and
+        succ = fn.getParameter(callArgIndex)
+      )
       or
-      if fnIndex = 0
-      then
-        // flow into the first composed function
-        exists(int callArgIndex |
-          pred = call.getArgument(callArgIndex) and
-          succ = fn.getParameter(callArgIndex)
-        )
-      else
-        // flow through the composed functions
-        exists(DataFlow::FunctionNode predFn | predFn = composed.getFunction(fnIndex - 1) |
-          pred = predFn.getAReturn() and
-          succ = fn.getParameter(0)
-        )
+      // flow through the composed functions
+      exists(DataFlow::FunctionNode predFn | predFn = composed.getOperandFunction(fnIndex + 1) |
+        pred = predFn.getReturnNode() and
+        succ = fn.getParameter(0)
+      )
+      or
+      // flow out of the composed call
+      fnIndex = 0 and
+      pred = fn.getReturnNode() and
+      succ = this
     )
   }
 }

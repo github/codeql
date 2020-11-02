@@ -1,8 +1,8 @@
-import compose1 from 'just-compose';
-import compose2 from 'compose-function';
-import compose3 from 'lodash.flow';
+import lcompose1 from 'just-compose';
+import rcompose2 from 'compose-function';
+import lcompose3 from 'lodash.flow';
 import _ from 'lodash';
-var compose4 = _.flow;
+var lcompose4 = _.flow;
 
 (function(){
     var source = SOURCE();
@@ -17,7 +17,7 @@ var compose4 = _.flow;
     function f2(){
         return source;
     }
-    SINK(compose1(f2)());
+    SINK(lcompose1(f2)());
 
     function f3(){
 
@@ -25,12 +25,12 @@ var compose4 = _.flow;
     function f4(){
         return source;
     }
-    SINK(compose1(f3, f4)());
+    SINK(lcompose1(f3, f4)());
 
     function f5(){
         return source;
     }
-    SINK(compose1(o.f, f5)());
+    SINK(lcompose1(o.f, f5)());
 
     function f6(){
         return source;
@@ -38,7 +38,7 @@ var compose4 = _.flow;
     function f7(x){
         return x;
     }
-    SINK(compose1(f6, f7)());
+    SINK(lcompose1(f6, f7)());
 
     function f8(x){
         return x;
@@ -46,7 +46,7 @@ var compose4 = _.flow;
     function f9(x){
         return x;
     }
-    SINK(compose1(f8, f9)(source));
+    SINK(lcompose1(f8, f9)(source));
 
 
     function f10(x){
@@ -58,12 +58,12 @@ var compose4 = _.flow;
     function f12(x){
         return x;
     }
-    SINK(compose1(f10, f11, f12)(source));
+    SINK(lcompose1(f10, f11, f12)(source));
 
     function f13(x){
         return x + 'foo' ;
     }
-    SINK(compose1(f13)(source));
+    SINK(lcompose1(f13)(source));
 
     function f14(){
         return undefined;
@@ -76,7 +76,7 @@ var compose4 = _.flow;
     function f16(){
         return undefined;
     }
-    SINK(compose1(f15, f16)()); // NO FLOW
+    SINK(lcompose1(f15, f16)()); // NO FLOW
 
     function f17(x, y){
         return y;
@@ -91,16 +91,21 @@ var compose4 = _.flow;
     function f19(){
         return source;
     }
-    SINK(compose2(f19)());
+    SINK(rcompose2(f19, o.f)());
 
     function f20(){
         return source;
     }
-    SINK(compose3(f20)());
+    SINK(lcompose3(f16, f20)());
 
     function f21(){
         return source;
     }
-    SINK(compose4(f21)());
+    SINK(lcompose4(f16, f21)());
+
+    function f22(){
+        return source;
+    }
+    SINK(lcompose3(f22, f16)()); // NO FLOW
 
 })();
