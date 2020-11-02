@@ -8,7 +8,7 @@
  */
 
 import python
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.DataFlow
 
 class CustomTestConfiguration extends DataFlow::Configuration {
   CustomTestConfiguration() { this = "CustomTestConfiguration" }

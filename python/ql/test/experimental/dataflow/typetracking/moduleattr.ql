@@ -1,6 +1,6 @@
 import python
-import experimental.dataflow.DataFlow
-import experimental.dataflow.TypeTracker
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.TypeTracker
 
 DataFlow::Node module_tracker(TypeTracker t) {
   t.start() and

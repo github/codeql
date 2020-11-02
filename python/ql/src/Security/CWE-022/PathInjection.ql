@@ -37,12 +37,12 @@
  */
 
 import python
-import experimental.dataflow.DataFlow
-import experimental.dataflow.DataFlow2
-import experimental.dataflow.TaintTracking
-import experimental.dataflow.TaintTracking2
-import experimental.semmle.python.Concepts
-import experimental.dataflow.RemoteFlowSources
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.DataFlow2
+import semmle.python.dataflow.new.TaintTracking
+import semmle.python.dataflow.new.TaintTracking2
+import semmle.python.Concepts
+import semmle.python.dataflow.new.RemoteFlowSources
 import ChainedConfigs12
 
 // ---------------------------------------------------------------------------
