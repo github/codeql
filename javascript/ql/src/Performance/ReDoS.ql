@@ -136,7 +136,7 @@ RegExpRoot getRoot(RegExpTerm term) {
  */
 newtype TInputSymbol =
   /** An input symbol corresponding to character `c`. */
-  Char(string c) { c = any(RegExpConstant cc).getValue().charAt(_) } or
+  Char(string c) { c = any(RegExpConstant cc | getRoot(cc).isRelevant()).getValue().charAt(_) } or
   /**
    * An input symbol representing all characters matched by
    * (positive, non-universal) character class `recc`.
@@ -161,6 +161,31 @@ newtype TInputSymbol =
   Any() or
   /** An epsilon transition in the automaton. */
   Epsilon()
+
+/**
+ * Holds if `a` and `b` are input symbols from the same regexp.
+ * (And not a `Dot()`, `Any()` or `Epsilon()`)
+ */
+pragma[noinline]
+private predicate sharesRoot(TInputSymbol a, TInputSymbol b) {
+  exists(RegExpRoot root |
+    belongsTo(a, root) and
+    belongsTo(b, root)
+  )
+}
+
+/**
+ * Holds if the `a` is an inputsymbol from a regexp that has root `root`.
+ */
+private predicate belongsTo(TInputSymbol a, RegExpRoot root) {
+  exists(RegExpTerm term | getRoot(term) = root |
+    a = Char(term.(RegExpConstant).getValue().charAt(_))
+    or
+    a = CharClass(term)
+    or
+    a = InvertedCharClass(term)
+  )
+}
 
 /**
  * An abstract input symbol, representing a set of concrete characters.
@@ -485,6 +510,7 @@ private string getARelevantCharClassChar(TInputSymbol symbol) {
  * negative char class `d`.
  */
 private string getAOverlapBetweenCharacterClasses(CharClass c, InvertedCharClass d) {
+  sharesRoot(c, d) and
   result = [getARelevantCharClassChar(c), getARelevantCharClassChar(d)] and
   exists(RegExpCharacterClass negClass, RegExpCharacterClass posClass |
     c = CharClass(posClass) and
@@ -500,12 +526,15 @@ private string getAOverlapBetweenCharacterClasses(CharClass c, InvertedCharClass
 string intersect(InputSymbol c, InputSymbol d) {
   c = Char(result) and
   (
-    d = Char(result)
-    or
-    exists(RegExpCharacterClass cc | d = CharClass(cc) | charClassMatchesChar(cc, result))
-    or
-    exists(RegExpCharacterClass cc | d = InvertedCharClass(cc) |
-      not charClassMatchesChar(cc, result)
+    sharesRoot(c, d) and
+    (
+      d = Char(result)
+      or
+      exists(RegExpCharacterClass cc | d = CharClass(cc) | charClassMatchesChar(cc, result))
+      or
+      exists(RegExpCharacterClass cc | d = InvertedCharClass(cc) |
+        not charClassMatchesChar(cc, result)
+      )
     )
     or
     d = Dot() and
@@ -517,7 +546,7 @@ string intersect(InputSymbol c, InputSymbol d) {
   result = getMinOverlapBetweenCharacterClasses(c, d)
   or
   exists(RegExpCharacterClass cc | c = InvertedCharClass(cc) and result = chooseFromInverted(cc) |
-    d = InvertedCharClass(cc)
+    d = InvertedCharClass(cc) and sharesRoot(c, d)
     or
     d = Dot() and
     not (result = "\n" or result = "\r")
@@ -526,7 +555,7 @@ string intersect(InputSymbol c, InputSymbol d) {
   )
   or
   exists(RegExpCharacterClass cc | c = CharClass(cc) and result = choose(cc) |
-    d = CharClass(cc)
+    d = CharClass(cc) and sharesRoot(c, d)
     or
     d = Dot() and
     not (result = "\n" or result = "\r")
