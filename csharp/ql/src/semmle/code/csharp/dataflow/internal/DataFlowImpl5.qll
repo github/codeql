@@ -112,8 +112,8 @@ abstract class Configuration extends string {
   predicate hasFlowToExpr(DataFlowExpr sink) { hasFlowTo(exprNode(sink)) }
 
   /**
-   * Gets the exploration limit for `hasPartialFlow` measured in approximate
-   * number of interprocedural steps.
+   * Gets the exploration limit for `hasPartialFlow` and `hasPartialFlowRev`
+   * measured in approximate number of interprocedural steps.
    */
   int explorationLimit() { none() }
 
@@ -123,7 +123,7 @@ abstract class Configuration extends string {
    * is restricted to be less than or equal to `explorationLimit()`. This
    * predicate completely disregards sink definitions.
    *
-   * This predicate is intended for dataflow exploration and debugging and may
+   * This predicate is intended for data-flow exploration and debugging and may
    * perform poorly if the number of sources is too big and/or the exploration
    * limit is set too high without using barriers.
    *
@@ -143,7 +143,7 @@ abstract class Configuration extends string {
    * is restricted to be less than or equal to `explorationLimit()`. This
    * predicate completely disregards source definitions.
    *
-   * This predicate is intended for dataflow exploration and debugging and may
+   * This predicate is intended for data-flow exploration and debugging and may
    * perform poorly if the number of sinks is too big and/or the exploration
    * limit is set too high without using barriers.
    *
@@ -155,7 +155,7 @@ abstract class Configuration extends string {
    * Note that reverse flow has slightly lower precision than the corresponding
    * forward flow, as reverse flow disregards type pruning among other features.
    */
-  final predicate hasRevPartialFlow(PartialPathNode node, PartialPathNode sink, int dist) {
+  final predicate hasPartialFlowRev(PartialPathNode node, PartialPathNode sink, int dist) {
     revPartialFlow(node, sink, this) and
     dist = node.getSinkDistance()
   }
@@ -3211,7 +3211,7 @@ private module FlowExploration {
     }
 
     /**
-     * Gets the approximate distance to the nearest source measured in number
+     * Gets the approximate distance to the nearest sink measured in number
      * of interprocedural steps.
      */
     int getSinkDistance() {

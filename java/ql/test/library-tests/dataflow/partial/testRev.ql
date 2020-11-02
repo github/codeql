@@ -14,5 +14,5 @@ class Conf extends Configuration {
 }
 
 from PartialPathNode n, int dist
-where any(Conf c).hasRevPartialFlow(n, _, dist)
+where any(Conf c).hasPartialFlowRev(n, _, dist)
 select dist, n
