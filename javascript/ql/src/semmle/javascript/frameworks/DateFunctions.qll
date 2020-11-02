@@ -50,7 +50,7 @@ private module DateFns {
 private module Moment {
   /** Gets a reference to a `moment` object. */
   private API::Node moment() {
-    result = API::moduleImport("moment")
+    result = API::moduleImport(["moment", "moment-timezone"])
     or
     result = moment().getReturn()
     or
