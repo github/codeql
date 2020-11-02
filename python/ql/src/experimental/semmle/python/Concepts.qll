@@ -6,8 +6,9 @@
 
 import python
 private import experimental.dataflow.DataFlow
-private import experimental.semmle.python.Frameworks
 private import experimental.dataflow.RemoteFlowSources
+private import experimental.dataflow.TaintTracking
+private import experimental.semmle.python.Frameworks
 
 /**
  * A data-flow node that executes an operating system command,
@@ -158,6 +159,55 @@ module Decoding {
     abstract DataFlow::Node getAnInput();
 
     /** Gets the output that contains the decoded data produced by this function. */
+    abstract DataFlow::Node getOutput();
+
+    /** Gets an identifier for the format this function decodes from, such as "JSON". */
+    abstract string getFormat();
+  }
+}
+
+/**
+ * A data-flow node that encodes data to a binary or textual format. This
+ * is intended to include serialization, marshalling, encoding, pickling,
+ * compressing, encrypting, etc.
+ *
+ * Doing so should normally preserve taint.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Encoding::Range` instead.
+ */
+class Encoding extends DataFlow::Node {
+  Encoding::Range range;
+
+  Encoding() { this = range }
+
+  /** Gets an input that is encoded by this function. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+
+  /** Gets the output that contains the encoded data produced by this function. */
+  DataFlow::Node getOutput() { result = range.getOutput() }
+
+  /** Gets an identifier for the format this function decodes from, such as "JSON". */
+  string getFormat() { result = range.getFormat() }
+}
+
+/** Provides a class for modeling new encoding mechanisms. */
+module Encoding {
+  /**
+   * A data-flow node that encodes data to a binary or textual format. This
+   * is intended to include serialization, marshalling, encoding, pickling,
+   * compressing, encrypting, etc.
+   *
+   * Doing so should normally preserve taint.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Encoding` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an input that is encoded by this function. */
+    abstract DataFlow::Node getAnInput();
+
+    /** Gets the output that contains the encoded data produced by this function. */
     abstract DataFlow::Node getOutput();
 
     /** Gets an identifier for the format this function decodes from, such as "JSON". */
