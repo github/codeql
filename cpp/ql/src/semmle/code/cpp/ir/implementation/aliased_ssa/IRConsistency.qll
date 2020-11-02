@@ -441,9 +441,7 @@ module InstructionConsistency {
     isOnAliasedDefinitionChain(instr.(PhiInstruction).getAnInputOperand().getAnyDef())
   }
 
-  private predicate shouldBeConflated(Instruction instr) {
-    isOnAliasedDefinitionChain(instr)
-  }
+  private predicate shouldBeConflated(Instruction instr) { isOnAliasedDefinitionChain(instr) }
 
   query predicate notMarkedAsConflated(
     Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
