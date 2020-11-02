@@ -1,6 +1,8 @@
 /**
  * Provides classes modeling security-relevant aspects of the `mysql-connector-python` package.
- * See https://dev.mysql.com/doc/dev/connector-python/.
+ * See
+ * - https://dev.mysql.com/doc/connector-python/en/
+ * - https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
  */
 
 private import python
@@ -11,7 +13,9 @@ private import PEP249
 
 /**
  * Provides models for the `mysql-connector-python` package.
- * See https://dev.mysql.com/doc/dev/connector-python/.
+ * See
+ * - https://dev.mysql.com/doc/connector-python/en/
+ * - https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
  */
 module MysqlConnectorPython {
   // ---------------------------------------------------------------------------
