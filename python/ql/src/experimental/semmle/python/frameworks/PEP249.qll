@@ -66,7 +66,7 @@ module Connection {
  * See https://www.python.org/dev/peps/pep-0249/#cursor.
  */
 module cursor {
-  /** Gets a reference to the `db.connection.cursor` metod. */
+  /** Gets a reference to the `db.connection.cursor` method. */
   private DataFlow::Node methodRef(DataFlow::TypeTracker t) {
     t.startInAttr("cursor") and
     result = Connection::instance()
