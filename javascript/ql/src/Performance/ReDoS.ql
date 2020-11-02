@@ -327,8 +327,12 @@ private module CharacterClasses {
       char = "0123456789".charAt(_)
       or
       cc.getValue() = "s" and
-      // TODO: also supposed to match \f and vertical tab (\x0B).
-      char = [" ", "\t", "\r", "\n"]
+      (
+        char = [" ", "\t", "\r", "\n", "\\u000c", "\\u000b"]
+        or
+        exists(RegExpConstant constant | constant.getValue().charAt(_) = char) and
+        char.regexpMatch("\\u000b|\\u000c") // \v|\f (vertical tab | form feed)
+      )
       or
       cc.getValue() = "w" and
       char = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".charAt(_)

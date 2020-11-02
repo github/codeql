@@ -144,3 +144,12 @@ var bad31 = /((\d|\w)*)"/;
 
 // NOT GOOD
 var bad32 = /((\d|5)*)"/;
+
+// NOT GOOD
+var bad33 = /((\s|[\f])*)"/;
+
+// NOT GOOD
+var bad34 = /((\s|[\v]|\\v)*)"/;
+
+// NOT GOOD
+var bad35 = /((\f|[\f])*)"/;
