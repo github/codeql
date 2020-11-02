@@ -11,10 +11,10 @@
 
 import python
 /* General import that is useful */
-// import experimental.dataflow.DataFlow
+// import semmle.python.dataflow.new.DataFlow
 //
 /* for extending `TaintTracking::AdditionalTaintStep` */
-// import experimental.dataflow.TaintTracking
+// import semmle.python.dataflow.new.TaintTracking
 //
 /* for extending `RemoteFlowSource::Range` */
-// import experimental.dataflow.RemoteFlowSources
+// import semmle.python.dataflow.new.RemoteFlowSources
