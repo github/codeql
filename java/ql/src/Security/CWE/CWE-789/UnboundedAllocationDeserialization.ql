@@ -1,5 +1,6 @@
 /**
  * @name Unbounded allocation during deserialization
+ * @description Allocating an unbounded amount of memory during a deserialization method can lead to a Denial of Service attack.
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
@@ -38,4 +39,5 @@ class UnboundedDeserializationConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UnboundedDeserializationConfig config
 where config.hasFlowPath(source, sink)
-select sink, source, sink, "Unbounded memory allocation from deserialization"
+select sink, source, sink, "Unbounded memory allocation during deserialization of $@.", source,
+  "this input stream"

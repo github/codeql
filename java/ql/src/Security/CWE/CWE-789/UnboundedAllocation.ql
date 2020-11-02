@@ -1,5 +1,6 @@
 /**
  * @name Unbounded allocation
+ * @description Allocating an unbounded amount of memory from a user-provided value can lead to a Denial of Service attack.
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
@@ -25,4 +26,4 @@ class UnboundedAllocationConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UnboundedAllocationConfig config
 where config.hasFlowPath(source, sink)
-select sink, source, sink, "Unbounded memory allocation"
+select sink, source, sink, "Unbounded memory allocation from $@.", source, "this user input"
