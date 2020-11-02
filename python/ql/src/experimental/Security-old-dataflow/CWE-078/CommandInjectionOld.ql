@@ -6,7 +6,7 @@
  * @problem.severity error
  * @sub-severity high
  * @precision high
- * @id py/command-line-injection
+ * @id py/command-line-injection-old
  * @tags correctness
  *       security
  *       external/owasp/owasp-a1

@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id py/sql-injection
+ * @id py/sql-injection-old
  * @tags security
  *       external/cwe/cwe-089
  *       external/owasp/owasp-a1
