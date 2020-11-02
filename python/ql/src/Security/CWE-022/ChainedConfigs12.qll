@@ -6,10 +6,10 @@
  */
 
 import python
-import experimental.dataflow.DataFlow
-import experimental.dataflow.DataFlow2
-import experimental.dataflow.TaintTracking
-import experimental.dataflow.TaintTracking2
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.DataFlow2
+import semmle.python.dataflow.new.TaintTracking
+import semmle.python.dataflow.new.TaintTracking2
 
 /**
  * A `DataFlow::Node` that appears as a sink in Config1 and a source in Config2.
