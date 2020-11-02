@@ -534,6 +534,11 @@ private TypeParameter getATypeParameterSubType(DataFlowTypeOrUnifiable t) {
 }
 
 pragma[noinline]
+private TypeParameter getATypeParameterSubTypeRestricted(DataFlowType t) {
+  result = getATypeParameterSubType(t)
+}
+
+pragma[noinline]
 private Gvn::GvnType getANonTypeParameterSubType(DataFlowTypeOrUnifiable t) {
   not t instanceof Gvn::TypeParameterGvnType and
   not result instanceof Gvn::TypeParameterGvnType and
@@ -542,6 +547,11 @@ private Gvn::GvnType getANonTypeParameterSubType(DataFlowTypeOrUnifiable t) {
     result = Gvn::getGlobalValueNumber(t1) and
     t = Gvn::getGlobalValueNumber(t2)
   )
+}
+
+pragma[noinline]
+private Gvn::GvnType getANonTypeParameterSubTypeRestricted(DataFlowType t) {
+  result = getANonTypeParameterSubType(t)
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -793,9 +803,9 @@ private module Cached {
     not t1 instanceof Gvn::TypeParameterGvnType and
     t1 = t2
     or
-    getATypeParameterSubType(t1) = getATypeParameterSubType(t2)
+    getATypeParameterSubType(t1) = getATypeParameterSubTypeRestricted(t2)
     or
-    getANonTypeParameterSubType(t1) = getANonTypeParameterSubType(t2)
+    getANonTypeParameterSubType(t1) = getANonTypeParameterSubTypeRestricted(t2)
   }
 
   /**
