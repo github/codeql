@@ -14,4 +14,5 @@ function main() {
     document.body.innerHTML = `Time is ${dateFnsFp.format(time)(taint)}`; // OK - time arg is safe
     document.body.innerHTML = `Time is ${moment(time).format(taint)}`; // NOT OK
     document.body.innerHTML = `Time is ${moment(taint).format()}`; // OK
+    document.body.innerHTML = `Time is ${dateformat(time, taint)}`; // NOT OK
 }

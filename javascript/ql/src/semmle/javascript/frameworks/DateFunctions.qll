@@ -71,3 +71,19 @@ private module Moment {
     }
   }
 }
+
+private module DateFormat {
+  /**
+   * Taint step of form: `x -> dateformat(..., x)`
+   *
+   * The format string can use single-quotes to include mostly arbitrary text.
+   */
+  private class DateFormatStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
+    DateFormatStep() { this = DataFlow::moduleImport("dateformat").getACall() }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = getArgument(1) and
+      succ = this
+    }
+  }
+}
