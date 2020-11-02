@@ -543,6 +543,10 @@ class StatePair extends TStatePair {
   StatePair() { this = MkStatePair(q1, q2) }
 
   string toString() { result = "(" + q1 + ", " + q2 + ")" }
+
+  State getLeft() { result = q1 }
+
+  State getRight() { result = q2 }
 }
 
 /**
@@ -605,10 +609,12 @@ predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
  * Holds if there are transitions from the components of `q` to `r1` and `r2`
  * labelled with `s1` and `s2`, respectively.
  */
+pragma[noopt]
 predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
-  exists(State q1, State q2 | q = MkStatePair(q1, q2) |
+  exists(State q1, State q2 | q.getLeft() = q1 and q.getRight() = q2 |
     deltaClosed(q1, s1, r1) and
     deltaClosed(q2, s2, r2) and
+    // use noopt to force the join on `intersect` to happen last.
     exists(intersect(s1, s2))
   )
 }
@@ -777,6 +783,7 @@ predicate isPumpable(State fork, string w) {
  */
 State process(State fork, string w, int i) {
   isPumpable(fork, w) and
+  min(string s | isPumpable(fork, s)).prefix(w.length()) = w and
   exists(State prev |
     i = 0 and prev = fork
     or
