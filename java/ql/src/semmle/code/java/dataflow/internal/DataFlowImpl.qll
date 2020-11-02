@@ -764,7 +764,24 @@ private module Stage2 {
 
   class Cc = boolean;
 
+  class CcCall extends Cc {
+    CcCall() { this = true }
+  }
+
+  class CcNoCall extends Cc {
+    CcNoCall() { this = false }
+  }
+
   Cc ccAny() { result = false }
+
+  bindingset[call, c, outercc]
+  CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
+
+  bindingset[call, c]
+  CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
+
+  bindingset[innercc, inner, call]
+  predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) { any() }
 
   predicate flowCand(Node node, ApApprox apa, Configuration config) {
     Stage1::revFlow(node, config) and exists(apa)
@@ -828,14 +845,12 @@ private module Stage2 {
       )
       or
       // flow into a callable
-      fwdFlowIn(_, node, _, _, ap, config) and
-      cc = true and
+      fwdFlowIn(_, node, _, cc, _, ap, config) and
       if parameterThroughFlowNodeCand1(node, config) then argAp = apSome(ap) else argAp = apNone()
       or
       // flow out of a callable
       exists(DataFlowCall call |
-        fwdFlowOut(call, node, cc, argAp, ap, config) and
-        cc = ccAny()
+        fwdFlowOut(call, node, any(CcNoCall innercc), cc, argAp, ap, config)
         or
         exists(Ap argAp0 |
           fwdFlowOutFromArg(call, node, argAp0, ap, config) and
@@ -878,11 +893,13 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowIn(
-    DataFlowCall call, ParameterNode p, Cc cc, ApOption argAp, Ap ap, Configuration config
+    DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
+    Configuration config
   ) {
     exists(ArgumentNode arg, boolean allowsFieldFlow |
-      fwdFlow(arg, cc, argAp, ap, config) and
-      flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config)
+      fwdFlow(arg, outercc, argAp, ap, config) and
+      flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config) and
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -890,11 +907,14 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node node, Cc cc, ApOption argAp, Ap ap, Configuration config
+    DataFlowCall call, Node node, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
   ) {
-    exists(ReturnNodeExt ret, boolean allowsFieldFlow |
-      fwdFlow(ret, cc, argAp, ap, config) and
-      flowOutOfCallNodeCand1(call, ret, node, allowsFieldFlow, config)
+    exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
+      fwdFlow(ret, innercc, argAp, ap, config) and
+      flowOutOfCallNodeCand1(call, ret, node, allowsFieldFlow, config) and
+      inner = ret.getEnclosingCallable() and
+      checkCallContextReturn(innercc, inner, call) and
+      ccOut = getCallContextReturn(inner, call)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -904,7 +924,7 @@ private module Stage2 {
   private predicate fwdFlowOutFromArg(
     DataFlowCall call, Node node, Ap argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, node, true, apSome(argAp), ap, config)
+    fwdFlowOut(call, node, any(CcCall ccc), _, apSome(argAp), ap, config)
   }
 
   /**
@@ -915,7 +935,7 @@ private module Stage2 {
     DataFlowCall call, Cc cc, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ParameterNode p |
-      fwdFlowIn(call, p, cc, argAp, ap, config) and
+      fwdFlowIn(call, p, cc, _, argAp, ap, config) and
       parameterThroughFlowNodeCand1(p, config)
     )
   }
@@ -1288,7 +1308,24 @@ private module Stage3 {
 
   class Cc = boolean;
 
+  class CcCall extends Cc {
+    CcCall() { this = true }
+  }
+
+  class CcNoCall extends Cc {
+    CcNoCall() { this = false }
+  }
+
   Cc ccAny() { result = false }
+
+  bindingset[call, c, outercc]
+  CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
+
+  bindingset[call, c]
+  CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
+
+  bindingset[innercc, inner, call]
+  predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) { any() }
 
   predicate flowCand(Node node, ApApprox apa, Configuration config) {
     Stage2::revFlow(node, _, _, apa, config)
@@ -1360,16 +1397,14 @@ private module Stage3 {
     )
     or
     // flow into a callable
-    fwdFlowIn(_, node, _, _, ap, config) and
-    cc = true and
+    fwdFlowIn(_, node, _, cc, _, ap, config) and
     if Stage2::revFlow(node, true, _, unbindBool(ap.toBoolNonEmpty()), config)
     then argAp = apSome(ap)
     else argAp = apNone()
     or
     // flow out of a callable
     exists(DataFlowCall call |
-      fwdFlowOut(call, node, cc, argAp, ap, config) and
-      cc = ccAny()
+      fwdFlowOut(call, node, any(CcNoCall innercc), cc, argAp, ap, config)
       or
       exists(Ap argAp0 |
         fwdFlowOutFromArg(call, node, argAp0, ap, config) and
@@ -1411,11 +1446,13 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate fwdFlowIn(
-    DataFlowCall call, ParameterNode p, Cc cc, ApOption argAp, Ap ap, Configuration config
+    DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
+    Configuration config
   ) {
     exists(ArgumentNode arg, boolean allowsFieldFlow |
-      fwdFlow(arg, cc, argAp, ap, config) and
-      flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
+      fwdFlow(arg, outercc, argAp, ap, config) and
+      flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1423,11 +1460,14 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node node, Cc cc, ApOption argAp, Ap ap, Configuration config
+    DataFlowCall call, Node node, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
   ) {
-    exists(ReturnNodeExt ret, boolean allowsFieldFlow |
-      fwdFlow(ret, cc, argAp, ap, config) and
-      flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config)
+    exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
+      fwdFlow(ret, innercc, argAp, ap, config) and
+      flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
+      inner = ret.getEnclosingCallable() and
+      checkCallContextReturn(innercc, inner, call) and
+      ccOut = getCallContextReturn(inner, call)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1437,7 +1477,7 @@ private module Stage3 {
   private predicate fwdFlowOutFromArg(
     DataFlowCall call, Node node, Ap argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, node, true, apSome(argAp), ap, config)
+    fwdFlowOut(call, node, any(CcCall ccc), _, apSome(argAp), ap, config)
   }
 
   /**
@@ -1448,7 +1488,7 @@ private module Stage3 {
     DataFlowCall call, Cc cc, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ParameterNode p |
-      fwdFlowIn(call, p, cc, argAp, ap, config) and
+      fwdFlowIn(call, p, cc, _, argAp, ap, config) and
       Stage2::revFlow(p, true, TBooleanSome(_), unbindBool(ap.toBoolNonEmpty()), config)
     )
   }
@@ -1857,7 +1897,29 @@ private module Stage4 {
 
   class Cc = CallContext;
 
+  class CcCall = CallContextCall;
+
+  class CcNoCall = CallContextNoCall;
+
   Cc ccAny() { result instanceof CallContextAny }
+
+  bindingset[call, c, outercc]
+  CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) {
+    c = resolveCall(call, outercc) and
+    if recordDataFlowCallSite(call, c) then result = TSpecificCall(call) else result = TSomeCall()
+  }
+
+  bindingset[call, c]
+  CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
+    if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccAny()
+  }
+
+  bindingset[innercc, inner, call]
+  predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
+    resolveReturn(innercc, inner, call)
+    or
+    innercc.(CallContextCall).matchesCall(call)
+  }
 
   predicate flowCand(Node node, ApApprox apa, Configuration config) {
     Stage3::revFlow(node, _, _, apa, config)
@@ -1934,10 +1996,7 @@ private module Stage4 {
     or
     // flow out of a callable
     exists(DataFlowCall call |
-      exists(DataFlowCallable c |
-        fwdFlowOut(call, node, any(CallContextNoCall innercc), c, argAp, ap, config) and
-        if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
-      )
+      fwdFlowOut(call, node, any(CcNoCall innercc), cc, argAp, ap, config)
       or
       exists(Ap argAp0 |
         fwdFlowOutFromArg(call, node, argAp0, ap, config) and
@@ -2009,15 +2068,11 @@ private module Stage4 {
     DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
     Configuration config
   ) {
-    exists(ArgumentNode arg, boolean allowsFieldFlow, DataFlowCallable c |
+    exists(ArgumentNode arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
-      c = p.getEnclosingCallable() and
-      c = resolveCall(call, outercc) and
       flowCand(p, _, unbind(config)) and
-      if recordDataFlowCallSite(call, c)
-      then innercc = TSpecificCall(call)
-      else innercc = TSomeCall()
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -2025,19 +2080,15 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node node, Cc innercc, DataFlowCallable innerc, ApOption argAp, Ap ap,
-    Configuration config
+    DataFlowCall call, Node node, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
   ) {
-    exists(ReturnNodeExt ret, boolean allowsFieldFlow |
+    exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
-      innerc = ret.getEnclosingCallable() and
+      inner = ret.getEnclosingCallable() and
       flowCand(node, _, unbind(config)) and
-      (
-        resolveReturn(innercc, innerc, call)
-        or
-        innercc.(CallContextCall).matchesCall(call)
-      )
+      checkCallContextReturn(innercc, inner, call) and
+      ccOut = getCallContextReturn(inner, call)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -2047,7 +2098,7 @@ private module Stage4 {
   private predicate fwdFlowOutFromArg(
     DataFlowCall call, Node node, Ap argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, node, any(CallContextCall ccc), _, apSome(argAp), ap, config)
+    fwdFlowOut(call, node, any(CcCall ccc), _, apSome(argAp), ap, config)
   }
 
   /**
