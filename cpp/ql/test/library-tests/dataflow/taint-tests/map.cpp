@@ -84,10 +84,10 @@ void test_pair()
 	sink(make_pair("123", "456").first);
 	sink(make_pair("123", "456").second);
 	sink(make_pair(source(), "456")); // tainted [NOT DETECTED]
-	sink(make_pair(source(), "456").first); // tainted [NOT DETECTED]
+	sink(make_pair(source(), "456").first); // tainted
 	sink(make_pair(source(), "456").second);
 	sink(make_pair("123", source())); // tainted
-	sink(make_pair("123", source()).first); // [FALSE POSITIVE]
+	sink(make_pair("123", source()).first);
 	sink(make_pair("123", source()).second); // tainted
 
 	std::pair<std::pair<char *, char *>, char *> m;
