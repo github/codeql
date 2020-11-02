@@ -153,3 +153,9 @@ var bad34 = /((\s|[\v]|\\v)*)"/;
 
 // NOT GOOD
 var bad35 = /((\f|[\f])*)"/;
+
+// NOT GOOD
+var bad36 = /((\W|\D)*)"/;
+
+// NOT GOOD
+var bad37 = /((\S|\w)*)"/;

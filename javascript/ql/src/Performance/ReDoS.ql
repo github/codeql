@@ -304,6 +304,25 @@ private module CharacterClasses {
   }
 
   /**
+   * Holds if the character class escape `clazz` (\d, \s, or \w) matches `char`.
+   */
+  private predicate classEscapeMatches(string clazz, string char) {
+    clazz = "d" and
+    char = "0123456789".charAt(_)
+    or
+    clazz = "s" and
+    (
+      char = [" ", "\t", "\r", "\n", "\\u000c", "\\u000b"]
+      or
+      exists(RegExpConstant constant | constant.getValue().charAt(_) = char) and
+      char.regexpMatch("\\u000b|\\u000c") // \v|\f (vertical tab | form feed)
+    )
+    or
+    clazz = "w" and
+    char = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".charAt(_)
+  }
+
+  /**
    * An implementation of `CharacterClass` for \d, \s, and \w.
    */
   private class PositiveCharacterClassEscape extends CharacterClass {
@@ -322,25 +341,37 @@ private module CharacterClasses {
       result = ["a", "Z", "_", "0", "9"]
     }
 
+    override predicate matches(string char) { classEscapeMatches(cc.getValue(), char) }
+
+    override string choose() { result = min(string c | c = getARelevantChar()) }
+  }
+
+  /**
+   * An implementation of `CharacterClass` for \D, \S, and \W.
+   */
+  private class NegativeCharacterClassEscape extends CharacterClass {
+    RegExpCharacterClassEscape cc;
+
+    NegativeCharacterClassEscape() { this = CharClass(cc) and cc.getValue() = ["D", "S", "W"] }
+
+    override string getARelevantChar() {
+      cc.getValue() = "D" and
+      result = ["a", "Z", "!"]
+      or
+      cc.getValue() = "S" and
+      result = ["a", "9", "!"]
+      or
+      cc.getValue() = "W" and
+      result = [" ", "!"]
+    }
+
+    bindingset[char]
     override predicate matches(string char) {
-      cc.getValue() = "d" and
-      char = "0123456789".charAt(_)
-      or
-      cc.getValue() = "s" and
-      (
-        char = [" ", "\t", "\r", "\n", "\\u000c", "\\u000b"]
-        or
-        exists(RegExpConstant constant | constant.getValue().charAt(_) = char) and
-        char.regexpMatch("\\u000b|\\u000c") // \v|\f (vertical tab | form feed)
-      )
-      or
-      cc.getValue() = "w" and
-      char = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".charAt(_)
+      not classEscapeMatches(cc.getValue().toLowerCase(), char)
     }
 
     override string choose() { result = min(string c | c = getARelevantChar()) }
   }
-  // TODO: Implementations for inversed RegExpCharacterClassEscape
 }
 
 newtype TState =
