@@ -35,21 +35,21 @@ module Connection {
    * calls, or a special parameter that will be set when functions are called by external
    * libraries.
    *
-   * Use `Conection::instance()` predicate to get references to instances of `db.Conection`.
+   * Use `Connection::instance()` predicate to get references to instances of `db.Connection`.
    *
    * Extend this class if the module implementing PEP 249 offers more direct ways to obtain
    * a connection than going through `connect`.
    */
   abstract class InstanceSource extends DataFlow::Node { }
 
-  /** A direct instantiation of `db.Conection`. */
+  /** A direct instantiation of `db.Connection`. */
   private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
     override CallNode node;
 
     ClassInstantiation() { node.getFunction() = connect().asCfgNode() }
   }
 
-  /** Gets a reference to an instance of `db.Conection`. */
+  /** Gets a reference to an instance of `db.Connection`. */
   private DataFlow::Node instance(DataFlow::TypeTracker t) {
     t.start() and
     result instanceof InstanceSource
@@ -57,7 +57,7 @@ module Connection {
     exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
   }
 
-  /** Gets a reference to an instance of `db.Conection`. */
+  /** Gets a reference to an instance of `db.Connection`. */
   DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
 }
 
