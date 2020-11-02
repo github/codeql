@@ -759,18 +759,11 @@ module CFG {
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
       or
-      exists(int nl, int nr | nl = getNumLhs() and nr = getNumRhs() |
-        last = MkAssignNode(this, nl - 1)
+      (
+        last = max(int i | | epilogueNode(i) order by i)
         or
-        not exists(MkAssignNode(this, nl - 1)) and
-        (
-          exists(ControlFlow::Node rhs | lastNode(getRhs(nr - 1), rhs, normalCompletion()) |
-            if nl = nr then last = rhs else last = MkExtractNode(this, nl - 1)
-          )
-          or
-          not exists(getRhs(nr - 1)) and
-          lastNode(getLhs(nl - 1), last, normalCompletion())
-        )
+        not exists(epilogueNode(_)) and
+        lastNode(getLastSubExprInEvalOrder(), last, normalCompletion())
       ) and
       cmpl = Done()
     }
@@ -787,7 +780,7 @@ module CFG {
           firstNode(getRhs(0), succ)
           or
           not exists(getRhs(_)) and
-          succ = epilogueNodeRanked(1)
+          succ = epilogueNodeRanked(0)
         )
       )
       or
@@ -795,6 +788,10 @@ module CFG {
         lastNode(getRhs(i), pred, normalCompletion()) and
         firstNode(getRhs(i + 1), succ)
       )
+      or
+      not this instanceof RecvStmt and
+      lastNode(getRhs(getNumRhs() - 1), pred, normalCompletion()) and
+      succ = epilogueNodeRanked(0)
       or
       exists(int i |
         pred = epilogueNodeRanked(i) and
@@ -809,16 +806,17 @@ module CFG {
       )
     }
 
+    private Expr getSubExprInEvalOrder(int evalOrder) {
+      if evalOrder < getNumLhs()
+      then result = getLhs(evalOrder)
+      else result = getRhs(evalOrder - getNumLhs())
+    }
+
+    private Expr getLastSubExprInEvalOrder() {
+      result = max(int i | | getSubExprInEvalOrder(i) order by i)
+    }
+
     private ControlFlow::Node epilogueNode(int i) {
-      not this instanceof RecvStmt and
-      i = -2 and
-      (
-        lastNode(getRhs(getNumRhs() - 1), result, normalCompletion())
-        or
-        not exists(getRhs(_)) and
-        lastNode(getLhs(getNumLhs() - 1), result, normalCompletion())
-      )
-      or
       i = -1 and
       result = MkCompoundAssignRhsNode(this)
       or

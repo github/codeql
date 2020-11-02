@@ -635,7 +635,7 @@
 | main.go:79:2:79:13 | call to Print | main.go:80:1:80:1 | exit |
 | main.go:79:12:79:12 | z | main.go:79:2:79:13 | call to Print |
 | main.go:82:1:82:1 | entry | main.go:82:18:82:18 | zero value for a |
-| main.go:82:1:86:1 | function declaration | main.go:0:0:0:0 | exit |
+| main.go:82:1:86:1 | function declaration | main.go:88:6:88:23 | skip |
 | main.go:82:6:82:13 | skip | main.go:82:1:86:1 | function declaration |
 | main.go:82:18:82:18 | implicit read of a | main.go:82:25:82:25 | implicit read of b |
 | main.go:82:18:82:18 | initialization of a | main.go:82:25:82:25 | zero value for b |
@@ -655,6 +655,36 @@
 | main.go:84:11:84:12 | 19 | main.go:84:9:84:12 | ...+... |
 | main.go:84:15:84:15 | x | main.go:84:2:84:2 | assignment to x |
 | main.go:85:2:85:7 | return statement | main.go:82:18:82:18 | implicit read of a |
+| main.go:88:1:88:1 | entry | main.go:88:25:88:25 | argument corresponding to x |
+| main.go:88:1:96:1 | function declaration | main.go:0:0:0:0 | exit |
+| main.go:88:6:88:23 | skip | main.go:88:1:96:1 | function declaration |
+| main.go:88:25:88:25 | argument corresponding to x | main.go:88:25:88:25 | initialization of x |
+| main.go:88:25:88:25 | initialization of x | main.go:89:2:89:2 | skip |
+| main.go:89:2:89:2 | assignment to a | main.go:89:5:89:5 | assignment to b |
+| main.go:89:2:89:2 | skip | main.go:89:5:89:5 | skip |
+| main.go:89:5:89:5 | assignment to b | main.go:90:5:90:8 | cond |
+| main.go:89:5:89:5 | skip | main.go:89:10:89:10 | x |
+| main.go:89:10:89:10 | x | main.go:89:13:89:13 | 0 |
+| main.go:89:13:89:13 | 0 | main.go:89:2:89:2 | assignment to a |
+| main.go:90:5:90:8 | cond | main.go:90:5:90:10 | call to cond |
+| main.go:90:5:90:10 | call to cond | main.go:90:10:90:10 | call to cond is false |
+| main.go:90:5:90:10 | call to cond | main.go:90:10:90:10 | call to cond is true |
+| main.go:90:5:90:10 | call to cond | main.go:96:1:96:1 | exit |
+| main.go:90:10:90:10 | call to cond is false | main.go:93:3:93:3 | skip |
+| main.go:90:10:90:10 | call to cond is true | main.go:91:3:91:3 | skip |
+| main.go:91:3:91:3 | assignment to a | main.go:95:9:95:9 | a |
+| main.go:91:3:91:3 | skip | main.go:91:6:91:6 | skip |
+| main.go:91:6:91:6 | skip | main.go:91:10:91:10 | b |
+| main.go:91:10:91:10 | b | main.go:91:13:91:13 | a |
+| main.go:91:13:91:13 | a | main.go:91:3:91:3 | assignment to a |
+| main.go:93:3:93:3 | skip | main.go:93:6:93:6 | skip |
+| main.go:93:6:93:6 | assignment to b | main.go:95:9:95:9 | a |
+| main.go:93:6:93:6 | skip | main.go:93:10:93:10 | b |
+| main.go:93:10:93:10 | b | main.go:93:13:93:13 | a |
+| main.go:93:13:93:13 | a | main.go:93:6:93:6 | assignment to b |
+| main.go:95:2:95:12 | return statement | main.go:96:1:96:1 | exit |
+| main.go:95:9:95:9 | a | main.go:95:12:95:12 | b |
+| main.go:95:12:95:12 | b | main.go:95:2:95:12 | return statement |
 | noretfunctions.go:0:0:0:0 | entry | noretfunctions.go:3:1:6:1 | skip |
 | noretfunctions.go:3:1:6:1 | skip | noretfunctions.go:8:6:8:12 | skip |
 | noretfunctions.go:8:1:8:1 | entry | noretfunctions.go:9:2:9:8 | selection of Exit |
@@ -734,7 +764,7 @@
 | stmts2.go:12:9:12:13 | ...+... | stmts2.go:12:2:12:13 | return statement |
 | stmts2.go:12:13:12:13 | y | stmts2.go:12:9:12:13 | ...+... |
 | stmts2.go:15:1:15:1 | entry | stmts2.go:15:13:15:14 | argument corresponding to ch |
-| stmts2.go:15:1:28:1 | function declaration | stmts2.go:0:0:0:0 | exit |
+| stmts2.go:15:1:28:1 | function declaration | stmts2.go:30:6:30:12 | skip |
 | stmts2.go:15:6:15:11 | skip | stmts2.go:15:1:28:1 | function declaration |
 | stmts2.go:15:13:15:14 | argument corresponding to ch | stmts2.go:15:13:15:14 | initialization of ch |
 | stmts2.go:15:13:15:14 | initialization of ch | stmts2.go:17:13:17:14 | ch |
@@ -778,6 +808,29 @@
 | stmts2.go:25:16:25:17 | ch | stmts2.go:16:2:26:2 | select statement |
 | stmts2.go:27:2:27:9 | return statement | stmts2.go:28:1:28:1 | exit |
 | stmts2.go:27:9:27:9 | 1 | stmts2.go:27:2:27:9 | return statement |
+| stmts2.go:30:1:30:1 | entry | stmts2.go:31:2:31:2 | skip |
+| stmts2.go:30:1:34:1 | function declaration | stmts2.go:0:0:0:0 | exit |
+| stmts2.go:30:6:30:12 | skip | stmts2.go:30:1:34:1 | function declaration |
+| stmts2.go:31:2:31:2 | assignment to x | stmts2.go:31:2:31:14 | ... := ...[1] |
+| stmts2.go:31:2:31:2 | skip | stmts2.go:31:5:31:5 | skip |
+| stmts2.go:31:2:31:14 | ... := ...[0] | stmts2.go:31:2:31:2 | assignment to x |
+| stmts2.go:31:2:31:14 | ... := ...[1] | stmts2.go:32:6:32:6 | skip |
+| stmts2.go:31:5:31:5 | skip | stmts2.go:31:10:31:12 | gen |
+| stmts2.go:31:10:31:12 | gen | stmts2.go:31:10:31:14 | call to gen |
+| stmts2.go:31:10:31:14 | call to gen | stmts2.go:31:2:31:14 | ... := ...[0] |
+| stmts2.go:31:10:31:14 | call to gen | stmts2.go:34:1:34:1 | exit |
+| stmts2.go:32:6:32:6 | assignment to y | stmts2.go:32:6:32:17 | value declaration specifier[1] |
+| stmts2.go:32:6:32:6 | skip | stmts2.go:32:9:32:9 | skip |
+| stmts2.go:32:6:32:17 | value declaration specifier[0] | stmts2.go:32:6:32:6 | assignment to y |
+| stmts2.go:32:6:32:17 | value declaration specifier[1] | stmts2.go:33:9:33:9 | x |
+| stmts2.go:32:9:32:9 | skip | stmts2.go:32:13:32:15 | gen |
+| stmts2.go:32:13:32:15 | gen | stmts2.go:32:13:32:17 | call to gen |
+| stmts2.go:32:13:32:17 | call to gen | stmts2.go:32:6:32:17 | value declaration specifier[0] |
+| stmts2.go:32:13:32:17 | call to gen | stmts2.go:34:1:34:1 | exit |
+| stmts2.go:33:2:33:13 | return statement | stmts2.go:34:1:34:1 | exit |
+| stmts2.go:33:9:33:9 | x | stmts2.go:33:13:33:13 | y |
+| stmts2.go:33:9:33:13 | ...+... | stmts2.go:33:2:33:13 | return statement |
+| stmts2.go:33:13:33:13 | y | stmts2.go:33:9:33:13 | ...+... |
 | stmts3.go:0:0:0:0 | entry | stmts3.go:3:1:3:13 | skip |
 | stmts3.go:3:1:3:13 | skip | stmts3.go:5:6:5:11 | skip |
 | stmts3.go:5:1:5:1 | entry | stmts3.go:7:3:7:5 | skip |
@@ -814,7 +867,7 @@
 | stmts3.go:19:22:19:23 | skip | stmts3.go:19:23:19:23 | exit |
 | stmts4.go:0:0:0:0 | entry | stmts4.go:3:5:3:5 | skip |
 | stmts4.go:3:5:3:5 | skip | stmts4.go:3:5:3:5 | zero value for _ |
-| stmts4.go:3:5:3:5 | skip | stmts4.go:5:6:5:11 | skip |
+| stmts4.go:3:5:3:5 | zero value for _ | stmts4.go:5:6:5:11 | skip |
 | stmts4.go:5:1:5:26 | function declaration | stmts4.go:0:0:0:0 | exit |
 | stmts4.go:5:6:5:11 | skip | stmts4.go:5:1:5:26 | function declaration |
 | stmts5.go:0:0:0:0 | entry | stmts5.go:3:1:5:1 | skip |

@@ -84,3 +84,13 @@ func multiRes() (a int, b float32) {
 	x, a = x+19, x
 	return
 }
+
+func fooWithUnderscores(x int) (int, int) {
+	a, b := x, 0
+	if cond() {
+		a, _ = b, a
+	} else {
+		_, b = b, a
+	}
+	return a, b
+}

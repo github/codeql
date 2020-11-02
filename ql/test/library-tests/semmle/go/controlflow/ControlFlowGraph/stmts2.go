@@ -26,3 +26,9 @@ func test14(ch chan int) int {
 	}
 	return 1
 }
+
+func test13b() int {
+	x, _ := gen()
+	var y, _ = gen()
+	return x + y
+}
