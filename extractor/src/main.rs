@@ -1,9 +1,46 @@
 mod extractor;
 
 use clap;
+use flate2::write::GzEncoder;
 use std::fs;
-use std::io::BufRead;
+use std::io::{BufRead, BufWriter, Write};
 use std::path::{Path, PathBuf};
+
+enum TrapCompression {
+    None,
+    Gzip,
+}
+
+impl TrapCompression {
+    fn from_env() -> TrapCompression {
+        match std::env::var("CODEQL_RUBY_TRAP_COMPRESSION") {
+            Ok(method) => match TrapCompression::from_string(&method) {
+                Some(c) => c,
+                None => {
+                    tracing::error!("Unknown compression method '{}'; using gzip.", &method);
+                    TrapCompression::Gzip
+                }
+            },
+            // Default compression method if the env var isn't set:
+            Err(_) => TrapCompression::Gzip,
+        }
+    }
+
+    fn from_string(s: &str) -> Option<TrapCompression> {
+        match s.to_lowercase().as_ref() {
+            "none" => Some(TrapCompression::None),
+            "gzip" => Some(TrapCompression::Gzip),
+            _ => None,
+        }
+    }
+
+    fn extension(&self) -> &str {
+        match self {
+            TrapCompression::None => ".trap",
+            TrapCompression::Gzip => ".trap.gz",
+        }
+    }
+}
 
 fn main() -> std::io::Result<()> {
     tracing_subscriber::fmt()
@@ -32,6 +69,7 @@ fn main() -> std::io::Result<()> {
         .value_of("output-dir")
         .expect("missing --output-dir");
     let trap_dir = PathBuf::from(trap_dir);
+    let trap_compression = TrapCompression::from_env();
 
     let file_list = matches.value_of("file-list").expect("missing --file-list");
     let file_list = fs::File::open(file_list)?;
@@ -41,18 +79,27 @@ fn main() -> std::io::Result<()> {
     let mut extractor = extractor::create(language, schema);
     for line in std::io::BufReader::new(file_list).lines() {
         let path = PathBuf::from(line?).canonicalize()?;
-        let trap_file = path_for(&trap_dir, &path, ".trap");
+        let trap_file = path_for(&trap_dir, &path, trap_compression.extension());
         let src_archive_file = path_for(&src_archive_dir, &path, "");
         let trap = extractor.extract(&path)?;
         std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
         std::fs::copy(&path, &src_archive_file)?;
         std::fs::create_dir_all(&trap_file.parent().unwrap())?;
-        let mut trap_file = std::fs::File::create(&trap_file)?;
-        let trap_file: &mut dyn std::io::Write = &mut trap_file;
-        write!(trap_file, "{}", trap)?;
+        let trap_file = std::fs::File::create(&trap_file)?;
+        let mut trap_file = BufWriter::new(trap_file);
+        match trap_compression {
+            TrapCompression::None => {
+                write!(trap_file, "{}", trap)?;
+            }
+            TrapCompression::Gzip => {
+                let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
+                write!(compressed_writer, "{}", trap)?;
+            }
+        }
     }
     return Ok(());
 }
+
 fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
     let mut result = PathBuf::from(dir);
     for component in path.components() {
