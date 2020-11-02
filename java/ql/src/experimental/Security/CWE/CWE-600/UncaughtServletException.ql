@@ -21,11 +21,25 @@ private predicate exceptionIsCaught(TryStmt t, RefType exType) {
     cc.getVariable() = v and
     v.getType().(RefType).getASubtype*() = exType and // Detect the case that a subclass exception is thrown but its parent class is declared in the catch clause.
     not exists(
-      ThrowStmt ts, ClassInstanceExpr cie // Catch and rethrow an exception without processing, e.g. catch (UnknownHostException uhex) {throw new IOException(uhex);}
+      ThrowStmt ts, ClassInstanceExpr cie // Catch and rethrow an exception without processing
     |
       ts.getEnclosingStmt() = cc.getBlock() and
-      ts.getExpr() = cie and
-      cie.getArgument(0) = v.getAnAccess()
+      (
+        ts.getExpr() = cie and
+        cie.getAnArgument() = v.getAnAccess() // catch (UnknownHostException uhex) {throw new IOException(uhex);}
+        or
+        exists(MethodAccess ma |
+          ma.getMethod().getName() in ["initCause", "addSuppressed"] and
+          ma.getAnArgument() = v.getAnAccess() and
+          (
+            ma.getQualifier().(VarAccess).getVariable().getAnAssignedValue() = cie and
+            ts.getExpr() = ma.getQualifier().(VarAccess).getVariable().getAnAccess() // e.g. IOException ioException = new IOException(); ioException.initCause(e); throw ioException;
+          )
+          or
+          ma.getQualifier() = cie and
+          ts.getExpr() = ma // e.g. throw new IOException().initCause(uhex);
+        )
+      )
     )
   )
 }
