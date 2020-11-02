@@ -32,8 +32,8 @@ module Connection {
    * A source of an instance of `db.Conection`.
    *
    * This can include instantiation of the class, return value from function
-   * calls, or a special parameter that will be set when functions are call by external
-   * library.
+   * calls, or a special parameter that will be set when functions are called by external
+   * libraries.
    *
    * Use `Conection::instance()` predicate to get references to instances of `db.Conection`.
    *
