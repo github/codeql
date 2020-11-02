@@ -8,6 +8,7 @@ private import experimental.dataflow.DataFlow
 private import experimental.dataflow.RemoteFlowSources
 private import experimental.dataflow.TaintTracking
 private import experimental.semmle.python.Concepts
+private import experimental.semmle.python.frameworks.PEP249
 private import semmle.python.regex
 
 /**
@@ -76,6 +77,10 @@ private module Django {
     /** Gets a reference to the `django.db` module. */
     DataFlow::Node db() { result = django_attr("db") }
 
+    class DjangoDb extends PEP249Module {
+      DjangoDb() { this = db() }
+    }
+
     /** Provides models for the `django.db` module. */
     module db {
       /** Gets a reference to the `django.db.connection` object. */
@@ -92,44 +97,9 @@ private module Django {
       /** Gets a reference to the `django.db.connection` object. */
       DataFlow::Node connection() { result = connection(DataFlow::TypeTracker::end()) }
 
-      /** Provides models for the `django.db.connection.cursor` method. */
-      module cursor {
-        /** Gets a reference to the `django.db.connection.cursor` metod. */
-        private DataFlow::Node methodRef(DataFlow::TypeTracker t) {
-          t.start() and
-          result = DataFlow::importNode("django.db.connection.cursor")
-          or
-          t.startInAttr("cursor") and
-          result = connection()
-          or
-          exists(DataFlow::TypeTracker t2 | result = methodRef(t2).track(t2, t))
-        }
-
-        /** Gets a reference to the `django.db.connection.cursor` metod. */
-        DataFlow::Node methodRef() { result = methodRef(DataFlow::TypeTracker::end()) }
-
-        /** Gets a reference to a result of calling `django.db.connection.cursor`. */
-        private DataFlow::Node methodResult(DataFlow::TypeTracker t) {
-          t.start() and
-          result.asCfgNode().(CallNode).getFunction() = methodRef().asCfgNode()
-          or
-          exists(DataFlow::TypeTracker t2 | result = methodResult(t2).track(t2, t))
-        }
-
-        /** Gets a reference to a result of calling `django.db.connection.cursor`. */
-        DataFlow::Node methodResult() { result = methodResult(DataFlow::TypeTracker::end()) }
+      class DjangoDbConnection extends Connection::InstanceSource {
+        DjangoDbConnection() { this = connection() }
       }
-
-      /** Gets a reference to the `django.db.connection.cursor.execute` function. */
-      private DataFlow::Node execute(DataFlow::TypeTracker t) {
-        t.startInAttr("execute") and
-        result = cursor::methodResult()
-        or
-        exists(DataFlow::TypeTracker t2 | result = execute(t2).track(t2, t))
-      }
-
-      /** Gets a reference to the `django.db.connection.cursor.execute` function. */
-      DataFlow::Node execute() { result = execute(DataFlow::TypeTracker::end()) }
 
       // -------------------------------------------------------------------------
       // django.db.models
@@ -273,23 +243,6 @@ private module Django {
             }
           }
         }
-      }
-    }
-
-    /**
-     * A call to the `django.db.connection.cursor.execute` function.
-     *
-     * See
-     * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#executing-custom-sql-directly
-     * - https://docs.djangoproject.com/en/3.1/topics/db/sql/#connections-and-cursors
-     */
-    private class DbConnectionExecute extends SqlExecution::Range, DataFlow::CfgNode {
-      override CallNode node;
-
-      DbConnectionExecute() { node.getFunction() = django::db::execute().asCfgNode() }
-
-      override DataFlow::Node getSql() {
-        result.asCfgNode() in [node.getArg(0), node.getArgByName("sql")]
       }
     }
 
