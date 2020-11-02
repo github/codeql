@@ -94,7 +94,7 @@ var good9 = '(a|aa?)*b';
 // NOT GOOD
 var bad18 = /(([^]|[^a])*)"/;
 
-// NOT GOOD - but not flagged
+// NOT GOOD
 var bad19 = /([^"']+)*/g;
 
 // NOT GOOD
@@ -108,3 +108,15 @@ var bad21 = /((b|[^a])*)"/;
 
 // NOT GOOD
 var bad22 = /((G|[^a])*)"/;
+
+// NOT GOOD
+var bad23 = /(([0-9]|[^a])*)"/;
+
+// NOT GOOD
+var bad24 = /(?:=(?:([!#\$%&'\*\+\-\.\^_`\|~0-9A-Za-z]+)|"((?:\\[\x00-\x7f]|[^\x00-\x08\x0a-\x1f\x7f"])*)"))?/;
+
+// NOT GOOD
+var bad25 = /"((?:\\[\x00-\x7f]|[^\x00-\x08\x0a-\x1f\x7f"])*)"/;
+
+// GOOD
+var bad26 = /"((?:\\[\x00-\x7f]|[^\x00-\x08\x0a-\x1f\x7f"\\])*)"/;

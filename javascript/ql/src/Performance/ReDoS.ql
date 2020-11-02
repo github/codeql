@@ -444,6 +444,57 @@ predicate charClassMatchesChar(RegExpCharacterClass cc, string char) {
 }
 
 /**
+ * Gets the minimum char that is matched by both the positive char class `c` and the
+ * negative char class `d`.
+ */
+pragma[noinline]
+private string getMinOverlapBetweenCharacterClasses(CharClass c, InvertedCharClass d) {
+  result = min(getAOverlapBetweenCharacterClasses(c, d))
+}
+
+/**
+ * Gets a char that is mentioned in the character class `c`.
+ */
+private string getAMentionedChar(RegExpCharacterClass c) {
+  exists(RegExpTerm child | child = c.getAChild() |
+    result = child.(RegExpConstant).getValue()
+    or
+    child.(RegExpCharacterRange).isRange(result, _)
+    or
+    child.(RegExpCharacterRange).isRange(_, result)
+  )
+}
+
+/**
+ * Gets a char that is relevant for ReDoS analysis of `symbol`.
+ * The result is either mentioned in the character class `symbol`,
+ * or, if `symbol` is an inverted character class, then the result is the next/previous charcode.
+ */
+pragma[noinline]
+private string getARelevantCharClassChar(TInputSymbol symbol) {
+  exists(RegExpCharacterClass cc | symbol = CharClass(cc) | result = getAMentionedChar(cc))
+  or
+  exists(RegExpCharacterClass cc | symbol = InvertedCharClass(cc) |
+    result = nextChar(getAMentionedChar(cc)) or
+    nextChar(result) = getAMentionedChar(cc)
+  )
+}
+
+/**
+ * Gets a char that is matched by both the positive char class `c` and the
+ * negative char class `d`.
+ */
+private string getAOverlapBetweenCharacterClasses(CharClass c, InvertedCharClass d) {
+  result = [getARelevantCharClassChar(c), getARelevantCharClassChar(d)] and
+  exists(RegExpCharacterClass negClass, RegExpCharacterClass posClass |
+    c = CharClass(posClass) and
+    d = InvertedCharClass(negClass) and
+    charClassMatchesChar(posClass, result) and
+    not charClassMatchesChar(negClass, result)
+  )
+}
+
+/**
  * Gets a character that is represented by both `c` and `d`.
  */
 string intersect(InputSymbol c, InputSymbol d) {
@@ -462,6 +513,8 @@ string intersect(InputSymbol c, InputSymbol d) {
     or
     d = Any()
   )
+  or
+  result = getMinOverlapBetweenCharacterClasses(c, d)
   or
   exists(RegExpCharacterClass cc | c = InvertedCharClass(cc) and result = chooseFromInverted(cc) |
     d = InvertedCharClass(cc)

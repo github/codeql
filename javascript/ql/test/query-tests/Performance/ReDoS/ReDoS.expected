@@ -33,6 +33,7 @@
 | regexplib/uri.js:3:128:3:129 | .* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '/'. |
 | regexplib/uri.js:38:35:38:40 | [a-z]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | regexplib/uri.js:55:35:55:40 | [a-z]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| regexplib/uri.js:63:393:63:429 | [a-zA-Z0-9\\.\\,\\?\\'\\\\/\\+&%\\$#\\=~_\\-@]* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '/#'. |
 | tst.js:4:18:4:32 | (?:__\|[\\s\\S])+? | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '__'. |
 | tst.js:4:42:4:58 | (?:\\*\\*\|[\\s\\S])+? | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '**'. |
 | tst.js:14:14:14:15 | .* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of ','. |
@@ -56,6 +57,10 @@
 | tst.js:83:14:83:20 | (.\|\\n)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
 | tst.js:89:25:89:32 | (a\|aa?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.js:95:15:95:25 | ([^]\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
+| tst.js:98:15:98:20 | [^"']+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '('. |
 | tst.js:101:15:101:23 | (.\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
 | tst.js:107:15:107:23 | (b\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
 | tst.js:110:15:110:23 | (G\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'G'. |
+| tst.js:113:15:113:27 | ([0-9]\|[^a])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| tst.js:116:60:116:104 | (?:\\\\[\\x00-\\x7f]\|[^\\x00-\\x08\\x0a-\\x1f\\x7f"])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\\\!'. |
+| tst.js:119:16:119:60 | (?:\\\\[\\x00-\\x7f]\|[^\\x00-\\x08\\x0a-\\x1f\\x7f"])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\\\!'. |
