@@ -234,7 +234,14 @@ private module CharacterClasses {
       exists(string lo, string hi | child.(RegExpCharacterRange).isRange(lo, hi) |
         lo <= char and char <= hi
       )
-      // TODO: RegExpCharacterClassEscape.
+      or
+      exists(RegExpCharacterClassEscape escape | escape = child |
+        escape.getValue() = escape.getValue().toLowerCase() and
+        classEscapeMatches(escape.getValue(), char)
+        or
+        escape.getValue() = escape.getValue().toUpperCase() and
+        not classEscapeMatches(escape.getValue().toLowerCase(), char)
+      )
     )
   }
 
@@ -248,6 +255,12 @@ private module CharacterClasses {
       child.(RegExpCharacterRange).isRange(result, _)
       or
       child.(RegExpCharacterRange).isRange(_, result)
+      or
+      exists(RegExpCharacterClassEscape escape | child = escape |
+        result = min(string s | classEscapeMatches(escape.getValue().toLowerCase(), s))
+        or
+        result = max(string s | classEscapeMatches(escape.getValue().toLowerCase(), s))
+      )
     )
   }
 
@@ -264,15 +277,7 @@ private module CharacterClasses {
     bindingset[char]
     override predicate matches(string char) { hasChildThatMatches(cc, char) }
 
-    override string choose() {
-      result =
-        min(string c |
-          exists(RegExpTerm child | child = cc.getAChild() |
-            c = child.(RegExpConstant).getValue() or
-            child.(RegExpCharacterRange).isRange(c, _)
-          )
-        )
-    }
+    override string choose() { result = min(string c | c = getAMentionedChar(cc)) }
   }
 
   /**
@@ -293,19 +298,14 @@ private module CharacterClasses {
 
     override string choose() {
       // The next char after the max of the inverted charclass.
-      result =
-        nextChar(max(string c |
-            exists(RegExpTerm child | child = cc.getAChild() |
-              c = child.(RegExpConstant).getValue() or
-              child.(RegExpCharacterRange).isRange(_, c)
-            )
-          ))
+      result = nextChar(max(string c | c = getAMentionedChar(cc)))
     }
   }
 
   /**
    * Holds if the character class escape `clazz` (\d, \s, or \w) matches `char`.
    */
+  pragma[noinline]
   private predicate classEscapeMatches(string clazz, string char) {
     clazz = "d" and
     char = "0123456789".charAt(_)

@@ -159,3 +159,15 @@ var bad36 = /((\W|\D)*)"/;
 
 // NOT GOOD
 var bad37 = /((\S|\w)*)"/;
+
+// NOT GOOD
+var bad38 = /((\S|[\w])*)"/;
+
+// NOT GOOD
+var bad39 = /((1s|[\da-z])*)"/;
+
+// NOT GOOD
+var bad40 = /((0|[\d])*)"/;
+
+// NOT GOOD
+var bad41 = /(([\d]+)*)"/;
