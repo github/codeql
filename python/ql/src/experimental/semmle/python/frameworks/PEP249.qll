@@ -29,7 +29,7 @@ DataFlow::Node connect() { result = connect(DataFlow::TypeTracker::end()) }
  */
 module Connection {
   /**
-   * A source of an instance of `db.Conection`.
+   * A source of an instance of `db.Connection`.
    *
    * This can include instantiation of the class, return value from function
    * calls, or a special parameter that will be set when functions are called by external
@@ -62,7 +62,7 @@ module Connection {
 }
 
 /**
- * Provides models for the `db.connection.cursor` method.
+ * Provides models for the `db.Connection.cursor` method.
  * See https://www.python.org/dev/peps/pep-0249/#cursor.
  */
 module cursor {
@@ -90,7 +90,7 @@ module cursor {
 }
 
 /**
- * Gets a reference to the `db.connection.cursor.execute` function.
+ * Gets a reference to the `db.Connection.Cursor.execute` function.
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
 private DataFlow::Node execute(DataFlow::TypeTracker t) {
@@ -101,7 +101,7 @@ private DataFlow::Node execute(DataFlow::TypeTracker t) {
 }
 
 /**
- * Gets a reference to the `db.connection.cursor.execute` function.
+ * Gets a reference to the `db.Connection.Cursor.execute` function.
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
 DataFlow::Node execute() { result = execute(DataFlow::TypeTracker::end()) }
