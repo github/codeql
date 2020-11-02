@@ -30,7 +30,7 @@ private class AtomicArrayConstructor extends AllocatingCallable, Constructor {
     this
         .getDeclaringType()
         .hasQualifiedName("java.util.concurrent.atomic",
-          ["AtomicIntArray", "AtomicLongArray", "AtomicReferenceArray"]) and
+          ["AtomicIntegerArray", "AtomicLongArray", "AtomicReferenceArray"]) and
     this.getParameterType(0) instanceof IntegralType
   }
 

@@ -13,7 +13,7 @@
 <recommendation>
 
 <p>Ensure that user-provided sizes are within some upper bound. 
-Alternatively, a structure such as <code>ArrayList</code> could be used to ensure that the application only allocates as much memory as is necassary.</p>
+Alternatively, a structure such as <code>ArrayList</code> could be used to ensure that the application only allocates as much memory as is necessary.</p>
 
 </recommendation>
 <example>
@@ -24,7 +24,7 @@ The following example allocates an amount of memory based on a user provided val
 
 <sample src="UnboundedAllocationBad.java" />
 
-<p>The following example firt validates the uner input against an upper bound:</p>
+<p>The following example first validates the user input against an upper bound:</p>
 
 <sample src="UnboundedAllocationGood.java" />
 

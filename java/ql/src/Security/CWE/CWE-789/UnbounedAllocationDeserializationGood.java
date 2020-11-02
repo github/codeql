@@ -13,7 +13,7 @@ class A implements Serializable{
         int length = in.readInt();
 
         // GOOD: An ArrayList is used, which dynamically allocates memory as needed.
-        ArrayList<Object> dataList = new ArrayList<Object>();
+        ArrayList<Object> dataList = new ArrayList<>();
 
         for (int i = 0; i < length; i++) {
             dataList.add(in.readObject());

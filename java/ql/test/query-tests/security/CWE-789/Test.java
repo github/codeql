@@ -43,7 +43,7 @@ class Test {
             int length = in.readInt();
 
             // GOOD: An ArrayList is used, which dynamically allocates memory as needed.
-            ArrayList<Object> dataList = new ArrayList<Object>();
+            ArrayList<Object> dataList = new ArrayList<>();
 
             for (int i = 0; i < length; i++) {
                 dataList.add(in.readObject());
@@ -58,7 +58,7 @@ class Test {
         ObjectInputStream stream = new ObjectInputStream(sock.getInputStream());
 
         int size = stream.readInt();
-        // BAD: A user-controlled amount of memory is alocated
+        // BAD: A user-controlled amount of memory is allocated
         byte[] buffer = new byte[size];
 
         // ...

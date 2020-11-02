@@ -6,7 +6,7 @@
 <p>
   A custom deserialization method may be expected to be run on an untrusted data stream. 
   If so, care should be taken when allocating resources such as memory based on a number within that stream. 
-  Otherwise, an an attacker may be able to cause a DoS (Denial of Service) attack by providing the application with a malicously crafted
+  Otherwise, an attacker may be able to cause a DoS (Denial of Service) attack by providing the application with a maliciously crafted
   data stream causing it to consume an unbounded amount of memory.
 </p>
 
