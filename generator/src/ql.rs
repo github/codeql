@@ -1,5 +1,19 @@
 use std::fmt;
 
+pub enum TopLevel {
+    Class(Class),
+    Import(String),
+}
+
+impl fmt::Display for TopLevel {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            TopLevel::Import(x) => write!(f, "import {}", x),
+            TopLevel::Class(cls) => write!(f, "{}", cls),
+        }
+    }
+}
+
 pub struct Class {
     pub name: String,
     pub is_abstract: bool,
@@ -198,7 +212,7 @@ impl fmt::Display for FormalParameter {
 pub fn write(
     language_name: &str,
     file: &mut dyn std::io::Write,
-    classes: &[Class],
+    elements: &[TopLevel],
 ) -> std::io::Result<()> {
     write!(file, "/*\n")?;
     write!(file, " * CodeQL library for {}\n", language_name)?;
@@ -208,8 +222,8 @@ pub fn write(
     )?;
     write!(file, " */\n\n")?;
 
-    for class in classes {
-        write!(file, "{}\n\n", &class)?;
+    for element in elements {
+        write!(file, "{}\n\n", &element)?;
     }
 
     Ok(())
