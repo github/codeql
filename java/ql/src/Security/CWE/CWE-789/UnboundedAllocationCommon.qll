@@ -3,7 +3,6 @@
  */
 
 import semmle.code.java.dataflow.RangeAnalysis
-import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 
@@ -46,15 +45,6 @@ private class ListConstructor extends AllocatingCallable, Constructor {
   override int getParam() { result = 0 }
 }
 
-private class ReadMethod extends TaintPreservingCallable {
-  ReadMethod() {
-    this.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
-    this.getName().matches("read%")
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-}
-
 private class ArithmeticStep extends TaintTracking::AdditionalTaintStep {
   override predicate step(DataFlow::Node src, DataFlow::Node sink) {
     exists(BinaryExpr binex | sink.asExpr() = binex and src.asExpr() = binex.getAnOperand() |
@@ -64,11 +54,11 @@ private class ArithmeticStep extends TaintTracking::AdditionalTaintStep {
       or
       binex instanceof SubExpr
       or
+      binex instanceof LShiftExpr
+      or
       src.asExpr() = binex.getLeftOperand() and
       (
         binex instanceof DivExpr
-        or
-        binex instanceof LShiftExpr
         or
         binex instanceof RShiftExpr
         or
