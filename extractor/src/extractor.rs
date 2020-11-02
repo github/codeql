@@ -10,14 +10,14 @@ struct TrapWriter {
     /// The accumulated trap entries
     trap_output: Vec<TrapEntry>,
     /// A counter for generating fresh labels
-    counter: i32,
+    counter: u32,
     /// cache of global keys
     global_keys: std::collections::HashMap<String, Label>,
 }
 
 fn new_trap_writer() -> TrapWriter {
     TrapWriter {
-        counter: -1,
+        counter: 0,
         trap_output: Vec::new(),
         global_keys: std::collections::HashMap::new(),
     }
@@ -34,8 +34,8 @@ impl TrapWriter {
     ///  full ID "methods_com.method.package.DeclaringClass.method(argumentList)".
 
     fn fresh_id(&mut self) -> Label {
-        self.counter += 1;
         let label = Label(self.counter);
+        self.counter += 1;
         self.trap_output.push(TrapEntry::FreshId(label));
         label
     }
@@ -44,8 +44,8 @@ impl TrapWriter {
         if let Some(label) = self.global_keys.get(key) {
             return (*label, false);
         }
-        self.counter += 1;
         let label = Label(self.counter);
+        self.counter += 1;
         self.global_keys.insert(key.to_owned(), label);
         self.trap_output
             .push(TrapEntry::MapLabelToKey(label, key.to_owned()));
@@ -601,7 +601,7 @@ impl fmt::Display for TrapEntry {
 
 #[derive(Debug, Copy, Clone)]
 // Identifiers of the form #0, #1...
-struct Label(i32);
+struct Label(u32);
 
 impl fmt::Display for Label {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -643,12 +643,22 @@ impl fmt::Display for Arg {
     }
 }
 
+/// Limit the length (in bytes) of a string. If the string's length in bytes is
+/// less than or equal to the limit then the entire string is returned. Otherwise
+/// the string is sliced at the provided limit. If there is a multi-byte character
+/// at the limit then the returned slice will be slightly shorter than the limit to
+/// avoid splitting that multi-byte character.
 fn limit_string(string: &String, max_size: usize) -> &str {
     if string.len() <= max_size {
         return string;
     }
     let p = string.as_ptr();
     let mut index = max_size;
+    // We want to clip the string at [max_size]; however, the character at that position
+    // may span several bytes. We need to find the first byte of the character. In UTF-8
+    // encoded data any byte that matches the bit pattern 10XXXXXX is not a start byte.
+    // Therefore we decrement the index as long as there are bytes matching this pattern.
+    // This ensures we cut the string at the border between one character and another.
     while index > 0 && unsafe { (*p.offset(index as isize) & 0b11000000) == 0b10000000 } {
         index -= 1;
     }
