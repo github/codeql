@@ -1,3 +1,4 @@
+import Customizations
 import semmle.python.Files
 import semmle.python.Operations
 import semmle.python.Variables
