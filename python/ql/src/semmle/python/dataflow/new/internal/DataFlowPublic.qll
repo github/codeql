@@ -118,11 +118,13 @@ class Node extends TNode {
   Node track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 }
 
+/** A data-flow node corresponding to an SSA variable. */
 class EssaNode extends Node, TEssaNode {
   EssaVariable var;
 
   EssaNode() { this = TEssaNode(var) }
 
+  /** Gets the `EssaVariable` represented by this data-flow node. */
   EssaVariable getVar() { result = var }
 
   override EssaVariable asVar() { result = var }
@@ -135,11 +137,13 @@ class EssaNode extends Node, TEssaNode {
   override Location getLocation() { result = var.getDefinition().getLocation() }
 }
 
+/** A data-flow node corresponding to a control-flow node. */
 class CfgNode extends Node, TCfgNode {
   ControlFlowNode node;
 
   CfgNode() { this = TCfgNode(node) }
 
+  /** Gets the `ControlFlowNode` represented by this data-flow node. */
   ControlFlowNode getNode() { result = node }
 
   override ControlFlowNode asCfgNode() { result = node }
