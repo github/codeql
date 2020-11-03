@@ -226,23 +226,77 @@ private module CharacterClasses {
   /**
    * Holds if the character class `cc` has a child (constant or range) that matches `char`.
    */
-  bindingset[char]
+  pragma[noinline]
   predicate hasChildThatMatches(RegExpCharacterClass cc, string char) {
+    exists(CharClass(cc)) and
     exists(RegExpTerm child | child = cc.getAChild() |
       char = child.(RegExpConstant).getValue()
       or
+      rangeMatchesOnLetterOrDigits(child, char)
+      or
+      not rangeMatchesOnLetterOrDigits(child, _) and
+      char = getAnyPossiblyMatchedChar() and
       exists(string lo, string hi | child.(RegExpCharacterRange).isRange(lo, hi) |
-        lo <= char and char <= hi
+        lo <= char and
+        char <= hi
       )
       or
       exists(RegExpCharacterClassEscape escape | escape = child |
         escape.getValue() = escape.getValue().toLowerCase() and
         classEscapeMatches(escape.getValue(), char)
         or
+        char = getAnyPossiblyMatchedChar() and
         escape.getValue() = escape.getValue().toUpperCase() and
         not classEscapeMatches(escape.getValue().toLowerCase(), char)
       )
     )
+  }
+
+  /**
+   * Holds if `range` is a range on lower-case, upper-case, or digits, and matches `char`.
+   * This predicate is used to restrict the searchspace for ranges by only joining `getAnyPossiblyMatchedChar`
+   * on a few ranges.
+   */
+  private predicate rangeMatchesOnLetterOrDigits(RegExpCharacterRange range, string char) {
+    exists(string lo, string hi |
+      range.isRange(lo, hi) and lo = lowercaseLetter() and hi = lowercaseLetter()
+    |
+      lo <= char and
+      char <= hi and
+      char = lowercaseLetter()
+    )
+    or
+    exists(string lo, string hi |
+      range.isRange(lo, hi) and lo = upperCaseLetter() and hi = upperCaseLetter()
+    |
+      lo <= char and
+      char <= hi and
+      char = upperCaseLetter()
+    )
+    or
+    exists(string lo, string hi | range.isRange(lo, hi) and lo = digit() and hi = digit() |
+      lo <= char and
+      char <= hi and
+      char = digit()
+    )
+  }
+
+  private string lowercaseLetter() { result = "abdcefghijklmnopqrstuvwxyz".charAt(_) }
+
+  private string upperCaseLetter() { result = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(_) }
+
+  private string digit() { result = [0 .. 9].toString() }
+
+  /**
+   * Gets any char that could possibly be matched by a regular expression.
+   * Includes all printable ascii chars, all constants mentioned in a regexp, and all chars matches by the regexp `/\s|\d|\w/`.
+   */
+  private string getAnyPossiblyMatchedChar() {
+    exists(ascii(result))
+    or
+    exists(RegExpConstant c | result = c.getValue().charAt(_))
+    or
+    classEscapeMatches(_, result)
   }
 
   /**
@@ -274,7 +328,6 @@ private module CharacterClasses {
 
     override string getARelevantChar() { result = getAMentionedChar(cc) }
 
-    bindingset[char]
     override predicate matches(string char) { hasChildThatMatches(cc, char) }
 
     override string choose() { result = min(string c | c = getAMentionedChar(cc)) }
@@ -314,7 +367,7 @@ private module CharacterClasses {
     (
       char = [" ", "\t", "\r", "\n", "\\u000c", "\\u000b"]
       or
-      exists(RegExpConstant constant | constant.getValue().charAt(_) = char) and
+      char = getAnyPossiblyMatchedChar() and
       char.regexpMatch("\\u000b|\\u000c") // \v|\f (vertical tab | form feed)
     )
     or
