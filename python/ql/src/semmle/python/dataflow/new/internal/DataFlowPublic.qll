@@ -364,7 +364,7 @@ newtype TContent =
   TListElementContent() or
   /** An element of a set. */
   TSetElementContent() or
-  /** An element of a tuple at a specifik index. */
+  /** An element of a tuple at a specific index. */
   TTupleElementContent(int index) { exists(any(TupleNode tn).getElement(index)) } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
@@ -372,7 +372,7 @@ newtype TContent =
     or
     key = any(Keyword kw).getArg()
   } or
-  /** An element of a dictionary at any key. */
+  /** An element of a dictionary under any key. */
   TDictionaryElementAnyContent() or
   /** An object attribute. */
   TAttributeContent(string attr) { attr = any(Attribute a).getName() }
@@ -387,17 +387,17 @@ class Content extends TContent {
   string toString() { result = "Content" }
 }
 
-/** The content of an element of a list. */
+/** An element of a list. */
 class ListElementContent extends TListElementContent, Content {
   override string toString() { result = "List element" }
 }
 
-/** The content of an element of a set. */
+/** An element of a set. */
 class SetElementContent extends TSetElementContent, Content {
   override string toString() { result = "Set element" }
 }
 
-/** The content, at a specific index, of an element of a tuple. */
+/** An element of a tuple at a specific index. */
 class TupleElementContent extends TTupleElementContent, Content {
   int index;
 
@@ -409,7 +409,7 @@ class TupleElementContent extends TTupleElementContent, Content {
   override string toString() { result = "Tuple element at index " + index.toString() }
 }
 
-/** The content, under a specific key, of an element of a dictionary. */
+/** An element of a dictionary under a specific key. */
 class DictionaryElementContent extends TDictionaryElementContent, Content {
   string key;
 
@@ -421,12 +421,12 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
   override string toString() { result = "Dictionary element at key " + key }
 }
 
-/** The content, at any key, of an element of a dictionary. */
+/** An element of a dictionary under any key. */
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
   override string toString() { result = "Any dictionary element" }
 }
 
-/** The content of an object attribute. */
+/** An object attribute. */
 class AttributeContent extends TAttributeContent, Content {
   private string attr;
 
