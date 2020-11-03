@@ -6,23 +6,23 @@ A list of design patterns you are recommended to follow.
 
 To allow both extensibility and refinement of classes, we use what is commonly referred to as the `::Range` pattern (since https://github.com/github/codeql/pull/727), but the actual implementation can use different names.
 
+This pattern should be used when you want to model a user-extensible set of values ("extensibility"), while allowing restrictive subclasses, typically for the purposes of overriding predicates ("refinement"). Using a simple `abstract` class gives you the former, but makes it impossible to create overriding methods for all contributing extensions at once. Using a non-`abstract` class provides refinement-based overriding, but requires the original class to range over a closed, non-extensible set.
 <details>
 <summary>Generic example of how to define classes with ::Range</summary>
 
-Instead of
+Using a single `abstract` class looks like this:
 ```ql
 /** <QLDoc...> */
 abstract class MySpecialExpr extends Expr {
   /** <QLDoc...> */
   abstract int memberPredicate();
 }
-```
-with
-```ql
 class ConcreteSubclass extends MySpecialExpr { ... }
 ```
 
-use
+While this allows users of the library to add new types of `MySpecialExpr` (like, in this case, `ConcreteSubclass), there is no way to override the implementations of `memberPredicate` of all extensions at once.
+
+Applying the `::Range` pattern yields the following:
 
 ```ql
 /**
@@ -54,10 +54,9 @@ module MySpecialExpr {
   }
 }
 ```
-with
-```ql
-class ConcreteSubclass extends MySpecialExpr::Range { ... }
-```
+Now, a concrete subclass can derive from `MySpecialExpr::Range` if it wants to extend the set of values in `MySpecialExpr`, and it will be required to implement the abstract `memberPredicate()`. Conversely, if it wants to refine `MySpecialExpr` and override `memberPredicate` for all extensions, it can do so by deriving from `MySpecialExpr` directly.
+
+The key element of the pattern is to provide a field of type `MySpecialExpr::Range`, equating it to `this` in the characteristic predicate of `MySpecialExpr`. In member predicates, we can use either `this` or `range`, depending on which type has the API we need.
 
 </details>
 
