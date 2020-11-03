@@ -26,7 +26,7 @@ class ThrowExConfiguration extends DataFlow2::Configuration {
 
   /** Sink of `ThrowStmt` */
   override predicate isSink(DataFlow::Node sink) {
-    exists(ThrowStmt ts | sink.asExpr() = ts.getExpr()) // e.g. the uhex exception throwed in `catch (UnknownHostException uhex) {throw uhex;}`
+    exists(ThrowStmt ts | sink.asExpr() = ts.getExpr()) // e.g. the uhex exception thrown in `catch (UnknownHostException uhex) {throw uhex;}`
   }
 
   /**

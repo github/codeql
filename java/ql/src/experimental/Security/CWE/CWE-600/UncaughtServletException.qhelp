@@ -29,7 +29,7 @@
       <a href="https://cwe.mitre.org/data/definitions/600.html">CWE-600: Uncaught Exception in Servlet</a>
     </li>
     <li>
-      Sonarsource:
+      SonarSource:
       <a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-1989">Exceptions should not be thrown from servlet methods</a>
     </li>
     <li>
