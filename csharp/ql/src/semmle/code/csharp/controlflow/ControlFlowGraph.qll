@@ -109,7 +109,7 @@ module ControlFlow {
      * Holds if this node post-dominates `that` node.
      *
      * That is, all paths reaching a normal callable exit node (an `AnnotatedExitNode`
-     * with a normal normal exit type) from `that` node must go through this node.
+     * with a normal exit type) from `that` node must go through this node.
      *
      * Example:
      *
@@ -146,7 +146,7 @@ module ControlFlow {
      * Holds if this node strictly post-dominates `that` node.
      *
      * That is, all paths reaching a normal callable exit node (an `AnnotatedExitNode`
-     * with a normal normal exit type) from `that` node must go through this node
+     * with a normal exit type) from `that` node must go through this node
      * (which must be different from `that` node).
      *
      * Example:
