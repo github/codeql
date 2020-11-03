@@ -831,31 +831,31 @@ private module Stage2 {
         argAp = apNone() and
         ap = getApNil(node)
       )
+    )
+    or
+    // store
+    exists(TypedContent tc, Ap ap0 |
+      fwdFlowStore(node, tc, ap0, cc, argAp, config) and
+      ap = apCons(tc, ap0)
+    )
+    or
+    // read
+    exists(Ap ap0, Content c |
+      fwdFlowRead(ap0, c, _, node, cc, argAp, config) and
+      fwdFlowConsCand(ap0, c, ap, config)
+    )
+    or
+    // flow into a callable
+    fwdFlowIn(_, node, _, cc, _, ap, config) and
+    if parameterThroughFlowNodeCand1(node, config) then argAp = apSome(ap) else argAp = apNone()
+    or
+    // flow out of a callable
+    exists(DataFlowCall call |
+      fwdFlowOut(call, node, any(CcNoCall innercc), cc, argAp, ap, config)
       or
-      // store
-      exists(TypedContent tc, Ap ap0 |
-        fwdFlowStore(node, tc, ap0, cc, argAp, config) and
-        ap = apCons(tc, ap0)
-      )
-      or
-      // read
-      exists(Ap ap0, Content c |
-        fwdFlowRead(ap0, c, _, node, cc, argAp, config) and
-        fwdFlowConsCand(ap0, c, ap, config)
-      )
-      or
-      // flow into a callable
-      fwdFlowIn(_, node, _, cc, _, ap, config) and
-      if parameterThroughFlowNodeCand1(node, config) then argAp = apSome(ap) else argAp = apNone()
-      or
-      // flow out of a callable
-      exists(DataFlowCall call |
-        fwdFlowOut(call, node, any(CcNoCall innercc), cc, argAp, ap, config)
-        or
-        exists(Ap argAp0 |
-          fwdFlowOutFromArg(call, node, argAp0, ap, config) and
-          fwdFlowIsEntered(call, cc, argAp, argAp0, config)
-        )
+      exists(Ap argAp0 |
+        fwdFlowOutFromArg(call, node, argAp0, ap, config) and
+        fwdFlowIsEntered(call, cc, argAp, argAp0, config)
       )
     )
   }
