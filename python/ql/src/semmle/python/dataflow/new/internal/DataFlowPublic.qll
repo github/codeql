@@ -352,7 +352,8 @@ class BarrierGuard extends GuardNode {
 }
 
 /**
- * A reference contained in an object. This is either a field or a property.
+ * IPA type for tracking data content associated with values.
+ * Content can be collection elements or object attributes.
  */
 newtype TContent =
   /** An element of a list. */
@@ -372,19 +373,27 @@ newtype TContent =
   /** An object attribute. */
   TAttributeContent(string attr) { attr = any(Attribute a).getName() }
 
+/**
+ * A data-flow value can have associated content.
+ * If the value is a collection, it can have elements,
+ * if it is an object, it can have attribute values.
+ */
 class Content extends TContent {
   /** Gets a textual representation of this element. */
   string toString() { result = "Content" }
 }
 
+/** The content of an element of a list. */
 class ListElementContent extends TListElementContent, Content {
   override string toString() { result = "List element" }
 }
 
+/** The content of an element of a set. */
 class SetElementContent extends TSetElementContent, Content {
   override string toString() { result = "Set element" }
 }
 
+/** The content, at a specifik index, of an element of a tuple. */
 class TupleElementContent extends TTupleElementContent, Content {
   int index;
 
@@ -396,6 +405,7 @@ class TupleElementContent extends TTupleElementContent, Content {
   override string toString() { result = "Tuple element at index " + index.toString() }
 }
 
+/** The content, under a specific key, of an element of a dictionary. */
 class DictionaryElementContent extends TDictionaryElementContent, Content {
   string key;
 
@@ -407,10 +417,12 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
   override string toString() { result = "Dictionary element at key " + key }
 }
 
+/** The content, at any key, of an element of a dictionary. */
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
   override string toString() { result = "Any dictionary element" }
 }
 
+/** The content of an object attribute. */
 class AttributeContent extends TAttributeContent, Content {
   private string attr;
 
