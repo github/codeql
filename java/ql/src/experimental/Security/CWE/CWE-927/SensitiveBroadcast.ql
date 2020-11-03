@@ -52,7 +52,7 @@ class SensitiveInfoExpr extends Expr {
 }
 
 /**
- * A method access of the `context.sendBroadcast` family.
+ * A method access of the `Context.sendBroadcast` family.
  */
 class SendBroadcastMethodAccess extends MethodAccess {
   SendBroadcastMethodAccess() {

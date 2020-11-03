@@ -16,14 +16,14 @@ import PathGraph
 /**
  * Gets a regular expression for matching names of variables that indicate the value being held may contain sensitive information
  */
-private string getACredentialRegex() {
-  result = "(?i)(.*username|url).*"
-}
+private string getACredentialRegex() { result = "(?i)(.*username|url).*" }
 
 /** Variable keeps sensitive information judging by its name * */
 class CredentialExpr extends Expr {
   CredentialExpr() {
-    exists(Variable v | this = v.getAnAccess() | v.getName().regexpMatch([getCommonSensitiveInfoRegex(), getACredentialRegex()]))
+    exists(Variable v | this = v.getAnAccess() |
+      v.getName().regexpMatch([getCommonSensitiveInfoRegex(), getACredentialRegex()])
+    )
   }
 }
 
