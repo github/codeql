@@ -369,6 +369,7 @@ case @type.kind of
 | 30 = @arglist_type
 | 31 = @unknown_type
 | 32 = @tuple_type
+| 33 = @function_pointer_type
   ;
 
 @simple_type = @bool_type | @char_type | @integral_type | @floating_point_type | @decimal_type;
@@ -413,6 +414,10 @@ enum_underlying_type(
 delegate_return_type(
   unique int delegate_id: @delegate_type ref,
   int return_type_id: @type_or_ref ref);
+
+function_pointer_return_type(
+    unique int function_pointer_id: @function_pointer_type ref,
+    int return_type_id: @type_or_ref ref);
 
 extend(
   unique int sub: @type ref,
@@ -544,6 +549,18 @@ specific_type_parameter_nullability(
   int id: @type_parameter_constraints ref,
   int base_id: @type_or_ref ref,
   int nullability: @nullability ref);
+
+/** FUNCTION POINTERS */
+
+function_pointer_calling_conventions(
+  int id: @function_pointer_type ref,
+  int kind: int ref);
+
+#keyset[id, index]
+has_unmanaged_calling_conventions(
+  int id: @function_pointer_type ref,
+  int index: int ref,
+  int conv_id: @type_or_ref ref);
 
 /** MODIFIERS */
 
@@ -758,7 +775,7 @@ localvar_location(
   unique int id: @local_variable ref,
   int loc: @location ref);
 
-@parameterizable = @callable | @delegate_type | @indexer;
+@parameterizable = @callable | @delegate_type | @indexer | @function_pointer_type;
 
 #keyset[name, parent_id]
 #keyset[index, parent_id]
@@ -1015,6 +1032,7 @@ case @expr.kind of
 | 124 = @le_pattern_expr
 | 125 = @ge_pattern_expr
 | 126 = @not_pattern_expr
+| 129 = @function_pointer_invocation_expr
 ;
 
 @switch = @switch_stmt | @switch_expr;
@@ -1085,7 +1103,7 @@ case @expr.kind of
 
 @call = @method_invocation_expr | @constructor_init_expr | @operator_invocation_expr
       | @delegate_invocation_expr | @object_creation_expr | @call_access_expr
-      | @local_function_invocation_expr;
+      | @local_function_invocation_expr | @function_pointer_invocation_expr;
 
 @call_access_expr = @property_access_expr | @event_access_expr | @indexer_access_expr;
 

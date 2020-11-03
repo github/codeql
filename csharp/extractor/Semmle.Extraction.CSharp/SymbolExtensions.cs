@@ -134,6 +134,13 @@ namespace Semmle.Extraction.CSharp
                             return tp.ContainingSymbol is ITypeSymbol cont
                                 ? IdDependsOnImpl(cont)
                                 : SymbolEqualityComparer.Default.Equals(tp.ContainingSymbol, symbol);
+                        case TypeKind.FunctionPointer:
+                            var funptr = (IFunctionPointerTypeSymbol)type;
+                            if (funptr.Signature.Parameters.Any(p => IdDependsOnImpl(p.Type)))
+                            {
+                                return true;
+                            }
+                            return IdDependsOnImpl(funptr.Signature.ReturnType);
                         default:
                             return false;
                     }
@@ -189,6 +196,10 @@ namespace Semmle.Extraction.CSharp
                         return;
                     case TypeKind.Dynamic:
                         trapFile.Write("dynamic");
+                        return;
+                    case TypeKind.FunctionPointer:
+                        var funptr = (IFunctionPointerTypeSymbol)type;
+                        funptr.BuildFunctionPointerTypeId(cx, trapFile, symbolBeingDefined);
                         return;
                     default:
                         throw new InternalError(type, $"Unhandled type kind '{type.TypeKind}'");
@@ -263,6 +274,53 @@ namespace Semmle.Extraction.CSharp
                 trapFile.Write(assembly.Version.Revision);
             }
             trapFile.Write("::");
+        }
+
+        private static void BuildFunctionPointerTypeId(this IFunctionPointerTypeSymbol funptr, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined)
+        {
+            trapFile.Write("delegate* ");
+            trapFile.Write(funptr.Signature.CallingConvention.ToString().ToLowerInvariant());
+            if (funptr.Signature.UnmanagedCallingConventionTypes.Any())
+            {
+                trapFile.Write('[');
+                trapFile.BuildList(",", funptr.Signature.UnmanagedCallingConventionTypes,
+                    (ta, tb0) => ta.BuildOrWriteId(cx, tb0, symbolBeingDefined)
+                    );
+                trapFile.Write("]");
+            }
+
+            trapFile.Write('<');
+            trapFile.BuildList(",", funptr.Signature.Parameters,
+                (p, trap) =>
+                {
+                    p.Type.BuildOrWriteId(cx, trap, symbolBeingDefined);
+                    switch (p.RefKind)
+                    {
+                        case RefKind.Out:
+                            trap.Write(" out");
+                            break;
+                        case RefKind.In:
+                            trap.Write(" in");
+                            break;
+                        case RefKind.Ref:
+                            trap.Write(" ref");
+                            break;
+                    }
+                });
+
+            if (funptr.Signature.Parameters.Any())
+            {
+                trapFile.Write(",");
+            }
+
+            funptr.Signature.ReturnType.BuildOrWriteId(cx, trapFile, symbolBeingDefined);
+
+            if (funptr.Signature.ReturnsByRef)
+                trapFile.Write(" ref");
+            if (funptr.Signature.ReturnsByRefReadonly)
+                trapFile.Write(" readonly ref");
+
+            trapFile.Write('>');
         }
 
         private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
@@ -394,6 +452,10 @@ namespace Semmle.Extraction.CSharp
                         ptr.PointedAtType.BuildDisplayName(cx, trapFile);
                         trapFile.Write('*');
                         return;
+                    case TypeKind.FunctionPointer:
+                        var funptr = (IFunctionPointerTypeSymbol)type;
+                        funptr.BuildFunctionPointerTypeDisplayName(cx, trapFile);
+                        return;
                     case TypeKind.TypeParameter:
                         trapFile.Write(type.Name);
                         return;
@@ -406,31 +468,90 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        public static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter trapFile, bool constructUnderlyingTupleType)
+        private static void BuildFunctionPointerTypeDisplayName(this IFunctionPointerTypeSymbol funptr, Context cx, TextWriter trapFile)
+        {
+            trapFile.Write("delegate* ");
+            trapFile.Write(funptr.Signature.CallingConvention.ToString().ToLowerInvariant());
+
+            if (funptr.Signature.UnmanagedCallingConventionTypes.Any())
+            {
+                trapFile.Write('[');
+                trapFile.BuildList(
+                    ",",
+                    funptr.Signature.UnmanagedCallingConventionTypes,
+                    (t, tb0) => t.BuildDisplayName(cx, tb0));
+                trapFile.Write("]");
+            }
+
+            trapFile.Write('<');
+            trapFile.BuildList(",", funptr.Signature.Parameters,
+                (p, trap) =>
+                {
+                    p.Type.BuildDisplayName(cx, trapFile);
+                    switch (p.RefKind)
+                    {
+                        case RefKind.Out:
+                            trap.Write(" out");
+                            break;
+                        case RefKind.In:
+                            trap.Write(" in");
+                            break;
+                        case RefKind.Ref:
+                            trap.Write(" ref");
+                            break;
+                    }
+                });
+
+            if (funptr.Signature.Parameters.Any())
+            {
+                trapFile.Write(",");
+            }
+
+            funptr.Signature.ReturnType.BuildDisplayName(cx, trapFile);
+
+            if (funptr.Signature.ReturnsByRef)
+                trapFile.Write(" ref");
+            if (funptr.Signature.ReturnsByRefReadonly)
+                trapFile.Write(" readonly ref");
+
+            trapFile.Write('>');
+        }
+
+        private static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter trapFile, bool constructUnderlyingTupleType)
         {
             if (!constructUnderlyingTupleType && namedType.IsTupleType)
             {
                 trapFile.Write('(');
-                trapFile.BuildList(",", namedType.TupleElements.Select(f => f.Type),
-                    (t, tb0) => t.BuildDisplayName(cx, tb0)
-                    );
-
+                trapFile.BuildList(
+                    ",",
+                    namedType.TupleElements.Select(f => f.Type),
+                    (t, tb0) => t.BuildDisplayName(cx, tb0));
                 trapFile.Write(")");
                 return;
             }
 
             if (namedType.IsAnonymousType)
+            {
                 namedType.BuildAnonymousName(cx, trapFile);
+            }
             else
+            {
                 trapFile.Write(namedType.Name);
+            }
+
             if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
             {
                 trapFile.Write('<');
-                trapFile.BuildList(",", namedType.TypeArguments, (p, tb0) =>
-                {
-                    if (IsReallyBound(namedType))
-                        p.BuildDisplayName(cx, tb0);
-                });
+                trapFile.BuildList(
+                    ",",
+                    namedType.TypeArguments,
+                    (p, tb0) =>
+                    {
+                        if (IsReallyBound(namedType))
+                        {
+                            p.BuildDisplayName(cx, tb0);
+                        }
+                    });
                 trapFile.Write('>');
             }
         }
