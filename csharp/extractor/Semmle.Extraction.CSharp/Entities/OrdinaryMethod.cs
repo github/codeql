@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             PopulateGenerics(trapFile);
             Overrides(trapFile);
-            ExtractRefReturn(trapFile);
+            ExtractRefReturn(trapFile, symbol, this);
             ExtractCompilerGenerated(trapFile);
         }
 

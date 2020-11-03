@@ -399,52 +399,210 @@ ForeachExtension.cs:
 #   12| [LocalVariableAccess] access to local variable i
 
 FunctionPointer.cs:
-#    5| [Class] Program
-#-----| 5 -> [Method] Main
-#-----| 6 -> [Method] Example
+#    7| [Class] Program
+#-----| 5 -> [Field] pointer
+#-----| 6 -> [Method] Main
+#-----| 7 -> [Method] M1
+#-----| 8 -> [Method] M2
+#-----| 9 -> [Method] M3
+#-----| 10 -> [Method] M4
 
-#   14| [Method] Example
+#    9| [Field] pointer
+#-----| -1 -> [TypeMention] delegate* default<Int32>
+#-----| 1 -> [AssignExpr] ... = ...
+
+#   11| [Method] Main
+#-----| -1 -> [TypeMention] int
+#-----| 4 -> [BlockStmt] {...}
+
+#   16| [Method] M1
 #-----| -1 -> [TypeMention] Void
 #-----| 2 -> (Parameters)
 #-----| 4 -> [BlockStmt] {...}
 
-#    9| [Method] Main
-#-----| -1 -> [TypeMention] int
+#   16| [Parameter] f
+#-----| -1 -> [TypeMention] delegate* default<Int32 ref,Object out,Int32>
+
+#   22| [Method] M2
+#-----| -1 -> [TypeMention] Void
+#-----| 1 -> (Type parameters)
+#-----| 2 -> (Parameters)
 #-----| 4 -> [BlockStmt] {...}
 
-#   14| [Parameter] a
-#-----| -1 -> [TypeMention] Action<Int32>
+#   22| [Parameter] f
+#-----| -1 -> [TypeMention] delegate* unmanaged[CallConvStdcall,CallConvSuppressGCTransition]<Int32 ref,Object out,T,Void>
 
-#   10| [BlockStmt] {...}
+#   22| [TypeParameter] T
+
+#   28| [Method] M3
+#-----| -1 -> [TypeMention] Void
+#-----| 2 -> (Parameters)
+#-----| 4 -> [BlockStmt] {...}
+
+#   28| [Parameter] f
+#-----| -1 -> [TypeMention] delegate* default<Int32 ref,Object out,Int32 in,Int32 ref>
+
+#   34| [Method] M4
+#-----| -1 -> [TypeMention] Void
+#-----| 1 -> (Type parameters)
+#-----| 2 -> (Parameters)
+#-----| 4 -> [BlockStmt] {...}
+
+#   34| [Parameter] f
+#-----| -1 -> [TypeMention] delegate* default<T,Int32>
+
+#   34| [TypeParameter] T
+
+#    9| [AssignExpr] ... = ...
+#-----| 0 -> [FieldAccess] access to field pointer
+
+#    9| [MethodAccess] access to method Main
+
+#    9| [FieldAccess] access to field pointer
+
+#   12| [BlockStmt] {...}
 #-----| 0 -> [ReturnStmt] return ...;
 
-#   11| [ReturnStmt] return ...;
+#   13| [ReturnStmt] return ...;
 #-----| 0 -> [IntLiteral] 0
 
-#   11| [IntLiteral] 0
+#   13| [IntLiteral] 0
 
-#   15| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
+#   17| [BlockStmt] {...}
+#-----| 0 -> [LocalVariableDeclStmt] ... ...;
+#-----| 1 -> [LocalVariableDeclStmt] ... ...;
+
+#   18| [LocalVariableDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 i = ...
+
+#   18| [LocalVariableDeclAndInitExpr] Int32 i = ...
+#-----| -1 -> [TypeMention] int
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+#-----| 1 -> [IntLiteral] 42
+
+#   18| [IntLiteral] 42
+
+#   18| [LocalVariableAccess] access to local variable i
+
+#   19| [LocalVariableDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 j = ...
+
+#   19| [LocalVariableDeclAndInitExpr] Int32 j = ...
+#-----| -1 -> [TypeMention] int
+#-----| 0 -> [LocalVariableAccess] access to local variable j
+#-----| 1 -> [???] call
+
+#   19| [???] call
+#-----| -1 -> [ParameterAccess] access to parameter f
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+#-----| 1 -> [LocalVariableAccess,LocalVariableDeclExpr] Object o
+
+#   19| [ParameterAccess] access to parameter f
+
+#   19| [LocalVariableAccess] access to local variable i
+
+#   19| [LocalVariableAccess,LocalVariableDeclExpr] Object o
+
+#   19| [LocalVariableAccess] access to local variable j
+
+#   23| [BlockStmt] {...}
+#-----| 0 -> [LocalVariableDeclStmt] ... ...;
 #-----| 1 -> [ExprStmt] ...;
 
-#   16| [ExprStmt] ...;
-#-----| 0 -> [DelegateCall] delegate call
+#   24| [LocalVariableDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 i = ...
 
-#   16| [DelegateCall] delegate call
-#-----| -1 -> [ParameterAccess] access to parameter a
-#-----| 0 -> [IntLiteral] 42
+#   24| [LocalVariableDeclAndInitExpr] Int32 i = ...
+#-----| -1 -> [TypeMention] int
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+#-----| 1 -> [IntLiteral] 42
 
-#   16| [ParameterAccess] access to parameter a
+#   24| [IntLiteral] 42
 
-#   16| [IntLiteral] 42
+#   24| [LocalVariableAccess] access to local variable i
 
-#   17| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method 
+#   25| [ExprStmt] ...;
+#-----| 0 -> [???] call
 
-#   17| [MethodCall] call to method 
-#-----| 0 -> [IntLiteral] 42
+#   25| [???] call
+#-----| -1 -> [ParameterAccess] access to parameter f
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+#-----| 1 -> [LocalVariableAccess,LocalVariableDeclExpr] Object o
+#-----| 2 -> [ObjectCreation] object creation of type T
 
-#   17| [IntLiteral] 42
+#   25| [ParameterAccess] access to parameter f
+
+#   25| [LocalVariableAccess] access to local variable i
+
+#   25| [LocalVariableAccess,LocalVariableDeclExpr] Object o
+
+#   25| [ObjectCreation] object creation of type T
+#-----| 0 -> [TypeMention] T
+
+#   29| [BlockStmt] {...}
+#-----| 0 -> [LocalVariableDeclStmt] ... ...;
+#-----| 1 -> [LocalVariableDeclStmt] ... ...;
+
+#   30| [LocalVariableDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 i = ...
+
+#   30| [LocalVariableDeclAndInitExpr] Int32 i = ...
+#-----| -1 -> [TypeMention] int
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+#-----| 1 -> [IntLiteral] 42
+
+#   30| [IntLiteral] 42
+
+#   30| [LocalVariableAccess] access to local variable i
+
+#   31| [LocalVariableDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 j = ...
+
+#   31| [LocalVariableDeclAndInitExpr] Int32 j = ...
+#-----| -1 -> [TypeMention] null
+#-----| 0 -> [LocalVariableAccess] access to local variable j
+#-----| 1 -> [RefExpr] ref ...
+
+#   31| [RefExpr] ref ...
+#-----| 0 -> [???] call
+
+#   31| [???] call
+#-----| -1 -> [ParameterAccess] access to parameter f
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+#-----| 1 -> [LocalVariableAccess,LocalVariableDeclExpr] Object o
+#-----| 2 -> [LocalVariableAccess] access to local variable i
+
+#   31| [ParameterAccess] access to parameter f
+
+#   31| [LocalVariableAccess] access to local variable i
+
+#   31| [LocalVariableAccess,LocalVariableDeclExpr] Object o
+
+#   31| [LocalVariableAccess] access to local variable i
+
+#   31| [LocalVariableAccess] access to local variable j
+
+#   35| [BlockStmt] {...}
+#-----| 0 -> [LocalVariableDeclStmt] ... ...;
+
+#   36| [LocalVariableDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 j = ...
+
+#   36| [LocalVariableDeclAndInitExpr] Int32 j = ...
+#-----| -1 -> [TypeMention] int
+#-----| 0 -> [LocalVariableAccess] access to local variable j
+#-----| 1 -> [???] call
+
+#   36| [???] call
+#-----| -1 -> [ParameterAccess] access to parameter f
+#-----| 0 -> [ObjectCreation] object creation of type T
+
+#   36| [ParameterAccess] access to parameter f
+
+#   36| [ObjectCreation] object creation of type T
+#-----| 0 -> [TypeMention] T
+
+#   36| [LocalVariableAccess] access to local variable j
 
 InitOnlySetter.cs:
 #   15| [Getter] get_Prop2
@@ -1543,8 +1701,11 @@ TargetType.cs:
 
 #-----| (Base types)
 #-----| 0 -> [TypeMention] Class1
+#-----| 0 -> [TypeMention] Class1
 
 #-----| (Base types)
+#-----| 0 -> [TypeMention] Base
+#-----| 0 -> [TypeMention] Base
 #-----| 0 -> [TypeMention] Base
 
 #-----| (Base types)
@@ -1577,7 +1738,16 @@ TargetType.cs:
 #-----| 0 -> [Parameter] enumerator
 
 #-----| (Parameters)
-#-----| 0 -> [Parameter] a
+#-----| 0 -> [Parameter] f
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] f
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] f
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] f
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] value
@@ -1659,12 +1829,20 @@ TargetType.cs:
 #-----| (Type parameters)
 #-----| 0 -> [TypeParameter] T
 
+#-----| (Type parameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (Type parameters)
+#-----| 0 -> [TypeParameter] T
+
 CovariantReturn.cs:
 #    9| [TypeMention] Class1
 
 #    6| [TypeMention] Class1
 
 #   12| [TypeMention] Class2
+
+#    9| [TypeMention] Class1
 
 #    5| [TypeMention] Class1
 
@@ -1754,19 +1932,50 @@ ForeachExtension.cs:
 #    8| [TypeMention] int
 
 FunctionPointer.cs:
-#    9| [TypeMention] int
+#    9| [TypeMention] delegate* default<Int32>
 
-#   14| [TypeMention] Action<Int32>
-#-----| 1 -> [TypeMention] int
+#   11| [TypeMention] int
 
-#   14| [TypeMention] Void
+#   16| [TypeMention] delegate* default<Int32 ref,Object out,Int32>
 
-#   14| [TypeMention] int
+#   16| [TypeMention] Void
+
+#   22| [TypeMention] delegate* unmanaged[CallConvStdcall,CallConvSuppressGCTransition]<Int32 ref,Object out,T,Void>
+
+#   22| [TypeMention] Void
+
+#   28| [TypeMention] delegate* default<Int32 ref,Object out,Int32 in,Int32 ref>
+
+#   28| [TypeMention] Void
+
+#   34| [TypeMention] delegate* default<T,Int32>
+
+#   34| [TypeMention] Void
+
+#   18| [TypeMention] int
+
+#   19| [TypeMention] int
+
+#   24| [TypeMention] int
+
+#   25| [TypeMention] T
+
+#   30| [TypeMention] int
+
+#   31| [TypeMention] null
+
+#   36| [TypeMention] T
+
+#   36| [TypeMention] int
 
 InitOnlySetter.cs:
 #   10| [TypeMention] Base
 
 #   18| [TypeMention] Console
+
+#   10| [TypeMention] Base
+
+#   10| [TypeMention] Base
 
 #    5| [TypeMention] int
 
@@ -1963,6 +2172,21 @@ ForeachExtension.cs:
 #-----| 5 -> [Method] Main
 #-----| 6 -> [Method] GetAsyncEnumerator
 
+InitOnlySetter.cs:
+#    3| [Class] Base
+#-----| 5 -> [Property] Prop0
+#-----| 6 -> [Property] Prop1
+
+#   10| [Class] Derived
+#-----| 3 -> (Base types)
+#-----| 5 -> [Property] Prop1
+#-----| 6 -> [Property] Prop2
+
+#   25| [Class] C1
+#-----| 5 -> [Method] M1
+#-----| 6 -> [Method] M2
+#-----| 7 -> [Method] M3
+
 CovariantReturn.cs:
 #    3| [Class] Class1
 #-----| 5 -> [Method] M1
@@ -1975,17 +2199,6 @@ CovariantReturn.cs:
 #-----| 12 -> [Enum] E
 
 Discard.cs:
-#    3| [Class] Class1
-#-----| 5 -> [Method] M1
-#-----| 6 -> [Method] M2
-#-----| 7 -> [Method] M1
-#-----| 7 -> [Method] M1
-#-----| 7 -> [Method] M1
-#-----| 8 -> [Class] Program
-#-----| 9 -> [Method] M1
-#-----| 12 -> [Enum] E
-
-FunctionPointer.cs:
 #    3| [Class] Class1
 #-----| 5 -> [Method] M1
 #-----| 6 -> [Method] M2
@@ -2017,21 +2230,6 @@ NativeInt.cs:
 #-----| 8 -> [Class] Program
 #-----| 9 -> [Method] M1
 #-----| 12 -> [Enum] E
-
-InitOnlySetter.cs:
-#    3| [Class] Base
-#-----| 5 -> [Property] Prop0
-#-----| 6 -> [Property] Prop1
-
-#   10| [Class] Derived
-#-----| 3 -> (Base types)
-#-----| 5 -> [Property] Prop1
-#-----| 6 -> [Property] Prop2
-
-#   25| [Class] C1
-#-----| 5 -> [Method] M1
-#-----| 6 -> [Method] M2
-#-----| 7 -> [Method] M3
 
 Pattern.cs:
 #    3| [Class] Pattern

@@ -38,6 +38,8 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override IEntity VisitPointerType(IPointerTypeSymbol symbol) => PointerType.Create(cx, symbol);
 
+        public override IEntity VisitFunctionPointerType(IFunctionPointerTypeSymbol symbol) => FunctionPointerType.Create(cx, symbol);
+
         public override IEntity VisitDynamicType(IDynamicTypeSymbol symbol) => DynamicType.Create(cx, symbol);
     }
 }

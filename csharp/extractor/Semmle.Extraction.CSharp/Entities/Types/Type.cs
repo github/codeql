@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -82,6 +83,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         case TypeKind.Enum: return Kinds.TypeKind.ENUM;
                         case TypeKind.Delegate: return Kinds.TypeKind.DELEGATE;
                         case TypeKind.Pointer: return Kinds.TypeKind.POINTER;
+                        case TypeKind.FunctionPointer: return Kinds.TypeKind.FUNCTION_POINTER;
                         case TypeKind.Error: return Kinds.TypeKind.UNKNOWN;
                         default:
                             cx.ModelError(t, $"Unhandled type kind '{t.TypeKind}'");
@@ -156,23 +158,14 @@ namespace Semmle.Extraction.CSharp.Entities
                 // This is a delegate.
                 // The method "Invoke" has the return type.
                 var invokeMethod = ((INamedTypeSymbol)symbol).DelegateInvokeMethod;
+                ExtractParameterForDelegateLikeType(trapFile, invokeMethod,
+                    t => trapFile.delegate_return_type(this, t));
+            }
 
-                // Copy the parameters from the "Invoke" method to the delegate type
-                for (var i = 0; i < invokeMethod.Parameters.Length; ++i)
-                {
-                    var param = invokeMethod.Parameters[i];
-                    var originalParam = invokeMethod.OriginalDefinition.Parameters[i];
-                    var originalParamEntity = SymbolEqualityComparer.Default.Equals(param, originalParam) ? null :
-                        DelegateTypeParameter.Create(Context, originalParam, Create(Context, ((INamedTypeSymbol)symbol).OriginalDefinition));
-                    DelegateTypeParameter.Create(Context, param, this, originalParamEntity);
-                }
-
-                var returnKey = Create(Context, invokeMethod.ReturnType);
-                trapFile.delegate_return_type(this, returnKey.TypeRef);
-                if (invokeMethod.ReturnsByRef)
-                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
-                if (invokeMethod.ReturnsByRefReadonly)
-                    trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
+            if (symbol is IFunctionPointerTypeSymbol functionPointer)
+            {
+                ExtractParameterForDelegateLikeType(trapFile, functionPointer.Signature,
+                    t => trapFile.function_pointer_return_type(this, t));
             }
 
             Modifier.ExtractModifiers(Context, trapFile, this, symbol);
@@ -193,6 +186,23 @@ namespace Semmle.Extraction.CSharp.Entities
                         (s, t) => TypeMention.Create(Context, s.Type, this, t))
                     .Enumerate();
             }
+        }
+
+        private void ExtractParameterForDelegateLikeType(TextWriter trapFile, IMethodSymbol invokeMethod, Action<Type> storeReturnType)
+        {
+            for (var i = 0; i < invokeMethod.Parameters.Length; ++i)
+            {
+                var param = invokeMethod.Parameters[i];
+                var originalParam = invokeMethod.OriginalDefinition.Parameters[i];
+                var originalParamEntity = SymbolEqualityComparer.Default.Equals(param, originalParam)
+                    ? null
+                    : DelegateTypeParameter.Create(Context, originalParam, Create(Context, ((INamedTypeSymbol)symbol).OriginalDefinition));
+                DelegateTypeParameter.Create(Context, param, this, originalParamEntity);
+            }
+
+            var returnKey = Create(Context, invokeMethod.ReturnType);
+            storeReturnType(returnKey.TypeRef);
+            Method.ExtractRefReturn(trapFile, invokeMethod, this);
         }
 
         /// <summary>
@@ -290,8 +300,7 @@ namespace Semmle.Extraction.CSharp.Entities
             symbol != null && symbol.TypeKind == TypeKind.Delegate;
 
         /// <summary>
-        /// A copy of a delegate "Invoke" method parameter used for the delgate
-        /// type.
+        /// A copy of a delegate "Invoke" method or function pointer parameter.
         /// </summary>
         private class DelegateTypeParameter : Parameter
         {
