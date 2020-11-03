@@ -33,7 +33,6 @@ The following example uses an <code>ArrayList</code> to only allocate as much me
 </p>
 
 <sample src="UnboundedAllocationDeserializationGood.java" />
-
 </example>
 <references>
 
