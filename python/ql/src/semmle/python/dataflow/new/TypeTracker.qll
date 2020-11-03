@@ -303,6 +303,7 @@ class TypeTracker extends TTypeTracker {
   }
 }
 
+/** Provides predicates for implementing custom `TypeTracker`s. */
 module TypeTracker {
   /**
    * Gets a valid end point of type tracking.
