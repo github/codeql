@@ -356,7 +356,7 @@ class BarrierGuard extends GuardNode {
 }
 
 /**
- * IPA type for tracking data content associated with values.
+ * Algebraic datatype for tracking data content associated with values.
  * Content can be collection elements or object attributes.
  */
 newtype TContent =
@@ -397,7 +397,7 @@ class SetElementContent extends TSetElementContent, Content {
   override string toString() { result = "Set element" }
 }
 
-/** The content, at a specifik index, of an element of a tuple. */
+/** The content, at a specific index, of an element of a tuple. */
 class TupleElementContent extends TTupleElementContent, Content {
   int index;
 
