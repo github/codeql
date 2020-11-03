@@ -1,4 +1,0 @@
-
-#undef A
-#undef B
-

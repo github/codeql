@@ -1,6 +1,0 @@
-{
-    "name": "cyclic",
-    "dependencies": {
-        "foo": "*"
-    }
-}

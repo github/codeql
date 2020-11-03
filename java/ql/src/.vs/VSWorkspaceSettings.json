@@ -1,8 +1,0 @@
-{
-    "ql.projects" : {
-        "." : {
-            "dbScheme" : "config/semmlecode.dbscheme",
-            "libraryPath" : []
-        }
-    }
-}

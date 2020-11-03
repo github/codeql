@@ -1,1 +1,0 @@
-<div ns:attr />

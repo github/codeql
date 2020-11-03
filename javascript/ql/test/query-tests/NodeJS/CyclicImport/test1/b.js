@@ -1,1 +1,0 @@
-require('../test2/inner/a');

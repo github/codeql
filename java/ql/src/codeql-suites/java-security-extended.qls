@@ -1,4 +1,0 @@
-- description: Security-extended queries for Java
-- qlpack: codeql-java
-- apply: security-extended-selectors.yml
-  from: codeql-suite-helpers

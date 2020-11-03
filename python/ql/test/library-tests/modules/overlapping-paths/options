@@ -1,1 +1,0 @@
-semmle-extractor-options: -R src --path outer/inner --path outer

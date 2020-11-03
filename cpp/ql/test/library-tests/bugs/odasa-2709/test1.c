@@ -1,2 +1,0 @@
-void foo(int x) {
-}

@@ -1,4 +1,0 @@
-- description: Security-extended queries for Python
-- qlpack: codeql-python
-- apply: security-extended-selectors.yml
-  from: codeql-suite-helpers

@@ -1,2 +1,0 @@
-
-CONTEXTTYPE myVar2;

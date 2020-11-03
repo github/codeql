@@ -1,4 +1,0 @@
-- description: Security-and-quality queries for Java
-- qlpack: codeql-java
-- apply: security-and-quality-selectors.yml
-  from: codeql-suite-helpers

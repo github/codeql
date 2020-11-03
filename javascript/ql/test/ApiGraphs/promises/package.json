@@ -1,6 +1,0 @@
-{
-    "name": "promises",
-    "dependencies": {
-        "fs-extra": "*"
-    }
-}

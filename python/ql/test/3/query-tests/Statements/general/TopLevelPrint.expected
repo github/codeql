@@ -1,1 +1,0 @@
-| module.py:2:1:2:31 | ExprStmt | Print statement may execute during import. |

@@ -1,1 +1,0 @@
-long longVal = ((long)intVal) << 32; // GOOD

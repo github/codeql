@@ -1,7 +1,0 @@
-<!DOCTYPE qhelp PUBLIC
-  "-//Semmle//qhelp//EN"
-  "qhelp.dtd">
-<qhelp>
-  <include src="CommentedOutCodeQuery.qhelp" />
-  <include src="../Metrics/Files/CommentedOutCodeReferences.qhelp" />
-</qhelp>

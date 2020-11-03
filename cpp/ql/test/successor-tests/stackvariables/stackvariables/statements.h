@@ -1,4 +1,0 @@
-struct NonTrivial {
-  ~NonTrivial() {
-  }
-};

@@ -1,4 +1,0 @@
-name: codeql-csharp-tests
-version: 0.0.0
-libraryPathDependencies: codeql-csharp
-extractor: csharp

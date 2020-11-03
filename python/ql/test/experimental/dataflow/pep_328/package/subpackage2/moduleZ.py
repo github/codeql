@@ -1,1 +1,0 @@
-eggs = "eggs"

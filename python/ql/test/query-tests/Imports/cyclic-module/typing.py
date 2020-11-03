@@ -1,2 +1,0 @@
-TYPE_CHECKING = False
-

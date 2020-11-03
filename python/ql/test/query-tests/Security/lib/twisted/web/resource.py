@@ -1,2 +1,0 @@
-class Resource(object):
-    pass

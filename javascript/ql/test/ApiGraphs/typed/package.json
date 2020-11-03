@@ -1,7 +1,0 @@
-{
-    "name": "typed",
-    "dependencies": {
-        "mongodb": "*",
-        "mongoose": "*"
-    }
-}

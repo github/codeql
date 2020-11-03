@@ -1,8 +1,0 @@
-edges
-| test.py:33:15:33:36 | exception info | test.py:34:29:34:31 | exception info |
-| test.py:33:15:33:36 | exception info | test.py:34:29:34:31 | exception info |
-| test.py:34:29:34:31 | exception info | test.py:34:16:34:32 | exception info |
-| test.py:34:29:34:31 | exception info | test.py:34:16:34:32 | exception info |
-#select
-| test.py:16:16:16:37 | Attribute() | test.py:16:16:16:37 | exception info | test.py:16:16:16:37 | exception info | $@ may be exposed to an external user | test.py:16:16:16:37 | Attribute() | Error information |
-| test.py:34:16:34:32 | format_error() | test.py:33:15:33:36 | exception info | test.py:34:16:34:32 | exception info | $@ may be exposed to an external user | test.py:33:15:33:36 | Attribute() | Error information |

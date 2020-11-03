@@ -1,3 +1,0 @@
-# CWE-121: Stack-based Buffer Overflow
-+ semmlecode-cpp-queries/Security/CWE/CWE-121/UnterminatedVarargsCall.ql: /CWE/CWE-121
-    @name Unterminated variadic call (CWE-121)

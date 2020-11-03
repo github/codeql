@@ -1,5 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<root>
-  <child foo="bar">Some text</child>
-  <!-- a comment -->
-</root>

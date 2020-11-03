@@ -1,1 +1,0 @@
-| protocols.py:74:5:74:22 | Function MegaDel.__del__ | Overly complex '__del__' method. |

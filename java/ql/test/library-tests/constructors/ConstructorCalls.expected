@@ -1,3 +1,0 @@
-| constructors/A.java:5:3:5:11 | this(...) |
-| constructors/A.java:8:2:8:2 | super(...) |
-| constructors/A.java:11:3:11:9 | new A(...) |

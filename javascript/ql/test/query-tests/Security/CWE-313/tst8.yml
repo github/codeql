@@ -1,6 +1,0 @@
-config: |
-    [mail]
-    host = smtp.mydomain.com
-    port = 25
-    username = {{username}}
-    password = {{pwd}}

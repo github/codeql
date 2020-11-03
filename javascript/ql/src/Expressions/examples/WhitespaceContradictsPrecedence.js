@@ -1,1 +1,0 @@
-var a = new Array(capacity + capacity>>1);

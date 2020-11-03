@@ -1,3 +1,0 @@
-"""
-Fake pytest module
-"""

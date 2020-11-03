@@ -1,3 +1,0 @@
-# CWE-129: Stack-based Buffer Overflow
-+ semmlecode-cpp-queries/Security/CWE/CWE-129/ImproperArrayIndexValidation.ql: /CWE/CWE-129
-    @name Unclear validation of array index (CWE-129)

@@ -1,2 +1,0 @@
-| strcat.c:22:5:22:10 | call to strcat | Always check the size of the source buffer when using strcat. |
-| strcat.c:23:5:23:10 | call to strcat | Always check the size of the source buffer when using strcat. |

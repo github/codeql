@@ -1,7 +1,0 @@
-steps:
-- script: |
-    PASSWORD="$(PASSWORD)" npm install
-    OTHER_PASSWORD=`get password` yarn install
-username: <%= ENV['USERNAME'] %>
-password: <%= ENV['PASSWORD'] %>
-password: change_me

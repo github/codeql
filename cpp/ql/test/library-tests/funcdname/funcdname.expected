@@ -1,2 +1,0 @@
-| Bar::(unnamed namespace)::B | Bar::<unnamed>::B |
-| Foo::(unnamed namespace)::A | _ZN3Foo37_GLOBAL__N__13_funcdname_cpp_?AEv |

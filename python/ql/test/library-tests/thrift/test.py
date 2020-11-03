@@ -1,1 +1,0 @@
-#Check that thrift extractor works when there is a Python file with the same stem

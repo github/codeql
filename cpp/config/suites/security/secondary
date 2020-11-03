@@ -1,3 +1,0 @@
-# Not in the default suite due to using expensive points-to analysis
-@import "cwe-497-expensive"
-@import "cwe-772-expensive"

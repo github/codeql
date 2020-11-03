@@ -1,3 +1,0 @@
----
-cyclic: &cyc
-    backedge: *cyc

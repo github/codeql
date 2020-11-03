@@ -1,3 +1,0 @@
-# CWE-416: Use After Free
-+ semmlecode-cpp-queries/Critical/UseAfterFree.ql: /CWE/CWE-416
-    @name Potential use after free (CWE-416)

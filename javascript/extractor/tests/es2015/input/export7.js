@@ -1,1 +1,0 @@
-export { x, y as z } from 'foo';

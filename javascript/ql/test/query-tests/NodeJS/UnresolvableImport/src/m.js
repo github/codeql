@@ -1,1 +1,0 @@
-$.prototype.foo = 42;

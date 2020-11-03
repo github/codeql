@@ -1,3 +1,0 @@
-| test.py:7:10:7:16 | request | pyramid.request |
-| test.py:15:11:15:17 | request | pyramid.request |
-| test.py:24:11:24:17 | request | pyramid.request |

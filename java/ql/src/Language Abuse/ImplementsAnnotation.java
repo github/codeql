@@ -1,3 +1,0 @@
-public abstract class ImplementsAnnotation implements Deprecated {
-	// ...
-}

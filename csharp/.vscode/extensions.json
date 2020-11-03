@@ -1,9 +1,0 @@
-{
-    "recommendations": [
-        "github.vscode-codeql",
-        "ms-dotnettools.csharp",
-        "formulahendry.dotnet-test-explorer",
-        "hbenl.vscode-test-explorer"
-    ],
-    "unwantedRecommendations": []
-}

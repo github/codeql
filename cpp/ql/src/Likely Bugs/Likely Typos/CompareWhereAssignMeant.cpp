@@ -1,3 +1,0 @@
-int x;
-x == 4; // most likely = was intended. Otherwise this statement has no effect.
-...

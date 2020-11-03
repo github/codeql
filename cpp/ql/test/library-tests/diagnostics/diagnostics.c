@@ -1,3 +1,0 @@
-
-int int int i;
-

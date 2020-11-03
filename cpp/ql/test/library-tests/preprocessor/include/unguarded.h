@@ -1,3 +1,0 @@
-// unguarded.h
-
-// ... content ...

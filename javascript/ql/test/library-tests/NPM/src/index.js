@@ -1,3 +1,0 @@
-alert("Hello");
-
-require("process");

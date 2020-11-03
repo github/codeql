@@ -1,4 +1,0 @@
-- description: Security-extended queries for JavaScript
-- qlpack: codeql-javascript
-- apply: security-extended-selectors.yml
-  from: codeql-suite-helpers

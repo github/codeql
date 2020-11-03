@@ -1,3 +1,0 @@
-import javascript
-
-select "Success"

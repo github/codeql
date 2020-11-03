@@ -1,1 +1,0 @@
-| variables_test.py:57:1:57:10 | Global | Declaring 'g_x' as global at module-level is redundant. |
