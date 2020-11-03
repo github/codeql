@@ -21,7 +21,7 @@
  */
 
 private import python
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.DataFlow
 
 class TestConfiguration extends DataFlow::Configuration {
   TestConfiguration() { this = "TestConfiguration" }

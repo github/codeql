@@ -1,4 +1,4 @@
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.DataFlow
 
 /**
  * A configuration to find all flows.

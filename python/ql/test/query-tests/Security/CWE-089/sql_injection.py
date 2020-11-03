@@ -1,15 +1,17 @@
-"""This is copied from ql/python/ql/test/library-tests/web/django/test.py
-and a only a slight extension of ql/python/ql/src/Security/CWE-089/examples/sql_injection.py
+"""This is adapted from ql/python/ql/test/query-tests\Security\CWE-089
+we now prefer to setup routing by flask
 """
 
-from django.conf.urls import url
 from django.db import connection, models
 from django.db.models.expressions import RawSQL
+from flask import Flask, request
+app = Flask(__name__)
 
 class User(models.Model):
     pass
 
-def show_user(request, username):
+@app.route("/users/<username>")
+def show_user(username):
     with connection.cursor() as cursor:
         # GOOD -- Using parameters
         cursor.execute("SELECT * FROM users WHERE username = %s", username)
@@ -36,5 +38,3 @@ def show_user(request, username):
         # When testing this out locally, none of the queries worked against SQLite3, but I could use
         # the SQL injection against MySQL.
         User.objects.raw("SELECT * FROM users WHERE username = '%s'", (username,))
-
-urlpatterns = [url(r'^users/(?P<username>[^/]+)$', show_user)]

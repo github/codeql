@@ -1,6 +1,6 @@
 import python
-import experimental.dataflow.DataFlow
-import experimental.semmle.python.Concepts
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.Concepts
 import TestUtilities.InlineExpectationsTest
 
 string value_from_expr(Expr e) {
@@ -69,6 +69,38 @@ class DecodingTest extends InlineExpectationsTest {
       element = d.toString() and
       value = "" and
       tag = "decodeMayExecuteInput"
+    )
+  }
+}
+
+class EncodingTest extends InlineExpectationsTest {
+  EncodingTest() { this = "EncodingTest" }
+
+  override string getARelevantTag() { result in ["encodeInput", "encodeOutput", "encodeFormat"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Encoding e |
+      exists(DataFlow::Node data |
+        location = data.getLocation() and
+        element = data.toString() and
+        value = value_from_expr(data.asExpr()) and
+        (
+          data = e.getAnInput() and
+          tag = "encodeInput"
+          or
+          data = e.getOutput() and
+          tag = "encodeOutput"
+        )
+      )
+      or
+      exists(string format |
+        location = e.getLocation() and
+        element = format and
+        value = format and
+        format = e.getFormat() and
+        tag = "encodeFormat"
+      )
     )
   }
 }

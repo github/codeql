@@ -78,7 +78,7 @@ urlpatterns = [
 def page_number(request, page_number=1):  # $routeHandler routedParameter=page_number
     return HttpResponse('page_number: {}'.format(page_number))  # $HttpResponse
 
-def foo_bar_baz(request, foo, bar, baz):  # $routeHandler $routedParameter=foo routedParameter=bar routedParameter=baz
+def foo_bar_baz(request, foo, bar, baz):  # $routeHandler routedParameter=foo routedParameter=bar routedParameter=baz
     return HttpResponse('foo_bar_baz: {} {} {}'.format(foo, bar, baz))  # $HttpResponse
 
 def path_kwargs(request, foo, bar):  # $routeHandler routedParameter=foo routedParameter=bar
