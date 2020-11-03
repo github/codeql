@@ -8,8 +8,8 @@ edition = "2018"
 
 [dependencies]
 node-types = { path = "../node-types" }
-tree-sitter = "0.17.0"
-tree-sitter-ruby = "0.16"
+tree-sitter = "0.17"
+tree-sitter-ruby = "0.17"
 clap = "2.33"
 tracing = "0.1"
 tracing-subscriber = { version = "0.2", features = ["env-filter"] }
