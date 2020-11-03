@@ -9,10 +9,47 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Servlets
 import semmle.code.xml.WebXML
 import DataFlow::PathGraph
+
+/** DataFlow configuration for detecting the case of rethrowing unprocessed exceptions */
+class ThrowExConfiguration extends DataFlow2::Configuration {
+  ThrowExConfiguration() { this = "Throwing Unprocessed Exception Configuration" }
+
+  /** Source of `LocalVariableDeclExpr` */
+  override predicate isSource(DataFlow::Node source) {
+    exists(LocalVariableDeclExpr v | source.asExpr() = v.getAnAccess())
+  }
+
+  /** Sink of `ThrowStmt` */
+  override predicate isSink(DataFlow::Node sink) {
+    exists(ThrowStmt ts | sink.asExpr() = ts.getExpr()) // e.g. the uhex exception throwed in `catch (UnknownHostException uhex) {throw uhex;}`
+  }
+
+  /**
+   * Holds if there are additional flow steps below:
+   *  new IOException(uhex);
+   *  IOException ioException = new IOException(); ioException.initCause(e); throw ioException;
+   *  IOException ioException = new IOException(); ioException.addSuppressed(e); throw ioException;
+   */
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(ClassInstanceExpr cie | node1.asExpr() = cie.getAnArgument() and node2.asExpr() = cie) // catch (UnknownHostException uhex) {throw new IOException(uhex);}
+    or
+    exists(
+      MethodAccess ma // e.g. IOException ioException = new IOException(); ioException.addSuppressed(e); throw ioException;
+    |
+      ma.getMethod().getName() in ["initCause", "addSuppressed"] and
+      node1.asExpr() = ma.getAnArgument() and
+      (
+        node2.asExpr() = ma.getQualifier() or
+        node2.asExpr() = ma
+      )
+    )
+  }
+}
 
 /** Holds if a given exception type is caught. */
 private predicate exceptionIsCaught(TryStmt t, RefType exType) {
@@ -21,24 +58,11 @@ private predicate exceptionIsCaught(TryStmt t, RefType exType) {
     cc.getVariable() = v and
     v.getType().(RefType).getASubtype*() = exType and // Detect the case that a subclass exception is thrown but its parent class is declared in the catch clause.
     not exists(
-      ThrowStmt ts, ClassInstanceExpr cie // Catch and rethrow an exception without processing
+      ThrowStmt ts // Detect the edge case that exception is caught then rethrown without processing in a catch clause
     |
       ts.getEnclosingStmt() = cc.getBlock() and
-      (
-        ts.getExpr() = cie and
-        cie.getAnArgument() = v.getAnAccess() // catch (UnknownHostException uhex) {throw new IOException(uhex);}
-        or
-        exists(MethodAccess ma |
-          ma.getMethod().getName() in ["initCause", "addSuppressed"] and
-          ma.getAnArgument() = v.getAnAccess() and
-          (
-            ma.getQualifier().(VarAccess).getVariable().getAnAssignedValue() = cie and
-            ts.getExpr() = ma.getQualifier().(VarAccess).getVariable().getAnAccess() // e.g. IOException ioException = new IOException(); ioException.initCause(e); throw ioException;
-          )
-          or
-          ma.getQualifier() = cie and
-          ts.getExpr() = ma // e.g. throw new IOException().initCause(uhex);
-        )
+      exists(ThrowExConfiguration tec |
+        tec.hasFlow(DataFlow::exprNode(v.getAnAccess()), DataFlow::exprNode(ts.getExpr()))
       )
     )
   )
