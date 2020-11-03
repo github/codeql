@@ -127,7 +127,7 @@ module Public {
     final string toString() {
       exists(int i |
         this = TParameterSummaryInput(i) and
-        result = "parameter " + i
+        if i = -1 then result = "this parameter" else result = "parameter " + i
         or
         this = TDelegateSummaryInput(i) and
         result = "deleget output from parameter " + i
@@ -144,7 +144,7 @@ module Public {
       or
       exists(int i |
         this = TParameterSummaryOutput(i) and
-        result = "parameter " + i
+        if i = -1 then result = "this parameter" else result = "parameter " + i
       )
       or
       exists(int delegateIndex, int parameterIndex |

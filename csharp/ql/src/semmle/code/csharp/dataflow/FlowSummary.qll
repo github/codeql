@@ -138,3 +138,32 @@ module SummaryOutput {
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
+
+/** Provides a query predicate for outputting a set of relevant flow summaries. */
+module TestOutput {
+  /** A flow summary to include in the `summary/3` query predicate. */
+  abstract class RelevantSummarizedCallable extends SummarizedCallable { }
+
+  /** A query predicate for outputting flow summaries in QL tests. */
+  query predicate summary(string callable, string flow, boolean preservesValue) {
+    exists(
+      RelevantSummarizedCallable c, SummaryInput input, ContentList inputContents,
+      string inputContentsString, SummaryOutput output, ContentList outputContents,
+      string outputContentsString
+    |
+      callable = c.getQualifiedNameWithTypes() and
+      Impl::Private::summary(c, input, inputContents, output, outputContents, preservesValue) and
+      (
+        if inputContents.length() = 0
+        then inputContentsString = ""
+        else inputContentsString = " [" + inputContents + "]"
+      ) and
+      (
+        if outputContents.length() = 0
+        then outputContentsString = ""
+        else outputContentsString = " [" + outputContents + "]"
+      ) and
+      flow = input + inputContentsString + " -> " + output + outputContentsString
+    )
+  }
+}
