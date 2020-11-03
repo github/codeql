@@ -65,4 +65,6 @@ app.use(function(req, res) {
 	(/^foo(K|Y)+.*X/.test(tainted)); // NOT OK
 	(/(K|Y).*X/.test(tainted)); // NOT OK
 	(/[^Y].*X/.test(tainted)); // NOT OK
+	(/[^Y].*$/.test(req.url)); // OK - the input cannot contain newlines.
+	(/[^Y].*$/.test(req.body)); // NOT OK
 });
