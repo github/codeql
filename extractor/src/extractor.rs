@@ -187,6 +187,7 @@ impl Extractor {
             // TODO: should we handle path strings that are not valid UTF8 better?
             path: format!("{}", path.display()),
             file_label: *file_label,
+            token_counter: 0,
             stack: Vec::new(),
             tables: build_schema_lookup(&self.schema),
             union_types: build_union_type_lookup(&self.schema),
@@ -248,7 +249,7 @@ fn full_id_for_folder(path: &Path) -> String {
 fn build_schema_lookup<'a>(schema: &'a Vec<Entry>) -> Map<&'a TypeName, &'a Entry> {
     let mut map = std::collections::BTreeMap::new();
     for entry in schema {
-        if let Entry::Table { type_name, .. } = entry {
+        if let Entry::Token { type_name, .. } | Entry::Table { type_name, .. } = entry {
             map.insert(type_name, entry);
         }
     }
@@ -275,6 +276,8 @@ struct Visitor<'a> {
     source: &'a Vec<u8>,
     /// A TrapWriter to accumulate trap entries
     trap_writer: TrapWriter,
+    /// A counter for tokens
+    token_counter: usize,
     /// A lookup table from type name to dbscheme table entries
     tables: Map<&'a TypeName, &'a Entry>,
     /// A lookup table for union types mapping a type name to its direct members
@@ -312,31 +315,48 @@ impl Visitor<'_> {
             return;
         }
         let child_nodes = self.stack.pop().expect("Vistor: empty stack");
+        let id = self.trap_writer.fresh_id();
+        let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
+        let loc = self.trap_writer.location(
+            self.file_label.clone(),
+            start_line,
+            start_column,
+            end_line,
+            end_column,
+        );
         let table = self.tables.get(&TypeName {
             kind: node.kind().to_owned(),
             named: node.is_named(),
         });
-        if let Some(Entry::Table { fields, .. }) = table {
-            let id = self.trap_writer.fresh_id();
-            let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
-            let loc = self.trap_writer.location(
-                self.file_label.clone(),
-                start_line,
-                start_column,
-                end_line,
-                end_column,
+        if let Some(Entry::Token { kind_id, .. }) = table {
+            self.trap_writer.add_tuple(
+                "tokeninfo",
+                vec![
+                    Arg::Label(id),
+                    Arg::Int(*kind_id),
+                    Arg::Label(self.file_label),
+                    Arg::Int(self.token_counter),
+                    sliced_source_arg(self.source, node),
+                    Arg::Label(loc),
+                ],
             );
+            self.token_counter += 1;
+            if let Some(parent) = self.stack.last_mut() {
+                parent.push((
+                    field_name,
+                    id,
+                    TypeName {
+                        kind: node.kind().to_owned(),
+                        named: node.is_named(),
+                    },
+                ))
+            };
+        } else if let Some(Entry::Table { fields, .. }) = table {
             let table_name = escape_name(&format!(
                 "{}_def",
                 node_type_name(node.kind(), node.is_named())
             ));
-            let args: Option<Vec<Arg>>;
-            if fields.is_empty() {
-                args = Some(vec![sliced_source_arg(self.source, node)]);
-            } else {
-                args = self.complex_node(&node, fields, child_nodes, id);
-            }
-            if let Some(args) = args {
+            if let Some(args) = self.complex_node(&node, fields, child_nodes, id) {
                 let mut all_args = Vec::new();
                 all_args.push(Arg::Label(id));
                 all_args.extend(args);

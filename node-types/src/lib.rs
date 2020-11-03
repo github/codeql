@@ -15,6 +15,10 @@ pub enum Entry {
         type_name: TypeName,
         fields: Vec<Field>,
     },
+    Token {
+        type_name: TypeName,
+        kind_id: usize,
+    },
 }
 
 #[derive(Debug, Ord, PartialOrd, Eq, PartialEq)]
@@ -75,7 +79,7 @@ fn convert_types(node_types: &Vec<NodeType>) -> Set<TypeName> {
 }
 pub fn convert_nodes(nodes: Vec<NodeInfo>) -> Vec<Entry> {
     let mut entries: Vec<Entry> = Vec::new();
-
+    let mut token_kinds = Set::new();
     for node in nodes {
         if let Some(subtypes) = &node.subtypes {
             // It's a tree-sitter supertype node, for which we create a union
@@ -87,6 +91,12 @@ pub fn convert_nodes(nodes: Vec<NodeInfo>) -> Vec<Entry> {
                 },
                 members: convert_types(&subtypes),
             });
+        } else if node.fields.as_ref().map_or(0, |x| x.len()) == 0 && node.children.is_none() {
+            let type_name = TypeName {
+                kind: node.kind,
+                named: node.named,
+            };
+            token_kinds.insert(type_name);
         } else {
             // It's a product type, defined by a table.
             let type_name = TypeName {
@@ -113,6 +123,16 @@ pub fn convert_nodes(nodes: Vec<NodeInfo>) -> Vec<Entry> {
             }
             entries.push(Entry::Table { type_name, fields });
         }
+    }
+    let mut counter = 0;
+    for type_name in token_kinds {
+        let kind_id = if type_name.named {
+            counter += 1;
+            counter
+        } else {
+            0
+        };
+        entries.push(Entry::Token { type_name, kind_id });
     }
     entries
 }

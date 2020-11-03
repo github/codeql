@@ -48,15 +48,15 @@ sourceLocationPrefix(
 
 @underscore_arg = @underscore_primary | @assignment | @binary | @conditional | @operator_assignment | @range | @unary
 
-@underscore_lhs = @underscore_variable | @call | @element_reference | @false | @method_call | @nil | @scope_resolution | @true
+@underscore_lhs = @underscore_variable | @call | @element_reference | @token_false | @method_call | @token_nil | @scope_resolution | @token_true
 
-@underscore_method_name = @class_variable | @constant | @global_variable | @identifier | @instance_variable | @operator | @setter | @symbol
+@underscore_method_name = @token_class_variable | @token_constant | @token_global_variable | @token_identifier | @token_instance_variable | @token_operator | @setter | @symbol
 
-@underscore_primary = @underscore_lhs | @array | @begin | @break | @case__ | @chained_string | @character | @class | @complex | @float__ | @for | @hash | @heredoc_beginning | @if | @integer | @lambda | @method | @module | @next | @parenthesized_statements | @rational | @redo | @regex | @retry | @return | @singleton_class | @singleton_method | @string__ | @string_array | @subshell | @symbol | @symbol_array | @unary | @unless | @until | @while | @yield
+@underscore_primary = @underscore_lhs | @array | @begin | @break | @case__ | @chained_string | @token_character | @class | @token_complex | @token_float | @for | @hash | @token_heredoc_beginning | @if | @token_integer | @lambda | @method | @module | @next | @parenthesized_statements | @rational | @redo | @regex | @retry | @return | @singleton_class | @singleton_method | @string__ | @string_array | @subshell | @symbol | @symbol_array | @unary | @unless | @until | @while | @yield
 
 @underscore_statement = @underscore_arg | @alias | @assignment | @begin_block | @binary | @break | @call | @end_block | @if_modifier | @method_call | @next | @operator_assignment | @rescue_modifier | @return | @unary | @undef | @unless_modifier | @until_modifier | @while_modifier | @yield
 
-@underscore_variable = @class_variable | @constant | @global_variable | @identifier | @instance_variable | @self | @super
+@underscore_variable = @token_class_variable | @token_constant | @token_global_variable | @token_identifier | @token_instance_variable | @token_self | @token_super
 
 alias_def(
   unique int id: @alias,
@@ -104,7 +104,7 @@ assignment_def(
   int loc: @location ref
 );
 
-@bare_string_child_type = @escape_sequence | @interpolation
+@bare_string_child_type = @token_escape_sequence | @interpolation
 
 #keyset[bare_string, index]
 bare_string_child(
@@ -118,7 +118,7 @@ bare_string_def(
   int loc: @location ref
 );
 
-@bare_symbol_child_type = @escape_sequence | @interpolation
+@bare_symbol_child_type = @token_escape_sequence | @interpolation
 
 #keyset[bare_symbol, index]
 bare_symbol_child(
@@ -132,7 +132,7 @@ bare_symbol_def(
   int loc: @location ref
 );
 
-@begin_child_type = @underscore_statement | @else | @empty_statement | @ensure | @rescue
+@begin_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue
 
 #keyset[begin, index]
 begin_child(
@@ -146,7 +146,7 @@ begin_def(
   int loc: @location ref
 );
 
-@begin_block_child_type = @underscore_statement | @empty_statement
+@begin_block_child_type = @underscore_statement | @token_empty_statement
 
 #keyset[begin_block, index]
 begin_block_child(
@@ -162,7 +162,7 @@ begin_block_def(
 
 @binary_left_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
 
-@binary_operator_type = @bangequal_unnamed | @bangtilde_unnamed | @percent_unnamed | @ampersand_unnamed | @ampersandampersand_unnamed | @star_unnamed | @starstar_unnamed | @plus_unnamed | @minus_unnamed | @slash_unnamed | @langle_unnamed | @langlelangle_unnamed | @langleequal_unnamed | @langleequalrangle_unnamed | @equalequal_unnamed | @equalequalequal_unnamed | @equaltilde_unnamed | @rangle_unnamed | @rangleequal_unnamed | @ranglerangle_unnamed | @caret_unnamed | @and_unnamed | @or_unnamed | @pipe_unnamed | @pipepipe_unnamed
+@binary_operator_type = @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word
 
 @binary_right_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
 
@@ -174,7 +174,7 @@ binary_def(
   int loc: @location ref
 );
 
-@block_child_type = @underscore_statement | @block_parameters | @empty_statement
+@block_child_type = @underscore_statement | @block_parameters | @token_empty_statement
 
 #keyset[block, index]
 block_child(
@@ -196,11 +196,11 @@ block_argument_def(
 
 block_parameter_def(
   unique int id: @block_parameter,
-  int name: @identifier ref,
+  int name: @token_identifier ref,
   int loc: @location ref
 );
 
-@block_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @identifier | @keyword_parameter | @optional_parameter | @splat_parameter
+@block_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @token_identifier | @keyword_parameter | @optional_parameter | @splat_parameter
 
 #keyset[block_parameters, index]
 block_parameters_child(
@@ -224,7 +224,7 @@ break_def(
   int loc: @location ref
 );
 
-@call_method_type = @argument_list | @constant | @identifier | @operator
+@call_method_type = @argument_list | @token_constant | @token_identifier | @token_operator
 
 @call_receiver_type = @underscore_primary | @method_call
 
@@ -266,9 +266,9 @@ chained_string_def(
   int loc: @location ref
 );
 
-@class_name_type = @constant | @scope_resolution
+@class_name_type = @token_constant | @scope_resolution
 
-@class_child_type = @underscore_statement | @else | @empty_statement | @ensure | @rescue | @superclass
+@class_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue | @superclass
 
 #keyset[class, index]
 class_child(
@@ -305,7 +305,7 @@ destructured_left_assignment_def(
   int loc: @location ref
 );
 
-@destructured_parameter_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @identifier | @keyword_parameter | @optional_parameter | @splat_parameter
+@destructured_parameter_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @token_identifier | @keyword_parameter | @optional_parameter | @splat_parameter
 
 #keyset[destructured_parameter, index]
 destructured_parameter_child(
@@ -319,7 +319,7 @@ destructured_parameter_def(
   int loc: @location ref
 );
 
-@do_child_type = @underscore_statement | @empty_statement
+@do_child_type = @underscore_statement | @token_empty_statement
 
 #keyset[do, index]
 do_child(
@@ -333,7 +333,7 @@ do_def(
   int loc: @location ref
 );
 
-@do_block_child_type = @underscore_statement | @block_parameters | @else | @empty_statement | @ensure | @rescue
+@do_block_child_type = @underscore_statement | @block_parameters | @else | @token_empty_statement | @ensure | @rescue
 
 #keyset[do_block, index]
 do_block_child(
@@ -364,10 +364,10 @@ element_reference_def(
 
 else_condition(
   unique int else: @else ref,
-  unique int semicolon_unnamed: @semicolon_unnamed ref
+  unique int reserved_word: @reserved_word ref
 );
 
-@else_child_type = @underscore_statement | @empty_statement
+@else_child_type = @underscore_statement | @token_empty_statement
 
 #keyset[else, index]
 else_child(
@@ -399,13 +399,7 @@ elsif_def(
   int loc: @location ref
 );
 
-empty_statement_def(
-  unique int id: @empty_statement,
-  string text: string ref,
-  int loc: @location ref
-);
-
-@end_block_child_type = @underscore_statement | @empty_statement
+@end_block_child_type = @underscore_statement | @token_empty_statement
 
 #keyset[end_block, index]
 end_block_child(
@@ -419,7 +413,7 @@ end_block_def(
   int loc: @location ref
 );
 
-@ensure_child_type = @underscore_statement | @empty_statement
+@ensure_child_type = @underscore_statement | @token_empty_statement
 
 #keyset[ensure, index]
 ensure_child(
@@ -491,7 +485,7 @@ hash_splat_argument_def(
 
 hash_splat_parameter_name(
   unique int hash_splat_parameter: @hash_splat_parameter ref,
-  unique int identifier: @identifier ref
+  unique int token_identifier: @token_identifier ref
 );
 
 hash_splat_parameter_def(
@@ -499,7 +493,7 @@ hash_splat_parameter_def(
   int loc: @location ref
 );
 
-@heredoc_body_child_type = @escape_sequence | @heredoc_end | @interpolation
+@heredoc_body_child_type = @token_escape_sequence | @token_heredoc_end | @interpolation
 
 #keyset[heredoc_body, index]
 heredoc_body_child(
@@ -559,7 +553,7 @@ keyword_parameter_value(
 
 keyword_parameter_def(
   unique int id: @keyword_parameter,
-  int name: @identifier ref,
+  int name: @token_identifier ref,
   int loc: @location ref
 );
 
@@ -576,7 +570,7 @@ lambda_def(
   int loc: @location ref
 );
 
-@lambda_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @identifier | @keyword_parameter | @optional_parameter | @splat_parameter
+@lambda_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @token_identifier | @keyword_parameter | @optional_parameter | @splat_parameter
 
 #keyset[lambda_parameters, index]
 lambda_parameters_child(
@@ -609,7 +603,7 @@ method_parameters(
   unique int method_parameters: @method_parameters ref
 );
 
-@method_child_type = @underscore_statement | @else | @empty_statement | @ensure | @rescue
+@method_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue
 
 #keyset[method, index]
 method_child(
@@ -644,7 +638,7 @@ method_call_def(
   int loc: @location ref
 );
 
-@method_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @identifier | @keyword_parameter | @optional_parameter | @splat_parameter
+@method_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @token_identifier | @keyword_parameter | @optional_parameter | @splat_parameter
 
 #keyset[method_parameters, index]
 method_parameters_child(
@@ -658,9 +652,9 @@ method_parameters_def(
   int loc: @location ref
 );
 
-@module_name_type = @constant | @scope_resolution
+@module_name_type = @token_constant | @scope_resolution
 
-@module_child_type = @underscore_statement | @else | @empty_statement | @ensure | @rescue
+@module_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue
 
 #keyset[module, index]
 module_child(
@@ -685,12 +679,6 @@ next_def(
   int loc: @location ref
 );
 
-operator_def(
-  unique int id: @operator,
-  string text: string ref,
-  int loc: @location ref
-);
-
 @operator_assignment_right_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
 
 operator_assignment_def(
@@ -702,7 +690,7 @@ operator_assignment_def(
 
 optional_parameter_def(
   unique int id: @optional_parameter,
-  int name: @identifier ref,
+  int name: @token_identifier ref,
   int value: @underscore_arg ref,
   int loc: @location ref
 );
@@ -716,7 +704,7 @@ pair_def(
   int loc: @location ref
 );
 
-@parenthesized_statements_child_type = @underscore_statement | @empty_statement
+@parenthesized_statements_child_type = @underscore_statement | @token_empty_statement
 
 #keyset[parenthesized_statements, index]
 parenthesized_statements_child(
@@ -738,7 +726,7 @@ pattern_def(
   int loc: @location ref
 );
 
-@program_child_type = @underscore_statement | @empty_statement | @uninterpreted
+@program_child_type = @underscore_statement | @token_empty_statement | @token_uninterpreted
 
 #keyset[program, index]
 program_child(
@@ -766,7 +754,7 @@ range_def(
 
 rational_def(
   unique int id: @rational,
-  int child: @integer ref,
+  int child: @token_integer ref,
   int loc: @location ref
 );
 
@@ -780,7 +768,7 @@ redo_def(
   int loc: @location ref
 );
 
-@regex_child_type = @escape_sequence | @interpolation
+@regex_child_type = @token_escape_sequence | @interpolation
 
 #keyset[regex, index]
 regex_child(
@@ -867,7 +855,7 @@ right_assignment_list_def(
   int loc: @location ref
 );
 
-@scope_resolution_name_type = @constant | @identifier
+@scope_resolution_name_type = @token_constant | @token_identifier
 
 scope_resolution_scope(
   unique int scope_resolution: @scope_resolution ref,
@@ -882,11 +870,11 @@ scope_resolution_def(
 
 setter_def(
   unique int id: @setter,
-  int child: @identifier ref,
+  int child: @token_identifier ref,
   int loc: @location ref
 );
 
-@singleton_class_child_type = @underscore_statement | @else | @empty_statement | @ensure | @rescue
+@singleton_class_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue
 
 #keyset[singleton_class, index]
 singleton_class_child(
@@ -908,7 +896,7 @@ singleton_method_parameters(
   unique int method_parameters: @method_parameters ref
 );
 
-@singleton_method_child_type = @underscore_statement | @else | @empty_statement | @ensure | @rescue
+@singleton_method_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue
 
 #keyset[singleton_method, index]
 singleton_method_child(
@@ -932,7 +920,7 @@ splat_argument_def(
 
 splat_parameter_name(
   unique int splat_parameter: @splat_parameter ref,
-  unique int identifier: @identifier ref
+  unique int token_identifier: @token_identifier ref
 );
 
 splat_parameter_def(
@@ -940,7 +928,7 @@ splat_parameter_def(
   int loc: @location ref
 );
 
-@string_child_type = @escape_sequence | @interpolation
+@string_child_type = @token_escape_sequence | @interpolation
 
 #keyset[string__, index]
 string_child(
@@ -966,7 +954,7 @@ string_array_def(
   int loc: @location ref
 );
 
-@subshell_child_type = @escape_sequence | @interpolation
+@subshell_child_type = @token_escape_sequence | @interpolation
 
 #keyset[subshell, index]
 subshell_child(
@@ -988,7 +976,7 @@ superclass_def(
   int loc: @location ref
 );
 
-@symbol_child_type = @escape_sequence | @interpolation
+@symbol_child_type = @token_escape_sequence | @interpolation
 
 #keyset[symbol, index]
 symbol_child(
@@ -1014,7 +1002,7 @@ symbol_array_def(
   int loc: @location ref
 );
 
-@then_child_type = @underscore_statement | @empty_statement
+@then_child_type = @underscore_statement | @token_empty_statement
 
 #keyset[then, index]
 then_child(
@@ -1028,7 +1016,7 @@ then_def(
   int loc: @location ref
 );
 
-@unary_child_type = @underscore_arg | @break | @call | @float__ | @integer | @method_call | @next | @parenthesized_statements | @return | @yield
+@unary_child_type = @underscore_arg | @break | @call | @token_float | @token_integer | @method_call | @next | @parenthesized_statements | @return | @yield
 
 unary_def(
   unique int id: @unary,
@@ -1096,7 +1084,7 @@ when_body(
   unique int then: @then ref
 );
 
-@when_pattern_type = @comma_unnamed | @pattern
+@when_pattern_type = @reserved_word | @pattern
 
 #keyset[when, index]
 when_pattern(
@@ -1136,725 +1124,40 @@ yield_def(
   int loc: @location ref
 );
 
-bang_unnamed_def(
-  unique int id: @bang_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-bangequal_unnamed_def(
-  unique int id: @bangequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-bangtilde_unnamed_def(
-  unique int id: @bangtilde_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-dquote_unnamed_def(
-  unique int id: @dquote_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-hashlbrace_unnamed_def(
-  unique int id: @hashlbrace_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-percent_unnamed_def(
-  unique int id: @percent_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-percentequal_unnamed_def(
-  unique int id: @percentequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-percentilparen_unnamed_def(
-  unique int id: @percentilparen_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-percentwlparen_unnamed_def(
-  unique int id: @percentwlparen_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-ampersand_unnamed_def(
-  unique int id: @ampersand_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-ampersandampersand_unnamed_def(
-  unique int id: @ampersandampersand_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-ampersandampersandequal_unnamed_def(
-  unique int id: @ampersandampersandequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-ampersanddot_unnamed_def(
-  unique int id: @ampersanddot_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-ampersandequal_unnamed_def(
-  unique int id: @ampersandequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-lparen_unnamed_def(
-  unique int id: @lparen_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-rparen_unnamed_def(
-  unique int id: @rparen_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-star_unnamed_def(
-  unique int id: @star_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-starstar_unnamed_def(
-  unique int id: @starstar_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-starstarequal_unnamed_def(
-  unique int id: @starstarequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-starequal_unnamed_def(
-  unique int id: @starequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-plus_unnamed_def(
-  unique int id: @plus_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-plusequal_unnamed_def(
-  unique int id: @plusequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-plusat_unnamed_def(
-  unique int id: @plusat_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-comma_unnamed_def(
-  unique int id: @comma_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-minus_unnamed_def(
-  unique int id: @minus_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-minusequal_unnamed_def(
-  unique int id: @minusequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-minusrangle_unnamed_def(
-  unique int id: @minusrangle_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-minusat_unnamed_def(
-  unique int id: @minusat_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-dot_unnamed_def(
-  unique int id: @dot_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-dotdot_unnamed_def(
-  unique int id: @dotdot_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-dotdotdot_unnamed_def(
-  unique int id: @dotdotdot_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-slash_unnamed_def(
-  unique int id: @slash_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-slashequal_unnamed_def(
-  unique int id: @slashequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-colon_unnamed_def(
-  unique int id: @colon_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-colondquote_unnamed_def(
-  unique int id: @colondquote_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-coloncolon_unnamed_def(
-  unique int id: @coloncolon_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-semicolon_unnamed_def(
-  unique int id: @semicolon_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-langle_unnamed_def(
-  unique int id: @langle_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-langlelangle_unnamed_def(
-  unique int id: @langlelangle_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-langlelangleequal_unnamed_def(
-  unique int id: @langlelangleequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-langleequal_unnamed_def(
-  unique int id: @langleequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-langleequalrangle_unnamed_def(
-  unique int id: @langleequalrangle_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-equal_unnamed_def(
-  unique int id: @equal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-equalequal_unnamed_def(
-  unique int id: @equalequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-equalequalequal_unnamed_def(
-  unique int id: @equalequalequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-equalrangle_unnamed_def(
-  unique int id: @equalrangle_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-equaltilde_unnamed_def(
-  unique int id: @equaltilde_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-rangle_unnamed_def(
-  unique int id: @rangle_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-rangleequal_unnamed_def(
-  unique int id: @rangleequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-ranglerangle_unnamed_def(
-  unique int id: @ranglerangle_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-ranglerangleequal_unnamed_def(
-  unique int id: @ranglerangleequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-question_unnamed_def(
-  unique int id: @question_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-b_e_g_i_n__unnamed_def(
-  unique int id: @b_e_g_i_n__unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-e_n_d__unnamed_def(
-  unique int id: @e_n_d__unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-lbracket_unnamed_def(
-  unique int id: @lbracket_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-lbracketrbracket_unnamed_def(
-  unique int id: @lbracketrbracket_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-lbracketrbracketequal_unnamed_def(
-  unique int id: @lbracketrbracketequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-rbracket_unnamed_def(
-  unique int id: @rbracket_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-caret_unnamed_def(
-  unique int id: @caret_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-caretequal_unnamed_def(
-  unique int id: @caretequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-underscore__e_n_d____unnamed_def(
-  unique int id: @underscore__e_n_d____unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-backtick_unnamed_def(
-  unique int id: @backtick_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-alias_unnamed_def(
-  unique int id: @alias_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-and_unnamed_def(
-  unique int id: @and_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-begin_unnamed_def(
-  unique int id: @begin_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-break_unnamed_def(
-  unique int id: @break_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-case_unnamed_def(
-  unique int id: @case_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-character_def(
-  unique int id: @character,
-  string text: string ref,
-  int loc: @location ref
-);
-
-class_unnamed_def(
-  unique int id: @class_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-class_variable_def(
-  unique int id: @class_variable,
-  string text: string ref,
-  int loc: @location ref
-);
-
-comment_def(
-  unique int id: @comment,
-  string text: string ref,
-  int loc: @location ref
-);
-
-complex_def(
-  unique int id: @complex,
-  string text: string ref,
-  int loc: @location ref
-);
-
-constant_def(
-  unique int id: @constant,
-  string text: string ref,
-  int loc: @location ref
-);
-
-def_unnamed_def(
-  unique int id: @def_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-definedquestion_unnamed_def(
-  unique int id: @definedquestion_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-do_unnamed_def(
-  unique int id: @do_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-else_unnamed_def(
-  unique int id: @else_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-elsif_unnamed_def(
-  unique int id: @elsif_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-end_unnamed_def(
-  unique int id: @end_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-ensure_unnamed_def(
-  unique int id: @ensure_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-escape_sequence_def(
-  unique int id: @escape_sequence,
-  string text: string ref,
-  int loc: @location ref
-);
-
-false_def(
-  unique int id: @false,
-  string text: string ref,
-  int loc: @location ref
-);
-
-float_def(
-  unique int id: @float__,
-  string text: string ref,
-  int loc: @location ref
-);
-
-for_unnamed_def(
-  unique int id: @for_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-global_variable_def(
-  unique int id: @global_variable,
-  string text: string ref,
-  int loc: @location ref
-);
-
-heredoc_beginning_def(
-  unique int id: @heredoc_beginning,
-  string text: string ref,
-  int loc: @location ref
-);
-
-heredoc_end_def(
-  unique int id: @heredoc_end,
-  string text: string ref,
-  int loc: @location ref
-);
-
-identifier_def(
-  unique int id: @identifier,
-  string text: string ref,
-  int loc: @location ref
-);
-
-if_unnamed_def(
-  unique int id: @if_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-in_unnamed_def(
-  unique int id: @in_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-instance_variable_def(
-  unique int id: @instance_variable,
-  string text: string ref,
-  int loc: @location ref
-);
-
-integer_def(
-  unique int id: @integer,
-  string text: string ref,
-  int loc: @location ref
-);
-
-module_unnamed_def(
-  unique int id: @module_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-next_unnamed_def(
-  unique int id: @next_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-nil_def(
-  unique int id: @nil,
-  string text: string ref,
-  int loc: @location ref
-);
-
-not_unnamed_def(
-  unique int id: @not_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-or_unnamed_def(
-  unique int id: @or_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-r_unnamed_def(
-  unique int id: @r_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-redo_unnamed_def(
-  unique int id: @redo_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-rescue_unnamed_def(
-  unique int id: @rescue_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-retry_unnamed_def(
-  unique int id: @retry_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-return_unnamed_def(
-  unique int id: @return_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-self_def(
-  unique int id: @self,
-  string text: string ref,
-  int loc: @location ref
-);
-
-super_def(
-  unique int id: @super,
-  string text: string ref,
-  int loc: @location ref
-);
-
-then_unnamed_def(
-  unique int id: @then_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-true_def(
-  unique int id: @true,
-  string text: string ref,
-  int loc: @location ref
-);
-
-undef_unnamed_def(
-  unique int id: @undef_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-uninterpreted_def(
-  unique int id: @uninterpreted,
-  string text: string ref,
-  int loc: @location ref
-);
-
-unless_unnamed_def(
-  unique int id: @unless_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-until_unnamed_def(
-  unique int id: @until_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-when_unnamed_def(
-  unique int id: @when_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-while_unnamed_def(
-  unique int id: @while_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-yield_unnamed_def(
-  unique int id: @yield_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-lbrace_unnamed_def(
-  unique int id: @lbrace_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-pipe_unnamed_def(
-  unique int id: @pipe_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-pipeequal_unnamed_def(
-  unique int id: @pipeequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-pipepipe_unnamed_def(
-  unique int id: @pipepipe_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-pipepipeequal_unnamed_def(
-  unique int id: @pipepipeequal_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-rbrace_unnamed_def(
-  unique int id: @rbrace_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-tilde_unnamed_def(
-  unique int id: @tilde_unnamed,
-  string text: string ref,
-  int loc: @location ref
-);
-
-@ast_node = @alias | @argument_list | @array | @assignment | @bare_string | @bare_symbol | @begin | @begin_block | @binary | @block | @block_argument | @block_parameter | @block_parameters | @break | @call | @case__ | @chained_string | @class | @conditional | @destructured_left_assignment | @destructured_parameter | @do | @do_block | @element_reference | @else | @elsif | @empty_statement | @end_block | @ensure | @exception_variable | @exceptions | @for | @hash | @hash_splat_argument | @hash_splat_parameter | @heredoc_body | @if | @if_modifier | @in | @interpolation | @keyword_parameter | @lambda | @lambda_parameters | @left_assignment_list | @method | @method_call | @method_parameters | @module | @next | @operator | @operator_assignment | @optional_parameter | @pair | @parenthesized_statements | @pattern | @program | @range | @rational | @redo | @regex | @rescue | @rescue_modifier | @rest_assignment | @retry | @return | @right_assignment_list | @scope_resolution | @setter | @singleton_class | @singleton_method | @splat_argument | @splat_parameter | @string__ | @string_array | @subshell | @superclass | @symbol | @symbol_array | @then | @unary | @undef | @unless | @unless_modifier | @until | @until_modifier | @when | @while | @while_modifier | @yield | @bang_unnamed | @bangequal_unnamed | @bangtilde_unnamed | @dquote_unnamed | @hashlbrace_unnamed | @percent_unnamed | @percentequal_unnamed | @percentilparen_unnamed | @percentwlparen_unnamed | @ampersand_unnamed | @ampersandampersand_unnamed | @ampersandampersandequal_unnamed | @ampersanddot_unnamed | @ampersandequal_unnamed | @lparen_unnamed | @rparen_unnamed | @star_unnamed | @starstar_unnamed | @starstarequal_unnamed | @starequal_unnamed | @plus_unnamed | @plusequal_unnamed | @plusat_unnamed | @comma_unnamed | @minus_unnamed | @minusequal_unnamed | @minusrangle_unnamed | @minusat_unnamed | @dot_unnamed | @dotdot_unnamed | @dotdotdot_unnamed | @slash_unnamed | @slashequal_unnamed | @colon_unnamed | @colondquote_unnamed | @coloncolon_unnamed | @semicolon_unnamed | @langle_unnamed | @langlelangle_unnamed | @langlelangleequal_unnamed | @langleequal_unnamed | @langleequalrangle_unnamed | @equal_unnamed | @equalequal_unnamed | @equalequalequal_unnamed | @equalrangle_unnamed | @equaltilde_unnamed | @rangle_unnamed | @rangleequal_unnamed | @ranglerangle_unnamed | @ranglerangleequal_unnamed | @question_unnamed | @b_e_g_i_n__unnamed | @e_n_d__unnamed | @lbracket_unnamed | @lbracketrbracket_unnamed | @lbracketrbracketequal_unnamed | @rbracket_unnamed | @caret_unnamed | @caretequal_unnamed | @underscore__e_n_d____unnamed | @backtick_unnamed | @alias_unnamed | @and_unnamed | @begin_unnamed | @break_unnamed | @case_unnamed | @character | @class_unnamed | @class_variable | @comment | @complex | @constant | @def_unnamed | @definedquestion_unnamed | @do_unnamed | @else_unnamed | @elsif_unnamed | @end_unnamed | @ensure_unnamed | @escape_sequence | @false | @float__ | @for_unnamed | @global_variable | @heredoc_beginning | @heredoc_end | @identifier | @if_unnamed | @in_unnamed | @instance_variable | @integer | @module_unnamed | @next_unnamed | @nil | @not_unnamed | @or_unnamed | @r_unnamed | @redo_unnamed | @rescue_unnamed | @retry_unnamed | @return_unnamed | @self | @super | @then_unnamed | @true | @undef_unnamed | @uninterpreted | @unless_unnamed | @until_unnamed | @when_unnamed | @while_unnamed | @yield_unnamed | @lbrace_unnamed | @pipe_unnamed | @pipeequal_unnamed | @pipepipe_unnamed | @pipepipeequal_unnamed | @rbrace_unnamed | @tilde_unnamed
+tokeninfo(
+  unique int id: @token,
+  int kind: int ref,
+  int file: @file ref,
+  int idx: int ref,
+  string value: string ref,
+  int loc: @location ref
+);
+
+case @token.kind of
+  0 = @reserved_word
+| 1 = @token_character
+| 2 = @token_class_variable
+| 3 = @token_comment
+| 4 = @token_complex
+| 5 = @token_constant
+| 6 = @token_empty_statement
+| 7 = @token_escape_sequence
+| 8 = @token_false
+| 9 = @token_float
+| 10 = @token_global_variable
+| 11 = @token_heredoc_beginning
+| 12 = @token_heredoc_end
+| 13 = @token_identifier
+| 14 = @token_instance_variable
+| 15 = @token_integer
+| 16 = @token_nil
+| 17 = @token_operator
+| 18 = @token_self
+| 19 = @token_super
+| 20 = @token_true
+| 21 = @token_uninterpreted
+;
+
+
+@ast_node = @token | @alias | @argument_list | @array | @assignment | @bare_string | @bare_symbol | @begin | @begin_block | @binary | @block | @block_argument | @block_parameter | @block_parameters | @break | @call | @case__ | @chained_string | @class | @conditional | @destructured_left_assignment | @destructured_parameter | @do | @do_block | @element_reference | @else | @elsif | @end_block | @ensure | @exception_variable | @exceptions | @for | @hash | @hash_splat_argument | @hash_splat_parameter | @heredoc_body | @if | @if_modifier | @in | @interpolation | @keyword_parameter | @lambda | @lambda_parameters | @left_assignment_list | @method | @method_call | @method_parameters | @module | @next | @operator_assignment | @optional_parameter | @pair | @parenthesized_statements | @pattern | @program | @range | @rational | @redo | @regex | @rescue | @rescue_modifier | @rest_assignment | @retry | @return | @right_assignment_list | @scope_resolution | @setter | @singleton_class | @singleton_method | @splat_argument | @splat_parameter | @string__ | @string_array | @subshell | @superclass | @symbol | @symbol_array | @then | @unary | @undef | @unless | @unless_modifier | @until | @until_modifier | @when | @while | @while_modifier | @yield
 

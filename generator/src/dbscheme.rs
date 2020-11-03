@@ -5,7 +5,8 @@ use std::fmt;
 pub enum Entry {
     /// An entry defining a database table.
     Table(Table),
-
+    /// An entry defining a database table.
+    Case(Case),
     /// An entry defining type that is a union of other types.
     Union(Union),
 }
@@ -23,6 +24,13 @@ pub struct Union {
     pub members: Vec<String>,
 }
 
+/// A table in the database schema.
+pub struct Case {
+    pub name: String,
+    pub column: String,
+    pub branches: Vec<(usize, String)>,
+}
+
 /// A column in a table.
 pub struct Column {
     pub db_type: DbColumnType,
@@ -36,6 +44,18 @@ pub struct Column {
 pub enum DbColumnType {
     Int,
     String,
+}
+
+impl fmt::Display for Case {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, "case @{}.{} of", &self.name, &self.column)?;
+        let mut sep = " ";
+        for (c, tp) in &self.branches {
+            writeln!(f, "{} {} = @{}", sep, c, tp)?;
+            sep = "|";
+        }
+        writeln!(f, ";")
+    }
 }
 
 impl fmt::Display for Table {
@@ -110,6 +130,7 @@ pub fn write(
 
     for entry in entries {
         match entry {
+            Entry::Case(case) => write!(file, "{}\n\n", case)?,
             Entry::Table(table) => write!(file, "{}\n\n", table)?,
             Entry::Union(union) => write!(file, "{}\n\n", union)?,
         }
