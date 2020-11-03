@@ -610,4 +610,26 @@ func _() {
 	_ = x
 }
 
+func _(v1, v2 int32) (int32, int32) {
+	if v1 > v2 {
+		v1, _ = v2, v1
+	}
+	return v1, v2
+}
+
+func _(v1, v2 int32) (int32, int32) {
+	if v1 > v2 {
+		_, v1 = v2, v1
+	}
+	return v1, v2
+}
+
+func _(v1, v2 int32) (int32, int32) {
+	if v1 > v2 {
+		v1, _ = v2, v1
+	}
+	v1, v2 = 0, 0
+	return v1, v2
+}
+
 func anyFunctionMightPanic()

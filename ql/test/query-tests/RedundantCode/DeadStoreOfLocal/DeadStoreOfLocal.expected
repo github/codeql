@@ -27,3 +27,4 @@
 | testdata.go:488:3:488:3 | assignment to x | This definition of x is never used. |
 | testdata.go:542:3:542:3 | assignment to x | This definition of x is never used. |
 | testdata.go:580:4:580:4 | assignment to x | This definition of x is never used. |
+| testdata.go:629:3:629:4 | assignment to v1 | This definition of v1 is never used. |
