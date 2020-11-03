@@ -9,17 +9,29 @@ private import SqlInjectionCustomizations
 private import RequestForgeryCustomizations
 private import CommandInjectionCustomizations
 private import CleartextLoggingCustomizations
+private import Logrus
 
 /**
  * A `Function` that is considered a "safe" external API from a security perspective.
  */
 abstract class SafeExternalAPIFunction extends Function { }
 
+private predicate isDefaultSafePackage(Package package) {
+  package.getPath() in ["time", "unicode/utf8", Logrus::packagePath(),
+        GolangOrgXNetWebsocket::packagePath(), GorillaWebsocket::packagePath(),
+        package("http://gopkg.in/go-playground/validator", "")]
+}
+
 /** The default set of "safe" external APIs. */
 private class DefaultSafeExternalAPIFunction extends SafeExternalAPIFunction {
   DefaultSafeExternalAPIFunction() {
-    this instanceof BuiltinFunction
-    // TODO: Add more external API functions which we know are safe here
+    this instanceof BuiltinFunction or
+    isDefaultSafePackage(this.getPackage()) or
+    this.hasQualifiedName(package("gopkg.in/square/go-jose", "jwt"), "ParseSigned") or
+    this.(Method).hasQualifiedName(Gorm::packagePath(), "DB", "Update") or
+    this.hasQualifiedName("crypto/hmac", "Equal") or
+    this.hasQualifiedName("crypto/subtle", "ConstantTimeCompare") or
+    this.(Method).hasQualifiedName(package("golang.org/x/oauth2", ""), "Config", "Exchange")
   }
 }
 
