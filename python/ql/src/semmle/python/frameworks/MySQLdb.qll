@@ -32,6 +32,7 @@ module MySQLdb {
   /** Gets a reference to the `MySQLdb` module. */
   DataFlow::Node moduleMySQLdb() { result = moduleMySQLdb(DataFlow::TypeTracker::end()) }
 
+  /** MySQLdb implements PEP 249, providing ways to execute SQL statments against a database. */
   class MySQLdb extends PEP249Module {
     MySQLdb() { this = moduleMySQLdb() }
   }
