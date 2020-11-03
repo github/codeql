@@ -44,12 +44,24 @@ class StepSummary extends TStepSummary {
   }
 }
 
+/** Provides predicates for updating step summaries (`StepSummary`s). */
 module StepSummary {
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
+   */
   cached
   predicate step(Node nodeFrom, Node nodeTo, StepSummary summary) {
     exists(Node mid | typePreservingStep*(nodeFrom, mid) and smallstep(mid, nodeTo, summary))
   }
 
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * local, heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * Unlike `StepSummary::step`, this predicate does not compress
+   * type-preserving steps.
+   */
   predicate smallstep(Node nodeFrom, Node nodeTo, StepSummary summary) {
     typePreservingStep(nodeFrom, nodeTo) and
     summary = LevelStep()
