@@ -210,7 +210,14 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
       exists(HTTP::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
-        value = response.getMimetype() and
+        // Ensure that an expectation value such as "mimetype=text/html; charset=utf-8" is parsed as a
+        // single expectation with tag mimetype, and not as two expecations with tags mimetype and
+        // charset.
+        (
+          if exists(response.getMimetype().indexOf(" "))
+          then value = "\"" + response.getMimetype() + "\""
+          else value = response.getMimetype()
+        ) and
         tag = "mimetype"
       )
     )

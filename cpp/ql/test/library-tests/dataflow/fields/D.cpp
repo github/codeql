@@ -19,7 +19,7 @@ public:
   };
 
   static void sinkWrap(Box2* b2) {
-    sink(b2->getBox1()->getElem()); // $ast=28:15 $ast=35:15 $ast=42:15 $ast=49:15 $f-:ir
+    sink(b2->getBox1()->getElem()); // $ast=28:15 ast=35:15 ast=42:15 ast=49:15 MISSING: ir
   }
 
   Box2* boxfield;
@@ -61,6 +61,6 @@ public:
 
 private:
   void f5b() {
-    sink(boxfield->box->elem); // $ast $f-:ir
+    sink(boxfield->box->elem); // $ ast MISSING: ir
   }
 };

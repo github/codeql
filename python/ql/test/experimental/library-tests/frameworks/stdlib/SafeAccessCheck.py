@@ -1,8 +1,8 @@
 s = "taintedString"
 
-if s.startswith("tainted"):  # $checks=s $branch=true
+if s.startswith("tainted"):  # $checks=s branch=true
     pass
 
-sw = s.startswith  # $f-:checks=s $f-:branch=true
+sw = s.startswith  # $ MISSING: checks=s branch=true
 if sw("safe"):
     pass
