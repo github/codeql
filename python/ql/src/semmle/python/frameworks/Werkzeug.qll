@@ -6,6 +6,12 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 
+/**
+ * Provides models for the `Werkzeug` PyPI package.
+ * See
+ * - https://pypi.org/project/Werkzeug/
+ * - https://werkzeug.palletsprojects.com/en/1.0.x/#werkzeug
+ */
 module Werkzeug {
   /** Provides models for the `werkzeug` module. */
   module werkzeug {
