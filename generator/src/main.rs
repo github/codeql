@@ -123,7 +123,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
         create_containerparent_table(),
         create_source_location_prefix_table(),
     ];
-    let mut top_members: Vec<String> = Vec::new();
+    let mut ast_node_members: Vec<String> = Vec::new();
 
     for node in nodes {
         match &node {
@@ -162,7 +162,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
                     }],
                     keysets: None,
                 };
-                top_members.push(node_types::escape_name(&name));
+                ast_node_members.push(node_types::escape_name(&name));
 
                 // If the type also has fields or children, then we create either
                 // auxiliary tables or columns in the defining table for them.
@@ -198,8 +198,8 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
 
     // Create a union of all database types.
     entries.push(dbscheme::Entry::Union(dbscheme::Union {
-        name: "top".to_string(),
-        members: top_members,
+        name: "ast_node".to_string(),
+        members: ast_node_members,
     }));
 
     entries
