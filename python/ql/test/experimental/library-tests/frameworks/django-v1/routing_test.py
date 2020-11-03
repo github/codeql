@@ -4,7 +4,7 @@ from django.http.response import HttpResponse
 from django.views.generic import View
 
 
-def url_match_xss(request, foo, bar, no_taint=None):  # $routeHandler $routedParameter=foo $routedParameter=bar
+def url_match_xss(request, foo, bar, no_taint=None):  # $routeHandler routedParameter=foo routedParameter=bar
     return HttpResponse('url_match_xss: {} {}'.format(foo, bar))  # $HttpResponse
 
 
@@ -26,22 +26,22 @@ class Foo(object):
     # Note: since Foo is used as the super type in a class view, it will be able to handle requests.
 
 
-    def post(self, request, untrusted):  # $f-:routeHandler $f-:routedParameter=untrusted
+    def post(self, request, untrusted):  # $ MISSING: routeHandler routedParameter=untrusted
         return HttpResponse('Foo post: {}'.format(untrusted))  # $HttpResponse
 
 
 class ClassView(View, Foo):
 
-    def get(self, request, untrusted):  # $f-:routeHandler $f-:routedParameter=untrusted
+    def get(self, request, untrusted):  # $ MISSING: routeHandler routedParameter=untrusted
         return HttpResponse('ClassView get: {}'.format(untrusted))  # $HttpResponse
 
 
-def show_articles(request, page_number=1):  # $routeHandler $routedParameter=page_number
+def show_articles(request, page_number=1):  # $routeHandler routedParameter=page_number
     page_number = int(page_number)
     return HttpResponse('articles page: {}'.format(page_number))  # $HttpResponse
 
 
-def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $routeHandler $routedParameter=arg0 $routedParameter=arg1
+def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $routeHandler routedParameter=arg0 routedParameter=arg1
     return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))  # $HttpResponse
 
 
@@ -62,7 +62,7 @@ urlpatterns = [
 ################################################################################
 # Using patterns() for routing
 
-def show_user(request, username):  # $routeHandler $routedParameter=username
+def show_user(request, username):  # $routeHandler routedParameter=username
     return HttpResponse('show_user {}'.format(username))  # $HttpResponse
 
 

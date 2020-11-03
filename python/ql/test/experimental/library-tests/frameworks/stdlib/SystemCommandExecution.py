@@ -69,7 +69,7 @@ import subprocess
 subprocess.Popen("cmd1; cmd2", shell=True)  # $getCommand="cmd1; cmd2"
 subprocess.Popen("cmd1; cmd2", shell="truthy string")  # $getCommand="cmd1; cmd2"
 subprocess.Popen(["cmd1; cmd2", "shell-arg"], shell=True)  # $getCommand="cmd1; cmd2"
-subprocess.Popen("cmd1; cmd2", shell=True, executable="/bin/bash")  # $getCommand="cmd1; cmd2" $getCommand="/bin/bash"
+subprocess.Popen("cmd1; cmd2", shell=True, executable="/bin/bash")  # $getCommand="cmd1; cmd2" getCommand="/bin/bash"
 
 subprocess.Popen("executable")  # $getCommand="executable"
 subprocess.Popen(["executable", "arg0"])  # $getCommand="executable"
@@ -86,30 +86,30 @@ subprocess.run(["executable", "arg0"])  # $getCommand="executable"
 ########################################
 # actively using known shell as the executable
 
-subprocess.Popen(["/bin/sh", "-c", "vuln"])  # $getCommand="/bin/sh" $f-:getCommand="vuln"
-subprocess.Popen(["/bin/bash", "-c", "vuln"])  # $getCommand="/bin/bash" $f-:getCommand="vuln"
-subprocess.Popen(["/bin/dash", "-c", "vuln"])  # $getCommand="/bin/dash" $f-:getCommand="vuln"
-subprocess.Popen(["/bin/zsh", "-c", "vuln"])  # $getCommand="/bin/zsh" $f-:getCommand="vuln"
+subprocess.Popen(["/bin/sh", "-c", "vuln"])  # $getCommand="/bin/sh" MISSING: getCommand="vuln"
+subprocess.Popen(["/bin/bash", "-c", "vuln"])  # $getCommand="/bin/bash" MISSING: getCommand="vuln"
+subprocess.Popen(["/bin/dash", "-c", "vuln"])  # $getCommand="/bin/dash" MISSING: getCommand="vuln"
+subprocess.Popen(["/bin/zsh", "-c", "vuln"])  # $getCommand="/bin/zsh" MISSING: getCommand="vuln"
 
-subprocess.Popen(["sh", "-c", "vuln"])  # $getCommand="sh" $f-:getCommand="vuln"
-subprocess.Popen(["bash", "-c", "vuln"])  # $getCommand="bash" $f-:getCommand="vuln"
-subprocess.Popen(["dash", "-c", "vuln"])  # $getCommand="dash" $f-:getCommand="vuln"
-subprocess.Popen(["zsh", "-c", "vuln"])  # $getCommand="zsh" $f-:getCommand="vuln"
+subprocess.Popen(["sh", "-c", "vuln"])  # $getCommand="sh" MISSING: getCommand="vuln"
+subprocess.Popen(["bash", "-c", "vuln"])  # $getCommand="bash" MISSING: getCommand="vuln"
+subprocess.Popen(["dash", "-c", "vuln"])  # $getCommand="dash" MISSING: getCommand="vuln"
+subprocess.Popen(["zsh", "-c", "vuln"])  # $getCommand="zsh" MISSING: getCommand="vuln"
 
 # Check that we don't consider ANY argument a command injection sink
 subprocess.Popen(["sh", "/bin/python"])  # $getCommand="sh"
 
-subprocess.Popen(["cmd.exe", "/c", "vuln"])  # $getCommand="cmd.exe" $f-:getCommand="vuln"
-subprocess.Popen(["cmd.exe", "/C", "vuln"])  # $getCommand="cmd.exe" $f-:getCommand="vuln"
-subprocess.Popen(["cmd", "/c", "vuln"])  # $getCommand="cmd" $f-:getCommand="vuln"
-subprocess.Popen(["cmd", "/C", "vuln"])  # $getCommand="cmd" $f-:getCommand="vuln"
+subprocess.Popen(["cmd.exe", "/c", "vuln"])  # $getCommand="cmd.exe" MISSING: getCommand="vuln"
+subprocess.Popen(["cmd.exe", "/C", "vuln"])  # $getCommand="cmd.exe" MISSING: getCommand="vuln"
+subprocess.Popen(["cmd", "/c", "vuln"])  # $getCommand="cmd" MISSING: getCommand="vuln"
+subprocess.Popen(["cmd", "/C", "vuln"])  # $getCommand="cmd" MISSING: getCommand="vuln"
 
-subprocess.Popen(["<progname>", "-c", "vuln"], executable="/bin/bash")  # $getCommand="/bin/bash" $f-:getCommand="vuln"
+subprocess.Popen(["<progname>", "-c", "vuln"], executable="/bin/bash")  # $getCommand="/bin/bash" MISSING: getCommand="vuln"
 
 if UNKNOWN:
-    os.execl("/bin/sh", "<progname>", "-c", "vuln")  # $getCommand="/bin/sh" $f-:getCommand="vuln"
+    os.execl("/bin/sh", "<progname>", "-c", "vuln")  # $getCommand="/bin/sh" MISSING: getCommand="vuln"
 
-os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $getCommand="/bin/sh" $f-:getCommand="vuln"
+os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $getCommand="/bin/sh" MISSING: getCommand="vuln"
 
 
 ########################################
@@ -121,7 +121,7 @@ subprocess.Popen(args)  # $getCommand=args
 args = "<progname>"
 use_shell = False
 exe = "executable"
-subprocess.Popen(args, shell=use_shell, executable=exe)  # $f+:getCommand=args $getCommand=exe
+subprocess.Popen(args, shell=use_shell, executable=exe)  # $getCommand=exe SPURIOUS: getCommand=args
 
 
 ################################################################################

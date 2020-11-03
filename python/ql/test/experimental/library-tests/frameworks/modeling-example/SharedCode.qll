@@ -1,6 +1,6 @@
 private import python
-private import experimental.dataflow.DataFlow
-private import experimental.dataflow.TaintTracking
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.TaintTracking
 
 // Helpers modeling MyClass
 /** A data-flow Node representing an instance of MyClass. */

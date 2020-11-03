@@ -1,6 +1,6 @@
 import python
-import experimental.dataflow.DataFlow
-import experimental.dataflow.TypeTracker
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.TypeTracker
 import TestUtilities.InlineExpectationsTest
 
 DataFlow::Node tracked(TypeTracker t) {
