@@ -3231,8 +3231,10 @@ private module FlowExploration {
       result = " <" + this.(PartialPathNodeFwd).getCallContext().toString() + ">"
     }
 
+    /** Holds if this is a source in a forward-flow path. */
     predicate isFwdSource() { this.(PartialPathNodeFwd).isSource() }
 
+    /** Holds if this is a sink in a reverse-flow path. */
     predicate isRevSink() { this.(PartialPathNodeRev).isSink() }
   }
 
