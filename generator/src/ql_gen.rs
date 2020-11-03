@@ -76,7 +76,7 @@ fn create_supertype_map(nodes: &[node_types::Entry]) -> SupertypeMap {
 }
 
 fn get_base_classes(name: &str, supertype_map: &SupertypeMap) -> Vec<ql::Type> {
-    let mut base_classes: Vec<ql::Type> = vec![ql::Type::Normal("Top".to_owned())];
+    let mut base_classes: Vec<ql::Type> = vec![ql::Type::Normal("AstNode".to_owned())];
 
     if let Some(supertypes) = supertype_map.get(name) {
         base_classes.extend(
@@ -89,10 +89,24 @@ fn get_base_classes(name: &str, supertype_map: &SupertypeMap) -> Vec<ql::Type> {
     base_classes
 }
 
-/// Creates the hard-coded `Top` class that acts as a supertype of all classes we
-/// generate.
-fn create_top_class() -> ql::Class {
-    let to_string = create_none_predicate("toString", false, Some(ql::Type::String), vec![]);
+/// Creates the hard-coded `AstNode` class that acts as a supertype of all
+/// classes we generate.
+fn create_ast_node_class() -> ql::Class {
+    // Default implementation of `toString` calls `this.describeQlClass()`
+    let to_string = ql::Predicate {
+        name: "toString".to_owned(),
+        overridden: false,
+        return_type: Some(ql::Type::String),
+        formal_parameters: vec![],
+        body: ql::Expression::Equals(
+            Box::new(ql::Expression::Var("result".to_owned())),
+            Box::new(ql::Expression::Dot(
+                Box::new(ql::Expression::Var("this".to_owned())),
+                "describeQlClass".to_owned(),
+                vec![],
+            )),
+        ),
+    };
     let get_location = create_none_predicate(
         "getLocation",
         false,
@@ -102,15 +116,30 @@ fn create_top_class() -> ql::Class {
     let get_a_field_or_child = create_none_predicate(
         "getAFieldOrChild",
         false,
-        Some(ql::Type::Normal("Top".to_owned())),
+        Some(ql::Type::Normal("AstNode".to_owned())),
         vec![],
     );
+    let describe_ql_class = ql::Predicate {
+        name: "describeQlClass".to_owned(),
+        overridden: false,
+        return_type: Some(ql::Type::String),
+        formal_parameters: vec![],
+        body: ql::Expression::Equals(
+            Box::new(ql::Expression::Var("result".to_owned())),
+            Box::new(ql::Expression::String("???".to_owned())),
+        ),
+    };
     ql::Class {
-        name: "Top".to_owned(),
+        name: "AstNode".to_owned(),
         is_abstract: false,
-        supertypes: vec![ql::Type::AtType("top".to_owned())],
+        supertypes: vec![ql::Type::AtType("ast_node".to_owned())],
         characteristic_predicate: None,
-        predicates: vec![to_string, get_location, get_a_field_or_child],
+        predicates: vec![
+            to_string,
+            get_location,
+            get_a_field_or_child,
+            describe_ql_class,
+        ],
     }
 }
 
@@ -159,7 +188,7 @@ fn create_field_class(
             ]
             .concat(),
             characteristic_predicate: None,
-            predicates: vec![],
+            predicates: vec![create_describe_ql_class(&class_name)],
         }));
         field_union_name
     }
@@ -188,16 +217,17 @@ fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
         .join("")
 }
 
-/// Creates a `toString` predicate that returns the given text.
-fn create_to_string_predicate(text: &str) -> ql::Predicate {
+/// Creates an overridden `describeQlClass` predicate that returns the given
+/// name.
+fn create_describe_ql_class(class_name: &str) -> ql::Predicate {
     ql::Predicate {
-        name: "toString".to_owned(),
+        name: "describeQlClass".to_owned(),
         overridden: true,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
             Box::new(ql::Expression::Var("result".to_owned())),
-            Box::new(ql::Expression::String(text.to_owned())),
+            Box::new(ql::Expression::String(class_name.to_owned())),
         ),
     }
 }
@@ -385,7 +415,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
     let mut classes: Vec<ql::TopLevel> = vec![
         ql::TopLevel::Import("codeql.files.FileSystem".to_owned()),
         ql::TopLevel::Import("codeql.Locations".to_owned()),
-        ql::TopLevel::Class(create_top_class()),
+        ql::TopLevel::Class(create_ast_node_class()),
     ];
 
     for node in nodes {
@@ -410,7 +440,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                     ]
                     .concat(),
                     characteristic_predicate: None,
-                    predicates: vec![],
+                    predicates: vec![create_describe_ql_class(&class_name)],
                 }));
             }
             node_types::Entry::Table { type_name, fields } => {
@@ -444,7 +474,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                     .concat(),
                     characteristic_predicate: None,
                     predicates: vec![
-                        create_to_string_predicate(&main_class_name),
+                        create_describe_ql_class(&main_class_name),
                         create_get_location_predicate(&main_table_name, main_table_arity),
                     ],
                 };
@@ -479,7 +509,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                     main_class.predicates.push(ql::Predicate {
                         name: "getAFieldOrChild".to_owned(),
                         overridden: true,
-                        return_type: Some(ql::Type::Normal("Top".to_owned())),
+                        return_type: Some(ql::Type::Normal("AstNode".to_owned())),
                         formal_parameters: vec![],
                         body: ql::Expression::Or(get_child_exprs),
                     });
