@@ -159,6 +159,34 @@ nodes
 | mongooseModelClient.js:12:22:12:29 | req.body |
 | mongooseModelClient.js:12:22:12:29 | req.body |
 | mongooseModelClient.js:12:22:12:32 | req.body.id |
+| redis.js:10:16:10:23 | req.body |
+| redis.js:10:16:10:23 | req.body |
+| redis.js:10:16:10:27 | req.body.key |
+| redis.js:10:16:10:27 | req.body.key |
+| redis.js:12:9:12:26 | key |
+| redis.js:12:15:12:22 | req.body |
+| redis.js:12:15:12:22 | req.body |
+| redis.js:12:15:12:26 | req.body.key |
+| redis.js:18:16:18:18 | key |
+| redis.js:18:16:18:18 | key |
+| redis.js:19:43:19:45 | key |
+| redis.js:19:43:19:45 | key |
+| redis.js:25:14:25:16 | key |
+| redis.js:25:14:25:16 | key |
+| redis.js:30:23:30:25 | key |
+| redis.js:30:23:30:25 | key |
+| redis.js:32:28:32:30 | key |
+| redis.js:32:28:32:30 | key |
+| redis.js:38:11:38:28 | key |
+| redis.js:38:17:38:24 | req.body |
+| redis.js:38:17:38:24 | req.body |
+| redis.js:38:17:38:28 | req.body.key |
+| redis.js:39:16:39:18 | key |
+| redis.js:39:16:39:18 | key |
+| redis.js:43:27:43:29 | key |
+| redis.js:43:27:43:29 | key |
+| redis.js:46:34:46:36 | key |
+| redis.js:46:34:46:36 | key |
 | socketio.js:10:25:10:30 | handle |
 | socketio.js:10:25:10:30 | handle |
 | socketio.js:11:12:11:53 | `INSERT ... andle}` |
@@ -432,6 +460,32 @@ edges
 | mongooseModelClient.js:12:22:12:29 | req.body | mongooseModelClient.js:12:22:12:32 | req.body.id |
 | mongooseModelClient.js:12:22:12:32 | req.body.id | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } |
 | mongooseModelClient.js:12:22:12:32 | req.body.id | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } |
+| redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key |
+| redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key |
+| redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key |
+| redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key |
+| redis.js:12:9:12:26 | key | redis.js:18:16:18:18 | key |
+| redis.js:12:9:12:26 | key | redis.js:18:16:18:18 | key |
+| redis.js:12:9:12:26 | key | redis.js:19:43:19:45 | key |
+| redis.js:12:9:12:26 | key | redis.js:19:43:19:45 | key |
+| redis.js:12:9:12:26 | key | redis.js:25:14:25:16 | key |
+| redis.js:12:9:12:26 | key | redis.js:25:14:25:16 | key |
+| redis.js:12:9:12:26 | key | redis.js:30:23:30:25 | key |
+| redis.js:12:9:12:26 | key | redis.js:30:23:30:25 | key |
+| redis.js:12:9:12:26 | key | redis.js:32:28:32:30 | key |
+| redis.js:12:9:12:26 | key | redis.js:32:28:32:30 | key |
+| redis.js:12:15:12:22 | req.body | redis.js:12:15:12:26 | req.body.key |
+| redis.js:12:15:12:22 | req.body | redis.js:12:15:12:26 | req.body.key |
+| redis.js:12:15:12:26 | req.body.key | redis.js:12:9:12:26 | key |
+| redis.js:38:11:38:28 | key | redis.js:39:16:39:18 | key |
+| redis.js:38:11:38:28 | key | redis.js:39:16:39:18 | key |
+| redis.js:38:11:38:28 | key | redis.js:43:27:43:29 | key |
+| redis.js:38:11:38:28 | key | redis.js:43:27:43:29 | key |
+| redis.js:38:11:38:28 | key | redis.js:46:34:46:36 | key |
+| redis.js:38:11:38:28 | key | redis.js:46:34:46:36 | key |
+| redis.js:38:17:38:24 | req.body | redis.js:38:17:38:28 | req.body.key |
+| redis.js:38:17:38:24 | req.body | redis.js:38:17:38:28 | req.body.key |
+| redis.js:38:17:38:28 | req.body.key | redis.js:38:11:38:28 | key |
 | socketio.js:10:25:10:30 | handle | socketio.js:11:46:11:51 | handle |
 | socketio.js:10:25:10:30 | handle | socketio.js:11:46:11:51 | handle |
 | socketio.js:11:46:11:51 | handle | socketio.js:11:12:11:53 | `INSERT ... andle}` |
@@ -500,6 +554,15 @@ edges
 | mongooseJsonParse.js:23:19:23:23 | query | mongooseJsonParse.js:20:30:20:43 | req.query.data | mongooseJsonParse.js:23:19:23:23 | query | This query depends on $@. | mongooseJsonParse.js:20:30:20:43 | req.query.data | a user-provided value |
 | mongooseModelClient.js:11:16:11:24 | { id: v } | mongooseModelClient.js:10:22:10:29 | req.body | mongooseModelClient.js:11:16:11:24 | { id: v } | This query depends on $@. | mongooseModelClient.js:10:22:10:29 | req.body | a user-provided value |
 | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | mongooseModelClient.js:12:22:12:29 | req.body | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | This query depends on $@. | mongooseModelClient.js:12:22:12:29 | req.body | a user-provided value |
+| redis.js:10:16:10:27 | req.body.key | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key | This query depends on $@. | redis.js:10:16:10:23 | req.body | a user-provided value |
+| redis.js:18:16:18:18 | key | redis.js:12:15:12:22 | req.body | redis.js:18:16:18:18 | key | This query depends on $@. | redis.js:12:15:12:22 | req.body | a user-provided value |
+| redis.js:19:43:19:45 | key | redis.js:12:15:12:22 | req.body | redis.js:19:43:19:45 | key | This query depends on $@. | redis.js:12:15:12:22 | req.body | a user-provided value |
+| redis.js:25:14:25:16 | key | redis.js:12:15:12:22 | req.body | redis.js:25:14:25:16 | key | This query depends on $@. | redis.js:12:15:12:22 | req.body | a user-provided value |
+| redis.js:30:23:30:25 | key | redis.js:12:15:12:22 | req.body | redis.js:30:23:30:25 | key | This query depends on $@. | redis.js:12:15:12:22 | req.body | a user-provided value |
+| redis.js:32:28:32:30 | key | redis.js:12:15:12:22 | req.body | redis.js:32:28:32:30 | key | This query depends on $@. | redis.js:12:15:12:22 | req.body | a user-provided value |
+| redis.js:39:16:39:18 | key | redis.js:38:17:38:24 | req.body | redis.js:39:16:39:18 | key | This query depends on $@. | redis.js:38:17:38:24 | req.body | a user-provided value |
+| redis.js:43:27:43:29 | key | redis.js:38:17:38:24 | req.body | redis.js:43:27:43:29 | key | This query depends on $@. | redis.js:38:17:38:24 | req.body | a user-provided value |
+| redis.js:46:34:46:36 | key | redis.js:38:17:38:24 | req.body | redis.js:46:34:46:36 | key | This query depends on $@. | redis.js:38:17:38:24 | req.body | a user-provided value |
 | socketio.js:11:12:11:53 | `INSERT ... andle}` | socketio.js:10:25:10:30 | handle | socketio.js:11:12:11:53 | `INSERT ... andle}` | This query depends on $@. | socketio.js:10:25:10:30 | handle | a user-provided value |
 | tst2.js:9:27:9:84 | "select ... d + "'" | tst2.js:9:66:9:78 | req.params.id | tst2.js:9:27:9:84 | "select ... d + "'" | This query depends on $@. | tst2.js:9:66:9:78 | req.params.id | a user-provided value |
 | tst3.js:9:14:9:19 | query1 | tst3.js:8:16:8:34 | req.params.category | tst3.js:9:14:9:19 | query1 | This query depends on $@. | tst3.js:8:16:8:34 | req.params.category | a user-provided value |

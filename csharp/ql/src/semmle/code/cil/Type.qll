@@ -38,7 +38,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
 
   override string getName() { cil_type(this, result, _, _, _) }
 
-  override string toString() { result = getQualifiedName() }
+  override string toString() { result = this.getName() }
 
   /** Gets the containing type of this type, if any. */
   override Type getDeclaringType() { result = getParent() }

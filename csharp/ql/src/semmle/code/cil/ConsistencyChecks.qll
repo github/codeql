@@ -477,7 +477,9 @@ class InvalidOverride extends MethodViolation {
   }
 
   override string getMessage() {
-    result = "Overridden method from " + base.getDeclaringType() + " is not in a base type"
+    result =
+      "Overridden method from " + base.getDeclaringType().getQualifiedName() +
+        " is not in a base type"
   }
 }
 

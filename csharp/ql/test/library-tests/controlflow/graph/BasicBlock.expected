@@ -134,6 +134,13 @@
 | Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | Assert.cs:127:24:127:32 | [b (line 84): true] ... != ... | 16 |
 | Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | 1 |
 | Assert.cs:127:37:127:38 | [b (line 84): true] !... | Assert.cs:128:9:128:35 | call to method WriteLine | 7 |
+| Assert.cs:131:18:131:32 | enter AssertTrueFalse | Assert.cs:131:18:131:32 | exit AssertTrueFalse | 3 |
+| Assert.cs:138:10:138:12 | enter M13 | Assert.cs:140:25:140:26 | access to parameter b1 | 5 |
+| Assert.cs:138:10:138:12 | exit M13 | Assert.cs:138:10:138:12 | exit M13 | 1 |
+| Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | 3 |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:29:140:30 | access to parameter b2 | 1 |
+| Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | 2 |
+| Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | Assert.cs:141:9:141:15 | return ...; | 3 |
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:3:10:3:10 | exit M | 33 |
 | Assignments.cs:14:18:14:35 | enter (...) => ... | Assignments.cs:14:18:14:35 | exit (...) => ... | 3 |
 | Assignments.cs:17:40:17:40 | enter + | Assignments.cs:17:40:17:40 | exit + | 5 |

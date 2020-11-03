@@ -18,7 +18,7 @@ void sink(char *b);
 
 void handlePacket(packet *p)
 {
-    sink(p->data.buffer); // $ast $f-:ir
+    sink(p->data.buffer); // $ ast MISSING: ir
 }
 
 void f(buf* b)
@@ -28,7 +28,7 @@ void f(buf* b)
     argument_source(raw);
     argument_source(b->buffer);
     argument_source(p.data.buffer);
-    sink(raw); // $ast $f-:ir
-    sink(b->buffer); // $ast $f-:ir
+    sink(raw); // $ ast MISSING: ir
+    sink(b->buffer); // $ ast MISSING: ir
     handlePacket(&p);
 }
