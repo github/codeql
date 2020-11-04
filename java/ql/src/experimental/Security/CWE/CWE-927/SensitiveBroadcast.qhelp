@@ -31,7 +31,7 @@
       <a href="https://developer.android.com/guide/components/broadcasts">Security considerations and best practices for sending and receiving broadcasts</a>
     </li>
     <li>
-      sonarsource:
+      SonarSource:
       <a href="https://rules.sonarsource.com/java/type/Security%20Hotspot/RSPEC-5320">Broadcasting intents is security-sensitive</a>
     </li>
     <li>
