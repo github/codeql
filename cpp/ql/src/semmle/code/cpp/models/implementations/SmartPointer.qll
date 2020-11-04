@@ -3,14 +3,14 @@ import semmle.code.cpp.models.interfaces.Taint
 /**
  * The `std::shared_ptr` and `std::unique_ptr` template classes.
  */
-class UniqueOrSharedPtr extends Class {
+private class UniqueOrSharedPtr extends Class {
   UniqueOrSharedPtr() { this.hasQualifiedName("std", ["shared_ptr", "unique_ptr"]) }
 }
 
 /**
  * The `std::make_shared` and `std::make_unique` template functions.
  */
-class MakeUniqueOrShared extends TaintFunction {
+private class MakeUniqueOrShared extends TaintFunction {
   MakeUniqueOrShared() { this.hasQualifiedName("std", ["make_shared", "make_unique"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -33,7 +33,7 @@ class MakeUniqueOrShared extends TaintFunction {
 /**
  * A prefix `operator*` member function for a `shared_ptr` or `unique_ptr` type.
  */
-class UniqueOrSharedDereferenceMemberOperator extends MemberFunction, TaintFunction {
+private class UniqueOrSharedDereferenceMemberOperator extends MemberFunction, TaintFunction {
   UniqueOrSharedDereferenceMemberOperator() {
     this.hasName("operator*") and
     this.getDeclaringType() instanceof UniqueOrSharedPtr
@@ -48,7 +48,7 @@ class UniqueOrSharedDereferenceMemberOperator extends MemberFunction, TaintFunct
 /**
  * The `std::shared_ptr` or `std::unique_ptr` function `get`.
  */
-class UniqueOrSharedGet extends TaintFunction {
+private class UniqueOrSharedGet extends TaintFunction {
   UniqueOrSharedGet() {
     this.hasName("get") and
     this.getDeclaringType() instanceof UniqueOrSharedPtr

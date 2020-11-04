@@ -10,7 +10,7 @@ import semmle.code.cpp.models.interfaces.Allocation
  * An allocation function (such as `malloc`) that has an argument for the size
  * in bytes.
  */
-class MallocAllocationFunction extends AllocationFunction {
+private class MallocAllocationFunction extends AllocationFunction {
   int sizeArg;
 
   MallocAllocationFunction() {
@@ -112,7 +112,7 @@ class MallocAllocationFunction extends AllocationFunction {
  * An allocation function (such as `alloca`) that does not require a
  * corresponding free (and has an argument for the size in bytes).
  */
-class AllocaAllocationFunction extends AllocationFunction {
+private class AllocaAllocationFunction extends AllocationFunction {
   int sizeArg;
 
   AllocaAllocationFunction() {
@@ -137,7 +137,7 @@ class AllocaAllocationFunction extends AllocationFunction {
  * An allocation function (such as `calloc`) that has an argument for the size
  * and another argument for the size of those units (in bytes).
  */
-class CallocAllocationFunction extends AllocationFunction {
+private class CallocAllocationFunction extends AllocationFunction {
   int sizeArg;
   int multArg;
 
@@ -158,7 +158,7 @@ class CallocAllocationFunction extends AllocationFunction {
  * An allocation function (such as `realloc`) that has an argument for the size
  * in bytes, and an argument for an existing pointer that is to be reallocated.
  */
-class ReallocAllocationFunction extends AllocationFunction {
+private class ReallocAllocationFunction extends AllocationFunction {
   int sizeArg;
   int reallocArg;
 
@@ -197,7 +197,7 @@ class ReallocAllocationFunction extends AllocationFunction {
  * A miscellaneous allocation function that has no explicit argument for
  * the size of the allocation.
  */
-class SizelessAllocationFunction extends AllocationFunction {
+private class SizelessAllocationFunction extends AllocationFunction {
   SizelessAllocationFunction() {
     exists(string name |
       hasGlobalName(name) and
@@ -302,7 +302,7 @@ private predicate deconstructSizeExpr(Expr sizeExpr, Expr lengthExpr, int sizeof
 /**
  * An allocation expression that is a function call, such as call to `malloc`.
  */
-class CallAllocationExpr extends AllocationExpr, FunctionCall {
+private class CallAllocationExpr extends AllocationExpr, FunctionCall {
   AllocationFunction target;
 
   CallAllocationExpr() {
@@ -353,7 +353,7 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
 /**
  * An allocation expression that is a `new` expression.
  */
-class NewAllocationExpr extends AllocationExpr, NewExpr {
+private class NewAllocationExpr extends AllocationExpr, NewExpr {
   NewAllocationExpr() { this instanceof NewExpr }
 
   override int getSizeBytes() { result = getAllocatedType().getSize() }
@@ -366,7 +366,7 @@ class NewAllocationExpr extends AllocationExpr, NewExpr {
 /**
  * An allocation expression that is a `new []` expression.
  */
-class NewArrayAllocationExpr extends AllocationExpr, NewArrayExpr {
+private class NewArrayAllocationExpr extends AllocationExpr, NewArrayExpr {
   NewArrayAllocationExpr() { this instanceof NewArrayExpr }
 
   override Expr getSizeExpr() {

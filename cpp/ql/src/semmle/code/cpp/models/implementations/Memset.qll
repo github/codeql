@@ -12,7 +12,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 /**
  * The standard function `memset` and its assorted variants
  */
-class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction, SideEffectFunction {
+private class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction, SideEffectFunction {
   MemsetFunction() {
     hasGlobalName("memset") or
     hasGlobalName("wmemset") or

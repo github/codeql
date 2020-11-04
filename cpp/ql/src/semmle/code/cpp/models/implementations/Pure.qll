@@ -3,7 +3,7 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
-class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
+private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
   PureStrFunction() {
     hasGlobalOrStdName(["atof", "atoi", "atol", "atoll", "strcasestr", "strchnul", "strchr",
           "strchrnul", "strstr", "strpbrk", "strcmp", "strcspn", "strncmp", "strrchr", "strspn",
@@ -56,7 +56,7 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
   }
 }
 
-class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
+private class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   StrLenFunction() {
     hasGlobalOrStdName(["strlen", "strnlen", "wcslen"])
     or
@@ -89,7 +89,7 @@ class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   }
 }
 
-class PureFunction extends TaintFunction, SideEffectFunction {
+private class PureFunction extends TaintFunction, SideEffectFunction {
   PureFunction() { hasGlobalOrStdName(["abs", "labs"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

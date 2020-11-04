@@ -62,7 +62,7 @@ class Fprintf extends FormattingFunction {
 /**
  * The standard function `sprintf` and its Microsoft and glib variants.
  */
-class Sprintf extends FormattingFunction {
+private class Sprintf extends FormattingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
@@ -122,7 +122,7 @@ class Sprintf extends FormattingFunction {
  * The standard functions `snprintf` and `swprintf`, and their
  * Microsoft and glib variants.
  */
-class Snprintf extends FormattingFunction {
+private class Snprintf extends FormattingFunction {
   Snprintf() {
     this instanceof TopLevelFunction and
     (
@@ -201,7 +201,7 @@ class Snprintf extends FormattingFunction {
 /**
  * The Microsoft `StringCchPrintf` function and variants.
  */
-class StringCchPrintf extends FormattingFunction {
+private class StringCchPrintf extends FormattingFunction {
   StringCchPrintf() {
     this instanceof TopLevelFunction and
     (

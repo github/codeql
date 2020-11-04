@@ -8,7 +8,7 @@ import semmle.code.cpp.models.implementations.Iterator
 /**
  * Additional model for set constructors using iterator inputs.
  */
-class StdSetConstructor extends Constructor, TaintFunction {
+private class StdSetConstructor extends Constructor, TaintFunction {
   StdSetConstructor() {
     this.hasQualifiedName("std", "set", "set") or
     this.hasQualifiedName("std", "unordered_set", "unordered_set")
@@ -35,7 +35,7 @@ class StdSetConstructor extends Constructor, TaintFunction {
 /**
  * The standard set `insert` and `insert_or_assign` functions.
  */
-class StdSetInsert extends TaintFunction {
+private class StdSetInsert extends TaintFunction {
   StdSetInsert() { this.hasQualifiedName("std", ["set", "unordered_set"], "insert") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -52,7 +52,7 @@ class StdSetInsert extends TaintFunction {
 /**
  * The standard set `emplace` and `emplace_hint` functions.
  */
-class StdSetEmplace extends TaintFunction {
+private class StdSetEmplace extends TaintFunction {
   StdSetEmplace() {
     this.hasQualifiedName("std", ["set", "unordered_set"], ["emplace", "emplace_hint"])
   }
@@ -75,7 +75,7 @@ class StdSetEmplace extends TaintFunction {
 /**
  * The standard set `swap` functions.
  */
-class StdSetSwap extends TaintFunction {
+private class StdSetSwap extends TaintFunction {
   StdSetSwap() { this.hasQualifiedName("std", ["set", "unordered_set"], "swap") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -91,7 +91,7 @@ class StdSetSwap extends TaintFunction {
 /**
  * The standard set `merge` function.
  */
-class StdSetMerge extends TaintFunction {
+private class StdSetMerge extends TaintFunction {
   StdSetMerge() { this.hasQualifiedName("std", ["set", "unordered_set"], "merge") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -104,7 +104,7 @@ class StdSetMerge extends TaintFunction {
 /**
  * The standard set `find` function.
  */
-class StdSetFind extends TaintFunction {
+private class StdSetFind extends TaintFunction {
   StdSetFind() { this.hasQualifiedName("std", ["set", "unordered_set"], "find") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -116,7 +116,7 @@ class StdSetFind extends TaintFunction {
 /**
  * The standard set `erase` function.
  */
-class StdSetErase extends TaintFunction {
+private class StdSetErase extends TaintFunction {
   StdSetErase() { this.hasQualifiedName("std", ["set", "unordered_set"], "erase") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -130,7 +130,7 @@ class StdSetErase extends TaintFunction {
 /**
  * The standard set `lower_bound`, `upper_bound` and `equal_range` functions.
  */
-class StdSetEqualRange extends TaintFunction {
+private class StdSetEqualRange extends TaintFunction {
   StdSetEqualRange() {
     this
         .hasQualifiedName("std", ["set", "unordered_set"],

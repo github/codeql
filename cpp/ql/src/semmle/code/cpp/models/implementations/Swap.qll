@@ -4,7 +4,7 @@ import semmle.code.cpp.models.interfaces.Taint
 /**
  * The standard function `swap`.
  */
-class Swap extends DataFlowFunction {
+private class Swap extends DataFlowFunction {
   Swap() { this.hasQualifiedName("std", "swap") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {

@@ -9,7 +9,7 @@ import semmle.code.cpp.models.interfaces.Deallocation
 /**
  * A deallocation function such as `free`.
  */
-class StandardDeallocationFunction extends DeallocationFunction {
+private class StandardDeallocationFunction extends DeallocationFunction {
   int freedArg;
 
   StandardDeallocationFunction() {
@@ -114,7 +114,7 @@ class OperatorDeleteDeallocationFunction extends DeallocationFunction {
 /**
  * An deallocation expression that is a function call, such as call to `free`.
  */
-class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
+private class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
   DeallocationFunction target;
 
   CallDeallocationExpr() { target = getTarget() }
@@ -125,7 +125,7 @@ class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
 /**
  * An deallocation expression that is a `delete` expression.
  */
-class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
+private class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
   DeleteDeallocationExpr() { this instanceof DeleteExpr }
 
   override Expr getFreedExpr() { result = getExpr() }
@@ -134,7 +134,7 @@ class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
 /**
  * An deallocation expression that is a `delete []` expression.
  */
-class DeleteArrayDeallocationExpr extends DeallocationExpr, DeleteArrayExpr {
+private class DeleteArrayDeallocationExpr extends DeallocationExpr, DeleteArrayExpr {
   DeleteArrayDeallocationExpr() { this instanceof DeleteArrayExpr }
 
   override Expr getFreedExpr() { result = getExpr() }
