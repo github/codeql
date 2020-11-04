@@ -71,7 +71,7 @@ private class SnakeYamlParse extends MethodAccess {
   SnakeYamlParse() {
     exists(Method m |
       m.getDeclaringType() instanceof Yaml and
-      (m.hasName("compose") or m.hasName("composeAll") or m.hasName("load") or m.hasName("loadAll") or m.hasName("loadAs") or m.hasName("parse")) and
+      m.hasName(["compose", "composeAll", "load", "loadAll", "loadAs", "parse"]) and
       m = this.getMethod()
     )
   }
