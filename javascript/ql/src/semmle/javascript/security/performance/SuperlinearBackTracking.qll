@@ -147,7 +147,7 @@ class PolynomialBackTrackingTerm extends InfiniteRepetitionQuantifier {
   }
 
   /**
-   * Holds if all non-empty successors to the polynimial backtracking term matches the end of the line.
+   * Holds if all non-empty successors to the polynomial backtracking term matches the end of the line.
    */
   predicate isAtEndLine() {
     forall(RegExpTerm succ | this.getSuccessor+() = succ and not matchesEpsilon(succ) |
