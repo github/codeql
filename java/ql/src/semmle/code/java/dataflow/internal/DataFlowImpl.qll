@@ -619,13 +619,13 @@ private predicate read(Node n1, Content c, Node n2, Configuration config) {
 
 pragma[noinline]
 private predicate localFlowStepNodeCand1(Node node1, Node node2, Configuration config) {
-  Stage1::revFlow(node1, config) and
+  Stage1::revFlow(node2, config) and
   localFlowStep(node1, node2, config)
 }
 
 pragma[noinline]
 private predicate additionalLocalFlowStepNodeCand1(Node node1, Node node2, Configuration config) {
-  Stage1::revFlow(node1, config) and
+  Stage1::revFlow(node2, config) and
   additionalLocalFlowStep(node1, node2, config)
 }
 
@@ -804,33 +804,32 @@ private module Stage2 {
     argAp = apNone() and
     ap = getApNil(node)
     or
-    flowCand(node, _, unbind(config)) and
-    (
-      exists(Node mid |
-        fwdFlow(mid, cc, argAp, ap, config) and
-        localFlowStepNodeCand1(mid, node, config)
-      )
-      or
-      exists(Node mid |
-        fwdFlow(mid, cc, argAp, ap, config) and
-        additionalLocalFlowStepNodeCand1(mid, node, config) and
-        ap = false
-      )
-      or
-      exists(Node mid |
-        fwdFlow(mid, _, _, ap, config) and
-        jumpStep(mid, node, config) and
-        cc = ccAny() and
-        argAp = apNone()
-      )
-      or
-      exists(Node mid, ApNil nil |
-        fwdFlow(mid, _, _, nil, config) and
-        additionalJumpStep(mid, node, config) and
-        cc = ccAny() and
-        argAp = apNone() and
-        ap = getApNil(node)
-      )
+    exists(Node mid |
+      fwdFlow(mid, cc, argAp, ap, config) and
+      localFlowStepNodeCand1(mid, node, config)
+    )
+    or
+    exists(Node mid |
+      fwdFlow(mid, cc, argAp, ap, config) and
+      additionalLocalFlowStepNodeCand1(mid, node, config) and
+      ap = false
+    )
+    or
+    exists(Node mid |
+      fwdFlow(mid, _, _, ap, config) and
+      flowCand(node, _, unbind(config)) and
+      jumpStep(mid, node, config) and
+      cc = ccAny() and
+      argAp = apNone()
+    )
+    or
+    exists(Node mid, ApNil nil |
+      fwdFlow(mid, _, _, nil, config) and
+      flowCand(node, _, unbind(config)) and
+      additionalJumpStep(mid, node, config) and
+      cc = ccAny() and
+      argAp = apNone() and
+      ap = getApNil(node)
     )
     or
     // store
