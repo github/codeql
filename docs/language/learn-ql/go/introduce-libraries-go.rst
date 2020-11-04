@@ -502,7 +502,7 @@ taint, you can define a subclass of ``TaintTracking::Configuration``, which work
 data-flow configurations.
 
 A detailed exposition of global data flow and taint tracking is out of scope for this brief
-introduction. For a general overview of data flow and taint tracking, see `About data flow analysis <https://help.semmle.com/QL/learn-ql/intro-to-data-flow.html>`__.
+introduction. For a general overview of data flow and taint tracking, see "`About data flow analysis <https://help.semmle.com/QL/learn-ql/intro-to-data-flow.html>`__."
 
 Advanced libraries
 ------------------

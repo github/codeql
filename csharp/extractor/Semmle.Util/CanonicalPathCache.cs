@@ -40,7 +40,7 @@ namespace Semmle.Util
         /// <returns>A canonical path.</returns>
         protected static string ConstructCanonicalPath(string path, IPathCache cache)
         {
-            DirectoryInfo parent = Directory.GetParent(path);
+            var parent = Directory.GetParent(path);
 
             return parent != null ?
                 Path.Combine(cache.GetCanonicalPath(parent.FullName), Path.GetFileName(path)) :
@@ -52,7 +52,7 @@ namespace Semmle.Util
     /// Determine canonical paths using the Win32 function
     /// GetFinalPathNameByHandle(). Follows symlinks.
     /// </summary>
-    class GetFinalPathNameByHandleStrategy : PathStrategy
+    internal class GetFinalPathNameByHandleStrategy : PathStrategy
     {
         /// <summary>
         /// Call GetFinalPathNameByHandle() to get a canonical filename.
@@ -70,48 +70,45 @@ namespace Semmle.Util
         /// <returns>The canonical path.</returns>
         public override string GetCanonicalPath(string path, IPathCache cache)
         {
-            using (var hFile = Win32.CreateFile(  // lgtm[cs/call-to-unmanaged-code]
+            using var hFile = Win32.CreateFile(  // lgtm[cs/call-to-unmanaged-code]
                 path,
                 0,
                 Win32.FILE_SHARE_READ | Win32.FILE_SHARE_WRITE,
                 IntPtr.Zero,
                 Win32.OPEN_EXISTING,
                 Win32.FILE_FLAG_BACKUP_SEMANTICS,
-                IntPtr.Zero))
+                IntPtr.Zero);
+
+            if (hFile.IsInvalid)
             {
-
-                if (hFile.IsInvalid)
-                {
-                    // File/directory does not exist.
-                    return ConstructCanonicalPath(path, cache);
-                }
-                else
-                {
-                    StringBuilder outPath = new StringBuilder(Win32.MAX_PATH);
-                    int length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
-                    if (length >= outPath.Capacity)
-                    {
-                        // Path length exceeded MAX_PATH.
-                        // Possible if target has a long path.
-                        outPath = new StringBuilder(length + 1);
-                        length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
-                    }
-
-                    const int PREAMBLE = 4; // outPath always starts \\?\
-
-                    if (length <= PREAMBLE)
-                    {
-                        // Failed. GetFinalPathNameByHandle() failed somehow.
-                        return ConstructCanonicalPath(path, cache);
-                    }
-
-                    string result = outPath.ToString(PREAMBLE, length - PREAMBLE);  // Trim off leading \\?\
-
-                    return result.StartsWith("UNC") ?
-                        @"\" + result.Substring(3) :
-                        result;
-                }
+                // File/directory does not exist.
+                return ConstructCanonicalPath(path, cache);
             }
+
+            var outPath = new StringBuilder(Win32.MAX_PATH);
+            var length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
+
+            if (length >= outPath.Capacity)
+            {
+                // Path length exceeded MAX_PATH.
+                // Possible if target has a long path.
+                outPath = new StringBuilder(length + 1);
+                length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
+            }
+
+            const int preamble = 4; // outPath always starts \\?\
+
+            if (length <= preamble)
+            {
+                // Failed. GetFinalPathNameByHandle() failed somehow.
+                return ConstructCanonicalPath(path, cache);
+            }
+
+            var result = outPath.ToString(preamble, length - preamble);  // Trim off leading \\?\
+
+            return result.StartsWith("UNC")
+                ? @"\" + result.Substring(3)
+                : result;
         }
     }
 
@@ -119,35 +116,34 @@ namespace Semmle.Util
     /// Determine file case by querying directory contents.
     /// Preserves symlinks.
     /// </summary>
-    class QueryDirectoryStrategy : PathStrategy
+    internal class QueryDirectoryStrategy : PathStrategy
     {
         public override string GetCanonicalPath(string path, IPathCache cache)
         {
-            DirectoryInfo parent = Directory.GetParent(path);
+            var parent = Directory.GetParent(path);
 
-            if (parent != null)
-            {
-                var name = Path.GetFileName(path);
-                var parentPath = cache.GetCanonicalPath(parent.FullName);
-                try
-                {
-                    string[] entries = Directory.GetFileSystemEntries(parentPath, name);
-                    return entries.Length == 1 ?
-                        entries[0] :
-                        Path.Combine(parentPath, name);
-                }
-                catch  // lgtm[cs/catch-of-all-exceptions]
-                {
-                    // IO error or security error querying directory.
-                    return Path.Combine(parentPath, name);
-                }
-            }
-            else
+            if (parent == null)
             {
                 // We are at a root of the filesystem.
                 // Convert drive letters, UNC paths etc. to uppercase.
                 // On UNIX, this should be "/" or "".
                 return path.ToUpperInvariant();
+
+            }
+
+            var name = Path.GetFileName(path);
+            var parentPath = cache.GetCanonicalPath(parent.FullName);
+            try
+            {
+                var entries = Directory.GetFileSystemEntries(parentPath, name);
+                return entries.Length == 1
+                    ? entries[0]
+                    : Path.Combine(parentPath, name);
+            }
+            catch  // lgtm[cs/catch-of-all-exceptions]
+            {
+                // IO error or security error querying directory.
+                return Path.Combine(parentPath, name);
             }
         }
     }
@@ -156,14 +152,14 @@ namespace Semmle.Util
     /// Uses Mono.Unix.UnixPath to resolve symlinks.
     /// Not available on Windows.
     /// </summary>
-    class PosixSymlinkStrategy : PathStrategy
+    internal class PosixSymlinkStrategy : PathStrategy
     {
         public PosixSymlinkStrategy()
         {
             GetRealPath(".");   // Test that it works
         }
 
-        string GetRealPath(string path)
+        private static string GetRealPath(string path)
         {
             path = UnixPath.GetFullPath(path);
             return UnixPath.GetCompleteRealPath(path);
@@ -192,7 +188,7 @@ namespace Semmle.Util
         /// <summary>
         /// The maximum number of items in the cache.
         /// </summary>
-        readonly int maxCapacity;
+        private readonly int maxCapacity;
 
         /// <summary>
         /// How to handle symlinks.
@@ -206,7 +202,7 @@ namespace Semmle.Util
         /// <summary>
         /// Algorithm for computing the canonical path.
         /// </summary>
-        readonly PathStrategy pathStrategy;
+        private readonly PathStrategy pathStrategy;
 
         /// <summary>
         /// Create cache with a given capacity.
@@ -216,10 +212,33 @@ namespace Semmle.Util
         public CanonicalPathCache(int maxCapacity, PathStrategy pathStrategy)
         {
             if (maxCapacity <= 0)
-                throw new ArgumentOutOfRangeException("Invalid cache size specified");
+                throw new ArgumentOutOfRangeException(nameof(maxCapacity), maxCapacity, "Invalid cache size specified");
 
             this.maxCapacity = maxCapacity;
             this.pathStrategy = pathStrategy;
+        }
+
+
+        /// <summary>
+        /// Create a CanonicalPathCache.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Creates the appropriate PathStrategy object which encapsulates
+        /// the correct algorithm. Falls back to different implementations
+        /// depending on platform.
+        /// </remarks>
+        ///
+        /// <param name="maxCapacity">Size of the cache.</param>
+        /// <param name="symlinks">Policy for following symlinks.</param>
+        /// <returns>A new CanonicalPathCache.</returns>
+        public static CanonicalPathCache Create(ILogger logger, int maxCapacity)
+        {
+            var preserveSymlinks =
+                Environment.GetEnvironmentVariable("CODEQL_PRESERVE_SYMLINKS") == "true" ||
+                Environment.GetEnvironmentVariable("SEMMLE_PRESERVE_SYMLINKS") == "true";
+            return Create(logger, maxCapacity, preserveSymlinks ? CanonicalPathCache.Symlinks.Preserve : CanonicalPathCache.Symlinks.Follow);
+
         }
 
         /// <summary>
@@ -259,7 +278,7 @@ namespace Semmle.Util
                     pathStrategy = new QueryDirectoryStrategy();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("Invalid symlinks option");
+                    throw new ArgumentOutOfRangeException(nameof(symlinks), symlinks, "Invalid symlinks option");
             }
 
             return new CanonicalPathCache(maxCapacity, pathStrategy);
@@ -268,12 +287,12 @@ namespace Semmle.Util
         /// <summary>
         /// Map of path to canonical path.
         /// </summary>
-        readonly IDictionary<string, string> cache = new Dictionary<string, string>();
+        private readonly IDictionary<string, string> cache = new Dictionary<string, string>();
 
         /// <summary>
         /// Used to evict random cache items when the cache is full.
         /// </summary>
-        readonly Random random = new Random();
+        private readonly Random random = new Random();
 
         /// <summary>
         /// The current number of items in the cache.
@@ -293,7 +312,7 @@ namespace Semmle.Util
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="canonical">The canonical form of path.</param>
-        void AddToCache(string path, string canonical)
+        private void AddToCache(string path, string canonical)
         {
             if (cache.Count >= maxCapacity)
             {

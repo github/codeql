@@ -8,7 +8,7 @@ import cpp
 from DoStmt ds, ExprStmt last, Expr succ
 where
   ds.getEnclosingFunction().hasName("normal") and
-  last = ds.getStmt().(Block).getLastStmt() and
+  last = ds.getStmt().(BlockStmt).getLastStmt() and
   succ = last.getExpr().getASuccessor() and
   succ = ds.getCondition().getAChild*() and
   count(last.getExpr().getASuccessor()) = 1

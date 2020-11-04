@@ -31,8 +31,7 @@ while ``hasCapital`` is the set of two-tuples ``{("Belgium","Brussels"),("German
 The `arity <https://en.wikipedia.org/wiki/Arity>`_ of these predicates is one and two, respectively.
 
 In general, all tuples in a predicate have the same number of elements. The **arity** of 
-a predicate is that number of elements, not including a possible ``result`` variable (see 
-:ref:`predicates-with-result`).
+a predicate is that number of elements, not including a possible ``result`` variable. For more information, see ":ref:`predicates-with-result`."
 
 There are a number of `built-in predicates <https://help.semmle.com/QL/ql-spec/language.html#built-ins>`_ 
 in QL. You can use these in any queries without needing to :ref:`import <importing-modules>`
@@ -147,7 +146,7 @@ predicate recursively, as shown below::
 
 Now ``getANeighbor("Belgium")`` also returns results, namely ``"France"`` and ``"Germany"``.
 
-For a more general discussion of recursive predicates and queries, see :ref:`recursion`.
+For a more general discussion of recursive predicates and queries, see ":ref:`recursion`."
 
 Kinds of predicates
 *******************
@@ -161,7 +160,7 @@ Non-member predicates are defined outside a class, that is, they are not members
 
 For more information about the other kinds of predicates, see :ref:`characteristic predicates
 <characteristic-predicates>` and :ref:`member predicates <member-predicates>` in the 
-:ref:`Classes <classes>` topic.
+":ref:`Classes <classes>`" topic.
 
 Here is an example showing a predicate of each kind::
 
@@ -198,7 +197,7 @@ It must be possible to evaluate a predicate in a finite amount of time, so the s
 is not usually allowed to be infinite. In other words, a predicate can only contain a finite number of tuples.
 
 The QL compiler reports an error when it can prove that a predicate contains variables that
-aren't constrained to a finite number of values. See :ref:`binding` for more information.
+aren't constrained to a finite number of values. For more information, see ":ref:`binding`."
 
 Here are a few examples of infinite predicates::
 

@@ -1,0 +1,190 @@
+routeHandler
+| src/RouterExample.js:4:65:10:1 | (req, r ... ;\\n  }\\n} |
+| src/app-in-property.js:6:13:6:32 | function(req, res){} |
+| src/app-in-property.js:14:21:14:40 | function(req, res){} |
+| src/bound-handler.js:4:1:4:28 | functio ...  res){} |
+| src/bound-handler.js:9:12:9:31 | function(req, res){} |
+| src/connect.js:5:9:5:27 | function(req,res){} |
+| src/connect.js:8:12:8:31 | function(req, res){} |
+| src/connect.js:12:9:12:27 | function(req,res){} |
+| src/connect.js:13:10:13:28 | function(req,res){} |
+| src/connect.js:14:10:14:28 | function(req,res){} |
+| src/constructed-handler.js:5:12:5:32 | functio ... res) {} |
+| src/exported-getter.js:2:12:2:31 | function(req, res){} |
+| src/exported-handler.js:1:19:1:55 | functio ... res) {} |
+| src/exported-middleware-attacher-2.js:2:13:2:32 | function(req, res){} |
+| src/exported-middleware-attacher.js:2:13:2:32 | function(req, res){} |
+| src/handler-in-property.js:5:14:5:33 | function(req, res){} |
+| src/handler-in-property.js:12:18:12:37 | function(req, res){} |
+| src/middleware-attacher-getter.js:4:17:4:36 | function(req, res){} |
+| src/middleware-attacher-getter.js:19:19:19:38 | function(req, res){} |
+| src/middleware-attacher-getter.js:29:32:29:51 | function(req, res){} |
+| src/middleware-attacher.js:3:13:3:32 | function(req, res){} |
+| src/nodejs.js:3:19:3:38 | function(req, res){} |
+| src/nodejs.js:8:14:8:33 | function(req, res){} |
+| src/nodejs.js:10:35:10:54 | function(req, res){} |
+| src/nodejs.js:15:12:15:31 | function(req, res){} |
+| src/returned-handler.js:5:12:5:32 | functio ... res) {} |
+| src/tst.js:4:23:4:43 | functio ... res) {} |
+| src/tst.js:74:5:76:5 | functio ... \\n\\n    } |
+| src/tst.js:91:5:93:5 | functio ... \\n\\n    } |
+| src/tst.js:116:16:118:9 | functio ...       } |
+| src/tst.js:142:16:144:9 | functio ...       } |
+routeHandlerCandidate
+| src/RouterExample.js:4:65:10:1 | (req, r ... ;\\n  }\\n} |
+| src/app-in-property.js:6:13:6:32 | function(req, res){} |
+| src/app-in-property.js:14:21:14:40 | function(req, res){} |
+| src/bound-handler.js:4:1:4:28 | functio ...  res){} |
+| src/bound-handler.js:9:12:9:31 | function(req, res){} |
+| src/connect.js:5:9:5:27 | function(req,res){} |
+| src/connect.js:8:12:8:31 | function(req, res){} |
+| src/connect.js:12:9:12:27 | function(req,res){} |
+| src/connect.js:13:10:13:28 | function(req,res){} |
+| src/connect.js:14:10:14:28 | function(req,res){} |
+| src/constructed-handler.js:5:12:5:32 | functio ... res) {} |
+| src/exported-getter.js:2:12:2:31 | function(req, res){} |
+| src/exported-handler.js:1:19:1:55 | functio ... res) {} |
+| src/exported-middleware-attacher-2.js:2:13:2:32 | function(req, res){} |
+| src/exported-middleware-attacher.js:2:13:2:32 | function(req, res){} |
+| src/handler-in-property.js:5:14:5:33 | function(req, res){} |
+| src/handler-in-property.js:12:18:12:37 | function(req, res){} |
+| src/hapi.js:1:1:1:30 | functio ... t, h){} |
+| src/iterated-handlers.js:4:2:4:22 | functio ...  res){} |
+| src/middleware-attacher-getter.js:4:17:4:36 | function(req, res){} |
+| src/middleware-attacher-getter.js:19:19:19:38 | function(req, res){} |
+| src/middleware-attacher-getter.js:29:32:29:51 | function(req, res){} |
+| src/middleware-attacher.js:3:13:3:32 | function(req, res){} |
+| src/nodejs.js:3:19:3:38 | function(req, res){} |
+| src/nodejs.js:5:22:5:41 | function(req, res){} |
+| src/nodejs.js:8:14:8:33 | function(req, res){} |
+| src/nodejs.js:10:35:10:54 | function(req, res){} |
+| src/nodejs.js:11:23:11:42 | function(req, res){} |
+| src/nodejs.js:12:25:12:44 | function(req, res){} |
+| src/nodejs.js:15:12:15:31 | function(req, res){} |
+| src/returned-handler.js:5:12:5:32 | functio ... res) {} |
+| src/route-objects.js:7:19:7:38 | function(req, res){} |
+| src/route-objects.js:8:12:10:5 | (req, res) {\\n\\n    } |
+| src/route-objects.js:20:16:22:9 | (req, r ...       } |
+| src/route-objects.js:27:16:29:9 | (req, r ...       } |
+| src/route-objects.js:40:12:42:5 | (req, res) {\\n\\n    } |
+| src/route-objects.js:50:12:52:5 | (req, res) {\\n\\n    } |
+| src/route-objects.js:56:12:58:5 | functio ... ;\\n    } |
+| src/tst.js:4:23:4:43 | functio ... res) {} |
+| src/tst.js:6:32:6:52 | functio ... res) {} |
+| src/tst.js:8:32:8:61 | functio ... nse) {} |
+| src/tst.js:30:36:30:56 | functio ... res) {} |
+| src/tst.js:33:18:33:38 | functio ... res) {} |
+| src/tst.js:34:18:34:38 | functio ... res) {} |
+| src/tst.js:37:5:37:25 | functio ... res) {} |
+| src/tst.js:38:5:38:25 | functio ... res) {} |
+| src/tst.js:43:18:43:38 | functio ... res) {} |
+| src/tst.js:46:1:46:23 | functio ... res) {} |
+| src/tst.js:52:1:54:1 | functio ... req()\\n} |
+| src/tst.js:56:1:58:1 | functio ... s) {\\n\\n} |
+| src/tst.js:61:1:63:1 | functio ... turn;\\n} |
+| src/tst.js:65:1:67:1 | functio ... rn x;\\n} |
+| src/tst.js:70:5:72:5 | functio ... \\n\\n    } |
+| src/tst.js:74:5:76:5 | functio ... \\n\\n    } |
+| src/tst.js:79:5:81:5 | functio ... \\n\\n    } |
+| src/tst.js:84:5:86:5 | functio ... \\n\\n    } |
+| src/tst.js:91:5:93:5 | functio ... \\n\\n    } |
+| src/tst.js:109:16:111:9 | functio ...       } |
+| src/tst.js:116:16:118:9 | functio ...       } |
+| src/tst.js:124:16:126:9 | functio ...       } |
+| src/tst.js:132:16:134:9 | functio ...       } |
+| src/tst.js:142:16:144:9 | functio ...       } |
+routeSetup
+| src/RouterExample.js:4:1:10:2 | authRou ... \\n  }\\n}) |
+| src/app-in-property.js:6:1:6:33 | obj.app ... res){}) |
+| src/app-in-property.js:14:1:14:41 | getConf ... res){}) |
+| src/bound-handler.js:6:1:6:21 | app.use ... andler) |
+| src/bound-handler.js:12:1:12:21 | app.use ... andler) |
+| src/connect.js:5:1:5:28 | app.use ... res){}) |
+| src/connect.js:10:1:10:21 | app.use ... dler()) |
+| src/connect.js:12:1:12:28 | app.use ... res){}) |
+| src/connect.js:12:1:13:29 | app.use ... res){}) |
+| src/connect.js:12:1:14:29 | app.use ... res){}) |
+| src/constructed-handler.js:9:1:9:16 | app.use(handler) |
+| src/exported-middleware-attacher-2.js:2:5:2:33 | app.use ... res){}) |
+| src/exported-middleware-attacher.js:2:5:2:33 | app.use ... res){}) |
+| src/handler-in-property.js:7:1:7:23 | app.use ... andler) |
+| src/handler-in-property.js:15:1:15:28 | app.use ... andler) |
+| src/imported-getter.js:6:1:6:16 | app.use(handler) |
+| src/imported-handler.js:5:1:5:24 | app.use ... andler) |
+| src/iterated-handlers.js:5:5:5:14 | app.use(h) |
+| src/middleware-attacher-getter.js:4:9:4:37 | app.use ... res){}) |
+| src/middleware-attacher-getter.js:14:9:14:18 | app.use(h) |
+| src/middleware-attacher-getter.js:24:9:24:18 | app.use(h) |
+| src/middleware-attacher.js:3:5:3:33 | app.use ... res){}) |
+| src/nodejs.js:3:1:3:39 | http.cr ... res){}) |
+| src/nodejs.js:8:1:8:34 | createS ... res){}) |
+| src/nodejs.js:10:1:10:55 | http.cr ... res){}) |
+| src/nodejs.js:17:1:17:31 | http.cr ... dler()) |
+| src/returned-handler.js:9:1:9:16 | app.use(handler) |
+| src/tst.js:4:1:4:44 | app.get ... es) {}) |
+| src/tst.js:77:5:77:41 | app.get ... oSetup) |
+| src/tst.js:82:5:82:48 | app.get ... Array]) |
+| src/tst.js:94:5:94:29 | app.get ... h', rh) |
+| src/tst.js:121:5:121:41 | app.get ... oSetup) |
+| src/tst.js:129:5:129:48 | app.get ... Array]) |
+| src/tst.js:147:5:147:29 | app.get ... h', rh) |
+routeSetupCandidate
+| src/RouterExample.js:4:1:10:2 | authRou ... \\n  }\\n}) |
+| src/app-in-property.js:6:1:6:33 | obj.app ... res){}) |
+| src/app-in-property.js:14:1:14:41 | getConf ... res){}) |
+| src/bound-handler.js:6:1:6:21 | app.use ... andler) |
+| src/bound-handler.js:12:1:12:21 | app.use ... andler) |
+| src/connect.js:5:1:5:28 | app.use ... res){}) |
+| src/connect.js:10:1:10:21 | app.use ... dler()) |
+| src/connect.js:12:1:12:28 | app.use ... res){}) |
+| src/connect.js:12:1:13:29 | app.use ... res){}) |
+| src/connect.js:12:1:14:29 | app.use ... res){}) |
+| src/constructed-handler.js:9:1:9:16 | app.use(handler) |
+| src/exported-middleware-attacher-2.js:2:5:2:33 | app.use ... res){}) |
+| src/exported-middleware-attacher.js:2:5:2:33 | app.use ... res){}) |
+| src/handler-in-property.js:7:1:7:23 | app.use ... andler) |
+| src/handler-in-property.js:15:1:15:28 | app.use ... andler) |
+| src/imported-getter.js:6:1:6:16 | app.use(handler) |
+| src/imported-handler.js:5:1:5:24 | app.use ... andler) |
+| src/iterated-handlers.js:5:5:5:14 | app.use(h) |
+| src/middleware-attacher-getter.js:4:9:4:37 | app.use ... res){}) |
+| src/middleware-attacher-getter.js:14:9:14:18 | app.use(h) |
+| src/middleware-attacher-getter.js:24:9:24:18 | app.use(h) |
+| src/middleware-attacher.js:3:5:3:33 | app.use ... res){}) |
+| src/nodejs.js:3:1:3:39 | http.cr ... res){}) |
+| src/nodejs.js:5:1:5:42 | unknown ... res){}) |
+| src/nodejs.js:10:1:10:55 | http.cr ... res){}) |
+| src/nodejs.js:11:1:11:43 | unknown ... res){}) |
+| src/nodejs.js:12:1:12:45 | unknown ... res){}) |
+| src/nodejs.js:17:1:17:31 | http.cr ... dler()) |
+| src/returned-handler.js:9:1:9:16 | app.use(handler) |
+| src/tst.js:4:1:4:44 | app.get ... es) {}) |
+| src/tst.js:6:1:6:53 | someOth ... es) {}) |
+| src/tst.js:8:1:8:62 | someOth ... se) {}) |
+| src/tst.js:10:1:12:2 | someOth ... ts()\\n}) |
+| src/tst.js:14:1:16:2 | someOth ... ocol\\n}) |
+| src/tst.js:18:1:20:2 | someOth ... nt()\\n}) |
+| src/tst.js:22:1:24:2 | someOth ... Sent\\n}) |
+| src/tst.js:26:1:28:2 | someOth ... te')\\n}) |
+| src/tst.js:30:1:30:57 | someOth ... es) {}) |
+| src/tst.js:32:1:34:39 | someOth ... es) {}) |
+| src/tst.js:36:1:39:2 | someOth ... ) {}\\n]) |
+| src/tst.js:41:1:43:39 | someOth ... es) {}) |
+| src/tst.js:77:5:77:41 | app.get ... oSetup) |
+| src/tst.js:82:5:82:48 | app.get ... Array]) |
+| src/tst.js:87:5:87:57 | unknown ... cSetup) |
+| src/tst.js:94:5:94:29 | app.get ... h', rh) |
+| src/tst.js:96:5:96:36 | unknown ... h', rh) |
+| src/tst.js:98:5:98:38 | unknown ... , [rh]) |
+| src/tst.js:100:5:100:41 | unknown ... nknown) |
+| src/tst.js:102:5:102:43 | unknown ... known]) |
+| src/tst.js:104:5:104:45 | unknown ... wn, rh) |
+| src/tst.js:121:5:121:41 | app.get ... oSetup) |
+| src/tst.js:129:5:129:48 | app.get ... Array]) |
+| src/tst.js:137:5:137:57 | unknown ... cSetup) |
+| src/tst.js:147:5:147:29 | app.get ... h', rh) |
+| src/tst.js:149:5:149:36 | unknown ... h', rh) |
+| src/tst.js:151:5:151:38 | unknown ... , [rh]) |
+| src/tst.js:153:5:153:41 | unknown ... nknown) |
+| src/tst.js:155:5:155:43 | unknown ... known]) |
+| src/tst.js:157:5:157:45 | unknown ... wn, rh) |

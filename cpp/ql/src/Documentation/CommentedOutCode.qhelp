@@ -3,5 +3,5 @@
   "qhelp.dtd">
 <qhelp>
   <include src="CommentedOutCodeQuery.qhelp" />
-  <include src="CommentedOutCodeReferences.qhelp" />
+  <include src="../Metrics/Files/CommentedOutCodeReferences.qhelp" />
 </qhelp>

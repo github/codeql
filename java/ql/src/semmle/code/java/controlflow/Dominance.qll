@@ -14,7 +14,7 @@ private predicate flowEntry(Stmt entry) {
   exists(Callable c | entry = c.getBody())
   or
   // This disjunct is technically superfluous, but safeguards against extractor problems.
-  entry instanceof Block and
+  entry instanceof BlockStmt and
   not exists(entry.getEnclosingCallable()) and
   not entry.getParent() instanceof Stmt
 }

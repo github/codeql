@@ -1,5 +1,3 @@
-using Semmle.Extraction.Entities;
-using System;
 using System.IO;
 
 namespace Semmle.Extraction
@@ -9,9 +7,9 @@ namespace Semmle.Extraction
     /// </summary>
     public abstract class FreshEntity : IEntity
     {
-        protected readonly Context cx;
+        protected Context cx { get; }
 
-        public FreshEntity(Context cx)
+        protected FreshEntity(Context cx)
         {
             this.cx = cx;
             cx.AddFreshLabel(this);
@@ -46,11 +44,9 @@ namespace Semmle.Extraction
         {
             get
             {
-                using (var writer = new StringWriter())
-                {
-                    Populate(writer);
-                    return writer.ToString();
-                }
+                using var writer = new StringWriter();
+                Populate(writer);
+                return writer.ToString();
             }
         }
 

@@ -3,9 +3,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    sealed class Namespace : CachedEntity<INamespaceSymbol>
+    internal sealed class Namespace : CachedEntity<INamespaceSymbol>
     {
-        Namespace(Context cx, INamespaceSymbol init)
+        private Namespace(Context cx, INamespaceSymbol init)
             : base(cx, init) { }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (symbol.ContainingNamespace != null)
             {
-                Namespace parent = Create(Context, symbol.ContainingNamespace);
+                var parent = Create(Context, symbol.ContainingNamespace);
                 trapFile.parent_namespace(this, parent);
             }
         }
@@ -34,11 +34,11 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";namespace");
         }
 
-        public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntity2(cx, ns);
+        public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntityFromSymbol(cx, ns);
 
-        class NamespaceFactory : ICachedEntityFactory<INamespaceSymbol, Namespace>
+        private class NamespaceFactory : ICachedEntityFactory<INamespaceSymbol, Namespace>
         {
-            public static readonly NamespaceFactory Instance = new NamespaceFactory();
+            public static NamespaceFactory Instance { get; } = new NamespaceFactory();
 
             public Namespace Create(Context cx, INamespaceSymbol init) => new Namespace(cx, init);
         }
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override int GetHashCode() => QualifiedName.GetHashCode();
 
-        string QualifiedName => symbol.ToDisplayString();
+        private string QualifiedName => symbol.ToDisplayString();
 
         public override bool Equals(object obj)
         {

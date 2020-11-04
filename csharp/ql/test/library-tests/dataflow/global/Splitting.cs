@@ -33,4 +33,22 @@ class Splitting
         if (b)
             Check(x);
     }
+
+    void M3(bool b)
+    {
+        var s = b ? "taint source" : "not tainted";
+        if (b)
+            Check(s); // flow
+        else
+            Check(s); // no flow [FALSE POSITIVE]
+    }
+
+    void M4(bool b)
+    {
+        var s = b switch { true => "taint source", false => "not tainted" };
+        if (b)
+            Check(s); // flow
+        else
+            Check(s); // no flow [FALSE POSITIVE]
+    }
 }

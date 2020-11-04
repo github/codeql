@@ -75,7 +75,7 @@ DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
   exists(DataFlow::MethodCallNode stringop |
     stringop.getMethodName().matches("trim%") or
     stringop.getMethodName().matches("to%Case") or
-    stringop.getMethodName() = "replace"
+    stringop.getMethodName() = ["replace", "replaceAll"]
   |
     result = schemeCheck(stringop, scheme) and
     nd = stringop.getReceiver()

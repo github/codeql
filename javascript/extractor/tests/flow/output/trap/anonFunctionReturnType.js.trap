@@ -102,19 +102,19 @@ variables(#20036,"f",#20000)
 #20037=*
 stmts(#20037,18,#20001,0,"var f = ...  => {};")
 hasLocation(#20037,#20003)
-stmtContainers(#20037,#20001)
+stmt_containers(#20037,#20001)
 #20038=*
 exprs(#20038,64,#20037,0,"f = (vi ... n => {}")
 #20039=@"loc,{#10000},1,5,1,47"
 locations_default(#20039,#10000,1,5,1,47)
 hasLocation(#20038,#20039)
-enclosingStmt(#20038,#20037)
-exprContainers(#20038,#20001)
+enclosing_stmt(#20038,#20037)
+expr_containers(#20038,#20001)
 #20040=*
 exprs(#20040,78,#20038,0,"f")
 hasLocation(#20040,#20007)
-enclosingStmt(#20040,#20037)
-exprContainers(#20040,#20001)
+enclosing_stmt(#20040,#20037)
+expr_containers(#20040,#20001)
 literals("f","f",#20040)
 decl(#20040,#20036)
 #20041=*
@@ -122,8 +122,8 @@ exprs(#20041,65,#20038,1,"(viewab ... n => {}")
 #20042=@"loc,{#10000},1,9,1,47"
 locations_default(#20042,#10000,1,9,1,47)
 hasLocation(#20041,#20042)
-enclosingStmt(#20041,#20037)
-exprContainers(#20041,#20001)
+enclosing_stmt(#20041,#20037)
+expr_containers(#20041,#20001)
 #20043=*
 scopes(#20043,1)
 scopenodes(#20041,#20043)
@@ -133,7 +133,7 @@ variables(#20044,"viewable",#20043)
 #20045=*
 exprs(#20045,78,#20041,0,"viewable")
 hasLocation(#20045,#20013)
-exprContainers(#20045,#20041)
+expr_containers(#20045,#20041)
 literals("viewable","viewable",#20045)
 decl(#20045,#20044)
 #20046=*
@@ -141,7 +141,7 @@ stmts(#20046,1,#20041,-2,"{}")
 #20047=@"loc,{#10000},1,46,1,47"
 locations_default(#20047,#10000,1,46,1,47)
 hasLocation(#20046,#20047)
-stmtContainers(#20046,#20041)
+stmt_containers(#20046,#20041)
 #20048=*
 entry_cfg_node(#20048,#20001)
 #20049=@"loc,{#10000},1,1,1,0"

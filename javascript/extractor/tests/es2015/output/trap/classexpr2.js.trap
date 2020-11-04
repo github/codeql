@@ -50,19 +50,19 @@ hasLocation(#20001,#20003)
 #20016=*
 stmts(#20016,2,#20001,0,"(class       {})")
 hasLocation(#20016,#20003)
-stmtContainers(#20016,#20001)
+stmt_containers(#20016,#20001)
 #20017=*
 exprs(#20017,63,#20016,0,"(class       {})")
 hasLocation(#20017,#20003)
-enclosingStmt(#20017,#20016)
-exprContainers(#20017,#20001)
+enclosing_stmt(#20017,#20016)
+expr_containers(#20017,#20001)
 #20018=*
 exprs(#20018,80,#20017,0,"class       {}")
 #20019=@"loc,{#10000},1,2,1,15"
 locations_default(#20019,#10000,1,2,1,15)
 hasLocation(#20018,#20019)
-enclosingStmt(#20018,#20016)
-exprContainers(#20018,#20001)
+enclosing_stmt(#20018,#20016)
+expr_containers(#20018,#20001)
 #20020=*
 properties(#20020,#20018,2,0,"constructor() {}")
 #20021=@"loc,{#10000},1,14,1,13"
@@ -71,26 +71,26 @@ hasLocation(#20020,#20021)
 #20022=*
 exprs(#20022,0,#20020,0,"constructor")
 hasLocation(#20022,#20021)
-enclosingStmt(#20022,#20016)
-exprContainers(#20022,#20001)
+enclosing_stmt(#20022,#20016)
+expr_containers(#20022,#20001)
 literals("constructor","constructor",#20022)
 #20023=*
 exprs(#20023,9,#20020,1,"() {}")
 hasLocation(#20023,#20021)
-enclosingStmt(#20023,#20016)
-exprContainers(#20023,#20001)
+enclosing_stmt(#20023,#20016)
+expr_containers(#20023,#20001)
 #20024=*
 scopes(#20024,1)
 scopenodes(#20023,#20024)
 scopenesting(#20024,#20000)
 #20025=@"var;{arguments};{#20024}"
 variables(#20025,"arguments",#20024)
-isArgumentsObject(#20025)
+is_arguments_object(#20025)
 #20026=*
 stmts(#20026,1,#20023,-2,"{}")
 hasLocation(#20026,#20021)
-stmtContainers(#20026,#20023)
-isMethod(#20020)
+stmt_containers(#20026,#20023)
+is_method(#20020)
 #20027=*
 entry_cfg_node(#20027,#20001)
 #20028=@"loc,{#10000},1,1,1,0"

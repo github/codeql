@@ -27,7 +27,7 @@ then removing it will make code more readable. If the static variable is needed 
   <a href="https://www.securecoding.cert.org/confluence/display/c/MSC12-C.+Detect+and+remove+code+that+has+no+effect+or+is+never+executed">Detect and remove code that has no effect</a>
 </li>
 <li>
-  <a href="https://www.securecoding.cert.org/confluence/display/cplusplus/DCL07-CPP.+Minimize+the+scope+of+variables+and+methods">Minimize the scope of variables and methods</a>
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/DCL19-C.+Minimize+the+scope+of+variables+and+functions">Minimize the scope of variables and functions</a>
 </li>
 
 

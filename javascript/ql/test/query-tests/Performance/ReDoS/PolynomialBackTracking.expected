@@ -17,6 +17,7 @@
 | polynomial-redos.js:31:42:31:43 | -+ | it can start matching anywhere |
 | polynomial-redos.js:32:45:32:47 | \\n* | it can start matching anywhere |
 | polynomial-redos.js:33:17:33:20 | (.)* | it can start matching anywhere |
+| polynomial-redos.js:48:22:48:24 | \\s* | it can start matching anywhere |
 | regexplib/address.js:18:26:18:31 | [ \\w]* | it can start matching anywhere after the start of the preceeding '[ \\w]{3,}' |
 | regexplib/address.js:20:144:20:147 | [ ]+ | it can start matching anywhere after the start of the preceeding '[a-zA-Z0-9 \\-.]{6,}' |
 | regexplib/address.js:24:26:24:31 | [ \\w]* | it can start matching anywhere after the start of the preceeding '[ \\w]{3,}' |

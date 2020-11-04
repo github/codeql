@@ -1172,3 +1172,15 @@ class SimpleXMLFormatterCall extends XmlParserCall {
 
   override predicate isSafe() { none() }
 }
+
+/** A configuration for secure processing. */
+Expr configSecureProcessing() {
+  result.(ConstantStringExpr).getStringValue() =
+    "http://javax.xml.XMLConstants/feature/secure-processing"
+  or
+  exists(Field f |
+    result = f.getAnAccess() and
+    f.hasName("FEATURE_SECURE_PROCESSING") and
+    f.getDeclaringType() instanceof XmlConstants
+  )
+}

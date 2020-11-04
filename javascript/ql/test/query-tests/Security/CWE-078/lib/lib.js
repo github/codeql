@@ -320,3 +320,22 @@ module.exports.typeofcheck = function (name) {
 		cp.exec("rm -rf " + name); // NOT OK
 	}
 }
+
+module.exports.typeofcheck = function (arg) {
+	var cmd = "MyWindowCommand | findstr /i /c:" + arg; // NOT OK
+	cp.exec(cmd); 
+}
+
+function id(x) {
+	return x;
+}
+
+module.exports.id = id;
+
+module.exports.unproblematic = function() {
+	cp.exec("rm -rf " + id("test")); // OK
+};
+
+module.exports.problematic = function(n) {
+	cp.exec("rm -rf " + id(n)); // NOT OK
+};

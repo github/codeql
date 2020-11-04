@@ -737,6 +737,9 @@ class SsaRefinementNode extends SsaPseudoDefinition, TRefinement {
 }
 
 module SSA {
+  /** Gets the SSA definition corresponding to the implicit initialization of `v`. */
+  SsaImplicitInit implicitInit(SsaSourceVariable v) { result.getSourceVariable() = v }
+
   /** Gets the SSA definition corresponding to `d`. */
   SsaExplicitDefinition definition(VarDef d) { result.getDef() = d }
 

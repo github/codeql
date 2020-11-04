@@ -161,7 +161,8 @@ public class CustomParser extends FlowParser {
     } else if (options.v8Extensions() && this.type == TokenType.modulo) {
       // parse V8 native
       this.next();
-      Identifier name = this.parseIdent(true);
+      Identifier buildinName = this.parseIdent(true);
+      Identifier name = this.finishNode(new Identifier(new SourceLocation(startLoc), "%" + buildinName.getName()));
       this.expect(TokenType.parenL);
       List<Expression> args = this.parseExprList(TokenType.parenR, false, false, null);
       CallExpression node =

@@ -422,6 +422,7 @@ callableFlow
 | System.IO.TextReader.Read(Span<Char>) | qualifier -> return | false |
 | System.IO.TextReader.ReadAsync(Char[], int, int) | qualifier -> return | false |
 | System.IO.TextReader.ReadAsync(Memory<Char>, CancellationToken) | qualifier -> return | false |
+| System.IO.TextReader.ReadAsyncInternal(Memory<Char>, CancellationToken) | qualifier -> return | false |
 | System.IO.TextReader.ReadBlock(Char[], int, int) | qualifier -> return | false |
 | System.IO.TextReader.ReadBlock(Span<Char>) | qualifier -> return | false |
 | System.IO.TextReader.ReadBlockAsync(Char[], int, int) | qualifier -> return | false |
@@ -442,6 +443,7 @@ callableFlow
 | System.Int32.TryParse(string, NumberStyles, IFormatProvider, out int) | argument 0 -> return | false |
 | System.Int32.TryParse(string, out int) | argument 0 -> argument 1 | false |
 | System.Int32.TryParse(string, out int) | argument 0 -> return | false |
+| System.Lazy<>.get_Value() | qualifier -> return | false |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | argument 1 -> parameter 0 of argument 2 | true |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | output from argument 2 -> parameter 0 of argument 3 | true |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | output from argument 3 -> return | true |
@@ -493,6 +495,8 @@ callableFlow
 | System.Net.WebUtility.HtmlEncode(string) | argument 0 -> return | false |
 | System.Net.WebUtility.HtmlEncode(string, TextWriter) | argument 0 -> return | false |
 | System.Net.WebUtility.UrlEncode(string) | argument 0 -> return | false |
+| System.Nullable<>.GetValueOrDefault(T) | argument 0 -> return | true |
+| System.Nullable<>.get_Value() | qualifier -> return | false |
 | System.Security.Cryptography.CryptoStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
 | System.Security.Cryptography.CryptoStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
 | System.Security.Cryptography.CryptoStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
@@ -589,6 +593,7 @@ callableFlow
 | System.String.TrimStart(params Char[]) | qualifier -> return | false |
 | System.Text.Encoding.GetBytes(ReadOnlySpan<Char>, Span<Byte>) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(char*, int, byte*, int) | argument 0 -> return | false |
+| System.Text.Encoding.GetBytes(char*, int, byte*, int, EncoderNLS) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(string) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(string, int, int) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(string, int, int, Byte[], int) | argument 0 -> return | false |
@@ -598,25 +603,10 @@ callableFlow
 | System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
 | System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskContinuationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, TaskContinuationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.FromResult<TResult>(TResult) | argument 0 -> return | true |
-| System.Threading.Tasks.Task.Run<TResult>(Func<TResult>) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.Run<TResult>(Func<TResult>, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.Run<TResult>(Func<Task<TResult>>) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task.Run<TResult>(Func<Task<TResult>>, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task.Task(Action<Object>, object) | argument 1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task.Task(Action<Object>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task.Task(Action<Object>, object, CancellationToken, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
@@ -637,127 +627,61 @@ callableFlow
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskContinuationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskContinuationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, TaskCreationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.Task(Func<TResult>) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.Task(Func<TResult>, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.Task(Func<TResult>, CancellationToken, TaskCreationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.Task(Func<TResult>, TaskCreationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.get_Result() | qualifier -> return | true |
+| System.Threading.Tasks.Task<>.get_Result() | qualifier -> return | false |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task>) | argument 0 -> parameter 0 of argument 1 | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>, CancellationToken) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task<TAntecedentResult>>) | argument 0 -> parameter 0 of argument 1 | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task<TAntecedentResult>>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task<TAntecedentResult>>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Action<Task<TAntecedentResult>>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>, CancellationToken) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory.StartNew(Action<Object>, object) | argument 1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.TaskFactory.StartNew(Action<Object>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.TaskFactory.StartNew(Action<Object>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | argument 1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.TaskFactory.StartNew(Action<Object>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, TaskCreationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>, TaskCreationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>, CancellationToken) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>, CancellationToken) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, TaskContinuationOptions) | argument 0 -> parameter 0 of argument 1 | true |
-| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, TaskContinuationOptions) | output from argument 1 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, CancellationToken) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 -> return | true |
 | System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, TaskCreationOptions) | argument 1 -> parameter 0 of argument 0 | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, TaskCreationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, TaskCreationOptions) | output from argument 0 -> return | true |
 | System.Uri.ToString() | qualifier -> return | false |
 | System.Uri.Uri(string) | argument 0 -> return | false |
 | System.Uri.Uri(string, UriKind) | argument 0 -> return | false |
@@ -774,6 +698,98 @@ callableFlow
 | System.Web.HttpUtility.UrlEncode(string) | argument 0 -> return | false |
 | System.Web.UI.WebControls.TextBox.get_Text() | qualifier -> return | false |
 callableFlowAccessPath
+| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 0 [<empty>] -> return [Item1] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 1 [<empty>] -> return [Item2] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 2 [<empty>] -> return [Item3] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 3 [<empty>] -> return [Item4] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 4 [<empty>] -> return [Item5] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 5 [<empty>] -> return [Item6] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 6 [<empty>] -> return [Item7] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 7 [<empty>] -> return [Item8] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 0 [<empty>] -> return [Item1] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 1 [<empty>] -> return [Item2] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 2 [<empty>] -> return [Item3] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 3 [<empty>] -> return [Item4] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 4 [<empty>] -> return [Item5] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 5 [<empty>] -> return [Item6] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 6 [<empty>] -> return [Item7] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 0 [<empty>] -> return [Item1] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 1 [<empty>] -> return [Item2] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 2 [<empty>] -> return [Item3] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 3 [<empty>] -> return [Item4] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 4 [<empty>] -> return [Item5] | true |
+| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 5 [<empty>] -> return [Item6] | true |
+| System.().Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 0 [<empty>] -> return [Item1] | true |
+| System.().Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 1 [<empty>] -> return [Item2] | true |
+| System.().Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 2 [<empty>] -> return [Item3] | true |
+| System.().Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 3 [<empty>] -> return [Item4] | true |
+| System.().Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 4 [<empty>] -> return [Item5] | true |
+| System.().Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 0 [<empty>] -> return [Item1] | true |
+| System.().Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 1 [<empty>] -> return [Item2] | true |
+| System.().Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 2 [<empty>] -> return [Item3] | true |
+| System.().Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 3 [<empty>] -> return [Item4] | true |
+| System.().Create<T1, T2, T3>(T1, T2, T3) | argument 0 [<empty>] -> return [Item1] | true |
+| System.().Create<T1, T2, T3>(T1, T2, T3) | argument 1 [<empty>] -> return [Item2] | true |
+| System.().Create<T1, T2, T3>(T1, T2, T3) | argument 2 [<empty>] -> return [Item3] | true |
+| System.().Create<T1, T2>(T1, T2) | argument 0 [<empty>] -> return [Item1] | true |
+| System.().Create<T1, T2>(T1, T2) | argument 1 [<empty>] -> return [Item2] | true |
+| System.().Create<T1>(T1) | argument 0 [<empty>] -> return [Item1] | true |
+| System.(T1).ValueTuple(T1) | argument 0 [<empty>] -> return [Item1] | true |
+| System.(T1).get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.(T1,T2).ValueTuple(T1, T2) | argument 0 [<empty>] -> return [Item1] | true |
+| System.(T1,T2).ValueTuple(T1, T2) | argument 1 [<empty>] -> return [Item2] | true |
+| System.(T1,T2).get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.(T1,T2).get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.(T1,T2,T3).ValueTuple(T1, T2, T3) | argument 0 [<empty>] -> return [Item1] | true |
+| System.(T1,T2,T3).ValueTuple(T1, T2, T3) | argument 1 [<empty>] -> return [Item2] | true |
+| System.(T1,T2,T3).ValueTuple(T1, T2, T3) | argument 2 [<empty>] -> return [Item3] | true |
+| System.(T1,T2,T3).get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.(T1,T2,T3).get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.(T1,T2,T3).get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4).ValueTuple(T1, T2, T3, T4) | argument 0 [<empty>] -> return [Item1] | true |
+| System.(T1,T2,T3,T4).ValueTuple(T1, T2, T3, T4) | argument 1 [<empty>] -> return [Item2] | true |
+| System.(T1,T2,T3,T4).ValueTuple(T1, T2, T3, T4) | argument 2 [<empty>] -> return [Item3] | true |
+| System.(T1,T2,T3,T4).ValueTuple(T1, T2, T3, T4) | argument 3 [<empty>] -> return [Item4] | true |
+| System.(T1,T2,T3,T4).get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4).get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4).get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4).get_Item(int) | qualifier [Item4] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5).ValueTuple(T1, T2, T3, T4, T5) | argument 0 [<empty>] -> return [Item1] | true |
+| System.(T1,T2,T3,T4,T5).ValueTuple(T1, T2, T3, T4, T5) | argument 1 [<empty>] -> return [Item2] | true |
+| System.(T1,T2,T3,T4,T5).ValueTuple(T1, T2, T3, T4, T5) | argument 2 [<empty>] -> return [Item3] | true |
+| System.(T1,T2,T3,T4,T5).ValueTuple(T1, T2, T3, T4, T5) | argument 3 [<empty>] -> return [Item4] | true |
+| System.(T1,T2,T3,T4,T5).ValueTuple(T1, T2, T3, T4, T5) | argument 4 [<empty>] -> return [Item5] | true |
+| System.(T1,T2,T3,T4,T5).get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5).get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5).get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5).get_Item(int) | qualifier [Item4] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5).get_Item(int) | qualifier [Item5] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 0 [<empty>] -> return [Item1] | true |
+| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 1 [<empty>] -> return [Item2] | true |
+| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 2 [<empty>] -> return [Item3] | true |
+| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 3 [<empty>] -> return [Item4] | true |
+| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 4 [<empty>] -> return [Item5] | true |
+| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 5 [<empty>] -> return [Item6] | true |
+| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | qualifier [Item4] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | qualifier [Item5] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | qualifier [Item6] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 0 [<empty>] -> return [Item1] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 1 [<empty>] -> return [Item2] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 2 [<empty>] -> return [Item3] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 3 [<empty>] -> return [Item4] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 4 [<empty>] -> return [Item5] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 5 [<empty>] -> return [Item6] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 6 [<empty>] -> return [Item7] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | qualifier [Item4] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | qualifier [Item5] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | qualifier [Item6] -> return [<empty>] | true |
+| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | qualifier [Item7] -> return [<empty>] | true |
 | System.Array.Add(object) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Array.AsReadOnly<T>(T[]) | argument 0 [[]] -> return [[]] | true |
 | System.Array.Clone() | argument 0 [[]] -> return [[]] | true |
@@ -791,6 +807,8 @@ callableFlowAccessPath
 | System.Array.Reverse(Array, int, int) | argument 0 [[]] -> return [[]] | true |
 | System.Array.Reverse<T>(T[]) | argument 0 [[]] -> return [[]] | true |
 | System.Array.Reverse<T>(T[], int, int) | argument 0 [[]] -> return [[]] | true |
+| System.Array.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
+| System.Array.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.ArrayList.Add(object) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Collections.ArrayList.AddRange(ICollection) | argument 0 [[]] -> qualifier [[]] | true |
 | System.Collections.ArrayList.Clone() | argument 0 [[]] -> return [[]] | true |
@@ -814,6 +832,8 @@ callableFlowAccessPath
 | System.Collections.CollectionBase.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.CollectionBase.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Collections.CollectionBase.Insert(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Collections.CollectionBase.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
+| System.Collections.CollectionBase.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Concurrent.BlockingCollection<>.Add(T) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Concurrent.BlockingCollection<>.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Concurrent.BlockingCollection<>.CopyTo(T[], int) | qualifier [[]] -> argument 0 [[]] | true |
@@ -839,10 +859,13 @@ callableFlowAccessPath
 | System.Collections.Concurrent.ConcurrentDictionary<,>.CopyTo(KeyValuePair<TKey,TValue>[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Concurrent.ConcurrentDictionary<,>.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Collections.Concurrent.ConcurrentDictionary<,>.get_Item(TKey) | qualifier [[], Value] -> return [<empty>] | true |
+| System.Collections.Concurrent.ConcurrentDictionary<,>.get_Item(object) | qualifier [[], Value] -> return [<empty>] | true |
 | System.Collections.Concurrent.ConcurrentDictionary<,>.get_Keys() | qualifier [[], Key] -> return [[]] | true |
 | System.Collections.Concurrent.ConcurrentDictionary<,>.get_Values() | qualifier [[], Value] -> return [[]] | true |
 | System.Collections.Concurrent.ConcurrentDictionary<,>.set_Item(TKey, TValue) | argument 0 [<empty>] -> qualifier [[], Key] | true |
 | System.Collections.Concurrent.ConcurrentDictionary<,>.set_Item(TKey, TValue) | argument 1 [<empty>] -> qualifier [[], Value] | true |
+| System.Collections.Concurrent.ConcurrentDictionary<,>.set_Item(object, object) | argument 0 [<empty>] -> qualifier [[], Key] | true |
+| System.Collections.Concurrent.ConcurrentDictionary<,>.set_Item(object, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
 | System.Collections.Concurrent.ConcurrentQueue<>.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Concurrent.ConcurrentQueue<>.CopyTo(T[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Concurrent.ConcurrentQueue<>.GetEnumerator() | qualifier [[]] -> return [Current] | true |
@@ -854,6 +877,11 @@ callableFlowAccessPath
 | System.Collections.DictionaryBase.Add(object, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
 | System.Collections.DictionaryBase.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.DictionaryBase.GetEnumerator() | qualifier [[]] -> return [Current] | true |
+| System.Collections.DictionaryBase.get_Item(object) | qualifier [[], Value] -> return [<empty>] | true |
+| System.Collections.DictionaryBase.get_Keys() | qualifier [[], Key] -> return [[]] | true |
+| System.Collections.DictionaryBase.get_Values() | qualifier [[], Value] -> return [[]] | true |
+| System.Collections.DictionaryBase.set_Item(object, object) | argument 0 [<empty>] -> qualifier [[], Key] | true |
+| System.Collections.DictionaryBase.set_Item(object, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
 | System.Collections.Generic.Dictionary<,>.Add(KeyValuePair<TKey, TValue>) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Generic.Dictionary<,>.Add(KeyValuePair<TKey, TValue>) | argument 0 [Key] -> qualifier [[], Key] | true |
 | System.Collections.Generic.Dictionary<,>.Add(KeyValuePair<TKey, TValue>) | argument 0 [Value] -> qualifier [[], Value] | true |
@@ -881,10 +909,13 @@ callableFlowAccessPath
 | System.Collections.Generic.Dictionary<,>.ValueCollection.CopyTo(TValue[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Generic.Dictionary<,>.ValueCollection.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Collections.Generic.Dictionary<,>.get_Item(TKey) | qualifier [[], Value] -> return [<empty>] | true |
+| System.Collections.Generic.Dictionary<,>.get_Item(object) | qualifier [[], Value] -> return [<empty>] | true |
 | System.Collections.Generic.Dictionary<,>.get_Keys() | qualifier [[], Key] -> return [[]] | true |
 | System.Collections.Generic.Dictionary<,>.get_Values() | qualifier [[], Value] -> return [[]] | true |
 | System.Collections.Generic.Dictionary<,>.set_Item(TKey, TValue) | argument 0 [<empty>] -> qualifier [[], Key] | true |
 | System.Collections.Generic.Dictionary<,>.set_Item(TKey, TValue) | argument 1 [<empty>] -> qualifier [[], Value] | true |
+| System.Collections.Generic.Dictionary<,>.set_Item(object, object) | argument 0 [<empty>] -> qualifier [[], Key] | true |
+| System.Collections.Generic.Dictionary<,>.set_Item(object, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
 | System.Collections.Generic.HashSet<>.Add(T) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Generic.HashSet<>.CopyTo(T[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Generic.HashSet<>.GetEnumerator() | qualifier [[]] -> return [Current] | true |
@@ -932,6 +963,7 @@ callableFlowAccessPath
 | System.Collections.Generic.List<>.Reverse(int, int) | argument 0 [[]] -> return [[]] | true |
 | System.Collections.Generic.List<>.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
 | System.Collections.Generic.List<>.set_Item(int, T) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Collections.Generic.List<>.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Generic.Queue<>.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Generic.Queue<>.CopyTo(T[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Generic.Queue<>.GetEnumerator() | qualifier [[]] -> return [Current] | true |
@@ -959,10 +991,13 @@ callableFlowAccessPath
 | System.Collections.Generic.SortedDictionary<,>.ValueCollection.CopyTo(TValue[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Generic.SortedDictionary<,>.ValueCollection.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Collections.Generic.SortedDictionary<,>.get_Item(TKey) | qualifier [[], Value] -> return [<empty>] | true |
+| System.Collections.Generic.SortedDictionary<,>.get_Item(object) | qualifier [[], Value] -> return [<empty>] | true |
 | System.Collections.Generic.SortedDictionary<,>.get_Keys() | qualifier [[], Key] -> return [[]] | true |
 | System.Collections.Generic.SortedDictionary<,>.get_Values() | qualifier [[], Value] -> return [[]] | true |
 | System.Collections.Generic.SortedDictionary<,>.set_Item(TKey, TValue) | argument 0 [<empty>] -> qualifier [[], Key] | true |
 | System.Collections.Generic.SortedDictionary<,>.set_Item(TKey, TValue) | argument 1 [<empty>] -> qualifier [[], Value] | true |
+| System.Collections.Generic.SortedDictionary<,>.set_Item(object, object) | argument 0 [<empty>] -> qualifier [[], Key] | true |
+| System.Collections.Generic.SortedDictionary<,>.set_Item(object, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
 | System.Collections.Generic.SortedList<,>.Add(KeyValuePair<TKey, TValue>) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Generic.SortedList<,>.Add(KeyValuePair<TKey, TValue>) | argument 0 [Key] -> qualifier [[], Key] | true |
 | System.Collections.Generic.SortedList<,>.Add(KeyValuePair<TKey, TValue>) | argument 0 [Value] -> qualifier [[], Value] | true |
@@ -992,10 +1027,13 @@ callableFlowAccessPath
 | System.Collections.Generic.SortedList<,>.ValueList.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
 | System.Collections.Generic.SortedList<,>.ValueList.set_Item(int, TValue) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Generic.SortedList<,>.get_Item(TKey) | qualifier [[], Value] -> return [<empty>] | true |
+| System.Collections.Generic.SortedList<,>.get_Item(object) | qualifier [[], Value] -> return [<empty>] | true |
 | System.Collections.Generic.SortedList<,>.get_Keys() | qualifier [[], Key] -> return [[]] | true |
 | System.Collections.Generic.SortedList<,>.get_Values() | qualifier [[], Value] -> return [[]] | true |
 | System.Collections.Generic.SortedList<,>.set_Item(TKey, TValue) | argument 0 [<empty>] -> qualifier [[], Key] | true |
 | System.Collections.Generic.SortedList<,>.set_Item(TKey, TValue) | argument 1 [<empty>] -> qualifier [[], Value] | true |
+| System.Collections.Generic.SortedList<,>.set_Item(object, object) | argument 0 [<empty>] -> qualifier [[], Key] | true |
+| System.Collections.Generic.SortedList<,>.set_Item(object, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
 | System.Collections.Generic.SortedSet<>.Add(T) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Generic.SortedSet<>.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Generic.SortedSet<>.CopyTo(T[], int) | qualifier [[]] -> argument 0 [[]] | true |
@@ -1059,6 +1097,7 @@ callableFlowAccessPath
 | System.Collections.ObjectModel.Collection<>.Insert(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.ObjectModel.Collection<>.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
 | System.Collections.ObjectModel.Collection<>.set_Item(int, T) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Collections.ObjectModel.Collection<>.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.ObjectModel.KeyedCollection<,>.get_Item(TKey) | qualifier [[]] -> return [<empty>] | true |
 | System.Collections.ObjectModel.ReadOnlyCollection<>.Add(T) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Collections.ObjectModel.ReadOnlyCollection<>.Add(object) | argument 0 [<empty>] -> qualifier [[]] | true |
@@ -1068,6 +1107,8 @@ callableFlowAccessPath
 | System.Collections.ObjectModel.ReadOnlyCollection<>.Insert(int, T) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.ObjectModel.ReadOnlyCollection<>.Insert(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.ObjectModel.ReadOnlyCollection<>.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
+| System.Collections.ObjectModel.ReadOnlyCollection<>.set_Item(int, T) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Collections.ObjectModel.ReadOnlyCollection<>.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.ObjectModel.ReadOnlyDictionary<,>.Add(KeyValuePair<TKey, TValue>) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Collections.ObjectModel.ReadOnlyDictionary<,>.Add(KeyValuePair<TKey, TValue>) | argument 0 [Key] -> qualifier [[], Key] | true |
 | System.Collections.ObjectModel.ReadOnlyDictionary<,>.Add(KeyValuePair<TKey, TValue>) | argument 0 [Value] -> qualifier [[], Value] | true |
@@ -1089,8 +1130,13 @@ callableFlowAccessPath
 | System.Collections.ObjectModel.ReadOnlyDictionary<,>.ValueCollection.CopyTo(TValue[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.ObjectModel.ReadOnlyDictionary<,>.ValueCollection.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Collections.ObjectModel.ReadOnlyDictionary<,>.get_Item(TKey) | qualifier [[], Value] -> return [<empty>] | true |
+| System.Collections.ObjectModel.ReadOnlyDictionary<,>.get_Item(object) | qualifier [[], Value] -> return [<empty>] | true |
 | System.Collections.ObjectModel.ReadOnlyDictionary<,>.get_Keys() | qualifier [[], Key] -> return [[]] | true |
 | System.Collections.ObjectModel.ReadOnlyDictionary<,>.get_Values() | qualifier [[], Value] -> return [[]] | true |
+| System.Collections.ObjectModel.ReadOnlyDictionary<,>.set_Item(TKey, TValue) | argument 0 [<empty>] -> qualifier [[], Key] | true |
+| System.Collections.ObjectModel.ReadOnlyDictionary<,>.set_Item(TKey, TValue) | argument 1 [<empty>] -> qualifier [[], Value] | true |
+| System.Collections.ObjectModel.ReadOnlyDictionary<,>.set_Item(object, object) | argument 0 [<empty>] -> qualifier [[], Key] | true |
+| System.Collections.ObjectModel.ReadOnlyDictionary<,>.set_Item(object, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
 | System.Collections.Queue.Clone() | argument 0 [[]] -> return [[]] | true |
 | System.Collections.Queue.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Collections.Queue.GetEnumerator() | qualifier [[]] -> return [Current] | true |
@@ -1162,6 +1208,7 @@ callableFlowAccessPath
 | System.Collections.Specialized.StringCollection.Insert(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Specialized.StringCollection.Insert(int, string) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Specialized.StringCollection.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
+| System.Collections.Specialized.StringCollection.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Specialized.StringCollection.set_Item(int, string) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Collections.Specialized.StringDictionary.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Collections.Stack.Clone() | argument 0 [[]] -> return [[]] | true |
@@ -1180,6 +1227,7 @@ callableFlowAccessPath
 | System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection.Insert(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
 | System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection.get_Item(string) | qualifier [[]] -> return [<empty>] | true |
+| System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.ComponentModel.Design.DesignerVerbCollection.Add(DesignerVerb) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.ComponentModel.Design.DesignerVerbCollection.AddRange(DesignerVerbCollection) | argument 0 [[]] -> qualifier [[]] | true |
 | System.ComponentModel.Design.DesignerVerbCollection.AddRange(DesignerVerb[]) | argument 0 [[]] -> qualifier [[]] | true |
@@ -1196,6 +1244,7 @@ callableFlowAccessPath
 | System.ComponentModel.EventDescriptorCollection.Insert(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.ComponentModel.EventDescriptorCollection.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
 | System.ComponentModel.EventDescriptorCollection.get_Item(string) | qualifier [[]] -> return [<empty>] | true |
+| System.ComponentModel.EventDescriptorCollection.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.ComponentModel.IBindingList.Find(PropertyDescriptor, object) | qualifier [[]] -> return [<empty>] | true |
 | System.ComponentModel.ListSortDescriptionCollection.Add(object) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.ComponentModel.ListSortDescriptionCollection.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
@@ -1203,6 +1252,7 @@ callableFlowAccessPath
 | System.ComponentModel.ListSortDescriptionCollection.Insert(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.ComponentModel.ListSortDescriptionCollection.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
 | System.ComponentModel.ListSortDescriptionCollection.set_Item(int, ListSortDescription) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.ComponentModel.ListSortDescriptionCollection.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.ComponentModel.PropertyDescriptorCollection.Add(PropertyDescriptor) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.ComponentModel.PropertyDescriptorCollection.Add(PropertyDescriptor) | argument 0 [Key] -> qualifier [[], Key] | true |
 | System.ComponentModel.PropertyDescriptorCollection.Add(PropertyDescriptor) | argument 0 [Value] -> qualifier [[], Value] | true |
@@ -1222,8 +1272,18 @@ callableFlowAccessPath
 | System.ComponentModel.PropertyDescriptorCollection.PropertyDescriptorCollection(PropertyDescriptor[], bool) | argument 0 [[], Value] -> return [[], Value] | true |
 | System.ComponentModel.PropertyDescriptorCollection.get_Item(int) | qualifier [[], Value] -> return [<empty>] | true |
 | System.ComponentModel.PropertyDescriptorCollection.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
+| System.ComponentModel.PropertyDescriptorCollection.get_Item(object) | qualifier [[], Value] -> return [<empty>] | true |
+| System.ComponentModel.PropertyDescriptorCollection.get_Item(object) | qualifier [[]] -> return [<empty>] | true |
 | System.ComponentModel.PropertyDescriptorCollection.get_Item(string) | qualifier [[], Value] -> return [<empty>] | true |
 | System.ComponentModel.PropertyDescriptorCollection.get_Item(string) | qualifier [[]] -> return [<empty>] | true |
+| System.ComponentModel.PropertyDescriptorCollection.get_Keys() | qualifier [[], Key] -> return [[]] | true |
+| System.ComponentModel.PropertyDescriptorCollection.get_Values() | qualifier [[], Value] -> return [[]] | true |
+| System.ComponentModel.PropertyDescriptorCollection.set_Item(int, object) | argument 0 [<empty>] -> qualifier [[], Key] | true |
+| System.ComponentModel.PropertyDescriptorCollection.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
+| System.ComponentModel.PropertyDescriptorCollection.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.ComponentModel.PropertyDescriptorCollection.set_Item(object, object) | argument 0 [<empty>] -> qualifier [[], Key] | true |
+| System.ComponentModel.PropertyDescriptorCollection.set_Item(object, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
+| System.ComponentModel.PropertyDescriptorCollection.set_Item(object, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.ComponentModel.TypeConverter.StandardValuesCollection.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.ComponentModel.TypeConverter.StandardValuesCollection.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Dynamic.ExpandoObject.Add(KeyValuePair<String, Object>) | argument 0 [<empty>] -> qualifier [[]] | true |
@@ -1233,6 +1293,11 @@ callableFlowAccessPath
 | System.Dynamic.ExpandoObject.Add(string, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
 | System.Dynamic.ExpandoObject.CopyTo(KeyValuePair<String,Object>[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Dynamic.ExpandoObject.GetEnumerator() | qualifier [[]] -> return [Current] | true |
+| System.Dynamic.ExpandoObject.get_Item(string) | qualifier [[], Value] -> return [<empty>] | true |
+| System.Dynamic.ExpandoObject.get_Keys() | qualifier [[], Key] -> return [[]] | true |
+| System.Dynamic.ExpandoObject.get_Values() | qualifier [[], Value] -> return [[]] | true |
+| System.Dynamic.ExpandoObject.set_Item(string, object) | argument 0 [<empty>] -> qualifier [[], Key] | true |
+| System.Dynamic.ExpandoObject.set_Item(string, object) | argument 1 [<empty>] -> qualifier [[], Value] | true |
 | System.IO.Path.Combine(params String[]) | argument 0 [[]] -> return [<empty>] | false |
 | System.Lazy<>.Lazy(Func<T>) | output from argument 0 [<empty>] -> return [Value] | true |
 | System.Lazy<>.Lazy(Func<T>, LazyThreadSafetyMode) | output from argument 0 [<empty>] -> return [Value] | true |
@@ -1441,6 +1506,8 @@ callableFlowAccessPath
 | System.Linq.Grouping<,>.CopyTo(TElement[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Linq.Grouping<,>.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Linq.Grouping<,>.Insert(int, TElement) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Linq.Grouping<,>.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
+| System.Linq.Grouping<,>.set_Item(int, TElement) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Linq.Lookup<,>.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Linq.ParallelEnumerable.Aggregate<TSource, TAccumulate, TResult>(ParallelQuery<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | argument 0 [[]] -> parameter 1 of argument 2 [<empty>] | true |
 | System.Linq.ParallelEnumerable.Aggregate<TSource, TAccumulate>(ParallelQuery<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>) | argument 0 [[]] -> parameter 1 of argument 2 [<empty>] | true |
@@ -1847,9 +1914,15 @@ callableFlowAccessPath
 | System.Net.NetworkInformation.IPAddressCollection.Add(IPAddress) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Net.NetworkInformation.IPAddressCollection.CopyTo(IPAddress[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Net.NetworkInformation.IPAddressCollection.GetEnumerator() | qualifier [[]] -> return [Current] | true |
+| System.Nullable<>.GetValueOrDefault() | qualifier [Value] -> return [<empty>] | true |
+| System.Nullable<>.GetValueOrDefault(T) | qualifier [Value] -> return [<empty>] | true |
+| System.Nullable<>.Nullable(T) | argument 0 [<empty>] -> return [Value] | true |
+| System.Nullable<>.get_HasValue() | qualifier [Value] -> return [<empty>] | false |
 | System.Resources.ResourceReader.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Resources.ResourceSet.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Runtime.CompilerServices.ConditionalWeakTable<,>.GetEnumerator() | qualifier [[]] -> return [Current] | true |
+| System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.ConfiguredTaskAwaiter.GetResult() | qualifier [m_task, Result] -> return [<empty>] | true |
+| System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.GetAwaiter() | qualifier [m_configuredTaskAwaiter] -> return [<empty>] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.Add(T) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.Add(object) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
@@ -1861,6 +1934,8 @@ callableFlowAccessPath
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.Reverse(int, int) | argument 0 [[]] -> return [[]] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
 | System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.set_Item(int, T) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Runtime.CompilerServices.ReadOnlyCollectionBuilder<>.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Runtime.CompilerServices.TaskAwaiter<>.GetResult() | qualifier [m_task, Result] -> return [<empty>] | true |
 | System.Security.PermissionSet.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Security.PermissionSet.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.String.Concat(IEnumerable<String>) | argument 0 [[]] -> return [<empty>] | false |
@@ -1899,6 +1974,7 @@ callableFlowAccessPath
 | System.Text.Encoding.GetChars(Byte[], int, int, Char[], int) | argument 0 [[]] -> return [<empty>] | false |
 | System.Text.Encoding.GetChars(ReadOnlySpan<Byte>, Span<Char>) | argument 0 [[]] -> return [<empty>] | false |
 | System.Text.Encoding.GetChars(byte*, int, char*, int) | argument 0 [[]] -> return [<empty>] | false |
+| System.Text.Encoding.GetChars(byte*, int, char*, int, DecoderNLS) | argument 0 [[]] -> return [<empty>] | false |
 | System.Text.Encoding.GetString(Byte[]) | argument 0 [[]] -> return [<empty>] | false |
 | System.Text.Encoding.GetString(Byte[], int, int) | argument 0 [[]] -> return [<empty>] | false |
 | System.Text.Encoding.GetString(ReadOnlySpan<Byte>) | argument 0 [[]] -> return [<empty>] | false |
@@ -1911,6 +1987,8 @@ callableFlowAccessPath
 | System.Text.RegularExpressions.CaptureCollection.Insert(int, Capture) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.CaptureCollection.Insert(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.CaptureCollection.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
+| System.Text.RegularExpressions.CaptureCollection.set_Item(int, Capture) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Text.RegularExpressions.CaptureCollection.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.GroupCollection.Add(Group) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.GroupCollection.Add(object) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.GroupCollection.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
@@ -1920,6 +1998,8 @@ callableFlowAccessPath
 | System.Text.RegularExpressions.GroupCollection.Insert(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.GroupCollection.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
 | System.Text.RegularExpressions.GroupCollection.get_Item(string) | qualifier [[]] -> return [<empty>] | true |
+| System.Text.RegularExpressions.GroupCollection.set_Item(int, Group) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Text.RegularExpressions.GroupCollection.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.MatchCollection.Add(Match) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.MatchCollection.Add(object) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.MatchCollection.CopyTo(Array, int) | qualifier [[]] -> argument 0 [[]] | true |
@@ -1928,6 +2008,8 @@ callableFlowAccessPath
 | System.Text.RegularExpressions.MatchCollection.Insert(int, Match) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.MatchCollection.Insert(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Text.RegularExpressions.MatchCollection.get_Item(int) | qualifier [[]] -> return [<empty>] | true |
+| System.Text.RegularExpressions.MatchCollection.set_Item(int, Match) | argument 1 [<empty>] -> qualifier [[]] | true |
+| System.Text.RegularExpressions.MatchCollection.set_Item(int, object) | argument 1 [<empty>] -> qualifier [[]] | true |
 | System.Text.StringBuilder.Append(object) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Text.StringBuilder.Append(object) | argument 0 [<empty>] -> return [[]] | true |
 | System.Text.StringBuilder.Append(string) | argument 0 [<empty>] -> qualifier [[]] | true |
@@ -1981,10 +2063,338 @@ callableFlowAccessPath
 | System.Text.StringBuilder.StringBuilder(string, int, int, int) | argument 0 [<empty>] -> return [[]] | true |
 | System.Text.StringBuilder.ToString() | qualifier [[]] -> return [<empty>] | false |
 | System.Text.StringBuilder.ToString(int, int) | qualifier [[]] -> return [<empty>] | false |
-| System.Threading.Tasks.Task.WhenAll<TResult>(IEnumerable<Task<TResult>>) | argument 0 [[]] -> return [<empty>] | true |
-| System.Threading.Tasks.Task.WhenAll<TResult>(params Task<TResult>[]) | argument 0 [[]] -> return [<empty>] | true |
-| System.Threading.Tasks.Task.WhenAny<TResult>(IEnumerable<Task<TResult>>) | argument 0 [[]] -> return [<empty>] | true |
-| System.Threading.Tasks.Task.WhenAny<TResult>(params Task<TResult>[]) | argument 0 [[]] -> return [<empty>] | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskContinuationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, TaskContinuationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.FromResult<TResult>(TResult) | argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.Run<TResult>(Func<TResult>) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.Run<TResult>(Func<TResult>, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.Run<TResult>(Func<Task<TResult>>) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.Run<TResult>(Func<Task<TResult>>, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task.WhenAll<TResult>(IEnumerable<Task<TResult>>) | argument 0 [[], Result] -> return [Result, []] | true |
+| System.Threading.Tasks.Task.WhenAll<TResult>(params Task<TResult>[]) | argument 0 [[], Result] -> return [Result, []] | true |
+| System.Threading.Tasks.Task.WhenAny<TResult>(IEnumerable<Task<TResult>>) | argument 0 [[], Result] -> return [Result, []] | true |
+| System.Threading.Tasks.Task.WhenAny<TResult>(params Task<TResult>[]) | argument 0 [[], Result] -> return [Result, []] | true |
+| System.Threading.Tasks.Task<>.ConfigureAwait(bool) | qualifier [<empty>] -> return [m_configuredTaskAwaiter, m_task] | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskContinuationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskContinuationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.GetAwaiter() | qualifier [<empty>] -> return [m_task] | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, TaskCreationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.Task(Func<TResult>) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.Task(Func<TResult>, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.Task(Func<TResult>, CancellationToken, TaskCreationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.Task<>.Task(Func<TResult>, TaskCreationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>, CancellationToken) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAll<TResult>(Task[], Func<Task[], TResult>, TaskContinuationOptions) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, TaskContinuationOptions) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>, CancellationToken) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.ContinueWhenAny<TResult>(Task[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<Object, TResult>, object, TaskCreationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory.StartNew<TResult>(Func<TResult>, TaskCreationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>, CancellationToken) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll(Task[], Func<Task[], TResult>, TaskContinuationOptions) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAll<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>, CancellationToken) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny(Task[], Func<Task, TResult>, TaskContinuationOptions) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.ContinueWhenAny<TAntecedentResult>(Task<TAntecedentResult>[], Func<Task<TAntecedentResult>, TResult>, TaskContinuationOptions) | output from argument 1 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<Object, TResult>, object, TaskCreationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, CancellationToken) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, CancellationToken, TaskCreationOptions, TaskScheduler) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Threading.Tasks.TaskFactory<>.StartNew(Func<TResult>, TaskCreationOptions) | output from argument 0 [<empty>] -> return [Result] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 3 [<empty>] -> return [Item4] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 4 [<empty>] -> return [Item5] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 5 [<empty>] -> return [Item6] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 6 [<empty>] -> return [Item7] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 3 [<empty>] -> return [Item4] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 4 [<empty>] -> return [Item5] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 5 [<empty>] -> return [Item6] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 6 [<empty>] -> return [Item7] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 3 [<empty>] -> return [Item4] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 4 [<empty>] -> return [Item5] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 5 [<empty>] -> return [Item6] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 3 [<empty>] -> return [Item4] | true |
+| System.Tuple.Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 4 [<empty>] -> return [Item5] | true |
+| System.Tuple.Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple.Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple.Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple.Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 3 [<empty>] -> return [Item4] | true |
+| System.Tuple.Create<T1, T2, T3>(T1, T2, T3) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple.Create<T1, T2, T3>(T1, T2, T3) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple.Create<T1, T2, T3>(T1, T2, T3) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple.Create<T1, T2>(T1, T2) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple.Create<T1, T2>(T1, T2) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple.Create<T1>(T1) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple<,,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple<,,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple<,,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple<,,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 3 [<empty>] -> return [Item4] | true |
+| System.Tuple<,,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 4 [<empty>] -> return [Item5] | true |
+| System.Tuple<,,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 5 [<empty>] -> return [Item6] | true |
+| System.Tuple<,,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 6 [<empty>] -> return [Item7] | true |
+| System.Tuple<,,,,,,,>.get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.Tuple<,,,,,,,>.get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.Tuple<,,,,,,,>.get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.Tuple<,,,,,,,>.get_Item(int) | qualifier [Item4] -> return [<empty>] | true |
+| System.Tuple<,,,,,,,>.get_Item(int) | qualifier [Item5] -> return [<empty>] | true |
+| System.Tuple<,,,,,,,>.get_Item(int) | qualifier [Item6] -> return [<empty>] | true |
+| System.Tuple<,,,,,,,>.get_Item(int) | qualifier [Item7] -> return [<empty>] | true |
+| System.Tuple<,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple<,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple<,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple<,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7) | argument 3 [<empty>] -> return [Item4] | true |
+| System.Tuple<,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7) | argument 4 [<empty>] -> return [Item5] | true |
+| System.Tuple<,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7) | argument 5 [<empty>] -> return [Item6] | true |
+| System.Tuple<,,,,,,>.Tuple(T1, T2, T3, T4, T5, T6, T7) | argument 6 [<empty>] -> return [Item7] | true |
+| System.Tuple<,,,,,,>.get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.Tuple<,,,,,,>.get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.Tuple<,,,,,,>.get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.Tuple<,,,,,,>.get_Item(int) | qualifier [Item4] -> return [<empty>] | true |
+| System.Tuple<,,,,,,>.get_Item(int) | qualifier [Item5] -> return [<empty>] | true |
+| System.Tuple<,,,,,,>.get_Item(int) | qualifier [Item6] -> return [<empty>] | true |
+| System.Tuple<,,,,,,>.get_Item(int) | qualifier [Item7] -> return [<empty>] | true |
+| System.Tuple<,,,,,>.Tuple(T1, T2, T3, T4, T5, T6) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple<,,,,,>.Tuple(T1, T2, T3, T4, T5, T6) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple<,,,,,>.Tuple(T1, T2, T3, T4, T5, T6) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple<,,,,,>.Tuple(T1, T2, T3, T4, T5, T6) | argument 3 [<empty>] -> return [Item4] | true |
+| System.Tuple<,,,,,>.Tuple(T1, T2, T3, T4, T5, T6) | argument 4 [<empty>] -> return [Item5] | true |
+| System.Tuple<,,,,,>.Tuple(T1, T2, T3, T4, T5, T6) | argument 5 [<empty>] -> return [Item6] | true |
+| System.Tuple<,,,,,>.get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.Tuple<,,,,,>.get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.Tuple<,,,,,>.get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.Tuple<,,,,,>.get_Item(int) | qualifier [Item4] -> return [<empty>] | true |
+| System.Tuple<,,,,,>.get_Item(int) | qualifier [Item5] -> return [<empty>] | true |
+| System.Tuple<,,,,,>.get_Item(int) | qualifier [Item6] -> return [<empty>] | true |
+| System.Tuple<,,,,>.Tuple(T1, T2, T3, T4, T5) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple<,,,,>.Tuple(T1, T2, T3, T4, T5) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple<,,,,>.Tuple(T1, T2, T3, T4, T5) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple<,,,,>.Tuple(T1, T2, T3, T4, T5) | argument 3 [<empty>] -> return [Item4] | true |
+| System.Tuple<,,,,>.Tuple(T1, T2, T3, T4, T5) | argument 4 [<empty>] -> return [Item5] | true |
+| System.Tuple<,,,,>.get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.Tuple<,,,,>.get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.Tuple<,,,,>.get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.Tuple<,,,,>.get_Item(int) | qualifier [Item4] -> return [<empty>] | true |
+| System.Tuple<,,,,>.get_Item(int) | qualifier [Item5] -> return [<empty>] | true |
+| System.Tuple<,,,>.Tuple(T1, T2, T3, T4) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple<,,,>.Tuple(T1, T2, T3, T4) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple<,,,>.Tuple(T1, T2, T3, T4) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple<,,,>.Tuple(T1, T2, T3, T4) | argument 3 [<empty>] -> return [Item4] | true |
+| System.Tuple<,,,>.get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.Tuple<,,,>.get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.Tuple<,,,>.get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.Tuple<,,,>.get_Item(int) | qualifier [Item4] -> return [<empty>] | true |
+| System.Tuple<,,>.Tuple(T1, T2, T3) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple<,,>.Tuple(T1, T2, T3) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple<,,>.Tuple(T1, T2, T3) | argument 2 [<empty>] -> return [Item3] | true |
+| System.Tuple<,,>.get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.Tuple<,,>.get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.Tuple<,,>.get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.Tuple<,>.Tuple(T1, T2) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple<,>.Tuple(T1, T2) | argument 1 [<empty>] -> return [Item2] | true |
+| System.Tuple<,>.get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.Tuple<,>.get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.Tuple<>.Tuple(T1) | argument 0 [<empty>] -> return [Item1] | true |
+| System.Tuple<>.get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20,T21>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20, out T21) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20,T21>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20, out T21) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20,T21>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20, out T21) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20,T21>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20, out T21) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20,T21>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20, out T21) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20,T21>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20, out T21) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20,T21>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20, out T21) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19,T20>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19, out T20) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18,T19>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18, out T19) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17,T18>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17, out T18) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16,T17>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16, out T17) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15,T16>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15, out T16) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14,Tuple<T15>>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14, out T15) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13,T14>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13, out T14) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12,T13>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12, out T13) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11,T12>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11, out T12) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10,T11>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10, out T11) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9,T10>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9, out T10) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8,T9>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7, T8>(Tuple<T1, T2, T3, T4, T5, T6, T7, Tuple<T8>>, out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7>(Tuple<T1, T2, T3, T4, T5, T6, T7>, out T1, out T2, out T3, out T4, out T5, out T6, out T7) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7>(Tuple<T1, T2, T3, T4, T5, T6, T7>, out T1, out T2, out T3, out T4, out T5, out T6, out T7) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7>(Tuple<T1, T2, T3, T4, T5, T6, T7>, out T1, out T2, out T3, out T4, out T5, out T6, out T7) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7>(Tuple<T1, T2, T3, T4, T5, T6, T7>, out T1, out T2, out T3, out T4, out T5, out T6, out T7) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7>(Tuple<T1, T2, T3, T4, T5, T6, T7>, out T1, out T2, out T3, out T4, out T5, out T6, out T7) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7>(Tuple<T1, T2, T3, T4, T5, T6, T7>, out T1, out T2, out T3, out T4, out T5, out T6, out T7) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6, T7>(Tuple<T1, T2, T3, T4, T5, T6, T7>, out T1, out T2, out T3, out T4, out T5, out T6, out T7) | argument 0 [Item7] -> argument 7 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6>(Tuple<T1, T2, T3, T4, T5, T6>, out T1, out T2, out T3, out T4, out T5, out T6) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6>(Tuple<T1, T2, T3, T4, T5, T6>, out T1, out T2, out T3, out T4, out T5, out T6) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6>(Tuple<T1, T2, T3, T4, T5, T6>, out T1, out T2, out T3, out T4, out T5, out T6) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6>(Tuple<T1, T2, T3, T4, T5, T6>, out T1, out T2, out T3, out T4, out T5, out T6) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6>(Tuple<T1, T2, T3, T4, T5, T6>, out T1, out T2, out T3, out T4, out T5, out T6) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5, T6>(Tuple<T1, T2, T3, T4, T5, T6>, out T1, out T2, out T3, out T4, out T5, out T6) | argument 0 [Item6] -> argument 6 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5>(Tuple<T1, T2, T3, T4, T5>, out T1, out T2, out T3, out T4, out T5) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5>(Tuple<T1, T2, T3, T4, T5>, out T1, out T2, out T3, out T4, out T5) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5>(Tuple<T1, T2, T3, T4, T5>, out T1, out T2, out T3, out T4, out T5) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5>(Tuple<T1, T2, T3, T4, T5>, out T1, out T2, out T3, out T4, out T5) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4, T5>(Tuple<T1, T2, T3, T4, T5>, out T1, out T2, out T3, out T4, out T5) | argument 0 [Item5] -> argument 5 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4>(Tuple<T1, T2, T3, T4>, out T1, out T2, out T3, out T4) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4>(Tuple<T1, T2, T3, T4>, out T1, out T2, out T3, out T4) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4>(Tuple<T1, T2, T3, T4>, out T1, out T2, out T3, out T4) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3, T4>(Tuple<T1, T2, T3, T4>, out T1, out T2, out T3, out T4) | argument 0 [Item4] -> argument 4 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3>(Tuple<T1, T2, T3>, out T1, out T2, out T3) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3>(Tuple<T1, T2, T3>, out T1, out T2, out T3) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2, T3>(Tuple<T1, T2, T3>, out T1, out T2, out T3) | argument 0 [Item3] -> argument 3 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2>(Tuple<T1, T2>, out T1, out T2) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1, T2>(Tuple<T1, T2>, out T1, out T2) | argument 0 [Item2] -> argument 2 [<empty>] | true |
+| System.TupleExtensions.Deconstruct<T1>(Tuple<T1>, out T1) | argument 0 [Item1] -> argument 1 [<empty>] | true |
+| System.ValueTuple<,,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 0 [<empty>] -> return [Item1] | true |
+| System.ValueTuple<,,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 1 [<empty>] -> return [Item2] | true |
+| System.ValueTuple<,,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 2 [<empty>] -> return [Item3] | true |
+| System.ValueTuple<,,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 3 [<empty>] -> return [Item4] | true |
+| System.ValueTuple<,,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 4 [<empty>] -> return [Item5] | true |
+| System.ValueTuple<,,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 5 [<empty>] -> return [Item6] | true |
+| System.ValueTuple<,,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 6 [<empty>] -> return [Item7] | true |
+| System.ValueTuple<,,,,,,,>.get_Item(int) | qualifier [Item1] -> return [<empty>] | true |
+| System.ValueTuple<,,,,,,,>.get_Item(int) | qualifier [Item2] -> return [<empty>] | true |
+| System.ValueTuple<,,,,,,,>.get_Item(int) | qualifier [Item3] -> return [<empty>] | true |
+| System.ValueTuple<,,,,,,,>.get_Item(int) | qualifier [Item4] -> return [<empty>] | true |
+| System.ValueTuple<,,,,,,,>.get_Item(int) | qualifier [Item5] -> return [<empty>] | true |
+| System.ValueTuple<,,,,,,,>.get_Item(int) | qualifier [Item6] -> return [<empty>] | true |
+| System.ValueTuple<,,,,,,,>.get_Item(int) | qualifier [Item7] -> return [<empty>] | true |
 clearsContent
 | System.Array.Clear() | qualifier | [] |
 | System.Array.Clear(Array, int, int) | qualifier | [] |

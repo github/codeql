@@ -3,13 +3,14 @@
  * such as methods and operators.
  */
 
-import Type
 import Member
 import Stmt
+import Type
 import exprs.Call
 private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.metrics.Complexity
+private import TypeRef
 
 /**
  * An element that can be called.
@@ -31,23 +32,15 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * Gets the body of this callable, if any.
    *
    * The body is either a `BlockStmt` or an `Expr`.
-   */
-  final ControlFlowElement getBody() {
-    result = this.getStatementBody() or
-    result = this.getExpressionBody()
-  }
-
-  /**
-   * Gets a body of this callable, if any.
    *
-   * Unlike `getBody()`, this predicate may return multiple bodies, in the case
-   * where the same callable is compiled multiple times. For example, if we
-   * compile both `A.cs`
+   * Normally, each callable will have at most one body, except in the case where
+   * the same callable is compiled multiple times. For example, if we compile
+   * both `A.cs`
    *
    * ```csharp
    * namespaces N {
    *   public class C {
-   *     public int M() => 0;
+   *     public int M() { return 0; }
    *   }
    * }
    * ```
@@ -57,19 +50,24 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * ```csharp
    * namespaces N {
    *   public class C {
-   *     public int M() { return 1; }
+   *     public int M() => 1;
    *   }
    * }
    * ```
    *
-   * to the same assembly, then both `0` and `{ return 1; }` are bodies of `N.C.M()`.
+   * then both `{ return 0; }` and `1` are bodies of `N.C.M()`.
    */
-  final ControlFlowElement getABody() {
-    result = this.getAStatementBody() or
-    result = this.getAnExpressionBody()
+  final ControlFlowElement getBody() {
+    result = this.getStatementBody() or
+    result = this.getExpressionBody()
   }
 
-  override predicate hasBody() { exists(getBody()) }
+  /**
+   * DEPRECATED: Use `getBody()` instead.
+   */
+  deprecated final ControlFlowElement getABody() { result = this.getBody() }
+
+  override predicate hasBody() { exists(this.getBody()) }
 
   /**
    * Holds if this callable has a non-empty body. That is, either it has
@@ -78,19 +76,15 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   predicate hasNonEmptyBody() {
     this.hasExpressionBody()
     or
-    this.hasStatementBody() and
-    not this.getStatementBody().stripSingletonBlocks().(BlockStmt).isEmpty()
+    this.getStatementBody().stripSingletonBlocks() = any(Stmt s | not s.(BlockStmt).isEmpty())
   }
 
-  /** Gets the statement body of this callable, if any. */
-  final BlockStmt getStatementBody() { result = this.getAChildStmt() }
-
   /**
-   * Gets a statement body of this callable, if any.
+   * Gets the statement body of this callable, if any.
    *
-   * Unlike `getStatementBody()`, this predicate may return multiple bodies, in
-   * the case where the same callable is compiled multiple times. For example,
-   * if we compile both `A.cs`
+   * Normally, each callable will have at most one statement body, except in the
+   * case where the same callable is compiled multiple times. For example, if
+   * we compile both `A.cs`
    *
    * ```csharp
    * namespaces N {
@@ -110,23 +104,25 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * }
    * ```
    *
-   * to the same assembly, then both `{ return 0; }` and `{ return 1; }` are
-   * statement bodies of `N.C.M()`.
+   * then both `{ return 0; }` and `{ return 1; }` are statement bodies of
+   * `N.C.M()`.
    */
-  final BlockStmt getAStatementBody() { stmt_parent_top_level(result, _, this) }
+  final BlockStmt getStatementBody() { result = this.getAChildStmt() }
+
+  /**
+   * DEPRECATED: Use `getStatementBody` instead.
+   */
+  final BlockStmt getAStatementBody() { result = this.getStatementBody() }
 
   /** Holds if this callable has a statement body. */
   final predicate hasStatementBody() { exists(getStatementBody()) }
 
-  /** Gets the expression body of this callable (if any), specified by `=>`. */
-  final Expr getExpressionBody() { result = this.getChildExpr(0) }
-
   /**
-   * Gets an expression body of this callable (if any), specified by `=>`.
+   * Gets the expression body of this callable (if any), specified by `=>`.
    *
-   * Unlike `getExpressionBody()`, this predicate may return multiple bodies, in
-   * the case where the same callable is compiled multiple times. For example,
-   * if we compile both `A.cs`
+   * Normally, each callable will have at most one expression body, except in the
+   * case where the same callable is compiled multiple times. For example, if
+   * we compile both `A.cs`
    *
    * ```csharp
    * namespaces N {
@@ -146,9 +142,17 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * }
    * ```
    *
-   * to the same assembly, then both `0` and `1` are expression bodies of `N.C.M()`.
+   * then both `0` and `1` are expression bodies of `N.C.M()`.
    */
-  final Expr getAnExpressionBody() { expr_parent_top_level_adjusted(result, 0, this) }
+  final Expr getExpressionBody() {
+    result = this.getAChildExpr() and
+    not result = this.(Constructor).getInitializer()
+  }
+
+  /**
+   * DEPRECATED: Use `getExpressionBody()` instead.
+   */
+  deprecated final Expr getAnExpressionBody() { result = this.getExpressionBody() }
 
   /** Holds if this callable has an expression body. */
   final predicate hasExpressionBody() { exists(getExpressionBody()) }

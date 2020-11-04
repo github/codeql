@@ -7,7 +7,7 @@
 <overview>
 
 <!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
-<include src="cpp/jsfNote.qhelp" />
+<include src="../jsfNote.qhelp" />
 
 <p>
 This query highlights string literals that are assigned to a non-<code>const</code> variable. String literals

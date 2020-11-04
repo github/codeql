@@ -25,12 +25,16 @@
 | cpp.cpp:30:5:30:7 | Bar | int -> int -> int -> int -> void | true |
 | cpp.cpp:31:5:31:7 | Bar | int -> int -> int -> int -> int -> void | false |
 | cpp.cpp:32:5:32:7 | Bar | int -> int -> int -> int -> int -> int -> void | false |
+| cpp.cpp:35:7:35:7 | PurelyDestructible | void | false |
 | cpp.cpp:35:7:35:7 | operator= | const PurelyDestructible & -> PurelyDestructible & | false |
 | cpp.cpp:37:5:37:23 | ~PurelyDestructible | void | true |
+| cpp.cpp:40:7:40:7 | ImpurelyDestructible | void | false |
 | cpp.cpp:40:7:40:7 | operator= | const ImpurelyDestructible & -> ImpurelyDestructible & | false |
 | cpp.cpp:42:5:42:25 | ~ImpurelyDestructible | void | false |
+| cpp.cpp:45:7:45:7 | SuperPurelyDestructible | void | false |
 | cpp.cpp:45:7:45:7 | operator= | const SuperPurelyDestructible & -> SuperPurelyDestructible & | false |
 | cpp.cpp:47:5:47:28 | ~SuperPurelyDestructible | void | true |
+| cpp.cpp:50:7:50:7 | SuperImpurelyDestructible | void | false |
 | cpp.cpp:50:7:50:7 | operator= | const SuperImpurelyDestructible & -> SuperImpurelyDestructible & | false |
 | cpp.cpp:52:5:52:30 | ~SuperImpurelyDestructible | void | false |
 | cpp.cpp:55:7:55:7 | operator= | const someClass & -> someClass & | false |

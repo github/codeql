@@ -107,11 +107,11 @@ variables(#20036,"f",#20000)
 #20037=*
 stmts(#20037,17,#20001,0,"functio ... = 42;\n}")
 hasLocation(#20037,#20035)
-stmtContainers(#20037,#20001)
+stmt_containers(#20037,#20001)
 #20038=*
 exprs(#20038,78,#20037,-1,"f")
 hasLocation(#20038,#20013)
-exprContainers(#20038,#20037)
+expr_containers(#20038,#20037)
 literals("f","f",#20038)
 decl(#20038,#20036)
 #20039=*
@@ -120,56 +120,56 @@ scopenodes(#20037,#20039)
 scopenesting(#20039,#20000)
 #20040=@"var;{arguments};{#20039}"
 variables(#20040,"arguments",#20039)
-isArgumentsObject(#20040)
+is_arguments_object(#20040)
 #20041=*
 stmts(#20041,1,#20037,-2,"{\n  'us ... = 42;\n}")
 #20042=@"loc,{#10000},1,14,4,1"
 locations_default(#20042,#10000,1,14,4,1)
 hasLocation(#20041,#20042)
-stmtContainers(#20041,#20037)
+stmt_containers(#20041,#20037)
 #20043=*
 stmts(#20043,2,#20041,0,"'use strict';")
 #20044=@"loc,{#10000},2,3,2,15"
 locations_default(#20044,#10000,2,3,2,15)
 hasLocation(#20043,#20044)
-stmtContainers(#20043,#20037)
+stmt_containers(#20043,#20037)
 #20045=*
 exprs(#20045,4,#20043,0,"'use strict'")
 hasLocation(#20045,#20021)
-enclosingStmt(#20045,#20043)
-exprContainers(#20045,#20037)
+enclosing_stmt(#20045,#20043)
+expr_containers(#20045,#20037)
 literals("use strict","'use strict'",#20045)
 #20046=*
 regexpterm(#20046,14,#20045,0,"use strict")
 #20047=@"loc,{#10000},2,4,2,13"
 locations_default(#20047,#10000,2,4,2,13)
 hasLocation(#20046,#20047)
-regexpConstValue(#20046,"use strict")
+regexp_const_value(#20046,"use strict")
 #20048=*
 stmts(#20048,2,#20041,1,"arguments = 42;")
 #20049=@"loc,{#10000},3,3,3,17"
 locations_default(#20049,#10000,3,3,3,17)
 hasLocation(#20048,#20049)
-stmtContainers(#20048,#20037)
+stmt_containers(#20048,#20037)
 #20050=*
 exprs(#20050,47,#20048,0,"arguments = 42")
 #20051=@"loc,{#10000},3,3,3,16"
 locations_default(#20051,#10000,3,3,3,16)
 hasLocation(#20050,#20051)
-enclosingStmt(#20050,#20048)
-exprContainers(#20050,#20037)
+enclosing_stmt(#20050,#20048)
+expr_containers(#20050,#20037)
 #20052=*
 exprs(#20052,79,#20050,0,"arguments")
 hasLocation(#20052,#20025)
-enclosingStmt(#20052,#20048)
-exprContainers(#20052,#20037)
+enclosing_stmt(#20052,#20048)
+expr_containers(#20052,#20037)
 literals("arguments","arguments",#20052)
 bind(#20052,#20040)
 #20053=*
 exprs(#20053,3,#20050,1,"42")
 hasLocation(#20053,#20029)
-enclosingStmt(#20053,#20048)
-exprContainers(#20053,#20037)
+enclosing_stmt(#20053,#20048)
+expr_containers(#20053,#20037)
 literals("42","42",#20053)
 #20054=*
 entry_cfg_node(#20054,#20001)
@@ -197,7 +197,7 @@ successor(#20057,#20041)
 successor(#20038,#20037)
 successor(#20054,#20038)
 #20059=*
-jsParseErrors(#20059,#20001,"Error: Assigning to arguments in strict mode","  arguments = 42;
+js_parse_errors(#20059,#20001,"Error: Assigning to arguments in strict mode","  arguments = 42;
 ")
 #20060=@"loc,{#10000},3,3,3,3"
 locations_default(#20060,#10000,3,3,3,3)

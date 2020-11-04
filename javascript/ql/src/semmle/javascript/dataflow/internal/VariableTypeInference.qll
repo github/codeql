@@ -144,7 +144,7 @@ class AnalyzedVarDef extends VarDef {
 /**
  * Flow analysis for simple parameters of selected functions.
  */
-private class AnalyzedParameterAsVarDef extends AnalyzedVarDef, @vardecl {
+private class AnalyzedParameterAsVarDef extends AnalyzedVarDef, @var_decl {
   AnalyzedParameterAsVarDef() { this instanceof Parameter }
 
   override AbstractValue getAnRhsValue() {

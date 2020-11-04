@@ -21,7 +21,7 @@ class Include extends PreprocessorDirective, @ppd_include {
 
   /**
    * Gets the token which occurs after `#include`, for example `"filename"`
-   * or `&lt;filename>`.
+   * or `<filename>`.
    */
   string getIncludeText() { result = getHead() }
 

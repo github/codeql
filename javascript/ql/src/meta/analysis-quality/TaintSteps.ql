@@ -11,12 +11,22 @@
 import javascript
 import CallGraphQuality
 
-class BasicTaintConfiguration extends TaintTracking::Configuration {
-  BasicTaintConfiguration() { this = "BasicTaintConfiguration" }
-}
-
 predicate relevantStep(DataFlow::Node pred, DataFlow::Node succ) {
-  any(BasicTaintConfiguration cfg).isAdditionalFlowStep(pred, succ) and
+  (
+    any(TaintTracking::AdditionalTaintStep dts).step(pred, succ)
+    or
+    any(DataFlow::AdditionalFlowStep cfg).step(pred, succ)
+    or
+    any(DataFlow::AdditionalFlowStep cfg).step(pred, succ, _, _)
+    or
+    any(DataFlow::AdditionalFlowStep cfg).loadStep(pred, succ, _)
+    or
+    any(DataFlow::AdditionalFlowStep cfg).storeStep(pred, succ, _)
+    or
+    any(DataFlow::AdditionalFlowStep cfg).loadStoreStep(pred, succ, _, _)
+    or
+    any(DataFlow::AdditionalFlowStep cfg).loadStoreStep(pred, succ, _)
+  ) and
   not pred.getFile() instanceof IgnoredFile and
   not succ.getFile() instanceof IgnoredFile
 }

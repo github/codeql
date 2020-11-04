@@ -327,7 +327,7 @@ module TaintTracking {
    * taint to flow from `v` to any read of `c2.state.p`, where `c2`
    * also is an instance of `C`.
    */
-  private class ReactComponentStateTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
+  private class ReactComponentStateTaintStep extends AdditionalTaintStep {
     DataFlow::Node source;
 
     ReactComponentStateTaintStep() {
@@ -358,7 +358,7 @@ module TaintTracking {
    * taint to flow from `v` to any read of `c2.props.p`, where `c2`
    * also is an instance of `C`.
    */
-  private class ReactComponentPropsTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
+  private class ReactComponentPropsTaintStep extends AdditionalTaintStep {
     DataFlow::Node source;
 
     ReactComponentPropsTaintStep() {
@@ -427,6 +427,7 @@ module TaintTracking {
         name = "padStart" or
         name = "repeat" or
         name = "replace" or
+        name = "replaceAll" or
         name = "slice" or
         name = "small" or
         name = "split" or
@@ -452,7 +453,7 @@ module TaintTracking {
       exists(int i | pred.asExpr() = succ.getAstNode().(MethodCallExpr).getArgument(i) |
         name = "concat"
         or
-        name = "replace" and i = 1
+        name = ["replace", "replaceAll"] and i = 1
       )
     )
     or
@@ -707,7 +708,8 @@ module TaintTracking {
      */
     private ControlFlowNode getACaptureSetter(DataFlow::Node input) {
       exists(DataFlow::MethodCallNode call | result = call.asExpr() |
-        call.getMethodName() = ["search", "replace", "match"] and input = call.getReceiver()
+        call.getMethodName() = ["search", "replace", "replaceAll", "match"] and
+        input = call.getReceiver()
         or
         call.getMethodName() = ["test", "exec"] and input = call.getArgument(0)
       )

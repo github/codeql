@@ -19,13 +19,11 @@ namespace Semmle.Extraction.CSharp.Populators
             {
                 return l1;
             }
-            else
-            {
-                var l2 = n2.FixedLocation();
-                int start = System.Math.Min(l1.SourceSpan.Start, l2.SourceSpan.Start);
-                int end = System.Math.Max(l1.SourceSpan.End, l2.SourceSpan.End);
-                return Location.Create(n2.SyntaxTree, new Microsoft.CodeAnalysis.Text.TextSpan(start, end - start));
-            }
+
+            var l2 = n2.FixedLocation();
+            var start = System.Math.Min(l1.SourceSpan.Start, l2.SourceSpan.Start);
+            var end = System.Math.Max(l1.SourceSpan.End, l2.SourceSpan.End);
+            return Location.Create(n2.SyntaxTree, new Microsoft.CodeAnalysis.Text.TextSpan(start, end - start));
         }
 
         /// <summary>

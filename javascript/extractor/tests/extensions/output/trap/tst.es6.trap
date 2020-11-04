@@ -64,31 +64,31 @@ hasLocation(#20001,#20020)
 scopes(#20021,3)
 scopenodes(#20001,#20021)
 scopenesting(#20021,#20000)
-isModule(#20001)
-isES2015Module(#20001)
+is_module(#20001)
+is_es2015_module(#20001)
 #20022=*
 stmts(#20022,2,#20001,0,"console ...  ES6"");")
 hasLocation(#20022,#20003)
-stmtContainers(#20022,#20001)
+stmt_containers(#20022,#20001)
 #20023=*
 exprs(#20023,13,#20022,0,"console ... o ES6"")")
 #20024=@"loc,{#10000},1,1,1,24"
 locations_default(#20024,#10000,1,1,1,24)
 hasLocation(#20023,#20024)
-enclosingStmt(#20023,#20022)
-exprContainers(#20023,#20001)
+enclosing_stmt(#20023,#20022)
+expr_containers(#20023,#20001)
 #20025=*
 exprs(#20025,14,#20023,-1,"console.log")
 #20026=@"loc,{#10000},1,1,1,11"
 locations_default(#20026,#10000,1,1,1,11)
 hasLocation(#20025,#20026)
-enclosingStmt(#20025,#20022)
-exprContainers(#20025,#20001)
+enclosing_stmt(#20025,#20022)
+expr_containers(#20025,#20001)
 #20027=*
 exprs(#20027,79,#20025,0,"console")
 hasLocation(#20027,#20005)
-enclosingStmt(#20027,#20022)
-exprContainers(#20027,#20001)
+enclosing_stmt(#20027,#20022)
+expr_containers(#20027,#20001)
 literals("console","console",#20027)
 #20028=@"var;{console};{#20000}"
 variables(#20028,"console",#20000)
@@ -96,21 +96,21 @@ bind(#20027,#20028)
 #20029=*
 exprs(#20029,0,#20025,1,"log")
 hasLocation(#20029,#20009)
-enclosingStmt(#20029,#20022)
-exprContainers(#20029,#20001)
+enclosing_stmt(#20029,#20022)
+expr_containers(#20029,#20001)
 literals("log","log",#20029)
 #20030=*
 exprs(#20030,4,#20023,0,"""Hello ES6""")
 hasLocation(#20030,#20013)
-enclosingStmt(#20030,#20022)
-exprContainers(#20030,#20001)
+enclosing_stmt(#20030,#20022)
+expr_containers(#20030,#20001)
 literals("Hello ES6","""Hello ES6""",#20030)
 #20031=*
 regexpterm(#20031,14,#20030,0,"Hello ES6")
 #20032=@"loc,{#10000},1,14,1,22"
 locations_default(#20032,#10000,1,14,1,22)
 hasLocation(#20031,#20032)
-regexpConstValue(#20031,"Hello ES6")
+regexp_const_value(#20031,"Hello ES6")
 #20033=*
 entry_cfg_node(#20033,#20001)
 #20034=@"loc,{#10000},1,1,1,0"

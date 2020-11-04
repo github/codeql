@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Mostly duplicate method
  * @description Methods in which most of the lines are duplicated in another method make code more
  *              difficult to understand and introduce a risk of changes being made to only one copy.

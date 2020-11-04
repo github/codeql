@@ -228,7 +228,7 @@ module DataFlow {
      *
      * Doesn't take field types and function return types into account.
      */
-    private JSDocTypeExpr getFallbackTypeAnnotation() {
+    private TypeAnnotation getFallbackTypeAnnotation() {
       exists(BindingPattern pattern |
         this = valueNode(pattern) and
         not ast_node_type(pattern, _) and
@@ -236,6 +236,11 @@ module DataFlow {
       )
       or
       result = getAPredecessor().getFallbackTypeAnnotation()
+      or
+      exists(DataFlow::ClassNode cls, string fieldName |
+        this = cls.getAReceiverNode().getAPropertyRead(fieldName) and
+        result = cls.getFieldTypeAnnotation(fieldName)
+      )
     }
 
     /**
@@ -704,7 +709,9 @@ module DataFlow {
       result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
     }
 
-    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+    override Expr getPropertyNameExpr() {
+      none() // The parameter value is not the name of the field
+    }
 
     override string getPropertyName() { result = prop.getName() }
 
@@ -912,7 +919,7 @@ module DataFlow {
       function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override BasicBlock getBasicBlock() { result = function.(ExprOrStmt).getBasicBlock() }
+    override BasicBlock getBasicBlock() { result = function.getExit().getBasicBlock() }
 
     /**
      * Gets the function corresponding to this exceptional return node.
@@ -938,7 +945,7 @@ module DataFlow {
       function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override BasicBlock getBasicBlock() { result = function.(ExprOrStmt).getBasicBlock() }
+    override BasicBlock getBasicBlock() { result = function.getExit().getBasicBlock() }
 
     /**
      * Gets the function corresponding to this return node.
@@ -1495,7 +1502,7 @@ module DataFlow {
     )
     or
     // from returned expr to the FunctionReturnNode.
-    exists(Function f | not f.isAsync() |
+    exists(Function f | not f.isAsyncOrGenerator() |
       DataFlow::functionReturnNode(succ, f) and pred = valueNode(f.getAReturnedExpr())
     )
   }

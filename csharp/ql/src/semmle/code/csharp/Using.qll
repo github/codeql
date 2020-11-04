@@ -5,6 +5,7 @@
  */
 
 import Element
+private import TypeRef
 
 /**
  * A `using` directive. Either a namespace `using` directive

@@ -14,10 +14,10 @@ private import semmle.code.csharp.frameworks.JsonNET
 private import semmle.code.csharp.frameworks.WCF
 
 /**
- * Holds if `node` should be a barrier in all global taint flow configurations
+ * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintBarrier(DataFlow::Node node) { none() }
+predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 deprecated predicate localAdditionalTaintStep = defaultAdditionalTaintStep/2;
 
@@ -95,20 +95,24 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
           scope = e2 and
           isSuccessor = true
         )
+      or
+      e1 = e2.(AwaitExpr).getExpr() and
+      scope = e2 and
+      isSuccessor = true
     )
   }
 }
 
 private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   Stages::DataFlowStage::forceCachingInSameStage() and
-  any(LocalTaintExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
+  hasNodePath(any(LocalTaintExprStepConfiguration x), nodeFrom, nodeTo)
   or
   localTaintStepCil(nodeFrom, nodeTo)
 }
 
 cached
 private module Cached {
-  private import LibraryFlow
+  private import Summaries
 
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
@@ -126,19 +130,19 @@ private module Cached {
     (
       // Simple flow through library code is included in the exposed local
       // step relation, even though flow is technically inter-procedural
-      LibraryFlow::localStepLibrary(nodeFrom, nodeTo, false)
+      summaryThroughStep(nodeFrom, nodeTo, false)
       or
       // Taint collection by adding a tainted element
       exists(DataFlow::ElementContent c |
         storeStep(nodeFrom, c, nodeTo)
         or
-        setterLibrary(nodeFrom, c, nodeTo, false)
+        summarySetterStep(nodeFrom, c, nodeTo)
       )
       or
       exists(DataFlow::Content c |
         readStep(nodeFrom, c, nodeTo)
         or
-        getterLibrary(nodeFrom, c, nodeTo, false)
+        summaryGetterStep(nodeFrom, c, nodeTo)
       |
         // Taint members
         c = any(TaintedMember m).(FieldOrProperty).getContent()
@@ -165,7 +169,7 @@ private module Cached {
     // tracking configurations where the source is a collection
     readStep(nodeFrom, TElementContent(), nodeTo)
     or
-    LibraryFlow::localStepLibrary(nodeFrom, nodeTo, false)
+    summaryLocalStep(nodeFrom, nodeTo, false)
     or
     nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
   }

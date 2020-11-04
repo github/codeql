@@ -7,7 +7,7 @@
 <overview>
 
 <!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
-<include src="cpp/jsfNote.qhelp" />
+<include src="../jsfNote.qhelp" />
 
 <p>
 This query finds bit fields with members that are not explicitly declared to be unsigned.

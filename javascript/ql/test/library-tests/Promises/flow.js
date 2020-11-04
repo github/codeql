@@ -154,4 +154,15 @@
 	} catch (e) {
 	  sink(e); // NOT OK
 	}
-  })();
+})();
+
+(function () {
+	var source = "source";
+
+	var bluebird = require("bluebird");
+
+	bluebird.mapSeries(source, x => sink(x)); // NOT OK (for taint-tracking configs)
+
+	const foo = bluebird.mapSeries(source, x => x);
+	sink(foo); // NOT OK (for taint-tracking configs)
+})

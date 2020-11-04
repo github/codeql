@@ -27,11 +27,11 @@ predicate macroUseLocation(File f, int start, int end) {
 }
 
 pragma[noopt]
-predicate emptyIf(IfStmt s, Block b, File f, int start, int end) {
+predicate emptyIf(IfStmt s, BlockStmt b, File f, int start, int end) {
   s instanceof IfStmt and
   not exists(s.getElse()) and
   b = s.getThen() and
-  b instanceof Block and
+  b instanceof BlockStmt and
   not exists(b.getAChild()) and
   f = b.getFile() and
   exists(Location l |
@@ -42,7 +42,7 @@ predicate emptyIf(IfStmt s, Block b, File f, int start, int end) {
 }
 
 pragma[noopt]
-predicate query(IfStmt s, Block b) {
+predicate query(IfStmt s, BlockStmt b) {
   exists(File f, int blockStart, int blockEnd |
     emptyIf(s, b, f, blockStart, blockEnd) and
     not exists(int macroStart, int macroEnd |
@@ -53,7 +53,7 @@ predicate query(IfStmt s, Block b) {
   )
 }
 
-from IfStmt s, Block b
+from IfStmt s, BlockStmt b
 where
   query(s, b) and
   not b.isInMacroExpansion()

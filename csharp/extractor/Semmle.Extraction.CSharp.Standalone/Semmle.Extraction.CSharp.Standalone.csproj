@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Semmle.Extraction.CSharp.Standalone</AssemblyName>
     <RootNamespace>Semmle.Extraction.CSharp.Standalone</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -10,6 +10,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

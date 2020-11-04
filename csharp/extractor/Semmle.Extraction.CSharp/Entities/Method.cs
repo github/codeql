@@ -9,10 +9,10 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public abstract class Method : CachedSymbol<IMethodSymbol>, IExpressionParentEntity, IStatementParentEntity
     {
-        public Method(Context cx, IMethodSymbol init)
+        protected Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        protected void PopulateParameters(TextWriter trapFile)
+        protected void PopulateParameters()
         {
             var originalMethod = OriginalDefinition;
             IEnumerable<IParameterSymbol> parameters = symbol.Parameters;
@@ -62,7 +62,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // so there's nothing to extract.
         }
 
-        void PopulateMethodBody(TextWriter trapFile)
+        private void PopulateMethodBody(TextWriter trapFile)
         {
             if (!IsSourceDeclaration)
                 return;
@@ -71,30 +71,34 @@ namespace Semmle.Extraction.CSharp.Entities
             var expr = ExpressionBody;
 
             if (block != null || expr != null)
+            {
                 Context.PopulateLater(
-                    () =>
-                    {
-                        ExtractInitializers(trapFile);
-                        if (block != null)
-                            Statements.Block.Create(Context, block, this, 0);
-                        else
-                            Expression.Create(Context, expr, this, 0);
+                   () =>
+                   {
+                       ExtractInitializers(trapFile);
+                       if (block != null)
+                           Statements.Block.Create(Context, block, this, 0);
+                       else
+                           Expression.Create(Context, expr, this, 0);
 
-                        Context.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
-                    });
+                       Context.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
+                   });
+            }
         }
 
         public void Overrides(TextWriter trapFile)
         {
-            foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.
-                Where(sym => sym.MethodKind == MethodKind.Ordinary).
-                Select(impl => Type.Create(Context, impl.ContainingType)))
+            foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations
+                .Where(sym => sym.MethodKind == MethodKind.Ordinary)
+                .Select(impl => Type.Create(Context, impl.ContainingType)))
             {
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 if (IsSourceDeclaration)
+                {
                     foreach (var syntax in symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
                         TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
+                }
             }
 
             if (symbol.OverriddenMethod != null)
@@ -108,6 +112,9 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         protected static void BuildMethodId(Method m, TextWriter trapFile)
         {
+            m.symbol.ReturnType.BuildOrWriteId(m.Context, trapFile, m.symbol);
+            trapFile.Write(" ");
+
             trapFile.WriteSubId(m.ContainingType);
 
             AddExplicitInterfaceQualifierToId(m.Context, trapFile, m.symbol.ExplicitInterfaceImplementations);
@@ -129,7 +136,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     // Type arguments with different nullability can result in
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); trapFile.Write((int)ta.Nullability); });
+                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { ta.Symbol.BuildOrWriteId(m.Context, tb0, m.symbol); trapFile.Write((int)ta.Nullability); });
                     trapFile.Write('>');
                 }
             }
@@ -163,65 +170,21 @@ namespace Semmle.Extraction.CSharp.Entities
             BuildMethodId(this, trapFile);
         }
 
-        /// <summary>
-        /// Adds an appropriate label ID to the trap builder <paramref name="trapFile"/>
-        /// for the type <paramref name="type"/> belonging to the signature of method
-        /// <paramref name="method"/>.
-        ///
-        /// For methods without type parameters this will always add the key of the
-        /// corresponding type.
-        ///
-        /// For methods with type parameters, this will add the key of the
-        /// corresponding type if the type does *not* contain one of the method
-        /// type parameters, otherwise it will add a textual representation of
-        /// the type. This distinction is required because type parameter IDs
-        /// refer to their declaring methods.
-        ///
-        /// Example:
-        ///
-        /// <code>
-        /// int Count&lt;T&gt;(IEnumerable<T> items)
-        /// </code>
-        ///
-        /// The label definitions for <code>Count</code> (<code>#4</code>) and <code>T</code>
-        /// (<code>#5</code>) will look like:
-        ///
-        /// <code>
-        /// #1=&lt;label for System.Int32&gt;
-        /// #2=&lt;label for type containing Count&gt;
-        /// #3=&lt;label for IEnumerable`1&gt;
-        /// #4=@"{#1} {#2}.Count`2(#3<T>);method"
-        /// #5=@"{#4}T;typeparameter"
-        /// </code>
-        ///
-        /// Note how <code>int</code> is referenced in the label definition <code>#3</code> for
-        /// <code>Count</code>, while <code>T[]</code> is represented textually in order
-        /// to make the reference to <code>#3</code> in the label definition <code>#4</code> for
-        /// <code>T</code> valid.
-        /// </summary>
-        protected static void AddSignatureTypeToId(Context cx, TextWriter trapFile, IMethodSymbol method, ITypeSymbol type)
-        {
-            if (type.ContainsTypeParameters(cx, method))
-                type.BuildTypeId(cx, trapFile, (cx0, tb0, type0) => AddSignatureTypeToId(cx, tb0, method, type0));
-            else
-                trapFile.WriteSubId(Type.Create(cx, type));
-        }
-
         protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
         {
             trapFile.Write('(');
-            int index = 0;
+            var index = 0;
 
-            if (method.MethodKind == MethodKind.ReducedExtension)
+            var @params = method.MethodKind == MethodKind.ReducedExtension
+                ? method.ReducedFrom.Parameters
+                : method.Parameters;
+
+            foreach (var param in @params)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType);
-            }
-
-            foreach (var param in method.Parameters)
-            {
-                trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, param.Type);
+                param.Type.BuildOrWriteId(cx, trapFile, method);
+                trapFile.Write(" ");
+                trapFile.Write(param.Name);
                 switch (param.RefKind)
                 {
                     case RefKind.Out:
@@ -245,9 +208,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static void AddExplicitInterfaceQualifierToId(Context cx, System.IO.TextWriter trapFile, IEnumerable<ISymbol> explicitInterfaceImplementations)
         {
             if (explicitInterfaceImplementations.Any())
-            {
                 trapFile.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
-            }
         }
 
         public virtual string Name => symbol.Name;
@@ -260,7 +221,8 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns></returns>
         public static Method Create(Context cx, IMethodSymbol methodDecl)
         {
-            if (methodDecl == null) return null;
+            if (methodDecl == null)
+                return null;
 
             var methodKind = methodDecl.MethodKind;
 
@@ -283,7 +245,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     return Destructor.Create(cx, methodDecl);
                 case MethodKind.PropertyGet:
                 case MethodKind.PropertySet:
-                    return methodDecl.AssociatedSymbol is null ? OrdinaryMethod.Create(cx, methodDecl) : (Method)Accessor.Create(cx, methodDecl);
+                    return Accessor.GetPropertySymbol(methodDecl) is null ? OrdinaryMethod.Create(cx, methodDecl) : (Method)Accessor.Create(cx, methodDecl);
                 case MethodKind.EventAdd:
                 case MethodKind.EventRemove:
                     return EventAccessor.Create(cx, methodDecl);
@@ -322,7 +284,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public bool IsBoundGeneric => IsGeneric && !IsUnboundGeneric;
 
-        bool IsReducedExtension => symbol.MethodKind == MethodKind.ReducedExtension;
+        private bool IsReducedExtension => symbol.MethodKind == MethodKind.ReducedExtension;
 
         protected IMethodSymbol ConstructedFromSymbol => symbol.ConstructedFrom.ReducedFrom ?? symbol.ConstructedFrom;
 
@@ -336,7 +298,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (IsGeneric)
             {
-                int child = 0;
+                var child = 0;
 
                 if (isFullyConstructed)
                 {
@@ -375,7 +337,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Common population code for all callables
             BindComments();
             PopulateAttributes();
-            PopulateParameters(trapFile);
+            PopulateParameters();
             PopulateMethodBody(trapFile);
             PopulateGenerics(trapFile);
             PopulateMetadataHandle(trapFile);

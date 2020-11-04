@@ -50,19 +50,19 @@ hasLocation(#20001,#20003)
 #20016=*
 stmts(#20016,2,#20001,0,"alert("" ... rld!"");")
 hasLocation(#20016,#20003)
-stmtContainers(#20016,#20001)
+stmt_containers(#20016,#20001)
 #20017=*
 exprs(#20017,13,#20016,0,"alert("" ... orld!"")")
 #20018=@"loc,{#10000},1,1,1,22"
 locations_default(#20018,#10000,1,1,1,22)
 hasLocation(#20017,#20018)
-enclosingStmt(#20017,#20016)
-exprContainers(#20017,#20001)
+enclosing_stmt(#20017,#20016)
+expr_containers(#20017,#20001)
 #20019=*
 exprs(#20019,79,#20017,-1,"alert")
 hasLocation(#20019,#20005)
-enclosingStmt(#20019,#20016)
-exprContainers(#20019,#20001)
+enclosing_stmt(#20019,#20016)
+expr_containers(#20019,#20001)
 literals("alert","alert",#20019)
 #20020=@"var;{alert};{#20000}"
 variables(#20020,"alert",#20000)
@@ -70,15 +70,15 @@ bind(#20019,#20020)
 #20021=*
 exprs(#20021,4,#20017,0,"""Hello, world!""")
 hasLocation(#20021,#20009)
-enclosingStmt(#20021,#20016)
-exprContainers(#20021,#20001)
+enclosing_stmt(#20021,#20016)
+expr_containers(#20021,#20001)
 literals("Hello, world!","""Hello, world!""",#20021)
 #20022=*
 regexpterm(#20022,14,#20021,0,"Hello, world!")
 #20023=@"loc,{#10000},1,8,1,20"
 locations_default(#20023,#10000,1,8,1,20)
 hasLocation(#20022,#20023)
-regexpConstValue(#20022,"Hello, world!")
+regexp_const_value(#20022,"Hello, world!")
 #20024=*
 entry_cfg_node(#20024,#20001)
 #20025=@"loc,{#10000},1,1,1,0"

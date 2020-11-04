@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.controlflow.Dominance
 
-from IfStmt i, Block b
+from IfStmt i, BlockStmt b
 where
   b = i.getThen() and
   dominates(i.getThen(), b) and

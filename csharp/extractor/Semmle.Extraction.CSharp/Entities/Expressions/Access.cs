@@ -1,12 +1,11 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Access : Expression
+    internal class Access : Expression
     {
-        static ExprKind AccessKind(Context cx, ISymbol symbol)
+        private static ExprKind AccessKind(Context cx, ISymbol symbol)
         {
             switch (symbol.Kind)
             {
@@ -43,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        Access(ExpressionNodeInfo info, ISymbol symbol, bool implicitThis, IEntity target)
+        private Access(ExpressionNodeInfo info, ISymbol symbol, bool implicitThis, IEntity target)
             : base(info.SetKind(AccessKind(info.Context, symbol)))
         {
             if (!(target is null))

@@ -1,11 +1,12 @@
 /** Provides classes relating to declarations and type members. */
 
-import Element
-import Variable
 import Callable
+import Element
 import Modifier
-private import Implements
+import Variable
 private import dotnet
+private import Implements
+private import TypeRef
 
 /**
  * A declaration.

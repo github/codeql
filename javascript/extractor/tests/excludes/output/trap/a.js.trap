@@ -28,12 +28,12 @@ hasLocation(#20001,#20003)
 #20007=*
 stmts(#20007,2,#20001,0,"42")
 hasLocation(#20007,#20003)
-stmtContainers(#20007,#20001)
+stmt_containers(#20007,#20001)
 #20008=*
 exprs(#20008,3,#20007,0,"42")
 hasLocation(#20008,#20003)
-enclosingStmt(#20008,#20007)
-exprContainers(#20008,#20001)
+enclosing_stmt(#20008,#20007)
+expr_containers(#20008,#20001)
 literals("42","42",#20008)
 #20009=*
 entry_cfg_node(#20009,#20001)

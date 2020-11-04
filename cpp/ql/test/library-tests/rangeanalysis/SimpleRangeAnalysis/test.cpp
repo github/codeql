@@ -78,3 +78,45 @@ void use_after_cast(unsigned char c)
   }
   c_times_2;
 }
+
+int ref_to_number(int &i, const int &ci, int &aliased) {
+  int &alias = aliased; // no range analysis for either of the two aliased variables
+
+  if (i >= 2)
+    return i;
+
+  if (ci >= 2)
+    return ci;
+
+  if (aliased >= 2)
+    return aliased;
+
+  if (alias >= 2)
+    return alias;
+
+  for (; i <= 12345; i++) { // test that widening works for references
+    i;
+  }
+
+  return 0;
+}
+
+void notequal_refinement(short n) {
+  if (n < 0)
+    return;
+
+  if (n) {
+    n; // 1 ..
+  } else {
+    n; // 0 .. 0
+  }
+
+  if (!n) {
+    n; // 0 .. 0
+  } else {
+    n; // 1 ..
+  }
+
+  n  ? n : n; // ? 1..  : 0..0
+  !n ? n : n; // ? 0..0 : 1..
+}

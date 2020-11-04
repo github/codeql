@@ -128,7 +128,7 @@ class Element extends ElementBase {
 
   /**
    * Gets the parent scope of this `Element`, if any.
-   * A scope is a `Type` (`Class` / `Enum`), a `Namespace`, a `Block`, a `Function`,
+   * A scope is a `Type` (`Class` / `Enum`), a `Namespace`, a `BlockStmt`, a `Function`,
    * or certain kinds of `Statement`.
    */
   Element getParentScope() {
@@ -161,7 +161,7 @@ class Element extends ElementBase {
     exists(EnumConstant e | this = e and result = e.getDeclaringEnum())
     or
     // result instanceof block|function
-    exists(Block b | this = b and blockscope(unresolveElement(b), unresolveElement(result)))
+    exists(BlockStmt b | this = b and blockscope(unresolveElement(b), unresolveElement(result)))
     or
     exists(TemplateFunction tf | this = tf.getATemplateArgument() and result = tf)
     or

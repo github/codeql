@@ -4,18 +4,22 @@ import python
 abstract class Comp extends Expr {
   abstract Function getFunction();
 
-  /** Gets the iteration variable for the nth innermost generator of this list comprehension */
+  /** Gets the iterable of this set comprehension. */
+  abstract Expr getIterable();
+
+  /** Gets the iteration variable for the nth innermost generator of this comprehension. */
   Variable getIterationVariable(int n) {
     result.getAnAccess() = this.getNthInnerLoop(n).getTarget()
   }
 
-  private For getNthInnerLoop(int n) {
+  /** Gets the nth innermost For expression of this comprehension. */
+  For getNthInnerLoop(int n) {
     n = 0 and result = this.getFunction().getStmt(0)
     or
     result = this.getNthInnerLoop(n - 1).getStmt(0)
   }
 
-  /** Gets the iteration variable for a generator of this list comprehension */
+  /** Gets the iteration variable for a generator of this list comprehension. */
   Variable getAnIterationVariable() { result = this.getIterationVariable(_) }
 
   /** Gets the scope in which the body of this list comprehension evaluates. */
@@ -62,6 +66,8 @@ class ListComp extends ListComp_, Comp {
 
   override Function getFunction() { result = ListComp_.super.getFunction() }
 
+  override Expr getIterable() { result = ListComp_.super.getIterable() }
+
   override string toString() { result = ListComp_.super.toString() }
 
   override Expr getElt() { result = Comp.super.getElt() }
@@ -79,6 +85,8 @@ class SetComp extends SetComp_, Comp {
   override predicate hasSideEffects() { any() }
 
   override Function getFunction() { result = SetComp_.super.getFunction() }
+
+  override Expr getIterable() { result = SetComp_.super.getIterable() }
 }
 
 /** A dictionary comprehension, such as `{ k:v for k, v in enumerate("0123456789") }` */
@@ -93,6 +101,8 @@ class DictComp extends DictComp_, Comp {
   override predicate hasSideEffects() { any() }
 
   override Function getFunction() { result = DictComp_.super.getFunction() }
+
+  override Expr getIterable() { result = DictComp_.super.getIterable() }
 }
 
 /** A generator expression, such as `(var for var in iterable)` */
@@ -107,4 +117,6 @@ class GeneratorExp extends GeneratorExp_, Comp {
   override predicate hasSideEffects() { any() }
 
   override Function getFunction() { result = GeneratorExp_.super.getFunction() }
+
+  override Expr getIterable() { result = GeneratorExp_.super.getIterable() }
 }

@@ -46,23 +46,23 @@ hasLocation(#20001,#20013)
 #20014=*
 stmts(#20014,2,#20001,0,"'use strict';")
 hasLocation(#20014,#20003)
-stmtContainers(#20014,#20001)
+stmt_containers(#20014,#20001)
 #20015=*
 exprs(#20015,4,#20014,0,"'use strict'")
 hasLocation(#20015,#20007)
-enclosingStmt(#20015,#20014)
-exprContainers(#20015,#20001)
+enclosing_stmt(#20015,#20014)
+expr_containers(#20015,#20001)
 literals("use strict","'use strict'",#20015)
 #20016=*
 regexpterm(#20016,14,#20015,0,"use strict")
 #20017=@"loc,{#10000},1,2,1,11"
 locations_default(#20017,#10000,1,2,1,11)
 hasLocation(#20016,#20017)
-regexpConstValue(#20016,"use strict")
+regexp_const_value(#20016,"use strict")
 #20018=*
 stmts(#20018,0,#20001,1,";")
 hasLocation(#20018,#20005)
-stmtContainers(#20018,#20001)
+stmt_containers(#20018,#20001)
 #20019=*
 entry_cfg_node(#20019,#20001)
 #20020=@"loc,{#10000},1,1,1,0"

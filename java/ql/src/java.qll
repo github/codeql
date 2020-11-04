@@ -3,6 +3,7 @@
 import Customizations
 import semmle.code.FileSystem
 import semmle.code.Location
+import semmle.code.Unit
 import semmle.code.java.Annotation
 import semmle.code.java.CompilationUnit
 import semmle.code.java.ControlFlowGraph

@@ -9,22 +9,27 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// The compiler exe, or null if unspecified.
         /// </summary>
-        public string CompilerName;
+        public string CompilerName { get; set; }
 
         /// <summary>
         /// Specified .Net Framework dir, or null if unspecified.
         /// </summary>
-        public string Framework;
+        public string Framework { get; set; }
 
         /// <summary>
         /// All other arguments passed to the compilation.
         /// </summary>
-        public IList<string> CompilerArguments = new List<string>();
+        public IList<string> CompilerArguments { get; } = new List<string>();
 
         /// <summary>
         /// Holds if the extractor was launched from the CLR tracer.
         /// </summary>
-        public bool ClrTracer = false;
+        public bool ClrTracer { get; private set; } = false;
+
+        /// <summary>
+        /// Holds if assembly information should be prefixed to TRAP labels.
+        /// </summary>
+        public bool AssemblySensitiveTrap { get; private set; } = false;
 
         public static Options CreateWithEnvironment(string[] arguments)
         {
@@ -41,19 +46,19 @@ namespace Semmle.Extraction.CSharp
             return options;
         }
 
-        public override bool handleArgument(string argument)
+        public override bool HandleArgument(string argument)
         {
             CompilerArguments.Add(argument);
             return true;
         }
 
-        public override void invalidArgument(string argument)
+        public override void InvalidArgument(string argument)
         {
             // Unrecognised arguments are passed to the compiler.
             CompilerArguments.Add(argument);
         }
 
-        public override bool handleOption(string key, string value)
+        public override bool HandleOption(string key, string value)
         {
             switch (key)
             {
@@ -64,19 +69,22 @@ namespace Semmle.Extraction.CSharp
                     Framework = value;
                     return true;
                 default:
-                    return base.handleOption(key, value);
+                    return base.HandleOption(key, value);
             }
         }
 
-        public override bool handleFlag(string flag, bool value)
+        public override bool HandleFlag(string flag, bool value)
         {
             switch (flag)
             {
                 case "clrtracer":
                     ClrTracer = value;
                     return true;
+                case "assemblysensitivetrap":
+                    AssemblySensitiveTrap = value;
+                    return true;
                 default:
-                    return base.handleFlag(flag, value);
+                    return base.HandleFlag(flag, value);
             }
         }
 

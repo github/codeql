@@ -3,15 +3,15 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class ArrayType : Type<IArrayTypeSymbol>
+    internal class ArrayType : Type<IArrayTypeSymbol>
     {
-        ArrayType(Context cx, IArrayTypeSymbol init)
+        private ArrayType(Context cx, IArrayTypeSymbol init)
             : base(cx, init)
         {
             element = Create(cx, symbol.GetAnnotatedElementType());
         }
 
-        readonly AnnotatedType element;
+        private readonly AnnotatedType element;
 
         public int Rank => symbol.Rank;
 
@@ -36,11 +36,11 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";type");
         }
 
-        public static ArrayType Create(Context cx, IArrayTypeSymbol symbol) => ArrayTypeFactory.Instance.CreateEntity(cx, symbol);
+        public static ArrayType Create(Context cx, IArrayTypeSymbol symbol) => ArrayTypeFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class ArrayTypeFactory : ICachedEntityFactory<IArrayTypeSymbol, ArrayType>
+        private class ArrayTypeFactory : ICachedEntityFactory<IArrayTypeSymbol, ArrayType>
         {
-            public static readonly ArrayTypeFactory Instance = new ArrayTypeFactory();
+            public static ArrayTypeFactory Instance { get; } = new ArrayTypeFactory();
 
             public ArrayType Create(Context cx, IArrayTypeSymbol init) => new ArrayType(cx, init);
         }

@@ -4,6 +4,7 @@
 
 import Type
 private import semmle.code.csharp.ExprOrStmtParent
+private import TypeRef
 
 /**
  * An element that can have attributes. Either an assembly (`Assembly`), a field (`Field`),
@@ -88,7 +89,7 @@ class Attribute extends TopLevelExprParent, @attribute {
   override Location getALocation() { attribute_location(this, result) }
 
   override string toString() {
-    exists(string type, string name | type = getType().toString() |
+    exists(string type, string name | type = getType().getName() |
       (if type.matches("%Attribute") then name = type.prefix(type.length() - 9) else name = type) and
       result = "[" + name + "(...)]"
     )

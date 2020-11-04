@@ -138,7 +138,7 @@ To decide who should inherit the king's fortune, the villagers carefully read th
 
 *"The heir to the throne is the closest living relative of the king. Any person with a criminal record will not be considered. If there are multiple candidates, the oldest person is the heir."*
 
-As your final challenge, define a predicate ``hasCriminalRecord`` so that ``hasCriminalRecord(p)`` holds if ``p`` is any of the criminals you unmasked earlier (in the :doc:`Find the thief <find-the-thief>` and :doc:`Catch the fire starter <catch-the-fire-starter>` tutorials).
+As your final challenge, define a predicate ``hasCriminalRecord`` so that ``hasCriminalRecord(p)`` holds if ``p`` is any of the criminals you unmasked earlier (in the ":doc:`Find the thief <find-the-thief>`" and ":doc:`Catch the fire starter <catch-the-fire-starter>`" tutorials).
 
 ➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/1820692755164273290/>`__
 

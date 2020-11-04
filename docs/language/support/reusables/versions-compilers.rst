@@ -14,7 +14,7 @@
    C#,C# up to 8.0,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
 
    .NET Core up to 3.1","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
-   Go (aka Golang), "Go up to 1.14", "Go 1.11 or more recent", ``.go``
+   Go (aka Golang), "Go up to 1.15", "Go 1.11 or more recent", ``.go``
    Java,"Java 6 to 14 [3]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [4]_",``.java``

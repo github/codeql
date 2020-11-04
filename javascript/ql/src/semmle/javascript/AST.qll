@@ -148,12 +148,12 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
       or
       this instanceof InterfaceDeclaration
       or
-      hasDeclareKeyword(this)
+      has_declare_keyword(this)
       or
-      hasTypeKeyword(this)
+      has_type_keyword(this)
       or
       // An export such as `export declare function f()` should be seen as ambient.
-      hasDeclareKeyword(this.(ExportNamedDeclaration).getOperand())
+      has_declare_keyword(this.(ExportNamedDeclaration).getOperand())
       or
       exists(Function f |
         this = f and
@@ -221,7 +221,7 @@ class TopLevel extends @toplevel, StmtContainer {
   /** Holds if this toplevel is an externs definitions file. */
   predicate isExterns() {
     // either it was explicitly extracted as an externs file...
-    isExterns(this)
+    is_externs(this)
     or
     // ...or it has a comment with an `@externs` tag in it
     exists(JSDocTag externs |
@@ -350,7 +350,7 @@ class Externs extends TopLevel {
  * i = 9
  * ```
  */
-class ExprOrStmt extends @exprorstmt, ControlFlowNode, ASTNode { }
+class ExprOrStmt extends @expr_or_stmt, ControlFlowNode, ASTNode { }
 
 /**
  * A program element that contains statements, but isn't itself

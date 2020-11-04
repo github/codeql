@@ -84,50 +84,50 @@ variables(#20028,"__filename",#20024)
 variables(#20029,"__dirname",#20024)
 #20030=@"var;{arguments};{#20024}"
 variables(#20030,"arguments",#20024)
-isModule(#20001)
+is_module(#20001)
 #20031=*
 stmts(#20031,2,#20001,0,"console ... rld!"");")
 hasLocation(#20031,#20003)
-stmtContainers(#20031,#20001)
+stmt_containers(#20031,#20001)
 #20032=*
 exprs(#20032,13,#20031,0,"console ... orld!"")")
 #20033=@"loc,{#10000},2,1,2,28"
 locations_default(#20033,#10000,2,1,2,28)
 hasLocation(#20032,#20033)
-enclosingStmt(#20032,#20031)
-exprContainers(#20032,#20001)
+enclosing_stmt(#20032,#20031)
+expr_containers(#20032,#20001)
 #20034=*
 exprs(#20034,14,#20032,-1,"console.log")
 #20035=@"loc,{#10000},2,1,2,11"
 locations_default(#20035,#10000,2,1,2,11)
 hasLocation(#20034,#20035)
-enclosingStmt(#20034,#20031)
-exprContainers(#20034,#20001)
+enclosing_stmt(#20034,#20031)
+expr_containers(#20034,#20001)
 #20036=*
 exprs(#20036,79,#20034,0,"console")
 hasLocation(#20036,#20005)
-enclosingStmt(#20036,#20031)
-exprContainers(#20036,#20001)
+enclosing_stmt(#20036,#20031)
+expr_containers(#20036,#20001)
 literals("console","console",#20036)
 bind(#20036,#20022)
 #20037=*
 exprs(#20037,0,#20034,1,"log")
 hasLocation(#20037,#20009)
-enclosingStmt(#20037,#20031)
-exprContainers(#20037,#20001)
+enclosing_stmt(#20037,#20031)
+expr_containers(#20037,#20001)
 literals("log","log",#20037)
 #20038=*
 exprs(#20038,4,#20032,0,"""Hello, world!""")
 hasLocation(#20038,#20013)
-enclosingStmt(#20038,#20031)
-exprContainers(#20038,#20001)
+enclosing_stmt(#20038,#20031)
+expr_containers(#20038,#20001)
 literals("Hello, world!","""Hello, world!""",#20038)
 #20039=*
 regexpterm(#20039,14,#20038,0,"Hello, world!")
 #20040=@"loc,{#10000},2,14,2,26"
 locations_default(#20040,#10000,2,14,2,26)
 hasLocation(#20039,#20040)
-regexpConstValue(#20039,"Hello, world!")
+regexp_const_value(#20039,"Hello, world!")
 #20041=*
 entry_cfg_node(#20041,#20001)
 #20042=@"loc,{#10000},2,1,2,0"
@@ -143,7 +143,7 @@ successor(#20036,#20037)
 successor(#20034,#20038)
 successor(#20032,#20043)
 successor(#20041,#20031)
-isNodejs(#20001)
+is_nodejs(#20001)
 #20044=*
 lines(#20044,#20001,"#!/usr/bin/env node","
 ")

@@ -24,6 +24,7 @@
 | copy.cpp:38:8:38:16 | operator= |  | defaulted |
 | copy.cpp:41:9:41:9 | operator= |  |  |
 | copy.cpp:46:5:46:7 | Sub | deleted | defaulted |
+| copy.cpp:49:9:49:9 | HasPointer |  |  |
 | copy.cpp:49:9:49:9 | operator= |  |  |
 | copy.cpp:49:9:49:9 | operator= |  |  |
 | copy.cpp:54:9:54:9 | HasArray | deleted |  |
@@ -34,6 +35,7 @@
 | copy.cpp:59:9:59:9 | HasArray2D | deleted |  |
 | copy.cpp:59:9:59:9 | operator= |  |  |
 | copy.cpp:59:9:59:9 | operator= |  |  |
+| copy.cpp:67:9:67:9 | Wrapper |  |  |
 | copy.cpp:67:9:67:9 | Wrapper |  |  |
 | copy.cpp:67:9:67:9 | Wrapper | deleted |  |
 | copy.cpp:67:9:67:9 | Wrapper | deleted |  |
@@ -46,12 +48,14 @@
 | copy.cpp:72:9:72:9 | NotCopyable | deleted |  |
 | copy.cpp:72:9:72:9 | NotCopyable | deleted |  |
 | copy.cpp:72:9:72:9 | operator= | deleted |  |
+| copy.cpp:76:9:76:9 | CopyableComposition |  |  |
 | copy.cpp:76:9:76:9 | operator= |  |  |
 | copy.cpp:76:9:76:9 | operator= |  |  |
 | copy.cpp:80:9:80:9 | NotCopyableComposition |  |  |
 | copy.cpp:80:9:80:9 | NotCopyableComposition | deleted |  |
 | copy.cpp:80:9:80:9 | NotCopyableComposition | deleted |  |
 | copy.cpp:80:9:80:9 | operator= | deleted |  |
+| copy.cpp:84:9:84:9 | CopyableInheritance |  |  |
 | copy.cpp:84:9:84:9 | operator= |  |  |
 | copy.cpp:84:9:84:9 | operator= |  |  |
 | copy.cpp:86:9:86:9 | NotCopyableInheritance |  |  |
@@ -64,16 +68,16 @@
 | copy.cpp:91:11:91:11 | operator= |  |  |
 | copy.cpp:95:9:95:9 | operator= |  |  |
 | copy.cpp:95:9:95:9 | operator= |  |  |
+| copy.cpp:100:9:100:9 | Derived |  |  |
 | copy.cpp:100:9:100:9 | operator= |  |  |
 | copy.cpp:100:9:100:9 | operator= |  |  |
 | copy.cpp:106:9:106:9 | MoveCtor | deleted |  |
 | copy.cpp:106:9:106:9 | operator= | deleted |  |
 | copy.cpp:108:5:108:12 | MoveCtor |  |  |
+| copy.cpp:111:9:111:9 | MoveAssign |  |  |
 | copy.cpp:111:9:111:9 | MoveAssign | deleted |  |
 | copy.cpp:111:9:111:9 | operator= | deleted |  |
 | copy.cpp:113:17:113:25 | operator= |  |  |
-| copy.cpp:120:9:120:9 | OnlyCtor |  |  |
-| copy.cpp:120:9:120:9 | OnlyCtor |  |  |
 | copy.cpp:120:9:120:9 | OnlyCtor | deleted |  |
 | copy.cpp:120:9:120:9 | operator= | deleted |  |
 | copy.cpp:126:11:126:19 | operator= |  |  |

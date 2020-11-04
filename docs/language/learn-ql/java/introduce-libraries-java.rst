@@ -210,7 +210,7 @@ Class ``Variable`` represents a variable `in the Java sense <https://docs.oracle
 Abstract syntax tree
 --------------------
 
-Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see :doc:`Abstract syntax tree classes for working with Java programs <ast-class-reference>`.
+Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see ":doc:`Abstract syntax tree classes for working with Java programs <ast-class-reference>`."
 
 Both ``Expr`` and ``Stmt`` provide member predicates for exploring the abstract syntax tree of a program:
 
@@ -379,7 +379,7 @@ Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So 
    where not exists(c.getAReference())
    select c
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/7261739919657747703/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see :doc:`Navigating the call graph <call-graph>`.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/7261739919657747703/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see ":doc:`Navigating the call graph <call-graph>`."
 
 For more information about callables and calls, see the :doc:`article on the call graph <call-graph>`.
 

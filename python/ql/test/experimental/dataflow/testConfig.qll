@@ -21,7 +21,7 @@
  */
 
 private import python
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.DataFlow
 
 class TestConfiguration extends DataFlow::Configuration {
   TestConfiguration() { this = "TestConfiguration" }
@@ -43,4 +43,6 @@ class TestConfiguration extends DataFlow::Configuration {
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
+
+  override int explorationLimit() { result = 4 }
 }

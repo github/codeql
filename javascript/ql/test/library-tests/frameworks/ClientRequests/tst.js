@@ -209,3 +209,30 @@ import {ClientRequest, net} from 'electron';
 
 	$.get("example.php").fail(function(xhr) {console.log(xhr.responseText)});
 });
+
+const net = require("net");
+(function () {
+    var data = {
+        socket: new net.Socket()
+    }
+
+    data.socket.connect({host: "myHost"});
+
+    data.socket.on("data", (data) => {});
+
+    data.socket.write("foobar");
+})();
+
+const needle = require("needle");
+(function () {
+    const options = { headers: { 'X-Custom-Header': 'Bumbaway atuna' } };
+    needle("POST", "http://example.org/foo/bar", "MyData", options).then(function(resp) { console.log(resp.body) });
+
+    needle.get("http://example.org", (err, resp, body) => {
+
+    });
+
+    needle.post("http://example.org/post", "data", options, (err, resp, body) => {
+
+    });
+})();

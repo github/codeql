@@ -61,26 +61,26 @@ variables(#20019,"x",#20000)
 #20020=*
 stmts(#20020,23,#20001,0,"let /* **/ x = 42;")
 hasLocation(#20020,#20005)
-stmtContainers(#20020,#20001)
+stmt_containers(#20020,#20001)
 #20021=*
 exprs(#20021,64,#20020,0,"x = 42")
 #20022=@"loc,{#10000},1,12,1,17"
 locations_default(#20022,#10000,1,12,1,17)
 hasLocation(#20021,#20022)
-enclosingStmt(#20021,#20020)
-exprContainers(#20021,#20001)
+enclosing_stmt(#20021,#20020)
+expr_containers(#20021,#20001)
 #20023=*
 exprs(#20023,78,#20021,0,"x")
 hasLocation(#20023,#20009)
-enclosingStmt(#20023,#20020)
-exprContainers(#20023,#20001)
+enclosing_stmt(#20023,#20020)
+expr_containers(#20023,#20001)
 literals("x","x",#20023)
 decl(#20023,#20019)
 #20024=*
 exprs(#20024,3,#20021,1,"42")
 hasLocation(#20024,#20013)
-enclosingStmt(#20024,#20020)
-exprContainers(#20024,#20001)
+enclosing_stmt(#20024,#20020)
+expr_containers(#20024,#20001)
 literals("42","42",#20024)
 #20025=*
 entry_cfg_node(#20025,#20001)

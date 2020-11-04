@@ -1,12 +1,13 @@
 import python
-import experimental.dataflow.TaintTracking
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.TaintTracking
+import semmle.python.dataflow.new.DataFlow
 
 class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
   TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.(DataFlow::CfgNode).getNode().(NameNode).getId() in ["TAINTED_STRING", "TAINTED_BYTES"]
+    source.(DataFlow::CfgNode).getNode().(NameNode).getId() in ["TAINTED_STRING", "TAINTED_BYTES",
+          "TAINTED_LIST", "TAINTED_DICT"]
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -42,9 +43,10 @@ private string repr(Expr e) {
   result = repr(e.(Attribute).getObject()) + "." + e.(Attribute).getName()
 }
 
-query predicate test_taint(string arg_location, string test_res, string function_name, string repr) {
+query predicate test_taint(string arg_location, string test_res, string scope_name, string repr) {
   exists(Call call, Expr arg, boolean expected_taint, boolean has_taint |
-    call.getLocation().getFile().getShortName() = "test.py" and
+    // only consider files that are extracted as part of the test
+    exists(call.getLocation().getFile().getRelativePath()) and
     (
       call.getFunc().(Name).getId() = "ensure_tainted" and
       expected_taint = true
@@ -66,7 +68,7 @@ query predicate test_taint(string arg_location, string test_res, string function
     // select
     arg_location = arg.getLocation().toString() and
     test_res = test_res and
-    function_name = call.getScope().(Function).getName() and
+    scope_name = call.getScope().getName() and
     repr = repr(arg)
   )
 }

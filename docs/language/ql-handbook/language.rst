@@ -34,11 +34,11 @@ In the syntax itself, juxtaposition indicates sequencing. The vertical bar (``|`
 Architecture
 ------------
 
-A *QL program* consists of a query module defined in a QL file and a number of library modules defined in QLL files that it imports (see `Import directives <#import-directives>`__). The module in the QL file includes one or more queries (see `Queries <#queries>`__). A module may also include *import directives* (see `Import directives <#import-directives>`__), non-member predicates (see `Non-member predicates <#non-member-predicates>`__), class definitions (see `Classes <#classes>`__), and module definitions (see `Modules <#modules>`__).
+A *QL program* consists of a query module defined in a QL file and a number of library modules defined in QLL files that it imports (see "`Import directives <#import-directives>`__"). The module in the QL file includes one or more queries (see "`Queries <#queries>`__"). A module may also include *import directives* (see "`Import directives <#import-directives>`__"), non-member predicates (see "`Non-member predicates <#non-member-predicates>`__"), class definitions (see "`Classes <#classes>`__"), and module definitions (see "`Modules <#modules>`__").
 
-QL programs are interpreted in the context of a *database* and a *library path* . The database provides a number of definitions: database types (see `Types <#types>`__), entities (see `Values <#values>`__), built-in predicates (see `Built-ins <#built-ins>`__), and the *database content* of built-in predicates and external predicates (see `Evaluation <#evaluation>`__). The library path is a sequence of file-system directories that hold QLL files.
+QL programs are interpreted in the context of a *database* and a *library path* . The database provides a number of definitions: database types (see "`Types <#types>`__"), entities (see "`Values <#values>`__"), built-in predicates (see "`Built-ins <#built-ins>`__"), and the *database content* of built-in predicates and external predicates (see "`Evaluation <#evaluation>`__"). The library path is a sequence of file-system directories that hold QLL files.
 
-A QL program can be *evaluated* (see `Evaluation <#evaluation>`__) to produce a set of tuples of values (see `Values <#values>`__).
+A QL program can be *evaluated* (see "`Evaluation <#evaluation>`__") to produce a set of tuples of values (see "`Values <#values>`__").
 
 For a QL program to be *valid*, it must conform to a variety of conditions that are described throughout this specification; otherwise the program is said to be *invalid*. An implementation of QL must detect all invalid programs and refuse to evaluate them.
 
@@ -46,7 +46,7 @@ Library path
 ------------
 
 The library path is an ordered list of directory locations. It is used
-for resolving module imports (see `Module resolution <#module-resolution>`__). The library path is not strictly
+for resolving module imports (see "`Module resolution <#module-resolution>`__"). The library path is not strictly
 speaking a core part of the QL language, since different
 implementations of QL construct it in slightly different ways. Most QL
 tools also allow you to explicitly specify the library path on the command line for a
@@ -150,7 +150,7 @@ Module environments
 
 For each of modules, types, and predicates, a module *imports*, *declares*, and *exports* an environment. These are defined as follows (with X denoting the type of entity we are currently considering):
 
--  The *imported X environment* of a module is defined to be the union of the exported X environments of all the modules which the current module directly imports (see `Import directives <#import-directives>`__).
+-  The *imported X environment* of a module is defined to be the union of the exported X environments of all the modules which the current module directly imports (see "`Import directives <#import-directives>`__").
 
 -  The *declared X environment* of a module is the multimap of X declarations in the module itself.
 
@@ -232,10 +232,7 @@ For selection identifiers (``a::b``):
 
 For qualified identifiers (``a.b``):
 
--  Build up a list of *candidate search paths*, consisting of the
-   current file's directory, then the *query directory* of the current
-   file, and finally each of the directories on the
-   `library path <#library-path>`__ (in order).
+-  Build up a list of *candidate search paths*, consisting of the current file's directory, then the *query directory* of the current file, and finally each of the directories on the `library path <#library-path>`__ (in order).
 
 -  Determine the first candidate search path that has a *matching* QLL file for the import directive's qualified name. A QLL file in a candidate search path is said to match a qualified name if, starting from the candidate search path, there is a subdirectory for each successive qualifier in the qualified name, and the directory named by the final qualifier contains a file whose base name matches the qualified name's base name, with the addition of the file extension ``.qll``. The file and directory names are matched case-sensitively, regardless of whether the filesystem is case-sensitive or not.
 
@@ -268,7 +265,7 @@ The primitive types are ``boolean``, ``date``, ``float``, ``int``, and ``string`
 
 Database types are supplied as part of the database. Each database type has a *name*, which is an identifier starting with an at sign (``@``, U+0040) followed by lower-case letter. Database types have some number of *base types*, which are other database types. In a valid database, the base types relation is non-cyclic.
 
-Class types are defined in QL, in a way specified later in this document (see `Classes <#classes>`__). Each class type has a name that is an identifier starting with an upper-case letter. Each class type has one or more base types, which can be any kind of type except a class domain type. A class type may be declared *abstract*.
+Class types are defined in QL, in a way specified later in this document (see "`Classes <#classes>`__"). Each class type has a name that is an identifier starting with an upper-case letter. Each class type has one or more base types, which can be any kind of type except a class domain type. A class type may be declared *abstract*.
 
 Any class in QL has an associated class domain type and an associated character type.
 
@@ -287,7 +284,7 @@ With the exception of class domain types and character types (which cannot be re
 
 A type reference is resolved to a type as follows:
 
--  If it is a selection identifier (for example, ``a::B``), then the qualifier (``a``) is resolved as a module (see `Module resolution <#module-resolution>`__). The identifier (``B``) is then resolved in the exported type environment of the qualifier module.
+-  If it is a selection identifier (for example, ``a::B``), then the qualifier (``a``) is resolved as a module (see "`Module resolution <#module-resolution>`__"). The identifier (``B``) is then resolved in the exported type environment of the qualifier module.
 
 -  Otherwise, the identifier is resolved in the current module's visible type environment.
 
@@ -383,7 +380,7 @@ A *variable declaration list* provides a sequence of variables and a type for ea
 
 A valid variable declaration list must not include two declarations with the same variable name. Moreover, if the declaration has a typing environment that applies, it must not use a variable name that is already present in that typing environment.
 
-An *extension* of a named tuple for a given variable declaration list is a named tuple that additionally maps each variable in the list to a value. The value mapped by each new variable must be in the type that is associated with that variable in the given list; see `The store <#the-store>`__ for the definition of a value being in a type.
+An *extension* of a named tuple for a given variable declaration list is a named tuple that additionally maps each variable in the list to a value. The value mapped by each new variable must be in the type that is associated with that variable in the given list; see "`The store <#the-store>`__" for the definition of a value being in a type.
 
 The store
 ---------
@@ -410,7 +407,7 @@ A value ``v`` is in a type ``t`` under any of the following conditions:
 
 An ordered tuple *satisfies a predicate* ``p`` under the following circumstances. If ``p`` is not a member predicate, then the tuple satisfies the predicate whenever it directly satisfies the predicate.
 
-Otherwise, the tuple must be the tuple of a fact in the store with predicate ``q``, where ``q`` shares a root definition with ``p``. The first element of the tuple must be in the type before the dot in ``q``, and there must be no other predicate that overrides ``q`` such that this is true (see `Classes <#classes>`__ for details on overriding and root definitions).
+Otherwise, the tuple must be the tuple of a fact in the store with predicate ``q``, where ``q`` shares a root definition with ``p``. The first element of the tuple must be in the type before the dot in ``q``, and there must be no other predicate that overrides ``q`` such that this is true (see "`Classes <#classes>`__" for details on overriding and root definitions).
 
 An ordered tuple ``(a0, an)`` satisfies the ``+`` closure of a predicate if there is a sequence of binary tuples ``(a0, a1)``, ``(a1, a2)``, ..., ``(an-1, an)`` that all satisfy the predicate. An ordered tuple ``(a, b)`` satisfies the ``*`` closure of a predicate if it either satisfies the ``+`` closure, or if ``a`` and ``b`` are the same, and if moreover they are in each argument type of the predicate.
 
@@ -419,7 +416,7 @@ Lexical syntax
 
 QL and QLL files contain a sequence of *tokens* that are encoded as Unicode text. This section describes the tokenization algorithm, the kinds of available tokens, and their representation in Unicode.
 
-Some kinds of tokens have an identifier given in parentheses in the section title. That identifier, if present, is a terminal used in grammar productions later in the specification. Additionally, the `Identifiers <#identifiers>`__ section gives several kinds of identifiers, each of which has its own grammar terminal.
+Some kinds of tokens have an identifier given in parentheses in the section title. That identifier, if present, is a terminal used in grammar productions later in the specification. Additionally, the "`Identifiers <#identifiers>`__" section gives several kinds of identifiers, each of which has its own grammar terminal.
 
 Tokenization
 ~~~~~~~~~~~~
@@ -719,7 +716,7 @@ The parameterized annotation ``language`` supplies language pragmas which change
 
 A binding set for a predicate is a subset of the predicate’s arguments such that if those arguments are bound (restricted to a finite range of values), then all of the predicate’s arguments are bound.
 
-The parameterized annotation ``bindingset`` can be applied to a predicate (see `Non-member predicates <#non-member-predicates>`__ and `Members <#members>`__) to specify a binding set.
+The parameterized annotation ``bindingset`` can be applied to a predicate (see "`Non-member predicates <#non-member-predicates>`__" and "`Members <#members>`__") to specify a binding set.
 
 This annotation accepts a (possibly empty) list of variable names as parameters. The named variables must all be arguments of the predicate, possibly including ``this`` for characteristic predicates and member predicates, and ``result`` for predicates that yield a result.
 
@@ -754,7 +751,7 @@ A *predicate* is declared as a sequence of annotations, a head, and an optional 
 
 A predicate definition adds a mapping from the predicate name and arity to the predicate declaration to the current module's declared predicate environment.
 
-When a predicate is a top-level clause in a module, it is called a non-member predicate. See below for `member predicates <#member-predicates>`__.
+When a predicate is a top-level clause in a module, it is called a non-member predicate. See below for "`Member predicates <#member-predicates>`__."
 
 A valid non-member predicate can be annotated with ``cached``, ``deprecated``, ``external``, ``transient``, ``private``, and ``query``. Note, the ``transient`` annotation can only be applied if the non-member predicate is also annotated with ``external``.
 
@@ -772,7 +769,7 @@ The body of a predicate is of one of three forms:
            |  "{" formula "}" 
            |  "=" literalId "(" (predicateRef "/" int ("," predicateRef "/" int)*)? ")" "(" (exprs)? ")"
 
-In the first form, with just a semicolon, the predicate is said to not have a body. In the second form, the body of the predicate is the given formula (see `Formulas <#formulas>`__). In the third form, the body is a higher-order relation.
+In the first form, with just a semicolon, the predicate is said to not have a body. In the second form, the body of the predicate is the given formula (see "`Formulas <#formulas>`__"). In the third form, the body is a higher-order relation.
 
 A valid non-member predicate must have a body, either a formula or a higher-order relation, unless it is external, in which case it must not have a body.
 
@@ -903,7 +900,7 @@ The ``order`` keyword, if present, is followed by a number of *ordering directiv
 
 Each identifier in an ordering directive must identify exactly one of the select expressions. It must either be the label of the expression, or it must be a variable expression that is equivalent to exactly one of the select expressions. The type of the designated select expression must be a subtype of a primitive type.
 
-No select expression may be specified by more than one ordering directive. See `Ordering <#ordering>`__ for more information.
+No select expression may be specified by more than one ordering directive. See "`Ordering <#ordering>`__" for more information.
 
 Queries
 ~~~~~~~
@@ -1011,7 +1008,7 @@ The typing environment for the two environments is the same as for the operation
 
 The type of the operation is ``string`` if either operand is a subtype of ``string``. Otherwise, the type of the operation is ``int`` if both operands are subtypes of ``int``. Otherwise, the type of the operation is ``float``.
 
-If the result is of type ``string``, then the *left values* of the operation are the values of a "call with results" expression with the left operand as the receiver, ``toString`` as the predicate name, and no arguments (see `Calls with results <#calls-with-results>`__). Otherwise the left values are the values of the left operand. Likewise, the *right values* are either the values from calling ``toString`` on the right operand, or the values of the right operand as it is.
+If the result is of type ``string``, then the *left values* of the operation are the values of a "call with results" expression with the left operand as the receiver, ``toString`` as the predicate name, and no arguments (see "`Calls with results <#calls-with-results>`__"). Otherwise the left values are the values of the left operand. Likewise, the *right values* are either the values from calling ``toString`` on the right operand, or the values of the right operand as it is.
 
 The binary operation has one value for each combination of a left value and a right value. That value is determined as follows:
 
@@ -1098,7 +1095,7 @@ A valid call with results must *resolve* to exactly one predicate. The ways a ca
 
 -  If the call has no receiver, then it can resolve to a non-member predicate. If the predicate name is a simple identifier, then the predicate is resolved by looking up its name and arity in the visible predicate environment of the enclosing class or module.
 
-   If the predicate name is a selection identifier, then the qualifier is resolved as a module (see `Module resolution <#module-resolution>`__). The identifier is then resolved in the exported predicate environment of the qualifier module.
+   If the predicate name is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__"). The identifier is then resolved in the exported predicate environment of the qualifier module.
 
 -  If the call has a super expression as the receiver, then it resolves to a member predicate in a class the enclosing class inherits from. If the super expression is unqualified, then the super-class is the single class that the current class inherits from. If there is not exactly one such class, then the program is invalid. Otherwise the super-class is the class named by the qualifier of the super expression. The predicate is resolved by looking up its name and arity in the exported predicate environment of the super-class. If there is more than one such predicate, then the predicate call is not valid.
 
@@ -1182,7 +1179,7 @@ The type of a ``count``, ``strictcount`` aggregation is ``int``. The type of an 
 
 An ordering directive may only be specified for a ``max``, ``min``, ``rank``, ``concat`` or ``strictconcat`` aggregation. The type of the expression in an ordering directive must be an orderable type.
 
-The values of the aggregation expression are determined as follows. Firstly, the *range tuples* are extensions of the named tuple that the aggregation is being evaluated in with the variable declarations of the aggregation, and which *match* the formula (see `Formulas <#formulas>`__).
+The values of the aggregation expression are determined as follows. Firstly, the *range tuples* are extensions of the named tuple that the aggregation is being evaluated in with the variable declarations of the aggregation, and which *match* the formula (see "`Formulas <#formulas>`__").
 
 For each range tuple, the *aggregation tuples* are the extension of the range tuples to *aggregation variables* and *sort variables*.
 
@@ -1398,7 +1395,7 @@ A comparison formula is two expressions separated by a comparison operator:
    comparison ::= expr compop expr
    compop ::= "=" | "!=" | "<" | ">" | "<=" | ">="      
 
-A comparison formula matches if there is one value of the left expression that is in the given ordering with one of the values of the right expression. The ordering used is specified in `Ordering <#ordering>`__. If one of the values is an integer and the other is a float value, then the integer is converted to a float value before the comparison.
+A comparison formula matches if there is one value of the left expression that is in the given ordering with one of the values of the right expression. The ordering used is specified in "`Ordering <#ordering>`__." If one of the values is an integer and the other is a float value, then the integer is converted to a float value before the comparison.
 
 If the operator is ``=``, then at least one of the left and right expressions must have a type; if they both have a type, those types must be compatible.
 
@@ -1444,7 +1441,7 @@ A call has the following syntax:
 
 The identifier is called the *predicate name* of the call.
 
-A call must resolve to a predicate, using the same definition of resolve as for calls with results (see `Calls with results <#calls-with-results>`__).
+A call must resolve to a predicate, using the same definition of resolve as for calls with results (see "`Calls with results <#calls-with-results>`__").
 
 The resolved predicate must not have a result type.
 

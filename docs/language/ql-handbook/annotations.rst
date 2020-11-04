@@ -53,7 +53,7 @@ You can also find a summary table in the Annotations section of the
 
 The ``abstract`` annotation is used to define an abstract entity.
 
-For information about **abstract classes**, see :ref:`Classes <abstract-classes>`.
+For information about **abstract classes**, see ":ref:`Classes <abstract-classes>`."
 
 **Abstract predicates** are member predicates that have no body. They can be defined on any 
 class, and should be :ref:`overridden <overriding-member-predicates>` in non-abstract subtypes.
@@ -359,7 +359,7 @@ Language pragmas
 This annotation allows you to use **monotonic aggregates** instead of the standard QL
 :ref:`aggregates <aggregations>`.
 
-For more information, see :ref:`monotonic-aggregates`.
+For more information, see ":ref:`monotonic-aggregates`."
 
 .. _bindingset:
 
@@ -380,7 +380,7 @@ The ``bindingset`` annotation takes a comma-separated list of variables. Each va
 an argument of the predicate, possibly including ``this`` (for characteristic predicates and 
 member predicates) and ``result`` (for predicates that return a result).
 
-See :ref:`predicate-binding` in the :ref:`predicates` topic for examples and more information.
+For more information, see ":ref:`predicate-binding`."
 
 .. Links to use in substitutions
 

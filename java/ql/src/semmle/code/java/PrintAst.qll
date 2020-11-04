@@ -1,1005 +1,815 @@
 /**
- * Provides pretty-printed representations of the AST, in particular top-level
- * classes and interfaces.
+ * Provides queries to pretty-print a Java AST as a graph.
+ *
+ * By default, this will print the AST for all elements in the database. To change this behavior,
+ * extend `PrintAstConfiguration` and override `shouldPrint` to hold for only the elements
+ * you wish to view the AST for.
  */
 
 import java
 
-/**
- * Holds if the pretty-printed representation of `c` has the line `s` at line
- * number `line`.
- */
-predicate pp(ClassOrInterface c, string s, int line) {
-  not c instanceof NestedType and
-  s =
-    strictconcat(string part, int i |
-      exists(PpAst e | getEnclosingAst*(e) = c | ppPart(e, part, line, i))
-    |
-      part order by i
-    )
-}
-
-private PpAst getEnclosingAst(PpAst e) {
-  e.(Expr).getEnclosingCallable() = result or
-  e.(Stmt).getEnclosingCallable() = result or
-  e.(Member).getDeclaringType() = result or
-  e.(NestedType).getEnclosingType() = result
-}
+private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
 /**
- * An AST element to pretty-print. This is either an `Expr`, `Stmt`, `Class`,
- * `Interface`, or `Member`.
- *
- * Subclasses specify how they are printed by giving a sequence of printable
- * items. Each item in the sequence is either a string given by `getPart`, a
- * line break given by `newline`, or another AST element given by `getChild`.
- * The ordering of the sequence is given by the indices `i` in each of the
- * three predicates.
+ * The query can extend this class to control which elements are printed.
  */
-private class PpAst extends Top {
-  /** Gets the `i`th item to print. */
-  string getPart(int i) { none() }
-
-  /** Holds if the `i`th item to print is a line break. */
-  predicate newline(int i) { none() }
-
-  /** Gets the `i`th item to print. */
-  PpAst getChild(int i) { none() }
+class PrintAstConfiguration extends TPrintAstConfiguration {
+  /**
+   * Gets a textual representation of this `PrintAstConfiguration`.
+   */
+  string toString() { result = "PrintAstConfiguration" }
 
   /**
-   * Holds if the `i`th item to print is a `PpAst` given by `getChild(i)` and
-   * that this should be indented.
+   * Controls whether the `Element` should be considered for AST printing.
+   * By default it checks whether the `Element` `e` belongs to `Location` `l`.
    */
-  predicate indents(int i) { none() }
+  predicate shouldPrint(Element e, Location l) { e.fromSource() and l = e.getLocation() }
 }
 
-/** Gets the indentation level of the AST element `e`. */
-private int indentLevel(PpAst e) {
-  exists(ClassOrInterface c | c = e and not c instanceof NestedType and result = 0)
+private predicate shouldPrint(Element e, Location l) {
+  exists(PrintAstConfiguration config | config.shouldPrint(e, l))
+}
+
+private class ExprOrStmt extends Element {
+  ExprOrStmt() { this instanceof Expr or this instanceof Stmt }
+
+  ExprOrStmt getParent() {
+    result = this.(Expr).getParent()
+    or
+    result = this.(Stmt).getParent()
+  }
+
+  Callable getEnclosingCallable() {
+    result = this.(Expr).getEnclosingCallable()
+    or
+    result = this.(Stmt).getEnclosingCallable()
+  }
+}
+
+/** Holds if the given element does not need to be rendered in the AST, due to being compiler-generated. */
+private predicate isNotNeeded(Element el) {
+  exists(InitializerMethod im |
+    el = im
+    or
+    exists(ExprOrStmt e | e = el |
+      e.getEnclosingCallable() = im and
+      not e.getParent*() = any(Field f).getInitializer() and
+      not isInitBlock(im.getDeclaringType(), e.getParent*())
+    )
+  )
   or
-  exists(PpAst parent, int i, int lev |
-    e = parent.getChild(i) and
-    lev = indentLevel(parent) and
-    if parent.indents(i) then result = lev + 1 else result = lev
+  exists(Constructor c | c.isDefaultConstructor() |
+    el = c
+    or
+    el.(ExprOrStmt).getEnclosingCallable() = c
+  )
+  or
+  exists(Constructor c, int sline, int eline, int scol, int ecol |
+    el.(ExprOrStmt).getEnclosingCallable() = c
+  |
+    el.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
+    c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol)
+    // simply comparing their getLocation() doesn't work as they have distinct but equivalent locations
+  )
+  or
+  isNotNeeded(el.(Expr).getParent*().(Annotation).getAnnotatedElement())
+  or
+  isNotNeeded(el.(Parameter).getCallable())
+}
+
+/** Holds if the given field would have the same javadoc and annotations as another field declared in the same declaration */
+private predicate duplicateMetadata(Field f) {
+  exists(FieldDeclaration fd |
+    f = fd.getAField() and
+    not f = fd.getField(0)
   )
 }
 
 /**
- * Gets the `i`th item to print belonging to `e`. This is similar to
- * `e.getPart(i)`, but also include parentheses.
+ * Retrieves the canonical QL class(es) for entity `el`
  */
-private string getPart(PpAst e, int i) {
-  result = e.getPart(i)
-  or
-  e.(Expr).isParenthesized() and
-  (
-    i = -1 + min(int j | exists(e.getPart(j)) or e.newline(j) or exists(e.getChild(j))) and
-    result = "("
-    or
-    i = 1 + max(int j | exists(e.getPart(j)) or e.newline(j) or exists(e.getChild(j))) and
-    result = ")"
+private string getQlClass(Top el) {
+  result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
+  // Alternative implementation -- do not delete. It is useful for QL class discovery.
+  // result = "[" + concat(el.getAQlClass(), ",") + "] "
+}
+
+private predicate locationSortKeys(Element ast, string file, int line, int column) {
+  exists(Location loc |
+    loc = ast.getLocation() and
+    file = loc.getFile().toString() and
+    line = loc.getStartLine() and
+    column = loc.getStartColumn()
   )
+  or
+  not exists(ast.getLocation()) and
+  file = "" and
+  line = 0 and
+  column = 0
 }
 
 /**
- * Gets the number of string parts contained in `e` and recursively in its
- * children.
+ * Printed AST nodes are mostly `Element`s of the underlying AST.
  */
-language[monotonicAggregates]
-private int numParts(PpAst e) {
-  result =
-    count(int i | exists(getPart(e, i))) +
-      sum(PpAst child | child = e.getChild(_) | numParts(child))
-}
+private newtype TPrintAstNode =
+  TElementNode(Element el) { shouldPrint(el, _) } or
+  TForInitNode(ForStmt fs) { shouldPrint(fs, _) and exists(fs.getAnInit()) } or
+  TLocalVarDeclNode(LocalVariableDeclExpr lvde) {
+    shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
+  } or
+  TAnnotationsNode(Annotatable ann) {
+    shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)
+  } or
+  TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
+  TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
+  TGenericTypeNode(GenericType ty) { shouldPrint(ty, _) } or
+  TGenericCallableNode(GenericCallable c) { shouldPrint(c, _) } or
+  TDocumentableNode(Documentable d) { shouldPrint(d, _) and exists(d.getJavadoc()) } or
+  TJavadocNode(Javadoc jd) { exists(Documentable d | d.getJavadoc() = jd | shouldPrint(d, _)) } or
+  TJavadocElementNode(JavadocElement jd) {
+    exists(Documentable d | d.getJavadoc() = jd.getParent*() | shouldPrint(d, _))
+  } or
+  TImportsNode(CompilationUnit cu) {
+    shouldPrint(cu, _) and exists(Import i | i.getCompilationUnit() = cu)
+  }
 
 /**
- * Gets the number of line breaks contained in `e` and recursively in its
- * children.
+ * A node in the output tree.
  */
-language[monotonicAggregates]
-private int numLines(PpAst e) {
-  result = count(int i | e.newline(i)) + sum(PpAst child | child = e.getChild(_) | numLines(child))
-}
+class PrintAstNode extends TPrintAstNode {
+  /**
+   * Gets a textual representation of this node in the PrintAst output tree.
+   */
+  string toString() { none() }
 
-/**
- * Gets an index to a string part, line break, or child in `e` with rank `r`.
- */
-private int getIndex(PpAst e, int r) {
-  result = rank[r](int i | exists(getPart(e, i)) or e.newline(i) or exists(e.getChild(i)))
-}
+  /**
+   * Gets the child node at index `childIndex`. Child indices must be unique,
+   * but need not be contiguous.
+   */
+  PrintAstNode getChild(int childIndex) { none() }
 
-/** Holds if the `ix`th item of `e` should be printed at `(line, pos)`. */
-private predicate startPos(PpAst e, int ix, int line, int pos) {
-  exists(ClassOrInterface c |
-    c = e and not c instanceof NestedType and ix = getIndex(e, 1) and line = 0 and pos = 0
-  )
-  or
-  exists(PpAst parent, int parix |
-    startPos(parent, parix, line, pos) and e = parent.getChild(parix) and ix = getIndex(e, 1)
-  )
-  or
-  exists(int prevIx, int r | prevIx = getIndex(e, r - 1) and ix = getIndex(e, r) |
-    exists(getPart(e, prevIx)) and startPos(e, prevIx, line, pos - 1)
-    or
-    e.newline(prevIx) and startPos(e, prevIx, line - 1, _) and pos = 0
-    or
-    exists(PpAst child, int l, int p |
-      child = e.getChild(prevIx) and
-      startPos(e, prevIx, l, p) and
-      line = l + numLines(child) and
-      pos = p + numParts(child)
-    )
-  )
-}
+  /**
+   * Gets a child of this node.
+   */
+  final PrintAstNode getAChild() { result = getChild(_) }
 
-/**
- * Holds if the pretty-printed representation of `e` contributes `part` to occur
- * on `(line, pos)`. This does not include string parts belonging to children of
- * `e`.
- */
-private predicate ppPart(PpAst e, string part, int line, int pos) {
-  exists(int i | part = getPart(e, i) and startPos(e, i, line, pos))
-  or
-  exists(int i | exists(getPart(e, i)) or e.newline(i) |
-    startPos(e, i, line, 0) and
-    pos = -1 and
-    part = concat(int ind | ind in [1 .. indentLevel(e)] | "  ")
-  )
-}
+  /**
+   * Gets the parent of this node, if any.
+   */
+  final PrintAstNode getParent() { result.getAChild() = this }
 
-/*
- * Expressions
- */
+  /**
+   * Gets the location of this node in the source code.
+   */
+  Location getLocation() { none() }
 
-private class PpArrayAccess extends PpAst, ArrayAccess {
-  override string getPart(int i) {
-    i = 1 and result = "["
-    or
-    i = 3 and result = "]"
+  /**
+   * Gets the value of the property of this node, where the name of the property
+   * is `key`.
+   */
+  string getProperty(string key) {
+    key = "semmle.label" and
+    result = toString()
   }
 
-  override PpAst getChild(int i) {
-    i = 0 and result = this.getArray()
-    or
-    i = 2 and result = this.getIndexExpr()
+  /**
+   * Gets the label for the edge from this node to the specified child. By
+   * default, this is just the index of the child, but subclasses can override
+   * this.
+   */
+  string getChildEdgeLabel(int childIndex) {
+    exists(getChild(childIndex)) and
+    result = childIndex.toString()
   }
 }
 
-private class PpArrayCreationExpr extends PpAst, ArrayCreationExpr {
-  override string getPart(int i) {
-    i = 0 and result = "new "
-    or
-    i = 1 and result = baseType()
-    or
-    i = 2 + 3 * dimensionIndex() and result = "["
-    or
-    i = 4 + 3 * dimensionIndex() and result = "]"
-    or
-    i = 4 + 3 * exprDims() + [1 .. nonExprDims()] and result = "[]"
-  }
-
-  private string baseType() { result = this.getType().(Array).getElementType().toString() }
-
-  private int dimensionIndex() { exists(this.getDimension(result)) }
-
-  private int exprDims() { result = max(int j | j = 0 or j = 1 + dimensionIndex()) }
-
-  private int nonExprDims() { result = this.getType().(Array).getDimension() - exprDims() }
-
-  override PpAst getChild(int i) {
-    exists(int j | result = this.getDimension(j) and i = 3 + 3 * j)
-    or
-    i = 5 + 3 * exprDims() + nonExprDims() and result = this.getInit()
-  }
-}
-
-private class PpArrayInit extends PpAst, ArrayInit {
-  override string getPart(int i) {
-    i = 0 and result = "{ "
-    or
-    exists(int j | exists(this.getInit(j)) and j != 0 and i = 2 * j and result = ", ")
-    or
-    i = 2 + 2 * max(int j | exists(this.getInit(j)) or j = 0) and result = " }"
-  }
-
-  override PpAst getChild(int i) { exists(int j | result = this.getInit(j) and i = 1 + 2 * j) }
-}
-
-private class PpAssignment extends PpAst, Assignment {
-  override string getPart(int i) {
-    i = 1 and
-    this instanceof AssignExpr and
-    result = " = "
-    or
-    i = 1 and
-    result = " " + this.(AssignOp).getOp() + " "
-  }
-
-  override PpAst getChild(int i) {
-    i = 0 and result = this.getDest()
-    or
-    i = 2 and result = this.getRhs()
-  }
-}
-
-private class PpLiteral extends PpAst, Literal {
-  override string getPart(int i) { i = 0 and result = this.getLiteral() }
-}
-
-private class PpBinaryExpr extends PpAst, BinaryExpr {
-  override string getPart(int i) { i = 1 and result = this.getOp() }
-
-  override PpAst getChild(int i) {
-    i = 0 and result = this.getLeftOperand()
-    or
-    i = 2 and result = this.getRightOperand()
-  }
-}
-
-private class PpUnaryExpr extends PpAst, UnaryExpr {
-  override string getPart(int i) {
-    i = 0 and result = "++" and this instanceof PreIncExpr
-    or
-    i = 0 and result = "--" and this instanceof PreDecExpr
-    or
-    i = 0 and result = "-" and this instanceof MinusExpr
-    or
-    i = 0 and result = "+" and this instanceof PlusExpr
-    or
-    i = 0 and result = "~" and this instanceof BitNotExpr
-    or
-    i = 0 and result = "!" and this instanceof LogNotExpr
-    or
-    i = 2 and result = "++" and this instanceof PostIncExpr
-    or
-    i = 2 and result = "--" and this instanceof PostDecExpr
-  }
-
-  override PpAst getChild(int i) { i = 1 and result = this.getExpr() }
-}
-
-private class PpCastExpr extends PpAst, CastExpr {
-  override string getPart(int i) {
-    i = 0 and result = "("
-    or
-    i = 2 and result = ")"
-  }
-
-  override PpAst getChild(int i) {
-    i = 1 and result = this.getTypeExpr()
-    or
-    i = 3 and result = this.getExpr()
-  }
-}
-
-private class PpCall extends PpAst, Call {
-  override string getPart(int i) {
-    i = 1 and exists(this.getQualifier()) and result = "."
-    or
-    i = 2 and
-    (
-      result = this.(MethodAccess).getMethod().getName()
-      or
-      result = "this" and this instanceof ThisConstructorInvocationStmt
-      or
-      result = "super" and this instanceof SuperConstructorInvocationStmt
-      or
-      result = "new " and this instanceof ClassInstanceExpr and not this instanceof FunctionalExpr
-      or
-      result = "new /* -> */ " and this instanceof LambdaExpr
-      or
-      result = "new /* :: */ " and this instanceof MemberRefExpr
-    )
-    or
-    i = 4 and result = "("
-    or
-    exists(int argi |
-      exists(this.getArgument(argi)) and argi != 0 and i = 4 + 2 * argi and result = ", "
-    )
-    or
-    i = 5 + 2 * this.getNumArgument() and result = ")"
-    or
-    i = 6 + 2 * this.getNumArgument() and result = ";" and this instanceof Stmt
-    or
-    i = 6 + 2 * this.getNumArgument() and
-    result = " " and
-    exists(this.(ClassInstanceExpr).getAnonymousClass())
-  }
-
-  override PpAst getChild(int i) {
-    i = 0 and result = this.getQualifier()
-    or
-    i = 3 and result = this.(ClassInstanceExpr).getTypeName()
-    or
-    exists(int argi | i = 5 + 2 * argi and result = this.getArgument(argi))
-    or
-    i = 7 + 2 * this.getNumArgument() and result = this.(ClassInstanceExpr).getAnonymousClass()
-  }
-}
-
-private class PpConditionalExpr extends PpAst, ConditionalExpr {
-  override string getPart(int i) {
-    i = 1 and result = " ? "
-    or
-    i = 3 and result = " : "
-  }
-
-  override PpAst getChild(int i) {
-    i = 0 and result = this.getCondition()
-    or
-    i = 2 and result = this.getTrueExpr()
-    or
-    i = 4 and result = this.getFalseExpr()
-  }
-}
-
-private class PpSwitchExpr extends PpAst, SwitchExpr {
-  override string getPart(int i) {
-    i = 0 and result = "switch ("
-    or
-    i = 2 and result = ") {"
-    or
-    i = 4 + 2 * count(this.getAStmt()) and result = "}"
-  }
-
-  override predicate newline(int i) { i = 3 or this.hasChildAt(_, i - 1) }
-
-  override PpAst getChild(int i) {
-    i = 1 and result = this.getExpr()
-    or
-    this.hasChildAt(result, i)
-  }
-
-  override predicate indents(int i) { this.hasChildAt(_, i) }
-
-  private predicate hasChildAt(PpAst c, int i) {
-    exists(int index | c = this.getStmt(index) and i = 4 + 2 * index)
-  }
-}
-
-private class PpInstanceOfExpr extends PpAst, InstanceOfExpr {
-  override string getPart(int i) {
-    i = 1 and result = " instanceof "
-    or
-    i = 3 and result = " " and this.isPattern()
-    or
-    i = 4 and result = this.getLocalVariableDeclExpr().getName()
-  }
-
-  override PpAst getChild(int i) {
-    i = 0 and result = this.getExpr()
-    or
-    i = 2 and result = this.getTypeName()
-  }
-}
-
-private class PpLocalVariableDeclExpr extends PpAst, LocalVariableDeclExpr {
-  override string getPart(int i) {
-    i = 0 and result = this.getName()
-    or
-    i = 1 and result = " = " and exists(this.getInit())
-  }
-
-  override PpAst getChild(int i) { i = 2 and result = this.getInit() }
-}
-
-private class PpTypeLiteral extends PpAst, TypeLiteral {
-  override string getPart(int i) { i = 1 and result = ".class" }
-
-  override PpAst getChild(int i) { i = 0 and result = this.getTypeName() }
-}
-
-private class PpThisAccess extends PpAst, ThisAccess {
-  override string getPart(int i) {
-    i = 1 and
-    if exists(this.getQualifier()) then result = ".this" else result = "this"
-  }
-
-  override PpAst getChild(int i) { i = 0 and result = this.getQualifier() }
-}
-
-private class PpSuperAccess extends PpAst, SuperAccess {
-  override string getPart(int i) {
-    i = 1 and
-    if exists(this.getQualifier()) then result = ".super" else result = "super"
-  }
-
-  override PpAst getChild(int i) { i = 0 and result = this.getQualifier() }
-}
-
-private class PpVarAccess extends PpAst, VarAccess {
-  override string getPart(int i) {
-    exists(string name | name = this.(VarAccess).getVariable().getName() and i = 1 |
-      if exists(this.getQualifier()) then result = "." + name else result = name
-    )
-  }
-
-  override PpAst getChild(int i) { i = 0 and result = this.getQualifier() }
-}
-
-private class PpTypeAccess extends PpAst, TypeAccess {
-  override string getPart(int i) { i = 0 and result = this.toString() }
-}
-
-private class PpArrayTypeAccess extends PpAst, ArrayTypeAccess {
-  override string getPart(int i) { i = 1 and result = "[]" }
-
-  override PpAst getChild(int i) { i = 0 and result = this.getComponentName() }
-}
-
-private class PpUnionTypeAccess extends PpAst, UnionTypeAccess {
-  override string getPart(int i) {
-    exists(int j | i = 2 * j - 1 and j != 0 and result = " | " and exists(this.getAlternative(j)))
-  }
-
-  private Expr getAlternative(int j) { result = this.getAnAlternative() and j = result.getIndex() }
-
-  override PpAst getChild(int i) { exists(int j | i = 2 * j and result = this.getAlternative(j)) }
-}
-
-private class PpIntersectionTypeAccess extends PpAst, IntersectionTypeAccess {
-  override string getPart(int i) {
-    exists(int j | i = 2 * j - 1 and j != 0 and result = " & " and exists(this.getBound(j)))
-  }
-
-  override PpAst getChild(int i) { exists(int j | i = 2 * j and result = this.getBound(j)) }
-}
-
-private class PpPackageAccess extends PpAst, PackageAccess {
-  override string getPart(int i) { i = 0 and result = "package" }
-}
-
-private class PpWildcardTypeAccess extends PpAst, WildcardTypeAccess {
-  override string getPart(int i) {
-    i = 0 and result = "?"
-    or
-    i = 1 and result = " extends " and exists(this.getUpperBound())
-    or
-    i = 1 and result = " super " and exists(this.getLowerBound())
-  }
-
-  override PpAst getChild(int i) {
-    i = 2 and result = this.getUpperBound()
-    or
-    i = 2 and result = this.getLowerBound()
-  }
-}
-
-/*
- * Statements
- */
-
-private class PpBlock extends PpAst, Block {
-  override string getPart(int i) {
-    i = 0 and result = "{"
-    or
-    i = 2 + 2 * this.getNumStmt() and result = "}"
-  }
-
-  override predicate newline(int i) { i = 1 or this.hasChildAt(_, i - 1) }
-
-  override PpAst getChild(int i) { this.hasChildAt(result, i) }
-
-  override predicate indents(int i) { this.hasChildAt(_, i) }
-
-  private predicate hasChildAt(PpAst c, int i) {
-    exists(int index | c = this.getStmt(index) and i = 2 + 2 * index)
-  }
-}
-
-private class PpIfStmt extends PpAst, IfStmt {
-  override string getPart(int i) {
-    i = 0 and result = "if ("
-    or
-    i = 2 and result = ")"
-    or
-    i = 3 and result = " " and this.getThen() instanceof Block
-    or
-    exists(this.getElse()) and
-    (
-      i = 5 and result = " " and this.getThen() instanceof Block
-      or
-      i = 6 and result = "else"
-      or
-      i = 7 and result = " " and this.getElse() instanceof Block
-    )
-  }
-
-  override predicate newline(int i) {
-    i = 3 and not this.getThen() instanceof Block
-    or
-    exists(this.getElse()) and
-    (
-      i = 5 and not this.getThen() instanceof Block
-      or
-      i = 7 and not this.getElse() instanceof Block
-    )
-  }
-
-  override PpAst getChild(int i) {
-    i = 1 and result = this.getCondition()
-    or
-    i = 4 and result = this.getThen()
-    or
-    i = 8 and result = this.getElse()
-  }
-
-  override predicate indents(int i) {
-    i = 4 and not this.getThen() instanceof Block
-    or
-    i = 8 and not this.getElse() instanceof Block
-  }
-}
-
-private class PpForStmt extends PpAst, ForStmt {
-  override string getPart(int i) {
-    i = 0 and result = "for ("
-    or
-    i = 2 and result = " " and this.getInit(0) instanceof LocalVariableDeclExpr
-    or
-    exists(int j | j > 0 and exists(this.getInit(j)) and i = 2 + 2 * j and result = ", ")
-    or
-    i = 1 + lastInitIndex() and result = "; "
-    or
-    i = 3 + lastInitIndex() and result = "; "
-    or
-    exists(int j |
-      j > 0 and exists(this.getUpdate(j)) and i = 3 + lastInitIndex() + 2 * j and result = ", "
-    )
-    or
-    i = 1 + lastUpdateIndex() and result = ")"
-    or
-    i = 2 + lastUpdateIndex() and result = " " and this.getStmt() instanceof Block
-  }
-
-  private int lastInitIndex() { result = 3 + 2 * max(int j | exists(this.getInit(j))) }
-
-  private int lastUpdateIndex() {
-    result = 4 + lastInitIndex() + 2 * max(int j | exists(this.getUpdate(j)))
-  }
-
-  override predicate newline(int i) {
-    i = 2 + lastUpdateIndex() and not this.getStmt() instanceof Block
-  }
-
-  override PpAst getChild(int i) {
-    i = 1 and result = this.getInit(0).(LocalVariableDeclExpr).getTypeAccess()
-    or
-    exists(int j | result = this.getInit(j) and i = 3 + 2 * j)
-    or
-    i = 2 + lastInitIndex() and result = this.getCondition()
-    or
-    exists(int j | result = this.getUpdate(j) and i = 4 + lastInitIndex() + 2 * j)
-    or
-    i = 3 + lastUpdateIndex() and result = this.getStmt()
-  }
-
-  override predicate indents(int i) {
-    i = 3 + lastUpdateIndex() and not this.getStmt() instanceof Block
-  }
-}
-
-private class PpEnhancedForStmt extends PpAst, EnhancedForStmt {
-  override string getPart(int i) {
-    i = 0 and result = "for ("
-    or
-    i = 2 and result = " "
-    or
-    i = 4 and result = " : "
-    or
-    i = 6 and
-    if this.getStmt() instanceof Block then result = ") " else result = ")"
-  }
-
-  override PpAst getChild(int i) {
-    i = 1 and result = this.getVariable().getTypeAccess()
-    or
-    i = 3 and result = this.getVariable()
-    or
-    i = 5 and result = this.getExpr()
-    or
-    i = 7 and result = this.getStmt()
-  }
-
-  override predicate indents(int i) { i = 7 and not this.getStmt() instanceof Block }
-}
-
-private class PpWhileStmt extends PpAst, WhileStmt {
-  override string getPart(int i) {
-    i = 0 and result = "while ("
-    or
-    i = 2 and result = ")"
-    or
-    i = 3 and result = " " and this.getStmt() instanceof Block
-  }
-
-  override predicate newline(int i) { i = 3 and not this.getStmt() instanceof Block }
-
-  override PpAst getChild(int i) {
-    i = 1 and result = this.getCondition()
-    or
-    i = 4 and result = this.getStmt()
-  }
-
-  override predicate indents(int i) { i = 4 and not this.getStmt() instanceof Block }
-}
-
-private class PpDoStmt extends PpAst, DoStmt {
-  override string getPart(int i) {
-    i = 0 and result = "do"
-    or
-    i in [1, 3] and result = " " and this.getStmt() instanceof Block
-    or
-    i = 4 and result = "while ("
-    or
-    i = 6 and result = ");"
-  }
-
-  override predicate newline(int i) { i in [1, 3] and not this.getStmt() instanceof Block }
-
-  override PpAst getChild(int i) {
-    i = 2 and result = this.getStmt()
-    or
-    i = 5 and result = this.getCondition()
-  }
-
-  override predicate indents(int i) { i = 2 and not this.getStmt() instanceof Block }
-}
-
-private class PpTryStmt extends PpAst, TryStmt {
-  override string getPart(int i) {
-    i = 0 and result = "try "
-    or
-    i = 1 and result = "(" and exists(this.getAResource())
-    or
-    exists(int j | exists(this.getResourceExpr(j)) and i = 3 + 2 * j and result = ";")
-    or
-    i = 2 + lastResourceIndex() and result = ") " and exists(this.getAResource())
-    or
-    i = 1 + lastCatchIndex() and result = " finally " and exists(this.getFinally())
-  }
-
-  private int lastResourceIndex() {
-    result = 2 + 2 * max(int j | exists(this.getResource(j)) or j = 0)
-  }
-
-  private int lastCatchIndex() {
-    result = 4 + lastResourceIndex() + max(int j | exists(this.getCatchClause(j)) or j = 0)
-  }
-
-  override PpAst getChild(int i) {
-    exists(int j | i = 2 + 2 * j and result = this.getResource(j))
-    or
-    i = 3 + lastResourceIndex() and result = this.getBlock()
-    or
-    exists(int j | i = 4 + lastResourceIndex() + j and result = this.getCatchClause(j))
-    or
-    i = 2 + lastCatchIndex() and result = this.getFinally()
-  }
-}
-
-private class PpCatchClause extends PpAst, CatchClause {
-  override string getPart(int i) {
-    i = 0 and result = " catch ("
-    or
-    i = 2 and result = " "
-    or
-    i = 4 and result = ") "
-  }
-
-  override PpAst getChild(int i) {
-    i = 1 and result = this.getVariable().getTypeAccess()
-    or
-    i = 3 and result = this.getVariable()
-    or
-    i = 5 and result = this.getBlock()
-  }
-}
-
-private class PpSwitchStmt extends PpAst, SwitchStmt {
-  override string getPart(int i) {
-    i = 0 and result = "switch ("
-    or
-    i = 2 and result = ") {"
-    or
-    i = 4 + 2 * count(this.getAStmt()) and result = "}"
-  }
-
-  override predicate newline(int i) { i = 3 or this.hasChildAt(_, i - 1) }
-
-  override PpAst getChild(int i) {
-    i = 1 and result = this.getExpr()
-    or
-    this.hasChildAt(result, i)
-  }
-
-  override predicate indents(int i) { this.hasChildAt(_, i) }
-
-  private predicate hasChildAt(PpAst c, int i) {
-    exists(int index | c = this.getStmt(index) and i = 4 + 2 * index)
-  }
-}
-
-private class PpSwitchCase extends PpAst, SwitchCase {
-  override string getPart(int i) {
-    i = 0 and result = "default" and this instanceof DefaultCase
-    or
-    i = 0 and result = "case " and this instanceof ConstCase
-    or
-    exists(int j | i = 2 * j and j != 0 and result = ", " and exists(this.(ConstCase).getValue(j)))
-    or
-    i = 1 + lastConstCaseValueIndex() and result = ":" and not this.isRule()
-    or
-    i = 1 + lastConstCaseValueIndex() and result = " -> " and this.isRule()
-    or
-    i = 3 + lastConstCaseValueIndex() and result = ";" and exists(this.getRuleExpression())
-  }
-
-  private int lastConstCaseValueIndex() {
-    result = 1 + 2 * max(int j | j = 0 or exists(this.(ConstCase).getValue(j)))
-  }
-
-  override PpAst getChild(int i) {
-    exists(int j | i = 1 + 2 * j and result = this.(ConstCase).getValue(j))
-    or
-    i = 2 + lastConstCaseValueIndex() and result = this.getRuleExpression()
-    or
-    i = 2 + lastConstCaseValueIndex() and result = this.getRuleStatement()
-  }
-}
-
-private class PpSynchronizedStmt extends PpAst, SynchronizedStmt {
-  override string getPart(int i) {
-    i = 0 and result = "synchronized ("
-    or
-    i = 2 and result = ")"
-    or
-    i = 3 and result = " "
-  }
-
-  override PpAst getChild(int i) {
-    i = 1 and result = this.getExpr()
-    or
-    i = 4 and result = this.getBlock()
-  }
-}
-
-private class PpReturnStmt extends PpAst, ReturnStmt {
-  override string getPart(int i) {
-    if exists(this.getResult())
-    then
-      i = 0 and result = "return "
-      or
-      i = 2 and result = ";"
-    else (
-      i = 0 and result = "return;"
-    )
-  }
-
-  override PpAst getChild(int i) { i = 1 and result = this.getResult() }
-}
-
-private class PpThrowStmt extends PpAst, ThrowStmt {
-  override string getPart(int i) {
-    i = 0 and result = "throw "
-    or
-    i = 2 and result = ";"
-  }
-
-  override PpAst getChild(int i) { i = 1 and result = this.getExpr() }
-}
-
-private class PpBreakStmt extends PpAst, BreakStmt {
-  override string getPart(int i) {
-    i = 0 and result = "break"
-    or
-    i = 1 and result = " " and exists(this.getLabel())
-    or
-    i = 2 and result = this.getLabel()
-    or
-    i = 3 and result = ";"
-  }
-}
-
-private class PpYieldStmt extends PpAst, YieldStmt {
-  override string getPart(int i) {
-    i = 0 and result = "yield "
-    or
-    i = 2 and result = ";"
-  }
-
-  override PpAst getChild(int i) { i = 1 and result = this.getValue() }
-}
-
-private class PpContinueStmt extends PpAst, ContinueStmt {
-  override string getPart(int i) {
-    i = 0 and result = "continue"
-    or
-    i = 1 and result = " " and exists(this.getLabel())
-    or
-    i = 2 and result = this.getLabel()
-    or
-    i = 3 and result = ";"
-  }
-}
-
-private class PpEmptyStmt extends PpAst, EmptyStmt {
-  override string getPart(int i) { i = 0 and result = ";" }
-}
-
-private class PpExprStmt extends PpAst, ExprStmt {
-  override string getPart(int i) { i = 1 and result = ";" }
-
-  override PpAst getChild(int i) { i = 0 and result = this.getExpr() }
-}
-
-private class PpLabeledStmt extends PpAst, LabeledStmt {
-  override string getPart(int i) {
-    i = 0 and result = this.getLabel()
-    or
-    i = 1 and result = ":"
-  }
-
-  override predicate newline(int i) { i = 2 }
-
-  override PpAst getChild(int i) { i = 3 and result = this.getStmt() }
-}
-
-private class PpAssertStmt extends PpAst, AssertStmt {
-  override string getPart(int i) {
-    i = 0 and result = "assert "
-    or
-    i = 2 and result = " : " and exists(this.getMessage())
-    or
-    i = 4 and result = ";"
-  }
-
-  override PpAst getChild(int i) {
-    i = 1 and result = this.getExpr()
-    or
-    i = 3 and result = this.getMessage()
-  }
-}
-
-private class PpLocalVariableDeclStmt extends PpAst, LocalVariableDeclStmt {
-  override string getPart(int i) {
-    i = 1 and result = " "
-    or
-    exists(int v | v > 1 and i = 2 * v - 1 and result = ", " and v = this.getAVariableIndex())
-    or
-    i = 2 * max(this.getAVariableIndex()) + 1 and result = ";"
-  }
-
-  override PpAst getChild(int i) {
-    i = 0 and result = this.getAVariable().getTypeAccess()
-    or
-    exists(int v | i = 2 * v and result = this.getVariable(v))
-  }
-}
-
-private class PpLocalClassDeclStmt extends PpAst, LocalClassDeclStmt {
-  override PpAst getChild(int i) { i = 0 and result = this.getLocalClass() }
-}
-
-/*
- * Classes, interfaces, and members
- */
-
-private string getMemberId(Member m) {
-  result = m.(Callable).getSignature()
-  or
-  result = m.getName() and not m instanceof Callable
-}
-
-private class PpClassOrInterface extends PpAst, ClassOrInterface {
-  override string getPart(int i) {
-    not this instanceof AnonymousClass and
-    (
-      result = getModifierPart(this, i)
-      or
-      i = 0 and result = "class " and this instanceof Class
-      or
-      i = 0 and result = "interface " and this instanceof Interface
-      or
-      i = 1 and result = this.getName()
-      or
-      i = 2 and result = " "
-    )
-    or
-    i = 3 and result = "{"
-    or
-    i = 5 + 3 * max(this.memberRank(_)) and result = "}"
-  }
-
-  override predicate newline(int i) {
-    exists(int ci | ci = 3 + 3 * this.memberRank(_) | i = ci - 1 or i = ci + 1)
-  }
-
-  private int memberRank(Member member) {
-    member =
-      rank[result](Member m |
-        m = this.getAMember()
+/** A top-level AST node. */
+class TopLevelPrintAstNode extends PrintAstNode {
+  TopLevelPrintAstNode() { not exists(this.getParent()) }
+
+  private int getOrder() {
+    this =
+      rank[result](TopLevelPrintAstNode n, Location l |
+        l = n.getLocation()
       |
-        m order by m.getLocation().getStartLine(), m.getLocation().getStartColumn(), getMemberId(m)
+        n
+        order by
+          l.getFile().getRelativePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+          l.getEndColumn()
       )
   }
 
-  override PpAst getChild(int i) { this.memberRank(result) * 3 + 3 = i }
-
-  override predicate indents(int i) { this.memberRank(_) * 3 + 3 = i }
-}
-
-private string getModifierPart(Modifiable m, int i) {
-  m.isAbstract() and result = "abstract " and i = -12
-  or
-  m.isPublic() and result = "public " and i = -11
-  or
-  m.isProtected() and result = "protected " and i = -10
-  or
-  m.isPrivate() and result = "private " and i = -9
-  or
-  m.isStatic() and result = "static " and i = -8
-  or
-  m.isFinal() and result = "final " and i = -7
-  or
-  m.isVolatile() and result = "volatile " and i = -6
-  or
-  m.isSynchronized() and result = "synchronized " and i = -5
-  or
-  m.isNative() and result = "native " and i = -4
-  or
-  m.isDefault() and result = "default " and i = -3
-  or
-  m.isTransient() and result = "transient " and i = -2
-  or
-  m.isStrictfp() and result = "strictfp " and i = -1
-}
-
-private class PpField extends PpAst, Field {
-  override string getPart(int i) {
-    result = getModifierPart(this, i)
+  override string getProperty(string key) {
+    result = super.getProperty(key)
     or
-    i = 0 and result = this.getType().toString()
-    or
-    i = 1 and result = " "
-    or
-    i = 2 and result = this.getName()
-    or
-    i = 3 and result = ";"
+    key = "semmle.order" and
+    result = this.getOrder().toString()
   }
 }
 
-private class PpCallable extends PpAst, Callable {
-  override string getPart(int i) {
-    result = getModifierPart(this, i)
-    or
-    i = 0 and result = this.getReturnType().toString() and this instanceof Method
-    or
-    i = 1 and result = " " and this instanceof Method
-    or
-    i = 2 and
-    (if this.getName() = "" then result = "<no name>" else result = this.getName())
-    or
-    i = 3 and result = "("
-    or
-    exists(Parameter p, int n | this.getParameter(n) = p |
-      i = 4 + 4 * n and result = p.getType().toString()
+/**
+ * A node representing an AST node with an underlying `Element`.
+ */
+abstract class ElementNode extends PrintAstNode, TElementNode {
+  Element element;
+
+  ElementNode() { this = TElementNode(element) and not isNotNeeded(element) }
+
+  override string toString() { result = getQlClass(element) + element.toString() }
+
+  override Location getLocation() { result = element.getLocation() }
+
+  /**
+   * Gets the `Element` represented by this node.
+   */
+  final Element getElement() { result = element }
+}
+
+/**
+ * A node representing an `Expr` or a `Stmt`.
+ */
+class ExprStmtNode extends ElementNode {
+  ExprStmtNode() { element instanceof ExprOrStmt }
+
+  override PrintAstNode getChild(int childIndex) {
+    exists(Element el | result.(ElementNode).getElement() = el |
+      el.(Expr).isNthChildOf(element, childIndex)
       or
-      i = 5 + 4 * n and result = " "
-      or
-      i = 6 + 4 * n and result = p.getName()
-      or
-      i = 7 + 4 * n and result = ", " and n < this.getNumberOfParameters() - 1
+      el.(Stmt).isNthChildOf(element, childIndex)
     )
-    or
-    i = 4 + 4 * this.getNumberOfParameters() and result = ") "
-    or
-    i = 5 + 4 * this.getNumberOfParameters() and
-    not exists(this.getBody()) and
-    result = "{ <missing body> }"
+  }
+}
+
+/**
+ * Holds if the given expression is part of an annotation.
+ */
+private predicate partOfAnnotation(Expr e) {
+  e instanceof Annotation
+  or
+  e instanceof ArrayInit and
+  partOfAnnotation(e.getParent())
+}
+
+/**
+ * A node representing an `Expr` that is part of an annotation.
+ */
+final class AnnotationPartNode extends ExprStmtNode {
+  AnnotationPartNode() { partOfAnnotation(element) }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement() =
+      rank[childIndex](Element ch, string file, int line, int column |
+        ch = getAnAnnotationChild() and locationSortKeys(ch, file, line, column)
+      |
+        ch order by file, line, column
+      )
   }
 
-  override PpAst getChild(int i) {
-    i = 5 + 4 * this.getNumberOfParameters() and result = this.getBody()
+  private Expr getAnAnnotationChild() {
+    result = element.(Annotation).getValue(_)
+    or
+    result = element.(ArrayInit).getAnInit()
+    or
+    result = element.(ArrayInit).(Annotatable).getAnAnnotation()
   }
+}
+
+/**
+ * A node representing a `LocalVariableDeclExpr`.
+ */
+final class LocalVarDeclExprNode extends ExprStmtNode {
+  LocalVarDeclExprNode() { element instanceof LocalVariableDeclExpr }
+
+  override PrintAstNode getChild(int childIndex) {
+    result = super.getChild(childIndex)
+    or
+    childIndex = -2 and
+    result.(AnnotationsNode).getAnnotated() = element.(LocalVariableDeclExpr).getVariable()
+  }
+}
+
+/**
+ * A node representing a `ClassInstanceExpr`.
+ */
+final class ClassInstanceExprNode extends ExprStmtNode {
+  ClassInstanceExprNode() { element instanceof ClassInstanceExpr }
+
+  override ElementNode getChild(int childIndex) {
+    result = super.getChild(childIndex)
+    or
+    childIndex = -4 and
+    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass()
+  }
+}
+
+/**
+ * A node representing a `LocalClassDeclStmt`.
+ */
+final class LocalClassDeclStmtNode extends ExprStmtNode {
+  LocalClassDeclStmtNode() { element instanceof LocalClassDeclStmt }
+
+  override ElementNode getChild(int childIndex) {
+    result = super.getChild(childIndex)
+    or
+    childIndex = 0 and
+    result.getElement() = element.(LocalClassDeclStmt).getLocalClass()
+  }
+}
+
+/**
+ * A node representing a `ForStmt`.
+ */
+final class ForStmtNode extends ExprStmtNode {
+  ForStmtNode() { element instanceof ForStmt }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex >= 1 and
+    result = super.getChild(childIndex)
+    or
+    childIndex = 0 and
+    result.(ForInitNode).getForStmt() = element
+  }
+}
+
+/**
+ * An element that can be the parent of up to one `LocalVariableDeclExpr` for which we want
+ * to use a synthetic node to hold the variable declaration and its `TypeAccess`.
+ */
+private class SingleLocalVarDeclParent extends ExprOrStmt {
+  SingleLocalVarDeclParent() {
+    this instanceof EnhancedForStmt or
+    this instanceof CatchClause or
+    this.(InstanceOfExpr).isPattern()
+  }
+
+  /** Gets the variable declaration that this element contains */
+  LocalVariableDeclExpr getVariable() { result.getParent() = this }
+
+  /** Gets the type access of the variable */
+  Expr getTypeAccess() { result = getVariable().getTypeAccess() }
+}
+
+/**
+ * A node representing an element that can be the parent of up to one `LocalVariableDeclExpr` for which we
+ * want to use a synthetic node to variable declaration and its type access.
+ *
+ * Excludes `LocalVariableDeclStmt` and `ForStmt`, as they can hold multiple declarations.
+ * For these cases, either a synthetic node is not necassary or a different synthetic node is used.
+ */
+final class SingleLocalVarDeclParentNode extends ExprStmtNode {
+  SingleLocalVarDeclParent lvdp;
+
+  SingleLocalVarDeclParentNode() { lvdp = element }
+
+  override PrintAstNode getChild(int childIndex) {
+    result = super.getChild(childIndex) and
+    not result.(ElementNode).getElement() = [lvdp.getVariable(), lvdp.getTypeAccess()]
+    or
+    childIndex = lvdp.getVariable().getIndex() and
+    result.(LocalVarDeclSynthNode).getVariable() = lvdp.getVariable()
+  }
+}
+
+/**
+ * A node representing a `Callable`, such as method declaration.
+ */
+final class CallableNode extends ElementNode {
+  Callable callable;
+
+  CallableNode() { callable = element }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.(DocumentableNode).getDocumentable() = callable
+    or
+    childIndex = 1 and
+    result.(AnnotationsNode).getAnnotated() = callable
+    or
+    childIndex = 2 and
+    result.(GenericCallableNode).getCallable() = callable
+    or
+    childIndex = 3 and
+    result.(ElementNode).getElement().(Expr).isNthChildOf(callable, -1) // return type
+    or
+    childIndex = 4 and
+    result.(ParametersNode).getCallable() = callable
+    or
+    childIndex = 5 and
+    result.(ElementNode).getElement() = callable.getBody()
+  }
+}
+
+/**
+ * A node representing a `Parameter` of a `Callable`.
+ */
+final class ParameterNode extends ElementNode {
+  Parameter p;
+
+  ParameterNode() { p = element }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = -1 and
+    result.(AnnotationsNode).getAnnotated() = p
+    or
+    childIndex = 0 and
+    result.(ElementNode).getElement().(Expr).isNthChildOf(p, -1) // type
+  }
+}
+
+private predicate isInitBlock(Class c, BlockStmt b) {
+  exists(InitializerMethod m | b.getParent() = m.getBody() and m.getDeclaringType() = c)
+}
+
+/**
+ * A node representing a `Class` or an `Interface`.
+ */
+final class ClassInterfaceNode extends ElementNode {
+  ClassOrInterface ty;
+
+  ClassInterfaceNode() { ty = element }
+
+  private Element getADeclaration() {
+    result.(Callable).getDeclaringType() = ty
+    or
+    result.(FieldDeclaration).getAField().getDeclaringType() = ty
+    or
+    result.(NestedType).getEnclosingType().getSourceDeclaration() = ty and
+    not result instanceof AnonymousClass and
+    not result instanceof LocalClass
+    or
+    isInitBlock(ty, result)
+  }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = -4 and
+    result.(DocumentableNode).getDocumentable() = ty
+    or
+    childIndex = -3 and
+    result.(AnnotationsNode).getAnnotated() = ty
+    or
+    childIndex = -2 and
+    result.(GenericTypeNode).getType() = ty
+    or
+    childIndex = -1 and
+    result.(BaseTypesNode).getClassOrInterface() = ty
+    or
+    childIndex >= 0 and
+    result.(ElementNode).getElement() =
+      rank[childIndex](Element e, string file, int line, int column |
+        e = getADeclaration() and locationSortKeys(e, file, line, column)
+      |
+        e order by file, line, column
+      )
+  }
+}
+
+/**
+ * A node representing a `FieldDeclaration`.
+ */
+final class FieldDeclNode extends ElementNode {
+  FieldDeclaration decl;
+
+  FieldDeclNode() { decl = element }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = -3 and
+    result.(DocumentableNode).getDocumentable() = decl.getField(0)
+    or
+    childIndex = -2 and
+    result.(AnnotationsNode).getAnnotated() = decl.getField(0)
+    or
+    childIndex = -1 and
+    result.(ElementNode).getElement() = decl.getTypeAccess()
+    or
+    childIndex >= 0 and
+    result.(ElementNode).getElement() = decl.getField(childIndex).getInitializer()
+  }
+}
+
+/**
+ * A node representing a `CompilationUnit`.
+ */
+final class CompilationUnitNode extends ElementNode {
+  CompilationUnit cu;
+
+  CompilationUnitNode() { cu = element }
+
+  private Element getADeclaration() { cu.hasChildElement(result) }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = -1 and
+    result.(ImportsNode).getCompilationUnit() = cu
+    or
+    childIndex >= 0 and
+    result.(ElementNode).getElement() =
+      rank[childIndex](Element e, string file, int line, int column |
+        e = getADeclaration() and locationSortKeys(e, file, line, column)
+      |
+        e order by file, line, column
+      )
+  }
+}
+
+/**
+ * A node representing an `Import`.
+ */
+final class ImportNode extends ElementNode {
+  ImportNode() { element instanceof Import }
+}
+
+/**
+ * A node representing a `TypeVariable`.
+ */
+final class TypeVariableNode extends ElementNode {
+  TypeVariableNode() { element instanceof TypeVariable }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement().(Expr).isNthChildOf(element, childIndex)
+  }
+}
+
+/**
+ * A node representing the initializers of a `ForStmt`.
+ */
+final class ForInitNode extends PrintAstNode, TForInitNode {
+  ForStmt fs;
+
+  ForInitNode() { this = TForInitNode(fs) }
+
+  override string toString() { result = "(For Initializers) " }
+
+  override ElementNode getChild(int childIndex) {
+    childIndex >= 0 and
+    result.getElement().(Expr).isNthChildOf(fs, -childIndex)
+  }
+
+  /**
+   * Gets the underlying `ForStmt`.
+   */
+  ForStmt getForStmt() { result = fs }
+}
+
+/**
+ * A synthetic node holding a `LocalVariableDeclExpr` and its type access.
+ */
+final class LocalVarDeclSynthNode extends PrintAstNode, TLocalVarDeclNode {
+  LocalVariableDeclExpr lvde;
+
+  LocalVarDeclSynthNode() { this = TLocalVarDeclNode(lvde) }
+
+  override string toString() { result = "(Single Local Variable Declaration)" }
+
+  override ElementNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.getElement() = lvde.getTypeAccess()
+    or
+    childIndex = 1 and
+    result.getElement() = lvde
+  }
+
+  /**
+   * Gets the underlying `LocalVariableDeclExpr`
+   */
+  LocalVariableDeclExpr getVariable() { result = lvde }
+}
+
+/**
+ * A node representing the annotations of an `Annotatable`.
+ * Only rendered if there is at least one annotation.
+ */
+final class AnnotationsNode extends PrintAstNode, TAnnotationsNode {
+  Annotatable ann;
+
+  AnnotationsNode() {
+    this = TAnnotationsNode(ann) and not isNotNeeded(ann) and not duplicateMetadata(ann)
+  }
+
+  override string toString() { result = "(Annotations)" }
+
+  override Location getLocation() { none() }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement() =
+      rank[childIndex](Element e, string file, int line, int column |
+        e = ann.getAnAnnotation() and locationSortKeys(e, file, line, column)
+      |
+        e order by file, line, column
+      )
+  }
+
+  /**
+   * Gets the underlying `Annotatable`.
+   */
+  Annotatable getAnnotated() { result = ann }
+}
+
+/**
+ * A node representing the parameters of a `Callable`.
+ * Only rendered if there is at least one parameter.
+ */
+final class ParametersNode extends PrintAstNode, TParametersNode {
+  Callable c;
+
+  ParametersNode() { this = TParametersNode(c) and not isNotNeeded(c) }
+
+  override string toString() { result = "(Parameters)" }
+
+  override Location getLocation() { none() }
+
+  override ElementNode getChild(int childIndex) { result.getElement() = c.getParameter(childIndex) }
+
+  /**
+   * Gets the underlying `Callable`.
+   */
+  Callable getCallable() { result = c }
+}
+
+/**
+ * A node representing the base types of a `Class` or `Interface` that it extends or implements.
+ * Only redered if there is at least one such type.
+ */
+final class BaseTypesNode extends PrintAstNode, TBaseTypesNode {
+  ClassOrInterface ty;
+
+  BaseTypesNode() { this = TBaseTypesNode(ty) and exists(TypeAccess ta | ta.getParent() = ty) }
+
+  override string toString() { result = "(Base Types)" }
+
+  override Location getLocation() { none() }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement().(TypeAccess).isNthChildOf(ty, -2 - childIndex)
+  }
+
+  /**
+   * Gets the underlying `Class` or `Interface`.
+   */
+  ClassOrInterface getClassOrInterface() { result = ty }
+}
+
+/**
+ * A node representing the type parameters of a `Class` or `Interface`.
+ * Only rendered when the type in question is indeed generic.
+ */
+final class GenericTypeNode extends PrintAstNode, TGenericTypeNode {
+  GenericType ty;
+
+  GenericTypeNode() { this = TGenericTypeNode(ty) }
+
+  override string toString() { result = "(Generic Parameters)" }
+
+  override Location getLocation() { none() }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement().(TypeVariable) = ty.getTypeParameter(childIndex)
+  }
+
+  /**
+   * Gets the underlying `GenericType`.
+   */
+  GenericType getType() { result = ty }
+}
+
+/**
+ * A node representing the type parameters of a `Callable`.
+ * Only rendered when the callable in question is indeed generic.
+ */
+final class GenericCallableNode extends PrintAstNode, TGenericCallableNode {
+  GenericCallable c;
+
+  GenericCallableNode() { this = TGenericCallableNode(c) }
+
+  override string toString() { result = "(Generic Parameters)" }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement().(TypeVariable) = c.getTypeParameter(childIndex)
+  }
+
+  /**
+   * Gets the underlying `GenericCallable`.
+   */
+  GenericCallable getCallable() { result = c }
+}
+
+/**
+ * A node representing the documentation of a `Documentable`.
+ * Only rendered if there is at least one `Javadoc` attatched to it.
+ */
+final class DocumentableNode extends PrintAstNode, TDocumentableNode {
+  Documentable d;
+
+  DocumentableNode() { this = TDocumentableNode(d) and not duplicateMetadata(d) }
+
+  override string toString() { result = "(Javadoc)" }
+
+  override Location getLocation() { none() }
+
+  override JavadocNode getChild(int childIndex) {
+    result.getJavadoc() =
+      rank[childIndex](Javadoc jd, string file, int line, int column |
+        jd.getCommentedElement() = d and jd.getLocation().hasLocationInfo(file, line, column, _, _)
+      |
+        jd order by file, line, column
+      )
+  }
+
+  /**
+   * Gets the underlying `Documentable`.
+   */
+  Documentable getDocumentable() { result = d }
+}
+
+/**
+ * A node representing a `Javadoc`.
+ * Only rendered if it is the javadoc of some `Documentable`.
+ */
+final class JavadocNode extends PrintAstNode, TJavadocNode {
+  Javadoc jd;
+
+  JavadocNode() { this = TJavadocNode(jd) }
+
+  override string toString() { result = getQlClass(jd) + jd.toString() }
+
+  override Location getLocation() { result = jd.getLocation() }
+
+  override JavadocElementNode getChild(int childIndex) {
+    result.getJavadocElement() = jd.getChild(childIndex)
+  }
+
+  /**
+   * Gets the `Javadoc` represented by this node.
+   */
+  Javadoc getJavadoc() { result = jd }
+}
+
+/**
+ * A node representing a `JavadocElement`.
+ * Only rendered if it is part of the javadoc of some `Documentable`.
+ */
+final class JavadocElementNode extends PrintAstNode, TJavadocElementNode {
+  JavadocElement jd;
+
+  JavadocElementNode() { this = TJavadocElementNode(jd) }
+
+  override string toString() { result = getQlClass(jd) + jd.toString() }
+
+  override Location getLocation() { result = jd.getLocation() }
+
+  override JavadocElementNode getChild(int childIndex) {
+    result.getJavadocElement() = jd.(JavadocParent).getChild(childIndex)
+  }
+
+  /**
+   * Gets the `JavadocElement` represented by this node.
+   */
+  JavadocElement getJavadocElement() { result = jd }
+}
+
+/**
+ * A node representing the `Import`s of a `CompilationUnit`.
+ * Only rendered if there is at least one import.
+ */
+final class ImportsNode extends PrintAstNode, TImportsNode {
+  CompilationUnit cu;
+
+  ImportsNode() { this = TImportsNode(cu) }
+
+  override string toString() { result = "(Imports)" }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement() =
+      rank[childIndex](Import im, string file, int line, int column |
+        im.getCompilationUnit() = cu and locationSortKeys(im, file, line, column)
+      |
+        im order by file, line, column
+      )
+  }
+
+  /**
+   * Gets the underlying CompilationUnit.
+   */
+  CompilationUnit getCompilationUnit() { result = cu }
+}
+
+/** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
+query predicate nodes(PrintAstNode node, string key, string value) { value = node.getProperty(key) }
+
+/**
+ * Holds if `target` is a child of `source` in the AST, and property `key` of the edge has the
+ * given `value`.
+ */
+query predicate edges(PrintAstNode source, PrintAstNode target, string key, string value) {
+  exists(int childIndex |
+    target = source.getChild(childIndex) and
+    (
+      key = "semmle.label" and value = source.getChildEdgeLabel(childIndex)
+      or
+      key = "semmle.order" and value = childIndex.toString()
+    )
+  )
+}
+
+/** Holds if property `key` of the graph has the given `value`. */
+query predicate graphProperties(string key, string value) {
+  key = "semmle.graphKind" and value = "tree"
 }

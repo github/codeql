@@ -28,7 +28,7 @@ import javascript
  * }
  * ```
  */
-class ClassOrInterface extends @classorinterface, TypeParameterized {
+class ClassOrInterface extends @class_or_interface, TypeParameterized {
   /** Gets the identifier naming the declared type, if any. */
   Identifier getIdentifier() { none() } // Overridden in subtypes.
 
@@ -155,7 +155,7 @@ class ClassOrInterface extends @classorinterface, TypeParameterized {
  * };
  * ```
  */
-class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode {
+class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNode {
   /** Gets the variable holding this class. */
   Variable getVariable() { result = getIdentifier().getVariable() }
 
@@ -215,7 +215,7 @@ class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode
   /**
    * Holds if this class has the `abstract` modifier.
    */
-  override predicate isAbstract() { isAbstractClass(this) }
+  override predicate isAbstract() { is_abstract_class(this) }
 
   override string describe() {
     if exists(inferNameFromVarDef())
@@ -256,6 +256,8 @@ class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode
   ClassDefinition getSuperClassDefinition() {
     result = getSuperClass().analyze().getAValue().(AbstractClass).getClass()
   }
+
+  override string getAPrimaryQlClass() { result = "ClassDefinition" }
 }
 
 /**
@@ -274,9 +276,9 @@ class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode
  * }
  * ```
  */
-class ClassDeclStmt extends @classdeclstmt, ClassDefinition, Stmt {
+class ClassDeclStmt extends @class_decl_stmt, ClassDefinition, Stmt {
   override ControlFlowNode getFirstControlFlowNode() {
-    if hasDeclareKeyword(this) then result = this else result = getIdentifier()
+    if has_declare_keyword(this) then result = this else result = getIdentifier()
   }
 }
 
@@ -294,7 +296,7 @@ class ClassDeclStmt extends @classdeclstmt, ClassDefinition, Stmt {
  * };
  * ```
  */
-class ClassExpr extends @classexpr, ClassDefinition, Expr {
+class ClassExpr extends @class_expr, ClassDefinition, Expr {
   override string getName() {
     result = ClassDefinition.super.getName()
     or
@@ -342,6 +344,8 @@ private class ClassInitializedMember extends MemberDeclaration {
   ClassInitializedMember() { this instanceof MethodDefinition or this.isStatic() }
 
   int getIndex() { properties(this, _, result, _, _) }
+
+  override string getAPrimaryQlClass() { result = "ClassInitializedMember" }
 }
 
 /**
@@ -353,7 +357,7 @@ private class ClassInitializedMember extends MemberDeclaration {
  * super
  * ```
  */
-class SuperExpr extends @superexpr, Expr {
+class SuperExpr extends @super_expr, Expr {
   override predicate isImpure() { none() }
 
   /**
@@ -361,6 +365,8 @@ class SuperExpr extends @superexpr, Expr {
    * which is the nearest enclosing non-arrow function.
    */
   Function getBinder() { result = getEnclosingFunction().getThisBinder() }
+
+  override string getAPrimaryQlClass() { result = "SuperExpr" }
 }
 
 /**
@@ -410,21 +416,23 @@ class SuperPropAccess extends PropAccess {
  *
  * See also ECMAScript 2015 Language Specification, Chapter 12.3.8.
  */
-class NewTargetExpr extends @newtargetexpr, Expr {
+class NewTargetExpr extends @newtarget_expr, Expr {
   override predicate isImpure() { none() }
+
+  override string getAPrimaryQlClass() { result = "NewTargetExpr" }
 }
 
 /**
  * A scope induced by a named class expression or class expression with type parameters.
  */
-class ClassExprScope extends @classexprscope, Scope {
+class ClassExprScope extends @class_expr_scope, Scope {
   override string toString() { result = "class expression scope" }
 }
 
 /**
  * A scope induced by a class declaration with type parameters.
  */
-class ClassDeclScope extends @classdeclscope, Scope {
+class ClassDeclScope extends @class_decl_scope, Scope {
   override string toString() { result = "class declaration scope" }
 }
 
@@ -472,14 +480,14 @@ class MemberDeclaration extends @property, Documentable {
   /**
    * Holds if this member is static.
    */
-  predicate isStatic() { isStatic(this) }
+  predicate isStatic() { is_static(this) }
 
   /**
    * Holds if this member is abstract.
    *
    * Abstract members occur only in TypeScript.
    */
-  predicate isAbstract() { isAbstractMember(this) }
+  predicate isAbstract() { is_abstract_member(this) }
 
   /**
    * Holds if this member is public, either because it has no access modifier or
@@ -492,17 +500,17 @@ class MemberDeclaration extends @property, Documentable {
   /**
    * Holds if this is a TypeScript member explicitly annotated with the `public` keyword.
    */
-  predicate hasPublicKeyword() { hasPublicKeyword(this) }
+  predicate hasPublicKeyword() { has_public_keyword(this) }
 
   /**
    * Holds if this is a TypeScript member annotated with the `private` keyword.
    */
-  predicate isPrivate() { hasPrivateKeyword(this) }
+  predicate isPrivate() { has_private_keyword(this) }
 
   /**
    * Holds if this is a TypeScript member annotated with the `protected` keyword.
    */
-  predicate isProtected() { hasProtectedKeyword(this) }
+  predicate isProtected() { has_protected_keyword(this) }
 
   /**
    * Gets the expression specifying the name of this member,
@@ -525,7 +533,7 @@ class MemberDeclaration extends @property, Documentable {
   }
 
   /** Holds if the name of this member is computed. */
-  predicate isComputed() { isComputed(this) }
+  predicate isComputed() { is_computed(this) }
 
   /** Gets the class or interface this member belongs to. */
   ClassOrInterface getDeclaringType() { properties(this, result, _, _, _) }
@@ -574,6 +582,8 @@ class MemberDeclaration extends @property, Documentable {
    * True if this is abstract, ambient, or an overload signature.
    */
   predicate isSignature() { not isConcrete() }
+
+  override string getAPrimaryQlClass() { result = "MemberDeclaration" }
 }
 
 /**
@@ -646,7 +656,7 @@ class MemberSignature extends MemberDeclaration {
  * Note that TypeScript call signatures are not considered methods.
  */
 class MethodDeclaration extends MemberDeclaration {
-  MethodDeclaration() { isMethod(this) }
+  MethodDeclaration() { is_method(this) }
 
   /**
    * Gets the body of this method.
@@ -748,7 +758,9 @@ private predicate hasOverloadedConstructorCallSignature(ClassOrInterface type) {
  * }
  * ```
  */
-class MethodDefinition extends MethodDeclaration, MemberDefinition { }
+class MethodDefinition extends MethodDeclaration, MemberDefinition {
+  override string getAPrimaryQlClass() { result = "MethodDefinition" }
+}
 
 /**
  * A method signature declared in a class or interface, that is, a method without a function body.
@@ -763,7 +775,9 @@ class MethodDefinition extends MethodDeclaration, MemberDefinition { }
  *
  * Note that TypeScript call signatures are not considered method signatures.
  */
-class MethodSignature extends MethodDeclaration, MemberSignature { }
+class MethodSignature extends MethodDeclaration, MemberSignature {
+  override string getAPrimaryQlClass() { result = "MethodSignature" }
+}
 
 /**
  * A constructor declaration in a class, either a concrete definition or a signature without a body.
@@ -792,6 +806,8 @@ class ConstructorDeclaration extends MethodDeclaration {
 
   /** Holds if this is a synthetic default constructor. */
   predicate isSynthetic() { getLocation().isEmpty() }
+
+  override string getAPrimaryQlClass() { result = "ConstructorDeclaration" }
 }
 
 /**
@@ -813,7 +829,9 @@ class ConstructorDeclaration extends MethodDeclaration {
  * }
  * ```
  */
-class ConstructorDefinition extends ConstructorDeclaration, MethodDefinition { }
+class ConstructorDefinition extends ConstructorDeclaration, MethodDefinition {
+  override string getAPrimaryQlClass() { result = "ConstructorDefinition" }
+}
 
 /**
  * A constructor signature declared in a class, that is, a constructor without a function body.
@@ -824,7 +842,9 @@ class ConstructorDefinition extends ConstructorDeclaration, MethodDefinition { }
  * }
  * ```
  */
-class ConstructorSignature extends ConstructorDeclaration, MethodSignature { }
+class ConstructorSignature extends ConstructorDeclaration, MethodSignature {
+  override string getAPrimaryQlClass() { result = "ConstructorSignature" }
+}
 
 /**
  * A function generated by the extractor to implement a synthetic default constructor.
@@ -925,7 +945,9 @@ abstract class AccessorMethodSignature extends MethodSignature, AccessorMethodDe
  * }
  * ```
  */
-class GetterMethodDeclaration extends AccessorMethodDeclaration, @property_getter { }
+class GetterMethodDeclaration extends AccessorMethodDeclaration, @property_getter {
+  override string getAPrimaryQlClass() { result = "GetterMethodDeclaration" }
+}
 
 /**
  * A concrete getter method definition in a class, that is, a getter method with a function body.
@@ -945,7 +967,9 @@ class GetterMethodDeclaration extends AccessorMethodDeclaration, @property_gette
  * }
  * ```
  */
-class GetterMethodDefinition extends GetterMethodDeclaration, AccessorMethodDefinition { }
+class GetterMethodDefinition extends GetterMethodDeclaration, AccessorMethodDefinition {
+  override string getAPrimaryQlClass() { result = "GetterMethodDefinition" }
+}
 
 /**
  * A getter method signature declared in a class or interface, that is, a getter method without a function body.
@@ -958,7 +982,9 @@ class GetterMethodDefinition extends GetterMethodDeclaration, AccessorMethodDefi
  * }
  * ```
  */
-class GetterMethodSignature extends GetterMethodDeclaration, AccessorMethodSignature { }
+class GetterMethodSignature extends GetterMethodDeclaration, AccessorMethodSignature {
+  override string getAPrimaryQlClass() { result = "GetterMethodSignature" }
+}
 
 /**
  * A setter method declaration in a class or interface, either a concrete definition or a signature without a body.
@@ -981,7 +1007,9 @@ class GetterMethodSignature extends GetterMethodDeclaration, AccessorMethodSigna
  * }
  * ```
  */
-class SetterMethodDeclaration extends AccessorMethodDeclaration, @property_setter { }
+class SetterMethodDeclaration extends AccessorMethodDeclaration, @property_setter {
+  override string getAPrimaryQlClass() { result = "SetterMethodDeclaration" }
+}
 
 /**
  * A concrete setter method definition in a class, that is, a setter method with a function body
@@ -1000,7 +1028,9 @@ class SetterMethodDeclaration extends AccessorMethodDeclaration, @property_sette
  * }
  * ```
  */
-class SetterMethodDefinition extends SetterMethodDeclaration, AccessorMethodDefinition { }
+class SetterMethodDefinition extends SetterMethodDeclaration, AccessorMethodDefinition {
+  override string getAPrimaryQlClass() { result = "SetterMethodDefinition" }
+}
 
 /**
  * A setter method signature declared in a class or interface, that is, a setter method without a function body.
@@ -1013,7 +1043,9 @@ class SetterMethodDefinition extends SetterMethodDeclaration, AccessorMethodDefi
  * }
  * ```
  */
-class SetterMethodSignature extends SetterMethodDeclaration, AccessorMethodSignature { }
+class SetterMethodSignature extends SetterMethodDeclaration, AccessorMethodSignature {
+  override string getAPrimaryQlClass() { result = "SetterMethodSignature" }
+}
 
 /**
  * A field declaration in a class or interface, either a concrete definition or an abstract or ambient field signature.
@@ -1040,13 +1072,15 @@ class FieldDeclaration extends MemberDeclaration, @field {
   }
 
   /** Holds if this is a TypeScript field annotated with the `readonly` keyword. */
-  predicate isReadonly() { hasReadonlyKeyword(this) }
+  predicate isReadonly() { has_readonly_keyword(this) }
 
   /** Holds if this is a TypeScript field marked as optional with the `?` operator. */
-  predicate isOptional() { isOptionalMember(this) }
+  predicate isOptional() { is_optional_member(this) }
 
   /** Holds if this is a TypeScript field marked as definitely assigned with the `!` operator. */
-  predicate hasDefiniteAssignmentAssertion() { hasDefiniteAssignmentAssertion(this) }
+  predicate hasDefiniteAssignmentAssertion() { has_definite_assignment_assertion(this) }
+
+  override string getAPrimaryQlClass() { result = "FieldDeclaration" }
 }
 
 /**
@@ -1203,4 +1237,6 @@ class IndexSignature extends @index_signature, MemberSignature {
   override InterfaceDefinition getDeclaringType() {
     result = MemberSignature.super.getDeclaringType()
   }
+
+  override string getAPrimaryQlClass() { result = "IndexSignature" }
 }

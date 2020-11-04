@@ -151,6 +151,23 @@ private class TypeMentionUse extends Use, TypeMention {
     )
   }
 
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, _) and
+    endcolumn =
+      startcolumn +
+          this.getType().(ConstructedType).getUnboundGeneric().getNameWithoutBrackets().length() - 1
+    or
+    Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, _) and
+    endcolumn =
+      startcolumn + this.getType().(UnboundGenericType).getNameWithoutBrackets().length() - 1
+    or
+    not this.getType() instanceof ConstructedType and
+    not this.getType() instanceof UnboundGenericType and
+    Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
   override Type getDefinition() { result = this.getType().getSourceDeclaration() }
 
   override string getUseType() {

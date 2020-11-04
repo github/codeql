@@ -12,7 +12,7 @@ namespace Semmle.BuildAnalyser
     /// Locates packages in a source tree and downloads all of the
     /// referenced assemblies to a temp folder.
     /// </summary>
-    class NugetPackages
+    internal class NugetPackages
     {
         /// <summary>
         /// Create the package manager for a specified source tree.
@@ -25,24 +25,22 @@ namespace Semmle.BuildAnalyser
 
             // Expect nuget.exe to be in a `nuget` directory under the directory containing this exe.
             var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            nugetExe = Path.Combine(Path.GetDirectoryName(currentAssembly), "nuget", "nuget.exe");
+            var directory = Path.GetDirectoryName(currentAssembly);
+            if (directory is null)
+                throw new FileNotFoundException($"Directory path '{currentAssembly}' of current assembly is null");
+
+            nugetExe = Path.Combine(directory, "nuget", "nuget.exe");
 
             if (!File.Exists(nugetExe))
                 throw new FileNotFoundException(string.Format("NuGet could not be found at {0}", nugetExe));
-        }
 
-        /// <summary>
-        /// Locate all NuGet packages but don't download them yet.
-        /// </summary>
-        public void FindPackages()
-        {
             packages = new DirectoryInfo(SourceDirectory).
                 EnumerateFiles("packages.config", SearchOption.AllDirectories).
                 ToArray();
         }
 
         // List of package files to download.
-        FileInfo[] packages;
+        private readonly FileInfo[] packages;
 
         /// <summary>
         /// The list of package files.
@@ -82,7 +80,7 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         /// <param name="package">The package file.</param>
         /// <param name="pm">Where to log progress/errors.</param>
-        void RestoreNugetPackage(string package, IProgressMonitor pm)
+        private void RestoreNugetPackage(string package, IProgressMonitor pm)
         {
             pm.NugetInstall(package);
 
@@ -115,8 +113,8 @@ namespace Semmle.BuildAnalyser
             {
                 using var p = Process.Start(pi);
 
-                string output = p.StandardOutput.ReadToEnd();
-                string error = p.StandardError.ReadToEnd();
+                var output = p.StandardOutput.ReadToEnd();
+                var error = p.StandardError.ReadToEnd();
 
                 p.WaitForExit();
                 if (p.ExitCode != 0)
@@ -131,6 +129,6 @@ namespace Semmle.BuildAnalyser
             }
         }
 
-        readonly string nugetExe;
+        private readonly string nugetExe;
     }
 }

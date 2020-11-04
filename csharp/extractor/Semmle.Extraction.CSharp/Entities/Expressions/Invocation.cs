@@ -7,15 +7,15 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Invocation : Expression<InvocationExpressionSyntax>
+    internal class Invocation : Expression<InvocationExpressionSyntax>
     {
-        Invocation(ExpressionNodeInfo info)
+        private Invocation(ExpressionNodeInfo info)
             : base(info.SetKind(GetKind(info)))
         {
             this.info = info;
         }
 
-        readonly ExpressionNodeInfo info;
+        private readonly ExpressionNodeInfo info;
 
         public static Expression Create(ExpressionNodeInfo info) => new Invocation(info).TryPopulate();
 
@@ -53,12 +53,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     if (target != null && !target.IsStatic)
                     {
                         // Implicit `this` qualifier; add explicitly
-                        var callingMethod = cx.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) as IMethodSymbol;
 
-                        if (callingMethod == null)
-                            cx.ModelError(Syntax, "Couldn't determine implicit this type");
-                        else
+                        if (cx.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) is IMethodSymbol callingMethod)
                             This.CreateImplicit(cx, Entities.Type.Create(cx, callingMethod.ContainingType), Location, this, child++);
+                        else
+                            cx.ModelError(Syntax, "Couldn't determine implicit this type");
                     }
                     else
                     {
@@ -94,7 +93,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             trapFile.expr_call(this, targetKey);
         }
 
-        static bool IsDynamicCall(ExpressionNodeInfo info)
+        private static bool IsDynamicCall(ExpressionNodeInfo info)
         {
             // Either the qualifier (Expression) is dynamic,
             // or one of the arguments is dynamic.
@@ -111,7 +110,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var si = SymbolInfo;
 
-                if (si.Symbol != null) return si.Symbol as IMethodSymbol;
+                if (si.Symbol != null)
+                    return si.Symbol as IMethodSymbol;
 
                 if (si.CandidateReason == CandidateReason.OverloadResolutionFailure)
                 {
@@ -119,10 +119,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     // For some reason, typeof(X).InvokeMember(...) fails to resolve the correct
                     // InvokeMember() method, even though the number of parameters clearly identifies the correct method
 
-                    var candidates = si.CandidateSymbols.
-                        OfType<IMethodSymbol>().
-                        Where(method => method.Parameters.Length >= Syntax.ArgumentList.Arguments.Count).
-                        Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= Syntax.ArgumentList.Arguments.Count);
+                    var candidates = si.CandidateSymbols
+                        .OfType<IMethodSymbol>()
+                        .Where(method => method.Parameters.Length >= Syntax.ArgumentList.Arguments.Count)
+                        .Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= Syntax.ArgumentList.Arguments.Count);
 
                     return cx.Extractor.Standalone ?
                         candidates.FirstOrDefault() :
@@ -133,13 +133,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        static bool IsDelegateCall(ExpressionNodeInfo info)
+        private static bool IsDelegateCall(ExpressionNodeInfo info)
         {
             var si = info.SymbolInfo;
 
             if (si.CandidateReason == CandidateReason.OverloadResolutionFailure &&
                 si.CandidateSymbols.OfType<IMethodSymbol>().All(s => s.MethodKind == MethodKind.DelegateInvoke))
+            {
                 return true;
+            }
 
             // Delegate variable is a dynamic
             var node = (InvocationExpressionSyntax)info.Node;
@@ -147,36 +149,37 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 node.Expression is IdentifierNameSyntax &&
                 IsDynamic(info.Context, node.Expression) &&
                 si.Symbol == null)
+            {
                 return true;
+            }
 
             return si.Symbol != null &&
                 si.Symbol.Kind == SymbolKind.Method &&
                 ((IMethodSymbol)si.Symbol).MethodKind == MethodKind.DelegateInvoke;
         }
 
-        static bool IsLocalFunctionInvocation(ExpressionNodeInfo info)
+        private static bool IsLocalFunctionInvocation(ExpressionNodeInfo info)
         {
-            var target = info.SymbolInfo.Symbol as IMethodSymbol;
-            return target != null && target.MethodKind == MethodKind.LocalFunction;
+            return info.SymbolInfo.Symbol is IMethodSymbol target &&
+                target.MethodKind == MethodKind.LocalFunction;
         }
 
-        static ExprKind GetKind(ExpressionNodeInfo info)
+        private static ExprKind GetKind(ExpressionNodeInfo info)
         {
-            return IsNameof((InvocationExpressionSyntax)info.Node) ?
-                ExprKind.NAMEOF :
-                IsDelegateCall(info) ?
-                ExprKind.DELEGATE_INVOCATION :
-                IsLocalFunctionInvocation(info) ?
-                ExprKind.LOCAL_FUNCTION_INVOCATION :
-                ExprKind.METHOD_INVOCATION;
+            return IsNameof((InvocationExpressionSyntax)info.Node)
+                ? ExprKind.NAMEOF
+                : IsDelegateCall(info)
+                    ? ExprKind.DELEGATE_INVOCATION
+                    : IsLocalFunctionInvocation(info)
+                        ? ExprKind.LOCAL_FUNCTION_INVOCATION
+                        : ExprKind.METHOD_INVOCATION;
         }
 
-        static bool IsNameof(InvocationExpressionSyntax syntax)
+        private static bool IsNameof(InvocationExpressionSyntax syntax)
         {
             // Odd that this is not a separate expression type.
             // Maybe it will be in the future.
-            var id = syntax.Expression as IdentifierNameSyntax;
-            return id != null && id.Identifier.Text == "nameof";
+            return syntax.Expression is IdentifierNameSyntax id && id.Identifier.Text == "nameof";
         }
     }
 }

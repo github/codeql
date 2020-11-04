@@ -6,9 +6,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class CommentLine : CachedEntity<(Microsoft.CodeAnalysis.Location, string)>, ICommentLine
+    internal class CommentLine : CachedEntity<(Microsoft.CodeAnalysis.Location, string)>, ICommentLine
     {
-        CommentLine(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw)
+        private CommentLine(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw)
             : base(cx, (loc, text))
         {
             Type = type;
@@ -36,14 +36,14 @@ namespace Semmle.Extraction.CSharp.Entities
                     var split = text.Split('\n');
                     var currentLocation = trivia.GetLocation().SourceSpan.Start - 3;
 
-                    for (int line = 0; line < split.Length - 1; ++line)
+                    for (var line = 0; line < split.Length - 1; ++line)
                     {
-                        string fullLine = split[line];
+                        var fullLine = split[line];
                         var nextLineLocation = currentLocation + fullLine.Length + 1;
                         fullLine = fullLine.TrimEnd('\r');
-                        string trimmedLine = fullLine;
+                        var trimmedLine = fullLine;
 
-                        int leadingSpaces = trimmedLine.IndexOf('/');
+                        var leadingSpaces = trimmedLine.IndexOf('/');
                         if (leadingSpaces != -1)
                         {
                             fullLine = fullLine.Substring(leadingSpaces);
@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 case SyntaxKind.SingleLineCommentTrivia:
                     {
-                        string contents = trivia.ToString().Substring(2);
+                        var contents = trivia.ToString().Substring(2);
                         var commentType = CommentLineType.Singleline;
                         if (contents.Length > 0 && contents[0] == '/')
                         {
@@ -86,14 +86,16 @@ namespace Semmle.Extraction.CSharp.Entities
                     split = text.Split('\n');
                     currentLocation = trivia.GetLocation().SourceSpan.Start;
 
-                    for (int line = 0; line < split.Length; ++line)
+                    for (var line = 0; line < split.Length; ++line)
                     {
-                        string fullLine = split[line];
+                        var fullLine = split[line];
                         var nextLineLocation = currentLocation + fullLine.Length + 1;
                         fullLine = fullLine.TrimEnd('\r');
-                        string trimmedLine = fullLine;
-                        if (line == 0) trimmedLine = trimmedLine.Substring(2);
-                        if (line == split.Length - 1) trimmedLine = trimmedLine.Substring(0, trimmedLine.Length - 2);
+                        var trimmedLine = fullLine;
+                        if (line == 0)
+                            trimmedLine = trimmedLine.Substring(2);
+                        if (line == split.Length - 1)
+                            trimmedLine = trimmedLine.Substring(0, trimmedLine.Length - 2);
                         trimmedLine = trimmedLine.Trim();
 
                         var span = Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(currentLocation, currentLocation + fullLine.Length);
@@ -110,7 +112,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        Extraction.Entities.Location location;
+        private Extraction.Entities.Location location;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -129,11 +131,15 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";commentline");
         }
 
-        static CommentLine Create(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw) => CommentLineFactory.Instance.CreateEntity(cx, loc, type, text, raw);
-
-        class CommentLineFactory : ICachedEntityFactory<(Microsoft.CodeAnalysis.Location, CommentLineType, string, string), CommentLine>
+        private static CommentLine Create(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw)
         {
-            public static readonly CommentLineFactory Instance = new CommentLineFactory();
+            var init = (loc, type, text, raw);
+            return CommentLineFactory.Instance.CreateEntity(cx, init, init);
+        }
+
+        private class CommentLineFactory : ICachedEntityFactory<(Microsoft.CodeAnalysis.Location, CommentLineType, string, string), CommentLine>
+        {
+            public static CommentLineFactory Instance { get; } = new CommentLineFactory();
 
             public CommentLine Create(Context cx, (Microsoft.CodeAnalysis.Location, CommentLineType, string, string) init) =>
                 new CommentLine(cx, init.Item1, init.Item2, init.Item3, init.Item4);

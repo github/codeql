@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.InferredTypes
 
 /** Provides classes and predicates shared between the XSS queries. */
 module Shared {
@@ -33,11 +34,10 @@ module Shared {
    * The XSS queries do not attempt to reason about correctness or completeness of sanitizers,
    * so any such replacement stops taint propagation.
    */
-  class MetacharEscapeSanitizer extends Sanitizer, DataFlow::MethodCallNode {
+  class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
-      getMethodName() = "replace" and
       exists(RegExpConstant c |
-        c.getLiteral() = getArgument(0).getALocalSource().asExpr() and
+        c.getLiteral() = getRegExp().asExpr() and
         c.getValue().regexpMatch("['\"&<>]")
       )
     }
@@ -154,19 +154,9 @@ module DomBasedXss {
   class LibrarySink extends Sink, DataFlow::ValueNode {
     LibrarySink() {
       // call to a jQuery method that interprets its argument as HTML
-      exists(JQuery::MethodCall call | call.interpretsArgumentAsHtml(this) |
-        // either the argument is always interpreted as HTML
-        not call.interpretsArgumentAsSelector(this)
-        or
-        // or it doesn't start with something other than `<`, and so at least
-        // _may_ be interpreted as HTML
-        not exists(DataFlow::Node prefix, string strval |
-          isPrefixOfJQueryHtmlString(this, prefix) and
-          strval = prefix.getStringValue() and
-          not strval = "" and
-          not strval.regexpMatch("\\s*<.*")
-        ) and
-        not DOM::locationRef().flowsTo(this)
+      exists(JQuery::MethodCall call |
+        call.interpretsArgumentAsHtml(this) and
+        not call.interpretsArgumentAsSelector(this) // Handled by `JQuerySelectorSink`
       )
       or
       // call to an Angular method that interprets its argument as HTML
@@ -193,14 +183,52 @@ module DomBasedXss {
    * HTML by a jQuery method.
    */
   predicate isPrefixOfJQueryHtmlString(DataFlow::Node htmlString, DataFlow::Node prefix) {
-    any(JQuery::MethodCall call).interpretsArgumentAsHtml(htmlString) and
-    prefix = htmlString
+    prefix = getAPrefixOfJQuerySelectorString(htmlString)
+  }
+
+  /**
+   * Holds if `prefix` is a prefix of `htmlString`, which may be intepreted as
+   * HTML by a jQuery method.
+   */
+  private DataFlow::Node getAPrefixOfJQuerySelectorString(DataFlow::Node htmlString) {
+    any(JQuery::MethodCall call).interpretsArgumentAsSelector(htmlString) and
+    result = htmlString
     or
-    exists(DataFlow::Node pred | isPrefixOfJQueryHtmlString(htmlString, pred) |
-      prefix = StringConcatenation::getFirstOperand(pred)
+    exists(DataFlow::Node pred | pred = getAPrefixOfJQuerySelectorString(htmlString) |
+      result = StringConcatenation::getFirstOperand(pred)
       or
-      prefix = pred.getAPredecessor()
+      result = pred.getAPredecessor()
     )
+  }
+
+  /**
+   * An argument to the jQuery `$` function or similar, which is interpreted as either a selector
+   * or as an HTML string depending on its first character.
+   */
+  class JQueryHtmlOrSelectorArgument extends DataFlow::Node {
+    JQueryHtmlOrSelectorArgument() {
+      exists(JQuery::MethodCall call |
+        call.interpretsArgumentAsHtml(this) and
+        call.interpretsArgumentAsSelector(this) and
+        analyze().getAType() = TTString()
+      )
+    }
+
+    /** Gets a string that flows to the prefix of this argument. */
+    string getAPrefix() { result = getAPrefixOfJQuerySelectorString(this).getStringValue() }
+  }
+
+  /**
+   * An argument to the jQuery `$` function or similar, which may be interpreted as HTML.
+   *
+   * This is the same as `JQueryHtmlOrSelectorArgument`, excluding cases where the value
+   * is prefixed by something other than `<`.
+   */
+  class JQueryHtmlOrSelectorSink extends Sink, JQueryHtmlOrSelectorArgument {
+    JQueryHtmlOrSelectorSink() {
+      // If a prefix of the string is known, it must start with '<' or be an empty string
+      forall(string strval | strval = getAPrefix() | strval.regexpMatch("(?s)\\s*<.*|"))
+    }
   }
 
   /**
@@ -350,11 +378,6 @@ module DomBasedXss {
     SafePropertyReadSanitizer() {
       exists(PropAccess pacc | pacc = this.asExpr() |
         isSafeLocationProperty(pacc)
-        or
-        // `$(location.hash)` is a fairly common and safe idiom
-        // (because `location.hash` always starts with `#`),
-        // so we mark `hash` as safe for the purposes of this query
-        pacc.getPropertyName() = "hash"
         or
         pacc.getPropertyName() = "length"
       )

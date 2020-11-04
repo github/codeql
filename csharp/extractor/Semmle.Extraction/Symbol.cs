@@ -1,14 +1,15 @@
 using System.IO;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction
 {
     /// <summary>
     /// An abstract symbol, which encapsulates a data type (such as a C# symbol).
     /// </summary>
-    /// <typeparam name="Initializer">The type of the symbol.</typeparam>
-    public abstract class CachedEntity<Initializer> : ICachedEntity
+    /// <typeparam name="TSymbol">The type of the symbol.</typeparam>
+    public abstract class CachedEntity<TSymbol> : ICachedEntity
     {
-        public CachedEntity(Context context, Initializer init)
+        protected CachedEntity(Context context, TSymbol init)
         {
             Context = context;
             symbol = init;
@@ -29,11 +30,9 @@ namespace Semmle.Extraction
         {
             get
             {
-                using (var trap = new StringWriter())
-                {
-                    Populate(trap);
-                    return trap.ToString();
-                }
+                using var trap = new StringWriter();
+                Populate(trap);
+                return trap.ToString();
             }
         }
 
@@ -42,14 +41,14 @@ namespace Semmle.Extraction
             get;
         }
 
-        public Initializer symbol
+        public TSymbol symbol
         {
             get;
         }
 
         object? ICachedEntity.UnderlyingObject => symbol;
 
-        public Initializer UnderlyingObject => symbol;
+        public TSymbol UnderlyingObject => symbol;
 
         public abstract void WriteId(System.IO.TextWriter trapFile);
 
@@ -65,24 +64,30 @@ namespace Semmle.Extraction
             get;
         }
 
-        /// <summary>
-        /// Runs the given action <paramref name="a"/>, guarding for trap duplication
-        /// based on the ID an location of this entity.
-        /// </summary>
-        protected void WithDuplicationGuard(System.Action a, IEntity location)
-        {
-            var key = new Key(this, location);
-            Context.WithDuplicationGuard(key, a);
-        }
-
         public override int GetHashCode() => symbol is null ? 0 : symbol.GetHashCode();
 
         public override bool Equals(object? obj)
         {
-            var other = obj as CachedEntity<Initializer>;
+            var other = obj as CachedEntity<TSymbol>;
             return other?.GetType() == GetType() && Equals(other.symbol, symbol);
         }
 
         public abstract TrapStackBehaviour TrapStackBehaviour { get; }
+    }
+
+    /// <summary>
+    /// A class used to wrap an `ISymbol` object, which uses `SymbolEqualityComparer.Default`
+    /// for comparison.
+    /// </summary>
+    public sealed class SymbolEqualityWrapper
+    {
+        public ISymbol Symbol { get; }
+
+        public SymbolEqualityWrapper(ISymbol symbol) { Symbol = symbol; }
+
+        public override bool Equals(object? other) =>
+            other is SymbolEqualityWrapper sew && SymbolEqualityComparer.Default.Equals(Symbol, sew.Symbol);
+
+        public override int GetHashCode() => 11 * Symbol.GetHashCode();
     }
 }

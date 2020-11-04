@@ -16,7 +16,7 @@ point and hence the result of the evaluation.
 Similarly, the result of a QL query is the least fixed point of the predicates referenced in
 the query.
 
-In certain cases, you can also use aggregates recursively. For more information, see :ref:`monotonic-aggregates`.
+In certain cases, you can also use aggregates recursively. For more information, see ":ref:`monotonic-aggregates`."
 
 Examples of recursive predicates
 ********************************

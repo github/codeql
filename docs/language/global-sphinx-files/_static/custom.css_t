@@ -1,305 +1,85 @@
 /*
- * Sphinx stylesheet to add some customizations to the default Alabaster theme.
+ * This Sphinx stylesheet adds some customizations to the default Alabaster theme.
  * 
  * The source for the default stylesheet can be found at 
  * https://github.com/bitprophet/alabaster/blob/master/alabaster/static/alabaster.css_t
  *
+ * For the classes provided by the primer, see https://unpkg.com/@primer/css/dist/primer.css
  */
 
-div.body h1 {
-    margin-top: 1em;
-}
 
-div.wrapper {
-    padding-top: 78px;
-    margin-bottom: 0px;
-    height: 637px;
-}
+/* -- CODE SNIPPETS ----------------------------------------------------------------------- */
 
-/* -- HEADER ------------------------------------------------------------------------------- */
-
-div.header {
-    background-color: #140f46;
-    top:0;
-    position: fixed;
-    width: 100%;
-    padding: 0 30px 30px 30px;
-}
-.textContainer {
-    margin: auto;
-}
-
-/*div.logocontainer {
-    width: 50%;
-}*/
-
-#siteBanner {
-    position: fixed;
-    width: 100%;
-    height: 4.5rem; 
-    margin: 0;
-    padding: 0 20px 0 30px;
-    background-color: #140f46;
-    opacity: 0.95;
-    transform: translate3d(0px, 0px, 0px);
-    z-index: 1;
-}
-#siteBanner input {
-    border-width: 0;
-    /*color: rgb(244, 244, 244);
-    background-color: #140f46;
-    font-size: 0.9rem;*/
-    letter-spacing: 0.1rem;
-    /*width: 12rem;*/
-}
-#siteBanner input:focus, 
-#siteBanner textarea:focus, 
-#siteBanner select:focus{
-    outline: none;
-}
-svg.Header-logo-white {
-    display: inline;
-}
-svg.Header-logo-purple {
-    display: none;
-}
-
-div.linkcontainer {
-   /*width: 50%;*/
-    margin-left: auto;
-    margin-top: -1.3rem;
-    padding-right: 50px;
-}
-
-div.linkbar {
-    float:right;
-}
-.linkbar a {
-    color: White;
-    font-size: 18px;
-    margin-left: 20px;
-    text-decoration: none;
-}
-
-
-.linkbar a:hover {
-    text-decoration: underline;
-}
-.small-bar {
-    float:right;
-    display:none;
-}
-
-.small-bar a {
-    color: White;
-    font-size: 18px;
-    margin-left: 20px;
-    text-decoration: none;
-}
-.small-bar a:hover {
-    text-decoration: underline;
-}
-
-#Header-logo {
-    text-decoration: none;
-    position: relative;
-    width: 98px;
-    height: 20px;
-}
-
-#Header-logo > * {
-    margin-top: 1.7rem;
-}
-
-svg.Header-logo-white {
-    display: inline;
-}
-
-
-/* -- DOCUMENT ------------------------------------------------------------------------------- */
-
-div.document {
-    width: 100%;
-    padding: 0;
-    margin: 0 0 30px 0;
-}
-
-div.documentwrapper {
-    width: 90%;
-    box-shadow: 0.1rem 0.4rem 1.5rem #d0cee4;
-    margin: 20px 20px 20px 20px;
-    padding-bottom: 50px;
-}
-div.mainBox {
-    margin-left: calc(30% + 25px);  /* Allow 25px for the width of the ToC scrollbar */
-}
-
-div.privacy {
-    text-align: right;
-    padding-right: 5%;
-    padding-bottom: 20px;
-}
-
-/* -- SIDEBAR ------------------------------------------------------------------------------- */
-
-div.navBox {
-    overflow-y:auto;
-    width:29%;
-    padding-left: 25px;
-    position: fixed;
-    height: calc(100% - 108px);
-    z-index: 100;
-    background-color: #FFFFFF;
-    padding-top: 30px;
-}
-
-.navBox li {
-    margin: 10px 0 10px 0px; 
-}
-
-.navBox ul, .navBox ol, .navBox li {
-    list-style-type: none;
-}
-
-.navBox ul li a {
-    border-bottom: none;
-}
-
-.navBox ul li a:hover {
-    font-weight: bold;
-    border-bottom: none;
-}
-
-.navBox a.current {
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-/* -- SMALL SCREEN ------------------------------------------------------------------------------- */
-
-@media screen and (max-width: 875px){ 
-   
-    #siteBanner {
-        position: relative;
-    }
-    div.wrapper {
-        /*margin-top:-100px;*/
-        flex-direction: column;
-        height: 100%;
-        width: 100%;
-        padding-top: 0px;
-    }  
-    div.mainBox {
-        margin: 0 10px 0 10px;
-        position: relative;
-        height: 100%;
-        width: 100%;
-    } 
-    div.documentwrapper {
-        padding-left: 20px;
-        width:100%;
-        box-shadow: none;
-        margin: 0;
-        padding-left:0;
-    }
-
-    div.navBox {
-        position: relative;
-        width: 100%;
-        border-color: #2f1695;       
-    }
-    body {
-        margin: 0;
-        padding: 0;
-        overflow: inherit;
-        width:95%;
-    }
-
-    div.body {
-        min-width: unset;
-    }
-    div.linkbar {
-        display: none;
-    
-    } 
-    .small-bar {
-        display: inherit;
-    }
-    
-    ul {
-    margin: 10px 20px 10px 20px;
-    }
-
-    div.privacy {
-        padding-right: 0%;
-    }
-
-}
-    
-/* -- PRINT VIEW ----------------------------------------------------------------------------*/
-
-@media print {
-    div.navBox {
-        display: none;
-    }
-
-    #siteBanner {
-        display: none;
-    }
-
-    div.wrapper {
-        /*margin-top:-100px;*/
-        flex-direction: column;
-        height: 100%;
-        width: 100%;
-        padding-top: 0px;
-    }  
-    div.mainBox {
-        margin: 0 10px 0 10px;
-        position: relative;
-        height: 100%;
-        width: 100%;
-    } 
-    div.documentwrapper {
-        padding-left: 20px;
-        width:100%;
-        box-shadow: none;
-        margin: 0;
-        padding-left:0;
-    }
-
-    body {
-        margin: 0;
-        padding: 0;
-        overflow: inherit;
-        width:95%;
-    }
-
-    div.body {
-        min-width: unset;
-    }
-    div.linkbar {
-        display: none;
-    
-    } 
-    .small-bar {
-        display: inherit;
-    }
-    
-    ul {
-    margin: 10px 20px 10px 20px;
-    }
-
-    div.privacy {
-        display: none;
-    }
+code {
+    font-size: 0.9em !important; /* makes code snippets in headings the correct size */
 }
 
 /* -- MAIN BODY ---------------------------------------------------------------------------- */
 
+main {
+    min-height: calc(100vh - 68px);
+}
+
 div.body {
-    max-width: 100%;  /* overrule 800px in basic.css */
-} 
+    max-width: 100%;
+    min-width: unset;
+    padding: 0;
+}
+
+div.body li {
+    margin: 0 0 0.5em 0; /* Increase spacing between list items */
+}
+
+article {
+    min-height: calc(100vh - 145px); /* Makes sure GitHub footer stays at bottom of viewport */
+}
+
+/* -- SIDEBAR ------------------------------------------------------------------------------- */
+
+.SideNav {
+    max-height: 100vh;  /* Makes sure sidebar doesn't cover GitHub footer */
+}
+
+.SideNav li {
+    margin: 10px 0 10px 0px; 
+}
+
+.SideNav ul, .SideNav ol, .SideNav li {
+    list-style-type: none;
+}
+
+.SideNav ul li a {
+    border-bottom: none;
+    color: black;
+}
+
+.SideNav ul li a:hover {
+    font-weight: bold;
+    border-bottom: none;
+}
+
+.SideNav a.current {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* -- BREADCRUMBS --------------------------------------------------------------------------------*/
+
+div.related ul {
+    padding: 0;
+}
+
+/* -- LINKS --------------------------------------------------------------------------------------*/
+
+a.reference {
+    border-bottom: none;
+}
+
+a.reference:hover {
+    text-decoration: none; 
+}
+
+/* -- ADMONITIONS ---------------------------------------------------------------------------- */
 
 /* 
  * Override default styling for "admonitions". 
@@ -337,7 +117,10 @@ pre {
     border: 1px solid #BBB;
     background: #F6F6F6;
     border-radius: 5px;
+    white-space: pre-wrap;
 }
+
+/* -- QL SYNTAX HIGHLIGHTING -------------------------------------------------- */
 
 /*
  * Use more appropriate colors for syntax highlighting
@@ -354,35 +137,25 @@ pre {
 .highlight .kt { color: #7a65cd; font-weight: bold } /* built-in type keywords */
 .highlight .kr { color: #333; font-style: italic } /* annotations */
 
-/* -- INDEX -------------------------------------------------------------------------------- */
+
+/* -- SEARCH PAGE ---------------------------------------------------------------------------- */
+
+div.context { /* hide rst search snippets */
+    display: none;
+}
+
+/* -- INDEX ---------------------------------------------------------------------------------------- */
 
 table.indextable li > a {
     text-decoration: unset;
 }
 
+/* -- ANCHOR LINKS ------------------------------------------------------------------------------- */
 
-/* -- FOOTER ------------------------------------------------------------------------------- */
-div.footer {
-    display: none;
-    /* background-color: #2F1695; */
-    /* color: #FFFFFF; */
-    /* padding: 30px; */
-    /* margin: 0; */
-    /* width: calc(100% - 60px); */  /* Allow for 2 x 30px of padding (at left & right side) */
-    /* position: fixed; */
-    /* bottom: 0; */
-}
+/* make anchor highlighting more sensible */
 
-/* Adjust anchor targets to allow for the fixed banner */
-div.documentwrapper a[name], 
-div.documentwrapper :target::before,
-div.footnote-group a[name], 
-div.footnote-group :target::before
- {
-    content: "";
-    display: block;
-    height: 78px;      /* Height of banner */
-    margin-top: -78px; /* Prevent this showing as a gap */      
+dt:target::before {
+    background-color: white;
 }
 
 /* -- CSV TABLE STYLING ------------------------------------------------------------------------------- */
@@ -444,4 +217,39 @@ blockquote.pull-quote > :last-child {
 
 .toggle .name.open:after {
     content: " ▼";
+}
+
+/* -- PRINT VIEW ----------------------------------------------------------------------------*/
+
+@media print {
+
+    div.SideNav {
+        display: none;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: inherit;
+        width:95%;
+    }
+
+    div.privacy {
+        display: none;
+    }
+}
+
+/* -- SMALL SCREEN ------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 875px) { 
+
+    /* Overrides strange behaviour caused by default styles */
+
+    body {
+        padding: 0;
+    } 
+    
+    div.footer {
+        display: block;
+    }
 }

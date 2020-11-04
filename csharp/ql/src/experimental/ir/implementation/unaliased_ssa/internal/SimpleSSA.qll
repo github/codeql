@@ -59,6 +59,12 @@ class MemoryLocation extends TMemoryLocation {
   final string getUniqueId() { result = var.getUniqueId() }
 }
 
+/**
+ * Represents a set of `MemoryLocation`s that cannot overlap with
+ * `MemoryLocation`s outside of the set. The `VirtualVariable` will be
+ * represented by a `MemoryLocation` that totally overlaps all other
+ * `MemoryLocations` in the set.
+ */
 class VirtualVariable extends MemoryLocation { }
 
 /** A virtual variable that groups all escaped memory within a function. */
@@ -79,3 +85,9 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
   result = getMemoryLocation(getAddressOperandAllocation(operand.getAddressOperand()))
 }
+
+/** Gets the start bit offset of a `MemoryLocation`, if any. */
+int getStartBitOffset(MemoryLocation location) { none() }
+
+/** Gets the end bit offset of a `MemoryLocation`, if any. */
+int getEndBitOffset(MemoryLocation location) { none() }

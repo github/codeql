@@ -490,10 +490,10 @@ Prefer type tracking when:
 Prefer data-flow configurations when:
 
 - Tracking user-controlled data -- use `taint tracking <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#using-global-taint-tracking>`__.
-- Differentiating between different kinds of user-controlled data -- see :doc:`Using flow labels for precise data flow analysis <flow-labels>`.
+- Differentiating between different kinds of user-controlled data -- see ":doc:`Using flow labels for precise data flow analysis <flow-labels>`."
 - Tracking transformations of a value through generic utility functions.
 - Tracking values through string manipulation.
-- Generating a path from source to sink -- see :doc:`Creating path queries <../writing-queries/path-queries>`.
+- Generating a path from source to sink -- see ":doc:`Creating path queries <../writing-queries/path-queries>`."
 
 Lastly, depending on the code base being analyzed, some alternatives to consider are:
 

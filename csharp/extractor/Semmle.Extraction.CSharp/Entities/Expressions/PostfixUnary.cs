@@ -4,26 +4,26 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class PostfixUnary : Expression<ExpressionSyntax>
+    internal class PostfixUnary : Expression<ExpressionSyntax>
     {
-        PostfixUnary(ExpressionNodeInfo info, ExprKind kind, ExpressionSyntax operand)
+        private PostfixUnary(ExpressionNodeInfo info, ExprKind kind, ExpressionSyntax operand)
             : base(info.SetKind(UnaryOperatorKind(info.Context, kind, info.Node)))
         {
-            Operand = operand;
-            OperatorKind = kind;
+            this.operand = operand;
+            operatorKind = kind;
         }
 
-        readonly ExpressionSyntax Operand;
-        readonly ExprKind OperatorKind;
+        private readonly ExpressionSyntax operand;
+        private readonly ExprKind operatorKind;
 
         public static Expression Create(ExpressionNodeInfo info, ExpressionSyntax operand) => new PostfixUnary(info, info.Kind, operand).TryPopulate();
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            Create(cx, Operand, this, 0);
+            Create(cx, operand, this, 0);
             OperatorCall(trapFile, Syntax);
 
-            if ((OperatorKind == ExprKind.POST_INCR || OperatorKind == ExprKind.POST_DECR) &&
+            if ((operatorKind == ExprKind.POST_INCR || operatorKind == ExprKind.POST_DECR) &&
                 Kind == ExprKind.OPERATOR_INVOCATION)
             {
                 trapFile.mutator_invocation_mode(this, 2);

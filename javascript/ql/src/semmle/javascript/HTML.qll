@@ -80,6 +80,8 @@ module HTML {
     }
 
     override string toString() { result = "<" + getName() + ">...</>" }
+
+    override string getAPrimaryQlClass() { result = "HTML::Element" }
   }
 
   /**
@@ -124,6 +126,34 @@ module HTML {
     string getValue() { xmlAttrs(this, _, _, result, _, _) }
 
     override string toString() { result = getName() + "=" + getValue() }
+
+    /**
+     * Gets the inline script of this attribute, if any.
+     */
+    CodeInAttribute getCodeInAttribute() {
+      exists(
+        string f, Location l1, int sl1, int sc1, int el1, int ec1, Location l2, int sl2, int sc2,
+        int el2, int ec2
+      |
+        l1 = getLocation() and
+        l2 = result.getLocation() and
+        l1.hasLocationInfo(f, sl1, sc1, el1, ec1) and
+        l2.hasLocationInfo(f, sl2, sc2, el2, ec2)
+      |
+        (
+          sl1 = sl2 and sc1 < sc2
+          or
+          sl1 < sl2
+        ) and
+        (
+          el1 = el2 and ec1 > ec2
+          or
+          el1 > el2
+        )
+      )
+    }
+
+    override string getAPrimaryQlClass() { result = "HTML::Attribute" }
   }
 
   /**
@@ -227,6 +257,8 @@ module HTML {
       result = getInlineScript() or
       result = resolveSource()
     }
+
+    override string getAPrimaryQlClass() { result = "HTML::ScriptElement" }
   }
 
   /**

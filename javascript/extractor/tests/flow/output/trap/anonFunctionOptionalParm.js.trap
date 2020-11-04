@@ -95,19 +95,19 @@ variables(#20033,"f",#20000)
 #20034=*
 stmts(#20034,18,#20001,0,"var f = ...  => {};")
 hasLocation(#20034,#20003)
-stmtContainers(#20034,#20001)
+stmt_containers(#20034,#20001)
 #20035=*
 exprs(#20035,64,#20034,0,"f = (x?:int) => {}")
 #20036=@"loc,{#10000},1,5,1,22"
 locations_default(#20036,#10000,1,5,1,22)
 hasLocation(#20035,#20036)
-enclosingStmt(#20035,#20034)
-exprContainers(#20035,#20001)
+enclosing_stmt(#20035,#20034)
+expr_containers(#20035,#20001)
 #20037=*
 exprs(#20037,78,#20035,0,"f")
 hasLocation(#20037,#20007)
-enclosingStmt(#20037,#20034)
-exprContainers(#20037,#20001)
+enclosing_stmt(#20037,#20034)
+expr_containers(#20037,#20001)
 literals("f","f",#20037)
 decl(#20037,#20033)
 #20038=*
@@ -115,8 +115,8 @@ exprs(#20038,65,#20035,1,"(x?:int) => {}")
 #20039=@"loc,{#10000},1,9,1,22"
 locations_default(#20039,#10000,1,9,1,22)
 hasLocation(#20038,#20039)
-enclosingStmt(#20038,#20034)
-exprContainers(#20038,#20001)
+enclosing_stmt(#20038,#20034)
+expr_containers(#20038,#20001)
 #20040=*
 scopes(#20040,1)
 scopenodes(#20038,#20040)
@@ -126,7 +126,7 @@ variables(#20041,"x",#20040)
 #20042=*
 exprs(#20042,78,#20038,0,"x")
 hasLocation(#20042,#20013)
-exprContainers(#20042,#20038)
+expr_containers(#20042,#20038)
 literals("x","x",#20042)
 decl(#20042,#20041)
 #20043=*
@@ -134,7 +134,7 @@ stmts(#20043,1,#20038,-2,"{}")
 #20044=@"loc,{#10000},1,21,1,22"
 locations_default(#20044,#10000,1,21,1,22)
 hasLocation(#20043,#20044)
-stmtContainers(#20043,#20038)
+stmt_containers(#20043,#20038)
 #20045=*
 entry_cfg_node(#20045,#20001)
 #20046=@"loc,{#10000},1,1,1,0"

@@ -2905,7 +2905,7 @@ predicate exprNeedsCopyIfNotLoaded(Expr expr) {
 private predicate exprImmediatelyDiscarded(Expr expr) {
   exists(ExprStmt s |
     s = expr.getParent() and
-    not exists(StmtExpr se | s = se.getStmt().(Block).getLastStmt())
+    not exists(StmtExpr se | s = se.getStmt().(BlockStmt).getLastStmt())
   )
   or
   exists(CommaExpr c | c.getLeftOperand() = expr)

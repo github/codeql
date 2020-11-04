@@ -19,8 +19,8 @@ import com.semmle.js.extractor.trapcache.DefaultTrapCache;
 import com.semmle.js.extractor.trapcache.DummyTrapCache;
 import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.js.parser.ParsedProject;
-import com.semmle.js.parser.TypeScriptParser;
 import com.semmle.ts.extractor.TypeExtractor;
+import com.semmle.ts.extractor.TypeScriptParser;
 import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.data.UnitParser;
@@ -43,7 +43,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2020-08-24";
+  public static final String EXTRACTOR_VERSION = "2020-09-17";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 

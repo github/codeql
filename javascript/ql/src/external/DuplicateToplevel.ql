@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Duplicate script
  * @description There is another script that shares a lot of code with this script. Consider combining the
  *              two scripts to improve maintainability.

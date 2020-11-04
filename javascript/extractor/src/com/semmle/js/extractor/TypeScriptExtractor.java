@@ -5,6 +5,7 @@ import java.io.File;
 import com.semmle.js.extractor.ExtractorConfig.ECMAVersion;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.JSParser.Result;
+import com.semmle.ts.extractor.TypeScriptParser;
 import com.semmle.js.parser.ParseError;
 
 public class TypeScriptExtractor implements IExtractor {

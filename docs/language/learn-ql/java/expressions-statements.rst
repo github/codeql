@@ -26,7 +26,7 @@ If ``l`` is bigger than 2\ :sup:`31`\ - 1 (the largest positive value of type ``
 
    All primitive numeric types have a maximum value, beyond which they will wrap around to their lowest possible value (called an "overflow"). For ``int``, this maximum value is 2\ :sup:`31`\ - 1. Type ``long`` can accommodate larger values up to a maximum of 2\ :sup:`63`\ - 1. In this example, this means that ``l`` can take on a value that is higher than the maximum for type ``int``; ``i`` will never be able to reach this value, instead overflowing and returning to a low value.
 
-We're going to develop a query that finds code that looks like it might exhibit this kind of behavior. We'll be using several of the standard library classes for representing statements and functions. For a full list, see :doc:`Abstract syntax tree classes for working with Java programs <ast-class-reference>`.
+We're going to develop a query that finds code that looks like it might exhibit this kind of behavior. We'll be using several of the standard library classes for representing statements and functions. For a full list, see ":doc:`Abstract syntax tree classes for working with Java programs <ast-class-reference>`."
 
 Initial query
 -------------

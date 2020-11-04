@@ -22,6 +22,7 @@ class StringFormatMethod extends FormatMethod {
   StringFormatMethod() {
     (
       this.hasName("format") or
+      this.hasName("formatted") or
       this.hasName("printf") or
       this.hasName("readLine") or
       this.hasName("readPassword")
@@ -37,6 +38,8 @@ class StringFormatMethod extends FormatMethod {
 
   override int getFormatStringIndex() {
     result = 0 and this.getSignature() = "format(java.lang.String,java.lang.Object[])"
+    or
+    result = -1 and this.getSignature() = "formatted(java.lang.Object[])"
     or
     result = 0 and this.getSignature() = "printf(java.lang.String,java.lang.Object[])"
     or
@@ -91,6 +94,12 @@ class FmtSyntax extends TFmtSyntax {
   predicate isLogger() { this = TFmtLogger() }
 }
 
+private Expr getArgumentOrQualifier(Call c, int i) {
+  result = c.getArgument(i)
+  or
+  result = c.getQualifier() and i = -1
+}
+
 /**
  * Holds if `c` wraps a call to a `StringFormatMethod`, such that `fmtix` is
  * the index of the format string argument to `c` and the following and final
@@ -111,7 +120,7 @@ private predicate formatWrapper(Callable c, int fmtix, FmtSyntax syntax) {
       or
       fmtcall.getCallee().(LoggerFormatMethod).getFormatStringIndex() = i and syntax = TFmtLogger()
     ) and
-    fmtcall.getArgument(i) = fmt.getAnAccess() and
+    getArgumentOrQualifier(fmtcall, i) = fmt.getAnAccess() and
     fmtcall.getArgument(i + 1) = args.getAnAccess()
   )
 }
@@ -155,7 +164,7 @@ class FormattingCall extends Call {
   }
 
   /** Gets the argument to this call in the position of the format string */
-  Expr getFormatArgument() { result = this.getArgument(this.getFormatStringIndex()) }
+  Expr getFormatArgument() { result = getArgumentOrQualifier(this, this.getFormatStringIndex()) }
 
   /** Gets an argument to be formatted. */
   Expr getAnArgumentToBeFormatted() {

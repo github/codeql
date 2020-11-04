@@ -75,14 +75,14 @@ hasLocation(#20001,#20003)
 #20026=*
 stmts(#20026,2,#20001,0,"({x = 1}) => x;")
 hasLocation(#20026,#20003)
-stmtContainers(#20026,#20001)
+stmt_containers(#20026,#20001)
 #20027=*
 exprs(#20027,65,#20026,0,"({x = 1}) => x")
 #20028=@"loc,{#10000},1,1,1,14"
 locations_default(#20028,#10000,1,1,1,14)
 hasLocation(#20027,#20028)
-enclosingStmt(#20027,#20026)
-exprContainers(#20027,#20001)
+enclosing_stmt(#20027,#20026)
+expr_containers(#20027,#20001)
 #20029=*
 scopes(#20029,1)
 scopenodes(#20027,#20029)
@@ -94,7 +94,7 @@ exprs(#20031,68,#20027,0,"{x = 1}")
 #20032=@"loc,{#10000},1,2,1,8"
 locations_default(#20032,#10000,1,2,1,8)
 hasLocation(#20031,#20032)
-exprContainers(#20031,#20027)
+expr_containers(#20031,#20027)
 #20033=*
 properties(#20033,#20031,0,0,"x = 1")
 #20034=@"loc,{#10000},1,3,1,7"
@@ -103,23 +103,23 @@ hasLocation(#20033,#20034)
 #20035=*
 exprs(#20035,0,#20033,0,"x")
 hasLocation(#20035,#20009)
-exprContainers(#20035,#20027)
+expr_containers(#20035,#20027)
 literals("x","x",#20035)
 #20036=*
 exprs(#20036,78,#20033,1,"x")
 hasLocation(#20036,#20009)
-exprContainers(#20036,#20027)
+expr_containers(#20036,#20027)
 literals("x","x",#20036)
 decl(#20036,#20030)
 #20037=*
 exprs(#20037,3,#20033,2,"1")
 hasLocation(#20037,#20013)
-exprContainers(#20037,#20027)
+expr_containers(#20037,#20027)
 literals("1","1",#20037)
 #20038=*
 exprs(#20038,79,#20027,-2,"x")
 hasLocation(#20038,#20021)
-exprContainers(#20038,#20027)
+expr_containers(#20038,#20027)
 literals("x","x",#20038)
 bind(#20038,#20030)
 #20039=*

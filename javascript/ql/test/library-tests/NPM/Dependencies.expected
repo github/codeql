@@ -1,2 +1,0 @@
-| src/package.json:1:1:18:1 | {\\n  "na ... "\\n  }\\n} | esprima | * |
-| src/package.json:1:1:18:1 | {\\n  "na ... "\\n  }\\n} | mocha | 1.0 |

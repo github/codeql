@@ -10,7 +10,7 @@ namespace Semmle.BuildAnalyser
     /// Searches for assembly DLLs, indexes them and provides
     /// a lookup facility from assembly ID to filename.
     /// </summary>
-    class AssemblyCache
+    internal class AssemblyCache
     {
         /// <summary>
         /// Locate all reference files and index them.
@@ -33,57 +33,57 @@ namespace Semmle.BuildAnalyser
         /// (Indexing is performed at a later stage by IndexReferences()).
         /// </summary>
         /// <param name="dir">The directory to index.</param>
-        /// <returns>The number of DLLs within this directory.</returns>
-        int AddReferenceDirectory(string dir)
+        private void AddReferenceDirectory(string dir)
         {
-            int count = 0;
             foreach (var dll in new DirectoryInfo(dir).EnumerateFiles("*.dll", SearchOption.AllDirectories))
             {
-                dlls.Add(dll.FullName);
-                ++count;
+                pendingDllsToIndex.Enqueue(dll.FullName);
             }
-            return count;
         }
 
         /// <summary>
         /// Indexes all DLLs we have located.
         /// Because this is a potentially time-consuming operation, it is put into a separate stage.
         /// </summary>
-        void IndexReferences()
+        private void IndexReferences()
         {
             // Read all of the files
-            foreach (var filename in dlls)
+            foreach (var filename in pendingDllsToIndex)
             {
-                var info = AssemblyInfo.ReadFromFile(filename);
-
-                if (info.Valid)
-                {
-                    assemblyInfo[filename] = info;
-                }
-                else
-                {
-                    failedDlls.Add(filename);
-                }
+                IndexReference(filename);
             }
 
             // Index "assemblyInfo" by version string
             // The OrderBy is used to ensure that we by default select the highest version number.
-            foreach (var info in assemblyInfo.Values.OrderBy(info => info.Id))
+            foreach (var info in assemblyInfoByFileName.Values.OrderBy(info => info.Id))
             {
                 foreach (var index in info.IndexStrings)
-                    references[index] = info;
+                    assemblyInfoById[index] = info;
+            }
+        }
+
+        private void IndexReference(string filename)
+        {
+            try
+            {
+                var info = AssemblyInfo.ReadFromFile(filename);
+                assemblyInfoByFileName[filename] = info;
+            }
+            catch (AssemblyLoadException)
+            {
+                failedAssemblyInfoFileNames.Add(filename);
             }
         }
 
         /// <summary>
         /// The number of DLLs which are assemblies.
         /// </summary>
-        public int AssemblyCount => assemblyInfo.Count;
+        public int AssemblyCount => assemblyInfoByFileName.Count;
 
         /// <summary>
         /// The number of DLLs which weren't assemblies. (E.g. C++).
         /// </summary>
-        public int NonAssemblyCount => failedDlls.Count;
+        public int NonAssemblyCount => failedAssemblyInfoFileNames.Count;
 
         /// <summary>
         /// Given an assembly id, determine its full info.
@@ -93,70 +93,67 @@ namespace Semmle.BuildAnalyser
         public AssemblyInfo ResolveReference(string id)
         {
             // Fast path if we've already seen this before.
-            if (failedReferences.Contains(id))
-                return AssemblyInfo.Invalid;
+            if (failedAssemblyInfoIds.Contains(id))
+                throw new AssemblyLoadException();
 
-            var query = AssemblyInfo.MakeFromId(id);
-            id = query.Id;  // Sanitise the id.
+            string assemblyName;
+            (id, assemblyName) = AssemblyInfo.ComputeSanitizedAssemblyInfo(id);
 
             // Look up the id in our references map.
-            AssemblyInfo result;
-            if (references.TryGetValue(id, out result))
+            if (assemblyInfoById.TryGetValue(id, out var result))
             {
                 // The string is in the references map.
                 return result;
             }
-            else
+
+            // Attempt to load the reference from the GAC.
+            try
             {
-                // Attempt to load the reference from the GAC.
-                try
-                {
-                    var loadedAssembly = System.Reflection.Assembly.ReflectionOnlyLoad(id);
+                var loadedAssembly = System.Reflection.Assembly.ReflectionOnlyLoad(id);
 
-                    if (loadedAssembly != null)
-                    {
-                        // The assembly was somewhere we haven't indexed before.
-                        // Add this assembly to our index so that subsequent lookups are faster.
+                if (loadedAssembly != null)
+                {
+                    // The assembly was somewhere we haven't indexed before.
+                    // Add this assembly to our index so that subsequent lookups are faster.
 
-                        result = AssemblyInfo.MakeFromAssembly(loadedAssembly);
-                        references[id] = result;
-                        assemblyInfo[loadedAssembly.Location] = result;
-                        return result;
-                    }
-                }
-                catch (FileNotFoundException)
-                {
-                    // A suitable assembly could not be found
-                }
-                catch (FileLoadException)
-                {
-                    // The assembly cannot be loaded for some reason
-                    // e.g. The name is malformed.
-                }
-                catch (PlatformNotSupportedException)
-                {
-                    // .NET Core does not have a GAC.
-                }
-
-                // Fallback position - locate the assembly by its lower-case name only.
-                var asmName = query.Name.ToLowerInvariant();
-
-                if (references.TryGetValue(asmName, out result))
-                {
-                    references[asmName] = result;  // Speed up the next time the same string is resolved
+                    result = AssemblyInfo.MakeFromAssembly(loadedAssembly);
+                    assemblyInfoById[id] = result;
+                    assemblyInfoByFileName[loadedAssembly.Location] = result;
                     return result;
                 }
-
-                failedReferences.Add(id);   // Fail early next time
-
-                return AssemblyInfo.Invalid;
             }
+            catch (FileNotFoundException)
+            {
+                // A suitable assembly could not be found
+            }
+            catch (FileLoadException)
+            {
+                // The assembly cannot be loaded for some reason
+                // e.g. The name is malformed.
+            }
+            catch (PlatformNotSupportedException)
+            {
+                // .NET Core does not have a GAC.
+            }
+
+            // Fallback position - locate the assembly by its lower-case name only.
+            var asmName = assemblyName.ToLowerInvariant();
+
+            if (assemblyInfoById.TryGetValue(asmName, out result))
+            {
+                assemblyInfoById[asmName] = result;  // Speed up the next time the same string is resolved
+                return result;
+            }
+
+            failedAssemblyInfoIds.Add(id);   // Fail early next time
+
+            throw new AssemblyLoadException();
         }
 
         /// <summary>
         /// All the assemblies we have indexed.
         /// </summary>
-        public IEnumerable<AssemblyInfo> AllAssemblies => assemblyInfo.Select(a => a.Value);
+        public IEnumerable<AssemblyInfo> AllAssemblies => assemblyInfoByFileName.Select(a => a.Value);
 
         /// <summary>
         /// Retrieve the assembly info of a pre-cached assembly.
@@ -165,32 +162,32 @@ namespace Semmle.BuildAnalyser
         /// <returns>The assembly info.</returns>
         public AssemblyInfo GetAssemblyInfo(string filepath)
         {
-            if(assemblyInfo.TryGetValue(filepath, out var info))
+            if (assemblyInfoByFileName.TryGetValue(filepath, out var info))
             {
                 return info;
             }
-            else
+
+            IndexReference(filepath);
+
+            if (assemblyInfoByFileName.TryGetValue(filepath, out info))
             {
-                info = AssemblyInfo.ReadFromFile(filepath);
-                assemblyInfo.Add(filepath, info);
                 return info;
             }
+
+            throw new AssemblyLoadException();
         }
 
-        // List of pending DLLs to index.
-        readonly List<string> dlls = new List<string>();
+        private readonly Queue<string> pendingDllsToIndex = new Queue<string>();
 
-        // Map from filename to assembly info.
-        readonly Dictionary<string, AssemblyInfo> assemblyInfo = new Dictionary<string, AssemblyInfo>();
+        private readonly Dictionary<string, AssemblyInfo> assemblyInfoByFileName = new Dictionary<string, AssemblyInfo>();
 
         // List of DLLs which are not assemblies.
         // We probably don't need to keep this
-        readonly List<string> failedDlls = new List<string>();
+        private readonly List<string> failedAssemblyInfoFileNames = new List<string>();
 
         // Map from assembly id (in various formats) to the full info.
-        readonly Dictionary<string, AssemblyInfo> references = new Dictionary<string, AssemblyInfo>();
+        private readonly Dictionary<string, AssemblyInfo> assemblyInfoById = new Dictionary<string, AssemblyInfo>();
 
-        // Set of failed assembly ids.
-        readonly HashSet<string> failedReferences = new HashSet<string>();
+        private readonly HashSet<string> failedAssemblyInfoIds = new HashSet<string>();
     }
 }

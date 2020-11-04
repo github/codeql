@@ -14,14 +14,14 @@
 
 import java
 
-Block finallyBlock() { exists(TryStmt try | try.getFinally() = result) }
+BlockStmt finallyBlock() { exists(TryStmt try | try.getFinally() = result) }
 
-Stmt statementIn(Block finally) {
+Stmt statementIn(BlockStmt finally) {
   finallyBlock() = finally and
   result.getParent+() = finally
 }
 
-predicate banned(Stmt s, Block finally) {
+predicate banned(Stmt s, BlockStmt finally) {
   s = statementIn(finally) and
   (
     s instanceof ReturnStmt
@@ -32,6 +32,6 @@ predicate banned(Stmt s, Block finally) {
   )
 }
 
-from Stmt s, Block finally
+from Stmt s, BlockStmt finally
 where banned(s, finally)
 select s, "Leaving a finally-block with this statement can cause exceptions to silently disappear."

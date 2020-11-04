@@ -85,28 +85,28 @@ hasLocation(#20001,#20003)
 #20030=*
 stmts(#20030,2,#20001,0,"({ x: o.x } = q);")
 hasLocation(#20030,#20003)
-stmtContainers(#20030,#20001)
+stmt_containers(#20030,#20001)
 #20031=*
 exprs(#20031,63,#20030,0,"({ x: o.x } = q)")
 #20032=@"loc,{#10000},1,1,1,16"
 locations_default(#20032,#10000,1,1,1,16)
 hasLocation(#20031,#20032)
-enclosingStmt(#20031,#20030)
-exprContainers(#20031,#20001)
+enclosing_stmt(#20031,#20030)
+expr_containers(#20031,#20001)
 #20033=*
 exprs(#20033,47,#20031,0,"{ x: o.x } = q")
 #20034=@"loc,{#10000},1,2,1,15"
 locations_default(#20034,#10000,1,2,1,15)
 hasLocation(#20033,#20034)
-enclosingStmt(#20033,#20030)
-exprContainers(#20033,#20001)
+enclosing_stmt(#20033,#20030)
+expr_containers(#20033,#20001)
 #20035=*
 exprs(#20035,68,#20033,0,"{ x: o.x }")
 #20036=@"loc,{#10000},1,2,1,11"
 locations_default(#20036,#10000,1,2,1,11)
 hasLocation(#20035,#20036)
-enclosingStmt(#20035,#20030)
-exprContainers(#20035,#20001)
+enclosing_stmt(#20035,#20030)
+expr_containers(#20035,#20001)
 #20037=*
 properties(#20037,#20035,0,0,"x: o.x")
 #20038=@"loc,{#10000},1,4,1,9"
@@ -115,21 +115,21 @@ hasLocation(#20037,#20038)
 #20039=*
 exprs(#20039,0,#20037,0,"x")
 hasLocation(#20039,#20009)
-enclosingStmt(#20039,#20030)
-exprContainers(#20039,#20001)
+enclosing_stmt(#20039,#20030)
+expr_containers(#20039,#20001)
 literals("x","x",#20039)
 #20040=*
 exprs(#20040,14,#20037,1,"o.x")
 #20041=@"loc,{#10000},1,7,1,9"
 locations_default(#20041,#10000,1,7,1,9)
 hasLocation(#20040,#20041)
-enclosingStmt(#20040,#20030)
-exprContainers(#20040,#20001)
+enclosing_stmt(#20040,#20030)
+expr_containers(#20040,#20001)
 #20042=*
 exprs(#20042,79,#20040,0,"o")
 hasLocation(#20042,#20013)
-enclosingStmt(#20042,#20030)
-exprContainers(#20042,#20001)
+enclosing_stmt(#20042,#20030)
+expr_containers(#20042,#20001)
 literals("o","o",#20042)
 #20043=@"var;{o};{#20000}"
 variables(#20043,"o",#20000)
@@ -137,14 +137,14 @@ bind(#20042,#20043)
 #20044=*
 exprs(#20044,0,#20040,1,"x")
 hasLocation(#20044,#20017)
-enclosingStmt(#20044,#20030)
-exprContainers(#20044,#20001)
+enclosing_stmt(#20044,#20030)
+expr_containers(#20044,#20001)
 literals("x","x",#20044)
 #20045=*
 exprs(#20045,79,#20033,1,"q")
 hasLocation(#20045,#20023)
-enclosingStmt(#20045,#20030)
-exprContainers(#20045,#20001)
+enclosing_stmt(#20045,#20030)
+expr_containers(#20045,#20001)
 literals("q","q",#20045)
 #20046=@"var;{q};{#20000}"
 variables(#20046,"q",#20000)

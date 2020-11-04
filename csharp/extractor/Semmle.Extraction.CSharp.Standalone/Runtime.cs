@@ -10,14 +10,14 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// <summary>
     /// Locates .NET Runtimes.
     /// </summary>
-    static class Runtime
+    internal static class Runtime
     {
-        static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
+        private static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
 
         /// <summary>
         /// Locates .NET Core Runtimes.
         /// </summary>
-        public static IEnumerable<string> CoreRuntimes
+        private static IEnumerable<string> CoreRuntimes
         {
             get
             {
@@ -27,8 +27,12 @@ namespace Semmle.Extraction.CSharp.Standalone
                     : new[] { "/usr/share/dotnet", @"C:\Program Files\dotnet" };
                 var coreDirs = dotnetDirs.Select(d => Path.Combine(d, "shared", "Microsoft.NETCore.App"));
 
-                foreach (var dir in coreDirs.Where(Directory.Exists))
+                var dir = coreDirs.FirstOrDefault(Directory.Exists);
+                if (dir is object)
+                {
                     return Directory.EnumerateDirectories(dir).OrderByDescending(Path.GetFileName);
+                }
+
                 return Enumerable.Empty<string>();
             }
         }
@@ -37,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// Locates .NET Desktop Runtimes.
         /// This includes Mono and Microsoft.NET.
         /// </summary>
-        public static IEnumerable<string> DesktopRuntimes
+        private static IEnumerable<string> DesktopRuntimes
         {
             get
             {
@@ -48,22 +52,29 @@ namespace Semmle.Extraction.CSharp.Standalone
 
                 if (Directory.Exists(@"C:\Windows\Microsoft.NET\Framework64"))
                 {
-                    return Directory.EnumerateDirectories(@"C:\Windows\Microsoft.NET\Framework64", "v*").
-                        OrderByDescending(Path.GetFileName);
+                    return Directory.EnumerateDirectories(@"C:\Windows\Microsoft.NET\Framework64", "v*")
+                        .OrderByDescending(Path.GetFileName);
                 }
 
-                foreach (var dir in monoDirs.Where(Directory.Exists))
+                var dir = monoDirs.FirstOrDefault(Directory.Exists);
+
+                if (dir is object)
                 {
-                    return Directory.EnumerateDirectories(dir).
-                        Where(d => Char.IsDigit(Path.GetFileName(d)[0])).
-                        OrderByDescending(Path.GetFileName);
+                    return Directory.EnumerateDirectories(dir)
+                        .Where(d => Char.IsDigit(Path.GetFileName(d)[0]))
+                        .OrderByDescending(Path.GetFileName);
                 }
 
                 return Enumerable.Empty<string>();
             }
         }
 
-        public static IEnumerable<string> Runtimes
+        /// <summary>
+        /// Gets the .NET runtime location to use for extraction
+        /// </summary>
+        public static string GetRuntime(bool useSelfContained) => useSelfContained ? ExecutingRuntime : Runtimes.First();
+
+        private static IEnumerable<string> Runtimes
         {
             get
             {

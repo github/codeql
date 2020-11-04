@@ -1,0 +1,11 @@
+test_taint
+| test.py:22 | ok   | test_custom_sanitizer | s |
+| test.py:36 | ok   | test_custom_sanitizer_guard | s |
+| test.py:38 | ok   | test_custom_sanitizer_guard | s |
+| test.py:40 | ok   | test_custom_sanitizer_guard | s |
+| test.py:51 | ok   | test_escape | s2 |
+isSanitizer
+| TestTaintTrackingConfiguration | test.py:21:39:21:39 | ControlFlowNode for s |
+| TestTaintTrackingConfiguration | test.py:50:10:50:29 | ControlFlowNode for emulated_escaping() |
+isSanitizerGuard
+| TestTaintTrackingConfiguration | test.py:35:8:35:26 | ControlFlowNode for emulated_is_safe() |

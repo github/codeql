@@ -12,7 +12,7 @@
 import cpp
 import semmle.code.cpp.commons.Exclusions
 
-Stmt getNextRealStmt(Block b, int i) {
+Stmt getNextRealStmt(BlockStmt b, int i) {
   result = b.getStmt(i + 1) and
   not result instanceof EmptyStmt
   or
@@ -20,7 +20,7 @@ Stmt getNextRealStmt(Block b, int i) {
   result = getNextRealStmt(b, i + 1)
 }
 
-from JumpStmt js, Block b, int i, Stmt s
+from JumpStmt js, BlockStmt b, int i, Stmt s
 where
   b.getStmt(i) = js and
   s = getNextRealStmt(b, i) and

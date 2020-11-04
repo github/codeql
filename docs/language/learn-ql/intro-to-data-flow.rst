@@ -14,17 +14,17 @@ The following sections provide a brief introduction to data flow analysis with C
 
 See the following tutorials for more information about analyzing data flow in specific languages:
 
-- :doc:`Analyzing data flow in C/C++ <cpp/dataflow>`
-- :doc:`Analyzing data flow in C# <csharp/dataflow>`
-- :doc:`Analyzing data flow in Java <java/dataflow>`
-- :doc:`Analyzing data flow in JavaScript/TypeScript <javascript/dataflow>`
-- :doc:`Analyzing data flow and tracking tainted data in Python <python/taint-tracking>`
+- ":doc:`Analyzing data flow in C/C++ <cpp/dataflow>`"
+- ":doc:`Analyzing data flow in C# <csharp/dataflow>`"
+- ":doc:`Analyzing data flow in Java <java/dataflow>`"
+- ":doc:`Analyzing data flow in JavaScript/TypeScript <javascript/dataflow>`"
+- ":doc:`Analyzing data flow and tracking tainted data in Python <python/taint-tracking>`"
 
 .. pull-quote::
 
     Note
 
-    Data flow analysis is used extensively in path queries. To learn more about path queries, see :doc:`Creating path queries <writing-queries/path-queries>`.  
+    Data flow analysis is used extensively in path queries. To learn more about path queries, see ":doc:`Creating path queries <writing-queries/path-queries>`."  
 
 .. _data-flow-graph:
 
@@ -82,4 +82,5 @@ These flow steps are modeled in the taint-tracking library using predicates that
 Further reading
 ***************
 
-- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+- "`Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__"
+

@@ -11,7 +11,7 @@ namespace ns_int
 }
 
 void sink(int);
-void sink(std::vector<int> &);
+template<typename T> void sink(std::vector<T> &);
 
 void test_range_based_for_loop_vector(int source1) {
 	std::vector<int> v(100, source1);
@@ -21,7 +21,7 @@ void test_range_based_for_loop_vector(int source1) {
 	}
 
 	for(std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
-		sink(*it); // tainted [NOT DETECTED]
+		sink(*it); // tainted [NOT DETECTED by IR]
 	}
 
 	for(int& x : v) {
@@ -75,14 +75,14 @@ void test_element_taint(int x) {
 	sink(v6); // tainted
 	sink(v6.data()[2]); // tainted
 
+
 	{
-		const std::vector<int> &v7c = v7; // (workaround because our iterators don't convert to const_iterator)
-		std::vector<int>::const_iterator it = v7c.begin();
+		std::vector<int>::const_iterator it = v7.begin();
 		v7.insert(it, source());
 	}
-	sink(v7); // tainted [NOT DETECTED]
-	sink(v7.front()); // tainted [NOT DETECTED]
-	sink(v7.back());
+	sink(v7); // tainted
+	sink(v7.front()); // tainted
+	sink(v7.back()); // [FALSE POSITIVE]
 
 	{
 		const std::vector<int> &v8c = v8;
@@ -159,7 +159,7 @@ void test_nested_vectors()
 
 		sink(aa[0][0]);
 		aa[0][0] = source();
-		sink(aa[0][0]); // tainted [IR ONLY]
+		sink(aa[0][0]); // tainted
 	}
 
 	{
@@ -255,10 +255,10 @@ void test_vector_assign() {
 		v6.assign(i1, i2);
 
 		sink(v4);
-		sink(v5); // tainted [NOT DETECTED]
-		sink(i1); // tainted [NOT DETECTED]
-		sink(i2); // tainted [NOT DETECTED]
-		sink(v6); // tainted [NOT DETECTED]
+		sink(v5); // tainted
+		sink(i1); // tainted
+		sink(i2); // tainted
+		sink(v6); // tainted
 	}
 
 	{
@@ -290,4 +290,199 @@ void test_data_more() {
 	sink(v2); // tainted
 	sink(v2.data()); // tainted
 	sink(v2.data()[2]); // tainted
+}
+
+void sink(std::vector<int>::iterator);
+
+void test_vector_insert() {
+	std::vector<int> a;
+	std::vector<int> b;
+	std::vector<int> c;
+	std::vector<int> d;
+
+	d.push_back(source());
+
+	sink(a.insert(a.end(), b.begin(), b.end()));
+	sink(a);
+
+	sink(c.insert(c.end(), d.begin(), d.end())); // tainted
+	sink(c); // tainted
+
+	sink(d.insert(d.end(), a.begin(), a.end())); // tainted
+	sink(d); // tainted
+}
+
+void test_constructors_more() {
+	std::vector<int> v1;
+	std::vector<int> v2;
+	v2.push_back(source());
+
+	std::vector<int> v3(v1.begin(), v1.end());
+	std::vector<int> v4(v2.begin(), v2.end());
+
+	sink(v1);
+	sink(v2); // tainted
+	sink(v3);
+	sink(v4); // tainted
+}
+
+void taint_vector_output_iterator(std::vector<int>::iterator iter) {
+	*iter = source();
+}
+
+void vector_iterator_assign_wrapper(std::vector<int>::iterator iter, int i) {
+	*iter = i;
+}
+
+void test_vector_output_iterator(int b) {
+	std::vector<int> v1(10), v2(10), v3(10), v4(10), v5(10), v6(10), v7(10), v8(10), v9(10), v10(10), v11(10), v12(10), v13(10), v14(10);
+
+	std::vector<int>::iterator i1 = v1.begin();
+	*i1 = source();
+	sink(v1); // tainted [NOT DETECTED by IR]
+
+	for(std::vector<int>::iterator it = v2.begin(); it != v2.end(); ++it) {
+		*it = source();
+	}
+	sink(v2); // tainted [NOT DETECTED by IR]
+
+	for(int& x : v3) {
+		x = source();
+	}
+	sink(v3); // tainted [NOT DETECTED]
+
+	for(std::vector<int>::iterator it = v4.begin(); it != v4.end(); ++it) {
+		taint_vector_output_iterator(it);
+	}
+	sink(v4); // tainted [NOT DETECTED by IR]
+	
+	std::vector<int>::iterator i5 = v5.begin();
+	*i5 = source();
+	sink(v5); // tainted [NOT DETECTED by IR]
+	*i5 = 1;
+	sink(v5); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i6 = v6.begin();
+	*i6 = source();
+	sink(v6); // tainted [NOT DETECTED by IR]
+	v6 = std::vector<int>(10);
+	sink(v6); // [FALSE POSITIVE in AST]
+
+	std::vector<int>::iterator i7 = v7.begin();
+	if(b) {
+		*i7 = source();
+		sink(v7); // tainted [NOT DETECTED by IR]
+	} else {
+		*i7 = 1;
+		sink(v7);
+	}
+	sink(v7); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i8 = v8.begin();
+	*i8 = source();
+	sink(v8); // tainted [NOT DETECTED by IR]
+	*i8 = 1;
+	sink(v8);
+
+	std::vector<int>::iterator i9 = v9.begin();
+
+	*i9 = source();
+	taint_vector_output_iterator(i9);
+
+	sink(v9);
+
+	std::vector<int>::iterator i10 = v10.begin();
+	vector_iterator_assign_wrapper(i10, 10);
+	sink(v10);
+
+	std::vector<int>::iterator i11 = v11.begin();
+	vector_iterator_assign_wrapper(i11, source());
+	sink(v11); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i12 = v12.begin();
+	*i12++ = 0;
+	*i12 = source();
+	sink(v12); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i13 = v13.begin();
+	*i13++ = source();
+	sink(v13); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i14 = v14.begin();
+	i14++;
+	*i14++ = source();
+	sink(v14); // tainted [NOT DETECTED by IR]
+}
+
+void test_vector_inserter(char *source_string) {
+	{
+		std::vector<std::string> out;
+		auto it = out.end();
+		*it++ = std::string(source_string);
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<std::string> out;
+		auto it = std::back_inserter(out);
+		*it++ = std::string(source_string);
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<int> out;
+		auto it = std::back_inserter(out);
+		*it++ = source();
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<std::string> out;
+		auto it = std::back_inserter(out);
+		*++it = std::string(source_string);
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<int> out;
+		auto it = std::back_inserter(out);
+		*++it = source();
+		sink(out); // tainted [NOT DETECTED by IR]
+	}
+}
+
+void *memcpy(void *s1, const void *s2, size_t n);
+
+namespace ns_string
+{
+	std::string source();
+}
+
+void sink(std::vector<char> &);
+void sink(std::string &);
+
+void test_vector_memcpy()
+{
+	{
+		std::vector<int> v(100);
+		int s = source();
+		int i = 0;
+
+		sink(v);
+		memcpy(&v[i], &s, sizeof(int));
+		sink(v); // tainted [NOT DETECTED by IR]
+	}
+
+	{
+		std::vector<char> cs(100);
+		std::string src = ns_string::source();
+		const size_t offs = 10;
+		const size_t len = src.length();
+
+		sink(src); // tainted
+		sink(cs);
+		memcpy(&cs[offs + 1], src.c_str(), len);
+		sink(src); // tainted
+		sink(cs); // tainted [NOT DETECTED by IR]
+	}
 }

@@ -86,6 +86,19 @@ class Top extends @top {
   /** Gets a textual representation of this element. */
   cached
   string toString() { hasName(this, result) }
+
+  /**
+   * Gets the name of a primary CodeQL class to which this element belongs.
+   *
+   * For most elements, this is simply the most precise syntactic category to
+   * which they belong; for example, `AddExpr` is a primary class, but
+   * `BinaryExpr` is not.
+   *
+   * This predicate always has a result. If no primary class can be
+   * determined, the result is `"???"`. If multiple primary classes match,
+   * this predicate can have multiple results.
+   */
+  string getAPrimaryQlClass() { result = "???" }
 }
 
 /** A location maps language elements to positions in source files. */
@@ -137,12 +150,18 @@ class Location extends @location {
 
   /** Gets a string representation containing the file and range for this location. */
   string toString() {
-    exists(File f, int startLine, int endLine |
-      locations_default(this, f, startLine, _, endLine, _)
+    exists(File f, int startLine, int startCol, int endLine, int endCol |
+      locations_default(this, f, startLine, startCol, endLine, endCol)
     |
       if endLine = startLine
-      then result = f.toString() + ":" + startLine.toString()
-      else result = f.toString() + ":" + startLine.toString() + "-" + endLine.toString()
+      then
+        result =
+          f.toString() + ":" + startLine.toString() + "[" + startCol.toString() + "-" +
+            endCol.toString() + "]"
+      else
+        result =
+          f.toString() + ":" + startLine.toString() + "[" + startCol.toString() + "]-" +
+            endLine.toString() + "[" + endCol.toString() + "]"
     )
   }
 

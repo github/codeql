@@ -14,7 +14,8 @@ class AndroidComponent extends Class {
     this.getASupertype*().hasQualifiedName("android.app", "Activity") or
     this.getASupertype*().hasQualifiedName("android.app", "Service") or
     this.getASupertype*().hasQualifiedName("android.content", "BroadcastReceiver") or
-    this.getASupertype*().hasQualifiedName("android.content", "ContentProvider")
+    this.getASupertype*().hasQualifiedName("android.content", "ContentProvider") or
+    this.getASupertype*().hasQualifiedName("android.content", "ContentResolver")
   }
 
   /** The XML element corresponding to this Android component. */
@@ -29,26 +30,50 @@ class AndroidComponent extends Class {
   predicate hasIntentFilter() { exists(getAndroidComponentXmlElement().getAnIntentFilterElement()) }
 }
 
+/**
+ * An Android component that can be explicitly or implicitly exported.
+ */
+class ExportableAndroidComponent extends AndroidComponent {
+  /**
+   * Holds if this Android component is configured as `exported` or has intent
+   * filters configured without `exported` explicitly disabled in an
+   * `AndroidManifest.xml` file.
+   */
+  override predicate isExported() {
+    getAndroidComponentXmlElement().isExported()
+    or
+    hasIntentFilter() and
+    not getAndroidComponentXmlElement().isNotExported()
+  }
+}
+
 /** An Android activity. */
-class AndroidActivity extends AndroidComponent {
+class AndroidActivity extends ExportableAndroidComponent {
   AndroidActivity() { this.getASupertype*().hasQualifiedName("android.app", "Activity") }
 }
 
 /** An Android service. */
-class AndroidService extends AndroidComponent {
+class AndroidService extends ExportableAndroidComponent {
   AndroidService() { this.getASupertype*().hasQualifiedName("android.app", "Service") }
 }
 
 /** An Android broadcast receiver. */
-class AndroidBroadcastReceiver extends AndroidComponent {
+class AndroidBroadcastReceiver extends ExportableAndroidComponent {
   AndroidBroadcastReceiver() {
     this.getASupertype*().hasQualifiedName("android.content", "BroadcastReceiver")
   }
 }
 
 /** An Android content provider. */
-class AndroidContentProvider extends AndroidComponent {
+class AndroidContentProvider extends ExportableAndroidComponent {
   AndroidContentProvider() {
     this.getASupertype*().hasQualifiedName("android.content", "ContentProvider")
+  }
+}
+
+/** An Android content resolver. */
+class AndroidContentResolver extends AndroidComponent {
+  AndroidContentResolver() {
+    this.getASupertype*().hasQualifiedName("android.content", "ContentResolver")
   }
 }

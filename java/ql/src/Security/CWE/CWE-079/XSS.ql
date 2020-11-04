@@ -22,8 +22,10 @@ class XSSConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof NumericType or node.getType() instanceof BooleanType
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof XssSanitizer }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(XssAdditionalTaintStep s).step(node1, node2)
   }
 }
 

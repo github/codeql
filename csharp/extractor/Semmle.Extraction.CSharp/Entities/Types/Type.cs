@@ -21,9 +21,9 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// The underlying type.
         /// </summary>
-        public Type Type;
+        public Type Type { get; private set; }
 
-        readonly private NullableAnnotation annotation;
+        private readonly NullableAnnotation annotation;
 
         /// <summary>
         /// Gets the annotated type symbol of this annotated type.
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
     public abstract class Type : CachedSymbol<ITypeSymbol>
     {
-        public Type(Context cx, ITypeSymbol init)
+        protected Type(Context cx, ITypeSymbol init)
             : base(cx, init) { }
 
         public virtual AnnotatedType ElementType => default(AnnotatedType);
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 symbol.ContainingType != null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
-        static Kinds.TypeKind GetClassType(Context cx, ITypeSymbol t)
+        private static Kinds.TypeKind GetClassType(Context cx, ITypeSymbol t, bool constructUnderlyingTupleType)
         {
             switch (t.SpecialType)
             {
@@ -67,17 +67,22 @@ namespace Semmle.Extraction.CSharp.Entities
                 case SpecialType.System_Single: return Kinds.TypeKind.FLOAT;
                 case SpecialType.System_IntPtr: return Kinds.TypeKind.INT_PTR;
                 default:
-                    if (t.IsBoundNullable()) return Kinds.TypeKind.NULLABLE;
+                    if (t.IsBoundNullable())
+                        return Kinds.TypeKind.NULLABLE;
+
                     switch (t.TypeKind)
                     {
                         case TypeKind.Class: return Kinds.TypeKind.CLASS;
                         case TypeKind.Struct:
-                            return ((INamedTypeSymbol)t).IsTupleType ? Kinds.TypeKind.TUPLE : Kinds.TypeKind.STRUCT;
+                            return ((INamedTypeSymbol)t).IsTupleType && !constructUnderlyingTupleType
+                                ? Kinds.TypeKind.TUPLE
+                                : Kinds.TypeKind.STRUCT;
                         case TypeKind.Interface: return Kinds.TypeKind.INTERFACE;
                         case TypeKind.Array: return Kinds.TypeKind.ARRAY;
                         case TypeKind.Enum: return Kinds.TypeKind.ENUM;
                         case TypeKind.Delegate: return Kinds.TypeKind.DELEGATE;
                         case TypeKind.Pointer: return Kinds.TypeKind.POINTER;
+                        case TypeKind.Error: return Kinds.TypeKind.UNKNOWN;
                         default:
                             cx.ModelError(t, $"Unhandled type kind '{t.TypeKind}'");
                             return Kinds.TypeKind.UNKNOWN;
@@ -85,7 +90,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        protected void PopulateType(TextWriter trapFile)
+        protected void PopulateType(TextWriter trapFile, bool constructUnderlyingTupleType = false)
         {
             PopulateMetadataHandle(trapFile);
             PopulateAttributes();
@@ -93,24 +98,19 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write("types(");
             trapFile.WriteColumn(this);
             trapFile.Write(',');
-            trapFile.WriteColumn((int)GetClassType(Context, symbol));
+            trapFile.WriteColumn((int)GetClassType(Context, symbol, constructUnderlyingTupleType));
             trapFile.Write(",\"");
-            symbol.BuildDisplayName(Context, trapFile);
+            symbol.BuildDisplayName(Context, trapFile, constructUnderlyingTupleType);
             trapFile.WriteLine("\")");
 
             // Visit base types
             var baseTypes = new List<Type>();
-            if (symbol.BaseType != null)
+            if (symbol.GetNonObjectBaseType(Context) is INamedTypeSymbol @base)
             {
-                Type baseKey = Create(Context, symbol.BaseType);
+                var baseKey = Create(Context, @base);
                 trapFile.extend(this, baseKey.TypeRef);
                 if (symbol.TypeKind != TypeKind.Struct)
                     baseTypes.Add(baseKey);
-            }
-
-            if (symbol.TypeKind == TypeKind.Interface)
-            {
-                trapFile.extend(this, Create(Context, Context.Compilation.ObjectType));
             }
 
             if (!(base.symbol is IArrayTypeSymbol))
@@ -125,7 +125,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var containingType = ContainingType;
             if (containingType != null && symbol.Kind != SymbolKind.TypeParameter)
             {
-                Type originalDefinition = symbol.TypeKind == TypeKind.Error ? this : Create(Context, symbol.OriginalDefinition);
+                var originalDefinition = symbol.TypeKind == TypeKind.Error ? this : Create(Context, symbol.OriginalDefinition);
                 trapFile.nested_types(this, containingType, originalDefinition);
             }
             else if (symbol.ContainingNamespace != null)
@@ -133,19 +133,19 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.parent_namespace(this, Namespace.Create(Context, symbol.ContainingNamespace));
             }
 
-            if (symbol is IArrayTypeSymbol)
+            if (symbol is IArrayTypeSymbol array)
             {
                 // They are in the namespace of the original object
-                ITypeSymbol elementType = ((IArrayTypeSymbol)symbol).ElementType;
-                INamespaceSymbol ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
+                var elementType = array.ElementType;
+                var ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
                 if (ns != null)
                     trapFile.parent_namespace(this, Namespace.Create(Context, ns));
             }
 
-            if (symbol is IPointerTypeSymbol)
+            if (symbol is IPointerTypeSymbol pointer)
             {
-                ITypeSymbol elementType = ((IPointerTypeSymbol)symbol).PointedAtType;
-                INamespaceSymbol ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
+                var elementType = pointer.PointedAtType;
+                var ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
 
                 if (ns != null)
                     trapFile.parent_namespace(this, Namespace.Create(Context, ns));
@@ -185,12 +185,13 @@ namespace Semmle.Extraction.CSharp.Entities
                 baseLists = baseLists.Concat(declSyntaxReferences.OfType<InterfaceDeclarationSyntax>().Select(c => c.BaseList));
                 baseLists = baseLists.Concat(declSyntaxReferences.OfType<StructDeclarationSyntax>().Select(c => c.BaseList));
 
-                baseLists.
-                    Where(bl => bl != null).
-                    SelectMany(bl => bl.Types).
-                    Zip(baseTypes.Where(bt => bt.symbol.SpecialType != SpecialType.System_Object),
-                        (s, t) => TypeMention.Create(Context, s.Type, this, t)).
-                    Enumerate();
+                baseLists
+                    .Where(bl => bl != null)
+                    .SelectMany(bl => bl.Types)
+                    .Zip(
+                        baseTypes.Where(bt => bt.symbol.SpecialType != SpecialType.System_Object),
+                        (s, t) => TypeMention.Create(Context, s.Type, this, t))
+                    .Enumerate();
             }
         }
 
@@ -275,9 +276,9 @@ namespace Semmle.Extraction.CSharp.Entities
         public static Type Create(Context cx, ITypeSymbol type)
         {
             type = type.DisambiguateType();
-            const bool errorTypeIsNull = false;
-            return type == null || (errorTypeIsNull && type.TypeKind == TypeKind.Error) ?
-                NullType.Create(cx).Type : (Type)cx.CreateEntity(type);
+            return type == null
+                ? NullType.Create(cx).Type
+                : (Type)cx.CreateEntity(type);
         }
 
         public static AnnotatedType Create(Context cx, AnnotatedTypeSymbol type) =>
@@ -292,17 +293,19 @@ namespace Semmle.Extraction.CSharp.Entities
         /// A copy of a delegate "Invoke" method parameter used for the delgate
         /// type.
         /// </summary>
-        class DelegateTypeParameter : Parameter
+        private class DelegateTypeParameter : Parameter
         {
-            DelegateTypeParameter(Context cx, IParameterSymbol init, IEntity parent, Parameter original)
+            private DelegateTypeParameter(Context cx, IParameterSymbol init, IEntity parent, Parameter original)
                 : base(cx, init, parent, original) { }
 
-            new public static DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter original = null) =>
-                DelegateTypeParameterFactory.Instance.CreateEntity(cx, (param, parent, original));
+            public static new DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter original = null) =>
+               // We need to use a different cache key than `param` to avoid mixing up
+               // `DelegateTypeParameter`s and `Parameter`s
+               DelegateTypeParameterFactory.Instance.CreateEntity(cx, (typeof(DelegateTypeParameter), new SymbolEqualityWrapper(param)), (param, parent, original));
 
-            class DelegateTypeParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), DelegateTypeParameter>
+            private class DelegateTypeParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), DelegateTypeParameter>
             {
-                public static readonly DelegateTypeParameterFactory Instance = new DelegateTypeParameterFactory();
+                public static DelegateTypeParameterFactory Instance { get; } = new DelegateTypeParameterFactory();
 
                 public DelegateTypeParameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) =>
                     new DelegateTypeParameter(cx, init.Item1, init.Item2, init.Item3);
@@ -324,11 +327,19 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Type;
+            return other?.GetType() == GetType() && SymbolEqualityComparer.IncludeNullability.Equals(other.symbol, symbol);
+        }
+
+        public override int GetHashCode() => SymbolEqualityComparer.IncludeNullability.GetHashCode(symbol);
     }
 
-    abstract class Type<T> : Type where T : ITypeSymbol
+    internal abstract class Type<T> : Type where T : ITypeSymbol
     {
-        public Type(Context cx, T init)
+        protected Type(Context cx, T init)
             : base(cx, init) { }
 
         public new T symbol => (T)base.symbol;

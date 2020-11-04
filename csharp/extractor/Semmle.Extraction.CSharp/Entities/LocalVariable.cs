@@ -4,9 +4,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class LocalVariable : CachedSymbol<ISymbol>
+    internal class LocalVariable : CachedSymbol<ISymbol>
     {
-        LocalVariable(Context cx, ISymbol init) : base(cx, init) { }
+        private LocalVariable(Context cx, ISymbol init) : base(cx, init) { }
 
         public override void WriteId(TextWriter trapFile)
         {
@@ -23,10 +23,9 @@ namespace Semmle.Extraction.CSharp.Entities
         public void PopulateManual(Expression parent, bool isVar)
         {
             var trapFile = Context.TrapWriter.Writer;
-            var (kind, type) =
-                symbol is ILocalSymbol l ?
-                    (l.IsRef ? 3 : l.IsConst ? 2 : 1, Type.Create(Context, l.GetAnnotatedType())) :
-                    (1, parent.Type);
+            var (kind, type) = symbol is ILocalSymbol l
+                ? (l.IsRef ? 3 : l.IsConst ? 2 : 1, Type.Create(Context, l.GetAnnotatedType()))
+                : (1, parent.Type);
             trapFile.localvars(this, kind, symbol.Name, isVar ? 1 : 0, type.Type.TypeRef, parent);
 
             if (symbol is ILocalSymbol local)
@@ -43,21 +42,20 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static LocalVariable Create(Context cx, ISymbol local)
         {
-            return LocalVariableFactory.Instance.CreateEntity(cx, local);
+            return LocalVariableFactory.Instance.CreateEntityFromSymbol(cx, local);
         }
 
-        void DefineConstantValue(TextWriter trapFile)
+        private void DefineConstantValue(TextWriter trapFile)
         {
-            var local = symbol as ILocalSymbol;
-            if (local != null && local.HasConstantValue)
+            if (symbol is ILocalSymbol local && local.HasConstantValue)
             {
                 trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue));
             }
         }
 
-        class LocalVariableFactory : ICachedEntityFactory<ISymbol, LocalVariable>
+        private class LocalVariableFactory : ICachedEntityFactory<ISymbol, LocalVariable>
         {
-            public static readonly LocalVariableFactory Instance = new LocalVariableFactory();
+            public static LocalVariableFactory Instance { get; } = new LocalVariableFactory();
 
             public LocalVariable Create(Context cx, ISymbol init) => new LocalVariable(cx, init);
         }

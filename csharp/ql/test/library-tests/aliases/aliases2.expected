@@ -1,3 +1,3 @@
-| Program.cs:18:21:18:22 | c1 | Assembly1.dll:0:0:0:0 | Class |
-| Program.cs:19:21:19:22 | c2 | Assembly2.dll:0:0:0:0 | Class |
+| Program.cs:18:21:18:22 | c1 | Program.cs:10:7:10:11 | Class |
+| Program.cs:19:21:19:22 | c2 | Program.cs:10:7:10:11 | Class |
 | Program.cs:20:15:20:16 | c3 | Program.cs:10:7:10:11 | Class |

@@ -150,6 +150,34 @@ private module Cached {
   }
 
   /**
+   * Holds if the partial operand of this `ChiInstruction` updates the bit range
+   * `[startBitOffset, endBitOffset)` of the total operand.
+   */
+  cached
+  predicate getIntervalUpdatedByChi(ChiInstruction chi, int startBitOffset, int endBitOffset) {
+    exists(Alias::MemoryLocation location, OldInstruction oldInstruction |
+      oldInstruction = getOldInstruction(chi.getPartial()) and
+      location = Alias::getResultMemoryLocation(oldInstruction) and
+      startBitOffset = Alias::getStartBitOffset(location) and
+      endBitOffset = Alias::getEndBitOffset(location)
+    )
+  }
+
+  /**
+   * Holds if `operand` totally overlaps with its definition and consumes the bit range
+   * `[startBitOffset, endBitOffset)`.
+   */
+  cached
+  predicate getUsedInterval(NonPhiMemoryOperand operand, int startBitOffset, int endBitOffset) {
+    exists(Alias::MemoryLocation location, OldIR::NonPhiMemoryOperand oldOperand |
+      oldOperand = operand.getUse().(OldInstruction).getAnOperand() and
+      location = Alias::getOperandMemoryLocation(oldOperand) and
+      startBitOffset = Alias::getStartBitOffset(location) and
+      endBitOffset = Alias::getEndBitOffset(location)
+    )
+  }
+
+  /**
    * Holds if `instr` is part of a cycle in the operand graph that doesn't go
    * through a phi instruction and therefore should be impossible.
    *

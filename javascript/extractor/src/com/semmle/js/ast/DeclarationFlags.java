@@ -37,16 +37,16 @@ public class DeclarationFlags {
 
   public static final List<String> relationNames =
       Arrays.asList(
-          "isComputed",
-          "isAbstractMember",
-          "isStatic",
-          "hasReadonlyKeyword",
-          "hasPublicKeyword",
-          "hasPrivateKeyword",
-          "hasProtectedKeyword",
-          "isOptionalMember",
-          "hasDefiniteAssignmentAssertion",
-          "hasDeclareKeyword");
+          "is_computed",
+          "is_abstract_member",
+          "is_static",
+          "has_readonly_keyword",
+          "has_public_keyword",
+          "has_private_keyword",
+          "has_protected_keyword",
+          "is_optional_member",
+          "has_definite_assignment_assertion",
+          "has_declare_keyword");
 
   public static boolean isComputed(int flags) {
     return (flags & computed) != 0;

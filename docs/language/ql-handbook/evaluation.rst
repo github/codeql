@@ -26,14 +26,14 @@ Each evaluation starts from these sets of tuples.
 The remaining predicates and types in the program are organized into a number of layers, based 
 on the dependencies between them.
 These layers are evaluated to produce their own sets of tuples, by finding the least fixed point
-of each predicate. (For example, see :ref:`recursion`.)
+of each predicate. (For example, see ":ref:`recursion`.")
 
 The program's :ref:`queries <query>` determine which of these sets of tuples make up the final 
 results of the program. The results are sorted according to any ordering directives 
 (``order by``) in the queries.
 
-For more details about each step of the evaluation process, see the `QL language specification
-<https://help.semmle.com/QL/ql-spec/language.html#evaluation>`_.
+For more details about each step of the evaluation process, see the "`QL language specification
+<https://help.semmle.com/QL/ql-spec/language.html#evaluation>`_."
 
 Validity of programs
 ********************
@@ -97,7 +97,7 @@ To do this, you can use the following mechanisms:
    .. important:: If a predicate uses non-standard binding sets, then it does **not** always bind
       all its arguments. In such a case, whether the predicate call binds a specific argument
       depends on which other arguments are bound, and what the binding sets say about the
-      argument in question. See :ref:`binding-sets` for more information.
+      argument in question. For more information, see ":ref:`binding-sets`."
 
 #. **Binding operators**: Most operators, such as the :ref:`arithmetic operators <binary-operations>`,
    require that all their operands are bound. For example, you can't add two variables in QL 

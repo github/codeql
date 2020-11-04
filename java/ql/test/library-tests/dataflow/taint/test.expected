@@ -33,6 +33,9 @@
 | B.java:15:21:15:27 | taint(...) | B.java:126:10:126:21 | taintedArray |
 | B.java:15:21:15:27 | taint(...) | B.java:128:10:128:22 | taintedArray2 |
 | B.java:15:21:15:27 | taint(...) | B.java:130:10:130:22 | taintedArray3 |
+| B.java:15:21:15:27 | taint(...) | B.java:133:10:133:44 | toURL(...) |
+| B.java:15:21:15:27 | taint(...) | B.java:136:10:136:37 | toPath(...) |
+| B.java:15:21:15:27 | taint(...) | B.java:139:10:139:46 | toFile(...) |
 | MethodFlow.java:7:22:7:28 | taint(...) | MethodFlow.java:8:10:8:16 | tainted |
 | MethodFlow.java:9:31:9:37 | taint(...) | MethodFlow.java:10:10:10:17 | tainted2 |
 | MethodFlow.java:11:35:11:41 | taint(...) | MethodFlow.java:12:10:12:17 | tainted3 |

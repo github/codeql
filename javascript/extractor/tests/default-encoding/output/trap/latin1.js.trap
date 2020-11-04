@@ -75,11 +75,11 @@ variables(#20025,"f",#20000)
 #20026=*
 stmts(#20026,17,#20001,0,"function f(\u00e4, \u00f6) {}")
 hasLocation(#20026,#20003)
-stmtContainers(#20026,#20001)
+stmt_containers(#20026,#20001)
 #20027=*
 exprs(#20027,78,#20026,-1,"f")
 hasLocation(#20027,#20007)
-exprContainers(#20027,#20026)
+expr_containers(#20027,#20026)
 literals("f","f",#20027)
 decl(#20027,#20025)
 #20028=*
@@ -91,7 +91,7 @@ variables(#20029,"ä",#20028)
 #20030=*
 exprs(#20030,78,#20026,0,"\u00e4")
 hasLocation(#20030,#20011)
-exprContainers(#20030,#20026)
+expr_containers(#20030,#20026)
 literals("ä","ä",#20030)
 decl(#20030,#20029)
 #20031=@"var;{ö};{#20028}"
@@ -99,18 +99,18 @@ variables(#20031,"ö",#20028)
 #20032=*
 exprs(#20032,78,#20026,1,"\u00f6")
 hasLocation(#20032,#20015)
-exprContainers(#20032,#20026)
+expr_containers(#20032,#20026)
 literals("ö","ö",#20032)
 decl(#20032,#20031)
 #20033=@"var;{arguments};{#20028}"
 variables(#20033,"arguments",#20028)
-isArgumentsObject(#20033)
+is_arguments_object(#20033)
 #20034=*
 stmts(#20034,1,#20026,-2,"{}")
 #20035=@"loc,{#10000},1,18,1,19"
 locations_default(#20035,#10000,1,18,1,19)
 hasLocation(#20034,#20035)
-stmtContainers(#20034,#20026)
+stmt_containers(#20034,#20026)
 #20036=*
 entry_cfg_node(#20036,#20001)
 #20037=@"loc,{#10000},1,1,1,0"

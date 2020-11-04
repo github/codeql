@@ -3,22 +3,22 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    interface IFolder : IFileOrFolder
+    internal interface IFolder : IFileOrFolder
     {
     }
 
     public sealed class Folder : LabelledEntity, IFolder
     {
-        readonly string path;
+        private readonly PathTransformer.ITransformedPath transformedPath;
 
-        public Folder(Context cx, string path) : base(cx)
+        public Folder(Context cx, PathTransformer.ITransformedPath path) : base(cx)
         {
-            this.path = path;
+            this.transformedPath = path;
         }
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.Write(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));
+            trapFile.Write(transformedPath.DatabaseId);
         }
 
         public override string IdSuffix => ";folder";
@@ -27,25 +27,21 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                // On Posix, we could get a Windows directory of the form "C:"
-                bool windowsDriveLetter = path.Length == 2 && char.IsLetter(path[0]) && path[1] == ':';
-
-                var parent = Path.GetDirectoryName(path);
-                if (parent != null && !windowsDriveLetter)
+                if (transformedPath.ParentDirectory is PathTransformer.ITransformedPath parent)
                 {
-                    var parentFolder = cx.CreateFolder(parent);
+                    var parentFolder = Cx.CreateFolder(parent);
                     yield return parentFolder;
                     yield return Tuples.containerparent(parentFolder, this);
                 }
-                yield return Tuples.folders(this, Semmle.Extraction.Entities.File.PathAsDatabaseString(path), Path.GetFileName(path));
+                yield return Tuples.folders(this, transformedPath.Value, transformedPath.NameWithoutExtension);
             }
         }
 
         public override bool Equals(object? obj)
         {
-            return obj is Folder folder && path == folder.path;
+            return obj is Folder folder && transformedPath == folder.transformedPath;
         }
 
-        public override int GetHashCode() => path.GetHashCode();
+        public override int GetHashCode() => transformedPath.GetHashCode();
     }
 }

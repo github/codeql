@@ -273,7 +273,7 @@ private class GWTDependency extends ScriptDependency {
  * A dependency on the Google Closure library indicated by
  * a call to `goog.require` or `goog.provide`.
  */
-private class GoogleClosureDep extends Dependency, @callexpr {
+private class GoogleClosureDep extends Dependency, @call_expr {
   GoogleClosureDep() {
     exists(MethodCallExpr mce |
       mce = this and mce.getReceiver().(GlobalVarAccess).getName() = "goog"

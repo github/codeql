@@ -16,6 +16,7 @@
 import Location
 import Namespace
 private import dotnet
+private import TypeRef
 
 /**
  * A generic declaration. Either an unbound generic (`UnboundGeneric`) or a
@@ -226,7 +227,7 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
   predicate hasNullableRefTypeConstraint() { general_type_parameter_constraints(this, 5) }
 
   /** Gets a textual representation of these constraints. */
-  override string toString() { result = "where " + this.getTypeParameter().toString() + ": ..." }
+  override string toString() { result = "where " + this.getTypeParameter().getName() + ": ..." }
 }
 
 /**

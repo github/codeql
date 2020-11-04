@@ -20,6 +20,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.Constants
 private import semmle.code.csharp.frameworks.System
 private import NonReturning
@@ -97,6 +98,8 @@ class Completion extends TCompletion {
     or
     cfe instanceof ThrowElement and
     this = TThrowCompletion(cfe.(ThrowElement).getThrownExceptionType())
+    or
+    this = assertionCompletion(cfe, _)
     or
     completionIsValidForStmt(cfe, this)
     or
@@ -382,6 +385,22 @@ private predicate invalidCastCandidate(CastExpr ce) {
   ce.getType() = ce.getExpr().getType().(ValueOrRefType).getASubType+()
 }
 
+private predicate assertion(Assertion a, int i, AssertMethod am, Expr e) {
+  e = a.getExpr(i) and
+  am = a.getAssertMethod()
+}
+
+/** Gets a valid completion when argument `i` fails in assertion `a`. */
+Completion assertionCompletion(Assertion a, int i) {
+  exists(AssertMethod am | am = a.getAssertMethod() |
+    result = TThrowCompletion(am.getExceptionClass(i))
+    or
+    i = am.getAnAssertionIndex() and
+    not exists(am.getExceptionClass(i)) and
+    result = TExitCompletion()
+  )
+}
+
 /**
  * Holds if a normal completion of `e` must be a Boolean completion.
  */
@@ -408,6 +427,12 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
   exists(Case c | c.getCondition() = e | isBooleanCompletionForParent = false)
   or
   exists(SpecificCatchClause scc | scc.getFilterClause() = e | isBooleanCompletionForParent = false)
+  or
+  exists(BooleanAssertMethod m, int i |
+    assertion(_, i, m, e) and
+    i = m.getAnAssertionIndex(_) and
+    isBooleanCompletionForParent = false
+  )
   or
   exists(LogicalNotExpr lne | lne.getAnOperand() = e |
     inBooleanContext(lne, _) and
@@ -476,6 +501,12 @@ private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParen
   or
   exists(QualifiableExpr qe | qe.isConditional() |
     e = qe.getChildExpr(-1) and
+    isNullnessCompletionForParent = false
+  )
+  or
+  exists(NullnessAssertMethod m, int i |
+    assertion(_, i, m, e) and
+    i = m.getAnAssertionIndex(_) and
     isNullnessCompletionForParent = false
   )
   or

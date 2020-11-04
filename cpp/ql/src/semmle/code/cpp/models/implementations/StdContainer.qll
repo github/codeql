@@ -3,6 +3,7 @@
  */
 
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.implementations.Iterator
 
 /**
  * Additional model for standard container constructors that reference the
@@ -26,10 +27,22 @@ class StdSequenceContainerConstructor extends Constructor, TaintFunction {
       getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of the value type to the returned object
-    input.isParameterDeref(getAValueTypeParameterIndex()) and
-    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+    (
+      input.isParameterDeref(getAValueTypeParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
+    ) and
+    (
+      output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
+      or
+      output.isQualifierObject()
+    )
   }
 }
 
@@ -89,6 +102,43 @@ class StdSequenceContainerFrontBack extends TaintFunction {
 }
 
 /**
+ * The standard container functions `insert` and `insert_after`.
+ */
+class StdSequenceContainerInsert extends TaintFunction {
+  StdSequenceContainerInsert() {
+    this.hasQualifiedName("std", ["vector", "deque", "list"], "insert") or
+    this.hasQualifiedName("std", ["forward_list"], "insert_after")
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is a reference to the
+   * value type of the container.
+   */
+  int getAValueTypeParameterIndex() {
+    getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to container itself (qualifier) and return value
+    (
+      input.isQualifierObject() or
+      input.isParameterDeref(getAValueTypeParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
+    ) and
+    (
+      output.isQualifierObject() or
+      output.isReturnValueDeref()
+    )
+  }
+}
+
+/**
  * The standard container function `assign`.
  */
 class StdSequenceContainerAssign extends TaintFunction {
@@ -105,9 +155,17 @@ class StdSequenceContainerAssign extends TaintFunction {
       getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameter to string itself (qualifier) and return value
-    input.isParameterDeref(getAValueTypeParameterIndex()) and
+    // flow from parameter to container itself (qualifier)
+    (
+      input.isParameterDeref(getAValueTypeParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
+    ) and
     output.isQualifierObject()
   }
 }

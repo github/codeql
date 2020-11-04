@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Indexer : Property, IExpressionParentEntity
+    internal class Indexer : Property, IExpressionParentEntity
     {
         protected Indexer(Context cx, IPropertySymbol init)
             : base(cx, init) { }
 
-        Indexer OriginalDefinition => IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
+        private Indexer OriginalDefinition => IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
 
         public override void Populate(TextWriter trapFile)
         {
@@ -71,7 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 TypeMention.Create(Context, syntax.Type, this, type);
         }
 
-        public static new Indexer Create(Context cx, IPropertySymbol prop) => IndexerFactory.Instance.CreateEntity(cx, prop);
+        public static new Indexer Create(Context cx, IPropertySymbol prop) => IndexerFactory.Instance.CreateEntityFromSymbol(cx, prop);
 
         public override void WriteId(TextWriter trapFile)
         {
@@ -87,22 +87,20 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return
-                    symbol.
-                    DeclaringSyntaxReferences.
-                    Select(r => r.GetSyntax()).
-                    OfType<IndexerDeclarationSyntax>().
-                    Select(s => s.GetLocation()).
-                    Concat(symbol.Locations).
-                    First();
+                return symbol.DeclaringSyntaxReferences
+                    .Select(r => r.GetSyntax())
+                    .OfType<IndexerDeclarationSyntax>()
+                    .Select(s => s.GetLocation())
+                    .Concat(symbol.Locations)
+                    .First();
             }
         }
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        class IndexerFactory : ICachedEntityFactory<IPropertySymbol, Indexer>
+        private class IndexerFactory : ICachedEntityFactory<IPropertySymbol, Indexer>
         {
-            public static readonly IndexerFactory Instance = new IndexerFactory();
+            public static IndexerFactory Instance { get; } = new IndexerFactory();
 
             public Indexer Create(Context cx, IPropertySymbol init) => new Indexer(cx, init);
         }

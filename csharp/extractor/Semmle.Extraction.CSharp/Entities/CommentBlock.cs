@@ -4,15 +4,15 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class CommentBlock : CachedEntity<ICommentBlock>
+    internal class CommentBlock : CachedEntity<ICommentBlock>
     {
-        CommentBlock(Context cx, ICommentBlock init)
+        private CommentBlock(Context cx, ICommentBlock init)
             : base(cx, init) { }
 
         public override void Populate(TextWriter trapFile)
         {
             trapFile.commentblock(this);
-            int child = 0;
+            var child = 0;
             trapFile.commentblock_location(this, Context.Create(symbol.Location));
             foreach (var l in symbol.CommentLines)
             {
@@ -35,11 +35,11 @@ namespace Semmle.Extraction.CSharp.Entities
             Context.TrapWriter.Writer.commentblock_binding(this, entity, binding);
         }
 
-        public static CommentBlock Create(Context cx, ICommentBlock block) => CommentBlockFactory.Instance.CreateEntity(cx, block);
+        public static CommentBlock Create(Context cx, ICommentBlock block) => CommentBlockFactory.Instance.CreateEntity(cx, block, block);
 
-        class CommentBlockFactory : ICachedEntityFactory<ICommentBlock, CommentBlock>
+        private class CommentBlockFactory : ICachedEntityFactory<ICommentBlock, CommentBlock>
         {
-            public static readonly CommentBlockFactory Instance = new CommentBlockFactory();
+            public static CommentBlockFactory Instance { get; } = new CommentBlockFactory();
 
             public CommentBlock Create(Context cx, ICommentBlock init) => new CommentBlock(cx, init);
         }

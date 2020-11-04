@@ -51,6 +51,7 @@ module PolynomialReDoS {
           name = "split" or
           name = "matchAll" or
           name = "replace" or
+          name = "replaceAll" or
           name = "search"
         )
         or

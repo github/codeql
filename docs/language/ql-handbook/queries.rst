@@ -29,7 +29,7 @@ file) of the following form::
 
 The ``from`` and ``where`` parts are optional.
 
-Apart from the expressions described in :ref:`expressions`, you can also include:
+Apart from the expressions described in ":ref:`expressions`," you can also include:
  - The ``as`` keyword, followed by a name. This gives a "label" to a column of results, and allows
    you to use them in subsequent select expressions.
  - The ``order by`` keywords, followed by the name of a result column, and optionally the

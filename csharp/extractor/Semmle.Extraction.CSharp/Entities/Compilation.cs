@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Compilation : FreshEntity
+    internal class Compilation : FreshEntity
     {
         private readonly string cwd;
         private readonly string[] args;
@@ -22,10 +23,10 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             Extraction.Entities.Assembly.CreateOutputAssembly(cx);
 
-            trapFile.compilations(this, Extraction.Entities.File.PathAsDatabaseString(cwd));
+            trapFile.compilations(this, FileUtils.ConvertToUnix(cwd));
 
             // Arguments
-            int index = 0;
+            var index = 0;
             foreach (var arg in args)
             {
                 trapFile.compilation_args(this, index++, arg);
@@ -56,8 +57,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public void PopulatePerformance(PerformanceMetrics p)
         {
             var trapFile = cx.TrapWriter.Writer;
-            int index = 0;
-            foreach (float metric in p.Metrics)
+            var index = 0;
+            foreach (var metric in p.Metrics)
             {
                 trapFile.compilation_time(this, -1, index++, metric);
             }
@@ -67,11 +68,11 @@ namespace Semmle.Extraction.CSharp.Entities
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 
-    class Diagnostic : FreshEntity
+    internal class Diagnostic : FreshEntity
     {
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
 
-        readonly Microsoft.CodeAnalysis.Diagnostic diagnostic;
+        private readonly Microsoft.CodeAnalysis.Diagnostic diagnostic;
 
         public Diagnostic(Context cx, Microsoft.CodeAnalysis.Diagnostic diag) : base(cx)
         {
@@ -88,7 +89,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
     public struct Timings
     {
-        public TimeSpan Elapsed, Cpu, User;
+        public TimeSpan Elapsed { get; set; }
+        public TimeSpan Cpu { get; set; }
+        public TimeSpan User { get; set; }
     }
 
     /// <summary>
@@ -96,8 +99,10 @@ namespace Semmle.Extraction.CSharp.Entities
     /// </summary>
     public struct PerformanceMetrics
     {
-        public Timings Frontend, Extractor, Total;
-        public long PeakWorkingSet;
+        public Timings Frontend { get; set; }
+        public Timings Extractor { get; set; }
+        public Timings Total { get; set; }
+        public long PeakWorkingSet { get; set; }
 
         /// <summary>
         /// These are in database order (0 indexed)

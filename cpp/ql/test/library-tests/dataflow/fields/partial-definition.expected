@@ -185,6 +185,79 @@
 | aliasing.cpp:92:3:92:3 | w |
 | aliasing.cpp:92:5:92:5 | s |
 | aliasing.cpp:92:7:92:8 | m1 |
+| aliasing.cpp:98:3:98:3 | s |
+| aliasing.cpp:98:5:98:6 | m1 |
+| aliasing.cpp:106:3:106:5 | * ... |
+| aliasing.cpp:111:15:111:19 | & ... |
+| aliasing.cpp:111:16:111:16 | s |
+| aliasing.cpp:121:15:121:16 | xs |
+| aliasing.cpp:126:15:126:20 | ... - ... |
+| aliasing.cpp:131:15:131:16 | xs |
+| aliasing.cpp:136:15:136:17 | + ... |
+| aliasing.cpp:141:15:141:15 | s |
+| aliasing.cpp:141:17:141:20 | data |
+| aliasing.cpp:147:15:147:22 | & ... |
+| aliasing.cpp:147:16:147:19 | access to array |
+| aliasing.cpp:158:15:158:15 | s |
+| aliasing.cpp:158:17:158:20 | data |
+| aliasing.cpp:164:15:164:15 | s |
+| aliasing.cpp:164:17:164:20 | data |
+| aliasing.cpp:175:15:175:22 | & ... |
+| aliasing.cpp:175:16:175:17 | s2 |
+| aliasing.cpp:175:19:175:19 | s |
+| aliasing.cpp:181:15:181:22 | & ... |
+| aliasing.cpp:181:16:181:17 | s2 |
+| aliasing.cpp:181:19:181:19 | s |
+| aliasing.cpp:187:15:187:22 | & ... |
+| aliasing.cpp:187:16:187:17 | s2 |
+| aliasing.cpp:187:19:187:19 | s |
+| aliasing.cpp:194:15:194:22 | & ... |
+| aliasing.cpp:194:16:194:17 | s2 |
+| aliasing.cpp:194:19:194:19 | s |
+| aliasing.cpp:200:15:200:24 | & ... |
+| aliasing.cpp:200:16:200:18 | ps2 |
+| aliasing.cpp:200:21:200:21 | s |
+| aliasing.cpp:205:15:205:24 | & ... |
+| aliasing.cpp:205:16:205:18 | ps2 |
+| aliasing.cpp:205:21:205:21 | s |
+| arrays.cpp:6:3:6:8 | access to array |
+| arrays.cpp:15:3:15:10 | * ... |
+| arrays.cpp:36:3:36:3 | o |
+| arrays.cpp:36:3:36:17 | access to array |
+| arrays.cpp:36:5:36:10 | nested |
+| arrays.cpp:36:19:36:22 | data |
+| arrays.cpp:37:8:37:8 | o |
+| arrays.cpp:37:8:37:22 | access to array |
+| arrays.cpp:37:10:37:15 | nested |
+| arrays.cpp:37:24:37:27 | data |
+| arrays.cpp:38:8:38:8 | o |
+| arrays.cpp:38:8:38:22 | access to array |
+| arrays.cpp:38:10:38:15 | nested |
+| arrays.cpp:38:24:38:27 | data |
+| arrays.cpp:42:3:42:3 | o |
+| arrays.cpp:42:3:42:20 | access to array |
+| arrays.cpp:42:5:42:12 | indirect |
+| arrays.cpp:42:22:42:25 | data |
+| arrays.cpp:43:8:43:8 | o |
+| arrays.cpp:43:8:43:25 | access to array |
+| arrays.cpp:43:10:43:17 | indirect |
+| arrays.cpp:43:27:43:30 | data |
+| arrays.cpp:44:8:44:8 | o |
+| arrays.cpp:44:8:44:25 | access to array |
+| arrays.cpp:44:10:44:17 | indirect |
+| arrays.cpp:44:27:44:30 | data |
+| arrays.cpp:48:3:48:3 | o |
+| arrays.cpp:48:3:48:20 | access to array |
+| arrays.cpp:48:5:48:12 | indirect |
+| arrays.cpp:48:22:48:25 | data |
+| arrays.cpp:49:8:49:8 | o |
+| arrays.cpp:49:8:49:25 | access to array |
+| arrays.cpp:49:10:49:17 | indirect |
+| arrays.cpp:49:27:49:30 | data |
+| arrays.cpp:50:8:50:8 | o |
+| arrays.cpp:50:8:50:25 | access to array |
+| arrays.cpp:50:10:50:17 | indirect |
+| arrays.cpp:50:27:50:30 | data |
 | by_reference.cpp:12:5:12:5 | s |
 | by_reference.cpp:12:8:12:8 | a |
 | by_reference.cpp:16:5:16:8 | this |
@@ -209,6 +282,8 @@
 | by_reference.cpp:84:10:84:10 | a |
 | by_reference.cpp:88:3:88:7 | inner |
 | by_reference.cpp:88:9:88:9 | a |
+| by_reference.cpp:92:3:92:5 | * ... |
+| by_reference.cpp:96:3:96:4 | pa |
 | by_reference.cpp:102:21:102:39 | & ... |
 | by_reference.cpp:102:22:102:26 | outer |
 | by_reference.cpp:103:21:103:25 | outer |
@@ -269,28 +344,28 @@
 | complex.cpp:11:22:11:23 | this |
 | complex.cpp:12:22:12:23 | b_ |
 | complex.cpp:12:22:12:23 | this |
-| complex.cpp:51:8:51:8 | b |
-| complex.cpp:51:10:51:14 | inner |
-| complex.cpp:51:16:51:16 | f |
-| complex.cpp:52:8:52:8 | b |
-| complex.cpp:52:10:52:14 | inner |
-| complex.cpp:52:16:52:16 | f |
-| complex.cpp:62:3:62:4 | b1 |
-| complex.cpp:62:6:62:10 | inner |
-| complex.cpp:62:12:62:12 | f |
-| complex.cpp:63:3:63:4 | b2 |
-| complex.cpp:63:6:63:10 | inner |
-| complex.cpp:63:12:63:12 | f |
-| complex.cpp:64:3:64:4 | b3 |
-| complex.cpp:64:6:64:10 | inner |
-| complex.cpp:64:12:64:12 | f |
-| complex.cpp:65:3:65:4 | b3 |
-| complex.cpp:65:6:65:10 | inner |
-| complex.cpp:65:12:65:12 | f |
-| complex.cpp:68:7:68:8 | b1 |
-| complex.cpp:71:7:71:8 | b2 |
-| complex.cpp:74:7:74:8 | b3 |
-| complex.cpp:77:7:77:8 | b4 |
+| complex.cpp:42:8:42:8 | b |
+| complex.cpp:42:10:42:14 | inner |
+| complex.cpp:42:16:42:16 | f |
+| complex.cpp:43:8:43:8 | b |
+| complex.cpp:43:10:43:14 | inner |
+| complex.cpp:43:16:43:16 | f |
+| complex.cpp:53:3:53:4 | b1 |
+| complex.cpp:53:6:53:10 | inner |
+| complex.cpp:53:12:53:12 | f |
+| complex.cpp:54:3:54:4 | b2 |
+| complex.cpp:54:6:54:10 | inner |
+| complex.cpp:54:12:54:12 | f |
+| complex.cpp:55:3:55:4 | b3 |
+| complex.cpp:55:6:55:10 | inner |
+| complex.cpp:55:12:55:12 | f |
+| complex.cpp:56:3:56:4 | b3 |
+| complex.cpp:56:6:56:10 | inner |
+| complex.cpp:56:12:56:12 | f |
+| complex.cpp:59:7:59:8 | b1 |
+| complex.cpp:62:7:62:8 | b2 |
+| complex.cpp:65:7:65:8 | b3 |
+| complex.cpp:68:7:68:8 | b4 |
 | constructors.cpp:20:24:20:25 | a_ |
 | constructors.cpp:20:24:20:25 | this |
 | constructors.cpp:21:24:21:25 | b_ |
@@ -343,6 +418,33 @@
 | qualifiers.cpp:48:10:48:14 | outer |
 | qualifiers.cpp:48:16:48:20 | inner |
 | qualifiers.cpp:48:23:48:23 | a |
+| realistic.cpp:26:5:26:10 | offset |
+| realistic.cpp:42:20:42:20 | o |
+| realistic.cpp:49:9:49:11 | foo |
+| realistic.cpp:49:9:49:18 | access to array |
+| realistic.cpp:49:20:49:22 | baz |
+| realistic.cpp:53:9:53:11 | foo |
+| realistic.cpp:53:9:53:18 | access to array |
+| realistic.cpp:53:20:53:22 | baz |
+| realistic.cpp:53:25:53:33 | userInput |
+| realistic.cpp:53:35:53:43 | bufferLen |
+| realistic.cpp:54:16:54:18 | foo |
+| realistic.cpp:54:16:54:25 | access to array |
+| realistic.cpp:54:27:54:29 | baz |
+| realistic.cpp:54:32:54:40 | userInput |
+| realistic.cpp:54:42:54:47 | buffer |
+| realistic.cpp:60:16:60:18 | dst |
+| realistic.cpp:61:21:61:23 | foo |
+| realistic.cpp:61:21:61:30 | access to array |
+| realistic.cpp:61:32:61:34 | baz |
+| realistic.cpp:61:37:61:45 | userInput |
+| realistic.cpp:61:47:61:55 | bufferLen |
+| realistic.cpp:65:21:65:23 | foo |
+| realistic.cpp:65:21:65:30 | access to array |
+| realistic.cpp:65:32:65:34 | baz |
+| realistic.cpp:65:37:65:45 | userInput |
+| realistic.cpp:65:47:65:52 | buffer |
+| realistic.cpp:66:21:66:23 | dst |
 | simple.cpp:20:24:20:25 | a_ |
 | simple.cpp:20:24:20:25 | this |
 | simple.cpp:21:24:21:25 | b_ |
@@ -363,6 +465,8 @@
 | simple.cpp:83:9:83:10 | this |
 | simple.cpp:83:12:83:13 | f1 |
 | simple.cpp:84:14:84:20 | this |
+| simple.cpp:92:5:92:5 | a |
+| simple.cpp:92:7:92:7 | i |
 | struct_init.c:15:8:15:9 | ab |
 | struct_init.c:15:12:15:12 | a |
 | struct_init.c:16:8:16:9 | ab |

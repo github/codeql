@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class While : Statement<WhileStatementSyntax>
+    internal class While : Statement<WhileStatementSyntax>
     {
-        While(Context cx, WhileStatementSyntax node, IStatementParentEntity parent, int child)
+        private While(Context cx, WhileStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.WHILE, parent, child) { }
 
         public static While Create(Context cx, WhileStatementSyntax node, IStatementParentEntity parent, int child)

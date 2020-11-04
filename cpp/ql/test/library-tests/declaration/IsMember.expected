@@ -3,6 +3,7 @@
 | declaration.cpp:32:7:32:7 | operator= |
 | declaration.cpp:32:7:32:7 | operator= |
 | declaration.cpp:34:7:34:14 | myField0 |
+| declaration.cpp:36:9:36:9 | MyNestedClass |
 | declaration.cpp:36:9:36:9 | operator= |
 | declaration.cpp:36:9:36:9 | operator= |
 | declaration.cpp:36:9:36:21 | MyNestedClass |
@@ -28,6 +29,7 @@
 | declaration.cpp:100:7:100:7 | operator= |
 | declaration.cpp:100:7:100:7 | operator= |
 | declaration.cpp:102:7:102:14 | myField1 |
+| declaration.cpp:104:9:104:9 | MyNestedClass |
 | declaration.cpp:104:9:104:9 | operator= |
 | declaration.cpp:104:9:104:9 | operator= |
 | declaration.cpp:104:9:104:21 | MyNestedClass |

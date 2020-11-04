@@ -152,6 +152,21 @@ class Test
                 break;
         }
     }
+
+    void f9()
+    {
+        var l1 = new MyList(); // BAD
+        var x1 = l1[0];
+
+        var l2 = new MyList(); // GOOD
+        var x2 = l2[0];
+        l2.Prop = 42;
+    }
+
+    class MyList : List<int>
+    {
+        public int Prop { get { return 0; } set { Add(value); } }
+    }
 }
 
 // semmle-extractor-options: /r:System.Collections.dll

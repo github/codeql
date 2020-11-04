@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
-using Semmle.Util;
 using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
@@ -82,13 +81,19 @@ namespace Semmle.Extraction
         ILogger Logger { get; }
 
         /// <summary>
+        /// The path transformer to apply.
+        /// </summary>
+        PathTransformer PathTransformer { get; }
+
+        /// <summary>
         /// Creates a new context.
         /// </summary>
         /// <param name="c">The C# compilation.</param>
         /// <param name="trapWriter">The trap writer.</param>
         /// <param name="scope">The extraction scope (what to include in this trap file).</param>
+        /// <param name="addAssemblyTrapPrefix">Whether to add assembly prefixes to TRAP labels.</param>
         /// <returns></returns>
-        Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope);
+        Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix);
     }
 
     /// <summary>
@@ -96,11 +101,6 @@ namespace Semmle.Extraction
     /// </summary>
     public class Extractor : IExtractor
     {
-        /// <summary>
-        /// The default number of threads to use for extraction.
-        /// </summary>
-        public static readonly int DefaultNumberOfThreads = Environment.ProcessorCount;
-
         public bool Standalone
         {
             get; private set;
@@ -111,18 +111,21 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="standalone">If the extraction is standalone.</param>
         /// <param name="outputPath">The name of the output DLL/EXE, or null if not specified (standalone extraction).</param>
-        public Extractor(bool standalone, string outputPath, ILogger logger)
+        /// <param name="logger">The object used for logging.</param>
+        /// <param name="pathTransformer">The object used for path transformations.</param>
+        public Extractor(bool standalone, string outputPath, ILogger logger, PathTransformer pathTransformer)
         {
             Standalone = standalone;
             OutputPath = outputPath;
             Logger = logger;
+            PathTransformer = pathTransformer;
         }
 
         // Limit the number of error messages in the log file
         // to handle pathological cases.
-        const int maxErrors = 1000;
+        private const int maxErrors = 1000;
 
-        readonly object mutex = new object();
+        private readonly object mutex = new object();
 
         public void Message(Message msg)
         {
@@ -149,7 +152,7 @@ namespace Semmle.Extraction
 
         // Roslyn framework has no apparent mechanism to associate assemblies with their files.
         // So this lookup table needs to be populated.
-        readonly Dictionary<string, string> referenceFilenames = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> referenceFilenames = new Dictionary<string, string>();
 
         public void SetAssemblyFile(string assembly, string file)
         {
@@ -166,8 +169,8 @@ namespace Semmle.Extraction
             get; private set;
         }
 
-        readonly ISet<string> missingTypes = new SortedSet<string>();
-        readonly ISet<string> missingNamespaces = new SortedSet<string>();
+        private readonly ISet<string> missingTypes = new SortedSet<string>();
+        private readonly ISet<string> missingNamespaces = new SortedSet<string>();
 
         public void MissingType(string fqn, bool fromSource)
         {
@@ -187,9 +190,9 @@ namespace Semmle.Extraction
             }
         }
 
-        public Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope)
+        public Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
         {
-            return new Context(this, c, trapWriter, scope);
+            return new Context(this, c, trapWriter, scope, addAssemblyTrapPrefix);
         }
 
         public IEnumerable<string> MissingTypes => missingTypes;
@@ -205,5 +208,7 @@ namespace Semmle.Extraction
         public ILogger Logger { get; private set; }
 
         public static string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
+
+        public PathTransformer PathTransformer { get; }
     }
 }

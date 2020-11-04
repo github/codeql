@@ -14,7 +14,7 @@ toplevels(#20001,0)
 locations_default(#20002,#10000,1,1,1,1)
 hasLocation(#20001,#20002)
 #20003=*
-jsParseErrors(#20003,#20001,"Error: Imports within a `declare module` body must always be `import type` or `import typeof`.","  import {
+js_parse_errors(#20003,#20001,"Error: Imports within a `declare module` body must always be `import type` or `import typeof`.","  import {
 ")
 #20004=@"loc,{#10000},2,3,2,3"
 locations_default(#20004,#10000,2,3,2,3)

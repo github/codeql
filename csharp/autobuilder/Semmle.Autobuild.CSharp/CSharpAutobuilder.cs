@@ -50,12 +50,15 @@ namespace Semmle.Autobuild.CSharp
                         BuildScript.Create(actions =>
                         {
                             foreach (var file in Extractor.GetCSharpArgsLogs())
+                            {
                                 try
                                 {
                                     actions.FileDelete(file);
                                 }
                                 catch // lgtm[cs/catch-of-all-exceptions] lgtm[cs/empty-catch-block]
                                 { }
+                            }
+
                             return 0;
                         });
                     var attemptExtractorCleanup =
@@ -85,17 +88,14 @@ namespace Semmle.Autobuild.CSharp
                     break;
             }
 
-            return
-                attempt &
-                (() => new AspBuildRule().Analyse(this, false)) &
-                (() => new XmlBuildRule().Analyse(this, false));
+            return attempt;
         }
 
         /// <summary>
         /// Gets the build strategy that the autobuilder should apply, based on the
         /// options in the `lgtm.yml` file.
         /// </summary>
-        CSharpBuildStrategy GetCSharpBuildStrategy()
+        private CSharpBuildStrategy GetCSharpBuildStrategy()
         {
             if (Options.BuildCommand != null)
                 return CSharpBuildStrategy.CustomBuildCommand;
@@ -107,7 +107,9 @@ namespace Semmle.Autobuild.CSharp
                 || Options.MsBuildConfiguration != null
                 || Options.MsBuildPlatform != null
                 || Options.MsBuildTarget != null)
+            {
                 return CSharpBuildStrategy.MSBuild;
+            }
 
             if (Options.DotNetArguments != null || Options.DotNetVersion != null)
                 return CSharpBuildStrategy.DotNet;
@@ -115,7 +117,7 @@ namespace Semmle.Autobuild.CSharp
             return CSharpBuildStrategy.Auto;
         }
 
-        enum CSharpBuildStrategy
+        private enum CSharpBuildStrategy
         {
             CustomBuildCommand,
             Buildless,

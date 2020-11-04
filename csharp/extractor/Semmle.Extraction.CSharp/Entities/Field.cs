@@ -1,5 +1,4 @@
 using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp.Populators;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
@@ -10,15 +9,15 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Field : CachedSymbol<IFieldSymbol>, IExpressionParentEntity
+    internal class Field : CachedSymbol<IFieldSymbol>, IExpressionParentEntity
     {
-        Field(Context cx, IFieldSymbol init)
+        private Field(Context cx, IFieldSymbol init)
             : base(cx, init)
         {
             type = new Lazy<AnnotatedType>(() => Entities.Type.Create(cx, symbol.GetAnnotatedType()));
         }
 
-        public static Field Create(Context cx, IFieldSymbol field) => FieldFactory.Instance.CreateEntity(cx, field);
+        public static Field Create(Context cx, IFieldSymbol field) => FieldFactory.Instance.CreateEntityFromSymbol(cx, field);
 
         // Do not populate backing fields.
         // Populate Tuple fields.
@@ -32,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType.PopulateGenerics();
             PopulateNullability(trapFile, symbol.GetAnnotatedType());
 
-            Field unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
+            var unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
             trapFile.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey);
 
             PopulateModifiers(trapFile);
@@ -58,49 +57,70 @@ namespace Semmle.Extraction.CSharp.Entities
 
             Context.BindComments(this, Location.symbol);
 
-            int child = 0;
-            foreach (var initializer in
-                symbol.DeclaringSyntaxReferences.
-                Select(n => n.GetSyntax()).
-                OfType<VariableDeclaratorSyntax>().
-                Where(n => n.Initializer != null))
+            var child = 0;
+            foreach (var initializer in symbol.DeclaringSyntaxReferences
+                .Select(n => n.GetSyntax())
+                .OfType<VariableDeclaratorSyntax>()
+                .Where(n => n.Initializer != null))
             {
                 Context.PopulateLater(() =>
                 {
                     var loc = Context.Create(initializer.GetLocation());
-                    var simpleAssignExpr = new Expression(new ExpressionInfo(Context, Type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
-                    Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Initializer.Value, simpleAssignExpr, 0));
-                    var access = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, null));
-                    trapFile.expr_access(access, this);
+
+                    var fieldAccess = AddInitializerAssignment(trapFile, initializer.Initializer.Value, loc, null, ref child);
+
                     if (!symbol.IsStatic)
                     {
-                        This.CreateImplicit(Context, Entities.Type.Create(Context, symbol.ContainingType), Location, access, -1);
+                        This.CreateImplicit(Context, Entities.Type.Create(Context, symbol.ContainingType), Location, fieldAccess, -1);
                     }
                 });
             }
 
-            foreach (var initializer in symbol.DeclaringSyntaxReferences.
-                Select(n => n.GetSyntax()).
-                OfType<EnumMemberDeclarationSyntax>().
-                Where(n => n.EqualsValue != null))
+            foreach (var initializer in symbol.DeclaringSyntaxReferences
+                .Select(n => n.GetSyntax())
+                .OfType<EnumMemberDeclarationSyntax>()
+                .Where(n => n.EqualsValue != null))
             {
                 // Mark fields that have explicit initializers.
-                var expr = new Expression(new ExpressionInfo(Context, Type, Context.Create(initializer.EqualsValue.Value.FixedLocation()), Kinds.ExprKind.FIELD_ACCESS, this, child++, false, null));
-                trapFile.expr_access(expr, this);
+                var constValue = symbol.HasConstantValue
+                    ? Expression.ValueAsString(symbol.ConstantValue)
+                    : null;
+
+                var loc = Context.Create(initializer.GetLocation());
+
+                AddInitializerAssignment(trapFile, initializer.EqualsValue.Value, loc, constValue, ref child);
             }
 
             if (IsSourceDeclaration)
-                foreach (var syntax in symbol.DeclaringSyntaxReferences.
-                    Select(d => d.GetSyntax()).OfType<VariableDeclaratorSyntax>().
-                    Select(d => d.Parent).OfType<VariableDeclarationSyntax>())
+            {
+                foreach (var syntax in symbol.DeclaringSyntaxReferences
+                  .Select(d => d.GetSyntax())
+                  .OfType<VariableDeclaratorSyntax>()
+                  .Select(d => d.Parent)
+                  .OfType<VariableDeclarationSyntax>())
+                {
                     TypeMention.Create(Context, syntax.Type, this, Type);
+                }
+            }
         }
 
-        readonly Lazy<AnnotatedType> type;
+        private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Extraction.Entities.Location loc,
+            string constValue, ref int child)
+        {
+            var simpleAssignExpr = new Expression(new ExpressionInfo(Context, Type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, constValue));
+            Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer, simpleAssignExpr, 0));
+            var access = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, constValue));
+            trapFile.expr_access(access, this);
+            return access;
+        }
+
+        private readonly Lazy<AnnotatedType> type;
         public AnnotatedType Type => type.Value;
 
         public override void WriteId(TextWriter trapFile)
         {
+            trapFile.WriteSubId(Type.Type);
+            trapFile.Write(" ");
             trapFile.WriteSubId(ContainingType);
             trapFile.Write('.');
             trapFile.Write(symbol.Name);
@@ -109,9 +129,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        class FieldFactory : ICachedEntityFactory<IFieldSymbol, Field>
+        private class FieldFactory : ICachedEntityFactory<IFieldSymbol, Field>
         {
-            public static readonly FieldFactory Instance = new FieldFactory();
+            public static FieldFactory Instance { get; } = new FieldFactory();
 
             public Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
         }

@@ -1,6 +1,0 @@
-| tst.js:3:1:3:106 | <a href ... */}</a> | 0 | href |
-| tst.js:3:1:3:106 | <a href ... */}</a> | 1 | target |
-| tst.js:4:1:4:35 | <MyComp ... "bar"/> | 0 | foo |
-| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 0 | href |
-| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 1 | target |
-| tstest.tsx:4:1:4:35 | <MyComp ... "bar"/> | 0 | foo |

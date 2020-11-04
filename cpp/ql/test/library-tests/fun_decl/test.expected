@@ -1,4 +1,5 @@
 | compile1.cpp:3:6:3:10 | func1 |
+| compile2.cpp:3:7:3:7 | classA |
 | compile2.cpp:3:7:3:7 | operator= |
 | compile2.cpp:5:2:5:8 | ~classA |
 | compile2.cpp:8:9:8:19 | create_an_a |

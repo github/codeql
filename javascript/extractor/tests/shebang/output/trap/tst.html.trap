@@ -14,7 +14,7 @@ toplevels(#20001,1)
 locations_default(#20002,#10000,3,17,3,17)
 hasLocation(#20001,#20002)
 #20003=*
-jsParseErrors(#20003,#20001,"Error: Unexpected token","#!/usr/bin/node
+js_parse_errors(#20003,#20001,"Error: Unexpected token","#!/usr/bin/node
 ")
 #20004=@"loc,{#10000},4,1,4,1"
 locations_default(#20004,#10000,4,1,4,1)

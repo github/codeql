@@ -1,0 +1,11 @@
+| Pointer.cs:7:21:7:28 | Pointer.cs:7:21:7:28 | Int32* | Int32* | (...) ... |
+| Pointer.cs:11:21:11:32 | Pointer.cs:11:21:11:32 | Int32* | Int32* | &... |
+| Pointer.cs:13:18:13:24 | Pointer.cs:13:18:13:24 | Int32* | Int32* | access to local variable i2 |
+| Pointer.cs:14:13:14:23 | Pointer.cs:14:13:14:23 | Int32* | Int32* | ... + ... |
+| Pointer.cs:15:13:15:25 | Pointer.cs:15:13:15:25 | Int32 | Int32 | ... + ... |
+| Pointer.cs:16:19:16:25 | Pointer.cs:16:19:16:25 | Void* | Void* | (...) ... |
+| Pointer.cs:19:14:19:22 | Pointer.cs:19:14:19:22 | Int32* | null | null |
+| Pointer.cs:21:13:21:25 | Pointer.cs:21:13:21:25 | Int32 | Int32 | 1024 |
+| Pointer.cs:22:15:22:32 | Pointer.cs:22:15:22:32 | Byte* | Byte* | (...) ... |
+| Pointer.cs:24:13:24:29 | Pointer.cs:24:13:24:29 | String | String | "some string" |
+| Pointer.cs:25:22:25:27 | Pointer.cs:25:22:25:27 | Char* | Char* | (...) ... |

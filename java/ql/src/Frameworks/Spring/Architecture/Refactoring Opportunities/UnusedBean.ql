@@ -51,9 +51,9 @@ class ImpureStmt extends Stmt {
 /**
  * Get any non-block stmt in the block, including those nested within blocks.
  */
-private Stmt getANestedStmt(Block block) {
+private Stmt getANestedStmt(BlockStmt block) {
   // Any non-block statement
-  not result instanceof Block and result = block.getAStmt()
+  not result instanceof BlockStmt and result = block.getAStmt()
   or
   // Or any statement nested in a block
   result = getANestedStmt(block.getAStmt())

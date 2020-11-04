@@ -11,7 +11,7 @@ namespace InsufficientKeySize
         {
             try
             {
-                RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(512); // BAD
+                RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(1024); // BAD
                 rsa.ImportParameters(key);
                 return rsa.Encrypt(plaintext, true);
             }
@@ -27,7 +27,7 @@ namespace InsufficientKeySize
             try
             {
                 RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(); // BAD
-                rsa = new RSACryptoServiceProvider(1024); // GOOD
+                rsa = new RSACryptoServiceProvider(2048); // GOOD
                 rsa.ImportParameters(key);
                 return rsa.Encrypt(plaintext, true);
             }
@@ -58,7 +58,7 @@ namespace InsufficientKeySize
             try
             {
                 DSACryptoServiceProvider dsa = new DSACryptoServiceProvider(); // BAD
-                dsa = new DSACryptoServiceProvider(1024); // GOOD
+                dsa = new DSACryptoServiceProvider(2048); // GOOD
                 dsa.ImportParameters(key);
                 return dsa.SignData(plaintext);
             }
@@ -121,7 +121,7 @@ namespace InsufficientKeySize
             try
             {
                 // Create a new instance of DSACryptoServiceProvider.
-                using (DSACryptoServiceProvider DSA = new DSACryptoServiceProvider(1024)) // GOOD
+                using (DSACryptoServiceProvider DSA = new DSACryptoServiceProvider(2048)) // GOOD
                 {
                     // Import the key information.
                     DSA.ImportParameters(DSAKeyInfo);

@@ -66,6 +66,7 @@
 import java
 private import SSA
 private import RangeUtils
+private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import SignAnalysis
 private import ModulusAnalysis
@@ -252,6 +253,15 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
   or
   result = eqFlowCond(v, e, delta, true, testIsTrue) and
   (upper = true or upper = false)
+  or
+  // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
+  // exists a guard `guardEq` such that `v = v2 - d1 + d2`.
+  exists(SsaVariable v2, Guard guardEq, boolean eqIsTrue, int d1, int d2 |
+    guardEq = eqFlowCond(v, ssaRead(v2, d1), d2, true, eqIsTrue) and
+    result = boundFlowCond(v2, e, delta + d1 - d2, upper, testIsTrue) and
+    // guardEq needs to control guard
+    guardEq.directlyControls(result.getBasicBlock(), eqIsTrue)
+  )
 }
 
 private newtype TReason =

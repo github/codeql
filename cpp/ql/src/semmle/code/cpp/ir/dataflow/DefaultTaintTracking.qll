@@ -70,7 +70,7 @@ private DataFlow::Node getNodeForSource(Expr source) {
     //
     // This case goes together with the similar (but not identical) rule in
     // `nodeIsBarrierIn`.
-    result = DataFlow::definitionByReferenceNode(source) and
+    result = DataFlow::definitionByReferenceNodeFromArgument(source) and
     not argv(source.(VariableAccess).getTarget())
   )
 }
@@ -210,7 +210,7 @@ private predicate nodeIsBarrierIn(DataFlow::Node node) {
     or
     // This case goes together with the similar (but not identical) rule in
     // `getNodeForSource`.
-    node = DataFlow::definitionByReferenceNode(source)
+    node = DataFlow::definitionByReferenceNodeFromArgument(source)
   )
 }
 
@@ -264,9 +264,6 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
     t instanceof Union
     or
     t instanceof ArrayType
-    or
-    // Buffers of unknown size
-    t instanceof UnknownType
   )
   or
   exists(BinaryInstruction bin |
@@ -306,8 +303,6 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
     )
   or
   // Flow from input argument to output argument
-  // TODO: This won't work in practice as long as all aliased memory is tracked
-  // together in a single virtual variable.
   // TODO: Will this work on the test for `TaintedPath.ql`, where the output arg
   // is a pointer addition expression?
   i2 =

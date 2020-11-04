@@ -9,6 +9,7 @@
  * @tags reliability
  *       correctness
  *       exceptions
+ *       external/cwe/cwe-193
  */
 
 import java

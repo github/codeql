@@ -11,18 +11,18 @@ namespace Semmle.Extraction.CSharp.Entities
     /// A tuple type, which is a C# type but not a .Net type.
     /// Tuples have the underlying type System.ValueTuple.
     /// </summary>
-    class TupleType : Type<INamedTypeSymbol>
+    internal class TupleType : Type<INamedTypeSymbol>
     {
-        public static TupleType Create(Context cx, INamedTypeSymbol type) => TupleTypeFactory.Instance.CreateEntity(cx, type);
+        public static TupleType Create(Context cx, INamedTypeSymbol type) => TupleTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
-        class TupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, TupleType>
+        private class TupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, TupleType>
         {
-            public static readonly TupleTypeFactory Instance = new TupleTypeFactory();
+            public static TupleTypeFactory Instance { get; } = new TupleTypeFactory();
 
             public TupleType Create(Context cx, INamedTypeSymbol init) => new TupleType(cx, init);
         }
 
-        TupleType(Context cx, INamedTypeSymbol init) : base(cx, init)
+        private TupleType(Context cx, INamedTypeSymbol init) : base(cx, init)
         {
             tupleElementsLazy = new Lazy<Field[]>(() => symbol.TupleElements.Select(t => Field.Create(cx, t)).ToArray());
         }
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub) => tb0.WriteSubId(Create(cx0, sub)));
+            symbol.BuildTypeId(Context, trapFile, symbol);
             trapFile.Write(";tuple");
         }
 
@@ -41,10 +41,11 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateType(trapFile);
             PopulateGenerics();
 
-            var underlyingType = NamedType.Create(Context, symbol.TupleUnderlyingType);
+            var underlyingType = NamedType.CreateNamedTypeFromTupleType(Context, symbol.TupleUnderlyingType ?? symbol);
+
             trapFile.tuple_underlying_type(this, underlyingType);
 
-            int index = 0;
+            var index = 0;
             foreach (var element in TupleElements)
                 trapFile.tuple_element(this, index++, element);
 
@@ -55,7 +56,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.type_location(this, Context.Create(l));
         }
 
-        readonly Lazy<Field[]> tupleElementsLazy;
+        private readonly Lazy<Field[]> tupleElementsLazy;
         public Field[] TupleElements => tupleElementsLazy.Value;
 
         public override IEnumerable<Type> TypeMentions => TupleElements.Select(e => e.Type.Type);

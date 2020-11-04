@@ -14,7 +14,7 @@ toplevels(#20001,0)
 locations_default(#20002,#10000,1,1,1,1)
 hasLocation(#20001,#20002)
 #20003=*
-jsParseErrors(#20003,#20001,"Error: Rest patterns cannot have a default value","[...x = a] = a;  // Error, rest element cannot have initializer
+js_parse_errors(#20003,#20001,"Error: Rest patterns cannot have a default value","[...x = a] = a;  // Error, rest element cannot have initializer
 ")
 #20004=@"loc,{#10000},3,5,3,5"
 locations_default(#20004,#10000,3,5,3,5)

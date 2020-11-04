@@ -11,7 +11,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// The name of the msbuild command.
         /// </summary>
-        const string MsBuild = "msbuild";
+        private const string msBuild = "msbuild";
 
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {
@@ -36,10 +36,11 @@ namespace Semmle.Autobuild.Shared
                 builder.Log(Severity.Warning, "Could not find a suitable version of VsDevCmd.bat/vcvarsall.bat");
             }
 
-            var nuget =
-                builder.SemmlePlatformTools != null ?
-                builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "nuget", "nuget.exe") :
-                "nuget";
+            // Use `nuget.exe` from source code repo, if present, otherwise first attempt with global
+            // `nuget` command, and if that fails, attempt to download `nuget.exe` from nuget.org
+            var nuget = builder.GetFilename("nuget.exe").Select(t => t.Item1).FirstOrDefault() ?? "nuget";
+            var nugetDownload = builder.Actions.PathCombine(builder.Options.RootDirectory, ".nuget", "nuget.exe");
+            var nugetDownloaded = false;
 
             var ret = BuildScript.Success;
 
@@ -47,11 +48,39 @@ namespace Semmle.Autobuild.Shared
             {
                 if (builder.Options.NugetRestore)
                 {
-                    var nugetCommand = new CommandBuilder(builder.Actions).
-                        RunCommand(nuget).
-                        Argument("restore").
+                    BuildScript GetNugetRestoreScript() =>
+                        new CommandBuilder(builder.Actions).
+                            RunCommand(nuget).
+                            Argument("restore").
+                            QuoteArgument(projectOrSolution.FullPath).
+                            Argument("-DisableParallelProcessing").
+                            Script;
+                    var nugetRestore = GetNugetRestoreScript();
+                    var msbuildRestoreCommand = new CommandBuilder(builder.Actions).
+                        RunCommand(msBuild).
+                        Argument("/t:restore").
                         QuoteArgument(projectOrSolution.FullPath);
-                    ret &= BuildScript.Try(nugetCommand.Script);
+
+                    if (nugetDownloaded)
+                    {
+                        ret &= BuildScript.Try(nugetRestore | msbuildRestoreCommand.Script);
+                    }
+                    else
+                    {
+                        // If `nuget restore` fails, and we have not already attempted to download `nuget.exe`,
+                        // download it and reattempt `nuget restore`.
+                        var nugetDownloadAndRestore =
+                            BuildScript.Bind(DownloadNugetExe(builder, nugetDownload), exitCode =>
+                            {
+                                nugetDownloaded = true;
+                                if (exitCode != 0)
+                                    return BuildScript.Failure;
+
+                                nuget = nugetDownload;
+                                return GetNugetRestoreScript();
+                            });
+                        ret &= BuildScript.Try(nugetRestore | nugetDownloadAndRestore | msbuildRestoreCommand.Script);
+                    }
                 }
 
                 var command = new CommandBuilder(builder.Actions);
@@ -66,20 +95,14 @@ namespace Semmle.Autobuild.Shared
                     command.RunCommand("set Platform=&& type NUL", quoteExe: false);
                 }
 
-                builder.MaybeIndex(command, MsBuild);
+                builder.MaybeIndex(command, msBuild);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
                 command.Argument("/p:UseSharedCompilation=false");
 
-                string target = builder.Options.MsBuildTarget != null
-                                       ? builder.Options.MsBuildTarget
-                                       : "rebuild";
-                string? platform = builder.Options.MsBuildPlatform != null
-                                         ? builder.Options.MsBuildPlatform
-                                         : projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null;
-                string? configuration = builder.Options.MsBuildConfiguration != null
-                                              ? builder.Options.MsBuildConfiguration
-                                              : projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null;
+                var target = builder.Options.MsBuildTarget ?? "rebuild";
+                var platform = builder.Options.MsBuildPlatform ?? (projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null);
+                var configuration = builder.Options.MsBuildConfiguration ?? (projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null);
 
                 command.Argument("/t:" + target);
                 if (platform != null)
@@ -130,5 +153,26 @@ namespace Semmle.Autobuild.Shared
 
             return vsTools;
         }
+
+        /// <summary>
+        /// Returns a script for downloading `nuget.exe` from nuget.org.
+        /// </summary>
+        private static BuildScript DownloadNugetExe(Autobuilder builder, string path) =>
+            BuildScript.Create(_ =>
+            {
+                builder.Log(Severity.Info, "Attempting to download nuget.exe");
+                return 0;
+            })
+            &
+            BuildScript.DownloadFile(
+                "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe",
+                path,
+                e => builder.Log(Severity.Warning, $"Failed to download 'nuget.exe': {e.Message}"))
+            &
+            BuildScript.Create(_ =>
+            {
+                builder.Log(Severity.Info, $"Successfully downloaded {path}");
+                return 0;
+            });
     }
 }

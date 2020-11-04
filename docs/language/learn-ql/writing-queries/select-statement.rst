@@ -15,7 +15,7 @@ This topic explains how to write your select statement to generate helpful analy
 Overview
 --------
 
-Alert queries must have the property ``@kind problem`` defined in their metadata. For further information, see :doc:`Metadata for CodeQL queries <query-metadata>`. 
+Alert queries must have the property ``@kind problem`` defined in their metadata. For more information, see ":doc:`Metadata for CodeQL queries <query-metadata>`." 
 In their most basic form, the ``select`` statement must select two 'columns':
 
 -  **Element**—a code element that's identified by the query. This defines the location of the alert.
@@ -27,7 +27,7 @@ If you look at some of the LGTM queries, you'll see that they can select extra e
 
     Note
 
-    An in-depth discussion of ``select`` statements for path queries is not included in this topic. However, you can develop the string column of the ``select`` statement in the same way as for alert queries. For more specific information about path queries, see :doc:`Creating path queries <path-queries>`.
+    An in-depth discussion of ``select`` statements for path queries is not included in this topic. However, you can develop the string column of the ``select`` statement in the same way as for alert queries. For more specific information about path queries, see ":doc:`Creating path queries <path-queries>`."
 
 Developing a select statement
 -----------------------------

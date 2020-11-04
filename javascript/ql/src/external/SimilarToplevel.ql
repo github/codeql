@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Similar script
  * @description There is another script that shares a lot of code with this script.
  *              Extract the common parts to a new script to improve maintainability..

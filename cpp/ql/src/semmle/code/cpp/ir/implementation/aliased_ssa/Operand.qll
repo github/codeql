@@ -79,7 +79,8 @@ private PhiOperandBase phiOperand(
 }
 
 /**
- * A source operand of an `Instruction`. The operand represents a value consumed by the instruction.
+ * An operand of an `Instruction`. The operand represents a use of the result of one instruction
+ * (the defining instruction) in another instruction (the use instruction)
  */
 class Operand extends TOperand {
   /** Gets a textual representation of this element. */
@@ -149,6 +150,11 @@ class Operand extends TOperand {
    * Gets a prefix to use when dumping the operand in an operand list.
    */
   string getDumpLabel() { result = "" }
+
+  /**
+   * Gets a string that uniquely identifies this operand on its use instruction.
+   */
+  string getDumpId() { result = "" }
 
   /**
    * Gets a string describing this operand, suitable for display in IR dumps. This consists of the
@@ -279,6 +285,8 @@ class NonPhiOperand extends Operand {
 
   final override string getDumpLabel() { result = tag.getLabel() }
 
+  final override string getDumpId() { result = tag.getId() }
+
   final override int getDumpSortOrder() { result = tag.getSortOrder() }
 
   /**
@@ -327,6 +335,14 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, NonPhiMemoryOper
     defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
     not Construction::isInCycle(useInstr) and
     strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
+  }
+
+  /**
+   * Holds if the operand totally overlaps with its definition and consumes the
+   * bit range `[startBitOffset, endBitOffset)` relative to the start address of the definition.
+   */
+  predicate getUsedInterval(int startBitOffset, int endBitOffset) {
+    Construction::getUsedInterval(this, startBitOffset, endBitOffset)
   }
 }
 
@@ -467,6 +483,8 @@ class PhiInputOperand extends MemoryOperand, PhiOperandBase {
   final override string getDumpLabel() {
     result = "from " + getPredecessorBlock().getDisplayIndex().toString() + ":"
   }
+
+  final override string getDumpId() { result = getPredecessorBlock().getDisplayIndex().toString() }
 
   /**
    * Gets the predecessor block from which this value comes.

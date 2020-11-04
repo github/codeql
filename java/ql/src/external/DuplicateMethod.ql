@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Duplicate method
  * @description Duplicated methods make code more difficult to understand and introduce a risk of
  *              changes being made to only one copy.

@@ -16,6 +16,7 @@
 | clang.cpp:30:27:30:34 | call to getFirst | clang.cpp:28:27:28:32 | call to source |
 | clang.cpp:37:10:37:11 | m2 | clang.cpp:34:32:34:37 | call to source |
 | clang.cpp:45:17:45:18 | m2 | clang.cpp:43:35:43:40 | call to source |
+| clang.cpp:51:8:51:17 | stackArray | clang.cpp:50:19:50:24 | call to source |
 | dispatch.cpp:11:38:11:38 | x | dispatch.cpp:37:19:37:24 | call to source |
 | dispatch.cpp:11:38:11:38 | x | dispatch.cpp:45:18:45:23 | call to source |
 | dispatch.cpp:35:16:35:25 | call to notSource1 | dispatch.cpp:9:37:9:42 | call to source |
@@ -79,12 +80,17 @@
 | test.cpp:424:8:424:12 | local | test.cpp:423:20:423:25 | ref arg & ... |
 | test.cpp:430:8:430:12 | local | test.cpp:428:7:428:11 | local |
 | test.cpp:430:8:430:12 | local | test.cpp:429:20:429:24 | ref arg local |
+| test.cpp:431:8:431:13 | * ... | test.cpp:428:7:428:11 | local |
+| test.cpp:431:8:431:13 | * ... | test.cpp:429:20:429:24 | ref arg local |
 | test.cpp:437:8:437:12 | local | test.cpp:435:7:435:11 | local |
 | test.cpp:437:8:437:12 | local | test.cpp:436:18:436:23 | ref arg & ... |
 | test.cpp:443:8:443:12 | local | test.cpp:441:7:441:11 | local |
 | test.cpp:443:8:443:12 | local | test.cpp:442:18:442:22 | ref arg local |
+| test.cpp:444:8:444:13 | * ... | test.cpp:441:7:441:11 | local |
+| test.cpp:444:8:444:13 | * ... | test.cpp:442:18:442:22 | ref arg local |
 | test.cpp:450:9:450:22 | (statement expression) | test.cpp:449:26:449:32 | source1 |
 | test.cpp:461:8:461:12 | local | test.cpp:449:26:449:32 | source1 |
+| test.cpp:471:8:471:8 | x | test.cpp:465:8:465:13 | call to source |
 | true_upon_entry.cpp:21:8:21:8 | x | true_upon_entry.cpp:17:11:17:16 | call to source |
 | true_upon_entry.cpp:29:8:29:8 | x | true_upon_entry.cpp:27:9:27:14 | call to source |
 | true_upon_entry.cpp:39:8:39:8 | x | true_upon_entry.cpp:33:11:33:16 | call to source |

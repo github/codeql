@@ -1,4 +1,5 @@
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * A configuration to find the call graph edges.
@@ -7,18 +8,18 @@ class CallGraphConfig extends DataFlow::Configuration {
   CallGraphConfig() { this = "CallGraphConfig" }
 
   override predicate isSource(DataFlow::Node node) {
-    node instanceof DataFlow::ReturnNode
+    node instanceof DataFlowPrivate::ReturnNode
     or
     // These sources should allow for the non-standard call syntax
-    node instanceof DataFlow::ArgumentNode
+    node instanceof DataFlowPrivate::ArgumentNode
   }
 
   override predicate isSink(DataFlow::Node node) {
-    node instanceof DataFlow::OutNode
+    node instanceof DataFlowPrivate::OutNode
     or
     node instanceof DataFlow::ParameterNode and
     // exclude parameters to the SINK-functions
-    not exists(DataFlow::DataFlowCallable c |
+    not exists(DataFlowPrivate::DataFlowCallable c |
       node.(DataFlow::ParameterNode).isParameterOf(c, _) and
       c.getName().matches("SINK_")
     )

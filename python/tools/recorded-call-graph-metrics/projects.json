@@ -1,0 +1,28 @@
+{
+    "wcwidth": {
+        "repo": "https://github.com/jquast/wcwidth.git",
+        "sha": "b29897e5a1b403a0e36f7fc991614981cbc42475",
+        "module_command": "pytest -c /dev/null",
+        "setup": [
+            "pip install pytest"
+        ]
+    },
+    "youtube-dl": {
+        "repo": "https://github.com/ytdl-org/youtube-dl.git",
+        "sha": "a115e07594ccb7749ca108c889978510c7df126e",
+        "module_command": "nose -v test --exclude test_download.py --exclude test_age_restriction.py --exclude test_subtitles.py --exclude test_write_annotations.py --exclude test_youtube_lists.py --exclude test_iqiyi_sdk_interpreter.py --exclude test_socks.py",
+        "setup": [
+            "pip install nose"
+        ]
+    },
+    "flask": {
+        "repo": "https://github.com/pallets/flask.git",
+        "sha": "21c3df31de4bc2f838c945bd37d185210d9bab1a",
+        "module_command": "pytest -c /dev/null tests examples",
+        "setup": [
+            "pip install -r requirements/tests.txt",
+            "pip install -q -e examples/tutorial[test]",
+            "pip install -q -e examples/javascript[test]"
+        ]
+    }
+}

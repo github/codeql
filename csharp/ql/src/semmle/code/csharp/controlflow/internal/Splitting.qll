@@ -27,23 +27,28 @@ private module Cached {
   cached
   newtype TSplitKind =
     TInitializerSplitKind() or
+    TAssertionSplitKind() or
     TFinallySplitKind(int nestLevel) { nestLevel = FinallySplitting::nestLevel(_) } or
     TExceptionHandlerSplitKind() or
     TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) { kind.startsSplit(_) } or
-    TLoopUnrollingSplitKind(LoopUnrollingSplitting::UnrollableLoopStmt loop)
+    TLoopSplitKind(LoopSplitting::AnalyzableLoopStmt loop)
 
   cached
   newtype TSplit =
     TInitializerSplit(Constructor c) { InitializerSplitting::constructorInitializes(c, _) } or
+    TAssertionSplit(AssertionSplitting::Assertion a, int i, boolean success) {
+      exists(a.getExpr(i)) and
+      success in [false, true]
+    } or
     TFinallySplit(FinallySplitting::FinallySplitType type, int nestLevel) {
       nestLevel = FinallySplitting::nestLevel(_)
     } or
     TExceptionHandlerSplit(ExceptionClass ec) or
     TBooleanSplit(BooleanSplitting::BooleanSplitSubKind kind, boolean branch) {
       kind.startsSplit(_) and
-      (branch = true or branch = false)
+      branch in [false, true]
     } or
-    TLoopUnrollingSplit(LoopUnrollingSplitting::UnrollableLoopStmt loop)
+    TLoopSplit(LoopSplitting::AnalyzableLoopStmt loop)
 
   cached
   newtype TSplits =
@@ -385,6 +390,128 @@ module InitializerSplitting {
   }
 }
 
+module AssertionSplitting {
+  import semmle.code.csharp.commons.Assertions
+  private import semmle.code.csharp.ExprOrStmtParent
+
+  private ControlFlowElement getAnAssertionDescendant(Assertion a) {
+    result = a
+    or
+    result = getAnAssertionDescendant(a).getAChild()
+  }
+
+  /**
+   * A split for assertions. For example, in
+   *
+   * ```csharp
+   * void M(int i)
+   * {
+   *     Debug.Assert(i >= 0);
+   *     System.Console.WriteLine("i is positive")
+   * }
+   * ```
+   *
+   * we record whether `i >= 0` evaluates to `true` or `false`, and restrict the
+   * edges out of the assertion accordingly.
+   */
+  class AssertionSplitImpl extends SplitImpl, TAssertionSplit {
+    Assertion a;
+    boolean success;
+    int i;
+
+    AssertionSplitImpl() { this = TAssertionSplit(a, i, success) }
+
+    /** Gets the assertion. */
+    Assertion getAssertion() { result = a }
+
+    /** Holds if this split represents a successful assertion. */
+    predicate isSuccess() { success = true }
+
+    override string toString() {
+      success = true and result = "assertion success"
+      or
+      success = false and result = "assertion failure"
+    }
+  }
+
+  private class AssertionSplitKind extends SplitKind, TAssertionSplitKind {
+    override int getListOrder() { result = InitializerSplitting::getNextListOrder() }
+
+    override predicate isEnabled(ControlFlowElement cfe) { this.appliesTo(cfe) }
+
+    override string toString() { result = "Assertion" }
+  }
+
+  int getNextListOrder() { result = InitializerSplitting::getNextListOrder() + 1 }
+
+  private class AssertionSplitInternal extends SplitInternal, AssertionSplitImpl {
+    override AssertionSplitKind getKind() { any() }
+
+    override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      exists(AssertMethod m |
+        pred = last(a.getExpr(i), c) and
+        succ = succ(pred, c) and
+        m = a.getAssertMethod() and
+        // The assertion only succeeds when all asserted arguments succeeded, so
+        // we only enter a "success" state after the last argument has succeeded.
+        //
+        // The split is only entered if we are not already in a "failing" state
+        // for one of the previous arguments, which ensures that the "success"
+        // state is only entered when all arguments succeed. This also means
+        // that if multiple arguments fail, then the first failing argument
+        // will determine the exception being thrown by the assertion.
+        if success = true then i = max(int j | exists(a.getExpr(j))) else any()
+      |
+        exists(boolean b | i = m.(BooleanAssertMethod).getAnAssertionIndex(b) |
+          c instanceof TrueCompletion and success = b
+          or
+          c instanceof FalseCompletion and success = b.booleanNot()
+        )
+        or
+        exists(boolean b | i = m.(NullnessAssertMethod).getAnAssertionIndex(b) |
+          c.(NullnessCompletion).isNull() and success = b
+          or
+          c.(NullnessCompletion).isNonNull() and success = b.booleanNot()
+        )
+      )
+    }
+
+    override predicate hasEntry(Callable c, ControlFlowElement succ) { none() }
+
+    override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesTo(pred) and
+      pred = a and
+      succ = succ(pred, c) and
+      (
+        success = true and
+        c instanceof NormalCompletion
+        or
+        success = false and
+        c = assertionCompletion(a, i)
+      )
+    }
+
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
+      this.appliesTo(pred) and
+      pred = a and
+      result = succExit(pred, c) and
+      (
+        success = true and
+        c instanceof NormalCompletion
+        or
+        success = false and
+        c = assertionCompletion(a, i)
+      )
+    }
+
+    override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesTo(pred) and
+      succ = succ(pred, c) and
+      succ = getAnAssertionDescendant(a)
+    }
+  }
+}
+
 pragma[noinline]
 private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
   result = cfe.getAChild() and
@@ -509,11 +636,11 @@ module FinallySplitting {
   }
 
   private int getListOrder(FinallySplitKind kind) {
-    result = InitializerSplitting::getNextListOrder() + kind.getNestLevel()
+    result = AssertionSplitting::getNextListOrder() + kind.getNestLevel()
   }
 
   int getNextListOrder() {
-    result = max(int i | i = getListOrder(_) + 1 or i = InitializerSplitting::getNextListOrder())
+    result = max(int i | i = getListOrder(_) + 1 or i = AssertionSplitting::getNextListOrder())
   }
 
   private class FinallySplitKind extends SplitKind, TFinallySplitKind {
@@ -1109,7 +1236,7 @@ module BooleanSplitting {
   }
 }
 
-module LoopUnrollingSplitting {
+module LoopSplitting {
   private import semmle.code.csharp.controlflow.Guards as Guards
   private import PreBasicBlocks
   private import PreSsa
@@ -1125,51 +1252,78 @@ module LoopUnrollingSplitting {
   }
 
   /**
-   * A loop where the body is guaranteed to be executed at least once, and
-   * can therefore be unrolled in the control flow graph.
+   * A loop where the body is guaranteed to be executed at least once, and hence
+   * can be unrolled in the control flow graph, or where the body is guaranteed
+   * to never be executed, and hence can be removed from the control flow graph.
    */
-  abstract class UnrollableLoopStmt extends LoopStmt {
-    /** Holds if the step `pred --c--> succ` should start loop unrolling. */
-    abstract predicate startUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+  abstract class AnalyzableLoopStmt extends LoopStmt {
+    /** Holds if the step `pred --c--> succ` should start the split. */
+    abstract predicate start(ControlFlowElement pred, ControlFlowElement succ, Completion c);
 
-    /** Holds if the step `pred --c--> succ` should stop loop unrolling. */
-    abstract predicate stopUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+    /** Holds if the step `pred --c--> succ` should stop the split. */
+    abstract predicate stop(ControlFlowElement pred, ControlFlowElement succ, Completion c);
 
     /**
-     * Holds if any step `pred --c--> _` should be pruned from the unrolled loop
-     * (the loop condition evaluating to `false`).
+     * Holds if any step `pred --c--> _` should be pruned from the control flow graph.
      */
     abstract predicate pruneLoopCondition(ControlFlowElement pred, ConditionalCompletion c);
+
+    /**
+     * Holds if the body is guaranteed to be executed at least once. If not, the
+     * body is guaranteed to never be executed.
+     */
+    abstract predicate isUnroll();
   }
 
-  private class UnrollableForeachStmt extends UnrollableLoopStmt, ForeachStmt {
-    UnrollableForeachStmt() {
-      exists(Guards::AbstractValues::EmptyCollectionValue v | v.isNonEmpty() |
-        emptinessGuarded(_, this.getIterableExpr(), v)
-        or
-        this.getIterableExpr() = v.getAnExpr()
-      )
+  private class AnalyzableForeachStmt extends AnalyzableLoopStmt, ForeachStmt {
+    Guards::AbstractValues::EmptyCollectionValue v;
+
+    AnalyzableForeachStmt() {
+      /*
+       * We use `unique` to avoid degenerate cases like
+       * ```csharp
+       * if (xs.Length == 0)
+       *     return;
+       * if (xs.Length > 0)
+       *     return;
+       * foreach (var x in xs)
+       *     ....
+       * ```
+       * where the iterator expression `xs` is guarded by both an emptiness check
+       * and a non-emptiness check.
+       */
+
+      v =
+        unique(Guards::AbstractValues::EmptyCollectionValue v0 |
+          emptinessGuarded(_, this.getIterableExpr(), v0)
+          or
+          this.getIterableExpr() = v0.getAnExpr()
+        |
+          v0
+        )
     }
 
-    override predicate startUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    override predicate start(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       pred = last(this.getIterableExpr(), c) and
       succ = this
     }
 
-    override predicate stopUnroll(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    override predicate stop(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       pred = this and
       succ = succ(pred, c)
     }
 
     override predicate pruneLoopCondition(ControlFlowElement pred, ConditionalCompletion c) {
       pred = this and
-      c.(EmptinessCompletion).isEmpty()
+      c = any(EmptinessCompletion ec | if v.isEmpty() then not ec.isEmpty() else ec.isEmpty())
     }
+
+    override predicate isUnroll() { v.isNonEmpty() }
   }
 
   /**
-   * A split for loops where the body is guaranteed to be executed at least once, and
-   * can therefore be unrolled in the control flow graph. For example, in
+   * A split for loops where the body is guaranteed to be executed at least once, or
+   * guaranteed to never be executed. For example, in
    *
    * ```csharp
    * void M(string[] args)
@@ -1184,21 +1338,23 @@ module LoopUnrollingSplitting {
    * the `foreach` loop is guaranteed to be executed at least once, as a result of the
    * `args.Length == 0` check.
    */
-  class LoopUnrollingSplitImpl extends SplitImpl, TLoopUnrollingSplit {
-    UnrollableLoopStmt loop;
+  class LoopSplitImpl extends SplitImpl, TLoopSplit {
+    AnalyzableLoopStmt loop;
 
-    LoopUnrollingSplitImpl() { this = TLoopUnrollingSplit(loop) }
+    LoopSplitImpl() { this = TLoopSplit(loop) }
 
     override string toString() {
-      result = "unroll (line " + loop.getLocation().getStartLine() + ")"
+      if loop.isUnroll()
+      then result = "unroll (line " + loop.getLocation().getStartLine() + ")"
+      else result = "skip (line " + loop.getLocation().getStartLine() + ")"
     }
   }
 
-  private int getListOrder(UnrollableLoopStmt loop) {
+  private int getListOrder(AnalyzableLoopStmt loop) {
     exists(Callable c, int r | c = loop.getEnclosingCallable() |
       result = r + BooleanSplitting::getNextListOrder() - 1 and
       loop =
-        rank[r](UnrollableLoopStmt loop0 |
+        rank[r](AnalyzableLoopStmt loop0 |
           loop0.getEnclosingCallable() = c
         |
           loop0 order by loop0.getLocation().getStartLine(), loop0.getLocation().getStartColumn()
@@ -1210,21 +1366,21 @@ module LoopUnrollingSplitting {
     result = max(int i | i = getListOrder(_) + 1 or i = BooleanSplitting::getNextListOrder())
   }
 
-  private class LoopUnrollingSplitKind extends SplitKind, TLoopUnrollingSplitKind {
-    private UnrollableLoopStmt loop;
+  private class LoopSplitKind extends SplitKind, TLoopSplitKind {
+    private AnalyzableLoopStmt loop;
 
-    LoopUnrollingSplitKind() { this = TLoopUnrollingSplitKind(loop) }
+    LoopSplitKind() { this = TLoopSplitKind(loop) }
 
     override int getListOrder() { result = getListOrder(loop) }
 
     override string toString() { result = "Unroll" }
   }
 
-  private class LoopUnrollingSplitInternal extends SplitInternal, LoopUnrollingSplitImpl {
-    override LoopUnrollingSplitKind getKind() { result = TLoopUnrollingSplitKind(loop) }
+  private class LoopUnrollingSplitInternal extends SplitInternal, LoopSplitImpl {
+    override LoopSplitKind getKind() { result = TLoopSplitKind(loop) }
 
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      loop.startUnroll(pred, succ, c)
+      loop.start(pred, succ, c)
     }
 
     override predicate hasEntry(Callable pred, ControlFlowElement succ) { none() }
@@ -1241,7 +1397,7 @@ module LoopUnrollingSplitting {
 
     override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       this.appliesToPredecessor(pred, c) and
-      loop.stopUnroll(pred, succ, c)
+      loop.stop(pred, succ, c)
     }
 
     override Callable hasExit(ControlFlowElement pred, Completion c) {
@@ -1252,7 +1408,7 @@ module LoopUnrollingSplitting {
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       this.appliesToPredecessor(pred, c) and
       succ = succ(pred, c) and
-      not loop.stopUnroll(pred, succ, c)
+      not loop.stop(pred, succ, c)
     }
   }
 }
@@ -1444,7 +1600,7 @@ private module SuccSplits {
 
   /**
    * Holds if `succSplits` should not inherit a split of kind `sk` from
-   * `predSplits, except possibly because of a split in `except`.
+   * `predSplits`, except possibly because of a split in `except`.
    *
    * The predicate is written using explicit recursion, as opposed to a `forall`,
    * to avoid negative recursion.

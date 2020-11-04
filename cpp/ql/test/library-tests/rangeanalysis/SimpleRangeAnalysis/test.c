@@ -533,3 +533,129 @@ int mul_by_constant(int i, int j) {
 
   return 0;
 }
+
+
+int notequal_type_endpoint(unsigned n) {
+  out(n); // 0 ..
+
+  if (n > 0) {
+    out(n); // 1 ..
+  }
+
+  if (n != 0) {
+    out(n); // 1 ..
+  } else {
+    out(n); // 0 .. 0
+  }
+
+  if (!n) {
+    out(n); // 0 .. 0
+  } else {
+    out(n); // 1 ..
+  }
+
+  while (n != 0) {
+    n--; // 1 ..
+  }
+
+  out(n); // 0 .. 0
+}
+
+void notequal_refinement(short n) {
+  if (n < 0)
+    return;
+
+  if (n == 0) {
+    out(n); // 0 .. 0
+  } else {
+    out(n); // 1 ..
+  }
+
+  if (n) {
+    out(n); // 1 ..
+  } else {
+    out(n); // 0 .. 0
+  }
+
+  while (n != 0) {
+    n--; // 1 ..
+  }
+
+  out(n); // 0 .. 0
+}
+
+void notequal_variations(short n, float f) {
+  if (n != 0) {
+    if (n >= 0) {
+      out(n); // 1 .. [BUG: we can't handle `!=` coming first]
+    }
+  }
+
+  if (n >= 5) {
+    if (2 * n - 10 == 0) { // Same as `n == 10/2` (modulo overflow)
+      return;
+    }
+    out(n); // 6 ..
+  }
+
+  if (n != -32768 && n != -32767) {
+    out(n); // -32766 ..
+  }
+
+  if (n >= 0) {
+    n  ? n : n; // ? 1..  : 0..0
+    !n ? n : n; // ? 0..0 : 1..
+  }
+}
+
+void two_bounds_from_one_test(short ss, unsigned short us) {
+  // These tests demonstrate how the range analysis is often able to deduce
+  // both an upper bound and a lower bound even when there is only one
+  // inequality in the source. For example `signedInt < 4U` establishes that
+  // `signedInt >= 0` since if `signedInt` were negative then it would be
+  // greater than 4 in the unsigned comparison.
+
+  if (ss < sizeof(int)) { // Lower bound added in `linearBoundFromGuard`
+    out(ss); // 0 .. 3
+  }
+
+  if (ss < 0x8001) { // Lower bound removed in `getDefLowerBounds`
+    out(ss); // -32768 .. 32767
+  }
+
+  if ((short)us >= 0) {
+    out(us); // 0 .. 32767
+  }
+
+  if ((short)us >= -1) {
+    out(us); // 0 .. 65535
+  }
+
+  if (ss >= sizeof(int)) { // test is true for negative numbers
+    out(ss); // -32768 .. 32767
+  }
+
+  if (ss + 1 < sizeof(int)) {
+    out(ss); // -1 .. 2
+  }
+}
+
+void widen_recursive_expr() {
+  int s;
+  for (s = 0; s < 10; s++) {
+    int result = s + s; // 0 .. 9 [BUG: upper bound is 15 due to widening]
+    out(result); // 0 .. 18 [BUG: upper bound is 127 due to double widening]
+  }
+}
+
+void guard_bound_out_of_range(void) {
+  int i = 0;
+  if (i < 0) {
+    out(i); // unreachable [BUG: is -max .. +max]
+  }
+
+  unsigned int u = 0;
+  if (u < 0) {
+    out(u); // unreachable [BUG: is 0 .. +max]
+  }
+}
