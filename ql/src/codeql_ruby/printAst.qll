@@ -26,13 +26,8 @@ class PrintAstConfiguration extends string {
 class PrintAstNode extends AstNode {
   string getProperty(string key) {
     key = "semmle.label" and
-    result = this.toString()
+    result = "[" + this.describeQlClass() + "] " + this.toString()
   }
-
-  /**
-   * Gets a textual representation of this node in the PrintAST output tree.
-   */
-  override string toString() { result = "[" + this.describeQlClass() + "] " + super.toString() }
 
   /**
    * Holds if this node should be printed in the output. By default, all nodes

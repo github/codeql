@@ -178,8 +178,8 @@ fn create_token_class() -> ql::Class {
             ],
         ),
     };
-    let describe_ql_class = ql::Predicate {
-        name: "describeQlClass".to_owned(),
+    let to_string = ql::Predicate {
+        name: "toString".to_owned(),
         overridden: true,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
@@ -196,7 +196,12 @@ fn create_token_class() -> ql::Class {
             ql::Type::Normal("AstNode".to_owned()),
         ],
         characteristic_predicate: None,
-        predicates: vec![get_value, get_location, describe_ql_class],
+        predicates: vec![
+            get_value,
+            get_location,
+            to_string,
+            create_describe_ql_class("Token"),
+        ],
     }
 }
 /// Creates a predicate whose body is `none()`.
@@ -242,7 +247,7 @@ fn create_field_class(
         let class_name = dbscheme_name_to_class_name(&field_union_name);
         classes.push(ql::TopLevel::Class(ql::Class {
             name: class_name.clone(),
-            is_abstract: false,
+            is_abstract: true,
             supertypes: [
                 vec![ql::Type::AtType(field_union_name.clone())],
                 get_base_classes(&class_name, &supertype_map),
@@ -505,7 +510,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                 let class_name = dbscheme_name_to_class_name(&union_name);
                 classes.push(ql::TopLevel::Class(ql::Class {
                     name: class_name.clone(),
-                    is_abstract: false,
+                    is_abstract: true,
                     supertypes: [
                         vec![ql::Type::AtType(union_name)],
                         get_base_classes(&class_name, &supertype_map),
