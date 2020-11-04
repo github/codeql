@@ -2,13 +2,13 @@ using System;
 
 #nullable enable
 
-public class Class1
+public class FnPointer
 {
     public unsafe static class Program
     {
-        static delegate*<int> pointer = &Main;
+        static delegate*<int> pointer = &M0;
 
-        public static int Main()
+        public static int M0()
         {
             return 0;
         }
@@ -19,7 +19,7 @@ public class Class1
             int j = f(ref i, out object? o);
         }
 
-        static void M2<T>(delegate* unmanaged[Stdcall, SuppressGCTransition]<ref int, out object?, T, void> f) where T : new()
+        static void M2<T>(delegate* unmanaged[Stdcall/*, StdcallSuppressGCTransition*/]<ref int, out object?, T, void> f) where T : new()
         {
             int i = 42;
             f(ref i, out object? o, new T());

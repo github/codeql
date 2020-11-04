@@ -798,6 +798,31 @@ class DelegateType extends RefType, Parameterizable, @delegate_type {
 }
 
 /**
+ * A function pointer type, for example
+ *
+ * ```csharp
+ * delegate*<int, void>
+ * ```
+ */
+class FunctionPointerType extends Type, Parameterizable, @function_pointer_type {
+  /** Gets the return type of this function pointer. */
+  Type getReturnType() { function_pointer_return_type(this, getTypeRef(result)) }
+
+  /** Gets the calling convention. */
+  int getCallingConvention() { function_pointer_calling_conventions(this, result) }
+
+  /** Gets the unmanaged calling convention at index `i`. */
+  Type getUnmanagedCallingConvention(int i) {
+    has_unmanaged_calling_conventions(this, i, getTypeRef(result))
+  }
+
+  /** Gets an unmanaged calling convention. */
+  Type getAnUnmanagedCallingConvention() { result = getUnmanagedCallingConvention(_) }
+
+  override string getAPrimaryQlClass() { result = "FunctionPointerType" }
+}
+
+/**
  * The `null` type. The type of the `null` literal.
  */
 class NullType extends RefType, @null_type { }

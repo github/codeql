@@ -1,0 +1,22 @@
+type
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | Int32 | 0 |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32> | Int32 | 0 |
+| file://:0:0:0:0 | delegate* default<Int32> | Int32 | 0 |
+| file://:0:0:0:0 | delegate* default<T,Int32> | Int32 | 0 |
+| file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | Void | 2 |
+unmanagedCallingConvention
+parameter
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | 0 | file://:0:0:0:0 |  | Int32 |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | 1 | file://:0:0:0:0 | `1 | Object |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 in,Int32 ref> | 2 | file://:0:0:0:0 | `2 | Int32 |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32> | 0 | file://:0:0:0:0 |  | Int32 |
+| file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32> | 1 | file://:0:0:0:0 | `1 | Object |
+| file://:0:0:0:0 | delegate* default<T,Int32> | 0 | file://:0:0:0:0 |  | T |
+| file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 0 | file://:0:0:0:0 |  | Int32 |
+| file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 1 | file://:0:0:0:0 | `1 | Object |
+| file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 2 | file://:0:0:0:0 | `2 | T |
+invocation
+| FunctionPointer.cs:19:21:19:43 | function pointer call |
+| FunctionPointer.cs:25:13:25:44 | function pointer call |
+| FunctionPointer.cs:31:29:31:57 | function pointer call |
+| FunctionPointer.cs:36:21:36:30 | function pointer call |
