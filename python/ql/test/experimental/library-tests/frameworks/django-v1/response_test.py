@@ -18,7 +18,15 @@ def safe__manual_content_type(request):
 # XSS FP reported in https://github.com/github/codeql/issues/3466
 # Note: This should be an open-redirect sink, but not an XSS sink.
 def or__redirect(request):
-    return HttpResponseRedirect(request.GET.get("next"))  # $HttpResponse mimetype=text/html responseBody=Attribute()
+    return HttpResponseRedirect(request.GET.get("next"))  # $HttpResponse mimetype=text/html
+
+def information_exposure_through_redirect(request, as_kw=False):
+    # This is a contrived example, but possible
+    private = "private"
+    if as_kw:
+        return HttpResponseRedirect(request.GET.get("next"), content=private)  # $HttpResponse mimetype=text/html responseBody=private
+    else:
+        return HttpResponseRedirect(request.GET.get("next"), private)  # $HttpResponse mimetype=text/html responseBody=private
 
 # Ensure that simple subclasses are still vuln to XSS
 def xss__not_found(request):

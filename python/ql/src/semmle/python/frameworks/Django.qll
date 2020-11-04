@@ -732,7 +732,10 @@ private module Django {
             ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
+              // note that even though browsers like Chrome usually doesn't fetch the
+              // content of a redirect, it is possible to observe the body (for example,
+              // with cURL).
+              result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
@@ -796,7 +799,10 @@ private module Django {
             ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
+              // note that even though browsers like Chrome usually doesn't fetch the
+              // content of a redirect, it is possible to observe the body (for example,
+              // with cURL).
+              result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
