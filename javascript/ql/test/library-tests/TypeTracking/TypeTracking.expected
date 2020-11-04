@@ -1,2 +1,0 @@
-| destructuring-export-client.js:3:8:3:41 | // trac ... ort-foo | Failed to track destructuring-export-foo here. |
-| destructuring-export-client.js:4:8:4:41 | // trac ... ort-bar | Failed to track destructuring-export-bar here. |
