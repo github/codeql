@@ -332,6 +332,9 @@ namespace std {
 		iterator insert(const_iterator position, size_type n, const T& x);
 		template<class InputIterator> iterator insert(const_iterator position, InputIterator first, InputIterator last);
 
+		template <class... Args> iterator emplace (const_iterator position, Args&&... args);
+		template <class... Args> void emplace_back (Args&&... args);
+
 		void swap(vector&) noexcept/*(allocator_traits<Allocator>::propagate_on_container_swap::value || allocator_traits<Allocator>::is_always_equal::value)*/;
 
 		void clear() noexcept;

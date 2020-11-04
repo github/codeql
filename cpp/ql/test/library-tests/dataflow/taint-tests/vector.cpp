@@ -486,3 +486,13 @@ void test_vector_memcpy()
 		sink(cs); // tainted [NOT DETECTED by IR]
 	}
 }
+
+void test_vector_emplace() {
+	std::vector<int> v1(10), v2(10);
+
+	v1.emplace_back(source());
+	sink(v1); // tainted
+
+	v2.emplace(v2.begin(), source());
+	sink(v2); // tainted
+}

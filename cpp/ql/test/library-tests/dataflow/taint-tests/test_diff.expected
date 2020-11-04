@@ -266,3 +266,5 @@
 | vector.cpp:450:8:450:10 | vector.cpp:449:11:449:16 | AST only |
 | vector.cpp:473:8:473:8 | vector.cpp:468:11:468:16 | AST only |
 | vector.cpp:486:8:486:9 | vector.cpp:478:21:478:37 | AST only |
+| vector.cpp:494:7:494:8 | vector.cpp:493:18:493:23 | AST only |
+| vector.cpp:497:7:497:8 | vector.cpp:496:25:496:30 | AST only |
