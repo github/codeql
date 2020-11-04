@@ -90,12 +90,10 @@ private class StandardDeallocationFunction extends DeallocationFunction {
 }
 
 /**
- * An `operator delete` or `operator delete[]` function that may be associated
- * with `delete` or `delete[]` expressions.  Note that `delete` and `delete[]`
- * are not function calls, but these functions may also be called directly.
+ * Implements `OperatorDeleteDeallocationFunction`.
  */
-class OperatorDeleteDeallocationFunction extends DeallocationFunction {
-  OperatorDeleteDeallocationFunction() {
+private class OperatorDeleteDeallocationFunctionImpl extends OperatorDeleteDeallocationFunction {
+  OperatorDeleteDeallocationFunctionImpl() {
     exists(string name |
       hasGlobalName(name) and
       (

@@ -85,3 +85,16 @@ abstract class AllocationExpr extends Expr {
    */
   predicate requiresDealloc() { any() }
 }
+
+/**
+ * An `operator new` or `operator new[]` function that may be associated with
+ * `new` or `new[]` expressions.  Note that `new` and `new[]` are not function
+ * calls, but these functions may also be called directly.
+ */
+abstract class OperatorNewAllocationFunction extends AllocationFunction {
+  /**
+   * Gets the position of the placement pointer if this is a placement
+   * `operator new` function.
+   */
+  int getPlacementArgument() { none()}
+}

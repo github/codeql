@@ -237,12 +237,10 @@ private class SizelessAllocationFunction extends AllocationFunction {
 }
 
 /**
- * An `operator new` or `operator new[]` function that may be associated with `new` or
- * `new[]` expressions.  Note that `new` and `new[]` are not function calls, but these
- * functions may also be called directly.
+ * Implements `OperatorNewAllocationFunction`.
  */
-class OperatorNewAllocationFunction extends AllocationFunction {
-  OperatorNewAllocationFunction() {
+private class OperatorNewAllocationFunctionImpl extends OperatorNewAllocationFunction {
+  OperatorNewAllocationFunctionImpl() {
     exists(string name |
       hasGlobalName(name) and
       (
@@ -259,11 +257,7 @@ class OperatorNewAllocationFunction extends AllocationFunction {
 
   override predicate requiresDealloc() { not exists(getPlacementArgument()) }
 
-  /**
-   * Gets the position of the placement pointer if this is a placement
-   * `operator new` function.
-   */
-  int getPlacementArgument() {
+  override int getPlacementArgument() {
     getNumberOfParameters() = 2 and
     getParameter(1).getType() instanceof VoidPointerType and
     result = 1
