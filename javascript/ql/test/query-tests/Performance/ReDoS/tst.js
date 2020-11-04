@@ -8,7 +8,7 @@ var bad1 = /^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/;
 // under the MIT license; see file marked-LICENSE.
 var good1 = /^\b_((?:__|[^_])+?)_\b|^\*((?:\*\*|[^*])+?)\*(?!\*)/;
 
-// NOT GOOD
+// GOOD - there is no witness in the end that could cause the regexp to not match
 // Adapted from brace-expansion (https://github.com/juliangruber/brace-expansion),
 // which is licensed under the MIT license; see file brace-expansion-LICENSE.
 var bad2 = /(.*,)+.+/;
@@ -94,7 +94,7 @@ var good9 = '(a|aa?)*b';
 // NOT GOOD
 var bad18 = /(([^]|[^a])*)"/;
 
-// NOT GOOD
+// GOOD - there is no witness in the end that could cause the regexp to not match
 var bad19 = /([^"']+)*/g;
 
 // NOT GOOD
@@ -171,3 +171,81 @@ var bad40 = /((0|[\d])*)"/;
 
 // NOT GOOD
 var bad41 = /(([\d]+)*)"/;
+
+// GOOD - there is no witness in the end that could cause the regexp to not match
+var good12 = /(\d+(X\d+)?)+/;
+
+// GOOD - there is no witness in the end that could cause the regexp to not match
+var good13 = /([0-9]+(X[0-9]*)?)*/;
+
+// NOT GOOD
+var bad42 = /([\n\s]+)*(.)/;
+
+// GOOD - any witness passes through the accept state.
+var good14 = /(A*A*X)*/;
+
+// GOOD - but still flagged (always matches something)
+var good15 = /^([^>]+)*(>|$)/;
+
+// NOT GOOD
+var bad43 = /^([^>a]+)*(>|$)/;
+
+// NOT GOOD
+var bad44 = /(\n\s*)+$/;
+
+// NOT GOOD
+var bad45 = /^(?:\s+|#.*|\(\?#[^)]*\))*(?:[?*+]|{\d+(?:,\d*)?})/;
+
+// NOT GOOD
+var bad46 = /\{\[\s*([a-zA-Z]+)\(([a-zA-Z]+)\)((\s*([a-zA-Z]+)\: ?([ a-zA-Z{}]+),?)+)*\s*\]\}/;
+
+// NOT GOOD
+var bad47 = /(a+|b+|c+)*c/;
+
+// NOT GOOD
+var bad48 = /(((a+a?)*)+b+)/;
+
+// NOT GOOD
+var bad49 = /(a+)+bbbb/;
+
+// GOOD
+var good16 = /(a+)+aaaaa*a+/;
+
+// NOT GOOD
+var bad50 = /(a+)+aaaaa$/;
+
+// GOOD
+var good17 = /(\n+)+\n\n/;
+
+// NOT GOOD
+var bad51 = /(\n+)+\n\n$/;
+
+// NOT GOOD
+var bad52 = /([^X]+)*$/;
+
+// NOT GOOD
+var bad53 = /(([^X]b)+)*$/;
+
+// GOOD
+var good18 = /(([^X]b)+)*($|[^X]b)/;
+
+// NOT GOOD
+var bad54 = /(([^X]b)+)*($|[^X]c)/;
+
+// GOOD
+var good19 = /(.*,)+.+/;
+
+// GOOD
+var good20 = /((ab)+)*ababab/;
+
+// GOOD
+var good21 = /((ab)+)*abab(ab)*(ab)+/;
+
+// GOOD
+var good22 = /((ab)+)*/;
+
+// NOT GOOD
+var bad55 = /((ab)+)*$/;
+
+// GOOD
+var good23 = /((ab)+)*[a1][b1][a2][b2][a3][b3]/;

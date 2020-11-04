@@ -711,16 +711,11 @@ private string getAOverlapBetweenCharacterClasses(CharacterClass c, CharacterCla
  */
 string intersect(InputSymbol c, InputSymbol d) {
   c = Char(result) and
+  d = getAnInputSymbolMatching(result) and
   (
-    sharesRoot(c, d) and
-    (
-      d = Char(result)
-      or
-      d.(CharacterClass).matches(result)
-    )
+    sharesRoot(c, d)
     or
-    d = Dot() and
-    not (result = "\n" or result = "\r")
+    d = Dot()
     or
     d = Any()
   )
@@ -747,6 +742,21 @@ string intersect(InputSymbol c, InputSymbol d) {
   c = Any() and d = Any() and result = "a"
   or
   result = intersect(d, c)
+}
+
+/**
+ * Gets a symbol that matches `char`.
+ */
+bindingset[char]
+InputSymbol getAnInputSymbolMatching(string char) {
+  result = Char(char)
+  or
+  result.(CharacterClass).matches(char)
+  or
+  result = Dot() and
+  not (char = "\n" or char = "\r")
+  or
+  result = Any()
 }
 
 /**
@@ -825,14 +835,8 @@ predicate isPumpable(State fork, string w) {
 }
 
 /**
- * Gets a state that can be reached from pumpable `fork` consuming
- * the first `i+1` characters of `w`.
- *
- * Character classes are overapproximated as intervals; for example,
- * `[a-ln-z]` is treated the same as `[a-z]`, and hence considered
- * to match `m`, even though in fact it does not. This is fine for
- * our purposes, since we only use this predicate to avoid false
- * positives.
+ * Gets a state that can be reached from pumpable `fork` consuming all
+ * chars in `w` any number of times followed by the first `i+1` characters of `w`.
  */
 State process(State fork, string w, int i) {
   isPumpable(fork, w) and
@@ -841,11 +845,12 @@ State process(State fork, string w, int i) {
     i = 0 and prev = fork
     or
     prev = process(fork, w, i - 1)
+    or
+    // repeat until fixpoint
+    i = 0 and
+    prev = process(fork, w, w.length() - 1)
   |
-    exists(InputSymbol s |
-      deltaClosed(prev, s, result) and
-      exists(intersect(Char(w.charAt(i)), s))
-    )
+    deltaClosed(prev, getAnInputSymbolMatching(w.charAt(i)), result)
   )
 }
 
@@ -873,7 +878,7 @@ from RegExpTerm t, string c, int i
 where
   c = min(string w | isPumpable(Match(t, i), w)) and
   not isPumpable(epsilonSucc+(Match(t, i)), _) and
-  not epsilonSucc*(process(Match(t, i), c, c.length() - 1)) = Accept(_)
+  not epsilonSucc*(process(Match(t, i), c, [0 .. c.length() - 1])) = Accept(_)
 select t,
   "This part of the regular expression may cause exponential backtracking on strings " +
     "containing many repetitions of '" + escape(rotate(c, i)) + "'."
