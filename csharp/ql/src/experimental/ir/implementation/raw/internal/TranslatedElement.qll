@@ -384,10 +384,10 @@ abstract class TranslatedElement extends TTranslatedElement {
   abstract TranslatedElement getChild(int id);
 
   /**
-   * Gets the an identifier string for the element. This string is unique within
+   * Gets the an identifier string for the element. This id is unique within
    * the scope of the element's function.
    */
-  final string getId() { result = this.getUniqueId().toString() }
+  int getId() { result = this.getUniqueId() }
 
   private TranslatedElement getChildByRank(int rankIndex) {
     result =
