@@ -50,6 +50,8 @@
 | polynomial-redos.js:66:9:66:10 | .* | it can start matching anywhere after the start of the preceeding 'K\|Y' |
 | polynomial-redos.js:66:9:66:10 | .* | it can start matching anywhere after the start of the preceeding 'Y' |
 | polynomial-redos.js:67:8:67:9 | .* | it can start matching anywhere after the start of the preceeding '[^Y]' |
+| polynomial-redos.js:68:8:68:9 | .* | it can start matching anywhere after the start of the preceeding '[^Y]' |
+| polynomial-redos.js:69:8:69:9 | .* | it can start matching anywhere after the start of the preceeding '[^Y]' |
 | regexplib/address.js:18:26:18:31 | [ \\w]* | it can start matching anywhere after the start of the preceeding '[ \\w]{3,}' |
 | regexplib/address.js:20:144:20:147 | [ ]+ | it can start matching anywhere after the start of the preceeding '[a-zA-Z0-9 \\-.]{6,}' |
 | regexplib/address.js:24:26:24:31 | [ \\w]* | it can start matching anywhere after the start of the preceeding '[ \\w]{3,}' |
