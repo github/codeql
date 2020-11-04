@@ -29,36 +29,24 @@ class UnderscoreArg extends @underscore_arg, AstNode, ArgumentListChildType, Arr
   ExceptionsChildType, IfModifierConditionType, OperatorAssignmentRightType, PairKeyType,
   PatternChildType, RescueModifierHandlerType, RightAssignmentListChildType,
   SingletonMethodObjectType, SuperclassChildType, UnaryChildType, UnderscoreStatement,
-  UnlessModifierConditionType, UntilModifierConditionType, WhileModifierConditionType {
-  override string describeQlClass() { result = "UnderscoreArg" }
-}
+  UnlessModifierConditionType, UntilModifierConditionType, WhileModifierConditionType { }
 
 class UnderscoreLhs extends @underscore_lhs, AstNode, AssignmentLeftType,
   DestructuredLeftAssignmentChildType, ForPatternType, LeftAssignmentListChildType,
-  UnderscorePrimary {
-  override string describeQlClass() { result = "UnderscoreLhs" }
-}
+  UnderscorePrimary { }
 
-class UnderscoreMethodName extends @underscore_method_name, AstNode {
-  override string describeQlClass() { result = "UnderscoreMethodName" }
-}
+class UnderscoreMethodName extends @underscore_method_name, AstNode { }
 
-class UnderscorePrimary extends @underscore_primary, AstNode, CallReceiverType, UnderscoreArg {
-  override string describeQlClass() { result = "UnderscorePrimary" }
-}
+class UnderscorePrimary extends @underscore_primary, AstNode, CallReceiverType, UnderscoreArg { }
 
 class UnderscoreStatement extends @underscore_statement, AstNode, BeginBlockChildType,
   BeginChildType, BlockChildType, ClassChildType, DoBlockChildType, DoChildType, ElseChildType,
   EndBlockChildType, EnsureChildType, MethodChildType, ModuleChildType,
   ParenthesizedStatementsChildType, ProgramChildType, SingletonClassChildType,
-  SingletonMethodChildType, ThenChildType {
-  override string describeQlClass() { result = "UnderscoreStatement" }
-}
+  SingletonMethodChildType, ThenChildType { }
 
 class UnderscoreVariable extends @underscore_variable, AstNode, MethodCallMethodType,
-  SingletonMethodObjectType, UnderscoreLhs {
-  override string describeQlClass() { result = "UnderscoreVariable" }
-}
+  SingletonMethodObjectType, UnderscoreLhs { }
 
 class Alias extends @alias, AstNode, UnderscoreStatement {
   override string describeQlClass() { result = "Alias" }
@@ -74,9 +62,7 @@ class Alias extends @alias, AstNode, UnderscoreStatement {
   }
 }
 
-class ArgumentListChildType extends @argument_list_child_type, AstNode {
-  override string describeQlClass() { result = "ArgumentListChildType" }
-}
+class ArgumentListChildType extends @argument_list_child_type, AstNode { }
 
 class ArgumentList extends @argument_list, AstNode, CallMethodType {
   override string describeQlClass() { result = "ArgumentList" }
@@ -88,9 +74,7 @@ class ArgumentList extends @argument_list, AstNode, CallMethodType {
   override AstNode getAFieldOrChild() { argument_list_child(this, _, result) }
 }
 
-class ArrayChildType extends @array_child_type, AstNode {
-  override string describeQlClass() { result = "ArrayChildType" }
-}
+class ArrayChildType extends @array_child_type, AstNode { }
 
 class Array extends @array, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Array" }
@@ -102,13 +86,9 @@ class Array extends @array, AstNode, UnderscorePrimary {
   override AstNode getAFieldOrChild() { array_child(this, _, result) }
 }
 
-class AssignmentLeftType extends @assignment_left_type, AstNode {
-  override string describeQlClass() { result = "AssignmentLeftType" }
-}
+class AssignmentLeftType extends @assignment_left_type, AstNode { }
 
-class AssignmentRightType extends @assignment_right_type, AstNode {
-  override string describeQlClass() { result = "AssignmentRightType" }
-}
+class AssignmentRightType extends @assignment_right_type, AstNode { }
 
 class Assignment extends @assignment, AstNode, UnderscoreArg, UnderscoreStatement {
   override string describeQlClass() { result = "Assignment" }
@@ -124,9 +104,7 @@ class Assignment extends @assignment, AstNode, UnderscoreArg, UnderscoreStatemen
   }
 }
 
-class BareStringChildType extends @bare_string_child_type, AstNode {
-  override string describeQlClass() { result = "BareStringChildType" }
-}
+class BareStringChildType extends @bare_string_child_type, AstNode { }
 
 class BareString extends @bare_string, AstNode {
   override string describeQlClass() { result = "BareString" }
@@ -138,9 +116,7 @@ class BareString extends @bare_string, AstNode {
   override AstNode getAFieldOrChild() { bare_string_child(this, _, result) }
 }
 
-class BareSymbolChildType extends @bare_symbol_child_type, AstNode {
-  override string describeQlClass() { result = "BareSymbolChildType" }
-}
+class BareSymbolChildType extends @bare_symbol_child_type, AstNode { }
 
 class BareSymbol extends @bare_symbol, AstNode {
   override string describeQlClass() { result = "BareSymbol" }
@@ -152,9 +128,7 @@ class BareSymbol extends @bare_symbol, AstNode {
   override AstNode getAFieldOrChild() { bare_symbol_child(this, _, result) }
 }
 
-class BeginChildType extends @begin_child_type, AstNode {
-  override string describeQlClass() { result = "BeginChildType" }
-}
+class BeginChildType extends @begin_child_type, AstNode { }
 
 class Begin extends @begin, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Begin" }
@@ -166,9 +140,7 @@ class Begin extends @begin, AstNode, UnderscorePrimary {
   override AstNode getAFieldOrChild() { begin_child(this, _, result) }
 }
 
-class BeginBlockChildType extends @begin_block_child_type, AstNode {
-  override string describeQlClass() { result = "BeginBlockChildType" }
-}
+class BeginBlockChildType extends @begin_block_child_type, AstNode { }
 
 class BeginBlock extends @begin_block, AstNode, UnderscoreStatement {
   override string describeQlClass() { result = "BeginBlock" }
@@ -180,17 +152,11 @@ class BeginBlock extends @begin_block, AstNode, UnderscoreStatement {
   override AstNode getAFieldOrChild() { begin_block_child(this, _, result) }
 }
 
-class BinaryLeftType extends @binary_left_type, AstNode {
-  override string describeQlClass() { result = "BinaryLeftType" }
-}
+class BinaryLeftType extends @binary_left_type, AstNode { }
 
-class BinaryOperatorType extends @binary_operator_type, AstNode {
-  override string describeQlClass() { result = "BinaryOperatorType" }
-}
+class BinaryOperatorType extends @binary_operator_type, AstNode { }
 
-class BinaryRightType extends @binary_right_type, AstNode {
-  override string describeQlClass() { result = "BinaryRightType" }
-}
+class BinaryRightType extends @binary_right_type, AstNode { }
 
 class Binary extends @binary, AstNode, UnderscoreArg, UnderscoreStatement {
   override string describeQlClass() { result = "Binary" }
@@ -210,9 +176,7 @@ class Binary extends @binary, AstNode, UnderscoreArg, UnderscoreStatement {
   }
 }
 
-class BlockChildType extends @block_child_type, AstNode {
-  override string describeQlClass() { result = "BlockChildType" }
-}
+class BlockChildType extends @block_child_type, AstNode { }
 
 class Block extends @block, AstNode, LambdaBodyType, MethodCallBlockType {
   override string describeQlClass() { result = "Block" }
@@ -246,9 +210,7 @@ class BlockParameter extends @block_parameter, AstNode, BlockParametersChildType
   override AstNode getAFieldOrChild() { block_parameter_def(this, result, _) }
 }
 
-class BlockParametersChildType extends @block_parameters_child_type, AstNode {
-  override string describeQlClass() { result = "BlockParametersChildType" }
-}
+class BlockParametersChildType extends @block_parameters_child_type, AstNode { }
 
 class BlockParameters extends @block_parameters, AstNode, BlockChildType, DoBlockChildType {
   override string describeQlClass() { result = "BlockParameters" }
@@ -274,13 +236,9 @@ class Break extends @break, AstNode, ArgumentListChildType, ArrayChildType, Assi
   override AstNode getAFieldOrChild() { break_child(this, result) }
 }
 
-class CallMethodType extends @call_method_type, AstNode {
-  override string describeQlClass() { result = "CallMethodType" }
-}
+class CallMethodType extends @call_method_type, AstNode { }
 
-class CallReceiverType extends @call_receiver_type, AstNode {
-  override string describeQlClass() { result = "CallReceiverType" }
-}
+class CallReceiverType extends @call_receiver_type, AstNode { }
 
 class Call extends @call, AstNode, ArgumentListChildType, ArrayChildType, AssignmentRightType,
   BinaryLeftType, BinaryRightType, ElementReferenceChildType, IfModifierConditionType,
@@ -300,9 +258,7 @@ class Call extends @call, AstNode, ArgumentListChildType, ArrayChildType, Assign
   }
 }
 
-class CaseChildType extends @case_child_type, AstNode {
-  override string describeQlClass() { result = "CaseChildType" }
-}
+class CaseChildType extends @case_child_type, AstNode { }
 
 class Case extends @case__, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Case" }
@@ -326,13 +282,9 @@ class ChainedString extends @chained_string, AstNode, UnderscorePrimary {
   override AstNode getAFieldOrChild() { chained_string_child(this, _, result) }
 }
 
-class ClassNameType extends @class_name_type, AstNode {
-  override string describeQlClass() { result = "ClassNameType" }
-}
+class ClassNameType extends @class_name_type, AstNode { }
 
-class ClassChildType extends @class_child_type, AstNode {
-  override string describeQlClass() { result = "ClassChildType" }
-}
+class ClassChildType extends @class_child_type, AstNode { }
 
 class Class extends @class, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Class" }
@@ -365,7 +317,6 @@ class Conditional extends @conditional, AstNode, UnderscoreArg {
 }
 
 class DestructuredLeftAssignmentChildType extends @destructured_left_assignment_child_type, AstNode {
-  override string describeQlClass() { result = "DestructuredLeftAssignmentChildType" }
 }
 
 class DestructuredLeftAssignment extends @destructured_left_assignment, AstNode,
@@ -381,9 +332,7 @@ class DestructuredLeftAssignment extends @destructured_left_assignment, AstNode,
   override AstNode getAFieldOrChild() { destructured_left_assignment_child(this, _, result) }
 }
 
-class DestructuredParameterChildType extends @destructured_parameter_child_type, AstNode {
-  override string describeQlClass() { result = "DestructuredParameterChildType" }
-}
+class DestructuredParameterChildType extends @destructured_parameter_child_type, AstNode { }
 
 class DestructuredParameter extends @destructured_parameter, AstNode, BlockParametersChildType,
   DestructuredParameterChildType, LambdaParametersChildType, MethodParametersChildType {
@@ -396,9 +345,7 @@ class DestructuredParameter extends @destructured_parameter, AstNode, BlockParam
   override AstNode getAFieldOrChild() { destructured_parameter_child(this, _, result) }
 }
 
-class DoChildType extends @do_child_type, AstNode {
-  override string describeQlClass() { result = "DoChildType" }
-}
+class DoChildType extends @do_child_type, AstNode { }
 
 class Do extends @do, AstNode {
   override string describeQlClass() { result = "Do" }
@@ -410,9 +357,7 @@ class Do extends @do, AstNode {
   override AstNode getAFieldOrChild() { do_child(this, _, result) }
 }
 
-class DoBlockChildType extends @do_block_child_type, AstNode {
-  override string describeQlClass() { result = "DoBlockChildType" }
-}
+class DoBlockChildType extends @do_block_child_type, AstNode { }
 
 class DoBlock extends @do_block, AstNode, LambdaBodyType, MethodCallBlockType {
   override string describeQlClass() { result = "DoBlock" }
@@ -424,9 +369,7 @@ class DoBlock extends @do_block, AstNode, LambdaBodyType, MethodCallBlockType {
   override AstNode getAFieldOrChild() { do_block_child(this, _, result) }
 }
 
-class ElementReferenceChildType extends @element_reference_child_type, AstNode {
-  override string describeQlClass() { result = "ElementReferenceChildType" }
-}
+class ElementReferenceChildType extends @element_reference_child_type, AstNode { }
 
 class ElementReference extends @element_reference, AstNode, UnderscoreLhs {
   override string describeQlClass() { result = "ElementReference" }
@@ -442,9 +385,7 @@ class ElementReference extends @element_reference, AstNode, UnderscoreLhs {
   }
 }
 
-class ElseChildType extends @else_child_type, AstNode {
-  override string describeQlClass() { result = "ElseChildType" }
-}
+class ElseChildType extends @else_child_type, AstNode { }
 
 class Else extends @else, AstNode, BeginChildType, CaseChildType, ClassChildType, DoBlockChildType,
   ElsifAlternativeType, IfAlternativeType, MethodChildType, ModuleChildType,
@@ -462,9 +403,7 @@ class Else extends @else, AstNode, BeginChildType, CaseChildType, ClassChildType
   }
 }
 
-class ElsifAlternativeType extends @elsif_alternative_type, AstNode {
-  override string describeQlClass() { result = "ElsifAlternativeType" }
-}
+class ElsifAlternativeType extends @elsif_alternative_type, AstNode { }
 
 class Elsif extends @elsif, AstNode, ElsifAlternativeType, IfAlternativeType, UnlessAlternativeType {
   override string describeQlClass() { result = "Elsif" }
@@ -482,9 +421,7 @@ class Elsif extends @elsif, AstNode, ElsifAlternativeType, IfAlternativeType, Un
   }
 }
 
-class EndBlockChildType extends @end_block_child_type, AstNode {
-  override string describeQlClass() { result = "EndBlockChildType" }
-}
+class EndBlockChildType extends @end_block_child_type, AstNode { }
 
 class EndBlock extends @end_block, AstNode, UnderscoreStatement {
   override string describeQlClass() { result = "EndBlock" }
@@ -496,9 +433,7 @@ class EndBlock extends @end_block, AstNode, UnderscoreStatement {
   override AstNode getAFieldOrChild() { end_block_child(this, _, result) }
 }
 
-class EnsureChildType extends @ensure_child_type, AstNode {
-  override string describeQlClass() { result = "EnsureChildType" }
-}
+class EnsureChildType extends @ensure_child_type, AstNode { }
 
 class Ensure extends @ensure, AstNode, BeginChildType, ClassChildType, DoBlockChildType,
   MethodChildType, ModuleChildType, SingletonClassChildType, SingletonMethodChildType {
@@ -521,9 +456,7 @@ class ExceptionVariable extends @exception_variable, AstNode {
   override AstNode getAFieldOrChild() { exception_variable_def(this, result, _) }
 }
 
-class ExceptionsChildType extends @exceptions_child_type, AstNode {
-  override string describeQlClass() { result = "ExceptionsChildType" }
-}
+class ExceptionsChildType extends @exceptions_child_type, AstNode { }
 
 class Exceptions extends @exceptions, AstNode {
   override string describeQlClass() { result = "Exceptions" }
@@ -535,9 +468,7 @@ class Exceptions extends @exceptions, AstNode {
   override AstNode getAFieldOrChild() { exceptions_child(this, _, result) }
 }
 
-class ForPatternType extends @for_pattern_type, AstNode {
-  override string describeQlClass() { result = "ForPatternType" }
-}
+class ForPatternType extends @for_pattern_type, AstNode { }
 
 class For extends @for, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "For" }
@@ -555,9 +486,7 @@ class For extends @for, AstNode, UnderscorePrimary {
   }
 }
 
-class HashChildType extends @hash_child_type, AstNode {
-  override string describeQlClass() { result = "HashChildType" }
-}
+class HashChildType extends @hash_child_type, AstNode { }
 
 class Hash extends @hash, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Hash" }
@@ -591,9 +520,7 @@ class HashSplatParameter extends @hash_splat_parameter, AstNode, BlockParameters
   override AstNode getAFieldOrChild() { hash_splat_parameter_name(this, result) }
 }
 
-class HeredocBodyChildType extends @heredoc_body_child_type, AstNode {
-  override string describeQlClass() { result = "HeredocBodyChildType" }
-}
+class HeredocBodyChildType extends @heredoc_body_child_type, AstNode { }
 
 class HeredocBody extends @heredoc_body, AstNode {
   override string describeQlClass() { result = "HeredocBody" }
@@ -605,9 +532,7 @@ class HeredocBody extends @heredoc_body, AstNode {
   override AstNode getAFieldOrChild() { heredoc_body_child(this, _, result) }
 }
 
-class IfAlternativeType extends @if_alternative_type, AstNode {
-  override string describeQlClass() { result = "IfAlternativeType" }
-}
+class IfAlternativeType extends @if_alternative_type, AstNode { }
 
 class If extends @if, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "If" }
@@ -625,9 +550,7 @@ class If extends @if, AstNode, UnderscorePrimary {
   }
 }
 
-class IfModifierConditionType extends @if_modifier_condition_type, AstNode {
-  override string describeQlClass() { result = "IfModifierConditionType" }
-}
+class IfModifierConditionType extends @if_modifier_condition_type, AstNode { }
 
 class IfModifier extends @if_modifier, AstNode, UnderscoreStatement {
   override string describeQlClass() { result = "IfModifier" }
@@ -679,9 +602,7 @@ class KeywordParameter extends @keyword_parameter, AstNode, BlockParametersChild
   }
 }
 
-class LambdaBodyType extends @lambda_body_type, AstNode {
-  override string describeQlClass() { result = "LambdaBodyType" }
-}
+class LambdaBodyType extends @lambda_body_type, AstNode { }
 
 class Lambda extends @lambda, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Lambda" }
@@ -697,9 +618,7 @@ class Lambda extends @lambda, AstNode, UnderscorePrimary {
   }
 }
 
-class LambdaParametersChildType extends @lambda_parameters_child_type, AstNode {
-  override string describeQlClass() { result = "LambdaParametersChildType" }
-}
+class LambdaParametersChildType extends @lambda_parameters_child_type, AstNode { }
 
 class LambdaParameters extends @lambda_parameters, AstNode {
   override string describeQlClass() { result = "LambdaParameters" }
@@ -711,9 +630,7 @@ class LambdaParameters extends @lambda_parameters, AstNode {
   override AstNode getAFieldOrChild() { lambda_parameters_child(this, _, result) }
 }
 
-class LeftAssignmentListChildType extends @left_assignment_list_child_type, AstNode {
-  override string describeQlClass() { result = "LeftAssignmentListChildType" }
-}
+class LeftAssignmentListChildType extends @left_assignment_list_child_type, AstNode { }
 
 class LeftAssignmentList extends @left_assignment_list, AstNode, AssignmentLeftType {
   override string describeQlClass() { result = "LeftAssignmentList" }
@@ -725,9 +642,7 @@ class LeftAssignmentList extends @left_assignment_list, AstNode, AssignmentLeftT
   override AstNode getAFieldOrChild() { left_assignment_list_child(this, _, result) }
 }
 
-class MethodChildType extends @method_child_type, AstNode {
-  override string describeQlClass() { result = "MethodChildType" }
-}
+class MethodChildType extends @method_child_type, AstNode { }
 
 class Method extends @method, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Method" }
@@ -745,13 +660,9 @@ class Method extends @method, AstNode, UnderscorePrimary {
   }
 }
 
-class MethodCallBlockType extends @method_call_block_type, AstNode {
-  override string describeQlClass() { result = "MethodCallBlockType" }
-}
+class MethodCallBlockType extends @method_call_block_type, AstNode { }
 
-class MethodCallMethodType extends @method_call_method_type, AstNode {
-  override string describeQlClass() { result = "MethodCallMethodType" }
-}
+class MethodCallMethodType extends @method_call_method_type, AstNode { }
 
 class MethodCall extends @method_call, AstNode, ArgumentListChildType, ArrayChildType,
   AssignmentRightType, BinaryLeftType, BinaryRightType, CallReceiverType, ElementReferenceChildType,
@@ -775,9 +686,7 @@ class MethodCall extends @method_call, AstNode, ArgumentListChildType, ArrayChil
   }
 }
 
-class MethodParametersChildType extends @method_parameters_child_type, AstNode {
-  override string describeQlClass() { result = "MethodParametersChildType" }
-}
+class MethodParametersChildType extends @method_parameters_child_type, AstNode { }
 
 class MethodParameters extends @method_parameters, AstNode {
   override string describeQlClass() { result = "MethodParameters" }
@@ -789,13 +698,9 @@ class MethodParameters extends @method_parameters, AstNode {
   override AstNode getAFieldOrChild() { method_parameters_child(this, _, result) }
 }
 
-class ModuleNameType extends @module_name_type, AstNode {
-  override string describeQlClass() { result = "ModuleNameType" }
-}
+class ModuleNameType extends @module_name_type, AstNode { }
 
-class ModuleChildType extends @module_child_type, AstNode {
-  override string describeQlClass() { result = "ModuleChildType" }
-}
+class ModuleChildType extends @module_child_type, AstNode { }
 
 class Module extends @module, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Module" }
@@ -825,9 +730,7 @@ class Next extends @next, AstNode, ArgumentListChildType, ArrayChildType, Assign
   override AstNode getAFieldOrChild() { next_child(this, result) }
 }
 
-class OperatorAssignmentRightType extends @operator_assignment_right_type, AstNode {
-  override string describeQlClass() { result = "OperatorAssignmentRightType" }
-}
+class OperatorAssignmentRightType extends @operator_assignment_right_type, AstNode { }
 
 class OperatorAssignment extends @operator_assignment, AstNode, UnderscoreArg, UnderscoreStatement {
   override string describeQlClass() { result = "OperatorAssignment" }
@@ -858,9 +761,7 @@ class OptionalParameter extends @optional_parameter, AstNode, BlockParametersChi
   }
 }
 
-class PairKeyType extends @pair_key_type, AstNode {
-  override string describeQlClass() { result = "PairKeyType" }
-}
+class PairKeyType extends @pair_key_type, AstNode { }
 
 class Pair extends @pair, AstNode, ArgumentListChildType, ArrayChildType, ElementReferenceChildType,
   HashChildType {
@@ -877,9 +778,7 @@ class Pair extends @pair, AstNode, ArgumentListChildType, ArrayChildType, Elemen
   }
 }
 
-class ParenthesizedStatementsChildType extends @parenthesized_statements_child_type, AstNode {
-  override string describeQlClass() { result = "ParenthesizedStatementsChildType" }
-}
+class ParenthesizedStatementsChildType extends @parenthesized_statements_child_type, AstNode { }
 
 class ParenthesizedStatements extends @parenthesized_statements, AstNode, UnaryChildType,
   UnderscorePrimary {
@@ -894,9 +793,7 @@ class ParenthesizedStatements extends @parenthesized_statements, AstNode, UnaryC
   override AstNode getAFieldOrChild() { parenthesized_statements_child(this, _, result) }
 }
 
-class PatternChildType extends @pattern_child_type, AstNode {
-  override string describeQlClass() { result = "PatternChildType" }
-}
+class PatternChildType extends @pattern_child_type, AstNode { }
 
 class Pattern extends @pattern, AstNode, WhenPatternType {
   override string describeQlClass() { result = "Pattern" }
@@ -908,9 +805,7 @@ class Pattern extends @pattern, AstNode, WhenPatternType {
   override AstNode getAFieldOrChild() { pattern_def(this, result, _) }
 }
 
-class ProgramChildType extends @program_child_type, AstNode {
-  override string describeQlClass() { result = "ProgramChildType" }
-}
+class ProgramChildType extends @program_child_type, AstNode { }
 
 class Program extends @program, AstNode {
   override string describeQlClass() { result = "Program" }
@@ -952,9 +847,7 @@ class Redo extends @redo, AstNode, UnderscorePrimary {
   override AstNode getAFieldOrChild() { redo_child(this, result) }
 }
 
-class RegexChildType extends @regex_child_type, AstNode {
-  override string describeQlClass() { result = "RegexChildType" }
-}
+class RegexChildType extends @regex_child_type, AstNode { }
 
 class Regex extends @regex, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Regex" }
@@ -983,9 +876,7 @@ class Rescue extends @rescue, AstNode, BeginChildType, ClassChildType, DoBlockCh
   }
 }
 
-class RescueModifierHandlerType extends @rescue_modifier_handler_type, AstNode {
-  override string describeQlClass() { result = "RescueModifierHandlerType" }
-}
+class RescueModifierHandlerType extends @rescue_modifier_handler_type, AstNode { }
 
 class RescueModifier extends @rescue_modifier, AstNode, UnderscoreStatement {
   override string describeQlClass() { result = "RescueModifier" }
@@ -1036,9 +927,7 @@ class Return extends @return, AstNode, ArgumentListChildType, ArrayChildType, As
   override AstNode getAFieldOrChild() { return_child(this, result) }
 }
 
-class RightAssignmentListChildType extends @right_assignment_list_child_type, AstNode {
-  override string describeQlClass() { result = "RightAssignmentListChildType" }
-}
+class RightAssignmentListChildType extends @right_assignment_list_child_type, AstNode { }
 
 class RightAssignmentList extends @right_assignment_list, AstNode, AssignmentRightType {
   override string describeQlClass() { result = "RightAssignmentList" }
@@ -1050,9 +939,7 @@ class RightAssignmentList extends @right_assignment_list, AstNode, AssignmentRig
   override AstNode getAFieldOrChild() { right_assignment_list_child(this, _, result) }
 }
 
-class ScopeResolutionNameType extends @scope_resolution_name_type, AstNode {
-  override string describeQlClass() { result = "ScopeResolutionNameType" }
-}
+class ScopeResolutionNameType extends @scope_resolution_name_type, AstNode { }
 
 class ScopeResolution extends @scope_resolution, AstNode, ClassNameType, MethodCallMethodType,
   ModuleNameType, UnderscoreLhs {
@@ -1079,9 +966,7 @@ class Setter extends @setter, AstNode, UnderscoreMethodName {
   override AstNode getAFieldOrChild() { setter_def(this, result, _) }
 }
 
-class SingletonClassChildType extends @singleton_class_child_type, AstNode {
-  override string describeQlClass() { result = "SingletonClassChildType" }
-}
+class SingletonClassChildType extends @singleton_class_child_type, AstNode { }
 
 class SingletonClass extends @singleton_class, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "SingletonClass" }
@@ -1097,13 +982,9 @@ class SingletonClass extends @singleton_class, AstNode, UnderscorePrimary {
   }
 }
 
-class SingletonMethodObjectType extends @singleton_method_object_type, AstNode {
-  override string describeQlClass() { result = "SingletonMethodObjectType" }
-}
+class SingletonMethodObjectType extends @singleton_method_object_type, AstNode { }
 
-class SingletonMethodChildType extends @singleton_method_child_type, AstNode {
-  override string describeQlClass() { result = "SingletonMethodChildType" }
-}
+class SingletonMethodChildType extends @singleton_method_child_type, AstNode { }
 
 class SingletonMethod extends @singleton_method, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "SingletonMethod" }
@@ -1149,9 +1030,7 @@ class SplatParameter extends @splat_parameter, AstNode, BlockParametersChildType
   override AstNode getAFieldOrChild() { splat_parameter_name(this, result) }
 }
 
-class StringChildType extends @string_child_type, AstNode {
-  override string describeQlClass() { result = "StringChildType" }
-}
+class StringChildType extends @string_child_type, AstNode { }
 
 class String extends @string__, AstNode, PairKeyType, UnderscorePrimary {
   override string describeQlClass() { result = "String" }
@@ -1173,9 +1052,7 @@ class StringArray extends @string_array, AstNode, UnderscorePrimary {
   override AstNode getAFieldOrChild() { string_array_child(this, _, result) }
 }
 
-class SubshellChildType extends @subshell_child_type, AstNode {
-  override string describeQlClass() { result = "SubshellChildType" }
-}
+class SubshellChildType extends @subshell_child_type, AstNode { }
 
 class Subshell extends @subshell, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Subshell" }
@@ -1187,9 +1064,7 @@ class Subshell extends @subshell, AstNode, UnderscorePrimary {
   override AstNode getAFieldOrChild() { subshell_child(this, _, result) }
 }
 
-class SuperclassChildType extends @superclass_child_type, AstNode {
-  override string describeQlClass() { result = "SuperclassChildType" }
-}
+class SuperclassChildType extends @superclass_child_type, AstNode { }
 
 class Superclass extends @superclass, AstNode, ClassChildType {
   override string describeQlClass() { result = "Superclass" }
@@ -1201,9 +1076,7 @@ class Superclass extends @superclass, AstNode, ClassChildType {
   override AstNode getAFieldOrChild() { superclass_def(this, result, _) }
 }
 
-class SymbolChildType extends @symbol_child_type, AstNode {
-  override string describeQlClass() { result = "SymbolChildType" }
-}
+class SymbolChildType extends @symbol_child_type, AstNode { }
 
 class Symbol extends @symbol, AstNode, PairKeyType, UnderscoreMethodName, UnderscorePrimary {
   override string describeQlClass() { result = "Symbol" }
@@ -1225,9 +1098,7 @@ class SymbolArray extends @symbol_array, AstNode, UnderscorePrimary {
   override AstNode getAFieldOrChild() { symbol_array_child(this, _, result) }
 }
 
-class ThenChildType extends @then_child_type, AstNode {
-  override string describeQlClass() { result = "ThenChildType" }
-}
+class ThenChildType extends @then_child_type, AstNode { }
 
 class Then extends @then, AstNode {
   override string describeQlClass() { result = "Then" }
@@ -1239,9 +1110,7 @@ class Then extends @then, AstNode {
   override AstNode getAFieldOrChild() { then_child(this, _, result) }
 }
 
-class UnaryChildType extends @unary_child_type, AstNode {
-  override string describeQlClass() { result = "UnaryChildType" }
-}
+class UnaryChildType extends @unary_child_type, AstNode { }
 
 class Unary extends @unary, AstNode, UnderscoreArg, UnderscorePrimary, UnderscoreStatement {
   override string describeQlClass() { result = "Unary" }
@@ -1263,9 +1132,7 @@ class Undef extends @undef, AstNode, UnderscoreStatement {
   override AstNode getAFieldOrChild() { undef_child(this, _, result) }
 }
 
-class UnlessAlternativeType extends @unless_alternative_type, AstNode {
-  override string describeQlClass() { result = "UnlessAlternativeType" }
-}
+class UnlessAlternativeType extends @unless_alternative_type, AstNode { }
 
 class Unless extends @unless, AstNode, UnderscorePrimary {
   override string describeQlClass() { result = "Unless" }
@@ -1285,9 +1152,7 @@ class Unless extends @unless, AstNode, UnderscorePrimary {
   }
 }
 
-class UnlessModifierConditionType extends @unless_modifier_condition_type, AstNode {
-  override string describeQlClass() { result = "UnlessModifierConditionType" }
-}
+class UnlessModifierConditionType extends @unless_modifier_condition_type, AstNode { }
 
 class UnlessModifier extends @unless_modifier, AstNode, UnderscoreStatement {
   override string describeQlClass() { result = "UnlessModifier" }
@@ -1317,9 +1182,7 @@ class Until extends @until, AstNode, UnderscorePrimary {
   }
 }
 
-class UntilModifierConditionType extends @until_modifier_condition_type, AstNode {
-  override string describeQlClass() { result = "UntilModifierConditionType" }
-}
+class UntilModifierConditionType extends @until_modifier_condition_type, AstNode { }
 
 class UntilModifier extends @until_modifier, AstNode, UnderscoreStatement {
   override string describeQlClass() { result = "UntilModifier" }
@@ -1335,9 +1198,7 @@ class UntilModifier extends @until_modifier, AstNode, UnderscoreStatement {
   }
 }
 
-class WhenPatternType extends @when_pattern_type, AstNode {
-  override string describeQlClass() { result = "WhenPatternType" }
-}
+class WhenPatternType extends @when_pattern_type, AstNode { }
 
 class When extends @when, AstNode, CaseChildType {
   override string describeQlClass() { result = "When" }
@@ -1365,9 +1226,7 @@ class While extends @while, AstNode, UnderscorePrimary {
   }
 }
 
-class WhileModifierConditionType extends @while_modifier_condition_type, AstNode {
-  override string describeQlClass() { result = "WhileModifierConditionType" }
-}
+class WhileModifierConditionType extends @while_modifier_condition_type, AstNode { }
 
 class WhileModifier extends @while_modifier, AstNode, UnderscoreStatement {
   override string describeQlClass() { result = "WhileModifier" }

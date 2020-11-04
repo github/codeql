@@ -249,7 +249,7 @@ fn create_field_class(
             ]
             .concat(),
             characteristic_predicate: None,
-            predicates: vec![create_describe_ql_class(&class_name)],
+            predicates: vec![],
         }));
         field_union_name
     }
@@ -512,7 +512,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                     ]
                     .concat(),
                     characteristic_predicate: None,
-                    predicates: vec![create_describe_ql_class(&class_name)],
+                    predicates: vec![],
                 }));
             }
             node_types::Entry::Table { type_name, fields } => {
