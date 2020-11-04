@@ -1,3 +1,14 @@
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyCompany(...)] | System.Reflection.AssemblyCompanyAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyFileVersion(...)] | System.Reflection.AssemblyFileVersionAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyInformationalVersion(...)] | System.Reflection.AssemblyInformationalVersionAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyProduct(...)] | System.Reflection.AssemblyProductAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [CompilationRelaxations(...)] | System.Runtime.CompilerServices.CompilationRelaxationsAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [Custom(...)] | Assembly1.CustomAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [Debuggable(...)] | System.Diagnostics.DebuggableAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [RuntimeCompatibility(...)] | System.Runtime.CompilerServices.RuntimeCompatibilityAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [TargetFramework(...)] | System.Runtime.Versioning.TargetFrameworkAttribute |
 | attributes.cs:44:7:44:9 | Foo | attributes.cs:43:2:43:22 | [AttributeUsage(...)] | System.AttributeUsageAttribute |
 | attributes.cs:47:17:47:19 | foo | attributes.cs:46:6:46:16 | [Conditional(...)] | System.Diagnostics.ConditionalAttribute |
 | attributes.cs:52:23:52:23 | x | attributes.cs:52:14:52:16 | [Foo(...)] | Foo |

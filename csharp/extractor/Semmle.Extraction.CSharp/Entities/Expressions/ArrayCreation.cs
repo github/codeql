@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -10,6 +11,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     internal abstract class ArrayCreation<TSyntaxNode> : Expression<TSyntaxNode>
         where TSyntaxNode : ExpressionSyntax
     {
+        protected const int InitializerIndex = -1;
+
         protected ArrayCreation(ExpressionNodeInfo info) : base(info) { }
     }
 
@@ -48,7 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (!(Initializer is null))
             {
-                ArrayInitializer.Create(new ExpressionNodeInfo(cx, Initializer, this, NormalArrayCreation.InitializerIndex));
+                ArrayInitializer.Create(new ExpressionNodeInfo(cx, Initializer, this, InitializerIndex));
             }
 
             if (explicitlySized)
@@ -75,8 +78,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
     internal class NormalArrayCreation : ExplicitArrayCreation<ArrayCreationExpressionSyntax>
     {
-        public const int InitializerIndex = -1;
-
         private NormalArrayCreation(ExpressionNodeInfo info) : base(info) { }
 
         protected override ArrayTypeSyntax TypeSyntax => Syntax.Type;
@@ -85,12 +86,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new NormalArrayCreation(info).TryPopulate();
 
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, int length)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, IEnumerable<TypedConstant> items, Semmle.Extraction.Entities.Location location)
         {
             var info = new ExpressionInfo(
                 cx,
                 new AnnotatedType(Entities.Type.Create(cx, type), NullableAnnotation.None),
-                Extraction.Entities.GeneratedLocation.Create(cx),
+                location,
                 ExprKind.ARRAY_CREATION,
                 parent,
                 childIndex,
@@ -99,7 +100,19 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             var arrayCreation = new Expression(info);
 
-            Literal.CreateGenerated(cx, arrayCreation, 0, cx.Compilation.GetSpecialType(SpecialType.System_Int32), length);
+            var length = items.Count();
+
+            Literal.CreateGenerated(cx, arrayCreation, 0, cx.Compilation.GetSpecialType(SpecialType.System_Int32), length, location);
+
+            if (length > 0)
+            {
+                var arrayInit = ArrayInitializer.CreateGenerated(cx, arrayCreation, InitializerIndex, location);
+                var child = 0;
+                foreach (var item in items)
+                {
+                    Expression.CreateGenerated(cx, item, arrayInit, child++, location);
+                }
+            }
 
             return arrayCreation;
         }
@@ -130,7 +143,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, NormalArrayCreation.InitializerIndex));
+            ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, InitializerIndex));
             trapFile.implicitly_typed_array_creation(this);
             trapFile.stackalloc_array_creation(this);
         }
@@ -146,7 +159,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             if (Syntax.Initializer != null)
             {
-                ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, NormalArrayCreation.InitializerIndex));
+                ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, InitializerIndex));
             }
 
             trapFile.implicitly_typed_array_creation(this);

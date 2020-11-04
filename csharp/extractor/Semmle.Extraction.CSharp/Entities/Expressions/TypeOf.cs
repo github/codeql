@@ -6,7 +6,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
     internal class TypeOf : Expression<TypeOfExpressionSyntax>
     {
-        public const int TypeAccessIndex = 0;
+        private const int TypeAccessIndex = 0;
 
         private TypeOf(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.TYPEOF)) { }
 
@@ -17,19 +17,23 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             TypeAccess.Create(cx, Syntax.Type, this, TypeAccessIndex);
         }
 
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, Extraction.Entities.Location location)
         {
             var info = new ExpressionInfo(
                 cx,
                 new AnnotatedType(Entities.Type.Create(cx, type), Microsoft.CodeAnalysis.NullableAnnotation.None),
-                Extraction.Entities.GeneratedLocation.Create(cx),
+                location,
                 ExprKind.TYPEOF,
                 parent,
                 childIndex,
                 true,
                 null);
 
-            return new Expression(info);
+            var ret = new Expression(info);
+
+            TypeAccess.CreateGenerated(cx, ret, TypeOf.TypeAccessIndex, type, location);
+
+            return ret;
         }
     }
 }

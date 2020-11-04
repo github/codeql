@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities;
 using Semmle.Extraction.Entities;
 using Semmle.Util.Logging;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -58,12 +59,15 @@ namespace Semmle.Extraction.CSharp.Populators
                 return;
 
             var outputAssembly = Assembly.CreateOutputAssembly(cx);
-            var attributeDatas = cx.Compilation.Assembly.GetAttributes().ToList();
-            attributeDatas.AddRange(cx.Compilation.Assembly.Modules.SelectMany(m => m.GetAttributes()));
+            var attributeLookup = new Dictionary<SyntaxNode, AttributeData>();
+            foreach (var attributeData in cx.Compilation.Assembly.GetAttributes().Concat(cx.Compilation.Assembly.Modules.SelectMany(m => m.GetAttributes())))
+            {
+                if (attributeData.ApplicationSyntaxReference?.GetSyntax() is SyntaxNode syntax)
+                    attributeLookup.Add(syntax, attributeData);
+            }
             foreach (var attribute in node.Attributes)
             {
-                var attributeData = attributeDatas.Single(ad => ad.ApplicationSyntaxReference?.GetSyntax() == attribute);
-                if (attributeData is object)
+                if (attributeLookup.TryGetValue(attribute, out var attributeData))
                 {
                     var ae = Attribute.Create(cx, attributeData, outputAssembly);
                     cx.BindComments(ae, attribute.GetLocation());

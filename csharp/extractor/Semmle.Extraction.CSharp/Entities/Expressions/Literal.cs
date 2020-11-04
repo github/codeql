@@ -78,12 +78,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
-            Extraction.Entities.Location location = null)
+            Extraction.Entities.Location location)
         {
             var info = new ExpressionInfo(
                 cx,
                 new AnnotatedType(Entities.Type.Create(cx, type), NullableAnnotation.None),
-                location ?? Extraction.Entities.GeneratedLocation.Create(cx),
+                location,
                 GetExprKind(type, null, cx),
                 parent,
                 childIndex,
@@ -93,12 +93,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             return new Expression(info);
         }
 
-        public static Expression CreateGeneratedNullLiteral(Context cx, IExpressionParentEntity parent, int childIndex)
+        public static Expression CreateGeneratedNullLiteral(Context cx, IExpressionParentEntity parent, int childIndex, Extraction.Entities.Location location)
         {
             var info = new ExpressionInfo(
                 cx,
                 NullType.Create(cx),
-                Extraction.Entities.GeneratedLocation.Create(cx),
+                location,
                 ExprKind.NULL_LITERAL,
                 parent,
                 childIndex,

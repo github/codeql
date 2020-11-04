@@ -1,4 +1,22 @@
 arguments
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 1 |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 3 |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 42 |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 1 | Assembly1.dll:0:0:0:0 | array creation of type Int32[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 1 | Assembly1.dll:0:0:0:0 | array creation of type Int32[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 1 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 2 | Assembly1.dll:0:0:0:0 | null |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 2 | Assembly1.dll:0:0:0:0 | typeof(...) |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 2 | Assembly1.dll:0:0:0:0 | typeof(...) |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 3 | Assembly1.dll:0:0:0:0 | (...) ... |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 3 | Assembly1.dll:0:0:0:0 | (...) ... |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 3 | Assembly1.dll:0:0:0:0 | (...) ... |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 4 | Assembly1.dll:0:0:0:0 | array creation of type Int32[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 4 | Assembly1.dll:0:0:0:0 | null |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 4 | Assembly1.dll:0:0:0:0 | null |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 5 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 5 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 5 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
 | attributes.cs:10:12:10:24 | [AssemblyTitle(...)] | 0 | attributes.cs:10:26:10:45 | "C# attributes test" |
 | attributes.cs:11:12:11:30 | [AssemblyDescription(...)] | 0 | attributes.cs:11:32:11:56 | "A test of C# attributes" |
 | attributes.cs:12:12:12:32 | [AssemblyConfiguration(...)] | 0 | attributes.cs:12:34:12:35 | "" |
@@ -42,6 +60,21 @@ arguments
 | attributes.cs:79:6:79:9 | [Args(...)] | 4 | attributes.cs:79:55:79:58 | null |
 | attributes.cs:79:6:79:9 | [Args(...)] | 5 | attributes.cs:79:68:79:98 | array creation of type Object[] |
 constructorArguments
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 1 |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 3 |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 42 |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 1 | Assembly1.dll:0:0:0:0 | array creation of type Int32[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 1 | Assembly1.dll:0:0:0:0 | array creation of type Int32[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 1 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 2 | Assembly1.dll:0:0:0:0 | null |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 2 | Assembly1.dll:0:0:0:0 | typeof(...) |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 2 | Assembly1.dll:0:0:0:0 | typeof(...) |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 3 | Assembly1.dll:0:0:0:0 | (...) ... |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 3 | Assembly1.dll:0:0:0:0 | (...) ... |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 3 | Assembly1.dll:0:0:0:0 | (...) ... |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 4 | Assembly1.dll:0:0:0:0 | array creation of type Int32[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 4 | Assembly1.dll:0:0:0:0 | null |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | 4 | Assembly1.dll:0:0:0:0 | null |
 | attributes.cs:10:12:10:24 | [AssemblyTitle(...)] | 0 | attributes.cs:10:26:10:45 | "C# attributes test" |
 | attributes.cs:11:12:11:30 | [AssemblyDescription(...)] | 0 | attributes.cs:11:32:11:56 | "A test of C# attributes" |
 | attributes.cs:12:12:12:32 | [AssemblyConfiguration(...)] | 0 | attributes.cs:12:34:12:35 | "" |
@@ -79,6 +112,9 @@ constructorArguments
 | attributes.cs:79:6:79:9 | [Args(...)] | 3 | attributes.cs:79:48:79:52 | (...) ... |
 | attributes.cs:79:6:79:9 | [Args(...)] | 4 | attributes.cs:79:55:79:58 | null |
 namedArguments
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
+| Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
 | attributes.cs:40:12:40:15 | [Args(...)] | Prop | attributes.cs:40:92:40:122 | array creation of type Object[] |
 | attributes.cs:41:10:41:13 | [Args(...)] | Prop | attributes.cs:41:90:41:120 | array creation of type Object[] |
 | attributes.cs:57:6:57:16 | [My(...)] | x | attributes.cs:57:36:57:36 | 0 |

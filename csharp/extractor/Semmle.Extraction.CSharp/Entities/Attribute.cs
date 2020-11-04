@@ -2,23 +2,20 @@ using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class Attribute : CachedEntity<(AttributeData, IEntity)>, IExpressionParentEntity
+    internal class Attribute : CachedEntity<AttributeData>, IExpressionParentEntity
     {
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private readonly AttributeData attributeData;
         private readonly AttributeSyntax attributeSyntax;
         private readonly IEntity entity;
 
         private Attribute(Context cx, AttributeData attributeData, IEntity entity)
-            : base(cx, (attributeData, entity))
+            : base(cx, attributeData)
         {
-            this.attributeData = attributeData;
             this.attributeSyntax = attributeData.ApplicationSyntaxReference?.GetSyntax() as AttributeSyntax;
             this.entity = entity;
         }
@@ -27,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (ReportingLocation?.IsInSource == true)
             {
-                trapFile.WriteSubId(Context.Create(ReportingLocation));
+                trapFile.WriteSubId(Location);
                 trapFile.Write(";attribute");
             }
             else
@@ -50,13 +47,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            var type = Type.Create(Context, attributeData.AttributeClass);
+            var type = Type.Create(Context, symbol.AttributeClass);
             trapFile.attributes(this, type.TypeRef, entity);
+            trapFile.attribute_location(this, Location);
 
             if (attributeSyntax is object)
             {
-                trapFile.attribute_location(this, Context.Create(attributeSyntax.Name.GetLocation()));
-
                 if (Context.Extractor.OutputPath != null)
                 {
                     trapFile.attribute_location(this, Assembly.CreateOutputAssembly(Context));
@@ -71,18 +67,16 @@ namespace Semmle.Extraction.CSharp.Entities
         private void ExtractArguments(TextWriter trapFile)
         {
             var childIndex = 0;
-            foreach (var constructorArgument in attributeData.ConstructorArguments)
+            foreach (var constructorArgument in symbol.ConstructorArguments)
             {
                 CreateExpressionFromArgument(
                     constructorArgument,
                     attributeSyntax?.ArgumentList.Arguments[childIndex].Expression,
                     this,
-                    childIndex);
-
-                childIndex++;
+                    childIndex++);
             }
 
-            foreach (var namedArgument in attributeData.NamedArguments)
+            foreach (var namedArgument in symbol.NamedArguments)
             {
                 var expr = CreateExpressionFromArgument(
                     namedArgument.Value,
@@ -100,70 +94,18 @@ namespace Semmle.Extraction.CSharp.Entities
         private Expression CreateExpressionFromArgument(TypedConstant constant, ExpressionSyntax syntax, IExpressionParentEntity parent,
             int childIndex)
         {
-            if (syntax is object)
-            {
-                return Expression.Create(Context, syntax, parent, childIndex);
-            }
-
-            return CreateGeneratedExpressionFromArgument(constant, parent, childIndex);
-        }
-
-        private Expression CreateGeneratedExpressionFromArgument(TypedConstant constant, IExpressionParentEntity parent,
-            int childIndex)
-        {
-            if (constant.IsNull)
-            {
-                return Literal.CreateGeneratedNullLiteral(Context, parent, childIndex);
-            }
-
-            switch (constant.Kind)
-            {
-                case TypedConstantKind.Primitive:
-                    return Literal.CreateGenerated(Context, parent, childIndex, constant.Type, constant.Value);
-                case TypedConstantKind.Enum:
-                    // Enum value is generated in the following format: (Enum)value
-
-                    var cast = Cast.CreateGenerated(Context, parent, childIndex, constant.Type, constant.Value);
-                    Literal.CreateGenerated(Context, cast, Cast.ExpressionIndex, ((INamedTypeSymbol)constant.Type).EnumUnderlyingType, constant.Value);
-                    TypeAccess.CreateGenerated(Context, cast, Cast.TypeAccessIndex, constant.Type);
-
-                    return cast;
-                case TypedConstantKind.Type:
-                    var type = ((ITypeSymbol)constant.Value).OriginalDefinition;
-                    var t = TypeOf.CreateGenerated(Context, parent, childIndex, type);
-                    TypeAccess.CreateGenerated(Context, t, TypeOf.TypeAccessIndex, type);
-                    return t;
-                case TypedConstantKind.Array:
-                    {
-                        // Single dimensional arrays are in the following format:
-                        // * new Type[N] { item1, item2, ..., itemN }
-                        // * new Type[0]
-                        //
-                        // itemI is generated recursively.
-
-                        var arrayCreation = NormalArrayCreation.CreateGenerated(Context, parent, childIndex, constant.Type, constant.Values.Length);
-
-                        if (constant.Values.Length > 0)
-                        {
-                            var arrayInit = ArrayInitializer.CreateGenerated(Context, arrayCreation);
-
-                            constant.Values
-                                .Select((constantItem, itemIndex) => CreateGeneratedExpressionFromArgument(constantItem, arrayInit, itemIndex))
-                                .Where(e => e is object)
-                                .ToList();
-                        }
-
-                        return arrayCreation;
-                    }
-                default:
-                    Context.ExtractionError("Couldn't extract constant in attribute", entity.ToString(), Context.Create(entity.ReportingLocation));
-                    return null;
-            }
+            return syntax is null
+                ? Expression.CreateGenerated(Context, constant, parent, childIndex, Location)
+                : Expression.Create(Context, syntax, parent, childIndex);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => attributeSyntax?.Name.GetLocation();
+
+        private Semmle.Extraction.Entities.Location location;
+        private Semmle.Extraction.Entities.Location Location =>
+            location ?? (location = Semmle.Extraction.Entities.Location.Create(Context, attributeSyntax is null ? entity.ReportingLocation : attributeSyntax.Name.GetLocation()));
 
         public override bool NeedsPopulation => true;
 
@@ -178,7 +120,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static Attribute Create(Context cx, AttributeData attributeData, IEntity entity)
         {
             var init = (attributeData, entity);
-            return AttributeFactory.Instance.CreateEntity(cx, init, init);
+            return AttributeFactory.Instance.CreateEntity(cx, attributeData, init);
         }
 
         private class AttributeFactory : ICachedEntityFactory<(AttributeData attributeData, IEntity receiver), Attribute>
