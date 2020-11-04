@@ -1,27 +1,27 @@
 private import python
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.DataFlow
 
-predicate pointsToOrigin(DataFlow::DataFlowCfgNode pointer, DataFlow::DataFlowCfgNode origin) {
-  origin = pointer.pointsTo().getOrigin()
+predicate pointsToOrigin(DataFlow::CfgNode pointer, DataFlow::CfgNode origin) {
+  origin.getNode() = pointer.getNode().pointsTo().getOrigin()
 }
 
 class PointsToConfiguration extends DataFlow::Configuration {
   PointsToConfiguration() { this = "PointsToConfiguration" }
 
-  override predicate isSource(DataFlow::Node node) { pointsToOrigin(_, node.asCfgNode()) }
+  override predicate isSource(DataFlow::Node node) { pointsToOrigin(_, node) }
 
-  override predicate isSink(DataFlow::Node node) { pointsToOrigin(node.asCfgNode(), _) }
+  override predicate isSink(DataFlow::Node node) { pointsToOrigin(node, _) }
 }
 
-predicate hasFlow(ControlFlowNode origin, ControlFlowNode pointer) {
+predicate hasFlow(DataFlow::Node origin, DataFlow::Node pointer) {
   exists(PointsToConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink |
-    source.getNode().asCfgNode() = origin and
-    sink.getNode().asCfgNode() = pointer and
+    source.getNode() = origin and
+    sink.getNode() = pointer and
     config.hasFlowPath(source, sink)
   )
 }
 
-from DataFlow::DataFlowCfgNode pointer, DataFlow::DataFlowCfgNode origin
+from DataFlow::Node pointer, DataFlow::Node origin
 where
   pointsToOrigin(pointer, origin) and
   not hasFlow(origin, pointer)
