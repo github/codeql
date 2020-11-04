@@ -1489,7 +1489,7 @@ TargetType.cs:
 #-----| 3 -> [Getter] get_Prop1
 #-----| 4 -> [Setter] set_Prop1
 
-#   32| [DelegateType] D
+#   30| [DelegateType] D
 #-----| 2 -> (Parameters)
 
 #    7| [Getter] get_Prop1
@@ -1503,18 +1503,18 @@ TargetType.cs:
 #-----| -1 -> [TypeMention] Void
 #-----| 4 -> [BlockStmt] {...}
 
-#   32| [Parameter] x
+#   30| [Parameter] x
 #-----| -1 -> [TypeMention] int
 
-#   34| [Method] M
+#   32| [Method] M
 #-----| -1 -> [TypeMention] Void
 #-----| 2 -> (Parameters)
 #-----| 4 -> [BlockStmt] {...}
 
-#   34| [Parameter] x
+#   32| [Parameter] x
 #-----| -1 -> [TypeMention] int
 
-#   36| [Method] GetM
+#   34| [Method] GetM
 #-----| -1 -> [TypeMention] D
 #-----| 4 -> [BlockStmt] {...}
 
@@ -1531,7 +1531,6 @@ TargetType.cs:
 #-----| 1 -> [LocalVariableDeclStmt] ... ...;
 #-----| 2 -> [LocalVariableDeclStmt] ... ...;
 #-----| 3 -> [LocalVariableDeclStmt] ... ...;
-#-----| 4 -> [LocalVariableDeclStmt] ... ...;
 
 #   18| [LocalVariableDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] Random rand = ...
@@ -1637,38 +1636,21 @@ TargetType.cs:
 
 #   25| [LocalVariableAccess] access to local variable xs
 
-#   29| [LocalVariableDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xss = ...
-
-#   29| [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xss = ...
-#-----| -1 -> [TypeMention] IEnumerable<Int32>
-#-----| 0 -> [LocalVariableAccess] access to local variable xss
-#-----| 1 -> [CastExpr] (...) ...
-
-#   29| [CastExpr] (...) ...
-#-----| 1 -> [NullCoalescingExpr] ... ?? ...
-
-#   29| [NullCoalescingExpr] ... ?? ...
-#-----| 0 -> [MethodCall] call to method ToList
-#-----| 1 -> [ArrayCreation] array creation of type Int32[]
-
-#   29| [LocalVariableAccess] access to local variable xss
+#   32| [BlockStmt] {...}
 
 #   34| [BlockStmt] {...}
-
-#   36| [BlockStmt] {...}
 #-----| 0 -> [ReturnStmt] return ...;
 
-#   36| [ReturnStmt] return ...;
+#   34| [ReturnStmt] return ...;
 #-----| 0 -> [ExplicitDelegateCreation] delegate creation of type D
 
-#   36| [ExplicitDelegateCreation] delegate creation of type D
+#   34| [ExplicitDelegateCreation] delegate creation of type D
 #-----| 0 -> [ImplicitDelegateCreation] delegate creation of type D
 
-#   36| [ImplicitDelegateCreation] delegate creation of type D
+#   34| [ImplicitDelegateCreation] delegate creation of type D
 #-----| 0 -> [MethodAccess] access to method M
 
-#   36| [MethodAccess] access to method M
+#   34| [MethodAccess] access to method M
 
 #   19| [MethodCall] call to method NextDouble
 #-----| -1 -> [LocalVariableAccess] access to local variable rand
@@ -1676,22 +1658,6 @@ TargetType.cs:
 #   19| [LocalVariableAccess] access to local variable rand
 
 #   19| [DoubleLiteral] 0.5
-
-#   29| [MethodCall] call to method ToList
-#-----| -1 -> [LocalVariableAccess] access to local variable xs
-
-#   29| [LocalVariableAccess] access to local variable xs
-
-#   29| [ArrayCreation] array creation of type Int32[]
-#-----| -1 -> [ArrayInitializer] { ..., ... }
-
-#   29| [ArrayInitializer] { ..., ... }
-#-----| 0 -> [IntLiteral] 1
-#-----| 1 -> [IntLiteral] 2
-
-#   29| [IntLiteral] 1
-
-#   29| [IntLiteral] 2
 
 #-----| (Attributes)
 #-----| 1 -> [Attribute] [Obsolete(...)]
@@ -2108,7 +2074,7 @@ TargetType.cs:
 
 #   10| [TypeMention] TargetType
 
-#   32| [TypeMention] int
+#   30| [TypeMention] int
 
 #    7| [TypeMention] int
 
@@ -2117,11 +2083,11 @@ TargetType.cs:
 
 #   16| [TypeMention] Void
 
-#   34| [TypeMention] int
+#   32| [TypeMention] int
 
-#   34| [TypeMention] Void
+#   32| [TypeMention] Void
 
-#   36| [TypeMention] D
+#   34| [TypeMention] D
 
 #    8| [TypeMention] TargetType
 
@@ -2147,14 +2113,9 @@ TargetType.cs:
 #   25| [TypeMention] IEnumerable<Int32>
 #-----| 1 -> [TypeMention] int
 
-#   29| [TypeMention] IEnumerable<Int32>
-#-----| 1 -> [TypeMention] int
-
 #   26| [TypeMention] int
 
 #   25| [TypeMention] int
-
-#   29| [TypeMention] int
 
 CovariantReturn.cs:
 #    9| [Class] Class2

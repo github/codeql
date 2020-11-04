@@ -7,4 +7,4 @@ implicitlyTypedObjectCreation
 | TargetType.cs:12:17:12:21 | object creation of type TargetType |
 | TargetType.cs:13:16:13:34 | object creation of type TargetType |
 implicitlyTypedDelegateCreation
-| TargetType.cs:36:23:36:28 | delegate creation of type D |
+| TargetType.cs:34:23:34:28 | delegate creation of type D |

@@ -1,0 +1,13 @@
+conditional
+| TargetType.cs:21:18:23:18 | ... ? ... : ... | int? | int? | null |
+| TargetType.cs:25:31:27:32 | ... ? ... : ... | IEnumerable<Int32> | List<Int32> | Int32[] |
+implicitlyTypedObjectCreation
+| CovariantReturn.cs:5:41:5:45 | object creation of type Class1 | Class1 |
+| CovariantReturn.cs:6:41:6:45 | object creation of type Class1 | Class1 |
+| CovariantReturn.cs:11:42:11:46 | object creation of type Class1 | Class1 |
+| CovariantReturn.cs:12:42:12:46 | object creation of type Class2 | Class2 |
+| TargetType.cs:8:34:8:38 | object creation of type List<TargetType> | List<TargetType> |
+| TargetType.cs:12:17:12:21 | object creation of type TargetType | TargetType |
+| TargetType.cs:13:16:13:34 | object creation of type TargetType | TargetType |
+implicitlyTypedDelegateCreation
+| TargetType.cs:34:23:34:28 | delegate creation of type D | D |

@@ -25,8 +25,6 @@ public class TargetType
         IEnumerable<int> xs = x is null
             ? new List<int>() { 0, 1 }
             : new int[] { 2, 3 };
-
-        IEnumerable<int> xss = xs.ToList() ?? new[] { 1, 2 };
     }
 
     delegate void D(int x);
