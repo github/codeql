@@ -503,9 +503,7 @@ impl Visitor<'_> {
 // Emit a slice of a source file as an Arg.
 fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
     let range = n.byte_range();
-    Arg::String(String::from(
-        std::str::from_utf8(&source[range.start..range.end]).expect("Failed to decode string"),
-    ))
+    Arg::String(String::from_utf8_lossy(&source[range.start..range.end]).into_owned())
 }
 
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
