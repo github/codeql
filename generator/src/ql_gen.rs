@@ -247,7 +247,7 @@ fn create_field_class(
         let class_name = dbscheme_name_to_class_name(&field_union_name);
         classes.push(ql::TopLevel::Class(ql::Class {
             name: class_name.clone(),
-            is_abstract: true,
+            is_abstract: false,
             supertypes: [
                 vec![ql::Type::AtType(field_union_name.clone())],
                 get_base_classes(&class_name, &supertype_map),
@@ -510,7 +510,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                 let class_name = dbscheme_name_to_class_name(&union_name);
                 classes.push(ql::TopLevel::Class(ql::Class {
                     name: class_name.clone(),
-                    is_abstract: true,
+                    is_abstract: false,
                     supertypes: [
                         vec![ql::Type::AtType(union_name)],
                         get_base_classes(&class_name, &supertype_map),
