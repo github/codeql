@@ -670,7 +670,7 @@ private module Django {
               result.asCfgNode() in [node.getArg(1), node.getArgByName("content_type")]
             }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponse`. */
@@ -738,7 +738,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseRedirect`. */
@@ -802,7 +802,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponsePermanentRedirect`. */
@@ -928,7 +928,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseBadRequest`. */
@@ -992,7 +992,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotFound`. */
@@ -1056,7 +1056,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseForbidden`. */
@@ -1121,7 +1121,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotAllowed`. */
@@ -1185,7 +1185,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseGone`. */
@@ -1249,7 +1249,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseServerError`. */
@@ -1380,7 +1380,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.StreamingHttpResponse`. */
@@ -1444,7 +1444,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.FileResponse`. */
