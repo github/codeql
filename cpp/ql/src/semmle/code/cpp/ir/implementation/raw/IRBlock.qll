@@ -29,15 +29,6 @@ class IRBlockBase extends TIRBlock {
   /**
    * INTERNAL: Do not use.
    *
-   * Gets a string that uniquely identifies this block within its enclosing function.
-   *
-   * This predicate is used by debugging and printing code only.
-   */
-  final string getUniqueId() { result = getFirstInstruction(this).getUniqueId() }
-
-  /**
-   * INTERNAL: Do not use.
-   *
    * Gets the zero-based index of the block within its function.
    *
    * This predicate is used by debugging and printing code only.
@@ -47,14 +38,15 @@ class IRBlockBase extends TIRBlock {
       config.shouldEvaluateDebugStringsForFunction(this.getEnclosingFunction())
     ) and
     this =
-      rank[result + 1](IRBlock funcBlock, int sortOverride |
+      rank[result + 1](IRBlock funcBlock, int sortOverride, int sortKey1, int sortKey2 |
         funcBlock.getEnclosingFunction() = getEnclosingFunction() and
+        funcBlock.getFirstInstruction().hasSortKeys(sortKey1, sortKey2) and
         // Ensure that the block containing `EnterFunction` always comes first.
         if funcBlock.getFirstInstruction() instanceof EnterFunctionInstruction
         then sortOverride = 0
         else sortOverride = 1
       |
-        funcBlock order by sortOverride, funcBlock.getUniqueId()
+        funcBlock order by sortOverride, sortKey1, sortKey2
       )
   }
 

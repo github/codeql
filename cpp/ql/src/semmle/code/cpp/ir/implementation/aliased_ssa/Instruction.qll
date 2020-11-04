@@ -172,6 +172,16 @@ class Instruction extends Construction::TStageInstruction {
   final string getUniqueId() { result = Construction::getInstructionUniqueId(this) }
 
   /**
+   * INTERNAL: Do not use.
+   *
+   * Gets two sort keys for this instruction - used to order instructions for printing
+   * in test outputs.
+   */
+  final predicate hasSortKeys(int key1, int key2) {
+    Construction::instructionHasSortKeys(this, key1, key2)
+  }
+
+  /**
    * Gets the basic block that contains this instruction.
    */
   final IRBlock getBlock() { result.getAnInstruction() = this }
