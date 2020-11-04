@@ -1438,7 +1438,10 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html" }
+            override string getMimetypeDefault() {
+              // see https://github.com/django/django/blob/ebb08d19424c314c75908bc6048ff57c2f872269/django/http/response.py#L471-L479
+              result = "application/octet-stream"
+            }
           }
 
           /** Gets a reference to an instance of `django.http.response.FileResponse`. */
