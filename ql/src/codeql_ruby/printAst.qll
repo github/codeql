@@ -39,7 +39,14 @@ class PrintAstNode extends AstNode {
    * are printed, but the query can override
    * `PrintAstConfiguration.shouldPrintNode` to filter the output.
    */
-  predicate shouldPrint() { shouldPrintNode(this) }
+  predicate shouldPrint() {
+    (
+      not this instanceof Token
+      or
+      exists(AstNode parent | parent.getAFieldOrChild() = this)
+    ) and
+    shouldPrintNode(this)
+  }
 }
 
 private predicate shouldPrintNode(AstNode n) {
