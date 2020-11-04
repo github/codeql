@@ -35,7 +35,11 @@ class ConversionConstructorModel extends Constructor, TaintFunction {
 class CopyConstructorModel extends CopyConstructor, DataFlowFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // data flow from the first constructor argument to the returned object
-    input.isParameter(0) and
+    (
+      input.isParameter(0)
+      or
+      input.isParameterDeref(0)
+    ) and
     (
       output.isReturnValue()
       or
@@ -50,7 +54,11 @@ class CopyConstructorModel extends CopyConstructor, DataFlowFunction {
 class MoveConstructorModel extends MoveConstructor, DataFlowFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // data flow from the first constructor argument to the returned object
-    input.isParameter(0) and
+    (
+      input.isParameter(0)
+      or
+      input.isParameterDeref(0)
+    ) and
     (
       output.isReturnValue()
       or

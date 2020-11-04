@@ -2,9 +2,9 @@
 #include "stl.h"
 
 using namespace std;
-
+namespace {
 char *source();
-
+}
 namespace ns_char
 {
 	char source();

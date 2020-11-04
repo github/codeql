@@ -1,6 +1,6 @@
 
 int source();
-void sink(...) {};
+void sink(...);
 
 class MyCopyableClassDeclOnly {
 public:
@@ -15,7 +15,7 @@ public:
 	int v;
 };
 
-void test_copyableclass()
+void test_copyableclass_declonly()
 {
 	{
 		MyCopyableClassDeclOnly s1(1);

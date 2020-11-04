@@ -6014,6 +6014,9 @@ ir.cpp:
 #  716|           Type = [TemplateParameter] T
 #  716|           Value = [Literal] 0
 #  716|           ValueCategory = prvalue
+#  716|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  716|           Type = [TemplateParameter] T
+#  716|           ValueCategory = prvalue(load)
 #  715| [MemberFunction,TemplateFunction] long Outer<long>::Func<U, V>(U, V)
 #  715|   <params>: 
 #  715|     getParameter(0): [Parameter] x
@@ -6032,6 +6035,9 @@ ir.cpp:
 #  716|           Type = [LongType] long
 #  716|           Value = [Literal] 0
 #  716|           ValueCategory = prvalue
+#  716|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  716|           Type = [LongType] long
+#  716|           ValueCategory = prvalue(load)
 #  720| [TopLevelFunction] double CallNestedTemplateFunc()
 #  720|   <params>: 
 #  720|   getEntryPoint(): [BlockStmt] { ... }
@@ -6694,6 +6700,9 @@ ir.cpp:
 #  809|               Conversion = [GlvalueConversion] glvalue conversion
 #  809|               Type = [SpecifiedType] const Base
 #  809|               ValueCategory = lvalue
+#  809|             getExpr(): [TemporaryObjectExpr] temporary object
+#  809|                 Type = [Struct,VirtualBaseClass] Base
+#  809|                 ValueCategory = lvalue
 #  809|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #  809|           Type = [Struct,VirtualBaseClass] Base
 #  809|           ValueCategory = lvalue
@@ -6724,6 +6733,9 @@ ir.cpp:
 #  810|               Conversion = [GlvalueConversion] glvalue conversion
 #  810|               Type = [SpecifiedType] const Base
 #  810|               ValueCategory = lvalue
+#  810|             getExpr(): [TemporaryObjectExpr] temporary object
+#  810|                 Type = [Struct,VirtualBaseClass] Base
+#  810|                 ValueCategory = lvalue
 #  810|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #  810|           Type = [Struct,VirtualBaseClass] Base
 #  810|           ValueCategory = lvalue
@@ -6928,6 +6940,9 @@ ir.cpp:
 #  823|               Conversion = [GlvalueConversion] glvalue conversion
 #  823|               Type = [SpecifiedType] const Base
 #  823|               ValueCategory = lvalue
+#  823|             getExpr(): [TemporaryObjectExpr] temporary object
+#  823|                 Type = [Struct,VirtualBaseClass] Base
+#  823|                 ValueCategory = lvalue
 #  823|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #  823|           Type = [Struct,VirtualBaseClass] Base
 #  823|           ValueCategory = lvalue
@@ -6962,6 +6977,9 @@ ir.cpp:
 #  824|               Conversion = [GlvalueConversion] glvalue conversion
 #  824|               Type = [SpecifiedType] const Base
 #  824|               ValueCategory = lvalue
+#  824|             getExpr(): [TemporaryObjectExpr] temporary object
+#  824|                 Type = [Struct,VirtualBaseClass] Base
+#  824|                 ValueCategory = lvalue
 #  824|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #  824|           Type = [Struct,VirtualBaseClass] Base
 #  824|           ValueCategory = lvalue
@@ -7248,16 +7266,16 @@ ir.cpp:
 #  850|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
 #  850|           Type = [Struct] PolymorphicBase
 #  850|         getVariable().getInitializer(): [Initializer] initializer for b
-#-----|           getExpr(): [ConstructorCall] call to PolymorphicBase
-#-----|               Type = [VoidType] void
-#-----|               ValueCategory = prvalue
+#  850|           getExpr(): [ConstructorCall] call to PolymorphicBase
+#  850|               Type = [VoidType] void
+#  850|               ValueCategory = prvalue
 #  851|     getStmt(1): [DeclStmt] declaration
 #  851|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
 #  851|           Type = [Struct] PolymorphicDerived
 #  851|         getVariable().getInitializer(): [Initializer] initializer for d
-#-----|           getExpr(): [ConstructorCall] call to PolymorphicDerived
-#-----|               Type = [VoidType] void
-#-----|               ValueCategory = prvalue
+#  851|           getExpr(): [ConstructorCall] call to PolymorphicDerived
+#  851|               Type = [VoidType] void
+#  851|               ValueCategory = prvalue
 #  853|     getStmt(2): [DeclStmt] declaration
 #  853|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of pb
 #  853|           Type = [PointerType] PolymorphicBase *
@@ -9677,7 +9695,7 @@ ir.cpp:
 # 1178|   getEntryPoint(): [BlockStmt] { ... }
 # 1179|     getStmt(0): [ReturnStmt] return ...
 # 1179|       getExpr(): [ConstructorCall] call to String
-# 1179|           Type = [Struct] String
+# 1179|           Type = [VoidType] void
 # 1179|           ValueCategory = prvalue
 # 1179|         getArgument(0): foo
 # 1179|             Type = [ArrayType] const char[4]
@@ -10555,6 +10573,752 @@ ir.cpp:
 # 1322|               Type = [VoidPointerType] void *
 # 1322|               ValueCategory = prvalue
 # 1323|     getStmt(1): [ReturnStmt] return ...
+# 1326| [FunctionTemplateInstantiation,TopLevelFunction] Point defaultConstruct<Point>()
+# 1326|   <params>: 
+# 1326|   getEntryPoint(): [BlockStmt] { ... }
+# 1327|     getStmt(0): [ReturnStmt] return ...
+# 1327|       getExpr(): [Literal] 0
+# 1327|           Type = [Struct] Point
+# 1327|           Value = [Literal] 0
+# 1327|           ValueCategory = prvalue
+# 1326| [FunctionTemplateInstantiation,TopLevelFunction] String defaultConstruct<String>()
+# 1326|   <params>: 
+# 1326|   getEntryPoint(): [BlockStmt] { ... }
+# 1327|     getStmt(0): [ReturnStmt] return ...
+# 1327|       getExpr(): [ConstructorCall] call to String
+# 1327|           Type = [VoidType] void
+# 1327|           ValueCategory = prvalue
+# 1326| [TemplateFunction,TopLevelFunction] T defaultConstruct<T>()
+# 1326|   <params>: 
+# 1326|   getEntryPoint(): [BlockStmt] { ... }
+# 1327|     getStmt(0): [ReturnStmt] return ...
+# 1327|       getExpr(): [Literal] 0
+# 1327|           Type = [TemplateParameter] T
+# 1327|           Value = [Literal] 0
+# 1327|           ValueCategory = prvalue
+# 1327|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1327|           Type = [TemplateParameter] T
+# 1327|           ValueCategory = prvalue(load)
+# 1326| [FunctionTemplateInstantiation,TopLevelFunction] copy_constructor defaultConstruct<copy_constructor>()
+# 1326|   <params>: 
+# 1326|   getEntryPoint(): [BlockStmt] { ... }
+# 1327|     getStmt(0): [ReturnStmt] return ...
+# 1327|       getExpr(): [ConstructorCall] call to copy_constructor
+# 1327|           Type = [VoidType] void
+# 1327|           ValueCategory = prvalue
+# 1326| [FunctionTemplateInstantiation,TopLevelFunction] destructor_only defaultConstruct<destructor_only>()
+# 1326|   <params>: 
+# 1326|   getEntryPoint(): [BlockStmt] { ... }
+# 1327|     getStmt(0): [ReturnStmt] return ...
+# 1327|       getExpr(): [Literal] 0
+# 1327|           Type = [Class] destructor_only
+# 1327|           Value = [Literal] 0
+# 1327|           ValueCategory = prvalue
+# 1330| [CopyAssignmentOperator] constructor_only& constructor_only::operator=(constructor_only const&)
+# 1330|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const constructor_only &
+# 1330| [MoveAssignmentOperator] constructor_only& constructor_only::operator=(constructor_only&&)
+# 1330|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] constructor_only &&
+# 1330| [CopyConstructor] void constructor_only::constructor_only(constructor_only const&)
+# 1330|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const constructor_only &
+# 1330| [MoveConstructor] void constructor_only::constructor_only(constructor_only&&)
+# 1330|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] constructor_only &&
+# 1335| [ConversionConstructor] void constructor_only::constructor_only(int)
+# 1335|   <params>: 
+# 1335|     getParameter(0): [Parameter] x
+# 1335|         Type = [IntType] int
+# 1338| [CopyAssignmentOperator] copy_constructor& copy_constructor::operator=(copy_constructor const&)
+# 1338|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const copy_constructor &
+# 1343| [Constructor] void copy_constructor::copy_constructor()
+# 1343|   <params>: 
+# 1344| [CopyConstructor] void copy_constructor::copy_constructor(copy_constructor const&)
+# 1344|   <params>: 
+# 1344|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 1344|         Type = [LValueReferenceType] const copy_constructor &
+# 1346| [MemberFunction] void copy_constructor::method()
+# 1346|   <params>: 
+# 1349| [CopyAssignmentOperator] destructor_only& destructor_only::operator=(destructor_only const&)
+# 1349|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const destructor_only &
+# 1349| [Constructor] void destructor_only::destructor_only()
+# 1349|   <params>: 
+# 1351| [Destructor] void destructor_only::~destructor_only()
+# 1351|   <params>: 
+# 1353| [MemberFunction] void destructor_only::method()
+# 1353|   <params>: 
+# 1357| [FunctionTemplateInstantiation,TopLevelFunction] void acceptRef<Point>(Point const&)
+# 1357|   <params>: 
+# 1357|     getParameter(0): [Parameter] v
+# 1357|         Type = [LValueReferenceType] const Point &
+# 1357| [FunctionTemplateInstantiation,TopLevelFunction] void acceptRef<String>(String const&)
+# 1357|   <params>: 
+# 1357|     getParameter(0): [Parameter] v
+# 1357|         Type = [LValueReferenceType] const String &
+# 1357| [TemplateFunction,TopLevelFunction] void acceptRef<T>(T const&)
+# 1357|   <params>: 
+# 1357|     getParameter(0): [Parameter] v
+# 1357|         Type = [LValueReferenceType] const T &
+# 1357| [FunctionTemplateInstantiation,TopLevelFunction] void acceptRef<copy_constructor>(copy_constructor const&)
+# 1357|   <params>: 
+# 1357|     getParameter(0): [Parameter] v
+# 1357|         Type = [LValueReferenceType] const copy_constructor &
+# 1357| [FunctionTemplateInstantiation,TopLevelFunction] void acceptRef<destructor_only>(destructor_only const&)
+# 1357|   <params>: 
+# 1357|     getParameter(0): [Parameter] v
+# 1357|         Type = [LValueReferenceType] const destructor_only &
+# 1360| [FunctionTemplateInstantiation,TopLevelFunction] void acceptValue<Point>(Point)
+# 1360|   <params>: 
+# 1360|     getParameter(0): [Parameter] v
+# 1360|         Type = [Struct] Point
+# 1360| [FunctionTemplateInstantiation,TopLevelFunction] void acceptValue<String>(String)
+# 1360|   <params>: 
+# 1360|     getParameter(0): [Parameter] v
+# 1360|         Type = [Struct] String
+# 1360| [TemplateFunction,TopLevelFunction] void acceptValue<T>(T)
+# 1360|   <params>: 
+# 1360|     getParameter(0): [Parameter] v
+# 1360|         Type = [TemplateParameter] T
+# 1360| [FunctionTemplateInstantiation,TopLevelFunction] void acceptValue<copy_constructor>(copy_constructor)
+# 1360|   <params>: 
+# 1360|     getParameter(0): [Parameter] v
+# 1360|         Type = [Class] copy_constructor
+# 1360| [FunctionTemplateInstantiation,TopLevelFunction] void acceptValue<destructor_only>(destructor_only)
+# 1360|   <params>: 
+# 1360|     getParameter(0): [Parameter] v
+# 1360|         Type = [Class] destructor_only
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] POD_Derived returnValue<POD_Derived>()
+# 1363|   <params>: 
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] POD_Middle returnValue<POD_Middle>()
+# 1363|   <params>: 
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] Point returnValue<Point>()
+# 1363|   <params>: 
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] String returnValue<String>()
+# 1363|   <params>: 
+# 1363| [TemplateFunction,TopLevelFunction] T returnValue<T>()
+# 1363|   <params>: 
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] UnusualFields returnValue<UnusualFields>()
+# 1363|   <params>: 
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] copy_constructor returnValue<copy_constructor>()
+# 1363|   <params>: 
+# 1363| [FunctionTemplateInstantiation,TopLevelFunction] destructor_only returnValue<destructor_only>()
+# 1363|   <params>: 
+# 1365| [TopLevelFunction] void temporary_string()
+# 1365|   <params>: 
+# 1365|   getEntryPoint(): [BlockStmt] { ... }
+# 1366|     getStmt(0): [DeclStmt] declaration
+# 1366|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 1366|           Type = [Struct] String
+# 1366|         getVariable().getInitializer(): [Initializer] initializer for s
+# 1366|           getExpr(): [FunctionCall] call to returnValue
+# 1366|               Type = [Struct] String
+# 1366|               ValueCategory = prvalue
+# 1367|     getStmt(1): [DeclStmt] declaration
+# 1367|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of rs
+# 1367|           Type = [LValueReferenceType] const String &
+# 1367|         getVariable().getInitializer(): [Initializer] initializer for rs
+# 1367|           getExpr(): [FunctionCall] call to returnValue
+# 1367|               Type = [Struct] String
+# 1367|               ValueCategory = prvalue
+# 1367|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1367|               Type = [LValueReferenceType] const String &
+# 1367|               ValueCategory = prvalue
+# 1367|             getExpr(): [CStyleCast] (const String)...
+# 1367|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1367|                 Type = [SpecifiedType] const String
+# 1367|                 ValueCategory = lvalue
+# 1367|               getExpr(): [TemporaryObjectExpr] temporary object
+# 1367|                   Type = [Struct] String
+# 1367|                   ValueCategory = lvalue
+# 1369|     getStmt(2): [ExprStmt] ExprStmt
+# 1369|       getExpr(): [FunctionCall] call to acceptRef
+# 1369|           Type = [VoidType] void
+# 1369|           ValueCategory = prvalue
+# 1369|         getArgument(0): [VariableAccess] s
+# 1369|             Type = [Struct] String
+# 1369|             ValueCategory = lvalue
+# 1369|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1369|             Type = [LValueReferenceType] const String &
+# 1369|             ValueCategory = prvalue
+# 1369|           getExpr(): [CStyleCast] (const String)...
+# 1369|               Conversion = [GlvalueConversion] glvalue conversion
+# 1369|               Type = [SpecifiedType] const String
+# 1369|               ValueCategory = lvalue
+# 1370|     getStmt(3): [ExprStmt] ExprStmt
+# 1370|       getExpr(): [FunctionCall] call to acceptRef
+# 1370|           Type = [VoidType] void
+# 1370|           ValueCategory = prvalue
+# 1370|         getArgument(0): [ConstructorCall] call to String
+# 1370|             Type = [VoidType] void
+# 1370|             ValueCategory = prvalue
+# 1370|           getArgument(0): foo
+# 1370|               Type = [ArrayType] const char[4]
+# 1370|               Value = [StringLiteral] "foo"
+# 1370|               ValueCategory = lvalue
+# 1370|           getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1370|               Type = [PointerType] const char *
+# 1370|               ValueCategory = prvalue
+# 1370|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1370|             Type = [LValueReferenceType] const String &
+# 1370|             ValueCategory = prvalue
+# 1370|           getExpr(): [TemporaryObjectExpr] temporary object
+# 1370|               Type = [SpecifiedType] const String
+# 1370|               ValueCategory = lvalue
+# 1371|     getStmt(4): [ExprStmt] ExprStmt
+# 1371|       getExpr(): [FunctionCall] call to acceptValue
+# 1371|           Type = [VoidType] void
+# 1371|           ValueCategory = prvalue
+# 1371|         getArgument(0): [ConstructorCall] call to String
+# 1371|             Type = [VoidType] void
+# 1371|             ValueCategory = prvalue
+# 1371|           getArgument(0): [VariableAccess] s
+# 1371|               Type = [Struct] String
+# 1371|               ValueCategory = lvalue
+# 1371|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1371|               Type = [LValueReferenceType] const String &
+# 1371|               ValueCategory = prvalue
+# 1371|             getExpr(): [CStyleCast] (const String)...
+# 1371|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1371|                 Type = [SpecifiedType] const String
+# 1371|                 ValueCategory = lvalue
+# 1371|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1371|             Type = [Struct] String
+# 1371|             ValueCategory = lvalue
+# 1372|     getStmt(5): [ExprStmt] ExprStmt
+# 1372|       getExpr(): [FunctionCall] call to acceptValue
+# 1372|           Type = [VoidType] void
+# 1372|           ValueCategory = prvalue
+# 1372|         getArgument(0): [ConstructorCall] call to String
+# 1372|             Type = [VoidType] void
+# 1372|             ValueCategory = prvalue
+# 1372|           getArgument(0): foo
+# 1372|               Type = [ArrayType] const char[4]
+# 1372|               Value = [StringLiteral] "foo"
+# 1372|               ValueCategory = lvalue
+# 1372|           getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1372|               Type = [PointerType] const char *
+# 1372|               ValueCategory = prvalue
+# 1372|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1372|             Type = [Struct] String
+# 1372|             ValueCategory = lvalue
+# 1373|     getStmt(6): [ExprStmt] ExprStmt
+# 1373|       getExpr(): [FunctionCall] call to c_str
+# 1373|           Type = [PointerType] const char *
+# 1373|           ValueCategory = prvalue
+# 1373|         getQualifier(): [ConstructorCall] call to String
+# 1373|             Type = [VoidType] void
+# 1373|             ValueCategory = prvalue
+# 1373|         getQualifier().getFullyConverted(): [CStyleCast] (const String)...
+# 1373|             Conversion = [PrvalueAdjustmentConversion] prvalue adjustment conversion
+# 1373|             Type = [SpecifiedType] const String
+# 1373|             ValueCategory = prvalue
+# 1373|           getExpr(): [TemporaryObjectExpr] temporary object
+# 1373|               Type = [Struct] String
+# 1373|               ValueCategory = prvalue(load)
+# 1374|     getStmt(7): [ExprStmt] ExprStmt
+# 1374|       getExpr(): [FunctionCall] call to c_str
+# 1374|           Type = [PointerType] const char *
+# 1374|           ValueCategory = prvalue
+# 1374|         getQualifier(): [FunctionCall] call to returnValue
+# 1374|             Type = [Struct] String
+# 1374|             ValueCategory = prvalue
+# 1374|         getQualifier().getFullyConverted(): [CStyleCast] (const String)...
+# 1374|             Conversion = [PrvalueAdjustmentConversion] prvalue adjustment conversion
+# 1374|             Type = [SpecifiedType] const String
+# 1374|             ValueCategory = prvalue
+# 1374|           getExpr(): [TemporaryObjectExpr] temporary object
+# 1374|               Type = [Struct] String
+# 1374|               ValueCategory = prvalue(load)
+# 1376|     getStmt(8): [ExprStmt] ExprStmt
+# 1376|       getExpr(): [FunctionCall] call to defaultConstruct
+# 1376|           Type = [Struct] String
+# 1376|           ValueCategory = prvalue
+# 1376|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1376|           Type = [Struct] String
+# 1376|           ValueCategory = prvalue(load)
+# 1377|     getStmt(9): [ReturnStmt] return ...
+# 1379| [TopLevelFunction] void temporary_destructor_only()
+# 1379|   <params>: 
+# 1379|   getEntryPoint(): [BlockStmt] { ... }
+# 1380|     getStmt(0): [DeclStmt] declaration
+# 1380|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+# 1380|           Type = [Class] destructor_only
+# 1380|         getVariable().getInitializer(): [Initializer] initializer for d
+# 1380|           getExpr(): [FunctionCall] call to returnValue
+# 1380|               Type = [Class] destructor_only
+# 1380|               ValueCategory = prvalue
+# 1381|     getStmt(1): [DeclStmt] declaration
+# 1381|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of rd
+# 1381|           Type = [LValueReferenceType] const destructor_only &
+# 1381|         getVariable().getInitializer(): [Initializer] initializer for rd
+# 1381|           getExpr(): [FunctionCall] call to returnValue
+# 1381|               Type = [Class] destructor_only
+# 1381|               ValueCategory = prvalue
+# 1381|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1381|               Type = [LValueReferenceType] const destructor_only &
+# 1381|               ValueCategory = prvalue
+# 1381|             getExpr(): [CStyleCast] (const destructor_only)...
+# 1381|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1381|                 Type = [SpecifiedType] const destructor_only
+# 1381|                 ValueCategory = lvalue
+# 1381|               getExpr(): [TemporaryObjectExpr] temporary object
+# 1381|                   Type = [Class] destructor_only
+# 1381|                   ValueCategory = lvalue
+# 1382|     getStmt(2): [DeclStmt] declaration
+# 1382|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d2
+# 1382|           Type = [Class] destructor_only
+# 1383|     getStmt(3): [ExprStmt] ExprStmt
+# 1383|       getExpr(): [FunctionCall] call to acceptRef
+# 1383|           Type = [VoidType] void
+# 1383|           ValueCategory = prvalue
+# 1383|         getArgument(0): [VariableAccess] d
+# 1383|             Type = [Class] destructor_only
+# 1383|             ValueCategory = lvalue
+# 1383|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1383|             Type = [LValueReferenceType] const destructor_only &
+# 1383|             ValueCategory = prvalue
+# 1383|           getExpr(): [CStyleCast] (const destructor_only)...
+# 1383|               Conversion = [GlvalueConversion] glvalue conversion
+# 1383|               Type = [SpecifiedType] const destructor_only
+# 1383|               ValueCategory = lvalue
+# 1384|     getStmt(4): [ExprStmt] ExprStmt
+# 1384|       getExpr(): [FunctionCall] call to acceptValue
+# 1384|           Type = [VoidType] void
+# 1384|           ValueCategory = prvalue
+# 1384|         getArgument(0): [VariableAccess] d
+# 1384|             Type = [Class] destructor_only
+# 1384|             ValueCategory = prvalue(load)
+# 1384|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1384|             Type = [Class] destructor_only
+# 1384|             ValueCategory = lvalue
+# 1385|     getStmt(5): [ExprStmt] ExprStmt
+# 1385|       getExpr(): [FunctionCall] call to method
+# 1385|           Type = [VoidType] void
+# 1385|           ValueCategory = prvalue
+# 1385|         getQualifier(): [Literal] 0
+# 1385|             Type = [Class] destructor_only
+# 1385|             Value = [Literal] 0
+# 1385|             ValueCategory = prvalue
+# 1385|         getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1385|             Type = [Class] destructor_only
+# 1385|             ValueCategory = prvalue(load)
+# 1386|     getStmt(6): [ExprStmt] ExprStmt
+# 1386|       getExpr(): [FunctionCall] call to method
+# 1386|           Type = [VoidType] void
+# 1386|           ValueCategory = prvalue
+# 1386|         getQualifier(): [FunctionCall] call to returnValue
+# 1386|             Type = [Class] destructor_only
+# 1386|             ValueCategory = prvalue
+# 1386|         getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1386|             Type = [Class] destructor_only
+# 1386|             ValueCategory = prvalue(load)
+# 1388|     getStmt(7): [ExprStmt] ExprStmt
+# 1388|       getExpr(): [FunctionCall] call to defaultConstruct
+# 1388|           Type = [Class] destructor_only
+# 1388|           ValueCategory = prvalue
+# 1388|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1388|           Type = [Class] destructor_only
+# 1388|           ValueCategory = prvalue(load)
+# 1389|     getStmt(8): [ReturnStmt] return ...
+# 1391| [TopLevelFunction] void temporary_copy_constructor()
+# 1391|   <params>: 
+# 1391|   getEntryPoint(): [BlockStmt] { ... }
+# 1392|     getStmt(0): [DeclStmt] declaration
+# 1392|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+# 1392|           Type = [Class] copy_constructor
+# 1392|         getVariable().getInitializer(): [Initializer] initializer for d
+# 1392|           getExpr(): [FunctionCall] call to returnValue
+# 1392|               Type = [Class] copy_constructor
+# 1392|               ValueCategory = prvalue
+# 1393|     getStmt(1): [DeclStmt] declaration
+# 1393|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of rd
+# 1393|           Type = [LValueReferenceType] const copy_constructor &
+# 1393|         getVariable().getInitializer(): [Initializer] initializer for rd
+# 1393|           getExpr(): [FunctionCall] call to returnValue
+# 1393|               Type = [Class] copy_constructor
+# 1393|               ValueCategory = prvalue
+# 1393|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1393|               Type = [LValueReferenceType] const copy_constructor &
+# 1393|               ValueCategory = prvalue
+# 1393|             getExpr(): [CStyleCast] (const copy_constructor)...
+# 1393|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1393|                 Type = [SpecifiedType] const copy_constructor
+# 1393|                 ValueCategory = lvalue
+# 1393|               getExpr(): [TemporaryObjectExpr] temporary object
+# 1393|                   Type = [Class] copy_constructor
+# 1393|                   ValueCategory = lvalue
+# 1394|     getStmt(2): [DeclStmt] declaration
+# 1394|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d2
+# 1394|           Type = [Class] copy_constructor
+# 1394|         getVariable().getInitializer(): [Initializer] initializer for d2
+# 1394|           getExpr(): [ConstructorCall] call to copy_constructor
+# 1394|               Type = [VoidType] void
+# 1394|               ValueCategory = prvalue
+# 1395|     getStmt(3): [ExprStmt] ExprStmt
+# 1395|       getExpr(): [FunctionCall] call to acceptRef
+# 1395|           Type = [VoidType] void
+# 1395|           ValueCategory = prvalue
+# 1395|         getArgument(0): [VariableAccess] d
+# 1395|             Type = [Class] copy_constructor
+# 1395|             ValueCategory = lvalue
+# 1395|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1395|             Type = [LValueReferenceType] const copy_constructor &
+# 1395|             ValueCategory = prvalue
+# 1395|           getExpr(): [CStyleCast] (const copy_constructor)...
+# 1395|               Conversion = [GlvalueConversion] glvalue conversion
+# 1395|               Type = [SpecifiedType] const copy_constructor
+# 1395|               ValueCategory = lvalue
+# 1396|     getStmt(4): [ExprStmt] ExprStmt
+# 1396|       getExpr(): [FunctionCall] call to acceptValue
+# 1396|           Type = [VoidType] void
+# 1396|           ValueCategory = prvalue
+# 1396|         getArgument(0): [ConstructorCall] call to copy_constructor
+# 1396|             Type = [VoidType] void
+# 1396|             ValueCategory = prvalue
+# 1396|           getArgument(0): [VariableAccess] d
+# 1396|               Type = [Class] copy_constructor
+# 1396|               ValueCategory = lvalue
+# 1396|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1396|               Type = [LValueReferenceType] const copy_constructor &
+# 1396|               ValueCategory = prvalue
+# 1396|             getExpr(): [CStyleCast] (const copy_constructor)...
+# 1396|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1396|                 Type = [SpecifiedType] const copy_constructor
+# 1396|                 ValueCategory = lvalue
+# 1396|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1396|             Type = [Class] copy_constructor
+# 1396|             ValueCategory = lvalue
+# 1397|     getStmt(5): [ExprStmt] ExprStmt
+# 1397|       getExpr(): [FunctionCall] call to method
+# 1397|           Type = [VoidType] void
+# 1397|           ValueCategory = prvalue
+# 1397|         getQualifier(): [ConstructorCall] call to copy_constructor
+# 1397|             Type = [VoidType] void
+# 1397|             ValueCategory = prvalue
+# 1397|         getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1397|             Type = [Class] copy_constructor
+# 1397|             ValueCategory = prvalue(load)
+# 1398|     getStmt(6): [ExprStmt] ExprStmt
+# 1398|       getExpr(): [FunctionCall] call to method
+# 1398|           Type = [VoidType] void
+# 1398|           ValueCategory = prvalue
+# 1398|         getQualifier(): [FunctionCall] call to returnValue
+# 1398|             Type = [Class] copy_constructor
+# 1398|             ValueCategory = prvalue
+# 1398|         getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1398|             Type = [Class] copy_constructor
+# 1398|             ValueCategory = prvalue(load)
+# 1399|     getStmt(7): [ExprStmt] ExprStmt
+# 1399|       getExpr(): [FunctionCall] call to defaultConstruct
+# 1399|           Type = [Class] copy_constructor
+# 1399|           ValueCategory = prvalue
+# 1399|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1399|           Type = [Class] copy_constructor
+# 1399|           ValueCategory = prvalue(load)
+# 1401|     getStmt(8): [DeclStmt] declaration
+# 1401|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 1401|           Type = [IntType] int
+# 1401|         getVariable().getInitializer(): [Initializer] initializer for y
+# 1401|           getExpr(): [ValueFieldAccess] y
+# 1401|               Type = [IntType] int
+# 1401|               ValueCategory = prvalue
+# 1401|             getQualifier(): [FunctionCall] call to returnValue
+# 1401|                 Type = [Class] copy_constructor
+# 1401|                 ValueCategory = prvalue
+# 1401|             getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1401|                 Type = [Class] copy_constructor
+# 1401|                 ValueCategory = prvalue(load)
+# 1402|     getStmt(9): [ReturnStmt] return ...
+# 1404| [TopLevelFunction] void temporary_point()
+# 1404|   <params>: 
+# 1404|   getEntryPoint(): [BlockStmt] { ... }
+# 1405|     getStmt(0): [DeclStmt] declaration
+# 1405|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of p
+# 1405|           Type = [Struct] Point
+# 1405|         getVariable().getInitializer(): [Initializer] initializer for p
+# 1405|           getExpr(): [FunctionCall] call to returnValue
+# 1405|               Type = [Struct] Point
+# 1405|               ValueCategory = prvalue
+# 1406|     getStmt(1): [DeclStmt] declaration
+# 1406|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of rp
+# 1406|           Type = [LValueReferenceType] const Point &
+# 1406|         getVariable().getInitializer(): [Initializer] initializer for rp
+# 1406|           getExpr(): [FunctionCall] call to returnValue
+# 1406|               Type = [Struct] Point
+# 1406|               ValueCategory = prvalue
+# 1406|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1406|               Type = [LValueReferenceType] const Point &
+# 1406|               ValueCategory = prvalue
+# 1406|             getExpr(): [CStyleCast] (const Point)...
+# 1406|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1406|                 Type = [SpecifiedType] const Point
+# 1406|                 ValueCategory = lvalue
+# 1406|               getExpr(): [TemporaryObjectExpr] temporary object
+# 1406|                   Type = [Struct] Point
+# 1406|                   ValueCategory = lvalue
+# 1408|     getStmt(2): [ExprStmt] ExprStmt
+# 1408|       getExpr(): [FunctionCall] call to acceptRef
+# 1408|           Type = [VoidType] void
+# 1408|           ValueCategory = prvalue
+# 1408|         getArgument(0): [VariableAccess] p
+# 1408|             Type = [Struct] Point
+# 1408|             ValueCategory = lvalue
+# 1408|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1408|             Type = [LValueReferenceType] const Point &
+# 1408|             ValueCategory = prvalue
+# 1408|           getExpr(): [CStyleCast] (const Point)...
+# 1408|               Conversion = [GlvalueConversion] glvalue conversion
+# 1408|               Type = [SpecifiedType] const Point
+# 1408|               ValueCategory = lvalue
+# 1409|     getStmt(3): [ExprStmt] ExprStmt
+# 1409|       getExpr(): [FunctionCall] call to acceptValue
+# 1409|           Type = [VoidType] void
+# 1409|           ValueCategory = prvalue
+# 1409|         getArgument(0): [VariableAccess] p
+# 1409|             Type = [Struct] Point
+# 1409|             ValueCategory = prvalue(load)
+# 1410|     getStmt(4): [ExprStmt] ExprStmt
+# 1410|       getExpr(): [ValueFieldAccess] x
+# 1410|           Type = [IntType] int
+# 1410|           Value = [ValueFieldAccess] 0
+# 1410|           ValueCategory = prvalue
+# 1410|         getQualifier(): [Literal] 0
+# 1410|             Type = [Struct] Point
+# 1410|             Value = [Literal] 0
+# 1410|             ValueCategory = prvalue
+# 1410|         getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1410|             Type = [Struct] Point
+# 1410|             ValueCategory = prvalue(load)
+# 1411|     getStmt(5): [DeclStmt] declaration
+# 1411|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 1411|           Type = [IntType] int
+# 1411|         getVariable().getInitializer(): [Initializer] initializer for y
+# 1411|           getExpr(): [ValueFieldAccess] y
+# 1411|               Type = [IntType] int
+# 1411|               ValueCategory = prvalue
+# 1411|             getQualifier(): [FunctionCall] call to returnValue
+# 1411|                 Type = [Struct] Point
+# 1411|                 ValueCategory = prvalue
+# 1413|     getStmt(6): [ExprStmt] ExprStmt
+# 1413|       getExpr(): [FunctionCall] call to defaultConstruct
+# 1413|           Type = [Struct] Point
+# 1413|           ValueCategory = prvalue
+# 1414|     getStmt(7): [ReturnStmt] return ...
+# 1416| [CopyAssignmentOperator] UnusualFields& UnusualFields::operator=(UnusualFields const&)
+# 1416|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const UnusualFields &
+# 1416| [Constructor] void UnusualFields::UnusualFields()
+# 1416|   <params>: 
+# 1416| [CopyConstructor] void UnusualFields::UnusualFields(UnusualFields const&)
+# 1416|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const UnusualFields &
+# 1416| [MoveConstructor] void UnusualFields::UnusualFields(UnusualFields&&)
+# 1416|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] UnusualFields &&
+# 1421| [TopLevelFunction] void temporary_unusual_fields()
+# 1421|   <params>: 
+# 1421|   getEntryPoint(): [BlockStmt] { ... }
+# 1422|     getStmt(0): [DeclStmt] declaration
+# 1422|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of rx
+# 1422|           Type = [LValueReferenceType] const int &
+# 1422|         getVariable().getInitializer(): [Initializer] initializer for rx
+# 1422|           getExpr(): [ValueFieldAccess] r
+# 1422|               Type = [LValueReferenceType] int &
+# 1422|               ValueCategory = prvalue
+# 1422|             getQualifier(): [FunctionCall] call to returnValue
+# 1422|                 Type = [Struct] UnusualFields
+# 1422|                 ValueCategory = prvalue
+# 1422|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1422|               Type = [LValueReferenceType] const int &
+# 1422|               ValueCategory = prvalue
+# 1422|             getExpr(): [CStyleCast] (const int)...
+# 1422|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1422|                 Type = [SpecifiedType] const int
+# 1422|                 ValueCategory = lvalue
+# 1422|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1422|                   Type = [IntType] int
+# 1422|                   ValueCategory = lvalue
+# 1423|     getStmt(1): [DeclStmt] declaration
+# 1423|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1423|           Type = [IntType] int
+# 1423|         getVariable().getInitializer(): [Initializer] initializer for x
+# 1423|           getExpr(): [ValueFieldAccess] r
+# 1423|               Type = [LValueReferenceType] int &
+# 1423|               ValueCategory = prvalue
+# 1423|             getQualifier(): [FunctionCall] call to returnValue
+# 1423|                 Type = [Struct] UnusualFields
+# 1423|                 ValueCategory = prvalue
+# 1423|           getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1423|               Type = [IntType] int
+# 1423|               ValueCategory = prvalue(load)
+# 1425|     getStmt(2): [DeclStmt] declaration
+# 1425|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of rf
+# 1425|           Type = [LValueReferenceType] const float &
+# 1425|         getVariable().getInitializer(): [Initializer] initializer for rf
+# 1425|           getExpr(): [ArrayExpr] access to array
+# 1425|               Type = [FloatType] float
+# 1425|               ValueCategory = lvalue
+# 1425|             getArrayBase(): [ValueFieldAccess] a
+# 1425|                 Type = [ArrayType] float[10]
+# 1425|                 ValueCategory = prvalue
+# 1425|               getQualifier(): [FunctionCall] call to returnValue
+# 1425|                   Type = [Struct] UnusualFields
+# 1425|                   ValueCategory = prvalue
+# 1425|             getArrayOffset(): [Literal] 3
+# 1425|                 Type = [IntType] int
+# 1425|                 Value = [Literal] 3
+# 1425|                 ValueCategory = prvalue
+# 1425|             getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1425|                 Type = [PointerType] float *
+# 1425|                 ValueCategory = prvalue
+# 1425|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1425|               Type = [LValueReferenceType] const float &
+# 1425|               ValueCategory = prvalue
+# 1425|             getExpr(): [CStyleCast] (const float)...
+# 1425|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1425|                 Type = [SpecifiedType] const float
+# 1425|                 ValueCategory = lvalue
+# 1426|     getStmt(3): [DeclStmt] declaration
+# 1426|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of f
+# 1426|           Type = [FloatType] float
+# 1426|         getVariable().getInitializer(): [Initializer] initializer for f
+# 1426|           getExpr(): [ArrayExpr] access to array
+# 1426|               Type = [FloatType] float
+# 1426|               ValueCategory = prvalue(load)
+# 1426|             getArrayBase(): [ValueFieldAccess] a
+# 1426|                 Type = [ArrayType] float[10]
+# 1426|                 ValueCategory = prvalue
+# 1426|               getQualifier(): [FunctionCall] call to returnValue
+# 1426|                   Type = [Struct] UnusualFields
+# 1426|                   ValueCategory = prvalue
+# 1426|             getArrayOffset(): [Literal] 5
+# 1426|                 Type = [IntType] int
+# 1426|                 Value = [Literal] 5
+# 1426|                 ValueCategory = prvalue
+# 1426|             getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1426|                 Type = [PointerType] float *
+# 1426|                 ValueCategory = prvalue
+# 1427|     getStmt(4): [ReturnStmt] return ...
+# 1429| [CopyAssignmentOperator] POD_Base& POD_Base::operator=(POD_Base const&)
+# 1429|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const POD_Base &
+# 1429| [MoveAssignmentOperator] POD_Base& POD_Base::operator=(POD_Base&&)
+# 1429|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] POD_Base &&
+# 1432| [ConstMemberFunction] float POD_Base::f() const
+# 1432|   <params>: 
+# 1435| [CopyAssignmentOperator] POD_Middle& POD_Middle::operator=(POD_Middle const&)
+# 1435|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const POD_Middle &
+# 1435| [MoveAssignmentOperator] POD_Middle& POD_Middle::operator=(POD_Middle&&)
+# 1435|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] POD_Middle &&
+# 1435| [Constructor] void POD_Middle::POD_Middle()
+# 1435|   <params>: 
+# 1439| [CopyAssignmentOperator] POD_Derived& POD_Derived::operator=(POD_Derived const&)
+# 1439|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const POD_Derived &
+# 1439| [MoveAssignmentOperator] POD_Derived& POD_Derived::operator=(POD_Derived&&)
+# 1439|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] POD_Derived &&
+# 1439| [Constructor] void POD_Derived::POD_Derived()
+# 1439|   <params>: 
+# 1443| [TopLevelFunction] void temporary_hierarchy()
+# 1443|   <params>: 
+# 1443|   getEntryPoint(): [BlockStmt] { ... }
+# 1444|     getStmt(0): [DeclStmt] declaration
+# 1444|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 1444|           Type = [Struct] POD_Base
+# 1444|         getVariable().getInitializer(): [Initializer] initializer for b
+# 1444|           getExpr(): [FunctionCall] call to returnValue
+# 1444|               Type = [Struct] POD_Middle
+# 1444|               ValueCategory = prvalue
+# 1444|           getExpr().getFullyConverted(): [CStyleCast] (POD_Base)...
+# 1444|               Conversion = [BaseClassConversion] base class conversion
+# 1444|               Type = [Struct] POD_Base
+# 1444|               ValueCategory = prvalue
+# 1445|     getStmt(1): [ExprStmt] ExprStmt
+# 1445|       getExpr(): [AssignExpr] ... = ...
+# 1445|           Type = [Struct] POD_Base
+# 1445|           ValueCategory = lvalue
+# 1445|         getLValue(): [VariableAccess] b
+# 1445|             Type = [Struct] POD_Base
+# 1445|             ValueCategory = lvalue
+# 1445|         getRValue(): [FunctionCall] call to returnValue
+# 1445|             Type = [Struct] POD_Derived
+# 1445|             ValueCategory = prvalue
+# 1445|         getRValue().getFullyConverted(): [CStyleCast] (POD_Base)...
+# 1445|             Conversion = [BaseClassConversion] base class conversion
+# 1445|             Type = [Struct] POD_Base
+# 1445|             ValueCategory = prvalue(load)
+# 1445|           getExpr(): [CStyleCast] (POD_Middle)...
+# 1445|               Conversion = [BaseClassConversion] base class conversion
+# 1445|               Type = [Struct] POD_Middle
+# 1445|               ValueCategory = lvalue
+# 1445|             getExpr(): [TemporaryObjectExpr] temporary object
+# 1445|                 Type = [Struct] POD_Derived
+# 1445|                 ValueCategory = lvalue
+# 1445|               getExpr(): [ParenthesisExpr] (...)
+# 1445|                   Type = [Struct] POD_Derived
+# 1445|                   ValueCategory = prvalue
+# 1446|     getStmt(2): [DeclStmt] declaration
+# 1446|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1446|           Type = [IntType] int
+# 1446|         getVariable().getInitializer(): [Initializer] initializer for x
+# 1446|           getExpr(): [ValueFieldAccess] x
+# 1446|               Type = [IntType] int
+# 1446|               ValueCategory = prvalue
+# 1446|             getQualifier(): [FunctionCall] call to returnValue
+# 1446|                 Type = [Struct] POD_Derived
+# 1446|                 ValueCategory = prvalue
+# 1446|             getQualifier().getFullyConverted(): [CStyleCast] (POD_Base)...
+# 1446|                 Conversion = [BaseClassConversion] base class conversion
+# 1446|                 Type = [Struct] POD_Base
+# 1446|                 ValueCategory = prvalue
+# 1446|               getExpr(): [CStyleCast] (POD_Middle)...
+# 1446|                   Conversion = [BaseClassConversion] base class conversion
+# 1446|                   Type = [Struct] POD_Middle
+# 1446|                   ValueCategory = prvalue
+# 1447|     getStmt(3): [DeclStmt] declaration
+# 1447|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of f
+# 1447|           Type = [FloatType] float
+# 1447|         getVariable().getInitializer(): [Initializer] initializer for f
+# 1447|           getExpr(): [FunctionCall] call to f
+# 1447|               Type = [FloatType] float
+# 1447|               ValueCategory = prvalue
+# 1447|             getQualifier(): [FunctionCall] call to returnValue
+# 1447|                 Type = [Struct] POD_Derived
+# 1447|                 ValueCategory = prvalue
+# 1447|             getQualifier().getFullyConverted(): [CStyleCast] (const POD_Base)...
+# 1447|                 Conversion = [BaseClassConversion] base class conversion
+# 1447|                 Type = [SpecifiedType] const POD_Base
+# 1447|                 ValueCategory = prvalue
+# 1447|               getExpr(): [CStyleCast] (POD_Middle)...
+# 1447|                   Conversion = [BaseClassConversion] base class conversion
+# 1447|                   Type = [Struct] POD_Middle
+# 1447|                   ValueCategory = prvalue
+# 1447|                 getExpr(): [ParenthesisExpr] (...)
+# 1447|                     Type = [Struct] POD_Derived
+# 1447|                     ValueCategory = prvalue
+# 1448|     getStmt(4): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

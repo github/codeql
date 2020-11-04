@@ -312,7 +312,7 @@ void test_vector_insert() {
 	sink(d); // tainted
 }
 
-void test_constructors_more() {
+void test_vector_constructors_more() {
 	std::vector<int> v1;
 	std::vector<int> v2;
 	v2.push_back(source());
