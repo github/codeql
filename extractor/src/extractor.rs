@@ -328,44 +328,20 @@ impl Visitor<'_> {
             kind: node.kind().to_owned(),
             named: node.is_named(),
         });
-        if let Some(Entry::Token { kind_id, .. }) = table {
-            self.trap_writer.add_tuple(
-                "tokeninfo",
-                vec![
-                    Arg::Label(id),
-                    Arg::Int(*kind_id),
-                    Arg::Label(self.file_label),
-                    Arg::Int(self.token_counter),
-                    sliced_source_arg(self.source, node),
-                    Arg::Label(loc),
-                ],
-            );
-            self.token_counter += 1;
-            if let Some(parent) = self.stack.last_mut() {
-                parent.push((
-                    field_name,
-                    id,
-                    TypeName {
-                        kind: node.kind().to_owned(),
-                        named: node.is_named(),
-                    },
-                ))
-            };
-        } else if let Some(Entry::Table { fields, .. }) = table {
-            let table_name = escape_name(&format!(
-                "{}_def",
-                node_type_name(node.kind(), node.is_named())
-            ));
-            if let Some(args) = self.complex_node(&node, fields, child_nodes, id) {
-                let mut all_args = Vec::new();
-                all_args.push(Arg::Label(id));
-                all_args.extend(args);
-                all_args.push(Arg::Label(loc));
-                self.trap_writer.add_tuple(&table_name, all_args);
-            }
-            if !node.is_extra() {
-                // Extra nodes are independent root nodes and do not belong to the parent node
-                // Therefore we should not register them in the parent vector
+        match table {
+            Some(Entry::Token { kind_id, .. }) => {
+                self.trap_writer.add_tuple(
+                    "tokeninfo",
+                    vec![
+                        Arg::Label(id),
+                        Arg::Int(*kind_id),
+                        Arg::Label(self.file_label),
+                        Arg::Int(self.token_counter),
+                        sliced_source_arg(self.source, node),
+                        Arg::Label(loc),
+                    ],
+                );
+                self.token_counter += 1;
                 if let Some(parent) = self.stack.last_mut() {
                     parent.push((
                         field_name,
@@ -377,16 +353,43 @@ impl Visitor<'_> {
                     ))
                 };
             }
-        } else {
-            error!(
-                "{}:{}: unknown table type: '{}'",
-                &self.path,
-                node.start_position().row,
-                node.kind()
-            );
+            Some(Entry::Table { fields, .. }) => {
+                let table_name = escape_name(&format!(
+                    "{}_def",
+                    node_type_name(node.kind(), node.is_named())
+                ));
+                if let Some(args) = self.complex_node(&node, fields, child_nodes, id) {
+                    let mut all_args = Vec::new();
+                    all_args.push(Arg::Label(id));
+                    all_args.extend(args);
+                    all_args.push(Arg::Label(loc));
+                    self.trap_writer.add_tuple(&table_name, all_args);
+                }
+                if !node.is_extra() {
+                    // Extra nodes are independent root nodes and do not belong to the parent node
+                    // Therefore we should not register them in the parent vector
+                    if let Some(parent) = self.stack.last_mut() {
+                        parent.push((
+                            field_name,
+                            id,
+                            TypeName {
+                                kind: node.kind().to_owned(),
+                                named: node.is_named(),
+                            },
+                        ))
+                    };
+                }
+            }
+            _ => {
+                error!(
+                    "{}:{}: unknown table type: '{}'",
+                    &self.path,
+                    node.start_position().row,
+                    node.kind()
+                );
+            }
         }
     }
-
     fn complex_node(
         &mut self,
         node: &Node,

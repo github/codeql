@@ -235,7 +235,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
     }
 
     // Add the tokeninfo table
-    add_tokeninf_table(&mut entries, token_kinds);
+    add_tokeninfo_table(&mut entries, token_kinds);
 
     // Create a union of all database types.
     entries.push(dbscheme::Entry::Union(dbscheme::Union {
@@ -246,7 +246,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
     entries
 }
 
-fn add_tokeninf_table(entries: &mut Vec<dbscheme::Entry>, token_kinds: Map<String, usize>) {
+fn add_tokeninfo_table(entries: &mut Vec<dbscheme::Entry>, token_kinds: Map<String, usize>) {
     entries.push(dbscheme::Entry::Table(dbscheme::Table {
         name: "tokeninfo".to_owned(),
         keysets: None,
