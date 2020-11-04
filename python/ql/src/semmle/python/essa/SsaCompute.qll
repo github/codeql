@@ -446,7 +446,6 @@ private module SsaComputeImpl {
      * ```
      */
     pragma[nomagic]
-    cached
     private predicate adjacentRefUse(
       SsaSourceVariable v, BasicBlock b2, int i2, ControlFlowNode use1
     ) {
