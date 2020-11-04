@@ -840,7 +840,6 @@ predicate isPumpable(State fork, string w) {
  */
 State process(State fork, string w, int i) {
   isPumpable(fork, w) and
-  min(string s | isPumpable(fork, s)).prefix(w.length()) = w and
   exists(State prev |
     i = 0 and prev = fork
     or
@@ -876,9 +875,12 @@ string rotate(string str, int i) {
 
 from RegExpTerm t, string c, int i
 where
-  c = min(string w | isPumpable(Match(t, i), w)) and
-  not isPumpable(epsilonSucc+(Match(t, i)), _) and
-  not epsilonSucc*(process(Match(t, i), c, [0 .. c.length() - 1])) = Accept(_)
+  c =
+    min(string w |
+      isPumpable(Match(t, i), w) and
+      not isPumpable(epsilonSucc+(Match(t, i)), _) and
+      not epsilonSucc*(process(Match(t, i), w, [0 .. w.length() - 1])) = Accept(_)
+    )
 select t,
   "This part of the regular expression may cause exponential backtracking on strings " +
     "containing many repetitions of '" + escape(rotate(c, i)) + "'."
