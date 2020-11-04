@@ -13,7 +13,7 @@ module PolynomialReDoS {
    */
   abstract class Source extends DataFlow::Node {
     /**
-     * Gets the kind of source that is being accesed. See `HTTP::RequestInputAccess::getKind()`. 
+     * Gets the kind of source that is being accesed. See `HTTP::RequestInputAccess::getKind()`.
      * Can be one of "parameter", "header", "body", "url", "cookie".
      */
     abstract string getKind();
@@ -38,9 +38,7 @@ module PolynomialReDoS {
   class RequestInputAccessAsSource extends Source {
     RequestInputAccessAsSource() { this instanceof HTTP::RequestInputAccess }
 
-    override string getKind() {
-      result = this.(HTTP::RequestInputAccess).getKind()
-    }
+    override string getKind() { result = this.(HTTP::RequestInputAccess).getKind() }
   }
 
   /**
