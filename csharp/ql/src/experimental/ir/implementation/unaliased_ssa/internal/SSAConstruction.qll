@@ -856,7 +856,8 @@ private module CachedForDebugging {
     exists(Alias::MemoryLocation location, OldBlock phiBlock, string specificity |
       instr = getPhi(phiBlock, location) and
       result =
-        "Phi Block(" + phiBlock.getFirstInstruction().getUniqueId() + ")[" + specificity + "]: " + location.getUniqueId() and
+        "Phi Block(" + phiBlock.getFirstInstruction().getUniqueId() + ")[" + specificity + "]: " +
+          location.getUniqueId() and
       if location instanceof Alias::VirtualVariable
       then
         // Sort Phi nodes for virtual variables before Phi nodes for member locations.
