@@ -490,9 +490,9 @@ FunctionPointer.cs:
 #   19| [LocalVariableDeclAndInitExpr] Int32 j = ...
 #-----| -1 -> [TypeMention] int
 #-----| 0 -> [LocalVariableAccess] access to local variable j
-#-----| 1 -> [???] call
+#-----| 1 -> [FunctionPointerCall] function pointer call
 
-#   19| [???] call
+#   19| [FunctionPointerCall] function pointer call
 #-----| -1 -> [ParameterAccess] access to parameter f
 #-----| 0 -> [LocalVariableAccess] access to local variable i
 #-----| 1 -> [LocalVariableAccess,LocalVariableDeclExpr] Object o
@@ -522,9 +522,9 @@ FunctionPointer.cs:
 #   24| [LocalVariableAccess] access to local variable i
 
 #   25| [ExprStmt] ...;
-#-----| 0 -> [???] call
+#-----| 0 -> [FunctionPointerCall] function pointer call
 
-#   25| [???] call
+#   25| [FunctionPointerCall] function pointer call
 #-----| -1 -> [ParameterAccess] access to parameter f
 #-----| 0 -> [LocalVariableAccess] access to local variable i
 #-----| 1 -> [LocalVariableAccess,LocalVariableDeclExpr] Object o
@@ -564,9 +564,9 @@ FunctionPointer.cs:
 #-----| 1 -> [RefExpr] ref ...
 
 #   31| [RefExpr] ref ...
-#-----| 0 -> [???] call
+#-----| 0 -> [FunctionPointerCall] function pointer call
 
-#   31| [???] call
+#   31| [FunctionPointerCall] function pointer call
 #-----| -1 -> [ParameterAccess] access to parameter f
 #-----| 0 -> [LocalVariableAccess] access to local variable i
 #-----| 1 -> [LocalVariableAccess,LocalVariableDeclExpr] Object o
@@ -591,9 +591,9 @@ FunctionPointer.cs:
 #   36| [LocalVariableDeclAndInitExpr] Int32 j = ...
 #-----| -1 -> [TypeMention] int
 #-----| 0 -> [LocalVariableAccess] access to local variable j
-#-----| 1 -> [???] call
+#-----| 1 -> [FunctionPointerCall] function pointer call
 
-#   36| [???] call
+#   36| [FunctionPointerCall] function pointer call
 #-----| -1 -> [ParameterAccess] access to parameter f
 #-----| 0 -> [ObjectCreation] object creation of type T
 

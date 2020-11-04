@@ -605,6 +605,27 @@ class DelegateCall extends Call, @delegate_invocation_expr {
 }
 
 /**
+ * A function pointer call, for example `fp(1)` on line 3 in
+ *
+ * ```csharp
+ * class A {
+ *   void Call(delegate*<int, void> fp) {
+ *     fp(1);
+ *   }
+ * }
+ * ```
+ */
+class FunctionPointerCall extends Call, @function_pointer_invocation_expr {
+  override Callable getTarget() { none() }
+
+  override Expr getRuntimeArgument(int i) { result = getArgument(i) }
+
+  override string toString() { result = "function pointer call" }
+
+  override string getAPrimaryQlClass() { result = "FunctionPointerCall" }
+}
+
+/**
  * A call to an accessor. Either a property accessor call (`PropertyCall`),
  * an indexer accessor call (`IndexerCall`), or an event accessor call
  * (`EventCall`).
