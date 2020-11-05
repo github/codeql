@@ -293,14 +293,18 @@ struct Visitor<'a> {
 impl Visitor<'_> {
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_error() {
-            error!("{}:{}: parse error", &self.path, node.start_position().row);
+            error!(
+                "{}:{}: parse error",
+                &self.path,
+                node.start_position().row + 1
+            );
             return false;
         }
         if node.is_missing() {
             error!(
                 "{}:{}: parse error: expecting '{}'",
                 &self.path,
-                node.start_position().row,
+                node.start_position().row + 1,
                 node.kind()
             );
             return false;
@@ -328,6 +332,7 @@ impl Visitor<'_> {
             kind: node.kind().to_owned(),
             named: node.is_named(),
         });
+        let mut valid = true;
         match table {
             Some(Entry::Token { kind_id, .. }) => {
                 self.trap_writer.add_tuple(
@@ -342,16 +347,6 @@ impl Visitor<'_> {
                     ],
                 );
                 self.token_counter += 1;
-                if let Some(parent) = self.stack.last_mut() {
-                    parent.push((
-                        field_name,
-                        id,
-                        TypeName {
-                            kind: node.kind().to_owned(),
-                            named: node.is_named(),
-                        },
-                    ))
-                };
             }
             Some(Entry::Table { fields, .. }) => {
                 let table_name = escape_name(&format!(
@@ -365,29 +360,30 @@ impl Visitor<'_> {
                     all_args.push(Arg::Label(loc));
                     self.trap_writer.add_tuple(&table_name, all_args);
                 }
-                if !node.is_extra() {
-                    // Extra nodes are independent root nodes and do not belong to the parent node
-                    // Therefore we should not register them in the parent vector
-                    if let Some(parent) = self.stack.last_mut() {
-                        parent.push((
-                            field_name,
-                            id,
-                            TypeName {
-                                kind: node.kind().to_owned(),
-                                named: node.is_named(),
-                            },
-                        ))
-                    };
-                }
             }
             _ => {
                 error!(
                     "{}:{}: unknown table type: '{}'",
                     &self.path,
-                    node.start_position().row,
+                    node.start_position().row + 1,
                     node.kind()
                 );
+                valid = false;
             }
+        }
+        if valid && !node.is_extra() {
+            // Extra nodes are independent root nodes and do not belong to the parent node
+            // Therefore we should not register them in the parent vector
+            if let Some(parent) = self.stack.last_mut() {
+                parent.push((
+                    field_name,
+                    id,
+                    TypeName {
+                        kind: node.kind().to_owned(),
+                        named: node.is_named(),
+                    },
+                ))
+            };
         }
     }
     fn complex_node(
@@ -410,7 +406,7 @@ impl Visitor<'_> {
                     error!(
                         "{}:{}: type mismatch for field {}::{} with type {:?} != {:?}",
                         &self.path,
-                        node.start_position().row,
+                        node.start_position().row + 1,
                         node.kind(),
                         child_field.unwrap_or("child"),
                         child_type,
@@ -422,7 +418,7 @@ impl Visitor<'_> {
                     error!(
                         "{}:{}: value for unknown field: {}::{} and type {:?}",
                         &self.path,
-                        node.start_position().row,
+                        node.start_position().row + 1,
                         node.kind(),
                         &child_field.unwrap_or("child"),
                         &child_type
@@ -443,7 +439,7 @@ impl Visitor<'_> {
                         error!(
                             "{}:{}: {} for field: {}::{}",
                             &self.path,
-                            node.start_position().row,
+                            node.start_position().row + 1,
                             if child_ids.is_empty() {
                                 "missing value"
                             } else {
@@ -460,7 +456,7 @@ impl Visitor<'_> {
                             error!(
                                 "{}:{}: too many values for field: {}::{}",
                                 &self.path,
-                                node.start_position().row,
+                                node.start_position().row + 1,
                                 node.kind(),
                                 &field.get_name()
                             );
