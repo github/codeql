@@ -13,13 +13,13 @@ CodeQL includes queries to find the most relevant and interesting problems for e
 
 You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/about-queries#what-are-query-packs>`__ to analyze your projects in `LGTM <https://lgtm.com>`__, use them to analyze a database with the "`CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__," or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/github/codeql>`__.
 
-This topic is a basic introduction to query files. You can find more information on writing queries for specific programming languages `here <https://help.semmle.com/QL/learn-ql/>`__, and detailed technical information about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+This topic is a basic introduction to query files. You can find more information on writing queries for specific programming languages `here <https://help.semmle.com/QL/learn-ql/>`__, and detailed technical information about QL in the `QL language reference <https://help.semmle.com/QL/ql-language-reference/index.html>`__.
 For more information on how to format your code when contributing queries to the GitHub repository, see the `CodeQL style guide <https://github.com/github/codeql/blob/main/docs/ql-style-guide.md>`__.
 
 Basic query structure
 *********************
 
-`Queries <https://help.semmle.com/QL/ql-handbook/queries.html>`__ written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing queries include additional optional information, and have the following structure::
+`Queries <https://help.semmle.com/QL/ql-language-reference/queries.html>`__ written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing queries include additional optional information, and have the following structure::
 
     /**
      * 
@@ -61,7 +61,7 @@ Query metadata is used to identify your custom queries when they are added to th
 Import statements
 =================
 
-Each query generally contains one or more ``import`` statements, which define the `libraries <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ or `modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__ to import into the query. Libraries and modules provide a way of grouping together related `types <https://help.semmle.com/QL/ql-handbook/types.html>`__, `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__, and other modules. The contents of each library or module that you import can then be accessed by the query. 
+Each query generally contains one or more ``import`` statements, which define the `libraries <https://help.semmle.com/QL/ql-language-reference/modules.html#library-modules>`__ or `modules <https://help.semmle.com/QL/ql-language-reference/modules.html>`__ to import into the query. Libraries and modules provide a way of grouping together related `types <https://help.semmle.com/QL/ql-language-reference/types.html>`__, `predicates <https://help.semmle.com/QL/ql-language-reference/predicates.html>`__, and other modules. The contents of each library or module that you import can then be accessed by the query. 
 Our `open source repository on GitHub <https://github.com/github/codeql>`__ contains the standard CodeQL libraries for each supported language.   
 
 When writing your own alert queries, you would typically import the standard library for the language of the project that you are querying, using ``import`` followed by a language:
@@ -80,18 +80,18 @@ You can explore the contents of all the standard libraries in the `CodeQL librar
 Optional CodeQL classes and predicates
 --------------------------------------
 
-You can customize your analysis by defining your own predicates and classes in the query. For further information, see `Defining a predicate <https://help.semmle.com/QL/ql-handbook/predicates.html#defining-a-predicate>`__ and `Defining a class <https://help.semmle.com/QL/ql-handbook/types.html#defining-a-class>`__. 
+You can customize your analysis by defining your own predicates and classes in the query. For further information, see `Defining a predicate <https://help.semmle.com/QL/ql-language-reference/predicates.html#defining-a-predicate>`__ and `Defining a class <https://help.semmle.com/QL/ql-language-reference/types.html#defining-a-class>`__. 
 
 From clause
 ===========
 
 The ``from`` clause declares the variables that are used in the query. Each declaration must be of the form ``<type> <variable name>``. 
-For more information on the available `types <https://help.semmle.com/QL/ql-handbook/types.html>`__, and to learn how to define your own types using `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__, see the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+For more information on the available `types <https://help.semmle.com/QL/ql-language-reference/types.html>`__, and to learn how to define your own types using `classes <https://help.semmle.com/QL/ql-language-reference/types.html#classes>`__, see the `QL language reference <https://help.semmle.com/QL/ql-language-reference/index.html>`__.
 
 Where clause
 ============
 
-The ``where`` clause defines the logical conditions to apply to the variables declared in the ``from`` clause to generate your results. This clause uses `aggregations <https://help.semmle.com/QL/ql-handbook/expressions.html#aggregations>`__, `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__, and logical `formulas <https://help.semmle.com/QL/ql-handbook/formulas.html>`_ to limit the variables of interest to a smaller set, which meet the defined conditions. 
+The ``where`` clause defines the logical conditions to apply to the variables declared in the ``from`` clause to generate your results. This clause uses `aggregations <https://help.semmle.com/QL/ql-language-reference/expressions.html#aggregations>`__, `predicates <https://help.semmle.com/QL/ql-language-reference/predicates.html>`__, and logical `formulas <https://help.semmle.com/QL/ql-language-reference/formulas.html>`_ to limit the variables of interest to a smaller set, which meet the defined conditions. 
 The CodeQL libraries group commonly used predicates for specific languages and frameworks. You can also define your own predicates in the body of the query file or in your own custom modules, as described above.
 
 Select clause

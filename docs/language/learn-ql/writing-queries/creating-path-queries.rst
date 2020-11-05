@@ -104,7 +104,7 @@ Generating path explanations
 ****************************
 
 In order to generate path explanations, your query needs to compute a `path graph <https://en.wikipedia.org/wiki/Path_graph>`__.
-To do this you need to define a `query predicate <https://help.semmle.com/QL/ql-handbook/queries.html#query-predicates>`__ called ``edges`` in your query.
+To do this you need to define a `query predicate <https://help.semmle.com/QL/ql-language-reference/queries.html#query-predicates>`__ called ``edges`` in your query.
 This predicate defines the edge relations of the graph you are computing, and it is used to compute the paths related to each result that your query generates. 
 You can import a predefined ``edges`` predicate from a path graph module in one of the standard data flow libraries. In addition to the path graph module, the data flow libraries contain the other ``classes``, ``predicates``, and ``modules`` that are commonly used in data flow analysis. The import statement to use depends on the language that you are analyzing.
 
@@ -151,7 +151,7 @@ The configuration class is accessed by importing the data flow library. This cla
 
 For more information on using the configuration class in your analysis see the sections on global data flow in ":doc:`Analyzing data flow in C/C++ <../cpp/analyzing-data-flow-in-cpp>`" and ":doc:`Analyzing data flow in C# <../csharp/analyzing-data-flow-in-csharp>`."
 
-You can also create a configuration for different frameworks and environments by extending the ``Configuration`` class. For more information, see "`Types <https://help.semmle.com/QL/ql-handbook/types.html#defining-a-class>`__" in the QL language reference.
+You can also create a configuration for different frameworks and environments by extending the ``Configuration`` class. For more information, see "`Types <https://help.semmle.com/QL/ql-language-reference/types.html#defining-a-class>`__" in the QL language reference.
 
 If you are querying Python code (and you have used ``import semmle.python.security.Paths`` in your query) you should declare ``TaintedPathSource source, TaintedPathSink sink`` in your ``from`` statement. You do not need to declare a ``Configuration`` class as the definitions of the ``TaintedPathSource`` and ``TaintedPathSink`` contain all of the type information that is required::
 
@@ -163,7 +163,7 @@ Defining flow conditions
 ************************
 
 The ``where`` clause defines the logical conditions to apply to the variables declared in the ``from`` clause to generate your results. 
-This clause can use `aggregations <https://help.semmle.com/QL/ql-handbook/expressions.html#aggregations>`__, `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__, and logical `formulas <https://help.semmle.com/QL/ql-handbook/formulas.html>`_ to limit the variables of interest to a smaller set which meet the defined conditions. 
+This clause can use `aggregations <https://help.semmle.com/QL/ql-language-reference/expressions.html#aggregations>`__, `predicates <https://help.semmle.com/QL/ql-language-reference/predicates.html>`__, and logical `formulas <https://help.semmle.com/QL/ql-language-reference/formulas.html>`_ to limit the variables of interest to a smaller set which meet the defined conditions. 
 
 When writing a path queries, you would typically include a predicate that holds only if data flows from the ``source`` to the ``sink``. 
 

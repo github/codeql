@@ -49,8 +49,8 @@ flow between functions and through object properties. Global data flow, however,
 graph that do not precisely correspond to the flow of values, but model whether some value at runtime may be derived from another, for instance through a string manipulating
 operation.
 
-The data flow graph is computed using `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ to model the program elements that represent the graph's nodes.
-The flow of data between the nodes is modeled using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ to compute the graph's edges.
+The data flow graph is computed using `classes <https://help.semmle.com/QL/ql-language-reference/types.html#classes>`__ to model the program elements that represent the graph's nodes.
+The flow of data between the nodes is modeled using `predicates <https://help.semmle.com/QL/ql-language-reference/predicates.html>`__ to compute the graph's edges.
 
 Computing an accurate and complete data flow graph presents several challenges:
 
