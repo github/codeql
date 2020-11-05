@@ -9,7 +9,6 @@
 
 import java
 import semmle.code.java.frameworks.android.Intent
-import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
@@ -80,7 +79,7 @@ private predicate throwsNFE(Expr e) {
 }
 
 /**
- * Taint configuration tracking flow from untrusted inputs to number conversion calls.
+ * Taint configuration tracking flow from untrusted inputs to number conversion calls in exported Android compononents.
  */
 class NFELocalDoSConfiguration extends TaintTracking::Configuration {
   NFELocalDoSConfiguration() { this = "NFELocalDoSConfiguration" }
@@ -91,6 +90,7 @@ class NFELocalDoSConfiguration extends TaintTracking::Configuration {
   /** Holds if NFE is thrown but not caught */
   override predicate isSink(DataFlow::Node sink) {
     exists(Expr e |
+      e.getEnclosingCallable().getDeclaringType() instanceof ExportableAndroidComponent and
       throwsNFE(e) and
       not exists(TryStmt t |
         t.getBlock() = e.getEnclosingStmt().getEnclosingStmt*() and
