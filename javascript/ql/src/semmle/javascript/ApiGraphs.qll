@@ -54,17 +54,17 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    DataFlow::CallNode getACall() { result = getReturn().getAnImmediateUse() }
+    CallNode getACall() { result = getReturn().getAnImmediateUse() }
 
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    DataFlow::NewNode getAnInstantiation() { result = getInstance().getAnImmediateUse() }
+    NewNode getAnInstantiation() { result = getInstance().getAnImmediateUse() }
 
     /**
      * Gets an invocation (with our without `new`) to the function represented by this API component.
      */
-    DataFlow::InvokeNode getAnInvocation() { result = getACall() or result = getAnInstantiation() }
+    InvokeNode getAnInvocation() { result = getACall() or result = getAnInstantiation() }
 
     /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of the API
@@ -114,11 +114,17 @@ module API {
      * For example, if this node represents a use of some class `A`, then there might be a node
      * representing instances of `A`, typically corresponding to expressions `new A()` at the
      * source level.
+     *
+     * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
+     * Consider using `getAnInstantiation()` if there is a need to distingiush between individual constructor calls.
      */
     Node getInstance() { result = getASuccessor(Label::instance()) }
 
     /**
      * Gets a node representing the `i`th parameter of the function represented by this node.
+     *
+     * This predicate may have multiple results when there are multiple invocations of this API component.
+     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
      */
     bindingset[i]
     Node getParameter(int i) { result = getASuccessor(Label::parameter(i)) }
@@ -133,6 +139,9 @@ module API {
 
     /**
      * Gets a node representing the last parameter of the function represented by this node.
+     *
+     * This predicate may have multiple results when there are multiple invocations of this API component.
+     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
      */
     Node getLastParameter() { result = getParameter(getNumParameter() - 1) }
 
@@ -144,6 +153,10 @@ module API {
     /**
      * Gets a node representing a parameter or the receiver of the function represented by this
      * node.
+     *
+     * This predicate may result in a mix of parameters from different call sites in cases where
+     * there are multiple invocations of this API component.
+     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
      */
     Node getAParameter() {
       result = getASuccessor(Label::parameterByStringIndex(_)) or
@@ -152,6 +165,9 @@ module API {
 
     /**
      * Gets a node representing the result of the function represented by this node.
+     *
+     * This predicate may have multiple results when there are multiple invocations of this API component.
+     * Consider using `getACall()` if there is a need to distingiush between individual calls.
      */
     Node getReturn() { result = getASuccessor(Label::return()) }
 
@@ -787,6 +803,46 @@ module API {
   }
 
   import Label as EdgeLabel
+
+  /**
+   * An `InvokeNode` that is connected to the API graph.
+   *
+   * Can be used to reason about calls to an external API in which the correlation between
+   * parameters and/or return values must be retained.
+   *
+   * The member predicates `getParameter`, `getReturn`, and `getInstance` mimic the corresponding
+   * predicates from `API::Node`. These are guaranteed to exist and be unique to this call.
+   */
+  class InvokeNode extends DataFlow::InvokeNode {
+    API::Node callee;
+
+    InvokeNode() { this = callee.getReturn().getAnImmediateUse() or this = callee.getInstance().getAnImmediateUse() }
+
+    /** Gets the API node for the `i`th parameter of this invocation. */
+    Node getParameter(int i) {
+      result = callee.getParameter(i) and
+      result.getARhs() = getArgument(i)
+    }
+
+    /** Gets the API node a parameter of this invocation. */
+    Node getAParameter() {
+      result = getParameter(_)
+    }
+
+    /** Gets the API node for the return value of this call. */
+    Node getReturn() { result.getAnImmediateUse() = this }
+
+    /** Gets the API node for the object constructed by this invocation. */
+    Node getInstance() { result.getAnImmediateUse() = this }
+  }
+
+  /** A call connected to the API graph. */
+  class CallNode extends InvokeNode, DataFlow::CallNode {
+  }
+
+  /** A `new` call connected to the API graph. */
+  class NewNode extends InvokeNode, DataFlow::NewNode {
+  }
 }
 
 private module Label {
