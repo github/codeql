@@ -1,4 +1,4 @@
-# This file contains snippets from snapshots that displayed interesting results for `pointsto.ql`.
+# This file contains snippets from snapshots that displayed interesting results for `ImpliesDataflow.ql`.
 
 class Chatbot:
     """

@@ -1,3 +1,8 @@
+/**
+ * Test that the new data-flow analysis can connect any two
+ * data-flow nodes that the points-to analysis can.
+ */
+
 private import python
 import semmle.python.dataflow.new.DataFlow
 
