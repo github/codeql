@@ -1,3 +1,19 @@
+| Discard.cs:7:29:7:29 | access to local variable i | Func<Int32,Int32,Int32> |
+| Discard.cs:7:29:7:52 | Func<Int32,Int32,Int32> i = ... | Func<Int32,Int32,Int32> |
+| Discard.cs:7:33:7:52 | (...) => ... | Func<Int32,Int32,Int32> |
+| Discard.cs:7:51:7:52 | 42 | Int32 |
+| Discard.cs:8:9:8:9 | access to local variable i | Func<Int32,Int32,Int32> |
+| Discard.cs:8:9:8:24 | ... = ... | Func<Int32,Int32,Int32> |
+| Discard.cs:8:13:8:24 | (...) => ... | Func<Int32,Int32,Int32> |
+| Discard.cs:8:23:8:24 | 42 | Int32 |
+| Discard.cs:9:9:9:9 | access to local variable i | Func<Int32,Int32,Int32> |
+| Discard.cs:9:9:9:32 | ... = ... | Func<Int32,Int32,Int32> |
+| Discard.cs:9:13:9:32 | (...) => ... | Func<Int32,Int32,Int32> |
+| Discard.cs:9:31:9:32 | 42 | Int32 |
+| Discard.cs:10:9:10:9 | access to local variable i | Func<Int32,Int32,Int32> |
+| Discard.cs:10:9:10:49 | ... = ... | Func<Int32,Int32,Int32> |
+| Discard.cs:10:13:10:49 | delegate(...) { ... } | Func<Int32,Int32,Int32> |
+| Discard.cs:10:46:10:46 | 0 | Int32 |
 | NativeInt.cs:7:14:7:14 | access to local variable x | IntPtr |
 | NativeInt.cs:7:14:7:18 | IntPtr x = ... | IntPtr |
 | NativeInt.cs:7:18:7:18 | (...) ... | IntPtr |

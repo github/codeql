@@ -1,3 +1,52 @@
+Discard.cs:
+#    3| [Class] Discard
+#    5|   5: [Method] M1
+#    5|     -1: [TypeMention] Void
+#    6|     4: [BlockStmt] {...}
+#    7|       0: [LocalVariableDeclStmt] ... ...;
+#    7|         0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32,Int32> i = ...
+#    7|           -1: [TypeMention] Func<Int32, Int32, Int32>
+#    7|             1: [TypeMention] int
+#    7|             2: [TypeMention] int
+#    7|             3: [TypeMention] int
+#    7|           0: [LocalVariableAccess] access to local variable i
+#    7|           1: [LambdaExpr] (...) => ...
+#-----|             2: (Parameters)
+#    7|               0: [Parameter] a
+#    7|                 -1: [TypeMention] int
+#    7|               1: [Parameter] b
+#    7|                 -1: [TypeMention] int
+#    7|             4: [IntLiteral] 42
+#    8|       1: [ExprStmt] ...;
+#    8|         0: [AssignExpr] ... = ...
+#    8|           0: [LocalVariableAccess] access to local variable i
+#    8|           1: [LambdaExpr] (...) => ...
+#-----|             2: (Parameters)
+#    8|               0: [Parameter] _
+#    8|               1: [Parameter] _`1
+#    8|             4: [IntLiteral] 42
+#    9|       2: [ExprStmt] ...;
+#    9|         0: [AssignExpr] ... = ...
+#    9|           0: [LocalVariableAccess] access to local variable i
+#    9|           1: [LambdaExpr] (...) => ...
+#-----|             2: (Parameters)
+#    9|               0: [Parameter] _
+#    9|                 -1: [TypeMention] int
+#    9|               1: [Parameter] _`1
+#    9|                 -1: [TypeMention] int
+#    9|             4: [IntLiteral] 42
+#   10|       3: [ExprStmt] ...;
+#   10|         0: [AssignExpr] ... = ...
+#   10|           0: [LocalVariableAccess] access to local variable i
+#   10|           1: [AnonymousMethodExpr] delegate(...) { ... }
+#-----|             2: (Parameters)
+#   10|               0: [Parameter] _
+#   10|                 -1: [TypeMention] int
+#   10|               1: [Parameter] _`1
+#   10|                 -1: [TypeMention] int
+#   10|             4: [BlockStmt] {...}
+#   10|               0: [ReturnStmt] return ...;
+#   10|                 0: [IntLiteral] 0
 NativeInt.cs:
 #    3| [Class] Class1
 #    5|   5: [Method] M1

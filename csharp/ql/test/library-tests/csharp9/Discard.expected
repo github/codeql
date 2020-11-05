@@ -1,0 +1,8 @@
+| Discard.cs:7:33:7:52 | (...) => ... | Discard.cs:7:38:7:38 | a |
+| Discard.cs:7:33:7:52 | (...) => ... | Discard.cs:7:45:7:45 | b |
+| Discard.cs:8:13:8:24 | (...) => ... | Discard.cs:8:14:8:14 | _ |
+| Discard.cs:8:13:8:24 | (...) => ... | Discard.cs:8:17:8:17 | _`1 |
+| Discard.cs:9:13:9:32 | (...) => ... | Discard.cs:9:18:9:18 | _ |
+| Discard.cs:9:13:9:32 | (...) => ... | Discard.cs:9:25:9:25 | _`1 |
+| Discard.cs:10:13:10:49 | delegate(...) { ... } | Discard.cs:10:27:10:27 | _ |
+| Discard.cs:10:13:10:49 | delegate(...) { ... } | Discard.cs:10:34:10:34 | _`1 |
