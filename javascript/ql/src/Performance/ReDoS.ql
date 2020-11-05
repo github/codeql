@@ -214,9 +214,9 @@ abstract class CharacterClass extends InputSymbol {
   abstract predicate matches(string char);
 
   /**
-   * Gets a single character matched by this character class.
+   * Gets a character matched by this character class.
    */
-  abstract string choose();
+  string choose() { result = getARelevantChar() }
 }
 
 /**
@@ -329,8 +329,6 @@ private module CharacterClasses {
     override string getARelevantChar() { result = getAMentionedChar(cc) }
 
     override predicate matches(string char) { hasChildThatMatches(cc, char) }
-
-    override string choose() { result = min(string c | c = getAMentionedChar(cc)) }
   }
 
   /**
@@ -348,11 +346,6 @@ private module CharacterClasses {
 
     bindingset[char]
     override predicate matches(string char) { not hasChildThatMatches(cc, char) }
-
-    override string choose() {
-      // The next char after the max of the inverted charclass.
-      result = nextChar(max(string c | c = getAMentionedChar(cc)))
-    }
   }
 
   /**
@@ -396,7 +389,16 @@ private module CharacterClasses {
 
     override predicate matches(string char) { classEscapeMatches(cc.getValue(), char) }
 
-    override string choose() { result = min(string c | c = getARelevantChar()) }
+    override string choose() {
+      cc.getValue() = "d" and
+      result = "9"
+      or
+      cc.getValue() = "s" and
+      result = [" "]
+      or
+      cc.getValue() = "w" and
+      result = "a"
+    }
   }
 
   /**
@@ -422,8 +424,6 @@ private module CharacterClasses {
     override predicate matches(string char) {
       not classEscapeMatches(cc.getValue().toLowerCase(), char)
     }
-
-    override string choose() { result = min(string c | c = getARelevantChar()) }
   }
 }
 
@@ -880,6 +880,8 @@ where
       isPumpable(Match(t, i), w) and
       not isPumpable(epsilonSucc+(Match(t, i)), _) and
       not epsilonSucc*(process(Match(t, i), w, [0 .. w.length() - 1])) = Accept(_)
+    |
+      w order by w.length(), w
     )
 select t,
   "This part of the regular expression may cause exponential backtracking on strings " +

@@ -244,8 +244,17 @@ var bad55 = /((ab)+)*$/;
 // GOOD
 var good23 = /((ab)+)*[a1][b1][a2][b2][a3][b3]/;
 
-// NOT GOOD - but not catched due to the analysis taking an unlucky guess when choosing an arbitary char from `[\n\s]`. 
+// NOT GOOD
 var bad56 = /([\n\s]+)*(.)/;
 
 // GOOD - any witness passes through the accept state.
 var good24 = /(A*A*X)*/;
+
+// GOOD - but still flagged (always matches something)
+var good25 = /^([^>]+)*(>|$)/;
+
+// NOT GOOD
+var bad57 = /^([^>a]+)*(>|$)/;
+
+// NOT GOOD
+var bad58 = /(\n\s*)+$/;
