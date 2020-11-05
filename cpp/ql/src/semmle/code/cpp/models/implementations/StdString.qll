@@ -5,7 +5,8 @@
  */
 
 import semmle.code.cpp.models.interfaces.Taint
-import semmle.code.cpp.models.implementations.Iterator
+import semmle.code.cpp.models.interfaces.Iterator
+import semmle.code.cpp.models.interfaces.DataFlow
 
 /**
  * The `std::basic_string` template class.

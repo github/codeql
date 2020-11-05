@@ -3,7 +3,7 @@
  */
 
 import semmle.code.cpp.models.interfaces.Taint
-import semmle.code.cpp.models.implementations.Iterator
+import semmle.code.cpp.models.interfaces.Iterator
 
 /**
  * Additional model for set constructors using iterator inputs.

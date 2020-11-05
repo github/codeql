@@ -48,10 +48,10 @@ private class StdIterator extends Class {
 }
 
 /**
- * A type which can be used as an iterator
+ * Implements `Iterator`.
  */
-class Iterator extends Type {
-  Iterator() {
+private class IteratorImpl extends Iterator {
+  IteratorImpl() {
     this instanceof IteratorByTypedefs or
     exists(IteratorTraits it | it.getIteratorType() = this) or
     this instanceof StdIterator
