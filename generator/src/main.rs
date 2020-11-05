@@ -4,16 +4,31 @@ mod ql;
 mod ql_gen;
 
 use language::Language;
+use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fs::File;
 use std::io::LineWriter;
 use std::path::PathBuf;
 use tracing::{error, info};
 
+fn child_node_type_name(token_types: &Map<String, usize>, t: &node_types::TypeName) -> String {
+    if !t.named {
+        // an unnamed token
+        "reserved_word".to_owned()
+    } else if token_types.contains_key(&t.kind) {
+        // a named token
+        format!("token_{}", t.kind)
+    } else {
+        // a normal node
+        node_types::node_type_name(&t.kind, t.named)
+    }
+}
+
 /// Given the name of the parent node, and its field information, returns the
 /// name of the field's type. This may be an ad-hoc union of all the possible
 /// types the field can take, in which case the union is added to `entries`.
 fn make_field_type(
+    token_types: &Map<String, usize>,
     parent_name: &str,
     field_name: &str,
     types: &Set<node_types::TypeName>,
@@ -22,7 +37,7 @@ fn make_field_type(
     if types.len() == 1 {
         // This field can only have a single type.
         let t = types.iter().next().unwrap();
-        node_types::escape_name(&node_types::node_type_name(&t.kind, t.named))
+        node_types::escape_name(&child_node_type_name(token_types, t))
     } else {
         // This field can have one of several types. Create an ad-hoc QL union
         // type to represent them.
@@ -30,7 +45,7 @@ fn make_field_type(
         let field_union_name = node_types::escape_name(&field_union_name);
         let members: Vec<String> = types
             .iter()
-            .map(|t| node_types::escape_name(&node_types::node_type_name(&t.kind, t.named)))
+            .map(|t| node_types::escape_name(&child_node_type_name(token_types, t)))
             .collect();
         entries.push(dbscheme::Entry::Union(dbscheme::Union {
             name: field_union_name.clone(),
@@ -43,6 +58,7 @@ fn make_field_type(
 /// Adds the appropriate dbscheme information for the given field, either as a
 /// column on `main_table`, or as an auxiliary table.
 fn add_field(
+    token_types: &Map<String, usize>,
     main_table: &mut dbscheme::Table,
     field: &node_types::Field,
     entries: &mut Vec<dbscheme::Entry>,
@@ -53,7 +69,13 @@ fn add_field(
         node_types::Storage::Table(has_index) => {
             // This field can appear zero or multiple times, so put
             // it in an auxiliary table.
-            let field_type = make_field_type(&parent_name, &field_name, &field.types, entries);
+            let field_type = make_field_type(
+                token_types,
+                &parent_name,
+                &field_name,
+                &field.types,
+                entries,
+            );
             let parent_column = dbscheme::Column {
                 unique: !*has_index,
                 db_type: dbscheme::DbColumnType::Int,
@@ -98,7 +120,13 @@ fn add_field(
         node_types::Storage::Column => {
             // This field must appear exactly once, so we add it as
             // a column to the main table for the node type.
-            let field_type = make_field_type(&parent_name, &field_name, &field.types, entries);
+            let field_type = make_field_type(
+                token_types,
+                &parent_name,
+                &field_name,
+                &field.types,
+                entries,
+            );
             main_table.columns.push(dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
@@ -124,6 +152,15 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
         create_source_location_prefix_table(),
     ];
     let mut ast_node_members: Vec<String> = Vec::new();
+    let mut token_kinds: Map<String, usize> = Map::new();
+    ast_node_members.push(node_types::escape_name("token"));
+    for node in nodes {
+        if let node_types::Entry::Token { type_name, kind_id } = node {
+            if type_name.named {
+                token_kinds.insert(type_name.kind.to_owned(), *kind_id);
+            }
+        }
+    }
 
     for node in nodes {
         match &node {
@@ -135,9 +172,9 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
                 // type.
                 let mut members: Vec<String> = Vec::new();
                 for n_member in n_members {
-                    members.push(node_types::escape_name(&node_types::node_type_name(
-                        &n_member.kind,
-                        n_member.named,
+                    members.push(node_types::escape_name(&child_node_type_name(
+                        &token_kinds,
+                        n_member,
                     )))
                 }
                 entries.push(dbscheme::Entry::Union(dbscheme::Union {
@@ -167,7 +204,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
                 // If the type also has fields or children, then we create either
                 // auxiliary tables or columns in the defining table for them.
                 for field in fields {
-                    add_field(&mut main_table, &field, &mut entries);
+                    add_field(&token_kinds, &mut main_table, &field, &mut entries);
                 }
 
                 if fields.is_empty() {
@@ -193,8 +230,12 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
 
                 entries.push(dbscheme::Entry::Table(main_table));
             }
+            node_types::Entry::Token { .. } => {}
         }
     }
+
+    // Add the tokeninfo table
+    add_tokeninfo_table(&mut entries, token_kinds);
 
     // Create a union of all database types.
     entries.push(dbscheme::Entry::Union(dbscheme::Union {
@@ -203,6 +244,71 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
     }));
 
     entries
+}
+
+fn add_tokeninfo_table(entries: &mut Vec<dbscheme::Entry>, token_kinds: Map<String, usize>) {
+    entries.push(dbscheme::Entry::Table(dbscheme::Table {
+        name: "tokeninfo".to_owned(),
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id".to_string(),
+                unique: true,
+                ql_type: ql::Type::AtType("token".to_owned()),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "kind".to_string(),
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "file".to_string(),
+                ql_type: ql::Type::AtType("file".to_string()),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "idx".to_string(),
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "value".to_string(),
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "loc".to_string(),
+                ql_type: ql::Type::AtType("location".to_string()),
+                ql_type_is_ref: true,
+            },
+        ],
+    }));
+    let mut branches: Vec<(usize, String)> = Vec::new();
+    branches.push((0, "reserved_word".to_owned()));
+    for (token_kind, idx) in token_kinds.iter() {
+        branches.push((
+            *idx,
+            node_types::escape_name(&format!("token_{}", token_kind)),
+        ));
+    }
+
+    entries.push(dbscheme::Entry::Case(dbscheme::Case {
+        name: "token".to_owned(),
+        column: "kind".to_owned(),
+        branches: branches,
+    }));
 }
 
 fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::Result<()> {

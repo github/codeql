@@ -187,6 +187,7 @@ impl Extractor {
             // TODO: should we handle path strings that are not valid UTF8 better?
             path: format!("{}", path.display()),
             file_label: *file_label,
+            token_counter: 0,
             stack: Vec::new(),
             tables: build_schema_lookup(&self.schema),
             union_types: build_union_type_lookup(&self.schema),
@@ -248,7 +249,7 @@ fn full_id_for_folder(path: &Path) -> String {
 fn build_schema_lookup<'a>(schema: &'a Vec<Entry>) -> Map<&'a TypeName, &'a Entry> {
     let mut map = std::collections::BTreeMap::new();
     for entry in schema {
-        if let Entry::Table { type_name, .. } = entry {
+        if let Entry::Token { type_name, .. } | Entry::Table { type_name, .. } = entry {
             map.insert(type_name, entry);
         }
     }
@@ -275,6 +276,8 @@ struct Visitor<'a> {
     source: &'a Vec<u8>,
     /// A TrapWriter to accumulate trap entries
     trap_writer: TrapWriter,
+    /// A counter for tokens
+    token_counter: usize,
     /// A lookup table from type name to dbscheme table entries
     tables: Map<&'a TypeName, &'a Entry>,
     /// A lookup table for union types mapping a type name to its direct members
@@ -290,14 +293,18 @@ struct Visitor<'a> {
 impl Visitor<'_> {
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_error() {
-            error!("{}:{}: parse error", &self.path, node.start_position().row);
+            error!(
+                "{}:{}: parse error",
+                &self.path,
+                node.start_position().row + 1
+            );
             return false;
         }
         if node.is_missing() {
             error!(
                 "{}:{}: parse error: expecting '{}'",
                 &self.path,
-                node.start_position().row,
+                node.start_position().row + 1,
                 node.kind()
             );
             return false;
@@ -312,61 +319,73 @@ impl Visitor<'_> {
             return;
         }
         let child_nodes = self.stack.pop().expect("Vistor: empty stack");
+        let id = self.trap_writer.fresh_id();
+        let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
+        let loc = self.trap_writer.location(
+            self.file_label.clone(),
+            start_line,
+            start_column,
+            end_line,
+            end_column,
+        );
         let table = self.tables.get(&TypeName {
             kind: node.kind().to_owned(),
             named: node.is_named(),
         });
-        if let Some(Entry::Table { fields, .. }) = table {
-            let id = self.trap_writer.fresh_id();
-            let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
-            let loc = self.trap_writer.location(
-                self.file_label.clone(),
-                start_line,
-                start_column,
-                end_line,
-                end_column,
-            );
-            let table_name = escape_name(&format!(
-                "{}_def",
-                node_type_name(node.kind(), node.is_named())
-            ));
-            let args: Option<Vec<Arg>>;
-            if fields.is_empty() {
-                args = Some(vec![sliced_source_arg(self.source, node)]);
-            } else {
-                args = self.complex_node(&node, fields, child_nodes, id);
+        let mut valid = true;
+        match table {
+            Some(Entry::Token { kind_id, .. }) => {
+                self.trap_writer.add_tuple(
+                    "tokeninfo",
+                    vec![
+                        Arg::Label(id),
+                        Arg::Int(*kind_id),
+                        Arg::Label(self.file_label),
+                        Arg::Int(self.token_counter),
+                        sliced_source_arg(self.source, node),
+                        Arg::Label(loc),
+                    ],
+                );
+                self.token_counter += 1;
             }
-            if let Some(args) = args {
-                let mut all_args = Vec::new();
-                all_args.push(Arg::Label(id));
-                all_args.extend(args);
-                all_args.push(Arg::Label(loc));
-                self.trap_writer.add_tuple(&table_name, all_args);
+            Some(Entry::Table { fields, .. }) => {
+                let table_name = escape_name(&format!(
+                    "{}_def",
+                    node_type_name(node.kind(), node.is_named())
+                ));
+                if let Some(args) = self.complex_node(&node, fields, child_nodes, id) {
+                    let mut all_args = Vec::new();
+                    all_args.push(Arg::Label(id));
+                    all_args.extend(args);
+                    all_args.push(Arg::Label(loc));
+                    self.trap_writer.add_tuple(&table_name, all_args);
+                }
             }
-            if !node.is_extra() {
-                // Extra nodes are independent root nodes and do not belong to the parent node
-                // Therefore we should not register them in the parent vector
-                if let Some(parent) = self.stack.last_mut() {
-                    parent.push((
-                        field_name,
-                        id,
-                        TypeName {
-                            kind: node.kind().to_owned(),
-                            named: node.is_named(),
-                        },
-                    ))
-                };
+            _ => {
+                error!(
+                    "{}:{}: unknown table type: '{}'",
+                    &self.path,
+                    node.start_position().row + 1,
+                    node.kind()
+                );
+                valid = false;
             }
-        } else {
-            error!(
-                "{}:{}: unknown table type: '{}'",
-                &self.path,
-                node.start_position().row,
-                node.kind()
-            );
+        }
+        if valid && !node.is_extra() {
+            // Extra nodes are independent root nodes and do not belong to the parent node
+            // Therefore we should not register them in the parent vector
+            if let Some(parent) = self.stack.last_mut() {
+                parent.push((
+                    field_name,
+                    id,
+                    TypeName {
+                        kind: node.kind().to_owned(),
+                        named: node.is_named(),
+                    },
+                ))
+            };
         }
     }
-
     fn complex_node(
         &mut self,
         node: &Node,
@@ -387,7 +406,7 @@ impl Visitor<'_> {
                     error!(
                         "{}:{}: type mismatch for field {}::{} with type {:?} != {:?}",
                         &self.path,
-                        node.start_position().row,
+                        node.start_position().row + 1,
                         node.kind(),
                         child_field.unwrap_or("child"),
                         child_type,
@@ -399,7 +418,7 @@ impl Visitor<'_> {
                     error!(
                         "{}:{}: value for unknown field: {}::{} and type {:?}",
                         &self.path,
-                        node.start_position().row,
+                        node.start_position().row + 1,
                         node.kind(),
                         &child_field.unwrap_or("child"),
                         &child_type
@@ -420,7 +439,7 @@ impl Visitor<'_> {
                         error!(
                             "{}:{}: {} for field: {}::{}",
                             &self.path,
-                            node.start_position().row,
+                            node.start_position().row + 1,
                             if child_ids.is_empty() {
                                 "missing value"
                             } else {
@@ -437,7 +456,7 @@ impl Visitor<'_> {
                             error!(
                                 "{}:{}: too many values for field: {}::{}",
                                 &self.path,
-                                node.start_position().row,
+                                node.start_position().row + 1,
                                 node.kind(),
                                 &field.get_name()
                             );
@@ -483,9 +502,7 @@ impl Visitor<'_> {
 // Emit a slice of a source file as an Arg.
 fn sliced_source_arg(source: &Vec<u8>, n: Node) -> Arg {
     let range = n.byte_range();
-    Arg::String(String::from(
-        std::str::from_utf8(&source[range.start..range.end]).expect("Failed to decode string"),
-    ))
+    Arg::String(String::from_utf8_lossy(&source[range.start..range.end]).into_owned())
 }
 
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
