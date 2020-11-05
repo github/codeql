@@ -128,7 +128,7 @@ namespace Semmle.Extraction.CSharp.Entities
             node is PatternSyntax || node is VariableDesignationSyntax || node.ChildNodes().Any(ContainsPattern);
 
         /// <summary>
-        /// Creates a generated expression from a typed constant..
+        /// Creates a generated expression from a typed constant.
         /// </summary>
         public static Expression CreateGenerated(Context cx, TypedConstant constant, IExpressionParentEntity parent,
             int childIndex, Semmle.Extraction.Entities.Location location)
