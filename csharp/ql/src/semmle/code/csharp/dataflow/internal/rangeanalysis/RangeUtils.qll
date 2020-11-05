@@ -154,7 +154,7 @@ private module Impl {
    */
   predicate propertyOverrides(Property p, string baseClass, string property) {
     exists(Property p2 |
-      p2.getSourceDeclaration().getDeclaringType().hasQualifiedName(baseClass) and
+      p2.getUnboundDeclaration().getDeclaringType().hasQualifiedName(baseClass) and
       p2.hasName(property)
     |
       p.overridesOrImplementsOrEquals(p2)

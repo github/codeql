@@ -44,7 +44,7 @@ predicate declarationHasXmlComment(Declaration d) { exists(getADeclarationXmlCom
 
 /** Whether a declaration should have documentation. */
 predicate isDocumentationNeeded(Modifiable decl) {
-  decl.getSourceDeclaration() = decl and // Exclude constructed types and methods
+  decl.isUnboundDeclaration() and // Exclude constructed types and methods
   not exists(decl.(Attributable).getAnAttribute()) and // An attribute may serve to document
   decl.isPublic() and
   (

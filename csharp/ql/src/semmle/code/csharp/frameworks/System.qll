@@ -554,7 +554,7 @@ class IEquatableEqualsMethod extends Method {
   IEquatableEqualsMethod() {
     exists(Method m |
       m = any(SystemIEquatableTInterface i).getAConstructedGeneric().getAMethod() and
-      m.getSourceDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
+      m.getUnboundDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
     |
       this = m or getAnUltimateImplementee() = m
     )
@@ -626,8 +626,8 @@ private IEquatableEqualsMethod getInvokedIEquatableEqualsMethod(ValueOrRefType t
 /** Whether `eq` calls `ieem` */
 private predicate callsEqualsMethod(EqualsMethod eq, IEquatableEqualsMethod ieem) {
   exists(MethodCall callToDerivedEquals |
-    callToDerivedEquals.getEnclosingCallable() = eq.getSourceDeclaration() and
-    callToDerivedEquals.getTarget() = ieem.getSourceDeclaration()
+    callToDerivedEquals.getEnclosingCallable() = eq.getUnboundDeclaration() and
+    callToDerivedEquals.getTarget() = ieem.getUnboundDeclaration()
   )
 }
 
@@ -709,8 +709,8 @@ private DisposeBoolMethod getInvokedDiposeBoolMethod(ValueOrRefType t, DisposeMe
     not disp.fromSource()
     or
     exists(MethodCall callToDerivedDispose |
-      callToDerivedDispose.getEnclosingCallable() = disp.getSourceDeclaration() and
-      callToDerivedDispose.getTarget() = dbm.getSourceDeclaration()
+      callToDerivedDispose.getEnclosingCallable() = disp.getUnboundDeclaration() and
+      callToDerivedDispose.getTarget() = dbm.getUnboundDeclaration()
     )
   )
 }

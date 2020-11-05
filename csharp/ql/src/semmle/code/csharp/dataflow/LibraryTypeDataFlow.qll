@@ -94,12 +94,12 @@ module AccessPath {
 
   /** Gets a singleton property access path. */
   AccessPath property(Property p) {
-    result = singleton(any(PropertyContent c | c.getProperty() = p.getSourceDeclaration()))
+    result = singleton(any(PropertyContent c | c.getProperty() = p.getUnboundDeclaration()))
   }
 
   /** Gets a singleton field access path. */
   AccessPath field(Field f) {
-    result = singleton(any(FieldContent c | c.getField() = f.getSourceDeclaration()))
+    result = singleton(any(FieldContent c | c.getField() = f.getUnboundDeclaration()))
   }
 
   /** Gets an access path representing a property inside a collection. */
@@ -108,7 +108,7 @@ module AccessPath {
 
 /** An unbound callable. */
 class SourceDeclarationCallable extends Callable {
-  SourceDeclarationCallable() { this = this.getSourceDeclaration() }
+  SourceDeclarationCallable() { this.isUnboundDeclaration() }
 }
 
 /** An unbound method. */
@@ -301,7 +301,7 @@ class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDel
 
 /** A specification of data flow for a library (non-source code) type. */
 abstract class LibraryTypeDataFlow extends Type {
-  LibraryTypeDataFlow() { this = this.getSourceDeclaration() }
+  LibraryTypeDataFlow() { this = this.getUnboundDeclaration() }
 
   /**
    * Holds if data may flow from `source` to `sink` when calling callable `c`.
@@ -779,7 +779,7 @@ class SystemLazyFlow extends LibraryTypeDataFlow, SystemLazyClass {
     preservesValue = true and
     exists(SystemFuncDelegateType t, int i | t.getNumberOfTypeParameters() = 1 |
       c.(Constructor).getDeclaringType() = this and
-      c.getParameter(i).getType().getSourceDeclaration() = t and
+      c.getParameter(i).getType().getUnboundDeclaration() = t and
       source = getDelegateFlowSourceArg(c, i) and
       sourceAp = AccessPath::empty() and
       sink = TCallableFlowSinkReturn() and
@@ -917,7 +917,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
     SourceDeclarationMethod m
   ) {
-    m.(ExtensionMethod).getExtendedType().getSourceDeclaration() = this and
+    m.(ExtensionMethod).getExtendedType().getUnboundDeclaration() = this and
     exists(string name, int arity | name = m.getName() and arity = m.getNumberOfParameters() |
       name = "Aggregate" and
       (
@@ -1123,7 +1123,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
           sink = getDelegateFlowSinkArg(m, 2, 0) and
           sinkAp = AccessPath::empty()
           or
-          not m.getParameter(2).getType().getSourceDeclaration() instanceof
+          not m.getParameter(2).getType().getUnboundDeclaration() instanceof
             SystemCollectionsGenericIEqualityComparerTInterface and
           source = getDelegateFlowSourceArg(m, 2) and
           sourceAp = AccessPath::empty() and
@@ -1437,7 +1437,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow, RefType {
 /** Data flow for `System.Collections.[Generic.]ICollection` (and sub types). */
 class ICollectionFlow extends LibraryTypeDataFlow, RefType {
   ICollectionFlow() {
-    exists(Interface i | i = this.getABaseType*().getSourceDeclaration() |
+    exists(Interface i | i = this.getABaseType*().getUnboundDeclaration() |
       i instanceof SystemCollectionsICollectionInterface
       or
       i instanceof SystemCollectionsGenericICollectionInterface
@@ -1486,7 +1486,7 @@ class ICollectionFlow extends LibraryTypeDataFlow, RefType {
 /** Data flow for `System.Collections.[Generic.]IList` (and sub types). */
 class IListFlow extends LibraryTypeDataFlow, RefType {
   IListFlow() {
-    exists(Interface i | i = this.getABaseType*().getSourceDeclaration() |
+    exists(Interface i | i = this.getABaseType*().getUnboundDeclaration() |
       i instanceof SystemCollectionsIListInterface
       or
       i instanceof SystemCollectionsGenericIListInterface
@@ -1536,7 +1536,7 @@ class IListFlow extends LibraryTypeDataFlow, RefType {
 /** Data flow for `System.Collections.[Generic.]IDictionary` (and sub types). */
 class IDictionaryFlow extends LibraryTypeDataFlow, RefType {
   IDictionaryFlow() {
-    exists(Interface i | i = this.getABaseType*().getSourceDeclaration() |
+    exists(Interface i | i = this.getABaseType*().getUnboundDeclaration() |
       i instanceof SystemCollectionsIDictionaryInterface
       or
       i instanceof SystemCollectionsGenericIDictionaryInterface
@@ -1776,13 +1776,13 @@ class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
         t = this
         or
         c = this.getAMethod(any(string name | name.regexpMatch("Create(<,*>)?"))) and
-        t = c.getReturnType().getSourceDeclaration()
+        t = c.getReturnType().getUnboundDeclaration()
       )
       or
       c =
         any(ExtensionMethod m |
           m.hasName("Deconstruct") and
-          this = m.getExtendedType().getSourceDeclaration() and
+          this = m.getExtendedType().getUnboundDeclaration() and
           exists(int i |
             m.getParameter(i).isOut() and
             source = getFlowSourceArg(c, 0, _) and
@@ -2179,7 +2179,7 @@ library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEnco
   ) {
     preservesValue = false and
     c = this.getAMethod() and
-    exists(Method m | m.getAnOverrider*().getSourceDeclaration() = c |
+    exists(Method m | m.getAnOverrider*().getUnboundDeclaration() = c |
       m = getGetBytesMethod() and
       source = getFlowSourceArg(m, 0, sourceAp) and
       sink = TCallableFlowSinkReturn() and

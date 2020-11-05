@@ -21,7 +21,7 @@ private class DelegateFlowSource extends DataFlow::ExprNode {
     this.getExpr() =
       any(Expr e |
         c = e.(AnonymousFunctionExpr) or
-        c = e.(CallableAccess).getTarget().getSourceDeclaration()
+        c = e.(CallableAccess).getTarget().getUnboundDeclaration()
       )
   }
 

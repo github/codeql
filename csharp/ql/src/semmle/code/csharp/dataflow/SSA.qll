@@ -1050,7 +1050,7 @@ module Ssa {
     Callable getARuntimeTarget(Call c, boolean libraryDelegateCall) {
       // Non-delegate call: use dispatch library
       exists(DispatchCall dc | dc.getCall() = c |
-        result = dc.getADynamicTarget().getSourceDeclaration() and
+        result = dc.getADynamicTarget().getUnboundDeclaration() and
         libraryDelegateCall = false
       )
       or
@@ -1090,7 +1090,7 @@ module Ssa {
         or
         e =
           any(CallableAccess ca |
-            c = ca.getTarget().getSourceDeclaration() and
+            c = ca.getTarget().getUnboundDeclaration() and
             dt = ca.getType()
           )
       }
@@ -1099,7 +1099,7 @@ module Ssa {
         Steps::stepClosed(pred, succ)
         or
         exists(Call call, Callable callable |
-          callable.getSourceDeclaration().canReturn(pred) and
+          callable.getUnboundDeclaration().canReturn(pred) and
           call = succ
         |
           callable = call.getTarget() or

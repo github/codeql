@@ -16,8 +16,11 @@ private import TypeRef
 class Declaration extends DotNet::Declaration, Element, @declaration {
   override ValueOrRefType getDeclaringType() { none() }
 
+  /** Holds if this declaration is unbound. */
+  final predicate isUnboundDeclaration() { this = this.getUnboundDeclaration() }
+
   /** Holds if this declaration is unconstructed and in source code. */
-  predicate isSourceDeclaration() { fromSource() and this = getSourceDeclaration() }
+  final predicate isSourceDeclaration() { this.fromSource() and this.isUnboundDeclaration() }
 
   override string toString() { result = this.getName() }
 

@@ -17,30 +17,30 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
  * code version.
  */
 DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
-  exists(DotNet::Callable sourceDecl | sourceDecl = c.getSourceDeclaration() |
-    result = sourceDecl and
+  exists(DotNet::Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
+    result = unboundDecl and
     result instanceof SummarizedCallable
     or
-    result = sourceDecl and
+    result = unboundDecl and
     FlowSummaryImpl::Private::summary(_, _, _, SummaryOutput::jump(result, _), _, _)
     or
     result.hasBody() and
-    if sourceDecl.getFile().fromSource()
+    if unboundDecl.getFile().fromSource()
     then
       // C# callable with C# implementation in the database
-      result = sourceDecl
+      result = unboundDecl
     else
-      if sourceDecl instanceof CIL::Callable
+      if unboundDecl instanceof CIL::Callable
       then
         // CIL callable with C# implementation in the database
-        sourceDecl.matchesHandle(result.(Callable))
+        unboundDecl.matchesHandle(result.(Callable))
         or
         // CIL callable without C# implementation in the database
-        not sourceDecl.matchesHandle(any(Callable k | k.hasBody())) and
-        result = sourceDecl
+        not unboundDecl.matchesHandle(any(Callable k | k.hasBody())) and
+        result = unboundDecl
       else
         // C# callable without C# implementation in the database
-        sourceDecl.matchesHandle(result.(CIL::Callable))
+        unboundDecl.matchesHandle(result.(CIL::Callable))
   )
 }
 
@@ -172,7 +172,7 @@ private module DispatchImpl {
           .(NonDelegateDataFlowCall)
           .getDispatchCall()
           .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
-          .getSourceDeclaration()
+          .getUnboundDeclaration()
   }
 }
 

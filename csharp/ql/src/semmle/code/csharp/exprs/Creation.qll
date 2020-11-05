@@ -415,7 +415,7 @@ class AnonymousFunctionExpr extends Expr, Callable, @anonymous_function_expr {
       this.getType().(SystemLinqExpressions::DelegateExtType).getDelegateType().getReturnType()
   }
 
-  override AnonymousFunctionExpr getSourceDeclaration() { result = this }
+  override AnonymousFunctionExpr getUnboundDeclaration() { result = this }
 
   override Callable getEnclosingCallable() { result = Expr.super.getEnclosingCallable() }
 
