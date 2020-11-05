@@ -53,7 +53,7 @@ You can write simple queries using the some of the basic functions that are avai
 Exercise 1
 ~~~~~~~~~~
 
-Write a query which returns the length of the string ``"lgtm"``. (Hint: `here <https://help.semmle.com/QL/ql-spec/language.html#built-ins-for-string>`__ is the list of the functions that can be applied to strings.)
+Write a query which returns the length of the string ``"lgtm"``. (Hint: `here <ql-language-specification#built-ins-for-string>`__ is the list of the functions that can be applied to strings.)
 
 ➤ `See answer in the query console on LGTM.com <https://lgtm.com/query/2103060623/>`__
 

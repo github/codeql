@@ -25,7 +25,7 @@ a class ``OneTwoThree``::
       }
     } 
 
-The name of a module can be any `identifier <https://help.semmle.com/QL/ql-spec/language.html#identifiers>`_
+The name of a module can be any `identifier <ql-language-specification#identifiers>`_
 that starts with an uppercase or lowercase letter. 
 
 ``.ql`` or ``.qll`` files also implicitly define modules.
@@ -178,5 +178,5 @@ for example ``import javascript as js``.
 The ``<module_expression>`` itself can be a module name, a selection, or a qualified
 reference. For more information, see ":ref:`name-resolution`."
 
-For information about how import statements are looked up, see "`Module resolution <https://help.semmle.com/QL/ql-spec/language.html#module-resolution>`__"
+For information about how import statements are looked up, see "`Module resolution <ql-language-specification#module-resolution>`__"
 in the QL language specification. 

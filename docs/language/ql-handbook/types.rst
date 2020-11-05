@@ -48,7 +48,7 @@ independent of the database that you are querying.
     
 
 QL has a range of built-in operations defined on primitive types. These are available by using dispatch on expressions of the appropriate type. For example, ``1.toString()`` is the string representation of the integer constant ``1``. For a full list of built-in operations available in QL, see the
-section on `built-ins <https://help.semmle.com/QL/ql-spec/language.html#built-ins>`__ in the QL language specification.
+section on `built-ins <ql-language-specification#built-ins>`__ in the QL language specification.
 
 .. index:: class
 .. _classes:
@@ -74,7 +74,7 @@ Defining a class
 To define a class, you write:
 
 #. The keyword ``class``. 
-#. The name of the class. This is an `identifier <https://help.semmle.com/QL/ql-spec/language.html#identifiers>`_ 
+#. The name of the class. This is an `identifier <ql-language-specification#identifiers>`_ 
    starting with an uppercase letter.
 #. The types to extend. 
 #. The :ref:`body of the class <class-bodies>`, enclosed in braces.
@@ -419,7 +419,7 @@ The branch definitions have the following form::
 
     <BranchName>(<arguments>) { <body> }
 
-- The type name and the branch names must be `identifiers <https://help.semmle.com/QL/ql-spec/language.html#identifiers>`_ 
+- The type name and the branch names must be `identifiers <ql-language-specification#identifiers>`_ 
   starting with an uppercase letter. Conventionally, they start with ``T``.
 - The different branches of an algebraic datatype are separated by ``or``.
 - The arguments to a branch, if any, are :ref:`variable declarations <variable-declarations>`

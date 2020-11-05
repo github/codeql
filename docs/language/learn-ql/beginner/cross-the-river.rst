@@ -203,7 +203,7 @@ the given path without revisiting any previously visited states.
     revisiting any previous states, and there is a ``safeFerry`` action from the intermediate state to
     the result state.
     (Hint: To check whether a state has previously been visited, you could check if
-    there is an `index of <https://help.semmle.com/QL/ql-spec/language.html#built-ins-for-string>`__
+    there is an `index of <ql-language-specification#built-ins-for-string>`__
     ``visitedStates`` at which the state occurs.)
 
 .. container:: toggle
