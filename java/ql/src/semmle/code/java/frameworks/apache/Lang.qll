@@ -12,7 +12,8 @@ class TypeApacheRandomStringUtils extends Class {
 }
 
 /*--- Methods ---*/
-/** The method `deserialize` in either `org.apache.commons.lang.SerializationUtils`
+/**
+ * The method `deserialize` in either `org.apache.commons.lang.SerializationUtils`
  * or `org.apache.commons.lang3.SerializationUtils`.
  */
 class MethodApacheSerializationUtilsDeserialize extends Method {
