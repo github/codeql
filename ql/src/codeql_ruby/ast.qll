@@ -26,6 +26,10 @@ class Token extends @token, AstNode {
   override string describeQlClass() { result = "Token" }
 }
 
+class ReservedWord extends Token, @reserved_word {
+  override string describeQlClass() { result = "ReservedWord" }
+}
+
 class UnderscoreArg extends @underscore_arg, AstNode, ArgumentListChildType, ArrayChildType,
   AssignmentRightType, BinaryLeftType, BinaryRightType, ElementReferenceChildType,
   ExceptionsChildType, IfModifierConditionType, OperatorAssignmentRightType, PairKeyType,
@@ -1256,4 +1260,88 @@ class Yield extends @yield, AstNode, ArgumentListChildType, ArrayChildType, Assi
   ArgumentList getChild() { yield_child(this, result) }
 
   override AstNode getAFieldOrChild() { yield_child(this, result) }
+}
+
+class Character extends Token, @token_character {
+  override string describeQlClass() { result = "Character" }
+}
+
+class ClassVariable extends Token, @token_class_variable {
+  override string describeQlClass() { result = "ClassVariable" }
+}
+
+class Comment extends Token, @token_comment {
+  override string describeQlClass() { result = "Comment" }
+}
+
+class Complex extends Token, @token_complex {
+  override string describeQlClass() { result = "Complex" }
+}
+
+class Constant extends Token, @token_constant {
+  override string describeQlClass() { result = "Constant" }
+}
+
+class EmptyStatement extends Token, @token_empty_statement {
+  override string describeQlClass() { result = "EmptyStatement" }
+}
+
+class EscapeSequence extends Token, @token_escape_sequence {
+  override string describeQlClass() { result = "EscapeSequence" }
+}
+
+class False extends Token, @token_false {
+  override string describeQlClass() { result = "False" }
+}
+
+class Float extends Token, @token_float {
+  override string describeQlClass() { result = "Float" }
+}
+
+class GlobalVariable extends Token, @token_global_variable {
+  override string describeQlClass() { result = "GlobalVariable" }
+}
+
+class HeredocBeginning extends Token, @token_heredoc_beginning {
+  override string describeQlClass() { result = "HeredocBeginning" }
+}
+
+class HeredocEnd extends Token, @token_heredoc_end {
+  override string describeQlClass() { result = "HeredocEnd" }
+}
+
+class Identifier extends Token, @token_identifier {
+  override string describeQlClass() { result = "Identifier" }
+}
+
+class InstanceVariable extends Token, @token_instance_variable {
+  override string describeQlClass() { result = "InstanceVariable" }
+}
+
+class Integer extends Token, @token_integer {
+  override string describeQlClass() { result = "Integer" }
+}
+
+class Nil extends Token, @token_nil {
+  override string describeQlClass() { result = "Nil" }
+}
+
+class Operator extends Token, @token_operator {
+  override string describeQlClass() { result = "Operator" }
+}
+
+class Self extends Token, @token_self {
+  override string describeQlClass() { result = "Self" }
+}
+
+class Super extends Token, @token_super {
+  override string describeQlClass() { result = "Super" }
+}
+
+class True extends Token, @token_true {
+  override string describeQlClass() { result = "True" }
+}
+
+class Uninterpreted extends Token, @token_uninterpreted {
+  override string describeQlClass() { result = "Uninterpreted" }
 }

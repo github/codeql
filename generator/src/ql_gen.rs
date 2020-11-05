@@ -204,6 +204,24 @@ fn create_token_class() -> ql::Class {
         ],
     }
 }
+
+// Creates the `ReservedWord` class.
+fn create_reserved_word_class() -> ql::Class {
+    let db_name = "reserved_word".to_owned();
+    let class_name = dbscheme_name_to_class_name(&db_name);
+    let describe_ql_class = create_describe_ql_class(&class_name);
+    ql::Class {
+        name: class_name,
+        is_abstract: false,
+        supertypes: vec![
+            ql::Type::Normal("Token".to_owned()),
+            ql::Type::AtType(db_name),
+        ],
+        characteristic_predicate: None,
+        predicates: vec![describe_ql_class],
+    }
+}
+
 /// Creates a predicate whose body is `none()`.
 fn create_none_predicate(
     name: &str,
@@ -482,6 +500,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
         ql::TopLevel::Import("codeql.Locations".to_owned()),
         ql::TopLevel::Class(create_ast_node_class()),
         ql::TopLevel::Class(create_token_class()),
+        ql::TopLevel::Class(create_reserved_word_class()),
     ];
     let mut token_kinds = BTreeSet::new();
     for node in nodes {
@@ -494,8 +513,27 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
 
     for node in nodes {
         match &node {
-            node_types::Entry::Token { .. } => {
-                // don't generate any QL code for tokens
+            node_types::Entry::Token {
+                type_name,
+                kind_id: _,
+            } => {
+                if type_name.named {
+                    let db_name = format!("token_{}", &type_name.kind);
+                    let db_name = node_types::escape_name(&db_name);
+                    let class_name =
+                        dbscheme_name_to_class_name(&node_types::escape_name(&type_name.kind));
+                    let describe_ql_class = create_describe_ql_class(&class_name);
+                    classes.push(ql::TopLevel::Class(ql::Class {
+                        name: class_name,
+                        is_abstract: false,
+                        supertypes: vec![
+                            ql::Type::Normal("Token".to_owned()),
+                            ql::Type::AtType(db_name),
+                        ],
+                        characteristic_predicate: None,
+                        predicates: vec![describe_ql_class],
+                    }));
+                }
             }
             node_types::Entry::Union {
                 type_name,
