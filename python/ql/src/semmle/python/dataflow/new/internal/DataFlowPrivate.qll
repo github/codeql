@@ -181,6 +181,7 @@ module EssaFlow {
  * data flow. It is a strict subset of the `localFlowStep` predicate, as it
  * excludes SSA flow through instance fields.
  */
+cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // If there is ESSA-flow out of a node `node`, we want flow
   // both out of `node` and any post-update node of `node`.

@@ -352,6 +352,19 @@ class BarrierGuard extends GuardNode {
 }
 
 /**
+ * A data flow node that is a source of local flow. This includes things like
+ * - Expressions
+ * - Function parameters
+ */
+class LocalSourceNode extends Node {
+  LocalSourceNode() { not simpleLocalFlowStep(_, this) }
+
+  /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
+  cached
+  predicate flowsTo(Node nodeTo) { simpleLocalFlowStep*(this, nodeTo) }
+}
+
+/**
  * A reference contained in an object. This is either a field or a property.
  */
 newtype TContent =
