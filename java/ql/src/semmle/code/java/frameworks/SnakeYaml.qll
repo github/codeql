@@ -39,7 +39,7 @@ class SafeSnakeYamlConstruction extends ClassInstanceExpr {
  * The class `org.yaml.snakeyaml.Yaml`.
  */
 class Yaml extends RefType {
-  Yaml() { this.hasQualifiedName("org.yaml.snakeyaml", "Yaml") }
+  Yaml() { this.getASupertype*().hasQualifiedName("org.yaml.snakeyaml", "Yaml") }
 }
 
 private class SafeYamlConstructionFlowConfig extends DataFlow2::Configuration {
@@ -71,7 +71,7 @@ private class SnakeYamlParse extends MethodAccess {
   SnakeYamlParse() {
     exists(Method m |
       m.getDeclaringType() instanceof Yaml and
-      (m.hasName("load") or m.hasName("loadAll") or m.hasName("loadAs") or m.hasName("parse")) and
+      m.hasName(["compose", "composeAll", "load", "loadAll", "loadAs", "parse"]) and
       m = this.getMethod()
     )
   }
