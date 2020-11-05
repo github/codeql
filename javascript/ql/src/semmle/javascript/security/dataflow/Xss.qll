@@ -151,7 +151,7 @@ module DomBasedXss {
    * An expression whose value is interpreted as HTML
    * and may be inserted into the DOM through a library.
    */
-  class LibrarySink extends Sink, DataFlow::ValueNode {
+  class LibrarySink extends Sink {
     LibrarySink() {
       // call to a jQuery method that interprets its argument as HTML
       exists(JQuery::MethodCall call |
@@ -175,6 +175,13 @@ module DomBasedXss {
       this = any(Handlebars::SafeString s).getAnArgument()
       or
       this = any(JQuery::MethodCall call | call.getMethodName() = "jGrowl").getArgument(0)
+      or
+      // A construction of a JSDOM object (server side DOM), where scripts are allowed.
+      exists(DataFlow::NewNode instance |
+        instance = API::moduleImport("jsdom").getMember("JSDOM").getInstance().getAnImmediateUse() and
+        this = instance.getArgument(0) and
+        instance.getOptionArgument(1, "runScripts").mayHaveStringValue("dangerously")
+      )
     }
   }
 

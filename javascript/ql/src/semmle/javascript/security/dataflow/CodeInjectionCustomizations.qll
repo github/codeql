@@ -138,17 +138,4 @@ module CodeInjection {
         API::moduleImport("module").getInstance().getMember("_compile").getACall().getArgument(0)
     }
   }
-
-  /**
-   * A construction of a JSDOM object (server side DOM), where scripts are allowed.
-   */
-  class JSDomWithRunScripts extends Sink {
-    JSDomWithRunScripts() {
-      exists(DataFlow::NewNode instance |
-        instance = API::moduleImport("jsdom").getMember("JSDOM").getInstance().getAnImmediateUse() and
-        this = instance.getArgument(0) and
-        instance.getOptionArgument(1, "runScripts").mayHaveStringValue("dangerously")
-      )
-    }
-  }
 }

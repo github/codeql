@@ -20,13 +20,3 @@ app.get('/some/path', function(req, res) {
   // NOT OK
   vm.runInContext(req.param("code_runInContext"), vm.createContext());
 });
-
-import {JSDOM} from "jsdom";
-
-app.get('/some/path', function(req, res) {
-  // NOT OK
-  new JSDOM(req.param("wobble"), {runScripts: "dangerously"});
-
-  // OK
-  new JSDOM(req.param("wobble"), {runScripts: "outside-only"});
-});
