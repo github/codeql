@@ -1945,33 +1945,36 @@ private module Stage4 {
     argAp = apNone() and
     ap = getApNil(node)
     or
-    flowCand(node, _, unbind(config)) and
-    (
-      exists(Node mid, LocalCallContext localCC |
-        fwdFlowLocalEntry(mid, cc, argAp, ap, localCC, config) and
-        localFlowBigStep(mid, node, true, _, config, localCC)
-      )
+    exists(Node mid, Ap ap0, LocalCallContext localCC |
+      fwdFlow(mid, cc, argAp, ap0, config) and
+      localFlowEntry(mid, config) and
+      localCC = getLocalCallContext(cc, mid.getEnclosingCallable())
+    |
+      localFlowBigStep(mid, node, true, _, config, localCC) and
+      ap = ap0
       or
-      exists(Node mid, ApNil nil, LocalCallContext localCC, AccessPathFront apf |
-        fwdFlowLocalEntry(mid, cc, argAp, nil, localCC, config) and
+      exists(AccessPathFront apf |
         localFlowBigStep(mid, node, false, apf, config, localCC) and
+        ap0 instanceof ApNil and
         apf = ap.(ApNil).getFront()
       )
-      or
-      exists(Node mid |
-        fwdFlow(mid, _, _, ap, config) and
-        jumpStep(mid, node, config) and
-        cc = ccAny() and
-        argAp = apNone()
-      )
-      or
-      exists(Node mid, ApNil nil |
-        fwdFlow(mid, _, _, nil, config) and
-        additionalJumpStep(mid, node, config) and
-        cc = ccAny() and
-        argAp = apNone() and
-        ap = getApNil(node)
-      )
+    )
+    or
+    exists(Node mid |
+      fwdFlow(mid, _, _, ap, config) and
+      flowCand(node, _, unbind(config)) and
+      jumpStep(mid, node, config) and
+      cc = ccAny() and
+      argAp = apNone()
+    )
+    or
+    exists(Node mid, ApNil nil |
+      fwdFlow(mid, _, _, nil, config) and
+      flowCand(node, _, unbind(config)) and
+      additionalJumpStep(mid, node, config) and
+      cc = ccAny() and
+      argAp = apNone() and
+      ap = getApNil(node)
     )
     or
     // store
@@ -2002,15 +2005,6 @@ private module Stage4 {
         fwdFlowIsEntered(call, cc, argAp, argAp0, config)
       )
     )
-  }
-
-  pragma[nomagic]
-  private predicate fwdFlowLocalEntry(
-    Node node, Cc cc, ApOption argAp, Ap ap, LocalCallContext localCC, Configuration config
-  ) {
-    fwdFlow(node, cc, argAp, ap, config) and
-    localFlowEntry(node, config) and
-    localCC = getLocalCallContext(cc, node.getEnclosingCallable())
   }
 
   pragma[nomagic]
