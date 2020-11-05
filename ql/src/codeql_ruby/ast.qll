@@ -26,6 +26,10 @@ class Token extends @token, AstNode {
   override string describeQlClass() { result = "Token" }
 }
 
+class ReservedWord extends Token, @reserved_word {
+  override string describeQlClass() { result = "ReservedWord" }
+}
+
 class UnderscoreArg extends @underscore_arg, AstNode, ArgumentListChildType, ArrayChildType,
   AssignmentRightType, BinaryLeftType, BinaryRightType, ElementReferenceChildType,
   ExceptionsChildType, IfModifierConditionType, OperatorAssignmentRightType, PairKeyType,
@@ -1256,4 +1260,88 @@ class Yield extends @yield, AstNode, ArgumentListChildType, ArrayChildType, Assi
   ArgumentList getChild() { yield_child(this, result) }
 
   override AstNode getAFieldOrChild() { yield_child(this, result) }
+}
+
+class TokenCharacter extends Token, @token_character {
+  override string describeQlClass() { result = "TokenCharacter" }
+}
+
+class TokenClassVariable extends Token, @token_class_variable {
+  override string describeQlClass() { result = "TokenClassVariable" }
+}
+
+class TokenComment extends Token, @token_comment {
+  override string describeQlClass() { result = "TokenComment" }
+}
+
+class TokenComplex extends Token, @token_complex {
+  override string describeQlClass() { result = "TokenComplex" }
+}
+
+class TokenConstant extends Token, @token_constant {
+  override string describeQlClass() { result = "TokenConstant" }
+}
+
+class TokenEmptyStatement extends Token, @token_empty_statement {
+  override string describeQlClass() { result = "TokenEmptyStatement" }
+}
+
+class TokenEscapeSequence extends Token, @token_escape_sequence {
+  override string describeQlClass() { result = "TokenEscapeSequence" }
+}
+
+class TokenFalse extends Token, @token_false {
+  override string describeQlClass() { result = "TokenFalse" }
+}
+
+class TokenFloat extends Token, @token_float {
+  override string describeQlClass() { result = "TokenFloat" }
+}
+
+class TokenGlobalVariable extends Token, @token_global_variable {
+  override string describeQlClass() { result = "TokenGlobalVariable" }
+}
+
+class TokenHeredocBeginning extends Token, @token_heredoc_beginning {
+  override string describeQlClass() { result = "TokenHeredocBeginning" }
+}
+
+class TokenHeredocEnd extends Token, @token_heredoc_end {
+  override string describeQlClass() { result = "TokenHeredocEnd" }
+}
+
+class TokenIdentifier extends Token, @token_identifier {
+  override string describeQlClass() { result = "TokenIdentifier" }
+}
+
+class TokenInstanceVariable extends Token, @token_instance_variable {
+  override string describeQlClass() { result = "TokenInstanceVariable" }
+}
+
+class TokenInteger extends Token, @token_integer {
+  override string describeQlClass() { result = "TokenInteger" }
+}
+
+class TokenNil extends Token, @token_nil {
+  override string describeQlClass() { result = "TokenNil" }
+}
+
+class TokenOperator extends Token, @token_operator {
+  override string describeQlClass() { result = "TokenOperator" }
+}
+
+class TokenSelf extends Token, @token_self {
+  override string describeQlClass() { result = "TokenSelf" }
+}
+
+class TokenSuper extends Token, @token_super {
+  override string describeQlClass() { result = "TokenSuper" }
+}
+
+class TokenTrue extends Token, @token_true {
+  override string describeQlClass() { result = "TokenTrue" }
+}
+
+class TokenUninterpreted extends Token, @token_uninterpreted {
+  override string describeQlClass() { result = "TokenUninterpreted" }
 }
