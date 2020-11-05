@@ -11,7 +11,7 @@ import semmle.code.cpp.models.interfaces.Alias
 /**
  * The standard functions `printf`, `wprintf` and their glib variants.
  */
-class Printf extends FormattingFunction, AliasFunction {
+private class Printf extends FormattingFunction, AliasFunction {
   Printf() {
     this instanceof TopLevelFunction and
     (
@@ -31,6 +31,8 @@ class Printf extends FormattingFunction, AliasFunction {
     hasGlobalName("wprintf_s")
   }
 
+  override predicate isOutputGlobal() { any() }
+
   override predicate parameterNeverEscapes(int n) { n = 0 }
 
   override predicate parameterEscapesOnlyViaReturn(int n) { none() }
@@ -41,7 +43,7 @@ class Printf extends FormattingFunction, AliasFunction {
 /**
  * The standard functions `fprintf`, `fwprintf` and their glib variants.
  */
-class Fprintf extends FormattingFunction {
+private class Fprintf extends FormattingFunction {
   Fprintf() {
     this instanceof TopLevelFunction and
     (
@@ -57,6 +59,8 @@ class Fprintf extends FormattingFunction {
   deprecated override predicate isWideCharDefault() { hasGlobalOrStdName("fwprintf") }
 
   override int getOutputParameterIndex() { result = 0 }
+
+  override predicate isOutputStream() { any() }
 }
 
 /**
@@ -232,7 +236,7 @@ private class StringCchPrintf extends FormattingFunction {
 /**
  * The standard function `syslog`.
  */
-class Syslog extends FormattingFunction {
+private class Syslog extends FormattingFunction {
   Syslog() {
     this instanceof TopLevelFunction and
     hasGlobalName("syslog") and
@@ -240,4 +244,6 @@ class Syslog extends FormattingFunction {
   }
 
   override int getFormatParameterIndex() { result = 1 }
+
+  override predicate isOutputGlobal() { any() }
 }

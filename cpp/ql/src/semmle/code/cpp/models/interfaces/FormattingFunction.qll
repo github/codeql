@@ -109,9 +109,24 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   }
 
   /**
-   * Gets the position at which the output parameter, if any, occurs.
+   * Gets the position at which the output parameter, if any, occurs. This may
+   * be a buffer that characters are written to if this function behaves like
+   * `sprintf`.  Alternatively it may be a stream that is used for output if
+   * this function behaves like `fprintf` (see `isOutputStream`).
    */
   int getOutputParameterIndex() { none() }
+  
+  /**
+   * Holds if this function outputs to a global stream such as standard output,
+   * standard error or a system log. For example `printf`.
+   */
+  predicate isOutputGlobal() { none() }
+  
+  /**
+   * Holds if this function outputs to the stream indicated by
+   * `getOutputParameterIndex()`, that is, this function behaves like `fprintf`.
+   */
+  predicate isOutputStream() { none() }
 
   /**
    * Gets the position of the first format argument, corresponding with
