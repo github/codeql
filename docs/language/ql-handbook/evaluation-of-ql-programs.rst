@@ -33,7 +33,7 @@ results of the program. The results are sorted according to any ordering directi
 (``order by``) in the queries.
 
 For more details about each step of the evaluation process, see the "`QL language specification
-<https://help.semmle.com/QL/ql-spec/language.html#evaluation>`_."
+<https://help.semmle.com/QL/ql-spec/language.html#evaluations-of-ql-programs>`_."
 
 Validity of programs
 ********************

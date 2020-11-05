@@ -196,7 +196,7 @@ The wildcards ``? extends Number`` and ``? super Float`` are represented by clas
 
 For dealing with generic methods, there are classes ``GenericMethod``, ``ParameterizedMethod`` and ``RawMethod``, which are entirely analogous to the like-named classes for representing generic types.
 
-For more information on working with types, see the :doc:`article on Java types <types-class-hierarchy>`.
+For more information on working with types, see the :doc:`article on Java types <types-in-java>`.
 
 Variables
 ~~~~~~~~~
@@ -210,7 +210,7 @@ Class ``Variable`` represents a variable `in the Java sense <https://docs.oracle
 Abstract syntax tree
 --------------------
 
-Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see ":doc:`Abstract syntax tree classes for working with Java programs <ast-class-reference>`."
+Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see ":doc:`Abstract syntax tree classes for working with Java programs <abstract-syntax-tree-classes-for-working-with-go-programs>`."
 
 Both ``Expr`` and ``Stmt`` provide member predicates for exploring the abstract syntax tree of a program:
 
@@ -260,7 +260,7 @@ Finally, here is a query that finds method bodies:
 
 As these examples show, the parent node of an expression is not always an expression: it may also be a statement, for example, an ``IfStmt``. Similarly, the parent node of a statement is not always a statement: it may also be a method or a constructor. To capture this, the QL Java library provides two abstract class ``ExprParent`` and ``StmtParent``, the former representing any node that may be the parent node of an expression, and the latter any node that may be the parent node of a statement.
 
-For more information on working with AST classes, see the :doc:`article on overflow-prone comparisons in Java <expressions-statements>`.
+For more information on working with AST classes, see the :doc:`article on overflow-prone comparisons in Java <overflow-prone-comparisons-in-java>`.
 
 Metadata
 --------
@@ -292,7 +292,7 @@ These annotations are represented by class ``Annotation``. An annotation is simp
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5393027107459215059/>`__. Only constructors with the ``@Deprecated`` annotation are reported this time.
 
-For more information on working with annotations, see the :doc:`article on annotations <annotations>`.
+For more information on working with annotations, see the :doc:`article on annotations <annotations-in-java>`.
 
 For Javadoc, class ``Element`` has a member predicate ``getDoc`` that returns a delegate ``Documentable`` object, which can then be queried for its attached Javadoc comments. For example, the following query finds Javadoc comments on private fields:
 
@@ -379,9 +379,9 @@ Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So 
    where not exists(c.getAReference())
    select c
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/7261739919657747703/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see ":doc:`Navigating the call graph <call-graph>`."
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/7261739919657747703/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see ":doc:`Navigating the call graph <navigating-the-call-graph>`."
 
-For more information about callables and calls, see the :doc:`article on the call graph <call-graph>`.
+For more information about callables and calls, see the :doc:`article on the call graph <navigating-the-call-graph>`.
 
 Further reading
 ---------------

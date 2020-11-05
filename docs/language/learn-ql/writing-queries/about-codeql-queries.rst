@@ -35,17 +35,17 @@ Basic query structure
     where /* ... logical formula ... */
     select /* ... expressions ... */
 
-The following sections describe the information that is typically included in a query file for alerts. Path queries are discussed in more detail in ":doc:`Creating path queries <path-queries>`." 
+The following sections describe the information that is typically included in a query file for alerts. Path queries are discussed in more detail in ":doc:`Creating path queries <creating-path-queries>`." 
 
 Query metadata
 ==============
 
-Query metadata is used to identify your custom queries when they are added to the GitHub repository or used in your analysis. Metadata provides information about the query's purpose, and also specifies how to interpret and display the query results. For a full list of metadata properties, see ":doc:`Metadata for CodeQL queries <query-metadata>`." The exact metadata requirement depends on how you are going to run your query:
+Query metadata is used to identify your custom queries when they are added to the GitHub repository or used in your analysis. Metadata provides information about the query's purpose, and also specifies how to interpret and display the query results. For a full list of metadata properties, see ":doc:`Metadata for CodeQL queries <metadata-for-codeql-queries>`." The exact metadata requirement depends on how you are going to run your query:
 
 - If you are contributing a query to the GitHub repository, please read the `query metadata style guide <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__. 
-- If you are adding a custom query to a query pack for analysis using LGTM , see `Writing custom queries to include in LGTM analysis <https://lgtm.com/help/lgtm/writing-custom-queries>`__.
+- If you are adding a custom query to a query pack for analysis using LGTM , see `Writing custom queries to include in LGTM analysis <https://lgtm.com/help/lgtm/writing-using-custom-queries-with-the-codeql-cli>`__.
 - If you are analyzing a database using the `CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__, your query metadata must contain ``@kind``.
-- If you are running a query in the query console on LGTM or with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com and "`Analyzing your projects <https://help.semmle.com/codeql/codeql-for-vscode/procedures/using-extension.html>`__" in the CodeQL for VS Code help.
+- If you are running a query in the query console on LGTM or with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com and "`Analyzing your projects <https://help.semmle.com/codeql/codeql-for-vscode/procedures/analyzing-your-projects.html>`__" in the CodeQL for VS Code help.
 
 .. pull-quote:: 
 
@@ -73,7 +73,7 @@ When writing your own alert queries, you would typically import the standard lib
 - JavaScript/TypeScript: ``javascript``
 - Python: ``python``
 
-There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. For more information, see ":doc:`Creating path queries <path-queries>`."
+There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
 
 You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://help.semmle.com/QL/ql-libraries.html>`__ or in the `GitHub repository <https://github.com/github/codeql>`__.
 
@@ -106,9 +106,9 @@ Select clauses for alert queries (``@kind problem``) consist of two 'columns', w
 - ``element``: a code element that is identified by the query, which defines where the alert is displayed.
 - ``string``: a message, which can also include links and placeholders, explaining why the alert was generated. 
 
-You can modify the alert message defined in the final column of the ``select`` statement to give more detail about the alert or path found by the query using links and placeholders. For more information, see ":doc:`Defining the results of a query <select-statement>`." 
+You can modify the alert message defined in the final column of the ``select`` statement to give more detail about the alert or path found by the query using links and placeholders. For more information, see ":doc:`Defining the results of a query <defining-the-results-of-a-query>`." 
 
-Select clauses for path queries (``@kind path-problem``) are crafted to display both an alert and the source and sink of an associated path graph. For more information, see ":doc:`Creating path queries <path-queries>`."
+Select clauses for path queries (``@kind path-problem``) are crafted to display both an alert and the source and sink of an associated path graph. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
 
 Viewing the standard CodeQL queries
 ***********************************
@@ -123,12 +123,12 @@ Contributing queries
 Contributions to the standard queries and libraries are very welcome. For more information, see our `contributing guidelines <https://github.com/github/codeql/blob/main/CONTRIBUTING.md>`__.
 If you are contributing a query to the open source GitHub repository, writing a custom query for LGTM, or using a custom query in an analysis with the CodeQL CLI, then you need to include extra metadata in your query to ensure that the query results are interpreted and displayed correctly. See the following topics for more information on query metadata:
 
--  ":doc:`Metadata for CodeQL queries <query-metadata>`"
+-  ":doc:`Metadata for CodeQL queries <metadata-for-codeql-queries>`"
 -  `Query metadata style guide on GitHub <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__
 
-Query contributions to the open source GitHub repository may also have an accompanying query help file to provide information about their purpose for other users. For more information on writing query help, see the `Query help style guide on GitHub <https://github.com/github/codeql/blob/main/docs/query-help-style-guide.md>`__ and the ":doc:`Query help files <query-help>`."
+Query contributions to the open source GitHub repository may also have an accompanying query help file to provide information about their purpose for other users. For more information on writing query help, see the `Query help style guide on GitHub <https://github.com/github/codeql/blob/main/docs/query-help-style-guide.md>`__ and the ":doc:`Query help files <query-help-files>`."
 
 Query help files
 ****************
 
-When you write a custom query, we also recommend that you write a query help file to explain the purpose of the query to other users. For more information, see the `Query help style guide <https://github.com/github/codeql/blob/main/docs/query-help-style-guide.md>`__ on GitHub, and the ":doc:`Query help files <query-help>`." 
+When you write a custom query, we also recommend that you write a query help file to explain the purpose of the query to other users. For more information, see the `Query help style guide <https://github.com/github/codeql/blob/main/docs/query-help-style-guide.md>`__ on GitHub, and the ":doc:`Query help files <query-help-files>`." 

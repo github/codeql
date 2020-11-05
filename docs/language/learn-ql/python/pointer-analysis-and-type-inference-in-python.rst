@@ -181,7 +181,7 @@ The ``Value`` class has a method ``getACall()`` which allows us to find calls to
 
 If we wish to restrict the callables to actual functions we can use the ``FunctionValue`` class, which is a subclass of ``Value`` and corresponds to function objects in Python, in much the same way as the ``ClassValue`` class corresponds to class objects in Python.
 
-Returning to an example from ":doc:`Functions in Python <functions>`," we wish to find calls to the ``eval`` function.
+Returning to an example from ":doc:`Functions in Python <functions-in-python>`," we wish to find calls to the ``eval`` function.
 
 The original query looked this:
 

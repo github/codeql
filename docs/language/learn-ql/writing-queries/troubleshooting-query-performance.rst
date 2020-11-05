@@ -11,7 +11,7 @@ Before reading the tips below, it is worth reiterating a few important points ab
 
 - CodeQL `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ are evaluated to database `tables <https://en.wikipedia.org/wiki/Table_(database)>`__. Large predicates generate large tables with many rows, and are therefore expensive to compute.
 - The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, and union). For more information about query languages and databases, see `About the QL language <https://help.semmle.com/QL/learn-ql/about-ql.html>`__.
-- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until *all* of the predicates that it depends on are evaluated. For more information on query evaluation, see "`Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__." 
+- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until *all* of the predicates that it depends on are evaluated. For more information on query evaluation, see "`Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluations-of-ql-programs.html>`__." 
 
 Performance tips
 ----------------

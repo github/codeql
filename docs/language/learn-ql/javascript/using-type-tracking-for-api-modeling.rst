@@ -10,7 +10,7 @@ usually to recognize method calls and properties accessed on a specific type of 
 
 This is an advanced topic and is intended for readers already familiar with the
 `SourceNode <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#source-nodes>`__ class as well as
-`taint tracking <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#using-global-taint-tracking>`__.
+`taint tracking <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#using-global-analyzing-data-flow-and-tracking-tainted-data-in-python>`__.
 For TypeScript analysis also consider reading about `static type information <https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-ts.html#static-type-information>`__ first.
 
 
@@ -489,11 +489,11 @@ Prefer type tracking when:
 
 Prefer data-flow configurations when:
 
-- Tracking user-controlled data -- use `taint tracking <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#using-global-taint-tracking>`__.
-- Differentiating between different kinds of user-controlled data -- see ":doc:`Using flow labels for precise data flow analysis <flow-labels>`."
+- Tracking user-controlled data -- use `taint tracking <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#using-global-analyzing-data-flow-and-tracking-tainted-data-in-python>`__.
+- Differentiating between different kinds of user-controlled data -- see ":doc:`Using flow labels for precise data flow analysis <using-flow-labels-for-precise-data-flow-analysis>`."
 - Tracking transformations of a value through generic utility functions.
 - Tracking values through string manipulation.
-- Generating a path from source to sink -- see ":doc:`Creating path queries <../writing-queries/path-queries>`."
+- Generating a path from source to sink -- see ":doc:`Creating path queries <../writing-queries/creating-path-queries>`."
 
 Lastly, depending on the code base being analyzed, some alternatives to consider are:
 

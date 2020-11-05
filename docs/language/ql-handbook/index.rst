@@ -19,6 +19,6 @@ Learn all about QL, the powerful query language that underlies the code scanning
    recursion
    lexical-syntax
    name-resolution
-   evaluation
-   language
-   qldoc
+   evaluation-of-ql-programs
+   ql-language-specification
+   qldoc-comment-specification

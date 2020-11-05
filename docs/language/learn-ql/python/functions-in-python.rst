@@ -3,7 +3,7 @@ Functions in Python
 
 You can use syntactic classes from the standard CodeQL library to find Python functions and identify calls to them.
 
-These examples use the standard CodeQL class `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__. For more information, see ":doc:`CodeQL library for Python <introduce-libraries-python>`."
+These examples use the standard CodeQL class `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__. For more information, see ":doc:`CodeQL library for Python <codeql-library-for-python>`."
 
 Finding all functions called "get..."
 -------------------------------------
@@ -57,7 +57,7 @@ We can modify the query further to include only methods whose body consists of a
     and count(f.getAStmt()) = 1
    select f, "This function is (probably) a getter."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/667290044/>`__. This query returns fewer results, but if you examine the results you can see that there are still refinements to be made. This is refined further in ":doc:`Expressions and statements in Python <statements-expressions>`."
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/667290044/>`__. This query returns fewer results, but if you examine the results you can see that there are still refinements to be made. This is refined further in ":doc:`Expressions and statements in Python <expressions-and-statements-in-python>`."
 
 Finding a call to a specific function
 -------------------------------------

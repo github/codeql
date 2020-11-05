@@ -6,7 +6,7 @@ You can use CodeQL to explore functions in C and C++ code.
 Overview
 --------
 
-The standard CodeQL library for C and C++ represents functions using the ``Function`` class (see :doc:`CodeQL libraries for C and C++ <introduce-libraries-cpp>`).
+The standard CodeQL library for C and C++ represents functions using the ``Function`` class (see :doc:`CodeQL libraries for C and C++ <codeql-library-for-cpp>`).
 
 The example queries in this topic explore some of the most useful library predicates for querying functions.
 
@@ -28,7 +28,7 @@ This query is very general, so there are probably too many results to be interes
 Finding functions that are not called
 -------------------------------------
 
-It might be more interesting to find functions that are not called, using the standard CodeQL ``FunctionCall`` class from the **abstract syntax tree** category (see :doc:`CodeQL libraries for C and C++ <introduce-libraries-cpp>`). The ``FunctionCall`` class can be used to identify places where a function is actually used, and it is related to ``Function`` through the ``FunctionCall.getTarget()`` predicate.
+It might be more interesting to find functions that are not called, using the standard CodeQL ``FunctionCall`` class from the **abstract syntax tree** category (see :doc:`CodeQL libraries for C and C++ <codeql-library-for-cpp>`). The ``FunctionCall`` class can be used to identify places where a function is actually used, and it is related to ``Function`` through the ``FunctionCall.getTarget()`` predicate.
 
 .. code-block:: ql
 

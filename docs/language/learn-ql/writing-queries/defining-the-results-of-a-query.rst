@@ -7,7 +7,7 @@ About query results
 -------------------
 
 The information contained in the results of a query is controlled by the ``select`` statement. Part of the process of developing a useful query is to make the results clear and easy for other users to understand.
-When you write your own queries in the query console or in the CodeQL `extension for VS Code <https://help.semmle.com/codeql/codeql-for-vscode.html>`__ there are no constraints on what can be selected.
+When you write your own queries in the query console or in the CodeQL `extension for VS Code <https://help.semmle.com/codeql/codeql-for-visual-studio-code.html>`__ there are no constraints on what can be selected.
 However, if you want to use a query to create alerts in LGTM or generate valid analysis results using the `CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__, you'll need to make the ``select`` statement report results in the required format. 
 You must also ensure that the query has the appropriate metadata properties defined. 
 This topic explains how to write your select statement to generate helpful analysis results. 
@@ -15,7 +15,7 @@ This topic explains how to write your select statement to generate helpful analy
 Overview
 --------
 
-Alert queries must have the property ``@kind problem`` defined in their metadata. For more information, see ":doc:`Metadata for CodeQL queries <query-metadata>`." 
+Alert queries must have the property ``@kind problem`` defined in their metadata. For more information, see ":doc:`Metadata for CodeQL queries <metadata-for-codeql-queries>`." 
 In their most basic form, the ``select`` statement must select two 'columns':
 
 -  **Element**—a code element that's identified by the query. This defines the location of the alert.
@@ -27,7 +27,7 @@ If you look at some of the LGTM queries, you'll see that they can select extra e
 
     Note
 
-    An in-depth discussion of ``select`` statements for path queries is not included in this topic. However, you can develop the string column of the ``select`` statement in the same way as for alert queries. For more specific information about path queries, see ":doc:`Creating path queries <path-queries>`."
+    An in-depth discussion of ``select`` statements for path queries is not included in this topic. However, you can develop the string column of the ``select`` statement in the same way as for alert queries. For more specific information about path queries, see ":doc:`Creating path queries <creating-path-queries>`."
 
 Developing a select statement
 -----------------------------

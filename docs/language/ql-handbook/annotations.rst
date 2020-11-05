@@ -41,7 +41,7 @@ Overview of annotations
 
 This section describes what the different annotations do, and when you can use them.
 You can also find a summary table in the Annotations section of the 
-`QL language specification <https://help.semmle.com/QL/ql-spec/language.html#annotations>`_.
+`QL language specification <https://help.semmle.com/QL/ql-spec/language.html#annotations-in-java>`_.
 
 .. index:: abstract
 .. _abstract:

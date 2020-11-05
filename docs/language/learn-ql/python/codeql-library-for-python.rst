@@ -320,7 +320,7 @@ Summary
    -  ``CallableValue``
    -  ``ModuleValue``
 
-For more information about these classes, see ":doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`."
+For more information about these classes, see ":doc:`Pointer analysis and type inference in Python <pointer-analysis-and-type-inference-in-python>`."
 
 Taint-tracking classes
 ----------------------
@@ -334,7 +334,7 @@ Summary
 - `TaintKind <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__
 - `Configuration <https://help.semmle.com/qldoc/python/semmle/python/dataflow/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__
 
-For more information about these classes, see ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`."
+For more information about these classes, see ":doc:`Analyzing data flow and tracking tainted data in Python <analyzing-data-flow-and-tracking-tainted-data-in-python>`."
 
 
 Further reading

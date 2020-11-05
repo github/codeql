@@ -7,7 +7,7 @@ Overview
 --------
 
 You can use basic inter-procedural data-flow analysis and taint tracking as described in
-":doc:`Analyzing data flow in JavaScript and TypeScript <dataflow>`" to check whether there is a path in
+":doc:`Analyzing data flow in JavaScript and TypeScript <analyzing-data-flow-in-javascript>`" to check whether there is a path in
 the data-flow graph from some source node to a sink node that does not pass through any sanitizer
 nodes. Another way of thinking about this is that it statically models the flow of data through the
 program, and associates a flag with every data value telling us whether it might have come from a
@@ -267,7 +267,7 @@ sanitized value:
     }
   }
 
-Here is the final query, expressed as a :doc:`path query <../writing-queries/path-queries>` so we can examine paths from sources to sinks
+Here is the final query, expressed as a :doc:`path query <../writing-queries/creating-path-queries>` so we can examine paths from sources to sinks
 step by step in the UI:
 
 .. code-block:: ql
@@ -398,7 +398,7 @@ string may be an absolute path and whether it may contain ``..`` components.
 Further reading
 ---------------
 
-- "`Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__"
+- "`Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-data-flow-with-path-queries.html>`__"
 
 
 .. include:: ../../reusables/javascript-further-reading.rst

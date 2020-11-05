@@ -100,7 +100,7 @@ statements and expressions, respectively. This section briefly discusses some of
 important subclasses and predicates. For a full reference of all the subclasses of `Stmt
 <https://help.semmle.com/qldoc/go/semmle/go/Stmt.qll/type.Stmt$Stmt.html>`__ and `Expr
 <https://help.semmle.com/qldoc/go/semmle/go/Expr.qll/type.Expr$Expr.html>`__, see
-:doc:`Abstract syntax tree classes for Go <ast-class-reference>`.
+:doc:`Abstract syntax tree classes for Go <abstract-syntax-tree-classes-for-working-with-go-programs>`.
 
 Statements
 ~~~~~~~~~~
@@ -502,7 +502,7 @@ taint, you can define a subclass of ``TaintTracking::Configuration``, which work
 data-flow configurations.
 
 A detailed exposition of global data flow and taint tracking is out of scope for this brief
-introduction. For a general overview of data flow and taint tracking, see "`About data flow analysis <https://help.semmle.com/QL/learn-ql/intro-to-data-flow.html>`__."
+introduction. For a general overview of data flow and taint tracking, see "`About data flow analysis <https://help.semmle.com/QL/learn-ql/about-data-flow-analysis.html>`__."
 
 Advanced libraries
 ------------------

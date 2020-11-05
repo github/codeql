@@ -15,13 +15,13 @@ QL also supports recursion and aggregates. This allows you to write complex recu
 Running a query
 ---------------
 
-You can try out the following examples and exercises using `CodeQL for VS Code <https://help.semmle.com/codeql/codeql-for-vscode.html>`__, or you can run them in the `query console on LGTM.com <https://lgtm.com/query>`__. Before you can run a query on LGTM.com, you need to select a language and project to query (for these logic examples, any language and project will do).
+You can try out the following examples and exercises using `CodeQL for VS Code <https://help.semmle.com/codeql/codeql-for-visual-studio-code.html>`__, or you can run them in the `query console on LGTM.com <https://lgtm.com/query>`__. Before you can run a query on LGTM.com, you need to select a language and project to query (for these logic examples, any language and project will do).
 
 Once you have selected a language, the query console is populated with the query:
 
 .. code-block:: ql
 
-   import <language>
+   import <ql-language-specification>
 
    select "hello world"
 
@@ -122,7 +122,7 @@ The following example queries *do* use these databases and give you an idea of h
 Queries using the CodeQL libraries can find errors and uncover variants of important security vulnerabilities in codebases.
 Visit `GitHub Security Lab <https://securitylab.github.com/>`__ to read about examples of vulnerabilities that we have recently found in open source projects.
 
-To import the CodeQL library for a specific programming language, type ``import <language>`` at the start of the query.
+To import the CodeQL library for a specific programming language, type ``import <ql-language-specification>`` at the start of the query.
 
 .. code-block:: ql
 
