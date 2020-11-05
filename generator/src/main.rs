@@ -43,7 +43,7 @@ fn make_field_type(
         // type to represent them.
         let field_union_name = format!("{}_{}_type", parent_name, field_name);
         let field_union_name = node_types::escape_name(&field_union_name);
-        let members: Vec<String> = types
+        let members: Set<String> = types
             .iter()
             .map(|t| node_types::escape_name(&child_node_type_name(token_types, t)))
             .collect();
@@ -151,9 +151,9 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
         create_containerparent_table(),
         create_source_location_prefix_table(),
     ];
-    let mut ast_node_members: Vec<String> = Vec::new();
+    let mut ast_node_members: Set<String> = Set::new();
     let mut token_kinds: Map<String, usize> = Map::new();
-    ast_node_members.push(node_types::escape_name("token"));
+    ast_node_members.insert(node_types::escape_name("token"));
     for node in nodes {
         if let node_types::Entry::Token { type_name, kind_id } = node {
             if type_name.named {
@@ -170,12 +170,12 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
             } => {
                 // It's a tree-sitter supertype node, for which we create a union
                 // type.
-                let mut members: Vec<String> = Vec::new();
+                let mut members: Set<String> = Set::new();
                 for n_member in n_members {
-                    members.push(node_types::escape_name(&child_node_type_name(
+                    members.insert(node_types::escape_name(&child_node_type_name(
                         &token_kinds,
                         n_member,
-                    )))
+                    )));
                 }
                 entries.push(dbscheme::Entry::Union(dbscheme::Union {
                     name: node_types::escape_name(&node_types::node_type_name(
@@ -199,7 +199,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
                     }],
                     keysets: None,
                 };
-                ast_node_members.push(node_types::escape_name(&name));
+                ast_node_members.insert(node_types::escape_name(&name));
 
                 // If the type also has fields or children, then we create either
                 // auxiliary tables or columns in the defining table for them.
@@ -328,7 +328,7 @@ fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::
 fn create_location_union() -> dbscheme::Entry {
     dbscheme::Entry::Union(dbscheme::Union {
         name: "location".to_owned(),
-        members: vec!["location_default".to_owned()],
+        members: vec!["location_default".to_owned()].into_iter().collect(),
     })
 }
 
@@ -459,7 +459,7 @@ fn create_locations_default_table() -> dbscheme::Entry {
 fn create_sourceline_union() -> dbscheme::Entry {
     dbscheme::Entry::Union(dbscheme::Union {
         name: "sourceline".to_owned(),
-        members: vec!["file".to_owned()],
+        members: vec!["file".to_owned()].into_iter().collect(),
     })
 }
 
@@ -503,7 +503,9 @@ fn create_numlines_table() -> dbscheme::Entry {
 fn create_container_union() -> dbscheme::Entry {
     dbscheme::Entry::Union(dbscheme::Union {
         name: "container".to_owned(),
-        members: vec!["folder".to_owned(), "file".to_owned()],
+        members: vec!["folder".to_owned(), "file".to_owned()]
+            .into_iter()
+            .collect(),
     })
 }
 

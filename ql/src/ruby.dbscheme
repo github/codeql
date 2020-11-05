@@ -35,7 +35,7 @@ folders(
   string simple: string ref
 );
 
-@container = @folder | @file
+@container = @file | @folder
 
 containerparent(
   int parent: @container ref,
@@ -46,15 +46,15 @@ sourceLocationPrefix(
   string prefix: string ref
 );
 
-@underscore_arg = @underscore_primary | @assignment | @binary | @conditional | @operator_assignment | @range | @unary
+@underscore_arg = @assignment | @binary | @conditional | @operator_assignment | @range | @unary | @underscore_primary
 
-@underscore_lhs = @underscore_variable | @call | @element_reference | @token_false | @method_call | @token_nil | @scope_resolution | @token_true
+@underscore_lhs = @call | @element_reference | @method_call | @scope_resolution | @token_false | @token_nil | @token_true | @underscore_variable
 
-@underscore_method_name = @token_class_variable | @token_constant | @token_global_variable | @token_identifier | @token_instance_variable | @token_operator | @setter | @symbol
+@underscore_method_name = @setter | @symbol | @token_class_variable | @token_constant | @token_global_variable | @token_identifier | @token_instance_variable | @token_operator
 
-@underscore_primary = @underscore_lhs | @array | @begin | @break | @case__ | @chained_string | @token_character | @class | @token_complex | @token_float | @for | @hash | @token_heredoc_beginning | @if | @token_integer | @lambda | @method | @module | @next | @parenthesized_statements | @rational | @redo | @regex | @retry | @return | @singleton_class | @singleton_method | @string__ | @string_array | @subshell | @symbol | @symbol_array | @unary | @unless | @until | @while | @yield
+@underscore_primary = @array | @begin | @break | @case__ | @chained_string | @class | @for | @hash | @if | @lambda | @method | @module | @next | @parenthesized_statements | @rational | @redo | @regex | @retry | @return | @singleton_class | @singleton_method | @string__ | @string_array | @subshell | @symbol | @symbol_array | @token_character | @token_complex | @token_float | @token_heredoc_beginning | @token_integer | @unary | @underscore_lhs | @unless | @until | @while | @yield
 
-@underscore_statement = @underscore_arg | @alias | @assignment | @begin_block | @binary | @break | @call | @end_block | @if_modifier | @method_call | @next | @operator_assignment | @rescue_modifier | @return | @unary | @undef | @unless_modifier | @until_modifier | @while_modifier | @yield
+@underscore_statement = @alias | @assignment | @begin_block | @binary | @break | @call | @end_block | @if_modifier | @method_call | @next | @operator_assignment | @rescue_modifier | @return | @unary | @undef | @underscore_arg | @unless_modifier | @until_modifier | @while_modifier | @yield
 
 @underscore_variable = @token_class_variable | @token_constant | @token_global_variable | @token_identifier | @token_instance_variable | @token_self | @token_super
 
@@ -65,7 +65,7 @@ alias_def(
   int loc: @location ref
 );
 
-@argument_list_child_type = @underscore_arg | @block_argument | @break | @call | @hash_splat_argument | @method_call | @next | @pair | @return | @splat_argument | @yield
+@argument_list_child_type = @block_argument | @break | @call | @hash_splat_argument | @method_call | @next | @pair | @return | @splat_argument | @underscore_arg | @yield
 
 #keyset[argument_list, index]
 argument_list_child(
@@ -79,7 +79,7 @@ argument_list_def(
   int loc: @location ref
 );
 
-@array_child_type = @underscore_arg | @block_argument | @break | @call | @hash_splat_argument | @method_call | @next | @pair | @return | @splat_argument | @yield
+@array_child_type = @block_argument | @break | @call | @hash_splat_argument | @method_call | @next | @pair | @return | @splat_argument | @underscore_arg | @yield
 
 #keyset[array, index]
 array_child(
@@ -93,9 +93,9 @@ array_def(
   int loc: @location ref
 );
 
-@assignment_left_type = @underscore_lhs | @left_assignment_list
+@assignment_left_type = @left_assignment_list | @underscore_lhs
 
-@assignment_right_type = @underscore_arg | @break | @call | @method_call | @next | @return | @right_assignment_list | @splat_argument | @yield
+@assignment_right_type = @break | @call | @method_call | @next | @return | @right_assignment_list | @splat_argument | @underscore_arg | @yield
 
 assignment_def(
   unique int id: @assignment,
@@ -104,7 +104,7 @@ assignment_def(
   int loc: @location ref
 );
 
-@bare_string_child_type = @token_escape_sequence | @interpolation
+@bare_string_child_type = @interpolation | @token_escape_sequence
 
 #keyset[bare_string, index]
 bare_string_child(
@@ -118,7 +118,7 @@ bare_string_def(
   int loc: @location ref
 );
 
-@bare_symbol_child_type = @token_escape_sequence | @interpolation
+@bare_symbol_child_type = @interpolation | @token_escape_sequence
 
 #keyset[bare_symbol, index]
 bare_symbol_child(
@@ -132,7 +132,7 @@ bare_symbol_def(
   int loc: @location ref
 );
 
-@begin_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue
+@begin_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
 
 #keyset[begin, index]
 begin_child(
@@ -146,7 +146,7 @@ begin_def(
   int loc: @location ref
 );
 
-@begin_block_child_type = @underscore_statement | @token_empty_statement
+@begin_block_child_type = @token_empty_statement | @underscore_statement
 
 #keyset[begin_block, index]
 begin_block_child(
@@ -160,11 +160,11 @@ begin_block_def(
   int loc: @location ref
 );
 
-@binary_left_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
+@binary_left_type = @break | @call | @method_call | @next | @return | @underscore_arg | @yield
 
-@binary_operator_type = @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word | @reserved_word
+@binary_operator_type = @reserved_word
 
-@binary_right_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
+@binary_right_type = @break | @call | @method_call | @next | @return | @underscore_arg | @yield
 
 binary_def(
   unique int id: @binary,
@@ -174,7 +174,7 @@ binary_def(
   int loc: @location ref
 );
 
-@block_child_type = @underscore_statement | @block_parameters | @token_empty_statement
+@block_child_type = @block_parameters | @token_empty_statement | @underscore_statement
 
 #keyset[block, index]
 block_child(
@@ -200,7 +200,7 @@ block_parameter_def(
   int loc: @location ref
 );
 
-@block_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @token_identifier | @keyword_parameter | @optional_parameter | @splat_parameter
+@block_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @keyword_parameter | @optional_parameter | @splat_parameter | @token_identifier
 
 #keyset[block_parameters, index]
 block_parameters_child(
@@ -226,7 +226,7 @@ break_def(
 
 @call_method_type = @argument_list | @token_constant | @token_identifier | @token_operator
 
-@call_receiver_type = @underscore_primary | @method_call
+@call_receiver_type = @method_call | @underscore_primary
 
 call_def(
   unique int id: @call,
@@ -266,9 +266,9 @@ chained_string_def(
   int loc: @location ref
 );
 
-@class_name_type = @token_constant | @scope_resolution
+@class_name_type = @scope_resolution | @token_constant
 
-@class_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue | @superclass
+@class_child_type = @else | @ensure | @rescue | @superclass | @token_empty_statement | @underscore_statement
 
 #keyset[class, index]
 class_child(
@@ -291,7 +291,7 @@ conditional_def(
   int loc: @location ref
 );
 
-@destructured_left_assignment_child_type = @underscore_lhs | @destructured_left_assignment | @rest_assignment
+@destructured_left_assignment_child_type = @destructured_left_assignment | @rest_assignment | @underscore_lhs
 
 #keyset[destructured_left_assignment, index]
 destructured_left_assignment_child(
@@ -305,7 +305,7 @@ destructured_left_assignment_def(
   int loc: @location ref
 );
 
-@destructured_parameter_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @token_identifier | @keyword_parameter | @optional_parameter | @splat_parameter
+@destructured_parameter_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @keyword_parameter | @optional_parameter | @splat_parameter | @token_identifier
 
 #keyset[destructured_parameter, index]
 destructured_parameter_child(
@@ -319,7 +319,7 @@ destructured_parameter_def(
   int loc: @location ref
 );
 
-@do_child_type = @underscore_statement | @token_empty_statement
+@do_child_type = @token_empty_statement | @underscore_statement
 
 #keyset[do, index]
 do_child(
@@ -333,7 +333,7 @@ do_def(
   int loc: @location ref
 );
 
-@do_block_child_type = @underscore_statement | @block_parameters | @else | @token_empty_statement | @ensure | @rescue
+@do_block_child_type = @block_parameters | @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
 
 #keyset[do_block, index]
 do_block_child(
@@ -347,7 +347,7 @@ do_block_def(
   int loc: @location ref
 );
 
-@element_reference_child_type = @underscore_arg | @block_argument | @break | @call | @hash_splat_argument | @method_call | @next | @pair | @return | @splat_argument | @yield
+@element_reference_child_type = @block_argument | @break | @call | @hash_splat_argument | @method_call | @next | @pair | @return | @splat_argument | @underscore_arg | @yield
 
 #keyset[element_reference, index]
 element_reference_child(
@@ -367,7 +367,7 @@ else_condition(
   unique int reserved_word: @reserved_word ref
 );
 
-@else_child_type = @underscore_statement | @token_empty_statement
+@else_child_type = @token_empty_statement | @underscore_statement
 
 #keyset[else, index]
 else_child(
@@ -399,7 +399,7 @@ elsif_def(
   int loc: @location ref
 );
 
-@end_block_child_type = @underscore_statement | @token_empty_statement
+@end_block_child_type = @token_empty_statement | @underscore_statement
 
 #keyset[end_block, index]
 end_block_child(
@@ -413,7 +413,7 @@ end_block_def(
   int loc: @location ref
 );
 
-@ensure_child_type = @underscore_statement | @token_empty_statement
+@ensure_child_type = @token_empty_statement | @underscore_statement
 
 #keyset[ensure, index]
 ensure_child(
@@ -433,7 +433,7 @@ exception_variable_def(
   int loc: @location ref
 );
 
-@exceptions_child_type = @underscore_arg | @splat_argument
+@exceptions_child_type = @splat_argument | @underscore_arg
 
 #keyset[exceptions, index]
 exceptions_child(
@@ -447,7 +447,7 @@ exceptions_def(
   int loc: @location ref
 );
 
-@for_pattern_type = @underscore_lhs | @destructured_left_assignment | @rest_assignment
+@for_pattern_type = @destructured_left_assignment | @rest_assignment | @underscore_lhs
 
 #keyset[for, index]
 for_pattern(
@@ -493,7 +493,7 @@ hash_splat_parameter_def(
   int loc: @location ref
 );
 
-@heredoc_body_child_type = @token_escape_sequence | @token_heredoc_end | @interpolation
+@heredoc_body_child_type = @interpolation | @token_escape_sequence | @token_heredoc_end
 
 #keyset[heredoc_body, index]
 heredoc_body_child(
@@ -525,7 +525,7 @@ if_def(
   int loc: @location ref
 );
 
-@if_modifier_condition_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
+@if_modifier_condition_type = @break | @call | @method_call | @next | @return | @underscore_arg | @yield
 
 if_modifier_def(
   unique int id: @if_modifier,
@@ -570,7 +570,7 @@ lambda_def(
   int loc: @location ref
 );
 
-@lambda_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @token_identifier | @keyword_parameter | @optional_parameter | @splat_parameter
+@lambda_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @keyword_parameter | @optional_parameter | @splat_parameter | @token_identifier
 
 #keyset[lambda_parameters, index]
 lambda_parameters_child(
@@ -584,7 +584,7 @@ lambda_parameters_def(
   int loc: @location ref
 );
 
-@left_assignment_list_child_type = @underscore_lhs | @destructured_left_assignment | @rest_assignment
+@left_assignment_list_child_type = @destructured_left_assignment | @rest_assignment | @underscore_lhs
 
 #keyset[left_assignment_list, index]
 left_assignment_list_child(
@@ -603,7 +603,7 @@ method_parameters(
   unique int method_parameters: @method_parameters ref
 );
 
-@method_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue
+@method_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
 
 #keyset[method, index]
 method_child(
@@ -630,7 +630,7 @@ method_call_block(
   unique int method_call_block_type: @method_call_block_type ref
 );
 
-@method_call_method_type = @underscore_variable | @call | @scope_resolution
+@method_call_method_type = @call | @scope_resolution | @underscore_variable
 
 method_call_def(
   unique int id: @method_call,
@@ -638,7 +638,7 @@ method_call_def(
   int loc: @location ref
 );
 
-@method_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @token_identifier | @keyword_parameter | @optional_parameter | @splat_parameter
+@method_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @keyword_parameter | @optional_parameter | @splat_parameter | @token_identifier
 
 #keyset[method_parameters, index]
 method_parameters_child(
@@ -652,9 +652,9 @@ method_parameters_def(
   int loc: @location ref
 );
 
-@module_name_type = @token_constant | @scope_resolution
+@module_name_type = @scope_resolution | @token_constant
 
-@module_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue
+@module_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
 
 #keyset[module, index]
 module_child(
@@ -679,7 +679,7 @@ next_def(
   int loc: @location ref
 );
 
-@operator_assignment_right_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
+@operator_assignment_right_type = @break | @call | @method_call | @next | @return | @underscore_arg | @yield
 
 operator_assignment_def(
   unique int id: @operator_assignment,
@@ -695,7 +695,7 @@ optional_parameter_def(
   int loc: @location ref
 );
 
-@pair_key_type = @underscore_arg | @string__ | @symbol
+@pair_key_type = @string__ | @symbol | @underscore_arg
 
 pair_def(
   unique int id: @pair,
@@ -704,7 +704,7 @@ pair_def(
   int loc: @location ref
 );
 
-@parenthesized_statements_child_type = @underscore_statement | @token_empty_statement
+@parenthesized_statements_child_type = @token_empty_statement | @underscore_statement
 
 #keyset[parenthesized_statements, index]
 parenthesized_statements_child(
@@ -718,7 +718,7 @@ parenthesized_statements_def(
   int loc: @location ref
 );
 
-@pattern_child_type = @underscore_arg | @splat_argument
+@pattern_child_type = @splat_argument | @underscore_arg
 
 pattern_def(
   unique int id: @pattern,
@@ -726,7 +726,7 @@ pattern_def(
   int loc: @location ref
 );
 
-@program_child_type = @underscore_statement | @token_empty_statement | @token_uninterpreted
+@program_child_type = @token_empty_statement | @token_uninterpreted | @underscore_statement
 
 #keyset[program, index]
 program_child(
@@ -768,7 +768,7 @@ redo_def(
   int loc: @location ref
 );
 
-@regex_child_type = @token_escape_sequence | @interpolation
+@regex_child_type = @interpolation | @token_escape_sequence
 
 #keyset[regex, index]
 regex_child(
@@ -802,7 +802,7 @@ rescue_def(
   int loc: @location ref
 );
 
-@rescue_modifier_handler_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
+@rescue_modifier_handler_type = @break | @call | @method_call | @next | @return | @underscore_arg | @yield
 
 rescue_modifier_def(
   unique int id: @rescue_modifier,
@@ -841,7 +841,7 @@ return_def(
   int loc: @location ref
 );
 
-@right_assignment_list_child_type = @underscore_arg | @splat_argument
+@right_assignment_list_child_type = @splat_argument | @underscore_arg
 
 #keyset[right_assignment_list, index]
 right_assignment_list_child(
@@ -874,7 +874,7 @@ setter_def(
   int loc: @location ref
 );
 
-@singleton_class_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue
+@singleton_class_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
 
 #keyset[singleton_class, index]
 singleton_class_child(
@@ -896,7 +896,7 @@ singleton_method_parameters(
   unique int method_parameters: @method_parameters ref
 );
 
-@singleton_method_child_type = @underscore_statement | @else | @token_empty_statement | @ensure | @rescue
+@singleton_method_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
 
 #keyset[singleton_method, index]
 singleton_method_child(
@@ -928,7 +928,7 @@ splat_parameter_def(
   int loc: @location ref
 );
 
-@string_child_type = @token_escape_sequence | @interpolation
+@string_child_type = @interpolation | @token_escape_sequence
 
 #keyset[string__, index]
 string_child(
@@ -954,7 +954,7 @@ string_array_def(
   int loc: @location ref
 );
 
-@subshell_child_type = @token_escape_sequence | @interpolation
+@subshell_child_type = @interpolation | @token_escape_sequence
 
 #keyset[subshell, index]
 subshell_child(
@@ -968,7 +968,7 @@ subshell_def(
   int loc: @location ref
 );
 
-@superclass_child_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
+@superclass_child_type = @break | @call | @method_call | @next | @return | @underscore_arg | @yield
 
 superclass_def(
   unique int id: @superclass,
@@ -976,7 +976,7 @@ superclass_def(
   int loc: @location ref
 );
 
-@symbol_child_type = @token_escape_sequence | @interpolation
+@symbol_child_type = @interpolation | @token_escape_sequence
 
 #keyset[symbol, index]
 symbol_child(
@@ -1002,7 +1002,7 @@ symbol_array_def(
   int loc: @location ref
 );
 
-@then_child_type = @underscore_statement | @token_empty_statement
+@then_child_type = @token_empty_statement | @underscore_statement
 
 #keyset[then, index]
 then_child(
@@ -1016,7 +1016,7 @@ then_def(
   int loc: @location ref
 );
 
-@unary_child_type = @underscore_arg | @break | @call | @token_float | @token_integer | @method_call | @next | @parenthesized_statements | @return | @yield
+@unary_child_type = @break | @call | @method_call | @next | @parenthesized_statements | @return | @token_float | @token_integer | @underscore_arg | @yield
 
 unary_def(
   unique int id: @unary,
@@ -1054,7 +1054,7 @@ unless_def(
   int loc: @location ref
 );
 
-@unless_modifier_condition_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
+@unless_modifier_condition_type = @break | @call | @method_call | @next | @return | @underscore_arg | @yield
 
 unless_modifier_def(
   unique int id: @unless_modifier,
@@ -1070,7 +1070,7 @@ until_def(
   int loc: @location ref
 );
 
-@until_modifier_condition_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
+@until_modifier_condition_type = @break | @call | @method_call | @next | @return | @underscore_arg | @yield
 
 until_modifier_def(
   unique int id: @until_modifier,
@@ -1084,7 +1084,7 @@ when_body(
   unique int then: @then ref
 );
 
-@when_pattern_type = @reserved_word | @pattern
+@when_pattern_type = @pattern | @reserved_word
 
 #keyset[when, index]
 when_pattern(
@@ -1105,7 +1105,7 @@ while_def(
   int loc: @location ref
 );
 
-@while_modifier_condition_type = @underscore_arg | @break | @call | @method_call | @next | @return | @yield
+@while_modifier_condition_type = @break | @call | @method_call | @next | @return | @underscore_arg | @yield
 
 while_modifier_def(
   unique int id: @while_modifier,
@@ -1159,5 +1159,5 @@ case @token.kind of
 ;
 
 
-@ast_node = @token | @alias | @argument_list | @array | @assignment | @bare_string | @bare_symbol | @begin | @begin_block | @binary | @block | @block_argument | @block_parameter | @block_parameters | @break | @call | @case__ | @chained_string | @class | @conditional | @destructured_left_assignment | @destructured_parameter | @do | @do_block | @element_reference | @else | @elsif | @end_block | @ensure | @exception_variable | @exceptions | @for | @hash | @hash_splat_argument | @hash_splat_parameter | @heredoc_body | @if | @if_modifier | @in | @interpolation | @keyword_parameter | @lambda | @lambda_parameters | @left_assignment_list | @method | @method_call | @method_parameters | @module | @next | @operator_assignment | @optional_parameter | @pair | @parenthesized_statements | @pattern | @program | @range | @rational | @redo | @regex | @rescue | @rescue_modifier | @rest_assignment | @retry | @return | @right_assignment_list | @scope_resolution | @setter | @singleton_class | @singleton_method | @splat_argument | @splat_parameter | @string__ | @string_array | @subshell | @superclass | @symbol | @symbol_array | @then | @unary | @undef | @unless | @unless_modifier | @until | @until_modifier | @when | @while | @while_modifier | @yield
+@ast_node = @alias | @argument_list | @array | @assignment | @bare_string | @bare_symbol | @begin | @begin_block | @binary | @block | @block_argument | @block_parameter | @block_parameters | @break | @call | @case__ | @chained_string | @class | @conditional | @destructured_left_assignment | @destructured_parameter | @do | @do_block | @element_reference | @else | @elsif | @end_block | @ensure | @exception_variable | @exceptions | @for | @hash | @hash_splat_argument | @hash_splat_parameter | @heredoc_body | @if | @if_modifier | @in | @interpolation | @keyword_parameter | @lambda | @lambda_parameters | @left_assignment_list | @method | @method_call | @method_parameters | @module | @next | @operator_assignment | @optional_parameter | @pair | @parenthesized_statements | @pattern | @program | @range | @rational | @redo | @regex | @rescue | @rescue_modifier | @rest_assignment | @retry | @return | @right_assignment_list | @scope_resolution | @setter | @singleton_class | @singleton_method | @splat_argument | @splat_parameter | @string__ | @string_array | @subshell | @superclass | @symbol | @symbol_array | @then | @token | @unary | @undef | @unless | @unless_modifier | @until | @until_modifier | @when | @while | @while_modifier | @yield
 

@@ -1,6 +1,6 @@
 use crate::ql;
+use std::collections::BTreeSet as Set;
 use std::fmt;
-
 /// Represents a distinct entry in the database schema.
 pub enum Entry {
     /// An entry defining a database table.
@@ -21,7 +21,7 @@ pub struct Table {
 /// A union in the database schema.
 pub struct Union {
     pub name: String,
-    pub members: Vec<String>,
+    pub members: Set<String>,
 }
 
 /// A table in the database schema.
