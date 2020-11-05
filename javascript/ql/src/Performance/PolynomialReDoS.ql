@@ -14,9 +14,15 @@
 
 import javascript
 import semmle.javascript.security.performance.PolynomialReDoS::PolynomialReDoS
+import semmle.javascript.security.performance.SuperlinearBackTracking
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+where
+  cfg.hasFlowPath(source, sink) and
+  not (
+    source.getNode().(Source).getKind() = "url" and
+    sink.getNode().(Sink).getRegExp().(PolynomialBackTrackingTerm).isAtEndLine()
+  )
 select sink.getNode(), source, sink, "This expensive $@ use depends on $@.",
   sink.getNode().(Sink).getRegExp(), "regular expression", source.getNode(), "a user-provided value"
