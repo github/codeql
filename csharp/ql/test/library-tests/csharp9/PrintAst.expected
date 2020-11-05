@@ -335,6 +335,58 @@ ParenthesizedPattern.cs:
 #   27|               0: [TypeAccessPatternExpr] access to type String
 #   27|                 0: [TypeMention] string
 #   27|               2: [IntLiteral] 5
+TargetType.cs:
+#    5| [Class] TargetType
+#    7|   5: [Method] M2
+#    7|     -1: [TypeMention] Void
+#    8|     4: [BlockStmt] {...}
+#    9|       0: [LocalVariableDeclStmt] ... ...;
+#    9|         0: [LocalVariableDeclAndInitExpr] Random rand = ...
+#    9|           -1: [TypeMention] Random
+#    9|           0: [LocalVariableAccess] access to local variable rand
+#    9|           1: [ObjectCreation] object creation of type Random
+#    9|             0: [TypeMention] Random
+#   10|       1: [LocalVariableDeclStmt] ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] Boolean condition = ...
+#   10|           -1: [TypeMention] bool
+#   10|           0: [LocalVariableAccess] access to local variable condition
+#   10|           1: [GTExpr] ... > ...
+#   10|             0: [MethodCall] call to method NextDouble
+#   10|               -1: [LocalVariableAccess] access to local variable rand
+#   10|             1: [DoubleLiteral] 0.5
+#   12|       2: [LocalVariableDeclStmt] ... ...;
+#   12|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x = ...
+#   12|           -1: [TypeMention] int?
+#   12|             1: [TypeMention] int
+#   12|           0: [LocalVariableAccess] access to local variable x
+#   12|           1: [ConditionalExpr] ... ? ... : ...
+#   12|             0: [LocalVariableAccess] access to local variable condition
+#   13|             1: [CastExpr] (...) ...
+#   13|               1: [IntLiteral] 12
+#   14|             2: [NullLiteral] null
+#   16|       3: [LocalVariableDeclStmt] ... ...;
+#   16|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs = ...
+#   16|           -1: [TypeMention] IEnumerable<Int32>
+#   16|             1: [TypeMention] int
+#   16|           0: [LocalVariableAccess] access to local variable xs
+#   16|           1: [ConditionalExpr] ... ? ... : ...
+#   16|             0: [IsExpr] ... is ...
+#   16|               0: [LocalVariableAccess] access to local variable x
+#   16|               1: [ConstantPatternExpr,NullLiteral] null
+#   17|             1: [ObjectCreation] object creation of type List<Int32>
+#   17|               -2: [TypeMention] List<Int32>
+#   17|                 1: [TypeMention] int
+#   17|               -1: [CollectionInitializer] { ..., ... }
+#   17|                 0: [ElementInitializer] call to method Add
+#   17|                   0: [IntLiteral] 0
+#   17|                 1: [ElementInitializer] call to method Add
+#   17|                   0: [IntLiteral] 1
+#   18|             2: [ArrayCreation] array creation of type Int32[]
+#   18|               -2: [TypeMention] Int32[]
+#   18|                 1: [TypeMention] int
+#   18|               -1: [ArrayInitializer] { ..., ... }
+#   18|                 0: [IntLiteral] 2
+#   18|                 1: [IntLiteral] 3
 TypeParameterNullability.cs:
 #    1| [Interface] I1
 #    3| [Class] A2
