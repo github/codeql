@@ -6,7 +6,6 @@ import semmle.code.cpp.Type
 import semmle.code.cpp.commons.CommonType
 import semmle.code.cpp.commons.StringAnalysis
 import semmle.code.cpp.models.interfaces.FormattingFunction
-import semmle.code.cpp.models.implementations.Printf
 
 class PrintfFormatAttribute extends FormatAttribute {
   PrintfFormatAttribute() { getArchetype() = ["printf", "__printf__"] }

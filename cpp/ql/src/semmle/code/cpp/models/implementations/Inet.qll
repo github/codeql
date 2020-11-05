@@ -1,4 +1,5 @@
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.ArrayFunction
 
 private class InetNtoa extends TaintFunction {
