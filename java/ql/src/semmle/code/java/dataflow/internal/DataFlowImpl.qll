@@ -774,6 +774,8 @@ private module Stage2 {
 
   Cc ccAny() { result = false }
 
+  class LocalCc = Unit;
+
   bindingset[call, c, outercc]
   CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
 
@@ -785,6 +787,23 @@ private module Stage2 {
 
   predicate flowCand(Node node, ApApprox apa, Configuration config) {
     Stage1::revFlow(node, config) and exists(apa)
+  }
+
+  bindingset[node, cc, config]
+  LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
+
+  predicate localStep(
+    Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
+  ) {
+    (
+      preservesValue = true and
+      localFlowStepNodeCand1(node1, node2, config)
+      or
+      preservesValue = false and
+      additionalLocalFlowStepNodeCand1(node1, node2, config)
+    ) and
+    exists(ap) and
+    exists(lcc)
   }
 
   /* Begin: Stage 2 logic. */
@@ -804,15 +823,15 @@ private module Stage2 {
     argAp = apNone() and
     ap = getApNil(node)
     or
-    exists(Node mid |
-      fwdFlow(mid, cc, argAp, ap, config) and
-      localFlowStepNodeCand1(mid, node, config)
-    )
-    or
-    exists(Node mid |
-      fwdFlow(mid, cc, argAp, ap, config) and
-      additionalLocalFlowStepNodeCand1(mid, node, config) and
-      ap = false
+    exists(Node mid, Ap ap0, LocalCc localCc |
+      fwdFlow(mid, cc, argAp, ap0, config) and
+      localCc = getLocalCc(mid, cc, config)
+    |
+      localStep(mid, node, true, _, config, localCc) and
+      ap = ap0
+      or
+      localStep(mid, node, false, ap, config, localCc) and
+      ap0 instanceof ApNil
     )
     or
     exists(Node mid |
@@ -970,13 +989,13 @@ private module Stage2 {
     ap instanceof ApNil
     or
     exists(Node mid |
-      localFlowStepNodeCand1(node, mid, config) and
+      localStep(node, mid, true, _, config, _) and
       revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
     exists(Node mid, ApNil nil |
       fwdFlow(node, _, _, ap, config) and
-      additionalLocalFlowStepNodeCand1(node, mid, config) and
+      localStep(node, mid, false, _, config, _) and
       revFlow(mid, toReturn, returnAp, nil, config) and
       ap instanceof ApNil
     )
@@ -1317,6 +1336,8 @@ private module Stage3 {
 
   Cc ccAny() { result = false }
 
+  class LocalCc = Unit;
+
   bindingset[call, c, outercc]
   CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
 
@@ -1328,6 +1349,15 @@ private module Stage3 {
 
   predicate flowCand(Node node, ApApprox apa, Configuration config) {
     Stage2::revFlow(node, _, _, apa, config)
+  }
+
+  bindingset[node, cc, config]
+  LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
+
+  predicate localStep(
+    Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
+  ) {
+    localFlowBigStep(node1, node2, preservesValue, ap, config, _) and exists(lcc)
   }
 
   /* Begin: Stage 3 logic. */
@@ -1355,14 +1385,15 @@ private module Stage3 {
     argAp = apNone() and
     ap = getApNil(node)
     or
-    exists(Node mid |
-      fwdFlow(mid, cc, argAp, ap, config) and
-      localFlowBigStep(mid, node, true, _, config, _)
-    )
-    or
-    exists(Node mid, ApNil nil |
-      fwdFlow(mid, cc, argAp, nil, config) and
-      localFlowBigStep(mid, node, false, ap, config, _)
+    exists(Node mid, Ap ap0, LocalCc localCc |
+      fwdFlow(mid, cc, argAp, ap0, config) and
+      localCc = getLocalCc(mid, cc, config)
+    |
+      localStep(mid, node, true, _, config, localCc) and
+      ap = ap0
+      or
+      localStep(mid, node, false, ap, config, localCc) and
+      ap0 instanceof ApNil
     )
     or
     exists(Node mid |
@@ -1522,13 +1553,13 @@ private module Stage3 {
     ap instanceof ApNil
     or
     exists(Node mid |
-      localFlowBigStep(node, mid, true, _, config, _) and
+      localStep(node, mid, true, _, config, _) and
       revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
     exists(Node mid, ApNil nil |
       fwdFlow(node, _, _, ap, config) and
-      localFlowBigStep(node, mid, false, _, config, _) and
+      localStep(node, mid, false, _, config, _) and
       revFlow(mid, toReturn, returnAp, nil, config) and
       ap instanceof ApNil
     )
@@ -1902,6 +1933,8 @@ private module Stage4 {
 
   Cc ccAny() { result instanceof CallContextAny }
 
+  class LocalCc = LocalCallContext;
+
   bindingset[call, c, outercc]
   CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) {
     c = resolveCall(call, outercc) and
@@ -1922,6 +1955,18 @@ private module Stage4 {
 
   predicate flowCand(Node node, ApApprox apa, Configuration config) {
     Stage3::revFlow(node, _, _, apa, config)
+  }
+
+  bindingset[node, cc, config]
+  LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
+    localFlowEntry(node, config) and
+    result = getLocalCallContext(cc, node.getEnclosingCallable())
+  }
+
+  predicate localStep(
+    Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
+  ) {
+    localFlowBigStep(node1, node2, preservesValue, ap.getFront(), config, lcc)
   }
 
   /* Begin: Stage 4 logic. */
@@ -1945,19 +1990,15 @@ private module Stage4 {
     argAp = apNone() and
     ap = getApNil(node)
     or
-    exists(Node mid, Ap ap0, LocalCallContext localCC |
+    exists(Node mid, Ap ap0, LocalCc localCc |
       fwdFlow(mid, cc, argAp, ap0, config) and
-      localFlowEntry(mid, config) and
-      localCC = getLocalCallContext(cc, mid.getEnclosingCallable())
+      localCc = getLocalCc(mid, cc, config)
     |
-      localFlowBigStep(mid, node, true, _, config, localCC) and
+      localStep(mid, node, true, _, config, localCc) and
       ap = ap0
       or
-      exists(AccessPathFront apf |
-        localFlowBigStep(mid, node, false, apf, config, localCC) and
-        ap0 instanceof ApNil and
-        apf = ap.(ApNil).getFront()
-      )
+      localStep(mid, node, false, ap, config, localCc) and
+      ap0 instanceof ApNil
     )
     or
     exists(Node mid |
@@ -2137,13 +2178,13 @@ private module Stage4 {
     ap instanceof ApNil
     or
     exists(Node mid |
-      localFlowBigStep(node, mid, true, _, config, _) and
+      localStep(node, mid, true, _, config, _) and
       revFlow(mid, toReturn, returnAp, ap, config)
     )
     or
     exists(Node mid, ApNil nil |
       fwdFlow(node, _, _, ap, config) and
-      localFlowBigStep(node, mid, false, _, config, _) and
+      localStep(node, mid, false, _, config, _) and
       revFlow(mid, toReturn, returnAp, nil, config) and
       ap instanceof ApNil
     )
