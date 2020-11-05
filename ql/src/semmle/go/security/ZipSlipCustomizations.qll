@@ -42,7 +42,13 @@ module ZipSlip {
 
   /** A path-traversal sink, considered as a taint sink for zip slip. */
   class TaintedPathSinkAsSink extends Sink {
-    TaintedPathSinkAsSink() { this instanceof TaintedPath::Sink }
+    TaintedPathSinkAsSink() {
+      this instanceof TaintedPath::Sink and
+      // Exclude `os.Symlink`, which is treated specifically in query `go/unsafe-unzip-symlink`.
+      not exists(DataFlow::CallNode c | c.getTarget().hasQualifiedName("os", "Symlink") |
+        this = c.getAnArgument()
+      )
+    }
   }
 
   /** A path-traversal sanitizer, considered as a sanitizer for zip slip. */

@@ -1,0 +1,9 @@
+edges
+nodes
+| UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | semmle.label | selection of Linkname |
+| UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | semmle.label | selection of Name |
+| UnsafeUnzipSymlink.go:43:25:43:35 | selection of Name | semmle.label | selection of Name |
+#select
+| UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | Unresolved path from an archive header, which may point outside the archive root, is used in $@. | UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | symlink creation |
+| UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | Unresolved path from an archive header, which may point outside the archive root, is used in $@. | UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | symlink creation |
+| UnsafeUnzipSymlink.go:43:25:43:35 | selection of Name | UnsafeUnzipSymlink.go:43:25:43:35 | selection of Name | UnsafeUnzipSymlink.go:43:25:43:35 | selection of Name | Unresolved path from an archive header, which may point outside the archive root, is used in $@. | UnsafeUnzipSymlink.go:43:25:43:35 | selection of Name | symlink creation |
