@@ -520,7 +520,8 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                 if type_name.named {
                     let db_name = format!("token_{}", &type_name.kind);
                     let db_name = node_types::escape_name(&db_name);
-                    let class_name = dbscheme_name_to_class_name(&db_name);
+                    let class_name =
+                        dbscheme_name_to_class_name(&node_types::escape_name(&type_name.kind));
                     let describe_ql_class = create_describe_ql_class(&class_name);
                     classes.push(ql::TopLevel::Class(ql::Class {
                         name: class_name,
