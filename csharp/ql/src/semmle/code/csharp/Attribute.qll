@@ -10,7 +10,8 @@ private import TypeRef
  * An element that can have attributes. Either an assembly (`Assembly`), a field (`Field`),
  * a parameter (`Parameter`), an operator (`Operator`), a method (`Method`), a constructor (`Constructor`),
  * a destructor (`Destructor`), a callable accessor (`CallableAccessor`), a value or reference type
- * (`ValueOrRefType`), or a declaration with accessors (`DeclarationWithAccessors`).
+ * (`ValueOrRefType`), a declaration with accessors (`DeclarationWithAccessors`), or a local function
+ * (`LocalFunction`).
  */
 class Attributable extends @attributable {
   /** Gets an attribute attached to this element, if any. */

@@ -48,7 +48,7 @@ Discard.cs:
 #   10|               0: [ReturnStmt] return ...;
 #   10|                 0: [IntLiteral] 0
 LocalFunction.cs:
-#    4| [Class] Class1
+#    4| [Class] LocalFunction
 #    6|   5: [Method] M1
 #    6|     -1: [TypeMention] Task
 #    7|     4: [BlockStmt] {...}
@@ -77,6 +77,36 @@ LocalFunction.cs:
 #   14|             0: [IntLiteral] 2
 #   16|       3: [LocalFunctionStmt] localExtern(...)
 #   16|         0: [LocalFunction] localExtern
+#   19|   6: [Method] M2
+#   19|     -1: [TypeMention] Void
+#   20|     4: [BlockStmt] {...}
+#   21|       0: [LocalFunctionStmt] dup(...)
+#   21|         0: [LocalFunction] dup
+#-----|           0: (Attributes)
+#   21|             1: [Attribute] [Obsolete(...)]
+#   21|               0: [TypeMention] ObsoleteAttribute
+#-----|           2: (Parameters)
+#   22|             0: [Parameter] b
+#   22|               -1: [TypeMention] bool
+#-----|               0: (Attributes)
+#   22|                 1: [Attribute] [NotNullWhen(...)]
+#   22|                   -1: [TypeMention] NotNullWhenAttribute
+#   22|                   0: [BoolLiteral] true
+#   22|             1: [Parameter] i
+#   22|               -1: [TypeMention] int?
+#   22|                 1: [TypeMention] int
+#   23|           4: [BlockStmt] {...}
+#   24|             0: [ReturnStmt] return ...;
+#   24|               0: [MulExpr] ... * ...
+#   24|                 0: [CastExpr] (...) ...
+#   24|                   1: [IntLiteral] 2
+#   24|                 1: [ParameterAccess] access to parameter i
+#   27|       1: [ExprStmt] ...;
+#   27|         0: [LocalFunctionCall] call to local function dup
+#   27|           -1: [LocalFunctionAccess] access to local function dup
+#   27|           0: [BoolLiteral] true
+#   27|           1: [CastExpr] (...) ...
+#   27|             1: [IntLiteral] 42
 NativeInt.cs:
 #    3| [Class] NativeInt
 #    5|   5: [Method] M1
