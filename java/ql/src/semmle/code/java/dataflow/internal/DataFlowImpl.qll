@@ -808,13 +808,12 @@ private module Stage2 {
 
   /* Begin: Stage 2 logic. */
   /**
-   * Holds if `node` is reachable from a source in the configuration `config`.
-   * The Boolean `ap` records whether the tracked value is stored into a
-   * field of `node`.
+   * Holds if `node` is reachable with access path `ap` from a source in the
+   * configuration `config`.
    *
-   * The Boolean `cc` records whether the node is reached through an
-   * argument in a call, and if so, `argAp` records whether the tracked
-   * value was stored into a field of the argument.
+   * The call context `cc` records whether the node is reached through an
+   * argument in a call, and if so, `argAp` records the access path of that
+   * argument.
    */
   private predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
@@ -964,13 +963,12 @@ private module Stage2 {
   }
 
   /**
-   * Holds if `node` is part of a path from a source to a sink in the
-   * configuration `config`. The Boolean `ap` records whether the tracked
-   * value must be read from a field of `node` in order to reach a sink.
+   * Holds if `node` with access path `ap` is part of a path from a source to a
+   * sink in the configuration `config`.
    *
-   * The Boolean `toReturn` records whether the node must be returned from
-   * the enclosing callable in order to reach a sink, and if so, `returnAp`
-   * records whether a field must be read from the returned value.
+   * The Boolean `toReturn` records whether the node must be returned from the
+   * enclosing callable in order to reach a sink, and if so, `returnAp` records
+   * the access path of the returned value.
    */
   pragma[nomagic]
   predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
@@ -1362,12 +1360,12 @@ private module Stage3 {
 
   /* Begin: Stage 3 logic. */
   /**
-   * Holds if `node` is reachable with access path front `ap` from a
-   * source in the configuration `config`.
+   * Holds if `node` is reachable with access path `ap` from a source in the
+   * configuration `config`.
    *
-   * The Boolean `cc` records whether the node is reached through an
-   * argument in a call, and if so, `argAp` records the front of the
-   * access path of that argument.
+   * The call context `cc` records whether the node is reached through an
+   * argument in a call, and if so, `argAp` records the access path of that
+   * argument.
    */
   pragma[nomagic]
   predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
@@ -1529,12 +1527,12 @@ private module Stage3 {
   }
 
   /**
-   * Holds if `node` with access path front `ap` is part of a path from a
-   * source to a sink in the configuration `config`.
+   * Holds if `node` with access path `ap` is part of a path from a source to a
+   * sink in the configuration `config`.
    *
-   * The Boolean `toReturn` records whether the node must be returned from
-   * the enclosing callable in order to reach a sink, and if so, `returnAp`
-   * records the front of the access path of the returned value.
+   * The Boolean `toReturn` records whether the node must be returned from the
+   * enclosing callable in order to reach a sink, and if so, `returnAp` records
+   * the access path of the returned value.
    */
   pragma[nomagic]
   predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
@@ -1971,12 +1969,12 @@ private module Stage4 {
 
   /* Begin: Stage 4 logic. */
   /**
-   * Holds if `node` is reachable with approximate access path `ap` from a source
-   * in the configuration `config`.
+   * Holds if `node` is reachable with access path `ap` from a source in the
+   * configuration `config`.
    *
    * The call context `cc` records whether the node is reached through an
-   * argument in a call, and if so, `argAp` records the approximate access path
-   * of that argument.
+   * argument in a call, and if so, `argAp` records the access path of that
+   * argument.
    */
   predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     fwdFlow0(node, cc, argAp, ap, config) and
@@ -2154,12 +2152,12 @@ private module Stage4 {
   }
 
   /**
-   * Holds if `node` with approximate access path `ap` is part of a path from a
-   * source to a sink in the configuration `config`.
+   * Holds if `node` with access path `ap` is part of a path from a source to a
+   * sink in the configuration `config`.
    *
-   * The Boolean `toReturn` records whether the node must be returned from
-   * the enclosing callable in order to reach a sink, and if so, `returnAp`
-   * records the approximate access path of the returned value.
+   * The Boolean `toReturn` records whether the node must be returned from the
+   * enclosing callable in order to reach a sink, and if so, `returnAp` records
+   * the access path of the returned value.
    */
   pragma[nomagic]
   predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
