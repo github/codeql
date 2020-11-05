@@ -541,7 +541,7 @@ specific_type_parameter_nullability(
 
 @modifiable = @modifiable_direct | @event_accessor;
 
-@modifiable_direct = @member | @accessor | @local_function;
+@modifiable_direct = @member | @accessor | @local_function | @anonymous_function_expr;
 
 modifiers(
   unique int id: @modifier,

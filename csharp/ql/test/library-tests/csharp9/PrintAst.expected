@@ -47,6 +47,66 @@ Discard.cs:
 #   10|             4: [BlockStmt] {...}
 #   10|               0: [ReturnStmt] return ...;
 #   10|                 0: [IntLiteral] 0
+LambdaModifier.cs:
+#    4| [Class] Class1
+#    6|   5: [Method] M1
+#    6|     -1: [TypeMention] Task
+#    7|     4: [BlockStmt] {...}
+#    8|       0: [LocalFunctionStmt] m(...)
+#    8|         0: [LocalFunction] m
+#-----|           2: (Parameters)
+#    8|             0: [Parameter] f
+#    8|               -1: [TypeMention] Func<Int32, Int32>
+#    8|                 1: [TypeMention] int
+#    8|                 2: [TypeMention] int
+#    8|           4: [BlockStmt] {...}
+#   10|       1: [LocalConstantDeclStmt] const ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] Int32 z = ...
+#   10|           -1: [TypeMention] int
+#   10|           0: [LocalVariableAccess] access to local variable z
+#   10|           1: [IntLiteral] 10
+#   11|       2: [ExprStmt] ...;
+#   11|         0: [LocalFunctionCall] call to local function m
+#   11|           -1: [LocalFunctionAccess] access to local function m
+#   11|           0: [LambdaExpr] (...) => ...
+#-----|             2: (Parameters)
+#   11|               0: [Parameter] x
+#   11|             4: [AddExpr] ... + ...
+#   11|               0: [ParameterAccess] access to parameter x
+#   11|               1: [LocalVariableAccess] access to local variable z
+#   12|       3: [ExprStmt] ...;
+#   12|         0: [LocalFunctionCall] call to local function m
+#   12|           -1: [LocalFunctionAccess] access to local function m
+#   12|           0: [LambdaExpr] (...) => ...
+#-----|             2: (Parameters)
+#   12|               0: [Parameter] x
+#   12|             4: [AddExpr] ... + ...
+#   12|               0: [ParameterAccess] access to parameter x
+#   12|               1: [LocalVariableAccess] access to local variable z
+#   13|       4: [ExprStmt] ...;
+#   13|         0: [LocalFunctionCall] call to local function m
+#   13|           -1: [LocalFunctionAccess] access to local function m
+#   13|           0: [AnonymousMethodExpr] delegate(...) { ... }
+#-----|             2: (Parameters)
+#   13|               0: [Parameter] x
+#   13|                 -1: [TypeMention] int
+#   13|             4: [BlockStmt] {...}
+#   13|               0: [ReturnStmt] return ...;
+#   13|                 0: [AddExpr] ... + ...
+#   13|                   0: [ParameterAccess] access to parameter x
+#   13|                   1: [LocalVariableAccess] access to local variable z
+#   15|       5: [ExprStmt] ...;
+#   15|         0: [AwaitExpr] await ...
+#   15|           0: [MethodCall] call to method Run
+#   15|             -1: [TypeAccess] access to type Task
+#   15|               0: [TypeMention] Task
+#   15|             0: [LambdaExpr] (...) => ...
+#   15|               4: [BlockStmt] {...}
+#   15|                 0: [ExprStmt] ...;
+#   15|                   0: [AwaitExpr] await ...
+#   15|                     0: [PropertyCall] access to property CompletedTask
+#   15|                       -1: [TypeAccess] access to type Task
+#   15|                         0: [TypeMention] Task
 LocalFunction.cs:
 #    4| [Class] LocalFunction
 #    6|   5: [Method] M1

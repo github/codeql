@@ -86,10 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (symbol.IsSealed)
                 HasModifier(cx, trapFile, key, "sealed");
 
-            var fromSource = symbol.DeclaringSyntaxReferences.Length > 0;
-
-            if (symbol.IsStatic && !(symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsConst && !fromSource))
-                HasModifier(cx, trapFile, key, "static");
+            ExtractStaticModifier(cx, trapFile, key, symbol);
 
             if (symbol.IsVirtual)
                 HasModifier(cx, trapFile, key, "virtual");
@@ -104,8 +101,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (symbol.IsOverride)
                 HasModifier(cx, trapFile, key, "override");
 
-            if (symbol.Kind == SymbolKind.Method && ((IMethodSymbol)symbol).IsAsync)
-                HasModifier(cx, trapFile, key, "async");
+            ExtractAsyncModifier(cx, trapFile, key, symbol);
 
             if (symbol.IsExtern)
                 HasModifier(cx, trapFile, key, "extern");
@@ -127,6 +123,20 @@ namespace Semmle.Extraction.CSharp.Entities
                         HasModifier(cx, trapFile, key, "ref");
                 }
             }
+        }
+
+        public static void ExtractAsyncModifier(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
+        {
+            if (symbol.Kind == SymbolKind.Method && ((IMethodSymbol)symbol).IsAsync)
+                HasModifier(cx, trapFile, key, "async");
+        }
+
+        public static void ExtractStaticModifier(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
+        {
+            var fromSource = symbol.DeclaringSyntaxReferences.Length > 0;
+
+            if (symbol.IsStatic && !(symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsConst && !fromSource))
+                HasModifier(cx, trapFile, key, "static");
         }
 
         public static Modifier Create(Context cx, string modifier)
