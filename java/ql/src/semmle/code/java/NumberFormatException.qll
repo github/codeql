@@ -1,15 +1,3 @@
-/**
- * @name Missing catch of NumberFormatException
- * @description Calling a string to number conversion method without handling
- *              'NumberFormatException' may cause unexpected runtime exceptions.
- * @kind problem
- * @problem.severity recommendation
- * @precision high
- * @id java/uncaught-number-format-exception
- * @tags reliability
- *       external/cwe/cwe-248
- */
-
 import java
 
 /** Calls a string to number conversion */
@@ -68,7 +56,7 @@ class NumberFormatException extends RefType {
   NumberFormatException() { this.hasQualifiedName("java.lang", "NumberFormatException") }
 }
 
-/** Holds if NFE is caught */
+/** Holds if `java.lang.NumberFormatException` is caught */
 predicate catchesNFE(TryStmt t) {
   exists(CatchClause cc, LocalVariableDeclExpr v |
     t.getACatchClause() = cc and
@@ -77,7 +65,7 @@ predicate catchesNFE(TryStmt t) {
   )
 }
 
-/** Holds if NFE is thrown */
+/** Holds if `java.lang.NumberFormatException` is thrown */
 predicate throwsNFE(Expr e) {
   e.(SpecialClassInstanceExpr).throwsNFE() or e.(SpecialMethodAccess).throwsNFE()
 }
