@@ -852,7 +852,7 @@ private module Stage2 {
     or
     // store
     exists(TypedContent tc, Ap ap0 |
-      fwdFlowStore(node, tc, ap0, cc, argAp, config) and
+      fwdFlowStore(_, ap0, tc, node, cc, argAp, config) and
       ap = apCons(tc, ap0)
     )
     or
@@ -879,12 +879,10 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowStore(
-    Node node, TypedContent tc, Ap ap0, Cc cc, ApOption argAp, Configuration config
+    Node node1, Ap ap1, TypedContent tc, Node node2, Cc cc, ApOption argAp, Configuration config
   ) {
-    exists(Node mid |
-      fwdFlow(mid, cc, argAp, ap0, config) and
-      storeCand1(mid, tc, node, config)
-    )
+    fwdFlow(node1, cc, argAp, ap1, config) and
+    storeCand1(node1, tc, node2, config)
   }
 
   /**
@@ -893,7 +891,7 @@ private module Stage2 {
   pragma[nomagic]
   private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
     exists(TypedContent tc |
-      fwdFlowStore(_, tc, tail, _, _, config) and
+      fwdFlowStore(_, tail, tc, _, _, _, config) and
       tc.getContent() = c and
       cons = apCons(tc, tail)
     )
@@ -1016,7 +1014,7 @@ private module Stage2 {
     or
     // store
     exists(Ap ap0, Content c |
-      revFlowStore(ap0, c, node, toReturn, returnAp, ap, config) and
+      revFlowStore(ap0, c, ap, node, _, _, toReturn, returnAp, config) and
       revFlowConsCand(ap0, c, ap, config)
     )
     or
@@ -1047,15 +1045,14 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate revFlowStore(
-    Ap ap0, Content c, Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+    Ap ap0, Content c, Ap ap, Node node, TypedContent tc, Node mid, boolean toReturn,
+    ApOption returnAp, Configuration config
   ) {
-    exists(Node mid, TypedContent tc |
-      revFlow(mid, toReturn, returnAp, ap0, config) and
-      storeCand1(node, tc, mid, config) and
-      tc.getContent() = c and
-      ap0 = true and
-      fwdFlow(node, _, _, ap, unbind(config))
-    )
+    revFlow(mid, toReturn, returnAp, ap0, config) and
+    storeCand1(node, tc, mid, config) and
+    tc.getContent() = c and
+    ap0 = true and
+    fwdFlow(node, _, _, ap, unbind(config))
   }
 
   /**
@@ -1075,7 +1072,7 @@ private module Stage2 {
   pragma[nomagic]
   private predicate revFlowIsStored(Content c, Ap ap, Configuration conf) {
     exists(Node node |
-      revFlowStore(_, c, node, _, _, ap, conf) and
+      revFlowStore(_, c, ap, node, _, _, _, _, conf) and
       revFlow(node, _, _, ap, conf)
     )
   }
@@ -1413,7 +1410,7 @@ private module Stage3 {
     or
     // store
     exists(TypedContent tc, Ap ap0 |
-      fwdFlowStore(node, tc, ap0, cc, argAp, config) and
+      fwdFlowStore(_, ap0, tc, node, cc, argAp, config) and
       ap = apCons(tc, ap0)
     )
     or
@@ -1443,21 +1440,21 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate fwdFlowStore(
-    Node node, TypedContent tc, Ap ap0, Cc cc, ApOption argAp, Configuration config
+    Node node1, Ap ap1, TypedContent tc, Node node2, Cc cc, ApOption argAp, Configuration config
   ) {
-    exists(Node mid, DataFlowType contentType |
-      fwdFlow(mid, cc, argAp, ap0, config) and
-      storeCand2(mid, tc, node, contentType, config) and
+    exists(DataFlowType contentType |
+      fwdFlow(node1, cc, argAp, ap1, config) and
+      storeCand2(node1, tc, node2, contentType, config) and
       // We need to typecheck stores here, since reverse flow through a getter
       // might have a different type here compared to inside the getter.
-      compatibleTypes(ap0.getType(), contentType)
+      compatibleTypes(ap1.getType(), contentType)
     )
   }
 
   pragma[nomagic]
   private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
     exists(TypedContent tc |
-      fwdFlowStore(_, tc, tail, _, _, config) and
+      fwdFlowStore(_, tail, tc, _, _, _, config) and
       tc.getContent() = c and
       cons = apCons(tc, tail)
     )
@@ -1580,7 +1577,7 @@ private module Stage3 {
     or
     // store
     exists(Ap ap0, Content c |
-      revFlowStore(ap0, c, node, toReturn, returnAp, ap, config) and
+      revFlowStore(ap0, c, ap, node, _, _, toReturn, returnAp, config) and
       revFlowConsCand(ap0, c, ap, config)
     )
     or
@@ -1616,15 +1613,14 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate revFlowStore(
-    Ap ap0, Content c, Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+    Ap ap0, Content c, Ap ap, Node node, TypedContent tc, Node mid, boolean toReturn,
+    ApOption returnAp, Configuration config
   ) {
-    exists(Node mid, TypedContent tc |
-      revFlow(mid, toReturn, returnAp, ap0, unbind(config)) and
-      fwdFlow(node, _, _, ap, config) and
-      storeCand2(node, tc, mid, _, unbind(config)) and
-      ap0 = TFrontHead(tc) and
-      tc.getContent() = c
-    )
+    revFlow(mid, toReturn, returnAp, ap0, unbind(config)) and
+    fwdFlow(node, _, _, ap, config) and
+    storeCand2(node, tc, mid, _, unbind(config)) and
+    ap0 = TFrontHead(tc) and
+    tc.getContent() = c
   }
 
   pragma[nomagic]
@@ -2018,7 +2014,7 @@ private module Stage4 {
     or
     // store
     exists(TypedContent tc, Ap ap0 |
-      fwdFlowStore(node, tc, ap0, cc, argAp, config) and
+      fwdFlowStore(_, ap0, tc, node, cc, argAp, config) and
       ap = apCons(tc, ap0)
     )
     or
@@ -2048,18 +2044,16 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate fwdFlowStore(
-    Node node, TypedContent tc, Ap ap0, Cc cc, ApOption argAp, Configuration config
+    Node node1, Ap ap1, TypedContent tc, Node node2, Cc cc, ApOption argAp, Configuration config
   ) {
-    exists(Node mid |
-      fwdFlow(mid, cc, argAp, ap0, config) and
-      fwdFlowStore0(mid, tc, node, ap0.getFront(), config)
-    )
+    fwdFlow(node1, cc, argAp, ap1, config) and
+    fwdFlowStore0(node1, tc, node2, ap1.getFront(), config)
   }
 
   pragma[nomagic]
   private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
     exists(TypedContent tc |
-      fwdFlowStore(_, tc, tail, _, _, config) and
+      fwdFlowStore(_, tail, tc, _, _, _, config) and
       tc.getContent() = c and
       cons = apCons(tc, tail)
     )
@@ -2205,7 +2199,7 @@ private module Stage4 {
     or
     // store
     exists(Ap ap0, Content c |
-      revFlowStore(ap0, c, node, toReturn, returnAp, ap, config) and
+      revFlowStore(ap0, c, ap, node, _, _, toReturn, returnAp, config) and
       revFlowConsCand(ap0, c, ap, config)
     )
     or
@@ -2239,19 +2233,18 @@ private module Stage4 {
     Node node1, TypedContent tc, Node node2, Ap ap, Ap ap0, Configuration config
   ) {
     storeCand2(node1, tc, node2, _, config) and
-    fwdFlowStore(node2, tc, ap, _, _, config) and
+    fwdFlowStore(_, ap, tc, node2, _, _, config) and
     ap0 = push(tc, ap)
   }
 
   pragma[nomagic]
   private predicate revFlowStore(
-    Ap ap0, Content c, Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
+    Ap ap0, Content c, Ap ap, Node node, TypedContent tc, Node mid, boolean toReturn,
+    ApOption returnAp, Configuration config
   ) {
-    exists(Node mid, TypedContent tc |
-      revFlow(mid, toReturn, returnAp, ap0, config) and
-      storeFlowFwd(node, tc, mid, ap, ap0, config) and
-      tc.getContent() = c
-    )
+    revFlow(mid, toReturn, returnAp, ap0, config) and
+    storeFlowFwd(node, tc, mid, ap, ap0, config) and
+    tc.getContent() = c
   }
 
   pragma[nomagic]
