@@ -21,6 +21,7 @@ import semmle.go.frameworks.stdlib.CryptoCipher
 import semmle.go.frameworks.stdlib.CryptoRsa
 import semmle.go.frameworks.stdlib.CryptoTls
 import semmle.go.frameworks.stdlib.CryptoX509
+import semmle.go.frameworks.stdlib.DatabaseSql
 import semmle.go.frameworks.stdlib.Encoding
 import semmle.go.frameworks.stdlib.EncodingAscii85
 import semmle.go.frameworks.stdlib.EncodingAsn1
