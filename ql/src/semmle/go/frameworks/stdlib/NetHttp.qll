@@ -145,16 +145,10 @@ module NetHttp {
         responseWriter = call.(DataFlow::MethodCallNode).getReceiver()
       )
       or
-      exists(
-        TaintTracking::FunctionModel model, FunctionOutput modelOutput, FunctionInput modelInput,
-        DataFlow::CallNode call
-      |
+      exists(TaintTracking::FunctionModel model |
         // A modelled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
-        call = model.getACall() and
-        model.hasTaintFlow(modelInput, modelOutput) and
-        this = modelInput.getNode(call) and
-        responseWriter = modelOutput.getNode(call).(DataFlow::PostUpdateNode).getPreUpdateNode() and
+        model.taintStep(this, responseWriter) and
         responseWriter.getType().implements("net/http", "ResponseWriter")
       )
     }
