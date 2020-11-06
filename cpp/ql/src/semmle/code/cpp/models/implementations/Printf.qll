@@ -119,11 +119,10 @@ private class Sprintf extends FormattingFunction {
 }
 
 /**
- * The standard functions `snprintf` and `swprintf`, and their
- * Microsoft and glib variants.
+ * Implements `Snprintf`.
  */
-private class Snprintf extends FormattingFunction {
-  Snprintf() {
+private class SnprintfImpl extends Snprintf {
+  SnprintfImpl() {
     this instanceof TopLevelFunction and
     (
       hasGlobalOrStdName("snprintf") or // C99 defines snprintf
@@ -180,12 +179,7 @@ private class Snprintf extends FormattingFunction {
     )
   }
 
-  /**
-   * Holds if this function returns the length of the formatted string
-   * that would have been output, regardless of the amount of space
-   * in the buffer.
-   */
-  predicate returnsFullFormatLength() {
+  override predicate returnsFullFormatLength() {
     (
       hasGlobalOrStdName("snprintf") or
       hasGlobalName("g_snprintf") or

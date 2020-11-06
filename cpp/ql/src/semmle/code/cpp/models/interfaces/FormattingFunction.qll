@@ -165,3 +165,16 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
     )
   }
 }
+
+/**
+ * The standard functions `snprintf` and `swprintf`, and their
+ * Microsoft and glib variants.
+ */
+abstract class Snprintf extends FormattingFunction {
+  /**
+   * Holds if this function returns the length of the formatted string
+   * that would have been output, regardless of the amount of space
+   * in the buffer.
+   */
+  predicate returnsFullFormatLength() { none() }
+}
