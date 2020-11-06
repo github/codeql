@@ -535,8 +535,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-ruby"
 version = "0.17.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "428e841bb6dc0fafd1f4f5732b11e89c3449fce73a207545034d1541aa9163ce"
+source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git#df5e5024ecdf81c52eca9d70919c39cb5ab71d20"
 dependencies = [
  "cc",
  "tree-sitter",

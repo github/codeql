@@ -104,7 +104,7 @@ assignment_def(
   int loc: @location ref
 );
 
-@bare_string_child_type = @interpolation | @token_escape_sequence
+@bare_string_child_type = @interpolation | @token_escape_sequence | @token_string_content
 
 #keyset[bare_string, index]
 bare_string_child(
@@ -118,7 +118,7 @@ bare_string_def(
   int loc: @location ref
 );
 
-@bare_symbol_child_type = @interpolation | @token_escape_sequence
+@bare_symbol_child_type = @interpolation | @token_escape_sequence | @token_string_content
 
 #keyset[bare_symbol, index]
 bare_symbol_child(
@@ -362,11 +362,6 @@ element_reference_def(
   int loc: @location ref
 );
 
-else_condition(
-  unique int else: @else ref,
-  unique int reserved_word: @reserved_word ref
-);
-
 @else_child_type = @token_empty_statement | @underscore_statement
 
 #keyset[else, index]
@@ -493,7 +488,7 @@ hash_splat_parameter_def(
   int loc: @location ref
 );
 
-@heredoc_body_child_type = @interpolation | @token_escape_sequence | @token_heredoc_end
+@heredoc_body_child_type = @interpolation | @token_escape_sequence | @token_heredoc_content | @token_heredoc_end
 
 #keyset[heredoc_body, index]
 heredoc_body_child(
@@ -768,7 +763,7 @@ redo_def(
   int loc: @location ref
 );
 
-@regex_child_type = @interpolation | @token_escape_sequence
+@regex_child_type = @interpolation | @token_escape_sequence | @token_string_content
 
 #keyset[regex, index]
 regex_child(
@@ -928,7 +923,7 @@ splat_parameter_def(
   int loc: @location ref
 );
 
-@string_child_type = @interpolation | @token_escape_sequence
+@string_child_type = @interpolation | @token_escape_sequence | @token_string_content
 
 #keyset[string__, index]
 string_child(
@@ -954,7 +949,7 @@ string_array_def(
   int loc: @location ref
 );
 
-@subshell_child_type = @interpolation | @token_escape_sequence
+@subshell_child_type = @interpolation | @token_escape_sequence | @token_string_content
 
 #keyset[subshell, index]
 subshell_child(
@@ -976,7 +971,7 @@ superclass_def(
   int loc: @location ref
 );
 
-@symbol_child_type = @interpolation | @token_escape_sequence
+@symbol_child_type = @interpolation | @token_escape_sequence | @token_string_content
 
 #keyset[symbol, index]
 symbol_child(
@@ -1146,16 +1141,18 @@ case @token.kind of
 | 9 = @token_float
 | 10 = @token_global_variable
 | 11 = @token_heredoc_beginning
-| 12 = @token_heredoc_end
-| 13 = @token_identifier
-| 14 = @token_instance_variable
-| 15 = @token_integer
-| 16 = @token_nil
-| 17 = @token_operator
-| 18 = @token_self
-| 19 = @token_super
-| 20 = @token_true
-| 21 = @token_uninterpreted
+| 12 = @token_heredoc_content
+| 13 = @token_heredoc_end
+| 14 = @token_identifier
+| 15 = @token_instance_variable
+| 16 = @token_integer
+| 17 = @token_nil
+| 18 = @token_operator
+| 19 = @token_self
+| 20 = @token_string_content
+| 21 = @token_super
+| 22 = @token_true
+| 23 = @token_uninterpreted
 ;
 
 
