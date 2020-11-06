@@ -4,6 +4,11 @@
  */
 
 import go
+private import Xss
+private import SqlInjectionCustomizations
+private import RequestForgeryCustomizations
+private import CommandInjectionCustomizations
+private import CleartextLoggingCustomizations
 
 /**
  * A `Function` that is considered a "safe" external API from a security perspective.
@@ -16,6 +21,15 @@ private class DefaultSafeExternalAPIFunction extends SafeExternalAPIFunction {
     this instanceof BuiltinFunction
     // TODO: Add more external API functions which we know are safe here
   }
+}
+
+/** Holds if `n` is a sink for XSS, SQL injection or request forgery. */
+predicate isACommonSink(DataFlow::Node n) {
+  n instanceof SharedXss::Sink or
+  n instanceof SqlInjection::Sink or
+  n instanceof RequestForgery::Sink or
+  n instanceof CommandInjection::Sink or
+  n instanceof CleartextLogging::Sink
 }
 
 /** A node representing data being passed to an external API. */
@@ -42,6 +56,8 @@ class ExternalAPIDataNode extends DataFlow::Node {
     not exists(call.getACallee().getBody()) and
     // Not already modeled as a taint step
     not exists(DataFlow::Node next | TaintTracking::localTaintStep(this, next)) and
+    // Not a sink for a commonly-used query
+    not isACommonSink(this) and
     // Not a call to a known safe external API
     not call = any(SafeExternalAPIFunction f).getACall()
   }
