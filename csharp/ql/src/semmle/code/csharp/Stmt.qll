@@ -582,6 +582,27 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
    */
   Expr getIterableExpr() { result = this.getChild(1) }
 
+  /** Gets the called `GetEnumerator` method. */
+  Method getGetEnumerator() { foreach_stmt_info(this, _, result, _, _, _, _) }
+
+  /** Gets the called `MoveNext` or `MoveNextAsync` method. */
+  Method getMoveNext() { foreach_stmt_info(this, _, _, result, _, _, _) }
+
+  /** Gets the called `Dispose` or `DisposeAsync` method. */
+  Method getDispose() { foreach_stmt_info(this, _, _, _, result, _, _) }
+
+  /** Gets the called `Current` property. */
+  Property getCurrent() { foreach_stmt_info(this, _, _, _, _, result, _) }
+
+  /**
+   * Gets the intermediate type to which the `Current` property is converted before
+   * being converted to the iteration variable type.
+   */
+  Type getElementType() { foreach_stmt_info(this, result, _, _, _, _, _) }
+
+  /** Holds if this `foreach` statement is asynchronous. */
+  predicate isAsync() { foreach_stmt_info(this, _, _, _, _, _, 2) }
+
   override string toString() { result = "foreach (... ... in ...) ..." }
 
   override string getAPrimaryQlClass() { result = "ForeachStmt" }

@@ -53,6 +53,12 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("catch_type", @catch, type, explicityCaught ? 1 : 2);
         }
 
+        internal static void foreach_stmt_info(this TextWriter trapFile, Entities.Statements.ForEach @foreach, Type element, Method getEnumerator,
+            Method moveNext, Method dispose, Property current, bool isAsync)
+        {
+            trapFile.WriteTuple("foreach_stmt_info", @foreach, element, getEnumerator, moveNext, dispose, current, isAsync ? 2 : 1);
+        }
+
         internal static void commentblock(this TextWriter trapFile, CommentBlock k)
         {
             trapFile.WriteTuple("commentblock", k);

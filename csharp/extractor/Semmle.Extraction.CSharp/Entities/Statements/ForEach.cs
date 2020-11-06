@@ -18,11 +18,12 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             return ret;
         }
 
-        protected override void PopulateStatement(TextWriter _)
+        protected override void PopulateStatement(TextWriter trapFile)
         {
             Expression.Create(cx, Stmt.Expression, this, 1);
 
-            var typeSymbol = cx.GetModel(Stmt).GetDeclaredSymbol(Stmt);
+            var semanticModel = cx.GetModel(Stmt);
+            var typeSymbol = semanticModel.GetDeclaredSymbol(Stmt);
             var type = typeSymbol.GetAnnotatedType();
 
             var location = cx.Create(Stmt.Identifier.GetLocation());
@@ -30,6 +31,15 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             Expressions.VariableDeclaration.Create(cx, typeSymbol, type, Stmt.Type, location, Stmt.Type.IsVar, this, 0);
 
             Statement.Create(cx, Stmt.Statement, this, 2);
+
+            var info = semanticModel.GetForEachStatementInfo(Stmt);
+            var getEnumerator = Method.Create(cx, info.GetEnumeratorMethod);
+            var currentProp = Property.Create(cx, info.CurrentProperty);
+            var moveNext = Method.Create(cx, info.MoveNextMethod);
+            var dispose = Method.Create(cx, info.DisposeMethod);
+            var elementType = Type.Create(cx, info.ElementType);
+
+            trapFile.foreach_stmt_info(this, elementType, getEnumerator, moveNext, dispose, currentProp, info.IsAsynchronous);
         }
     }
 

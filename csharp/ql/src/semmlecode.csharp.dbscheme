@@ -982,6 +982,15 @@ catch_type(
   int type_id: @type_or_ref ref,
   int kind: int ref /* explicit = 1, implicit = 2 */);
 
+foreach_stmt_info(
+  unique int id: @foreach_stmt ref,
+  int element_type_id: @type_or_ref ref,
+  int getenumerator_id: @method ref,
+  int movenext_id: @method ref,
+  int dispose_id: @method ref,
+  int current_id: @property ref,
+  int kind: int ref /* non-async = 1, async = 2 */);
+
 /** EXPRESSIONS **/
 
 expressions(
