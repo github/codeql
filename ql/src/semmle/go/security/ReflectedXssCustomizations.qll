@@ -56,6 +56,8 @@ module ReflectedXss {
   private predicate nonHtmlContentType(HTTP::ResponseBody body) {
     not htmlTypeSpecified(body) and
     (
+      exists(body.getAContentType())
+      or
       exists(body.getAContentTypeNode())
       or
       exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("fmt", "Fprintf") |

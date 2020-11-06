@@ -60,7 +60,7 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   tupleStep(pred, succ) or
   stringConcatStep(pred, succ) or
   sliceStep(pred, succ) or
-  functionModelStep(_, pred, succ) or
+  any(FunctionModel fm).taintStep(pred, succ) or
   any(AdditionalTaintStep a).step(pred, succ)
 }
 
@@ -140,16 +140,6 @@ predicate sliceStep(DataFlow::Node pred, DataFlow::Node succ) {
   succ.(DataFlow::SliceNode).getBase() = pred
 }
 
-/** Holds if taint flows from `pred` to `succ` via a function model. */
-predicate functionModelStep(FunctionModel fn, DataFlow::Node pred, DataFlow::Node succ) {
-  exists(DataFlow::CallNode c, FunctionInput inp, FunctionOutput outp |
-    c = fn.getACall() and
-    fn.hasTaintFlow(inp, outp) and
-    pred = inp.getNode(c) and
-    succ = outp.getNode(c)
-  )
-}
-
 /**
  * A model of a function specifying that the function propagates taint from
  * a parameter or qualifier to a result.
@@ -157,6 +147,26 @@ predicate functionModelStep(FunctionModel fn, DataFlow::Node pred, DataFlow::Nod
 abstract class FunctionModel extends Function {
   /** Holds if taint propagates through this function from `input` to `output`. */
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);
+
+  /** Gets an input node for this model for the call `c`. */
+  DataFlow::Node getAnInputNode(DataFlow::CallNode c) { this.taintStepForCall(result, _, c) }
+
+  /** Gets an output node for this model for the call `c`. */
+  DataFlow::Node getAnOutputNode(DataFlow::CallNode c) { this.taintStepForCall(_, result, c) }
+
+  /** Holds if this function model causes taint to flow from `pred` to `succ` for the call `c`. */
+  predicate taintStepForCall(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode c) {
+    c = this.getACall() and
+    exists(FunctionInput inp, FunctionOutput outp | this.hasTaintFlow(inp, outp) |
+      pred = inp.getNode(c) and
+      succ = outp.getNode(c)
+    )
+  }
+
+  /** Holds if this function model causes taint to flow from `pred` to `succ`. */
+  predicate taintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    this.taintStepForCall(pred, succ, _)
+  }
 }
 
 /**
@@ -167,8 +177,10 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintStep(src, sink)
 }
 
+abstract class DefaultTaintSanitizer extends DataFlow::Node { }
+
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
+predicate defaultTaintSanitizer(DataFlow::Node node) { node instanceof DefaultTaintSanitizer }

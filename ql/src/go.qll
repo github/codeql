@@ -34,11 +34,13 @@ import semmle.go.frameworks.Email
 import semmle.go.frameworks.Encoding
 import semmle.go.frameworks.Gin
 import semmle.go.frameworks.Glog
+import semmle.go.frameworks.Logrus
 import semmle.go.frameworks.HTTP
 import semmle.go.frameworks.Macaron
 import semmle.go.frameworks.Mux
 import semmle.go.frameworks.NoSQL
 import semmle.go.frameworks.Protobuf
+import semmle.go.frameworks.Revel
 import semmle.go.frameworks.Spew
 import semmle.go.frameworks.SQL
 import semmle.go.frameworks.Stdlib

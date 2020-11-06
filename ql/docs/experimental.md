@@ -17,7 +17,7 @@ Experimental queries and libraries may not be actively maintained as the standar
     - The query must have a `@name` and `@description` to explain its purpose.
     - The query must have a `@kind` and `@problem.severity` as required by CodeQL tools.
 
-    For details, see the [guide on query metadata](https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md).
+    For details, see the [guide on query metadata](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md).
 
 3. **Formatting**
 
@@ -34,4 +34,4 @@ Experimental queries and libraries may not be actively maintained as the standar
 
 ## Non-requirements
 
-Other criteria typically required for our standard queries and libraries are not required for experimental queries and libraries. In particular, fully disciplined query [metadata](https://git.semmle.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md), query [help](https://git.semmle.com/Semmle/ql/blob/master/docs/query-help-style-guide.md), tests, a low false positive rate and performance tuning are not required (but nonetheless recommended).
+Other criteria typically required for our standard queries and libraries are not required for experimental queries and libraries. In particular, fully disciplined query [metadata](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md), query [help](https://github.com/github/codeql/blob/main/docs/query-help-style-guide.md), tests, a low false positive rate and performance tuning are not required (but nonetheless recommended).
