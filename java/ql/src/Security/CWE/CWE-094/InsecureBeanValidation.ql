@@ -14,6 +14,38 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
+class ELMessageInterpolatorType extends RefType {
+  ELMessageInterpolatorType() {
+    this
+        .getASourceSupertype*()
+        .hasQualifiedName("org.hibernate.validator.messageinterpolation",
+          ["ResourceBundleMessageInterpolator", "ValueFormatterMessageInterpolator"])
+  }
+}
+
+class SetSafeMessageInterpolator extends MethodAccess {
+  SetSafeMessageInterpolator() {
+    exists(Method m |
+      this.getMethod() = m and
+      (
+        m
+            .getDeclaringType()
+            .getASourceSupertype*()
+            .hasQualifiedName("javax.validation", ["Configuration", "ValidatorContext"]) and
+        m.getName() = "messageInterpolator"
+        or
+        m
+            .getDeclaringType()
+            .getASourceSupertype*()
+            .hasQualifiedName("org.springframework.validation.beanvalidation",
+              ["CustomValidatorBean", "LocalValidatorFactoryBean"]) and
+        m.getName() = "setMessageInterpolator"
+      )
+    ) and
+    not this.getAnArgument().getType() instanceof ELMessageInterpolatorType
+  }
+}
+
 class BuildConstraintViolationWithTemplateMethod extends Method {
   BuildConstraintViolationWithTemplateMethod() {
     this
@@ -38,5 +70,8 @@ class BeanValidationConfig extends TaintTracking::Configuration {
 }
 
 from BeanValidationConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
-select sink, source, sink, "Custom constraint error message contains unsanitized user data"
+where
+  not exists(SetSafeMessageInterpolator ma) and
+  cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink,
+  "Custom constraint error message contains unsanitized user data"
