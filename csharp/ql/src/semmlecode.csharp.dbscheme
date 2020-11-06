@@ -604,6 +604,9 @@ case @accessor.kind of
 | 2 = @setter
   ;
 
+init_only_accessors(
+  unique int id: @accessor ref);
+
 accessor_location(
   int id: @accessor ref,
   int loc: @location ref);
