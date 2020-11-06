@@ -955,6 +955,15 @@ private module Stage2 {
     )
   }
 
+  pragma[nomagic]
+  private predicate storeStepFwd(
+    Node node1, Ap ap1, TypedContent tc, Node node2, Ap ap2, Configuration config
+  ) {
+    fwdFlowStore(node1, ap1, tc, node2, _, _, config) and
+    ap2 = apCons(tc, ap1) and
+    fwdFlowRead(ap2, tc.getContent(), _, _, _, _, config)
+  }
+
   private predicate readStepFwd(Node n1, Ap ap1, Content c, Node n2, Ap ap2, Configuration config) {
     fwdFlowRead(ap1, c, n1, n2, _, _, config) and
     fwdFlowConsCand(ap1, c, ap2, config)
@@ -1049,10 +1058,8 @@ private module Stage2 {
     ApOption returnAp, Configuration config
   ) {
     revFlow(mid, toReturn, returnAp, ap0, config) and
-    storeCand1(node, tc, mid, config) and
-    tc.getContent() = c and
-    ap0 = true and
-    fwdFlow(node, _, _, ap, unbind(config))
+    storeStepFwd(node, ap, tc, mid, ap0, config) and
+    tc.getContent() = c
   }
 
   /**
@@ -1518,6 +1525,15 @@ private module Stage3 {
     )
   }
 
+  pragma[nomagic]
+  private predicate storeStepFwd(
+    Node node1, Ap ap1, TypedContent tc, Node node2, Ap ap2, Configuration config
+  ) {
+    fwdFlowStore(node1, ap1, tc, node2, _, _, config) and
+    ap2 = apCons(tc, ap1) and
+    fwdFlowRead(ap2, tc.getContent(), _, _, _, _, config)
+  }
+
   private predicate readStepFwd(Node n1, Ap ap1, Content c, Node n2, Ap ap2, Configuration config) {
     fwdFlowRead(ap1, c, n1, n2, _, _, config) and
     fwdFlowConsCand(ap1, c, ap2, config)
@@ -1616,10 +1632,8 @@ private module Stage3 {
     Ap ap0, Content c, Ap ap, Node node, TypedContent tc, Node mid, boolean toReturn,
     ApOption returnAp, Configuration config
   ) {
-    revFlow(mid, toReturn, returnAp, ap0, unbind(config)) and
-    fwdFlow(node, _, _, ap, config) and
-    storeCand2(node, tc, mid, _, unbind(config)) and
-    ap0 = TFrontHead(tc) and
+    revFlow(mid, toReturn, returnAp, ap0, config) and
+    storeStepFwd(node, ap, tc, mid, ap0, config) and
     tc.getContent() = c
   }
 
@@ -2140,6 +2154,15 @@ private module Stage4 {
     )
   }
 
+  pragma[nomagic]
+  private predicate storeStepFwd(
+    Node node1, Ap ap1, TypedContent tc, Node node2, Ap ap2, Configuration config
+  ) {
+    fwdFlowStore(node1, ap1, tc, node2, _, _, config) and
+    ap2 = apCons(tc, ap1) and
+    fwdFlowRead(ap2, tc.getContent(), _, _, _, _, config)
+  }
+
   private predicate readStepFwd(Node n1, Ap ap1, Content c, Node n2, Ap ap2, Configuration config) {
     fwdFlowRead(ap1, c, n1, n2, _, _, config) and
     fwdFlowConsCand(ap1, c, ap2, config)
@@ -2229,21 +2252,12 @@ private module Stage4 {
   }
 
   pragma[nomagic]
-  private predicate storeFlowFwd(
-    Node node1, TypedContent tc, Node node2, Ap ap, Ap ap0, Configuration config
-  ) {
-    storeCand2(node1, tc, node2, _, config) and
-    fwdFlowStore(_, ap, tc, node2, _, _, config) and
-    ap0 = push(tc, ap)
-  }
-
-  pragma[nomagic]
   private predicate revFlowStore(
     Ap ap0, Content c, Ap ap, Node node, TypedContent tc, Node mid, boolean toReturn,
     ApOption returnAp, Configuration config
   ) {
     revFlow(mid, toReturn, returnAp, ap0, config) and
-    storeFlowFwd(node, tc, mid, ap, ap0, config) and
+    storeStepFwd(node, ap, tc, mid, ap0, config) and
     tc.getContent() = c
   }
 
