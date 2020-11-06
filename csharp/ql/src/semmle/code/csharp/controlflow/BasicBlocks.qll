@@ -213,7 +213,7 @@ class BasicBlock extends TBasicBlockStart {
   /**
    * Holds if this basic block strictly post-dominates basic block `bb`.
    *
-   * That is, all paths reaching an exit point basic block from basic
+   * That is, all paths reaching a normal exit point basic block from basic
    * block `bb` must go through this basic block (which must be different
    * from `bb`).
    *
@@ -239,7 +239,7 @@ class BasicBlock extends TBasicBlockStart {
   /**
    * Holds if this basic block post-dominates basic block `bb`.
    *
-   * That is, all paths reaching an exit point basic block from basic
+   * That is, all paths reaching a normal exit point basic block from basic
    * block `bb` must go through this basic block.
    *
    * Example:
@@ -333,10 +333,15 @@ private module Internal {
   /** Holds if `pred` is a basic block predecessor of `succ`. */
   private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
 
+  /** Holds if `bb` is an exit basic block that represents normal exit. */
+  private predicate normalExitBB(BasicBlock bb) {
+    bb.getANode().(ControlFlow::Nodes::AnnotatedExitNode).isNormal()
+  }
+
   /** Holds if `dom` is an immediate post-dominator of `bb`. */
   cached
   predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
-    idominance(exitBB/1, predBB/2)(_, dom, bb)
+    idominance(normalExitBB/1, predBB/2)(_, dom, bb)
 }
 
 private import Internal
@@ -355,15 +360,20 @@ private predicate entryBB(BasicBlock bb) {
 }
 
 /**
+ * An annotated exit basic block, that is, a basic block that contains
+ * an annotated exit node.
+ */
+class AnnotatedExitBasicBlock extends BasicBlock {
+  AnnotatedExitBasicBlock() { this.getANode() instanceof ControlFlow::Nodes::AnnotatedExitNode }
+}
+
+/**
  * An exit basic block, that is, a basic block whose last node is
  * the exit node of a callable.
  */
 class ExitBasicBlock extends BasicBlock {
-  ExitBasicBlock() { exitBB(this) }
+  ExitBasicBlock() { this.getLastNode() instanceof ControlFlow::Nodes::ExitNode }
 }
-
-/** Holds if `bb` is an exit basic block. */
-private predicate exitBB(BasicBlock bb) { bb.getLastNode() instanceof ControlFlow::Nodes::ExitNode }
 
 private module JoinBlockPredecessors {
   private import ControlFlow::Nodes

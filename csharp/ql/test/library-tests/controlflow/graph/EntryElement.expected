@@ -2167,6 +2167,31 @@
 | Patterns.cs:37:17:37:22 | break; | Patterns.cs:37:17:37:22 | break; |
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:40:9:42:9 | switch (...) {...} |
 | Patterns.cs:40:17:40:17 | access to local variable o | Patterns.cs:40:17:40:17 | access to local variable o |
+| PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:6:5:8:5 | {...} |
+| PostDominance.cs:7:9:7:28 | call to method WriteLine | PostDominance.cs:7:27:7:27 | access to parameter s |
+| PostDominance.cs:7:9:7:29 | ...; | PostDominance.cs:7:9:7:29 | ...; |
+| PostDominance.cs:7:27:7:27 | access to parameter s | PostDominance.cs:7:27:7:27 | access to parameter s |
+| PostDominance.cs:11:5:15:5 | {...} | PostDominance.cs:11:5:15:5 | {...} |
+| PostDominance.cs:12:9:13:19 | if (...) ... | PostDominance.cs:12:9:13:19 | if (...) ... |
+| PostDominance.cs:12:13:12:13 | access to parameter s | PostDominance.cs:12:13:12:13 | access to parameter s |
+| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:12:13:12:13 | access to parameter s |
+| PostDominance.cs:12:18:12:21 | null | PostDominance.cs:12:18:12:21 | null |
+| PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:13:13:13:19 | return ...; |
+| PostDominance.cs:14:9:14:28 | call to method WriteLine | PostDominance.cs:14:27:14:27 | access to parameter s |
+| PostDominance.cs:14:9:14:29 | ...; | PostDominance.cs:14:9:14:29 | ...; |
+| PostDominance.cs:14:27:14:27 | access to parameter s | PostDominance.cs:14:27:14:27 | access to parameter s |
+| PostDominance.cs:18:5:22:5 | {...} | PostDominance.cs:18:5:22:5 | {...} |
+| PostDominance.cs:19:9:20:55 | if (...) ... | PostDominance.cs:19:9:20:55 | if (...) ... |
+| PostDominance.cs:19:13:19:13 | access to parameter s | PostDominance.cs:19:13:19:13 | access to parameter s |
+| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:19:13:19:13 | access to parameter s |
+| PostDominance.cs:19:18:19:21 | null | PostDominance.cs:19:18:19:21 | null |
+| PostDominance.cs:20:13:20:55 | throw ...; | PostDominance.cs:20:45:20:53 | nameof(...) |
+| PostDominance.cs:20:19:20:54 | object creation of type ArgumentNullException | PostDominance.cs:20:45:20:53 | nameof(...) |
+| PostDominance.cs:20:45:20:53 | nameof(...) | PostDominance.cs:20:45:20:53 | nameof(...) |
+| PostDominance.cs:20:52:20:52 | access to parameter s | PostDominance.cs:20:52:20:52 | access to parameter s |
+| PostDominance.cs:21:9:21:28 | call to method WriteLine | PostDominance.cs:21:27:21:27 | access to parameter s |
+| PostDominance.cs:21:9:21:29 | ...; | PostDominance.cs:21:9:21:29 | ...; |
+| PostDominance.cs:21:27:21:27 | access to parameter s | PostDominance.cs:21:27:21:27 | access to parameter s |
 | Qualifiers.cs:7:28:7:31 | null | Qualifiers.cs:7:28:7:31 | null |
 | Qualifiers.cs:8:41:8:44 | null | Qualifiers.cs:8:41:8:44 | null |
 | Qualifiers.cs:11:5:31:5 | {...} | Qualifiers.cs:11:5:31:5 | {...} |

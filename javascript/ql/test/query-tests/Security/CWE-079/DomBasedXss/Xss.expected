@@ -89,6 +89,9 @@ nodes
 | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name |
 | classnames.js:15:52:15:62 | window.name |
+| express.js:7:15:7:33 | req.param("wobble") |
+| express.js:7:15:7:33 | req.param("wobble") |
+| express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
@@ -685,6 +688,7 @@ edges
 | classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
 | jquery.js:2:17:2:33 | document.location | jquery.js:2:17:2:40 | documen ... .search |
@@ -1175,6 +1179,7 @@ edges
 | classnames.js:11:31:11:79 | `<span  ... <span>` | classnames.js:10:45:10:55 | window.name | classnames.js:11:31:11:79 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:10:45:10:55 | window.name | user-provided value |
 | classnames.js:13:31:13:83 | `<span  ... <span>` | classnames.js:13:57:13:67 | window.name | classnames.js:13:31:13:83 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:13:57:13:67 | window.name | user-provided value |
 | classnames.js:15:31:15:78 | `<span  ... <span>` | classnames.js:15:52:15:62 | window.name | classnames.js:15:31:15:78 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:15:52:15:62 | window.name | user-provided value |
+| express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") | Cross-site scripting vulnerability due to $@. | express.js:7:15:7:33 | req.param("wobble") | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:40 | documen ... .search | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:33 | document.location | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | jquery.js:10:13:10:20 | location | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | Cross-site scripting vulnerability due to $@. | jquery.js:10:13:10:20 | location | user-provided value |

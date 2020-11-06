@@ -30,10 +30,19 @@ class StdStringConstructor extends Constructor, TaintFunction {
    * character).
    */
   int getAStringParameterIndex() {
-    getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
-    getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
-    getParameter(result).getUnspecifiedType() =
-      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
+    exists(Type paramType | paramType = getParameter(result).getUnspecifiedType() |
+      // e.g. `std::basic_string::CharT *`
+      paramType instanceof PointerType
+      or
+      // e.g. `std::basic_string &`, avoiding `const Allocator&`
+      paramType instanceof ReferenceType and
+      not paramType.(ReferenceType).getBaseType() =
+        getDeclaringType().getTemplateArgument(2).(Type).getUnspecifiedType()
+      or
+      // i.e. `std::basic_string::CharT`
+      getParameter(result).getUnspecifiedType() =
+        getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType()
+    )
   }
 
   /**

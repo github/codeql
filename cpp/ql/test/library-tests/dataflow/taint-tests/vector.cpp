@@ -312,7 +312,7 @@ void test_vector_insert() {
 	sink(d); // tainted
 }
 
-void test_constructors_more() {
+void test_vector_constructors_more() {
 	std::vector<int> v1;
 	std::vector<int> v2;
 	v2.push_back(source());
@@ -485,4 +485,14 @@ void test_vector_memcpy()
 		sink(src); // tainted
 		sink(cs); // tainted [NOT DETECTED by IR]
 	}
+}
+
+void test_vector_emplace() {
+	std::vector<int> v1(10), v2(10);
+
+	v1.emplace_back(source());
+	sink(v1); // tainted
+
+	v2.emplace(v2.begin(), source());
+	sink(v2); // tainted
 }

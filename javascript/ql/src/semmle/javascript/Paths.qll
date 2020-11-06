@@ -144,26 +144,24 @@ abstract class PathString extends string {
   Path resolveUpTo(int n, Folder root) {
     n = 0 and result.getContainer() = root and root = getARootFolder()
     or
-    exists(Path base | base = resolveUpTo(n - 1, root) |
-      exists(string next | next = getComponent(n - 1) |
-        // handle empty components and the special "." folder
-        (next = "" or next = ".") and
-        result = base
-        or
-        // handle the special ".." folder
-        next = ".." and result = base.(ConsPath).getParent()
-        or
-        // special handling for Windows drive letters when resolving absolute path:
-        // the extractor populates "C:/" as a folder that has path "C:/" but name ""
-        n = 1 and
-        next.regexpMatch("[A-Za-z]:") and
-        root.getBaseName() = "" and
-        root.toString() = next.toUpperCase() + "/" and
-        result = base
-        or
-        // default case
-        result = TConsPath(base, next)
-      )
+    exists(Path base, string next | next = getComponent(this, n - 1, base, root) |
+      // handle empty components and the special "." folder
+      (next = "" or next = ".") and
+      result = base
+      or
+      // handle the special ".." folder
+      next = ".." and result = base.(ConsPath).getParent()
+      or
+      // special handling for Windows drive letters when resolving absolute path:
+      // the extractor populates "C:/" as a folder that has path "C:/" but name ""
+      n = 1 and
+      next.regexpMatch("[A-Za-z]:") and
+      root.getBaseName() = "" and
+      root.toString() = next.toUpperCase() + "/" and
+      result = base
+      or
+      // default case
+      result = TConsPath(base, next)
     )
   }
 
@@ -172,6 +170,105 @@ abstract class PathString extends string {
    * `root`.
    */
   Path resolve(Folder root) { result = resolveUpTo(getNumComponent(), root) }
+}
+
+/**
+ * Gets the `i`th component of the path `str`, where `base` is the resolved path one level up.
+ * Supports that the root directory might be compiled output from TypeScript.
+ */
+private string getComponent(PathString str, int n, Path base, Folder root) {
+  base = str.resolveUpTo(n, root) and
+  (
+    result = str.getComponent(n)
+    or
+    result = TypeScriptOutDir::getOriginalTypeScriptFolder(str.getComponent(n), base.getContainer())
+  )
+}
+
+/**
+ * Predicates for resolving imports to compiled TypeScript.
+ */
+private module TypeScriptOutDir {
+  /**
+   * Gets a folder of TypeScript files that is compiled to JavaScript files in `outdir` relative to a `parent`.
+   */
+  string getOriginalTypeScriptFolder(string outdir, Folder parent) {
+    exists(JSONObject tsconfig |
+      tsconfig.getFile().getBaseName() = "tsconfig.json" and
+      tsconfig.isTopLevel() and
+      tsconfig.getFile().getParentContainer() = parent
+    |
+      outdir =
+        tsconfig
+            .getPropValue("compilerOptions")
+            .(JSONObject)
+            .getPropValue("outDir")
+            .(JSONString)
+            .getValue() and
+      result = getEffectiveRootDirFromTSConfig(tsconfig)
+    )
+  }
+
+  /**
+   * Gets the directory that contains the TypeScript source files.
+   * Based on the tsconfig.json file `tsconfig`.
+   */
+  pragma[inline]
+  private string getEffectiveRootDirFromTSConfig(JSONObject tsconfig) {
+    // if an explicit "rootDir" option exists, then use that.
+    result = getRootDir(tsconfig)
+    or
+    // otherwise, infer from "includes"
+    not exists(getRootDir(tsconfig)) and
+    (
+      // if unique root folder in "includes", then use that.
+      result = unique( | | getARootDirFromInclude(tsconfig))
+      or
+      // otherwise use "." if the includes are split over multiple folders.
+      exists(getARootDirFromInclude(tsconfig)) and
+      not exists(unique( | | getARootDirFromInclude(tsconfig))) and
+      result = "."
+    )
+  }
+
+  /**
+   * Gets the first folder from `path`.
+   */
+  bindingset[path]
+  private string getRootFolderFromPath(string path) {
+    not exists(path.indexOf("/")) and result = path
+    or
+    result = path.substring(0, path.indexOf("/", 0, 0))
+  }
+
+  /**
+   * Gets a root directory containing TypeScript files based on the "include" option from tsconfig.json.
+   * Can have multiple results if the includes are from multiple folders.
+   */
+  pragma[inline]
+  private string getARootDirFromInclude(JSONObject tsconfig) {
+    result =
+      getRootFolderFromPath(tsconfig
+            .getPropValue("include")
+            .(JSONArray)
+            .getElementValue(_)
+            .(JSONString)
+            .getValue())
+  }
+
+  /**
+   * Gets the value of the "rootDir" option from a tsconfig.json.
+   */
+  pragma[inline]
+  private string getRootDir(JSONObject tsconfig) {
+    result =
+      tsconfig
+          .getPropValue("compilerOptions")
+          .(JSONObject)
+          .getPropValue("rootDir")
+          .(JSONString)
+          .getValue()
+  }
 }
 
 /**

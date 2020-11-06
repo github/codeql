@@ -1,4 +1,6 @@
 | patterns.cs:98:10:98:20 | enter Expressions | patterns.cs:99:5:121:5 | {...} | semmle.label | successor |
+| patterns.cs:98:10:98:20 | exit Expressions (abnormal) | patterns.cs:98:10:98:20 | exit Expressions | semmle.label | successor |
+| patterns.cs:98:10:98:20 | exit Expressions (normal) | patterns.cs:98:10:98:20 | exit Expressions | semmle.label | successor |
 | patterns.cs:99:5:121:5 | {...} | patterns.cs:100:9:103:10 | ... ...; | semmle.label | successor |
 | patterns.cs:100:9:103:10 | ... ...; | patterns.cs:100:20:103:9 | ... switch { ... } | semmle.label | successor |
 | patterns.cs:100:13:103:9 | String size = ... | patterns.cs:105:9:105:27 | ... ...; | semmle.label | successor |
@@ -39,7 +41,7 @@
 | patterns.cs:110:23:110:23 | 1 | patterns.cs:110:25:110:25 | 0 | semmle.label | successor |
 | patterns.cs:110:25:110:25 | 0 | patterns.cs:110:22:110:26 | (..., ...) | semmle.label | successor |
 | patterns.cs:111:13:111:17 | ( ... ) | patterns.cs:111:13:111:17 | { ... } | semmle.label | successor |
-| patterns.cs:111:13:111:17 | { ... } | patterns.cs:98:10:98:20 | exit Expressions | semmle.label | exception(InvalidOperationException) |
+| patterns.cs:111:13:111:17 | { ... } | patterns.cs:98:10:98:20 | exit Expressions (abnormal) | semmle.label | exception(InvalidOperationException) |
 | patterns.cs:111:13:111:17 | { ... } | patterns.cs:111:23:111:23 | 0 | semmle.label | match |
 | patterns.cs:111:13:111:26 | ... => ... | patterns.cs:111:14:111:14 | 1 | semmle.label | successor |
 | patterns.cs:111:14:111:14 | 1 | patterns.cs:111:16:111:16 | 0 | semmle.label | successor |
@@ -48,7 +50,7 @@
 | patterns.cs:111:23:111:23 | 0 | patterns.cs:111:25:111:25 | 1 | semmle.label | successor |
 | patterns.cs:111:25:111:25 | 1 | patterns.cs:111:22:111:26 | (..., ...) | semmle.label | successor |
 | patterns.cs:115:9:115:16 | (..., ...) | patterns.cs:115:20:120:9 | ... switch { ... } | semmle.label | successor |
-| patterns.cs:115:9:120:9 | ... = ... | patterns.cs:98:10:98:20 | exit Expressions | semmle.label | successor |
+| patterns.cs:115:9:120:9 | ... = ... | patterns.cs:98:10:98:20 | exit Expressions (normal) | semmle.label | successor |
 | patterns.cs:115:9:120:10 | ...; | patterns.cs:115:9:115:16 | (..., ...) | semmle.label | successor |
 | patterns.cs:115:20:115:27 | (..., ...) | patterns.cs:117:13:117:33 | ... => ... | semmle.label | successor |
 | patterns.cs:115:20:120:9 | ... switch { ... } | patterns.cs:115:21:115:22 | access to local variable x0 | semmle.label | successor |
@@ -73,7 +75,7 @@
 | patterns.cs:118:29:118:29 | 0 | patterns.cs:118:32:118:33 | access to local variable x2 | semmle.label | successor |
 | patterns.cs:118:32:118:33 | access to local variable x2 | patterns.cs:118:28:118:34 | (..., ...) | semmle.label | successor |
 | patterns.cs:119:13:119:28 | ( ... ) | patterns.cs:119:13:119:28 | { ... } | semmle.label | successor |
-| patterns.cs:119:13:119:28 | { ... } | patterns.cs:98:10:98:20 | exit Expressions | semmle.label | exception(InvalidOperationException) |
+| patterns.cs:119:13:119:28 | { ... } | patterns.cs:98:10:98:20 | exit Expressions (abnormal) | semmle.label | exception(InvalidOperationException) |
 | patterns.cs:119:13:119:28 | { ... } | patterns.cs:119:34:119:34 | 0 | semmle.label | match |
 | patterns.cs:119:13:119:38 | ... => ... | patterns.cs:119:14:119:19 | Int32 x2 | semmle.label | successor |
 | patterns.cs:119:14:119:19 | Int32 x2 | patterns.cs:119:22:119:27 | Int32 y2 | semmle.label | successor |
@@ -82,6 +84,8 @@
 | patterns.cs:119:34:119:34 | 0 | patterns.cs:119:37:119:37 | 0 | semmle.label | successor |
 | patterns.cs:119:37:119:37 | 0 | patterns.cs:119:33:119:38 | (..., ...) | semmle.label | successor |
 | patterns.cs:123:10:123:21 | enter Expressions2 | patterns.cs:124:5:149:5 | {...} | semmle.label | successor |
+| patterns.cs:123:10:123:21 | exit Expressions2 (abnormal) | patterns.cs:123:10:123:21 | exit Expressions2 | semmle.label | successor |
+| patterns.cs:123:10:123:21 | exit Expressions2 (normal) | patterns.cs:123:10:123:21 | exit Expressions2 | semmle.label | successor |
 | patterns.cs:124:5:149:5 | {...} | patterns.cs:125:9:125:39 | ... ...; | semmle.label | successor |
 | patterns.cs:125:9:125:39 | ... ...; | patterns.cs:125:17:125:38 | object creation of type MyStruct | semmle.label | successor |
 | patterns.cs:125:13:125:38 | MyStruct s = ... | patterns.cs:126:9:132:10 | ... ...; | semmle.label | successor |
@@ -117,7 +121,7 @@
 | patterns.cs:130:14:130:14 | 1 | patterns.cs:130:17:130:17 | 2 | semmle.label | successor |
 | patterns.cs:130:17:130:17 | 2 | patterns.cs:130:13:130:18 | ( ... ) | semmle.label | successor |
 | patterns.cs:130:23:130:23 | 2 | patterns.cs:126:13:132:9 | Int32 r = ... | semmle.label | successor |
-| patterns.cs:131:13:131:22 | (..., ...) | patterns.cs:123:10:123:21 | exit Expressions2 | semmle.label | exception(InvalidOperationException) |
+| patterns.cs:131:13:131:22 | (..., ...) | patterns.cs:123:10:123:21 | exit Expressions2 (abnormal) | semmle.label | exception(InvalidOperationException) |
 | patterns.cs:131:13:131:22 | (..., ...) | patterns.cs:131:27:131:27 | 3 | semmle.label | match |
 | patterns.cs:131:13:131:27 | ... => ... | patterns.cs:131:18:131:18 | Int32 x | semmle.label | successor |
 | patterns.cs:131:18:131:18 | Int32 x | patterns.cs:131:21:131:21 | _ | semmle.label | successor |
@@ -125,7 +129,7 @@
 | patterns.cs:131:27:131:27 | 3 | patterns.cs:126:13:132:9 | Int32 r = ... | semmle.label | successor |
 | patterns.cs:134:9:148:9 | try {...} ... | patterns.cs:135:9:144:9 | {...} | semmle.label | successor |
 | patterns.cs:135:9:144:9 | {...} | patterns.cs:136:13:143:14 | ...; | semmle.label | successor |
-| patterns.cs:136:13:143:13 | ... = ... | patterns.cs:123:10:123:21 | exit Expressions2 | semmle.label | successor |
+| patterns.cs:136:13:143:13 | ... = ... | patterns.cs:123:10:123:21 | exit Expressions2 (normal) | semmle.label | successor |
 | patterns.cs:136:13:143:14 | ...; | patterns.cs:136:17:143:13 | ... switch { ... } | semmle.label | successor |
 | patterns.cs:136:17:136:17 | access to parameter o | patterns.cs:138:17:138:50 | ... => ... | semmle.label | successor |
 | patterns.cs:136:17:143:13 | ... switch { ... } | patterns.cs:136:17:136:17 | access to parameter o | semmle.label | successor |
@@ -158,13 +162,13 @@
 | patterns.cs:142:26:142:34 | { ... } | patterns.cs:142:17:142:36 | { ... } | semmle.label | successor |
 | patterns.cs:142:31:142:32 | 10 | patterns.cs:142:26:142:34 | { ... } | semmle.label | successor |
 | patterns.cs:142:41:142:41 | 6 | patterns.cs:136:13:143:13 | ... = ... | semmle.label | successor |
-| patterns.cs:145:9:148:9 | [exception: ArgumentException] catch (...) {...} | patterns.cs:123:10:123:21 | exit Expressions2 | semmle.label | exception(ArgumentException) |
-| patterns.cs:145:9:148:9 | [exception: Exception] catch (...) {...} | patterns.cs:123:10:123:21 | exit Expressions2 | semmle.label | exception(Exception) |
+| patterns.cs:145:9:148:9 | [exception: ArgumentException] catch (...) {...} | patterns.cs:123:10:123:21 | exit Expressions2 (abnormal) | semmle.label | exception(ArgumentException) |
+| patterns.cs:145:9:148:9 | [exception: Exception] catch (...) {...} | patterns.cs:123:10:123:21 | exit Expressions2 (abnormal) | semmle.label | exception(Exception) |
 | patterns.cs:145:9:148:9 | [exception: Exception] catch (...) {...} | patterns.cs:145:41:145:42 | [exception: Exception] InvalidOperationException ex | semmle.label | match |
 | patterns.cs:145:9:148:9 | [exception: InvalidOperationException] catch (...) {...} | patterns.cs:145:41:145:42 | [exception: InvalidOperationException] InvalidOperationException ex | semmle.label | match |
 | patterns.cs:145:41:145:42 | [exception: Exception] InvalidOperationException ex | patterns.cs:146:9:148:9 | {...} | semmle.label | successor |
 | patterns.cs:145:41:145:42 | [exception: InvalidOperationException] InvalidOperationException ex | patterns.cs:146:9:148:9 | {...} | semmle.label | successor |
 | patterns.cs:146:9:148:9 | {...} | patterns.cs:147:13:147:51 | ...; | semmle.label | successor |
-| patterns.cs:147:13:147:50 | call to method WriteLine | patterns.cs:123:10:123:21 | exit Expressions2 | semmle.label | successor |
+| patterns.cs:147:13:147:50 | call to method WriteLine | patterns.cs:123:10:123:21 | exit Expressions2 (normal) | semmle.label | successor |
 | patterns.cs:147:13:147:51 | ...; | patterns.cs:147:31:147:49 | "Invalid operation" | semmle.label | successor |
 | patterns.cs:147:31:147:49 | "Invalid operation" | patterns.cs:147:13:147:50 | call to method WriteLine | semmle.label | successor |

@@ -30,7 +30,7 @@ int sscanf(const char *s, const char *format, ...);
 // ----------
 
 int source();
-void sink(...) {};
+void sink(...);
 
 namespace string
 {

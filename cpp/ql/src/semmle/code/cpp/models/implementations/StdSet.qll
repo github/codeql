@@ -61,7 +61,7 @@ class StdSetEmplace extends TaintFunction {
     // flow from any parameter to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameter([0 .. getNumberOfParameters() - 1]) and
+    input.isParameterDeref([0 .. getNumberOfParameters() - 1]) and
     (
       output.isQualifierObject() or
       output.isReturnValue()
