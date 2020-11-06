@@ -215,9 +215,9 @@ private predicate localEssaStep(EssaNode nodeFrom, EssaNode nodeTo) {
  * Holds if `result` is either `node`, or the post-update node for `node`.
  */
 private Node update(Node node) {
-  node = result.(PostUpdateNode).getPreUpdateNode()
-  or
   result = node
+  or
+  result.(PostUpdateNode).getPreUpdateNode() = node
 }
 
 // TODO: Make modules for these headings
