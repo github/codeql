@@ -28,6 +28,8 @@ predicate hasFlow(DataFlow::Node origin, DataFlow::Node pointer) {
 
 from DataFlow::Node pointer, DataFlow::Node origin
 where
+  exists(pointer.getLocation().getFile().getRelativePath()) and
+  exists(origin.getLocation().getFile().getRelativePath()) and
   pointsToOrigin(pointer, origin) and
   not hasFlow(origin, pointer)
 select origin, pointer
