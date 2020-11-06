@@ -366,7 +366,12 @@ module HTTP {
      * extend `HTTP::ResponseWriter` instead.
      */
     abstract class Range extends Variable {
-      /** Gets a data-flow node that is a use of this response writer. */
+      /**
+       * Gets a data-flow node that is a use of this response writer.
+       *
+       * Note that `PostUpdateNode`s for nodes that this predicate gets do not need to be
+       * included, as they are handled by the concrete `ResponseWriter`'s `getANode`.
+       */
       abstract DataFlow::Node getANode();
     }
   }
@@ -392,7 +397,10 @@ module HTTP {
     Redirect getARedirect() { result.getResponseWriter() = this }
 
     /** Gets a data-flow node that is a use of this response writer. */
-    DataFlow::Node getANode() { result = self.getANode() }
+    DataFlow::Node getANode() {
+      result = self.getANode() or
+      result.(DataFlow::PostUpdateNode).getPreUpdateNode() = self.getANode()
+    }
   }
 
   /** Provides a class for modeling new HTTP header-write APIs. */
