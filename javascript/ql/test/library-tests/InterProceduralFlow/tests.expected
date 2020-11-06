@@ -1,6 +1,5 @@
 dataFlow
 | a.js:1:15:1:23 | "tainted" | b.js:4:13:4:40 | whoKnow ... Tainted |
-| a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
 | a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
 | async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
 | async.js:2:16:2:23 | "source" | async.js:13:15:13:20 | sync() |
@@ -26,6 +25,8 @@ dataFlow
 | global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
 | global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
 | global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:6:13:6:13 | x |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:7:13:7:16 | ns.x |
 | nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
 | nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
 | nodeJsLib.js:2:15:2:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |
@@ -77,7 +78,6 @@ flowLabels
 | tst5.mjs:15:8:15:19 | source(flow) | tst5.mjs:16:13:16:16 | flow |
 taintTracking
 | a.js:1:15:1:23 | "tainted" | b.js:4:13:4:40 | whoKnow ... Tainted |
-| a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
 | a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
 | async.js:2:16:2:23 | "source" | async.js:7:14:7:20 | async() |
 | async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
@@ -106,6 +106,8 @@ taintTracking
 | global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
 | global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
 | global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:6:13:6:13 | x |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:7:13:7:16 | ns.x |
 | nodeJsLib.js:1:15:1:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
 | nodeJsLib.js:1:15:1:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
 | nodeJsLib.js:1:15:1:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |
@@ -182,7 +184,6 @@ taintTracking
 | underscore.js:19:17:19:22 | "src5" | underscore.js:20:15:20:44 | _.map([ ... ource5) |
 germanFlow
 | a.js:1:15:1:23 | "tainted" | b.js:4:13:4:40 | whoKnow ... Tainted |
-| a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
 | a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
 | async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
 | async.js:2:16:2:23 | "source" | async.js:13:15:13:20 | sync() |
@@ -209,6 +210,8 @@ germanFlow
 | global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
 | global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
 | global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:6:13:6:13 | x |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:7:13:7:16 | ns.x |
 | nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
 | nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
 | nodeJsLib.js:2:15:2:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |
