@@ -53,7 +53,22 @@ class ExternalAPIDataNode extends DataFlow::Node {
   int getIndex() { result = i }
 
   /** Gets the description of the function being called. */
-  string getFunctionDescription() { result = call.getCalleeName() }
+  string getFunctionDescription() {
+    // For methods, need to use `getReceiverBaseType` to avoid multiple values when the
+    // receiver of the method is an embedded field in another type. Note also that
+    // for non-methods, `getQualifiedName` isn't always defined, e.g. for built-in
+    // functions or function variables. In those cases we cannot provide a package with
+    // the function description.
+    if this.getFunction() instanceof Method
+    then
+      result =
+        this.getFunction().(Method).getReceiverBaseType().getQualifiedName() + "." +
+          this.getFunction().getName()
+    else
+      if exists(this.getFunction().getQualifiedName())
+      then result = this.getFunction().getQualifiedName()
+      else result = call.getCalleeName()
+  }
 }
 
 /** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalAPIDataNode`s. */
