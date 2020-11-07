@@ -159,7 +159,7 @@ for lang in languages:
             # Generate the query help for each query
             try:
                 query_help = subprocess_run(
-                    ["codeql", "generate", "query-help", "--format=markdown", "--warnings=hide", queryfile]).stdout.strip()
+                    ["codeql", "generate", "query-help", "--format=markdown", "--warnings=error", queryfile]).stdout.strip()
             except:
                 # Print a message if generate query help fails
                 print("Failed to generate query help for '%s'" % (queryfile_nwo))
@@ -192,7 +192,7 @@ for lang in languages:
 
             # Join metadata into a literal block and add query link below
             meta_string = "\n"*2 + "```\n" + query_id + query_kind + query_severity + \
-                query_precision + query_tags + "\n" + "```\n" + query_link + "\n"
+                query_precision + query_tags + "```\n\n" + query_link + "\n"
 
             # Insert metadata block into query help directly under title
             full_help = query_help.replace("\n", meta_string, 1)
