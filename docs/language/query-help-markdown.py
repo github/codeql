@@ -23,7 +23,7 @@ languages = [ "cpp", "csharp", "go", "java", "javascript", "python"]
 
 # Query suites to generate help for
 # lgtm-full suites covers all queries used in code scanning and on lgtm.com plus a few more
-packs = ["lgtm-full"]
+packs = ["lgtm"]
 
 def prefix_repo_nwo(filename):
     """
