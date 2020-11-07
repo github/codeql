@@ -21,9 +21,9 @@ as long as you run the script from one of the following locations:
 # Define which languages and query packs to consider
 languages = [ "cpp", "csharp", "go", "java", "javascript", "python"]
 
-# generate query-help fails for some queries in these suites. Faliures generate an error message.
-packs = ["code-scanning", "security-and-quality", "security-extended"]
-
+# Query suites to generate help for
+# lgtm-full suites covers all queries used in code scanning and on lgtm.com plus a few more
+packs = ["lgtm-full"]
 
 def prefix_repo_nwo(filename):
     """
@@ -197,8 +197,10 @@ for lang in languages:
             # Insert metadata block into query help directly under title
             full_help = query_help.replace("\n", meta_string, 1)
 
-            # Basename of query, used to make markdown output filepath
-            query_name = os.path.split(queryfile_nwo)[1][:-3]
+            # Use id property (without language code) to make name for markdown file
+            s = query_id.index("/")
+            # replace "/" with "-"
+            query_name = query_id[s+1:-1].replace("/", "-")
 
             # Populate index_file_dictionary with @name extracted from metadata and corresponding query filename
             index_file_dictionary[query_name_meta] = lang + "/" + query_name
