@@ -1,8 +1,8 @@
-package test
+package main
 
 import "regexp"
 
-func test() {
+func main() {
 
 	// BAD: probably a mistake:
 	regexp.MustCompile("hello\aworld")
@@ -20,5 +20,6 @@ func test() {
 	regexp.MustCompile("hello\010world")
 	regexp.MustCompile("hello\u0008world")
 	regexp.MustCompile("hello\U00000008world")
-
+	// GOOD: use of a raw string literal
+	regexp.MustCompile(`hello\b\sworld`)
 }
