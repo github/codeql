@@ -22,6 +22,7 @@ private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 // import `LibraryTypeDataFlow` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.JsonNET
+private import FlowSummary
 
 private newtype TAccessPath =
   TNilAccessPath() or
@@ -350,6 +351,90 @@ abstract class LibraryTypeDataFlow extends Type {
     CallableFlowSource source, Content content, SourceDeclarationCallable callable
   ) {
     none()
+  }
+}
+
+private CallableFlowSource toCallableFlowSource(SummaryInput input) {
+  result = TCallableFlowSourceQualifier() and
+  input = SummaryInput::parameter(-1)
+  or
+  exists(int i |
+    result = TCallableFlowSourceArg(i) and
+    input = SummaryInput::parameter(i)
+  )
+  or
+  exists(int i |
+    result = TCallableFlowSourceDelegateArg(i) and
+    input = SummaryInput::delegate(i)
+  )
+}
+
+private CallableFlowSink toCallableFlowSink(SummaryOutput output) {
+  result = TCallableFlowSinkQualifier() and
+  output = SummaryOutput::parameter(-1)
+  or
+  result = TCallableFlowSinkReturn() and
+  output = SummaryOutput::return()
+  or
+  exists(int i |
+    result = TCallableFlowSinkArg(i) and
+    output = SummaryOutput::parameter(i)
+  )
+  or
+  exists(int i, int j |
+    result = TCallableFlowSinkDelegateArg(i, j) and
+    output = SummaryOutput::delegate(i, j)
+  )
+}
+
+private AccessPath toAccessPath(ContentList cl) {
+  cl = ContentList::empty() and
+  result = TNilAccessPath()
+  or
+  exists(Content head, ContentList tail |
+    cl = ContentList::cons(head, tail) and
+    result = TConsAccessPath(head, toAccessPath(tail))
+  )
+}
+
+private class FrameworkDataFlowAdaptor extends SummarizedCallable {
+  private LibraryTypeDataFlow ltdf;
+
+  FrameworkDataFlowAdaptor() {
+    ltdf.callableFlow(_, _, this, _) or
+    ltdf.callableFlow(_, _, _, _, this, _) or
+    ltdf.clearsContent(_, _, this)
+  }
+
+  override predicate propagatesFlow(SummaryInput input, SummaryOutput output, boolean preservesValue) {
+    ltdf.callableFlow(toCallableFlowSource(input), toCallableFlowSink(output), this, preservesValue)
+  }
+
+  override predicate propagatesFlow(
+    SummaryInput input, ContentList inputContents, SummaryOutput output, ContentList outputContents,
+    boolean preservesValue
+  ) {
+    ltdf
+        .callableFlow(toCallableFlowSource(input), toAccessPath(inputContents),
+          toCallableFlowSink(output), toAccessPath(outputContents), this, preservesValue)
+  }
+
+  private AccessPath getAnAccessPath() {
+    ltdf.callableFlow(_, result, _, _, this, _)
+    or
+    ltdf.callableFlow(_, _, _, result, _, _)
+  }
+
+  override predicate requiresContentList(Content head, ContentList tail) {
+    exists(AccessPath ap |
+      ap = this.getAnAccessPath().drop(_) and
+      head = ap.getHead() and
+      toAccessPath(tail) = ap.getTail()
+    )
+  }
+
+  override predicate clearsContent(SummaryInput input, Content content) {
+    ltdf.clearsContent(toCallableFlowSource(input), content, this)
   }
 }
 
@@ -1904,6 +1989,53 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow, SystemThreading
     sinkAp =
       AccessPath::field(any(SystemRuntimeCompilerServicesTaskAwaiterStruct s)
             .getUnderlyingTaskField())
+    or
+    // var awaitable = task.ConfigureAwait(false);  // <-- new ConfiguredTaskAwaitable<>(task, false)
+    //                                              //       m_configuredTaskAwaiter = new ConfiguredTaskAwaiter(task, false)
+    //                                              //         m_task = task
+    // var awaiter = awaitable.GetAwaiter();
+    // var result = awaiter.GetResult();
+    m = this.getConfigureAwaitMethod() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp =
+      AccessPath::cons(any(FieldContent fc |
+          fc.getField() =
+            any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct t)
+                .getUnderlyingAwaiterField()
+        ),
+        AccessPath::field(any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct s
+          ).getUnderlyingTaskField()))
+  }
+
+  override predicate requiresAccessPath(Content head, AccessPath tail) {
+    head.(FieldContent).getField() =
+      any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct t).getUnderlyingAwaiterField() and
+    tail =
+      AccessPath::field(any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct s
+        ).getUnderlyingTaskField())
+  }
+}
+
+/** Data flow for `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>`. */
+private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTFlow extends LibraryTypeDataFlow,
+  SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct {
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    // var awaitable = task.ConfigureAwait(false);
+    // var awaiter = awaitable.GetAwaiter();  // <-- awaitable.m_configuredTaskAwaiter
+    // var result = awaiter.GetResult();
+    c = this.getGetAwaiterMethod() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp =
+      AccessPath::field(any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct s)
+            .getUnderlyingAwaiterField()) and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty() and
+    preservesValue = true
   }
 }
 
@@ -1995,6 +2127,32 @@ class SystemRuntimeCompilerServicesTaskAwaiterFlow extends LibraryTypeDataFlow,
     CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
     SourceDeclarationCallable c, boolean preservesValue
   ) {
+    preservesValue = true and
+    c = this.getGetResultMethod() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp =
+      AccessPath::cons(any(FieldContent fc | fc.getField() = this.getUnderlyingTaskField()),
+        AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())) and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty()
+  }
+
+  override predicate requiresAccessPath(Content head, AccessPath tail) {
+    head.(FieldContent).getField() = this.getUnderlyingTaskField() and
+    tail = AccessPath::property(any(SystemThreadingTasksTaskTClass t).getResultProperty())
+  }
+}
+
+/** Data flow for `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.ConfiguredTaskAwaiter`. */
+class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterFlow extends LibraryTypeDataFlow,
+  SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct {
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    // var awaitable = task.ConfigureAwait(false);
+    // var awaiter = awaitable.GetAwaiter();
+    // var result = awaiter.GetResult();  // <-- task.Result
     preservesValue = true and
     c = this.getGetResultMethod() and
     source = TCallableFlowSourceQualifier() and

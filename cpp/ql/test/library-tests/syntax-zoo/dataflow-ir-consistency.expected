@@ -1571,6 +1571,9 @@ postWithInFlow
 | misc.c:158:14:158:18 | Chi | PostUpdateNode should not be the target of local flow. |
 | misc.c:160:31:160:33 | Chi | PostUpdateNode should not be the target of local flow. |
 | misc.c:160:31:160:33 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:220:3:223:3 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:221:10:221:10 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:222:10:222:10 | Chi | PostUpdateNode should not be the target of local flow. |
 | range_analysis.c:102:5:102:15 | Chi | PostUpdateNode should not be the target of local flow. |
 | static_init_templates.cpp:3:2:3:8 | Chi | PostUpdateNode should not be the target of local flow. |
 | static_init_templates.cpp:21:2:21:12 | Chi | PostUpdateNode should not be the target of local flow. |

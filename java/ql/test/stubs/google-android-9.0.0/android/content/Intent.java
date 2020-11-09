@@ -1996,4 +1996,77 @@ public class Intent implements Parcelable, Cloneable {
 
     public void readFromParcel(Parcel in) {
     }
+
+    /**
+     * Retrieve the application package name this Intent is limited to.  When
+     * resolving an Intent, if non-null this limits the resolution to only
+     * components in the given application package.
+     *
+     * @return The name of the application package for the Intent.
+     *
+     * @see #resolveActivity
+     * @see #setPackage
+     */
+    public String getPackage() {
+        return null;
+    }
+
+    /**
+     * (Usually optional) Set an explicit application package name that limits
+     * the components this Intent will resolve to.  If left to the default
+     * value of null, all components in all applications will considered.
+     * If non-null, the Intent can only match the components in the given
+     * application package.
+     *
+     * @param packageName The name of the application package to handle the
+     * intent, or null to allow any application package.
+     *
+     * @return Returns the same Intent object, for chaining multiple calls
+     * into a single statement.
+     *
+     * @see #getPackage
+     * @see #resolveActivity
+     */
+    public Intent setPackage(String packageName) {
+        return null;
+    }
+
+    /**
+     * Convenience for calling {@link #setComponent} with an
+     * explicit class name.
+     *
+     * @param packageContext A Context of the application package implementing
+     * this class.
+     * @param className The name of a class inside of the application package
+     * that will be used as the component for this Intent.
+     *
+     * @return Returns the same Intent object, for chaining multiple calls
+     * into a single statement.
+     *
+     * @see #setComponent
+     * @see #setClass
+     */
+    public Intent setClassName(Context packageContext, String className) {
+        return null;
+    }
+
+    /**
+     * Convenience for calling {@link #setComponent} with an
+     * explicit application package name and class name.
+     *
+     * @param packageName The name of the package implementing the desired
+     * component.
+     * @param className The name of a class inside of the application package
+     * that will be used as the component for this Intent.
+     *
+     * @return Returns the same Intent object, for chaining multiple calls
+     * into a single statement.
+     *
+     * @see #setComponent
+     * @see #setClass
+     */
+    public Intent setClassName(String packageName, String className) {
+        return null;
+    }
+
 }

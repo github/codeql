@@ -58,12 +58,12 @@ int main(int argc, char** argv) {
             return -1;
         }
         memcpy(dst, foo.bar[i].baz->userInput.buffer, foo.bar[i].baz->userInput.bufferLen);
-        sink((void*)foo.bar[i].baz->userInput.bufferLen); // $ast $f-:ir
+        sink((void*)foo.bar[i].baz->userInput.bufferLen); // $ ast MISSING: ir
         // There is no flow to the following two `sink` calls because the
         // source is the _pointer_ returned by `user_input` rather than the
         // _data_ to which it points.
-        sink((void*)foo.bar[i].baz->userInput.buffer); // $f-:ast,ir
-        sink((void*)dst); // $f-:ast,ir
+        sink((void*)foo.bar[i].baz->userInput.buffer); // $ MISSING: ir,ast
+        sink((void*)dst); // ir MISSING: ast
         i++;
     }
     return 0;

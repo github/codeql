@@ -156,6 +156,10 @@
 | Assert.cs:80:24:80:37 | ... \|\| ... | false | Assert.cs:80:37:80:37 | access to parameter b | false |
 | Assert.cs:81:27:81:27 | access to local variable s | non-null | Assert.cs:79:20:79:32 | ... ? ... : ... | non-null |
 | Assert.cs:81:27:81:27 | access to local variable s | null | Assert.cs:79:20:79:32 | ... ? ... : ... | null |
+| Assert.cs:94:16:94:24 | ... && ... | true | Assert.cs:94:16:94:17 | access to parameter b1 | true |
+| Assert.cs:94:16:94:24 | ... && ... | true | Assert.cs:94:22:94:24 | !... | true |
+| Assert.cs:94:22:94:24 | !... | false | Assert.cs:94:23:94:24 | access to parameter b2 | true |
+| Assert.cs:94:22:94:24 | !... | true | Assert.cs:94:23:94:24 | access to parameter b2 | false |
 | Collections.cs:12:17:12:32 | ... == ... | false | Collections.cs:12:17:12:20 | access to parameter args | non-empty |
 | Collections.cs:12:17:12:32 | ... == ... | true | Collections.cs:12:17:12:20 | access to parameter args | empty |
 | Collections.cs:13:13:13:28 | ... == ... | true | Collections.cs:13:13:13:16 | access to parameter args | non-empty |

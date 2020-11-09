@@ -1,4 +1,5 @@
 | goto.cs:4:17:4:20 | enter Main | goto.cs:5:5:20:5 | {...} | semmle.label | successor |
+| goto.cs:4:17:4:20 | exit Main (normal) | goto.cs:4:17:4:20 | exit Main | semmle.label | successor |
 | goto.cs:5:5:20:5 | {...} | goto.cs:6:9:8:9 | {...} | semmle.label | successor |
 | goto.cs:6:9:8:9 | {...} | goto.cs:7:13:7:14 | s1: | semmle.label | successor |
 | goto.cs:7:13:7:14 | s1: | goto.cs:7:17:7:24 | goto ...; | semmle.label | successor |
@@ -41,4 +42,4 @@
 | goto.cs:17:26:17:40 | goto case ...; | goto.cs:12:13:12:22 | case ...: | semmle.label | goto(null) |
 | goto.cs:17:36:17:39 | null | goto.cs:17:26:17:40 | goto case ...; | semmle.label | successor |
 | goto.cs:19:9:19:10 | s9: | goto.cs:19:12:19:12 | ; | semmle.label | successor |
-| goto.cs:19:12:19:12 | ; | goto.cs:4:17:4:20 | exit Main | semmle.label | successor |
+| goto.cs:19:12:19:12 | ; | goto.cs:4:17:4:20 | exit Main (normal) | semmle.label | successor |

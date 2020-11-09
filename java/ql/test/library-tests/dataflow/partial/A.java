@@ -20,6 +20,11 @@ public class A {
 
   void f3(Box b) {
     Box other = new Box();
+    addElem(other);
     sink(other.elem);
+  }
+
+  void addElem(Box b) {
+    b.elem = new Object();
   }
 }

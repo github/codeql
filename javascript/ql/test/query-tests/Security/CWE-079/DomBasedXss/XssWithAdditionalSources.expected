@@ -59,6 +59,39 @@ nodes
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
+| classnames.js:7:31:7:84 | `<span  ... <span>` |
+| classnames.js:7:31:7:84 | `<span  ... <span>` |
+| classnames.js:7:47:7:69 | classNa ... w.name) |
+| classnames.js:7:58:7:68 | window.name |
+| classnames.js:7:58:7:68 | window.name |
+| classnames.js:8:31:8:85 | `<span  ... <span>` |
+| classnames.js:8:31:8:85 | `<span  ... <span>` |
+| classnames.js:8:47:8:70 | classNa ... w.name) |
+| classnames.js:8:59:8:69 | window.name |
+| classnames.js:8:59:8:69 | window.name |
+| classnames.js:9:31:9:85 | `<span  ... <span>` |
+| classnames.js:9:31:9:85 | `<span  ... <span>` |
+| classnames.js:9:47:9:70 | classNa ... w.name) |
+| classnames.js:9:59:9:69 | window.name |
+| classnames.js:9:59:9:69 | window.name |
+| classnames.js:10:45:10:55 | window.name |
+| classnames.js:10:45:10:55 | window.name |
+| classnames.js:11:31:11:79 | `<span  ... <span>` |
+| classnames.js:11:31:11:79 | `<span  ... <span>` |
+| classnames.js:11:47:11:64 | unsafeStyle('foo') |
+| classnames.js:13:31:13:83 | `<span  ... <span>` |
+| classnames.js:13:31:13:83 | `<span  ... <span>` |
+| classnames.js:13:47:13:68 | safeSty ... w.name) |
+| classnames.js:13:57:13:67 | window.name |
+| classnames.js:13:57:13:67 | window.name |
+| classnames.js:15:31:15:78 | `<span  ... <span>` |
+| classnames.js:15:31:15:78 | `<span  ... <span>` |
+| classnames.js:15:47:15:63 | clsx(window.name) |
+| classnames.js:15:52:15:62 | window.name |
+| classnames.js:15:52:15:62 | window.name |
+| express.js:7:15:7:33 | req.param("wobble") |
+| express.js:7:15:7:33 | req.param("wobble") |
+| express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
@@ -144,6 +177,36 @@ nodes
 | react-native.js:8:18:8:24 | tainted |
 | react-native.js:9:27:9:33 | tainted |
 | react-native.js:9:27:9:33 | tainted |
+| react-use-context.js:10:22:10:32 | window.name |
+| react-use-context.js:10:22:10:32 | window.name |
+| react-use-context.js:10:22:10:32 | window.name |
+| react-use-context.js:16:26:16:36 | window.name |
+| react-use-context.js:16:26:16:36 | window.name |
+| react-use-context.js:16:26:16:36 | window.name |
+| react-use-state.js:4:9:4:49 | state |
+| react-use-state.js:4:10:4:14 | state |
+| react-use-state.js:4:38:4:48 | window.name |
+| react-use-state.js:4:38:4:48 | window.name |
+| react-use-state.js:5:51:5:55 | state |
+| react-use-state.js:5:51:5:55 | state |
+| react-use-state.js:9:9:9:43 | state |
+| react-use-state.js:9:10:9:14 | state |
+| react-use-state.js:10:14:10:24 | window.name |
+| react-use-state.js:10:14:10:24 | window.name |
+| react-use-state.js:11:51:11:55 | state |
+| react-use-state.js:11:51:11:55 | state |
+| react-use-state.js:15:9:15:43 | state |
+| react-use-state.js:15:10:15:14 | state |
+| react-use-state.js:16:20:16:30 | window.name |
+| react-use-state.js:16:20:16:30 | window.name |
+| react-use-state.js:17:51:17:55 | state |
+| react-use-state.js:17:51:17:55 | state |
+| react-use-state.js:21:10:21:14 | state |
+| react-use-state.js:22:14:22:17 | prev |
+| react-use-state.js:23:35:23:38 | prev |
+| react-use-state.js:23:35:23:38 | prev |
+| react-use-state.js:25:20:25:30 | window.name |
+| react-use-state.js:25:20:25:30 | window.name |
 | sanitiser.js:16:7:16:27 | tainted |
 | sanitiser.js:16:17:16:27 | window.name |
 | sanitiser.js:16:17:16:27 | window.name |
@@ -605,6 +668,31 @@ edges
 | angular2-client.ts:35:44:35:89 | this.ro ... .params | angular2-client.ts:35:44:35:91 | this.ro ... arams.x |
 | angular2-client.ts:37:44:37:58 | this.router.url | angular2-client.ts:37:44:37:58 | this.router.url |
 | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') | angular2-client.ts:41:44:41:76 | routeSn ... ('foo') |
+| classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
+| classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
+| classnames.js:7:58:7:68 | window.name | classnames.js:7:47:7:69 | classNa ... w.name) |
+| classnames.js:7:58:7:68 | window.name | classnames.js:7:47:7:69 | classNa ... w.name) |
+| classnames.js:8:47:8:70 | classNa ... w.name) | classnames.js:8:31:8:85 | `<span  ... <span>` |
+| classnames.js:8:47:8:70 | classNa ... w.name) | classnames.js:8:31:8:85 | `<span  ... <span>` |
+| classnames.js:8:59:8:69 | window.name | classnames.js:8:47:8:70 | classNa ... w.name) |
+| classnames.js:8:59:8:69 | window.name | classnames.js:8:47:8:70 | classNa ... w.name) |
+| classnames.js:9:47:9:70 | classNa ... w.name) | classnames.js:9:31:9:85 | `<span  ... <span>` |
+| classnames.js:9:47:9:70 | classNa ... w.name) | classnames.js:9:31:9:85 | `<span  ... <span>` |
+| classnames.js:9:59:9:69 | window.name | classnames.js:9:47:9:70 | classNa ... w.name) |
+| classnames.js:9:59:9:69 | window.name | classnames.js:9:47:9:70 | classNa ... w.name) |
+| classnames.js:10:45:10:55 | window.name | classnames.js:11:47:11:64 | unsafeStyle('foo') |
+| classnames.js:10:45:10:55 | window.name | classnames.js:11:47:11:64 | unsafeStyle('foo') |
+| classnames.js:11:47:11:64 | unsafeStyle('foo') | classnames.js:11:31:11:79 | `<span  ... <span>` |
+| classnames.js:11:47:11:64 | unsafeStyle('foo') | classnames.js:11:31:11:79 | `<span  ... <span>` |
+| classnames.js:13:47:13:68 | safeSty ... w.name) | classnames.js:13:31:13:83 | `<span  ... <span>` |
+| classnames.js:13:47:13:68 | safeSty ... w.name) | classnames.js:13:31:13:83 | `<span  ... <span>` |
+| classnames.js:13:57:13:67 | window.name | classnames.js:13:47:13:68 | safeSty ... w.name) |
+| classnames.js:13:57:13:67 | window.name | classnames.js:13:47:13:68 | safeSty ... w.name) |
+| classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
+| classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
+| classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
 | jquery.js:2:17:2:33 | document.location | jquery.js:2:17:2:40 | documen ... .search |
@@ -687,6 +775,28 @@ edges
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name |
+| react-use-context.js:16:26:16:36 | window.name | react-use-context.js:16:26:16:36 | window.name |
+| react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
+| react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
+| react-use-state.js:4:10:4:14 | state | react-use-state.js:4:9:4:49 | state |
+| react-use-state.js:4:38:4:48 | window.name | react-use-state.js:4:10:4:14 | state |
+| react-use-state.js:4:38:4:48 | window.name | react-use-state.js:4:10:4:14 | state |
+| react-use-state.js:9:9:9:43 | state | react-use-state.js:11:51:11:55 | state |
+| react-use-state.js:9:9:9:43 | state | react-use-state.js:11:51:11:55 | state |
+| react-use-state.js:9:10:9:14 | state | react-use-state.js:9:9:9:43 | state |
+| react-use-state.js:10:14:10:24 | window.name | react-use-state.js:9:10:9:14 | state |
+| react-use-state.js:10:14:10:24 | window.name | react-use-state.js:9:10:9:14 | state |
+| react-use-state.js:15:9:15:43 | state | react-use-state.js:17:51:17:55 | state |
+| react-use-state.js:15:9:15:43 | state | react-use-state.js:17:51:17:55 | state |
+| react-use-state.js:15:10:15:14 | state | react-use-state.js:15:9:15:43 | state |
+| react-use-state.js:16:20:16:30 | window.name | react-use-state.js:15:10:15:14 | state |
+| react-use-state.js:16:20:16:30 | window.name | react-use-state.js:15:10:15:14 | state |
+| react-use-state.js:21:10:21:14 | state | react-use-state.js:22:14:22:17 | prev |
+| react-use-state.js:22:14:22:17 | prev | react-use-state.js:23:35:23:38 | prev |
+| react-use-state.js:22:14:22:17 | prev | react-use-state.js:23:35:23:38 | prev |
+| react-use-state.js:25:20:25:30 | window.name | react-use-state.js:21:10:21:14 | state |
+| react-use-state.js:25:20:25:30 | window.name | react-use-state.js:21:10:21:14 | state |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:23:29:23:35 | tainted |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:30:29:30:35 | tainted |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:33:29:33:35 | tainted |

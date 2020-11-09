@@ -3,7 +3,7 @@
  */
 
 import python
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.DataFlow
 import DataFlow::PathGraph
 
 /**

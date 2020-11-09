@@ -8,27 +8,32 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class NamespaceDeclaration : FreshEntity
+    internal class NamespaceDeclaration : CachedEntity<NamespaceDeclarationSyntax>
     {
         private readonly NamespaceDeclaration parent;
         private readonly NamespaceDeclarationSyntax node;
 
         public NamespaceDeclaration(Context cx, NamespaceDeclarationSyntax node, NamespaceDeclaration parent)
-            : base(cx)
+            : base(cx, node)
         {
             this.node = node;
             this.parent = parent;
-            TryPopulate();
         }
 
-        protected override void Populate(TextWriter trapFile)
+        public override void WriteId(TextWriter trapFile)
         {
-            var @namespace = (INamespaceSymbol)cx.GetModel(node).GetSymbolInfo(node.Name).Symbol;
-            var ns = Namespace.Create(cx, @namespace);
-            trapFile.namespace_declarations(this, ns);
-            trapFile.namespace_declaration_location(this, cx.Create(node.Name.GetLocation()));
+            trapFile.WriteSubId(Context.Create(ReportingLocation));
+            trapFile.Write(";namespacedeclaration");
+        }
 
-            var visitor = new Populators.TypeOrNamespaceVisitor(cx, trapFile, this);
+        public override void Populate(TextWriter trapFile)
+        {
+            var @namespace = (INamespaceSymbol)Context.GetModel(node).GetSymbolInfo(node.Name).Symbol;
+            var ns = Namespace.Create(Context, @namespace);
+            trapFile.namespace_declarations(this, ns);
+            trapFile.namespace_declaration_location(this, Context.Create(node.Name.GetLocation()));
+
+            var visitor = new Populators.TypeOrNamespaceVisitor(Context, trapFile, this);
 
             foreach (var member in node.Members.Cast<CSharpSyntaxNode>().Concat(node.Usings))
             {
@@ -41,8 +46,24 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static NamespaceDeclaration Create(Context cx, NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) => new NamespaceDeclaration(cx, decl, parent);
+        public static NamespaceDeclaration Create(Context cx, NamespaceDeclarationSyntax decl, NamespaceDeclaration parent)
+        {
+            var init = (decl, parent);
+            return NamespaceDeclarationFactory.Instance.CreateEntity(cx, decl, init);
+        }
+
+        private class NamespaceDeclarationFactory : ICachedEntityFactory<(NamespaceDeclarationSyntax decl, NamespaceDeclaration parent), NamespaceDeclaration>
+        {
+            public static readonly NamespaceDeclarationFactory Instance = new NamespaceDeclarationFactory();
+
+            public NamespaceDeclaration Create(Context cx, (NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) init) =>
+                new NamespaceDeclaration(cx, init.decl, init.parent);
+        }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => node.Name.GetLocation();
+
+        public override bool NeedsPopulation => true;
     }
 }
