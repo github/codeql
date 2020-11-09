@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 
 class UncaughtServletException2 extends HttpServlet {
 	// BAD - Tests rethrowing caught exceptions with stack trace using `initCause(...)`
+	// Note this special case is not being handled by the query since in 99% of cases we're looking for `catch(Exception e) { ... throw e; }`
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			String ip = request.getParameter("srcIP");
@@ -21,17 +22,18 @@ class UncaughtServletException2 extends HttpServlet {
 	}
 
 	// BAD - Tests rethrowing caught exceptions with stack trace using the same exception variable.
+	// Note this special case is not being handled by the query since in 99% of cases we're looking for `catch(Exception e) { ... throw e; }`
 	public void doHead(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			String ip = request.getParameter("srcIP");
 			InetAddress addr = InetAddress.getByName(ip);
 		} catch (UnknownHostException uhex) {
-			uhex.printStackTrace();
-			throw uhex;
+			throw new IOException(uhex);
 		}
 	}
 
 	// BAD - Tests rethrowing caught exceptions with stack trace  using `addSuppressed(...)`.
+	// Note this special case is not being handled by the query since in 99% of cases we're looking for `catch(Exception e) { ... throw e; }`
 	public void doTrace(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			String ip = request.getParameter("srcIP");
@@ -44,6 +46,7 @@ class UncaughtServletException2 extends HttpServlet {
 	}
 
 	// BAD - Tests rethrowing caught exceptions with stack trace using `initCause(...)`
+	// Note this special case is not being handled by the query since in 99% of cases we're looking for `catch(Exception e) { ... throw e; }`
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
 			String ip = request.getParameter("srcIP");

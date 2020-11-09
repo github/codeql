@@ -1,35 +1,19 @@
 edges
-| UncaughtServletException2.java:14:16:14:44 | getParameter(...) : String | UncaughtServletException2.java:15:45:15:46 | ip |
-| UncaughtServletException2.java:26:16:26:44 | getParameter(...) : String | UncaughtServletException2.java:27:45:27:46 | ip |
-| UncaughtServletException2.java:37:16:37:44 | getParameter(...) : String | UncaughtServletException2.java:38:45:38:46 | ip |
-| UncaughtServletException2.java:49:16:49:44 | getParameter(...) : String | UncaughtServletException2.java:50:45:50:46 | ip |
 | UncaughtServletException.java:13:15:13:43 | getParameter(...) : String | UncaughtServletException.java:14:44:14:45 | ip |
 | UncaughtServletException.java:16:19:16:41 | getRemoteUser(...) : String | UncaughtServletException.java:17:20:17:25 | userId |
 | UncaughtServletException.java:54:16:54:44 | getParameter(...) : String | UncaughtServletException.java:55:45:55:46 | ip |
-| UncaughtServletException.java:74:21:74:43 | getRemoteUser(...) : String | UncaughtServletException.java:75:22:75:27 | userId |
+| UncaughtServletException.java:75:21:75:43 | getRemoteUser(...) : String | UncaughtServletException.java:76:22:76:27 | userId |
 nodes
-| UncaughtServletException2.java:14:16:14:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| UncaughtServletException2.java:15:45:15:46 | ip | semmle.label | ip |
-| UncaughtServletException2.java:26:16:26:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| UncaughtServletException2.java:27:45:27:46 | ip | semmle.label | ip |
-| UncaughtServletException2.java:37:16:37:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| UncaughtServletException2.java:38:45:38:46 | ip | semmle.label | ip |
-| UncaughtServletException2.java:49:16:49:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| UncaughtServletException2.java:50:45:50:46 | ip | semmle.label | ip |
 | UncaughtServletException.java:13:15:13:43 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | UncaughtServletException.java:14:44:14:45 | ip | semmle.label | ip |
 | UncaughtServletException.java:16:19:16:41 | getRemoteUser(...) : String | semmle.label | getRemoteUser(...) : String |
 | UncaughtServletException.java:17:20:17:25 | userId | semmle.label | userId |
 | UncaughtServletException.java:54:16:54:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | UncaughtServletException.java:55:45:55:46 | ip | semmle.label | ip |
-| UncaughtServletException.java:74:21:74:43 | getRemoteUser(...) : String | semmle.label | getRemoteUser(...) : String |
-| UncaughtServletException.java:75:22:75:27 | userId | semmle.label | userId |
+| UncaughtServletException.java:75:21:75:43 | getRemoteUser(...) : String | semmle.label | getRemoteUser(...) : String |
+| UncaughtServletException.java:76:22:76:27 | userId | semmle.label | userId |
 #select
-| UncaughtServletException2.java:15:45:15:46 | ip | UncaughtServletException2.java:14:16:14:44 | getParameter(...) : String | UncaughtServletException2.java:15:45:15:46 | ip | $@ flows to here and can throw uncaught exception. | UncaughtServletException2.java:14:16:14:44 | getParameter(...) | User-provided value |
-| UncaughtServletException2.java:27:45:27:46 | ip | UncaughtServletException2.java:26:16:26:44 | getParameter(...) : String | UncaughtServletException2.java:27:45:27:46 | ip | $@ flows to here and can throw uncaught exception. | UncaughtServletException2.java:26:16:26:44 | getParameter(...) | User-provided value |
-| UncaughtServletException2.java:38:45:38:46 | ip | UncaughtServletException2.java:37:16:37:44 | getParameter(...) : String | UncaughtServletException2.java:38:45:38:46 | ip | $@ flows to here and can throw uncaught exception. | UncaughtServletException2.java:37:16:37:44 | getParameter(...) | User-provided value |
-| UncaughtServletException2.java:50:45:50:46 | ip | UncaughtServletException2.java:49:16:49:44 | getParameter(...) : String | UncaughtServletException2.java:50:45:50:46 | ip | $@ flows to here and can throw uncaught exception. | UncaughtServletException2.java:49:16:49:44 | getParameter(...) | User-provided value |
 | UncaughtServletException.java:14:44:14:45 | ip | UncaughtServletException.java:13:15:13:43 | getParameter(...) : String | UncaughtServletException.java:14:44:14:45 | ip | $@ flows to here and can throw uncaught exception. | UncaughtServletException.java:13:15:13:43 | getParameter(...) | User-provided value |
 | UncaughtServletException.java:17:20:17:25 | userId | UncaughtServletException.java:16:19:16:41 | getRemoteUser(...) : String | UncaughtServletException.java:17:20:17:25 | userId | $@ flows to here and can throw uncaught exception. | UncaughtServletException.java:16:19:16:41 | getRemoteUser(...) | User-provided value |
 | UncaughtServletException.java:55:45:55:46 | ip | UncaughtServletException.java:54:16:54:44 | getParameter(...) : String | UncaughtServletException.java:55:45:55:46 | ip | $@ flows to here and can throw uncaught exception. | UncaughtServletException.java:54:16:54:44 | getParameter(...) | User-provided value |
-| UncaughtServletException.java:75:22:75:27 | userId | UncaughtServletException.java:74:21:74:43 | getRemoteUser(...) : String | UncaughtServletException.java:75:22:75:27 | userId | $@ flows to here and can throw uncaught exception. | UncaughtServletException.java:74:21:74:43 | getRemoteUser(...) | User-provided value |
+| UncaughtServletException.java:76:22:76:27 | userId | UncaughtServletException.java:75:21:75:43 | getRemoteUser(...) : String | UncaughtServletException.java:76:22:76:27 | userId | $@ flows to here and can throw uncaught exception. | UncaughtServletException.java:75:21:75:43 | getRemoteUser(...) | User-provided value |

@@ -54,7 +54,8 @@ class UncaughtServletException extends HttpServlet {
 			String ip = request.getParameter("srcIP");
 			InetAddress addr = InetAddress.getByName(ip);
 		} catch (UnknownHostException uhex) {
-			throw new IOException(uhex);
+			uhex.printStackTrace();
+			throw uhex;
 		}
 	}
 
