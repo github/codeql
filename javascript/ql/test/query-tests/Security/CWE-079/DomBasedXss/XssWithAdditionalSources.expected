@@ -125,6 +125,14 @@ nodes
 | jquery.js:16:38:16:52 | window.location |
 | jquery.js:16:38:16:52 | window.location |
 | jquery.js:16:38:16:63 | window. ... tring() |
+| jwt-server.js:7:9:7:35 | taint |
+| jwt-server.js:7:17:7:35 | req.param("wobble") |
+| jwt-server.js:7:17:7:35 | req.param("wobble") |
+| jwt-server.js:9:16:9:20 | taint |
+| jwt-server.js:9:55:9:61 | decoded |
+| jwt-server.js:11:19:11:25 | decoded |
+| jwt-server.js:11:19:11:29 | decoded.foo |
+| jwt-server.js:11:19:11:29 | decoded.foo |
 | jwt.js:4:36:4:39 | data |
 | jwt.js:4:36:4:39 | data |
 | jwt.js:5:9:5:34 | decoded |
@@ -727,6 +735,13 @@ edges
 | jquery.js:16:38:16:52 | window.location | jquery.js:16:38:16:63 | window. ... tring() |
 | jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
 | jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
+| jwt-server.js:7:9:7:35 | taint | jwt-server.js:9:16:9:20 | taint |
+| jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
+| jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
+| jwt-server.js:9:16:9:20 | taint | jwt-server.js:9:55:9:61 | decoded |
+| jwt-server.js:9:55:9:61 | decoded | jwt-server.js:11:19:11:25 | decoded |
+| jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
+| jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
 | jwt.js:4:36:4:39 | data | jwt.js:5:30:5:33 | data |
 | jwt.js:4:36:4:39 | data | jwt.js:5:30:5:33 | data |
 | jwt.js:5:9:5:34 | decoded | jwt.js:6:14:6:20 | decoded |
