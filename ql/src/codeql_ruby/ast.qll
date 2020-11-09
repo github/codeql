@@ -400,13 +400,9 @@ class Else extends @else, AstNode, BeginChildType, CaseChildType, ClassChildType
 
   override Location getLocation() { else_def(this, result) }
 
-  Token getCondition() { else_condition(this, result) }
-
   ElseChildType getChild(int i) { else_child(this, i, result) }
 
-  override AstNode getAFieldOrChild() {
-    else_condition(this, result) or else_child(this, _, result)
-  }
+  override AstNode getAFieldOrChild() { else_child(this, _, result) }
 }
 
 class ElsifAlternativeType extends @elsif_alternative_type, AstNode { }
@@ -1306,6 +1302,10 @@ class HeredocBeginning extends Token, @token_heredoc_beginning {
   override string describeQlClass() { result = "HeredocBeginning" }
 }
 
+class HeredocContent extends Token, @token_heredoc_content {
+  override string describeQlClass() { result = "HeredocContent" }
+}
+
 class HeredocEnd extends Token, @token_heredoc_end {
   override string describeQlClass() { result = "HeredocEnd" }
 }
@@ -1332,6 +1332,10 @@ class Operator extends Token, @token_operator {
 
 class Self extends Token, @token_self {
   override string describeQlClass() { result = "Self" }
+}
+
+class StringContent extends Token, @token_string_content {
+  override string describeQlClass() { result = "StringContent" }
 }
 
 class Super extends Token, @token_super {
