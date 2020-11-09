@@ -12,19 +12,8 @@
  */
 
 import python
-import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.TaintTracking
-import semmle.python.Concepts
-import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.security.dataflow.SqlInjection
 import DataFlow::PathGraph
-
-class SQLInjectionConfiguration extends TaintTracking::Configuration {
-  SQLInjectionConfiguration() { this = "SQLInjectionConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink = any(SqlExecution e).getSql() }
-}
 
 from SQLInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
