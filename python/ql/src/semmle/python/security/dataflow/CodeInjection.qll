@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for reasoning about code injection
+ * Provides a taint-tracking configuration for detecting code injection
  * vulnerabilities.
  */
 
@@ -10,7 +10,7 @@ import semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
 
 /**
- * A taint-tracking configuration for reasoning about code injection vulnerabilities.
+ * A taint-tracking configuration for detecting code injection vulnerabilities.
  */
 class CodeInjectionConfiguration extends TaintTracking::Configuration {
   CodeInjectionConfiguration() { this = "CodeInjectionConfiguration" }

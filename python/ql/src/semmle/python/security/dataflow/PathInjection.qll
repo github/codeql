@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for reasoning about path injection
+ * Provides a taint-tracking configuration for detecting path injection
  * vulnerabilities.
  *
  * We detect cases where a user-controlled path is used in an unsafe manner,

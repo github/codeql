@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for reasoning about reflected server-side
+ * Provides a taint-tracking configuration for detecting reflected server-side
  * cross-site scripting vulnerabilities.
  */
 
@@ -10,7 +10,7 @@ import semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
 
 /**
- * A taint-tracking configuration for reasoning about reflected server-side cross-site
+ * A taint-tracking configuration for detecting reflected server-side cross-site
  * scripting vulnerabilities.
  */
 class ReflectedXssConfiguration extends TaintTracking::Configuration {

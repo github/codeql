@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for reasoning about arbitrary code execution
+ * Provides a taint-tracking configuration for detecting arbitrary code execution
  * vulnerabilities due to deserializing user-controlled data.
  */
 
@@ -10,7 +10,7 @@ import semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
 
 /**
- * A taint-tracking configuration for reasoning about arbitrary code execution
+ * A taint-tracking configuration for detecting arbitrary code execution
  * vulnerabilities due to deserializing user-controlled data.
  */
 class UnsafeDeserializationConfiguration extends TaintTracking::Configuration {

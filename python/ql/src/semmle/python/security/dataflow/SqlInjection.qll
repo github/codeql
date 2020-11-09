@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for reasoning about SQL injection
+ * Provides a taint-tracking configuration for detecting SQL injection
  * vulnerabilities.
  */
 
@@ -10,7 +10,7 @@ import semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
 
 /**
- * A taint-tracking configuration for reasoning about SQL injection vulnerabilities.
+ * A taint-tracking configuration for detecting SQL injection vulnerabilities.
  */
 class SQLInjectionConfiguration extends TaintTracking::Configuration {
   SQLInjectionConfiguration() { this = "SQLInjectionConfiguration" }

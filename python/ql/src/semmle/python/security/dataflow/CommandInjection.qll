@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for reasoning about command injection
+ * Provides a taint-tracking configuration for detecting command injection
  * vulnerabilities.
  */
 
@@ -10,7 +10,7 @@ import semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
 
 /**
- * A taint-tracking configuration for reasoning about command injection vulnerabilities.
+ * A taint-tracking configuration for detecting command injection vulnerabilities.
  */
 class CommandInjectionConfiguration extends TaintTracking::Configuration {
   CommandInjectionConfiguration() { this = "CommandInjectionConfiguration" }
