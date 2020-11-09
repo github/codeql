@@ -164,8 +164,6 @@ useNotDominatedByDefinition
 | try_catch.cpp:21:13:21:24 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | void throw_from_nonstmt(int) | void throw_from_nonstmt(int) |
 | vla.c:3:27:3:30 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | int main(int, char**) | int main(int, char**) |
 switchInstructionWithoutDefaultEdge
-notMarkedAsConflated
-wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
 missingCanonicalLanguageType

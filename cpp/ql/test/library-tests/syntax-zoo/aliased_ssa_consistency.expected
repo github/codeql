@@ -109,9 +109,6 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
-notMarkedAsConflated
-| statements.cpp:49:1:49:4 | Phi: label ...: | Instruction 'Phi: label ...:' should be marked as having a conflated result in function '$@'. | statements.cpp:43:6:43:10 | void gotos(int) | void gotos(int) |
-wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
 missingCanonicalLanguageType

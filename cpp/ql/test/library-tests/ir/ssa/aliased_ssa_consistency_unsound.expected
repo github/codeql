@@ -17,9 +17,6 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
-notMarkedAsConflated
-| ssa.cpp:321:5:321:25 | Phi: return ... | Instruction 'Phi: return ...' should be marked as having a conflated result in function '$@'. | ssa.cpp:315:5:315:19 | int staticLocalInit(int) | int staticLocalInit(int) |
-wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
 missingCanonicalLanguageType

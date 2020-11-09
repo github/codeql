@@ -2,7 +2,7 @@ ssa.cpp:
 #   13| int ChiPhiNode(Point*, bool, bool)
 #   13|   Block 0
 #   13|     v13_1(void)           = EnterFunction               : 
-#   13|     mu13_2(unknown)       = AliasedDefinition           : 
+#   13|     %mu13_2(unknown)      = AliasedDefinition           : 
 #   13|     r13_3(glval<Point *>) = VariableAddress[p]          : 
 #   13|     m13_4(Point *)        = InitializeParameter[p]      : &:r13_3
 #   13|     r13_5(Point *)        = Load[p]                     : &:r13_3, m13_4
@@ -85,7 +85,7 @@ ssa.cpp:
 #   31| int UnreachableViaGoto()
 #   31|   Block 0
 #   31|     v31_1(void)       = EnterFunction            : 
-#   31|     mu31_2(unknown)   = AliasedDefinition        : 
+#   31|     %mu31_2(unknown)  = AliasedDefinition        : 
 #   32|     v32_1(void)       = NoOp                     : 
 #   34|     v34_1(void)       = NoOp                     : 
 #   35|     r35_1(glval<int>) = VariableAddress[#return] : 
@@ -99,7 +99,7 @@ ssa.cpp:
 #   38| int UnreachableIf(bool)
 #   38|   Block 0
 #   38|     v38_1(void)        = EnterFunction          : 
-#   38|     mu38_2(unknown)    = AliasedDefinition      : 
+#   38|     %mu38_2(unknown)   = AliasedDefinition      : 
 #   38|     r38_3(glval<bool>) = VariableAddress[b]     : 
 #   38|     m38_4(bool)        = InitializeParameter[b] : &:r38_3
 #   39|     r39_1(glval<int>)  = VariableAddress[x]     : 
@@ -168,7 +168,7 @@ ssa.cpp:
 #   59| int DoWhileFalse()
 #   59|   Block 0
 #   59|     v59_1(void)       = EnterFunction      : 
-#   59|     mu59_2(unknown)   = AliasedDefinition  : 
+#   59|     %mu59_2(unknown)  = AliasedDefinition  : 
 #   60|     r60_1(glval<int>) = VariableAddress[i] : 
 #   60|     r60_2(int)        = Constant[0]        : 
 #   60|     m60_3(int)        = Store[i]           : &:r60_1, r60_2
@@ -198,7 +198,7 @@ ssa.cpp:
 #   68| void chiNodeAtEndOfLoop(int, char*)
 #   68|   Block 0
 #   68|     v68_1(void)          = EnterFunction            : 
-#   68|     mu68_2(unknown)      = AliasedDefinition        : 
+#   68|     %mu68_2(unknown)     = AliasedDefinition        : 
 #   68|     r68_3(glval<int>)    = VariableAddress[n]       : 
 #   68|     m68_4(int)           = InitializeParameter[n]   : &:r68_3
 #   68|     r68_5(glval<char *>) = VariableAddress[p]       : 
@@ -244,7 +244,7 @@ ssa.cpp:
 #   75| void ScalarPhi(bool)
 #   75|   Block 0
 #   75|     v75_1(void)        = EnterFunction          : 
-#   75|     mu75_2(unknown)    = AliasedDefinition      : 
+#   75|     %mu75_2(unknown)   = AliasedDefinition      : 
 #   75|     r75_3(glval<bool>) = VariableAddress[b]     : 
 #   75|     m75_4(bool)        = InitializeParameter[b] : &:r75_3
 #   76|     r76_1(glval<int>)  = VariableAddress[x]     : 
@@ -300,7 +300,7 @@ ssa.cpp:
 #   91| void MustExactlyOverlap(Point)
 #   91|   Block 0
 #   91|     v91_1(void)         = EnterFunction          : 
-#   91|     mu91_2(unknown)     = AliasedDefinition      : 
+#   91|     %mu91_2(unknown)    = AliasedDefinition      : 
 #   91|     r91_3(glval<Point>) = VariableAddress[a]     : 
 #   91|     m91_4(Point)        = InitializeParameter[a] : &:r91_3
 #   92|     r92_1(glval<Point>) = VariableAddress[b]     : 
@@ -315,7 +315,7 @@ ssa.cpp:
 #   95| void MustExactlyOverlapEscaped(Point)
 #   95|   Block 0
 #   95|     v95_1(void)           = EnterFunction                : 
-#   95|     mu95_2(unknown)       = AliasedDefinition            : 
+#   95|     %mu95_2(unknown)      = AliasedDefinition            : 
 #   95|     r95_3(glval<Point>)   = VariableAddress[a]           : 
 #   95|     mu95_4(Point)         = InitializeParameter[a]       : &:r95_3
 #   96|     r96_1(glval<Point>)   = VariableAddress[b]           : 
@@ -338,7 +338,7 @@ ssa.cpp:
 #  100| void MustTotallyOverlap(Point)
 #  100|   Block 0
 #  100|     v100_1(void)         = EnterFunction          : 
-#  100|     mu100_2(unknown)     = AliasedDefinition      : 
+#  100|     %mu100_2(unknown)    = AliasedDefinition      : 
 #  100|     r100_3(glval<Point>) = VariableAddress[a]     : 
 #  100|     mu100_4(Point)       = InitializeParameter[a] : &:r100_3
 #  101|     r101_1(glval<int>)   = VariableAddress[x]     : 
@@ -359,7 +359,7 @@ ssa.cpp:
 #  105| void MustTotallyOverlapEscaped(Point)
 #  105|   Block 0
 #  105|     v105_1(void)           = EnterFunction                : 
-#  105|     mu105_2(unknown)       = AliasedDefinition            : 
+#  105|     %mu105_2(unknown)      = AliasedDefinition            : 
 #  105|     r105_3(glval<Point>)   = VariableAddress[a]           : 
 #  105|     mu105_4(Point)         = InitializeParameter[a]       : &:r105_3
 #  106|     r106_1(glval<int>)     = VariableAddress[x]           : 
@@ -388,7 +388,7 @@ ssa.cpp:
 #  111| void MayPartiallyOverlap(int, int)
 #  111|   Block 0
 #  111|     v111_1(void)         = EnterFunction          : 
-#  111|     mu111_2(unknown)     = AliasedDefinition      : 
+#  111|     %mu111_2(unknown)    = AliasedDefinition      : 
 #  111|     r111_3(glval<int>)   = VariableAddress[x]     : 
 #  111|     m111_4(int)          = InitializeParameter[x] : &:r111_3
 #  111|     r111_5(glval<int>)   = VariableAddress[y]     : 
@@ -415,7 +415,7 @@ ssa.cpp:
 #  116| void MayPartiallyOverlapEscaped(int, int)
 #  116|   Block 0
 #  116|     v116_1(void)           = EnterFunction                : 
-#  116|     mu116_2(unknown)       = AliasedDefinition            : 
+#  116|     %mu116_2(unknown)      = AliasedDefinition            : 
 #  116|     r116_3(glval<int>)     = VariableAddress[x]           : 
 #  116|     m116_4(int)            = InitializeParameter[x]       : &:r116_3
 #  116|     r116_5(glval<int>)     = VariableAddress[y]           : 
@@ -450,7 +450,7 @@ ssa.cpp:
 #  122| void MergeMustExactlyOverlap(bool, int, int)
 #  122|   Block 0
 #  122|     v122_1(void)         = EnterFunction           : 
-#  122|     mu122_2(unknown)     = AliasedDefinition       : 
+#  122|     %mu122_2(unknown)    = AliasedDefinition       : 
 #  122|     r122_3(glval<bool>)  = VariableAddress[c]      : 
 #  122|     m122_4(bool)         = InitializeParameter[c]  : &:r122_3
 #  122|     r122_5(glval<int>)   = VariableAddress[x1]     : 
@@ -505,7 +505,7 @@ ssa.cpp:
 #  134| void MergeMustExactlyWithMustTotallyOverlap(bool, Point, int)
 #  134|   Block 0
 #  134|     v134_1(void)         = EnterFunction           : 
-#  134|     mu134_2(unknown)     = AliasedDefinition       : 
+#  134|     %mu134_2(unknown)    = AliasedDefinition       : 
 #  134|     r134_3(glval<bool>)  = VariableAddress[c]      : 
 #  134|     m134_4(bool)         = InitializeParameter[c]  : &:r134_3
 #  134|     r134_5(glval<Point>) = VariableAddress[p]      : 
@@ -555,7 +555,7 @@ ssa.cpp:
 #  145| void MergeMustExactlyWithMayPartiallyOverlap(bool, Point, int)
 #  145|   Block 0
 #  145|     v145_1(void)         = EnterFunction           : 
-#  145|     mu145_2(unknown)     = AliasedDefinition       : 
+#  145|     %mu145_2(unknown)    = AliasedDefinition       : 
 #  145|     r145_3(glval<bool>)  = VariableAddress[c]      : 
 #  145|     m145_4(bool)         = InitializeParameter[c]  : &:r145_3
 #  145|     r145_5(glval<Point>) = VariableAddress[p]      : 
@@ -604,7 +604,7 @@ ssa.cpp:
 #  156| void MergeMustTotallyOverlapWithMayPartiallyOverlap(bool, Rect, int)
 #  156|   Block 0
 #  156|     v156_1(void)         = EnterFunction             : 
-#  156|     mu156_2(unknown)     = AliasedDefinition         : 
+#  156|     %mu156_2(unknown)    = AliasedDefinition         : 
 #  156|     r156_3(glval<bool>)  = VariableAddress[c]        : 
 #  156|     m156_4(bool)         = InitializeParameter[c]    : &:r156_3
 #  156|     r156_5(glval<Rect>)  = VariableAddress[r]        : 
@@ -655,7 +655,7 @@ ssa.cpp:
 #  171| void WrapperStruct(Wrapper)
 #  171|   Block 0
 #  171|     v171_1(void)           = EnterFunction          : 
-#  171|     mu171_2(unknown)       = AliasedDefinition      : 
+#  171|     %mu171_2(unknown)      = AliasedDefinition      : 
 #  171|     r171_3(glval<Wrapper>) = VariableAddress[w]     : 
 #  171|     mu171_4(Wrapper)       = InitializeParameter[w] : &:r171_3
 #  172|     r172_1(glval<Wrapper>) = VariableAddress[x]     : 
@@ -688,7 +688,7 @@ ssa.cpp:
 #  179| int AsmStmt(int*)
 #  179|   Block 0
 #  179|     v179_1(void)         = EnterFunction            : 
-#  179|     mu179_2(unknown)     = AliasedDefinition        : 
+#  179|     %mu179_2(unknown)    = AliasedDefinition        : 
 #  179|     r179_3(glval<int *>) = VariableAddress[p]       : 
 #  179|     m179_4(int *)        = InitializeParameter[p]   : &:r179_3
 #  179|     r179_5(int *)        = Load[p]                  : &:r179_3, m179_4
@@ -708,7 +708,7 @@ ssa.cpp:
 #  184| void AsmStmtWithOutputs(unsigned int&, unsigned int&, unsigned int&, unsigned int&)
 #  184|   Block 0
 #  184|     v184_1(void)                   = EnterFunction            : 
-#  184|     mu184_2(unknown)               = AliasedDefinition        : 
+#  184|     %mu184_2(unknown)              = AliasedDefinition        : 
 #  184|     r184_3(glval<unsigned int &>)  = VariableAddress[a]       : 
 #  184|     m184_4(unsigned int &)         = InitializeParameter[a]   : &:r184_3
 #  184|     r184_5(unsigned int &)         = Load[a]                  : &:r184_3, m184_4
@@ -750,7 +750,7 @@ ssa.cpp:
 #  198| int PureFunctions(char*, char*, int)
 #  198|   Block 0
 #  198|     v198_1(void)           = EnterFunction               : 
-#  198|     mu198_2(unknown)       = AliasedDefinition           : 
+#  198|     %mu198_2(unknown)      = AliasedDefinition           : 
 #  198|     r198_3(glval<char *>)  = VariableAddress[str1]       : 
 #  198|     m198_4(char *)         = InitializeParameter[str1]   : &:r198_3
 #  198|     r198_5(char *)         = Load[str1]                  : &:r198_3, m198_4
@@ -805,7 +805,7 @@ ssa.cpp:
 #  207| int ModeledCallTarget(int)
 #  207|   Block 0
 #  207|     v207_1(void)           = EnterFunction                      : 
-#  207|     mu207_2(unknown)       = AliasedDefinition                  : 
+#  207|     %mu207_2(unknown)      = AliasedDefinition                  : 
 #  207|     r207_3(glval<int>)     = VariableAddress[x]                 : 
 #  207|     mu207_4(int)           = InitializeParameter[x]             : &:r207_3
 #  208|     r208_1(glval<int>)     = VariableAddress[y]                 : 
@@ -833,7 +833,7 @@ ssa.cpp:
 #  213| void InitArray()
 #  213|   Block 0
 #  213|     v213_1(void)            = EnterFunction            : 
-#  213|     mu213_2(unknown)        = AliasedDefinition        : 
+#  213|     %mu213_2(unknown)       = AliasedDefinition        : 
 #  214|     r214_1(glval<char[32]>) = VariableAddress[a_pad]   : 
 #  214|     r214_2(glval<char[32]>) = StringConstant[""]       : 
 #  214|     r214_3(char[32])        = Load[?]                  : &:r214_2, ~m?
@@ -892,7 +892,7 @@ ssa.cpp:
 #  226| char StringLiteralAliasing()
 #  226|   Block 0
 #  226|     v226_1(void)           = EnterFunction                 : 
-#  226|     mu226_2(unknown)       = AliasedDefinition             : 
+#  226|     %mu226_2(unknown)      = AliasedDefinition             : 
 #  227|     r227_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
 #  227|     v227_2(void)           = Call[ExternalFunc]            : func:r227_1
 #  227|     mu227_3(unknown)       = ^CallSideEffect               : ~m?
@@ -915,7 +915,7 @@ ssa.cpp:
 #  235| void Constructible::Constructible(int)
 #  235|   Block 0
 #  235|     v235_1(void)                 = EnterFunction                : 
-#  235|     mu235_2(unknown)             = AliasedDefinition            : 
+#  235|     %mu235_2(unknown)            = AliasedDefinition            : 
 #  235|     r235_3(glval<unknown>)       = VariableAddress[#this]       : 
 #  235|     m235_4(glval<Constructible>) = InitializeParameter[#this]   : &:r235_3
 #  235|     r235_5(glval<Constructible>) = Load[#this]                  : &:r235_3, m235_4
@@ -931,7 +931,7 @@ ssa.cpp:
 #  236| void Constructible::g()
 #  236|   Block 0
 #  236|     v236_1(void)                 = EnterFunction                : 
-#  236|     mu236_2(unknown)             = AliasedDefinition            : 
+#  236|     %mu236_2(unknown)            = AliasedDefinition            : 
 #  236|     r236_3(glval<unknown>)       = VariableAddress[#this]       : 
 #  236|     m236_4(glval<Constructible>) = InitializeParameter[#this]   : &:r236_3
 #  236|     r236_5(glval<Constructible>) = Load[#this]                  : &:r236_3, m236_4
@@ -945,7 +945,7 @@ ssa.cpp:
 #  239| void ExplicitConstructorCalls()
 #  239|   Block 0
 #  239|     v239_1(void)                 = EnterFunction                   : 
-#  239|     mu239_2(unknown)             = AliasedDefinition               : 
+#  239|     %mu239_2(unknown)            = AliasedDefinition               : 
 #  240|     r240_1(glval<Constructible>) = VariableAddress[c]              : 
 #  240|     mu240_2(Constructible)       = Uninitialized[c]                : &:r240_1
 #  240|     r240_3(glval<unknown>)       = FunctionAddress[Constructible]  : 
@@ -986,7 +986,7 @@ ssa.cpp:
 #  247| char* VoidStarIndirectParameters(char*, int)
 #  247|   Block 0
 #  247|     v247_1(void)           = EnterFunction                      : 
-#  247|     mu247_2(unknown)       = AliasedDefinition                  : 
+#  247|     %mu247_2(unknown)      = AliasedDefinition                  : 
 #  247|     r247_3(glval<char *>)  = VariableAddress[src]               : 
 #  247|     m247_4(char *)         = InitializeParameter[src]           : &:r247_3
 #  247|     r247_5(char *)         = Load[src]                          : &:r247_3, m247_4
@@ -1035,7 +1035,7 @@ ssa.cpp:
 #  254| char StringLiteralAliasing2(bool)
 #  254|   Block 0
 #  254|     v254_1(void)        = EnterFunction          : 
-#  254|     mu254_2(unknown)    = AliasedDefinition      : 
+#  254|     %mu254_2(unknown)   = AliasedDefinition      : 
 #  254|     r254_3(glval<bool>) = VariableAddress[b]     : 
 #  254|     m254_4(bool)        = InitializeParameter[b] : &:r254_3
 #  255|     r255_1(glval<bool>) = VariableAddress[b]     : 
@@ -1076,7 +1076,7 @@ ssa.cpp:
 #  268| void* MallocAliasing(void*, int)
 #  268|   Block 0
 #  268|     v268_1(void)           = EnterFunction                      : 
-#  268|     mu268_2(unknown)       = AliasedDefinition                  : 
+#  268|     %mu268_2(unknown)      = AliasedDefinition                  : 
 #  268|     r268_3(glval<void *>)  = VariableAddress[s]                 : 
 #  268|     m268_4(void *)         = InitializeParameter[s]             : &:r268_3
 #  268|     r268_5(void *)         = Load[s]                            : &:r268_3, m268_4
@@ -1114,7 +1114,7 @@ ssa.cpp:
 #  275| void EscapedButNotConflated(bool, Point, int)
 #  275|   Block 0
 #  275|     v275_1(void)           = EnterFunction           : 
-#  275|     mu275_2(unknown)       = AliasedDefinition       : 
+#  275|     %mu275_2(unknown)      = AliasedDefinition       : 
 #  275|     r275_3(glval<bool>)    = VariableAddress[c]      : 
 #  275|     m275_4(bool)           = InitializeParameter[c]  : &:r275_3
 #  275|     r275_5(glval<Point>)   = VariableAddress[p]      : 
@@ -1161,7 +1161,7 @@ ssa.cpp:
 #  286| void A::A(int)
 #  286|   Block 0
 #  286|     v286_1(void)           = EnterFunction                : 
-#  286|     mu286_2(unknown)       = AliasedDefinition            : 
+#  286|     %mu286_2(unknown)      = AliasedDefinition            : 
 #  286|     r286_3(glval<unknown>) = VariableAddress[#this]       : 
 #  286|     m286_4(glval<A>)       = InitializeParameter[#this]   : &:r286_3
 #  286|     r286_5(glval<A>)       = Load[#this]                  : &:r286_3, m286_4
@@ -1177,7 +1177,7 @@ ssa.cpp:
 #  287| void A::A(A*)
 #  287|   Block 0
 #  287|     v287_1(void)           = EnterFunction                                : 
-#  287|     mu287_2(unknown)       = AliasedDefinition                            : 
+#  287|     %mu287_2(unknown)      = AliasedDefinition                            : 
 #  287|     r287_3(glval<unknown>) = VariableAddress[#this]                       : 
 #  287|     m287_4(glval<A>)       = InitializeParameter[#this]                   : &:r287_3
 #  287|     r287_5(glval<A>)       = Load[#this]                                  : &:r287_3, m287_4
@@ -1196,7 +1196,7 @@ ssa.cpp:
 #  288| void A::A()
 #  288|   Block 0
 #  288|     v288_1(void)           = EnterFunction                : 
-#  288|     mu288_2(unknown)       = AliasedDefinition            : 
+#  288|     %mu288_2(unknown)      = AliasedDefinition            : 
 #  288|     r288_3(glval<unknown>) = VariableAddress[#this]       : 
 #  288|     m288_4(glval<A>)       = InitializeParameter[#this]   : &:r288_3
 #  288|     r288_5(glval<A>)       = Load[#this]                  : &:r288_3, m288_4
@@ -1210,7 +1210,7 @@ ssa.cpp:
 #  291| Point* NewAliasing(int)
 #  291|   Block 0
 #  291|     v291_1(void)            = EnterFunction                   : 
-#  291|     mu291_2(unknown)        = AliasedDefinition               : 
+#  291|     %mu291_2(unknown)       = AliasedDefinition               : 
 #  291|     r291_3(glval<int>)      = VariableAddress[x]              : 
 #  291|     m291_4(int)             = InitializeParameter[x]          : &:r291_3
 #  292|     r292_1(glval<Point *>)  = VariableAddress[p]              : 
@@ -1281,7 +1281,7 @@ ssa.cpp:
 #  301| int main(int, char**)
 #  301|   Block 0
 #  301|     v301_1(void)           = EnterFunction                    : 
-#  301|     mu301_2(unknown)       = AliasedDefinition                : 
+#  301|     %mu301_2(unknown)      = AliasedDefinition                : 
 #  301|     r301_3(glval<int>)     = VariableAddress[argc]            : 
 #  301|     m301_4(int)            = InitializeParameter[argc]        : &:r301_3
 #  301|     r301_5(glval<char **>) = VariableAddress[argv]            : 
@@ -1322,7 +1322,7 @@ ssa.cpp:
 #  310| void ThisAliasTest::setX(int)
 #  310|   Block 0
 #  310|     v310_1(void)                 = EnterFunction                : 
-#  310|     mu310_2(unknown)             = AliasedDefinition            : 
+#  310|     %mu310_2(unknown)            = AliasedDefinition            : 
 #  310|     r310_3(glval<unknown>)       = VariableAddress[#this]       : 
 #  310|     m310_4(glval<ThisAliasTest>) = InitializeParameter[#this]   : &:r310_3
 #  310|     r310_5(glval<ThisAliasTest>) = Load[#this]                  : &:r310_3, m310_4
@@ -1344,7 +1344,7 @@ ssa.cpp:
 #  315| int staticLocalInit(int)
 #  315|   Block 0
 #  315|     v315_1(void)        = EnterFunction           : 
-#  315|     mu315_2(unknown)    = AliasedDefinition       : 
+#  315|     %mu315_2(unknown)   = AliasedDefinition       : 
 #  315|     r315_3(glval<int>)  = VariableAddress[x]      : 
 #  315|     m315_4(int)         = InitializeParameter[x]  : &:r315_3
 #  318|     r318_1(glval<bool>) = VariableAddress[c#init] : 

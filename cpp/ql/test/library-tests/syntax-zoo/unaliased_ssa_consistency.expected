@@ -109,8 +109,6 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
-notMarkedAsConflated
-wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
 missingCanonicalLanguageType

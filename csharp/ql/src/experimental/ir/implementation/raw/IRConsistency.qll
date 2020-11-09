@@ -441,30 +441,6 @@ module InstructionConsistency {
     isOnAliasedDefinitionChain(instr.(PhiInstruction).getAnInputOperand().getAnyDef())
   }
 
-  private predicate shouldBeConflated(Instruction instr) { isOnAliasedDefinitionChain(instr) }
-
-  query predicate notMarkedAsConflated(
-    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
-  ) {
-    shouldBeConflated(instr) and
-    not instr.isResultConflated() and
-    message =
-      "Instruction '" + instr.toString() +
-        "' should be marked as having a conflated result in function '$@'." and
-    irFunc = getInstructionIRFunction(instr, irFuncText)
-  }
-
-  query predicate wronglyMarkedAsConflated(
-    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
-  ) {
-    instr.isResultConflated() and
-    not shouldBeConflated(instr) and
-    message =
-      "Instruction '" + instr.toString() +
-        "' should not be marked as having a conflated result in function '$@'." and
-    irFunc = getInstructionIRFunction(instr, irFuncText)
-  }
-
   query predicate invalidOverlap(
     MemoryOperand useOperand, string message, OptionalIRFunction irFunc, string irFuncText
   ) {
