@@ -23,6 +23,23 @@ private class DefaultSafeExternalAPIFunction extends SafeExternalAPIFunction {
   }
 }
 
+/** Gets the name of a method in package `p` which has a function model. */
+TaintTracking::FunctionModel getAMethodModelInPackage(Package p) {
+  p = result.getPackage() and
+  result instanceof Method and
+  result.getName() != "String" and
+  not exists(TaintTracking::FunctionModel baseMethod |
+    baseMethod != result and result.(Method).implements(baseMethod)
+  )
+}
+
+/** Gets the name of a package which has models for some functions. */
+Package getAPackageWithModels() {
+  exists(TaintTracking::FunctionModel f | not f instanceof Method | result = f.getPackage())
+  or
+  exists(getAMethodModelInPackage(result))
+}
+
 /** Holds if `n` is a sink for XSS, SQL injection or request forgery. */
 predicate isACommonSink(DataFlow::Node n) {
   n instanceof SharedXss::Sink or
@@ -58,6 +75,8 @@ class ExternalAPIDataNode extends DataFlow::Node {
     not exists(DataFlow::Node next | TaintTracking::localTaintStep(this, next)) and
     // Not a sink for a commonly-used query
     not isACommonSink(this) and
+    // Not in a package that has some functions modeled
+    not call.getTarget().getPackage() = getAPackageWithModels() and
     // Not a call to a known safe external API
     not call = any(SafeExternalAPIFunction f).getACall()
   }
