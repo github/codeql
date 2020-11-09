@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * Provides classes and predicates modelling the `jwt-decode` libary.
+ * Provides classes and predicates modeling the `jwt-decode` libary.
  */
 private module JwtDecode {
   /**
@@ -22,7 +22,7 @@ private module JwtDecode {
 }
 
 /**
- * Provides classes and predicates modelling the `jsonwebtoken` libary.
+ * Provides classes and predicates modeling the `jsonwebtoken` libary.
  */
 private module JsonWebToken {
   /**
