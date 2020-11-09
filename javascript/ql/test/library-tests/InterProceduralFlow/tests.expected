@@ -1,5 +1,6 @@
 dataFlow
 | a.js:1:15:1:23 | "tainted" | b.js:4:13:4:40 | whoKnow ... Tainted |
+| a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
 | a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
 | async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
 | async.js:2:16:2:23 | "source" | async.js:13:15:13:20 | sync() |
@@ -78,6 +79,7 @@ flowLabels
 | tst5.mjs:15:8:15:19 | source(flow) | tst5.mjs:16:13:16:16 | flow |
 taintTracking
 | a.js:1:15:1:23 | "tainted" | b.js:4:13:4:40 | whoKnow ... Tainted |
+| a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
 | a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
 | async.js:2:16:2:23 | "source" | async.js:7:14:7:20 | async() |
 | async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
@@ -184,6 +186,7 @@ taintTracking
 | underscore.js:19:17:19:22 | "src5" | underscore.js:20:15:20:44 | _.map([ ... ource5) |
 germanFlow
 | a.js:1:15:1:23 | "tainted" | b.js:4:13:4:40 | whoKnow ... Tainted |
+| a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
 | a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
 | async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
 | async.js:2:16:2:23 | "source" | async.js:13:15:13:20 | sync() |
