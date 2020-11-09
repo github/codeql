@@ -1,6 +1,8 @@
+/** Provides classes and predicates for reasoning about `java.lang.NumberFormatException`. */
+
 import java
 
-/** Calls a string to number conversion */
+/** A call to a string to number conversion. */
 private class SpecialMethodAccess extends MethodAccess {
   predicate isValueOfMethod(string klass) {
     this.getMethod().getName() = "valueOf" and
@@ -33,7 +35,7 @@ private class SpecialMethodAccess extends MethodAccess {
   }
 }
 
-/** Constructs a number from its string representation */
+/** A `ClassInstanceExpr` that constructs a number from its string representation. */
 private class SpecialClassInstanceExpr extends ClassInstanceExpr {
   predicate isStringConstructor(string klass) {
     this.getType().(RefType).hasQualifiedName("java.lang", klass) and
@@ -51,12 +53,12 @@ private class SpecialClassInstanceExpr extends ClassInstanceExpr {
   }
 }
 
-/** The class `java.lang.NumberFormatException` */
+/** The class `java.lang.NumberFormatException`. */
 class NumberFormatException extends RefType {
   NumberFormatException() { this.hasQualifiedName("java.lang", "NumberFormatException") }
 }
 
-/** Holds if `java.lang.NumberFormatException` is caught */
+/** Holds if `java.lang.NumberFormatException` is caught. */
 predicate catchesNFE(TryStmt t) {
   exists(CatchClause cc, LocalVariableDeclExpr v |
     t.getACatchClause() = cc and
@@ -65,7 +67,7 @@ predicate catchesNFE(TryStmt t) {
   )
 }
 
-/** Holds if `java.lang.NumberFormatException` is thrown */
+/** Holds if `java.lang.NumberFormatException` can be thrown. */
 predicate throwsNFE(Expr e) {
   e.(SpecialClassInstanceExpr).throwsNFE() or e.(SpecialMethodAccess).throwsNFE()
 }
