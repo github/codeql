@@ -3,6 +3,18 @@ package main
 import "regexp"
 
 func main() {
+	// many backslashes
+	regexp.MustCompile("\a") // BAD
+	regexp.MustCompile("\\a")
+	regexp.MustCompile("\\\a")  // BAD
+	regexp.MustCompile("x\\\a") // BAD
+	regexp.MustCompile("\\\\a")
+	regexp.MustCompile("\\\\\a") // BAD
+	regexp.MustCompile("\\\\\\a")
+	regexp.MustCompile("\\\\\\\a") // BAD
+	regexp.MustCompile("\\\\\\\\a")
+	regexp.MustCompile("\\\\\\\\\a") // BAD
+	regexp.MustCompile("\\\\\\\\\\a")
 
 	// BAD: probably a mistake:
 	regexp.MustCompile("hello\aworld")
