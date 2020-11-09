@@ -36,4 +36,19 @@ private module JsonWebToken {
       succ = this.getABoundCallbackParameter(2, 1)
     }
   }
+
+  /**
+   * The public/private key for a JWT as a `CredentialsExpr`.
+   */
+  private class JWTKey extends CredentialsExpr {
+    JWTKey() {
+      this =
+        DataFlow::moduleMember("jsonwebtoken", ["verify", "sign"])
+            .getACall()
+            .getArgument(1)
+            .asExpr()
+    }
+
+    override string getCredentialsKind() { result = "key" }
+  }
 }
