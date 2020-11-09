@@ -66,3 +66,92 @@ func unzipSymlinkOtherLoop(f io.Reader, target string) {
 		os.Symlink(linkName, name)
 	}
 }
+
+// BAD (but not detected): a pair of variants of the above, where either the tar-read or
+// symlink operation are wrapped in a dummy loop, tricking the analysis into thinking there
+// isn't a simple loop relationship between the two.
+func unzipSymlinkChildLoop1(f io.Reader, target string) {
+	r := tar.NewReader(f)
+	for {
+		var header *tar.Header
+		var err error
+		for {
+			header, err = r.Next()
+			break
+		}
+		if err != nil {
+			break
+		}
+		if isRel(header.Linkname, target) && isRel(header.Name, target) {
+			os.Symlink(header.Linkname, header.Name)
+		}
+	}
+}
+
+func unzipSymlinkChildLoop2(f io.Reader, target string) {
+	r := tar.NewReader(f)
+	for {
+		header, err := r.Next()
+		if err != nil {
+			break
+		}
+		if isRel(header.Linkname, target) && isRel(header.Name, target) {
+			for {
+				os.Symlink(header.Linkname, header.Name)
+				break
+			}
+		}
+	}
+}
+
+func getNextHeader(f *tar.Reader) (*tar.Header, error) {
+	return f.Next()
+}
+
+func writeSymlink(linkName, fileName string) {
+	os.Symlink(linkName, fileName)
+}
+
+// BAD: a variant of `unzipSymlinkBad` where the tar-read and symlink
+// operations belong to different functions, so finding their closest
+// enclosing loop involves looking across call-graph edges.
+func unzipSymlinkBadFactored(f io.Reader, target string) {
+	r := tar.NewReader(f)
+	for {
+		header, err := getNextHeader(r)
+		if err != nil {
+			break
+		}
+		if isRel(header.Linkname, target) && isRel(header.Name, target) {
+			writeSymlink(header.Linkname, header.Name)
+		}
+	}
+}
+
+func writeSymlink2(linkName, fileName string) {
+	os.Symlink(linkName, fileName)
+}
+
+// BAD (but not detected): a variant of `unzipSymlinkBadFactored` where
+// the tar-read and symlink operations belong to different functions, so
+// finding their closest enclosing loop involves looking across call-graph edges.
+// However, by surrounding one of the calls with a dummy loop, they appear not
+// to have a simple control-flow relationship and are ignored.
+//
+// This uses a duplicate of writeSymlink2, otherwise the two functions sharing
+// a loop in the previous test is mistaken for this one.
+func unzipSymlinkBadFactoredDummyLoop(f io.Reader, target string) {
+	r := tar.NewReader(f)
+	for {
+		header, err := getNextHeader(r)
+		if err != nil {
+			break
+		}
+		if isRel(header.Linkname, target) && isRel(header.Name, target) {
+			for {
+				writeSymlink2(header.Linkname, header.Name)
+				break
+			}
+		}
+	}
+}
