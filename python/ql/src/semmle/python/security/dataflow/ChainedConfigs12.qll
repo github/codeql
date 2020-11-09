@@ -41,6 +41,13 @@ class CustomPathNode extends TCustomPathNode {
     this = Config2Node(result) or this = CrossoverNode(result.getNode())
   }
 
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
@@ -49,6 +56,7 @@ class CustomPathNode extends TCustomPathNode {
     asNode2().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
+  /** Gets a textual representation of this element. */
   string toString() {
     result = asNode1().toString()
     or
