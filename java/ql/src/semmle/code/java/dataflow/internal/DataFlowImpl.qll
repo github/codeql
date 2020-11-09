@@ -1142,6 +1142,17 @@ private module Stage2 {
     )
   }
 
+  pragma[nomagic]
+  predicate storeStepCand(
+    Node node1, Ap ap1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
+  ) {
+    exists(Ap ap2, Content c |
+      store(node1, tc, node2, contentType) and
+      revFlowStore(ap2, c, ap1, node1, tc, node2, _, _, config) and
+      revFlowConsCand(ap2, c, ap1, config)
+    )
+  }
+
   predicate revFlow(Node node, Configuration config) { revFlow(node, _, _, _, config) }
   /* End: Stage 2 logic. */
 }
@@ -1290,16 +1301,6 @@ private predicate readCand2(Node node1, Content c, Node node2, Configuration con
   Stage2::revFlow(node1, _, _, true, unbind(config)) and
   Stage2::revFlow(node2, config) and
   Stage2::revFlowIsReadAndStored(c, unbind(config))
-}
-
-pragma[nomagic]
-private predicate storeCand2(
-  Node node1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
-) {
-  store(node1, tc, node2, contentType) and
-  Stage2::revFlow(node1, config) and
-  Stage2::revFlow(node2, _, _, true, unbind(config)) and
-  Stage2::revFlowIsReadAndStored(tc.getContent(), unbind(config))
 }
 
 private module Stage3 {
@@ -1451,7 +1452,7 @@ private module Stage3 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, cc, argAp, ap1, config) and
-      storeCand2(node1, tc, node2, contentType, config) and
+      Stage2::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
       // We need to typecheck stores here, since reverse flow through a getter
       // might have a different type here compared to inside the getter.
       compatibleTypes(ap1.getType(), contentType)
@@ -1688,6 +1689,17 @@ private module Stage3 {
     exists(ReturnNodeExt ret |
       revFlowOut(call, ret, toReturn, returnAp, ap, config) and
       fwdFlow(ret, true, apSome(_), ap, config)
+    )
+  }
+
+  pragma[nomagic]
+  predicate storeStepCand(
+    Node node1, Ap ap1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
+  ) {
+    exists(Ap ap2, Content c |
+      store(node1, tc, node2, contentType) and
+      revFlowStore(ap2, c, ap1, node1, tc, node2, _, _, config) and
+      revFlowConsCand(ap2, c, ap1, config)
     )
   }
 
@@ -2060,8 +2072,10 @@ private module Stage4 {
   private predicate fwdFlowStore(
     Node node1, Ap ap1, TypedContent tc, Node node2, Cc cc, ApOption argAp, Configuration config
   ) {
-    fwdFlow(node1, cc, argAp, ap1, config) and
-    fwdFlowStore0(node1, tc, node2, ap1.getFront(), config)
+    exists(DataFlowType contentType |
+      fwdFlow(node1, cc, argAp, ap1, config) and
+      Stage3::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config)
+    )
   }
 
   pragma[nomagic]
@@ -2070,27 +2084,6 @@ private module Stage4 {
       fwdFlowStore(_, tail, tc, _, _, _, config) and
       tc.getContent() = c and
       cons = apCons(tc, tail)
-    )
-  }
-
-  pragma[nomagic]
-  private predicate storeCand(
-    Node mid, TypedContent tc, Node node, AccessPathFront apf0, AccessPathFront apf,
-    Configuration config
-  ) {
-    storeCand2(mid, tc, node, _, config) and
-    flowCand(mid, apf0, config) and
-    apf.headUsesContent(tc)
-  }
-
-  pragma[noinline]
-  private predicate fwdFlowStore0(
-    Node mid, TypedContent tc, Node node, AccessPathFront apf0, Configuration config
-  ) {
-    exists(AccessPathFront apf |
-      storeCand(mid, tc, node, apf0, apf, config) and
-      stage3consCand(tc, apf0, config) and
-      flowCand(node, apf, unbind(config))
     )
   }
 
@@ -2313,6 +2306,17 @@ private module Stage4 {
       revFlowOut(call, ret, toReturn, returnAp, ap, config) and
       fwdFlow(ret, ccc, apSome(_), ap, config) and
       ccc.matchesCall(call)
+    )
+  }
+
+  pragma[nomagic]
+  predicate storeStepCand(
+    Node node1, Ap ap1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
+  ) {
+    exists(Ap ap2, Content c |
+      store(node1, tc, node2, contentType) and
+      revFlowStore(ap2, c, ap1, node1, tc, node2, _, _, config) and
+      revFlowConsCand(ap2, c, ap1, config)
     )
   }
 
@@ -2930,17 +2934,11 @@ private predicate pathReadStep(
 }
 
 pragma[nomagic]
-private predicate storeCand(Node node1, TypedContent tc, Node node2, Configuration config) {
-  storeCand2(node1, tc, node2, _, config) and
-  Stage4::revFlow(node2, config)
-}
-
-pragma[nomagic]
 private predicate pathStoreStep(
   PathNodeMid mid, Node node, AccessPath ap0, TypedContent tc, CallContext cc
 ) {
   ap0 = mid.getAp() and
-  storeCand(mid.getNode(), tc, node, mid.getConfiguration()) and
+  Stage4::storeStepCand(mid.getNode(), _, tc, node, _, mid.getConfiguration()) and
   cc = mid.getCallContext()
 }
 
