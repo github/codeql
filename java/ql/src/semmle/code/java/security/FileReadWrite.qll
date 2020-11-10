@@ -23,8 +23,10 @@ private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
       filesMethod.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
       fileAccess = ma.getArgument(0) and
       filesMethod
-          .hasName(["readAllBytes", "readAllLines", "readString", "lines", "newBufferedReader",
-                "newInputStream", "newByteChannel"])
+          .hasName([
+              "readAllBytes", "readAllLines", "readString", "lines", "newBufferedReader",
+              "newInputStream", "newByteChannel"
+            ])
     )
   )
   or

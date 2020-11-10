@@ -382,7 +382,10 @@ private predicate isParamsArg(Call c, Expr arg, Parameter p) {
     p.isParams() and
     numArgs = c.getNumberOfArguments() and
     arg =
-      [getImplicitArgument(c, [p.getPosition() .. numArgs - 1]), getExplicitArgument(c, p.getName())]
+      [
+        getImplicitArgument(c, [p.getPosition() .. numArgs - 1]),
+        getExplicitArgument(c, p.getName())
+      ]
   |
     numArgs > target.getNumberOfParameters()
     or
