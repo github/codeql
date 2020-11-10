@@ -57,5 +57,5 @@ To increase the number of threads used for testing queries, you can update the *
 Further reading
 ----------------
 
-- `User and workspace settings <https://code.visualstudio.com/docs/getstarted/customizing-settings>`__ in the Visual Studio Code help
+- `User and workspace settings <https://code.visualstudio.com/docs/getstarted/settings>`__ in the Visual Studio Code help
 - ":doc:`CodeQL CLI <codeql-cli:index>`"

@@ -5,7 +5,7 @@ You can customize your CodeQL analyses by writing your own queries to highlight
 specific vulnerabilities or errors.
 
 This topic is specifically about writing
-queries to use with the :doc:`database analyze <../commands/database-analyze>`
+queries to use with the :doc:`database analyze <codeql-cli-manual:database-analyze>`
 command to produce :ref:`interpreted results <interpret-query-results>`. 
 
 .. include:: ../../reusables/advanced-query-execution.rst

@@ -48,7 +48,7 @@ the language you want to analyze:
   detect the build system automatically, using a built-in autobuilder. 
    
 For full details of all the options you can use when creating databases,
-see the :doc:`database create reference documentation <../commands/database-create>`.  
+see the :doc:`database create reference documentation <codeql-cli-manual:database-create>`.  
 
 Progress and results
 --------------------

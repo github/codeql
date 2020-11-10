@@ -68,8 +68,8 @@ contain a single top-level tag named
 of the active database schema (for example, ``<queries
 language="java"/>``).
 
-A ``qlpack.yml`` file defines a `QL pack
-<https://help.semmle.com/codeql/codeql-cli/reference/qlpack-overview.html>`__.
+A ``qlpack.yml`` file defines a :doc:`QL pack
+<codeql-cli:codeql-cli-reference/about-ql-packs>`.
 The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation. This file
 will not be recognized when using legacy tools that are not based
 on the CodeQL CLI (that is, LGTM.com, LGTM Enterprise, ODASA, CodeQL for

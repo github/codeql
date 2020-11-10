@@ -1,5 +1,0 @@
-.. toctree::	
-   :titlesonly:	
-   :glob:	
-
-   commands/*

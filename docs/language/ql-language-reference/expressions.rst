@@ -363,7 +363,7 @@ Next, consider the following query:
 #. A single tuple ``"hello"`` is generated in this step.
 
 #. The ``<expression> charAt(_)`` is applied on this tuple. The underscore ``_`` in ``charAt(_)``
-   is a :ref:`don't-care expression <dont-care>`, which represents any value.
+   is a :ref:`don't-care expression <don-t-care-expressions>`, which represents any value.
    ``s.charAt(_)`` generates four distinct values ``h, e, l, o``.
 
 #. Finally, ``count`` is applied on these values, and the query returns ``4``.  

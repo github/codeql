@@ -14,7 +14,7 @@ Success, normal termination.
 
 The command successfully determined that the answer to your question is "no".
 
-This exit code is only used by a few commands, such as :doc:`codeql test run <../commands/test-run>`, :doc:`codeql database check <../commands/dataset-check>`, :doc:`codeql query format <../commands/query-format>`,and :doc:`codeql resolve extractor <../commands/resolve-extractor>`.
+This exit code is only used by a few commands, such as :doc:`codeql test run <codeql-cli-manual:test-run>`, :doc:`codeql database check <codeql-cli-manual:dataset-check>`, :doc:`codeql query format <codeql-cli-manual:query-format>`,and :doc:`codeql resolve extractor <codeql-cli-manual:resolve-extractor>`.
 For more details, see the documentation for those commands.
 
 2
@@ -35,7 +35,7 @@ In this case, the launcher can't start the Java code for the CodeQL CLI at all. 
 32
 ---
 
-The extractor didn't find any code to analyze when running :doc:`codeql database create <../commands/database-create>` or :doc:`codeql database finalize <../commands/database-finalize>`.
+The extractor didn't find any code to analyze when running :doc:`codeql database create <codeql-cli-manual:database-create>` or :doc:`codeql database finalize <codeql-cli-manual:database-finalize>`.
 
 33
 ---

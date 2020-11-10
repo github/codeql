@@ -250,7 +250,7 @@ Implicit quantifiers
 
 Implicitly quantified variables can be introduced using "don't care expressions." These are used 
 when you need to introduce a variable to use as an argument to a predicate call, but don't care 
-about its value. For further information, see ":ref:`Don't-care expressions <dont-care>`."
+about its value. For further information, see ":ref:`Don't-care expressions <don-t-care-expressions>`."
 
 .. _logical-connectives:
 

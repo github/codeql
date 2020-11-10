@@ -9,7 +9,7 @@ considered "optional". This document details the output produced when using the
 format type ``sarifv2.1.0``, which corresponds to the SARIF v2.1.0.csd1
 specification.
 For more information on selecting a file format for your analysis results, see
-the :doc:`database analyze reference <../commands/database-analyze>`.
+the :doc:`database analyze reference <codeql-cli-manual:database-analyze>`.
 
 SARIF specification and schema
 ------------------------------

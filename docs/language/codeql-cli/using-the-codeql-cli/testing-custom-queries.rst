@@ -129,7 +129,7 @@ You can also specify:
 
 For full details of all the options you can use when testing queries,
 see the :doc:`test run reference documentation
-<../commands/test-run>`.
+<codeql-cli-manual:test-run>`.
 
 Example
 -------

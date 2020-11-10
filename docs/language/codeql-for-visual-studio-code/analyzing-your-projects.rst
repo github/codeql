@@ -111,6 +111,8 @@ To display the exact text that produced the results for a particular entry, righ
 
 To remove queries from the Query History view, select all the queries you want to remove, then right-click and select **Remove History Item**.
 
+.. _viewing-query-results:
+
 Viewing query results
 -----------------------
 
@@ -131,7 +133,7 @@ To use standard code navigation features in the source code, you can right-click
 
      If you're using an older database, code navigation commands such as **Go to Definition** and **Go to References** may not work.
      To use code navigation, try unzipping the database and running ``codeql database cleanup <database>`` on the unzipped database using the CodeQL CLI. Then, re-add the database to Visual Studio Code.
-     For more information, see the `database cleanup <https://help.semmle.com/codeql/codeql-cli/commands/database-cleanup.html>`__ reference documentation.
+     For more information, see the :doc:`database cleanup <codeql-cli-manual:database-cleanup>` reference documentation.
 
 Comparing query results
 ------------------------
