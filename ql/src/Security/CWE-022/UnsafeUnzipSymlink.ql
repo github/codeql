@@ -93,14 +93,18 @@ class SymlinkSink extends DataFlow::Node {
 }
 
 /**
- * An argument to `path/filepath.EvalSymlinks`, taken as a sink for detecting target paths
- * that are likely safe to extract to.
+ * An argument to `path/filepath.EvalSymlinks` or `os.Readlink`, taken as a sink for detecting target
+ * paths that are likely safe to extract to.
  */
 class EvalSymlinksSink extends DataFlow::Node {
   EvalSymlinksSink() {
-    this =
-      any(DataFlow::CallNode n | n.getTarget().hasQualifiedName("path/filepath", "EvalSymlinks"))
-          .getArgument(0)
+    exists(DataFlow::CallNode n |
+      n.getTarget().hasQualifiedName("path/filepath", "EvalSymlinks")
+      or
+      n.getTarget().hasQualifiedName("os", "Readlink")
+    |
+      this = n.getArgument(0)
+    )
   }
 }
 
