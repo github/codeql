@@ -97,9 +97,9 @@ class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
 }
 
 /**
- * Calls to constructors are treated as post-update nodes for the synthesized argument
+ * Calls to constructors act as post-update nodes for the synthesized argument
  * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
- * object after the constructor (currently only `__init__`) has run.
+ * object _after_ the constructor (currently only `__init__`) has run.
  */
 class ObjectCreationNode extends PostUpdateNode, NeedsSyntheticPreUpdateNode, CfgNode {
   ObjectCreationNode() { node.(CallNode) = any(ClassCall c).getNode() }
@@ -122,26 +122,30 @@ module EssaFlow {
     // Definition
     //   `x = f(42)`
     //   nodeFrom is `f(42)`, cfg node
-    //   nodeTo is `x`, essa var
-    nodeFrom.(CfgNode).getNode() =
-      nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
-    or
-    // With definition
-    //   `with f(42) as x:`
-    //   nodeFrom is `f(42)`, cfg node
-    //   nodeTo is `x`, essa var
-    exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
-      nodeFrom.(CfgNode).getNode() = contextManager and
-      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
-      // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
-      with.getContextExpr() = contextManager.getNode() and
-      with.getOptionalVars() = var.getNode() and
-      contextManager.strictlyDominates(var)
+    //   nodeTo is
+    //     - `x`, essa var, if `x` is global
+    //     - first use of `x`, cfg node, if `x` is not global
+    //
+    // case where `x` is not global
+    exists(EssaNodeDefinition ed |
+      nodeFrom.asCfgNode() = ed.getDefiningNode().(DefinitionNode).getValue() and
+      defToFirstUse(ed.getVariable(), nodeTo.asCfgNode()) and
+      not ed.getVariable() instanceof GlobalSsaVariable
     )
     or
+    // case where `x` is global
+    exists(EssaNodeDefinition ed |
+      nodeFrom.asCfgNode() = ed.getDefiningNode().(DefinitionNode).getValue() and
+      nodeTo.asVar().(GlobalSsaVariable) = ed.getVariable()
+    )
+    or
+    // Parameter definition
+    //   `f(x)`
+    //   nodeFrom is `x`, cfg node
+    //   nodeTo is first use of `x`, cfg node
     exists(ParameterDefinition pd |
       nodeFrom.asCfgNode() = pd.getDefiningNode() and
-      nodeTo.asVar() = pd.getVariable()
+      defToFirstUse(pd.getVariable(), nodeTo.asCfgNode())
     )
     or
     // First use after definition

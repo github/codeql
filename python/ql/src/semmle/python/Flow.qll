@@ -661,6 +661,8 @@ class DefinitionNode extends ControlFlowNode {
     exists(Assign a | list_or_tuple_nested_element(a.getATarget()).getAFlowNode() = this)
     or
     exists(For for | for.getTarget().getAFlowNode() = this)
+    or
+    exists(With with | with.getOptionalVars().getAFlowNode() = this)
   }
 
   /** flow node corresponding to the value assigned for the definition corresponding to this flow node */
@@ -791,6 +793,11 @@ private AstNode assigned_value(Expr lhs) {
   or
   /* for lhs in seq: => `result` is the `for` node, representing the `iter(next(seq))` operation. */
   result.(For).getTarget() = lhs
+  or
+  exists(With with |
+    result = with.getContextExpr() and
+    lhs = with.getOptionalVars()
+  )
 }
 
 predicate nested_sequence_assign(
