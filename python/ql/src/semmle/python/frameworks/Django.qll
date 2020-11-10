@@ -259,8 +259,9 @@ private module Django {
 
       ObjectsAnnotate() {
         node.getFunction() = django::db::models::objects_attr("annotate").asCfgNode() and
-        django::db::models::expressions::RawSQL::instance(sql).asCfgNode() in [node.getArg(_),
-              node.getArgByName(_)]
+        django::db::models::expressions::RawSQL::instance(sql).asCfgNode() in [
+            node.getArg(_), node.getArgByName(_)
+          ]
       }
 
       override DataFlow::Node getSql() { result.asCfgNode() = sql }
@@ -423,18 +424,19 @@ private module Django {
        * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node http_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["request",
-              // request
-              "HttpRequest",
-              // response
-              "response", "HttpResponse",
-              // HttpResponse subclasses
-              "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
-              "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
-              "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError",
-              "JsonResponse",
-              // HttpResponse-like classes
-              "StreamingHttpResponse", "FileResponse"] and
+        attr_name in [
+            "request",
+            // request
+            "HttpRequest",
+            // response
+            "response", "HttpResponse",
+            // HttpResponse subclasses
+            "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
+            "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
+            "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError", "JsonResponse",
+            // HttpResponse-like classes
+            "StreamingHttpResponse", "FileResponse"
+          ] and
         (
           t.start() and
           result = DataFlow::importNode("django.http" + "." + attr_name)
@@ -576,14 +578,16 @@ private module Django {
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node response_attr(DataFlow::TypeTracker t, string attr_name) {
-          attr_name in ["HttpResponse",
-                // HttpResponse subclasses
-                "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
-                "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
-                "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError",
-                "JsonResponse",
-                // HttpResponse-like classes
-                "StreamingHttpResponse", "FileResponse"] and
+          attr_name in [
+              "HttpResponse",
+              // HttpResponse subclasses
+              "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
+              "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
+              "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError",
+              "JsonResponse",
+              // HttpResponse-like classes
+              "StreamingHttpResponse", "FileResponse"
+            ] and
           (
             t.start() and
             result = DataFlow::importNode("django.http.response" + "." + attr_name)
@@ -1704,25 +1708,27 @@ private module Django {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       nodeFrom = django::http::request::HttpRequest::instance() and
       exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
-        read.getAttributeName() in ["body",
-              // str / bytes
-              "path", "path_info", "method", "encoding", "content_type",
-              // django.http.QueryDict
-              // TODO: Model QueryDict
-              "GET", "POST",
-              // dict[str, str]
-              "content_params", "COOKIES",
-              // dict[str, Any]
-              "META",
-              // HttpHeaders (case insensitive dict-like)
-              "headers",
-              // MultiValueDict[str, UploadedFile]
-              // TODO: Model MultiValueDict
-              // TODO: Model UploadedFile
-              "FILES",
-              // django.urls.ResolverMatch
-              // TODO: Model ResolverMatch
-              "resolver_match"]
+        read.getAttributeName() in [
+            "body",
+            // str / bytes
+            "path", "path_info", "method", "encoding", "content_type",
+            // django.http.QueryDict
+            // TODO: Model QueryDict
+            "GET", "POST",
+            // dict[str, str]
+            "content_params", "COOKIES",
+            // dict[str, Any]
+            "META",
+            // HttpHeaders (case insensitive dict-like)
+            "headers",
+            // MultiValueDict[str, UploadedFile]
+            // TODO: Model MultiValueDict
+            // TODO: Model UploadedFile
+            "FILES",
+            // django.urls.ResolverMatch
+            // TODO: Model ResolverMatch
+            "resolver_match"
+          ]
         // TODO: Handle calls to methods
         // TODO: Handle that a HttpRequest is iterable
       )

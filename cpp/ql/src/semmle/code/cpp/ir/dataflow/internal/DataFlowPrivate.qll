@@ -243,8 +243,10 @@ pragma[noinline]
 private predicate getWrittenField(Instruction instr, Field f, Class c) {
   exists(FieldAddressInstruction fa |
     fa =
-      getFieldInstruction([instr.(StoreInstruction).getDestinationAddress(),
-            instr.(WriteSideEffectInstruction).getDestinationAddress()]) and
+      getFieldInstruction([
+          instr.(StoreInstruction).getDestinationAddress(),
+          instr.(WriteSideEffectInstruction).getDestinationAddress()
+        ]) and
     f = fa.getField() and
     c = f.getDeclaringType()
   )

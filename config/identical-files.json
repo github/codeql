@@ -409,5 +409,12 @@
     "java/ql/src/Metrics/Files/CommentedOutCodeReferences.qhelp",
     "javascript/ql/src/Comments/CommentedOutCodeReferences.qhelp",
     "python/ql/src/Lexical/CommentedOutCodeReferences.qhelp"
+  ],
+  "IDE Contextual Queries": [
+    "cpp/ql/src/IDEContextual.qll",
+    "csharp/ql/src/IDEContextual.qll",
+    "java/ql/src/IDEContextual.qll",
+    "javascript/ql/src/IDEContextual.qll",
+    "python/ql/src/analysis/IDEContextual.qll"
   ]
 }

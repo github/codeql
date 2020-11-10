@@ -168,13 +168,15 @@ private module FabricV2 {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node fabric_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["connection",
-          // connection.py
-          "Connection",
-          // group.py
-          "group", "SerialGroup", "ThreadingGroup",
-          // tasks.py
-          "tasks", "task"] and
+    attr_name in [
+        "connection",
+        // connection.py
+        "Connection",
+        // group.py
+        "group", "SerialGroup", "ThreadingGroup",
+        // tasks.py
+        "tasks", "task"
+      ] and
     (
       t.start() and
       result = DataFlow::importNode("fabric" + "." + attr_name)

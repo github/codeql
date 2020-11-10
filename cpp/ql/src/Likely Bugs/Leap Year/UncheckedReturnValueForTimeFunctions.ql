@@ -50,10 +50,12 @@ class SafeTimeGatheringFunction extends Function {
 class TimeConversionFunction extends Function {
   TimeConversionFunction() {
     this.getQualifiedName() =
-      ["FileTimeToSystemTime", "SystemTimeToFileTime", "SystemTimeToTzSpecificLocalTime",
-          "SystemTimeToTzSpecificLocalTimeEx", "TzSpecificLocalTimeToSystemTime",
-          "TzSpecificLocalTimeToSystemTimeEx", "RtlLocalTimeToSystemTime",
-          "RtlTimeToSecondsSince1970", "_mkgmtime"]
+      [
+        "FileTimeToSystemTime", "SystemTimeToFileTime", "SystemTimeToTzSpecificLocalTime",
+        "SystemTimeToTzSpecificLocalTimeEx", "TzSpecificLocalTimeToSystemTime",
+        "TzSpecificLocalTimeToSystemTimeEx", "RtlLocalTimeToSystemTime",
+        "RtlTimeToSecondsSince1970", "_mkgmtime"
+      ]
   }
 }
 
