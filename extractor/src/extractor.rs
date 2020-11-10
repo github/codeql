@@ -1,4 +1,4 @@
-use node_types::{escape_name, node_type_name, Entry, Field, Storage, TypeName};
+use node_types::{escape_name, EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
@@ -150,10 +150,10 @@ impl TrapWriter {
 
 pub struct Extractor {
     pub parser: Parser,
-    pub schema: Vec<Entry>,
+    pub schema: NodeTypeMap,
 }
 
-pub fn create(language: Language, schema: Vec<Entry>) -> Extractor {
+pub fn create(language: Language, schema: NodeTypeMap) -> Extractor {
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
 
@@ -189,8 +189,7 @@ impl Extractor {
             file_label: *file_label,
             token_counter: 0,
             stack: Vec::new(),
-            tables: build_schema_lookup(&self.schema),
-            union_types: build_union_type_lookup(&self.schema),
+            schema: &self.schema,
         };
         traverse(&tree, &mut visitor);
 
@@ -246,26 +245,6 @@ fn full_id_for_folder(path: &Path) -> String {
     format!("{};folder", normalize_path(path))
 }
 
-fn build_schema_lookup<'a>(schema: &'a Vec<Entry>) -> Map<&'a TypeName, &'a Entry> {
-    let mut map = std::collections::BTreeMap::new();
-    for entry in schema {
-        if let Entry::Token { type_name, .. } | Entry::Table { type_name, .. } = entry {
-            map.insert(type_name, entry);
-        }
-    }
-    map
-}
-
-fn build_union_type_lookup<'a>(schema: &'a Vec<Entry>) -> Map<&'a TypeName, &'a Set<TypeName>> {
-    let mut union_types = std::collections::BTreeMap::new();
-    for entry in schema {
-        if let Entry::Union { type_name, members } = entry {
-            union_types.insert(type_name, members);
-        }
-    }
-    union_types
-}
-
 struct Visitor<'a> {
     /// The file path of the source code (as string)
     path: String,
@@ -278,10 +257,8 @@ struct Visitor<'a> {
     trap_writer: TrapWriter,
     /// A counter for tokens
     token_counter: usize,
-    /// A lookup table from type name to dbscheme table entries
-    tables: Map<&'a TypeName, &'a Entry>,
-    /// A lookup table for union types mapping a type name to its direct members
-    union_types: Map<&'a TypeName, &'a Set<TypeName>>,
+    /// A lookup table from type name to node types
+    schema: &'a NodeTypeMap,
     /// A stack for gathering information from hild nodes. Whenever a node is entered
     /// an empty list is pushed. All children append their data (field name, label, type) to
     /// the the list. When the visitor leaves a node the list containing the child data is popped
@@ -328,13 +305,16 @@ impl Visitor<'_> {
             end_line,
             end_column,
         );
-        let table = self.tables.get(&TypeName {
-            kind: node.kind().to_owned(),
-            named: node.is_named(),
-        });
+        let table = self
+            .schema
+            .get(&TypeName {
+                kind: node.kind().to_owned(),
+                named: node.is_named(),
+            })
+            .unwrap();
         let mut valid = true;
-        match table {
-            Some(Entry::Token { kind_id, .. }) => {
+        match &table.kind {
+            EntryKind::Token { kind_id, .. } => {
                 self.trap_writer.add_tuple(
                     "tokeninfo",
                     vec![
@@ -348,11 +328,8 @@ impl Visitor<'_> {
                 );
                 self.token_counter += 1;
             }
-            Some(Entry::Table { fields, .. }) => {
-                let table_name = escape_name(&format!(
-                    "{}_def",
-                    node_type_name(node.kind(), node.is_named())
-                ));
+            EntryKind::Table { fields, .. } => {
+                let table_name = escape_name(&format!("{}_def", &table.flattened_name));
                 if let Some(args) = self.complex_node(&node, fields, child_nodes, id) {
                     let mut all_args = Vec::new();
                     all_args.push(Arg::Label(id));
@@ -386,6 +363,7 @@ impl Visitor<'_> {
             };
         }
     }
+
     fn complex_node(
         &mut self,
         node: &Node,
@@ -400,7 +378,7 @@ impl Visitor<'_> {
         for (child_field, child_id, child_type) in child_nodes {
             if let Some((field, values)) = map.get_mut(&child_field.map(|x| x.to_owned())) {
                 //TODO: handle error and missing nodes
-                if self.type_matches(&child_type, &field.types) {
+                if self.type_matches(&child_type, &field.type_info) {
                     values.push(child_id);
                 } else if field.name.is_some() {
                     error!(
@@ -410,7 +388,7 @@ impl Visitor<'_> {
                         node.kind(),
                         child_field.unwrap_or("child"),
                         child_type,
-                        field.types
+                        field.type_info
                     )
                 }
             } else {
@@ -464,7 +442,7 @@ impl Visitor<'_> {
                         }
                         let table_name = escape_name(&format!(
                             "{}_{}",
-                            node_type_name(&field.parent.kind, field.parent.named),
+                            self.schema.get(&field.parent).unwrap().flattened_name,
                             field.get_name()
                         ));
                         let mut args = Vec::new();
@@ -484,18 +462,48 @@ impl Visitor<'_> {
             None
         }
     }
-    fn type_matches(&self, tp: &TypeName, types: &Set<TypeName>) -> bool {
+
+    fn type_matches(&self, tp: &TypeName, type_info: &node_types::FieldTypeInfo) -> bool {
+        match type_info {
+            node_types::FieldTypeInfo::Single(single_type) => {
+                if tp == single_type {
+                    return true;
+                }
+                match &self.schema.get(single_type).unwrap().kind {
+                    EntryKind::Union { members } => {
+                        if self.type_matches_set(tp, members) {
+                            return true;
+                        }
+                    }
+                    _ => {}
+                }
+            }
+            node_types::FieldTypeInfo::Multiple {
+                types,
+                dbscheme_union: _,
+                ql_class: _,
+            } => {
+                return self.type_matches_set(tp, types);
+            }
+        }
+        false
+    }
+
+    fn type_matches_set(&self, tp: &TypeName, types: &Set<TypeName>) -> bool {
         if types.contains(tp) {
             return true;
         }
         for other in types.iter() {
-            if let Some(x) = self.union_types.get(other) {
-                if self.type_matches(tp, x) {
-                    return true;
+            match &self.schema.get(other).unwrap().kind {
+                EntryKind::Union { members } => {
+                    if self.type_matches_set(tp, members) {
+                        return true;
+                    }
                 }
+                _ => {}
             }
         }
-        return false;
+        false
     }
 }
 

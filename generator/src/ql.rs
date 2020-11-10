@@ -1,3 +1,4 @@
+use std::collections::BTreeSet;
 use std::fmt;
 
 pub enum TopLevel {
@@ -14,10 +15,11 @@ impl fmt::Display for TopLevel {
     }
 }
 
+#[derive(Clone, Eq, PartialEq, Hash)]
 pub struct Class {
     pub name: String,
     pub is_abstract: bool,
-    pub supertypes: Vec<Type>,
+    pub supertypes: BTreeSet<Type>,
     pub characteristic_predicate: Option<Expression>,
     pub predicates: Vec<Predicate>,
 }
@@ -61,7 +63,7 @@ impl fmt::Display for Class {
 }
 
 // The QL type of a column.
-#[derive(Clone)]
+#[derive(Clone, Eq, PartialEq, Hash, Ord, PartialOrd)]
 pub enum Type {
     /// Primitive `int` type.
     Int,
@@ -69,11 +71,11 @@ pub enum Type {
     /// Primitive `string` type.
     String,
 
-    /// A user-defined type.
-    Normal(String),
-
     /// A database type that will need to be referred to with an `@` prefix.
     AtType(String),
+
+    /// A user-defined type.
+    Normal(String),
 }
 
 impl fmt::Display for Type {
@@ -87,15 +89,13 @@ impl fmt::Display for Type {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Eq, PartialEq, Hash)]
 pub enum Expression {
     Var(String),
     String(String),
     Pred(String, Vec<Expression>),
     Or(Vec<Expression>),
-    And(Vec<Expression>),
     Equals(Box<Expression>, Box<Expression>),
-    Exists(Vec<FormalParameter>, Box<Expression>),
     Dot(Box<Expression>, String, Vec<Expression>),
 }
 
@@ -127,30 +127,7 @@ impl fmt::Display for Expression {
                     Ok(())
                 }
             }
-            Expression::And(conjuncts) => {
-                if conjuncts.is_empty() {
-                    write!(f, "any()")
-                } else {
-                    for (index, conjunct) in conjuncts.iter().enumerate() {
-                        if index > 0 {
-                            write!(f, " and ")?;
-                        }
-                        write!(f, "{}", conjunct)?;
-                    }
-                    Ok(())
-                }
-            }
             Expression::Equals(a, b) => write!(f, "{} = {}", a, b),
-            Expression::Exists(params, formula) => {
-                write!(f, "exists(")?;
-                for (index, param) in params.iter().enumerate() {
-                    if index > 0 {
-                        write!(f, ", ")?;
-                    }
-                    write!(f, "{}", param)?;
-                }
-                write!(f, " | {})", formula)
-            }
             Expression::Dot(x, member_pred, args) => {
                 write!(f, "{}.{}(", x, member_pred)?;
                 for (index, arg) in args.iter().enumerate() {
@@ -165,7 +142,7 @@ impl fmt::Display for Expression {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Eq, PartialEq, Hash)]
 pub struct Predicate {
     pub name: String,
     pub overridden: bool,
@@ -196,7 +173,7 @@ impl fmt::Display for Predicate {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Eq, PartialEq, Hash)]
 pub struct FormalParameter {
     pub name: String,
     pub param_type: Type,

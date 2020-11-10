@@ -67,7 +67,9 @@ fn create_ast_node_class() -> ql::Class {
     ql::Class {
         name: "AstNode".to_owned(),
         is_abstract: false,
-        supertypes: vec![ql::Type::AtType("ast_node".to_owned())],
+        supertypes: vec![ql::Type::AtType("ast_node".to_owned())]
+            .into_iter()
+            .collect(),
         characteristic_predicate: None,
         predicates: vec![
             to_string,
@@ -77,6 +79,7 @@ fn create_ast_node_class() -> ql::Class {
         ],
     }
 }
+
 fn create_token_class() -> ql::Class {
     let get_value = ql::Predicate {
         name: "getValue".to_owned(),
@@ -128,7 +131,9 @@ fn create_token_class() -> ql::Class {
         supertypes: vec![
             ql::Type::AtType("token".to_owned()),
             ql::Type::Normal("AstNode".to_owned()),
-        ],
+        ]
+        .into_iter()
+        .collect(),
         characteristic_predicate: None,
         predicates: vec![
             get_value,
@@ -141,16 +146,18 @@ fn create_token_class() -> ql::Class {
 
 // Creates the `ReservedWord` class.
 fn create_reserved_word_class() -> ql::Class {
-    let db_name = "reserved_word".to_owned();
-    let class_name = dbscheme_name_to_class_name(&db_name);
+    let db_name = "reserved_word";
+    let class_name = "ReservedWord".to_owned();
     let describe_ql_class = create_describe_ql_class(&class_name);
     ql::Class {
         name: class_name,
         is_abstract: false,
         supertypes: vec![
+            ql::Type::AtType(db_name.to_owned()),
             ql::Type::Normal("Token".to_owned()),
-            ql::Type::AtType(db_name),
-        ],
+        ]
+        .into_iter()
+        .collect(),
         characteristic_predicate: None,
         predicates: vec![describe_ql_class],
     }
@@ -170,47 +177,6 @@ fn create_none_predicate(
         formal_parameters,
         body: ql::Expression::Pred("none".to_owned(), vec![]),
     }
-}
-
-/// Given the name of the parent node, and its field information, returns the
-/// name of the field's type. This may be an ad-hoc union of all the possible
-/// types the field can take, in which case we create a new class and push it to
-/// `classes`.
-fn create_field_class(token_kinds: &BTreeSet<String>, field: &node_types::Field) -> String {
-    if field.types.len() == 1 {
-        // This field can only have a single type.
-        let t = field.types.iter().next().unwrap();
-        if !t.named || token_kinds.contains(&t.kind) {
-            "Token".to_owned()
-        } else {
-            node_types::escape_name(&node_types::node_type_name(&t.kind, t.named))
-        }
-    } else {
-        "AstNode".to_owned()
-    }
-}
-
-/// Given a valid dbscheme name (i.e. in snake case), produces the equivalent QL
-/// name (i.e. in CamelCase). For example, "foo_bar_baz" becomes "FooBarBaz".
-fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
-    fn to_title_case(word: &str) -> String {
-        let mut first = true;
-        let mut result = String::new();
-        for c in word.chars() {
-            if first {
-                first = false;
-                result.push(c.to_ascii_uppercase());
-            } else {
-                result.push(c);
-            }
-        }
-        result
-    }
-    dbscheme_name
-        .split('_')
-        .map(|word| to_title_case(word))
-        .collect::<Vec<String>>()
-        .join("")
 }
 
 /// Creates an overridden `describeQlClass` predicate that returns the given
@@ -345,20 +311,24 @@ fn create_field_getters(
     main_table_column_index: &mut usize,
     parent_name: &str,
     field: &node_types::Field,
-    field_type: &str,
+    nodes: &node_types::NodeTypeMap,
 ) -> (ql::Predicate, ql::Expression) {
-    let predicate_name = format!(
-        "get{}",
-        dbscheme_name_to_class_name(&node_types::escape_name(&field.get_name()))
-    );
-    let return_type = Some(ql::Type::Normal(dbscheme_name_to_class_name(field_type)));
+    let predicate_name = field.get_getter_name();
+    let return_type = Some(ql::Type::Normal(match &field.type_info {
+        node_types::FieldTypeInfo::Single(t) => nodes.get(&t).unwrap().ql_class_name.clone(),
+        node_types::FieldTypeInfo::Multiple {
+            types: _,
+            dbscheme_union: _,
+            ql_class,
+        } => ql_class.clone(),
+    }));
     match &field.storage {
         node_types::Storage::Column => {
             let result = (
                 ql::Predicate {
                     name: predicate_name,
                     overridden: false,
-                    return_type: return_type,
+                    return_type,
                     formal_parameters: vec![],
                     body: create_get_field_expr_for_column_storage(
                         &main_table_name,
@@ -381,7 +351,7 @@ fn create_field_getters(
                 ql::Predicate {
                     name: predicate_name,
                     overridden: false,
-                    return_type: return_type,
+                    return_type,
                     formal_parameters: if *has_index {
                         vec![ql::FormalParameter {
                             name: "i".to_owned(),
@@ -405,7 +375,7 @@ fn create_field_getters(
 }
 
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
-pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
+pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
     let mut classes: Vec<ql::TopLevel> = vec![
         ql::TopLevel::Import("codeql.files.FileSystem".to_owned()),
         ql::TopLevel::Import("codeql.Locations".to_owned()),
@@ -414,61 +384,48 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
         ql::TopLevel::Class(create_reserved_word_class()),
     ];
     let mut token_kinds = BTreeSet::new();
-    for node in nodes {
-        if let node_types::Entry::Token { type_name, .. } = node {
+    for (type_name, node) in nodes {
+        if let node_types::EntryKind::Token { .. } = &node.kind {
             if type_name.named {
                 token_kinds.insert(type_name.kind.to_owned());
             }
         }
     }
 
-    for node in nodes {
-        match &node {
-            node_types::Entry::Token {
-                type_name,
-                kind_id: _,
-            } => {
+    for (type_name, node) in nodes {
+        match &node.kind {
+            node_types::EntryKind::Token { kind_id: _ } => {
                 if type_name.named {
-                    let db_name = format!("token_{}", &type_name.kind);
-                    let db_name = node_types::escape_name(&db_name);
-                    let class_name =
-                        dbscheme_name_to_class_name(&node_types::escape_name(&type_name.kind));
-                    let describe_ql_class = create_describe_ql_class(&class_name);
+                    let describe_ql_class = create_describe_ql_class(&node.ql_class_name);
+                    let mut supertypes: BTreeSet<ql::Type> = BTreeSet::new();
+                    supertypes.insert(ql::Type::AtType(node.flattened_name.to_owned()));
+                    supertypes.insert(ql::Type::Normal("Token".to_owned()));
                     classes.push(ql::TopLevel::Class(ql::Class {
-                        name: class_name,
+                        name: node.ql_class_name.clone(),
                         is_abstract: false,
-                        supertypes: vec![
-                            ql::Type::Normal("Token".to_owned()),
-                            ql::Type::AtType(db_name),
-                        ],
+                        supertypes,
                         characteristic_predicate: None,
                         predicates: vec![describe_ql_class],
                     }));
                 }
             }
-            node_types::Entry::Union {
-                type_name,
-                members: _,
-            } => {
+            node_types::EntryKind::Union { members: _ } => {
                 // It's a tree-sitter supertype node, so we're wrapping a dbscheme
                 // union type.
-                let union_name = node_types::escape_name(&node_types::node_type_name(
-                    &type_name.kind,
-                    type_name.named,
-                ));
-                let class_name = dbscheme_name_to_class_name(&union_name);
                 classes.push(ql::TopLevel::Class(ql::Class {
-                    name: class_name.clone(),
+                    name: node.ql_class_name.clone(),
                     is_abstract: false,
                     supertypes: vec![
-                        ql::Type::AtType(union_name),
+                        ql::Type::AtType(node_types::escape_name(&node.flattened_name)),
                         ql::Type::Normal("AstNode".to_owned()),
-                    ],
+                    ]
+                    .into_iter()
+                    .collect(),
                     characteristic_predicate: None,
                     predicates: vec![],
                 }));
             }
-            node_types::Entry::Table { type_name, fields } => {
+            node_types::EntryKind::Table { fields } => {
                 // Count how many columns there will be in the main table.
                 // There will be:
                 // - one for the id
@@ -484,15 +441,19 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                         .count()
                 };
 
-                let name = node_types::node_type_name(&type_name.kind, type_name.named);
-                let dbscheme_name = node_types::escape_name(&name);
-                let ql_type = ql::Type::AtType(dbscheme_name.clone());
-                let main_table_name = node_types::escape_name(&(format!("{}_def", name)));
-                let main_class_name = dbscheme_name_to_class_name(&dbscheme_name);
+                let escaped_name = node_types::escape_name(&node.flattened_name);
+                let main_class_name = &node.ql_class_name;
+                let main_table_name =
+                    node_types::escape_name(&format!("{}_def", &node.flattened_name));
                 let mut main_class = ql::Class {
                     name: main_class_name.clone(),
                     is_abstract: false,
-                    supertypes: vec![ql_type, ql::Type::Normal("AstNode".to_owned())],
+                    supertypes: vec![
+                        ql::Type::AtType(escaped_name),
+                        ql::Type::Normal("AstNode".to_owned()),
+                    ]
+                    .into_iter()
+                    .collect(),
                     characteristic_predicate: None,
                     predicates: vec![
                         create_describe_ql_class(&main_class_name),
@@ -513,14 +474,13 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                     // - predicates to access the fields,
                     // - the QL expressions to access the fields that will be part of getAFieldOrChild.
                     for field in fields {
-                        let field_type = create_field_class(&token_kinds, field);
                         let (get_pred, get_child_expr) = create_field_getters(
                             &main_table_name,
                             main_table_arity,
                             &mut main_table_column_index,
-                            &name,
+                            &node.flattened_name,
                             field,
-                            &field_type,
+                            nodes,
                         );
                         main_class.predicates.push(get_pred);
                         get_child_exprs.push(get_child_expr);

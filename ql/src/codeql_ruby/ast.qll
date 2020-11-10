@@ -26,7 +26,7 @@ class Token extends @token, AstNode {
   override string describeQlClass() { result = "Token" }
 }
 
-class ReservedWord extends Token, @reserved_word {
+class ReservedWord extends @reserved_word, Token {
   override string describeQlClass() { result = "ReservedWord" }
 }
 
@@ -173,7 +173,7 @@ class BlockParameter extends @block_parameter, AstNode {
 
   override Location getLocation() { block_parameter_def(this, _, result) }
 
-  Token getName() { block_parameter_def(this, result, _) }
+  Identifier getName() { block_parameter_def(this, result, _) }
 
   override AstNode getAFieldOrChild() { block_parameter_def(this, result, _) }
 }
@@ -234,6 +234,10 @@ class ChainedString extends @chained_string, AstNode {
   override AstNode getAFieldOrChild() { chained_string_child(this, _, result) }
 }
 
+class Character extends @token_character, Token {
+  override string describeQlClass() { result = "Character" }
+}
+
 class Class extends @class, AstNode {
   override string describeQlClass() { result = "Class" }
 
@@ -244,6 +248,18 @@ class Class extends @class, AstNode {
   AstNode getChild(int i) { class_child(this, i, result) }
 
   override AstNode getAFieldOrChild() { class_def(this, result, _) or class_child(this, _, result) }
+}
+
+class ClassVariable extends @token_class_variable, Token {
+  override string describeQlClass() { result = "ClassVariable" }
+}
+
+class Comment extends @token_comment, Token {
+  override string describeQlClass() { result = "Comment" }
+}
+
+class Complex extends @token_complex, Token {
+  override string describeQlClass() { result = "Complex" }
 }
 
 class Conditional extends @conditional, AstNode {
@@ -262,6 +278,10 @@ class Conditional extends @conditional, AstNode {
     conditional_def(this, _, result, _, _) or
     conditional_def(this, _, _, result, _)
   }
+}
+
+class Constant extends @token_constant, Token {
+  override string describeQlClass() { result = "Constant" }
 }
 
 class DestructuredLeftAssignment extends @destructured_left_assignment, AstNode {
@@ -344,6 +364,10 @@ class Elsif extends @elsif, AstNode {
   }
 }
 
+class EmptyStatement extends @token_empty_statement, Token {
+  override string describeQlClass() { result = "EmptyStatement" }
+}
+
 class EndBlock extends @end_block, AstNode {
   override string describeQlClass() { result = "EndBlock" }
 
@@ -362,6 +386,10 @@ class Ensure extends @ensure, AstNode {
   AstNode getChild(int i) { ensure_child(this, i, result) }
 
   override AstNode getAFieldOrChild() { ensure_child(this, _, result) }
+}
+
+class EscapeSequence extends @token_escape_sequence, Token {
+  override string describeQlClass() { result = "EscapeSequence" }
 }
 
 class ExceptionVariable extends @exception_variable, AstNode {
@@ -384,6 +412,14 @@ class Exceptions extends @exceptions, AstNode {
   override AstNode getAFieldOrChild() { exceptions_child(this, _, result) }
 }
 
+class False extends @token_false, Token {
+  override string describeQlClass() { result = "False" }
+}
+
+class Float extends @token_float, Token {
+  override string describeQlClass() { result = "Float" }
+}
+
 class For extends @for, AstNode {
   override string describeQlClass() { result = "For" }
 
@@ -398,6 +434,10 @@ class For extends @for, AstNode {
   override AstNode getAFieldOrChild() {
     for_def(this, result, _, _) or for_pattern(this, _, result) or for_def(this, _, result, _)
   }
+}
+
+class GlobalVariable extends @token_global_variable, Token {
+  override string describeQlClass() { result = "GlobalVariable" }
 }
 
 class Hash extends @hash, AstNode {
@@ -425,9 +465,13 @@ class HashSplatParameter extends @hash_splat_parameter, AstNode {
 
   override Location getLocation() { hash_splat_parameter_def(this, result) }
 
-  Token getName() { hash_splat_parameter_name(this, result) }
+  Identifier getName() { hash_splat_parameter_name(this, result) }
 
   override AstNode getAFieldOrChild() { hash_splat_parameter_name(this, result) }
+}
+
+class HeredocBeginning extends @token_heredoc_beginning, Token {
+  override string describeQlClass() { result = "HeredocBeginning" }
 }
 
 class HeredocBody extends @heredoc_body, AstNode {
@@ -438,6 +482,18 @@ class HeredocBody extends @heredoc_body, AstNode {
   AstNode getChild(int i) { heredoc_body_child(this, i, result) }
 
   override AstNode getAFieldOrChild() { heredoc_body_child(this, _, result) }
+}
+
+class HeredocContent extends @token_heredoc_content, Token {
+  override string describeQlClass() { result = "HeredocContent" }
+}
+
+class HeredocEnd extends @token_heredoc_end, Token {
+  override string describeQlClass() { result = "HeredocEnd" }
+}
+
+class Identifier extends @token_identifier, Token {
+  override string describeQlClass() { result = "Identifier" }
 }
 
 class If extends @if, AstNode {
@@ -480,6 +536,14 @@ class In extends @in, AstNode {
   override AstNode getAFieldOrChild() { in_def(this, result, _) }
 }
 
+class InstanceVariable extends @token_instance_variable, Token {
+  override string describeQlClass() { result = "InstanceVariable" }
+}
+
+class Integer extends @token_integer, Token {
+  override string describeQlClass() { result = "Integer" }
+}
+
 class Interpolation extends @interpolation, AstNode {
   override string describeQlClass() { result = "Interpolation" }
 
@@ -495,7 +559,7 @@ class KeywordParameter extends @keyword_parameter, AstNode {
 
   override Location getLocation() { keyword_parameter_def(this, _, result) }
 
-  Token getName() { keyword_parameter_def(this, result, _) }
+  Identifier getName() { keyword_parameter_def(this, result, _) }
 
   UnderscoreArg getValue() { keyword_parameter_value(this, result) }
 
@@ -606,6 +670,14 @@ class Next extends @next, AstNode {
   override AstNode getAFieldOrChild() { next_child(this, result) }
 }
 
+class Nil extends @token_nil, Token {
+  override string describeQlClass() { result = "Nil" }
+}
+
+class Operator extends @token_operator, Token {
+  override string describeQlClass() { result = "Operator" }
+}
+
 class OperatorAssignment extends @operator_assignment, AstNode {
   override string describeQlClass() { result = "OperatorAssignment" }
 
@@ -625,7 +697,7 @@ class OptionalParameter extends @optional_parameter, AstNode {
 
   override Location getLocation() { optional_parameter_def(this, _, _, result) }
 
-  Token getName() { optional_parameter_def(this, result, _, _) }
+  Identifier getName() { optional_parameter_def(this, result, _, _) }
 
   UnderscoreArg getValue() { optional_parameter_def(this, _, result, _) }
 
@@ -693,7 +765,7 @@ class Rational extends @rational, AstNode {
 
   override Location getLocation() { rational_def(this, _, result) }
 
-  Token getChild() { rational_def(this, result, _) }
+  Integer getChild() { rational_def(this, result, _) }
 
   override AstNode getAFieldOrChild() { rational_def(this, result, _) }
 }
@@ -802,12 +874,16 @@ class ScopeResolution extends @scope_resolution, AstNode {
   }
 }
 
+class Self extends @token_self, Token {
+  override string describeQlClass() { result = "Self" }
+}
+
 class Setter extends @setter, AstNode {
   override string describeQlClass() { result = "Setter" }
 
   override Location getLocation() { setter_def(this, _, result) }
 
-  Token getChild() { setter_def(this, result, _) }
+  Identifier getChild() { setter_def(this, result, _) }
 
   override AstNode getAFieldOrChild() { setter_def(this, result, _) }
 }
@@ -862,7 +938,7 @@ class SplatParameter extends @splat_parameter, AstNode {
 
   override Location getLocation() { splat_parameter_def(this, result) }
 
-  Token getName() { splat_parameter_name(this, result) }
+  Identifier getName() { splat_parameter_name(this, result) }
 
   override AstNode getAFieldOrChild() { splat_parameter_name(this, result) }
 }
@@ -887,6 +963,10 @@ class StringArray extends @string_array, AstNode {
   override AstNode getAFieldOrChild() { string_array_child(this, _, result) }
 }
 
+class StringContent extends @token_string_content, Token {
+  override string describeQlClass() { result = "StringContent" }
+}
+
 class Subshell extends @subshell, AstNode {
   override string describeQlClass() { result = "Subshell" }
 
@@ -895,6 +975,10 @@ class Subshell extends @subshell, AstNode {
   AstNode getChild(int i) { subshell_child(this, i, result) }
 
   override AstNode getAFieldOrChild() { subshell_child(this, _, result) }
+}
+
+class Super extends @token_super, Token {
+  override string describeQlClass() { result = "Super" }
 }
 
 class Superclass extends @superclass, AstNode {
@@ -937,6 +1021,10 @@ class Then extends @then, AstNode {
   override AstNode getAFieldOrChild() { then_child(this, _, result) }
 }
 
+class True extends @token_true, Token {
+  override string describeQlClass() { result = "True" }
+}
+
 class Unary extends @unary, AstNode {
   override string describeQlClass() { result = "Unary" }
 
@@ -959,6 +1047,10 @@ class Undef extends @undef, AstNode {
   UnderscoreMethodName getChild(int i) { undef_child(this, i, result) }
 
   override AstNode getAFieldOrChild() { undef_child(this, _, result) }
+}
+
+class Uninterpreted extends @token_uninterpreted, Token {
+  override string describeQlClass() { result = "Uninterpreted" }
 }
 
 class Unless extends @unless, AstNode {
@@ -1069,96 +1161,4 @@ class Yield extends @yield, AstNode {
   ArgumentList getChild() { yield_child(this, result) }
 
   override AstNode getAFieldOrChild() { yield_child(this, result) }
-}
-
-class Character extends Token, @token_character {
-  override string describeQlClass() { result = "Character" }
-}
-
-class ClassVariable extends Token, @token_class_variable {
-  override string describeQlClass() { result = "ClassVariable" }
-}
-
-class Comment extends Token, @token_comment {
-  override string describeQlClass() { result = "Comment" }
-}
-
-class Complex extends Token, @token_complex {
-  override string describeQlClass() { result = "Complex" }
-}
-
-class Constant extends Token, @token_constant {
-  override string describeQlClass() { result = "Constant" }
-}
-
-class EmptyStatement extends Token, @token_empty_statement {
-  override string describeQlClass() { result = "EmptyStatement" }
-}
-
-class EscapeSequence extends Token, @token_escape_sequence {
-  override string describeQlClass() { result = "EscapeSequence" }
-}
-
-class False extends Token, @token_false {
-  override string describeQlClass() { result = "False" }
-}
-
-class Float extends Token, @token_float {
-  override string describeQlClass() { result = "Float" }
-}
-
-class GlobalVariable extends Token, @token_global_variable {
-  override string describeQlClass() { result = "GlobalVariable" }
-}
-
-class HeredocBeginning extends Token, @token_heredoc_beginning {
-  override string describeQlClass() { result = "HeredocBeginning" }
-}
-
-class HeredocContent extends Token, @token_heredoc_content {
-  override string describeQlClass() { result = "HeredocContent" }
-}
-
-class HeredocEnd extends Token, @token_heredoc_end {
-  override string describeQlClass() { result = "HeredocEnd" }
-}
-
-class Identifier extends Token, @token_identifier {
-  override string describeQlClass() { result = "Identifier" }
-}
-
-class InstanceVariable extends Token, @token_instance_variable {
-  override string describeQlClass() { result = "InstanceVariable" }
-}
-
-class Integer extends Token, @token_integer {
-  override string describeQlClass() { result = "Integer" }
-}
-
-class Nil extends Token, @token_nil {
-  override string describeQlClass() { result = "Nil" }
-}
-
-class Operator extends Token, @token_operator {
-  override string describeQlClass() { result = "Operator" }
-}
-
-class Self extends Token, @token_self {
-  override string describeQlClass() { result = "Self" }
-}
-
-class StringContent extends Token, @token_string_content {
-  override string describeQlClass() { result = "StringContent" }
-}
-
-class Super extends Token, @token_super {
-  override string describeQlClass() { result = "Super" }
-}
-
-class True extends Token, @token_true {
-  override string describeQlClass() { result = "True" }
-}
-
-class Uninterpreted extends Token, @token_uninterpreted {
-  override string describeQlClass() { result = "Uninterpreted" }
 }
