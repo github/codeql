@@ -23,20 +23,20 @@ class ELMessageInterpolatorType extends RefType {
   }
 }
 
-class SetSafeMessageInterpolator extends MethodAccess {
-  SetSafeMessageInterpolator() {
-    exists(Method m |
+/**
+ * A method call that sets the application's default message interpolator to an interpolator type that is likely to be safe,
+ * because it does not process Java Expression Language expressions.
+ */
+class SetSafeMessageInterpolatorCall extends MethodAccess {
+  SetSafeMessageInterpolatorCall() {
+    exists(Method m, RefType t |
       this.getMethod() = m and
+      m.getDeclaringType().getASourceSupertype*() = t and
       (
-        m
-            .getDeclaringType()
-            .getASourceSupertype*()
-            .hasQualifiedName("javax.validation", ["Configuration", "ValidatorContext"]) and
+        t.hasQualifiedName("javax.validation", ["Configuration", "ValidatorContext"]) and
         m.getName() = "messageInterpolator"
         or
-        m
-            .getDeclaringType()
-            .getASourceSupertype*()
+        t
             .hasQualifiedName("org.springframework.validation.beanvalidation",
               ["CustomValidatorBean", "LocalValidatorFactoryBean"]) and
         m.getName() = "setMessageInterpolator"
@@ -71,7 +71,7 @@ class BeanValidationConfig extends TaintTracking::Configuration {
 
 from BeanValidationConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where
-  not exists(SetSafeMessageInterpolator ma) and
+  not exists(SetSafeMessageInterpolatorCall ma) and
   cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "Custom constraint error message contains unsanitized user data"
