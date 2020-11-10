@@ -102,13 +102,13 @@ html_static_path = ['../global-sphinx-files/_static']
 base_url = 'http://docteam.internal.semmle.com/james/codeql-site-layout/'
 
 intersphinx_mapping = {
-    'codeql-overview': (base_url + 'codeql-overview/', None),
-    'codeql-language-guides': (base_url + 'codeql-language-guides/', None),
-    'writing-codeql-queries':  (base_url + 'writing-codeql-queries/', None),
-    'ql-language-reference':  (base_url + 'ql-language-reference/', None),
-    'codeql-cli':  (base_url + 'codeql-cli/', None),
-    'codeql-cli-manual':  (base_url + 'codeql-cli-manual/', None),
-    'codeql-for-visual-studio-code':  (base_url + 'codeql-for-visual-studio-code/', None)
+    'codeql-overview': (base_url + 'codeql-overview/', (None, 'object.inv')),
+    'codeql-language-guides': (base_url + 'codeql-language-guides/', (None, 'object.inv')),
+    'writing-codeql-queries':  (base_url + 'writing-codeql-queries/', (None, 'object.inv')),
+    'ql-language-reference':  (base_url + 'ql-language-reference/', (None, 'object.inv')),
+    'codeql-cli':  (base_url + 'codeql-cli/', (None, 'object.inv')),
+    'codeql-cli-manual':  (base_url + 'codeql-cli-manual/', (None, 'object.inv')),
+    'codeql-for-visual-studio-code':  (base_url + 'codeql-for-visual-studio-code/', (None, 'object.inv'))
 }
 
 ##############################################################################
