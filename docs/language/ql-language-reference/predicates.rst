@@ -38,6 +38,8 @@ in QL. You can use these in any queries without needing to :ref:`import <importi
 any additional modules. In addition to these built-in predicates, you can also define your
 own:
 
+.. _defining-a-predicate:
+
 Defining a predicate
 ********************
 

@@ -6,8 +6,6 @@ QL is the powerful query language that underlies CodeQL, which is used to analyz
 About query languages and databases
 -----------------------------------
 
-This section is aimed at users with a background in general purpose programming as well as in databases. For a basic introduction and information on how to get started, see "`Learning CodeQL <https://help.semmle.com/QL/learn-ql/index.html>`__."
-
 QL is a declarative, object-oriented query language that is optimized to enable efficient analysis of hierarchical data structures, in particular, databases representing software artifacts.
 
 A database is an organized collection of data. The most commonly used database model is a relational model which stores data in tables and SQL (Structured Query Language) is the most commonly used query language for relational databases.

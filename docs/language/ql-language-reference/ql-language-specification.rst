@@ -95,7 +95,7 @@ added to the library path, the QL packs named in its
 path, and the process continues until all packs have been
 resolved. The actual library path consists of the root directories of
 the selected QL packs. This process depends on a mechanism for finding
-QL packs by pack name, as described in the `CodeQL CLI documentation <https://help.semmle.com/codeql/codeql-cli.html>`__.
+QL packs by pack name, as described in the :doc:`CodeQL CLI documentation <codeql-cli:index>`.
 
 When the query directory contains a ``queries.xml`` file but no
 ``qlpack.yml``, the QL pack resolution behaves as if it defines a QL
