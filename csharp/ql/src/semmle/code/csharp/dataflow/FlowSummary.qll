@@ -138,9 +138,11 @@ module SummaryOutput {
   }
 
   /**
-   * Gets an output specification that specifies the output `output` of calling
-   * `target` as the output. `output` is limited to (this) parameters and
-   * ordinary returns.
+   * Gets an output specification that specifies the `output` of `target` as the
+   * output. That is, data will flow into one callable and out of another callable
+   * (`target`).
+   *
+   * `output` is limited to (this) parameters and ordinary returns.
    */
   SummaryOutput jump(SummarizableCallable target, SummaryOutput output) {
     result = TJumpSummaryOutput(target, toReturnKind(output))

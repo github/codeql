@@ -68,6 +68,14 @@
 | Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync() | this parameter [Persons, [], Id] -> jump to get_Persons (return) [[], Id] | true |
 | Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync() | this parameter [Persons, [], Name] -> jump to get_PersonAddresses (return) [[], Person, Name] | true |
 | Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync() | this parameter [Persons, [], Name] -> jump to get_Persons (return) [[], Name] | true |
+| Microsoft.EntityFrameworkCore.DbSet<>.Add(T) | parameter 0 -> this parameter [[]] | true |
+| Microsoft.EntityFrameworkCore.DbSet<>.AddAsync(T) | parameter 0 -> this parameter [[]] | true |
+| Microsoft.EntityFrameworkCore.DbSet<>.AddRange(IEnumerable<T>) | parameter 0 [[]] -> this parameter [[]] | true |
+| Microsoft.EntityFrameworkCore.DbSet<>.AddRangeAsync(IEnumerable<T>) | parameter 0 [[]] -> this parameter [[]] | true |
+| Microsoft.EntityFrameworkCore.DbSet<>.Attach(T) | parameter 0 -> this parameter [[]] | true |
+| Microsoft.EntityFrameworkCore.DbSet<>.AttachRange(IEnumerable<T>) | parameter 0 [[]] -> this parameter [[]] | true |
+| Microsoft.EntityFrameworkCore.DbSet<>.Update(T) | parameter 0 -> this parameter [[]] | true |
+| Microsoft.EntityFrameworkCore.DbSet<>.UpdateRange(IEnumerable<T>) | parameter 0 [[]] -> this parameter [[]] | true |
 | Microsoft.EntityFrameworkCore.RawSqlString.RawSqlString(string) | parameter 0 -> return | false |
 | Microsoft.EntityFrameworkCore.RawSqlString.implicit conversion(string) | parameter 0 -> return | false |
 | System.Data.Entity.DbContext.SaveChanges() | this parameter [Addresses, [], Id] -> jump to get_Addresses (return) [[], Id] | true |
@@ -140,3 +148,11 @@
 | System.Data.Entity.DbContext.SaveChangesAsync() | this parameter [Persons, [], Id] -> jump to get_Persons (return) [[], Id] | true |
 | System.Data.Entity.DbContext.SaveChangesAsync() | this parameter [Persons, [], Name] -> jump to get_PersonAddresses (return) [[], Person, Name] | true |
 | System.Data.Entity.DbContext.SaveChangesAsync() | this parameter [Persons, [], Name] -> jump to get_Persons (return) [[], Name] | true |
+| System.Data.Entity.DbSet<>.Add(T) | parameter 0 -> this parameter [[]] | true |
+| System.Data.Entity.DbSet<>.AddAsync(T) | parameter 0 -> this parameter [[]] | true |
+| System.Data.Entity.DbSet<>.AddRange(IEnumerable<T>) | parameter 0 [[]] -> this parameter [[]] | true |
+| System.Data.Entity.DbSet<>.AddRangeAsync(IEnumerable<T>) | parameter 0 [[]] -> this parameter [[]] | true |
+| System.Data.Entity.DbSet<>.Attach(T) | parameter 0 -> this parameter [[]] | true |
+| System.Data.Entity.DbSet<>.AttachRange(IEnumerable<T>) | parameter 0 [[]] -> this parameter [[]] | true |
+| System.Data.Entity.DbSet<>.Update(T) | parameter 0 -> this parameter [[]] | true |
+| System.Data.Entity.DbSet<>.UpdateRange(IEnumerable<T>) | parameter 0 [[]] -> this parameter [[]] | true |

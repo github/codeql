@@ -13,6 +13,13 @@ namespace System.Data.Entity
     public class DbSet<T> : IEnumerable<T>
     {
         public void Add(T t) { }
+        public System.Threading.Tasks.Task<int> AddAsync(T t) => null;
+        public void AddRange(IEnumerable<T> t) { }
+        public System.Threading.Tasks.Task<int> AddRangeAsync(IEnumerable<T> t) => null;
+        public void Attach(T t) { }
+        public void AttachRange(IEnumerable<T> t) { }
+        public void Update(T t) { }
+        public void UpdateRange(IEnumerable<T> t) { }
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => null;
         IEnumerator IEnumerable.GetEnumerator() => null;
     }
@@ -55,6 +62,13 @@ namespace Microsoft.EntityFrameworkCore
     public class DbSet<T> : IEnumerable<T>
     {
         public void Add(T t) { }
+        public System.Threading.Tasks.Task<int> AddAsync(T t) => null;
+        public void AddRange(IEnumerable<T> t) { }
+        public System.Threading.Tasks.Task<int> AddRangeAsync(IEnumerable<T> t) => null;
+        public void Attach(T t) { }
+        public void AttachRange(IEnumerable<T> t) { }
+        public void Update(T t) { }
+        public void UpdateRange(IEnumerable<T> t) { }
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => null;
         IEnumerator IEnumerable.GetEnumerator() => null;
     }

@@ -73,6 +73,41 @@ module EntityFramework {
   /** The class `Microsoft.EntityFrameworkCore.DbSet<>` or `System.Data.Entity.DbSet<>`. */
   class DbSet extends EFClass, UnboundGenericClass {
     DbSet() { this.getName() = "DbSet<>" }
+
+    /** Gets a method that adds or updates entities in a DB set. */
+    SummarizableMethod getAnAddOrUpdateMethod(boolean range) {
+      exists(string name | result = this.getAMethod(name) |
+        name in ["Add", "AddAsync", "Attach", "Update"] and
+        range = false
+        or
+        name in ["AddRange", "AddRangeAsync", "AttachRange", "UpdateRange"] and
+        range = true
+      )
+    }
+  }
+
+  /** A flow summary for EntityFramework. */
+  abstract class EFSummarizedCallable extends SummarizedCallable { }
+
+  private class DbSetAddOrUpdate extends EFSummarizedCallable {
+    private boolean range;
+
+    DbSetAddOrUpdate() { this = any(DbSet c).getAnAddOrUpdateMethod(range) }
+
+    override predicate propagatesFlow(
+      SummaryInput input, ContentList inputContents, SummaryOutput output,
+      ContentList outputContents, boolean preservesValue
+    ) {
+      input = SummaryInput::parameter(0) and
+      (
+        if range = true
+        then inputContents = ContentList::element()
+        else inputContents = ContentList::empty()
+      ) and
+      output = SummaryOutput::thisParameter() and
+      outputContents = ContentList::element() and
+      preservesValue = true
+    }
   }
 
   /** The class `Microsoft.EntityFrameworkCore.DbQuery<>` or `System.Data.Entity.DbQuery<>`. */
@@ -117,9 +152,6 @@ module EntityFramework {
       not isNotMapped(this)
     }
   }
-
-  /** A flow summary for EntityFramework. */
-  abstract class EFSummarizedCallable extends SummarizedCallable { }
 
   /** The struct `Microsoft.EntityFrameworkCore.RawSqlString`. */
   private class RawSqlStringStruct extends Struct {
@@ -359,7 +391,9 @@ module EntityFramework {
      * to a column in the underlying DB.
      */
     pragma[noinline]
-    predicate mappedPath(Property dbSet, PropertyContent head, ContentList tail, Property last) {
+    predicate pathFromDbSetToDbProperty(
+      Property dbSet, PropertyContent head, ContentList tail, Property last
+    ) {
       this.requiresContentList(head, _, tail, _, last) and
       head.getProperty() = dbSet and
       dbSet = this.getADbSetProperty(_)
@@ -383,12 +417,12 @@ module EntityFramework {
         preservesValue = true and
         exists(PropertyContent sourceHead, ContentList sourceTail |
           input = SummaryInput::thisParameter() and
-          c.mappedPath(_, sourceHead, sourceTail, mapped) and
+          c.pathFromDbSetToDbProperty(_, sourceHead, sourceTail, mapped) and
           inputContents = ContentList::cons(sourceHead, sourceTail)
         ) and
         exists(Property dbSetProp |
           output = SummaryOutput::jump(dbSetProp.getGetter(), SummaryOutput::return()) and
-          c.mappedPath(dbSetProp, _, outputContents, mapped)
+          c.pathFromDbSetToDbProperty(dbSetProp, _, outputContents, mapped)
         )
       )
     }
