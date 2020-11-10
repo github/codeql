@@ -1402,8 +1402,7 @@ private module Stage3 {
     // read
     exists(Ap ap0, Content c |
       fwdFlowRead(ap0, c, _, node, cc, argAp, config) and
-      fwdFlowConsCand(ap0, c, ap, config) and
-      flowCand(node, unbindBool(ap.toBoolNonEmpty()), unbind(config))
+      fwdFlowConsCand(ap0, c, ap, config)
     )
     or
     // flow into a callable
