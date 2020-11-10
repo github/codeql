@@ -14,7 +14,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
-/** 
+/**
  * A message interpolator Type that perform Expression Language (EL) evaluations
  */
 class ELMessageInterpolatorType extends RefType {
@@ -50,9 +50,9 @@ class SetSafeMessageInterpolatorCall extends MethodAccess {
 }
 
 /**
-  * A method named `buildConstraintViolationWithTemplate` declared on a subtype
-  * of `javax.validation.ConstraintValidatorContext`.
-  */
+ * A method named `buildConstraintViolationWithTemplate` declared on a subtype
+ * of `javax.validation.ConstraintValidatorContext`.
+ */
 class BuildConstraintViolationWithTemplateMethod extends Method {
   BuildConstraintViolationWithTemplateMethod() {
     this
