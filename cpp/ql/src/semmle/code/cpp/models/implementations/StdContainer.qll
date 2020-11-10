@@ -206,3 +206,34 @@ private class StdSequenceContainerAt extends TaintFunction {
     output.isQualifierObject()
   }
 }
+
+/**
+ * The standard vector `emplace` function.
+ */
+class StdVectorEmplace extends TaintFunction {
+  StdVectorEmplace() { this.hasQualifiedName("std", "vector", "emplace") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from any parameter except the position iterator to qualifier and return value
+    // (here we assume taint flow from any constructor parameter to the constructed object)
+    input.isParameter([1 .. getNumberOfParameters() - 1]) and
+    (
+      output.isQualifierObject() or
+      output.isReturnValue()
+    )
+  }
+}
+
+/**
+ * The standard vector `emplace_back` function.
+ */
+class StdVectorEmplaceBack extends TaintFunction {
+  StdVectorEmplaceBack() { this.hasQualifiedName("std", "vector", "emplace_back") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from any parameter to qualifier
+    // (here we assume taint flow from any constructor parameter to the constructed object)
+    input.isParameter([0 .. getNumberOfParameters() - 1]) and
+    output.isQualifierObject()
+  }
+}

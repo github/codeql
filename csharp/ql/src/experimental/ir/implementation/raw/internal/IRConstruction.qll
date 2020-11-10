@@ -411,8 +411,19 @@ private module CachedForDebugging {
   string getTempVariableUniqueId(IRTempVariable var) {
     exists(TranslatedElement element |
       var = element.getTempVariable(_) and
-      result = element.getId() + ":" + getTempVariableTagId(var.getTag())
+      result = element.getId().toString() + ":" + getTempVariableTagId(var.getTag())
     )
+  }
+
+  cached
+  predicate instructionHasSortKeys(Instruction instruction, int key1, int key2) {
+    key1 = getInstructionTranslatedElement(instruction).getId() and
+    getInstructionTag(instruction) =
+      rank[key2](InstructionTag tag, string tagId |
+        tagId = getInstructionTagId(tag)
+      |
+        tag order by tagId
+      )
   }
 
   cached

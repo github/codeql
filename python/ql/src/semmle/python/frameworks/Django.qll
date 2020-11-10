@@ -259,8 +259,9 @@ private module Django {
 
       ObjectsAnnotate() {
         node.getFunction() = django::db::models::objects_attr("annotate").asCfgNode() and
-        django::db::models::expressions::RawSQL::instance(sql).asCfgNode() in [node.getArg(_),
-              node.getArgByName(_)]
+        django::db::models::expressions::RawSQL::instance(sql).asCfgNode() in [
+            node.getArg(_), node.getArgByName(_)
+          ]
       }
 
       override DataFlow::Node getSql() { result.asCfgNode() = sql }
@@ -423,18 +424,19 @@ private module Django {
        * WARNING: Only holds for a few predefined attributes.
        */
       private DataFlow::Node http_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["request",
-              // request
-              "HttpRequest",
-              // response
-              "response", "HttpResponse",
-              // HttpResponse subclasses
-              "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
-              "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
-              "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError",
-              "JsonResponse",
-              // HttpResponse-like classes
-              "StreamingHttpResponse", "FileResponse"] and
+        attr_name in [
+            "request",
+            // request
+            "HttpRequest",
+            // response
+            "response", "HttpResponse",
+            // HttpResponse subclasses
+            "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
+            "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
+            "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError", "JsonResponse",
+            // HttpResponse-like classes
+            "StreamingHttpResponse", "FileResponse"
+          ] and
         (
           t.start() and
           result = DataFlow::importNode("django.http" + "." + attr_name)
@@ -576,14 +578,16 @@ private module Django {
          * WARNING: Only holds for a few predefined attributes.
          */
         private DataFlow::Node response_attr(DataFlow::TypeTracker t, string attr_name) {
-          attr_name in ["HttpResponse",
-                // HttpResponse subclasses
-                "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
-                "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
-                "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError",
-                "JsonResponse",
-                // HttpResponse-like classes
-                "StreamingHttpResponse", "FileResponse"] and
+          attr_name in [
+              "HttpResponse",
+              // HttpResponse subclasses
+              "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
+              "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
+              "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError",
+              "JsonResponse",
+              // HttpResponse-like classes
+              "StreamingHttpResponse", "FileResponse"
+            ] and
           (
             t.start() and
             result = DataFlow::importNode("django.http.response" + "." + attr_name)
@@ -629,8 +633,7 @@ private module Django {
             t.start() and
             result = response_attr("HttpResponse")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.HttpResponse` alias
+            // Handle `django.http.HttpResponse` alias
             t.start() and
             result = http_attr("HttpResponse")
             or
@@ -670,7 +673,7 @@ private module Django {
               result.asCfgNode() in [node.getArg(1), node.getArgByName("content_type")]
             }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponse`. */
@@ -700,8 +703,7 @@ private module Django {
             t.start() and
             result = response_attr("HttpResponseRedirect")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.HttpResponseRedirect` alias
+            // Handle `django.http.HttpResponseRedirect` alias
             t.start() and
             result = http_attr("HttpResponseRedirect")
             or
@@ -732,13 +734,16 @@ private module Django {
             ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
+              // note that even though browsers like Chrome usually doesn't fetch the
+              // content of a redirect, it is possible to observe the body (for example,
+              // with cURL).
+              result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseRedirect`. */
@@ -764,8 +769,7 @@ private module Django {
             t.start() and
             result = response_attr("HttpResponsePermanentRedirect")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.HttpResponsePermanentRedirect` alias
+            // Handle `django.http.HttpResponsePermanentRedirect` alias
             t.start() and
             result = http_attr("HttpResponsePermanentRedirect")
             or
@@ -796,13 +800,16 @@ private module Django {
             ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
+              // note that even though browsers like Chrome usually doesn't fetch the
+              // content of a redirect, it is possible to observe the body (for example,
+              // with cURL).
+              result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponsePermanentRedirect`. */
@@ -829,7 +836,7 @@ private module Django {
             result = response_attr("HttpResponseNotModified")
             or
             // TODO: remove/expand this part of the template as needed
-            // Handle `http.HttpResponseNotModified` alias
+            // Handle `django.http.HttpResponseNotModified` alias
             t.start() and
             result = http_attr("HttpResponseNotModified")
             or
@@ -890,8 +897,7 @@ private module Django {
             t.start() and
             result = response_attr("HttpResponseBadRequest")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.HttpResponseBadRequest` alias
+            // Handle `django.http.HttpResponseBadRequest` alias
             t.start() and
             result = http_attr("HttpResponseBadRequest")
             or
@@ -928,7 +934,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseBadRequest`. */
@@ -954,8 +960,7 @@ private module Django {
             t.start() and
             result = response_attr("HttpResponseNotFound")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.HttpResponseNotFound` alias
+            // Handle `django.http.HttpResponseNotFound` alias
             t.start() and
             result = http_attr("HttpResponseNotFound")
             or
@@ -992,7 +997,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotFound`. */
@@ -1018,8 +1023,7 @@ private module Django {
             t.start() and
             result = response_attr("HttpResponseForbidden")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.HttpResponseForbidden` alias
+            // Handle `django.http.HttpResponseForbidden` alias
             t.start() and
             result = http_attr("HttpResponseForbidden")
             or
@@ -1056,7 +1060,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseForbidden`. */
@@ -1082,8 +1086,7 @@ private module Django {
             t.start() and
             result = response_attr("HttpResponseNotAllowed")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.HttpResponseNotAllowed` alias
+            // Handle `django.http.HttpResponseNotAllowed` alias
             t.start() and
             result = http_attr("HttpResponseNotAllowed")
             or
@@ -1121,7 +1124,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotAllowed`. */
@@ -1147,8 +1150,7 @@ private module Django {
             t.start() and
             result = response_attr("HttpResponseGone")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.HttpResponseGone` alias
+            // Handle `django.http.HttpResponseGone` alias
             t.start() and
             result = http_attr("HttpResponseGone")
             or
@@ -1185,7 +1187,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseGone`. */
@@ -1211,8 +1213,7 @@ private module Django {
             t.start() and
             result = response_attr("HttpResponseServerError")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.HttpResponseServerError` alias
+            // Handle `django.http.HttpResponseServerError` alias
             t.start() and
             result = http_attr("HttpResponseServerError")
             or
@@ -1249,7 +1250,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseServerError`. */
@@ -1275,8 +1276,7 @@ private module Django {
             t.start() and
             result = response_attr("JsonResponse")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.JsonResponse` alias
+            // Handle `django.http.JsonResponse` alias
             t.start() and
             result = http_attr("JsonResponse")
             or
@@ -1342,8 +1342,7 @@ private module Django {
             t.start() and
             result = response_attr("StreamingHttpResponse")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.StreamingHttpResponse` alias
+            // Handle `django.http.StreamingHttpResponse` alias
             t.start() and
             result = http_attr("StreamingHttpResponse")
             or
@@ -1380,7 +1379,7 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() { result = "text/html" }
           }
 
           /** Gets a reference to an instance of `django.http.response.StreamingHttpResponse`. */
@@ -1406,8 +1405,7 @@ private module Django {
             t.start() and
             result = response_attr("FileResponse")
             or
-            // TODO: remove/expand this part of the template as needed
-            // Handle `http.FileResponse` alias
+            // Handle `django.http.FileResponse` alias
             t.start() and
             result = http_attr("FileResponse")
             or
@@ -1444,7 +1442,10 @@ private module Django {
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
-            override string getMimetypeDefault() { result = "text/html; charset=utf-8" }
+            override string getMimetypeDefault() {
+              // see https://github.com/django/django/blob/ebb08d19424c314c75908bc6048ff57c2f872269/django/http/response.py#L471-L479
+              result = "application/octet-stream"
+            }
           }
 
           /** Gets a reference to an instance of `django.http.response.FileResponse`. */
@@ -1707,25 +1708,27 @@ private module Django {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       nodeFrom = django::http::request::HttpRequest::instance() and
       exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
-        read.getAttributeName() in ["body",
-              // str / bytes
-              "path", "path_info", "method", "encoding", "content_type",
-              // django.http.QueryDict
-              // TODO: Model QueryDict
-              "GET", "POST",
-              // dict[str, str]
-              "content_params", "COOKIES",
-              // dict[str, Any]
-              "META",
-              // HttpHeaders (case insensitive dict-like)
-              "headers",
-              // MultiValueDict[str, UploadedFile]
-              // TODO: Model MultiValueDict
-              // TODO: Model UploadedFile
-              "FILES",
-              // django.urls.ResolverMatch
-              // TODO: Model ResolverMatch
-              "resolver_match"]
+        read.getAttributeName() in [
+            "body",
+            // str / bytes
+            "path", "path_info", "method", "encoding", "content_type",
+            // django.http.QueryDict
+            // TODO: Model QueryDict
+            "GET", "POST",
+            // dict[str, str]
+            "content_params", "COOKIES",
+            // dict[str, Any]
+            "META",
+            // HttpHeaders (case insensitive dict-like)
+            "headers",
+            // MultiValueDict[str, UploadedFile]
+            // TODO: Model MultiValueDict
+            // TODO: Model UploadedFile
+            "FILES",
+            // django.urls.ResolverMatch
+            // TODO: Model ResolverMatch
+            "resolver_match"
+          ]
         // TODO: Handle calls to methods
         // TODO: Handle that a HttpRequest is iterable
       )

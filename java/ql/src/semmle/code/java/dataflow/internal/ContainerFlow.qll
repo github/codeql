@@ -112,8 +112,10 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   // java.util.Map
   m
       .(MapMethod)
-      .hasName(["computeIfAbsent", "entrySet", "get", "getOrDefault", "put", "putIfAbsent",
-            "remove", "replace", "values"])
+      .hasName([
+          "computeIfAbsent", "entrySet", "get", "getOrDefault", "put", "putIfAbsent", "remove",
+          "replace", "values"
+        ])
   or
   // java.util.Collection
   m.(CollectionMethod).hasName(["parallelStream", "stream", "toArray"])
@@ -138,8 +140,10 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   // java.util.Deque
   m
       .(CollectionMethod)
-      .hasName(["getFirst", "getLast", "peekFirst", "peekLast", "pollFirst", "pollLast",
-            "removeFirst", "removeLast"])
+      .hasName([
+          "getFirst", "getLast", "peekFirst", "peekLast", "pollFirst", "pollLast", "removeFirst",
+          "removeLast"
+        ])
   or
   // java.util.concurrent.BlockingQueue
   // covered by Queue: poll(long, TimeUnit)
@@ -166,8 +170,10 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   // covered by SortedMap: headMap(K, boolean), subMap(K, boolean, K, boolean), tailMap(K, boolean)
   m
       .(MapMethod)
-      .hasName(["ceilingEntry", "descendingMap", "firstEntry", "floorEntry", "higherEntry",
-            "lastEntry", "lowerEntry", "pollFirstEntry", "pollLastEntry"])
+      .hasName([
+          "ceilingEntry", "descendingMap", "firstEntry", "floorEntry", "higherEntry", "lastEntry",
+          "lowerEntry", "pollFirstEntry", "pollLastEntry"
+        ])
   or
   // java.util.Dictionary
   m
@@ -273,15 +279,17 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method.getDeclaringType().hasQualifiedName("java.util", "Collections") and
   (
     method
-        .hasName(["checkedCollection", "checkedList", "checkedMap", "checkedNavigableMap",
-              "checkedNavigableSet", "checkedSet", "checkedSortedMap", "checkedSortedSet",
-              "enumeration", "list", "max", "min", "singleton", "singletonList",
-              "synchronizedCollection", "synchronizedList", "synchronizedMap",
-              "synchronizedNavigableMap", "synchronizedNavigableSet", "synchronizedSet",
-              "synchronizedSortedMap", "synchronizedSortedSet", "unmodifiableCollection",
-              "unmodifiableList", "unmodifiableMap", "unmodifiableNavigableMap",
-              "unmodifiableNavigableSet", "unmodifiableSet", "unmodifiableSortedMap",
-              "unmodifiableSortedSet"]) and
+        .hasName([
+            "checkedCollection", "checkedList", "checkedMap", "checkedNavigableMap",
+            "checkedNavigableSet", "checkedSet", "checkedSortedMap", "checkedSortedSet",
+            "enumeration", "list", "max", "min", "singleton", "singletonList",
+            "synchronizedCollection", "synchronizedList", "synchronizedMap",
+            "synchronizedNavigableMap", "synchronizedNavigableSet", "synchronizedSet",
+            "synchronizedSortedMap", "synchronizedSortedSet", "unmodifiableCollection",
+            "unmodifiableList", "unmodifiableMap", "unmodifiableNavigableMap",
+            "unmodifiableNavigableSet", "unmodifiableSet", "unmodifiableSortedMap",
+            "unmodifiableSortedSet"
+          ]) and
     arg = 0
     or
     method.hasName(["nCopies", "singletonMap"]) and arg = 1

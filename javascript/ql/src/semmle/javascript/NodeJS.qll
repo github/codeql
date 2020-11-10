@@ -205,15 +205,18 @@ private predicate isRequire(DataFlow::Node nd) {
   or
   isRequire(nd.getAPredecessor())
   or
-  // `import { createRequire } from 'module';` support.
-  // specialized to ES2015 modules to avoid recursion in the `DataFlow::moduleImport()` predicate.
-  exists(ImportDeclaration imp | imp.getImportedPath().getValue() = "module" |
-    nd =
-      imp
-          .getImportedModuleNode()
-          .(DataFlow::SourceNode)
-          .getAPropertyRead("createRequire")
-          .getACall()
+  // `import { createRequire } from 'module';`.
+  // specialized to ES2015 modules to avoid recursion in the `DataFlow::moduleImport()` predicate and to avoid
+  // negative recursion between `Import.getImportedModuleNode()` and `Import.getImportedModule()`.
+  exists(ImportDeclaration imp, DataFlow::SourceNode baseObj |
+    imp.getImportedPath().getValue() = "module"
+  |
+    baseObj =
+      [
+        DataFlow::destructuredModuleImportNode(imp),
+        DataFlow::valueNode(imp.getASpecifier().(ImportNamespaceSpecifier))
+      ] and
+    nd = baseObj.getAPropertyRead("createRequire").getACall()
   )
 }
 
@@ -235,6 +238,9 @@ class Require extends CallExpr, Import {
 
   override Module resolveImportedPath() {
     moduleInFile(result, load(min(int prio | moduleInFile(_, load(prio)))))
+    or
+    not exists(Module mod | moduleInFile(mod, load(_))) and
+    result = Import.super.resolveImportedPath()
   }
 
   /**
