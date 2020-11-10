@@ -28,7 +28,7 @@ class NFELocalDoSConfiguration extends TaintTracking::Configuration {
       e.getEnclosingCallable().getDeclaringType().(ExportableAndroidComponent).isExported() and
       throwsNFE(e) and
       not exists(TryStmt t |
-        t.getBlock() = e.getEnclosingStmt().getEnclosingStmt*() and
+        t.getBlock() = e.getAnEnclosingStmt() and
         catchesNFE(t)
       ) and
       sink.asExpr() = e
