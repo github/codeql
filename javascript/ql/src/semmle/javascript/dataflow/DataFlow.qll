@@ -100,6 +100,11 @@ module DataFlow {
       getAPredecessor().mayHaveStringValue(s)
       or
       s = getStringValue()
+      or
+      exists(DataFlow::Node pred |
+        FlowSteps::propertyFlowStep(pred, this) and
+        pred.mayHaveStringValue(s)
+      )
     }
 
     /** Gets the string value of this node, if it is a string literal or constant string concatenation. */

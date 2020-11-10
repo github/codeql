@@ -79,6 +79,39 @@ basicBlock
 | eval.js:3:3:3:16 | exceptional return of eval("x = 23") | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
 | eval.js:3:8:3:15 | "x = 23" | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
 | eval.js:4:3:4:3 | x | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
+| exportedStrings.js:1:1:1:0 | this | exportedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| exportedStrings.js:1:14:1:16 | foo | exportedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| exportedStrings.js:1:14:1:24 | foo = "foo" | exportedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| exportedStrings.js:1:20:1:24 | "foo" | exportedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| exportedStrings.js:2:14:2:16 | BAR | exportedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| exportedStrings.js:2:14:2:24 | BAR = "bar" | exportedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| exportedStrings.js:2:20:2:24 | "bar" | exportedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:1:1:1:0 | this | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:1:1:1:1 | BAR | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:1:1:1:1 | foo | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:1:1:1:45 | import  ... rings"; | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:1:10:1:12 | foo | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:1:10:1:12 | foo | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:1:10:1:12 | foo | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:1:15:1:17 | BAR | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:1:15:1:17 | BAR | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:1:15:1:17 | BAR | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:3:1:3:0 | BAR | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:3:1:3:0 | foo | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:3:1:3:0 | this | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:3:1:5:1 | exceptional return of function f | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:3:1:5:1 | functio ... BAR];\\n} | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:3:1:5:1 | return of function f | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:3:10:3:10 | f | importedStrings.js:1:1:1:0 | entry node of <toplevel> |
+| importedStrings.js:3:12:3:14 | obj | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:3:12:3:14 | obj | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:4:12:4:14 | obj | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:4:12:4:19 | obj[foo] | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:4:12:4:30 | obj[foo] + obj[BAR] | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:4:16:4:18 | foo | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:4:23:4:25 | obj | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:4:23:4:30 | obj[BAR] | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
+| importedStrings.js:4:27:4:29 | BAR | importedStrings.js:3:1:3:0 | entry node of functio ... BAR];\\n} |
 | sources.js:1:1:1:0 | this | sources.js:1:1:1:0 | entry node of <toplevel> |
 | sources.js:1:1:1:12 | exceptional return of new (x => x) | sources.js:1:1:1:0 | entry node of <toplevel> |
 | sources.js:1:1:1:12 | new (x => x) | sources.js:1:1:1:0 | entry node of <toplevel> |
@@ -601,6 +634,28 @@ enclosingExpr
 | eval.js:3:3:3:16 | eval("x = 23") | eval.js:3:3:3:16 | eval("x = 23") |
 | eval.js:3:8:3:15 | "x = 23" | eval.js:3:8:3:15 | "x = 23" |
 | eval.js:4:3:4:3 | x | eval.js:4:3:4:3 | x |
+| exportedStrings.js:1:14:1:16 | foo | exportedStrings.js:1:14:1:16 | foo |
+| exportedStrings.js:1:14:1:24 | foo = "foo" | exportedStrings.js:1:14:1:24 | foo = "foo" |
+| exportedStrings.js:1:20:1:24 | "foo" | exportedStrings.js:1:20:1:24 | "foo" |
+| exportedStrings.js:2:14:2:16 | BAR | exportedStrings.js:2:14:2:16 | BAR |
+| exportedStrings.js:2:14:2:24 | BAR = "bar" | exportedStrings.js:2:14:2:24 | BAR = "bar" |
+| exportedStrings.js:2:20:2:24 | "bar" | exportedStrings.js:2:20:2:24 | "bar" |
+| importedStrings.js:1:10:1:12 | foo | importedStrings.js:1:10:1:12 | foo |
+| importedStrings.js:1:10:1:12 | foo | importedStrings.js:1:10:1:12 | foo |
+| importedStrings.js:1:10:1:12 | foo | importedStrings.js:1:10:1:12 | foo |
+| importedStrings.js:1:15:1:17 | BAR | importedStrings.js:1:15:1:17 | BAR |
+| importedStrings.js:1:15:1:17 | BAR | importedStrings.js:1:15:1:17 | BAR |
+| importedStrings.js:1:15:1:17 | BAR | importedStrings.js:1:15:1:17 | BAR |
+| importedStrings.js:1:26:1:44 | "./exportedStrings" | importedStrings.js:1:26:1:44 | "./exportedStrings" |
+| importedStrings.js:3:10:3:10 | f | importedStrings.js:3:10:3:10 | f |
+| importedStrings.js:3:12:3:14 | obj | importedStrings.js:3:12:3:14 | obj |
+| importedStrings.js:4:12:4:14 | obj | importedStrings.js:4:12:4:14 | obj |
+| importedStrings.js:4:12:4:19 | obj[foo] | importedStrings.js:4:12:4:19 | obj[foo] |
+| importedStrings.js:4:12:4:30 | obj[foo] + obj[BAR] | importedStrings.js:4:12:4:30 | obj[foo] + obj[BAR] |
+| importedStrings.js:4:16:4:18 | foo | importedStrings.js:4:16:4:18 | foo |
+| importedStrings.js:4:23:4:25 | obj | importedStrings.js:4:23:4:25 | obj |
+| importedStrings.js:4:23:4:30 | obj[BAR] | importedStrings.js:4:23:4:30 | obj[BAR] |
+| importedStrings.js:4:27:4:29 | BAR | importedStrings.js:4:27:4:29 | BAR |
 | sources.js:1:1:1:12 | new (x => x) | sources.js:1:1:1:12 | new (x => x) |
 | sources.js:1:5:1:12 | (x => x) | sources.js:1:5:1:12 | (x => x) |
 | sources.js:1:6:1:6 | x | sources.js:1:6:1:6 | x |
@@ -929,6 +984,20 @@ flowStep
 | arguments.js:8:21:8:22 | {} | arguments.js:8:9:8:22 | arguments = {} |
 | eval.js:2:7:2:12 | x | eval.js:4:3:4:3 | x |
 | eval.js:2:11:2:12 | 42 | eval.js:2:7:2:12 | x |
+| importedStrings.js:1:1:1:1 | BAR | importedStrings.js:1:15:1:17 | BAR |
+| importedStrings.js:1:1:1:1 | foo | importedStrings.js:1:10:1:12 | foo |
+| importedStrings.js:1:10:1:12 | foo | importedStrings.js:1:10:1:12 | foo |
+| importedStrings.js:1:10:1:12 | foo | importedStrings.js:1:10:1:12 | foo |
+| importedStrings.js:1:10:1:12 | foo | importedStrings.js:3:1:3:0 | foo |
+| importedStrings.js:1:15:1:17 | BAR | importedStrings.js:1:15:1:17 | BAR |
+| importedStrings.js:1:15:1:17 | BAR | importedStrings.js:1:15:1:17 | BAR |
+| importedStrings.js:1:15:1:17 | BAR | importedStrings.js:3:1:3:0 | BAR |
+| importedStrings.js:3:1:3:0 | BAR | importedStrings.js:4:27:4:29 | BAR |
+| importedStrings.js:3:1:3:0 | foo | importedStrings.js:4:16:4:18 | foo |
+| importedStrings.js:3:12:3:14 | obj | importedStrings.js:3:12:3:14 | obj |
+| importedStrings.js:3:12:3:14 | obj | importedStrings.js:4:12:4:14 | obj |
+| importedStrings.js:3:12:3:14 | obj | importedStrings.js:4:23:4:25 | obj |
+| importedStrings.js:4:12:4:30 | obj[foo] + obj[BAR] | importedStrings.js:3:1:5:1 | return of function f |
 | sources.js:1:6:1:6 | x | sources.js:1:6:1:6 | x |
 | sources.js:1:6:1:6 | x | sources.js:1:11:1:11 | x |
 | sources.js:1:6:1:11 | x => x | sources.js:1:5:1:12 | (x => x) |
@@ -1119,6 +1188,13 @@ getImmediatePredecessor
 | arguments.js:8:21:8:22 | {} | arguments.js:8:9:8:22 | arguments = {} |
 | eval.js:2:7:2:12 | x | eval.js:4:3:4:3 | x |
 | eval.js:2:11:2:12 | 42 | eval.js:2:7:2:12 | x |
+| importedStrings.js:1:10:1:12 | foo | importedStrings.js:1:10:1:12 | foo |
+| importedStrings.js:1:15:1:17 | BAR | importedStrings.js:1:15:1:17 | BAR |
+| importedStrings.js:3:1:3:0 | BAR | importedStrings.js:4:27:4:29 | BAR |
+| importedStrings.js:3:1:3:0 | foo | importedStrings.js:4:16:4:18 | foo |
+| importedStrings.js:3:12:3:14 | obj | importedStrings.js:3:12:3:14 | obj |
+| importedStrings.js:3:12:3:14 | obj | importedStrings.js:4:12:4:14 | obj |
+| importedStrings.js:3:12:3:14 | obj | importedStrings.js:4:23:4:25 | obj |
 | sources.js:1:6:1:6 | x | sources.js:1:6:1:6 | x |
 | sources.js:1:6:1:6 | x | sources.js:1:11:1:11 | x |
 | sources.js:1:6:1:11 | x => x | sources.js:1:5:1:12 | (x => x) |
@@ -1297,6 +1373,12 @@ incomplete
 | eval.js:3:3:3:6 | eval | global |
 | eval.js:3:3:3:16 | eval("x = 23") | call |
 | eval.js:3:3:3:16 | exceptional return of eval("x = 23") | call |
+| importedStrings.js:1:10:1:12 | foo | import |
+| importedStrings.js:1:15:1:17 | BAR | import |
+| importedStrings.js:3:1:5:1 | exceptional return of function f | call |
+| importedStrings.js:3:12:3:14 | obj | call |
+| importedStrings.js:4:12:4:19 | obj[foo] | heap |
+| importedStrings.js:4:23:4:30 | obj[BAR] | heap |
 | sources.js:1:1:1:12 | exceptional return of new (x => x) | call |
 | sources.js:1:6:1:11 | exceptional return of anonymous function | call |
 | sources.js:3:1:5:6 | exceptional return of (functi ... \\n})(23) | call |
@@ -1404,11 +1486,17 @@ incomplete
 | tst.js:117:22:117:23 | x1 | global |
 noBasicBlock
 | file://:0:0:0:0 | global access path |
+| importedStrings.js:1:10:1:12 | foo |
+| importedStrings.js:1:10:1:12 | foo |
+| importedStrings.js:1:15:1:17 | BAR |
+| importedStrings.js:1:15:1:17 | BAR |
+| importedStrings.js:1:26:1:44 | "./exportedStrings" |
 | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs |
 | tst.js:1:20:1:23 | 'fs' |
 parameters
 | arguments.js:2:16:2:16 | x |
+| importedStrings.js:3:12:3:14 | obj |
 | sources.js:1:6:1:6 | x |
 | sources.js:3:11:3:11 | x |
 | sources.js:9:14:9:18 | array |
@@ -1439,7 +1527,18 @@ sources
 | eval.js:1:1:5:1 | return of function k |
 | eval.js:3:3:3:6 | eval |
 | eval.js:3:3:3:16 | eval("x = 23") |
+| exportedStrings.js:1:1:1:0 | this |
 | file://:0:0:0:0 | global access path |
+| importedStrings.js:1:1:1:0 | this |
+| importedStrings.js:1:1:1:45 | import  ... rings"; |
+| importedStrings.js:1:10:1:12 | foo |
+| importedStrings.js:1:15:1:17 | BAR |
+| importedStrings.js:3:1:3:0 | this |
+| importedStrings.js:3:1:5:1 | functio ... BAR];\\n} |
+| importedStrings.js:3:1:5:1 | return of function f |
+| importedStrings.js:3:12:3:14 | obj |
+| importedStrings.js:4:12:4:19 | obj[foo] |
+| importedStrings.js:4:23:4:30 | obj[BAR] |
 | sources.js:1:1:1:0 | this |
 | sources.js:1:1:1:12 | new (x => x) |
 | sources.js:1:6:1:6 | x |
@@ -1575,3 +1674,49 @@ sources
 | tst.js:117:22:117:23 | x1 |
 stress_getAQlClass
 | OK |
+mayHaveStringValue
+| eval.js:3:8:3:15 | "x = 23" | x = 23 |
+| exportedStrings.js:1:20:1:24 | "foo" | foo |
+| exportedStrings.js:2:20:2:24 | "bar" | bar |
+| importedStrings.js:1:10:1:12 | foo | foo |
+| importedStrings.js:1:10:1:12 | foo | foo |
+| importedStrings.js:1:10:1:12 | foo | foo |
+| importedStrings.js:1:15:1:17 | BAR | bar |
+| importedStrings.js:1:15:1:17 | BAR | bar |
+| importedStrings.js:1:15:1:17 | BAR | bar |
+| importedStrings.js:1:26:1:44 | "./exportedStrings" | ./exportedStrings |
+| importedStrings.js:3:1:3:0 | BAR | bar |
+| importedStrings.js:3:1:3:0 | foo | foo |
+| importedStrings.js:4:16:4:18 | foo | foo |
+| importedStrings.js:4:27:4:29 | BAR | bar |
+| tst.js:1:20:1:23 | 'fs' | fs |
+| tst.js:4:5:4:12 | y | hi |
+| tst.js:4:9:4:12 | "hi" | hi |
+| tst.js:10:1:10:4 | x, y | hi |
+| tst.js:10:4:10:4 | y | hi |
+| tst.js:11:1:11:6 | x && y | hi |
+| tst.js:11:6:11:6 | y | hi |
+| tst.js:12:1:12:6 | x \|\| y | hi |
+| tst.js:12:6:12:6 | y | hi |
+| tst.js:13:1:13:5 | z | hi |
+| tst.js:13:1:13:5 | z = y | hi |
+| tst.js:13:5:13:5 | y | hi |
+| tst.js:14:1:14:1 | z | hi |
+| tst.js:14:1:14:9 | z ? x : y | hi |
+| tst.js:14:9:14:9 | y | hi |
+| tst.js:16:1:20:9 | (functi ... ("arg") |  |
+| tst.js:16:1:20:9 | (functi ... ("arg") | arg |
+| tst.js:16:2:20:1 | return of function f |  |
+| tst.js:16:2:20:1 | return of function f | arg |
+| tst.js:16:13:16:13 | a | arg |
+| tst.js:16:13:16:13 | a | arg |
+| tst.js:18:12:18:12 | a | arg |
+| tst.js:19:10:19:11 | "" |  |
+| tst.js:20:4:20:8 | "arg" | arg |
+| tst.js:46:1:46:11 | global = "" |  |
+| tst.js:46:10:46:11 | "" |  |
+| tst.js:57:2:57:4 | x:  | x:  |
+| tst.js:58:6:58:8 | x:  | x:  |
+| tst.js:75:16:75:20 | 'foo' | foo |
+| tst.js:105:1:105:6 | x ?? y | hi |
+| tst.js:105:6:105:6 | y | hi |

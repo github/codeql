@@ -35,3 +35,7 @@ query predicate stress_getAQlClass(string msg) {
   count(DataFlow::Node node, string cls | cls = node.getAQlClass()) >= 42 and
   msg = "OK"
 }
+
+query predicate mayHaveStringValue(DataFlow::Node node, string value) {
+  node.mayHaveStringValue(value)
+}
