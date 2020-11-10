@@ -123,9 +123,11 @@ module Cookie {
   class InsecureJsCookie extends Cookie {
     InsecureJsCookie() {
       this =
-        [DataFlow::globalVarRef("Cookie"),
-            DataFlow::globalVarRef("Cookie").getAMemberCall("noConflict"),
-            DataFlow::moduleImport("js-cookie")].getAMemberCall("set")
+        [
+          DataFlow::globalVarRef("Cookie"),
+          DataFlow::globalVarRef("Cookie").getAMemberCall("noConflict"),
+          DataFlow::moduleImport("js-cookie")
+        ].getAMemberCall("set")
     }
 
     override string getKind() { result = "js-cookie" }

@@ -212,8 +212,10 @@ private predicate isRequire(DataFlow::Node nd) {
     imp.getImportedPath().getValue() = "module"
   |
     baseObj =
-      [DataFlow::destructuredModuleImportNode(imp),
-          DataFlow::valueNode(imp.getASpecifier().(ImportNamespaceSpecifier))] and
+      [
+        DataFlow::destructuredModuleImportNode(imp),
+        DataFlow::valueNode(imp.getASpecifier().(ImportNamespaceSpecifier))
+      ] and
     nd = baseObj.getAPropertyRead("createRequire").getACall()
   )
 }

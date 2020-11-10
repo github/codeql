@@ -472,8 +472,10 @@ module NodeJSLib {
           result = promisifyAllCall and
           pred.flowsTo(promisifyAllCall.getArgument(0)) and
           promisifyAllCall =
-            [DataFlow::moduleMember("bluebird", "promisifyAll"),
-                DataFlow::moduleImport("util-promisifyall")].getACall()
+            [
+              DataFlow::moduleMember("bluebird", "promisifyAll"),
+              DataFlow::moduleImport("util-promisifyall")
+            ].getACall()
         )
       )
     }
@@ -771,8 +773,10 @@ module NodeJSLib {
      * Gets the code to be executed as part of this invocation.
      */
     DataFlow::Node getACodeArgument() {
-      memberName in ["Script", "SourceTextModule", "compileFunction", "runInContext",
-            "runInNewContext", "runInThisContext"] and
+      memberName in [
+          "Script", "SourceTextModule", "compileFunction", "runInContext", "runInNewContext",
+          "runInThisContext"
+        ] and
       // all of the above methods/constructors take the command as their first argument
       result = getArgument(0)
     }
