@@ -44,7 +44,7 @@ The DIL format may change without warning between CLI releases.
 When you specify the ``--dump-dil`` option for ``codeql query compile``, CodeQL 
 prints DIL to standard output for the queries it compiles. You can also 
 view results in DIL format when you run queries in VS Code. 
-For more information, see "`Analyzing your projects <https://help.semmle.com/codeql/codeql-for-vscode/procedures/using-extension.html#viewing-query-results>`__" in the CodeQL for VS Code help.
+For more information, see ":ref:`Analyzing your projects <codeql-for-visual-studio-code:viewing-query-results>`" in the CodeQL for VS Code help.
 
 .. _extractor:
 

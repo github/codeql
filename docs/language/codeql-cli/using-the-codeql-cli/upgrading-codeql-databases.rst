@@ -39,7 +39,7 @@ want to upgrade, must be specified.
 
 For full details of all the options you can use when upgrading databases,
 see the :doc:`database upgrade reference documentation
-<../commands/database-upgrade>`.
+<codeql-cli-manual:database-upgrade>`.
 
 Progress and results
 --------------------

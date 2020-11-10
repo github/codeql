@@ -107,6 +107,7 @@ intersphinx_mapping = {
     'writing-codeql-queries':  (base_url + 'writing-codeql-queries/', None),
     'ql-language-reference':  (base_url + 'ql-language-reference/', None),
     'codeql-cli':  (base_url + 'codeql-cli/', None),
+    'codeql-cli-manual':  (base_url + 'codeql-cli-manual/', None),
     'codeql-for-visual-studio-code':  (base_url + 'codeql-for-visual-studio-code/', None)
 }
 

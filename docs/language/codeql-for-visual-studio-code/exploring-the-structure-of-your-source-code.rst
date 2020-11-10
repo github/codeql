@@ -7,7 +7,7 @@ About the abstract syntax tree
 -------------------------------
 
 The abstract syntax tree (AST) of a program represents the program's syntactic structure. Nodes on the AST represent elements such as statements and expressions.
-A CodeQL database encodes these program elements and the relationships between them through a :ref:`database schema <codeql-glossary:codeql-database-schema>`.
+A CodeQL database encodes these program elements and the relationships between them through a :ref:`database schema <codeql-overview:codeql-database-schema>`.
 
 CodeQL for Visual Studio Code contains an AST viewer. The viewer consists of a graph visualization view that lets you explore the AST of a file in a CodeQL database. This helps you see which CodeQL classes correspond to which parts of your source files.
 

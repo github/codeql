@@ -47,7 +47,7 @@ You must specify:
   <sarif-file>`, and graph formats. For more information about CSV and SARIF,
   see `Results <#results>`__. To find out which other results formats are
   supported, see the :doc:`database analyze reference
-  <../commands/database-analyze>`.
+  <codeql-cli-manual:database-analyze>`.
 
 - ``--output``: the output path of the results file generated during analysis.
 
@@ -68,7 +68,7 @@ You can also specify:
    <upgrading-codeql-databases>`."
 
 For full details of all the options you can use when analyzing databases, see
-the :doc:`database analyze reference documentation <../commands/database-analyze>`.
+the :doc:`database analyze reference documentation <codeql-cli-manual:database-analyze>`.
 
 .. _database-analyze-examples:
 
