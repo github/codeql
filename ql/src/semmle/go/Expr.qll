@@ -343,6 +343,8 @@ class RuneLit = CharLit;
  */
 class StringLit extends @stringlit, BasicLit {
   override string getAPrimaryQlClass() { result = "StringLit" }
+
+  predicate isRaw() { this.getText().matches("`%`") }
 }
 
 /**
