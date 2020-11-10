@@ -60,7 +60,7 @@ The key element of the pattern is to provide a field of type `MySpecialExpr::Ran
 
 </details>
 
-Note, previously we used to write `MySpecialExpr() { this = self }`, but we now recommend using `MySpecialExpr() { this = range }` instead to avoid anyone mistakenly thinking that `self` and `this` are synonyms in general.
+Note that in some libraries, the `range` field is in fact called `self`. While we do recommend using `range` for consistency, the name of the field does not matter (and using `range` avoids confusion in contexts like Python analysis that has strong usage of `self`).
 
 ### Rationale
 
