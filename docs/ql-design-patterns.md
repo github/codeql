@@ -20,7 +20,7 @@ abstract class MySpecialExpr extends Expr {
 class ConcreteSubclass extends MySpecialExpr { ... }
 ```
 
-While this allows users of the library to add new types of `MySpecialExpr` (like, in this case, `ConcreteSubclass), there is no way to override the implementations of `memberPredicate` of all extensions at once.
+While this allows users of the library to add new types of `MySpecialExpr` (like, in this case, `ConcreteSubclass`), there is no way to override the implementations of `memberPredicate` of all extensions at once.
 
 Applying the `::Range` pattern yields the following:
 
