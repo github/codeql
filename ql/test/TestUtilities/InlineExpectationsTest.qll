@@ -242,7 +242,9 @@ abstract private class Expectation extends FailureLocatable {
 
   override string toString() { result = comment.toString() }
 
-  override predicate hasLocation(string file, int line) { comment.hasLocationInfo(file, line, _, _, _) }
+  override predicate hasLocation(string file, int line) {
+    comment.hasLocationInfo(file, line, _, _, _)
+  }
 }
 
 private class ValidExpectation extends Expectation, TValidExpectation {
