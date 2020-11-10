@@ -32,14 +32,16 @@ private module Stdlib {
    * For example, using `attr_name = "system"` will get all uses of `os.system`.
    */
   private DataFlow::Node os_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["system", "popen", "popen2", "popen3", "popen4",
-          // exec
-          "execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe",
-          // spawn
-          "spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp", "spawnvpe",
-          "posix_spawn", "posix_spawnp",
-          // modules
-          "path"] and
+    attr_name in [
+        "system", "popen", "popen2", "popen3", "popen4",
+        // exec
+        "execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe",
+        // spawn
+        "spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp", "spawnvpe",
+        "posix_spawn", "posix_spawnp",
+        // modules
+        "path"
+      ] and
     (
       t.start() and
       result = DataFlow::importNode("os." + attr_name)
@@ -218,8 +220,9 @@ private module Stdlib {
 
     OsSpawnCall() {
       exists(string name |
-        name in ["spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp",
-              "spawnvpe"] and
+        name in [
+            "spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp", "spawnvpe"
+          ] and
         node.getFunction() = os_attr(name).asCfgNode()
       )
     }
@@ -505,9 +508,11 @@ private module Stdlib {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node popen2_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["popen2", "popen3", "popen4",
-          // classes
-          "Popen3", "Popen4"] and
+    attr_name in [
+        "popen2", "popen3", "popen4",
+        // classes
+        "Popen3", "Popen4"
+      ] and
     (
       t.start() and
       result = DataFlow::importNode("popen2." + attr_name)
@@ -772,10 +777,12 @@ DataFlow::Node base64() { result = base64(DataFlow::TypeTracker::end()) }
  * WARNING: Only holds for a few predefined attributes.
  */
 private DataFlow::Node base64_attr(DataFlow::TypeTracker t, string attr_name) {
-  attr_name in ["b64encode", "b64decode", "standard_b64encode", "standard_b64decode",
-        "urlsafe_b64encode", "urlsafe_b64decode", "b32encode", "b32decode", "b16encode",
-        "b16decode", "encodestring", "decodestring", "a85encode", "a85decode", "b85encode",
-        "b85decode", "encodebytes", "decodebytes"] and
+  attr_name in [
+      "b64encode", "b64decode", "standard_b64encode", "standard_b64decode", "urlsafe_b64encode",
+      "urlsafe_b64decode", "b32encode", "b32decode", "b16encode", "b16decode", "encodestring",
+      "decodestring", "a85encode", "a85decode", "b85encode", "b85decode", "encodebytes",
+      "decodebytes"
+    ] and
   (
     t.start() and
     result = DataFlow::importNode("base64" + "." + attr_name)
@@ -815,8 +822,10 @@ private class Base64EncodeCall extends Encoding::Range, DataFlow::CfgNode {
 
   Base64EncodeCall() {
     exists(string name |
-      name in ["b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
-            "encodestring", "a85encode", "b85encode", "encodebytes"] and
+      name in [
+          "b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
+          "encodestring", "a85encode", "b85encode", "encodebytes"
+        ] and
       node.getFunction() = base64_attr(name).asCfgNode()
     )
   }
@@ -827,7 +836,9 @@ private class Base64EncodeCall extends Encoding::Range, DataFlow::CfgNode {
 
   override string getFormat() {
     exists(string name | node.getFunction() = base64_attr(name).asCfgNode() |
-      name in ["b64encode", "standard_b64encode", "urlsafe_b64encode", "encodestring", "encodebytes"] and
+      name in [
+          "b64encode", "standard_b64encode", "urlsafe_b64encode", "encodestring", "encodebytes"
+        ] and
       result = "Base64"
       or
       name = "b32encode" and result = "Base32"
@@ -847,8 +858,10 @@ private class Base64DecodeCall extends Decoding::Range, DataFlow::CfgNode {
 
   Base64DecodeCall() {
     exists(string name |
-      name in ["b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
-            "decodestring", "a85decode", "b85decode", "decodebytes"] and
+      name in [
+          "b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
+          "decodestring", "a85decode", "b85decode", "decodebytes"
+        ] and
       node.getFunction() = base64_attr(name).asCfgNode()
     )
   }
@@ -861,7 +874,9 @@ private class Base64DecodeCall extends Decoding::Range, DataFlow::CfgNode {
 
   override string getFormat() {
     exists(string name | node.getFunction() = base64_attr(name).asCfgNode() |
-      name in ["b64decode", "standard_b64decode", "urlsafe_b64decode", "decodestring", "decodebytes"] and
+      name in [
+          "b64decode", "standard_b64decode", "urlsafe_b64decode", "decodestring", "decodebytes"
+        ] and
       result = "Base64"
       or
       name = "b32decode" and result = "Base32"

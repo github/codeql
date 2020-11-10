@@ -14,6 +14,7 @@ nullableDataFlow
 | NullableRefTypes.cs:88:13:88:13 | access to local variable x | NullableRefTypes.cs:88:13:88:14 | ...! |
 nullableControlFlow
 | NullableRefTypes.cs:82:10:82:40 | enter TestSuppressNullableWarningExpr | NullableRefTypes.cs:83:5:89:5 | {...} | successor |
+| NullableRefTypes.cs:82:10:82:40 | exit TestSuppressNullableWarningExpr (normal) | NullableRefTypes.cs:82:10:82:40 | exit TestSuppressNullableWarningExpr | successor |
 | NullableRefTypes.cs:83:5:89:5 | {...} | NullableRefTypes.cs:84:9:84:29 | ... ...; | successor |
 | NullableRefTypes.cs:84:9:84:29 | ... ...; | NullableRefTypes.cs:84:21:84:28 | "source" | successor |
 | NullableRefTypes.cs:84:17:84:28 | String x = ... | NullableRefTypes.cs:85:9:85:22 | ... ...; | successor |
@@ -29,7 +30,7 @@ nullableControlFlow
 | NullableRefTypes.cs:87:9:87:16 | ... = ... | NullableRefTypes.cs:88:9:88:15 | ...; | successor |
 | NullableRefTypes.cs:87:9:87:17 | ...; | NullableRefTypes.cs:87:13:87:16 | null | successor |
 | NullableRefTypes.cs:87:13:87:16 | null | NullableRefTypes.cs:87:9:87:16 | ... = ... | successor |
-| NullableRefTypes.cs:88:9:88:14 | ... = ... | NullableRefTypes.cs:82:10:82:40 | exit TestSuppressNullableWarningExpr | successor |
+| NullableRefTypes.cs:88:9:88:14 | ... = ... | NullableRefTypes.cs:82:10:82:40 | exit TestSuppressNullableWarningExpr (normal) | successor |
 | NullableRefTypes.cs:88:9:88:15 | ...; | NullableRefTypes.cs:88:13:88:13 | access to local variable x | successor |
 | NullableRefTypes.cs:88:13:88:13 | access to local variable x | NullableRefTypes.cs:88:13:88:14 | ...! | successor |
 | NullableRefTypes.cs:88:13:88:14 | ...! | NullableRefTypes.cs:88:9:88:14 | ... = ... | successor |

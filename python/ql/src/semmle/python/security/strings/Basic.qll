@@ -8,11 +8,12 @@ abstract class StringKind extends TaintKind {
   StringKind() { this = this }
 
   override TaintKind getTaintOfMethodResult(string name) {
-    name in ["capitalize", "casefold", "center", "expandtabs", "format", "format_map", "ljust",
-          "lstrip", "lower", "replace", "rjust", "rstrip", "strip", "swapcase", "title", "upper",
-          "zfill",
-          /* encode/decode is technically not correct, but close enough */
-          "encode", "decode"] and
+    name in [
+        "capitalize", "casefold", "center", "expandtabs", "format", "format_map", "ljust", "lstrip",
+        "lower", "replace", "rjust", "rstrip", "strip", "swapcase", "title", "upper", "zfill",
+        /* encode/decode is technically not correct, but close enough */
+        "encode", "decode"
+      ] and
     result = this
     or
     name in ["partition", "rpartition", "rsplit", "split", "splitlines"] and

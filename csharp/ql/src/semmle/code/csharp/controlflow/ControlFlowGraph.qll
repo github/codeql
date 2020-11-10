@@ -108,8 +108,8 @@ module ControlFlow {
     /**
      * Holds if this node post-dominates `that` node.
      *
-     * That is, all paths reaching a callable exit node (`ExitNode`)
-     * from `that` node must go through this node.
+     * That is, all paths reaching a normal callable exit node (an `AnnotatedExitNode`
+     * with a normal exit type) from `that` node must go through this node.
      *
      * Example:
      *
@@ -145,9 +145,9 @@ module ControlFlow {
     /**
      * Holds if this node strictly post-dominates `that` node.
      *
-     * That is, all paths reaching a callable exit node (`ExitNode`)
-     * from `that` node must go through this node (which must be different
-     * from `that` node).
+     * That is, all paths reaching a normal callable exit node (an `AnnotatedExitNode`
+     * with a normal exit type) from `that` node must go through this node
+     * (which must be different from `that` node).
      *
      * Example:
      *
@@ -259,6 +259,38 @@ module ControlFlow {
       override string toString() { result = "enter " + getCallable().toString() }
     }
 
+    /** A node for a callable exit point, annotated with the type of exit. */
+    class AnnotatedExitNode extends Node, TAnnotatedExitNode {
+      private Callable c;
+      private boolean normal;
+
+      AnnotatedExitNode() { this = TAnnotatedExitNode(c, normal) }
+
+      /** Gets the callable that this exit applies to. */
+      Callable getCallable() { result = c }
+
+      /** Holds if this node represent a normal exit. */
+      predicate isNormal() { normal = true }
+
+      override BasicBlocks::AnnotatedExitBlock getBasicBlock() {
+        result = Node.super.getBasicBlock()
+      }
+
+      override Callable getEnclosingCallable() { result = this.getCallable() }
+
+      override Location getLocation() { result = getCallable().getLocation() }
+
+      override string toString() {
+        exists(string s |
+          normal = true and s = "normal"
+          or
+          normal = false and s = "abnormal"
+        |
+          result = "exit " + getCallable() + " (" + s + ")"
+        )
+      }
+    }
+
     /** A node for a callable exit point. */
     class ExitNode extends Node, TExitNode {
       /** Gets the callable that this exit applies to. */
@@ -342,6 +374,8 @@ module ControlFlow {
   /** Provides different types of basic blocks. */
   module BasicBlocks {
     class EntryBlock = BBs::EntryBasicBlock;
+
+    class AnnotatedExitBlock = BBs::AnnotatedExitBasicBlock;
 
     class ExitBlock = BBs::ExitBasicBlock;
 
@@ -1953,6 +1987,10 @@ module ControlFlow {
     private module Cached {
       private import semmle.code.csharp.Caching
 
+      private predicate isAbnormalExitType(SuccessorType t) {
+        t instanceof ExceptionSuccessor or t instanceof ExitSuccessor
+      }
+
       /**
        * Internal representation of control flow nodes in the control flow graph.
        * The control flow graph is pruned for unreachable nodes.
@@ -1962,6 +2000,12 @@ module ControlFlow {
         TEntryNode(Callable c) {
           Stages::ControlFlowStage::forceCachingInSameStage() and
           succEntrySplits(c, _, _, _)
+        } or
+        TAnnotatedExitNode(Callable c, boolean normal) {
+          exists(Reachability::SameSplitsBlock b, SuccessorType t | b.isReachable(_) |
+            succExitSplits(b.getAnElement(), _, c, t) and
+            if isAbnormalExitType(t) then normal = false else normal = true
+          )
         } or
         TExitNode(Callable c) {
           exists(Reachability::SameSplitsBlock b | b.isReachable(_) |
@@ -1985,8 +2029,12 @@ module ControlFlow {
         exists(ControlFlowElement predElement, Splits predSplits |
           pred = TElementNode(predElement, predSplits)
         |
-          // Element node -> callable exit
-          succExitSplits(predElement, predSplits, result.(Nodes::ExitNode).getCallable(), t)
+          // Element node -> callable exit (annotated)
+          result =
+            any(Nodes::AnnotatedExitNode exit |
+              succExitSplits(predElement, predSplits, exit.getCallable(), t) and
+              if isAbnormalExitType(t) then not exit.isNormal() else exit.isNormal()
+            )
           or
           // Element node -> element node
           exists(ControlFlowElement succElement, Splits succSplits, Completion c |
@@ -1996,6 +2044,10 @@ module ControlFlow {
             t.matchesCompletion(c)
           )
         )
+        or
+        // Callable exit (annotated) -> callable exit
+        pred.(Nodes::AnnotatedExitNode).getCallable() = result.(Nodes::ExitNode).getCallable() and
+        t instanceof SuccessorTypes::NormalSuccessor
       }
 
       /**

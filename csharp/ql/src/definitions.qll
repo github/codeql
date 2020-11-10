@@ -4,6 +4,7 @@
  */
 
 import csharp
+import IDEContextual
 
 /** An element with an associated definition. */
 abstract class Use extends @type_mention_parent {
@@ -188,11 +189,3 @@ Declaration definitionOf(Use use, string kind) {
   result.fromSource() and
   kind = use.getUseType()
 }
-
-/**
- * Returns an appropriately encoded version of a filename `name`
- * passed by the VS Code extension in order to coincide with the
- * output of `.getFile()` on locatable entities.
- */
-cached
-File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }

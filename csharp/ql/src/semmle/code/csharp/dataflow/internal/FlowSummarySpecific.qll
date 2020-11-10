@@ -4,13 +4,13 @@
 
 private import csharp
 private import semmle.code.csharp.frameworks.system.linq.Expressions
+private import DataFlowDispatch
 
 module Private {
   private import Public
   private import DataFlowPrivate as DataFlowPrivate
   private import DataFlowPublic as DataFlowPublic
   private import FlowSummaryImpl as Impl
-  private import DataFlowDispatch
   private import semmle.code.csharp.Unification
 
   class Content = DataFlowPublic::Content;
@@ -56,7 +56,19 @@ module Private {
     TParameterSummaryOutput(int i) {
       i in [-1, any(SummarizableCallable c).getAParameter().getPosition()]
     } or
-    TDelegateSummaryOutput(int i, int j) { hasDelegateArgumentPosition2(_, i, j) }
+    TDelegateSummaryOutput(int i, int j) { hasDelegateArgumentPosition2(_, i, j) } or
+    TJumpSummaryOutput(SummarizableCallable target, ReturnKind rk) {
+      rk instanceof NormalReturnKind and
+      (
+        target instanceof Constructor or
+        not target.getReturnType() instanceof VoidType
+      )
+      or
+      rk instanceof QualifierReturnKind and
+      not target.(Modifiable).isStatic()
+      or
+      exists(target.getParameter(rk.(OutRefReturnKind).getPosition()))
+    }
 
   /** Gets the return kind that matches `sink`, if any. */
   ReturnKind toReturnKind(SummaryOutput output) {
@@ -91,6 +103,11 @@ module Private {
     exists(int i, int j |
       output = TDelegateSummaryOutput(i, j) and
       result = DataFlowPrivate::TSummaryDelegateArgumentNode(c, i, j)
+    )
+    or
+    exists(SummarizableCallable target, ReturnKind rk |
+      output = TJumpSummaryOutput(target, rk) and
+      result = DataFlowPrivate::TSummaryJumpNode(c, target, rk)
     )
   }
 
@@ -150,6 +167,11 @@ module Public {
       exists(int delegateIndex, int parameterIndex |
         this = TDelegateSummaryOutput(delegateIndex, parameterIndex) and
         result = "parameter " + parameterIndex + " of delegate parameter " + delegateIndex
+      )
+      or
+      exists(SummarizableCallable target, ReturnKind rk |
+        this = TJumpSummaryOutput(target, rk) and
+        result = "jump to " + target + " (" + rk + ")"
       )
     }
   }

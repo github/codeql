@@ -61,7 +61,7 @@ class URLConstructor extends ClassInstanceExpr {
  * Class of Java URI constructor.
  */
 class URIConstructor extends ClassInstanceExpr {
-  URIConstructor() { this.getConstructor().getDeclaringType().hasQualifiedName("java.net", "URI") }
+  URIConstructor() { this.getConstructor().getDeclaringType() instanceof TypeUri }
 
   predicate hasHttpStringArg() {
     (
@@ -185,7 +185,7 @@ predicate createURI(DataFlow::Node node1, DataFlow::Node node2) {
   exists(
     StaticMethodAccess ma // URI.create
   |
-    ma.getMethod().getDeclaringType().hasQualifiedName("java.net", "URI") and
+    ma.getMethod().getDeclaringType() instanceof TypeUri and
     ma.getMethod().hasName("create") and
     node1.asExpr() = ma.getArgument(0) and
     node2.asExpr() = ma
