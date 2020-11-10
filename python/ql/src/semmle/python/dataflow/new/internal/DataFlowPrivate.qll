@@ -136,7 +136,7 @@ module EssaFlow {
     // case where `x` is global
     exists(EssaNodeDefinition ed |
       nodeFrom.asCfgNode() = ed.getDefiningNode().(DefinitionNode).getValue() and
-      nodeTo.asVar().(GlobalSsaVariable) = ed.getVariable()
+      nodeTo.asVar() = ed.getVariable().(GlobalSsaVariable)
     )
     or
     // Parameter definition
