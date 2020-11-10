@@ -22,6 +22,6 @@ class Cfg extends PrintASTConfiguration {
    * Print All functions from the selected file.
    */
   override predicate shouldPrintFunction(Function func) {
-    func.getFile() = getEncodedFile(selectedSourceFile())
+    func.getFile() = getFileBySourceArchiveName(selectedSourceFile())
   }
 }

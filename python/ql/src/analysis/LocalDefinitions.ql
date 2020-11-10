@@ -16,5 +16,5 @@ from NiceLocationExpr use, Definition defn, string kind, string f
 where
   defn = definitionOf(use, kind) and
   use.hasLocationInfo(f, _, _, _, _) and
-  getEncodedFile(selectedSourceFile()).getAbsolutePath() = f
+  getFileBySourceArchiveName(selectedSourceFile()).getAbsolutePath() = f
 select use, defn, kind
