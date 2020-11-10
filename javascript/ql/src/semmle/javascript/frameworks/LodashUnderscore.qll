@@ -407,7 +407,12 @@ module LodashUnderscore {
             "shuffle", "sample", "toArray", "partition", "compact", "first", "initial", "last",
             "rest", "flatten", "without", "difference", "uniq", "unique", "unzip", "transpose",
             "object", "chunk", "values", "mapObject", "pick", "omit", "defaults", "clone", "tap",
-            "identity"] and
+            "identity",
+            // String category
+            "camelCase", "capitalize", "deburr", "kebabCase", "lowerCase", "lowerFirst", "pad",
+            "padEnd", "padStart", "repeat", "replace", "snakeCase", "split", "startCase", "toLower",
+            "toUpper", "trim", "trimEnd", "trimStart", "truncate", "unescape", "upperCase",
+            "upperFirst", "words"] and
       pred = call.getArgument(0) and
       succ = call
       or

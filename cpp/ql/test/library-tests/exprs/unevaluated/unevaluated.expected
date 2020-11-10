@@ -13,3 +13,4 @@
 | test.cpp:42:11:42:11 | x |
 | test.cpp:57:9:57:9 | 4 |
 | test.cpp:63:9:63:19 | call to getAVirtual |
+| test.cpp:63:9:63:21 | temporary object |

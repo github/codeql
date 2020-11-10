@@ -59,27 +59,6 @@ class FetchResourceMethodAccess extends MethodAccess {
 }
 
 /**
- * Method access to external inputs of `android.content.Intent` object
- */
-class IntentGetExtraMethodAccess extends MethodAccess {
-  IntentGetExtraMethodAccess() {
-    this.getMethod().getName().regexpMatch("get\\w+Extra") and
-    this.getMethod().getDeclaringType() instanceof TypeIntent
-    or
-    this.getMethod().getName().regexpMatch("get\\w+") and
-    this.getQualifier().(MethodAccess).getMethod().hasName("getExtras") and
-    this.getQualifier().(MethodAccess).getMethod().getDeclaringType() instanceof TypeIntent
-  }
-}
-
-/**
- * Source of fetching URLs from intent extras
- */
-class UntrustedResourceSource extends DataFlow::ExprNode {
-  UntrustedResourceSource() { this.asExpr() instanceof IntentGetExtraMethodAccess }
-}
-
-/**
  * Holds if `ma` loads URL `sink`
  */
 predicate fetchResource(FetchResourceMethodAccess ma, Expr sink) { sink = ma.getArgument(0) }
@@ -127,7 +106,7 @@ class UrlResourceSink extends DataFlow::ExprNode {
 class FetchUntrustedResourceConfiguration extends TaintTracking::Configuration {
   FetchUntrustedResourceConfiguration() { this = "FetchUntrustedResourceConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedResourceSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof UrlResourceSink and

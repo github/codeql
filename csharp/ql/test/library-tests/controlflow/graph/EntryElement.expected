@@ -659,6 +659,17 @@
 | Assert.cs:128:9:128:36 | ...; | Assert.cs:128:9:128:36 | ...; |
 | Assert.cs:128:27:128:27 | access to local variable s | Assert.cs:128:27:128:27 | access to local variable s |
 | Assert.cs:128:27:128:34 | access to property Length | Assert.cs:128:27:128:27 | access to local variable s |
+| Assert.cs:132:61:132:65 | false | Assert.cs:132:61:132:65 | false |
+| Assert.cs:133:61:133:64 | true | Assert.cs:133:61:133:64 | true |
+| Assert.cs:135:5:136:5 | {...} | Assert.cs:135:5:136:5 | {...} |
+| Assert.cs:139:5:142:5 | {...} | Assert.cs:139:5:142:5 | {...} |
+| Assert.cs:140:9:140:35 | call to method AssertTrueFalse | Assert.cs:140:9:140:35 | this access |
+| Assert.cs:140:9:140:35 | this access | Assert.cs:140:9:140:35 | this access |
+| Assert.cs:140:9:140:36 | ...; | Assert.cs:140:9:140:36 | ...; |
+| Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:140:25:140:26 | access to parameter b1 |
+| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:140:29:140:30 | access to parameter b2 |
+| Assert.cs:140:33:140:34 | access to parameter b3 | Assert.cs:140:33:140:34 | access to parameter b3 |
+| Assert.cs:141:9:141:15 | return ...; | Assert.cs:141:9:141:15 | return ...; |
 | Assignments.cs:4:5:15:5 | {...} | Assignments.cs:4:5:15:5 | {...} |
 | Assignments.cs:5:9:5:18 | ... ...; | Assignments.cs:5:9:5:18 | ... ...; |
 | Assignments.cs:5:13:5:17 | Int32 x = ... | Assignments.cs:5:17:5:17 | 0 |
@@ -2156,6 +2167,31 @@
 | Patterns.cs:37:17:37:22 | break; | Patterns.cs:37:17:37:22 | break; |
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:40:9:42:9 | switch (...) {...} |
 | Patterns.cs:40:17:40:17 | access to local variable o | Patterns.cs:40:17:40:17 | access to local variable o |
+| PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:6:5:8:5 | {...} |
+| PostDominance.cs:7:9:7:28 | call to method WriteLine | PostDominance.cs:7:27:7:27 | access to parameter s |
+| PostDominance.cs:7:9:7:29 | ...; | PostDominance.cs:7:9:7:29 | ...; |
+| PostDominance.cs:7:27:7:27 | access to parameter s | PostDominance.cs:7:27:7:27 | access to parameter s |
+| PostDominance.cs:11:5:15:5 | {...} | PostDominance.cs:11:5:15:5 | {...} |
+| PostDominance.cs:12:9:13:19 | if (...) ... | PostDominance.cs:12:9:13:19 | if (...) ... |
+| PostDominance.cs:12:13:12:13 | access to parameter s | PostDominance.cs:12:13:12:13 | access to parameter s |
+| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:12:13:12:13 | access to parameter s |
+| PostDominance.cs:12:18:12:21 | null | PostDominance.cs:12:18:12:21 | null |
+| PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:13:13:13:19 | return ...; |
+| PostDominance.cs:14:9:14:28 | call to method WriteLine | PostDominance.cs:14:27:14:27 | access to parameter s |
+| PostDominance.cs:14:9:14:29 | ...; | PostDominance.cs:14:9:14:29 | ...; |
+| PostDominance.cs:14:27:14:27 | access to parameter s | PostDominance.cs:14:27:14:27 | access to parameter s |
+| PostDominance.cs:18:5:22:5 | {...} | PostDominance.cs:18:5:22:5 | {...} |
+| PostDominance.cs:19:9:20:55 | if (...) ... | PostDominance.cs:19:9:20:55 | if (...) ... |
+| PostDominance.cs:19:13:19:13 | access to parameter s | PostDominance.cs:19:13:19:13 | access to parameter s |
+| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:19:13:19:13 | access to parameter s |
+| PostDominance.cs:19:18:19:21 | null | PostDominance.cs:19:18:19:21 | null |
+| PostDominance.cs:20:13:20:55 | throw ...; | PostDominance.cs:20:45:20:53 | nameof(...) |
+| PostDominance.cs:20:19:20:54 | object creation of type ArgumentNullException | PostDominance.cs:20:45:20:53 | nameof(...) |
+| PostDominance.cs:20:45:20:53 | nameof(...) | PostDominance.cs:20:45:20:53 | nameof(...) |
+| PostDominance.cs:20:52:20:52 | access to parameter s | PostDominance.cs:20:52:20:52 | access to parameter s |
+| PostDominance.cs:21:9:21:28 | call to method WriteLine | PostDominance.cs:21:27:21:27 | access to parameter s |
+| PostDominance.cs:21:9:21:29 | ...; | PostDominance.cs:21:9:21:29 | ...; |
+| PostDominance.cs:21:27:21:27 | access to parameter s | PostDominance.cs:21:27:21:27 | access to parameter s |
 | Qualifiers.cs:7:28:7:31 | null | Qualifiers.cs:7:28:7:31 | null |
 | Qualifiers.cs:8:41:8:44 | null | Qualifiers.cs:8:41:8:44 | null |
 | Qualifiers.cs:11:5:31:5 | {...} | Qualifiers.cs:11:5:31:5 | {...} |

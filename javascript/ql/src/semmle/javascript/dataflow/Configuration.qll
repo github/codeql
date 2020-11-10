@@ -1077,35 +1077,46 @@ private DataFlow::Node getAwaitOperand(DataFlow::Node await) {
 }
 
 /**
- * Holds if `f` may `read` property `prop` of parameter `parm`.
+ * Holds if property `prop` of `arg` is read inside a function and returned to the call `succ`.
  */
 private predicate parameterPropRead(
-  Function f, DataFlow::Node invk, DataFlow::Node arg, string prop, DataFlow::Node read,
-  DataFlow::Configuration cfg
+  DataFlow::Node arg, string prop, DataFlow::Node succ, DataFlow::Configuration cfg,
+  PathSummary summary
 ) {
-  exists(DataFlow::SourceNode parm |
-    callInputStep(f, invk, arg, parm, cfg) and
-    (
-      read = parm.getAPropertyRead(prop)
-      or
-      exists(DataFlow::Node use | parm.flowsTo(use) | isAdditionalLoadStep(use, read, prop, cfg))
+  exists(Function f, DataFlow::Node read, DataFlow::Node invk |
+    not f.isAsyncOrGenerator() and invk = succ
+    or
+    // load from an immediately awaited function call
+    f.isAsync() and
+    invk = getAwaitOperand(succ)
+  |
+    exists(DataFlow::SourceNode parm |
+      callInputStep(f, invk, arg, parm, cfg) and
+      (
+        reachesReturn(f, read, cfg, summary) and
+        read = parm.getAPropertyRead(prop)
+        or
+        reachesReturn(f, read, cfg, summary) and
+        exists(DataFlow::Node use | parm.flowsTo(use) | isAdditionalLoadStep(use, read, prop, cfg))
+      )
     )
   )
 }
 
 /**
- * Holds if `nd` may flow into a return statement of `f` under configuration `cfg`
+ * Holds if `read` may flow into a return statement of `f` under configuration `cfg`
  * (possibly through callees) along a path summarized by `summary`.
  */
 private predicate reachesReturn(
-  Function f, DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary
+  Function f, DataFlow::Node read, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  isRelevant(nd, cfg) and
-  returnExpr(f, nd, _) and
-  summary = PathSummary::level()
+  isRelevant(read, cfg) and
+  returnExpr(f, read, _) and
+  summary = PathSummary::level() and
+  callInputStep(f, _, _, _, _) // check that a relevant result can exist.
   or
   exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
-    flowStep(nd, cfg, mid, oldSummary) and
+    flowStep(read, cfg, mid, oldSummary) and
     reachesReturn(f, mid, cfg, newSummary) and
     summary = oldSummary.append(newSummary)
   )
@@ -1168,16 +1179,7 @@ private predicate loadStep(
   isAdditionalLoadStep(pred, succ, prop, cfg) and
   summary = PathSummary::level()
   or
-  exists(Function f, DataFlow::Node read, DataFlow::Node invk |
-    not f.isAsyncOrGenerator() and invk = succ
-    or
-    // load from an immediately awaited function call
-    f.isAsync() and
-    invk = getAwaitOperand(succ)
-  |
-    parameterPropRead(f, invk, pred, prop, read, cfg) and
-    reachesReturn(f, read, cfg, summary)
-  )
+  parameterPropRead(pred, prop, succ, cfg, summary)
 }
 
 /**

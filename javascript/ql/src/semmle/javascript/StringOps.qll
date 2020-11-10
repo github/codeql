@@ -576,7 +576,9 @@ module StringOps {
         strictconcat(StringLiteralLike leaf |
           leaf = getALeaf().asExpr()
         |
-          leaf.getStringValue() order by leaf.getFirstToken().getIndex()
+          leaf.getStringValue()
+          order by
+            leaf.getLocation().getStartLine(), leaf.getLocation().getStartColumn()
         )
     }
   }

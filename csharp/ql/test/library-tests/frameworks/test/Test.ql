@@ -13,5 +13,6 @@ where
   not framework = "SourceDeclarationCallable" and
   not framework = "SourceDeclarationMethod" and
   not framework = "NonConstructedMethod" and
-  not framework = "RuntimeInstanceMethod"
+  not framework = "RuntimeInstanceMethod" and
+  not framework = "SummarizableMethod"
 select e, type, framework

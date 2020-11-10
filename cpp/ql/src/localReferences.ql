@@ -1,7 +1,7 @@
 /**
  * @name Find-references links
  * @description Generates use-definition pairs that provide the data
- *              for find-references in the code viewer.
+ *              for find-references in the code viewer of VSCode.
  * @kind definitions
  * @id cpp/ide-find-references
  * @tags ide-contextual-queries/local-references

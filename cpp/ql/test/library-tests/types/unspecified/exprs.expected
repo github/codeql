@@ -10,6 +10,7 @@
 | test.cpp:13:15:13:15 | constructor init of field d | struct D | struct D |
 | test.cpp:19:30:19:30 | (reference to) | reference to {const {struct E}} | reference to {struct E} |
 | test.cpp:19:30:19:30 | call to E | void | void |
+| test.cpp:19:30:19:30 | temporary object | const {struct E} | struct E |
 | test.cpp:19:30:19:30 | w | pointer to {int} | pointer to {int} |
 | test.cpp:23:12:23:12 | (const F *)... | pointer to {const {struct F}} | pointer to {struct F} |
 | test.cpp:23:12:23:12 | f | pointer to {struct F} | pointer to {struct F} |

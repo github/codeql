@@ -464,6 +464,28 @@ class SignAnalysis
         x++;
         System.Console.WriteLine(x); // strictly positive
     }
+
+    void Splitting1(bool b)
+    {
+        var x = b ? 1 : -1;
+        if (b)
+            System.Console.WriteLine(x); // strictly positive [MISSING]
+        else
+            System.Console.WriteLine(x); // strictly negative [MISSING]
+    }
+
+    void Splitting2(bool b)
+    {
+        int x;
+        if (b) x = 1; else x = -1;
+
+        System.Console.WriteLine(x); // strictly positive (b = true) or strictly negative (b = false)
+
+        if (b)
+            System.Console.WriteLine(x); // strictly positive
+        else
+            System.Console.WriteLine(x); // strictly negative
+    }
 }
 
 // semmle-extractor-options: /r:System.Linq.dll

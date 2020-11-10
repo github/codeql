@@ -130,6 +130,160 @@ public class BaseBundle {
     }
 
     /**
+     * Returns true if the given key is contained in the mapping
+     * of this Bundle.
+     *
+     * @param key a String key
+     * @return true if the key is part of the mapping, false otherwise
+     */
+    public boolean containsKey(String key) {
+        return false;
+    }
+
+    /**
+     * Returns the entry with the given key as an object.
+     *
+     * @param key a String key
+     * @return an Object, or null
+     */
+    public Object get(String key) {
+        return null;
+    }
+    
+    /**
+     * Removes any entry with the given key from the mapping of this Bundle.
+     *
+     * @param key a String key
+     */
+    public void remove(String key) {
+    }
+
+    /** {@hide} */
+    public void putObject(String key, Object value) {
+    }    
+
+    /**
+     * Inserts a Boolean value into the mapping of this Bundle, replacing
+     * any existing value for the given key.  Either key or value may be null.
+     *
+     * @param key a String, or null
+     * @param value a boolean
+     */
+    public void putBoolean(String key, boolean value) {
+    }
+
+    /**
+     * Inserts a byte value into the mapping of this Bundle, replacing
+     * any existing value for the given key.
+     *
+     * @param key a String, or null
+     * @param value a byte
+     */
+    void putByte(String key, byte value) {
+    }
+
+    /**
+     * Inserts a char value into the mapping of this Bundle, replacing
+     * any existing value for the given key.
+     *
+     * @param key a String, or null
+     * @param value a char
+     */
+    void putChar(String key, char value) {
+    }
+
+    /**
+     * Inserts a short value into the mapping of this Bundle, replacing
+     * any existing value for the given key.
+     *
+     * @param key a String, or null
+     * @param value a short
+     */
+    void putShort(String key, short value) {
+    }
+
+    /**
+     * Inserts an int value into the mapping of this Bundle, replacing
+     * any existing value for the given key.
+     *
+     * @param key a String, or null
+     * @param value an int
+     */
+    public void putInt(String key, int value) {
+    }
+
+    /**
+     * Inserts a long value into the mapping of this Bundle, replacing
+     * any existing value for the given key.
+     *
+     * @param key a String, or null
+     * @param value a long
+     */
+    public void putLong(String key, long value) {
+    }
+
+    /**
+     * Inserts a float value into the mapping of this Bundle, replacing
+     * any existing value for the given key.
+     *
+     * @param key a String, or null
+     * @param value a float
+     */
+    void putFloat(String key, float value) {
+    }
+
+    /**
+     * Inserts a double value into the mapping of this Bundle, replacing
+     * any existing value for the given key.
+     *
+     * @param key a String, or null
+     * @param value a double
+     */
+    public void putDouble(String key, double value) {
+    }
+
+    /**
+     * Inserts a String value into the mapping of this Bundle, replacing
+     * any existing value for the given key.  Either key or value may be null.
+     *
+     * @param key a String, or null
+     * @param value a String, or null
+     */
+    public void putString(String key, String value) {
+    }
+
+    /**
+     * Inserts a CharSequence value into the mapping of this Bundle, replacing
+     * any existing value for the given key.  Either key or value may be null.
+     *
+     * @param key a String, or null
+     * @param value a CharSequence, or null
+     */
+    void putCharSequence(String key, CharSequence value) {
+    }
+
+    /**
+     * Inserts an ArrayList<Integer> value into the mapping of this Bundle, replacing
+     * any existing value for the given key.  Either key or value may be null.
+     *
+     * @param key a String, or null
+     * @param value an ArrayList<Integer> object, or null
+     */
+    void putIntegerArrayList(String key, ArrayList<Integer> value) {
+    }
+
+    /**
+     * Inserts an ArrayList<String> value into the mapping of this Bundle, replacing
+     * any existing value for the given key.  Either key or value may be null.
+     *
+     * @param key a String, or null
+     * @param value an ArrayList<String> object, or null
+     */
+    void putStringArrayList(String key, ArrayList<String> value) {
+    }
+
+
+    /**
      * Inserts an ArrayList<CharSequence> value into the mapping of this Bundle,
      * replacing any existing value for the given key. Either key or value may be
      * null.

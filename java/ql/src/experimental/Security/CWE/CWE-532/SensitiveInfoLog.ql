@@ -9,21 +9,21 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.security.SensitiveActions
 import DataFlow
 import PathGraph
 
 /**
- * Gets a regular expression for matching names of variables that indicate the value being held is a credential
+ * Gets a regular expression for matching names of variables that indicate the value being held may contain sensitive information
  */
-private string getACredentialRegex() {
-  result = "(?i).*challenge|pass(wd|word|code|phrase)(?!.*question).*" or
-  result = "(?i)(.*username|.*secret|url).*"
-}
+private string getACredentialRegex() { result = "(?i)(.*username|url).*" }
 
 /** Variable keeps sensitive information judging by its name * */
 class CredentialExpr extends Expr {
   CredentialExpr() {
-    exists(Variable v | this = v.getAnAccess() | v.getName().regexpMatch(getACredentialRegex()))
+    exists(Variable v | this = v.getAnAccess() |
+      v.getName().regexpMatch([getCommonSensitiveInfoRegex(), getACredentialRegex()])
+    )
   }
 }
 

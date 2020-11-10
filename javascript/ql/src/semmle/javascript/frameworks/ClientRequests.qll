@@ -809,4 +809,19 @@ module ClientRequest {
 
     override DataFlow::Node getADataNode() { none() }
   }
+
+  /**
+   * A model of a URL request made using `jsdom.fromUrl()`.
+   */
+  class JSDOMFromUrl extends ClientRequest::Range {
+    JSDOMFromUrl() {
+      this = API::moduleImport("jsdom").getMember("JSDOM").getMember("fromURL").getACall()
+    }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() { none() }
+  }
 }

@@ -1446,12 +1446,23 @@ ssa.cpp:
 #  318|     r318_1(glval<bool>) = VariableAddress[c#init] : 
 #  318|     r318_2(bool)        = Load[c#init]            : &:r318_1, ~m315_2
 #  318|     v318_3(void)        = ConditionalBranch       : r318_2
-#-----|   False -> Block 2
-#-----|   True -> Block 1
+#-----|   False -> Block 1
+#-----|   True -> Block 2
 
-#  321|   Block 1
-#  321|     m321_1(int)         = Phi                      : from 0:~m315_2, from 2:m318_7
-#  321|     %m321_2(unknown)    = Phi                      : from 0:~m315_2, from 2:~m318_11
+#  318|   Block 1
+#  318|     r318_4(glval<int>) = VariableAddress[c] : 
+#  318|     r318_5(glval<int>) = VariableAddress[x] : 
+#  318|     r318_6(int)        = Load[x]            : &:r318_5, m315_4
+#  318|     m318_7(int)        = Store[c]           : &:r318_4, r318_6
+#  318|     %m318_8(unknown)   = Chi                : total:m315_2, partial:m318_7
+#  318|     r318_9(bool)       = Constant[1]        : 
+#  318|     m318_10(bool)      = Store[c#init]      : &:r318_1, r318_9
+#  318|     %m318_11(unknown)  = Chi                : total:m318_8, partial:m318_10
+#-----|   Goto -> Block 2
+
+#  321|   Block 2
+#  321|     m321_1(int)         = Phi                      : from 0:~m315_2, from 1:m318_7
+#  321|     %m321_2(unknown)    = Phi                      : from 0:~m315_2, from 1:~m318_11
 #  321|     r321_3(glval<int>)  = VariableAddress[#return] : 
 #  321|     r321_4(glval<int>)  = VariableAddress[a]       : 
 #  321|     r321_5(int)         = Load[a]                  : &:r321_4, ~m321_2
@@ -1469,14 +1480,3 @@ ssa.cpp:
 #  315|     v315_6(void)        = ReturnValue              : &:r315_5, m321_15
 #  315|     v315_7(void)        = AliasedUse               : ~m321_2
 #  315|     v315_8(void)        = ExitFunction             : 
-
-#  318|   Block 2
-#  318|     r318_4(glval<int>) = VariableAddress[c] : 
-#  318|     r318_5(glval<int>) = VariableAddress[x] : 
-#  318|     r318_6(int)        = Load[x]            : &:r318_5, m315_4
-#  318|     m318_7(int)        = Store[c]           : &:r318_4, r318_6
-#  318|     %m318_8(unknown)   = Chi                : total:m315_2, partial:m318_7
-#  318|     r318_9(bool)       = Constant[1]        : 
-#  318|     m318_10(bool)      = Store[c#init]      : &:r318_1, r318_9
-#  318|     %m318_11(unknown)  = Chi                : total:m318_8, partial:m318_10
-#-----|   Goto -> Block 1

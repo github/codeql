@@ -260,6 +260,12 @@
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
 | format.cpp:16:21:16:21 | s | format.cpp:22:22:22:22 | s |  |
 | format.cpp:16:31:16:31 | n | format.cpp:22:25:22:25 | n |  |
 | format.cpp:16:46:16:51 | format | format.cpp:22:28:22:33 | format |  |
@@ -2060,8 +2066,8 @@
 | movableclass.cpp:15:3:15:13 | ... = ... | movableclass.cpp:15:9:15:9 | v [post update] |  |
 | movableclass.cpp:15:13:15:13 | 0 | movableclass.cpp:15:3:15:13 | ... = ... |  |
 | movableclass.cpp:16:11:16:14 | this | movableclass.cpp:16:10:16:14 | * ... | TAINT |
-| movableclass.cpp:22:57:22:57 | 1 | movableclass.cpp:22:42:22:58 | call to MyMovableClass | TAINT |
-| movableclass.cpp:23:55:23:60 | call to source | movableclass.cpp:23:40:23:63 | call to MyMovableClass | TAINT |
+| movableclass.cpp:22:57:22:57 | 1 | movableclass.cpp:22:35:22:59 | call to MyMovableClass | TAINT |
+| movableclass.cpp:23:55:23:60 | call to source | movableclass.cpp:23:33:23:64 | call to MyMovableClass | TAINT |
 | movableclass.cpp:28:21:28:21 | 1 | movableclass.cpp:28:21:28:22 | call to MyMovableClass | TAINT |
 | movableclass.cpp:28:21:28:22 | call to MyMovableClass | movableclass.cpp:33:8:33:9 | s1 |  |
 | movableclass.cpp:29:22:29:23 | call to MyMovableClass | movableclass.cpp:34:8:34:9 | s2 |  |
@@ -2090,10 +2096,8 @@
 | movableclass.cpp:52:8:52:31 | call to MyMovableClass | movableclass.cpp:52:3:52:4 | ref arg s2 | TAINT |
 | movableclass.cpp:52:8:52:31 | call to MyMovableClass | movableclass.cpp:52:6:52:6 | call to operator= | TAINT |
 | movableclass.cpp:52:23:52:28 | call to source | movableclass.cpp:52:8:52:31 | call to MyMovableClass | TAINT |
-| movableclass.cpp:59:21:59:32 | call to getUnTainted | movableclass.cpp:59:21:59:35 | call to MyMovableClass |  |
-| movableclass.cpp:59:21:59:35 | call to MyMovableClass | movableclass.cpp:63:8:63:9 | s1 |  |
-| movableclass.cpp:60:21:60:30 | call to getTainted | movableclass.cpp:60:21:60:33 | call to MyMovableClass |  |
-| movableclass.cpp:60:21:60:33 | call to MyMovableClass | movableclass.cpp:64:8:64:9 | s2 |  |
+| movableclass.cpp:59:21:59:32 | call to getUnTainted | movableclass.cpp:63:8:63:9 | s1 |  |
+| movableclass.cpp:60:21:60:30 | call to getTainted | movableclass.cpp:64:8:64:9 | s2 |  |
 | movableclass.cpp:61:18:61:19 | call to MyMovableClass | movableclass.cpp:65:8:65:9 | s3 |  |
 | movableclass.cpp:65:13:65:18 | call to source | movableclass.cpp:65:13:65:20 | call to MyMovableClass | TAINT |
 | movableclass.cpp:65:13:65:20 | call to MyMovableClass | movableclass.cpp:65:8:65:9 | ref arg s3 | TAINT |
@@ -3145,147 +3149,166 @@
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:53:12:53:18 | source1 |  |
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:54:14:54:20 | source1 |  |
 | standalone_iterators.cpp:53:12:53:18 | ref arg source1 | standalone_iterators.cpp:54:14:54:20 | source1 |  |
-| stl.h:241:30:241:40 | call to allocator | stl.h:241:21:241:41 | noexcept(...) | TAINT |
-| stl.h:241:30:241:40 | call to allocator | stl.h:241:21:241:41 | noexcept(...) | TAINT |
-| stl.h:241:30:241:40 | call to allocator | stl.h:241:21:241:41 | noexcept(...) | TAINT |
-| stl.h:241:30:241:40 | call to allocator | stl.h:241:21:241:41 | noexcept(...) | TAINT |
-| stl.h:241:30:241:40 | call to allocator | stl.h:241:21:241:41 | noexcept(...) | TAINT |
-| stl.h:241:53:241:63 | 0 | stl.h:241:46:241:64 | (no string representation) | TAINT |
-| stl.h:334:9:334:9 | Unknown literal | stl.h:334:9:334:9 | constructor init of field first | TAINT |
-| stl.h:334:9:334:9 | Unknown literal | stl.h:334:9:334:9 | constructor init of field second | TAINT |
-| stl.h:334:9:334:9 | constructor init of field first [post-this] | stl.h:334:9:334:9 | constructor init of field second [pre-this] |  |
-| stl.h:334:9:334:9 | constructor init of field first [pre-this] | stl.h:334:9:334:9 | constructor init of field second [pre-this] |  |
-| stl.h:334:9:334:9 | this | stl.h:334:9:334:9 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:3 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:3:341:6 | this | stl.h:341:36:341:43 | constructor init of field first [pre-this] |  |
-| stl.h:341:18:341:18 | x | stl.h:341:18:341:18 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:18:341:18 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:18:341:18 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:18:341:18 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:18:341:18 | x | stl.h:341:42:341:42 | x |  |
-| stl.h:341:31:341:31 | y | stl.h:341:31:341:31 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:31:341:31 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:31:341:31 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:31:341:31 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:31:341:31 | y | stl.h:341:53:341:53 | y |  |
-| stl.h:341:36:341:43 | call to unknown function | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [post-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:36:341:43 | constructor init of field first [pre-this] | stl.h:341:46:341:54 | constructor init of field second [pre-this] |  |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:42:341:42 | x | stl.h:341:36:341:43 | constructor init of field first | TAINT |
-| stl.h:341:46:341:54 | call to unknown function | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:341:53:341:53 | y | stl.h:341:46:341:54 | constructor init of field second | TAINT |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:347:109:347:109 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:109:347:109 | x | stl.h:348:40:348:40 | x |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:347:117:347:117 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:347:117:347:117 | y | stl.h:348:61:348:61 | y |  |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:10:348:63 | call to pair | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:347:109:347:109 | x |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:347:109:347:109 | x |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:347:109:347:109 | x |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:347:109:347:109 | x |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:348:40:348:40 | x [inner post update] |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:348:40:348:40 | x [inner post update] |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:348:40:348:40 | x [inner post update] |  |
-| stl.h:348:23:348:38 | ref arg call to forward | stl.h:348:40:348:40 | x [inner post update] |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:40:348:40 | x | stl.h:348:23:348:38 | call to forward |  |
-| stl.h:348:44:348:59 | call to forward | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:44:348:59 | call to forward | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:347:117:347:117 | y |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:347:117:347:117 | y |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:347:117:347:117 | y |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:347:117:347:117 | y |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:348:61:348:61 | y [inner post update] |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:348:61:348:61 | y [inner post update] |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:348:61:348:61 | y [inner post update] |  |
-| stl.h:348:44:348:59 | ref arg call to forward | stl.h:348:61:348:61 | y [inner post update] |  |
-| stl.h:348:61:348:61 | y | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:61:348:61 | y | stl.h:348:10:348:63 | call to pair | TAINT |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
-| stl.h:348:61:348:61 | y | stl.h:348:44:348:59 | call to forward |  |
+| standalone_iterators.cpp:83:15:83:16 | call to container | standalone_iterators.cpp:85:35:85:36 | c1 |  |
+| standalone_iterators.cpp:83:15:83:16 | call to container | standalone_iterators.cpp:87:10:87:11 | c1 |  |
+| standalone_iterators.cpp:83:19:83:20 | call to container | standalone_iterators.cpp:89:35:89:36 | c2 |  |
+| standalone_iterators.cpp:83:19:83:20 | call to container | standalone_iterators.cpp:91:10:91:11 | c2 |  |
+| standalone_iterators.cpp:85:35:85:36 | c1 | standalone_iterators.cpp:85:38:85:42 | call to begin | TAINT |
+| standalone_iterators.cpp:85:35:85:36 | ref arg c1 | standalone_iterators.cpp:87:10:87:11 | c1 |  |
+| standalone_iterators.cpp:85:38:85:42 | call to begin | standalone_iterators.cpp:86:6:86:7 | i1 |  |
+| standalone_iterators.cpp:86:5:86:5 | ref arg call to operator* | standalone_iterators.cpp:86:8:86:8 | ref arg call to operator-- | TAINT |
+| standalone_iterators.cpp:86:5:86:5 | ref arg call to operator* | standalone_iterators.cpp:87:10:87:11 | c1 |  |
+| standalone_iterators.cpp:86:6:86:7 | i1 | standalone_iterators.cpp:86:8:86:8 | call to operator-- |  |
+| standalone_iterators.cpp:86:8:86:8 | call to operator-- | standalone_iterators.cpp:86:5:86:5 | call to operator* | TAINT |
+| standalone_iterators.cpp:86:8:86:8 | ref arg call to operator-- | standalone_iterators.cpp:86:6:86:7 | ref arg i1 |  |
+| standalone_iterators.cpp:86:13:86:18 | call to source | standalone_iterators.cpp:86:5:86:5 | ref arg call to operator* | TAINT |
+| standalone_iterators.cpp:89:35:89:36 | c2 | standalone_iterators.cpp:89:38:89:42 | call to begin | TAINT |
+| standalone_iterators.cpp:89:35:89:36 | ref arg c2 | standalone_iterators.cpp:91:10:91:11 | c2 |  |
+| standalone_iterators.cpp:89:38:89:42 | call to begin | standalone_iterators.cpp:90:6:90:7 | i2 |  |
+| standalone_iterators.cpp:90:5:90:5 | ref arg call to operator* | standalone_iterators.cpp:90:8:90:8 | ref arg call to operator-- | TAINT |
+| standalone_iterators.cpp:90:5:90:5 | ref arg call to operator* | standalone_iterators.cpp:91:10:91:11 | c2 |  |
+| standalone_iterators.cpp:90:6:90:7 | i2 | standalone_iterators.cpp:90:8:90:8 | call to operator-- |  |
+| standalone_iterators.cpp:90:8:90:8 | call to operator-- | standalone_iterators.cpp:90:5:90:5 | call to operator* | TAINT |
+| standalone_iterators.cpp:90:8:90:8 | ref arg call to operator-- | standalone_iterators.cpp:90:6:90:7 | ref arg i2 |  |
+| standalone_iterators.cpp:90:13:90:13 | 0 | standalone_iterators.cpp:90:5:90:5 | ref arg call to operator* | TAINT |
+| stl.h:75:8:75:8 | Unknown literal | stl.h:75:8:75:8 | constructor init of field container | TAINT |
+| stl.h:75:8:75:8 | Unknown literal | stl.h:75:8:75:8 | constructor init of field container | TAINT |
+| stl.h:75:8:75:8 | this | stl.h:75:8:75:8 | constructor init of field container [pre-this] |  |
+| stl.h:75:8:75:8 | this | stl.h:75:8:75:8 | constructor init of field container [pre-this] |  |
+| stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
+| stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
+| stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
+| stl.h:95:69:95:69 | x | stl.h:96:42:96:42 | x |  |
+| stl.h:95:69:95:69 | x | stl.h:96:42:96:42 | x |  |
+| stl.h:95:69:95:69 | x | stl.h:96:42:96:42 | x |  |
+| stl.h:96:42:96:42 | ref arg x | stl.h:95:69:95:69 | x |  |
+| stl.h:96:42:96:42 | ref arg x | stl.h:95:69:95:69 | x |  |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
+| stl.h:292:53:292:63 | 0 | stl.h:292:46:292:64 | (no string representation) | TAINT |
+| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field first | TAINT |
+| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field first | TAINT |
+| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field first | TAINT |
+| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field first | TAINT |
+| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field first | TAINT |
+| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field second | TAINT |
+| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field second | TAINT |
+| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field second | TAINT |
+| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field second | TAINT |
+| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field second | TAINT |
+| stl.h:388:9:388:9 | constructor init of field first [post-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
+| stl.h:388:9:388:9 | constructor init of field first [post-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
+| stl.h:388:9:388:9 | constructor init of field first [post-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
+| stl.h:388:9:388:9 | constructor init of field first [post-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
+| stl.h:388:9:388:9 | constructor init of field first [post-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
+| stl.h:388:9:388:9 | constructor init of field first [pre-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
+| stl.h:388:9:388:9 | constructor init of field first [pre-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
+| stl.h:388:9:388:9 | constructor init of field first [pre-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
+| stl.h:388:9:388:9 | constructor init of field first [pre-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
+| stl.h:388:9:388:9 | constructor init of field first [pre-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
+| stl.h:388:9:388:9 | this | stl.h:388:9:388:9 | constructor init of field first [pre-this] |  |
+| stl.h:388:9:388:9 | this | stl.h:388:9:388:9 | constructor init of field first [pre-this] |  |
+| stl.h:388:9:388:9 | this | stl.h:388:9:388:9 | constructor init of field first [pre-this] |  |
+| stl.h:388:9:388:9 | this | stl.h:388:9:388:9 | constructor init of field first [pre-this] |  |
+| stl.h:388:9:388:9 | this | stl.h:388:9:388:9 | constructor init of field first [pre-this] |  |
+| stl.h:395:3:395:3 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
+| stl.h:395:3:395:3 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
+| stl.h:395:3:395:3 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
+| stl.h:395:3:395:3 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
+| stl.h:395:3:395:3 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
+| stl.h:395:3:395:6 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
+| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
+| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
+| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
+| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
+| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
+| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
+| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
+| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
+| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
+| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
+| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
+| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
+| stl.h:395:36:395:43 | call to unknown function | stl.h:395:36:395:43 | constructor init of field first | TAINT |
+| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
+| stl.h:395:42:395:42 | x | stl.h:395:36:395:43 | constructor init of field first | TAINT |
+| stl.h:395:42:395:42 | x | stl.h:395:36:395:43 | constructor init of field first | TAINT |
+| stl.h:395:42:395:42 | x | stl.h:395:36:395:43 | constructor init of field first | TAINT |
+| stl.h:395:42:395:42 | x | stl.h:395:36:395:43 | constructor init of field first | TAINT |
+| stl.h:395:42:395:42 | x | stl.h:395:36:395:43 | constructor init of field first | TAINT |
+| stl.h:395:46:395:54 | call to unknown function | stl.h:395:46:395:54 | constructor init of field second | TAINT |
+| stl.h:395:53:395:53 | y | stl.h:395:46:395:54 | constructor init of field second | TAINT |
+| stl.h:395:53:395:53 | y | stl.h:395:46:395:54 | constructor init of field second | TAINT |
+| stl.h:395:53:395:53 | y | stl.h:395:46:395:54 | constructor init of field second | TAINT |
+| stl.h:395:53:395:53 | y | stl.h:395:46:395:54 | constructor init of field second | TAINT |
+| stl.h:395:53:395:53 | y | stl.h:395:46:395:54 | constructor init of field second | TAINT |
+| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
+| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
+| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
+| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
+| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
+| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
+| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
+| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
+| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
+| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
+| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
+| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
+| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
+| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
+| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
+| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
+| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
 | string.cpp:25:12:25:17 | call to source | string.cpp:29:7:29:7 | a |  |
 | string.cpp:26:16:26:20 | 123 | string.cpp:26:16:26:21 | call to basic_string | TAINT |
 | string.cpp:26:16:26:21 | call to basic_string | string.cpp:30:7:30:7 | b |  |
@@ -5023,16 +5046,10 @@
 | swap1.cpp:56:30:56:34 | data1 | swap1.cpp:56:18:56:22 | ref arg data1 |  |
 | swap1.cpp:61:22:61:22 | x | swap1.cpp:61:22:61:22 | x |  |
 | swap1.cpp:61:22:61:22 | x | swap1.cpp:63:9:63:9 | x |  |
-| swap1.cpp:61:22:61:22 | x | swap2.cpp:61:22:61:22 | x |  |
-| swap1.cpp:61:22:61:22 | x | swap2.cpp:63:9:63:9 | x |  |
 | swap1.cpp:61:32:61:32 | y | swap1.cpp:61:32:61:32 | y |  |
 | swap1.cpp:61:32:61:32 | y | swap1.cpp:63:16:63:16 | y |  |
-| swap1.cpp:61:32:61:32 | y | swap2.cpp:61:32:61:32 | y |  |
-| swap1.cpp:61:32:61:32 | y | swap2.cpp:63:16:63:16 | y |  |
 | swap1.cpp:63:9:63:9 | ref arg x | swap1.cpp:61:22:61:22 | x |  |
-| swap1.cpp:63:9:63:9 | ref arg x | swap2.cpp:61:22:61:22 | x |  |
 | swap1.cpp:63:16:63:16 | ref arg y | swap1.cpp:61:32:61:32 | y |  |
-| swap1.cpp:63:16:63:16 | ref arg y | swap2.cpp:61:32:61:32 | y |  |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:71:5:71:5 | x |  |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:73:10:73:10 | x |  |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:76:9:76:9 | x |  |
@@ -5193,17 +5210,11 @@
 | swap2.cpp:56:50:56:53 | that | swap2.cpp:56:43:56:47 | ref arg data2 |  |
 | swap2.cpp:56:50:56:53 | that [post update] | swap2.cpp:53:26:53:29 | that |  |
 | swap2.cpp:56:55:56:59 | data2 | swap2.cpp:56:43:56:47 | ref arg data2 |  |
-| swap2.cpp:61:22:61:22 | x | swap1.cpp:61:22:61:22 | x |  |
-| swap2.cpp:61:22:61:22 | x | swap1.cpp:63:9:63:9 | x |  |
 | swap2.cpp:61:22:61:22 | x | swap2.cpp:61:22:61:22 | x |  |
 | swap2.cpp:61:22:61:22 | x | swap2.cpp:63:9:63:9 | x |  |
-| swap2.cpp:61:32:61:32 | y | swap1.cpp:61:32:61:32 | y |  |
-| swap2.cpp:61:32:61:32 | y | swap1.cpp:63:16:63:16 | y |  |
 | swap2.cpp:61:32:61:32 | y | swap2.cpp:61:32:61:32 | y |  |
 | swap2.cpp:61:32:61:32 | y | swap2.cpp:63:16:63:16 | y |  |
-| swap2.cpp:63:9:63:9 | ref arg x | swap1.cpp:61:22:61:22 | x |  |
 | swap2.cpp:63:9:63:9 | ref arg x | swap2.cpp:61:22:61:22 | x |  |
-| swap2.cpp:63:16:63:16 | ref arg y | swap1.cpp:61:32:61:32 | y |  |
 | swap2.cpp:63:16:63:16 | ref arg y | swap2.cpp:61:32:61:32 | y |  |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:71:5:71:5 | x |  |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:73:10:73:10 | x |  |
@@ -6794,66 +6805,75 @@
 | vector.cpp:337:38:337:38 | b | vector.cpp:372:5:372:5 | b |  |
 | vector.cpp:338:22:338:24 | call to vector | vector.cpp:340:34:340:35 | v1 |  |
 | vector.cpp:338:22:338:24 | call to vector | vector.cpp:342:7:342:8 | v1 |  |
-| vector.cpp:338:22:338:24 | call to vector | vector.cpp:401:1:401:1 | v1 |  |
+| vector.cpp:338:22:338:24 | call to vector | vector.cpp:415:1:415:1 | v1 |  |
 | vector.cpp:338:30:338:32 | call to vector | vector.cpp:344:38:344:39 | v2 |  |
 | vector.cpp:338:30:338:32 | call to vector | vector.cpp:344:56:344:57 | v2 |  |
 | vector.cpp:338:30:338:32 | call to vector | vector.cpp:347:7:347:8 | v2 |  |
-| vector.cpp:338:30:338:32 | call to vector | vector.cpp:401:1:401:1 | v2 |  |
+| vector.cpp:338:30:338:32 | call to vector | vector.cpp:415:1:415:1 | v2 |  |
 | vector.cpp:338:38:338:40 | call to vector | vector.cpp:349:15:349:16 | v3 |  |
 | vector.cpp:338:38:338:40 | call to vector | vector.cpp:352:7:352:8 | v3 |  |
-| vector.cpp:338:38:338:40 | call to vector | vector.cpp:401:1:401:1 | v3 |  |
+| vector.cpp:338:38:338:40 | call to vector | vector.cpp:415:1:415:1 | v3 |  |
 | vector.cpp:338:46:338:48 | call to vector | vector.cpp:354:38:354:39 | v4 |  |
 | vector.cpp:338:46:338:48 | call to vector | vector.cpp:354:56:354:57 | v4 |  |
 | vector.cpp:338:46:338:48 | call to vector | vector.cpp:357:7:357:8 | v4 |  |
-| vector.cpp:338:46:338:48 | call to vector | vector.cpp:401:1:401:1 | v4 |  |
+| vector.cpp:338:46:338:48 | call to vector | vector.cpp:415:1:415:1 | v4 |  |
 | vector.cpp:338:54:338:56 | call to vector | vector.cpp:359:34:359:35 | v5 |  |
 | vector.cpp:338:54:338:56 | call to vector | vector.cpp:361:7:361:8 | v5 |  |
 | vector.cpp:338:54:338:56 | call to vector | vector.cpp:363:7:363:8 | v5 |  |
-| vector.cpp:338:54:338:56 | call to vector | vector.cpp:401:1:401:1 | v5 |  |
+| vector.cpp:338:54:338:56 | call to vector | vector.cpp:415:1:415:1 | v5 |  |
 | vector.cpp:338:62:338:64 | call to vector | vector.cpp:365:34:365:35 | v6 |  |
 | vector.cpp:338:62:338:64 | call to vector | vector.cpp:367:7:367:8 | v6 |  |
 | vector.cpp:338:62:338:64 | call to vector | vector.cpp:368:2:368:3 | v6 |  |
 | vector.cpp:338:62:338:64 | call to vector | vector.cpp:369:7:369:8 | v6 |  |
-| vector.cpp:338:62:338:64 | call to vector | vector.cpp:401:1:401:1 | v6 |  |
+| vector.cpp:338:62:338:64 | call to vector | vector.cpp:415:1:415:1 | v6 |  |
 | vector.cpp:338:70:338:72 | call to vector | vector.cpp:371:34:371:35 | v7 |  |
 | vector.cpp:338:70:338:72 | call to vector | vector.cpp:374:8:374:9 | v7 |  |
 | vector.cpp:338:70:338:72 | call to vector | vector.cpp:377:8:377:9 | v7 |  |
 | vector.cpp:338:70:338:72 | call to vector | vector.cpp:379:7:379:8 | v7 |  |
-| vector.cpp:338:70:338:72 | call to vector | vector.cpp:401:1:401:1 | v7 |  |
+| vector.cpp:338:70:338:72 | call to vector | vector.cpp:415:1:415:1 | v7 |  |
 | vector.cpp:338:78:338:80 | call to vector | vector.cpp:381:34:381:35 | v8 |  |
 | vector.cpp:338:78:338:80 | call to vector | vector.cpp:383:7:383:8 | v8 |  |
 | vector.cpp:338:78:338:80 | call to vector | vector.cpp:385:7:385:8 | v8 |  |
-| vector.cpp:338:78:338:80 | call to vector | vector.cpp:401:1:401:1 | v8 |  |
+| vector.cpp:338:78:338:80 | call to vector | vector.cpp:415:1:415:1 | v8 |  |
 | vector.cpp:338:86:338:88 | call to vector | vector.cpp:387:34:387:35 | v9 |  |
 | vector.cpp:338:86:338:88 | call to vector | vector.cpp:392:7:392:8 | v9 |  |
-| vector.cpp:338:86:338:88 | call to vector | vector.cpp:401:1:401:1 | v9 |  |
+| vector.cpp:338:86:338:88 | call to vector | vector.cpp:415:1:415:1 | v9 |  |
 | vector.cpp:338:95:338:97 | call to vector | vector.cpp:394:35:394:37 | v10 |  |
 | vector.cpp:338:95:338:97 | call to vector | vector.cpp:396:7:396:9 | v10 |  |
-| vector.cpp:338:95:338:97 | call to vector | vector.cpp:401:1:401:1 | v10 |  |
+| vector.cpp:338:95:338:97 | call to vector | vector.cpp:415:1:415:1 | v10 |  |
 | vector.cpp:338:104:338:106 | call to vector | vector.cpp:398:35:398:37 | v11 |  |
 | vector.cpp:338:104:338:106 | call to vector | vector.cpp:400:7:400:9 | v11 |  |
-| vector.cpp:338:104:338:106 | call to vector | vector.cpp:401:1:401:1 | v11 |  |
+| vector.cpp:338:104:338:106 | call to vector | vector.cpp:415:1:415:1 | v11 |  |
+| vector.cpp:338:113:338:115 | call to vector | vector.cpp:402:35:402:37 | v12 |  |
+| vector.cpp:338:113:338:115 | call to vector | vector.cpp:405:7:405:9 | v12 |  |
+| vector.cpp:338:113:338:115 | call to vector | vector.cpp:415:1:415:1 | v12 |  |
+| vector.cpp:338:122:338:124 | call to vector | vector.cpp:407:35:407:37 | v13 |  |
+| vector.cpp:338:122:338:124 | call to vector | vector.cpp:409:7:409:9 | v13 |  |
+| vector.cpp:338:122:338:124 | call to vector | vector.cpp:415:1:415:1 | v13 |  |
+| vector.cpp:338:131:338:133 | call to vector | vector.cpp:411:35:411:37 | v14 |  |
+| vector.cpp:338:131:338:133 | call to vector | vector.cpp:414:7:414:9 | v14 |  |
+| vector.cpp:338:131:338:133 | call to vector | vector.cpp:415:1:415:1 | v14 |  |
 | vector.cpp:340:34:340:35 | ref arg v1 | vector.cpp:342:7:342:8 | v1 |  |
-| vector.cpp:340:34:340:35 | ref arg v1 | vector.cpp:401:1:401:1 | v1 |  |
+| vector.cpp:340:34:340:35 | ref arg v1 | vector.cpp:415:1:415:1 | v1 |  |
 | vector.cpp:340:34:340:35 | v1 | vector.cpp:340:37:340:41 | call to begin | TAINT |
 | vector.cpp:340:37:340:41 | call to begin | vector.cpp:341:3:341:4 | i1 |  |
 | vector.cpp:341:2:341:2 | call to operator* [post update] | vector.cpp:342:7:342:8 | v1 |  |
-| vector.cpp:341:2:341:2 | call to operator* [post update] | vector.cpp:401:1:401:1 | v1 |  |
+| vector.cpp:341:2:341:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v1 |  |
 | vector.cpp:341:2:341:15 | ... = ... | vector.cpp:341:2:341:2 | call to operator* [post update] |  |
 | vector.cpp:341:3:341:4 | i1 | vector.cpp:341:2:341:2 | call to operator* | TAINT |
 | vector.cpp:341:8:341:13 | call to source | vector.cpp:341:2:341:2 | call to operator* [post update] | TAINT |
 | vector.cpp:341:8:341:13 | call to source | vector.cpp:341:2:341:15 | ... = ... |  |
-| vector.cpp:342:7:342:8 | ref arg v1 | vector.cpp:401:1:401:1 | v1 |  |
+| vector.cpp:342:7:342:8 | ref arg v1 | vector.cpp:415:1:415:1 | v1 |  |
 | vector.cpp:344:38:344:39 | ref arg v2 | vector.cpp:344:56:344:57 | v2 |  |
 | vector.cpp:344:38:344:39 | ref arg v2 | vector.cpp:347:7:347:8 | v2 |  |
-| vector.cpp:344:38:344:39 | ref arg v2 | vector.cpp:401:1:401:1 | v2 |  |
+| vector.cpp:344:38:344:39 | ref arg v2 | vector.cpp:415:1:415:1 | v2 |  |
 | vector.cpp:344:38:344:39 | v2 | vector.cpp:344:41:344:45 | call to begin | TAINT |
 | vector.cpp:344:41:344:45 | call to begin | vector.cpp:344:50:344:51 | it |  |
 | vector.cpp:344:41:344:45 | call to begin | vector.cpp:344:68:344:69 | it |  |
 | vector.cpp:344:41:344:45 | call to begin | vector.cpp:345:4:345:5 | it |  |
 | vector.cpp:344:56:344:57 | ref arg v2 | vector.cpp:344:56:344:57 | v2 |  |
 | vector.cpp:344:56:344:57 | ref arg v2 | vector.cpp:347:7:347:8 | v2 |  |
-| vector.cpp:344:56:344:57 | ref arg v2 | vector.cpp:401:1:401:1 | v2 |  |
+| vector.cpp:344:56:344:57 | ref arg v2 | vector.cpp:415:1:415:1 | v2 |  |
 | vector.cpp:344:56:344:57 | v2 | vector.cpp:344:59:344:61 | call to end | TAINT |
 | vector.cpp:344:68:344:69 | it | vector.cpp:344:66:344:66 | call to operator++ |  |
 | vector.cpp:344:68:344:69 | ref arg it | vector.cpp:344:50:344:51 | it |  |
@@ -6861,12 +6881,12 @@
 | vector.cpp:344:68:344:69 | ref arg it | vector.cpp:345:4:345:5 | it |  |
 | vector.cpp:345:3:345:3 | call to operator* [post update] | vector.cpp:344:56:344:57 | v2 |  |
 | vector.cpp:345:3:345:3 | call to operator* [post update] | vector.cpp:347:7:347:8 | v2 |  |
-| vector.cpp:345:3:345:3 | call to operator* [post update] | vector.cpp:401:1:401:1 | v2 |  |
+| vector.cpp:345:3:345:3 | call to operator* [post update] | vector.cpp:415:1:415:1 | v2 |  |
 | vector.cpp:345:3:345:16 | ... = ... | vector.cpp:345:3:345:3 | call to operator* [post update] |  |
 | vector.cpp:345:4:345:5 | it | vector.cpp:345:3:345:3 | call to operator* | TAINT |
 | vector.cpp:345:9:345:14 | call to source | vector.cpp:345:3:345:3 | call to operator* [post update] | TAINT |
 | vector.cpp:345:9:345:14 | call to source | vector.cpp:345:3:345:16 | ... = ... |  |
-| vector.cpp:347:7:347:8 | ref arg v2 | vector.cpp:401:1:401:1 | v2 |  |
+| vector.cpp:347:7:347:8 | ref arg v2 | vector.cpp:415:1:415:1 | v2 |  |
 | vector.cpp:349:15:349:15 | (__begin) | vector.cpp:349:15:349:15 | call to operator* | TAINT |
 | vector.cpp:349:15:349:15 | (__begin) | vector.cpp:349:15:349:15 | call to operator++ |  |
 | vector.cpp:349:15:349:15 | (__end) | vector.cpp:349:15:349:15 | call to iterator |  |
@@ -6885,17 +6905,17 @@
 | vector.cpp:349:15:349:16 | v3 | vector.cpp:349:15:349:15 | call to operator* | TAINT |
 | vector.cpp:350:3:350:14 | ... = ... | vector.cpp:350:3:350:3 | x [post update] |  |
 | vector.cpp:350:7:350:12 | call to source | vector.cpp:350:3:350:14 | ... = ... |  |
-| vector.cpp:352:7:352:8 | ref arg v3 | vector.cpp:401:1:401:1 | v3 |  |
+| vector.cpp:352:7:352:8 | ref arg v3 | vector.cpp:415:1:415:1 | v3 |  |
 | vector.cpp:354:38:354:39 | ref arg v4 | vector.cpp:354:56:354:57 | v4 |  |
 | vector.cpp:354:38:354:39 | ref arg v4 | vector.cpp:357:7:357:8 | v4 |  |
-| vector.cpp:354:38:354:39 | ref arg v4 | vector.cpp:401:1:401:1 | v4 |  |
+| vector.cpp:354:38:354:39 | ref arg v4 | vector.cpp:415:1:415:1 | v4 |  |
 | vector.cpp:354:38:354:39 | v4 | vector.cpp:354:41:354:45 | call to begin | TAINT |
 | vector.cpp:354:41:354:45 | call to begin | vector.cpp:354:50:354:51 | it |  |
 | vector.cpp:354:41:354:45 | call to begin | vector.cpp:354:68:354:69 | it |  |
 | vector.cpp:354:41:354:45 | call to begin | vector.cpp:355:32:355:33 | it |  |
 | vector.cpp:354:56:354:57 | ref arg v4 | vector.cpp:354:56:354:57 | v4 |  |
 | vector.cpp:354:56:354:57 | ref arg v4 | vector.cpp:357:7:357:8 | v4 |  |
-| vector.cpp:354:56:354:57 | ref arg v4 | vector.cpp:401:1:401:1 | v4 |  |
+| vector.cpp:354:56:354:57 | ref arg v4 | vector.cpp:415:1:415:1 | v4 |  |
 | vector.cpp:354:56:354:57 | v4 | vector.cpp:354:59:354:61 | call to end | TAINT |
 | vector.cpp:354:68:354:69 | it | vector.cpp:354:66:354:66 | call to operator++ |  |
 | vector.cpp:354:68:354:69 | ref arg it | vector.cpp:354:50:354:51 | it |  |
@@ -6903,138 +6923,332 @@
 | vector.cpp:354:68:354:69 | ref arg it | vector.cpp:355:32:355:33 | it |  |
 | vector.cpp:355:32:355:33 | call to iterator [post update] | vector.cpp:354:56:354:57 | v4 |  |
 | vector.cpp:355:32:355:33 | call to iterator [post update] | vector.cpp:357:7:357:8 | v4 |  |
-| vector.cpp:355:32:355:33 | call to iterator [post update] | vector.cpp:401:1:401:1 | v4 |  |
+| vector.cpp:355:32:355:33 | call to iterator [post update] | vector.cpp:415:1:415:1 | v4 |  |
 | vector.cpp:355:32:355:33 | it | vector.cpp:355:32:355:33 | call to iterator |  |
 | vector.cpp:355:32:355:33 | it [post update] | vector.cpp:354:56:354:57 | v4 |  |
 | vector.cpp:355:32:355:33 | it [post update] | vector.cpp:357:7:357:8 | v4 |  |
-| vector.cpp:355:32:355:33 | it [post update] | vector.cpp:401:1:401:1 | v4 |  |
-| vector.cpp:357:7:357:8 | ref arg v4 | vector.cpp:401:1:401:1 | v4 |  |
+| vector.cpp:355:32:355:33 | it [post update] | vector.cpp:415:1:415:1 | v4 |  |
+| vector.cpp:357:7:357:8 | ref arg v4 | vector.cpp:415:1:415:1 | v4 |  |
 | vector.cpp:359:34:359:35 | ref arg v5 | vector.cpp:361:7:361:8 | v5 |  |
 | vector.cpp:359:34:359:35 | ref arg v5 | vector.cpp:363:7:363:8 | v5 |  |
-| vector.cpp:359:34:359:35 | ref arg v5 | vector.cpp:401:1:401:1 | v5 |  |
+| vector.cpp:359:34:359:35 | ref arg v5 | vector.cpp:415:1:415:1 | v5 |  |
 | vector.cpp:359:34:359:35 | v5 | vector.cpp:359:37:359:41 | call to begin | TAINT |
 | vector.cpp:359:37:359:41 | call to begin | vector.cpp:360:3:360:4 | i5 |  |
 | vector.cpp:359:37:359:41 | call to begin | vector.cpp:362:3:362:4 | i5 |  |
 | vector.cpp:360:2:360:2 | call to operator* [post update] | vector.cpp:361:7:361:8 | v5 |  |
 | vector.cpp:360:2:360:2 | call to operator* [post update] | vector.cpp:363:7:363:8 | v5 |  |
-| vector.cpp:360:2:360:2 | call to operator* [post update] | vector.cpp:401:1:401:1 | v5 |  |
+| vector.cpp:360:2:360:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v5 |  |
 | vector.cpp:360:2:360:15 | ... = ... | vector.cpp:360:2:360:2 | call to operator* [post update] |  |
 | vector.cpp:360:3:360:4 | i5 | vector.cpp:360:2:360:2 | call to operator* | TAINT |
 | vector.cpp:360:8:360:13 | call to source | vector.cpp:360:2:360:2 | call to operator* [post update] | TAINT |
 | vector.cpp:360:8:360:13 | call to source | vector.cpp:360:2:360:15 | ... = ... |  |
 | vector.cpp:361:7:361:8 | ref arg v5 | vector.cpp:363:7:363:8 | v5 |  |
-| vector.cpp:361:7:361:8 | ref arg v5 | vector.cpp:401:1:401:1 | v5 |  |
+| vector.cpp:361:7:361:8 | ref arg v5 | vector.cpp:415:1:415:1 | v5 |  |
 | vector.cpp:362:2:362:2 | call to operator* [post update] | vector.cpp:363:7:363:8 | v5 |  |
-| vector.cpp:362:2:362:2 | call to operator* [post update] | vector.cpp:401:1:401:1 | v5 |  |
+| vector.cpp:362:2:362:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v5 |  |
 | vector.cpp:362:2:362:8 | ... = ... | vector.cpp:362:2:362:2 | call to operator* [post update] |  |
 | vector.cpp:362:3:362:4 | i5 | vector.cpp:362:2:362:2 | call to operator* | TAINT |
 | vector.cpp:362:8:362:8 | 1 | vector.cpp:362:2:362:2 | call to operator* [post update] | TAINT |
 | vector.cpp:362:8:362:8 | 1 | vector.cpp:362:2:362:8 | ... = ... |  |
-| vector.cpp:363:7:363:8 | ref arg v5 | vector.cpp:401:1:401:1 | v5 |  |
+| vector.cpp:363:7:363:8 | ref arg v5 | vector.cpp:415:1:415:1 | v5 |  |
 | vector.cpp:365:34:365:35 | ref arg v6 | vector.cpp:367:7:367:8 | v6 |  |
 | vector.cpp:365:34:365:35 | ref arg v6 | vector.cpp:368:2:368:3 | v6 |  |
 | vector.cpp:365:34:365:35 | ref arg v6 | vector.cpp:369:7:369:8 | v6 |  |
-| vector.cpp:365:34:365:35 | ref arg v6 | vector.cpp:401:1:401:1 | v6 |  |
+| vector.cpp:365:34:365:35 | ref arg v6 | vector.cpp:415:1:415:1 | v6 |  |
 | vector.cpp:365:34:365:35 | v6 | vector.cpp:365:37:365:41 | call to begin | TAINT |
 | vector.cpp:365:37:365:41 | call to begin | vector.cpp:366:3:366:4 | i6 |  |
 | vector.cpp:366:2:366:2 | call to operator* [post update] | vector.cpp:367:7:367:8 | v6 |  |
 | vector.cpp:366:2:366:2 | call to operator* [post update] | vector.cpp:368:2:368:3 | v6 |  |
 | vector.cpp:366:2:366:2 | call to operator* [post update] | vector.cpp:369:7:369:8 | v6 |  |
-| vector.cpp:366:2:366:2 | call to operator* [post update] | vector.cpp:401:1:401:1 | v6 |  |
+| vector.cpp:366:2:366:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v6 |  |
 | vector.cpp:366:2:366:15 | ... = ... | vector.cpp:366:2:366:2 | call to operator* [post update] |  |
 | vector.cpp:366:3:366:4 | i6 | vector.cpp:366:2:366:2 | call to operator* | TAINT |
 | vector.cpp:366:8:366:13 | call to source | vector.cpp:366:2:366:2 | call to operator* [post update] | TAINT |
 | vector.cpp:366:8:366:13 | call to source | vector.cpp:366:2:366:15 | ... = ... |  |
 | vector.cpp:367:7:367:8 | ref arg v6 | vector.cpp:368:2:368:3 | v6 |  |
 | vector.cpp:367:7:367:8 | ref arg v6 | vector.cpp:369:7:369:8 | v6 |  |
-| vector.cpp:367:7:367:8 | ref arg v6 | vector.cpp:401:1:401:1 | v6 |  |
+| vector.cpp:367:7:367:8 | ref arg v6 | vector.cpp:415:1:415:1 | v6 |  |
 | vector.cpp:368:2:368:3 | ref arg v6 | vector.cpp:369:7:369:8 | v6 |  |
-| vector.cpp:368:2:368:3 | ref arg v6 | vector.cpp:401:1:401:1 | v6 |  |
+| vector.cpp:368:2:368:3 | ref arg v6 | vector.cpp:415:1:415:1 | v6 |  |
 | vector.cpp:368:7:368:26 | call to vector | vector.cpp:368:2:368:3 | ref arg v6 | TAINT |
 | vector.cpp:368:7:368:26 | call to vector | vector.cpp:368:5:368:5 | call to operator= | TAINT |
-| vector.cpp:369:7:369:8 | ref arg v6 | vector.cpp:401:1:401:1 | v6 |  |
+| vector.cpp:369:7:369:8 | ref arg v6 | vector.cpp:415:1:415:1 | v6 |  |
 | vector.cpp:371:34:371:35 | ref arg v7 | vector.cpp:374:8:374:9 | v7 |  |
 | vector.cpp:371:34:371:35 | ref arg v7 | vector.cpp:377:8:377:9 | v7 |  |
 | vector.cpp:371:34:371:35 | ref arg v7 | vector.cpp:379:7:379:8 | v7 |  |
-| vector.cpp:371:34:371:35 | ref arg v7 | vector.cpp:401:1:401:1 | v7 |  |
+| vector.cpp:371:34:371:35 | ref arg v7 | vector.cpp:415:1:415:1 | v7 |  |
 | vector.cpp:371:34:371:35 | v7 | vector.cpp:371:37:371:41 | call to begin | TAINT |
 | vector.cpp:371:37:371:41 | call to begin | vector.cpp:373:4:373:5 | i7 |  |
 | vector.cpp:371:37:371:41 | call to begin | vector.cpp:376:4:376:5 | i7 |  |
 | vector.cpp:373:3:373:3 | call to operator* [post update] | vector.cpp:374:8:374:9 | v7 |  |
 | vector.cpp:373:3:373:3 | call to operator* [post update] | vector.cpp:379:7:379:8 | v7 |  |
-| vector.cpp:373:3:373:3 | call to operator* [post update] | vector.cpp:401:1:401:1 | v7 |  |
+| vector.cpp:373:3:373:3 | call to operator* [post update] | vector.cpp:415:1:415:1 | v7 |  |
 | vector.cpp:373:3:373:16 | ... = ... | vector.cpp:373:3:373:3 | call to operator* [post update] |  |
 | vector.cpp:373:4:373:5 | i7 | vector.cpp:373:3:373:3 | call to operator* | TAINT |
 | vector.cpp:373:9:373:14 | call to source | vector.cpp:373:3:373:3 | call to operator* [post update] | TAINT |
 | vector.cpp:373:9:373:14 | call to source | vector.cpp:373:3:373:16 | ... = ... |  |
 | vector.cpp:374:8:374:9 | ref arg v7 | vector.cpp:379:7:379:8 | v7 |  |
-| vector.cpp:374:8:374:9 | ref arg v7 | vector.cpp:401:1:401:1 | v7 |  |
+| vector.cpp:374:8:374:9 | ref arg v7 | vector.cpp:415:1:415:1 | v7 |  |
 | vector.cpp:376:3:376:3 | call to operator* [post update] | vector.cpp:377:8:377:9 | v7 |  |
 | vector.cpp:376:3:376:3 | call to operator* [post update] | vector.cpp:379:7:379:8 | v7 |  |
-| vector.cpp:376:3:376:3 | call to operator* [post update] | vector.cpp:401:1:401:1 | v7 |  |
+| vector.cpp:376:3:376:3 | call to operator* [post update] | vector.cpp:415:1:415:1 | v7 |  |
 | vector.cpp:376:3:376:9 | ... = ... | vector.cpp:376:3:376:3 | call to operator* [post update] |  |
 | vector.cpp:376:4:376:5 | i7 | vector.cpp:376:3:376:3 | call to operator* | TAINT |
 | vector.cpp:376:9:376:9 | 1 | vector.cpp:376:3:376:3 | call to operator* [post update] | TAINT |
 | vector.cpp:376:9:376:9 | 1 | vector.cpp:376:3:376:9 | ... = ... |  |
 | vector.cpp:377:8:377:9 | ref arg v7 | vector.cpp:379:7:379:8 | v7 |  |
-| vector.cpp:377:8:377:9 | ref arg v7 | vector.cpp:401:1:401:1 | v7 |  |
-| vector.cpp:379:7:379:8 | ref arg v7 | vector.cpp:401:1:401:1 | v7 |  |
+| vector.cpp:377:8:377:9 | ref arg v7 | vector.cpp:415:1:415:1 | v7 |  |
+| vector.cpp:379:7:379:8 | ref arg v7 | vector.cpp:415:1:415:1 | v7 |  |
 | vector.cpp:381:34:381:35 | ref arg v8 | vector.cpp:383:7:383:8 | v8 |  |
 | vector.cpp:381:34:381:35 | ref arg v8 | vector.cpp:385:7:385:8 | v8 |  |
-| vector.cpp:381:34:381:35 | ref arg v8 | vector.cpp:401:1:401:1 | v8 |  |
+| vector.cpp:381:34:381:35 | ref arg v8 | vector.cpp:415:1:415:1 | v8 |  |
 | vector.cpp:381:34:381:35 | v8 | vector.cpp:381:37:381:41 | call to begin | TAINT |
 | vector.cpp:381:37:381:41 | call to begin | vector.cpp:382:3:382:4 | i8 |  |
 | vector.cpp:381:37:381:41 | call to begin | vector.cpp:384:3:384:4 | i8 |  |
 | vector.cpp:382:2:382:2 | call to operator* [post update] | vector.cpp:383:7:383:8 | v8 |  |
 | vector.cpp:382:2:382:2 | call to operator* [post update] | vector.cpp:385:7:385:8 | v8 |  |
-| vector.cpp:382:2:382:2 | call to operator* [post update] | vector.cpp:401:1:401:1 | v8 |  |
+| vector.cpp:382:2:382:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v8 |  |
 | vector.cpp:382:2:382:15 | ... = ... | vector.cpp:382:2:382:2 | call to operator* [post update] |  |
 | vector.cpp:382:3:382:4 | i8 | vector.cpp:382:2:382:2 | call to operator* | TAINT |
 | vector.cpp:382:8:382:13 | call to source | vector.cpp:382:2:382:2 | call to operator* [post update] | TAINT |
 | vector.cpp:382:8:382:13 | call to source | vector.cpp:382:2:382:15 | ... = ... |  |
 | vector.cpp:383:7:383:8 | ref arg v8 | vector.cpp:385:7:385:8 | v8 |  |
-| vector.cpp:383:7:383:8 | ref arg v8 | vector.cpp:401:1:401:1 | v8 |  |
+| vector.cpp:383:7:383:8 | ref arg v8 | vector.cpp:415:1:415:1 | v8 |  |
 | vector.cpp:384:2:384:2 | call to operator* [post update] | vector.cpp:385:7:385:8 | v8 |  |
-| vector.cpp:384:2:384:2 | call to operator* [post update] | vector.cpp:401:1:401:1 | v8 |  |
+| vector.cpp:384:2:384:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v8 |  |
 | vector.cpp:384:2:384:8 | ... = ... | vector.cpp:384:2:384:2 | call to operator* [post update] |  |
 | vector.cpp:384:3:384:4 | i8 | vector.cpp:384:2:384:2 | call to operator* | TAINT |
 | vector.cpp:384:8:384:8 | 1 | vector.cpp:384:2:384:2 | call to operator* [post update] | TAINT |
 | vector.cpp:384:8:384:8 | 1 | vector.cpp:384:2:384:8 | ... = ... |  |
-| vector.cpp:385:7:385:8 | ref arg v8 | vector.cpp:401:1:401:1 | v8 |  |
+| vector.cpp:385:7:385:8 | ref arg v8 | vector.cpp:415:1:415:1 | v8 |  |
 | vector.cpp:387:34:387:35 | ref arg v9 | vector.cpp:392:7:392:8 | v9 |  |
-| vector.cpp:387:34:387:35 | ref arg v9 | vector.cpp:401:1:401:1 | v9 |  |
+| vector.cpp:387:34:387:35 | ref arg v9 | vector.cpp:415:1:415:1 | v9 |  |
 | vector.cpp:387:34:387:35 | v9 | vector.cpp:387:37:387:41 | call to begin | TAINT |
 | vector.cpp:387:37:387:41 | call to begin | vector.cpp:389:3:389:4 | i9 |  |
 | vector.cpp:387:37:387:41 | call to begin | vector.cpp:390:31:390:32 | i9 |  |
 | vector.cpp:389:2:389:2 | call to operator* [post update] | vector.cpp:392:7:392:8 | v9 |  |
-| vector.cpp:389:2:389:2 | call to operator* [post update] | vector.cpp:401:1:401:1 | v9 |  |
+| vector.cpp:389:2:389:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v9 |  |
 | vector.cpp:389:2:389:15 | ... = ... | vector.cpp:389:2:389:2 | call to operator* [post update] |  |
 | vector.cpp:389:3:389:4 | i9 | vector.cpp:389:2:389:2 | call to operator* | TAINT |
 | vector.cpp:389:8:389:13 | call to source | vector.cpp:389:2:389:2 | call to operator* [post update] | TAINT |
 | vector.cpp:389:8:389:13 | call to source | vector.cpp:389:2:389:15 | ... = ... |  |
 | vector.cpp:390:31:390:32 | call to iterator [post update] | vector.cpp:392:7:392:8 | v9 |  |
-| vector.cpp:390:31:390:32 | call to iterator [post update] | vector.cpp:401:1:401:1 | v9 |  |
+| vector.cpp:390:31:390:32 | call to iterator [post update] | vector.cpp:415:1:415:1 | v9 |  |
 | vector.cpp:390:31:390:32 | i9 | vector.cpp:390:31:390:32 | call to iterator |  |
 | vector.cpp:390:31:390:32 | i9 [post update] | vector.cpp:392:7:392:8 | v9 |  |
-| vector.cpp:390:31:390:32 | i9 [post update] | vector.cpp:401:1:401:1 | v9 |  |
-| vector.cpp:392:7:392:8 | ref arg v9 | vector.cpp:401:1:401:1 | v9 |  |
+| vector.cpp:390:31:390:32 | i9 [post update] | vector.cpp:415:1:415:1 | v9 |  |
+| vector.cpp:392:7:392:8 | ref arg v9 | vector.cpp:415:1:415:1 | v9 |  |
 | vector.cpp:394:35:394:37 | ref arg v10 | vector.cpp:396:7:396:9 | v10 |  |
-| vector.cpp:394:35:394:37 | ref arg v10 | vector.cpp:401:1:401:1 | v10 |  |
+| vector.cpp:394:35:394:37 | ref arg v10 | vector.cpp:415:1:415:1 | v10 |  |
 | vector.cpp:394:35:394:37 | v10 | vector.cpp:394:39:394:43 | call to begin | TAINT |
 | vector.cpp:394:39:394:43 | call to begin | vector.cpp:395:33:395:35 | i10 |  |
 | vector.cpp:395:33:395:35 | call to iterator [post update] | vector.cpp:396:7:396:9 | v10 |  |
-| vector.cpp:395:33:395:35 | call to iterator [post update] | vector.cpp:401:1:401:1 | v10 |  |
+| vector.cpp:395:33:395:35 | call to iterator [post update] | vector.cpp:415:1:415:1 | v10 |  |
 | vector.cpp:395:33:395:35 | i10 | vector.cpp:395:33:395:35 | call to iterator |  |
 | vector.cpp:395:33:395:35 | i10 [post update] | vector.cpp:396:7:396:9 | v10 |  |
-| vector.cpp:395:33:395:35 | i10 [post update] | vector.cpp:401:1:401:1 | v10 |  |
-| vector.cpp:396:7:396:9 | ref arg v10 | vector.cpp:401:1:401:1 | v10 |  |
+| vector.cpp:395:33:395:35 | i10 [post update] | vector.cpp:415:1:415:1 | v10 |  |
+| vector.cpp:396:7:396:9 | ref arg v10 | vector.cpp:415:1:415:1 | v10 |  |
 | vector.cpp:398:35:398:37 | ref arg v11 | vector.cpp:400:7:400:9 | v11 |  |
-| vector.cpp:398:35:398:37 | ref arg v11 | vector.cpp:401:1:401:1 | v11 |  |
+| vector.cpp:398:35:398:37 | ref arg v11 | vector.cpp:415:1:415:1 | v11 |  |
 | vector.cpp:398:35:398:37 | v11 | vector.cpp:398:39:398:43 | call to begin | TAINT |
 | vector.cpp:398:39:398:43 | call to begin | vector.cpp:399:33:399:35 | i11 |  |
 | vector.cpp:399:33:399:35 | call to iterator [post update] | vector.cpp:400:7:400:9 | v11 |  |
-| vector.cpp:399:33:399:35 | call to iterator [post update] | vector.cpp:401:1:401:1 | v11 |  |
+| vector.cpp:399:33:399:35 | call to iterator [post update] | vector.cpp:415:1:415:1 | v11 |  |
 | vector.cpp:399:33:399:35 | i11 | vector.cpp:399:33:399:35 | call to iterator |  |
 | vector.cpp:399:33:399:35 | i11 [post update] | vector.cpp:400:7:400:9 | v11 |  |
-| vector.cpp:399:33:399:35 | i11 [post update] | vector.cpp:401:1:401:1 | v11 |  |
-| vector.cpp:400:7:400:9 | ref arg v11 | vector.cpp:401:1:401:1 | v11 |  |
+| vector.cpp:399:33:399:35 | i11 [post update] | vector.cpp:415:1:415:1 | v11 |  |
+| vector.cpp:400:7:400:9 | ref arg v11 | vector.cpp:415:1:415:1 | v11 |  |
+| vector.cpp:402:35:402:37 | ref arg v12 | vector.cpp:405:7:405:9 | v12 |  |
+| vector.cpp:402:35:402:37 | ref arg v12 | vector.cpp:415:1:415:1 | v12 |  |
+| vector.cpp:402:35:402:37 | v12 | vector.cpp:402:39:402:43 | call to begin | TAINT |
+| vector.cpp:402:39:402:43 | call to begin | vector.cpp:403:3:403:5 | i12 |  |
+| vector.cpp:402:39:402:43 | call to begin | vector.cpp:404:3:404:5 | i12 |  |
+| vector.cpp:403:2:403:2 | call to operator* [post update] | vector.cpp:405:7:405:9 | v12 |  |
+| vector.cpp:403:2:403:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v12 |  |
+| vector.cpp:403:2:403:11 | ... = ... | vector.cpp:403:2:403:2 | call to operator* [post update] |  |
+| vector.cpp:403:3:403:5 | i12 | vector.cpp:403:6:403:6 | call to operator++ |  |
+| vector.cpp:403:3:403:5 | ref arg i12 | vector.cpp:404:3:404:5 | i12 |  |
+| vector.cpp:403:6:403:6 | call to operator++ | vector.cpp:403:2:403:2 | call to operator* | TAINT |
+| vector.cpp:403:11:403:11 | 0 | vector.cpp:403:2:403:2 | call to operator* [post update] | TAINT |
+| vector.cpp:403:11:403:11 | 0 | vector.cpp:403:2:403:11 | ... = ... |  |
+| vector.cpp:404:2:404:2 | call to operator* [post update] | vector.cpp:405:7:405:9 | v12 |  |
+| vector.cpp:404:2:404:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v12 |  |
+| vector.cpp:404:2:404:16 | ... = ... | vector.cpp:404:2:404:2 | call to operator* [post update] |  |
+| vector.cpp:404:3:404:5 | i12 | vector.cpp:404:2:404:2 | call to operator* | TAINT |
+| vector.cpp:404:9:404:14 | call to source | vector.cpp:404:2:404:2 | call to operator* [post update] | TAINT |
+| vector.cpp:404:9:404:14 | call to source | vector.cpp:404:2:404:16 | ... = ... |  |
+| vector.cpp:405:7:405:9 | ref arg v12 | vector.cpp:415:1:415:1 | v12 |  |
+| vector.cpp:407:35:407:37 | ref arg v13 | vector.cpp:409:7:409:9 | v13 |  |
+| vector.cpp:407:35:407:37 | ref arg v13 | vector.cpp:415:1:415:1 | v13 |  |
+| vector.cpp:407:35:407:37 | v13 | vector.cpp:407:39:407:43 | call to begin | TAINT |
+| vector.cpp:407:39:407:43 | call to begin | vector.cpp:408:3:408:5 | i13 |  |
+| vector.cpp:408:2:408:2 | call to operator* [post update] | vector.cpp:409:7:409:9 | v13 |  |
+| vector.cpp:408:2:408:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v13 |  |
+| vector.cpp:408:2:408:18 | ... = ... | vector.cpp:408:2:408:2 | call to operator* [post update] |  |
+| vector.cpp:408:3:408:5 | i13 | vector.cpp:408:6:408:6 | call to operator++ |  |
+| vector.cpp:408:6:408:6 | call to operator++ | vector.cpp:408:2:408:2 | call to operator* | TAINT |
+| vector.cpp:408:11:408:16 | call to source | vector.cpp:408:2:408:2 | call to operator* [post update] | TAINT |
+| vector.cpp:408:11:408:16 | call to source | vector.cpp:408:2:408:18 | ... = ... |  |
+| vector.cpp:409:7:409:9 | ref arg v13 | vector.cpp:415:1:415:1 | v13 |  |
+| vector.cpp:411:35:411:37 | ref arg v14 | vector.cpp:414:7:414:9 | v14 |  |
+| vector.cpp:411:35:411:37 | ref arg v14 | vector.cpp:415:1:415:1 | v14 |  |
+| vector.cpp:411:35:411:37 | v14 | vector.cpp:411:39:411:43 | call to begin | TAINT |
+| vector.cpp:411:39:411:43 | call to begin | vector.cpp:412:2:412:4 | i14 |  |
+| vector.cpp:411:39:411:43 | call to begin | vector.cpp:413:3:413:5 | i14 |  |
+| vector.cpp:412:2:412:4 | i14 | vector.cpp:412:5:412:5 | call to operator++ |  |
+| vector.cpp:412:2:412:4 | ref arg i14 | vector.cpp:413:3:413:5 | i14 |  |
+| vector.cpp:413:2:413:2 | call to operator* [post update] | vector.cpp:414:7:414:9 | v14 |  |
+| vector.cpp:413:2:413:2 | call to operator* [post update] | vector.cpp:415:1:415:1 | v14 |  |
+| vector.cpp:413:2:413:18 | ... = ... | vector.cpp:413:2:413:2 | call to operator* [post update] |  |
+| vector.cpp:413:3:413:5 | i14 | vector.cpp:413:6:413:6 | call to operator++ |  |
+| vector.cpp:413:6:413:6 | call to operator++ | vector.cpp:413:2:413:2 | call to operator* | TAINT |
+| vector.cpp:413:11:413:16 | call to source | vector.cpp:413:2:413:2 | call to operator* [post update] | TAINT |
+| vector.cpp:413:11:413:16 | call to source | vector.cpp:413:2:413:18 | ... = ... |  |
+| vector.cpp:414:7:414:9 | ref arg v14 | vector.cpp:415:1:415:1 | v14 |  |
+| vector.cpp:417:33:417:45 | source_string | vector.cpp:421:23:421:35 | source_string |  |
+| vector.cpp:417:33:417:45 | source_string | vector.cpp:428:23:428:35 | source_string |  |
+| vector.cpp:417:33:417:45 | source_string | vector.cpp:442:23:442:35 | source_string |  |
+| vector.cpp:419:28:419:30 | call to vector | vector.cpp:420:13:420:15 | out |  |
+| vector.cpp:419:28:419:30 | call to vector | vector.cpp:422:8:422:10 | out |  |
+| vector.cpp:419:28:419:30 | call to vector | vector.cpp:423:2:423:2 | out |  |
+| vector.cpp:420:13:420:15 | out | vector.cpp:420:17:420:19 | call to end | TAINT |
+| vector.cpp:420:13:420:15 | ref arg out | vector.cpp:422:8:422:10 | out |  |
+| vector.cpp:420:13:420:15 | ref arg out | vector.cpp:423:2:423:2 | out |  |
+| vector.cpp:420:17:420:19 | call to end | vector.cpp:421:4:421:5 | it |  |
+| vector.cpp:421:3:421:3 | call to operator* [post update] | vector.cpp:422:8:422:10 | out |  |
+| vector.cpp:421:3:421:3 | call to operator* [post update] | vector.cpp:423:2:423:2 | out |  |
+| vector.cpp:421:3:421:36 | ... = ... | vector.cpp:421:3:421:3 | call to operator* [post update] |  |
+| vector.cpp:421:4:421:5 | it | vector.cpp:421:6:421:6 | call to operator++ |  |
+| vector.cpp:421:6:421:6 | call to operator++ | vector.cpp:421:3:421:3 | call to operator* | TAINT |
+| vector.cpp:421:11:421:36 | call to basic_string | vector.cpp:421:3:421:3 | call to operator* [post update] | TAINT |
+| vector.cpp:421:11:421:36 | call to basic_string | vector.cpp:421:3:421:36 | ... = ... |  |
+| vector.cpp:421:23:421:35 | source_string | vector.cpp:421:11:421:36 | call to basic_string | TAINT |
+| vector.cpp:422:8:422:10 | ref arg out | vector.cpp:423:2:423:2 | out |  |
+| vector.cpp:426:28:426:30 | call to vector | vector.cpp:427:32:427:34 | out |  |
+| vector.cpp:426:28:426:30 | call to vector | vector.cpp:429:8:429:10 | out |  |
+| vector.cpp:426:28:426:30 | call to vector | vector.cpp:430:2:430:2 | out |  |
+| vector.cpp:427:13:427:30 | call to back_inserter | vector.cpp:428:4:428:5 | it |  |
+| vector.cpp:427:32:427:34 | ref arg out | vector.cpp:429:8:429:10 | out |  |
+| vector.cpp:427:32:427:34 | ref arg out | vector.cpp:430:2:430:2 | out |  |
+| vector.cpp:428:3:428:3 | ref arg call to operator* | vector.cpp:428:6:428:6 | ref arg call to operator++ | TAINT |
+| vector.cpp:428:3:428:3 | ref arg call to operator* | vector.cpp:429:8:429:10 | out |  |
+| vector.cpp:428:3:428:3 | ref arg call to operator* | vector.cpp:430:2:430:2 | out |  |
+| vector.cpp:428:4:428:5 | it | vector.cpp:428:6:428:6 | call to operator++ |  |
+| vector.cpp:428:6:428:6 | call to operator++ | vector.cpp:428:3:428:3 | call to operator* | TAINT |
+| vector.cpp:428:6:428:6 | ref arg call to operator++ | vector.cpp:428:4:428:5 | ref arg it |  |
+| vector.cpp:428:11:428:36 | call to basic_string | vector.cpp:428:3:428:3 | ref arg call to operator* | TAINT |
+| vector.cpp:428:23:428:35 | source_string | vector.cpp:428:11:428:36 | call to basic_string | TAINT |
+| vector.cpp:429:8:429:10 | ref arg out | vector.cpp:430:2:430:2 | out |  |
+| vector.cpp:433:20:433:22 | call to vector | vector.cpp:434:32:434:34 | out |  |
+| vector.cpp:433:20:433:22 | call to vector | vector.cpp:436:8:436:10 | out |  |
+| vector.cpp:433:20:433:22 | call to vector | vector.cpp:437:2:437:2 | out |  |
+| vector.cpp:434:13:434:30 | call to back_inserter | vector.cpp:435:4:435:5 | it |  |
+| vector.cpp:434:32:434:34 | ref arg out | vector.cpp:436:8:436:10 | out |  |
+| vector.cpp:434:32:434:34 | ref arg out | vector.cpp:437:2:437:2 | out |  |
+| vector.cpp:435:3:435:3 | ref arg call to operator* | vector.cpp:435:6:435:6 | ref arg call to operator++ | TAINT |
+| vector.cpp:435:3:435:3 | ref arg call to operator* | vector.cpp:436:8:436:10 | out |  |
+| vector.cpp:435:3:435:3 | ref arg call to operator* | vector.cpp:437:2:437:2 | out |  |
+| vector.cpp:435:4:435:5 | it | vector.cpp:435:6:435:6 | call to operator++ |  |
+| vector.cpp:435:6:435:6 | call to operator++ | vector.cpp:435:3:435:3 | call to operator* | TAINT |
+| vector.cpp:435:6:435:6 | ref arg call to operator++ | vector.cpp:435:4:435:5 | ref arg it |  |
+| vector.cpp:435:11:435:16 | call to source | vector.cpp:435:3:435:3 | ref arg call to operator* | TAINT |
+| vector.cpp:436:8:436:10 | ref arg out | vector.cpp:437:2:437:2 | out |  |
+| vector.cpp:440:28:440:30 | call to vector | vector.cpp:441:32:441:34 | out |  |
+| vector.cpp:440:28:440:30 | call to vector | vector.cpp:443:8:443:10 | out |  |
+| vector.cpp:440:28:440:30 | call to vector | vector.cpp:444:2:444:2 | out |  |
+| vector.cpp:441:13:441:30 | call to back_inserter | vector.cpp:442:6:442:7 | it |  |
+| vector.cpp:441:32:441:34 | ref arg out | vector.cpp:443:8:443:10 | out |  |
+| vector.cpp:441:32:441:34 | ref arg out | vector.cpp:444:2:444:2 | out |  |
+| vector.cpp:442:3:442:3 | ref arg call to operator* | vector.cpp:442:4:442:4 | ref arg call to operator++ | TAINT |
+| vector.cpp:442:3:442:3 | ref arg call to operator* | vector.cpp:443:8:443:10 | out |  |
+| vector.cpp:442:3:442:3 | ref arg call to operator* | vector.cpp:444:2:444:2 | out |  |
+| vector.cpp:442:4:442:4 | call to operator++ | vector.cpp:442:3:442:3 | call to operator* | TAINT |
+| vector.cpp:442:4:442:4 | ref arg call to operator++ | vector.cpp:442:6:442:7 | ref arg it |  |
+| vector.cpp:442:6:442:7 | it | vector.cpp:442:4:442:4 | call to operator++ |  |
+| vector.cpp:442:11:442:36 | call to basic_string | vector.cpp:442:3:442:3 | ref arg call to operator* | TAINT |
+| vector.cpp:442:23:442:35 | source_string | vector.cpp:442:11:442:36 | call to basic_string | TAINT |
+| vector.cpp:443:8:443:10 | ref arg out | vector.cpp:444:2:444:2 | out |  |
+| vector.cpp:447:20:447:22 | call to vector | vector.cpp:448:32:448:34 | out |  |
+| vector.cpp:447:20:447:22 | call to vector | vector.cpp:450:8:450:10 | out |  |
+| vector.cpp:447:20:447:22 | call to vector | vector.cpp:451:2:451:2 | out |  |
+| vector.cpp:448:13:448:30 | call to back_inserter | vector.cpp:449:6:449:7 | it |  |
+| vector.cpp:448:32:448:34 | ref arg out | vector.cpp:450:8:450:10 | out |  |
+| vector.cpp:448:32:448:34 | ref arg out | vector.cpp:451:2:451:2 | out |  |
+| vector.cpp:449:3:449:3 | ref arg call to operator* | vector.cpp:449:4:449:4 | ref arg call to operator++ | TAINT |
+| vector.cpp:449:3:449:3 | ref arg call to operator* | vector.cpp:450:8:450:10 | out |  |
+| vector.cpp:449:3:449:3 | ref arg call to operator* | vector.cpp:451:2:451:2 | out |  |
+| vector.cpp:449:4:449:4 | call to operator++ | vector.cpp:449:3:449:3 | call to operator* | TAINT |
+| vector.cpp:449:4:449:4 | ref arg call to operator++ | vector.cpp:449:6:449:7 | ref arg it |  |
+| vector.cpp:449:6:449:7 | it | vector.cpp:449:4:449:4 | call to operator++ |  |
+| vector.cpp:449:11:449:16 | call to source | vector.cpp:449:3:449:3 | ref arg call to operator* | TAINT |
+| vector.cpp:450:8:450:10 | ref arg out | vector.cpp:451:2:451:2 | out |  |
+| vector.cpp:467:22:467:25 | call to vector | vector.cpp:471:8:471:8 | v |  |
+| vector.cpp:467:22:467:25 | call to vector | vector.cpp:472:11:472:11 | v |  |
+| vector.cpp:467:22:467:25 | call to vector | vector.cpp:473:8:473:8 | v |  |
+| vector.cpp:467:22:467:25 | call to vector | vector.cpp:474:2:474:2 | v |  |
+| vector.cpp:468:11:468:16 | call to source | vector.cpp:472:18:472:18 | s |  |
+| vector.cpp:469:10:469:11 | 0 | vector.cpp:472:13:472:13 | i |  |
+| vector.cpp:471:8:471:8 | ref arg v | vector.cpp:472:11:472:11 | v |  |
+| vector.cpp:471:8:471:8 | ref arg v | vector.cpp:473:8:473:8 | v |  |
+| vector.cpp:471:8:471:8 | ref arg v | vector.cpp:474:2:474:2 | v |  |
+| vector.cpp:472:10:472:14 | & ... | vector.cpp:472:3:472:8 | call to memcpy |  |
+| vector.cpp:472:10:472:14 | ref arg & ... | vector.cpp:472:12:472:12 | call to operator[] [inner post update] |  |
+| vector.cpp:472:11:472:11 | ref arg v | vector.cpp:473:8:473:8 | v |  |
+| vector.cpp:472:11:472:11 | ref arg v | vector.cpp:474:2:474:2 | v |  |
+| vector.cpp:472:11:472:11 | v | vector.cpp:472:12:472:12 | call to operator[] | TAINT |
+| vector.cpp:472:12:472:12 | call to operator[] | vector.cpp:472:10:472:14 | & ... |  |
+| vector.cpp:472:12:472:12 | call to operator[] [inner post update] | vector.cpp:472:11:472:11 | ref arg v | TAINT |
+| vector.cpp:472:17:472:18 | & ... | vector.cpp:472:3:472:8 | call to memcpy | TAINT |
+| vector.cpp:472:17:472:18 | & ... | vector.cpp:472:10:472:14 | ref arg & ... | TAINT |
+| vector.cpp:472:18:472:18 | s | vector.cpp:472:10:472:14 | ref arg & ... |  |
+| vector.cpp:472:18:472:18 | s | vector.cpp:472:17:472:18 | & ... |  |
+| vector.cpp:473:8:473:8 | ref arg v | vector.cpp:474:2:474:2 | v |  |
+| vector.cpp:477:24:477:27 | call to vector | vector.cpp:483:8:483:9 | cs |  |
+| vector.cpp:477:24:477:27 | call to vector | vector.cpp:484:11:484:12 | cs |  |
+| vector.cpp:477:24:477:27 | call to vector | vector.cpp:486:8:486:9 | cs |  |
+| vector.cpp:477:24:477:27 | call to vector | vector.cpp:487:2:487:2 | cs |  |
+| vector.cpp:478:21:478:37 | call to source | vector.cpp:480:22:480:24 | src |  |
+| vector.cpp:478:21:478:37 | call to source | vector.cpp:482:8:482:10 | src |  |
+| vector.cpp:478:21:478:37 | call to source | vector.cpp:484:25:484:27 | src |  |
+| vector.cpp:478:21:478:37 | call to source | vector.cpp:485:8:485:10 | src |  |
+| vector.cpp:479:23:479:24 | 10 | vector.cpp:484:14:484:17 | offs |  |
+| vector.cpp:480:26:480:31 | call to length | vector.cpp:484:38:484:40 | len |  |
+| vector.cpp:482:8:482:10 | ref arg src | vector.cpp:484:25:484:27 | src |  |
+| vector.cpp:482:8:482:10 | ref arg src | vector.cpp:485:8:485:10 | src |  |
+| vector.cpp:483:8:483:9 | ref arg cs | vector.cpp:484:11:484:12 | cs |  |
+| vector.cpp:483:8:483:9 | ref arg cs | vector.cpp:486:8:486:9 | cs |  |
+| vector.cpp:483:8:483:9 | ref arg cs | vector.cpp:487:2:487:2 | cs |  |
+| vector.cpp:484:10:484:22 | & ... | vector.cpp:484:3:484:8 | call to memcpy |  |
+| vector.cpp:484:10:484:22 | ref arg & ... | vector.cpp:484:13:484:13 | call to operator[] [inner post update] |  |
+| vector.cpp:484:11:484:12 | cs | vector.cpp:484:13:484:13 | call to operator[] | TAINT |
+| vector.cpp:484:11:484:12 | ref arg cs | vector.cpp:486:8:486:9 | cs |  |
+| vector.cpp:484:11:484:12 | ref arg cs | vector.cpp:487:2:487:2 | cs |  |
+| vector.cpp:484:13:484:13 | call to operator[] | vector.cpp:484:10:484:22 | & ... |  |
+| vector.cpp:484:13:484:13 | call to operator[] [inner post update] | vector.cpp:484:11:484:12 | ref arg cs | TAINT |
+| vector.cpp:484:14:484:17 | offs | vector.cpp:484:14:484:21 | ... + ... | TAINT |
+| vector.cpp:484:21:484:21 | 1 | vector.cpp:484:14:484:21 | ... + ... | TAINT |
+| vector.cpp:484:25:484:27 | src | vector.cpp:484:29:484:33 | call to c_str | TAINT |
+| vector.cpp:484:29:484:33 | call to c_str | vector.cpp:484:3:484:8 | call to memcpy | TAINT |
+| vector.cpp:484:29:484:33 | call to c_str | vector.cpp:484:10:484:22 | ref arg & ... | TAINT |
+| vector.cpp:486:8:486:9 | ref arg cs | vector.cpp:487:2:487:2 | cs |  |
+| vector.cpp:491:22:491:24 | call to vector | vector.cpp:493:2:493:3 | v1 |  |
+| vector.cpp:491:22:491:24 | call to vector | vector.cpp:494:7:494:8 | v1 |  |
+| vector.cpp:491:22:491:24 | call to vector | vector.cpp:498:1:498:1 | v1 |  |
+| vector.cpp:491:30:491:32 | call to vector | vector.cpp:496:2:496:3 | v2 |  |
+| vector.cpp:491:30:491:32 | call to vector | vector.cpp:496:13:496:14 | v2 |  |
+| vector.cpp:491:30:491:32 | call to vector | vector.cpp:497:7:497:8 | v2 |  |
+| vector.cpp:491:30:491:32 | call to vector | vector.cpp:498:1:498:1 | v2 |  |
+| vector.cpp:493:2:493:3 | ref arg v1 | vector.cpp:494:7:494:8 | v1 |  |
+| vector.cpp:493:2:493:3 | ref arg v1 | vector.cpp:498:1:498:1 | v1 |  |
+| vector.cpp:493:18:493:23 | call to source | vector.cpp:493:2:493:3 | ref arg v1 | TAINT |
+| vector.cpp:494:7:494:8 | ref arg v1 | vector.cpp:498:1:498:1 | v1 |  |
+| vector.cpp:496:2:496:3 | ref arg v2 | vector.cpp:497:7:497:8 | v2 |  |
+| vector.cpp:496:2:496:3 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
+| vector.cpp:496:13:496:14 | ref arg v2 | vector.cpp:496:2:496:3 | v2 |  |
+| vector.cpp:496:13:496:14 | ref arg v2 | vector.cpp:497:7:497:8 | v2 |  |
+| vector.cpp:496:13:496:14 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
+| vector.cpp:496:13:496:14 | v2 | vector.cpp:496:16:496:20 | call to begin | TAINT |
+| vector.cpp:496:16:496:20 | call to begin | vector.cpp:496:13:496:22 | call to iterator | TAINT |
+| vector.cpp:496:25:496:30 | call to source | vector.cpp:496:2:496:3 | ref arg v2 | TAINT |
+| vector.cpp:496:25:496:30 | call to source | vector.cpp:496:5:496:11 | call to emplace | TAINT |
+| vector.cpp:497:7:497:8 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |

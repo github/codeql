@@ -60,7 +60,7 @@ namespace Semmle.Extraction.Tests
 
             // Test trap file generation
             var trapwriterFilename = project.GetTrapPath(logger, new TransformedPathStub("foo.cs"), TrapWriter.CompressionMode.Gzip);
-            using (var trapwriter = project.CreateTrapWriter(logger, new TransformedPathStub("foo.cs"), false, TrapWriter.CompressionMode.Gzip))
+            using (var trapwriter = project.CreateTrapWriter(logger, new TransformedPathStub("foo.cs"), TrapWriter.CompressionMode.Gzip, discardDuplicates: false))
             {
                 trapwriter.Emit("1=*");
                 Assert.False(File.Exists(trapwriterFilename));
@@ -104,7 +104,7 @@ namespace Semmle.Extraction.Tests
                 trapwriterFilename);
 
             // Test the source archive
-            var trapWriter = project.CreateTrapWriter(logger, new TransformedPathStub("bar.cs"), false, TrapWriter.CompressionMode.Gzip);
+            var trapWriter = project.CreateTrapWriter(logger, new TransformedPathStub("bar.cs"), TrapWriter.CompressionMode.Gzip, discardDuplicates: false);
             trapWriter.Archive("layout.txt", new TransformedPathStub("layout.txt"), System.Text.Encoding.ASCII);
             var writtenFile = TrapWriter.NestPaths(logger, Path.GetFullPath("snapshot\\archive"), "layout.txt");
             Assert.True(File.Exists(writtenFile));

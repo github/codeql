@@ -11,7 +11,13 @@ module PolynomialReDoS {
   /**
    * A data flow source node for polynomial regular expression denial-of-service vulnerabilities.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /**
+     * Gets the kind of source that is being accesed. See `HTTP::RequestInputAccess::getKind()`.
+     * Can be one of "parameter", "header", "body", "url", "cookie".
+     */
+    abstract string getKind();
+  }
 
   /**
    * A data flow sink node for polynomial regular expression denial-of-service vulnerabilities.
@@ -31,6 +37,8 @@ module PolynomialReDoS {
    */
   class RequestInputAccessAsSource extends Source {
     RequestInputAccessAsSource() { this instanceof HTTP::RequestInputAccess }
+
+    override string getKind() { result = this.(HTTP::RequestInputAccess).getKind() }
   }
 
   /**

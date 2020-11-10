@@ -1350,10 +1350,19 @@ ssa.cpp:
 #  318|     r318_1(glval<bool>) = VariableAddress[c#init] : 
 #  318|     r318_2(bool)        = Load[c#init]            : &:r318_1, ~m?
 #  318|     v318_3(void)        = ConditionalBranch       : r318_2
-#-----|   False -> Block 2
-#-----|   True -> Block 1
+#-----|   False -> Block 1
+#-----|   True -> Block 2
 
-#  321|   Block 1
+#  318|   Block 1
+#  318|     r318_4(glval<int>) = VariableAddress[c] : 
+#  318|     r318_5(glval<int>) = VariableAddress[x] : 
+#  318|     r318_6(int)        = Load[x]            : &:r318_5, m315_4
+#  318|     mu318_7(int)       = Store[c]           : &:r318_4, r318_6
+#  318|     r318_8(bool)       = Constant[1]        : 
+#  318|     mu318_9(bool)      = Store[c#init]      : &:r318_1, r318_8
+#-----|   Goto -> Block 2
+
+#  321|   Block 2
 #  321|     r321_1(glval<int>)  = VariableAddress[#return] : 
 #  321|     r321_2(glval<int>)  = VariableAddress[a]       : 
 #  321|     r321_3(int)         = Load[a]                  : &:r321_2, ~m?
@@ -1371,12 +1380,3 @@ ssa.cpp:
 #  315|     v315_6(void)        = ReturnValue              : &:r315_5, m321_13
 #  315|     v315_7(void)        = AliasedUse               : ~m?
 #  315|     v315_8(void)        = ExitFunction             : 
-
-#  318|   Block 2
-#  318|     r318_4(glval<int>) = VariableAddress[c] : 
-#  318|     r318_5(glval<int>) = VariableAddress[x] : 
-#  318|     r318_6(int)        = Load[x]            : &:r318_5, m315_4
-#  318|     mu318_7(int)       = Store[c]           : &:r318_4, r318_6
-#  318|     r318_8(bool)       = Constant[1]        : 
-#  318|     mu318_9(bool)      = Store[c#init]      : &:r318_1, r318_8
-#-----|   Goto -> Block 1

@@ -24,7 +24,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-
             var explicitlySized = false;
 
             if (TypeSyntax is null)
@@ -54,6 +53,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (explicitlySized)
                 trapFile.explicitly_sized_array_creation(this);
+
+            TypeMention.Create(cx, TypeSyntax, this, Type);
         }
 
         private void SetArraySizes(InitializerExpressionSyntax initializer, int rank)

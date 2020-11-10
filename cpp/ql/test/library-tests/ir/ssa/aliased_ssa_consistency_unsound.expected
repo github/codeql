@@ -19,6 +19,8 @@ useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
 invalidOverlap
 nonUniqueEnclosingIRFunction
+fieldAddressOnNonPointer
+thisArgumentIsNonPointer
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

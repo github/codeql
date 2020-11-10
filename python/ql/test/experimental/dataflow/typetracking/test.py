@@ -27,7 +27,7 @@ def baz():
 def id(x): # $tracked
     return x # $tracked
 
-def use_tracked_quux(x): # $f-:tracked
+def use_tracked_quux(x): # $ MISSING: tracked
     do_stuff(y) # call after return -- not tracked in here.
 
 def quux():

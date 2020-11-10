@@ -55,7 +55,7 @@ class ModulusAnalysis
         {
             j = i * 8 + 7;
         }
-        System.Console.WriteLine(j); // congruent 3 mod 4 or 7 mod 8
+        System.Console.WriteLine(j); // congruent 3 mod 4 (cond = true) or 7 mod 8 (cond = false)
 
         if (cond)
         {
@@ -78,7 +78,18 @@ class ModulusAnalysis
         }
     }
 
+    void For(int cap)
+    {
+        for (var i = 0; i < cap; i++)
+            System.Console.WriteLine(i);
+
+        for (var j = 0; j < cap; j += 1)
+            System.Console.WriteLine(j);
+
+        for (var k = 0; k < cap; k += 3)
+            System.Console.WriteLine(k); // congruent 0 mod 3
+    }
 
 
-    int[] GetArray(){ return new int[42]; }
+    int[] GetArray() { return new int[42]; }
 }

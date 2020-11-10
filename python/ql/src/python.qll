@@ -1,3 +1,4 @@
+import Customizations
 import semmle.python.Files
 import semmle.python.Operations
 import semmle.python.Variables
@@ -35,3 +36,7 @@ import semmle.python.pointsto.Context
 import semmle.python.pointsto.CallGraph
 import semmle.python.objects.ObjectAPI
 import site
+// Removing this import perturbs the compilation process enough that the points-to analysis gets
+// compiled -- and cached -- differently depending on whether the data flow library is imported. By
+// importing it privately here, we ensure that the points-to analysis is compiled the same way.
+private import semmle.python.dataflow.new.DataFlow

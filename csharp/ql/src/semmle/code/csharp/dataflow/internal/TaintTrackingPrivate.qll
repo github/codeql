@@ -1,10 +1,10 @@
 private import csharp
 private import TaintTrackingPublic
 private import DataFlowImplCommon
+private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.ControlFlowReachability
-private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.commons.ComparisonTest
 private import cil
@@ -105,15 +105,13 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
 
 private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   Stages::DataFlowStage::forceCachingInSameStage() and
-  any(LocalTaintExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
+  hasNodePath(any(LocalTaintExprStepConfiguration x), nodeFrom, nodeTo)
   or
   localTaintStepCil(nodeFrom, nodeTo)
 }
 
 cached
 private module Cached {
-  private import Summaries
-
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.
@@ -130,19 +128,19 @@ private module Cached {
     (
       // Simple flow through library code is included in the exposed local
       // step relation, even though flow is technically inter-procedural
-      summaryThroughStep(nodeFrom, nodeTo, false)
+      FlowSummaryImpl::Private::throughStep(nodeFrom, nodeTo, false)
       or
       // Taint collection by adding a tainted element
       exists(DataFlow::ElementContent c |
         storeStep(nodeFrom, c, nodeTo)
         or
-        summarySetterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::setterStep(nodeFrom, c, nodeTo)
       )
       or
       exists(DataFlow::Content c |
         readStep(nodeFrom, c, nodeTo)
         or
-        summaryGetterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::getterStep(nodeFrom, c, nodeTo)
       |
         // Taint members
         c = any(TaintedMember m).(FieldOrProperty).getContent()
@@ -169,7 +167,7 @@ private module Cached {
     // tracking configurations where the source is a collection
     readStep(nodeFrom, TElementContent(), nodeTo)
     or
-    summaryLocalStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::localStep(nodeFrom, nodeTo, false)
     or
     nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
   }
