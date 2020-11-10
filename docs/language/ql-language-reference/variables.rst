@@ -28,7 +28,7 @@ variables ``i``, ``node``, and ``lsv`` with types ``int``, ``SsaDefinitionNode``
 ``LocalScopeVariable`` respectively.
 
 Variable declarations appear in different contexts, for example in a :ref:`select clause <select-clauses>`,
-inside a :ref:`quantified formula <quantifiers>`, as an argument of a :ref:`predicate <predicates>`,
+inside a :ref:`quantified formula <quantified-formulas>`, as an argument of a :ref:`predicate <predicates>`,
 and many more.
 
 Conceptually, you can think of a variable as holding all the values that its type allows, subject

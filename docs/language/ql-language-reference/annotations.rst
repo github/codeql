@@ -307,7 +307,7 @@ recommended to do so by GitHub, for example, to help resolve performance issues.
 
 When you use this annotation, be aware of the following issues:
 
-#. The QL optimizer automatically orders the conjuncts of a :ref:`complex formula <connectives>`
+#. The QL optimizer automatically orders the conjuncts of a :ref:`complex formula <logical-connectives>`
    in an efficient way. In a ``noopt`` predicate, the conjuncts are evaluated in exactly the order 
    that you write them.
 #. The QL optimizer automatically creates intermediary conjuncts to "translate" certain formulas 

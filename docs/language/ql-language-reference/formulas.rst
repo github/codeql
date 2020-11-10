@@ -165,7 +165,7 @@ A parenthesized formula is any formula surrounded by parentheses, ``(`` and ``)`
 has exactly the same meaning as the enclosed formula. The parentheses often help to improve 
 readability and group certain formulas together.
 
-.. _quantifiers:
+.. _quantified-formulas:
 
 Quantified formulas
 *******************
@@ -252,7 +252,7 @@ Implicitly quantified variables can be introduced using "don't care expressions.
 when you need to introduce a variable to use as an argument to a predicate call, but don't care 
 about its value. For further information, see ":ref:`Don't-care expressions <dont-care>`."
 
-.. _connectives:
+.. _logical-connectives:
 
 Logical connectives
 *******************

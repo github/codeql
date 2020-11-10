@@ -626,7 +626,7 @@ If you prefer to use a prefix cast, you can rewrite the ``where`` part as::
     where ((Class)t).getASupertype().hasName("List")
 
 .. index:: underscore
-.. _dont-care:
+.. _don-t-care-expressions:
 
 Don't-care expressions
 **********************

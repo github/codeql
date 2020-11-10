@@ -66,7 +66,7 @@ Classes provide an easy way to reuse and structure code. For example, you can:
 A class in QL doesn't "create" a new object, it just represents a logical property. A value is 
 in a particular class if it satisfies that logical property.
 
-.. _defining-class:
+.. _defining-a-class:
 
 Defining a class
 ================
@@ -146,7 +146,7 @@ Member predicates
 
 These are :ref:`predicates <predicates>` that only apply to members of a particular class.
 You can :ref:`call <calls>` a member predicate on a value. For example, you can use the member
-predicate from the :ref:`above <defining-class>` class::
+predicate from the :ref:`above <defining-a-class>` class::
 
     1.(OneTwoThree).getAString()
 
@@ -273,7 +273,7 @@ inherited predicate, and by adding the ``override`` :ref:`annotation <override>`
 This is useful if you want to refine the predicate to give a more specific result for the 
 values in the subclass.
 
-For example, extending the class from the :ref:`first example <defining-class>`::
+For example, extending the class from the :ref:`first example <defining-a-class>`::
 
     class OneTwo extends OneTwoThree {
       OneTwo() {
