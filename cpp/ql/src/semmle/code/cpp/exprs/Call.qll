@@ -442,40 +442,6 @@ class ConstructorCall extends FunctionCall {
 }
 
 /**
- * A C++ `throw` expression.
- * ```
- * throw Exc(2);
- * ```
- */
-class ThrowExpr extends Expr, @throw_expr {
-  /**
-   * Gets the expression that will be thrown, if any. There is no result if
-   * `this` is a `ReThrowExpr`.
-   */
-  Expr getExpr() { result = this.getChild(0) }
-
-  override string getAPrimaryQlClass() { result = "ThrowExpr" }
-
-  override string toString() { result = "throw ..." }
-
-  override int getPrecedence() { result = 1 }
-}
-
-/**
- * A C++ `throw` expression with no argument (which causes the current exception to be re-thrown).
- * ```
- * throw;
- * ```
- */
-class ReThrowExpr extends ThrowExpr {
-  ReThrowExpr() { this.getType() instanceof VoidType }
-
-  override string getAPrimaryQlClass() { result = "ReThrowExpr" }
-
-  override string toString() { result = "re-throw exception " }
-}
-
-/**
  * A call to a destructor.
  * ```
  * struct S { ~S(void) {} } *s;
