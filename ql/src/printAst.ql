@@ -22,7 +22,9 @@ external string selectedSourceFile();
 class Cfg extends PrintAstConfiguration {
   override predicate shouldPrintFunction(FuncDecl func) { shouldPrintFile(func.getFile()) }
 
-  override predicate shouldPrintFile(File file) { file = getEncodedFile(selectedSourceFile()) }
+  override predicate shouldPrintFile(File file) {
+    file = getFileBySourceArchiveName(selectedSourceFile())
+  }
 
   override predicate shouldPrintComments(File file) { none() }
 }

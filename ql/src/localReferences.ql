@@ -13,5 +13,8 @@ import ideContextual
 external string selectedSourceFile();
 
 from Ident def, Ident use, Entity e
-where use.uses(e) and def.declares(e) and def.getFile() = getEncodedFile(selectedSourceFile())
+where
+  use.uses(e) and
+  def.declares(e) and
+  def.getFile() = getFileBySourceArchiveName(selectedSourceFile())
 select use, def, "V"
