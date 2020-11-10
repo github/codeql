@@ -176,21 +176,21 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends EssaNode {
-  ParameterNode() { var instanceof ParameterDefinition }
+class ParameterNode extends CfgNode {
+  ParameterDefinition def;
+
+  ParameterNode() { node = def.getDefiningNode() }
 
   /**
    * Holds if this node is the parameter of callable `c` at the
    * (zero-based) index `i`.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) {
-    var.(ParameterDefinition).getDefiningNode() = c.getParameter(i)
-  }
+  predicate isParameterOf(DataFlowCallable c, int i) { node = c.getParameter(i) }
 
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 
   /** Gets the `Parameter` this `ParameterNode` represents. */
-  Parameter getParameter() { result = var.(ParameterDefinition).getParameter() }
+  Parameter getParameter() { result = def.getParameter() }
 }
 
 /**
