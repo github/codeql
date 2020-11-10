@@ -29,7 +29,7 @@ private class IteratorTraits extends Class {
 /**
  * A type which has the typedefs expected for an iterator.
  */
-private class IteratorByTypedefs extends Class {
+private class IteratorByTypedefs extends Iterator, Class {
   IteratorByTypedefs() {
     this.getAMember().(TypedefType).hasName("difference_type") and
     this.getAMember().(TypedefType).hasName("value_type") and
@@ -43,18 +43,17 @@ private class IteratorByTypedefs extends Class {
 /**
  * The `std::iterator` class.
  */
-private class StdIterator extends Class {
+private class StdIterator extends Iterator, Class {
   StdIterator() { this.hasQualifiedName("std", "iterator") }
 }
 
 /**
- * Implements `Iterator`.
+ * A type that is deduced to be an iterator because there is a corresponding
+ * `std::iterator_traits` instantiation for it.
  */
-private class IteratorImpl extends Iterator {
-  IteratorImpl() {
-    this instanceof IteratorByTypedefs or
-    exists(IteratorTraits it | it.getIteratorType() = this) or
-    this instanceof StdIterator
+private class IteratorByTraits extends Iterator {
+  IteratorByTraits() {
+    exists(IteratorTraits it | it.getIteratorType() = this)
   }
 }
 
