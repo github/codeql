@@ -200,7 +200,6 @@
 | taint.cpp:42:7:42:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:43:7:43:13 | taint.cpp:37:22:37:27 | AST only |
 | taint.cpp:137:7:137:9 | taint.cpp:120:11:120:16 | AST only |
-| taint.cpp:195:7:195:7 | taint.cpp:192:23:192:28 | AST only |
 | taint.cpp:195:7:195:7 | taint.cpp:193:6:193:6 | AST only |
 | taint.cpp:236:3:236:6 | taint.cpp:223:10:223:15 | AST only |
 | taint.cpp:372:7:372:7 | taint.cpp:365:24:365:29 | AST only |
