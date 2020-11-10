@@ -3,7 +3,6 @@
 | LocalDataFlow.cs:69:15:69:19 | access to local variable sink5 |
 | LocalDataFlow.cs:77:15:77:19 | access to local variable sink6 |
 | LocalDataFlow.cs:85:15:85:19 | [b (line 48): false] access to local variable sink7 |
-| LocalDataFlow.cs:85:15:85:19 | [b (line 48): true] access to local variable sink7 |
 | LocalDataFlow.cs:93:15:93:19 | access to local variable sink8 |
 | LocalDataFlow.cs:101:15:101:19 | access to local variable sink9 |
 | LocalDataFlow.cs:109:15:109:20 | access to local variable sink15 |

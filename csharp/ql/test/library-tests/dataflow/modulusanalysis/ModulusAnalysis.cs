@@ -81,7 +81,7 @@ class ModulusAnalysis
             ? i * 4 + 3
             : i * 8 + 7;
         if (!cond3)
-            System.Console.WriteLine(j); // congruent 3 mod 4
+            System.Console.WriteLine(j); // congruent 7 mod 8
     }
 
     void For(int cap)

@@ -72,6 +72,7 @@ query predicate breakInvariant3(
   succSplits(pred, predSplits, succ, succSplits, c) and
   split = predSplits.getASplit() and
   split.hasExit(pred, succ, c) and
+  not split.hasEntry(pred, succ, c) and
   split = succSplits.getASplit()
 }
 
@@ -81,7 +82,7 @@ query predicate breakInvariant4(
 ) {
   succSplits(pred, predSplits, succ, succSplits, c) and
   split.hasEntry(pred, succ, c) and
-  not split = predSplits.getASplit() and
+  not split.getKind() = predSplits.getASplit().getKind() and
   not split = succSplits.getASplit()
 }
 
@@ -92,12 +93,13 @@ query predicate breakInvariant5(
   succSplits(pred, predSplits, succ, succSplits, c) and
   split = succSplits.getASplit() and
   not (split.hasSuccessor(pred, succ, c) and split = predSplits.getASplit()) and
-  not (split.hasEntry(pred, succ, c) and not split = predSplits.getASplit())
+  not split.hasEntry(pred, succ, c)
 }
 
 query predicate multipleSuccessors(
   ControlFlow::Node node, SuccessorType t, ControlFlow::Node successor
 ) {
+  not node instanceof ControlFlow::Nodes::EntryNode and
   strictcount(node.getASuccessorByType(t)) > 1 and
   successor = node.getASuccessorByType(t)
 }

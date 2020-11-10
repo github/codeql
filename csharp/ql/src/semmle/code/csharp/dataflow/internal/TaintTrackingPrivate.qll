@@ -37,14 +37,13 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
     Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
   ) {
     exactScope = false and
+    isSuccessor = true and
     (
       e1 = e2.(ElementAccess).getQualifier() and
-      scope = e2 and
-      isSuccessor = true
+      scope = e2
       or
       e1 = e2.(AddExpr).getAnOperand() and
-      scope = e2 and
-      isSuccessor = true
+      scope = e2
       or
       // A comparison expression where taint can flow from one of the
       // operands if the other operand is a constant value.
@@ -54,51 +53,43 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
         other = ct.getAnArgument() and
         other.stripCasts().hasValue() and
         e1 != other and
-        scope = e2 and
-        isSuccessor = true
+        scope = e2
       )
       or
       e1 = e2.(UnaryLogicalOperation).getAnOperand() and
-      scope = e2 and
-      isSuccessor = false
+      scope = e2
       or
       e1 = e2.(BinaryLogicalOperation).getAnOperand() and
-      scope = e2 and
-      isSuccessor = false
+      scope = e2
       or
       // Taint from tuple argument
       e2 =
         any(TupleExpr te |
           e1 = te.getAnArgument() and
           te.isReadAccess() and
-          scope = e2 and
-          isSuccessor = true
+          scope = e2
         )
       or
       e1 = e2.(InterpolatedStringExpr).getAChild() and
-      scope = e2 and
-      isSuccessor = true
+      scope = e2
       or
       // Taint from tuple expression
       e2 =
         any(MemberAccess ma |
           ma.getQualifier().getType() instanceof TupleType and
           e1 = ma.getQualifier() and
-          scope = e2 and
-          isSuccessor = true
+          scope = e2
         )
       or
       e2 =
         any(OperatorCall oc |
           oc.getTarget().(ConversionOperator).fromLibrary() and
           e1 = oc.getAnArgument() and
-          scope = e2 and
-          isSuccessor = true
+          scope = e2
         )
       or
       e1 = e2.(AwaitExpr).getExpr() and
-      scope = e2 and
-      isSuccessor = true
+      scope = e2
     )
   }
 }
