@@ -1073,29 +1073,6 @@ private module Stage2 {
     )
   }
 
-  /**
-   * Holds if `c` is the target of a store in the flow covered by `revFlow`.
-   */
-  pragma[nomagic]
-  private predicate revFlowIsStored(Content c, Ap ap, Configuration conf) {
-    exists(Node node |
-      revFlowStore(_, c, ap, node, _, _, _, _, conf) and
-      revFlow(node, _, _, ap, conf)
-    )
-  }
-
-  /**
-   * Holds if `c` is the target of both a store and a read in the path graph
-   * covered by `revFlow`.
-   */
-  pragma[noinline]
-  predicate revFlowIsReadAndStored(Content c, Configuration conf) {
-    exists(Ap ap |
-      revFlowIsStored(c, ap, conf) and
-      revFlowConsCand(_, c, ap, conf)
-    )
-  }
-
   pragma[nomagic]
   private predicate revFlowOut(
     DataFlowCall call, ReturnNodeExt ret, boolean toReturn, ApOption returnAp, Ap ap,
@@ -1150,6 +1127,14 @@ private module Stage2 {
       store(node1, tc, node2, contentType) and
       revFlowStore(ap2, c, ap1, node1, tc, node2, _, _, config) and
       revFlowConsCand(ap2, c, ap1, config)
+    )
+  }
+
+  predicate readStepCand(Node node1, Content c, Node node2, Configuration config) {
+    exists(Ap ap1, Ap ap2 |
+      revFlow(node2, _, _, ap2, config) and
+      readStepFwd(node1, ap1, c, node2, ap2, config) and
+      revFlowStore(ap1, c, /*unbind*/ ap2, _, _, _, _, _, unbind(config))
     )
   }
 
@@ -1294,14 +1279,6 @@ private module LocalFlowBigStep {
 }
 
 private import LocalFlowBigStep
-
-pragma[nomagic]
-private predicate readCand2(Node node1, Content c, Node node2, Configuration config) {
-  read(node1, c, node2, config) and
-  Stage2::revFlow(node1, _, _, true, unbind(config)) and
-  Stage2::revFlow(node2, config) and
-  Stage2::revFlowIsReadAndStored(c, unbind(config))
-}
 
 private module Stage3 {
   class ApApprox = Stage2::Ap;
@@ -1473,7 +1450,7 @@ private module Stage3 {
     Ap ap, Content c, Node node1, Node node2, Cc cc, ApOption argAp, Configuration config
   ) {
     fwdFlow(node1, cc, argAp, ap, config) and
-    readCand2(node1, c, node2, config) and
+    Stage2::readStepCand(node1, c, node2, config) and
     getHeadContent(ap) = c
   }
 
@@ -1621,13 +1598,6 @@ private module Stage3 {
     if fwdFlow(node, true, _, ap, config) then returnAp = apSome(ap) else returnAp = apNone()
   }
 
-  // TODO: remove
-  pragma[nomagic]
-  predicate readCandFwd(Node node1, TypedContent tc, Ap ap, Node node2, Configuration config) {
-    fwdFlowRead(ap, _, node1, node2, _, _, config) and
-    ap.headUsesContent(tc)
-  }
-
   pragma[nomagic]
   private predicate revFlowStore(
     Ap ap0, Content c, Ap ap, Node node, TypedContent tc, Node mid, boolean toReturn,
@@ -1704,9 +1674,10 @@ private module Stage3 {
   }
 
   predicate readStepCand(Node node1, Content c, Node node2, Configuration config) {
-    exists(Ap ap |
-      revFlow(node2, _, _, ap, config) and
-      readStepFwd(node1, _, c, node2, ap, config)
+    exists(Ap ap1, Ap ap2 |
+      revFlow(node2, _, _, ap2, config) and
+      readStepFwd(node1, ap1, c, node2, ap2, config) and
+      revFlowStore(ap1, c, /*unbind*/ ap2, _, _, _, _, _, unbind(config))
     )
   }
   /* End: Stage 3 logic. */
@@ -2320,6 +2291,14 @@ private module Stage4 {
     )
   }
 
+  predicate readStepCand(Node node1, Content c, Node node2, Configuration config) {
+    exists(Ap ap1, Ap ap2 |
+      revFlow(node2, _, _, ap2, config) and
+      readStepFwd(node1, ap1, c, node2, ap2, config) and
+      revFlowStore(ap1, c, /*unbind*/ ap2, _, _, _, _, _, unbind(config))
+    )
+  }
+
   predicate revFlow(Node n, Configuration config) { revFlow(n, _, _, _, config) }
   /* End: Stage 4 logic. */
 }
@@ -2919,17 +2898,12 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
 }
 
 pragma[nomagic]
-private predicate readCand(Node node1, TypedContent tc, Node node2, Configuration config) {
-  Stage3::readCandFwd(node1, tc, _, node2, config) and
-  Stage4::revFlow(node2, config)
-}
-
-pragma[nomagic]
 private predicate pathReadStep(
   PathNodeMid mid, Node node, AccessPath ap0, TypedContent tc, CallContext cc
 ) {
   ap0 = mid.getAp() and
-  readCand(mid.getNode(), tc, node, mid.getConfiguration()) and
+  tc = ap0.getHead() and
+  Stage4::readStepCand(mid.getNode(), tc.getContent(), node, mid.getConfiguration()) and
   cc = mid.getCallContext()
 }
 
