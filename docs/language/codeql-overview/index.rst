@@ -1,3 +1,5 @@
+.. _codeql-overview:
+
 CodeQL overview
 ===============
 

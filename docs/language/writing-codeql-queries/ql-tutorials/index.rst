@@ -1,3 +1,5 @@
+.. _ql-tutorials:
+
 QL tutorials
 ============
 

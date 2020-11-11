@@ -1,3 +1,5 @@
+.. _writing-codeql-queries:
+
 Writing CodeQL queries
 ======================
 

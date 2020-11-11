@@ -1,3 +1,5 @@
+.. _codeql-language-guides:
+
 CodeQL language guides
 ======================
 

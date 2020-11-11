@@ -1,3 +1,5 @@
+.. _codeql-for-javascript:
+
 CodeQL for JavaScript
 =====================
 

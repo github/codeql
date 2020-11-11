@@ -1,3 +1,5 @@
+.. _codeql-for-csharp:
+
 CodeQL for C#
 =============
 
