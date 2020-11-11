@@ -25,8 +25,7 @@ predicate parameterOf(Parameter p, Function f, int n) {
 
 /**
  * Holds if `instr` is the `n`'th argument to a call to the non-virtual function `f`, and
- * `init` is the corresponding initiazation instruction that receives the value of
- * `instr` in `f`.
+ * `init` is the corresponding initiazation instruction that receives the value of `instr` in `f`.
  */
 predicate flowIntoParameter(
   CallInstruction call, Instruction instr, Function f, int n, InitializeParameterInstruction init
@@ -39,9 +38,8 @@ predicate flowIntoParameter(
 }
 
 /**
- * Holds if `instr` is an argument to a call to the function `f`, and
- * `init` is the corresponding initiazation instruction that receives the value of
- * `instr` in `f`.
+ * Holds if `instr` is an argument to a call to the function `f`, and `init` is the
+ * corresponding initialization instruction that receives the value of `instr` in `f`.
  */
 pragma[noinline]
 predicate getPositionalArgumentInitParam(
@@ -96,42 +94,32 @@ predicate isSource(InitializeParameterInstruction init, string msg, Class c) {
   init.getEnclosingFunction().getDeclaringType() = c
 }
 
-/**
- * Holds if `instr` flows to the sink instruction `sink` that is a `this`
- * pointer of type `sinkClass`
- */
-predicate flowsToSink(Instruction instr, Instruction sink, Class sinkClass) {
-  instr = sink and
-  isSink(sink, _, sinkClass)
+/** Holds if `instr` flows to a sink. */
+predicate flowsToSink(Instruction instr) {
+  isSink(instr, _, _)
   or
   exists(Instruction mid |
-    successor(instr, mid, sinkClass) and
-    flowsToSink(mid, sink, sinkClass)
+    successor(instr, mid) and
+    flowsToSink(mid)
+  )
+}
+
+/** Holds if `instr` flows from a source. */
+predicate flowsFromSource(Instruction instr) {
+  isSource(instr, _, _)
+  or
+  exists(Instruction mid |
+    successor(mid, instr) and
+    flowsFromSource(mid)
   )
 }
 
 /**
- * Holds if `source` is an initialization of a `this` pointer of type `sourceClass`, and
- * `source` flows to instruction `instr`.
+ * Holds if `instr` is an argument (or argument indirection) to a call, and
+ * `succ` is the corresponding initialization instruction in the call target.
  */
-predicate flowsFromSource(Instruction source, Instruction instr, Class sourceClass) {
-  source = instr and
-  isSource(source, _, sourceClass)
-  or
-  exists(Instruction mid |
-    successorFwd(mid, instr, sourceClass) and
-    flowsFromSource(source, mid, sourceClass)
-  )
-}
-
-/**
- * Holds if
- * - `instr` is an argument (or argument indirection) to a call, and
- * - `succ` is the corresponding initialization instruction in the call target, and
- * - `succ` eventually flows to an instruction that is used as a `this` pointer of type `sinkClass`.
- */
-predicate flowThroughCallable(Instruction instr, Instruction succ, Class sinkClass) {
-  flowsToSink(succ, _, sinkClass) and
+predicate flowThroughCallable(Instruction instr, Instruction succ) {
+  flowsToSink(succ) and
   (
     // Flow from an argument to a parameter
     exists(CallInstruction call, InitializeParameterInstruction init | init = succ |
@@ -160,115 +148,57 @@ predicate flowThroughCallable(Instruction instr, Instruction succ, Class sinkCla
   )
 }
 
-/**
- * Holds if `instr` flows to `succ` and `succ` eventually flows to an instruction that is used
- * as a `this` pointer of type `sinkClass`.
- */
-predicate successor(Instruction instr, Instruction succ, Class sinkClass) {
-  flowsToSink(succ, _, sinkClass) and
+/** Holds if `instr` flows to `succ`. */
+predicate successor(Instruction instr, Instruction succ) {
+  flowsToSink(succ) and
   (
     irBbPostDominates(succ.getBlock(), instr.getBlock()) and
     (
-      (
-        succ.(CopyInstruction).getSourceValue() = instr or
-        succ.(CheckedConvertOrNullInstruction).getUnary() = instr or
-        succ.(ChiInstruction).getTotal() = instr or
-        succ.(ConvertInstruction).getUnary() = instr
-      )
-      or
+      succ.(CopyInstruction).getSourceValue() = instr or
+      succ.(CheckedConvertOrNullInstruction).getUnary() = instr or
+      succ.(ChiInstruction).getTotal() = instr or
+      succ.(ConvertInstruction).getUnary() = instr or
       succ.(InheritanceConversionInstruction).getUnary() = instr
     )
     or
-    flowThroughCallable(instr, succ, sinkClass)
+    flowThroughCallable(instr, succ)
   )
 }
 
-/**
- * Holds if
- * - `instr` is an argument (or argument indirection) to a call, and
- * - `succ` is the corresponding initialization instruction in the call target, and
- * - there exists an initialization of a `this` pointer of type `sourceClass` that flows to `instr`.
- */
-predicate flowThroughCallableFwd(Instruction instr, Instruction succ, Class sourceClass) {
-  flowsFromSource(_, instr, sourceClass) and
-  (
-    // Flow from an argument to a parameter
-    exists(CallInstruction call, InitializeParameterInstruction init | init = succ |
-      getPositionalArgumentInitParam(call, instr, init, call.getStaticCallTarget())
-      or
-      getThisArgumentInitParam(call, instr, init, call.getStaticCallTarget())
-    )
-    or
-    // Flow from argument indirection to parameter indirection
-    exists(
-      CallInstruction call, ReadSideEffectInstruction read, InitializeIndirectionInstruction init
-    |
-      init = succ and
-      init.getEnclosingFunction() = call.getStaticCallTarget() and
-      read.getPrimaryInstruction() = call and
-      read.getSideEffectOperand().getAnyDef() = instr
-    |
-      exists(int n |
-        read.getIndex() = n and
-        init.getParameter().getIndex() = unbind(n)
-      )
-      or
-      call.getThisArgument() = instr and
-      init.getIRVariable() instanceof IRThisVariable
-    )
-  )
-}
+predicate successorTC(Instruction i1, Instruction i2) = fastTC(successor/2)(i1, i2)
 
 /**
- * Holds if there exists an initialization of a `this` pointer of type `sourceClass` that flows
- * to `instr`, and `instr` flows to `succ` and `succ`.
+ * Holds if:
+ * - `source` is an initialization of a `this` pointer of type `sourceClass`, and
+ * - `sink` is a use of the `this` pointer as type `sinkClass`, and
+ * - `call` invokes a pure virtual function using `sink` as the `this` pointer, and
+ * - `msg` is a string describing whether `source` is from a constructor or destructor.
  */
-predicate successorFwd(Instruction instr, Instruction succ, Class sourceClass) {
-  flowsFromSource(_, instr, sourceClass) and
-  (
-    irBbPostDominates(succ.getBlock(), instr.getBlock()) and
-    (
-      (
-        succ.(CopyInstruction).getSourceValue() = instr or
-        succ.(CheckedConvertOrNullInstruction).getUnary() = instr or
-        succ.(ChiInstruction).getTotal() = instr or
-        succ.(ConvertInstruction).getUnary() = instr
-      )
-      or
-      succ.(InheritanceConversionInstruction).getUnary() = instr
-    )
-    or
-    flowThroughCallableFwd(instr, succ, sourceClass)
-  )
-}
-
-/**
- * Holds if `instr` is in the path from an initialization of a `this` pointer in a subclass, to a use
- * of the `this` pointer in a baseclass.
- */
-predicate isInPath(Instruction instr) {
-  exists(Class sourceClass, Class sinkClass |
-    flowsFromSource(_, instr, sourceClass) and
-    flowsToSink(instr, _, sinkClass) and
-    sourceClass.getABaseClass+() = sinkClass
-  )
+predicate flows(
+  Instruction source, string msg, Class sourceClass, Instruction sink, CallInstruction call,
+  Class sinkClass
+) {
+  isSource(source, msg, sourceClass) and
+  successorTC(source, sink) and
+  isSink(sink, call, sinkClass)
 }
 
 query predicate edges(Instruction a, Instruction b) {
-  successor(a, b, _) and isInPath(a) and isInPath(b)
+  successor(a, b) and flowsFromSource(a) and flowsFromSource(b)
 }
 
 query predicate nodes(Instruction n, string key, string val) {
-  isInPath(n) and key = "semmle.label" and val = n.toString()
+  flowsFromSource(n) and
+  flowsToSink(n) and
+  key = "semmle.label" and
+  val = n.toString()
 }
 
 from
   Instruction source, Instruction sink, CallInstruction call, string msg, Class sourceClass,
   Class sinkClass
 where
-  isSource(source, msg, sourceClass) and
-  flowsToSink(source, sink, sinkClass) and
-  isSink(sink, call, sinkClass) and
+  flows(source, msg, sourceClass, sink, call, sinkClass) and
   sourceClass.getABaseClass+() = sinkClass
 select call.getUnconvertedResultExpression(), source, sink,
   "Call to pure virtual function during " + msg
