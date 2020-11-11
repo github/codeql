@@ -5,7 +5,7 @@ private:
 public:
     Base() {
         // wrong: the virtual table of `Derived` has not been initialized yet. So this
-        // call will resolve to `B::construct`, which cannot be called as it is a pure
+        // call will resolve to `Base::construct`, which cannot be called as it is a pure
         // virtual function.
         construct();
     }
