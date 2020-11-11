@@ -36,5 +36,19 @@ abstract class DeallocationExpr extends Expr {
  * with `delete` or `delete[]` expressions.  Note that `delete` and `delete[]`
  * are not function calls, but these functions may also be called directly.
  */
-abstract class OperatorDeleteDeallocationFunction extends DeallocationFunction {
+class OperatorDeleteDeallocationFunction extends DeallocationFunction {
+  OperatorDeleteDeallocationFunction() {
+    exists(string name |
+      hasGlobalName(name) and
+      (
+        // operator delete(pointer, ...)
+        name = "operator delete"
+        or
+        // operator delete[](pointer, ...)
+        name = "operator delete[]"
+      )
+    )
+  }
+
+  override int getFreedArg() { result = 0 }
 }

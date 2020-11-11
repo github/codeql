@@ -90,26 +90,6 @@ private class StandardDeallocationFunction extends DeallocationFunction {
 }
 
 /**
- * Implements `OperatorDeleteDeallocationFunction`.
- */
-private class OperatorDeleteDeallocationFunctionImpl extends OperatorDeleteDeallocationFunction {
-  OperatorDeleteDeallocationFunctionImpl() {
-    exists(string name |
-      hasGlobalName(name) and
-      (
-        // operator delete(pointer, ...)
-        name = "operator delete"
-        or
-        // operator delete[](pointer, ...)
-        name = "operator delete[]"
-      )
-    )
-  }
-
-  override int getFreedArg() { result = 0 }
-}
-
-/**
  * An deallocation expression that is a function call, such as call to `free`.
  */
 private class CallDeallocationExpr extends DeallocationExpr, FunctionCall {

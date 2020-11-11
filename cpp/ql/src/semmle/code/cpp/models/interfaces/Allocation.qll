@@ -91,10 +91,31 @@ abstract class AllocationExpr extends Expr {
  * `new` or `new[]` expressions.  Note that `new` and `new[]` are not function
  * calls, but these functions may also be called directly.
  */
-abstract class OperatorNewAllocationFunction extends AllocationFunction {
+class OperatorNewAllocationFunction extends AllocationFunction {
+  OperatorNewAllocationFunction() {
+    exists(string name |
+      hasGlobalName(name) and
+      (
+        // operator new(bytes, ...)
+        name = "operator new"
+        or
+        // operator new[](bytes, ...)
+        name = "operator new[]"
+      )
+    )
+  }
+
+  override int getSizeArg() { result = 0 }
+
+  override predicate requiresDealloc() { not exists(getPlacementArgument()) }
+
   /**
    * Gets the position of the placement pointer if this is a placement
    * `operator new` function.
    */
-  int getPlacementArgument() { none()}
+  int getPlacementArgument() {
+    getNumberOfParameters() = 2 and
+    getParameter(1).getType() instanceof VoidPointerType and
+    result = 1
+  }
 }

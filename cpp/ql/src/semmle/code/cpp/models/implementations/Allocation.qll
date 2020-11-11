@@ -237,34 +237,6 @@ private class SizelessAllocationFunction extends AllocationFunction {
 }
 
 /**
- * Implements `OperatorNewAllocationFunction`.
- */
-private class OperatorNewAllocationFunctionImpl extends OperatorNewAllocationFunction {
-  OperatorNewAllocationFunctionImpl() {
-    exists(string name |
-      hasGlobalName(name) and
-      (
-        // operator new(bytes, ...)
-        name = "operator new"
-        or
-        // operator new[](bytes, ...)
-        name = "operator new[]"
-      )
-    )
-  }
-
-  override int getSizeArg() { result = 0 }
-
-  override predicate requiresDealloc() { not exists(getPlacementArgument()) }
-
-  override int getPlacementArgument() {
-    getNumberOfParameters() = 2 and
-    getParameter(1).getType() instanceof VoidPointerType and
-    result = 1
-  }
-}
-
-/**
  * Holds if `sizeExpr` is an expression consisting of a subexpression
  * `lengthExpr` multiplied by a constant `sizeof` that is the result of a
  * `sizeof()` expression.  Alternatively if there isn't a suitable `sizeof()`
