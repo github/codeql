@@ -17,7 +17,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    annotations-in-java
    javadoc
    working-with-source-locations
-   abstract-syntax-tree-classes-for-working-with-go-programs
+   abstract-syntax-tree-classes-for-working-with-java-programs
 
 -  :doc:`Basic query for Java code <basic-query-for-java-code>`: Learn to write and run a simple CodeQL query using LGTM.
 
@@ -37,5 +37,5 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Working with source locations <working-with-source-locations>`: You can use the location of entities within Java code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.
 
--  :doc:`Abstract syntax tree classes for working with Java programs <abstract-syntax-tree-classes-for-working-with-go-programs>`: CodeQL has a large selection of classes for representing the abstract syntax tree of Java programs.
+-  :doc:`Abstract syntax tree classes for working with Java programs <abstract-syntax-tree-classes-for-working-with-java-programs>`: CodeQL has a large selection of classes for representing the abstract syntax tree of Java programs.
 

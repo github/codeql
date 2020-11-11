@@ -1,4 +1,4 @@
-.. _abstract-syntax-tree-classes-for-working-with-go-programs:
+.. _abstract-syntax-tree-classes-for-working-with-java-programs:
 
 Abstract syntax tree classes for working with Java programs
 ===========================================================
