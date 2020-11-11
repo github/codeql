@@ -15,44 +15,27 @@
 import semmle.code.cpp.ir.IR
 import cpp
 
-predicate irBbFunctionExit(IRBlock exit) {
-  exit.getLastInstruction() instanceof ExitFunctionInstruction
-}
-
-predicate irBbNodePred(IRBlock src, IRBlock pred) { src.getAPredecessor() = pred }
-
-predicate irBbIPostDominates(IRBlock postDominator, IRBlock node) =
-  idominance(irBbFunctionExit/1, irBbNodePred/2)(_, postDominator, node)
-
-predicate irBbStrictlyPostDominates(IRBlock postDominator, IRBlock node) {
-  irBbIPostDominates+(postDominator, node)
-}
-
-/**
- * Holds if `postDominator` is a post-dominator of `node` in the control-flow graph. This
- * is reflexive.
- */
-predicate irBbPostDominates(IRBlock postDominator, IRBlock node) {
-  irBbStrictlyPostDominates(postDominator, node) or postDominator = node
-}
-
 bindingset[n, result]
 int unbind(int n) { result >= n and result <= n }
 
-/** Holds if `p` is the `n`'th parameter of function `f`. */
-predicate parameterOf(Parameter p, Function f, int n) { p.getFunction() = f and p.getIndex() = n }
+/** Holds if `p` is the `n`'th parameter of the non-virtual function `f`. */
+predicate parameterOf(Parameter p, Function f, int n) {
+  not f.isVirtual() and f.getParameter(n) = p
+}
 
 /**
- * Holds if `instr` is the `n`'th argument to a call to the function `f`, and
+ * Holds if `instr` is the `n`'th argument to a call to the non-virtual function `f`, and
  * `init` is the corresponding initiazation instruction that receives the value of
  * `instr` in `f`.
  */
 predicate flowIntoParameter(
   CallInstruction call, Instruction instr, Function f, int n, InitializeParameterInstruction init
 ) {
+  not f.isVirtual() and
   call.getPositionalArgument(n) = instr and
   f = call.getStaticCallTarget() and
-  init.getEnclosingFunction() = f
+  init.getEnclosingFunction() = f and
+  init.getParameter().getIndex() = unbind(n)
 }
 
 /**
@@ -71,7 +54,7 @@ predicate getPositionalArgumentInitParam(
 }
 
 /**
- * Holds if `instr` is the qualifier to a call to the function `f`, and
+ * Holds if `instr` is the qualifier to a call to the non-virtual function `f`, and
  * `init` is the corresponding initiazation instruction that receives the value of
  * `instr` in `f`.
  */
@@ -79,6 +62,7 @@ pragma[noinline]
 predicate getThisArgumentInitParam(
   CallInstruction call, Instruction instr, InitializeParameterInstruction init, Function f
 ) {
+  not f.isVirtual() and
   call.getStaticCallTarget() = f and
   init.getEnclosingFunction() = f and
   call.getThisArgument() = instr and
@@ -270,7 +254,9 @@ predicate isInPath(Instruction instr) {
   )
 }
 
-query predicate edges(Instruction a, Instruction b) { successor(a, b, _) }
+query predicate edges(Instruction a, Instruction b) {
+  successor(a, b, _) and isInPath(a) and isInPath(b)
+}
 
 query predicate nodes(Instruction n, string key, string val) {
   isInPath(n) and key = "semmle.label" and val = n.toString()

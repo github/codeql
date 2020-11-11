@@ -280,3 +280,24 @@ private module Cached {
 }
 
 private Instruction getFirstInstruction(TIRBlock block) { block = MkIRBlock(result) }
+
+private predicate irBbFunctionExit(IRBlock exit) {
+  exit.getLastInstruction() instanceof ExitFunctionInstruction
+}
+
+private predicate irBbNodePred(IRBlock src, IRBlock pred) { src.getAPredecessor() = pred }
+
+private predicate irBbIPostDominates(IRBlock postDominator, IRBlock node) =
+  idominance(irBbFunctionExit/1, irBbNodePred/2)(_, postDominator, node)
+
+private predicate irBbStrictlyPostDominates(IRBlock postDominator, IRBlock node) {
+  irBbIPostDominates+(postDominator, node)
+}
+
+/**
+ * Holds if `postDominator` is a post-dominator of `node` in the control-flow graph. This
+ * is reflexive.
+ */
+predicate irBbPostDominates(IRBlock postDominator, IRBlock node) {
+  irBbStrictlyPostDominates(postDominator, node) or postDominator = node
+}
