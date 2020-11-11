@@ -1,3 +1,5 @@
+.. _conversions-and-classes-in-cpp:
+
 Conversions and classes in C and C++
 ====================================
 

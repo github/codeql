@@ -1,3 +1,5 @@
+.. _customizing-settings:
+
 Customizing settings
 ====================
 

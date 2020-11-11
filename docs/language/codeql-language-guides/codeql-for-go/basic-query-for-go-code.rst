@@ -1,3 +1,5 @@
+.. _basic-query-for-go-code:
+
 Basic query for Go code
 =======================
 

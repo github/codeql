@@ -1,3 +1,5 @@
+.. _analyzing-data-flow-in-cpp:
+
 Analyzing data flow in C and C++
 ================================
 

@@ -1,3 +1,5 @@
+.. _catch-the-fire-starter:
+
 Catch the fire starter
 ======================
 

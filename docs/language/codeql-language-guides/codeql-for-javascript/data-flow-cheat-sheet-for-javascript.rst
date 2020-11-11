@@ -1,3 +1,5 @@
+.. _data-flow-cheat-sheet-for-javascript:
+
 Data flow cheat sheet for JavaScript
 ====================================
 

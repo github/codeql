@@ -1,3 +1,5 @@
+.. _about-codeql:
+
 About CodeQL
 ============
 

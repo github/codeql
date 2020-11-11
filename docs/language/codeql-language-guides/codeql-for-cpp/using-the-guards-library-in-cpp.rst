@@ -1,3 +1,5 @@
+.. _using-the-guards-library-in-cpp:
+
 Using the guards library in C and C++
 =====================================
 

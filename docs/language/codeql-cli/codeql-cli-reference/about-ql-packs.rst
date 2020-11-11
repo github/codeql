@@ -1,3 +1,5 @@
+.. _about-ql-packs:
+
 About QL packs
 ==============
 

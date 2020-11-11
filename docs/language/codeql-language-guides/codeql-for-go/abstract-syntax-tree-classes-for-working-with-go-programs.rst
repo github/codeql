@@ -1,3 +1,5 @@
+.. _abstract-syntax-tree-classes-for-working-with-go-programs:
+
 Abstract syntax tree classes for working with Go programs
 =========================================================
 

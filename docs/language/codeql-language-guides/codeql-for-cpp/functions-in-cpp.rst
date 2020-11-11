@@ -1,3 +1,5 @@
+.. _functions-in-cpp:
+
 Functions in C and C++
 =======================
 

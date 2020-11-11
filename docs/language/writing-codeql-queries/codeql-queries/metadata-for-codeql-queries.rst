@@ -1,3 +1,5 @@
+.. _metadata-for-codeql-queries:
+
 Metadata for CodeQL queries
 ===========================
 

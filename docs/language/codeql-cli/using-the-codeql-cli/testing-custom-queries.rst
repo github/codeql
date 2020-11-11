@@ -1,3 +1,5 @@
+.. _testing-custom-queries:
+
 Testing custom queries
 ======================
 

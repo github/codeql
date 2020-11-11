@@ -1,3 +1,5 @@
+.. _basic-query-for-cpp-code:
+
 Basic query for C and C++ code
 ==============================
 

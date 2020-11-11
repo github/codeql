@@ -1,3 +1,5 @@
+.. _about-codeql-queries:
+
 About CodeQL queries
 ####################
 

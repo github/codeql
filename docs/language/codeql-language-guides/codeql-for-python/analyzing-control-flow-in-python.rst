@@ -1,3 +1,5 @@
+.. _analyzing-control-flow-in-python:
+
 Analyzing control flow in Python
 ================================
 

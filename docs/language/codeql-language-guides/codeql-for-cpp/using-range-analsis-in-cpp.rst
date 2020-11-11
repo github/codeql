@@ -1,3 +1,5 @@
+.. _using-range-analsis-in-cpp:
+
 Using range analysis for C and C++
 ==================================
 

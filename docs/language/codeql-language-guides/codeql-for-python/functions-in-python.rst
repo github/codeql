@@ -1,3 +1,5 @@
+.. _functions-in-python:
+
 Functions in Python
 ===================
 

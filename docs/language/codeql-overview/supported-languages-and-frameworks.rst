@@ -1,3 +1,5 @@
+.. _supported-languages-and-frameworks:
+
 Supported languages and frameworks
 ----------------------------------
 

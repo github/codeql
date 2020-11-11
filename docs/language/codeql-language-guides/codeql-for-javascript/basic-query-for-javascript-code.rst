@@ -1,3 +1,5 @@
+.. _basic-query-for-javascript-code:
+
 Basic query for JavaScript code
 ===============================
 

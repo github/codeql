@@ -1,3 +1,5 @@
+.. _about-the-codeql-cli:
+
 About the CodeQL CLI
 ====================
 

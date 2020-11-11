@@ -1,3 +1,5 @@
+.. _creating-path-queries:
+
 Creating path queries
 #####################
 

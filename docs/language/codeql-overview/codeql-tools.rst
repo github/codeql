@@ -1,3 +1,5 @@
+.. _codeql-tools:
+
 CodeQL tools
 ============
 

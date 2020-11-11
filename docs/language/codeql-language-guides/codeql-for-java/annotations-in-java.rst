@@ -1,3 +1,5 @@
+.. _annotations-in-java:
+
 Annotations in Java
 ===================
 

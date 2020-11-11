@@ -1,3 +1,5 @@
+.. _testing-query-help-files:
+
 Testing query help files
 ========================
 

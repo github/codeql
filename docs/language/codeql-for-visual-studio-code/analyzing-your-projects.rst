@@ -1,3 +1,5 @@
+.. _analyzing-your-projects:
+
 Analyzing your projects
 =================================================
 

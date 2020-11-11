@@ -1,3 +1,5 @@
+.. _types-in-java:
+
 Java types
 ==========
 

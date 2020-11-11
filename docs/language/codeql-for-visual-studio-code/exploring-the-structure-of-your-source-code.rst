@@ -1,3 +1,5 @@
+.. _exploring-the-structure-of-your-source-code:
+
 Exploring the structure of your source code
 =================================================
 

@@ -1,3 +1,5 @@
+.. _sarif-output:
+
 SARIF output
 ============
 

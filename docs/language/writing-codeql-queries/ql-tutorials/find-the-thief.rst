@@ -1,3 +1,5 @@
+.. _find-the-thief:
+
 Find the thief
 ==============
 

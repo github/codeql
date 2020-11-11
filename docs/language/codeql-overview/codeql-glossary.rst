@@ -1,3 +1,5 @@
+.. _codeql-glossary:
+
 CodeQL glossary
 ===============
 

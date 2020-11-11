@@ -1,3 +1,5 @@
+.. _codeql-library-for-python:
+
 CodeQL library for Python
 =========================
 

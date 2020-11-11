@@ -1,3 +1,5 @@
+.. _getting-started-with-the-codeql-cli:
+
 Getting started with the CodeQL CLI
 ===================================
 

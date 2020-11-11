@@ -1,3 +1,5 @@
+.. _expressions-types-and-statements-in-cpp:
+
 Expressions, types, and statements in C and C++
 ===============================================
 

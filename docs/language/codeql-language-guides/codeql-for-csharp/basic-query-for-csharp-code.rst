@@ -1,3 +1,5 @@
+.. _basic-query-for-csharp-code:
+
 Basic query for C# code
 =======================
 
