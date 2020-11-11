@@ -1,3 +1,5 @@
+.. _query-reference-files:
+
 Query reference files
 =====================
 

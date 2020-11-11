@@ -1,3 +1,5 @@
+.. _exploring-data-flow-with-path-queries:
+
 Exploring data flow with path queries
 =================================================
 

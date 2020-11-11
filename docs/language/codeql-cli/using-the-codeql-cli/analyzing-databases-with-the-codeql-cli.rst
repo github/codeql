@@ -1,3 +1,5 @@
+.. _analyzing-databases-with-the-codeql-cli:
+
 Analyzing databases with the CodeQL CLI
 =======================================
 

@@ -1,3 +1,5 @@
+.. _basic-query-for-python-code:
+
 Basic query for Python code
 ===========================
 

@@ -1,3 +1,5 @@
+.. _using-custom-queries-with-the-codeql-cli:
+
 Using custom queries with the CodeQL CLI
 =========================================
 

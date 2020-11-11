@@ -1,3 +1,5 @@
+.. _defining-the-results-of-a-query:
+
 Defining the results of a query
 ===============================
 

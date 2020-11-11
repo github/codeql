@@ -1,3 +1,5 @@
+.. _creating-codeql-databases:
+
 Creating CodeQL databases
 =========================
 

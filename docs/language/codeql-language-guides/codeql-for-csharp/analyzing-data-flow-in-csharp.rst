@@ -1,3 +1,5 @@
+.. _analyzing-data-flow-in-csharp:
+
 Analyzing data flow in C#
 =========================
 

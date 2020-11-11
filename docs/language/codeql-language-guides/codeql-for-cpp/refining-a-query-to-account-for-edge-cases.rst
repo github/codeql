@@ -1,3 +1,5 @@
+.. _refining-a-query-to-account-for-edge-cases:
+
 Refining a query to account for edge cases
 ==========================================
 

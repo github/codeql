@@ -1,3 +1,5 @@
+.. _abstract-syntax-tree-classes-for-working-with-javascript-and-typescript-programs:
+
 Abstract syntax tree classes for working with JavaScript and TypeScript programs
 ================================================================================
 

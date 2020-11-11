@@ -1,3 +1,5 @@
+.. _troubleshooting-query-performance:
+
 Troubleshooting query performance
 =================================
 

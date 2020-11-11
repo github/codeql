@@ -1,3 +1,5 @@
+.. _basic-query-for-java-code:
+
 Basic query for Java code
 =========================
 

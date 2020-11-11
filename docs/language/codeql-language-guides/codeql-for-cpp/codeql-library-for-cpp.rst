@@ -1,3 +1,5 @@
+.. _codeql-library-for-cpp:
+
 CodeQL library for C and C++
 ============================
 

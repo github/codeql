@@ -1,3 +1,5 @@
+.. _detecting-a-potential-buffer-overflow:
+
 Detecting a potential buffer overflow
 =====================================
 

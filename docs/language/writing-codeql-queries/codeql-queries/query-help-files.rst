@@ -1,3 +1,5 @@
+.. _query-help-files:
+
 Query help files
 ****************
 

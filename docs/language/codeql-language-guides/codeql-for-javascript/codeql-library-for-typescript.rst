@@ -1,3 +1,5 @@
+.. _codeql-library-for-typescript:
+
 CodeQL library for TypeScript
 =============================
 

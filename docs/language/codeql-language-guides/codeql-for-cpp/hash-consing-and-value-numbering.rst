@@ -1,3 +1,5 @@
+.. _hash-consing-and-value-numbering:
+
 Hash consing and value numbering
 ================================
 

@@ -1,3 +1,5 @@
+.. _providing-locations-in-codeql-queries:
+
 Providing locations in CodeQL queries
 =====================================
 

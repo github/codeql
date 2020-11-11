@@ -1,3 +1,5 @@
+.. _codeql-library-for-go:
+
 CodeQL library for Go
 =====================
 

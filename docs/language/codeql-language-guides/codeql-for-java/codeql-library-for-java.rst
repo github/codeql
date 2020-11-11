@@ -1,3 +1,5 @@
+.. _codeql-library-for-java:
+
 CodeQL library for Java
 =======================
 

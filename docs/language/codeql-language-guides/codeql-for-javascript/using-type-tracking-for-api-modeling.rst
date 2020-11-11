@@ -1,3 +1,5 @@
+.. _using-type-tracking-for-api-modeling:
+
 Using type tracking for API modeling
 ====================================
 

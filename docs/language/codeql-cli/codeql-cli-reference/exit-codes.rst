@@ -1,3 +1,5 @@
+.. _exit-codes:
+
 Exit codes
 ==========
 

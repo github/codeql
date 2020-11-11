@@ -1,3 +1,5 @@
+.. _introduction-to-ql:
+
 Introduction to QL 
 ==================
 

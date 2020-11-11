@@ -1,3 +1,5 @@
+.. _analyzing-data-flow-in-java:
+
 Analyzing data flow in Java
 ===========================
 

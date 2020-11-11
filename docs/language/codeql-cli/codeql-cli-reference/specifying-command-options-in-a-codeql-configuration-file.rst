@@ -1,3 +1,5 @@
+.. _specifying-command-options-in-a-codeql-configuration-file:
+
 Specifying command options in a CodeQL configuration file
 =========================================================
 

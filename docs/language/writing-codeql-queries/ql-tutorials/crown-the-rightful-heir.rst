@@ -1,3 +1,5 @@
+.. _crown-the-rightful-heir:
+
 Crown the rightful heir
 =======================
 

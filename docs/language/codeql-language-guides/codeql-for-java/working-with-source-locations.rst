@@ -1,3 +1,5 @@
+.. _working-with-source-locations:
+
 Working with source locations
 =============================
 

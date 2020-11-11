@@ -1,3 +1,5 @@
+.. _modeling-data-flow-in-go-libraries:
+
 Modeling data flow in Go libraries
 ==================================
 

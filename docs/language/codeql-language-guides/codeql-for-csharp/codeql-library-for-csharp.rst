@@ -1,3 +1,5 @@
+.. _codeql-library-for-csharp:
+
 CodeQL library for C#
 =====================
 

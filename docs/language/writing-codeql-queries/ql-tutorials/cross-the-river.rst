@@ -1,3 +1,5 @@
+.. _cross-the-river:
+
 Cross the river
 ===============
 

@@ -1,3 +1,5 @@
+.. _creating-codeql-query-suites:
+
 Creating CodeQL query suites
 ============================
 

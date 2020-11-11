@@ -1,3 +1,5 @@
+.. _upgrading-codeql-databases:
+
 Upgrading CodeQL databases
 ==========================
 

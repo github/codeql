@@ -1,3 +1,5 @@
+.. _codeql-library-for-javascript:
+
 CodeQL library for JavaScript
 =============================
 

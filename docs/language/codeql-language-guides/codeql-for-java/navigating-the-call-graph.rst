@@ -1,3 +1,5 @@
+.. _navigating-the-call-graph:
+
 Navigating the call graph
 =========================
 

@@ -1,3 +1,5 @@
+.. _overflow-prone-comparisons-in-java:
+
 Overflow-prone comparisons in Java
 ==================================
 
