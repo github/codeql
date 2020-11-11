@@ -389,11 +389,10 @@ private module FlaskModel {
         this.asCfgNode() = attr and attr.getObject(attr_name) = flask::request().asCfgNode()
       |
         attr_name in [
-            "path",
             // str
-            "full_path", "base_url", "url", "access_control_request_method", "content_encoding",
-            "content_md5", "content_type", "data", "method", "mimetype", "origin", "query_string",
-            "referrer", "remote_addr", "remote_user", "user_agent",
+            "path", "full_path", "base_url", "url", "access_control_request_method",
+            "content_encoding", "content_md5", "content_type", "data", "method", "mimetype",
+            "origin", "query_string", "referrer", "remote_addr", "remote_user", "user_agent",
             // dict
             "environ", "cookies", "mimetype_params", "view_args",
             // json
