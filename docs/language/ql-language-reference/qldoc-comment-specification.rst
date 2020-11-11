@@ -1,3 +1,5 @@
+.. _qldoc-comment-specification:
+
 QLDoc comment specification
 ===========================
 

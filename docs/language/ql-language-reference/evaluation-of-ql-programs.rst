@@ -1,4 +1,4 @@
-.. _evaluation:
+.. _evaluation-of-ql-programs:
 
 Evaluation of QL programs
 #########################

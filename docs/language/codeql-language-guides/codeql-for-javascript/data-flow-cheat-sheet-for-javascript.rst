@@ -36,7 +36,7 @@ This query reports flow paths which:
 - Step through variables, function calls, properties, strings, arrays, promises, exceptions, and steps added by `isAdditionalTaintStep <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/TaintTracking.qll/predicate.TaintTracking$TaintTracking$Configuration$isAdditionalTaintStep.2.html>`__.
 - End at a node matched by `isSink <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Configuration.qll/predicate.Configuration$Configuration$isSink.1.html>`__.
 
-See also: "`Global data flow <analyzing-data-flow-in-javascript.html#global-data-flow>`__" and ":doc:`Creating path queries <writing-codeql-queries:codeql-queries/creating-path-queries>`."
+See also: "`Global data flow <analyzing-data-flow-in-javascript.html#global-data-flow>`__" and ":ref:`Creating path queries <creating-path-queries>`."
 
 DataFlow module
 ---------------
@@ -222,7 +222,7 @@ Troubleshooting
 Further reading
 ---------------
 
-- ":doc:`Exploring data flow with path queries <codeql-for-visual-studio-code:exploring-data-flow-with-path-queries>`"
+- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
 
 
 .. include:: ../../reusables/javascript-further-reading.rst

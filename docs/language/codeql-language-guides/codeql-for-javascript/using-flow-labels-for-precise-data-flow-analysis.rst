@@ -269,7 +269,7 @@ sanitized value:
     }
   }
 
-Here is the final query, expressed as a :doc:`path query <writing-codeql-queries:codeql-queries/creating-path-queries>` so we can examine paths from sources to sinks
+Here is the final query, expressed as a :ref:`path query <creating-path-queries>` so we can examine paths from sources to sinks
 step by step in the UI:
 
 .. code-block:: ql
@@ -400,7 +400,7 @@ string may be an absolute path and whether it may contain ``..`` components.
 Further reading
 ---------------
 
-- ":doc:`Exploring data flow with path queries <codeql-for-visual-studio-code:exploring-data-flow-with-path-queries>`"
+- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
 
 
 .. include:: ../../reusables/javascript-further-reading.rst

@@ -13,15 +13,15 @@ CodeQL includes queries to find the most relevant and interesting problems for e
 - **Alert queries**: queries that highlight issues in specific locations in your code.
 - **Path queries**: queries that describe the flow of information between a source and a sink in your code.
 
-You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/about-queries#what-are-query-packs>`__ to analyze your projects in `LGTM <https://lgtm.com>`__, use them to analyze a database with the ":doc:`CodeQL CLI <codeql-cli:index>`," or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/github/codeql>`__.
+You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/about-queries#what-are-query-packs>`__ to analyze your projects in `LGTM <https://lgtm.com>`__, use them to analyze a database with the ":ref:`CodeQL CLI <codeql-cli>`," or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/github/codeql>`__.
 
-This topic is a basic introduction to query files. You can find more information on writing queries for specific programming languages in the ":doc:`CodeQL language guides <codeql-language-guides:index>`," and detailed technical information about QL in the ":doc:`QL language reference <ql-language-reference:index>`."
+This topic is a basic introduction to query files. You can find more information on writing queries for specific programming languages in the ":ref:`CodeQL language guides <codeql-language-guides>`," and detailed technical information about QL in the ":ref:`QL language reference <ql-language-reference>`."
 For more information on how to format your code when contributing queries to the GitHub repository, see the `CodeQL style guide <https://github.com/github/codeql/blob/main/docs/ql-style-guide.md>`__.
 
 Basic query structure
 *********************
 
-:doc:`Queries <ql-language-reference:queries>` written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing queries include additional optional information, and have the following structure::
+:ref:`Queries <queries>` written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing queries include additional optional information, and have the following structure::
 
     /**
      * 
@@ -46,14 +46,14 @@ Query metadata is used to identify your custom queries when they are added to th
 
 - If you are contributing a query to the GitHub repository, please read the `query metadata style guide <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__. 
 - If you are adding a custom query to a query pack for analysis using LGTM , see `Writing custom queries to include in LGTM analysis <https://lgtm.com/help/lgtm/writing-custom-queries>`__.
-- If you are analyzing a database using the :doc:`CodeQL CLI <codeql-cli:index>`, your query metadata must contain ``@kind``.
-- If you are running a query in the query console on LGTM or with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com and ":doc:`Analyzing your projects <codeql-for-visual-studio-code:analyzing-your-projects>`" in the CodeQL for VS Code help.
+- If you are analyzing a database using the :ref:`CodeQL CLI <codeql-cli>`, your query metadata must contain ``@kind``.
+- If you are running a query in the query console on LGTM or with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com and ":ref:`Analyzing your projects <analyzing-your-projects>`" in the CodeQL for VS Code help.
 
 .. pull-quote:: 
 
     Note
 
-    Queries that are contributed to the open source repository, added to a query pack in LGTM, or used to analyze a database with the :doc:`CodeQL CLI <codeql-cli:index>` must have a query type (``@kind``) specified. The ``@kind`` property indicates how to interpret and display the results of the query analysis:
+    Queries that are contributed to the open source repository, added to a query pack in LGTM, or used to analyze a database with the :ref:`CodeQL CLI <codeql-cli>` must have a query type (``@kind``) specified. The ``@kind`` property indicates how to interpret and display the results of the query analysis:
 
     - Alert query metadata must contain ``@kind problem``.
     - Path query metadata must contain ``@kind path-problem``.
@@ -63,7 +63,7 @@ Query metadata is used to identify your custom queries when they are added to th
 Import statements
 =================
 
-Each query generally contains one or more ``import`` statements, which define the :ref:`libraries <ql-language-reference:library-modules>` or :doc:`modules <ql-language-reference:modules>` to import into the query. Libraries and modules provide a way of grouping together related :doc:`types <ql-language-reference:types>`, :doc:`predicates <ql-language-reference:predicates>`, and other modules. The contents of each library or module that you import can then be accessed by the query. 
+Each query generally contains one or more ``import`` statements, which define the :ref:`libraries <library-modules>` or :ref:`modules <modules>` to import into the query. Libraries and modules provide a way of grouping together related :ref:`types <types>`, :ref:`predicates <predicates>`, and other modules. The contents of each library or module that you import can then be accessed by the query. 
 Our `open source repository on GitHub <https://github.com/github/codeql>`__ contains the standard CodeQL libraries for each supported language.   
 
 When writing your own alert queries, you would typically import the standard library for the language of the project that you are querying, using ``import`` followed by a language:
@@ -82,18 +82,18 @@ You can explore the contents of all the standard libraries in the `CodeQL librar
 Optional CodeQL classes and predicates
 --------------------------------------
 
-You can customize your analysis by defining your own predicates and classes in the query. For further information, see :ref:`Defining a predicate <ql-language-reference:defining-a-predicate>` and :ref:`Defining a class <ql-language-reference:defining-a-class>`. 
+You can customize your analysis by defining your own predicates and classes in the query. For further information, see :ref:`Defining a predicate <defining-a-predicate>` and :ref:`Defining a class <defining-a-class>`. 
 
 From clause
 ===========
 
 The ``from`` clause declares the variables that are used in the query. Each declaration must be of the form ``<type> <variable name>``. 
-For more information on the available :doc:`types <ql-language-reference:types>`, and to learn how to define your own types using :ref:`classes <ql-language-reference:classes>`, see the :doc:`QL language reference <ql-language-reference:index>`.
+For more information on the available :ref:`types <types>`, and to learn how to define your own types using :ref:`classes <classes>`, see the :ref:`QL language reference <ql-language-reference>`.
 
 Where clause
 ============
 
-The ``where`` clause defines the logical conditions to apply to the variables declared in the ``from`` clause to generate your results. This clause uses :ref:`aggregations <ql-language-reference:aggregations>`, :doc:`predicates <ql-language-reference:predicates>`, and logical :doc:`formulas <ql-language-reference:formulas>` to limit the variables of interest to a smaller set, which meet the defined conditions. 
+The ``where`` clause defines the logical conditions to apply to the variables declared in the ``from`` clause to generate your results. This clause uses :ref:`aggregations <aggregations>`, :ref:`predicates <predicates>`, and logical :ref:`formulas <formulas>` to limit the variables of interest to a smaller set, which meet the defined conditions. 
 The CodeQL libraries group commonly used predicates for specific languages and frameworks. You can also define your own predicates in the body of the query file or in your own custom modules, as described above.
 
 Select clause

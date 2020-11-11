@@ -20,7 +20,7 @@ even though there is no data flow from ``path`` to ``path + "/"``.
 Separate CodeQL libraries have been written to handle 'normal' data flow and taint tracking in :doc:`C/C++ <../codeql-for-cpp/analyzing-data-flow-in-cpp>`, :doc:`C# <../codeql-for-csharp/analyzing-data-flow-in-csharp>`, :doc:`Java <../codeql-for-java/analyzing-data-flow-in-java>`, and :doc:`JavaScript <../codeql-for-javascript/analyzing-data-flow-in-javascript>`. You can access the appropriate classes and predicates that reason about these different modes of data flow by importing the appropriate library in your query.
 In Python analysis, we can use the same taint tracking library to model both 'normal' data flow and taint flow, but we are still able make the distinction between steps that preserve values and those that don't by defining additional data flow properties.
 
-For further information on data flow and taint tracking with CodeQL, see ":doc:`Introduction to data flow <writing-codeql-queries:codeql-queries/about-data-flow-analysis>`."
+For further information on data flow and taint tracking with CodeQL, see ":ref:`Introduction to data flow <about-data-flow-analysis>`."
 
 Fundamentals of taint tracking using data flow analysis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -261,7 +261,7 @@ which defines the simplest possible taint kind class, ``HardcodedValue``, and cu
 Further reading
 ---------------
 
-- ":doc:`Exploring data flow with path queries <codeql-for-visual-studio-code:exploring-data-flow-with-path-queries>`"
+- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
 
 
 .. include:: ../../reusables/python-further-reading.rst

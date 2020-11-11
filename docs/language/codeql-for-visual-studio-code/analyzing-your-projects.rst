@@ -27,15 +27,15 @@ Obtaining a local database
 
 If you have a CodeQL database saved locally, as an unarchived folder or as a ZIP file, you can add it to Visual Studio Code. There are several ways to obtain a local CodeQL database. 
 
-- To create a database with the CodeQL CLI, see ":doc:`Creating CodeQL databases <codeql-cli:using-the-codeql-cli/creating-codeql-databases>`."
+- To create a database with the CodeQL CLI, see ":ref:`Creating CodeQL databases <creating-codeql-databases>`."
 
 - .. include:: ../reusables/download-lgtm-database.rst
 
 - To analyze a test database, add a ``.testproj`` folder to the Databases view.
-  Test databases (that is, folders with a ``.testproj`` extension) are generated when you run regression tests on custom queries using the :doc:`CodeQL CLI <codeql-cli:index>`.
+  Test databases (that is, folders with a ``.testproj`` extension) are generated when you run regression tests on custom queries using the :ref:`CodeQL CLI <codeql-cli>`.
   If a query fails a regression test, you may want to analyze the test database in Visual Studio Code to debug the failure.
    
-  For more information about running query tests, see ":doc:`Testing custom queries <codeql-cli:using-the-codeql-cli/testing-custom-queries>`" in the CodeQL CLI help.  
+  For more information about running query tests, see ":ref:`Testing custom queries <testing-custom-queries>`" in the CodeQL CLI help.  
 
 Running a query
 ------------------------
@@ -75,19 +75,19 @@ To run the query, use **CodeQL: Run Query**.
 
 You can see all quick queries that you've run in the current session in the Query History view. Click an entry to see the exact text of the quick query that produced the results.
 
-Once you're happy with your quick query, you should save it in a QL pack so you can access it later. For more information, see ":doc:`About QL packs <codeql-cli:codeql-cli-reference/about-ql-packs>`."
+Once you're happy with your quick query, you should save it in a QL pack so you can access it later. For more information, see ":ref:`About QL packs <about-ql-packs>`."
 
 Running a specific part of a query or library
 ----------------------------------------------
 
 This is helpful if you're debugging a query or library and you want to locate the part that is wrong.
-Instead of using **CodeQL: Run Query** to run the whole query (the :ref:`select clause <ql-language-reference:select-clauses>` and any :ref:`query predicates <ql-language-reference:query-predicates>`), you can use **CodeQL: Quick Evaluation** to run a specific part of a ``.ql`` or ``.qll`` file.
+Instead of using **CodeQL: Run Query** to run the whole query (the :ref:`select clause <select-clauses>` and any :ref:`query predicates <query-predicates>`), you can use **CodeQL: Quick Evaluation** to run a specific part of a ``.ql`` or ``.qll`` file.
 
 **CodeQL: Quick Evaluation** evaluates a code snippet (instead of the whole query) and displays results of that selection in the Results view. 
 Possible targets for quick evaluation include:
 
-- Selecting the name of a CodeQL entity (such as a :ref:`class <ql-language-reference:classes>` or :doc:`predicate <ql-language-reference:predicates>`) to evaluate that entity.
-- Selecting a :doc:`formula <ql-language-reference:formulas>` or :doc:`expression <ql-language-reference:expressions>` with free variables to evaluate that formula or expression.
+- Selecting the name of a CodeQL entity (such as a :ref:`class <classes>` or :ref:`predicate <predicates>`) to evaluate that entity.
+- Selecting a :ref:`formula <formulas>` or :ref:`expression <expressions>` with free variables to evaluate that formula or expression.
 
 For example, in the following snippet, you could select the predicate name ``foo`` or the formula ``s = "bar"`` for quick evaluation.
 
@@ -120,10 +120,10 @@ Viewing query results
 
 #. Click a query in the Query History view to display its results in the Results view. Alternatively, right-click the result to select a different view:
 
-   - To view the results in :doc:`SARIF format <codeql-cli:codeql-cli-reference/sarif-output>`, right-click and select **View SARIF**.
-   - To view the results in :ref:`DIL format <codeql-overview:dil>`, right-click and select **View DIL**.
+   - To view the results in :ref:`SARIF format <sarif-output>`, right-click and select **View SARIF**.
+   - To view the results in :ref:`DIL format <dil>`, right-click and select **View DIL**.
 
-#. Use the dropdown menu in the Results view to choose which results to display, and in what form to display them, such as a formatted alert message or a table of raw results. The available output forms are specified by the format of the query and the metadata. For more information, see ":doc:`CodeQL queries <writing-codeql-queries:codeql-queries/index>`."
+#. Use the dropdown menu in the Results view to choose which results to display, and in what form to display them, such as a formatted alert message or a table of raw results. The available output forms are specified by the format of the query and the metadata. For more information, see ":ref:`CodeQL queries <codeql-queries>`."
 
 #. To sort the results by the entries in a particular column, click the column header.
 
@@ -151,5 +151,5 @@ To compare results, the two queries must be run on the same database.
 Further reading
 ------------------------
 
-- ":doc:`CodeQL queries <writing-codeql-queries:codeql-queries/index>`"
+- ":ref:`CodeQL queries <codeql-queries>`"
 - ":doc:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"

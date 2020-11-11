@@ -55,7 +55,7 @@ There is too much information to search through by hand, so you decide to use yo
 QL libraries
 ------------
 
-We've defined a number of QL :doc:`predicates <ql-language-reference:predicates>` to help you extract data from your table. A QL predicate is a mini-query that expresses a relation between various pieces of data and describes some of their properties. In this case, the predicates give you information about a person, for example their height or age.
+We've defined a number of QL :ref:`predicates <predicates>` to help you extract data from your table. A QL predicate is a mini-query that expresses a relation between various pieces of data and describes some of their properties. In this case, the predicates give you information about a person, for example their height or age.
 
 +--------------------+----------------------------------------------------------------------------------------+
 | Predicate          | Description                                                                            |
@@ -86,14 +86,14 @@ The villagers answered "yes" to the question "Is the thief taller than 150cm?" T
    where t.getHeight() > 150
    select t
 
-The first line, ``from Person t``, declares that ``t`` must be a ``Person``. We say that the :doc:`type <ql-language-reference:types>` of ``t`` is ``Person``.
+The first line, ``from Person t``, declares that ``t`` must be a ``Person``. We say that the :ref:`type <types>` of ``t`` is ``Person``.
 
 Before you use the rest of your answers in your QL search, here are some more tools and examples to help you write your own QL queries:
 
 Logical connectives
 -------------------
 
-Using :ref:`logical connectives <ql-language-reference:logical-connectives>`, you can write more complex queries that combine different pieces of information.
+Using :ref:`logical connectives <logical-connectives>`, you can write more complex queries that combine different pieces of information.
 
 For example, if you know that the thief is older than 30 *and* has brown hair, you can use the following ``where`` clause to link two predicates:
 
@@ -159,7 +159,7 @@ Notice that we have only temporarily introduced the variable ``c`` and we didn't
 
    Note
 
-   If you are familiar with logic, you may notice that ``exists`` in QL corresponds to the existential :ref:`quantifier <ql-language-reference:quantified-formulas>` in logic. QL also has a universal quantifier ``forall(vars | formula 1 | formula 2)`` which is logically equivalent to ``not exists(vars | formula 1 | not formula 2)``.
+   If you are familiar with logic, you may notice that ``exists`` in QL corresponds to the existential :ref:`quantifier <quantified-formulas>` in logic. QL also has a universal quantifier ``forall(vars | formula 1 | formula 2)`` which is logically equivalent to ``not exists(vars | formula 1 | not formula 2)``.
 
 The real investigation
 ----------------------
@@ -220,7 +220,7 @@ You are getting closer to solving the mystery! Unfortunately, you still have qui
 More advanced queries
 ---------------------
 
-What if you want to find the oldest, youngest, tallest, or shortest person in the village? As mentioned in the previous topic, you can do this using ``exists``. However, there is also a more efficient way to do this in QL using functions like ``max`` and ``min``. These are examples of :ref:`aggregates <ql-language-reference:aggregations>`.
+What if you want to find the oldest, youngest, tallest, or shortest person in the village? As mentioned in the previous topic, you can do this using ``exists``. However, there is also a more efficient way to do this in QL using functions like ``max`` and ``min``. These are examples of :ref:`aggregates <aggregations>`.
 
 In general, an aggregate is a function that performs an operation on multiple pieces of data and returns a single value as its output. Common aggregates are ``count``, ``max``, ``min``, ``avg`` (average) and ``sum``. The general way to use an aggregate is:
 

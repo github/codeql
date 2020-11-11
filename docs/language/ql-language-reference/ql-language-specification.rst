@@ -1,3 +1,5 @@
+.. _ql-language-specification:
+
 QL language specification
 =========================
 
@@ -68,8 +70,7 @@ contain a single top-level tag named
 of the active database schema (for example, ``<queries
 language="java"/>``).
 
-A ``qlpack.yml`` file defines a :doc:`QL pack
-<codeql-cli:codeql-cli-reference/about-ql-packs>`.
+A ``qlpack.yml`` file defines a :ref:`QL pack <about-ql-packs>`.
 The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation. This file
 will not be recognized when using legacy tools that are not based
 on the CodeQL CLI (that is, LGTM.com, LGTM Enterprise, ODASA, CodeQL for
@@ -95,7 +96,7 @@ added to the library path, the QL packs named in its
 path, and the process continues until all packs have been
 resolved. The actual library path consists of the root directories of
 the selected QL packs. This process depends on a mechanism for finding
-QL packs by pack name, as described in the :doc:`CodeQL CLI documentation <codeql-cli:index>`.
+QL packs by pack name, as described in the :ref:`CodeQL CLI documentation <codeql-cli>`.
 
 When the query directory contains a ``queries.xml`` file but no
 ``qlpack.yml``, the QL pack resolution behaves as if it defines a QL

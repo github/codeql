@@ -78,4 +78,4 @@ For more information, see the `generate query-help reference documentation <code
 Further reading
 ---------------
 
-- ":doc:`Query help files <writing-codeql-queries:codeql-queries/query-help-files>`"
+- ":ref:`Query help files <query-help-files>`"

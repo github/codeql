@@ -225,4 +225,4 @@ IDE.
 Further reading
 ---------------
 
-- ":doc:`Analyzing your projects in CodeQL for VS Code <codeql-for-visual-studio-code:analyzing-your-projects>`"
+- ":ref:`Analyzing your projects in CodeQL for VS Code <analyzing-your-projects>`"

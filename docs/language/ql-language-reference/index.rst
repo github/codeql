@@ -1,3 +1,5 @@
+.. _ql-language-reference:
+
 QL language reference
 #####################
 

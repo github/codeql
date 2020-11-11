@@ -124,7 +124,7 @@ a non-negative number, then the final formula holds. On the other hand, if ``x``
 ``-9`` for example, then the formula doesn't hold. The variable ``y`` doesn't affect whether
 the formula holds or not.
 
-For more information about how assignments to free variables are computed, see ":ref:`evaluation`."
+For more information about how assignments to free variables are computed, see ":ref:`evaluation of QL programs <evaluation-of-ql-programs>`."
 
 .. rubric:: Footnotes
 

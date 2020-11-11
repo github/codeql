@@ -10,7 +10,7 @@ About this article
 
 This article describes how data flow analysis is implemented in the CodeQL libraries for C# and includes examples to help you write your own data flow queries.
 The following sections describe how to use the libraries for local data flow, global data flow, and taint tracking.
-For a more general introduction to modeling data flow, see ":doc:`About data flow analysis <writing-codeql-queries:codeql-queries/about-data-flow-analysis>`."
+For a more general introduction to modeling data flow, see ":ref:`About data flow analysis <about-data-flow-analysis>`."
 
 Local data flow
 ---------------
@@ -555,7 +555,7 @@ This can be adapted from the ``SystemUriFlow`` class:
 Further reading
 ---------------
 
-- ":doc:`Exploring data flow with path queries <codeql-for-visual-studio-code:exploring-data-flow-with-path-queries>`"
+- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
 
 
 .. include:: ../../reusables/csharp-further-reading.rst

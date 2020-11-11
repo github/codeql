@@ -33,4 +33,4 @@ CLI commands
 
 The following links provide detailed information about each CodeQL CLI command,
 including its usage and options. For information about the terms used in these
-pages, see the ":doc:`CodeQL glossary <codeql-overview:codeql-glossary>`."
+pages, see the ":ref:`CodeQL glossary <codeql-glossary>`."

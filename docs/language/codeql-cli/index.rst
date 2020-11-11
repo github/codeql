@@ -7,10 +7,10 @@ CodeQL CLI
 
 See the following links to learn how to get set up and run CodeQL commands:
 
-- :doc:`Using the CodeQL CLI <using-the-codeql-cli/index>`: Software 
+- :ref:`Using the CodeQL CLI <using-the-codeql-cli>`: Software 
   developers and security researchers can secure their code using the CodeQL CLI.
 
-- :doc:`CodeQL CLI reference <codeql-cli-reference/index>`."
+- :ref:`CodeQL CLI reference <codeql-cli-reference>`."
 
 .. toctree::
    :titlesonly:

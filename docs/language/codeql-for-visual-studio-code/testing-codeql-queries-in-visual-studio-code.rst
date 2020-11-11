@@ -12,7 +12,7 @@ To ensure that your CodeQL queries produce the expected results, you can run tes
 
 The CodeQL extension automatically prompts VS Code to install the Test Explorer extension as a dependency. The Test Explorer displays any workspace folders with a name ending in ``-tests`` and provides a UI for exploring and running tests in those folders.
 
-For more information about how CodeQL tests work, see ":doc:`Testing custom queries <codeql-cli:using-the-codeql-cli/testing-custom-queries>`" in the CLI help.
+For more information about how CodeQL tests work, see ":ref:`Testing custom queries <testing-custom-queries>`" in the CLI help.
 
 Testing the results of your queries
 -----------------------------------
@@ -41,10 +41,10 @@ Query performance is important when you want to run a query on large databases, 
 
 When a query is evaluated, the query server caches the predicates that it calculates. So when you want to compare the performance of two evaluations, you should clear the query server's cache before each run (**CodeQL: Clear Cache** command). This ensures that you're comparing equivalent data.
 
-For more information, see ":doc:`Troubleshooting query performance <writing-codeql-queries:codeql-queries/troubleshooting-query-performance>`" and ":doc:`Evaluation of QL programs <ql-language-reference:evaluation-of-ql-programs>`."
+For more information, see ":ref:`Troubleshooting query performance <troubleshooting-query-performance>`" and ":ref:`Evaluation of QL programs <evaluation-of-ql-programs>`."
 
 
 Further reading
 ----------------
 
-* ":doc:`Testing custom queries <codeql-cli:using-the-codeql-cli/testing-custom-queries>`"
+* ":ref:`Testing custom queries <testing-custom-queries>`"
