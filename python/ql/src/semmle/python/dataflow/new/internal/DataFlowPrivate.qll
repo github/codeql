@@ -139,6 +139,11 @@ module EssaFlow {
       contextManager.strictlyDominates(var)
     )
     or
+    exists(ParameterDefinition pd |
+      nodeFrom.asCfgNode() = pd.getDefiningNode() and
+      nodeTo.asVar() = pd.getVariable()
+    )
+    or
     // First use after definition
     //   `y = 42`
     //   `x = f(y)`
