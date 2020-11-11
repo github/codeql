@@ -83,6 +83,12 @@ module API {
     DataFlow::Node getARhs() { Impl::rhs(this, result) }
 
     /**
+     * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
+     * of the API component represented by this node.
+     */
+    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(getARhs()) }
+
+    /**
      * Gets a node representing member `m` of this API component.
      *
      * For example, modules have an `exports` member representing their exports, and objects have
@@ -825,9 +831,10 @@ module API {
     }
 
     /** Gets the API node a parameter of this invocation. */
-    Node getAParameter() {
-      result = getParameter(_)
-    }
+    Node getAParameter() { result = getParameter(_) }
+
+    /** Gets the API node for the last parameter of this invocation. */
+    Node getLastParameter() { result = getParameter(getNumArgument() - 1) }
 
     /** Gets the API node for the return value of this call. */
     Node getReturn() { result.getAnImmediateUse() = this }
