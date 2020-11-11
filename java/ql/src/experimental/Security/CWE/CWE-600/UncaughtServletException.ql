@@ -48,9 +48,10 @@ class UncaughtServletExceptionSink extends DataFlow::ExprNode {
   UncaughtServletExceptionSink() {
     exists(Method m, MethodAccess ma | ma.getMethod() = m |
       isServletMethod(ma.getEnclosingCallable()) and
+      exists(m.getAThrownExceptionType()) and // The called method might plausibly throw an exception.
       ma.getAnArgument() = this.getExpr() and
       not exists(TryStmt t |
-        t.getBlock() = ma.getEnclosingStmt().getEnclosingStmt*() and
+        t.getBlock() = ma.getAnEnclosingStmt() and
         exceptionIsCaught(t, m.getAThrownExceptionType())
       )
     )
