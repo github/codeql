@@ -502,7 +502,7 @@ private module Stage1 {
    * Holds if `c` is the target of both a read and a store in the flow covered
    * by `revFlow`.
    */
-  predicate revFlowIsReadAndStored(Content c, Configuration conf) {
+  private predicate revFlowIsReadAndStored(Content c, Configuration conf) {
     revFlowIsRead(c, conf) and
     revFlowStore(c, _, _, conf)
   }
@@ -558,7 +558,31 @@ private module Stage1 {
   }
 
   pragma[nomagic]
+  predicate storeStepCand(
+    Node node1, Ap ap1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
+  ) {
+    exists(Content c |
+      revFlowIsReadAndStored(c, config) and
+      revFlow(node2, unbind(config)) and
+      store(node1, tc, node2, contentType) and
+      c = tc.getContent() and
+      exists(ap1)
+    )
+  }
+
+  pragma[nomagic]
+  predicate readStepCand(Node n1, Content c, Node n2, Configuration config) {
+    revFlowIsReadAndStored(c, config) and
+    revFlow(n2, unbind(config)) and
+    read(n1, c, n2)
+  }
+
+  pragma[nomagic]
   predicate revFlow(Node node, Configuration config) { revFlow(node, _, config) }
+
+  predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
+    revFlow(node, toReturn, config) and exists(returnAp) and exists(ap)
+  }
   /* End: Stage 1 logic. */
 }
 
@@ -598,23 +622,6 @@ private predicate parameterThroughFlowNodeCand1(ParameterNode p, Configuration c
       kind.(ParamUpdateReturnKind).getPosition() = pos and p.isParameterOf(_, pos)
     )
   )
-}
-
-pragma[nomagic]
-private predicate storeCand1(Node n1, TypedContent tc, Node n2, Configuration config) {
-  exists(Content c |
-    Stage1::revFlowIsReadAndStored(c, config) and
-    Stage1::revFlow(n2, unbind(config)) and
-    store(n1, tc, n2, _) and
-    c = tc.getContent()
-  )
-}
-
-pragma[nomagic]
-private predicate read(Node n1, Content c, Node n2, Configuration config) {
-  Stage1::revFlowIsReadAndStored(c, config) and
-  Stage1::revFlow(n2, unbind(config)) and
-  read(n1, c, n2)
 }
 
 pragma[noinline]
@@ -740,13 +747,18 @@ private predicate flowIntoCallNodeCand1(
 }
 
 private module Stage2 {
-  class ApApprox = Stage1::Ap;
+  module PrevStage = Stage1;
+
+  class ApApprox = PrevStage::Ap;
 
   class Ap = boolean;
 
   class ApNil extends Ap {
     ApNil() { this = false }
   }
+
+  bindingset[result, ap]
+  ApApprox getApprox(Ap ap) { any() }
 
   ApNil getApNil(Node node) { any() }
 
@@ -785,10 +797,6 @@ private module Stage2 {
   bindingset[innercc, inner, call]
   predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) { any() }
 
-  predicate flowCand(Node node, ApApprox apa, Configuration config) {
-    Stage1::revFlow(node, config) and exists(apa)
-  }
-
   bindingset[node, cc, config]
   LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
 
@@ -807,6 +815,10 @@ private module Stage2 {
   }
 
   /* Begin: Stage 2 logic. */
+  private predicate flowCand(Node node, ApApprox apa, Configuration config) {
+    PrevStage::revFlow(node, _, _, apa, config)
+  }
+
   /**
    * Holds if `node` is reachable with access path `ap` from a source in the
    * configuration `config`.
@@ -881,8 +893,10 @@ private module Stage2 {
   private predicate fwdFlowStore(
     Node node1, Ap ap1, TypedContent tc, Node node2, Cc cc, ApOption argAp, Configuration config
   ) {
-    fwdFlow(node1, cc, argAp, ap1, config) and
-    storeCand1(node1, tc, node2, config)
+    exists(DataFlowType contentType |
+      fwdFlow(node1, cc, argAp, ap1, config) and
+      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config)
+    )
   }
 
   /**
@@ -902,7 +916,7 @@ private module Stage2 {
     Ap ap, Content c, Node node1, Node node2, Cc cc, ApOption argAp, Configuration config
   ) {
     fwdFlow(node1, cc, argAp, ap, config) and
-    read(node1, c, node2, config) and
+    PrevStage::readStepCand(node1, c, node2, config) and
     getHeadContent(ap) = c
   }
 
@@ -1281,7 +1295,9 @@ private module LocalFlowBigStep {
 private import LocalFlowBigStep
 
 private module Stage3 {
-  class ApApprox = Stage2::Ap;
+  module PrevStage = Stage2;
+
+  class ApApprox = PrevStage::Ap;
 
   class Ap = AccessPathFront;
 
@@ -1327,10 +1343,6 @@ private module Stage3 {
   bindingset[innercc, inner, call]
   predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) { any() }
 
-  predicate flowCand(Node node, ApApprox apa, Configuration config) {
-    Stage2::revFlow(node, _, _, apa, config)
-  }
-
   bindingset[node, cc, config]
   LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
 
@@ -1341,6 +1353,10 @@ private module Stage3 {
   }
 
   /* Begin: Stage 3 logic. */
+  private predicate flowCand(Node node, ApApprox apa, Configuration config) {
+    PrevStage::revFlow(node, _, _, apa, config)
+  }
+
   /**
    * Holds if `node` is reachable with access path `ap` from a source in the
    * configuration `config`.
@@ -1407,7 +1423,7 @@ private module Stage3 {
     or
     // flow into a callable
     fwdFlowIn(_, node, _, cc, _, ap, config) and
-    if Stage2::revFlow(node, true, _, unbindBool(ap.toBoolNonEmpty()), config)
+    if PrevStage::revFlow(node, true, _, unbindBool(ap.toBoolNonEmpty()), config)
     then argAp = apSome(ap)
     else argAp = apNone()
     or
@@ -1428,7 +1444,7 @@ private module Stage3 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, cc, argAp, ap1, config) and
-      Stage2::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
+      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
       // We need to typecheck stores here, since reverse flow through a getter
       // might have a different type here compared to inside the getter.
       compatibleTypes(ap1.getType(), contentType)
@@ -1449,7 +1465,7 @@ private module Stage3 {
     Ap ap, Content c, Node node1, Node node2, Cc cc, ApOption argAp, Configuration config
   ) {
     fwdFlow(node1, cc, argAp, ap, config) and
-    Stage2::readStepCand(node1, c, node2, config) and
+    PrevStage::readStepCand(node1, c, node2, config) and
     getHeadContent(ap) = c
   }
 
@@ -1498,7 +1514,7 @@ private module Stage3 {
   ) {
     exists(ParameterNode p |
       fwdFlowIn(call, p, cc, _, argAp, ap, config) and
-      Stage2::revFlow(p, true, TBooleanSome(_), unbindBool(ap.toBoolNonEmpty()), config)
+      PrevStage::revFlow(p, true, TBooleanSome(_), unbindBool(ap.toBoolNonEmpty()), config)
     )
   }
 
@@ -1893,7 +1909,9 @@ private class AccessPathApproxOption extends TAccessPathApproxOption {
 }
 
 private module Stage4 {
-  class ApApprox = Stage3::Ap;
+  module PrevStage = Stage3;
+
+  class ApApprox = PrevStage::Ap;
 
   class Ap = AccessPathApprox;
 
@@ -1943,10 +1961,6 @@ private module Stage4 {
     innercc.(CallContextCall).matchesCall(call)
   }
 
-  predicate flowCand(Node node, ApApprox apa, Configuration config) {
-    Stage3::revFlow(node, _, _, apa, config)
-  }
-
   bindingset[node, cc, config]
   LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
     localFlowEntry(node, config) and
@@ -1960,6 +1974,10 @@ private module Stage4 {
   }
 
   /* Begin: Stage 4 logic. */
+  private predicate flowCand(Node node, ApApprox apa, Configuration config) {
+    PrevStage::revFlow(node, _, _, apa, config)
+  }
+
   /**
    * Holds if `node` is reachable with access path `ap` from a source in the
    * configuration `config`.
@@ -2024,7 +2042,9 @@ private module Stage4 {
     exists(ApApprox apa |
       fwdFlowIn(_, node, _, cc, _, ap, config) and
       apa = ap.getFront() and
-      if Stage3::revFlow(node, true, _, apa, config) then argAp = apSome(ap) else argAp = apNone()
+      if PrevStage::revFlow(node, true, _, apa, config)
+      then argAp = apSome(ap)
+      else argAp = apNone()
     )
     or
     // flow out of a callable
@@ -2044,7 +2064,7 @@ private module Stage4 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, cc, argAp, ap1, config) and
-      Stage3::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config)
+      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config)
     )
   }
 
@@ -2062,7 +2082,7 @@ private module Stage4 {
     Ap ap, Content c, Node node1, Node node2, Cc cc, ApOption argAp, Configuration config
   ) {
     fwdFlow(node1, cc, argAp, ap, config) and
-    Stage3::readStepCand(node1, c, node2, config) and
+    PrevStage::readStepCand(node1, c, node2, config) and
     getHeadContent(ap) = c
   }
 
@@ -2113,7 +2133,7 @@ private module Stage4 {
   ) {
     exists(ParameterNode p |
       fwdFlowIn(call, p, cc, _, argAp, ap, config) and
-      Stage3::revFlow(p, true, TAccessPathFrontSome(_), ap.getFront(), config)
+      PrevStage::revFlow(p, true, TAccessPathFrontSome(_), ap.getFront(), config)
     )
   }
 
