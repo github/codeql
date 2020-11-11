@@ -172,7 +172,7 @@ Module definitions
 
 A QL module definition has the following syntax:
 
-::
+.. code-block:: ql
 
    module ::= annotation* "module" modulename "{" moduleBody "}"
 
@@ -182,7 +182,7 @@ A module definition extends the current module's declared module environment wit
 
 QL files consist of simply a module body without a name and surrounding braces:
 
-::
+.. code-block:: ql
 
    ql ::= moduleBody
 
@@ -204,7 +204,7 @@ Import directives
 
 An import directive refers to a module identifier:
 
-::
+.. code-block:: ql
 
    import ::= annotations "import" importModuleId ("as" modulename)?
 
@@ -276,7 +276,7 @@ Type references
 
 With the exception of class domain types and character types (which cannot be referenced explicitly in QL source), a reference to a type is written as the name of the type. In the case of database types, the name includes the at sign (``@``, U+0040).
 
-::
+.. code-block:: ql
 
    type ::= (moduleId "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
@@ -373,7 +373,7 @@ A *named tuple* is a finite map of variables to values. Each variable in a named
 
 A *variable declaration list* provides a sequence of variables and a type for each one:
 
-::
+.. code-block:: ql
 
    var_decls ::= var_decl ("," var_decl)*
    var_decl ::= type simpleId
@@ -389,7 +389,7 @@ QL programs evaluate in the context of a *store*. This section specifies several
 
 A *fact* is a predicate or type along with an ordered tuple. A fact is written as the predicate name or type name followed immediately by the tuple. Here are some examples of facts:
 
-::
+.. code-block:: ql
 
    successor(0, 1)
    Tree.toString(@method_tree(12), "def println")
@@ -439,13 +439,13 @@ There are two kinds of comments in QL: one-line and multiline.
 
 A one-line comment is two slash characters (``/``, U+002F) followed by any sequence of characters other than line feeds (U+000A) and carriage returns (U+000D). Here is an example of a one-line comment:
 
-::
+.. code-block:: ql
 
    // This is a comment
 
 A multiline comment is a *comment start*, followed by a *comment body*, followed by a *comment end*. A comment start is a slash (``/``, U+002F) followed by an asterisk (``*``, U+002A), and a comment end is an asterisk followed by a slash. A comment body is any sequence of characters that does not include a comment end. Here is an example multiline comment:
 
-::
+.. code-block:: ql
 
    /*
      It was the best of code.
@@ -458,7 +458,7 @@ Keywords
 
 The following sequences of characters are keyword tokens:
 
-::
+.. code-block:: ql
 
    and
    any
@@ -513,7 +513,7 @@ Operators
 
 The following sequences of characters are operator tokens:
 
-::
+.. code-block:: ql
 
    <
    <=
@@ -548,7 +548,7 @@ An identifier cannot have the same sequence of characters as a keyword, nor can 
 
 Here are some examples of identifiers:
 
-::
+.. code-block:: ql
 
    width
    Window_width
@@ -567,7 +567,7 @@ There are several kinds of identifiers:
 
 Identifiers are used in following syntactic constructs:
 
-::
+.. code-block:: ql
 
    simpleId      ::= lowerId | upperId
    modulename    ::= simpleId
@@ -583,7 +583,7 @@ Integer literals (int)
 
 An integer literal is a possibly negated sequence of decimal digits (``0`` through ``9``, U+0030 through U+0039). Here are some examples of integer literals:
 
-::
+.. code-block:: ql
 
    0
    42
@@ -595,7 +595,7 @@ Float literals (float)
 
 A floating-point literals is a possibly negated two non-negative integers literals separated by a dot (``.``, U+002E). Here are some examples of float literals:
 
-::
+.. code-block:: ql
 
    0.5
    2.0
@@ -619,7 +619,7 @@ A string literal denotes a sequence of characters. It begins and ends with a dou
 
 Here are some examples of string literals:
 
-::
+.. code-block:: ql
 
    "hello"
    "He said, \"Logic clearly dictates that the needs of the many...\""
@@ -629,7 +629,7 @@ Annotations
 
 Various kinds of syntax can have *annotations* applied to them. Annotations are as follows:
 
-::
+.. code-block:: ql
 
    annotations ::= annotation*
 
@@ -745,7 +745,7 @@ Non-member predicates
 
 A *predicate* is declared as a sequence of annotations, a head, and an optional body:
 
-::
+.. code-block:: ql
 
    predicate ::= annotations head optbody
 
@@ -757,13 +757,13 @@ A valid non-member predicate can be annotated with ``cached``, ``deprecated``, `
 
 The head of the predicate gives a name, an optional *result type*, and a sequence of variables declarations that are *arguments*:
 
-::
+.. code-block:: ql
 
    head ::= ("predicate" | type) predicateName "(" (var_decls)? ")"
 
 The body of a predicate is of one of three forms:
 
-::
+.. code-block:: ql
 
    optbody ::= ";"
            |  "{" formula "}" 
@@ -780,7 +780,7 @@ Classes
 
 A class definition has the following syntax:
 
-::
+.. code-block:: ql
 
    class ::= annotations "class" classname "extends" type ("," type)* "{" member* "}"
 
@@ -818,7 +818,7 @@ Members
 
 Each member of a class is either a *character*, a predicate, or a field:
 
-::
+.. code-block:: ql
 
    member ::= character | predicate | field
    character ::= annotations classname "(" ")" "{" formula "}" 
@@ -870,7 +870,7 @@ Select clauses
 
 A QL file may include at most one *select clause*. That select clause has the following syntax:
 
-::
+.. code-block:: ql
 
    select ::= ("from" var_decls)? ("where" formula)? "select" select_exprs ("order" "by" orderbys)?
 
@@ -884,7 +884,7 @@ The ``where`` keyword, if present, is followed by the *formula* of the select cl
 
 The ``select`` keyword is followed by a number of *select expressions*. Select expressions have the following syntax:
 
-::
+.. code-block:: ql
 
    as_exprs ::= as_expr ("," as_expr)*
    as_expr ::= expr ("as" simpleId)?
@@ -893,7 +893,7 @@ The keyword ``as`` gives a *label* to the select expression it is part of. No tw
 
 The ``order`` keyword, if present, is followed by a number of *ordering directives*. Ordering directives have the following syntax:
 
-::
+.. code-block:: ql
 
    orderbys ::= orderby ("," orderby)*
    orderby ::= simpleId ("asc" | "desc")?
@@ -923,7 +923,7 @@ Given a named tuple and a store, each expression has one or more *values*. This 
 
 There are several kinds of expressions:
 
-::
+.. code-block:: ql
 
    exprs ::= expr ("," expr)*
 
@@ -947,7 +947,7 @@ Parenthesized expressions
 
 A parenthesized expression is an expression surrounded by parentheses:
 
-::
+.. code-block:: ql
 
    eparen ::= "(" expr ")"
 
@@ -958,7 +958,7 @@ Don't-care expressions
 
 A don't-care expression is written as a single underscore:
 
-::
+.. code-block:: ql
 
    dontcare ::= "_"
 
@@ -969,7 +969,7 @@ Literals
 
 A literal expression is as follows:
 
-::
+.. code-block:: ql
 
    literal ::= "false" | "true" | int | float | string
 
@@ -980,7 +980,7 @@ Unary operations
 
 A unary operation is the application of ``+`` or ``-`` to another expression:
 
-::
+.. code-block:: ql
 
    unop ::= "+" expr
         |   "-" expr
@@ -996,7 +996,7 @@ Binary operations
 
 A binary operation is written as a *left operand* followed by a *binary operator*, followed by a *right operand*:
 
-::
+.. code-block:: ql
 
    binop ::= expr "+" expr
          |   expr "-" expr
@@ -1023,7 +1023,7 @@ Variables
 
 A variable has the following syntax:
 
-::
+.. code-block:: ql
 
    variable ::= varname | "this" | "result"
 
@@ -1036,7 +1036,7 @@ Super
 
 A super expression has the following syntax:
 
-::
+.. code-block:: ql
 
    super_expr ::= "super" | type "." "super" 
 
@@ -1055,7 +1055,7 @@ Casts
 
 A cast expression is a type in parentheses followed by another expression:
 
-::
+.. code-block:: ql
 
    cast ::= "(" type ")" expr
 
@@ -1070,7 +1070,7 @@ Postfix casts
 
 A postfix cast is a primary expression followed by a dot and then a class or primitive type in parentheses:
 
-::
+.. code-block:: ql
 
    postfix_cast ::= primary "." "(" type ")"
 
@@ -1081,7 +1081,7 @@ Calls with results
 
 An expression for a call with results is of one of two forms:
 
-::
+.. code-block:: ql
 
    callwithresult ::= predicateRef (closure)? "(" (exprs)? ")"
                   |   primary "." predicateName (closure)? "(" (exprs)? ")"
@@ -1124,7 +1124,7 @@ Aggregations
 
 An aggregation can be written in one of two forms:
 
-::
+.. code-block:: ql
 
    aggregation ::= aggid ("[" expr "]")? "(" (var_decls)? ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
@@ -1218,7 +1218,7 @@ Any
 
 The ``any`` expression is a special kind of quantified expression.
 
-::
+.. code-block:: ql
 
    any ::= "any" "(" var_decls ("|" (formula)? ("|" expr)?)? ")"
 
@@ -1231,7 +1231,7 @@ Ranges
 
 Range expressions denote a range of values.
 
-::
+.. code-block:: ql
 
    range ::= "[" expr ".." expr "]"
 
@@ -1246,7 +1246,7 @@ Set literals
 
 Set literals denote a choice from a collection of values.
 
-::
+.. code-block:: ql
 
    setliteral ::= "[" expr ("," expr)* "]"
 
@@ -1275,7 +1275,7 @@ A formula is a form of syntax used to *match* a named tuple given a store.
 
 There are several kinds of formulas:
 
-::
+.. code-block:: ql
 
    formula ::= fparen
            |   disjunction
@@ -1296,7 +1296,7 @@ Parenthesized formulas
 
 A parenthesized formula is a formula enclosed by a pair of parentheses:
 
-::
+.. code-block:: ql
 
    fparen ::= "(" formula ")"
 
@@ -1307,7 +1307,7 @@ Disjunctions
 
 A disjunction is two formulas separated by the ``or`` keyword:
 
-::
+.. code-block:: ql
 
    disjunction ::= formula "or" formula
 
@@ -1318,7 +1318,7 @@ Conjunctions
 
 A conjunction is two formulas separated by the ``and`` keyword:
 
-::
+.. code-block:: ql
 
    conjunction ::= formula "and" formula
 
@@ -1329,7 +1329,7 @@ Implications
 
 An implication formula is two formulas separated by the ``implies`` keyword:
 
-::
+.. code-block:: ql
 
    implies ::= formula "implies" formula
 
@@ -1342,7 +1342,7 @@ Conditional formulas
 
 A conditional formula has the following syntax:
 
-::
+.. code-block:: ql
 
    ifthen ::= "if" formula "then" formula "else" formula
 
@@ -1355,7 +1355,7 @@ Negations
 
 A negation formula is a formula preceded by the ``not`` keyword:
 
-::
+.. code-block:: ql
 
    negated ::= "not" formula
 
@@ -1366,7 +1366,7 @@ Quantified formulas
 
 A quantified formula has several syntaxes:
 
-::
+.. code-block:: ql
 
    quantified ::= "exists" "(" expr ")"
               |   "exists" "(" var_decls ("|" formula)? ("|" formula)? ")"
@@ -1390,7 +1390,7 @@ Comparisons
 
 A comparison formula is two expressions separated by a comparison operator:
 
-::
+.. code-block:: ql
 
    comparison ::= expr compop expr
    compop ::= "=" | "!=" | "<" | ">" | "<=" | ">="      
@@ -1408,7 +1408,7 @@ Type checks
 
 A type check formula has the following syntax:
 
-::
+.. code-block:: ql
 
    instanceof ::= expr "instanceof" type
 
@@ -1423,7 +1423,7 @@ Range checks
 
 A range check has the following syntax:
 
-::
+.. code-block:: ql
 
    inrange ::= expr "in" range
 
@@ -1434,7 +1434,7 @@ Calls
 
 A call has the following syntax:
 
-::
+.. code-block:: ql
 
    call ::= predicateRef (closure)? "(" (exprs)? ")"
         |   primary "." predicateName (closure)? "(" (exprs)? ")"
@@ -1471,7 +1471,7 @@ Aliases
 
 Aliases define new names for existing QL entities.
 
-::
+.. code-block:: ql
 
    alias ::= annotations "predicate" literalId "=" predicateRef "/" int ";"
          |   annotations "class" classname "=" type ";"
@@ -1891,7 +1891,7 @@ Summary of syntax
 
 The complete grammar for QL is as follows:
 
-::
+.. code-block:: ql
 
    ql ::= moduleBody
 

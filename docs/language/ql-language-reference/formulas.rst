@@ -22,7 +22,9 @@ The following sections describe the kinds of formulas that are available in QL.
 Comparisons
 ***********
 
-A comparison formula is of the form::
+A comparison formula is of the form:
+
+.. code-block:: ql
 
     <expression> <operator> <expression>
 
@@ -109,7 +111,9 @@ As a consequence, ``A != B`` has a very different meaning to the :ref:`negation 
 Type checks
 ***********
 
-A type check is a formula that looks like::
+A type check is a formula that looks like:
+
+.. code-block:: ql
 
     <expression> instanceof <type>
 
@@ -121,7 +125,9 @@ example, ``x instanceof Person`` holds if the variable ``x`` has type ``Person``
 Range checks
 ************
 
-A range check is a formula that looks like::
+A range check is a formula that looks like:
+
+.. code-block:: ql
 
     <expression> in <range>
 
@@ -186,7 +192,9 @@ mathematical logic.
 ``exists``
 ----------
 
-This quantifier has the following syntax::
+This quantifier has the following syntax:
+
+.. code-block:: ql
 
     exists(<variable declarations> | <formula>)
 
@@ -204,7 +212,9 @@ type ``int`` and holds if any value of that variable has type ``OneTwoThree``.
 ``forall``
 ----------
 
-This quantifier has the following syntax::
+This quantifier has the following syntax:
+
+.. code-block:: ql
 
     forall(<variable declarations> | <formula 1> | <formula 2>)
 
@@ -224,11 +234,15 @@ logically the same as ``not exists(<vars> | <formula 1> | not <formula 2>)``.
 ``forex``
 ---------
 
-This quantifier has the following syntax::
+This quantifier has the following syntax:
+
+.. code-block:: ql
 
     forex(<variable declarations> | <formula 1> | <formula 2>)
 
-This quantifier exists as a shorthand for::
+This quantifier exists as a shorthand for:
+
+.. code-block:: ql
 
     forall(<vars> | <formula 1> | <formula 2>) and 
     exists(<vars> | <formula 1> | <formula 2>)
@@ -296,7 +310,7 @@ You can use the keyword ``not`` before a formula. The resulting formula is calle
 
 The following query selects files that are not HTML files.
 
-::
+.. code-block:: ql
 
     from File f
     where not f.getFileType().isHtml()
@@ -318,7 +332,9 @@ notation: ``if A then B else C`` is the same as writing ``(A and B) or ((not A) 
 **Example**
 
 With the following definition, ``visibility(c)`` returns ``"public"`` if ``x`` is
-a public class and returns ``"private"`` otherwise::
+a public class and returns ``"private"`` otherwise:
+
+.. code-block:: ql
 
     string visibility(Class c){
       if c.isPublic()
@@ -340,7 +356,9 @@ conjunction.
 **Example**
 
 The following query selects files that have the ``js`` extension and contain fewer
-than 200 lines of code::
+than 200 lines of code:
+
+.. code-block:: ql
 
     from File f
     where f.getExtension() = "js" and 
@@ -383,7 +401,7 @@ implication. This is just a simplified notation: ``A implies B`` is the same as 
 
 The following query selects any ``SmallInt`` that is odd, or a multiple of ``4``.
 
-::
+.. code-block:: ql
 
     class SmallInt extends int {
       SmallInt() { this = [1 .. 10] }
@@ -396,11 +414,15 @@ The following query selects any ``SmallInt`` that is odd, or a multiple of ``4``
 .. rubric:: Footnotes
 
 .. [#] The difference between ``A != B`` and ``not A = B`` is due to the underlying quantifiers. 
-       If you think of ``A`` and ``B`` as sets of values, then ``A != B`` means::
+       If you think of ``A`` and ``B`` as sets of values, then ``A != B`` means:
+
+.. code-block:: ql
 
            exists( a, b | a in A and b in B | a != b )
 
-       On the other hand, ``not A = B`` means::
+       On the other hand, ``not A = B`` means:
+
+.. code-block:: ql
 
            not exists( a, b | a in A and b in B | a = b )
        

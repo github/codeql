@@ -5,7 +5,9 @@ Annotations
 
 An annotation is a string that you can place directly before the declaration of a QL entity or name.
 
-For example, to declare a module ``M`` as private, you could use::
+For example, to declare a module ``M`` as private, you could use:
+
+.. code-block:: ql
 
     private module M {
         ...
@@ -20,7 +22,9 @@ For example, if you annotate an entity with ``private``, then only that particul
 private. You could still access that entity under a different name (using an :ref:`alias <aliases>`).
 On the other hand, if you annotate an entity with ``cached``, then the entity itself is cached.
 
-Here is an explicit example::
+Here is an explicit example:
+
+.. code-block:: ql
 
     module M {
       private int foo() { result = 1 }
@@ -61,7 +65,9 @@ class, and should be :ref:`overridden <overriding-member-predicates>` in non-abs
 Here is an example that uses abstract predicates. A common pattern when writing data flow
 analysis in QL is to define a configuration class. Such a configuration must describe, among
 other things, the sources of data that it tracks. A supertype of all such configurations might
-look like this::
+look like this:
+
+.. code-block:: ql
 
     abstract class Configuration extends string {
       ...
@@ -125,7 +131,9 @@ alternatives.
 Typically, deprecated names have a QLDoc comment that tells users which updated element they
 should use instead.
 
-For example, the name ``DataFlowNode`` is deprecated and has the following QLDoc comment::
+For example, the name ``DataFlowNode`` is deprecated and has the following QLDoc comment:
+
+.. code-block:: ql
 
     /**
      * DEPRECATED: Use `DataFlow::Node` instead.
@@ -177,7 +185,9 @@ This is useful if you don't want subclasses to change the meaning of a particula
 
 For example, the predicate ``hasName(string name)`` holds if an element has the name ``name``. 
 It uses the predicate ``getName()`` to check this, and it wouldn't make sense for a subclass to
-change this definition. In this case, ``hasName`` should be final::
+change this definition. In this case, ``hasName`` should be final:
+
+.. code-block:: ql
 
     class Element ... {
       string getName() { result = ... }

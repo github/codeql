@@ -37,7 +37,9 @@ Apart from the expressions described in ":ref:`expressions`," you can also inclu
 
 .. TODO: link to topics on formulas and expressions in QL
 
-For example::
+For example:
+
+.. code-block:: ql
 
     from int x, int y 
     where x = 3 and y in [0 .. 2]
@@ -76,7 +78,9 @@ Query predicates
 A query predicate is a :ref:`non-member predicate <non-member-predicates>` with a ``query`` 
 annotation. It returns all the tuples that the predicate evaluates to.
 
-For example::
+For example:
+
+.. code-block:: ql
 
     query int getProduct(int x, int y) {
       x = 3 and 

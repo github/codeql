@@ -33,7 +33,9 @@ You can express certain values directly in QL, such as numbers, booleans, and st
 
 - :ref:`Integer <int>` literals: These are sequences of decimal digits (``0`` through ``9``),
   possibly starting with a minus sign (``-``).
-  For example::
+  For example:
+
+.. code-block:: ql
 
     0
     42
@@ -50,7 +52,9 @@ You can express certain values directly in QL, such as numbers, booleans, and st
 - :ref:`String <string>` literals: These are finite strings of 16-bit characters. You can 
   define a string literal by enclosing characters in quotation marks (``"..."``). Most 
   characters represent themselves, but there are a few characters that you need to "escape"
-  with a backslash. The following are examples of string literals::
+  with a backslash. The following are examples of string literals:
+
+.. code-block:: ql
 
     "hello"
     "They said, \"Please escape quotation marks!\""
@@ -177,7 +181,9 @@ Aggregations
 An aggregation is a mapping that computes a result value from a set of input values that are
 specified by a formula. 
 
-The general syntax is::
+The general syntax is:
+
+.. code-block:: ql
 
     <aggregate>(<variable declarations> | <formula> | <expression>)
 
@@ -203,7 +209,9 @@ The following aggregates are available in QL:
   each possible assignment of the aggregation variables.
   
   For example, the following aggregation returns the number of files that have more than 
-  ``500`` lines::
+  ``500`` lines:
+
+.. code-block:: ql
 
       count(File f | f.getTotalNumberOfLines() > 500 | f)
   
@@ -217,7 +225,9 @@ The following aggregates are available in QL:
   In this case, ``<expression>`` must be of numeric type or of type ``string``.
     
   For example, the following aggregation returns the name of the ``.js`` file (or files) with the 
-  largest number of lines::
+  largest number of lines:
+
+.. code-block:: ql
 
       max(File f | f.getExtension() = "js" | f.getBaseName() order by f.getTotalNumberOfLines())
 
@@ -260,7 +270,9 @@ The following aggregates are available in QL:
   the formula, then ``concat`` defaults to the empty string.
 
   For example, the following aggregation returns the string ``"3210"``, that is, the
-  concatenation of the strings ``"0"``, ``"1"``, ``"2"``, and ``"3"`` in descending order::
+  concatenation of the strings ``"0"``, ``"1"``, ``"2"``, and ``"3"`` in descending order:
+
+.. code-block:: ql
 
       concat(int i | i = [0 .. 3] | i.toString() order by i desc)
 
@@ -378,7 +390,9 @@ aggregation in a simpler form:
 
 #. If you want to write an aggregation of the form ``<aggregate>(<type> v | <expression> = v | v)``,
    then you can omit the ``<variable declarations>`` and ``<formula>`` parts and write it 
-   as follows::
+   as follows:
+
+.. code-block:: ql
 
        <aggregate>(<expression>)
 
@@ -403,17 +417,23 @@ aggregation in a simpler form:
        count(int i, int j | i in [1 .. 3] and j in [1 .. 3] | 1)
        count(int i, int j | i in [1 .. 3] and j in [1 .. 3])
 
-#. You can omit the ``<formula>`` part, but in that case you should include two vertical bars::
+#. You can omit the ``<formula>`` part, but in that case you should include two vertical bars:
+
+.. code-block:: ql
 
        <aggregate>(<variable declarations> | | <expression>)
 
    This is useful if you don't want to restrict the aggregation variables any further. 
-   For example, the following aggregation returns the maximum number of lines across all files::
+   For example, the following aggregation returns the maximum number of lines across all files:
+
+.. code-block:: ql
 
        max(File f | | f.getTotalNumberOfLines())
 
 #. Finally, you can also omit both the ``<formula>`` and ``<expression>`` parts. For example,
-   the following aggregations are equivalent ways to count the number of files in a database::
+   the following aggregations are equivalent ways to count the number of files in a database:
+
+.. code-block:: ql
 
        count(File f | any() | 1)
        count(File f | | 1)
@@ -498,7 +518,9 @@ Any
 ***
 
 The general syntax of an ``any`` expression is similar to the syntax of an
-:ref:`aggregation <aggregations>`, namely::
+:ref:`aggregation <aggregations>`, namely:
+
+.. code-block:: ql
 
     any(<variable declarations> | <formula> | <expression>)
 
@@ -536,7 +558,9 @@ Unary operations
 ****************
 
 A unary operation is a minus sign (``-``) or a plus sign (``+``) followed by an expression of type
-``int`` or ``float``. For example::
+``int`` or ``float``. For example:
+
+.. code-block:: ql
 
     -6.28
     +(10 - 4)
@@ -552,7 +576,9 @@ Binary operations
 *****************
 
 A binary operation consists of an expression, followed by a binary operator, followed by 
-another expression. For example::
+another expression. For example:
+
+.. code-block:: ql
 
     5 % 2
     (9 + 1) / (-2)
@@ -621,7 +647,9 @@ Since the predicate ``getASupertype()`` is defined for ``Class``, but not for ``
 can't call ``t.getASupertype()`` directly. The cast ``t.(Class)`` ensures that ``t`` is
 of type ``Class``, so it has access to the desired predicate.
 
-If you prefer to use a prefix cast, you can rewrite the ``where`` part as::
+If you prefer to use a prefix cast, you can rewrite the ``where`` part as:
+
+.. code-block:: ql
 
     where ((Class)t).getASupertype().hasName("List")
 
