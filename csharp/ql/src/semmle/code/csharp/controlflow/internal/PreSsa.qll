@@ -11,8 +11,8 @@
 
 import csharp
 private import AssignableDefinitions
-private import semmle.code.csharp.controlflow.internal.PreBasicBlocks
-private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow::Internal::Successor
+private import PreBasicBlocks
+private import ControlFlowGraphImpl
 private import semmle.code.csharp.controlflow.Guards as Guards
 
 /**

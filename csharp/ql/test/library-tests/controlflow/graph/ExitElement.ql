@@ -1,5 +1,5 @@
 import csharp
-import ControlFlow::Internal
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 private import semmle.code.csharp.controlflow.internal.Completion
 import Common
 

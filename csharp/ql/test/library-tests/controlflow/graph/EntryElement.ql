@@ -1,6 +1,6 @@
 import csharp
 import Common
-import ControlFlow::Internal
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 
 from SourceControlFlowElement cfe
 where cfe.fromSource()

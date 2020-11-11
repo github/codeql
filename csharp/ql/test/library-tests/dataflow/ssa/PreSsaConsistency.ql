@@ -1,6 +1,6 @@
 import csharp
 import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
-import ControlFlow::Internal
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 
 class CallableWithSplitting extends Callable {
   CallableWithSplitting() { this = any(SplitControlFlowElement e).getEnclosingCallable() }

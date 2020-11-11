@@ -1,7 +1,8 @@
 import csharp
 import ControlFlow
 import Common
-import Internal
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
+import semmle.code.csharp.controlflow.internal.Splitting
 import Nodes
 
 query predicate booleanNode(ElementNode e, BooleanSplit split) { split = e.getASplit() }

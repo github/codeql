@@ -5,11 +5,11 @@
  */
 
 import csharp
-private import semmle.code.csharp.controlflow.internal.Completion
-private import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
-private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow::Internal::Successor
-private import ControlFlow
+private import Completion
+private import PreSsa as PreSsa
+private import ControlFlowGraphImpl
 private import SuccessorTypes
+private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow
 
 /** The maximum number of splits allowed for a given node. */
 private int maxSplits() { result = 5 }

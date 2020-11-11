@@ -10,9 +10,9 @@
  */
 
 import csharp
-private import semmle.code.csharp.controlflow.internal.Completion
+private import Completion
+private import ControlFlowGraphImpl
 private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow
-private import Internal::Successor
 
 private predicate startsBB(ControlFlowElement cfe) {
   not cfe = succ(_, _) and

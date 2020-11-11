@@ -5,7 +5,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.controlflow.internal.Completion
+private import Completion
 private import semmle.code.csharp.Caching
 
 cached

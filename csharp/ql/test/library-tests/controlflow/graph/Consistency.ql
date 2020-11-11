@@ -2,7 +2,8 @@ import csharp
 import semmle.code.csharp.controlflow.internal.Completion
 import semmle.code.csharp.controlflow.internal.PreBasicBlocks
 import ControlFlow
-import ControlFlow::Internal
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
+import semmle.code.csharp.controlflow.internal.Splitting
 
 predicate bbStartInconsistency(ControlFlowElement cfe) {
   exists(ControlFlow::BasicBlock bb | bb.getFirstNode() = cfe.getAControlFlowNode()) and
