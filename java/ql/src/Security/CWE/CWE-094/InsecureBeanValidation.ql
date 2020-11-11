@@ -85,7 +85,11 @@ class BeanValidationConfig extends TaintTracking::Configuration {
 
 from BeanValidationConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where
-  not forall(SetMessageInterpolatorCall c | c.isSafe()) and
+  (
+    not exists(SetMessageInterpolatorCall c)
+    or
+    exists(SetMessageInterpolatorCall c | not c.isSafe())
+  ) and
   cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "Custom constraint error message contains unsanitized user data"
