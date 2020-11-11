@@ -71,6 +71,8 @@ class ExternalAPIDataNode extends DataFlow::Node {
     ) and
     // Not defined in the code that is being analysed
     not exists(call.getACallee().getBody()) and
+    // Not defined in a test file
+    not call.getFile() instanceof TestFile and
     // Not already modeled as a taint step
     not exists(DataFlow::Node next | TaintTracking::localTaintStep(this, next)) and
     // Not a sink for a commonly-used query
