@@ -271,13 +271,13 @@ This information may be sufficient to debug trivial test failures.
 
 For failures that are harder to debug, you can import ``EmptyThen.testproj``
 into CodeQL for VS Code, execute ``EmptyThen.ql``, and view the results in the
-``Test.java`` example code. For more information, see ":doc:`Analyzing your projects
-<codeql-for-visual-studio-code:analyzing-your-projects>`" in the CodeQL for VS Code
+``Test.java`` example code. For more information, see ":ref:`Analyzing your projects
+<analyzing-your-projects>`" in the CodeQL for VS Code
 help.  
 
 Further reading
 ---------------
 
-- ":doc:`CodeQL queries
-  <writing-codeql-queries:codeql-queries/index>`"
-- ":doc:`Testing CodeQL queries in Visual Studio Code <codeql-for-visual-studio-code:testing-codeql-queries-in-visual-studio-code>`"
+- ":ref:`CodeQL queries
+  <codeql-queries>`"
+- ":ref:`Testing CodeQL queries in Visual Studio Code <testing-codeql-queries-in-visual-studio-code>`"

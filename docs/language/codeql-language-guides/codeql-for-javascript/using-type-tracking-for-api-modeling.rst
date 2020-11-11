@@ -495,7 +495,7 @@ Prefer data-flow configurations when:
 - Differentiating between different kinds of user-controlled data -- see ":doc:`Using flow labels for precise data flow analysis <using-flow-labels-for-precise-data-flow-analysis>`."
 - Tracking transformations of a value through generic utility functions.
 - Tracking values through string manipulation.
-- Generating a path from source to sink -- see ":doc:`Creating path queries <writing-codeql-queries:codeql-queries/creating-path-queries>`."
+- Generating a path from source to sink -- see ":ref:`Creating path queries <creating-path-queries>`."
 
 Lastly, depending on the code base being analyzed, some alternatives to consider are:
 

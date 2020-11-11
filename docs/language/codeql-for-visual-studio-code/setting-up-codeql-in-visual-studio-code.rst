@@ -26,7 +26,7 @@ Configuring access to the CodeQL CLI
 
 The extension uses the CodeQL CLI to compile and run queries.
 
-If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from LGTM.com. For more information, see ":doc:`CodeQL CLI <codeql-cli:index>`."
+If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from LGTM.com. For more information, see ":ref:`CodeQL CLI <codeql-cli>`."
 
 Otherwise, the extension automatically manages access to the executable of the CLI for you. This ensures that the CLI is compatible with the CodeQL extension. You can also check for updates with the **CodeQL: Check for CLI Updates** command.
 
@@ -37,7 +37,7 @@ Otherwise, the extension automatically manages access to the executable of the C
    To avoid having two copies of the CLI on your machine, you can point the CodeQL CLI **Executable Path** setting to your existing copy of the CLI.
 
 If you want the extension to use a specific version of the CLI, set the CodeQL CLI **Executable Path** to the location of the executable file for the CLI.
-That is, the file named ``codeql`` (Linux/Mac) or ``codeql.exe`` (Windows). For more information, see ":doc:`Customizing settings </customizing-settings>`."
+That is, the file named ``codeql`` (Linux/Mac) or ``codeql.exe`` (Windows). For more information, see ":ref:`Customizing settings <customizing-settings>`."
 
 If you have any difficulty setting up access to the CodeQL CLI, check the CodeQL Extension Log for error messages. For more information, see ":doc:`Troubleshooting CodeQL for Visual Studio Code <troubleshooting-codeql-for-visual-studio-code>`."
 
@@ -53,7 +53,7 @@ There are two ways to do this:
 
 .. pull-quote:: Note
    
-   For CLI users there is a third option: If you have followed the instructions in ":doc:`Getting started with the CodeQL CLI <codeql-cli:using-the-codeql-cli/getting-started-with-the-codeql-cli>`" to create a CodeQL directory (for example ``codeql-home``) containing the CodeQL libraries, you can open this directory in VS Code. This also gives the extension access to the CodeQL libraries.
+   For CLI users there is a third option: If you have followed the instructions in ":ref:`Getting started with the CodeQL CLI <getting-started-with-the-codeql-cli>`" to create a CodeQL directory (for example ``codeql-home``) containing the CodeQL libraries, you can open this directory in VS Code. This also gives the extension access to the CodeQL libraries.
 
 .. container:: toggle
 
@@ -110,7 +110,7 @@ For example, to make a custom CodeQL folder called ``my-custom-cpp-pack`` depend
     version: 0.0.0
     libraryPathDependencies: codeql-cpp
 
-For more information about why you need to add a ``qlpack.yml`` file, see ":doc:`About QL packs <codeql-cli:codeql-cli-reference/about-ql-packs>`."
+For more information about why you need to add a ``qlpack.yml`` file, see ":ref:`About QL packs <about-ql-packs>`."
 
 .. pull-quote:: Note
 
@@ -120,4 +120,4 @@ Further reading
 ----------------
 
 * ":doc:`Analyzing your projects <analyzing-your-projects>`"
-* ":doc:`CodeQL CLI <codeql-cli:index>`"
+* ":ref:`CodeQL CLI <codeql-cli>`"

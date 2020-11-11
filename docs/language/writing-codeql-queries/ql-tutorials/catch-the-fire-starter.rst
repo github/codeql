@@ -16,7 +16,7 @@ Read the examples below to learn how to define predicates and classes in QL. The
 Select the southerners
 ----------------------
 
-This time you only need to consider a specific group of villagers, namely those living in the south of the village. Instead of writing ``getLocation() = "south"`` in all your queries, you could define a new :doc:`predicate <ql-language-reference:predicates>` ``isSouthern``:
+This time you only need to consider a specific group of villagers, namely those living in the south of the village. Instead of writing ``getLocation() = "south"`` in all your queries, you could define a new :ref:`predicate <predicates>` ``isSouthern``:
 
 .. code-block:: ql
 
@@ -43,7 +43,7 @@ You can now list all southerners using:
    where isSouthern(p)
    select p
 
-This is already a nice way to simplify the logic, but we could be more efficient. Currently, the query looks at every ``Person p``, and then restricts to those who satisfy ``isSouthern(p)``. Instead, we could define a new :ref:`class <ql-language-reference:classes>` ``Southerner`` containing precisely the people we want to consider.
+This is already a nice way to simplify the logic, but we could be more efficient. Currently, the query looks at every ``Person p``, and then restricts to those who satisfy ``isSouthern(p)``. Instead, we could define a new :ref:`class <classes>` ``Southerner`` containing precisely the people we want to consider.
 
 .. code-block:: ql
 

@@ -179,7 +179,7 @@ Ambient nodes are mostly ignored by control flow and data flow analysis. The out
 Static type information
 -----------------------
 
-Static type information and global name binding is available for projects with "full" TypeScript extraction enabled. This option is enabled by default for projects on LGTM.com and when you create databases with the :doc:`CodeQL CLI <codeql-cli:index>`.
+Static type information and global name binding is available for projects with "full" TypeScript extraction enabled. This option is enabled by default for projects on LGTM.com and when you create databases with the :ref:`CodeQL CLI <codeql-cli>`.
 
 .. pull-quote:: Note
 

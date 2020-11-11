@@ -1,3 +1,5 @@
+.. _about-the-ql-language:
+
 About the QL language
 ######################
 

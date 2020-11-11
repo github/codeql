@@ -8,8 +8,8 @@ Metadata tells users important information about CodeQL queries. You must includ
 About query metadata
 --------------------
 
-Any query that is run as part of an analysis includes a number of properties, known as query metadata. Metadata is included at the top of each query file as the content of a :doc:`QLDoc <ql-language-reference:qldoc-comment-specification>` comment. 
-This metadata tells LGTM and the CodeQL :doc:`extension for VS Code <codeql-for-visual-studio-code:index>` how to handle the query and display its results correctly. 
+Any query that is run as part of an analysis includes a number of properties, known as query metadata. Metadata is included at the top of each query file as the content of a :ref:`QLDoc <qldoc-comment-specification>` comment. 
+This metadata tells LGTM and the CodeQL :ref:`extension for VS Code <codeql-for-visual-studio-code>` how to handle the query and display its results correctly. 
 It also gives other users information about what the query results mean. For more information on query metadata, see the `query metadata style guide <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__ in our `open source repository <https://github.com/github/codeql>`__ on GitHub.
 
 .. pull-quote::

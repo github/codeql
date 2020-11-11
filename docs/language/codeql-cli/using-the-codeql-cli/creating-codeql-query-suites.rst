@@ -105,8 +105,8 @@ typically a query metadata property. The value can be:
 
 To match a constraint, a metadata value must match one of the strings or
 regular expressions. When there is more than one metadata key, each key must be matched. 
-For more information about query metadata properties, see ":doc:`Metadata for CodeQL queries
-<writing-codeql-queries:codeql-queries/metadata-for-codeql-queries>`."
+For more information about query metadata properties, see ":ref:`Metadata for CodeQL queries
+<metadata-for-codeql-queries>`."
 
 In addition to metadata tags, the keys in the constraint block can also be:
 

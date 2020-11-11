@@ -240,7 +240,7 @@ and the global namespaces. (You can think of global namespaces as the enclosing 
 Let's see what the module, type, and predicate namespaces look like in a concrete example:
 
 For example, you could define a library module ``Villagers`` containing some of the classes and predicates that 
-were defined in the :doc:`QL tutorials <writing-codeql-queries:ql-tutorials/index>`:
+were defined in the :ref:`QL tutorials <ql-tutorials>`:
     
 **Villagers.qll**
 

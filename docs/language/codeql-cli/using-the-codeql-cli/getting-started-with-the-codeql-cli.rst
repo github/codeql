@@ -184,15 +184,14 @@ executable in a couple of ways:
   can run the executable as just ``codeql``. 
 
 At this point, you can execute CodeQL commands. For a full list of the CodeQL
-CLI commands, see the ":doc:`CodeQL CLI reference <../codeql-cli-reference/index>`."
+CLI commands, see the ":ref:`CodeQL CLI reference <codeql-cli-reference>`."
 
 .. pull-quote:: Note
 
    If you add ``codeql`` to your ``PATH``, it can be accessed by CodeQL
    for Visual Studio Code to compile and run queries.
    For more information about configuring VS Code to access the CodeQL CLI, see
-   ":doc:`Setting up CodeQL in Visual Studio Code
-   <codeql-for-visual-studio-code:setting-up-codeql-in-visual-studio-code>`."
+   ":ref:`Setting up CodeQL in Visual Studio Code <setting-up-codeql-in-visual-studio-code>`."
 
 
 6. Verify your CodeQL CLI setup

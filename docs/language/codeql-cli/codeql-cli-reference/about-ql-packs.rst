@@ -54,8 +54,7 @@ from any location in the pack by declaring ``import mycompany.java.CustomSinks``
    Security/
    CustomQuery.ql
 
-For more
-information, see ":ref:`Importing modules <ql-language-reference:importing-modules>`" 
+For more information, see ":ref:`Importing modules <importing-modules>`" 
 in the QL language reference.
 
 ``qlpack.yml`` properties

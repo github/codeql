@@ -15,7 +15,7 @@ open source software projects. You can use the CodeQL CLI to:
 - Develop and test custom CodeQL queries to use in your own analyses
 
 For more information about how to use the CodeQL CLI, see 
-":doc:`CodeQL CLI <index>`."
+":ref:`CodeQL CLI <codeql-cli>`."
 
 CodeQL CLI commands
 -------------------
@@ -26,4 +26,4 @@ command line. To run a command, use::
    codeql [command] [subcommand]
 
 To view the reference documentation for a command, add the ``--help`` flag, or visit the 
-":doc:`CodeQL CLI reference <../codeql-cli-reference/index>`."
+":ref:`CodeQL CLI reference <codeql-cli-reference>`."

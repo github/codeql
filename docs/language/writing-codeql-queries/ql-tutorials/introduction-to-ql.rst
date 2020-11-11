@@ -17,7 +17,7 @@ QL also supports recursion and aggregates. This allows you to write complex recu
 Running a query
 ---------------
 
-You can try out the following examples and exercises using :doc:`CodeQL for VS Code <codeql-for-visual-studio-code:index>`, or you can run them in the `query console on LGTM.com <https://lgtm.com/query>`__. Before you can run a query on LGTM.com, you need to select a language and project to query (for these logic examples, any language and project will do).
+You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>`, or you can run them in the `query console on LGTM.com <https://lgtm.com/query>`__. Before you can run a query on LGTM.com, you need to select a language and project to query (for these logic examples, any language and project will do).
 
 Once you have selected a language, the query console is populated with the query:
 
@@ -159,4 +159,4 @@ To import the CodeQL library for a specific programming language, type ``import 
 Further reading
 ---------------
 
--  For a more technical description of the underlying language, see the ":doc:`QL language reference <ql-language-reference:index>`."
+-  For a more technical description of the underlying language, see the ":ref:`QL language reference <ql-language-reference>`."

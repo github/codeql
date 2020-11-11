@@ -17,8 +17,8 @@ Writing a valid query
 
 Before running a custom analysis you need to write a valid query, and save it in
 a file with a ``.ql`` extension. There is extensive documentation available to
-help you write queries. For more information, see ":doc:`CodeQL queries
-<writing-codeql-queries:codeql-queries/index>`."
+help you write queries. For more information, see ":ref:`CodeQL queries
+<codeql-queries>`."
 
 .. _including-query-metadata:
 
@@ -36,15 +36,15 @@ following two properties to ensure that the results are interpreted correctly:
 - Query type (``@kind``): identifies the query is an alert (``@kind problem``)
   or a path (``@kind path-problem``).
 
-For more information about these metadata properties, see ":doc:`Metadata for CodeQL queries
-<writing-codeql-queries:codeql-queries/metadata-for-codeql-queries>`" and the `Query metadata style guide
+For more information about these metadata properties, see ":ref:`Metadata for CodeQL queries
+<metadata-for-codeql-queries>`" and the `Query metadata style guide
 <https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md>`__.
 
 .. pull-quote:: Note
 
    Metadata requirements may differ if you want to use your query with other
-   applications. For more information, see ":doc:`Metadata for CodeQL queries
-   <writing-codeql-queries:codeql-queries/metadata-for-codeql-queries>`
+   applications. For more information, see ":ref:`Metadata for CodeQL queries
+   <metadata-for-codeql-queries>`
    ."  
 
 
@@ -73,5 +73,5 @@ further information, see `Contributing to CodeQL
 Further reading
 ---------------
 
-- ":doc:`CodeQL queries
-  <writing-codeql-queries:codeql-queries/index>`"
+- ":ref:`CodeQL queries
+  <codeql-queries>`"

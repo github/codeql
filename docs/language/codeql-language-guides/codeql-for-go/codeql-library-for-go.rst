@@ -504,7 +504,7 @@ taint, you can define a subclass of ``TaintTracking::Configuration``, which work
 data-flow configurations.
 
 A detailed exposition of global data flow and taint tracking is out of scope for this brief
-introduction. For a general overview of data flow and taint tracking, see ":doc:`About data flow analysis <writing-codeql-queries:codeql-queries/about-data-flow-analysis>`."
+introduction. For a general overview of data flow and taint tracking, see ":ref:`About data flow analysis <about-data-flow-analysis>`."
 
 Advanced libraries
 ------------------

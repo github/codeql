@@ -63,7 +63,7 @@ Notice that we use the predicate ``getType`` (available on all subclasses of ``E
 
 The class ``LoopStmt`` is a common superclass of all loops, including, in particular, ``for`` loops as in our example above. While different kinds of loops have different syntax, they all have a loop condition, which can be accessed through predicate ``getCondition``. We use the reflexive transitive closure operator ``*`` applied to the ``getAChildExpr`` predicate to express the requirement that ``expr`` should be nested inside the loop condition. In particular, it can be the loop condition itself.
 
-The final conjunct in the ``where`` clause takes advantage of the fact that :doc:`predicates <ql-language-reference:predicates>` can return more than one value (they are really relations). In particular, ``getAnOperand`` may return *either* operand of ``expr``, so ``expr.getAnOperand().isCompileTimeConstant()`` holds if at least one of the operands is constant. Negating this condition means that the query will only find expressions where *neither* of the operands is constant.
+The final conjunct in the ``where`` clause takes advantage of the fact that :ref:`predicates <predicates>` can return more than one value (they are really relations). In particular, ``getAnOperand`` may return *either* operand of ``expr``, so ``expr.getAnOperand().isCompileTimeConstant()`` holds if at least one of the operands is constant. Negating this condition means that the query will only find expressions where *neither* of the operands is constant.
 
 Generalizing the query
 ----------------------

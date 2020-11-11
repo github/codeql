@@ -1,2 +1,2 @@
-- ":doc:`QL language reference <ql-language-reference:index>`"
-- ":doc:`CodeQL tools <codeql-overview:codeql-tools>`"
+- ":ref:`QL language reference <ql-language-reference>`"
+- ":ref:`CodeQL tools <codeql-tools>`"

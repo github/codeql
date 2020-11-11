@@ -108,7 +108,7 @@ You can translate this into QL as follows:
      result = parentOf(ancestorOf(p))
    }
 
-As you can see, you have used the predicate ``ancestorOf()`` inside its own definition. This is an example of :doc:`recursion <ql-language-reference:recursion>`.
+As you can see, you have used the predicate ``ancestorOf()`` inside its own definition. This is an example of :ref:`recursion <recursion>`.
 
 This kind of recursion, where the same operation (in this case ``parentOf()``) is applied multiple times, is very common in QL, and is known as the *transitive closure* of the operation. There are two special symbols ``+`` and ``*`` that are extremely useful when working with transitive closures:
 

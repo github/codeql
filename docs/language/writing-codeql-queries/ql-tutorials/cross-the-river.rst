@@ -22,8 +22,8 @@ A solution should be a set of instructions for how to ferry the items, such as "
 across the river, and come back with nothing. Then ferry the cabbage across, and come back with ..."
 
 There are lots of ways to approach this problem and implement it in QL. Before you start, make
-sure that you are familiar with how to define :ref:`classes <ql-language-reference:classes>`
-and :doc:`predicates <ql-language-reference:predicates>` in QL.
+sure that you are familiar with how to define :ref:`classes <classes>`
+and :ref:`predicates <predicates>` in QL.
 The following walkthrough is just one of many possible implementations, so have a go at writing your
 own query too! To find more example queries, see the list :ref:`below <alternatives>`.
 
@@ -71,7 +71,7 @@ For example, if the man is on the left shore, the goat on the right shore, and t
 shore, the state should be ``Left, Right, Left, Left``.
 
 You may find it helpful to introduce some variables that refer to the shore on which the man and the cargo items are. These
-temporary variables in the body of a class are called :ref:`fields <ql-language-reference:fields>`.
+temporary variables in the body of a class are called :ref:`fields <fields>`.
 
 .. container:: toggle
 
@@ -161,12 +161,12 @@ could ferry the goat back and forth any number of times without ever reaching an
 Such a path would have an infinite number of river crossings without ever solving the puzzle.
 
 One way to restrict our paths to a finite number of river crossings is to define a 
-:ref:`member predicate <ql-language-reference:member-predicates>`
+:ref:`member predicate <member-predicates>`
 ``State reachesVia(string path, int steps)``.
 The result of this predicate is any state that is reachable from the current state (``this``) via
 the given path in a specified finite number of steps.
 
-You can write this as a :doc:`recursive predicate <ql-language-reference:recursion>`,
+You can write this as a :ref:`recursive predicate <recursion>`,
 with the following base case and recursion step:
 
   - If ``this`` *is* the result state, then it (trivially) reaches the result state via an
@@ -220,7 +220,7 @@ the given path without revisiting any previously visited states.
 Display the results
 ~~~~~~~~~~~~~~~~~~~
 
-Once you've defined all the necessary classes and predicates, write a :ref:`select clause <ql-language-reference:select-clauses>`
+Once you've defined all the necessary classes and predicates, write a :ref:`select clause <select-clauses>`
 that returns the resulting path.
 
 .. container:: toggle
@@ -232,7 +232,7 @@ that returns the resulting path.
    .. literalinclude:: river-crossing.ql
       :lines: 115-117
 
-The :ref:`don't-care expression <ql-language-reference:don-t-care-expressions>` (``_``),
+The :ref:`don't-care expression <don-t-care-expressions>` (``_``),
 as the second argument to the ``reachesVia`` predicate, represents any value of ``visitedStates``.
 
 For now, the path defined in ``reachesVia`` just lists the order of cargo items to ferry.
@@ -256,12 +256,12 @@ Here are some more example queries that solve the river crossing puzzle:
      ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/659603593702729237/>`__
 
   #. This query models the man and the cargo items in a different way, using an 
-     :ref:`abstract <ql-language-reference:abstract>`
+     :ref:`abstract <abstract>`
      class and predicate. It also displays the resulting path in a more visual way.
 
      ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/1025323464423811143/>`__
 
-  #. This query introduces :ref:`algebraic datatypes <ql-language-reference:algebraic-datatypes>`
+  #. This query introduces :ref:`algebraic datatypes <algebraic-datatypes>`
      to model the situation, instead of defining everything as a subclass of ``string``.
 
      ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/7260748307619718263/>`__

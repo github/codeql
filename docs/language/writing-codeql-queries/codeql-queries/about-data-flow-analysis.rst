@@ -16,11 +16,11 @@ The following sections provide a brief introduction to data flow analysis with C
 
 See the following tutorials for more information about analyzing data flow in specific languages:
 
-- ":doc:`Analyzing data flow in C/C++ <codeql-language-guides:codeql-for-cpp/analyzing-data-flow-in-cpp>`"
-- ":doc:`Analyzing data flow in C# <codeql-language-guides:codeql-for-csharp/analyzing-data-flow-in-csharp>`"
-- ":doc:`Analyzing data flow in Java <codeql-language-guides:codeql-for-java/analyzing-data-flow-in-java>`"
-- ":doc:`Analyzing data flow in JavaScript/TypeScript <codeql-language-guides:codeql-for-javascript/analyzing-data-flow-in-javascript>`"
-- ":doc:`Analyzing data flow and tracking tainted data in Python <codeql-language-guides:codeql-for-python/analyzing-data-flow-and-tracking-tainted-data-in-python>`"
+- ":ref:`Analyzing data flow in C/C++ <analyzing-data-flow-in-cpp>`"
+- ":ref:`Analyzing data flow in C# <analyzing-data-flow-in-csharp>`"
+- ":ref:`Analyzing data flow in Java <analyzing-data-flow-in-java>`"
+- ":ref:`Analyzing data flow in JavaScript/TypeScript <analyzing-data-flow-in-javascript>`"
+- ":ref:`Analyzing data flow and tracking tainted data in Python <analyzing-data-flow-and-tracking-tainted-data-in-python>`"
 
 .. pull-quote::
 
@@ -51,8 +51,8 @@ flow between functions and through object properties. Global data flow, however,
 graph that do not precisely correspond to the flow of values, but model whether some value at runtime may be derived from another, for instance through a string manipulating
 operation.
 
-The data flow graph is computed using :ref:`classes <ql-language-reference:classes>` to model the program elements that represent the graph's nodes.
-The flow of data between the nodes is modeled using :doc:`predicates <ql-language-reference:predicates>` to compute the graph's edges.
+The data flow graph is computed using :ref:`classes <classes>` to model the program elements that represent the graph's nodes.
+The flow of data between the nodes is modeled using :ref:`predicates <predicates>` to compute the graph's edges.
 
 Computing an accurate and complete data flow graph presents several challenges:
 
@@ -84,5 +84,5 @@ These flow steps are modeled in the taint-tracking library using predicates that
 Further reading
 ***************
 
-- ":doc:`Exploring data flow with path queries <codeql-for-visual-studio-code:exploring-data-flow-with-path-queries>`"
+- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
 

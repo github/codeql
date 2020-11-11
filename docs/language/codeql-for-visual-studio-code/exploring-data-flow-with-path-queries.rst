@@ -15,7 +15,7 @@ You can find a number of these in the standard CodeQL libraries, for example, a 
 You can run the standard CodeQL path queries to identify security vulnerabilities and manually look through the results.
 You can also modify the existing queries to model data flow more precisely for the specific framework of your project, or write completely new path queries to find a different vulnerability.
 
-To ensure that your path query uses the correct format and metadata, follow the instructions in ":doc:`Creating path queries <writing-codeql-queries:codeql-queries/creating-path-queries>`."
+To ensure that your path query uses the correct format and metadata, follow the instructions in ":ref:`Creating path queries <creating-path-queries>`."
 This topic also contains detailed information about how to define new sources and sinks, as well as templates and examples of how to extend the CodeQL libraries to suit your analysis.
 
 Running path queries in VS Code
@@ -31,5 +31,5 @@ Running path queries in VS Code
 Further reading
 -----------------
 
-- ":doc:`About data flow analysis <writing-codeql-queries:codeql-queries/about-data-flow-analysis>`"
-- ":doc:`Creating path queries <writing-codeql-queries:codeql-queries/creating-path-queries>`"
+- ":ref:`About data flow analysis <about-data-flow-analysis>`"
+- ":ref:`Creating path queries <creating-path-queries>`"
