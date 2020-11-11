@@ -1,3 +1,5 @@
+.. _codeql-cli:
+
 CodeQL CLI
 ==========
 

@@ -1,3 +1,5 @@
+.. _codeql-for-cpp:
+
 CodeQL for C and C++
 ====================
 

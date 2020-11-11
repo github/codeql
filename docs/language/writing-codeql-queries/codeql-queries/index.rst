@@ -1,3 +1,5 @@
+.. _codeql-queries:
+
 CodeQL queries
 ##############
 

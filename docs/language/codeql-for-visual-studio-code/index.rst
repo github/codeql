@@ -1,3 +1,5 @@
+.. _codeql-for-visual-studio-code:
+
 CodeQL for Visual Studio Code
 =============================
 

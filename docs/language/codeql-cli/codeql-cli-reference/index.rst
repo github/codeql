@@ -1,3 +1,5 @@
+.. _codeql-cli-reference:
+
 CodeQL CLI reference
 ====================
 

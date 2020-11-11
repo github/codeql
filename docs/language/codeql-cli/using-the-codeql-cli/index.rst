@@ -1,3 +1,5 @@
+.. _using-the-codeql-cli:
+
 Using the CodeQL CLI
 ====================
 

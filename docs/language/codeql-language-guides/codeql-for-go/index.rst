@@ -1,3 +1,5 @@
+.. _codeql-for-go:
+
 CodeQL for Go
 =============
 

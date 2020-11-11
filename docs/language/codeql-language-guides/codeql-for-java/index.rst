@@ -1,3 +1,5 @@
+.. _codeql-for-java:
+
 CodeQL for Java
 ===============
 
