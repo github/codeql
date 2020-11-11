@@ -497,12 +497,16 @@ public class RegExpParser {
     return this.finishTerm(new CharacterClass(loc, elements, inverted));
   }
 
+  private static final List<String> escapeClasses = Arrays.asList("d", "D", "s", "S", "w", "W");
+
   private RegExpTerm parseCharacterClassElement() {
     SourceLocation loc = new SourceLocation(pos());
     RegExpTerm atom = this.parseCharacterClassAtom();
-    for (String c : Arrays.asList("d", "D", "s", "S", "w", "W")) {
-      if (this.lookahead("-\\" + c))
-        return atom;
+    if (this.lookahead("-\\")) {
+      for (String c : escapeClasses) {
+        if (this.lookahead("-\\" + c))
+          return atom;
+      }
     }
     if (!this.lookahead("-]") && this.match("-") && !(atom instanceof CharacterClassEscape))
       return this.finishTerm(new CharacterClassRange(loc, atom, this.parseCharacterClassAtom()));
