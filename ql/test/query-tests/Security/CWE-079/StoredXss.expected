@@ -1,0 +1,11 @@
+edges
+| StoredXss.go:13:21:13:31 | call to Name : string | StoredXss.go:13:21:13:36 | ...+... |
+| stored.go:16:3:16:28 | ... := ...[0] : pointer type | stored.go:28:22:28:25 | name |
+nodes
+| StoredXss.go:13:21:13:31 | call to Name : string | semmle.label | call to Name : string |
+| StoredXss.go:13:21:13:36 | ...+... | semmle.label | ...+... |
+| stored.go:16:3:16:28 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| stored.go:28:22:28:25 | name | semmle.label | name |
+#select
+| StoredXss.go:13:21:13:36 | ...+... | StoredXss.go:13:21:13:31 | call to Name : string | StoredXss.go:13:21:13:36 | ...+... | Stored cross-site scripting vulnerability due to $@. | StoredXss.go:13:21:13:31 | call to Name | stored value |
+| stored.go:28:22:28:25 | name | stored.go:16:3:16:28 | ... := ...[0] : pointer type | stored.go:28:22:28:25 | name | Stored cross-site scripting vulnerability due to $@. | stored.go:16:3:16:28 | ... := ...[0] | stored value |
