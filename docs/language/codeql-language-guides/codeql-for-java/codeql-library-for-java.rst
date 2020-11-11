@@ -212,7 +212,7 @@ Class ``Variable`` represents a variable `in the Java sense <https://docs.oracle
 Abstract syntax tree
 --------------------
 
-Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see ":doc:`Abstract syntax tree classes for working with Java programs <abstract-syntax-tree-classes-for-working-with-go-programs>`."
+Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see ":doc:`Abstract syntax tree classes for working with Java programs <abstract-syntax-tree-classes-for-working-with-java-programs>`."
 
 Both ``Expr`` and ``Stmt`` provide member predicates for exploring the abstract syntax tree of a program:
 
