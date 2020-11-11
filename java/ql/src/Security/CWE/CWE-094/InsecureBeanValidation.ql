@@ -47,11 +47,9 @@ class SetMessageInterpolatorCall extends MethodAccess {
   }
 
   /**
-  * The message interpolator is likely to be safe, because it does not process Java Expression Language expressions.
-  */
-  predicate isSafe() {
-    not this.getAnArgument().getType() instanceof ELMessageInterpolatorType
-  }
+   * The message interpolator is likely to be safe, because it does not process Java Expression Language expressions.
+   */
+  predicate isSafe() { not this.getAnArgument().getType() instanceof ELMessageInterpolatorType }
 }
 
 /**
