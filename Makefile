@@ -30,11 +30,11 @@ clean:
 DATAFLOW_BRANCH=master
 
 autoformat:
-	find ql/src -name "*.ql" -or -name "*.qll" | xargs codeql query format -qq -i
+	find ql -name "*.ql" -or -name "*.qll" | xargs codeql query format -qq -i
 	git ls-files | grep '\.go$$' | grep -v ^vendor/ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -w
 
 check-formatting:
-	find ql/src -name "*.ql" -or -name "*.qll" | xargs codeql query format --check-only
+	find ql -name "*.ql" -or -name "*.qll" | xargs codeql query format --check-only
 	test -z "$$(git ls-files | grep '\.go$$' | grep -v ^vendor/ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
 
 ifeq ($(QHELP_OUT_DIR),)

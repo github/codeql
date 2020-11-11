@@ -61,7 +61,9 @@ predicate repmetadata(Locatable l, string mod, string dep, string dver, string r
   )
 }
 
-query predicate missingReplace(string mod, string dep, string dver, string rep, string rver, int line) {
+query predicate missingReplace(
+  string mod, string dep, string dver, string rep, string rver, int line
+) {
   exists(Locatable l | repmetadata(l, mod, dep, dver, rep, rver) |
     l.hasLocationInfo(_, line, _, _, _)
   ) and
