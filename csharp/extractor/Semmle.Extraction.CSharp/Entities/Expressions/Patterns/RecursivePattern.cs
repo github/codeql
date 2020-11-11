@@ -6,7 +6,7 @@ using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal class RecursivePattern : Expression
+    internal partial class RecursivePattern : Expression
     {
         /// <summary>
         /// Creates and populates a recursive pattern.
