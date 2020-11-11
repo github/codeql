@@ -1153,6 +1153,14 @@ private module Stage2 {
   }
 
   predicate revFlow(Node node, Configuration config) { revFlow(node, _, _, _, config) }
+
+  private predicate fwdConsCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepFwd(_, ap, tc, _, _, config)
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepCand(_, ap, tc, _, _, config)
+  }
   /* End: Stage 2 logic. */
 }
 
@@ -1624,7 +1632,7 @@ private module Stage3 {
   }
 
   pragma[nomagic]
-  predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+  private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
     exists(Node mid |
       revFlow(mid, _, _, tail, config) and
       readStepFwd(_, cons, c, mid, tail, config)
@@ -1695,14 +1703,15 @@ private module Stage3 {
       revFlowStore(ap1, c, /*unbind*/ ap2, _, _, _, _, _, unbind(config))
     )
   }
-  /* End: Stage 3 logic. */
-}
 
-private predicate stage3consCand(TypedContent tc, AccessPathFront apf, Configuration config) {
-  exists(AccessPathFront apf0 |
-    Stage3::revFlowConsCand(apf0, _, apf, config) and
-    apf0.getHead() = tc
-  )
+  private predicate fwdConsCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepFwd(_, ap, tc, _, _, config)
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepCand(_, ap, tc, _, _, config)
+  }
+  /* End: Stage 3 logic. */
 }
 
 /**
@@ -1722,7 +1731,7 @@ private predicate flowCandSummaryCtx(Node node, AccessPathFront argApf, Configur
  */
 private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) {
   exists(int tails, int nodes, int apLimit, int tupleLimit |
-    tails = strictcount(AccessPathFront apf | stage3consCand(tc, apf, config)) and
+    tails = strictcount(AccessPathFront apf | Stage3::consCand(tc, apf, config)) and
     nodes =
       strictcount(Node n |
         Stage3::revFlow(n, _, _, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), config)
@@ -1738,11 +1747,11 @@ private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) 
 private newtype TAccessPathApprox =
   TNil(DataFlowType t) or
   TConsNil(TypedContent tc, DataFlowType t) {
-    stage3consCand(tc, TFrontNil(t), _) and
+    Stage3::consCand(tc, TFrontNil(t), _) and
     not expensiveLen2unfolding(tc, _)
   } or
   TConsCons(TypedContent tc1, TypedContent tc2, int len) {
-    stage3consCand(tc1, TFrontHead(tc2), _) and
+    Stage3::consCand(tc1, TFrontHead(tc2), _) and
     len in [2 .. accessPathLimit()] and
     not expensiveLen2unfolding(tc1, _)
   } or
@@ -1872,7 +1881,7 @@ private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
   override AccessPathApprox pop(TypedContent head) {
     head = tc and
     (
-      exists(TypedContent tc2 | stage3consCand(tc, TFrontHead(tc2), _) |
+      exists(TypedContent tc2 | Stage3::consCand(tc, TFrontHead(tc2), _) |
         result = TConsCons(tc2, _, len - 1)
         or
         len = 2 and
@@ -1883,7 +1892,7 @@ private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
       or
       exists(DataFlowType t |
         len = 1 and
-        stage3consCand(tc, TFrontNil(t), _) and
+        Stage3::consCand(tc, TFrontNil(t), _) and
         result = TNil(t)
       )
     )
@@ -2245,7 +2254,7 @@ private module Stage4 {
   }
 
   pragma[nomagic]
-  predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
+  private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
     exists(Node mid |
       revFlow(mid, _, _, tail, config) and
       readStepFwd(_, cons, c, mid, tail, config)
@@ -2319,14 +2328,15 @@ private module Stage4 {
   }
 
   predicate revFlow(Node n, Configuration config) { revFlow(n, _, _, _, config) }
-  /* End: Stage 4 logic. */
-}
 
-private predicate stage4consCand(TypedContent tc, AccessPathApprox apa, Configuration config) {
-  exists(AccessPathApprox apa0 |
-    Stage4::revFlowConsCand(apa0, _, apa, config) and
-    apa0.getHead() = tc
-  )
+  private predicate fwdConsCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepFwd(_, ap, tc, _, _, config)
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    storeStepCand(_, ap, tc, _, _, config)
+  }
+  /* End: Stage 4 logic. */
 }
 
 bindingset[conf, result]
@@ -2405,7 +2415,7 @@ private int count1to2unfold(AccessPathApproxCons1 apa, Configuration config) {
     len = apa.len() and
     result =
       strictcount(AccessPathFront apf |
-        stage4consCand(tc, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1),
+        Stage4::consCand(tc, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1),
           config)
       )
   )
@@ -2433,7 +2443,7 @@ private predicate expensiveLen1to2unfolding(AccessPathApproxCons1 apa, Configura
 private AccessPathApprox getATail(AccessPathApprox apa, Configuration config) {
   exists(TypedContent head |
     apa.pop(head) = result and
-    stage4consCand(head, result, config)
+    Stage4::consCand(head, result, config)
   )
 }
 
@@ -2651,7 +2661,7 @@ private class AccessPathCons2 extends AccessPath, TAccessPathCons2 {
   override TypedContent getHead() { result = head1 }
 
   override AccessPath getTail() {
-    stage4consCand(head1, result.getApprox(), _) and
+    Stage4::consCand(head1, result.getApprox(), _) and
     result.getHead() = head2 and
     result.length() = len - 1
   }
@@ -2682,7 +2692,7 @@ private class AccessPathCons1 extends AccessPath, TAccessPathCons1 {
   override TypedContent getHead() { result = head }
 
   override AccessPath getTail() {
-    stage4consCand(head, result.getApprox(), _) and result.length() = len - 1
+    Stage4::consCand(head, result.getApprox(), _) and result.length() = len - 1
   }
 
   override AccessPathFrontHead getFront() { result = TFrontHead(head) }
