@@ -583,6 +583,20 @@ private module Stage1 {
   predicate revFlow(Node node, boolean toReturn, ApOption returnAp, Ap ap, Configuration config) {
     revFlow(node, toReturn, config) and exists(returnAp) and exists(ap)
   }
+
+  predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
+    fwd = true and
+    nodes = count(Node node | fwdFlow(node, config)) and
+    fields = count(Content f0 | fwdFlowIsStored(f0, config)) and
+    conscand = -1 and
+    tuples = count(Node n, boolean b | fwdFlow(n, b, config))
+    or
+    fwd = false and
+    nodes = count(Node node | revFlow(node, _, config)) and
+    fields = count(Content f0 | revFlowIsRead(f0, config)) and
+    conscand = -1 and
+    tuples = count(Node n, boolean b | revFlow(n, b, config))
+  }
   /* End: Stage 1 logic. */
 }
 
@@ -1161,6 +1175,20 @@ private module Stage2 {
   predicate consCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
   }
+
+  predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
+    fwd = true and
+    nodes = count(Node node | fwdFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | fwdConsCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | fwdConsCand(f0, ap, config)) and
+    tuples = count(Node n, Cc cc, ApOption argAp, Ap ap | fwdFlow(n, cc, argAp, ap, config))
+    or
+    fwd = false and
+    nodes = count(Node node | revFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | consCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | consCand(f0, ap, config)) and
+    tuples = count(Node n, boolean b, ApOption retAp, Ap ap | revFlow(n, b, retAp, ap, config))
+  }
   /* End: Stage 2 logic. */
 }
 
@@ -1710,6 +1738,20 @@ private module Stage3 {
 
   predicate consCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
+    fwd = true and
+    nodes = count(Node node | fwdFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | fwdConsCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | fwdConsCand(f0, ap, config)) and
+    tuples = count(Node n, Cc cc, ApOption argAp, Ap ap | fwdFlow(n, cc, argAp, ap, config))
+    or
+    fwd = false and
+    nodes = count(Node node | revFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | consCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | consCand(f0, ap, config)) and
+    tuples = count(Node n, boolean b, ApOption retAp, Ap ap | revFlow(n, b, retAp, ap, config))
   }
   /* End: Stage 3 logic. */
 }
@@ -2335,6 +2377,20 @@ private module Stage4 {
 
   predicate consCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
+    fwd = true and
+    nodes = count(Node node | fwdFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | fwdConsCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | fwdConsCand(f0, ap, config)) and
+    tuples = count(Node n, Cc cc, ApOption argAp, Ap ap | fwdFlow(n, cc, argAp, ap, config))
+    or
+    fwd = false and
+    nodes = count(Node node | revFlow(node, _, _, _, config)) and
+    fields = count(TypedContent f0 | consCand(f0, _, config)) and
+    conscand = count(TypedContent f0, Ap ap | consCand(f0, ap, config)) and
+    tuples = count(Node n, boolean b, ApOption retAp, Ap ap | revFlow(n, b, retAp, ap, config))
   }
   /* End: Stage 4 logic. */
 }
@@ -3120,6 +3176,48 @@ private predicate flowsTo(
  */
 predicate flowsTo(Node source, Node sink, Configuration configuration) {
   flowsTo(_, _, source, sink, configuration)
+}
+
+private predicate finalStats(boolean fwd, int nodes, int fields, int conscand, int tuples) {
+  fwd = true and
+  nodes = count(Node n0 | exists(PathNode pn | pn.getNode() = n0)) and
+  fields =
+    count(TypedContent f0 | exists(PathNodeMid pn | pn.getAp().getFront().headUsesContent(f0))) and
+  conscand = count(AccessPath ap | exists(PathNodeMid pn | pn.getAp() = ap)) and
+  tuples = count(PathNode pn)
+  or
+  fwd = false and
+  nodes = count(Node n0 | exists(PathNode pn | pn.getNode() = n0 and reach(pn))) and
+  fields =
+    count(TypedContent f0 |
+      exists(PathNodeMid pn | pn.getAp().getFront().headUsesContent(f0) and reach(pn))
+    ) and
+  conscand = count(AccessPath ap | exists(PathNodeMid pn | pn.getAp() = ap and reach(pn))) and
+  tuples = count(PathNode pn | reach(pn))
+}
+
+predicate stageStats(
+  int n, string stage, int nodes, int fields, int conscand, int tuples, Configuration config
+) {
+  stage = "1 Fwd" and n = 10 and Stage1::stats(true, nodes, fields, conscand, tuples, config)
+  or
+  stage = "1 Rev" and n = 15 and Stage1::stats(false, nodes, fields, conscand, tuples, config)
+  or
+  stage = "2 Fwd" and n = 20 and Stage2::stats(true, nodes, fields, conscand, tuples, config)
+  or
+  stage = "2 Rev" and n = 25 and Stage2::stats(false, nodes, fields, conscand, tuples, config)
+  or
+  stage = "3 Fwd" and n = 30 and Stage3::stats(true, nodes, fields, conscand, tuples, config)
+  or
+  stage = "3 Rev" and n = 35 and Stage3::stats(false, nodes, fields, conscand, tuples, config)
+  or
+  stage = "4 Fwd" and n = 40 and Stage4::stats(true, nodes, fields, conscand, tuples, config)
+  or
+  stage = "4 Rev" and n = 45 and Stage4::stats(false, nodes, fields, conscand, tuples, config)
+  or
+  stage = "5 Fwd" and n = 50 and finalStats(true, nodes, fields, conscand, tuples)
+  or
+  stage = "5 Rev" and n = 55 and finalStats(false, nodes, fields, conscand, tuples)
 }
 
 private module FlowExploration {
