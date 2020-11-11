@@ -32,10 +32,6 @@ source_suffix = '.rst'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.mathjax',
-]
 
 # The encoding of source files.
 source_encoding = 'utf-8-sig'
@@ -47,7 +43,7 @@ pygments_style = 'sphinx'
 import sys
 
 def setup(sphinx):
-    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.path.pardir, 'global-sphinx-files')))
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))	
     from qllexer import QLLexer
     sphinx.add_lexer("ql", QLLexer())
 
@@ -92,23 +88,12 @@ html_theme_options = {'font_size': '16px',
                       }
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['../global-sphinx-files/_templates']
+templates_path = ['_templates']
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['../global-sphinx-files/_static']
+html_static_path = ['_static']
 
-base_url = 'http://docteam.internal.semmle.com/james/codeql-site-layout/'
-
-intersphinx_mapping = {
-    'codeql-overview': (base_url + 'codeql-overview/', (None, 'object.inv')),
-    'codeql-language-guides': (base_url + 'codeql-language-guides/', (None, 'object.inv')),
-    'writing-codeql-queries':  (base_url + 'writing-codeql-queries/', (None, 'object.inv')),
-    'ql-language-reference':  (base_url + 'ql-language-reference/', (None, 'object.inv')),
-    'codeql-cli':  (base_url + 'codeql-cli/', (None, 'object.inv')),
-    'codeql-cli-manual':  (base_url + 'codeql-cli-manual/', (None, 'object.inv')),
-    'codeql-for-visual-studio-code':  (base_url + 'codeql-for-visual-studio-code/', (None, 'object.inv'))
-}
-
+exclude_patterns = ['vale*', '_static', '_templates', 'codeql', 'learn-ql', 'reusables', 'images', 'support', 'ql-training', '_build', '*.py*']
 ##############################################################################
