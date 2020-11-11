@@ -21,7 +21,9 @@ You can also write another kind of comment, namely **QLDoc comments**. These com
 QL entities and are displayed as pop-up information in QL editors. For information about QLDoc
 comments, see the ":doc:`QLDoc comment specification <qldoc-comment-specification>`."
 
-The following example uses these three different kinds of comments::
+The following example uses these three different kinds of comments:
+
+.. code-block:: ql
 
     /**
      * A QLDoc comment that describes the class `Digit`.

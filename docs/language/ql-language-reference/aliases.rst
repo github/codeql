@@ -35,7 +35,9 @@ Use the following syntax to define an alias for a :ref:`module <modules>`::
     module ModAlias = ModuleName;
 
 For example, if you create a new module ``NewVersion`` that is an updated version 
-of ``OldVersion``, you could deprecate the name ``OldVersion`` as follows::
+of ``OldVersion``, you could deprecate the name ``OldVersion`` as follows:
+
+.. code-block:: ql
 
     deprecated module OldVersion = NewVersion;
 
@@ -59,7 +61,9 @@ For example, you can use an alias to abbreviate the name of the primitive type `
     class bool = boolean;
 
 Or, to use a class ``OneTwo`` defined in a :ref:`module <explicit-modules>` ``M`` in 
-``OneTwoThreeLib.qll``, you could create an alias to use the shorter name ``OT`` instead::
+``OneTwoThreeLib.qll``, you could create an alias to use the shorter name ``OT`` instead:
+
+.. code-block:: ql
 
     import OneTwoThreeLib
     
@@ -92,12 +96,16 @@ You can use an alias to abbreviate the name to ``succ``::
     predicate succ = getSuccessor/1;
 
 As an example of a predicate without result, suppose you have a predicate that holds 
-for any positive integer less than ten::
+for any positive integer less than ten:
+
+.. code-block:: ql
 
     predicate isSmall(int i) { 
       i in [1 .. 9]
     }
 
-You could give the predicate a more descriptive name as follows::
+You could give the predicate a more descriptive name as follows:
+
+.. code-block:: ql
 
     predicate lessThanTen = isSmall/1;

@@ -65,7 +65,9 @@ Predicates without result
 These predicate definitions start with the keyword ``predicate``. If a value satisfies the 
 logical property in the body, then the predicate holds for that value.
 
-For example::
+For example:
+
+.. code-block:: ql
 
     predicate isSmall(int i) { 
       i in [1 .. 9]
@@ -84,7 +86,9 @@ Predicates with result
 You can define a predicate with result by replacing the keyword ``predicate`` with the type 
 of the result. This introduces the special variable ``result``. 
 
-For example::
+For example:
+
+.. code-block:: ql
 
     int getSuccessor(int i) {
       result = i + 1 and
@@ -97,7 +101,9 @@ is the successor of ``i``.
 Note that you can use ``result`` in the same way as any other argument to the predicate. 
 You can express the relation between ``result`` and other variables in any way you like. 
 For example, given a predicate ``getAParentOf(Person x)`` that returns parents of ``x``, you can 
-define a "reverse" predicate as follows::
+define a "reverse" predicate as follows:
+
+.. code-block:: ql
 
     Person getAChildOf(Person p) {
       p = getAParentOf(result)
@@ -105,7 +111,9 @@ define a "reverse" predicate as follows::
 
 
 It is also possible for a predicate to have multiple results (or none at all) for each value 
-of its arguments. For example::
+of its arguments. For example:
+
+.. code-block:: ql
 
     string getANeighbor(string country) {
       country = "France" and result = "Belgium" 
@@ -164,7 +172,9 @@ For more information about the other kinds of predicates, see :ref:`characterist
 <characteristic-predicates>` and :ref:`member predicates <member-predicates>` in the 
 ":ref:`Classes <classes>`" topic.
 
-Here is an example showing a predicate of each kind::
+Here is an example showing a predicate of each kind:
+
+.. code-block:: ql
 
     int getSuccessor(int i) {  // 1. Non-member predicate 
       result = i + 1 and
@@ -201,7 +211,9 @@ is not usually allowed to be infinite. In other words, a predicate can only cont
 The QL compiler reports an error when it can prove that a predicate contains variables that
 aren't constrained to a finite number of values. For more information, see ":ref:`binding`."
 
-Here are a few examples of infinite predicates::
+Here are a few examples of infinite predicates:
+
+.. code-block:: ql
 
     /*
       Compilation errors:
@@ -239,7 +251,9 @@ use it on a restricted set of arguments. In that case, you can specify an explic
 set using the ``bindingset`` :ref:`annotation <bindingset>`. This annotation is valid for any
 kind of predicate.
 
-For example::
+For example:
+
+.. code-block:: ql
 
     bindingset[i]
     int multiplyBy4(int i) {
@@ -256,7 +270,9 @@ finite provided that ``i`` is bound to a finite number of values. Then it uses t
 a context where ``i`` is restricted to to the range ``[1 .. 10]``.
 
 It is also possible to state multiple binding sets for a predicate. This can be done by adding 
-multiple binding set annotations, for example::
+multiple binding set annotations, for example:
+
+.. code-block:: ql
 
     bindingset[x] bindingset[y]
     predicate plusOne(int x, int y) {
@@ -276,7 +292,9 @@ be bound, is different from ``bindingset[x, y]``, which states that both ``x`` a
 bound.
 
 The latter can be useful when you want to declare a :ref:`predicate with result <predicates-with-result>` that takes multiple input arguments.
-For example, the following predicate takes a string ``str`` and truncates it to a maximum length of ``len`` characters::
+For example, the following predicate takes a string ``str`` and truncates it to a maximum length of ``len`` characters:
+
+.. code-block:: ql
 
     bindingset[str, len]
     string truncate(string str, int len) {
@@ -285,7 +303,9 @@ For example, the following predicate takes a string ``str`` and truncates it to 
       else result = str
     }
 
-You can then use this in a :ref:`select clause <select-clauses>`, for example::
+You can then use this in a :ref:`select clause <select-clauses>`, for example:
+
+.. code-block:: ql
 
     select truncate("hello world", 5)
 

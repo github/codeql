@@ -132,7 +132,9 @@ If a recursive predicate evaluates to the empty set of values, there is usually 
 wrong.
 
 For example, you might try to define the predicate ``getAnAncestor()`` (from the 
-:ref:`above <transitive-closures>` example) as follows::
+:ref:`above <transitive-closures>` example) as follows:
+
+.. code-block:: ql
 
     Person getAnAncestor() {
       result = this.getAParent().getAnAncestor()
@@ -141,7 +143,9 @@ For example, you might try to define the predicate ``getAnAncestor()`` (from the
 In this case, the QL compiler gives an error stating that this is an empty recursive call.
 
 Since ``getAnAncestor()`` is initially assumed to be empty, there is no way for new values to
-be added. The predicate needs a starting point for the recursion, for example::
+be added. The predicate needs a starting point for the recursion, for example:
+
+.. code-block:: ql
 
     Person getAnAncestor() {
       result = this.getAParent()
@@ -158,7 +162,9 @@ A valid recursive predicate must also be `monotonic <https://en.wikipedia.org/wi
 This means that (mutual) recursion is only allowed under an even number of :ref:`negations <negation>`.
 
 Intuitively, this prevents "`liar's paradox <https://en.wikipedia.org/wiki/Liar_paradox>`_"
-situations, where there is no solution to the recursion. For example::
+situations, where there is no solution to the recursion. For example:
+
+.. code-block:: ql
 
     predicate isParadox() {
       not isParadox()
@@ -181,7 +187,9 @@ For example, consider the following (slightly macabre) member predicate of class
 
 The recursive call to ``isExtinct()`` is nested in an even number of negations, so this is a
 valid definition. 
-In fact, you could rewrite the second part of the definition as follows::
+In fact, you could rewrite the second part of the definition as follows:
+
+.. code-block:: ql
 
     forall(Person descendant | descendant.getAParent+() = this | 
       descendant.isExtinct()

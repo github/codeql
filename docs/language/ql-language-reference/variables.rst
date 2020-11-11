@@ -34,7 +34,9 @@ and many more.
 Conceptually, you can think of a variable as holding all the values that its type allows, subject
 to any further constraints.
 
-For example, consider the following select clause::
+For example, consider the following select clause:
+
+.. code-block:: ql
 
     from int i
     where i in [0 .. 9]
@@ -44,7 +46,9 @@ Just based on its type, the variable ``i`` could contain all integers. However, 
 constrained by the formula ``i in [0 .. 9]``. Consequently, the result of the select clause is
 the ten numbers between ``0`` and ``9`` inclusive.
 
-As an aside, note that the following query leads to a compile-time error::
+As an aside, note that the following query leads to a compile-time error:
+
+.. code-block:: ql
 
     from int i
     select i
@@ -64,7 +68,9 @@ affect the value of an :ref:`expression <expressions>` that uses them, or whethe
 Other variables, called **bound** variables, are restricted to specific sets of values.
 
 It might be easiest to understand this distinction in an example. Take a look at the following
-expressions::
+expressions:
+
+.. code-block:: ql
 
     "hello".indexOf("l")
 
@@ -90,7 +96,9 @@ variables ``i`` and ``x`` respectively. In other words, the value of the variabl
 on the value of the expression. These are examples of **free variables**.
 
 Similarly, if a formula contains free variables, then the formula can hold or not hold
-depending on the values assigned to those variables [#]_. For example::
+depending on the values assigned to those variables [#]_. For example:
+
+.. code-block:: ql
 
     "hello".indexOf("l") = 1
 

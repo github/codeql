@@ -79,7 +79,9 @@ To define a class, you write:
 #. The types to extend. 
 #. The :ref:`body of the class <class-bodies>`, enclosed in braces.
 
-For example::
+For example:
+
+.. code-block:: ql
 
     class OneTwoThree extends int {
       OneTwoThree() { // characteristic predicate
@@ -146,7 +148,9 @@ Member predicates
 
 These are :ref:`predicates <predicates>` that only apply to members of a particular class.
 You can :ref:`call <calls>` a member predicate on a value. For example, you can use the member
-predicate from the :ref:`above <defining-a-class>` class::
+predicate from the :ref:`above <defining-a-class>` class:
+
+.. code-block:: ql
 
     1.(OneTwoThree).getAString()
 
@@ -166,7 +170,9 @@ This call returns ``"ONE, TWO OR THREE: 1"``.
 .. index:: this
 .. _this:
 
-.. note::
+.. note:
+
+.. code-block:: ql
 
     Characteristic predicates and member predicates often use the variable ``this``. 
     This variable always refers to a member of the class—in this case a value belonging to the 
@@ -240,7 +246,9 @@ abstract class, you can add more subclasses to it.
 
 If you are writing a security query, you may be interested in identifying 
 all expressions that can be interpreted as SQL queries. 
-You can use the following abstract class to describe these expressions::
+You can use the following abstract class to describe these expressions:
+
+.. code-block:: ql
 
     abstract class SqlExpr extends Expr {
       ... 
@@ -343,7 +351,9 @@ Multiple inheritance
 
 A class can extend multiple types. In that case, it inherits from all those types.
 
-For example, using the definitions from the above section::
+For example, using the definitions from the above section:
+
+.. code-block:: ql
 
     class Two extends OneTwo, TwoThree {}
 
@@ -401,7 +411,9 @@ of values that satisfy the argument types and the body.
 
 A benefit of this is that each branch can have a different structure. For example, if you want
 to define an "option type" that either holds a value (such as a ``Call``) or is empty, you
-could write this as follows::
+could write this as follows:
+
+.. code-block:: ql
 
     newtype OptionCall = SomeCall(Call c) or NoCall()
 
@@ -415,7 +427,9 @@ To define an algebraic datatype, use the following general syntax::
 
     newtype <TypeName> = <branches>
 
-The branch definitions have the following form::
+The branch definitions have the following form:
+
+.. code-block:: ql
 
     <BranchName>(<arguments>) { <body> }
 
@@ -429,7 +443,9 @@ The branch definitions have the following form::
   Note that branch bodies are evaluated fully, so they must be finite. They should be kept small
   for good performance.
 
-For example, the following algebraic datatype has three branches::
+For example, the following algebraic datatype has three branches:
+
+.. code-block:: ql
 
     newtype T =
       Type1(A a, B b) { body(a, b) }
@@ -495,7 +511,9 @@ Type unions of :ref:`database types <database-types>` are also supported.
 You can use a type union to give a name to a subset of the branches from an algebraic datatype.
 In some cases, using the type union over the whole algebraic datatype can avoid spurious
 :ref:`recursion <recursion>` in predicates.
-For example, the following construction is legal::
+For example, the following construction is legal:
+
+.. code-block:: ql
 
     newtype InitialValueSource =
       ExplicitInitialization(VarDecl v) { exists(v.getInitializer()) } or

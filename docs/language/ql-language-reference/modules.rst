@@ -60,7 +60,7 @@ For example, consider the following QL library:
 
 **OneTwoThreeLib.qll**
 
-::
+.. code-block:: ql
 
     class OneTwoThree extends int {
       OneTwoThree() {
@@ -90,7 +90,7 @@ For example:
 
 **OneTwoQuery.ql**
 
-::
+.. code-block:: ql
 
     import OneTwoThreeLib
     
@@ -162,7 +162,9 @@ into the :ref:`namespace <namespaces>` of the current module.
 Import statements
 =================
 
-Import statements are used for importing modules. They are of the form::
+Import statements are used for importing modules. They are of the form:
+
+.. code-block:: ql
 
     import <module_expression1> as <name>
     import <module_expression2>

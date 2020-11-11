@@ -163,7 +163,9 @@ being "bound" or "unbound" is a global concept—a single binding occurrence is 
 variable bound.
 
 Therefore, you could fix the "infinite" examples above by providing a binding occurrence. For
-example, instead of ``int timesTwo(int n) { result = n * 2 }``, you could write::
+example, instead of ``int timesTwo(int n) { result = n * 2 }``, you could write:
+
+.. code-block:: ql
 
     int timesTwo(int n) {
       n in [0 .. 10] and 

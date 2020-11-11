@@ -38,7 +38,9 @@ in the :ref:`namespaces <namespaces>` of the current module.
 
 In an :ref:`import statement <import-statements>`, name resolution is slightly more complicated.
 For example, suppose you define a :ref:`query module <query-modules>` ``Example.ql`` with the 
-following import statement::
+following import statement:
+
+.. code-block:: ql
 
     import javascript
 
@@ -57,7 +59,9 @@ only use such an expression in :ref:`import statements <import-statements>`, to 
 library module defined by a relative path.
 
 For example, suppose you define a :ref:`query module <query-modules>` ``Example.ql`` with the 
-following import statement::
+following import statement:
+
+.. code-block:: ql
 
     import examples.security.MyLibrary
 
@@ -84,7 +88,9 @@ Selections
 **********
 
 You can use a selection to refer to a module, type, or predicate inside a particular 
-module. A selection is of the form::
+module. A selection is of the form:
+
+.. code-block:: ql
 
     <module_expression>::<name>
 
@@ -200,7 +206,7 @@ This is easiest to understand in an example:
 
 **OneTwoThreeLib.qll**
 
-::
+.. code-block:: ql
 
     import MyFavoriteNumbers
 
