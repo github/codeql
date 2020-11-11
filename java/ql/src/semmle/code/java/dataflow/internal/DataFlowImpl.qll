@@ -326,7 +326,7 @@ private module Stage1 {
       // read
       exists(Content c |
         fwdFlowRead(c, node, cc, config) and
-        fwdFlowIsStored(c, config) and
+        fwdFlowConsCand(c, config) and
         not inBarrier(node, config)
       )
       or
@@ -362,7 +362,7 @@ private module Stage1 {
    * Holds if `c` is the target of a store in the flow covered by `fwdFlow`.
    */
   pragma[nomagic]
-  private predicate fwdFlowIsStored(Content c, Configuration config) {
+  private predicate fwdFlowConsCand(Content c, Configuration config) {
     exists(Node mid, Node node, TypedContent tc |
       not fullBarrier(node, config) and
       useFieldFlow(config) and
@@ -413,12 +413,12 @@ private module Stage1 {
    */
   pragma[nomagic]
   predicate revFlow(Node node, boolean toReturn, Configuration config) {
-    revFlow_0(node, toReturn, config) and
+    revFlow0(node, toReturn, config) and
     fwdFlow(node, config)
   }
 
   pragma[nomagic]
-  private predicate revFlow_0(Node node, boolean toReturn, Configuration config) {
+  private predicate revFlow0(Node node, boolean toReturn, Configuration config) {
     fwdFlow(node, config) and
     config.isSink(node) and
     toReturn = false
@@ -448,13 +448,13 @@ private module Stage1 {
     // store
     exists(Content c |
       revFlowStore(c, node, toReturn, config) and
-      revFlowIsRead(c, config)
+      revFlowConsCand(c, config)
     )
     or
     // read
     exists(Node mid, Content c |
       read(node, c, mid) and
-      fwdFlowIsStored(c, unbind(config)) and
+      fwdFlowConsCand(c, unbind(config)) and
       revFlow(mid, toReturn, config)
     )
     or
@@ -479,11 +479,11 @@ private module Stage1 {
    * Holds if `c` is the target of a read in the flow covered by `revFlow`.
    */
   pragma[nomagic]
-  private predicate revFlowIsRead(Content c, Configuration config) {
+  private predicate revFlowConsCand(Content c, Configuration config) {
     exists(Node mid, Node node |
       fwdFlow(node, unbind(config)) and
       read(node, c, mid) and
-      fwdFlowIsStored(c, unbind(config)) and
+      fwdFlowConsCand(c, unbind(config)) and
       revFlow(mid, _, config)
     )
   }
@@ -492,7 +492,7 @@ private module Stage1 {
   private predicate revFlowStore(Content c, Node node, boolean toReturn, Configuration config) {
     exists(Node mid, TypedContent tc |
       revFlow(mid, toReturn, config) and
-      fwdFlowIsStored(c, unbind(config)) and
+      fwdFlowConsCand(c, unbind(config)) and
       store(node, tc, mid, _) and
       c = tc.getContent()
     )
@@ -503,7 +503,7 @@ private module Stage1 {
    * by `revFlow`.
    */
   private predicate revFlowIsReadAndStored(Content c, Configuration conf) {
-    revFlowIsRead(c, conf) and
+    revFlowConsCand(c, conf) and
     revFlowStore(c, _, _, conf)
   }
 
@@ -587,13 +587,13 @@ private module Stage1 {
   predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
     fwd = true and
     nodes = count(Node node | fwdFlow(node, config)) and
-    fields = count(Content f0 | fwdFlowIsStored(f0, config)) and
+    fields = count(Content f0 | fwdFlowConsCand(f0, config)) and
     conscand = -1 and
     tuples = count(Node n, boolean b | fwdFlow(n, b, config))
     or
     fwd = false and
     nodes = count(Node node | revFlow(node, _, config)) and
-    fields = count(Content f0 | revFlowIsRead(f0, config)) and
+    fields = count(Content f0 | revFlowConsCand(f0, config)) and
     conscand = -1 and
     tuples = count(Node n, boolean b | revFlow(n, b, config))
   }
