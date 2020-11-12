@@ -1162,6 +1162,9 @@ abstract class BarrierGuard extends Node {
       or
       onlyPossibleReturnOfNonNil(fd, outp, ret) and
       p.isNonNil()
+      or
+      onlyPossibleReturnOfNil(fd, outp, ret) and
+      p.isNil()
     )
   }
 }
@@ -1205,5 +1208,44 @@ private predicate onlyPossibleReturnOfNonNil(FuncDecl fd, FunctionOutput res, No
   possiblyReturnsNonNil(fd, res, ret) and
   forall(Node otherRet | otherRet = res.getEntryNode(fd) and otherRet != ret |
     otherRet.asExpr() = Builtin::nil().getAReference()
+  )
+}
+
+/**
+ * Holds if function `f`'s result `output`, which must be a return value, is always non-nil.
+ */
+private predicate certainlyReturnsNonNil(Function f, FunctionOutput output) {
+  output.isResult(_) and
+  (
+    f.hasQualifiedName("errors", "New")
+    or
+    f in [Builtin::new(), Builtin::make()]
+    or
+    exists(FuncDecl fd | fd = f.getFuncDecl() |
+      forex(DataFlow::Node ret | ret = output.getEntryNode(fd) | isCertainlyNotNil(ret))
+    )
+  )
+}
+
+/**
+ * Holds if `node` is always non-nil.
+ */
+private predicate isCertainlyNotNil(DataFlow::Node node) {
+  node instanceof DataFlow::AddressOperationNode
+  or
+  exists(DataFlow::CallNode c, FunctionOutput output | output.getExitNode(c) = node |
+    certainlyReturnsNonNil(c.getTarget(), output)
+  )
+}
+
+/**
+ * Holds if `ret` is the only data-flow node whose value contributes to the output `res` of `fd`
+ * that returns `nil`, since all the other output nodes are known to be non-nil.
+ */
+private predicate onlyPossibleReturnOfNil(FuncDecl fd, FunctionOutput res, DataFlow::Node ret) {
+  ret = res.getEntryNode(fd) and
+  ret.asExpr() = Builtin::nil().getAReference() and
+  forall(DataFlow::Node otherRet | otherRet = res.getEntryNode(fd) and otherRet != ret |
+    isCertainlyNotNil(otherRet)
   )
 }
