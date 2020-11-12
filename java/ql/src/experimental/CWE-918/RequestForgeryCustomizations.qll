@@ -141,3 +141,42 @@ module RequestForgery {
     }
   }
 }
+
+/**
+ * A class representing all Spring Rest Template methods
+ * which take an URL as an argument.
+ */
+class SpringRestTemplateUrlMethods extends Method {
+  SpringRestTemplateUrlMethods() {
+    this.getDeclaringType() instanceof SpringRestTemplate and
+    this.hasName("doExecute")
+    or
+    this.hasName("postForEntity")
+    or
+    this.hasName("postForLocation")
+    or
+    this.hasName("postForObject")
+    or
+    this.hasName("put")
+    or
+    this.hasName("exchange")
+    or
+    this.hasName("execute")
+    or
+    this.hasName("getForEntity")
+    or
+    this.hasName("getForObject")
+    or
+    this.hasName("patchForObject")
+  }
+
+  /**
+   * Gets the argument which corresponds to a URL argument
+   * passed as a `java.net.URL` object or as a string or the like
+   */
+  Argument getUrlArgument(MethodAccess ma) {
+    // doExecute(URI url, HttpMethod method, RequestCallback requestCallback,
+    //  ResponseExtractor<T> responseExtractor)
+    result = ma.getArgument(0)
+  }
+}
