@@ -6,7 +6,7 @@
 <overview>
 	<p>
 
-		Directly using uncontrolled stored value (for example, file names) to
+		Directly using externally-controlled stored value (for example, file names or database contents) to
 		create HTML content without properly sanitizing the input first,
 		allows for a cross-site scripting vulnerability.
 
