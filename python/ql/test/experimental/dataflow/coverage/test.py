@@ -41,7 +41,7 @@ def SINK_F(x):
 def test_tuple_with_local_flow():
     x = (NONSOURCE, SOURCE)
     y = x[1]
-    SINK(y)
+    SINK(y) #$ flow="ControlFlowNode for SOURCE, l:42 -> ControlFlowNode for y" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for y"
 
 
 def test_tuple_negative():
@@ -53,45 +53,45 @@ def test_tuple_negative():
 # 6.2.1. Identifiers (Names)
 def test_names():
     x = SOURCE
-    SINK(x)
+    SINK(x) #$ flow="ControlFlowNode for SOURCE, l:55 -> ControlFlowNode for x" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for x"
 
 
 # 6.2.2. Literals
 def test_string_literal():
     x = "source"
-    SINK(x)
+    SINK(x) #$ flow="ControlFlowNode for Str, l:61 -> ControlFlowNode for x" 
 
 
 def test_bytes_literal():
     x = b"source"
-    SINK(x)
+    SINK(x) #$ flow="ControlFlowNode for Str, l:66 -> ControlFlowNode for x"
 
 
 def test_integer_literal():
     x = 42
-    SINK(x)
+    SINK(x) #$ flow="ControlFlowNode for IntegerLiteral, l:71 -> ControlFlowNode for x"
 
 
 def test_floatnumber_literal():
     x = 42.0
-    SINK(x)
+    SINK(x) #$ flow="ControlFlowNode for FloatLiteral, l:76 -> ControlFlowNode for x"
 
 
 def test_imagnumber_literal():
     x = 42j
-    SINK(x)  # Flow missing
+    SINK(x) #$ MISSING:flow="ControlFlowNode for FloatLiteral, l:81 -> ControlFlowNode for x"
 
 
 # 6.2.3. Parenthesized forms
 def test_parenthesized_form():
     x = (SOURCE)
-    SINK(x)
+    SINK(x) #$ flow="ControlFlowNode for SOURCE, l:87 -> ControlFlowNode for x" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for x"
 
 
 # 6.2.5. List displays
 def test_list_display():
     x = [SOURCE]
-    SINK(x[0])
+    SINK(x[0]) #$ flow="ControlFlowNode for SOURCE, l:93 -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_list_display_negative():
@@ -101,109 +101,109 @@ def test_list_display_negative():
 
 def test_list_comprehension():
     x = [SOURCE for y in [NONSOURCE]]
-    SINK(x[0])
+    SINK(x[0]) #$ flow="ControlFlowNode for SOURCE, l:103 -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_list_comprehension_flow():
     x = [y for y in [SOURCE]]
-    SINK(x[0])
+    SINK(x[0]) #$  flow="ControlFlowNode for SOURCE, l:108 -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_list_comprehension_inflow():
     l = [SOURCE]
     x = [y for y in l]
-    SINK(x[0])
+    SINK(x[0]) #$ flow="ControlFlowNode for SOURCE, l:113 -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_nested_list_display():
     x = [*[SOURCE]]
-    SINK(x[0])  # Flow missing
+    SINK(x[0]) #$ MISSING:flow="ControlFlowNode for SOURCE, l:119 -> ControlFlowNode for Subscript" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 # 6.2.6. Set displays
 def test_set_display():
     x = {SOURCE}
-    SINK(x.pop())
+    SINK(x.pop()) #$ flow="ControlFlowNode for SOURCE, l:125 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def test_set_comprehension():
     x = {SOURCE for y in [NONSOURCE]}
-    SINK(x.pop())
+    SINK(x.pop()) #$ flow="ControlFlowNode for SOURCE, l:130 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def test_set_comprehension_flow():
     x = {y for y in [SOURCE]}
-    SINK(x.pop())
+    SINK(x.pop()) #$ flow="ControlFlowNode for SOURCE, l:135 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def test_set_comprehension_inflow():
     l = {SOURCE}
     x = {y for y in l}
-    SINK(x.pop())
+    SINK(x.pop()) #$ flow="ControlFlowNode for SOURCE, l:140 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def test_nested_set_display():
     x = {*{SOURCE}}
-    SINK(x.pop())  # Flow missing
+    SINK(x.pop()) #$ MISSING:flow="ControlFlowNode for SOURCE, l:146 -> ControlFlowNode for Attribute()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 # 6.2.7. Dictionary displays
 def test_dict_display():
     x = {"s": SOURCE}
-    SINK(x["s"])
+    SINK(x["s"]) #$ flow="ControlFlowNode for SOURCE, l:152 -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_dict_display_pop():
     x = {"s": SOURCE}
-    SINK(x.pop("s"))
+    SINK(x.pop("s")) #$ flow="ControlFlowNode for SOURCE, l:157 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def test_dict_comprehension():
     x = {y: SOURCE for y in ["s"]}
-    SINK(x["s"])  # Flow missing
+    SINK(x["s"]) #$ MISSING:flow="ControlFlowNode for SOURCE, l:152 -> ControlFlowNode for Subscript" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_dict_comprehension_pop():
     x = {y: SOURCE for y in ["s"]}
-    SINK(x.pop("s"))  # Flow missing
+    SINK(x.pop("s")) #$ MISSING:flow="ControlFlowNode for SOURCE, l:167 -> ControlFlowNode for Attribute()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def test_nested_dict_display():
     x = {**{"s": SOURCE}}
-    SINK(x["s"])  # Flow missing
+    SINK(x["s"]) #$ MISSING:flow="ControlFlowNode for SOURCE, l:172 -> ControlFlowNode for Subscript" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_nested_dict_display_pop():
     x = {**{"s": SOURCE}}
-    SINK(x.pop("s"))  # Flow missing
+    SINK(x.pop("s")) #$ MISSING:flow="ControlFlowNode for SOURCE, l:177 -> ControlFlowNode for Attribute()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 # Nested comprehensions
 def test_nested_comprehension():
     x = [y for z in [[SOURCE]] for y in z]
-    SINK(x[0])
+    SINK(x[0]) #$ flow="ControlFlowNode for SOURCE, l:183 -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_nested_comprehension_deep_with_local_flow():
     x = [y for v in [[[[SOURCE]]]] for u in v for z in u for y in z]
-    SINK(x[0])
+    SINK(x[0]) #$ flow="ControlFlowNode for SOURCE, l:188 -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_nested_comprehension_dict():
     d = {"s": [SOURCE]}
     x = [y for k, v in d.items() for y in v]
-    SINK(x[0])  # Flow missing
+    SINK(x[0]) #$ MISSING:flow="ControlFlowNode for SOURCE, l:193 -> ControlFlowNode for Subscript" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_nested_comprehension_paren():
     x = [y for y in (z for z in [SOURCE])]
-    SINK(x[0])
+    SINK(x[0]) #$ flow="ControlFlowNode for SOURCE, l:199 -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 # 6.2.8. Generator expressions
 def test_generator():
     x = (SOURCE for y in [NONSOURCE])
-    SINK([*x][0])  # Flow missing
+    SINK([*x][0]) #$ MISSING:flow="ControlFlowNode for SOURCE, l:205 -> ControlFlowNode for Subscript" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 # 6.2.9. Yield expressions
@@ -213,7 +213,7 @@ def gen(x):
 
 def test_yield():
     g = gen(SOURCE)
-    SINK(next(g))  # Flow missing
+    SINK(next(g)) #$ MISSING:flow="ControlFlowNode for SOURCE, l:215 -> ControlFlowNode for next()" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for next()"
 
 
 def gen_from(x):
@@ -222,19 +222,19 @@ def gen_from(x):
 
 def test_yield_from():
     g = gen_from(SOURCE)
-    SINK(next(g))  # Flow missing
+    SINK(next(g)) #$ MISSING:flow="ControlFlowNode for SOURCE, l:224 -> ControlFlowNode for next()" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for next()"
 
 
 # a statement rather than an expression, but related to generators
 def test_for():
     for x in gen(SOURCE):
-        SINK(x)  # Flow missing
+        SINK(x) #$ MISSING:flow="ControlFlowNode for SOURCE, l:230 -> ControlFlowNode for x" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for x"
 
 
 # 6.2.9.1. Generator-iterator methods
 def test___next__():
     g = gen(SOURCE)
-    SINK(g.__next__())  # Flow missing
+    SINK(g.__next__()) #$ MISSING:flow="ControlFlowNode for SOURCE, l:236 -> ControlFlowNode for Attribute()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def gen2(x):
@@ -246,7 +246,7 @@ def gen2(x):
 def test_send():
     g = gen2(NONSOURCE)
     n = next(g)
-    SINK(g.send(SOURCE))  # Flow missing
+    SINK(g.send(SOURCE)) #$ MISSING:flow="ControlFlowNode for SOURCE -> ControlFlowNode for Attribute()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def gen_ex(x):
@@ -259,7 +259,7 @@ def gen_ex(x):
 def test_throw():
     g = gen_ex(SOURCE)
     n = next(g)
-    SINK(g.throw(TypeError))  # Flow missing
+    SINK(g.throw(TypeError)) #$ MISSING:flow="ControlFlowNode for SOURCE, l:260 -> ControlFlowNode for Attribute()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 # no `test_close` as `close` involves no data flow
@@ -280,7 +280,7 @@ def runa(a):
 
 async def atest___anext__():
     g = agen(SOURCE)
-    SINK(await g.__anext__())  # Flow missing
+    SINK(await g.__anext__()) #$ MISSING:flow="ControlFlowNode for SOURCE, l:282 -> ControlFlowNode for Attribute()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def test___anext__():
@@ -296,7 +296,7 @@ async def agen2(x):
 async def atest_asend():
     g = agen2(NONSOURCE)
     n = await g.__anext__()
-    SINK(await g.asend(SOURCE))  # Flow missing
+    SINK(await g.asend(SOURCE)) #$ MISSING:flow="ControlFlowNode for SOURCE -> ControlFlowNode for Attribute()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def test_asend():
@@ -313,7 +313,7 @@ async def agen_ex(x):
 async def atest_athrow():
     g = agen_ex(SOURCE)
     n = await g.__anext__()
-    SINK(await g.athrow(TypeError))  # Flow missing
+    SINK(await g.athrow(TypeError)) #$ MISSING:flow="ControlFlowNode for SOURCE, l:314 -> ControlFlowNode for Attribute()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute()"
 
 
 def test_athrow():
@@ -326,22 +326,22 @@ class C:
 
 
 def test_attribute_reference():
-    SINK(C.a)  # Flow missing
+    SINK(C.a) #$ MISSING:flow="ControlFlowNode for SOURCE, l:325 -> ControlFlowNode for Attribute" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Attribute"
 
 
 # overriding __getattr__ should be tested by the class coverage tests
 
 # 6.3.2. Subscriptions
 def test_subscription_tuple():
-    SINK((SOURCE,)[0])
+    SINK((SOURCE,)[0]) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_subscription_list():
-    SINK([SOURCE][0])
+    SINK([SOURCE][0]) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 def test_subscription_mapping():
-    SINK({"s": SOURCE}["s"])
+    SINK({"s": SOURCE}["s"]) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for Subscript" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 # overriding __getitem__ should be tested by the class coverage tests
@@ -353,7 +353,7 @@ l = [SOURCE]
 
 def test_slicing():
     s = l[0:1:1]
-    SINK(s[0])  # Flow missing
+    SINK(s[0]) #$ MISSING:flow="ControlFlowNode for SOURCE -> ControlFlowNode for Subscript" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
 
 
 # The grammar seems to allow `l[0:1:1, 0:1]`, but the interpreter does not like it
@@ -364,7 +364,7 @@ def second(a, b):
 
 
 def test_call_positional():
-    SINK(second(NONSOURCE, SOURCE))
+    SINK(second(NONSOURCE, SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for second()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for second()"
 
 
 def test_call_positional_negative():
@@ -372,15 +372,15 @@ def test_call_positional_negative():
 
 
 def test_call_keyword():
-    SINK(second(NONSOURCE, b=SOURCE))
+    SINK(second(NONSOURCE, b=SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for second()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for second()"
 
 
 def test_call_unpack_iterable():
-    SINK(second(NONSOURCE, *[SOURCE]))  # Flow missing
+    SINK(second(NONSOURCE, *[SOURCE])) #$ MISSING:flow="ControlFlowNode for SOURCE -> ControlFlowNode for second()" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for second()"
 
 
 def test_call_unpack_mapping():
-    SINK(second(NONSOURCE, **{"b": SOURCE}))
+    SINK(second(NONSOURCE, **{"b": SOURCE})) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for second()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for second()"
 
 
 def f_extra_pos(a, *b):
@@ -388,7 +388,7 @@ def f_extra_pos(a, *b):
 
 
 def test_call_extra_pos():
-    SINK(f_extra_pos(NONSOURCE, SOURCE))
+    SINK(f_extra_pos(NONSOURCE, SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for f_extra_pos()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for f_extra_pos()"
 
 
 def f_extra_keyword(a, **b):
@@ -396,7 +396,7 @@ def f_extra_keyword(a, **b):
 
 
 def test_call_extra_keyword():
-    SINK(f_extra_keyword(NONSOURCE, b=SOURCE))
+    SINK(f_extra_keyword(NONSOURCE, b=SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for f_extra_keyword()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for f_extra_keyword()"
 
 
 # return the name of the first extra keyword argument
@@ -406,18 +406,18 @@ def f_extra_keyword_flow(**a):
 
 # call the function with our source as the name of the keyword arguemnt
 def test_call_extra_keyword_flow():
-    SINK(f_extra_keyword_flow(**{SOURCE: None}))  # Flow missing
+    SINK(f_extra_keyword_flow(**{SOURCE: None})) #$ MISSING:flow="ControlFlowNode for SOURCE -> ControlFlowNode for f_extra_keyword()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for f_extra_keyword()"
 
 
 # 6.12. Assignment expressions
 def test_assignment_expression():
     x = NONSOURCE
-    SINK(x := SOURCE)  # Flow missing
+    SINK(x := SOURCE) #$ MISSING:flow="ControlFlowNode for SOURCE -> ControlFlowNode for x" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for x"
 
 
 # 6.13. Conditional expressions
 def test_conditional_true():
-    SINK(SOURCE if True else NONSOURCE)
+    SINK(SOURCE if True else NONSOURCE) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for IfExp" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for IfExp"
 
 
 def test_conditional_true_guards():
@@ -425,7 +425,7 @@ def test_conditional_true_guards():
 
 
 def test_conditional_false():
-    SINK(NONSOURCE if False else SOURCE)
+    SINK(NONSOURCE if False else SOURCE) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for IfExp" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for IfExp"
 
 
 def test_conditional_false_guards():
@@ -435,13 +435,13 @@ def test_conditional_false_guards():
 # Condition is evaluated first, so x is SOURCE once chosen
 def test_conditional_evaluation_true():
     x = NONSOURCE
-    SINK(x if (SOURCE == (x := SOURCE)) else NONSOURCE)  # Flow missing
+    SINK(x if (SOURCE == (x := SOURCE)) else NONSOURCE) #$ MISSING:flow="ControlFlowNode for SOURCE -> ControlFlowNode for IfExp" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for IfExp"
 
 
 # Condition is evaluated first, so x is SOURCE once chosen
 def test_conditional_evaluation_false():
     x = NONSOURCE
-    SINK(NONSOURCE if (NONSOURCE == (x := SOURCE)) else x)  # Flow missing
+    SINK(NONSOURCE if (NONSOURCE == (x := SOURCE)) else x) #$ MISSING:flow="ControlFlowNode for SOURCE -> ControlFlowNode for IfExp" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for IfExp"
 
 
 # 6.14. Lambdas
@@ -449,14 +449,14 @@ def test_lambda():
     def f(x):
         return x
 
-    SINK(f(SOURCE))
+    SINK(f(SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for f()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for f()"
 
 
 def test_lambda_positional():
     def second(a, b):
         return b
 
-    SINK(second(NONSOURCE, SOURCE))
+    SINK(second(NONSOURCE, SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for second()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for second()"
 
 
 def test_lambda_positional_negative():
@@ -470,50 +470,50 @@ def test_lambda_keyword():
     def second(a, b):
         return b
 
-    SINK(second(NONSOURCE, b=SOURCE))
+    SINK(second(NONSOURCE, b=SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for second()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for second()"
 
 
 def test_lambda_unpack_iterable():
     def second(a, b):
         return b
 
-    SINK(second(NONSOURCE, *[SOURCE]))  # Flow missing
+    SINK(second(NONSOURCE, *[SOURCE])) #$ MISSING:flow="ControlFlowNode for SOURCE -> ControlFlowNode for second()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for second()"  # Flow missing
 
 
 def test_lambda_unpack_mapping():
     def second(a, b):
         return b
 
-    SINK(second(NONSOURCE, **{"b": SOURCE}))
+    SINK(second(NONSOURCE, **{"b": SOURCE})) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for second()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for second()"
 
 
 def test_lambda_extra_pos():
     f_extra_pos = lambda a, *b: b[0]
-    SINK(f_extra_pos(NONSOURCE, SOURCE))
+    SINK(f_extra_pos(NONSOURCE, SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for f_extra_pos()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for f_extra_pos()"
 
 
 def test_lambda_extra_keyword():
     f_extra_keyword = lambda a, **b: b["b"]
-    SINK(f_extra_keyword(NONSOURCE, b=SOURCE))
+    SINK(f_extra_keyword(NONSOURCE, b=SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for f_extra_keyword()" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for f_extra_keyword()"
 
 
 # call the function with our source as the name of the keyword argument
 def test_lambda_extra_keyword_flow():
     # return the name of the first extra keyword argument
     f_extra_keyword_flow = lambda **a: [*a][0]
-    SINK(f_extra_keyword_flow(**{SOURCE: None}))  # Flow missing
+    SINK(f_extra_keyword_flow(**{SOURCE: None})) #$ MISSING:flow="ControlFlowNode for SOURCE -> ControlFlowNode for f_extra_keyword()" MISSING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for f_extra_keyword()"
 
 
 @expects(4)
 def test_swap():
     a = SOURCE
     b = NONSOURCE
-    SINK(a)
+    SINK(a) #$ flow="ControlFlowNode for SOURCE, l:509 -> ControlFlowNode for a" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for a"
     SINK_F(b)
 
     a, b = b, a
     SINK_F(a)
-    SINK(b)
+    SINK(b) #$ flow="ControlFlowNode for SOURCE, l:509 -> ControlFlowNode for b" flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for b"
 
 
 def test_deep_callgraph():
@@ -538,7 +538,7 @@ def test_deep_callgraph():
         return f5(arg)
 
     x = f6(SOURCE)
-    SINK(x)  # Flow missing
+    SINK(x) #$ MISSING:flow="ControlFlowNode for SOURCE, l:540 -> ControlFlowNode for x" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for x"
 
 
 @expects(2)
@@ -547,7 +547,7 @@ def test_dynamic_tuple_creation_1():
     tup += (SOURCE,)
     tup += (NONSOURCE,)
 
-    SINK(tup[0])  # Flow missing
+    SINK(tup[0]) #$ MISSING:flow="ControlFlowNode for SOURCE, l:547 -> ControlFlowNode for Subscript" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
     SINK_F(tup[1])
 
 
@@ -557,7 +557,7 @@ def test_dynamic_tuple_creation_2():
     tup += (SOURCE,)
     tup += (NONSOURCE,)
 
-    SINK(tup[0])  # Flow missing
+    SINK(tup[0]) #$ MISSING:flow="ControlFlowNode for SOURCE, l:557 -> ControlFlowNode for Subscript" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
     SINK_F(tup[1])
 
 
@@ -567,7 +567,7 @@ def test_dynamic_tuple_creation_3():
     tup2 = (NONSOURCE,)
     tup = tup1 + tup2
 
-    SINK(tup[0])  # Flow missing
+    SINK(tup[0]) #$ MISSING:flow="ControlFlowNode for SOURCE, l:566 -> ControlFlowNode for Subscript" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
     SINK_F(tup[1])
 
 
@@ -578,5 +578,5 @@ def test_dynamic_tuple_creation_4():
     for item in [SOURCE, NONSOURCE]:
         tup += (item,)
 
-    SINK(tup[0])  # Flow missing
+    SINK(tup[0]) #$ MISSING:flow="ControlFlowNode for SOURCE, l:578 -> ControlFlowNode for Subscript" MISING:flow="ControlFlowNode for Str, l:20 -> ControlFlowNode for Subscript"
     SINK_F(tup[1])

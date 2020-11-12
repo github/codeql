@@ -35,7 +35,7 @@ def SINK_F(x):
 def f(a, b):
   return a
 
-SINK(f(SOURCE, 3))
+SINK(f(SOURCE, 3)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for f()" flow="ControlFlowNode for Str, l:13 -> ControlFlowNode for f()"
 
 # Instance methods
 # An instance method object combines a class, a class instance and any callable object (normally a user-defined function).
@@ -68,8 +68,8 @@ c = C()
 func_obj = c.method.__func__
 
 # When an instance method object is called, the underlying function (__func__) is called, inserting the class instance (__self__) in front of the argument list. For instance, when C is a class which contains a definition for a function f(), and x is an instance of C, calling x.f(1) is equivalent to calling C.f(x, 1).
-SINK(c.method(SOURCE, C))
-SINK(C.method(c, SOURCE, C))
+SINK(c.method(SOURCE, C)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:38 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for Str, l:13 -> ControlFlowNode for Attribute()"
+SINK(C.method(c, SOURCE, C)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:38 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:71 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for Str, l:13 -> ControlFlowNode for Attribute()"
 SINK(func_obj(c, SOURCE, C))
 
 
@@ -77,8 +77,8 @@ SINK(func_obj(c, SOURCE, C))
 c_func_obj = C.classmethod.__func__
 
 # When an instance method object is derived from a class method object, the “class instance” stored in __self__ will actually be the class itself, so that calling either x.f(1) or C.f(1) is equivalent to calling f(C,1) where f is the underlying function.
-SINK(c.classmethod(SOURCE))
-SINK(C.classmethod(SOURCE))
+SINK(c.classmethod(SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:38 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:71 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:72 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:73 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for Str, l:13 -> ControlFlowNode for Attribute()"
+SINK(C.classmethod(SOURCE)) #$ flow="ControlFlowNode for SOURCE -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:38 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:71 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:72 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:73 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for SOURCE, l:80 -> ControlFlowNode for Attribute()" flow="ControlFlowNode for Str, l:13 -> ControlFlowNode for Attribute()"
 SINK(c_func_obj(C, SOURCE))
 
 # Generator functions
@@ -156,4 +156,4 @@ customized = Customized()
 SINK(Customized.a)
 SINK_F(Customized.b)
 SINK(customized.a)
-SINK(customized.b)  # Flow found
+SINK(customized.b)  #$ flow="ControlFlowNode for SOURCE, l:152 -> ControlFlowNode for Attribute" flow="ControlFlowNode for Str, l:13 -> ControlFlowNode for Attribute"
