@@ -945,7 +945,7 @@ SsaNode ssaNode(SsaVariable v) { result.getDefinition() = v.getDefinition() }
 
 /**
  * Gets the data-flow node corresponding to the `i`th element of tuple `t` (which is either a call
- * with multiple results or an iterator in a range loop).
+ * with multiple results, an iterator in a range loop, or the result of a type assertion).
  */
 Node extractTupleElement(Node t, int i) {
   exists(IR::Instruction insn | t = instructionNode(insn) |
@@ -981,11 +981,21 @@ private predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Instruction -> Instruction
   exists(Expr pred, Expr succ |
     succ.(LogicalBinaryExpr).getAnOperand() = pred or
-    succ.(ConversionExpr).getOperand() = pred or
-    succ.(TypeAssertExpr).getExpr() = pred
+    succ.(ConversionExpr).getOperand() = pred
   |
     nodeFrom = exprNode(pred) and
     nodeTo = exprNode(succ)
+  )
+  or
+  // Type assertion: if in the context `checked, ok := e.(*Type)` (in which
+  // case tuple-extraction instructions exist), flow from `e` to `e.(*Type)[0]`;
+  // otherwise flow from `e` to `e.(*Type)`.
+  exists(IR::Instruction evalAssert, TypeAssertExpr assert |
+    nodeFrom.asExpr() = assert.getExpr() and
+    evalAssert = IR::evalExprInstruction(assert) and
+    if exists(IR::extractTupleElement(evalAssert, _))
+    then nodeTo.asInstruction() = IR::extractTupleElement(evalAssert, 0)
+    else nodeTo.asInstruction() = evalAssert
   )
   or
   // Instruction -> SSA

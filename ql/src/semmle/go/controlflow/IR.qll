@@ -628,7 +628,8 @@ module IR {
 
   /**
    * An instruction selecting one of multiple values returned by a function, or either the key
-   * or the value of the iterator in a range loop.
+   * or the value of the iterator in a range loop, or the result or success value from a type
+   * assertion.
    */
   class ExtractTupleElementInstruction extends Instruction, MkExtractNode {
     AstNode s;
@@ -658,6 +659,10 @@ module IR {
     override Type getResultType() {
       exists(CallExpr c | getBase() = evalExprInstruction(c) |
         result = c.getTarget().getResultType(i)
+      )
+      or
+      exists(TypeAssertExpr tae | getBase() = evalExprInstruction(tae) |
+        result = tae.getType().(TupleType).getComponentType(i)
       )
       or
       exists(Type rangeType | rangeType = s.(RangeStmt).getDomain().getType().getUnderlyingType() |

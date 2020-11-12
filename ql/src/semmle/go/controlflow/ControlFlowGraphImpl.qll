@@ -90,7 +90,7 @@ newtype TControlFlowNode =
    */
   MkCompoundAssignRhsNode(CompoundAssignStmt assgn) or
   /**
-   * A control-flow node that represents the `i`th component of a tuple expression `base`.
+   * A control-flow node that represents the `i`th component of a tuple expression `s`.
    */
   MkExtractNode(AstNode s, int i) {
     // in an assignment `x, y, z = tuple`
