@@ -296,6 +296,11 @@ class Label extends @label, Identifier, Expr {
   override predicate isImpure() { none() }
 
   override string getAPrimaryQlClass() { result = "Label" }
+
+  override string getStringValue() {
+    (this = any(Property prop).getNameExpr() or this = any(DotExpr dot).getPropertyNameExpr()) and
+    result = getName()
+  }
 }
 
 /**

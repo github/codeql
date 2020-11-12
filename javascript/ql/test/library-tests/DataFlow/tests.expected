@@ -207,6 +207,16 @@ basicBlock
 | tst2.ts:13:39:13:38 | super | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | super(...args) | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | this | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
+| tst2.ts:15:1:17:1 | class C ... g) {}\\n} | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:15:7:15:7 | C | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:16:3:16:2 | this | tst2.ts:16:3:16:2 | entry node of constru ... ing) {} |
+| tst2.ts:16:3:16:36 | constru ... ing) {} | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:16:3:16:36 | constru ... ing) {} | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:16:3:16:36 | constru ... ing) {} | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:16:3:16:36 | constru ... ing) {} | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:16:3:16:36 | exceptional return of constructor of class C | tst2.ts:16:3:16:2 | entry node of constru ... ing) {} |
+| tst2.ts:16:3:16:36 | return of constructor of class C | tst2.ts:16:3:16:2 | entry node of constru ... ing) {} |
+| tst2.ts:16:22:16:24 | foo | tst2.ts:16:3:16:2 | entry node of constru ... ing) {} |
 | tst.js:1:1:1:0 | this | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:1:1:1:1 | x | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:1:1:1:24 | import  ... m 'fs'; | tst.js:1:1:1:0 | entry node of <toplevel> |
@@ -711,6 +721,10 @@ enclosingExpr
 | tst2.ts:13:39:13:38 | constructor | tst2.ts:13:39:13:38 | constructor |
 | tst2.ts:13:39:13:38 | super | tst2.ts:13:39:13:38 | super |
 | tst2.ts:13:39:13:38 | super(...args) | tst2.ts:13:39:13:38 | super(...args) |
+| tst2.ts:15:7:15:7 | C | tst2.ts:15:7:15:7 | C |
+| tst2.ts:16:3:16:36 | constru ... ing) {} | tst2.ts:16:3:16:36 | constru ... ing) {} |
+| tst2.ts:16:3:16:36 | constru ... ing) {} | tst2.ts:16:3:16:36 | constru ... ing) {} |
+| tst2.ts:16:22:16:24 | foo | tst2.ts:16:22:16:24 | foo |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
@@ -1399,6 +1413,8 @@ incomplete
 | tst2.ts:13:39:13:38 | exceptional return of super(...args) | call |
 | tst2.ts:13:39:13:38 | super | call |
 | tst2.ts:13:39:13:38 | super(...args) | call |
+| tst2.ts:16:3:16:36 | exceptional return of constructor of class C | call |
+| tst2.ts:16:22:16:24 | foo | call |
 | tst.js:1:10:1:11 | fs | import |
 | tst.js:16:1:20:9 | exceptional return of (functi ... ("arg") | call |
 | tst.js:16:2:20:1 | exceptional return of function f | call |
@@ -1491,6 +1507,8 @@ noBasicBlock
 | importedStrings.js:1:15:1:17 | BAR |
 | importedStrings.js:1:15:1:17 | BAR |
 | importedStrings.js:1:26:1:44 | "./exportedStrings" |
+| tst2.ts:16:15:16:32 | public foo: string |
+| tst2.ts:16:15:16:32 | public foo: string |
 | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs |
 | tst.js:1:20:1:23 | 'fs' |
@@ -1501,6 +1519,7 @@ parameters
 | sources.js:3:11:3:11 | x |
 | sources.js:9:14:9:18 | array |
 | tst2.ts:13:39:13:38 | args |
+| tst2.ts:16:22:16:24 | foo |
 | tst.js:16:13:16:13 | a |
 | tst.js:32:12:32:12 | b |
 | tst.js:87:11:87:24 | { p: x, ...o } |
@@ -1571,6 +1590,11 @@ sources
 | tst2.ts:13:39:13:38 | return of default constructor of class StringList |
 | tst2.ts:13:39:13:38 | super(...args) |
 | tst2.ts:13:39:13:38 | this |
+| tst2.ts:15:1:17:1 | class C ... g) {}\\n} |
+| tst2.ts:16:3:16:2 | this |
+| tst2.ts:16:3:16:36 | constru ... ing) {} |
+| tst2.ts:16:3:16:36 | return of constructor of class C |
+| tst2.ts:16:22:16:24 | foo |
 | tst.js:1:1:1:0 | this |
 | tst.js:1:1:1:24 | import  ... m 'fs'; |
 | tst.js:1:10:1:11 | fs |
@@ -1689,6 +1713,8 @@ mayHaveStringValue
 | importedStrings.js:3:1:3:0 | foo | foo |
 | importedStrings.js:4:16:4:18 | foo | foo |
 | importedStrings.js:4:27:4:29 | BAR | bar |
+| tst2.ts:8:5:8:5 | x | x |
+| tst2.ts:11:13:11:13 | x | x |
 | tst.js:1:20:1:23 | 'fs' | fs |
 | tst.js:4:5:4:12 | y | hi |
 | tst.js:4:9:4:12 | "hi" | hi |
@@ -1710,13 +1736,53 @@ mayHaveStringValue
 | tst.js:16:2:20:1 | return of function f | arg |
 | tst.js:16:13:16:13 | a | arg |
 | tst.js:16:13:16:13 | a | arg |
+| tst.js:17:12:17:17 | random | random |
 | tst.js:18:12:18:12 | a | arg |
 | tst.js:19:10:19:11 | "" |  |
 | tst.js:20:4:20:8 | "arg" | arg |
+| tst.js:38:3:38:3 | x | x |
+| tst.js:39:3:39:3 | m | m |
+| tst.js:43:3:43:3 | x | x |
+| tst.js:44:3:44:3 | m | m |
 | tst.js:46:1:46:11 | global = "" |  |
 | tst.js:46:10:46:11 | "" |  |
 | tst.js:57:2:57:4 | x:  | x:  |
 | tst.js:58:6:58:8 | x:  | x:  |
+| tst.js:61:5:61:5 | m | m |
+| tst.js:69:6:69:9 | next | next |
 | tst.js:75:16:75:20 | 'foo' | foo |
+| tst.js:93:3:93:3 | p | p |
+| tst.js:94:3:94:3 | q | q |
+| tst.js:95:3:95:3 | r | r |
 | tst.js:105:1:105:6 | x ?? y | hi |
 | tst.js:105:6:105:6 | y | hi |
+| tst.js:115:7:115:10 | call | call |
+| tst.js:117:17:117:20 | seal | seal |
+getStringValue
+| eval.js:3:8:3:15 | "x = 23" | x = 23 |
+| exportedStrings.js:1:20:1:24 | "foo" | foo |
+| exportedStrings.js:2:20:2:24 | "bar" | bar |
+| importedStrings.js:1:26:1:44 | "./exportedStrings" | ./exportedStrings |
+| tst2.ts:8:5:8:5 | x | x |
+| tst2.ts:11:13:11:13 | x | x |
+| tst.js:1:20:1:23 | 'fs' | fs |
+| tst.js:4:9:4:12 | "hi" | hi |
+| tst.js:17:12:17:17 | random | random |
+| tst.js:19:10:19:11 | "" |  |
+| tst.js:20:4:20:8 | "arg" | arg |
+| tst.js:38:3:38:3 | x | x |
+| tst.js:39:3:39:3 | m | m |
+| tst.js:43:3:43:3 | x | x |
+| tst.js:44:3:44:3 | m | m |
+| tst.js:46:1:46:11 | global = "" |  |
+| tst.js:46:10:46:11 | "" |  |
+| tst.js:57:2:57:4 | x:  | x:  |
+| tst.js:58:6:58:8 | x:  | x:  |
+| tst.js:61:5:61:5 | m | m |
+| tst.js:69:6:69:9 | next | next |
+| tst.js:75:16:75:20 | 'foo' | foo |
+| tst.js:93:3:93:3 | p | p |
+| tst.js:94:3:94:3 | q | q |
+| tst.js:95:3:95:3 | r | r |
+| tst.js:115:7:115:10 | call | call |
+| tst.js:117:17:117:20 | seal | seal |

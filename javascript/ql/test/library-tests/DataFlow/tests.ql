@@ -39,3 +39,7 @@ query predicate stress_getAQlClass(string msg) {
 query predicate mayHaveStringValue(DataFlow::Node node, string value) {
   node.mayHaveStringValue(value)
 }
+
+query string getStringValue(DataFlow::Node node) {
+  result = node.getStringValue()
+}
