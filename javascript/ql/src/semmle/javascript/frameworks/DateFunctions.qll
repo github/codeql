@@ -7,8 +7,10 @@ private module DateFns {
     result = API::moduleImport(["date-fns", "date-fns/esm"]).getMember(["format", "lightFormat"])
     or
     result =
-      API::moduleImport(["date-fns/format", "date-fns/lightFormat", "date-fns/esm/format",
-            "date-fns/esm/lightFormat"])
+      API::moduleImport([
+          "date-fns/format", "date-fns/lightFormat", "date-fns/esm/format",
+          "date-fns/esm/lightFormat"
+        ])
   }
 
   private API::Node curriedFormatFunction() {
@@ -16,8 +18,10 @@ private module DateFns {
       API::moduleImport(["date-fns/fp", "date-fns/esm/fp"]).getMember(["format", "lightFormat"])
     or
     result =
-      API::moduleImport(["date-fns/fp/format", "date-fns/fp/lightFormat", "date-fns/esm/fp/format",
-            "date-fns/esm/fp/lightFormat"])
+      API::moduleImport([
+          "date-fns/fp/format", "date-fns/fp/lightFormat", "date-fns/esm/fp/format",
+          "date-fns/esm/fp/lightFormat"
+        ])
   }
 
   /**
