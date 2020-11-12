@@ -33,7 +33,7 @@ predicate flowIntoParameter(
   not f.isVirtual() and
   call.getPositionalArgument(n) = instr and
   f = call.getStaticCallTarget() and
-  init.getEnclosingFunction() = f and
+  getEnclosingNonVirtualFunctionInitializeParameter(init, f) and
   init.getParameter().getIndex() = unbind(n)
 }
 
@@ -62,7 +62,7 @@ predicate getThisArgumentInitParam(
 ) {
   not f.isVirtual() and
   call.getStaticCallTarget() = f and
-  init.getEnclosingFunction() = f and
+  getEnclosingNonVirtualFunctionInitializeParameter(init, f) and
   call.getThisArgument() = instr and
   init.getIRVariable() instanceof IRThisVariable
 }
@@ -94,13 +94,19 @@ predicate isSource(InitializeParameterInstruction init, string msg, Class c) {
   init.getEnclosingFunction().getDeclaringType() = c
 }
 
-/** Holds if `instr` flows to a sink. */
-predicate flowsToSink(Instruction instr) {
-  isSink(instr, _, _)
-  or
-  exists(Instruction mid |
-    successor(instr, mid) and
-    flowsToSink(mid)
+/**
+ * Holds if `instr` flows to a sink (which is a use of the value of `instr` as a `this` pointer
+ * of type `sinkClass`).
+ */
+predicate flowsToSink(Instruction instr, Instruction sink, Class sinkClass) {
+  flowsFromSource(instr) and
+  (
+    isSink(instr, _, sinkClass) and instr = sink
+    or
+    exists(Instruction mid |
+      successor(instr, mid) and
+      flowsToSink(mid, sink, sinkClass)
+    )
   )
 }
 
@@ -114,58 +120,66 @@ predicate flowsFromSource(Instruction instr) {
   )
 }
 
+/** Holds if `f` is the enclosing non-virtual function of `init`. */
+predicate getEnclosingNonVirtualFunctionInitializeParameter(
+  InitializeParameterInstruction init, Function f
+) {
+  not f.isVirtual() and
+  init.getEnclosingFunction() = f
+}
+
+/** Holds if `f` is the enclosing non-virtual function of `init`. */
+predicate getEnclosingNonVirtualFunctionInitializeIndirection(
+  InitializeIndirectionInstruction init, Function f
+) {
+  not f.isVirtual() and
+  init.getEnclosingFunction() = f
+}
+
 /**
  * Holds if `instr` is an argument (or argument indirection) to a call, and
  * `succ` is the corresponding initialization instruction in the call target.
  */
 predicate flowThroughCallable(Instruction instr, Instruction succ) {
-  flowsToSink(succ) and
-  (
-    // Flow from an argument to a parameter
-    exists(CallInstruction call, InitializeParameterInstruction init | init = succ |
-      getPositionalArgumentInitParam(call, instr, init, call.getStaticCallTarget())
-      or
-      getThisArgumentInitParam(call, instr, init, call.getStaticCallTarget())
+  // Flow from an argument to a parameter
+  exists(CallInstruction call, InitializeParameterInstruction init | init = succ |
+    getPositionalArgumentInitParam(call, instr, init, call.getStaticCallTarget())
+    or
+    getThisArgumentInitParam(call, instr, init, call.getStaticCallTarget())
+  )
+  or
+  // Flow from argument indirection to parameter indirection
+  exists(
+    CallInstruction call, ReadSideEffectInstruction read, InitializeIndirectionInstruction init
+  |
+    init = succ and
+    read.getPrimaryInstruction() = call and
+    getEnclosingNonVirtualFunctionInitializeIndirection(init, call.getStaticCallTarget())
+  |
+    exists(int n |
+      read.getSideEffectOperand().getAnyDef() = instr and
+      read.getIndex() = n and
+      init.getParameter().getIndex() = unbind(n)
     )
     or
-    // Flow from argument indirection to parameter indirection
-    exists(
-      CallInstruction call, ReadSideEffectInstruction read, InitializeIndirectionInstruction init
-    |
-      init = succ and
-      read.getPrimaryInstruction() = call and
-      init.getEnclosingFunction() = call.getStaticCallTarget()
-    |
-      exists(int n |
-        read.getSideEffectOperand().getAnyDef() = instr and
-        read.getIndex() = n and
-        init.getParameter().getIndex() = unbind(n)
-      )
-      or
-      call.getThisArgument() = instr and
-      init.getIRVariable() instanceof IRThisVariable
-    )
+    call.getThisArgument() = instr and
+    init.getIRVariable() instanceof IRThisVariable
   )
 }
 
 /** Holds if `instr` flows to `succ`. */
 predicate successor(Instruction instr, Instruction succ) {
-  flowsToSink(succ) and
+  succ.getBlock().postDominates(instr.getBlock()) and
   (
-    irBbPostDominates(succ.getBlock(), instr.getBlock()) and
-    (
-      succ.(CopyInstruction).getSourceValue() = instr or
-      succ.(CheckedConvertOrNullInstruction).getUnary() = instr or
-      succ.(ChiInstruction).getTotal() = instr or
-      succ.(ConvertInstruction).getUnary() = instr or
-      succ.(InheritanceConversionInstruction).getUnary() = instr
-    )
-    or
-    flowThroughCallable(instr, succ)
+    succ.(CopyInstruction).getSourceValue() = instr or
+    succ.(CheckedConvertOrNullInstruction).getUnary() = instr or
+    succ.(ChiInstruction).getTotal() = instr or
+    succ.(ConvertInstruction).getUnary() = instr or
+    succ.(InheritanceConversionInstruction).getUnary() = instr
   )
+  or
+  flowThroughCallable(instr, succ)
 }
-
-predicate successorTC(Instruction i1, Instruction i2) = fastTC(successor/2)(i1, i2)
 
 /**
  * Holds if:
@@ -179,17 +193,14 @@ predicate flows(
   Class sinkClass
 ) {
   isSource(source, msg, sourceClass) and
-  successorTC(source, sink) and
+  flowsToSink(source, sink, sinkClass) and
   isSink(sink, call, sinkClass)
 }
 
-query predicate edges(Instruction a, Instruction b) {
-  successor(a, b) and flowsFromSource(a) and flowsFromSource(b)
-}
+query predicate edges(Instruction a, Instruction b) { successor(a, b) and flowsToSink(b, _, _) }
 
 query predicate nodes(Instruction n, string key, string val) {
-  flowsFromSource(n) and
-  flowsToSink(n) and
+  flowsToSink(n, _, _) and
   key = "semmle.label" and
   val = n.toString()
 }
