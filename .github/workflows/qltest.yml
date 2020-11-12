@@ -1,0 +1,34 @@
+name: Run QL Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  qltest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Fetch CodeQL
+        run: | 
+          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip
+          unzip -q codeql-linux64.zip
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Build Extractor
+        run: env "PATH=$PATH:${{ github.workspace }}/codeql" ./create-extractor-pack.sh
+      - name: Run QL tests
+        run: codeql/codeql test run --search-path "${{ github.workspace }}" ql/test
+
