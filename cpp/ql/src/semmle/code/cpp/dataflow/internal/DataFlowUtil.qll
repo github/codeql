@@ -678,6 +678,11 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
         f.hasDataFlow(inModel, outModel) and
         (
           exists(int iIn |
+            inModel.isParameterDeref(iIn) and
+            call.passesByReference(iIn, fromExpr)
+          )
+          or
+          exists(int iIn |
             inModel.isParameter(iIn) and
             fromExpr = call.getArgument(iIn)
           )

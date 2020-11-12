@@ -160,8 +160,9 @@ private module Impl {
 
   /** Returned an expression that is assigned to `f`. */
   ExprNode getAssignedValueToField(Field f) {
-    result.getExpr() in [f.getAnAssignedValue(),
-          any(AssignOperation a | a.getLValue() = f.getAnAccess())]
+    result.getExpr() in [
+        f.getAnAssignedValue(), any(AssignOperation a | a.getLValue() = f.getAnAccess())
+      ]
   }
 
   /** Holds if `f` can have any sign. */

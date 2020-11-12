@@ -21,6 +21,9 @@ DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
     result = sourceDecl and
     result instanceof SummarizedCallable
     or
+    result = sourceDecl and
+    FlowSummaryImpl::Private::summary(_, _, _, SummaryOutput::jump(result, _), _, _)
+    or
     result.hasBody() and
     if sourceDecl.getFile().fromSource()
     then

@@ -89,6 +89,32 @@ nodes
 | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name |
 | classnames.js:15:52:15:62 | window.name |
+| dates.js:9:9:9:69 | taint |
+| dates.js:9:17:9:69 | decodeU ... ing(1)) |
+| dates.js:9:36:9:50 | window.location |
+| dates.js:9:36:9:50 | window.location |
+| dates.js:9:36:9:55 | window.location.hash |
+| dates.js:9:36:9:68 | window. ... ring(1) |
+| dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:42:11:68 | dateFns ...  taint) |
+| dates.js:11:63:11:67 | taint |
+| dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:42:12:71 | dateFns ...  taint) |
+| dates.js:12:66:12:70 | taint |
+| dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:42:13:70 | dateFns ... )(time) |
+| dates.js:13:59:13:63 | taint |
+| dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:42:16:67 | moment( ... (taint) |
+| dates.js:16:62:16:66 | taint |
+| dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:42:18:64 | datefor ...  taint) |
+| dates.js:18:59:18:63 | taint |
 | express.js:7:15:7:33 | req.param("wobble") |
 | express.js:7:15:7:33 | req.param("wobble") |
 | express.js:7:15:7:33 | req.param("wobble") |
@@ -707,6 +733,31 @@ edges
 | classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| dates.js:9:9:9:69 | taint | dates.js:11:63:11:67 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:12:66:12:70 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:13:59:13:63 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:16:62:16:66 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:18:59:18:63 | taint |
+| dates.js:9:17:9:69 | decodeU ... ing(1)) | dates.js:9:9:9:69 | taint |
+| dates.js:9:36:9:50 | window.location | dates.js:9:36:9:55 | window.location.hash |
+| dates.js:9:36:9:50 | window.location | dates.js:9:36:9:55 | window.location.hash |
+| dates.js:9:36:9:55 | window.location.hash | dates.js:9:36:9:68 | window. ... ring(1) |
+| dates.js:9:36:9:68 | window. ... ring(1) | dates.js:9:17:9:69 | decodeU ... ing(1)) |
+| dates.js:11:42:11:68 | dateFns ...  taint) | dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:42:11:68 | dateFns ...  taint) | dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:63:11:67 | taint | dates.js:11:42:11:68 | dateFns ...  taint) |
+| dates.js:12:42:12:71 | dateFns ...  taint) | dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:42:12:71 | dateFns ...  taint) | dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:66:12:70 | taint | dates.js:12:42:12:71 | dateFns ...  taint) |
+| dates.js:13:42:13:70 | dateFns ... )(time) | dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:42:13:70 | dateFns ... )(time) | dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:59:13:63 | taint | dates.js:13:42:13:70 | dateFns ... )(time) |
+| dates.js:16:42:16:67 | moment( ... (taint) | dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:42:16:67 | moment( ... (taint) | dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:62:16:66 | taint | dates.js:16:42:16:67 | moment( ... (taint) |
+| dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:59:18:63 | taint | dates.js:18:42:18:64 | datefor ...  taint) |
 | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |

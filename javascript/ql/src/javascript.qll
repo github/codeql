@@ -79,6 +79,7 @@ import semmle.javascript.frameworks.ClosureLibrary
 import semmle.javascript.frameworks.CookieLibraries
 import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
+import semmle.javascript.frameworks.DateFunctions
 import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.Electron
 import semmle.javascript.frameworks.EventEmitter
