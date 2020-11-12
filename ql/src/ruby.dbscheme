@@ -1011,11 +1011,14 @@ then_def(
   int loc: @location ref
 );
 
-@unary_child_type = @break | @call | @method_call | @next | @parenthesized_statements | @return | @token_float | @token_integer | @underscore_arg | @yield
+@unary_operand_type = @break | @call | @method_call | @next | @parenthesized_statements | @return | @token_float | @token_integer | @underscore_arg | @yield
+
+@unary_operator_type = @reserved_word
 
 unary_def(
   unique int id: @unary,
-  int child: @unary_child_type ref,
+  int operand: @unary_operand_type ref,
+  int operator: @unary_operator_type ref,
   int loc: @location ref
 );
 
