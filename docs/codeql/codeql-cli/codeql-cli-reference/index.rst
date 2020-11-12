@@ -3,8 +3,7 @@
 CodeQL CLI reference
 ====================
 
-Find detailed information about the CodeQL commands, as well the files you can
-use or generate when executing CodeQL processes. 
+Learn more about the files you can use when running CodeQL processes and the results format and exit codes that CodeQL generates. 
 
 .. toctree::
    :titlesonly:
