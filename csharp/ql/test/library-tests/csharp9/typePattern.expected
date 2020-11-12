@@ -1,3 +1,6 @@
+| BinaryPattern.cs:10:14:10:21 | Object o | Object |
+| BinaryPattern.cs:12:14:12:21 | Object o | Object |
+| BinaryPattern.cs:12:27:12:41 | BinaryPattern u | BinaryPattern |
 | ParenthesizedPattern.cs:25:13:25:15 | T t | T |
 | ParenthesizedPattern.cs:26:14:26:22 | Object o1 | Object |
 | ParenthesizedPattern.cs:27:14:27:19 | access to type String | String |
