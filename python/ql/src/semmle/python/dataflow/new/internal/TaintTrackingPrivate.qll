@@ -173,9 +173,8 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   // methods
   exists(CallNode call, string name | call = nodeTo.asCfgNode() |
     name in [
-        "copy",
         // general
-        "pop",
+        "copy", "pop",
         // dict
         "values", "items", "get", "popitem"
       ] and

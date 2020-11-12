@@ -393,11 +393,13 @@ private predicate assertion(Assertion a, int i, AssertMethod am, Expr e) {
 /** Gets a valid completion when argument `i` fails in assertion `a`. */
 Completion assertionCompletion(Assertion a, int i) {
   exists(AssertMethod am | am = a.getAssertMethod() |
-    result = TThrowCompletion(am.getExceptionClass(i))
-    or
-    i = am.getAnAssertionIndex() and
-    not exists(am.getExceptionClass(i)) and
-    result = TExitCompletion()
+    if am.getAssertionFailure(i).isExit()
+    then result = TExitCompletion()
+    else
+      exists(Class c |
+        am.getAssertionFailure(i).isException(c) and
+        result = TThrowCompletion(c)
+      )
   )
 }
 

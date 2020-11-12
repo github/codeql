@@ -121,6 +121,14 @@ postWithInFlow
 | complex.cpp:12:22:12:27 | Chi | PostUpdateNode should not be the target of local flow. |
 | complex.cpp:14:26:14:26 | Chi | PostUpdateNode should not be the target of local flow. |
 | complex.cpp:14:33:14:33 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:22:11:22:17 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:25:7:25:7 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:42:16:42:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:43:16:43:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:53:12:53:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:54:12:54:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:55:12:55:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| complex.cpp:56:12:56:12 | Chi | PostUpdateNode should not be the target of local flow. |
 | constructors.cpp:20:24:20:29 | Chi | PostUpdateNode should not be the target of local flow. |
 | constructors.cpp:21:24:21:29 | Chi | PostUpdateNode should not be the target of local flow. |
 | constructors.cpp:23:28:23:28 | Chi | PostUpdateNode should not be the target of local flow. |

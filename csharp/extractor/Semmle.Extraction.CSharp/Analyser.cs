@@ -198,12 +198,12 @@ namespace Semmle.Extraction.CSharp
         /// Perform an analysis on an assembly.
         /// </summary>
         /// <param name="assembly">Assembly to analyse.</param>
-        private void AnalyseAssembly(PortableExecutableReference assembly)
+        private void AnalyseReferenceAssembly(PortableExecutableReference assembly)
         {
             // CIL first - it takes longer.
             if (options.CIL)
                 extractionTasks.Add(() => DoExtractCIL(assembly));
-            extractionTasks.Add(() => DoAnalyseAssembly(assembly));
+            extractionTasks.Add(() => DoAnalyseReferenceAssembly(assembly));
         }
 
         private static bool FileIsUpToDate(string src, string dest)
@@ -250,7 +250,7 @@ namespace Semmle.Extraction.CSharp
         ///     extraction within the snapshot.
         /// </summary>
         /// <param name="r">The assembly to extract.</param>
-        private void DoAnalyseAssembly(PortableExecutableReference r)
+        private void DoAnalyseReferenceAssembly(PortableExecutableReference r)
         {
             try
             {
@@ -294,6 +294,8 @@ namespace Semmle.Extraction.CSharp
                             AnalyseNamespace(cx, module.GlobalNamespace);
                         }
 
+                        Entities.Attribute.ExtractAttributes(cx, assembly, Extraction.Entities.Assembly.Create(cx, assembly.GetSymbolLocation()));
+
                         cx.PopulateAll();
                     }
                 }
@@ -335,7 +337,7 @@ namespace Semmle.Extraction.CSharp
         {
             foreach (var r in compilation.References.OfType<PortableExecutableReference>())
             {
-                AnalyseAssembly(r);
+                AnalyseReferenceAssembly(r);
             }
         }
 

@@ -189,6 +189,7 @@
 | AccessorCalls.cs:58:22:58:25 | this access | AccessorCalls.cs:58:22:58:25 | this access |
 | AccessorCalls.cs:58:22:58:30 | access to property Prop | AccessorCalls.cs:58:22:58:25 | this access |
 | AccessorCalls.cs:58:33:58:44 | (..., ...) | AccessorCalls.cs:58:37:58:40 | this access |
+| AccessorCalls.cs:58:34:58:34 | 1 | AccessorCalls.cs:58:34:58:34 | 1 |
 | AccessorCalls.cs:58:37:58:40 | this access | AccessorCalls.cs:58:37:58:40 | this access |
 | AccessorCalls.cs:58:37:58:43 | access to indexer | AccessorCalls.cs:58:37:58:40 | this access |
 | AccessorCalls.cs:58:42:58:42 | 0 | AccessorCalls.cs:58:42:58:42 | 0 |
@@ -1600,7 +1601,9 @@
 | Foreach.cs:25:5:28:5 | {...} | Foreach.cs:25:5:28:5 | {...} |
 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:36:26:39 | access to parameter args |
 | Foreach.cs:26:18:26:31 | (..., ...) | Foreach.cs:26:23:26:23 | String x |
+| Foreach.cs:26:19:26:23 | 1 | Foreach.cs:26:19:26:23 | 1 |
 | Foreach.cs:26:23:26:23 | String x | Foreach.cs:26:23:26:23 | String x |
+| Foreach.cs:26:26:26:30 | 1 | Foreach.cs:26:26:26:30 | 1 |
 | Foreach.cs:26:30:26:30 | Int32 y | Foreach.cs:26:30:26:30 | Int32 y |
 | Foreach.cs:26:36:26:39 | access to parameter args | Foreach.cs:26:36:26:39 | access to parameter args |
 | Foreach.cs:27:11:27:11 | ; | Foreach.cs:27:11:27:11 | ; |
