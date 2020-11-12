@@ -27,15 +27,6 @@ class TypeApacheHttpRequestBase extends RefType {
   }
 }
 
-/*
- * Any class which can be used to make an HTTP request using the Apache Http Client library
- * Examples include `HttpGet`,`HttpPost` etc.
- */
-
-class TypeApacheHttpRequest extends Class {
-  TypeApacheHttpRequest() { exists(TypeApacheHttpRequestBase t | this.extendsOrImplements(t)) }
-}
-
 /* A class representing the `RequestBuilder` class of the Apache Http Client library */
 class TypeApacheHttpRequestBuilder extends Class {
   TypeApacheHttpRequestBuilder() {

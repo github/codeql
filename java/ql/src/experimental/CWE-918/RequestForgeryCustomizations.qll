@@ -2,8 +2,8 @@
 
 import java
 import semmle.code.java.frameworks.Networking
-import semmle.code.java.frameworks.javase.URI
-import semmle.code.java.frameworks.javase.URL
+import semmle.code.java.frameworks.ApacheHttp
+import semmle.code.java.frameworks.spring.Spring
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.Http
 import semmle.code.java.dataflow.DataFlow
@@ -34,8 +34,8 @@ module RequestForgery {
    */
   private class ApacheSetUri extends Sink {
     ApacheSetUri() {
-      exists(MethodAccess ma |
-        ma.getReceiverType() instanceof TypeApacheHttpRequest and
+      exists(MethodAccess ma, TypeApacheHttpRequestBase t |
+        ma.getReceiverType().extendsOrImplements(t) and
         ma.getMethod().hasName("setURI")
       |
         this.asExpr() = ma.getArgument(0)
@@ -49,7 +49,9 @@ module RequestForgery {
    */
   private class ApacheHttpRequestInstantiation extends Sink {
     ApacheHttpRequestInstantiation() {
-      exists(ClassInstanceExpr c | c.getConstructedType() instanceof TypeApacheHttpRequest |
+      exists(ClassInstanceExpr c, TypeApacheHttpRequestBase t |
+        c.getConstructedType().extendsOrImplements(t)
+      |
         this.asExpr() = c.getArgument(0)
       )
     }
@@ -115,8 +117,7 @@ module RequestForgery {
    */
   private class JaxRsClientTarget extends Sink {
     JaxRsClientTarget() {
-      exists(MethodAccess ma, JaxRsClient t |
-        // ma.getMethod().getDeclaringType().getQualifiedName() ="javax.ws.rs.client.Client" and
+      exists(MethodAccess ma |
         ma.getMethod().getDeclaringType() instanceof JaxRsClient and
         ma.getMethod().hasName("target")
       |
@@ -131,7 +132,12 @@ module RequestForgery {
    */
   private class RequestEntityUriArg extends Sink {
     RequestEntityUriArg() {
-      exists(SpringRequestEntityInstanceExpr e | e.getUriArg() = this.asExpr())
+      exists(ClassInstanceExpr e, Argument a |
+        e.getConstructedType() instanceof SpringRequestEntity and
+        e.getAnArgument() = a and
+        a.getType() instanceof TypeUri and
+        this.asExpr() = a
+      )
     }
   }
 }

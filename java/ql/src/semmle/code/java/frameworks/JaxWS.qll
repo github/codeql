@@ -171,7 +171,7 @@ class JaxRsResponseBuilder extends Class {
 }
 
 /**
- * The class `javax.ws.rs.client.Client`
+ * The class `javax.ws.rs.client.Client`.
  */
 class JaxRsClient extends RefType {
   JaxRsClient() { this.hasQualifiedName("javax.ws.rs.client", "Client") }

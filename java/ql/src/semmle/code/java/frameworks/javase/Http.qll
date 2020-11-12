@@ -1,7 +1,10 @@
-import java
-import semmle.code.java.dataflow.FlowSources
+/**
+ * Provides classes for identifying methods called by the Java net Http package.
+ */
 
-/** A class representing `HttpRequest.Builder`. */
+import java
+
+/** The interface representing `HttpRequest.Builder`. */
 class TypeHttpRequestBuilder extends Interface {
   TypeHttpRequestBuilder() { hasQualifiedName("java.net.http", "HttpRequest$Builder") }
 }
@@ -11,7 +14,7 @@ class TypeHttpRequest extends Interface {
   TypeHttpRequest() { hasQualifiedName("java.net.http", "HttpRequest") }
 }
 
-/** A class representing `java.net.http.HttpRequest$Builder`'s `uri` method. */
+/** The `uri` method on `java.net.http.HttpRequest.Builder`. */
 class HttpBuilderUri extends Method {
   HttpBuilderUri() {
     this.getDeclaringType() instanceof TypeHttpRequestBuilder and

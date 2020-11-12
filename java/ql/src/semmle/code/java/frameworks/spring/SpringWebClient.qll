@@ -33,7 +33,10 @@ class SpringWebClient extends Interface {
  * which take an URL as an argument.
  */
 abstract class SpringRestTemplateUrlMethods extends Method {
-  /** Gets the argument which corresponds to a URL */
+  /**
+   * Gets the argument which corresponds to a URL argument
+   * passed as a `java.net.URL` object or as a string or the like
+   */
   abstract Argument getUrlArgument(MethodAccess ma);
 }
 

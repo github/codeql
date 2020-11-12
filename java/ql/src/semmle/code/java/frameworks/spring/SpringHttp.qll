@@ -39,17 +39,3 @@ class SpringResponseEntityBodyBuilder extends Interface {
 class SpringHttpHeaders extends Class {
   SpringHttpHeaders() { this.hasQualifiedName("org.springframework.http", "HttpHeaders") }
 }
-
-/** Models `org.springframework.http.RequestEntity`s instantiation expressions. */
-class SpringRequestEntityInstanceExpr extends ClassInstanceExpr {
-  int numArgs;
-
-  SpringRequestEntityInstanceExpr() {
-    this.getConstructedType() instanceof SpringRequestEntity and
-    numArgs = this.getNumArgument()
-  }
-
-  Argument getUriArg() {
-    exists(Argument a | this.getAnArgument() = a and a.getType() instanceof TypeUri | result = a)
-  }
-}

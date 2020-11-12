@@ -1,7 +1,5 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.frameworks.javase.URI
-import semmle.code.java.frameworks.javase.URL
 import semmle.code.java.frameworks.javase.Http
 import semmle.code.java.dataflow.DataFlow
 
