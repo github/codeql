@@ -301,6 +301,11 @@ private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
     mid instanceof @unary_pattern_expr and
     child = mid.getChild(0)
   )
+  or
+  exists(Expr mid | hasChildPattern(pm, mid) and mid instanceof @binary_pattern_expr |
+    child = mid.getChild(0) or
+    child = mid.getChild(1)
+  )
 }
 
 /**
@@ -500,6 +505,29 @@ class NotPatternExpr extends UnaryPatternExpr, @not_pattern_expr {
   override string toString() { result = "not ..." }
 
   override string getAPrimaryQlClass() { result = "NotPatternExpr" }
+}
+
+/** A binary pattern. For example, `1 or 2`. */
+class BinaryPatternExpr extends PatternExpr, @binary_pattern_expr {
+  /** Gets the left pattern. */
+  PatternExpr getLeftOperand() { result = this.getChild(0) }
+
+  /** Gets the right pattern. */
+  PatternExpr getRightOperand() { result = this.getChild(1) }
+}
+
+/** A binary or pattern. For example, `1 or 2`. */
+class OrPatternExpr extends BinaryPatternExpr, @or_pattern_expr {
+  override string toString() { result = "... or ..." }
+
+  override string getAPrimaryQlClass() { result = "OrPatternExpr" }
+}
+
+/** A binary and pattern. For example, `< 1 and > 2`. */
+class AndPatternExpr extends BinaryPatternExpr, @and_pattern_expr {
+  override string toString() { result = "... and ..." }
+
+  override string getAPrimaryQlClass() { result = "AndPatternExpr" }
 }
 
 /**

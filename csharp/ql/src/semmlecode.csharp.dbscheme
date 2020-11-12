@@ -1032,6 +1032,8 @@ case @expr.kind of
 | 124 = @le_pattern_expr
 | 125 = @ge_pattern_expr
 | 126 = @not_pattern_expr
+| 127 = @and_pattern_expr
+| 128 = @or_pattern_expr
 | 129 = @function_pointer_invocation_expr
 ;
 
@@ -1040,6 +1042,7 @@ case @expr.kind of
 @pattern_match = @case | @is_expr;
 @unary_pattern_expr = @not_pattern_expr;
 @relational_pattern_expr = @gt_pattern_expr | @lt_pattern_expr | @ge_pattern_expr | @le_pattern_expr;
+@binary_pattern_expr = @and_pattern_expr | @or_pattern_expr;
 
 @integer_literal_expr = @int_literal_expr | @long_literal_expr | @uint_literal_expr | @ulong_literal_expr;
 @real_literal_expr = @float_literal_expr | @double_literal_expr | @decimal_literal_expr;
