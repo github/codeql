@@ -20,9 +20,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Install rustfmt
-        run: rustup component add rustfmt --toolchain stable-x86_64-apple-darwin
-        if: ${{ matrix.os == 'macos-latest' }}
       - uses: actions/cache@v2
         with:
           path: |
