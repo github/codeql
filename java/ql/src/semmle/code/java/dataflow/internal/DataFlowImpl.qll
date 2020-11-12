@@ -584,6 +584,43 @@ private module Stage1 {
     revFlow(node, toReturn, config) and exists(returnAp) and exists(ap)
   }
 
+  private predicate throughFlowNodeCand1(Node node, Configuration config) {
+    revFlow(node, true, config) and
+    fwdFlow(node, true, config) and
+    not fullBarrier(node, config) and
+    not inBarrier(node, config) and
+    not outBarrier(node, config)
+  }
+
+  /** Holds if flow may return from `callable`. */
+  pragma[nomagic]
+  private predicate returnFlowCallableNodeCand1(
+    DataFlowCallable callable, ReturnKindExt kind, Configuration config
+  ) {
+    exists(ReturnNodeExt ret |
+      throughFlowNodeCand1(ret, config) and
+      callable = ret.getEnclosingCallable() and
+      kind = ret.getKind()
+    )
+  }
+
+  /**
+   * Holds if flow may enter through `p` and reach a return node making `p` a
+   * candidate for the origin of a summary.
+   */
+  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+    exists(ReturnKindExt kind |
+      throughFlowNodeCand1(p, config) and
+      returnFlowCallableNodeCand1(c, kind, config) and
+      p.getEnclosingCallable() = c and
+      exists(ap) and
+      // we don't expect a parameter to return stored in itself
+      not exists(int pos |
+        kind.(ParamUpdateReturnKind).getPosition() = pos and p.isParameterOf(_, pos)
+      )
+    )
+  }
+
   predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
     fwd = true and
     nodes = count(Node node | fwdFlow(node, config)) and
@@ -602,41 +639,6 @@ private module Stage1 {
 
 bindingset[result, b]
 private boolean unbindBool(boolean b) { result != b.booleanNot() }
-
-private predicate throughFlowNodeCand1(Node node, Configuration config) {
-  Stage1::revFlow(node, true, config) and
-  Stage1::fwdFlow(node, true, config) and
-  not fullBarrier(node, config) and
-  not inBarrier(node, config) and
-  not outBarrier(node, config)
-}
-
-/** Holds if flow may return from `callable`. */
-pragma[nomagic]
-private predicate returnFlowCallableNodeCand1(
-  DataFlowCallable callable, ReturnKindExt kind, Configuration config
-) {
-  exists(ReturnNodeExt ret |
-    throughFlowNodeCand1(ret, config) and
-    callable = ret.getEnclosingCallable() and
-    kind = ret.getKind()
-  )
-}
-
-/**
- * Holds if flow may enter through `p` and reach a return node making `p` a
- * candidate for the origin of a summary.
- */
-private predicate parameterThroughFlowNodeCand1(ParameterNode p, Configuration config) {
-  exists(ReturnKindExt kind |
-    throughFlowNodeCand1(p, config) and
-    returnFlowCallableNodeCand1(p.getEnclosingCallable(), kind, config) and
-    // we don't expect a parameter to return stored in itself
-    not exists(int pos |
-      kind.(ParamUpdateReturnKind).getPosition() = pos and p.isParameterOf(_, pos)
-    )
-  )
-}
 
 pragma[noinline]
 private predicate localFlowStepNodeCand1(Node node1, Node node2, Configuration config) {
@@ -889,8 +891,13 @@ private module Stage2 {
     )
     or
     // flow into a callable
-    fwdFlowIn(_, node, _, cc, _, ap, config) and
-    if parameterThroughFlowNodeCand1(node, config) then argAp = apSome(ap) else argAp = apNone()
+    exists(ApApprox apa |
+      fwdFlowIn(_, node, _, cc, _, ap, config) and
+      apa = getApprox(ap) and
+      if PrevStage::parameterMayFlowThrough(node, _, apa, config)
+      then argAp = apSome(ap)
+      else argAp = apNone()
+    )
     or
     // flow out of a callable
     exists(DataFlowCall call |
@@ -979,7 +986,7 @@ private module Stage2 {
   ) {
     exists(ParameterNode p |
       fwdFlowIn(call, p, cc, _, argAp, ap, config) and
-      parameterThroughFlowNodeCand1(p, config)
+      PrevStage::parameterMayFlowThrough(p, _, getApprox(ap), config)
     )
   }
 
@@ -1075,7 +1082,7 @@ private module Stage2 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, true, apSome(_), unbindBool(ap), config)
+    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
     then returnAp = apSome(ap)
     else returnAp = apNone()
   }
@@ -1174,6 +1181,27 @@ private module Stage2 {
 
   predicate consCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  pragma[noinline]
+  private predicate parameterFlow(
+    ParameterNode p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
+  ) {
+    revFlow(p, true, apSome(ap0), ap, config) and
+    c = p.getEnclosingCallable()
+  }
+
+  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+    exists(ReturnNodeExt ret, Ap ap0, ReturnKindExt kind, int pos |
+      parameterFlow(p, ap, ap0, c, config) and
+      c = ret.getEnclosingCallable() and
+      revFlow(ret, true, apSome(_), ap0, config) and
+      fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
+      kind = ret.getKind() and
+      p.isParameterOf(_, pos) and
+      // we don't expect a parameter to return stored in itself
+      not kind.(ParamUpdateReturnKind).getPosition() = pos
+    )
   }
 
   predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
@@ -1339,8 +1367,7 @@ private module Stage3 {
 
   class ApNil = AccessPathFrontNil;
 
-  bindingset[result, ap]
-  ApApprox getApprox(Ap ap) { result = unbindBool(ap.toBoolNonEmpty()) }
+  ApApprox getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
 
   ApNil getApNil(Node node) { result = TFrontNil(getNodeType(node)) }
 
@@ -1404,7 +1431,7 @@ private module Stage3 {
   pragma[nomagic]
   predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     fwdFlow0(node, cc, argAp, ap, config) and
-    flowCand(node, getApprox(ap), config) and
+    flowCand(node, unbindBool(getApprox(ap)), config) and
     not ap.isClearedAt(node) and
     if node instanceof CastingNode then compatibleTypes(getNodeType(node), ap.getType()) else any()
   }
@@ -1458,10 +1485,13 @@ private module Stage3 {
     )
     or
     // flow into a callable
-    fwdFlowIn(_, node, _, cc, _, ap, config) and
-    if PrevStage::revFlow(node, true, _, unbindBool(ap.toBoolNonEmpty()), config)
-    then argAp = apSome(ap)
-    else argAp = apNone()
+    exists(ApApprox apa |
+      fwdFlowIn(_, node, _, cc, _, ap, config) and
+      apa = getApprox(ap) and
+      if PrevStage::parameterMayFlowThrough(node, _, apa, config)
+      then argAp = apSome(ap)
+      else argAp = apNone()
+    )
     or
     // flow out of a callable
     exists(DataFlowCall call |
@@ -1550,7 +1580,7 @@ private module Stage3 {
   ) {
     exists(ParameterNode p |
       fwdFlowIn(call, p, cc, _, argAp, ap, config) and
-      PrevStage::revFlow(p, true, TBooleanSome(_), unbindBool(ap.toBoolNonEmpty()), config)
+      PrevStage::parameterMayFlowThrough(p, _, unbindBool(getApprox(ap)), config)
     )
   }
 
@@ -1646,7 +1676,9 @@ private module Stage3 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, true, _, ap, config) then returnAp = apSome(ap) else returnAp = apNone()
+    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
+    then returnAp = apSome(ap)
+    else returnAp = apNone()
   }
 
   pragma[nomagic]
@@ -1738,6 +1770,27 @@ private module Stage3 {
 
   predicate consCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  pragma[noinline]
+  private predicate parameterFlow(
+    ParameterNode p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
+  ) {
+    revFlow(p, true, apSome(ap0), ap, config) and
+    c = p.getEnclosingCallable()
+  }
+
+  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+    exists(ReturnNodeExt ret, Ap ap0, ReturnKindExt kind, int pos |
+      parameterFlow(p, ap, ap0, c, config) and
+      c = ret.getEnclosingCallable() and
+      revFlow(ret, true, apSome(_), ap0, config) and
+      fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
+      kind = ret.getKind() and
+      p.isParameterOf(_, pos) and
+      // we don't expect a parameter to return stored in itself
+      not kind.(ParamUpdateReturnKind).getPosition() = pos
+    )
   }
 
   predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
@@ -2092,8 +2145,8 @@ private module Stage4 {
     // flow into a callable
     exists(ApApprox apa |
       fwdFlowIn(_, node, _, cc, _, ap, config) and
-      apa = ap.getFront() and
-      if PrevStage::revFlow(node, true, _, apa, config)
+      apa = getApprox(ap) and
+      if PrevStage::parameterMayFlowThrough(node, _, apa, config)
       then argAp = apSome(ap)
       else argAp = apNone()
     )
@@ -2184,7 +2237,7 @@ private module Stage4 {
   ) {
     exists(ParameterNode p |
       fwdFlowIn(call, p, cc, _, argAp, ap, config) and
-      PrevStage::revFlow(p, true, TAccessPathFrontSome(_), ap.getFront(), config)
+      PrevStage::parameterMayFlowThrough(p, _, getApprox(ap), config)
     )
   }
 
@@ -2280,7 +2333,7 @@ private module Stage4 {
     // flow out of a callable
     revFlowOut(_, node, _, _, ap, config) and
     toReturn = true and
-    if fwdFlow(node, any(CallContextCall ccc), apSome(_), ap, config)
+    if fwdFlow(node, any(CcCall ccc), apSome(_), ap, config)
     then returnAp = apSome(ap)
     else returnAp = apNone()
   }
@@ -2343,7 +2396,7 @@ private module Stage4 {
   private predicate revFlowIsReturned(
     DataFlowCall call, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
-    exists(ReturnNodeExt ret, CallContextCall ccc |
+    exists(ReturnNodeExt ret, CcCall ccc |
       revFlowOut(call, ret, toReturn, returnAp, ap, config) and
       fwdFlow(ret, ccc, apSome(_), ap, config) and
       ccc.matchesCall(call)
@@ -2379,6 +2432,27 @@ private module Stage4 {
     storeStepCand(_, ap, tc, _, _, config)
   }
 
+  pragma[noinline]
+  private predicate parameterFlow(
+    ParameterNode p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
+  ) {
+    revFlow(p, true, apSome(ap0), ap, config) and
+    c = p.getEnclosingCallable()
+  }
+
+  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+    exists(ReturnNodeExt ret, Ap ap0, ReturnKindExt kind, int pos |
+      parameterFlow(p, ap, ap0, c, config) and
+      c = ret.getEnclosingCallable() and
+      revFlow(ret, true, apSome(_), ap0, config) and
+      fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
+      kind = ret.getKind() and
+      p.isParameterOf(_, pos) and
+      // we don't expect a parameter to return stored in itself
+      not kind.(ParamUpdateReturnKind).getPosition() = pos
+    )
+  }
+
   predicate stats(boolean fwd, int nodes, int fields, int conscand, int tuples, Configuration config) {
     fwd = true and
     nodes = count(Node node | fwdFlow(node, _, _, _, config)) and
@@ -2398,27 +2472,9 @@ private module Stage4 {
 bindingset[conf, result]
 private Configuration unbind(Configuration conf) { result >= conf and result <= conf }
 
-pragma[noinline]
-private predicate parameterFlow(
-  ParameterNode p, AccessPathApprox apa, AccessPathApprox apa0, DataFlowCallable c,
-  Configuration config
-) {
-  Stage4::revFlow(p, true, TAccessPathApproxSome(apa0), apa, config) and
-  c = p.getEnclosingCallable()
-}
-
-private predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, AccessPathApprox apa) {
-  exists(ReturnNodeExt ret, Configuration config, AccessPathApprox apa0 |
-    parameterFlow(p, apa, apa0, c, config) and
-    c = ret.getEnclosingCallable() and
-    Stage4::revFlow(ret, true, TAccessPathApproxSome(_), apa0, config) and
-    Stage4::fwdFlow(ret, any(CallContextCall ccc), TAccessPathApproxSome(apa), apa0, config)
-  )
-}
-
 private predicate nodeMayUseSummary(Node n, AccessPathApprox apa, Configuration config) {
   exists(DataFlowCallable c, AccessPathApprox apa0 |
-    parameterMayFlowThrough(_, c, apa) and
+    Stage4::parameterMayFlowThrough(_, c, apa, _) and
     Stage4::revFlow(n, true, _, apa0, config) and
     Stage4::fwdFlow(n, any(CallContextCall ccc), TAccessPathApproxSome(apa), apa0, config) and
     n.getEnclosingCallable() = c
@@ -2427,7 +2483,9 @@ private predicate nodeMayUseSummary(Node n, AccessPathApprox apa, Configuration 
 
 private newtype TSummaryCtx =
   TSummaryCtxNone() or
-  TSummaryCtxSome(ParameterNode p, AccessPath ap) { parameterMayFlowThrough(p, _, ap.getApprox()) }
+  TSummaryCtxSome(ParameterNode p, AccessPath ap) {
+    Stage4::parameterMayFlowThrough(p, _, ap.getApprox(), _)
+  }
 
 /**
  * A context for generating flow summaries. This represents flow entry through
