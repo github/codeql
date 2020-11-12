@@ -72,8 +72,8 @@ def argument_passing(
     f,
     **g,
 ):
-    SINK1(a)
-    SINK2(b)
+    SINK1(a) #$ arg1="ControlFlowNode for arg1, l:89 -> ControlFlowNode for a" arg1="ControlFlowNode for arg1, l:94 -> ControlFlowNode for a"
+    SINK2(b) #$ arg2="ControlFlowNode for arg2, l:94 -> ControlFlowNode for b" MISSING:arg2="ControlFlowNode for arg2, l:89 -> ControlFlowNode for b"
     SINK3(c)
     SINK4(d)
     SINK5(e)
@@ -95,8 +95,8 @@ def test_argument_passing2():
 
 
 def with_pos_only(a, /, b):
-    SINK1(a)
-    SINK2(b)
+    SINK1(a) #$ arg1="ControlFlowNode for arg1, l:104 -> ControlFlowNode for a" arg1="ControlFlowNode for arg1, l:105 -> ControlFlowNode for a" arg1="ControlFlowNode for arg1, l:106 -> ControlFlowNode for a"
+    SINK2(b) #$ arg2="ControlFlowNode for arg2, l:104 -> ControlFlowNode for b" arg2="ControlFlowNode for arg2, l:105 -> ControlFlowNode for b" MISSING: arg2="ControlFlowNode for arg2, l:106 -> ControlFlowNode for b"
 
 
 @expects(6)
@@ -107,8 +107,8 @@ def test_pos_only():
 
 
 def with_multiple_kw_args(a, b, c):
-    SINK1(a)
-    SINK2(b)
+    SINK1(a) #$ arg1="ControlFlowNode for arg1, l:117 -> ControlFlowNode for a" arg1="ControlFlowNode for arg1, l:118 -> ControlFlowNode for a" arg1="ControlFlowNode for arg1, l:119 -> ControlFlowNode for a" arg1="ControlFlowNode for arg1, l:120 -> ControlFlowNode for a"
+    SINK2(b) #$ arg2="ControlFlowNode for arg2, l:117 -> ControlFlowNode for b" arg2="ControlFlowNode for arg2, l:120 -> ControlFlowNode for b" MISSING: arg2="ControlFlowNode for arg2, l:118 -> ControlFlowNode for b" arg2="ControlFlowNode for arg2, l:119 -> ControlFlowNode for b"
     SINK3(c)
 
 
@@ -121,8 +121,8 @@ def test_multiple_kw_args():
 
 
 def with_default_arguments(a=arg1, b=arg2, c=arg3):
-    SINK1(a)
-    SINK2(b)
+    SINK1(a) #$ arg1="ControlFlowNode for arg1, l:132 -> ControlFlowNode for a" MISSING:arg1="ControlFlowNode for arg1, l:123 -> ControlFlowNode for a"
+    SINK2(b) #$ arg2="ControlFlowNode for arg2, l:133 -> ControlFlowNode for b" MISSING: arg2="ControlFlowNode for arg2, l:123 -> ControlFlowNode for b"
     SINK3(c)
 
 
@@ -136,14 +136,14 @@ def test_default_arguments():
 
 # Nested constructor pattern
 def grab_foo_bar_baz(foo, **kwargs):
-    SINK1(foo)
+    SINK1(foo) #$ arg1="ControlFlowNode for arg1, l:160 -> ControlFlowNode for foo"
     grab_bar_baz(**kwargs)
 
 
 # It is not possible to pass `bar` into `kwargs`,
 # since `bar` is a valid keyword argument.
 def grab_bar_baz(bar, **kwargs):
-    SINK2(bar)
+    SINK2(bar) #$ arg2="ControlFlowNode for arg2, l:160 -> ControlFlowNode for bar"
     try:
         SINK2_F(kwargs["bar"])
     except:
@@ -163,14 +163,14 @@ def test_grab():
 # All combinations
 def test_pos_pos():
     def with_pos(a):
-        SINK1(a)
+        SINK1(a) #$ arg1="ControlFlowNode for arg1, l:168 -> ControlFlowNode for a"
 
     with_pos(arg1)
 
 
 def test_pos_pos_only():
     def with_pos_only(a, /):
-        SINK1(a)
+        SINK1(a) #$ arg1="ControlFlowNode for arg1, l:175 -> ControlFlowNode for a"
 
     with_pos_only(arg1)
 
@@ -178,34 +178,34 @@ def test_pos_pos_only():
 def test_pos_star():
     def with_star(*a):
         if len(a) > 0:
-            SINK1(a[0])
+            SINK1(a[0]) #$ arg1="ControlFlowNode for arg1, l:183 -> ControlFlowNode for Subscript"
 
     with_star(arg1)
 
 
 def test_pos_kw():
     def with_kw(a=""):
-        SINK1(a)
+        SINK1(a) #$ arg1="ControlFlowNode for arg1, l:190 -> ControlFlowNode for a"
 
     with_kw(arg1)
 
 
 def test_kw_pos():
     def with_pos(a):
-        SINK1(a)
+        SINK1(a) #$ arg1="ControlFlowNode for arg1, l:197 -> ControlFlowNode for a"
 
     with_pos(a=arg1)
 
 
 def test_kw_kw():
     def with_kw(a=""):
-        SINK1(a)
+        SINK1(a) #$ arg1="ControlFlowNode for arg1, l:204 -> ControlFlowNode for a"
 
     with_kw(a=arg1)
 
 
 def test_kw_doublestar():
     def with_doublestar(**a):
-        SINK1(a["a"])
+        SINK1(a["a"]) #$ arg1="ControlFlowNode for arg1, l:211 -> ControlFlowNode for Subscript"
 
     with_doublestar(a=arg1)
