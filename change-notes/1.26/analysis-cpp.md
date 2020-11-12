@@ -8,7 +8,6 @@ The following changes in version 1.26 affect C/C++ analysis in all applications.
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| Unsafe use of this-pointer (`cpp/Likely Bugs/OO/UnsafeUseOfThis.ql`) | correctness, language-features, security | This query finds pure virtual function calls whose qualifier is an object under construction. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
