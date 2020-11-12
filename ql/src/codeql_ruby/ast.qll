@@ -34,7 +34,7 @@ class UnderscoreArg extends @underscore_arg, AstNode, ArgumentListChildType, Arr
   AssignmentRightType, BinaryLeftType, BinaryRightType, ElementReferenceChildType,
   ExceptionsChildType, IfModifierConditionType, OperatorAssignmentRightType, PairKeyType,
   PatternChildType, RescueModifierHandlerType, RightAssignmentListChildType,
-  SingletonMethodObjectType, SuperclassChildType, UnaryChildType, UnderscoreStatement,
+  SingletonMethodObjectType, SuperclassChildType, UnaryOperandType, UnderscoreStatement,
   UnlessModifierConditionType, UntilModifierConditionType, WhileModifierConditionType { }
 
 class UnderscoreLhs extends @underscore_lhs, AstNode, AssignmentLeftType,
@@ -230,7 +230,7 @@ class BlockParameters extends @block_parameters, AstNode, BlockChildType, DoBloc
 
 class Break extends @break, AstNode, ArgumentListChildType, ArrayChildType, AssignmentRightType,
   BinaryLeftType, BinaryRightType, ElementReferenceChildType, IfModifierConditionType,
-  OperatorAssignmentRightType, RescueModifierHandlerType, SuperclassChildType, UnaryChildType,
+  OperatorAssignmentRightType, RescueModifierHandlerType, SuperclassChildType, UnaryOperandType,
   UnderscorePrimary, UnderscoreStatement, UnlessModifierConditionType, UntilModifierConditionType,
   WhileModifierConditionType {
   override string describeQlClass() { result = "Break" }
@@ -249,7 +249,7 @@ class CallReceiverType extends @call_receiver_type, AstNode { }
 class Call extends @call, AstNode, ArgumentListChildType, ArrayChildType, AssignmentRightType,
   BinaryLeftType, BinaryRightType, ElementReferenceChildType, IfModifierConditionType,
   MethodCallMethodType, OperatorAssignmentRightType, RescueModifierHandlerType, SuperclassChildType,
-  UnaryChildType, UnderscoreLhs, UnderscoreStatement, UnlessModifierConditionType,
+  UnaryOperandType, UnderscoreLhs, UnderscoreStatement, UnlessModifierConditionType,
   UntilModifierConditionType, WhileModifierConditionType {
   override string describeQlClass() { result = "Call" }
 
@@ -669,7 +669,7 @@ class MethodCallMethodType extends @method_call_method_type, AstNode { }
 class MethodCall extends @method_call, AstNode, ArgumentListChildType, ArrayChildType,
   AssignmentRightType, BinaryLeftType, BinaryRightType, CallReceiverType, ElementReferenceChildType,
   IfModifierConditionType, OperatorAssignmentRightType, RescueModifierHandlerType,
-  SuperclassChildType, UnaryChildType, UnderscoreLhs, UnderscoreStatement,
+  SuperclassChildType, UnaryOperandType, UnderscoreLhs, UnderscoreStatement,
   UnlessModifierConditionType, UntilModifierConditionType, WhileModifierConditionType {
   override string describeQlClass() { result = "MethodCall" }
 
@@ -720,7 +720,7 @@ class Module extends @module, AstNode, UnderscorePrimary {
 
 class Next extends @next, AstNode, ArgumentListChildType, ArrayChildType, AssignmentRightType,
   BinaryLeftType, BinaryRightType, ElementReferenceChildType, IfModifierConditionType,
-  OperatorAssignmentRightType, RescueModifierHandlerType, SuperclassChildType, UnaryChildType,
+  OperatorAssignmentRightType, RescueModifierHandlerType, SuperclassChildType, UnaryOperandType,
   UnderscorePrimary, UnderscoreStatement, UnlessModifierConditionType, UntilModifierConditionType,
   WhileModifierConditionType {
   override string describeQlClass() { result = "Next" }
@@ -782,7 +782,7 @@ class Pair extends @pair, AstNode, ArgumentListChildType, ArrayChildType, Elemen
 
 class ParenthesizedStatementsChildType extends @parenthesized_statements_child_type, AstNode { }
 
-class ParenthesizedStatements extends @parenthesized_statements, AstNode, UnaryChildType,
+class ParenthesizedStatements extends @parenthesized_statements, AstNode, UnaryOperandType,
   UnderscorePrimary {
   override string describeQlClass() { result = "ParenthesizedStatements" }
 
@@ -917,7 +917,7 @@ class Retry extends @retry, AstNode, UnderscorePrimary {
 
 class Return extends @return, AstNode, ArgumentListChildType, ArrayChildType, AssignmentRightType,
   BinaryLeftType, BinaryRightType, ElementReferenceChildType, IfModifierConditionType,
-  OperatorAssignmentRightType, RescueModifierHandlerType, SuperclassChildType, UnaryChildType,
+  OperatorAssignmentRightType, RescueModifierHandlerType, SuperclassChildType, UnaryOperandType,
   UnderscorePrimary, UnderscoreStatement, UnlessModifierConditionType, UntilModifierConditionType,
   WhileModifierConditionType {
   override string describeQlClass() { result = "Return" }
@@ -1112,16 +1112,22 @@ class Then extends @then, AstNode {
   override AstNode getAFieldOrChild() { then_child(this, _, result) }
 }
 
-class UnaryChildType extends @unary_child_type, AstNode { }
+class UnaryOperandType extends @unary_operand_type, AstNode { }
+
+class UnaryOperatorType extends @unary_operator_type, AstNode { }
 
 class Unary extends @unary, AstNode, UnderscoreArg, UnderscorePrimary, UnderscoreStatement {
   override string describeQlClass() { result = "Unary" }
 
-  override Location getLocation() { unary_def(this, _, result) }
+  override Location getLocation() { unary_def(this, _, _, result) }
 
-  UnaryChildType getChild() { unary_def(this, result, _) }
+  UnaryOperandType getOperand() { unary_def(this, result, _, _) }
 
-  override AstNode getAFieldOrChild() { unary_def(this, result, _) }
+  UnaryOperatorType getOperator() { unary_def(this, _, result, _) }
+
+  override AstNode getAFieldOrChild() {
+    unary_def(this, result, _, _) or unary_def(this, _, result, _)
+  }
 }
 
 class Undef extends @undef, AstNode, UnderscoreStatement {
@@ -1246,7 +1252,7 @@ class WhileModifier extends @while_modifier, AstNode, UnderscoreStatement {
 
 class Yield extends @yield, AstNode, ArgumentListChildType, ArrayChildType, AssignmentRightType,
   BinaryLeftType, BinaryRightType, ElementReferenceChildType, IfModifierConditionType,
-  OperatorAssignmentRightType, RescueModifierHandlerType, SuperclassChildType, UnaryChildType,
+  OperatorAssignmentRightType, RescueModifierHandlerType, SuperclassChildType, UnaryOperandType,
   UnderscorePrimary, UnderscoreStatement, UnlessModifierConditionType, UntilModifierConditionType,
   WhileModifierConditionType {
   override string describeQlClass() { result = "Yield" }
