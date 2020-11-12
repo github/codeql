@@ -18,8 +18,12 @@ struct B : public A {
 };
 
 struct C : public B {
-	C() {
+	C(bool b) {
 		call_f(this);
+
+		if(b) {
+			this->f(); // GOOD: Not a 'must' flow
+		}
 	}
 };
 
@@ -37,4 +41,10 @@ struct E : public A {
 	}
 
 	void f() override {}
+};
+
+struct F : public E {
+	F() {
+		((A*)this)->f(); // BAD: undefined behavior
+	}
 };
