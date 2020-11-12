@@ -50,6 +50,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             }
 
                             throw new InternalError(varPattern, "Unable to get the declared symbol of the var pattern designation.");
+                        case DiscardDesignationSyntax discard:
+                            return new Expressions.Discard(cx, discard, parent, child);
                         default:
                             throw new InternalError("var pattern designation is unhandled");
                     }
