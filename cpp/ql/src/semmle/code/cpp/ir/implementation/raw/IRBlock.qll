@@ -152,6 +152,34 @@ class IRBlock extends IRBlockBase {
   final predicate dominates(IRBlock block) { strictlyDominates(block) or this = block }
 
   /**
+   * Holds if this block immediately post-dominates `block`.
+   *
+   * Block `A` immediate post-dominates block `B` if block `A` strictly post-dominates block `B` and
+   * block `B` is a direct successor of block `A`.
+   */
+  final predicate immediatelyPostDominates(IRBlock block) {
+    blockImmediatelyPostDominates(this, block)
+  }
+
+  /**
+   * Holds if this block strictly post-dominates `block`.
+   *
+   * Block `A` strictly post-dominates block `B` if block `A` post-dominates block `B` and blocks `A`
+   * and `B` are not the same block.
+   */
+  private predicate strictlyPostDominates(IRBlock block) {
+    blockImmediatelyPostDominates+(this, block)
+  }
+
+  /**
+   * Holds if this block is a post-dominator of `block`.
+   *
+   * Block `A` post-dominates block `B` if any control flow path from `B` to the exit block of the
+   * function must pass through block `A`. A block always post-dominates itself.
+   */
+  predicate postDominates(IRBlock block) { strictlyPostDominates(block) or this = block }
+
+  /**
    * Gets a block on the dominance frontier of this block.
    *
    * The dominance frontier of block `A` is the set of blocks `B` such that block `A` does not
@@ -281,23 +309,11 @@ private module Cached {
 
 private Instruction getFirstInstruction(TIRBlock block) { block = MkIRBlock(result) }
 
-private predicate irBbFunctionExit(IRBlock exit) {
+private predicate blockFunctionExit(IRBlock exit) {
   exit.getLastInstruction() instanceof ExitFunctionInstruction
 }
 
-private predicate irBbNodePred(IRBlock src, IRBlock pred) { src.getAPredecessor() = pred }
+private predicate blockPredecessor(IRBlock src, IRBlock pred) { src.getAPredecessor() = pred }
 
-private predicate irBbIPostDominates(IRBlock postDominator, IRBlock node) =
-  idominance(irBbFunctionExit/1, irBbNodePred/2)(_, postDominator, node)
-
-private predicate irBbStrictlyPostDominates(IRBlock postDominator, IRBlock node) {
-  irBbIPostDominates+(postDominator, node)
-}
-
-/**
- * Holds if `postDominator` is a post-dominator of `node` in the control-flow graph. This
- * is reflexive.
- */
-predicate irBbPostDominates(IRBlock postDominator, IRBlock node) {
-  irBbStrictlyPostDominates(postDominator, node) or postDominator = node
-}
+private predicate blockImmediatelyPostDominates(IRBlock postDominator, IRBlock block) =
+  idominance(blockFunctionExit/1, blockPredecessor/2)(_, postDominator, block)
