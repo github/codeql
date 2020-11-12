@@ -9,21 +9,7 @@ module Logrus {
 
   bindingset[result]
   private string getALogResultName() {
-    result.matches("Debug%")
-    or
-    result.matches("Error%")
-    or
-    result.matches("Fatal%")
-    or
-    result.matches("Info%")
-    or
-    result.matches("Panic%")
-    or
-    result.matches("Print%")
-    or
-    result.matches("Trace%")
-    or
-    result.matches("Warn%")
+    result.matches(["Debug%", "Error%", "Fatal%", "Info%", "Panic%", "Print%", "Trace%", "Warn%"])
   }
 
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
