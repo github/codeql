@@ -42,11 +42,7 @@ private module JsonWebToken {
    */
   private class JWTKey extends CredentialsExpr {
     JWTKey() {
-      this =
-        DataFlow::moduleMember("jsonwebtoken", "sign")
-            .getACall()
-            .getArgument(1)
-            .asExpr()
+      this = DataFlow::moduleMember("jsonwebtoken", "sign").getACall().getArgument(1).asExpr()
     }
 
     override string getCredentialsKind() { result = "key" }
