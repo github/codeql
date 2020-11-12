@@ -4,7 +4,6 @@
 
 import semmle.code.java.Type
 
-// import semmle.code.java.dataflow.FlowSources
 /** The type `java.net.URLConnection`. */
 class TypeUrlConnection extends RefType {
   TypeUrlConnection() { hasQualifiedName("java.net", "URLConnection") }
