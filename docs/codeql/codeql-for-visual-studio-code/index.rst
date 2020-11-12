@@ -33,7 +33,7 @@ See the following help topics for more information:
   <testing-codeql-queries-in-visual-studio-code>`: You can run unit tests for
   CodeQL queries using the Visual Studio Code extension.
 
-- :doc:`Customizing customizing-settings
+- :doc:`Customizing settings
   <customizing-settings>`: You can edit the settings for the 
   CodeQL extension to suit your needs.
 
