@@ -58,7 +58,9 @@ where
   not exists(AsmStmt s | f = s.getEnclosingFunction()) and
   not v.getAnAttribute().getName() = "unused" and
   not any(ErrorExpr e).getEnclosingFunction() = f and // unextracted expr may use `v`
-  not exists(Literal l | // this case can be removed when the `myFunction2( [obj](){} );` test case doesn't depend on this exclusion
+  not exists(
+    Literal l // this case can be removed when the `myFunction2( [obj](){} );` test case doesn't depend on this exclusion
+  |
     l.getEnclosingFunction() = f and
     not exists(l.getValue())
   ) and
