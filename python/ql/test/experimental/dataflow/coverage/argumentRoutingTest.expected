@@ -1,5 +1,6 @@
 | classes.py:556:15:556:17 | ControlFlowNode for key | Unexpected result: arg2="ControlFlowNode for arg2, l:565 -> ControlFlowNode for key" |
 | classes.py:557:15:557:18 | ControlFlowNode for self | Unexpected result: arg1="SSA variable with_getitem, l:563 -> ControlFlowNode for self" |
+| classes.py:571:15:571:19 | ControlFlowNode for value | Unexpected result: arg3="ControlFlowNode for arg3, l:581 -> ControlFlowNode for value" |
 | classes.py:572:15:572:17 | ControlFlowNode for key | Unexpected result: arg2="ControlFlowNode for arg2, l:581 -> ControlFlowNode for key" |
 | classes.py:573:15:573:18 | ControlFlowNode for self | Unexpected result: arg1="SSA variable with_setitem, l:578 -> ControlFlowNode for self" |
 | classes.py:587:15:587:17 | ControlFlowNode for key | Unexpected result: arg2="ControlFlowNode for arg2, l:595 -> ControlFlowNode for key" |

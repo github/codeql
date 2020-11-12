@@ -74,12 +74,12 @@ def argument_passing(
 ):
     SINK1(a) #$ arg1="ControlFlowNode for arg1, l:89 -> ControlFlowNode for a" arg1="ControlFlowNode for arg1, l:94 -> ControlFlowNode for a"
     SINK2(b) #$ arg2="ControlFlowNode for arg2, l:94 -> ControlFlowNode for b" MISSING:arg2="ControlFlowNode for arg2, l:89 -> ControlFlowNode for b"
-    SINK3(c)
-    SINK4(d)
-    SINK5(e)
-    SINK6(f)
+    SINK3(c) #$ arg3="ControlFlowNode for arg3, l:94 -> ControlFlowNode for c" MISSING: arg3="ControlFlowNode for arg3, l:89 -> ControlFlowNode for c"
+    SINK4(d) #$ MISSING: arg4="ControlFlowNode for arg4, l:89 -> ControlFlowNode for d"
+    SINK5(e) #$ MISSING: arg5="ControlFlowNode for arg5, l:89 -> ControlFlowNode for e"
+    SINK6(f) #$ MISSING: arg6="ControlFlowNode for arg6, l:89 -> ControlFlowNode for f"
     try:
-        SINK7(g["g"])
+        SINK7(g["g"]) #$ arg7="ControlFlowNode for arg7, l:89 -> ControlFlowNode for Subscript"
     except:
         print("OK")
 
@@ -109,7 +109,7 @@ def test_pos_only():
 def with_multiple_kw_args(a, b, c):
     SINK1(a) #$ arg1="ControlFlowNode for arg1, l:117 -> ControlFlowNode for a" arg1="ControlFlowNode for arg1, l:118 -> ControlFlowNode for a" arg1="ControlFlowNode for arg1, l:119 -> ControlFlowNode for a" arg1="ControlFlowNode for arg1, l:120 -> ControlFlowNode for a"
     SINK2(b) #$ arg2="ControlFlowNode for arg2, l:117 -> ControlFlowNode for b" arg2="ControlFlowNode for arg2, l:120 -> ControlFlowNode for b" MISSING: arg2="ControlFlowNode for arg2, l:118 -> ControlFlowNode for b" arg2="ControlFlowNode for arg2, l:119 -> ControlFlowNode for b"
-    SINK3(c)
+    SINK3(c) #$ arg3="ControlFlowNode for arg3, l:117 -> ControlFlowNode for c" arg3="ControlFlowNode for arg3, l:119 -> ControlFlowNode for c" arg3="ControlFlowNode for arg3, l:120 -> ControlFlowNode for c" MISSING: arg3="ControlFlowNode for arg3, l:118 -> ControlFlowNode for c"
 
 
 @expects(9)
@@ -123,7 +123,7 @@ def test_multiple_kw_args():
 def with_default_arguments(a=arg1, b=arg2, c=arg3):
     SINK1(a) #$ arg1="ControlFlowNode for arg1, l:132 -> ControlFlowNode for a" MISSING:arg1="ControlFlowNode for arg1, l:123 -> ControlFlowNode for a"
     SINK2(b) #$ arg2="ControlFlowNode for arg2, l:133 -> ControlFlowNode for b" MISSING: arg2="ControlFlowNode for arg2, l:123 -> ControlFlowNode for b"
-    SINK3(c)
+    SINK3(c) #$ arg3="ControlFlowNode for arg3, l:134 -> ControlFlowNode for c" MISSING: arg3="ControlFlowNode for arg3, l:123 -> ControlFlowNode for c"
 
 
 @expects(12)
@@ -152,7 +152,7 @@ def grab_bar_baz(bar, **kwargs):
 
 
 def grab_baz(baz):
-    SINK3(baz)
+    SINK3(baz) #$ arg3="ControlFlowNode for arg3, l:160 -> ControlFlowNode for baz"
 
 
 @expects(4)
