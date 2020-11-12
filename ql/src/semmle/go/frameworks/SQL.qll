@@ -194,7 +194,7 @@ module SQL {
       exists(Method meth, string package, string name |
         meth.hasQualifiedName(package, "DB", name) and
         this = meth.getACall().getArgument(0) and
-        package in ["github.com/jinzhu/gorm", "github.com/go-gorm/gorm", "gorm.io/gorm"] and
+        package = Gorm::packagePath() and
         name in ["Where", "Raw", "Order", "Not", "Or", "Select", "Table", "Group", "Having",
               "Joins", "Exec", "Distinct", "Pluck"]
       )
@@ -213,5 +213,13 @@ module SQL {
         name = ["MustExec", "Queryx", "NamedExec", "NamedQuery"] and n = 0
       )
     }
+  }
+}
+
+module Gorm {
+  /** Gets the package name. */
+  bindingset[result]
+  string packagePath() {
+    result = package(["github.com/jinzhu/gorm", "github.com/go-gorm/gorm", "gorm.io/gorm"], "")
   }
 }
