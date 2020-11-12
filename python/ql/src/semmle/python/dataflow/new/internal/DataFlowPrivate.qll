@@ -122,20 +122,29 @@ module EssaFlow {
     // Definition
     //   `x = f(42)`
     //   nodeFrom is `f(42)`, cfg node
+    //   nodeTo `x`, cfg node
+    exists(EssaNodeDefinition ed, DefinitionNode def | def = ed.getDefiningNode() |
+      nodeFrom.asCfgNode() = def.getValue() and
+      nodeTo.asCfgNode() = def
+    )
+    or
+    // Definition
+    //   `x = f(42)`
+    //   nodeFrom is `f(42)`, cfg node
     //   nodeTo is
     //     - `x`, essa var, if `x` is global
     //     - first use of `x`, cfg node, if `x` is not global
     //
     // case where `x` is not global
     exists(EssaNodeDefinition ed |
-      nodeFrom.asCfgNode() = ed.getDefiningNode().(DefinitionNode).getValue() and
+      nodeFrom.asCfgNode() = ed.getDefiningNode() and
       defToFirstUse(ed.getVariable(), nodeTo.asCfgNode()) and
       not ed.getVariable() instanceof GlobalSsaVariable
     )
     or
     // case where `x` is global
     exists(EssaNodeDefinition ed |
-      nodeFrom.asCfgNode() = ed.getDefiningNode().(DefinitionNode).getValue() and
+      nodeFrom.asCfgNode() = ed.getDefiningNode() and
       nodeTo.asVar() = ed.getVariable().(GlobalSsaVariable)
     )
     or
@@ -153,6 +162,8 @@ module EssaFlow {
     //   `x = f(y)`
     //   nodeFrom is `y` on first line, essa var
     //   nodeTo is `y` on second line, cfg node
+    //
+    // This case is now only used for captured variables.
     defToFirstUse(nodeFrom.asVar(), nodeTo.asCfgNode())
     or
     // Next use after use
