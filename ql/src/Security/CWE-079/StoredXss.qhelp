@@ -6,7 +6,7 @@
 <overview>
 	<p>
 
-		Directly using externally-controlled stored value (for example, file names or database contents) to
+		Directly using externally-controlled stored values (for example, file names or database contents) to
 		create HTML content without properly sanitizing the input first,
 		allows for a cross-site scripting vulnerability.
 
@@ -33,7 +33,7 @@
 <example>
 	<p>
 
-		The following example code writes file names directly to a HTTP
+		The following example code writes file names directly to an HTTP
 		response. This leaves the website vulnerable to cross-site scripting,
 		if an attacker can choose the file names on the disk.
 
@@ -52,7 +52,7 @@
 		(Cross Site Scripting) Prevention Cheat Sheet</a>.
 	</li>
 	<li>
-		OWASP
+		OWASP:
 		<a href="https://www.owasp.org/index.php/Types_of_Cross-Site_Scripting">Types of Cross-Site
 		Scripting</a>.
 	</li>
