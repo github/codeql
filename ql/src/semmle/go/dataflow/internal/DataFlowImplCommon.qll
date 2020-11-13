@@ -2,6 +2,30 @@ private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 import Cached
 
+/**
+ * The cost limits for the `AccessPathFront` to `AccessPathApprox` expansion.
+ *
+ * `apLimit` bounds the acceptable fan-out, and `tupleLimit` bounds the
+ * estimated per-`AccessPathFront` tuple cost. Access paths exceeding both of
+ * these limits are represented with lower precision during pruning.
+ */
+predicate accessPathApproxCostLimits(int apLimit, int tupleLimit) {
+  apLimit = 10 and
+  tupleLimit = 10000
+}
+
+/**
+ * The cost limits for the `AccessPathApprox` to `AccessPath` expansion.
+ *
+ * `apLimit` bounds the acceptable fan-out, and `tupleLimit` bounds the
+ * estimated per-`AccessPathApprox` tuple cost. Access paths exceeding both of
+ * these limits are represented with lower precision.
+ */
+predicate accessPathCostLimits(int apLimit, int tupleLimit) {
+  apLimit = 5 and
+  tupleLimit = 1000
+}
+
 cached
 private module Cached {
   /**
@@ -512,13 +536,19 @@ abstract class CallContext extends TCallContext {
   abstract predicate relevantFor(DataFlowCallable callable);
 }
 
-class CallContextAny extends CallContext, TAnyCallContext {
+abstract class CallContextNoCall extends CallContext { }
+
+class CallContextAny extends CallContextNoCall, TAnyCallContext {
   override string toString() { result = "CcAny" }
 
   override predicate relevantFor(DataFlowCallable callable) { any() }
 }
 
-abstract class CallContextCall extends CallContext { }
+abstract class CallContextCall extends CallContext {
+  /** Holds if this call context may be `call`. */
+  bindingset[call]
+  abstract predicate matchesCall(DataFlowCall call);
+}
 
 class CallContextSpecificCall extends CallContextCall, TSpecificCall {
   override string toString() {
@@ -529,6 +559,8 @@ class CallContextSpecificCall extends CallContextCall, TSpecificCall {
     recordDataFlowCallSite(getCall(), callable)
   }
 
+  override predicate matchesCall(DataFlowCall call) { call = this.getCall() }
+
   DataFlowCall getCall() { this = TSpecificCall(result) }
 }
 
@@ -538,9 +570,11 @@ class CallContextSomeCall extends CallContextCall, TSomeCall {
   override predicate relevantFor(DataFlowCallable callable) {
     exists(ParameterNode p | p.getEnclosingCallable() = callable)
   }
+
+  override predicate matchesCall(DataFlowCall call) { any() }
 }
 
-class CallContextReturn extends CallContext, TReturn {
+class CallContextReturn extends CallContextNoCall, TReturn {
   override string toString() {
     exists(DataFlowCall call | this = TReturn(_, call) | result = "CcReturn(" + call + ")")
   }
