@@ -27,6 +27,8 @@ module LodashUnderscore {
       or
       this = DataFlow::moduleImport("lodash/" + name)
       or
+      this = DataFlow::moduleImport("lodash-es/" + name)
+      or
       this = DataFlow::moduleImport("lodash." + name.toLowerCase()) and isLodashMember(name)
       or
       this = DataFlow::globalVarRef("_").getAPropertyRead(name)
