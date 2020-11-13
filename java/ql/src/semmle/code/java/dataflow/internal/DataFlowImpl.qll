@@ -830,6 +830,10 @@ private module Stage2 {
     exists(lcc)
   }
 
+  private predicate flowOutOfCall = flowOutOfCallNodeCand1/5;
+
+  private predicate flowIntoCall = flowIntoCallNodeCand1/5;
+
   /* Begin: Stage 2 logic. */
   private predicate flowCand(Node node, ApApprox apa, Configuration config) {
     PrevStage::revFlow(node, _, _, apa, config)
@@ -948,7 +952,7 @@ private module Stage2 {
   ) {
     exists(ArgumentNode arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
-      flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config) and
+      flowIntoCall(call, arg, p, allowsFieldFlow, config) and
       innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
@@ -961,7 +965,7 @@ private module Stage2 {
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
       fwdFlow(ret, innercc, argAp, ap, config) and
-      flowOutOfCallNodeCand1(call, ret, node, allowsFieldFlow, config) and
+      flowOutOfCall(call, ret, node, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
       checkCallContextReturn(innercc, inner, call) and
       ccOut = getCallContextReturn(inner, call)
@@ -1115,7 +1119,7 @@ private module Stage2 {
   ) {
     exists(Node out, boolean allowsFieldFlow |
       revFlow(out, toReturn, returnAp, ap, config) and
-      flowOutOfCallNodeCand1(call, ret, out, allowsFieldFlow, config)
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1128,7 +1132,7 @@ private module Stage2 {
   ) {
     exists(ParameterNode p, boolean allowsFieldFlow |
       revFlow(p, toReturn, returnAp, ap, config) and
-      flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow, config)
+      flowIntoCall(call, arg, p, allowsFieldFlow, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1148,9 +1152,9 @@ private module Stage2 {
   private predicate revFlowIsReturned(
     DataFlowCall call, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
-    exists(ReturnNodeExt ret |
+    exists(ReturnNodeExt ret, CcCall ccc |
       revFlowOut(call, ret, toReturn, returnAp, ap, config) and
-      fwdFlow(ret, true, apSome(_), ap, config)
+      fwdFlow(ret, ccc, apSome(_), ap, config)
     )
   }
 
@@ -1415,6 +1419,10 @@ private module Stage3 {
     localFlowBigStep(node1, node2, preservesValue, ap, config, _) and exists(lcc)
   }
 
+  private predicate flowOutOfCall = flowOutOfCallNodeCand2/5;
+
+  private predicate flowIntoCall = flowIntoCallNodeCand2/5;
+
   /* Begin: Stage 3 logic. */
   private predicate flowCand(Node node, ApApprox apa, Configuration config) {
     PrevStage::revFlow(node, _, _, apa, config)
@@ -1542,7 +1550,7 @@ private module Stage3 {
   ) {
     exists(ArgumentNode arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
-      flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
+      flowIntoCall(call, arg, p, allowsFieldFlow, config) and
       innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
@@ -1555,7 +1563,7 @@ private module Stage3 {
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
       fwdFlow(ret, innercc, argAp, ap, config) and
-      flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
+      flowOutOfCall(call, ret, node, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
       checkCallContextReturn(innercc, inner, call) and
       ccOut = getCallContextReturn(inner, call)
@@ -1706,7 +1714,7 @@ private module Stage3 {
   ) {
     exists(Node out, boolean allowsFieldFlow |
       revFlow(out, toReturn, returnAp, ap, config) and
-      flowOutOfCallNodeCand2(call, ret, out, allowsFieldFlow, config)
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1719,7 +1727,7 @@ private module Stage3 {
   ) {
     exists(ParameterNode p, boolean allowsFieldFlow |
       revFlow(p, toReturn, returnAp, ap, config) and
-      flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
+      flowIntoCall(call, arg, p, allowsFieldFlow, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1739,9 +1747,9 @@ private module Stage3 {
   private predicate revFlowIsReturned(
     DataFlowCall call, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
-    exists(ReturnNodeExt ret |
+    exists(ReturnNodeExt ret, CcCall ccc |
       revFlowOut(call, ret, toReturn, returnAp, ap, config) and
-      fwdFlow(ret, true, apSome(_), ap, config)
+      fwdFlow(ret, ccc, apSome(_), ap, config)
     )
   }
 
@@ -2077,6 +2085,26 @@ private module Stage4 {
     localFlowBigStep(node1, node2, preservesValue, ap.getFront(), config, lcc)
   }
 
+  pragma[nomagic]
+  private predicate flowOutOfCall(
+    DataFlowCall call, ReturnNodeExt node1, Node node2, boolean allowsFieldFlow,
+    Configuration config
+  ) {
+    flowOutOfCallNodeCand2(call, node1, node2, allowsFieldFlow, config) and
+    PrevStage::revFlow(node2, _, _, _, config) and
+    PrevStage::revFlow(node1, _, _, _, unbind(config))
+  }
+
+  pragma[nomagic]
+  private predicate flowIntoCall(
+    DataFlowCall call, ArgumentNode node1, ParameterNode node2, boolean allowsFieldFlow,
+    Configuration config
+  ) {
+    flowIntoCallNodeCand2(call, node1, node2, allowsFieldFlow, config) and
+    PrevStage::revFlow(node2, _, _, _, config) and
+    PrevStage::revFlow(node1, _, _, _, unbind(config))
+  }
+
   /* Begin: Stage 4 logic. */
   private predicate flowCand(Node node, ApApprox apa, Configuration config) {
     PrevStage::revFlow(node, _, _, apa, config)
@@ -2197,8 +2225,7 @@ private module Stage4 {
   ) {
     exists(ArgumentNode arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
-      flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
-      flowCand(p, _, unbind(config)) and
+      flowIntoCall(call, arg, p, allowsFieldFlow, config) and
       innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
@@ -2211,9 +2238,8 @@ private module Stage4 {
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
       fwdFlow(ret, innercc, argAp, ap, config) and
-      flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
+      flowOutOfCall(call, ret, node, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      flowCand(node, _, unbind(config)) and
       checkCallContextReturn(innercc, inner, call) and
       ccOut = getCallContextReturn(inner, call)
     |
@@ -2363,7 +2389,7 @@ private module Stage4 {
   ) {
     exists(Node out, boolean allowsFieldFlow |
       revFlow(out, toReturn, returnAp, ap, config) and
-      flowOutOfCallNodeCand2(call, ret, out, allowsFieldFlow, config)
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -2376,7 +2402,7 @@ private module Stage4 {
   ) {
     exists(ParameterNode p, boolean allowsFieldFlow |
       revFlow(p, toReturn, returnAp, ap, config) and
-      flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
+      flowIntoCall(call, arg, p, allowsFieldFlow, config)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
