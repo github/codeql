@@ -9,3 +9,7 @@ import ReactComponent_getACandidatePropsValue
 import ReactComponent
 import ReactComponent_getAPropRead
 import ReactName
+
+query DataFlow::SourceNode locationSource() {
+  result = DOM::locationSource()
+}
