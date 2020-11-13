@@ -699,8 +699,10 @@ module TaintTracking {
     private DataFlow::PropRead getAStaticCaptureRef() {
       result =
         DataFlow::globalVarRef("RegExp")
-            .getAPropertyRead(["$" + [1 .. 9], "input", "lastMatch", "leftContext", "rightContext",
-                  "$&", "$^", "$`"])
+            .getAPropertyRead([
+                "$" + [1 .. 9], "input", "lastMatch", "leftContext", "rightContext", "$&", "$^",
+                "$`"
+              ])
     }
 
     /**

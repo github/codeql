@@ -19,13 +19,13 @@ CodeQL is based on a powerful query language called QL. The following topics hel
    :maxdepth: 1
 
    beginner/ql-tutorials
-   writing-queries/writing-queries
-   cpp/ql-for-cpp
-   csharp/ql-for-csharp
-   go/ql-for-go
-   java/ql-for-java
-   javascript/ql-for-javascript
-   python/ql-for-python
+   writing-queries/codeql-queries
+   cpp/codeql-for-cpp
+   csharp/codeql-for-csharp
+   go/codeql-for-go
+   java/codeql-for-java
+   javascript/codeql-for-javascript
+   python/codeql-for-python
    ql-training
 
 .. toctree::
@@ -36,4 +36,4 @@ CodeQL is based on a powerful query language called QL. The following topics hel
 Further reading
 ***************
 
-- `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__: A description of important concepts in QL and a formal specification of the QL language.
+- `QL language reference <https://help.semmle.com/QL/ql-language-reference/index.html>`__: A description of important concepts in QL and a formal specification of the QL language.

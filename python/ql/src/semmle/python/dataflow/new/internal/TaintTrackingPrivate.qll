@@ -86,9 +86,11 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
     object = call.getFunction().(AttrNode).getObject(method_name)
   |
     nodeFrom.getNode() = object and
-    method_name in ["capitalize", "casefold", "center", "expandtabs", "format", "format_map",
-          "join", "ljust", "lstrip", "lower", "replace", "rjust", "rstrip", "strip", "swapcase",
-          "title", "upper", "zfill", "encode", "decode"]
+    method_name in [
+        "capitalize", "casefold", "center", "expandtabs", "format", "format_map", "join", "ljust",
+        "lstrip", "lower", "replace", "rjust", "rstrip", "strip", "swapcase", "title", "upper",
+        "zfill", "encode", "decode"
+      ]
     or
     method_name = "replace" and
     nodeFrom.getNode() = call.getArg(1)
@@ -156,8 +158,9 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   or
   // constructor call
   exists(CallNode call | call = nodeTo.asCfgNode() |
-    call.getFunction().(NameNode).getId() in ["list", "set", "frozenset", "dict", "defaultdict",
-          "tuple"] and
+    call.getFunction().(NameNode).getId() in [
+        "list", "set", "frozenset", "dict", "defaultdict", "tuple"
+      ] and
     call.getArg(0) = nodeFrom.getNode()
   )
   or
@@ -169,11 +172,12 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   or
   // methods
   exists(CallNode call, string name | call = nodeTo.asCfgNode() |
-    name in ["copy",
-          // general
-          "pop",
-          // dict
-          "values", "items", "get", "popitem"] and
+    name in [
+        // general
+        "copy", "pop",
+        // dict
+        "values", "items", "get", "popitem"
+      ] and
     call.getFunction().(AttrNode).getObject(name) = nodeFrom.asCfgNode()
   )
   or

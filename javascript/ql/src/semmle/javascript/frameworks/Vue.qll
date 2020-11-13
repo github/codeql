@@ -33,8 +33,10 @@ module Vue {
   /** Gets the name of a lifecycle hook method. */
   private string lifecycleHookName() {
     result =
-      ["beforeCreate", "created", "beforeMount", "mounted", "beforeUpdate", "updated", "activated",
-          "deactivated", "beforeDestroy", "destroyed", "errorCaptured"]
+      [
+        "beforeCreate", "created", "beforeMount", "mounted", "beforeUpdate", "updated", "activated",
+        "deactivated", "beforeDestroy", "destroyed", "errorCaptured"
+      ]
   }
 
   /** Gets a value that can be used as a `@Component` decorator. */

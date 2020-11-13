@@ -20,8 +20,8 @@ A solution should be a set of instructions for how to ferry the items, such as "
 across the river, and come back with nothing. Then ferry the cabbage across, and come back with ..."
 
 There are lots of ways to approach this problem and implement it in QL. Before you start, make
-sure that you are familiar with how to define `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__
-and `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ in QL.
+sure that you are familiar with how to define `classes <https://help.semmle.com/QL/ql-language-reference/types.html#classes>`__
+and `predicates <https://help.semmle.com/QL/ql-language-reference/predicates.html>`__ in QL.
 The following walkthrough is just one of many possible implementations, so have a go at writing your
 own query too! To find more example queries, see the list :ref:`below <alternatives>`.
 
@@ -69,7 +69,7 @@ For example, if the man is on the left shore, the goat on the right shore, and t
 shore, the state should be ``Left, Right, Left, Left``.
 
 You may find it helpful to introduce some variables that refer to the shore on which the man and the cargo items are. These
-temporary variables in the body of a class are called `fields <https://help.semmle.com/QL/ql-handbook/types.html#fields>`__.
+temporary variables in the body of a class are called `fields <https://help.semmle.com/QL/ql-language-reference/types.html#fields>`__.
 
 .. container:: toggle
 
@@ -159,12 +159,12 @@ could ferry the goat back and forth any number of times without ever reaching an
 Such a path would have an infinite number of river crossings without ever solving the puzzle.
 
 One way to restrict our paths to a finite number of river crossings is to define a 
-`member predicate <https://help.semmle.com/QL/ql-handbook/types.html#member-predicates>`__
+`member predicate <https://help.semmle.com/QL/ql-language-reference/types.html#member-predicates>`__
 ``State reachesVia(string path, int steps)``.
 The result of this predicate is any state that is reachable from the current state (``this``) via
 the given path in a specified finite number of steps.
 
-You can write this as a `recursive predicate <https://help.semmle.com/QL/ql-handbook/recursion.html>`__,
+You can write this as a `recursive predicate <https://help.semmle.com/QL/ql-language-reference/recursion.html>`__,
 with the following base case and recursion step:
 
   - If ``this`` *is* the result state, then it (trivially) reaches the result state via an
@@ -203,7 +203,7 @@ the given path without revisiting any previously visited states.
     revisiting any previous states, and there is a ``safeFerry`` action from the intermediate state to
     the result state.
     (Hint: To check whether a state has previously been visited, you could check if
-    there is an `index of <https://help.semmle.com/QL/ql-spec/language.html#built-ins-for-string>`__
+    there is an `index of <ql-language-specification#built-ins-for-string>`__
     ``visitedStates`` at which the state occurs.)
 
 .. container:: toggle
@@ -218,7 +218,7 @@ the given path without revisiting any previously visited states.
 Display the results
 ~~~~~~~~~~~~~~~~~~~
 
-Once you've defined all the necessary classes and predicates, write a `select clause <https://help.semmle.com/QL/ql-handbook/queries.html#select-clauses>`__
+Once you've defined all the necessary classes and predicates, write a `select clause <https://help.semmle.com/QL/ql-language-reference/queries.html#select-clauses>`__
 that returns the resulting path.
 
 .. container:: toggle
@@ -230,7 +230,7 @@ that returns the resulting path.
    .. literalinclude:: river-crossing.ql
       :lines: 115-117
 
-The `don't-care expression <https://help.semmle.com/QL/ql-handbook/expressions.html#don-t-care-expressions>`__ (``_``),
+The `don't-care expression <https://help.semmle.com/QL/ql-language-reference/expressions.html#don-t-care-expressions>`__ (``_``),
 as the second argument to the ``reachesVia`` predicate, represents any value of ``visitedStates``.
 
 For now, the path defined in ``reachesVia`` just lists the order of cargo items to ferry.
@@ -254,12 +254,12 @@ Here are some more example queries that solve the river crossing puzzle:
      ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/659603593702729237/>`__
 
   #. This query models the man and the cargo items in a different way, using an 
-     `abstract <https://help.semmle.com/QL/ql-handbook/annotations.html#abstract>`__
+     `abstract <https://help.semmle.com/QL/ql-language-reference/annotations.html#abstract>`__
      class and predicate. It also displays the resulting path in a more visual way.
 
      ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/1025323464423811143/>`__
 
-  #. This query introduces `algebraic datatypes <https://help.semmle.com/QL/ql-handbook/types.html#algebraic-datatypes>`__
+  #. This query introduces `algebraic datatypes <https://help.semmle.com/QL/ql-language-reference/types.html#algebraic-datatypes>`__
      to model the situation, instead of defining everything as a subclass of ``string``.
 
      ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/7260748307619718263/>`__

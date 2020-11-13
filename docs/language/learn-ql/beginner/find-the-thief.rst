@@ -48,12 +48,12 @@ There is too much information to search through by hand, so you decide to use yo
 
 #. Open the `query console on LGTM.com <https://lgtm.com/query>`__ to get started.
 #. Select a language and a demo project. For this tutorial, any language and project will do.
-#. Delete the default code ``import <language> select "hello world"``.
+#. Delete the default code ``import <ql-language-specification> select "hello world"``.
 
 QL libraries
 ------------
 
-We've defined a number of QL `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ to help you extract data from your table. A QL predicate is a mini-query that expresses a relation between various pieces of data and describes some of their properties. In this case, the predicates give you information about a person, for example their height or age.
+We've defined a number of QL `predicates <https://help.semmle.com/QL/ql-language-reference/predicates.html>`__ to help you extract data from your table. A QL predicate is a mini-query that expresses a relation between various pieces of data and describes some of their properties. In this case, the predicates give you information about a person, for example their height or age.
 
 +--------------------+----------------------------------------------------------------------------------------+
 | Predicate          | Description                                                                            |
@@ -84,14 +84,14 @@ The villagers answered "yes" to the question "Is the thief taller than 150cm?" T
    where t.getHeight() > 150
    select t
 
-The first line, ``from Person t``, declares that ``t`` must be a ``Person``. We say that the `type <https://help.semmle.com/QL/ql-handbook/types.html>`__ of ``t`` is ``Person``.
+The first line, ``from Person t``, declares that ``t`` must be a ``Person``. We say that the `type <https://help.semmle.com/QL/ql-language-reference/types.html>`__ of ``t`` is ``Person``.
 
 Before you use the rest of your answers in your QL search, here are some more tools and examples to help you write your own QL queries:
 
 Logical connectives
 -------------------
 
-Using `logical connectives <https://help.semmle.com/QL/ql-handbook/formulas.html#logical-connectives>`__, you can write more complex queries that combine different pieces of information.
+Using `logical connectives <https://help.semmle.com/QL/ql-language-reference/formulas.html#logical-connectives>`__, you can write more complex queries that combine different pieces of information.
 
 For example, if you know that the thief is older than 30 *and* has brown hair, you can use the following ``where`` clause to link two predicates:
 
@@ -157,7 +157,7 @@ Notice that we have only temporarily introduced the variable ``c`` and we didn't
 
    Note
 
-   If you are familiar with logic, you may notice that ``exists`` in QL corresponds to the existential `quantifier <https://help.semmle.com/QL/ql-handbook/formulas.html#quantified-formulas>`__ in logic. QL also has a universal quantifier ``forall(vars | formula 1 | formula 2)`` which is logically equivalent to ``not exists(vars | formula 1 | not formula 2)``.
+   If you are familiar with logic, you may notice that ``exists`` in QL corresponds to the existential `quantifier <https://help.semmle.com/QL/ql-language-reference/formulas.html#quantified-formulas>`__ in logic. QL also has a universal quantifier ``forall(vars | formula 1 | formula 2)`` which is logically equivalent to ``not exists(vars | formula 1 | not formula 2)``.
 
 The real investigation
 ----------------------
@@ -218,7 +218,7 @@ You are getting closer to solving the mystery! Unfortunately, you still have qui
 More advanced queries
 ---------------------
 
-What if you want to find the oldest, youngest, tallest, or shortest person in the village? As mentioned in the previous topic, you can do this using ``exists``. However, there is also a more efficient way to do this in QL using functions like ``max`` and ``min``. These are examples of `aggregates <https://help.semmle.com/QL/ql-handbook/expressions.html#aggregations>`__.
+What if you want to find the oldest, youngest, tallest, or shortest person in the village? As mentioned in the previous topic, you can do this using ``exists``. However, there is also a more efficient way to do this in QL using functions like ``max`` and ``min``. These are examples of `aggregates <https://help.semmle.com/QL/ql-language-reference/expressions.html#aggregations>`__.
 
 In general, an aggregate is a function that performs an operation on multiple pieces of data and returns a single value as its output. Common aggregates are ``count``, ``max``, ``min``, ``avg`` (average) and ``sum``. The general way to use an aggregate is:
 

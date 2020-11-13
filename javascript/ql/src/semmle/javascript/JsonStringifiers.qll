@@ -13,9 +13,11 @@ class JsonStringifyCall extends DataFlow::CallNode {
       callee = DataFlow::globalVarRef("JSON").getAPropertyRead("stringify") or
       callee = DataFlow::moduleMember("json3", "stringify") or
       callee =
-        DataFlow::moduleImport(["json-stringify-safe", "json-stable-stringify", "stringify-object",
-              "fast-json-stable-stringify", "fast-safe-stringify", "javascript-stringify",
-              "js-stringify"]) or
+        DataFlow::moduleImport([
+            "json-stringify-safe", "json-stable-stringify", "stringify-object",
+            "fast-json-stable-stringify", "fast-safe-stringify", "javascript-stringify",
+            "js-stringify"
+          ]) or
       // require("util").inspect() and similar
       callee = DataFlow::moduleMember("util", "inspect") or
       callee = DataFlow::moduleImport(["pretty-format", "object-inspect"])

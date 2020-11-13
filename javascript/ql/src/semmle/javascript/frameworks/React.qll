@@ -569,10 +569,12 @@ private class UseStateStep extends PreCallGraphStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::CallNode call | call = react().getAMemberCall("useState") |
       pred =
-        [call.getArgument(0), // initial state
-            call.getCallback(0).getReturnNode(), // lazy initial state
-            call.getAPropertyRead("1").getACall().getArgument(0), // setState invocation
-            call.getAPropertyRead("1").getACall().getCallback(0).getReturnNode()] and // setState with callback
+        [
+          call.getArgument(0), // initial state
+          call.getCallback(0).getReturnNode(), // lazy initial state
+          call.getAPropertyRead("1").getACall().getArgument(0), // setState invocation
+          call.getAPropertyRead("1").getACall().getCallback(0).getReturnNode() // setState with callback
+        ] and
       succ = call.getAPropertyRead("0")
       or
       // Propagate current state into the callback argument of `setState(prevState => { ... })`

@@ -26,8 +26,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
 
             var type = info.Type.Type.symbol;
+            return GetExprKind(type, info.Node, info.Context);
+        }
 
-            switch (type.SpecialType)
+        private static ExprKind GetExprKind(ITypeSymbol type, ExpressionSyntax expr, Context context)
+        {
+            switch (type?.SpecialType)
             {
                 case SpecialType.System_Boolean:
                     return ExprKind.BOOL_LITERAL;
@@ -63,10 +67,45 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case SpecialType.System_UInt64:
                     return ExprKind.ULONG_LITERAL;
 
+                case null:
                 default:
-                    info.Context.ModelError(info.Node, "Unhandled literal type");
+                    if (expr is object)
+                        context.ModelError(expr, "Unhandled literal type");
+                    else
+                        context.ModelError("Unhandled literal type");
                     return ExprKind.UNKNOWN;
             }
+        }
+
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
+            Extraction.Entities.Location location)
+        {
+            var info = new ExpressionInfo(
+                cx,
+                new AnnotatedType(Entities.Type.Create(cx, type), NullableAnnotation.None),
+                location,
+                GetExprKind(type, null, cx),
+                parent,
+                childIndex,
+                true,
+                ValueAsString(value));
+
+            return new Expression(info);
+        }
+
+        public static Expression CreateGeneratedNullLiteral(Context cx, IExpressionParentEntity parent, int childIndex, Extraction.Entities.Location location)
+        {
+            var info = new ExpressionInfo(
+                cx,
+                NullType.Create(cx),
+                location,
+                ExprKind.NULL_LITERAL,
+                parent,
+                childIndex,
+                true,
+                ValueAsString(null));
+
+            return new Expression(info);
         }
     }
 }
