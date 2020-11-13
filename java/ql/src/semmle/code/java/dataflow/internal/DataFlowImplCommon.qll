@@ -807,12 +807,7 @@ abstract class AccessPathFront extends TAccessPathFront {
   // TODO: delete
   predicate headUsesContent(TypedContent tc) { this = TFrontHead(tc) }
 
-  predicate isClearedAt(Node n) {
-    exists(TypedContent tc |
-      this.headUsesContent(tc) and
-      clearsContent(n, tc.getContent())
-    )
-  }
+  predicate isClearedAt(Node n) { clearsContent(n, getHead().getContent()) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {

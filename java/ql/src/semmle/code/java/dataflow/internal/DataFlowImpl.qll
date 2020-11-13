@@ -1862,9 +1862,9 @@ private predicate expensiveLen2unfolding(TypedContent tc, Configuration config) 
     tails = strictcount(AccessPathFront apf | Stage3::consCand(tc, apf, config)) and
     nodes =
       strictcount(Node n |
-        Stage3::revFlow(n, _, _, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), config)
+        Stage3::revFlow(n, _, _, any(AccessPathFrontHead apf | apf.getHead() = tc), config)
         or
-        flowCandSummaryCtx(n, any(AccessPathFrontHead apf | apf.headUsesContent(tc)), config)
+        flowCandSummaryCtx(n, any(AccessPathFrontHead apf | apf.getHead() = tc), config)
       ) and
     accessPathApproxCostLimits(apLimit, tupleLimit) and
     apLimit < tails and
@@ -3300,17 +3300,13 @@ predicate flowsTo(Node source, Node sink, Configuration configuration) {
 private predicate finalStats(boolean fwd, int nodes, int fields, int conscand, int tuples) {
   fwd = true and
   nodes = count(Node n0 | exists(PathNode pn | pn.getNode() = n0)) and
-  fields =
-    count(TypedContent f0 | exists(PathNodeMid pn | pn.getAp().getFront().headUsesContent(f0))) and
+  fields = count(TypedContent f0 | exists(PathNodeMid pn | pn.getAp().getHead() = f0)) and
   conscand = count(AccessPath ap | exists(PathNodeMid pn | pn.getAp() = ap)) and
   tuples = count(PathNode pn)
   or
   fwd = false and
   nodes = count(Node n0 | exists(PathNode pn | pn.getNode() = n0 and reach(pn))) and
-  fields =
-    count(TypedContent f0 |
-      exists(PathNodeMid pn | pn.getAp().getFront().headUsesContent(f0) and reach(pn))
-    ) and
+  fields = count(TypedContent f0 | exists(PathNodeMid pn | pn.getAp().getHead() = f0 and reach(pn))) and
   conscand = count(AccessPath ap | exists(PathNodeMid pn | pn.getAp() = ap and reach(pn))) and
   tuples = count(PathNode pn | reach(pn))
 }
