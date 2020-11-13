@@ -34,8 +34,8 @@ module RequestForgery {
    */
   private class ApacheSetUri extends Sink {
     ApacheSetUri() {
-      exists(MethodAccess ma, TypeApacheHttpRequestBase t |
-        ma.getReceiverType().extendsOrImplements(t) and
+      exists(MethodAccess ma |
+        ma.getReceiverType() instanceof ApacheHttpRequest and
         ma.getMethod().hasName("setURI")
       |
         this.asExpr() = ma.getArgument(0)
@@ -49,9 +49,7 @@ module RequestForgery {
    */
   private class ApacheHttpRequestInstantiation extends Sink {
     ApacheHttpRequestInstantiation() {
-      exists(ClassInstanceExpr c, TypeApacheHttpRequestBase t |
-        c.getConstructedType().extendsOrImplements(t)
-      |
+      exists(ClassInstanceExpr c | c.getConstructedType() instanceof ApacheHttpRequest |
         this.asExpr() = c.getArgument(0)
       )
     }
@@ -149,25 +147,9 @@ module RequestForgery {
 class SpringRestTemplateUrlMethods extends Method {
   SpringRestTemplateUrlMethods() {
     this.getDeclaringType() instanceof SpringRestTemplate and
-    this.hasName("doExecute")
-    or
-    this.hasName("postForEntity")
-    or
-    this.hasName("postForLocation")
-    or
-    this.hasName("postForObject")
-    or
-    this.hasName("put")
-    or
-    this.hasName("exchange")
-    or
-    this.hasName("execute")
-    or
-    this.hasName("getForEntity")
-    or
-    this.hasName("getForObject")
-    or
-    this.hasName("patchForObject")
+    this
+        .hasName(["doExecute", "postForEntity", "postForLocation", "postForObject", "put",
+              "exchange", "execute", "getForEntity", "getForObject", "patchForObject"])
   }
 
   /**

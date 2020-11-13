@@ -15,11 +15,11 @@ class ApacheHttpEntityGetContent extends Method {
 }
 
 /**
- *  A class derived from the `HttpRequestBase` or the `BasicHttpRequest`
+ *  Models any class derived from `HttpRequestBase` or the `BasicHttpRequest`
  *  class of the Apache Http Client `org.apache.http` library
  */
-class TypeApacheHttpRequestBase extends RefType {
-  TypeApacheHttpRequestBase() {
+class ApacheHttpRequest extends RefType {
+  ApacheHttpRequest() {
     this
         .getASourceSupertype*()
         .hasQualifiedName("org.apache.http.client.methods", "HttpRequestBase") or
@@ -27,7 +27,7 @@ class TypeApacheHttpRequestBase extends RefType {
   }
 }
 
-/* A class representing the `RequestBuilder` class of the Apache Http Client library */
+/** Models `RequestBuilder` class of the Apache Http Client library */
 class TypeApacheHttpRequestBuilder extends Class {
   TypeApacheHttpRequestBuilder() {
     hasQualifiedName("org.apache.http.client.methods", "RequestBuilder")

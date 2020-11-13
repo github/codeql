@@ -11,7 +11,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.frameworks.javase.URL
+import semmle.code.java.frameworks.Networking
 import DataFlow::PathGraph
 
 class HTTPString extends StringLiteral {
@@ -52,7 +52,7 @@ class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(URLConstructor u |
+    exists(UrlConstructor u |
       node1.asExpr() = u.protocolArg() and
       node2.asExpr() = u
     )

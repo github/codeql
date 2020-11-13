@@ -155,7 +155,7 @@ class HttpURLOpenMethod extends Method {
 /** Constructor of `ApacheHttpRequest` */
 predicate apacheHttpRequest(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ConstructorCall cc |
-    cc.getConstructedType() instanceof TypeApacheHttpRequestBase and
+    cc.getConstructedType() instanceof ApacheHttpRequest and
     node2.asExpr() = cc and
     cc.getAnArgument() = node1.asExpr()
   )

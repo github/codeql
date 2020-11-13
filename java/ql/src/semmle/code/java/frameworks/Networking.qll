@@ -43,7 +43,12 @@ class SocketGetInputStreamMethod extends Method {
 }
 
 /** Any expresion or call which returns a new URI. */
-abstract class UriCreation extends Top {
+class UriCreation extends Call {
+  UriCreation() {
+    this.getCallee().getDeclaringType() instanceof TypeUri and
+    (this instanceof ClassInstanceExpr or this.getCallee().hasName("create"))
+  }
+
   /**
    * Returns the host of the newly created URI.
    *  In the case where the host is specified separately, this returns only the host.
@@ -51,14 +56,14 @@ abstract class UriCreation extends Top {
    *  such as in `URI(`http://foo.com/mypath')`,
    *  this returns the entire argument passed i.e. `http://foo.com/mypath'.
    */
-  abstract Expr hostArg();
+  Expr getHostArg() { none() }
 }
 
 /** An URI constructor expression */
 class UriConstructor extends ClassInstanceExpr, UriCreation {
   UriConstructor() { this.getConstructor().getDeclaringType().getQualifiedName() = "java.net.URI" }
 
-  override Expr hostArg() {
+  override Expr getHostArg() {
     // URI​(String str)
     result = this.getArgument(0) and this.getNumArgument() = 1
     or
@@ -73,20 +78,22 @@ class UriConstructor extends ClassInstanceExpr, UriCreation {
   }
 }
 
+/** An URI create call */
 class UriCreate extends Call, UriCreation {
   UriCreate() {
     this.getCallee().getName() = "create" and
     this.getCallee().getDeclaringType() instanceof TypeUri
   }
 
-  override Expr hostArg() { result = this.getArgument(0) }
+  override Expr getHostArg() { result = this.getArgument(0) }
 }
 
 /* An URL constructor expression */
 class UrlConstructor extends ClassInstanceExpr {
   UrlConstructor() { this.getConstructor().getDeclaringType().getQualifiedName() = "java.net.URL" }
 
-  Expr hostArg() {
+  /** Returns the host of the newly created URI. */
+  Expr getHostArg() {
     // URL(String spec)
     this.getNumArgument() = 1 and result = this.getArgument(0)
     or
@@ -104,6 +111,7 @@ class UrlConstructor extends ClassInstanceExpr {
     result = this.getArgument(1)
   }
 
+  /** Returns the expression which corresponds to the protocol of the url. */
   Expr protocolArg() {
     // In all cases except where the first parameter is a URL, the argument
     // containing the protocol is the first one, otherwise it is the second.
@@ -113,6 +121,7 @@ class UrlConstructor extends ClassInstanceExpr {
   }
 }
 
+/** Models the `openStream` method of `java.net.url`. */
 class UrlOpenStreamMethod extends Method {
   UrlOpenStreamMethod() {
     this.getDeclaringType() instanceof TypeUrl and
@@ -120,6 +129,7 @@ class UrlOpenStreamMethod extends Method {
   }
 }
 
+/** Models the `openConnection` method of `java.net.url`. */
 class UrlOpenConnectionMethod extends Method {
   UrlOpenConnectionMethod() {
     this.getDeclaringType() instanceof TypeUrl and

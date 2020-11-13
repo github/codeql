@@ -24,10 +24,10 @@ module RequestForgery {
 
 predicate additionalStep(DataFlow::Node pred, DataFlow::Node succ) {
   // propagate to a URI when its host is assigned to
-  exists(UriConstructor c | c.hostArg() = pred.asExpr() | succ.asExpr() = c)
+  exists(UriCreation c | c.getHostArg() = pred.asExpr() | succ.asExpr() = c)
   or
   // propagate to a URL when its host is assigned to
-  exists(UrlConstructor c | c.hostArg() = pred.asExpr() | succ.asExpr() = c)
+  exists(UrlConstructor c | c.getHostArg() = pred.asExpr() | succ.asExpr() = c)
   or
   // propagate to a RequestEntity when its url is assigned to
   exists(MethodAccess m |
