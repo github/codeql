@@ -39,6 +39,12 @@ namespace Semmle.Extraction.CSharp.Populators
             throw new InternalError(node, "Unhandled top-level syntax node");
         }
 
+        public override void VisitGlobalStatement(GlobalStatementSyntax node)
+        {
+            // Intentionally left empty.
+            // Global statements are handled in CompilationUnitVisitor
+        }
+
         public override void VisitDelegateDeclaration(DelegateDeclarationSyntax node)
         {
             Entities.NamedType.Create(Cx, Cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(TrapFile, Parent);
@@ -84,7 +90,7 @@ namespace Semmle.Extraction.CSharp.Populators
             {
                 if (attributeLookup.Value(attribute) is AttributeData attributeData)
                 {
-                    var ae = Semmle.Extraction.CSharp.Entities.Attribute.Create(Cx, attributeData, outputAssembly);
+                    var ae = Entities.Attribute.Create(Cx, attributeData, outputAssembly);
                     Cx.BindComments(ae, attribute.GetLocation());
                 }
             }

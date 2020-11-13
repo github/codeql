@@ -843,6 +843,9 @@ local_function_stmts(
     unique int fn: @local_function_stmt ref,
     int stmt: @local_function ref);
 
+entry_methods(
+  unique int id: @method ref);
+
 /** VARIABLES **/
 
 @variable = @local_scope_variable | @field;
@@ -972,6 +975,8 @@ case @stmt.kind of
 
 @goto_any_stmt = @goto_default_stmt | @goto_case_stmt | @goto_stmt;
 
+global_stmt_block(
+  unique int id: @block_stmt ref);
 
 stmt_location(
   unique int id: @stmt ref,

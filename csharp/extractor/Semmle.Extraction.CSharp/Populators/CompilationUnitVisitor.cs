@@ -2,6 +2,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util.Logging;
+using Semmle.Extraction.CSharp.Entities;
+using Semmle.Extraction.CSharp.Entities.Statements;
+using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
@@ -23,6 +26,8 @@ namespace Semmle.Extraction.CSharp.Populators
                 Cx.Try(m, null, () => ((CSharpSyntaxNode)m).Accept(this));
             }
 
+            ExtractGlobalStatements(compilationUnit);
+
             // Gather comments:
             foreach (var trivia in compilationUnit.DescendantTrivia(compilationUnit.Span, descendIntoTrivia: true))
             {
@@ -37,6 +42,31 @@ namespace Semmle.Extraction.CSharp.Populators
             foreach (var trivia in compilationUnit.GetTrailingTrivia())
             {
                 CommentPopulator.ExtractComment(Cx, trivia);
+            }
+        }
+
+        private void ExtractGlobalStatements(CompilationUnitSyntax compilationUnit)
+        {
+            var globalStatements = compilationUnit
+                .ChildNodes()
+                .OfType<GlobalStatementSyntax>()
+                .ToList();
+
+            if (!globalStatements.Any())
+            {
+                return;
+            }
+
+            var entryPoint = Cx.Compilation.GetEntryPoint(System.Threading.CancellationToken.None);
+            var entryMethod = Method.Create(Cx, entryPoint);
+            var block = GlobalStatementsBlock.Create(Cx, entryMethod);
+
+            for (var i = 0; i < globalStatements.Count; i++)
+            {
+                if (globalStatements[i].Statement is object)
+                {
+                    Statement.Create(Cx, globalStatements[i].Statement, block, i);
+                }
             }
         }
     }
