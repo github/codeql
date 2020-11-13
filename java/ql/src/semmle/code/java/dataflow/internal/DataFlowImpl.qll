@@ -794,6 +794,9 @@ private module Stage2 {
 
   class CcCall extends Cc {
     CcCall() { this = true }
+
+    /** Holds if this call context may be `call`. */
+    predicate matchesCall(DataFlowCall call) { any() }
   }
 
   class CcNoCall extends Cc {
@@ -834,6 +837,9 @@ private module Stage2 {
 
   private predicate flowIntoCall = flowIntoCallNodeCand1/5;
 
+  bindingset[ap, contentType]
+  private predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
+
   /* Begin: Stage 2 logic. */
   private predicate flowCand(Node node, ApApprox apa, Configuration config) {
     PrevStage::revFlow(node, _, _, apa, config)
@@ -847,7 +853,8 @@ private module Stage2 {
    * argument in a call, and if so, `argAp` records the access path of that
    * argument.
    */
-  private predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
+  pragma[nomagic]
+  predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     config.isSource(node) and
     cc = ccAny() and
@@ -920,7 +927,8 @@ private module Stage2 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, cc, argAp, ap1, config) and
-      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config)
+      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
+      typecheckStore(ap1, contentType)
     )
   }
 
@@ -1154,7 +1162,8 @@ private module Stage2 {
   ) {
     exists(ReturnNodeExt ret, CcCall ccc |
       revFlowOut(call, ret, toReturn, returnAp, ap, config) and
-      fwdFlow(ret, ccc, apSome(_), ap, config)
+      fwdFlow(ret, ccc, apSome(_), ap, config) and
+      ccc.matchesCall(call)
     )
   }
 
@@ -1391,6 +1400,9 @@ private module Stage3 {
 
   class CcCall extends Cc {
     CcCall() { this = true }
+
+    /** Holds if this call context may be `call`. */
+    predicate matchesCall(DataFlowCall call) { any() }
   }
 
   class CcNoCall extends Cc {
@@ -1423,6 +1435,19 @@ private module Stage3 {
 
   private predicate flowIntoCall = flowIntoCallNodeCand2/5;
 
+  bindingset[node, ap]
+  private predicate filter(Node node, Ap ap) {
+    not ap.isClearedAt(node) and
+    if node instanceof CastingNode then compatibleTypes(getNodeType(node), ap.getType()) else any()
+  }
+
+  bindingset[ap, contentType]
+  private predicate typecheckStore(Ap ap, DataFlowType contentType) {
+    // We need to typecheck stores here, since reverse flow through a getter
+    // might have a different type here compared to inside the getter.
+    compatibleTypes(ap.getType(), contentType)
+  }
+
   /* Begin: Stage 3 logic. */
   private predicate flowCand(Node node, ApApprox apa, Configuration config) {
     PrevStage::revFlow(node, _, _, apa, config)
@@ -1440,13 +1465,12 @@ private module Stage3 {
   predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     fwdFlow0(node, cc, argAp, ap, config) and
     flowCand(node, unbindBool(getApprox(ap)), config) and
-    not ap.isClearedAt(node) and
-    if node instanceof CastingNode then compatibleTypes(getNodeType(node), ap.getType()) else any()
+    filter(node, ap)
   }
 
   pragma[nomagic]
   private predicate fwdFlow0(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
-    flowCand(node, false, config) and
+    flowCand(node, _, config) and
     config.isSource(node) and
     cc = ccAny() and
     argAp = apNone() and
@@ -1519,9 +1543,7 @@ private module Stage3 {
     exists(DataFlowType contentType |
       fwdFlow(node1, cc, argAp, ap1, config) and
       PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
-      // We need to typecheck stores here, since reverse flow through a getter
-      // might have a different type here compared to inside the getter.
-      compatibleTypes(ap1.getType(), contentType)
+      typecheckStore(ap1, contentType)
     )
   }
 
@@ -1749,7 +1771,8 @@ private module Stage3 {
   ) {
     exists(ReturnNodeExt ret, CcCall ccc |
       revFlowOut(call, ret, toReturn, returnAp, ap, config) and
-      fwdFlow(ret, ccc, apSome(_), ap, config)
+      fwdFlow(ret, ccc, apSome(_), ap, config) and
+      ccc.matchesCall(call)
     )
   }
 
@@ -1771,6 +1794,8 @@ private module Stage3 {
       revFlowStore(ap1, c, /*unbind*/ ap2, _, _, _, _, _, unbind(config))
     )
   }
+
+  predicate revFlow(Node node, Configuration config) { revFlow(node, _, _, _, config) }
 
   private predicate fwdConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepFwd(_, ap, tc, _, _, config)
@@ -2105,6 +2130,12 @@ private module Stage4 {
     PrevStage::revFlow(node1, _, _, _, unbind(config))
   }
 
+  bindingset[node, ap]
+  private predicate filter(Node node, Ap ap) { any() }
+
+  bindingset[ap, contentType]
+  private predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
+
   /* Begin: Stage 4 logic. */
   private predicate flowCand(Node node, ApApprox apa, Configuration config) {
     PrevStage::revFlow(node, _, _, apa, config)
@@ -2118,11 +2149,14 @@ private module Stage4 {
    * argument in a call, and if so, `argAp` records the access path of that
    * argument.
    */
+  pragma[nomagic]
   predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     fwdFlow0(node, cc, argAp, ap, config) and
-    flowCand(node, getApprox(ap), config)
+    flowCand(node, getApprox(ap), config) and
+    filter(node, ap)
   }
 
+  pragma[nomagic]
   private predicate fwdFlow0(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     config.isSource(node) and
@@ -2196,7 +2230,8 @@ private module Stage4 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, cc, argAp, ap1, config) and
-      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config)
+      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
+      typecheckStore(ap1, contentType)
     )
   }
 
@@ -2448,7 +2483,7 @@ private module Stage4 {
     )
   }
 
-  predicate revFlow(Node n, Configuration config) { revFlow(n, _, _, _, config) }
+  predicate revFlow(Node node, Configuration config) { revFlow(node, _, _, _, config) }
 
   private predicate fwdConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepFwd(_, ap, tc, _, _, config)
