@@ -169,7 +169,7 @@ private predicate sharesRoot(TInputSymbol a, TInputSymbol b) {
 }
 
 /**
- * Holds if the `a` is an inputsymbol from a regexp that has root `root`.
+ * Holds if the `a` is an input symbol from a regexp that has root `root`.
  */
 private predicate belongsTo(TInputSymbol a, RegExpRoot root) {
   exists(RegExpTerm term | getRoot(term) = root |
@@ -201,9 +201,15 @@ class InputSymbol extends TInputSymbol {
  */
 abstract class CharacterClass extends InputSymbol {
   /**
-   * Gets a char that is likely relevant for the ReDoS analysis of this character class.
-   * That is: One of the endpoints to the character class,
-   * or a char that is off-by-one to one of the endpoints of the character class (if this is an inversed character class).
+   * Gets a character that is relevant for intersection-tests involving this
+   * character class.
+   *
+   * Specifically, this is any of the characters mentioned explicitly in the 
+   * character class, offset by one if it is inverted. For character class escapes,
+   * the result is as if the class had been written out as a series of intervals.
+   *
+   * This set is large enough to ensure that for any two intersecting character
+   * classes, one contains a relevant character from the other.
    */
   abstract string getARelevantChar();
 
