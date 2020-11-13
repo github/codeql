@@ -169,15 +169,11 @@ predicate flowThroughCallable(Instruction instr, Instruction succ) {
 
 /** Holds if `instr` flows to `succ`. */
 predicate successor(Instruction instr, Instruction succ) {
-  succ.getBlock().postDominates(instr.getBlock()) and
-  (
-    succ.(CopyInstruction).getSourceValue() = instr or
-    succ.(CheckedConvertOrNullInstruction).getUnary() = instr or
-    succ.(ChiInstruction).getTotal() = instr or
-    succ.(ConvertInstruction).getUnary() = instr or
-    succ.(InheritanceConversionInstruction).getUnary() = instr
-  )
-  or
+  succ.(CopyInstruction).getSourceValue() = instr or
+  succ.(CheckedConvertOrNullInstruction).getUnary() = instr or
+  succ.(ChiInstruction).getTotal() = instr or
+  succ.(ConvertInstruction).getUnary() = instr or
+  succ.(InheritanceConversionInstruction).getUnary() = instr or
   flowThroughCallable(instr, succ)
 }
 

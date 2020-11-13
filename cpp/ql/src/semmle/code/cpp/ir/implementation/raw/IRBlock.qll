@@ -152,34 +152,6 @@ class IRBlock extends IRBlockBase {
   final predicate dominates(IRBlock block) { strictlyDominates(block) or this = block }
 
   /**
-   * Holds if this block immediately post-dominates `block`.
-   *
-   * Block `A` immediate post-dominates block `B` if block `A` strictly post-dominates block `B` and
-   * block `B` is a direct successor of block `A`.
-   */
-  final predicate immediatelyPostDominates(IRBlock block) {
-    blockImmediatelyPostDominates(this, block)
-  }
-
-  /**
-   * Holds if this block strictly post-dominates `block`.
-   *
-   * Block `A` strictly post-dominates block `B` if block `A` post-dominates block `B` and blocks `A`
-   * and `B` are not the same block.
-   */
-  private predicate strictlyPostDominates(IRBlock block) {
-    blockImmediatelyPostDominates+(this, block)
-  }
-
-  /**
-   * Holds if this block is a post-dominator of `block`.
-   *
-   * Block `A` post-dominates block `B` if any control flow path from `B` to the exit block of the
-   * function must pass through block `A`. A block always post-dominates itself.
-   */
-  predicate postDominates(IRBlock block) { strictlyPostDominates(block) or this = block }
-
-  /**
    * Gets a block on the dominance frontier of this block.
    *
    * The dominance frontier of block `A` is the set of blocks `B` such that block `A` does not
@@ -308,12 +280,3 @@ private module Cached {
 }
 
 private Instruction getFirstInstruction(TIRBlock block) { block = MkIRBlock(result) }
-
-private predicate blockFunctionExit(IRBlock exit) {
-  exit.getLastInstruction() instanceof ExitFunctionInstruction
-}
-
-private predicate blockPredecessor(IRBlock src, IRBlock pred) { src.getAPredecessor() = pred }
-
-private predicate blockImmediatelyPostDominates(IRBlock postDominator, IRBlock block) =
-  idominance(blockFunctionExit/1, blockPredecessor/2)(_, postDominator, block)

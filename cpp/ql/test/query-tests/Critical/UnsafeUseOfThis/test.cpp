@@ -22,7 +22,7 @@ struct C : public B {
     call_f(this);
 
     if(b) {
-      this->f(); // GOOD: Not a 'must' flow
+      this->f(); // BAD: undefined behavior
     }
   }
 };
@@ -45,6 +45,6 @@ struct E : public A {
 
 struct F : public E {
   F() {
-    ((A*)this)->f(); // BAD: undefined behavior
+    ((A*)this)->f(); // GOOD: Will call `E::f` [FALSE POSITIVE]
   }
 };
