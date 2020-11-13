@@ -204,7 +204,7 @@ abstract class CharacterClass extends InputSymbol {
    * Gets a character that is relevant for intersection-tests involving this
    * character class.
    *
-   * Specifically, this is any of the characters mentioned explicitly in the 
+   * Specifically, this is any of the characters mentioned explicitly in the
    * character class, offset by one if it is inverted. For character class escapes,
    * the result is as if the class had been written out as a series of intervals.
    *
