@@ -774,9 +774,9 @@ private module Stage2 {
   }
 
   bindingset[result, ap]
-  ApApprox getApprox(Ap ap) { any() }
+  private ApApprox getApprox(Ap ap) { any() }
 
-  ApNil getApNil(Node node) { any() }
+  private ApNil getApNil(Node node) { any() }
 
   bindingset[tc, tail]
   private Ap apCons(TypedContent tc, Ap tail) { result = true and exists(tc) and exists(tail) }
@@ -805,21 +805,23 @@ private module Stage2 {
 
   Cc ccAny() { result = false }
 
-  class LocalCc = Unit;
+  private class LocalCc = Unit;
 
   bindingset[call, c, outercc]
-  CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
+  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
 
   bindingset[call, c]
-  CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
+  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
 
   bindingset[innercc, inner, call]
-  predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) { any() }
+  private predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
+    any()
+  }
 
   bindingset[node, cc, config]
-  LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
+  private LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
 
-  predicate localStep(
+  private predicate localStep(
     Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
   ) {
     (
@@ -1380,9 +1382,9 @@ private module Stage3 {
 
   class ApNil = AccessPathFrontNil;
 
-  ApApprox getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
+  private ApApprox getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
 
-  ApNil getApNil(Node node) { result = TFrontNil(getNodeType(node)) }
+  private ApNil getApNil(Node node) { result = TFrontNil(getNodeType(node)) }
 
   bindingset[tc, tail]
   private Ap apCons(TypedContent tc, Ap tail) { result.getHead() = tc and exists(tail) }
@@ -1411,21 +1413,23 @@ private module Stage3 {
 
   Cc ccAny() { result = false }
 
-  class LocalCc = Unit;
+  private class LocalCc = Unit;
 
   bindingset[call, c, outercc]
-  CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
+  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
 
   bindingset[call, c]
-  CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
+  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
 
   bindingset[innercc, inner, call]
-  predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) { any() }
+  private predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
+    any()
+  }
 
   bindingset[node, cc, config]
-  LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
+  private LocalCc getLocalCc(Node node, Cc cc, Configuration config) { any() }
 
-  predicate localStep(
+  private predicate localStep(
     Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
   ) {
     localFlowBigStep(node1, node2, preservesValue, ap, config, _) and exists(lcc)
@@ -2054,9 +2058,9 @@ private module Stage4 {
 
   class ApNil = AccessPathApproxNil;
 
-  ApApprox getApprox(Ap ap) { result = ap.getFront() }
+  private ApApprox getApprox(Ap ap) { result = ap.getFront() }
 
-  ApNil getApNil(Node node) { result = TNil(getNodeType(node)) }
+  private ApNil getApNil(Node node) { result = TNil(getNodeType(node)) }
 
   bindingset[tc, tail]
   private Ap apCons(TypedContent tc, Ap tail) { result = push(tc, tail) }
@@ -2078,33 +2082,33 @@ private module Stage4 {
 
   Cc ccAny() { result instanceof CallContextAny }
 
-  class LocalCc = LocalCallContext;
+  private class LocalCc = LocalCallContext;
 
   bindingset[call, c, outercc]
-  CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) {
+  private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) {
     c = resolveCall(call, outercc) and
     if recordDataFlowCallSite(call, c) then result = TSpecificCall(call) else result = TSomeCall()
   }
 
   bindingset[call, c]
-  CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
+  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
     if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccAny()
   }
 
   bindingset[innercc, inner, call]
-  predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
+  private predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
     resolveReturn(innercc, inner, call)
     or
     innercc.(CallContextCall).matchesCall(call)
   }
 
   bindingset[node, cc, config]
-  LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
+  private LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
     localFlowEntry(node, config) and
     result = getLocalCallContext(cc, node.getEnclosingCallable())
   }
 
-  predicate localStep(
+  private predicate localStep(
     Node node1, Node node2, boolean preservesValue, ApNil ap, Configuration config, LocalCc lcc
   ) {
     localFlowBigStep(node1, node2, preservesValue, ap.getFront(), config, lcc)
