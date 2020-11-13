@@ -98,14 +98,14 @@ predicate isSource(InitializeParameterInstruction init, string msg, Class c) {
  * Holds if `instr` flows to a sink (which is a use of the value of `instr` as a `this` pointer
  * of type `sinkClass`).
  */
-predicate flowsToSink(Instruction instr, Instruction sink, Class sinkClass) {
+predicate flowsToSink(Instruction instr, Instruction sink) {
   flowsFromSource(instr) and
   (
-    isSink(instr, _, sinkClass) and instr = sink
+    isSink(instr, _, _) and instr = sink
     or
     exists(Instruction mid |
       successor(instr, mid) and
-      flowsToSink(mid, sink, sinkClass)
+      flowsToSink(mid, sink)
     )
   )
 }
@@ -193,14 +193,14 @@ predicate flows(
   Class sinkClass
 ) {
   isSource(source, msg, sourceClass) and
-  flowsToSink(source, sink, sinkClass) and
+  flowsToSink(source, sink) and
   isSink(sink, call, sinkClass)
 }
 
-query predicate edges(Instruction a, Instruction b) { successor(a, b) and flowsToSink(b, _, _) }
+query predicate edges(Instruction a, Instruction b) { successor(a, b) and flowsToSink(b, _) }
 
 query predicate nodes(Instruction n, string key, string val) {
-  flowsToSink(n, _, _) and
+  flowsToSink(n, _) and
   key = "semmle.label" and
   val = n.toString()
 }
