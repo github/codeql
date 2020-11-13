@@ -241,7 +241,7 @@ private module CharacterClasses {
       rangeMatchesOnLetterOrDigits(child, char)
       or
       not rangeMatchesOnLetterOrDigits(child, _) and
-      char = getAnyPossiblyMatchedChar() and
+      char = getARelevantChar() and
       exists(string lo, string hi | child.(RegExpCharacterRange).isRange(lo, hi) |
         lo <= char and
         char <= hi
@@ -251,7 +251,7 @@ private module CharacterClasses {
         escape.getValue() = escape.getValue().toLowerCase() and
         classEscapeMatches(escape.getValue(), char)
         or
-        char = getAnyPossiblyMatchedChar() and
+        char = getARelevantChar() and
         escape.getValue() = escape.getValue().toUpperCase() and
         not classEscapeMatches(escape.getValue().toLowerCase(), char)
       )
@@ -294,10 +294,10 @@ private module CharacterClasses {
   private string digit() { result = [0 .. 9].toString() }
 
   /**
-   * Gets any char that could possibly be matched by a regular expression.
+   * Gets a char that could be matched by a regular expression.
    * Includes all printable ascii chars, all constants mentioned in a regexp, and all chars matches by the regexp `/\s|\d|\w/`.
    */
-  private string getAnyPossiblyMatchedChar() {
+  private string getARelevantChar() {
     exists(ascii(result))
     or
     exists(RegExpConstant c | result = c.getValue().charAt(_))
@@ -364,9 +364,9 @@ private module CharacterClasses {
     or
     clazz = "s" and
     (
-      char = [" ", "\t", "\r", "\n", "\\u000c", "\\u000b"]
+      char = [" ", "\t", "\r", "\n"]
       or
-      char = getAnyPossiblyMatchedChar() and
+      char = getARelevantChar() and
       char.regexpMatch("\\u000b|\\u000c") // \v|\f (vertical tab | form feed)
     )
     or
@@ -643,7 +643,7 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
     delta(q1, s1, r1) and
     q2 = epsilonSucc*(q) and
     delta(q2, s2, r2) and
-    // Use pragma[noopt] to prevent compatible(s1,s2) from being the starting point of the join.
+    // Use pragma[noopt] to prevent intersect(s1,s2) from being the starting point of the join.
     // From (s1,s2) it would find a huge number of intermediate state pairs (q1,q2) originating from different literals,
     // and discover at the end that no `q` can reach both `q1` and `q2` by epsilon transitions.
     exists(intersect(s1, s2))
@@ -885,7 +885,7 @@ where
     min(string w |
       isPumpable(Match(t, i), w) and
       not isPumpable(epsilonSucc+(Match(t, i)), _) and
-      not epsilonSucc*(process(Match(t, i), w, [0 .. w.length() - 1])) = Accept(_)
+      not epsilonSucc*(process(Match(t, i), w, _)) = Accept(_)
     |
       w order by w.length(), w
     )
