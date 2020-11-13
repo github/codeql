@@ -935,7 +935,8 @@ private module Stage2 {
   }
 
   /**
-   * Holds if `c` is the target of a store in the flow covered by `fwdFlow`.
+   * Holds if forward flow with access path `tail` reaches a store of `c`
+   * resulting in access path `cons`.
    */
   pragma[nomagic]
   private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
@@ -992,7 +993,8 @@ private module Stage2 {
   }
 
   /**
-   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
+   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`
+   * and data might flow through the target callable and back out at `call`.
    */
   pragma[nomagic]
   private predicate fwdFlowIsEntered(
@@ -1112,7 +1114,8 @@ private module Stage2 {
   }
 
   /**
-   * Holds if `c` is the target of a read in the flow covered by `revFlow`.
+   * Holds if reverse flow with access path `tail` reaches a read of `c`
+   * resulting in access path `cons`.
    */
   pragma[nomagic]
   private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
@@ -1156,7 +1159,9 @@ private module Stage2 {
   }
 
   /**
-   * Holds if an output from `call` is reached in the flow covered by `revFlow`.
+   * Holds if an output from `call` is reached in the flow covered by `revFlow`
+   * and data might flow through the target callable resulting in reverse flow
+   * reaching an argument of `call`.
    */
   pragma[nomagic]
   private predicate revFlowIsReturned(
@@ -1551,6 +1556,10 @@ private module Stage3 {
     )
   }
 
+  /**
+   * Holds if forward flow with access path `tail` reaches a store of `c`
+   * resulting in access path `cons`.
+   */
   pragma[nomagic]
   private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
     exists(TypedContent tc |
@@ -1606,7 +1615,8 @@ private module Stage3 {
   }
 
   /**
-   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
+   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`
+   * and data might flow through the target callable and back out at `call`.
    */
   pragma[nomagic]
   private predicate fwdFlowIsEntered(
@@ -1725,6 +1735,10 @@ private module Stage3 {
     tc.getContent() = c
   }
 
+  /**
+   * Holds if reverse flow with access path `tail` reaches a read of `c`
+   * resulting in access path `cons`.
+   */
   pragma[nomagic]
   private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
     exists(Node mid |
@@ -1767,7 +1781,9 @@ private module Stage3 {
   }
 
   /**
-   * Holds if an output from `call` is reached in the flow covered by `revFlow`.
+   * Holds if an output from `call` is reached in the flow covered by `revFlow`
+   * and data might flow through the target callable resulting in reverse flow
+   * reaching an argument of `call`.
    */
   pragma[nomagic]
   private predicate revFlowIsReturned(
@@ -2239,6 +2255,10 @@ private module Stage4 {
     )
   }
 
+  /**
+   * Holds if forward flow with access path `tail` reaches a store of `c`
+   * resulting in access path `cons`.
+   */
   pragma[nomagic]
   private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
     exists(TypedContent tc |
@@ -2294,7 +2314,8 @@ private module Stage4 {
   }
 
   /**
-   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
+   * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`
+   * and data might flow through the target callable and back out at `call`.
    */
   pragma[nomagic]
   private predicate fwdFlowIsEntered(
@@ -2413,6 +2434,10 @@ private module Stage4 {
     tc.getContent() = c
   }
 
+  /**
+   * Holds if reverse flow with access path `tail` reaches a read of `c`
+   * resulting in access path `cons`.
+   */
   pragma[nomagic]
   private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
     exists(Node mid |
@@ -2455,7 +2480,9 @@ private module Stage4 {
   }
 
   /**
-   * Holds if an output from `call` is reached in the flow covered by `revFlow`.
+   * Holds if an output from `call` is reached in the flow covered by `revFlow`
+   * and data might flow through the target callable resulting in reverse flow
+   * reaching an argument of `call`.
    */
   pragma[nomagic]
   private predicate revFlowIsReturned(
@@ -3315,6 +3342,11 @@ private predicate finalStats(boolean fwd, int nodes, int fields, int conscand, i
   tuples = count(PathNode pn | reach(pn))
 }
 
+/**
+ * INTERNAL: Only for debugging.
+ *
+ * Calculates per-stage metrics for data flow.
+ */
 predicate stageStats(
   int n, string stage, int nodes, int fields, int conscand, int tuples, Configuration config
 ) {
