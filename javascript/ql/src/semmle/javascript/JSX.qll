@@ -26,6 +26,8 @@ class JSXNode extends Expr, @jsx_element {
    * Gets the parent JSX element or fragment of this element.
    */
   JSXNode getJsxParent() { this = result.getABodyElement() }
+
+  override string getAPrimaryQlClass() { result = "JSXNode" }
 }
 
 /**
@@ -61,6 +63,8 @@ class JSXElement extends JSXNode {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getNameExpr().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "JSXElement" }
 }
 
 /**
@@ -80,6 +84,8 @@ class JSXFragment extends JSXNode {
     or
     not exists(getABodyElement()) and result = this
   }
+
+  override string getAPrimaryQlClass() { result = "JSXFragment" }
 }
 
 /**
@@ -124,6 +130,8 @@ class JSXAttribute extends ASTNode, @jsx_attribute {
   }
 
   override string toString() { properties(this, _, _, _, result) }
+
+  override string getAPrimaryQlClass() { result = "JSXAttribute" }
 }
 
 /**
@@ -163,6 +171,8 @@ class JSXQualifiedName extends Expr, @jsx_qualified_name {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getNamespace().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "JSXQualifiedName" }
 }
 
 /**
@@ -214,7 +224,9 @@ class JSXName extends Expr {
  * { /* TBD *&#47; }
  * </pre>
  */
-class JSXEmptyExpr extends Expr, @jsx_empty_expr { }
+class JSXEmptyExpr extends Expr, @jsx_empty_expr {
+  override string getAPrimaryQlClass() { result = "JSXEmptyExpr" }
+}
 
 /**
  * A legacy `@jsx` pragma.

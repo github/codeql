@@ -13,8 +13,8 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public class CompilerVersion
     {
-        const string csc_rsp = "csc.rsp";
-        readonly string specifiedFramework = null;
+        private const string csc_rsp = "csc.rsp";
+        private readonly string specifiedFramework = null;
 
         /// <summary>
         /// The value specified by --compiler, or null.
@@ -85,7 +85,7 @@ namespace Semmle.Extraction.CSharp
             ArgsWithResponse = AddDefaultResponse(CscRsp, options.CompilerArguments).ToArray();
         }
 
-        void SkipExtractionBecause(string reason)
+        private void SkipExtractionBecause(string reason)
         {
             SkipExtraction = true;
             SkipReason = reason;
@@ -99,7 +99,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// The file csc.rsp.
         /// </summary>
-        string CscRsp => Path.Combine(FrameworkPath, csc_rsp);
+        private string CscRsp => Path.Combine(FrameworkPath, csc_rsp);
 
         /// <summary>
         /// Should we skip extraction?
@@ -122,18 +122,18 @@ namespace Semmle.Extraction.CSharp
         /// <param name="responseFile">The full pathname of csc.rsp.</param>
         /// <param name="args">The other command line arguments.</param>
         /// <returns>Modified list of arguments.</returns>
-        static IEnumerable<string> AddDefaultResponse(string responseFile, IEnumerable<string> args)
+        private static IEnumerable<string> AddDefaultResponse(string responseFile, IEnumerable<string> args)
         {
             return SuppressDefaultResponseFile(args) || !File.Exists(responseFile) ?
                 args :
                 new[] { "@" + responseFile }.Concat(args);
         }
 
-        static bool SuppressDefaultResponseFile(IEnumerable<string> args)
+        private static bool SuppressDefaultResponseFile(IEnumerable<string> args)
         {
             return args.Any(arg => new[] { "/noconfig", "-noconfig" }.Contains(arg.ToLowerInvariant()));
         }
 
-        public readonly string[] ArgsWithResponse;
+        public IEnumerable<string> ArgsWithResponse { get; }
     }
 }

@@ -1,83 +1,68 @@
 edges
-| A.cpp:55:5:55:5 | set output argument [c] | A.cpp:56:13:56:15 | call to get |
-| A.cpp:55:12:55:19 | (C *)... | A.cpp:55:5:55:5 | set output argument [c] |
-| A.cpp:55:12:55:19 | new | A.cpp:55:5:55:5 | set output argument [c] |
-| A.cpp:57:11:57:24 | B output argument [c] | A.cpp:57:28:57:30 | call to get |
-| A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | B output argument [c] |
-| A.cpp:98:12:98:18 | new | A.cpp:100:5:100:13 | Store |
-| A.cpp:100:5:100:13 | Store | A.cpp:100:9:100:9 | a [a] |
-| A.cpp:100:9:100:9 | a [a] | A.cpp:103:14:103:14 | *c [a] |
-| A.cpp:103:14:103:14 | *c [a] | A.cpp:107:16:107:16 | a |
+| A.cpp:55:5:55:5 | set output argument [B[0, 64)] | A.cpp:56:13:56:15 | call to get |
+| A.cpp:55:12:55:19 | (C *)... | A.cpp:55:5:55:5 | set output argument [B[0, 64)] |
+| A.cpp:55:12:55:19 | new | A.cpp:55:5:55:5 | set output argument [B[0, 64)] |
+| A.cpp:57:11:57:24 | B output argument [B[0, 64)] | A.cpp:57:28:57:30 | call to get |
+| A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | B output argument [B[0, 64)] |
+| A.cpp:98:12:98:18 | new | A.cpp:100:9:100:9 | a [C1[64, 128)] |
+| A.cpp:100:9:100:9 | a [C1[64, 128)] | A.cpp:103:14:103:14 | *c [C1[64, 128)] |
+| A.cpp:103:14:103:14 | *c [C1[64, 128)] | A.cpp:107:16:107:16 | a |
 | A.cpp:107:16:107:16 | a | A.cpp:107:16:107:16 | a |
-| A.cpp:126:5:126:5 | Chi [c] | A.cpp:131:8:131:8 | f7 output argument [c] |
-| A.cpp:126:5:126:5 | set output argument [c] | A.cpp:126:5:126:5 | Chi [c] |
-| A.cpp:126:12:126:18 | new | A.cpp:126:5:126:5 | set output argument [c] |
-| A.cpp:131:8:131:8 | Chi [c] | A.cpp:132:13:132:13 | c |
-| A.cpp:131:8:131:8 | f7 output argument [c] | A.cpp:131:8:131:8 | Chi [c] |
+| A.cpp:126:5:126:5 | Chi [B[0, 64)] | A.cpp:131:8:131:8 | f7 output argument [B[0, 64)] |
+| A.cpp:126:5:126:5 | set output argument [B[0, 64)] | A.cpp:126:5:126:5 | Chi [B[0, 64)] |
+| A.cpp:126:12:126:18 | new | A.cpp:126:5:126:5 | set output argument [B[0, 64)] |
+| A.cpp:131:8:131:8 | Chi [B[0, 64)] | A.cpp:132:13:132:13 | c |
+| A.cpp:131:8:131:8 | f7 output argument [B[0, 64)] | A.cpp:131:8:131:8 | Chi [B[0, 64)] |
 | A.cpp:132:13:132:13 | c | A.cpp:132:13:132:13 | c |
-| A.cpp:142:7:142:20 | Chi [c] | A.cpp:151:18:151:18 | D output argument [c] |
-| A.cpp:142:7:142:20 | Store | A.cpp:142:10:142:10 | c [c] |
-| A.cpp:142:10:142:10 | c [c] | A.cpp:142:7:142:20 | Chi [c] |
-| A.cpp:142:14:142:20 | new | A.cpp:142:7:142:20 | Store |
-| A.cpp:143:7:143:31 | Chi [b] | A.cpp:151:12:151:24 | D output argument [b] |
-| A.cpp:143:7:143:31 | Store | A.cpp:143:13:143:13 | b [b] |
-| A.cpp:143:13:143:13 | b [b] | A.cpp:143:7:143:31 | Chi [b] |
-| A.cpp:143:25:143:31 | new | A.cpp:143:7:143:31 | Store |
-| A.cpp:150:12:150:18 | new | A.cpp:151:12:151:24 | D output argument [b] |
-| A.cpp:151:12:151:24 | Chi [b] | A.cpp:152:13:152:13 | b |
-| A.cpp:151:12:151:24 | D output argument [b] | A.cpp:151:12:151:24 | Chi [b] |
-| A.cpp:151:18:151:18 | Chi [c] | A.cpp:154:13:154:13 | c |
-| A.cpp:151:18:151:18 | D output argument [c] | A.cpp:151:18:151:18 | Chi [c] |
+| A.cpp:142:7:142:20 | Chi [B[0, 64)] | A.cpp:151:18:151:18 | D output argument [B[0, 64)] |
+| A.cpp:142:10:142:10 | c [B[0, 64)] | A.cpp:142:7:142:20 | Chi [B[0, 64)] |
+| A.cpp:142:14:142:20 | new | A.cpp:142:10:142:10 | c [B[0, 64)] |
+| A.cpp:143:7:143:31 | Chi [D[0, 64)] | A.cpp:151:12:151:24 | D output argument [D[0, 64)] |
+| A.cpp:143:13:143:13 | b [D[0, 64)] | A.cpp:143:7:143:31 | Chi [D[0, 64)] |
+| A.cpp:143:25:143:31 | new | A.cpp:143:13:143:13 | b [D[0, 64)] |
+| A.cpp:150:12:150:18 | new | A.cpp:151:12:151:24 | D output argument [D[0, 64)] |
+| A.cpp:151:12:151:24 | Chi [D[0, 64)] | A.cpp:152:13:152:13 | b |
+| A.cpp:151:12:151:24 | D output argument [D[0, 64)] | A.cpp:151:12:151:24 | Chi [D[0, 64)] |
+| A.cpp:151:18:151:18 | Chi [B[0, 64)] | A.cpp:154:13:154:13 | c |
+| A.cpp:151:18:151:18 | D output argument [B[0, 64)] | A.cpp:151:18:151:18 | Chi [B[0, 64)] |
 | A.cpp:152:13:152:13 | b | A.cpp:152:13:152:13 | b |
 | A.cpp:154:13:154:13 | c | A.cpp:154:13:154:13 | c |
-| C.cpp:18:12:18:18 | C output argument [s1] | C.cpp:27:8:27:11 | *#this [s1] |
-| C.cpp:18:12:18:18 | C output argument [s3] | C.cpp:27:8:27:11 | *#this [s3] |
-| C.cpp:22:9:22:22 | s1 [s1] | C.cpp:24:5:24:25 | Chi [s1] |
-| C.cpp:22:12:22:21 | Store | C.cpp:22:9:22:22 | s1 [s1] |
-| C.cpp:22:12:22:21 | new | C.cpp:22:12:22:21 | Store |
-| C.cpp:24:5:24:25 | Chi [s1] | C.cpp:18:12:18:18 | C output argument [s1] |
-| C.cpp:24:5:24:25 | Chi [s3] | C.cpp:18:12:18:18 | C output argument [s3] |
-| C.cpp:24:5:24:25 | Store | C.cpp:24:11:24:12 | s3 [s3] |
-| C.cpp:24:11:24:12 | s3 [s3] | C.cpp:24:5:24:25 | Chi [s3] |
-| C.cpp:24:16:24:25 | new | C.cpp:24:5:24:25 | Store |
-| C.cpp:27:8:27:11 | *#this [s1] | C.cpp:29:10:29:11 | s1 |
-| C.cpp:27:8:27:11 | *#this [s1] | C.cpp:29:10:29:11 | s1 |
-| C.cpp:27:8:27:11 | *#this [s3] | C.cpp:31:10:31:11 | s3 |
-| C.cpp:27:8:27:11 | *#this [s3] | C.cpp:31:10:31:11 | s3 |
+| C.cpp:18:12:18:18 | C output argument [C[0, 64)] | C.cpp:27:8:27:11 | *#this [C[0, 64)] |
+| C.cpp:18:12:18:18 | C output argument [C[128, 192)] | C.cpp:27:8:27:11 | *#this [C[128, 192)] |
+| C.cpp:22:9:22:22 | s1 [C[0, 64)] | C.cpp:24:5:24:25 | Chi [C[0, 64)] |
+| C.cpp:22:12:22:21 | new | C.cpp:22:9:22:22 | s1 [C[0, 64)] |
+| C.cpp:24:5:24:25 | Chi [C[0, 64)] | C.cpp:18:12:18:18 | C output argument [C[0, 64)] |
+| C.cpp:24:5:24:25 | Chi [C[128, 192)] | C.cpp:18:12:18:18 | C output argument [C[128, 192)] |
+| C.cpp:24:11:24:12 | s3 [C[128, 192)] | C.cpp:24:5:24:25 | Chi [C[128, 192)] |
+| C.cpp:24:16:24:25 | new | C.cpp:24:11:24:12 | s3 [C[128, 192)] |
+| C.cpp:27:8:27:11 | *#this [C[0, 64)] | C.cpp:29:10:29:11 | s1 |
+| C.cpp:27:8:27:11 | *#this [C[128, 192)] | C.cpp:31:10:31:11 | s3 |
 | C.cpp:29:10:29:11 | s1 | C.cpp:29:10:29:11 | s1 |
 | C.cpp:31:10:31:11 | s3 | C.cpp:31:10:31:11 | s3 |
-| aliasing.cpp:9:3:9:22 | Chi [m1] | aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] |
-| aliasing.cpp:9:3:9:22 | Store | aliasing.cpp:9:6:9:7 | m1 [m1] |
-| aliasing.cpp:9:6:9:7 | m1 [m1] | aliasing.cpp:9:3:9:22 | Chi [m1] |
-| aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:9:3:9:22 | Store |
-| aliasing.cpp:13:3:13:21 | Chi [m1] | aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] |
-| aliasing.cpp:13:3:13:21 | Store | aliasing.cpp:13:5:13:6 | m1 [m1] |
-| aliasing.cpp:13:5:13:6 | m1 [m1] | aliasing.cpp:13:3:13:21 | Chi [m1] |
-| aliasing.cpp:13:10:13:19 | call to user_input | aliasing.cpp:13:3:13:21 | Store |
-| aliasing.cpp:25:17:25:19 | Chi [m1] | aliasing.cpp:29:11:29:12 | m1 |
-| aliasing.cpp:25:17:25:19 | Chi [m1] | aliasing.cpp:29:11:29:12 | m1 |
-| aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] | aliasing.cpp:25:17:25:19 | Chi [m1] |
-| aliasing.cpp:26:19:26:20 | Chi [m1] | aliasing.cpp:30:11:30:12 | m1 |
-| aliasing.cpp:26:19:26:20 | Chi [m1] | aliasing.cpp:30:11:30:12 | m1 |
-| aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] | aliasing.cpp:26:19:26:20 | Chi [m1] |
+| aliasing.cpp:9:3:9:22 | Chi [S[0, 32)] | aliasing.cpp:25:17:25:19 | pointerSetter output argument [S[0, 32)] |
+| aliasing.cpp:9:6:9:7 | m1 [S[0, 32)] | aliasing.cpp:9:3:9:22 | Chi [S[0, 32)] |
+| aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:9:6:9:7 | m1 [S[0, 32)] |
+| aliasing.cpp:13:3:13:21 | Chi [S[0, 32)] | aliasing.cpp:26:19:26:20 | referenceSetter output argument [S[0, 32)] |
+| aliasing.cpp:13:5:13:6 | m1 [S[0, 32)] | aliasing.cpp:13:3:13:21 | Chi [S[0, 32)] |
+| aliasing.cpp:13:10:13:19 | call to user_input | aliasing.cpp:13:5:13:6 | m1 [S[0, 32)] |
+| aliasing.cpp:25:17:25:19 | Chi [S[0, 32)] | aliasing.cpp:29:11:29:12 | m1 |
+| aliasing.cpp:25:17:25:19 | pointerSetter output argument [S[0, 32)] | aliasing.cpp:25:17:25:19 | Chi [S[0, 32)] |
+| aliasing.cpp:26:19:26:20 | Chi [S[0, 32)] | aliasing.cpp:30:11:30:12 | m1 |
+| aliasing.cpp:26:19:26:20 | referenceSetter output argument [S[0, 32)] | aliasing.cpp:26:19:26:20 | Chi [S[0, 32)] |
 | aliasing.cpp:29:11:29:12 | m1 | aliasing.cpp:29:11:29:12 | m1 |
 | aliasing.cpp:30:11:30:12 | m1 | aliasing.cpp:30:11:30:12 | m1 |
 | aliasing.cpp:37:13:37:22 | call to user_input | aliasing.cpp:38:11:38:12 | m1 |
 | aliasing.cpp:42:11:42:20 | call to user_input | aliasing.cpp:43:13:43:14 | m1 |
-| aliasing.cpp:60:3:60:22 | Store | aliasing.cpp:60:6:60:7 | m1 [m1] |
-| aliasing.cpp:60:6:60:7 | m1 [m1] | aliasing.cpp:61:13:61:14 | Store [m1] |
-| aliasing.cpp:60:11:60:20 | call to user_input | aliasing.cpp:60:3:60:22 | Store |
-| aliasing.cpp:61:13:61:14 | Store [m1] | aliasing.cpp:62:14:62:15 | m1 |
-| aliasing.cpp:61:13:61:14 | Store [m1] | aliasing.cpp:62:14:62:15 | m1 |
+| aliasing.cpp:60:6:60:7 | m1 [S[0, 32)] | aliasing.cpp:61:13:61:14 | Store [S[0, 32)] |
+| aliasing.cpp:60:11:60:20 | call to user_input | aliasing.cpp:60:6:60:7 | m1 [S[0, 32)] |
+| aliasing.cpp:61:13:61:14 | Store [S[0, 32)] | aliasing.cpp:62:14:62:15 | m1 |
 | aliasing.cpp:62:14:62:15 | m1 | aliasing.cpp:62:14:62:15 | m1 |
 | aliasing.cpp:79:11:79:20 | call to user_input | aliasing.cpp:80:12:80:13 | m1 |
 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 |
 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 |
-| aliasing.cpp:98:3:98:21 | Store | aliasing.cpp:98:5:98:6 | m1 [m1] |
-| aliasing.cpp:98:5:98:6 | m1 [m1] | aliasing.cpp:100:14:100:14 | Store [m1] |
-| aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:98:3:98:21 | Store |
-| aliasing.cpp:100:14:100:14 | Store [m1] | aliasing.cpp:101:21:101:22 | m1 |
-| aliasing.cpp:100:14:100:14 | Store [m1] | aliasing.cpp:102:8:102:10 | * ... |
+| aliasing.cpp:98:5:98:6 | m1 [S[0, 32)] | aliasing.cpp:100:14:100:14 | Store [S[0, 32)] |
+| aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:98:5:98:6 | m1 [S[0, 32)] |
+| aliasing.cpp:100:14:100:14 | Store [S[0, 32)] | aliasing.cpp:101:21:101:22 | m1 |
 | aliasing.cpp:101:21:101:22 | m1 | aliasing.cpp:102:8:102:10 | * ... |
 | aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument [array content] |
 | aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:126:15:126:20 | taint_a_ptr output argument [array content] |
@@ -89,8 +74,7 @@ edges
 | aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:187:15:187:22 | taint_a_ptr output argument [array content] |
 | aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:200:15:200:24 | taint_a_ptr output argument [array content] |
 | aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:225:15:225:22 | taint_a_ptr output argument [array content] |
-| aliasing.cpp:106:3:106:20 | Store | aliasing.cpp:106:3:106:20 | Chi [array content] |
-| aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:106:3:106:20 | Store |
+| aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:106:3:106:20 | Chi [array content] |
 | aliasing.cpp:121:15:121:16 | Chi [array content] | aliasing.cpp:122:8:122:12 | access to array |
 | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument [array content] | aliasing.cpp:121:15:121:16 | Chi [array content] |
 | aliasing.cpp:126:15:126:20 | Chi [array content] | aliasing.cpp:127:8:127:16 | * ... |
@@ -103,446 +87,321 @@ edges
 | aliasing.cpp:158:15:158:20 | taint_a_ptr output argument [array content] | aliasing.cpp:158:15:158:20 | Chi [array content] |
 | aliasing.cpp:164:15:164:20 | Chi [array content] | aliasing.cpp:165:8:165:16 | access to array |
 | aliasing.cpp:164:15:164:20 | taint_a_ptr output argument [array content] | aliasing.cpp:164:15:164:20 | Chi [array content] |
-| aliasing.cpp:175:15:175:22 | BufferMayWriteSideEffect: & ... | aliasing.cpp:175:21:175:22 | m1 [m1] |
-| aliasing.cpp:175:15:175:22 | Chi [s, m1] | aliasing.cpp:176:11:176:11 | s [m1] |
+| aliasing.cpp:175:15:175:22 | BufferMayWriteSideEffect: & ... | aliasing.cpp:175:21:175:22 | m1 [S[0, 32)] |
+| aliasing.cpp:175:15:175:22 | Chi [S2[0, 64), S[0, 32)] | aliasing.cpp:176:11:176:11 | s [S[0, 32)] |
 | aliasing.cpp:175:15:175:22 | taint_a_ptr output argument [array content] | aliasing.cpp:175:15:175:22 | BufferMayWriteSideEffect: & ... |
-| aliasing.cpp:175:19:175:19 | s [s, m1] | aliasing.cpp:175:15:175:22 | Chi [s, m1] |
-| aliasing.cpp:175:21:175:22 | m1 [m1] | aliasing.cpp:175:19:175:19 | s [s, m1] |
-| aliasing.cpp:176:11:176:11 | s [m1] | aliasing.cpp:176:13:176:14 | m1 |
+| aliasing.cpp:175:19:175:19 | s [S2[0, 64), S[0, 32)] | aliasing.cpp:175:15:175:22 | Chi [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:175:21:175:22 | m1 [S[0, 32)] | aliasing.cpp:175:19:175:19 | s [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:176:11:176:11 | s [S[0, 32)] | aliasing.cpp:176:13:176:14 | m1 |
 | aliasing.cpp:176:13:176:14 | m1 | aliasing.cpp:176:13:176:14 | m1 |
-| aliasing.cpp:187:15:187:22 | BufferMayWriteSideEffect: & ... | aliasing.cpp:187:21:187:22 | m1 [m1] |
+| aliasing.cpp:187:15:187:22 | BufferMayWriteSideEffect: & ... | aliasing.cpp:187:21:187:22 | m1 [S[0, 32)] |
 | aliasing.cpp:187:15:187:22 | taint_a_ptr output argument [array content] | aliasing.cpp:187:15:187:22 | BufferMayWriteSideEffect: & ... |
-| aliasing.cpp:187:19:187:19 | s [s, m1] | aliasing.cpp:188:13:188:14 | Store [s, m1] |
-| aliasing.cpp:187:21:187:22 | m1 [m1] | aliasing.cpp:187:19:187:19 | s [s, m1] |
-| aliasing.cpp:188:13:188:14 | Store [s, m1] | aliasing.cpp:189:13:189:13 | s [m1] |
-| aliasing.cpp:189:13:189:13 | s [m1] | aliasing.cpp:189:15:189:16 | m1 |
+| aliasing.cpp:187:19:187:19 | s [S2[0, 64), S[0, 32)] | aliasing.cpp:188:13:188:14 | Store [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:187:21:187:22 | m1 [S[0, 32)] | aliasing.cpp:187:19:187:19 | s [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:188:13:188:14 | Store [S2[0, 64), S[0, 32)] | aliasing.cpp:189:13:189:13 | s [S[0, 32)] |
+| aliasing.cpp:189:13:189:13 | s [S[0, 32)] | aliasing.cpp:189:15:189:16 | m1 |
 | aliasing.cpp:189:15:189:16 | m1 | aliasing.cpp:189:15:189:16 | m1 |
-| aliasing.cpp:200:15:200:24 | BufferMayWriteSideEffect: & ... | aliasing.cpp:200:23:200:24 | m1 [m1] |
-| aliasing.cpp:200:15:200:24 | Chi [s, m1] | aliasing.cpp:201:13:201:13 | s [m1] |
+| aliasing.cpp:200:15:200:24 | BufferMayWriteSideEffect: & ... | aliasing.cpp:200:23:200:24 | m1 [S[0, 32)] |
+| aliasing.cpp:200:15:200:24 | Chi [S2[0, 64), S[0, 32)] | aliasing.cpp:201:13:201:13 | s [S[0, 32)] |
 | aliasing.cpp:200:15:200:24 | taint_a_ptr output argument [array content] | aliasing.cpp:200:15:200:24 | BufferMayWriteSideEffect: & ... |
-| aliasing.cpp:200:21:200:21 | s [s, m1] | aliasing.cpp:200:15:200:24 | Chi [s, m1] |
-| aliasing.cpp:200:23:200:24 | m1 [m1] | aliasing.cpp:200:21:200:21 | s [s, m1] |
-| aliasing.cpp:201:13:201:13 | s [m1] | aliasing.cpp:201:15:201:16 | m1 |
+| aliasing.cpp:200:21:200:21 | s [S2[0, 64), S[0, 32)] | aliasing.cpp:200:15:200:24 | Chi [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:200:23:200:24 | m1 [S[0, 32)] | aliasing.cpp:200:21:200:21 | s [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:201:13:201:13 | s [S[0, 32)] | aliasing.cpp:201:15:201:16 | m1 |
 | aliasing.cpp:201:15:201:16 | m1 | aliasing.cpp:201:15:201:16 | m1 |
-| aliasing.cpp:211:3:211:24 | Chi [s, m1] | aliasing.cpp:212:12:212:12 | s [m1] |
-| aliasing.cpp:211:3:211:24 | Chi [s, m1] | aliasing.cpp:212:12:212:12 | s [m1] |
-| aliasing.cpp:211:3:211:24 | Store | aliasing.cpp:211:8:211:9 | m1 [m1] |
-| aliasing.cpp:211:6:211:6 | s [s, m1] | aliasing.cpp:211:3:211:24 | Chi [s, m1] |
-| aliasing.cpp:211:8:211:9 | m1 [m1] | aliasing.cpp:211:6:211:6 | s [s, m1] |
-| aliasing.cpp:211:13:211:22 | call to user_input | aliasing.cpp:211:3:211:24 | Store |
-| aliasing.cpp:212:12:212:12 | Store [m1] | aliasing.cpp:213:10:213:11 | m1 |
-| aliasing.cpp:212:12:212:12 | Store [m1] | aliasing.cpp:213:10:213:11 | m1 |
-| aliasing.cpp:212:12:212:12 | s [m1] | aliasing.cpp:212:12:212:12 | Store [m1] |
-| aliasing.cpp:212:12:212:12 | s [m1] | aliasing.cpp:212:12:212:12 | Store [m1] |
+| aliasing.cpp:211:3:211:24 | Chi [S2[0, 64), S[0, 32)] | aliasing.cpp:212:12:212:12 | s [S[0, 32)] |
+| aliasing.cpp:211:6:211:6 | s [S2[0, 64), S[0, 32)] | aliasing.cpp:211:3:211:24 | Chi [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:211:8:211:9 | m1 [S[0, 32)] | aliasing.cpp:211:6:211:6 | s [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:211:13:211:22 | call to user_input | aliasing.cpp:211:8:211:9 | m1 [S[0, 32)] |
+| aliasing.cpp:212:12:212:12 | Store [S[0, 32)] | aliasing.cpp:213:10:213:11 | m1 |
+| aliasing.cpp:212:12:212:12 | s [S[0, 32)] | aliasing.cpp:212:12:212:12 | Store [S[0, 32)] |
 | aliasing.cpp:213:10:213:11 | m1 | aliasing.cpp:213:10:213:11 | m1 |
-| aliasing.cpp:225:15:225:22 | BufferMayWriteSideEffect: & ... | aliasing.cpp:225:21:225:22 | m1 [m1] |
-| aliasing.cpp:225:15:225:22 | Chi [s, m1] | aliasing.cpp:226:12:226:12 | s [m1] |
-| aliasing.cpp:225:15:225:22 | Chi [s, m1] | aliasing.cpp:226:12:226:12 | s [m1] |
+| aliasing.cpp:225:15:225:22 | BufferMayWriteSideEffect: & ... | aliasing.cpp:225:21:225:22 | m1 [S[0, 32)] |
+| aliasing.cpp:225:15:225:22 | Chi [S2[0, 64), S[0, 32)] | aliasing.cpp:226:12:226:12 | s [S[0, 32)] |
 | aliasing.cpp:225:15:225:22 | taint_a_ptr output argument [array content] | aliasing.cpp:225:15:225:22 | BufferMayWriteSideEffect: & ... |
-| aliasing.cpp:225:19:225:19 | s [s, m1] | aliasing.cpp:225:15:225:22 | Chi [s, m1] |
-| aliasing.cpp:225:21:225:22 | m1 [m1] | aliasing.cpp:225:19:225:19 | s [s, m1] |
-| aliasing.cpp:226:12:226:12 | Store [m1] | aliasing.cpp:227:10:227:11 | m1 |
-| aliasing.cpp:226:12:226:12 | Store [m1] | aliasing.cpp:227:10:227:11 | m1 |
-| aliasing.cpp:226:12:226:12 | s [m1] | aliasing.cpp:226:12:226:12 | Store [m1] |
-| aliasing.cpp:226:12:226:12 | s [m1] | aliasing.cpp:226:12:226:12 | Store [m1] |
+| aliasing.cpp:225:19:225:19 | s [S2[0, 64), S[0, 32)] | aliasing.cpp:225:15:225:22 | Chi [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:225:21:225:22 | m1 [S[0, 32)] | aliasing.cpp:225:19:225:19 | s [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:226:12:226:12 | Store [S[0, 32)] | aliasing.cpp:227:10:227:11 | m1 |
+| aliasing.cpp:226:12:226:12 | s [S[0, 32)] | aliasing.cpp:226:12:226:12 | Store [S[0, 32)] |
 | aliasing.cpp:227:10:227:11 | m1 | aliasing.cpp:227:10:227:11 | m1 |
-| aliasing.cpp:249:26:249:26 | *p [e] | aliasing.cpp:250:11:250:11 | e |
+| aliasing.cpp:249:26:249:26 | *p [B[96, 128)] | aliasing.cpp:250:11:250:11 | e |
 | aliasing.cpp:250:11:250:11 | e | aliasing.cpp:250:11:250:11 | e |
-| aliasing.cpp:256:10:256:19 | call to user_input | aliasing.cpp:257:3:257:13 | Store |
-| aliasing.cpp:257:3:257:13 | Store | aliasing.cpp:257:6:257:6 | e [e] |
-| aliasing.cpp:257:6:257:6 | e [e] | aliasing.cpp:249:26:249:26 | *p [e] |
-| aliasing.cpp:266:3:266:21 | Store | aliasing.cpp:266:6:266:6 | c [c] |
-| aliasing.cpp:266:6:266:6 | c [c] | aliasing.cpp:267:37:267:37 | multiple_loads_from_a_same_memory output argument [e] |
-| aliasing.cpp:266:10:266:19 | call to user_input | aliasing.cpp:266:3:266:21 | Store |
-| aliasing.cpp:267:37:267:37 | multiple_loads_from_a_same_memory output argument [e] | aliasing.cpp:249:26:249:26 | *p [e] |
+| aliasing.cpp:256:10:256:19 | call to user_input | aliasing.cpp:257:6:257:6 | e [B[96, 128)] |
+| aliasing.cpp:257:6:257:6 | e [B[96, 128)] | aliasing.cpp:249:26:249:26 | *p [B[96, 128)] |
+| aliasing.cpp:266:6:266:6 | c [B[32, 64)] | aliasing.cpp:267:37:267:37 | multiple_loads_from_a_same_memory output argument [B[96, 128)] |
+| aliasing.cpp:266:10:266:19 | call to user_input | aliasing.cpp:266:6:266:6 | c [B[32, 64)] |
+| aliasing.cpp:267:37:267:37 | multiple_loads_from_a_same_memory output argument [B[96, 128)] | aliasing.cpp:249:26:249:26 | *p [B[96, 128)] |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... |
 | arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:16:8:16:13 | access to array |
 | arrays.cpp:36:26:36:35 | call to user_input | arrays.cpp:37:24:37:27 | data |
-| by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | by_reference.cpp:51:10:51:20 | call to getDirectly |
-| by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] |
-| by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] | by_reference.cpp:57:10:57:22 | call to getIndirectly |
-| by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] |
-| by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
-| by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] |
-| by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
-| by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] |
-| by_reference.cpp:84:3:84:25 | Chi [a] | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] |
-| by_reference.cpp:84:3:84:25 | Chi [a] | by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] |
-| by_reference.cpp:84:3:84:25 | Store | by_reference.cpp:84:10:84:10 | a [a] |
-| by_reference.cpp:84:10:84:10 | a [a] | by_reference.cpp:84:3:84:25 | Chi [a] |
-| by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:84:3:84:25 | Store |
-| by_reference.cpp:88:3:88:24 | Chi [a] | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:88:3:88:24 | Chi [a] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:88:3:88:24 | Store | by_reference.cpp:88:9:88:9 | a [a] |
-| by_reference.cpp:88:9:88:9 | a [a] | by_reference.cpp:88:3:88:24 | Chi [a] |
-| by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:88:3:88:24 | Store |
+| by_reference.cpp:50:3:50:3 | setDirectly output argument [S[0, 64)] | by_reference.cpp:51:10:51:20 | call to getDirectly |
+| by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:50:3:50:3 | setDirectly output argument [S[0, 64)] |
+| by_reference.cpp:56:3:56:3 | setIndirectly output argument [S[0, 64)] | by_reference.cpp:57:10:57:22 | call to getIndirectly |
+| by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:56:3:56:3 | setIndirectly output argument [S[0, 64)] |
+| by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [S[0, 64)] | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
+| by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [S[0, 64)] |
+| by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [S[0, 64)] | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
+| by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [S[0, 64)] |
+| by_reference.cpp:84:3:84:25 | Chi [Inner[0, 64)] | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [Inner[0, 64)] |
+| by_reference.cpp:84:3:84:25 | Chi [Inner[0, 64)] | by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [Inner[0, 64)] |
+| by_reference.cpp:84:10:84:10 | a [Inner[0, 64)] | by_reference.cpp:84:3:84:25 | Chi [Inner[0, 64)] |
+| by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:84:10:84:10 | a [Inner[0, 64)] |
+| by_reference.cpp:88:3:88:24 | Chi [Inner[0, 64)] | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [Inner[0, 64)] |
+| by_reference.cpp:88:3:88:24 | Chi [Inner[0, 64)] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [Inner[0, 64)] |
+| by_reference.cpp:88:9:88:9 | a [Inner[0, 64)] | by_reference.cpp:88:3:88:24 | Chi [Inner[0, 64)] |
+| by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:88:9:88:9 | a [Inner[0, 64)] |
 | by_reference.cpp:92:3:92:20 | Chi [array content] | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [array content] |
 | by_reference.cpp:92:3:92:20 | Chi [array content] | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [array content] |
-| by_reference.cpp:92:3:92:20 | Store | by_reference.cpp:92:3:92:20 | Chi [array content] |
-| by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:92:3:92:20 | Store |
+| by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:92:3:92:20 | Chi [array content] |
 | by_reference.cpp:96:3:96:19 | Chi [array content] | by_reference.cpp:124:15:124:21 | taint_a_ref output argument [array content] |
 | by_reference.cpp:96:3:96:19 | Chi [array content] | by_reference.cpp:128:15:128:23 | taint_a_ref output argument [array content] |
-| by_reference.cpp:96:3:96:19 | Store | by_reference.cpp:96:3:96:19 | Chi [array content] |
-| by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:96:3:96:19 | Store |
-| by_reference.cpp:102:21:102:39 | Chi [a, a] | by_reference.cpp:110:14:110:25 | inner_nested [a] |
-| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a, a] | by_reference.cpp:102:21:102:39 | Chi [a, a] |
-| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | by_reference.cpp:102:28:102:39 | inner_nested [a, a] |
-| by_reference.cpp:102:28:102:39 | inner_nested [a, a] | by_reference.cpp:102:21:102:39 | Chi [a, a] |
-| by_reference.cpp:102:28:102:39 | inner_nested [a, a] | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a, a] |
-| by_reference.cpp:104:15:104:22 | BufferMayWriteSideEffect: & ... | by_reference.cpp:104:22:104:22 | a [a] |
-| by_reference.cpp:104:15:104:22 | Chi [a] | by_reference.cpp:112:14:112:14 | a |
-| by_reference.cpp:104:15:104:22 | Chi [a] | by_reference.cpp:112:14:112:14 | a |
-| by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [a] | by_reference.cpp:104:15:104:22 | Chi [a] |
+| by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:96:3:96:19 | Chi [array content] |
+| by_reference.cpp:102:21:102:39 | Chi [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:110:14:110:25 | inner_nested [Inner[0, 64)] |
+| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [Inner[0, 64)] | by_reference.cpp:102:28:102:39 | inner_nested [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:102:21:102:39 | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:102:28:102:39 | inner_nested [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:102:21:102:39 | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:102:28:102:39 | inner_nested [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:104:15:104:22 | BufferMayWriteSideEffect: & ... | by_reference.cpp:104:22:104:22 | a [Outer[128, 192)] |
+| by_reference.cpp:104:15:104:22 | Chi [Outer[128, 192)] | by_reference.cpp:112:14:112:14 | a |
+| by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [Outer[128, 192)] | by_reference.cpp:104:15:104:22 | Chi [Outer[128, 192)] |
 | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [array content] | by_reference.cpp:104:15:104:22 | BufferMayWriteSideEffect: & ... |
-| by_reference.cpp:104:22:104:22 | a [a] | by_reference.cpp:104:15:104:22 | Chi [a] |
-| by_reference.cpp:104:22:104:22 | a [a] | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [a] |
-| by_reference.cpp:106:21:106:41 | Chi [a, a] | by_reference.cpp:114:16:114:27 | inner_nested [a] |
-| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a, a] | by_reference.cpp:106:21:106:41 | Chi [a, a] |
-| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] | by_reference.cpp:106:30:106:41 | inner_nested [a, a] |
-| by_reference.cpp:106:30:106:41 | inner_nested [a, a] | by_reference.cpp:106:21:106:41 | Chi [a, a] |
-| by_reference.cpp:106:30:106:41 | inner_nested [a, a] | by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a, a] |
-| by_reference.cpp:108:15:108:24 | BufferMayWriteSideEffect: & ... | by_reference.cpp:108:24:108:24 | a [a] |
-| by_reference.cpp:108:15:108:24 | Chi [a] | by_reference.cpp:116:16:116:16 | a |
-| by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [a] | by_reference.cpp:108:15:108:24 | Chi [a] |
+| by_reference.cpp:104:22:104:22 | a [Outer[128, 192)] | by_reference.cpp:104:15:104:22 | Chi [Outer[128, 192)] |
+| by_reference.cpp:104:22:104:22 | a [Outer[128, 192)] | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [Outer[128, 192)] |
+| by_reference.cpp:106:21:106:41 | Chi [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:114:16:114:27 | inner_nested [Inner[0, 64)] |
+| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [Inner[0, 64)] | by_reference.cpp:106:30:106:41 | inner_nested [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:106:21:106:41 | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:106:30:106:41 | inner_nested [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:106:21:106:41 | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:106:30:106:41 | inner_nested [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:108:15:108:24 | BufferMayWriteSideEffect: & ... | by_reference.cpp:108:24:108:24 | a [Outer[128, 192)] |
+| by_reference.cpp:108:15:108:24 | Chi [Outer[128, 192)] | by_reference.cpp:116:16:116:16 | a |
+| by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [Outer[128, 192)] | by_reference.cpp:108:15:108:24 | Chi [Outer[128, 192)] |
 | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [array content] | by_reference.cpp:108:15:108:24 | BufferMayWriteSideEffect: & ... |
-| by_reference.cpp:108:24:108:24 | a [a] | by_reference.cpp:108:15:108:24 | Chi [a] |
-| by_reference.cpp:108:24:108:24 | a [a] | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [a] |
-| by_reference.cpp:110:14:110:25 | inner_nested [a] | by_reference.cpp:110:27:110:27 | a |
+| by_reference.cpp:108:24:108:24 | a [Outer[128, 192)] | by_reference.cpp:108:15:108:24 | Chi [Outer[128, 192)] |
+| by_reference.cpp:108:24:108:24 | a [Outer[128, 192)] | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [Outer[128, 192)] |
+| by_reference.cpp:110:14:110:25 | inner_nested [Inner[0, 64)] | by_reference.cpp:110:27:110:27 | a |
 | by_reference.cpp:110:27:110:27 | a | by_reference.cpp:110:27:110:27 | a |
 | by_reference.cpp:112:14:112:14 | a | by_reference.cpp:112:14:112:14 | a |
-| by_reference.cpp:114:16:114:27 | inner_nested [a] | by_reference.cpp:114:29:114:29 | a |
+| by_reference.cpp:114:16:114:27 | inner_nested [Inner[0, 64)] | by_reference.cpp:114:29:114:29 | a |
 | by_reference.cpp:114:29:114:29 | a | by_reference.cpp:114:29:114:29 | a |
 | by_reference.cpp:116:16:116:16 | a | by_reference.cpp:116:16:116:16 | a |
-| by_reference.cpp:122:21:122:38 | Chi [a, a] | by_reference.cpp:130:14:130:25 | inner_nested [a] |
-| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a, a] | by_reference.cpp:122:21:122:38 | Chi [a, a] |
-| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] | by_reference.cpp:122:27:122:38 | inner_nested [a, a] |
-| by_reference.cpp:122:27:122:38 | inner_nested [a, a] | by_reference.cpp:122:21:122:38 | Chi [a, a] |
-| by_reference.cpp:122:27:122:38 | inner_nested [a, a] | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a, a] |
-| by_reference.cpp:124:15:124:21 | BufferMayWriteSideEffect: (reference to) | by_reference.cpp:124:21:124:21 | a [a] |
-| by_reference.cpp:124:15:124:21 | Chi [a] | by_reference.cpp:132:14:132:14 | a |
-| by_reference.cpp:124:15:124:21 | Chi [a] | by_reference.cpp:132:14:132:14 | a |
-| by_reference.cpp:124:15:124:21 | taint_a_ref output argument [a] | by_reference.cpp:124:15:124:21 | Chi [a] |
+| by_reference.cpp:122:21:122:38 | Chi [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:130:14:130:25 | inner_nested [Inner[0, 64)] |
+| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [Inner[0, 64)] | by_reference.cpp:122:27:122:38 | inner_nested [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:122:21:122:38 | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:122:27:122:38 | inner_nested [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:122:21:122:38 | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:122:27:122:38 | inner_nested [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:124:15:124:21 | BufferMayWriteSideEffect: (reference to) | by_reference.cpp:124:21:124:21 | a [Outer[128, 192)] |
+| by_reference.cpp:124:15:124:21 | Chi [Outer[128, 192)] | by_reference.cpp:132:14:132:14 | a |
+| by_reference.cpp:124:15:124:21 | taint_a_ref output argument [Outer[128, 192)] | by_reference.cpp:124:15:124:21 | Chi [Outer[128, 192)] |
 | by_reference.cpp:124:15:124:21 | taint_a_ref output argument [array content] | by_reference.cpp:124:15:124:21 | BufferMayWriteSideEffect: (reference to) |
-| by_reference.cpp:124:21:124:21 | a [a] | by_reference.cpp:124:15:124:21 | Chi [a] |
-| by_reference.cpp:124:21:124:21 | a [a] | by_reference.cpp:124:15:124:21 | taint_a_ref output argument [a] |
-| by_reference.cpp:126:21:126:40 | Chi [a, a] | by_reference.cpp:134:16:134:27 | inner_nested [a] |
-| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a, a] | by_reference.cpp:126:21:126:40 | Chi [a, a] |
-| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] | by_reference.cpp:126:29:126:40 | inner_nested [a, a] |
-| by_reference.cpp:126:29:126:40 | inner_nested [a, a] | by_reference.cpp:126:21:126:40 | Chi [a, a] |
-| by_reference.cpp:126:29:126:40 | inner_nested [a, a] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a, a] |
-| by_reference.cpp:128:15:128:23 | BufferMayWriteSideEffect: (reference to) | by_reference.cpp:128:23:128:23 | a [a] |
-| by_reference.cpp:128:15:128:23 | Chi [a] | by_reference.cpp:136:16:136:16 | a |
-| by_reference.cpp:128:15:128:23 | taint_a_ref output argument [a] | by_reference.cpp:128:15:128:23 | Chi [a] |
+| by_reference.cpp:124:21:124:21 | a [Outer[128, 192)] | by_reference.cpp:124:15:124:21 | Chi [Outer[128, 192)] |
+| by_reference.cpp:124:21:124:21 | a [Outer[128, 192)] | by_reference.cpp:124:15:124:21 | taint_a_ref output argument [Outer[128, 192)] |
+| by_reference.cpp:126:21:126:40 | Chi [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:134:16:134:27 | inner_nested [Inner[0, 64)] |
+| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [Inner[0, 64)] | by_reference.cpp:126:29:126:40 | inner_nested [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:126:21:126:40 | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:126:29:126:40 | inner_nested [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:126:21:126:40 | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:126:29:126:40 | inner_nested [Outer[0, 64), Inner[0, 64)] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:128:15:128:23 | BufferMayWriteSideEffect: (reference to) | by_reference.cpp:128:23:128:23 | a [Outer[128, 192)] |
+| by_reference.cpp:128:15:128:23 | Chi [Outer[128, 192)] | by_reference.cpp:136:16:136:16 | a |
+| by_reference.cpp:128:15:128:23 | taint_a_ref output argument [Outer[128, 192)] | by_reference.cpp:128:15:128:23 | Chi [Outer[128, 192)] |
 | by_reference.cpp:128:15:128:23 | taint_a_ref output argument [array content] | by_reference.cpp:128:15:128:23 | BufferMayWriteSideEffect: (reference to) |
-| by_reference.cpp:128:23:128:23 | a [a] | by_reference.cpp:128:15:128:23 | Chi [a] |
-| by_reference.cpp:128:23:128:23 | a [a] | by_reference.cpp:128:15:128:23 | taint_a_ref output argument [a] |
-| by_reference.cpp:130:14:130:25 | inner_nested [a] | by_reference.cpp:130:27:130:27 | a |
+| by_reference.cpp:128:23:128:23 | a [Outer[128, 192)] | by_reference.cpp:128:15:128:23 | Chi [Outer[128, 192)] |
+| by_reference.cpp:128:23:128:23 | a [Outer[128, 192)] | by_reference.cpp:128:15:128:23 | taint_a_ref output argument [Outer[128, 192)] |
+| by_reference.cpp:130:14:130:25 | inner_nested [Inner[0, 64)] | by_reference.cpp:130:27:130:27 | a |
 | by_reference.cpp:130:27:130:27 | a | by_reference.cpp:130:27:130:27 | a |
 | by_reference.cpp:132:14:132:14 | a | by_reference.cpp:132:14:132:14 | a |
-| by_reference.cpp:134:16:134:27 | inner_nested [a] | by_reference.cpp:134:29:134:29 | a |
+| by_reference.cpp:134:16:134:27 | inner_nested [Inner[0, 64)] | by_reference.cpp:134:29:134:29 | a |
 | by_reference.cpp:134:29:134:29 | a | by_reference.cpp:134:29:134:29 | a |
 | by_reference.cpp:136:16:136:16 | a | by_reference.cpp:136:16:136:16 | a |
-| complex.cpp:40:17:40:17 | *b [a_] | complex.cpp:51:16:51:16 | a output argument [a_] |
-| complex.cpp:40:17:40:17 | *b [a_] | complex.cpp:51:18:51:18 | call to a |
-| complex.cpp:40:17:40:17 | *b [b_] | complex.cpp:51:16:51:16 | a output argument [b_] |
-| complex.cpp:40:17:40:17 | *b [b_] | complex.cpp:52:18:52:18 | call to b |
-| complex.cpp:40:17:40:17 | *b [f, b_] | complex.cpp:51:10:51:14 | inner [b_] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (3)] | complex.cpp:51:10:51:14 | inner [f, a_] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (3)] | complex.cpp:51:10:51:14 | inner [f, b_] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (3)] | complex.cpp:51:16:51:16 | Chi [f, f, ... (3)] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (3)] | complex.cpp:51:16:51:16 | a output argument [f, f, ... (3)] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (4)] | complex.cpp:51:10:51:14 | inner [f, f, ... (3)] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (4)] | complex.cpp:51:10:51:14 | inner [f, f, ... (3)] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (5)] | complex.cpp:51:10:51:14 | inner [f, f, ... (4)] |
-| complex.cpp:51:10:51:14 | inner [b_] | complex.cpp:52:18:52:18 | call to b |
-| complex.cpp:51:10:51:14 | inner [f, a_] | complex.cpp:51:16:51:16 | f [a_] |
-| complex.cpp:51:10:51:14 | inner [f, a_] | complex.cpp:51:16:51:16 | f [a_] |
-| complex.cpp:51:10:51:14 | inner [f, a_] | complex.cpp:51:16:51:16 | f [a_] |
-| complex.cpp:51:10:51:14 | inner [f, b_] | complex.cpp:51:16:51:16 | f [b_] |
-| complex.cpp:51:10:51:14 | inner [f, b_] | complex.cpp:51:16:51:16 | f [b_] |
-| complex.cpp:51:10:51:14 | inner [f, b_] | complex.cpp:51:16:51:16 | f [b_] |
-| complex.cpp:51:10:51:14 | inner [f, f, ... (3)] | complex.cpp:51:16:51:16 | Chi [f, f, ... (3)] |
-| complex.cpp:51:10:51:14 | inner [f, f, ... (3)] | complex.cpp:51:16:51:16 | f [f, a_] |
-| complex.cpp:51:10:51:14 | inner [f, f, ... (3)] | complex.cpp:51:16:51:16 | f [f, b_] |
-| complex.cpp:51:10:51:14 | inner [f, f, ... (4)] | complex.cpp:51:16:51:16 | f [f, f, ... (3)] |
-| complex.cpp:51:10:51:14 | inner [f, f, ... (4)] | complex.cpp:51:16:51:16 | f [f, f, ... (3)] |
-| complex.cpp:51:10:51:14 | inner [f, f, ... (4)] | complex.cpp:51:16:51:16 | f [f, f, ... (3)] |
-| complex.cpp:51:16:51:16 | Chi [f, f, ... (3)] | complex.cpp:52:10:52:14 | inner [f, b_] |
-| complex.cpp:51:16:51:16 | a output argument [a_] | complex.cpp:51:16:51:16 | f [f, a_] |
-| complex.cpp:51:16:51:16 | a output argument [b_] | complex.cpp:51:16:51:16 | f [f, b_] |
-| complex.cpp:51:16:51:16 | a output argument [b_] | complex.cpp:52:18:52:18 | call to b |
-| complex.cpp:51:16:51:16 | a output argument [f, f, ... (3)] | complex.cpp:51:16:51:16 | Chi [f, f, ... (3)] |
-| complex.cpp:51:16:51:16 | f [a_] | complex.cpp:51:16:51:16 | a output argument [a_] |
-| complex.cpp:51:16:51:16 | f [a_] | complex.cpp:51:16:51:16 | a output argument [a_] |
-| complex.cpp:51:16:51:16 | f [a_] | complex.cpp:51:16:51:16 | a output argument [a_] |
-| complex.cpp:51:16:51:16 | f [a_] | complex.cpp:51:18:51:18 | call to a |
-| complex.cpp:51:16:51:16 | f [a_] | complex.cpp:51:18:51:18 | call to a |
-| complex.cpp:51:16:51:16 | f [a_] | complex.cpp:51:18:51:18 | call to a |
-| complex.cpp:51:16:51:16 | f [b_] | complex.cpp:51:16:51:16 | a output argument [b_] |
-| complex.cpp:51:16:51:16 | f [b_] | complex.cpp:51:16:51:16 | a output argument [b_] |
-| complex.cpp:51:16:51:16 | f [b_] | complex.cpp:51:16:51:16 | a output argument [b_] |
-| complex.cpp:51:16:51:16 | f [f, a_] | complex.cpp:51:10:51:14 | inner [f, f, ... (3)] |
-| complex.cpp:51:16:51:16 | f [f, b_] | complex.cpp:51:10:51:14 | inner [f, f, ... (3)] |
-| complex.cpp:51:16:51:16 | f [f, f, ... (3)] | complex.cpp:51:16:51:16 | a output argument [f, f, ... (3)] |
-| complex.cpp:51:16:51:16 | f [f, f, ... (3)] | complex.cpp:51:16:51:16 | a output argument [f, f, ... (3)] |
-| complex.cpp:51:16:51:16 | f [f, f, ... (3)] | complex.cpp:51:16:51:16 | a output argument [f, f, ... (3)] |
-| complex.cpp:52:10:52:14 | inner [f, b_] | complex.cpp:52:16:52:16 | f [b_] |
-| complex.cpp:52:10:52:14 | inner [f, b_] | complex.cpp:52:16:52:16 | f [b_] |
-| complex.cpp:52:10:52:14 | inner [f, b_] | complex.cpp:52:16:52:16 | f [b_] |
-| complex.cpp:52:16:52:16 | f [b_] | complex.cpp:52:18:52:18 | call to b |
-| complex.cpp:52:16:52:16 | f [b_] | complex.cpp:52:18:52:18 | call to b |
-| complex.cpp:52:16:52:16 | f [b_] | complex.cpp:52:18:52:18 | call to b |
-| complex.cpp:62:6:62:10 | inner [f, f, ... (3)] | complex.cpp:40:17:40:17 | *b [f, f, ... (3)] |
-| complex.cpp:62:6:62:10 | inner [f, f, ... (4)] | complex.cpp:40:17:40:17 | *b [f, f, ... (4)] |
-| complex.cpp:62:6:62:10 | inner [f, f, ... (5)] | complex.cpp:40:17:40:17 | *b [f, f, ... (5)] |
-| complex.cpp:62:12:62:12 | f [f, a_] | complex.cpp:62:6:62:10 | inner [f, f, ... (3)] |
-| complex.cpp:62:12:62:12 | f [f, a_] | complex.cpp:62:12:62:12 | setA output argument [f, a_] |
-| complex.cpp:62:12:62:12 | f [f, f, ... (3)] | complex.cpp:62:6:62:10 | inner [f, f, ... (4)] |
-| complex.cpp:62:12:62:12 | f [f, f, ... (3)] | complex.cpp:62:12:62:12 | setA output argument [f, f, ... (3)] |
-| complex.cpp:62:12:62:12 | f [f, f, ... (4)] | complex.cpp:62:6:62:10 | inner [f, f, ... (5)] |
-| complex.cpp:62:12:62:12 | setA output argument [a_] | complex.cpp:40:17:40:17 | *b [a_] |
-| complex.cpp:62:12:62:12 | setA output argument [a_] | complex.cpp:62:12:62:12 | f [f, a_] |
-| complex.cpp:62:12:62:12 | setA output argument [f, a_] | complex.cpp:62:12:62:12 | f [f, f, ... (3)] |
-| complex.cpp:62:12:62:12 | setA output argument [f, f, ... (3)] | complex.cpp:62:12:62:12 | f [f, f, ... (4)] |
-| complex.cpp:62:19:62:28 | call to user_input | complex.cpp:62:12:62:12 | setA output argument [a_] |
-| complex.cpp:63:6:63:10 | inner [f, f, ... (3)] | complex.cpp:40:17:40:17 | *b [f, f, ... (3)] |
-| complex.cpp:63:6:63:10 | inner [f, f, ... (4)] | complex.cpp:40:17:40:17 | *b [f, f, ... (4)] |
-| complex.cpp:63:6:63:10 | inner [f, f, ... (5)] | complex.cpp:40:17:40:17 | *b [f, f, ... (5)] |
-| complex.cpp:63:12:63:12 | f [f, b_] | complex.cpp:63:6:63:10 | inner [f, f, ... (3)] |
-| complex.cpp:63:12:63:12 | f [f, b_] | complex.cpp:63:12:63:12 | setB output argument [f, b_] |
-| complex.cpp:63:12:63:12 | f [f, f, ... (3)] | complex.cpp:63:6:63:10 | inner [f, f, ... (4)] |
-| complex.cpp:63:12:63:12 | f [f, f, ... (3)] | complex.cpp:63:12:63:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:63:12:63:12 | f [f, f, ... (4)] | complex.cpp:63:6:63:10 | inner [f, f, ... (5)] |
-| complex.cpp:63:12:63:12 | setB output argument [b_] | complex.cpp:40:17:40:17 | *b [b_] |
-| complex.cpp:63:12:63:12 | setB output argument [b_] | complex.cpp:63:12:63:12 | f [f, b_] |
-| complex.cpp:63:12:63:12 | setB output argument [f, b_] | complex.cpp:63:12:63:12 | f [f, f, ... (3)] |
-| complex.cpp:63:12:63:12 | setB output argument [f, f, ... (3)] | complex.cpp:63:12:63:12 | f [f, f, ... (4)] |
-| complex.cpp:63:19:63:28 | call to user_input | complex.cpp:63:12:63:12 | setB output argument [b_] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (3)] | complex.cpp:40:17:40:17 | *b [f, f, ... (3)] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (3)] | complex.cpp:64:12:64:12 | Chi [f, f, ... (3)] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (4)] | complex.cpp:40:17:40:17 | *b [f, f, ... (4)] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (4)] | complex.cpp:64:12:64:12 | Chi [f, f, ... (4)] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (4)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (4)] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (5)] | complex.cpp:40:17:40:17 | *b [f, f, ... (5)] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (5)] | complex.cpp:64:12:64:12 | Chi [f, f, ... (5)] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (5)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (5)] |
-| complex.cpp:64:12:64:12 | Chi [f, f, ... (3)] | complex.cpp:65:6:65:10 | inner [f, a_] |
-| complex.cpp:64:12:64:12 | Chi [f, f, ... (3)] | complex.cpp:65:6:65:10 | inner [f, b_] |
-| complex.cpp:64:12:64:12 | Chi [f, f, ... (4)] | complex.cpp:65:6:65:10 | inner [f, f, ... (3)] |
-| complex.cpp:64:12:64:12 | Chi [f, f, ... (4)] | complex.cpp:65:6:65:10 | inner [f, f, ... (3)] |
-| complex.cpp:64:12:64:12 | Chi [f, f, ... (5)] | complex.cpp:65:6:65:10 | inner [f, f, ... (4)] |
-| complex.cpp:64:12:64:12 | Chi [f, f, ... (5)] | complex.cpp:65:6:65:10 | inner [f, f, ... (4)] |
-| complex.cpp:64:12:64:12 | f [f, a_] | complex.cpp:64:6:64:10 | inner [f, f, ... (3)] |
-| complex.cpp:64:12:64:12 | f [f, a_] | complex.cpp:64:12:64:12 | setA output argument [f, a_] |
-| complex.cpp:64:12:64:12 | f [f, f, ... (3)] | complex.cpp:64:6:64:10 | inner [f, f, ... (4)] |
-| complex.cpp:64:12:64:12 | f [f, f, ... (3)] | complex.cpp:64:12:64:12 | setA output argument [f, f, ... (3)] |
-| complex.cpp:64:12:64:12 | f [f, f, ... (4)] | complex.cpp:64:6:64:10 | inner [f, f, ... (5)] |
-| complex.cpp:64:12:64:12 | setA output argument [a_] | complex.cpp:40:17:40:17 | *b [a_] |
-| complex.cpp:64:12:64:12 | setA output argument [a_] | complex.cpp:64:12:64:12 | f [f, a_] |
-| complex.cpp:64:12:64:12 | setA output argument [a_] | complex.cpp:65:12:65:12 | setB output argument [a_] |
-| complex.cpp:64:12:64:12 | setA output argument [f, a_] | complex.cpp:64:12:64:12 | f [f, f, ... (3)] |
-| complex.cpp:64:12:64:12 | setA output argument [f, a_] | complex.cpp:65:12:65:12 | setB output argument [f, a_] |
-| complex.cpp:64:12:64:12 | setA output argument [f, f, ... (3)] | complex.cpp:64:12:64:12 | f [f, f, ... (4)] |
-| complex.cpp:64:12:64:12 | setA output argument [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:64:19:64:28 | call to user_input | complex.cpp:64:12:64:12 | setA output argument [a_] |
-| complex.cpp:65:6:65:10 | inner [f, a_] | complex.cpp:65:12:65:12 | f [a_] |
-| complex.cpp:65:6:65:10 | inner [f, a_] | complex.cpp:65:12:65:12 | f [a_] |
-| complex.cpp:65:6:65:10 | inner [f, a_] | complex.cpp:65:12:65:12 | f [a_] |
-| complex.cpp:65:6:65:10 | inner [f, b_] | complex.cpp:40:17:40:17 | *b [f, b_] |
-| complex.cpp:65:6:65:10 | inner [f, b_] | complex.cpp:65:12:65:12 | f [b_] |
-| complex.cpp:65:6:65:10 | inner [f, b_] | complex.cpp:65:12:65:12 | f [b_] |
-| complex.cpp:65:6:65:10 | inner [f, b_] | complex.cpp:65:12:65:12 | f [b_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | complex.cpp:40:17:40:17 | *b [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, a_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, a_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, a_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, b_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, b_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, b_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, b_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, b_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, b_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:40:17:40:17 | *b [f, f, ... (4)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:40:17:40:17 | *b [f, f, ... (4)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (5)] | complex.cpp:40:17:40:17 | *b [f, f, ... (5)] |
-| complex.cpp:65:12:65:12 | f [a_] | complex.cpp:65:12:65:12 | setB output argument [a_] |
-| complex.cpp:65:12:65:12 | f [a_] | complex.cpp:65:12:65:12 | setB output argument [a_] |
-| complex.cpp:65:12:65:12 | f [a_] | complex.cpp:65:12:65:12 | setB output argument [a_] |
-| complex.cpp:65:12:65:12 | f [b_] | complex.cpp:65:6:65:10 | inner [f, b_] |
-| complex.cpp:65:12:65:12 | f [b_] | complex.cpp:65:12:65:12 | setB output argument [b_] |
-| complex.cpp:65:12:65:12 | f [b_] | complex.cpp:65:12:65:12 | setB output argument [b_] |
-| complex.cpp:65:12:65:12 | f [b_] | complex.cpp:65:12:65:12 | setB output argument [b_] |
-| complex.cpp:65:12:65:12 | f [f, a_] | complex.cpp:65:6:65:10 | inner [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, a_] | complex.cpp:65:12:65:12 | setB output argument [f, a_] |
-| complex.cpp:65:12:65:12 | f [f, a_] | complex.cpp:65:12:65:12 | setB output argument [f, a_] |
-| complex.cpp:65:12:65:12 | f [f, a_] | complex.cpp:65:12:65:12 | setB output argument [f, a_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | complex.cpp:65:6:65:10 | inner [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, b_] | complex.cpp:65:12:65:12 | setB output argument [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | complex.cpp:65:12:65:12 | setB output argument [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | complex.cpp:65:12:65:12 | setB output argument [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | complex.cpp:65:12:65:12 | setB output argument [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | complex.cpp:65:12:65:12 | setB output argument [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | complex.cpp:65:12:65:12 | setB output argument [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:6:65:10 | inner [f, f, ... (4)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:6:65:10 | inner [f, f, ... (4)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:6:65:10 | inner [f, f, ... (4)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (4)] | complex.cpp:65:6:65:10 | inner [f, f, ... (5)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (4)] | complex.cpp:65:6:65:10 | inner [f, f, ... (5)] |
-| complex.cpp:65:12:65:12 | setB output argument [a_] | complex.cpp:40:17:40:17 | *b [a_] |
-| complex.cpp:65:12:65:12 | setB output argument [a_] | complex.cpp:65:12:65:12 | f [f, a_] |
-| complex.cpp:65:12:65:12 | setB output argument [b_] | complex.cpp:40:17:40:17 | *b [b_] |
-| complex.cpp:65:12:65:12 | setB output argument [b_] | complex.cpp:65:12:65:12 | f [f, b_] |
-| complex.cpp:65:12:65:12 | setB output argument [f, a_] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, b_] | complex.cpp:40:17:40:17 | *b [f, b_] |
-| complex.cpp:65:12:65:12 | setB output argument [f, b_] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, b_] | complex.cpp:65:12:65:12 | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] | complex.cpp:40:17:40:17 | *b [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, f, ... (4)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, f, ... (4)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] | complex.cpp:65:12:65:12 | f [f, f, ... (4)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (4)] | complex.cpp:40:17:40:17 | *b [f, f, ... (4)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (5)] | complex.cpp:40:17:40:17 | *b [f, f, ... (5)] |
-| complex.cpp:65:19:65:28 | call to user_input | complex.cpp:65:12:65:12 | setB output argument [b_] |
-| constructors.cpp:26:15:26:15 | *f [a_] | constructors.cpp:28:12:28:12 | call to a |
-| constructors.cpp:26:15:26:15 | *f [b_] | constructors.cpp:28:10:28:10 | a output argument [b_] |
-| constructors.cpp:26:15:26:15 | *f [b_] | constructors.cpp:29:12:29:12 | call to b |
-| constructors.cpp:28:10:28:10 | a output argument [b_] | constructors.cpp:29:12:29:12 | call to b |
-| constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:34:11:34:26 | Foo output argument [a_] |
-| constructors.cpp:34:11:34:26 | Foo output argument [a_] | constructors.cpp:26:15:26:15 | *f [a_] |
-| constructors.cpp:35:11:35:26 | Foo output argument [b_] | constructors.cpp:26:15:26:15 | *f [b_] |
-| constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:35:11:35:26 | Foo output argument [b_] |
-| constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:36:11:36:37 | Foo output argument [a_] |
-| constructors.cpp:36:11:36:37 | Foo output argument [a_] | constructors.cpp:26:15:26:15 | *f [a_] |
-| constructors.cpp:36:11:36:37 | Foo output argument [b_] | constructors.cpp:26:15:26:15 | *f [b_] |
-| constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:36:11:36:37 | Foo output argument [b_] |
-| simple.cpp:26:15:26:15 | *f [a_] | simple.cpp:28:12:28:12 | call to a |
-| simple.cpp:26:15:26:15 | *f [b_] | simple.cpp:28:10:28:10 | a output argument [b_] |
-| simple.cpp:26:15:26:15 | *f [b_] | simple.cpp:29:12:29:12 | call to b |
-| simple.cpp:28:10:28:10 | a output argument [b_] | simple.cpp:29:12:29:12 | call to b |
-| simple.cpp:39:5:39:5 | setA output argument [a_] | simple.cpp:26:15:26:15 | *f [a_] |
-| simple.cpp:39:12:39:21 | call to user_input | simple.cpp:39:5:39:5 | setA output argument [a_] |
-| simple.cpp:40:5:40:5 | setB output argument [b_] | simple.cpp:26:15:26:15 | *f [b_] |
-| simple.cpp:40:12:40:21 | call to user_input | simple.cpp:40:5:40:5 | setB output argument [b_] |
-| simple.cpp:41:5:41:5 | setA output argument [a_] | simple.cpp:26:15:26:15 | *f [a_] |
-| simple.cpp:41:5:41:5 | setA output argument [a_] | simple.cpp:42:5:42:5 | setB output argument [a_] |
-| simple.cpp:41:12:41:21 | call to user_input | simple.cpp:41:5:41:5 | setA output argument [a_] |
-| simple.cpp:42:5:42:5 | setB output argument [a_] | simple.cpp:26:15:26:15 | *f [a_] |
-| simple.cpp:42:5:42:5 | setB output argument [b_] | simple.cpp:26:15:26:15 | *f [b_] |
-| simple.cpp:42:12:42:21 | call to user_input | simple.cpp:42:5:42:5 | setB output argument [b_] |
-| simple.cpp:65:7:65:7 | i [i] | simple.cpp:66:12:66:12 | Store [i] |
-| simple.cpp:65:11:65:20 | call to user_input | simple.cpp:65:7:65:7 | i [i] |
-| simple.cpp:66:12:66:12 | Store [i] | simple.cpp:67:13:67:13 | i |
-| simple.cpp:66:12:66:12 | Store [i] | simple.cpp:67:13:67:13 | i |
+| complex.cpp:40:17:40:17 | *b [Foo[0, 32)] | complex.cpp:42:18:42:18 | call to a |
+| complex.cpp:40:17:40:17 | *b [Foo[32, 64)] | complex.cpp:42:16:42:16 | a output argument [Foo[32, 64)] |
+| complex.cpp:40:17:40:17 | *b [Foo[32, 64)] | complex.cpp:43:18:43:18 | call to b |
+| complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:42:10:42:14 | inner [Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:42:10:42:14 | inner [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:42:10:42:14 | inner [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:42:16:42:16 | Chi [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:42:16:42:16 | a output argument [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:10:42:14 | inner [Bar[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:42:16:42:16 | f [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:10:42:14 | inner [Bar[0, 64), Foo[0, 32)] | complex.cpp:42:16:42:16 | f [Foo[0, 32)] |
+| complex.cpp:42:10:42:14 | inner [Bar[0, 64), Foo[0, 32)] | complex.cpp:42:16:42:16 | f [Foo[0, 32)] |
+| complex.cpp:42:10:42:14 | inner [Bar[0, 64), Foo[0, 32)] | complex.cpp:42:16:42:16 | f [Foo[0, 32)] |
+| complex.cpp:42:10:42:14 | inner [Bar[0, 64), Foo[32, 64)] | complex.cpp:42:16:42:16 | f [Foo[32, 64)] |
+| complex.cpp:42:10:42:14 | inner [Bar[0, 64), Foo[32, 64)] | complex.cpp:42:16:42:16 | f [Foo[32, 64)] |
+| complex.cpp:42:10:42:14 | inner [Bar[0, 64), Foo[32, 64)] | complex.cpp:42:16:42:16 | f [Foo[32, 64)] |
+| complex.cpp:42:10:42:14 | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:42:16:42:16 | Chi [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | Chi [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:43:10:43:14 | inner [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | a output argument [Foo[32, 64)] | complex.cpp:42:16:42:16 | f [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | a output argument [Foo[32, 64)] | complex.cpp:43:18:43:18 | call to b |
+| complex.cpp:42:16:42:16 | a output argument [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:42:16:42:16 | Chi [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | f [Bar[0, 64), Foo[32, 64)] | complex.cpp:42:10:42:14 | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | f [Foo[0, 32)] | complex.cpp:42:18:42:18 | call to a |
+| complex.cpp:42:16:42:16 | f [Foo[0, 32)] | complex.cpp:42:18:42:18 | call to a |
+| complex.cpp:42:16:42:16 | f [Foo[0, 32)] | complex.cpp:42:18:42:18 | call to a |
+| complex.cpp:42:16:42:16 | f [Foo[32, 64)] | complex.cpp:42:16:42:16 | a output argument [Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | f [Foo[32, 64)] | complex.cpp:42:16:42:16 | a output argument [Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | f [Foo[32, 64)] | complex.cpp:42:16:42:16 | a output argument [Foo[32, 64)] |
+| complex.cpp:43:10:43:14 | inner [Bar[0, 64), Foo[32, 64)] | complex.cpp:43:16:43:16 | f [Foo[32, 64)] |
+| complex.cpp:43:10:43:14 | inner [Bar[0, 64), Foo[32, 64)] | complex.cpp:43:16:43:16 | f [Foo[32, 64)] |
+| complex.cpp:43:10:43:14 | inner [Bar[0, 64), Foo[32, 64)] | complex.cpp:43:16:43:16 | f [Foo[32, 64)] |
+| complex.cpp:43:16:43:16 | f [Foo[32, 64)] | complex.cpp:43:18:43:18 | call to b |
+| complex.cpp:43:16:43:16 | f [Foo[32, 64)] | complex.cpp:43:18:43:18 | call to b |
+| complex.cpp:43:16:43:16 | f [Foo[32, 64)] | complex.cpp:43:18:43:18 | call to b |
+| complex.cpp:53:6:53:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:53:12:53:12 | f [Bar[0, 64), Foo[0, 32)] | complex.cpp:53:6:53:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:53:12:53:12 | setA output argument [Foo[0, 32)] | complex.cpp:40:17:40:17 | *b [Foo[0, 32)] |
+| complex.cpp:53:12:53:12 | setA output argument [Foo[0, 32)] | complex.cpp:53:12:53:12 | f [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:53:19:53:28 | call to user_input | complex.cpp:53:12:53:12 | setA output argument [Foo[0, 32)] |
+| complex.cpp:54:6:54:10 | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:6:54:10 | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:12:54:12 | f [Bar[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:54:6:54:10 | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:12:54:12 | f [Bar[0, 64), Foo[32, 64)] | complex.cpp:54:6:54:10 | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:12:54:12 | f [Bar[0, 64), Foo[32, 64)] | complex.cpp:54:12:54:12 | setB output argument [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:12:54:12 | setB output argument [Bar[0, 64), Foo[32, 64)] | complex.cpp:54:12:54:12 | f [Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:12:54:12 | setB output argument [Foo[32, 64)] | complex.cpp:40:17:40:17 | *b [Foo[32, 64)] |
+| complex.cpp:54:12:54:12 | setB output argument [Foo[32, 64)] | complex.cpp:54:12:54:12 | f [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:19:54:28 | call to user_input | complex.cpp:54:12:54:12 | setB output argument [Foo[32, 64)] |
+| complex.cpp:55:6:55:10 | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:55:12:55:12 | Chi [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:6:55:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:6:55:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:55:12:55:12 | Chi [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:6:55:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:56:12:56:12 | setB output argument [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | Chi [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:56:6:56:10 | inner [Bar[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | Chi [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:56:6:56:10 | inner [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | f [Bar[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:55:6:55:10 | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | f [Bar[0, 64), Foo[0, 32)] | complex.cpp:55:6:55:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | f [Bar[0, 64), Foo[0, 32)] | complex.cpp:55:12:55:12 | setA output argument [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | setA output argument [Bar[0, 64), Foo[0, 32)] | complex.cpp:55:12:55:12 | f [Bar[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | setA output argument [Foo[0, 32)] | complex.cpp:40:17:40:17 | *b [Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | setA output argument [Foo[0, 32)] | complex.cpp:55:12:55:12 | f [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | setA output argument [Foo[0, 32)] | complex.cpp:56:12:56:12 | setB output argument [Foo[0, 32)] |
+| complex.cpp:55:19:55:28 | call to user_input | complex.cpp:55:12:55:12 | setA output argument [Foo[0, 32)] |
+| complex.cpp:56:6:56:10 | inner [Bar[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:56:12:56:12 | f [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:56:6:56:10 | inner [Bar[0, 64), Foo[0, 32)] | complex.cpp:56:12:56:12 | f [Foo[0, 32)] |
+| complex.cpp:56:6:56:10 | inner [Bar[0, 64), Foo[0, 32)] | complex.cpp:56:12:56:12 | f [Foo[0, 32)] |
+| complex.cpp:56:6:56:10 | inner [Bar[0, 64), Foo[0, 32)] | complex.cpp:56:12:56:12 | f [Foo[0, 32)] |
+| complex.cpp:56:6:56:10 | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:6:56:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:56:6:56:10 | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | f [Bar[0, 64), Bar[0, 64), Foo[32, 64)] | complex.cpp:56:6:56:10 | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | f [Bar[0, 64), Foo[0, 32)] | complex.cpp:56:6:56:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | f [Bar[0, 64), Foo[32, 64)] | complex.cpp:56:6:56:10 | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | f [Bar[0, 64), Foo[32, 64)] | complex.cpp:56:12:56:12 | setB output argument [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | f [Foo[0, 32)] | complex.cpp:56:12:56:12 | setB output argument [Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | f [Foo[0, 32)] | complex.cpp:56:12:56:12 | setB output argument [Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | f [Foo[0, 32)] | complex.cpp:56:12:56:12 | setB output argument [Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | setB output argument [Bar[0, 64), Foo[32, 64)] | complex.cpp:56:12:56:12 | f [Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | setB output argument [Foo[0, 32)] | complex.cpp:40:17:40:17 | *b [Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | setB output argument [Foo[0, 32)] | complex.cpp:56:12:56:12 | f [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | setB output argument [Foo[32, 64)] | complex.cpp:40:17:40:17 | *b [Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | setB output argument [Foo[32, 64)] | complex.cpp:56:12:56:12 | f [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | setB output argument [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:56:19:56:28 | call to user_input | complex.cpp:56:12:56:12 | setB output argument [Foo[32, 64)] |
+| constructors.cpp:26:15:26:15 | *f [Foo[0, 32)] | constructors.cpp:28:12:28:12 | call to a |
+| constructors.cpp:26:15:26:15 | *f [Foo[32, 64)] | constructors.cpp:28:10:28:10 | a output argument [Foo[32, 64)] |
+| constructors.cpp:26:15:26:15 | *f [Foo[32, 64)] | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:28:10:28:10 | a output argument [Foo[32, 64)] | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:34:11:34:26 | Foo output argument [Foo[0, 32)] |
+| constructors.cpp:34:11:34:26 | Foo output argument [Foo[0, 32)] | constructors.cpp:26:15:26:15 | *f [Foo[0, 32)] |
+| constructors.cpp:35:11:35:26 | Foo output argument [Foo[32, 64)] | constructors.cpp:26:15:26:15 | *f [Foo[32, 64)] |
+| constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:35:11:35:26 | Foo output argument [Foo[32, 64)] |
+| constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:36:11:36:37 | Foo output argument [Foo[0, 32)] |
+| constructors.cpp:36:11:36:37 | Foo output argument [Foo[0, 32)] | constructors.cpp:26:15:26:15 | *f [Foo[0, 32)] |
+| constructors.cpp:36:11:36:37 | Foo output argument [Foo[32, 64)] | constructors.cpp:26:15:26:15 | *f [Foo[32, 64)] |
+| constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:36:11:36:37 | Foo output argument [Foo[32, 64)] |
+| simple.cpp:26:15:26:15 | *f [Foo[0, 32)] | simple.cpp:28:12:28:12 | call to a |
+| simple.cpp:26:15:26:15 | *f [Foo[32, 64)] | simple.cpp:28:10:28:10 | a output argument [Foo[32, 64)] |
+| simple.cpp:26:15:26:15 | *f [Foo[32, 64)] | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:28:10:28:10 | a output argument [Foo[32, 64)] | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:39:5:39:5 | setA output argument [Foo[0, 32)] | simple.cpp:26:15:26:15 | *f [Foo[0, 32)] |
+| simple.cpp:39:12:39:21 | call to user_input | simple.cpp:39:5:39:5 | setA output argument [Foo[0, 32)] |
+| simple.cpp:40:5:40:5 | setB output argument [Foo[32, 64)] | simple.cpp:26:15:26:15 | *f [Foo[32, 64)] |
+| simple.cpp:40:12:40:21 | call to user_input | simple.cpp:40:5:40:5 | setB output argument [Foo[32, 64)] |
+| simple.cpp:41:5:41:5 | setA output argument [Foo[0, 32)] | simple.cpp:26:15:26:15 | *f [Foo[0, 32)] |
+| simple.cpp:41:5:41:5 | setA output argument [Foo[0, 32)] | simple.cpp:42:5:42:5 | setB output argument [Foo[0, 32)] |
+| simple.cpp:41:12:41:21 | call to user_input | simple.cpp:41:5:41:5 | setA output argument [Foo[0, 32)] |
+| simple.cpp:42:5:42:5 | setB output argument [Foo[0, 32)] | simple.cpp:26:15:26:15 | *f [Foo[0, 32)] |
+| simple.cpp:42:5:42:5 | setB output argument [Foo[32, 64)] | simple.cpp:26:15:26:15 | *f [Foo[32, 64)] |
+| simple.cpp:42:12:42:21 | call to user_input | simple.cpp:42:5:42:5 | setB output argument [Foo[32, 64)] |
+| simple.cpp:65:7:65:7 | i [A[0, 32)] | simple.cpp:66:12:66:12 | Store [A[0, 32)] |
+| simple.cpp:65:11:65:20 | call to user_input | simple.cpp:65:7:65:7 | i [A[0, 32)] |
+| simple.cpp:66:12:66:12 | Store [A[0, 32)] | simple.cpp:67:13:67:13 | i |
 | simple.cpp:67:13:67:13 | i | simple.cpp:67:13:67:13 | i |
-| simple.cpp:83:9:83:10 | f2 [f1, f1] | simple.cpp:84:14:84:20 | call to getf2f1 |
-| simple.cpp:83:9:83:28 | Store | simple.cpp:83:12:83:13 | f1 [f1] |
-| simple.cpp:83:12:83:13 | f1 [f1] | simple.cpp:83:9:83:10 | f2 [f1, f1] |
-| simple.cpp:83:17:83:26 | call to user_input | simple.cpp:83:9:83:28 | Store |
-| simple.cpp:92:7:92:7 | i [i] | simple.cpp:93:20:93:20 | Store [i] |
-| simple.cpp:92:11:92:20 | call to user_input | simple.cpp:92:7:92:7 | i [i] |
-| simple.cpp:93:20:93:20 | Store [i] | simple.cpp:94:13:94:13 | i |
-| simple.cpp:93:20:93:20 | Store [i] | simple.cpp:94:13:94:13 | i |
+| simple.cpp:83:9:83:10 | f2 [C2[0, 32), C[0, 32)] | simple.cpp:84:14:84:20 | call to getf2f1 |
+| simple.cpp:83:12:83:13 | f1 [C[0, 32)] | simple.cpp:83:9:83:10 | f2 [C2[0, 32), C[0, 32)] |
+| simple.cpp:83:17:83:26 | call to user_input | simple.cpp:83:12:83:13 | f1 [C[0, 32)] |
+| simple.cpp:92:7:92:7 | i [A[0, 32)] | simple.cpp:93:20:93:20 | Store [A[0, 32)] |
+| simple.cpp:92:11:92:20 | call to user_input | simple.cpp:92:7:92:7 | i [A[0, 32)] |
+| simple.cpp:93:20:93:20 | Store [A[0, 32)] | simple.cpp:94:13:94:13 | i |
 | simple.cpp:94:13:94:13 | i | simple.cpp:94:13:94:13 | i |
-| struct_init.c:14:24:14:25 | *ab [a] | struct_init.c:15:12:15:12 | a |
+| struct_init.c:14:24:14:25 | *ab [AB[0, 64)] | struct_init.c:15:12:15:12 | a |
 | struct_init.c:15:12:15:12 | a | struct_init.c:15:12:15:12 | a |
-| struct_init.c:20:17:20:36 | a [a] | struct_init.c:14:24:14:25 | *ab [a] |
-| struct_init.c:20:20:20:29 | Store | struct_init.c:20:17:20:36 | a [a] |
-| struct_init.c:20:20:20:29 | call to user_input | struct_init.c:20:20:20:29 | Store |
+| struct_init.c:20:17:20:36 | a [AB[0, 64)] | struct_init.c:14:24:14:25 | *ab [AB[0, 64)] |
+| struct_init.c:20:20:20:29 | call to user_input | struct_init.c:20:17:20:36 | a [AB[0, 64)] |
 | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:22:11:22:11 | a |
-| struct_init.c:26:23:29:3 | nestedAB [nestedAB, a] | struct_init.c:28:5:28:7 | Chi [nestedAB, a] |
-| struct_init.c:27:5:27:23 | a [a] | struct_init.c:26:23:29:3 | nestedAB [nestedAB, a] |
-| struct_init.c:27:7:27:16 | Store | struct_init.c:27:5:27:23 | a [a] |
-| struct_init.c:27:7:27:16 | call to user_input | struct_init.c:27:7:27:16 | Store |
+| struct_init.c:26:23:29:3 | nestedAB [Outer[0, 128), AB[0, 64)] | struct_init.c:28:5:28:7 | Chi [Outer[0, 128), AB[0, 64)] |
+| struct_init.c:27:5:27:23 | a [AB[0, 64)] | struct_init.c:26:23:29:3 | nestedAB [Outer[0, 128), AB[0, 64)] |
+| struct_init.c:27:7:27:16 | call to user_input | struct_init.c:27:5:27:23 | a [AB[0, 64)] |
 | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:31:23:31:23 | a |
-| struct_init.c:28:5:28:7 | Chi [nestedAB, a] | struct_init.c:36:17:36:24 | nestedAB [a] |
-| struct_init.c:36:17:36:24 | nestedAB [a] | struct_init.c:14:24:14:25 | *ab [a] |
+| struct_init.c:28:5:28:7 | Chi [Outer[0, 128), AB[0, 64)] | struct_init.c:36:17:36:24 | nestedAB [AB[0, 64)] |
+| struct_init.c:36:17:36:24 | nestedAB [AB[0, 64)] | struct_init.c:14:24:14:25 | *ab [AB[0, 64)] |
 nodes
-| A.cpp:55:5:55:5 | set output argument [c] | semmle.label | set output argument [c] |
+| A.cpp:55:5:55:5 | set output argument [B[0, 64)] | semmle.label | set output argument [B[0, 64)] |
 | A.cpp:55:12:55:19 | (C *)... | semmle.label | (C *)... |
 | A.cpp:55:12:55:19 | new | semmle.label | new |
 | A.cpp:56:13:56:15 | call to get | semmle.label | call to get |
-| A.cpp:57:11:57:24 | B output argument [c] | semmle.label | B output argument [c] |
+| A.cpp:57:11:57:24 | B output argument [B[0, 64)] | semmle.label | B output argument [B[0, 64)] |
 | A.cpp:57:17:57:23 | new | semmle.label | new |
 | A.cpp:57:28:57:30 | call to get | semmle.label | call to get |
 | A.cpp:98:12:98:18 | new | semmle.label | new |
-| A.cpp:100:5:100:13 | Store | semmle.label | Store |
-| A.cpp:100:9:100:9 | a [a] | semmle.label | a [a] |
-| A.cpp:103:14:103:14 | *c [a] | semmle.label | *c [a] |
+| A.cpp:100:9:100:9 | a [C1[64, 128)] | semmle.label | a [C1[64, 128)] |
+| A.cpp:103:14:103:14 | *c [C1[64, 128)] | semmle.label | *c [C1[64, 128)] |
 | A.cpp:107:16:107:16 | a | semmle.label | a |
 | A.cpp:107:16:107:16 | a | semmle.label | a |
-| A.cpp:126:5:126:5 | Chi [c] | semmle.label | Chi [c] |
-| A.cpp:126:5:126:5 | set output argument [c] | semmle.label | set output argument [c] |
+| A.cpp:126:5:126:5 | Chi [B[0, 64)] | semmle.label | Chi [B[0, 64)] |
+| A.cpp:126:5:126:5 | set output argument [B[0, 64)] | semmle.label | set output argument [B[0, 64)] |
 | A.cpp:126:12:126:18 | new | semmle.label | new |
-| A.cpp:131:8:131:8 | Chi [c] | semmle.label | Chi [c] |
-| A.cpp:131:8:131:8 | f7 output argument [c] | semmle.label | f7 output argument [c] |
+| A.cpp:131:8:131:8 | Chi [B[0, 64)] | semmle.label | Chi [B[0, 64)] |
+| A.cpp:131:8:131:8 | f7 output argument [B[0, 64)] | semmle.label | f7 output argument [B[0, 64)] |
 | A.cpp:132:13:132:13 | c | semmle.label | c |
 | A.cpp:132:13:132:13 | c | semmle.label | c |
-| A.cpp:142:7:142:20 | Chi [c] | semmle.label | Chi [c] |
-| A.cpp:142:7:142:20 | Store | semmle.label | Store |
-| A.cpp:142:10:142:10 | c [c] | semmle.label | c [c] |
+| A.cpp:142:7:142:20 | Chi [B[0, 64)] | semmle.label | Chi [B[0, 64)] |
+| A.cpp:142:10:142:10 | c [B[0, 64)] | semmle.label | c [B[0, 64)] |
 | A.cpp:142:14:142:20 | new | semmle.label | new |
-| A.cpp:143:7:143:31 | Chi [b] | semmle.label | Chi [b] |
-| A.cpp:143:7:143:31 | Store | semmle.label | Store |
-| A.cpp:143:13:143:13 | b [b] | semmle.label | b [b] |
+| A.cpp:143:7:143:31 | Chi [D[0, 64)] | semmle.label | Chi [D[0, 64)] |
+| A.cpp:143:13:143:13 | b [D[0, 64)] | semmle.label | b [D[0, 64)] |
 | A.cpp:143:25:143:31 | new | semmle.label | new |
 | A.cpp:150:12:150:18 | new | semmle.label | new |
-| A.cpp:151:12:151:24 | Chi [b] | semmle.label | Chi [b] |
-| A.cpp:151:12:151:24 | D output argument [b] | semmle.label | D output argument [b] |
-| A.cpp:151:18:151:18 | Chi [c] | semmle.label | Chi [c] |
-| A.cpp:151:18:151:18 | D output argument [c] | semmle.label | D output argument [c] |
+| A.cpp:151:12:151:24 | Chi [D[0, 64)] | semmle.label | Chi [D[0, 64)] |
+| A.cpp:151:12:151:24 | D output argument [D[0, 64)] | semmle.label | D output argument [D[0, 64)] |
+| A.cpp:151:18:151:18 | Chi [B[0, 64)] | semmle.label | Chi [B[0, 64)] |
+| A.cpp:151:18:151:18 | D output argument [B[0, 64)] | semmle.label | D output argument [B[0, 64)] |
 | A.cpp:152:13:152:13 | b | semmle.label | b |
 | A.cpp:152:13:152:13 | b | semmle.label | b |
 | A.cpp:154:13:154:13 | c | semmle.label | c |
 | A.cpp:154:13:154:13 | c | semmle.label | c |
-| C.cpp:18:12:18:18 | C output argument [s1] | semmle.label | C output argument [s1] |
-| C.cpp:18:12:18:18 | C output argument [s3] | semmle.label | C output argument [s3] |
-| C.cpp:22:9:22:22 | s1 [s1] | semmle.label | s1 [s1] |
-| C.cpp:22:12:22:21 | Store | semmle.label | Store |
+| C.cpp:18:12:18:18 | C output argument [C[0, 64)] | semmle.label | C output argument [C[0, 64)] |
+| C.cpp:18:12:18:18 | C output argument [C[128, 192)] | semmle.label | C output argument [C[128, 192)] |
+| C.cpp:22:9:22:22 | s1 [C[0, 64)] | semmle.label | s1 [C[0, 64)] |
 | C.cpp:22:12:22:21 | new | semmle.label | new |
-| C.cpp:24:5:24:25 | Chi [s1] | semmle.label | Chi [s1] |
-| C.cpp:24:5:24:25 | Chi [s3] | semmle.label | Chi [s3] |
-| C.cpp:24:5:24:25 | Store | semmle.label | Store |
-| C.cpp:24:11:24:12 | s3 [s3] | semmle.label | s3 [s3] |
+| C.cpp:24:5:24:25 | Chi [C[0, 64)] | semmle.label | Chi [C[0, 64)] |
+| C.cpp:24:5:24:25 | Chi [C[128, 192)] | semmle.label | Chi [C[128, 192)] |
+| C.cpp:24:11:24:12 | s3 [C[128, 192)] | semmle.label | s3 [C[128, 192)] |
 | C.cpp:24:16:24:25 | new | semmle.label | new |
-| C.cpp:27:8:27:11 | *#this [s1] | semmle.label | *#this [s1] |
-| C.cpp:27:8:27:11 | *#this [s3] | semmle.label | *#this [s3] |
+| C.cpp:27:8:27:11 | *#this [C[0, 64)] | semmle.label | *#this [C[0, 64)] |
+| C.cpp:27:8:27:11 | *#this [C[128, 192)] | semmle.label | *#this [C[128, 192)] |
 | C.cpp:29:10:29:11 | s1 | semmle.label | s1 |
 | C.cpp:29:10:29:11 | s1 | semmle.label | s1 |
 | C.cpp:31:10:31:11 | s3 | semmle.label | s3 |
 | C.cpp:31:10:31:11 | s3 | semmle.label | s3 |
-| aliasing.cpp:9:3:9:22 | Chi [m1] | semmle.label | Chi [m1] |
-| aliasing.cpp:9:3:9:22 | Store | semmle.label | Store |
-| aliasing.cpp:9:6:9:7 | m1 [m1] | semmle.label | m1 [m1] |
+| aliasing.cpp:9:3:9:22 | Chi [S[0, 32)] | semmle.label | Chi [S[0, 32)] |
+| aliasing.cpp:9:6:9:7 | m1 [S[0, 32)] | semmle.label | m1 [S[0, 32)] |
 | aliasing.cpp:9:11:9:20 | call to user_input | semmle.label | call to user_input |
-| aliasing.cpp:13:3:13:21 | Chi [m1] | semmle.label | Chi [m1] |
-| aliasing.cpp:13:3:13:21 | Store | semmle.label | Store |
-| aliasing.cpp:13:5:13:6 | m1 [m1] | semmle.label | m1 [m1] |
+| aliasing.cpp:13:3:13:21 | Chi [S[0, 32)] | semmle.label | Chi [S[0, 32)] |
+| aliasing.cpp:13:5:13:6 | m1 [S[0, 32)] | semmle.label | m1 [S[0, 32)] |
 | aliasing.cpp:13:10:13:19 | call to user_input | semmle.label | call to user_input |
-| aliasing.cpp:25:17:25:19 | Chi [m1] | semmle.label | Chi [m1] |
-| aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] | semmle.label | pointerSetter output argument [m1] |
-| aliasing.cpp:26:19:26:20 | Chi [m1] | semmle.label | Chi [m1] |
-| aliasing.cpp:26:19:26:20 | referenceSetter output argument [m1] | semmle.label | referenceSetter output argument [m1] |
+| aliasing.cpp:25:17:25:19 | Chi [S[0, 32)] | semmle.label | Chi [S[0, 32)] |
+| aliasing.cpp:25:17:25:19 | pointerSetter output argument [S[0, 32)] | semmle.label | pointerSetter output argument [S[0, 32)] |
+| aliasing.cpp:26:19:26:20 | Chi [S[0, 32)] | semmle.label | Chi [S[0, 32)] |
+| aliasing.cpp:26:19:26:20 | referenceSetter output argument [S[0, 32)] | semmle.label | referenceSetter output argument [S[0, 32)] |
 | aliasing.cpp:29:11:29:12 | m1 | semmle.label | m1 |
 | aliasing.cpp:29:11:29:12 | m1 | semmle.label | m1 |
 | aliasing.cpp:30:11:30:12 | m1 | semmle.label | m1 |
@@ -551,10 +410,9 @@ nodes
 | aliasing.cpp:38:11:38:12 | m1 | semmle.label | m1 |
 | aliasing.cpp:42:11:42:20 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:43:13:43:14 | m1 | semmle.label | m1 |
-| aliasing.cpp:60:3:60:22 | Store | semmle.label | Store |
-| aliasing.cpp:60:6:60:7 | m1 [m1] | semmle.label | m1 [m1] |
+| aliasing.cpp:60:6:60:7 | m1 [S[0, 32)] | semmle.label | m1 [S[0, 32)] |
 | aliasing.cpp:60:11:60:20 | call to user_input | semmle.label | call to user_input |
-| aliasing.cpp:61:13:61:14 | Store [m1] | semmle.label | Store [m1] |
+| aliasing.cpp:61:13:61:14 | Store [S[0, 32)] | semmle.label | Store [S[0, 32)] |
 | aliasing.cpp:62:14:62:15 | m1 | semmle.label | m1 |
 | aliasing.cpp:62:14:62:15 | m1 | semmle.label | m1 |
 | aliasing.cpp:79:11:79:20 | call to user_input | semmle.label | call to user_input |
@@ -563,14 +421,12 @@ nodes
 | aliasing.cpp:87:12:87:13 | m1 | semmle.label | m1 |
 | aliasing.cpp:92:12:92:21 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:93:12:93:13 | m1 | semmle.label | m1 |
-| aliasing.cpp:98:3:98:21 | Store | semmle.label | Store |
-| aliasing.cpp:98:5:98:6 | m1 [m1] | semmle.label | m1 [m1] |
+| aliasing.cpp:98:5:98:6 | m1 [S[0, 32)] | semmle.label | m1 [S[0, 32)] |
 | aliasing.cpp:98:10:98:19 | call to user_input | semmle.label | call to user_input |
-| aliasing.cpp:100:14:100:14 | Store [m1] | semmle.label | Store [m1] |
+| aliasing.cpp:100:14:100:14 | Store [S[0, 32)] | semmle.label | Store [S[0, 32)] |
 | aliasing.cpp:101:21:101:22 | m1 | semmle.label | m1 |
 | aliasing.cpp:102:8:102:10 | * ... | semmle.label | * ... |
 | aliasing.cpp:106:3:106:20 | Chi [array content] | semmle.label | Chi [array content] |
-| aliasing.cpp:106:3:106:20 | Store | semmle.label | Store |
 | aliasing.cpp:106:9:106:18 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:121:15:121:16 | Chi [array content] | semmle.label | Chi [array content] |
 | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
@@ -591,59 +447,54 @@ nodes
 | aliasing.cpp:164:15:164:20 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
 | aliasing.cpp:165:8:165:16 | access to array | semmle.label | access to array |
 | aliasing.cpp:175:15:175:22 | BufferMayWriteSideEffect: & ... | semmle.label | BufferMayWriteSideEffect: & ... |
-| aliasing.cpp:175:15:175:22 | Chi [s, m1] | semmle.label | Chi [s, m1] |
+| aliasing.cpp:175:15:175:22 | Chi [S2[0, 64), S[0, 32)] | semmle.label | Chi [S2[0, 64), S[0, 32)] |
 | aliasing.cpp:175:15:175:22 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| aliasing.cpp:175:19:175:19 | s [s, m1] | semmle.label | s [s, m1] |
-| aliasing.cpp:175:21:175:22 | m1 [m1] | semmle.label | m1 [m1] |
-| aliasing.cpp:176:11:176:11 | s [m1] | semmle.label | s [m1] |
+| aliasing.cpp:175:19:175:19 | s [S2[0, 64), S[0, 32)] | semmle.label | s [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:175:21:175:22 | m1 [S[0, 32)] | semmle.label | m1 [S[0, 32)] |
+| aliasing.cpp:176:11:176:11 | s [S[0, 32)] | semmle.label | s [S[0, 32)] |
 | aliasing.cpp:176:13:176:14 | m1 | semmle.label | m1 |
 | aliasing.cpp:176:13:176:14 | m1 | semmle.label | m1 |
 | aliasing.cpp:187:15:187:22 | BufferMayWriteSideEffect: & ... | semmle.label | BufferMayWriteSideEffect: & ... |
 | aliasing.cpp:187:15:187:22 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| aliasing.cpp:187:19:187:19 | s [s, m1] | semmle.label | s [s, m1] |
-| aliasing.cpp:187:21:187:22 | m1 [m1] | semmle.label | m1 [m1] |
-| aliasing.cpp:188:13:188:14 | Store [s, m1] | semmle.label | Store [s, m1] |
-| aliasing.cpp:189:13:189:13 | s [m1] | semmle.label | s [m1] |
+| aliasing.cpp:187:19:187:19 | s [S2[0, 64), S[0, 32)] | semmle.label | s [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:187:21:187:22 | m1 [S[0, 32)] | semmle.label | m1 [S[0, 32)] |
+| aliasing.cpp:188:13:188:14 | Store [S2[0, 64), S[0, 32)] | semmle.label | Store [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:189:13:189:13 | s [S[0, 32)] | semmle.label | s [S[0, 32)] |
 | aliasing.cpp:189:15:189:16 | m1 | semmle.label | m1 |
 | aliasing.cpp:189:15:189:16 | m1 | semmle.label | m1 |
 | aliasing.cpp:200:15:200:24 | BufferMayWriteSideEffect: & ... | semmle.label | BufferMayWriteSideEffect: & ... |
-| aliasing.cpp:200:15:200:24 | Chi [s, m1] | semmle.label | Chi [s, m1] |
+| aliasing.cpp:200:15:200:24 | Chi [S2[0, 64), S[0, 32)] | semmle.label | Chi [S2[0, 64), S[0, 32)] |
 | aliasing.cpp:200:15:200:24 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| aliasing.cpp:200:21:200:21 | s [s, m1] | semmle.label | s [s, m1] |
-| aliasing.cpp:200:23:200:24 | m1 [m1] | semmle.label | m1 [m1] |
-| aliasing.cpp:201:13:201:13 | s [m1] | semmle.label | s [m1] |
+| aliasing.cpp:200:21:200:21 | s [S2[0, 64), S[0, 32)] | semmle.label | s [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:200:23:200:24 | m1 [S[0, 32)] | semmle.label | m1 [S[0, 32)] |
+| aliasing.cpp:201:13:201:13 | s [S[0, 32)] | semmle.label | s [S[0, 32)] |
 | aliasing.cpp:201:15:201:16 | m1 | semmle.label | m1 |
 | aliasing.cpp:201:15:201:16 | m1 | semmle.label | m1 |
-| aliasing.cpp:211:3:211:24 | Chi [s, m1] | semmle.label | Chi [s, m1] |
-| aliasing.cpp:211:3:211:24 | Store | semmle.label | Store |
-| aliasing.cpp:211:6:211:6 | s [s, m1] | semmle.label | s [s, m1] |
-| aliasing.cpp:211:8:211:9 | m1 [m1] | semmle.label | m1 [m1] |
+| aliasing.cpp:211:3:211:24 | Chi [S2[0, 64), S[0, 32)] | semmle.label | Chi [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:211:6:211:6 | s [S2[0, 64), S[0, 32)] | semmle.label | s [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:211:8:211:9 | m1 [S[0, 32)] | semmle.label | m1 [S[0, 32)] |
 | aliasing.cpp:211:13:211:22 | call to user_input | semmle.label | call to user_input |
-| aliasing.cpp:212:12:212:12 | Store [m1] | semmle.label | Store [m1] |
-| aliasing.cpp:212:12:212:12 | s [m1] | semmle.label | s [m1] |
-| aliasing.cpp:212:12:212:12 | s [m1] | semmle.label | s [m1] |
+| aliasing.cpp:212:12:212:12 | Store [S[0, 32)] | semmle.label | Store [S[0, 32)] |
+| aliasing.cpp:212:12:212:12 | s [S[0, 32)] | semmle.label | s [S[0, 32)] |
 | aliasing.cpp:213:10:213:11 | m1 | semmle.label | m1 |
 | aliasing.cpp:213:10:213:11 | m1 | semmle.label | m1 |
 | aliasing.cpp:225:15:225:22 | BufferMayWriteSideEffect: & ... | semmle.label | BufferMayWriteSideEffect: & ... |
-| aliasing.cpp:225:15:225:22 | Chi [s, m1] | semmle.label | Chi [s, m1] |
+| aliasing.cpp:225:15:225:22 | Chi [S2[0, 64), S[0, 32)] | semmle.label | Chi [S2[0, 64), S[0, 32)] |
 | aliasing.cpp:225:15:225:22 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| aliasing.cpp:225:19:225:19 | s [s, m1] | semmle.label | s [s, m1] |
-| aliasing.cpp:225:21:225:22 | m1 [m1] | semmle.label | m1 [m1] |
-| aliasing.cpp:226:12:226:12 | Store [m1] | semmle.label | Store [m1] |
-| aliasing.cpp:226:12:226:12 | s [m1] | semmle.label | s [m1] |
-| aliasing.cpp:226:12:226:12 | s [m1] | semmle.label | s [m1] |
+| aliasing.cpp:225:19:225:19 | s [S2[0, 64), S[0, 32)] | semmle.label | s [S2[0, 64), S[0, 32)] |
+| aliasing.cpp:225:21:225:22 | m1 [S[0, 32)] | semmle.label | m1 [S[0, 32)] |
+| aliasing.cpp:226:12:226:12 | Store [S[0, 32)] | semmle.label | Store [S[0, 32)] |
+| aliasing.cpp:226:12:226:12 | s [S[0, 32)] | semmle.label | s [S[0, 32)] |
 | aliasing.cpp:227:10:227:11 | m1 | semmle.label | m1 |
 | aliasing.cpp:227:10:227:11 | m1 | semmle.label | m1 |
-| aliasing.cpp:249:26:249:26 | *p [e] | semmle.label | *p [e] |
+| aliasing.cpp:249:26:249:26 | *p [B[96, 128)] | semmle.label | *p [B[96, 128)] |
 | aliasing.cpp:250:11:250:11 | e | semmle.label | e |
 | aliasing.cpp:250:11:250:11 | e | semmle.label | e |
 | aliasing.cpp:256:10:256:19 | call to user_input | semmle.label | call to user_input |
-| aliasing.cpp:257:3:257:13 | Store | semmle.label | Store |
-| aliasing.cpp:257:6:257:6 | e [e] | semmle.label | e [e] |
-| aliasing.cpp:266:3:266:21 | Store | semmle.label | Store |
-| aliasing.cpp:266:6:266:6 | c [c] | semmle.label | c [c] |
+| aliasing.cpp:257:6:257:6 | e [B[96, 128)] | semmle.label | e [B[96, 128)] |
+| aliasing.cpp:266:6:266:6 | c [B[32, 64)] | semmle.label | c [B[32, 64)] |
 | aliasing.cpp:266:10:266:19 | call to user_input | semmle.label | call to user_input |
-| aliasing.cpp:267:37:267:37 | multiple_loads_from_a_same_memory output argument [e] | semmle.label | multiple_loads_from_a_same_memory output argument [e] |
+| aliasing.cpp:267:37:267:37 | multiple_loads_from_a_same_memory output argument [B[96, 128)] | semmle.label | multiple_loads_from_a_same_memory output argument [B[96, 128)] |
 | arrays.cpp:6:12:6:21 | call to user_input | semmle.label | call to user_input |
 | arrays.cpp:7:8:7:13 | access to array | semmle.label | access to array |
 | arrays.cpp:9:8:9:11 | * ... | semmle.label | * ... |
@@ -652,259 +503,198 @@ nodes
 | arrays.cpp:16:8:16:13 | access to array | semmle.label | access to array |
 | arrays.cpp:36:26:36:35 | call to user_input | semmle.label | call to user_input |
 | arrays.cpp:37:24:37:27 | data | semmle.label | data |
-| by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | semmle.label | setDirectly output argument [a] |
+| by_reference.cpp:50:3:50:3 | setDirectly output argument [S[0, 64)] | semmle.label | setDirectly output argument [S[0, 64)] |
 | by_reference.cpp:50:17:50:26 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:51:10:51:20 | call to getDirectly | semmle.label | call to getDirectly |
-| by_reference.cpp:56:3:56:3 | setIndirectly output argument [a] | semmle.label | setIndirectly output argument [a] |
+| by_reference.cpp:56:3:56:3 | setIndirectly output argument [S[0, 64)] | semmle.label | setIndirectly output argument [S[0, 64)] |
 | by_reference.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:57:10:57:22 | call to getIndirectly | semmle.label | call to getIndirectly |
-| by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] | semmle.label | setThroughNonMember output argument [a] |
+| by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [S[0, 64)] | semmle.label | setThroughNonMember output argument [S[0, 64)] |
 | by_reference.cpp:62:25:62:34 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | semmle.label | call to getThroughNonMember |
-| by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] | semmle.label | nonMemberSetA output argument [a] |
+| by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [S[0, 64)] | semmle.label | nonMemberSetA output argument [S[0, 64)] |
 | by_reference.cpp:68:21:68:30 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | semmle.label | call to nonMemberGetA |
-| by_reference.cpp:84:3:84:25 | Chi [a] | semmle.label | Chi [a] |
-| by_reference.cpp:84:3:84:25 | Store | semmle.label | Store |
-| by_reference.cpp:84:10:84:10 | a [a] | semmle.label | a [a] |
+| by_reference.cpp:84:3:84:25 | Chi [Inner[0, 64)] | semmle.label | Chi [Inner[0, 64)] |
+| by_reference.cpp:84:10:84:10 | a [Inner[0, 64)] | semmle.label | a [Inner[0, 64)] |
 | by_reference.cpp:84:14:84:23 | call to user_input | semmle.label | call to user_input |
-| by_reference.cpp:88:3:88:24 | Chi [a] | semmle.label | Chi [a] |
-| by_reference.cpp:88:3:88:24 | Store | semmle.label | Store |
-| by_reference.cpp:88:9:88:9 | a [a] | semmle.label | a [a] |
+| by_reference.cpp:88:3:88:24 | Chi [Inner[0, 64)] | semmle.label | Chi [Inner[0, 64)] |
+| by_reference.cpp:88:9:88:9 | a [Inner[0, 64)] | semmle.label | a [Inner[0, 64)] |
 | by_reference.cpp:88:13:88:22 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:92:3:92:20 | Chi [array content] | semmle.label | Chi [array content] |
-| by_reference.cpp:92:3:92:20 | Store | semmle.label | Store |
 | by_reference.cpp:92:9:92:18 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:96:3:96:19 | Chi [array content] | semmle.label | Chi [array content] |
-| by_reference.cpp:96:3:96:19 | Store | semmle.label | Store |
 | by_reference.cpp:96:8:96:17 | call to user_input | semmle.label | call to user_input |
-| by_reference.cpp:102:21:102:39 | Chi [a, a] | semmle.label | Chi [a, a] |
-| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a, a] | semmle.label | taint_inner_a_ptr output argument [a, a] |
-| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
-| by_reference.cpp:102:28:102:39 | inner_nested [a, a] | semmle.label | inner_nested [a, a] |
+| by_reference.cpp:102:21:102:39 | Chi [Outer[0, 64), Inner[0, 64)] | semmle.label | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [Inner[0, 64)] | semmle.label | taint_inner_a_ptr output argument [Inner[0, 64)] |
+| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [Outer[0, 64), Inner[0, 64)] | semmle.label | taint_inner_a_ptr output argument [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:102:28:102:39 | inner_nested [Outer[0, 64), Inner[0, 64)] | semmle.label | inner_nested [Outer[0, 64), Inner[0, 64)] |
 | by_reference.cpp:104:15:104:22 | BufferMayWriteSideEffect: & ... | semmle.label | BufferMayWriteSideEffect: & ... |
-| by_reference.cpp:104:15:104:22 | Chi [a] | semmle.label | Chi [a] |
-| by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [a] | semmle.label | taint_a_ptr output argument [a] |
+| by_reference.cpp:104:15:104:22 | Chi [Outer[128, 192)] | semmle.label | Chi [Outer[128, 192)] |
+| by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [Outer[128, 192)] | semmle.label | taint_a_ptr output argument [Outer[128, 192)] |
 | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| by_reference.cpp:104:22:104:22 | a [a] | semmle.label | a [a] |
-| by_reference.cpp:106:21:106:41 | Chi [a, a] | semmle.label | Chi [a, a] |
-| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a, a] | semmle.label | taint_inner_a_ptr output argument [a, a] |
-| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
-| by_reference.cpp:106:30:106:41 | inner_nested [a, a] | semmle.label | inner_nested [a, a] |
+| by_reference.cpp:104:22:104:22 | a [Outer[128, 192)] | semmle.label | a [Outer[128, 192)] |
+| by_reference.cpp:106:21:106:41 | Chi [Outer[0, 64), Inner[0, 64)] | semmle.label | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [Inner[0, 64)] | semmle.label | taint_inner_a_ptr output argument [Inner[0, 64)] |
+| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [Outer[0, 64), Inner[0, 64)] | semmle.label | taint_inner_a_ptr output argument [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:106:30:106:41 | inner_nested [Outer[0, 64), Inner[0, 64)] | semmle.label | inner_nested [Outer[0, 64), Inner[0, 64)] |
 | by_reference.cpp:108:15:108:24 | BufferMayWriteSideEffect: & ... | semmle.label | BufferMayWriteSideEffect: & ... |
-| by_reference.cpp:108:15:108:24 | Chi [a] | semmle.label | Chi [a] |
-| by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [a] | semmle.label | taint_a_ptr output argument [a] |
+| by_reference.cpp:108:15:108:24 | Chi [Outer[128, 192)] | semmle.label | Chi [Outer[128, 192)] |
+| by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [Outer[128, 192)] | semmle.label | taint_a_ptr output argument [Outer[128, 192)] |
 | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| by_reference.cpp:108:24:108:24 | a [a] | semmle.label | a [a] |
-| by_reference.cpp:110:14:110:25 | inner_nested [a] | semmle.label | inner_nested [a] |
+| by_reference.cpp:108:24:108:24 | a [Outer[128, 192)] | semmle.label | a [Outer[128, 192)] |
+| by_reference.cpp:110:14:110:25 | inner_nested [Inner[0, 64)] | semmle.label | inner_nested [Inner[0, 64)] |
 | by_reference.cpp:110:27:110:27 | a | semmle.label | a |
 | by_reference.cpp:110:27:110:27 | a | semmle.label | a |
 | by_reference.cpp:112:14:112:14 | a | semmle.label | a |
 | by_reference.cpp:112:14:112:14 | a | semmle.label | a |
-| by_reference.cpp:114:16:114:27 | inner_nested [a] | semmle.label | inner_nested [a] |
+| by_reference.cpp:114:16:114:27 | inner_nested [Inner[0, 64)] | semmle.label | inner_nested [Inner[0, 64)] |
 | by_reference.cpp:114:29:114:29 | a | semmle.label | a |
 | by_reference.cpp:114:29:114:29 | a | semmle.label | a |
 | by_reference.cpp:116:16:116:16 | a | semmle.label | a |
 | by_reference.cpp:116:16:116:16 | a | semmle.label | a |
-| by_reference.cpp:122:21:122:38 | Chi [a, a] | semmle.label | Chi [a, a] |
-| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a, a] | semmle.label | taint_inner_a_ref output argument [a, a] |
-| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] | semmle.label | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:122:27:122:38 | inner_nested [a, a] | semmle.label | inner_nested [a, a] |
+| by_reference.cpp:122:21:122:38 | Chi [Outer[0, 64), Inner[0, 64)] | semmle.label | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [Inner[0, 64)] | semmle.label | taint_inner_a_ref output argument [Inner[0, 64)] |
+| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [Outer[0, 64), Inner[0, 64)] | semmle.label | taint_inner_a_ref output argument [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:122:27:122:38 | inner_nested [Outer[0, 64), Inner[0, 64)] | semmle.label | inner_nested [Outer[0, 64), Inner[0, 64)] |
 | by_reference.cpp:124:15:124:21 | BufferMayWriteSideEffect: (reference to) | semmle.label | BufferMayWriteSideEffect: (reference to) |
-| by_reference.cpp:124:15:124:21 | Chi [a] | semmle.label | Chi [a] |
-| by_reference.cpp:124:15:124:21 | taint_a_ref output argument [a] | semmle.label | taint_a_ref output argument [a] |
+| by_reference.cpp:124:15:124:21 | Chi [Outer[128, 192)] | semmle.label | Chi [Outer[128, 192)] |
+| by_reference.cpp:124:15:124:21 | taint_a_ref output argument [Outer[128, 192)] | semmle.label | taint_a_ref output argument [Outer[128, 192)] |
 | by_reference.cpp:124:15:124:21 | taint_a_ref output argument [array content] | semmle.label | taint_a_ref output argument [array content] |
-| by_reference.cpp:124:21:124:21 | a [a] | semmle.label | a [a] |
-| by_reference.cpp:126:21:126:40 | Chi [a, a] | semmle.label | Chi [a, a] |
-| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a, a] | semmle.label | taint_inner_a_ref output argument [a, a] |
-| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] | semmle.label | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:126:29:126:40 | inner_nested [a, a] | semmle.label | inner_nested [a, a] |
+| by_reference.cpp:124:21:124:21 | a [Outer[128, 192)] | semmle.label | a [Outer[128, 192)] |
+| by_reference.cpp:126:21:126:40 | Chi [Outer[0, 64), Inner[0, 64)] | semmle.label | Chi [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [Inner[0, 64)] | semmle.label | taint_inner_a_ref output argument [Inner[0, 64)] |
+| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [Outer[0, 64), Inner[0, 64)] | semmle.label | taint_inner_a_ref output argument [Outer[0, 64), Inner[0, 64)] |
+| by_reference.cpp:126:29:126:40 | inner_nested [Outer[0, 64), Inner[0, 64)] | semmle.label | inner_nested [Outer[0, 64), Inner[0, 64)] |
 | by_reference.cpp:128:15:128:23 | BufferMayWriteSideEffect: (reference to) | semmle.label | BufferMayWriteSideEffect: (reference to) |
-| by_reference.cpp:128:15:128:23 | Chi [a] | semmle.label | Chi [a] |
-| by_reference.cpp:128:15:128:23 | taint_a_ref output argument [a] | semmle.label | taint_a_ref output argument [a] |
+| by_reference.cpp:128:15:128:23 | Chi [Outer[128, 192)] | semmle.label | Chi [Outer[128, 192)] |
+| by_reference.cpp:128:15:128:23 | taint_a_ref output argument [Outer[128, 192)] | semmle.label | taint_a_ref output argument [Outer[128, 192)] |
 | by_reference.cpp:128:15:128:23 | taint_a_ref output argument [array content] | semmle.label | taint_a_ref output argument [array content] |
-| by_reference.cpp:128:23:128:23 | a [a] | semmle.label | a [a] |
-| by_reference.cpp:130:14:130:25 | inner_nested [a] | semmle.label | inner_nested [a] |
+| by_reference.cpp:128:23:128:23 | a [Outer[128, 192)] | semmle.label | a [Outer[128, 192)] |
+| by_reference.cpp:130:14:130:25 | inner_nested [Inner[0, 64)] | semmle.label | inner_nested [Inner[0, 64)] |
 | by_reference.cpp:130:27:130:27 | a | semmle.label | a |
 | by_reference.cpp:130:27:130:27 | a | semmle.label | a |
 | by_reference.cpp:132:14:132:14 | a | semmle.label | a |
 | by_reference.cpp:132:14:132:14 | a | semmle.label | a |
-| by_reference.cpp:134:16:134:27 | inner_nested [a] | semmle.label | inner_nested [a] |
+| by_reference.cpp:134:16:134:27 | inner_nested [Inner[0, 64)] | semmle.label | inner_nested [Inner[0, 64)] |
 | by_reference.cpp:134:29:134:29 | a | semmle.label | a |
 | by_reference.cpp:134:29:134:29 | a | semmle.label | a |
 | by_reference.cpp:136:16:136:16 | a | semmle.label | a |
 | by_reference.cpp:136:16:136:16 | a | semmle.label | a |
-| complex.cpp:40:17:40:17 | *b [a_] | semmle.label | *b [a_] |
-| complex.cpp:40:17:40:17 | *b [b_] | semmle.label | *b [b_] |
-| complex.cpp:40:17:40:17 | *b [f, b_] | semmle.label | *b [f, b_] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (3)] | semmle.label | *b [f, f, ... (3)] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (4)] | semmle.label | *b [f, f, ... (4)] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (4)] | semmle.label | *b [f, f, ... (4)] |
-| complex.cpp:40:17:40:17 | *b [f, f, ... (5)] | semmle.label | *b [f, f, ... (5)] |
-| complex.cpp:51:10:51:14 | inner [b_] | semmle.label | inner [b_] |
-| complex.cpp:51:10:51:14 | inner [f, a_] | semmle.label | inner [f, a_] |
-| complex.cpp:51:10:51:14 | inner [f, b_] | semmle.label | inner [f, b_] |
-| complex.cpp:51:10:51:14 | inner [f, f, ... (3)] | semmle.label | inner [f, f, ... (3)] |
-| complex.cpp:51:10:51:14 | inner [f, f, ... (3)] | semmle.label | inner [f, f, ... (3)] |
-| complex.cpp:51:10:51:14 | inner [f, f, ... (4)] | semmle.label | inner [f, f, ... (4)] |
-| complex.cpp:51:16:51:16 | Chi [f, f, ... (3)] | semmle.label | Chi [f, f, ... (3)] |
-| complex.cpp:51:16:51:16 | a output argument [a_] | semmle.label | a output argument [a_] |
-| complex.cpp:51:16:51:16 | a output argument [b_] | semmle.label | a output argument [b_] |
-| complex.cpp:51:16:51:16 | a output argument [f, f, ... (3)] | semmle.label | a output argument [f, f, ... (3)] |
-| complex.cpp:51:16:51:16 | f [a_] | semmle.label | f [a_] |
-| complex.cpp:51:16:51:16 | f [a_] | semmle.label | f [a_] |
-| complex.cpp:51:16:51:16 | f [a_] | semmle.label | f [a_] |
-| complex.cpp:51:16:51:16 | f [b_] | semmle.label | f [b_] |
-| complex.cpp:51:16:51:16 | f [b_] | semmle.label | f [b_] |
-| complex.cpp:51:16:51:16 | f [b_] | semmle.label | f [b_] |
-| complex.cpp:51:16:51:16 | f [f, a_] | semmle.label | f [f, a_] |
-| complex.cpp:51:16:51:16 | f [f, b_] | semmle.label | f [f, b_] |
-| complex.cpp:51:16:51:16 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:51:16:51:16 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:51:16:51:16 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:51:18:51:18 | call to a | semmle.label | call to a |
-| complex.cpp:52:10:52:14 | inner [f, b_] | semmle.label | inner [f, b_] |
-| complex.cpp:52:16:52:16 | f [b_] | semmle.label | f [b_] |
-| complex.cpp:52:16:52:16 | f [b_] | semmle.label | f [b_] |
-| complex.cpp:52:16:52:16 | f [b_] | semmle.label | f [b_] |
-| complex.cpp:52:18:52:18 | call to b | semmle.label | call to b |
-| complex.cpp:62:6:62:10 | inner [f, f, ... (3)] | semmle.label | inner [f, f, ... (3)] |
-| complex.cpp:62:6:62:10 | inner [f, f, ... (4)] | semmle.label | inner [f, f, ... (4)] |
-| complex.cpp:62:6:62:10 | inner [f, f, ... (5)] | semmle.label | inner [f, f, ... (5)] |
-| complex.cpp:62:12:62:12 | f [f, a_] | semmle.label | f [f, a_] |
-| complex.cpp:62:12:62:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:62:12:62:12 | f [f, f, ... (4)] | semmle.label | f [f, f, ... (4)] |
-| complex.cpp:62:12:62:12 | setA output argument [a_] | semmle.label | setA output argument [a_] |
-| complex.cpp:62:12:62:12 | setA output argument [f, a_] | semmle.label | setA output argument [f, a_] |
-| complex.cpp:62:12:62:12 | setA output argument [f, f, ... (3)] | semmle.label | setA output argument [f, f, ... (3)] |
-| complex.cpp:62:19:62:28 | call to user_input | semmle.label | call to user_input |
-| complex.cpp:63:6:63:10 | inner [f, f, ... (3)] | semmle.label | inner [f, f, ... (3)] |
-| complex.cpp:63:6:63:10 | inner [f, f, ... (4)] | semmle.label | inner [f, f, ... (4)] |
-| complex.cpp:63:6:63:10 | inner [f, f, ... (5)] | semmle.label | inner [f, f, ... (5)] |
-| complex.cpp:63:12:63:12 | f [f, b_] | semmle.label | f [f, b_] |
-| complex.cpp:63:12:63:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:63:12:63:12 | f [f, f, ... (4)] | semmle.label | f [f, f, ... (4)] |
-| complex.cpp:63:12:63:12 | setB output argument [b_] | semmle.label | setB output argument [b_] |
-| complex.cpp:63:12:63:12 | setB output argument [f, b_] | semmle.label | setB output argument [f, b_] |
-| complex.cpp:63:12:63:12 | setB output argument [f, f, ... (3)] | semmle.label | setB output argument [f, f, ... (3)] |
-| complex.cpp:63:19:63:28 | call to user_input | semmle.label | call to user_input |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (3)] | semmle.label | inner [f, f, ... (3)] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (4)] | semmle.label | inner [f, f, ... (4)] |
-| complex.cpp:64:6:64:10 | inner [f, f, ... (5)] | semmle.label | inner [f, f, ... (5)] |
-| complex.cpp:64:12:64:12 | Chi [f, f, ... (3)] | semmle.label | Chi [f, f, ... (3)] |
-| complex.cpp:64:12:64:12 | Chi [f, f, ... (4)] | semmle.label | Chi [f, f, ... (4)] |
-| complex.cpp:64:12:64:12 | Chi [f, f, ... (5)] | semmle.label | Chi [f, f, ... (5)] |
-| complex.cpp:64:12:64:12 | f [f, a_] | semmle.label | f [f, a_] |
-| complex.cpp:64:12:64:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:64:12:64:12 | f [f, f, ... (4)] | semmle.label | f [f, f, ... (4)] |
-| complex.cpp:64:12:64:12 | setA output argument [a_] | semmle.label | setA output argument [a_] |
-| complex.cpp:64:12:64:12 | setA output argument [f, a_] | semmle.label | setA output argument [f, a_] |
-| complex.cpp:64:12:64:12 | setA output argument [f, f, ... (3)] | semmle.label | setA output argument [f, f, ... (3)] |
-| complex.cpp:64:19:64:28 | call to user_input | semmle.label | call to user_input |
-| complex.cpp:65:6:65:10 | inner [f, a_] | semmle.label | inner [f, a_] |
-| complex.cpp:65:6:65:10 | inner [f, b_] | semmle.label | inner [f, b_] |
-| complex.cpp:65:6:65:10 | inner [f, b_] | semmle.label | inner [f, b_] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | semmle.label | inner [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | semmle.label | inner [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (3)] | semmle.label | inner [f, f, ... (3)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | semmle.label | inner [f, f, ... (4)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | semmle.label | inner [f, f, ... (4)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | semmle.label | inner [f, f, ... (4)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (4)] | semmle.label | inner [f, f, ... (4)] |
-| complex.cpp:65:6:65:10 | inner [f, f, ... (5)] | semmle.label | inner [f, f, ... (5)] |
-| complex.cpp:65:12:65:12 | f [a_] | semmle.label | f [a_] |
-| complex.cpp:65:12:65:12 | f [a_] | semmle.label | f [a_] |
-| complex.cpp:65:12:65:12 | f [a_] | semmle.label | f [a_] |
-| complex.cpp:65:12:65:12 | f [b_] | semmle.label | f [b_] |
-| complex.cpp:65:12:65:12 | f [b_] | semmle.label | f [b_] |
-| complex.cpp:65:12:65:12 | f [b_] | semmle.label | f [b_] |
-| complex.cpp:65:12:65:12 | f [f, a_] | semmle.label | f [f, a_] |
-| complex.cpp:65:12:65:12 | f [f, a_] | semmle.label | f [f, a_] |
-| complex.cpp:65:12:65:12 | f [f, a_] | semmle.label | f [f, a_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | semmle.label | f [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | semmle.label | f [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | semmle.label | f [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | semmle.label | f [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | semmle.label | f [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, b_] | semmle.label | f [f, b_] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (3)] | semmle.label | f [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (4)] | semmle.label | f [f, f, ... (4)] |
-| complex.cpp:65:12:65:12 | f [f, f, ... (4)] | semmle.label | f [f, f, ... (4)] |
-| complex.cpp:65:12:65:12 | setB output argument [a_] | semmle.label | setB output argument [a_] |
-| complex.cpp:65:12:65:12 | setB output argument [b_] | semmle.label | setB output argument [b_] |
-| complex.cpp:65:12:65:12 | setB output argument [f, a_] | semmle.label | setB output argument [f, a_] |
-| complex.cpp:65:12:65:12 | setB output argument [f, b_] | semmle.label | setB output argument [f, b_] |
-| complex.cpp:65:12:65:12 | setB output argument [f, b_] | semmle.label | setB output argument [f, b_] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] | semmle.label | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] | semmle.label | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (3)] | semmle.label | setB output argument [f, f, ... (3)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (4)] | semmle.label | setB output argument [f, f, ... (4)] |
-| complex.cpp:65:12:65:12 | setB output argument [f, f, ... (5)] | semmle.label | setB output argument [f, f, ... (5)] |
-| complex.cpp:65:19:65:28 | call to user_input | semmle.label | call to user_input |
-| constructors.cpp:26:15:26:15 | *f [a_] | semmle.label | *f [a_] |
-| constructors.cpp:26:15:26:15 | *f [b_] | semmle.label | *f [b_] |
-| constructors.cpp:28:10:28:10 | a output argument [b_] | semmle.label | a output argument [b_] |
+| complex.cpp:40:17:40:17 | *b [Foo[0, 32)] | semmle.label | *b [Foo[0, 32)] |
+| complex.cpp:40:17:40:17 | *b [Foo[32, 64)] | semmle.label | *b [Foo[32, 64)] |
+| complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | *b [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | semmle.label | *b [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:40:17:40:17 | *b [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | *b [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:10:42:14 | inner [Bar[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | inner [Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:10:42:14 | inner [Bar[0, 64), Foo[0, 32)] | semmle.label | inner [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:42:10:42:14 | inner [Bar[0, 64), Foo[32, 64)] | semmle.label | inner [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:10:42:14 | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | Chi [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | Chi [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | a output argument [Foo[32, 64)] | semmle.label | a output argument [Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | a output argument [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | a output argument [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | f [Bar[0, 64), Foo[32, 64)] | semmle.label | f [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | f [Foo[0, 32)] | semmle.label | f [Foo[0, 32)] |
+| complex.cpp:42:16:42:16 | f [Foo[0, 32)] | semmle.label | f [Foo[0, 32)] |
+| complex.cpp:42:16:42:16 | f [Foo[0, 32)] | semmle.label | f [Foo[0, 32)] |
+| complex.cpp:42:16:42:16 | f [Foo[32, 64)] | semmle.label | f [Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | f [Foo[32, 64)] | semmle.label | f [Foo[32, 64)] |
+| complex.cpp:42:16:42:16 | f [Foo[32, 64)] | semmle.label | f [Foo[32, 64)] |
+| complex.cpp:42:18:42:18 | call to a | semmle.label | call to a |
+| complex.cpp:43:10:43:14 | inner [Bar[0, 64), Foo[32, 64)] | semmle.label | inner [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:43:16:43:16 | f [Foo[32, 64)] | semmle.label | f [Foo[32, 64)] |
+| complex.cpp:43:16:43:16 | f [Foo[32, 64)] | semmle.label | f [Foo[32, 64)] |
+| complex.cpp:43:16:43:16 | f [Foo[32, 64)] | semmle.label | f [Foo[32, 64)] |
+| complex.cpp:43:18:43:18 | call to b | semmle.label | call to b |
+| complex.cpp:53:6:53:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | semmle.label | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:53:12:53:12 | f [Bar[0, 64), Foo[0, 32)] | semmle.label | f [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:53:12:53:12 | setA output argument [Foo[0, 32)] | semmle.label | setA output argument [Foo[0, 32)] |
+| complex.cpp:53:19:53:28 | call to user_input | semmle.label | call to user_input |
+| complex.cpp:54:6:54:10 | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:6:54:10 | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:12:54:12 | f [Bar[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | f [Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:12:54:12 | f [Bar[0, 64), Foo[32, 64)] | semmle.label | f [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:12:54:12 | setB output argument [Bar[0, 64), Foo[32, 64)] | semmle.label | setB output argument [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:54:12:54:12 | setB output argument [Foo[32, 64)] | semmle.label | setB output argument [Foo[32, 64)] |
+| complex.cpp:54:19:54:28 | call to user_input | semmle.label | call to user_input |
+| complex.cpp:55:6:55:10 | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[0, 32)] | semmle.label | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:6:55:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | semmle.label | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | Chi [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[0, 32)] | semmle.label | Chi [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | Chi [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | semmle.label | Chi [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | f [Bar[0, 64), Bar[0, 64), Foo[0, 32)] | semmle.label | f [Bar[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | f [Bar[0, 64), Foo[0, 32)] | semmle.label | f [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | setA output argument [Bar[0, 64), Foo[0, 32)] | semmle.label | setA output argument [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:55:12:55:12 | setA output argument [Foo[0, 32)] | semmle.label | setA output argument [Foo[0, 32)] |
+| complex.cpp:55:19:55:28 | call to user_input | semmle.label | call to user_input |
+| complex.cpp:56:6:56:10 | inner [Bar[0, 64), Bar[0, 64), Foo[0, 32)] | semmle.label | inner [Bar[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:56:6:56:10 | inner [Bar[0, 64), Foo[0, 32)] | semmle.label | inner [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:56:6:56:10 | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | inner [Outer[0, 64), Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:6:56:10 | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | semmle.label | inner [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:56:6:56:10 | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | inner [Outer[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | f [Bar[0, 64), Bar[0, 64), Foo[32, 64)] | semmle.label | f [Bar[0, 64), Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | f [Bar[0, 64), Foo[0, 32)] | semmle.label | f [Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | f [Bar[0, 64), Foo[32, 64)] | semmle.label | f [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | f [Foo[0, 32)] | semmle.label | f [Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | f [Foo[0, 32)] | semmle.label | f [Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | f [Foo[0, 32)] | semmle.label | f [Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | setB output argument [Bar[0, 64), Foo[32, 64)] | semmle.label | setB output argument [Bar[0, 64), Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | setB output argument [Foo[0, 32)] | semmle.label | setB output argument [Foo[0, 32)] |
+| complex.cpp:56:12:56:12 | setB output argument [Foo[32, 64)] | semmle.label | setB output argument [Foo[32, 64)] |
+| complex.cpp:56:12:56:12 | setB output argument [Outer[0, 64), Bar[0, 64), Foo[0, 32)] | semmle.label | setB output argument [Outer[0, 64), Bar[0, 64), Foo[0, 32)] |
+| complex.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
+| constructors.cpp:26:15:26:15 | *f [Foo[0, 32)] | semmle.label | *f [Foo[0, 32)] |
+| constructors.cpp:26:15:26:15 | *f [Foo[32, 64)] | semmle.label | *f [Foo[32, 64)] |
+| constructors.cpp:28:10:28:10 | a output argument [Foo[32, 64)] | semmle.label | a output argument [Foo[32, 64)] |
 | constructors.cpp:28:12:28:12 | call to a | semmle.label | call to a |
 | constructors.cpp:29:12:29:12 | call to b | semmle.label | call to b |
 | constructors.cpp:34:11:34:20 | call to user_input | semmle.label | call to user_input |
-| constructors.cpp:34:11:34:26 | Foo output argument [a_] | semmle.label | Foo output argument [a_] |
-| constructors.cpp:35:11:35:26 | Foo output argument [b_] | semmle.label | Foo output argument [b_] |
+| constructors.cpp:34:11:34:26 | Foo output argument [Foo[0, 32)] | semmle.label | Foo output argument [Foo[0, 32)] |
+| constructors.cpp:35:11:35:26 | Foo output argument [Foo[32, 64)] | semmle.label | Foo output argument [Foo[32, 64)] |
 | constructors.cpp:35:14:35:23 | call to user_input | semmle.label | call to user_input |
 | constructors.cpp:36:11:36:20 | call to user_input | semmle.label | call to user_input |
-| constructors.cpp:36:11:36:37 | Foo output argument [a_] | semmle.label | Foo output argument [a_] |
-| constructors.cpp:36:11:36:37 | Foo output argument [b_] | semmle.label | Foo output argument [b_] |
+| constructors.cpp:36:11:36:37 | Foo output argument [Foo[0, 32)] | semmle.label | Foo output argument [Foo[0, 32)] |
+| constructors.cpp:36:11:36:37 | Foo output argument [Foo[32, 64)] | semmle.label | Foo output argument [Foo[32, 64)] |
 | constructors.cpp:36:25:36:34 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:26:15:26:15 | *f [a_] | semmle.label | *f [a_] |
-| simple.cpp:26:15:26:15 | *f [b_] | semmle.label | *f [b_] |
-| simple.cpp:28:10:28:10 | a output argument [b_] | semmle.label | a output argument [b_] |
+| simple.cpp:26:15:26:15 | *f [Foo[0, 32)] | semmle.label | *f [Foo[0, 32)] |
+| simple.cpp:26:15:26:15 | *f [Foo[32, 64)] | semmle.label | *f [Foo[32, 64)] |
+| simple.cpp:28:10:28:10 | a output argument [Foo[32, 64)] | semmle.label | a output argument [Foo[32, 64)] |
 | simple.cpp:28:12:28:12 | call to a | semmle.label | call to a |
 | simple.cpp:29:12:29:12 | call to b | semmle.label | call to b |
-| simple.cpp:39:5:39:5 | setA output argument [a_] | semmle.label | setA output argument [a_] |
+| simple.cpp:39:5:39:5 | setA output argument [Foo[0, 32)] | semmle.label | setA output argument [Foo[0, 32)] |
 | simple.cpp:39:12:39:21 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:40:5:40:5 | setB output argument [b_] | semmle.label | setB output argument [b_] |
+| simple.cpp:40:5:40:5 | setB output argument [Foo[32, 64)] | semmle.label | setB output argument [Foo[32, 64)] |
 | simple.cpp:40:12:40:21 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:41:5:41:5 | setA output argument [a_] | semmle.label | setA output argument [a_] |
+| simple.cpp:41:5:41:5 | setA output argument [Foo[0, 32)] | semmle.label | setA output argument [Foo[0, 32)] |
 | simple.cpp:41:12:41:21 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:42:5:42:5 | setB output argument [a_] | semmle.label | setB output argument [a_] |
-| simple.cpp:42:5:42:5 | setB output argument [b_] | semmle.label | setB output argument [b_] |
+| simple.cpp:42:5:42:5 | setB output argument [Foo[0, 32)] | semmle.label | setB output argument [Foo[0, 32)] |
+| simple.cpp:42:5:42:5 | setB output argument [Foo[32, 64)] | semmle.label | setB output argument [Foo[32, 64)] |
 | simple.cpp:42:12:42:21 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:65:7:65:7 | i [i] | semmle.label | i [i] |
+| simple.cpp:65:7:65:7 | i [A[0, 32)] | semmle.label | i [A[0, 32)] |
 | simple.cpp:65:11:65:20 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:66:12:66:12 | Store [i] | semmle.label | Store [i] |
+| simple.cpp:66:12:66:12 | Store [A[0, 32)] | semmle.label | Store [A[0, 32)] |
 | simple.cpp:67:13:67:13 | i | semmle.label | i |
 | simple.cpp:67:13:67:13 | i | semmle.label | i |
-| simple.cpp:83:9:83:10 | f2 [f1, f1] | semmle.label | f2 [f1, f1] |
-| simple.cpp:83:9:83:28 | Store | semmle.label | Store |
-| simple.cpp:83:12:83:13 | f1 [f1] | semmle.label | f1 [f1] |
+| simple.cpp:83:9:83:10 | f2 [C2[0, 32), C[0, 32)] | semmle.label | f2 [C2[0, 32), C[0, 32)] |
+| simple.cpp:83:12:83:13 | f1 [C[0, 32)] | semmle.label | f1 [C[0, 32)] |
 | simple.cpp:83:17:83:26 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:84:14:84:20 | call to getf2f1 | semmle.label | call to getf2f1 |
-| simple.cpp:92:7:92:7 | i [i] | semmle.label | i [i] |
+| simple.cpp:92:7:92:7 | i [A[0, 32)] | semmle.label | i [A[0, 32)] |
 | simple.cpp:92:11:92:20 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:93:20:93:20 | Store [i] | semmle.label | Store [i] |
+| simple.cpp:93:20:93:20 | Store [A[0, 32)] | semmle.label | Store [A[0, 32)] |
 | simple.cpp:94:13:94:13 | i | semmle.label | i |
 | simple.cpp:94:13:94:13 | i | semmle.label | i |
-| struct_init.c:14:24:14:25 | *ab [a] | semmle.label | *ab [a] |
+| struct_init.c:14:24:14:25 | *ab [AB[0, 64)] | semmle.label | *ab [AB[0, 64)] |
 | struct_init.c:15:12:15:12 | a | semmle.label | a |
 | struct_init.c:15:12:15:12 | a | semmle.label | a |
-| struct_init.c:20:17:20:36 | a [a] | semmle.label | a [a] |
-| struct_init.c:20:20:20:29 | Store | semmle.label | Store |
+| struct_init.c:20:17:20:36 | a [AB[0, 64)] | semmle.label | a [AB[0, 64)] |
 | struct_init.c:20:20:20:29 | call to user_input | semmle.label | call to user_input |
 | struct_init.c:22:11:22:11 | a | semmle.label | a |
-| struct_init.c:26:23:29:3 | nestedAB [nestedAB, a] | semmle.label | nestedAB [nestedAB, a] |
-| struct_init.c:27:5:27:23 | a [a] | semmle.label | a [a] |
-| struct_init.c:27:7:27:16 | Store | semmle.label | Store |
+| struct_init.c:26:23:29:3 | nestedAB [Outer[0, 128), AB[0, 64)] | semmle.label | nestedAB [Outer[0, 128), AB[0, 64)] |
+| struct_init.c:27:5:27:23 | a [AB[0, 64)] | semmle.label | a [AB[0, 64)] |
 | struct_init.c:27:7:27:16 | call to user_input | semmle.label | call to user_input |
-| struct_init.c:28:5:28:7 | Chi [nestedAB, a] | semmle.label | Chi [nestedAB, a] |
+| struct_init.c:28:5:28:7 | Chi [Outer[0, 128), AB[0, 64)] | semmle.label | Chi [Outer[0, 128), AB[0, 64)] |
 | struct_init.c:31:23:31:23 | a | semmle.label | a |
-| struct_init.c:36:17:36:24 | nestedAB [a] | semmle.label | nestedAB [a] |
+| struct_init.c:36:17:36:24 | nestedAB [AB[0, 64)] | semmle.label | nestedAB [AB[0, 64)] |
 #select
 | A.cpp:56:13:56:15 | call to get | A.cpp:55:12:55:19 | (C *)... | A.cpp:56:13:56:15 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | (C *)... | (C *)... |
 | A.cpp:56:13:56:15 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:13:56:15 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
@@ -955,14 +745,10 @@ nodes
 | by_reference.cpp:132:14:132:14 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:132:14:132:14 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
 | by_reference.cpp:134:29:134:29 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:134:29:134:29 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | by_reference.cpp:136:16:136:16 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:136:16:136:16 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
-| complex.cpp:51:18:51:18 | call to a | complex.cpp:62:19:62:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | call to a flows from $@ | complex.cpp:62:19:62:28 | call to user_input | call to user_input |
-| complex.cpp:51:18:51:18 | call to a | complex.cpp:63:19:63:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | call to a flows from $@ | complex.cpp:63:19:63:28 | call to user_input | call to user_input |
-| complex.cpp:51:18:51:18 | call to a | complex.cpp:64:19:64:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | call to a flows from $@ | complex.cpp:64:19:64:28 | call to user_input | call to user_input |
-| complex.cpp:51:18:51:18 | call to a | complex.cpp:65:19:65:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | call to a flows from $@ | complex.cpp:65:19:65:28 | call to user_input | call to user_input |
-| complex.cpp:52:18:52:18 | call to b | complex.cpp:62:19:62:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | call to b flows from $@ | complex.cpp:62:19:62:28 | call to user_input | call to user_input |
-| complex.cpp:52:18:52:18 | call to b | complex.cpp:63:19:63:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | call to b flows from $@ | complex.cpp:63:19:63:28 | call to user_input | call to user_input |
-| complex.cpp:52:18:52:18 | call to b | complex.cpp:64:19:64:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | call to b flows from $@ | complex.cpp:64:19:64:28 | call to user_input | call to user_input |
-| complex.cpp:52:18:52:18 | call to b | complex.cpp:65:19:65:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | call to b flows from $@ | complex.cpp:65:19:65:28 | call to user_input | call to user_input |
+| complex.cpp:42:18:42:18 | call to a | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:53:19:53:28 | call to user_input | call to user_input |
+| complex.cpp:42:18:42:18 | call to a | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:55:19:55:28 | call to user_input | call to user_input |
+| complex.cpp:43:18:43:18 | call to b | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:54:19:54:28 | call to user_input | call to user_input |
+| complex.cpp:43:18:43:18 | call to b | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:56:19:56:28 | call to user_input | call to user_input |
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:34:11:34:20 | call to user_input | call to user_input |
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:36:11:36:20 | call to user_input | call to user_input |
 | constructors.cpp:29:12:29:12 | call to b | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:35:14:35:23 | call to user_input | call to user_input |

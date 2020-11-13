@@ -299,8 +299,10 @@ module PromiseFlow {
       or
       prop = errorProp() and
       value =
-        [promise.getRejectParameter().getACall().getArgument(0),
-            promise.getExecutor().getExceptionalReturn()]
+        [
+          promise.getRejectParameter().getACall().getArgument(0),
+          promise.getExecutor().getExceptionalReturn()
+        ]
     )
     or
     // promise creation call, e.g. `Promise.resolve`.
@@ -639,5 +641,41 @@ private module ClosurePromise {
     }
 
     override predicate step(DataFlow::Node src, DataFlow::Node dst) { src = pred and dst = this }
+  }
+}
+
+private module DynamicImportSteps {
+  /**
+   * A step from an export value to its uses via dynamic imports.
+   *
+   * For example:
+   * ```js
+   * // foo.js
+   * export default Foo
+   *
+   * // bar.js
+   * let Foo = await import('./foo');
+   * ```
+   */
+  class DynamicImportStep extends PreCallGraphStep {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      exists(DynamicImportExpr imprt |
+        pred = imprt.getImportedModule().getAnExportedValue("default") and
+        succ = imprt.flow() and
+        prop = Promises::valueProp()
+      )
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      // Special-case code like `(await import(x)).Foo` to boost type tracking depth.
+      exists(
+        DynamicImportExpr imprt, string name, DataFlow::Node mid, DataFlow::SourceNode awaited
+      |
+        pred = imprt.getImportedModule().getAnExportedValue(name) and
+        mid.getALocalSource() = imprt.flow() and
+        PromiseFlow::loadStep(mid, awaited, Promises::valueProp()) and
+        succ = awaited.getAPropertyRead(name)
+      )
+    }
   }
 }

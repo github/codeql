@@ -41,6 +41,40 @@ class ES2015Module extends Module {
 }
 
 /**
+ * Holds if `mod` contains one or more named export declarations other than `default`.
+ */
+private predicate hasNamedExports(ES2015Module mod) {
+  mod.getAnExport().(ExportNamedDeclaration).getASpecifier().getExportedName() != "default"
+  or
+  exists(mod.getAnExport().(ExportNamedDeclaration).getAnExportedDecl())
+  or
+  // Bulk re-exports only export named bindings (not "default")
+  mod.getAnExport() instanceof BulkReExportDeclaration
+}
+
+/**
+ * Holds if this module contains a `default` export.
+ */
+private predicate hasDefaultExport(ES2015Module mod) {
+  // export default foo;
+  mod.getAnExport() instanceof ExportDefaultDeclaration
+  or
+  // export { foo as default };
+  mod.getAnExport().(ExportNamedDeclaration).getASpecifier().getExportedName() = "default"
+}
+
+/**
+ * Holds if `mod` contains both named and `default` exports.
+ *
+ * This is used to determine whether a default-import of the module should be reinterpreted
+ * as a namespace-import, to accomodate the non-standard behavior implemented by some compilers.
+ */
+private predicate hasBothNamedAndDefaultExports(ES2015Module mod) {
+  hasNamedExports(mod) and
+  hasDefaultExport(mod)
+}
+
+/**
  * An import declaration.
  *
  * Examples:
@@ -70,6 +104,10 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
       is instanceof ImportNamespaceSpecifier and
       count(getASpecifier()) = 1
       or
+      // For compatibility with the non-standard implementation of default imports,
+      // treat default imports as namespace imports in cases where it can't cause ambiguity
+      // between named exports and the properties of a default-exported object.
+      not hasBothNamedAndDefaultExports(getImportedModule()) and
       is.getImportedName() = "default"
     )
     or
@@ -79,6 +117,8 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
 
   /** Holds if this is declared with the `type` keyword, so it only imports types. */
   predicate isTypeOnly() { has_type_keyword(this) }
+
+  override string getAPrimaryQlClass() { result = "ImportDeclaration" }
 }
 
 /** A literal path expression appearing in an `import` declaration. */
@@ -129,6 +169,8 @@ class ImportSpecifier extends Expr, @import_specifier {
 
   /** Gets the local variable into which this specifier imports. */
   VarDecl getLocal() { result = getChildExpr(1) }
+
+  override string getAPrimaryQlClass() { result = "ImportSpecifier" }
 }
 
 /**
@@ -262,6 +304,8 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
 
   /** Holds if is declared with the `type` keyword, so only types are exported. */
   predicate isTypeOnly() { has_type_keyword(this) }
+
+  override string getAPrimaryQlClass() { result = "ExportDeclaration" }
 }
 
 /**
@@ -511,6 +555,8 @@ class ExportSpecifier extends Expr, @exportspecifier {
    * an exported name since it does not export a unique symbol.
    */
   string getExportedName() { result = getExported().getName() }
+
+  override string getAPrimaryQlClass() { result = "ExportSpecifier" }
 }
 
 /**

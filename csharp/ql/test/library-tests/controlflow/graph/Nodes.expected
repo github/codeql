@@ -1000,6 +1000,8 @@ entryPoint
 | Assert.cs:70:10:70:12 | M10 | Assert.cs:71:5:75:5 | {...} |
 | Assert.cs:77:10:77:12 | M11 | Assert.cs:78:5:82:5 | {...} |
 | Assert.cs:84:10:84:12 | M12 | Assert.cs:85:5:129:5 | {...} |
+| Assert.cs:131:18:131:32 | AssertTrueFalse | Assert.cs:135:5:136:5 | {...} |
+| Assert.cs:138:10:138:12 | M13 | Assert.cs:139:5:142:5 | {...} |
 | Assignments.cs:3:10:3:10 | M | Assignments.cs:4:5:15:5 | {...} |
 | Assignments.cs:14:18:14:35 | (...) => ... | Assignments.cs:14:33:14:35 | {...} |
 | Assignments.cs:17:40:17:40 | + | Assignments.cs:18:5:20:5 | {...} |
@@ -1160,6 +1162,9 @@ entryPoint
 | NullCoalescing.cs:11:9:11:10 | M5 | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... |
 | NullCoalescing.cs:13:10:13:11 | M6 | NullCoalescing.cs:14:5:18:5 | {...} |
 | Patterns.cs:5:10:5:13 | Test | Patterns.cs:6:5:43:5 | {...} |
+| PostDominance.cs:5:10:5:11 | M1 | PostDominance.cs:6:5:8:5 | {...} |
+| PostDominance.cs:10:10:10:11 | M2 | PostDominance.cs:11:5:15:5 | {...} |
+| PostDominance.cs:17:10:17:11 | M3 | PostDominance.cs:18:5:22:5 | {...} |
 | Qualifiers.cs:7:16:7:21 | Method | Qualifiers.cs:7:28:7:31 | null |
 | Qualifiers.cs:8:23:8:34 | StaticMethod | Qualifiers.cs:8:41:8:44 | null |
 | Qualifiers.cs:10:10:10:10 | M | Qualifiers.cs:11:5:31:5 | {...} |

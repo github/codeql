@@ -1,3 +1,7 @@
+summaryDelegateCall
+| file://:0:0:0:0 | [summary] valueFactory | DelegateFlow.cs:104:23:104:30 | (...) => ... | DelegateFlow.cs:105:23:105:23 | access to local variable f |
+| file://:0:0:0:0 | [summary] valueFactory | DelegateFlow.cs:106:13:106:20 | (...) => ... | DelegateFlow.cs:107:23:107:23 | access to local variable f |
+delegateCall
 | DelegateFlow.cs:9:9:9:12 | delegate call | DelegateFlow.cs:5:10:5:11 | M1 | DelegateFlow.cs:17:12:17:13 | delegate creation of type Action<Int32> |
 | DelegateFlow.cs:9:9:9:12 | delegate call | DelegateFlow.cs:5:10:5:11 | M1 | DelegateFlow.cs:22:12:22:12 | access to parameter a |
 | DelegateFlow.cs:9:9:9:12 | delegate call | DelegateFlow.cs:16:12:16:19 | (...) => ... | DelegateFlow.cs:16:12:16:19 | (...) => ... |

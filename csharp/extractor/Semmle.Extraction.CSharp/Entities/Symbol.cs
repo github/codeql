@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public abstract class CachedSymbol<T> : CachedEntity<T> where T : ISymbol
     {
-        public CachedSymbol(Context cx, T init)
+        protected CachedSymbol(Context cx, T init)
             : base(cx, init) { }
 
         public virtual Type ContainingType => symbol.ContainingType != null ? Type.Create(Context, symbol.ContainingType) : null;
@@ -101,11 +101,10 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return BodyDeclaringSymbol.
-                    DeclaringSyntaxReferences.
-                    SelectMany(r => r.GetSyntax().ChildNodes()).
-                    OfType<BlockSyntax>().
-                    FirstOrDefault();
+                return BodyDeclaringSymbol.DeclaringSyntaxReferences
+                    .SelectMany(r => r.GetSyntax().ChildNodes())
+                    .OfType<BlockSyntax>()
+                    .FirstOrDefault();
             }
         }
 
@@ -113,12 +112,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return BodyDeclaringSymbol.
-                    DeclaringSyntaxReferences.
-                    SelectMany(r => r.GetSyntax().ChildNodes()).
-                    OfType<ArrowExpressionClauseSyntax>().
-                    Select(arrow => arrow.Expression).
-                    FirstOrDefault();
+                return BodyDeclaringSymbol.DeclaringSyntaxReferences
+                    .SelectMany(r => r.GetSyntax().ChildNodes())
+                    .OfType<ArrowExpressionClauseSyntax>()
+                    .Select(arrow => arrow.Expression)
+                    .FirstOrDefault();
             }
         }
 
@@ -136,8 +134,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.metadata_handle(this, Location, MetadataTokens.GetToken(handle.Value));
         }
 
-        static System.Reflection.PropertyInfo GetPropertyInfo(object o, string name) =>
-            o.GetType().GetProperty(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetProperty);
+        private static System.Reflection.PropertyInfo GetPropertyInfo(object o, string name)
+        {
+            return o.GetType().GetProperty(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetProperty);
+        }
 
         public Handle? MetadataHandle
         {

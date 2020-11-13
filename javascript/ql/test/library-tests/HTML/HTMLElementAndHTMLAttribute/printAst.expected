@@ -1,0 +1,84 @@
+nodes
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
+| file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
+| file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
+| tst.html:2:1:13:7 | [HTML::Element] <html ... | semmle.label | [HTML::Element] <html ... |
+| tst.html:2:1:13:7 | [HTML::Element] <html ... | semmle.order | 1 |
+| tst.html:3:5:9:11 | [HTML::Element] <head ... | semmle.label | [HTML::Element] <head ... |
+| tst.html:4:9:4:32 | [HTML::Element] <title ... | semmle.label | [HTML::Element] <title ... |
+| tst.html:5:9:5:43 | [HTML::ScriptElement] <script ... | semmle.label | [HTML::ScriptElement] <script ... |
+| tst.html:5:17:5:33 | [HTML::Attribute] src=external.js | semmle.label | [HTML::Attribute] src=external.js |
+| tst.html:6:9:8:17 | [HTML::ScriptElement] <script ... | semmle.label | [HTML::ScriptElement] <script ... |
+| tst.html:6:17:8:8 | (Script) | semmle.label | (Script) |
+| tst.html:7:13:7:17 | [VarRef] alert | semmle.label | [VarRef] alert |
+| tst.html:7:13:7:34 | [CallExpr] alert(" ... orld!") | semmle.label | [CallExpr] alert(" ... orld!") |
+| tst.html:7:13:7:35 | [ExprStmt] alert(" ... rld!"); | semmle.label | [ExprStmt] alert(" ... rld!"); |
+| tst.html:7:19:7:33 | [Literal] "Hello, world!" | semmle.label | [Literal] "Hello, world!" |
+| tst.html:10:5:12:11 | [HTML::Element] <body ... | semmle.label | [HTML::Element] <body ... |
+| tst.html:10:11:10:16 | [HTML::Attribute] ng-app= | semmle.label | [HTML::Attribute] ng-app= |
+| tst.html:11:9:11:64 | [HTML::Element] <a ... | semmle.label | [HTML::Element] <a ... |
+| tst.html:11:12:11:49 | [HTML::Attribute] href=javascript:void(alert('Nope!')) | semmle.label | [HTML::Attribute] href=javascript:void(alert('Nope!')) |
+| tst.html:11:29:11:48 | (Script) | semmle.label | (Script) |
+| tst.html:11:29:11:48 | [ExprStmt] void(alert('Nope!')) | semmle.label | [ExprStmt] void(alert('Nope!')) |
+| tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | semmle.label | [UnaryExpr] void(alert('Nope!')) |
+| tst.html:11:33:11:48 | [ParExpr] (alert('Nope!')) | semmle.label | [ParExpr] (alert('Nope!')) |
+| tst.html:11:34:11:38 | [VarRef] alert | semmle.label | [VarRef] alert |
+| tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | semmle.label | [CallExpr] alert('Nope!') |
+| tst.html:11:40:11:46 | [Literal] 'Nope!' | semmle.label | [Literal] 'Nope!' |
+edges
+| file://:0:0:0:0 | (Arguments) | tst.html:7:19:7:33 | [Literal] "Hello, world!" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.html:7:19:7:33 | [Literal] "Hello, world!" | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.html:11:40:11:46 | [Literal] 'Nope!' | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.html:11:40:11:46 | [Literal] 'Nope!' | semmle.order | 0 |
+| file://:0:0:0:0 | (Attributes) | tst.html:5:17:5:33 | [HTML::Attribute] src=external.js | semmle.label | 0 |
+| file://:0:0:0:0 | (Attributes) | tst.html:5:17:5:33 | [HTML::Attribute] src=external.js | semmle.order | 0 |
+| file://:0:0:0:0 | (Attributes) | tst.html:10:11:10:16 | [HTML::Attribute] ng-app= | semmle.label | 0 |
+| file://:0:0:0:0 | (Attributes) | tst.html:10:11:10:16 | [HTML::Attribute] ng-app= | semmle.order | 0 |
+| file://:0:0:0:0 | (Attributes) | tst.html:11:12:11:49 | [HTML::Attribute] href=javascript:void(alert('Nope!')) | semmle.label | 0 |
+| file://:0:0:0:0 | (Attributes) | tst.html:11:12:11:49 | [HTML::Attribute] href=javascript:void(alert('Nope!')) | semmle.order | 0 |
+| tst.html:2:1:13:7 | [HTML::Element] <html ... | tst.html:3:5:9:11 | [HTML::Element] <head ... | semmle.label | 1 |
+| tst.html:2:1:13:7 | [HTML::Element] <html ... | tst.html:3:5:9:11 | [HTML::Element] <head ... | semmle.order | 1 |
+| tst.html:2:1:13:7 | [HTML::Element] <html ... | tst.html:10:5:12:11 | [HTML::Element] <body ... | semmle.label | 3 |
+| tst.html:2:1:13:7 | [HTML::Element] <html ... | tst.html:10:5:12:11 | [HTML::Element] <body ... | semmle.order | 3 |
+| tst.html:3:5:9:11 | [HTML::Element] <head ... | tst.html:4:9:4:32 | [HTML::Element] <title ... | semmle.label | 1 |
+| tst.html:3:5:9:11 | [HTML::Element] <head ... | tst.html:4:9:4:32 | [HTML::Element] <title ... | semmle.order | 1 |
+| tst.html:3:5:9:11 | [HTML::Element] <head ... | tst.html:5:9:5:43 | [HTML::ScriptElement] <script ... | semmle.label | 3 |
+| tst.html:3:5:9:11 | [HTML::Element] <head ... | tst.html:5:9:5:43 | [HTML::ScriptElement] <script ... | semmle.order | 3 |
+| tst.html:3:5:9:11 | [HTML::Element] <head ... | tst.html:6:9:8:17 | [HTML::ScriptElement] <script ... | semmle.label | 5 |
+| tst.html:3:5:9:11 | [HTML::Element] <head ... | tst.html:6:9:8:17 | [HTML::ScriptElement] <script ... | semmle.order | 5 |
+| tst.html:5:9:5:43 | [HTML::ScriptElement] <script ... | file://:0:0:0:0 | (Attributes) | semmle.label | -1 |
+| tst.html:5:9:5:43 | [HTML::ScriptElement] <script ... | file://:0:0:0:0 | (Attributes) | semmle.order | -1 |
+| tst.html:6:9:8:17 | [HTML::ScriptElement] <script ... | tst.html:6:17:8:8 | (Script) | semmle.label | -200 |
+| tst.html:6:9:8:17 | [HTML::ScriptElement] <script ... | tst.html:6:17:8:8 | (Script) | semmle.order | -200 |
+| tst.html:6:17:8:8 | (Script) | tst.html:7:13:7:35 | [ExprStmt] alert(" ... rld!"); | semmle.label | 0 |
+| tst.html:6:17:8:8 | (Script) | tst.html:7:13:7:35 | [ExprStmt] alert(" ... rld!"); | semmle.order | 0 |
+| tst.html:7:13:7:34 | [CallExpr] alert(" ... orld!") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| tst.html:7:13:7:34 | [CallExpr] alert(" ... orld!") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| tst.html:7:13:7:34 | [CallExpr] alert(" ... orld!") | tst.html:7:13:7:17 | [VarRef] alert | semmle.label | 0 |
+| tst.html:7:13:7:34 | [CallExpr] alert(" ... orld!") | tst.html:7:13:7:17 | [VarRef] alert | semmle.order | 0 |
+| tst.html:7:13:7:35 | [ExprStmt] alert(" ... rld!"); | tst.html:7:13:7:34 | [CallExpr] alert(" ... orld!") | semmle.label | 1 |
+| tst.html:7:13:7:35 | [ExprStmt] alert(" ... rld!"); | tst.html:7:13:7:34 | [CallExpr] alert(" ... orld!") | semmle.order | 1 |
+| tst.html:10:5:12:11 | [HTML::Element] <body ... | file://:0:0:0:0 | (Attributes) | semmle.label | -1 |
+| tst.html:10:5:12:11 | [HTML::Element] <body ... | file://:0:0:0:0 | (Attributes) | semmle.order | -1 |
+| tst.html:10:5:12:11 | [HTML::Element] <body ... | tst.html:11:9:11:64 | [HTML::Element] <a ... | semmle.label | 1 |
+| tst.html:10:5:12:11 | [HTML::Element] <body ... | tst.html:11:9:11:64 | [HTML::Element] <a ... | semmle.order | 1 |
+| tst.html:11:9:11:64 | [HTML::Element] <a ... | file://:0:0:0:0 | (Attributes) | semmle.label | -1 |
+| tst.html:11:9:11:64 | [HTML::Element] <a ... | file://:0:0:0:0 | (Attributes) | semmle.order | -1 |
+| tst.html:11:12:11:49 | [HTML::Attribute] href=javascript:void(alert('Nope!')) | tst.html:11:29:11:48 | (Script) | semmle.label | 0 |
+| tst.html:11:12:11:49 | [HTML::Attribute] href=javascript:void(alert('Nope!')) | tst.html:11:29:11:48 | (Script) | semmle.order | 0 |
+| tst.html:11:29:11:48 | (Script) | tst.html:11:29:11:48 | [ExprStmt] void(alert('Nope!')) | semmle.label | 0 |
+| tst.html:11:29:11:48 | (Script) | tst.html:11:29:11:48 | [ExprStmt] void(alert('Nope!')) | semmle.order | 0 |
+| tst.html:11:29:11:48 | [ExprStmt] void(alert('Nope!')) | tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | semmle.label | 1 |
+| tst.html:11:29:11:48 | [ExprStmt] void(alert('Nope!')) | tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | semmle.order | 1 |
+| tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | tst.html:11:33:11:48 | [ParExpr] (alert('Nope!')) | semmle.label | 1 |
+| tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | tst.html:11:33:11:48 | [ParExpr] (alert('Nope!')) | semmle.order | 1 |
+| tst.html:11:33:11:48 | [ParExpr] (alert('Nope!')) | tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | semmle.label | 1 |
+| tst.html:11:33:11:48 | [ParExpr] (alert('Nope!')) | tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | semmle.order | 1 |
+| tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | tst.html:11:34:11:38 | [VarRef] alert | semmle.label | 0 |
+| tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | tst.html:11:34:11:38 | [VarRef] alert | semmle.order | 0 |
+graphProperties
+| semmle.graphKind | tree |

@@ -4,6 +4,7 @@
  */
 
 import csharp
+import IDEContextual
 
 /** An element with an associated definition. */
 abstract class Use extends @type_mention_parent {
@@ -151,6 +152,23 @@ private class TypeMentionUse extends Use, TypeMention {
     )
   }
 
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, _) and
+    endcolumn =
+      startcolumn +
+          this.getType().(ConstructedType).getUnboundGeneric().getNameWithoutBrackets().length() - 1
+    or
+    Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, _) and
+    endcolumn =
+      startcolumn + this.getType().(UnboundGenericType).getNameWithoutBrackets().length() - 1
+    or
+    not this.getType() instanceof ConstructedType and
+    not this.getType() instanceof UnboundGenericType and
+    Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
   override Type getDefinition() { result = this.getType().getSourceDeclaration() }
 
   override string getUseType() {
@@ -171,11 +189,3 @@ Declaration definitionOf(Use use, string kind) {
   result.fromSource() and
   kind = use.getUseType()
 }
-
-/**
- * Returns an appropriately encoded version of a filename `name`
- * passed by the VS Code extension in order to coincide with the
- * output of `.getFile()` on locatable entities.
- */
-cached
-File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }

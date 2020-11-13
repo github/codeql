@@ -729,3 +729,8 @@ class SystemGuid extends SystemStruct {
 class SystemNotImplementedExceptionClass extends SystemClass {
   SystemNotImplementedExceptionClass() { this.hasName("NotImplementedException") }
 }
+
+/** The `System.DateTime` struct. */
+class SystemDateTimeStruct extends SystemStruct {
+  SystemDateTimeStruct() { this.hasName("DateTime") }
+}

@@ -1,5 +1,5 @@
 import python
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.DataFlow
 import TestUtilities.InlineExpectationsTest
 
 class GlobalReadTest extends InlineExpectationsTest {

@@ -19,10 +19,10 @@ public:
 	int v;
 };
 
-MyMovableClass &&getUnTainted() { return MyMovableClass(1); }
-MyMovableClass &&getTainted() { return MyMovableClass(source()); }
+MyMovableClass   getUnTainted() { return MyMovableClass(1); }
+MyMovableClass   getTainted() { return MyMovableClass(source()); }
 
-void test_copyableclass()
+void test_movableclass()
 {
 	{
 		MyMovableClass s1(1);

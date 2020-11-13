@@ -23,7 +23,7 @@ namespace Semmle.Autobuild.Shared
 
         public Version ToolsVersion { get; private set; }
 
-        readonly Lazy<List<Project>> includedProjectsLazy;
+        private readonly Lazy<List<Project>> includedProjectsLazy;
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjectsLazy.Value;
 
         public Project(Autobuilder builder, string path) : base(builder, path)

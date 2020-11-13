@@ -7,9 +7,9 @@ using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class VariableDeclaration : Expression
+    internal class VariableDeclaration : Expression
     {
-        VariableDeclaration(IExpressionInfo info) : base(info) { }
+        private VariableDeclaration(IExpressionInfo info) : base(info) { }
 
         public static VariableDeclaration Create(Context cx, ISymbol symbol, AnnotatedType type, TypeSyntax optionalSyntax, Extraction.Entities.Location exprLocation, bool isVar, IExpressionParentEntity parent, int child)
         {
@@ -19,12 +19,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var l = LocalVariable.Create(cx, symbol);
                 l.PopulateManual(ret, isVar);
                 if (optionalSyntax != null)
-                    TypeMention.Create(cx, optionalSyntax, parent, type);
+                    TypeMention.Create(cx, optionalSyntax, ret, type);
             });
             return ret;
         }
 
-        static VariableDeclaration CreateSingle(Context cx, DeclarationExpressionSyntax node, SingleVariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
+        private static VariableDeclaration CreateSingle(Context cx, DeclarationExpressionSyntax node, SingleVariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
         {
             var variableSymbol = cx.GetModel(designation).GetDeclaredSymbol(designation) as ILocalSymbol;
             if (variableSymbol == null)
@@ -71,6 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var child0 = 0;
                 foreach (var variable in designation.Variables)
+                {
                     switch (variable)
                     {
                         case ParenthesizedVariableDesignationSyntax paren:
@@ -94,13 +95,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         default:
                             throw new InternalError(variable, "Unhandled designation type");
                     }
+                }
             });
 
             return tuple;
         }
 
 
-        static Expression Create(Context cx, DeclarationExpressionSyntax node, VariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
+        private static Expression Create(Context cx, DeclarationExpressionSyntax node, VariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
         {
             switch (designation)
             {
@@ -157,15 +159,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     cx.TrapWriter.Writer.expr_access(access, localVar);
                 }
 
-                var decl = d.Parent as VariableDeclarationSyntax;
-                if (decl != null)
+                if (d.Parent is VariableDeclarationSyntax decl)
                     TypeMention.Create(cx, decl.Type, ret, type);
             });
             return ret;
         }
     }
 
-    static class VariableDeclarations
+    internal static class VariableDeclarations
     {
         public static void Populate(Context cx, VariableDeclarationSyntax decl, IExpressionParentEntity parent, int child, int childIncrement = 1)
         {

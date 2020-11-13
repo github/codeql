@@ -26,8 +26,8 @@ void callSetters() {
   referenceSetter(s2);
   copySetter(s3);
 
-  sink(s1.m1); // $ast,ir
-  sink(s2.m1); // $ast,ir
+  sink(s1.m1); // $ ast,ir
+  sink(s2.m1); // $ ast,ir
   sink(s3.m1); // no flow
 }
 
@@ -35,12 +35,12 @@ void assignAfterAlias() {
   S s1 = { 0, 0 };
   S &ref1 = s1;
   ref1.m1 = user_input();
-  sink(s1.m1); // $f-:ast $ir
+  sink(s1.m1); // $ ir MISSING: ast
 
   S s2 = { 0, 0 };
   S &ref2 = s2;
   s2.m1 = user_input();
-  sink(ref2.m1); // $f-:ast $ir
+  sink(ref2.m1); // $ ir MISSING: ast
 }
 
 void assignAfterCopy() {
@@ -59,7 +59,7 @@ void assignBeforeCopy() {
   S s2 = { 0, 0 };
   s2.m1 = user_input();
   S copy2 = s2;
-  sink(copy2.m1); // $ast,ir
+  sink(copy2.m1); // $ ast,ir
 }
 
 struct Wrapper {
@@ -77,20 +77,20 @@ void pointerIntermediate() {
   Wrapper w = { { 0, 0 } };
   S *s = &w.s;
   s->m1 = user_input();
-  sink(w.s.m1); // $f-:ast $ir
+  sink(w.s.m1); // $ ir MISSING: ast
 }
 
 void referenceIntermediate() {
   Wrapper w = { { 0, 0 } };
   S &s = w.s;
   s.m1 = user_input();
-  sink(w.s.m1); // $f-:ast $ir
+  sink(w.s.m1); // $ ir MISSING: ast
 }
 
 void nestedAssign() {
   Wrapper w = { { 0, 0 } };
   w.s.m1 = user_input();
-  sink(w.s.m1); // $ast,ir
+  sink(w.s.m1); // $ ast,ir
 }
 
 void addressOfField() {
@@ -99,7 +99,7 @@ void addressOfField() {
 
   S s_copy = s;
   int* px = &s_copy.m1;
-  sink(*px); // $f-:ast $ir
+  sink(*px); // $ ir MISSING: ast
 }
 
 void taint_a_ptr(int* pa) {
@@ -119,28 +119,28 @@ struct S_with_pointer {
 
 void pointer_deref(int* xs) {
   taint_a_ptr(xs);
-  sink(xs[0]); // $f-:ast $ir
+  sink(xs[0]); // $ ir MISSING: ast
 }
 
 void pointer_deref_sub(int* xs) {
   taint_a_ptr(xs - 2);
-  sink(*(xs - 2)); // $f-:ast $ir
+  sink(*(xs - 2)); // $ ir MISSING: ast
 }
 
 void pointer_many_addrof_and_deref(int* xs) {
   taint_a_ptr(xs);
-  sink(*&*&*xs); // $f-:ast $ir
+  sink(*&*&*xs); // $ ir MISSING: ast
 }
 
 void pointer_unary_plus(int* xs) {
   taint_a_ptr(+xs);
-  sink(*+xs); // $f-:ast $ir
+  sink(*+xs); // $ ir MISSING: ast
 }
 
 void pointer_member_index(S_with_pointer s) {
   taint_a_ptr(s.data);
   // `s.data` is points to all-aliased-memory
-  sink(s.data[0]); // $f-:ast,ir
+  sink(s.data[0]); // $ MISSING: ir,ast
 }
 
 void member_array_different_field(S_with_pointer* s) {
@@ -156,13 +156,13 @@ struct S_with_array {
 void pointer_member_deref() {
   S_with_array s;
   taint_a_ptr(s.data);
-  sink(*s.data); // $ir,ast
+  sink(*s.data); // $ ir,ast
 }
 
 void array_member_deref() {
   S_with_array s;
   taint_a_ptr(s.data);
-  sink(s.data[0]); // $ir,ast
+  sink(s.data[0]); // $ ir,ast
 }
 
 struct S2 {
@@ -173,7 +173,7 @@ struct S2 {
 void deep_member_field_dot() {
   S2 s2;
   taint_a_ptr(&s2.s.m1);
-  sink(s2.s.m1); // $ir,ast
+  sink(s2.s.m1); // $ ir,ast
 }
 
 void deep_member_field_dot_different_fields() {
@@ -186,7 +186,7 @@ void deep_member_field_dot_2() {
   S2 s2;
   taint_a_ptr(&s2.s.m1);
   S2 s2_2 = s2;
-  sink(s2_2.s.m1); // $ir,ast
+  sink(s2_2.s.m1); // $ ir,ast
 }
 
 void deep_member_field_dot_different_fields_2() {
@@ -198,7 +198,7 @@ void deep_member_field_dot_different_fields_2() {
 
 void deep_member_field_arrow(S2 *ps2) {
   taint_a_ptr(&ps2->s.m1);
-  sink(ps2->s.m1); // $ir,ast
+  sink(ps2->s.m1); // $ ir,ast
 }
 
 void deep_member_field_arrow_different_fields(S2 *ps2) {

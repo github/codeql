@@ -10,38 +10,38 @@ namespace SemmleTests.Semmle.Util
     /// Ensure that the Extractor works with long paths.
     /// These should be handled by .NET Core.
     /// </summary>
-    public class LongPaths : IDisposable
+    public sealed class LongPaths : IDisposable
     {
-        static readonly string tmpDir = Path.GetTempPath();
-        static readonly string shortPath = Path.Combine(tmpDir, "test.txt");
-        static readonly string longPath = Path.Combine(tmpDir, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        private static readonly string tmpDir = Path.GetTempPath();
+        private static readonly string shortPath = Path.Combine(tmpDir, "test.txt");
+        private static readonly string longPath = Path.Combine(tmpDir, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
             "ccccccccccccccccccccccccccccccc", "ddddddddddddddddddddddddddddddddddddd", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "fffffffffffffffffffffffffffffffff",
-            "ggggggggggggggggggggggggggggggggggg","hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh","iiiiiiiiiiiiiiii.txt");
+            "ggggggggggggggggggggggggggggggggggg", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", "iiiiiiiiiiiiiiii.txt");
 
         public LongPaths()
         {
             CleanUp();
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             CleanUp();
         }
 
-        void CleanUp()
+        private static void CleanUp()
         {
             try
             {
                 File.Delete(shortPath);
             }
-            catch(DirectoryNotFoundException)
+            catch (DirectoryNotFoundException)
             {
             }
             try
             {
                 File.Delete(longPath);
             }
-            catch(DirectoryNotFoundException)
+            catch (DirectoryNotFoundException)
             {
             }
         }
@@ -93,7 +93,7 @@ namespace SemmleTests.Semmle.Util
             Assert.Equal("def", File.ReadAllText(shortPath));
         }
 
-        readonly byte[] buffer1 = new byte[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        private readonly byte[] buffer1 = new byte[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
         [Fact]
         public void CreateShortStream()

@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Do : Statement<DoStatementSyntax>
+    internal class Do : Statement<DoStatementSyntax>
     {
-        Do(Context cx, DoStatementSyntax node, IStatementParentEntity parent, int child)
+        private Do(Context cx, DoStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.DO, parent, child, cx.Create(node.GetLocation())) { }
 
         public static Do Create(Context cx, DoStatementSyntax node, IStatementParentEntity parent, int child)

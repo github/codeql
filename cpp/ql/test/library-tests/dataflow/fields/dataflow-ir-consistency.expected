@@ -1,10 +1,10 @@
 uniqueEnclosingCallable
 uniqueType
 uniqueNodeLocation
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
 missingLocation
 | Nodes without location: 4 |
 uniqueNodeToString
@@ -161,11 +161,11 @@ reverseRead
 | by_reference.cpp:122:21:122:38 | Chi | Origin of readStep is missing a PostUpdateNode. |
 | by_reference.cpp:126:21:126:40 | Chi | Origin of readStep is missing a PostUpdateNode. |
 | complex.cpp:40:17:40:17 | *b | Origin of readStep is missing a PostUpdateNode. |
-| complex.cpp:51:16:51:16 | Chi | Origin of readStep is missing a PostUpdateNode. |
-| complex.cpp:57:9:57:10 | Chi | Origin of readStep is missing a PostUpdateNode. |
-| complex.cpp:58:9:58:10 | Chi | Origin of readStep is missing a PostUpdateNode. |
-| complex.cpp:59:9:59:10 | Chi | Origin of readStep is missing a PostUpdateNode. |
-| complex.cpp:64:12:64:12 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:42:16:42:16 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:48:9:48:10 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:49:9:49:10 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:50:9:50:10 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| complex.cpp:55:12:55:12 | Chi | Origin of readStep is missing a PostUpdateNode. |
 | struct_init.c:27:7:27:16 | Store | Origin of readStep is missing a PostUpdateNode. |
 | struct_init.c:27:21:27:21 | Store | Origin of readStep is missing a PostUpdateNode. |
 argHasPostUpdate

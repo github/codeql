@@ -6,18 +6,18 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A parameter entity.
     /// </summary>
-    interface IParameter : IExtractedEntity
+    internal interface IParameter : IExtractedEntity
     {
     }
 
     /// <summary>
     /// A parameter entity.
     /// </summary>
-    sealed class Parameter : LabelledEntity, IParameter
+    internal sealed class Parameter : LabelledEntity, IParameter
     {
-        readonly Method method;
-        readonly int index;
-        readonly Type type;
+        private readonly Method method;
+        private readonly int index;
+        private readonly Type type;
 
         public Parameter(Context cx, Method m, int i, Type t) : base(cx)
         {

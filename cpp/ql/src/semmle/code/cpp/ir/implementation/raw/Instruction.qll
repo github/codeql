@@ -172,6 +172,16 @@ class Instruction extends Construction::TStageInstruction {
   final string getUniqueId() { result = Construction::getInstructionUniqueId(this) }
 
   /**
+   * INTERNAL: Do not use.
+   *
+   * Gets two sort keys for this instruction - used to order instructions for printing
+   * in test outputs.
+   */
+  final predicate hasSortKeys(int key1, int key2) {
+    Construction::instructionHasSortKeys(this, key1, key2)
+  }
+
+  /**
    * Gets the basic block that contains this instruction.
    */
   final IRBlock getBlock() { result.getAnInstruction() = this }
@@ -805,10 +815,24 @@ class CopyValueInstruction extends CopyInstruction, UnaryInstruction {
 }
 
 /**
+ * Gets a string describing the location pointed to by the specified address operand.
+ */
+private string getAddressOperandDescription(AddressOperand operand) {
+  result = operand.getDef().(VariableAddressInstruction).getIRVariable().toString()
+  or
+  not operand.getDef() instanceof VariableAddressInstruction and
+  result = "?"
+}
+
+/**
  * An instruction that returns a register result containing a copy of its memory operand.
  */
 class LoadInstruction extends CopyInstruction {
   LoadInstruction() { getOpcode() instanceof Opcode::Load }
+
+  final override string getImmediateString() {
+    result = getAddressOperandDescription(getSourceAddressOperand())
+  }
 
   /**
    * Gets the operand that provides the address of the value being loaded.
@@ -828,6 +852,10 @@ class LoadInstruction extends CopyInstruction {
  */
 class StoreInstruction extends CopyInstruction {
   StoreInstruction() { getOpcode() instanceof Opcode::Store }
+
+  final override string getImmediateString() {
+    result = getAddressOperandDescription(getDestinationAddressOperand())
+  }
 
   /**
    * Gets the operand that provides the address of the location to which the value will be stored.
@@ -1501,6 +1529,12 @@ class SwitchInstruction extends Instruction {
 class CallInstruction extends Instruction {
   CallInstruction() { getOpcode() instanceof Opcode::Call }
 
+  final override string getImmediateString() {
+    result = getStaticCallTarget().toString()
+    or
+    not exists(getStaticCallTarget()) and result = "?"
+  }
+
   /**
    * Gets the operand the specifies the target function of the call.
    */
@@ -1543,6 +1577,7 @@ class CallInstruction extends Instruction {
   /**
    * Gets the argument operand at the specified index.
    */
+  pragma[noinline]
   final PositionalArgumentOperand getPositionalArgumentOperand(int index) {
     result = getAnOperand() and
     result.getIndex() = index
@@ -1551,6 +1586,7 @@ class CallInstruction extends Instruction {
   /**
    * Gets the argument at the specified index.
    */
+  pragma[noinline]
   final Instruction getPositionalArgument(int index) {
     result = getPositionalArgumentOperand(index).getDef()
   }

@@ -1,73 +1,247 @@
 attributes.cs:
 #   10| [Attribute] [AssemblyTitle(...)]
+#   10|   -1: [TypeMention] AssemblyTitleAttribute
 #   10|   0: [StringLiteral] "C# attributes test"
 #   11| [Attribute] [AssemblyDescription(...)]
+#   11|   -1: [TypeMention] AssemblyDescriptionAttribute
 #   11|   0: [StringLiteral] "A test of C# attributes"
 #   12| [Attribute] [AssemblyConfiguration(...)]
+#   12|   -1: [TypeMention] AssemblyConfigurationAttribute
 #   12|   0: [StringLiteral] ""
 #   13| [Attribute] [AssemblyCompany(...)]
+#   13|   -1: [TypeMention] AssemblyCompanyAttribute
 #   13|   0: [StringLiteral] "Semmle Plc"
 #   14| [Attribute] [AssemblyProduct(...)]
+#   14|   -1: [TypeMention] AssemblyProductAttribute
 #   14|   0: [StringLiteral] "Odasa"
 #   15| [Attribute] [AssemblyCopyright(...)]
-#   15|   0: [StringLiteral] "Copyright � Semmle 2018"
+#   15|   -1: [TypeMention] AssemblyCopyrightAttribute
+#   15|   0: [StringLiteral] "Copyright © Semmle 2018"
 #   16| [Attribute] [AssemblyTrademark(...)]
+#   16|   -1: [TypeMention] AssemblyTrademarkAttribute
 #   16|   0: [StringLiteral] ""
 #   17| [Attribute] [AssemblyCulture(...)]
+#   17|   -1: [TypeMention] AssemblyCultureAttribute
 #   17|   0: [StringLiteral] ""
 #   22| [Attribute] [ComVisible(...)]
+#   22|   -1: [TypeMention] ComVisibleAttribute
 #   22|   0: [BoolLiteral] false
 #   25| [Attribute] [Guid(...)]
+#   25|   -1: [TypeMention] GuidAttribute
 #   25|   0: [StringLiteral] "2f70fdd6-14aa-4850-b053-d547adb1f476"
 #   37| [Attribute] [AssemblyVersion(...)]
+#   37|   -1: [TypeMention] AssemblyVersionAttribute
 #   37|   0: [StringLiteral] "1.0.0.0"
 #   38| [Attribute] [AssemblyFileVersion(...)]
+#   38|   -1: [TypeMention] AssemblyFileVersionAttribute
 #   38|   0: [StringLiteral] "1.0.0.0"
-#   41| [Class] Foo
+#   40| [Attribute] [Args(...)]
+#   40|   -1: [TypeMention] ArgsAttribute
+#   40|   0: [IntLiteral] 0
+#   40|   1: [ArrayCreation] array creation of type Object[]
+#   40|     -2: [TypeMention] Object[]
+#   40|       1: [TypeMention] object
+#   40|     -1: [ArrayInitializer] { ..., ... }
+#   40|       0: [CastExpr] (...) ...
+#   40|         1: [IntLiteral] 1
+#   40|       1: [CastExpr] (...) ...
+#   40|         1: [IntLiteral] 2
+#   40|       2: [NullLiteral] null
+#   40|   2: [TypeofExpr] typeof(...)
+#   40|     0: [TypeAccess] access to type ArgsAttribute
+#   40|       0: [TypeMention] ArgsAttribute
+#   40|   3: [CastExpr] (...) ...
+#   40|     0: [TypeAccess] access to type E
+#   40|       0: [TypeMention] E
+#   40|     1: [IntLiteral] 12
+#   40|   4: [NullLiteral] null
+#   40|   5: [ArrayCreation] array creation of type Object[]
+#   40|     -2: [TypeMention] Object[]
+#   40|       1: [TypeMention] object
+#   40|     -1: [ArrayInitializer] { ..., ... }
+#   40|       0: [CastExpr] (...) ...
+#   40|         1: [IntLiteral] 1
+#   40|       1: [TypeofExpr] typeof(...)
+#   40|         0: [TypeAccess] access to type Int32
+#   40|           0: [TypeMention] int
+#   41| [Attribute] [Args(...)]
+#   41|   -1: [TypeMention] ArgsAttribute
+#   41|   0: [IntLiteral] 0
+#   41|   1: [ArrayCreation] array creation of type Object[]
+#   41|     -2: [TypeMention] Object[]
+#   41|       1: [TypeMention] object
+#   41|     -1: [ArrayInitializer] { ..., ... }
+#   41|       0: [CastExpr] (...) ...
+#   41|         1: [IntLiteral] 1
+#   41|       1: [CastExpr] (...) ...
+#   41|         1: [IntLiteral] 2
+#   41|       2: [NullLiteral] null
+#   41|   2: [TypeofExpr] typeof(...)
+#   41|     0: [TypeAccess] access to type ArgsAttribute
+#   41|       0: [TypeMention] ArgsAttribute
+#   41|   3: [CastExpr] (...) ...
+#   41|     0: [TypeAccess] access to type E
+#   41|       0: [TypeMention] E
+#   41|     1: [IntLiteral] 12
+#   41|   4: [NullLiteral] null
+#   41|   5: [ArrayCreation] array creation of type Object[]
+#   41|     -2: [TypeMention] Object[]
+#   41|       1: [TypeMention] object
+#   41|     -1: [ArrayInitializer] { ..., ... }
+#   41|       0: [CastExpr] (...) ...
+#   41|         1: [IntLiteral] 1
+#   41|       1: [TypeofExpr] typeof(...)
+#   41|         0: [TypeAccess] access to type Int32
+#   41|           0: [TypeMention] int
+#   44| [Class] Foo
 #-----|   0: (Attributes)
-#   40|     1: [Attribute] [AttributeUsage(...)]
-#   40|       0: [MemberConstantAccess] access to constant All
-#   40|         -1: [TypeAccess] access to type AttributeTargets
+#   43|     1: [Attribute] [AttributeUsage(...)]
+#   43|       -1: [TypeMention] AttributeUsageAttribute
+#   43|       0: [MemberConstantAccess] access to constant All
+#   43|         -1: [TypeAccess] access to type AttributeTargets
+#   43|           0: [TypeMention] AttributeTargets
 #-----|   3: (Base types)
-#   41|     0: [Class] Attribute
-#   44|   5: [Method] foo
+#   44|     0: [TypeMention] Attribute
+#   47|   5: [Method] foo
+#   47|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#   43|       1: [Attribute] [Conditional(...)]
-#   43|         0: [StringLiteral] "DEBUG2"
-#   44|     4: [BlockStmt] {...}
-#   47| [Class] Bar
-#   49|   5: [Method] inc
+#   46|       1: [Attribute] [Conditional(...)]
+#   46|         -1: [TypeMention] ConditionalAttribute
+#   46|         0: [StringLiteral] "DEBUG2"
+#   47|     4: [BlockStmt] {...}
+#   50| [Class] Bar
+#   52|   5: [Method] inc
+#   52|     -1: [TypeMention] int
 #-----|     2: (Parameters)
-#   49|       0: [Parameter] x
+#   52|       0: [Parameter] x
+#   52|         -1: [TypeMention] int
 #-----|         0: (Attributes)
-#   49|           1: [Attribute] [Foo(...)]
-#   49|     4: [BlockStmt] {...}
-#   49|       0: [ReturnStmt] return ...;
-#   49|         0: [AddExpr] ... + ...
-#   49|           0: [ParameterAccess] access to parameter x
-#   49|           1: [IntLiteral] 1
-#   52|   6: [Method] M1
-#-----|     0: (Attributes)
-#   51|       1: [Attribute] [My(...)]
-#   51|         0: [BoolLiteral] false
+#   52|           1: [Attribute] [Foo(...)]
+#   52|             0: [TypeMention] Foo
 #   52|     4: [BlockStmt] {...}
-#   55|   7: [Method] M2
+#   52|       0: [ReturnStmt] return ...;
+#   52|         0: [AddExpr] ... + ...
+#   52|           0: [ParameterAccess] access to parameter x
+#   52|           1: [IntLiteral] 1
+#   55|   6: [Method] M1
+#   55|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #   54|       1: [Attribute] [My(...)]
-#   54|         0: [BoolLiteral] true
-#   54|         1: [StringLiteral] ""
-#   54|         2: [IntLiteral] 0
+#   54|         -1: [TypeMention] MyAttribute
+#   54|         0: [BoolLiteral] false
 #   55|     4: [BlockStmt] {...}
-#   58| [Class] MyAttribute
+#   58|   7: [Method] M2
+#   58|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#   57|       1: [Attribute] [My(...)]
+#   57|         -1: [TypeMention] MyAttribute
+#   57|         0: [BoolLiteral] true
+#   57|         1: [StringLiteral] ""
+#   57|         2: [IntLiteral] 0
+#   58|     4: [BlockStmt] {...}
+#   61| [Class] MyAttribute
 #-----|   3: (Base types)
-#   58|     0: [Class] Attribute
-#   60|   4: [Field] x
-#   61|   5: [IndexerProperty] y
-#   61|     3: [Getter] get_y
-#   61|     4: [Setter] set_y
+#   61|     0: [TypeMention] Attribute
+#   63|   4: [Field] x
+#   63|     -1: [TypeMention] int
+#   64|   5: [IndexerProperty] y
+#   64|     -1: [TypeMention] string
+#   64|     3: [Getter] get_y
+#   64|     4: [Setter] set_y
 #-----|       2: (Parameters)
-#   61|         0: [Parameter] value
-#   62|   6: [InstanceConstructor] MyAttribute
+#   64|         0: [Parameter] value
+#   65|   6: [InstanceConstructor] MyAttribute
 #-----|     2: (Parameters)
-#   62|       0: [Parameter] b
-#   62|     4: [BlockStmt] {...}
+#   65|       0: [Parameter] b
+#   65|         -1: [TypeMention] bool
+#   65|     4: [BlockStmt] {...}
+#   68| [Enum] E
+#   68|   5: [Field] A
+#   68|     1: [AssignExpr] ... = ...
+#   68|       0: [MemberConstantAccess] access to constant A
+#   68|       1: [IntLiteral] 42
+#   70| [Class] ArgsAttribute
+#-----|   3: (Base types)
+#   70|     0: [TypeMention] Attribute
+#   72|   4: [Property] Prop
+#   72|     -1: [TypeMention] Object[]
+#   72|       1: [TypeMention] object
+#   72|     3: [Getter] get_Prop
+#   72|     4: [Setter] set_Prop
+#-----|       2: (Parameters)
+#   72|         0: [Parameter] value
+#   73|   5: [InstanceConstructor] ArgsAttribute
+#-----|     2: (Parameters)
+#   73|       0: [Parameter] i
+#   73|         -1: [TypeMention] int
+#   73|       1: [Parameter] o
+#   73|         -1: [TypeMention] object
+#   73|       2: [Parameter] t
+#   73|         -1: [TypeMention] Type
+#   73|       3: [Parameter] e
+#   73|         -1: [TypeMention] E
+#   73|       4: [Parameter] arr
+#   73|         -1: [TypeMention] Int32[]
+#   73|           1: [TypeMention] int
+#   73|     4: [BlockStmt] {...}
+#   77| [Class] X
+#-----|   0: (Attributes)
+#   76|     1: [Attribute] [Args(...)]
+#   76|       -1: [TypeMention] ArgsAttribute
+#   76|       0: [IntLiteral] 42
+#   76|       1: [NullLiteral] null
+#   76|       2: [TypeofExpr] typeof(...)
+#   76|         0: [TypeAccess] access to type X
+#   76|           0: [TypeMention] X
+#   76|       3: [MemberConstantAccess] access to constant A
+#   76|         -1: [TypeAccess] access to type E
+#   76|           0: [TypeMention] E
+#   76|       4: [ArrayCreation] array creation of type Int32[]
+#   76|         -2: [TypeMention] Int32[]
+#   76|           1: [TypeMention] int
+#   76|         -1: [ArrayInitializer] { ..., ... }
+#   76|           0: [IntLiteral] 1
+#   76|           1: [IntLiteral] 2
+#   76|           2: [IntLiteral] 3
+#   76|       5: [ArrayCreation] array creation of type Object[]
+#   76|         -2: [TypeMention] Object[]
+#   76|           1: [TypeMention] object
+#   76|         -1: [ArrayInitializer] { ..., ... }
+#   76|           0: [CastExpr] (...) ...
+#   76|             1: [IntLiteral] 1
+#   76|           1: [TypeofExpr] typeof(...)
+#   76|             0: [TypeAccess] access to type Int32
+#   76|               0: [TypeMention] int
+#   81|   5: [Method] SomeMethod
+#   81|     -1: [TypeMention] int
+#-----|     0: (Attributes)
+#   79|       1: [Attribute] [Args(...)]
+#   79|         -1: [TypeMention] ArgsAttribute
+#   79|         0: [AddExpr] ... + ...
+#   79|           0: [IntLiteral] 42
+#   79|           1: [IntLiteral] 0
+#   79|         1: [ArrayCreation] array creation of type Int32[]
+#   79|           -2: [TypeMention] Int32[]
+#   79|             1: [TypeMention] int
+#   79|           -1: [ArrayInitializer] { ..., ... }
+#   79|             0: [IntLiteral] 1
+#   79|             1: [IntLiteral] 2
+#   79|             2: [IntLiteral] 3
+#   79|         2: [NullLiteral] null
+#   79|         3: [CastExpr] (...) ...
+#   79|           0: [TypeAccess] access to type E
+#   79|             0: [TypeMention] E
+#   79|           1: [IntLiteral] 12
+#   79|         4: [NullLiteral] null
+#   79|         5: [ArrayCreation] array creation of type Object[]
+#   79|           -2: [TypeMention] Object[]
+#   79|             1: [TypeMention] object
+#   79|           -1: [ArrayInitializer] { ..., ... }
+#   79|             0: [CastExpr] (...) ...
+#   79|               1: [IntLiteral] 1
+#   79|             1: [TypeofExpr] typeof(...)
+#   79|               0: [TypeAccess] access to type Int32
+#   79|                 0: [TypeMention] int
+#   81|     4: [BlockStmt] {...}
+#   81|       0: [ReturnStmt] return ...;
+#   81|         0: [IntLiteral] 1

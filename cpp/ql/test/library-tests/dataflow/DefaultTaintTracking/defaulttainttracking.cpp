@@ -9,7 +9,7 @@
 
 
 
-int main(int argc, char *argv[]) {
+int main() {
 
 
 
@@ -208,4 +208,50 @@ void test_field_to_obj_test_pointer_arith(Point* pp) {
   (pp + sizeof(*pp))->x = getenv("VAR")[0];
   sink(pp); // tainted [field -> object]
   sink(pp + sizeof(*pp)); // tainted [field -> object]
+}
+
+void sink(char **);
+
+void test_pointers1()
+{
+	char buffer[1024];
+	char *s = getenv("VAR");
+	char *ptr1, **ptr2;
+	char *ptr3, **ptr4;
+
+	ptr1 = buffer;
+	ptr2 = &ptr1;
+	memcpy(buffer, s, 1024);
+	ptr3 = buffer;
+	ptr4 = &ptr3;
+
+	sink(buffer); // tainted
+	sink(ptr1); // tainted
+	sink(ptr2);
+	sink(*ptr2); // tainted [NOT DETECTED]
+	sink(ptr3); // tainted
+	sink(ptr4);
+	sink(*ptr4); // tainted [NOT DETECTED]
+}
+
+void test_pointers2()
+{
+	char buffer[1024];
+	char *s = getenv("VAR");
+	char *ptr1, **ptr2;
+	char *ptr3, **ptr4;
+
+	ptr1 = buffer;
+	ptr2 = &ptr1;
+	memcpy(*ptr2, s, 1024);
+	ptr3 = buffer;
+	ptr4 = &ptr3;
+
+	sink(buffer); // tainted [NOT DETECTED]
+	sink(ptr1); // tainted [NOT DETECTED]
+	sink(ptr2);
+	sink(*ptr2); // tainted [NOT DETECTED]
+	sink(ptr3); // tainted [NOT DETECTED]
+	sink(ptr4);
+	sink(*ptr4); // tainted [NOT DETECTED]
 }

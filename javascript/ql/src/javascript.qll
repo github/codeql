@@ -65,6 +65,7 @@ import semmle.javascript.YAML
 import semmle.javascript.dataflow.DataFlow
 import semmle.javascript.dataflow.TaintTracking
 import semmle.javascript.dataflow.TypeInference
+import semmle.javascript.frameworks.Angular2
 import semmle.javascript.frameworks.AngularJS
 import semmle.javascript.frameworks.AsyncPackage
 import semmle.javascript.frameworks.AWS
@@ -72,11 +73,13 @@ import semmle.javascript.frameworks.Azure
 import semmle.javascript.frameworks.Babel
 import semmle.javascript.frameworks.Cheerio
 import semmle.javascript.frameworks.ComposedFunctions
+import semmle.javascript.frameworks.Classnames
 import semmle.javascript.frameworks.ClientRequests
 import semmle.javascript.frameworks.ClosureLibrary
 import semmle.javascript.frameworks.CookieLibraries
 import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
+import semmle.javascript.frameworks.DateFunctions
 import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.Electron
 import semmle.javascript.frameworks.EventEmitter

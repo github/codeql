@@ -10,7 +10,7 @@ namespace Semmle.BuildAnalyser
     /// Searches for assembly DLLs, indexes them and provides
     /// a lookup facility from assembly ID to filename.
     /// </summary>
-    class AssemblyCache
+    internal class AssemblyCache
     {
         /// <summary>
         /// Locate all reference files and index them.
@@ -33,7 +33,7 @@ namespace Semmle.BuildAnalyser
         /// (Indexing is performed at a later stage by IndexReferences()).
         /// </summary>
         /// <param name="dir">The directory to index.</param>
-        void AddReferenceDirectory(string dir)
+        private void AddReferenceDirectory(string dir)
         {
             foreach (var dll in new DirectoryInfo(dir).EnumerateFiles("*.dll", SearchOption.AllDirectories))
             {
@@ -45,7 +45,7 @@ namespace Semmle.BuildAnalyser
         /// Indexes all DLLs we have located.
         /// Because this is a potentially time-consuming operation, it is put into a separate stage.
         /// </summary>
-        void IndexReferences()
+        private void IndexReferences()
         {
             // Read all of the files
             foreach (var filename in pendingDllsToIndex)
@@ -100,7 +100,7 @@ namespace Semmle.BuildAnalyser
             (id, assemblyName) = AssemblyInfo.ComputeSanitizedAssemblyInfo(id);
 
             // Look up the id in our references map.
-            if (assemblyInfoById.TryGetValue(id, out AssemblyInfo? result))
+            if (assemblyInfoById.TryGetValue(id, out var result))
             {
                 // The string is in the references map.
                 return result;
@@ -177,17 +177,17 @@ namespace Semmle.BuildAnalyser
             throw new AssemblyLoadException();
         }
 
-        readonly Queue<string> pendingDllsToIndex = new Queue<string>();
+        private readonly Queue<string> pendingDllsToIndex = new Queue<string>();
 
-        readonly Dictionary<string, AssemblyInfo> assemblyInfoByFileName = new Dictionary<string, AssemblyInfo>();
+        private readonly Dictionary<string, AssemblyInfo> assemblyInfoByFileName = new Dictionary<string, AssemblyInfo>();
 
         // List of DLLs which are not assemblies.
         // We probably don't need to keep this
-        readonly List<string> failedAssemblyInfoFileNames = new List<string>();
+        private readonly List<string> failedAssemblyInfoFileNames = new List<string>();
 
         // Map from assembly id (in various formats) to the full info.
-        readonly Dictionary<string, AssemblyInfo> assemblyInfoById = new Dictionary<string, AssemblyInfo>();
+        private readonly Dictionary<string, AssemblyInfo> assemblyInfoById = new Dictionary<string, AssemblyInfo>();
 
-        readonly HashSet<string> failedAssemblyInfoIds = new HashSet<string>();
+        private readonly HashSet<string> failedAssemblyInfoIds = new HashSet<string>();
     }
 }

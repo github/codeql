@@ -1,6 +1,6 @@
 import python
-import experimental.dataflow.DataFlow
-private import experimental.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 
 /** Gets the EssaNode that holds the module imported by the fully qualified module name `name` */
 DataFlow::EssaNode module_import(string name) {

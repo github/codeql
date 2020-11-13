@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Switch : Expression<SwitchExpressionSyntax>
+    internal class Switch : Expression<SwitchExpressionSyntax>
     {
         private Switch(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.SWITCH))
         {
@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class SwitchCase : Expression
+    internal class SwitchCase : Expression
     {
         internal SwitchCase(Context cx, SwitchExpressionArmSyntax arm, Switch parent, int child) :
             base(new ExpressionInfo(

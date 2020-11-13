@@ -15,8 +15,8 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public struct AnnotatedTypeSymbol
     {
-        public ITypeSymbol Symbol;
-        public NullableAnnotation Nullability;
+        public ITypeSymbol Symbol { get; set; }
+        public NullableAnnotation Nullability { get; }
 
         public AnnotatedTypeSymbol(ITypeSymbol symbol, NullableAnnotation nullability)
         {
@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp
         }
     }
 
-    static class SymbolExtensions
+    internal static class SymbolExtensions
     {
         /// <summary>
         /// Tries to recover from an ErrorType.
@@ -46,11 +46,10 @@ namespace Semmle.Extraction.CSharp
              * The conservative option would be to resolve all error types as null.
              */
 
-            var errorType = type as IErrorTypeSymbol;
 
-            return errorType != null && errorType.CandidateSymbols.Any() ?
-                errorType.CandidateSymbols.First() as ITypeSymbol :
-                type;
+            return type is IErrorTypeSymbol errorType && errorType.CandidateSymbols.Any()
+                ? errorType.CandidateSymbols.First() as ITypeSymbol
+                : type;
         }
 
         /// <summary>
@@ -71,16 +70,14 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static IEnumerable<string> GetSourceLevelModifiers(this ISymbol symbol)
         {
-            var methodModifiers =
-                symbol.DeclaringSyntaxReferences.
-                Select(r => r.GetSyntax()).
-                OfType<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>().
-                SelectMany(md => md.Modifiers);
-            var typeModifers =
-                symbol.DeclaringSyntaxReferences.
-                Select(r => r.GetSyntax()).
-                OfType<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>().
-                SelectMany(cd => cd.Modifiers);
+            var methodModifiers = symbol.DeclaringSyntaxReferences
+                .Select(r => r.GetSyntax())
+                .OfType<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>()
+                .SelectMany(md => md.Modifiers);
+            var typeModifers = symbol.DeclaringSyntaxReferences
+                .Select(r => r.GetSyntax())
+                .OfType<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>()
+                .SelectMany(cd => cd.Modifiers);
             return methodModifiers.Concat(typeModifers).Select(m => m.Text);
         }
 
@@ -156,7 +153,7 @@ namespace Semmle.Extraction.CSharp
         public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType = false) =>
             type.BuildTypeId(cx, trapFile, symbolBeingDefined, true, constructUnderlyingTupleType);
 
-        static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
+        private static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
         {
             using (cx.StackGuard)
             {
@@ -196,7 +193,7 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        static void BuildOrWriteId(this ISymbol symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType = false)
+        private static void BuildOrWriteId(this ISymbol symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType = false)
         {
             // We need to keep track of the symbol being defined in order to avoid cyclic labels.
             // For example, in
@@ -242,7 +239,7 @@ namespace Semmle.Extraction.CSharp
         public static void BuildArraySuffix(this IArrayTypeSymbol array, TextWriter trapFile)
         {
             trapFile.Write('[');
-            for (int i = 0; i < array.Rank - 1; i++)
+            for (var i = 0; i < array.Rank - 1; i++)
                 trapFile.Write(',');
             trapFile.Write(']');
         }
@@ -265,7 +262,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("::");
         }
 
-        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
+        private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
         {
             if (!constructUnderlyingTupleType && named.IsTupleType)
             {
@@ -342,16 +339,16 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter trapFile)
+        private static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter trapFile)
         {
             trapFile.WriteSubId(Namespace.Create(cx, ns));
             trapFile.Write('.');
         }
 
-        static void BuildAnonymousName(this INamedTypeSymbol type, Context cx, TextWriter trapFile)
+        private static void BuildAnonymousName(this INamedTypeSymbol type, Context cx, TextWriter trapFile)
         {
-            int memberCount = type.GetMembers().OfType<IPropertySymbol>().Count();
-            int hackTypeNumber = memberCount == 1 ? 1 : 0;
+            var memberCount = type.GetMembers().OfType<IPropertySymbol>().Count();
+            var hackTypeNumber = memberCount == 1 ? 1 : 0;
             trapFile.Write("<>__AnonType");
             trapFile.Write(hackTypeNumber);
             trapFile.Write('<');
@@ -372,7 +369,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Array:
                         var array = (IArrayTypeSymbol)type;
                         var elementType = array.ElementType;
-                        if (elementType.MetadataName.IndexOf("`") >= 0)
+                        if (elementType.MetadataName.Contains("`"))
                         {
                             trapFile.Write(elementType.Name);
                             return;
@@ -454,16 +451,40 @@ namespace Semmle.Extraction.CSharp
             type.SpecialType == SpecialType.System_Nullable_T;
 
         /// <summary>
+        /// Holds if this type is <code>System.Span<T></code>.
+        /// </summary>
+        public static bool IsUnboundSpan(this ITypeSymbol type) =>
+            type.ToString() == "System.Span<T>";
+
+        /// <summary>
+        /// Holds if this type is of the form <code>System.Span<byte></code>.
+        /// </summary>
+        public static bool IsBoundSpan(this ITypeSymbol type) =>
+            type.SpecialType == SpecialType.None && type.OriginalDefinition.IsUnboundSpan();
+
+        /// <summary>
+        /// Holds if this type is <code>System.ReadOnlySpan<T></code>.
+        /// </summary>
+        public static bool IsUnboundReadOnlySpan(this ITypeSymbol type) =>
+            type.ToString() == "System.ReadOnlySpan<T>";
+
+        /// <summary>
+        /// Holds if this type is of the form <code>System.ReadOnlySpan<byte></code>.
+        /// </summary>
+        public static bool IsBoundReadOnlySpan(this ITypeSymbol type) =>
+            type.SpecialType == SpecialType.None && type.OriginalDefinition.IsUnboundReadOnlySpan();
+
+        /// <summary>
         /// Gets the parameters of a method or property.
         /// </summary>
         /// <returns>The list of parameters, or an empty list.</returns>
         public static IEnumerable<IParameterSymbol> GetParameters(this ISymbol parameterizable)
         {
-            if (parameterizable is IMethodSymbol)
-                return ((IMethodSymbol)parameterizable).Parameters;
+            if (parameterizable is IMethodSymbol meth)
+                return meth.Parameters;
 
-            if (parameterizable is IPropertySymbol)
-                return ((IPropertySymbol)parameterizable).Parameters;
+            if (parameterizable is IPropertySymbol prop)
+                return prop.Parameters;
 
             return Enumerable.Empty<IParameterSymbol>();
         }
@@ -489,11 +510,9 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static bool IsSourceDeclaration(this IParameterSymbol parameter)
         {
-            var method = parameter.ContainingSymbol as IMethodSymbol;
-            if (method != null)
+            if (parameter.ContainingSymbol is IMethodSymbol method)
                 return method.IsSourceDeclaration();
-            var property = parameter.ContainingSymbol as IPropertySymbol;
-            if (property != null && property.IsIndexer)
+            if (parameter.ContainingSymbol is IPropertySymbol property && property.IsIndexer)
                 return property.IsSourceDeclaration();
             return true;
         }
@@ -507,7 +526,8 @@ namespace Semmle.Extraction.CSharp
 
         public static IEntity CreateEntity(this Context cx, ISymbol symbol)
         {
-            if (symbol == null) return null;
+            if (symbol == null)
+                return null;
 
             using (cx.StackGuard)
             {

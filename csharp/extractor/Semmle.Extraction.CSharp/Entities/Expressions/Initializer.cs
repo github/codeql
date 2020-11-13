@@ -1,21 +1,20 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    abstract class Initializer : Expression<InitializerExpressionSyntax>
+    internal abstract class Initializer : Expression<InitializerExpressionSyntax>
     {
         protected Initializer(ExpressionNodeInfo info) : base(info) { }
     }
 
-    class ArrayInitializer : Expression<InitializerExpressionSyntax>
+    internal class ArrayInitializer : Expression<InitializerExpressionSyntax>
     {
-        ArrayInitializer(ExpressionNodeInfo info) : base(info.SetType(NullType.Create(info.Context)).SetKind(ExprKind.ARRAY_INIT)) { }
+        private ArrayInitializer(ExpressionNodeInfo info) : base(info.SetType(NullType.Create(info.Context)).SetKind(ExprKind.ARRAY_INIT)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new ArrayInitializer(info).TryPopulate();
 
@@ -36,12 +35,27 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 }
             }
         }
+
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int index, Extraction.Entities.Location location)
+        {
+            var info = new ExpressionInfo(
+                cx,
+                NullType.Create(cx),
+                location,
+                ExprKind.ARRAY_INIT,
+                parent,
+                index,
+                true,
+                null);
+
+            return new Expression(info);
+        }
     }
 
     // Array initializer { ..., ... }.
-    class ImplicitArrayInitializer : Initializer
+    internal class ImplicitArrayInitializer : Initializer
     {
-        ImplicitArrayInitializer(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
+        private ImplicitArrayInitializer(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new ImplicitArrayInitializer(info).TryPopulate();
 
@@ -52,9 +66,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class ObjectInitializer : Initializer
+    internal class ObjectInitializer : Initializer
     {
-        ObjectInitializer(ExpressionNodeInfo info)
+        private ObjectInitializer(ExpressionNodeInfo info)
             : base(info.SetKind(ExprKind.OBJECT_INIT)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new ObjectInitializer(info).TryPopulate();
@@ -65,9 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             foreach (var init in Syntax.Expressions)
             {
-                var assignment = init as AssignmentExpressionSyntax;
-
-                if (assignment != null)
+                if (init is AssignmentExpressionSyntax assignment)
                 {
                     var assignmentInfo = new ExpressionNodeInfo(cx, init, this, child++).SetKind(ExprKind.SIMPLE_ASSIGN);
                     var assignmentEntity = new Expression(assignmentInfo);
@@ -86,7 +98,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                     // If the target is null, then assume that this is an array initializer (of the form `[...] = ...`)
 
-                    Expression access = target.Symbol is null ?
+                    var access = target.Symbol is null ?
                         new Expression(new ExpressionNodeInfo(cx, assignment.Left, assignmentEntity, 1).SetKind(ExprKind.ARRAY_ACCESS)) :
                         Access.Create(new ExpressionNodeInfo(cx, assignment.Left, assignmentEntity, 1), target.Symbol, false, cx.CreateEntity(target.Symbol));
 
@@ -94,7 +106,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     {
                         // An array/indexer initializer of the form `[...] = ...`
 
-                        int indexChild = 0;
+                        var indexChild = 0;
                         foreach (var arg in iea.ArgumentList.Arguments)
                         {
                             Expression.Create(cx, arg.Expression, access, indexChild++);
@@ -110,9 +122,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
     }
 
-    class CollectionInitializer : Initializer
+    internal class CollectionInitializer : Initializer
     {
-        CollectionInitializer(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.COLLECTION_INIT)) { }
+        private CollectionInitializer(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.COLLECTION_INIT)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new CollectionInitializer(info).TryPopulate();
 
@@ -139,7 +151,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                     var init = (InitializerExpressionSyntax)i;
 
-                    int addChild = 0;
+                    var addChild = 0;
                     foreach (var arg in init.Expressions)
                     {
                         Create(cx, arg, invocation, addChild++);

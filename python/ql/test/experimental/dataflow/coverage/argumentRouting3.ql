@@ -1,5 +1,10 @@
+/**
+ * @kind path-problem
+ */
+
 import python
-import experimental.dataflow.DataFlow
+import semmle.python.dataflow.new.DataFlow
+import DataFlow::PathGraph
 
 /**
  * A configuration to check routing of arguments through magic methods.
@@ -17,11 +22,19 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
+
+  /**
+   * We want to be able to use `arg` in a sequence of calls such as `func(kw=arg); ... ; func(arg)`.
+   * Use-use flow lets the argument to the first call reach the sink inside the second call,
+   * making it seem like we handle all cases even if we only handle the last one.
+   * We make the test honest by preventing flow into source nodes.
+   */
+  override predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-from DataFlow::Node source, DataFlow::Node sink
+from DataFlow::PathNode source, DataFlow::PathNode sink
 where
-  source.getLocation().getFile().getBaseName() = "classes.py" and
-  sink.getLocation().getFile().getBaseName() = "classes.py" and
-  exists(ArgumentRoutingConfig cfg | cfg.hasFlow(source, sink))
-select source, sink
+  source.getNode().getLocation().getFile().getBaseName() in ["classes.py", "argumentPassing.py"] and
+  sink.getNode().getLocation().getFile().getBaseName() in ["classes.py", "argumentPassing.py"] and
+  exists(ArgumentRoutingConfig cfg | cfg.hasFlowPath(source, sink))
+select source.getNode(), source, sink, "Flow found"

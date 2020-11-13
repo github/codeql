@@ -1380,6 +1380,46 @@ module PartialInvokeNode {
   }
 
   /**
+   * A partial call that behaves like a throttle call, like `require("call-limit")(fs, limit)` or `_.memoize`.
+   * Seen as a partial invocation that binds no arguments.
+   */
+  private class ThrottleLikePartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
+    int callbackIndex;
+
+    ThrottleLikePartialCall() {
+      callbackIndex = 0 and
+      (
+        this = LodashUnderscore::member(["throttle", "debounce", "once", "memoize"]).getACall()
+        or
+        this = DataFlow::moduleImport(["call-limit", "debounce"]).getACall()
+      )
+      or
+      callbackIndex = 1 and
+      (
+        this = LodashUnderscore::member(["after", "before"]).getACall()
+        or
+        // not jQuery: https://github.com/cowboy/jquery-throttle-debounce
+        this = DataFlow::globalVarRef("$").getAMemberCall(["throttle", "debounce"])
+      )
+      or
+      callbackIndex = -1 and
+      this = DataFlow::moduleMember("throttle-debounce", ["debounce", "throttle"]).getACall()
+    }
+
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      (
+        callbackIndex >= 0 and
+        callback = getArgument(callbackIndex)
+        or
+        callbackIndex = -1 and
+        callback = getLastArgument()
+      ) and
+      boundArgs = 0 and
+      result = this
+    }
+  }
+
+  /**
    * A partial call through `ramda.partial`.
    */
   private class RamdaPartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {

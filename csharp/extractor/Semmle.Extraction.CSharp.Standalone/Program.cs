@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Semmle.BuildAnalyser;
 using Semmle.Util.Logging;
 
@@ -9,21 +8,21 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// <summary>
     ///     One independent run of the extractor.
     /// </summary>
-    class Extraction
+    internal class Extraction
     {
         public Extraction(string directory)
         {
-            this.directory = directory;
+            Directory = directory;
         }
 
-        public readonly string directory;
-        public readonly List<string> Sources = new List<string>();
+        public string Directory { get; }
+        public List<string> Sources { get; } = new List<string>();
     };
 
     /// <summary>
     ///     Searches for source/references and creates separate extractions.
     /// </summary>
-    class Analysis : IDisposable
+    internal sealed class Analysis : IDisposable
     {
         public Analysis(ILogger logger, Options options)
         {
@@ -41,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// </summary>
         public Extraction Extraction { get; }
 
-        readonly BuildAnalysis buildAnalysis;
+        private readonly BuildAnalysis buildAnalysis;
 
         public void Dispose()
         {
@@ -51,15 +50,15 @@ namespace Semmle.Extraction.CSharp.Standalone
 
     public class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             var options = Options.Create(args);
             // options.CIL = true;  // To do: Enable this
-            var output = new ConsoleLogger(options.Verbosity);
+            using var output = new ConsoleLogger(options.Verbosity);
 
             if (options.Help)
             {
-                options.ShowHelp(System.Console.Out);
+                Options.ShowHelp(System.Console.Out);
                 return 0;
             }
 
@@ -70,9 +69,9 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             output.Log(Severity.Info, "Running C# standalone extractor");
             using var a = new Analysis(output, options);
-            int sourceFiles = a.Extraction.Sources.Count();
+            var sourceFileCount = a.Extraction.Sources.Count;
 
-            if (sourceFiles == 0)
+            if (sourceFileCount == 0)
             {
                 output.Log(Severity.Error, "No source files found");
                 return 1;
@@ -80,13 +79,15 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             if (!options.SkipExtraction)
             {
+                using var fileLogger = new FileLogger(options.Verbosity, Extractor.GetCSharpLogPath());
+
                 output.Log(Severity.Info, "");
                 output.Log(Severity.Info, "Extracting...");
                 Extractor.ExtractStandalone(
                     a.Extraction.Sources,
                     a.References,
                     new ExtractionProgress(output),
-                    new FileLogger(options.Verbosity, Extractor.GetCSharpLogPath()),
+                    fileLogger,
                     options);
                 output.Log(Severity.Info, $"Extraction completed in {DateTime.Now - start}");
             }
@@ -94,19 +95,23 @@ namespace Semmle.Extraction.CSharp.Standalone
             return 0;
         }
 
-        class ExtractionProgress : IProgressMonitor
+        private class ExtractionProgress : IProgressMonitor
         {
             public ExtractionProgress(ILogger output)
             {
                 logger = output;
             }
 
-            readonly ILogger logger;
+            private readonly ILogger logger;
 
             public void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action)
             {
                 logger.Log(Severity.Info, "[{0}/{1}] {2} ({3})", item, total, source,
-                    action == AnalysisAction.Extracted ? time.ToString() : action == AnalysisAction.Excluded ? "excluded" : "up to date");
+                    action == AnalysisAction.Extracted
+                        ? time.ToString()
+                        : action == AnalysisAction.Excluded
+                            ? "excluded"
+                            : "up to date");
             }
 
             public void MissingType(string type)

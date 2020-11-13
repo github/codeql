@@ -1,12 +1,10 @@
-from django.conf.urls import url
-import base64
+from flask import Flask, request
+app = Flask(__name__)
 
-def code_execution(request):
-    if request.method == 'POST':
-        first_name = request.POST.get('first_name', '')
-        exec(base64.decodestring(first_name))
-
-urlpatterns = [
-    # Route to code_execution
-    url(r'^code-ex$', code_execution, name='code-execution')
-]
+@app.route("/code-execution")
+def code_execution():
+    code = request.args.get("code")
+    exec(code)
+    eval(code)
+    cmd = compile(code, "<filename>", "exec")
+    exec(cmd)

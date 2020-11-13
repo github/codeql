@@ -34,7 +34,7 @@ namespace Semmle.Extraction.Tests
             Assert.True(success);
             Assert.Equal("/ghi/file.cs", s);
 
-            success = FilePattern.Matches(patterns, @"C:\agent\root\def\file.cs", out s);
+            success = FilePattern.Matches(patterns, @"C:\agent\root\def\file.cs", out _);
             Assert.False(success);
         }
 

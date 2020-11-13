@@ -1,6 +1,7 @@
 import semmle.code.java.frameworks.Kryo
 import semmle.code.java.frameworks.XStream
 import semmle.code.java.frameworks.SnakeYaml
+import semmle.code.java.frameworks.apache.Lang
 
 class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
@@ -70,6 +71,9 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     m instanceof KryoReadObjectMethod and
     sink = ma.getAnArgument() and
     not exists(SafeKryo sk | sk.hasFlowToExpr(ma.getQualifier()))
+    or
+    m instanceof MethodApacheSerializationUtilsDeserialize and
+    sink = ma.getArgument(0)
     or
     ma instanceof UnsafeSnakeYamlParse and
     sink = ma.getArgument(0)

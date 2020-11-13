@@ -1,0 +1,17 @@
+| Test.java:15:20:15:26 | taint(...) | Test.java:17:14:17:41 | padStart(...) |
+| Test.java:15:20:15:26 | taint(...) | Test.java:18:14:18:39 | padEnd(...) |
+| Test.java:15:20:15:26 | taint(...) | Test.java:19:14:19:33 | repeat(...) |
+| Test.java:15:20:15:26 | taint(...) | Test.java:20:14:20:56 | emptyToNull(...) |
+| Test.java:15:20:15:26 | taint(...) | Test.java:21:14:21:40 | lenientFormat(...) |
+| Test.java:15:20:15:26 | taint(...) | Test.java:24:14:24:51 | lenientFormat(...) |
+| Test.java:28:20:28:26 | taint(...) | Test.java:32:14:32:23 | split(...) |
+| Test.java:28:20:28:26 | taint(...) | Test.java:33:14:33:29 | splitToList(...) |
+| Test.java:28:20:28:26 | taint(...) | Test.java:35:14:35:50 | split(...) |
+| Test.java:39:20:39:26 | taint(...) | Test.java:46:14:46:54 | appendTo(...) |
+| Test.java:39:20:39:26 | taint(...) | Test.java:47:14:47:26 | toString(...) |
+| Test.java:39:20:39:26 | taint(...) | Test.java:48:14:48:51 | appendTo(...) |
+| Test.java:39:20:39:26 | taint(...) | Test.java:49:14:49:26 | toString(...) |
+| Test.java:39:20:39:26 | taint(...) | Test.java:52:14:52:42 | appendTo(...) |
+| Test.java:39:20:39:26 | taint(...) | Test.java:57:14:57:56 | join(...) |
+| Test.java:39:20:39:26 | taint(...) | Test.java:58:14:58:82 | join(...) |
+| Test.java:39:20:39:26 | taint(...) | Test.java:60:14:60:58 | join(...) |

@@ -1,0 +1,94 @@
+edges
+| path_injection.py:9:12:9:23 | ControlFlowNode for Attribute | path_injection.py:10:14:10:44 | ControlFlowNode for Attribute() |
+| path_injection.py:15:12:15:23 | ControlFlowNode for Attribute | path_injection.py:16:13:16:61 | ControlFlowNode for Attribute() |
+| path_injection.py:16:13:16:61 | ControlFlowNode for Attribute() | path_injection.py:17:14:17:18 | ControlFlowNode for npath |
+| path_injection.py:24:12:24:23 | ControlFlowNode for Attribute | path_injection.py:25:13:25:61 | ControlFlowNode for Attribute() |
+| path_injection.py:25:13:25:61 | ControlFlowNode for Attribute() | path_injection.py:28:14:28:18 | ControlFlowNode for npath |
+| path_injection.py:33:12:33:23 | ControlFlowNode for Attribute | path_injection.py:34:13:34:61 | ControlFlowNode for Attribute() |
+| test.py:9:12:9:23 | ControlFlowNode for Attribute | test.py:9:12:9:39 | ControlFlowNode for Attribute() |
+| test.py:9:12:9:23 | ControlFlowNode for Attribute | test.py:9:12:9:39 | ControlFlowNode for Attribute() |
+| test.py:9:12:9:39 | ControlFlowNode for Attribute() | test.py:18:9:18:16 | ControlFlowNode for source() |
+| test.py:9:12:9:39 | ControlFlowNode for Attribute() | test.py:24:9:24:16 | ControlFlowNode for source() |
+| test.py:9:12:9:39 | ControlFlowNode for Attribute() | test.py:31:9:31:16 | ControlFlowNode for source() |
+| test.py:9:12:9:39 | ControlFlowNode for Attribute() | test.py:38:9:38:16 | ControlFlowNode for source() |
+| test.py:9:12:9:39 | ControlFlowNode for Attribute() | test.py:46:9:46:16 | ControlFlowNode for source() |
+| test.py:12:15:12:15 | ControlFlowNode for x | test.py:13:12:13:30 | ControlFlowNode for Attribute() |
+| test.py:13:12:13:30 | ControlFlowNode for Attribute() | test.py:25:9:25:20 | ControlFlowNode for normalize() |
+| test.py:13:12:13:30 | ControlFlowNode for Attribute() | test.py:48:13:48:24 | ControlFlowNode for normalize() |
+| test.py:18:9:18:16 | ControlFlowNode for source() | test.py:19:10:19:10 | ControlFlowNode for x |
+| test.py:24:9:24:16 | ControlFlowNode for source() | test.py:25:19:25:19 | ControlFlowNode for x |
+| test.py:25:9:25:20 | ControlFlowNode for normalize() | test.py:26:10:26:10 | ControlFlowNode for y |
+| test.py:25:19:25:19 | ControlFlowNode for x | test.py:12:15:12:15 | ControlFlowNode for x |
+| test.py:31:9:31:16 | ControlFlowNode for source() | test.py:33:14:33:14 | ControlFlowNode for x |
+| test.py:38:9:38:16 | ControlFlowNode for source() | test.py:39:19:39:19 | ControlFlowNode for x |
+| test.py:39:19:39:19 | ControlFlowNode for x | test.py:12:15:12:15 | ControlFlowNode for x |
+| test.py:46:9:46:16 | ControlFlowNode for source() | test.py:48:23:48:23 | ControlFlowNode for x |
+| test.py:48:13:48:24 | ControlFlowNode for normalize() | test.py:49:14:49:14 | ControlFlowNode for y |
+| test.py:48:23:48:23 | ControlFlowNode for x | test.py:12:15:12:15 | ControlFlowNode for x |
+| test_chaining.py:9:12:9:23 | ControlFlowNode for Attribute | test_chaining.py:9:12:9:39 | ControlFlowNode for Attribute() |
+| test_chaining.py:9:12:9:39 | ControlFlowNode for Attribute() | test_chaining.py:20:9:20:16 | ControlFlowNode for source() |
+| test_chaining.py:9:12:9:39 | ControlFlowNode for Attribute() | test_chaining.py:28:9:28:16 | ControlFlowNode for source() |
+| test_chaining.py:9:12:9:39 | ControlFlowNode for Attribute() | test_chaining.py:41:9:41:16 | ControlFlowNode for source() |
+| test_chaining.py:14:15:14:15 | ControlFlowNode for x | test_chaining.py:15:12:15:30 | ControlFlowNode for Attribute() |
+| test_chaining.py:15:12:15:30 | ControlFlowNode for Attribute() | test_chaining.py:31:13:31:24 | ControlFlowNode for normalize() |
+| test_chaining.py:20:9:20:16 | ControlFlowNode for source() | test_chaining.py:21:19:21:19 | ControlFlowNode for x |
+| test_chaining.py:21:19:21:19 | ControlFlowNode for x | test_chaining.py:14:15:14:15 | ControlFlowNode for x |
+| test_chaining.py:28:9:28:16 | ControlFlowNode for source() | test_chaining.py:29:19:29:19 | ControlFlowNode for x |
+| test_chaining.py:29:19:29:19 | ControlFlowNode for x | test_chaining.py:14:15:14:15 | ControlFlowNode for x |
+| test_chaining.py:31:13:31:24 | ControlFlowNode for normalize() | test_chaining.py:32:14:32:14 | ControlFlowNode for z |
+| test_chaining.py:41:9:41:16 | ControlFlowNode for source() | test_chaining.py:42:9:42:19 | ControlFlowNode for normpath() |
+| test_chaining.py:44:13:44:23 | ControlFlowNode for normpath() | test_chaining.py:45:14:45:14 | ControlFlowNode for z |
+nodes
+| path_injection.py:9:12:9:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:10:14:10:44 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| path_injection.py:15:12:15:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:16:13:16:61 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| path_injection.py:17:14:17:18 | ControlFlowNode for npath | semmle.label | ControlFlowNode for npath |
+| path_injection.py:24:12:24:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:25:13:25:61 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| path_injection.py:28:14:28:18 | ControlFlowNode for npath | semmle.label | ControlFlowNode for npath |
+| path_injection.py:33:12:33:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| path_injection.py:34:13:34:61 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:9:12:9:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:9:12:9:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:9:12:9:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:9:12:9:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:12:15:12:15 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:13:12:13:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:18:9:18:16 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test.py:19:10:19:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:24:9:24:16 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test.py:25:9:25:20 | ControlFlowNode for normalize() | semmle.label | ControlFlowNode for normalize() |
+| test.py:25:19:25:19 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:26:10:26:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:31:9:31:16 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test.py:33:14:33:14 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:38:9:38:16 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test.py:39:19:39:19 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:46:9:46:16 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test.py:48:13:48:24 | ControlFlowNode for normalize() | semmle.label | ControlFlowNode for normalize() |
+| test.py:48:23:48:23 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:49:14:49:14 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test_chaining.py:9:12:9:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test_chaining.py:9:12:9:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test_chaining.py:14:15:14:15 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test_chaining.py:15:12:15:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test_chaining.py:20:9:20:16 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test_chaining.py:21:19:21:19 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test_chaining.py:28:9:28:16 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test_chaining.py:29:19:29:19 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test_chaining.py:31:13:31:24 | ControlFlowNode for normalize() | semmle.label | ControlFlowNode for normalize() |
+| test_chaining.py:32:14:32:14 | ControlFlowNode for z | semmle.label | ControlFlowNode for z |
+| test_chaining.py:41:9:41:16 | ControlFlowNode for source() | semmle.label | ControlFlowNode for source() |
+| test_chaining.py:42:9:42:19 | ControlFlowNode for normpath() | semmle.label | ControlFlowNode for normpath() |
+| test_chaining.py:44:13:44:23 | ControlFlowNode for normpath() | semmle.label | ControlFlowNode for normpath() |
+| test_chaining.py:45:14:45:14 | ControlFlowNode for z | semmle.label | ControlFlowNode for z |
+#select
+| path_injection.py:10:14:10:44 | ControlFlowNode for Attribute() | path_injection.py:9:12:9:23 | ControlFlowNode for Attribute | path_injection.py:10:14:10:44 | ControlFlowNode for Attribute() | This path depends on $@. | path_injection.py:9:12:9:23 | ControlFlowNode for Attribute | a user-provided value |
+| path_injection.py:17:14:17:18 | ControlFlowNode for npath | path_injection.py:15:12:15:23 | ControlFlowNode for Attribute | path_injection.py:17:14:17:18 | ControlFlowNode for npath | This path depends on $@. | path_injection.py:15:12:15:23 | ControlFlowNode for Attribute | a user-provided value |
+| path_injection.py:28:14:28:18 | ControlFlowNode for npath | path_injection.py:24:12:24:23 | ControlFlowNode for Attribute | path_injection.py:28:14:28:18 | ControlFlowNode for npath | This path depends on $@. | path_injection.py:24:12:24:23 | ControlFlowNode for Attribute | a user-provided value |
+| test.py:19:10:19:10 | ControlFlowNode for x | test.py:9:12:9:23 | ControlFlowNode for Attribute | test.py:19:10:19:10 | ControlFlowNode for x | This path depends on $@. | test.py:9:12:9:23 | ControlFlowNode for Attribute | a user-provided value |
+| test.py:26:10:26:10 | ControlFlowNode for y | test.py:9:12:9:23 | ControlFlowNode for Attribute | test.py:26:10:26:10 | ControlFlowNode for y | This path depends on $@. | test.py:9:12:9:23 | ControlFlowNode for Attribute | a user-provided value |
+| test.py:33:14:33:14 | ControlFlowNode for x | test.py:9:12:9:23 | ControlFlowNode for Attribute | test.py:33:14:33:14 | ControlFlowNode for x | This path depends on $@. | test.py:9:12:9:23 | ControlFlowNode for Attribute | a user-provided value |
+| test.py:49:14:49:14 | ControlFlowNode for y | test.py:9:12:9:23 | ControlFlowNode for Attribute | test.py:49:14:49:14 | ControlFlowNode for y | This path depends on $@. | test.py:9:12:9:23 | ControlFlowNode for Attribute | a user-provided value |
+| test_chaining.py:32:14:32:14 | ControlFlowNode for z | test_chaining.py:9:12:9:23 | ControlFlowNode for Attribute | test_chaining.py:32:14:32:14 | ControlFlowNode for z | This path depends on $@. | test_chaining.py:9:12:9:23 | ControlFlowNode for Attribute | a user-provided value |

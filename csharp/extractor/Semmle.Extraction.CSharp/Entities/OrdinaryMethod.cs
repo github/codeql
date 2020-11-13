@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class OrdinaryMethod : Method
+    internal class OrdinaryMethod : Method
     {
-        OrdinaryMethod(Context cx, IMethodSymbol init)
+        private OrdinaryMethod(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
         public override string Name => symbol.GetName();
@@ -36,11 +36,13 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.methods(this, Name, ContainingType, returnType.TypeRef, OriginalDefinition);
 
             if (IsSourceDeclaration)
+            {
                 foreach (var declaration in symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).OfType<MethodDeclarationSyntax>())
                 {
                     Context.BindComments(this, declaration.Identifier.GetLocation());
                     TypeMention.Create(Context, declaration.ReturnType, this, returnType);
                 }
+            }
 
             foreach (var l in Locations)
                 trapFile.method_location(this, l);
@@ -51,11 +53,11 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractCompilerGenerated(trapFile);
         }
 
-        public new static OrdinaryMethod Create(Context cx, IMethodSymbol method) => OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);
+        public static new OrdinaryMethod Create(Context cx, IMethodSymbol method) => OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);
 
-        class OrdinaryMethodFactory : ICachedEntityFactory<IMethodSymbol, OrdinaryMethod>
+        private class OrdinaryMethodFactory : ICachedEntityFactory<IMethodSymbol, OrdinaryMethod>
         {
-            public static readonly OrdinaryMethodFactory Instance = new OrdinaryMethodFactory();
+            public static OrdinaryMethodFactory Instance { get; } = new OrdinaryMethodFactory();
 
             public OrdinaryMethod Create(Context cx, IMethodSymbol init) => new OrdinaryMethod(cx, init);
         }

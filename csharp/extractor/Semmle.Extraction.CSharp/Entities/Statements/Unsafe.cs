@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Unsafe : Statement<UnsafeStatementSyntax>
+    internal class Unsafe : Statement<UnsafeStatementSyntax>
     {
-        Unsafe(Context cx, UnsafeStatementSyntax node, IStatementParentEntity parent, int child)
+        private Unsafe(Context cx, UnsafeStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.UNSAFE, parent, child) { }
 
         public static Unsafe Create(Context cx, UnsafeStatementSyntax node, IStatementParentEntity parent, int child)

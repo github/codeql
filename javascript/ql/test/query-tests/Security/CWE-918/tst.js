@@ -68,3 +68,10 @@ var server = http.createServer(async function(req, res) {
 		client.Page.navigate({url: tainted}); // NOT OK.	
 	});
 })
+
+import {JSDOM} from "jsdom";
+var server = http.createServer(async function(req, res) {
+    var tainted = url.parse(req.url, true).query.url;
+
+    JSDOM.fromURL(tainted); // NOT OK
+});

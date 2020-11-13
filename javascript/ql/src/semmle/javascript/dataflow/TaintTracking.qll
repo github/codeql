@@ -327,7 +327,7 @@ module TaintTracking {
    * taint to flow from `v` to any read of `c2.state.p`, where `c2`
    * also is an instance of `C`.
    */
-  private class ReactComponentStateTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
+  private class ReactComponentStateTaintStep extends AdditionalTaintStep {
     DataFlow::Node source;
 
     ReactComponentStateTaintStep() {
@@ -358,7 +358,7 @@ module TaintTracking {
    * taint to flow from `v` to any read of `c2.props.p`, where `c2`
    * also is an instance of `C`.
    */
-  private class ReactComponentPropsTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
+  private class ReactComponentPropsTaintStep extends AdditionalTaintStep {
     DataFlow::Node source;
 
     ReactComponentPropsTaintStep() {
@@ -699,8 +699,10 @@ module TaintTracking {
     private DataFlow::PropRead getAStaticCaptureRef() {
       result =
         DataFlow::globalVarRef("RegExp")
-            .getAPropertyRead(["$" + [1 .. 9], "input", "lastMatch", "leftContext", "rightContext",
-                  "$&", "$^", "$`"])
+            .getAPropertyRead([
+                "$" + [1 .. 9], "input", "lastMatch", "leftContext", "rightContext", "$&", "$^",
+                "$`"
+              ])
     }
 
     /**

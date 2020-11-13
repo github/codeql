@@ -1,0 +1,32 @@
+dataFlowModuleImports
+| ./esDefaultExport | tst.ts:1:26:1:53 | require ... xport') |
+| ./esNamedExports | tst.ts:2:18:2:44 | require ... ports') |
+| ./nodeFullExport | tst.ts:3:25:3:51 | require ... xport') |
+| ./nodeNamedExport | tst.ts:4:20:4:47 | require ... xport') |
+| ./taintSource | tst.ts:16:22:16:45 | require ... ource') |
+| external | tst.ts:5:19:5:37 | require('external') |
+| externalTaintSink | tst.ts:17:28:17:55 | require ... tSink') |
+| externalTaintSource | taintSource.ts:1:30:1:59 | require ... ource") |
+| fs | nodeFullExport.ts:1:10:1:22 | require('fs') |
+| fs | nodeNamedExport.ts:1:10:1:22 | require('fs') |
+imports
+| tst.ts:1:26:1:53 | require ... xport') | ./esDefaultExport | esDefaultExport.ts:1:1:2:0 | <toplevel> |
+| tst.ts:2:18:2:44 | require ... ports') | ./esNamedExports | esNamedExports.ts:1:1:6:0 | <toplevel> |
+| tst.ts:3:25:3:51 | require ... xport') | ./nodeFullExport | nodeFullExport.ts:1:1:4:0 | <toplevel> |
+| tst.ts:4:20:4:47 | require ... xport') | ./nodeNamedExport | nodeNamedExport.ts:1:1:4:0 | <toplevel> |
+| tst.ts:16:22:16:45 | require ... ource') | ./taintSource | taintSource.ts:1:1:4:0 | <toplevel> |
+moduleTypes
+| esDefaultExport.ts:1:1:2:0 | <toplevel> | esDefaultExport.ts | es2015 |
+| esNamedExports.ts:1:1:6:0 | <toplevel> | esNamedExports.ts | es2015 |
+| nodeFullExport.ts:1:1:4:0 | <toplevel> | nodeFullExport.ts | node |
+| nodeNamedExport.ts:1:1:4:0 | <toplevel> | nodeNamedExport.ts | node |
+| taintSource.ts:1:1:4:0 | <toplevel> | taintSource.ts | es2015 |
+| tst.ts:1:1:19:0 | <toplevel> | tst.ts | es2015 |
+resolution
+| tst.ts:7:1:7:21 | new ESD ... xport() | esDefaultExport.ts:1:16:1:39 | class E ... port {} | tst.ts | ESDefaultExport | esDefaultExport.ts |
+| tst.ts:8:1:8:28 | new esN ... port1() | esNamedExports.ts:1:8:1:30 | class E ... ort1 {} | tst.ts | ESNamedExport1 | esNamedExports.ts |
+| tst.ts:9:1:9:28 | new esN ... port2() | esNamedExports.ts:3:1:3:23 | class E ... ort2 {} | tst.ts | ESNamedExport2 | esNamedExports.ts |
+| tst.ts:10:1:10:20 | new NodeFullExport() | nodeFullExport.ts:3:18:3:40 | class N ... port {} | tst.ts | NodeFullExport | nodeFullExport.ts |
+| tst.ts:11:1:11:31 | new nod ... xport() | nodeNamedExport.ts:3:27:3:50 | class N ... port {} | tst.ts | NodeNamedExport | nodeNamedExport.ts |
+taint
+| test taint config | taintSource.ts:3:27:3:47 | externa ... ource() | tst.ts:18:19:18:42 | taintSo ... edValue |

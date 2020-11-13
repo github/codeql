@@ -439,6 +439,41 @@ public class DataFlow
     {
         get { return ""; }
     }
+
+    static void AppendToStringBuilder(StringBuilder sb, string s)
+    {
+        sb.Append(s);
+    }
+
+    void TestStringBuilderFlow()
+    {
+        var sb = new StringBuilder();
+        AppendToStringBuilder(sb, "taint source");
+        var sink43 = sb.ToString();
+        Check(sink43);
+
+        sb.Clear();
+        var nonSink = sb.ToString();
+        Check(nonSink);
+    }
+
+    void TestStringFlow()
+    {
+        var sink44 = string.Join(",", "whatever", "taint source");
+        Check(sink44);
+
+        var nonSink = string.Join(",", "whatever", "not tainted");
+        Check(nonSink);
+    }
+
+    public void M4()
+    {
+        var task = Task.Run(() => "taint source");
+        var awaitable = task.ConfigureAwait(false);
+        var awaiter = awaitable.GetAwaiter();
+        var sink45 = awaiter.GetResult();
+        Check(sink45);
+    }
 }
 
 static class IEnumerableExtensions

@@ -1,16 +1,16 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | 0 | 0 |
+| file://:0:0:0:0 | (unnamed parameter 0) | 0 | 0 |
+| file://:0:0:0:0 | (unnamed parameter 0) | 0 | 0 |
+| file://:0:0:0:0 | (unnamed parameter 0) | 0 | 0 |
+| file://:0:0:0:0 | (unnamed parameter 0) | 0 | 0 |
+| file://:0:0:0:0 | (unnamed parameter 0) | 0 | 0 |
+| file://:0:0:0:0 | (unnamed parameter 0) | 0 | 0 |
+| file://:0:0:0:0 | (unnamed parameter 0) | 0 | 0 |
+| file://:0:0:0:0 | (unnamed parameter 0) | 0 | 0 |
+| file://:0:0:0:0 | (unnamed parameter 0) | 0 | 0 |
 | file://:0:0:0:0 | fp_offset | 0 | 0 |
 | file://:0:0:0:0 | gp_offset | 0 | 0 |
 | file://:0:0:0:0 | overflow_arg_area | 0 | 0 |
-| file://:0:0:0:0 | p#0 | 0 | 0 |
-| file://:0:0:0:0 | p#0 | 0 | 0 |
-| file://:0:0:0:0 | p#0 | 0 | 0 |
-| file://:0:0:0:0 | p#0 | 0 | 0 |
-| file://:0:0:0:0 | p#0 | 0 | 0 |
-| file://:0:0:0:0 | p#0 | 0 | 0 |
-| file://:0:0:0:0 | p#0 | 0 | 0 |
-| file://:0:0:0:0 | p#0 | 0 | 0 |
-| file://:0:0:0:0 | p#0 | 0 | 0 |
-| file://:0:0:0:0 | p#0 | 0 | 0 |
 | file://:0:0:0:0 | reg_save_area | 0 | 0 |
 | initializers.cpp:8:8:8:12 | a_ptr | 1 | 1 |
 | initializers.cpp:9:4:9:4 | a | 1 | 1 |

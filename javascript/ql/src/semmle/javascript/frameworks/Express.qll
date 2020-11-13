@@ -491,8 +491,10 @@ module Express {
     RequestInputAccess() {
       kind = "parameter" and
       this =
-        [getAQueryObjectReference(DataFlow::TypeTracker::end(), rh),
-            getAParamsObjectReference(DataFlow::TypeTracker::end(), rh)].getAPropertyRead()
+        [
+          getAQueryObjectReference(DataFlow::TypeTracker::end(), rh),
+          getAParamsObjectReference(DataFlow::TypeTracker::end(), rh)
+        ].getAPropertyRead()
       or
       exists(DataFlow::SourceNode request | request = rh.getARequestSource().ref() |
         kind = "parameter" and
@@ -718,7 +720,7 @@ module Express {
   /**
    * An invocation of the `cookie` method on an HTTP response object.
    */
-  private class SetCookie extends HTTP::CookieDefinition, MethodCallExpr {
+  class SetCookie extends HTTP::CookieDefinition, MethodCallExpr {
     RouteHandler rh;
 
     SetCookie() { calls(rh.getAResponseExpr(), "cookie") }

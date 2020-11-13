@@ -273,6 +273,8 @@ private DataFlow::Node getCatchParameterFromStmt(Stmt stmt) {
 class Identifier extends @identifier, ExprOrType {
   /** Gets the name of this identifier. */
   string getName() { literals(result, _, this) }
+
+  override string getAPrimaryQlClass() { result = "Identifier" }
 }
 
 /**
@@ -290,6 +292,8 @@ class Identifier extends @identifier, ExprOrType {
  */
 class Label extends @label, Identifier, Expr {
   override predicate isImpure() { none() }
+
+  override string getAPrimaryQlClass() { result = "Label" }
 }
 
 /**
@@ -317,6 +321,8 @@ class Literal extends @literal, Expr {
   string getRawValue() { literals(_, result, this) }
 
   override predicate isImpure() { none() }
+
+  override string getAPrimaryQlClass() { result = "Literal" }
 }
 
 /**
@@ -341,6 +347,8 @@ class ParExpr extends @par_expr, Expr {
   override Expr getUnderlyingValue() { result = getExpression().getUnderlyingValue() }
 
   override Expr getUnderlyingReference() { result = getExpression().getUnderlyingReference() }
+
+  override string getAPrimaryQlClass() { result = "ParExpr" }
 }
 
 /**
@@ -462,6 +470,8 @@ class RegExpLiteral extends @regexp_literal, Literal, RegExpParent {
 
   /** Holds if this regular expression has an `s` flag. */
   predicate isDotAll() { RegExp::isDotAll(getFlags()) }
+
+  override string getAPrimaryQlClass() { result = "RegExpLiteral" }
 }
 
 /**
@@ -491,6 +501,8 @@ class ThisExpr extends @this_expr, Expr {
     or
     result = getContainer().(TopLevel)
   }
+
+  override string getAPrimaryQlClass() { result = "ThisExpr" }
 }
 
 /**
@@ -528,6 +540,8 @@ class ArrayExpr extends @array_expr, Expr {
   predicate hasOmittedElement() { elementIsOmitted(_) }
 
   override predicate isImpure() { getAnElement().isImpure() }
+
+  override string getAPrimaryQlClass() { result = "ArrayExpr" }
 }
 
 /**
@@ -568,6 +582,8 @@ class ObjectExpr extends @obj_expr, Expr {
   predicate hasTrailingComma() { this.getLastToken().getPreviousToken().getValue() = "," }
 
   override predicate isImpure() { getAProperty().isImpure() }
+
+  override string getAPrimaryQlClass() { result = "ObjectExpr" }
 }
 
 /**
@@ -668,6 +684,8 @@ class Property extends @property, Documentable {
    * decorators `@A` and `@B`.
    */
   Decorator getADecorator() { result = getDecorator(_) }
+
+  override string getAPrimaryQlClass() { result = "Property" }
 }
 
 /**
@@ -791,6 +809,8 @@ class FunctionExpr extends @function_expr, Expr, Function {
   override StmtContainer getEnclosingContainer() { result = Expr.super.getContainer() }
 
   override predicate isImpure() { none() }
+
+  override string getAPrimaryQlClass() { result = "FunctionExpr" }
 }
 
 /**
@@ -811,6 +831,8 @@ class ArrowFunctionExpr extends @arrow_function_expr, Expr, Function {
   override predicate isImpure() { none() }
 
   override Function getThisBinder() { result = getEnclosingContainer().(Function).getThisBinder() }
+
+  override string getAPrimaryQlClass() { result = "ArrowFunctionExpr" }
 }
 
 /**
@@ -838,6 +860,8 @@ class SeqExpr extends @seq_expr, Expr {
   override predicate isImpure() { getAnOperand().isImpure() }
 
   override Expr getUnderlyingValue() { result = getLastOperand().getUnderlyingValue() }
+
+  override string getAPrimaryQlClass() { result = "SeqExpr" }
 }
 
 /**
@@ -866,6 +890,8 @@ class ConditionalExpr extends @conditional_expr, Expr {
     getCondition().isImpure() or
     getABranch().isImpure()
   }
+
+  override string getAPrimaryQlClass() { result = "ConditionalExpr" }
 }
 
 /**
@@ -986,7 +1012,9 @@ class InvokeExpr extends @invokeexpr, Expr {
  * new Array(16)
  * ```
  */
-class NewExpr extends @new_expr, InvokeExpr { }
+class NewExpr extends @new_expr, InvokeExpr {
+  override string getAPrimaryQlClass() { result = "NewExpr" }
+}
 
 /**
  * A function call expression.
@@ -1005,6 +1033,8 @@ class CallExpr extends @call_expr, InvokeExpr {
    * is invoked, if any.
    */
   Expr getReceiver() { result = getCallee().(PropAccess).getBase() }
+
+  override string getAPrimaryQlClass() { result = "CallExpr" }
 }
 
 /**
@@ -1037,6 +1067,8 @@ class MethodCallExpr extends CallExpr {
 
   /** Holds if this invocation calls method `m` on expression `base`. */
   predicate calls(Expr base, string m) { getMethodRef().accesses(base, m) }
+
+  override string getAPrimaryQlClass() { result = "MethodCallExpr" }
 }
 
 /**
@@ -1103,6 +1135,8 @@ class DotExpr extends @dot_expr, PropAccess {
   Identifier getProperty() { result = getChildExpr(1) }
 
   override predicate isImpure() { getBase().isImpure() }
+
+  override string getAPrimaryQlClass() { result = "DotExpr" }
 }
 
 /**
@@ -1124,6 +1158,8 @@ class IndexExpr extends @index_expr, PropAccess {
     getBase().isImpure() or
     getIndex().isImpure()
   }
+
+  override string getAPrimaryQlClass() { result = "IndexExpr" }
 }
 
 /**
@@ -1148,6 +1184,8 @@ class UnaryExpr extends @unaryexpr, Expr {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getOperand().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "UnaryExpr" }
 }
 
 /**
@@ -1258,6 +1296,8 @@ class DeleteExpr extends @delete_expr, UnaryExpr {
  */
 class SpreadElement extends @spread_element, UnaryExpr {
   override string getOperator() { result = "..." }
+
+  override string getAPrimaryQlClass() { result = "SpreadElement" }
 }
 
 /**
@@ -1314,6 +1354,8 @@ class BinaryExpr extends @binaryexpr, Expr {
       result = c4 - c3 - 1
     )
   }
+
+  override string getAPrimaryQlClass() { result = "BinaryExpr" }
 }
 
 /**
@@ -1561,15 +1603,26 @@ private predicate hasAllConstantLeafs(AddExpr add) {
 private string getConcatenatedString(Expr add) {
   result = getConcatenatedString(add.getUnderlyingValue())
   or
-  not add = getAnAddOperand(any(AddExpr parent | hasAllConstantLeafs(parent))) and
-  hasAllConstantLeafs(add) and
   result =
     strictconcat(Expr leaf |
-      leaf = getAnAddOperand*(add)
+      leaf = getAnAddOperand*(add.(SmallConcatRoot))
     |
-      getConstantString(leaf) order by leaf.getFirstToken().getIndex()
-    ) and
-  result.length() < 1000 * 1000
+      getConstantString(leaf)
+      order by
+        leaf.getLocation().getStartLine(), leaf.getLocation().getStartColumn()
+    )
+}
+
+/**
+ * An expr that is the root of a string concatenation of constant parts,
+ * and the length of the resulting concatenation is less than 1 million chars.
+ */
+private class SmallConcatRoot extends Expr {
+  SmallConcatRoot() {
+    not this = getAnAddOperand(any(AddExpr parent | hasAllConstantLeafs(parent))) and
+    hasAllConstantLeafs(this) and
+    sum(Expr leaf | leaf = getAnAddOperand*(this) | getConstantString(leaf).length()) < 1000 * 1000
+  }
 }
 
 /**
@@ -1846,6 +1899,8 @@ class Assignment extends @assignment, Expr {
  */
 class AssignExpr extends @assign_expr, Assignment {
   override Expr getUnderlyingValue() { result = getRhs().getUnderlyingValue() }
+
+  override string getAPrimaryQlClass() { result = "AssignExpr" }
 }
 
 private class TCompoundAssignExpr =
@@ -1864,7 +1919,9 @@ private class TCompoundAssignExpr =
  * x /= 2
  * ```
  */
-class CompoundAssignExpr extends TCompoundAssignExpr, Assignment { }
+class CompoundAssignExpr extends TCompoundAssignExpr, Assignment {
+  override string getAPrimaryQlClass() { result = "CompoundAssignExpr" }
+}
 
 /**
  * A compound add-assign expression.
@@ -2007,7 +2064,7 @@ class AssignAndExpr extends @assign_and_expr, CompoundAssignExpr { }
  * x ||= y
  * ```
  */
-class AssignLogOrExpr extends @assignlogandexpr, CompoundAssignExpr { }
+class AssignLogOrExpr extends @assignlogorexpr, CompoundAssignExpr { }
 
 /**
  * A logical-'and'-assign expression.
@@ -2018,7 +2075,7 @@ class AssignLogOrExpr extends @assignlogandexpr, CompoundAssignExpr { }
  * x &&= y
  * ```
  */
-class AssignLogAndExpr extends @assignlogorexpr, CompoundAssignExpr { }
+class AssignLogAndExpr extends @assignlogandexpr, CompoundAssignExpr { }
 
 /**
  * A 'nullish-coalescing'-assign expression.
@@ -2056,6 +2113,8 @@ class UpdateExpr extends @updateexpr, Expr {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getOperand().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "UpdateExpr" }
 }
 
 /**
@@ -2137,6 +2196,8 @@ class YieldExpr extends @yield_expr, Expr {
     or
     not exists(getOperand()) and result = this
   }
+
+  override string getAPrimaryQlClass() { result = "YieldExpr" }
 }
 
 /**
@@ -2194,6 +2255,8 @@ class ComprehensionExpr extends @comprehension_expr, Expr {
   predicate isPostfix() {
     exists(Token tk | tk = getFirstToken().getNextToken() | not tk.getValue().regexpMatch("if|for"))
   }
+
+  override string getAPrimaryQlClass() { result = "ComprehensionExpr" }
 }
 
 /**
@@ -2246,6 +2309,8 @@ class ComprehensionBlock extends @comprehension_block, Expr {
     getIterator().isImpure() or
     getDomain().isImpure()
   }
+
+  override string getAPrimaryQlClass() { result = "ComprehensionBlock" }
 }
 
 /**
@@ -2468,6 +2533,8 @@ class LegacyLetExpr extends Expr, @legacy_letexpr {
 
   /** Gets the expression this `let` expression scopes over. */
   Expr getBody() { result = getChildExpr(-1) }
+
+  override string getAPrimaryQlClass() { result = "LegacyLetExpr" }
 }
 
 /**
@@ -2569,6 +2636,8 @@ class AwaitExpr extends @await_expr, Expr {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getOperand().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "AwaitExpr" }
 }
 
 /**
@@ -2586,6 +2655,8 @@ class AwaitExpr extends @await_expr, Expr {
  */
 class FunctionSentExpr extends @function_sent_expr, Expr {
   override predicate isImpure() { none() }
+
+  override string getAPrimaryQlClass() { result = "FunctionSentExpr" }
 }
 
 /**
@@ -2621,6 +2692,8 @@ class Decorator extends @decorator, Expr {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getExpression().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "Decorator" }
 }
 
 /**
@@ -2687,6 +2760,8 @@ class FunctionBindExpr extends @bind_expr, Expr {
     or
     not exists(getObject()) and result = getCallee().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "FunctionBindExpr" }
 }
 
 /**
@@ -2711,6 +2786,8 @@ class DynamicImportExpr extends @dynamic_import, Expr, Import {
   override Module getEnclosingModule() { result = getTopLevel() }
 
   override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
+
+  override string getAPrimaryQlClass() { result = "DynamicImportExpr" }
 }
 
 /** A literal path expression appearing in a dynamic import. */
@@ -2734,6 +2811,8 @@ private class LiteralDynamicImportPath extends PathExpr, ConstantString {
  */
 class OptionalUse extends Expr, @optionalchainable {
   OptionalUse() { isOptionalChaining(this) }
+
+  override string getAPrimaryQlClass() { result = "OptionalUse" }
 }
 
 private class ChainElem extends Expr, @optionalchainable {
@@ -2775,4 +2854,6 @@ class OptionalChainRoot extends ChainElem {
  */
 class ImportMetaExpr extends @import_meta_expr, Expr {
   override predicate isImpure() { none() }
+
+  override string getAPrimaryQlClass() { result = "ImportMetaExpr" }
 }

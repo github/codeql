@@ -120,6 +120,14 @@ private predicate isInterestingBaseType(ValueOrRefType base) {
  */
 private newtype TPrintAstNode =
   TElementNode(Element element) { shouldPrint(element, _) } or
+  TTypeMentionNode(TypeMention typeMention) {
+    exists(Element target |
+      target = typeMention.getParent*().getTarget() and
+      shouldPrint(target, _) and
+      not isNotNeeded(target.getParent*()) and
+      not target.getParent*() instanceof TypeParameter
+    )
+  } or
   TParametersNode(Parameterizable parameterizable) {
     shouldPrint(parameterizable, _) and
     parameterizable.getNumberOfParameters() > 0 and
@@ -127,7 +135,7 @@ private newtype TPrintAstNode =
   } or
   TAttributesNode(Attributable attributable) {
     shouldPrint(attributable, _) and
-    exists(attributable.getAnAttribute()) and
+    exists(Attribute a | a = attributable.getAnAttribute() | shouldPrint(a, _)) and
     not isNotNeeded(attributable)
   } or
   TTypeParametersNode(UnboundGeneric unboundGeneric) {
@@ -139,11 +147,6 @@ private newtype TPrintAstNode =
     shouldPrint(type, _) and
     hasInterestingBaseTypes(type) and
     not isNotNeeded(type)
-  } or
-  TBaseTypeNode(ValueOrRefType derived, ValueOrRefType base) {
-    shouldPrint(derived, _) and
-    base = getAnInterestingBaseType(derived) and
-    not isNotNeeded(derived)
   }
 
 /**
@@ -239,6 +242,41 @@ abstract class ElementNode extends PrintAstNode, TElementNode {
 }
 
 /**
+ * A node representing an AST node with an underlying `TypeMention`.
+ */
+class TypeMentionNode extends PrintAstNode, TTypeMentionNode {
+  TypeMention typeMention;
+
+  TypeMentionNode() { this = TTypeMentionNode(typeMention) }
+
+  override string toString() {
+    result = "[TypeMention] " + typeMention.getType().toStringWithTypes()
+  }
+
+  override Location getLocation() { result = typeMention.getLocation() }
+
+  /**
+   * Gets the `TypeMention` represented by this node.
+   */
+  final TypeMention getTypeMention() { result = typeMention }
+
+  /**
+   * Gets the `Element` targetted by the `TypeMention`.
+   */
+  final Element getTarget() { result = typeMention.getTarget() }
+
+  override TypeMentionNode getChild(int childIndex) {
+    result.getTypeMention() =
+      rank[childIndex](TypeMention t, Location l |
+        t.getParent() = typeMention and
+        l = t.getLocation()
+      |
+        t order by l.getFile().toString(), l.getStartLine(), l.getStartColumn()
+      )
+  }
+}
+
+/**
  * A node representing a `ControlFlowElement` (`Expr` or `Stmt`).
  */
 class ControlFlowElementNode extends ElementNode {
@@ -260,11 +298,21 @@ class ControlFlowElementNode extends ElementNode {
           controlFlowElement.getParent*()
       )
     ) and
-    not isNotNeeded(element.getParent+())
+    not isNotNeeded(element.getParent+()) and
+    // LambdaExpr is both a Callable and a ControlFlowElement,
+    // print it with the more specific CallableNode
+    not element instanceof Callable
   }
 
-  override ElementNode getChild(int childIndex) {
-    result.getElement() = controlFlowElement.getChild(childIndex)
+  override PrintAstNode getChild(int childIndex) {
+    (
+      childIndex = min(int i | exists(controlFlowElement.getChild(i))) - 1
+      or
+      not exists(controlFlowElement.getAChild()) and childIndex = 0
+    ) and
+    result.(TypeMentionNode).getTarget() = controlFlowElement
+    or
+    result.(ElementNode).getElement() = controlFlowElement.getChild(childIndex)
   }
 }
 
@@ -284,6 +332,45 @@ final class LocalFunctionStmtNode extends ControlFlowElementNode {
 }
 
 /**
+ * A node representing an `Assignment`.
+ * Left and right children are shown in this order.
+ */
+final class AssignmentNode extends ControlFlowElementNode {
+  Assignment assignment;
+
+  AssignmentNode() { assignment = element }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = -1 and
+    result.(TypeMentionNode).getTarget() = controlFlowElement
+    or
+    childIndex = 0 and
+    result.(ElementNode).getElement() = assignment.getLValue()
+    or
+    childIndex = 1 and
+    result.(ElementNode).getElement() = assignment.getRValue()
+  }
+}
+
+/**
+ * A node representing a `CastExpr`.
+ * Type access and casted expression children are shown in this order.
+ */
+final class CastExprNode extends ControlFlowElementNode {
+  CastExpr cast;
+
+  CastExprNode() { cast = element }
+
+  override ElementNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.getElement() = cast.getTypeAccess()
+    or
+    childIndex = 1 and
+    result.getElement() = cast.getExpr()
+  }
+}
+
+/**
  * A node representing a `Callable`, such as method declaration.
  */
 final class CallableNode extends ElementNode {
@@ -295,6 +382,9 @@ final class CallableNode extends ElementNode {
   }
 
   override PrintAstNode getChild(int childIndex) {
+    childIndex = -1 and
+    result.(TypeMentionNode).getTarget() = callable
+    or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = callable
     or
@@ -324,6 +414,9 @@ final class DeclarationWithAccessorsNode extends ElementNode {
   }
 
   override PrintAstNode getChild(int childIndex) {
+    childIndex = -1 and
+    result.(TypeMentionNode).getTarget() = declaration
+    or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = declaration
     or
@@ -357,6 +450,9 @@ final class FieldNode extends ElementNode {
   }
 
   override PrintAstNode getChild(int childIndex) {
+    childIndex = -1 and
+    result.(TypeMentionNode).getTarget() = field
+    or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = field
     or
@@ -396,6 +492,9 @@ final class ParameterNode extends ElementNode {
   }
 
   override PrintAstNode getChild(int childIndex) {
+    childIndex = -1 and
+    result.(TypeMentionNode).getTarget() = param
+    or
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = param
     or
@@ -415,7 +514,16 @@ final class AttributeNode extends ElementNode {
     not isNotNeeded(attr.getTarget())
   }
 
-  override ElementNode getChild(int childIndex) { result.getElement() = attr.getChild(childIndex) }
+  override PrintAstNode getChild(int childIndex) {
+    (
+      childIndex = min(int i | exists(attr.getChild(i))) - 1
+      or
+      not exists(attr.getAChild()) and childIndex = 0
+    ) and
+    result.(TypeMentionNode).getTarget() = attr
+    or
+    result.(ElementNode).getElement() = attr.getChild(childIndex)
+  }
 }
 
 /**
@@ -576,51 +684,25 @@ final class BaseTypesNode extends PrintAstNode, TBaseTypesNode {
 
   override Location getLocation() { none() }
 
-  override BaseTypeNode getChild(int childIndex) {
+  override TypeMentionNode getChild(int childIndex) {
     childIndex = 0 and
-    result.getBaseType() = valueOrRefType.getBaseClass() and
-    result.getDerivedType() = valueOrRefType
+    result.getTypeMention().getType() = valueOrRefType.getBaseClass() and
+    result.getTarget() = valueOrRefType
     or
-    result.getBaseType() =
-      rank[childIndex](ValueOrRefType base, string name |
-        base = valueOrRefType.getABaseInterface() and
-        name = base.toString()
+    result.getTypeMention() =
+      rank[childIndex](TypeMention t, Location l |
+        t.getType() = valueOrRefType.getABaseInterface() and
+        t.getTarget() = valueOrRefType and
+        l = t.getLocation()
       |
-        base order by name
-      ) and
-    result.getDerivedType() = valueOrRefType
+        t order by l.getFile().toString(), l.getStartLine(), l.getStartColumn()
+      )
   }
 
   /**
    * Gets the underlying `ValueOrRefType`
    */
   ValueOrRefType getValueOrRefType() { result = valueOrRefType }
-}
-
-/**
- * A node representing a base type reference of a `ValueOrRefType` declaration.
- */
-final class BaseTypeNode extends PrintAstNode, TBaseTypeNode {
-  ValueOrRefType derived;
-  ValueOrRefType base;
-
-  BaseTypeNode() { this = TBaseTypeNode(derived, base) }
-
-  override string toString() { result = getQlClass(base) + base.toString() }
-
-  override Location getLocation() { result = derived.getLocation() }
-
-  override BaseTypeNode getChild(int childIndex) { none() }
-
-  /**
-   * Gets the underlying derived `ValueOrRefType`
-   */
-  ValueOrRefType getDerivedType() { result = derived }
-
-  /**
-   * Gets the underlying base `ValueOrRefType`
-   */
-  ValueOrRefType getBaseType() { result = base }
 }
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */

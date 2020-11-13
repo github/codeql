@@ -15,13 +15,13 @@ QL also supports recursion and aggregates. This allows you to write complex recu
 Running a query
 ---------------
 
-You can try out the following examples and exercises using `CodeQL for VS Code <https://help.semmle.com/codeql/codeql-for-vscode.html>`__, or you can run them in the `query console on LGTM.com <https://lgtm.com/query>`__. Before you can run a query on LGTM.com, you need to select a language and project to query (for these logic examples, any language and project will do).
+You can try out the following examples and exercises using `CodeQL for VS Code <https://help.semmle.com/codeql/codeql-for-visual-studio-code.html>`__, or you can run them in the `query console on LGTM.com <https://lgtm.com/query>`__. Before you can run a query on LGTM.com, you need to select a language and project to query (for these logic examples, any language and project will do).
 
 Once you have selected a language, the query console is populated with the query:
 
 .. code-block:: ql
 
-   import <language>
+   import <ql-language-specification>
 
    select "hello world"
 
@@ -53,7 +53,7 @@ You can write simple queries using the some of the basic functions that are avai
 Exercise 1
 ~~~~~~~~~~
 
-Write a query which returns the length of the string ``"lgtm"``. (Hint: `here <https://help.semmle.com/QL/ql-spec/language.html#built-ins-for-string>`__ is the list of the functions that can be applied to strings.)
+Write a query which returns the length of the string ``"lgtm"``. (Hint: `here <ql-language-specification#built-ins-for-string>`__ is the list of the functions that can be applied to strings.)
 
 ➤ `See answer in the query console on LGTM.com <https://lgtm.com/query/2103060623/>`__
 
@@ -122,7 +122,7 @@ The following example queries *do* use these databases and give you an idea of h
 Queries using the CodeQL libraries can find errors and uncover variants of important security vulnerabilities in codebases.
 Visit `GitHub Security Lab <https://securitylab.github.com/>`__ to read about examples of vulnerabilities that we have recently found in open source projects.
 
-To import the CodeQL library for a specific programming language, type ``import <language>`` at the start of the query.
+To import the CodeQL library for a specific programming language, type ``import <ql-language-specification>`` at the start of the query.
 
 .. code-block:: ql
 
@@ -159,4 +159,4 @@ Further reading
 
 -  To find out more about how to write your own queries, try working through the ":doc:`QL tutorials <beginner/ql-tutorials>`."
 -  For an overview of the other available resources, see ":doc:`Learning CodeQL <../index>`."
--  For a more technical description of the underlying language, see the "`QL language reference <https://help.semmle.com/QL/ql-handbook>`__."
+-  For a more technical description of the underlying language, see the "`QL language reference <https://help.semmle.com/QL/ql-language-reference>`__."
