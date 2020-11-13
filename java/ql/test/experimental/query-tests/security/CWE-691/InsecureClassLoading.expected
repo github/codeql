@@ -1,0 +1,21 @@
+edges
+| InsecureClassLoading.java:18:29:18:54 | getInstalledPackages(...) : List | InsecureClassLoading.java:24:60:24:70 | packageName |
+| InsecureClassLoading.java:29:25:29:29 | "com" : String | InsecureClassLoading.java:31:52:31:62 | packageName |
+| InsecureClassLoading.java:29:25:29:29 | "com" : String | InsecureClassLoading.java:33:52:33:62 | packageName |
+| InsecureClassLoading.java:35:25:35:34 | "com.test" : String | InsecureClassLoading.java:37:52:37:62 | packageName |
+| InsecureClassLoading.java:35:25:35:34 | "com.test" : String | InsecureClassLoading.java:39:52:39:62 | packageName |
+nodes
+| InsecureClassLoading.java:18:29:18:54 | getInstalledPackages(...) : List | semmle.label | getInstalledPackages(...) : List |
+| InsecureClassLoading.java:24:60:24:70 | packageName | semmle.label | packageName |
+| InsecureClassLoading.java:29:25:29:29 | "com" : String | semmle.label | "com" : String |
+| InsecureClassLoading.java:31:52:31:62 | packageName | semmle.label | packageName |
+| InsecureClassLoading.java:33:52:33:62 | packageName | semmle.label | packageName |
+| InsecureClassLoading.java:35:25:35:34 | "com.test" : String | semmle.label | "com.test" : String |
+| InsecureClassLoading.java:37:52:37:62 | packageName | semmle.label | packageName |
+| InsecureClassLoading.java:39:52:39:62 | packageName | semmle.label | packageName |
+#select
+| InsecureClassLoading.java:24:60:24:70 | packageName | InsecureClassLoading.java:18:29:18:54 | getInstalledPackages(...) : List | InsecureClassLoading.java:24:60:24:70 | packageName | Arbitary code execution from $@. | InsecureClassLoading.java:18:29:18:54 | getInstalledPackages(...) | this user input |
+| InsecureClassLoading.java:31:52:31:62 | packageName | InsecureClassLoading.java:29:25:29:29 | "com" : String | InsecureClassLoading.java:31:52:31:62 | packageName | Arbitary code execution from $@. | InsecureClassLoading.java:29:25:29:29 | "com" | this user input |
+| InsecureClassLoading.java:33:52:33:62 | packageName | InsecureClassLoading.java:29:25:29:29 | "com" : String | InsecureClassLoading.java:33:52:33:62 | packageName | Arbitary code execution from $@. | InsecureClassLoading.java:29:25:29:29 | "com" | this user input |
+| InsecureClassLoading.java:37:52:37:62 | packageName | InsecureClassLoading.java:35:25:35:34 | "com.test" : String | InsecureClassLoading.java:37:52:37:62 | packageName | Arbitary code execution from $@. | InsecureClassLoading.java:35:25:35:34 | "com.test" | this user input |
+| InsecureClassLoading.java:39:52:39:62 | packageName | InsecureClassLoading.java:35:25:35:34 | "com.test" : String | InsecureClassLoading.java:39:52:39:62 | packageName | Arbitary code execution from $@. | InsecureClassLoading.java:35:25:35:34 | "com.test" | this user input |

@@ -15,950 +15,480 @@
  */
 package android.content;
 
-import java.io.File;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-/**
- * Interface to global information about an application environment. This is an
- * abstract class whose implementation is provided by the Android system. It
- * allows access to application-specific resources and classes, as well as
- * up-calls for application-level operations such as launching activities,
- * broadcasting and receiving intents, etc.
- */
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.concurrent.Executor;
+
 public abstract class Context {
-    /**
-     * File creation mode: the default mode, where the created file can only
-     * be accessed by the calling application (or all applications sharing the
-     * same user ID).
-     * @see #MODE_WORLD_READABLE
-     * @see #MODE_WORLD_WRITEABLE
-     */
     public static final int MODE_PRIVATE = 0x0000;
-
-    /**
-     * @deprecated Creating world-readable files is very dangerous, and likely
-     * to cause security holes in applications.  It is strongly discouraged;
-     * instead, applications should use more formal mechanism for interactions
-     * such as {@link ContentProvider}, {@link BroadcastReceiver}, and
-     * {@link android.app.Service}.  There are no guarantees that this
-     * access mode will remain on a file, such as when it goes through a
-     * backup and restore.
-     * File creation mode: allow all other applications to have read access
-     * to the created file.
-     * @see #MODE_PRIVATE
-     * @see #MODE_WORLD_WRITEABLE
-     */
-    @Deprecated
     public static final int MODE_WORLD_READABLE = 0x0001;
-
-    /**
-     * @deprecated Creating world-writable files is very dangerous, and likely
-     * to cause security holes in applications.  It is strongly discouraged;
-     * instead, applications should use more formal mechanism for interactions
-     * such as {@link ContentProvider}, {@link BroadcastReceiver}, and
-     * {@link android.app.Service}.  There are no guarantees that this
-     * access mode will remain on a file, such as when it goes through a
-     * backup and restore.
-     * File creation mode: allow all other applications to have write access
-     * to the created file.
-     * @see #MODE_PRIVATE
-     * @see #MODE_WORLD_READABLE
-     */
-    @Deprecated
     public static final int MODE_WORLD_WRITEABLE = 0x0002;
 
-    /**
-     * File creation mode: for use with {@link #openFileOutput}, if the file
-     * already exists then write data to the end of the existing file
-     * instead of erasing it.
-     * @see #openFileOutput
-     */
     public static final int MODE_APPEND = 0x8000;
-
-    /**
-     * SharedPreference loading flag: when set, the file on disk will
-     * be checked for modification even if the shared preferences
-     * instance is already loaded in this process.  This behavior is
-     * sometimes desired in cases where the application has multiple
-     * processes, all writing to the same SharedPreferences file.
-     * Generally there are better forms of communication between
-     * processes, though.
-     *
-     * <p>This was the legacy (but undocumented) behavior in and
-     * before Gingerbread (Android 2.3) and this flag is implied when
-     * targetting such releases.  For applications targetting SDK
-     * versions <em>greater than</em> Android 2.3, this flag must be
-     * explicitly set if desired.
-     *
-     * @see #getSharedPreferences
-     */
     public static final int MODE_MULTI_PROCESS = 0x0004;
-
-    /**
-     * Database open flag: when set, the database is opened with write-ahead
-     * logging enabled by default.
-     *
-     * @see #openOrCreateDatabase(String, int, CursorFactory)
-     * @see #openOrCreateDatabase(String, int, CursorFactory, DatabaseErrorHandler)
-     * @see SQLiteDatabase#enableWriteAheadLogging
-     */
     public static final int MODE_ENABLE_WRITE_AHEAD_LOGGING = 0x0008;
+    public static final int MODE_NO_LOCALIZED_COLLATORS = 0x0010;
 
-    /**
-     * Return the context of the single, global Application object of the current
-     * process. This generally should only be used if you need a Context whose
-     * lifecycle is separate from the current context, that is tied to the lifetime
-     * of the process rather than the current component.
-     *
-     * <p>
-     * Consider for example how this interacts with
-     * {@link #registerReceiver(BroadcastReceiver, IntentFilter)}:
-     * <ul>
-     * <li>
-     * <p>
-     * If used from an Activity context, the receiver is being registered within
-     * that activity. This means that you are expected to unregister before the
-     * activity is done being destroyed; in fact if you do not do so, the framework
-     * will clean up your leaked registration as it removes the activity and log an
-     * error. Thus, if you use the Activity context to register a receiver that is
-     * static (global to the process, not associated with an Activity instance) then
-     * that registration will be removed on you at whatever point the activity you
-     * used is destroyed.
-     * <li>
-     * <p>
-     * If used from the Context returned here, the receiver is being registered with
-     * the global state associated with your application. Thus it will never be
-     * unregistered for you. This is necessary if the receiver is associated with
-     * static data, not a particular component. However using the ApplicationContext
-     * elsewhere can easily lead to serious leaks if you forget to unregister,
-     * unbind, etc.
-     * </ul>
-     */
+    public @interface BindServiceFlags {
+    }
+
+    public static final int BIND_AUTO_CREATE = 0x0001;
+
+    public static final int BIND_DEBUG_UNBIND = 0x0002;
+
+    public static final int BIND_NOT_FOREGROUND = 0x0004;
+
+    public static final int BIND_ABOVE_CLIENT = 0x0008;
+
+    public static final int BIND_ALLOW_OOM_MANAGEMENT = 0x0010;
+
+    public static final int BIND_WAIVE_PRIORITY = 0x0020;
+
+    public static final int BIND_IMPORTANT = 0x0040;
+
+    public static final int BIND_ADJUST_WITH_ACTIVITY = 0x0080;
+
+    public static final int BIND_NOT_PERCEPTIBLE = 0x00000100;
+
+    public static final int BIND_INCLUDE_CAPABILITIES = 0x000001000;
+
+    public static final int BIND_SCHEDULE_LIKE_TOP_APP = 0x00080000;
+
+    public static final int BIND_ALLOW_BACKGROUND_ACTIVITY_STARTS = 0x00100000;
+
+    public static final int BIND_RESTRICT_ASSOCIATIONS = 0x00200000;
+
+    public static final int BIND_ALLOW_INSTANT = 0x00400000;
+
+    public static final int BIND_IMPORTANT_BACKGROUND = 0x00800000;
+
+    public static final int BIND_ALLOW_WHITELIST_MANAGEMENT = 0x01000000;
+
+    public static final int BIND_FOREGROUND_SERVICE_WHILE_AWAKE = 0x02000000;
+
+    public static final int BIND_FOREGROUND_SERVICE = 0x04000000;
+
+    public static final int BIND_TREAT_LIKE_ACTIVITY = 0x08000000;
+
+    public static final int BIND_VISIBLE = 0x10000000;
+
+    public static final int BIND_SHOWING_UI = 0x20000000;
+
+    public static final int BIND_NOT_VISIBLE = 0x40000000;
+    public static final int BIND_EXTERNAL_SERVICE = 0x80000000;
+    public static final int BIND_REDUCTION_FLAGS = Context.BIND_ALLOW_OOM_MANAGEMENT | Context.BIND_WAIVE_PRIORITY
+            | Context.BIND_NOT_PERCEPTIBLE | Context.BIND_NOT_VISIBLE;
+
+    public @interface RegisterReceiverFlags {
+    }
+
+    public static final int RECEIVER_VISIBLE_TO_INSTANT_APPS = 0x1;
+
+    public abstract PackageManager getPackageManager();
+
     public abstract Context getApplicationContext();
 
-    /**
-     * Returns the absolute path on the filesystem where a file created with
-     * {@link #openFileOutput} is stored.
-     * <p>
-     * The returned path may change over time if the calling app is moved to an
-     * adopted storage device, so only relative paths should be persisted.
-     *
-     * @param name The name of the file for which you would like to get its path.
-     *
-     * @return An absolute path to the given file.
-     *
-     * @see #openFileOutput
-     * @see #getFilesDir
-     * @see #getDir
-     */
-    public abstract File getFileStreamPath(String name);
+    public abstract ClassLoader getClassLoader();
 
-    /**
-     * {@hide}
-     * Return the full path to the shared prefs file for the given prefs group name.
-     *
-     * <p>Note: this is not generally useful for applications, since they should
-     * not be directly accessing the file system.
-     */
-    public abstract File getSharedPrefsFile(String name);
+    public String getOpPackageName() {
+        throw new RuntimeException("Not implemented. Must override in a subclass.");
+    }
 
-    /**
-     * Retrieve and hold the contents of the preferences file 'name', returning
-     * a SharedPreferences through which you can retrieve and modify its
-     * values.  Only one instance of the SharedPreferences object is returned
-     * to any callers for the same name, meaning they will see each other's
-     * edits as soon as they are made.
-     *
-     * @param name Desired preferences file. If a preferences file by this name
-     * does not exist, it will be created when you retrieve an
-     * editor (SharedPreferences.edit()) and then commit changes (Editor.commit()).
-     * @param mode Operating mode.  Use 0 or {@link #MODE_PRIVATE} for the
-     * default operation, {@link #MODE_WORLD_READABLE}
-     * and {@link #MODE_WORLD_WRITEABLE} to control permissions.  The bit
-     * {@link #MODE_MULTI_PROCESS} can also be used if multiple processes
-     * are mutating the same SharedPreferences file.  {@link #MODE_MULTI_PROCESS}
-     * is always on in apps targetting Gingerbread (Android 2.3) and below, and
-     * off by default in later versions.
-     *
-     * @return Returns the single SharedPreferences instance that can be used
-     *         to retrieve and modify the preference values.
-     *
-     * @see #MODE_PRIVATE
-     * @see #MODE_WORLD_READABLE
-     * @see #MODE_WORLD_WRITEABLE
-     * @see #MODE_MULTI_PROCESS
-     */
-    public abstract SharedPreferences getSharedPreferences(String name,
-            int mode);
+    public String getAttributionTag() {
+        return null;
+    }
 
-    /**
-     * Returns the absolute path to the directory on the filesystem where all
-     * private files belonging to this app are stored. Apps should not use this path
-     * directly; they should instead use {@link #getFilesDir()},
-     * {@link #getCacheDir()}, {@link #getDir(String, int)}, or other storage APIs
-     * on this class.
-     * <p>
-     * The returned path may change over time if the calling app is moved to an
-     * adopted storage device, so only relative paths should be persisted.
-     * <p>
-     * No additional permissions are required for the calling app to read or write
-     * files under the returned path.
-     *
-     * @see ApplicationInfo#dataDir
-     */
-    public abstract File getDataDir();
+    public String getFeatureId() {
+        return getAttributionTag();
+    }
 
-    /**
-     * Returns the absolute path to the directory on the filesystem where files
-     * created with {@link #openFileOutput} are stored.
-     * <p>
-     * The returned path may change over time if the calling app is moved to an
-     * adopted storage device, so only relative paths should be persisted.
-     * <p>
-     * No additional permissions are required for the calling app to read or write
-     * files under the returned path.
-     *
-     * @return The path of the directory holding application files.
-     * @see #openFileOutput
-     * @see #getFileStreamPath
-     * @see #getDir
-     */
-    public abstract File getFilesDir();
-
-    /**
-     * Returns the absolute path to the directory on the filesystem similar to
-     * {@link #getFilesDir()}. The difference is that files placed under this
-     * directory will be excluded from automatic backup to remote storage. See
-     * {@link android.app.backup.BackupAgent BackupAgent} for a full discussion of
-     * the automatic backup mechanism in Android.
-     * <p>
-     * The returned path may change over time if the calling app is moved to an
-     * adopted storage device, so only relative paths should be persisted.
-     * <p>
-     * No additional permissions are required for the calling app to read or write
-     * files under the returned path.
-     *
-     * @return The path of the directory holding application files that will not be
-     *         automatically backed up to remote storage.
-     * @see #openFileOutput
-     * @see #getFileStreamPath
-     * @see #getDir
-     * @see android.app.backup.BackupAgent
-     */
-    public abstract File getNoBackupFilesDir();
-
-    /**
-     * Returns the absolute path to the directory on the primary shared/external
-     * storage device where the application can place persistent files it owns.
-     * These files are internal to the applications, and not typically visible to
-     * the user as media.
-     * <p>
-     * This is like {@link #getFilesDir()} in that these files will be deleted when
-     * the application is uninstalled, however there are some important differences:
-     * <ul>
-     * <li>Shared storage may not always be available, since removable media can be
-     * ejected by the user. Media state can be checked using
-     * {@link Environment#getExternalStorageState(File)}.
-     * <li>There is no security enforced with these files. For example, any
-     * application holding
-     * {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} can write to these
-     * files.
-     * </ul>
-     * <p>
-     * If a shared storage device is emulated (as determined by
-     * {@link Environment#isExternalStorageEmulated(File)}), it's contents are
-     * backed by a private user data partition, which means there is little benefit
-     * to storing data here instead of the private directories returned by
-     * {@link #getFilesDir()}, etc.
-     * <p>
-     * Starting in {@link android.os.Build.VERSION_CODES#KITKAT}, no permissions are
-     * required to read or write to the returned path; it's always accessible to the
-     * calling app. This only applies to paths generated for package name of the
-     * calling application. To access paths belonging to other packages,
-     * {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} and/or
-     * {@link android.Manifest.permission#READ_EXTERNAL_STORAGE} are required.
-     * <p>
-     * On devices with multiple users (as described by {@link UserManager}), each
-     * user has their own isolated shared storage. Applications only have access to
-     * the shared storage for the user they're running as.
-     * <p>
-     * The returned path may change over time if different shared storage media is
-     * inserted, so only relative paths should be persisted.
-     * <p>
-     * Here is an example of typical code to manipulate a file in an application's
-     * shared storage:
-     * </p>
-     * {@sample development/samples/ApiDemos/src/com/example/android/apis/content/ExternalStorage.java
-     * private_file}
-     * <p>
-     * If you supply a non-null <var>type</var> to this function, the returned file
-     * will be a path to a sub-directory of the given type. Though these files are
-     * not automatically scanned by the media scanner, you can explicitly add them
-     * to the media database with
-     * {@link android.media.MediaScannerConnection#scanFile(Context, String[], String[], android.media.MediaScannerConnection.OnScanCompletedListener)
-     * MediaScannerConnection.scanFile}. Note that this is not the same as
-     * {@link android.os.Environment#getExternalStoragePublicDirectory
-     * Environment.getExternalStoragePublicDirectory()}, which provides directories
-     * of media shared by all applications. The directories returned here are owned
-     * by the application, and their contents will be removed when the application
-     * is uninstalled. Unlike
-     * {@link android.os.Environment#getExternalStoragePublicDirectory
-     * Environment.getExternalStoragePublicDirectory()}, the directory returned here
-     * will be automatically created for you.
-     * <p>
-     * Here is an example of typical code to manipulate a picture in an
-     * application's shared storage and add it to the media database:
-     * </p>
-     * {@sample development/samples/ApiDemos/src/com/example/android/apis/content/ExternalStorage.java
-     * private_picture}
-     *
-     * @param type The type of files directory to return. May be {@code null} for
-     *             the root of the files directory or one of the following constants
-     *             for a subdirectory:
-     *             {@link android.os.Environment#DIRECTORY_MUSIC},
-     *             {@link android.os.Environment#DIRECTORY_PODCASTS},
-     *             {@link android.os.Environment#DIRECTORY_RINGTONES},
-     *             {@link android.os.Environment#DIRECTORY_ALARMS},
-     *             {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},
-     *             {@link android.os.Environment#DIRECTORY_PICTURES}, or
-     *             {@link android.os.Environment#DIRECTORY_MOVIES}.
-     * @return the absolute path to application-specific directory. May return
-     *         {@code null} if shared storage is not currently available.
-     * @see #getFilesDir
-     * @see #getExternalFilesDirs(String)
-     * @see Environment#getExternalStorageState(File)
-     * @see Environment#isExternalStorageEmulated(File)
-     * @see Environment#isExternalStorageRemovable(File)
-     */
-    public abstract File getExternalFilesDir(String type);
-
-    /**
-     * Returns absolute paths to application-specific directories on all
-     * shared/external storage devices where the application can place persistent
-     * files it owns. These files are internal to the application, and not typically
-     * visible to the user as media.
-     * <p>
-     * This is like {@link #getFilesDir()} in that these files will be deleted when
-     * the application is uninstalled, however there are some important differences:
-     * <ul>
-     * <li>Shared storage may not always be available, since removable media can be
-     * ejected by the user. Media state can be checked using
-     * {@link Environment#getExternalStorageState(File)}.
-     * <li>There is no security enforced with these files. For example, any
-     * application holding
-     * {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} can write to these
-     * files.
-     * </ul>
-     * <p>
-     * If a shared storage device is emulated (as determined by
-     * {@link Environment#isExternalStorageEmulated(File)}), it's contents are
-     * backed by a private user data partition, which means there is little benefit
-     * to storing data here instead of the private directories returned by
-     * {@link #getFilesDir()}, etc.
-     * <p>
-     * Shared storage devices returned here are considered a stable part of the
-     * device, including physical media slots under a protective cover. The returned
-     * paths do not include transient devices, such as USB flash drives connected to
-     * handheld devices.
-     * <p>
-     * An application may store data on any or all of the returned devices. For
-     * example, an app may choose to store large files on the device with the most
-     * available space, as measured by {@link StatFs}.
-     * <p>
-     * No additional permissions are required for the calling app to read or write
-     * files under the returned path. Write access outside of these paths on
-     * secondary external storage devices is not available.
-     * <p>
-     * The returned path may change over time if different shared storage media is
-     * inserted, so only relative paths should be persisted.
-     *
-     * @param type The type of files directory to return. May be {@code null} for
-     *             the root of the files directory or one of the following constants
-     *             for a subdirectory:
-     *             {@link android.os.Environment#DIRECTORY_MUSIC},
-     *             {@link android.os.Environment#DIRECTORY_PODCASTS},
-     *             {@link android.os.Environment#DIRECTORY_RINGTONES},
-     *             {@link android.os.Environment#DIRECTORY_ALARMS},
-     *             {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},
-     *             {@link android.os.Environment#DIRECTORY_PICTURES}, or
-     *             {@link android.os.Environment#DIRECTORY_MOVIES}.
-     * @return the absolute paths to application-specific directories. Some
-     *         individual paths may be {@code null} if that shared storage is not
-     *         currently available. The first path returned is the same as
-     *         {@link #getExternalFilesDir(String)}.
-     * @see #getExternalFilesDir(String)
-     * @see Environment#getExternalStorageState(File)
-     * @see Environment#isExternalStorageEmulated(File)
-     * @see Environment#isExternalStorageRemovable(File)
-     */
-    public abstract File[] getExternalFilesDirs(String type);
-
-    /**
-     * Return the primary shared/external storage directory where this application's
-     * OBB files (if there are any) can be found. Note if the application does not
-     * have any OBB files, this directory may not exist.
-     * <p>
-     * This is like {@link #getFilesDir()} in that these files will be deleted when
-     * the application is uninstalled, however there are some important differences:
-     * <ul>
-     * <li>Shared storage may not always be available, since removable media can be
-     * ejected by the user. Media state can be checked using
-     * {@link Environment#getExternalStorageState(File)}.
-     * <li>There is no security enforced with these files. For example, any
-     * application holding
-     * {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} can write to these
-     * files.
-     * </ul>
-     * <p>
-     * Starting in {@link android.os.Build.VERSION_CODES#KITKAT}, no permissions are
-     * required to read or write to the path that this method returns. However,
-     * starting from {@link android.os.Build.VERSION_CODES#M}, to read the OBB
-     * expansion files, you must declare the
-     * {@link android.Manifest.permission#READ_EXTERNAL_STORAGE} permission in the
-     * app manifest and ask for permission at runtime as follows:
-     * </p>
-     * <p>
-     * {@code <uses-permission android:name=
-     * "android.permission.READ_EXTERNAL_STORAGE"
-     * android:maxSdkVersion="23" />}
-     * </p>
-     * <p>
-     * Starting from {@link android.os.Build.VERSION_CODES#N},
-     * {@link android.Manifest.permission#READ_EXTERNAL_STORAGE} permission is not
-     * required, so don't ask for this permission at runtime. To handle both cases,
-     * your app must first try to read the OBB file, and if it fails, you must
-     * request {@link android.Manifest.permission#READ_EXTERNAL_STORAGE} permission
-     * at runtime.
-     * </p>
-     *
-     * <p>
-     * The following code snippet shows how to do this:
-     * </p>
-     *
-     * <pre>
-     * File obb = new File(obb_filename);
-     * boolean open_failed = false;
-     *
-     * try {
-     *     BufferedReader br = new BufferedReader(new FileReader(obb));
-     *     open_failed = false;
-     *     ReadObbFile(br);
-     * } catch (IOException e) {
-     *     open_failed = true;
-     * }
-     *
-     * if (open_failed) {
-     *     // request READ_EXTERNAL_STORAGE permission before reading OBB file
-     *     ReadObbFileWithPermission();
-     * }
-     * </pre>
-     *
-     * On devices with multiple users (as described by {@link UserManager}),
-     * multiple users may share the same OBB storage location. Applications should
-     * ensure that multiple instances running under different users don't interfere
-     * with each other.
-     *
-     * @return the absolute path to application-specific directory. May return
-     *         {@code null} if shared storage is not currently available.
-     * @see #getObbDirs()
-     * @see Environment#getExternalStorageState(File)
-     * @see Environment#isExternalStorageEmulated(File)
-     * @see Environment#isExternalStorageRemovable(File)
-     */
-    public abstract File getObbDir();
-
-    /**
-     * Returns absolute paths to application-specific directories on all
-     * shared/external storage devices where the application's OBB files (if there
-     * are any) can be found. Note if the application does not have any OBB files,
-     * these directories may not exist.
-     * <p>
-     * This is like {@link #getFilesDir()} in that these files will be deleted when
-     * the application is uninstalled, however there are some important differences:
-     * <ul>
-     * <li>Shared storage may not always be available, since removable media can be
-     * ejected by the user. Media state can be checked using
-     * {@link Environment#getExternalStorageState(File)}.
-     * <li>There is no security enforced with these files. For example, any
-     * application holding
-     * {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} can write to these
-     * files.
-     * </ul>
-     * <p>
-     * Shared storage devices returned here are considered a stable part of the
-     * device, including physical media slots under a protective cover. The returned
-     * paths do not include transient devices, such as USB flash drives connected to
-     * handheld devices.
-     * <p>
-     * An application may store data on any or all of the returned devices. For
-     * example, an app may choose to store large files on the device with the most
-     * available space, as measured by {@link StatFs}.
-     * <p>
-     * No additional permissions are required for the calling app to read or write
-     * files under the returned path. Write access outside of these paths on
-     * secondary external storage devices is not available.
-     *
-     * @return the absolute paths to application-specific directories. Some
-     *         individual paths may be {@code null} if that shared storage is not
-     *         currently available. The first path returned is the same as
-     *         {@link #getObbDir()}
-     * @see #getObbDir()
-     * @see Environment#getExternalStorageState(File)
-     * @see Environment#isExternalStorageEmulated(File)
-     * @see Environment#isExternalStorageRemovable(File)
-     */
-    public abstract File[] getObbDirs();
-
-    /**
-     * Returns the absolute path to the application specific cache directory on the
-     * filesystem.
-     * <p>
-     * The system will automatically delete files in this directory as disk space is
-     * needed elsewhere on the device. The system will always delete older files
-     * first, as reported by {@link File#lastModified()}. If desired, you can exert
-     * more control over how files are deleted using
-     * {@link StorageManager#setCacheBehaviorGroup(File, boolean)} and
-     * {@link StorageManager#setCacheBehaviorTombstone(File, boolean)}.
-     * <p>
-     * Apps are strongly encouraged to keep their usage of cache space below the
-     * quota returned by {@link StorageManager#getCacheQuotaBytes(java.util.UUID)}.
-     * If your app goes above this quota, your cached files will be some of the
-     * first to be deleted when additional disk space is needed. Conversely, if your
-     * app stays under this quota, your cached files will be some of the last to be
-     * deleted when additional disk space is needed.
-     * <p>
-     * Note that your cache quota will change over time depending on how frequently
-     * the user interacts with your app, and depending on how much system-wide disk
-     * space is used.
-     * <p>
-     * The returned path may change over time if the calling app is moved to an
-     * adopted storage device, so only relative paths should be persisted.
-     * <p>
-     * Apps require no extra permissions to read or write to the returned path,
-     * since this path lives in their private storage.
-     *
-     * @return The path of the directory holding application cache files.
-     * @see #openFileOutput
-     * @see #getFileStreamPath
-     * @see #getDir
-     * @see #getExternalCacheDir
-     */
-    public abstract File getCacheDir();
-
-    /**
-     * Returns the absolute path to the application specific cache directory on the
-     * filesystem designed for storing cached code.
-     * <p>
-     * The system will delete any files stored in this location both when your
-     * specific application is upgraded, and when the entire platform is upgraded.
-     * <p>
-     * This location is optimal for storing compiled or optimized code generated by
-     * your application at runtime.
-     * <p>
-     * The returned path may change over time if the calling app is moved to an
-     * adopted storage device, so only relative paths should be persisted.
-     * <p>
-     * Apps require no extra permissions to read or write to the returned path,
-     * since this path lives in their private storage.
-     *
-     * @return The path of the directory holding application code cache files.
-     */
-    public abstract File getCodeCacheDir();
-
-    /**
-     * Returns absolute path to application-specific directory on the primary
-     * shared/external storage device where the application can place cache files it
-     * owns. These files are internal to the application, and not typically visible
-     * to the user as media.
-     * <p>
-     * This is like {@link #getCacheDir()} in that these files will be deleted when
-     * the application is uninstalled, however there are some important differences:
-     * <ul>
-     * <li>The platform does not always monitor the space available in shared
-     * storage, and thus may not automatically delete these files. Apps should
-     * always manage the maximum space used in this location. Currently the only
-     * time files here will be deleted by the platform is when running on
-     * {@link android.os.Build.VERSION_CODES#JELLY_BEAN_MR1} or later and
-     * {@link Environment#isExternalStorageEmulated(File)} returns true.
-     * <li>Shared storage may not always be available, since removable media can be
-     * ejected by the user. Media state can be checked using
-     * {@link Environment#getExternalStorageState(File)}.
-     * <li>There is no security enforced with these files. For example, any
-     * application holding
-     * {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} can write to these
-     * files.
-     * </ul>
-     * <p>
-     * If a shared storage device is emulated (as determined by
-     * {@link Environment#isExternalStorageEmulated(File)}), its contents are backed
-     * by a private user data partition, which means there is little benefit to
-     * storing data here instead of the private directory returned by
-     * {@link #getCacheDir()}.
-     * <p>
-     * Starting in {@link android.os.Build.VERSION_CODES#KITKAT}, no permissions are
-     * required to read or write to the returned path; it's always accessible to the
-     * calling app. This only applies to paths generated for package name of the
-     * calling application. To access paths belonging to other packages,
-     * {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} and/or
-     * {@link android.Manifest.permission#READ_EXTERNAL_STORAGE} are required.
-     * <p>
-     * On devices with multiple users (as described by {@link UserManager}), each
-     * user has their own isolated shared storage. Applications only have access to
-     * the shared storage for the user they're running as.
-     * <p>
-     * The returned path may change over time if different shared storage media is
-     * inserted, so only relative paths should be persisted.
-     *
-     * @return the absolute path to application-specific directory. May return
-     *         {@code null} if shared storage is not currently available.
-     * @see #getCacheDir
-     * @see #getExternalCacheDirs()
-     * @see Environment#getExternalStorageState(File)
-     * @see Environment#isExternalStorageEmulated(File)
-     * @see Environment#isExternalStorageRemovable(File)
-     */
-    public abstract File getExternalCacheDir();
-
-    /**
-     * Returns absolute path to application-specific directory in the preloaded
-     * cache.
-     * <p>
-     * Files stored in the cache directory can be deleted when the device runs low
-     * on storage. There is no guarantee when these files will be deleted.
-     * 
-     * @hide
-     */
-    public abstract File getPreloadsFileCache();
-
-    /**
-     * Returns absolute paths to application-specific directories on all
-     * shared/external storage devices where the application can place cache files
-     * it owns. These files are internal to the application, and not typically
-     * visible to the user as media.
-     * <p>
-     * This is like {@link #getCacheDir()} in that these files will be deleted when
-     * the application is uninstalled, however there are some important differences:
-     * <ul>
-     * <li>The platform does not always monitor the space available in shared
-     * storage, and thus may not automatically delete these files. Apps should
-     * always manage the maximum space used in this location. Currently the only
-     * time files here will be deleted by the platform is when running on
-     * {@link android.os.Build.VERSION_CODES#JELLY_BEAN_MR1} or later and
-     * {@link Environment#isExternalStorageEmulated(File)} returns true.
-     * <li>Shared storage may not always be available, since removable media can be
-     * ejected by the user. Media state can be checked using
-     * {@link Environment#getExternalStorageState(File)}.
-     * <li>There is no security enforced with these files. For example, any
-     * application holding
-     * {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} can write to these
-     * files.
-     * </ul>
-     * <p>
-     * If a shared storage device is emulated (as determined by
-     * {@link Environment#isExternalStorageEmulated(File)}), it's contents are
-     * backed by a private user data partition, which means there is little benefit
-     * to storing data here instead of the private directory returned by
-     * {@link #getCacheDir()}.
-     * <p>
-     * Shared storage devices returned here are considered a stable part of the
-     * device, including physical media slots under a protective cover. The returned
-     * paths do not include transient devices, such as USB flash drives connected to
-     * handheld devices.
-     * <p>
-     * An application may store data on any or all of the returned devices. For
-     * example, an app may choose to store large files on the device with the most
-     * available space, as measured by {@link StatFs}.
-     * <p>
-     * No additional permissions are required for the calling app to read or write
-     * files under the returned path. Write access outside of these paths on
-     * secondary external storage devices is not available.
-     * <p>
-     * The returned paths may change over time if different shared storage media is
-     * inserted, so only relative paths should be persisted.
-     *
-     * @return the absolute paths to application-specific directories. Some
-     *         individual paths may be {@code null} if that shared storage is not
-     *         currently available. The first path returned is the same as
-     *         {@link #getExternalCacheDir()}.
-     * @see #getExternalCacheDir()
-     * @see Environment#getExternalStorageState(File)
-     * @see Environment#isExternalStorageEmulated(File)
-     * @see Environment#isExternalStorageRemovable(File)
-     */
-    public abstract File[] getExternalCacheDirs();
-
-    /**
-     * Returns absolute paths to application-specific directories on all
-     * shared/external storage devices where the application can place media files.
-     * These files are scanned and made available to other apps through
-     * {@link MediaStore}.
-     * <p>
-     * This is like {@link #getExternalFilesDirs} in that these files will be
-     * deleted when the application is uninstalled, however there are some important
-     * differences:
-     * <ul>
-     * <li>Shared storage may not always be available, since removable media can be
-     * ejected by the user. Media state can be checked using
-     * {@link Environment#getExternalStorageState(File)}.
-     * <li>There is no security enforced with these files. For example, any
-     * application holding
-     * {@link android.Manifest.permission#WRITE_EXTERNAL_STORAGE} can write to these
-     * files.
-     * </ul>
-     * <p>
-     * Shared storage devices returned here are considered a stable part of the
-     * device, including physical media slots under a protective cover. The returned
-     * paths do not include transient devices, such as USB flash drives connected to
-     * handheld devices.
-     * <p>
-     * An application may store data on any or all of the returned devices. For
-     * example, an app may choose to store large files on the device with the most
-     * available space, as measured by {@link StatFs}.
-     * <p>
-     * No additional permissions are required for the calling app to read or write
-     * files under the returned path. Write access outside of these paths on
-     * secondary external storage devices is not available.
-     * <p>
-     * The returned paths may change over time if different shared storage media is
-     * inserted, so only relative paths should be persisted.
-     *
-     * @return the absolute paths to application-specific directories. Some
-     *         individual paths may be {@code null} if that shared storage is not
-     *         currently available.
-     * @see Environment#getExternalStorageState(File)
-     * @see Environment#isExternalStorageEmulated(File)
-     * @see Environment#isExternalStorageRemovable(File)
-     */
-    public abstract File[] getExternalMediaDirs();
-
-    /**
-     * Returns an array of strings naming the private files associated with this
-     * Context's application package.
-     *
-     * @return Array of strings naming the private files.
-     *
-     * @see #openFileInput
-     * @see #openFileOutput
-     * @see #deleteFile
-     */
-    public abstract String[] fileList();
-
-    /**
-     * Retrieve, creating if needed, a new directory in which the application can
-     * place its own custom data files. You can use the returned File object to
-     * create and access files in this directory. Note that files created through a
-     * File object will only be accessible by your own application; you can only set
-     * the mode of the entire directory, not of individual files.
-     * <p>
-     * The returned path may change over time if the calling app is moved to an
-     * adopted storage device, so only relative paths should be persisted.
-     * <p>
-     * Apps require no extra permissions to read or write to the returned path,
-     * since this path lives in their private storage.
-     *
-     * @param name Name of the directory to retrieve. This is a directory that is
-     *             created as part of your application data.
-     * @param mode Operating mode.
-     *
-     * @return A {@link File} object for the requested directory. The directory will
-     *         have been created if it does not already exist.
-     *
-     * @see #openFileOutput(String, int)
-     */
-    public abstract File getDir(String name, int mode);
-
-    /**
-     * Same as {@link #startActivity(Intent, Bundle)} with no options specified.
-     *
-     * @param intent The description of the activity to start.
-     *
-     * @throws ActivityNotFoundException &nbsp; `
-     * @see #startActivity(Intent, Bundle)
-     * @see PackageManager#resolveActivity
-     */
-    public abstract void startActivity(Intent intent);
-
-    /**
-     * Launch a new activity. You will not receive any information about when the
-     * activity exits.
-     *
-     * <p>
-     * Note that if this method is being called from outside of an
-     * {@link android.app.Activity} Context, then the Intent must include the
-     * {@link Intent#FLAG_ACTIVITY_NEW_TASK} launch flag. This is because, without
-     * being started from an existing Activity, there is no existing task in which
-     * to place the new activity and thus it needs to be placed in its own separate
-     * task.
-     *
-     * <p>
-     * This method throws {@link ActivityNotFoundException} if there was no Activity
-     * found to run the given Intent.
-     *
-     * @param intent  The description of the activity to start.
-     * @param options Additional options for how the Activity should be started. May
-     *                be null if there are no options. See
-     *                {@link android.app.ActivityOptions} for how to build the
-     *                Bundle supplied here; there are no supported definitions for
-     *                building it manually.
-     *
-     * @throws ActivityNotFoundException &nbsp;
-     *
-     * @see #startActivity(Intent)
-     * @see PackageManager#resolveActivity
-     */
-    public abstract void startActivity(Intent intent, Bundle options);
-
-    /**
-     * Identifies whether this Context instance will be able to process calls to
-     * {@link #startActivityForResult(String, Intent, int, Bundle)}.
-     * 
-     * @hide
-     */
     public boolean canStartActivityForResult() {
         return false;
     }
 
-    /**
-     * Same as {@link #startActivities(Intent[], Bundle)} with no options specified.
-     *
-     * @param intents An array of Intents to be started.
-     *
-     * @throws ActivityNotFoundException &nbsp;
-     *
-     * @see #startActivities(Intent[], Bundle)
-     * @see PackageManager#resolveActivity
-     */
-    public abstract void startActivities(Intent[] intents);
+    public abstract void startActivity(Intent intent);
 
-    /**
-     * Launch multiple new activities. This is generally the same as calling
-     * {@link #startActivity(Intent)} for the first Intent in the array, that
-     * activity during its creation calling {@link #startActivity(Intent)} for the
-     * second entry, etc. Note that unlike that approach, generally none of the
-     * activities except the last in the array will be created at this point, but
-     * rather will be created when the user first visits them (due to pressing back
-     * from the activity on top).
-     *
-     * <p>
-     * This method throws {@link ActivityNotFoundException} if there was no Activity
-     * found for <em>any</em> given Intent. In this case the state of the activity
-     * stack is undefined (some Intents in the list may be on it, some not), so you
-     * probably want to avoid such situations.
-     *
-     * @param intents An array of Intents to be started.
-     * @param options Additional options for how the Activity should be started. See
-     *                {@link android.content.Context#startActivity(Intent, Bundle)}
-     *                Context.startActivity(Intent, Bundle)} for more details.
-     *
-     * @throws ActivityNotFoundException &nbsp;
-     *
-     * @see #startActivities(Intent[])
-     * @see PackageManager#resolveActivity
-     */
-    public abstract void startActivities(Intent[] intents, Bundle options);
-
-    /**
-     * Broadcast the given intent to all interested BroadcastReceivers. This call is
-     * asynchronous; it returns immediately, and you will continue executing while
-     * the receivers are run. No results are propagated from receivers and receivers
-     * can not abort the broadcast. If you want to allow receivers to propagate
-     * results or abort the broadcast, you must send an ordered broadcast using
-     * {@link #sendOrderedBroadcast(Intent, String)}.
-     *
-     * <p>
-     * See {@link BroadcastReceiver} for more information on Intent broadcasts.
-     *
-     * @param intent The Intent to broadcast; all receivers matching this Intent
-     *               will receive the broadcast.
-     *
-     * @see android.content.BroadcastReceiver
-     * @see #registerReceiver
-     * @see #sendBroadcast(Intent, String)
-     * @see #sendOrderedBroadcast(Intent, String)
-     * @see #sendOrderedBroadcast(Intent, String, BroadcastReceiver, Handler, int,
-     *      String, Bundle)
-     */
     public abstract void sendBroadcast(Intent intent);
 
-    /**
-     * Broadcast the given intent to all interested BroadcastReceivers, allowing an
-     * optional required permission to be enforced. This call is asynchronous; it
-     * returns immediately, and you will continue executing while the receivers are
-     * run. No results are propagated from receivers and receivers can not abort the
-     * broadcast. If you want to allow receivers to propagate results or abort the
-     * broadcast, you must send an ordered broadcast using
-     * {@link #sendOrderedBroadcast(Intent, String)}.
-     *
-     * <p>
-     * See {@link BroadcastReceiver} for more information on Intent broadcasts.
-     *
-     * @param intent             The Intent to broadcast; all receivers matching
-     *                           this Intent will receive the broadcast.
-     * @param receiverPermission (optional) String naming a permission that a
-     *                           receiver must hold in order to receive your
-     *                           broadcast. If null, no permission is required.
-     *
-     * @see android.content.BroadcastReceiver
-     * @see #registerReceiver
-     * @see #sendBroadcast(Intent)
-     * @see #sendOrderedBroadcast(Intent, String)
-     * @see #sendOrderedBroadcast(Intent, String, BroadcastReceiver, Handler, int,
-     *      String, Bundle)
-     */
     public abstract void sendBroadcast(Intent intent, String receiverPermission);
 
-    /**
-     * Like {@link #sendBroadcast(Intent, String)}, but also allows specification of
-     * an associated app op as per {@link android.app.AppOpsManager}.
-     * 
-     * @hide
-     */
+    public void sendBroadcastMultiplePermissions(Intent intent, String[] receiverPermissions) {
+        throw new RuntimeException("Not implemented. Must override in a subclass.");
+    }
+
+    public void sendBroadcastWithMultiplePermissions(Intent intent, String[] receiverPermissions) {
+        sendBroadcastMultiplePermissions(intent, receiverPermissions);
+    }
+
+    public abstract void sendBroadcast(Intent intent, String receiverPermission, Bundle options);
+
     public abstract void sendBroadcast(Intent intent, String receiverPermission, int appOp);
 
-    /**
-     * Broadcast the given intent to all interested BroadcastReceivers, allowing
-     * an array of required permissions to be enforced.  This call is asynchronous; it returns
-     * immediately, and you will continue executing while the receivers are run.  No results are
-     * propagated from receivers and receivers can not abort the broadcast. If you want to allow
-     * receivers to propagate results or abort the broadcast, you must send an ordered broadcast
-     * using {@link #sendOrderedBroadcast(Intent, String)}.
-     *
-     * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
-     *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
-     * @param receiverPermissions Array of names of permissions that a receiver must hold
-     *                            in order to receive your broadcast.
-     *                            If empty, no permissions are required.
-     *
-     * @see android.content.BroadcastReceiver
-     * @see #registerReceiver
-     * @see #sendBroadcast(Intent)
-     * @see #sendOrderedBroadcast(Intent, String)
-     * @see #sendOrderedBroadcast(Intent, String, BroadcastReceiver, Handler, int, String, Bundle)
-     * @hide
-     */    
-    public abstract void sendBroadcastWithMultiplePermissions (Intent intent, String[] receiverPermissions);
+    public abstract void sendOrderedBroadcast(Intent intent, String receiverPermission);
 
-    /**
-     * Broadcast the given intent to all interested BroadcastReceivers, delivering
-     * them one at a time to allow more preferred receivers to consume the
-     * broadcast before it is delivered to less preferred receivers.  This
-     * call is asynchronous; it returns immediately, and you will continue
-     * executing while the receivers are run.
-     *
-     * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
-     *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
-     * @param receiverPermission (optional) String naming a permissions that
-     *               a receiver must hold in order to receive your broadcast.
-     *               If null, no permission is required.
-     *
-     * @see android.content.BroadcastReceiver
-     * @see #registerReceiver
-     * @see #sendBroadcast(Intent)
-     * @see #sendOrderedBroadcast(Intent, String, BroadcastReceiver, Handler, int, String, Bundle)
-     */
-    public abstract void sendOrderedBroadcast(Intent intent, String receiverPermission);    
+    public @interface ServiceName {
+    }
+
+    public static final String POWER_SERVICE = "power";
+
+    public static final String RECOVERY_SERVICE = "recovery";
+
+    public static final String SYSTEM_UPDATE_SERVICE = "system_update";
+
+    public static final String WINDOW_SERVICE = "window";
+
+    public static final String LAYOUT_INFLATER_SERVICE = "layout_inflater";
+
+    public static final String ACCOUNT_SERVICE = "account";
+
+    public static final String ACTIVITY_SERVICE = "activity";
+
+    public static final String ACTIVITY_TASK_SERVICE = "activity_task";
+
+    public static final String URI_GRANTS_SERVICE = "uri_grants";
+
+    public static final String ALARM_SERVICE = "alarm";
+
+    public static final String NOTIFICATION_SERVICE = "notification";
+
+    public static final String ACCESSIBILITY_SERVICE = "accessibility";
+
+    public static final String CAPTIONING_SERVICE = "captioning";
+
+    public static final String KEYGUARD_SERVICE = "keyguard";
+
+    public static final String LOCATION_SERVICE = "location";
+
+    public static final String COUNTRY_DETECTOR = "country_detector";
+
+    public static final String SEARCH_SERVICE = "search";
+
+    public static final String SENSOR_SERVICE = "sensor";
+
+    public static final String SENSOR_PRIVACY_SERVICE = "sensor_privacy";
+
+    public static final String STORAGE_SERVICE = "storage";
+
+    public static final String STORAGE_STATS_SERVICE = "storagestats";
+
+    public static final String WALLPAPER_SERVICE = "wallpaper";
+
+    public static final String VIBRATOR_SERVICE = "vibrator";
+
+    public static final String STATUS_BAR_SERVICE = "statusbar";
+
+    public static final String CONNECTIVITY_SERVICE = "connectivity";
+
+    public static final String VCN_MANAGEMENT_SERVICE = "vcn_management";
+
+    public static final String NETD_SERVICE = "netd";
+
+    public static final String NETWORK_STACK_SERVICE = "network_stack";
+
+    public static final String TETHERING_SERVICE = "tethering";
+
+    public static final String IPSEC_SERVICE = "ipsec";
+
+    public static final String VPN_MANAGEMENT_SERVICE = "vpn_management";
+
+    public static final String CONNECTIVITY_DIAGNOSTICS_SERVICE = "connectivity_diagnostics";
+
+    public static final String TEST_NETWORK_SERVICE = "test_network";
+
+    public static final String UPDATE_LOCK_SERVICE = "updatelock";
+
+    public static final String NETWORKMANAGEMENT_SERVICE = "network_management";
+
+    public static final String SLICE_SERVICE = "slice";
+
+    public static final String NETWORK_STATS_SERVICE = "netstats";
+
+    public static final String NETWORK_POLICY_SERVICE = "netpolicy";
+
+    public static final String NETWORK_WATCHLIST_SERVICE = "network_watchlist";
+
+    public static final String WIFI_SERVICE = "wifi";
+
+    public static final String WIFI_NL80211_SERVICE = "wifinl80211";
+
+    public static final String WIFI_P2P_SERVICE = "wifip2p";
+
+    public static final String WIFI_AWARE_SERVICE = "wifiaware";
+
+    public static final String WIFI_SCANNING_SERVICE = "wifiscanner";
+
+    public static final String WIFI_RTT_SERVICE = "rttmanager";
+
+    public static final String WIFI_RTT_RANGING_SERVICE = "wifirtt";
+
+    public static final String LOWPAN_SERVICE = "lowpan";
+
+    public static final String ETHERNET_SERVICE = "ethernet";
+
+    public static final String NSD_SERVICE = "servicediscovery";
+
+    public static final String AUDIO_SERVICE = "audio";
+
+    public static final String AUTH_SERVICE = "auth";
+
+    public static final String FINGERPRINT_SERVICE = "fingerprint";
+
+    public static final String FACE_SERVICE = "face";
+
+    public static final String IRIS_SERVICE = "iris";
+
+    public static final String BIOMETRIC_SERVICE = "biometric";
+
+    public static final String MEDIA_ROUTER_SERVICE = "media_router";
+
+    public static final String MEDIA_SESSION_SERVICE = "media_session";
+
+    public static final String TELEPHONY_SERVICE = "phone";
+
+    public static final String TELEPHONY_SUBSCRIPTION_SERVICE = "telephony_subscription_service";
+
+    public static final String TELECOM_SERVICE = "telecom";
+
+    public static final String CARRIER_CONFIG_SERVICE = "carrier_config";
+
+    public static final String EUICC_SERVICE = "euicc";
+
+    public static final String EUICC_CARD_SERVICE = "euicc_card";
+
+    public static final String MMS_SERVICE = "mms";
+
+    public static final String CLIPBOARD_SERVICE = "clipboard";
+
+    public static final String TEXT_CLASSIFICATION_SERVICE = "textclassification";
+
+    public static final String ATTENTION_SERVICE = "attention";
+
+    public static final String INPUT_METHOD_SERVICE = "input_method";
+
+    public static final String TEXT_SERVICES_MANAGER_SERVICE = "textservices";
+
+    public static final String APPWIDGET_SERVICE = "appwidget";
+
+    public static final String VOICE_INTERACTION_MANAGER_SERVICE = "voiceinteraction";
+
+    public static final String AUTOFILL_MANAGER_SERVICE = "autofill";
+
+    public static final String CONTENT_CAPTURE_MANAGER_SERVICE = "content_capture";
+
+    public static final String CONTENT_SUGGESTIONS_SERVICE = "content_suggestions";
+
+    public static final String APP_PREDICTION_SERVICE = "app_prediction";
+
+    public static final String SOUND_TRIGGER_SERVICE = "soundtrigger";
+
+    public static final String SOUND_TRIGGER_MIDDLEWARE_SERVICE = "soundtrigger_middleware";
+
+    public static final String PERMISSION_SERVICE = "permission";
+
+    public static final String PERMISSION_CONTROLLER_SERVICE = "permission_controller";
+
+    public static final String BACKUP_SERVICE = "backup";
+
+    public static final String ROLLBACK_SERVICE = "rollback";
+
+    public static final String DROPBOX_SERVICE = "dropbox";
+
+    public static final String DEVICE_IDLE_CONTROLLER = "deviceidle";
+
+    public static final String POWER_WHITELIST_MANAGER = "power_whitelist";
+
+    public static final String DEVICE_POLICY_SERVICE = "device_policy";
+
+    public static final String UI_MODE_SERVICE = "uimode";
+
+    public static final String DOWNLOAD_SERVICE = "download";
+
+    public static final String BATTERY_SERVICE = "batterymanager";
+
+    public static final String NFC_SERVICE = "nfc";
+
+    public static final String BLUETOOTH_SERVICE = "bluetooth";
+
+    public static final String SIP_SERVICE = "sip";
+
+    public static final String USB_SERVICE = "usb";
+
+    public static final String ADB_SERVICE = "adb";
+
+    public static final String SERIAL_SERVICE = "serial";
+
+    public static final String HDMI_CONTROL_SERVICE = "hdmi_control";
+
+    public static final String INPUT_SERVICE = "input";
+
+    public static final String DISPLAY_SERVICE = "display";
+
+    public static final String COLOR_DISPLAY_SERVICE = "color_display";
+
+    public static final String USER_SERVICE = "user";
+
+    public static final String LAUNCHER_APPS_SERVICE = "launcherapps";
+
+    public static final String RESTRICTIONS_SERVICE = "restrictions";
+
+    public static final String APP_OPS_SERVICE = "appops";
+
+    public static final String ROLE_SERVICE = "role";
+
+    public static final String ROLE_CONTROLLER_SERVICE = "role_controller";
+
+    public static final String CAMERA_SERVICE = "camera";
+
+    public static final String PRINT_SERVICE = "print";
+
+    public static final String COMPANION_DEVICE_SERVICE = "companiondevice";
+
+    public static final String CONSUMER_IR_SERVICE = "consumer_ir";
+
+    public static final String TRUST_SERVICE = "trust";
+
+    public static final String TV_INPUT_SERVICE = "tv_input";
+
+    public static final String TV_TUNER_RESOURCE_MGR_SERVICE = "tv_tuner_resource_mgr";
+
+    public static final String NETWORK_SCORE_SERVICE = "network_score";
+
+    public static final String USAGE_STATS_SERVICE = "usagestats";
+
+    public static final String JOB_SCHEDULER_SERVICE = "jobscheduler";
+
+    public static final String PERSISTENT_DATA_BLOCK_SERVICE = "persistent_data_block";
+
+    public static final String OEM_LOCK_SERVICE = "oem_lock";
+
+    public static final String MEDIA_PROJECTION_SERVICE = "media_projection";
+
+    public static final String MIDI_SERVICE = "midi";
+
+    public static final String RADIO_SERVICE = "broadcastradio";
+
+    public static final String HARDWARE_PROPERTIES_SERVICE = "hardware_properties";
+
+    public static final String THERMAL_SERVICE = "thermalservice";
+
+    public static final String SHORTCUT_SERVICE = "shortcut";
+
+    public static final String CONTEXTHUB_SERVICE = "contexthub";
+
+    public static final String SYSTEM_HEALTH_SERVICE = "systemhealth";
+
+    public static final String GATEKEEPER_SERVICE = "android.service.gatekeeper.IGateKeeperService";
+
+    public static final String DEVICE_IDENTIFIERS_SERVICE = "device_identifiers";
+
+    public static final String INCIDENT_SERVICE = "incident";
+
+    public static final String INCIDENT_COMPANION_SERVICE = "incidentcompanion";
+
+    public static final String STATS_MANAGER_SERVICE = "statsmanager";
+
+    public static final String STATS_COMPANION_SERVICE = "statscompanion";
+
+    public static final String STATS_MANAGER = "stats";
+
+    public static final String PLATFORM_COMPAT_SERVICE = "platform_compat";
+
+    public static final String PLATFORM_COMPAT_NATIVE_SERVICE = "platform_compat_native";
+
+    public static final String BUGREPORT_SERVICE = "bugreport";
+
+    public static final String OVERLAY_SERVICE = "overlay";
+
+    public static final String IDMAP_SERVICE = "idmap";
+
+    public static final String VR_SERVICE = "vrmanager";
+
+    public static final String TIME_ZONE_RULES_MANAGER_SERVICE = "timezone";
+
+    public static final String CROSS_PROFILE_APPS_SERVICE = "crossprofileapps";
+
+    public static final String SECURE_ELEMENT_SERVICE = "secure_element";
+
+    public static final String TIME_DETECTOR_SERVICE = "time_detector";
+
+    public static final String TIME_ZONE_DETECTOR_SERVICE = "time_zone_detector";
+
+    public static final String APP_BINDING_SERVICE = "app_binding";
+
+    public static final String TELEPHONY_IMS_SERVICE = "telephony_ims";
+
+    public static final String SYSTEM_CONFIG_SERVICE = "system_config";
+
+    public static final String TELEPHONY_RCS_MESSAGE_SERVICE = "ircsmessage";
+
+    public static final String DYNAMIC_SYSTEM_SERVICE = "dynamic_system";
+
+    public static final String BLOB_STORE_SERVICE = "blob_store";
+
+    public static final String TELEPHONY_REGISTRY_SERVICE = "telephony_registry";
+
+    public static final String BATTERY_STATS_SERVICE = "batterystats";
+
+    public static final String APP_INTEGRITY_SERVICE = "app_integrity";
+
+    public static final String DATA_LOADER_MANAGER_SERVICE = "dataloader_manager";
+
+    public static final String INCREMENTAL_SERVICE = "incremental";
+
+    public static final String FILE_INTEGRITY_SERVICE = "file_integrity";
+
+    public static final String LIGHTS_SERVICE = "lights";
+
+    public static final String UWB_SERVICE = "uwb";
+
+    public static final String DREAM_SERVICE = "dream";
+
+    public @interface CreatePackageOptions {
+    }
+
+    public static final int CONTEXT_INCLUDE_CODE = 0x00000001;
+
+    public static final int CONTEXT_IGNORE_SECURITY = 0x00000002;
+
+    public static final int CONTEXT_RESTRICTED = 0x00000004;
+
+    public static final int CONTEXT_DEVICE_PROTECTED_STORAGE = 0x00000008;
+
+    public static final int CONTEXT_CREDENTIAL_PROTECTED_STORAGE = 0x00000010;
+
+    public static final int CONTEXT_REGISTER_PACKAGE = 0x40000000;
+
+    public abstract Context createPackageContext(String packageName, int flags) throws Exception;
+
+    public Context createWindowContext(int type, Bundle options) {
+        throw new RuntimeException("Not implemented. Must override in a subclass.");
+    }
+
+    public Context createAttributionContext(String attributionTag) {
+        throw new RuntimeException("Not implemented. Must override in a subclass.");
+    }
+
+    public Context createFeatureContext(String featureId) {
+        return createAttributionContext(featureId);
+    }
+
+    public abstract SharedPreferences getSharedPreferences(String name, int mode);
+
+    public boolean isRestricted() {
+        return false;
+    }
+
+    public boolean isUiContext() {
+        throw new RuntimeException("Not implemented. Must override in a subclass.");
+    }
+
 }

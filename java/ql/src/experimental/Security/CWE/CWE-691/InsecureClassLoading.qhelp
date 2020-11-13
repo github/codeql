@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      Loading a class that could have been installed by another Android application will lead to arbitrary code being executed in the context of the victim application.
+      This query detects usage of code which can be maliciously abused by an adversary to create a new Android
+      <code>Context</code>
+      , which in turn, can be used to instantiate untrusted classes.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>This can be avoided in two ways. </p>
+    <ol>
+      <li> 
+        To avoid arbitrary code execution, the application should verify the signature of the package before loading it.
+      </li>
+      <li> Changing the application architecture to prevent unintended access to sensitive components.</li>
+    </ol>
+  </recommendation>
+
+  <example>
+    <p>
+      The following example shows a dangerous way of creating an Android <code>Context</code>.
+      A malicious, attacker-controlled app may have registered a package with the name
+      <code>somename.plugin.xyz</code> having a <code>pluginLoader</code> class, which the victim app will encounter and execute.
+    </p>
+    <sample src="InsecureClassLoadingBad.java" />
+    <p> Then, when the code above executes, the attacker would be able to run malicious code in the context of the applciaiton.</p>
+    <p>However, in the example shown below, the signature of the package is being verified and hence, the context creation in this case is safe.</p>
+    <sample src="InsecureClassLoadingGood.java" />
+
+  </example>
+
+  <references></references>
+</qhelp>

@@ -342,3 +342,15 @@ class ExportedAndroidIntentInput extends RemoteFlowSource, AndroidIntentInput {
 
   override string getSourceType() { result = "Exported Android intent source" }
 }
+
+/** Android `PackageInfo` objects that may have come from a hostile application. */
+class AndroidPackageInput extends DataFlow::Node {
+  AndroidPackageInput() {
+    exists(MethodAccess ma, Method m |
+      ma.getMethod() = m and
+      m.getDeclaringType().hasQualifiedName("android.content.pm", "PackageManager") and
+      m.hasName("getInstalledPackages") and
+      this.asExpr() = ma
+    )
+  }
+}
