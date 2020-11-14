@@ -222,7 +222,6 @@ private predicate nodeIsBarrierIn(DataFlow::Node node) {
     not predictableInstruction(iTo.getRight()) and
     // propagate taint from either the pointer or the offset, regardless of predictability
     not iTo instanceof PointerArithmeticInstruction
-  
   )
   or
   // don't use dataflow through calls to pure functions if two or more operands
@@ -473,7 +472,14 @@ private Element adjustedSink(DataFlow::Node sink) {
   // Taint `e1 += e2`, `e &= e2` and friends when `e1` or `e2` is tainted.
   result.(AssignOperation).getAnOperand() = sink.asExpr()
   or
-  result = sink.asOperand().(SideEffectOperand).getUse().(ReadSideEffectInstruction).getArgumentDef().getUnconvertedResultExpression()
+  result =
+    sink
+        .asOperand()
+        .(SideEffectOperand)
+        .getUse()
+        .(ReadSideEffectInstruction)
+        .getArgumentDef()
+        .getUnconvertedResultExpression()
 }
 
 /**
