@@ -41,6 +41,9 @@ See the following links to learn how to get set up and run CodeQL commands:
   Test query help files by rendering them as markdown to ensure they are valid 
   before uploading them to the CodeQL repository or using them in code scanning.
 
+- :doc:`Specifying command options in a CodeQL configuration file <specifying-command-options-in-a-codeql-configuration-file>`: 
+  You can save default or frequently used options for your commands in a per-user configuration file.
+
 .. toctree::
    :titlesonly:
    :hidden:
@@ -54,3 +57,4 @@ See the following links to learn how to get set up and run CodeQL commands:
    creating-codeql-query-suites
    testing-custom-queries
    testing-query-help-files
+   Specifying command options <specifying-command-options-in-a-codeql-configuration-file>

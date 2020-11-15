@@ -1,7 +1,7 @@
 .. _types-in-java:
 
-Java types
-==========
+Types in Java
+=============
 
 You can use CodeQL to find out information about data types used in Java code. This allows you to write queries to identify specific type-related issues.
 

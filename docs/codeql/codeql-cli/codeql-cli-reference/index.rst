@@ -12,7 +12,6 @@ Learn more about the files you can use when running CodeQL processes and the res
    about-ql-packs
    query-reference-files
    sarif-output
-   specifying-command-options-in-a-codeql-configuration-file
    exit-codes
 
 
@@ -20,15 +19,13 @@ Learn more about the files you can use when running CodeQL processes and the res
   contain queries, library files, query suites, and important metadata. 
 - :doc:`Query reference files <query-reference-files>`: A query reference file is text file that defines the location of one query to test.
 - :doc:`SARIF output <sarif-output>`: CodeQL supports SARIF as an output format for sharing static analysis results.
-- :doc:`Specifying command options in a CodeQL configuration file <specifying-command-options-in-a-codeql-configuration-file>`: 
-  You can save default or frequently used options for your commands in a per-user configuration file.
 - :doc:`Exit codes <exit-codes>`: The CodeQL CLI reports the status of each command it runs as an exit code.
   This exit code provides information for subsequent commands or for other tools that rely on the CodeQL CLI.
 
 .. _cli-commands:
 
-CodeQL CLI commands
--------------------
+CodeQL CLI manual
+-----------------
 
 To view provide detailed information about each CodeQL CLI command,
 including its usage and options, visit the "`CodeQL CLI manual <../codeql-cli-manual>`__."

@@ -231,7 +231,7 @@ When the test runs it:
    ``codeql test run --search-path=java java/tests/EmptyThen``
 
    For information about saving the search path as part of your configuration, see
-   ":doc:`Specifying command options in a CodeQL configuration file <../codeql-cli-reference/specifying-command-options-in-a-codeql-configuration-file>`."
+   ":ref:`Specifying command options in a CodeQL configuration file <specifying-command-options-in-a-codeql-configuration-file>`."
 #. Executes the test by running the query and generating an ``EmptyThen.actual`` results file.
 #. Checks for an ``EmptyThen.expected`` file to compare with the ``.actual`` results file.
 #. Reports the results of the test --- in this case, a failure: ``0 tests passed; 1 tests failed:``.

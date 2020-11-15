@@ -198,7 +198,7 @@ The wildcards ``? extends Number`` and ``? super Float`` are represented by clas
 
 For dealing with generic methods, there are classes ``GenericMethod``, ``ParameterizedMethod`` and ``RawMethod``, which are entirely analogous to the like-named classes for representing generic types.
 
-For more information on working with types, see the :doc:`article on Java types <types-in-java>`.
+For more information on working with types, see the :doc:`Types in Java <types-in-java>`.
 
 Variables
 ~~~~~~~~~
