@@ -30,5 +30,5 @@ Learn more about the files you can use when running CodeQL processes and the res
 CodeQL CLI commands
 -------------------
 
-To view provide detailed information about each CodeQL CLI command,
-including its usage and options, visit the "`CodeQL CLI manual <../codeql-cli-manual>`__."
+To view detailed information about each CodeQL CLI command,
+including its usage and options, add the ``--help`` flag or visit the "`CodeQL CLI manual <../codeql-cli-manual>`__."

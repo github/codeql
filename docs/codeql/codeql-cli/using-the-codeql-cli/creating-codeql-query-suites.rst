@@ -282,5 +282,4 @@ repository.
 Further reading
 ---------------
 
-- "`CodeQL queries
-  <writing-codeql-queries:codeql-queries>`"
+- ":ref:`CodeQL queries <codeql-queries>`"

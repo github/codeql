@@ -14,8 +14,8 @@ open source software projects. You can use the CodeQL CLI to:
 - Create CodeQL databases to use in the CodeQL for Visual Studio Code
 - Develop and test custom CodeQL queries to use in your own analyses
 
-For more information about how to use the CodeQL CLI, see 
-":ref:`CodeQL CLI <codeql-cli>`."
+For information about using the CodeQL CLI, see 
+":ref:`Getting started with the CodeQL CLI <getting-started-with-the-codeql-cli>`."
 
 CodeQL CLI commands
 -------------------
