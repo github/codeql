@@ -145,7 +145,7 @@ the CodeQL repository.
 
    When you create a custom QL pack, it's usually a good idea to add it to the search path in your CodeQL configuration.
    This will ensure that any libraries the pack contains are available to the CodeQL CLI.
-   For more information, see ":doc:`Specifying command options in a CodeQL configuration file <../codeql-cli-reference/specifying-command-options-in-a-codeql-configuration-file>`."
+   For more information, see ":ref:`Specifying command options in a CodeQL configuration file <specifying-command-options-in-a-codeql-configuration-file>`."
 
 QL packs for custom test files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

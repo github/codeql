@@ -184,7 +184,7 @@ executable in a couple of ways:
   can run the executable as just ``codeql``. 
 
 At this point, you can execute CodeQL commands. For a full list of the CodeQL
-CLI commands, see the ":ref:`CodeQL CLI reference <codeql-cli-reference>`."
+CLI commands, see the "`CodeQL CLI manual <../../codeql-cli-manual>`__."
 
 .. pull-quote:: Note
 

@@ -49,4 +49,4 @@ The content of a QLDoc comment is interpreted as standard Markdown, with the fol
 
 The content of a QLDoc comment may contain metadata tags as follows:
 
-The tag begins with any number of whitespace characters, followed by an '@' sign. At this point there may be any number of non-whitespace characters, which form the key of the tag. Then, a single whitespace character which separates the key from the value. The value of the tag is formed by the remainder of the line, and any subsequent lines until another '@' tag is seen, or the end of the content is reached.
+The tag begins with any number of whitespace characters, followed by an ``@`` sign. At this point there may be any number of non-whitespace characters, which form the key of the tag. Then, a single whitespace character which separates the key from the value. The value of the tag is formed by the remainder of the line, and any subsequent lines until another ``@`` tag is seen, or the end of the content is reached.

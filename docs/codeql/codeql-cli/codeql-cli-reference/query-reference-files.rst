@@ -40,7 +40,7 @@ A query reference file to test a JavaScript alert query:
 The `QL pack <https://github.com/github/codeql/blob/main/javascript/ql/test/qlpack.yml>`__ 
 for the ``javascript/ql/test`` directory defines the ``codeql-javascript`` queries as
 a dependency. So the query reference file defines the location of the query relative
-to the ``codeql-javascript`` QL pack:
+to the ``codeql-javascript`` QL pack::
 
     AngularJS/DeadAngularJSEventListener.ql
 
