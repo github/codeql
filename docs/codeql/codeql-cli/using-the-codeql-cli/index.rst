@@ -18,7 +18,7 @@ See the following links to learn how to get set up and run CodeQL commands:
   <creating-codeql-databases>`: Create relational
   representations of source code that can be queried like any other database.
   
-- :doc:`Analyzing CodeQL databases
+- :doc:`Analyzing CodeQL databases with the CodeQL CLI
   <analyzing-databases-with-the-codeql-cli>`: Analyze your code using queries
   written in a specially-designed, object-oriented query language.
 
@@ -39,7 +39,7 @@ See the following links to learn how to get set up and run CodeQL commands:
 
 - :doc:`Testing query help files <testing-query-help-files>`:
   Test query help files by rendering them as markdown to ensure they are valid 
-  before uploading them to the CodeQL repository or using them in code scanning.
+  before adding them to the CodeQL repository or using them in code scanning.
 
 - :doc:`Specifying command options in a CodeQL configuration file <specifying-command-options-in-a-codeql-configuration-file>`: 
   You can save default or frequently used options for your commands in a per-user configuration file.

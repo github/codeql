@@ -40,7 +40,7 @@ where ``<database>``, the path to the CodeQL database you
 want to upgrade, must be specified.
 
 For full details of all the options you can use when upgrading databases,
-see the `database upgrade reference documentation <../codeql-cli-manual/database-upgrade.html>`.
+see the "`database upgrade <../codeql-cli-manual/database-upgrade.html>`__"  reference documentation.
 
 Progress and results
 --------------------
