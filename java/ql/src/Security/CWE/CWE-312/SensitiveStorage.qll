@@ -1,6 +1,7 @@
 import java
 import semmle.code.java.frameworks.Properties
 import semmle.code.java.frameworks.JAXB
+import semmle.code.java.frameworks.android.SharedPreferences
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.DataFlow4
@@ -26,6 +27,10 @@ private class SensitiveSourceFlowConfig extends TaintTracking::Configuration {
     or
     exists(MethodAccess m |
       m.getMethod() instanceof PropertiesSetPropertyMethod and sink.asExpr() = m.getArgument(1)
+    )
+    or
+    exists(MethodAccess m |
+      m.getMethod() instanceof SharedPreferencesSetMethod and sink.asExpr() = m.getArgument(1)
     )
     or
     sink.asExpr() = getInstanceInput(_, _)
@@ -239,6 +244,75 @@ class Marshallable extends ClassStore {
   override Expr getAStore() {
     exists(ClassStoreFlowConfig conf, DataFlow::Node n |
       marshallableStore(n, result) and
+      conf.hasFlow(DataFlow::exprNode(this), n)
+    )
+  }
+}
+
+/* Holds if the method call is a setter method of `SharedPreferences`. */
+private predicate sharedPreferencesInput(DataFlow::Node sharedPrefs, Expr input) {
+  exists(MethodAccess m |
+    m.getMethod() instanceof SharedPreferencesSetMethod and
+    input = m.getArgument(1) and
+    sharedPrefs.asExpr() = m.getQualifier()
+  )
+}
+
+/* Holds if the method call is the save method of `SharedPreferences`. */
+private predicate sharedPreferencesStore(DataFlow::Node sharedPrefs, Expr store) {
+  exists(MethodAccess m |
+    m.getMethod() instanceof SharedPreferencesStoreMethod and
+    store = m and
+    sharedPrefs.asExpr() = m.getQualifier()
+  )
+}
+
+/* Flow from `SharedPreferences` to the method call changing its value. */
+class SharedPreferencesFlowConfig extends TaintTracking::Configuration {
+  SharedPreferencesFlowConfig() { this = "SensitiveStorage::SharedPreferencesFlowConfig" }
+
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr() instanceof SharedPreferencesEditor
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sharedPreferencesInput(sink, _) or
+    sharedPreferencesStore(sink, _)
+  }
+
+  override predicate isSanitizer(DataFlow::Node n) {
+    exists(MethodAccess ma |
+      ma.getMethod().getName().toLowerCase().matches("%encrypt%") and
+      n.asExpr() = ma.getAnArgument()
+    )
+  }
+}
+
+/** The call to get a `SharedPreferences.Editor` object, which can set shared preferences or be stored to device. */
+class SharedPreferencesEditor extends MethodAccess {
+  SharedPreferencesEditor() {
+    this.getMethod() instanceof SharedPreferencesGetEditorMethod and
+    not exists(
+      MethodAccess cma // not exists `SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(...)`
+    |
+      cma.getQualifier().getType() instanceof TypeEncryptedSharedPreferences and
+      cma.getMethod().hasName("create") and
+      cma.getParent().(VariableAssign).getDestVar().getAnAccess() = this.getQualifier()
+    )
+  }
+
+  /** Gets an input, for example `input` in `editor.putString("password", password);`. */
+  Expr getAnInput() {
+    exists(SharedPreferencesFlowConfig conf, DataFlow::Node n |
+      sharedPreferencesInput(n, result) and
+      conf.hasFlow(DataFlow::exprNode(this), n)
+    )
+  }
+
+  /** Gets a store, for example `editor.commit();`. */
+  Expr getAStore() {
+    exists(SharedPreferencesFlowConfig conf, DataFlow::Node n |
+      sharedPreferencesStore(n, result) and
       conf.hasFlow(DataFlow::exprNode(this), n)
     )
   }
