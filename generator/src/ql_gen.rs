@@ -1,10 +1,8 @@
 use crate::language::Language;
 use crate::ql;
-use std::collections::{BTreeSet, HashMap};
+use std::collections::BTreeSet;
 use std::fs::File;
 use std::io::LineWriter;
-
-type SupertypeMap = HashMap<String, BTreeSet<String>>;
 
 /// Writes the QL AST library for the given library.
 ///
@@ -24,70 +22,6 @@ pub fn write(language: &Language, classes: &[ql::TopLevel]) -> std::io::Result<(
     let file = File::create(&language.ql_library_path)?;
     let mut file = LineWriter::new(file);
     ql::write(&language.name, &mut file, &classes)
-}
-
-/// Creates a map from QL class names to their supertypes.
-fn create_supertype_map(nodes: &[node_types::Entry]) -> SupertypeMap {
-    let mut map = SupertypeMap::new();
-    for node in nodes {
-        match &node {
-            node_types::Entry::Union {
-                type_name,
-                members: n_members,
-            } => {
-                let supertype_class_name = dbscheme_name_to_class_name(&node_types::escape_name(
-                    &node_types::node_type_name(&type_name.kind, type_name.named),
-                ));
-                for n_member in n_members {
-                    let subtype_class_name = dbscheme_name_to_class_name(&node_types::escape_name(
-                        &node_types::node_type_name(&n_member.kind, n_member.named),
-                    ));
-                    map.entry(subtype_class_name)
-                        .or_insert_with(|| BTreeSet::new())
-                        .insert(supertype_class_name.clone());
-                }
-            }
-            node_types::Entry::Table { type_name, fields } => {
-                let node_name = node_types::node_type_name(&type_name.kind, type_name.named);
-                for field in fields {
-                    if field.types.len() != 1 {
-                        // This field can have one of several types. Since we create an ad-hoc
-                        // QL union type to represent them, the class wrapping that union type
-                        // will be a supertype of all its members.
-                        let field_union_name = format!("{}_{}_type", &node_name, &field.get_name());
-                        let field_union_name = node_types::escape_name(&field_union_name);
-                        let supertype_name = dbscheme_name_to_class_name(&field_union_name);
-                        for field_type in &field.types {
-                            let member_name =
-                                node_types::node_type_name(&field_type.kind, field_type.named);
-                            let member_class_name =
-                                dbscheme_name_to_class_name(&node_types::escape_name(&member_name));
-                            map.entry(member_class_name)
-                                .or_insert_with(|| BTreeSet::new())
-                                .insert(supertype_name.clone());
-                        }
-                    }
-                }
-            }
-            node_types::Entry::Token { .. } => {}
-        }
-    }
-
-    map
-}
-
-fn get_base_classes(name: &str, supertype_map: &SupertypeMap) -> Vec<ql::Type> {
-    let mut base_classes: Vec<ql::Type> = vec![ql::Type::Normal("AstNode".to_owned())];
-
-    if let Some(supertypes) = supertype_map.get(name) {
-        base_classes.extend(
-            supertypes
-                .into_iter()
-                .map(|st| ql::Type::Normal(st.clone())),
-        );
-    }
-
-    base_classes
 }
 
 /// Creates the hard-coded `AstNode` class that acts as a supertype of all
@@ -242,13 +176,7 @@ fn create_none_predicate(
 /// name of the field's type. This may be an ad-hoc union of all the possible
 /// types the field can take, in which case we create a new class and push it to
 /// `classes`.
-fn create_field_class(
-    token_kinds: &BTreeSet<String>,
-    parent_name: &str,
-    field: &node_types::Field,
-    classes: &mut Vec<ql::TopLevel>,
-    supertype_map: &SupertypeMap,
-) -> String {
+fn create_field_class(token_kinds: &BTreeSet<String>, field: &node_types::Field) -> String {
     if field.types.len() == 1 {
         // This field can only have a single type.
         let t = field.types.iter().next().unwrap();
@@ -258,23 +186,7 @@ fn create_field_class(
             node_types::escape_name(&node_types::node_type_name(&t.kind, t.named))
         }
     } else {
-        // This field can have one of several types. The dbscheme contains a
-        // union type, so we create a QL class to wrap that.
-        let field_union_name = format!("{}_{}_type", parent_name, &field.get_name());
-        let field_union_name = node_types::escape_name(&field_union_name);
-        let class_name = dbscheme_name_to_class_name(&field_union_name);
-        classes.push(ql::TopLevel::Class(ql::Class {
-            name: class_name.clone(),
-            is_abstract: false,
-            supertypes: [
-                vec![ql::Type::AtType(field_union_name.clone())],
-                get_base_classes(&class_name, &supertype_map),
-            ]
-            .concat(),
-            characteristic_predicate: None,
-            predicates: vec![],
-        }));
-        field_union_name
+        "AstNode".to_owned()
     }
 }
 
@@ -494,7 +406,6 @@ fn create_field_getters(
 
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
 pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
-    let supertype_map = create_supertype_map(nodes);
     let mut classes: Vec<ql::TopLevel> = vec![
         ql::TopLevel::Import("codeql.files.FileSystem".to_owned()),
         ql::TopLevel::Import("codeql.Locations".to_owned()),
@@ -549,11 +460,10 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                 classes.push(ql::TopLevel::Class(ql::Class {
                     name: class_name.clone(),
                     is_abstract: false,
-                    supertypes: [
-                        vec![ql::Type::AtType(union_name)],
-                        get_base_classes(&class_name, &supertype_map),
-                    ]
-                    .concat(),
+                    supertypes: vec![
+                        ql::Type::AtType(union_name),
+                        ql::Type::Normal("AstNode".to_owned()),
+                    ],
                     characteristic_predicate: None,
                     predicates: vec![],
                 }));
@@ -582,11 +492,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                 let mut main_class = ql::Class {
                     name: main_class_name.clone(),
                     is_abstract: false,
-                    supertypes: [
-                        vec![ql_type],
-                        get_base_classes(&main_class_name, &supertype_map),
-                    ]
-                    .concat(),
+                    supertypes: vec![ql_type, ql::Type::Normal("AstNode".to_owned())],
                     characteristic_predicate: None,
                     predicates: vec![
                         create_describe_ql_class(&main_class_name),
@@ -607,13 +513,7 @@ pub fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<ql::TopLevel> {
                     // - predicates to access the fields,
                     // - the QL expressions to access the fields that will be part of getAFieldOrChild.
                     for field in fields {
-                        let field_type = create_field_class(
-                            &token_kinds,
-                            &name,
-                            field,
-                            &mut classes,
-                            &supertype_map,
-                        );
+                        let field_type = create_field_class(&token_kinds, field);
                         let (get_pred, get_child_expr) = create_field_getters(
                             &main_table_name,
                             main_table_arity,
