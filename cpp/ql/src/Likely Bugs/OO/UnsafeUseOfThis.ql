@@ -1,6 +1,6 @@
 /**
  * @name Unsafe use of this in constructor
- * @description A call to a pure virtual function using a this
+ * @description A call to a pure virtual function using a 'this'
  *              pointer of an object that is under construction
  *              may lead to undefined behavior.
  * @kind path-problem
