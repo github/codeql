@@ -1932,6 +1932,15 @@ private predicate viableConstantBooleanParamArg(
 
 int accessPathLimit() { result = 5 }
 
+/** The unit type. */
+private newtype TUnit = TMkUnit()
+
+/** The trivial type with a single element. */
+class Unit extends TUnit {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "unit" }
+}
+
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
  * modified or its modification cannot be observed, for example if it is a
