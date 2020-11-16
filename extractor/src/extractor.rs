@@ -480,8 +480,7 @@ impl Visitor<'_> {
             }
             node_types::FieldTypeInfo::Multiple {
                 types,
-                dbscheme_union: _,
-                ql_class: _,
+                ..
             } => {
                 return self.type_matches_set(tp, types);
             }
