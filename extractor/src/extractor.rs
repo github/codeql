@@ -478,10 +478,7 @@ impl Visitor<'_> {
                     _ => {}
                 }
             }
-            node_types::FieldTypeInfo::Multiple {
-                types,
-                ..
-            } => {
+            node_types::FieldTypeInfo::Multiple { types, .. } => {
                 return self.type_matches_set(tp, types);
             }
         }
@@ -493,13 +490,10 @@ impl Visitor<'_> {
             return true;
         }
         for other in types.iter() {
-            match &self.schema.get(other).unwrap().kind {
-                EntryKind::Union { members } => {
-                    if self.type_matches_set(tp, members) {
-                        return true;
-                    }
+            if let EntryKind::Union { members } = &self.schema.get(other).unwrap().kind {
+                if self.type_matches_set(tp, members) {
+                    return true;
                 }
-                _ => {}
             }
         }
         false
