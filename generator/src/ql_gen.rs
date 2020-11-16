@@ -309,7 +309,6 @@ fn create_field_getters(
     main_table_name: &str,
     main_table_arity: usize,
     main_table_column_index: &mut usize,
-    parent_name: &str,
     field: &node_types::Field,
     nodes: &node_types::NodeTypeMap,
 ) -> (ql::Predicate, ql::Expression) {
@@ -323,7 +322,7 @@ fn create_field_getters(
         } => ql_class.clone(),
     }));
     match &field.storage {
-        node_types::Storage::Column => {
+        node_types::Storage::Column { name: _ } => {
             let result = (
                 ql::Predicate {
                     name: predicate_name,
@@ -345,32 +344,32 @@ fn create_field_getters(
             *main_table_column_index += 1;
             result
         }
-        node_types::Storage::Table(has_index) => {
-            let field_table_name = format!("{}_{}", parent_name, &field.get_name());
-            (
-                ql::Predicate {
-                    name: predicate_name,
-                    overridden: false,
-                    return_type,
-                    formal_parameters: if *has_index {
-                        vec![ql::FormalParameter {
-                            name: "i".to_owned(),
-                            param_type: ql::Type::Int,
-                        }]
-                    } else {
-                        vec![]
-                    },
-                    body: create_get_field_expr_for_table_storage(
-                        &field_table_name,
-                        if *has_index { Some("i") } else { None },
-                    ),
+        node_types::Storage::Table {
+            name: field_table_name,
+            has_index,
+        } => (
+            ql::Predicate {
+                name: predicate_name,
+                overridden: false,
+                return_type,
+                formal_parameters: if *has_index {
+                    vec![ql::FormalParameter {
+                        name: "i".to_owned(),
+                        param_type: ql::Type::Int,
+                    }]
+                } else {
+                    vec![]
                 },
-                create_get_field_expr_for_table_storage(
+                body: create_get_field_expr_for_table_storage(
                     &field_table_name,
-                    if *has_index { Some("_") } else { None },
+                    if *has_index { Some("i") } else { None },
                 ),
-            )
-        }
+            },
+            create_get_field_expr_for_table_storage(
+                &field_table_name,
+                if *has_index { Some("_") } else { None },
+            ),
+        ),
     }
 }
 
@@ -398,7 +397,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                 if type_name.named {
                     let describe_ql_class = create_describe_ql_class(&node.ql_class_name);
                     let mut supertypes: BTreeSet<ql::Type> = BTreeSet::new();
-                    supertypes.insert(ql::Type::AtType(node.flattened_name.to_owned()));
+                    supertypes.insert(ql::Type::AtType(node.dbscheme_name.to_owned()));
                     supertypes.insert(ql::Type::Normal("Token".to_owned()));
                     classes.push(ql::TopLevel::Class(ql::Class {
                         name: node.ql_class_name.clone(),
@@ -416,7 +415,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                     name: node.ql_class_name.clone(),
                     is_abstract: false,
                     supertypes: vec![
-                        ql::Type::AtType(node_types::escape_name(&node.flattened_name)),
+                        ql::Type::AtType(node.dbscheme_name.clone()),
                         ql::Type::Normal("AstNode".to_owned()),
                     ]
                     .into_iter()
@@ -425,7 +424,10 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                     predicates: vec![],
                 }));
             }
-            node_types::EntryKind::Table { fields } => {
+            node_types::EntryKind::Table {
+                name: main_table_name,
+                fields,
+            } => {
                 // Count how many columns there will be in the main table.
                 // There will be:
                 // - one for the id
@@ -437,19 +439,16 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                 } else {
                     fields
                         .iter()
-                        .filter(|&f| matches!(f.storage, node_types::Storage::Column))
+                        .filter(|&f| matches!(f.storage, node_types::Storage::Column{..}))
                         .count()
                 };
 
-                let escaped_name = node_types::escape_name(&node.flattened_name);
                 let main_class_name = &node.ql_class_name;
-                let main_table_name =
-                    node_types::escape_name(&format!("{}_def", &node.flattened_name));
                 let mut main_class = ql::Class {
                     name: main_class_name.clone(),
                     is_abstract: false,
                     supertypes: vec![
-                        ql::Type::AtType(escaped_name),
+                        ql::Type::AtType(node.dbscheme_name.clone()),
                         ql::Type::Normal("AstNode".to_owned()),
                     ]
                     .into_iter()
@@ -478,7 +477,6 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                             &main_table_name,
                             main_table_arity,
                             &mut main_table_column_index,
-                            &node.flattened_name,
                             field,
                             nodes,
                         );

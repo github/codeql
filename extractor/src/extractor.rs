@@ -1,4 +1,4 @@
-use node_types::{escape_name, EntryKind, Field, NodeTypeMap, Storage, TypeName};
+use node_types::{EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
@@ -328,8 +328,10 @@ impl Visitor<'_> {
                 );
                 self.token_counter += 1;
             }
-            EntryKind::Table { fields, .. } => {
-                let table_name = escape_name(&format!("{}_def", &table.flattened_name));
+            EntryKind::Table {
+                fields,
+                name: table_name,
+            } => {
                 if let Some(args) = self.complex_node(&node, fields, child_nodes, id) {
                     let mut all_args = Vec::new();
                     all_args.push(Arg::Label(id));
@@ -409,7 +411,7 @@ impl Visitor<'_> {
         for field in fields {
             let child_ids = &map.get(&field.name).unwrap().1;
             match &field.storage {
-                Storage::Column => {
+                Storage::Column { name: column_name } => {
                     if child_ids.len() == 1 {
                         args.push(Arg::Label(*child_ids.first().unwrap()));
                     } else {
@@ -424,11 +426,14 @@ impl Visitor<'_> {
                                 "too many values"
                             },
                             node.kind(),
-                            &field.get_name()
+                            column_name
                         )
                     }
                 }
-                Storage::Table(has_index) => {
+                Storage::Table {
+                    name: table_name,
+                    has_index,
+                } => {
                     for (index, child_id) in child_ids.iter().enumerate() {
                         if !*has_index && index > 0 {
                             error!(
@@ -436,15 +441,10 @@ impl Visitor<'_> {
                                 &self.path,
                                 node.start_position().row + 1,
                                 node.kind(),
-                                &field.get_name()
+                                table_name,
                             );
                             break;
                         }
-                        let table_name = escape_name(&format!(
-                            "{}_{}",
-                            self.schema.get(&field.parent).unwrap().flattened_name,
-                            field.get_name()
-                        ));
                         let mut args = Vec::new();
                         args.push(Arg::Label(parent_id));
                         if *has_index {

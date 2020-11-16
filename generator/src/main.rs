@@ -29,15 +29,15 @@ fn make_field_type(
             // type to represent them.
             let members: Set<String> = types
                 .iter()
-                .map(|t| node_types::escape_name(&nodes.get(t).unwrap().flattened_name))
+                .map(|t| nodes.get(t).unwrap().dbscheme_name.clone())
                 .collect();
             entries.push(dbscheme::Entry::Union(dbscheme::Union {
-                name: node_types::escape_name(&dbscheme_union),
+                name: dbscheme_union.clone(),
                 members,
             }));
             dbscheme_union.clone()
         }
-        node_types::FieldTypeInfo::Single(t) => nodes.get(&t).unwrap().flattened_name.clone(),
+        node_types::FieldTypeInfo::Single(t) => nodes.get(&t).unwrap().dbscheme_name.clone(),
     }
 }
 
@@ -49,18 +49,20 @@ fn add_field(
     entries: &mut Vec<dbscheme::Entry>,
     nodes: &node_types::NodeTypeMap,
 ) {
-    let field_name = field.get_name();
-    let parent_name = &nodes.get(&field.parent).unwrap().flattened_name;
+    let parent_name = &nodes.get(&field.parent).unwrap().dbscheme_name;
     match &field.storage {
-        node_types::Storage::Table(has_index) => {
+        node_types::Storage::Table {
+            name: table_name,
+            has_index,
+        } => {
             // This field can appear zero or multiple times, so put
             // it in an auxiliary table.
-            let field_type = node_types::escape_name(&make_field_type(&field, entries, nodes));
+            let field_type = make_field_type(&field, entries, nodes);
             let parent_column = dbscheme::Column {
                 unique: !*has_index,
                 db_type: dbscheme::DbColumnType::Int,
-                name: node_types::escape_name(&parent_name),
-                ql_type: ql::Type::AtType(node_types::escape_name(&parent_name)),
+                name: parent_name.clone(),
+                ql_type: ql::Type::AtType(parent_name.clone()),
                 ql_type_is_ref: true,
             };
             let index_column = dbscheme::Column {
@@ -78,7 +80,7 @@ fn add_field(
                 ql_type_is_ref: true,
             };
             let field_table = dbscheme::Table {
-                name: node_types::escape_name(&format!("{}_{}", parent_name, field_name)),
+                name: table_name.clone(),
                 columns: if *has_index {
                     vec![parent_column, index_column, field_column]
                 } else {
@@ -87,25 +89,22 @@ fn add_field(
                 // In addition to the field being unique, the combination of
                 // parent+index is unique, so add a keyset for them.
                 keysets: if *has_index {
-                    Some(vec![
-                        node_types::escape_name(&parent_name),
-                        "index".to_string(),
-                    ])
+                    Some(vec![parent_name.clone(), "index".to_string()])
                 } else {
                     None
                 },
             };
             entries.push(dbscheme::Entry::Table(field_table));
         }
-        node_types::Storage::Column => {
+        node_types::Storage::Column { name: column_name } => {
             // This field must appear exactly once, so we add it as
             // a column to the main table for the node type.
             let field_type = make_field_type(&field, entries, nodes);
             main_table.columns.push(dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: node_types::escape_name(&field_name),
-                ql_type: ql::Type::AtType(node_types::escape_name(&field_type)),
+                name: column_name.clone(),
+                ql_type: ql::Type::AtType(field_type),
                 ql_type_is_ref: true,
             });
         }
@@ -130,12 +129,12 @@ fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<dbscheme::Entry> {
         .iter()
         .filter_map(|(_, node)| match &node.kind {
             node_types::EntryKind::Token { kind_id } => {
-                Some((node.flattened_name.clone(), *kind_id))
+                Some((node.dbscheme_name.clone(), *kind_id))
             }
             _ => None,
         })
         .collect();
-    ast_node_members.insert(node_types::escape_name("token"));
+    ast_node_members.insert("token".to_owned());
 
     for (_, node) in nodes {
         match &node.kind {
@@ -144,27 +143,27 @@ fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<dbscheme::Entry> {
                 // type.
                 let members: Set<String> = n_members
                     .iter()
-                    .map(|n| node_types::escape_name(&nodes.get(n).unwrap().flattened_name))
+                    .map(|n| nodes.get(n).unwrap().dbscheme_name.clone())
                     .collect();
                 entries.push(dbscheme::Entry::Union(dbscheme::Union {
-                    name: node_types::escape_name(&node.flattened_name),
+                    name: node.dbscheme_name.clone(),
                     members,
                 }));
             }
-            node_types::EntryKind::Table { fields } => {
+            node_types::EntryKind::Table { name, fields } => {
                 // It's a product type, defined by a table.
                 let mut main_table = dbscheme::Table {
-                    name: node_types::escape_name(&(format!("{}_def", &node.flattened_name))),
+                    name: name.clone(),
                     columns: vec![dbscheme::Column {
                         db_type: dbscheme::DbColumnType::Int,
                         name: "id".to_string(),
                         unique: true,
-                        ql_type: ql::Type::AtType(node_types::escape_name(&node.flattened_name)),
+                        ql_type: ql::Type::AtType(node.dbscheme_name.clone()),
                         ql_type_is_ref: false,
                     }],
                     keysets: None,
                 };
-                ast_node_members.insert(node_types::escape_name(&node.flattened_name));
+                ast_node_members.insert(node.dbscheme_name.clone());
 
                 // If the type also has fields or children, then we create either
                 // auxiliary tables or columns in the defining table for them.
@@ -262,7 +261,7 @@ fn add_tokeninfo_table(entries: &mut Vec<dbscheme::Entry>, token_kinds: Map<Stri
     }));
     let branches: Vec<(usize, String)> = token_kinds
         .iter()
-        .map(|(name, kind_id)| (*kind_id, node_types::escape_name(name)))
+        .map(|(name, kind_id)| (*kind_id, name.clone()))
         .collect();
     entries.push(dbscheme::Entry::Case(dbscheme::Case {
         name: "token".to_owned(),

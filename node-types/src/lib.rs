@@ -10,7 +10,7 @@ pub type NodeTypeMap = BTreeMap<TypeName, Entry>;
 
 #[derive(Debug)]
 pub struct Entry {
-    pub flattened_name: String,
+    pub dbscheme_name: String,
     pub ql_class_name: String,
     pub kind: EntryKind,
 }
@@ -18,7 +18,7 @@ pub struct Entry {
 #[derive(Debug)]
 pub enum EntryKind {
     Union { members: Set<TypeName> },
-    Table { fields: Vec<Field> },
+    Table { name: String, fields: Vec<Field> },
     Token { kind_id: usize },
 }
 
@@ -61,10 +61,6 @@ fn name_for_field_or_child(name: &Option<String>) -> String {
 }
 
 impl Field {
-    pub fn get_name(&self) -> String {
-        name_for_field_or_child(&self.name)
-    }
-
     pub fn get_getter_name(&self) -> String {
         format!(
             "get{}",
@@ -76,10 +72,10 @@ impl Field {
 #[derive(Debug)]
 pub enum Storage {
     /// the field is stored as a column in the parent table
-    Column,
+    Column { name: String },
     /// the field is stored in a link table, and may or may not have an
     /// associated index column
-    Table(bool),
+    Table { name: String, has_index: bool },
 }
 
 pub fn read_node_types(node_types_path: &Path) -> std::io::Result<NodeTypeMap> {
@@ -109,8 +105,9 @@ pub fn convert_nodes(nodes: Vec<NodeInfo>) -> NodeTypeMap {
     let mut entries = NodeTypeMap::new();
     let mut token_kinds = Set::new();
     for node in nodes {
-        let flattened_name = node_type_name(&node.kind, node.named);
-        let ql_class_name = dbscheme_name_to_class_name(&escape_name(&flattened_name));
+        let flattened_name = &node_type_name(&node.kind, node.named);
+        let dbscheme_name = escape_name(&flattened_name);
+        let ql_class_name = dbscheme_name_to_class_name(&dbscheme_name);
         if let Some(subtypes) = &node.subtypes {
             // It's a tree-sitter supertype node, for which we create a union
             // type.
@@ -120,7 +117,7 @@ pub fn convert_nodes(nodes: Vec<NodeInfo>) -> NodeTypeMap {
                     named: node.named,
                 },
                 Entry {
-                    flattened_name,
+                    dbscheme_name,
                     ql_class_name,
                     kind: EntryKind::Union {
                         members: convert_types(&subtypes),
@@ -139,6 +136,7 @@ pub fn convert_nodes(nodes: Vec<NodeInfo>) -> NodeTypeMap {
                 kind: node.kind,
                 named: node.named,
             };
+            let table_name = escape_name(&(format!("{}_def", &flattened_name)));
             let mut fields = Vec::new();
 
             // If the type also has fields or children, then we create either
@@ -160,9 +158,12 @@ pub fn convert_nodes(nodes: Vec<NodeInfo>) -> NodeTypeMap {
             entries.insert(
                 type_name,
                 Entry {
-                    flattened_name,
+                    dbscheme_name,
                     ql_class_name,
-                    kind: EntryKind::Table { fields },
+                    kind: EntryKind::Table {
+                        name: table_name,
+                        fields,
+                    },
                 },
             );
         }
@@ -173,13 +174,13 @@ pub fn convert_nodes(nodes: Vec<NodeInfo>) -> NodeTypeMap {
             counter += 1;
             let unprefixed_name = node_type_name(&type_name.kind, true);
             Entry {
-                flattened_name: format!("token_{}", &unprefixed_name),
+                dbscheme_name: escape_name(&format!("token_{}", &unprefixed_name)),
                 ql_class_name: dbscheme_name_to_class_name(&escape_name(&unprefixed_name)),
                 kind: EntryKind::Token { kind_id: counter },
             }
         } else {
             Entry {
-                flattened_name: "reserved_word".to_owned(),
+                dbscheme_name: "reserved_word".to_owned(),
                 ql_class_name: "ReservedWord".to_owned(),
                 kind: EntryKind::Token { kind_id: 0 },
             }
@@ -195,18 +196,25 @@ fn add_field(
     field_info: &FieldInfo,
     fields: &mut Vec<Field>,
 ) {
+    let parent_flattened_name = node_type_name(&parent_type_name.kind, parent_type_name.named);
     let storage = if !field_info.multiple && field_info.required {
         // This field must appear exactly once, so we add it as
         // a column to the main table for the node type.
-        Storage::Column
-    } else if !field_info.multiple {
-        // This field is optional but can occur at most once. Put it in an
-        // auxiliary table without an index.
-        Storage::Table(false)
+        Storage::Column {
+            name: escape_name(&name_for_field_or_child(&field_name)),
+        }
     } else {
-        // This field can occur multiple times. Put it in an auxiliary table
-        // with an associated index.
-        Storage::Table(true)
+        // Put the field in an auxiliary table.
+        let has_index = field_info.multiple;
+        let field_table_name = escape_name(&format!(
+            "{}_{}",
+            parent_flattened_name,
+            &name_for_field_or_child(&field_name)
+        ));
+        Storage::Table {
+            has_index,
+            name: field_table_name,
+        }
     };
     let type_info = if field_info.types.len() == 1 {
         FieldTypeInfo::Single(convert_type(field_info.types.iter().next().unwrap()))
@@ -216,7 +224,7 @@ fn add_field(
             types: convert_types(&field_info.types),
             dbscheme_union: format!(
                 "{}_{}_type",
-                &node_type_name(&parent_type_name.kind, parent_type_name.named),
+                &parent_flattened_name,
                 &name_for_field_or_child(&field_name)
             ),
             ql_class: "AstNode".to_owned(),
@@ -277,7 +285,7 @@ const RESERVED_KEYWORDS: [&'static str; 14] = [
 
 /// Returns a string that's a copy of `name` but suitably escaped to be a valid
 /// QL identifier.
-pub fn escape_name(name: &str) -> String {
+fn escape_name(name: &str) -> String {
     let mut result = String::new();
 
     // If there's a leading underscore, replace it with 'underscore_'.
