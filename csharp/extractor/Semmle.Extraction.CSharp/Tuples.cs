@@ -271,6 +271,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("extend", type, super);
         }
 
+        internal static void anonymous_types(this TextWriter trapFile, Type type)
+        {
+            trapFile.WriteTuple("anonymous_types", type);
+        }
+
         internal static void field_location(this TextWriter trapFile, Field field, Location location)
         {
             trapFile.WriteTuple("field_location", field, location);
