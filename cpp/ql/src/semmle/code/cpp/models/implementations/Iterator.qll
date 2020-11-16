@@ -52,9 +52,7 @@ private class StdIterator extends Iterator, Class {
  * `std::iterator_traits` instantiation for it.
  */
 private class IteratorByTraits extends Iterator {
-  IteratorByTraits() {
-    exists(IteratorTraits it | it.getIteratorType() = this)
-  }
+  IteratorByTraits() { exists(IteratorTraits it | it.getIteratorType() = this) }
 }
 
 private FunctionInput getIteratorArgumentInput(Operator op, int index) {
@@ -80,7 +78,8 @@ private FunctionInput getIteratorArgumentInput(Operator op, int index) {
 /**
  * A non-member prefix `operator*` function for an iterator type.
  */
-private class IteratorPointerDereferenceOperator extends Operator, TaintFunction, IteratorReferenceFunction {
+private class IteratorPointerDereferenceOperator extends Operator, TaintFunction,
+  IteratorReferenceFunction {
   FunctionInput iteratorInput;
 
   IteratorPointerDereferenceOperator() {
@@ -244,7 +243,8 @@ private class IteratorBinaryArithmeticMemberOperator extends MemberFunction, Tai
 /**
  * An `operator+=` or `operator-=` member function of an iterator class.
  */
-private class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
+private class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFunction,
+  TaintFunction {
   IteratorAssignArithmeticMemberOperator() {
     this.hasName(["operator+=", "operator-="]) and
     this.getDeclaringType() instanceof Iterator
@@ -267,7 +267,8 @@ private class IteratorAssignArithmeticMemberOperator extends MemberFunction, Dat
 /**
  * An `operator[]` member function of an iterator class.
  */
-private class IteratorArrayMemberOperator extends MemberFunction, TaintFunction, IteratorReferenceFunction {
+private class IteratorArrayMemberOperator extends MemberFunction, TaintFunction,
+  IteratorReferenceFunction {
   IteratorArrayMemberOperator() {
     this.hasName("operator[]") and
     this.getDeclaringType() instanceof Iterator
@@ -307,10 +308,8 @@ private class IteratorAssignmentMemberOperator extends MemberFunction, TaintFunc
 private class BeginOrEndFunction extends MemberFunction, TaintFunction, GetIteratorFunction {
   BeginOrEndFunction() {
     this
-        .hasName([
-            "begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend", "before_begin",
-            "cbefore_begin"
-          ]) and
+        .hasName(["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend",
+              "before_begin", "cbefore_begin"]) and
     this.getType().getUnspecifiedType() instanceof Iterator
   }
 
