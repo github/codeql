@@ -31,7 +31,15 @@ private class DefaultSafeExternalAPIFunction extends SafeExternalAPIFunction {
     this.(Method).hasQualifiedName(Gorm::packagePath(), "DB", "Update") or
     this.hasQualifiedName("crypto/hmac", "Equal") or
     this.hasQualifiedName("crypto/subtle", "ConstantTimeCompare") or
-    this.(Method).hasQualifiedName(package("golang.org/x/oauth2", ""), "Config", "Exchange")
+    this.(Method).hasQualifiedName(package("golang.org/x/oauth2", ""), "Config", "Exchange") or
+    this.hasQualifiedName(package("golang.org/x/crypto", "bcrypt"), "CompareHashAndPassword") or
+    this.hasQualifiedName(package("golang.org/x/crypto", "bcrypt"), "GenerateFromPassword") or
+    this.(Method).hasQualifiedName("hash", "Hash", "Sum") or
+    this.(Method).hasQualifiedName("hash", "Hash32", "Sum32") or
+    this.(Method).hasQualifiedName("hash", "Hash64", "Sum64") or
+    this.hasQualifiedName("crypto/sha256", "Sum256") or
+    this.hasQualifiedName("crypto/md5", "Sum") or
+    this.hasQualifiedName("crypto/sha1", "Sum")
   }
 }
 
