@@ -69,6 +69,16 @@ predicate isACommonSink(DataFlow::Node n) {
   n instanceof CleartextLogging::Sink
 }
 
+/** Holds if `callNode` is a local function pointer. */
+private predicate isProbableLocalFunctionPointer(DataFlow::CallNode callNode) {
+  // Not a method call
+  not callNode instanceof DataFlow::MethodCallNode and
+  // Does not have a declared target function
+  not exists(callNode.getTarget()) and
+  // Does not appear to be in a package
+  not callNode.getCall().getCalleeExpr().(QualifiedName).getBase() instanceof PackageName
+}
+
 /** A node representing data being passed to an external API. */
 class ExternalAPIDataNode extends DataFlow::Node {
   DataFlow::CallNode call;
@@ -91,6 +101,8 @@ class ExternalAPIDataNode extends DataFlow::Node {
     ) and
     // Not defined in the code that is being analysed
     not exists(call.getACallee().getBody()) and
+    // Not a function pointer, unless it's declared in a package
+    not isProbableLocalFunctionPointer(call) and
     // Not defined in a test file
     not call.getFile() instanceof TestFile and
     // Not already modeled as a taint step
