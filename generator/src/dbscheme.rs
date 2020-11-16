@@ -2,41 +2,41 @@ use crate::ql;
 use std::collections::BTreeSet as Set;
 use std::fmt;
 /// Represents a distinct entry in the database schema.
-pub enum Entry {
+pub enum Entry<'a> {
     /// An entry defining a database table.
-    Table(Table),
+    Table(Table<'a>),
     /// An entry defining a database table.
-    Case(Case),
+    Case(Case<'a>),
     /// An entry defining type that is a union of other types.
-    Union(Union),
+    Union(Union<'a>),
 }
 
 /// A table in the database schema.
-pub struct Table {
-    pub name: String,
-    pub columns: Vec<Column>,
-    pub keysets: Option<Vec<String>>,
+pub struct Table<'a> {
+    pub name: &'a str,
+    pub columns: Vec<Column<'a>>,
+    pub keysets: Option<Vec<&'a str>>,
 }
 
 /// A union in the database schema.
-pub struct Union {
-    pub name: String,
-    pub members: Set<String>,
+pub struct Union<'a> {
+    pub name: &'a str,
+    pub members: Set<&'a str>,
 }
 
 /// A table in the database schema.
-pub struct Case {
-    pub name: String,
-    pub column: String,
-    pub branches: Vec<(usize, String)>,
+pub struct Case<'a> {
+    pub name: &'a str,
+    pub column: &'a str,
+    pub branches: Vec<(usize, &'a str)>,
 }
 
 /// A column in a table.
-pub struct Column {
+pub struct Column<'a> {
     pub db_type: DbColumnType,
-    pub name: String,
+    pub name: &'a str,
     pub unique: bool,
-    pub ql_type: ql::Type,
+    pub ql_type: ql::Type<'a>,
     pub ql_type_is_ref: bool,
 }
 
@@ -46,7 +46,7 @@ pub enum DbColumnType {
     String,
 }
 
-impl fmt::Display for Case {
+impl<'a> fmt::Display for Case<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         writeln!(f, "case @{}.{} of", &self.name, &self.column)?;
         let mut sep = " ";
@@ -58,7 +58,7 @@ impl fmt::Display for Case {
     }
 }
 
-impl fmt::Display for Table {
+impl<'a> fmt::Display for Table<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if let Some(keyset) = &self.keysets {
             write!(f, "#keyset[")?;
@@ -100,7 +100,7 @@ impl fmt::Display for Table {
     }
 }
 
-impl fmt::Display for Union {
+impl<'a> fmt::Display for Union<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "@{} = ", self.name)?;
         let mut first = true;
@@ -117,10 +117,10 @@ impl fmt::Display for Union {
 }
 
 /// Generates the dbscheme by writing the given dbscheme `entries` to the `file`.
-pub fn write(
+pub fn write<'a>(
     language_name: &str,
     file: &mut dyn std::io::Write,
-    entries: &[Entry],
+    entries: &'a [Entry],
 ) -> std::io::Result<()> {
     write!(file, "// CodeQL database schema for {}\n", language_name)?;
     write!(

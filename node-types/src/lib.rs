@@ -50,6 +50,8 @@ pub struct Field {
     /// The name of the field or None for the anonymous 'children'
     /// entry from node_types.json
     pub name: Option<String>,
+    /// The name of the predicate to get this field.
+    pub getter_name: String,
     pub storage: Storage,
 }
 
@@ -57,15 +59,6 @@ fn name_for_field_or_child(name: &Option<String>) -> String {
     match name {
         Some(name) => name.clone(),
         None => "child".to_owned(),
-    }
-}
-
-impl Field {
-    pub fn get_getter_name(&self) -> String {
-        format!(
-            "get{}",
-            dbscheme_name_to_class_name(&escape_name(&name_for_field_or_child(&self.name)))
-        )
     }
 }
 
@@ -230,6 +223,10 @@ fn add_field(
             ql_class: "AstNode".to_owned(),
         }
     };
+    let getter_name = format!(
+        "get{}",
+        dbscheme_name_to_class_name(&escape_name(&name_for_field_or_child(&field_name)))
+    );
     fields.push(Field {
         parent: TypeName {
             kind: parent_type_name.kind.to_string(),
@@ -237,6 +234,7 @@ fn add_field(
         },
         type_info,
         name: field_name,
+        getter_name,
         storage,
     });
 }

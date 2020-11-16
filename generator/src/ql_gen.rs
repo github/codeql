@@ -26,50 +26,40 @@ pub fn write(language: &Language, classes: &[ql::TopLevel]) -> std::io::Result<(
 
 /// Creates the hard-coded `AstNode` class that acts as a supertype of all
 /// classes we generate.
-fn create_ast_node_class() -> ql::Class {
+fn create_ast_node_class<'a>() -> ql::Class<'a> {
     // Default implementation of `toString` calls `this.describeQlClass()`
     let to_string = ql::Predicate {
-        name: "toString".to_owned(),
+        name: "toString",
         overridden: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
-            Box::new(ql::Expression::Var("result".to_owned())),
+            Box::new(ql::Expression::Var("result")),
             Box::new(ql::Expression::Dot(
-                Box::new(ql::Expression::Var("this".to_owned())),
-                "describeQlClass".to_owned(),
+                Box::new(ql::Expression::Var("this")),
+                "describeQlClass",
                 vec![],
             )),
         ),
     };
-    let get_location = create_none_predicate(
-        "getLocation",
-        false,
-        Some(ql::Type::Normal("Location".to_owned())),
-        vec![],
-    );
-    let get_a_field_or_child = create_none_predicate(
-        "getAFieldOrChild",
-        false,
-        Some(ql::Type::Normal("AstNode".to_owned())),
-        vec![],
-    );
+    let get_location =
+        create_none_predicate("getLocation", false, Some(ql::Type::Normal("Location")));
+    let get_a_field_or_child =
+        create_none_predicate("getAFieldOrChild", false, Some(ql::Type::Normal("AstNode")));
     let describe_ql_class = ql::Predicate {
-        name: "describeQlClass".to_owned(),
+        name: "describeQlClass",
         overridden: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
-            Box::new(ql::Expression::Var("result".to_owned())),
-            Box::new(ql::Expression::String("???".to_owned())),
+            Box::new(ql::Expression::Var("result")),
+            Box::new(ql::Expression::String("???")),
         ),
     };
     ql::Class {
-        name: "AstNode".to_owned(),
+        name: "AstNode",
         is_abstract: false,
-        supertypes: vec![ql::Type::AtType("ast_node".to_owned())]
-            .into_iter()
-            .collect(),
+        supertypes: vec![ql::Type::AtType("ast_node")].into_iter().collect(),
         characteristic_predicate: None,
         predicates: vec![
             to_string,
@@ -80,60 +70,57 @@ fn create_ast_node_class() -> ql::Class {
     }
 }
 
-fn create_token_class() -> ql::Class {
+fn create_token_class<'a>() -> ql::Class<'a> {
     let get_value = ql::Predicate {
-        name: "getValue".to_owned(),
+        name: "getValue",
         overridden: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Pred(
-            "tokeninfo".to_owned(),
+            "tokeninfo",
             vec![
-                ql::Expression::Var("this".to_owned()),
-                ql::Expression::Var("_".to_owned()),
-                ql::Expression::Var("_".to_owned()),
-                ql::Expression::Var("_".to_owned()),
-                ql::Expression::Var("result".to_owned()),
-                ql::Expression::Var("_".to_owned()),
+                ql::Expression::Var("this"),
+                ql::Expression::Var("_"),
+                ql::Expression::Var("_"),
+                ql::Expression::Var("_"),
+                ql::Expression::Var("result"),
+                ql::Expression::Var("_"),
             ],
         ),
     };
     let get_location = ql::Predicate {
-        name: "getLocation".to_owned(),
+        name: "getLocation",
         overridden: true,
-        return_type: Some(ql::Type::Normal("Location".to_owned())),
+        return_type: Some(ql::Type::Normal("Location")),
         formal_parameters: vec![],
         body: ql::Expression::Pred(
-            "tokeninfo".to_owned(),
+            "tokeninfo",
             vec![
-                ql::Expression::Var("this".to_owned()),
-                ql::Expression::Var("_".to_owned()),
-                ql::Expression::Var("_".to_owned()),
-                ql::Expression::Var("_".to_owned()),
-                ql::Expression::Var("_".to_owned()),
-                ql::Expression::Var("result".to_owned()),
+                ql::Expression::Var("this"),
+                ql::Expression::Var("_"),
+                ql::Expression::Var("_"),
+                ql::Expression::Var("_"),
+                ql::Expression::Var("_"),
+                ql::Expression::Var("result"),
             ],
         ),
     };
     let to_string = ql::Predicate {
-        name: "toString".to_owned(),
+        name: "toString",
         overridden: true,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
-            Box::new(ql::Expression::Var("result".to_owned())),
-            Box::new(ql::Expression::Pred("getValue".to_owned(), vec![])),
+            Box::new(ql::Expression::Var("result")),
+            Box::new(ql::Expression::Pred("getValue", vec![])),
         ),
     };
     ql::Class {
-        name: "Token".to_owned(),
+        name: "Token",
         is_abstract: false,
-        supertypes: vec![
-            ql::Type::AtType("token".to_owned()),
-            ql::Type::Normal("AstNode".to_owned()),
-        ]
-        .into_iter()
-        .collect(),
+        supertypes: vec![ql::Type::AtType("token"), ql::Type::Normal("AstNode")]
+            .into_iter()
+            .collect(),
         characteristic_predicate: None,
         predicates: vec![
             get_value,
@@ -145,51 +132,47 @@ fn create_token_class() -> ql::Class {
 }
 
 // Creates the `ReservedWord` class.
-fn create_reserved_word_class() -> ql::Class {
+fn create_reserved_word_class<'a>() -> ql::Class<'a> {
     let db_name = "reserved_word";
-    let class_name = "ReservedWord".to_owned();
+    let class_name = "ReservedWord";
     let describe_ql_class = create_describe_ql_class(&class_name);
     ql::Class {
         name: class_name,
         is_abstract: false,
-        supertypes: vec![
-            ql::Type::AtType(db_name.to_owned()),
-            ql::Type::Normal("Token".to_owned()),
-        ]
-        .into_iter()
-        .collect(),
+        supertypes: vec![ql::Type::AtType(db_name), ql::Type::Normal("Token")]
+            .into_iter()
+            .collect(),
         characteristic_predicate: None,
         predicates: vec![describe_ql_class],
     }
 }
 
 /// Creates a predicate whose body is `none()`.
-fn create_none_predicate(
-    name: &str,
+fn create_none_predicate<'a>(
+    name: &'a str,
     overridden: bool,
-    return_type: Option<ql::Type>,
-    formal_parameters: Vec<ql::FormalParameter>,
-) -> ql::Predicate {
+    return_type: Option<ql::Type<'a>>,
+) -> ql::Predicate<'a> {
     ql::Predicate {
-        name: name.to_owned(),
+        name: name,
         overridden,
         return_type,
-        formal_parameters,
-        body: ql::Expression::Pred("none".to_owned(), vec![]),
+        formal_parameters: Vec::new(),
+        body: ql::Expression::Pred("none", vec![]),
     }
 }
 
 /// Creates an overridden `describeQlClass` predicate that returns the given
 /// name.
-fn create_describe_ql_class(class_name: &str) -> ql::Predicate {
+fn create_describe_ql_class<'a>(class_name: &'a str) -> ql::Predicate<'a> {
     ql::Predicate {
-        name: "describeQlClass".to_owned(),
+        name: "describeQlClass",
         overridden: true,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
-            Box::new(ql::Expression::Var("result".to_owned())),
-            Box::new(ql::Expression::String(class_name.to_owned())),
+            Box::new(ql::Expression::Var("result")),
+            Box::new(ql::Expression::String(class_name)),
         ),
     }
 }
@@ -200,19 +183,19 @@ fn create_describe_ql_class(class_name: &str) -> ql::Predicate {
 ///
 /// `def_table` - the name of the table that defines the entity and its location.
 /// `arity` - the total number of columns in the table
-fn create_get_location_predicate(def_table: &str, arity: usize) -> ql::Predicate {
+fn create_get_location_predicate<'a>(def_table: &'a str, arity: usize) -> ql::Predicate<'a> {
     ql::Predicate {
-        name: "getLocation".to_owned(),
+        name: "getLocation",
         overridden: true,
-        return_type: Some(ql::Type::Normal("Location".to_owned())),
+        return_type: Some(ql::Type::Normal("Location")),
         formal_parameters: vec![],
         // body of the form: foo_bar_def(_, _, ..., result)
         body: ql::Expression::Pred(
-            def_table.to_owned(),
+            def_table,
             [
-                vec![ql::Expression::Var("this".to_owned())],
-                vec![ql::Expression::Var("_".to_owned()); arity - 2],
-                vec![ql::Expression::Var("result".to_owned())],
+                vec![ql::Expression::Var("this")],
+                vec![ql::Expression::Var("_"); arity - 2],
+                vec![ql::Expression::Var("result")],
             ]
             .concat(),
         ),
@@ -224,18 +207,18 @@ fn create_get_location_predicate(def_table: &str, arity: usize) -> ql::Predicate
 /// # Arguments
 ///
 /// `def_table` - the name of the table that defines the entity and its text.
-fn create_get_text_predicate(def_table: &str) -> ql::Predicate {
+fn create_get_text_predicate<'a>(def_table: &'a str) -> ql::Predicate<'a> {
     ql::Predicate {
-        name: "getText".to_owned(),
+        name: "getText",
         overridden: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: ql::Expression::Pred(
-            def_table.to_owned(),
+            def_table,
             vec![
-                ql::Expression::Var("this".to_owned()),
-                ql::Expression::Var("result".to_owned()),
-                ql::Expression::Var("_".to_owned()),
+                ql::Expression::Var("this"),
+                ql::Expression::Var("result"),
+                ql::Expression::Var("_"),
             ],
         ),
     }
@@ -248,20 +231,20 @@ fn create_get_text_predicate(def_table: &str) -> ql::Predicate {
 /// * `table_name` - the name of parent's defining table
 /// * `column_index` - the index in that table that defines the field
 /// * `arity` - the total number of columns in the table
-fn create_get_field_expr_for_column_storage(
-    table_name: &str,
+fn create_get_field_expr_for_column_storage<'a>(
+    table_name: &'a str,
     column_index: usize,
     arity: usize,
-) -> ql::Expression {
+) -> ql::Expression<'a> {
     let num_underscores_before = column_index - 1;
     let num_underscores_after = arity - 2 - num_underscores_before;
     ql::Expression::Pred(
-        table_name.to_owned(),
+        table_name,
         [
-            vec![ql::Expression::Var("this".to_owned())],
-            vec![ql::Expression::Var("_".to_owned()); num_underscores_before],
-            vec![ql::Expression::Var("result".to_owned())],
-            vec![ql::Expression::Var("_".to_owned()); num_underscores_after],
+            vec![ql::Expression::Var("this")],
+            vec![ql::Expression::Var("_"); num_underscores_before],
+            vec![ql::Expression::Var("result")],
+            vec![ql::Expression::Var("_"); num_underscores_after],
         ]
         .concat(),
     )
@@ -270,22 +253,19 @@ fn create_get_field_expr_for_column_storage(
 /// Returns an expression to get the field with the given index from its
 /// auxiliary table. The index name can be "_" so the expression will hold for
 /// all indices.
-fn create_get_field_expr_for_table_storage(
-    table_name: &str,
-    index_var_name: Option<&str>,
-) -> ql::Expression {
+fn create_get_field_expr_for_table_storage<'a>(
+    table_name: &'a str,
+    index_var_name: Option<&'a str>,
+) -> ql::Expression<'a> {
     ql::Expression::Pred(
-        table_name.to_owned(),
+        table_name,
         match index_var_name {
             Some(index_var_name) => vec![
-                ql::Expression::Var("this".to_owned()),
-                ql::Expression::Var(index_var_name.to_owned()),
-                ql::Expression::Var("result".to_owned()),
+                ql::Expression::Var("this"),
+                ql::Expression::Var(index_var_name),
+                ql::Expression::Var("result"),
             ],
-            None => vec![
-                ql::Expression::Var("this".to_owned()),
-                ql::Expression::Var("result".to_owned()),
-            ],
+            None => vec![ql::Expression::Var("this"), ql::Expression::Var("result")],
         },
     )
 }
@@ -305,27 +285,26 @@ fn create_get_field_expr_for_table_storage(
 /// `parent_name` - the name of the parent node
 /// `field` - the field whose getters we are creating
 /// `field_type` - the db name of the field's type (possibly being a union we created)
-fn create_field_getters(
-    main_table_name: &str,
+fn create_field_getters<'a>(
+    main_table_name: &'a str,
     main_table_arity: usize,
     main_table_column_index: &mut usize,
-    field: &node_types::Field,
-    nodes: &node_types::NodeTypeMap,
-) -> (ql::Predicate, ql::Expression) {
-    let predicate_name = field.get_getter_name();
+    field: &'a node_types::Field,
+    nodes: &'a node_types::NodeTypeMap,
+) -> (ql::Predicate<'a>, ql::Expression<'a>) {
     let return_type = Some(ql::Type::Normal(match &field.type_info {
-        node_types::FieldTypeInfo::Single(t) => nodes.get(&t).unwrap().ql_class_name.clone(),
+        node_types::FieldTypeInfo::Single(t) => &nodes.get(&t).unwrap().ql_class_name,
         node_types::FieldTypeInfo::Multiple {
             types: _,
             dbscheme_union: _,
             ql_class,
-        } => ql_class.clone(),
+        } => &ql_class,
     }));
     match &field.storage {
         node_types::Storage::Column { name: _ } => {
             let result = (
                 ql::Predicate {
-                    name: predicate_name,
+                    name: &field.getter_name,
                     overridden: false,
                     return_type,
                     formal_parameters: vec![],
@@ -349,12 +328,12 @@ fn create_field_getters(
             has_index,
         } => (
             ql::Predicate {
-                name: predicate_name,
+                name: &field.getter_name,
                 overridden: false,
                 return_type,
                 formal_parameters: if *has_index {
                     vec![ql::FormalParameter {
-                        name: "i".to_owned(),
+                        name: "i",
                         param_type: ql::Type::Int,
                     }]
                 } else {
@@ -374,10 +353,10 @@ fn create_field_getters(
 }
 
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
-pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
+pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel<'a>> {
     let mut classes: Vec<ql::TopLevel> = vec![
-        ql::TopLevel::Import("codeql.files.FileSystem".to_owned()),
-        ql::TopLevel::Import("codeql.Locations".to_owned()),
+        ql::TopLevel::Import("codeql.files.FileSystem"),
+        ql::TopLevel::Import("codeql.Locations"),
         ql::TopLevel::Class(create_ast_node_class()),
         ql::TopLevel::Class(create_token_class()),
         ql::TopLevel::Class(create_reserved_word_class()),
@@ -386,7 +365,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Token { .. } = &node.kind {
             if type_name.named {
-                token_kinds.insert(type_name.kind.to_owned());
+                token_kinds.insert(&type_name.kind);
             }
         }
     }
@@ -397,10 +376,10 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                 if type_name.named {
                     let describe_ql_class = create_describe_ql_class(&node.ql_class_name);
                     let mut supertypes: BTreeSet<ql::Type> = BTreeSet::new();
-                    supertypes.insert(ql::Type::AtType(node.dbscheme_name.to_owned()));
-                    supertypes.insert(ql::Type::Normal("Token".to_owned()));
+                    supertypes.insert(ql::Type::AtType(&node.dbscheme_name));
+                    supertypes.insert(ql::Type::Normal("Token"));
                     classes.push(ql::TopLevel::Class(ql::Class {
-                        name: node.ql_class_name.clone(),
+                        name: &node.ql_class_name,
                         is_abstract: false,
                         supertypes,
                         characteristic_predicate: None,
@@ -412,11 +391,11 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                 // It's a tree-sitter supertype node, so we're wrapping a dbscheme
                 // union type.
                 classes.push(ql::TopLevel::Class(ql::Class {
-                    name: node.ql_class_name.clone(),
+                    name: &node.ql_class_name,
                     is_abstract: false,
                     supertypes: vec![
-                        ql::Type::AtType(node.dbscheme_name.clone()),
-                        ql::Type::Normal("AstNode".to_owned()),
+                        ql::Type::AtType(&node.dbscheme_name),
+                        ql::Type::Normal("AstNode"),
                     ]
                     .into_iter()
                     .collect(),
@@ -445,11 +424,11 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
 
                 let main_class_name = &node.ql_class_name;
                 let mut main_class = ql::Class {
-                    name: main_class_name.clone(),
+                    name: &main_class_name,
                     is_abstract: false,
                     supertypes: vec![
-                        ql::Type::AtType(node.dbscheme_name.clone()),
-                        ql::Type::Normal("AstNode".to_owned()),
+                        ql::Type::AtType(&node.dbscheme_name),
+                        ql::Type::Normal("AstNode"),
                     ]
                     .into_iter()
                     .collect(),
@@ -485,9 +464,9 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                     }
 
                     main_class.predicates.push(ql::Predicate {
-                        name: "getAFieldOrChild".to_owned(),
+                        name: "getAFieldOrChild",
                         overridden: true,
-                        return_type: Some(ql::Type::Normal("AstNode".to_owned())),
+                        return_type: Some(ql::Type::Normal("AstNode")),
                         formal_parameters: vec![],
                         body: ql::Expression::Or(get_child_exprs),
                     });

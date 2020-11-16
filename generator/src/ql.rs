@@ -1,12 +1,12 @@
 use std::collections::BTreeSet;
 use std::fmt;
 
-pub enum TopLevel {
-    Class(Class),
-    Import(String),
+pub enum TopLevel<'a> {
+    Class(Class<'a>),
+    Import(&'a str),
 }
 
-impl fmt::Display for TopLevel {
+impl<'a> fmt::Display for TopLevel<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             TopLevel::Import(x) => write!(f, "import {}", x),
@@ -16,15 +16,15 @@ impl fmt::Display for TopLevel {
 }
 
 #[derive(Clone, Eq, PartialEq, Hash)]
-pub struct Class {
-    pub name: String,
+pub struct Class<'a> {
+    pub name: &'a str,
     pub is_abstract: bool,
-    pub supertypes: BTreeSet<Type>,
-    pub characteristic_predicate: Option<Expression>,
-    pub predicates: Vec<Predicate>,
+    pub supertypes: BTreeSet<Type<'a>>,
+    pub characteristic_predicate: Option<Expression<'a>>,
+    pub predicates: Vec<Predicate<'a>>,
 }
 
-impl fmt::Display for Class {
+impl<'a> fmt::Display for Class<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if self.is_abstract {
             write!(f, "abstract ")?;
@@ -64,7 +64,7 @@ impl fmt::Display for Class {
 
 // The QL type of a column.
 #[derive(Clone, Eq, PartialEq, Hash, Ord, PartialOrd)]
-pub enum Type {
+pub enum Type<'a> {
     /// Primitive `int` type.
     Int,
 
@@ -72,13 +72,13 @@ pub enum Type {
     String,
 
     /// A database type that will need to be referred to with an `@` prefix.
-    AtType(String),
+    AtType(&'a str),
 
     /// A user-defined type.
-    Normal(String),
+    Normal(&'a str),
 }
 
-impl fmt::Display for Type {
+impl<'a> fmt::Display for Type<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Type::Int => write!(f, "int"),
@@ -90,16 +90,16 @@ impl fmt::Display for Type {
 }
 
 #[derive(Clone, Eq, PartialEq, Hash)]
-pub enum Expression {
-    Var(String),
-    String(String),
-    Pred(String, Vec<Expression>),
-    Or(Vec<Expression>),
-    Equals(Box<Expression>, Box<Expression>),
-    Dot(Box<Expression>, String, Vec<Expression>),
+pub enum Expression<'a> {
+    Var(&'a str),
+    String(&'a str),
+    Pred(&'a str, Vec<Expression<'a>>),
+    Or(Vec<Expression<'a>>),
+    Equals(Box<Expression<'a>>, Box<Expression<'a>>),
+    Dot(Box<Expression<'a>>, &'a str, Vec<Expression<'a>>),
 }
 
-impl fmt::Display for Expression {
+impl<'a> fmt::Display for Expression<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Expression::Var(x) => write!(f, "{}", x),
@@ -143,15 +143,15 @@ impl fmt::Display for Expression {
 }
 
 #[derive(Clone, Eq, PartialEq, Hash)]
-pub struct Predicate {
-    pub name: String,
+pub struct Predicate<'a> {
+    pub name: &'a str,
     pub overridden: bool,
-    pub return_type: Option<Type>,
-    pub formal_parameters: Vec<FormalParameter>,
-    pub body: Expression,
+    pub return_type: Option<Type<'a>>,
+    pub formal_parameters: Vec<FormalParameter<'a>>,
+    pub body: Expression<'a>,
 }
 
-impl fmt::Display for Predicate {
+impl<'a> fmt::Display for Predicate<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if self.overridden {
             write!(f, "override ")?;
@@ -174,22 +174,22 @@ impl fmt::Display for Predicate {
 }
 
 #[derive(Clone, Eq, PartialEq, Hash)]
-pub struct FormalParameter {
-    pub name: String,
-    pub param_type: Type,
+pub struct FormalParameter<'a> {
+    pub name: &'a str,
+    pub param_type: Type<'a>,
 }
 
-impl fmt::Display for FormalParameter {
+impl<'a> fmt::Display for FormalParameter<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{} {}", self.param_type, self.name)
     }
 }
 
 /// Generates a QL library by writing the given `classes` to the `file`.
-pub fn write(
+pub fn write<'a>(
     language_name: &str,
     file: &mut dyn std::io::Write,
-    elements: &[TopLevel],
+    elements: &'a [TopLevel],
 ) -> std::io::Result<()> {
     write!(file, "/*\n")?;
     write!(file, " * CodeQL library for {}\n", language_name)?;
