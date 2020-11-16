@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds calls to pure virtual member functions in constructors and destructors. Such calls do not perform virtual dispatch, and can cause undefined behavior.</p>
+
+</overview>
+<recommendation>
+<p>Do not rely on virtual dispatch in constructors and destructors. Instead, each class should be responsible for acquiring and releasing its resources.</p>
+
+</recommendation>
+<example><sample src="UnsafeUseOfThis.cpp" />
+
+
+
+</example>
+<references>
+
+<li>
+  <a href="https://isocpp.org/wiki/faq/strange-inheritance#calling-virtuals-from-ctors">When my base class’s constructor calls a virtual function on its this object, why doesn’t my derived class’s override of that virtual function get invoked?</a>
+</li>
+<li>
+  <a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/OOP50-CPP.+Do+not+invoke+virtual+functions+from+constructors+or+destructors">OOP50-CPP. Do not invoke virtual functions from constructors or destructors</a>
+</li>
+<li>
+  <a href="https://scc.ustc.edu.cn/zlsc/sugon/intel/ssadiag_docs/pt_reference/references/sc_cpp_virtual_call_in_ctor.htm">Virtual function call in constructor</a>
+</li>
+
+
+</references></qhelp>
