@@ -125,7 +125,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
    * a common pattern to serialise `byte(v)`, `byte(v >> 8)`, and so on.
    */
   predicate isSink(DataFlow::TypeCastNode sink, int bitSize) {
-    exists(IntegerType integerType | sink.getType().getUnderlyingType() = integerType |
+    exists(IntegerType integerType | sink.getResultType().getUnderlyingType() = integerType |
       bitSize = integerType.getSize()
       or
       not exists(integerType.getSize()) and

@@ -878,6 +878,16 @@ class TypeCastNode extends ExprNode {
     expr instanceof ConversionExpr
   }
 
+  /**
+   * Gets the type being converted to. Note this differs from `this.getType()` for
+   * `TypeAssertExpr`s that return a (result, ok) tuple.
+   */
+  Type getResultType() {
+    if this.getType() instanceof TupleType
+    then result = this.getType().(TupleType).getComponentType(0)
+    else result = this.getType()
+  }
+
   /** Gets the operand of the type cast. */
   DataFlow::Node getOperand() {
     result.asExpr() = expr.(TypeAssertExpr).getExpr()
