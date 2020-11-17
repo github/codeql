@@ -1,3 +1,7 @@
+/**
+ * Provides IR-specific definitions for use in the `ExternalAPI` library.
+ */
+
 import semmle.code.cpp.ir.dataflow.TaintTracking
 private import semmle.code.cpp.security.FlowSources
 private import semmle.code.cpp.models.interfaces.DataFlow

@@ -1,3 +1,7 @@
+/**
+ * Provides AST-specific definitions for use in the `ExternalAPI` library.
+ */
+
 import semmle.code.cpp.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.models.interfaces.DataFlow

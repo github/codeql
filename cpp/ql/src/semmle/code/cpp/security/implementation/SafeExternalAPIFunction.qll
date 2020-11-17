@@ -1,3 +1,7 @@
+/**
+ * Provides a class for modeling external functions that are "safe" from a security perspective.
+ */
+
 private import cpp
 
 /**
