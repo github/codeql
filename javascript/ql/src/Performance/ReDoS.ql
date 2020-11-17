@@ -799,6 +799,7 @@ string concretise(Trace t) {
  * a path from `r` back to `(fork, fork)` with `rem` steps.
  */
 predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem) {
+  // base case
   exists(InputSymbol s1, InputSymbol s2, State q1, State q2 |
     isFork(fork, s1, s2, q1, q2) and
     r = MkStatePair(q1, q2) and
@@ -806,11 +807,12 @@ predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem) {
     rem = statePairDist(r, MkStatePair(fork, fork))
   )
   or
+  // recursive case
   exists(StatePair p, Trace v, InputSymbol s1, InputSymbol s2 |
     isReachableFromFork(fork, p, v, rem + 1) and
     step(p, s1, s2, r) and
     w = Step(s1, s2, v) and
-    rem > 0
+    rem >= statePairDist(r, MkStatePair(fork, fork))
   )
 }
 

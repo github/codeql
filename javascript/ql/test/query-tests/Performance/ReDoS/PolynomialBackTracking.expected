@@ -263,3 +263,8 @@
 | tst.js:251:18:251:19 | A* | it can start matching anywhere |
 | tst.js:251:18:251:19 | A* | it can start matching anywhere after the start of the preceeding 'A*' |
 | tst.js:260:14:260:21 | (\\n\\s*)+ | it can start matching anywhere |
+| tst.js:266:14:266:91 | (\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w*)+ | it can start matching anywhere |
+| tst.js:266:15:266:17 | \\w* | it can start matching anywhere |
+| tst.js:269:14:269:116 | (.thisisagoddamnlongstringforstresstestingthequery\|\\sthisisagoddamnlongstringforstresstestingthequery)* | it can start matching anywhere |
+| tst.js:272:14:272:77 | (thisisagoddamnlongstringforstresstestingthequery\|this\\w+query)* | it can start matching anywhere |
+| tst.js:275:15:275:117 | (thisisagoddamnlongstringforstresstestingthequery\|imanotherbutunrelatedstringcomparedtotheotherstring)* | it can start matching anywhere |

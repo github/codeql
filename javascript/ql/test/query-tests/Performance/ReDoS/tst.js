@@ -261,3 +261,15 @@ var bad58 = /(\n\s*)+$/;
 
 // GOOD
 var good26 = /([^\\\]]+)*/
+
+// NOT GOOD
+var bad59 = /(\w*foobarbaz\w*foobarbaz\w*foobarbaz\w*foobarbaz\s*foobarbaz\d*foobarbaz\w*)+-/;
+
+// NOT GOOD
+var bad60 = /(.thisisagoddamnlongstringforstresstestingthequery|\sthisisagoddamnlongstringforstresstestingthequery)*-/
+
+// NOT GOOD
+var bad61 = /(thisisagoddamnlongstringforstresstestingthequery|this\w+query)*-/
+
+// GOOD
+var good27 = /(thisisagoddamnlongstringforstresstestingthequery|imanotherbutunrelatedstringcomparedtotheotherstring)*-/
