@@ -1308,7 +1308,7 @@ class SpecifiedType extends DerivedType {
    * only depends on the specifiers, not on the source program). This is intended
    * for debugging queries only and is an expensive operation.
    */
-  string getSpecifierString() { result = concat(this.getASpecifier().getName(), " ") }
+  string getSpecifierString() { result = concat(this.getASpecifier().getName(), " ") + " " }
 
   override string explain() {
     result = this.getSpecifierString() + "{" + this.getBaseType().explain() + "}"
