@@ -106,6 +106,15 @@ class ConstantMatching
             _ => o.ToString() // GOOD
         };
     }
+
+    void M6(bool b1, bool b2) {
+        if (!b1)
+            return;
+        if (!b2)
+            return;
+        if (b1 && b2) // BAD
+            return;
+    }
 }
 
 class Assertions

@@ -170,7 +170,7 @@ module LocalFlow {
         or
         e1 = e2.(NullCoalescingExpr).getAnOperand() and
         scope = e2 and
-        isSuccessor = false
+        isSuccessor = true
         or
         e1 = e2.(SuppressNullableWarningExpr).getExpr() and
         scope = e2 and
@@ -182,7 +182,7 @@ module LocalFlow {
             e1 = ce.getElse()
           ) and
         scope = e2 and
-        isSuccessor = false
+        isSuccessor = true
         or
         e1 = e2.(Cast).getExpr() and
         scope = e2 and
@@ -207,7 +207,7 @@ module LocalFlow {
         or
         e1 = e2.(SwitchExpr).getACase().getBody() and
         scope = e2 and
-        isSuccessor = false
+        isSuccessor = true
       )
     }
 
