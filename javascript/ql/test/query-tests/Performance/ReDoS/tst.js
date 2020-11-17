@@ -258,3 +258,6 @@ var bad57 = /^([^>a]+)*(>|$)/;
 
 // NOT GOOD
 var bad58 = /(\n\s*)+$/;
+
+// GOOD
+var good26 = /([^\\\]]+)*/

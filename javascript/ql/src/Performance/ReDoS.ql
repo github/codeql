@@ -222,7 +222,7 @@ abstract class CharacterClass extends InputSymbol {
   /**
    * Gets a character matched by this character class.
    */
-  string choose() { result = getARelevantChar() }
+  string choose() { result = getARelevantChar() and matches(result) }
 }
 
 /**
