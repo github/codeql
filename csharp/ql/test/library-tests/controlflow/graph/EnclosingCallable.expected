@@ -497,7 +497,8 @@ nodeEnclosing
 | Assert.cs:58:16:58:32 | [b (line 56): false] String s = ... | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:16:58:32 | [b (line 56): true] String s = ... | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:58:20:58:32 | [b (line 56): false] ... ? ... : ... | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:58:20:58:32 | [b (line 56): true] ... ? ... : ... | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:24:58:27 | [b (line 56): true] null | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:31:58:32 | [b (line 56): false] "" | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | Assert.cs:56:10:56:11 | M8 |
@@ -508,8 +509,8 @@ nodeEnclosing
 | Assert.cs:59:23:59:23 | [b (line 56): true] access to local variable s | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:23:59:31 | [b (line 56): false] ... != ... | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:23:59:31 | [b (line 56): true] ... != ... | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:23:59:36 | [b (line 56): false] ... && ... | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:23:59:36 | [b (line 56): true] ... && ... | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:59:23:59:36 | [false] ... && ... | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:59:23:59:36 | [true] ... && ... | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:28:59:31 | [b (line 56): false] null | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:28:59:31 | [b (line 56): true] null | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:36:59:36 | [b (line 56): false] access to parameter b | Assert.cs:56:10:56:11 | M8 |
@@ -527,7 +528,8 @@ nodeEnclosing
 | Assert.cs:65:16:65:32 | [b (line 63): false] String s = ... | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:16:65:32 | [b (line 63): true] String s = ... | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:65:20:65:32 | [b (line 63): false] ... ? ... : ... | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:65:20:65:32 | [b (line 63): true] ... ? ... : ... | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:24:65:27 | [b (line 63): true] null | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:31:65:32 | [b (line 63): false] "" | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | Assert.cs:63:10:63:11 | M9 |
@@ -538,8 +540,8 @@ nodeEnclosing
 | Assert.cs:66:24:66:24 | [b (line 63): true] access to local variable s | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:24:66:32 | [b (line 63): false] ... == ... | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:24:66:32 | [b (line 63): true] ... == ... | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:24:66:37 | [b (line 63): false] ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:24:66:37 | [b (line 63): true] ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:66:24:66:37 | [false] ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:66:24:66:37 | [true] ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:29:66:32 | [b (line 63): false] null | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:29:66:32 | [b (line 63): true] null | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:37:66:37 | [b (line 63): false] access to parameter b | Assert.cs:63:10:63:11 | M9 |
@@ -557,7 +559,8 @@ nodeEnclosing
 | Assert.cs:72:16:72:32 | [b (line 70): false] String s = ... | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:16:72:32 | [b (line 70): true] String s = ... | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:72:20:72:32 | [b (line 70): false] ... ? ... : ... | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:72:20:72:32 | [b (line 70): true] ... ? ... : ... | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:24:72:27 | [b (line 70): true] null | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:31:72:32 | [b (line 70): false] "" | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | Assert.cs:70:10:70:12 | M10 |
@@ -568,8 +571,8 @@ nodeEnclosing
 | Assert.cs:73:23:73:23 | [b (line 70): true] access to local variable s | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:23:73:31 | [b (line 70): false] ... == ... | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:23:73:31 | [b (line 70): true] ... == ... | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:23:73:36 | [b (line 70): false] ... && ... | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:23:73:36 | [b (line 70): true] ... && ... | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:73:23:73:36 | [false] ... && ... | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:73:23:73:36 | [true] ... && ... | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:28:73:31 | [b (line 70): false] null | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:28:73:31 | [b (line 70): true] null | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:36:73:36 | [b (line 70): false] access to parameter b | Assert.cs:70:10:70:12 | M10 |
@@ -587,7 +590,8 @@ nodeEnclosing
 | Assert.cs:79:16:79:32 | [b (line 77): false] String s = ... | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:16:79:32 | [b (line 77): true] String s = ... | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:79:20:79:32 | [b (line 77): false] ... ? ... : ... | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:79:20:79:32 | [b (line 77): true] ... ? ... : ... | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:24:79:27 | [b (line 77): true] null | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:31:79:32 | [b (line 77): false] "" | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | Assert.cs:77:10:77:12 | M11 |
@@ -598,8 +602,8 @@ nodeEnclosing
 | Assert.cs:80:24:80:24 | [b (line 77): true] access to local variable s | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:24:80:32 | [b (line 77): false] ... != ... | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:24:80:32 | [b (line 77): true] ... != ... | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:24:80:37 | [b (line 77): false] ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:24:80:37 | [b (line 77): true] ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:80:24:80:37 | [false] ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:80:24:80:37 | [true] ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:29:80:32 | [b (line 77): false] null | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:29:80:32 | [b (line 77): true] null | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:37:80:37 | [b (line 77): false] access to parameter b | Assert.cs:77:10:77:12 | M11 |
@@ -617,7 +621,8 @@ nodeEnclosing
 | Assert.cs:86:16:86:32 | [b (line 84): false] String s = ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:86:16:86:32 | [b (line 84): true] String s = ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:86:20:86:20 | access to parameter b | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:86:20:86:32 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:86:20:86:32 | [b (line 84): false] ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:86:20:86:32 | [b (line 84): true] ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:86:24:86:27 | [b (line 84): true] null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:86:31:86:32 | [b (line 84): false] "" | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:87:9:87:31 | [assertion failure, b (line 84): false] call to method Assert | Assert.cs:84:10:84:12 | M12 |
@@ -831,8 +836,9 @@ nodeEnclosing
 | Assert.cs:115:23:115:23 | [b (line 84): true] access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:23:115:31 | [b (line 84): false] ... != ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:23:115:31 | [b (line 84): true] ... != ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:23:115:36 | [b (line 84): false] ... && ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:23:115:36 | [b (line 84): true] ... && ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:115:23:115:36 | [false, b (line 84): false] ... && ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:115:23:115:36 | [false, b (line 84): true] ... && ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:115:23:115:36 | [true, b (line 84): true] ... && ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:28:115:31 | [b (line 84): false] null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:28:115:31 | [b (line 84): true] null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:36:115:36 | [b (line 84): false] access to parameter b | Assert.cs:84:10:84:12 | M12 |
@@ -851,9 +857,10 @@ nodeEnclosing
 | Assert.cs:119:9:119:40 | [b (line 84): true] ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:119:24:119:24 | [b (line 84): true] access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:119:24:119:32 | [b (line 84): true] ... == ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:24:119:38 | [b (line 84): true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:119:24:119:38 | [false, b (line 84): true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:119:24:119:38 | [true, b (line 84): true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:119:29:119:32 | [b (line 84): true] null | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:37:119:38 | [b (line 84): true] !... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:119:37:119:38 | [false, b (line 84): true] !... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:119:38:119:38 | [b (line 84): true] access to parameter b | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:120:9:120:35 | [b (line 84): true] call to method WriteLine | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:120:9:120:36 | [b (line 84): true] ...; | Assert.cs:84:10:84:12 | M12 |
@@ -869,7 +876,8 @@ nodeEnclosing
 | Assert.cs:123:9:123:38 | [b (line 84): true] ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:23:123:23 | [b (line 84): true] access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:23:123:31 | [b (line 84): true] ... == ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:123:23:123:36 | [b (line 84): true] ... && ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:123:23:123:36 | [false, b (line 84): true] ... && ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:123:23:123:36 | [true, b (line 84): true] ... && ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:28:123:31 | [b (line 84): true] null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:124:9:124:35 | [b (line 84): true] call to method WriteLine | Assert.cs:84:10:84:12 | M12 |
@@ -886,9 +894,10 @@ nodeEnclosing
 | Assert.cs:127:9:127:40 | [b (line 84): true] ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:127:24:127:24 | [b (line 84): true] access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:127:24:127:32 | [b (line 84): true] ... != ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:24:127:38 | [b (line 84): true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:127:24:127:38 | [false] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:127:24:127:38 | [true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:127:29:127:32 | [b (line 84): true] null | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:37:127:38 | [b (line 84): true] !... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:127:37:127:38 | [false] !... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:127:38:127:38 | [b (line 84): true] access to parameter b | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:128:9:128:35 | call to method WriteLine | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:128:9:128:36 | ...; | Assert.cs:84:10:84:12 | M12 |
@@ -1110,9 +1119,6 @@ nodeEnclosing
 | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | CompileTimeOperators.cs:28:10:28:10 | M |
 | CompileTimeOperators.cs:40:14:40:38 | ...; | CompileTimeOperators.cs:28:10:28:10 | M |
 | CompileTimeOperators.cs:40:32:40:36 | "End" | CompileTimeOperators.cs:28:10:28:10 | M |
-| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | ConditionalAccess |
-| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | ConditionalAccess |
-| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess (normal) | ConditionalAccess.cs:1:7:1:23 | ConditionalAccess |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:12:3:13 | M1 |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 | ConditionalAccess.cs:3:12:3:13 | M1 |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 (normal) | ConditionalAccess.cs:3:12:3:13 | M1 |
@@ -1129,6 +1135,8 @@ nodeEnclosing
 | ConditionalAccess.cs:7:10:7:11 | exit M3 (normal) | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:10:7:11 | M3 |
+| ConditionalAccess.cs:7:39:7:46 | [non-null] ... ?? ... | ConditionalAccess.cs:7:10:7:11 | M3 |
+| ConditionalAccess.cs:7:39:7:46 | [null] ... ?? ... | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:49:7:55 | access to property Length | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:9:9:9:10 | enter M4 | ConditionalAccess.cs:9:9:9:10 | M4 |
@@ -1179,11 +1187,7 @@ nodeEnclosing
 | ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:30:10:30:12 | exit Out | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:30:10:30:12 | exit Out (normal) | ConditionalAccess.cs:30:10:30:12 | Out |
-| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:1:7:1:23 | ConditionalAccess |
 | ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:10:30:12 | Out |
-| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:10:30:12 | Out |
-| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:1:7:1:23 | ConditionalAccess |
-| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:32:10:32:11 | exit M8 | ConditionalAccess.cs:32:10:32:11 | M8 |
@@ -1215,8 +1219,8 @@ nodeEnclosing
 | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:7:9:8:16 | [inc (line 3): true] if (...) ... | Conditions.cs:3:10:3:19 | IncrOrDecr |
-| Conditions.cs:7:13:7:16 | [inc (line 3): false] !... | Conditions.cs:3:10:3:19 | IncrOrDecr |
-| Conditions.cs:7:13:7:16 | [inc (line 3): true] !... | Conditions.cs:3:10:3:19 | IncrOrDecr |
+| Conditions.cs:7:13:7:16 | [false] !... | Conditions.cs:3:10:3:19 | IncrOrDecr |
+| Conditions.cs:7:13:7:16 | [true] !... | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:7:14:7:16 | [inc (line 3): false] access to parameter inc | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:8:13:8:13 | access to parameter x | Conditions.cs:3:10:3:19 | IncrOrDecr |
@@ -1244,8 +1248,8 @@ nodeEnclosing
 | Conditions.cs:16:17:16:17 | [b (line 11): true] 0 | Conditions.cs:11:9:11:10 | M1 |
 | Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:11:9:11:10 | M1 |
 | Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... | Conditions.cs:11:9:11:10 | M1 |
-| Conditions.cs:17:17:17:18 | [b (line 11): false] !... | Conditions.cs:11:9:11:10 | M1 |
-| Conditions.cs:17:17:17:18 | [b (line 11): true] !... | Conditions.cs:11:9:11:10 | M1 |
+| Conditions.cs:17:17:17:18 | [false] !... | Conditions.cs:11:9:11:10 | M1 |
+| Conditions.cs:17:17:17:18 | [true] !... | Conditions.cs:11:9:11:10 | M1 |
 | Conditions.cs:17:18:17:18 | [b (line 11): false] access to parameter b | Conditions.cs:11:9:11:10 | M1 |
 | Conditions.cs:17:18:17:18 | [b (line 11): true] access to parameter b | Conditions.cs:11:9:11:10 | M1 |
 | Conditions.cs:18:17:18:17 | access to local variable x | Conditions.cs:11:9:11:10 | M1 |
@@ -1483,8 +1487,8 @@ nodeEnclosing
 | Conditions.cs:107:24:107:24 | [b (line 102): true] 0 | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... | Conditions.cs:102:12:102:13 | M8 |
-| Conditions.cs:108:17:108:18 | [b (line 102): false] !... | Conditions.cs:102:12:102:13 | M8 |
-| Conditions.cs:108:17:108:18 | [b (line 102): true] !... | Conditions.cs:102:12:102:13 | M8 |
+| Conditions.cs:108:17:108:18 | [false] !... | Conditions.cs:102:12:102:13 | M8 |
+| Conditions.cs:108:17:108:18 | [true] !... | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:108:18:108:18 | [b (line 102): false] access to parameter b | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:108:18:108:18 | [b (line 102): true] access to parameter b | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:102:12:102:13 | M8 |
@@ -1520,7 +1524,8 @@ nodeEnclosing
 | Conditions.cs:118:29:118:43 | ... - ... | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:118:43:118:43 | 1 | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:119:13:120:23 | if (...) ... | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:119:17:119:21 | !... | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:119:17:119:21 | [false, last (line 118): true] !... | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:119:17:119:21 | [true, last (line 118): false] !... | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:120:17:120:22 | [last (line 118): false] ... = ... | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:113:10:113:11 | M9 |
@@ -1580,7 +1585,8 @@ nodeEnclosing
 | Conditions.cs:145:13:145:29 | [b (line 143): false] String s = ... | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:145:13:145:29 | [b (line 143): true] String s = ... | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:145:17:145:17 | access to parameter b | Conditions.cs:143:10:143:12 | M11 |
-| Conditions.cs:145:17:145:29 | ... ? ... : ... | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:17:145:29 | [b (line 143): false] ... ? ... : ... | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:145:17:145:29 | [b (line 143): true] ... ? ... : ... | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:145:21:145:23 | [b (line 143): true] "a" | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:146:9:149:49 | [b (line 143): false] if (...) ... | Conditions.cs:143:10:143:12 | M11 |
@@ -2064,11 +2070,16 @@ nodeEnclosing
 | Finally.cs:114:13:115:41 | [finally: exception(OutOfMemoryException)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:13:115:41 | [finally: return] if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:13:115:41 | if (...) ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [finally: exception(Exception)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [finally: exception(NullReferenceException)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [finally: exception(OutOfMemoryException)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [finally: return] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false, finally: exception(Exception)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false, finally: exception(NullReferenceException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false, finally: exception(OutOfMemoryException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false, finally: return] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true, finally: exception(Exception)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true, finally: exception(NullReferenceException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true, finally: exception(OutOfMemoryException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true, finally: return] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:23 | [finally: exception(Exception)] access to field Field | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:23 | [finally: exception(Exception)] this access | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:23 | [finally: exception(NullReferenceException)] access to field Field | Finally.cs:103:10:103:11 | M5 |
@@ -2896,7 +2907,8 @@ nodeEnclosing
 | LoopUnrolling.cs:67:10:67:11 | exit M8 (normal) | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:68:5:74:5 | {...} | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:69:9:70:19 | if (...) ... | LoopUnrolling.cs:67:10:67:11 | M8 |
-| LoopUnrolling.cs:69:13:69:23 | !... | LoopUnrolling.cs:67:10:67:11 | M8 |
+| LoopUnrolling.cs:69:13:69:23 | [false] !... | LoopUnrolling.cs:67:10:67:11 | M8 |
+| LoopUnrolling.cs:69:13:69:23 | [true] !... | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:69:14:69:17 | access to parameter args | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:70:13:70:19 | return ...; | LoopUnrolling.cs:67:10:67:11 | M8 |
@@ -3322,7 +3334,8 @@ nodeEnclosing
 | NullCoalescing.cs:5:9:5:10 | exit M2 (normal) | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:9:5:10 | M2 |
-| NullCoalescing.cs:5:25:5:34 | ... ?? ... | NullCoalescing.cs:5:9:5:10 | M2 |
+| NullCoalescing.cs:5:25:5:34 | [false] ... ?? ... | NullCoalescing.cs:5:9:5:10 | M2 |
+| NullCoalescing.cs:5:25:5:34 | [true] ... ?? ... | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:30:5:34 | false | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:39:5:39 | 0 | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:43:5:43 | 1 | NullCoalescing.cs:5:9:5:10 | M2 |
@@ -3339,7 +3352,8 @@ nodeEnclosing
 | NullCoalescing.cs:9:12:9:13 | exit M4 (normal) | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:36:9:58 | ... ?? ... | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:37:9:37 | access to parameter b | NullCoalescing.cs:9:12:9:13 | M4 |
-| NullCoalescing.cs:9:37:9:45 | ... ? ... : ... | NullCoalescing.cs:9:12:9:13 | M4 |
+| NullCoalescing.cs:9:37:9:45 | [non-null] ... ? ... : ... | NullCoalescing.cs:9:12:9:13 | M4 |
+| NullCoalescing.cs:9:37:9:45 | [null] ... ? ... : ... | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:41:9:41 | access to parameter s | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:45:9:45 | access to parameter s | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:51:9:52 | "" | NullCoalescing.cs:9:12:9:13 | M4 |
@@ -3349,9 +3363,11 @@ nodeEnclosing
 | NullCoalescing.cs:11:9:11:10 | exit M5 (normal) | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:44:11:45 | access to parameter b1 | NullCoalescing.cs:11:9:11:10 | M5 |
-| NullCoalescing.cs:11:44:11:59 | ... ?? ... | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:44:11:59 | [false] ... ?? ... | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:44:11:59 | [true] ... ?? ... | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:51:11:52 | access to parameter b2 | NullCoalescing.cs:11:9:11:10 | M5 |
-| NullCoalescing.cs:11:51:11:58 | ... && ... | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:51:11:58 | [false] ... && ... | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:51:11:58 | [true] ... && ... | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:64:11:64 | 0 | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:68:11:68 | 1 | NullCoalescing.cs:11:9:11:10 | M5 |
@@ -3585,7 +3601,8 @@ nodeEnclosing
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:32:24:39 | access to property Length | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:32:24:43 | ... > ... | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:24:32:24:55 | ... && ... | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:24:32:24:55 | [false] ... && ... | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:24:32:24:55 | [true] ... && ... | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:43:24:43 | 0 | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:48:24:55 | ... != ... | Switch.cs:10:10:10:11 | M2 |
@@ -3733,12 +3750,14 @@ nodeEnclosing
 | Switch.cs:124:5:127:5 | {...} | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:13:125:13 | access to parameter o | Switch.cs:123:10:123:12 | M11 |
-| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:13:125:48 | [false] ... switch { ... } | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:13:125:48 | [true] ... switch { ... } | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:123:10:123:12 | M11 |
-| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:24:125:34 | [false] ... => ... | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:24:125:34 | [true] ... => ... | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:37:125:37 | _ | Switch.cs:123:10:123:12 | M11 |
-| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:37:125:46 | [false] ... => ... | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:42:125:46 | false | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:126:13:126:19 | return ...; | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:129:12:129:14 | M12 |
@@ -3747,12 +3766,14 @@ nodeEnclosing
 | Switch.cs:130:5:132:5 | {...} | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:9:131:67 | return ...; | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:129:12:129:14 | M12 |
-| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:17:131:53 | [non-null] ... switch { ... } | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:17:131:53 | [null] ... switch { ... } | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:129:12:129:14 | M12 |
-| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:28:131:40 | [non-null] ... => ... | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:28:131:40 | [null] ... => ... | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:129:12:129:14 | M12 |
-| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:43:131:51 | [null] ... => ... | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:48:131:51 | null | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:134:9:134:11 | enter M13 | Switch.cs:134:9:134:11 | M13 |
@@ -3945,7 +3966,8 @@ nodeEnclosing
 | cflow.cs:26:17:26:17 | access to local variable i | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:26:17:26:21 | ... % ... | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:26:17:26:26 | ... == ... | cflow.cs:5:17:5:20 | Main |
-| cflow.cs:26:17:26:40 | ... && ... | cflow.cs:5:17:5:20 | Main |
+| cflow.cs:26:17:26:40 | [false] ... && ... | cflow.cs:5:17:5:20 | Main |
+| cflow.cs:26:17:26:40 | [true] ... && ... | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:26:21:26:21 | 3 | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:26:26:26:26 | 0 | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:26:31:26:31 | access to local variable i | cflow.cs:5:17:5:20 | Main |
@@ -4024,7 +4046,8 @@ nodeEnclosing
 | cflow.cs:62:13:62:19 | case ...: | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:62:18:62:18 | 0 | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:63:21:63:34 | !... | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:63:21:63:34 | [false] !... | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:63:21:63:34 | [true] !... | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:63:23:63:27 | access to field Field | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:63:23:63:27 | this access | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:63:23:63:33 | ... == ... | cflow.cs:37:17:37:22 | Switch |
@@ -4063,7 +4086,8 @@ nodeEnclosing
 | cflow.cs:86:9:87:33 | if (...) ... | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:86:13:86:13 | access to parameter s | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:86:13:86:21 | ... != ... | cflow.cs:84:18:84:19 | M2 |
-| cflow.cs:86:13:86:37 | ... && ... | cflow.cs:84:18:84:19 | M2 |
+| cflow.cs:86:13:86:37 | [false] ... && ... | cflow.cs:84:18:84:19 | M2 |
+| cflow.cs:86:13:86:37 | [true] ... && ... | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:86:18:86:21 | null | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:86:26:86:26 | access to parameter s | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:86:26:86:33 | access to property Length | cflow.cs:84:18:84:19 | M2 |
@@ -4317,15 +4341,15 @@ nodeEnclosing
 | cflow.cs:187:9:190:52 | if (...) ... | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:13:187:13 | 1 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:13:187:18 | ... == ... | cflow.cs:185:10:185:18 | LogicalOr |
-| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
-| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
+| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
+| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:18:187:18 | 2 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:23:187:28 | ... == ... | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:28:187:28 | 3 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:34:187:39 | ... == ... | cflow.cs:185:10:185:18 | LogicalOr |
-| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:185:10:185:18 | LogicalOr |
+| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:39:187:39 | 3 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:190:13:190:51 | call to method WriteLine | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:190:13:190:52 | ...; | cflow.cs:185:10:185:18 | LogicalOr |
@@ -4350,12 +4374,14 @@ nodeEnclosing
 | cflow.cs:195:39:195:55 | ... == ... | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:195:55:195:55 | 1 | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:197:9:198:49 | if (...) ... | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:197:13:197:47 | !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:197:13:197:47 | [false] !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:197:13:197:47 | [true] !... | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:197:15:197:19 | access to field Field | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:197:15:197:19 | this access | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:197:15:197:26 | access to property Length | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:197:15:197:31 | ... == ... | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:197:15:197:46 | ... ? ... : ... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:197:15:197:46 | [false] ... ? ... : ... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:197:15:197:46 | [true] ... ? ... : ... | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:197:31:197:31 | 0 | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:197:35:197:39 | false | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:197:43:197:46 | true | cflow.cs:193:10:193:17 | Booleans |
@@ -4370,20 +4396,25 @@ nodeEnclosing
 | cflow.cs:198:37:198:41 | false | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:198:45:198:48 | true | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:9:205:9 | if (...) ... | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:200:13:200:32 | !... | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:200:13:200:62 | ... \|\| ... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:13:200:32 | [false] !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:13:200:32 | [true] !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:13:200:62 | [false] ... \|\| ... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:13:200:62 | [true] ... \|\| ... | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:15:200:19 | access to field Field | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:15:200:19 | this access | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:15:200:26 | access to property Length | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:15:200:31 | ... == ... | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:31:200:31 | 0 | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:200:37:200:62 | !... | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:200:38:200:62 | !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:37:200:62 | [false] !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:37:200:62 | [true] !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:38:200:62 | [false] !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:38:200:62 | [true] !... | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:40:200:44 | access to field Field | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:40:200:44 | this access | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:40:200:51 | access to property Length | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:40:200:56 | ... == ... | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:200:40:200:61 | ... && ... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:40:200:61 | [false] ... && ... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:40:200:61 | [true] ... && ... | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:56:200:56 | 1 | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:61:200:61 | access to local variable b | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:201:9:205:9 | {...} | cflow.cs:193:10:193:17 | Booleans |
@@ -4463,8 +4494,10 @@ nodeEnclosing
 | cflow.cs:241:5:259:5 | {...} | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:242:9:242:13 | Label: | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:242:16:242:45 | if (...) ... | cflow.cs:240:10:240:13 | Goto |
-| cflow.cs:242:20:242:40 | !... | cflow.cs:240:10:240:13 | Goto |
-| cflow.cs:242:21:242:40 | !... | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:242:20:242:40 | [false] !... | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:242:20:242:40 | [true] !... | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:242:21:242:40 | [false] !... | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:242:21:242:40 | [true] !... | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:242:23:242:27 | access to field Field | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:242:23:242:27 | this access | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:242:23:242:34 | access to property Length | cflow.cs:240:10:240:13 | Goto |
@@ -4559,7 +4592,8 @@ nodeEnclosing
 | cflow.cs:300:9:300:72 | object creation of type NegationInConstructor | cflow.cs:298:10:298:10 | M |
 | cflow.cs:300:9:300:73 | ...; | cflow.cs:298:10:298:10 | M |
 | cflow.cs:300:38:300:38 | 0 | cflow.cs:298:10:298:10 | M |
-| cflow.cs:300:44:300:51 | !... | cflow.cs:298:10:298:10 | M |
+| cflow.cs:300:44:300:51 | [false] !... | cflow.cs:298:10:298:10 | M |
+| cflow.cs:300:44:300:51 | [true] !... | cflow.cs:298:10:298:10 | M |
 | cflow.cs:300:44:300:64 | ... && ... | cflow.cs:298:10:298:10 | M |
 | cflow.cs:300:46:300:46 | access to parameter i | cflow.cs:298:10:298:10 | M |
 | cflow.cs:300:46:300:50 | ... > ... | cflow.cs:298:10:298:10 | M |
@@ -4588,49 +4622,49 @@ blockEnclosing
 | ArrayCreation.cs:9:12:9:13 | enter M4 | ArrayCreation.cs:9:12:9:13 | M4 |
 | Assert.cs:7:10:7:11 | enter M1 | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:7:10:7:11 | exit M1 | Assert.cs:7:10:7:11 | M1 |
-| Assert.cs:9:16:9:32 | String s = ... | Assert.cs:7:10:7:11 | M1 |
+| Assert.cs:9:20:9:32 | ... ? ... : ... | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:9:24:9:27 | null | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:9:31:9:32 | "" | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:10:9:10:31 | [assertion failure] call to method Assert | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:10:9:10:31 | [assertion success] call to method Assert | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:14:10:14:11 | enter M2 | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:14:10:14:11 | exit M2 | Assert.cs:14:10:14:11 | M2 |
-| Assert.cs:16:16:16:32 | String s = ... | Assert.cs:14:10:14:11 | M2 |
+| Assert.cs:16:20:16:32 | ... ? ... : ... | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:16:24:16:27 | null | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:16:31:16:32 | "" | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:17:9:17:24 | [assertion failure] call to method IsNull | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:17:9:17:24 | [assertion success] call to method IsNull | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:21:10:21:11 | enter M3 | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:21:10:21:11 | exit M3 | Assert.cs:21:10:21:11 | M3 |
-| Assert.cs:23:16:23:32 | String s = ... | Assert.cs:21:10:21:11 | M3 |
+| Assert.cs:23:20:23:32 | ... ? ... : ... | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:23:24:23:27 | null | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:23:31:23:32 | "" | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:24:9:24:27 | [assertion failure] call to method IsNotNull | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:24:9:24:27 | [assertion success] call to method IsNotNull | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:28:10:28:11 | enter M4 | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:28:10:28:11 | exit M4 | Assert.cs:28:10:28:11 | M4 |
-| Assert.cs:30:16:30:32 | String s = ... | Assert.cs:28:10:28:11 | M4 |
+| Assert.cs:30:20:30:32 | ... ? ... : ... | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:30:24:30:27 | null | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:30:31:30:32 | "" | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:31:9:31:32 | [assertion failure] call to method IsTrue | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:31:9:31:32 | [assertion success] call to method IsTrue | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:35:10:35:11 | enter M5 | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:35:10:35:11 | exit M5 | Assert.cs:35:10:35:11 | M5 |
-| Assert.cs:37:16:37:32 | String s = ... | Assert.cs:35:10:35:11 | M5 |
+| Assert.cs:37:20:37:32 | ... ? ... : ... | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:37:24:37:27 | null | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:37:31:37:32 | "" | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:38:9:38:32 | [assertion failure] call to method IsTrue | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:38:9:38:32 | [assertion success] call to method IsTrue | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:42:10:42:11 | enter M6 | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:42:10:42:11 | exit M6 | Assert.cs:42:10:42:11 | M6 |
-| Assert.cs:44:16:44:32 | String s = ... | Assert.cs:42:10:42:11 | M6 |
+| Assert.cs:44:20:44:32 | ... ? ... : ... | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:44:24:44:27 | null | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:44:31:44:32 | "" | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:45:9:45:33 | [assertion failure] call to method IsFalse | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:45:9:45:33 | [assertion success] call to method IsFalse | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:49:10:49:11 | enter M7 | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:49:10:49:11 | exit M7 | Assert.cs:49:10:49:11 | M7 |
-| Assert.cs:51:16:51:32 | String s = ... | Assert.cs:49:10:49:11 | M7 |
+| Assert.cs:51:20:51:32 | ... ? ... : ... | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:51:24:51:27 | null | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:51:31:51:32 | "" | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:52:9:52:33 | [assertion failure] call to method IsFalse | Assert.cs:49:10:49:11 | M7 |
@@ -4639,28 +4673,28 @@ blockEnclosing
 | Assert.cs:56:10:56:11 | exit M8 | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:24:58:27 | [b (line 56): true] null | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:31:58:32 | [b (line 56): false] "" | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:59:23:59:36 | [false] ... && ... | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:36:59:36 | [b (line 56): false] access to parameter b | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:36:59:36 | [b (line 56): true] access to parameter b | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:63:10:63:11 | enter M9 | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:63:10:63:11 | exit M9 | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:24:65:27 | [b (line 63): true] null | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:31:65:32 | [b (line 63): false] "" | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:66:24:66:37 | [true] ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:37:66:37 | [b (line 63): false] access to parameter b | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:37:66:37 | [b (line 63): true] access to parameter b | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:70:10:70:12 | enter M10 | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:70:10:70:12 | exit M10 | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:24:72:27 | [b (line 70): true] null | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:31:72:32 | [b (line 70): false] "" | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:73:23:73:36 | [false] ... && ... | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:36:73:36 | [b (line 70): false] access to parameter b | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:36:73:36 | [b (line 70): true] access to parameter b | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:77:10:77:12 | enter M11 | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:77:10:77:12 | exit M11 | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:24:79:27 | [b (line 77): true] null | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:31:79:32 | [b (line 77): false] "" | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:80:24:80:37 | [true] ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:37:80:37 | [b (line 77): false] access to parameter b | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:37:80:37 | [b (line 77): true] access to parameter b | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:84:10:84:12 | enter M12 | Assert.cs:84:10:84:12 | M12 |
@@ -4696,16 +4730,16 @@ blockEnclosing
 | Assert.cs:111:9:111:33 | [assertion failure, b (line 84): true] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:111:9:111:33 | [assertion success, b (line 84): false] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:111:9:111:33 | [assertion success, b (line 84): true] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:9:115:37 | [assertion failure, b (line 84): false] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:9:115:37 | [assertion failure, b (line 84): true] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:115:23:115:36 | [false, b (line 84): false] ... && ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:115:23:115:36 | [false, b (line 84): true] ... && ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:36:115:36 | [b (line 84): false] access to parameter b | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:36:115:36 | [b (line 84): true] access to parameter b | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:9:119:39 | [assertion failure, b (line 84): true] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:37:119:38 | [b (line 84): true] !... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:123:9:123:37 | [assertion failure, b (line 84): true] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:119:24:119:38 | [true, b (line 84): true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:119:38:119:38 | [b (line 84): true] access to parameter b | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:123:23:123:36 | [false, b (line 84): true] ... && ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:37:127:38 | [b (line 84): true] !... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:127:24:127:38 | [true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:127:38:127:38 | [b (line 84): true] access to parameter b | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:131:18:131:32 | enter AssertTrueFalse | Assert.cs:131:18:131:32 | AssertTrueFalse |
 | Assert.cs:138:10:138:12 | enter M13 | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:138:10:138:12 | exit M13 | Assert.cs:138:10:138:12 | M13 |
@@ -4758,8 +4792,6 @@ blockEnclosing
 | CompileTimeOperators.cs:15:10:15:15 | enter Typeof | CompileTimeOperators.cs:15:10:15:15 | Typeof |
 | CompileTimeOperators.cs:20:12:20:17 | enter Nameof | CompileTimeOperators.cs:20:12:20:17 | Nameof |
 | CompileTimeOperators.cs:28:10:28:10 | enter M | CompileTimeOperators.cs:28:10:28:10 | M |
-| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | ConditionalAccess |
-| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess (normal) | ConditionalAccess.cs:1:7:1:23 | ConditionalAccess |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:12:3:13 | M1 |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 (normal) | ConditionalAccess.cs:3:12:3:13 | M1 |
 | ConditionalAccess.cs:3:28:3:38 | call to method ToString | ConditionalAccess.cs:3:12:3:13 | M1 |
@@ -4769,10 +4801,13 @@ blockEnclosing
 | ConditionalAccess.cs:5:28:5:34 | access to property Length | ConditionalAccess.cs:5:10:5:11 | M2 |
 | ConditionalAccess.cs:7:10:7:11 | enter M3 | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:10:7:11 | exit M3 (normal) | ConditionalAccess.cs:7:10:7:11 | M3 |
+| ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:10:7:11 | M3 |
+| ConditionalAccess.cs:7:39:7:46 | [non-null] ... ?? ... | ConditionalAccess.cs:7:10:7:11 | M3 |
+| ConditionalAccess.cs:7:39:7:46 | [null] ... ?? ... | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:49:7:55 | access to property Length | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:9:9:9:10 | enter M4 | ConditionalAccess.cs:9:9:9:10 | M4 |
-| ConditionalAccess.cs:9:9:9:10 | exit M4 (normal) | ConditionalAccess.cs:9:9:9:10 | M4 |
+| ConditionalAccess.cs:9:25:9:38 | ... ?? ... | ConditionalAccess.cs:9:9:9:10 | M4 |
 | ConditionalAccess.cs:9:27:9:33 | access to property Length | ConditionalAccess.cs:9:9:9:10 | M4 |
 | ConditionalAccess.cs:9:38:9:38 | 0 | ConditionalAccess.cs:9:9:9:10 | M4 |
 | ConditionalAccess.cs:11:9:11:10 | enter M5 | ConditionalAccess.cs:11:9:11:10 | M5 |
@@ -4786,7 +4821,6 @@ blockEnclosing
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:12:19:13 | M6 |
 | ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:21:10:21:11 | M7 |
 | ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:10:30:12 | Out |
-| ConditionalAccess.cs:30:10:30:12 | exit Out (normal) | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:32:10:32:11 | exit M8 (normal) | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:32:10:32:11 | M8 |
@@ -4861,8 +4895,8 @@ blockEnclosing
 | Conditions.cs:116:25:116:25 | access to local variable i | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:116:42:116:42 | access to local variable i | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:113:10:113:11 | M9 |
-| Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:119:17:119:21 | [false, last (line 118): true] !... | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:119:17:119:21 | [true, last (line 118): false] !... | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:129:10:129:12 | enter M10 | Conditions.cs:129:10:129:12 | M10 |
 | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true | Conditions.cs:129:10:129:12 | M10 |
 | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true | Conditions.cs:129:10:129:12 | M10 |
@@ -4903,7 +4937,7 @@ blockEnclosing
 | ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:109:13:109:21 | ThrowExpr |
 | ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:109:13:109:21 | ThrowExpr |
 | ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
-| ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
+| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
 | ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
 | ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:114:16:114:34 | ExtensionMethodCall |
 | ExitMethods.cs:119:17:119:32 | enter FailingAssertion | ExitMethods.cs:119:17:119:32 | FailingAssertion |
@@ -4993,11 +5027,16 @@ blockEnclosing
 | Finally.cs:113:9:118:9 | [finally: exception(Exception)] {...} | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:113:9:118:9 | [finally: exception(NullReferenceException)] {...} | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:113:9:118:9 | {...} | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | [finally: exception(Exception)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | [finally: exception(NullReferenceException)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | [finally: return] ...; | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false, finally: exception(Exception)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false, finally: exception(NullReferenceException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false, finally: exception(OutOfMemoryException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false, finally: return] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true, finally: exception(Exception)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true, finally: exception(NullReferenceException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true, finally: exception(OutOfMemoryException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true, finally: return] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:13:117:37 | [finally: exception(Exception)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:13:117:37 | [finally: exception(NullReferenceException)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:13:117:37 | [finally: exception(OutOfMemoryException)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
@@ -5114,6 +5153,7 @@ blockEnclosing
 | Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:18:10:18:11 | M3 |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:18:10:18:11 | M3 |
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:18:10:18:11 | M3 |
+| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:18:10:18:11 | M3 |
 | Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:18:10:18:11 | M3 |
 | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:18:10:18:11 | M3 |
 | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:24:10:24:11 | M4 |
@@ -5165,8 +5205,8 @@ blockEnclosing
 | LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | LoopUnrolling.cs:55:10:55:11 | M7 |
 | LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:67:10:67:11 | exit M8 (normal) | LoopUnrolling.cs:67:10:67:11 | M8 |
-| LoopUnrolling.cs:70:13:70:19 | return ...; | LoopUnrolling.cs:67:10:67:11 | M8 |
-| LoopUnrolling.cs:71:9:71:21 | ...; | LoopUnrolling.cs:67:10:67:11 | M8 |
+| LoopUnrolling.cs:69:13:69:23 | [false] !... | LoopUnrolling.cs:67:10:67:11 | M8 |
+| LoopUnrolling.cs:69:13:69:23 | [true] !... | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:76:10:76:11 | enter M9 | LoopUnrolling.cs:76:10:76:11 | M9 |
 | LoopUnrolling.cs:85:10:85:12 | enter M10 | LoopUnrolling.cs:85:10:85:12 | M10 |
 | LoopUnrolling.cs:94:10:94:12 | enter M11 | LoopUnrolling.cs:94:10:94:12 | M11 |
@@ -5348,28 +5388,32 @@ blockEnclosing
 | MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationA.cs:36:9:36:10 | M1 |
 | MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationB.cs:32:9:32:10 | M1 |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | M1 |
-| NullCoalescing.cs:3:9:3:10 | exit M1 (normal) | NullCoalescing.cs:3:9:3:10 | M1 |
+| NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:5:9:5:10 | enter M2 | NullCoalescing.cs:5:9:5:10 | M2 |
-| NullCoalescing.cs:5:9:5:10 | exit M2 (normal) | NullCoalescing.cs:5:9:5:10 | M2 |
+| NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | NullCoalescing.cs:5:9:5:10 | M2 |
+| NullCoalescing.cs:5:25:5:34 | [false] ... ?? ... | NullCoalescing.cs:5:9:5:10 | M2 |
+| NullCoalescing.cs:5:25:5:34 | [true] ... ?? ... | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:30:5:34 | false | NullCoalescing.cs:5:9:5:10 | M2 |
-| NullCoalescing.cs:5:39:5:39 | 0 | NullCoalescing.cs:5:9:5:10 | M2 |
-| NullCoalescing.cs:5:43:5:43 | 1 | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:7:12:7:13 | enter M3 | NullCoalescing.cs:7:12:7:13 | M3 |
-| NullCoalescing.cs:7:12:7:13 | exit M3 (normal) | NullCoalescing.cs:7:12:7:13 | M3 |
+| NullCoalescing.cs:7:40:7:53 | ... ?? ... | NullCoalescing.cs:7:12:7:13 | M3 |
+| NullCoalescing.cs:7:46:7:47 | access to parameter s2 | NullCoalescing.cs:7:12:7:13 | M3 |
 | NullCoalescing.cs:7:46:7:53 | ... ?? ... | NullCoalescing.cs:7:12:7:13 | M3 |
 | NullCoalescing.cs:7:52:7:53 | "" | NullCoalescing.cs:7:12:7:13 | M3 |
 | NullCoalescing.cs:9:12:9:13 | enter M4 | NullCoalescing.cs:9:12:9:13 | M4 |
-| NullCoalescing.cs:9:12:9:13 | exit M4 (normal) | NullCoalescing.cs:9:12:9:13 | M4 |
+| NullCoalescing.cs:9:36:9:58 | ... ?? ... | NullCoalescing.cs:9:12:9:13 | M4 |
+| NullCoalescing.cs:9:37:9:45 | [non-null] ... ? ... : ... | NullCoalescing.cs:9:12:9:13 | M4 |
+| NullCoalescing.cs:9:37:9:45 | [null] ... ? ... : ... | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:41:9:41 | access to parameter s | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:45:9:45 | access to parameter s | NullCoalescing.cs:9:12:9:13 | M4 |
-| NullCoalescing.cs:9:51:9:58 | ... ?? ... | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:11:9:11:10 | enter M5 | NullCoalescing.cs:11:9:11:10 | M5 |
-| NullCoalescing.cs:11:9:11:10 | exit M5 (normal) | NullCoalescing.cs:11:9:11:10 | M5 |
-| NullCoalescing.cs:11:51:11:58 | ... && ... | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:44:11:59 | [false] ... ?? ... | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:44:11:59 | [true] ... ?? ... | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:51:11:52 | access to parameter b2 | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:51:11:58 | [false] ... && ... | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:51:11:58 | [true] ... && ... | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:9:11:10 | M5 |
-| NullCoalescing.cs:11:64:11:64 | 0 | NullCoalescing.cs:11:9:11:10 | M5 |
-| NullCoalescing.cs:11:68:11:68 | 1 | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:13:10:13:11 | enter M6 | NullCoalescing.cs:13:10:13:11 | M6 |
 | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:5:10:5:13 | Test |
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:13 | Test |
@@ -5417,9 +5461,10 @@ blockEnclosing
 | Switch.cs:22:21:22:27 | return ...; | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:13:24:56 | case ...: | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:24:32:24:55 | ... && ... | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:24:32:24:55 | [false] ... && ... | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:24:32:24:55 | [true] ... && ... | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:25:17:25:37 | ...; | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:27:13:27:39 | case ...: | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:30:13:30:20 | default: | Switch.cs:10:10:10:11 | M2 |
@@ -5465,14 +5510,18 @@ blockEnclosing
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:123:10:123:12 | enter M11 | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:123:10:123:12 | exit M11 (normal) | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:13:125:48 | [false] ... switch { ... } | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:24:125:34 | [false] ... => ... | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:24:125:34 | [true] ... => ... | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:123:10:123:12 | M11 |
-| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:123:10:123:12 | M11 |
-| Switch.cs:126:13:126:19 | return ...; | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:37:125:37 | _ | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:9:131:67 | return ...; | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:17:131:53 | [null] ... switch { ... } | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:28:131:40 | [non-null] ... => ... | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:28:131:40 | [null] ... => ... | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:129:12:129:14 | M12 |
-| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:129:12:129:14 | M12 |
-| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:43:131:43 | _ | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:134:9:134:11 | enter M13 | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:134:9:134:11 | exit M13 (normal) | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:138:13:138:20 | default: | Switch.cs:134:9:134:11 | M13 |
@@ -5489,9 +5538,9 @@ blockEnclosing
 | Switch.cs:154:10:154:12 | exit M15 | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:154:10:154:12 | exit M15 (abnormal) | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:154:10:154:12 | exit M15 (normal) | Switch.cs:154:10:154:12 | M15 |
-| Switch.cs:156:13:156:54 | String s = ... | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:36:156:38 | "a" | Switch.cs:154:10:154:12 | M15 |
-| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:41:156:45 | false | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:50:156:52 | "b" | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:158:13:158:49 | ...; | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:160:13:160:49 | ...; | Switch.cs:154:10:154:12 | M15 |
@@ -5501,7 +5550,7 @@ blockEnclosing
 | VarDecls.cs:5:18:5:19 | enter M1 | VarDecls.cs:5:18:5:19 | M1 |
 | VarDecls.cs:13:12:13:13 | enter M2 | VarDecls.cs:13:12:13:13 | M2 |
 | VarDecls.cs:19:7:19:8 | enter M3 | VarDecls.cs:19:7:19:8 | M3 |
-| VarDecls.cs:25:13:25:29 | return ...; | VarDecls.cs:19:7:19:8 | M3 |
+| VarDecls.cs:25:20:25:28 | ... ? ... : ... | VarDecls.cs:19:7:19:8 | M3 |
 | VarDecls.cs:25:24:25:24 | access to local variable x | VarDecls.cs:19:7:19:8 | M3 |
 | VarDecls.cs:25:28:25:28 | access to local variable y | VarDecls.cs:19:7:19:8 | M3 |
 | VarDecls.cs:28:41:28:47 | enter Dispose | VarDecls.cs:28:41:28:47 | Dispose |
@@ -5517,9 +5566,9 @@ blockEnclosing
 | cflow.cs:24:25:24:25 | access to local variable i | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:24:34:24:34 | access to local variable i | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:25:9:34:9 | {...} | cflow.cs:5:17:5:20 | Main |
+| cflow.cs:26:17:26:40 | [false] ... && ... | cflow.cs:5:17:5:20 | Main |
+| cflow.cs:26:17:26:40 | [true] ... && ... | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:26:31:26:31 | access to local variable i | cflow.cs:5:17:5:20 | Main |
-| cflow.cs:27:17:27:46 | ...; | cflow.cs:5:17:5:20 | Main |
-| cflow.cs:28:18:33:37 | if (...) ... | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:29:17:29:42 | ...; | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:30:18:33:37 | if (...) ... | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:31:17:31:42 | ...; | cflow.cs:5:17:5:20 | Main |
@@ -5537,8 +5586,8 @@ blockEnclosing
 | cflow.cs:56:13:56:20 | default: | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:64:27:64:54 | object creation of type NullReferenceException | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:65:17:65:22 | break; | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:63:21:63:34 | [false] !... | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:63:21:63:34 | [true] !... | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:67:16:67:16 | access to parameter a | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:70:18:70:18 | enter M | cflow.cs:70:18:70:18 | M |
 | cflow.cs:70:18:70:18 | exit M (normal) | cflow.cs:70:18:70:18 | M |
@@ -5548,8 +5597,9 @@ blockEnclosing
 | cflow.cs:79:9:81:9 | {...} | cflow.cs:70:18:70:18 | M |
 | cflow.cs:84:18:84:19 | enter M2 | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:84:18:84:19 | exit M2 (normal) | cflow.cs:84:18:84:19 | M2 |
+| cflow.cs:86:13:86:37 | [false] ... && ... | cflow.cs:84:18:84:19 | M2 |
+| cflow.cs:86:13:86:37 | [true] ... && ... | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:86:26:86:26 | access to parameter s | cflow.cs:84:18:84:19 | M2 |
-| cflow.cs:87:13:87:33 | ...; | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:90:18:90:19 | enter M3 | cflow.cs:90:18:90:19 | M3 |
 | cflow.cs:90:18:90:19 | exit M3 | cflow.cs:90:18:90:19 | M3 |
 | cflow.cs:90:18:90:19 | exit M3 (normal) | cflow.cs:90:18:90:19 | M3 |
@@ -5566,7 +5616,7 @@ blockEnclosing
 | cflow.cs:116:9:116:29 | ...; | cflow.cs:106:18:106:19 | M4 |
 | cflow.cs:119:20:119:21 | enter M5 | cflow.cs:119:20:119:21 | M5 |
 | cflow.cs:127:19:127:21 | enter get_Prop | cflow.cs:127:19:127:21 | get_Prop |
-| cflow.cs:127:25:127:58 | return ...; | cflow.cs:127:19:127:21 | get_Prop |
+| cflow.cs:127:32:127:57 | ... ? ... : ... | cflow.cs:127:19:127:21 | get_Prop |
 | cflow.cs:127:48:127:49 | "" | cflow.cs:127:19:127:21 | get_Prop |
 | cflow.cs:127:53:127:57 | this access | cflow.cs:127:19:127:21 | get_Prop |
 | cflow.cs:127:62:127:64 | enter set_Prop | cflow.cs:127:62:127:64 | set_Prop |
@@ -5597,18 +5647,20 @@ blockEnclosing
 | cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:193:10:193:17 | enter Booleans | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:193:10:193:17 | exit Booleans | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:193:10:193:17 | exit Booleans (normal) | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:195:13:195:56 | Boolean b = ... | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:195:37:195:56 | !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:195:17:195:56 | ... && ... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:195:39:195:43 | this access | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:197:35:197:39 | false | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:197:43:197:46 | true | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:198:13:198:48 | ... = ... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:198:17:198:48 | ... ? ... : ... | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:198:37:198:41 | false | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:198:45:198:48 | true | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:9:205:9 | if (...) ... | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:200:37:200:62 | !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:13:200:32 | [false] !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:13:200:32 | [true] !... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:13:200:62 | [true] ... \|\| ... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:40:200:61 | [false] ... && ... | cflow.cs:193:10:193:17 | Booleans |
+| cflow.cs:200:40:200:61 | [true] ... && ... | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:200:61:200:61 | access to local variable b | cflow.cs:193:10:193:17 | Booleans |
-| cflow.cs:201:9:205:9 | {...} | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:208:10:208:11 | enter Do | cflow.cs:208:10:208:11 | Do |
 | cflow.cs:208:10:208:11 | exit Do (normal) | cflow.cs:208:10:208:11 | Do |
 | cflow.cs:211:9:221:9 | {...} | cflow.cs:208:10:208:11 | Do |
@@ -5626,7 +5678,8 @@ blockEnclosing
 | cflow.cs:240:10:240:13 | enter Goto | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:242:9:242:13 | Label: | cflow.cs:240:10:240:13 | Goto |
-| cflow.cs:242:43:242:45 | {...} | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:242:21:242:40 | [false] !... | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:242:21:242:40 | [true] !... | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:244:31:244:41 | goto ...; | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:240:10:240:13 | Goto |
@@ -5646,5 +5699,6 @@ blockEnclosing
 | cflow.cs:291:12:291:12 | enter M | cflow.cs:291:12:291:12 | M |
 | cflow.cs:296:5:296:25 | enter NegationInConstructor | cflow.cs:296:5:296:25 | NegationInConstructor |
 | cflow.cs:298:10:298:10 | enter M | cflow.cs:298:10:298:10 | M |
-| cflow.cs:300:56:300:56 | access to parameter s | cflow.cs:298:10:298:10 | M |
-| cflow.cs:300:70:300:71 | "" | cflow.cs:298:10:298:10 | M |
+| cflow.cs:300:44:300:51 | [false] !... | cflow.cs:298:10:298:10 | M |
+| cflow.cs:300:44:300:51 | [true] !... | cflow.cs:298:10:298:10 | M |
+| cflow.cs:300:44:300:64 | ... && ... | cflow.cs:298:10:298:10 | M |

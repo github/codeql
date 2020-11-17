@@ -331,13 +331,13 @@
 | Assert.cs:7:10:7:11 | exit M1 (abnormal) | Assert.cs:7:10:7:11 | exit M1 | semmle.label | successor |
 | Assert.cs:7:10:7:11 | exit M1 (normal) | Assert.cs:7:10:7:11 | exit M1 | semmle.label | successor |
 | Assert.cs:8:5:12:5 | {...} | Assert.cs:9:9:9:33 | ... ...; | semmle.label | successor |
-| Assert.cs:9:9:9:33 | ... ...; | Assert.cs:9:20:9:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:9:9:9:33 | ... ...; | Assert.cs:9:20:9:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:9:16:9:32 | String s = ... | Assert.cs:10:9:10:32 | ...; | semmle.label | successor |
 | Assert.cs:9:20:9:20 | access to parameter b | Assert.cs:9:24:9:27 | null | semmle.label | true |
 | Assert.cs:9:20:9:20 | access to parameter b | Assert.cs:9:31:9:32 | "" | semmle.label | false |
-| Assert.cs:9:20:9:32 | ... ? ... : ... | Assert.cs:9:20:9:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:9:24:9:27 | null | Assert.cs:9:16:9:32 | String s = ... | semmle.label | successor |
-| Assert.cs:9:31:9:32 | "" | Assert.cs:9:16:9:32 | String s = ... | semmle.label | successor |
+| Assert.cs:9:20:9:32 | ... ? ... : ... | Assert.cs:9:16:9:32 | String s = ... | semmle.label | successor |
+| Assert.cs:9:24:9:27 | null | Assert.cs:9:20:9:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:9:31:9:32 | "" | Assert.cs:9:20:9:32 | ... ? ... : ... | semmle.label | successor |
 | Assert.cs:10:9:10:31 | [assertion failure] call to method Assert | Assert.cs:7:10:7:11 | exit M1 (abnormal) | semmle.label | exit |
 | Assert.cs:10:9:10:31 | [assertion success] call to method Assert | Assert.cs:11:9:11:36 | ...; | semmle.label | successor |
 | Assert.cs:10:9:10:32 | ...; | Assert.cs:10:22:10:22 | access to local variable s | semmle.label | successor |
@@ -353,13 +353,13 @@
 | Assert.cs:14:10:14:11 | exit M2 (abnormal) | Assert.cs:14:10:14:11 | exit M2 | semmle.label | successor |
 | Assert.cs:14:10:14:11 | exit M2 (normal) | Assert.cs:14:10:14:11 | exit M2 | semmle.label | successor |
 | Assert.cs:15:5:19:5 | {...} | Assert.cs:16:9:16:33 | ... ...; | semmle.label | successor |
-| Assert.cs:16:9:16:33 | ... ...; | Assert.cs:16:20:16:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:16:9:16:33 | ... ...; | Assert.cs:16:20:16:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:16:16:16:32 | String s = ... | Assert.cs:17:9:17:25 | ...; | semmle.label | successor |
 | Assert.cs:16:20:16:20 | access to parameter b | Assert.cs:16:24:16:27 | null | semmle.label | true |
 | Assert.cs:16:20:16:20 | access to parameter b | Assert.cs:16:31:16:32 | "" | semmle.label | false |
-| Assert.cs:16:20:16:32 | ... ? ... : ... | Assert.cs:16:20:16:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:16:24:16:27 | null | Assert.cs:16:16:16:32 | String s = ... | semmle.label | successor |
-| Assert.cs:16:31:16:32 | "" | Assert.cs:16:16:16:32 | String s = ... | semmle.label | successor |
+| Assert.cs:16:20:16:32 | ... ? ... : ... | Assert.cs:16:16:16:32 | String s = ... | semmle.label | successor |
+| Assert.cs:16:24:16:27 | null | Assert.cs:16:20:16:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:16:31:16:32 | "" | Assert.cs:16:20:16:32 | ... ? ... : ... | semmle.label | successor |
 | Assert.cs:17:9:17:24 | [assertion failure] call to method IsNull | Assert.cs:14:10:14:11 | exit M2 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:17:9:17:24 | [assertion success] call to method IsNull | Assert.cs:18:9:18:36 | ...; | semmle.label | successor |
 | Assert.cs:17:9:17:25 | ...; | Assert.cs:17:23:17:23 | access to local variable s | semmle.label | successor |
@@ -373,13 +373,13 @@
 | Assert.cs:21:10:21:11 | exit M3 (abnormal) | Assert.cs:21:10:21:11 | exit M3 | semmle.label | successor |
 | Assert.cs:21:10:21:11 | exit M3 (normal) | Assert.cs:21:10:21:11 | exit M3 | semmle.label | successor |
 | Assert.cs:22:5:26:5 | {...} | Assert.cs:23:9:23:33 | ... ...; | semmle.label | successor |
-| Assert.cs:23:9:23:33 | ... ...; | Assert.cs:23:20:23:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:23:9:23:33 | ... ...; | Assert.cs:23:20:23:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:23:16:23:32 | String s = ... | Assert.cs:24:9:24:28 | ...; | semmle.label | successor |
 | Assert.cs:23:20:23:20 | access to parameter b | Assert.cs:23:24:23:27 | null | semmle.label | true |
 | Assert.cs:23:20:23:20 | access to parameter b | Assert.cs:23:31:23:32 | "" | semmle.label | false |
-| Assert.cs:23:20:23:32 | ... ? ... : ... | Assert.cs:23:20:23:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:23:24:23:27 | null | Assert.cs:23:16:23:32 | String s = ... | semmle.label | successor |
-| Assert.cs:23:31:23:32 | "" | Assert.cs:23:16:23:32 | String s = ... | semmle.label | successor |
+| Assert.cs:23:20:23:32 | ... ? ... : ... | Assert.cs:23:16:23:32 | String s = ... | semmle.label | successor |
+| Assert.cs:23:24:23:27 | null | Assert.cs:23:20:23:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:23:31:23:32 | "" | Assert.cs:23:20:23:32 | ... ? ... : ... | semmle.label | successor |
 | Assert.cs:24:9:24:27 | [assertion failure] call to method IsNotNull | Assert.cs:21:10:21:11 | exit M3 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:24:9:24:27 | [assertion success] call to method IsNotNull | Assert.cs:25:9:25:36 | ...; | semmle.label | successor |
 | Assert.cs:24:9:24:28 | ...; | Assert.cs:24:26:24:26 | access to local variable s | semmle.label | successor |
@@ -393,13 +393,13 @@
 | Assert.cs:28:10:28:11 | exit M4 (abnormal) | Assert.cs:28:10:28:11 | exit M4 | semmle.label | successor |
 | Assert.cs:28:10:28:11 | exit M4 (normal) | Assert.cs:28:10:28:11 | exit M4 | semmle.label | successor |
 | Assert.cs:29:5:33:5 | {...} | Assert.cs:30:9:30:33 | ... ...; | semmle.label | successor |
-| Assert.cs:30:9:30:33 | ... ...; | Assert.cs:30:20:30:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:30:9:30:33 | ... ...; | Assert.cs:30:20:30:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:30:16:30:32 | String s = ... | Assert.cs:31:9:31:33 | ...; | semmle.label | successor |
 | Assert.cs:30:20:30:20 | access to parameter b | Assert.cs:30:24:30:27 | null | semmle.label | true |
 | Assert.cs:30:20:30:20 | access to parameter b | Assert.cs:30:31:30:32 | "" | semmle.label | false |
-| Assert.cs:30:20:30:32 | ... ? ... : ... | Assert.cs:30:20:30:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:30:24:30:27 | null | Assert.cs:30:16:30:32 | String s = ... | semmle.label | successor |
-| Assert.cs:30:31:30:32 | "" | Assert.cs:30:16:30:32 | String s = ... | semmle.label | successor |
+| Assert.cs:30:20:30:32 | ... ? ... : ... | Assert.cs:30:16:30:32 | String s = ... | semmle.label | successor |
+| Assert.cs:30:24:30:27 | null | Assert.cs:30:20:30:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:30:31:30:32 | "" | Assert.cs:30:20:30:32 | ... ? ... : ... | semmle.label | successor |
 | Assert.cs:31:9:31:32 | [assertion failure] call to method IsTrue | Assert.cs:28:10:28:11 | exit M4 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:31:9:31:32 | [assertion success] call to method IsTrue | Assert.cs:32:9:32:36 | ...; | semmle.label | successor |
 | Assert.cs:31:9:31:33 | ...; | Assert.cs:31:23:31:23 | access to local variable s | semmle.label | successor |
@@ -415,13 +415,13 @@
 | Assert.cs:35:10:35:11 | exit M5 (abnormal) | Assert.cs:35:10:35:11 | exit M5 | semmle.label | successor |
 | Assert.cs:35:10:35:11 | exit M5 (normal) | Assert.cs:35:10:35:11 | exit M5 | semmle.label | successor |
 | Assert.cs:36:5:40:5 | {...} | Assert.cs:37:9:37:33 | ... ...; | semmle.label | successor |
-| Assert.cs:37:9:37:33 | ... ...; | Assert.cs:37:20:37:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:37:9:37:33 | ... ...; | Assert.cs:37:20:37:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:37:16:37:32 | String s = ... | Assert.cs:38:9:38:33 | ...; | semmle.label | successor |
 | Assert.cs:37:20:37:20 | access to parameter b | Assert.cs:37:24:37:27 | null | semmle.label | true |
 | Assert.cs:37:20:37:20 | access to parameter b | Assert.cs:37:31:37:32 | "" | semmle.label | false |
-| Assert.cs:37:20:37:32 | ... ? ... : ... | Assert.cs:37:20:37:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:37:24:37:27 | null | Assert.cs:37:16:37:32 | String s = ... | semmle.label | successor |
-| Assert.cs:37:31:37:32 | "" | Assert.cs:37:16:37:32 | String s = ... | semmle.label | successor |
+| Assert.cs:37:20:37:32 | ... ? ... : ... | Assert.cs:37:16:37:32 | String s = ... | semmle.label | successor |
+| Assert.cs:37:24:37:27 | null | Assert.cs:37:20:37:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:37:31:37:32 | "" | Assert.cs:37:20:37:32 | ... ? ... : ... | semmle.label | successor |
 | Assert.cs:38:9:38:32 | [assertion failure] call to method IsTrue | Assert.cs:35:10:35:11 | exit M5 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:38:9:38:32 | [assertion success] call to method IsTrue | Assert.cs:39:9:39:36 | ...; | semmle.label | successor |
 | Assert.cs:38:9:38:33 | ...; | Assert.cs:38:23:38:23 | access to local variable s | semmle.label | successor |
@@ -437,13 +437,13 @@
 | Assert.cs:42:10:42:11 | exit M6 (abnormal) | Assert.cs:42:10:42:11 | exit M6 | semmle.label | successor |
 | Assert.cs:42:10:42:11 | exit M6 (normal) | Assert.cs:42:10:42:11 | exit M6 | semmle.label | successor |
 | Assert.cs:43:5:47:5 | {...} | Assert.cs:44:9:44:33 | ... ...; | semmle.label | successor |
-| Assert.cs:44:9:44:33 | ... ...; | Assert.cs:44:20:44:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:44:9:44:33 | ... ...; | Assert.cs:44:20:44:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:44:16:44:32 | String s = ... | Assert.cs:45:9:45:34 | ...; | semmle.label | successor |
 | Assert.cs:44:20:44:20 | access to parameter b | Assert.cs:44:24:44:27 | null | semmle.label | true |
 | Assert.cs:44:20:44:20 | access to parameter b | Assert.cs:44:31:44:32 | "" | semmle.label | false |
-| Assert.cs:44:20:44:32 | ... ? ... : ... | Assert.cs:44:20:44:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:44:24:44:27 | null | Assert.cs:44:16:44:32 | String s = ... | semmle.label | successor |
-| Assert.cs:44:31:44:32 | "" | Assert.cs:44:16:44:32 | String s = ... | semmle.label | successor |
+| Assert.cs:44:20:44:32 | ... ? ... : ... | Assert.cs:44:16:44:32 | String s = ... | semmle.label | successor |
+| Assert.cs:44:24:44:27 | null | Assert.cs:44:20:44:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:44:31:44:32 | "" | Assert.cs:44:20:44:32 | ... ? ... : ... | semmle.label | successor |
 | Assert.cs:45:9:45:33 | [assertion failure] call to method IsFalse | Assert.cs:42:10:42:11 | exit M6 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:45:9:45:33 | [assertion success] call to method IsFalse | Assert.cs:46:9:46:36 | ...; | semmle.label | successor |
 | Assert.cs:45:9:45:34 | ...; | Assert.cs:45:24:45:24 | access to local variable s | semmle.label | successor |
@@ -459,13 +459,13 @@
 | Assert.cs:49:10:49:11 | exit M7 (abnormal) | Assert.cs:49:10:49:11 | exit M7 | semmle.label | successor |
 | Assert.cs:49:10:49:11 | exit M7 (normal) | Assert.cs:49:10:49:11 | exit M7 | semmle.label | successor |
 | Assert.cs:50:5:54:5 | {...} | Assert.cs:51:9:51:33 | ... ...; | semmle.label | successor |
-| Assert.cs:51:9:51:33 | ... ...; | Assert.cs:51:20:51:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:51:9:51:33 | ... ...; | Assert.cs:51:20:51:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:51:16:51:32 | String s = ... | Assert.cs:52:9:52:34 | ...; | semmle.label | successor |
 | Assert.cs:51:20:51:20 | access to parameter b | Assert.cs:51:24:51:27 | null | semmle.label | true |
 | Assert.cs:51:20:51:20 | access to parameter b | Assert.cs:51:31:51:32 | "" | semmle.label | false |
-| Assert.cs:51:20:51:32 | ... ? ... : ... | Assert.cs:51:20:51:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:51:24:51:27 | null | Assert.cs:51:16:51:32 | String s = ... | semmle.label | successor |
-| Assert.cs:51:31:51:32 | "" | Assert.cs:51:16:51:32 | String s = ... | semmle.label | successor |
+| Assert.cs:51:20:51:32 | ... ? ... : ... | Assert.cs:51:16:51:32 | String s = ... | semmle.label | successor |
+| Assert.cs:51:24:51:27 | null | Assert.cs:51:20:51:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:51:31:51:32 | "" | Assert.cs:51:20:51:32 | ... ? ... : ... | semmle.label | successor |
 | Assert.cs:52:9:52:33 | [assertion failure] call to method IsFalse | Assert.cs:49:10:49:11 | exit M7 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:52:9:52:33 | [assertion success] call to method IsFalse | Assert.cs:53:9:53:36 | ...; | semmle.label | successor |
 | Assert.cs:52:9:52:34 | ...; | Assert.cs:52:24:52:24 | access to local variable s | semmle.label | successor |
@@ -481,30 +481,31 @@
 | Assert.cs:56:10:56:11 | exit M8 (abnormal) | Assert.cs:56:10:56:11 | exit M8 | semmle.label | successor |
 | Assert.cs:56:10:56:11 | exit M8 (normal) | Assert.cs:56:10:56:11 | exit M8 | semmle.label | successor |
 | Assert.cs:57:5:61:5 | {...} | Assert.cs:58:9:58:33 | ... ...; | semmle.label | successor |
-| Assert.cs:58:9:58:33 | ... ...; | Assert.cs:58:20:58:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:58:9:58:33 | ... ...; | Assert.cs:58:20:58:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:58:16:58:32 | [b (line 56): false] String s = ... | Assert.cs:59:9:59:38 | [b (line 56): false] ...; | semmle.label | successor |
 | Assert.cs:58:16:58:32 | [b (line 56): true] String s = ... | Assert.cs:59:9:59:38 | [b (line 56): true] ...; | semmle.label | successor |
 | Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:24:58:27 | [b (line 56): true] null | semmle.label | true |
 | Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:31:58:32 | [b (line 56): false] "" | semmle.label | false |
-| Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:58:20:58:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:58:24:58:27 | [b (line 56): true] null | Assert.cs:58:16:58:32 | [b (line 56): true] String s = ... | semmle.label | successor |
-| Assert.cs:58:31:58:32 | [b (line 56): false] "" | Assert.cs:58:16:58:32 | [b (line 56): false] String s = ... | semmle.label | successor |
+| Assert.cs:58:20:58:32 | [b (line 56): false] ... ? ... : ... | Assert.cs:58:16:58:32 | [b (line 56): false] String s = ... | semmle.label | successor |
+| Assert.cs:58:20:58:32 | [b (line 56): true] ... ? ... : ... | Assert.cs:58:16:58:32 | [b (line 56): true] String s = ... | semmle.label | successor |
+| Assert.cs:58:24:58:27 | [b (line 56): true] null | Assert.cs:58:20:58:32 | [b (line 56): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:58:31:58:32 | [b (line 56): false] "" | Assert.cs:58:20:58:32 | [b (line 56): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | Assert.cs:56:10:56:11 | exit M8 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:59:9:59:37 | [assertion success] call to method IsTrue | Assert.cs:60:9:60:36 | ...; | semmle.label | successor |
-| Assert.cs:59:9:59:38 | [b (line 56): false] ...; | Assert.cs:59:23:59:36 | [b (line 56): false] ... && ... | semmle.label | successor |
-| Assert.cs:59:9:59:38 | [b (line 56): true] ...; | Assert.cs:59:23:59:36 | [b (line 56): true] ... && ... | semmle.label | successor |
+| Assert.cs:59:9:59:38 | [b (line 56): false] ...; | Assert.cs:59:23:59:23 | [b (line 56): false] access to local variable s | semmle.label | successor |
+| Assert.cs:59:9:59:38 | [b (line 56): true] ...; | Assert.cs:59:23:59:23 | [b (line 56): true] access to local variable s | semmle.label | successor |
 | Assert.cs:59:23:59:23 | [b (line 56): false] access to local variable s | Assert.cs:59:28:59:31 | [b (line 56): false] null | semmle.label | successor |
 | Assert.cs:59:23:59:23 | [b (line 56): true] access to local variable s | Assert.cs:59:28:59:31 | [b (line 56): true] null | semmle.label | successor |
-| Assert.cs:59:23:59:31 | [b (line 56): false] ... != ... | Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | semmle.label | false |
+| Assert.cs:59:23:59:31 | [b (line 56): false] ... != ... | Assert.cs:59:23:59:36 | [false] ... && ... | semmle.label | false |
 | Assert.cs:59:23:59:31 | [b (line 56): false] ... != ... | Assert.cs:59:36:59:36 | [b (line 56): false] access to parameter b | semmle.label | true |
-| Assert.cs:59:23:59:31 | [b (line 56): true] ... != ... | Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | semmle.label | false |
+| Assert.cs:59:23:59:31 | [b (line 56): true] ... != ... | Assert.cs:59:23:59:36 | [false] ... && ... | semmle.label | false |
 | Assert.cs:59:23:59:31 | [b (line 56): true] ... != ... | Assert.cs:59:36:59:36 | [b (line 56): true] access to parameter b | semmle.label | true |
-| Assert.cs:59:23:59:36 | [b (line 56): false] ... && ... | Assert.cs:59:23:59:23 | [b (line 56): false] access to local variable s | semmle.label | successor |
-| Assert.cs:59:23:59:36 | [b (line 56): true] ... && ... | Assert.cs:59:23:59:23 | [b (line 56): true] access to local variable s | semmle.label | successor |
+| Assert.cs:59:23:59:36 | [false] ... && ... | Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | semmle.label | false |
+| Assert.cs:59:23:59:36 | [true] ... && ... | Assert.cs:59:9:59:37 | [assertion success] call to method IsTrue | semmle.label | true |
 | Assert.cs:59:28:59:31 | [b (line 56): false] null | Assert.cs:59:23:59:31 | [b (line 56): false] ... != ... | semmle.label | successor |
 | Assert.cs:59:28:59:31 | [b (line 56): true] null | Assert.cs:59:23:59:31 | [b (line 56): true] ... != ... | semmle.label | successor |
-| Assert.cs:59:36:59:36 | [b (line 56): false] access to parameter b | Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | semmle.label | false |
-| Assert.cs:59:36:59:36 | [b (line 56): true] access to parameter b | Assert.cs:59:9:59:37 | [assertion success] call to method IsTrue | semmle.label | true |
+| Assert.cs:59:36:59:36 | [b (line 56): false] access to parameter b | Assert.cs:59:23:59:36 | [false] ... && ... | semmle.label | false |
+| Assert.cs:59:36:59:36 | [b (line 56): true] access to parameter b | Assert.cs:59:23:59:36 | [true] ... && ... | semmle.label | true |
 | Assert.cs:60:9:60:35 | call to method WriteLine | Assert.cs:56:10:56:11 | exit M8 (normal) | semmle.label | successor |
 | Assert.cs:60:9:60:36 | ...; | Assert.cs:60:27:60:27 | access to local variable s | semmle.label | successor |
 | Assert.cs:60:27:60:27 | access to local variable s | Assert.cs:60:27:60:34 | access to property Length | semmle.label | successor |
@@ -513,30 +514,31 @@
 | Assert.cs:63:10:63:11 | exit M9 (abnormal) | Assert.cs:63:10:63:11 | exit M9 | semmle.label | successor |
 | Assert.cs:63:10:63:11 | exit M9 (normal) | Assert.cs:63:10:63:11 | exit M9 | semmle.label | successor |
 | Assert.cs:64:5:68:5 | {...} | Assert.cs:65:9:65:33 | ... ...; | semmle.label | successor |
-| Assert.cs:65:9:65:33 | ... ...; | Assert.cs:65:20:65:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:65:9:65:33 | ... ...; | Assert.cs:65:20:65:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:65:16:65:32 | [b (line 63): false] String s = ... | Assert.cs:66:9:66:39 | [b (line 63): false] ...; | semmle.label | successor |
 | Assert.cs:65:16:65:32 | [b (line 63): true] String s = ... | Assert.cs:66:9:66:39 | [b (line 63): true] ...; | semmle.label | successor |
 | Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:65:24:65:27 | [b (line 63): true] null | semmle.label | true |
 | Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:65:31:65:32 | [b (line 63): false] "" | semmle.label | false |
-| Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:65:20:65:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:65:24:65:27 | [b (line 63): true] null | Assert.cs:65:16:65:32 | [b (line 63): true] String s = ... | semmle.label | successor |
-| Assert.cs:65:31:65:32 | [b (line 63): false] "" | Assert.cs:65:16:65:32 | [b (line 63): false] String s = ... | semmle.label | successor |
+| Assert.cs:65:20:65:32 | [b (line 63): false] ... ? ... : ... | Assert.cs:65:16:65:32 | [b (line 63): false] String s = ... | semmle.label | successor |
+| Assert.cs:65:20:65:32 | [b (line 63): true] ... ? ... : ... | Assert.cs:65:16:65:32 | [b (line 63): true] String s = ... | semmle.label | successor |
+| Assert.cs:65:24:65:27 | [b (line 63): true] null | Assert.cs:65:20:65:32 | [b (line 63): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:65:31:65:32 | [b (line 63): false] "" | Assert.cs:65:20:65:32 | [b (line 63): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | Assert.cs:63:10:63:11 | exit M9 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:66:9:66:38 | [assertion success] call to method IsFalse | Assert.cs:67:9:67:36 | ...; | semmle.label | successor |
-| Assert.cs:66:9:66:39 | [b (line 63): false] ...; | Assert.cs:66:24:66:37 | [b (line 63): false] ... \|\| ... | semmle.label | successor |
-| Assert.cs:66:9:66:39 | [b (line 63): true] ...; | Assert.cs:66:24:66:37 | [b (line 63): true] ... \|\| ... | semmle.label | successor |
+| Assert.cs:66:9:66:39 | [b (line 63): false] ...; | Assert.cs:66:24:66:24 | [b (line 63): false] access to local variable s | semmle.label | successor |
+| Assert.cs:66:9:66:39 | [b (line 63): true] ...; | Assert.cs:66:24:66:24 | [b (line 63): true] access to local variable s | semmle.label | successor |
 | Assert.cs:66:24:66:24 | [b (line 63): false] access to local variable s | Assert.cs:66:29:66:32 | [b (line 63): false] null | semmle.label | successor |
 | Assert.cs:66:24:66:24 | [b (line 63): true] access to local variable s | Assert.cs:66:29:66:32 | [b (line 63): true] null | semmle.label | successor |
-| Assert.cs:66:24:66:32 | [b (line 63): false] ... == ... | Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | semmle.label | true |
+| Assert.cs:66:24:66:32 | [b (line 63): false] ... == ... | Assert.cs:66:24:66:37 | [true] ... \|\| ... | semmle.label | true |
 | Assert.cs:66:24:66:32 | [b (line 63): false] ... == ... | Assert.cs:66:37:66:37 | [b (line 63): false] access to parameter b | semmle.label | false |
-| Assert.cs:66:24:66:32 | [b (line 63): true] ... == ... | Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | semmle.label | true |
+| Assert.cs:66:24:66:32 | [b (line 63): true] ... == ... | Assert.cs:66:24:66:37 | [true] ... \|\| ... | semmle.label | true |
 | Assert.cs:66:24:66:32 | [b (line 63): true] ... == ... | Assert.cs:66:37:66:37 | [b (line 63): true] access to parameter b | semmle.label | false |
-| Assert.cs:66:24:66:37 | [b (line 63): false] ... \|\| ... | Assert.cs:66:24:66:24 | [b (line 63): false] access to local variable s | semmle.label | successor |
-| Assert.cs:66:24:66:37 | [b (line 63): true] ... \|\| ... | Assert.cs:66:24:66:24 | [b (line 63): true] access to local variable s | semmle.label | successor |
+| Assert.cs:66:24:66:37 | [false] ... \|\| ... | Assert.cs:66:9:66:38 | [assertion success] call to method IsFalse | semmle.label | false |
+| Assert.cs:66:24:66:37 | [true] ... \|\| ... | Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | semmle.label | true |
 | Assert.cs:66:29:66:32 | [b (line 63): false] null | Assert.cs:66:24:66:32 | [b (line 63): false] ... == ... | semmle.label | successor |
 | Assert.cs:66:29:66:32 | [b (line 63): true] null | Assert.cs:66:24:66:32 | [b (line 63): true] ... == ... | semmle.label | successor |
-| Assert.cs:66:37:66:37 | [b (line 63): false] access to parameter b | Assert.cs:66:9:66:38 | [assertion success] call to method IsFalse | semmle.label | false |
-| Assert.cs:66:37:66:37 | [b (line 63): true] access to parameter b | Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | semmle.label | true |
+| Assert.cs:66:37:66:37 | [b (line 63): false] access to parameter b | Assert.cs:66:24:66:37 | [false] ... \|\| ... | semmle.label | false |
+| Assert.cs:66:37:66:37 | [b (line 63): true] access to parameter b | Assert.cs:66:24:66:37 | [true] ... \|\| ... | semmle.label | true |
 | Assert.cs:67:9:67:35 | call to method WriteLine | Assert.cs:63:10:63:11 | exit M9 (normal) | semmle.label | successor |
 | Assert.cs:67:9:67:36 | ...; | Assert.cs:67:27:67:27 | access to local variable s | semmle.label | successor |
 | Assert.cs:67:27:67:27 | access to local variable s | Assert.cs:67:27:67:34 | access to property Length | semmle.label | successor |
@@ -545,30 +547,31 @@
 | Assert.cs:70:10:70:12 | exit M10 (abnormal) | Assert.cs:70:10:70:12 | exit M10 | semmle.label | successor |
 | Assert.cs:70:10:70:12 | exit M10 (normal) | Assert.cs:70:10:70:12 | exit M10 | semmle.label | successor |
 | Assert.cs:71:5:75:5 | {...} | Assert.cs:72:9:72:33 | ... ...; | semmle.label | successor |
-| Assert.cs:72:9:72:33 | ... ...; | Assert.cs:72:20:72:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:72:9:72:33 | ... ...; | Assert.cs:72:20:72:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:72:16:72:32 | [b (line 70): false] String s = ... | Assert.cs:73:9:73:38 | [b (line 70): false] ...; | semmle.label | successor |
 | Assert.cs:72:16:72:32 | [b (line 70): true] String s = ... | Assert.cs:73:9:73:38 | [b (line 70): true] ...; | semmle.label | successor |
 | Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:72:24:72:27 | [b (line 70): true] null | semmle.label | true |
 | Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:72:31:72:32 | [b (line 70): false] "" | semmle.label | false |
-| Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:72:20:72:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:72:24:72:27 | [b (line 70): true] null | Assert.cs:72:16:72:32 | [b (line 70): true] String s = ... | semmle.label | successor |
-| Assert.cs:72:31:72:32 | [b (line 70): false] "" | Assert.cs:72:16:72:32 | [b (line 70): false] String s = ... | semmle.label | successor |
+| Assert.cs:72:20:72:32 | [b (line 70): false] ... ? ... : ... | Assert.cs:72:16:72:32 | [b (line 70): false] String s = ... | semmle.label | successor |
+| Assert.cs:72:20:72:32 | [b (line 70): true] ... ? ... : ... | Assert.cs:72:16:72:32 | [b (line 70): true] String s = ... | semmle.label | successor |
+| Assert.cs:72:24:72:27 | [b (line 70): true] null | Assert.cs:72:20:72:32 | [b (line 70): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:72:31:72:32 | [b (line 70): false] "" | Assert.cs:72:20:72:32 | [b (line 70): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | Assert.cs:70:10:70:12 | exit M10 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:73:9:73:37 | [assertion success] call to method IsTrue | Assert.cs:74:9:74:36 | ...; | semmle.label | successor |
-| Assert.cs:73:9:73:38 | [b (line 70): false] ...; | Assert.cs:73:23:73:36 | [b (line 70): false] ... && ... | semmle.label | successor |
-| Assert.cs:73:9:73:38 | [b (line 70): true] ...; | Assert.cs:73:23:73:36 | [b (line 70): true] ... && ... | semmle.label | successor |
+| Assert.cs:73:9:73:38 | [b (line 70): false] ...; | Assert.cs:73:23:73:23 | [b (line 70): false] access to local variable s | semmle.label | successor |
+| Assert.cs:73:9:73:38 | [b (line 70): true] ...; | Assert.cs:73:23:73:23 | [b (line 70): true] access to local variable s | semmle.label | successor |
 | Assert.cs:73:23:73:23 | [b (line 70): false] access to local variable s | Assert.cs:73:28:73:31 | [b (line 70): false] null | semmle.label | successor |
 | Assert.cs:73:23:73:23 | [b (line 70): true] access to local variable s | Assert.cs:73:28:73:31 | [b (line 70): true] null | semmle.label | successor |
-| Assert.cs:73:23:73:31 | [b (line 70): false] ... == ... | Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | semmle.label | false |
+| Assert.cs:73:23:73:31 | [b (line 70): false] ... == ... | Assert.cs:73:23:73:36 | [false] ... && ... | semmle.label | false |
 | Assert.cs:73:23:73:31 | [b (line 70): false] ... == ... | Assert.cs:73:36:73:36 | [b (line 70): false] access to parameter b | semmle.label | true |
-| Assert.cs:73:23:73:31 | [b (line 70): true] ... == ... | Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | semmle.label | false |
+| Assert.cs:73:23:73:31 | [b (line 70): true] ... == ... | Assert.cs:73:23:73:36 | [false] ... && ... | semmle.label | false |
 | Assert.cs:73:23:73:31 | [b (line 70): true] ... == ... | Assert.cs:73:36:73:36 | [b (line 70): true] access to parameter b | semmle.label | true |
-| Assert.cs:73:23:73:36 | [b (line 70): false] ... && ... | Assert.cs:73:23:73:23 | [b (line 70): false] access to local variable s | semmle.label | successor |
-| Assert.cs:73:23:73:36 | [b (line 70): true] ... && ... | Assert.cs:73:23:73:23 | [b (line 70): true] access to local variable s | semmle.label | successor |
+| Assert.cs:73:23:73:36 | [false] ... && ... | Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | semmle.label | false |
+| Assert.cs:73:23:73:36 | [true] ... && ... | Assert.cs:73:9:73:37 | [assertion success] call to method IsTrue | semmle.label | true |
 | Assert.cs:73:28:73:31 | [b (line 70): false] null | Assert.cs:73:23:73:31 | [b (line 70): false] ... == ... | semmle.label | successor |
 | Assert.cs:73:28:73:31 | [b (line 70): true] null | Assert.cs:73:23:73:31 | [b (line 70): true] ... == ... | semmle.label | successor |
-| Assert.cs:73:36:73:36 | [b (line 70): false] access to parameter b | Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | semmle.label | false |
-| Assert.cs:73:36:73:36 | [b (line 70): true] access to parameter b | Assert.cs:73:9:73:37 | [assertion success] call to method IsTrue | semmle.label | true |
+| Assert.cs:73:36:73:36 | [b (line 70): false] access to parameter b | Assert.cs:73:23:73:36 | [false] ... && ... | semmle.label | false |
+| Assert.cs:73:36:73:36 | [b (line 70): true] access to parameter b | Assert.cs:73:23:73:36 | [true] ... && ... | semmle.label | true |
 | Assert.cs:74:9:74:35 | call to method WriteLine | Assert.cs:70:10:70:12 | exit M10 (normal) | semmle.label | successor |
 | Assert.cs:74:9:74:36 | ...; | Assert.cs:74:27:74:27 | access to local variable s | semmle.label | successor |
 | Assert.cs:74:27:74:27 | access to local variable s | Assert.cs:74:27:74:34 | access to property Length | semmle.label | successor |
@@ -577,30 +580,31 @@
 | Assert.cs:77:10:77:12 | exit M11 (abnormal) | Assert.cs:77:10:77:12 | exit M11 | semmle.label | successor |
 | Assert.cs:77:10:77:12 | exit M11 (normal) | Assert.cs:77:10:77:12 | exit M11 | semmle.label | successor |
 | Assert.cs:78:5:82:5 | {...} | Assert.cs:79:9:79:33 | ... ...; | semmle.label | successor |
-| Assert.cs:79:9:79:33 | ... ...; | Assert.cs:79:20:79:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:79:9:79:33 | ... ...; | Assert.cs:79:20:79:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:79:16:79:32 | [b (line 77): false] String s = ... | Assert.cs:80:9:80:39 | [b (line 77): false] ...; | semmle.label | successor |
 | Assert.cs:79:16:79:32 | [b (line 77): true] String s = ... | Assert.cs:80:9:80:39 | [b (line 77): true] ...; | semmle.label | successor |
 | Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:79:24:79:27 | [b (line 77): true] null | semmle.label | true |
 | Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:79:31:79:32 | [b (line 77): false] "" | semmle.label | false |
-| Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:20:79:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:79:24:79:27 | [b (line 77): true] null | Assert.cs:79:16:79:32 | [b (line 77): true] String s = ... | semmle.label | successor |
-| Assert.cs:79:31:79:32 | [b (line 77): false] "" | Assert.cs:79:16:79:32 | [b (line 77): false] String s = ... | semmle.label | successor |
+| Assert.cs:79:20:79:32 | [b (line 77): false] ... ? ... : ... | Assert.cs:79:16:79:32 | [b (line 77): false] String s = ... | semmle.label | successor |
+| Assert.cs:79:20:79:32 | [b (line 77): true] ... ? ... : ... | Assert.cs:79:16:79:32 | [b (line 77): true] String s = ... | semmle.label | successor |
+| Assert.cs:79:24:79:27 | [b (line 77): true] null | Assert.cs:79:20:79:32 | [b (line 77): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:79:31:79:32 | [b (line 77): false] "" | Assert.cs:79:20:79:32 | [b (line 77): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | Assert.cs:77:10:77:12 | exit M11 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:80:9:80:38 | [assertion success] call to method IsFalse | Assert.cs:81:9:81:36 | ...; | semmle.label | successor |
-| Assert.cs:80:9:80:39 | [b (line 77): false] ...; | Assert.cs:80:24:80:37 | [b (line 77): false] ... \|\| ... | semmle.label | successor |
-| Assert.cs:80:9:80:39 | [b (line 77): true] ...; | Assert.cs:80:24:80:37 | [b (line 77): true] ... \|\| ... | semmle.label | successor |
+| Assert.cs:80:9:80:39 | [b (line 77): false] ...; | Assert.cs:80:24:80:24 | [b (line 77): false] access to local variable s | semmle.label | successor |
+| Assert.cs:80:9:80:39 | [b (line 77): true] ...; | Assert.cs:80:24:80:24 | [b (line 77): true] access to local variable s | semmle.label | successor |
 | Assert.cs:80:24:80:24 | [b (line 77): false] access to local variable s | Assert.cs:80:29:80:32 | [b (line 77): false] null | semmle.label | successor |
 | Assert.cs:80:24:80:24 | [b (line 77): true] access to local variable s | Assert.cs:80:29:80:32 | [b (line 77): true] null | semmle.label | successor |
-| Assert.cs:80:24:80:32 | [b (line 77): false] ... != ... | Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | semmle.label | true |
+| Assert.cs:80:24:80:32 | [b (line 77): false] ... != ... | Assert.cs:80:24:80:37 | [true] ... \|\| ... | semmle.label | true |
 | Assert.cs:80:24:80:32 | [b (line 77): false] ... != ... | Assert.cs:80:37:80:37 | [b (line 77): false] access to parameter b | semmle.label | false |
-| Assert.cs:80:24:80:32 | [b (line 77): true] ... != ... | Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | semmle.label | true |
+| Assert.cs:80:24:80:32 | [b (line 77): true] ... != ... | Assert.cs:80:24:80:37 | [true] ... \|\| ... | semmle.label | true |
 | Assert.cs:80:24:80:32 | [b (line 77): true] ... != ... | Assert.cs:80:37:80:37 | [b (line 77): true] access to parameter b | semmle.label | false |
-| Assert.cs:80:24:80:37 | [b (line 77): false] ... \|\| ... | Assert.cs:80:24:80:24 | [b (line 77): false] access to local variable s | semmle.label | successor |
-| Assert.cs:80:24:80:37 | [b (line 77): true] ... \|\| ... | Assert.cs:80:24:80:24 | [b (line 77): true] access to local variable s | semmle.label | successor |
+| Assert.cs:80:24:80:37 | [false] ... \|\| ... | Assert.cs:80:9:80:38 | [assertion success] call to method IsFalse | semmle.label | false |
+| Assert.cs:80:24:80:37 | [true] ... \|\| ... | Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | semmle.label | true |
 | Assert.cs:80:29:80:32 | [b (line 77): false] null | Assert.cs:80:24:80:32 | [b (line 77): false] ... != ... | semmle.label | successor |
 | Assert.cs:80:29:80:32 | [b (line 77): true] null | Assert.cs:80:24:80:32 | [b (line 77): true] ... != ... | semmle.label | successor |
-| Assert.cs:80:37:80:37 | [b (line 77): false] access to parameter b | Assert.cs:80:9:80:38 | [assertion success] call to method IsFalse | semmle.label | false |
-| Assert.cs:80:37:80:37 | [b (line 77): true] access to parameter b | Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | semmle.label | true |
+| Assert.cs:80:37:80:37 | [b (line 77): false] access to parameter b | Assert.cs:80:24:80:37 | [false] ... \|\| ... | semmle.label | false |
+| Assert.cs:80:37:80:37 | [b (line 77): true] access to parameter b | Assert.cs:80:24:80:37 | [true] ... \|\| ... | semmle.label | true |
 | Assert.cs:81:9:81:35 | call to method WriteLine | Assert.cs:77:10:77:12 | exit M11 (normal) | semmle.label | successor |
 | Assert.cs:81:9:81:36 | ...; | Assert.cs:81:27:81:27 | access to local variable s | semmle.label | successor |
 | Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:81:27:81:34 | access to property Length | semmle.label | successor |
@@ -609,14 +613,15 @@
 | Assert.cs:84:10:84:12 | exit M12 (abnormal) | Assert.cs:84:10:84:12 | exit M12 | semmle.label | successor |
 | Assert.cs:84:10:84:12 | exit M12 (normal) | Assert.cs:84:10:84:12 | exit M12 | semmle.label | successor |
 | Assert.cs:85:5:129:5 | {...} | Assert.cs:86:9:86:33 | ... ...; | semmle.label | successor |
-| Assert.cs:86:9:86:33 | ... ...; | Assert.cs:86:20:86:32 | ... ? ... : ... | semmle.label | successor |
+| Assert.cs:86:9:86:33 | ... ...; | Assert.cs:86:20:86:20 | access to parameter b | semmle.label | successor |
 | Assert.cs:86:16:86:32 | [b (line 84): false] String s = ... | Assert.cs:87:9:87:32 | [b (line 84): false] ...; | semmle.label | successor |
 | Assert.cs:86:16:86:32 | [b (line 84): true] String s = ... | Assert.cs:87:9:87:32 | [b (line 84): true] ...; | semmle.label | successor |
 | Assert.cs:86:20:86:20 | access to parameter b | Assert.cs:86:24:86:27 | [b (line 84): true] null | semmle.label | true |
 | Assert.cs:86:20:86:20 | access to parameter b | Assert.cs:86:31:86:32 | [b (line 84): false] "" | semmle.label | false |
-| Assert.cs:86:20:86:32 | ... ? ... : ... | Assert.cs:86:20:86:20 | access to parameter b | semmle.label | successor |
-| Assert.cs:86:24:86:27 | [b (line 84): true] null | Assert.cs:86:16:86:32 | [b (line 84): true] String s = ... | semmle.label | successor |
-| Assert.cs:86:31:86:32 | [b (line 84): false] "" | Assert.cs:86:16:86:32 | [b (line 84): false] String s = ... | semmle.label | successor |
+| Assert.cs:86:20:86:32 | [b (line 84): false] ... ? ... : ... | Assert.cs:86:16:86:32 | [b (line 84): false] String s = ... | semmle.label | successor |
+| Assert.cs:86:20:86:32 | [b (line 84): true] ... ? ... : ... | Assert.cs:86:16:86:32 | [b (line 84): true] String s = ... | semmle.label | successor |
+| Assert.cs:86:24:86:27 | [b (line 84): true] null | Assert.cs:86:20:86:32 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:86:31:86:32 | [b (line 84): false] "" | Assert.cs:86:20:86:32 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:87:9:87:31 | [assertion failure, b (line 84): false] call to method Assert | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exit |
 | Assert.cs:87:9:87:31 | [assertion failure, b (line 84): true] call to method Assert | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exit |
 | Assert.cs:87:9:87:31 | [assertion success, b (line 84): false] call to method Assert | Assert.cs:88:9:88:36 | [b (line 84): false] ...; | semmle.label | successor |
@@ -641,14 +646,14 @@
 | Assert.cs:88:27:88:34 | [b (line 84): true] access to property Length | Assert.cs:88:9:88:35 | [b (line 84): true] call to method WriteLine | semmle.label | successor |
 | Assert.cs:90:9:90:25 | [b (line 84): false] ... = ... | Assert.cs:91:9:91:25 | [b (line 84): false] ...; | semmle.label | successor |
 | Assert.cs:90:9:90:25 | [b (line 84): true] ... = ... | Assert.cs:91:9:91:25 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:90:9:90:26 | [b (line 84): false] ...; | Assert.cs:90:13:90:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
-| Assert.cs:90:9:90:26 | [b (line 84): true] ...; | Assert.cs:90:13:90:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:90:9:90:26 | [b (line 84): false] ...; | Assert.cs:90:13:90:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
+| Assert.cs:90:9:90:26 | [b (line 84): true] ...; | Assert.cs:90:13:90:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
 | Assert.cs:90:13:90:13 | [b (line 84): false] access to parameter b | Assert.cs:90:24:90:25 | [b (line 84): false] "" | semmle.label | false |
 | Assert.cs:90:13:90:13 | [b (line 84): true] access to parameter b | Assert.cs:90:17:90:20 | [b (line 84): true] null | semmle.label | true |
-| Assert.cs:90:13:90:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:90:13:90:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
-| Assert.cs:90:13:90:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:90:13:90:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:90:17:90:20 | [b (line 84): true] null | Assert.cs:90:9:90:25 | [b (line 84): true] ... = ... | semmle.label | successor |
-| Assert.cs:90:24:90:25 | [b (line 84): false] "" | Assert.cs:90:9:90:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:90:13:90:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:90:9:90:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:90:13:90:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:90:9:90:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:90:17:90:20 | [b (line 84): true] null | Assert.cs:90:13:90:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:90:24:90:25 | [b (line 84): false] "" | Assert.cs:90:13:90:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:91:9:91:24 | [assertion failure, b (line 84): false] call to method IsNull | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:91:9:91:24 | [assertion failure, b (line 84): true] call to method IsNull | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:91:9:91:24 | [assertion success, b (line 84): false] call to method IsNull | Assert.cs:92:9:92:36 | [b (line 84): false] ...; | semmle.label | successor |
@@ -669,14 +674,14 @@
 | Assert.cs:92:27:92:34 | [b (line 84): true] access to property Length | Assert.cs:92:9:92:35 | [b (line 84): true] call to method WriteLine | semmle.label | successor |
 | Assert.cs:94:9:94:25 | [b (line 84): false] ... = ... | Assert.cs:95:9:95:28 | [b (line 84): false] ...; | semmle.label | successor |
 | Assert.cs:94:9:94:25 | [b (line 84): true] ... = ... | Assert.cs:95:9:95:28 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:94:9:94:26 | [b (line 84): false] ...; | Assert.cs:94:13:94:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
-| Assert.cs:94:9:94:26 | [b (line 84): true] ...; | Assert.cs:94:13:94:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:94:9:94:26 | [b (line 84): false] ...; | Assert.cs:94:13:94:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
+| Assert.cs:94:9:94:26 | [b (line 84): true] ...; | Assert.cs:94:13:94:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
 | Assert.cs:94:13:94:13 | [b (line 84): false] access to parameter b | Assert.cs:94:24:94:25 | [b (line 84): false] "" | semmle.label | false |
 | Assert.cs:94:13:94:13 | [b (line 84): true] access to parameter b | Assert.cs:94:17:94:20 | [b (line 84): true] null | semmle.label | true |
-| Assert.cs:94:13:94:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:94:13:94:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
-| Assert.cs:94:13:94:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:94:13:94:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:94:17:94:20 | [b (line 84): true] null | Assert.cs:94:9:94:25 | [b (line 84): true] ... = ... | semmle.label | successor |
-| Assert.cs:94:24:94:25 | [b (line 84): false] "" | Assert.cs:94:9:94:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:94:13:94:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:94:9:94:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:94:13:94:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:94:9:94:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:94:17:94:20 | [b (line 84): true] null | Assert.cs:94:13:94:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:94:24:94:25 | [b (line 84): false] "" | Assert.cs:94:13:94:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:95:9:95:27 | [assertion failure, b (line 84): false] call to method IsNotNull | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:95:9:95:27 | [assertion failure, b (line 84): true] call to method IsNotNull | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:95:9:95:27 | [assertion success, b (line 84): false] call to method IsNotNull | Assert.cs:96:9:96:36 | [b (line 84): false] ...; | semmle.label | successor |
@@ -697,14 +702,14 @@
 | Assert.cs:96:27:96:34 | [b (line 84): true] access to property Length | Assert.cs:96:9:96:35 | [b (line 84): true] call to method WriteLine | semmle.label | successor |
 | Assert.cs:98:9:98:25 | [b (line 84): false] ... = ... | Assert.cs:99:9:99:33 | [b (line 84): false] ...; | semmle.label | successor |
 | Assert.cs:98:9:98:25 | [b (line 84): true] ... = ... | Assert.cs:99:9:99:33 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:98:9:98:26 | [b (line 84): false] ...; | Assert.cs:98:13:98:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
-| Assert.cs:98:9:98:26 | [b (line 84): true] ...; | Assert.cs:98:13:98:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:98:9:98:26 | [b (line 84): false] ...; | Assert.cs:98:13:98:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
+| Assert.cs:98:9:98:26 | [b (line 84): true] ...; | Assert.cs:98:13:98:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
 | Assert.cs:98:13:98:13 | [b (line 84): false] access to parameter b | Assert.cs:98:24:98:25 | [b (line 84): false] "" | semmle.label | false |
 | Assert.cs:98:13:98:13 | [b (line 84): true] access to parameter b | Assert.cs:98:17:98:20 | [b (line 84): true] null | semmle.label | true |
-| Assert.cs:98:13:98:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:98:13:98:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
-| Assert.cs:98:13:98:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:98:13:98:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:98:17:98:20 | [b (line 84): true] null | Assert.cs:98:9:98:25 | [b (line 84): true] ... = ... | semmle.label | successor |
-| Assert.cs:98:24:98:25 | [b (line 84): false] "" | Assert.cs:98:9:98:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:98:13:98:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:98:9:98:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:98:13:98:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:98:9:98:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:98:17:98:20 | [b (line 84): true] null | Assert.cs:98:13:98:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:98:24:98:25 | [b (line 84): false] "" | Assert.cs:98:13:98:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:99:9:99:32 | [assertion failure, b (line 84): false] call to method IsTrue | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:99:9:99:32 | [assertion failure, b (line 84): true] call to method IsTrue | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:99:9:99:32 | [assertion success, b (line 84): false] call to method IsTrue | Assert.cs:100:9:100:36 | [b (line 84): false] ...; | semmle.label | successor |
@@ -729,14 +734,14 @@
 | Assert.cs:100:27:100:34 | [b (line 84): true] access to property Length | Assert.cs:100:9:100:35 | [b (line 84): true] call to method WriteLine | semmle.label | successor |
 | Assert.cs:102:9:102:25 | [b (line 84): false] ... = ... | Assert.cs:103:9:103:33 | [b (line 84): false] ...; | semmle.label | successor |
 | Assert.cs:102:9:102:25 | [b (line 84): true] ... = ... | Assert.cs:103:9:103:33 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:102:9:102:26 | [b (line 84): false] ...; | Assert.cs:102:13:102:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
-| Assert.cs:102:9:102:26 | [b (line 84): true] ...; | Assert.cs:102:13:102:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:102:9:102:26 | [b (line 84): false] ...; | Assert.cs:102:13:102:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
+| Assert.cs:102:9:102:26 | [b (line 84): true] ...; | Assert.cs:102:13:102:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
 | Assert.cs:102:13:102:13 | [b (line 84): false] access to parameter b | Assert.cs:102:24:102:25 | [b (line 84): false] "" | semmle.label | false |
 | Assert.cs:102:13:102:13 | [b (line 84): true] access to parameter b | Assert.cs:102:17:102:20 | [b (line 84): true] null | semmle.label | true |
-| Assert.cs:102:13:102:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:102:13:102:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
-| Assert.cs:102:13:102:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:102:13:102:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:102:17:102:20 | [b (line 84): true] null | Assert.cs:102:9:102:25 | [b (line 84): true] ... = ... | semmle.label | successor |
-| Assert.cs:102:24:102:25 | [b (line 84): false] "" | Assert.cs:102:9:102:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:102:13:102:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:102:9:102:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:102:13:102:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:102:9:102:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:102:17:102:20 | [b (line 84): true] null | Assert.cs:102:13:102:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:102:24:102:25 | [b (line 84): false] "" | Assert.cs:102:13:102:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:103:9:103:32 | [assertion failure, b (line 84): false] call to method IsTrue | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:103:9:103:32 | [assertion failure, b (line 84): true] call to method IsTrue | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:103:9:103:32 | [assertion success, b (line 84): false] call to method IsTrue | Assert.cs:104:9:104:36 | [b (line 84): false] ...; | semmle.label | successor |
@@ -761,14 +766,14 @@
 | Assert.cs:104:27:104:34 | [b (line 84): true] access to property Length | Assert.cs:104:9:104:35 | [b (line 84): true] call to method WriteLine | semmle.label | successor |
 | Assert.cs:106:9:106:25 | [b (line 84): false] ... = ... | Assert.cs:107:9:107:34 | [b (line 84): false] ...; | semmle.label | successor |
 | Assert.cs:106:9:106:25 | [b (line 84): true] ... = ... | Assert.cs:107:9:107:34 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:106:9:106:26 | [b (line 84): false] ...; | Assert.cs:106:13:106:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
-| Assert.cs:106:9:106:26 | [b (line 84): true] ...; | Assert.cs:106:13:106:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:106:9:106:26 | [b (line 84): false] ...; | Assert.cs:106:13:106:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
+| Assert.cs:106:9:106:26 | [b (line 84): true] ...; | Assert.cs:106:13:106:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
 | Assert.cs:106:13:106:13 | [b (line 84): false] access to parameter b | Assert.cs:106:24:106:25 | [b (line 84): false] "" | semmle.label | false |
 | Assert.cs:106:13:106:13 | [b (line 84): true] access to parameter b | Assert.cs:106:17:106:20 | [b (line 84): true] null | semmle.label | true |
-| Assert.cs:106:13:106:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:106:13:106:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
-| Assert.cs:106:13:106:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:106:13:106:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:106:17:106:20 | [b (line 84): true] null | Assert.cs:106:9:106:25 | [b (line 84): true] ... = ... | semmle.label | successor |
-| Assert.cs:106:24:106:25 | [b (line 84): false] "" | Assert.cs:106:9:106:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:106:13:106:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:106:9:106:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:106:13:106:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:106:9:106:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:106:17:106:20 | [b (line 84): true] null | Assert.cs:106:13:106:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:106:24:106:25 | [b (line 84): false] "" | Assert.cs:106:13:106:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:107:9:107:33 | [assertion failure, b (line 84): false] call to method IsFalse | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:107:9:107:33 | [assertion failure, b (line 84): true] call to method IsFalse | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:107:9:107:33 | [assertion success, b (line 84): false] call to method IsFalse | Assert.cs:108:9:108:36 | [b (line 84): false] ...; | semmle.label | successor |
@@ -793,14 +798,14 @@
 | Assert.cs:108:27:108:34 | [b (line 84): true] access to property Length | Assert.cs:108:9:108:35 | [b (line 84): true] call to method WriteLine | semmle.label | successor |
 | Assert.cs:110:9:110:25 | [b (line 84): false] ... = ... | Assert.cs:111:9:111:34 | [b (line 84): false] ...; | semmle.label | successor |
 | Assert.cs:110:9:110:25 | [b (line 84): true] ... = ... | Assert.cs:111:9:111:34 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:110:9:110:26 | [b (line 84): false] ...; | Assert.cs:110:13:110:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
-| Assert.cs:110:9:110:26 | [b (line 84): true] ...; | Assert.cs:110:13:110:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:110:9:110:26 | [b (line 84): false] ...; | Assert.cs:110:13:110:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
+| Assert.cs:110:9:110:26 | [b (line 84): true] ...; | Assert.cs:110:13:110:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
 | Assert.cs:110:13:110:13 | [b (line 84): false] access to parameter b | Assert.cs:110:24:110:25 | [b (line 84): false] "" | semmle.label | false |
 | Assert.cs:110:13:110:13 | [b (line 84): true] access to parameter b | Assert.cs:110:17:110:20 | [b (line 84): true] null | semmle.label | true |
-| Assert.cs:110:13:110:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:110:13:110:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
-| Assert.cs:110:13:110:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:110:13:110:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:110:17:110:20 | [b (line 84): true] null | Assert.cs:110:9:110:25 | [b (line 84): true] ... = ... | semmle.label | successor |
-| Assert.cs:110:24:110:25 | [b (line 84): false] "" | Assert.cs:110:9:110:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:110:13:110:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:110:9:110:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:110:13:110:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:110:9:110:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:110:17:110:20 | [b (line 84): true] null | Assert.cs:110:13:110:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:110:24:110:25 | [b (line 84): false] "" | Assert.cs:110:13:110:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:111:9:111:33 | [assertion failure, b (line 84): false] call to method IsFalse | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:111:9:111:33 | [assertion failure, b (line 84): true] call to method IsFalse | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:111:9:111:33 | [assertion success, b (line 84): false] call to method IsFalse | Assert.cs:112:9:112:36 | [b (line 84): false] ...; | semmle.label | successor |
@@ -825,87 +830,91 @@
 | Assert.cs:112:27:112:34 | [b (line 84): true] access to property Length | Assert.cs:112:9:112:35 | [b (line 84): true] call to method WriteLine | semmle.label | successor |
 | Assert.cs:114:9:114:25 | [b (line 84): false] ... = ... | Assert.cs:115:9:115:38 | [b (line 84): false] ...; | semmle.label | successor |
 | Assert.cs:114:9:114:25 | [b (line 84): true] ... = ... | Assert.cs:115:9:115:38 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:114:9:114:26 | [b (line 84): false] ...; | Assert.cs:114:13:114:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
-| Assert.cs:114:9:114:26 | [b (line 84): true] ...; | Assert.cs:114:13:114:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:114:9:114:26 | [b (line 84): false] ...; | Assert.cs:114:13:114:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
+| Assert.cs:114:9:114:26 | [b (line 84): true] ...; | Assert.cs:114:13:114:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
 | Assert.cs:114:13:114:13 | [b (line 84): false] access to parameter b | Assert.cs:114:24:114:25 | [b (line 84): false] "" | semmle.label | false |
 | Assert.cs:114:13:114:13 | [b (line 84): true] access to parameter b | Assert.cs:114:17:114:20 | [b (line 84): true] null | semmle.label | true |
-| Assert.cs:114:13:114:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:114:13:114:13 | [b (line 84): false] access to parameter b | semmle.label | successor |
-| Assert.cs:114:13:114:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:114:13:114:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:114:17:114:20 | [b (line 84): true] null | Assert.cs:114:9:114:25 | [b (line 84): true] ... = ... | semmle.label | successor |
-| Assert.cs:114:24:114:25 | [b (line 84): false] "" | Assert.cs:114:9:114:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:114:13:114:25 | [b (line 84): false] ... ? ... : ... | Assert.cs:114:9:114:25 | [b (line 84): false] ... = ... | semmle.label | successor |
+| Assert.cs:114:13:114:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:114:9:114:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:114:17:114:20 | [b (line 84): true] null | Assert.cs:114:13:114:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:114:24:114:25 | [b (line 84): false] "" | Assert.cs:114:13:114:25 | [b (line 84): false] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:115:9:115:37 | [assertion failure, b (line 84): false] call to method IsTrue | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:115:9:115:37 | [assertion failure, b (line 84): true] call to method IsTrue | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:115:9:115:37 | [assertion success, b (line 84): true] call to method IsTrue | Assert.cs:116:9:116:36 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:115:9:115:38 | [b (line 84): false] ...; | Assert.cs:115:23:115:36 | [b (line 84): false] ... && ... | semmle.label | successor |
-| Assert.cs:115:9:115:38 | [b (line 84): true] ...; | Assert.cs:115:23:115:36 | [b (line 84): true] ... && ... | semmle.label | successor |
+| Assert.cs:115:9:115:38 | [b (line 84): false] ...; | Assert.cs:115:23:115:23 | [b (line 84): false] access to local variable s | semmle.label | successor |
+| Assert.cs:115:9:115:38 | [b (line 84): true] ...; | Assert.cs:115:23:115:23 | [b (line 84): true] access to local variable s | semmle.label | successor |
 | Assert.cs:115:23:115:23 | [b (line 84): false] access to local variable s | Assert.cs:115:28:115:31 | [b (line 84): false] null | semmle.label | successor |
 | Assert.cs:115:23:115:23 | [b (line 84): true] access to local variable s | Assert.cs:115:28:115:31 | [b (line 84): true] null | semmle.label | successor |
-| Assert.cs:115:23:115:31 | [b (line 84): false] ... != ... | Assert.cs:115:9:115:37 | [assertion failure, b (line 84): false] call to method IsTrue | semmle.label | false |
+| Assert.cs:115:23:115:31 | [b (line 84): false] ... != ... | Assert.cs:115:23:115:36 | [false, b (line 84): false] ... && ... | semmle.label | false |
 | Assert.cs:115:23:115:31 | [b (line 84): false] ... != ... | Assert.cs:115:36:115:36 | [b (line 84): false] access to parameter b | semmle.label | true |
-| Assert.cs:115:23:115:31 | [b (line 84): true] ... != ... | Assert.cs:115:9:115:37 | [assertion failure, b (line 84): true] call to method IsTrue | semmle.label | false |
+| Assert.cs:115:23:115:31 | [b (line 84): true] ... != ... | Assert.cs:115:23:115:36 | [false, b (line 84): true] ... && ... | semmle.label | false |
 | Assert.cs:115:23:115:31 | [b (line 84): true] ... != ... | Assert.cs:115:36:115:36 | [b (line 84): true] access to parameter b | semmle.label | true |
-| Assert.cs:115:23:115:36 | [b (line 84): false] ... && ... | Assert.cs:115:23:115:23 | [b (line 84): false] access to local variable s | semmle.label | successor |
-| Assert.cs:115:23:115:36 | [b (line 84): true] ... && ... | Assert.cs:115:23:115:23 | [b (line 84): true] access to local variable s | semmle.label | successor |
+| Assert.cs:115:23:115:36 | [false, b (line 84): false] ... && ... | Assert.cs:115:9:115:37 | [assertion failure, b (line 84): false] call to method IsTrue | semmle.label | false |
+| Assert.cs:115:23:115:36 | [false, b (line 84): true] ... && ... | Assert.cs:115:9:115:37 | [assertion failure, b (line 84): true] call to method IsTrue | semmle.label | false |
+| Assert.cs:115:23:115:36 | [true, b (line 84): true] ... && ... | Assert.cs:115:9:115:37 | [assertion success, b (line 84): true] call to method IsTrue | semmle.label | true |
 | Assert.cs:115:28:115:31 | [b (line 84): false] null | Assert.cs:115:23:115:31 | [b (line 84): false] ... != ... | semmle.label | successor |
 | Assert.cs:115:28:115:31 | [b (line 84): true] null | Assert.cs:115:23:115:31 | [b (line 84): true] ... != ... | semmle.label | successor |
-| Assert.cs:115:36:115:36 | [b (line 84): false] access to parameter b | Assert.cs:115:9:115:37 | [assertion failure, b (line 84): false] call to method IsTrue | semmle.label | false |
-| Assert.cs:115:36:115:36 | [b (line 84): true] access to parameter b | Assert.cs:115:9:115:37 | [assertion success, b (line 84): true] call to method IsTrue | semmle.label | true |
+| Assert.cs:115:36:115:36 | [b (line 84): false] access to parameter b | Assert.cs:115:23:115:36 | [false, b (line 84): false] ... && ... | semmle.label | false |
+| Assert.cs:115:36:115:36 | [b (line 84): true] access to parameter b | Assert.cs:115:23:115:36 | [true, b (line 84): true] ... && ... | semmle.label | true |
 | Assert.cs:116:9:116:35 | [b (line 84): true] call to method WriteLine | Assert.cs:118:9:118:26 | [b (line 84): true] ...; | semmle.label | successor |
 | Assert.cs:116:9:116:36 | [b (line 84): true] ...; | Assert.cs:116:27:116:27 | [b (line 84): true] access to local variable s | semmle.label | successor |
 | Assert.cs:116:27:116:27 | [b (line 84): true] access to local variable s | Assert.cs:116:27:116:34 | [b (line 84): true] access to property Length | semmle.label | successor |
 | Assert.cs:116:27:116:34 | [b (line 84): true] access to property Length | Assert.cs:116:9:116:35 | [b (line 84): true] call to method WriteLine | semmle.label | successor |
 | Assert.cs:118:9:118:25 | [b (line 84): true] ... = ... | Assert.cs:119:9:119:40 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:118:9:118:26 | [b (line 84): true] ...; | Assert.cs:118:13:118:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:118:9:118:26 | [b (line 84): true] ...; | Assert.cs:118:13:118:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
 | Assert.cs:118:13:118:13 | [b (line 84): true] access to parameter b | Assert.cs:118:17:118:20 | [b (line 84): true] null | semmle.label | true |
-| Assert.cs:118:13:118:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:118:13:118:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:118:17:118:20 | [b (line 84): true] null | Assert.cs:118:9:118:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:118:13:118:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:118:9:118:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:118:17:118:20 | [b (line 84): true] null | Assert.cs:118:13:118:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:119:9:119:39 | [assertion failure, b (line 84): true] call to method IsFalse | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:119:9:119:39 | [assertion success, b (line 84): true] call to method IsFalse | Assert.cs:120:9:120:36 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:119:9:119:40 | [b (line 84): true] ...; | Assert.cs:119:24:119:38 | [b (line 84): true] ... \|\| ... | semmle.label | successor |
+| Assert.cs:119:9:119:40 | [b (line 84): true] ...; | Assert.cs:119:24:119:24 | [b (line 84): true] access to local variable s | semmle.label | successor |
 | Assert.cs:119:24:119:24 | [b (line 84): true] access to local variable s | Assert.cs:119:29:119:32 | [b (line 84): true] null | semmle.label | successor |
-| Assert.cs:119:24:119:32 | [b (line 84): true] ... == ... | Assert.cs:119:9:119:39 | [assertion failure, b (line 84): true] call to method IsFalse | semmle.label | true |
-| Assert.cs:119:24:119:32 | [b (line 84): true] ... == ... | Assert.cs:119:37:119:38 | [b (line 84): true] !... | semmle.label | false |
-| Assert.cs:119:24:119:38 | [b (line 84): true] ... \|\| ... | Assert.cs:119:24:119:24 | [b (line 84): true] access to local variable s | semmle.label | successor |
+| Assert.cs:119:24:119:32 | [b (line 84): true] ... == ... | Assert.cs:119:24:119:38 | [true, b (line 84): true] ... \|\| ... | semmle.label | true |
+| Assert.cs:119:24:119:32 | [b (line 84): true] ... == ... | Assert.cs:119:38:119:38 | [b (line 84): true] access to parameter b | semmle.label | false |
+| Assert.cs:119:24:119:38 | [false, b (line 84): true] ... \|\| ... | Assert.cs:119:9:119:39 | [assertion success, b (line 84): true] call to method IsFalse | semmle.label | false |
+| Assert.cs:119:24:119:38 | [true, b (line 84): true] ... \|\| ... | Assert.cs:119:9:119:39 | [assertion failure, b (line 84): true] call to method IsFalse | semmle.label | true |
 | Assert.cs:119:29:119:32 | [b (line 84): true] null | Assert.cs:119:24:119:32 | [b (line 84): true] ... == ... | semmle.label | successor |
-| Assert.cs:119:37:119:38 | [b (line 84): true] !... | Assert.cs:119:38:119:38 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:119:38:119:38 | [b (line 84): true] access to parameter b | Assert.cs:119:9:119:39 | [assertion success, b (line 84): true] call to method IsFalse | semmle.label | true |
+| Assert.cs:119:37:119:38 | [false, b (line 84): true] !... | Assert.cs:119:24:119:38 | [false, b (line 84): true] ... \|\| ... | semmle.label | false |
+| Assert.cs:119:38:119:38 | [b (line 84): true] access to parameter b | Assert.cs:119:37:119:38 | [false, b (line 84): true] !... | semmle.label | true |
 | Assert.cs:120:9:120:35 | [b (line 84): true] call to method WriteLine | Assert.cs:122:9:122:26 | [b (line 84): true] ...; | semmle.label | successor |
 | Assert.cs:120:9:120:36 | [b (line 84): true] ...; | Assert.cs:120:27:120:27 | [b (line 84): true] access to local variable s | semmle.label | successor |
 | Assert.cs:120:27:120:27 | [b (line 84): true] access to local variable s | Assert.cs:120:27:120:34 | [b (line 84): true] access to property Length | semmle.label | successor |
 | Assert.cs:120:27:120:34 | [b (line 84): true] access to property Length | Assert.cs:120:9:120:35 | [b (line 84): true] call to method WriteLine | semmle.label | successor |
 | Assert.cs:122:9:122:25 | [b (line 84): true] ... = ... | Assert.cs:123:9:123:38 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:122:9:122:26 | [b (line 84): true] ...; | Assert.cs:122:13:122:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:122:9:122:26 | [b (line 84): true] ...; | Assert.cs:122:13:122:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
 | Assert.cs:122:13:122:13 | [b (line 84): true] access to parameter b | Assert.cs:122:17:122:20 | [b (line 84): true] null | semmle.label | true |
-| Assert.cs:122:13:122:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:122:13:122:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:122:17:122:20 | [b (line 84): true] null | Assert.cs:122:9:122:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:122:13:122:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:122:9:122:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:122:17:122:20 | [b (line 84): true] null | Assert.cs:122:13:122:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:123:9:123:37 | [assertion failure, b (line 84): true] call to method IsTrue | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:123:9:123:37 | [assertion success, b (line 84): true] call to method IsTrue | Assert.cs:124:9:124:36 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:123:9:123:38 | [b (line 84): true] ...; | Assert.cs:123:23:123:36 | [b (line 84): true] ... && ... | semmle.label | successor |
+| Assert.cs:123:9:123:38 | [b (line 84): true] ...; | Assert.cs:123:23:123:23 | [b (line 84): true] access to local variable s | semmle.label | successor |
 | Assert.cs:123:23:123:23 | [b (line 84): true] access to local variable s | Assert.cs:123:28:123:31 | [b (line 84): true] null | semmle.label | successor |
-| Assert.cs:123:23:123:31 | [b (line 84): true] ... == ... | Assert.cs:123:9:123:37 | [assertion failure, b (line 84): true] call to method IsTrue | semmle.label | false |
+| Assert.cs:123:23:123:31 | [b (line 84): true] ... == ... | Assert.cs:123:23:123:36 | [false, b (line 84): true] ... && ... | semmle.label | false |
 | Assert.cs:123:23:123:31 | [b (line 84): true] ... == ... | Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | semmle.label | true |
-| Assert.cs:123:23:123:36 | [b (line 84): true] ... && ... | Assert.cs:123:23:123:23 | [b (line 84): true] access to local variable s | semmle.label | successor |
+| Assert.cs:123:23:123:36 | [false, b (line 84): true] ... && ... | Assert.cs:123:9:123:37 | [assertion failure, b (line 84): true] call to method IsTrue | semmle.label | false |
+| Assert.cs:123:23:123:36 | [true, b (line 84): true] ... && ... | Assert.cs:123:9:123:37 | [assertion success, b (line 84): true] call to method IsTrue | semmle.label | true |
 | Assert.cs:123:28:123:31 | [b (line 84): true] null | Assert.cs:123:23:123:31 | [b (line 84): true] ... == ... | semmle.label | successor |
-| Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | Assert.cs:123:9:123:37 | [assertion success, b (line 84): true] call to method IsTrue | semmle.label | true |
+| Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | Assert.cs:123:23:123:36 | [true, b (line 84): true] ... && ... | semmle.label | true |
 | Assert.cs:124:9:124:35 | [b (line 84): true] call to method WriteLine | Assert.cs:126:9:126:26 | [b (line 84): true] ...; | semmle.label | successor |
 | Assert.cs:124:9:124:36 | [b (line 84): true] ...; | Assert.cs:124:27:124:27 | [b (line 84): true] access to local variable s | semmle.label | successor |
 | Assert.cs:124:27:124:27 | [b (line 84): true] access to local variable s | Assert.cs:124:27:124:34 | [b (line 84): true] access to property Length | semmle.label | successor |
 | Assert.cs:124:27:124:34 | [b (line 84): true] access to property Length | Assert.cs:124:9:124:35 | [b (line 84): true] call to method WriteLine | semmle.label | successor |
 | Assert.cs:126:9:126:25 | [b (line 84): true] ... = ... | Assert.cs:127:9:127:40 | [b (line 84): true] ...; | semmle.label | successor |
-| Assert.cs:126:9:126:26 | [b (line 84): true] ...; | Assert.cs:126:13:126:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
+| Assert.cs:126:9:126:26 | [b (line 84): true] ...; | Assert.cs:126:13:126:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
 | Assert.cs:126:13:126:13 | [b (line 84): true] access to parameter b | Assert.cs:126:17:126:20 | [b (line 84): true] null | semmle.label | true |
-| Assert.cs:126:13:126:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:126:13:126:13 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:126:17:126:20 | [b (line 84): true] null | Assert.cs:126:9:126:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:126:13:126:25 | [b (line 84): true] ... ? ... : ... | Assert.cs:126:9:126:25 | [b (line 84): true] ... = ... | semmle.label | successor |
+| Assert.cs:126:17:126:20 | [b (line 84): true] null | Assert.cs:126:13:126:25 | [b (line 84): true] ... ? ... : ... | semmle.label | successor |
 | Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | Assert.cs:84:10:84:12 | exit M12 (abnormal) | semmle.label | exception(AssertFailedException) |
 | Assert.cs:127:9:127:39 | [assertion success] call to method IsFalse | Assert.cs:128:9:128:36 | ...; | semmle.label | successor |
-| Assert.cs:127:9:127:40 | [b (line 84): true] ...; | Assert.cs:127:24:127:38 | [b (line 84): true] ... \|\| ... | semmle.label | successor |
+| Assert.cs:127:9:127:40 | [b (line 84): true] ...; | Assert.cs:127:24:127:24 | [b (line 84): true] access to local variable s | semmle.label | successor |
 | Assert.cs:127:24:127:24 | [b (line 84): true] access to local variable s | Assert.cs:127:29:127:32 | [b (line 84): true] null | semmle.label | successor |
-| Assert.cs:127:24:127:32 | [b (line 84): true] ... != ... | Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | semmle.label | true |
-| Assert.cs:127:24:127:32 | [b (line 84): true] ... != ... | Assert.cs:127:37:127:38 | [b (line 84): true] !... | semmle.label | false |
-| Assert.cs:127:24:127:38 | [b (line 84): true] ... \|\| ... | Assert.cs:127:24:127:24 | [b (line 84): true] access to local variable s | semmle.label | successor |
+| Assert.cs:127:24:127:32 | [b (line 84): true] ... != ... | Assert.cs:127:24:127:38 | [true] ... \|\| ... | semmle.label | true |
+| Assert.cs:127:24:127:32 | [b (line 84): true] ... != ... | Assert.cs:127:38:127:38 | [b (line 84): true] access to parameter b | semmle.label | false |
+| Assert.cs:127:24:127:38 | [false] ... \|\| ... | Assert.cs:127:9:127:39 | [assertion success] call to method IsFalse | semmle.label | false |
+| Assert.cs:127:24:127:38 | [true] ... \|\| ... | Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | semmle.label | true |
 | Assert.cs:127:29:127:32 | [b (line 84): true] null | Assert.cs:127:24:127:32 | [b (line 84): true] ... != ... | semmle.label | successor |
-| Assert.cs:127:37:127:38 | [b (line 84): true] !... | Assert.cs:127:38:127:38 | [b (line 84): true] access to parameter b | semmle.label | successor |
-| Assert.cs:127:38:127:38 | [b (line 84): true] access to parameter b | Assert.cs:127:9:127:39 | [assertion success] call to method IsFalse | semmle.label | true |
+| Assert.cs:127:37:127:38 | [false] !... | Assert.cs:127:24:127:38 | [false] ... \|\| ... | semmle.label | false |
+| Assert.cs:127:38:127:38 | [b (line 84): true] access to parameter b | Assert.cs:127:37:127:38 | [false] !... | semmle.label | true |
 | Assert.cs:128:9:128:35 | call to method WriteLine | Assert.cs:84:10:84:12 | exit M12 (normal) | semmle.label | successor |
 | Assert.cs:128:9:128:36 | ...; | Assert.cs:128:27:128:27 | access to local variable s | semmle.label | successor |
 | Assert.cs:128:27:128:27 | access to local variable s | Assert.cs:128:27:128:34 | access to property Length | semmle.label | successor |
@@ -1132,8 +1141,6 @@
 | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | CompileTimeOperators.cs:28:10:28:10 | exit M (normal) | semmle.label | successor |
 | CompileTimeOperators.cs:40:14:40:38 | ...; | CompileTimeOperators.cs:40:32:40:36 | "End" | semmle.label | successor |
 | CompileTimeOperators.cs:40:32:40:36 | "End" | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | semmle.label | successor |
-| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:30:32:30:32 | 0 | semmle.label | successor |
-| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess (normal) | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | semmle.label | successor |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | semmle.label | successor |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 (normal) | ConditionalAccess.cs:3:12:3:13 | exit M1 | semmle.label | successor |
 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | ConditionalAccess.cs:3:12:3:13 | exit M1 (normal) | semmle.label | null |
@@ -1146,22 +1153,25 @@
 | ConditionalAccess.cs:5:26:5:26 | access to parameter s | ConditionalAccess.cs:5:10:5:11 | exit M2 (normal) | semmle.label | null |
 | ConditionalAccess.cs:5:26:5:26 | access to parameter s | ConditionalAccess.cs:5:28:5:34 | access to property Length | semmle.label | non-null |
 | ConditionalAccess.cs:5:28:5:34 | access to property Length | ConditionalAccess.cs:5:10:5:11 | exit M2 (normal) | semmle.label | successor |
-| ConditionalAccess.cs:7:10:7:11 | enter M3 | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | semmle.label | successor |
+| ConditionalAccess.cs:7:10:7:11 | enter M3 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | semmle.label | successor |
 | ConditionalAccess.cs:7:10:7:11 | exit M3 (normal) | ConditionalAccess.cs:7:10:7:11 | exit M3 | semmle.label | successor |
+| ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | semmle.label | non-null |
 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | semmle.label | null |
-| ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | ConditionalAccess.cs:7:49:7:55 | access to property Length | semmle.label | non-null |
-| ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | semmle.label | successor |
-| ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:10:7:11 | exit M3 (normal) | semmle.label | null |
-| ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:49:7:55 | access to property Length | semmle.label | non-null |
+| ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:10:7:11 | exit M3 (normal) | semmle.label | null |
+| ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:49:7:55 | access to property Length | semmle.label | non-null |
+| ConditionalAccess.cs:7:39:7:46 | [non-null] ... ?? ... | ConditionalAccess.cs:7:49:7:55 | access to property Length | semmle.label | non-null |
+| ConditionalAccess.cs:7:39:7:46 | [null] ... ?? ... | ConditionalAccess.cs:7:10:7:11 | exit M3 (normal) | semmle.label | null |
+| ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:39:7:46 | [non-null] ... ?? ... | semmle.label | non-null |
+| ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:39:7:46 | [null] ... ?? ... | semmle.label | null |
 | ConditionalAccess.cs:7:49:7:55 | access to property Length | ConditionalAccess.cs:7:10:7:11 | exit M3 (normal) | semmle.label | successor |
-| ConditionalAccess.cs:9:9:9:10 | enter M4 | ConditionalAccess.cs:9:25:9:38 | ... ?? ... | semmle.label | successor |
+| ConditionalAccess.cs:9:9:9:10 | enter M4 | ConditionalAccess.cs:9:25:9:25 | access to parameter s | semmle.label | successor |
 | ConditionalAccess.cs:9:9:9:10 | exit M4 (normal) | ConditionalAccess.cs:9:9:9:10 | exit M4 | semmle.label | successor |
 | ConditionalAccess.cs:9:25:9:25 | access to parameter s | ConditionalAccess.cs:9:27:9:33 | access to property Length | semmle.label | non-null |
 | ConditionalAccess.cs:9:25:9:25 | access to parameter s | ConditionalAccess.cs:9:38:9:38 | 0 | semmle.label | null |
-| ConditionalAccess.cs:9:25:9:38 | ... ?? ... | ConditionalAccess.cs:9:25:9:25 | access to parameter s | semmle.label | successor |
-| ConditionalAccess.cs:9:27:9:33 | access to property Length | ConditionalAccess.cs:9:9:9:10 | exit M4 (normal) | semmle.label | non-null |
+| ConditionalAccess.cs:9:25:9:38 | ... ?? ... | ConditionalAccess.cs:9:9:9:10 | exit M4 (normal) | semmle.label | successor |
+| ConditionalAccess.cs:9:27:9:33 | access to property Length | ConditionalAccess.cs:9:25:9:38 | ... ?? ... | semmle.label | non-null |
 | ConditionalAccess.cs:9:27:9:33 | access to property Length | ConditionalAccess.cs:9:38:9:38 | 0 | semmle.label | null |
-| ConditionalAccess.cs:9:38:9:38 | 0 | ConditionalAccess.cs:9:9:9:10 | exit M4 (normal) | semmle.label | successor |
+| ConditionalAccess.cs:9:38:9:38 | 0 | ConditionalAccess.cs:9:25:9:38 | ... ?? ... | semmle.label | successor |
 | ConditionalAccess.cs:11:9:11:10 | enter M5 | ConditionalAccess.cs:12:5:17:5 | {...} | semmle.label | successor |
 | ConditionalAccess.cs:11:9:11:10 | exit M5 (normal) | ConditionalAccess.cs:11:9:11:10 | exit M5 | semmle.label | successor |
 | ConditionalAccess.cs:12:5:17:5 | {...} | ConditionalAccess.cs:13:9:16:21 | if (...) ... | semmle.label | successor |
@@ -1202,10 +1212,7 @@
 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | semmle.label | successor |
 | ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:32:30:32 | 0 | semmle.label | successor |
 | ConditionalAccess.cs:30:10:30:12 | exit Out (normal) | ConditionalAccess.cs:30:10:30:12 | exit Out | semmle.label | successor |
-| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess (normal) | semmle.label | successor |
-| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess (normal) | semmle.label | successor |
 | ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:10:30:12 | exit Out (normal) | semmle.label | successor |
-| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:28:30:32 | ... = ... | semmle.label | successor |
 | ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:28:30:32 | ... = ... | semmle.label | successor |
 | ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:33:5:36:5 | {...} | semmle.label | successor |
 | ConditionalAccess.cs:32:10:32:11 | exit M8 (normal) | ConditionalAccess.cs:32:10:32:11 | exit M8 | semmle.label | successor |
@@ -1234,12 +1241,12 @@
 | Conditions.cs:6:13:6:13 | [inc (line 3): true] access to parameter x | Conditions.cs:6:13:6:15 | [inc (line 3): true] ...++ | semmle.label | successor |
 | Conditions.cs:6:13:6:15 | [inc (line 3): true] ...++ | Conditions.cs:7:9:8:16 | [inc (line 3): true] if (...) ... | semmle.label | successor |
 | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; | Conditions.cs:6:13:6:13 | [inc (line 3): true] access to parameter x | semmle.label | successor |
-| Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... | Conditions.cs:7:13:7:16 | [inc (line 3): false] !... | semmle.label | successor |
-| Conditions.cs:7:9:8:16 | [inc (line 3): true] if (...) ... | Conditions.cs:7:13:7:16 | [inc (line 3): true] !... | semmle.label | successor |
-| Conditions.cs:7:13:7:16 | [inc (line 3): false] !... | Conditions.cs:7:14:7:16 | [inc (line 3): false] access to parameter inc | semmle.label | successor |
-| Conditions.cs:7:13:7:16 | [inc (line 3): true] !... | Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc | semmle.label | successor |
-| Conditions.cs:7:14:7:16 | [inc (line 3): false] access to parameter inc | Conditions.cs:8:13:8:16 | ...; | semmle.label | false |
-| Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc | Conditions.cs:3:10:3:19 | exit IncrOrDecr (normal) | semmle.label | true |
+| Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... | Conditions.cs:7:14:7:16 | [inc (line 3): false] access to parameter inc | semmle.label | successor |
+| Conditions.cs:7:9:8:16 | [inc (line 3): true] if (...) ... | Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc | semmle.label | successor |
+| Conditions.cs:7:13:7:16 | [false] !... | Conditions.cs:3:10:3:19 | exit IncrOrDecr (normal) | semmle.label | false |
+| Conditions.cs:7:13:7:16 | [true] !... | Conditions.cs:8:13:8:16 | ...; | semmle.label | true |
+| Conditions.cs:7:14:7:16 | [inc (line 3): false] access to parameter inc | Conditions.cs:7:13:7:16 | [true] !... | semmle.label | false |
+| Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc | Conditions.cs:7:13:7:16 | [false] !... | semmle.label | true |
 | Conditions.cs:8:13:8:13 | access to parameter x | Conditions.cs:8:13:8:15 | ...-- | semmle.label | successor |
 | Conditions.cs:8:13:8:15 | ...-- | Conditions.cs:3:10:3:19 | exit IncrOrDecr (normal) | semmle.label | successor |
 | Conditions.cs:8:13:8:16 | ...; | Conditions.cs:8:13:8:13 | access to parameter x | semmle.label | successor |
@@ -1265,12 +1272,12 @@
 | Conditions.cs:16:13:16:17 | [b (line 11): true] ... > ... | Conditions.cs:19:16:19:16 | access to local variable x | semmle.label | false |
 | Conditions.cs:16:17:16:17 | [b (line 11): false] 0 | Conditions.cs:16:13:16:17 | [b (line 11): false] ... > ... | semmle.label | successor |
 | Conditions.cs:16:17:16:17 | [b (line 11): true] 0 | Conditions.cs:16:13:16:17 | [b (line 11): true] ... > ... | semmle.label | successor |
-| Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:17:17:17:18 | [b (line 11): false] !... | semmle.label | successor |
-| Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... | Conditions.cs:17:17:17:18 | [b (line 11): true] !... | semmle.label | successor |
-| Conditions.cs:17:17:17:18 | [b (line 11): false] !... | Conditions.cs:17:18:17:18 | [b (line 11): false] access to parameter b | semmle.label | successor |
-| Conditions.cs:17:17:17:18 | [b (line 11): true] !... | Conditions.cs:17:18:17:18 | [b (line 11): true] access to parameter b | semmle.label | successor |
-| Conditions.cs:17:18:17:18 | [b (line 11): false] access to parameter b | Conditions.cs:18:17:18:20 | ...; | semmle.label | false |
-| Conditions.cs:17:18:17:18 | [b (line 11): true] access to parameter b | Conditions.cs:19:16:19:16 | access to local variable x | semmle.label | true |
+| Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:17:18:17:18 | [b (line 11): false] access to parameter b | semmle.label | successor |
+| Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... | Conditions.cs:17:18:17:18 | [b (line 11): true] access to parameter b | semmle.label | successor |
+| Conditions.cs:17:17:17:18 | [false] !... | Conditions.cs:19:16:19:16 | access to local variable x | semmle.label | false |
+| Conditions.cs:17:17:17:18 | [true] !... | Conditions.cs:18:17:18:20 | ...; | semmle.label | true |
+| Conditions.cs:17:18:17:18 | [b (line 11): false] access to parameter b | Conditions.cs:17:17:17:18 | [true] !... | semmle.label | false |
+| Conditions.cs:17:18:17:18 | [b (line 11): true] access to parameter b | Conditions.cs:17:17:17:18 | [false] !... | semmle.label | true |
 | Conditions.cs:18:17:18:17 | access to local variable x | Conditions.cs:18:17:18:19 | ...-- | semmle.label | successor |
 | Conditions.cs:18:17:18:19 | ...-- | Conditions.cs:19:16:19:16 | access to local variable x | semmle.label | successor |
 | Conditions.cs:18:17:18:20 | ...; | Conditions.cs:18:17:18:17 | access to local variable x | semmle.label | successor |
@@ -1522,12 +1529,12 @@
 | Conditions.cs:107:13:107:24 | [b (line 102): true] ... > ... | Conditions.cs:110:16:110:16 | access to local variable x | semmle.label | false |
 | Conditions.cs:107:24:107:24 | [b (line 102): false] 0 | Conditions.cs:107:13:107:24 | [b (line 102): false] ... > ... | semmle.label | successor |
 | Conditions.cs:107:24:107:24 | [b (line 102): true] 0 | Conditions.cs:107:13:107:24 | [b (line 102): true] ... > ... | semmle.label | successor |
-| Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:108:17:108:18 | [b (line 102): false] !... | semmle.label | successor |
-| Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... | Conditions.cs:108:17:108:18 | [b (line 102): true] !... | semmle.label | successor |
-| Conditions.cs:108:17:108:18 | [b (line 102): false] !... | Conditions.cs:108:18:108:18 | [b (line 102): false] access to parameter b | semmle.label | successor |
-| Conditions.cs:108:17:108:18 | [b (line 102): true] !... | Conditions.cs:108:18:108:18 | [b (line 102): true] access to parameter b | semmle.label | successor |
-| Conditions.cs:108:18:108:18 | [b (line 102): false] access to parameter b | Conditions.cs:109:17:109:24 | ...; | semmle.label | false |
-| Conditions.cs:108:18:108:18 | [b (line 102): true] access to parameter b | Conditions.cs:110:16:110:16 | access to local variable x | semmle.label | true |
+| Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:108:18:108:18 | [b (line 102): false] access to parameter b | semmle.label | successor |
+| Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... | Conditions.cs:108:18:108:18 | [b (line 102): true] access to parameter b | semmle.label | successor |
+| Conditions.cs:108:17:108:18 | [false] !... | Conditions.cs:110:16:110:16 | access to local variable x | semmle.label | false |
+| Conditions.cs:108:17:108:18 | [true] !... | Conditions.cs:109:17:109:24 | ...; | semmle.label | true |
+| Conditions.cs:108:18:108:18 | [b (line 102): false] access to parameter b | Conditions.cs:108:17:108:18 | [true] !... | semmle.label | false |
+| Conditions.cs:108:18:108:18 | [b (line 102): true] access to parameter b | Conditions.cs:108:17:108:18 | [false] !... | semmle.label | true |
 | Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:22:109:23 | "" | semmle.label | successor |
 | Conditions.cs:109:17:109:23 | ... + ... | Conditions.cs:109:17:109:23 | ... = ... | semmle.label | successor |
 | Conditions.cs:109:17:109:23 | ... = ... | Conditions.cs:110:16:110:16 | access to local variable x | semmle.label | successor |
@@ -1560,10 +1567,11 @@
 | Conditions.cs:118:29:118:39 | access to property Length | Conditions.cs:118:43:118:43 | 1 | semmle.label | successor |
 | Conditions.cs:118:29:118:43 | ... - ... | Conditions.cs:118:24:118:43 | ... == ... | semmle.label | successor |
 | Conditions.cs:118:43:118:43 | 1 | Conditions.cs:118:29:118:43 | ... - ... | semmle.label | successor |
-| Conditions.cs:119:13:120:23 | if (...) ... | Conditions.cs:119:17:119:21 | !... | semmle.label | successor |
-| Conditions.cs:119:17:119:21 | !... | Conditions.cs:119:18:119:21 | access to local variable last | semmle.label | successor |
-| Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | semmle.label | false |
-| Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | semmle.label | true |
+| Conditions.cs:119:13:120:23 | if (...) ... | Conditions.cs:119:18:119:21 | access to local variable last | semmle.label | successor |
+| Conditions.cs:119:17:119:21 | [false, last (line 118): true] !... | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | semmle.label | false |
+| Conditions.cs:119:17:119:21 | [true, last (line 118): false] !... | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | semmle.label | true |
+| Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:119:17:119:21 | [false, last (line 118): true] !... | semmle.label | true |
+| Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:119:17:119:21 | [true, last (line 118): false] !... | semmle.label | false |
 | Conditions.cs:120:17:120:22 | [last (line 118): false] ... = ... | Conditions.cs:121:13:122:25 | [last (line 118): false] if (...) ... | semmle.label | successor |
 | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:120:21:120:22 | [last (line 118): false] "" | semmle.label | successor |
 | Conditions.cs:120:21:120:22 | [last (line 118): false] "" | Conditions.cs:120:17:120:22 | [last (line 118): false] ... = ... | semmle.label | successor |
@@ -1619,14 +1627,15 @@
 | Conditions.cs:143:10:143:12 | enter M11 | Conditions.cs:144:5:150:5 | {...} | semmle.label | successor |
 | Conditions.cs:143:10:143:12 | exit M11 (normal) | Conditions.cs:143:10:143:12 | exit M11 | semmle.label | successor |
 | Conditions.cs:144:5:150:5 | {...} | Conditions.cs:145:9:145:30 | ... ...; | semmle.label | successor |
-| Conditions.cs:145:9:145:30 | ... ...; | Conditions.cs:145:17:145:29 | ... ? ... : ... | semmle.label | successor |
+| Conditions.cs:145:9:145:30 | ... ...; | Conditions.cs:145:17:145:17 | access to parameter b | semmle.label | successor |
 | Conditions.cs:145:13:145:29 | [b (line 143): false] String s = ... | Conditions.cs:146:9:149:49 | [b (line 143): false] if (...) ... | semmle.label | successor |
 | Conditions.cs:145:13:145:29 | [b (line 143): true] String s = ... | Conditions.cs:146:9:149:49 | [b (line 143): true] if (...) ... | semmle.label | successor |
 | Conditions.cs:145:17:145:17 | access to parameter b | Conditions.cs:145:21:145:23 | [b (line 143): true] "a" | semmle.label | true |
 | Conditions.cs:145:17:145:17 | access to parameter b | Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | semmle.label | false |
-| Conditions.cs:145:17:145:29 | ... ? ... : ... | Conditions.cs:145:17:145:17 | access to parameter b | semmle.label | successor |
-| Conditions.cs:145:21:145:23 | [b (line 143): true] "a" | Conditions.cs:145:13:145:29 | [b (line 143): true] String s = ... | semmle.label | successor |
-| Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | Conditions.cs:145:13:145:29 | [b (line 143): false] String s = ... | semmle.label | successor |
+| Conditions.cs:145:17:145:29 | [b (line 143): false] ... ? ... : ... | Conditions.cs:145:13:145:29 | [b (line 143): false] String s = ... | semmle.label | successor |
+| Conditions.cs:145:17:145:29 | [b (line 143): true] ... ? ... : ... | Conditions.cs:145:13:145:29 | [b (line 143): true] String s = ... | semmle.label | successor |
+| Conditions.cs:145:21:145:23 | [b (line 143): true] "a" | Conditions.cs:145:17:145:29 | [b (line 143): true] ... ? ... : ... | semmle.label | successor |
+| Conditions.cs:145:27:145:29 | [b (line 143): false] "b" | Conditions.cs:145:17:145:29 | [b (line 143): false] ... ? ... : ... | semmle.label | successor |
 | Conditions.cs:146:9:149:49 | [b (line 143): false] if (...) ... | Conditions.cs:146:13:146:13 | [b (line 143): false] access to parameter b | semmle.label | successor |
 | Conditions.cs:146:9:149:49 | [b (line 143): true] if (...) ... | Conditions.cs:146:13:146:13 | [b (line 143): true] access to parameter b | semmle.label | successor |
 | Conditions.cs:146:13:146:13 | [b (line 143): false] access to parameter b | Conditions.cs:149:13:149:49 | ...; | semmle.label | false |
@@ -1752,32 +1761,32 @@
 | ExitMethods.cs:109:13:109:21 | enter ThrowExpr | ExitMethods.cs:110:5:112:5 | {...} | semmle.label | successor |
 | ExitMethods.cs:109:13:109:21 | exit ThrowExpr (abnormal) | ExitMethods.cs:109:13:109:21 | exit ThrowExpr | semmle.label | successor |
 | ExitMethods.cs:109:13:109:21 | exit ThrowExpr (normal) | ExitMethods.cs:109:13:109:21 | exit ThrowExpr | semmle.label | successor |
-| ExitMethods.cs:110:5:112:5 | {...} | ExitMethods.cs:111:16:111:76 | ... ? ... : ... | semmle.label | successor |
+| ExitMethods.cs:110:5:112:5 | {...} | ExitMethods.cs:111:16:111:20 | access to parameter input | semmle.label | successor |
 | ExitMethods.cs:111:9:111:77 | return ...; | ExitMethods.cs:109:13:109:21 | exit ThrowExpr (normal) | semmle.label | return |
 | ExitMethods.cs:111:16:111:20 | access to parameter input | ExitMethods.cs:111:25:111:25 | 0 | semmle.label | successor |
 | ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:29:111:29 | 1 | semmle.label | true |
 | ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:69:111:75 | "input" | semmle.label | false |
-| ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:111:16:111:20 | access to parameter input | semmle.label | successor |
+| ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:111:9:111:77 | return ...; | semmle.label | successor |
 | ExitMethods.cs:111:25:111:25 | 0 | ExitMethods.cs:111:25:111:25 | (...) ... | semmle.label | successor |
 | ExitMethods.cs:111:25:111:25 | (...) ... | ExitMethods.cs:111:16:111:25 | ... != ... | semmle.label | successor |
 | ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:111:29:111:29 | (...) ... | semmle.label | successor |
 | ExitMethods.cs:111:29:111:29 | (...) ... | ExitMethods.cs:111:33:111:37 | access to parameter input | semmle.label | successor |
-| ExitMethods.cs:111:29:111:37 | ... / ... | ExitMethods.cs:111:9:111:77 | return ...; | semmle.label | successor |
+| ExitMethods.cs:111:29:111:37 | ... / ... | ExitMethods.cs:111:16:111:76 | ... ? ... : ... | semmle.label | successor |
 | ExitMethods.cs:111:33:111:37 | access to parameter input | ExitMethods.cs:111:29:111:37 | ... / ... | semmle.label | successor |
 | ExitMethods.cs:111:41:111:76 | throw ... | ExitMethods.cs:109:13:109:21 | exit ThrowExpr (abnormal) | semmle.label | exception(ArgumentException) |
 | ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | ExitMethods.cs:111:41:111:76 | throw ... | semmle.label | successor |
 | ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | semmle.label | successor |
 | ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:115:5:117:5 | {...} | semmle.label | successor |
 | ExitMethods.cs:114:16:114:34 | exit ExtensionMethodCall (normal) | ExitMethods.cs:114:16:114:34 | exit ExtensionMethodCall | semmle.label | successor |
-| ExitMethods.cs:115:5:117:5 | {...} | ExitMethods.cs:116:16:116:38 | ... ? ... : ... | semmle.label | successor |
+| ExitMethods.cs:115:5:117:5 | {...} | ExitMethods.cs:116:16:116:16 | access to parameter s | semmle.label | successor |
 | ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:114:16:114:34 | exit ExtensionMethodCall (normal) | semmle.label | return |
 | ExitMethods.cs:116:16:116:16 | access to parameter s | ExitMethods.cs:116:27:116:29 | - | semmle.label | successor |
 | ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:34:116:34 | 0 | semmle.label | true |
 | ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:38:116:38 | 1 | semmle.label | false |
-| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:116:16:116:16 | access to parameter s | semmle.label | successor |
+| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:116:9:116:39 | return ...; | semmle.label | successor |
 | ExitMethods.cs:116:27:116:29 | - | ExitMethods.cs:116:16:116:30 | call to method Contains | semmle.label | successor |
-| ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:116:9:116:39 | return ...; | semmle.label | successor |
-| ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:116:9:116:39 | return ...; | semmle.label | successor |
+| ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:116:16:116:38 | ... ? ... : ... | semmle.label | successor |
+| ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:116:16:116:38 | ... ? ... : ... | semmle.label | successor |
 | ExitMethods.cs:119:17:119:32 | enter FailingAssertion | ExitMethods.cs:120:5:123:5 | {...} | semmle.label | successor |
 | ExitMethods.cs:119:17:119:32 | exit FailingAssertion (abnormal) | ExitMethods.cs:119:17:119:32 | exit FailingAssertion | semmle.label | successor |
 | ExitMethods.cs:120:5:123:5 | {...} | ExitMethods.cs:121:9:121:29 | ...; | semmle.label | successor |
@@ -2113,16 +2122,21 @@
 | Finally.cs:113:9:118:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:114:13:115:41 | [finally: exception(OutOfMemoryException)] if (...) ... | semmle.label | successor |
 | Finally.cs:113:9:118:9 | [finally: return] {...} | Finally.cs:114:13:115:41 | [finally: return] if (...) ... | semmle.label | successor |
 | Finally.cs:113:9:118:9 | {...} | Finally.cs:114:13:115:41 | if (...) ... | semmle.label | successor |
-| Finally.cs:114:13:115:41 | [finally: exception(Exception)] if (...) ... | Finally.cs:114:17:114:36 | [finally: exception(Exception)] !... | semmle.label | successor |
-| Finally.cs:114:13:115:41 | [finally: exception(NullReferenceException)] if (...) ... | Finally.cs:114:17:114:36 | [finally: exception(NullReferenceException)] !... | semmle.label | successor |
-| Finally.cs:114:13:115:41 | [finally: exception(OutOfMemoryException)] if (...) ... | Finally.cs:114:17:114:36 | [finally: exception(OutOfMemoryException)] !... | semmle.label | successor |
-| Finally.cs:114:13:115:41 | [finally: return] if (...) ... | Finally.cs:114:17:114:36 | [finally: return] !... | semmle.label | successor |
-| Finally.cs:114:13:115:41 | if (...) ... | Finally.cs:114:17:114:36 | !... | semmle.label | successor |
-| Finally.cs:114:17:114:36 | !... | Finally.cs:114:19:114:23 | this access | semmle.label | successor |
-| Finally.cs:114:17:114:36 | [finally: exception(Exception)] !... | Finally.cs:114:19:114:23 | [finally: exception(Exception)] this access | semmle.label | successor |
-| Finally.cs:114:17:114:36 | [finally: exception(NullReferenceException)] !... | Finally.cs:114:19:114:23 | [finally: exception(NullReferenceException)] this access | semmle.label | successor |
-| Finally.cs:114:17:114:36 | [finally: exception(OutOfMemoryException)] !... | Finally.cs:114:19:114:23 | [finally: exception(OutOfMemoryException)] this access | semmle.label | successor |
-| Finally.cs:114:17:114:36 | [finally: return] !... | Finally.cs:114:19:114:23 | [finally: return] this access | semmle.label | successor |
+| Finally.cs:114:13:115:41 | [finally: exception(Exception)] if (...) ... | Finally.cs:114:19:114:23 | [finally: exception(Exception)] this access | semmle.label | successor |
+| Finally.cs:114:13:115:41 | [finally: exception(NullReferenceException)] if (...) ... | Finally.cs:114:19:114:23 | [finally: exception(NullReferenceException)] this access | semmle.label | successor |
+| Finally.cs:114:13:115:41 | [finally: exception(OutOfMemoryException)] if (...) ... | Finally.cs:114:19:114:23 | [finally: exception(OutOfMemoryException)] this access | semmle.label | successor |
+| Finally.cs:114:13:115:41 | [finally: return] if (...) ... | Finally.cs:114:19:114:23 | [finally: return] this access | semmle.label | successor |
+| Finally.cs:114:13:115:41 | if (...) ... | Finally.cs:114:19:114:23 | this access | semmle.label | successor |
+| Finally.cs:114:17:114:36 | [false, finally: exception(Exception)] !... | Finally.cs:116:13:117:37 | [finally: exception(Exception)] if (...) ... | semmle.label | false |
+| Finally.cs:114:17:114:36 | [false, finally: exception(NullReferenceException)] !... | Finally.cs:116:13:117:37 | [finally: exception(NullReferenceException)] if (...) ... | semmle.label | false |
+| Finally.cs:114:17:114:36 | [false, finally: exception(OutOfMemoryException)] !... | Finally.cs:116:13:117:37 | [finally: exception(OutOfMemoryException)] if (...) ... | semmle.label | false |
+| Finally.cs:114:17:114:36 | [false, finally: return] !... | Finally.cs:116:13:117:37 | [finally: return] if (...) ... | semmle.label | false |
+| Finally.cs:114:17:114:36 | [false] !... | Finally.cs:116:13:117:37 | if (...) ... | semmle.label | false |
+| Finally.cs:114:17:114:36 | [true, finally: exception(Exception)] !... | Finally.cs:115:17:115:41 | [finally: exception(Exception)] ...; | semmle.label | true |
+| Finally.cs:114:17:114:36 | [true, finally: exception(NullReferenceException)] !... | Finally.cs:115:17:115:41 | [finally: exception(NullReferenceException)] ...; | semmle.label | true |
+| Finally.cs:114:17:114:36 | [true, finally: exception(OutOfMemoryException)] !... | Finally.cs:115:17:115:41 | [finally: exception(OutOfMemoryException)] ...; | semmle.label | true |
+| Finally.cs:114:17:114:36 | [true, finally: return] !... | Finally.cs:115:17:115:41 | [finally: return] ...; | semmle.label | true |
+| Finally.cs:114:17:114:36 | [true] !... | Finally.cs:115:17:115:41 | ...; | semmle.label | true |
 | Finally.cs:114:19:114:23 | [finally: exception(Exception)] access to field Field | Finally.cs:114:19:114:30 | [finally: exception(Exception)] access to property Length | semmle.label | successor |
 | Finally.cs:114:19:114:23 | [finally: exception(Exception)] this access | Finally.cs:114:19:114:23 | [finally: exception(Exception)] access to field Field | semmle.label | successor |
 | Finally.cs:114:19:114:23 | [finally: exception(NullReferenceException)] access to field Field | Finally.cs:114:19:114:30 | [finally: exception(NullReferenceException)] access to property Length | semmle.label | successor |
@@ -2138,16 +2152,16 @@
 | Finally.cs:114:19:114:30 | [finally: exception(OutOfMemoryException)] access to property Length | Finally.cs:114:35:114:35 | [finally: exception(OutOfMemoryException)] 0 | semmle.label | successor |
 | Finally.cs:114:19:114:30 | [finally: return] access to property Length | Finally.cs:114:35:114:35 | [finally: return] 0 | semmle.label | successor |
 | Finally.cs:114:19:114:30 | access to property Length | Finally.cs:114:35:114:35 | 0 | semmle.label | successor |
-| Finally.cs:114:19:114:35 | ... == ... | Finally.cs:115:17:115:41 | ...; | semmle.label | false |
-| Finally.cs:114:19:114:35 | ... == ... | Finally.cs:116:13:117:37 | if (...) ... | semmle.label | true |
-| Finally.cs:114:19:114:35 | [finally: exception(Exception)] ... == ... | Finally.cs:115:17:115:41 | [finally: exception(Exception)] ...; | semmle.label | false |
-| Finally.cs:114:19:114:35 | [finally: exception(Exception)] ... == ... | Finally.cs:116:13:117:37 | [finally: exception(Exception)] if (...) ... | semmle.label | true |
-| Finally.cs:114:19:114:35 | [finally: exception(NullReferenceException)] ... == ... | Finally.cs:115:17:115:41 | [finally: exception(NullReferenceException)] ...; | semmle.label | false |
-| Finally.cs:114:19:114:35 | [finally: exception(NullReferenceException)] ... == ... | Finally.cs:116:13:117:37 | [finally: exception(NullReferenceException)] if (...) ... | semmle.label | true |
-| Finally.cs:114:19:114:35 | [finally: exception(OutOfMemoryException)] ... == ... | Finally.cs:115:17:115:41 | [finally: exception(OutOfMemoryException)] ...; | semmle.label | false |
-| Finally.cs:114:19:114:35 | [finally: exception(OutOfMemoryException)] ... == ... | Finally.cs:116:13:117:37 | [finally: exception(OutOfMemoryException)] if (...) ... | semmle.label | true |
-| Finally.cs:114:19:114:35 | [finally: return] ... == ... | Finally.cs:115:17:115:41 | [finally: return] ...; | semmle.label | false |
-| Finally.cs:114:19:114:35 | [finally: return] ... == ... | Finally.cs:116:13:117:37 | [finally: return] if (...) ... | semmle.label | true |
+| Finally.cs:114:19:114:35 | ... == ... | Finally.cs:114:17:114:36 | [false] !... | semmle.label | true |
+| Finally.cs:114:19:114:35 | ... == ... | Finally.cs:114:17:114:36 | [true] !... | semmle.label | false |
+| Finally.cs:114:19:114:35 | [finally: exception(Exception)] ... == ... | Finally.cs:114:17:114:36 | [false, finally: exception(Exception)] !... | semmle.label | true |
+| Finally.cs:114:19:114:35 | [finally: exception(Exception)] ... == ... | Finally.cs:114:17:114:36 | [true, finally: exception(Exception)] !... | semmle.label | false |
+| Finally.cs:114:19:114:35 | [finally: exception(NullReferenceException)] ... == ... | Finally.cs:114:17:114:36 | [false, finally: exception(NullReferenceException)] !... | semmle.label | true |
+| Finally.cs:114:19:114:35 | [finally: exception(NullReferenceException)] ... == ... | Finally.cs:114:17:114:36 | [true, finally: exception(NullReferenceException)] !... | semmle.label | false |
+| Finally.cs:114:19:114:35 | [finally: exception(OutOfMemoryException)] ... == ... | Finally.cs:114:17:114:36 | [false, finally: exception(OutOfMemoryException)] !... | semmle.label | true |
+| Finally.cs:114:19:114:35 | [finally: exception(OutOfMemoryException)] ... == ... | Finally.cs:114:17:114:36 | [true, finally: exception(OutOfMemoryException)] !... | semmle.label | false |
+| Finally.cs:114:19:114:35 | [finally: return] ... == ... | Finally.cs:114:17:114:36 | [false, finally: return] !... | semmle.label | true |
+| Finally.cs:114:19:114:35 | [finally: return] ... == ... | Finally.cs:114:17:114:36 | [true, finally: return] !... | semmle.label | false |
 | Finally.cs:114:35:114:35 | 0 | Finally.cs:114:19:114:35 | ... == ... | semmle.label | successor |
 | Finally.cs:114:35:114:35 | [finally: exception(Exception)] 0 | Finally.cs:114:19:114:35 | [finally: exception(Exception)] ... == ... | semmle.label | successor |
 | Finally.cs:114:35:114:35 | [finally: exception(NullReferenceException)] 0 | Finally.cs:114:19:114:35 | [finally: exception(NullReferenceException)] ... == ... | semmle.label | successor |
@@ -2606,16 +2620,16 @@
 | Foreach.cs:15:13:15:13 | ; | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | semmle.label | successor |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:19:5:22:5 | {...} | semmle.label | successor |
 | Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:18:10:18:11 | exit M3 | semmle.label | successor |
-| Foreach.cs:19:5:22:5 | {...} | Foreach.cs:20:27:20:68 | ... ?? ... | semmle.label | successor |
+| Foreach.cs:19:5:22:5 | {...} | Foreach.cs:20:27:20:27 | access to parameter e | semmle.label | successor |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:18:10:18:11 | exit M3 (normal) | semmle.label | empty |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:22:20:22 | String x | semmle.label | non-empty |
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:21:11:21:11 | ; | semmle.label | successor |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:29:20:38 | call to method ToArray | semmle.label | non-null |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:43:20:68 | call to method Empty | semmle.label | null |
-| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:27 | access to parameter e | semmle.label | successor |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | non-null |
+| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:27:20:68 | ... ?? ... | semmle.label | non-null |
 | Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:43:20:68 | call to method Empty | semmle.label | null |
-| Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:27:20:68 | ... ?? ... | semmle.label | successor |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
 | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:25:5:28:5 | {...} | semmle.label | successor |
 | Foreach.cs:24:10:24:11 | exit M4 (normal) | Foreach.cs:24:10:24:11 | exit M4 | semmle.label | successor |
@@ -3003,11 +3017,12 @@
 | LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:68:5:74:5 | {...} | semmle.label | successor |
 | LoopUnrolling.cs:67:10:67:11 | exit M8 (normal) | LoopUnrolling.cs:67:10:67:11 | exit M8 | semmle.label | successor |
 | LoopUnrolling.cs:68:5:74:5 | {...} | LoopUnrolling.cs:69:9:70:19 | if (...) ... | semmle.label | successor |
-| LoopUnrolling.cs:69:9:70:19 | if (...) ... | LoopUnrolling.cs:69:13:69:23 | !... | semmle.label | successor |
-| LoopUnrolling.cs:69:13:69:23 | !... | LoopUnrolling.cs:69:14:69:17 | access to parameter args | semmle.label | successor |
+| LoopUnrolling.cs:69:9:70:19 | if (...) ... | LoopUnrolling.cs:69:14:69:17 | access to parameter args | semmle.label | successor |
+| LoopUnrolling.cs:69:13:69:23 | [false] !... | LoopUnrolling.cs:71:9:71:21 | ...; | semmle.label | false |
+| LoopUnrolling.cs:69:13:69:23 | [true] !... | LoopUnrolling.cs:70:13:70:19 | return ...; | semmle.label | true |
 | LoopUnrolling.cs:69:14:69:17 | access to parameter args | LoopUnrolling.cs:69:14:69:23 | call to method Any | semmle.label | successor |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:70:13:70:19 | return ...; | semmle.label | false |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:71:9:71:21 | ...; | semmle.label | true |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:13:69:23 | [false] !... | semmle.label | true |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:13:69:23 | [true] !... | semmle.label | false |
 | LoopUnrolling.cs:70:13:70:19 | return ...; | LoopUnrolling.cs:67:10:67:11 | exit M8 (normal) | semmle.label | return |
 | LoopUnrolling.cs:71:9:71:12 | access to parameter args | LoopUnrolling.cs:71:9:71:20 | call to method Clear | semmle.label | successor |
 | LoopUnrolling.cs:71:9:71:20 | call to method Clear | LoopUnrolling.cs:72:29:72:32 | access to parameter args | semmle.label | successor |
@@ -3326,74 +3341,78 @@
 | MultiImplementationB.cs:32:9:32:10 | exit M1 (normal) | MultiImplementationB.cs:32:9:32:10 | exit M1 | semmle.label | successor |
 | MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationA.cs:36:9:36:10 | exit M1 (normal) | semmle.label | successor |
 | MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationB.cs:32:9:32:10 | exit M1 (normal) | semmle.label | successor |
-| NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:28 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:23 | access to parameter i | semmle.label | successor |
 | NullCoalescing.cs:3:9:3:10 | exit M1 (normal) | NullCoalescing.cs:3:9:3:10 | exit M1 | semmle.label | successor |
-| NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:9:3:10 | exit M1 (normal) | semmle.label | non-null |
+| NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:23:3:28 | ... ?? ... | semmle.label | non-null |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:28:3:28 | 0 | semmle.label | null |
-| NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:23:3:23 | access to parameter i | semmle.label | successor |
-| NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:9:3:10 | exit M1 (normal) | semmle.label | successor |
-| NullCoalescing.cs:5:9:5:10 | enter M2 | NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | semmle.label | successor |
+| NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:9:3:10 | exit M1 (normal) | semmle.label | successor |
+| NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:23:3:28 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:5:9:5:10 | enter M2 | NullCoalescing.cs:5:25:5:25 | access to parameter b | semmle.label | successor |
 | NullCoalescing.cs:5:9:5:10 | exit M2 (normal) | NullCoalescing.cs:5:9:5:10 | exit M2 | semmle.label | successor |
-| NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | NullCoalescing.cs:5:25:5:34 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | NullCoalescing.cs:5:9:5:10 | exit M2 (normal) | semmle.label | successor |
+| NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:25:5:34 | [false] ... ?? ... | semmle.label | false |
+| NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:25:5:34 | [true] ... ?? ... | semmle.label | true |
 | NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:30:5:34 | false | semmle.label | null |
-| NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:39:5:39 | 0 | semmle.label | true |
-| NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:43:5:43 | 1 | semmle.label | false |
-| NullCoalescing.cs:5:25:5:34 | ... ?? ... | NullCoalescing.cs:5:25:5:25 | access to parameter b | semmle.label | successor |
-| NullCoalescing.cs:5:30:5:34 | false | NullCoalescing.cs:5:43:5:43 | 1 | semmle.label | false |
-| NullCoalescing.cs:5:39:5:39 | 0 | NullCoalescing.cs:5:9:5:10 | exit M2 (normal) | semmle.label | successor |
-| NullCoalescing.cs:5:43:5:43 | 1 | NullCoalescing.cs:5:9:5:10 | exit M2 (normal) | semmle.label | successor |
-| NullCoalescing.cs:7:12:7:13 | enter M3 | NullCoalescing.cs:7:40:7:53 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:5:25:5:34 | [false] ... ?? ... | NullCoalescing.cs:5:43:5:43 | 1 | semmle.label | false |
+| NullCoalescing.cs:5:25:5:34 | [true] ... ?? ... | NullCoalescing.cs:5:39:5:39 | 0 | semmle.label | true |
+| NullCoalescing.cs:5:30:5:34 | false | NullCoalescing.cs:5:25:5:34 | [false] ... ?? ... | semmle.label | false |
+| NullCoalescing.cs:5:39:5:39 | 0 | NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | semmle.label | successor |
+| NullCoalescing.cs:5:43:5:43 | 1 | NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | semmle.label | successor |
+| NullCoalescing.cs:7:12:7:13 | enter M3 | NullCoalescing.cs:7:40:7:41 | access to parameter s1 | semmle.label | successor |
 | NullCoalescing.cs:7:12:7:13 | exit M3 (normal) | NullCoalescing.cs:7:12:7:13 | exit M3 | semmle.label | successor |
-| NullCoalescing.cs:7:40:7:41 | access to parameter s1 | NullCoalescing.cs:7:12:7:13 | exit M3 (normal) | semmle.label | non-null |
-| NullCoalescing.cs:7:40:7:41 | access to parameter s1 | NullCoalescing.cs:7:46:7:53 | ... ?? ... | semmle.label | null |
-| NullCoalescing.cs:7:40:7:53 | ... ?? ... | NullCoalescing.cs:7:40:7:41 | access to parameter s1 | semmle.label | successor |
-| NullCoalescing.cs:7:46:7:47 | access to parameter s2 | NullCoalescing.cs:7:12:7:13 | exit M3 (normal) | semmle.label | non-null |
+| NullCoalescing.cs:7:40:7:41 | access to parameter s1 | NullCoalescing.cs:7:40:7:53 | ... ?? ... | semmle.label | non-null |
+| NullCoalescing.cs:7:40:7:41 | access to parameter s1 | NullCoalescing.cs:7:46:7:47 | access to parameter s2 | semmle.label | null |
+| NullCoalescing.cs:7:40:7:53 | ... ?? ... | NullCoalescing.cs:7:12:7:13 | exit M3 (normal) | semmle.label | successor |
+| NullCoalescing.cs:7:46:7:47 | access to parameter s2 | NullCoalescing.cs:7:46:7:53 | ... ?? ... | semmle.label | non-null |
 | NullCoalescing.cs:7:46:7:47 | access to parameter s2 | NullCoalescing.cs:7:52:7:53 | "" | semmle.label | null |
-| NullCoalescing.cs:7:46:7:53 | ... ?? ... | NullCoalescing.cs:7:46:7:47 | access to parameter s2 | semmle.label | successor |
-| NullCoalescing.cs:7:52:7:53 | "" | NullCoalescing.cs:7:12:7:13 | exit M3 (normal) | semmle.label | successor |
-| NullCoalescing.cs:9:12:9:13 | enter M4 | NullCoalescing.cs:9:36:9:58 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:7:46:7:53 | ... ?? ... | NullCoalescing.cs:7:40:7:53 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:7:52:7:53 | "" | NullCoalescing.cs:7:46:7:53 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:9:12:9:13 | enter M4 | NullCoalescing.cs:9:37:9:37 | access to parameter b | semmle.label | successor |
 | NullCoalescing.cs:9:12:9:13 | exit M4 (normal) | NullCoalescing.cs:9:12:9:13 | exit M4 | semmle.label | successor |
-| NullCoalescing.cs:9:36:9:58 | ... ?? ... | NullCoalescing.cs:9:37:9:45 | ... ? ... : ... | semmle.label | successor |
+| NullCoalescing.cs:9:36:9:58 | ... ?? ... | NullCoalescing.cs:9:12:9:13 | exit M4 (normal) | semmle.label | successor |
 | NullCoalescing.cs:9:37:9:37 | access to parameter b | NullCoalescing.cs:9:41:9:41 | access to parameter s | semmle.label | true |
 | NullCoalescing.cs:9:37:9:37 | access to parameter b | NullCoalescing.cs:9:45:9:45 | access to parameter s | semmle.label | false |
-| NullCoalescing.cs:9:37:9:45 | ... ? ... : ... | NullCoalescing.cs:9:37:9:37 | access to parameter b | semmle.label | successor |
-| NullCoalescing.cs:9:41:9:41 | access to parameter s | NullCoalescing.cs:9:12:9:13 | exit M4 (normal) | semmle.label | non-null |
-| NullCoalescing.cs:9:41:9:41 | access to parameter s | NullCoalescing.cs:9:51:9:58 | ... ?? ... | semmle.label | null |
-| NullCoalescing.cs:9:45:9:45 | access to parameter s | NullCoalescing.cs:9:12:9:13 | exit M4 (normal) | semmle.label | non-null |
-| NullCoalescing.cs:9:45:9:45 | access to parameter s | NullCoalescing.cs:9:51:9:58 | ... ?? ... | semmle.label | null |
-| NullCoalescing.cs:9:51:9:52 | "" | NullCoalescing.cs:9:12:9:13 | exit M4 (normal) | semmle.label | non-null |
-| NullCoalescing.cs:9:51:9:58 | ... ?? ... | NullCoalescing.cs:9:51:9:52 | "" | semmle.label | successor |
-| NullCoalescing.cs:11:9:11:10 | enter M5 | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | semmle.label | successor |
+| NullCoalescing.cs:9:37:9:45 | [non-null] ... ? ... : ... | NullCoalescing.cs:9:36:9:58 | ... ?? ... | semmle.label | non-null |
+| NullCoalescing.cs:9:37:9:45 | [null] ... ? ... : ... | NullCoalescing.cs:9:51:9:52 | "" | semmle.label | null |
+| NullCoalescing.cs:9:41:9:41 | access to parameter s | NullCoalescing.cs:9:37:9:45 | [non-null] ... ? ... : ... | semmle.label | non-null |
+| NullCoalescing.cs:9:41:9:41 | access to parameter s | NullCoalescing.cs:9:37:9:45 | [null] ... ? ... : ... | semmle.label | null |
+| NullCoalescing.cs:9:45:9:45 | access to parameter s | NullCoalescing.cs:9:37:9:45 | [non-null] ... ? ... : ... | semmle.label | non-null |
+| NullCoalescing.cs:9:45:9:45 | access to parameter s | NullCoalescing.cs:9:37:9:45 | [null] ... ? ... : ... | semmle.label | null |
+| NullCoalescing.cs:9:51:9:52 | "" | NullCoalescing.cs:9:51:9:58 | ... ?? ... | semmle.label | non-null |
+| NullCoalescing.cs:9:51:9:58 | ... ?? ... | NullCoalescing.cs:9:36:9:58 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:11:9:11:10 | enter M5 | NullCoalescing.cs:11:44:11:45 | access to parameter b1 | semmle.label | successor |
 | NullCoalescing.cs:11:9:11:10 | exit M5 (normal) | NullCoalescing.cs:11:9:11:10 | exit M5 | semmle.label | successor |
-| NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | NullCoalescing.cs:11:44:11:59 | ... ?? ... | semmle.label | successor |
-| NullCoalescing.cs:11:44:11:45 | access to parameter b1 | NullCoalescing.cs:11:51:11:58 | ... && ... | semmle.label | null |
-| NullCoalescing.cs:11:44:11:45 | access to parameter b1 | NullCoalescing.cs:11:64:11:64 | 0 | semmle.label | true |
-| NullCoalescing.cs:11:44:11:45 | access to parameter b1 | NullCoalescing.cs:11:68:11:68 | 1 | semmle.label | false |
-| NullCoalescing.cs:11:44:11:59 | ... ?? ... | NullCoalescing.cs:11:44:11:45 | access to parameter b1 | semmle.label | successor |
+| NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | NullCoalescing.cs:11:9:11:10 | exit M5 (normal) | semmle.label | successor |
+| NullCoalescing.cs:11:44:11:45 | access to parameter b1 | NullCoalescing.cs:11:44:11:59 | [false] ... ?? ... | semmle.label | false |
+| NullCoalescing.cs:11:44:11:45 | access to parameter b1 | NullCoalescing.cs:11:44:11:59 | [true] ... ?? ... | semmle.label | true |
+| NullCoalescing.cs:11:44:11:45 | access to parameter b1 | NullCoalescing.cs:11:51:11:52 | access to parameter b2 | semmle.label | null |
+| NullCoalescing.cs:11:44:11:59 | [false] ... ?? ... | NullCoalescing.cs:11:68:11:68 | 1 | semmle.label | false |
+| NullCoalescing.cs:11:44:11:59 | [true] ... ?? ... | NullCoalescing.cs:11:64:11:64 | 0 | semmle.label | true |
+| NullCoalescing.cs:11:51:11:52 | access to parameter b2 | NullCoalescing.cs:11:51:11:58 | [false] ... && ... | semmle.label | false |
 | NullCoalescing.cs:11:51:11:52 | access to parameter b2 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | semmle.label | true |
-| NullCoalescing.cs:11:51:11:52 | access to parameter b2 | NullCoalescing.cs:11:68:11:68 | 1 | semmle.label | false |
-| NullCoalescing.cs:11:51:11:58 | ... && ... | NullCoalescing.cs:11:51:11:52 | access to parameter b2 | semmle.label | successor |
-| NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:64:11:64 | 0 | semmle.label | true |
-| NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:68:11:68 | 1 | semmle.label | false |
-| NullCoalescing.cs:11:64:11:64 | 0 | NullCoalescing.cs:11:9:11:10 | exit M5 (normal) | semmle.label | successor |
-| NullCoalescing.cs:11:68:11:68 | 1 | NullCoalescing.cs:11:9:11:10 | exit M5 (normal) | semmle.label | successor |
+| NullCoalescing.cs:11:51:11:58 | [false] ... && ... | NullCoalescing.cs:11:44:11:59 | [false] ... ?? ... | semmle.label | false |
+| NullCoalescing.cs:11:51:11:58 | [true] ... && ... | NullCoalescing.cs:11:44:11:59 | [true] ... ?? ... | semmle.label | true |
+| NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:51:11:58 | [false] ... && ... | semmle.label | false |
+| NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:51:11:58 | [true] ... && ... | semmle.label | true |
+| NullCoalescing.cs:11:64:11:64 | 0 | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | semmle.label | successor |
+| NullCoalescing.cs:11:68:11:68 | 1 | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | semmle.label | successor |
 | NullCoalescing.cs:13:10:13:11 | enter M6 | NullCoalescing.cs:14:5:18:5 | {...} | semmle.label | successor |
 | NullCoalescing.cs:13:10:13:11 | exit M6 (normal) | NullCoalescing.cs:13:10:13:11 | exit M6 | semmle.label | successor |
 | NullCoalescing.cs:14:5:18:5 | {...} | NullCoalescing.cs:15:9:15:32 | ... ...; | semmle.label | successor |
-| NullCoalescing.cs:15:9:15:32 | ... ...; | NullCoalescing.cs:15:17:15:31 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:15:9:15:32 | ... ...; | NullCoalescing.cs:15:23:15:26 | null | semmle.label | successor |
 | NullCoalescing.cs:15:13:15:31 | Int32 j = ... | NullCoalescing.cs:16:9:16:26 | ... ...; | semmle.label | successor |
 | NullCoalescing.cs:15:17:15:26 | (...) ... | NullCoalescing.cs:15:31:15:31 | 0 | semmle.label | null |
-| NullCoalescing.cs:15:17:15:31 | ... ?? ... | NullCoalescing.cs:15:23:15:26 | null | semmle.label | successor |
+| NullCoalescing.cs:15:17:15:31 | ... ?? ... | NullCoalescing.cs:15:13:15:31 | Int32 j = ... | semmle.label | successor |
 | NullCoalescing.cs:15:23:15:26 | null | NullCoalescing.cs:15:17:15:26 | (...) ... | semmle.label | successor |
-| NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:15:13:15:31 | Int32 j = ... | semmle.label | successor |
-| NullCoalescing.cs:16:9:16:26 | ... ...; | NullCoalescing.cs:16:17:16:25 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:15:17:15:31 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:16:9:16:26 | ... ...; | NullCoalescing.cs:16:17:16:18 | "" | semmle.label | successor |
 | NullCoalescing.cs:16:13:16:25 | String s = ... | NullCoalescing.cs:17:9:17:25 | ...; | semmle.label | successor |
-| NullCoalescing.cs:16:17:16:18 | "" | NullCoalescing.cs:16:13:16:25 | String s = ... | semmle.label | non-null |
-| NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:16:17:16:18 | "" | semmle.label | successor |
+| NullCoalescing.cs:16:17:16:18 | "" | NullCoalescing.cs:16:17:16:25 | ... ?? ... | semmle.label | non-null |
+| NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:16:13:16:25 | String s = ... | semmle.label | successor |
 | NullCoalescing.cs:17:9:17:24 | ... = ... | NullCoalescing.cs:13:10:13:11 | exit M6 (normal) | semmle.label | successor |
-| NullCoalescing.cs:17:9:17:25 | ...; | NullCoalescing.cs:17:13:17:24 | ... ?? ... | semmle.label | successor |
-| NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:17:9:17:24 | ... = ... | semmle.label | non-null |
-| NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:19:17:19 | access to parameter i | semmle.label | successor |
+| NullCoalescing.cs:17:9:17:25 | ...; | NullCoalescing.cs:17:19:17:19 | access to parameter i | semmle.label | successor |
+| NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:17:13:17:24 | ... ?? ... | semmle.label | non-null |
+| NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:9:17:24 | ... = ... | semmle.label | successor |
 | NullCoalescing.cs:17:19:17:19 | access to parameter i | NullCoalescing.cs:17:13:17:19 | (...) ... | semmle.label | successor |
 | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:6:5:43:5 | {...} | semmle.label | successor |
 | Patterns.cs:5:10:5:13 | exit Test (normal) | Patterns.cs:5:10:5:13 | exit Test | semmle.label | successor |
@@ -3609,17 +3628,18 @@
 | Switch.cs:23:17:23:28 | goto case ...; | Switch.cs:16:13:16:19 | case ...: | semmle.label | goto(0) |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:17:23:28 | goto case ...; | semmle.label | successor |
 | Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:18:24:25 | String s | semmle.label | successor |
-| Switch.cs:24:18:24:25 | String s | Switch.cs:24:32:24:55 | ... && ... | semmle.label | match |
+| Switch.cs:24:18:24:25 | String s | Switch.cs:24:32:24:32 | access to local variable s | semmle.label | match |
 | Switch.cs:24:18:24:25 | String s | Switch.cs:27:13:27:39 | case ...: | semmle.label | no-match |
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:24:32:24:39 | access to property Length | semmle.label | successor |
 | Switch.cs:24:32:24:39 | access to property Length | Switch.cs:24:43:24:43 | 0 | semmle.label | successor |
+| Switch.cs:24:32:24:43 | ... > ... | Switch.cs:24:32:24:55 | [false] ... && ... | semmle.label | false |
 | Switch.cs:24:32:24:43 | ... > ... | Switch.cs:24:48:24:48 | access to local variable s | semmle.label | true |
-| Switch.cs:24:32:24:43 | ... > ... | Switch.cs:27:13:27:39 | case ...: | semmle.label | false |
-| Switch.cs:24:32:24:55 | ... && ... | Switch.cs:24:32:24:32 | access to local variable s | semmle.label | successor |
+| Switch.cs:24:32:24:55 | [false] ... && ... | Switch.cs:27:13:27:39 | case ...: | semmle.label | false |
+| Switch.cs:24:32:24:55 | [true] ... && ... | Switch.cs:25:17:25:37 | ...; | semmle.label | true |
 | Switch.cs:24:43:24:43 | 0 | Switch.cs:24:32:24:43 | ... > ... | semmle.label | successor |
 | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:24:53:24:55 | "a" | semmle.label | successor |
-| Switch.cs:24:48:24:55 | ... != ... | Switch.cs:25:17:25:37 | ...; | semmle.label | true |
-| Switch.cs:24:48:24:55 | ... != ... | Switch.cs:27:13:27:39 | case ...: | semmle.label | false |
+| Switch.cs:24:48:24:55 | ... != ... | Switch.cs:24:32:24:55 | [false] ... && ... | semmle.label | false |
+| Switch.cs:24:48:24:55 | ... != ... | Switch.cs:24:32:24:55 | [true] ... && ... | semmle.label | true |
 | Switch.cs:24:53:24:55 | "a" | Switch.cs:24:48:24:55 | ... != ... | semmle.label | successor |
 | Switch.cs:25:17:25:36 | call to method WriteLine | Switch.cs:26:17:26:23 | return ...; | semmle.label | successor |
 | Switch.cs:25:17:25:37 | ...; | Switch.cs:25:35:25:35 | access to local variable s | semmle.label | successor |
@@ -3768,32 +3788,36 @@
 | Switch.cs:123:10:123:12 | enter M11 | Switch.cs:124:5:127:5 | {...} | semmle.label | successor |
 | Switch.cs:123:10:123:12 | exit M11 (normal) | Switch.cs:123:10:123:12 | exit M11 | semmle.label | successor |
 | Switch.cs:124:5:127:5 | {...} | Switch.cs:125:9:126:19 | if (...) ... | semmle.label | successor |
-| Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:125:13:125:48 | ... switch { ... } | semmle.label | successor |
-| Switch.cs:125:13:125:13 | access to parameter o | Switch.cs:125:24:125:34 | ... => ... | semmle.label | successor |
-| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:13:125:13 | access to parameter o | semmle.label | successor |
+| Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:125:13:125:13 | access to parameter o | semmle.label | successor |
+| Switch.cs:125:13:125:13 | access to parameter o | Switch.cs:125:24:125:29 | Boolean b | semmle.label | successor |
+| Switch.cs:125:13:125:48 | [false] ... switch { ... } | Switch.cs:123:10:123:12 | exit M11 (normal) | semmle.label | false |
+| Switch.cs:125:13:125:48 | [true] ... switch { ... } | Switch.cs:126:13:126:19 | return ...; | semmle.label | true |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:34:125:34 | access to local variable b | semmle.label | match |
-| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:37:125:46 | ... => ... | semmle.label | no-match |
-| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:29 | Boolean b | semmle.label | successor |
-| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:123:10:123:12 | exit M11 (normal) | semmle.label | false |
-| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:126:13:126:19 | return ...; | semmle.label | true |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:37:125:37 | _ | semmle.label | no-match |
+| Switch.cs:125:24:125:34 | [false] ... => ... | Switch.cs:125:13:125:48 | [false] ... switch { ... } | semmle.label | false |
+| Switch.cs:125:24:125:34 | [true] ... => ... | Switch.cs:125:13:125:48 | [true] ... switch { ... } | semmle.label | true |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:24:125:34 | [false] ... => ... | semmle.label | false |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:24:125:34 | [true] ... => ... | semmle.label | true |
 | Switch.cs:125:37:125:37 | _ | Switch.cs:125:42:125:46 | false | semmle.label | match |
-| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:37 | _ | semmle.label | successor |
-| Switch.cs:125:42:125:46 | false | Switch.cs:123:10:123:12 | exit M11 (normal) | semmle.label | false |
+| Switch.cs:125:37:125:46 | [false] ... => ... | Switch.cs:125:13:125:48 | [false] ... switch { ... } | semmle.label | false |
+| Switch.cs:125:42:125:46 | false | Switch.cs:125:37:125:46 | [false] ... => ... | semmle.label | false |
 | Switch.cs:126:13:126:19 | return ...; | Switch.cs:123:10:123:12 | exit M11 (normal) | semmle.label | return |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:130:5:132:5 | {...} | semmle.label | successor |
 | Switch.cs:129:12:129:14 | exit M12 (normal) | Switch.cs:129:12:129:14 | exit M12 | semmle.label | successor |
-| Switch.cs:130:5:132:5 | {...} | Switch.cs:131:17:131:53 | ... switch { ... } | semmle.label | successor |
+| Switch.cs:130:5:132:5 | {...} | Switch.cs:131:17:131:17 | access to parameter o | semmle.label | successor |
 | Switch.cs:131:9:131:67 | return ...; | Switch.cs:129:12:129:14 | exit M12 (normal) | semmle.label | return |
-| Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:131:28:131:40 | ... => ... | semmle.label | successor |
-| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:17 | access to parameter o | semmle.label | successor |
+| Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:131:28:131:35 | String s | semmle.label | successor |
+| Switch.cs:131:17:131:53 | [non-null] ... switch { ... } | Switch.cs:131:56:131:66 | call to method ToString | semmle.label | non-null |
+| Switch.cs:131:17:131:53 | [null] ... switch { ... } | Switch.cs:131:9:131:67 | return ...; | semmle.label | null |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:40:131:40 | access to local variable s | semmle.label | match |
-| Switch.cs:131:28:131:35 | String s | Switch.cs:131:43:131:51 | ... => ... | semmle.label | no-match |
-| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:35 | String s | semmle.label | successor |
-| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:9:131:67 | return ...; | semmle.label | null |
-| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:56:131:66 | call to method ToString | semmle.label | non-null |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:43:131:43 | _ | semmle.label | no-match |
+| Switch.cs:131:28:131:40 | [non-null] ... => ... | Switch.cs:131:17:131:53 | [non-null] ... switch { ... } | semmle.label | non-null |
+| Switch.cs:131:28:131:40 | [null] ... => ... | Switch.cs:131:17:131:53 | [null] ... switch { ... } | semmle.label | null |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:28:131:40 | [non-null] ... => ... | semmle.label | non-null |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:28:131:40 | [null] ... => ... | semmle.label | null |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:48:131:51 | null | semmle.label | match |
-| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:43 | _ | semmle.label | successor |
-| Switch.cs:131:48:131:51 | null | Switch.cs:131:9:131:67 | return ...; | semmle.label | null |
+| Switch.cs:131:43:131:51 | [null] ... => ... | Switch.cs:131:17:131:53 | [null] ... switch { ... } | semmle.label | null |
+| Switch.cs:131:48:131:51 | null | Switch.cs:131:43:131:51 | [null] ... => ... | semmle.label | null |
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:9:131:67 | return ...; | semmle.label | successor |
 | Switch.cs:134:9:134:11 | enter M13 | Switch.cs:135:5:142:5 | {...} | semmle.label | successor |
 | Switch.cs:134:9:134:11 | exit M13 (normal) | Switch.cs:134:9:134:11 | exit M13 | semmle.label | successor |
@@ -3837,18 +3861,18 @@
 | Switch.cs:154:10:154:12 | exit M15 (abnormal) | Switch.cs:154:10:154:12 | exit M15 | semmle.label | successor |
 | Switch.cs:154:10:154:12 | exit M15 (normal) | Switch.cs:154:10:154:12 | exit M15 | semmle.label | successor |
 | Switch.cs:155:5:161:5 | {...} | Switch.cs:156:9:156:55 | ... ...; | semmle.label | successor |
-| Switch.cs:156:9:156:55 | ... ...; | Switch.cs:156:17:156:54 | ... switch { ... } | semmle.label | successor |
+| Switch.cs:156:9:156:55 | ... ...; | Switch.cs:156:17:156:17 | access to parameter b | semmle.label | successor |
 | Switch.cs:156:13:156:54 | String s = ... | Switch.cs:157:9:160:49 | if (...) ... | semmle.label | successor |
-| Switch.cs:156:17:156:17 | access to parameter b | Switch.cs:156:28:156:38 | ... => ... | semmle.label | successor |
-| Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:156:17:156:17 | access to parameter b | semmle.label | successor |
+| Switch.cs:156:17:156:17 | access to parameter b | Switch.cs:156:28:156:31 | true | semmle.label | successor |
+| Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:156:13:156:54 | String s = ... | semmle.label | successor |
 | Switch.cs:156:28:156:31 | true | Switch.cs:156:36:156:38 | "a" | semmle.label | match |
-| Switch.cs:156:28:156:31 | true | Switch.cs:156:41:156:52 | ... => ... | semmle.label | no-match |
-| Switch.cs:156:28:156:38 | ... => ... | Switch.cs:156:28:156:31 | true | semmle.label | successor |
-| Switch.cs:156:36:156:38 | "a" | Switch.cs:156:13:156:54 | String s = ... | semmle.label | successor |
+| Switch.cs:156:28:156:31 | true | Switch.cs:156:41:156:45 | false | semmle.label | no-match |
+| Switch.cs:156:28:156:38 | ... => ... | Switch.cs:156:17:156:54 | ... switch { ... } | semmle.label | successor |
+| Switch.cs:156:36:156:38 | "a" | Switch.cs:156:28:156:38 | ... => ... | semmle.label | successor |
 | Switch.cs:156:41:156:45 | false | Switch.cs:154:10:154:12 | exit M15 (abnormal) | semmle.label | exception(InvalidOperationException) |
 | Switch.cs:156:41:156:45 | false | Switch.cs:156:50:156:52 | "b" | semmle.label | match |
-| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:41:156:45 | false | semmle.label | successor |
-| Switch.cs:156:50:156:52 | "b" | Switch.cs:156:13:156:54 | String s = ... | semmle.label | successor |
+| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:17:156:54 | ... switch { ... } | semmle.label | successor |
+| Switch.cs:156:50:156:52 | "b" | Switch.cs:156:41:156:52 | ... => ... | semmle.label | successor |
 | Switch.cs:157:9:160:49 | if (...) ... | Switch.cs:157:13:157:13 | access to parameter b | semmle.label | successor |
 | Switch.cs:157:13:157:13 | access to parameter b | Switch.cs:158:13:158:49 | ...; | semmle.label | true |
 | Switch.cs:157:13:157:13 | access to parameter b | Switch.cs:160:13:160:49 | ...; | semmle.label | false |
@@ -3921,14 +3945,14 @@
 | VarDecls.cs:24:9:25:29 | using (...) {...} | VarDecls.cs:24:22:24:28 | object creation of type C | semmle.label | successor |
 | VarDecls.cs:24:18:24:28 | C x = ... | VarDecls.cs:24:35:24:41 | object creation of type C | semmle.label | successor |
 | VarDecls.cs:24:22:24:28 | object creation of type C | VarDecls.cs:24:18:24:28 | C x = ... | semmle.label | successor |
-| VarDecls.cs:24:31:24:41 | C y = ... | VarDecls.cs:25:20:25:28 | ... ? ... : ... | semmle.label | successor |
+| VarDecls.cs:24:31:24:41 | C y = ... | VarDecls.cs:25:20:25:20 | access to parameter b | semmle.label | successor |
 | VarDecls.cs:24:35:24:41 | object creation of type C | VarDecls.cs:24:31:24:41 | C y = ... | semmle.label | successor |
 | VarDecls.cs:25:13:25:29 | return ...; | VarDecls.cs:19:7:19:8 | exit M3 (normal) | semmle.label | return |
 | VarDecls.cs:25:20:25:20 | access to parameter b | VarDecls.cs:25:24:25:24 | access to local variable x | semmle.label | true |
 | VarDecls.cs:25:20:25:20 | access to parameter b | VarDecls.cs:25:28:25:28 | access to local variable y | semmle.label | false |
-| VarDecls.cs:25:20:25:28 | ... ? ... : ... | VarDecls.cs:25:20:25:20 | access to parameter b | semmle.label | successor |
-| VarDecls.cs:25:24:25:24 | access to local variable x | VarDecls.cs:25:13:25:29 | return ...; | semmle.label | successor |
-| VarDecls.cs:25:28:25:28 | access to local variable y | VarDecls.cs:25:13:25:29 | return ...; | semmle.label | successor |
+| VarDecls.cs:25:20:25:28 | ... ? ... : ... | VarDecls.cs:25:13:25:29 | return ...; | semmle.label | successor |
+| VarDecls.cs:25:24:25:24 | access to local variable x | VarDecls.cs:25:20:25:28 | ... ? ... : ... | semmle.label | successor |
+| VarDecls.cs:25:28:25:28 | access to local variable y | VarDecls.cs:25:20:25:28 | ... ? ... : ... | semmle.label | successor |
 | VarDecls.cs:28:41:28:47 | enter Dispose | VarDecls.cs:28:51:28:53 | {...} | semmle.label | successor |
 | VarDecls.cs:28:41:28:47 | exit Dispose (normal) | VarDecls.cs:28:41:28:47 | exit Dispose | semmle.label | successor |
 | VarDecls.cs:28:51:28:53 | {...} | VarDecls.cs:28:41:28:47 | exit Dispose (normal) | semmle.label | successor |
@@ -3985,18 +4009,19 @@
 | cflow.cs:24:34:24:34 | access to local variable i | cflow.cs:24:34:24:36 | ...++ | semmle.label | successor |
 | cflow.cs:24:34:24:36 | ...++ | cflow.cs:24:25:24:25 | access to local variable i | semmle.label | successor |
 | cflow.cs:25:9:34:9 | {...} | cflow.cs:26:13:33:37 | if (...) ... | semmle.label | successor |
-| cflow.cs:26:13:33:37 | if (...) ... | cflow.cs:26:17:26:40 | ... && ... | semmle.label | successor |
+| cflow.cs:26:13:33:37 | if (...) ... | cflow.cs:26:17:26:17 | access to local variable i | semmle.label | successor |
 | cflow.cs:26:17:26:17 | access to local variable i | cflow.cs:26:21:26:21 | 3 | semmle.label | successor |
 | cflow.cs:26:17:26:21 | ... % ... | cflow.cs:26:26:26:26 | 0 | semmle.label | successor |
+| cflow.cs:26:17:26:26 | ... == ... | cflow.cs:26:17:26:40 | [false] ... && ... | semmle.label | false |
 | cflow.cs:26:17:26:26 | ... == ... | cflow.cs:26:31:26:31 | access to local variable i | semmle.label | true |
-| cflow.cs:26:17:26:26 | ... == ... | cflow.cs:28:18:33:37 | if (...) ... | semmle.label | false |
-| cflow.cs:26:17:26:40 | ... && ... | cflow.cs:26:17:26:17 | access to local variable i | semmle.label | successor |
+| cflow.cs:26:17:26:40 | [false] ... && ... | cflow.cs:28:18:33:37 | if (...) ... | semmle.label | false |
+| cflow.cs:26:17:26:40 | [true] ... && ... | cflow.cs:27:17:27:46 | ...; | semmle.label | true |
 | cflow.cs:26:21:26:21 | 3 | cflow.cs:26:17:26:21 | ... % ... | semmle.label | successor |
 | cflow.cs:26:26:26:26 | 0 | cflow.cs:26:17:26:26 | ... == ... | semmle.label | successor |
 | cflow.cs:26:31:26:31 | access to local variable i | cflow.cs:26:35:26:35 | 5 | semmle.label | successor |
 | cflow.cs:26:31:26:35 | ... % ... | cflow.cs:26:40:26:40 | 0 | semmle.label | successor |
-| cflow.cs:26:31:26:40 | ... == ... | cflow.cs:27:17:27:46 | ...; | semmle.label | true |
-| cflow.cs:26:31:26:40 | ... == ... | cflow.cs:28:18:33:37 | if (...) ... | semmle.label | false |
+| cflow.cs:26:31:26:40 | ... == ... | cflow.cs:26:17:26:40 | [false] ... && ... | semmle.label | false |
+| cflow.cs:26:31:26:40 | ... == ... | cflow.cs:26:17:26:40 | [true] ... && ... | semmle.label | true |
 | cflow.cs:26:35:26:35 | 5 | cflow.cs:26:31:26:35 | ... % ... | semmle.label | successor |
 | cflow.cs:26:40:26:40 | 0 | cflow.cs:26:31:26:40 | ... == ... | semmle.label | successor |
 | cflow.cs:27:17:27:45 | call to method WriteLine | cflow.cs:24:34:24:34 | access to local variable i | semmle.label | successor |
@@ -4075,12 +4100,13 @@
 | cflow.cs:62:13:62:19 | case ...: | cflow.cs:62:18:62:18 | 0 | semmle.label | successor |
 | cflow.cs:62:18:62:18 | 0 | cflow.cs:63:17:64:55 | if (...) ... | semmle.label | match |
 | cflow.cs:62:18:62:18 | 0 | cflow.cs:67:16:67:16 | access to parameter a | semmle.label | no-match |
-| cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:63:21:63:34 | !... | semmle.label | successor |
-| cflow.cs:63:21:63:34 | !... | cflow.cs:63:23:63:27 | this access | semmle.label | successor |
+| cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:63:23:63:27 | this access | semmle.label | successor |
+| cflow.cs:63:21:63:34 | [false] !... | cflow.cs:65:17:65:22 | break; | semmle.label | false |
+| cflow.cs:63:21:63:34 | [true] !... | cflow.cs:64:27:64:54 | object creation of type NullReferenceException | semmle.label | true |
 | cflow.cs:63:23:63:27 | access to field Field | cflow.cs:63:32:63:33 | "" | semmle.label | successor |
 | cflow.cs:63:23:63:27 | this access | cflow.cs:63:23:63:27 | access to field Field | semmle.label | successor |
-| cflow.cs:63:23:63:33 | ... == ... | cflow.cs:64:27:64:54 | object creation of type NullReferenceException | semmle.label | false |
-| cflow.cs:63:23:63:33 | ... == ... | cflow.cs:65:17:65:22 | break; | semmle.label | true |
+| cflow.cs:63:23:63:33 | ... == ... | cflow.cs:63:21:63:34 | [false] !... | semmle.label | true |
+| cflow.cs:63:23:63:33 | ... == ... | cflow.cs:63:21:63:34 | [true] !... | semmle.label | false |
 | cflow.cs:63:32:63:33 | "" | cflow.cs:63:23:63:33 | ... == ... | semmle.label | successor |
 | cflow.cs:64:21:64:55 | throw ...; | cflow.cs:37:17:37:22 | exit Switch (abnormal) | semmle.label | exception(NullReferenceException) |
 | cflow.cs:64:27:64:54 | object creation of type NullReferenceException | cflow.cs:64:21:64:55 | throw ...; | semmle.label | successor |
@@ -4113,16 +4139,17 @@
 | cflow.cs:84:18:84:19 | enter M2 | cflow.cs:85:5:88:5 | {...} | semmle.label | successor |
 | cflow.cs:84:18:84:19 | exit M2 (normal) | cflow.cs:84:18:84:19 | exit M2 | semmle.label | successor |
 | cflow.cs:85:5:88:5 | {...} | cflow.cs:86:9:87:33 | if (...) ... | semmle.label | successor |
-| cflow.cs:86:9:87:33 | if (...) ... | cflow.cs:86:13:86:37 | ... && ... | semmle.label | successor |
+| cflow.cs:86:9:87:33 | if (...) ... | cflow.cs:86:13:86:13 | access to parameter s | semmle.label | successor |
 | cflow.cs:86:13:86:13 | access to parameter s | cflow.cs:86:18:86:21 | null | semmle.label | successor |
-| cflow.cs:86:13:86:21 | ... != ... | cflow.cs:84:18:84:19 | exit M2 (normal) | semmle.label | false |
+| cflow.cs:86:13:86:21 | ... != ... | cflow.cs:86:13:86:37 | [false] ... && ... | semmle.label | false |
 | cflow.cs:86:13:86:21 | ... != ... | cflow.cs:86:26:86:26 | access to parameter s | semmle.label | true |
-| cflow.cs:86:13:86:37 | ... && ... | cflow.cs:86:13:86:13 | access to parameter s | semmle.label | successor |
+| cflow.cs:86:13:86:37 | [false] ... && ... | cflow.cs:84:18:84:19 | exit M2 (normal) | semmle.label | false |
+| cflow.cs:86:13:86:37 | [true] ... && ... | cflow.cs:87:13:87:33 | ...; | semmle.label | true |
 | cflow.cs:86:18:86:21 | null | cflow.cs:86:13:86:21 | ... != ... | semmle.label | successor |
 | cflow.cs:86:26:86:26 | access to parameter s | cflow.cs:86:26:86:33 | access to property Length | semmle.label | successor |
 | cflow.cs:86:26:86:33 | access to property Length | cflow.cs:86:37:86:37 | 0 | semmle.label | successor |
-| cflow.cs:86:26:86:37 | ... > ... | cflow.cs:84:18:84:19 | exit M2 (normal) | semmle.label | false |
-| cflow.cs:86:26:86:37 | ... > ... | cflow.cs:87:13:87:33 | ...; | semmle.label | true |
+| cflow.cs:86:26:86:37 | ... > ... | cflow.cs:86:13:86:37 | [false] ... && ... | semmle.label | false |
+| cflow.cs:86:26:86:37 | ... > ... | cflow.cs:86:13:86:37 | [true] ... && ... | semmle.label | true |
 | cflow.cs:86:37:86:37 | 0 | cflow.cs:86:26:86:37 | ... > ... | semmle.label | successor |
 | cflow.cs:87:13:87:32 | call to method WriteLine | cflow.cs:84:18:84:19 | exit M2 (normal) | semmle.label | successor |
 | cflow.cs:87:13:87:33 | ...; | cflow.cs:87:31:87:31 | access to parameter s | semmle.label | successor |
@@ -4205,16 +4232,16 @@
 | cflow.cs:123:16:123:16 | access to local variable x | cflow.cs:123:9:123:17 | return ...; | semmle.label | successor |
 | cflow.cs:127:19:127:21 | enter get_Prop | cflow.cs:127:23:127:60 | {...} | semmle.label | successor |
 | cflow.cs:127:19:127:21 | exit get_Prop (normal) | cflow.cs:127:19:127:21 | exit get_Prop | semmle.label | successor |
-| cflow.cs:127:23:127:60 | {...} | cflow.cs:127:32:127:57 | ... ? ... : ... | semmle.label | successor |
+| cflow.cs:127:23:127:60 | {...} | cflow.cs:127:32:127:36 | this access | semmle.label | successor |
 | cflow.cs:127:25:127:58 | return ...; | cflow.cs:127:19:127:21 | exit get_Prop (normal) | semmle.label | return |
 | cflow.cs:127:32:127:36 | access to field Field | cflow.cs:127:41:127:44 | null | semmle.label | successor |
 | cflow.cs:127:32:127:36 | this access | cflow.cs:127:32:127:36 | access to field Field | semmle.label | successor |
 | cflow.cs:127:32:127:44 | ... == ... | cflow.cs:127:48:127:49 | "" | semmle.label | true |
 | cflow.cs:127:32:127:44 | ... == ... | cflow.cs:127:53:127:57 | this access | semmle.label | false |
-| cflow.cs:127:32:127:57 | ... ? ... : ... | cflow.cs:127:32:127:36 | this access | semmle.label | successor |
+| cflow.cs:127:32:127:57 | ... ? ... : ... | cflow.cs:127:25:127:58 | return ...; | semmle.label | successor |
 | cflow.cs:127:41:127:44 | null | cflow.cs:127:32:127:44 | ... == ... | semmle.label | successor |
-| cflow.cs:127:48:127:49 | "" | cflow.cs:127:25:127:58 | return ...; | semmle.label | successor |
-| cflow.cs:127:53:127:57 | access to field Field | cflow.cs:127:25:127:58 | return ...; | semmle.label | successor |
+| cflow.cs:127:48:127:49 | "" | cflow.cs:127:32:127:57 | ... ? ... : ... | semmle.label | successor |
+| cflow.cs:127:53:127:57 | access to field Field | cflow.cs:127:32:127:57 | ... ? ... : ... | semmle.label | successor |
 | cflow.cs:127:53:127:57 | this access | cflow.cs:127:53:127:57 | access to field Field | semmle.label | successor |
 | cflow.cs:127:62:127:64 | enter set_Prop | cflow.cs:127:66:127:83 | {...} | semmle.label | successor |
 | cflow.cs:127:62:127:64 | exit set_Prop (normal) | cflow.cs:127:62:127:64 | exit set_Prop | semmle.label | successor |
@@ -4364,18 +4391,18 @@
 | cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:186:5:191:5 | {...} | semmle.label | successor |
 | cflow.cs:185:10:185:18 | exit LogicalOr (normal) | cflow.cs:185:10:185:18 | exit LogicalOr | semmle.label | successor |
 | cflow.cs:186:5:191:5 | {...} | cflow.cs:187:9:190:52 | if (...) ... | semmle.label | successor |
-| cflow.cs:187:9:190:52 | if (...) ... | cflow.cs:187:13:187:50 | ... \|\| ... | semmle.label | successor |
+| cflow.cs:187:9:190:52 | if (...) ... | cflow.cs:187:13:187:13 | 1 | semmle.label | successor |
 | cflow.cs:187:13:187:13 | 1 | cflow.cs:187:18:187:18 | 2 | semmle.label | successor |
 | cflow.cs:187:13:187:18 | ... == ... | cflow.cs:187:23:187:23 | 2 | semmle.label | false |
-| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:13:187:13 | 1 | semmle.label | successor |
-| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:187:13:187:28 | ... \|\| ... | semmle.label | successor |
+| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:187:34:187:34 | 1 | semmle.label | false |
+| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:190:13:190:52 | ...; | semmle.label | false |
 | cflow.cs:187:18:187:18 | 2 | cflow.cs:187:13:187:18 | ... == ... | semmle.label | successor |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:187:28:187:28 | 3 | semmle.label | successor |
-| cflow.cs:187:23:187:28 | ... == ... | cflow.cs:187:34:187:49 | ... && ... | semmle.label | false |
+| cflow.cs:187:23:187:28 | ... == ... | cflow.cs:187:13:187:28 | [false] ... \|\| ... | semmle.label | false |
 | cflow.cs:187:28:187:28 | 3 | cflow.cs:187:23:187:28 | ... == ... | semmle.label | successor |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:187:39:187:39 | 3 | semmle.label | successor |
-| cflow.cs:187:34:187:39 | ... == ... | cflow.cs:190:13:190:52 | ...; | semmle.label | false |
-| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:34:187:34 | 1 | semmle.label | successor |
+| cflow.cs:187:34:187:39 | ... == ... | cflow.cs:187:34:187:49 | [false] ... && ... | semmle.label | false |
+| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:187:13:187:50 | [false] ... \|\| ... | semmle.label | false |
 | cflow.cs:187:39:187:39 | 3 | cflow.cs:187:34:187:39 | ... == ... | semmle.label | successor |
 | cflow.cs:190:13:190:51 | call to method WriteLine | cflow.cs:185:10:185:18 | exit LogicalOr (normal) | semmle.label | successor |
 | cflow.cs:190:13:190:52 | ...; | cflow.cs:190:31:190:50 | "This should happen" | semmle.label | successor |
@@ -4384,63 +4411,70 @@
 | cflow.cs:193:10:193:17 | exit Booleans (abnormal) | cflow.cs:193:10:193:17 | exit Booleans | semmle.label | successor |
 | cflow.cs:193:10:193:17 | exit Booleans (normal) | cflow.cs:193:10:193:17 | exit Booleans | semmle.label | successor |
 | cflow.cs:194:5:206:5 | {...} | cflow.cs:195:9:195:57 | ... ...; | semmle.label | successor |
-| cflow.cs:195:9:195:57 | ... ...; | cflow.cs:195:17:195:56 | ... && ... | semmle.label | successor |
+| cflow.cs:195:9:195:57 | ... ...; | cflow.cs:195:17:195:21 | this access | semmle.label | successor |
 | cflow.cs:195:13:195:56 | Boolean b = ... | cflow.cs:197:9:198:49 | if (...) ... | semmle.label | successor |
 | cflow.cs:195:17:195:21 | access to field Field | cflow.cs:195:17:195:28 | access to property Length | semmle.label | successor |
 | cflow.cs:195:17:195:21 | this access | cflow.cs:195:17:195:21 | access to field Field | semmle.label | successor |
 | cflow.cs:195:17:195:28 | access to property Length | cflow.cs:195:32:195:32 | 0 | semmle.label | successor |
-| cflow.cs:195:17:195:32 | ... > ... | cflow.cs:195:13:195:56 | Boolean b = ... | semmle.label | false |
-| cflow.cs:195:17:195:32 | ... > ... | cflow.cs:195:37:195:56 | !... | semmle.label | true |
-| cflow.cs:195:17:195:56 | ... && ... | cflow.cs:195:17:195:21 | this access | semmle.label | successor |
+| cflow.cs:195:17:195:32 | ... > ... | cflow.cs:195:17:195:56 | ... && ... | semmle.label | false |
+| cflow.cs:195:17:195:32 | ... > ... | cflow.cs:195:39:195:43 | this access | semmle.label | true |
+| cflow.cs:195:17:195:56 | ... && ... | cflow.cs:195:13:195:56 | Boolean b = ... | semmle.label | successor |
 | cflow.cs:195:32:195:32 | 0 | cflow.cs:195:17:195:32 | ... > ... | semmle.label | successor |
-| cflow.cs:195:37:195:56 | !... | cflow.cs:195:39:195:43 | this access | semmle.label | successor |
+| cflow.cs:195:37:195:56 | !... | cflow.cs:195:17:195:56 | ... && ... | semmle.label | successor |
 | cflow.cs:195:39:195:43 | access to field Field | cflow.cs:195:39:195:50 | access to property Length | semmle.label | successor |
 | cflow.cs:195:39:195:43 | this access | cflow.cs:195:39:195:43 | access to field Field | semmle.label | successor |
 | cflow.cs:195:39:195:50 | access to property Length | cflow.cs:195:55:195:55 | 1 | semmle.label | successor |
-| cflow.cs:195:39:195:55 | ... == ... | cflow.cs:195:13:195:56 | Boolean b = ... | semmle.label | successor |
+| cflow.cs:195:39:195:55 | ... == ... | cflow.cs:195:37:195:56 | !... | semmle.label | successor |
 | cflow.cs:195:55:195:55 | 1 | cflow.cs:195:39:195:55 | ... == ... | semmle.label | successor |
-| cflow.cs:197:9:198:49 | if (...) ... | cflow.cs:197:13:197:47 | !... | semmle.label | successor |
-| cflow.cs:197:13:197:47 | !... | cflow.cs:197:15:197:46 | ... ? ... : ... | semmle.label | successor |
+| cflow.cs:197:9:198:49 | if (...) ... | cflow.cs:197:15:197:19 | this access | semmle.label | successor |
+| cflow.cs:197:13:197:47 | [false] !... | cflow.cs:200:9:205:9 | if (...) ... | semmle.label | false |
+| cflow.cs:197:13:197:47 | [true] !... | cflow.cs:198:13:198:49 | ...; | semmle.label | true |
 | cflow.cs:197:15:197:19 | access to field Field | cflow.cs:197:15:197:26 | access to property Length | semmle.label | successor |
 | cflow.cs:197:15:197:19 | this access | cflow.cs:197:15:197:19 | access to field Field | semmle.label | successor |
 | cflow.cs:197:15:197:26 | access to property Length | cflow.cs:197:31:197:31 | 0 | semmle.label | successor |
 | cflow.cs:197:15:197:31 | ... == ... | cflow.cs:197:35:197:39 | false | semmle.label | true |
 | cflow.cs:197:15:197:31 | ... == ... | cflow.cs:197:43:197:46 | true | semmle.label | false |
-| cflow.cs:197:15:197:46 | ... ? ... : ... | cflow.cs:197:15:197:19 | this access | semmle.label | successor |
+| cflow.cs:197:15:197:46 | [false] ... ? ... : ... | cflow.cs:197:13:197:47 | [true] !... | semmle.label | false |
+| cflow.cs:197:15:197:46 | [true] ... ? ... : ... | cflow.cs:197:13:197:47 | [false] !... | semmle.label | true |
 | cflow.cs:197:31:197:31 | 0 | cflow.cs:197:15:197:31 | ... == ... | semmle.label | successor |
-| cflow.cs:197:35:197:39 | false | cflow.cs:198:13:198:49 | ...; | semmle.label | false |
-| cflow.cs:197:43:197:46 | true | cflow.cs:200:9:205:9 | if (...) ... | semmle.label | true |
+| cflow.cs:197:35:197:39 | false | cflow.cs:197:15:197:46 | [false] ... ? ... : ... | semmle.label | false |
+| cflow.cs:197:43:197:46 | true | cflow.cs:197:15:197:46 | [true] ... ? ... : ... | semmle.label | true |
 | cflow.cs:198:13:198:48 | ... = ... | cflow.cs:200:9:205:9 | if (...) ... | semmle.label | successor |
-| cflow.cs:198:13:198:49 | ...; | cflow.cs:198:17:198:48 | ... ? ... : ... | semmle.label | successor |
+| cflow.cs:198:13:198:49 | ...; | cflow.cs:198:17:198:21 | this access | semmle.label | successor |
 | cflow.cs:198:17:198:21 | access to field Field | cflow.cs:198:17:198:28 | access to property Length | semmle.label | successor |
 | cflow.cs:198:17:198:21 | this access | cflow.cs:198:17:198:21 | access to field Field | semmle.label | successor |
 | cflow.cs:198:17:198:28 | access to property Length | cflow.cs:198:33:198:33 | 0 | semmle.label | successor |
 | cflow.cs:198:17:198:33 | ... == ... | cflow.cs:198:37:198:41 | false | semmle.label | true |
 | cflow.cs:198:17:198:33 | ... == ... | cflow.cs:198:45:198:48 | true | semmle.label | false |
-| cflow.cs:198:17:198:48 | ... ? ... : ... | cflow.cs:198:17:198:21 | this access | semmle.label | successor |
+| cflow.cs:198:17:198:48 | ... ? ... : ... | cflow.cs:198:13:198:48 | ... = ... | semmle.label | successor |
 | cflow.cs:198:33:198:33 | 0 | cflow.cs:198:17:198:33 | ... == ... | semmle.label | successor |
-| cflow.cs:198:37:198:41 | false | cflow.cs:198:13:198:48 | ... = ... | semmle.label | successor |
-| cflow.cs:198:45:198:48 | true | cflow.cs:198:13:198:48 | ... = ... | semmle.label | successor |
-| cflow.cs:200:9:205:9 | if (...) ... | cflow.cs:200:13:200:62 | ... \|\| ... | semmle.label | successor |
-| cflow.cs:200:13:200:32 | !... | cflow.cs:200:15:200:19 | this access | semmle.label | successor |
-| cflow.cs:200:13:200:62 | ... \|\| ... | cflow.cs:200:13:200:32 | !... | semmle.label | successor |
+| cflow.cs:198:37:198:41 | false | cflow.cs:198:17:198:48 | ... ? ... : ... | semmle.label | successor |
+| cflow.cs:198:45:198:48 | true | cflow.cs:198:17:198:48 | ... ? ... : ... | semmle.label | successor |
+| cflow.cs:200:9:205:9 | if (...) ... | cflow.cs:200:15:200:19 | this access | semmle.label | successor |
+| cflow.cs:200:13:200:32 | [false] !... | cflow.cs:200:40:200:44 | this access | semmle.label | false |
+| cflow.cs:200:13:200:32 | [true] !... | cflow.cs:200:13:200:62 | [true] ... \|\| ... | semmle.label | true |
+| cflow.cs:200:13:200:62 | [false] ... \|\| ... | cflow.cs:193:10:193:17 | exit Booleans (normal) | semmle.label | false |
+| cflow.cs:200:13:200:62 | [true] ... \|\| ... | cflow.cs:201:9:205:9 | {...} | semmle.label | true |
 | cflow.cs:200:15:200:19 | access to field Field | cflow.cs:200:15:200:26 | access to property Length | semmle.label | successor |
 | cflow.cs:200:15:200:19 | this access | cflow.cs:200:15:200:19 | access to field Field | semmle.label | successor |
 | cflow.cs:200:15:200:26 | access to property Length | cflow.cs:200:31:200:31 | 0 | semmle.label | successor |
-| cflow.cs:200:15:200:31 | ... == ... | cflow.cs:200:37:200:62 | !... | semmle.label | true |
-| cflow.cs:200:15:200:31 | ... == ... | cflow.cs:201:9:205:9 | {...} | semmle.label | false |
+| cflow.cs:200:15:200:31 | ... == ... | cflow.cs:200:13:200:32 | [false] !... | semmle.label | true |
+| cflow.cs:200:15:200:31 | ... == ... | cflow.cs:200:13:200:32 | [true] !... | semmle.label | false |
 | cflow.cs:200:31:200:31 | 0 | cflow.cs:200:15:200:31 | ... == ... | semmle.label | successor |
-| cflow.cs:200:37:200:62 | !... | cflow.cs:200:38:200:62 | !... | semmle.label | successor |
-| cflow.cs:200:38:200:62 | !... | cflow.cs:200:40:200:61 | ... && ... | semmle.label | successor |
+| cflow.cs:200:37:200:62 | [false] !... | cflow.cs:200:13:200:62 | [false] ... \|\| ... | semmle.label | false |
+| cflow.cs:200:37:200:62 | [true] !... | cflow.cs:200:13:200:62 | [true] ... \|\| ... | semmle.label | true |
+| cflow.cs:200:38:200:62 | [false] !... | cflow.cs:200:37:200:62 | [true] !... | semmle.label | false |
+| cflow.cs:200:38:200:62 | [true] !... | cflow.cs:200:37:200:62 | [false] !... | semmle.label | true |
 | cflow.cs:200:40:200:44 | access to field Field | cflow.cs:200:40:200:51 | access to property Length | semmle.label | successor |
 | cflow.cs:200:40:200:44 | this access | cflow.cs:200:40:200:44 | access to field Field | semmle.label | successor |
 | cflow.cs:200:40:200:51 | access to property Length | cflow.cs:200:56:200:56 | 1 | semmle.label | successor |
-| cflow.cs:200:40:200:56 | ... == ... | cflow.cs:193:10:193:17 | exit Booleans (normal) | semmle.label | false |
+| cflow.cs:200:40:200:56 | ... == ... | cflow.cs:200:40:200:61 | [false] ... && ... | semmle.label | false |
 | cflow.cs:200:40:200:56 | ... == ... | cflow.cs:200:61:200:61 | access to local variable b | semmle.label | true |
-| cflow.cs:200:40:200:61 | ... && ... | cflow.cs:200:40:200:44 | this access | semmle.label | successor |
+| cflow.cs:200:40:200:61 | [false] ... && ... | cflow.cs:200:38:200:62 | [true] !... | semmle.label | false |
+| cflow.cs:200:40:200:61 | [true] ... && ... | cflow.cs:200:38:200:62 | [false] !... | semmle.label | true |
 | cflow.cs:200:56:200:56 | 1 | cflow.cs:200:40:200:56 | ... == ... | semmle.label | successor |
-| cflow.cs:200:61:200:61 | access to local variable b | cflow.cs:193:10:193:17 | exit Booleans (normal) | semmle.label | false |
-| cflow.cs:200:61:200:61 | access to local variable b | cflow.cs:201:9:205:9 | {...} | semmle.label | true |
+| cflow.cs:200:61:200:61 | access to local variable b | cflow.cs:200:40:200:61 | [false] ... && ... | semmle.label | false |
+| cflow.cs:200:61:200:61 | access to local variable b | cflow.cs:200:40:200:61 | [true] ... && ... | semmle.label | true |
 | cflow.cs:201:9:205:9 | {...} | cflow.cs:202:13:204:13 | {...} | semmle.label | successor |
 | cflow.cs:202:13:204:13 | {...} | cflow.cs:203:23:203:37 | object creation of type Exception | semmle.label | successor |
 | cflow.cs:203:17:203:38 | throw ...; | cflow.cs:193:10:193:17 | exit Booleans (abnormal) | semmle.label | exception(Exception) |
@@ -4520,14 +4554,16 @@
 | cflow.cs:240:10:240:13 | exit Goto (normal) | cflow.cs:240:10:240:13 | exit Goto | semmle.label | successor |
 | cflow.cs:241:5:259:5 | {...} | cflow.cs:242:9:242:13 | Label: | semmle.label | successor |
 | cflow.cs:242:9:242:13 | Label: | cflow.cs:242:16:242:45 | if (...) ... | semmle.label | successor |
-| cflow.cs:242:16:242:45 | if (...) ... | cflow.cs:242:20:242:40 | !... | semmle.label | successor |
-| cflow.cs:242:20:242:40 | !... | cflow.cs:242:21:242:40 | !... | semmle.label | successor |
-| cflow.cs:242:21:242:40 | !... | cflow.cs:242:23:242:27 | this access | semmle.label | successor |
+| cflow.cs:242:16:242:45 | if (...) ... | cflow.cs:242:23:242:27 | this access | semmle.label | successor |
+| cflow.cs:242:20:242:40 | [false] !... | cflow.cs:244:9:244:41 | if (...) ... | semmle.label | false |
+| cflow.cs:242:20:242:40 | [true] !... | cflow.cs:242:43:242:45 | {...} | semmle.label | true |
+| cflow.cs:242:21:242:40 | [false] !... | cflow.cs:242:20:242:40 | [true] !... | semmle.label | false |
+| cflow.cs:242:21:242:40 | [true] !... | cflow.cs:242:20:242:40 | [false] !... | semmle.label | true |
 | cflow.cs:242:23:242:27 | access to field Field | cflow.cs:242:23:242:34 | access to property Length | semmle.label | successor |
 | cflow.cs:242:23:242:27 | this access | cflow.cs:242:23:242:27 | access to field Field | semmle.label | successor |
 | cflow.cs:242:23:242:34 | access to property Length | cflow.cs:242:39:242:39 | 0 | semmle.label | successor |
-| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:242:43:242:45 | {...} | semmle.label | true |
-| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:244:9:244:41 | if (...) ... | semmle.label | false |
+| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:242:21:242:40 | [false] !... | semmle.label | true |
+| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:242:21:242:40 | [true] !... | semmle.label | false |
 | cflow.cs:242:39:242:39 | 0 | cflow.cs:242:23:242:39 | ... == ... | semmle.label | successor |
 | cflow.cs:242:43:242:45 | {...} | cflow.cs:244:9:244:41 | if (...) ... | semmle.label | successor |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:244:13:244:17 | this access | semmle.label | successor |
@@ -4615,14 +4651,15 @@
 | cflow.cs:299:5:301:5 | {...} | cflow.cs:300:9:300:73 | ...; | semmle.label | successor |
 | cflow.cs:300:9:300:72 | object creation of type NegationInConstructor | cflow.cs:298:10:298:10 | exit M (normal) | semmle.label | successor |
 | cflow.cs:300:9:300:73 | ...; | cflow.cs:300:38:300:38 | 0 | semmle.label | successor |
-| cflow.cs:300:38:300:38 | 0 | cflow.cs:300:44:300:64 | ... && ... | semmle.label | successor |
-| cflow.cs:300:44:300:51 | !... | cflow.cs:300:46:300:46 | access to parameter i | semmle.label | successor |
-| cflow.cs:300:44:300:64 | ... && ... | cflow.cs:300:44:300:51 | !... | semmle.label | successor |
+| cflow.cs:300:38:300:38 | 0 | cflow.cs:300:46:300:46 | access to parameter i | semmle.label | successor |
+| cflow.cs:300:44:300:51 | [false] !... | cflow.cs:300:44:300:64 | ... && ... | semmle.label | false |
+| cflow.cs:300:44:300:51 | [true] !... | cflow.cs:300:56:300:56 | access to parameter s | semmle.label | true |
+| cflow.cs:300:44:300:64 | ... && ... | cflow.cs:300:70:300:71 | "" | semmle.label | successor |
 | cflow.cs:300:46:300:46 | access to parameter i | cflow.cs:300:50:300:50 | 0 | semmle.label | successor |
-| cflow.cs:300:46:300:50 | ... > ... | cflow.cs:300:56:300:56 | access to parameter s | semmle.label | false |
-| cflow.cs:300:46:300:50 | ... > ... | cflow.cs:300:70:300:71 | "" | semmle.label | true |
+| cflow.cs:300:46:300:50 | ... > ... | cflow.cs:300:44:300:51 | [false] !... | semmle.label | true |
+| cflow.cs:300:46:300:50 | ... > ... | cflow.cs:300:44:300:51 | [true] !... | semmle.label | false |
 | cflow.cs:300:50:300:50 | 0 | cflow.cs:300:46:300:50 | ... > ... | semmle.label | successor |
 | cflow.cs:300:56:300:56 | access to parameter s | cflow.cs:300:61:300:64 | null | semmle.label | successor |
-| cflow.cs:300:56:300:64 | ... != ... | cflow.cs:300:70:300:71 | "" | semmle.label | successor |
+| cflow.cs:300:56:300:64 | ... != ... | cflow.cs:300:44:300:64 | ... && ... | semmle.label | successor |
 | cflow.cs:300:61:300:64 | null | cflow.cs:300:56:300:64 | ... != ... | semmle.label | successor |
 | cflow.cs:300:70:300:71 | "" | cflow.cs:300:9:300:72 | object creation of type NegationInConstructor | semmle.label | successor |
