@@ -46,7 +46,7 @@ private class RemoteParameterSource extends RemoteFlowSource {
       asInstruction() = instr and
       instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
       func.hasRemoteFlowSource(output, sourceType) and
-      output.isParameterDeref(instr.getIndex())
+      output.isParameterDerefOrQualifierObject(instr.getIndex())
     )
   }
 
@@ -80,7 +80,7 @@ private class LocalParameterSource extends LocalFlowSource {
       asInstruction() = instr and
       instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
       func.hasLocalFlowSource(output, sourceType) and
-      output.isParameterDeref(instr.getIndex())
+      output.isParameterDerefOrQualifierObject(instr.getIndex())
     )
   }
 
