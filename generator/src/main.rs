@@ -11,135 +11,109 @@ use std::io::LineWriter;
 use std::path::PathBuf;
 use tracing::{error, info};
 
-fn child_node_type_name(token_types: &Map<String, usize>, t: &node_types::TypeName) -> String {
-    if !t.named {
-        // an unnamed token
-        "reserved_word".to_owned()
-    } else if token_types.contains_key(&t.kind) {
-        // a named token
-        format!("token_{}", t.kind)
-    } else {
-        // a normal node
-        node_types::node_type_name(&t.kind, t.named)
+/// Given the name of the parent node, and its field information, returns a pair,
+/// the first of which is the name of the field's type. The second is an optional
+/// dbscheme entry that should be added, representing a union of all the possible
+/// types the field can take.
+fn make_field_type<'a>(
+    field: &'a node_types::Field,
+    nodes: &'a node_types::NodeTypeMap,
+) -> (&'a str, Option<dbscheme::Entry<'a>>) {
+    match &field.type_info {
+        node_types::FieldTypeInfo::Multiple {
+            types,
+            dbscheme_union,
+            ql_class: _,
+        } => {
+            // This field can have one of several types. Create an ad-hoc QL union
+            // type to represent them.
+            let members: Set<&str> = types
+                .iter()
+                .map(|t| nodes.get(t).unwrap().dbscheme_name.as_str())
+                .collect();
+            (
+                &dbscheme_union,
+                Some(dbscheme::Entry::Union(dbscheme::Union {
+                    name: dbscheme_union,
+                    members,
+                })),
+            )
+        }
+        node_types::FieldTypeInfo::Single(t) => (&nodes.get(&t).unwrap().dbscheme_name, None),
     }
 }
 
-/// Given the name of the parent node, and its field information, returns the
-/// name of the field's type. This may be an ad-hoc union of all the possible
-/// types the field can take, in which case the union is added to `entries`.
-fn make_field_type(
-    token_types: &Map<String, usize>,
-    parent_name: &str,
-    field_name: &str,
-    types: &Set<node_types::TypeName>,
-    entries: &mut Vec<dbscheme::Entry>,
-) -> String {
-    if types.len() == 1 {
-        // This field can only have a single type.
-        let t = types.iter().next().unwrap();
-        node_types::escape_name(&child_node_type_name(token_types, t))
-    } else {
-        // This field can have one of several types. Create an ad-hoc QL union
-        // type to represent them.
-        let field_union_name = format!("{}_{}_type", parent_name, field_name);
-        let field_union_name = node_types::escape_name(&field_union_name);
-        let members: Set<String> = types
-            .iter()
-            .map(|t| node_types::escape_name(&child_node_type_name(token_types, t)))
-            .collect();
-        entries.push(dbscheme::Entry::Union(dbscheme::Union {
-            name: field_union_name.clone(),
-            members,
-        }));
-        field_union_name
-    }
+fn add_field_for_table_storage<'a>(
+    field: &'a node_types::Field,
+    table_name: &'a str,
+    has_index: bool,
+    nodes: &'a node_types::NodeTypeMap,
+) -> (dbscheme::Table<'a>, Option<dbscheme::Entry<'a>>) {
+    let parent_name = &nodes.get(&field.parent).unwrap().dbscheme_name;
+    // This field can appear zero or multiple times, so put
+    // it in an auxiliary table.
+    let (field_type_name, field_type_entry) = make_field_type(&field, nodes);
+    let parent_column = dbscheme::Column {
+        unique: !has_index,
+        db_type: dbscheme::DbColumnType::Int,
+        name: &parent_name,
+        ql_type: ql::Type::AtType(&parent_name),
+        ql_type_is_ref: true,
+    };
+    let index_column = dbscheme::Column {
+        unique: false,
+        db_type: dbscheme::DbColumnType::Int,
+        name: "index",
+        ql_type: ql::Type::Int,
+        ql_type_is_ref: true,
+    };
+    let field_column = dbscheme::Column {
+        unique: true,
+        db_type: dbscheme::DbColumnType::Int,
+        name: field_type_name,
+        ql_type: ql::Type::AtType(field_type_name),
+        ql_type_is_ref: true,
+    };
+    let field_table = dbscheme::Table {
+        name: &table_name,
+        columns: if has_index {
+            vec![parent_column, index_column, field_column]
+        } else {
+            vec![parent_column, field_column]
+        },
+        // In addition to the field being unique, the combination of
+        // parent+index is unique, so add a keyset for them.
+        keysets: if has_index {
+            Some(vec![&parent_name, "index"])
+        } else {
+            None
+        },
+    };
+    (field_table, field_type_entry)
 }
 
-/// Adds the appropriate dbscheme information for the given field, either as a
-/// column on `main_table`, or as an auxiliary table.
-fn add_field(
-    token_types: &Map<String, usize>,
-    main_table: &mut dbscheme::Table,
-    field: &node_types::Field,
-    entries: &mut Vec<dbscheme::Entry>,
-) {
-    let field_name = field.get_name();
-    let parent_name = node_types::node_type_name(&field.parent.kind, field.parent.named);
-    match &field.storage {
-        node_types::Storage::Table(has_index) => {
-            // This field can appear zero or multiple times, so put
-            // it in an auxiliary table.
-            let field_type = make_field_type(
-                token_types,
-                &parent_name,
-                &field_name,
-                &field.types,
-                entries,
-            );
-            let parent_column = dbscheme::Column {
-                unique: !*has_index,
-                db_type: dbscheme::DbColumnType::Int,
-                name: node_types::escape_name(&parent_name),
-                ql_type: ql::Type::AtType(node_types::escape_name(&parent_name)),
-                ql_type_is_ref: true,
-            };
-            let index_column = dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "index".to_string(),
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            };
-            let field_column = dbscheme::Column {
-                unique: true,
-                db_type: dbscheme::DbColumnType::Int,
-                name: node_types::escape_name(&field_type),
-                ql_type: ql::Type::AtType(field_type),
-                ql_type_is_ref: true,
-            };
-            let field_table = dbscheme::Table {
-                name: format!("{}_{}", parent_name, field_name),
-                columns: if *has_index {
-                    vec![parent_column, index_column, field_column]
-                } else {
-                    vec![parent_column, field_column]
-                },
-                // In addition to the field being unique, the combination of
-                // parent+index is unique, so add a keyset for them.
-                keysets: if *has_index {
-                    Some(vec![
-                        node_types::escape_name(&parent_name),
-                        "index".to_string(),
-                    ])
-                } else {
-                    None
-                },
-            };
-            entries.push(dbscheme::Entry::Table(field_table));
-        }
-        node_types::Storage::Column => {
-            // This field must appear exactly once, so we add it as
-            // a column to the main table for the node type.
-            let field_type = make_field_type(
-                token_types,
-                &parent_name,
-                &field_name,
-                &field.types,
-                entries,
-            );
-            main_table.columns.push(dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: node_types::escape_name(&field_name),
-                ql_type: ql::Type::AtType(field_type),
-                ql_type_is_ref: true,
-            });
-        }
-    }
+fn add_field_for_column_storage<'a>(
+    field: &'a node_types::Field,
+    column_name: &'a str,
+    nodes: &'a node_types::NodeTypeMap,
+) -> (dbscheme::Column<'a>, Option<dbscheme::Entry<'a>>) {
+    // This field must appear exactly once, so we add it as
+    // a column to the main table for the node type.
+    let (field_type_name, field_type_entry) = make_field_type(&field, nodes);
+    (
+        dbscheme::Column {
+            unique: false,
+            db_type: dbscheme::DbColumnType::Int,
+            name: column_name,
+            ql_type: ql::Type::AtType(field_type_name),
+            ql_type_is_ref: true,
+        },
+        field_type_entry,
+    )
 }
 
 /// Converts the given tree-sitter node types into CodeQL dbscheme entries.
-fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
+fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<'a>> {
     let mut entries: Vec<dbscheme::Entry> = vec![
         create_location_union(),
         create_locations_default_table(),
@@ -151,60 +125,68 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
         create_containerparent_table(),
         create_source_location_prefix_table(),
     ];
-    let mut ast_node_members: Set<String> = Set::new();
-    let mut token_kinds: Map<String, usize> = Map::new();
-    ast_node_members.insert(node_types::escape_name("token"));
-    for node in nodes {
-        if let node_types::Entry::Token { type_name, kind_id } = node {
-            if type_name.named {
-                token_kinds.insert(type_name.kind.to_owned(), *kind_id);
+    let mut ast_node_members: Set<&str> = Set::new();
+    let token_kinds: Map<&str, usize> = nodes
+        .iter()
+        .filter_map(|(_, node)| match &node.kind {
+            node_types::EntryKind::Token { kind_id } => {
+                Some((node.dbscheme_name.as_str(), *kind_id))
             }
-        }
-    }
+            _ => None,
+        })
+        .collect();
+    ast_node_members.insert("token");
 
-    for node in nodes {
-        match &node {
-            node_types::Entry::Union {
-                type_name,
-                members: n_members,
-            } => {
+    for (_, node) in nodes {
+        match &node.kind {
+            node_types::EntryKind::Union { members: n_members } => {
                 // It's a tree-sitter supertype node, for which we create a union
                 // type.
-                let mut members: Set<String> = Set::new();
-                for n_member in n_members {
-                    members.insert(node_types::escape_name(&child_node_type_name(
-                        &token_kinds,
-                        n_member,
-                    )));
-                }
+                let members: Set<&str> = n_members
+                    .iter()
+                    .map(|n| nodes.get(n).unwrap().dbscheme_name.as_str())
+                    .collect();
                 entries.push(dbscheme::Entry::Union(dbscheme::Union {
-                    name: node_types::escape_name(&node_types::node_type_name(
-                        &type_name.kind,
-                        type_name.named,
-                    )),
+                    name: &node.dbscheme_name,
                     members,
                 }));
             }
-            node_types::Entry::Table { type_name, fields } => {
+            node_types::EntryKind::Table { name, fields } => {
                 // It's a product type, defined by a table.
-                let name = node_types::node_type_name(&type_name.kind, type_name.named);
                 let mut main_table = dbscheme::Table {
-                    name: node_types::escape_name(&(format!("{}_def", name))),
+                    name: &name,
                     columns: vec![dbscheme::Column {
                         db_type: dbscheme::DbColumnType::Int,
-                        name: "id".to_string(),
+                        name: "id",
                         unique: true,
-                        ql_type: ql::Type::AtType(node_types::escape_name(&name)),
+                        ql_type: ql::Type::AtType(&node.dbscheme_name),
                         ql_type_is_ref: false,
                     }],
                     keysets: None,
                 };
-                ast_node_members.insert(node_types::escape_name(&name));
+                ast_node_members.insert(&node.dbscheme_name);
 
                 // If the type also has fields or children, then we create either
                 // auxiliary tables or columns in the defining table for them.
                 for field in fields {
-                    add_field(&token_kinds, &mut main_table, &field, &mut entries);
+                    match &field.storage {
+                        node_types::Storage::Column { name } => {
+                            let (field_column, field_type_entry) =
+                                add_field_for_column_storage(field, name, nodes);
+                            if let Some(field_type_entry) = field_type_entry {
+                                entries.push(field_type_entry);
+                            }
+                            main_table.columns.push(field_column);
+                        }
+                        node_types::Storage::Table { name, has_index } => {
+                            let (field_table, field_type_entry) =
+                                add_field_for_table_storage(field, name, *has_index, nodes);
+                            if let Some(field_type_entry) = field_type_entry {
+                                entries.push(field_type_entry);
+                            }
+                            entries.push(dbscheme::Entry::Table(field_table));
+                        }
+                    }
                 }
 
                 if fields.is_empty() {
@@ -213,7 +195,7 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
                     main_table.columns.push(dbscheme::Column {
                         unique: false,
                         db_type: dbscheme::DbColumnType::String,
-                        name: "text".to_string(),
+                        name: "text",
                         ql_type: ql::Type::String,
                         ql_type_is_ref: true,
                     });
@@ -223,92 +205,92 @@ fn convert_nodes(nodes: &Vec<node_types::Entry>) -> Vec<dbscheme::Entry> {
                 main_table.columns.push(dbscheme::Column {
                     unique: false,
                     db_type: dbscheme::DbColumnType::Int,
-                    name: "loc".to_string(),
-                    ql_type: ql::Type::AtType("location".to_string()),
+                    name: "loc",
+                    ql_type: ql::Type::AtType("location"),
                     ql_type_is_ref: true,
                 });
 
                 entries.push(dbscheme::Entry::Table(main_table));
             }
-            node_types::Entry::Token { .. } => {}
+            node_types::EntryKind::Token { .. } => {}
         }
     }
 
     // Add the tokeninfo table
-    add_tokeninfo_table(&mut entries, token_kinds);
+    let (token_case, token_table) = create_tokeninfo(token_kinds);
+    entries.push(dbscheme::Entry::Table(token_table));
+    entries.push(dbscheme::Entry::Case(token_case));
 
     // Create a union of all database types.
     entries.push(dbscheme::Entry::Union(dbscheme::Union {
-        name: "ast_node".to_string(),
+        name: "ast_node",
         members: ast_node_members,
     }));
 
     entries
 }
 
-fn add_tokeninfo_table(entries: &mut Vec<dbscheme::Entry>, token_kinds: Map<String, usize>) {
-    entries.push(dbscheme::Entry::Table(dbscheme::Table {
-        name: "tokeninfo".to_owned(),
+fn create_tokeninfo<'a>(
+    token_kinds: Map<&'a str, usize>,
+) -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
+    let table = dbscheme::Table {
+        name: "tokeninfo",
         keysets: None,
         columns: vec![
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
-                name: "id".to_string(),
+                name: "id",
                 unique: true,
-                ql_type: ql::Type::AtType("token".to_owned()),
+                ql_type: ql::Type::AtType("token"),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "kind".to_string(),
+                name: "kind",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "file".to_string(),
-                ql_type: ql::Type::AtType("file".to_string()),
+                name: "file",
+                ql_type: ql::Type::AtType("file"),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "idx".to_string(),
+                name: "idx",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::String,
-                name: "value".to_string(),
+                name: "value",
                 ql_type: ql::Type::String,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "loc".to_string(),
-                ql_type: ql::Type::AtType("location".to_string()),
+                name: "loc",
+                ql_type: ql::Type::AtType("location"),
                 ql_type_is_ref: true,
             },
         ],
-    }));
-    let mut branches: Vec<(usize, String)> = Vec::new();
-    branches.push((0, "reserved_word".to_owned()));
-    for (token_kind, idx) in token_kinds.iter() {
-        branches.push((
-            *idx,
-            node_types::escape_name(&format!("token_{}", token_kind)),
-        ));
-    }
-
-    entries.push(dbscheme::Entry::Case(dbscheme::Case {
-        name: "token".to_owned(),
-        column: "kind".to_owned(),
+    };
+    let branches: Vec<(usize, &str)> = token_kinds
+        .iter()
+        .map(|(&name, kind_id)| (*kind_id, name))
+        .collect();
+    let case = dbscheme::Case {
+        name: "token",
+        column: "kind",
         branches: branches,
-    }));
+    };
+    (case, table)
 }
 
 fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::Result<()> {
@@ -325,49 +307,49 @@ fn write_dbscheme(language: &Language, entries: &[dbscheme::Entry]) -> std::io::
     dbscheme::write(&language.name, &mut file, &entries)
 }
 
-fn create_location_union() -> dbscheme::Entry {
+fn create_location_union<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Union(dbscheme::Union {
-        name: "location".to_owned(),
-        members: vec!["location_default".to_owned()].into_iter().collect(),
+        name: "location",
+        members: vec!["location_default"].into_iter().collect(),
     })
 }
 
-fn create_files_table() -> dbscheme::Entry {
+fn create_files_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
-        name: "files".to_owned(),
+        name: "files",
         keysets: None,
         columns: vec![
             dbscheme::Column {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "id".to_owned(),
-                ql_type: ql::Type::AtType("file".to_owned()),
+                name: "id",
+                ql_type: ql::Type::AtType("file"),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::String,
-                name: "name".to_owned(),
+                name: "name",
                 unique: false,
                 ql_type: ql::Type::String,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::String,
-                name: "simple".to_owned(),
+                name: "simple",
                 unique: false,
                 ql_type: ql::Type::String,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::String,
-                name: "ext".to_owned(),
+                name: "ext",
                 unique: false,
                 ql_type: ql::Type::String,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
-                name: "fromSource".to_owned(),
+                name: "fromSource",
                 unique: false,
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
@@ -375,28 +357,28 @@ fn create_files_table() -> dbscheme::Entry {
         ],
     })
 }
-fn create_folders_table() -> dbscheme::Entry {
+fn create_folders_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
-        name: "folders".to_owned(),
+        name: "folders",
         keysets: None,
         columns: vec![
             dbscheme::Column {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "id".to_owned(),
-                ql_type: ql::Type::AtType("folder".to_owned()),
+                name: "id",
+                ql_type: ql::Type::AtType("folder"),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::String,
-                name: "name".to_owned(),
+                name: "name",
                 unique: false,
                 ql_type: ql::Type::String,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::String,
-                name: "simple".to_owned(),
+                name: "simple",
                 unique: false,
                 ql_type: ql::Type::String,
                 ql_type_is_ref: true,
@@ -405,50 +387,50 @@ fn create_folders_table() -> dbscheme::Entry {
     })
 }
 
-fn create_locations_default_table() -> dbscheme::Entry {
+fn create_locations_default_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
-        name: "locations_default".to_string(),
+        name: "locations_default",
         keysets: None,
         columns: vec![
             dbscheme::Column {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "id".to_string(),
-                ql_type: ql::Type::AtType("location_default".to_string()),
+                name: "id",
+                ql_type: ql::Type::AtType("location_default"),
                 ql_type_is_ref: false,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "file".to_string(),
-                ql_type: ql::Type::AtType("file".to_owned()),
+                name: "file",
+                ql_type: ql::Type::AtType("file"),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "start_line".to_string(),
+                name: "start_line",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "start_column".to_string(),
+                name: "start_column",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "end_line".to_string(),
+                name: "end_line",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "end_column".to_string(),
+                name: "end_column",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
@@ -456,42 +438,42 @@ fn create_locations_default_table() -> dbscheme::Entry {
     })
 }
 
-fn create_sourceline_union() -> dbscheme::Entry {
+fn create_sourceline_union<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Union(dbscheme::Union {
-        name: "sourceline".to_owned(),
-        members: vec!["file".to_owned()].into_iter().collect(),
+        name: "sourceline",
+        members: vec!["file"].into_iter().collect(),
     })
 }
 
-fn create_numlines_table() -> dbscheme::Entry {
+fn create_numlines_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
-        name: "numlines".to_owned(),
+        name: "numlines",
         columns: vec![
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "element_id".to_string(),
-                ql_type: ql::Type::AtType("sourceline".to_owned()),
+                name: "element_id",
+                ql_type: ql::Type::AtType("sourceline"),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "num_lines".to_string(),
+                name: "num_lines",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "num_code".to_string(),
+                name: "num_code",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "num_comment".to_string(),
+                name: "num_comment",
                 ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
@@ -500,31 +482,29 @@ fn create_numlines_table() -> dbscheme::Entry {
     })
 }
 
-fn create_container_union() -> dbscheme::Entry {
+fn create_container_union<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Union(dbscheme::Union {
-        name: "container".to_owned(),
-        members: vec!["folder".to_owned(), "file".to_owned()]
-            .into_iter()
-            .collect(),
+        name: "container",
+        members: vec!["folder", "file"].into_iter().collect(),
     })
 }
 
-fn create_containerparent_table() -> dbscheme::Entry {
+fn create_containerparent_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
-        name: "containerparent".to_owned(),
+        name: "containerparent",
         columns: vec![
             dbscheme::Column {
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "parent".to_string(),
-                ql_type: ql::Type::AtType("container".to_owned()),
+                name: "parent",
+                ql_type: ql::Type::AtType("container"),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: true,
                 db_type: dbscheme::DbColumnType::Int,
-                name: "child".to_string(),
-                ql_type: ql::Type::AtType("container".to_owned()),
+                name: "child",
+                ql_type: ql::Type::AtType("container"),
                 ql_type_is_ref: true,
             },
         ],
@@ -532,14 +512,14 @@ fn create_containerparent_table() -> dbscheme::Entry {
     })
 }
 
-fn create_source_location_prefix_table() -> dbscheme::Entry {
+fn create_source_location_prefix_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
-        name: "sourceLocationPrefix".to_string(),
+        name: "sourceLocationPrefix",
         keysets: None,
         columns: vec![dbscheme::Column {
             unique: false,
             db_type: dbscheme::DbColumnType::String,
-            name: "prefix".to_string(),
+            name: "prefix",
             ql_type: ql::Type::String,
             ql_type_is_ref: true,
         }],
@@ -557,7 +537,7 @@ fn main() {
     // TODO: figure out proper dbscheme output path and/or take it from the
     // command line.
     let ruby = Language {
-        name: "Ruby".to_string(),
+        name: "Ruby".to_owned(),
         node_types: tree_sitter_ruby::NODE_TYPES,
         dbscheme_path: PathBuf::from("ql/src/ruby.dbscheme"),
         ql_library_path: PathBuf::from("ql/src/codeql_ruby/ast.qll"),
