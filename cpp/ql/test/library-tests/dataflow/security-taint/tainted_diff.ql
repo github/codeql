@@ -3,9 +3,7 @@ import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as IR
 import cpp
 
 class SourceConfiguration extends IR::TaintedWithPath::TaintTrackingConfiguration {
-    override predicate isSink(Element e) {
-        any()
-    }
+  override predicate isSink(Element e) { any() }
 }
 
 from Expr source, Element tainted, string side
