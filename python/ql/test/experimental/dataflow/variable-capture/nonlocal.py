@@ -79,6 +79,53 @@ def Out():
     captureOut2()
     SINK(sinkO2) #$ MISSING:captured
 
-@expects(2)
+    nonSink0 = ""
+    def captureOut1NotCalled():
+        nonlocal nonSink0
+        nonSink0 = "source"
+    SINK_F(nonSink0)
+
+    def captureOut2NotCalled():
+        def m():
+            nonlocal nonSink0
+            nonSink0 = "source"
+    captureOut2NotCalled()
+    SINK_F(nonSink0)
+
+@expects(4)
 def test_Out():
     Out()
+
+def Through(tainted):
+    sinkO1 = ""
+    def captureOut1():
+        nonlocal sinkO1
+        sinkO1 = tainted
+    captureOut1()
+    SINK(sinkO1) #$ MISSING:captured
+
+    sinkO2 = ""
+    def captureOut2():
+        def m():
+            nonlocal sinkO2
+            sinkO2 = tainted
+        m()
+    captureOut2()
+    SINK(sinkO2) #$ MISSING:captured
+
+    nonSink0 = ""
+    def captureOut1NotCalled():
+        nonlocal nonSink0
+        nonSink0 = tainted
+    SINK_F(nonSink0)
+
+    def captureOut2NotCalled():
+        def m():
+            nonlocal nonSink0
+            nonSink0 = tainted
+    captureOut2NotCalled()
+    SINK_F(nonSink0)
+
+@expects(4)
+def test_Through():
+    Through(SOURCE)
