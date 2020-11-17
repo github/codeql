@@ -1751,8 +1751,10 @@ class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
     result =
       unique(AccessPath ap |
         i in [1 .. count(this.getAMember())] and
-        ap in [AccessPath::field(this.getField("Item" + i)),
-              AccessPath::property(this.getProperty("Item" + i))]
+        ap in [
+            AccessPath::field(this.getField("Item" + i)),
+            AccessPath::property(this.getProperty("Item" + i))
+          ]
       |
         ap
       )

@@ -189,6 +189,7 @@
 | AccessorCalls.cs:58:22:58:25 | this access | AccessorCalls.cs:58:22:58:25 | this access |
 | AccessorCalls.cs:58:22:58:30 | access to property Prop | AccessorCalls.cs:58:22:58:25 | this access |
 | AccessorCalls.cs:58:33:58:44 | (..., ...) | AccessorCalls.cs:58:37:58:40 | this access |
+| AccessorCalls.cs:58:34:58:34 | 1 | AccessorCalls.cs:58:34:58:34 | 1 |
 | AccessorCalls.cs:58:37:58:40 | this access | AccessorCalls.cs:58:37:58:40 | this access |
 | AccessorCalls.cs:58:37:58:43 | access to indexer | AccessorCalls.cs:58:37:58:40 | this access |
 | AccessorCalls.cs:58:42:58:42 | 0 | AccessorCalls.cs:58:42:58:42 | 0 |
@@ -309,9 +310,9 @@
 | ArrayCreation.cs:9:48:9:48 | 3 | ArrayCreation.cs:9:48:9:48 | 3 |
 | Assert.cs:8:5:12:5 | {...} | Assert.cs:8:5:12:5 | {...} |
 | Assert.cs:9:9:9:33 | ... ...; | Assert.cs:9:9:9:33 | ... ...; |
-| Assert.cs:9:16:9:32 | String s = ... | Assert.cs:9:20:9:32 | ... ? ... : ... |
+| Assert.cs:9:16:9:32 | String s = ... | Assert.cs:9:20:9:20 | access to parameter b |
 | Assert.cs:9:20:9:20 | access to parameter b | Assert.cs:9:20:9:20 | access to parameter b |
-| Assert.cs:9:20:9:32 | ... ? ... : ... | Assert.cs:9:20:9:32 | ... ? ... : ... |
+| Assert.cs:9:20:9:32 | ... ? ... : ... | Assert.cs:9:20:9:20 | access to parameter b |
 | Assert.cs:9:24:9:27 | null | Assert.cs:9:24:9:27 | null |
 | Assert.cs:9:31:9:32 | "" | Assert.cs:9:31:9:32 | "" |
 | Assert.cs:10:9:10:31 | call to method Assert | Assert.cs:10:22:10:22 | access to local variable s |
@@ -325,9 +326,9 @@
 | Assert.cs:11:27:11:34 | access to property Length | Assert.cs:11:27:11:27 | access to local variable s |
 | Assert.cs:15:5:19:5 | {...} | Assert.cs:15:5:19:5 | {...} |
 | Assert.cs:16:9:16:33 | ... ...; | Assert.cs:16:9:16:33 | ... ...; |
-| Assert.cs:16:16:16:32 | String s = ... | Assert.cs:16:20:16:32 | ... ? ... : ... |
+| Assert.cs:16:16:16:32 | String s = ... | Assert.cs:16:20:16:20 | access to parameter b |
 | Assert.cs:16:20:16:20 | access to parameter b | Assert.cs:16:20:16:20 | access to parameter b |
-| Assert.cs:16:20:16:32 | ... ? ... : ... | Assert.cs:16:20:16:32 | ... ? ... : ... |
+| Assert.cs:16:20:16:32 | ... ? ... : ... | Assert.cs:16:20:16:20 | access to parameter b |
 | Assert.cs:16:24:16:27 | null | Assert.cs:16:24:16:27 | null |
 | Assert.cs:16:31:16:32 | "" | Assert.cs:16:31:16:32 | "" |
 | Assert.cs:17:9:17:24 | call to method IsNull | Assert.cs:17:23:17:23 | access to local variable s |
@@ -339,9 +340,9 @@
 | Assert.cs:18:27:18:34 | access to property Length | Assert.cs:18:27:18:27 | access to local variable s |
 | Assert.cs:22:5:26:5 | {...} | Assert.cs:22:5:26:5 | {...} |
 | Assert.cs:23:9:23:33 | ... ...; | Assert.cs:23:9:23:33 | ... ...; |
-| Assert.cs:23:16:23:32 | String s = ... | Assert.cs:23:20:23:32 | ... ? ... : ... |
+| Assert.cs:23:16:23:32 | String s = ... | Assert.cs:23:20:23:20 | access to parameter b |
 | Assert.cs:23:20:23:20 | access to parameter b | Assert.cs:23:20:23:20 | access to parameter b |
-| Assert.cs:23:20:23:32 | ... ? ... : ... | Assert.cs:23:20:23:32 | ... ? ... : ... |
+| Assert.cs:23:20:23:32 | ... ? ... : ... | Assert.cs:23:20:23:20 | access to parameter b |
 | Assert.cs:23:24:23:27 | null | Assert.cs:23:24:23:27 | null |
 | Assert.cs:23:31:23:32 | "" | Assert.cs:23:31:23:32 | "" |
 | Assert.cs:24:9:24:27 | call to method IsNotNull | Assert.cs:24:26:24:26 | access to local variable s |
@@ -353,9 +354,9 @@
 | Assert.cs:25:27:25:34 | access to property Length | Assert.cs:25:27:25:27 | access to local variable s |
 | Assert.cs:29:5:33:5 | {...} | Assert.cs:29:5:33:5 | {...} |
 | Assert.cs:30:9:30:33 | ... ...; | Assert.cs:30:9:30:33 | ... ...; |
-| Assert.cs:30:16:30:32 | String s = ... | Assert.cs:30:20:30:32 | ... ? ... : ... |
+| Assert.cs:30:16:30:32 | String s = ... | Assert.cs:30:20:30:20 | access to parameter b |
 | Assert.cs:30:20:30:20 | access to parameter b | Assert.cs:30:20:30:20 | access to parameter b |
-| Assert.cs:30:20:30:32 | ... ? ... : ... | Assert.cs:30:20:30:32 | ... ? ... : ... |
+| Assert.cs:30:20:30:32 | ... ? ... : ... | Assert.cs:30:20:30:20 | access to parameter b |
 | Assert.cs:30:24:30:27 | null | Assert.cs:30:24:30:27 | null |
 | Assert.cs:30:31:30:32 | "" | Assert.cs:30:31:30:32 | "" |
 | Assert.cs:31:9:31:32 | call to method IsTrue | Assert.cs:31:23:31:23 | access to local variable s |
@@ -369,9 +370,9 @@
 | Assert.cs:32:27:32:34 | access to property Length | Assert.cs:32:27:32:27 | access to local variable s |
 | Assert.cs:36:5:40:5 | {...} | Assert.cs:36:5:40:5 | {...} |
 | Assert.cs:37:9:37:33 | ... ...; | Assert.cs:37:9:37:33 | ... ...; |
-| Assert.cs:37:16:37:32 | String s = ... | Assert.cs:37:20:37:32 | ... ? ... : ... |
+| Assert.cs:37:16:37:32 | String s = ... | Assert.cs:37:20:37:20 | access to parameter b |
 | Assert.cs:37:20:37:20 | access to parameter b | Assert.cs:37:20:37:20 | access to parameter b |
-| Assert.cs:37:20:37:32 | ... ? ... : ... | Assert.cs:37:20:37:32 | ... ? ... : ... |
+| Assert.cs:37:20:37:32 | ... ? ... : ... | Assert.cs:37:20:37:20 | access to parameter b |
 | Assert.cs:37:24:37:27 | null | Assert.cs:37:24:37:27 | null |
 | Assert.cs:37:31:37:32 | "" | Assert.cs:37:31:37:32 | "" |
 | Assert.cs:38:9:38:32 | call to method IsTrue | Assert.cs:38:23:38:23 | access to local variable s |
@@ -385,9 +386,9 @@
 | Assert.cs:39:27:39:34 | access to property Length | Assert.cs:39:27:39:27 | access to local variable s |
 | Assert.cs:43:5:47:5 | {...} | Assert.cs:43:5:47:5 | {...} |
 | Assert.cs:44:9:44:33 | ... ...; | Assert.cs:44:9:44:33 | ... ...; |
-| Assert.cs:44:16:44:32 | String s = ... | Assert.cs:44:20:44:32 | ... ? ... : ... |
+| Assert.cs:44:16:44:32 | String s = ... | Assert.cs:44:20:44:20 | access to parameter b |
 | Assert.cs:44:20:44:20 | access to parameter b | Assert.cs:44:20:44:20 | access to parameter b |
-| Assert.cs:44:20:44:32 | ... ? ... : ... | Assert.cs:44:20:44:32 | ... ? ... : ... |
+| Assert.cs:44:20:44:32 | ... ? ... : ... | Assert.cs:44:20:44:20 | access to parameter b |
 | Assert.cs:44:24:44:27 | null | Assert.cs:44:24:44:27 | null |
 | Assert.cs:44:31:44:32 | "" | Assert.cs:44:31:44:32 | "" |
 | Assert.cs:45:9:45:33 | call to method IsFalse | Assert.cs:45:24:45:24 | access to local variable s |
@@ -401,9 +402,9 @@
 | Assert.cs:46:27:46:34 | access to property Length | Assert.cs:46:27:46:27 | access to local variable s |
 | Assert.cs:50:5:54:5 | {...} | Assert.cs:50:5:54:5 | {...} |
 | Assert.cs:51:9:51:33 | ... ...; | Assert.cs:51:9:51:33 | ... ...; |
-| Assert.cs:51:16:51:32 | String s = ... | Assert.cs:51:20:51:32 | ... ? ... : ... |
+| Assert.cs:51:16:51:32 | String s = ... | Assert.cs:51:20:51:20 | access to parameter b |
 | Assert.cs:51:20:51:20 | access to parameter b | Assert.cs:51:20:51:20 | access to parameter b |
-| Assert.cs:51:20:51:32 | ... ? ... : ... | Assert.cs:51:20:51:32 | ... ? ... : ... |
+| Assert.cs:51:20:51:32 | ... ? ... : ... | Assert.cs:51:20:51:20 | access to parameter b |
 | Assert.cs:51:24:51:27 | null | Assert.cs:51:24:51:27 | null |
 | Assert.cs:51:31:51:32 | "" | Assert.cs:51:31:51:32 | "" |
 | Assert.cs:52:9:52:33 | call to method IsFalse | Assert.cs:52:24:52:24 | access to local variable s |
@@ -417,16 +418,16 @@
 | Assert.cs:53:27:53:34 | access to property Length | Assert.cs:53:27:53:27 | access to local variable s |
 | Assert.cs:57:5:61:5 | {...} | Assert.cs:57:5:61:5 | {...} |
 | Assert.cs:58:9:58:33 | ... ...; | Assert.cs:58:9:58:33 | ... ...; |
-| Assert.cs:58:16:58:32 | String s = ... | Assert.cs:58:20:58:32 | ... ? ... : ... |
+| Assert.cs:58:16:58:32 | String s = ... | Assert.cs:58:20:58:20 | access to parameter b |
 | Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b |
-| Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:58:20:58:32 | ... ? ... : ... |
+| Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:58:20:58:20 | access to parameter b |
 | Assert.cs:58:24:58:27 | null | Assert.cs:58:24:58:27 | null |
 | Assert.cs:58:31:58:32 | "" | Assert.cs:58:31:58:32 | "" |
-| Assert.cs:59:9:59:37 | call to method IsTrue | Assert.cs:59:23:59:36 | ... && ... |
+| Assert.cs:59:9:59:37 | call to method IsTrue | Assert.cs:59:23:59:23 | access to local variable s |
 | Assert.cs:59:9:59:38 | ...; | Assert.cs:59:9:59:38 | ...; |
 | Assert.cs:59:23:59:23 | access to local variable s | Assert.cs:59:23:59:23 | access to local variable s |
 | Assert.cs:59:23:59:31 | ... != ... | Assert.cs:59:23:59:23 | access to local variable s |
-| Assert.cs:59:23:59:36 | ... && ... | Assert.cs:59:23:59:36 | ... && ... |
+| Assert.cs:59:23:59:36 | ... && ... | Assert.cs:59:23:59:23 | access to local variable s |
 | Assert.cs:59:28:59:31 | null | Assert.cs:59:28:59:31 | null |
 | Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:59:36:59:36 | access to parameter b |
 | Assert.cs:60:9:60:35 | call to method WriteLine | Assert.cs:60:27:60:27 | access to local variable s |
@@ -435,16 +436,16 @@
 | Assert.cs:60:27:60:34 | access to property Length | Assert.cs:60:27:60:27 | access to local variable s |
 | Assert.cs:64:5:68:5 | {...} | Assert.cs:64:5:68:5 | {...} |
 | Assert.cs:65:9:65:33 | ... ...; | Assert.cs:65:9:65:33 | ... ...; |
-| Assert.cs:65:16:65:32 | String s = ... | Assert.cs:65:20:65:32 | ... ? ... : ... |
+| Assert.cs:65:16:65:32 | String s = ... | Assert.cs:65:20:65:20 | access to parameter b |
 | Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:65:20:65:20 | access to parameter b |
-| Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:65:20:65:32 | ... ? ... : ... |
+| Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:65:20:65:20 | access to parameter b |
 | Assert.cs:65:24:65:27 | null | Assert.cs:65:24:65:27 | null |
 | Assert.cs:65:31:65:32 | "" | Assert.cs:65:31:65:32 | "" |
-| Assert.cs:66:9:66:38 | call to method IsFalse | Assert.cs:66:24:66:37 | ... \|\| ... |
+| Assert.cs:66:9:66:38 | call to method IsFalse | Assert.cs:66:24:66:24 | access to local variable s |
 | Assert.cs:66:9:66:39 | ...; | Assert.cs:66:9:66:39 | ...; |
 | Assert.cs:66:24:66:24 | access to local variable s | Assert.cs:66:24:66:24 | access to local variable s |
 | Assert.cs:66:24:66:32 | ... == ... | Assert.cs:66:24:66:24 | access to local variable s |
-| Assert.cs:66:24:66:37 | ... \|\| ... | Assert.cs:66:24:66:37 | ... \|\| ... |
+| Assert.cs:66:24:66:37 | ... \|\| ... | Assert.cs:66:24:66:24 | access to local variable s |
 | Assert.cs:66:29:66:32 | null | Assert.cs:66:29:66:32 | null |
 | Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:66:37:66:37 | access to parameter b |
 | Assert.cs:67:9:67:35 | call to method WriteLine | Assert.cs:67:27:67:27 | access to local variable s |
@@ -453,16 +454,16 @@
 | Assert.cs:67:27:67:34 | access to property Length | Assert.cs:67:27:67:27 | access to local variable s |
 | Assert.cs:71:5:75:5 | {...} | Assert.cs:71:5:75:5 | {...} |
 | Assert.cs:72:9:72:33 | ... ...; | Assert.cs:72:9:72:33 | ... ...; |
-| Assert.cs:72:16:72:32 | String s = ... | Assert.cs:72:20:72:32 | ... ? ... : ... |
+| Assert.cs:72:16:72:32 | String s = ... | Assert.cs:72:20:72:20 | access to parameter b |
 | Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:72:20:72:20 | access to parameter b |
-| Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:72:20:72:32 | ... ? ... : ... |
+| Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:72:20:72:20 | access to parameter b |
 | Assert.cs:72:24:72:27 | null | Assert.cs:72:24:72:27 | null |
 | Assert.cs:72:31:72:32 | "" | Assert.cs:72:31:72:32 | "" |
-| Assert.cs:73:9:73:37 | call to method IsTrue | Assert.cs:73:23:73:36 | ... && ... |
+| Assert.cs:73:9:73:37 | call to method IsTrue | Assert.cs:73:23:73:23 | access to local variable s |
 | Assert.cs:73:9:73:38 | ...; | Assert.cs:73:9:73:38 | ...; |
 | Assert.cs:73:23:73:23 | access to local variable s | Assert.cs:73:23:73:23 | access to local variable s |
 | Assert.cs:73:23:73:31 | ... == ... | Assert.cs:73:23:73:23 | access to local variable s |
-| Assert.cs:73:23:73:36 | ... && ... | Assert.cs:73:23:73:36 | ... && ... |
+| Assert.cs:73:23:73:36 | ... && ... | Assert.cs:73:23:73:23 | access to local variable s |
 | Assert.cs:73:28:73:31 | null | Assert.cs:73:28:73:31 | null |
 | Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:73:36:73:36 | access to parameter b |
 | Assert.cs:74:9:74:35 | call to method WriteLine | Assert.cs:74:27:74:27 | access to local variable s |
@@ -471,16 +472,16 @@
 | Assert.cs:74:27:74:34 | access to property Length | Assert.cs:74:27:74:27 | access to local variable s |
 | Assert.cs:78:5:82:5 | {...} | Assert.cs:78:5:82:5 | {...} |
 | Assert.cs:79:9:79:33 | ... ...; | Assert.cs:79:9:79:33 | ... ...; |
-| Assert.cs:79:16:79:32 | String s = ... | Assert.cs:79:20:79:32 | ... ? ... : ... |
+| Assert.cs:79:16:79:32 | String s = ... | Assert.cs:79:20:79:20 | access to parameter b |
 | Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:79:20:79:20 | access to parameter b |
-| Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:20:79:32 | ... ? ... : ... |
+| Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:20:79:20 | access to parameter b |
 | Assert.cs:79:24:79:27 | null | Assert.cs:79:24:79:27 | null |
 | Assert.cs:79:31:79:32 | "" | Assert.cs:79:31:79:32 | "" |
-| Assert.cs:80:9:80:38 | call to method IsFalse | Assert.cs:80:24:80:37 | ... \|\| ... |
+| Assert.cs:80:9:80:38 | call to method IsFalse | Assert.cs:80:24:80:24 | access to local variable s |
 | Assert.cs:80:9:80:39 | ...; | Assert.cs:80:9:80:39 | ...; |
 | Assert.cs:80:24:80:24 | access to local variable s | Assert.cs:80:24:80:24 | access to local variable s |
 | Assert.cs:80:24:80:32 | ... != ... | Assert.cs:80:24:80:24 | access to local variable s |
-| Assert.cs:80:24:80:37 | ... \|\| ... | Assert.cs:80:24:80:37 | ... \|\| ... |
+| Assert.cs:80:24:80:37 | ... \|\| ... | Assert.cs:80:24:80:24 | access to local variable s |
 | Assert.cs:80:29:80:32 | null | Assert.cs:80:29:80:32 | null |
 | Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:80:37:80:37 | access to parameter b |
 | Assert.cs:81:9:81:35 | call to method WriteLine | Assert.cs:81:27:81:27 | access to local variable s |
@@ -489,9 +490,9 @@
 | Assert.cs:81:27:81:34 | access to property Length | Assert.cs:81:27:81:27 | access to local variable s |
 | Assert.cs:85:5:129:5 | {...} | Assert.cs:85:5:129:5 | {...} |
 | Assert.cs:86:9:86:33 | ... ...; | Assert.cs:86:9:86:33 | ... ...; |
-| Assert.cs:86:16:86:32 | String s = ... | Assert.cs:86:20:86:32 | ... ? ... : ... |
+| Assert.cs:86:16:86:32 | String s = ... | Assert.cs:86:20:86:20 | access to parameter b |
 | Assert.cs:86:20:86:20 | access to parameter b | Assert.cs:86:20:86:20 | access to parameter b |
-| Assert.cs:86:20:86:32 | ... ? ... : ... | Assert.cs:86:20:86:32 | ... ? ... : ... |
+| Assert.cs:86:20:86:32 | ... ? ... : ... | Assert.cs:86:20:86:20 | access to parameter b |
 | Assert.cs:86:24:86:27 | null | Assert.cs:86:24:86:27 | null |
 | Assert.cs:86:31:86:32 | "" | Assert.cs:86:31:86:32 | "" |
 | Assert.cs:87:9:87:31 | call to method Assert | Assert.cs:87:22:87:22 | access to local variable s |
@@ -503,10 +504,10 @@
 | Assert.cs:88:9:88:36 | ...; | Assert.cs:88:9:88:36 | ...; |
 | Assert.cs:88:27:88:27 | access to local variable s | Assert.cs:88:27:88:27 | access to local variable s |
 | Assert.cs:88:27:88:34 | access to property Length | Assert.cs:88:27:88:27 | access to local variable s |
-| Assert.cs:90:9:90:25 | ... = ... | Assert.cs:90:13:90:25 | ... ? ... : ... |
+| Assert.cs:90:9:90:25 | ... = ... | Assert.cs:90:13:90:13 | access to parameter b |
 | Assert.cs:90:9:90:26 | ...; | Assert.cs:90:9:90:26 | ...; |
 | Assert.cs:90:13:90:13 | access to parameter b | Assert.cs:90:13:90:13 | access to parameter b |
-| Assert.cs:90:13:90:25 | ... ? ... : ... | Assert.cs:90:13:90:25 | ... ? ... : ... |
+| Assert.cs:90:13:90:25 | ... ? ... : ... | Assert.cs:90:13:90:13 | access to parameter b |
 | Assert.cs:90:17:90:20 | null | Assert.cs:90:17:90:20 | null |
 | Assert.cs:90:24:90:25 | "" | Assert.cs:90:24:90:25 | "" |
 | Assert.cs:91:9:91:24 | call to method IsNull | Assert.cs:91:23:91:23 | access to local variable s |
@@ -516,10 +517,10 @@
 | Assert.cs:92:9:92:36 | ...; | Assert.cs:92:9:92:36 | ...; |
 | Assert.cs:92:27:92:27 | access to local variable s | Assert.cs:92:27:92:27 | access to local variable s |
 | Assert.cs:92:27:92:34 | access to property Length | Assert.cs:92:27:92:27 | access to local variable s |
-| Assert.cs:94:9:94:25 | ... = ... | Assert.cs:94:13:94:25 | ... ? ... : ... |
+| Assert.cs:94:9:94:25 | ... = ... | Assert.cs:94:13:94:13 | access to parameter b |
 | Assert.cs:94:9:94:26 | ...; | Assert.cs:94:9:94:26 | ...; |
 | Assert.cs:94:13:94:13 | access to parameter b | Assert.cs:94:13:94:13 | access to parameter b |
-| Assert.cs:94:13:94:25 | ... ? ... : ... | Assert.cs:94:13:94:25 | ... ? ... : ... |
+| Assert.cs:94:13:94:25 | ... ? ... : ... | Assert.cs:94:13:94:13 | access to parameter b |
 | Assert.cs:94:17:94:20 | null | Assert.cs:94:17:94:20 | null |
 | Assert.cs:94:24:94:25 | "" | Assert.cs:94:24:94:25 | "" |
 | Assert.cs:95:9:95:27 | call to method IsNotNull | Assert.cs:95:26:95:26 | access to local variable s |
@@ -529,10 +530,10 @@
 | Assert.cs:96:9:96:36 | ...; | Assert.cs:96:9:96:36 | ...; |
 | Assert.cs:96:27:96:27 | access to local variable s | Assert.cs:96:27:96:27 | access to local variable s |
 | Assert.cs:96:27:96:34 | access to property Length | Assert.cs:96:27:96:27 | access to local variable s |
-| Assert.cs:98:9:98:25 | ... = ... | Assert.cs:98:13:98:25 | ... ? ... : ... |
+| Assert.cs:98:9:98:25 | ... = ... | Assert.cs:98:13:98:13 | access to parameter b |
 | Assert.cs:98:9:98:26 | ...; | Assert.cs:98:9:98:26 | ...; |
 | Assert.cs:98:13:98:13 | access to parameter b | Assert.cs:98:13:98:13 | access to parameter b |
-| Assert.cs:98:13:98:25 | ... ? ... : ... | Assert.cs:98:13:98:25 | ... ? ... : ... |
+| Assert.cs:98:13:98:25 | ... ? ... : ... | Assert.cs:98:13:98:13 | access to parameter b |
 | Assert.cs:98:17:98:20 | null | Assert.cs:98:17:98:20 | null |
 | Assert.cs:98:24:98:25 | "" | Assert.cs:98:24:98:25 | "" |
 | Assert.cs:99:9:99:32 | call to method IsTrue | Assert.cs:99:23:99:23 | access to local variable s |
@@ -544,10 +545,10 @@
 | Assert.cs:100:9:100:36 | ...; | Assert.cs:100:9:100:36 | ...; |
 | Assert.cs:100:27:100:27 | access to local variable s | Assert.cs:100:27:100:27 | access to local variable s |
 | Assert.cs:100:27:100:34 | access to property Length | Assert.cs:100:27:100:27 | access to local variable s |
-| Assert.cs:102:9:102:25 | ... = ... | Assert.cs:102:13:102:25 | ... ? ... : ... |
+| Assert.cs:102:9:102:25 | ... = ... | Assert.cs:102:13:102:13 | access to parameter b |
 | Assert.cs:102:9:102:26 | ...; | Assert.cs:102:9:102:26 | ...; |
 | Assert.cs:102:13:102:13 | access to parameter b | Assert.cs:102:13:102:13 | access to parameter b |
-| Assert.cs:102:13:102:25 | ... ? ... : ... | Assert.cs:102:13:102:25 | ... ? ... : ... |
+| Assert.cs:102:13:102:25 | ... ? ... : ... | Assert.cs:102:13:102:13 | access to parameter b |
 | Assert.cs:102:17:102:20 | null | Assert.cs:102:17:102:20 | null |
 | Assert.cs:102:24:102:25 | "" | Assert.cs:102:24:102:25 | "" |
 | Assert.cs:103:9:103:32 | call to method IsTrue | Assert.cs:103:23:103:23 | access to local variable s |
@@ -559,10 +560,10 @@
 | Assert.cs:104:9:104:36 | ...; | Assert.cs:104:9:104:36 | ...; |
 | Assert.cs:104:27:104:27 | access to local variable s | Assert.cs:104:27:104:27 | access to local variable s |
 | Assert.cs:104:27:104:34 | access to property Length | Assert.cs:104:27:104:27 | access to local variable s |
-| Assert.cs:106:9:106:25 | ... = ... | Assert.cs:106:13:106:25 | ... ? ... : ... |
+| Assert.cs:106:9:106:25 | ... = ... | Assert.cs:106:13:106:13 | access to parameter b |
 | Assert.cs:106:9:106:26 | ...; | Assert.cs:106:9:106:26 | ...; |
 | Assert.cs:106:13:106:13 | access to parameter b | Assert.cs:106:13:106:13 | access to parameter b |
-| Assert.cs:106:13:106:25 | ... ? ... : ... | Assert.cs:106:13:106:25 | ... ? ... : ... |
+| Assert.cs:106:13:106:25 | ... ? ... : ... | Assert.cs:106:13:106:13 | access to parameter b |
 | Assert.cs:106:17:106:20 | null | Assert.cs:106:17:106:20 | null |
 | Assert.cs:106:24:106:25 | "" | Assert.cs:106:24:106:25 | "" |
 | Assert.cs:107:9:107:33 | call to method IsFalse | Assert.cs:107:24:107:24 | access to local variable s |
@@ -574,10 +575,10 @@
 | Assert.cs:108:9:108:36 | ...; | Assert.cs:108:9:108:36 | ...; |
 | Assert.cs:108:27:108:27 | access to local variable s | Assert.cs:108:27:108:27 | access to local variable s |
 | Assert.cs:108:27:108:34 | access to property Length | Assert.cs:108:27:108:27 | access to local variable s |
-| Assert.cs:110:9:110:25 | ... = ... | Assert.cs:110:13:110:25 | ... ? ... : ... |
+| Assert.cs:110:9:110:25 | ... = ... | Assert.cs:110:13:110:13 | access to parameter b |
 | Assert.cs:110:9:110:26 | ...; | Assert.cs:110:9:110:26 | ...; |
 | Assert.cs:110:13:110:13 | access to parameter b | Assert.cs:110:13:110:13 | access to parameter b |
-| Assert.cs:110:13:110:25 | ... ? ... : ... | Assert.cs:110:13:110:25 | ... ? ... : ... |
+| Assert.cs:110:13:110:25 | ... ? ... : ... | Assert.cs:110:13:110:13 | access to parameter b |
 | Assert.cs:110:17:110:20 | null | Assert.cs:110:17:110:20 | null |
 | Assert.cs:110:24:110:25 | "" | Assert.cs:110:24:110:25 | "" |
 | Assert.cs:111:9:111:33 | call to method IsFalse | Assert.cs:111:24:111:24 | access to local variable s |
@@ -589,71 +590,71 @@
 | Assert.cs:112:9:112:36 | ...; | Assert.cs:112:9:112:36 | ...; |
 | Assert.cs:112:27:112:27 | access to local variable s | Assert.cs:112:27:112:27 | access to local variable s |
 | Assert.cs:112:27:112:34 | access to property Length | Assert.cs:112:27:112:27 | access to local variable s |
-| Assert.cs:114:9:114:25 | ... = ... | Assert.cs:114:13:114:25 | ... ? ... : ... |
+| Assert.cs:114:9:114:25 | ... = ... | Assert.cs:114:13:114:13 | access to parameter b |
 | Assert.cs:114:9:114:26 | ...; | Assert.cs:114:9:114:26 | ...; |
 | Assert.cs:114:13:114:13 | access to parameter b | Assert.cs:114:13:114:13 | access to parameter b |
-| Assert.cs:114:13:114:25 | ... ? ... : ... | Assert.cs:114:13:114:25 | ... ? ... : ... |
+| Assert.cs:114:13:114:25 | ... ? ... : ... | Assert.cs:114:13:114:13 | access to parameter b |
 | Assert.cs:114:17:114:20 | null | Assert.cs:114:17:114:20 | null |
 | Assert.cs:114:24:114:25 | "" | Assert.cs:114:24:114:25 | "" |
-| Assert.cs:115:9:115:37 | call to method IsTrue | Assert.cs:115:23:115:36 | ... && ... |
+| Assert.cs:115:9:115:37 | call to method IsTrue | Assert.cs:115:23:115:23 | access to local variable s |
 | Assert.cs:115:9:115:38 | ...; | Assert.cs:115:9:115:38 | ...; |
 | Assert.cs:115:23:115:23 | access to local variable s | Assert.cs:115:23:115:23 | access to local variable s |
 | Assert.cs:115:23:115:31 | ... != ... | Assert.cs:115:23:115:23 | access to local variable s |
-| Assert.cs:115:23:115:36 | ... && ... | Assert.cs:115:23:115:36 | ... && ... |
+| Assert.cs:115:23:115:36 | ... && ... | Assert.cs:115:23:115:23 | access to local variable s |
 | Assert.cs:115:28:115:31 | null | Assert.cs:115:28:115:31 | null |
 | Assert.cs:115:36:115:36 | access to parameter b | Assert.cs:115:36:115:36 | access to parameter b |
 | Assert.cs:116:9:116:35 | call to method WriteLine | Assert.cs:116:27:116:27 | access to local variable s |
 | Assert.cs:116:9:116:36 | ...; | Assert.cs:116:9:116:36 | ...; |
 | Assert.cs:116:27:116:27 | access to local variable s | Assert.cs:116:27:116:27 | access to local variable s |
 | Assert.cs:116:27:116:34 | access to property Length | Assert.cs:116:27:116:27 | access to local variable s |
-| Assert.cs:118:9:118:25 | ... = ... | Assert.cs:118:13:118:25 | ... ? ... : ... |
+| Assert.cs:118:9:118:25 | ... = ... | Assert.cs:118:13:118:13 | access to parameter b |
 | Assert.cs:118:9:118:26 | ...; | Assert.cs:118:9:118:26 | ...; |
 | Assert.cs:118:13:118:13 | access to parameter b | Assert.cs:118:13:118:13 | access to parameter b |
-| Assert.cs:118:13:118:25 | ... ? ... : ... | Assert.cs:118:13:118:25 | ... ? ... : ... |
+| Assert.cs:118:13:118:25 | ... ? ... : ... | Assert.cs:118:13:118:13 | access to parameter b |
 | Assert.cs:118:17:118:20 | null | Assert.cs:118:17:118:20 | null |
 | Assert.cs:118:24:118:25 | "" | Assert.cs:118:24:118:25 | "" |
-| Assert.cs:119:9:119:39 | call to method IsFalse | Assert.cs:119:24:119:38 | ... \|\| ... |
+| Assert.cs:119:9:119:39 | call to method IsFalse | Assert.cs:119:24:119:24 | access to local variable s |
 | Assert.cs:119:9:119:40 | ...; | Assert.cs:119:9:119:40 | ...; |
 | Assert.cs:119:24:119:24 | access to local variable s | Assert.cs:119:24:119:24 | access to local variable s |
 | Assert.cs:119:24:119:32 | ... == ... | Assert.cs:119:24:119:24 | access to local variable s |
-| Assert.cs:119:24:119:38 | ... \|\| ... | Assert.cs:119:24:119:38 | ... \|\| ... |
+| Assert.cs:119:24:119:38 | ... \|\| ... | Assert.cs:119:24:119:24 | access to local variable s |
 | Assert.cs:119:29:119:32 | null | Assert.cs:119:29:119:32 | null |
-| Assert.cs:119:37:119:38 | !... | Assert.cs:119:37:119:38 | !... |
+| Assert.cs:119:37:119:38 | !... | Assert.cs:119:38:119:38 | access to parameter b |
 | Assert.cs:119:38:119:38 | access to parameter b | Assert.cs:119:38:119:38 | access to parameter b |
 | Assert.cs:120:9:120:35 | call to method WriteLine | Assert.cs:120:27:120:27 | access to local variable s |
 | Assert.cs:120:9:120:36 | ...; | Assert.cs:120:9:120:36 | ...; |
 | Assert.cs:120:27:120:27 | access to local variable s | Assert.cs:120:27:120:27 | access to local variable s |
 | Assert.cs:120:27:120:34 | access to property Length | Assert.cs:120:27:120:27 | access to local variable s |
-| Assert.cs:122:9:122:25 | ... = ... | Assert.cs:122:13:122:25 | ... ? ... : ... |
+| Assert.cs:122:9:122:25 | ... = ... | Assert.cs:122:13:122:13 | access to parameter b |
 | Assert.cs:122:9:122:26 | ...; | Assert.cs:122:9:122:26 | ...; |
 | Assert.cs:122:13:122:13 | access to parameter b | Assert.cs:122:13:122:13 | access to parameter b |
-| Assert.cs:122:13:122:25 | ... ? ... : ... | Assert.cs:122:13:122:25 | ... ? ... : ... |
+| Assert.cs:122:13:122:25 | ... ? ... : ... | Assert.cs:122:13:122:13 | access to parameter b |
 | Assert.cs:122:17:122:20 | null | Assert.cs:122:17:122:20 | null |
 | Assert.cs:122:24:122:25 | "" | Assert.cs:122:24:122:25 | "" |
-| Assert.cs:123:9:123:37 | call to method IsTrue | Assert.cs:123:23:123:36 | ... && ... |
+| Assert.cs:123:9:123:37 | call to method IsTrue | Assert.cs:123:23:123:23 | access to local variable s |
 | Assert.cs:123:9:123:38 | ...; | Assert.cs:123:9:123:38 | ...; |
 | Assert.cs:123:23:123:23 | access to local variable s | Assert.cs:123:23:123:23 | access to local variable s |
 | Assert.cs:123:23:123:31 | ... == ... | Assert.cs:123:23:123:23 | access to local variable s |
-| Assert.cs:123:23:123:36 | ... && ... | Assert.cs:123:23:123:36 | ... && ... |
+| Assert.cs:123:23:123:36 | ... && ... | Assert.cs:123:23:123:23 | access to local variable s |
 | Assert.cs:123:28:123:31 | null | Assert.cs:123:28:123:31 | null |
 | Assert.cs:123:36:123:36 | access to parameter b | Assert.cs:123:36:123:36 | access to parameter b |
 | Assert.cs:124:9:124:35 | call to method WriteLine | Assert.cs:124:27:124:27 | access to local variable s |
 | Assert.cs:124:9:124:36 | ...; | Assert.cs:124:9:124:36 | ...; |
 | Assert.cs:124:27:124:27 | access to local variable s | Assert.cs:124:27:124:27 | access to local variable s |
 | Assert.cs:124:27:124:34 | access to property Length | Assert.cs:124:27:124:27 | access to local variable s |
-| Assert.cs:126:9:126:25 | ... = ... | Assert.cs:126:13:126:25 | ... ? ... : ... |
+| Assert.cs:126:9:126:25 | ... = ... | Assert.cs:126:13:126:13 | access to parameter b |
 | Assert.cs:126:9:126:26 | ...; | Assert.cs:126:9:126:26 | ...; |
 | Assert.cs:126:13:126:13 | access to parameter b | Assert.cs:126:13:126:13 | access to parameter b |
-| Assert.cs:126:13:126:25 | ... ? ... : ... | Assert.cs:126:13:126:25 | ... ? ... : ... |
+| Assert.cs:126:13:126:25 | ... ? ... : ... | Assert.cs:126:13:126:13 | access to parameter b |
 | Assert.cs:126:17:126:20 | null | Assert.cs:126:17:126:20 | null |
 | Assert.cs:126:24:126:25 | "" | Assert.cs:126:24:126:25 | "" |
-| Assert.cs:127:9:127:39 | call to method IsFalse | Assert.cs:127:24:127:38 | ... \|\| ... |
+| Assert.cs:127:9:127:39 | call to method IsFalse | Assert.cs:127:24:127:24 | access to local variable s |
 | Assert.cs:127:9:127:40 | ...; | Assert.cs:127:9:127:40 | ...; |
 | Assert.cs:127:24:127:24 | access to local variable s | Assert.cs:127:24:127:24 | access to local variable s |
 | Assert.cs:127:24:127:32 | ... != ... | Assert.cs:127:24:127:24 | access to local variable s |
-| Assert.cs:127:24:127:38 | ... \|\| ... | Assert.cs:127:24:127:38 | ... \|\| ... |
+| Assert.cs:127:24:127:38 | ... \|\| ... | Assert.cs:127:24:127:24 | access to local variable s |
 | Assert.cs:127:29:127:32 | null | Assert.cs:127:29:127:32 | null |
-| Assert.cs:127:37:127:38 | !... | Assert.cs:127:37:127:38 | !... |
+| Assert.cs:127:37:127:38 | !... | Assert.cs:127:38:127:38 | access to parameter b |
 | Assert.cs:127:38:127:38 | access to parameter b | Assert.cs:127:38:127:38 | access to parameter b |
 | Assert.cs:128:9:128:35 | call to method WriteLine | Assert.cs:128:27:128:27 | access to local variable s |
 | Assert.cs:128:9:128:36 | ...; | Assert.cs:128:9:128:36 | ...; |
@@ -819,11 +820,11 @@
 | ConditionalAccess.cs:5:26:5:26 | access to parameter s | ConditionalAccess.cs:5:26:5:26 | access to parameter s |
 | ConditionalAccess.cs:5:28:5:34 | access to property Length | ConditionalAccess.cs:5:26:5:26 | access to parameter s |
 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 |
-| ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:39:7:46 | ... ?? ... |
+| ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 |
 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 |
-| ConditionalAccess.cs:7:49:7:55 | access to property Length | ConditionalAccess.cs:7:39:7:46 | ... ?? ... |
+| ConditionalAccess.cs:7:49:7:55 | access to property Length | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 |
 | ConditionalAccess.cs:9:25:9:25 | access to parameter s | ConditionalAccess.cs:9:25:9:25 | access to parameter s |
-| ConditionalAccess.cs:9:25:9:38 | ... ?? ... | ConditionalAccess.cs:9:25:9:38 | ... ?? ... |
+| ConditionalAccess.cs:9:25:9:38 | ... ?? ... | ConditionalAccess.cs:9:25:9:25 | access to parameter s |
 | ConditionalAccess.cs:9:27:9:33 | access to property Length | ConditionalAccess.cs:9:25:9:25 | access to parameter s |
 | ConditionalAccess.cs:9:38:9:38 | 0 | ConditionalAccess.cs:9:38:9:38 | 0 |
 | ConditionalAccess.cs:12:5:17:5 | {...} | ConditionalAccess.cs:12:5:17:5 | {...} |
@@ -878,7 +879,7 @@
 | Conditions.cs:6:13:6:15 | ...++ | Conditions.cs:6:13:6:13 | access to parameter x |
 | Conditions.cs:6:13:6:16 | ...; | Conditions.cs:6:13:6:16 | ...; |
 | Conditions.cs:7:9:8:16 | if (...) ... | Conditions.cs:7:9:8:16 | if (...) ... |
-| Conditions.cs:7:13:7:16 | !... | Conditions.cs:7:13:7:16 | !... |
+| Conditions.cs:7:13:7:16 | !... | Conditions.cs:7:14:7:16 | access to parameter inc |
 | Conditions.cs:7:14:7:16 | access to parameter inc | Conditions.cs:7:14:7:16 | access to parameter inc |
 | Conditions.cs:8:13:8:13 | access to parameter x | Conditions.cs:8:13:8:13 | access to parameter x |
 | Conditions.cs:8:13:8:15 | ...-- | Conditions.cs:8:13:8:13 | access to parameter x |
@@ -897,7 +898,7 @@
 | Conditions.cs:16:13:16:17 | ... > ... | Conditions.cs:16:13:16:13 | access to local variable x |
 | Conditions.cs:16:17:16:17 | 0 | Conditions.cs:16:17:16:17 | 0 |
 | Conditions.cs:17:13:18:20 | if (...) ... | Conditions.cs:17:13:18:20 | if (...) ... |
-| Conditions.cs:17:17:17:18 | !... | Conditions.cs:17:17:17:18 | !... |
+| Conditions.cs:17:17:17:18 | !... | Conditions.cs:17:18:17:18 | access to parameter b |
 | Conditions.cs:17:18:17:18 | access to parameter b | Conditions.cs:17:18:17:18 | access to parameter b |
 | Conditions.cs:18:17:18:17 | access to local variable x | Conditions.cs:18:17:18:17 | access to local variable x |
 | Conditions.cs:18:17:18:19 | ...-- | Conditions.cs:18:17:18:17 | access to local variable x |
@@ -1070,7 +1071,7 @@
 | Conditions.cs:107:13:107:24 | ... > ... | Conditions.cs:107:13:107:13 | access to local variable x |
 | Conditions.cs:107:24:107:24 | 0 | Conditions.cs:107:24:107:24 | 0 |
 | Conditions.cs:108:13:109:24 | if (...) ... | Conditions.cs:108:13:109:24 | if (...) ... |
-| Conditions.cs:108:17:108:18 | !... | Conditions.cs:108:17:108:18 | !... |
+| Conditions.cs:108:17:108:18 | !... | Conditions.cs:108:18:108:18 | access to parameter b |
 | Conditions.cs:108:18:108:18 | access to parameter b | Conditions.cs:108:18:108:18 | access to parameter b |
 | Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:17:109:17 | access to local variable x |
 | Conditions.cs:109:17:109:23 | ... + ... | Conditions.cs:109:17:109:17 | access to local variable x |
@@ -1103,7 +1104,7 @@
 | Conditions.cs:118:29:118:43 | ... - ... | Conditions.cs:118:29:118:32 | access to parameter args |
 | Conditions.cs:118:43:118:43 | 1 | Conditions.cs:118:43:118:43 | 1 |
 | Conditions.cs:119:13:120:23 | if (...) ... | Conditions.cs:119:13:120:23 | if (...) ... |
-| Conditions.cs:119:17:119:21 | !... | Conditions.cs:119:17:119:21 | !... |
+| Conditions.cs:119:17:119:21 | !... | Conditions.cs:119:18:119:21 | access to local variable last |
 | Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:119:18:119:21 | access to local variable last |
 | Conditions.cs:120:17:120:22 | ... = ... | Conditions.cs:120:21:120:22 | "" |
 | Conditions.cs:120:17:120:23 | ...; | Conditions.cs:120:17:120:23 | ...; |
@@ -1131,9 +1132,9 @@
 | Conditions.cs:137:21:137:38 | ...; | Conditions.cs:137:21:137:38 | ...; |
 | Conditions.cs:144:5:150:5 | {...} | Conditions.cs:144:5:150:5 | {...} |
 | Conditions.cs:145:9:145:30 | ... ...; | Conditions.cs:145:9:145:30 | ... ...; |
-| Conditions.cs:145:13:145:29 | String s = ... | Conditions.cs:145:17:145:29 | ... ? ... : ... |
+| Conditions.cs:145:13:145:29 | String s = ... | Conditions.cs:145:17:145:17 | access to parameter b |
 | Conditions.cs:145:17:145:17 | access to parameter b | Conditions.cs:145:17:145:17 | access to parameter b |
-| Conditions.cs:145:17:145:29 | ... ? ... : ... | Conditions.cs:145:17:145:29 | ... ? ... : ... |
+| Conditions.cs:145:17:145:29 | ... ? ... : ... | Conditions.cs:145:17:145:17 | access to parameter b |
 | Conditions.cs:145:21:145:23 | "a" | Conditions.cs:145:21:145:23 | "a" |
 | Conditions.cs:145:27:145:29 | "b" | Conditions.cs:145:27:145:29 | "b" |
 | Conditions.cs:146:9:149:49 | if (...) ... | Conditions.cs:146:9:149:49 | if (...) ... |
@@ -1229,10 +1230,10 @@
 | ExitMethods.cs:106:9:106:47 | call to method Exit | ExitMethods.cs:106:9:106:47 | call to method Exit |
 | ExitMethods.cs:106:9:106:48 | ...; | ExitMethods.cs:106:9:106:48 | ...; |
 | ExitMethods.cs:110:5:112:5 | {...} | ExitMethods.cs:110:5:112:5 | {...} |
-| ExitMethods.cs:111:9:111:77 | return ...; | ExitMethods.cs:111:16:111:76 | ... ? ... : ... |
+| ExitMethods.cs:111:9:111:77 | return ...; | ExitMethods.cs:111:16:111:20 | access to parameter input |
 | ExitMethods.cs:111:16:111:20 | access to parameter input | ExitMethods.cs:111:16:111:20 | access to parameter input |
 | ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:16:111:20 | access to parameter input |
-| ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:111:16:111:76 | ... ? ... : ... |
+| ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:111:16:111:20 | access to parameter input |
 | ExitMethods.cs:111:25:111:25 | 0 | ExitMethods.cs:111:25:111:25 | 0 |
 | ExitMethods.cs:111:25:111:25 | (...) ... | ExitMethods.cs:111:25:111:25 | 0 |
 | ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:111:29:111:29 | 1 |
@@ -1243,10 +1244,10 @@
 | ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | ExitMethods.cs:111:69:111:75 | "input" |
 | ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:111:69:111:75 | "input" |
 | ExitMethods.cs:115:5:117:5 | {...} | ExitMethods.cs:115:5:117:5 | {...} |
-| ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:116:16:116:38 | ... ? ... : ... |
+| ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:116:16:116:16 | access to parameter s |
 | ExitMethods.cs:116:16:116:16 | access to parameter s | ExitMethods.cs:116:16:116:16 | access to parameter s |
 | ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:16:116:16 | access to parameter s |
-| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:116:16:116:38 | ... ? ... : ... |
+| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:116:16:116:16 | access to parameter s |
 | ExitMethods.cs:116:27:116:29 | - | ExitMethods.cs:116:27:116:29 | - |
 | ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:116:34:116:34 | 0 |
 | ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:116:38:116:38 | 1 |
@@ -1427,7 +1428,7 @@
 | Finally.cs:110:23:110:48 | object creation of type OutOfMemoryException | Finally.cs:110:23:110:48 | object creation of type OutOfMemoryException |
 | Finally.cs:113:9:118:9 | {...} | Finally.cs:113:9:118:9 | {...} |
 | Finally.cs:114:13:115:41 | if (...) ... | Finally.cs:114:13:115:41 | if (...) ... |
-| Finally.cs:114:17:114:36 | !... | Finally.cs:114:17:114:36 | !... |
+| Finally.cs:114:17:114:36 | !... | Finally.cs:114:19:114:23 | this access |
 | Finally.cs:114:19:114:23 | access to field Field | Finally.cs:114:19:114:23 | this access |
 | Finally.cs:114:19:114:23 | this access | Finally.cs:114:19:114:23 | this access |
 | Finally.cs:114:19:114:30 | access to property Length | Finally.cs:114:19:114:23 | this access |
@@ -1590,17 +1591,19 @@
 | Foreach.cs:14:27:14:30 | access to parameter args | Foreach.cs:14:27:14:30 | access to parameter args |
 | Foreach.cs:15:13:15:13 | ; | Foreach.cs:15:13:15:13 | ; |
 | Foreach.cs:19:5:22:5 | {...} | Foreach.cs:19:5:22:5 | {...} |
-| Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:27:20:68 | ... ?? ... |
+| Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:27:20:27 | access to parameter e |
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:20:22:20:22 | String x |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:27:20:27 | access to parameter e |
-| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:68 | ... ?? ... |
+| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:27 | access to parameter e |
 | Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:27:20:27 | access to parameter e |
 | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:21:11:21:11 | ; |
 | Foreach.cs:25:5:28:5 | {...} | Foreach.cs:25:5:28:5 | {...} |
 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:36:26:39 | access to parameter args |
 | Foreach.cs:26:18:26:31 | (..., ...) | Foreach.cs:26:23:26:23 | String x |
+| Foreach.cs:26:19:26:23 | 1 | Foreach.cs:26:19:26:23 | 1 |
 | Foreach.cs:26:23:26:23 | String x | Foreach.cs:26:23:26:23 | String x |
+| Foreach.cs:26:26:26:30 | 1 | Foreach.cs:26:26:26:30 | 1 |
 | Foreach.cs:26:30:26:30 | Int32 y | Foreach.cs:26:30:26:30 | Int32 y |
 | Foreach.cs:26:36:26:39 | access to parameter args | Foreach.cs:26:36:26:39 | access to parameter args |
 | Foreach.cs:27:11:27:11 | ; | Foreach.cs:27:11:27:11 | ; |
@@ -1913,7 +1916,7 @@
 | LoopUnrolling.cs:63:35:63:35 | access to local variable x | LoopUnrolling.cs:63:35:63:35 | access to local variable x |
 | LoopUnrolling.cs:68:5:74:5 | {...} | LoopUnrolling.cs:68:5:74:5 | {...} |
 | LoopUnrolling.cs:69:9:70:19 | if (...) ... | LoopUnrolling.cs:69:9:70:19 | if (...) ... |
-| LoopUnrolling.cs:69:13:69:23 | !... | LoopUnrolling.cs:69:13:69:23 | !... |
+| LoopUnrolling.cs:69:13:69:23 | !... | LoopUnrolling.cs:69:14:69:17 | access to parameter args |
 | LoopUnrolling.cs:69:14:69:17 | access to parameter args | LoopUnrolling.cs:69:14:69:17 | access to parameter args |
 | LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:14:69:17 | access to parameter args |
 | LoopUnrolling.cs:70:13:70:19 | return ...; | LoopUnrolling.cs:70:13:70:19 | return ...; |
@@ -2049,51 +2052,51 @@
 | MultiImplementationB.cs:22:34:22:34 | 1 | MultiImplementationB.cs:22:34:22:34 | 1 |
 | MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationB.cs:32:17:32:17 | 0 |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:23:3:23 | access to parameter i |
-| NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
+| NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:23:3:23 | access to parameter i |
 | NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:28:3:28 | 0 |
-| NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | NullCoalescing.cs:5:24:5:43 | ... ? ... : ... |
+| NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | NullCoalescing.cs:5:25:5:25 | access to parameter b |
 | NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:25:5:25 | access to parameter b |
-| NullCoalescing.cs:5:25:5:34 | ... ?? ... | NullCoalescing.cs:5:25:5:34 | ... ?? ... |
+| NullCoalescing.cs:5:25:5:34 | ... ?? ... | NullCoalescing.cs:5:25:5:25 | access to parameter b |
 | NullCoalescing.cs:5:30:5:34 | false | NullCoalescing.cs:5:30:5:34 | false |
 | NullCoalescing.cs:5:39:5:39 | 0 | NullCoalescing.cs:5:39:5:39 | 0 |
 | NullCoalescing.cs:5:43:5:43 | 1 | NullCoalescing.cs:5:43:5:43 | 1 |
 | NullCoalescing.cs:7:40:7:41 | access to parameter s1 | NullCoalescing.cs:7:40:7:41 | access to parameter s1 |
-| NullCoalescing.cs:7:40:7:53 | ... ?? ... | NullCoalescing.cs:7:40:7:53 | ... ?? ... |
+| NullCoalescing.cs:7:40:7:53 | ... ?? ... | NullCoalescing.cs:7:40:7:41 | access to parameter s1 |
 | NullCoalescing.cs:7:46:7:47 | access to parameter s2 | NullCoalescing.cs:7:46:7:47 | access to parameter s2 |
-| NullCoalescing.cs:7:46:7:53 | ... ?? ... | NullCoalescing.cs:7:46:7:53 | ... ?? ... |
+| NullCoalescing.cs:7:46:7:53 | ... ?? ... | NullCoalescing.cs:7:46:7:47 | access to parameter s2 |
 | NullCoalescing.cs:7:52:7:53 | "" | NullCoalescing.cs:7:52:7:53 | "" |
-| NullCoalescing.cs:9:36:9:58 | ... ?? ... | NullCoalescing.cs:9:36:9:58 | ... ?? ... |
+| NullCoalescing.cs:9:36:9:58 | ... ?? ... | NullCoalescing.cs:9:37:9:37 | access to parameter b |
 | NullCoalescing.cs:9:37:9:37 | access to parameter b | NullCoalescing.cs:9:37:9:37 | access to parameter b |
-| NullCoalescing.cs:9:37:9:45 | ... ? ... : ... | NullCoalescing.cs:9:37:9:45 | ... ? ... : ... |
+| NullCoalescing.cs:9:37:9:45 | ... ? ... : ... | NullCoalescing.cs:9:37:9:37 | access to parameter b |
 | NullCoalescing.cs:9:41:9:41 | access to parameter s | NullCoalescing.cs:9:41:9:41 | access to parameter s |
 | NullCoalescing.cs:9:45:9:45 | access to parameter s | NullCoalescing.cs:9:45:9:45 | access to parameter s |
 | NullCoalescing.cs:9:51:9:52 | "" | NullCoalescing.cs:9:51:9:52 | "" |
-| NullCoalescing.cs:9:51:9:58 | ... ?? ... | NullCoalescing.cs:9:51:9:58 | ... ?? ... |
+| NullCoalescing.cs:9:51:9:58 | ... ?? ... | NullCoalescing.cs:9:51:9:52 | "" |
 | NullCoalescing.cs:9:57:9:58 | "" | NullCoalescing.cs:9:57:9:58 | "" |
-| NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... |
+| NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | NullCoalescing.cs:11:44:11:45 | access to parameter b1 |
 | NullCoalescing.cs:11:44:11:45 | access to parameter b1 | NullCoalescing.cs:11:44:11:45 | access to parameter b1 |
-| NullCoalescing.cs:11:44:11:59 | ... ?? ... | NullCoalescing.cs:11:44:11:59 | ... ?? ... |
+| NullCoalescing.cs:11:44:11:59 | ... ?? ... | NullCoalescing.cs:11:44:11:45 | access to parameter b1 |
 | NullCoalescing.cs:11:51:11:52 | access to parameter b2 | NullCoalescing.cs:11:51:11:52 | access to parameter b2 |
-| NullCoalescing.cs:11:51:11:58 | ... && ... | NullCoalescing.cs:11:51:11:58 | ... && ... |
+| NullCoalescing.cs:11:51:11:58 | ... && ... | NullCoalescing.cs:11:51:11:52 | access to parameter b2 |
 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 |
 | NullCoalescing.cs:11:64:11:64 | 0 | NullCoalescing.cs:11:64:11:64 | 0 |
 | NullCoalescing.cs:11:68:11:68 | 1 | NullCoalescing.cs:11:68:11:68 | 1 |
 | NullCoalescing.cs:14:5:18:5 | {...} | NullCoalescing.cs:14:5:18:5 | {...} |
 | NullCoalescing.cs:15:9:15:32 | ... ...; | NullCoalescing.cs:15:9:15:32 | ... ...; |
-| NullCoalescing.cs:15:13:15:31 | Int32 j = ... | NullCoalescing.cs:15:17:15:31 | ... ?? ... |
+| NullCoalescing.cs:15:13:15:31 | Int32 j = ... | NullCoalescing.cs:15:23:15:26 | null |
 | NullCoalescing.cs:15:17:15:26 | (...) ... | NullCoalescing.cs:15:23:15:26 | null |
-| NullCoalescing.cs:15:17:15:31 | ... ?? ... | NullCoalescing.cs:15:17:15:31 | ... ?? ... |
+| NullCoalescing.cs:15:17:15:31 | ... ?? ... | NullCoalescing.cs:15:23:15:26 | null |
 | NullCoalescing.cs:15:23:15:26 | null | NullCoalescing.cs:15:23:15:26 | null |
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:15:31:15:31 | 0 |
 | NullCoalescing.cs:16:9:16:26 | ... ...; | NullCoalescing.cs:16:9:16:26 | ... ...; |
-| NullCoalescing.cs:16:13:16:25 | String s = ... | NullCoalescing.cs:16:17:16:25 | ... ?? ... |
+| NullCoalescing.cs:16:13:16:25 | String s = ... | NullCoalescing.cs:16:17:16:18 | "" |
 | NullCoalescing.cs:16:17:16:18 | "" | NullCoalescing.cs:16:17:16:18 | "" |
-| NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:16:17:16:25 | ... ?? ... |
+| NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:16:17:16:18 | "" |
 | NullCoalescing.cs:16:23:16:25 | "a" | NullCoalescing.cs:16:23:16:25 | "a" |
-| NullCoalescing.cs:17:9:17:24 | ... = ... | NullCoalescing.cs:17:13:17:24 | ... ?? ... |
+| NullCoalescing.cs:17:9:17:24 | ... = ... | NullCoalescing.cs:17:19:17:19 | access to parameter i |
 | NullCoalescing.cs:17:9:17:25 | ...; | NullCoalescing.cs:17:9:17:25 | ...; |
 | NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:17:19:17:19 | access to parameter i |
-| NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:13:17:24 | ... ?? ... |
+| NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:19:17:19 | access to parameter i |
 | NullCoalescing.cs:17:19:17:19 | access to parameter i | NullCoalescing.cs:17:19:17:19 | access to parameter i |
 | NullCoalescing.cs:17:24:17:24 | 1 | NullCoalescing.cs:17:24:17:24 | 1 |
 | Patterns.cs:6:5:43:5 | {...} | Patterns.cs:6:5:43:5 | {...} |
@@ -2279,7 +2282,7 @@
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:24:32:24:32 | access to local variable s |
 | Switch.cs:24:32:24:39 | access to property Length | Switch.cs:24:32:24:32 | access to local variable s |
 | Switch.cs:24:32:24:43 | ... > ... | Switch.cs:24:32:24:32 | access to local variable s |
-| Switch.cs:24:32:24:55 | ... && ... | Switch.cs:24:32:24:55 | ... && ... |
+| Switch.cs:24:32:24:55 | ... && ... | Switch.cs:24:32:24:32 | access to local variable s |
 | Switch.cs:24:43:24:43 | 0 | Switch.cs:24:43:24:43 | 0 |
 | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:24:48:24:48 | access to local variable s |
 | Switch.cs:24:48:24:55 | ... != ... | Switch.cs:24:48:24:48 | access to local variable s |
@@ -2401,25 +2404,25 @@
 | Switch.cs:124:5:127:5 | {...} | Switch.cs:124:5:127:5 | {...} |
 | Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:125:9:126:19 | if (...) ... |
 | Switch.cs:125:13:125:13 | access to parameter o | Switch.cs:125:13:125:13 | access to parameter o |
-| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:13:125:48 | ... switch { ... } |
+| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:13:125:13 | access to parameter o |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | Boolean b |
-| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:34 | ... => ... |
+| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:29 | Boolean b |
 | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b |
 | Switch.cs:125:37:125:37 | _ | Switch.cs:125:37:125:37 | _ |
-| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:46 | ... => ... |
+| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:37 | _ |
 | Switch.cs:125:42:125:46 | false | Switch.cs:125:42:125:46 | false |
 | Switch.cs:126:13:126:19 | return ...; | Switch.cs:126:13:126:19 | return ...; |
 | Switch.cs:130:5:132:5 | {...} | Switch.cs:130:5:132:5 | {...} |
-| Switch.cs:131:9:131:67 | return ...; | Switch.cs:131:17:131:53 | ... switch { ... } |
+| Switch.cs:131:9:131:67 | return ...; | Switch.cs:131:17:131:17 | access to parameter o |
 | Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:131:17:131:17 | access to parameter o |
-| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:53 | ... switch { ... } |
+| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:17 | access to parameter o |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | String s |
-| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:40 | ... => ... |
+| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:35 | String s |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:43:131:43 | _ |
-| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:51 | ... => ... |
+| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:43 | _ |
 | Switch.cs:131:48:131:51 | null | Switch.cs:131:48:131:51 | null |
-| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:17:131:53 | ... switch { ... } |
+| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:17:131:17 | access to parameter o |
 | Switch.cs:135:5:142:5 | {...} | Switch.cs:135:5:142:5 | {...} |
 | Switch.cs:136:9:141:9 | switch (...) {...} | Switch.cs:136:9:141:9 | switch (...) {...} |
 | Switch.cs:136:17:136:17 | access to parameter i | Switch.cs:136:17:136:17 | access to parameter i |
@@ -2452,14 +2455,14 @@
 | Switch.cs:150:28:150:28 | 2 | Switch.cs:150:28:150:28 | 2 |
 | Switch.cs:155:5:161:5 | {...} | Switch.cs:155:5:161:5 | {...} |
 | Switch.cs:156:9:156:55 | ... ...; | Switch.cs:156:9:156:55 | ... ...; |
-| Switch.cs:156:13:156:54 | String s = ... | Switch.cs:156:17:156:54 | ... switch { ... } |
+| Switch.cs:156:13:156:54 | String s = ... | Switch.cs:156:17:156:17 | access to parameter b |
 | Switch.cs:156:17:156:17 | access to parameter b | Switch.cs:156:17:156:17 | access to parameter b |
-| Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:156:17:156:54 | ... switch { ... } |
+| Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:156:17:156:17 | access to parameter b |
 | Switch.cs:156:28:156:31 | true | Switch.cs:156:28:156:31 | true |
-| Switch.cs:156:28:156:38 | ... => ... | Switch.cs:156:28:156:38 | ... => ... |
+| Switch.cs:156:28:156:38 | ... => ... | Switch.cs:156:28:156:31 | true |
 | Switch.cs:156:36:156:38 | "a" | Switch.cs:156:36:156:38 | "a" |
 | Switch.cs:156:41:156:45 | false | Switch.cs:156:41:156:45 | false |
-| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:41:156:52 | ... => ... |
+| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:41:156:45 | false |
 | Switch.cs:156:50:156:52 | "b" | Switch.cs:156:50:156:52 | "b" |
 | Switch.cs:157:9:160:49 | if (...) ... | Switch.cs:157:9:160:49 | if (...) ... |
 | Switch.cs:157:13:157:13 | access to parameter b | Switch.cs:157:13:157:13 | access to parameter b |
@@ -2525,9 +2528,9 @@
 | VarDecls.cs:24:22:24:28 | object creation of type C | VarDecls.cs:24:22:24:28 | object creation of type C |
 | VarDecls.cs:24:31:24:41 | C y = ... | VarDecls.cs:24:35:24:41 | object creation of type C |
 | VarDecls.cs:24:35:24:41 | object creation of type C | VarDecls.cs:24:35:24:41 | object creation of type C |
-| VarDecls.cs:25:13:25:29 | return ...; | VarDecls.cs:25:20:25:28 | ... ? ... : ... |
+| VarDecls.cs:25:13:25:29 | return ...; | VarDecls.cs:25:20:25:20 | access to parameter b |
 | VarDecls.cs:25:20:25:20 | access to parameter b | VarDecls.cs:25:20:25:20 | access to parameter b |
-| VarDecls.cs:25:20:25:28 | ... ? ... : ... | VarDecls.cs:25:20:25:28 | ... ? ... : ... |
+| VarDecls.cs:25:20:25:28 | ... ? ... : ... | VarDecls.cs:25:20:25:20 | access to parameter b |
 | VarDecls.cs:25:24:25:24 | access to local variable x | VarDecls.cs:25:24:25:24 | access to local variable x |
 | VarDecls.cs:25:28:25:28 | access to local variable y | VarDecls.cs:25:28:25:28 | access to local variable y |
 | VarDecls.cs:28:51:28:53 | {...} | VarDecls.cs:28:51:28:53 | {...} |
@@ -2582,7 +2585,7 @@
 | cflow.cs:26:17:26:17 | access to local variable i | cflow.cs:26:17:26:17 | access to local variable i |
 | cflow.cs:26:17:26:21 | ... % ... | cflow.cs:26:17:26:17 | access to local variable i |
 | cflow.cs:26:17:26:26 | ... == ... | cflow.cs:26:17:26:17 | access to local variable i |
-| cflow.cs:26:17:26:40 | ... && ... | cflow.cs:26:17:26:40 | ... && ... |
+| cflow.cs:26:17:26:40 | ... && ... | cflow.cs:26:17:26:17 | access to local variable i |
 | cflow.cs:26:21:26:21 | 3 | cflow.cs:26:21:26:21 | 3 |
 | cflow.cs:26:26:26:26 | 0 | cflow.cs:26:26:26:26 | 0 |
 | cflow.cs:26:31:26:31 | access to local variable i | cflow.cs:26:31:26:31 | access to local variable i |
@@ -2657,7 +2660,7 @@
 | cflow.cs:62:13:62:19 | case ...: | cflow.cs:62:13:62:19 | case ...: |
 | cflow.cs:62:18:62:18 | 0 | cflow.cs:62:18:62:18 | 0 |
 | cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:63:17:64:55 | if (...) ... |
-| cflow.cs:63:21:63:34 | !... | cflow.cs:63:21:63:34 | !... |
+| cflow.cs:63:21:63:34 | !... | cflow.cs:63:23:63:27 | this access |
 | cflow.cs:63:23:63:27 | access to field Field | cflow.cs:63:23:63:27 | this access |
 | cflow.cs:63:23:63:27 | this access | cflow.cs:63:23:63:27 | this access |
 | cflow.cs:63:23:63:33 | ... == ... | cflow.cs:63:23:63:27 | this access |
@@ -2690,7 +2693,7 @@
 | cflow.cs:86:9:87:33 | if (...) ... | cflow.cs:86:9:87:33 | if (...) ... |
 | cflow.cs:86:13:86:13 | access to parameter s | cflow.cs:86:13:86:13 | access to parameter s |
 | cflow.cs:86:13:86:21 | ... != ... | cflow.cs:86:13:86:13 | access to parameter s |
-| cflow.cs:86:13:86:37 | ... && ... | cflow.cs:86:13:86:37 | ... && ... |
+| cflow.cs:86:13:86:37 | ... && ... | cflow.cs:86:13:86:13 | access to parameter s |
 | cflow.cs:86:18:86:21 | null | cflow.cs:86:18:86:21 | null |
 | cflow.cs:86:26:86:26 | access to parameter s | cflow.cs:86:26:86:26 | access to parameter s |
 | cflow.cs:86:26:86:33 | access to property Length | cflow.cs:86:26:86:26 | access to parameter s |
@@ -2767,11 +2770,11 @@
 | cflow.cs:123:9:123:17 | return ...; | cflow.cs:123:16:123:16 | access to local variable x |
 | cflow.cs:123:16:123:16 | access to local variable x | cflow.cs:123:16:123:16 | access to local variable x |
 | cflow.cs:127:23:127:60 | {...} | cflow.cs:127:23:127:60 | {...} |
-| cflow.cs:127:25:127:58 | return ...; | cflow.cs:127:32:127:57 | ... ? ... : ... |
+| cflow.cs:127:25:127:58 | return ...; | cflow.cs:127:32:127:36 | this access |
 | cflow.cs:127:32:127:36 | access to field Field | cflow.cs:127:32:127:36 | this access |
 | cflow.cs:127:32:127:36 | this access | cflow.cs:127:32:127:36 | this access |
 | cflow.cs:127:32:127:44 | ... == ... | cflow.cs:127:32:127:36 | this access |
-| cflow.cs:127:32:127:57 | ... ? ... : ... | cflow.cs:127:32:127:57 | ... ? ... : ... |
+| cflow.cs:127:32:127:57 | ... ? ... : ... | cflow.cs:127:32:127:36 | this access |
 | cflow.cs:127:41:127:44 | null | cflow.cs:127:41:127:44 | null |
 | cflow.cs:127:48:127:49 | "" | cflow.cs:127:48:127:49 | "" |
 | cflow.cs:127:53:127:57 | access to field Field | cflow.cs:127:53:127:57 | this access |
@@ -2900,15 +2903,15 @@
 | cflow.cs:187:9:190:52 | if (...) ... | cflow.cs:187:9:190:52 | if (...) ... |
 | cflow.cs:187:13:187:13 | 1 | cflow.cs:187:13:187:13 | 1 |
 | cflow.cs:187:13:187:18 | ... == ... | cflow.cs:187:13:187:13 | 1 |
-| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:13:187:28 | ... \|\| ... |
-| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:187:13:187:50 | ... \|\| ... |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:187:13:187:13 | 1 |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:187:13:187:13 | 1 |
 | cflow.cs:187:18:187:18 | 2 | cflow.cs:187:18:187:18 | 2 |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:187:23:187:23 | 2 |
 | cflow.cs:187:23:187:28 | ... == ... | cflow.cs:187:23:187:23 | 2 |
 | cflow.cs:187:28:187:28 | 3 | cflow.cs:187:28:187:28 | 3 |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:187:34:187:34 | 1 |
 | cflow.cs:187:34:187:39 | ... == ... | cflow.cs:187:34:187:34 | 1 |
-| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:34:187:49 | ... && ... |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:187:34:187:34 | 1 |
 | cflow.cs:187:39:187:39 | 3 | cflow.cs:187:39:187:39 | 3 |
 | cflow.cs:187:44:187:44 | 3 | cflow.cs:187:44:187:44 | 3 |
 | cflow.cs:187:44:187:49 | ... == ... | cflow.cs:187:44:187:44 | 3 |
@@ -2921,54 +2924,54 @@
 | cflow.cs:190:31:190:50 | "This should happen" | cflow.cs:190:31:190:50 | "This should happen" |
 | cflow.cs:194:5:206:5 | {...} | cflow.cs:194:5:206:5 | {...} |
 | cflow.cs:195:9:195:57 | ... ...; | cflow.cs:195:9:195:57 | ... ...; |
-| cflow.cs:195:13:195:56 | Boolean b = ... | cflow.cs:195:17:195:56 | ... && ... |
+| cflow.cs:195:13:195:56 | Boolean b = ... | cflow.cs:195:17:195:21 | this access |
 | cflow.cs:195:17:195:21 | access to field Field | cflow.cs:195:17:195:21 | this access |
 | cflow.cs:195:17:195:21 | this access | cflow.cs:195:17:195:21 | this access |
 | cflow.cs:195:17:195:28 | access to property Length | cflow.cs:195:17:195:21 | this access |
 | cflow.cs:195:17:195:32 | ... > ... | cflow.cs:195:17:195:21 | this access |
-| cflow.cs:195:17:195:56 | ... && ... | cflow.cs:195:17:195:56 | ... && ... |
+| cflow.cs:195:17:195:56 | ... && ... | cflow.cs:195:17:195:21 | this access |
 | cflow.cs:195:32:195:32 | 0 | cflow.cs:195:32:195:32 | 0 |
-| cflow.cs:195:37:195:56 | !... | cflow.cs:195:37:195:56 | !... |
+| cflow.cs:195:37:195:56 | !... | cflow.cs:195:39:195:43 | this access |
 | cflow.cs:195:39:195:43 | access to field Field | cflow.cs:195:39:195:43 | this access |
 | cflow.cs:195:39:195:43 | this access | cflow.cs:195:39:195:43 | this access |
 | cflow.cs:195:39:195:50 | access to property Length | cflow.cs:195:39:195:43 | this access |
 | cflow.cs:195:39:195:55 | ... == ... | cflow.cs:195:39:195:43 | this access |
 | cflow.cs:195:55:195:55 | 1 | cflow.cs:195:55:195:55 | 1 |
 | cflow.cs:197:9:198:49 | if (...) ... | cflow.cs:197:9:198:49 | if (...) ... |
-| cflow.cs:197:13:197:47 | !... | cflow.cs:197:13:197:47 | !... |
+| cflow.cs:197:13:197:47 | !... | cflow.cs:197:15:197:19 | this access |
 | cflow.cs:197:15:197:19 | access to field Field | cflow.cs:197:15:197:19 | this access |
 | cflow.cs:197:15:197:19 | this access | cflow.cs:197:15:197:19 | this access |
 | cflow.cs:197:15:197:26 | access to property Length | cflow.cs:197:15:197:19 | this access |
 | cflow.cs:197:15:197:31 | ... == ... | cflow.cs:197:15:197:19 | this access |
-| cflow.cs:197:15:197:46 | ... ? ... : ... | cflow.cs:197:15:197:46 | ... ? ... : ... |
+| cflow.cs:197:15:197:46 | ... ? ... : ... | cflow.cs:197:15:197:19 | this access |
 | cflow.cs:197:31:197:31 | 0 | cflow.cs:197:31:197:31 | 0 |
 | cflow.cs:197:35:197:39 | false | cflow.cs:197:35:197:39 | false |
 | cflow.cs:197:43:197:46 | true | cflow.cs:197:43:197:46 | true |
-| cflow.cs:198:13:198:48 | ... = ... | cflow.cs:198:17:198:48 | ... ? ... : ... |
+| cflow.cs:198:13:198:48 | ... = ... | cflow.cs:198:17:198:21 | this access |
 | cflow.cs:198:13:198:49 | ...; | cflow.cs:198:13:198:49 | ...; |
 | cflow.cs:198:17:198:21 | access to field Field | cflow.cs:198:17:198:21 | this access |
 | cflow.cs:198:17:198:21 | this access | cflow.cs:198:17:198:21 | this access |
 | cflow.cs:198:17:198:28 | access to property Length | cflow.cs:198:17:198:21 | this access |
 | cflow.cs:198:17:198:33 | ... == ... | cflow.cs:198:17:198:21 | this access |
-| cflow.cs:198:17:198:48 | ... ? ... : ... | cflow.cs:198:17:198:48 | ... ? ... : ... |
+| cflow.cs:198:17:198:48 | ... ? ... : ... | cflow.cs:198:17:198:21 | this access |
 | cflow.cs:198:33:198:33 | 0 | cflow.cs:198:33:198:33 | 0 |
 | cflow.cs:198:37:198:41 | false | cflow.cs:198:37:198:41 | false |
 | cflow.cs:198:45:198:48 | true | cflow.cs:198:45:198:48 | true |
 | cflow.cs:200:9:205:9 | if (...) ... | cflow.cs:200:9:205:9 | if (...) ... |
-| cflow.cs:200:13:200:32 | !... | cflow.cs:200:13:200:32 | !... |
-| cflow.cs:200:13:200:62 | ... \|\| ... | cflow.cs:200:13:200:62 | ... \|\| ... |
+| cflow.cs:200:13:200:32 | !... | cflow.cs:200:15:200:19 | this access |
+| cflow.cs:200:13:200:62 | ... \|\| ... | cflow.cs:200:15:200:19 | this access |
 | cflow.cs:200:15:200:19 | access to field Field | cflow.cs:200:15:200:19 | this access |
 | cflow.cs:200:15:200:19 | this access | cflow.cs:200:15:200:19 | this access |
 | cflow.cs:200:15:200:26 | access to property Length | cflow.cs:200:15:200:19 | this access |
 | cflow.cs:200:15:200:31 | ... == ... | cflow.cs:200:15:200:19 | this access |
 | cflow.cs:200:31:200:31 | 0 | cflow.cs:200:31:200:31 | 0 |
-| cflow.cs:200:37:200:62 | !... | cflow.cs:200:37:200:62 | !... |
-| cflow.cs:200:38:200:62 | !... | cflow.cs:200:38:200:62 | !... |
+| cflow.cs:200:37:200:62 | !... | cflow.cs:200:40:200:44 | this access |
+| cflow.cs:200:38:200:62 | !... | cflow.cs:200:40:200:44 | this access |
 | cflow.cs:200:40:200:44 | access to field Field | cflow.cs:200:40:200:44 | this access |
 | cflow.cs:200:40:200:44 | this access | cflow.cs:200:40:200:44 | this access |
 | cflow.cs:200:40:200:51 | access to property Length | cflow.cs:200:40:200:44 | this access |
 | cflow.cs:200:40:200:56 | ... == ... | cflow.cs:200:40:200:44 | this access |
-| cflow.cs:200:40:200:61 | ... && ... | cflow.cs:200:40:200:61 | ... && ... |
+| cflow.cs:200:40:200:61 | ... && ... | cflow.cs:200:40:200:44 | this access |
 | cflow.cs:200:56:200:56 | 1 | cflow.cs:200:56:200:56 | 1 |
 | cflow.cs:200:61:200:61 | access to local variable b | cflow.cs:200:61:200:61 | access to local variable b |
 | cflow.cs:201:9:205:9 | {...} | cflow.cs:201:9:205:9 | {...} |
@@ -3043,8 +3046,8 @@
 | cflow.cs:241:5:259:5 | {...} | cflow.cs:241:5:259:5 | {...} |
 | cflow.cs:242:9:242:13 | Label: | cflow.cs:242:9:242:13 | Label: |
 | cflow.cs:242:16:242:45 | if (...) ... | cflow.cs:242:16:242:45 | if (...) ... |
-| cflow.cs:242:20:242:40 | !... | cflow.cs:242:20:242:40 | !... |
-| cflow.cs:242:21:242:40 | !... | cflow.cs:242:21:242:40 | !... |
+| cflow.cs:242:20:242:40 | !... | cflow.cs:242:23:242:27 | this access |
+| cflow.cs:242:21:242:40 | !... | cflow.cs:242:23:242:27 | this access |
 | cflow.cs:242:23:242:27 | access to field Field | cflow.cs:242:23:242:27 | this access |
 | cflow.cs:242:23:242:27 | this access | cflow.cs:242:23:242:27 | this access |
 | cflow.cs:242:23:242:34 | access to property Length | cflow.cs:242:23:242:27 | this access |
@@ -3121,8 +3124,8 @@
 | cflow.cs:300:9:300:72 | object creation of type NegationInConstructor | cflow.cs:300:38:300:38 | 0 |
 | cflow.cs:300:9:300:73 | ...; | cflow.cs:300:9:300:73 | ...; |
 | cflow.cs:300:38:300:38 | 0 | cflow.cs:300:38:300:38 | 0 |
-| cflow.cs:300:44:300:51 | !... | cflow.cs:300:44:300:51 | !... |
-| cflow.cs:300:44:300:64 | ... && ... | cflow.cs:300:44:300:64 | ... && ... |
+| cflow.cs:300:44:300:51 | !... | cflow.cs:300:46:300:46 | access to parameter i |
+| cflow.cs:300:44:300:64 | ... && ... | cflow.cs:300:46:300:46 | access to parameter i |
 | cflow.cs:300:46:300:46 | access to parameter i | cflow.cs:300:46:300:46 | access to parameter i |
 | cflow.cs:300:46:300:50 | ... > ... | cflow.cs:300:46:300:46 | access to parameter i |
 | cflow.cs:300:50:300:50 | 0 | cflow.cs:300:50:300:50 | 0 |

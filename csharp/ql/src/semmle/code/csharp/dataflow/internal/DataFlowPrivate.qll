@@ -170,7 +170,7 @@ module LocalFlow {
         or
         e1 = e2.(NullCoalescingExpr).getAnOperand() and
         scope = e2 and
-        isSuccessor = false
+        isSuccessor = true
         or
         e1 = e2.(SuppressNullableWarningExpr).getExpr() and
         scope = e2 and
@@ -182,7 +182,7 @@ module LocalFlow {
             e1 = ce.getElse()
           ) and
         scope = e2 and
-        isSuccessor = false
+        isSuccessor = true
         or
         e1 = e2.(Cast).getExpr() and
         scope = e2 and
@@ -207,7 +207,7 @@ module LocalFlow {
         or
         e1 = e2.(SwitchExpr).getACase().getBody() and
         scope = e2 and
-        isSuccessor = false
+        isSuccessor = true
       )
     }
 
@@ -382,7 +382,10 @@ private predicate isParamsArg(Call c, Expr arg, Parameter p) {
     p.isParams() and
     numArgs = c.getNumberOfArguments() and
     arg =
-      [getImplicitArgument(c, [p.getPosition() .. numArgs - 1]), getExplicitArgument(c, p.getName())]
+      [
+        getImplicitArgument(c, [p.getPosition() .. numArgs - 1]),
+        getExplicitArgument(c, p.getName())
+      ]
   |
     numArgs > target.getNumberOfParameters()
     or
@@ -469,12 +472,9 @@ private predicate overridesOrImplementsSourceDecl(Property p1, Property p2) {
 private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2) {
   e1 = e2.getQualifier() and
   exists(FieldOrProperty ret | c = ret.getContent() |
-    ret.isFieldLike() and
     ret = e2.getTarget()
     or
-    exists(ContentList cl, Property target |
-      FlowSummaryImpl::Private::summary(_, _, _, _, cl, _) and
-      cl.contains(ret.getContent()) and
+    exists(Property target |
       target.getGetter() = e2.(PropertyCall).getARuntimeTarget() and
       overridesOrImplementsSourceDecl(target, ret)
     )
@@ -640,6 +640,10 @@ private module Cached {
         output = SummaryOutput::delegate(delegateIndex, parameterIndex)
       )
     } or
+    TSummaryJumpNode(SummarizedCallable c, SummarizableCallable target, ReturnKind rk) {
+      FlowSummaryImpl::Private::summary(c, _, _,
+        FlowSummarySpecific::Private::TJumpSummaryOutput(target, rk), _, _)
+    } or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
       callCfn = any(Call c | isParamsArg(c, _, _)).getAControlFlowNode()
     }
@@ -685,8 +689,19 @@ private module Cached {
    * taken into account.
    */
   cached
-  predicate jumpStepImpl(ExprNode pred, ExprNode succ) {
+  predicate jumpStepImpl(Node pred, Node succ) {
     pred.(NonLocalJumpNode).getAJumpSuccessor(true) = succ
+    or
+    exists(FieldOrProperty fl, FieldOrPropertyRead flr |
+      fl.isStatic() and
+      fl.isFieldLike() and
+      fl.getAnAssignedValue() = pred.asExpr() and
+      fl.getAnAccess() = flr and
+      flr = succ.asExpr() and
+      flr.hasNonlocalValue()
+    )
+    or
+    succ = pred.(SummaryJumpNode).getAJumpTarget()
   }
 
   cached
@@ -1613,6 +1628,28 @@ private class SummaryInternalNode extends SummaryNodeImpl, TSummaryInternalNode 
   override string toStringImpl() { result = "[summary] " + state + " in " + c }
 }
 
+/** A data-flow node used to model flow summaries with jumps. */
+private class SummaryJumpNode extends SummaryNodeImpl, TSummaryJumpNode {
+  private SummarizedCallable c;
+  private SummarizableCallable target;
+  private ReturnKind rk;
+
+  SummaryJumpNode() { this = TSummaryJumpNode(c, target, rk) }
+
+  /** Gets a jump target of this node. */
+  OutNode getAJumpTarget() { target = viableCallable(result.getCall(rk)) }
+
+  override Callable getEnclosingCallableImpl() { result = c }
+
+  override DotNet::Type getTypeImpl() { result = target.getReturnType() }
+
+  override ControlFlow::Node getControlFlowNodeImpl() { none() }
+
+  override Location getLocationImpl() { result = c.getLocation() }
+
+  override string toStringImpl() { result = "[summary] jump to " + target }
+}
+
 /** A field or a property. */
 class FieldOrProperty extends Assignable, Modifiable {
   FieldOrProperty() {
@@ -1666,26 +1703,6 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
       idef instanceof Ssa::ImplicitEntryDefinition or
       idef instanceof Ssa::ImplicitCallDefinition
     )
-  }
-}
-
-/** A write to a static field/property. */
-private class StaticFieldLikeJumpNode extends NonLocalJumpNode, ExprNode {
-  FieldOrProperty fl;
-  FieldOrPropertyRead flr;
-  ExprNode succ;
-
-  StaticFieldLikeJumpNode() {
-    fl.isStatic() and
-    fl.isFieldLike() and
-    fl.getAnAssignedValue() = this.getExpr() and
-    fl.getAnAccess() = flr and
-    flr = succ.getExpr() and
-    flr.hasNonlocalValue()
-  }
-
-  override ExprNode getAJumpSuccessor(boolean preservesValue) {
-    result = succ and preservesValue = true
   }
 }
 

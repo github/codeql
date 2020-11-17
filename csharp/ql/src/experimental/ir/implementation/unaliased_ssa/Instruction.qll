@@ -1577,6 +1577,7 @@ class CallInstruction extends Instruction {
   /**
    * Gets the argument operand at the specified index.
    */
+  pragma[noinline]
   final PositionalArgumentOperand getPositionalArgumentOperand(int index) {
     result = getAnOperand() and
     result.getIndex() = index
@@ -1585,6 +1586,7 @@ class CallInstruction extends Instruction {
   /**
    * Gets the argument at the specified index.
    */
+  pragma[noinline]
   final Instruction getPositionalArgument(int index) {
     result = getPositionalArgumentOperand(index).getDef()
   }

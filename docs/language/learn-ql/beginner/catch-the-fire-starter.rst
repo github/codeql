@@ -14,7 +14,7 @@ Read the examples below to learn how to define predicates and classes in QL. The
 Select the southerners
 ----------------------
 
-This time you only need to consider a specific group of villagers, namely those living in the south of the village. Instead of writing ``getLocation() = "south"`` in all your queries, you could define a new `predicate <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ ``isSouthern``:
+This time you only need to consider a specific group of villagers, namely those living in the south of the village. Instead of writing ``getLocation() = "south"`` in all your queries, you could define a new `predicate <https://help.semmle.com/QL/ql-language-reference/predicates.html>`__ ``isSouthern``:
 
 .. code-block:: ql
 
@@ -41,7 +41,7 @@ You can now list all southerners using:
    where isSouthern(p)
    select p
 
-This is already a nice way to simplify the logic, but we could be more efficient. Currently, the query looks at every ``Person p``, and then restricts to those who satisfy ``isSouthern(p)``. Instead, we could define a new `class <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ ``Southerner`` containing precisely the people we want to consider.
+This is already a nice way to simplify the logic, but we could be more efficient. Currently, the query looks at every ``Person p``, and then restricts to those who satisfy ``isSouthern(p)``. Instead, we could define a new `class <https://help.semmle.com/QL/ql-language-reference/types.html#classes>`__ ``Southerner`` containing precisely the people we want to consider.
 
 .. code-block:: ql
 

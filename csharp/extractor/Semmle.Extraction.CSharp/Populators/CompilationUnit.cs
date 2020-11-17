@@ -3,8 +3,12 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities;
 using Semmle.Extraction.Entities;
+using Semmle.Util;
 using Semmle.Util.Logging;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
@@ -13,12 +17,23 @@ namespace Semmle.Extraction.CSharp.Populators
         protected Context cx { get; }
         protected IEntity parent { get; }
         protected TextWriter trapFile { get; }
+        private readonly Lazy<Func<SyntaxNode, AttributeData>> attributeLookup;
 
         public TypeContainerVisitor(Context cx, TextWriter trapFile, IEntity parent)
         {
             this.cx = cx;
             this.parent = parent;
             this.trapFile = trapFile;
+            attributeLookup = new Lazy<Func<SyntaxNode, AttributeData>>(() =>
+                {
+                    var dict = new Dictionary<SyntaxNode, AttributeData>();
+                    foreach (var attributeData in cx.Compilation.Assembly.GetAttributes().Concat(cx.Compilation.Assembly.Modules.SelectMany(m => m.GetAttributes())))
+                    {
+                        if (attributeData.ApplicationSyntaxReference?.GetSyntax() is SyntaxNode syntax)
+                            dict.Add(syntax, attributeData);
+                    }
+                    return dict.GetValueOrDefault;
+                });
         }
 
         public override void DefaultVisit(SyntaxNode node)
@@ -59,8 +74,11 @@ namespace Semmle.Extraction.CSharp.Populators
             var outputAssembly = Assembly.CreateOutputAssembly(cx);
             foreach (var attribute in node.Attributes)
             {
-                var ae = new Attribute(cx, attribute, outputAssembly);
-                cx.BindComments(ae, attribute.GetLocation());
+                if (attributeLookup.Value(attribute) is AttributeData attributeData)
+                {
+                    var ae = Semmle.Extraction.CSharp.Entities.Attribute.Create(cx, attributeData, outputAssembly);
+                    cx.BindComments(ae, attribute.GetLocation());
+                }
             }
         }
     }

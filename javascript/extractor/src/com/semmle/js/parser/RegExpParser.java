@@ -35,6 +35,7 @@ import com.semmle.js.ast.regexp.ZeroWidthNegativeLookbehind;
 import com.semmle.js.ast.regexp.ZeroWidthPositiveLookahead;
 import com.semmle.js.ast.regexp.ZeroWidthPositiveLookbehind;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /** A parser for ECMAScript 2018 regular expressions. */
@@ -496,10 +497,18 @@ public class RegExpParser {
     return this.finishTerm(new CharacterClass(loc, elements, inverted));
   }
 
+  private static final List<String> escapeClasses = Arrays.asList("d", "D", "s", "S", "w", "W");
+
   private RegExpTerm parseCharacterClassElement() {
     SourceLocation loc = new SourceLocation(pos());
     RegExpTerm atom = this.parseCharacterClassAtom();
-    if (!this.lookahead("-]") && this.match("-"))
+    if (this.lookahead("-\\")) {
+      for (String c : escapeClasses) {
+        if (this.lookahead("-\\" + c))
+          return atom;
+      }
+    }
+    if (!this.lookahead("-]") && this.match("-") && !(atom instanceof CharacterClassEscape))
       return this.finishTerm(new CharacterClassRange(loc, atom, this.parseCharacterClassAtom()));
     return atom;
   }
