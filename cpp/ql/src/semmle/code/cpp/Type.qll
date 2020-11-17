@@ -1308,7 +1308,7 @@ class SpecifiedType extends DerivedType {
    * only depends on the specifiers, not on the source program). This is intended
    * for debugging queries only and is an expensive operation.
    */
-  string getSpecifierString() { internalSpecString(this, result, 1) }
+  string getSpecifierString() { result = concat(this.getASpecifier().getName(), " ") }
 
   override string explain() {
     result = this.getSpecifierString() + "{" + this.getBaseType().explain() + "}"
@@ -1708,28 +1708,6 @@ class AutoType extends TemplateParameter {
     suppressUnusedThis(this) and
     result instanceof UnknownDefaultLocation
   }
-}
-
-//
-// Internal implementation predicates
-//
-private predicate allSpecifiers(int i, string s) { s = rank[i](string t | specifiers(_, t) | t) }
-
-private predicate internalSpecString(Type t, string res, int i) {
-  (
-    if allSpecifiers(i, t.getASpecifier().getName())
-    then
-      exists(string spec, string rest |
-        allSpecifiers(i, spec) and
-        res = spec + " " + rest and
-        internalSpecString(t, rest, i + 1)
-      )
-    else (
-      allSpecifiers(i, _) and internalSpecString(t, res, i + 1)
-    )
-  )
-  or
-  i = count(Specifier s) + 1 and res = ""
 }
 
 private predicate suppressUnusedThis(Type t) { any() }
