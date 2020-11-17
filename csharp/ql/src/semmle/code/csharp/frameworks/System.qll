@@ -444,6 +444,15 @@ class SystemStringClass extends StringType {
     result.getNumberOfParameters() = 1 and
     result.getReturnType() instanceof BoolType
   }
+
+  /** Gets the `IsNullOrWhiteSpace(string)` method. */
+  Method getIsNullOrWhiteSpaceMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("IsNullOrWhiteSpace") and
+    result.isStatic() and
+    result.getNumberOfParameters() = 1 and
+    result.getReturnType() instanceof BoolType
+  }
 }
 
 /** A `ToString()` method. */

@@ -1,0 +1,122 @@
+/**
+ * Definitions for reasoning about untrusted data used in APIs defined outside the
+ * database.
+ */
+
+import csharp
+import semmle.code.csharp.dataflow.flowsources.Remote
+import semmle.code.csharp.dataflow.TaintTracking
+import semmle.code.csharp.frameworks.System
+
+/**
+ * A `Callable` that is considered a "safe" external API from a security perspective.
+ */
+abstract class SafeExternalAPICallable extends Callable { }
+
+/** The default set of "safe" external APIs. */
+private class DefaultSafeExternalAPICallable extends SafeExternalAPICallable {
+  DefaultSafeExternalAPICallable() {
+    this instanceof EqualsMethod or
+    this instanceof IEquatableEqualsMethod or
+    this = any(SystemObjectClass s).getEqualsMethod() or
+    this = any(SystemObjectClass s).getReferenceEqualsMethod() or
+    this = any(SystemObjectClass s).getStaticEqualsMethod() or
+    this = any(SystemObjectClass s).getGetTypeMethod() or
+    this = any(SystemStringClass s).getEqualsMethod() or
+    this = any(SystemStringClass s).getEqualsOperator() or
+    this = any(SystemStringClass s).getIsNullOrEmptyMethod() or
+    this = any(SystemStringClass s).getIsNullOrWhiteSpaceMethod() or
+    this.getName().regexpMatch("Count|get_Count|get_Length")
+  }
+}
+
+/** A node representing data being passed to an external API. */
+class ExternalAPIDataNode extends DataFlow::Node {
+  Call call;
+  int i;
+
+  ExternalAPIDataNode() {
+    (
+      // Argument to call
+      this.asExpr() = call.getArgument(i)
+      or
+      // Qualifier to call
+      this.asExpr() = call.getChild(i) and
+      i = -1 and
+      // extension methods are covered above
+      not call.getTarget().(Method).isExtensionMethod()
+    ) and
+    // Defined outside the source archive
+    not call.getTarget().fromSource() and
+    // Not a call to a method which is overridden in source
+    not exists(Virtualizable m |
+      m.overridesOrImplementsOrEquals(call.getTarget().getSourceDeclaration()) and
+      m.fromSource()
+    ) and
+    // Not already modeled as a taint step
+    not exists(DataFlow::Node next | TaintTracking::localTaintStep(this, next)) and
+    // Not a call to a known safe external API
+    not call.getTarget().getSourceDeclaration() instanceof SafeExternalAPICallable
+  }
+
+  /** Gets the called API `Callable`. */
+  Callable getCallable() { result = call.getTarget().getSourceDeclaration() }
+
+  /** Gets the index which is passed untrusted data (where -1 indicates the qualifier). */
+  int getIndex() { result = i }
+
+  /** Gets the description of the callable being called. */
+  string getCallableDescription() { result = getCallable().getQualifiedName() }
+}
+
+/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalAPIDataNode`s. */
+class UntrustedDataToExternalAPIConfig extends TaintTracking::Configuration {
+  UntrustedDataToExternalAPIConfig() { this = "UntrustedDataToExternalAPIConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalAPIDataNode }
+}
+
+/** A node representing untrusted data being passed to an external API. */
+class UntrustedExternalAPIDataNode extends ExternalAPIDataNode {
+  UntrustedExternalAPIDataNode() { any(UntrustedDataToExternalAPIConfig c).hasFlow(_, this) }
+
+  /** Gets a source of untrusted data which is passed to this external API data node. */
+  DataFlow::Node getAnUntrustedSource() {
+    any(UntrustedDataToExternalAPIConfig c).hasFlow(result, this)
+  }
+}
+
+private newtype TExternalAPI =
+  TExternalAPIParameter(Callable m, int index) {
+    exists(UntrustedExternalAPIDataNode n |
+      m = n.getCallable().getSourceDeclaration() and
+      index = n.getIndex()
+    )
+  }
+
+/** An external API which is used with untrusted data. */
+class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
+  /** Gets a possibly untrusted use of this external API. */
+  UntrustedExternalAPIDataNode getUntrustedDataNode() {
+    this = TExternalAPIParameter(result.getCallable().getSourceDeclaration(), result.getIndex())
+  }
+
+  /** Gets the number of untrusted sources used with this external API. */
+  int getNumberOfUntrustedSources() {
+    result = count(getUntrustedDataNode().getAnUntrustedSource())
+  }
+
+  /** Gets a textual representation of this element. */
+  string toString() {
+    exists(Callable m, int index, string indexString |
+      if index = -1 then indexString = "qualifier" else indexString = "param " + index
+    |
+      this = TExternalAPIParameter(m, index) and
+      result =
+        m.getDeclaringType().getQualifiedName() + "." + m.toStringWithTypes() + " [" + indexString +
+          "]"
+    )
+  }
+}
