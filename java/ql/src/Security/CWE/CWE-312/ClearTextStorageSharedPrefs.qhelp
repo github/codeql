@@ -18,7 +18,7 @@
     </p>
 
     <p>
-      In the second and third examples, the code encrypts sensitive information before saving to the device.
+      In the second and third examples, the code encrypts sensitive information before saving it to the device.
     </p>
     <sample src="ClearTextStorageSharedPrefs.java" />
   </example>
@@ -33,7 +33,7 @@
       <a href="https://developer.android.com/topic/security/data">Work with data more securely</a>
     </li>
     <li>
-      PRO ANDROID DEV:
+      ProAndroidDev:
       <a href="https://proandroiddev.com/encrypted-preferences-in-android-af57a89af7c8">Encrypted Preferences in Android</a>
     </li>
   </references>

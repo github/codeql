@@ -1,6 +1,6 @@
 /**
  * @name Cleartext storage of sensitive information using `SharedPreferences` on Android
- * @description Cleartext Storage of Sensitive Information using SharedPreferences on Android allows user with root privileges to access or unexpected exposure from chained vulnerabilities.
+ * @description Cleartext Storage of Sensitive Information using SharedPreferences on Android allows access for users with root privileges or unexpected exposure from chained vulnerabilities.
  * @kind problem
  * @id java/android/cleartext-storage-shared-prefs
  * @tags security

@@ -25,30 +25,29 @@ public class ClearTextStorageSharedPrefs extends Activity {
 		editor.commit();
 	}
 
-    private static String encrypt(String cleartext) {
-        //Use an encryption or hashing algorithm in real world. The demo below just returns an arbitrary value.
-        String cipher = "whatever_encrypted";
-        return cipher;
-    }
+	private static String encrypt(String cleartext) {
+		//Use an encryption or hashing algorithm in real world. The demo below just returns an arbitrary value.
+		String cipher = "whatever_encrypted";
+		return cipher;
+	}
 
 	// GOOD - save sensitive information using the built-in `EncryptedSharedPreferences` class in androidx.
 	public void testSetSharedPrefs3(Context context, String name, String password) {
-        MasterKey masterKey = new MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build();
+		MasterKey masterKey = new MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+			.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+			.build();
 
-        SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
-            context,
-            "secret_shared_prefs",
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
-      
-        // Use the shared preferences and editor as you normally would
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+		SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
+			context,
+			"secret_shared_prefs",
+			masterKey,
+			EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+			EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+
+		// Use the shared preferences and editor as you normally would
+		SharedPreferences.Editor editor = sharedPreferences.edit();
 		editor.putString("name", name);
 		editor.putString("password", password);
 		editor.commit();
 	}
-
 }
