@@ -1,5 +1,5 @@
 /**
- * Provides an implementation class modelling the POSIX function `getenv`.
+ * Provides an implementation class modeling the POSIX function `getenv`.
  */
 import cpp
 import semmle.code.cpp.models.interfaces.FlowSource
