@@ -4,7 +4,9 @@
 <qhelp>
 <overview>
 <p>Using unsanitized untrusted data in an external API can cause a variety of security issues. This query reports 
-external APIs that use untrusted data. The results are not filtered so that you can audit all examples. The query provides data for security reviews of the application and you can also use it to identify external APIs that should be modeled as either taint steps, or sinks for specific problems.</p>
+external APIs that use untrusted data. The results are not filtered. This makes it possible to audit all examples.
+The query provides data for security reviews of the application and you can also use it to identify external APIs
+that should be modeled as either taint steps, or sinks for specific problems.</p>
 
 <p>An external API is defined as a call to a function that is not defined in the source code, and is not modeled
 as a taint step in the default taint library. External APIs may be from the
