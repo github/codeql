@@ -1189,7 +1189,7 @@ private module Stage2 {
     exists(Ap ap1, Ap ap2 |
       revFlow(node2, _, _, ap2, config) and
       readStepFwd(node1, ap1, c, node2, ap2, config) and
-      revFlowStore(ap1, c, /*unbind*/ ap2, _, _, _, _, _, unbind(config))
+      revFlowStore(ap1, c, /*unbind*/ unbindBool(ap2), _, _, _, _, _, unbind(config))
     )
   }
 
@@ -1551,7 +1551,7 @@ private module Stage3 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, cc, argAp, ap1, config) and
-      PrevStage::storeStepCand(node1, getApprox(ap1), tc, node2, contentType, config) and
+      PrevStage::storeStepCand(node1, unbindBool(getApprox(ap1)), tc, node2, contentType, config) and
       typecheckStore(ap1, contentType)
     )
   }
