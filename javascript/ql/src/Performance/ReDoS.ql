@@ -103,7 +103,15 @@ class RegExpRoot extends RegExpTerm {
    */
   predicate isRelevant() {
     // there is at least one repetition
-    exists(RegExpRepetition rep | getRoot(rep) = this) and
+    exists(RegExpRepetition rep | getRoot(rep) = this |
+      // that could possibly match the same thing in multiple ways.
+      exists(RegExpTerm child |
+        child instanceof RegExpAlt or
+        child instanceof RegExpQuantifier
+      |
+        child.getParent+() = rep
+      )
+    ) and
     // there are no lookbehinds
     not exists(RegExpLookbehind lbh | getRoot(lbh) = this) and
     // is actually used as a RegExp
