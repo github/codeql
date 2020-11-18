@@ -45,9 +45,7 @@ import javascript
  *
  * This is what the query does. It makes no attempt to construct a prefix
  * leading into `q`, and only a weak one to construct a suffix that ensures
- * rejection; this causes some false positives. Also, the query does not fully
- * handle character classes and does not handle various other features at all;
- * this causes false negatives.
+ * rejection; this causes some false positives.
  *
  * Finally, sometimes it depends on the translation whether the NFA generated
  * for a regular expression has a pumpable fork or not. We implement one
@@ -63,20 +61,23 @@ import javascript
  *   * Transitions between states may be labelled with epsilon, or an abstract
  *     input symbol.
  *   * Each abstract input symbol represents a set of concrete input characters:
- *     either a single character, a set of characters represented by a (positive)
+ *     either a single character, a set of characters represented by a
  *     character class, or the set of all characters.
  *   * The product automaton is constructed lazily, starting with pair states
  *     `(q, q)` where `q` is a fork, and proceding along an over-approximate
  *     step relation.
  *   * The over-approximate step relation allows transitions along pairs of
- *     abstract input symbols as long as the symbols are not trivially incompatible.
+ *     abstract input symbols where the symbols have overlap in the characters they accept.
  *   * Once a trace of pairs of abstract input symbols that leads from a fork
  *     back to itself has been identified, we attempt to construct a concrete
  *     string corresponding to it, which may fail.
  *   * Instead of trying to construct a suffix that makes the automaton fail,
- *     we ensure that it isn't possible to reach the accepting state from the
- *     fork along epsilon transitions. In this case, it is very likely (though
- *     not guaranteed) that a rejecting suffix exists.
+ *     we ensure that repeating `n` copies of `w` does not reach a state that is
+ *     an epsilon transition from the accepting state.
+ *     This assumes that the accepting state accepts any suffix.
+ *     Regular expressions - where the end anchor `$` is used - have an accepting state
+ *     that does not accept all suffixes. Such regular expression not accurately
+ *     modelled by this assumption, which can cause false negatives.
  */
 
 /**
@@ -862,6 +863,19 @@ predicate isPumpable(State fork, string w) {
 /**
  * Gets a state that can be reached from pumpable `fork` consuming all
  * chars in `w` any number of times followed by the first `i+1` characters of `w`.
+ *
+ * This predicate is used to ensure that the accepting state is not reached from the fork by repeating `w`.
+ * This works under the assumption that any accepting state accepts all suffixes.
+ * For example, a regexp like `/^(a+)+/` will accept any string as long the prefix is some number of `"a"`s,
+ * and it is therefore not possible to construct a rejected suffix.
+ * This assumption breaks on regular expression that use the anchor `$`, e.g: `/^(a+)+$/`, and such regular
+ * expression are not accurately modeled by this query.
+ *
+ * The the string `w` is repeated any number of times because the string `w` needs to be
+ * infinitely repeatedable for the attack to work.
+ * For a regular expression `/((ab)+)*abab/` the accepting state is not reachable from the fork
+ * using epsilon transitions. But any attempt at repeating `w` will end in the accepting state.
+ * This is also build on the assumption that any accepting state will accept all suffixes.
  */
 State process(State fork, string w, int i) {
   isPumpable(fork, w) and
