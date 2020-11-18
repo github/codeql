@@ -234,11 +234,22 @@ class PrintASTNode extends TPrintASTNode {
   private Function getEnclosingFunction() { result = getParent*().(FunctionNode).getFunction() }
 }
 
+private class PrintableElementBase extends ElementBase {
+  PrintableElementBase() {
+    not this instanceof Locatable
+    or
+    shouldPrintFunction(getEnclosingFunction(this.(Locatable)))
+  }
+
+  pragma[noinline]
+  string getAPrimaryQlClass0() { result = getAPrimaryQlClass() }
+}
+
 /**
  * Retrieves the canonical QL class(es) for entity `el`
  */
-private string qlClass(ElementBase el) {
-  result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
+private string qlClass(PrintableElementBase el) {
+  result = "[" + concat(el.getAPrimaryQlClass0(), ",") + "] "
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
   //result = "["+ concat(el.getAQlClass(), ",") + "] "
 }
