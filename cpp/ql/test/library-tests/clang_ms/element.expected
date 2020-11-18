@@ -76,6 +76,7 @@
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declared_constexpr |
+| file://:0:0:0:0 | declared_constinit |
 | file://:0:0:0:0 | decltype(nullptr) |
 | file://:0:0:0:0 | definition of fp_offset |
 | file://:0:0:0:0 | definition of gp_offset |

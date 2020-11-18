@@ -38,6 +38,7 @@
 | file://:0:0:0:0 | char32_t | Other |
 | file://:0:0:0:0 | const | Other |
 | file://:0:0:0:0 | declared_constexpr | Other |
+| file://:0:0:0:0 | declared_constinit | Other |
 | file://:0:0:0:0 | decltype(nullptr) | Other |
 | file://:0:0:0:0 | definition of fp_offset | Other |
 | file://:0:0:0:0 | definition of gp_offset | Other |
