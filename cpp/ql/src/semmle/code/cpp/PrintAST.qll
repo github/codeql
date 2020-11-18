@@ -241,7 +241,7 @@ private class PrintableElementBase extends ElementBase {
     or
     this instanceof Type
     or
-    shouldPrintFunction(this.(DeclarationEntry).getEnclosingElement+())
+    this instanceof DeclarationEntry
   }
 
   pragma[noinline]
