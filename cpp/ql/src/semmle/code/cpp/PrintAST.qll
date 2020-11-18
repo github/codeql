@@ -91,7 +91,8 @@ private newtype TPrintASTNode =
   TDeclarationEntryNode(DeclStmt stmt, DeclarationEntry entry) {
     // We create a unique node for each pair of (stmt, entry), to avoid having one node with
     // multiple parents due to extractor bug CPP-413.
-    stmt.getADeclarationEntry() = entry
+    stmt.getADeclarationEntry() = entry and
+    shouldPrintFunction(stmt.getEnclosingFunction())
   } or
   TParametersNode(Function func) { shouldPrintFunction(func) } or
   TConstructorInitializersNode(Constructor ctor) {
@@ -236,9 +237,11 @@ class PrintASTNode extends TPrintASTNode {
 
 private class PrintableElementBase extends ElementBase {
   PrintableElementBase() {
-    not this instanceof Locatable
+    shouldPrintFunction(getEnclosingFunction(this))
     or
-    shouldPrintFunction(getEnclosingFunction(this.(Locatable)))
+    this instanceof Type
+    or
+    shouldPrintFunction(this.(DeclarationEntry).getEnclosingElement+())
   }
 
   pragma[noinline]
