@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>Using unsanitized untrusted data in an external API can cause a variety of security issues. This query reports 
-external APIs that use untrusted data. The results are not filtered. This makes it possible to audit all examples.
+external APIs that use untrusted data. The results are not filtered, so you can audit all examples.
 The query provides data for security reviews of the application and you can also use it to identify external APIs
 that should be modeled as either taint steps, or sinks for specific problems.</p>
 
