@@ -2,7 +2,7 @@ test.cpp:
 #    1| void test00(int, int)
 #    1|   Block 0
 #    1|     v1_1(void)                 = EnterFunction           : 
-#    1|     m1_2(unknown)              = AliasedDefinition       : 
+#    1|     %m1_2(unknown)             = AliasedDefinition       : 
 #    1|         valnum = unique
 #    1|     r1_3(glval<int>)           = VariableAddress[p0]     : 
 #    1|         valnum = r1_3, r5_1, r6_1
@@ -68,7 +68,7 @@ test.cpp:
 #   12| void test01(int, int)
 #   12|   Block 0
 #   12|     v12_1(void)                 = EnterFunction             : 
-#   12|     m12_2(unknown)              = AliasedDefinition         : 
+#   12|     %m12_2(unknown)             = AliasedDefinition         : 
 #   12|         valnum = unique
 #   12|     r12_3(glval<int>)           = VariableAddress[p0]       : 
 #   12|         valnum = r12_3, r16_1, r17_1
@@ -146,7 +146,7 @@ test.cpp:
 #   25| void test02(int, int)
 #   25|   Block 0
 #   25|     v25_1(void)                 = EnterFunction                    : 
-#   25|     m25_2(unknown)              = AliasedDefinition                : 
+#   25|     %m25_2(unknown)             = AliasedDefinition                : 
 #   25|         valnum = unique
 #   25|     r25_3(glval<int>)           = VariableAddress[p0]              : 
 #   25|         valnum = r25_3, r29_1, r31_1
@@ -193,7 +193,7 @@ test.cpp:
 #   30|     v30_2(void)                 = Call[change_global02]            : func:r30_1
 #   30|     m30_3(unknown)              = ^CallSideEffect                  : ~m25_2
 #   30|         valnum = unique
-#   30|     m30_4(unknown)              = Chi                              : total:m25_2, partial:m30_3
+#   30|     %m30_4(unknown)             = Chi                              : total:m25_2, partial:m30_3
 #   30|         valnum = unique
 #   31|     r31_1(glval<int>)           = VariableAddress[p0]              : 
 #   31|         valnum = r25_3, r29_1, r31_1
@@ -231,7 +231,7 @@ test.cpp:
 #   39| void test03(int, int, int*)
 #   39|   Block 0
 #   39|     v39_1(void)                 = EnterFunction             : 
-#   39|     m39_2(unknown)              = AliasedDefinition         : 
+#   39|     %m39_2(unknown)             = AliasedDefinition         : 
 #   39|         valnum = unique
 #   39|     r39_3(glval<int>)           = VariableAddress[p0]       : 
 #   39|         valnum = r39_3, r43_1, r45_1
@@ -330,7 +330,7 @@ test.cpp:
 #   49| unsigned int my_strspn(char const*, char const*)
 #   49|   Block 0
 #   49|     v49_1(void)                = EnterFunction                : 
-#   49|     m49_2(unknown)             = AliasedDefinition            : 
+#   49|     %m49_2(unknown)            = AliasedDefinition            : 
 #   49|         valnum = unique
 #   49|     r49_3(glval<char *>)       = VariableAddress[str]         : 
 #   49|         valnum = r49_3, r53_2, r56_6
@@ -500,7 +500,7 @@ test.cpp:
 #   75| void test04(two_values*)
 #   75|   Block 0
 #   75|     v75_1(void)                 = EnterFunction               : 
-#   75|     m75_2(unknown)              = AliasedDefinition           : 
+#   75|     %m75_2(unknown)             = AliasedDefinition           : 
 #   75|         valnum = unique
 #   75|     r75_3(glval<two_values *>)  = VariableAddress[vals]       : 
 #   75|         valnum = r75_3, r79_4, r79_9
@@ -518,7 +518,7 @@ test.cpp:
 #   77|         valnum = unique
 #   77|     m77_4(unknown)              = ^CallSideEffect             : ~m75_2
 #   77|         valnum = unique
-#   77|     m77_5(unknown)              = Chi                         : total:m75_2, partial:m77_4
+#   77|     %m77_5(unknown)             = Chi                         : total:m75_2, partial:m77_4
 #   77|         valnum = unique
 #   77|     r77_6(signed short)         = Convert                     : r77_3
 #   77|         valnum = m77_7, r77_6, r79_2
@@ -565,7 +565,7 @@ test.cpp:
 #   80|         valnum = unique
 #   80|     m80_3(unknown)             = ^CallSideEffect            : ~m77_5
 #   80|         valnum = unique
-#   80|     m80_4(unknown)             = Chi                        : total:m77_5, partial:m80_3
+#   80|     %m80_4(unknown)            = Chi                        : total:m77_5, partial:m80_3
 #   80|         valnum = unique
 #   80|     r80_5(signed short)        = Convert                    : r80_2
 #   80|         valnum = m80_7, r80_5
@@ -576,18 +576,18 @@ test.cpp:
 #-----|   Goto -> Block 2
 
 #   82|   Block 2
-#   82|     m82_1(unknown) = Phi                     : from 0:~m77_5, from 1:~m80_4
+#   82|     %m82_1(unknown) = Phi                     : from 0:~m77_5, from 1:~m80_4
 #   82|         valnum = unique
-#   82|     v82_2(void)    = NoOp                    : 
-#   75|     v75_7(void)    = ReturnIndirection[vals] : &:r75_5, m75_6
-#   75|     v75_8(void)    = ReturnVoid              : 
-#   75|     v75_9(void)    = AliasedUse              : ~m82_1
-#   75|     v75_10(void)   = ExitFunction            : 
+#   82|     v82_2(void)     = NoOp                    : 
+#   75|     v75_7(void)     = ReturnIndirection[vals] : &:r75_5, m75_6
+#   75|     v75_8(void)     = ReturnVoid              : 
+#   75|     v75_9(void)     = AliasedUse              : ~m82_1
+#   75|     v75_10(void)    = ExitFunction            : 
 
 #   84| void test05(int, int, void*)
 #   84|   Block 0
 #   84|     v84_1(void)          = EnterFunction            : 
-#   84|     m84_2(unknown)       = AliasedDefinition        : 
+#   84|     %m84_2(unknown)      = AliasedDefinition        : 
 #   84|         valnum = unique
 #   84|     r84_3(glval<int>)    = VariableAddress[x]       : 
 #   84|         valnum = r84_3, r88_11
@@ -663,7 +663,7 @@ test.cpp:
 #   91| int regression_test00()
 #   91|   Block 0
 #   91|     v91_1(void)       = EnterFunction            : 
-#   91|     m91_2(unknown)    = AliasedDefinition        : 
+#   91|     %m91_2(unknown)   = AliasedDefinition        : 
 #   91|         valnum = unique
 #   92|     r92_1(glval<int>) = VariableAddress[x]       : 
 #   92|         valnum = r92_1, r92_3, r93_2
@@ -694,7 +694,7 @@ test.cpp:
 #  104| int inheritanceConversions(Derived*)
 #  104|   Block 0
 #  104|     v104_1(void)             = EnterFunction                           : 
-#  104|     m104_2(unknown)          = AliasedDefinition                       : 
+#  104|     %m104_2(unknown)         = AliasedDefinition                       : 
 #  104|         valnum = unique
 #  104|     r104_3(glval<Derived *>) = VariableAddress[pd]                     : 
 #  104|         valnum = r104_3, r105_2, r106_2
@@ -758,7 +758,7 @@ test.cpp:
 #  112| void test06()
 #  112|   Block 0
 #  112|     v112_1(void)           = EnterFunction       : 
-#  112|     m112_2(unknown)        = AliasedDefinition   : 
+#  112|     %m112_2(unknown)       = AliasedDefinition   : 
 #  112|         valnum = unique
 #  113|     r113_1(glval<char[2]>) = StringConstant["a"] : 
 #  113|         valnum = r113_1, r115_1
@@ -776,7 +776,7 @@ test.cpp:
 #  124| void test_read_arg_same(A*, int)
 #  124|   Block 0
 #  124|     v124_1(void)       = EnterFunction             : 
-#  124|     m124_2(unknown)    = AliasedDefinition         : 
+#  124|     %m124_2(unknown)   = AliasedDefinition         : 
 #  124|         valnum = unique
 #  124|     r124_3(glval<A *>) = VariableAddress[pa]       : 
 #  124|         valnum = r124_3, r125_2, r126_2, r128_3, r129_2
@@ -849,7 +849,7 @@ test.cpp:
 #  135| void test_read_global_same()
 #  135|   Block 0
 #  135|     v135_1(void)       = EnterFunction             : 
-#  135|     m135_2(unknown)    = AliasedDefinition         : 
+#  135|     %m135_2(unknown)   = AliasedDefinition         : 
 #  135|         valnum = unique
 #  136|     r136_1(glval<int>) = VariableAddress[b]        : 
 #  136|         valnum = unique
@@ -887,7 +887,7 @@ test.cpp:
 #  139|         valnum = r136_4, r137_4, r139_5
 #  139|     m139_6(int)        = Store[?]                  : &:r139_5, r139_2
 #  139|         valnum = m139_6, r139_2
-#  139|     m139_7(unknown)    = Chi                       : total:m135_2, partial:m139_6
+#  139|     %m139_7(unknown)   = Chi                       : total:m135_2, partial:m139_6
 #  139|         valnum = unique
 #  140|     r140_1(glval<int>) = VariableAddress[d]        : 
 #  140|         valnum = unique
@@ -909,7 +909,7 @@ test.cpp:
 #  143| void test_read_arg_different(A*)
 #  143|   Block 0
 #  143|     v143_1(void)       = EnterFunction             : 
-#  143|     m143_2(unknown)    = AliasedDefinition         : 
+#  143|     %m143_2(unknown)   = AliasedDefinition         : 
 #  143|         valnum = unique
 #  143|     r143_3(glval<A *>) = VariableAddress[pa]       : 
 #  143|         valnum = r143_3, r144_2, r145_2, r147_3, r149_2
@@ -978,7 +978,7 @@ test.cpp:
 #  152| void test_read_global_different(int)
 #  152|   Block 0
 #  152|     v152_1(void)       = EnterFunction             : 
-#  152|     m152_2(unknown)    = AliasedDefinition         : 
+#  152|     %m152_2(unknown)   = AliasedDefinition         : 
 #  152|         valnum = unique
 #  152|     r152_3(glval<int>) = VariableAddress[n]        : 
 #  152|         valnum = r152_3, r156_1
@@ -1020,7 +1020,7 @@ test.cpp:
 #  156|         valnum = unique
 #  156|     m156_6(int)        = Store[?]                  : &:r156_5, r156_2
 #  156|         valnum = m152_4, m156_6, r156_2
-#  156|     m156_7(unknown)    = Chi                       : total:m152_2, partial:m156_6
+#  156|     %m156_7(unknown)   = Chi                       : total:m152_2, partial:m156_6
 #  156|         valnum = unique
 #  158|     r158_1(glval<int>) = VariableAddress[d]        : 
 #  158|         valnum = unique
