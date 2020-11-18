@@ -3,6 +3,7 @@
  */
 
 private import cpp
+private import semmle.code.cpp.models.implementations.Pure
 
 /**
  * A `Function` that is considered a "safe" external API from a security perspective.

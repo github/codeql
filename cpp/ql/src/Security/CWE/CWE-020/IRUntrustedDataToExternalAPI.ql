@@ -10,7 +10,7 @@
 
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import semmle.code.cpp.security.ir.ExternalAPIs
+import ir.ExternalAPIs
 import semmle.code.cpp.security.FlowSources
 import DataFlow::PathGraph
 

@@ -10,7 +10,7 @@
 
 import cpp
 import semmle.code.cpp.dataflow.TaintTracking
-import semmle.code.cpp.security.ExternalAPIs
+import ExternalAPIs
 import DataFlow::PathGraph
 
 from UntrustedDataToExternalAPIConfig config, DataFlow::PathNode source, DataFlow::PathNode sink

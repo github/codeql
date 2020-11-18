@@ -6,7 +6,7 @@
 private import cpp
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.Taint
-import implementation.ExternalAPIsSpecific
+import ExternalAPIsSpecific
 
 /** A node representing untrusted data being passed to an external API. */
 class UntrustedExternalAPIDataNode extends ExternalAPIDataNode {

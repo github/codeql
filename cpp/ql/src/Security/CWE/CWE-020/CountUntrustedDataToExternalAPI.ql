@@ -9,7 +9,7 @@
  */
 
 import cpp
-import semmle.code.cpp.security.ExternalAPIs
+import ExternalAPIs
 
 from ExternalAPIUsedWithUntrustedData externalAPI
 select externalAPI, count(externalAPI.getUntrustedDataNode()) as numberOfUses,
