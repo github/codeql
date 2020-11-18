@@ -123,6 +123,13 @@ class RegExpRepetition extends RegExpParent {
 }
 
 /**
+ * A constant in a regular expression that represents valid Unicode character(s).
+ */
+class RegexpCharacterConstant extends RegExpConstant {
+  RegexpCharacterConstant() { this.isCharacter() }
+}
+
+/**
  * Gets the root containing the given term, that is, the root of the literal,
  * or a branch of the root disjunction.
  */
@@ -136,7 +143,9 @@ RegExpRoot getRoot(RegExpTerm term) {
  */
 newtype TInputSymbol =
   /** An input symbol corresponding to character `c`. */
-  Char(string c) { c = any(RegExpConstant cc | getRoot(cc).isRelevant()).getValue().charAt(_) } or
+  Char(string c) {
+    c = any(RegexpCharacterConstant cc | getRoot(cc).isRelevant()).getValue().charAt(_)
+  } or
   /**
    * An input symbol representing all characters matched by
    * (non-universal) character class `recc`.
@@ -173,7 +182,7 @@ private predicate sharesRoot(TInputSymbol a, TInputSymbol b) {
  */
 private predicate belongsTo(TInputSymbol a, RegExpRoot root) {
   exists(RegExpTerm term | getRoot(term) = root |
-    a = Char(term.(RegExpConstant).getValue().charAt(_))
+    a = Char(term.(RegexpCharacterConstant).getValue().charAt(_))
     or
     a = CharClass(term)
   )
@@ -236,7 +245,7 @@ private module CharacterClasses {
   predicate hasChildThatMatches(RegExpCharacterClass cc, string char) {
     exists(CharClass(cc)) and
     exists(RegExpTerm child | child = cc.getAChild() |
-      char = child.(RegExpConstant).getValue()
+      char = child.(RegexpCharacterConstant).getValue()
       or
       rangeMatchesOnLetterOrDigits(child, char)
       or
@@ -300,7 +309,7 @@ private module CharacterClasses {
   private string getARelevantChar() {
     exists(ascii(result))
     or
-    exists(RegExpConstant c | result = c.getValue().charAt(_))
+    exists(RegexpCharacterConstant c | result = c.getValue().charAt(_))
     or
     classEscapeMatches(_, result)
   }
@@ -310,7 +319,7 @@ private module CharacterClasses {
    */
   private string getAMentionedChar(RegExpCharacterClass c) {
     exists(RegExpTerm child | child = c.getAChild() |
-      result = child.(RegExpConstant).getValue()
+      result = child.(RegexpCharacterConstant).getValue()
       or
       child.(RegExpCharacterRange).isRange(result, _)
       or
@@ -439,7 +448,7 @@ newtype TState =
     (
       i = 0
       or
-      exists(t.(RegExpConstant).getValue().charAt(i))
+      exists(t.(RegexpCharacterConstant).getValue().charAt(i))
     )
   } or
   Accept(RegExpRoot l) { l.isRelevant() }
@@ -511,7 +520,7 @@ State after(RegExpTerm t) {
  * Holds if the NFA has a transition from `q1` to `q2` labelled with `lbl`.
  */
 predicate delta(State q1, EdgeLabel lbl, State q2) {
-  exists(RegExpConstant s, int i |
+  exists(RegexpCharacterConstant s, int i |
     q1 = Match(s, i) and
     lbl = Char(s.getValue().charAt(i)) and
     (

@@ -273,3 +273,9 @@ var bad61 = /(thisisagoddamnlongstringforstresstestingthequery|this\w+query)*-/
 
 // GOOD
 var good27 = /(thisisagoddamnlongstringforstresstestingthequery|imanotherbutunrelatedstringcomparedtotheotherstring)*-/
+
+// GOOD
+var good28 = /foo([\uDC66\uDC67]|[\uDC68\uDC69])*foo/
+
+// GOOD
+var good29 = /foo((\uDC66|\uDC67)|(\uDC68|\uDC69))*foo/
