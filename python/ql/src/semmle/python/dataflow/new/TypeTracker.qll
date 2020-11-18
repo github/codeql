@@ -88,7 +88,7 @@ private predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
- * Gets a callable for the call where `nodeFrom` is used as the `i`'th argument.
+ * Gets the callable for the call where `nodeFrom` is used as the `i`'th argument.
  *
  * Helper predicate to avoid bad join order experienced in `callStep`.
  * This happened when `isParameterOf` was joined _before_ `getCallable`.
