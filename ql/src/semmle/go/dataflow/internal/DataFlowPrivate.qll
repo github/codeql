@@ -217,19 +217,28 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
 }
 
 /**
+ * Returns a guard that will certainly not hold in calling context `call`.
+ *
+ * In particular it does not hold because it checks that `param` has value `b`, but
+ * in context `call` it is known to have value `!b`. Note this is `noinline`d in order
+ * to avoid a bad join order in `isUnreachableInCall`.
+ */
+pragma[noinline]
+private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
+  exists(ParameterNode param, ConstantBooleanArgumentNode arg |
+    // get constant bool argument and parameter for this call
+    viableParamArg(call, param, arg) and
+    // which is used in a guard controlling `n` with the opposite value of `arg`
+    result.ensures(param.getAUse(), arg.getBooleanValue().booleanNot())
+  )
+}
+
+/**
  * Holds if the node `n` is unreachable when the call context is `call`.
  */
 cached
 predicate isUnreachableInCall(Node n, DataFlowCall call) {
-  exists(
-    ParameterNode param, ConstantBooleanArgumentNode arg, ControlFlow::ConditionGuardNode guard
-  |
-    // get constant bool argument and parameter for this call
-    viableParamArg(call, param, arg) and
-    // which is used in a guard controlling `n` with the opposite value of `arg`
-    guard.ensures(param.getAUse(), arg.getBooleanValue().booleanNot()) and
-    guard.dominates(n.getBasicBlock())
-  )
+  getAFalsifiedGuard(call).dominates(n.getBasicBlock())
 }
 
 int accessPathLimit() { result = 5 }
