@@ -306,7 +306,7 @@ private module CharacterClasses {
    * Gets a char that could be matched by a regular expression.
    * Includes all printable ascii chars, all constants mentioned in a regexp, and all chars matches by the regexp `/\s|\d|\w/`.
    */
-  private string getARelevantChar() {
+  string getARelevantChar() {
     exists(ascii(result))
     or
     exists(RegexpCharacterConstant c | result = c.getValue().charAt(_))

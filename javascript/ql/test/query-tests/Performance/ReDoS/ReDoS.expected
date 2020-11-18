@@ -108,11 +108,8 @@
 | tst.js:218:15:218:19 | [^X]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'W'. |
 | tst.js:221:20:221:20 | b | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'bW'. |
 | tst.js:227:20:227:20 | b | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'bW'. |
-| tst.js:242:16:242:17 | ab | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'ab'. |
-| tst.js:248:15:248:21 | [\\n\\s]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
-| tst.js:254:17:254:21 | [^>]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '='. |
-| tst.js:257:16:257:21 | [^>a]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '='. |
-| tst.js:260:17:260:19 | \\s* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
-| tst.js:266:87:266:89 | \\w* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0foobarbazfoobarbazfoobarbazfoobarbazfoobarbazfoobarbaz'. |
-| tst.js:269:14:269:116 | (.thisisagoddamnlongstringforstresstestingthequery\|\\sthisisagoddamnlongstringforstresstestingthequery)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of ' thisisagoddamnlongstringforstresstestingthequery'. |
-| tst.js:272:14:272:77 | (thisisagoddamnlongstringforstresstestingthequery\|this\\w+query)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'thisisagoddamnlongstringforstresstestingthequery'. |
+| tst.js:239:16:239:17 | ab | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'ab'. |
+| tst.js:245:15:245:21 | [\\n\\s]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
+| tst.js:254:87:254:89 | \\w* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0foobarbazfoobarbazfoobarbazfoobarbazfoobarbazfoobarbaz'. |
+| tst.js:257:14:257:116 | (.thisisagoddamnlongstringforstresstestingthequery\|\\sthisisagoddamnlongstringforstresstestingthequery)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of ' thisisagoddamnlongstringforstresstestingthequery'. |
+| tst.js:260:14:260:77 | (thisisagoddamnlongstringforstresstestingthequery\|this\\w+query)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'thisisagoddamnlongstringforstresstestingthequery'. |

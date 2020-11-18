@@ -11,12 +11,12 @@ var good1 = /^\b_((?:__|[^_])+?)_\b|^\*((?:\*\*|[^*])+?)\*(?!\*)/;
 // GOOD - there is no witness in the end that could cause the regexp to not match
 // Adapted from brace-expansion (https://github.com/juliangruber/brace-expansion),
 // which is licensed under the MIT license; see file brace-expansion-LICENSE.
-var bad2 = /(.*,)+.+/;
+var good2 = /(.*,)+.+/;
 
 // NOT GOOD; attack: " '" + "\\\\".repeat(100)
 // Adapted from CodeMirror (https://github.com/codemirror/codemirror),
 // which is licensed under the MIT license; see file CodeMirror-LICENSE.
-var bad3 = /^(?:\s+(?:"(?:[^"\\]|\\\\|\\.)+"|'(?:[^'\\]|\\\\|\\.)+'|\((?:[^)\\]|\\\\|\\.)+\)))?/;
+var bad2 = /^(?:\s+(?:"(?:[^"\\]|\\\\|\\.)+"|'(?:[^'\\]|\\\\|\\.)+'|\((?:[^)\\]|\\\\|\\.)+\)))?/;
 
 // GOOD
 // Adapted from lulucms2 (https://github.com/yiifans/lulucms2).
@@ -95,7 +95,7 @@ var good9 = '(a|aa?)*b';
 var bad18 = /(([^]|[^a])*)"/;
 
 // GOOD - there is no witness in the end that could cause the regexp to not match
-var bad19 = /([^"']+)*/g;
+var good10 = /([^"']+)*/g;
 
 // NOT GOOD
 var bad20 = /((.|[^a])*)"/;
@@ -227,9 +227,6 @@ var good18 = /(([^X]b)+)*($|[^X]b)/;
 var bad54 = /(([^X]b)+)*($|[^X]c)/;
 
 // GOOD
-var good19 = /(.*,)+.+/;
-
-// GOOD
 var good20 = /((ab)+)*ababab/;
 
 // GOOD
@@ -249,15 +246,6 @@ var bad56 = /([\n\s]+)*(.)/;
 
 // GOOD - any witness passes through the accept state.
 var good24 = /(A*A*X)*/;
-
-// GOOD - but still flagged (always matches something)
-var good25 = /^([^>]+)*(>|$)/;
-
-// NOT GOOD
-var bad57 = /^([^>a]+)*(>|$)/;
-
-// NOT GOOD
-var bad58 = /(\n\s*)+$/;
 
 // GOOD
 var good26 = /([^\\\]]+)*/
