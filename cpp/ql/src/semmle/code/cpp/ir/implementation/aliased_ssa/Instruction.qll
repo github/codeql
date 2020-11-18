@@ -94,9 +94,7 @@ class Instruction extends Construction::TStageInstruction {
 
   private string getConflationPrefix() {
     shouldGenerateDumpStrings() and
-    if isResultConflated()
-    then result = "%"
-    else result = ""
+    if isResultConflated() then result = "%" else result = ""
   }
 
   /**
@@ -150,7 +148,8 @@ class Instruction extends Construction::TStageInstruction {
    */
   final string getResultString() {
     shouldGenerateDumpStrings() and
-    result = getConflationPrefix() + getResultId() + "(" + getResultLanguageType().getDumpString() + ")"
+    result =
+      getConflationPrefix() + getResultId() + "(" + getResultLanguageType().getDumpString() + ")"
   }
 
   /**
