@@ -125,8 +125,8 @@ module RequestForgery {
   }
 
   /**
-   * A URI argument to `org.springframework.http.RequestEntity`s constructor call
-   *   taken as a sink for request forgery vulnerabilities.
+   * An argument to `org.springframework.http.RequestEntity`s constructor call
+   *   which is an URI taken as a sink for request forgery vulnerabilities.
    */
   private class RequestEntityUriArg extends Sink {
     RequestEntityUriArg() {

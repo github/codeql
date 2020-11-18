@@ -15,8 +15,8 @@ class ApacheHttpEntityGetContent extends Method {
 }
 
 /**
- *  Models any class derived from `HttpRequestBase` or the `BasicHttpRequest`
- *  class of the Apache Http Client `org.apache.http` library
+ *  A class that is derived from the `HttpRequestBase` or the `BasicHttpRequest`
+ *  classes of the Apache HTTP Client `org.apache.http` library
  */
 class ApacheHttpRequest extends RefType {
   ApacheHttpRequest() {

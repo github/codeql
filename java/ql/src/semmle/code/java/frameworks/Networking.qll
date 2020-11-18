@@ -42,7 +42,7 @@ class SocketGetInputStreamMethod extends Method {
   }
 }
 
-/** Any expresion or call which returns a new URI. */
+/** A function or method call that returns a new `URI`. */
 class UriCreation extends Call {
   UriCreation() {
     this.getCallee().getDeclaringType() instanceof TypeUri and
@@ -61,8 +61,6 @@ class UriCreation extends Call {
 
 /** An URI constructor expression */
 class UriConstructor extends ClassInstanceExpr, UriCreation {
-  UriConstructor() { this.getConstructor().getDeclaringType().getQualifiedName() = "java.net.URI" }
-
   override Expr getHostArg() {
     // URI​(String str)
     result = this.getArgument(0) and this.getNumArgument() = 1
@@ -78,7 +76,7 @@ class UriConstructor extends ClassInstanceExpr, UriCreation {
   }
 }
 
-/** An URI create call */
+/** A call to the `create` method of the `java.net.URI` class */
 class UriCreate extends Call, UriCreation {
   UriCreate() {
     this.getCallee().getName() = "create" and
@@ -88,9 +86,9 @@ class UriCreate extends Call, UriCreation {
   override Expr getHostArg() { result = this.getArgument(0) }
 }
 
-/* An URL constructor expression */
+/** An `java.net.URL` constructor expression */
 class UrlConstructor extends ClassInstanceExpr {
-  UrlConstructor() { this.getConstructor().getDeclaringType().getQualifiedName() = "java.net.URL" }
+  UrlConstructor() { this.getConstructor().getDeclaringType() instanceof TypeUrl }
 
   /** Returns the host of the newly created URI. */
   Expr getHostArg() {
