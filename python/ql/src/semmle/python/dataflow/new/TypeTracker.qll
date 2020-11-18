@@ -87,11 +87,26 @@ private predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
   nodeFrom = nodeTo.(PostUpdateNode).getPreUpdateNode()
 }
 
+/**
+ * Gets a callable for the call where `nodeFrom` is used as the `i`'th argument.
+ *
+ * Helper predicate to avoid bad join order experienced in `callStep`.
+ * This happened when `isParameterOf` was joined _before_ `getCallable`.
+ */
+pragma[nomagic]
+private DataFlowCallable getCallableForArgument(ArgumentNode nodeFrom, int i) {
+  exists(DataFlowCall call |
+    nodeFrom.argumentOf(call, i) and
+    result = call.getCallable()
+  )
+}
+
 /** Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call. */
 predicate callStep(ArgumentNode nodeFrom, ParameterNode nodeTo) {
   // TODO: Support special methods?
-  exists(DataFlowCall call, int i |
-    nodeFrom.argumentOf(call, i) and nodeTo.isParameterOf(call.getCallable(), i)
+  exists(DataFlowCallable callable, int i |
+    callable = getCallableForArgument(nodeFrom, i) and
+    nodeTo.isParameterOf(callable, i)
   )
 }
 
