@@ -88,12 +88,13 @@ private predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
- * Helper predicate to avoid bad join order experienced in `callStep`.
+ * Gets a callable for the call where `nodeFrom` is used as the `i`'th argument.
  *
+ * Helper predicate to avoid bad join order experienced in `callStep`.
  * This happened when `isParameterOf` was joined _before_ `getCallable`.
  */
 pragma[nomagic]
-private DataFlowCallable callStepHelper(ArgumentNode nodeFrom, int i) {
+private DataFlowCallable getCallableForArgument(ArgumentNode nodeFrom, int i) {
   exists(DataFlowCall call |
     nodeFrom.argumentOf(call, i) and
     result = call.getCallable()
@@ -104,7 +105,7 @@ private DataFlowCallable callStepHelper(ArgumentNode nodeFrom, int i) {
 predicate callStep(ArgumentNode nodeFrom, ParameterNode nodeTo) {
   // TODO: Support special methods?
   exists(DataFlowCallable callable, int i |
-    callable = callStepHelper(nodeFrom, i) and
+    callable = getCallableForArgument(nodeFrom, i) and
     nodeTo.isParameterOf(callable, i)
   )
 }
