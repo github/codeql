@@ -102,15 +102,16 @@ private ValueOrRefType getAnInterestingBaseType(ValueOrRefType type) {
   not type instanceof ArrayType and
   not type instanceof NullableType and
   result = type.getABaseType() and
-  isInterestingBaseType(result)
+  isInterestingBaseType(type, result)
 }
 
-private predicate isInterestingBaseType(ValueOrRefType base) {
+private predicate isInterestingBaseType(ValueOrRefType type, ValueOrRefType base) {
   not base instanceof ObjectType and
   not base.getQualifiedName() = "System.ValueType" and
   not base.getQualifiedName() = "System.Delegate" and
   not base.getQualifiedName() = "System.MulticastDelegate" and
-  not base.getQualifiedName() = "System.Enum"
+  not base.getQualifiedName() = "System.Enum" and
+  exists(TypeMention tm | tm.getTarget() = type and tm.getType() = base)
 }
 
 /**
