@@ -304,7 +304,7 @@ private class SpecifiedDumpType extends DerivedDumpType, SpecifiedType {
       basePrefix = getBaseType().(DumpType).getDeclaratorPrefix() and
       if getBaseType().getUnspecifiedType() instanceof RoutineType
       then result = basePrefix
-      else result = basePrefix + " " + getSpecifierString().trim()
+      else result = basePrefix + " " + getSpecifierString()
     )
   }
 
@@ -312,7 +312,7 @@ private class SpecifiedDumpType extends DerivedDumpType, SpecifiedType {
     exists(string baseSuffix |
       baseSuffix = getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers() and
       if getBaseType().getUnspecifiedType() instanceof RoutineType
-      then result = baseSuffix + " " + getSpecifierString().trim()
+      then result = baseSuffix + " " + getSpecifierString()
       else result = baseSuffix
     )
   }
