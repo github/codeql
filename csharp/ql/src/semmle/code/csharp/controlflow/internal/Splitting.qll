@@ -635,7 +635,7 @@ module FinallySplitting {
         // If the entry into the `finally` block completes with any normal completion,
         // it simply means normal execution after the `finally` block
         this instanceof NormalSuccessor
-      else this.matchesCompletion(c)
+      else this = c.getAMatchingSuccessorType()
     }
   }
 
@@ -806,7 +806,7 @@ module FinallySplitting {
           // does not require another completion to be recovered
           inherited = false and
           (
-            type.matchesCompletion(c)
+            type = c.getAMatchingSuccessorType()
             or
             not c instanceof NormalCompletion
             or
@@ -816,7 +816,7 @@ module FinallySplitting {
           // Finally block can exit with completion `c` inherited from try/catch
           // block: must match this split
           inherited = true and
-          type.matchesCompletion(c) and
+          type = c.getAMatchingSuccessorType() and
           not type instanceof NormalSuccessor
         )
       )
@@ -1587,7 +1587,7 @@ predicate succEntrySplits(
 predicate succExitSplits(ControlFlowElement pred, Splits predSplits, Callable succ, SuccessorType t) {
   exists(Reachability::SameSplitsBlock b, Completion c | pred = b.getAnElement() |
     b.isReachable(predSplits) and
-    t.matchesCompletion(c) and
+    t = c.getAMatchingSuccessorType() and
     succExit(pred, succ, c) and
     forall(SplitImpl predSplit | predSplit = predSplits.getASplit() |
       predSplit.hasExitScope(pred, succ, c)

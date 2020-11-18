@@ -54,7 +54,7 @@ class PreBasicBlock extends ControlFlowElement {
   PreBasicBlock() { startsBB(this) }
 
   PreBasicBlock getASuccessorByType(SuccessorType t) {
-    succ(this.getLastElement(), result, any(Completion c | t.matchesCompletion(c)))
+    succ(this.getLastElement(), result, any(Completion c | t = c.getAMatchingSuccessorType()))
   }
 
   PreBasicBlock getASuccessor() { result = this.getASuccessorByType(_) }
@@ -127,7 +127,7 @@ class ConditionBlock extends PreBasicBlock {
   predicate controls(PreBasicBlock controlled, SuccessorTypes::ConditionalSuccessor s) {
     exists(PreBasicBlock succ, ConditionalCompletion c | immediatelyControls(succ, c) |
       succ.dominates(controlled) and
-      s.matchesCompletion(c)
+      s = c.getAMatchingSuccessorType()
     )
   }
 }

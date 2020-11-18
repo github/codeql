@@ -1619,7 +1619,7 @@ private module Cached {
         result = TElementNode(succElement, succSplits)
       |
         succSplits(predElement, predSplits, succElement, succSplits, c) and
-        t.matchesCompletion(c)
+        t = c.getAMatchingSuccessorType()
       )
     )
     or
