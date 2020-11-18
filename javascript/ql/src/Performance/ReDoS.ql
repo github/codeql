@@ -105,19 +105,25 @@ class RegExpRoot extends RegExpTerm {
    */
   predicate isRelevant() {
     // there is at least one repetition
-    exists(InfiniteRepetitionQuantifier rep | getRoot(rep) = this |
-      // that could possibly match the same thing in multiple ways.
-      exists(RegExpTerm child |
-        child instanceof RegExpAlt or
-        child instanceof RegExpQuantifier
-      |
-        child.getParent+() = rep
-      )
-    ) and
+    exists(MaybeBacktrackingRepetition rep | getRoot(rep) = this) and
     // there are no lookbehinds
     not exists(RegExpLookbehind lbh | getRoot(lbh) = this) and
     // is actually used as a RegExp
     isUsedAsRegExp()
+  }
+}
+
+/**
+ * A infinitely repeating quantifier that might backtrack.
+ */
+class MaybeBacktrackingRepetition extends InfiniteRepetitionQuantifier {
+  MaybeBacktrackingRepetition() {
+    exists(RegExpTerm child |
+      child instanceof RegExpAlt or
+      child instanceof RegExpQuantifier
+    |
+      child.getParent+() = this
+    )
   }
 }
 
@@ -461,7 +467,7 @@ newtype TState =
  * match `t`, or the `i`th character in `t` if `t` is a constant.
  */
 class State extends TState {
-  RegExpParent repr;
+  RegExpTerm repr;
 
   State() { this = Match(repr, _) or this = Accept(repr) }
 
@@ -473,6 +479,11 @@ class State extends TState {
   }
 
   Location getLocation() { result = repr.getLocation() }
+
+  /**
+   * Gets the term represented by this state.
+   */
+  RegExpTerm getRepr() { result = repr }
 }
 
 class EdgeLabel extends TInputSymbol {
@@ -587,6 +598,14 @@ State epsilonPred(State q) { q = epsilonSucc(result) }
 predicate deltaClosed(State q1, InputSymbol s, State q2) { delta(epsilonSucc*(q1), s, q2) }
 
 /**
+ * Holds if state `s` might be inside a backtracking repetition.
+ */
+pragma[noinline]
+predicate stateInsideBacktracking(State s) {
+  s.getRepr().getParent*() instanceof MaybeBacktrackingRepetition
+}
+
+/**
  * A state in the product automaton.
  *
  * We lazily only construct those states that we are actually
@@ -595,12 +614,16 @@ predicate deltaClosed(State q1, InputSymbol s, State q2) { delta(epsilonSucc*(q1
  * already constructed. To cut down on the number of states,
  * we only represent states `(q1, q2)` where `q1` is lexicographically
  * no bigger than `q2`.
+ *
+ * States are only constructed if both states in the pair are
+ * inside a repetition that might backtrack.
  */
 newtype TStatePair =
   MkStatePair(State q1, State q2) {
     isFork(q1, _, _, _, _) and q2 = q1
     or
-    step(_, _, _, q1, q2) and q1.toString() <= q2.toString()
+    step(_, _, _, q1, q2) and
+    q1.toString() <= q2.toString()
   }
 
 class StatePair extends TStatePair {
@@ -646,6 +669,7 @@ int statePairDist(StatePair q, StatePair r) =
  */
 pragma[noopt]
 predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
+  stateInsideBacktracking(q) and
   exists(State q1, State q2 |
     q1 = epsilonSucc*(q) and
     delta(q1, s1, r1) and
@@ -675,6 +699,9 @@ predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
 /**
  * Holds if there are transitions from the components of `q` to `r1` and `r2`
  * labelled with `s1` and `s2`, respectively.
+ *
+ * We only consider transitions where the resulting states `(r1, r2)` are both
+ * inside a repetition that might backtrack.
  */
 pragma[noopt]
 predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
@@ -683,7 +710,9 @@ predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, State r2) 
     deltaClosed(q2, s2, r2) and
     // use noopt to force the join on `intersect` to happen last.
     exists(intersect(s1, s2))
-  )
+  ) and
+  stateInsideBacktracking(r1) and
+  stateInsideBacktracking(r2)
 }
 
 /**
