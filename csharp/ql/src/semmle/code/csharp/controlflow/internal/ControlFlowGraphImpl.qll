@@ -50,704 +50,50 @@ private import SuccessorTypes
 private import Splitting
 private import semmle.code.csharp.ExprOrStmtParent
 
-/**
- * A control flow element where the children are evaluated following a
- * standard left-to-right evaluation. The actual evaluation order is
- * determined by the predicate `getChildElement()`.
- */
-abstract private class StandardElement extends ControlFlowElement {
-  /** Gets the first child element of this element. */
-  ControlFlowElement getFirstChildElement() { result = this.getChildElement(0) }
-
-  /** Holds if this element has no children. */
-  predicate isLeafElement() { not exists(this.getFirstChildElement()) }
-
-  /** Gets the last child element of this element. */
-  ControlFlowElement getLastChildElement() {
-    exists(int last |
-      last = max(int i | exists(this.getChildElement(i))) and
-      result = this.getChildElement(last)
-    )
-  }
-
-  /** Gets the `i`th child element, which is not the last element. */
-  pragma[noinline]
-  ControlFlowElement getNonLastChildElement(int i) {
-    result = this.getChildElement(i) and
-    not result = this.getLastChildElement()
-  }
-
-  /** Gets the `i`th child element, in order of evaluation, starting from 0. */
-  abstract ControlFlowElement getChildElement(int i);
-}
-
-private class StandardStmt extends StandardElement, Stmt {
-  StandardStmt() {
-    // The following statements need special treatment
-    not this instanceof IfStmt and
-    not this instanceof SwitchStmt and
-    not this instanceof CaseStmt and
-    not this instanceof LoopStmt and
-    not this instanceof TryStmt and
-    not this instanceof SpecificCatchClause and
-    not this instanceof JumpStmt
-  }
-
-  override ControlFlowElement getChildElement(int i) {
-    not this instanceof GeneralCatchClause and
-    not this instanceof FixedStmt and
-    not this instanceof UsingBlockStmt and
-    result = this.getChild(i)
-    or
-    this = any(GeneralCatchClause gcc | i = 0 and result = gcc.getBlock())
-    or
-    this =
-      any(FixedStmt fs |
-        result = fs.getVariableDeclExpr(i)
-        or
-        result = fs.getBody() and
-        i = max(int j | exists(fs.getVariableDeclExpr(j))) + 1
-      )
-    or
-    this =
-      any(UsingBlockStmt us |
-        if exists(us.getExpr())
-        then (
-          result = us.getExpr() and
-          i = 0
-          or
-          result = us.getBody() and
-          i = 1
-        ) else (
-          result = us.getVariableDeclExpr(i)
-          or
-          result = us.getBody() and
-          i = max(int j | exists(us.getVariableDeclExpr(j))) + 1
-        )
-      )
-  }
-}
-
-/**
- * An assignment operation that has an expanded version. We use the expanded
- * version in the control flow graph in order to get better data flow / taint
- * tracking.
- */
-private class AssignOperationWithExpandedAssignment extends AssignOperation {
-  AssignOperationWithExpandedAssignment() { this.hasExpandedAssignment() }
-}
-
-/** A conditionally qualified expression. */
-private class ConditionallyQualifiedExpr extends QualifiableExpr {
-  ConditionallyQualifiedExpr() { this.isConditional() }
-}
-
-/** An expression that should not be included in the control flow graph. */
-abstract private class NoNodeExpr extends Expr { }
-
-private class SimpleNoNodeExpr extends NoNodeExpr {
-  SimpleNoNodeExpr() {
-    this instanceof TypeAccess and
-    not this = any(PatternMatch pm).getPattern()
-  }
-}
-
-/** A write access that is not also a read access. */
-private class WriteAccess extends AssignableWrite {
-  WriteAccess() {
-    // `x++` is both a read and write access
-    not this instanceof AssignableRead
-  }
-}
-
-private class WriteAccessNoNodeExpr extends WriteAccess, NoNodeExpr {
-  WriteAccessNoNodeExpr() {
-    // For example a write to a static field, `Foo.Bar = 0`.
-    forall(Expr e | e = this.getAChildExpr() | e instanceof NoNodeExpr)
-  }
-}
-
-private ControlFlowElement getExprChildElement0(Expr e, int i) {
-  not e instanceof NameOfExpr and
-  not e instanceof QualifiableExpr and
-  not e instanceof Assignment and
-  not e instanceof AnonymousFunctionExpr and
-  result = e.getChild(i)
-  or
-  e = any(ExtensionMethodCall emc | result = emc.getArgument(i))
-  or
-  e =
-    any(QualifiableExpr qe |
-      not qe instanceof ExtensionMethodCall and
-      result = qe.getChild(i)
-    )
-  or
-  e =
-    any(Assignment a |
-      // The left-hand side of an assignment is evaluated before the right-hand side
-      i = 0 and result = a.getLValue()
-      or
-      i = 1 and result = a.getRValue()
-    )
-}
-
-private ControlFlowElement getExprChildElement(Expr e, int i) {
-  result =
-    rank[i + 1](ControlFlowElement cfe, int j |
-      cfe = getExprChildElement0(e, j) and
-      not cfe instanceof NoNodeExpr
-    |
-      cfe order by j
-    )
-}
-
-private int getFirstChildElement(Expr e) { result = min(int i | exists(getExprChildElement(e, i))) }
-
-private int getLastChildElement(Expr e) { result = max(int i | exists(getExprChildElement(e, i))) }
-
-/**
- * A qualified write access. In a qualified write access, the access itself is
- * not evaluated, only the qualifier and the indexer arguments (if any).
- */
-private class QualifiedWriteAccess extends WriteAccess, QualifiableExpr {
-  QualifiedWriteAccess() {
-    this.hasQualifier()
-    or
-    // Member initializers like
-    // ```csharp
-    // new Dictionary<int, string>() { [0] = "Zero", [1] = "One", [2] = "Two" }
-    // ```
-    // need special treatment, because the the accesses `[0]`, `[1]`, and `[2]`
-    // have no qualifier.
-    this = any(MemberInitializer mi).getLValue()
-  }
-}
-
-/** A normal or a (potential) dynamic call to an accessor. */
-private class StatOrDynAccessorCall extends Expr {
-  StatOrDynAccessorCall() {
-    this instanceof AccessorCall or
-    this instanceof DynamicAccess
-  }
-}
-
-/**
- * An expression that writes via an accessor call, for example `x.Prop = 0`,
- * where `Prop` is a property.
- *
- * Accessor writes need special attention, because we need to model the fact
- * that the accessor is called *after* the assigned value has been evaluated.
- * In the example above, this means we want a CFG that looks like
- *
- * ```csharp
- * x -> 0 -> set_Prop -> x.Prop = 0
- * ```
- */
-class AccessorWrite extends Expr {
-  AssignableDefinition def;
-
-  AccessorWrite() {
-    def.getExpr() = this and
-    def.getTargetAccess().(WriteAccess) instanceof StatOrDynAccessorCall and
-    not this instanceof AssignOperationWithExpandedAssignment
-  }
+abstract private class ControlFlowTree extends ControlFlowElement {
+  /**
+   * Holds if `first` is the first element executed within this control
+   * flow element.
+   */
+  pragma[nomagic]
+  abstract predicate first(ControlFlowElement first);
 
   /**
-   * Gets the `i`th accessor being called in this write. More than one call
-   * can happen in tuple assignments.
+   * Holds if `last` with completion `c` is a potential last element executed
+   * within this control flow element.
    */
-  StatOrDynAccessorCall getCall(int i) {
-    result =
-      rank[i + 1](AssignableDefinitions::TupleAssignmentDefinition tdef |
-        tdef.getExpr() = this and tdef.getTargetAccess() instanceof StatOrDynAccessorCall
-      |
-        tdef order by tdef.getEvaluationOrder()
-      ).getTargetAccess()
-    or
-    i = 0 and
-    result = def.getTargetAccess() and
-    not def instanceof AssignableDefinitions::TupleAssignmentDefinition
-  }
-}
+  pragma[nomagic]
+  abstract predicate last(ControlFlowElement last, Completion c);
 
-private class StandardExpr extends StandardElement, Expr {
-  StandardExpr() {
-    // The following expressions need special treatment
-    not this instanceof LogicalNotExpr and
-    not this instanceof LogicalAndExpr and
-    not this instanceof LogicalOrExpr and
-    not this instanceof NullCoalescingExpr and
-    not this instanceof ConditionalExpr and
-    not this instanceof AssignOperationWithExpandedAssignment and
-    not this instanceof ConditionallyQualifiedExpr and
-    not this instanceof ThrowExpr and
-    not this instanceof ObjectCreation and
-    not this instanceof ArrayCreation and
-    not this instanceof QualifiedWriteAccess and
-    not this instanceof AccessorWrite and
-    not this instanceof NoNodeExpr and
-    not this instanceof SwitchExpr and
-    not this instanceof SwitchCaseExpr
-  }
+  /** Holds if abnormal execution of `child` should propagate upwards. */
+  abstract predicate propagatesAbnormal(ControlFlowElement child);
 
-  override ControlFlowElement getChildElement(int i) { result = getExprChildElement(this, i) }
+  /**
+   * Holds if `succ` is a control flow successor for `pred`, given that `pred`
+   * finishes with completion `c`.
+   */
+  pragma[nomagic]
+  abstract predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c);
 }
 
 /**
- * Gets the first element executed within control flow element `cfe`.
+ * Holds if `first` is the first element executed within control flow
+ * element `cft`.
  */
-ControlFlowElement first(ControlFlowElement cfe) {
-  // Pre-order: element itself
-  cfe instanceof PreOrderElement and
-  result = cfe
-  or
-  // Post-order: first element of first child (or self, if no children)
-  cfe =
-    any(PostOrderElement poe |
-      result = first(poe.getFirstChild())
-      or
-      not exists(poe.getFirstChild()) and
-      result = poe
-    )
-  or
-  cfe = any(AssignOperationWithExpandedAssignment a | result = first(a.getExpandedAssignment()))
-  or
-  cfe = any(ConditionallyQualifiedExpr cqe | result = first(getExprChildElement(cqe, 0)))
-  or
-  cfe =
-    any(ObjectCreation oc |
-      result = first(getObjectCreationArgument(oc, 0))
-      or
-      not exists(getObjectCreationArgument(oc, 0)) and
-      result = oc
-    )
-  or
-  cfe =
-    any(ArrayCreation ac |
-      // First element of first length argument
-      result = first(ac.getLengthArgument(0))
-      or
-      // No length argument: element itself
-      not exists(ac.getLengthArgument(0)) and
-      result = ac
-    )
-  or
-  cfe =
-    any(ForeachStmt fs |
-      // Unlike most other statements, `foreach` statements are not modelled in
-      // pre-order, because we use the `foreach` node itself to represent the
-      // emptiness test that determines whether to execute the loop body
-      result = first(fs.getIterableExpr())
-    )
-  or
-  cfe instanceof QualifiedWriteAccess and
-  result = first(getExprChildElement(cfe, getFirstChildElement(cfe)))
-  or
-  cfe instanceof AccessorWrite and
-  result = first(getExprChildElement(cfe, getFirstChildElement(cfe)))
-}
-
-private class PreOrderElement extends Stmt {
-  PreOrderElement() {
-    this instanceof StandardStmt
-    or
-    this instanceof IfStmt
-    or
-    this instanceof SwitchStmt
-    or
-    this instanceof CaseStmt
-    or
-    this instanceof TryStmt
-    or
-    this instanceof SpecificCatchClause
-    or
-    this instanceof LoopStmt and not this instanceof ForeachStmt
-  }
-}
-
-private Expr getObjectCreationArgument(ObjectCreation oc, int i) {
-  i >= 0 and
-  if oc.hasInitializer()
-  then result = getExprChildElement(oc, i + 1)
-  else result = getExprChildElement(oc, i)
-}
-
-private class PostOrderElement extends ControlFlowElement {
-  PostOrderElement() {
-    this instanceof StandardExpr
-    or
-    this instanceof LogicalNotExpr
-    or
-    this instanceof LogicalAndExpr
-    or
-    this instanceof LogicalOrExpr
-    or
-    this instanceof NullCoalescingExpr
-    or
-    this instanceof ConditionalExpr
-    or
-    this instanceof SwitchExpr
-    or
-    this instanceof SwitchCaseExpr
-    or
-    this instanceof JumpStmt
-    or
-    this instanceof ThrowExpr
-  }
-
-  ControlFlowElement getFirstChild() {
-    result = this.(StandardExpr).getFirstChildElement()
-    or
-    result = this.(LogicalNotExpr).getOperand()
-    or
-    result = this.(LogicalAndExpr).getLeftOperand()
-    or
-    result = this.(LogicalOrExpr).getLeftOperand()
-    or
-    result = this.(NullCoalescingExpr).getLeftOperand()
-    or
-    result = this.(ConditionalExpr).getCondition()
-    or
-    result = this.(SwitchExpr).getExpr()
-    or
-    result = this.(SwitchCaseExpr).getPattern()
-    or
-    result = this.(JumpStmt).getChild(0)
-    or
-    result = this.(ThrowExpr).getExpr()
-  }
-}
-
-/** A specification of how to compute the last element of a control flow element. */
-private newtype TLastComputation =
-  /** The element is itself the last element. */
-  TSelf(Completion c) or
-  /** The last element must be computed recursively. */
-  TRec(TLastRecComputation c)
+predicate first(ControlFlowTree cft, ControlFlowElement first) { cft.first(first) }
 
 /**
- * A specification of how to compute the last element of a control flow element
- * using recursion.
+ * Holds if `last` with completion `c` is a potential last element executed
+ * within control flow element `cft`.
  */
-private newtype TLastRecComputation =
-  TLastRecSpecificCompletion(Completion c) or
-  TLastRecSpecificNegCompletion(Completion c) or
-  TLastRecAnyCompletion() or
-  TLastRecNormalCompletion() or
-  TLastRecAbnormalCompletion() or
-  TLastRecBreakCompletion() or
-  TLastRecSwitchAbnormalCompletion() or
-  TLastRecInvalidOperationException() or
-  TLastRecNonContinueCompletion() or
-  TLastRecLoopBodyAbnormal()
-
-private TSelf getValidSelfCompletion(ControlFlowElement cfe) {
-  result = TSelf(any(Completion c | c.isValidFor(cfe)))
-}
-
-private TRec specificBoolean(boolean value) {
-  result = TRec(TLastRecSpecificCompletion(any(BooleanCompletion bc | bc.getValue() = value)))
-}
-
-/**
- * Gets an element from which the last element of `cfe` can be computed
- * (recursively) based on computation specification `c`. The predicate
- * itself is non-recursive.
- *
- * With the exception of `try` statements, all elements have a simple
- * recursive last computation.
- */
-pragma[nomagic]
-private ControlFlowElement lastNonRec(ControlFlowElement cfe, TLastComputation c) {
-  // Pre-order: last element of last child (or self, if no children)
-  cfe =
-    any(StandardStmt ss |
-      result = ss.getLastChildElement() and
-      c = TRec(TLastRecAnyCompletion())
-      or
-      ss.isLeafElement() and
-      result = ss and
-      c = getValidSelfCompletion(result)
-    )
+predicate last(ControlFlowTree cft, ControlFlowElement last, Completion c) {
+  cft.last(last, c)
   or
-  // Post-order: element itself
-  cfe instanceof PostOrderElement and
-  result = cfe and
-  c = getValidSelfCompletion(result)
-  or
-  // Pre/post order: a child exits abnormally
-  result = cfe.(StandardElement).getChildElement(_) and
-  c = TRec(TLastRecAbnormalCompletion())
-  or
-  // Operand exits abnormally
-  result = cfe.(LogicalNotExpr).getOperand() and
-  c = TRec(TLastRecAbnormalCompletion())
-  or
-  // An operand exits abnormally
-  result = cfe.(LogicalAndExpr).getAnOperand() and
-  c = TRec(TLastRecAbnormalCompletion())
-  or
-  // An operand exits abnormally
-  result = cfe.(LogicalOrExpr).getAnOperand() and
-  c = TRec(TLastRecAbnormalCompletion())
-  or
-  // An operand exits abnormally
-  result = cfe.(NullCoalescingExpr).getAnOperand() and
-  c = TRec(TLastRecAbnormalCompletion())
-  or
-  // An operand exits abnormally
-  result = cfe.(ConditionalExpr).getAnOperand() and
-  c = TRec(TLastRecAbnormalCompletion())
-  or
-  cfe =
-    any(AssignOperation ao |
-      result = ao.getExpandedAssignment() and
-      c = TRec(TLastRecAnyCompletion())
-    )
-  or
-  cfe =
-    any(ConditionallyQualifiedExpr cqe |
-      // Post-order: element itself
-      result = cqe and
-      c = getValidSelfCompletion(result)
-      or
-      // Qualifier exits with a `null` completion
-      result = getExprChildElement(cqe, 0) and
-      c = TRec(TLastRecSpecificCompletion(any(NullnessCompletion nc | nc.isNull())))
-    )
-  or
-  // Expression being thrown exits abnormally
-  result = cfe.(ThrowExpr).getExpr() and
-  c = TRec(TLastRecAbnormalCompletion())
-  or
-  cfe =
-    any(ObjectCreation oc |
-      // Post-order: element itself (when no initializer)
-      result = oc and
-      not oc.hasInitializer() and
-      c = getValidSelfCompletion(result)
-      or
-      // Last element of initializer
-      result = oc.getInitializer() and
-      c = TRec(TLastRecAnyCompletion())
-    )
-  or
-  cfe =
-    any(ArrayCreation ac |
-      // Post-order: element itself (when no initializer)
-      result = ac and
-      not ac.hasInitializer() and
-      c = getValidSelfCompletion(result)
-      or
-      // Last element of initializer
-      result = ac.getInitializer() and
-      c = TRec(TLastRecAnyCompletion())
-    )
-  or
-  cfe =
-    any(IfStmt is |
-      // Condition exits with a false completion and there is no `else` branch
-      result = is.getCondition() and
-      c = specificBoolean(false) and
-      not exists(is.getElse())
-      or
-      // Condition exits abnormally
-      result = is.getCondition() and
-      c = TRec(TLastRecAbnormalCompletion())
-      or
-      // Then branch exits with any completion
-      result = is.getThen() and
-      c = TRec(TLastRecAnyCompletion())
-      or
-      // Else branch exits with any completion
-      result = is.getElse() and
-      c = TRec(TLastRecAnyCompletion())
-    )
-  or
-  cfe =
-    any(Switch s |
-      // Switch expression exits abnormally
-      result = s.getExpr() and
-      c = TRec(TLastRecAbnormalCompletion())
-      or
-      // A case exits abnormally
-      result = s.getACase() and
-      c = TRec(TLastRecSwitchAbnormalCompletion())
-    )
-  or
-  cfe =
-    any(SwitchStmt ss |
-      // Switch expression exits normally and there are no cases
-      result = ss.getExpr() and
-      not exists(ss.getACase()) and
-      c = TRec(TLastRecNormalCompletion())
-      or
-      // A statement exits with a `break` completion
-      result = ss.getStmt(_) and
-      c = TRec(TLastRecBreakCompletion())
-      or
-      // A statement exits abnormally
-      result = ss.getStmt(_) and
-      c = TRec(TLastRecSwitchAbnormalCompletion())
-      or
-      // Last case exits with a non-match
-      exists(CaseStmt cs, int last |
-        last = max(int i | exists(ss.getCase(i))) and
-        cs = ss.getCase(last)
-      |
-        result = cs.getPattern() and
-        c = TRec(TLastRecSpecificNegCompletion(any(MatchingCompletion mc | mc.isMatch())))
-        or
-        result = cs.getCondition() and
-        c = specificBoolean(false)
-      )
-    )
-  or
-  cfe =
-    any(SwitchExpr se |
-      // Last case exists with a non-match
-      exists(SwitchCaseExpr sce, int i |
-        sce = se.getCase(i) and
-        not sce.matchesAll() and
-        not exists(se.getCase(i + 1)) and
-        c = TRec(TLastRecInvalidOperationException())
-      |
-        result = sce.getPattern() or
-        result = sce.getCondition()
-      )
-    )
-  or
-  cfe =
-    any(Case case |
-      // Condition, pattern, or body exists abnormally
-      result in [case.getCondition(), case.getPattern(), case.getBody()] and
-      c = TRec(TLastRecAbnormalCompletion())
-    )
-  or
-  cfe =
-    any(CaseStmt case |
-      // Condition exists with a `false` completion
-      result = case.getCondition() and
-      c = specificBoolean(false)
-      or
-      // Case pattern exits with a non-match
-      result = case.getPattern() and
-      c = TRec(TLastRecSpecificNegCompletion(any(MatchingCompletion mc | mc.isMatch())))
-      or
-      // Case body exits with any completion
-      result = case.getBody() and
-      c = TRec(TLastRecAnyCompletion())
-    )
-  or
-  exists(LoopStmt ls |
-    cfe = ls and
-    not ls instanceof ForeachStmt
-  |
-    // Condition exits with a false completion
-    result = ls.getCondition() and
-    c = specificBoolean(false)
-    or
-    // Condition exits abnormally
-    result = ls.getCondition() and
-    c = TRec(TLastRecAbnormalCompletion())
-    or
-    // Body exits with a break completion; the loop exits normally
-    // Note: we use a `BreakNormalCompletion` rather than a `NormalCompletion`
-    // in order to be able to get the correct break label in the control flow
-    // graph from the `result` node to the node after the loop.
-    result = ls.getBody() and
-    c = TRec(TLastRecBreakCompletion())
-    or
-    // Body exits with a completion that does not continue the loop
-    result = ls.getBody() and
-    c = TRec(TLastRecNonContinueCompletion())
+  exists(ControlFlowElement cfe |
+    cft.propagatesAbnormal(cfe) and
+    last(cfe, last, c) and
+    not c instanceof NormalCompletion
   )
-  or
-  cfe =
-    any(ForeachStmt fs |
-      // Iterator expression exits abnormally
-      result = fs.getIterableExpr() and
-      c = TRec(TLastRecAbnormalCompletion())
-      or
-      // Emptiness test exits with no more elements
-      result = fs and
-      c = TSelf(any(EmptinessCompletion ec | ec.isEmpty()))
-      or
-      // Body exits with a break completion; the loop exits normally
-      // Note: we use a `BreakNormalCompletion` rather than a `NormalCompletion`
-      // in order to be able to get the correct break label in the control flow
-      // graph from the `result` node to the node after the loop.
-      result = fs.getBody() and
-      c = TRec(TLastRecBreakCompletion())
-      or
-      // Body exits abnormally
-      result = fs.getBody() and
-      c = TRec(TLastRecLoopBodyAbnormal())
-    )
-  or
-  cfe =
-    any(TryStmt ts |
-      // If the `finally` block completes abnormally, take the completion of
-      // the `finally` block itself
-      result = ts.getFinally() and
-      c = TRec(TLastRecAbnormalCompletion())
-    )
-  or
-  cfe =
-    any(SpecificCatchClause scc |
-      // Last element of `catch` block
-      result = scc.getBlock() and
-      c = TRec(TLastRecAnyCompletion())
-      or
-      not scc.isLast() and
-      (
-        // Incompatible exception type: clause itself
-        result = scc and
-        c = TSelf(any(MatchingCompletion mc | mc.isNonMatch()))
-        or
-        // Incompatible filter
-        result = scc.getFilterClause() and
-        c = specificBoolean(false)
-      )
-    )
-  or
-  cfe =
-    any(JumpStmt js |
-      // Post-order: element itself
-      result = js and
-      c = getValidSelfCompletion(result)
-      or
-      // Child exits abnormally
-      result = js.getChild(0) and
-      c = TRec(TLastRecAbnormalCompletion())
-    )
-  or
-  cfe =
-    any(QualifiedWriteAccess qwa |
-      // Skip the access in a qualified write access
-      result = getExprChildElement(qwa, getLastChildElement(qwa)) and
-      c = TRec(TLastRecAnyCompletion())
-      or
-      // A child exits abnormally
-      result = getExprChildElement(qwa, _) and
-      c = TRec(TLastRecAbnormalCompletion())
-    )
-  or
-  cfe =
-    any(AccessorWrite aw |
-      // Post-order: element itself
-      result = aw and
-      c = getValidSelfCompletion(result)
-      or
-      // A child exits abnormally
-      result = getExprChildElement(aw, _) and
-      c = TRec(TLastRecAbnormalCompletion())
-      or
-      // An accessor call exits abnormally
-      result = aw.getCall(_) and
-      c =
-        TSelf(any(Completion comp | comp.isValidFor(result) and not comp instanceof NormalCompletion))
-    )
 }
 
 pragma[noinline]
@@ -756,115 +102,1280 @@ private LabeledStmt getLabledStmt(string label, Callable c) {
   label = result.getLabel()
 }
 
+pragma[nomagic]
+private predicate goto(ControlFlowElement cfe, GotoCompletion gc, string label, Callable enclosing) {
+  last(_, cfe, gc) and
+  // Special case: when a `goto` happens inside a `try` statement with a
+  // `finally` block, flow does not go directly to the target, but instead
+  // to the `finally` block (and from there possibly to the target)
+  not cfe = any(Statements::TryStmtTree t | t.hasFinally()).getBlockOrCatchFinallyPred(_) and
+  label = gc.getLabel() and
+  enclosing = cfe.getEnclosingCallable()
+}
+
 /**
- * Gets a potential last element executed within control flow element `cfe`,
- * as well as its completion.
- *
- * For example, if `cfe` is `A || B` then both `A` and `B` are potential
- * last elements with Boolean completions.
+ * Holds if `succ` is a control flow successor for `pred`, given that `pred`
+ * finishes with completion `c`.
  */
-ControlFlowElement last(ControlFlowElement cfe, Completion c) {
-  result = lastNonRec(cfe, TSelf(c))
+pragma[nomagic]
+predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+  any(ControlFlowTree cft).succ(pred, succ, c)
   or
-  result = lastRecSpecific(cfe, c, c)
+  exists(Constructor con, InitializerSplitting::InitializedInstanceMember m, int i |
+    last(m.getInitializer(), pred, c) and
+    c instanceof NormalCompletion and
+    InitializerSplitting::constructorInitializeOrder(con, m, i)
+  |
+    // Flow from one member initializer to the next
+    exists(InitializerSplitting::InitializedInstanceMember next |
+      InitializerSplitting::constructorInitializeOrder(con, next, i + 1) and
+      first(next.getInitializer(), succ)
+    )
+    or
+    // Flow from last member initializer to constructor body
+    m = InitializerSplitting::lastConstructorInitializer(con) and
+    first(con.getBody(), succ)
+  )
   or
-  exists(TLastRecComputation rec, Completion c0 | result = lastRec(rec, cfe, c0) |
-    rec = TLastRecSpecificNegCompletion(any(Completion c1 | c1 != c0)) and
-    c = c0
+  // Flow from element with `goto` completion to first element of relevant
+  // target
+  exists(string label, Callable enclosing |
+    goto(pred, c, label, enclosing) and
+    first(getLabledStmt(label, enclosing), succ)
+  )
+}
+
+/** Holds if `first` is first executed when entering `scope`. */
+predicate succEntry(@top_level_exprorstmt_parent scope, ControlFlowElement first) {
+  scope =
+    any(Callable c |
+      if exists(c.(Constructor).getInitializer())
+      then first(c.(Constructor).getInitializer(), first)
+      else
+        if InitializerSplitting::constructorInitializes(c, _)
+        then
+          first(any(InitializerSplitting::InitializedInstanceMember m |
+              InitializerSplitting::constructorInitializeOrder(c, m, 0)
+            ).getInitializer(), first)
+        else first(c.getBody(), first)
+    )
+  or
+  expr_parent_top_level_adjusted(any(Expr e | first(e, first)), _, scope) and
+  not scope instanceof Callable and
+  not scope instanceof InitializerSplitting::InitializedInstanceMember
+}
+
+/** Holds if `scope` is exited when `last` finishes with completion `c`. */
+predicate succExit(ControlFlowElement last, Callable scope, Completion c) {
+  last(scope.getBody(), last, c) and
+  not c instanceof GotoCompletion
+  or
+  exists(InitializerSplitting::InitializedInstanceMember m |
+    m = InitializerSplitting::lastConstructorInitializer(scope) and
+    last(m.getInitializer(), last, c) and
+    not scope.hasBody()
+  )
+}
+
+/**
+ * A control flow element where the children are evaluated following a
+ * standard left-to-right evaluation. The actual evaluation order is
+ * determined by the predicate `getChildElement()`.
+ */
+abstract private class StandardElement extends ControlFlowTree {
+  /** Gets the `i`th child element, in order of evaluation, starting from 0. */
+  abstract ControlFlowElement getChildElement(int i);
+
+  /** Gets the first child element of this element. */
+  final ControlFlowElement getFirstChild() { result = this.getChildElement(0) }
+
+  /** Holds if this element has no children. */
+  final predicate isLeafElement() { not exists(this.getFirstChild()) }
+
+  /** Gets the last child element of this element. */
+  final ControlFlowTree getLastChild() {
+    exists(int last |
+      result = this.getChildElement(last) and
+      not exists(this.getChildElement(last + 1))
+    )
+  }
+
+  final override predicate propagatesAbnormal(ControlFlowElement child) {
+    child = this.getChildElement(_)
+  }
+
+  override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    exists(int i |
+      last(this.getChildElement(i), pred, c) and
+      first(this.getChildElement(i + 1), succ) and
+      c instanceof NormalCompletion
+    )
+  }
+}
+
+abstract private class PreOrderTree extends ControlFlowTree {
+  final override predicate first(ControlFlowElement first) { first = this }
+}
+
+abstract private class PostOrderTree extends ControlFlowTree {
+  override predicate last(ControlFlowElement last, Completion c) {
+    last = this and
+    c.isValidFor(last)
+  }
+}
+
+abstract private class SwitchTree extends ControlFlowTree, Switch {
+  Expr expr;
+
+  SwitchTree() { expr = this.getExpr() }
+
+  override predicate propagatesAbnormal(ControlFlowElement child) { child = expr }
+
+  override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    // Flow from last element of switch expression to first element of first case
+    last(expr, pred, c) and
+    c instanceof NormalCompletion and
+    first(this.getCase(0), succ)
     or
-    rec = TLastRecAnyCompletion() and c = c0
+    // Flow from last element of case pattern to next case
+    exists(Case case, int i | case = this.getCase(i) |
+      last(case.getPattern(), pred, c) and
+      c.(MatchingCompletion).isNonMatch() and
+      first(this.getCase(i + 1), succ)
+    )
     or
-    rec = TLastRecNormalCompletion() and
-    c0 instanceof NormalCompletion and
-    c = c0
+    // Flow from last element of condition to next case
+    exists(Case case, int i | case = this.getCase(i) |
+      last(case.getCondition(), pred, c) and
+      c instanceof FalseCompletion and
+      first(this.getCase(i + 1), succ)
+    )
+  }
+}
+
+abstract private class CaseTree extends ControlFlowTree, Case {
+  PatternExpr pattern;
+  ControlFlowElement body;
+
+  CaseTree() { pattern = this.getPattern() and body = this.getBody() }
+
+  final override predicate propagatesAbnormal(ControlFlowElement child) {
+    child in [pattern, this.getCondition().(ControlFlowElement), body]
+  }
+
+  override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    last(pattern, pred, c) and
+    c.(MatchingCompletion).isMatch() and
+    (
+      if exists(this.getCondition())
+      then
+        // Flow from the last element of pattern to the condition
+        first(this.getCondition(), succ)
+      else
+        // Flow from last element of pattern to first element of body
+        first(body, succ)
+    )
     or
-    rec = TLastRecAbnormalCompletion() and
-    not c0 instanceof NormalCompletion and
-    c = c0
+    // Flow from last element of condition to first element of body
+    last(this.getCondition(), pred, c) and
+    c instanceof TrueCompletion and
+    first(body, succ)
+  }
+}
+
+module Expressions {
+  /** An expression that should not be included in the control flow graph. */
+  abstract private class NoNodeExpr extends Expr { }
+
+  private class SimpleNoNodeExpr extends NoNodeExpr {
+    SimpleNoNodeExpr() {
+      this instanceof TypeAccess and
+      not this = any(PatternMatch pm).getPattern()
+    }
+  }
+
+  /** A write access that is not also a read access. */
+  private class WriteAccess extends AssignableWrite {
+    WriteAccess() {
+      // `x++` is both a read and write access
+      not this instanceof AssignableRead
+    }
+  }
+
+  private class WriteAccessNoNodeExpr extends WriteAccess, NoNodeExpr {
+    WriteAccessNoNodeExpr() {
+      // For example a write to a static field, `Foo.Bar = 0`.
+      forall(Expr e | e = this.getAChildExpr() | e instanceof NoNodeExpr)
+    }
+  }
+
+  private ControlFlowElement getExprChild0(Expr e, int i) {
+    not e instanceof NameOfExpr and
+    not e instanceof QualifiableExpr and
+    not e instanceof Assignment and
+    not e instanceof AnonymousFunctionExpr and
+    result = e.getChild(i)
     or
-    rec = TLastRecBreakCompletion() and
-    c0 instanceof BreakCompletion and
-    c instanceof BreakNormalCompletion
+    e = any(ExtensionMethodCall emc | result = emc.getArgument(i))
     or
-    rec = TLastRecSwitchAbnormalCompletion() and
-    not c instanceof BreakCompletion and
-    not c instanceof NormalCompletion and
-    not getLabledStmt(c.(GotoCompletion).getLabel(), cfe.getEnclosingCallable()) instanceof CaseStmt and
-    c = c0
-    or
-    rec = TLastRecInvalidOperationException() and
-    (c0.(MatchingCompletion).isNonMatch() or c0 instanceof FalseCompletion) and
-    c =
-      any(NestedCompletion nc |
-        nc.getInnerCompletion() = c0 and
-        nc
-            .getOuterCompletion()
-            .(ThrowCompletion)
-            .getExceptionClass()
-            .hasQualifiedName("System.InvalidOperationException")
+    e =
+      any(QualifiableExpr qe |
+        not qe instanceof ExtensionMethodCall and
+        result = qe.getChild(i)
       )
     or
-    rec = TLastRecNonContinueCompletion() and
-    not c0 instanceof BreakCompletion and
-    not c0.continuesLoop() and
-    c = c0
-    or
-    rec = TLastRecLoopBodyAbnormal() and
-    not c0 instanceof NormalCompletion and
-    not c0 instanceof ContinueCompletion and
-    not c0 instanceof BreakCompletion and
-    c = c0
-  )
-  or
-  // Last `catch` clause inherits throw completions from the `try` block,
-  // when the clause does not match
-  exists(SpecificCatchClause scc, ThrowCompletion tc |
-    scc = cfe and
-    scc.isLast() and
-    throwMayBeUncaught(scc, tc)
-  |
-    // Incompatible exception type: clause itself
-    result = scc and
-    exists(MatchingCompletion mc |
-      mc.isNonMatch() and
-      mc.isValidFor(scc) and
-      c =
-        any(NestedCompletion nc |
-          nc.getInnerCompletion() = mc and
-          nc.getOuterCompletion() = tc.getOuterCompletion()
-        )
+    e =
+      any(Assignment a |
+        // The left-hand side of an assignment is evaluated before the right-hand side
+        i = 0 and result = a.getLValue()
+        or
+        i = 1 and result = a.getRValue()
+      )
+  }
+
+  private ControlFlowElement getExprChild(Expr e, int i) {
+    result =
+      rank[i + 1](ControlFlowElement cfe, int j |
+        cfe = getExprChild0(e, j) and
+        not cfe instanceof NoNodeExpr
+      |
+        cfe order by j
+      )
+  }
+
+  private ControlFlowElement getLastExprChild(Expr e) {
+    exists(int last |
+      result = getExprChild(e, last) and
+      not exists(getExprChild(e, last + 1))
     )
-    or
-    // Incompatible filter
-    exists(FalseCompletion fc |
-      result = lastSpecificCatchClauseFilterClause(scc, fc) and
-      c =
-        any(NestedCompletion nc |
-          nc.getInnerCompletion() = fc and
-          nc.getOuterCompletion() = tc.getOuterCompletion()
+  }
+
+  private class StandardExpr extends StandardElement, PostOrderTree, Expr {
+    StandardExpr() {
+      // The following expressions need special treatment
+      not this instanceof LogicalNotExpr and
+      not this instanceof LogicalAndExpr and
+      not this instanceof LogicalOrExpr and
+      not this instanceof NullCoalescingExpr and
+      not this instanceof ConditionalExpr and
+      not this instanceof AssignOperationWithExpandedAssignment and
+      not this instanceof ConditionallyQualifiedExpr and
+      not this instanceof ThrowExpr and
+      not this instanceof ObjectCreation and
+      not this instanceof ArrayCreation and
+      not this instanceof QualifiedWriteAccess and
+      not this instanceof AccessorWrite and
+      not this instanceof NoNodeExpr and
+      not this instanceof SwitchExpr and
+      not this instanceof SwitchCaseExpr and
+      not this instanceof ConstructorInitializer
+    }
+
+    final override ControlFlowTree getChildElement(int i) { result = getExprChild(this, i) }
+
+    final override predicate first(ControlFlowElement first) {
+      first(this.getFirstChild(), first)
+      or
+      not exists(this.getFirstChild()) and
+      first = this
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      StandardElement.super.succ(pred, succ, c)
+      or
+      last(this.getLastChild(), pred, c) and
+      succ = this and
+      c instanceof NormalCompletion
+    }
+  }
+
+  /**
+   * A qualified write access. In a qualified write access, the access itself is
+   * not evaluated, only the qualifier and the indexer arguments (if any).
+   */
+  private class QualifiedWriteAccess extends WriteAccess, QualifiableExpr, ControlFlowTree {
+    QualifiedWriteAccess() {
+      this.hasQualifier()
+      or
+      // Member initializers like
+      // ```csharp
+      // new Dictionary<int, string>() { [0] = "Zero", [1] = "One", [2] = "Two" }
+      // ```
+      // need special treatment, because the the accesses `[0]`, `[1]`, and `[2]`
+      // have no qualifier.
+      this = any(MemberInitializer mi).getLValue()
+    }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = getExprChild(this, _)
+    }
+
+    final override predicate first(ControlFlowElement first) { first(getExprChild(this, 0), first) }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Skip the access in a qualified write access
+      last(getLastExprChild(this), last, c)
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      exists(int i |
+        last(getExprChild(this, i), pred, c) and
+        c instanceof NormalCompletion and
+        first(getExprChild(this, i + 1), succ)
+      )
+    }
+  }
+
+  /** A normal or a (potential) dynamic call to an accessor. */
+  private class StatOrDynAccessorCall extends Expr {
+    StatOrDynAccessorCall() {
+      this instanceof AccessorCall or
+      this instanceof DynamicAccess
+    }
+  }
+
+  /**
+   * An expression that writes via an accessor call, for example `x.Prop = 0`,
+   * where `Prop` is a property.
+   *
+   * Accessor writes need special attention, because we need to model the fact
+   * that the accessor is called *after* the assigned value has been evaluated.
+   * In the example above, this means we want a CFG that looks like
+   *
+   * ```csharp
+   * x -> 0 -> set_Prop -> x.Prop = 0
+   * ```
+   */
+  class AccessorWrite extends Expr, PostOrderTree {
+    AssignableDefinition def;
+
+    AccessorWrite() {
+      def.getExpr() = this and
+      def.getTargetAccess().(WriteAccess) instanceof StatOrDynAccessorCall and
+      not this instanceof AssignOperationWithExpandedAssignment
+    }
+
+    /**
+     * Gets the `i`th accessor being called in this write. More than one call
+     * can happen in tuple assignments.
+     */
+    StatOrDynAccessorCall getCall(int i) {
+      result =
+        rank[i + 1](AssignableDefinitions::TupleAssignmentDefinition tdef |
+          tdef.getExpr() = this and tdef.getTargetAccess() instanceof StatOrDynAccessorCall
+        |
+          tdef order by tdef.getEvaluationOrder()
+        ).getTargetAccess()
+      or
+      i = 0 and
+      result = def.getTargetAccess() and
+      not def instanceof AssignableDefinitions::TupleAssignmentDefinition
+    }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = getExprChild(this, _)
+      or
+      child = this.getCall(_)
+    }
+
+    final override predicate first(ControlFlowElement first) { first(getExprChild(this, 0), first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Standard left-to-right evaluation
+      exists(int i |
+        last(getExprChild(this, i), pred, c) and
+        c instanceof NormalCompletion and
+        first(getExprChild(this, i + 1), succ)
+      )
+      or
+      // Flow from last element of last child to first accessor call
+      last(getLastExprChild(this), pred, c) and
+      succ = this.getCall(0) and
+      c instanceof NormalCompletion
+      or
+      // Flow from one call to the next
+      exists(int i | pred = this.getCall(i) |
+        succ = this.getCall(i + 1) and
+        c.isValidFor(pred) and
+        c instanceof NormalCompletion
+      )
+      or
+      // Post-order: flow from last call to element itself
+      exists(int last | last = max(int i | exists(this.getCall(i))) |
+        pred = this.getCall(last) and
+        succ = this and
+        c.isValidFor(pred) and
+        c instanceof NormalCompletion
+      )
+    }
+  }
+
+  private class LogicalNotExprTree extends PostOrderTree, LogicalNotExpr {
+    private Expr operand;
+
+    LogicalNotExprTree() { operand = this.getOperand() }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getOperand()
+    }
+
+    final override predicate first(ControlFlowElement first) { first(operand, first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      succ = this and
+      (
+        last(operand, pred, c.(BooleanCompletion).getDual())
+        or
+        last(operand, pred, c) and
+        c instanceof SimpleCompletion
+      )
+    }
+  }
+
+  private class LogicalAndExprTree extends PostOrderTree, LogicalAndExpr {
+    private Expr left;
+    private Expr right;
+
+    LogicalAndExprTree() { left = this.getLeftOperand() and right = this.getRightOperand() }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) { child in [left, right] }
+
+    final override predicate first(ControlFlowElement first) { first(left, first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of left operand to first element of right operand
+      last(left, pred, c) and
+      c instanceof TrueCompletion and
+      first(right, succ)
+      or
+      // Post-order: flow from last element of left operand to element itself
+      last(left, pred, c) and
+      c instanceof FalseCompletion and
+      succ = this
+      or
+      // Post-order: flow from last element of right operand to element itself
+      last(right, pred, c) and
+      c instanceof NormalCompletion and
+      succ = this
+    }
+  }
+
+  private class LogicalOrExprTree extends PostOrderTree, LogicalOrExpr {
+    private Expr left;
+    private Expr right;
+
+    LogicalOrExprTree() { left = this.getLeftOperand() and right = this.getRightOperand() }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) { child in [left, right] }
+
+    final override predicate first(ControlFlowElement first) { first(left, first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of left operand to first element of right operand
+      last(left, pred, c) and
+      c instanceof FalseCompletion and
+      first(right, succ)
+      or
+      // Post-order: flow from last element of left operand to element itself
+      last(left, pred, c) and
+      c instanceof TrueCompletion and
+      succ = this
+      or
+      // Post-order: flow from last element of right operand to element itself
+      last(right, pred, c) and
+      c instanceof NormalCompletion and
+      succ = this
+    }
+  }
+
+  private class NullCoalescingExprTree extends PostOrderTree, NullCoalescingExpr {
+    private Expr left;
+    private Expr right;
+
+    NullCoalescingExprTree() { left = this.getLeftOperand() and right = this.getRightOperand() }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) { child in [left, right] }
+
+    final override predicate first(ControlFlowElement first) { first(left, first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of left operand to first element of right operand
+      last(left, pred, c) and
+      c.(NullnessCompletion).isNull() and
+      first(right, succ)
+      or
+      // Post-order: flow from last element of left operand to element itself
+      last(left, pred, c) and
+      succ = this and
+      c instanceof NormalCompletion and
+      not c.(NullnessCompletion).isNull()
+      or
+      // Post-order: flow from last element of right operand to element itself
+      last(right, pred, c) and
+      c instanceof NormalCompletion and
+      succ = this
+    }
+  }
+
+  private class ConditionalExprTree extends PostOrderTree, ConditionalExpr {
+    private Expr condition;
+    private Expr thenBranch;
+    private Expr elseBranch;
+
+    ConditionalExprTree() {
+      condition = this.getCondition() and
+      thenBranch = this.getThen() and
+      elseBranch = this.getElse()
+    }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child in [condition, thenBranch, elseBranch]
+    }
+
+    final override predicate first(ControlFlowElement first) { first(condition, first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of condition to first element of then branch
+      last(condition, pred, c) and
+      c instanceof TrueCompletion and
+      first(thenBranch, succ)
+      or
+      // Flow from last element of condition to first element of else branch
+      last(condition, pred, c) and
+      c instanceof FalseCompletion and
+      first(elseBranch, succ)
+      or
+      // Post-order: flow from last element of a branch to element itself
+      last([thenBranch, elseBranch], pred, c) and
+      c instanceof NormalCompletion and
+      succ = this
+    }
+  }
+
+  /**
+   * An assignment operation that has an expanded version. We use the expanded
+   * version in the control flow graph in order to get better data flow / taint
+   * tracking.
+   */
+  private class AssignOperationWithExpandedAssignment extends AssignOperation, ControlFlowTree {
+    private Expr expanded;
+
+    AssignOperationWithExpandedAssignment() { expanded = this.getExpandedAssignment() }
+
+    final override predicate first(ControlFlowElement first) { first(expanded, first) }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      last = expanded and
+      last(expanded, last, c)
+    }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) { none() }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      none()
+    }
+  }
+
+  /** A conditionally qualified expression. */
+  private class ConditionallyQualifiedExpr extends PostOrderTree, QualifiableExpr {
+    private Expr qualifier;
+
+    ConditionallyQualifiedExpr() { this.isConditional() and qualifier = getExprChild(this, 0) }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) { child = qualifier }
+
+    final override predicate first(ControlFlowElement first) { first(qualifier, first) }
+
+    pragma[nomagic]
+    private predicate lastQualifier(ControlFlowElement last, Completion c) {
+      last(qualifier, last, c)
+    }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      PostOrderTree.super.last(last, c)
+      or
+      // Qualifier exits with a `null` completion
+      lastQualifier(last, c) and
+      c.(NullnessCompletion).isNull()
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      exists(int i |
+        last(getExprChild(this, i), pred, c) and
+        c instanceof NormalCompletion and
+        if i = 0 then c.(NullnessCompletion).isNonNull() else any()
+      |
+        // Post-order: flow from last element of last child to element itself
+        i = max(int j | exists(getExprChild(this, j))) and
+        succ = this
+        or
+        // Standard left-to-right evaluation
+        first(getExprChild(this, i + 1), succ)
+      )
+    }
+  }
+
+  private class ThrowExprTree extends PostOrderTree, ThrowExpr {
+    private Expr expr;
+
+    ThrowExprTree() { expr = this.getExpr() }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) { child = expr }
+
+    final override predicate first(ControlFlowElement first) { first(expr, first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      last(expr, pred, c) and
+      c instanceof NormalCompletion and
+      succ = this
+    }
+  }
+
+  private class ObjectCreationTree extends ControlFlowTree, ObjectCreation {
+    private Expr getObjectCreationArgument(int i) {
+      i >= 0 and
+      if this.hasInitializer()
+      then result = getExprChild(this, i + 1)
+      else result = getExprChild(this, i)
+    }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getObjectCreationArgument(_)
+    }
+
+    final override predicate first(ControlFlowElement first) {
+      first(this.getObjectCreationArgument(0), first)
+      or
+      not exists(this.getObjectCreationArgument(0)) and
+      first = this
+    }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Post-order: element itself (when no initializer)
+      last = this and
+      not this.hasInitializer() and
+      c.isValidFor(this)
+      or
+      // Last element of initializer
+      last(this.getInitializer(), last, c)
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of argument `i` to first element of argument `i+1`
+      exists(int i | last(this.getObjectCreationArgument(i), pred, c) |
+        first(this.getObjectCreationArgument(i + 1), succ) and
+        c instanceof NormalCompletion
+      )
+      or
+      // Flow from last element of last argument to self
+      exists(int last | last = max(int i | exists(this.getObjectCreationArgument(i))) |
+        last(this.getObjectCreationArgument(last), pred, c) and
+        succ = this and
+        c instanceof NormalCompletion
+      )
+      or
+      // Flow from self to first element of initializer
+      pred = this and
+      first(this.getInitializer(), succ) and
+      c instanceof SimpleCompletion
+    }
+  }
+
+  private class ArrayCreationTree extends ControlFlowTree, ArrayCreation {
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getALengthArgument()
+    }
+
+    final override predicate first(ControlFlowElement first) {
+      // First element of first length argument
+      first(this.getLengthArgument(0), first)
+      or
+      // No length argument: element itself
+      not exists(this.getLengthArgument(0)) and
+      first = this
+    }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Post-order: element itself (when no initializer)
+      last = this and
+      not this.hasInitializer() and
+      c.isValidFor(this)
+      or
+      // Last element of initializer
+      last(this.getInitializer(), last, c)
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from self to first element of initializer
+      pred = this and
+      first(this.getInitializer(), succ) and
+      c instanceof SimpleCompletion
+      or
+      exists(int i |
+        last(this.getLengthArgument(i), pred, c) and
+        c instanceof SimpleCompletion
+      |
+        // Flow from last length argument to self
+        i = max(int j | exists(this.getLengthArgument(j))) and
+        succ = this
+        or
+        // Flow from one length argument to the next
+        first(this.getLengthArgument(i + 1), succ)
+      )
+    }
+  }
+
+  private class SwitchExprTree extends PostOrderTree, SwitchTree, SwitchExpr {
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      SwitchTree.super.propagatesAbnormal(child)
+      or
+      child = this.getACase()
+    }
+
+    final override predicate first(ControlFlowElement first) { first(expr, first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      SwitchTree.super.succ(pred, succ, c)
+      or
+      last(this.getACase(), pred, c) and
+      succ = this and
+      c instanceof NormalCompletion
+    }
+  }
+
+  private class SwitchCaseExprTree extends PostOrderTree, CaseTree, SwitchCaseExpr {
+    final override predicate first(ControlFlowElement first) { first(pattern, first) }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      PostOrderTree.super.last(last, c)
+      or
+      // Last case exists with a non-match
+      exists(SwitchExpr se, int i, ConditionalCompletion cc |
+        this = se.getCase(i) and
+        not this.matchesAll() and
+        not exists(se.getCase(i + 1)) and
+        last([pattern, this.getCondition()], last, cc) and
+        (cc.(MatchingCompletion).isNonMatch() or cc instanceof FalseCompletion) and
+        c =
+          any(NestedCompletion nc |
+            nc.getInnerCompletion() = cc and
+            nc
+                .getOuterCompletion()
+                .(ThrowCompletion)
+                .getExceptionClass()
+                .hasQualifiedName("System.InvalidOperationException")
+          )
+      )
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      CaseTree.super.succ(pred, succ, c)
+      or
+      last(body, pred, c) and
+      succ = this and
+      c instanceof NormalCompletion
+    }
+  }
+
+  private class ConstructorInitializerTree extends PostOrderTree, ConstructorInitializer {
+    private ControlFlowTree getChildElement(int i) { result = getExprChild(this, i) }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getChildElement(_)
+    }
+
+    final override predicate first(ControlFlowElement first) {
+      first(this.getChildElement(0), first)
+      or
+      not exists(this.getChildElement(0)) and
+      first = this
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Post-order: flow from last element of last child to element itself
+      exists(int lst |
+        lst = max(int i | exists(this.getChildElement(i))) and
+        last(this.getChildElement(lst), pred, c) and
+        succ = this and
+        c instanceof NormalCompletion
+      )
+      or
+      // Standard left-to-right evaluation
+      exists(int i |
+        last(this.getChildElement(i), pred, c) and
+        c instanceof NormalCompletion and
+        first(this.getChildElement(i + 1), succ)
+      )
+      or
+      exists(Constructor con |
+        last(this, pred, c) and
+        con = this.getConstructor() and
+        c instanceof NormalCompletion
+      |
+        // Flow from constructor initializer to first member initializer
+        exists(InitializerSplitting::InitializedInstanceMember m |
+          InitializerSplitting::constructorInitializeOrder(con, m, 0)
+        |
+          first(m.getInitializer(), succ)
         )
-    )
-  )
-  or
-  cfe =
-    any(TryStmt ts |
-      result = getBlockOrCatchFinallyPred(ts, c) and
+        or
+        // Flow from constructor initializer to first element of constructor body
+        not InitializerSplitting::constructorInitializeOrder(con, _, _) and
+        first(con.getBody(), succ)
+      )
+    }
+  }
+}
+
+module Statements {
+  private class StandardStmt extends StandardElement, PreOrderTree, Stmt {
+    StandardStmt() {
+      // The following statements need special treatment
+      not this instanceof IfStmt and
+      not this instanceof SwitchStmt and
+      (this instanceof DefaultCase or not this instanceof CaseStmt) and
+      not this instanceof LoopStmt and
+      not this instanceof TryStmt and
+      not this instanceof SpecificCatchClause and
+      not this instanceof JumpStmt
+    }
+
+    final override ControlFlowTree getChildElement(int i) {
+      not this instanceof GeneralCatchClause and
+      not this instanceof FixedStmt and
+      not this instanceof UsingBlockStmt and
+      not this instanceof DefaultCase and
+      result = this.getChild(i)
+      or
+      this = any(GeneralCatchClause gcc | i = 0 and result = gcc.getBlock())
+      or
+      this =
+        any(FixedStmt fs |
+          result = fs.getVariableDeclExpr(i)
+          or
+          result = fs.getBody() and
+          i = max(int j | exists(fs.getVariableDeclExpr(j))) + 1
+        )
+      or
+      this =
+        any(UsingBlockStmt us |
+          if exists(us.getExpr())
+          then (
+            result = us.getExpr() and
+            i = 0
+            or
+            result = us.getBody() and
+            i = 1
+          ) else (
+            result = us.getVariableDeclExpr(i)
+            or
+            result = us.getBody() and
+            i = max(int j | exists(us.getVariableDeclExpr(j))) + 1
+          )
+        )
+      or
+      result = this.(DefaultCase).getStmt() and
+      i = 0
+    }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      last(this.getLastChild(), last, c)
+      or
+      this.isLeafElement() and
+      last = this and
+      c.isValidFor(this)
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      StandardElement.super.succ(pred, succ, c)
+      or
+      pred = this and
+      first(this.getFirstChild(), succ) and
+      c instanceof SimpleCompletion
+    }
+  }
+
+  private class IfStmtTree extends PreOrderTree, IfStmt {
+    private Expr condition;
+
+    IfStmtTree() { condition = this.getCondition() }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) { child = condition }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Condition exits with a false completion and there is no `else` branch
+      last(condition, last, c) and
+      c instanceof FalseCompletion and
+      not exists(this.getElse())
+      or
+      // Then branch exits with any completion
+      last(this.getThen(), last, c)
+      or
+      // Else branch exits with any completion
+      last(this.getElse(), last, c)
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Pre-order: flow from statement itself to first element of condition
+      pred = this and
+      first(condition, succ) and
+      c instanceof SimpleCompletion
+      or
+      last(condition, pred, c) and
+      (
+        // Flow from last element of condition to first element of then branch
+        c instanceof TrueCompletion and first(this.getThen(), succ)
+        or
+        // Flow from last element of condition to first element of else branch
+        c instanceof FalseCompletion and first(this.getElse(), succ)
+      )
+    }
+  }
+
+  private class SwitchStmtTree extends PreOrderTree, SwitchTree, SwitchStmt {
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Switch expression exits normally and there are no cases
+      not exists(this.getACase()) and
+      last(expr, last, c) and
+      c instanceof NormalCompletion
+      or
+      // A statement exits with a `break` completion
+      last(this.getStmt(_), last, any(BreakCompletion bc)) and
+      c instanceof BreakNormalCompletion
+      or
+      // A statement exits abnormally
+      last(this.getStmt(_), last, c) and
+      not c instanceof BreakCompletion and
+      not c instanceof NormalCompletion and
+      not getLabledStmt(c.(GotoCompletion).getLabel(), this.getEnclosingCallable()) instanceof
+        CaseStmt
+      or
+      // Last case exits with a non-match
+      exists(CaseStmt cs, int last_ |
+        last_ = max(int i | exists(this.getCase(i))) and
+        cs = this.getCase(last_)
+      |
+        last(cs.getPattern(), last, c) and
+        not c.(MatchingCompletion).isMatch()
+        or
+        last(cs.getCondition(), last, c) and
+        c instanceof FalseCompletion
+      )
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      SwitchTree.super.succ(pred, succ, c)
+      or
+      // Pre-order: flow from statement itself to first switch expression
+      pred = this and
+      first(expr, succ) and
+      c instanceof SimpleCompletion
+      or
+      // Flow from last element of non-`case` statement `i` to first element of statement `i+1`
+      exists(int i | last(this.getStmt(i), pred, c) |
+        not this.getStmt(i) instanceof CaseStmt and
+        c instanceof NormalCompletion and
+        first(this.getStmt(i + 1), succ)
+      )
+      or
+      // Flow from last element of `case` statement `i` to first element of statement `i+1`
+      exists(int i | last(this.getStmt(i).(CaseStmt).getBody(), pred, c) |
+        c instanceof NormalCompletion and
+        first(this.getStmt(i + 1), succ)
+      )
+    }
+  }
+
+  private class CaseStmtTree extends PreOrderTree, CaseTree, CaseStmt {
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Condition exists with a `false` completion
+      last(this.getCondition(), last, c) and
+      c instanceof FalseCompletion
+      or
+      // Case pattern exits with a non-match
+      last(pattern, last, c) and
+      not c.(MatchingCompletion).isMatch()
+      or
+      // Case body exits with any completion
+      last(body, last, c)
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      CaseTree.super.succ(pred, succ, c)
+      or
+      pred = this and
+      first(pattern, succ) and
+      c instanceof SimpleCompletion
+    }
+  }
+
+  abstract private class LoopStmtTree extends PreOrderTree, LoopStmt {
+    Stmt body;
+
+    LoopStmtTree() { body = this.getBody() }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getCondition()
+    }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Condition exits with a false completion
+      last(this.getCondition(), last, c) and
+      c instanceof FalseCompletion
+      or
+      // Body exits with a break completion; the loop exits normally
+      // Note: we use a `BreakNormalCompletion` rather than a `NormalCompletion`
+      // in order to be able to get the correct break label in the control flow
+      // graph from the `result` node to the node after the loop.
+      last(body, last, any(BreakCompletion bc)) and
+      c instanceof BreakNormalCompletion
+      or
+      // Body exits with a completion that does not continue the loop
+      last(body, last, c) and
+      not c instanceof BreakCompletion and
+      not c.continuesLoop()
+    }
+
+    override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of condition to first element of loop body
+      last(this.getCondition(), pred, c) and
+      c instanceof TrueCompletion and
+      first(body, succ)
+      or
+      // Flow from last element of loop body back to first element of condition
+      not this instanceof ForStmt and
+      last(body, pred, c) and
+      c.continuesLoop() and
+      first(this.getCondition(), succ)
+    }
+  }
+
+  private class WhileStmtTree extends LoopStmtTree, WhileStmt {
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      LoopStmtTree.super.succ(pred, succ, c)
+      or
+      pred = this and
+      first(this.getCondition(), succ) and
+      c instanceof SimpleCompletion
+    }
+  }
+
+  private class DoStmtTree extends LoopStmtTree, DoStmt {
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      LoopStmtTree.super.succ(pred, succ, c)
+      or
+      pred = this and
+      first(body, succ) and
+      c instanceof SimpleCompletion
+    }
+  }
+
+  private class ForStmtTree extends LoopStmtTree, ForStmt {
+    /** Gets the condition if it exists, otherwise the body. */
+    private ControlFlowElement getConditionOrBody() {
+      result = this.getCondition()
+      or
+      not exists(this.getCondition()) and
+      result = body
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      LoopStmtTree.super.succ(pred, succ, c)
+      or
+      // Pre-order: flow from statement itself to first element of first initializer/
+      // condition/loop body
+      exists(ControlFlowElement next |
+        pred = this and
+        first(next, succ) and
+        c instanceof SimpleCompletion
+      |
+        next = this.getInitializer(0)
+        or
+        not exists(this.getInitializer(0)) and
+        next = this.getConditionOrBody()
+      )
+      or
+      // Flow from last element of initializer `i` to first element of initializer `i+1`
+      exists(int i | last(this.getInitializer(i), pred, c) |
+        c instanceof NormalCompletion and
+        first(this.getInitializer(i + 1), succ)
+      )
+      or
+      // Flow from last element of last initializer to first element of condition/loop body
+      exists(int last | last = max(int i | exists(this.getInitializer(i))) |
+        last(this.getInitializer(last), pred, c) and
+        c instanceof NormalCompletion and
+        first(this.getConditionOrBody(), succ)
+      )
+      or
+      // Flow from last element of condition into first element of loop body
+      last(this.getCondition(), pred, c) and
+      c instanceof TrueCompletion and
+      first(body, succ)
+      or
+      // Flow from last element of loop body to first element of update/condition/self
+      exists(ControlFlowElement next |
+        last(body, pred, c) and
+        c.continuesLoop() and
+        first(next, succ) and
+        if exists(this.getUpdate(0))
+        then next = this.getUpdate(0)
+        else next = this.getConditionOrBody()
+      )
+      or
+      // Flow from last element of update to first element of next update/condition/loop body
+      exists(ControlFlowElement next, int i |
+        last(this.getUpdate(i), pred, c) and
+        c instanceof NormalCompletion and
+        first(next, succ) and
+        if exists(this.getUpdate(i + 1))
+        then next = this.getUpdate(i + 1)
+        else next = this.getConditionOrBody()
+      )
+    }
+  }
+
+  private class ForeachStmtTree extends ControlFlowTree, ForeachStmt {
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getIterableExpr()
+    }
+
+    final override predicate first(ControlFlowElement first) {
+      // Unlike most other statements, `foreach` statements are not modelled in
+      // pre-order, because we use the `foreach` node itself to represent the
+      // emptiness test that determines whether to execute the loop body
+      first(this.getIterableExpr(), first)
+    }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Emptiness test exits with no more elements
+      last = this and
+      c.(EmptinessCompletion).isEmpty()
+      or
+      // Body exits with a break completion; the loop exits normally
+      // Note: we use a `BreakNormalCompletion` rather than a `NormalCompletion`
+      // in order to be able to get the correct break label in the control flow
+      // graph from the `result` node to the node after the loop.
+      last(this.getBody(), last, any(BreakCompletion bc)) and
+      c instanceof BreakNormalCompletion
+      or
+      // Body exits abnormally
+      last(this.getBody(), last, c) and
+      not c instanceof NormalCompletion and
+      not c instanceof ContinueCompletion and
+      not c instanceof BreakCompletion
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from last element of iterator expression to emptiness test
+      last(this.getIterableExpr(), pred, c) and
+      c instanceof NormalCompletion and
+      succ = this
+      or
+      // Flow from emptiness test to first element of variable declaration/loop body
+      pred = this and
+      c = any(EmptinessCompletion ec | not ec.isEmpty()) and
+      (
+        first(this.getVariableDeclExpr(), succ)
+        or
+        first(this.getVariableDeclTuple(), succ)
+        or
+        not exists(this.getVariableDeclExpr()) and
+        not exists(this.getVariableDeclTuple()) and
+        first(this.getBody(), succ)
+      )
+      or
+      // Flow from last element of variable declaration to first element of loop body
+      (
+        last(this.getVariableDeclExpr(), pred, c) or
+        last(this.getVariableDeclTuple(), pred, c)
+      ) and
+      c instanceof SimpleCompletion and
+      first(this.getBody(), succ)
+      or
+      // Flow from last element of loop body back to emptiness test
+      last(this.getBody(), pred, c) and
+      c.continuesLoop() and
+      succ = this
+    }
+  }
+
+  pragma[nomagic]
+  private ControlFlowElement lastLastCatchClause(CatchClause cc, Completion c) {
+    cc.isLast() and
+    last(cc, result, c)
+  }
+
+  pragma[nomagic]
+  private ControlFlowElement lastCatchClauseBlock(CatchClause cc, Completion c) {
+    last(cc.getBlock(), result, c)
+  }
+
+  class TryStmtTree extends PreOrderTree, TryStmt {
+    ControlFlowTree body;
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getFinally()
+    }
+
+    /** Holds if `last` is a last element of the block of this `try` statement. */
+    pragma[nomagic]
+    predicate lastBlock(ControlFlowElement last, Completion c) { last(this.getBlock(), last, c) }
+
+    /**
+     * Gets a last element from a `try` or `catch` block of this `try` statement
+     * that may finish with completion `c`, such that control may be transferred
+     * to the `finally` block (if it exists).
+     */
+    pragma[nomagic]
+    ControlFlowElement getBlockOrCatchFinallyPred(Completion c) {
+      this.lastBlock(result, c) and
+      (
+        // Any non-throw completion from the `try` block will always continue directly
+        // to the `finally` block
+        not c instanceof ThrowCompletion
+        or
+        // Any completion from the `try` block will continue to the `finally` block
+        // when there are no catch clauses
+        not exists(this.getACatchClause())
+      )
+      or
+      // Last element from any of the `catch` clause blocks continues to the `finally` block
+      result = lastCatchClauseBlock(this.getACatchClause(), c)
+      or
+      // Last element of last `catch` clause continues to the `finally` block
+      result = lastLastCatchClause(this.getACatchClause(), c)
+    }
+
+    pragma[nomagic]
+    private predicate lastFinally0(ControlFlowElement last, Completion c) {
+      last(this.getFinally(), last, c)
+    }
+
+    pragma[nomagic]
+    private predicate lastFinally(
+      ControlFlowElement last, NormalCompletion finally, Completion outer
+    ) {
+      this.lastFinally0(last, finally) and
+      exists(this.getBlockOrCatchFinallyPred(any(Completion c0 | outer = c0.getOuterCompletion())))
+    }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      last = this.getBlockOrCatchFinallyPred(c) and
       (
         // If there is no `finally` block, last elements are from the body, from
         // the blocks of one of the `catch` clauses, or from the last `catch` clause
-        not ts.hasFinally()
+        not this.hasFinally()
         or
         // Exit completions ignore the `finally` block
         c instanceof ExitCompletion
       )
       or
-      result = lastTryStmtFinally(ts, c, any(NormalCompletion nc))
+      this.lastFinally(last, c, any(NormalCompletion nc))
       or
       // If the `finally` block completes normally, it inherits any non-normal
       // completion that was current before the `finally` block was entered
-      exists(NormalCompletion finally, Completion outer |
-        result = lastTryStmtFinally(ts, finally, outer)
-      |
+      exists(NormalCompletion finally, Completion outer | this.lastFinally(last, finally, outer) |
         c =
           any(NestedCompletion nc |
             nc.getInnerCompletion() = finally and nc.getOuterCompletion() = outer
@@ -873,685 +1384,181 @@ ControlFlowElement last(ControlFlowElement cfe, Completion c) {
         not finally instanceof ConditionalCompletion and
         c = outer
       )
-    )
-}
+    }
 
-/**
- * Gets a potential last element executed within control flow element `cfe`,
- * as well as its completion, where the last element of `cfe` is recursively
- * computed as specified by `rec`.
- */
-pragma[nomagic]
-private ControlFlowElement lastRec(TLastRecComputation rec, ControlFlowElement cfe, Completion c) {
-  result = last(lastNonRec(cfe, TRec(rec)), c)
-}
+    /**
+     * Gets an exception type that is thrown by `cfe` in the block of this `try`
+     * statement. Throw completion `c` matches the exception type.
+     */
+    ExceptionClass getAThrownException(ControlFlowElement cfe, ThrowCompletion c) {
+      this.lastBlock(cfe, c) and
+      result = c.getExceptionClass()
+    }
 
-pragma[nomagic]
-private ControlFlowElement lastRecSpecific(ControlFlowElement cfe, Completion c1, Completion c2) {
-  result = lastRec(TLastRecSpecificCompletion(c2), cfe, c1)
-}
-
-pragma[nomagic]
-private ControlFlowElement lastTryStmtBlock(TryStmt ts, Completion c) {
-  result = last(ts.getBlock(), c)
-}
-
-pragma[nomagic]
-private ControlFlowElement lastLastCatchClause(CatchClause cc, Completion c) {
-  cc.isLast() and
-  result = last(cc, c)
-}
-
-pragma[nomagic]
-private ControlFlowElement lastCatchClauseBlock(CatchClause cc, Completion c) {
-  result = last(cc.getBlock(), c)
-}
-
-private ControlFlowElement lastSpecificCatchClauseFilterClause(SpecificCatchClause scc, Completion c) {
-  result = last(scc.getFilterClause(), c)
-}
-
-/**
- * Gets a last element from a `try` or `catch` block of this `try` statement
- * that may finish with completion `c`, such that control may be transferred
- * to the `finally` block (if it exists).
- */
-pragma[nomagic]
-private ControlFlowElement getBlockOrCatchFinallyPred(TryStmt ts, Completion c) {
-  result = lastTryStmtBlock(ts, c) and
-  (
-    // Any non-throw completion from the `try` block will always continue directly
-    // to the `finally` block
-    not c instanceof ThrowCompletion
-    or
-    // Any completion from the `try` block will continue to the `finally` block
-    // when there are no catch clauses
-    not exists(ts.getACatchClause())
-  )
-  or
-  // Last element from any of the `catch` clause blocks continues to the `finally` block
-  result = lastCatchClauseBlock(ts.getACatchClause(), c)
-  or
-  // Last element of last `catch` clause continues to the `finally` block
-  result = lastLastCatchClause(ts.getACatchClause(), c)
-}
-
-pragma[nomagic]
-private ControlFlowElement lastTryStmtFinally0(TryStmt ts, Completion c) {
-  result = last(ts.getFinally(), c)
-}
-
-pragma[nomagic]
-ControlFlowElement lastTryStmtFinally(TryStmt ts, NormalCompletion finally, Completion outer) {
-  result = lastTryStmtFinally0(ts, finally) and
-  exists(getBlockOrCatchFinallyPred(ts, any(Completion c0 | outer = c0.getOuterCompletion())))
-}
-
-/**
- * Holds if the `try` block that catch clause `last` belongs to may throw an
- * exception of type `c`, where no `catch` clause is guaranteed to catch it.
- * The catch clause `last` is the last catch clause in the `try` statement
- * that it belongs to.
- */
-pragma[nomagic]
-private predicate throwMayBeUncaught(SpecificCatchClause last, ThrowCompletion c) {
-  exists(TryStmt ts |
-    ts = last.getTryStmt() and
-    exists(lastTryStmtBlock(ts, c)) and
-    not ts.getACatchClause() instanceof GeneralCatchClause and
-    forall(SpecificCatchClause scc | scc = ts.getACatchClause() |
-      scc.hasFilterClause()
-      or
-      not c.getExceptionClass().getABaseType*() = scc.getCaughtExceptionType()
-    ) and
-    last.isLast()
-  )
-}
-
-/**
- * Gets a control flow successor for control flow element `cfe`, given that
- * `cfe` finishes with completion `c`.
- */
-pragma[nomagic]
-ControlFlowElement succ(ControlFlowElement cfe, Completion c) {
-  // Pre-order: flow from element itself to first element of first child
-  cfe =
-    any(StandardStmt ss |
-      result = first(ss.getFirstChildElement()) and
-      c instanceof SimpleCompletion
-    )
-  or
-  // Post-order: flow from last element of last child to element itself
-  cfe = last(result.(StandardExpr).getLastChildElement(), c) and
-  c instanceof NormalCompletion
-  or
-  // Standard left-to-right evaluation
-  exists(StandardElement parent, int i |
-    cfe = last(parent.(StandardElement).getNonLastChildElement(i), c) and
-    c instanceof NormalCompletion and
-    result = first(parent.getChildElement(i + 1))
-  )
-  or
-  // Post-order: flow from last element of operand to element itself
-  result =
-    any(LogicalNotExpr lne |
-      cfe = last(lne.getOperand(), c.(BooleanCompletion).getDual())
-      or
-      cfe = last(lne.getOperand(), c) and
-      c instanceof SimpleCompletion
-    )
-  or
-  exists(LogicalAndExpr lae |
-    // Flow from last element of left operand to first element of right operand
-    cfe = last(lae.getLeftOperand(), c) and
-    c instanceof TrueCompletion and
-    result = first(lae.getRightOperand())
-    or
-    // Post-order: flow from last element of left operand to element itself
-    cfe = last(lae.getLeftOperand(), c) and
-    c instanceof FalseCompletion and
-    result = lae
-    or
-    // Post-order: flow from last element of right operand to element itself
-    cfe = last(lae.getRightOperand(), c) and
-    c instanceof NormalCompletion and
-    result = lae
-  )
-  or
-  exists(LogicalOrExpr loe |
-    // Flow from last element of left operand to first element of right operand
-    cfe = last(loe.getLeftOperand(), c) and
-    c instanceof FalseCompletion and
-    result = first(loe.getRightOperand())
-    or
-    // Post-order: flow from last element of left operand to element itself
-    cfe = last(loe.getLeftOperand(), c) and
-    c instanceof TrueCompletion and
-    result = loe
-    or
-    // Post-order: flow from last element of right operand to element itself
-    cfe = last(loe.getRightOperand(), c) and
-    c instanceof NormalCompletion and
-    result = loe
-  )
-  or
-  exists(NullCoalescingExpr nce |
-    // Flow from last element of left operand to first element of right operand
-    cfe = last(nce.getLeftOperand(), c) and
-    c.(NullnessCompletion).isNull() and
-    result = first(nce.getRightOperand())
-    or
-    // Post-order: flow from last element of left operand to element itself
-    cfe = last(nce.getLeftOperand(), c) and
-    result = nce and
-    c instanceof NormalCompletion and
-    not c.(NullnessCompletion).isNull()
-    or
-    // Post-order: flow from last element of right operand to element itself
-    cfe = last(nce.getRightOperand(), c) and
-    c instanceof NormalCompletion and
-    result = nce
-  )
-  or
-  exists(ConditionalExpr ce |
-    // Flow from last element of condition to first element of then branch
-    cfe = last(ce.getCondition(), c) and
-    c instanceof TrueCompletion and
-    result = first(ce.getThen())
-    or
-    // Flow from last element of condition to first element of else branch
-    cfe = last(ce.getCondition(), c) and
-    c instanceof FalseCompletion and
-    result = first(ce.getElse())
-    or
-    // Post-order: flow from last element of a branch to element itself
-    cfe = last([ce.getThen(), ce.getElse()], c) and
-    c instanceof NormalCompletion and
-    result = ce
-  )
-  or
-  exists(ConditionallyQualifiedExpr parent, int i |
-    cfe = last(getExprChildElement(parent, i), c) and
-    c instanceof NormalCompletion and
-    if i = 0 then c.(NullnessCompletion).isNonNull() else any()
-  |
-    // Post-order: flow from last element of last child to element itself
-    i = max(int j | exists(getExprChildElement(parent, j))) and
-    result = parent
-    or
-    // Standard left-to-right evaluation
-    result = first(getExprChildElement(parent, i + 1))
-  )
-  or
-  // Post-order: flow from last element of thrown expression to expression itself
-  cfe = last(result.(ThrowExpr).getExpr(), c) and
-  c instanceof NormalCompletion
-  or
-  exists(ObjectCreation oc |
-    // Flow from last element of argument `i` to first element of argument `i+1`
-    exists(int i | cfe = last(getObjectCreationArgument(oc, i), c) |
-      result = first(getObjectCreationArgument(oc, i + 1)) and
-      c instanceof NormalCompletion
-    )
-    or
-    // Flow from last element of last argument to self
-    exists(int last | last = max(int i | exists(getObjectCreationArgument(oc, i))) |
-      cfe = last(getObjectCreationArgument(oc, last), c) and
-      result = oc and
-      c instanceof NormalCompletion
-    )
-    or
-    // Flow from self to first element of initializer
-    cfe = oc and
-    result = first(oc.getInitializer()) and
-    c instanceof SimpleCompletion
-  )
-  or
-  exists(ArrayCreation ac |
-    // Flow from self to first element of initializer
-    cfe = ac and
-    result = first(ac.getInitializer()) and
-    c instanceof SimpleCompletion
-    or
-    exists(int i |
-      cfe = last(ac.getLengthArgument(i), c) and
-      c instanceof SimpleCompletion
-    |
-      // Flow from last length argument to self
-      i = max(int j | exists(ac.getLengthArgument(j))) and
-      result = ac
-      or
-      // Flow from one length argument to the next
-      result = first(ac.getLengthArgument(i + 1))
-    )
-  )
-  or
-  exists(IfStmt is |
-    // Pre-order: flow from statement itself to first element of condition
-    cfe = is and
-    result = first(is.getCondition()) and
-    c instanceof SimpleCompletion
-    or
-    cfe = last(is.getCondition(), c) and
-    (
-      // Flow from last element of condition to first element of then branch
-      c instanceof TrueCompletion and result = first(is.getThen())
-      or
-      // Flow from last element of condition to first element of else branch
-      c instanceof FalseCompletion and result = first(is.getElse())
-    )
-  )
-  or
-  exists(Switch s |
-    // Flow from last element of switch expression to first element of first case
-    cfe = last(s.getExpr(), c) and
-    c instanceof NormalCompletion and
-    result = first(s.getCase(0))
-    or
-    // Flow from last element of case pattern to next case
-    exists(Case case, int i | case = s.getCase(i) |
-      cfe = last(case.getPattern(), c) and
-      c.(MatchingCompletion).isNonMatch() and
-      result = first(s.getCase(i + 1))
-    )
-    or
-    // Flow from last element of condition to next case
-    exists(Case case, int i | case = s.getCase(i) |
-      cfe = last(case.getCondition(), c) and
-      c instanceof FalseCompletion and
-      result = first(s.getCase(i + 1))
-    )
-  )
-  or
-  exists(SwitchStmt ss |
-    // Pre-order: flow from statement itself to first switch expression
-    cfe = ss and
-    result = first(ss.getExpr()) and
-    c instanceof SimpleCompletion
-    or
-    // Flow from last element of non-`case` statement `i` to first element of statement `i+1`
-    exists(int i | cfe = last(ss.getStmt(i), c) |
-      not ss.getStmt(i) instanceof CaseStmt and
-      c instanceof NormalCompletion and
-      result = first(ss.getStmt(i + 1))
-    )
-    or
-    // Flow from last element of `case` statement `i` to first element of statement `i+1`
-    exists(int i | cfe = last(ss.getStmt(i).(CaseStmt).getBody(), c) |
-      c instanceof NormalCompletion and
-      result = first(ss.getStmt(i + 1))
-    )
-  )
-  or
-  // Post-order: flow from last element of a case to element itself
-  cfe = last(result.(SwitchExpr).getACase(), c) and
-  c instanceof NormalCompletion
-  or
-  exists(Case case |
-    cfe = last(case.getPattern(), c) and
-    c.(MatchingCompletion).isMatch() and
-    (
-      if exists(case.getCondition())
-      then
-        // Flow from the last element of pattern to the condition
-        result = first(case.getCondition())
-      else
-        // Flow from last element of pattern to first element of body
-        result = first(case.getBody())
-    )
-    or
-    // Flow from last element of condition to first element of body
-    cfe = last(case.getCondition(), c) and
-    c instanceof TrueCompletion and
-    result = first(case.getBody())
-  )
-  or
-  // Pre-order: flow from case itself to first element of pattern
-  result = first(cfe.(CaseStmt).getPattern()) and
-  c instanceof SimpleCompletion
-  or
-  // Post-order: flow from last element of a case body to element itself
-  cfe = last(result.(SwitchCaseExpr).getBody(), c) and
-  c instanceof NormalCompletion
-  or
-  // Pre-order: flow from statement itself to first element of statement
-  cfe =
-    any(DefaultCase dc |
-      result = first(dc.getStmt()) and
-      c instanceof SimpleCompletion
-    )
-  or
-  exists(LoopStmt ls |
-    // Flow from last element of condition to first element of loop body
-    cfe = last(ls.getCondition(), c) and
-    c instanceof TrueCompletion and
-    result = first(ls.getBody())
-    or
-    // Flow from last element of loop body back to first element of condition
-    not ls instanceof ForStmt and
-    cfe = last(ls.getBody(), c) and
-    c.continuesLoop() and
-    result = first(ls.getCondition())
-  )
-  or
-  cfe =
-    any(WhileStmt ws |
-      // Pre-order: flow from statement itself to first element of condition
-      result = first(ws.getCondition()) and
-      c instanceof SimpleCompletion
-    )
-  or
-  cfe =
-    any(DoStmt ds |
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // Pre-order: flow from statement itself to first element of body
-      result = first(ds.getBody()) and
+      pred = this and
+      first(this.getBlock(), succ) and
       c instanceof SimpleCompletion
-    )
-  or
-  exists(ForStmt fs |
-    // Pre-order: flow from statement itself to first element of first initializer/
-    // condition/loop body
-    exists(ControlFlowElement next |
-      cfe = fs and
-      result = first(next) and
-      c instanceof SimpleCompletion
-    |
-      next = fs.getInitializer(0)
       or
-      not exists(fs.getInitializer(0)) and
-      next = getForStmtConditionOrBody(fs)
-    )
-    or
-    // Flow from last element of initializer `i` to first element of initializer `i+1`
-    exists(int i | cfe = last(fs.getInitializer(i), c) |
-      c instanceof NormalCompletion and
-      result = first(fs.getInitializer(i + 1))
-    )
-    or
-    // Flow from last element of last initializer to first element of condition/loop body
-    exists(int last | last = max(int i | exists(fs.getInitializer(i))) |
-      cfe = last(fs.getInitializer(last), c) and
-      c instanceof NormalCompletion and
-      result = first(getForStmtConditionOrBody(fs))
-    )
-    or
-    // Flow from last element of condition into first element of loop body
-    cfe = last(fs.getCondition(), c) and
-    c instanceof TrueCompletion and
-    result = first(fs.getBody())
-    or
-    // Flow from last element of loop body to first element of update/condition/self
-    exists(ControlFlowElement next |
-      cfe = last(fs.getBody(), c) and
-      c.continuesLoop() and
-      result = first(next) and
-      if exists(fs.getUpdate(0))
-      then next = fs.getUpdate(0)
-      else next = getForStmtConditionOrBody(fs)
-    )
-    or
-    // Flow from last element of update to first element of next update/condition/loop body
-    exists(ControlFlowElement next, int i |
-      cfe = last(fs.getUpdate(i), c) and
-      c instanceof NormalCompletion and
-      result = first(next) and
-      if exists(fs.getUpdate(i + 1))
-      then next = fs.getUpdate(i + 1)
-      else next = getForStmtConditionOrBody(fs)
-    )
-  )
-  or
-  exists(ForeachStmt fs |
-    // Flow from last element of iterator expression to emptiness test
-    cfe = last(fs.getIterableExpr(), c) and
-    c instanceof NormalCompletion and
-    result = fs
-    or
-    // Flow from emptiness test to first element of variable declaration/loop body
-    cfe = fs and
-    c = any(EmptinessCompletion ec | not ec.isEmpty()) and
-    (
-      result = first(fs.getVariableDeclExpr())
+      // Flow from last element of body to first `catch` clause
+      exists(this.getAThrownException(pred, c)) and
+      first(this.getCatchClause(0), succ)
       or
-      result = first(fs.getVariableDeclTuple())
-      or
-      not exists(fs.getVariableDeclExpr()) and
-      not exists(fs.getVariableDeclTuple()) and
-      result = first(fs.getBody())
-    )
-    or
-    // Flow from last element of variable declaration to first element of loop body
-    (
-      cfe = last(fs.getVariableDeclExpr(), c) or
-      cfe = last(fs.getVariableDeclTuple(), c)
-    ) and
-    c instanceof SimpleCompletion and
-    result = first(fs.getBody())
-    or
-    // Flow from last element of loop body back to emptiness test
-    cfe = last(fs.getBody(), c) and
-    c.continuesLoop() and
-    result = fs
-  )
-  or
-  exists(TryStmt ts |
-    // Pre-order: flow from statement itself to first element of body
-    cfe = ts and
-    result = first(ts.getBlock()) and
-    c instanceof SimpleCompletion
-    or
-    // Flow from last element of body to first `catch` clause
-    exists(getAThrownException(ts, cfe, c)) and
-    result = first(ts.getCatchClause(0))
-    or
-    exists(CatchClause cc, int i | cc = ts.getCatchClause(i) |
-      cfe = cc and
-      cc = last(ts.getCatchClause(i), c) and
-      (
-        // Flow from one `catch` clause to the next
-        result = first(ts.getCatchClause(i + 1)) and
-        c = any(MatchingCompletion mc | not mc.isMatch())
+      exists(CatchClause cc, int i | cc = this.getCatchClause(i) |
+        pred = cc and
+        last(this.getCatchClause(i), cc, c) and
+        (
+          // Flow from one `catch` clause to the next
+          first(this.getCatchClause(i + 1), succ) and
+          c = any(MatchingCompletion mc | not mc.isMatch())
+          or
+          // Flow from last `catch` clause to first element of `finally` block
+          this.getCatchClause(i).isLast() and
+          first(this.getFinally(), succ) and
+          c instanceof ThrowCompletion // inherited from `try` block
+        )
         or
-        // Flow from last `catch` clause to first element of `finally` block
-        ts.getCatchClause(i).isLast() and
-        result = first(ts.getFinally()) and
-        c instanceof ThrowCompletion // inherited from `try` block
+        last(this.getCatchClause(i), pred, c) and
+        last(cc.getFilterClause(), pred, _) and
+        (
+          // Flow from last element of `catch` clause filter to next `catch` clause
+          first(this.getCatchClause(i + 1), succ) and
+          c instanceof FalseCompletion
+          or
+          // Flow from last element of `catch` clause filter, of last clause, to first
+          // element of `finally` block
+          this.getCatchClause(i).isLast() and
+          first(this.getFinally(), succ) and
+          c instanceof ThrowCompletion // inherited from `try` block
+        )
+        or
+        // Flow from last element of a `catch` block to first element of `finally` block
+        pred = lastCatchClauseBlock(cc, c) and
+        first(this.getFinally(), succ)
       )
       or
-      cfe = last(ts.getCatchClause(i), c) and
-      cfe = last(cc.getFilterClause(), _) and
+      // Flow from last element of `try` block to first element of `finally` block
+      this.lastBlock(pred, c) and
+      first(this.getFinally(), succ) and
+      not c instanceof ExitCompletion and
+      (c instanceof ThrowCompletion implies not exists(this.getACatchClause()))
+    }
+  }
+
+  private class SpecificCatchClauseTree extends PreOrderTree, SpecificCatchClause {
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getFilterClause()
+    }
+
+    pragma[nomagic]
+    private predicate lastFilterClause(ControlFlowElement last, Completion c) {
+      last(this.getFilterClause(), last, c)
+    }
+
+    /**
+     * Holds if the `try` block that this catch clause belongs to may throw an
+     * exception of type `c`, where no `catch` clause is guaranteed to catch it.
+     * This catch clause is the last catch clause in the `try` statement that
+     * it belongs to.
+     */
+    pragma[nomagic]
+    private predicate throwMayBeUncaught(ThrowCompletion c) {
+      exists(TryStmtTree ts |
+        ts = this.getTryStmt() and
+        ts.lastBlock(_, c) and
+        not ts.getACatchClause() instanceof GeneralCatchClause and
+        forall(SpecificCatchClause scc | scc = ts.getACatchClause() |
+          scc.hasFilterClause()
+          or
+          not c.getExceptionClass().getABaseType*() = scc.getCaughtExceptionType()
+        ) and
+        this.isLast()
+      )
+    }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Last element of `catch` block
+      last(this.getBlock(), last, c)
+      or
+      not this.isLast() and
       (
-        // Flow from last element of `catch` clause filter to next `catch` clause
-        result = first(ts.getCatchClause(i + 1)) and
+        // Incompatible exception type: clause itself
+        last = this and
+        c.(MatchingCompletion).isNonMatch()
+        or
+        // Incompatible filter
+        this.lastFilterClause(last, c) and
         c instanceof FalseCompletion
-        or
-        // Flow from last element of `catch` clause filter, of last clause, to first
-        // element of `finally` block
-        ts.getCatchClause(i).isLast() and
-        result = first(ts.getFinally()) and
-        c instanceof ThrowCompletion // inherited from `try` block
       )
       or
-      // Flow from last element of a `catch` block to first element of `finally` block
-      cfe = lastCatchClauseBlock(cc, c) and
-      result = first(ts.getFinally())
-    )
-    or
-    // Flow from last element of `try` block to first element of `finally` block
-    cfe = lastTryStmtBlock(ts, c) and
-    result = first(ts.getFinally()) and
-    not c instanceof ExitCompletion and
-    (c instanceof ThrowCompletion implies not exists(ts.getACatchClause()))
-  )
-  or
-  exists(SpecificCatchClause scc |
-    // Flow from catch clause to variable declaration/filter clause/block
-    cfe = scc and
-    c.(MatchingCompletion).isMatch() and
-    exists(ControlFlowElement next | result = first(next) |
-      if exists(scc.getVariableDeclExpr())
-      then next = scc.getVariableDeclExpr()
-      else
-        if exists(scc.getFilterClause())
-        then next = scc.getFilterClause()
-        else next = scc.getBlock()
-    )
-    or
-    // Flow from variable declaration to filter clause/block
-    cfe = last(scc.getVariableDeclExpr(), c) and
-    c instanceof SimpleCompletion and
-    exists(ControlFlowElement next | result = first(next) |
-      if exists(scc.getFilterClause()) then next = scc.getFilterClause() else next = scc.getBlock()
-    )
-    or
-    // Flow from filter to block
-    cfe = last(scc.getFilterClause(), c) and
-    c instanceof TrueCompletion and
-    result = first(scc.getBlock())
-  )
-  or
-  // Post-order: flow from last element of child to statement itself
-  cfe = last(result.(JumpStmt).getChild(0), c) and
-  c instanceof NormalCompletion
-  or
-  exists(ConstructorInitializer ci, Constructor con |
-    cfe = last(ci, c) and
-    con = ci.getConstructor() and
-    c instanceof NormalCompletion
-  |
-    // Flow from constructor initializer to first member initializer
-    exists(InitializerSplitting::InitializedInstanceMember m |
-      InitializerSplitting::constructorInitializeOrder(con, m, 0)
-    |
-      result = first(m.getInitializer())
-    )
-    or
-    // Flow from constructor initializer to first element of constructor body
-    not InitializerSplitting::constructorInitializeOrder(con, _, _) and
-    result = first(con.getBody())
-  )
-  or
-  exists(Constructor con, InitializerSplitting::InitializedInstanceMember m, int i |
-    cfe = last(m.getInitializer(), c) and
-    c instanceof NormalCompletion and
-    InitializerSplitting::constructorInitializeOrder(con, m, i)
-  |
-    // Flow from one member initializer to the next
-    exists(InitializerSplitting::InitializedInstanceMember next |
-      InitializerSplitting::constructorInitializeOrder(con, next, i + 1) and
-      result = first(next.getInitializer())
-    )
-    or
-    // Flow from last member initializer to constructor body
-    m = InitializerSplitting::lastConstructorInitializer(con) and
-    result = first(con.getBody())
-  )
-  or
-  // Flow from element with `goto` completion to first element of relevant
-  // target
-  c =
-    any(GotoCompletion gc |
-      cfe = last(_, gc) and
-      // Special case: when a `goto` happens inside a `try` statement with a
-      // `finally` block, flow does not go directly to the target, but instead
-      // to the `finally` block (and from there possibly to the target)
-      not cfe = getBlockOrCatchFinallyPred(any(TryStmt ts | ts.hasFinally()), _) and
-      result = first(getLabledStmt(gc.getLabel(), cfe.getEnclosingCallable()))
-    )
-  or
-  // Standard left-to-right evaluation
-  exists(QualifiedWriteAccess qwa, int i |
-    cfe = last(getExprChildElement(qwa, i), c) and
-    c instanceof NormalCompletion and
-    result = first(getExprChildElement(qwa, i + 1))
-  )
-  or
-  exists(AccessorWrite aw |
-    // Standard left-to-right evaluation
-    exists(int i |
-      cfe = last(getExprChildElement(aw, i), c) and
-      c instanceof NormalCompletion and
-      result = first(getExprChildElement(aw, i + 1))
-    )
-    or
-    // Flow from last element of last child to first accessor call
-    cfe = last(getExprChildElement(aw, getLastChildElement(aw)), c) and
-    result = aw.getCall(0) and
-    c instanceof NormalCompletion
-    or
-    // Flow from one call to the next
-    exists(int i | cfe = aw.getCall(i) |
-      result = aw.getCall(i + 1) and
-      c.isValidFor(cfe) and
+      // Last `catch` clause inherits throw completions from the `try` block,
+      // when the clause does not match
+      this.isLast() and
+      c =
+        any(NestedCompletion nc |
+          this.throwMayBeUncaught(nc.getOuterCompletion().(ThrowCompletion)) and
+          (
+            // Incompatible exception type: clause itself
+            last = this and
+            nc.getInnerCompletion() =
+              any(MatchingCompletion mc |
+                mc.isNonMatch() and
+                mc.isValidFor(this)
+              )
+            or
+            // Incompatible filter
+            this.lastFilterClause(last, nc.getInnerCompletion().(FalseCompletion))
+          )
+        )
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Flow from catch clause to variable declaration/filter clause/block
+      pred = this and
+      c.(MatchingCompletion).isMatch() and
+      exists(ControlFlowElement next | first(next, succ) |
+        if exists(this.getVariableDeclExpr())
+        then next = this.getVariableDeclExpr()
+        else
+          if exists(this.getFilterClause())
+          then next = this.getFilterClause()
+          else next = this.getBlock()
+      )
+      or
+      // Flow from variable declaration to filter clause/block
+      last(this.getVariableDeclExpr(), pred, c) and
+      c instanceof SimpleCompletion and
+      exists(ControlFlowElement next | first(next, succ) |
+        if exists(this.getFilterClause())
+        then next = this.getFilterClause()
+        else next = this.getBlock()
+      )
+      or
+      // Flow from filter to block
+      last(this.getFilterClause(), pred, c) and
+      c instanceof TrueCompletion and
+      first(this.getBlock(), succ)
+    }
+  }
+
+  private class JumpStmtTree extends PostOrderTree, JumpStmt {
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child = this.getChild(0)
+    }
+
+    final override predicate first(ControlFlowElement first) {
+      first(this.getChild(0), first)
+      or
+      not exists(this.getChild(0)) and first = this
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      last(this.getChild(0), pred, c) and
+      succ = this and
       c instanceof NormalCompletion
-    )
-    or
-    // Post-order: flow from last call to element itself
-    exists(int last | last = max(int i | exists(aw.getCall(i))) |
-      cfe = aw.getCall(last) and
-      result = aw and
-      c.isValidFor(cfe) and
-      c instanceof NormalCompletion
-    )
-  )
-}
-
-/**
- * Gets an exception type that is thrown by `cfe` in the block of `try` statement
- * `ts`. Throw completion `c` matches the exception type.
- */
-ExceptionClass getAThrownException(TryStmt ts, ControlFlowElement cfe, ThrowCompletion c) {
-  cfe = lastTryStmtBlock(ts, c) and
-  result = c.getExceptionClass()
-}
-
-/**
- * Gets the condition of `for` loop `fs` if it exists, otherwise the body.
- */
-private ControlFlowElement getForStmtConditionOrBody(ForStmt fs) {
-  result = fs.getCondition()
-  or
-  not exists(fs.getCondition()) and
-  result = fs.getBody()
-}
-
-/**
- * Gets the control flow element that is first executed when entering
- * callable `c`.
- */
-ControlFlowElement succEntry(@top_level_exprorstmt_parent p) {
-  p =
-    any(Callable c |
-      if exists(c.(Constructor).getInitializer())
-      then result = first(c.(Constructor).getInitializer())
-      else
-        if InitializerSplitting::constructorInitializes(c, _)
-        then
-          result =
-            first(any(InitializerSplitting::InitializedInstanceMember m |
-                InitializerSplitting::constructorInitializeOrder(c, m, 0)
-              ).getInitializer())
-        else result = first(c.getBody())
-    )
-  or
-  expr_parent_top_level_adjusted(any(Expr e | result = first(e)), _, p) and
-  not p instanceof Callable and
-  not p instanceof InitializerSplitting::InitializedInstanceMember
-}
-
-/**
- * Gets the callable that is exited when `cfe` finishes with completion `c`,
- * if any.
- */
-Callable succExit(ControlFlowElement cfe, Completion c) {
-  cfe = last(result.getBody(), c) and
-  not c instanceof GotoCompletion
-  or
-  exists(InitializerSplitting::InitializedInstanceMember m |
-    m = InitializerSplitting::lastConstructorInitializer(result) and
-    cfe = last(m.getInitializer(), c) and
-    not result.hasBody()
-  )
+    }
+  }
 }
 
 cached
@@ -1625,13 +1632,13 @@ private module Cached {
    * Gets a first control flow element executed within `cfe`.
    */
   cached
-  ControlFlowElement getAControlFlowEntryNode(ControlFlowElement cfe) { result = first(cfe) }
+  ControlFlowElement getAControlFlowEntryNode(ControlFlowElement cfe) { first(cfe, result) }
 
   /**
    * Gets a potential last control flow element executed within `cfe`.
    */
   cached
-  ControlFlowElement getAControlFlowExitNode(ControlFlowElement cfe) { result = last(cfe, _) }
+  ControlFlowElement getAControlFlowExitNode(ControlFlowElement cfe) { last(cfe, result, _) }
 }
 
 import Cached

@@ -2,21 +2,23 @@ import csharp
 import ControlFlow
 import Common
 import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
-import semmle.code.csharp.controlflow.internal.Splitting
+import semmle.code.csharp.controlflow.internal.Splitting as Splitting
 import Nodes
 
 query predicate booleanNode(ElementNode e, BooleanSplit split) { split = e.getASplit() }
 
 class MyFinallySplitControlFlowNode extends ElementNode {
   MyFinallySplitControlFlowNode() {
-    exists(FinallySplitting::FinallySplitType type |
+    exists(Splitting::FinallySplitting::FinallySplitType type |
       type = this.getASplit().(FinallySplit).getType()
     |
       not type instanceof SuccessorTypes::NormalSuccessor
     )
   }
 
-  TryStmt getTryStmt() { this.getElement() = FinallySplitting::getAFinallyDescendant(result) }
+  TryStmt getTryStmt() {
+    this.getElement() = Splitting::FinallySplitting::getAFinallyDescendant(result)
+  }
 }
 
 query predicate finallyNode(MyFinallySplitControlFlowNode f, TryStmt try) { try = f.getTryStmt() }

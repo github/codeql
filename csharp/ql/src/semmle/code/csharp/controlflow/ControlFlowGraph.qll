@@ -8,7 +8,7 @@ module ControlFlow {
   import semmle.code.csharp.controlflow.internal.SuccessorType
   private import SuccessorTypes
   private import internal.ControlFlowGraphImpl
-  private import internal.Splitting
+  private import internal.Splitting as Splitting
 
   /**
    * A control flow node.
@@ -314,7 +314,7 @@ module ControlFlow {
      * different splits for the element.
      */
     class ElementNode extends Node, TElementNode {
-      private Splits splits;
+      private Splitting::Splits splits;
       private ControlFlowElement cfe;
 
       ElementNode() { this = TElementNode(cfe, splits) }
@@ -322,7 +322,8 @@ module ControlFlow {
       override Callable getEnclosingCallable() {
         result = cfe.getEnclosingCallable()
         or
-        result = this.getASplit().(InitializerSplitting::InitializerSplitImpl).getConstructor()
+        result =
+          this.getASplit().(Splitting::InitializerSplitting::InitializerSplit).getConstructor()
       }
 
       override ControlFlowElement getElement() { result = cfe }
@@ -359,15 +360,15 @@ module ControlFlow {
       Type getType() { result = e.getType() }
     }
 
-    class Split = SplitImpl;
+    class Split = Splitting::Split;
 
-    class FinallySplit = FinallySplitting::FinallySplitImpl;
+    class FinallySplit = Splitting::FinallySplitting::FinallySplit;
 
-    class ExceptionHandlerSplit = ExceptionHandlerSplitting::ExceptionHandlerSplitImpl;
+    class ExceptionHandlerSplit = Splitting::ExceptionHandlerSplitting::ExceptionHandlerSplit;
 
-    class BooleanSplit = BooleanSplitting::BooleanSplitImpl;
+    class BooleanSplit = Splitting::BooleanSplitting::BooleanSplit;
 
-    class LoopSplit = LoopSplitting::LoopSplitImpl;
+    class LoopSplit = Splitting::LoopSplitting::LoopSplit;
   }
 
   class BasicBlock = BBs::BasicBlock;

@@ -86,7 +86,7 @@ module SuccessorTypes {
     override string toString() { result = getValue().toString() }
 
     override predicate matchesCompletion(Completion c) {
-      c.(BooleanCompletion).getInnerCompletion().(BooleanCompletion).getValue() = this.getValue()
+      c.(BooleanCompletion).getValue() = this.getValue()
     }
   }
 

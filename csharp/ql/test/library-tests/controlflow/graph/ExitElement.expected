@@ -2034,11 +2034,13 @@
 | Finally.cs:157:13:160:13 | {...} | Finally.cs:158:21:158:36 | ... == ... | false |
 | Finally.cs:157:13:160:13 | {...} | Finally.cs:159:21:159:45 | throw ...; | throw(Exception) |
 | Finally.cs:157:13:160:13 | {...} | Finally.cs:159:27:159:44 | object creation of type Exception | throw(Exception) |
+| Finally.cs:157:13:160:13 | {...} | Finally.cs:159:41:159:43 | "1" | throw(OutOfMemoryException) |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:158:21:158:31 | access to property Length | throw(Exception) |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:158:21:158:31 | access to property Length | throw(NullReferenceException) |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:158:21:158:36 | ... == ... | false |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:159:21:159:45 | throw ...; | throw(Exception) |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:159:27:159:44 | object creation of type Exception | throw(Exception) |
+| Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:159:41:159:43 | "1" | throw(OutOfMemoryException) |
 | Finally.cs:158:21:158:24 | access to parameter args | Finally.cs:158:21:158:24 | access to parameter args | normal |
 | Finally.cs:158:21:158:31 | access to property Length | Finally.cs:158:21:158:31 | access to property Length | normal |
 | Finally.cs:158:21:158:31 | access to property Length | Finally.cs:158:21:158:31 | access to property Length | throw(Exception) |
@@ -2050,8 +2052,10 @@
 | Finally.cs:158:36:158:36 | 1 | Finally.cs:158:36:158:36 | 1 | normal |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:159:21:159:45 | throw ...; | throw(Exception) |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:159:27:159:44 | object creation of type Exception | throw(Exception) |
+| Finally.cs:159:21:159:45 | throw ...; | Finally.cs:159:41:159:43 | "1" | throw(OutOfMemoryException) |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:27:159:44 | object creation of type Exception | normal |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:27:159:44 | object creation of type Exception | throw(Exception) |
+| Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:41:159:43 | "1" | throw(OutOfMemoryException) |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:159:41:159:43 | "1" | normal |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:159:41:159:43 | "1" | throw(OutOfMemoryException) |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:13:164:13 | catch (...) {...} | no-match |
@@ -3316,6 +3320,7 @@
 | Switch.cs:156:36:156:38 | "a" | Switch.cs:156:36:156:38 | "a" | normal |
 | Switch.cs:156:41:156:45 | false | Switch.cs:156:41:156:45 | false | match |
 | Switch.cs:156:41:156:45 | false | Switch.cs:156:41:156:45 | false | no-match |
+| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:41:156:45 | false | throw(InvalidOperationException) [no-match] |
 | Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:41:156:52 | ... => ... | normal |
 | Switch.cs:156:50:156:52 | "b" | Switch.cs:156:50:156:52 | "b" | normal |
 | Switch.cs:157:9:160:49 | if (...) ... | Switch.cs:158:13:158:48 | call to method WriteLine | normal |
