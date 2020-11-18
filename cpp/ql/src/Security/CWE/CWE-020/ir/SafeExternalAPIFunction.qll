@@ -12,5 +12,9 @@ abstract class SafeExternalAPIFunction extends Function { }
 
 /** The default set of "safe" external APIs. */
 private class DefaultSafeExternalAPIFunction extends SafeExternalAPIFunction {
-  DefaultSafeExternalAPIFunction() { this.hasGlobalName(["strcmp", "strlen", "memcmp"]) }
+  DefaultSafeExternalAPIFunction() {
+    this instanceof PureStrFunction or
+    this instanceof StrLenFunction or
+    this instanceof PureMemFunction
+  }
 }
