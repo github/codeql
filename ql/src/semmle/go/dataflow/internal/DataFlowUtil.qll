@@ -616,10 +616,22 @@ class ReadNode extends InstructionNode {
   }
 
   /**
+   * Holds if this data-flow node reads the value of field `package.type.field` on the value of `base` or its
+   * implicit dereference.
+   *
+   * For example, for the field read `x.width`, `base` is either the data-flow node corresponding
+   * to `x` or (if `x` is a pointer) the data-flow node corresponding to the implicit dereference
+   * `*x`, and `x` has the type `package.type`.
+   */
+  predicate readsField(Node base, string package, string type, string field) {
+    exists(Field f | f.hasQualifiedName(package, type, field) | this.readsField(base, f))
+  }
+
+  /**
    * Holds if this data-flow node looks up method `m` on the value of `receiver` or its implicit
    * dereference.
    *
-   * For example, for the method read `x.area`, `base` is either the data-flow node corresponding
+   * For example, for the method read `x.area`, `receiver` is either the data-flow node corresponding
    * to `x` or (if `x` is a pointer) the data-flow node corresponding to the implicit dereference
    * `*x`, and `m` is the method referenced by `area`.
    */
@@ -627,6 +639,18 @@ class ReadNode extends InstructionNode {
     insn.readsMethod(receiver.asInstruction(), m)
     or
     insn.readsMethod(IR::implicitDerefInstruction(receiver.asExpr()), m)
+  }
+
+  /**
+   * Holds if this data-flow node looks up method `package.type.name` on the value of `receiver`
+   * or its implicit dereference.
+   *
+   * For example, for the method read `x.name`, `receiver` is either the data-flow node corresponding
+   * to `x` or (if `x` is a pointer) the data-flow node corresponding to the implicit dereference
+   * `*x`, and `package.type` is a type of `x` that defines a method named `name`.
+   */
+  predicate readsMethod(Node receiver, string package, string type, string name) {
+    exists(Method m | m.hasQualifiedName(package, type, name) | this.readsMethod(receiver, m))
   }
 
   /**

@@ -396,3 +396,12 @@ class SsaWithFields extends TSsaWithFields {
     this.getBaseVariable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
+
+/**
+ * Gets a read similar to `node`, according to the same rules as `SsaWithFields.similar()`.
+ */
+DataFlow::Node getASimilarReadNode(DataFlow::Node node) {
+  exists(SsaWithFields readFields | node = readFields.getAUse() |
+    result = readFields.similar().getAUse()
+  )
+}
