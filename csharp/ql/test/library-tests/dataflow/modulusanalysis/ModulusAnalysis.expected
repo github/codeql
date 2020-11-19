@@ -33,110 +33,82 @@
 | ModulusAnalysis.cs:25:42:25:44 | access to local variable mul | 0 | 3 | 42 |
 | ModulusAnalysis.cs:25:42:25:44 | access to local variable mul | SSA def(mul) | 0 | 0 |
 | ModulusAnalysis.cs:29:17:31:23 | ... ? ... : ... | 0 | 3 | 4 |
-| ModulusAnalysis.cs:30:15:30:15 | [cond (line 9): true] access to parameter i | SSA param(i) | 0 | 0 |
-| ModulusAnalysis.cs:30:15:30:19 | [cond (line 9): true] ... * ... | 0 | 0 | 4 |
-| ModulusAnalysis.cs:30:15:30:23 | [cond (line 9): true] ... + ... | 0 | 3 | 4 |
-| ModulusAnalysis.cs:30:19:30:19 | [cond (line 9): true] 4 | 0 | 4 | 0 |
-| ModulusAnalysis.cs:30:23:30:23 | [cond (line 9): true] 3 | 0 | 3 | 0 |
-| ModulusAnalysis.cs:31:15:31:15 | [cond (line 9): false] access to parameter i | SSA param(i) | 0 | 0 |
-| ModulusAnalysis.cs:31:15:31:19 | [cond (line 9): false] ... * ... | 0 | 0 | 8 |
-| ModulusAnalysis.cs:31:15:31:23 | [cond (line 9): false] ... + ... | 0 | 7 | 8 |
-| ModulusAnalysis.cs:31:19:31:19 | [cond (line 9): false] 8 | 0 | 8 | 0 |
-| ModulusAnalysis.cs:31:23:31:23 | [cond (line 9): false] 7 | 0 | 7 | 0 |
-| ModulusAnalysis.cs:32:34:32:34 | [cond (line 9): false] access to local variable j | 0 | 3 | 4 |
-| ModulusAnalysis.cs:32:34:32:34 | [cond (line 9): false] access to local variable j | [cond (line 9): false] SSA def(j) | 0 | 0 |
-| ModulusAnalysis.cs:32:34:32:34 | [cond (line 9): true] access to local variable j | 0 | 3 | 4 |
-| ModulusAnalysis.cs:32:34:32:34 | [cond (line 9): true] access to local variable j | [cond (line 9): true] SSA def(j) | 0 | 0 |
-| ModulusAnalysis.cs:34:13:34:13 | [cond (line 9): false] access to parameter x | SSA param(x) | 0 | 0 |
-| ModulusAnalysis.cs:34:13:34:13 | [cond (line 9): true] access to parameter x | SSA param(x) | 0 | 0 |
-| ModulusAnalysis.cs:34:17:34:18 | [cond (line 9): false] access to constant c1 | 0 | 42 | 0 |
-| ModulusAnalysis.cs:34:17:34:18 | [cond (line 9): false] access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
-| ModulusAnalysis.cs:34:17:34:18 | [cond (line 9): true] access to constant c1 | 0 | 42 | 0 |
-| ModulusAnalysis.cs:34:17:34:18 | [cond (line 9): true] access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
-| ModulusAnalysis.cs:34:23:34:23 | [cond (line 9): false] 3 | 0 | 3 | 0 |
-| ModulusAnalysis.cs:34:23:34:23 | [cond (line 9): true] 3 | 0 | 3 | 0 |
-| ModulusAnalysis.cs:34:28:34:28 | [cond (line 9): false] access to parameter y | SSA param(y) | 0 | 0 |
-| ModulusAnalysis.cs:34:28:34:28 | [cond (line 9): true] access to parameter y | SSA param(y) | 0 | 0 |
-| ModulusAnalysis.cs:34:32:34:33 | [cond (line 9): false] access to constant c1 | 0 | 42 | 0 |
-| ModulusAnalysis.cs:34:32:34:33 | [cond (line 9): false] access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
-| ModulusAnalysis.cs:34:32:34:33 | [cond (line 9): true] access to constant c1 | 0 | 42 | 0 |
-| ModulusAnalysis.cs:34:32:34:33 | [cond (line 9): true] access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
-| ModulusAnalysis.cs:34:38:34:38 | [cond (line 9): false] 7 | 0 | 7 | 0 |
-| ModulusAnalysis.cs:34:38:34:38 | [cond (line 9): true] 7 | 0 | 7 | 0 |
-| ModulusAnalysis.cs:36:38:36:38 | [cond (line 9): false] access to parameter x | SSA param(x) | 0 | 0 |
-| ModulusAnalysis.cs:36:38:36:38 | [cond (line 9): true] access to parameter x | SSA param(x) | 0 | 0 |
-| ModulusAnalysis.cs:36:42:36:42 | [cond (line 9): false] access to parameter y | SSA param(y) | 0 | 0 |
-| ModulusAnalysis.cs:36:42:36:42 | [cond (line 9): true] access to parameter y | SSA param(y) | 0 | 0 |
-| ModulusAnalysis.cs:39:13:39:13 | [cond (line 9): false] access to parameter x | SSA param(x) | 0 | 0 |
-| ModulusAnalysis.cs:39:13:39:13 | [cond (line 9): true] access to parameter x | SSA param(x) | 0 | 0 |
-| ModulusAnalysis.cs:39:17:39:18 | [cond (line 9): false] access to constant c1 | 0 | 42 | 0 |
-| ModulusAnalysis.cs:39:17:39:18 | [cond (line 9): false] access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
-| ModulusAnalysis.cs:39:17:39:18 | [cond (line 9): true] access to constant c1 | 0 | 42 | 0 |
-| ModulusAnalysis.cs:39:17:39:18 | [cond (line 9): true] access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
-| ModulusAnalysis.cs:39:23:39:23 | [cond (line 9): false] 3 | 0 | 3 | 0 |
-| ModulusAnalysis.cs:39:23:39:23 | [cond (line 9): true] 3 | 0 | 3 | 0 |
-| ModulusAnalysis.cs:39:28:39:28 | [cond (line 9): false] access to parameter y | SSA param(y) | 0 | 0 |
-| ModulusAnalysis.cs:39:28:39:28 | [cond (line 9): true] access to parameter y | SSA param(y) | 0 | 0 |
-| ModulusAnalysis.cs:39:32:39:33 | [cond (line 9): false] access to constant c1 | 0 | 42 | 0 |
-| ModulusAnalysis.cs:39:32:39:33 | [cond (line 9): false] access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
-| ModulusAnalysis.cs:39:32:39:33 | [cond (line 9): true] access to constant c1 | 0 | 42 | 0 |
-| ModulusAnalysis.cs:39:32:39:33 | [cond (line 9): true] access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
-| ModulusAnalysis.cs:39:38:39:38 | [cond (line 9): false] 7 | 0 | 7 | 0 |
-| ModulusAnalysis.cs:39:38:39:38 | [cond (line 9): true] 7 | 0 | 7 | 0 |
-| ModulusAnalysis.cs:41:38:41:38 | [cond (line 9): false] access to parameter x | SSA param(x) | 0 | 0 |
-| ModulusAnalysis.cs:41:38:41:38 | [cond (line 9): true] access to parameter x | SSA param(x) | 0 | 0 |
-| ModulusAnalysis.cs:41:42:41:42 | [cond (line 9): false] access to parameter y | SSA param(y) | 0 | 0 |
-| ModulusAnalysis.cs:41:42:41:42 | [cond (line 9): true] access to parameter y | SSA param(y) | 0 | 0 |
-| ModulusAnalysis.cs:44:17:44:26 | [cond (line 9): false] access to property Length | [cond (line 9): false] access to property Length | 0 | 0 |
-| ModulusAnalysis.cs:44:17:44:26 | [cond (line 9): true] access to property Length | [cond (line 9): true] access to property Length | 0 | 0 |
-| ModulusAnalysis.cs:44:17:44:30 | [cond (line 9): false] ... * ... | 0 | 0 | 4 |
-| ModulusAnalysis.cs:44:17:44:30 | [cond (line 9): true] ... * ... | 0 | 0 | 4 |
-| ModulusAnalysis.cs:44:17:44:35 | [cond (line 9): false] ... - ... | 0 | 1 | 4 |
-| ModulusAnalysis.cs:44:17:44:35 | [cond (line 9): true] ... - ... | 0 | 1 | 4 |
-| ModulusAnalysis.cs:44:30:44:30 | [cond (line 9): false] 4 | 0 | 4 | 0 |
-| ModulusAnalysis.cs:44:30:44:30 | [cond (line 9): true] 4 | 0 | 4 | 0 |
-| ModulusAnalysis.cs:44:34:44:35 | [cond (line 9): false] 11 | 0 | 11 | 0 |
-| ModulusAnalysis.cs:44:34:44:35 | [cond (line 9): true] 11 | 0 | 11 | 0 |
-| ModulusAnalysis.cs:45:34:45:34 | [cond (line 9): false] access to local variable l | 0 | 1 | 4 |
-| ModulusAnalysis.cs:45:34:45:34 | [cond (line 9): false] access to local variable l | [cond (line 9): false] SSA def(l) | 0 | 0 |
-| ModulusAnalysis.cs:45:34:45:34 | [cond (line 9): true] access to local variable l | 0 | 1 | 4 |
-| ModulusAnalysis.cs:45:34:45:34 | [cond (line 9): true] access to local variable l | [cond (line 9): true] SSA def(l) | 0 | 0 |
-| ModulusAnalysis.cs:47:9:47:38 | [cond (line 9): false] ... = ... | 0 | 1 | 4 |
-| ModulusAnalysis.cs:47:9:47:38 | [cond (line 9): true] ... = ... | 0 | 1 | 4 |
-| ModulusAnalysis.cs:47:13:47:29 | [cond (line 9): false] access to property Length | [cond (line 9): false] access to property Length | 0 | 0 |
-| ModulusAnalysis.cs:47:13:47:29 | [cond (line 9): true] access to property Length | [cond (line 9): true] access to property Length | 0 | 0 |
-| ModulusAnalysis.cs:47:13:47:33 | [cond (line 9): false] ... * ... | 0 | 0 | 4 |
-| ModulusAnalysis.cs:47:13:47:33 | [cond (line 9): true] ... * ... | 0 | 0 | 4 |
-| ModulusAnalysis.cs:47:13:47:38 | [cond (line 9): false] ... - ... | 0 | 1 | 4 |
-| ModulusAnalysis.cs:47:13:47:38 | [cond (line 9): true] ... - ... | 0 | 1 | 4 |
-| ModulusAnalysis.cs:47:33:47:33 | [cond (line 9): false] 4 | 0 | 4 | 0 |
-| ModulusAnalysis.cs:47:33:47:33 | [cond (line 9): true] 4 | 0 | 4 | 0 |
-| ModulusAnalysis.cs:47:37:47:38 | [cond (line 9): false] 11 | 0 | 11 | 0 |
-| ModulusAnalysis.cs:47:37:47:38 | [cond (line 9): true] 11 | 0 | 11 | 0 |
-| ModulusAnalysis.cs:48:34:48:34 | [cond (line 9): false] access to local variable l | 0 | 1 | 4 |
-| ModulusAnalysis.cs:48:34:48:34 | [cond (line 9): false] access to local variable l | [cond (line 9): false] SSA def(l) | 0 | 0 |
-| ModulusAnalysis.cs:48:34:48:34 | [cond (line 9): true] access to local variable l | 0 | 1 | 4 |
-| ModulusAnalysis.cs:48:34:48:34 | [cond (line 9): true] access to local variable l | [cond (line 9): true] SSA def(l) | 0 | 0 |
-| ModulusAnalysis.cs:52:13:52:25 | [cond (line 9): true] ... = ... | 0 | 3 | 4 |
-| ModulusAnalysis.cs:52:17:52:17 | [cond (line 9): true] access to parameter i | SSA param(i) | 0 | 0 |
-| ModulusAnalysis.cs:52:17:52:21 | [cond (line 9): true] ... * ... | 0 | 0 | 4 |
-| ModulusAnalysis.cs:52:17:52:25 | [cond (line 9): true] ... + ... | 0 | 3 | 4 |
-| ModulusAnalysis.cs:52:21:52:21 | [cond (line 9): true] 4 | 0 | 4 | 0 |
-| ModulusAnalysis.cs:52:25:52:25 | [cond (line 9): true] 3 | 0 | 3 | 0 |
-| ModulusAnalysis.cs:56:13:56:25 | [cond (line 9): false] ... = ... | 0 | 7 | 8 |
-| ModulusAnalysis.cs:56:17:56:17 | [cond (line 9): false] access to parameter i | SSA param(i) | 0 | 0 |
-| ModulusAnalysis.cs:56:17:56:21 | [cond (line 9): false] ... * ... | 0 | 0 | 8 |
-| ModulusAnalysis.cs:56:17:56:25 | [cond (line 9): false] ... + ... | 0 | 7 | 8 |
-| ModulusAnalysis.cs:56:21:56:21 | [cond (line 9): false] 8 | 0 | 8 | 0 |
-| ModulusAnalysis.cs:56:25:56:25 | [cond (line 9): false] 7 | 0 | 7 | 0 |
-| ModulusAnalysis.cs:58:34:58:34 | [cond (line 9): false] access to local variable j | 0 | 7 | 8 |
-| ModulusAnalysis.cs:58:34:58:34 | [cond (line 9): false] access to local variable j | [cond (line 9): false] SSA def(j) | 0 | 0 |
-| ModulusAnalysis.cs:58:34:58:34 | [cond (line 9): true] access to local variable j | 0 | 3 | 4 |
-| ModulusAnalysis.cs:58:34:58:34 | [cond (line 9): true] access to local variable j | [cond (line 9): true] SSA def(j) | 0 | 0 |
+| ModulusAnalysis.cs:30:15:30:15 | access to parameter i | SSA param(i) | 0 | 0 |
+| ModulusAnalysis.cs:30:15:30:19 | ... * ... | 0 | 0 | 4 |
+| ModulusAnalysis.cs:30:15:30:23 | ... + ... | 0 | 3 | 4 |
+| ModulusAnalysis.cs:30:19:30:19 | 4 | 0 | 4 | 0 |
+| ModulusAnalysis.cs:30:23:30:23 | 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:31:15:31:15 | access to parameter i | SSA param(i) | 0 | 0 |
+| ModulusAnalysis.cs:31:15:31:19 | ... * ... | 0 | 0 | 8 |
+| ModulusAnalysis.cs:31:15:31:23 | ... + ... | 0 | 7 | 8 |
+| ModulusAnalysis.cs:31:19:31:19 | 8 | 0 | 8 | 0 |
+| ModulusAnalysis.cs:31:23:31:23 | 7 | 0 | 7 | 0 |
+| ModulusAnalysis.cs:32:34:32:34 | access to local variable j | 0 | 3 | 4 |
+| ModulusAnalysis.cs:32:34:32:34 | access to local variable j | SSA def(j) | 0 | 0 |
+| ModulusAnalysis.cs:34:13:34:13 | access to parameter x | SSA param(x) | 0 | 0 |
+| ModulusAnalysis.cs:34:17:34:18 | access to constant c1 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:34:17:34:18 | access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
+| ModulusAnalysis.cs:34:23:34:23 | 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:34:28:34:28 | access to parameter y | SSA param(y) | 0 | 0 |
+| ModulusAnalysis.cs:34:32:34:33 | access to constant c1 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:34:32:34:33 | access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
+| ModulusAnalysis.cs:34:38:34:38 | 7 | 0 | 7 | 0 |
+| ModulusAnalysis.cs:36:38:36:38 | access to parameter x | 0 | 3 | 42 |
+| ModulusAnalysis.cs:36:38:36:38 | access to parameter x | SSA param(x) | 0 | 0 |
+| ModulusAnalysis.cs:36:38:36:42 | ... + ... | 0 | 10 | 42 |
+| ModulusAnalysis.cs:36:38:36:42 | ... + ... | SSA param(x) | 7 | 42 |
+| ModulusAnalysis.cs:36:38:36:42 | ... + ... | SSA param(y) | 3 | 42 |
+| ModulusAnalysis.cs:36:42:36:42 | access to parameter y | 0 | 7 | 42 |
+| ModulusAnalysis.cs:36:42:36:42 | access to parameter y | SSA param(y) | 0 | 0 |
+| ModulusAnalysis.cs:39:13:39:13 | access to parameter x | SSA param(x) | 0 | 0 |
+| ModulusAnalysis.cs:39:17:39:18 | access to constant c1 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:39:17:39:18 | access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
+| ModulusAnalysis.cs:39:23:39:23 | 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:39:28:39:28 | access to parameter y | SSA param(y) | 0 | 0 |
+| ModulusAnalysis.cs:39:32:39:33 | access to constant c1 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:39:32:39:33 | access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
+| ModulusAnalysis.cs:39:38:39:38 | 7 | 0 | 7 | 0 |
+| ModulusAnalysis.cs:41:38:41:38 | access to parameter x | 0 | 3 | 42 |
+| ModulusAnalysis.cs:41:38:41:38 | access to parameter x | SSA param(x) | 0 | 0 |
+| ModulusAnalysis.cs:41:38:41:42 | ... - ... | 0 | 38 | 42 |
+| ModulusAnalysis.cs:41:38:41:42 | ... - ... | SSA param(x) | 35 | 42 |
+| ModulusAnalysis.cs:41:42:41:42 | access to parameter y | 0 | 7 | 42 |
+| ModulusAnalysis.cs:41:42:41:42 | access to parameter y | SSA param(y) | 0 | 0 |
+| ModulusAnalysis.cs:44:17:44:26 | access to property Length | access to property Length | 0 | 0 |
+| ModulusAnalysis.cs:44:17:44:30 | ... * ... | 0 | 0 | 4 |
+| ModulusAnalysis.cs:44:17:44:35 | ... - ... | 0 | 1 | 4 |
+| ModulusAnalysis.cs:44:30:44:30 | 4 | 0 | 4 | 0 |
+| ModulusAnalysis.cs:44:34:44:35 | 11 | 0 | 11 | 0 |
+| ModulusAnalysis.cs:45:34:45:34 | access to local variable l | 0 | 1 | 4 |
+| ModulusAnalysis.cs:45:34:45:34 | access to local variable l | SSA def(l) | 0 | 0 |
+| ModulusAnalysis.cs:47:9:47:38 | ... = ... | 0 | 1 | 4 |
+| ModulusAnalysis.cs:47:13:47:29 | access to property Length | access to property Length | 0 | 0 |
+| ModulusAnalysis.cs:47:13:47:33 | ... * ... | 0 | 0 | 4 |
+| ModulusAnalysis.cs:47:13:47:38 | ... - ... | 0 | 1 | 4 |
+| ModulusAnalysis.cs:47:33:47:33 | 4 | 0 | 4 | 0 |
+| ModulusAnalysis.cs:47:37:47:38 | 11 | 0 | 11 | 0 |
+| ModulusAnalysis.cs:48:34:48:34 | access to local variable l | 0 | 1 | 4 |
+| ModulusAnalysis.cs:48:34:48:34 | access to local variable l | SSA def(l) | 0 | 0 |
+| ModulusAnalysis.cs:52:13:52:25 | [cond2 (line 9): true] ... = ... | 0 | 3 | 4 |
+| ModulusAnalysis.cs:52:17:52:17 | [cond2 (line 9): true] access to parameter i | SSA param(i) | 0 | 0 |
+| ModulusAnalysis.cs:52:17:52:21 | [cond2 (line 9): true] ... * ... | 0 | 0 | 4 |
+| ModulusAnalysis.cs:52:17:52:25 | [cond2 (line 9): true] ... + ... | 0 | 3 | 4 |
+| ModulusAnalysis.cs:52:21:52:21 | [cond2 (line 9): true] 4 | 0 | 4 | 0 |
+| ModulusAnalysis.cs:52:25:52:25 | [cond2 (line 9): true] 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:56:13:56:25 | [cond2 (line 9): false] ... = ... | 0 | 7 | 8 |
+| ModulusAnalysis.cs:56:17:56:17 | [cond2 (line 9): false] access to parameter i | SSA param(i) | 0 | 0 |
+| ModulusAnalysis.cs:56:17:56:21 | [cond2 (line 9): false] ... * ... | 0 | 0 | 8 |
+| ModulusAnalysis.cs:56:17:56:25 | [cond2 (line 9): false] ... + ... | 0 | 7 | 8 |
+| ModulusAnalysis.cs:56:21:56:21 | [cond2 (line 9): false] 8 | 0 | 8 | 0 |
+| ModulusAnalysis.cs:56:25:56:25 | [cond2 (line 9): false] 7 | 0 | 7 | 0 |
+| ModulusAnalysis.cs:58:34:58:34 | [cond2 (line 9): false] access to local variable j | 0 | 7 | 8 |
+| ModulusAnalysis.cs:58:34:58:34 | [cond2 (line 9): false] access to local variable j | [cond2 (line 9): false] SSA def(j) | 0 | 0 |
+| ModulusAnalysis.cs:58:34:58:34 | [cond2 (line 9): true] access to local variable j | 0 | 3 | 4 |
+| ModulusAnalysis.cs:58:34:58:34 | [cond2 (line 9): true] access to local variable j | [cond2 (line 9): true] SSA def(j) | 0 | 0 |
 | ModulusAnalysis.cs:62:38:62:38 | access to local variable j | 0 | 3 | 4 |
-| ModulusAnalysis.cs:62:38:62:38 | access to local variable j | [cond (line 9): true] SSA def(j) | 0 | 0 |
+| ModulusAnalysis.cs:62:38:62:38 | access to local variable j | [cond2 (line 9): true] SSA def(j) | 0 | 0 |
 | ModulusAnalysis.cs:66:38:66:38 | access to local variable j | 0 | 7 | 8 |
-| ModulusAnalysis.cs:66:38:66:38 | access to local variable j | [cond (line 9): false] SSA def(j) | 0 | 0 |
+| ModulusAnalysis.cs:66:38:66:38 | access to local variable j | [cond2 (line 9): false] SSA def(j) | 0 | 0 |
 | ModulusAnalysis.cs:69:17:69:18 | 64 | 0 | 64 | 0 |
 | ModulusAnalysis.cs:70:34:70:34 | access to local variable t | 0 | 64 | 0 |
 | ModulusAnalysis.cs:70:34:70:34 | access to local variable t | SSA def(t) | 0 | 0 |
@@ -159,36 +131,52 @@
 | ModulusAnalysis.cs:75:25:75:25 | 3 | 0 | 3 | 0 |
 | ModulusAnalysis.cs:77:38:77:38 | access to parameter x | 0 | 3 | 16 |
 | ModulusAnalysis.cs:77:38:77:38 | access to parameter x | SSA param(x) | 0 | 0 |
-| ModulusAnalysis.cs:83:22:83:22 | 0 | 0 | 0 | 0 |
-| ModulusAnalysis.cs:83:25:83:25 | access to local variable i | SSA phi(i) | 0 | 0 |
-| ModulusAnalysis.cs:83:29:83:31 | access to parameter cap | SSA param(cap) | 0 | 0 |
-| ModulusAnalysis.cs:83:34:83:34 | access to local variable i | SSA phi(i) | 0 | 0 |
-| ModulusAnalysis.cs:83:34:83:36 | ...++ | SSA phi(i) | 0 | 0 |
-| ModulusAnalysis.cs:84:38:84:38 | access to local variable i | SSA phi(i) | 0 | 0 |
-| ModulusAnalysis.cs:86:22:86:22 | 0 | 0 | 0 | 0 |
-| ModulusAnalysis.cs:86:25:86:25 | access to local variable j | SSA phi(j) | 0 | 0 |
-| ModulusAnalysis.cs:86:29:86:31 | access to parameter cap | SSA param(cap) | 0 | 0 |
-| ModulusAnalysis.cs:86:34:86:34 | access to local variable j | SSA phi(j) | 0 | 0 |
-| ModulusAnalysis.cs:86:34:86:39 | ... + ... | SSA phi(j) | 1 | 0 |
-| ModulusAnalysis.cs:86:34:86:39 | ... = ... | SSA phi(j) | 1 | 0 |
-| ModulusAnalysis.cs:86:39:86:39 | 1 | 0 | 1 | 0 |
-| ModulusAnalysis.cs:87:38:87:38 | access to local variable j | SSA phi(j) | 0 | 0 |
+| ModulusAnalysis.cs:80:9:82:23 | [cond3 (line 9): false] ... = ... | 0 | 7 | 8 |
+| ModulusAnalysis.cs:80:9:82:23 | [cond3 (line 9): true] ... = ... | 0 | 3 | 4 |
+| ModulusAnalysis.cs:80:13:82:23 | [cond3 (line 9): false] ... ? ... : ... | 0 | 7 | 8 |
+| ModulusAnalysis.cs:80:13:82:23 | [cond3 (line 9): true] ... ? ... : ... | 0 | 3 | 4 |
+| ModulusAnalysis.cs:81:15:81:15 | [cond3 (line 9): true] access to parameter i | SSA param(i) | 0 | 0 |
+| ModulusAnalysis.cs:81:15:81:19 | [cond3 (line 9): true] ... * ... | 0 | 0 | 4 |
+| ModulusAnalysis.cs:81:15:81:23 | [cond3 (line 9): true] ... + ... | 0 | 3 | 4 |
+| ModulusAnalysis.cs:81:19:81:19 | [cond3 (line 9): true] 4 | 0 | 4 | 0 |
+| ModulusAnalysis.cs:81:23:81:23 | [cond3 (line 9): true] 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:82:15:82:15 | [cond3 (line 9): false] access to parameter i | SSA param(i) | 0 | 0 |
+| ModulusAnalysis.cs:82:15:82:19 | [cond3 (line 9): false] ... * ... | 0 | 0 | 8 |
+| ModulusAnalysis.cs:82:15:82:23 | [cond3 (line 9): false] ... + ... | 0 | 7 | 8 |
+| ModulusAnalysis.cs:82:19:82:19 | [cond3 (line 9): false] 8 | 0 | 8 | 0 |
+| ModulusAnalysis.cs:82:23:82:23 | [cond3 (line 9): false] 7 | 0 | 7 | 0 |
+| ModulusAnalysis.cs:84:38:84:38 | access to local variable j | 0 | 7 | 8 |
+| ModulusAnalysis.cs:84:38:84:38 | access to local variable j | [cond3 (line 9): false] SSA def(j) | 0 | 0 |
 | ModulusAnalysis.cs:89:22:89:22 | 0 | 0 | 0 | 0 |
-| ModulusAnalysis.cs:89:25:89:25 | access to local variable k | 0 | 0 | 3 |
-| ModulusAnalysis.cs:89:25:89:25 | access to local variable k | SSA def(k) | 0 | 3 |
-| ModulusAnalysis.cs:89:25:89:25 | access to local variable k | SSA phi(k) | 0 | 0 |
+| ModulusAnalysis.cs:89:25:89:25 | access to local variable i | SSA phi(i) | 0 | 0 |
 | ModulusAnalysis.cs:89:29:89:31 | access to parameter cap | SSA param(cap) | 0 | 0 |
-| ModulusAnalysis.cs:89:34:89:34 | access to local variable k | 0 | 0 | 3 |
-| ModulusAnalysis.cs:89:34:89:34 | access to local variable k | SSA def(k) | 0 | 3 |
-| ModulusAnalysis.cs:89:34:89:34 | access to local variable k | SSA phi(k) | 0 | 0 |
-| ModulusAnalysis.cs:89:34:89:39 | ... + ... | 0 | 0 | 3 |
-| ModulusAnalysis.cs:89:34:89:39 | ... + ... | SSA def(k) | 0 | 3 |
-| ModulusAnalysis.cs:89:34:89:39 | ... + ... | SSA phi(k) | 3 | 0 |
-| ModulusAnalysis.cs:89:34:89:39 | ... = ... | 0 | 0 | 3 |
-| ModulusAnalysis.cs:89:34:89:39 | ... = ... | SSA def(k) | 0 | 3 |
-| ModulusAnalysis.cs:89:34:89:39 | ... = ... | SSA phi(k) | 3 | 0 |
-| ModulusAnalysis.cs:89:39:89:39 | 3 | 0 | 3 | 0 |
-| ModulusAnalysis.cs:90:38:90:38 | access to local variable k | 0 | 0 | 3 |
-| ModulusAnalysis.cs:90:38:90:38 | access to local variable k | SSA def(k) | 0 | 3 |
-| ModulusAnalysis.cs:90:38:90:38 | access to local variable k | SSA phi(k) | 0 | 0 |
-| ModulusAnalysis.cs:94:39:94:40 | 42 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:89:34:89:34 | access to local variable i | SSA phi(i) | 0 | 0 |
+| ModulusAnalysis.cs:89:34:89:36 | ...++ | SSA phi(i) | 0 | 0 |
+| ModulusAnalysis.cs:90:38:90:38 | access to local variable i | SSA phi(i) | 0 | 0 |
+| ModulusAnalysis.cs:92:22:92:22 | 0 | 0 | 0 | 0 |
+| ModulusAnalysis.cs:92:25:92:25 | access to local variable j | SSA phi(j) | 0 | 0 |
+| ModulusAnalysis.cs:92:29:92:31 | access to parameter cap | SSA param(cap) | 0 | 0 |
+| ModulusAnalysis.cs:92:34:92:34 | access to local variable j | SSA phi(j) | 0 | 0 |
+| ModulusAnalysis.cs:92:34:92:39 | ... + ... | SSA phi(j) | 1 | 0 |
+| ModulusAnalysis.cs:92:34:92:39 | ... = ... | SSA phi(j) | 1 | 0 |
+| ModulusAnalysis.cs:92:39:92:39 | 1 | 0 | 1 | 0 |
+| ModulusAnalysis.cs:93:38:93:38 | access to local variable j | SSA phi(j) | 0 | 0 |
+| ModulusAnalysis.cs:95:22:95:22 | 0 | 0 | 0 | 0 |
+| ModulusAnalysis.cs:95:25:95:25 | access to local variable k | 0 | 0 | 3 |
+| ModulusAnalysis.cs:95:25:95:25 | access to local variable k | SSA def(k) | 0 | 3 |
+| ModulusAnalysis.cs:95:25:95:25 | access to local variable k | SSA phi(k) | 0 | 0 |
+| ModulusAnalysis.cs:95:29:95:31 | access to parameter cap | SSA param(cap) | 0 | 0 |
+| ModulusAnalysis.cs:95:34:95:34 | access to local variable k | 0 | 0 | 3 |
+| ModulusAnalysis.cs:95:34:95:34 | access to local variable k | SSA def(k) | 0 | 3 |
+| ModulusAnalysis.cs:95:34:95:34 | access to local variable k | SSA phi(k) | 0 | 0 |
+| ModulusAnalysis.cs:95:34:95:39 | ... + ... | 0 | 0 | 3 |
+| ModulusAnalysis.cs:95:34:95:39 | ... + ... | SSA def(k) | 0 | 3 |
+| ModulusAnalysis.cs:95:34:95:39 | ... + ... | SSA phi(k) | 3 | 0 |
+| ModulusAnalysis.cs:95:34:95:39 | ... = ... | 0 | 0 | 3 |
+| ModulusAnalysis.cs:95:34:95:39 | ... = ... | SSA def(k) | 0 | 3 |
+| ModulusAnalysis.cs:95:34:95:39 | ... = ... | SSA phi(k) | 3 | 0 |
+| ModulusAnalysis.cs:95:39:95:39 | 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:96:38:96:38 | access to local variable k | 0 | 0 | 3 |
+| ModulusAnalysis.cs:96:38:96:38 | access to local variable k | SSA def(k) | 0 | 3 |
+| ModulusAnalysis.cs:96:38:96:38 | access to local variable k | SSA phi(k) | 0 | 0 |
+| ModulusAnalysis.cs:100:39:100:40 | 42 | 0 | 42 | 0 |

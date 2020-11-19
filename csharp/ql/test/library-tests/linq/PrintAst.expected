@@ -151,8 +151,8 @@ queries.cs:
 #   39|           -1: [TypeMention] IEnumerable<Object>
 #   39|           0: [LocalVariableAccess] access to local variable list8
 #   41|           1: [MethodCall] call to method Select
-#   40|             -1: [TypeMention] object
 #   40|             0: [LocalVariableDeclAndInitExpr] Object a = ...
+#   40|               -1: [TypeMention] object
 #   40|               0: [LocalVariableAccess] access to local variable a
 #   40|               1: [LocalVariableAccess] access to local variable list7
 #   41|             1: [LocalVariableAccess] access to local variable a
@@ -176,8 +176,8 @@ queries.cs:
 #   49|           -1: [TypeMention] IEnumerable<String>
 #   49|           0: [LocalVariableAccess] access to local variable list11
 #   51|           1: [MethodCall] call to method Select
-#   50|             -1: [TypeMention] string
 #   50|             0: [LocalVariableDeclAndInitExpr] String a = ...
+#   50|               -1: [TypeMention] string
 #   50|               0: [LocalVariableAccess] access to local variable a
 #   50|               1: [LocalVariableAccess] access to local variable list7
 #   51|             1: [LocalVariableAccess] access to local variable a

@@ -81,9 +81,11 @@
 | regexplib/address.js:95:379:95:755 | [a-zA-Z0-9&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;&#241;&#242;&#243;&#244;&#245;&#246;&#248;&#249;&#250;&#251;&#252;&#253;&#255;\\.\\,\\-\\/\\' ]+ | it can start matching anywhere after the start of the preceeding '[a-zA-Z0-9&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;&#241;&#242;&#243;&#244;&#245;&#246;&#248;&#249;&#250;&#251;&#252;&#253;&#255;\\.\\,\\-\\/\\']+' |
 | regexplib/email.js:8:16:8:49 | [^ \\t\\(\\)\\<\\>@,;\\:\\\\\\"\\.\\[\\]\\r\\n]+ | it can start matching anywhere |
 | regexplib/email.js:12:2:12:4 | \\w+ | it can start matching anywhere |
+| regexplib/email.js:15:6:15:13 | [\\w-\\.]* | it can start matching anywhere after the start of the preceeding '\\w+' |
 | regexplib/email.js:15:28:15:30 | \\w* | it can start matching anywhere after the start of the preceeding '\\w+' |
 | regexplib/email.js:20:3:20:6 | \\w+? | it can start matching anywhere |
 | regexplib/email.js:28:2:28:4 | \\w+ | it can start matching anywhere |
+| regexplib/email.js:28:5:28:12 | [\\w-\\.]* | it can start matching anywhere after the start of the preceeding '\\w+' |
 | regexplib/email.js:28:27:28:29 | \\w* | it can start matching anywhere after the start of the preceeding '\\w+' |
 | regexplib/email.js:28:73:28:87 | [0-9a-zA-Z'\\.]+ | it can start matching anywhere |
 | regexplib/email.js:28:125:28:139 | [0-9a-zA-Z'\\.]+ | it can start matching anywhere |
@@ -173,9 +175,11 @@
 | regexplib/uri.js:34:3:34:9 | [^\\=&]+ | it can start matching anywhere |
 | regexplib/uri.js:39:7:39:9 | .*? | it can start matching anywhere after the start of the preceeding '<a' |
 | regexplib/uri.js:44:2:44:4 | .*? | it can start matching anywhere |
+| regexplib/uri.js:47:31:47:36 | [\\w-]+ | it can start matching anywhere after the start of the preceeding '[\\w-\\s]*' |
 | regexplib/uri.js:53:3:53:9 | [^\\=&]+ | it can start matching anywhere |
 | regexplib/uri.js:58:2:58:45 | ((http\\:\\/\\/\|https\\:\\/\\/\|ftp\\:\\/\\/)\|(www.))+ | it can start matching anywhere |
 | regexplib/uri.js:59:2:59:13 | [a-zA-Z]{3,} | it can start matching anywhere |
+| regexplib/uri.js:64:31:64:36 | [\\w-]+ | it can start matching anywhere after the start of the preceeding '[\\w-\\s]*' |
 | regexplib/uri.js:73:2:73:4 | .*? | it can start matching anywhere |
 | tst.js:14:13:14:18 | (.*,)+ | it can start matching anywhere |
 | tst.js:14:14:14:15 | .* | it can start matching anywhere |

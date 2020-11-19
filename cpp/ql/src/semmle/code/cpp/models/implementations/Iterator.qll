@@ -308,8 +308,10 @@ class IteratorAssignmentMemberOperator extends MemberFunction, TaintFunction {
 class BeginOrEndFunction extends MemberFunction, TaintFunction, GetIteratorFunction {
   BeginOrEndFunction() {
     this
-        .hasName(["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend",
-              "before_begin", "cbefore_begin"]) and
+        .hasName([
+            "begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend", "before_begin",
+            "cbefore_begin"
+          ]) and
     this.getType().getUnspecifiedType() instanceof Iterator
   }
 

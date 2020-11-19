@@ -1,9 +1,11 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -124,6 +126,42 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private static bool ContainsPattern(SyntaxNode node) =>
             node is PatternSyntax || node is VariableDesignationSyntax || node.ChildNodes().Any(ContainsPattern);
+
+        /// <summary>
+        /// Creates a generated expression from a typed constant.
+        /// </summary>
+        public static Expression CreateGenerated(Context cx, TypedConstant constant, IExpressionParentEntity parent,
+            int childIndex, Semmle.Extraction.Entities.Location location)
+        {
+            if (constant.IsNull)
+            {
+                return Literal.CreateGeneratedNullLiteral(cx, parent, childIndex, location);
+            }
+
+            switch (constant.Kind)
+            {
+                case TypedConstantKind.Primitive:
+                    return Literal.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Value, location);
+                case TypedConstantKind.Enum:
+                    // Enum value is generated in the following format: (Enum)value
+                    Action<Expression, int> createChild = (parent, index) => Literal.CreateGenerated(cx, parent, index, ((INamedTypeSymbol)constant.Type).EnumUnderlyingType, constant.Value, location);
+                    var cast = Cast.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Value, createChild, location);
+                    return cast;
+                case TypedConstantKind.Type:
+                    var type = ((ITypeSymbol)constant.Value).OriginalDefinition;
+                    return TypeOf.CreateGenerated(cx, parent, childIndex, type, location);
+                case TypedConstantKind.Array:
+                    // Single dimensional arrays are in the following format:
+                    // * new Type[N] { item1, item2, ..., itemN }
+                    // * new Type[0]
+                    //
+                    // itemI is generated recursively.
+                    return NormalArrayCreation.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Values, location);
+                default:
+                    cx.ExtractionError("Couldn't extract constant in attribute", constant.ToString(), location);
+                    return null;
+            }
+        }
 
         /// <summary>
         /// Adapt the operator kind depending on whether it's a dynamic call or a user-operator call.

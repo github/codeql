@@ -1,5 +1,9 @@
+/**
+ * @kind path-problem
+ */
+
 import csharp
-import semmle.code.csharp.dataflow.TaintTracking
+import DataFlow::PathGraph
 
 class MyConfiguration extends TaintTracking::Configuration {
   MyConfiguration() { this = "EntityFramework dataflow" }
@@ -11,6 +15,6 @@ class MyConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from MyConfiguration config, DataFlow::Node source, DataFlow::Node sink
-where config.hasFlow(source, sink)
-select sink, source
+from DataFlow::PathNode source, DataFlow::PathNode sink, MyConfiguration conf
+where conf.hasFlowPath(source, sink)
+select sink, source, sink, "$@", source, source.toString()

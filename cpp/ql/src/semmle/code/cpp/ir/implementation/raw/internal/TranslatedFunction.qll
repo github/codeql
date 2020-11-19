@@ -114,11 +114,8 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       tag = EnterFunctionTag() and
       result = getInstruction(AliasedDefinitionTag())
       or
-      tag = AliasedDefinitionTag() and
-      result = getInstruction(InitializeNonLocalTag())
-      or
       (
-        tag = InitializeNonLocalTag() and
+        tag = AliasedDefinitionTag() and
         if exists(getThisType())
         then result = getParameter(-1).getFirstInstruction()
         else
@@ -174,10 +171,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       tag = AliasedDefinitionTag() and
       opcode instanceof Opcode::AliasedDefinition and
-      resultType = getUnknownType()
-      or
-      tag = InitializeNonLocalTag() and
-      opcode instanceof Opcode::InitializeNonLocal and
       resultType = getUnknownType()
       or
       tag = ReturnValueAddressTag() and
