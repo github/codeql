@@ -45,6 +45,6 @@ struct E : public A {
 
 struct F : public E {
   F() {
-    ((A*)this)->f(); // GOOD: Will call `E::f` [FALSE POSITIVE]
+    ((A*)this)->f(); // GOOD: Will call `E::f`
   }
 };

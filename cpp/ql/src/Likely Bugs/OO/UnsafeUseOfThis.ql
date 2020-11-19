@@ -6,7 +6,7 @@
  * @kind path-problem
  * @id cpp/unsafe-use-of-this
  * @problem.severity error
- * @precision high
+ * @precision very-high
  * @tags correctness
  *       language-features
  *       security
@@ -67,12 +67,11 @@ predicate getThisArgumentInitParam(
   init.getIRVariable() instanceof IRThisVariable
 }
 
-/** Holds if `instr` is a `this` pointer of type `c` used by the call instruction `call`. */
-predicate isSink(Instruction instr, CallInstruction call, Class c) {
+/** Holds if `instr` is a `this` pointer used by the call instruction `call`. */
+predicate isSink(Instruction instr, CallInstruction call) {
   exists(PureVirtualFunction func |
     call.getStaticCallTarget() = func and
     call.getThisArgument() = instr and
-    instr.getResultType().stripType() = c and
     // Weed out implicit calls to destructors of a base class
     not func instanceof Destructor
   )
@@ -95,13 +94,12 @@ predicate isSource(InitializeParameterInstruction init, string msg, Class c) {
 }
 
 /**
- * Holds if `instr` flows to a sink (which is a use of the value of `instr` as a `this` pointer
- * of type `sinkClass`).
+ * Holds if `instr` flows to a sink (which is a use of the value of `instr` as a `this` pointer).
  */
 predicate flowsToSink(Instruction instr, Instruction sink) {
   flowsFromSource(instr) and
   (
-    isSink(instr, _, _) and instr = sink
+    isSink(instr, _) and instr = sink
     or
     exists(Instruction mid |
       successor(instr, mid) and
@@ -180,17 +178,16 @@ predicate successor(Instruction instr, Instruction succ) {
 /**
  * Holds if:
  * - `source` is an initialization of a `this` pointer of type `sourceClass`, and
- * - `sink` is a use of the `this` pointer as type `sinkClass`, and
+ * - `sink` is a use of the `this` pointer, and
  * - `call` invokes a pure virtual function using `sink` as the `this` pointer, and
  * - `msg` is a string describing whether `source` is from a constructor or destructor.
  */
 predicate flows(
-  Instruction source, string msg, Class sourceClass, Instruction sink, CallInstruction call,
-  Class sinkClass
+  Instruction source, string msg, Class sourceClass, Instruction sink, CallInstruction call
 ) {
   isSource(source, msg, sourceClass) and
   flowsToSink(source, sink) and
-  isSink(sink, call, sinkClass)
+  isSink(sink, call)
 }
 
 query predicate edges(Instruction a, Instruction b) { successor(a, b) and flowsToSink(b, _) }
@@ -201,11 +198,12 @@ query predicate nodes(Instruction n, string key, string val) {
   val = n.toString()
 }
 
-from
-  Instruction source, Instruction sink, CallInstruction call, string msg, Class sourceClass,
-  Class sinkClass
+from Instruction source, Instruction sink, CallInstruction call, string msg, Class sourceClass
 where
-  flows(source, msg, sourceClass, sink, call, sinkClass) and
-  sourceClass.getABaseClass+() = sinkClass
+  flows(source, msg, sourceClass, sink, call) and
+  // Only raise an alert if there is no override of the pure virtual function in any base class.
+  not exists(Class c | c = sourceClass.getABaseClass*() |
+    c.getAMemberFunction().getAnOverriddenFunction() = call.getStaticCallTarget()
+  )
 select call.getUnconvertedResultExpression(), source, sink,
   "Call to pure virtual function during " + msg

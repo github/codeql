@@ -59,4 +59,3 @@ nodes
 | test.cpp:25:13:25:13 | call to f | test.cpp:21:3:21:3 | InitializeParameter: C | test.cpp:25:7:25:10 | ConvertToNonVirtualBase: (A *)... | Call to pure virtual function during construction |
 | test.cpp:35:6:35:6 | call to f | test.cpp:7:3:7:3 | InitializeParameter: B | test.cpp:35:3:35:3 | ConvertToNonVirtualBase: (A *)... | Call to pure virtual function during construction |
 | test.cpp:35:6:35:6 | call to f | test.cpp:21:3:21:3 | InitializeParameter: C | test.cpp:35:3:35:3 | ConvertToNonVirtualBase: (A *)... | Call to pure virtual function during construction |
-| test.cpp:48:17:48:17 | call to f | test.cpp:47:3:47:3 | InitializeParameter: F | test.cpp:48:6:48:13 | ConvertToNonVirtualBase: (A *)... | Call to pure virtual function during construction |
