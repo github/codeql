@@ -1,4 +1,7 @@
 /target
 extractor-pack
 .vscode/launch.json
-ql/src/.cache
+.cache
+ql/test/**/*.testproj
+ql/test/**/*.actual
+ql/test/**/CONSISTENCY

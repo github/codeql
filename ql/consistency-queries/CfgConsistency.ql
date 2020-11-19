@@ -1,0 +1,1 @@
+import codeql_ruby.controlflow.internal.Consistency
