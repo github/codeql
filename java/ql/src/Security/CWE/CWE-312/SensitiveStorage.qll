@@ -258,7 +258,7 @@ private predicate sharedPreferencesInput(DataFlow::Node sharedPrefs, Expr input)
   )
 }
 
-/* Holds if the method call is the save method of `SharedPreferences`. */
+/* Holds if the method call is the store method of `SharedPreferences`. */
 private predicate sharedPreferencesStore(DataFlow::Node sharedPrefs, Expr store) {
   exists(MethodAccess m |
     m.getMethod() instanceof SharedPreferencesStoreMethod and
