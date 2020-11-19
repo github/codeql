@@ -34,7 +34,7 @@ Type getBaseType(Type typ) {
 
 /* A conversion to a `unsafe.Pointer` */
 class ConversionToUnsafePointer extends DataFlow::TypeCastNode {
-  ConversionToUnsafePointer() { getFinalType(getType()) instanceof UnsafePointerType }
+  ConversionToUnsafePointer() { getFinalType(getResultType()) instanceof UnsafePointerType }
 }
 
 /* Type casting from a `unsafe.Pointer`.*/
@@ -68,7 +68,7 @@ predicate castShortArrayToLongerArray(
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    arrTo = getFinalType(castBig.getType()) and
+    arrTo = getFinalType(castBig.getResultType()) and
     (
       // Array (whole) to array:
       // The `unsafe.Pointer` expression is on the array
@@ -113,7 +113,7 @@ predicate castTypeToArray(DataFlow::PathNode source, DataFlow::PathNode sink, st
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    arrTo = getFinalType(castBig.getType()) and
+    arrTo = getFinalType(castBig.getResultType()) and
     not typeFrom.getUnderlyingType() instanceof ArrayType and
     not typeFrom instanceof PointerType and
     not castLittle
@@ -143,7 +143,7 @@ predicate castDifferentBitSizeNumbers(
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    numTo = getFinalType(castBig.getType()) and
+    numTo = getFinalType(castBig.getResultType()) and
     numFrom = getFinalType(castLittle.getOperand().getType()) and
     // TODO: also consider cast from uint to int?
     getNumericTypeSize(numTo) != getNumericTypeSize(numFrom) and

@@ -76,7 +76,7 @@
 | main.go:26:2:26:17 | ... := ...[0] | main.go:26:2:26:2 | definition of n |
 | main.go:26:2:26:17 | ... := ...[1] | main.go:26:5:26:6 | definition of ok |
 | main.go:26:5:26:6 | definition of ok | main.go:27:5:27:6 | ok |
-| main.go:26:11:26:11 | x | main.go:26:11:26:17 | type assertion |
+| main.go:26:11:26:11 | x | main.go:26:2:26:17 | ... := ...[0] |
 | main.go:38:2:38:2 | definition of s | main.go:39:15:39:15 | s |
 | main.go:38:2:38:2 | definition of s | main.go:40:15:40:15 | s |
 | main.go:38:2:38:2 | definition of s | main.go:42:7:42:7 | s |
