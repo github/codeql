@@ -18,7 +18,7 @@ class VariableScope extends TScope {
   /** Gets the program element this scope is associated with, if any. */
   abstract AstNode getScopeElement();
 
-  /** Gets the location of the program element this scope is associated with, if any. */
+  /** Gets the location of the program element this scope is associated with. */
   final Location getLocation() { result = getScopeElement().getLocation() }
 
   /**
@@ -36,8 +36,8 @@ class VariableScope extends TScope {
    * (only when this scope is a block scope).
    */
   Variable getVariable(string name) {
-    result = getAVariable() and
-    result.getValue() = name
+    result = this.getAVariable() and
+    result.getName() = name
   }
 }
 
@@ -127,18 +127,7 @@ class LocalVariable extends Variable {
   final override LocalVariableAccess getAnAccess() { result = super.getAnAccess() }
 }
 
-/**
- * An identifier that refers to a variable.
- *
- * Examples:
- *
- * ```
- * function f(o) {
- *   var w = 0, { x : y, z } = o;  // `o` is a variable access
- *   o = null;                     // `o` is a variable access
- * }
- * ```
- */
+/** An identifier that refers to a variable. */
 class VariableAccess extends Identifier {
   Variable variable;
 
@@ -207,8 +196,9 @@ class BlockScope extends VariableScope, TBlockScope {
   final VariableScope getOuterScope() { result = enclosingScope(this.getScopeElement()) }
 
   final override Variable getVariable(string name) {
-    if exists(VariableScope.super.getVariable(name))
-    then result = VariableScope.super.getVariable(name)
-    else result = this.getOuterScope().getVariable(name)
+    result = VariableScope.super.getVariable(name)
+    or
+    not exists(VariableScope.super.getVariable(name)) and
+    result = this.getOuterScope().getVariable(name)
   }
 }
