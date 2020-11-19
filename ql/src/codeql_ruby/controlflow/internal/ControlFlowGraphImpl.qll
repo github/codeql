@@ -31,7 +31,7 @@
  * caught up by its surrounding loop and turned into a `NormalCompletion`.
  */
 
-import codeql_ruby.ast
+private import codeql_ruby.ast
 private import AstNodes
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import Completion
@@ -501,6 +501,7 @@ private module Cached {
     TBreakSuccessor() or
     TNextSuccessor() or
     TRedoSuccessor() or
+    TRetrySuccessor() or
     TRaiseSuccessor() or // TODO: Add exception type?
     TExitSuccessor()
 

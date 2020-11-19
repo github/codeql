@@ -3,7 +3,7 @@
  * will likely be part of the hand-written user-facing AST layer.
  */
 
-import codeql_ruby.ast
+private import codeql_ruby.ast
 
 class LogicalNotAstNode extends Unary {
   AstNode operand;

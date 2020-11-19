@@ -1,24 +1,26 @@
 /** Provides classes representing the control flow graph. */
 
-import codeql_ruby.ast
+private import codeql_ruby.ast
 private import codeql_ruby.controlflow.BasicBlocks
 private import SuccessorTypes
 private import internal.ControlFlowGraphImpl
 private import internal.Splitting
 private import internal.Completion
 
+private class CfgScopeRange = @method or @block or @do_block;
+
 /** An AST node with an associated control-flow graph. */
-class CfgScope extends AstNode {
-  private string name;
-
-  CfgScope() {
-    name = this.(Method).getName().toString()
-    or
-    this = any(MethodCall mc | name = "block for " + mc.getMethod()).getBlock()
-  }
-
+class CfgScope extends AstNode, CfgScopeRange {
   /** Gets the name of this scope. */
-  string getName() { result = name }
+  string getName() {
+    result = this.(Method).getName().toString()
+    or
+    this instanceof Block and
+    result = "block"
+    or
+    this instanceof DoBlock and
+    result = "do block"
+  }
 }
 
 /**
@@ -274,6 +276,30 @@ module SuccessorTypes {
    */
   class RedoSuccessor extends SuccessorType, TRedoSuccessor {
     final override string toString() { result = "redo" }
+  }
+
+  /**
+   * A `retry` control flow successor.
+   *
+   * Example:
+   *
+   * Example:
+   *
+   * ```rb
+   * def m
+   *   begin
+   *     puts "Retry"
+   *     raise
+   *   rescue
+   *     retry
+   *   end
+   * end
+   * ```
+   *
+   * The node `puts "Retry"` is `retry` successor of the node `retry`.
+   */
+  class RetrySuccessor extends SuccessorType, TRetrySuccessor {
+    final override string toString() { result = "retry" }
   }
 
   /**

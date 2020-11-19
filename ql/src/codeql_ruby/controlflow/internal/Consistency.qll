@@ -1,7 +1,7 @@
-import codeql_ruby.ast
-import codeql_ruby.controlflow.ControlFlowGraph
-import Completion
-import Splitting
+private import codeql_ruby.ast
+private import codeql_ruby.controlflow.ControlFlowGraph
+private import Completion
+private import Splitting
 
 query predicate nonUniqueSetRepresentation(Splits s1, Splits s2) {
   forex(Split s | s = s1.getASplit() | s = s2.getASplit()) and

@@ -150,9 +150,9 @@ nodes
 | loops.rb:25:6:25:6 | 2 |
 | loops.rb:25:8:25:8 | 3 |
 | loops.rb:25:11:25:14 | each |
-| loops.rb:25:16:27:5 | enter block for Call |
-| loops.rb:25:16:27:5 | exit block for Call |
-| loops.rb:25:16:27:5 | exit block for Call (normal) |
+| loops.rb:25:16:27:5 | enter do block |
+| loops.rb:25:16:27:5 | exit do block |
+| loops.rb:25:16:27:5 | exit do block (normal) |
 | loops.rb:26:5:26:8 | puts |
 | loops.rb:26:5:26:10 | MethodCall |
 | loops.rb:26:10:26:10 | x |
@@ -328,10 +328,10 @@ edges
 | loops.rb:25:6:25:6 | 2 | loops.rb:25:8:25:8 | 3 | semmle.label | successor |
 | loops.rb:25:8:25:8 | 3 | loops.rb:25:3:25:9 | Array | semmle.label | successor |
 | loops.rb:25:11:25:14 | each | loops.rb:25:3:25:14 | Call | semmle.label | successor |
-| loops.rb:25:16:27:5 | enter block for Call | loops.rb:26:10:26:10 | x | semmle.label | successor |
-| loops.rb:25:16:27:5 | exit block for Call (normal) | loops.rb:25:16:27:5 | exit block for Call | semmle.label | successor |
+| loops.rb:25:16:27:5 | enter do block | loops.rb:26:10:26:10 | x | semmle.label | successor |
+| loops.rb:25:16:27:5 | exit do block (normal) | loops.rb:25:16:27:5 | exit do block | semmle.label | successor |
 | loops.rb:26:5:26:8 | puts | loops.rb:26:5:26:10 | MethodCall | semmle.label | successor |
-| loops.rb:26:5:26:10 | MethodCall | loops.rb:25:16:27:5 | exit block for Call (normal) | semmle.label | successor |
+| loops.rb:26:5:26:10 | MethodCall | loops.rb:25:16:27:5 | exit do block (normal) | semmle.label | successor |
 | loops.rb:26:10:26:10 | x | loops.rb:26:5:26:8 | puts | semmle.label | successor |
 | raise.rb:1:1:6:3 | enter m1 | raise.rb:2:3:4:5 | If | semmle.label | successor |
 | raise.rb:1:1:6:3 | exit m1 (abnormal) | raise.rb:1:1:6:3 | exit m1 | semmle.label | successor |

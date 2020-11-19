@@ -2,7 +2,7 @@
  * Provides classes and predicates relevant for splitting the control flow graph.
  */
 
-import codeql_ruby.ast
+private import codeql_ruby.ast
 private import AstNodes
 private import Completion
 private import ControlFlowGraphImpl

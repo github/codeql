@@ -4,7 +4,7 @@
  * A completion represents how a statement or expression terminates.
  */
 
-import codeql_ruby.ast
+private import codeql_ruby.ast
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import AstNodes
 private import NonReturning
@@ -17,6 +17,7 @@ private newtype TCompletion =
   TBreakCompletion() or
   TNextCompletion() or
   TRedoCompletion() or
+  TRetryCompletion() or
   TRaiseCompletion() or // TODO: Add exception type?
   TExitCompletion() or
   TNestedCompletion(Completion inner, Completion outer) {
@@ -218,6 +219,16 @@ class RedoCompletion extends Completion, TRedoCompletion {
   override RedoSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "redo" }
+}
+
+/**
+ * A completion that represents evaluation of a statement or an
+ * expression resulting in a retry.
+ */
+class RetryCompletion extends Completion, TRetryCompletion {
+  override RetrySuccessor getAMatchingSuccessorType() { any() }
+
+  override string toString() { result = "retry" }
 }
 
 /**
