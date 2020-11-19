@@ -871,11 +871,11 @@ predicate isPumpable(State fork, string w) {
  * This assumption breaks on regular expression that use the anchor `$`, e.g: `/^(a+)+$/`, and such regular
  * expression are not accurately modeled by this query.
  *
- * The the string `w` is repeated any number of times because the string `w` needs to be
+ * The string `w` is repeated any number of times because it needs to be
  * infinitely repeatedable for the attack to work.
  * For a regular expression `/((ab)+)*abab/` the accepting state is not reachable from the fork
  * using epsilon transitions. But any attempt at repeating `w` will end in the accepting state.
- * This is also build on the assumption that any accepting state will accept all suffixes.
+ * This also relies on the assumption that any accepting state will accept all suffixes.
  */
 State process(State fork, string w, int i) {
   isPumpable(fork, w) and
