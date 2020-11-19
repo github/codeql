@@ -29,39 +29,6 @@ def SINK_F(x):
         print("OK")
 
 
-def In(tainted):
-    def captureIn1():
-        sinkI1 = tainted
-        SINK(sinkI1) #$ MISSING:captured
-    captureIn1()
-
-    def captureIn2():
-        def m():
-            sinkI2 = tainted
-            SINK(sinkI2) #$ MISSING:captured
-        m()
-    captureIn2()
-
-    # captureIn3 = lambda arg:(
-    #     sinkI3 = tainted;
-    #     check(sinkI3);
-    #     return arg)
-    # [ captureIn3(x) for x in " " ]
-
-    def captureIn1NotCalled():
-        nonSink0 = tainted
-        SINK_F(nonSink0)
-
-    def captureIn2NotCalled():
-        def m():
-            nonSink0 = tainted
-            SINK_F(nonSink0)
-    captureIn2NotCalled()
-
-@expects(2)
-def test_In():
-    In(SOURCE)
-
 def Out():
     sinkO1 = { "x": "" }
     def captureOut1():
