@@ -996,7 +996,12 @@ State process(State fork, string w, int i) {
  */
 bindingset[s]
 string escape(string s) {
-  result = s.replaceAll("\\", "\\\\").replaceAll("\n", "\\n").replaceAll("\r", "\\r")
+  result =
+    s
+        .replaceAll("\\", "\\\\")
+        .replaceAll("\n", "\\n")
+        .replaceAll("\r", "\\r")
+        .replaceAll("\t", "\\t")
 }
 
 /**
