@@ -267,3 +267,36 @@ var good28 = /foo([\uDC66\uDC67]|[\uDC68\uDC69])*foo/
 
 // GOOD
 var good29 = /foo((\uDC66|\uDC67)|(\uDC68|\uDC69))*foo/
+
+// NOT GOOD - but cannot currently construct a prefix
+var bad62 = /a{2,3}(b+)+X/;
+
+// NOT GOOD - and a good prefix test
+var bad63 = /^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>/;
+
+// GOOD
+var good30 = /(a+)*[^][^][^]?/;
+
+// GOOD - but we fail to see that repeating the attack string ends in the "accept any" state.
+var good31 = /(a+)*[^]{2,3}/;
+
+// GOOD - but we don't find that no suffix is rejected
+var good32 = /(a+)*([^]{2,}|X)$/;
+
+// GOOD - but still flagged
+var good33 = /(a+)*([^]*|X)$/;
+
+// NOT GOOD
+var bad64 = /((a+)*$|[^]+)/;
+
+// GOOD - but still flagged. The only change compared to the above is the order of alternatives, which we don't model.
+var good34 = /((a+)*$|[^]+)/;
+
+// GOOD
+var good35 = /((;|^)a+)+$/;
+
+// NOT GOOD - a good prefix test
+var bad65 = /(^|;)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(e+)+f/;
+
+// NOT GOOD
+var bad66 = /^ab(c+)+$/;

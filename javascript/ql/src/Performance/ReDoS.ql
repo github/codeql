@@ -44,8 +44,9 @@ import semmle.javascript.security.performance.SuperlinearBackTracking
  * condition is equivalent to saying that `(q, q)` is reachable from `(r1, r2)`
  * in the product NFA.
  *
- * This is what the query does. It makes no attempt to construct a prefix
- * leading into `q`, and only a weak one to construct a suffix that ensures
+ * This is what the query does. It makes a simple attempt to construct a
+ * prefix `v` leading into `q`, but only to improve the alert message.
+ * And the query only weakly attempts to construct a suffix that ensures
  * rejection; this causes some false positives.
  *
  * Finally, sometimes it depends on the translation whether the NFA generated
@@ -880,6 +881,84 @@ predicate isPumpable(State fork, string w) {
 }
 
 /**
+ * Predicates for constructing a prefix string that leads to a given state.
+ */
+module PrefixConstruction {
+  /**
+   * Holds if `state` starts the string matched by the regular expression.
+   */
+  private predicate isStartState(State state) {
+    state = Match(any(RegExpRoot r), _)
+    or
+    exists(RegExpCaret car | state = after(car))
+  }
+
+  /**
+   * Holds if `state` is the textually last start state for the regular expression.
+   */
+  private predicate lastStartState(State state) {
+    exists(RegExpRoot root |
+      state =
+        max(State s, Location l |
+          isStartState(s) and getRoot(s.getRepr()) = root and l = s.getRepr().getLocation()
+        |
+          s order by l.getStartLine(), l.getStartColumn()
+        )
+    )
+  }
+
+  /**
+   * Holds if there exists any transition (Epsilon() or other) from `a` to `b`.
+   */
+  private predicate existsTransition(State a, State b) { delta(a, _, b) }
+
+  /**
+   * Gets the minimum number of transitions it takes to reach `state` from the `start` state.
+   */
+  int prefixLength(State start, State state) =
+    shortestDistances(lastStartState/1, existsTransition/2)(start, state, result)
+
+  /**
+   * Gets the minimum number of transitions it takes to reach `state` from the start state.
+   */
+  private int lengthFromStart(State state) { result = prefixLength(_, state) }
+
+  /**
+   * Gets a string for which the regular expression will reach `state`.
+   *
+   * Has at most one result for any given `state`.
+   * This predicate will not always have a result even if there is a ReDoS issue in
+   * the regular expression.
+   */
+  string prefix(State state) {
+    lastStartState(state) and
+    result = ""
+    or
+    // the search stops past the last pumpable state.
+    lengthFromStart(state) <= max(lengthFromStart(any(State s | isPumpable(s, _)))) and
+    exists(State prev |
+      // select a unique predecessor (by an arbitrary measure)
+      prev =
+        min(State s, Location loc |
+          lengthFromStart(s) = lengthFromStart(state) - 1 and
+          loc = s.getRepr().getLocation() and
+          delta(s, _, state)
+        |
+          s order by loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn()
+        )
+    |
+      // greedy search for the shortest prefix
+      result = prefix(prev) and delta(prev, Epsilon(), state)
+      or
+      not delta(prev, Epsilon(), state) and
+      result =
+        prefix(prev) +
+          min(string c | delta(prev, any(InputSymbol symbol | c = intersect(Any(), symbol)), state))
+    )
+  }
+}
+
+/**
  * Gets a state that can be reached from pumpable `fork` consuming all
  * chars in `w` any number of times followed by the first `i+1` characters of `w`.
  *
@@ -931,16 +1010,34 @@ string rotate(string str, int i) {
   result = str.suffix(str.length() - i) + str.prefix(str.length() - i)
 }
 
-from RegExpTerm t, string c, int i
+/**
+ * Holds if `term` may cause exponential backtracking on strings containing many repetitions of `witness`.
+ */
+predicate isReDoSAttackable(RegExpTerm term, string witness, State s) {
+  exists(int i, string c | s = Match(term, i) |
+    c =
+      min(string w |
+        isPumpable(s, w) and
+        not isPumpable(epsilonSucc+(s), _) and
+        not epsilonSucc*(process(s, w, _)) = Accept(_)
+      |
+        w order by w.length(), w
+      ) and
+    witness = escape(rotate(c, i))
+  )
+}
+
+from RegExpTerm t, string witness, State s, string prefixMsg
 where
-  c =
-    min(string w |
-      isPumpable(Match(t, i), w) and
-      not isPumpable(epsilonSucc+(Match(t, i)), _) and
-      not epsilonSucc*(process(Match(t, i), w, _)) = Accept(_)
-    |
-      w order by w.length(), w
-    )
+  isReDoSAttackable(t, witness, s) and
+  (
+    prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s)) + "' and " and
+    not PrefixConstruction::prefix(s) = ""
+    or
+    PrefixConstruction::prefix(s) = "" and prefixMsg = ""
+    or
+    not exists(PrefixConstruction::prefix(s)) and prefixMsg = ""
+  )
 select t,
-  "This part of the regular expression may cause exponential backtracking on strings " +
-    "containing many repetitions of '" + escape(rotate(c, i)) + "'."
+  "This part of the regular expression may cause exponential backtracking on strings " + prefixMsg +
+    "containing many repetitions of '" + witness + "'."
