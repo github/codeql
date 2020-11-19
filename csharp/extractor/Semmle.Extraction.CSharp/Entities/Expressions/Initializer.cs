@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected Initializer(ExpressionNodeInfo info) : base(info) { }
     }
 
-    internal class ArrayInitializer : Expression<InitializerExpressionSyntax>
+    internal class ArrayInitializer : Initializer
     {
         private ArrayInitializer(ExpressionNodeInfo info) : base(info.SetType(null).SetKind(ExprKind.ARRAY_INIT)) { }
 
