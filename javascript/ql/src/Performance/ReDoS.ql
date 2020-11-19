@@ -46,8 +46,8 @@ import semmle.javascript.security.performance.SuperlinearBackTracking
  *
  * This is what the query does. It makes a simple attempt to construct a
  * prefix `v` leading into `q`, but only to improve the alert message.
- * And the query only weakly attempts to construct a suffix that ensures
- * rejection; this causes some false positives.
+ * And the query tries to prove the existence of a suffix that ensures
+ * rejection. This check might fail, which can cause false positives.
  *
  * Finally, sometimes it depends on the translation whether the NFA generated
  * for a regular expression has a pumpable fork or not. We implement one
@@ -59,7 +59,9 @@ import semmle.javascript.security.performance.SuperlinearBackTracking
  *
  *   * Every sub-term `t` gives rise to an NFA state `Match(t,i)`, representing
  *     the state of the automaton before attempting to match the `i`th character in `t`.
- *   * There is one additional accepting state `Accept(r)`.
+ *   * There is one accepting state `Accept(r)`.
+ *   * There is a special `AcceptAnySuffix(r)` state, which accepts any suffix string
+ *     by using an epsilon transition to `Accept(r)` and an any transition to itself.
  *   * Transitions between states may be labelled with epsilon, or an abstract
  *     input symbol.
  *   * Each abstract input symbol represents a set of concrete input characters:
@@ -73,13 +75,8 @@ import semmle.javascript.security.performance.SuperlinearBackTracking
  *   * Once a trace of pairs of abstract input symbols that leads from a fork
  *     back to itself has been identified, we attempt to construct a concrete
  *     string corresponding to it, which may fail.
- *   * Instead of trying to construct a suffix that makes the automaton fail,
- *     we ensure that repeating `n` copies of `w` does not reach a state that is
- *     an epsilon transition from the accepting state.
- *     This assumes that the accepting state accepts any suffix.
- *     Regular expressions - where the end anchor `$` is used - have an accepting state
- *     that does not accept all suffixes. Such regular expression not accurately
- *     modelled by this assumption, which can cause false negatives.
+ *   * Lastly we ensure that any state reached by repeating `n` copies of `w` has
+ *     a suffix `x` (possible empty) that is __not__ accepted.
  */
 
 /**
@@ -457,26 +454,35 @@ newtype TState =
       exists(t.(RegexpCharacterConstant).getValue().charAt(i))
     )
   } or
-  Accept(RegExpRoot l) { l.isRelevant() }
+  Accept(RegExpRoot l) { l.isRelevant() } or
+  AcceptAnySuffix(RegExpRoot l) { l.isRelevant() }
 
 /**
  * A state in the NFA corresponding to a regular expression.
  *
  * Each regular expression literal `l` has one accepting state
- * `Accept(l)` and a state `Match(t, i)` for every subterm `t`,
+ * `Accept(l)`, one state that accepts all suffixes `AcceptAnySuffix(l)`,
+ * and a state `Match(t, i)` for every subterm `t`,
  * which represents the state of the NFA before starting to
  * match `t`, or the `i`th character in `t` if `t` is a constant.
  */
 class State extends TState {
   RegExpTerm repr;
 
-  State() { this = Match(repr, _) or this = Accept(repr) }
+  State() {
+    this = Match(repr, _) or
+    this = Accept(repr) or
+    this = AcceptAnySuffix(repr)
+  }
 
   string toString() {
     exists(int i | this = Match(repr, i) | result = "Match(" + repr + "," + i + ")")
     or
     this instanceof Accept and
     result = "Accept(" + repr + ")"
+    or
+    this instanceof AcceptAnySuffix and
+    result = "AcceptAny(" + repr + ")"
   }
 
   Location getLocation() { result = repr.getLocation() }
@@ -524,7 +530,7 @@ State after(RegExpTerm t) {
   or
   exists(RegExpOpt opt | t = opt.getAChild() | result = after(opt))
   or
-  exists(RegExpRoot root | t = root | result = Accept(root))
+  exists(RegExpRoot root | t = root | result = AcceptAnySuffix(root))
 }
 
 /**
@@ -578,6 +584,16 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     q1 = before(opt) and q2 = before(opt.getChild(0))
     or
     q1 = before(opt) and q2 = after(opt)
+  )
+  or
+  exists(RegExpRoot root | q1 = AcceptAnySuffix(root) |
+    lbl = Any() and q2 = q1
+    or
+    lbl = Epsilon() and q2 = Accept(root)
+  )
+  or
+  exists(RegExpDollar dollar | q1 = before(dollar) |
+    lbl = Epsilon() and q2 = Accept(getRoot(dollar))
   )
 }
 
@@ -959,34 +975,98 @@ module PrefixConstruction {
 }
 
 /**
- * Gets a state that can be reached from pumpable `fork` consuming all
- * chars in `w` any number of times followed by the first `i+1` characters of `w`.
+ * Predicates for testing the presence of a rejecting suffix.
  *
- * This predicate is used to ensure that the accepting state is not reached from the fork by repeating `w`.
- * This works under the assumption that any accepting state accepts all suffixes.
- * For example, a regexp like `/^(a+)+/` will accept any string as long the prefix is some number of `"a"`s,
- * and it is therefore not possible to construct a rejected suffix.
- * This assumption breaks on regular expression that use the anchor `$`, e.g: `/^(a+)+$/`, and such regular
- * expression are not accurately modeled by this query.
+ * These predicates are used to ensure that the all states reached from the fork
+ * by repeating `w` have a rejecting suffix.
+ *
+ * For example, a regexp like `/^(a+)+/` will accept any string as long the prefix is
+ * some number of `"a"`s, and it is therefore not possible to construct a rejecting suffix.
+ *
+ * A regexp like `/(a+)+$/` or `/(a+)+b/` trivially has a rejecting suffix,
+ * as the suffix "X" will cause both the regular expressions to be rejected.
  *
  * The string `w` is repeated any number of times because it needs to be
  * infinitely repeatedable for the attack to work.
- * For a regular expression `/((ab)+)*abab/` the accepting state is not reachable from the fork
- * using epsilon transitions. But any attempt at repeating `w` will end in the accepting state.
- * This also relies on the assumption that any accepting state will accept all suffixes.
+ * For the regular expression `/((ab)+)*abab/` the accepting state is not reachable from the fork
+ * using epsilon transitions. But any attempt at repeating `w` will end in a state that accepts all suffixes.
  */
-State process(State fork, string w, int i) {
-  isPumpable(fork, w) and
-  exists(State prev |
-    i = 0 and prev = fork
+module SuffixConstruction {
+  /**
+   * Holds if all states reachable from `fork` by repeating `w`
+   * are rejectable by appending some suffix.
+   */
+  predicate reachesOnlyRejectableSuffixes(State fork, string w) {
+    isPumpable(fork, w) and
+    forex(State next | next = process(fork, w, w.length() - 1) | isDefinitelyRejectable(next))
+  }
+
+  /**
+   * Holds if there definitely exists a path starting from `s` that leads to the regular expression being rejected.
+   */
+  private predicate isDefinitelyRejectable(State s) {
+    // exists a reject edge with some char.
+    hasRejectEdge(s, _)
     or
-    prev = process(fork, w, i - 1)
+    // all edges (at least one) with some char leads to another state that is rejectable.
+    exists(string char | char = relevant() |
+      forex(State next | deltaClosed(s, getAnInputSymbolMatching(char), next) |
+        isDefinitelyRejectable(next)
+      )
+    )
     or
-    // repeat until fixpoint
-    i = 0 and
-    prev = process(fork, w, w.length() - 1)
-  |
-    deltaClosed(prev, getAnInputSymbolMatching(w.charAt(i)), result)
+    // stopping here is rejection
+    not epsilonSucc*(s) = Accept(_)
+  }
+
+  /**
+   * Gets a char used for finding possible suffixes.
+   */
+  private string relevant() { result = CharacterClasses::getARelevantChar() }
+
+  /**
+   * Holds if there is no edge from `s` labeled `char` in our NFA.
+   * The NFA does not model reject states, so the above is the same as saying there is a reject edge.
+   */
+  private predicate hasRejectEdge(State s, string char) {
+    char = relevant() and
+    not deltaClosed(s, getAnInputSymbolMatching(char), _)
+  }
+
+  /**
+   * Gets a state that can be reached from pumpable `fork` consuming all
+   * chars in `w` any number of times followed by the first `i+1` characters of `w`.
+   */
+  private State process(State fork, string w, int i) {
+    isPumpable(fork, w) and
+    exists(State prev |
+      i = 0 and prev = fork
+      or
+      prev = process(fork, w, i - 1)
+      or
+      // repeat until fixpoint
+      i = 0 and
+      prev = process(fork, w, w.length() - 1)
+    |
+      deltaClosed(prev, getAnInputSymbolMatching(w.charAt(i)), result)
+    )
+  }
+}
+
+/**
+ * Holds if `term` may cause exponential backtracking on strings containing many repetitions of `witness`.
+ */
+predicate isReDoSAttackable(RegExpTerm term, string witness, State s) {
+  exists(int i, string c | s = Match(term, i) |
+    c =
+      min(string w |
+        isPumpable(s, w) and
+        not isPumpable(epsilonSucc+(s), _) and
+        SuffixConstruction::reachesOnlyRejectableSuffixes(s, w)
+      |
+        w order by w.length(), w
+      ) and
+    witness = escape(rotate(c, i))
   )
 }
 
@@ -1013,23 +1093,6 @@ string escape(string s) {
 bindingset[str, i]
 string rotate(string str, int i) {
   result = str.suffix(str.length() - i) + str.prefix(str.length() - i)
-}
-
-/**
- * Holds if `term` may cause exponential backtracking on strings containing many repetitions of `witness`.
- */
-predicate isReDoSAttackable(RegExpTerm term, string witness, State s) {
-  exists(int i, string c | s = Match(term, i) |
-    c =
-      min(string w |
-        isPumpable(s, w) and
-        not isPumpable(epsilonSucc+(s), _) and
-        not epsilonSucc*(process(s, w, _)) = Accept(_)
-      |
-        w order by w.length(), w
-      ) and
-    witness = escape(rotate(c, i))
-  )
 }
 
 from RegExpTerm t, string witness, State s, string prefixMsg

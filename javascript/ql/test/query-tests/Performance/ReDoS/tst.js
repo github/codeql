@@ -43,8 +43,8 @@ var bad6 = /^([\s\[\{\(]|#.*)*$/;
 // GOOD
 var good4 = /(\r\n|\r|\n)+/;
 
-// GOOD because it cannot be made to fail after the loop (but we can't tell that)
-var good5 = /((?:[^"']|".*?"|'.*?')*?)([(,)]|$)/;
+// BAD - PoC: `node -e "/((?:[^\"\']|\".*?\"|\'.*?\')*?)([(,)]|$)/.test(\"'''''''''''''''''''''''''''''''''''''''''''''\\\"\");"`. It's complicated though, because the regexp still matches something, it just matches the empty-string after the attack string.
+var actuallyBad = /((?:[^"']|".*?"|'.*?')*?)([(,)]|$)/;
 
 // NOT GOOD; attack: "a" + "[]".repeat(100) + ".b\n"
 // Adapted from Knockout (https://github.com/knockout/knockout), which is
@@ -178,7 +178,7 @@ var good12 = /(\d+(X\d+)?)+/;
 // GOOD - there is no witness in the end that could cause the regexp to not match
 var good13 = /([0-9]+(X[0-9]*)?)*/;
 
-// GOOD - but still flagged (always matches something)
+// GOOD
 var good15 = /^([^>]+)*(>|$)/;
 
 // NOT GOOD
@@ -283,7 +283,7 @@ var good31 = /(a+)*[^]{2,3}/;
 // GOOD - but we don't find that no suffix is rejected
 var good32 = /(a+)*([^]{2,}|X)$/;
 
-// GOOD - but still flagged
+// GOOD
 var good33 = /(a+)*([^]*|X)$/;
 
 // NOT GOOD
