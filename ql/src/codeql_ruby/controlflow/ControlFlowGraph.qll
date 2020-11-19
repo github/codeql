@@ -8,7 +8,18 @@ private import internal.Splitting
 private import internal.Completion
 
 /** An AST node with an associated control-flow graph. */
-class CfgScope = Method; // TODO: add more cases (e.g. bodies of lambdas/do blocks)
+class CfgScope extends AstNode {
+  private string name;
+
+  CfgScope() {
+    name = this.(Method).getName().toString()
+    or
+    this = any(MethodCall mc | name = "block for " + mc.getMethod()).getBlock()
+  }
+
+  /** Gets the name of this scope. */
+  string getName() { result = name }
+}
 
 /**
  * A control flow node.

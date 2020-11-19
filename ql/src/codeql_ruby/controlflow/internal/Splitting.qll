@@ -60,7 +60,12 @@ class Split extends TSplit {
   string toString() { none() }
 }
 
-private CfgScope getScope(AstNode n) { result.getAFieldOrChild*() = n }
+private AstNode parent(AstNode n) {
+  result.getAFieldOrChild() = n and
+  not n instanceof CfgScope
+}
+
+private CfgScope getScope(AstNode n) { result = parent+(n) }
 
 /**
  * Holds if split kinds `sk1` and `sk2` may overlap. That is, they may apply

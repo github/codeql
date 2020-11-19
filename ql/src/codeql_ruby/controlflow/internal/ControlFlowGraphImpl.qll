@@ -256,11 +256,7 @@ private module Trees {
     }
   }
 
-  private class BlockParameterTree extends LeafTree, BlockParameter { }
-
-  private class BlockParametersTree extends StandardPostOrderTree, BlockParameters {
-    final override AstNode getChildNode(int i) { result = this.getChild(i) }
-
+  private class BlockParametersTree extends LeafTree, BlockParameters {
     override predicate isHidden() { any() }
   }
 
@@ -277,6 +273,12 @@ private module Trees {
   }
 
   private class DoTree extends StandardPreOrderTree, Do {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
+  }
+
+  private class DoBlockTree extends StandardPreOrderTree, DoBlock {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
 
     override predicate isHidden() { any() }
@@ -382,12 +384,11 @@ private module Trees {
   }
 
   private class MethodCallTree extends StandardPostOrderTree, MethodCall {
+    // this.getBlock() is not included as it uses a different scope
     final override AstNode getChildNode(int i) {
       result = this.getArguments() and i = 0
       or
       result = this.getMethod() and i = 1
-      or
-      result = this.getBlock() and i = 2
     }
   }
 

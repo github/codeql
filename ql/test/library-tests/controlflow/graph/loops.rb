@@ -20,3 +20,9 @@ def m2 x
   end
   puts "Done"
 end
+
+def m3
+  [1,2,3].each do |x|
+    puts x
+  end
+end
