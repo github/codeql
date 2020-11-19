@@ -46,6 +46,20 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         create_none_predicate("getLocation", false, Some(ql::Type::Normal("Location")));
     let get_a_field_or_child =
         create_none_predicate("getAFieldOrChild", false, Some(ql::Type::Normal("AstNode")));
+    let get_parent = ql::Predicate {
+        name: "getParent",
+        overridden: false,
+        return_type: Some(ql::Type::Normal("AstNode")),
+        formal_parameters: vec![],
+        body: ql::Expression::Equals(
+            Box::new(ql::Expression::Var("this")),
+            Box::new(ql::Expression::Dot(
+                Box::new(ql::Expression::Var("result")),
+                "getAFieldOrChild",
+                vec![],
+            )),
+        ),
+    };
     let describe_ql_class = ql::Predicate {
         name: "describeQlClass",
         overridden: false,
@@ -64,6 +78,7 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         predicates: vec![
             to_string,
             get_location,
+            get_parent,
             get_a_field_or_child,
             describe_ql_class,
         ],
