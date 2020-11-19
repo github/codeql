@@ -6,7 +6,7 @@
  * to hold for only the AST nodes you wish to view.
  */
 
-private import codeql_ruby.ast
+import codeql_ruby.ast
 
 /**
  * The query can extend this class to control which nodes are printed.
