@@ -4,7 +4,7 @@ test_taint
 | test.py:38 | ok   | test_custom_sanitizer_guard | s |
 | test.py:40 | ok   | test_custom_sanitizer_guard | s |
 | test.py:51 | ok   | test_escape | s2 |
-| test_logical.py:30 | fail | test_basic | s |
+| test_logical.py:30 | ok   | test_basic | s |
 | test_logical.py:32 | ok   | test_basic | s |
 | test_logical.py:35 | ok   | test_basic | s |
 | test_logical.py:37 | fail | test_basic | s |
@@ -14,10 +14,10 @@ test_taint
 | test_logical.py:53 | ok   | test_or | s |
 | test_logical.py:57 | ok   | test_or | s |
 | test_logical.py:59 | ok   | test_or | s |
-| test_logical.py:67 | fail | test_and | s |
+| test_logical.py:67 | ok   | test_and | s |
 | test_logical.py:69 | ok   | test_and | s |
 | test_logical.py:73 | ok   | test_and | s |
-| test_logical.py:75 | fail | test_and | s |
+| test_logical.py:75 | ok   | test_and | s |
 | test_logical.py:79 | ok   | test_and | s |
 | test_logical.py:81 | fail | test_and | s |
 | test_logical.py:89 | fail | test_tricky | s |
@@ -27,13 +27,22 @@ test_taint
 | test_logical.py:105 | ok   | test_nesting_not | s |
 | test_logical.py:107 | fail | test_nesting_not | s |
 | test_logical.py:116 | ok   | test_nesting_not_with_and_true | s |
-| test_logical.py:118 | fail | test_nesting_not_with_and_true | s |
-| test_logical.py:121 | fail | test_nesting_not_with_and_true | s |
+| test_logical.py:118 | ok   | test_nesting_not_with_and_true | s |
+| test_logical.py:121 | ok   | test_nesting_not_with_and_true | s |
 | test_logical.py:123 | ok   | test_nesting_not_with_and_true | s |
 | test_logical.py:126 | ok   | test_nesting_not_with_and_true | s |
-| test_logical.py:128 | fail | test_nesting_not_with_and_true | s |
+| test_logical.py:128 | ok   | test_nesting_not_with_and_true | s |
 isSanitizer
 | TestTaintTrackingConfiguration | test.py:21:39:21:39 | ControlFlowNode for s |
 | TestTaintTrackingConfiguration | test.py:50:10:50:29 | ControlFlowNode for emulated_escaping() |
 isSanitizerGuard
 | TestTaintTrackingConfiguration | test.py:35:8:35:26 | ControlFlowNode for emulated_is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:29:8:29:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:44:8:44:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:50:12:50:21 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:66:8:66:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:72:12:72:21 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:92:8:92:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:115:12:115:21 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:120:16:120:25 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:125:20:125:29 | ControlFlowNode for is_safe() |
