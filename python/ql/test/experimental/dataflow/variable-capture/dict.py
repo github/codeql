@@ -32,26 +32,26 @@ def SINK_F(x):
 def Out():
     sinkO1 = { "x": "" }
     def captureOut1():
-        sinkO1["x"] = "source"
+        sinkO1["x"] = SOURCE
     captureOut1()
     SINK(sinkO1["x"]) #$ MISSING:captured
 
     sinkO2 = { "x": "" }
     def captureOut2():
         def m():
-            sinkO2["x"] = "source"
+            sinkO2["x"] = SOURCE
         m()
     captureOut2()
     SINK(sinkO2["x"]) #$ MISSING:captured
 
     nonSink0 = { "x": "" }
     def captureOut1NotCalled():
-        nonSink0["x"] = "source"
+        nonSink0["x"] = SOURCE
     SINK_F(nonSink0["x"])
 
     def captureOut2NotCalled():
         def m():
-            nonSink0["x"] = "source"
+            nonSink0["x"] = SOURCE
     captureOut2NotCalled()
     SINK_F(nonSink0["x"])
 
