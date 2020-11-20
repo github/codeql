@@ -162,10 +162,9 @@ module ExternalAPIUsedWithUntrustedData {
    * Gets a parameter of `base` with name `name`, or a property named `name` of a destructuring parameter.
    */
   private API::Node getNamedParameter(API::Node base, string name) {
-    exists(API::Node param, string lbl |
-      // getParameter(i) requires a bindingset for i, so use the raw label
-      param = base.getASuccessor("parameter " + lbl) and
-      lbl != "-1" // ignore receiver
+    exists(API::Node param |
+      param = base.getAParameter() and
+      not param = base.getReceiver()
     |
       result = param and
       name = param.getAnImmediateUse().asExpr().(Parameter).getName()
