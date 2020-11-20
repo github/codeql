@@ -21,8 +21,7 @@ as long as you run the script from one of the following locations:
 # Define which languages and query packs to consider
 languages = [ "cpp", "csharp", "go", "java", "javascript", "python"]
 
-# Query suites to generate help for
-# lgtm-full suites covers all queries used in code scanning and on lgtm.com plus a few more
+# Query suites to generate help for - lgtm suite should cover the queries that users are interested in
 packs = ["lgtm"]
 
 def prefix_repo_nwo(filename):
@@ -110,7 +109,6 @@ except Exception as e:
 # (and assumes the codeql-go repo is in a similar location)
 
 codeql_search_path = "./codeql:./codeql-go"  # will be extended further down
-
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
 try:
@@ -127,11 +125,18 @@ except:
 # Iterate over all languages and packs, and resolve which queries are part of those packs
 for lang in languages:
 
+    code_scanning_queries = subprocess_run(
+                ["codeql", "resolve", "queries", "--search-path", codeql_search_path, "%s-code-scanning.qls" % (lang)]).stdout.strip()
+    security_extended_queries = subprocess_run(
+                ["codeql", "resolve", "queries", "--search-path", codeql_search_path, "%s-security-extended.qls" % (lang)]).stdout.strip()
+    security_and_quality_queries = subprocess_run(
+                ["codeql", "resolve", "queries", "--search-path", codeql_search_path, "%s-security-and-quality.qls" % (lang)]).stdout.strip()
     # Define empty dictionary to store @name:filename pairs to generate alphabetically sorted Sphinx toctree
     index_file_dictionary = {}
     for pack in packs:
         # Get absolute paths to queries in this pack by using 'codeql resolve queries'
         try:
+            
             queries_subp = subprocess_run(
                 ["codeql", "resolve", "queries", "--search-path", codeql_search_path, "%s-%s.qls" % (lang, pack)])
         except Exception as e:
@@ -189,18 +194,34 @@ for lang in languages:
                     "codeql", "codeql/tree/main").replace(" ", "%20").replace("\\", "/")
             query_link = "[Click to see the query in the CodeQL repository](https://github.com/" + \
                 transform_link + ")\n"
+            
+            if queryfile in code_scanning_queries:
+                cs_suites = lang +'-code-scanning.qls '
+            else:
+                cs_suites = ""
+            if queryfile in security_extended_queries:
+                se_suites = lang + '-security-extended.qls '
+            else:
+                se_suites = ""
+            if queryfile in security_and_quality_queries:
+                sq_suites = lang + '-security-and-quality.qls '
+            else:
+                sq_Suites = ""
+
+            if queryfile in code_scanning_queries or queryfile in security_extended_queries or queryfile in security_and_quality_queries:
+                suites_list = "Query suites: " + cs_suites + se_suites + sq_suites + "\n"
+            else:
+                suites_list = ""
 
             # Join metadata into a literal block and add query link below
             meta_string = "\n"*2 + "```\n" + query_id + query_kind + query_severity + \
-                query_precision + query_tags + "```\n\n" + query_link + "\n"
+                query_precision + query_tags + suites_list + "```\n\n" + query_link + "\n"
 
             # Insert metadata block into query help directly under title
             full_help = query_help.replace("\n", meta_string, 1)
 
-            # Use id property (without language code) to make name for markdown file
-            s = query_id.index("/")
-            # replace "/" with "-"
-            query_name = query_id[s+1:-1].replace("/", "-")
+            # Use id property to make name for markdown file, replacing any "/" characters with "-"
+            query_name = query_id[4:-1].replace("/", "-")
 
             # Populate index_file_dictionary with @name extracted from metadata and corresponding query filename
             index_file_dictionary[query_name_meta] = lang + "/" + query_name
