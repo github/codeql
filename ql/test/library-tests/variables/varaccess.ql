@@ -1,13 +1,18 @@
 import codeql_ruby.Variables
 
-query predicate variableAccess(VariableAccess var, VariableScope scope) {
-  scope = var.getVariable().getDeclaringScope()
+query predicate variableAccess(VariableAccess access, Variable variable, VariableScope scope) {
+  variable = access.getVariable() and
+  scope = variable.getDeclaringScope()
 }
 
-query predicate parameterAccess(ParameterAccess var, VariableScope scope) {
-  scope = var.getVariable().getDeclaringScope()
+query predicate parameterAccess(ParameterAccess access, Parameter variable, VariableScope scope) {
+  variable = access.getVariable() and
+  scope = variable.getDeclaringScope()
 }
 
-query predicate localVariableAccess(LocalVariableAccess var, VariableScope scope) {
-  scope = var.getVariable().getDeclaringScope()
+query predicate localVariableAccess(
+  LocalVariableAccess access, LocalVariable variable, VariableScope scope
+) {
+  variable = access.getVariable() and
+  scope = variable.getDeclaringScope()
 }
