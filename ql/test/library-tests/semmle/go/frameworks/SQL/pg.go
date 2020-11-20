@@ -11,31 +11,31 @@ import (
 )
 
 func pgtest(query string, conn pg.Conn, db pg.DB, tx pg.Tx) {
-	pg.Q(query)
+	pg.Q(query) // $querystring=query
 	var dst []byte
-	conn.FormatQuery(dst, query)
-	conn.Prepare(query)
-	db.FormatQuery(dst, query)
-	db.Prepare(query)
-	tx.FormatQuery(dst, query)
-	tx.Prepare(query)
+	conn.FormatQuery(dst, query) // $querystring=query
+	conn.Prepare(query)          // $querystring=query
+	db.FormatQuery(dst, query)   // $querystring=query
+	db.Prepare(query)            // $querystring=query
+	tx.FormatQuery(dst, query)   // $querystring=query
+	tx.Prepare(query)            // $querystring=query
 }
 
 // go-pg v9 dropped support for `FormatQuery`
 func newpgtest(query string, conn newpg.Conn, db newpg.DB, tx newpg.Tx) {
-	newpg.Q(query)
-	conn.Prepare(query)
-	db.Prepare(query)
-	tx.Prepare(query)
+	newpg.Q(query)      // $querystring=query
+	conn.Prepare(query) // $querystring=query
+	db.Prepare(query)   // $querystring=query
+	tx.Prepare(query)   // $querystring=query
 }
 func pgormtest(query string, q orm.Query) {
-	orm.Q(query)
-	q.ColumnExpr(query)
-	q.For(query)
+	orm.Q(query)        // $querystring=query
+	q.ColumnExpr(query) // $querystring=query
+	q.For(query)        // $querystring=query
 	var b []byte
-	q.FormatQuery(b, query)
-	q.Having(query)
-	q.Where(query)
-	q.WhereInMulti(query)
-	q.WhereOr(query)
+	q.FormatQuery(b, query) // $querystring=query
+	q.Having(query)         // $querystring=query
+	q.Where(query)          // $querystring=query
+	q.WhereInMulti(query)   // $querystring=query
+	q.WhereOr(query)        // $querystring=query
 }

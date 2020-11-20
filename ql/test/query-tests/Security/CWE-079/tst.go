@@ -69,3 +69,5 @@ func serve9(log io.Writer) {
 	})
 	http.ListenAndServe(":80", nil)
 }
+
+func main() {}
