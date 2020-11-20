@@ -46,6 +46,10 @@ class PathNotNormalizedConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Path::PathNormalization }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+  }
 }
 
 /**
@@ -68,6 +72,10 @@ class FirstNormalizationConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof Path::PathNormalization }
 
   override predicate isSanitizerOut(DataFlow::Node node) { node instanceof Path::PathNormalization }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+  }
 }
 
 /** Configuration to find paths from normalizations to sinks that do not go through a check. */
@@ -82,6 +90,8 @@ class NormalizedPathNotCheckedConfiguration extends TaintTracking2::Configuratio
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof Path::SafeAccessCheck
+    or
+    guard instanceof DataFlow::BarrierGuard::StringConstCompare
   }
 }
 

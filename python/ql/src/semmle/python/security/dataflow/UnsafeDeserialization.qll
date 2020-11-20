@@ -24,4 +24,8 @@ class UnsafeDeserializationConfiguration extends TaintTracking::Configuration {
       sink = d.getAnInput()
     )
   }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+  }
 }

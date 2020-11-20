@@ -18,4 +18,8 @@ class SQLInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink = any(SqlExecution e).getSql() }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+  }
 }

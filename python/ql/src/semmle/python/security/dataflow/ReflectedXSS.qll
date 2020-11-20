@@ -24,4 +24,8 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
       sink = response.getBody()
     )
   }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+  }
 }

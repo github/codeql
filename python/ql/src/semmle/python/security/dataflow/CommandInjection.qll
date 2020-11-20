@@ -48,4 +48,8 @@ class CommandInjectionConfiguration extends TaintTracking::Configuration {
     // https://github.com/python/cpython/blob/fa7ce080175f65d678a7d5756c94f82887fc9803/Lib/subprocess.py#L341
     not sink.getScope().getEnclosingModule().getName() in ["os", "subprocess", "platform", "popen2"]
   }
+
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+  }
 }
