@@ -11,7 +11,7 @@ may be relevant for security analysis of this application.</p>
 <p>An external API is defined as a call to a function that is not defined in the source code, not overridden 
 in the source code, and is not modeled as a taint step in the default taint library. External APIs may be from the 
 third party dependencies or from internal dependencies. The query will report the external package name, followed
-by an access path leading to the function, followed <code>[param x]</code> where <code>x</code>
+by an access path leading to the function, followed by <code>[param x]</code> where <code>x</code>
 indicates the position of the parameter receiving the untrusted data.</p>
 
 </overview>
