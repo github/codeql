@@ -1,4 +1,4 @@
-| test_string_eq.py:16 | fail | const_eq_clears_taint | ts |
+| test_string_eq.py:16 | ok   | const_eq_clears_taint | ts |
 | test_string_eq.py:18 | ok   | const_eq_clears_taint | ts |
 | test_string_eq.py:20 | ok   | const_eq_clears_taint | ts |
 | test_string_eq.py:27 | fail | const_eq_clears_taint2 | ts |

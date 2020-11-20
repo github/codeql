@@ -355,6 +355,26 @@ class BarrierGuard extends GuardNode {
   }
 }
 
+/** Provides commonly used BarrierGuards */
+module BarrierGuard {
+  /** A validation of unknown node by comparing with a constant string value. */
+  class StringConstCompare extends BarrierGuard, CompareNode {
+    ControlFlowNode checked_node;
+
+    StringConstCompare() {
+      exists(StrConst str_const |
+        this.operands(str_const.getAFlowNode(), any(Eq eq), checked_node)
+        or
+        this.operands(checked_node, any(Eq eq), str_const.getAFlowNode())
+      )
+    }
+
+    override predicate checks(ControlFlowNode node, boolean branch) {
+      node = checked_node and branch = true
+    }
+  }
+}
+
 /**
  * Algebraic datatype for tracking data content associated with values.
  * Content can be collection elements or object attributes.
