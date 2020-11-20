@@ -27,6 +27,14 @@ def const_eq_clears_taint2():
     ensure_not_tainted(ts)
 
 
+def const_eq_clears_taint3():
+    ts = TAINTED_STRING
+    if ts == "safe" or ts == "also_safe":
+        ensure_not_tainted(ts)
+    else:
+        ensure_tainted(ts)
+
+
 def non_const_eq_preserves_taint(x="foo"):
     ts = TAINTED_STRING
     if ts == ts:
@@ -53,4 +61,5 @@ def const_eq_through_func():
 
 const_eq_clears_taint()
 const_eq_clears_taint2()
+const_eq_clears_taint3()
 non_const_eq_preserves_taint()

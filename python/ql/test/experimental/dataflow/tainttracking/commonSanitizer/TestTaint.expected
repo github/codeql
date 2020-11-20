@@ -2,8 +2,10 @@
 | test_string_eq.py:18 | ok   | const_eq_clears_taint | ts |
 | test_string_eq.py:20 | ok   | const_eq_clears_taint | ts |
 | test_string_eq.py:27 | fail | const_eq_clears_taint2 | ts |
-| test_string_eq.py:33 | ok   | non_const_eq_preserves_taint | ts |
-| test_string_eq.py:35 | ok   | non_const_eq_preserves_taint | ts |
-| test_string_eq.py:45 | fail | const_eq_through_func | ts |
-| test_string_eq.py:47 | ok   | const_eq_through_func | ts |
-| test_string_eq.py:49 | ok   | const_eq_through_func | ts |
+| test_string_eq.py:33 | fail | const_eq_clears_taint3 | ts |
+| test_string_eq.py:35 | ok   | const_eq_clears_taint3 | ts |
+| test_string_eq.py:41 | ok   | non_const_eq_preserves_taint | ts |
+| test_string_eq.py:43 | ok   | non_const_eq_preserves_taint | ts |
+| test_string_eq.py:53 | fail | const_eq_through_func | ts |
+| test_string_eq.py:55 | ok   | const_eq_through_func | ts |
+| test_string_eq.py:57 | ok   | const_eq_through_func | ts |
