@@ -1030,7 +1030,7 @@
 | BreakInTry.cs:31:21:31:32 | ... == ... | BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... | semmle.label | false |
 | BreakInTry.cs:31:21:31:32 | ... == ... | BreakInTry.cs:32:21:32:21 | ; | semmle.label | true |
 | BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... | BreakInTry.cs:32:21:32:21 | [finally: break] ; | semmle.label | true |
-| BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... | BreakInTry.cs:35:7:35:7 | ; | semmle.label | break |
+| BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... | BreakInTry.cs:35:7:35:7 | ; | semmle.label | false |
 | BreakInTry.cs:31:29:31:32 | [finally: break] null | BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... | semmle.label | successor |
 | BreakInTry.cs:31:29:31:32 | null | BreakInTry.cs:31:21:31:32 | ... == ... | semmle.label | successor |
 | BreakInTry.cs:32:21:32:21 | ; | BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... | semmle.label | successor |

@@ -860,8 +860,7 @@ module FinallySplitting {
       (
         exit(pred, c, _)
         or
-        exit(pred, any(BreakCompletion bc), _) and
-        c instanceof BreakNormalCompletion
+        exit(pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
       )
     }
 
@@ -870,8 +869,7 @@ module FinallySplitting {
       (
         exit(last, c, _)
         or
-        exit(last, any(BreakCompletion bc), _) and
-        c instanceof BreakNormalCompletion
+        exit(last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
       )
     }
 

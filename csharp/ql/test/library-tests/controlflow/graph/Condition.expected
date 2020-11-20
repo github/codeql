@@ -1307,6 +1307,7 @@ conditionFlow
 | BreakInTry.cs:31:21:31:32 | ... == ... | BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... | false |
 | BreakInTry.cs:31:21:31:32 | ... == ... | BreakInTry.cs:32:21:32:21 | ; | true |
 | BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... | BreakInTry.cs:32:21:32:21 | [finally: break] ; | true |
+| BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... | BreakInTry.cs:35:7:35:7 | ; | false |
 | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:43:17:43:23 | return ...; | true |
 | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:46:9:52:9 | {...} | false |
 | BreakInTry.cs:49:21:49:31 | ... == ... | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | false |

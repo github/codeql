@@ -36,23 +36,28 @@ private newtype TCompletion =
   TEmptinessCompletion(boolean isEmpty) { isEmpty = true or isEmpty = false } or
   TReturnCompletion() or
   TBreakCompletion() or
-  TBreakNormalCompletion() or
   TContinueCompletion() or
   TGotoCompletion(string label) { label = any(GotoStmt gs).getLabel() } or
   TThrowCompletion(ExceptionClass ec) or
   TExitCompletion() or
-  TNestedCompletion(ConditionalCompletion inner, Completion outer) {
-    outer = TReturnCompletion()
+  TNestedCompletion(Completion inner, Completion outer) {
+    inner instanceof NormalCompletion and
+    (
+      outer = TReturnCompletion()
+      or
+      outer = TBreakCompletion()
+      or
+      outer = TContinueCompletion()
+      or
+      outer = TGotoCompletion(_)
+      or
+      outer = TThrowCompletion(_)
+      or
+      outer = TExitCompletion()
+    )
     or
-    outer = TBreakCompletion()
-    or
-    outer = TContinueCompletion()
-    or
-    outer = TGotoCompletion(_)
-    or
-    outer = TThrowCompletion(_)
-    or
-    outer = TExitCompletion()
+    inner = TBreakCompletion() and
+    outer instanceof NonNestedNormalCompletion
   }
 
 pragma[noinline]
@@ -534,8 +539,10 @@ private predicate mustHaveEmptinessCompletion(ControlFlowElement cfe) { foreachE
  */
 abstract class NormalCompletion extends Completion { }
 
+abstract private class NonNestedNormalCompletion extends NormalCompletion { }
+
 /** A simple (normal) completion. */
-class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
+class SimpleCompletion extends NonNestedNormalCompletion, TSimpleCompletion {
   override NormalSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "normal" }
@@ -547,7 +554,7 @@ class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
  * completion (`NullnessCompletion`), a matching completion (`MatchingCompletion`),
  * or an emptiness completion (`EmptinessCompletion`).
  */
-abstract class ConditionalCompletion extends NormalCompletion { }
+abstract class ConditionalCompletion extends NonNestedNormalCompletion { }
 
 /**
  * A completion that represents evaluation of an expression
@@ -636,39 +643,6 @@ class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
 }
 
 /**
- * A completion that represents evaluation of a statement or
- * expression resulting in a loop break.
- *
- * This completion is added for technical reasons only: when a loop
- * body can complete with a break completion, the loop itself completes
- * normally. However, if we choose `TSimpleCompletion` as the completion
- * of the loop, we lose the information that the last element actually
- * completed with a break, meaning that the control flow edge out of the
- * breaking node cannot be marked with a `break` label.
- *
- * Example:
- *
- * ```csharp
- * while (...) {
- *    ...
- *    break;
- * }
- * return;
- * ```
- *
- * The `break` on line 3 completes with a `TBreakCompletion`, therefore
- * the `while` loop can complete with a `TBreakNormalCompletion`, so we
- * get an edge `break --break--> return`. (If we instead used a
- * `TSimpleCompletion`, we would get a less precise edge
- * `break --normal--> return`.)
- */
-class BreakNormalCompletion extends NormalCompletion, TBreakNormalCompletion {
-  override BreakSuccessor getAMatchingSuccessorType() { any() }
-
-  override string toString() { result = "normal (break)" }
-}
-
-/**
  * A nested completion. For example, in
  *
  * ```csharp
@@ -691,18 +665,74 @@ class BreakNormalCompletion extends NormalCompletion, TBreakNormalCompletion {
  * and an inner `false` completion. `b2` also has a (normal) `true` completion.
  */
 class NestedCompletion extends Completion, TNestedCompletion {
-  private ConditionalCompletion inner;
-  private Completion outer;
+  Completion inner;
+  Completion outer;
 
   NestedCompletion() { this = TNestedCompletion(inner, outer) }
 
-  override ConditionalCompletion getInnerCompletion() { result = inner }
+  /** Gets a completion that is compatible with the inner completion. */
+  Completion getAnInnerCompatibleCompletion() {
+    result.getOuterCompletion() = this.getInnerCompletion()
+  }
+
+  override Completion getInnerCompletion() { result = inner }
 
   override Completion getOuterCompletion() { result = outer }
 
   override SuccessorType getAMatchingSuccessorType() { none() }
 
   override string toString() { result = outer + " [" + inner + "]" }
+}
+
+/**
+ * A nested completion for a loop that exists with a `break`.
+ *
+ * This completion is added for technical reasons only: when a loop
+ * body can complete with a break completion, the loop itself completes
+ * normally. However, if we choose `TSimpleCompletion` as the completion
+ * of the loop, we lose the information that the last element actually
+ * completed with a break, meaning that the control flow edge out of the
+ * breaking node cannot be marked with a `break` label.
+ *
+ * Example:
+ *
+ * ```csharp
+ * while (...) {
+ *    ...
+ *    break;
+ * }
+ * return;
+ * ```
+ *
+ * The `break` on line 3 completes with a `TBreakCompletion`, therefore
+ * the `while` loop can complete with a `NestedBreakCompletion`, so we
+ * get an edge `break --break--> return`. (If we instead used a
+ * `TSimpleCompletion`, we would get a less precise edge
+ * `break --normal--> return`.)
+ */
+class NestedBreakCompletion extends NormalCompletion, NestedCompletion {
+  NestedBreakCompletion() {
+    inner = TBreakCompletion() and
+    outer instanceof NonNestedNormalCompletion
+  }
+
+  override BreakCompletion getInnerCompletion() { result = inner }
+
+  override SimpleCompletion getOuterCompletion() { result = outer }
+
+  override Completion getAnInnerCompatibleCompletion() {
+    result = inner and
+    outer = TSimpleCompletion()
+    or
+    result = TNestedCompletion(outer, inner)
+  }
+
+  override SuccessorType getAMatchingSuccessorType() {
+    outer instanceof SimpleCompletion and
+    result instanceof BreakSuccessor
+    or
+    result = outer.(ConditionalCompletion).getAMatchingSuccessorType()
+  }
 }
 
 /**

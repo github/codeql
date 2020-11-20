@@ -1040,8 +1040,7 @@ module Statements {
       c instanceof NormalCompletion
       or
       // A statement exits with a `break` completion
-      last(this.getStmt(_), last, any(BreakCompletion bc)) and
-      c instanceof BreakNormalCompletion
+      last(this.getStmt(_), last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
       or
       // A statement exits abnormally
       last(this.getStmt(_), last, c) and
@@ -1123,12 +1122,8 @@ module Statements {
       last(this.getCondition(), last, c) and
       c instanceof FalseCompletion
       or
-      // Body exits with a break completion; the loop exits normally
-      // Note: we use a `BreakNormalCompletion` rather than a `NormalCompletion`
-      // in order to be able to get the correct break label in the control flow
-      // graph from the `result` node to the node after the loop.
-      last(body, last, any(BreakCompletion bc)) and
-      c instanceof BreakNormalCompletion
+      // Body exits with a break completion
+      last(body, last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
       or
       // Body exits with a completion that does not continue the loop
       last(body, last, c) and
@@ -1252,12 +1247,8 @@ module Statements {
       last = this and
       c.(EmptinessCompletion).isEmpty()
       or
-      // Body exits with a break completion; the loop exits normally
-      // Note: we use a `BreakNormalCompletion` rather than a `NormalCompletion`
-      // in order to be able to get the correct break label in the control flow
-      // graph from the `result` node to the node after the loop.
-      last(this.getBody(), last, any(BreakCompletion bc)) and
-      c instanceof BreakNormalCompletion
+      // Body exits with a break completion
+      last(this.getBody(), last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
       or
       // Body exits abnormally
       last(this.getBody(), last, c) and
@@ -1375,15 +1366,10 @@ module Statements {
       or
       // If the `finally` block completes normally, it inherits any non-normal
       // completion that was current before the `finally` block was entered
-      exists(NormalCompletion finally, Completion outer | this.lastFinally(last, finally, outer) |
-        c =
-          any(NestedCompletion nc |
-            nc.getInnerCompletion() = finally and nc.getOuterCompletion() = outer
-          )
-        or
-        not finally instanceof ConditionalCompletion and
-        c = outer
-      )
+      c =
+        any(NestedCompletion nc |
+          this.lastFinally(last, nc.getAnInnerCompatibleCompletion(), nc.getOuterCompletion())
+        )
     }
 
     /**

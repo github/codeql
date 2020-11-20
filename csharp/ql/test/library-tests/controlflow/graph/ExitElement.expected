@@ -843,17 +843,13 @@
 | Assignments.cs:19:9:19:17 | return ...; | Assignments.cs:19:9:19:17 | return ...; | return |
 | Assignments.cs:19:16:19:16 | access to parameter x | Assignments.cs:19:16:19:16 | access to parameter x | normal |
 | BreakInTry.cs:4:5:18:5 | {...} | BreakInTry.cs:15:17:15:28 | ... == ... | false |
-| BreakInTry.cs:4:5:18:5 | {...} | BreakInTry.cs:16:17:16:17 | ; | empty |
 | BreakInTry.cs:4:5:18:5 | {...} | BreakInTry.cs:16:17:16:17 | ; | normal |
-| BreakInTry.cs:4:5:18:5 | {...} | BreakInTry.cs:16:17:16:17 | ; | normal (break) |
 | BreakInTry.cs:5:9:17:9 | try {...} ... | BreakInTry.cs:15:17:15:28 | ... == ... | false |
-| BreakInTry.cs:5:9:17:9 | try {...} ... | BreakInTry.cs:16:17:16:17 | ; | empty |
 | BreakInTry.cs:5:9:17:9 | try {...} ... | BreakInTry.cs:16:17:16:17 | ; | normal |
-| BreakInTry.cs:5:9:17:9 | try {...} ... | BreakInTry.cs:16:17:16:17 | ; | normal (break) |
 | BreakInTry.cs:6:9:12:9 | {...} | BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | empty |
-| BreakInTry.cs:6:9:12:9 | {...} | BreakInTry.cs:10:21:10:26 | break; | normal (break) |
+| BreakInTry.cs:6:9:12:9 | {...} | BreakInTry.cs:10:21:10:26 | break; | normal [break] |
 | BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | empty |
-| BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | BreakInTry.cs:10:21:10:26 | break; | normal (break) |
+| BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | BreakInTry.cs:10:21:10:26 | break; | normal [break] |
 | BreakInTry.cs:7:26:7:28 | String arg | BreakInTry.cs:7:26:7:28 | String arg | normal |
 | BreakInTry.cs:7:33:7:36 | access to parameter args | BreakInTry.cs:7:33:7:36 | access to parameter args | normal |
 | BreakInTry.cs:8:13:11:13 | {...} | BreakInTry.cs:9:21:9:31 | ... == ... | false |
@@ -876,19 +872,17 @@
 | BreakInTry.cs:16:17:16:17 | ; | BreakInTry.cs:16:17:16:17 | ; | normal |
 | BreakInTry.cs:21:5:36:5 | {...} | BreakInTry.cs:35:7:35:7 | ; | normal |
 | BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... | BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... | empty |
-| BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... | BreakInTry.cs:31:21:31:32 | ... == ... | normal (break) |
-| BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... | BreakInTry.cs:32:21:32:21 | ; | normal (break) |
+| BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... | BreakInTry.cs:31:21:31:32 | ... == ... | false [break] |
+| BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... | BreakInTry.cs:32:21:32:21 | ; | normal [break] |
 | BreakInTry.cs:22:22:22:24 | String arg | BreakInTry.cs:22:22:22:24 | String arg | normal |
 | BreakInTry.cs:22:29:22:32 | access to parameter args | BreakInTry.cs:22:29:22:32 | access to parameter args | normal |
 | BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:31:21:31:32 | ... == ... | break [false] |
 | BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:31:21:31:32 | ... == ... | false |
-| BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:32:21:32:21 | ; | break |
-| BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:32:21:32:21 | ; | false |
+| BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:32:21:32:21 | ; | break [normal] |
 | BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:32:21:32:21 | ; | normal |
 | BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:31:21:31:32 | ... == ... | break [false] |
 | BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:31:21:31:32 | ... == ... | false |
-| BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:32:21:32:21 | ; | break |
-| BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:32:21:32:21 | ; | false |
+| BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:32:21:32:21 | ; | break [normal] |
 | BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:32:21:32:21 | ; | normal |
 | BreakInTry.cs:25:13:28:13 | {...} | BreakInTry.cs:26:21:26:31 | ... == ... | false |
 | BreakInTry.cs:25:13:28:13 | {...} | BreakInTry.cs:27:21:27:26 | break; | break |
@@ -910,13 +904,12 @@
 | BreakInTry.cs:32:21:32:21 | ; | BreakInTry.cs:32:21:32:21 | ; | normal |
 | BreakInTry.cs:35:7:35:7 | ; | BreakInTry.cs:35:7:35:7 | ; | normal |
 | BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | return [empty] |
-| BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:50:21:50:26 | break; | return |
+| BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:50:21:50:26 | break; | return [normal] |
 | BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:53:7:53:7 | ; | normal |
 | BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | empty |
 | BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | return [empty] |
-| BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:50:21:50:26 | break; | false |
-| BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:50:21:50:26 | break; | normal (break) |
-| BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:50:21:50:26 | break; | return |
+| BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:50:21:50:26 | break; | normal [break] |
+| BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:50:21:50:26 | break; | return [normal] |
 | BreakInTry.cs:41:9:44:9 | {...} | BreakInTry.cs:42:17:42:28 | ... == ... | false |
 | BreakInTry.cs:41:9:44:9 | {...} | BreakInTry.cs:43:17:43:23 | return ...; | return |
 | BreakInTry.cs:42:13:43:23 | if (...) ... | BreakInTry.cs:42:17:42:28 | ... == ... | false |
@@ -927,9 +920,9 @@
 | BreakInTry.cs:42:25:42:28 | null | BreakInTry.cs:42:25:42:28 | null | normal |
 | BreakInTry.cs:43:17:43:23 | return ...; | BreakInTry.cs:43:17:43:23 | return ...; | return |
 | BreakInTry.cs:46:9:52:9 | {...} | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | empty |
-| BreakInTry.cs:46:9:52:9 | {...} | BreakInTry.cs:50:21:50:26 | break; | normal (break) |
+| BreakInTry.cs:46:9:52:9 | {...} | BreakInTry.cs:50:21:50:26 | break; | normal [break] |
 | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | empty |
-| BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | BreakInTry.cs:50:21:50:26 | break; | normal (break) |
+| BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | BreakInTry.cs:50:21:50:26 | break; | normal [break] |
 | BreakInTry.cs:47:26:47:28 | String arg | BreakInTry.cs:47:26:47:28 | String arg | normal |
 | BreakInTry.cs:47:33:47:36 | access to parameter args | BreakInTry.cs:47:33:47:36 | access to parameter args | normal |
 | BreakInTry.cs:48:13:51:13 | {...} | BreakInTry.cs:49:21:49:31 | ... == ... | false |
@@ -944,14 +937,12 @@
 | BreakInTry.cs:53:7:53:7 | ; | BreakInTry.cs:53:7:53:7 | ; | normal |
 | BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | empty |
 | BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | return [empty] |
-| BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:68:21:68:26 | break; | false |
-| BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:68:21:68:26 | break; | normal (break) |
-| BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:68:21:68:26 | break; | return |
+| BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:68:21:68:26 | break; | normal [break] |
+| BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:68:21:68:26 | break; | return [normal] |
 | BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | empty |
 | BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | return [empty] |
-| BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:68:21:68:26 | break; | false |
-| BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:68:21:68:26 | break; | normal (break) |
-| BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:68:21:68:26 | break; | return |
+| BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:68:21:68:26 | break; | normal [break] |
+| BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:68:21:68:26 | break; | return [normal] |
 | BreakInTry.cs:59:9:62:9 | {...} | BreakInTry.cs:60:17:60:28 | ... == ... | false |
 | BreakInTry.cs:59:9:62:9 | {...} | BreakInTry.cs:61:17:61:23 | return ...; | return |
 | BreakInTry.cs:60:13:61:23 | if (...) ... | BreakInTry.cs:60:17:60:28 | ... == ... | false |
@@ -962,9 +953,9 @@
 | BreakInTry.cs:60:25:60:28 | null | BreakInTry.cs:60:25:60:28 | null | normal |
 | BreakInTry.cs:61:17:61:23 | return ...; | BreakInTry.cs:61:17:61:23 | return ...; | return |
 | BreakInTry.cs:64:9:70:9 | {...} | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | empty |
-| BreakInTry.cs:64:9:70:9 | {...} | BreakInTry.cs:68:21:68:26 | break; | normal (break) |
+| BreakInTry.cs:64:9:70:9 | {...} | BreakInTry.cs:68:21:68:26 | break; | normal [break] |
 | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | empty |
-| BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | BreakInTry.cs:68:21:68:26 | break; | normal (break) |
+| BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | BreakInTry.cs:68:21:68:26 | break; | normal [break] |
 | BreakInTry.cs:65:26:65:28 | String arg | BreakInTry.cs:65:26:65:28 | String arg | normal |
 | BreakInTry.cs:65:33:65:36 | access to parameter args | BreakInTry.cs:65:33:65:36 | access to parameter args | normal |
 | BreakInTry.cs:66:13:69:13 | {...} | BreakInTry.cs:67:21:67:31 | ... == ... | false |
@@ -989,14 +980,14 @@
 | CompileTimeOperators.cs:22:9:22:25 | return ...; | CompileTimeOperators.cs:22:9:22:25 | return ...; | return |
 | CompileTimeOperators.cs:22:16:22:24 | nameof(...) | CompileTimeOperators.cs:22:16:22:24 | nameof(...) | normal |
 | CompileTimeOperators.cs:22:23:22:23 | access to parameter i | CompileTimeOperators.cs:22:23:22:23 | access to parameter i | normal |
-| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) |
-| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) |
-| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(OutOfMemoryException) |
+| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) [normal] |
+| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) [normal] |
+| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | normal |
-| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) |
+| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) [normal] |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | normal |
-| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) |
-| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(OutOfMemoryException) |
+| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) [normal] |
+| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:32:13:32:21 | goto ...; | goto(End) |
 | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | throw(Exception) |
@@ -1546,9 +1537,9 @@
 | ExitMethods.cs:88:9:88:28 | ...; | ExitMethods.cs:88:9:88:27 | call to method Exit | exit |
 | ExitMethods.cs:88:26:88:26 | 0 | ExitMethods.cs:88:26:88:26 | 0 | normal |
 | ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
-| ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit |
+| ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit [normal] |
 | ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
-| ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit |
+| ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit [normal] |
 | ExitMethods.cs:94:9:96:9 | {...} | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
 | ExitMethods.cs:95:13:95:18 | call to method Exit | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
 | ExitMethods.cs:95:13:95:18 | this access | ExitMethods.cs:95:13:95:18 | this access | normal |
@@ -1645,11 +1636,11 @@
 | Extensions.cs:25:23:25:32 | access to method Parse | Extensions.cs:25:23:25:32 | access to method Parse | normal |
 | Extensions.cs:25:23:25:32 | delegate creation of type Func<String,Boolean> | Extensions.cs:25:23:25:32 | delegate creation of type Func<String,Boolean> | normal |
 | Finally.cs:8:5:17:5 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | normal |
-| Finally.cs:8:5:17:5 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | throw(Exception) |
-| Finally.cs:8:5:17:5 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | throw(OutOfMemoryException) |
+| Finally.cs:8:5:17:5 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | throw(Exception) [normal] |
+| Finally.cs:8:5:17:5 | {...} | Finally.cs:15:13:15:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | Finally.cs:9:9:16:9 | try {...} ... | Finally.cs:15:13:15:40 | call to method WriteLine | normal |
-| Finally.cs:9:9:16:9 | try {...} ... | Finally.cs:15:13:15:40 | call to method WriteLine | throw(Exception) |
-| Finally.cs:9:9:16:9 | try {...} ... | Finally.cs:15:13:15:40 | call to method WriteLine | throw(OutOfMemoryException) |
+| Finally.cs:9:9:16:9 | try {...} ... | Finally.cs:15:13:15:40 | call to method WriteLine | throw(Exception) [normal] |
+| Finally.cs:9:9:16:9 | try {...} ... | Finally.cs:15:13:15:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | Finally.cs:10:9:12:9 | {...} | Finally.cs:11:13:11:37 | call to method WriteLine | normal |
 | Finally.cs:10:9:12:9 | {...} | Finally.cs:11:13:11:37 | call to method WriteLine | throw(Exception) |
 | Finally.cs:10:9:12:9 | {...} | Finally.cs:11:31:11:36 | "Try1" | throw(OutOfMemoryException) |
@@ -1666,13 +1657,13 @@
 | Finally.cs:15:13:15:41 | ...; | Finally.cs:15:13:15:40 | call to method WriteLine | normal |
 | Finally.cs:15:31:15:39 | "Finally" | Finally.cs:15:31:15:39 | "Finally" | normal |
 | Finally.cs:20:5:52:5 | {...} | Finally.cs:50:13:50:40 | call to method WriteLine | normal |
-| Finally.cs:20:5:52:5 | {...} | Finally.cs:50:13:50:40 | call to method WriteLine | return |
-| Finally.cs:20:5:52:5 | {...} | Finally.cs:50:13:50:40 | call to method WriteLine | throw(Exception) |
-| Finally.cs:20:5:52:5 | {...} | Finally.cs:50:13:50:40 | call to method WriteLine | throw(IOException) |
+| Finally.cs:20:5:52:5 | {...} | Finally.cs:50:13:50:40 | call to method WriteLine | return [normal] |
+| Finally.cs:20:5:52:5 | {...} | Finally.cs:50:13:50:40 | call to method WriteLine | throw(Exception) [normal] |
+| Finally.cs:20:5:52:5 | {...} | Finally.cs:50:13:50:40 | call to method WriteLine | throw(IOException) [normal] |
 | Finally.cs:21:9:51:9 | try {...} ... | Finally.cs:50:13:50:40 | call to method WriteLine | normal |
-| Finally.cs:21:9:51:9 | try {...} ... | Finally.cs:50:13:50:40 | call to method WriteLine | return |
-| Finally.cs:21:9:51:9 | try {...} ... | Finally.cs:50:13:50:40 | call to method WriteLine | throw(Exception) |
-| Finally.cs:21:9:51:9 | try {...} ... | Finally.cs:50:13:50:40 | call to method WriteLine | throw(IOException) |
+| Finally.cs:21:9:51:9 | try {...} ... | Finally.cs:50:13:50:40 | call to method WriteLine | return [normal] |
+| Finally.cs:21:9:51:9 | try {...} ... | Finally.cs:50:13:50:40 | call to method WriteLine | throw(Exception) [normal] |
+| Finally.cs:21:9:51:9 | try {...} ... | Finally.cs:50:13:50:40 | call to method WriteLine | throw(IOException) [normal] |
 | Finally.cs:22:9:25:9 | {...} | Finally.cs:23:13:23:37 | call to method WriteLine | throw(Exception) |
 | Finally.cs:22:9:25:9 | {...} | Finally.cs:23:31:23:36 | "Try2" | throw(OutOfMemoryException) |
 | Finally.cs:22:9:25:9 | {...} | Finally.cs:24:13:24:19 | return ...; | return |
@@ -1715,15 +1706,15 @@
 | Finally.cs:50:13:50:41 | ...; | Finally.cs:50:13:50:40 | call to method WriteLine | normal |
 | Finally.cs:50:31:50:39 | "Finally" | Finally.cs:50:31:50:39 | "Finally" | normal |
 | Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | normal |
-| Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | return |
-| Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | throw(Exception) |
-| Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | throw(IOException) |
-| Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | throw(OutOfMemoryException) |
+| Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | return [normal] |
+| Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | throw(Exception) [normal] |
+| Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | throw(IOException) [normal] |
+| Finally.cs:55:5:72:5 | {...} | Finally.cs:70:13:70:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | normal |
-| Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | return |
-| Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | throw(Exception) |
-| Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | throw(IOException) |
-| Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | throw(OutOfMemoryException) |
+| Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | return [normal] |
+| Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | throw(Exception) [normal] |
+| Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | throw(IOException) [normal] |
+| Finally.cs:56:9:71:9 | try {...} ... | Finally.cs:70:13:70:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | Finally.cs:57:9:60:9 | {...} | Finally.cs:58:13:58:37 | call to method WriteLine | throw(Exception) |
 | Finally.cs:57:9:60:9 | {...} | Finally.cs:58:31:58:36 | "Try3" | throw(OutOfMemoryException) |
 | Finally.cs:57:9:60:9 | {...} | Finally.cs:59:13:59:19 | return ...; | return |
@@ -1759,40 +1750,30 @@
 | Finally.cs:70:13:70:41 | ...; | Finally.cs:70:13:70:40 | call to method WriteLine | normal |
 | Finally.cs:70:31:70:39 | "Finally" | Finally.cs:70:31:70:39 | "Finally" | normal |
 | Finally.cs:75:5:101:5 | {...} | Finally.cs:77:16:77:20 | ... > ... | false |
-| Finally.cs:75:5:101:5 | {...} | Finally.cs:97:21:97:23 | ...-- | normal (break) |
-| Finally.cs:75:5:101:5 | {...} | Finally.cs:97:21:97:23 | ...-- | return |
-| Finally.cs:75:5:101:5 | {...} | Finally.cs:97:21:97:23 | ...-- | return [false] |
-| Finally.cs:75:5:101:5 | {...} | Finally.cs:97:21:97:23 | ...-- | throw(Exception) |
+| Finally.cs:75:5:101:5 | {...} | Finally.cs:97:21:97:23 | ...-- | normal [break] |
+| Finally.cs:75:5:101:5 | {...} | Finally.cs:97:21:97:23 | ...-- | return [normal] |
+| Finally.cs:75:5:101:5 | {...} | Finally.cs:97:21:97:23 | ...-- | throw(Exception) [normal] |
 | Finally.cs:76:9:76:19 | ... ...; | Finally.cs:76:13:76:18 | Int32 i = ... | normal |
 | Finally.cs:76:13:76:18 | Int32 i = ... | Finally.cs:76:13:76:18 | Int32 i = ... | normal |
 | Finally.cs:76:17:76:18 | 10 | Finally.cs:76:17:76:18 | 10 | normal |
 | Finally.cs:77:9:100:9 | while (...) ... | Finally.cs:77:16:77:20 | ... > ... | false |
-| Finally.cs:77:9:100:9 | while (...) ... | Finally.cs:97:21:97:23 | ...-- | normal (break) |
-| Finally.cs:77:9:100:9 | while (...) ... | Finally.cs:97:21:97:23 | ...-- | return |
-| Finally.cs:77:9:100:9 | while (...) ... | Finally.cs:97:21:97:23 | ...-- | return [false] |
-| Finally.cs:77:9:100:9 | while (...) ... | Finally.cs:97:21:97:23 | ...-- | throw(Exception) |
+| Finally.cs:77:9:100:9 | while (...) ... | Finally.cs:97:21:97:23 | ...-- | normal [break] |
+| Finally.cs:77:9:100:9 | while (...) ... | Finally.cs:97:21:97:23 | ...-- | return [normal] |
+| Finally.cs:77:9:100:9 | while (...) ... | Finally.cs:97:21:97:23 | ...-- | throw(Exception) [normal] |
 | Finally.cs:77:16:77:16 | access to local variable i | Finally.cs:77:16:77:16 | access to local variable i | normal |
 | Finally.cs:77:16:77:20 | ... > ... | Finally.cs:77:16:77:20 | ... > ... | false |
 | Finally.cs:77:16:77:20 | ... > ... | Finally.cs:77:16:77:20 | ... > ... | true |
 | Finally.cs:77:20:77:20 | 0 | Finally.cs:77:20:77:20 | 0 | normal |
-| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | break |
-| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | break [false] |
-| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | continue |
-| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | continue [false] |
-| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | break [normal] |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | continue [normal] |
 | Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | normal |
-| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | return |
-| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | return [false] |
-| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | throw(Exception) |
-| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | break |
-| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | break [false] |
-| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | continue |
-| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | continue [false] |
-| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | false |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | return [normal] |
+| Finally.cs:78:9:100:9 | {...} | Finally.cs:97:21:97:23 | ...-- | throw(Exception) [normal] |
+| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | break [normal] |
+| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | continue [normal] |
 | Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | normal |
-| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | return |
-| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | return [false] |
-| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | throw(Exception) |
+| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | return [normal] |
+| Finally.cs:79:13:99:13 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | throw(Exception) [normal] |
 | Finally.cs:80:13:87:13 | {...} | Finally.cs:82:21:82:27 | return ...; | return |
 | Finally.cs:80:13:87:13 | {...} | Finally.cs:84:21:84:29 | continue; | continue |
 | Finally.cs:80:13:87:13 | {...} | Finally.cs:85:21:85:26 | ... == ... | false |
@@ -1818,12 +1799,10 @@
 | Finally.cs:85:21:85:26 | ... == ... | Finally.cs:85:21:85:26 | ... == ... | true |
 | Finally.cs:85:26:85:26 | 2 | Finally.cs:85:26:85:26 | 2 | normal |
 | Finally.cs:86:21:86:26 | break; | Finally.cs:86:21:86:26 | break; | break |
-| Finally.cs:89:13:99:13 | {...} | Finally.cs:97:21:97:23 | ...-- | false |
 | Finally.cs:89:13:99:13 | {...} | Finally.cs:97:21:97:23 | ...-- | normal |
-| Finally.cs:89:13:99:13 | {...} | Finally.cs:97:21:97:23 | ...-- | throw(Exception) |
-| Finally.cs:90:17:98:17 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | false |
+| Finally.cs:89:13:99:13 | {...} | Finally.cs:97:21:97:23 | ...-- | throw(Exception) [normal] |
 | Finally.cs:90:17:98:17 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | normal |
-| Finally.cs:90:17:98:17 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | throw(Exception) |
+| Finally.cs:90:17:98:17 | try {...} ... | Finally.cs:97:21:97:23 | ...-- | throw(Exception) [normal] |
 | Finally.cs:91:17:94:17 | {...} | Finally.cs:92:25:92:30 | ... == ... | false |
 | Finally.cs:91:17:94:17 | {...} | Finally.cs:93:25:93:46 | throw ...; | throw(Exception) |
 | Finally.cs:91:17:94:17 | {...} | Finally.cs:93:31:93:45 | object creation of type Exception | throw(Exception) |
@@ -1847,23 +1826,21 @@
 | Finally.cs:104:5:119:5 | {...} | Finally.cs:116:17:116:32 | ... > ... | throw(Exception) [false] |
 | Finally.cs:104:5:119:5 | {...} | Finally.cs:116:17:116:32 | ... > ... | throw(NullReferenceException) [false] |
 | Finally.cs:104:5:119:5 | {...} | Finally.cs:116:17:116:32 | ... > ... | throw(OutOfMemoryException) [false] |
-| Finally.cs:104:5:119:5 | {...} | Finally.cs:117:17:117:36 | call to method WriteLine | false |
 | Finally.cs:104:5:119:5 | {...} | Finally.cs:117:17:117:36 | call to method WriteLine | normal |
-| Finally.cs:104:5:119:5 | {...} | Finally.cs:117:17:117:36 | call to method WriteLine | return |
-| Finally.cs:104:5:119:5 | {...} | Finally.cs:117:17:117:36 | call to method WriteLine | throw(Exception) |
-| Finally.cs:104:5:119:5 | {...} | Finally.cs:117:17:117:36 | call to method WriteLine | throw(NullReferenceException) |
-| Finally.cs:104:5:119:5 | {...} | Finally.cs:117:17:117:36 | call to method WriteLine | throw(OutOfMemoryException) |
+| Finally.cs:104:5:119:5 | {...} | Finally.cs:117:17:117:36 | call to method WriteLine | return [normal] |
+| Finally.cs:104:5:119:5 | {...} | Finally.cs:117:17:117:36 | call to method WriteLine | throw(Exception) [normal] |
+| Finally.cs:104:5:119:5 | {...} | Finally.cs:117:17:117:36 | call to method WriteLine | throw(NullReferenceException) [normal] |
+| Finally.cs:104:5:119:5 | {...} | Finally.cs:117:17:117:36 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:116:17:116:32 | ... > ... | false |
 | Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:116:17:116:32 | ... > ... | return [false] |
 | Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:116:17:116:32 | ... > ... | throw(Exception) [false] |
 | Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:116:17:116:32 | ... > ... | throw(NullReferenceException) [false] |
 | Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:116:17:116:32 | ... > ... | throw(OutOfMemoryException) [false] |
-| Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:117:17:117:36 | call to method WriteLine | false |
 | Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:117:17:117:36 | call to method WriteLine | normal |
-| Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:117:17:117:36 | call to method WriteLine | return |
-| Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:117:17:117:36 | call to method WriteLine | throw(Exception) |
-| Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:117:17:117:36 | call to method WriteLine | throw(NullReferenceException) |
-| Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:117:17:117:36 | call to method WriteLine | throw(OutOfMemoryException) |
+| Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:117:17:117:36 | call to method WriteLine | return [normal] |
+| Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:117:17:117:36 | call to method WriteLine | throw(Exception) [normal] |
+| Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:117:17:117:36 | call to method WriteLine | throw(NullReferenceException) [normal] |
+| Finally.cs:105:9:118:9 | try {...} ... | Finally.cs:117:17:117:36 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | Finally.cs:106:9:111:9 | {...} | Finally.cs:107:17:107:21 | access to field Field | throw(NullReferenceException) |
 | Finally.cs:106:9:111:9 | {...} | Finally.cs:107:17:107:28 | access to property Length | throw(Exception) |
 | Finally.cs:106:9:111:9 | {...} | Finally.cs:107:17:107:28 | access to property Length | throw(NullReferenceException) |
@@ -1958,13 +1935,13 @@
 | Finally.cs:128:9:130:9 | {...} | Finally.cs:129:13:129:13 | ; | normal |
 | Finally.cs:129:13:129:13 | ; | Finally.cs:129:13:129:13 | ; | normal |
 | Finally.cs:134:5:145:5 | {...} | Finally.cs:141:13:141:44 | throw ...; | throw(ArgumentException) |
-| Finally.cs:134:5:145:5 | {...} | Finally.cs:142:13:142:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:134:5:145:5 | {...} | Finally.cs:142:13:142:37 | call to method WriteLine | throw(OutOfMemoryException) |
+| Finally.cs:134:5:145:5 | {...} | Finally.cs:142:13:142:37 | call to method WriteLine | throw(Exception) [normal] |
+| Finally.cs:134:5:145:5 | {...} | Finally.cs:142:13:142:37 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | Finally.cs:134:5:145:5 | {...} | Finally.cs:144:9:144:33 | call to method WriteLine | normal |
 | Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:141:13:141:44 | throw ...; | throw(ArgumentException) |
 | Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:142:13:142:37 | call to method WriteLine | normal |
-| Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:142:13:142:37 | call to method WriteLine | throw(Exception) |
-| Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:142:13:142:37 | call to method WriteLine | throw(OutOfMemoryException) |
+| Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:142:13:142:37 | call to method WriteLine | throw(Exception) [normal] |
+| Finally.cs:135:9:143:9 | try {...} ... | Finally.cs:142:13:142:37 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | Finally.cs:136:9:138:9 | {...} | Finally.cs:137:13:137:36 | call to method WriteLine | normal |
 | Finally.cs:136:9:138:9 | {...} | Finally.cs:137:13:137:36 | call to method WriteLine | throw(Exception) |
 | Finally.cs:136:9:138:9 | {...} | Finally.cs:137:31:137:35 | "Try" | throw(OutOfMemoryException) |
@@ -1990,25 +1967,21 @@
 | Finally.cs:148:5:170:5 | {...} | Finally.cs:158:21:158:36 | ... == ... | false |
 | Finally.cs:148:5:170:5 | {...} | Finally.cs:158:21:158:36 | ... == ... | throw(ArgumentNullException) [false] |
 | Finally.cs:148:5:170:5 | {...} | Finally.cs:158:21:158:36 | ... == ... | throw(Exception) [false] |
-| Finally.cs:148:5:170:5 | {...} | Finally.cs:163:17:163:42 | call to method WriteLine | false |
 | Finally.cs:148:5:170:5 | {...} | Finally.cs:163:17:163:42 | call to method WriteLine | normal |
-| Finally.cs:148:5:170:5 | {...} | Finally.cs:163:17:163:42 | call to method WriteLine | throw(ArgumentNullException) |
-| Finally.cs:148:5:170:5 | {...} | Finally.cs:163:17:163:42 | call to method WriteLine | throw(Exception) |
-| Finally.cs:148:5:170:5 | {...} | Finally.cs:167:17:167:37 | call to method WriteLine | false |
+| Finally.cs:148:5:170:5 | {...} | Finally.cs:163:17:163:42 | call to method WriteLine | throw(ArgumentNullException) [normal] |
+| Finally.cs:148:5:170:5 | {...} | Finally.cs:163:17:163:42 | call to method WriteLine | throw(Exception) [normal] |
 | Finally.cs:148:5:170:5 | {...} | Finally.cs:167:17:167:37 | call to method WriteLine | normal |
-| Finally.cs:148:5:170:5 | {...} | Finally.cs:167:17:167:37 | call to method WriteLine | throw(ArgumentNullException) |
-| Finally.cs:148:5:170:5 | {...} | Finally.cs:167:17:167:37 | call to method WriteLine | throw(Exception) |
+| Finally.cs:148:5:170:5 | {...} | Finally.cs:167:17:167:37 | call to method WriteLine | throw(ArgumentNullException) [normal] |
+| Finally.cs:148:5:170:5 | {...} | Finally.cs:167:17:167:37 | call to method WriteLine | throw(Exception) [normal] |
 | Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:158:21:158:36 | ... == ... | false |
 | Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:158:21:158:36 | ... == ... | throw(ArgumentNullException) [false] |
 | Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:158:21:158:36 | ... == ... | throw(Exception) [false] |
-| Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:163:17:163:42 | call to method WriteLine | false |
 | Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:163:17:163:42 | call to method WriteLine | normal |
-| Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:163:17:163:42 | call to method WriteLine | throw(ArgumentNullException) |
-| Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:163:17:163:42 | call to method WriteLine | throw(Exception) |
-| Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:167:17:167:37 | call to method WriteLine | false |
+| Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:163:17:163:42 | call to method WriteLine | throw(ArgumentNullException) [normal] |
+| Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:163:17:163:42 | call to method WriteLine | throw(Exception) [normal] |
 | Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:167:17:167:37 | call to method WriteLine | normal |
-| Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:167:17:167:37 | call to method WriteLine | throw(ArgumentNullException) |
-| Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:167:17:167:37 | call to method WriteLine | throw(Exception) |
+| Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:167:17:167:37 | call to method WriteLine | throw(ArgumentNullException) [normal] |
+| Finally.cs:149:9:169:9 | try {...} ... | Finally.cs:167:17:167:37 | call to method WriteLine | throw(Exception) [normal] |
 | Finally.cs:150:9:153:9 | {...} | Finally.cs:151:17:151:28 | ... == ... | false |
 | Finally.cs:150:9:153:9 | {...} | Finally.cs:152:17:152:50 | throw ...; | throw(ArgumentNullException) |
 | Finally.cs:150:9:153:9 | {...} | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | throw(Exception) |
@@ -2157,16 +2130,15 @@
 | Finally.cs:196:5:214:5 | {...} | Finally.cs:209:21:209:22 | access to parameter b3 | throw(Exception) [false] |
 | Finally.cs:196:5:214:5 | {...} | Finally.cs:209:21:209:22 | access to parameter b3 | throw(ExceptionB) [false] |
 | Finally.cs:196:5:214:5 | {...} | Finally.cs:209:25:209:47 | throw ...; | throw(ExceptionC) |
-| Finally.cs:196:5:214:5 | {...} | Finally.cs:211:13:211:28 | ... = ... | throw(Exception) |
-| Finally.cs:196:5:214:5 | {...} | Finally.cs:211:13:211:28 | ... = ... | throw(ExceptionA) |
+| Finally.cs:196:5:214:5 | {...} | Finally.cs:211:13:211:28 | ... = ... | throw(Exception) [normal] |
+| Finally.cs:196:5:214:5 | {...} | Finally.cs:211:13:211:28 | ... = ... | throw(ExceptionA) [normal] |
 | Finally.cs:196:5:214:5 | {...} | Finally.cs:213:9:213:24 | ... = ... | normal |
 | Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:209:21:209:22 | access to parameter b3 | throw(Exception) [false] |
 | Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:209:21:209:22 | access to parameter b3 | throw(ExceptionB) [false] |
 | Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:209:25:209:47 | throw ...; | throw(ExceptionC) |
-| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:211:13:211:28 | ... = ... | false |
 | Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:211:13:211:28 | ... = ... | normal |
-| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:211:13:211:28 | ... = ... | throw(Exception) |
-| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:211:13:211:28 | ... = ... | throw(ExceptionA) |
+| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:211:13:211:28 | ... = ... | throw(Exception) [normal] |
+| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:211:13:211:28 | ... = ... | throw(ExceptionA) [normal] |
 | Finally.cs:198:9:200:9 | {...} | Finally.cs:199:17:199:18 | access to parameter b1 | false |
 | Finally.cs:198:9:200:9 | {...} | Finally.cs:199:21:199:43 | throw ...; | throw(ExceptionA) |
 | Finally.cs:198:9:200:9 | {...} | Finally.cs:199:27:199:42 | object creation of type ExceptionA | throw(Exception) |
@@ -2832,12 +2804,12 @@
 | Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:16:18:16:28 | ... is ... | true |
 | Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:23:16:28 | Object v1 | normal |
 | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:17:9:18:9 | {...} | normal |
-| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:23:17:23:22 | break; | normal (break) |
-| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:26:17:26:22 | break; | normal (break) |
-| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:29:17:29:22 | break; | normal (break) |
-| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:32:17:32:22 | break; | normal (break) |
-| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:34:17:34:22 | break; | normal (break) |
-| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:37:17:37:22 | break; | normal (break) |
+| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:23:17:23:22 | break; | normal [break] |
+| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:26:17:26:22 | break; | normal [break] |
+| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:29:17:29:22 | break; | normal [break] |
+| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:32:17:32:22 | break; | normal [break] |
+| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:34:17:34:22 | break; | normal [break] |
+| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:37:17:37:22 | break; | normal [break] |
 | Patterns.cs:20:17:20:17 | access to local variable o | Patterns.cs:20:17:20:17 | access to local variable o | normal |
 | Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:22:18:22:22 | "xyz" | no-match |
 | Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:23:17:23:22 | break; | break |
@@ -3064,14 +3036,14 @@
 | Switch.cs:37:17:37:23 | call to method Throw | Switch.cs:37:17:37:23 | call to method Throw | throw(Exception) |
 | Switch.cs:39:13:39:20 | default: | Switch.cs:40:17:40:23 | return ...; | return |
 | Switch.cs:40:17:40:23 | return ...; | Switch.cs:40:17:40:23 | return ...; | return |
-| Switch.cs:45:5:53:5 | {...} | Switch.cs:49:17:49:22 | break; | normal (break) |
+| Switch.cs:45:5:53:5 | {...} | Switch.cs:49:17:49:22 | break; | normal [break] |
 | Switch.cs:45:5:53:5 | {...} | Switch.cs:50:18:50:21 | access to type Boolean | no-match |
 | Switch.cs:45:5:53:5 | {...} | Switch.cs:50:30:50:38 | ... != ... | false |
-| Switch.cs:45:5:53:5 | {...} | Switch.cs:51:17:51:22 | break; | normal (break) |
-| Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:49:17:49:22 | break; | normal (break) |
+| Switch.cs:45:5:53:5 | {...} | Switch.cs:51:17:51:22 | break; | normal [break] |
+| Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:49:17:49:22 | break; | normal [break] |
 | Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:50:18:50:21 | access to type Boolean | no-match |
 | Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:50:30:50:38 | ... != ... | false |
-| Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:51:17:51:22 | break; | normal (break) |
+| Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:51:17:51:22 | break; | normal [break] |
 | Switch.cs:46:17:46:17 | access to parameter o | Switch.cs:46:17:46:17 | access to parameter o | normal |
 | Switch.cs:48:13:48:23 | case ...: | Switch.cs:48:18:48:20 | access to type Int32 | no-match |
 | Switch.cs:48:13:48:23 | case ...: | Switch.cs:49:17:49:22 | break; | break |
@@ -3088,10 +3060,10 @@
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:50:30:50:38 | ... != ... | true |
 | Switch.cs:50:35:50:38 | null | Switch.cs:50:35:50:38 | null | normal |
 | Switch.cs:51:17:51:22 | break; | Switch.cs:51:17:51:22 | break; | break |
-| Switch.cs:56:5:64:5 | {...} | Switch.cs:60:17:60:22 | break; | normal (break) |
-| Switch.cs:56:5:64:5 | {...} | Switch.cs:62:17:62:22 | break; | normal (break) |
-| Switch.cs:57:9:63:9 | switch (...) {...} | Switch.cs:60:17:60:22 | break; | normal (break) |
-| Switch.cs:57:9:63:9 | switch (...) {...} | Switch.cs:62:17:62:22 | break; | normal (break) |
+| Switch.cs:56:5:64:5 | {...} | Switch.cs:60:17:60:22 | break; | normal [break] |
+| Switch.cs:56:5:64:5 | {...} | Switch.cs:62:17:62:22 | break; | normal [break] |
+| Switch.cs:57:9:63:9 | switch (...) {...} | Switch.cs:60:17:60:22 | break; | normal [break] |
+| Switch.cs:57:9:63:9 | switch (...) {...} | Switch.cs:62:17:62:22 | break; | normal [break] |
 | Switch.cs:57:17:57:17 | 1 | Switch.cs:57:17:57:17 | 1 | normal |
 | Switch.cs:57:17:57:21 | ... + ... | Switch.cs:57:17:57:21 | ... + ... | normal |
 | Switch.cs:57:21:57:21 | 2 | Switch.cs:57:21:57:21 | 2 | normal |
@@ -3102,12 +3074,12 @@
 | Switch.cs:61:13:61:19 | case ...: | Switch.cs:62:17:62:22 | break; | break |
 | Switch.cs:61:18:61:18 | 3 | Switch.cs:61:18:61:18 | 3 | match |
 | Switch.cs:62:17:62:22 | break; | Switch.cs:62:17:62:22 | break; | break |
-| Switch.cs:67:5:75:5 | {...} | Switch.cs:71:17:71:22 | break; | normal (break) |
+| Switch.cs:67:5:75:5 | {...} | Switch.cs:71:17:71:22 | break; | normal [break] |
 | Switch.cs:67:5:75:5 | {...} | Switch.cs:72:18:72:19 | "" | no-match |
-| Switch.cs:67:5:75:5 | {...} | Switch.cs:73:17:73:22 | break; | normal (break) |
-| Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:71:17:71:22 | break; | normal (break) |
+| Switch.cs:67:5:75:5 | {...} | Switch.cs:73:17:73:22 | break; | normal [break] |
+| Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:71:17:71:22 | break; | normal [break] |
 | Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:72:18:72:19 | "" | no-match |
-| Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:73:17:73:22 | break; | normal (break) |
+| Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:73:17:73:22 | break; | normal [break] |
 | Switch.cs:68:17:68:25 | (...) ... | Switch.cs:68:17:68:25 | (...) ... | normal |
 | Switch.cs:68:25:68:25 | access to parameter s | Switch.cs:68:25:68:25 | access to parameter s | normal |
 | Switch.cs:70:13:70:23 | case ...: | Switch.cs:70:18:70:20 | access to type Int32 | no-match |
@@ -3124,7 +3096,7 @@
 | Switch.cs:78:5:89:5 | {...} | Switch.cs:88:9:88:21 | return ...; | return |
 | Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:82:17:82:28 | return ...; | return |
 | Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:83:18:83:18 | 2 | no-match |
-| Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:85:21:85:26 | break; | normal (break) |
+| Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:85:21:85:26 | break; | normal [break] |
 | Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:86:17:86:28 | return ...; | return |
 | Switch.cs:79:17:79:17 | access to parameter i | Switch.cs:79:17:79:17 | access to parameter i | normal |
 | Switch.cs:81:13:81:19 | case ...: | Switch.cs:81:18:81:18 | 1 | no-match |
@@ -3503,7 +3475,7 @@
 | cflow.cs:38:5:68:5 | {...} | cflow.cs:64:21:64:55 | throw ...; | throw(NullReferenceException) |
 | cflow.cs:38:5:68:5 | {...} | cflow.cs:67:9:67:17 | return ...; | return |
 | cflow.cs:39:9:50:9 | switch (...) {...} | cflow.cs:47:18:47:18 | 3 | no-match |
-| cflow.cs:39:9:50:9 | switch (...) {...} | cflow.cs:49:17:49:22 | break; | normal (break) |
+| cflow.cs:39:9:50:9 | switch (...) {...} | cflow.cs:49:17:49:22 | break; | normal [break] |
 | cflow.cs:39:17:39:17 | access to parameter a | cflow.cs:39:17:39:17 | access to parameter a | normal |
 | cflow.cs:41:13:41:19 | case ...: | cflow.cs:41:18:41:18 | 1 | no-match |
 | cflow.cs:41:13:41:19 | case ...: | cflow.cs:42:17:42:38 | call to method WriteLine | normal |
@@ -3531,8 +3503,8 @@
 | cflow.cs:48:17:48:39 | ...; | cflow.cs:48:17:48:38 | call to method WriteLine | normal |
 | cflow.cs:48:35:48:37 | "3" | cflow.cs:48:35:48:37 | "3" | normal |
 | cflow.cs:49:17:49:22 | break; | cflow.cs:49:17:49:22 | break; | break |
-| cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:55:17:55:22 | break; | normal (break) |
-| cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:58:17:58:22 | break; | normal (break) |
+| cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:55:17:55:22 | break; | normal [break] |
+| cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:58:17:58:22 | break; | normal [break] |
 | cflow.cs:51:17:51:17 | access to parameter a | cflow.cs:51:17:51:17 | access to parameter a | normal |
 | cflow.cs:53:13:53:20 | case ...: | cflow.cs:53:18:53:19 | 42 | no-match |
 | cflow.cs:53:13:53:20 | case ...: | cflow.cs:54:17:54:47 | call to method WriteLine | normal |
@@ -3549,7 +3521,7 @@
 | cflow.cs:58:17:58:22 | break; | cflow.cs:58:17:58:22 | break; | break |
 | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:62:18:62:18 | 0 | no-match |
 | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:64:21:64:55 | throw ...; | throw(NullReferenceException) |
-| cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:65:17:65:22 | break; | normal (break) |
+| cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:65:17:65:22 | break; | normal [break] |
 | cflow.cs:60:17:60:32 | call to method Parse | cflow.cs:60:17:60:32 | call to method Parse | normal |
 | cflow.cs:60:27:60:31 | access to field Field | cflow.cs:60:27:60:31 | access to field Field | normal |
 | cflow.cs:60:27:60:31 | this access | cflow.cs:60:27:60:31 | this access | normal |
@@ -3754,7 +3726,7 @@
 | cflow.cs:150:13:150:32 | call to method WriteLine | cflow.cs:150:13:150:32 | call to method WriteLine | normal |
 | cflow.cs:150:13:150:33 | ...; | cflow.cs:150:13:150:32 | call to method WriteLine | normal |
 | cflow.cs:150:31:150:31 | access to local variable x | cflow.cs:150:31:150:31 | access to local variable x | normal |
-| cflow.cs:152:9:157:9 | for (...;...;...) ... | cflow.cs:156:17:156:22 | break; | normal (break) |
+| cflow.cs:152:9:157:9 | for (...;...;...) ... | cflow.cs:156:17:156:22 | break; | normal [break] |
 | cflow.cs:152:18:152:18 | access to local variable x | cflow.cs:152:18:152:18 | access to local variable x | normal |
 | cflow.cs:152:18:152:20 | ...++ | cflow.cs:152:18:152:20 | ...++ | normal |
 | cflow.cs:153:9:157:9 | {...} | cflow.cs:155:17:155:22 | ... > ... | false |
@@ -3769,7 +3741,7 @@
 | cflow.cs:155:17:155:22 | ... > ... | cflow.cs:155:17:155:22 | ... > ... | true |
 | cflow.cs:155:21:155:22 | 20 | cflow.cs:155:21:155:22 | 20 | normal |
 | cflow.cs:156:17:156:22 | break; | cflow.cs:156:17:156:22 | break; | break |
-| cflow.cs:159:9:165:9 | for (...;...;...) ... | cflow.cs:164:17:164:22 | break; | normal (break) |
+| cflow.cs:159:9:165:9 | for (...;...;...) ... | cflow.cs:164:17:164:22 | break; | normal [break] |
 | cflow.cs:160:9:165:9 | {...} | cflow.cs:163:17:163:22 | ... > ... | false |
 | cflow.cs:160:9:165:9 | {...} | cflow.cs:164:17:164:22 | break; | break |
 | cflow.cs:161:13:161:32 | call to method WriteLine | cflow.cs:161:13:161:32 | call to method WriteLine | normal |
@@ -3930,9 +3902,9 @@
 | cflow.cs:202:13:204:13 | {...} | cflow.cs:203:17:203:38 | throw ...; | throw(Exception) |
 | cflow.cs:203:17:203:38 | throw ...; | cflow.cs:203:17:203:38 | throw ...; | throw(Exception) |
 | cflow.cs:203:23:203:37 | object creation of type Exception | cflow.cs:203:23:203:37 | object creation of type Exception | normal |
-| cflow.cs:209:5:222:5 | {...} | cflow.cs:219:17:219:22 | break; | normal (break) |
+| cflow.cs:209:5:222:5 | {...} | cflow.cs:219:17:219:22 | break; | normal [break] |
 | cflow.cs:209:5:222:5 | {...} | cflow.cs:221:18:221:34 | ... < ... | false |
-| cflow.cs:210:9:221:36 | do ... while (...); | cflow.cs:219:17:219:22 | break; | normal (break) |
+| cflow.cs:210:9:221:36 | do ... while (...); | cflow.cs:219:17:219:22 | break; | normal [break] |
 | cflow.cs:210:9:221:36 | do ... while (...); | cflow.cs:221:18:221:34 | ... < ... | false |
 | cflow.cs:211:9:221:9 | {...} | cflow.cs:215:17:215:25 | continue; | continue |
 | cflow.cs:211:9:221:9 | {...} | cflow.cs:217:17:217:32 | ... < ... | false |
@@ -3973,9 +3945,9 @@
 | cflow.cs:221:18:221:34 | ... < ... | cflow.cs:221:18:221:34 | ... < ... | true |
 | cflow.cs:221:33:221:34 | 10 | cflow.cs:221:33:221:34 | 10 | normal |
 | cflow.cs:225:5:238:5 | {...} | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | empty |
-| cflow.cs:225:5:238:5 | {...} | cflow.cs:235:17:235:22 | break; | normal (break) |
+| cflow.cs:225:5:238:5 | {...} | cflow.cs:235:17:235:22 | break; | normal [break] |
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | empty |
-| cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:235:17:235:22 | break; | normal (break) |
+| cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:235:17:235:22 | break; | normal [break] |
 | cflow.cs:226:22:226:22 | String x | cflow.cs:226:22:226:22 | String x | normal |
 | cflow.cs:226:27:226:64 | call to method Repeat | cflow.cs:226:27:226:64 | call to method Repeat | normal |
 | cflow.cs:226:57:226:59 | "a" | cflow.cs:226:57:226:59 | "a" | normal |
@@ -4013,9 +3985,9 @@
 | cflow.cs:234:13:236:13 | {...} | cflow.cs:235:17:235:22 | break; | break |
 | cflow.cs:235:17:235:22 | break; | cflow.cs:235:17:235:22 | break; | break |
 | cflow.cs:241:5:259:5 | {...} | cflow.cs:244:31:244:41 | goto ...; | goto(Label) |
-| cflow.cs:241:5:259:5 | {...} | cflow.cs:252:17:252:22 | break; | normal (break) |
+| cflow.cs:241:5:259:5 | {...} | cflow.cs:252:17:252:22 | break; | normal [break] |
 | cflow.cs:241:5:259:5 | {...} | cflow.cs:254:17:254:27 | goto ...; | goto(Label) |
-| cflow.cs:241:5:259:5 | {...} | cflow.cs:257:17:257:22 | break; | normal (break) |
+| cflow.cs:241:5:259:5 | {...} | cflow.cs:257:17:257:22 | break; | normal [break] |
 | cflow.cs:242:9:242:13 | Label: | cflow.cs:242:9:242:13 | Label: | normal |
 | cflow.cs:242:16:242:45 | if (...) ... | cflow.cs:242:20:242:40 | !... | false |
 | cflow.cs:242:16:242:45 | if (...) ... | cflow.cs:242:43:242:45 | {...} | normal |
@@ -4039,9 +4011,9 @@
 | cflow.cs:244:13:244:28 | ... > ... | cflow.cs:244:13:244:28 | ... > ... | true |
 | cflow.cs:244:28:244:28 | 0 | cflow.cs:244:28:244:28 | 0 | normal |
 | cflow.cs:244:31:244:41 | goto ...; | cflow.cs:244:31:244:41 | goto ...; | goto(Label) |
-| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:252:17:252:22 | break; | normal (break) |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:252:17:252:22 | break; | normal [break] |
 | cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:254:17:254:27 | goto ...; | goto(Label) |
-| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:257:17:257:22 | break; | normal (break) |
+| cflow.cs:246:9:258:9 | switch (...) {...} | cflow.cs:257:17:257:22 | break; | normal [break] |
 | cflow.cs:246:17:246:21 | access to field Field | cflow.cs:246:17:246:21 | access to field Field | normal |
 | cflow.cs:246:17:246:21 | this access | cflow.cs:246:17:246:21 | this access | normal |
 | cflow.cs:246:17:246:28 | access to property Length | cflow.cs:246:17:246:28 | access to property Length | normal |
@@ -4071,9 +4043,9 @@
 | cflow.cs:256:35:256:35 | 0 | cflow.cs:256:35:256:35 | 0 | normal |
 | cflow.cs:257:17:257:22 | break; | cflow.cs:257:17:257:22 | break; | break |
 | cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | normal |
-| cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | return |
-| cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | throw(Exception) |
-| cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | throw(OutOfMemoryException) |
+| cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | return [normal] |
+| cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:262:5:277:5 | {...} | cflow.cs:275:13:275:41 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | cflow.cs:263:9:263:23 | yield return ...; | cflow.cs:263:9:263:23 | yield return ...; | normal |
 | cflow.cs:263:22:263:22 | 0 | cflow.cs:263:22:263:22 | 0 | normal |
 | cflow.cs:264:9:267:9 | for (...;...;...) ... | cflow.cs:264:25:264:30 | ... < ... | false |
@@ -4089,9 +4061,9 @@
 | cflow.cs:266:13:266:27 | yield return ...; | cflow.cs:266:13:266:27 | yield return ...; | normal |
 | cflow.cs:266:26:266:26 | access to local variable i | cflow.cs:266:26:266:26 | access to local variable i | normal |
 | cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | normal |
-| cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | return |
-| cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | throw(Exception) |
-| cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | throw(OutOfMemoryException) |
+| cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | return [normal] |
+| cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | cflow.cs:269:9:272:9 | {...} | cflow.cs:270:13:270:24 | yield break; | return |
 | cflow.cs:269:9:272:9 | {...} | cflow.cs:271:13:271:42 | call to method WriteLine | normal |
 | cflow.cs:269:9:272:9 | {...} | cflow.cs:271:13:271:42 | call to method WriteLine | throw(Exception) |
