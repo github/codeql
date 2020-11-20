@@ -8,7 +8,7 @@ on:
      - 'lgtm.com'
   pull_request:
     paths:
-      - 'docs/language/query-help/**'
+      - 'docs/codeql/query-help/**'
 
 jobs:
   build:
@@ -38,10 +38,10 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Set up query help docs folder  
       run: |
-        cp -r codeql/docs/language/query-help/ . ; cp -r codeql/docs/language/global-sphinx-files/ .
+        cp -r codeql/docs/codeql/** .
     - name: Query help to markdown
       run: |
-        PATH="$PATH:codeql-cli/codeql" python codeql/docs/language/query-help-markdown.py
+        PATH="$PATH:codeql-cli/codeql" python codeql/docs/codeql/query-help-markdown.py
     - name: Run Sphinx for query help
       uses: ammaraskar/sphinx-action@master
       with:
