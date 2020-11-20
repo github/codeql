@@ -904,9 +904,12 @@ module PrefixConstruction {
    * Holds if `state` starts the string matched by the regular expression.
    */
   private predicate isStartState(State state) {
-    state = Match(any(RegExpRoot r), _)
-    or
-    exists(RegExpCaret car | state = after(car))
+    state instanceof StateInPumpableRegexp and
+    (
+      state = Match(any(RegExpRoot r), _)
+      or
+      exists(RegExpCaret car | state = after(car))
+    )
   }
 
   /**
@@ -972,6 +975,16 @@ module PrefixConstruction {
           min(string c | delta(prev, any(InputSymbol symbol | c = intersect(Any(), symbol)), state))
     )
   }
+
+  /**
+   * A state within a regular expression that has a pumpable state.
+   */
+  class StateInPumpableRegexp extends State {
+    pragma[noinline]
+    StateInPumpableRegexp() {
+      exists(State s | isPumpable(s, _) | getRoot(s.getRepr()) = getRoot(this.getRepr()))
+    }
+  }
 }
 
 /**
@@ -992,6 +1005,8 @@ module PrefixConstruction {
  * using epsilon transitions. But any attempt at repeating `w` will end in a state that accepts all suffixes.
  */
 module SuffixConstruction {
+  import PrefixConstruction
+
   /**
    * Holds if all states reachable from `fork` by repeating `w`
    * are rejectable by appending some suffix.
@@ -1004,7 +1019,7 @@ module SuffixConstruction {
   /**
    * Holds if there definitely exists a path starting from `s` that leads to the regular expression being rejected.
    */
-  private predicate isDefinitelyRejectable(State s) {
+  private predicate isDefinitelyRejectable(StateInPumpableRegexp s) {
     // exists a reject edge with some char.
     hasRejectEdge(s, _)
     or
@@ -1028,7 +1043,7 @@ module SuffixConstruction {
    * Holds if there is no edge from `s` labeled `char` in our NFA.
    * The NFA does not model reject states, so the above is the same as saying there is a reject edge.
    */
-  private predicate hasRejectEdge(State s, string char) {
+  private predicate hasRejectEdge(StateInPumpableRegexp s, string char) {
     char = relevant() and
     not deltaClosed(s, getAnInputSymbolMatching(char), _)
   }
