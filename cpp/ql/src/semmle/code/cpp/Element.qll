@@ -66,7 +66,7 @@ class ElementBase extends @element {
    * `BinaryOperation` is not.
    *
    * This predicate can have multiple results if multiple primary classes match.
-   * For some elements, this predicate may not exist.
+   * For some elements, this predicate may not have a result.
    */
   string getAPrimaryQlClass() { none() }
 }

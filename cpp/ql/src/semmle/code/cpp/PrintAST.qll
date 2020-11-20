@@ -237,11 +237,11 @@ class PrintASTNode extends TPrintASTNode {
 
 private class PrintableElementBase extends ElementBase {
   PrintableElementBase() {
-    shouldPrintFunction(getEnclosingFunction(this))
+    exists(TASTNode(this))
+    or
+    exists(TDeclarationEntryNode(_, this))
     or
     this instanceof Type
-    or
-    this instanceof DeclarationEntry
   }
 
   pragma[noinline]
