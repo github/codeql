@@ -588,6 +588,16 @@ class InitializeParameterInstruction extends VariableInstruction {
    * Gets the parameter initialized by this instruction.
    */
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
+
+  /**
+   * Holds if this instruction initializes the parameter with index `index`, or
+   * if `index` is `-1` and this instruction initializes `this`.
+   */
+  final predicate isParameterOrQualifierIndex(int index) {
+    index >= 0 and index = this.getParameter().getIndex()
+    or
+    index = -1 and this.getIRVariable() instanceof IRThisVariable
+  }
 }
 
 /**
@@ -601,6 +611,17 @@ class InitializeIndirectionInstruction extends VariableInstruction {
    * Gets the parameter initialized by this instruction.
    */
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
+
+  /**
+   * Holds if this instruction initializes the memory pointed to by the parameter with
+   * index `index`, or if `index` is `-1` and this instruction initializes the memory
+   * pointed to by `this`.
+   */
+  final predicate isParameterOrQualifierIndex(int index) {
+    index >= 0 and index = this.getParameter().getIndex()
+    or
+    index = -1 and this.getIRVariable() instanceof IRThisVariable
+  }
 }
 
 /**
@@ -775,6 +796,16 @@ class ReturnIndirectionInstruction extends VariableInstruction {
    * Holds if this instruction is the return indirection for `this`.
    */
   final predicate isThisIndirection() { var instanceof IRThisVariable }
+
+  /**
+   * Holds if this instruction is the return indirection for the parameter with index `index`, or
+   * if this instruction is the return indirection for `this` and `index` is `-1`.
+   */
+  final predicate isParameterOrThisIndirection(int index) {
+    index >= 0 and index = this.getParameter().getIndex()
+    or
+    index = -1 and this.isThisIndirection()
+  }
 }
 
 /**
@@ -1585,6 +1616,24 @@ class CallInstruction extends Instruction {
   pragma[noinline]
   final Instruction getPositionalArgument(int index) {
     result = getPositionalArgumentOperand(index).getDef()
+  }
+
+  /**
+   * Gets the argument operand at the specified index, or `this` if `index` is `-1`.
+   */
+  pragma[noinline]
+  final ArgumentOperand getPositionalOrThisArgumentOperand(int index) {
+    index >= 0 and result = getPositionalArgumentOperand(index)
+    or
+    index = -1 and result = getThisArgumentOperand()
+  }
+
+  /**
+   * Gets the argument at the specified index, or `this` if `index` is `-1`.
+   */
+  pragma[noinline]
+  final Instruction getPositionalOrThisArgument(int index) {
+    result = getPositionalOrThisArgumentOperand(index).getDef()
   }
 
   /**
