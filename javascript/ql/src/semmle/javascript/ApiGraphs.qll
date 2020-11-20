@@ -858,7 +858,7 @@ private class ModuleAsSourceNode extends DataFlow::SourceNode::Range {
   ModuleAsSourceNode() {
     this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getModuleVariable()))
     or
-    this = DataFlow::parameterNode(m.(AmdModule).getDefine().getModuleParameter())
+    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getModuleParameter())
   }
 
   Module getModule() { result = m }
@@ -873,7 +873,7 @@ private class ExportsAsSourceNode extends DataFlow::SourceNode::Range {
   ExportsAsSourceNode() {
     this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getExportsVariable()))
     or
-    this = DataFlow::parameterNode(m.(AmdModule).getDefine().getExportsParameter())
+    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getExportsParameter())
   }
 
   Module getModule() { result = m }
