@@ -32,6 +32,7 @@ test_taint
 | test_logical.py:123 | ok   | test_nesting_not_with_and_true | s |
 | test_logical.py:126 | ok   | test_nesting_not_with_and_true | s |
 | test_logical.py:128 | ok   | test_nesting_not_with_and_true | s |
+| test_logical.py:137 | fail | test_with_return | s |
 isSanitizer
 | TestTaintTrackingConfiguration | test.py:21:39:21:39 | ControlFlowNode for s |
 | TestTaintTrackingConfiguration | test.py:50:10:50:29 | ControlFlowNode for emulated_escaping() |
