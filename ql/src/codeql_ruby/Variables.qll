@@ -51,20 +51,24 @@ private VariableScope enclosingScope(AstNode node) {
   result.getScopeElement() = parent*(node.getParent())
 }
 
-/** Holds if `scope` defines `var` as a parameter. */
-private predicate scopeDefinesParameter(VariableScope scope, Identifier var) {
-  var in [scope
-            .(BlockScope)
-            .getScopeElement()
-            .getAFieldOrChild()
-            .(BlockParameters)
-            .getAFieldOrChild+(),
-        scope
-            .(MethodScope)
-            .getScopeElement()
-            .getAFieldOrChild()
-            .(MethodParameters)
-            .getAFieldOrChild+()]
+/** Holds if `scope` defines `name` as a parameter. */
+private predicate scopeDefinesParameter(VariableScope scope, string name, Location location) {
+  exists(Identifier var |
+    name = var.getValue() and
+    location = var.getLocation() and
+    var in [scope
+              .(BlockScope)
+              .getScopeElement()
+              .getAFieldOrChild()
+              .(BlockParameters)
+              .getAFieldOrChild+(),
+          scope
+              .(MethodScope)
+              .getScopeElement()
+              .getAFieldOrChild()
+              .(MethodParameters)
+              .getAFieldOrChild+()]
+  )
 }
 
 /** Holds if `var` is assigned in `scope`. */
@@ -81,30 +85,55 @@ predicate strictlyBefore(Location one, Location two) {
   one.getStartLine() = two.getStartLine() and one.getStartColumn() < two.getStartColumn()
 }
 
-cached
-private VariableScope blockOuterScopes(BlockScope block) { result = block.getOuterScope+() }
+/** Holds if block scope `scope` inherits `var` from an outer scope. */
+private predicate blockScopeInherits(BlockScope scope, string var) {
+  exists(VariableScope outer | outer = scope.getOuterScope() |
+    scopeDefinesParameter(outer, var, _)
+    or
+    exists(Identifier i | i.getValue() = var |
+      scopeAssigns(outer, i) and
+      strictlyBefore(i.getLocation(), scope.getLocation())
+    )
+    or
+    blockScopeInherits(outer, var)
+  )
+}
+
+newtype TVariable =
+  TParameter(VariableScope scope, string name, Location location) {
+    scopeDefinesParameter(scope, name, location)
+  } or
+  TLocalVariable(VariableScope scope, string name, Location location) {
+    not scopeDefinesParameter(scope, name, _) and
+    not blockScopeInherits(scope, name) and
+    location =
+      min(Location loc, Identifier other |
+        loc = other.getLocation() and name = other.getValue() and scopeAssigns(scope, other)
+      |
+        loc order by loc.getStartLine(), loc.getStartColumn()
+      )
+  }
 
 /** A variable declared in a scope. */
-class Variable extends Identifier {
+class Variable extends TVariable {
   VariableScope scope;
+  string name;
+  Location location;
 
   Variable() {
-    scopeDefinesParameter(scope, this)
+    this = TParameter(scope, name, location)
     or
-    scopeAssigns(scope, this) and
-    not exists(Identifier other, VariableScope outer | other.getValue() = this.getValue() |
-      (outer = scope or outer = blockOuterScopes(scope)) and
-      (
-        scopeDefinesParameter(outer, other)
-        or
-        scopeAssigns(outer, other) and
-        strictlyBefore(other.getLocation(), this.getLocation())
-      )
-    )
+    this = TLocalVariable(scope, name, location)
   }
 
   /** Gets the name of this variable. */
-  final string getName() { result = this.getValue() }
+  final string getName() { result = name }
+
+  /** Gets a textual representation of this variable. */
+  final string toString() { result = name }
+
+  /** Gets the location of this variable. */
+  final Location getLocation() { result = location }
 
   /** Gets the scope this variable is declared in. */
   final VariableScope getDeclaringScope() { result = scope }
@@ -115,14 +144,14 @@ class Variable extends Identifier {
 
 /** A parameter. */
 class Parameter extends Variable {
-  Parameter() { scopeDefinesParameter(scope, this) }
+  Parameter() { this = TParameter(scope, name, location) }
 
   final override ParameterAccess getAnAccess() { result = super.getAnAccess() }
 }
 
 /** A local variable. */
 class LocalVariable extends Variable {
-  LocalVariable() { not scopeDefinesParameter(scope, this) }
+  LocalVariable() { this = TLocalVariable(scope, name, location) }
 
   final override LocalVariableAccess getAnAccess() { result = super.getAnAccess() }
 }
