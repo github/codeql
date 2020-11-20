@@ -177,6 +177,9 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintStep(src, sink)
 }
 
+/**
+ * A sanitizer in all global taint flow configurations but not in local taint.
+ */
 abstract class DefaultTaintSanitizer extends DataFlow::Node { }
 
 /**

@@ -51,6 +51,7 @@ class FunctionInput extends TFunctionInput {
   abstract string toString();
 }
 
+/** Defines convenience methods that get particular `FunctionInput` instances. */
 module FunctionInput {
   /** Gets a `FunctionInput` representing the `i`th parameter. */
   FunctionInput parameter(int i) { result.isParameter(i) }
@@ -191,6 +192,7 @@ class FunctionOutput extends TFunctionOutput {
   abstract string toString();
 }
 
+/** Defines convenience methods that get particular `FunctionOutput` instances. */
 module FunctionOutput {
   /** Gets a `FunctionOutput` representing the result of a single-result function. */
   FunctionOutput functionResult() { result.isResult() }
