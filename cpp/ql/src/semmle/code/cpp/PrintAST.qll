@@ -235,8 +235,11 @@ class PrintASTNode extends TPrintASTNode {
   private Function getEnclosingFunction() { result = getParent*().(FunctionNode).getFunction() }
 }
 
-private class PrintableElementBase extends ElementBase {
-  PrintableElementBase() {
+/**
+ * Class that restricts the elements that we compute `qlClass` for.
+ */
+private class PrintableElement extends Element {
+  PrintableElement() {
     exists(TASTNode(this))
     or
     exists(TDeclarationEntryNode(_, this))
@@ -251,7 +254,7 @@ private class PrintableElementBase extends ElementBase {
 /**
  * Retrieves the canonical QL class(es) for entity `el`
  */
-private string qlClass(PrintableElementBase el) {
+private string qlClass(PrintableElement el) {
   result = "[" + concat(el.getAPrimaryQlClass0(), ",") + "] "
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
   //result = "["+ concat(el.getAQlClass(), ",") + "] "
