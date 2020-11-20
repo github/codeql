@@ -29,9 +29,7 @@ private class PrimaryArgumentNode extends ArgumentNode {
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
   override predicate argumentOf(DataFlowCall call, int pos) {
-    op = call.getPositionalArgumentOperand(pos)
-    or
-    op = call.getThisArgumentOperand() and pos = -1
+    op = call.getPositionalOrThisArgumentOperand(pos)
   }
 
   override string toString() {
@@ -110,10 +108,10 @@ class ReturnIndirectionNode extends ReturnNode {
   override ReturnIndirectionInstruction primary;
 
   override ReturnKind getKind() {
-    result = TIndirectReturnKind(-1) and
-    primary.isThisIndirection()
-    or
-    result = TIndirectReturnKind(primary.getParameter().getIndex())
+    exists(int index |
+      primary.isParameterOrThisIndirection(index) and
+      result = TIndirectReturnKind(index)
+    )
   }
 }
 
