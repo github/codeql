@@ -619,11 +619,11 @@ module API {
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
-        ref.(ModuleAsSourceNode).getModule() = mod
+        ref.(ModuleVarNode).getModule() = mod
       )
       or
       exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
-        ref.(ExportsAsSourceNode).getModule() = mod
+        ref.(ExportsVarNode).getModule() = mod
         or
         exists(DataFlow::Node base | use(MkModuleDef(m), base) |
           ref = trackUseNode(base).getAPropertyRead("exports")
@@ -746,9 +746,9 @@ module API {
       or
       // additional backwards step from `require('m')` to `exports` or `module.exports` in m
       exists(Import imp | imp.getImportedModuleNode() = trackDefNode(nd, t.continue()) |
-        result.(ExportsAsSourceNode).getModule() = imp.getImportedModule()
+        result.(ExportsVarNode).getModule() = imp.getImportedModule()
         or
-        exists(ModuleAsSourceNode mod |
+        exists(ModuleVarNode mod |
           mod.getModule() = imp.getImportedModule() and
           result = mod.(DataFlow::SourceNode).getAPropertyRead("exports")
         )
@@ -983,13 +983,21 @@ private module Label {
   string promised() { result = "promised" }
 }
 
+private class NodeModuleSourcesNodes extends DataFlow::SourceNode::Range {
+  NodeModuleSourcesNodes() {
+    exists(NodeModule m |
+      this = DataFlow::ssaDefinitionNode(SSA::implicitInit([m.getModuleVariable(), m.getExportsVariable()]))
+    )
+  }
+}
+
 /**
- * A CommonJS/AMD `module` variable, considered as a source node.
+ * A CommonJS/AMD `module` variable.
  */
-private class ModuleAsSourceNode extends DataFlow::SourceNode::Range {
+private class ModuleVarNode extends DataFlow::Node {
   Module m;
 
-  ModuleAsSourceNode() {
+  ModuleVarNode() {
     this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getModuleVariable()))
     or
     DataFlow::parameterNode(this, m.(AmdModule).getDefine().getModuleParameter())
@@ -999,12 +1007,12 @@ private class ModuleAsSourceNode extends DataFlow::SourceNode::Range {
 }
 
 /**
- * A CommonJS/AMD `exports` variable, considered as a source node.
+ * A CommonJS/AMD `exports` variable.
  */
-private class ExportsAsSourceNode extends DataFlow::SourceNode::Range {
+private class ExportsVarNode extends DataFlow::Node {
   Module m;
 
-  ExportsAsSourceNode() {
+  ExportsVarNode() {
     this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getExportsVariable()))
     or
     DataFlow::parameterNode(this, m.(AmdModule).getDefine().getExportsParameter())
