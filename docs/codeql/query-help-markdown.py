@@ -182,8 +182,8 @@ for lang in languages:
                 get_query_metadata('problem.severity', meta, queryfile) + "\n"
             query_precision = "Precision: " + \
                 get_query_metadata('precision', meta, queryfile) + "\n"
-            query_tags = "Tags: " + \
-                get_query_metadata('tags', meta, queryfile) + "\n"
+            query_tags = "Tags:\n   - " + \
+                get_query_metadata('tags', meta, queryfile).replace(" ", "\n   - ") + "\n"
 
             # Build a link to the query source file for display in the query help
             if "go" in prefix_repo_nwo(queryfile):
@@ -196,20 +196,20 @@ for lang in languages:
                 transform_link + ")\n"
             
             if queryfile in code_scanning_queries:
-                cs_suites = lang +'-code-scanning.qls '
+                cs_suites = '   - ' + lang +'-code-scanning.qls\n'
             else:
                 cs_suites = ""
             if queryfile in security_extended_queries:
-                se_suites = lang + '-security-extended.qls '
+                se_suites = '   - ' + lang + '-security-extended.qls\n'
             else:
                 se_suites = ""
             if queryfile in security_and_quality_queries:
-                sq_suites = lang + '-security-and-quality.qls '
+                sq_suites = '   - ' +lang + '-security-and-quality.qls\n'
             else:
                 sq_Suites = ""
 
             if queryfile in code_scanning_queries or queryfile in security_extended_queries or queryfile in security_and_quality_queries:
-                suites_list = "Query suites: " + cs_suites + se_suites + sq_suites + "\n"
+                suites_list = "Query suites:\n" + cs_suites + se_suites + sq_suites
             else:
                 suites_list = ""
 
