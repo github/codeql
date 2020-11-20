@@ -65,11 +65,10 @@ class ElementBase extends @element {
    * which they belong; for example, `AddExpr` is a primary class, but
    * `BinaryOperation` is not.
    *
-   * This predicate always has a result. If no primary class can be
-   * determined, the result is `"???"`. If multiple primary classes match,
-   * this predicate can have multiple results.
+   * This predicate can have multiple results if multiple primary classes match.
+   * For some elements, this predicate may not have a result.
    */
-  string getAPrimaryQlClass() { result = "???" }
+  string getAPrimaryQlClass() { none() }
 }
 
 /**
