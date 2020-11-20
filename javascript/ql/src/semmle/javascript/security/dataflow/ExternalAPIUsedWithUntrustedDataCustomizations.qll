@@ -34,7 +34,7 @@ module ExternalAPIUsedWithUntrustedData {
    *
    * By default, this includes the objects passed to a `PropertyProjection` or `ExtendCall`.
    *
-   * Such objects tend of have lots of application-defined properties which don't represent
+   * Such objects tend to have lots of application-defined properties which don't represent
    * distinct API usages, so the query will avoid generating API names from them.
    */
   abstract class DeepObjectSink extends DataFlow::Node { }
@@ -48,7 +48,7 @@ module ExternalAPIUsedWithUntrustedData {
   }
 
   /** Holds if `node` corresponds to a deep object argument. */
-  private predicate isDeepObjectSink(API::Node node) { node.getARhs() = any(DeepObjectSink deep) }
+  private predicate isDeepObjectSink(API::Node node) { node.getARhs() instanceof DeepObjectSink }
 
   /**
    * A sanitizer for data flowing to an external API.
@@ -136,7 +136,7 @@ module ExternalAPIUsedWithUntrustedData {
   }
 
   /**
-   * Holds `node` may be part of an access path leading to an external API call.
+   * Holds if `node` may be part of an access path leading to an external API call.
    */
   private predicate nodeIsRelevant(API::Node node) {
     mayComeFromLibrary(node) and
