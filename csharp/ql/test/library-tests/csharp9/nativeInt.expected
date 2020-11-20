@@ -1,0 +1,63 @@
+| NativeInt.cs:7:14:7:14 | access to local variable x | IntPtr |
+| NativeInt.cs:7:14:7:18 | IntPtr x = ... | IntPtr |
+| NativeInt.cs:7:18:7:18 | (...) ... | IntPtr |
+| NativeInt.cs:7:18:7:18 | access to parameter j | Int32 |
+| NativeInt.cs:8:14:8:15 | access to local variable x0 | IntPtr |
+| NativeInt.cs:8:14:8:25 | IntPtr x0 = ... | IntPtr |
+| NativeInt.cs:8:19:8:25 | (...) ... | IntPtr |
+| NativeInt.cs:8:20:8:23 | access to type IntPtr | IntPtr |
+| NativeInt.cs:8:25:8:25 | access to parameter j | Int32 |
+| NativeInt.cs:9:16:9:17 | access to local variable x1 | IntPtr |
+| NativeInt.cs:9:16:9:29 | IntPtr x1 = ... | IntPtr |
+| NativeInt.cs:9:21:9:29 | (...) ... | IntPtr |
+| NativeInt.cs:9:22:9:27 | access to type IntPtr | IntPtr |
+| NativeInt.cs:9:29:9:29 | access to parameter j | Int32 |
+| NativeInt.cs:10:15:10:15 | access to local variable y | UIntPtr |
+| NativeInt.cs:10:15:10:19 | UIntPtr y = ... | UIntPtr |
+| NativeInt.cs:10:19:10:19 | (...) ... | UIntPtr |
+| NativeInt.cs:10:19:10:19 | access to parameter k | UInt32 |
+| NativeInt.cs:12:20:12:20 | access to local variable i | IntPtr |
+| NativeInt.cs:12:20:12:31 | IntPtr i = ... | IntPtr |
+| NativeInt.cs:12:24:12:31 | (...) ... | IntPtr |
+| NativeInt.cs:12:25:12:28 | access to type IntPtr | IntPtr |
+| NativeInt.cs:12:30:12:31 | 42 | Int32 |
+| NativeInt.cs:17:14:17:14 | access to local variable x | IntPtr |
+| NativeInt.cs:17:14:17:18 | IntPtr x = ... | IntPtr |
+| NativeInt.cs:17:18:17:18 | 3 | Int32 |
+| NativeInt.cs:17:18:17:18 | (...) ... | IntPtr |
+| NativeInt.cs:18:13:18:13 | access to local variable y | Int32 |
+| NativeInt.cs:18:13:18:17 | Int32 y = ... | Int32 |
+| NativeInt.cs:18:17:18:17 | 3 | Int32 |
+| NativeInt.cs:19:14:19:14 | access to local variable v | Int64 |
+| NativeInt.cs:19:14:19:19 | Int64 v = ... | Int64 |
+| NativeInt.cs:19:18:19:19 | 10 | Int32 |
+| NativeInt.cs:19:18:19:19 | (...) ... | Int64 |
+| NativeInt.cs:21:13:21:17 | access to local variable test3 | Type |
+| NativeInt.cs:21:13:21:32 | Type test3 = ... | Type |
+| NativeInt.cs:21:21:21:32 | typeof(...) | Type |
+| NativeInt.cs:21:28:21:31 | access to type IntPtr | IntPtr |
+| NativeInt.cs:22:13:22:17 | access to local variable test4 | Type |
+| NativeInt.cs:22:13:22:33 | Type test4 = ... | Type |
+| NativeInt.cs:22:21:22:33 | typeof(...) | Type |
+| NativeInt.cs:22:28:22:32 | access to type UIntPtr | UIntPtr |
+| NativeInt.cs:23:13:23:17 | access to local variable test5 | Type |
+| NativeInt.cs:23:13:23:37 | Type test5 = ... | Type |
+| NativeInt.cs:23:21:23:37 | call to method GetType | Type |
+| NativeInt.cs:23:22:23:22 | access to local variable x | IntPtr |
+| NativeInt.cs:23:22:23:26 | ... + ... | IntPtr |
+| NativeInt.cs:23:26:23:26 | 1 | Int32 |
+| NativeInt.cs:23:26:23:26 | (...) ... | IntPtr |
+| NativeInt.cs:24:13:24:17 | access to local variable test6 | Type |
+| NativeInt.cs:24:13:24:37 | Type test6 = ... | Type |
+| NativeInt.cs:24:21:24:37 | call to method GetType | Type |
+| NativeInt.cs:24:22:24:22 | access to local variable x | IntPtr |
+| NativeInt.cs:24:22:24:26 | ... + ... | IntPtr |
+| NativeInt.cs:24:26:24:26 | (...) ... | IntPtr |
+| NativeInt.cs:24:26:24:26 | access to local variable y | Int32 |
+| NativeInt.cs:25:13:25:17 | access to local variable test7 | Type |
+| NativeInt.cs:25:13:25:37 | Type test7 = ... | Type |
+| NativeInt.cs:25:21:25:37 | call to method GetType | Type |
+| NativeInt.cs:25:22:25:22 | (...) ... | Int64 |
+| NativeInt.cs:25:22:25:22 | access to local variable x | IntPtr |
+| NativeInt.cs:25:22:25:26 | ... + ... | Int64 |
+| NativeInt.cs:25:26:25:26 | access to local variable v | Int64 |
