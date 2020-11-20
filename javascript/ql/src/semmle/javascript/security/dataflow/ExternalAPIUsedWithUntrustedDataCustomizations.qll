@@ -77,7 +77,11 @@ module ExternalAPIUsedWithUntrustedData {
   private class DefaultSafeExternalAPIPackage extends SafeExternalAPIPackage {
     DefaultSafeExternalAPIPackage() {
       // Promise libraries are safe and generate too much noise if included
-      this = ["bluebird", "q", "deferred", "when", "promise", "promises", "es6-promise", "promise-polyfill"]
+      this =
+        [
+          "bluebird", "q", "deferred", "when", "promise", "promises", "es6-promise",
+          "promise-polyfill"
+        ]
     }
   }
 
@@ -177,7 +181,9 @@ module ExternalAPIUsedWithUntrustedData {
   private string getSimplifiedName(API::Node node) {
     node = API::moduleImport(result)
     or
-    exists(API::Node base, string basename | getDepth(base) < getDepth(node) and basename = getSimplifiedName(base) |
+    exists(API::Node base, string basename |
+      getDepth(base) < getDepth(node) and basename = getSimplifiedName(base)
+    |
       // In practice there is no need to distinguish between 'new X' and 'X()'
       node = [base.getInstance(), base.getReturn()] and
       result = basename + "()"
@@ -215,9 +221,13 @@ module ExternalAPIUsedWithUntrustedData {
         result = basename + ".[callback].[param '" + paramName + "']"
         or
         exists(string callbackName, string index |
-          node = getNamedParameter(base.getASuccessor("parameter " + index).getMember(callbackName), paramName) and
+          node =
+            getNamedParameter(base.getASuccessor("parameter " + index).getMember(callbackName),
+              paramName) and
           index != "-1" and // ignore receiver
-          result = basename + ".[callback " + index + " '" + callbackName + "'].[param '" + paramName + "']"
+          result =
+            basename + ".[callback " + index + " '" + callbackName + "'].[param '" + paramName +
+              "']"
         )
       )
     )
@@ -251,7 +261,9 @@ module ExternalAPIUsedWithUntrustedData {
       // Ignore arguments to a method such as 'indexOf' that's likely called on a string or array value
       not isCommonBuiltinMethodName(this.(DataFlow::CallNode).getCalleeName()) and
       // Not already modeled as a flow/taint step
-      not exists(DataFlow::Node arg | arg = this.getAnArgument() and not arg instanceof DeepObjectSink |
+      not exists(DataFlow::Node arg |
+        arg = this.getAnArgument() and not arg instanceof DeepObjectSink
+      |
         any(TaintTracking::AdditionalTaintStep s).step(arg, _)
         or
         exists(DataFlow::AdditionalFlowStep s |
@@ -305,9 +317,7 @@ module ExternalAPIUsedWithUntrustedData {
       )
     }
 
-    override string getApiName() {
-      result = invoke.getApiName() + " [param *]"
-    }
+    override string getApiName() { result = invoke.getApiName() + " [param *]" }
   }
 
   /** A "named argument" to an external API call, seen as a sink. */
@@ -317,7 +327,7 @@ module ExternalAPIUsedWithUntrustedData {
     string prop;
 
     NamedParameterSink() {
-      exists (DataFlow::ObjectLiteralNode object, DataFlow::PropWrite write |
+      exists(DataFlow::ObjectLiteralNode object, DataFlow::PropWrite write |
         object = invoke.getArgument(index) and
         isNamedArgumentObject(object) and
         write = object.getAPropertyWrite() and
@@ -331,7 +341,9 @@ module ExternalAPIUsedWithUntrustedData {
       )
     }
 
-    override string getApiName() { result = invoke.getApiName() + " [param " + index + " '" + prop + "']" }
+    override string getApiName() {
+      result = invoke.getApiName() + " [param " + index + " '" + prop + "']"
+    }
   }
 
   /** The return value from a direct callback to an external API call, seen as a sink */
@@ -345,7 +357,9 @@ module ExternalAPIUsedWithUntrustedData {
       not invoke.getCalleeName() = ["then", "catch", "finally"]
     }
 
-    override string getApiName() { result = invoke.getApiName() + " [callback " + index + " result]" }
+    override string getApiName() {
+      result = invoke.getApiName() + " [callback " + index + " result]"
+    }
   }
 
   /** The return value from a named callback to an external API call, seen as a sink. */
@@ -355,9 +369,16 @@ module ExternalAPIUsedWithUntrustedData {
     string prop;
 
     NamedCallbackSink() {
-      this = invoke.getOptionArgument(index, prop).getALocalSource().(DataFlow::FunctionNode).getAReturn()
+      this =
+        invoke
+            .getOptionArgument(index, prop)
+            .getALocalSource()
+            .(DataFlow::FunctionNode)
+            .getAReturn()
     }
 
-    override string getApiName() { result = invoke.getApiName() + " [callback " + index + " '" + prop + "' result]" }
+    override string getApiName() {
+      result = invoke.getApiName() + " [callback " + index + " '" + prop + "' result]"
+    }
   }
 }
