@@ -116,9 +116,8 @@ module Werkzeug {
       nodeFrom = werkzeug::datastructures::FileStorage::instance() and
       exists(DataFlow::AttrRead read | nodeTo = read |
         read.getAttributeName() in [
-            "filename",
             // str
-            "name", "content_type", "mimetype",
+            "filename", "name", "content_type", "mimetype",
             // file-like
             "stream",
             // TODO: werkzeug.datastructures.Headers

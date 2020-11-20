@@ -36,8 +36,8 @@ AsyncStreams.cs:
 #   17|     -1: [TypeMention] Void
 #   18|     4: [BlockStmt] {...}
 #   19|       0: [ForeachStmt] foreach (... ... in ...) ...
-#   19|         -1: [TypeMention] int
 #   19|         0: [LocalVariableDeclExpr] Int32 item
+#   19|           0: [TypeMention] int
 #   19|         1: [MethodCall] call to method Items
 #   20|         2: [ExprStmt] ...;
 #   20|           0: [MethodCall] call to method WriteLine
@@ -744,9 +744,9 @@ patterns.cs:
 #    7|                   1: [IntLiteral] 2
 #    9|       1: [IfStmt] if (...) ...
 #    9|         0: [IsExpr] ... is ...
-#    9|           -1: [TypeMention] MyStruct
 #    9|           0: [LocalVariableAccess] access to local variable o
 #    9|           1: [VariablePatternExpr] MyStruct ms1
+#    9|             0: [TypeMention] MyStruct
 #   10|         1: [BlockStmt] {...}
 #   13|       2: [IfStmt] if (...) ...
 #   13|         0: [LogicalAndExpr] ... && ...
@@ -758,8 +758,8 @@ patterns.cs:
 #   13|                 1: [TypeAccess] access to type MyStruct
 #   13|                   0: [TypeMention] MyStruct
 #   13|                 3: [PropertyPatternExpr] { ... }
-#   13|                   -1: [TypeMention] int
 #   13|                   0: [LabeledPatternExpr,VariablePatternExpr] Int32 x
+#   13|                     0: [TypeMention] int
 #   13|             1: [LTExpr] ... < ...
 #   13|               0: [LocalVariableAccess] access to local variable x
 #   13|               1: [IntLiteral] 4
@@ -818,8 +818,8 @@ patterns.cs:
 #   36|       1: [SwitchStmt] switch (...) {...}
 #   36|         0: [LocalVariableAccess] access to local variable s
 #   38|         0: [CaseStmt] case ...:
-#   38|           -1: [TypeMention] MyStruct
 #   38|           0: [VariablePatternExpr] MyStruct ms1
+#   38|             0: [TypeMention] MyStruct
 #   38|           1: [EQExpr] ... == ...
 #   38|             0: [FieldAccess] access to field X
 #   38|               -1: [LocalVariableAccess] access to local variable ms1
@@ -831,8 +831,8 @@ patterns.cs:
 #   39|             0: [StringLiteral] "Hit the breakpoint"
 #   40|         2: [BreakStmt] break;
 #   41|         3: [CaseStmt] case ...:
-#   41|           -1: [TypeMention] MyStruct
 #   41|           0: [VariablePatternExpr] MyStruct ms2
+#   41|             0: [TypeMention] MyStruct
 #   41|           1: [LTExpr] ... < ...
 #   41|             0: [FieldAccess] access to field X
 #   41|               -1: [LocalVariableAccess] access to local variable ms2
@@ -850,8 +850,8 @@ patterns.cs:
 #   48|             1: [TypeAccess] access to type MyStruct
 #   48|               0: [TypeMention] MyStruct
 #   48|             3: [PropertyPatternExpr] { ... }
-#   48|               -1: [TypeMention] int
 #   48|               0: [LabeledPatternExpr,VariablePatternExpr] Int32 x
+#   48|                 0: [TypeMention] int
 #   48|           1: [GTExpr] ... > ...
 #   48|             0: [LocalVariableAccess] access to local variable x
 #   48|             1: [IntLiteral] 2
@@ -877,8 +877,8 @@ patterns.cs:
 #   54|         6: [CaseStmt] case ...:
 #   54|           0: [RecursivePatternExpr] { ... }
 #   54|             3: [PropertyPatternExpr] { ... }
-#   54|               -1: [TypeMention] int
 #   54|               0: [LabeledPatternExpr,VariablePatternExpr] Int32 x2
+#   54|                 0: [TypeMention] int
 #   54|           1: [GTExpr] ... > ...
 #   54|             0: [LocalVariableAccess] access to local variable x2
 #   54|             1: [IntLiteral] 2
@@ -908,8 +908,8 @@ patterns.cs:
 #   67|             1: [TypeAccess] access to type MyStruct
 #   67|               0: [TypeMention] MyStruct
 #   67|             3: [PropertyPatternExpr] { ... }
-#   67|               -1: [TypeMention] int
 #   67|               0: [LabeledPatternExpr,VariablePatternExpr] Int32 x
+#   67|                 0: [TypeMention] int
 #   67|           1: [GTExpr] ... > ...
 #   67|             0: [LocalVariableAccess] access to local variable x
 #   67|             1: [IntLiteral] 2
@@ -942,10 +942,10 @@ patterns.cs:
 #   78|         0: [CaseStmt] case ...:
 #   78|           0: [RecursivePatternExpr] { ... }
 #   78|             2: [PositionalPatternExpr] ( ... )
-#   78|               -1: [TypeMention] int
-#   78|               -1: [TypeMention] float
 #   78|               0: [VariablePatternExpr] Int32 x
+#   78|                 0: [TypeMention] int
 #   78|               1: [VariablePatternExpr] Single y
+#   78|                 0: [TypeMention] float
 #   78|           1: [LTExpr] ... < ...
 #   78|             0: [CastExpr] (...) ...
 #   78|               1: [LocalVariableAccess] access to local variable x
@@ -998,8 +998,8 @@ patterns.cs:
 #  100|           1: [SwitchExpr] ... switch { ... }
 #  100|             -1: [ParameterAccess] access to parameter x
 #  101|             0: [SwitchCaseExpr] ... => ...
-#  101|               -1: [TypeMention] int
 #  101|               0: [VariablePatternExpr] Int32 y
+#  101|                 0: [TypeMention] int
 #  101|               1: [GTExpr] ... > ...
 #  101|                 0: [LocalVariableAccess] access to local variable y
 #  101|                 1: [IntLiteral] 10
@@ -1101,8 +1101,8 @@ patterns.cs:
 #  128|                 1: [TypeAccess] access to type MyStruct
 #  128|                   0: [TypeMention] MyStruct
 #  128|                 3: [PropertyPatternExpr] { ... }
-#  128|                   -1: [TypeMention] int
 #  128|                   0: [LabeledPatternExpr,VariablePatternExpr] Int32 x
+#  128|                     0: [TypeMention] int
 #  128|               1: [GTExpr] ... > ...
 #  128|                 0: [LocalVariableAccess] access to local variable x
 #  128|                 1: [IntLiteral] 2
@@ -1142,8 +1142,8 @@ patterns.cs:
 #  139|                   0: [ConstantPatternExpr,IntLiteral] 2
 #  139|                   2: [IntLiteral] 3
 #  140|                 2: [SwitchCaseExpr] ... => ...
-#  140|                   -1: [TypeMention] object
 #  140|                   0: [VariablePatternExpr] Object y
+#  140|                     0: [TypeMention] object
 #  140|                   1: [IsExpr] ... is ...
 #  140|                     0: [LocalVariableAccess] access to local variable y
 #  140|                     1: [RecursivePatternExpr] { ... }

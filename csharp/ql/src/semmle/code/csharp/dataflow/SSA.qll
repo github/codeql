@@ -1130,7 +1130,7 @@ module Ssa {
         exists(Expr mid | reachesDelegateCall(mid) | delegateFlowStep(e, mid))
       }
 
-      pragma[noinline]
+      pragma[nomagic]
       private predicate delegateFlowStepReaches(Expr pred, Expr succ) {
         delegateFlowStep(pred, succ) and
         reachesDelegateCall(succ)

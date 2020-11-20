@@ -425,9 +425,8 @@ private module Django {
        */
       private DataFlow::Node http_attr(DataFlow::TypeTracker t, string attr_name) {
         attr_name in [
-            "request",
             // request
-            "HttpRequest",
+            "request", "HttpRequest",
             // response
             "response", "HttpResponse",
             // HttpResponse subclasses
@@ -1709,9 +1708,8 @@ private module Django {
       nodeFrom = django::http::request::HttpRequest::instance() and
       exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
         read.getAttributeName() in [
-            "body",
             // str / bytes
-            "path", "path_info", "method", "encoding", "content_type",
+            "body", "path", "path_info", "method", "encoding", "content_type",
             // django.http.QueryDict
             // TODO: Model QueryDict
             "GET", "POST",

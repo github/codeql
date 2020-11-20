@@ -111,8 +111,8 @@
 | DefUse.cs:63:9:63:14 | this.Field2 | DefUse.cs:63:9:63:18 | SSA def(this.Field2) | DefUse.cs:80:37:80:42 | access to field Field2 |
 | DefUse.cs:66:9:66:14 | this.Field3 | DefUse.cs:66:9:66:18 | SSA def(this.Field3) | DefUse.cs:69:13:69:18 | access to field Field3 |
 | DefUse.cs:67:19:67:20 | tc | DefUse.cs:67:19:67:27 | SSA def(tc) | DefUse.cs:68:9:68:10 | access to local variable tc |
-| DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:16:80:46 | SSA phi(x1) | DefUse.cs:80:30:80:31 | access to local variable x1 |
 | DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:30:80:31 | SSA def(x1) | DefUse.cs:81:13:81:14 | access to local variable x1 |
+| DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:30:80:31 | SSA phi(x1) | DefUse.cs:80:30:80:31 | access to local variable x1 |
 | DefUse.cs:83:13:83:14 | x2 | DefUse.cs:83:13:83:18 | SSA def(x2) | DefUse.cs:85:15:85:16 | access to local variable x2 |
 | DefUse.cs:83:13:83:14 | x2 | DefUse.cs:85:15:85:16 | SSA def(x2) | DefUse.cs:87:13:87:14 | access to local variable x2 |
 | DefUse.cs:89:13:89:14 | x3 | DefUse.cs:89:13:89:18 | SSA def(x3) | DefUse.cs:92:15:92:16 | access to local variable x3 |

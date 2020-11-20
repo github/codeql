@@ -169,9 +169,8 @@ private module FabricV2 {
    */
   private DataFlow::Node fabric_attr(DataFlow::TypeTracker t, string attr_name) {
     attr_name in [
-        "connection",
         // connection.py
-        "Connection",
+        "connection", "Connection",
         // group.py
         "group", "SerialGroup", "ThreadingGroup",
         // tasks.py
