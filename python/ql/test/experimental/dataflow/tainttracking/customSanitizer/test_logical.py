@@ -137,6 +137,14 @@ def test_with_return():
     ensure_not_tainted(s)
 
 
+def test_with_exception():
+    s = TAINTED_STRING
+
+    if not is_safe(s):
+        raise Exception("unsafe")
+
+    ensure_not_tainted(s)
+
 # Make tests runable
 
 test_basic()
@@ -146,3 +154,7 @@ test_tricky()
 test_nesting_not()
 test_nesting_not_with_and_true()
 test_with_return()
+try:
+    test_with_exception()
+except:
+    pass
