@@ -267,7 +267,7 @@ class ParameterIndirectionNode extends ParameterNode {
   override predicate isParameterOf(Function f, int pos) {
     exists(int index |
       instr.getEnclosingFunction() = f and
-      instr.isParameterOrQualifierIndex(index)
+      instr.hasIndex(index)
     |
       pos = getArgumentPosOfSideEffect(index)
     )
@@ -474,7 +474,7 @@ class DefinitionByReferenceNode extends InstructionNode {
       instr
           .getPrimaryInstruction()
           .(CallInstruction)
-          .getPositionalOrThisArgument(instr.getIndex())
+          .getArgument(instr.getIndex())
           .getUnconvertedResultExpression()
   }
 
