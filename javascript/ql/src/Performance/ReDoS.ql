@@ -953,8 +953,8 @@ module PrefixConstruction {
     lastStartState(state) and
     result = ""
     or
-    // the search stops past the last pumpable state.
-    lengthFromStart(state) <= max(lengthFromStart(any(State s | isPumpable(s, _)))) and
+    // the search stops past the last redos candidate state.
+    lengthFromStart(state) <= max(lengthFromStart(any(State s | isReDoSCandidate(s, _)))) and
     exists(State prev |
       // select a unique predecessor (by an arbitrary measure)
       prev =
@@ -982,7 +982,7 @@ module PrefixConstruction {
   class StateInPumpableRegexp extends State {
     pragma[noinline]
     StateInPumpableRegexp() {
-      exists(State s | isPumpable(s, _) | getRoot(s.getRepr()) = getRoot(this.getRepr()))
+      exists(State s | isReDoSCandidate(s, _) | getRoot(s.getRepr()) = getRoot(this.getRepr()))
     }
   }
 }
@@ -1012,7 +1012,7 @@ module SuffixConstruction {
    * are rejectable by appending some suffix.
    */
   predicate reachesOnlyRejectableSuffixes(State fork, string w) {
-    isPumpable(fork, w) and
+    isReDoSCandidate(fork, w) and
     forex(State next | next = process(fork, w, w.length() - 1) | isDefinitelyRejectable(next))
   }
 
@@ -1053,7 +1053,7 @@ module SuffixConstruction {
    * chars in `w` any number of times followed by the first `i+1` characters of `w`.
    */
   private State process(State fork, string w, int i) {
-    isPumpable(fork, w) and
+    isReDoSCandidate(fork, w) and
     exists(State prev |
       i = 0 and prev = fork
       or
@@ -1070,19 +1070,28 @@ module SuffixConstruction {
 
 /**
  * Holds if `term` may cause exponential backtracking on strings containing many repetitions of `witness`.
+ * Gets the minimum possible string that causes exponential backtracking.
  */
 predicate isReDoSAttackable(RegExpTerm term, string witness, State s) {
   exists(int i, string c | s = Match(term, i) |
     c =
       min(string w |
-        isPumpable(s, w) and
-        not isPumpable(epsilonSucc+(s), _) and
+        isReDoSCandidate(s, w) and
         SuffixConstruction::reachesOnlyRejectableSuffixes(s, w)
       |
         w order by w.length(), w
       ) and
     witness = escape(rotate(c, i))
   )
+}
+
+/**
+ * Holds if repeating `w' starting at `s` is a candidate for causing exponential backtracking.
+ * No check whether a rejected suffix exists has been made.
+ */
+predicate isReDoSCandidate(State s, string w) {
+  isPumpable(s, w) and
+  not isPumpable(epsilonSucc+(s), _)
 }
 
 /**
