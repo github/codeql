@@ -804,7 +804,6 @@ private module Redis {
      * For getter-like methods it is not generally possible to gain access "outside" of where you are supposed to have access,
      * it is at most possible to get a Redis call to return more results than expected (e.g. by adding more members to [`geohash`](https://redis.io/commands/geohash)).
      */
-    bindingset[argIndex]
     predicate argumentIsAmbiguousKey(string method, int argIndex) {
       method =
         [
@@ -815,7 +814,8 @@ private module Redis {
         ] and
       argIndex = 0
       or
-      method = ["bitop", "hmset", "mset", "msetnx", "geoadd"] and argIndex >= 0
+      method = ["bitop", "hmset", "mset", "msetnx", "geoadd"] and
+      argIndex in [0 .. any(DataFlow::InvokeNode invk).getNumArgument() - 1]
     }
   }
 
