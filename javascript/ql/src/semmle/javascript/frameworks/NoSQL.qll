@@ -708,7 +708,7 @@ private module Minimongo {
  */
 private module MarsDB {
   /** A call to a MarsDB query method. */
-  private class QueryCall extends DatabaseAccess, API::MethodCallNode {
+  private class QueryCall extends DatabaseAccess, API::CallNode {
     int queryArgIdx;
 
     QueryCall() {
