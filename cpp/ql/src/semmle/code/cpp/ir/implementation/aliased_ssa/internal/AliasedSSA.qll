@@ -81,8 +81,11 @@ private newtype TMemoryLocation =
   TAllNonLocalMemory(IRFunction irFunc, boolean isMayAccess) {
     isMayAccess = false or isMayAccess = true
   } or
-  TAllAliasedMemory(IRFunction irFunc, boolean isMayAccess) {
-    isMayAccess = false or isMayAccess = true
+  TAllAliasedMemory(IRFunction irFunc, boolean isMayAccess, boolean canDefineReadOnly) {
+    isMayAccess = false and
+    canDefineReadOnly = [true, false]
+    or
+    isMayAccess = true and canDefineReadOnly = false
   }
 
 /**
@@ -154,7 +157,7 @@ abstract class AllocationMemoryLocation extends MemoryLocation {
 
   final override VirtualVariable getVirtualVariable() {
     if allocationEscapes(var)
-    then result = TAllAliasedMemory(var.getEnclosingIRFunction(), false)
+    then result = TAllAliasedMemory(var.getEnclosingIRFunction(), false, true)
     else result.(AllocationMemoryLocation).getAllocation() = var
   }
 
@@ -284,7 +287,9 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
 
   final override string toStringInternal() { result = "{Unknown}" }
 
-  final override VirtualVariable getVirtualVariable() { result = TAllAliasedMemory(irFunc, false) }
+  final override VirtualVariable getVirtualVariable() {
+    result = TAllAliasedMemory(irFunc, false, true)
+  }
 
   final override Language::LanguageType getType() {
     result = any(IRUnknownType type).getCanonicalLanguageType()
@@ -325,13 +330,7 @@ class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
 
   final override predicate isMayAccess() { isMayAccess = true }
 
-  override predicate canDefineReadOnly() {
-    // A "must" access that defines all non-local memory appears only on the `InitializeNonLocal`
-    // instruction, which provides the initial definition for all memory outside of the current
-    // function's stack frame. This memory includes string literals and other read-only globals, so
-    // we allow such an access to be the definition for a use of a read-only location.
-    not isMayAccess()
-  }
+  override predicate canDefineReadOnly() { none() }
 }
 
 /**
@@ -340,8 +339,9 @@ class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
 class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
   IRFunction irFunc;
   boolean isMayAccess;
+  boolean canDefineReadOnly;
 
-  AllAliasedMemory() { this = TAllAliasedMemory(irFunc, isMayAccess) }
+  AllAliasedMemory() { this = TAllAliasedMemory(irFunc, isMayAccess, canDefineReadOnly) }
 
   final override string toStringInternal() { result = "{AllAliased}" }
 
@@ -355,14 +355,18 @@ class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
 
   final override string getUniqueId() { result = " " + toString() }
 
-  final override VirtualVariable getVirtualVariable() { result = TAllAliasedMemory(irFunc, false) }
+  final override VirtualVariable getVirtualVariable() {
+    result = TAllAliasedMemory(irFunc, false, true)
+  }
 
   final override predicate isMayAccess() { isMayAccess = true }
+
+  final override predicate canDefineReadOnly() { canDefineReadOnly = true }
 }
 
 /** A virtual variable that groups all escaped memory within a function. */
 class AliasedVirtualVariable extends AllAliasedMemory, VirtualVariable {
-  AliasedVirtualVariable() { not isMayAccess() }
+  AliasedVirtualVariable() { not isMayAccess() and canDefineReadOnly() }
 }
 
 /**
@@ -562,6 +566,9 @@ private Overlap getVariableMemoryLocationOverlap(
       use.getEndBitOffset())
 }
 
+bindingset[result, b]
+private boolean unbindBool(boolean b) { result != b.booleanNot() }
+
 MemoryLocation getResultMemoryLocation(Instruction instr) {
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
@@ -574,7 +581,8 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
           exists(Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
             hasResultMemoryAccess(instr, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
             result =
-              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset,
+                unbindBool(isMayAccess))
           )
         else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
       )
@@ -582,10 +590,13 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
       kind instanceof EntireAllocationMemoryAccess and
       result =
         TEntireAllocationMemoryLocation(getAddressOperandAllocation(instr.getResultAddressOperand()),
-          isMayAccess)
+          unbindBool(isMayAccess))
       or
       kind instanceof EscapedMemoryAccess and
-      result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
+      result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess, false)
+      or
+      kind instanceof EscapedInitializationMemoryAccess and
+      result = TAllAliasedMemory(instr.getEnclosingIRFunction(), false, true)
       or
       kind instanceof NonLocalMemoryAccess and
       result = TAllNonLocalMemory(instr.getEnclosingIRFunction(), isMayAccess)
@@ -616,7 +627,10 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
           isMayAccess)
       or
       kind instanceof EscapedMemoryAccess and
-      result = TAllAliasedMemory(operand.getEnclosingIRFunction(), isMayAccess)
+      result = TAllAliasedMemory(operand.getEnclosingIRFunction(), isMayAccess, false)
+      or
+      kind instanceof EscapedInitializationMemoryAccess and
+      result = TAllAliasedMemory(operand.getEnclosingIRFunction(), false, true)
       or
       kind instanceof NonLocalMemoryAccess and
       result = TAllNonLocalMemory(operand.getEnclosingIRFunction(), isMayAccess)

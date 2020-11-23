@@ -1,0 +1,210 @@
+NativeInt.cs:
+#    3| [Class] Class1
+#    5|   5: [Method] M1
+#    5|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#    5|       0: [Parameter] j
+#    5|         -1: [TypeMention] int
+#    5|       1: [Parameter] k
+#    5|         -1: [TypeMention] uint
+#    6|     4: [BlockStmt] {...}
+#    7|       0: [LocalVariableDeclStmt] ... ...;
+#    7|         0: [LocalVariableDeclAndInitExpr] IntPtr x = ...
+#    7|           -1: [TypeMention] IntPtr
+#    7|           0: [LocalVariableAccess] access to local variable x
+#    7|           1: [CastExpr] (...) ...
+#    7|             1: [ParameterAccess] access to parameter j
+#    8|       1: [LocalVariableDeclStmt] ... ...;
+#    8|         0: [LocalVariableDeclAndInitExpr] IntPtr x0 = ...
+#    8|           -1: [TypeMention] IntPtr
+#    8|           0: [LocalVariableAccess] access to local variable x0
+#    8|           1: [CastExpr] (...) ...
+#    8|             0: [TypeAccess] access to type IntPtr
+#    8|               0: [TypeMention] IntPtr
+#    8|             1: [ParameterAccess] access to parameter j
+#    9|       2: [LocalVariableDeclStmt] ... ...;
+#    9|         0: [LocalVariableDeclAndInitExpr] IntPtr x1 = ...
+#    9|           -1: [TypeMention] IntPtr
+#    9|           0: [LocalVariableAccess] access to local variable x1
+#    9|           1: [CastExpr] (...) ...
+#    9|             0: [TypeAccess] access to type IntPtr
+#    9|               0: [TypeMention] IntPtr
+#    9|             1: [ParameterAccess] access to parameter j
+#   10|       3: [LocalVariableDeclStmt] ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] UIntPtr y = ...
+#   10|           -1: [TypeMention] UIntPtr
+#   10|           0: [LocalVariableAccess] access to local variable y
+#   10|           1: [CastExpr] (...) ...
+#   10|             1: [ParameterAccess] access to parameter k
+#   12|       4: [LocalConstantDeclStmt] const ... ...;
+#   12|         0: [LocalVariableDeclAndInitExpr] IntPtr i = ...
+#   12|           -1: [TypeMention] IntPtr
+#   12|           0: [LocalVariableAccess] access to local variable i
+#   12|           1: [CastExpr] (...) ...
+#   12|             0: [TypeAccess] access to type IntPtr
+#   12|               0: [TypeMention] IntPtr
+#   12|             1: [IntLiteral] 42
+#   15|   6: [Method] M2
+#   15|     -1: [TypeMention] Void
+#   16|     4: [BlockStmt] {...}
+#   17|       0: [LocalVariableDeclStmt] ... ...;
+#   17|         0: [LocalVariableDeclAndInitExpr] IntPtr x = ...
+#   17|           -1: [TypeMention] IntPtr
+#   17|           0: [LocalVariableAccess] access to local variable x
+#   17|           1: [CastExpr] (...) ...
+#   17|             1: [IntLiteral] 3
+#   18|       1: [LocalVariableDeclStmt] ... ...;
+#   18|         0: [LocalVariableDeclAndInitExpr] Int32 y = ...
+#   18|           -1: [TypeMention] int
+#   18|           0: [LocalVariableAccess] access to local variable y
+#   18|           1: [IntLiteral] 3
+#   19|       2: [LocalVariableDeclStmt] ... ...;
+#   19|         0: [LocalVariableDeclAndInitExpr] Int64 v = ...
+#   19|           -1: [TypeMention] long
+#   19|           0: [LocalVariableAccess] access to local variable v
+#   19|           1: [CastExpr] (...) ...
+#   19|             1: [IntLiteral] 10
+#   21|       3: [LocalVariableDeclStmt] ... ...;
+#   21|         0: [LocalVariableDeclAndInitExpr] Type test3 = ...
+#   21|           -1: [TypeMention] Type
+#   21|           0: [LocalVariableAccess] access to local variable test3
+#   21|           1: [TypeofExpr] typeof(...)
+#   21|             0: [TypeAccess] access to type IntPtr
+#   21|               0: [TypeMention] IntPtr
+#   22|       4: [LocalVariableDeclStmt] ... ...;
+#   22|         0: [LocalVariableDeclAndInitExpr] Type test4 = ...
+#   22|           -1: [TypeMention] Type
+#   22|           0: [LocalVariableAccess] access to local variable test4
+#   22|           1: [TypeofExpr] typeof(...)
+#   22|             0: [TypeAccess] access to type UIntPtr
+#   22|               0: [TypeMention] UIntPtr
+#   23|       5: [LocalVariableDeclStmt] ... ...;
+#   23|         0: [LocalVariableDeclAndInitExpr] Type test5 = ...
+#   23|           -1: [TypeMention] Type
+#   23|           0: [LocalVariableAccess] access to local variable test5
+#   23|           1: [MethodCall] call to method GetType
+#   23|             -1: [AddExpr] ... + ...
+#   23|               0: [LocalVariableAccess] access to local variable x
+#   23|               1: [CastExpr] (...) ...
+#   23|                 1: [IntLiteral] 1
+#   24|       6: [LocalVariableDeclStmt] ... ...;
+#   24|         0: [LocalVariableDeclAndInitExpr] Type test6 = ...
+#   24|           -1: [TypeMention] Type
+#   24|           0: [LocalVariableAccess] access to local variable test6
+#   24|           1: [MethodCall] call to method GetType
+#   24|             -1: [AddExpr] ... + ...
+#   24|               0: [LocalVariableAccess] access to local variable x
+#   24|               1: [CastExpr] (...) ...
+#   24|                 1: [LocalVariableAccess] access to local variable y
+#   25|       7: [LocalVariableDeclStmt] ... ...;
+#   25|         0: [LocalVariableDeclAndInitExpr] Type test7 = ...
+#   25|           -1: [TypeMention] Type
+#   25|           0: [LocalVariableAccess] access to local variable test7
+#   25|           1: [MethodCall] call to method GetType
+#   25|             -1: [AddExpr] ... + ...
+#   25|               0: [CastExpr] (...) ...
+#   25|                 1: [LocalVariableAccess] access to local variable x
+#   25|               1: [LocalVariableAccess] access to local variable v
+TypeParameterNullability.cs:
+#    1| [Interface] I1
+#    3| [Class] A2
+#    5|   5: [Method] F1
+#    5|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    5|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    5|       0: [Parameter] t
+#    5|     4: [BlockStmt] {...}
+#    6|   6: [Method] F2
+#    6|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    6|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    6|       0: [Parameter] t
+#    6|         -1: [TypeMention] T?
+#    6|           1: [TypeMention] T
+#    6|     4: [BlockStmt] {...}
+#    7|   7: [Method] F3
+#    7|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    7|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] t
+#    7|     4: [BlockStmt] {...}
+#    8|   8: [Method] F4
+#    8|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    8|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    8|       0: [Parameter] t
+#    8|     4: [BlockStmt] {...}
+#    9|   9: [Method] F5
+#    9|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    9|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] t
+#    9|     4: [BlockStmt] {...}
+#   10|   10: [Method] F6
+#   10|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   10|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   10|       0: [Parameter] t
+#   10|         -1: [TypeMention] T?
+#   10|           1: [TypeMention] T
+#   10|     4: [BlockStmt] {...}
+#   13| [Class] B2
+#-----|   3: (Base types)
+#   13|     0: [TypeMention] A2
+#   15|   5: [Method] F1
+#   15|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   15|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   15|       0: [Parameter] t
+#   15|     4: [BlockStmt] {...}
+#   16|   6: [Method] F2
+#   16|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   16|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   16|       0: [Parameter] t
+#   16|         -1: [TypeMention] T?
+#   16|           1: [TypeMention] T
+#   16|     4: [BlockStmt] {...}
+#   17|   7: [Method] F3
+#   17|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   17|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   17|       0: [Parameter] t
+#   17|     4: [BlockStmt] {...}
+#   18|   8: [Method] F4
+#   18|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   18|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   18|       0: [Parameter] t
+#   18|     4: [BlockStmt] {...}
+#   19|   9: [Method] F6
+#   19|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   19|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] t
+#   19|         -1: [TypeMention] T?
+#   19|           1: [TypeMention] T
+#   19|     4: [BlockStmt] {...}
+#   22| [Class] B3
+#-----|   3: (Base types)
+#   22|     0: [TypeMention] A2
+#   24|   5: [Method] F2
+#   24|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   24|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   24|       0: [Parameter] t
+#   24|         -1: [TypeMention] T?
+#   24|           1: [TypeMention] T
+#   24|     4: [BlockStmt] {...}

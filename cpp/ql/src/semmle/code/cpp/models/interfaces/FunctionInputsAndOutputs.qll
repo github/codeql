@@ -132,6 +132,16 @@ class FunctionInput extends TFunctionInput {
    * part of itself, or one of its other inputs.
    */
   predicate isReturnValueDeref() { none() }
+
+  /**
+   * Holds if `i >= 0` and `isParameterDeref(i)` holds for this is value, or
+   * if `i = -1` and `isQualifierObject()` holds for this value.
+   */
+  final predicate isParameterDerefOrQualifierObject(ParameterIndex i) {
+    i >= 0 and this.isParameterDeref(i)
+    or
+    i = -1 and this.isQualifierObject()
+  }
 }
 
 /**
@@ -370,6 +380,16 @@ class FunctionOutput extends TFunctionOutput {
    * DEPRECATED: Use `isReturnValueDeref()` instead.
    */
   deprecated final predicate isOutReturnPointer() { isReturnValueDeref() }
+
+  /**
+   * Holds if `i >= 0` and `isParameterDeref(i)` holds for this is the value, or
+   * if `i = -1` and `isQualifierObject()` holds for this value.
+   */
+  final predicate isParameterDerefOrQualifierObject(ParameterIndex i) {
+    i >= 0 and this.isParameterDeref(i)
+    or
+    i = -1 and this.isQualifierObject()
+  }
 }
 
 /**

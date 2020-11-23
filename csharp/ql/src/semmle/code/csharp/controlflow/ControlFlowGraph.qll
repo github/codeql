@@ -708,6 +708,14 @@ module ControlFlow {
         cfe = any(ConditionallyQualifiedExpr cqe | result = first(getExprChildElement(cqe, 0)))
         or
         cfe =
+          any(ObjectCreation oc |
+            result = first(getObjectCreationArgument(oc, 0))
+            or
+            not exists(getObjectCreationArgument(oc, 0)) and
+            result = oc
+          )
+        or
+        cfe =
           any(ArrayCreation ac |
             // First element of first length argument
             result = first(ac.getLengthArgument(0))
@@ -732,7 +740,7 @@ module ControlFlow {
         result = first(getExprChildElement(cfe, getFirstChildElement(cfe)))
       }
 
-      private class PreOrderElement extends ControlFlowElement {
+      private class PreOrderElement extends Stmt {
         PreOrderElement() {
           this instanceof StandardStmt
           or
@@ -747,6 +755,19 @@ module ControlFlow {
           this instanceof SpecificCatchClause
           or
           this instanceof LoopStmt and not this instanceof ForeachStmt
+        }
+      }
+
+      private Expr getObjectCreationArgument(ObjectCreation oc, int i) {
+        i >= 0 and
+        if oc.hasInitializer()
+        then result = getExprChildElement(oc, i + 1)
+        else result = getExprChildElement(oc, i)
+      }
+
+      private class PostOrderElement extends ControlFlowElement {
+        PostOrderElement() {
+          this instanceof StandardExpr
           or
           this instanceof LogicalNotExpr
           or
@@ -761,29 +782,32 @@ module ControlFlow {
           this instanceof SwitchExpr
           or
           this instanceof SwitchCaseExpr
-        }
-      }
-
-      private Expr getObjectCreationArgument(ObjectCreation oc, int i) {
-        i >= 0 and
-        if oc.hasInitializer()
-        then result = getExprChildElement(oc, i + 1)
-        else result = getExprChildElement(oc, i)
-      }
-
-      private class PostOrderElement extends ControlFlowElement {
-        PostOrderElement() {
-          this instanceof StandardExpr or
-          this instanceof JumpStmt or
-          this instanceof ThrowExpr or
-          this instanceof ObjectCreation
+          or
+          this instanceof JumpStmt
+          or
+          this instanceof ThrowExpr
         }
 
         ControlFlowElement getFirstChild() {
-          result = this.(StandardExpr).getFirstChildElement() or
-          result = this.(JumpStmt).getChild(0) or
-          result = this.(ThrowExpr).getExpr() or
-          result = getObjectCreationArgument(this, 0)
+          result = this.(StandardExpr).getFirstChildElement()
+          or
+          result = this.(LogicalNotExpr).getOperand()
+          or
+          result = this.(LogicalAndExpr).getLeftOperand()
+          or
+          result = this.(LogicalOrExpr).getLeftOperand()
+          or
+          result = this.(NullCoalescingExpr).getLeftOperand()
+          or
+          result = this.(ConditionalExpr).getCondition()
+          or
+          result = this.(SwitchExpr).getExpr()
+          or
+          result = this.(SwitchCaseExpr).getPattern()
+          or
+          result = this.(JumpStmt).getChild(0)
+          or
+          result = this.(ThrowExpr).getExpr()
         }
       }
 
@@ -804,8 +828,6 @@ module ControlFlow {
         TLastRecAnyCompletion() or
         TLastRecNormalCompletion() or
         TLastRecAbnormalCompletion() or
-        TLastRecBooleanNegationCompletion() or
-        TLastRecNonBooleanCompletion() or
         TLastRecBreakCompletion() or
         TLastRecSwitchAbnormalCompletion() or
         TLastRecInvalidOperationException() or
@@ -842,7 +864,7 @@ module ControlFlow {
           )
         or
         // Post-order: element itself
-        cfe instanceof StandardExpr and
+        cfe instanceof PostOrderElement and
         result = cfe and
         c = getValidSelfCompletion(result)
         or
@@ -850,72 +872,25 @@ module ControlFlow {
         result = cfe.(StandardElement).getChildElement(_) and
         c = TRec(TLastRecAbnormalCompletion())
         or
-        cfe =
-          any(LogicalNotExpr lne |
-            // Operand exits with a Boolean completion
-            result = lne.getOperand() and
-            c = TRec(TLastRecBooleanNegationCompletion())
-            or
-            // Operand exits with a non-Boolean completion
-            result = lne.getOperand() and
-            c = TRec(TLastRecNonBooleanCompletion())
-          )
+        // Operand exits abnormally
+        result = cfe.(LogicalNotExpr).getOperand() and
+        c = TRec(TLastRecAbnormalCompletion())
         or
-        cfe =
-          any(LogicalAndExpr lae |
-            // Left operand exits with a false completion
-            result = lae.getLeftOperand() and
-            c = specificBoolean(false)
-            or
-            // Left operand exits abnormally
-            result = lae.getLeftOperand() and
-            c = TRec(TLastRecAbnormalCompletion())
-            or
-            // Right operand exits with any completion
-            result = lae.getRightOperand() and
-            c = TRec(TLastRecAnyCompletion())
-          )
+        // An operand exits abnormally
+        result = cfe.(LogicalAndExpr).getAnOperand() and
+        c = TRec(TLastRecAbnormalCompletion())
         or
-        cfe =
-          any(LogicalOrExpr loe |
-            // Left operand exits with a true completion
-            result = loe.getLeftOperand() and
-            c = specificBoolean(true)
-            or
-            // Left operand exits abnormally
-            result = loe.getLeftOperand() and
-            c = TRec(TLastRecAbnormalCompletion())
-            or
-            // Right operand exits with any completion
-            result = loe.getRightOperand() and
-            c = TRec(TLastRecAnyCompletion())
-          )
+        // An operand exits abnormally
+        result = cfe.(LogicalOrExpr).getAnOperand() and
+        c = TRec(TLastRecAbnormalCompletion())
         or
-        cfe =
-          any(NullCoalescingExpr nce |
-            // Left operand exits with any non-`null` completion
-            result = nce.getLeftOperand() and
-            c = TRec(TLastRecSpecificNegCompletion(any(NullnessCompletion nc | nc.isNull())))
-            or
-            // Right operand exits with any completion
-            result = nce.getRightOperand() and
-            c = TRec(TLastRecAnyCompletion())
-          )
+        // An operand exits abnormally
+        result = cfe.(NullCoalescingExpr).getAnOperand() and
+        c = TRec(TLastRecAbnormalCompletion())
         or
-        cfe =
-          any(ConditionalExpr ce |
-            // Condition exits abnormally
-            result = ce.getCondition() and
-            c = TRec(TLastRecAbnormalCompletion())
-            or
-            // Then branch exits with any completion
-            result = ce.getThen() and
-            c = TRec(TLastRecAnyCompletion())
-            or
-            // Else branch exits with any completion
-            result = ce.getElse() and
-            c = TRec(TLastRecAnyCompletion())
-          )
+        // An operand exits abnormally
+        result = cfe.(ConditionalExpr).getAnOperand() and
+        c = TRec(TLastRecAbnormalCompletion())
         or
         cfe =
           any(AssignOperation ao |
@@ -934,16 +909,9 @@ module ControlFlow {
             c = TRec(TLastRecSpecificCompletion(any(NullnessCompletion nc | nc.isNull())))
           )
         or
-        cfe =
-          any(ThrowExpr te |
-            // Post-order: element itself
-            result = te and
-            c = getValidSelfCompletion(result)
-            or
-            // Expression being thrown exits abnormally
-            result = te.getExpr() and
-            c = TRec(TLastRecAbnormalCompletion())
-          )
+        // Expression being thrown exits abnormally
+        result = cfe.(ThrowExpr).getExpr() and
+        c = TRec(TLastRecAbnormalCompletion())
         or
         cfe =
           any(ObjectCreation oc |
@@ -991,22 +959,22 @@ module ControlFlow {
         or
         cfe =
           any(Switch s |
-            // Switch expression exits normally and there are no cases
-            result = s.getExpr() and
-            not exists(s.getACase()) and
-            c = TRec(TLastRecNormalCompletion())
-            or
             // Switch expression exits abnormally
             result = s.getExpr() and
             c = TRec(TLastRecAbnormalCompletion())
             or
-            // Case condition exits abnormally
-            result = s.getACase().getCondition() and
-            c = TRec(TLastRecAbnormalCompletion())
+            // A case exits abnormally
+            result = s.getACase() and
+            c = TRec(TLastRecSwitchAbnormalCompletion())
           )
         or
         cfe =
           any(SwitchStmt ss |
+            // Switch expression exits normally and there are no cases
+            result = ss.getExpr() and
+            not exists(ss.getACase()) and
+            c = TRec(TLastRecNormalCompletion())
+            or
             // A statement exits with a `break` completion
             result = ss.getStmt(_) and
             c = TRec(TLastRecBreakCompletion())
@@ -1030,10 +998,6 @@ module ControlFlow {
         or
         cfe =
           any(SwitchExpr se |
-            // A matching case exists with any completion
-            result = se.getACase().getBody() and
-            c = TRec(TLastRecAnyCompletion())
-            or
             // Last case exists with a non-match
             exists(SwitchCaseExpr sce, int i |
               sce = se.getCase(i) and
@@ -1048,13 +1012,16 @@ module ControlFlow {
         or
         cfe =
           any(Case case |
+            // Condition, pattern, or body exists abnormally
+            result in [case.getCondition(), case.getPattern(), case.getBody()] and
+            c = TRec(TLastRecAbnormalCompletion())
+          )
+        or
+        cfe =
+          any(CaseStmt case |
             // Condition exists with a `false` completion
             result = case.getCondition() and
             c = specificBoolean(false)
-            or
-            // Condition exists abnormally
-            result = case.getCondition() and
-            c = TRec(TLastRecAbnormalCompletion())
             or
             // Case pattern exits with a non-match
             result = case.getPattern() and
@@ -1210,27 +1177,6 @@ module ControlFlow {
           not c0 instanceof NormalCompletion and
           c = c0
           or
-          rec = TLastRecBooleanNegationCompletion() and
-          (
-            c =
-              any(NestedCompletion nc |
-                nc.getInnerCompletion() = c0 and
-                nc.getOuterCompletion().(BooleanCompletion).getValue() =
-                  c0.(BooleanCompletion).getValue().booleanNot()
-              )
-            or
-            c =
-              any(BooleanCompletion bc |
-                bc.getValue() =
-                  c0.(NestedCompletion).getInnerCompletion().(BooleanCompletion).getValue() and
-                not bc instanceof NestedCompletion
-              )
-          )
-          or
-          rec = TLastRecNonBooleanCompletion() and
-          not c0 instanceof BooleanCompletion and
-          c = c0
-          or
           rec = TLastRecBreakCompletion() and
           c0 instanceof BreakCompletion and
           c instanceof BreakNormalCompletion
@@ -1312,10 +1258,17 @@ module ControlFlow {
             or
             // If the `finally` block completes normally, it inherits any non-normal
             // completion that was current before the `finally` block was entered
-            c =
-              any(NestedCompletion nc |
-                result = lastTryStmtFinally(ts, nc.getInnerCompletion(), nc.getOuterCompletion())
-              )
+            exists(NormalCompletion finally, Completion outer |
+              result = lastTryStmtFinally(ts, finally, outer)
+            |
+              c =
+                any(NestedCompletion nc |
+                  nc.getInnerCompletion() = finally and nc.getOuterCompletion() = outer
+                )
+              or
+              not finally instanceof ConditionalCompletion and
+              c = outer
+            )
           )
       }
 
@@ -1441,55 +1394,68 @@ module ControlFlow {
           result = first(parent.getChildElement(i + 1))
         )
         or
-        cfe =
+        // Post-order: flow from last element of operand to element itself
+        result =
           any(LogicalNotExpr lne |
-            // Pre-order: flow from expression itself to first element of operand
-            result = first(lne.getOperand()) and
+            cfe = last(lne.getOperand(), c.(BooleanCompletion).getDual())
+            or
+            cfe = last(lne.getOperand(), c) and
             c instanceof SimpleCompletion
           )
         or
         exists(LogicalAndExpr lae |
-          // Pre-order: flow from expression itself to first element of left operand
-          lae = cfe and
-          result = first(lae.getLeftOperand()) and
-          c instanceof SimpleCompletion
-          or
           // Flow from last element of left operand to first element of right operand
           cfe = last(lae.getLeftOperand(), c) and
           c instanceof TrueCompletion and
           result = first(lae.getRightOperand())
+          or
+          // Post-order: flow from last element of left operand to element itself
+          cfe = last(lae.getLeftOperand(), c) and
+          c instanceof FalseCompletion and
+          result = lae
+          or
+          // Post-order: flow from last element of right operand to element itself
+          cfe = last(lae.getRightOperand(), c) and
+          c instanceof NormalCompletion and
+          result = lae
         )
         or
         exists(LogicalOrExpr loe |
-          // Pre-order: flow from expression itself to first element of left operand
-          loe = cfe and
-          result = first(loe.getLeftOperand()) and
-          c instanceof SimpleCompletion
-          or
           // Flow from last element of left operand to first element of right operand
           cfe = last(loe.getLeftOperand(), c) and
           c instanceof FalseCompletion and
           result = first(loe.getRightOperand())
+          or
+          // Post-order: flow from last element of left operand to element itself
+          cfe = last(loe.getLeftOperand(), c) and
+          c instanceof TrueCompletion and
+          result = loe
+          or
+          // Post-order: flow from last element of right operand to element itself
+          cfe = last(loe.getRightOperand(), c) and
+          c instanceof NormalCompletion and
+          result = loe
         )
         or
         exists(NullCoalescingExpr nce |
-          // Pre-order: flow from expression itself to first element of left operand
-          nce = cfe and
-          result = first(nce.getLeftOperand()) and
-          c instanceof SimpleCompletion
-          or
           // Flow from last element of left operand to first element of right operand
           cfe = last(nce.getLeftOperand(), c) and
           c.(NullnessCompletion).isNull() and
           result = first(nce.getRightOperand())
+          or
+          // Post-order: flow from last element of left operand to element itself
+          cfe = last(nce.getLeftOperand(), c) and
+          result = nce and
+          c instanceof NormalCompletion and
+          not c.(NullnessCompletion).isNull()
+          or
+          // Post-order: flow from last element of right operand to element itself
+          cfe = last(nce.getRightOperand(), c) and
+          c instanceof NormalCompletion and
+          result = nce
         )
         or
         exists(ConditionalExpr ce |
-          // Pre-order: flow from expression itself to first element of condition
-          ce = cfe and
-          result = first(ce.getCondition()) and
-          c instanceof SimpleCompletion
-          or
           // Flow from last element of condition to first element of then branch
           cfe = last(ce.getCondition(), c) and
           c instanceof TrueCompletion and
@@ -1499,6 +1465,11 @@ module ControlFlow {
           cfe = last(ce.getCondition(), c) and
           c instanceof FalseCompletion and
           result = first(ce.getElse())
+          or
+          // Post-order: flow from last element of a branch to element itself
+          cfe = last([ce.getThen(), ce.getElse()], c) and
+          c instanceof NormalCompletion and
+          result = ce
         )
         or
         exists(ConditionallyQualifiedExpr parent, int i |
@@ -1574,11 +1545,6 @@ module ControlFlow {
         )
         or
         exists(Switch s |
-          // Pre-order: flow from statement itself to first switch expression
-          cfe = s and
-          result = first(s.getExpr()) and
-          c instanceof SimpleCompletion
-          or
           // Flow from last element of switch expression to first element of first case
           cfe = last(s.getExpr(), c) and
           c instanceof NormalCompletion and
@@ -1600,6 +1566,11 @@ module ControlFlow {
         )
         or
         exists(SwitchStmt ss |
+          // Pre-order: flow from statement itself to first switch expression
+          cfe = ss and
+          result = first(ss.getExpr()) and
+          c instanceof SimpleCompletion
+          or
           // Flow from last element of non-`case` statement `i` to first element of statement `i+1`
           exists(int i | cfe = last(ss.getStmt(i), c) |
             not ss.getStmt(i) instanceof CaseStmt and
@@ -1614,12 +1585,11 @@ module ControlFlow {
           )
         )
         or
+        // Post-order: flow from last element of a case to element itself
+        cfe = last(result.(SwitchExpr).getACase(), c) and
+        c instanceof NormalCompletion
+        or
         exists(Case case |
-          // Pre-order: flow from case itself to first element of pattern
-          cfe = case and
-          result = first(case.getPattern()) and
-          c instanceof SimpleCompletion
-          or
           cfe = last(case.getPattern(), c) and
           c.(MatchingCompletion).isMatch() and
           (
@@ -1637,6 +1607,14 @@ module ControlFlow {
           c instanceof TrueCompletion and
           result = first(case.getBody())
         )
+        or
+        // Pre-order: flow from case itself to first element of pattern
+        result = first(cfe.(CaseStmt).getPattern()) and
+        c instanceof SimpleCompletion
+        or
+        // Post-order: flow from last element of a case body to element itself
+        cfe = last(result.(SwitchCaseExpr).getBody(), c) and
+        c instanceof NormalCompletion
         or
         // Pre-order: flow from statement itself to first element of statement
         cfe =
