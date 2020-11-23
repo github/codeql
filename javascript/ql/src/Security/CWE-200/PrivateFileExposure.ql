@@ -83,7 +83,7 @@ DataFlow::Node getALeakingFolder(string description) {
   description = "the folder " + result.getFile().getParentContainer().getRelativePath()
   or
   result = DataFlow::moduleImport("os").getAMemberCall("homedir") and
-  description = "the home folder "
+  description = "the home folder"
   or
   result.mayHaveStringValue("/") and
   description = "the root folder"
