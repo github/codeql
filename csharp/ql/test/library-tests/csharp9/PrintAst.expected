@@ -105,3 +105,106 @@ NativeInt.cs:
 #   25|               0: [CastExpr] (...) ...
 #   25|                 1: [LocalVariableAccess] access to local variable x
 #   25|               1: [LocalVariableAccess] access to local variable v
+TypeParameterNullability.cs:
+#    1| [Interface] I1
+#    3| [Class] A2
+#    5|   5: [Method] F1
+#    5|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    5|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    5|       0: [Parameter] t
+#    5|     4: [BlockStmt] {...}
+#    6|   6: [Method] F2
+#    6|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    6|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    6|       0: [Parameter] t
+#    6|         -1: [TypeMention] T?
+#    6|           1: [TypeMention] T
+#    6|     4: [BlockStmt] {...}
+#    7|   7: [Method] F3
+#    7|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    7|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] t
+#    7|     4: [BlockStmt] {...}
+#    8|   8: [Method] F4
+#    8|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    8|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    8|       0: [Parameter] t
+#    8|     4: [BlockStmt] {...}
+#    9|   9: [Method] F5
+#    9|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    9|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] t
+#    9|     4: [BlockStmt] {...}
+#   10|   10: [Method] F6
+#   10|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   10|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   10|       0: [Parameter] t
+#   10|         -1: [TypeMention] T?
+#   10|           1: [TypeMention] T
+#   10|     4: [BlockStmt] {...}
+#   13| [Class] B2
+#-----|   3: (Base types)
+#   13|     0: [TypeMention] A2
+#   15|   5: [Method] F1
+#   15|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   15|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   15|       0: [Parameter] t
+#   15|     4: [BlockStmt] {...}
+#   16|   6: [Method] F2
+#   16|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   16|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   16|       0: [Parameter] t
+#   16|         -1: [TypeMention] T?
+#   16|           1: [TypeMention] T
+#   16|     4: [BlockStmt] {...}
+#   17|   7: [Method] F3
+#   17|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   17|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   17|       0: [Parameter] t
+#   17|     4: [BlockStmt] {...}
+#   18|   8: [Method] F4
+#   18|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   18|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   18|       0: [Parameter] t
+#   18|     4: [BlockStmt] {...}
+#   19|   9: [Method] F6
+#   19|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   19|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] t
+#   19|         -1: [TypeMention] T?
+#   19|           1: [TypeMention] T
+#   19|     4: [BlockStmt] {...}
+#   22| [Class] B3
+#-----|   3: (Base types)
+#   22|     0: [TypeMention] A2
+#   24|   5: [Method] F2
+#   24|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#   24|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   24|       0: [Parameter] t
+#   24|         -1: [TypeMention] T?
+#   24|           1: [TypeMention] T
+#   24|     4: [BlockStmt] {...}
