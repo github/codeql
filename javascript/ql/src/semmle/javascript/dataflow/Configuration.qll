@@ -1281,6 +1281,7 @@ private predicate summarizedHigherOrderCall(
     DataFlow::Node innerArg, DataFlow::SourceNode cbParm, PathSummary oldSummary
   |
     reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
+    not arg = DataFlow::capturedVariableNode(_) and // Only track actual parameter flow
     argumentPassing(outer, cb, f, cbParm) and
     innerArg = inner.getArgument(j)
   |

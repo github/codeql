@@ -1,0 +1,23 @@
+/**
+ * @name Prototype-polluting assignment
+ * @description Modifying an object obtained via a user-controlled property name may
+ *              lead to accidental modification of the built-in Object.prototype,
+ *              and possibly escalate to remote code execution or cross-site scripting.
+ * @kind path-problem
+ * @problem.severity warning
+ * @precision high
+ * @id js/prototype-polluting-assignment
+ * @tags security
+ *       external/cwe/cwe-250
+ *       external/cwe/cwe-471
+ */
+
+import javascript
+import semmle.javascript.security.dataflow.PrototypePollutingAssignment::PrototypePollutingAssignment
+import DataFlow::PathGraph
+
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink, source, sink,
+  "This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@.",
+  source.getNode(), "here"
