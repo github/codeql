@@ -1,0 +1,3 @@
+ERROR: Could not resolve predicate getArgument/1 (/Users/asger/git/code/ql/javascript/ql/src/semmle/javascript/frameworks/NoSQL.qll:716,60-71)
+ERROR: Could not resolve predicate getParameter/1 (/Users/asger/git/code/ql/javascript/ql/src/semmle/javascript/frameworks/NoSQL.qll:719,40-52)
+ERROR: Could not resolve type API::MethodCallNode (/Users/asger/git/code/ql/javascript/ql/src/semmle/javascript/frameworks/NoSQL.qll:705,51-70)
