@@ -11,7 +11,9 @@ class AstNode extends @ast_node {
 
   Location getLocation() { none() }
 
-  AstNode getParent() { this = result.getAFieldOrChild() }
+  AstNode getParent() {
+    result = unique(AstNode parent | this = parent.getAFieldOrChild() | parent)
+  }
 
   AstNode getAFieldOrChild() { none() }
 

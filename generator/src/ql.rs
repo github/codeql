@@ -97,6 +97,12 @@ pub enum Expression<'a> {
     Or(Vec<Expression<'a>>),
     Equals(Box<Expression<'a>>, Box<Expression<'a>>),
     Dot(Box<Expression<'a>>, &'a str, Vec<Expression<'a>>),
+    Aggregate(
+        &'a str,
+        Vec<FormalParameter<'a>>,
+        Box<Expression<'a>>,
+        Box<Expression<'a>>,
+    ),
 }
 
 impl<'a> fmt::Display for Expression<'a> {
@@ -136,6 +142,20 @@ impl<'a> fmt::Display for Expression<'a> {
                     }
                     write!(f, "{}", arg)?;
                 }
+                write!(f, ")")
+            }
+            Expression::Aggregate(n, vars, range, term) => {
+                write!(f, "{}(", n)?;
+                for (index, var) in vars.iter().enumerate() {
+                    if index > 0 {
+                        write!(f, ", ")?;
+                    }
+                    write!(f, "{}", var)?;
+                }
+                write!(f, " | ")?;
+                write!(f, "{}", range)?;
+                write!(f, " | ")?;
+                write!(f, "{}", term)?;
                 write!(f, ")")
             }
         }
