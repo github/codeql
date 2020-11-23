@@ -3,14 +3,16 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
-/** Pure string functions. */
-private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
+/**
+ * Pure string functions.
+ *
+ * INTERNAL: do not use.
+ */
+class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
   PureStrFunction() {
-    hasGlobalOrStdName([
-        "atof", "atoi", "atol", "atoll", "strcasestr", "strchnul", "strchr", "strchrnul", "strstr",
-        "strpbrk", "strcmp", "strcspn", "strncmp", "strrchr", "strspn", "strtod", "strtof",
-        "strtol", "strtoll", "strtoq", "strtoul"
-      ])
+    hasGlobalOrStdName(["atof", "atoi", "atol", "atoll", "strcasestr", "strchnul", "strchr",
+          "strchrnul", "strstr", "strpbrk", "strcmp", "strcspn", "strncmp", "strrchr", "strspn",
+          "strtod", "strtof", "strtol", "strtoll", "strtoq", "strtoul"])
   }
 
   override predicate hasArrayInput(int bufParam) {
@@ -59,8 +61,12 @@ private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunctio
   }
 }
 
-/** String standard `strlen` function, and related functions for computing string lengths. */
-private class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
+/**
+ * String standard `strlen` function, and related functions for computing string lengths.
+ *
+ * INTERNAL: do not use.
+ */
+class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   StrLenFunction() {
     hasGlobalOrStdName(["strlen", "strnlen", "wcslen"])
     or
@@ -110,7 +116,11 @@ private class PureFunction extends TaintFunction, SideEffectFunction {
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 }
 
-/** Pure raw-memory functions. */
+/**
+ * Pure raw-memory functions.
+ *
+ * INTERNAL: do not use.
+ */
 class PureMemFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
   PureMemFunction() { hasGlobalOrStdName(["memchr", "memrchr", "rawmemchr", "memcmp", "memmem"]) }
 
