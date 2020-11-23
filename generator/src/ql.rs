@@ -152,11 +152,7 @@ impl<'a> fmt::Display for Expression<'a> {
                     }
                     write!(f, "{}", var)?;
                 }
-                write!(f, " | ")?;
-                write!(f, "{}", range)?;
-                write!(f, " | ")?;
-                write!(f, "{}", term)?;
-                write!(f, ")")
+                write!(f, " | {} | {})", range, term)
             }
         }
     }
