@@ -673,7 +673,13 @@ private module Minimongo {
 
     QueryCall() {
       exists(string m |
-        this = API::moduleImport("minimongo").getAMember().getReturn().getAMember().getMember(m).getACall() and
+        this =
+          API::moduleImport("minimongo")
+              .getAMember()
+              .getReturn()
+              .getAMember()
+              .getMember(m)
+              .getACall() and
         CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )
     }
@@ -707,7 +713,8 @@ private module MarsDB {
 
     QueryCall() {
       exists(string m |
-        this = API::moduleImport("marsdb").getMember("Collection").getInstance().getMember(m).getACall() and
+        this =
+          API::moduleImport("marsdb").getMember("Collection").getInstance().getMember(m).getACall() and
         // implements parts of the Minimongo interface
         Minimongo::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )

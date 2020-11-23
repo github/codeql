@@ -822,7 +822,10 @@ module API {
   class InvokeNode extends DataFlow::InvokeNode {
     API::Node callee;
 
-    InvokeNode() { this = callee.getReturn().getAnImmediateUse() or this = callee.getInstance().getAnImmediateUse() }
+    InvokeNode() {
+      this = callee.getReturn().getAnImmediateUse() or
+      this = callee.getInstance().getAnImmediateUse()
+    }
 
     /** Gets the API node for the `i`th parameter of this invocation. */
     Node getParameter(int i) {
@@ -844,12 +847,10 @@ module API {
   }
 
   /** A call connected to the API graph. */
-  class CallNode extends InvokeNode, DataFlow::CallNode {
-  }
+  class CallNode extends InvokeNode, DataFlow::CallNode { }
 
   /** A `new` call connected to the API graph. */
-  class NewNode extends InvokeNode, DataFlow::NewNode {
-  }
+  class NewNode extends InvokeNode, DataFlow::NewNode { }
 }
 
 private module Label {
