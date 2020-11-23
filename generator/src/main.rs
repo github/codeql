@@ -136,7 +136,7 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
         })
         .collect();
     ast_node_members.insert("token");
-
+    ast_node_members.insert("file");
     for (_, node) in nodes {
         match &node.kind {
             node_types::EntryKind::Union { members: n_members } => {
@@ -155,13 +155,22 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
                 // It's a product type, defined by a table.
                 let mut main_table = dbscheme::Table {
                     name: &name,
-                    columns: vec![dbscheme::Column {
-                        db_type: dbscheme::DbColumnType::Int,
-                        name: "id",
-                        unique: true,
-                        ql_type: ql::Type::AtType(&node.dbscheme_name),
-                        ql_type_is_ref: false,
-                    }],
+                    columns: vec![
+                        dbscheme::Column {
+                            db_type: dbscheme::DbColumnType::Int,
+                            name: "id",
+                            unique: true,
+                            ql_type: ql::Type::AtType(&node.dbscheme_name),
+                            ql_type_is_ref: false,
+                        },
+                        dbscheme::Column {
+                            db_type: dbscheme::DbColumnType::Int,
+                            name: "parent",
+                            unique: false,
+                            ql_type: ql::Type::AtType("ast_node_parent"),
+                            ql_type_is_ref: true,
+                        },
+                    ],
                     keysets: None,
                 };
                 ast_node_members.insert(&node.dbscheme_name);
@@ -227,6 +236,11 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
         members: ast_node_members,
     }));
 
+    // Create the ast_node_parent union.
+    entries.push(dbscheme::Entry::Union(dbscheme::Union {
+        name: "ast_node_parent",
+        members: ["ast_node", "file"].iter().cloned().collect(),
+    }));
     entries
 }
 
@@ -243,6 +257,13 @@ fn create_tokeninfo<'a>(
                 unique: true,
                 ql_type: ql::Type::AtType("token"),
                 ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                db_type: dbscheme::DbColumnType::Int,
+                name: "parent",
+                unique: false,
+                ql_type: ql::Type::AtType("ast_node_parent"),
+                ql_type_is_ref: true,
             },
             dbscheme::Column {
                 unique: false,
