@@ -13,24 +13,36 @@ private VariableScope enclosingScope(AstNode node) {
   result.getScopeElement() = parent*(node.getParent())
 }
 
+private string parameterName(AstNode node) {
+  result = node.(Identifier).getValue() or
+  result = node.(SplatParameter).getName().getValue() or
+  result = node.(HashSplatParameter).getName().getValue() or
+  result = node.(BlockParameter).getName().getValue() or
+  result = node.(OptionalParameter).getName().getValue() or
+  result = node.(KeywordParameter).getName().getValue() or
+  result = parameterName(node.(DestructuredParameter).getAFieldOrChild())
+}
+
 /** Holds if `scope` defines `name` as a parameter. */
 private predicate scopeDefinesParameter(VariableScope scope, string name, Location location) {
-  exists(Identifier var |
-    name = var.getValue() and
-    location = var.getLocation() and
-    var in [scope
-              .(BlockScope)
-              .getScopeElement()
-              .getAFieldOrChild()
-              .(BlockParameters)
-              .getAFieldOrChild+(),
-          scope
-              .(MethodScope)
-              .getScopeElement()
-              .getAFieldOrChild()
-              .(MethodParameters)
-              .getAFieldOrChild+()]
-  )
+  location =
+    min(AstNode var |
+      name = parameterName(var) and
+      var in [scope
+                .(BlockScope)
+                .getScopeElement()
+                .getAFieldOrChild()
+                .(BlockParameters)
+                .getAFieldOrChild(),
+            scope
+                .(MethodScope)
+                .getScopeElement()
+                .getAFieldOrChild()
+                .(MethodParameters)
+                .getAFieldOrChild()]
+    |
+      var.getLocation() as loc order by loc.getStartLine(), loc.getStartColumn()
+    )
 }
 
 /** Holds if `var` is assigned in `scope`. */
