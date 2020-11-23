@@ -52,11 +52,22 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         return_type: Some(ql::Type::Normal("AstNode")),
         formal_parameters: vec![],
         body: ql::Expression::Equals(
-            Box::new(ql::Expression::Var("this")),
-            Box::new(ql::Expression::Dot(
-                Box::new(ql::Expression::Var("result")),
-                "getAFieldOrChild",
-                vec![],
+            Box::new(ql::Expression::Var("result")),
+            Box::new(ql::Expression::Aggregate(
+                "unique",
+                vec![ql::FormalParameter {
+                    name: "parent",
+                    param_type: ql::Type::Normal("AstNode"),
+                }],
+                Box::new(ql::Expression::Equals(
+                    Box::new(ql::Expression::Var("this")),
+                    Box::new(ql::Expression::Dot(
+                        Box::new(ql::Expression::Var("parent")),
+                        "getAFieldOrChild",
+                        vec![],
+                    )),
+                )),
+                Box::new(ql::Expression::Var("parent")),
             )),
         ),
     };
