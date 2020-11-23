@@ -1,0 +1,35 @@
+variable
+| nested_scopes.rb:5:3:5:3 | a |
+| nested_scopes.rb:7:5:7:5 | a |
+| nested_scopes.rb:9:7:9:7 | a |
+| nested_scopes.rb:11:9:11:9 | a |
+| nested_scopes.rb:13:11:13:11 | a |
+| nested_scopes.rb:15:23:15:23 | a |
+| nested_scopes.rb:16:26:16:26 | x |
+| nested_scopes.rb:16:29:16:29 | a |
+| nested_scopes.rb:18:26:18:26 | x |
+| nested_scopes.rb:22:21:22:21 | a |
+| nested_scopes.rb:31:11:31:11 | a |
+| nested_scopes.rb:40:1:40:1 | d |
+| scopes.rb:2:14:2:14 | x |
+| scopes.rb:4:4:4:4 | a |
+| scopes.rb:7:1:7:1 | a |
+| scopes.rb:9:14:9:14 | x |
+parameter
+| nested_scopes.rb:15:23:15:23 | a |
+| nested_scopes.rb:16:26:16:26 | x |
+| nested_scopes.rb:16:29:16:29 | a |
+| nested_scopes.rb:18:26:18:26 | x |
+| nested_scopes.rb:22:21:22:21 | a |
+| scopes.rb:2:14:2:14 | x |
+| scopes.rb:9:14:9:14 | x |
+localVariable
+| nested_scopes.rb:5:3:5:3 | a |
+| nested_scopes.rb:7:5:7:5 | a |
+| nested_scopes.rb:9:7:9:7 | a |
+| nested_scopes.rb:11:9:11:9 | a |
+| nested_scopes.rb:13:11:13:11 | a |
+| nested_scopes.rb:31:11:31:11 | a |
+| nested_scopes.rb:40:1:40:1 | d |
+| scopes.rb:4:4:4:4 | a |
+| scopes.rb:7:1:7:1 | a |

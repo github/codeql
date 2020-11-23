@@ -11,6 +11,8 @@ class AstNode extends @ast_node {
 
   Location getLocation() { none() }
 
+  AstNode getParent() { this = result.getAFieldOrChild() }
+
   AstNode getAFieldOrChild() { none() }
 
   string describeQlClass() { result = "???" }
