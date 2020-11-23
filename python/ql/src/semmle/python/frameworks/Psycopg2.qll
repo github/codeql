@@ -17,7 +17,7 @@ private import PEP249
  * - https://www.psycopg.org/docs/
  * - https://pypi.org/project/psycopg2/
  */
-module Psycopg {
+module Psycopg2 {
   // ---------------------------------------------------------------------------
   // Psycopg
   // ---------------------------------------------------------------------------
@@ -33,7 +33,7 @@ module Psycopg {
   DataFlow::Node psycopg2() { result = psycopg2(DataFlow::TypeTracker::end()) }
 
   /** psycopg2 implements PEP 249, providing ways to execute SQL statements against a database. */
-  class Psycopg extends PEP249Module {
-    Psycopg() { this = psycopg2() }
+  class Psycopg2 extends PEP249Module {
+    Psycopg2() { this = psycopg2() }
   }
 }
