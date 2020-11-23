@@ -6,7 +6,7 @@
 | test_string_const_compare.py:35 | fail | test_eq_with_or | ts |
 | test_string_const_compare.py:37 | ok   | test_eq_with_or | ts |
 | test_string_const_compare.py:43 | ok   | test_non_eq1 | ts |
-| test_string_const_compare.py:45 | fail | test_non_eq1 | ts |
+| test_string_const_compare.py:45 | ok   | test_non_eq1 | ts |
 | test_string_const_compare.py:51 | ok   | test_non_eq2 | ts |
 | test_string_const_compare.py:53 | fail | test_non_eq2 | ts |
 | test_string_const_compare.py:59 | fail | test_in_list | ts |

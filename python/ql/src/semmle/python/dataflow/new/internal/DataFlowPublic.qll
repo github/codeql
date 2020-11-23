@@ -360,17 +360,22 @@ module BarrierGuard {
   /** A validation of unknown node by comparing with a constant string value. */
   class StringConstCompare extends BarrierGuard, CompareNode {
     ControlFlowNode checked_node;
+    boolean safe_branch;
 
     StringConstCompare() {
-      exists(StrConst str_const |
-        this.operands(str_const.getAFlowNode(), any(Eq eq), checked_node)
+      exists(StrConst str_const, Cmpop op |
+        op = any(Eq eq) and safe_branch = true
         or
-        this.operands(checked_node, any(Eq eq), str_const.getAFlowNode())
+        op = any(NotEq ne) and safe_branch = false
+      |
+        this.operands(str_const.getAFlowNode(), op, checked_node)
+        or
+        this.operands(checked_node, op, str_const.getAFlowNode())
       )
     }
 
     override predicate checks(ControlFlowNode node, boolean branch) {
-      node = checked_node and branch = true
+      node = checked_node and branch = safe_branch
     }
   }
 }
