@@ -212,14 +212,9 @@ private predicate addressMayEscapeAt(Expr e) {
 
 private predicate addressMayEscapeMutablyAt(Expr e) {
   addressMayEscapeAt(e) and
-  exists(Type t | t = e.getType().getUnderlyingType() |
-    exists(PointerType pt |
-      pt = t
-      or
-      pt = t.(SpecifiedType).getBaseType()
-    |
-      not pt.getBaseType().isConst()
-    )
+  exists(Type t | t = e.getType().getUnderlyingType().stripTopLevelSpecifiers() |
+    t instanceof PointerType and
+    not t.(PointerType).getBaseType().isConst()
     or
     t instanceof ReferenceType and
     not t.(ReferenceType).getBaseType().isConst()
