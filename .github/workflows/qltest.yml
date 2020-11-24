@@ -31,4 +31,7 @@ jobs:
         run: env "PATH=$PATH:${{ github.workspace }}/codeql" ./create-extractor-pack.sh
       - name: Run QL tests
         run: codeql/codeql test run --check-databases --check-unused-labels --search-path "${{ github.workspace }}" --consistency-queries ql/consistency-queries ql/test
-
+      - name: Check QL formatting
+        run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql/codeql query format --check-only
+      - name: Check QL compilation
+        run: codeql/codeql query compile --check-only --threads=4 --warnings=error --search-path "${{ github.workspace }}" "ql/src" "ql/examples"
