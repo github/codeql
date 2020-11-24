@@ -12,3 +12,9 @@ For details see:
   framework-support.rst
 
 For details of the CodeQL libraries, see `CodeQL standard libraries <https://help.semmle.com/QL/ql-libraries.html>`_.
+
+.. toctree::
+   :hidden:
+
+   notes-ql-users
+   ql-training
