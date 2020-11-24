@@ -170,6 +170,13 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
                             ql_type: ql::Type::AtType("ast_node_parent"),
                             ql_type_is_ref: true,
                         },
+                        dbscheme::Column {
+                            unique: false,
+                            db_type: dbscheme::DbColumnType::Int,
+                            name: "parent_index",
+                            ql_type: ql::Type::Int,
+                            ql_type_is_ref: true,
+                        },
                     ],
                     keysets: None,
                 };
@@ -263,6 +270,13 @@ fn create_tokeninfo<'a>(
                 name: "parent",
                 unique: false,
                 ql_type: ql::Type::AtType("ast_node_parent"),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "parent_index",
+                ql_type: ql::Type::Int,
                 ql_type_is_ref: true,
             },
             dbscheme::Column {

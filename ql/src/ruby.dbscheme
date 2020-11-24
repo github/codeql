@@ -61,6 +61,7 @@ sourceLocationPrefix(
 alias_def(
   unique int id: @alias,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int alias: @underscore_method_name ref,
   int name: @underscore_method_name ref,
   int loc: @location ref
@@ -78,6 +79,7 @@ argument_list_child(
 argument_list_def(
   unique int id: @argument_list,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -93,6 +95,7 @@ array_child(
 array_def(
   unique int id: @array,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -103,6 +106,7 @@ array_def(
 assignment_def(
   unique int id: @assignment,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int left: @assignment_left_type ref,
   int right: @assignment_right_type ref,
   int loc: @location ref
@@ -120,6 +124,7 @@ bare_string_child(
 bare_string_def(
   unique int id: @bare_string,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -135,6 +140,7 @@ bare_symbol_child(
 bare_symbol_def(
   unique int id: @bare_symbol,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -150,6 +156,7 @@ begin_child(
 begin_def(
   unique int id: @begin,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -165,6 +172,7 @@ begin_block_child(
 begin_block_def(
   unique int id: @begin_block,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -177,6 +185,7 @@ begin_block_def(
 binary_def(
   unique int id: @binary,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int left: @binary_left_type ref,
   int operator: @binary_operator_type ref,
   int right: @binary_right_type ref,
@@ -195,12 +204,14 @@ block_child(
 block_def(
   unique int id: @block,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
 block_argument_def(
   unique int id: @block_argument,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int child: @underscore_arg ref,
   int loc: @location ref
 );
@@ -208,6 +219,7 @@ block_argument_def(
 block_parameter_def(
   unique int id: @block_parameter,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int name: @token_identifier ref,
   int loc: @location ref
 );
@@ -224,6 +236,7 @@ block_parameters_child(
 block_parameters_def(
   unique int id: @block_parameters,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -235,6 +248,7 @@ break_child(
 break_def(
   unique int id: @break,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -245,6 +259,7 @@ break_def(
 call_def(
   unique int id: @call,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int method: @call_method_type ref,
   int receiver: @call_receiver_type ref,
   int loc: @location ref
@@ -267,6 +282,7 @@ case_child(
 case_def(
   unique int id: @case__,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -280,6 +296,7 @@ chained_string_child(
 chained_string_def(
   unique int id: @chained_string,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -297,6 +314,7 @@ class_child(
 class_def(
   unique int id: @class,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int name: @class_name_type ref,
   int loc: @location ref
 );
@@ -304,6 +322,7 @@ class_def(
 conditional_def(
   unique int id: @conditional,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int alternative: @underscore_arg ref,
   int condition: @underscore_arg ref,
   int consequence: @underscore_arg ref,
@@ -322,6 +341,7 @@ destructured_left_assignment_child(
 destructured_left_assignment_def(
   unique int id: @destructured_left_assignment,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -337,6 +357,7 @@ destructured_parameter_child(
 destructured_parameter_def(
   unique int id: @destructured_parameter,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -352,6 +373,7 @@ do_child(
 do_def(
   unique int id: @do,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -367,6 +389,7 @@ do_block_child(
 do_block_def(
   unique int id: @do_block,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -382,6 +405,7 @@ element_reference_child(
 element_reference_def(
   unique int id: @element_reference,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int object: @underscore_primary ref,
   int loc: @location ref
 );
@@ -398,6 +422,7 @@ else_child(
 else_def(
   unique int id: @else,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -416,6 +441,7 @@ elsif_consequence(
 elsif_def(
   unique int id: @elsif,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int condition: @underscore_statement ref,
   int loc: @location ref
 );
@@ -432,6 +458,7 @@ end_block_child(
 end_block_def(
   unique int id: @end_block,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -447,12 +474,14 @@ ensure_child(
 ensure_def(
   unique int id: @ensure,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
 exception_variable_def(
   unique int id: @exception_variable,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int child: @underscore_lhs ref,
   int loc: @location ref
 );
@@ -469,6 +498,7 @@ exceptions_child(
 exceptions_def(
   unique int id: @exceptions,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -484,6 +514,7 @@ for_pattern(
 for_def(
   unique int id: @for,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int body: @do ref,
   int value: @in ref,
   int loc: @location ref
@@ -501,12 +532,14 @@ hash_child(
 hash_def(
   unique int id: @hash,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
 hash_splat_argument_def(
   unique int id: @hash_splat_argument,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int child: @underscore_arg ref,
   int loc: @location ref
 );
@@ -519,6 +552,7 @@ hash_splat_parameter_name(
 hash_splat_parameter_def(
   unique int id: @hash_splat_parameter,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -534,6 +568,7 @@ heredoc_body_child(
 heredoc_body_def(
   unique int id: @heredoc_body,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -552,6 +587,7 @@ if_consequence(
 if_def(
   unique int id: @if,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int condition: @underscore_statement ref,
   int loc: @location ref
 );
@@ -561,6 +597,7 @@ if_def(
 if_modifier_def(
   unique int id: @if_modifier,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int body: @underscore_statement ref,
   int condition: @if_modifier_condition_type ref,
   int loc: @location ref
@@ -569,6 +606,7 @@ if_modifier_def(
 in_def(
   unique int id: @in,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int child: @underscore_arg ref,
   int loc: @location ref
 );
@@ -576,6 +614,7 @@ in_def(
 interpolation_def(
   unique int id: @interpolation,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int child: @underscore_statement ref,
   int loc: @location ref
 );
@@ -588,6 +627,7 @@ keyword_parameter_value(
 keyword_parameter_def(
   unique int id: @keyword_parameter,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int name: @token_identifier ref,
   int loc: @location ref
 );
@@ -602,6 +642,7 @@ lambda_parameters(
 lambda_def(
   unique int id: @lambda,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int body: @lambda_body_type ref,
   int loc: @location ref
 );
@@ -618,6 +659,7 @@ lambda_parameters_child(
 lambda_parameters_def(
   unique int id: @lambda_parameters,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -633,6 +675,7 @@ left_assignment_list_child(
 left_assignment_list_def(
   unique int id: @left_assignment_list,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -653,6 +696,7 @@ method_child(
 method_def(
   unique int id: @method,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int name: @underscore_method_name ref,
   int loc: @location ref
 );
@@ -674,6 +718,7 @@ method_call_block(
 method_call_def(
   unique int id: @method_call,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int method: @method_call_method_type ref,
   int loc: @location ref
 );
@@ -690,6 +735,7 @@ method_parameters_child(
 method_parameters_def(
   unique int id: @method_parameters,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -707,6 +753,7 @@ module_child(
 module_def(
   unique int id: @module,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int name: @module_name_type ref,
   int loc: @location ref
 );
@@ -719,6 +766,7 @@ next_child(
 next_def(
   unique int id: @next,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -727,6 +775,7 @@ next_def(
 operator_assignment_def(
   unique int id: @operator_assignment,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int left: @underscore_lhs ref,
   int right: @operator_assignment_right_type ref,
   int loc: @location ref
@@ -735,6 +784,7 @@ operator_assignment_def(
 optional_parameter_def(
   unique int id: @optional_parameter,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int name: @token_identifier ref,
   int value: @underscore_arg ref,
   int loc: @location ref
@@ -745,6 +795,7 @@ optional_parameter_def(
 pair_def(
   unique int id: @pair,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int key__: @pair_key_type ref,
   int value: @underscore_arg ref,
   int loc: @location ref
@@ -762,6 +813,7 @@ parenthesized_statements_child(
 parenthesized_statements_def(
   unique int id: @parenthesized_statements,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -770,6 +822,7 @@ parenthesized_statements_def(
 pattern_def(
   unique int id: @pattern,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int child: @pattern_child_type ref,
   int loc: @location ref
 );
@@ -786,6 +839,7 @@ program_child(
 program_def(
   unique int id: @program,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -799,12 +853,14 @@ range_child(
 range_def(
   unique int id: @range,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
 rational_def(
   unique int id: @rational,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int child: @token_integer ref,
   int loc: @location ref
 );
@@ -817,6 +873,7 @@ redo_child(
 redo_def(
   unique int id: @redo,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -832,6 +889,7 @@ regex_child(
 regex_def(
   unique int id: @regex,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -853,6 +911,7 @@ rescue_variable(
 rescue_def(
   unique int id: @rescue,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -861,6 +920,7 @@ rescue_def(
 rescue_modifier_def(
   unique int id: @rescue_modifier,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int body: @underscore_statement ref,
   int handler: @rescue_modifier_handler_type ref,
   int loc: @location ref
@@ -874,6 +934,7 @@ rest_assignment_child(
 rest_assignment_def(
   unique int id: @rest_assignment,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -885,6 +946,7 @@ retry_child(
 retry_def(
   unique int id: @retry,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -896,6 +958,7 @@ return_child(
 return_def(
   unique int id: @return,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -911,6 +974,7 @@ right_assignment_list_child(
 right_assignment_list_def(
   unique int id: @right_assignment_list,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -924,6 +988,7 @@ scope_resolution_scope(
 scope_resolution_def(
   unique int id: @scope_resolution,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int name: @scope_resolution_name_type ref,
   int loc: @location ref
 );
@@ -931,6 +996,7 @@ scope_resolution_def(
 setter_def(
   unique int id: @setter,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int child: @token_identifier ref,
   int loc: @location ref
 );
@@ -947,6 +1013,7 @@ singleton_class_child(
 singleton_class_def(
   unique int id: @singleton_class,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int value: @underscore_arg ref,
   int loc: @location ref
 );
@@ -970,6 +1037,7 @@ singleton_method_child(
 singleton_method_def(
   unique int id: @singleton_method,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int name: @underscore_method_name ref,
   int object: @singleton_method_object_type ref,
   int loc: @location ref
@@ -978,6 +1046,7 @@ singleton_method_def(
 splat_argument_def(
   unique int id: @splat_argument,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int child: @underscore_arg ref,
   int loc: @location ref
 );
@@ -990,6 +1059,7 @@ splat_parameter_name(
 splat_parameter_def(
   unique int id: @splat_parameter,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -1005,6 +1075,7 @@ string_child(
 string_def(
   unique int id: @string__,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -1018,6 +1089,7 @@ string_array_child(
 string_array_def(
   unique int id: @string_array,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -1033,6 +1105,7 @@ subshell_child(
 subshell_def(
   unique int id: @subshell,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -1041,6 +1114,7 @@ subshell_def(
 superclass_def(
   unique int id: @superclass,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int child: @superclass_child_type ref,
   int loc: @location ref
 );
@@ -1057,6 +1131,7 @@ symbol_child(
 symbol_def(
   unique int id: @symbol,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -1070,6 +1145,7 @@ symbol_array_child(
 symbol_array_def(
   unique int id: @symbol_array,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -1085,6 +1161,7 @@ then_child(
 then_def(
   unique int id: @then,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -1095,6 +1172,7 @@ then_def(
 unary_def(
   unique int id: @unary,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int operand: @unary_operand_type ref,
   int operator: @unary_operator_type ref,
   int loc: @location ref
@@ -1110,6 +1188,7 @@ undef_child(
 undef_def(
   unique int id: @undef,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
@@ -1128,6 +1207,7 @@ unless_consequence(
 unless_def(
   unique int id: @unless,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int condition: @underscore_statement ref,
   int loc: @location ref
 );
@@ -1137,6 +1217,7 @@ unless_def(
 unless_modifier_def(
   unique int id: @unless_modifier,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int body: @underscore_statement ref,
   int condition: @unless_modifier_condition_type ref,
   int loc: @location ref
@@ -1145,6 +1226,7 @@ unless_modifier_def(
 until_def(
   unique int id: @until,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int body: @do ref,
   int condition: @underscore_statement ref,
   int loc: @location ref
@@ -1155,6 +1237,7 @@ until_def(
 until_modifier_def(
   unique int id: @until_modifier,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int body: @underscore_statement ref,
   int condition: @until_modifier_condition_type ref,
   int loc: @location ref
@@ -1177,12 +1260,14 @@ when_pattern(
 when_def(
   unique int id: @when,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
 while_def(
   unique int id: @while,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int body: @do ref,
   int condition: @underscore_statement ref,
   int loc: @location ref
@@ -1193,6 +1278,7 @@ while_def(
 while_modifier_def(
   unique int id: @while_modifier,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int body: @underscore_statement ref,
   int condition: @while_modifier_condition_type ref,
   int loc: @location ref
@@ -1206,12 +1292,14 @@ yield_child(
 yield_def(
   unique int id: @yield,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int loc: @location ref
 );
 
 tokeninfo(
   unique int id: @token,
   int parent: @ast_node_parent ref,
+  int parent_index: int ref,
   int kind: int ref,
   int file: @file ref,
   int idx: int ref,
