@@ -1,1 +1,1 @@
-import experimental.dataflow.FlowTestUtil.MaximalFlowTest
+import experimental.dataflow.TestUtil.MaximalFlowTest

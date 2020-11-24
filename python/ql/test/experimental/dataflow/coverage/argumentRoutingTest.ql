@@ -1,7 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
-import experimental.dataflow.FlowTestUtil.FlowTest
+import experimental.dataflow.TestUtil.FlowTest
 
 class Argument1RoutingTest extends FlowTest {
   Argument1RoutingTest() { this = "Argument1RoutingTest" }

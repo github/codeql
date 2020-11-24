@@ -1,5 +1,5 @@
 import python
-import experimental.dataflow.FlowTestUtil.FlowTest
+import experimental.dataflow.TestUtil.FlowTest
 import experimental.dataflow.testConfig
 
 class DataFlowTest extends FlowTest {

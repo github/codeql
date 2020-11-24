@@ -553,8 +553,8 @@ def test_length_hint():
 # object.__getitem__(self, key)
 class With_getitem:
     def __getitem__(self, key):
-        SINK2(key) #$ arg2="ControlFlowNode for arg2, l:565 -> ControlFlowNode for key"
-        SINK1(self) #$ arg1="SSA variable with_getitem, l:563 -> ControlFlowNode for self"
+        SINK2(key) #$ arg2="arg2, l:565 -> key"
+        SINK1(self) #$ arg1="SSA variable with_getitem, l:563 -> self"
         OK()
         return ""
 
@@ -568,9 +568,9 @@ def test_getitem():
 # object.__setitem__(self, key, value)
 class With_setitem:
     def __setitem__(self, key, value):
-        SINK3(value) #$ arg3="ControlFlowNode for arg3, l:581 -> ControlFlowNode for value"
-        SINK2(key) #$ arg2="ControlFlowNode for arg2, l:581 -> ControlFlowNode for key"
-        SINK1(self) #$ arg1="SSA variable with_setitem, l:578 -> ControlFlowNode for self"
+        SINK3(value) #$ arg3="arg3, l:581 -> value"
+        SINK2(key) #$ arg2="arg2, l:581 -> key"
+        SINK1(self) #$ arg1="SSA variable with_setitem, l:578 -> self"
         OK()
 
 
@@ -584,8 +584,8 @@ def test_setitem():
 # object.__delitem__(self, key)
 class With_delitem:
     def __delitem__(self, key):
-        SINK2(key) #$ arg2="ControlFlowNode for arg2, l:595 -> ControlFlowNode for key"
-        SINK1(self) #$ arg1="SSA variable with_delitem, l:593 -> ControlFlowNode for self"
+        SINK2(key) #$ arg2="arg2, l:595 -> key"
+        SINK1(self) #$ arg1="SSA variable with_delitem, l:593 -> self"
         OK()
 
 
@@ -655,8 +655,8 @@ def test_contains():
 # object.__add__(self, other)
 class With_add:
     def __add__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:667 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_add, l:665 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:667 -> other"
+        SINK1(self) #$ arg1="SSA variable with_add, l:665 -> self"
         OK()
         return self
 
@@ -670,8 +670,8 @@ def test_add():
 # object.__sub__(self, other)
 class With_sub:
     def __sub__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:682 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_sub, l:680 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:682 -> other"
+        SINK1(self) #$ arg1="SSA variable with_sub, l:680 -> self"
         OK()
         return self
 
@@ -685,8 +685,8 @@ def test_sub():
 # object.__mul__(self, other)
 class With_mul:
     def __mul__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:697 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_mul, l:695 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:697 -> other"
+        SINK1(self) #$ arg1="SSA variable with_mul, l:695 -> self"
         OK()
         return self
 
@@ -700,8 +700,8 @@ def test_mul():
 # object.__matmul__(self, other)
 class With_matmul:
     def __matmul__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:712 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_matmul, l:710 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:712 -> other"
+        SINK1(self) #$ arg1="SSA variable with_matmul, l:710 -> self"
         OK()
         return self
 
@@ -715,8 +715,8 @@ def test_matmul():
 # object.__truediv__(self, other)
 class With_truediv:
     def __truediv__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:727 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_truediv, l:725 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:727 -> other"
+        SINK1(self) #$ arg1="SSA variable with_truediv, l:725 -> self"
         OK()
         return self
 
@@ -730,8 +730,8 @@ def test_truediv():
 # object.__floordiv__(self, other)
 class With_floordiv:
     def __floordiv__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:742 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_floordiv, l:740 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:742 -> other"
+        SINK1(self) #$ arg1="SSA variable with_floordiv, l:740 -> self"
         OK()
         return self
 
@@ -745,8 +745,8 @@ def test_floordiv():
 # object.__mod__(self, other)
 class With_mod:
     def __mod__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:757 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_mod, l:755 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:757 -> other"
+        SINK1(self) #$ arg1="SSA variable with_mod, l:755 -> self"
         OK()
         return self
 
@@ -775,8 +775,8 @@ def test_divmod():
 # object.__pow__(self, other[, modulo])
 class With_pow:
     def __pow__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:793 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_pow, l:791 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:793 -> other"
+        SINK1(self) #$ arg1="SSA variable with_pow, l:791 -> self"
         OK()
         return self
 
@@ -796,8 +796,8 @@ def test_pow_op():
 # object.__lshift__(self, other)
 class With_lshift:
     def __lshift__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:808 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_lshift, l:806 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:808 -> other"
+        SINK1(self) #$ arg1="SSA variable with_lshift, l:806 -> self"
         OK()
         return self
 
@@ -811,8 +811,8 @@ def test_lshift():
 # object.__rshift__(self, other)
 class With_rshift:
     def __rshift__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:823 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_rshift, l:821 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:823 -> other"
+        SINK1(self) #$ arg1="SSA variable with_rshift, l:821 -> self"
         OK()
         return self
 
@@ -826,8 +826,8 @@ def test_rshift():
 # object.__and__(self, other)
 class With_and:
     def __and__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:838 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_and, l:836 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:838 -> other"
+        SINK1(self) #$ arg1="SSA variable with_and, l:836 -> self"
         OK()
         return self
 
@@ -841,8 +841,8 @@ def test_and():
 # object.__xor__(self, other)
 class With_xor:
     def __xor__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:853 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_xor, l:851 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:853 -> other"
+        SINK1(self) #$ arg1="SSA variable with_xor, l:851 -> self"
         OK()
         return self
 
@@ -856,8 +856,8 @@ def test_xor():
 # object.__or__(self, other)
 class With_or:
     def __or__(self, other):
-        SINK2(other) #$ arg2="ControlFlowNode for arg2, l:868 -> ControlFlowNode for other"
-        SINK1(self) #$ arg1="SSA variable with_or, l:866 -> ControlFlowNode for self"
+        SINK2(other) #$ arg2="arg2, l:868 -> other"
+        SINK1(self) #$ arg1="SSA variable with_or, l:866 -> self"
         OK()
         return self
 
