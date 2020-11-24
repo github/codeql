@@ -728,165 +728,165 @@ private module Stdlib {
       )
     }
   }
-}
 
-/**
- * An exec statement (only Python 2).
- * Se ehttps://docs.python.org/2/reference/simple_stmts.html#the-exec-statement.
- */
-private class ExecStatement extends CodeExecution::Range {
-  ExecStatement() {
-    // since there are no DataFlow::Nodes for a Statement, we can't do anything like
-    // `this = any(Exec exec)`
-    this.asExpr() = any(Exec exec).getBody()
+  /**
+   * An exec statement (only Python 2).
+   * Se ehttps://docs.python.org/2/reference/simple_stmts.html#the-exec-statement.
+   */
+  private class ExecStatement extends CodeExecution::Range {
+    ExecStatement() {
+      // since there are no DataFlow::Nodes for a Statement, we can't do anything like
+      // `this = any(Exec exec)`
+      this.asExpr() = any(Exec exec).getBody()
+    }
+
+    override DataFlow::Node getCode() { result = this }
   }
 
-  override DataFlow::Node getCode() { result = this }
-}
+  /**
+   * A call to the builtin `open` function.
+   * See https://docs.python.org/3/library/functions.html#open
+   */
+  private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-/**
- * A call to the builtin `open` function.
- * See https://docs.python.org/3/library/functions.html#open
- */
-private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
-  override CallNode node;
+    OpenCall() { node.getFunction().(NameNode).getId() = "open" }
 
-  OpenCall() { node.getFunction().(NameNode).getId() = "open" }
-
-  override DataFlow::Node getAPathArgument() {
-    result.asCfgNode() in [node.getArg(0), node.getArgByName("file")]
+    override DataFlow::Node getAPathArgument() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("file")]
+    }
   }
-}
 
-// ---------------------------------------------------------------------------
-// base64
-// ---------------------------------------------------------------------------
-/** Gets a reference to the `base64` module. */
-private DataFlow::Node base64(DataFlow::TypeTracker t) {
-  t.start() and
-  result = DataFlow::importNode("base64")
-  or
-  exists(DataFlow::TypeTracker t2 | result = base64(t2).track(t2, t))
-}
-
-/** Gets a reference to the `base64` module. */
-DataFlow::Node base64() { result = base64(DataFlow::TypeTracker::end()) }
-
-/**
- * Gets a reference to the attribute `attr_name` of the `base64` module.
- * WARNING: Only holds for a few predefined attributes.
- */
-private DataFlow::Node base64_attr(DataFlow::TypeTracker t, string attr_name) {
-  attr_name in [
-      "b64encode", "b64decode", "standard_b64encode", "standard_b64decode", "urlsafe_b64encode",
-      "urlsafe_b64decode", "b32encode", "b32decode", "b16encode", "b16decode", "encodestring",
-      "decodestring", "a85encode", "a85decode", "b85encode", "b85decode", "encodebytes",
-      "decodebytes"
-    ] and
-  (
+  // ---------------------------------------------------------------------------
+  // base64
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `base64` module. */
+  private DataFlow::Node base64(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::importNode("base64" + "." + attr_name)
+    result = DataFlow::importNode("base64")
     or
-    t.startInAttr(attr_name) and
-    result = base64()
-  )
-  or
-  // Due to bad performance when using normal setup with `base64_attr(t2, attr_name).track(t2, t)`
-  // we have inlined that code and forced a join
-  exists(DataFlow::TypeTracker t2 |
-    exists(DataFlow::StepSummary summary |
-      base64_attr_first_join(t2, attr_name, result, summary) and
-      t = t2.append(summary)
+    exists(DataFlow::TypeTracker t2 | result = base64(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `base64` module. */
+  DataFlow::Node base64() { result = base64(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `base64` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node base64_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in [
+        "b64encode", "b64decode", "standard_b64encode", "standard_b64decode", "urlsafe_b64encode",
+        "urlsafe_b64decode", "b32encode", "b32decode", "b16encode", "b16decode", "encodestring",
+        "decodestring", "a85encode", "a85decode", "b85encode", "b85decode", "encodebytes",
+        "decodebytes"
+      ] and
+    (
+      t.start() and
+      result = DataFlow::importNode("base64" + "." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = base64()
     )
-  )
-}
-
-pragma[nomagic]
-private predicate base64_attr_first_join(
-  DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-) {
-  DataFlow::StepSummary::step(base64_attr(t2, attr_name), res, summary)
-}
-
-/**
- * Gets a reference to the attribute `attr_name` of the `base64` module.
- * WARNING: Only holds for a few predefined attributes.
- */
-private DataFlow::Node base64_attr(string attr_name) {
-  result = base64_attr(DataFlow::TypeTracker::end(), attr_name)
-}
-
-/** A call to any of the encode functions in the `base64` module. */
-private class Base64EncodeCall extends Encoding::Range, DataFlow::CfgNode {
-  override CallNode node;
-
-  Base64EncodeCall() {
-    exists(string name |
-      name in [
-          "b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
-          "encodestring", "a85encode", "b85encode", "encodebytes"
-        ] and
-      node.getFunction() = base64_attr(name).asCfgNode()
+    or
+    // Due to bad performance when using normal setup with `base64_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        base64_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
     )
   }
 
-  override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
-
-  override DataFlow::Node getOutput() { result = this }
-
-  override string getFormat() {
-    exists(string name | node.getFunction() = base64_attr(name).asCfgNode() |
-      name in [
-          "b64encode", "standard_b64encode", "urlsafe_b64encode", "encodestring", "encodebytes"
-        ] and
-      result = "Base64"
-      or
-      name = "b32encode" and result = "Base32"
-      or
-      name = "b16encode" and result = "Base16"
-      or
-      name = "a85encode" and result = "Ascii85"
-      or
-      name = "b85encode" and result = "Base85"
-    )
-  }
-}
-
-/** A call to any of the decode functions in the `base64` module. */
-private class Base64DecodeCall extends Decoding::Range, DataFlow::CfgNode {
-  override CallNode node;
-
-  Base64DecodeCall() {
-    exists(string name |
-      name in [
-          "b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
-          "decodestring", "a85decode", "b85decode", "decodebytes"
-        ] and
-      node.getFunction() = base64_attr(name).asCfgNode()
-    )
+  pragma[nomagic]
+  private predicate base64_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(base64_attr(t2, attr_name), res, summary)
   }
 
-  override predicate mayExecuteInput() { none() }
+  /**
+   * Gets a reference to the attribute `attr_name` of the `base64` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node base64_attr(string attr_name) {
+    result = base64_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
 
-  override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+  /** A call to any of the encode functions in the `base64` module. */
+  private class Base64EncodeCall extends Encoding::Range, DataFlow::CfgNode {
+    override CallNode node;
 
-  override DataFlow::Node getOutput() { result = this }
+    Base64EncodeCall() {
+      exists(string name |
+        name in [
+            "b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
+            "encodestring", "a85encode", "b85encode", "encodebytes"
+          ] and
+        node.getFunction() = base64_attr(name).asCfgNode()
+      )
+    }
 
-  override string getFormat() {
-    exists(string name | node.getFunction() = base64_attr(name).asCfgNode() |
-      name in [
-          "b64decode", "standard_b64decode", "urlsafe_b64decode", "decodestring", "decodebytes"
-        ] and
-      result = "Base64"
-      or
-      name = "b32decode" and result = "Base32"
-      or
-      name = "b16decode" and result = "Base16"
-      or
-      name = "a85decode" and result = "Ascii85"
-      or
-      name = "b85decode" and result = "Base85"
-    )
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() {
+      exists(string name | node.getFunction() = base64_attr(name).asCfgNode() |
+        name in [
+            "b64encode", "standard_b64encode", "urlsafe_b64encode", "encodestring", "encodebytes"
+          ] and
+        result = "Base64"
+        or
+        name = "b32encode" and result = "Base32"
+        or
+        name = "b16encode" and result = "Base16"
+        or
+        name = "a85encode" and result = "Ascii85"
+        or
+        name = "b85encode" and result = "Base85"
+      )
+    }
+  }
+
+  /** A call to any of the decode functions in the `base64` module. */
+  private class Base64DecodeCall extends Decoding::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    Base64DecodeCall() {
+      exists(string name |
+        name in [
+            "b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
+            "decodestring", "a85decode", "b85decode", "decodebytes"
+          ] and
+        node.getFunction() = base64_attr(name).asCfgNode()
+      )
+    }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() {
+      exists(string name | node.getFunction() = base64_attr(name).asCfgNode() |
+        name in [
+            "b64decode", "standard_b64decode", "urlsafe_b64decode", "decodestring", "decodebytes"
+          ] and
+        result = "Base64"
+        or
+        name = "b32decode" and result = "Base32"
+        or
+        name = "b16decode" and result = "Base16"
+        or
+        name = "a85decode" and result = "Ascii85"
+        or
+        name = "b85decode" and result = "Base85"
+      )
+    }
   }
 }
 
