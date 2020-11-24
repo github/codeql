@@ -188,6 +188,7 @@ impl Extractor {
             path: format!("{}", path.display()),
             file_label: *file_label,
             token_counter: 0,
+            toplevel_child_counter: 0,
             stack: Vec::new(),
             schema: &self.schema,
         };
@@ -257,6 +258,8 @@ struct Visitor<'a> {
     trap_writer: TrapWriter,
     /// A counter for tokens
     token_counter: usize,
+    /// A counter for top-level child nodes
+    toplevel_child_counter: usize,
     /// A lookup table from type name to node types
     schema: &'a NodeTypeMap,
     /// A stack for gathering information from child nodes. Whenever a node is entered
@@ -320,7 +323,10 @@ impl Visitor<'_> {
                 p.1 += 1;
                 (p.0, p.1 - 1)
             }
-            _ => (self.file_label, 0),
+            _ => {
+                self.toplevel_child_counter += 1;
+                (self.file_label, self.toplevel_child_counter - 1)
+            }
         };
         match &table.kind {
             EntryKind::Token { kind_id, .. } => {
