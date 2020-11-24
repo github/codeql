@@ -165,12 +165,14 @@ module DefUse {
     (
       exists(int last | last = max(refRank(bb, _, v, _)) | defReachesRank(bb, vu, last, v))
       or
-      exists(BasicBlock pred |
-        pred = bb.getAPredecessor() and
-        defReachesEndOfBlock(pred, vu, v) and
-        not exists(refRank(bb, _, v, Write()))
-      )
+      defReachesStartOfBlock(bb, vu, v) and
+      not exists(refRank(bb, _, v, Write()))
     )
+  }
+
+  pragma[noinline]
+  private predicate defReachesStartOfBlock(BasicBlock bb, VariableUpdate vu, StackVariable v) {
+    defReachesEndOfBlock(bb.getAPredecessor(), vu, v)
   }
 
   /**

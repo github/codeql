@@ -105,8 +105,10 @@ module UnsafeShellCommandConstruction {
 
     ArrayAppendEndingInCommandExecutinSink() {
       this =
-        [array.(DataFlow::ArrayCreationNode).getAnElement(),
-            array.getAMethodCall(["push", "unshift"]).getAnArgument()] and
+        [
+          array.(DataFlow::ArrayCreationNode).getAnElement(),
+          array.getAMethodCall(["push", "unshift"]).getAnArgument()
+        ] and
       exists(DataFlow::MethodCallNode joinCall | array.getAMethodCall("join") = joinCall |
         joinCall = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys) and
         joinCall.getNumArgument() = 1 and

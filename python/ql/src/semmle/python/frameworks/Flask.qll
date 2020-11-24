@@ -388,40 +388,41 @@ private module FlaskModel {
       exists(AttrNode attr |
         this.asCfgNode() = attr and attr.getObject(attr_name) = flask::request().asCfgNode()
       |
-        attr_name in ["path",
-              // str
-              "full_path", "base_url", "url", "access_control_request_method", "content_encoding",
-              "content_md5", "content_type", "data", "method", "mimetype", "origin", "query_string",
-              "referrer", "remote_addr", "remote_user", "user_agent",
-              // dict
-              "environ", "cookies", "mimetype_params", "view_args",
-              // json
-              "json",
-              // List[str]
-              "access_route",
-              // file-like
-              "stream", "input_stream",
-              // MultiDict[str, str]
-              // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict
-              "args", "values", "form",
-              // MultiDict[str, FileStorage]
-              // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
-              // TODO: FileStorage needs extra taint steps
-              "files",
-              // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.HeaderSet
-              "access_control_request_headers", "pragma",
-              // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Accept
-              // TODO: Kinda badly modeled for now -- has type List[Tuple[value, quality]], and some extra methods
-              "accept_charsets", "accept_encodings", "accept_languages", "accept_mimetypes",
-              // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Authorization
-              // TODO: dict subclass with extra attributes like `username` and `password`
-              "authorization",
-              // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.RequestCacheControl
-              // TODO: has attributes like `no_cache`, and `to_header` method (actually, many of these models do)
-              "cache_control",
-              // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers
-              // TODO: dict-like with wsgiref.headers.Header compatibility methods
-              "headers"]
+        attr_name in [
+            // str
+            "path", "full_path", "base_url", "url", "access_control_request_method",
+            "content_encoding", "content_md5", "content_type", "data", "method", "mimetype",
+            "origin", "query_string", "referrer", "remote_addr", "remote_user", "user_agent",
+            // dict
+            "environ", "cookies", "mimetype_params", "view_args",
+            // json
+            "json",
+            // List[str]
+            "access_route",
+            // file-like
+            "stream", "input_stream",
+            // MultiDict[str, str]
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict
+            "args", "values", "form",
+            // MultiDict[str, FileStorage]
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
+            // TODO: FileStorage needs extra taint steps
+            "files",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.HeaderSet
+            "access_control_request_headers", "pragma",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Accept
+            // TODO: Kinda badly modeled for now -- has type List[Tuple[value, quality]], and some extra methods
+            "accept_charsets", "accept_encodings", "accept_languages", "accept_mimetypes",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Authorization
+            // TODO: dict subclass with extra attributes like `username` and `password`
+            "authorization",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.RequestCacheControl
+            // TODO: has attributes like `no_cache`, and `to_header` method (actually, many of these models do)
+            "cache_control",
+            // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers
+            // TODO: dict-like with wsgiref.headers.Header compatibility methods
+            "headers"
+          ]
       )
       or
       // methods (needs special handling to track bound-methods -- see `FlaskRequestMethodCallsAdditionalTaintStep` below)

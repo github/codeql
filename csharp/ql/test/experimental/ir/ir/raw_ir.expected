@@ -2,7 +2,7 @@ array.cs:
 #    2| System.Void ArrayTest.one_dim_init_acc()
 #    2|   Block 0
 #    2|     v2_1(Void)             = EnterFunction            : 
-#    2|     mu2_2(<unknown>)       = AliasedDefinition        : 
+#    2|     %mu2_2(<unknown>)      = AliasedDefinition        : 
 #    2|     r2_3(glval<ArrayTest>) = InitializeThis           : 
 #    4|     r4_1(glval<Int32[]>)   = VariableAddress[one_dim] : 
 #    4|     mu4_2(Int32[])         = Uninitialized[one_dim]   : &:r4_1
@@ -57,7 +57,7 @@ array.cs:
 #   13| System.Void ArrayTest.twod_and_init_acc()
 #   13|   Block 0
 #   13|     v13_1(Void)             = EnterFunction      : 
-#   13|     mu13_2(<unknown>)       = AliasedDefinition  : 
+#   13|     %mu13_2(<unknown>)      = AliasedDefinition  : 
 #   13|     r13_3(glval<ArrayTest>) = InitializeThis     : 
 #   15|     r15_1(glval<Int32[,]>)  = VariableAddress[a] : 
 #   15|     mu15_2(Int32[,])        = Uninitialized[a]   : &:r15_1
@@ -148,7 +148,7 @@ assignop.cs:
 #    4| System.Void AssignOp.Main()
 #    4|   Block 0
 #    4|     v4_1(Void)          = EnterFunction      : 
-#    4|     mu4_2(<unknown>)    = AliasedDefinition  : 
+#    4|     %mu4_2(<unknown>)   = AliasedDefinition  : 
 #    5|     r5_1(glval<Int32>)  = VariableAddress[a] : 
 #    5|     r5_2(Int32)         = Constant[1]        : 
 #    5|     mu5_3(Int32)        = Store[a]           : &:r5_1, r5_2
@@ -218,7 +218,7 @@ casts.cs:
 #   11| System.Void Casts.Main()
 #   11|   Block 0
 #   11|     v11_1(Void)           = EnterFunction            : 
-#   11|     mu11_2(<unknown>)     = AliasedDefinition        : 
+#   11|     %mu11_2(<unknown>)    = AliasedDefinition        : 
 #   13|     r13_1(glval<Casts_A>) = VariableAddress[Aobj]    : 
 #   13|     r13_2(Casts_A)        = NewObj                   : 
 #   13|     r13_3(<funcaddr>)     = FunctionAddress[Casts_A] : 
@@ -243,7 +243,7 @@ collections.cs:
 #   11| System.Void Collections.Main()
 #   11|   Block 0
 #   11|     v11_1(Void)                             = EnterFunction               : 
-#   11|     mu11_2(<unknown>)                       = AliasedDefinition           : 
+#   11|     %mu11_2(<unknown>)                      = AliasedDefinition           : 
 #   13|     r13_1(glval<Dictionary<Int32,MyClass>>) = VariableAddress[dict]       : 
 #   13|     r13_2(Dictionary<Int32,MyClass>)        = NewObj                      : 
 #   13|     r13_3(<funcaddr>)                       = FunctionAddress[Dictionary] : 
@@ -286,7 +286,7 @@ constructor_init.cs:
 #    5| System.Void BaseClass..ctor()
 #    5|   Block 0
 #    5|     v5_1(Void)             = EnterFunction     : 
-#    5|     mu5_2(<unknown>)       = AliasedDefinition : 
+#    5|     %mu5_2(<unknown>)      = AliasedDefinition : 
 #    5|     r5_3(glval<BaseClass>) = InitializeThis    : 
 #    6|     v6_1(Void)             = NoOp              : 
 #    5|     v5_4(Void)             = ReturnVoid        : 
@@ -296,7 +296,7 @@ constructor_init.cs:
 #    9| System.Void BaseClass..ctor(System.Int32)
 #    9|   Block 0
 #    9|     v9_1(Void)             = EnterFunction          : 
-#    9|     mu9_2(<unknown>)       = AliasedDefinition      : 
+#    9|     %mu9_2(<unknown>)      = AliasedDefinition      : 
 #    9|     r9_3(glval<BaseClass>) = InitializeThis         : 
 #    9|     r9_4(glval<Int32>)     = VariableAddress[i]     : 
 #    9|     mu9_5(Int32)           = InitializeParameter[i] : &:r9_4
@@ -312,7 +312,7 @@ constructor_init.cs:
 #   17| System.Void DerivedClass..ctor()
 #   17|   Block 0
 #   17|     v17_1(Void)                = EnterFunction                     : 
-#   17|     mu17_2(<unknown>)          = AliasedDefinition                 : 
+#   17|     %mu17_2(<unknown>)         = AliasedDefinition                 : 
 #   17|     r17_3(glval<DerivedClass>) = InitializeThis                    : 
 #   17|     r17_4(glval<BaseClass>)    = Convert[DerivedClass : BaseClass] : r17_3
 #   17|     r17_5(<funcaddr>)          = FunctionAddress[BaseClass]        : 
@@ -326,7 +326,7 @@ constructor_init.cs:
 #   21| System.Void DerivedClass..ctor(System.Int32)
 #   21|   Block 0
 #   21|     v21_1(Void)                = EnterFunction                     : 
-#   21|     mu21_2(<unknown>)          = AliasedDefinition                 : 
+#   21|     %mu21_2(<unknown>)         = AliasedDefinition                 : 
 #   21|     r21_3(glval<DerivedClass>) = InitializeThis                    : 
 #   21|     r21_4(glval<Int32>)        = VariableAddress[i]                : 
 #   21|     mu21_5(Int32)              = InitializeParameter[i]            : &:r21_4
@@ -344,7 +344,7 @@ constructor_init.cs:
 #   25| System.Void DerivedClass..ctor(System.Int32,System.Int32)
 #   25|   Block 0
 #   25|     v25_1(Void)                = EnterFunction                 : 
-#   25|     mu25_2(<unknown>)          = AliasedDefinition             : 
+#   25|     %mu25_2(<unknown>)         = AliasedDefinition             : 
 #   25|     r25_3(glval<DerivedClass>) = InitializeThis                : 
 #   25|     r25_4(glval<Int32>)        = VariableAddress[i]            : 
 #   25|     mu25_5(Int32)              = InitializeParameter[i]        : &:r25_4
@@ -363,7 +363,7 @@ constructor_init.cs:
 #   29| System.Void DerivedClass.Main()
 #   29|   Block 0
 #   29|     v29_1(Void)                = EnterFunction                 : 
-#   29|     mu29_2(<unknown>)          = AliasedDefinition             : 
+#   29|     %mu29_2(<unknown>)         = AliasedDefinition             : 
 #   31|     r31_1(glval<DerivedClass>) = VariableAddress[obj1]         : 
 #   31|     r31_2(DerivedClass)        = NewObj                        : 
 #   31|     r31_3(<funcaddr>)          = FunctionAddress[DerivedClass] : 
@@ -393,7 +393,7 @@ crement.cs:
 #    3| System.Void CrementOpsTest.Main()
 #    3|   Block 0
 #    3|     v3_1(Void)         = EnterFunction      : 
-#    3|     mu3_2(<unknown>)   = AliasedDefinition  : 
+#    3|     %mu3_2(<unknown>)  = AliasedDefinition  : 
 #    5|     r5_1(glval<Int32>) = VariableAddress[x] : 
 #    5|     r5_2(Int32)        = Constant[10]       : 
 #    5|     mu5_3(Int32)       = Store[x]           : &:r5_1, r5_2
@@ -433,7 +433,7 @@ delegates.cs:
 #    6| System.Int32 Delegates.returns(System.Int32)
 #    6|   Block 0
 #    6|     v6_1(Void)         = EnterFunction            : 
-#    6|     mu6_2(<unknown>)   = AliasedDefinition        : 
+#    6|     %mu6_2(<unknown>)  = AliasedDefinition        : 
 #    6|     r6_3(glval<Int32>) = VariableAddress[ret]     : 
 #    6|     mu6_4(Int32)       = InitializeParameter[ret] : &:r6_3
 #    8|     r8_1(glval<Int32>) = VariableAddress[#return] : 
@@ -447,30 +447,30 @@ delegates.cs:
 
 #   11| System.Void Delegates.Main()
 #   11|   Block 0
-#   11|     v11_1(Void)       = EnterFunction            : 
-#   11|     mu11_2(<unknown>) = AliasedDefinition        : 
-#   12|     r12_1(glval<Del>) = VariableAddress[del1]    : 
-#   12|     r12_2(Del)        = NewObj                   : 
-#   12|     r12_3(<funcaddr>) = FunctionAddress[Del]     : 
-#   12|     r12_4(glval<Del>) = FunctionAddress[returns] : 
-#   12|     v12_5(Void)       = Call[Del]                : func:r12_3, this:r12_2, 0:r12_4
-#   12|     mu12_6(<unknown>) = ^CallSideEffect          : ~m?
-#   12|     mu12_7(Del)       = Store[del1]              : &:r12_1, r12_2
-#   13|     r13_1(glval<Del>) = VariableAddress[del1]    : 
-#   13|     r13_2(Del)        = Load[del1]               : &:r13_1, ~m?
-#   13|     r13_3(<funcaddr>) = FunctionAddress[Invoke]  : 
-#   13|     r13_4(Int32)      = Constant[5]              : 
-#   13|     v13_5(Void)       = Call[Invoke]             : func:r13_3, this:r13_2, 0:r13_4
-#   13|     mu13_6(<unknown>) = ^CallSideEffect          : ~m?
-#   11|     v11_3(Void)       = ReturnVoid               : 
-#   11|     v11_4(Void)       = AliasedUse               : ~m?
-#   11|     v11_5(Void)       = ExitFunction             : 
+#   11|     v11_1(Void)        = EnterFunction            : 
+#   11|     %mu11_2(<unknown>) = AliasedDefinition        : 
+#   12|     r12_1(glval<Del>)  = VariableAddress[del1]    : 
+#   12|     r12_2(Del)         = NewObj                   : 
+#   12|     r12_3(<funcaddr>)  = FunctionAddress[Del]     : 
+#   12|     r12_4(glval<Del>)  = FunctionAddress[returns] : 
+#   12|     v12_5(Void)        = Call[Del]                : func:r12_3, this:r12_2, 0:r12_4
+#   12|     mu12_6(<unknown>)  = ^CallSideEffect          : ~m?
+#   12|     mu12_7(Del)        = Store[del1]              : &:r12_1, r12_2
+#   13|     r13_1(glval<Del>)  = VariableAddress[del1]    : 
+#   13|     r13_2(Del)         = Load[del1]               : &:r13_1, ~m?
+#   13|     r13_3(<funcaddr>)  = FunctionAddress[Invoke]  : 
+#   13|     r13_4(Int32)       = Constant[5]              : 
+#   13|     v13_5(Void)        = Call[Invoke]             : func:r13_3, this:r13_2, 0:r13_4
+#   13|     mu13_6(<unknown>)  = ^CallSideEffect          : ~m?
+#   11|     v11_3(Void)        = ReturnVoid               : 
+#   11|     v11_4(Void)        = AliasedUse               : ~m?
+#   11|     v11_5(Void)        = ExitFunction             : 
 
 events.cs:
 #    8| System.Void Events..ctor()
 #    8|   Block 0
 #    8|     v8_1(Void)          = EnterFunction          : 
-#    8|     mu8_2(<unknown>)    = AliasedDefinition      : 
+#    8|     %mu8_2(<unknown>)   = AliasedDefinition      : 
 #    8|     r8_3(glval<Events>) = InitializeThis         : 
 #   10|     r10_1(MyDel)        = NewObj                 : 
 #   10|     r10_2(<funcaddr>)   = FunctionAddress[MyDel] : 
@@ -487,7 +487,7 @@ events.cs:
 #   13| System.Void Events.AddEvent()
 #   13|   Block 0
 #   13|     v13_1(Void)          = EnterFunction                : 
-#   13|     mu13_2(<unknown>)    = AliasedDefinition            : 
+#   13|     %mu13_2(<unknown>)   = AliasedDefinition            : 
 #   13|     r13_3(glval<Events>) = InitializeThis               : 
 #   15|     r15_1(Events)        = CopyValue                    : r13_3
 #   15|     r15_2(<funcaddr>)    = FunctionAddress[add_MyEvent] : 
@@ -503,7 +503,7 @@ events.cs:
 #   18| System.Void Events.RemoveEvent()
 #   18|   Block 0
 #   18|     v18_1(Void)          = EnterFunction                   : 
-#   18|     mu18_2(<unknown>)    = AliasedDefinition               : 
+#   18|     %mu18_2(<unknown>)   = AliasedDefinition               : 
 #   18|     r18_3(glval<Events>) = InitializeThis                  : 
 #   20|     r20_1(Events)        = CopyValue                       : r18_3
 #   20|     r20_2(<funcaddr>)    = FunctionAddress[remove_MyEvent] : 
@@ -519,7 +519,7 @@ events.cs:
 #   23| System.String Events.Fun(System.String)
 #   23|   Block 0
 #   23|     v23_1(Void)          = EnterFunction            : 
-#   23|     mu23_2(<unknown>)    = AliasedDefinition        : 
+#   23|     %mu23_2(<unknown>)   = AliasedDefinition        : 
 #   23|     r23_3(glval<Events>) = InitializeThis           : 
 #   23|     r23_4(glval<String>) = VariableAddress[str]     : 
 #   23|     mu23_5(String)       = InitializeParameter[str] : &:r23_4
@@ -535,7 +535,7 @@ events.cs:
 #   28| System.Void Events.Main(System.String[])
 #   28|   Block 0
 #   28|     v28_1(Void)            = EnterFunction                : 
-#   28|     mu28_2(<unknown>)      = AliasedDefinition            : 
+#   28|     %mu28_2(<unknown>)     = AliasedDefinition            : 
 #   28|     r28_3(glval<String[]>) = VariableAddress[args]        : 
 #   28|     mu28_4(String[])       = InitializeParameter[args]    : &:r28_3
 #   30|     r30_1(glval<Events>)   = VariableAddress[obj]         : 
@@ -570,7 +570,7 @@ foreach.cs:
 #    4| System.Void ForEach.Main()
 #    4|   Block 0
 #    4|     v4_1(Void)               = EnterFunction                  : 
-#    4|     mu4_2(<unknown>)         = AliasedDefinition              : 
+#    4|     %mu4_2(<unknown>)        = AliasedDefinition              : 
 #    5|     r5_1(glval<Int32[]>)     = VariableAddress[a_array]       : 
 #    5|     mu5_2(Int32[])           = Uninitialized[a_array]         : &:r5_1
 #    5|     r5_3(Int32)              = Constant[0]                    : 
@@ -648,7 +648,7 @@ func_with_param_call.cs:
 #    5| System.Int32 test_call_with_param.f(System.Int32,System.Int32)
 #    5|   Block 0
 #    5|     v5_1(Void)         = EnterFunction            : 
-#    5|     mu5_2(<unknown>)   = AliasedDefinition        : 
+#    5|     %mu5_2(<unknown>)  = AliasedDefinition        : 
 #    5|     r5_3(glval<Int32>) = VariableAddress[x]       : 
 #    5|     mu5_4(Int32)       = InitializeParameter[x]   : &:r5_3
 #    5|     r5_5(glval<Int32>) = VariableAddress[y]       : 
@@ -668,7 +668,7 @@ func_with_param_call.cs:
 #   10| System.Int32 test_call_with_param.g()
 #   10|   Block 0
 #   10|     v10_1(Void)         = EnterFunction            : 
-#   10|     mu10_2(<unknown>)   = AliasedDefinition        : 
+#   10|     %mu10_2(<unknown>)  = AliasedDefinition        : 
 #   12|     r12_1(glval<Int32>) = VariableAddress[#return] : 
 #   12|     r12_2(<funcaddr>)   = FunctionAddress[f]       : 
 #   12|     r12_3(Int32)        = Constant[2]              : 
@@ -685,7 +685,7 @@ indexers.cs:
 #    8| System.String Indexers.MyClass.get_Item(System.Int32)
 #    8|   Block 0
 #    8|     v8_1(Void)             = EnterFunction              : 
-#    8|     mu8_2(<unknown>)       = AliasedDefinition          : 
+#    8|     %mu8_2(<unknown>)      = AliasedDefinition          : 
 #    8|     r8_3(glval<MyClass>)   = InitializeThis             : 
 #    6|     r6_1(glval<Int32>)     = VariableAddress[index]     : 
 #    6|     mu6_2(Int32)           = InitializeParameter[index] : &:r6_1
@@ -706,7 +706,7 @@ indexers.cs:
 #   12| System.Void Indexers.MyClass.set_Item(System.Int32,System.String)
 #   12|   Block 0
 #   12|     v12_1(Void)            = EnterFunction              : 
-#   12|     mu12_2(<unknown>)      = AliasedDefinition          : 
+#   12|     %mu12_2(<unknown>)     = AliasedDefinition          : 
 #   12|     r12_3(glval<MyClass>)  = InitializeThis             : 
 #    6|     r6_1(glval<Int32>)     = VariableAddress[index]     : 
 #    6|     mu6_2(Int32)           = InitializeParameter[index] : &:r6_1
@@ -728,7 +728,7 @@ indexers.cs:
 #   19| System.Void Indexers.Main()
 #   19|   Block 0
 #   19|     v19_1(Void)           = EnterFunction             : 
-#   19|     mu19_2(<unknown>)     = AliasedDefinition         : 
+#   19|     %mu19_2(<unknown>)    = AliasedDefinition         : 
 #   21|     r21_1(glval<MyClass>) = VariableAddress[inst]     : 
 #   21|     r21_2(MyClass)        = NewObj                    : 
 #   21|     r21_3(<funcaddr>)     = FunctionAddress[MyClass]  : 
@@ -769,7 +769,7 @@ inheritance_polymorphism.cs:
 #    3| System.Int32 A.function()
 #    3|   Block 0
 #    3|     v3_1(Void)         = EnterFunction            : 
-#    3|     mu3_2(<unknown>)   = AliasedDefinition        : 
+#    3|     %mu3_2(<unknown>)  = AliasedDefinition        : 
 #    3|     r3_3(glval<A>)     = InitializeThis           : 
 #    5|     r5_1(glval<Int32>) = VariableAddress[#return] : 
 #    5|     r5_2(Int32)        = Constant[0]              : 
@@ -782,7 +782,7 @@ inheritance_polymorphism.cs:
 #   15| System.Int32 C.function()
 #   15|   Block 0
 #   15|     v15_1(Void)         = EnterFunction            : 
-#   15|     mu15_2(<unknown>)   = AliasedDefinition        : 
+#   15|     %mu15_2(<unknown>)  = AliasedDefinition        : 
 #   15|     r15_3(glval<C>)     = InitializeThis           : 
 #   17|     r17_1(glval<Int32>) = VariableAddress[#return] : 
 #   17|     r17_2(Int32)        = Constant[1]              : 
@@ -794,52 +794,52 @@ inheritance_polymorphism.cs:
 
 #   23| System.Void Program.Main()
 #   23|   Block 0
-#   23|     v23_1(Void)       = EnterFunction             : 
-#   23|     mu23_2(<unknown>) = AliasedDefinition         : 
-#   25|     r25_1(glval<B>)   = VariableAddress[objB]     : 
-#   25|     r25_2(B)          = NewObj                    : 
-#   25|     r25_3(<funcaddr>) = FunctionAddress[B]        : 
-#   25|     v25_4(Void)       = Call[B]                   : func:r25_3, this:r25_2
-#   25|     mu25_5(<unknown>) = ^CallSideEffect           : ~m?
-#   25|     mu25_6(B)         = Store[objB]               : &:r25_1, r25_2
-#   26|     r26_1(glval<B>)   = VariableAddress[objB]     : 
-#   26|     r26_2(B)          = Load[objB]                : &:r26_1, ~m?
-#   26|     r26_3(<funcaddr>) = FunctionAddress[function] : 
-#   26|     r26_4(Int32)      = Call[function]            : func:r26_3, this:r26_2
-#   26|     mu26_5(<unknown>) = ^CallSideEffect           : ~m?
-#   29|     r29_1(glval<A>)   = VariableAddress[objA]     : 
-#   29|     mu29_2(A)         = Uninitialized[objA]       : &:r29_1
-#   30|     r30_1(glval<B>)   = VariableAddress[objB]     : 
-#   30|     r30_2(B)          = Load[objB]                : &:r30_1, ~m?
-#   30|     r30_3(A)          = Convert                   : r30_2
-#   30|     r30_4(glval<A>)   = VariableAddress[objA]     : 
-#   30|     mu30_5(A)         = Store[objA]               : &:r30_4, r30_3
-#   31|     r31_1(glval<A>)   = VariableAddress[objA]     : 
-#   31|     r31_2(A)          = Load[objA]                : &:r31_1, ~m?
-#   31|     r31_3(<funcaddr>) = FunctionAddress[function] : 
-#   31|     r31_4(Int32)      = Call[function]            : func:r31_3, this:r31_2
-#   31|     mu31_5(<unknown>) = ^CallSideEffect           : ~m?
-#   33|     r33_1(glval<A>)   = VariableAddress[objC]     : 
-#   33|     r33_2(C)          = NewObj                    : 
-#   33|     r33_3(<funcaddr>) = FunctionAddress[C]        : 
-#   33|     v33_4(Void)       = Call[C]                   : func:r33_3, this:r33_2
-#   33|     mu33_5(<unknown>) = ^CallSideEffect           : ~m?
-#   33|     r33_6(A)          = Convert                   : r33_2
-#   33|     mu33_7(A)         = Store[objC]               : &:r33_1, r33_2
-#   34|     r34_1(glval<A>)   = VariableAddress[objC]     : 
-#   34|     r34_2(A)          = Load[objC]                : &:r34_1, ~m?
-#   34|     r34_3(<funcaddr>) = FunctionAddress[function] : 
-#   34|     r34_4(Int32)      = Call[function]            : func:r34_3, this:r34_2
-#   34|     mu34_5(<unknown>) = ^CallSideEffect           : ~m?
-#   23|     v23_3(Void)       = ReturnVoid                : 
-#   23|     v23_4(Void)       = AliasedUse                : ~m?
-#   23|     v23_5(Void)       = ExitFunction              : 
+#   23|     v23_1(Void)        = EnterFunction             : 
+#   23|     %mu23_2(<unknown>) = AliasedDefinition         : 
+#   25|     r25_1(glval<B>)    = VariableAddress[objB]     : 
+#   25|     r25_2(B)           = NewObj                    : 
+#   25|     r25_3(<funcaddr>)  = FunctionAddress[B]        : 
+#   25|     v25_4(Void)        = Call[B]                   : func:r25_3, this:r25_2
+#   25|     mu25_5(<unknown>)  = ^CallSideEffect           : ~m?
+#   25|     mu25_6(B)          = Store[objB]               : &:r25_1, r25_2
+#   26|     r26_1(glval<B>)    = VariableAddress[objB]     : 
+#   26|     r26_2(B)           = Load[objB]                : &:r26_1, ~m?
+#   26|     r26_3(<funcaddr>)  = FunctionAddress[function] : 
+#   26|     r26_4(Int32)       = Call[function]            : func:r26_3, this:r26_2
+#   26|     mu26_5(<unknown>)  = ^CallSideEffect           : ~m?
+#   29|     r29_1(glval<A>)    = VariableAddress[objA]     : 
+#   29|     mu29_2(A)          = Uninitialized[objA]       : &:r29_1
+#   30|     r30_1(glval<B>)    = VariableAddress[objB]     : 
+#   30|     r30_2(B)           = Load[objB]                : &:r30_1, ~m?
+#   30|     r30_3(A)           = Convert                   : r30_2
+#   30|     r30_4(glval<A>)    = VariableAddress[objA]     : 
+#   30|     mu30_5(A)          = Store[objA]               : &:r30_4, r30_3
+#   31|     r31_1(glval<A>)    = VariableAddress[objA]     : 
+#   31|     r31_2(A)           = Load[objA]                : &:r31_1, ~m?
+#   31|     r31_3(<funcaddr>)  = FunctionAddress[function] : 
+#   31|     r31_4(Int32)       = Call[function]            : func:r31_3, this:r31_2
+#   31|     mu31_5(<unknown>)  = ^CallSideEffect           : ~m?
+#   33|     r33_1(glval<A>)    = VariableAddress[objC]     : 
+#   33|     r33_2(C)           = NewObj                    : 
+#   33|     r33_3(<funcaddr>)  = FunctionAddress[C]        : 
+#   33|     v33_4(Void)        = Call[C]                   : func:r33_3, this:r33_2
+#   33|     mu33_5(<unknown>)  = ^CallSideEffect           : ~m?
+#   33|     r33_6(A)           = Convert                   : r33_2
+#   33|     mu33_7(A)          = Store[objC]               : &:r33_1, r33_2
+#   34|     r34_1(glval<A>)    = VariableAddress[objC]     : 
+#   34|     r34_2(A)           = Load[objC]                : &:r34_1, ~m?
+#   34|     r34_3(<funcaddr>)  = FunctionAddress[function] : 
+#   34|     r34_4(Int32)       = Call[function]            : func:r34_3, this:r34_2
+#   34|     mu34_5(<unknown>)  = ^CallSideEffect           : ~m?
+#   23|     v23_3(Void)        = ReturnVoid                : 
+#   23|     v23_4(Void)        = AliasedUse                : ~m?
+#   23|     v23_5(Void)        = ExitFunction              : 
 
 inoutref.cs:
 #   11| System.Void InOutRef.set(MyClass,MyClass)
 #   11|   Block 0
 #   11|     v11_1(Void)           = EnterFunction           : 
-#   11|     mu11_2(<unknown>)     = AliasedDefinition       : 
+#   11|     %mu11_2(<unknown>)    = AliasedDefinition       : 
 #   11|     r11_3(glval<MyClass>) = VariableAddress[o1]     : 
 #   11|     mu11_4(MyClass)       = InitializeParameter[o1] : &:r11_3
 #   11|     r11_5(glval<MyClass>) = VariableAddress[o2]     : 
@@ -856,7 +856,7 @@ inoutref.cs:
 #   16| System.Void InOutRef.F(System.Int32,MyStruct,MyStruct,MyClass,MyClass)
 #   16|   Block 0
 #   16|     v16_1(Void)            = EnterFunction           : 
-#   16|     mu16_2(<unknown>)      = AliasedDefinition       : 
+#   16|     %mu16_2(<unknown>)     = AliasedDefinition       : 
 #   16|     r16_3(glval<Int32>)    = VariableAddress[a]      : 
 #   16|     mu16_4(Int32)          = InitializeParameter[a]  : &:r16_3
 #   16|     r16_5(glval<MyStruct>) = VariableAddress[b]      : 
@@ -914,7 +914,7 @@ inoutref.cs:
 #   29| System.Void InOutRef.Main()
 #   29|   Block 0
 #   29|     v29_1(Void)            = EnterFunction             : 
-#   29|     mu29_2(<unknown>)      = AliasedDefinition         : 
+#   29|     %mu29_2(<unknown>)     = AliasedDefinition         : 
 #   31|     r31_1(glval<Int32>)    = VariableAddress[a]        : 
 #   31|     r31_2(Int32)           = Constant[0]               : 
 #   31|     mu31_3(Int32)          = Store[a]                  : &:r31_1, r31_2
@@ -952,7 +952,7 @@ isexpr.cs:
 #    8| System.Void IsExpr.Main()
 #    8|   Block 0
 #    8|     v8_1(Void)           = EnterFunction        : 
-#    8|     mu8_2(<unknown>)     = AliasedDefinition    : 
+#    8|     %mu8_2(<unknown>)    = AliasedDefinition    : 
 #   10|     r10_1(glval<Is_A>)   = VariableAddress[obj] : 
 #   10|     r10_2(null)          = Constant[null]       : 
 #   10|     r10_3(Is_A)          = Convert              : r10_2
@@ -1014,7 +1014,7 @@ jumps.cs:
 #    5| System.Void Jumps.Main()
 #    5|   Block 0
 #    5|     v5_1(Void)         = EnterFunction      : 
-#    5|     mu5_2(<unknown>)   = AliasedDefinition  : 
+#    5|     %mu5_2(<unknown>)  = AliasedDefinition  : 
 #    7|     r7_1(glval<Int32>) = VariableAddress[i] : 
 #    7|     r7_2(Int32)        = Constant[1]        : 
 #    7|     mu7_3(Int32)       = Store[i]           : &:r7_1, r7_2
@@ -1187,7 +1187,7 @@ lock.cs:
 #    5| System.Void LockTest.A()
 #    5|   Block 0
 #    5|     v5_1(Void)            = EnterFunction              : 
-#    5|     mu5_2(<unknown>)      = AliasedDefinition          : 
+#    5|     %mu5_2(<unknown>)     = AliasedDefinition          : 
 #    7|     r7_1(glval<Object>)   = VariableAddress[object]    : 
 #    7|     r7_2(Object)          = NewObj                     : 
 #    7|     r7_3(<funcaddr>)      = FunctionAddress[Object]    : 
@@ -1238,7 +1238,7 @@ obj_creation.cs:
 #    7| System.Void ObjCreation.MyClass..ctor()
 #    7|   Block 0
 #    7|     v7_1(Void)           = EnterFunction     : 
-#    7|     mu7_2(<unknown>)     = AliasedDefinition : 
+#    7|     %mu7_2(<unknown>)    = AliasedDefinition : 
 #    7|     r7_3(glval<MyClass>) = InitializeThis    : 
 #    8|     v8_1(Void)           = NoOp              : 
 #    7|     v7_4(Void)           = ReturnVoid        : 
@@ -1248,7 +1248,7 @@ obj_creation.cs:
 #   11| System.Void ObjCreation.MyClass..ctor(System.Int32)
 #   11|   Block 0
 #   11|     v11_1(Void)           = EnterFunction           : 
-#   11|     mu11_2(<unknown>)     = AliasedDefinition       : 
+#   11|     %mu11_2(<unknown>)    = AliasedDefinition       : 
 #   11|     r11_3(glval<MyClass>) = InitializeThis          : 
 #   11|     r11_4(glval<Int32>)   = VariableAddress[_x]     : 
 #   11|     mu11_5(Int32)         = InitializeParameter[_x] : &:r11_4
@@ -1264,7 +1264,7 @@ obj_creation.cs:
 #   17| System.Void ObjCreation.SomeFun(ObjCreation.MyClass)
 #   17|   Block 0
 #   17|     v17_1(Void)           = EnterFunction          : 
-#   17|     mu17_2(<unknown>)     = AliasedDefinition      : 
+#   17|     %mu17_2(<unknown>)    = AliasedDefinition      : 
 #   17|     r17_3(glval<MyClass>) = VariableAddress[x]     : 
 #   17|     mu17_4(MyClass)       = InitializeParameter[x] : &:r17_3
 #   18|     v18_1(Void)           = NoOp                   : 
@@ -1275,7 +1275,7 @@ obj_creation.cs:
 #   21| System.Void ObjCreation.Main()
 #   21|   Block 0
 #   21|     v21_1(Void)           = EnterFunction                 : 
-#   21|     mu21_2(<unknown>)     = AliasedDefinition             : 
+#   21|     %mu21_2(<unknown>)    = AliasedDefinition             : 
 #   23|     r23_1(glval<MyClass>) = VariableAddress[obj]          : 
 #   23|     r23_2(MyClass)        = NewObj                        : 
 #   23|     r23_3(<funcaddr>)     = FunctionAddress[MyClass]      : 
@@ -1314,7 +1314,7 @@ pointers.cs:
 #    3| System.Void Pointers.addone(System.Int32[])
 #    3|   Block 0
 #    3|     v3_1(Void)           = EnterFunction               : 
-#    3|     mu3_2(<unknown>)     = AliasedDefinition           : 
+#    3|     %mu3_2(<unknown>)    = AliasedDefinition           : 
 #    3|     r3_3(glval<Int32[]>) = VariableAddress[arr]        : 
 #    3|     mu3_4(Int32[])       = InitializeParameter[arr]    : &:r3_3
 #    5|     r5_1(glval<Int32>)   = VariableAddress[length]     : 
@@ -1373,7 +1373,7 @@ pointers.cs:
 #   25| System.Void Pointers.Main()
 #   25|   Block 0
 #   25|     v25_1(Void)             = EnterFunction             : 
-#   25|     mu25_2(<unknown>)       = AliasedDefinition         : 
+#   25|     %mu25_2(<unknown>)      = AliasedDefinition         : 
 #   26|     r26_1(glval<MyClass>)   = VariableAddress[o]        : 
 #   26|     r26_2(MyClass)          = NewObj                    : 
 #   26|     r26_3(<funcaddr>)       = FunctionAddress[MyClass]  : 
@@ -1441,7 +1441,7 @@ prop.cs:
 #    7| System.Int32 PropClass.get_Prop()
 #    7|   Block 0
 #    7|     v7_1(Void)             = EnterFunction            : 
-#    7|     mu7_2(<unknown>)       = AliasedDefinition        : 
+#    7|     %mu7_2(<unknown>)      = AliasedDefinition        : 
 #    7|     r7_3(glval<PropClass>) = InitializeThis           : 
 #    9|     r9_1(glval<Int32>)     = VariableAddress[#return] : 
 #    9|     r9_2(PropClass)        = CopyValue                : r7_3
@@ -1457,7 +1457,7 @@ prop.cs:
 #   12| System.Void PropClass.set_Prop(System.Int32)
 #   12|   Block 0
 #   12|     v12_1(Void)             = EnterFunction              : 
-#   12|     mu12_2(<unknown>)       = AliasedDefinition          : 
+#   12|     %mu12_2(<unknown>)      = AliasedDefinition          : 
 #   12|     r12_3(glval<PropClass>) = InitializeThis             : 
 #   12|     r12_4(glval<Int32>)     = VariableAddress[value]     : 
 #   12|     mu12_5(Int32)           = InitializeParameter[value] : &:r12_4
@@ -1472,7 +1472,7 @@ prop.cs:
 #   18| System.Int32 PropClass.func()
 #   18|   Block 0
 #   18|     v18_1(Void)             = EnterFunction            : 
-#   18|     mu18_2(<unknown>)       = AliasedDefinition        : 
+#   18|     %mu18_2(<unknown>)      = AliasedDefinition        : 
 #   18|     r18_3(glval<PropClass>) = InitializeThis           : 
 #   20|     r20_1(glval<Int32>)     = VariableAddress[#return] : 
 #   20|     r20_2(Int32)            = Constant[0]              : 
@@ -1485,7 +1485,7 @@ prop.cs:
 #   26| System.Void Prog.Main()
 #   26|   Block 0
 #   26|     v26_1(Void)             = EnterFunction              : 
-#   26|     mu26_2(<unknown>)       = AliasedDefinition          : 
+#   26|     %mu26_2(<unknown>)      = AliasedDefinition          : 
 #   28|     r28_1(glval<PropClass>) = VariableAddress[obj]       : 
 #   28|     r28_2(PropClass)        = NewObj                     : 
 #   28|     r28_3(<funcaddr>)       = FunctionAddress[PropClass] : 
@@ -1513,7 +1513,7 @@ simple_call.cs:
 #    5| System.Int32 test_simple_call.f()
 #    5|   Block 0
 #    5|     v5_1(Void)         = EnterFunction            : 
-#    5|     mu5_2(<unknown>)   = AliasedDefinition        : 
+#    5|     %mu5_2(<unknown>)  = AliasedDefinition        : 
 #    7|     r7_1(glval<Int32>) = VariableAddress[#return] : 
 #    7|     r7_2(Int32)        = Constant[0]              : 
 #    7|     mu7_3(Int32)       = Store[#return]           : &:r7_1, r7_2
@@ -1525,7 +1525,7 @@ simple_call.cs:
 #   10| System.Int32 test_simple_call.g()
 #   10|   Block 0
 #   10|     v10_1(Void)                    = EnterFunction            : 
-#   10|     mu10_2(<unknown>)              = AliasedDefinition        : 
+#   10|     %mu10_2(<unknown>)             = AliasedDefinition        : 
 #   10|     r10_3(glval<test_simple_call>) = InitializeThis           : 
 #   12|     r12_1(glval<Int32>)            = VariableAddress[#return] : 
 #   12|     r12_2(<funcaddr>)              = FunctionAddress[f]       : 
@@ -1541,7 +1541,7 @@ simple_function.cs:
 #    5| System.Int32 test_simple_function.f()
 #    5|   Block 0
 #    5|     v5_1(Void)         = EnterFunction            : 
-#    5|     mu5_2(<unknown>)   = AliasedDefinition        : 
+#    5|     %mu5_2(<unknown>)  = AliasedDefinition        : 
 #    7|     r7_1(glval<Int32>) = VariableAddress[#return] : 
 #    7|     r7_2(Int32)        = Constant[0]              : 
 #    7|     mu7_3(Int32)       = Store[#return]           : &:r7_1, r7_2
@@ -1554,7 +1554,7 @@ stmts.cs:
 #    5| System.Int32 test_stmts.ifStmt(System.Int32)
 #    5|   Block 0
 #    5|     v5_1(Void)         = EnterFunction          : 
-#    5|     mu5_2(<unknown>)   = AliasedDefinition      : 
+#    5|     %mu5_2(<unknown>)  = AliasedDefinition      : 
 #    5|     r5_3(glval<Int32>) = VariableAddress[x]     : 
 #    5|     mu5_4(Int32)       = InitializeParameter[x] : &:r5_3
 #    7|     r7_1(glval<Int32>) = VariableAddress[x]     : 
@@ -1586,7 +1586,7 @@ stmts.cs:
 #   13| System.Void test_stmts.whileStmt(System.Int32)
 #   13|   Block 0
 #   13|     v13_1(Void)         = EnterFunction          : 
-#   13|     mu13_2(<unknown>)   = AliasedDefinition      : 
+#   13|     %mu13_2(<unknown>)  = AliasedDefinition      : 
 #   13|     r13_3(glval<Int32>) = VariableAddress[x]     : 
 #   13|     mu13_4(Int32)       = InitializeParameter[x] : &:r13_3
 #   15|     r15_1(glval<Int32>) = VariableAddress[i]     : 
@@ -1620,7 +1620,7 @@ stmts.cs:
 #   22| System.Int32 test_stmts.switchStmt()
 #   22|   Block 0
 #   22|     v22_1(Void)          = EnterFunction               : 
-#   22|     mu22_2(<unknown>)    = AliasedDefinition           : 
+#   22|     %mu22_2(<unknown>)   = AliasedDefinition           : 
 #   24|     r24_1(glval<Object>) = VariableAddress[caseSwitch] : 
 #   24|     r24_2(Object)        = NewObj                      : 
 #   24|     r24_3(<funcaddr>)    = FunctionAddress[Object]     : 
@@ -1685,7 +1685,7 @@ stmts.cs:
 #   46| System.Void test_stmts.tryCatchFinally()
 #   46|   Block 0
 #   46|     v46_1(Void)         = EnterFunction      : 
-#   46|     mu46_2(<unknown>)   = AliasedDefinition  : 
+#   46|     %mu46_2(<unknown>)  = AliasedDefinition  : 
 #   48|     r48_1(glval<Int32>) = VariableAddress[x] : 
 #   48|     r48_2(Int32)        = Constant[5]        : 
 #   48|     mu48_3(Int32)       = Store[x]           : &:r48_1, r48_2
@@ -1749,7 +1749,7 @@ stmts.cs:
 #   69| System.Void test_stmts.forStmt()
 #   69|   Block 0
 #   69|     v69_1(Void)         = EnterFunction      : 
-#   69|     mu69_2(<unknown>)   = AliasedDefinition  : 
+#   69|     %mu69_2(<unknown>)  = AliasedDefinition  : 
 #   71|     r71_1(glval<Int32>) = VariableAddress[x] : 
 #   71|     r71_2(Int32)        = Constant[0]        : 
 #   71|     mu71_3(Int32)       = Store[x]           : &:r71_1, r71_2
@@ -1831,7 +1831,7 @@ stmts.cs:
 #   89| System.Void test_stmts.doWhile()
 #   89|   Block 0
 #   89|     v89_1(Void)         = EnterFunction      : 
-#   89|     mu89_2(<unknown>)   = AliasedDefinition  : 
+#   89|     %mu89_2(<unknown>)  = AliasedDefinition  : 
 #   91|     r91_1(glval<Int32>) = VariableAddress[x] : 
 #   91|     r91_2(Int32)        = Constant[0]        : 
 #   91|     mu91_3(Int32)       = Store[x]           : &:r91_1, r91_2
@@ -1860,7 +1860,7 @@ stmts.cs:
 #   99| System.Void test_stmts.checkedUnchecked()
 #   99|   Block 0
 #   99|     v99_1(Void)          = EnterFunction        : 
-#   99|     mu99_2(<unknown>)    = AliasedDefinition    : 
+#   99|     %mu99_2(<unknown>)   = AliasedDefinition    : 
 #  101|     r101_1(glval<Int32>) = VariableAddress[num] : 
 #  101|     r101_2(Int32)        = Constant[2147483647] : 
 #  101|     r101_3(Int32)        = Load[?]              : &:r101_2, ~m?
@@ -1885,7 +1885,7 @@ using.cs:
 #    7| System.Void UsingStmt.MyDisposable..ctor()
 #    7|   Block 0
 #    7|     v7_1(Void)                = EnterFunction     : 
-#    7|     mu7_2(<unknown>)          = AliasedDefinition : 
+#    7|     %mu7_2(<unknown>)         = AliasedDefinition : 
 #    7|     r7_3(glval<MyDisposable>) = InitializeThis    : 
 #    7|     v7_4(Void)                = NoOp              : 
 #    7|     v7_5(Void)                = ReturnVoid        : 
@@ -1895,7 +1895,7 @@ using.cs:
 #    8| System.Void UsingStmt.MyDisposable.DoSomething()
 #    8|   Block 0
 #    8|     v8_1(Void)                = EnterFunction     : 
-#    8|     mu8_2(<unknown>)          = AliasedDefinition : 
+#    8|     %mu8_2(<unknown>)         = AliasedDefinition : 
 #    8|     r8_3(glval<MyDisposable>) = InitializeThis    : 
 #    8|     v8_4(Void)                = NoOp              : 
 #    8|     v8_5(Void)                = ReturnVoid        : 
@@ -1905,7 +1905,7 @@ using.cs:
 #    9| System.Void UsingStmt.MyDisposable.Dispose()
 #    9|   Block 0
 #    9|     v9_1(Void)                = EnterFunction     : 
-#    9|     mu9_2(<unknown>)          = AliasedDefinition : 
+#    9|     %mu9_2(<unknown>)         = AliasedDefinition : 
 #    9|     r9_3(glval<MyDisposable>) = InitializeThis    : 
 #    9|     v9_4(Void)                = NoOp              : 
 #    9|     v9_5(Void)                = ReturnVoid        : 
@@ -1915,7 +1915,7 @@ using.cs:
 #   12| System.Void UsingStmt.Main()
 #   12|   Block 0
 #   12|     v12_1(Void)                = EnterFunction                 : 
-#   12|     mu12_2(<unknown>)          = AliasedDefinition             : 
+#   12|     %mu12_2(<unknown>)         = AliasedDefinition             : 
 #   14|     r14_1(glval<MyDisposable>) = VariableAddress[o1]           : 
 #   14|     r14_2(MyDisposable)        = NewObj                        : 
 #   14|     r14_3(<funcaddr>)          = FunctionAddress[MyDisposable] : 
@@ -1957,7 +1957,7 @@ variables.cs:
 #    5| System.Void test_variables.f()
 #    5|   Block 0
 #    5|     v5_1(Void)          = EnterFunction      : 
-#    5|     mu5_2(<unknown>)    = AliasedDefinition  : 
+#    5|     %mu5_2(<unknown>)   = AliasedDefinition  : 
 #    7|     r7_1(glval<Int32>)  = VariableAddress[x] : 
 #    7|     mu7_2(Int32)        = Uninitialized[x]   : &:r7_1
 #    7|     r7_3(glval<Int32>)  = VariableAddress[y] : 

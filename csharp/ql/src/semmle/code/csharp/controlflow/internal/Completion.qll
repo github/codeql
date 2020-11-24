@@ -39,7 +39,7 @@ private newtype TCompletion =
   TGotoCompletion(string label) { label = any(GotoStmt gs).getLabel() } or
   TThrowCompletion(ExceptionClass ec) or
   TExitCompletion() or
-  TNestedCompletion(NormalCompletion inner, Completion outer) {
+  TNestedCompletion(ConditionalCompletion inner, Completion outer) {
     outer = TReturnCompletion()
     or
     outer = TBreakCompletion()
@@ -51,8 +51,6 @@ private newtype TCompletion =
     outer = TThrowCompletion(_)
     or
     outer = TExitCompletion()
-    or
-    exists(boolean b | inner = TBooleanCompletion(b) and outer = TBooleanCompletion(b.booleanNot()))
   }
 
 pragma[noinline]
@@ -393,11 +391,13 @@ private predicate assertion(Assertion a, int i, AssertMethod am, Expr e) {
 /** Gets a valid completion when argument `i` fails in assertion `a`. */
 Completion assertionCompletion(Assertion a, int i) {
   exists(AssertMethod am | am = a.getAssertMethod() |
-    result = TThrowCompletion(am.getExceptionClass(i))
-    or
-    i = am.getAnAssertionIndex() and
-    not exists(am.getExceptionClass(i)) and
-    result = TExitCompletion()
+    if am.getAssertionFailure(i).isExit()
+    then result = TExitCompletion()
+    else
+      exists(Class c |
+        am.getAssertionFailure(i).isException(c) and
+        result = TThrowCompletion(c)
+      )
   )
 }
 
@@ -405,126 +405,87 @@ Completion assertionCompletion(Assertion a, int i) {
  * Holds if a normal completion of `e` must be a Boolean completion.
  */
 private predicate mustHaveBooleanCompletion(Expr e) {
-  inBooleanContext(e, _) and
-  not inBooleanContext(e.getAChildExpr(), true) and
+  inBooleanContext(e) and
   not e instanceof NonReturningCall
 }
 
 /**
  * Holds if `e` is used in a Boolean context. That is, whether the value
  * that `e` evaluates to determines a true/false branch successor.
- *
- * `isBooleanCompletionForParent` indicates whether the Boolean completion
- * for `e` will be the Boolean completion for `e`'s parent. For example,
- * if `e = B` and the parent is `A && B`, then the Boolean completion of
- * `B` is the Boolean completion of `A && B`.
  */
-private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent) {
-  exists(IfStmt is | is.getCondition() = e | isBooleanCompletionForParent = false)
+private predicate inBooleanContext(Expr e) {
+  e = any(IfStmt is).getCondition()
   or
-  exists(LoopStmt ls | ls.getCondition() = e | isBooleanCompletionForParent = false)
+  e = any(LoopStmt ls).getCondition()
   or
-  exists(Case c | c.getCondition() = e | isBooleanCompletionForParent = false)
+  e = any(Case c).getCondition()
   or
-  exists(SpecificCatchClause scc | scc.getFilterClause() = e | isBooleanCompletionForParent = false)
+  e = any(SpecificCatchClause scc).getFilterClause()
   or
   exists(BooleanAssertMethod m, int i |
     assertion(_, i, m, e) and
-    i = m.getAnAssertionIndex(_) and
-    isBooleanCompletionForParent = false
+    i = m.getAnAssertionIndex(_)
   )
   or
-  exists(LogicalNotExpr lne | lne.getAnOperand() = e |
-    inBooleanContext(lne, _) and
-    isBooleanCompletionForParent = true
-  )
+  e = any(LogicalNotExpr lne | inBooleanContext(lne)).getAnOperand()
   or
   exists(LogicalAndExpr lae |
-    lae.getLeftOperand() = e and
-    isBooleanCompletionForParent = false
+    lae.getLeftOperand() = e
     or
-    lae.getRightOperand() = e and
-    inBooleanContext(lae, _) and
-    isBooleanCompletionForParent = true
+    inBooleanContext(lae) and
+    lae.getRightOperand() = e
   )
   or
   exists(LogicalOrExpr lae |
-    lae.getLeftOperand() = e and
-    isBooleanCompletionForParent = false
+    lae.getLeftOperand() = e
     or
-    lae.getRightOperand() = e and
-    inBooleanContext(lae, _) and
-    isBooleanCompletionForParent = true
+    inBooleanContext(lae) and
+    lae.getRightOperand() = e
   )
   or
   exists(ConditionalExpr ce |
-    ce.getCondition() = e and
-    isBooleanCompletionForParent = false
+    ce.getCondition() = e
     or
-    (ce.getThen() = e or ce.getElse() = e) and
-    inBooleanContext(ce, _) and
-    isBooleanCompletionForParent = true
+    inBooleanContext(ce) and
+    e in [ce.getThen(), ce.getElse()]
   )
   or
-  exists(NullCoalescingExpr nce | nce.getAnOperand() = e |
-    inBooleanContext(nce, _) and
-    isBooleanCompletionForParent = true
-  )
+  e = any(NullCoalescingExpr nce | inBooleanContext(nce)).getAnOperand()
   or
-  exists(SwitchExpr se |
-    inBooleanContext(se, _) and
-    e = se.getACase().getBody() and
-    isBooleanCompletionForParent = true
-  )
+  e = any(SwitchExpr se | inBooleanContext(se)).getACase()
+  or
+  e = any(SwitchCaseExpr sce | inBooleanContext(sce)).getBody()
 }
 
 /**
  * Holds if a normal completion of `e` must be a nullness completion.
  */
 private predicate mustHaveNullnessCompletion(Expr e) {
-  inNullnessContext(e, _) and
-  not inNullnessContext(e.getAChildExpr(), true) and
+  inNullnessContext(e) and
   not e instanceof NonReturningCall
 }
 
 /**
  * Holds if `e` is used in a nullness context. That is, whether the value
  * that `e` evaluates to determines a `null`/non-`null` branch successor.
- *
- * `isNullnessCompletionForParent` indicates whether the nullness completion
- * for `e` will be the nullness completion for `e`'s parent. For example,
- * if `e = A` and the parent is `A ?? B`, then the nullness completion of `B`
- * is the nullness completion of `A ?? B`.
  */
-private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParent) {
-  exists(NullCoalescingExpr nce | e = nce.getLeftOperand() | isNullnessCompletionForParent = false)
+private predicate inNullnessContext(Expr e) {
+  e = any(NullCoalescingExpr nce).getLeftOperand()
   or
-  exists(QualifiableExpr qe | qe.isConditional() |
-    e = qe.getChildExpr(-1) and
-    isNullnessCompletionForParent = false
-  )
+  exists(QualifiableExpr qe | qe.isConditional() | e = qe.getChildExpr(-1))
   or
   exists(NullnessAssertMethod m, int i |
     assertion(_, i, m, e) and
-    i = m.getAnAssertionIndex(_) and
-    isNullnessCompletionForParent = false
+    i = m.getAnAssertionIndex(_)
   )
   or
-  exists(ConditionalExpr ce | inNullnessContext(ce, _) |
-    (e = ce.getThen() or e = ce.getElse()) and
-    isNullnessCompletionForParent = true
-  )
+  exists(ConditionalExpr ce | inNullnessContext(ce) | (e = ce.getThen() or e = ce.getElse()))
   or
-  exists(NullCoalescingExpr nce | inNullnessContext(nce, _) |
-    e = nce.getRightOperand() and
-    isNullnessCompletionForParent = true
-  )
+  exists(NullCoalescingExpr nce | inNullnessContext(nce) | e = nce.getRightOperand())
   or
-  exists(SwitchExpr se |
-    inNullnessContext(se, _) and
-    e = se.getACase().getBody() and
-    isNullnessCompletionForParent = true
-  )
+  e = any(SwitchExpr se | inNullnessContext(se)).getACase()
+  or
+  e = any(SwitchCaseExpr sce | inNullnessContext(sce)).getBody()
 }
 
 /**
@@ -590,18 +551,14 @@ abstract class ConditionalCompletion extends NormalCompletion { }
 class BooleanCompletion extends ConditionalCompletion {
   private boolean value;
 
-  BooleanCompletion() {
-    this = TBooleanCompletion(value) or
-    this = TNestedCompletion(_, TBooleanCompletion(value))
-  }
+  BooleanCompletion() { this = TBooleanCompletion(value) }
 
   /** Gets the Boolean value of this completion. */
   boolean getValue() { result = value }
 
-  override string toString() {
-    this = TBooleanCompletion(value) and
-    result = this.getValue().toString()
-  }
+  BooleanCompletion getDual() { result = TBooleanCompletion(value.booleanNot()) }
+
+  override string toString() { result = value.toString() }
 }
 
 /** A Boolean `true` completion. */
@@ -688,30 +645,31 @@ class BreakNormalCompletion extends NormalCompletion, TBreakNormalCompletion {
  * A nested completion. For example, in
  *
  * ```csharp
- * void M(bool b)
+ * void M(bool b1, bool b2)
  * {
  *     try
  *     {
- *         if (b)
+ *         if (b1)
  *            throw new Exception();
  *     }
  *     finally
  *     {
- *         System.Console.WriteLine("M called");
+ *         if (b2)
+ *             System.Console.WriteLine("M called");
  *     }
  * }
  * ```
  *
- * `System.Console.WriteLine("M called")` has an outer throw completion
- * from `throw new Exception` and an inner simple completion.
+ * `b2` has an outer throw completion (inherited from `throw new Exception`)
+ * and an inner `false` completion. `b2` also has a (normal) `true` completion.
  */
 class NestedCompletion extends Completion, TNestedCompletion {
-  private NormalCompletion inner;
+  private ConditionalCompletion inner;
   private Completion outer;
 
   NestedCompletion() { this = TNestedCompletion(inner, outer) }
 
-  override NormalCompletion getInnerCompletion() { result = inner }
+  override ConditionalCompletion getInnerCompletion() { result = inner }
 
   override Completion getOuterCompletion() { result = outer }
 

@@ -798,10 +798,12 @@ private module Redis {
     bindingset[argIndex]
     predicate argumentIsAmbiguousKey(string method, int argIndex) {
       method =
-        ["set", "publish", "append", "bitfield", "decrby", "getset", "hincrby", "hincrbyfloat",
-            "hset", "hsetnx", "incrby", "incrbyfloat", "linsert", "lpush", "lpushx", "lset",
-            "ltrim", "rename", "renamenx", "rpushx", "setbit", "setex", "smove", "zincrby",
-            "zinterstore", "hdel", "lpush", "pfadd", "rpush", "sadd", "sdiffstore", "srem"] and
+        [
+          "set", "publish", "append", "bitfield", "decrby", "getset", "hincrby", "hincrbyfloat",
+          "hset", "hsetnx", "incrby", "incrbyfloat", "linsert", "lpush", "lpushx", "lset", "ltrim",
+          "rename", "renamenx", "rpushx", "setbit", "setex", "smove", "zincrby", "zinterstore",
+          "hdel", "lpush", "pfadd", "rpush", "sadd", "sdiffstore", "srem"
+        ] and
       argIndex = 0
       or
       method = ["bitop", "hmset", "mset", "msetnx", "geoadd"] and argIndex >= 0

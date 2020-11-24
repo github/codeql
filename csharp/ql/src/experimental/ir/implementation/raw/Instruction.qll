@@ -92,6 +92,11 @@ class Instruction extends Construction::TStageInstruction {
       else result = "r"
   }
 
+  private string getConflationPrefix() {
+    shouldGenerateDumpStrings() and
+    if isResultConflated() then result = "%" else result = ""
+  }
+
   /**
    * Gets the zero-based index of this instruction within its block. This is
    * used by debugging and printing code only.
@@ -143,7 +148,8 @@ class Instruction extends Construction::TStageInstruction {
    */
   final string getResultString() {
     shouldGenerateDumpStrings() and
-    result = getResultId() + "(" + getResultLanguageType().getDumpString() + ")"
+    result =
+      getConflationPrefix() + getResultId() + "(" + getResultLanguageType().getDumpString() + ")"
   }
 
   /**
@@ -582,16 +588,6 @@ class InitializeParameterInstruction extends VariableInstruction {
    * Gets the parameter initialized by this instruction.
    */
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
-}
-
-/**
- * An instruction that initializes all memory that existed before this function was called.
- *
- * This instruction provides a definition for memory that, because it was actually allocated and
- * initialized elsewhere, would not otherwise have a definition in this function.
- */
-class InitializeNonLocalInstruction extends Instruction {
-  InitializeNonLocalInstruction() { getOpcode() instanceof Opcode::InitializeNonLocal }
 }
 
 /**

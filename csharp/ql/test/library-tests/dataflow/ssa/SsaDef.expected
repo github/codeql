@@ -125,8 +125,8 @@
 | DefUse.cs:66:9:66:14 | this.Field3 | DefUse.cs:66:9:66:18 | SSA def(this.Field3) |
 | DefUse.cs:67:19:67:20 | tc | DefUse.cs:67:19:67:27 | SSA def(tc) |
 | DefUse.cs:79:13:79:14 | x1 | DefUse.cs:79:13:79:18 | SSA def(x1) |
-| DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:16:80:46 | SSA phi(x1) |
 | DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:30:80:31 | SSA def(x1) |
+| DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:30:80:31 | SSA phi(x1) |
 | DefUse.cs:83:13:83:14 | x2 | DefUse.cs:83:13:83:18 | SSA def(x2) |
 | DefUse.cs:83:13:83:14 | x2 | DefUse.cs:85:15:85:16 | SSA def(x2) |
 | DefUse.cs:89:13:89:14 | x3 | DefUse.cs:89:13:89:18 | SSA def(x3) |

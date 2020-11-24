@@ -66,9 +66,11 @@ module IndirectCommandInjection {
     exists(string method |
       not method =
         // the methods that does not return a chained `yargs` object.
-        ["getContext", "getDemandedOptions", "getDemandedCommands", "getDeprecatedOptions",
-            "_getParseContext", "getOptions", "getGroups", "getStrict", "getStrictCommands",
-            "getExitProcess", "locale", "getUsageInstance", "getCommandInstance"]
+        [
+          "getContext", "getDemandedOptions", "getDemandedCommands", "getDeprecatedOptions",
+          "_getParseContext", "getOptions", "getGroups", "getStrict", "getStrictCommands",
+          "getExitProcess", "locale", "getUsageInstance", "getCommandInstance"
+        ]
     |
       result = yargs().getAMethodCall(method)
     )

@@ -115,15 +115,16 @@ module Werkzeug {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       nodeFrom = werkzeug::datastructures::FileStorage::instance() and
       exists(DataFlow::AttrRead read | nodeTo = read |
-        read.getAttributeName() in ["filename",
-              // str
-              "name", "content_type", "mimetype",
-              // file-like
-              "stream",
-              // TODO: werkzeug.datastructures.Headers
-              "headers",
-              // dict[str, str]
-              "mimetype_params"] and
+        read.getAttributeName() in [
+            // str
+            "filename", "name", "content_type", "mimetype",
+            // file-like
+            "stream",
+            // TODO: werkzeug.datastructures.Headers
+            "headers",
+            // dict[str, str]
+            "mimetype_params"
+          ] and
         read.getObject() = nodeFrom
       )
     }

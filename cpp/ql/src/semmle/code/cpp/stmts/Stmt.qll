@@ -678,7 +678,7 @@ class CoReturnStmt extends Stmt, @stmt_co_return {
   override string getAPrimaryQlClass() { result = "CoReturnStmt" }
 
   /**
-   * Gets the operand of this 'co_return' statement.
+   * Gets the operand of this `co_return` statement.
    *
    * For example, for
    * ```
@@ -693,7 +693,7 @@ class CoReturnStmt extends Stmt, @stmt_co_return {
   FunctionCall getOperand() { result = this.getChild(0) }
 
   /**
-   * Gets the expression of this 'co_return' statement, if any.
+   * Gets the expression of this `co_return` statement, if any.
    *
    * For example, for
    * ```
@@ -707,7 +707,7 @@ class CoReturnStmt extends Stmt, @stmt_co_return {
   Expr getExpr() { result = this.getOperand().getArgument(0) }
 
   /**
-   * Holds if this 'co_return' statement has an expression.
+   * Holds if this `co_return` statement has an expression.
    *
    * For example, this holds for
    * ```

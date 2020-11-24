@@ -396,16 +396,16 @@ private FieldAddressInstruction getFieldInstruction(Instruction instr) {
 
 /**
  * The target of a `fieldStoreStepAfterArraySuppression` store step, which is used to convert
- * an `ArrayContent` to a `FieldContent` when the `BufferMayWriteSideEffect` instruction stores
+ * an `ArrayContent` to a `FieldContent` when the `WriteSideEffect` instruction stores
  * into a field. See the QLDoc for `suppressArrayRead` for an example of where such a conversion
  * is inserted.
  */
-private class BufferMayWriteSideEffectFieldStoreQualifierNode extends PartialDefinitionNode {
+private class WriteSideEffectFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
-  BufferMayWriteSideEffectInstruction write;
+  WriteSideEffectInstruction write;
   FieldAddressInstruction field;
 
-  BufferMayWriteSideEffectFieldStoreQualifierNode() {
+  WriteSideEffectFieldStoreQualifierNode() {
     not instr.isResultConflated() and
     instr.getPartial() = write and
     field = getFieldInstruction(write.getDestinationAddress())

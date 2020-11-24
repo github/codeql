@@ -491,8 +491,10 @@ module Express {
     RequestInputAccess() {
       kind = "parameter" and
       this =
-        [getAQueryObjectReference(DataFlow::TypeTracker::end(), rh),
-            getAParamsObjectReference(DataFlow::TypeTracker::end(), rh)].getAPropertyRead()
+        [
+          getAQueryObjectReference(DataFlow::TypeTracker::end(), rh),
+          getAParamsObjectReference(DataFlow::TypeTracker::end(), rh)
+        ].getAPropertyRead()
       or
       exists(DataFlow::SourceNode request | request = rh.getARequestSource().ref() |
         kind = "parameter" and
