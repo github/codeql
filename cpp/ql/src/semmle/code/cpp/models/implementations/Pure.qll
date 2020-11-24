@@ -10,9 +10,11 @@ import semmle.code.cpp.models.interfaces.SideEffect
  */
 class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
   PureStrFunction() {
-    hasGlobalOrStdName(["atof", "atoi", "atol", "atoll", "strcasestr", "strchnul", "strchr",
-          "strchrnul", "strstr", "strpbrk", "strcmp", "strcspn", "strncmp", "strrchr", "strspn",
-          "strtod", "strtof", "strtol", "strtoll", "strtoq", "strtoul"])
+    hasGlobalOrStdName([
+        "atof", "atoi", "atol", "atoll", "strcasestr", "strchnul", "strchr", "strchrnul", "strstr",
+        "strpbrk", "strcmp", "strcspn", "strncmp", "strrchr", "strspn", "strtod", "strtof",
+        "strtol", "strtoll", "strtoq", "strtoul"
+      ])
   }
 
   override predicate hasArrayInput(int bufParam) {
