@@ -625,7 +625,8 @@ private float getTruncatedLowerBounds(Expr expr) {
               )
           else result = newLB
         else result = exprMinVal(expr)
-      )
+      ) and
+      getUpperBoundsImpl(expr) <= exprMaxVal(expr)
       or
       // The expression might overflow and wrap. If so, the
       // lower bound is exprMinVal.
