@@ -36,7 +36,7 @@ def out():
     sinkO1 = ""
     def captureOut1():
         nonlocal sinkO1
-        sinkO1 = "source"
+        sinkO1 = SOURCE
     captureOut1()
     SINK(sinkO1) #$ MISSING:captured
 
@@ -44,7 +44,7 @@ def out():
     def captureOut2():
         def m():
             nonlocal sinkO2
-            sinkO2 = "source"
+            sinkO2 = SOURCE
         m()
     captureOut2()
     SINK(sinkO2) #$ MISSING:captured
@@ -52,13 +52,13 @@ def out():
     nonSink0 = ""
     def captureOut1NotCalled():
         nonlocal nonSink0
-        nonSink0 = "source"
+        nonSink0 = SOURCE
     SINK_F(nonSink0)
 
     def captureOut2NotCalled():
         def m():
             nonlocal nonSink0
-            nonSink0 = "source"
+            nonSink0 = SOURCE
     captureOut2NotCalled()
     SINK_F(nonSink0)
 
