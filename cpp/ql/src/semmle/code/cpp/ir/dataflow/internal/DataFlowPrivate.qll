@@ -28,11 +28,7 @@ private class PrimaryArgumentNode extends ArgumentNode {
 
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
-  override predicate argumentOf(DataFlowCall call, int pos) {
-    op = call.getPositionalArgumentOperand(pos)
-    or
-    op = call.getThisArgumentOperand() and pos = -1
-  }
+  override predicate argumentOf(DataFlowCall call, int pos) { op = call.getArgumentOperand(pos) }
 
   override string toString() {
     result = "Argument " + op.(PositionalArgumentOperand).getIndex()
@@ -110,10 +106,10 @@ class ReturnIndirectionNode extends ReturnNode {
   override ReturnIndirectionInstruction primary;
 
   override ReturnKind getKind() {
-    result = TIndirectReturnKind(-1) and
-    primary.isThisIndirection()
-    or
-    result = TIndirectReturnKind(primary.getParameter().getIndex())
+    exists(int index |
+      primary.hasIndex(index) and
+      result = TIndirectReturnKind(index)
+    )
   }
 }
 
@@ -500,13 +496,6 @@ class DataFlowType = IRType;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
-  /**
-   * Gets the nth argument for this call.
-   *
-   * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
-   */
-  Node getArgument(int n) { result.asInstruction() = this.getPositionalArgument(n) }
-
   Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
 
