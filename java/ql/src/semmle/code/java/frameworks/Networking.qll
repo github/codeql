@@ -42,7 +42,7 @@ class SocketGetInputStreamMethod extends Method {
   }
 }
 
-/** A function or method call that returns a new `URI`. */
+/** A method or constructor call that returns a new `URI`. */
 class UriCreation extends Call {
   UriCreation() {
     this.getCallee().getDeclaringType() instanceof TypeUri and
@@ -50,47 +50,44 @@ class UriCreation extends Call {
   }
 
   /**
-   * Returns the host of the newly created URI.
-   *  In the case where the host is specified separately, this returns only the host.
-   *  In the case where the uri is parsed from an input string,
-   *  such as in `URI(`http://foo.com/mypath')`,
-   *  this returns the entire argument passed i.e. `http://foo.com/mypath'.
+   * Gets the host argument of the newly created URI. In the case where the
+   * host is specified separately, this is only the host. In the case where the
+   * uri is parsed from an input string, such as in
+   * `URI("http://foo.com/mypath")`, this is the entire argument passed in,
+   * that is `"http://foo.com/mypath"`.
    */
   Expr getHostArg() { none() }
 }
 
-/** An URI constructor expression */
-class UriConstructor extends ClassInstanceExpr, UriCreation {
+/** A `java.net.URI` constructor call. */
+class UriConstructorCall extends ClassInstanceExpr, UriCreation {
   override Expr getHostArg() {
-    // URI​(String str)
+    // URI(String str)
     result = this.getArgument(0) and this.getNumArgument() = 1
     or
     // URI(String scheme, String ssp, String fragment)
-    // URI​(String scheme, String host, String path, String fragment)
-    // URI​(String scheme, String authority, String path, String query, String fragment)
+    // URI(String scheme, String host, String path, String fragment)
+    // URI(String scheme, String authority, String path, String query, String fragment)
     result = this.getArgument(1) and this.getNumArgument() = [3, 4, 5]
     or
-    // URI​(String scheme, String userInfo, String host, int port, String path, String query,
+    // URI(String scheme, String userInfo, String host, int port, String path, String query,
     //    String fragment)
     result = this.getArgument(2) and this.getNumArgument() = 7
   }
 }
 
-/** A call to the `create` method of the `java.net.URI` class */
-class UriCreate extends Call, UriCreation {
-  UriCreate() {
-    this.getCallee().getName() = "create" and
-    this.getCallee().getDeclaringType() instanceof TypeUri
-  }
+/** A call to `java.net.URI::create`. */
+class UriCreate extends UriCreation {
+  UriCreate() { this.getCallee().hasName("create") }
 
   override Expr getHostArg() { result = this.getArgument(0) }
 }
 
-/** An `java.net.URL` constructor expression */
-class UrlConstructor extends ClassInstanceExpr {
-  UrlConstructor() { this.getConstructor().getDeclaringType() instanceof TypeUrl }
+/** A `java.net.URL` constructor call. */
+class UrlConstructorCall extends ClassInstanceExpr {
+  UrlConstructorCall() { this.getConstructor().getDeclaringType() instanceof TypeUrl }
 
-  /** Returns the host of the newly created URI. */
+  /** Gets the host argument of the newly created URL. */
   Expr getHostArg() {
     // URL(String spec)
     this.getNumArgument() = 1 and result = this.getArgument(0)
@@ -102,24 +99,22 @@ class UrlConstructor extends ClassInstanceExpr {
     // URL(String protocol, String host, String file)
     // but not
     // URL(URL context, String spec, URLStreamHandler handler)
-    (
-      this.getNumArgument() = 3 and
-      this.getConstructor().getParameter(2).getType() instanceof TypeString
-    ) and
+    this.getNumArgument() = 3 and
+    this.getConstructor().getParameterType(2) instanceof TypeString and
     result = this.getArgument(1)
   }
 
-  /** Returns the expression which corresponds to the protocol of the url. */
+  /** Gets the argument that corresponds to the protocol of the URL. */
   Expr protocolArg() {
     // In all cases except where the first parameter is a URL, the argument
     // containing the protocol is the first one, otherwise it is the second.
-    if this.getConstructor().getParameter(0).getType().getName() = "URL"
+    if this.getConstructor().getParameterType(0) instanceof TypeUrl
     then result = this.getArgument(1)
     else result = this.getArgument(0)
   }
 }
 
-/** Models the `openStream` method of `java.net.url`. */
+/** The method `java.net.URL::openStream`. */
 class UrlOpenStreamMethod extends Method {
   UrlOpenStreamMethod() {
     this.getDeclaringType() instanceof TypeUrl and
@@ -127,7 +122,7 @@ class UrlOpenStreamMethod extends Method {
   }
 }
 
-/** Models the `openConnection` method of `java.net.url`. */
+/** The method `java.net.URL::openConnection`. */
 class UrlOpenConnectionMethod extends Method {
   UrlOpenConnectionMethod() {
     this.getDeclaringType() instanceof TypeUrl and

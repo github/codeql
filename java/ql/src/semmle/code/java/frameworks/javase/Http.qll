@@ -1,5 +1,5 @@
 /**
- * Provides classes for identifying methods called by the Java net Http package.
+ * Provides classes and predicates related to `java.net.http.*`.
  */
 
 import java
@@ -9,7 +9,7 @@ class TypeHttpRequestBuilder extends Interface {
   TypeHttpRequestBuilder() { hasQualifiedName("java.net.http", "HttpRequest$Builder") }
 }
 
-/** A class representing `java.net.http.HttpRequest`. */
+/** The interface representing `java.net.http.HttpRequest`. */
 class TypeHttpRequest extends Interface {
   TypeHttpRequest() { hasQualifiedName("java.net.http", "HttpRequest") }
 }

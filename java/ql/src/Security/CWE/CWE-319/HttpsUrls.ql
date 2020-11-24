@@ -52,7 +52,7 @@ class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(UrlConstructor u |
+    exists(UrlConstructorCall u |
       node1.asExpr() = u.protocolArg() and
       node2.asExpr() = u
     )

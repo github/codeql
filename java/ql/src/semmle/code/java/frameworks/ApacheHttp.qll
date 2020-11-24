@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates related to `org.apache.http.*`.
+ */
+
 import java
 
 class ApacheHttpGetParams extends Method {
@@ -15,8 +19,9 @@ class ApacheHttpEntityGetContent extends Method {
 }
 
 /**
- *  A class that is derived from the `HttpRequestBase` or the `BasicHttpRequest`
- *  classes of the Apache HTTP Client `org.apache.http` library
+ * An HTTP request as represented by the Apache HTTP Client library. This is
+ * either `org.apache.http.client.methods.HttpRequestBase`,
+ * `org.apache.http.message.BasicHttpRequest`, or one of their subclasses.
  */
 class ApacheHttpRequest extends RefType {
   ApacheHttpRequest() {
@@ -27,9 +32,11 @@ class ApacheHttpRequest extends RefType {
   }
 }
 
-/** Models `RequestBuilder` class of the Apache Http Client library */
+/**
+ * The `org.apache.http.client.methods.RequestBuilder` class.
+ */
 class TypeApacheHttpRequestBuilder extends Class {
   TypeApacheHttpRequestBuilder() {
-    hasQualifiedName("org.apache.http.client.methods", "RequestBuilder")
+    this.hasQualifiedName("org.apache.http.client.methods", "RequestBuilder")
   }
 }

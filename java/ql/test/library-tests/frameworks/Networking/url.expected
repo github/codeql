@@ -1,4 +1,0 @@
-| Uri.java:32:20:32:34 | new URL(...) | Uri.java:32:28:32:33 | "spec" |
-| Uri.java:34:20:34:53 | new URL(...) | Uri.java:34:36:34:41 | "host" |
-| Uri.java:36:20:36:50 | new URL(...) | Uri.java:36:36:36:41 | "host" |
-| Uri.java:41:20:41:67 | new URL(...) | Uri.java:41:36:41:41 | "host" |
