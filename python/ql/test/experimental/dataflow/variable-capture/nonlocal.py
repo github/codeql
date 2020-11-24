@@ -1,3 +1,6 @@
+# Here we test writing to a captured variable via the `nonlocal` keyword (see `out`).
+# We also test reading one captured variable and writing the value to another (see `through`).
+
 # All functions starting with "test_" should run and execute `print("OK")` exactly once.
 # This can be checked by running validTest.py.
 
@@ -29,7 +32,7 @@ def SINK_F(x):
         print("OK")
 
 
-def Out():
+def out():
     sinkO1 = ""
     def captureOut1():
         nonlocal sinkO1
@@ -60,10 +63,10 @@ def Out():
     SINK_F(nonSink0)
 
 @expects(4)
-def test_Out():
-    Out()
+def test_out():
+    out()
 
-def Through(tainted):
+def through(tainted):
     sinkO1 = ""
     def captureOut1():
         nonlocal sinkO1
@@ -94,5 +97,5 @@ def Through(tainted):
     SINK_F(nonSink0)
 
 @expects(4)
-def test_Through():
-    Through(SOURCE)
+def test_through():
+    through(SOURCE)

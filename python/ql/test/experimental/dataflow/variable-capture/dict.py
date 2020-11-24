@@ -1,3 +1,6 @@
+# Here we test writing to a captured variable via a dictionary (see `out`).
+# We also test reading one captured variable and writing the value to another (see `through`).
+
 # All functions starting with "test_" should run and execute `print("OK")` exactly once.
 # This can be checked by running validTest.py.
 
@@ -29,7 +32,7 @@ def SINK_F(x):
         print("OK")
 
 
-def Out():
+def out():
     sinkO1 = { "x": "" }
     def captureOut1():
         sinkO1["x"] = SOURCE
@@ -56,10 +59,10 @@ def Out():
     SINK_F(nonSink0["x"])
 
 @expects(4)
-def test_Out():
-    Out()
+def test_out():
+    out()
 
-def Through(tainted):
+def through(tainted):
     sinkO1 = { "x": "" }
     def captureOut1():
         sinkO1["x"] = tainted
@@ -86,5 +89,5 @@ def Through(tainted):
     SINK_F(nonSink0["x"])
 
 @expects(4)
-def test_Through():
-    Through(SOURCE)
+def test_through():
+    through(SOURCE)

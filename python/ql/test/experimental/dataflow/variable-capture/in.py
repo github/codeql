@@ -1,3 +1,5 @@
+# Here we test the case where a captured variable is being read.
+
 # All functions starting with "test_" should run and execute `print("OK")` exactly once.
 # This can be checked by running validTest.py.
 
@@ -28,7 +30,7 @@ def SINK_F(x):
     else:
         print("OK")
 
-
+# Capture the parameter of an outer function.
 def inParam(tainted):
     def captureIn1():
         sinkI1 = tainted
@@ -59,6 +61,7 @@ def inParam(tainted):
 def test_inParam():
     inParam(SOURCE)
 
+# Capture the local variable of an outer function.
 def inLocal():
     tainted = SOURCE
 
