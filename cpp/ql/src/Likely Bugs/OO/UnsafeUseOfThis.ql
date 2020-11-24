@@ -12,8 +12,11 @@
  *       security
  */
 
-import semmle.code.cpp.ir.IR
 import cpp
+// We don't actually use the global value numbering library in this query, but without it we end up
+// recomputing the IR.
+private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+private import semmle.code.cpp.ir.IR
 
 bindingset[n, result]
 int unbind(int n) { result >= n and result <= n }
