@@ -122,5 +122,5 @@ void f(int *const &ref_to_ptr);
 void testTempObject() {
   int x = 0;
   f(&x);
-  if (x > 0) {} // BAD [FALSE POSITIVE]
+  if (x > 0) {} // GOOD [NO LONGER REPORTED]
 }

@@ -222,6 +222,14 @@ private predicate addressMayEscapeMutablyAt(Expr e) {
     // If the address has been cast to an integral type, conservatively assume that it may eventually be cast back to a
     // pointer to non-const type.
     t instanceof IntegralType
+    or
+    // If we go through a temporary object step, we can take a reference to a temporary const pointer
+    // object, where the pointer doesn't point to a const value
+    exists(TemporaryObjectExpr temp, PointerType pt |
+      temp.getConversion() = e and pt = temp.getType().stripTopLevelSpecifiers()
+    |
+      not pt.getBaseType().isConst()
+    )
   )
 }
 
@@ -249,7 +257,7 @@ private predicate addressFromVariableAccess(VariableAccess va, Expr e) {
   // `e` could be a pointer that is converted to a reference as the final step,
   // meaning that we pass a value that is two dereferences away from referring
   // to `va`. This happens, for example, with `void std::vector::push_back(T&&
-  // value);` when called as `v.push_back(&x)`, for a static variable `x`. It
+  // value);` when called as `v.push_back(&x)`, for a variable `x`. It
   // can also happen when taking a reference to a const pointer to a
   // (potentially non-const) value.
   exists(Expr pointerValue |
