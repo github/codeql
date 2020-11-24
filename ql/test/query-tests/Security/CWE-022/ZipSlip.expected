@@ -18,10 +18,10 @@ edges
 | ZipSlip.go:11:2:15:2 | range statement[1] : pointer type | ZipSlip.go:14:20:14:20 | p |
 | ZipSlip.go:12:24:12:24 | implicit dereference : File | ZipSlip.go:12:24:12:24 | implicit dereference : File |
 | ZipSlip.go:12:24:12:24 | implicit dereference : File | ZipSlip.go:14:20:14:20 | p |
-| tarslip.go:13:2:13:30 | ... := ...[0] : pointer type | tarslip.go:14:14:14:34 | call to Dir |
-| tarslip.go:13:2:13:30 | ... := ...[0] : pointer type | tarslip.go:14:23:14:28 | implicit dereference : Header |
-| tarslip.go:14:23:14:28 | implicit dereference : Header | tarslip.go:14:14:14:34 | call to Dir |
-| tarslip.go:14:23:14:28 | implicit dereference : Header | tarslip.go:14:23:14:28 | implicit dereference : Header |
+| tarslip.go:15:2:15:30 | ... := ...[0] : pointer type | tarslip.go:16:14:16:34 | call to Dir |
+| tarslip.go:15:2:15:30 | ... := ...[0] : pointer type | tarslip.go:16:23:16:28 | implicit dereference : Header |
+| tarslip.go:16:23:16:28 | implicit dereference : Header | tarslip.go:16:14:16:34 | call to Dir |
+| tarslip.go:16:23:16:28 | implicit dereference : Header | tarslip.go:16:23:16:28 | implicit dereference : Header |
 | tst.go:23:2:43:2 | range statement[1] : pointer type | tst.go:24:11:24:11 | implicit dereference : File |
 | tst.go:23:2:43:2 | range statement[1] : pointer type | tst.go:29:20:29:23 | path |
 | tst.go:24:11:24:11 | implicit dereference : File | tst.go:24:11:24:11 | implicit dereference : File |
@@ -37,14 +37,14 @@ nodes
 | ZipSlip.go:11:2:15:2 | range statement[1] : pointer type | semmle.label | range statement[1] : pointer type |
 | ZipSlip.go:12:24:12:24 | implicit dereference : File | semmle.label | implicit dereference : File |
 | ZipSlip.go:14:20:14:20 | p | semmle.label | p |
-| tarslip.go:13:2:13:30 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
-| tarslip.go:14:14:14:34 | call to Dir | semmle.label | call to Dir |
-| tarslip.go:14:23:14:28 | implicit dereference : Header | semmle.label | implicit dereference : Header |
+| tarslip.go:15:2:15:30 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tarslip.go:16:14:16:34 | call to Dir | semmle.label | call to Dir |
+| tarslip.go:16:23:16:28 | implicit dereference : Header | semmle.label | implicit dereference : Header |
 | tst.go:23:2:43:2 | range statement[1] : pointer type | semmle.label | range statement[1] : pointer type |
 | tst.go:24:11:24:11 | implicit dereference : File | semmle.label | implicit dereference : File |
 | tst.go:29:20:29:23 | path | semmle.label | path |
 #select
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] : pointer type | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | Unsanitized archive entry, which may contain '..', is used in a $@. | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | file system operation |
 | ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:11:2:15:2 | range statement[1] : pointer type | ZipSlip.go:14:20:14:20 | p | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.go:14:20:14:20 | p | file system operation |
-| tarslip.go:13:2:13:30 | ... := ...[0] | tarslip.go:13:2:13:30 | ... := ...[0] : pointer type | tarslip.go:14:14:14:34 | call to Dir | Unsanitized archive entry, which may contain '..', is used in a $@. | tarslip.go:14:14:14:34 | call to Dir | file system operation |
+| tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:15:2:15:30 | ... := ...[0] : pointer type | tarslip.go:16:14:16:34 | call to Dir | Unsanitized archive entry, which may contain '..', is used in a $@. | tarslip.go:16:14:16:34 | call to Dir | file system operation |
 | tst.go:23:2:43:2 | range statement[1] | tst.go:23:2:43:2 | range statement[1] : pointer type | tst.go:29:20:29:23 | path | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:29:20:29:23 | path | file system operation |
