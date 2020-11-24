@@ -1,4 +1,4 @@
-def obfuscated_id(x): #$ step="FunctionExpr -> GSSA Variable obfuscated_id"
+def obfuscated_id(x): #$ step="FunctionExpr -> GSSA Variable obfuscated_id" step="x -> SSA variable x"
   y = x #$ step="x -> SSA variable y" step="SSA variable x, l:1 -> x"
   z = y #$ step="y -> SSA variable z" step="SSA variable y, l:2 -> y"
   return z #$ flow="42, l:6 -> z" step="SSA variable z, l:3 -> z"
