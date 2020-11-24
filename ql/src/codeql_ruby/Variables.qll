@@ -18,20 +18,18 @@ private predicate scopeDefinesParameter(VariableScope scope, string name, Locati
   exists(Identifier var |
     name = var.getValue() and
     location = var.getLocation() and
-    var in [
-        scope
-            .(BlockScope)
-            .getScopeElement()
-            .getAFieldOrChild()
-            .(BlockParameters)
-            .getAFieldOrChild+(),
-        scope
-            .(MethodScope)
-            .getScopeElement()
-            .getAFieldOrChild()
-            .(MethodParameters)
-            .getAFieldOrChild+()
-      ]
+    var in [scope
+              .(BlockScope)
+              .getScopeElement()
+              .getAFieldOrChild()
+              .(BlockParameters)
+              .getAFieldOrChild+(),
+          scope
+              .(MethodScope)
+              .getScopeElement()
+              .getAFieldOrChild()
+              .(MethodParameters)
+              .getAFieldOrChild+()]
   )
 }
 
