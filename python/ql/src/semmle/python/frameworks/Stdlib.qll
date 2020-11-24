@@ -651,7 +651,7 @@ private module Stdlib {
    * WARNING: Only holds for a few predefined attributes.
    */
   private DataFlow::Node builtins_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["exec", "eval", "compile"] and
+    attr_name in ["exec", "eval", "compile", "open"] and
     (
       t.start() and
       result = DataFlow::importNode(["builtins", "__builtin__"] + "." + attr_name)
@@ -730,6 +730,20 @@ private module Stdlib {
   }
 
   /**
+   * A call to the builtin `open` function.
+   * See https://docs.python.org/3/library/functions.html#open
+   */
+  private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    OpenCall() { node.getFunction() = builtins_attr("open").asCfgNode() }
+
+    override DataFlow::Node getAPathArgument() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("file")]
+    }
+  }
+
+  /**
    * An exec statement (only Python 2).
    * Se ehttps://docs.python.org/2/reference/simple_stmts.html#the-exec-statement.
    */
@@ -741,20 +755,6 @@ private module Stdlib {
     }
 
     override DataFlow::Node getCode() { result = this }
-  }
-
-  /**
-   * A call to the builtin `open` function.
-   * See https://docs.python.org/3/library/functions.html#open
-   */
-  private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    OpenCall() { node.getFunction().(NameNode).getId() = "open" }
-
-    override DataFlow::Node getAPathArgument() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("file")]
-    }
   }
 
   // ---------------------------------------------------------------------------

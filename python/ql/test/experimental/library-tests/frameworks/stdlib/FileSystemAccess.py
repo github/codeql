@@ -6,12 +6,12 @@ open(file="filepath")  # $getAPathArgument="filepath"
 
 o = open
 
-o("filepath")  # $ MISSING: getAPathArgument="filepath"
-o(file="filepath")  # $ MISSING: getAPathArgument="filepath"
+o("filepath")  # $getAPathArgument="filepath"
+o(file="filepath")  # $getAPathArgument="filepath"
 
 
-builtins.open("filepath")  # $ MISSING: getAPathArgument="filepath"
-builtins.open(file="filepath")  # $ MISSING: getAPathArgument="filepath"
+builtins.open("filepath")  # $getAPathArgument="filepath"
+builtins.open(file="filepath")  # $getAPathArgument="filepath"
 
 
 io.open("filepath")  # $ MISSING: getAPathArgument="filepath"
