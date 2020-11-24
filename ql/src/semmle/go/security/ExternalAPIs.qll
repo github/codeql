@@ -17,8 +17,7 @@ private import Logrus
 abstract class SafeExternalAPIFunction extends Function { }
 
 private predicate isDefaultSafePackage(Package package) {
-  package.getPath() in ["time", "unicode/utf8", Logrus::packagePath(),
-        GolangOrgXNetWebsocket::packagePath(), GorillaWebsocket::packagePath(),
+  package.getPath() in ["time", "unicode/utf8",
         package("http://gopkg.in/go-playground/validator", "")]
 }
 
@@ -41,32 +40,6 @@ private class DefaultSafeExternalAPIFunction extends SafeExternalAPIFunction {
     this.hasQualifiedName("crypto/md5", "Sum") or
     this.hasQualifiedName("crypto/sha1", "Sum")
   }
-}
-
-/** Gets the name of a method in package `p` which has a function model. */
-TaintTracking::FunctionModel getAMethodModelInPackage(Package p) {
-  p = result.getPackage() and
-  result instanceof Method and
-  result.getName() != "String" and
-  not exists(TaintTracking::FunctionModel baseMethod |
-    baseMethod != result and result.(Method).implements(baseMethod)
-  )
-}
-
-/** Gets the name of a package which has models for some functions. */
-Package getAPackageWithModels() {
-  exists(TaintTracking::FunctionModel f | not f instanceof Method | result = f.getPackage())
-  or
-  exists(getAMethodModelInPackage(result))
-}
-
-/** Holds if `n` is a sink for XSS, SQL injection or request forgery. */
-predicate isACommonSink(DataFlow::Node n) {
-  n instanceof SharedXss::Sink or
-  n instanceof SqlInjection::Sink or
-  n instanceof RequestForgery::Sink or
-  n instanceof CommandInjection::Sink or
-  n instanceof CleartextLogging::Sink
 }
 
 /** Holds if `callNode` is a local function pointer. */
@@ -107,10 +80,6 @@ class ExternalAPIDataNode extends DataFlow::Node {
     not call.getFile() instanceof TestFile and
     // Not already modeled as a taint step
     not exists(DataFlow::Node next | TaintTracking::localTaintStep(this, next)) and
-    // Not a sink for a commonly-used query
-    not isACommonSink(this) and
-    // Not in a package that has some functions modeled
-    not call.getTarget().getPackage() = getAPackageWithModels() and
     // Not a call to a known safe external API
     not call = any(SafeExternalAPIFunction f).getACall()
   }
@@ -140,6 +109,51 @@ class ExternalAPIDataNode extends DataFlow::Node {
   }
 }
 
+/** Gets the name of a method in package `p` which has a function model. */
+TaintTracking::FunctionModel getAMethodModelInPackage(Package p) {
+  p = result.getPackage() and
+  result instanceof Method and
+  result.getName() != "String" and
+  not exists(TaintTracking::FunctionModel baseMethod |
+    baseMethod != result and result.(Method).implements(baseMethod)
+  )
+}
+
+/** Gets the name of a package which has models for some functions. */
+Package getAPackageWithFunctionModels() {
+  exists(TaintTracking::FunctionModel f | not f instanceof Method | result = f.getPackage())
+  or
+  exists(getAMethodModelInPackage(result))
+}
+
+/** Gets the name of a package which has models. */
+Package getAPackageWithModels() {
+  result = getAPackageWithFunctionModels()
+  or
+  // An incomplete list of packages which have been modelled but do not have any function models
+  result.getPath() in [Logrus::packagePath(), GolangOrgXNetWebsocket::packagePath(),
+        GorillaWebsocket::packagePath()]
+}
+
+/** Holds if `n` is a sink for XSS, SQL injection or request forgery. */
+predicate isACommonSink(DataFlow::Node n) {
+  n instanceof SharedXss::Sink or
+  n instanceof SqlInjection::Sink or
+  n instanceof RequestForgery::Sink or
+  n instanceof CommandInjection::Sink or
+  n instanceof CleartextLogging::Sink
+}
+
+/** A node representing data being passed to an external API. */
+class UnknownExternalAPIDataNode extends ExternalAPIDataNode {
+  UnknownExternalAPIDataNode() {
+    // Not a sink for a commonly-used query
+    not isACommonSink(this) and
+    // Not in a package that has some functions modeled
+    not call.getTarget().getPackage() = getAPackageWithModels()
+  }
+}
+
 /** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalAPIDataNode`s. */
 class UntrustedDataToExternalAPIConfig extends TaintTracking::Configuration {
   UntrustedDataToExternalAPIConfig() { this = "UntrustedDataToExternalAPIConfig" }
@@ -147,6 +161,15 @@ class UntrustedDataToExternalAPIConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalAPIDataNode }
+}
+
+/** A configuration for tracking flow from `RemoteFlowSource`s to `UnknownExternalAPIDataNode`s. */
+class UntrustedDataToUnknownExternalAPIConfig extends TaintTracking::Configuration {
+  UntrustedDataToUnknownExternalAPIConfig() { this = "UntrustedDataToUnknownExternalAPIConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof UnknownExternalAPIDataNode }
 }
 
 /** A node representing untrusted data being passed to an external API. */
