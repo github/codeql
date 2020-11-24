@@ -924,7 +924,7 @@
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:16:17:16:18 | "" | 5 |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:17:13:17:19 | (...) ... | 5 |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | exit M6 | 4 |
-| Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:8:13:8:23 | ... is ... | 9 |
+| Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:8:13:8:23 | ... is ... | 9 |
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:10:13:10:42 | call to method WriteLine | 6 |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:12:18:12:31 | ... is ... | 4 |
 | Patterns.cs:13:9:15:9 | {...} | Patterns.cs:14:13:14:45 | call to method WriteLine | 6 |
@@ -942,7 +942,21 @@
 | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:18:33:23 | Object v2 | 2 |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; | 1 |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:37:17:37:22 | break; | 5 |
-| Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | exit Test | 4 |
+| Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | exit M1 | 4 |
+| Patterns.cs:47:24:47:25 | enter M2 | Patterns.cs:47:24:47:25 | exit M2 | 7 |
+| Patterns.cs:50:24:50:25 | enter M3 | Patterns.cs:51:9:51:21 | ... is ... | 5 |
+| Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:50:24:50:25 | exit M3 | 3 |
+| Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:51:25:51:30 | ... is ... | 3 |
+| Patterns.cs:51:34:51:34 | access to parameter c | Patterns.cs:51:34:51:39 | ... is ... | 3 |
+| Patterns.cs:53:24:53:25 | enter M4 | Patterns.cs:53:24:53:25 | exit M4 | 10 |
+| Patterns.cs:56:26:56:27 | enter M5 | Patterns.cs:60:13:60:17 | not ... | 5 |
+| Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:56:26:56:27 | exit M5 | 4 |
+| Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:60:13:60:28 | ... => ... | 2 |
+| Patterns.cs:61:13:61:13 | _ | Patterns.cs:61:13:61:13 | _ | 1 |
+| Patterns.cs:61:18:61:24 | "other" | Patterns.cs:61:13:61:24 | ... => ... | 2 |
+| Patterns.cs:65:26:65:27 | enter M6 | Patterns.cs:69:13:69:17 | not ... | 5 |
+| Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:13:70:13 | 2 | 1 |
+| Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:65:26:65:27 | exit M6 | 6 |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | exit M1 | 7 |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:12:13:12:21 | ... is ... | 6 |
 | PostDominance.cs:10:10:10:11 | exit M2 (normal) | PostDominance.cs:10:10:10:11 | exit M2 | 2 |

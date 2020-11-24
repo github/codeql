@@ -2,7 +2,7 @@ using System;
 
 class Patterns
 {
-    void Test()
+    void M1()
     {
         object o = null;
         if (o is int i1)
@@ -40,5 +40,34 @@ class Patterns
         switch (o)
         {
         }
+    }
+
+    public int P1 { get; set; }
+
+    public static bool M2(char c) =>
+        c is not 'a';
+
+    public static bool M3(object c) =>
+        c is not null ? c is 1 : c is 2;
+
+    public static bool M4(object c) =>
+        c is not Patterns { P1: 1 } u;
+
+    public static string M5(int i)
+    {
+        return i switch
+        {
+            not 1 => "not 1",
+            _ => "other"
+        };
+    }
+
+    public static string M6()
+    {
+        return 2 switch
+        {
+            not 2 => "impossible",
+            2 => "possible"
+        };
     }
 }

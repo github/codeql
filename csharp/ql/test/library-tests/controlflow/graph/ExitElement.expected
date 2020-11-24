@@ -2906,6 +2906,52 @@
 | Patterns.cs:37:17:37:22 | break; | Patterns.cs:37:17:37:22 | break; | break |
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:40:17:40:17 | access to local variable o | normal |
 | Patterns.cs:40:17:40:17 | access to local variable o | Patterns.cs:40:17:40:17 | access to local variable o | normal |
+| Patterns.cs:48:9:48:9 | access to parameter c | Patterns.cs:48:9:48:9 | access to parameter c | normal |
+| Patterns.cs:48:9:48:20 | ... is ... | Patterns.cs:48:9:48:20 | ... is ... | normal |
+| Patterns.cs:48:14:48:20 | not ... | Patterns.cs:48:14:48:20 | not ... | normal |
+| Patterns.cs:48:18:48:20 | a | Patterns.cs:48:18:48:20 | a | normal |
+| Patterns.cs:51:9:51:9 | access to parameter c | Patterns.cs:51:9:51:9 | access to parameter c | normal |
+| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:51:9:51:21 | ... is ... | false |
+| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:51:9:51:21 | ... is ... | true |
+| Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:51:9:51:39 | ... ? ... : ... | normal |
+| Patterns.cs:51:14:51:21 | not ... | Patterns.cs:51:14:51:21 | not ... | normal |
+| Patterns.cs:51:18:51:21 | null | Patterns.cs:51:18:51:21 | null | normal |
+| Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:51:25:51:25 | access to parameter c | normal |
+| Patterns.cs:51:25:51:30 | ... is ... | Patterns.cs:51:25:51:30 | ... is ... | normal |
+| Patterns.cs:51:30:51:30 | 1 | Patterns.cs:51:30:51:30 | 1 | normal |
+| Patterns.cs:51:34:51:34 | access to parameter c | Patterns.cs:51:34:51:34 | access to parameter c | normal |
+| Patterns.cs:51:34:51:39 | ... is ... | Patterns.cs:51:34:51:39 | ... is ... | normal |
+| Patterns.cs:51:39:51:39 | 2 | Patterns.cs:51:39:51:39 | 2 | normal |
+| Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:54:9:54:9 | access to parameter c | normal |
+| Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:54:9:54:37 | ... is ... | normal |
+| Patterns.cs:54:14:54:37 | not ... | Patterns.cs:54:14:54:37 | not ... | normal |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | Patterns u | normal |
+| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | { ... } | normal |
+| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | { ... } | normal |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:33:54:33 | 1 | normal |
+| Patterns.cs:57:5:63:5 | {...} | Patterns.cs:58:9:62:10 | return ...; | return |
+| Patterns.cs:58:9:62:10 | return ...; | Patterns.cs:58:9:62:10 | return ...; | return |
+| Patterns.cs:58:16:58:16 | access to parameter i | Patterns.cs:58:16:58:16 | access to parameter i | normal |
+| Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:58:16:62:9 | ... switch { ... } | normal |
+| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:13:60:17 | not ... | match |
+| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:13:60:17 | not ... | no-match |
+| Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:60:13:60:28 | ... => ... | normal |
+| Patterns.cs:60:17:60:17 | 1 | Patterns.cs:60:17:60:17 | 1 | normal |
+| Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:60:22:60:28 | "not 1" | normal |
+| Patterns.cs:61:13:61:13 | _ | Patterns.cs:61:13:61:13 | _ | match |
+| Patterns.cs:61:13:61:24 | ... => ... | Patterns.cs:61:13:61:24 | ... => ... | normal |
+| Patterns.cs:61:18:61:24 | "other" | Patterns.cs:61:18:61:24 | "other" | normal |
+| Patterns.cs:66:5:72:5 | {...} | Patterns.cs:67:9:71:10 | return ...; | return |
+| Patterns.cs:67:9:71:10 | return ...; | Patterns.cs:67:9:71:10 | return ...; | return |
+| Patterns.cs:67:16:67:16 | 2 | Patterns.cs:67:16:67:16 | 2 | normal |
+| Patterns.cs:67:16:71:9 | ... switch { ... } | Patterns.cs:67:16:71:9 | ... switch { ... } | normal |
+| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:69:13:69:17 | not ... | no-match |
+| Patterns.cs:69:13:69:33 | ... => ... | Patterns.cs:69:13:69:33 | ... => ... | normal |
+| Patterns.cs:69:17:69:17 | 2 | Patterns.cs:69:17:69:17 | 2 | normal |
+| Patterns.cs:69:22:69:33 | "impossible" | Patterns.cs:69:22:69:33 | "impossible" | normal |
+| Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:13:70:13 | 2 | match |
+| Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:70:13:70:27 | ... => ... | normal |
+| Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:70:18:70:27 | "possible" | normal |
 | PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |
 | PostDominance.cs:7:9:7:28 | call to method WriteLine | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |
 | PostDominance.cs:7:9:7:29 | ...; | PostDominance.cs:7:9:7:28 | call to method WriteLine | normal |

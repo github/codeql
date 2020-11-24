@@ -3484,80 +3484,137 @@ nodeEnclosing
 | NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:17:19:17:19 | access to parameter i | NullCoalescing.cs:13:10:13:11 | M6 |
-| Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:5:10:5:13 | exit Test | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:5:10:5:13 | exit Test (normal) | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:6:5:43:5 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:7:20:7:23 | null | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:10:13:10:42 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:10:13:10:43 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:10:31:10:41 | $"..." | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:10:33:10:36 | "int " | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:13:9:15:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:14:13:14:45 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:14:13:14:46 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:14:31:14:44 | $"..." | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:14:33:14:39 | "string " | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:14:41:14:42 | access to local variable s1 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:17:9:18:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:20:17:20:17 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:23:17:23:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:35:24:35 | 0 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:17:25:51 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:17:25:52 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:35:25:50 | $"..." | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:26:17:26:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:37:28:40 | "int " | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:29:17:29:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:35:31:48 | $"..." | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:37:31:43 | "string " | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:32:17:32:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:34:17:34:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:35:13:35:20 | default: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:36:17:36:51 | call to method WriteLine | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:36:17:36:52 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:36:35:36:50 | "Something else" | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:37:17:37:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:40:17:40:17 | access to local variable o | Patterns.cs:5:10:5:13 | Test |
+| Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:5:10:5:11 | exit M1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:5:10:5:11 | exit M1 (normal) | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:6:5:43:5 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:7:20:7:23 | null | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:13:10:42 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:13:10:43 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:31:10:41 | $"..." | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:33:10:36 | "int " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:13:9:15:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:13:14:45 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:13:14:46 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:31:14:44 | $"..." | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:33:14:39 | "string " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:41:14:42 | access to local variable s1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:17:9:18:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:20:17:20:17 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:23:17:23:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:35:24:35 | 0 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:17:25:51 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:17:25:52 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:35:25:50 | $"..." | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:26:17:26:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:37:28:40 | "int " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:29:17:29:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:35:31:48 | $"..." | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:37:31:43 | "string " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:32:17:32:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:34:17:34:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:35:13:35:20 | default: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:36:17:36:51 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:36:17:36:52 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:36:35:36:50 | "Something else" | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:37:17:37:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:40:17:40:17 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:47:24:47:25 | enter M2 | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:47:24:47:25 | exit M2 | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:47:24:47:25 | exit M2 (normal) | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:48:9:48:9 | access to parameter c | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:48:9:48:20 | ... is ... | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:48:14:48:20 | not ... | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:48:18:48:20 | a | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:50:24:50:25 | enter M3 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:50:24:50:25 | exit M3 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:50:24:50:25 | exit M3 (normal) | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:9 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:14:51:21 | not ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:18:51:21 | null | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:25:51:30 | ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:30:51:30 | 1 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:34:51:34 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:34:51:39 | ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:39:51:39 | 2 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:53:24:53:25 | enter M4 | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:53:24:53:25 | exit M4 | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:53:24:53:25 | exit M4 (normal) | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:14:54:37 | not ... | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:56:26:56:27 | enter M5 | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:56:26:56:27 | exit M5 | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:56:26:56:27 | exit M5 (normal) | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:57:5:63:5 | {...} | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:58:9:62:10 | return ...; | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:58:16:58:16 | access to parameter i | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:17:60:17 | 1 | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:13:61:13 | _ | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:13:61:24 | ... => ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:18:61:24 | "other" | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:65:26:65:27 | enter M6 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:65:26:65:27 | exit M6 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:65:26:65:27 | exit M6 (normal) | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:66:5:72:5 | {...} | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:67:9:71:10 | return ...; | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:67:16:67:16 | 2 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:67:16:71:9 | ... switch { ... } | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:17:69:17 | 2 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:13:70:13 | 2 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:65:26:65:27 | M6 |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:5:10:5:11 | exit M1 | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:5:10:5:11 | exit M1 (normal) | PostDominance.cs:5:10:5:11 | M1 |
@@ -5634,25 +5691,39 @@ blockEnclosing
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | M6 |
-| Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:13:9:15:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:17:9:18:9 | {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:23:17:23:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:25:17:25:52 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:34:17:34:22 | break; | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:35:13:35:20 | default: | Patterns.cs:5:10:5:13 | Test |
-| Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | Test |
+| Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:13:9:15:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:17:9:18:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:23:17:23:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:17:25:52 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:34:17:34:22 | break; | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:35:13:35:20 | default: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:47:24:47:25 | enter M2 | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:50:24:50:25 | enter M3 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:34:51:34 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:53:24:53:25 | enter M4 | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:56:26:56:27 | enter M5 | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:13:61:13 | _ | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:18:61:24 | "other" | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:65:26:65:27 | enter M6 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:13:70:13 | 2 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:65:26:65:27 | M6 |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:10:10:10:11 | exit M2 (normal) | PostDominance.cs:10:10:10:11 | M2 |

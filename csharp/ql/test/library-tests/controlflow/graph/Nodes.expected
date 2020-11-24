@@ -1218,7 +1218,12 @@ entryPoint
 | NullCoalescing.cs:9:12:9:13 | M4 | NullCoalescing.cs:9:37:9:37 | access to parameter b |
 | NullCoalescing.cs:11:9:11:10 | M5 | NullCoalescing.cs:11:44:11:45 | access to parameter b1 |
 | NullCoalescing.cs:13:10:13:11 | M6 | NullCoalescing.cs:14:5:18:5 | {...} |
-| Patterns.cs:5:10:5:13 | Test | Patterns.cs:6:5:43:5 | {...} |
+| Patterns.cs:5:10:5:11 | M1 | Patterns.cs:6:5:43:5 | {...} |
+| Patterns.cs:47:24:47:25 | M2 | Patterns.cs:48:9:48:9 | access to parameter c |
+| Patterns.cs:50:24:50:25 | M3 | Patterns.cs:51:9:51:9 | access to parameter c |
+| Patterns.cs:53:24:53:25 | M4 | Patterns.cs:54:9:54:9 | access to parameter c |
+| Patterns.cs:56:26:56:27 | M5 | Patterns.cs:57:5:63:5 | {...} |
+| Patterns.cs:65:26:65:27 | M6 | Patterns.cs:66:5:72:5 | {...} |
 | PostDominance.cs:5:10:5:11 | M1 | PostDominance.cs:6:5:8:5 | {...} |
 | PostDominance.cs:10:10:10:11 | M2 | PostDominance.cs:11:5:15:5 | {...} |
 | PostDominance.cs:17:10:17:11 | M3 | PostDominance.cs:18:5:22:5 | {...} |
