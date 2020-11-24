@@ -1,17 +1,11 @@
 import javascript
 
 class FooCall extends API::CallNode {
-  FooCall() {
-    this = API::moduleImport("mylibrary").getMember("foo").getACall()
-  }
+  FooCall() { this = API::moduleImport("mylibrary").getMember("foo").getACall() }
 
-  DataFlow::Node getFirst() {
-    result = getParameter(0).getMember("value").getARhs()
-  }
+  DataFlow::Node getFirst() { result = getParameter(0).getMember("value").getARhs() }
 
-  DataFlow::Node getSecond() {
-    result = getParameter(1).getMember("value").getARhs()
-  }
+  DataFlow::Node getSecond() { result = getParameter(1).getMember("value").getARhs() }
 }
 
 query predicate values(FooCall call, int first, int second) {
