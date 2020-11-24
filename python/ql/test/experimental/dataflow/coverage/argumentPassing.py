@@ -112,7 +112,7 @@ def with_multiple_kw_args(a, b, c):
     SINK3(c)
 
 
-@expects(9)
+@expects(12)
 def test_multiple_kw_args():
     with_multiple_kw_args(b=arg2, c=arg3, a=arg1)
     with_multiple_kw_args(arg1, *(arg2,), arg3)
