@@ -122,7 +122,7 @@ module API {
      * source level.
      *
      * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
-     * Consider using `getAnInstantiation()` if there is a need to distingiush between individual constructor calls.
+     * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
      */
     Node getInstance() { result = getASuccessor(Label::instance()) }
 
@@ -833,7 +833,7 @@ module API {
       result.getARhs() = getArgument(i)
     }
 
-    /** Gets the API node a parameter of this invocation. */
+    /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = getParameter(_) }
 
     /** Gets the API node for the last parameter of this invocation. */
