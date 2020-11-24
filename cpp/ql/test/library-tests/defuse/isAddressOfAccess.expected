@@ -151,6 +151,10 @@
 | pass_by_ref.cpp:49:5:49:5 | i |  |
 | pass_by_ref.cpp:53:22:53:22 | i | non-const address |
 | pass_by_ref.cpp:54:10:54:10 | i |  |
+| pass_by_ref.cpp:61:35:61:35 | x | const address |
+| pass_by_ref.cpp:62:10:62:10 | x |  |
+| pass_by_ref.cpp:67:34:67:34 | p | const address |
+| pass_by_ref.cpp:68:10:68:10 | p |  |
 | test.cpp:5:3:5:3 | a |  |
 | test.cpp:5:7:5:8 | a0 |  |
 | test.cpp:6:3:6:3 | b |  |

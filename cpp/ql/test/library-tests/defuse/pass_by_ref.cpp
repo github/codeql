@@ -53,3 +53,17 @@ int afterIf(int n) {
   referenceParameter(i);
   return i;
 }
+
+void constPointerReferenceParameter(int * const & pRef);
+
+int temporaryObject() {
+  int x = 2;
+  constPointerReferenceParameter(&x);
+  return x;
+}
+
+int * noTemporaryObject() {
+  int *p = nullptr;
+  constPointerReferenceParameter(p);
+  return p;
+}
