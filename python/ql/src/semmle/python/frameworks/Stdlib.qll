@@ -1032,6 +1032,205 @@ private module Stdlib {
 
     override string getFormat() { result = "JSON" }
   }
+
+  // ---------------------------------------------------------------------------
+  // cgi
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `cgi` module. */
+  private DataFlow::Node cgi(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("cgi")
+    or
+    exists(DataFlow::TypeTracker t2 | result = cgi(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `cgi` module. */
+  DataFlow::Node cgi() { result = cgi(DataFlow::TypeTracker::end()) }
+
+  /** Provides models for the `cgi` module. */
+  module cgi {
+    /**
+     * Provides models for the `cgi.FieldStorage` class
+     *
+     * See https://docs.python.org/3/library/cgi.html.
+     */
+    module FieldStorage {
+      /** Gets a reference to the `cgi.FieldStorage` class. */
+      private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+        t.startInAttr("FieldStorage") and
+        result = cgi()
+        or
+        exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the `cgi.FieldStorage` class. */
+      DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+
+      /**
+       * A source of an instance of `cgi.FieldStorage`.
+       *
+       * This can include instantiation of the class, return value from function
+       * calls, or a special parameter that will be set when functions are call by external
+       * library.
+       *
+       * Use `FieldStorage::instance()` predicate to get references to instances of `cgi.FieldStorage`.
+       */
+      abstract class InstanceSource extends DataFlow::Node { }
+
+      /**
+       * A direct instantiation of `cgi.FieldStorage`.
+       *
+       * We currently consider ALL instantiations to be `RemoteFlowSource`. This seems
+       * reasonable since it's used to parse form data for incoming POST requests, but
+       * if it turns out to be a problem, we'll have to refine.
+       */
+      private class ClassInstantiation extends InstanceSource, RemoteFlowSource::Range,
+        DataFlow::CfgNode {
+        override CallNode node;
+
+        ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+
+        override string getSourceType() { result = "cgi.FieldStorage" }
+      }
+
+      /** Gets a reference to an instance of `cgi.FieldStorage`. */
+      private DataFlow::Node instance(DataFlow::TypeTracker t) {
+        t.start() and
+        result instanceof InstanceSource
+        or
+        exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+      }
+
+      /** Gets a reference to an instance of `cgi.FieldStorage`. */
+      DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+
+      /** Gets a reference to the `getvalue` method on a `cgi.FieldStorage` instance. */
+      private DataFlow::Node getvalueRef(DataFlow::TypeTracker t) {
+        t.startInAttr("getvalue") and
+        result = instance()
+        or
+        exists(DataFlow::TypeTracker t2 | result = getvalueRef(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the `getvalue` method on a `cgi.FieldStorage` instance. */
+      DataFlow::Node getvalueRef() { result = getvalueRef(DataFlow::TypeTracker::end()) }
+
+      /** Gets a reference to the result of calling the `getvalue` method on a `cgi.FieldStorage` instance. */
+      private DataFlow::Node getvalueResult(DataFlow::TypeTracker t) {
+        t.start() and
+        result.asCfgNode().(CallNode).getFunction() = getvalueRef().asCfgNode()
+        or
+        exists(DataFlow::TypeTracker t2 | result = getvalueResult(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the result of calling the `getvalue` method on a `cgi.FieldStorage` instance. */
+      DataFlow::Node getvalueResult() { result = getvalueResult(DataFlow::TypeTracker::end()) }
+
+      /** Gets a reference to the `getfirst` method on a `cgi.FieldStorage` instance. */
+      private DataFlow::Node getfirstRef(DataFlow::TypeTracker t) {
+        t.startInAttr("getfirst") and
+        result = instance()
+        or
+        exists(DataFlow::TypeTracker t2 | result = getfirstRef(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the `getfirst` method on a `cgi.FieldStorage` instance. */
+      DataFlow::Node getfirstRef() { result = getfirstRef(DataFlow::TypeTracker::end()) }
+
+      /** Gets a reference to the result of calling the `getfirst` method on a `cgi.FieldStorage` instance. */
+      private DataFlow::Node getfirstResult(DataFlow::TypeTracker t) {
+        t.start() and
+        result.asCfgNode().(CallNode).getFunction() = getfirstRef().asCfgNode()
+        or
+        exists(DataFlow::TypeTracker t2 | result = getfirstResult(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the result of calling the `getfirst` method on a `cgi.FieldStorage` instance. */
+      DataFlow::Node getfirstResult() { result = getfirstResult(DataFlow::TypeTracker::end()) }
+
+      /** Gets a reference to the `getlist` method on a `cgi.FieldStorage` instance. */
+      private DataFlow::Node getlistRef(DataFlow::TypeTracker t) {
+        t.startInAttr("getlist") and
+        result = instance()
+        or
+        exists(DataFlow::TypeTracker t2 | result = getlistRef(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the `getlist` method on a `cgi.FieldStorage` instance. */
+      DataFlow::Node getlistRef() { result = getlistRef(DataFlow::TypeTracker::end()) }
+
+      /** Gets a reference to the result of calling the `getlist` method on a `cgi.FieldStorage` instance. */
+      private DataFlow::Node getlistResult(DataFlow::TypeTracker t) {
+        t.start() and
+        result.asCfgNode().(CallNode).getFunction() = getlistRef().asCfgNode()
+        or
+        exists(DataFlow::TypeTracker t2 | result = getlistResult(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the result of calling the `getlist` method on a `cgi.FieldStorage` instance. */
+      DataFlow::Node getlistResult() { result = getlistResult(DataFlow::TypeTracker::end()) }
+
+      /** Gets a reference to a list of fields. */
+      private DataFlow::Node fieldList(DataFlow::TypeTracker t) {
+        t.start() and
+        (
+          result = getlistResult()
+          or
+          result = getvalueResult()
+          or
+          // TODO: Should have better handling of subscripting
+          result.asCfgNode().(SubscriptNode).getObject() = instance().asCfgNode()
+        )
+        or
+        exists(DataFlow::TypeTracker t2 | result = fieldList(t2).track(t2, t))
+      }
+
+      /** Gets a reference to a list of fields. */
+      DataFlow::Node fieldList() { result = fieldList(DataFlow::TypeTracker::end()) }
+
+      /** Gets a reference to a field. */
+      private DataFlow::Node field(DataFlow::TypeTracker t) {
+        t.start() and
+        (
+          result = getfirstResult()
+          or
+          result = getvalueResult()
+          or
+          // TODO: Should have better handling of subscripting
+          result.asCfgNode().(SubscriptNode).getObject() = [instance(), fieldList()].asCfgNode()
+        )
+        or
+        exists(DataFlow::TypeTracker t2 | result = field(t2).track(t2, t))
+      }
+
+      /** Gets a reference to a field. */
+      DataFlow::Node field() { result = field(DataFlow::TypeTracker::end()) }
+
+      private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+        override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+          // Methods
+          nodeFrom = instance() and
+          nodeTo in [getvalueRef(), getfirstRef(), getlistRef()]
+          or
+          nodeFrom = getvalueRef() and nodeTo = getvalueResult()
+          or
+          nodeFrom = getfirstRef() and nodeTo = getfirstResult()
+          or
+          nodeFrom = getlistRef() and nodeTo = getlistResult()
+          or
+          // Indexing
+          nodeFrom in [instance(), fieldList()] and
+          nodeTo.asCfgNode().(SubscriptNode).getObject() = nodeFrom.asCfgNode()
+          or
+          // Attributes on Field
+          nodeFrom = field() and
+          exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
+            read.getAttributeName() in ["value", "file", "filename"]
+          )
+        }
+      }
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
