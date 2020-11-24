@@ -178,7 +178,7 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
                             ql_type_is_ref: true,
                         },
                     ],
-                    keysets: None,
+                    keysets: Some(vec!["parent", "parent_index"]),
                 };
                 ast_node_members.insert(&node.dbscheme_name);
 
@@ -256,7 +256,7 @@ fn create_tokeninfo<'a>(
 ) -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
     let table = dbscheme::Table {
         name: "tokeninfo",
-        keysets: None,
+        keysets: Some(vec!["parent", "parent_index"]),
         columns: vec![
             dbscheme::Column {
                 db_type: dbscheme::DbColumnType::Int,
