@@ -4,7 +4,6 @@
  */
 
 import java
-import semmle.code.java.frameworks.Networking
 
 /** The class `org.springframework.http.HttpEntity` or an instantiation of it. */
 class SpringHttpEntity extends Class {

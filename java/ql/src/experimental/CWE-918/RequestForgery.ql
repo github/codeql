@@ -1,5 +1,5 @@
 /**
- * @name Server Sider Request Forgery (SSRF) from remote source
+ * @name Server Sider Request Forgery (SSRF)
  * @description Making web requests based on unvalidated user-input
  *              may cause server to communicate with malicious servers.
  * @kind path-problem
@@ -12,10 +12,22 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import RequestForgery::RequestForgery
+import RequestForgery
 import DataFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, RequestForgeryRemoteConfiguration conf
+class RequestForgeryConfiguration extends TaintTracking::Configuration {
+  RequestForgeryConfiguration() { this = "Server Side Request Forgery" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof RequestForgerySink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    requestForgeryStep(pred, succ)
+  }
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, RequestForgeryConfiguration conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Potential server side request forgery due to $@.",
   source.getNode(), "a user-provided value"
