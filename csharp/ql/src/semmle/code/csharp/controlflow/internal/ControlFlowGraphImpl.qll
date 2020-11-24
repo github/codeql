@@ -368,7 +368,8 @@ module Expressions {
       not this instanceof NoNodeExpr and
       not this instanceof SwitchExpr and
       not this instanceof SwitchCaseExpr and
-      not this instanceof ConstructorInitializer
+      not this instanceof ConstructorInitializer and
+      not this instanceof NotPatternExpr
     }
 
     final override ControlFlowElement getChildElement(int i) { result = getExprChild(this, i) }
@@ -515,20 +516,14 @@ module Expressions {
 
     LogicalNotExprTree() { operand = this.getOperand() }
 
-    final override predicate propagatesAbnormal(ControlFlowElement child) {
-      child = this.getOperand()
-    }
+    final override predicate propagatesAbnormal(ControlFlowElement child) { child = operand }
 
     final override predicate first(ControlFlowElement first) { first(operand, first) }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       succ = this and
-      (
-        last(operand, pred, c.(BooleanCompletion).getDual())
-        or
-        last(operand, pred, c) and
-        c instanceof SimpleCompletion
-      )
+      last(operand, pred, c) and
+      c instanceof NormalCompletion
     }
   }
 
@@ -923,6 +918,22 @@ module Expressions {
         not InitializerSplitting::constructorInitializeOrder(con, _, _) and
         first(con.getBody(), succ)
       )
+    }
+  }
+
+  private class NotPatternExprTree extends PostOrderTree, NotPatternExpr {
+    private PatternExpr operand;
+
+    NotPatternExprTree() { operand = this.getPattern() }
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) { child = operand }
+
+    final override predicate first(ControlFlowElement first) { first(operand, first) }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      succ = this and
+      last(operand, pred, c) and
+      c instanceof NormalCompletion
     }
   }
 }

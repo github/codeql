@@ -3518,9 +3518,10 @@
 | Patterns.cs:7:20:7:23 | null | Patterns.cs:7:16:7:23 | Object o = ... | semmle.label | successor |
 | Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:8:13:8:13 | access to local variable o | semmle.label | successor |
 | Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:8:18:8:23 | Int32 i1 | semmle.label | successor |
-| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:9:9:11:9 | {...} | semmle.label | true |
-| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:12:14:18:9 | if (...) ... | semmle.label | false |
-| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:13:8:23 | ... is ... | semmle.label | successor |
+| Patterns.cs:8:13:8:23 | [false] ... is ... | Patterns.cs:12:14:18:9 | if (...) ... | semmle.label | false |
+| Patterns.cs:8:13:8:23 | [true] ... is ... | Patterns.cs:9:9:11:9 | {...} | semmle.label | true |
+| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:13:8:23 | [false] ... is ... | semmle.label | no-match |
+| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:13:8:23 | [true] ... is ... | semmle.label | match |
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:10:13:10:43 | ...; | semmle.label | successor |
 | Patterns.cs:10:13:10:42 | call to method WriteLine | Patterns.cs:20:9:38:9 | switch (...) {...} | semmle.label | successor |
 | Patterns.cs:10:13:10:43 | ...; | Patterns.cs:10:33:10:36 | "int " | semmle.label | successor |
@@ -3529,9 +3530,10 @@
 | Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:10:31:10:41 | $"..." | semmle.label | successor |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:12:18:12:18 | access to local variable o | semmle.label | successor |
 | Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:12:23:12:31 | String s1 | semmle.label | successor |
-| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:13:9:15:9 | {...} | semmle.label | true |
-| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:16:14:18:9 | if (...) ... | semmle.label | false |
-| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:18:12:31 | ... is ... | semmle.label | successor |
+| Patterns.cs:12:18:12:31 | [false] ... is ... | Patterns.cs:16:14:18:9 | if (...) ... | semmle.label | false |
+| Patterns.cs:12:18:12:31 | [true] ... is ... | Patterns.cs:13:9:15:9 | {...} | semmle.label | true |
+| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:18:12:31 | [false] ... is ... | semmle.label | no-match |
+| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:18:12:31 | [true] ... is ... | semmle.label | match |
 | Patterns.cs:13:9:15:9 | {...} | Patterns.cs:14:13:14:46 | ...; | semmle.label | successor |
 | Patterns.cs:14:13:14:45 | call to method WriteLine | Patterns.cs:20:9:38:9 | switch (...) {...} | semmle.label | successor |
 | Patterns.cs:14:13:14:46 | ...; | Patterns.cs:14:33:14:39 | "string " | semmle.label | successor |
@@ -3540,9 +3542,10 @@
 | Patterns.cs:14:41:14:42 | access to local variable s1 | Patterns.cs:14:31:14:44 | $"..." | semmle.label | successor |
 | Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:16:18:16:18 | access to local variable o | semmle.label | successor |
 | Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:16:23:16:28 | Object v1 | semmle.label | successor |
-| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:17:9:18:9 | {...} | semmle.label | true |
-| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:20:9:38:9 | switch (...) {...} | semmle.label | false |
-| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:18:16:28 | ... is ... | semmle.label | successor |
+| Patterns.cs:16:18:16:28 | [false] ... is ... | Patterns.cs:20:9:38:9 | switch (...) {...} | semmle.label | false |
+| Patterns.cs:16:18:16:28 | [true] ... is ... | Patterns.cs:17:9:18:9 | {...} | semmle.label | true |
+| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:18:16:28 | [false] ... is ... | semmle.label | no-match |
+| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:18:16:28 | [true] ... is ... | semmle.label | match |
 | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:20:9:38:9 | switch (...) {...} | semmle.label | successor |
 | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:20:17:20:17 | access to local variable o | semmle.label | successor |
 | Patterns.cs:20:17:20:17 | access to local variable o | Patterns.cs:22:13:22:23 | case ...: | semmle.label | successor |
@@ -3601,11 +3604,13 @@
 | Patterns.cs:50:24:50:25 | enter M3 | Patterns.cs:51:9:51:9 | access to parameter c | semmle.label | successor |
 | Patterns.cs:50:24:50:25 | exit M3 (normal) | Patterns.cs:50:24:50:25 | exit M3 | semmle.label | successor |
 | Patterns.cs:51:9:51:9 | access to parameter c | Patterns.cs:51:18:51:21 | null | semmle.label | successor |
-| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:51:25:51:25 | access to parameter c | semmle.label | true |
-| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:51:34:51:34 | access to parameter c | semmle.label | false |
+| Patterns.cs:51:9:51:21 | [false] ... is ... | Patterns.cs:51:34:51:34 | access to parameter c | semmle.label | false |
+| Patterns.cs:51:9:51:21 | [true] ... is ... | Patterns.cs:51:25:51:25 | access to parameter c | semmle.label | true |
 | Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:50:24:50:25 | exit M3 (normal) | semmle.label | successor |
-| Patterns.cs:51:14:51:21 | not ... | Patterns.cs:51:9:51:21 | ... is ... | semmle.label | successor |
-| Patterns.cs:51:18:51:21 | null | Patterns.cs:51:14:51:21 | not ... | semmle.label | successor |
+| Patterns.cs:51:14:51:21 | [match] not ... | Patterns.cs:51:9:51:21 | [true] ... is ... | semmle.label | match |
+| Patterns.cs:51:14:51:21 | [no-match] not ... | Patterns.cs:51:9:51:21 | [false] ... is ... | semmle.label | no-match |
+| Patterns.cs:51:18:51:21 | null | Patterns.cs:51:14:51:21 | [match] not ... | semmle.label | no-match |
+| Patterns.cs:51:18:51:21 | null | Patterns.cs:51:14:51:21 | [no-match] not ... | semmle.label | match |
 | Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:51:30:51:30 | 1 | semmle.label | successor |
 | Patterns.cs:51:25:51:30 | ... is ... | Patterns.cs:51:9:51:39 | ... ? ... : ... | semmle.label | successor |
 | Patterns.cs:51:30:51:30 | 1 | Patterns.cs:51:25:51:30 | ... is ... | semmle.label | successor |
@@ -3627,10 +3632,11 @@
 | Patterns.cs:58:9:62:10 | return ...; | Patterns.cs:56:26:56:27 | exit M5 (normal) | semmle.label | return |
 | Patterns.cs:58:16:58:16 | access to parameter i | Patterns.cs:60:17:60:17 | 1 | semmle.label | successor |
 | Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:58:9:62:10 | return ...; | semmle.label | successor |
-| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:22:60:28 | "not 1" | semmle.label | match |
-| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:61:13:61:13 | _ | semmle.label | no-match |
+| Patterns.cs:60:13:60:17 | [match] not ... | Patterns.cs:60:22:60:28 | "not 1" | semmle.label | match |
+| Patterns.cs:60:13:60:17 | [no-match] not ... | Patterns.cs:61:13:61:13 | _ | semmle.label | no-match |
 | Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:58:16:62:9 | ... switch { ... } | semmle.label | successor |
-| Patterns.cs:60:17:60:17 | 1 | Patterns.cs:60:13:60:17 | not ... | semmle.label | successor |
+| Patterns.cs:60:17:60:17 | 1 | Patterns.cs:60:13:60:17 | [match] not ... | semmle.label | no-match |
+| Patterns.cs:60:17:60:17 | 1 | Patterns.cs:60:13:60:17 | [no-match] not ... | semmle.label | match |
 | Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:60:13:60:28 | ... => ... | semmle.label | successor |
 | Patterns.cs:61:13:61:13 | _ | Patterns.cs:61:18:61:24 | "other" | semmle.label | match |
 | Patterns.cs:61:13:61:24 | ... => ... | Patterns.cs:58:16:62:9 | ... switch { ... } | semmle.label | successor |
@@ -3641,8 +3647,8 @@
 | Patterns.cs:67:9:71:10 | return ...; | Patterns.cs:65:26:65:27 | exit M6 (normal) | semmle.label | return |
 | Patterns.cs:67:16:67:16 | 2 | Patterns.cs:69:17:69:17 | 2 | semmle.label | successor |
 | Patterns.cs:67:16:71:9 | ... switch { ... } | Patterns.cs:67:9:71:10 | return ...; | semmle.label | successor |
-| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:70:13:70:13 | 2 | semmle.label | no-match |
-| Patterns.cs:69:17:69:17 | 2 | Patterns.cs:69:13:69:17 | not ... | semmle.label | successor |
+| Patterns.cs:69:13:69:17 | [no-match] not ... | Patterns.cs:70:13:70:13 | 2 | semmle.label | no-match |
+| Patterns.cs:69:17:69:17 | 2 | Patterns.cs:69:13:69:17 | [no-match] not ... | semmle.label | match |
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:18:70:27 | "possible" | semmle.label | match |
 | Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:67:16:71:9 | ... switch { ... } | semmle.label | successor |
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:70:13:70:27 | ... => ... | semmle.label | successor |
@@ -3657,9 +3663,10 @@
 | PostDominance.cs:11:5:15:5 | {...} | PostDominance.cs:12:9:13:19 | if (...) ... | semmle.label | successor |
 | PostDominance.cs:12:9:13:19 | if (...) ... | PostDominance.cs:12:13:12:13 | access to parameter s | semmle.label | successor |
 | PostDominance.cs:12:13:12:13 | access to parameter s | PostDominance.cs:12:18:12:21 | null | semmle.label | successor |
-| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:13:13:13:19 | return ...; | semmle.label | true |
-| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:14:9:14:29 | ...; | semmle.label | false |
-| PostDominance.cs:12:18:12:21 | null | PostDominance.cs:12:13:12:21 | ... is ... | semmle.label | successor |
+| PostDominance.cs:12:13:12:21 | [false] ... is ... | PostDominance.cs:14:9:14:29 | ...; | semmle.label | false |
+| PostDominance.cs:12:13:12:21 | [true] ... is ... | PostDominance.cs:13:13:13:19 | return ...; | semmle.label | true |
+| PostDominance.cs:12:18:12:21 | null | PostDominance.cs:12:13:12:21 | [false] ... is ... | semmle.label | no-match |
+| PostDominance.cs:12:18:12:21 | null | PostDominance.cs:12:13:12:21 | [true] ... is ... | semmle.label | match |
 | PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:10:10:10:11 | exit M2 (normal) | semmle.label | return |
 | PostDominance.cs:14:9:14:28 | call to method WriteLine | PostDominance.cs:10:10:10:11 | exit M2 (normal) | semmle.label | successor |
 | PostDominance.cs:14:9:14:29 | ...; | PostDominance.cs:14:27:14:27 | access to parameter s | semmle.label | successor |
@@ -3670,9 +3677,10 @@
 | PostDominance.cs:18:5:22:5 | {...} | PostDominance.cs:19:9:20:55 | if (...) ... | semmle.label | successor |
 | PostDominance.cs:19:9:20:55 | if (...) ... | PostDominance.cs:19:13:19:13 | access to parameter s | semmle.label | successor |
 | PostDominance.cs:19:13:19:13 | access to parameter s | PostDominance.cs:19:18:19:21 | null | semmle.label | successor |
-| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:20:45:20:53 | nameof(...) | semmle.label | true |
-| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:21:9:21:29 | ...; | semmle.label | false |
-| PostDominance.cs:19:18:19:21 | null | PostDominance.cs:19:13:19:21 | ... is ... | semmle.label | successor |
+| PostDominance.cs:19:13:19:21 | [false] ... is ... | PostDominance.cs:21:9:21:29 | ...; | semmle.label | false |
+| PostDominance.cs:19:13:19:21 | [true] ... is ... | PostDominance.cs:20:45:20:53 | nameof(...) | semmle.label | true |
+| PostDominance.cs:19:18:19:21 | null | PostDominance.cs:19:13:19:21 | [false] ... is ... | semmle.label | no-match |
+| PostDominance.cs:19:18:19:21 | null | PostDominance.cs:19:13:19:21 | [true] ... is ... | semmle.label | match |
 | PostDominance.cs:20:13:20:55 | throw ...; | PostDominance.cs:17:10:17:11 | exit M3 (abnormal) | semmle.label | exception(ArgumentNullException) |
 | PostDominance.cs:20:19:20:54 | object creation of type ArgumentNullException | PostDominance.cs:20:13:20:55 | throw ...; | semmle.label | successor |
 | PostDominance.cs:20:45:20:53 | nameof(...) | PostDominance.cs:20:19:20:54 | object creation of type ArgumentNullException | semmle.label | successor |
@@ -4049,9 +4057,10 @@
 | TypeAccesses.cs:6:13:6:23 | ... as ... | TypeAccesses.cs:6:9:6:23 | ... = ... | semmle.label | successor |
 | TypeAccesses.cs:7:9:7:25 | if (...) ... | TypeAccesses.cs:7:13:7:13 | access to parameter o | semmle.label | successor |
 | TypeAccesses.cs:7:13:7:13 | access to parameter o | TypeAccesses.cs:7:18:7:22 | Int32 j | semmle.label | successor |
-| TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:7:25:7:25 | ; | semmle.label | true |
-| TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:8:9:8:28 | ... ...; | semmle.label | false |
-| TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:13:7:22 | ... is ... | semmle.label | successor |
+| TypeAccesses.cs:7:13:7:22 | [false] ... is ... | TypeAccesses.cs:8:9:8:28 | ... ...; | semmle.label | false |
+| TypeAccesses.cs:7:13:7:22 | [true] ... is ... | TypeAccesses.cs:7:25:7:25 | ; | semmle.label | true |
+| TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:13:7:22 | [false] ... is ... | semmle.label | no-match |
+| TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:13:7:22 | [true] ... is ... | semmle.label | match |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:8:9:8:28 | ... ...; | semmle.label | successor |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:8:17:8:27 | typeof(...) | semmle.label | successor |
 | TypeAccesses.cs:8:13:8:27 | Type t = ... | TypeAccesses.cs:3:10:3:10 | exit M (normal) | semmle.label | successor |

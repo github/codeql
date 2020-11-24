@@ -3493,7 +3493,8 @@ nodeEnclosing
 | Patterns.cs:7:20:7:23 | null | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:23 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:23 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:10:13:10:42 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
@@ -3503,7 +3504,8 @@ nodeEnclosing
 | Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:31 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:31 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:13:9:15:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:14:13:14:45 | call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
@@ -3513,7 +3515,8 @@ nodeEnclosing
 | Patterns.cs:14:41:14:42 | access to local variable s1 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:28 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:28 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
@@ -3569,9 +3572,11 @@ nodeEnclosing
 | Patterns.cs:50:24:50:25 | exit M3 | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:50:24:50:25 | exit M3 (normal) | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:9:51:9 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
-| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:21 | [false] ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:21 | [true] ... is ... | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:50:24:50:25 | M3 |
-| Patterns.cs:51:14:51:21 | not ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:14:51:21 | [match] not ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:14:51:21 | [no-match] not ... | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:18:51:21 | null | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:25:51:30 | ... is ... | Patterns.cs:50:24:50:25 | M3 |
@@ -3596,7 +3601,8 @@ nodeEnclosing
 | Patterns.cs:58:9:62:10 | return ...; | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:58:16:58:16 | access to parameter i | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:56:26:56:27 | M5 |
-| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | [match] not ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | [no-match] not ... | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:60:17:60:17 | 1 | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:56:26:56:27 | M5 |
@@ -3610,7 +3616,7 @@ nodeEnclosing
 | Patterns.cs:67:9:71:10 | return ...; | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:67:16:67:16 | 2 | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:67:16:71:9 | ... switch { ... } | Patterns.cs:65:26:65:27 | M6 |
-| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:13:69:17 | [no-match] not ... | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:69:17:69:17 | 2 | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:65:26:65:27 | M6 |
@@ -3628,7 +3634,8 @@ nodeEnclosing
 | PostDominance.cs:11:5:15:5 | {...} | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:12:9:13:19 | if (...) ... | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:12:13:12:13 | access to parameter s | PostDominance.cs:10:10:10:11 | M2 |
-| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:13:12:21 | [false] ... is ... | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:13:12:21 | [true] ... is ... | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:12:18:12:21 | null | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:14:9:14:28 | call to method WriteLine | PostDominance.cs:10:10:10:11 | M2 |
@@ -3641,7 +3648,8 @@ nodeEnclosing
 | PostDominance.cs:18:5:22:5 | {...} | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:19:9:20:55 | if (...) ... | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:19:13:19:13 | access to parameter s | PostDominance.cs:17:10:17:11 | M3 |
-| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:13:19:21 | [false] ... is ... | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:13:19:21 | [true] ... is ... | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:19:18:19:21 | null | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:20:13:20:55 | throw ...; | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:20:19:20:54 | object creation of type ArgumentNullException | PostDominance.cs:17:10:17:11 | M3 |
@@ -4004,7 +4012,8 @@ nodeEnclosing
 | TypeAccesses.cs:6:13:6:23 | ... as ... | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:9:7:25 | if (...) ... | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:13:7:13 | access to parameter o | TypeAccesses.cs:3:10:3:10 | M |
-| TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:3:10:3:10 | M |
+| TypeAccesses.cs:7:13:7:22 | [false] ... is ... | TypeAccesses.cs:3:10:3:10 | M |
+| TypeAccesses.cs:7:13:7:22 | [true] ... is ... | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | M |
@@ -5692,10 +5701,16 @@ blockEnclosing
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | M6 |
 | Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:23 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:8:13:8:23 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:31 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:12:18:12:31 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:13:9:15:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:28 | [false] ... is ... | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:16:18:16:28 | [true] ... is ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:5:10:5:11 | M1 |
@@ -5712,25 +5727,36 @@ blockEnclosing
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:47:24:47:25 | enter M2 | Patterns.cs:47:24:47:25 | M2 |
 | Patterns.cs:50:24:50:25 | enter M3 | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:21 | [false] ... is ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:9:51:21 | [true] ... is ... | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:14:51:21 | [match] not ... | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:51:14:51:21 | [no-match] not ... | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:34:51:34 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:53:24:53:25 | enter M4 | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:56:26:56:27 | enter M5 | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | [match] not ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | [no-match] not ... | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:61:13:61:13 | _ | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:61:18:61:24 | "other" | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:65:26:65:27 | enter M6 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:13:69:17 | [no-match] not ... | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:65:26:65:27 | M6 |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:10:10:10:11 | exit M2 (normal) | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:13:12:21 | [false] ... is ... | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:12:13:12:21 | [true] ... is ... | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:14:9:14:29 | ...; | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:17:10:17:11 | enter M3 | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:17:10:17:11 | exit M3 | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:13:19:21 | [false] ... is ... | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:19:13:19:21 | [true] ... is ... | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:20:45:20:53 | nameof(...) | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:21:9:21:29 | ...; | PostDominance.cs:17:10:17:11 | M3 |
 | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | Method |
@@ -5847,6 +5873,8 @@ blockEnclosing
 | Switch.cs:158:13:158:49 | ...; | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:160:13:160:49 | ...; | Switch.cs:154:10:154:12 | M15 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | M |
+| TypeAccesses.cs:7:13:7:22 | [false] ... is ... | TypeAccesses.cs:3:10:3:10 | M |
+| TypeAccesses.cs:7:13:7:22 | [true] ... is ... | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | M |
 | VarDecls.cs:5:18:5:19 | enter M1 | VarDecls.cs:5:18:5:19 | M1 |
