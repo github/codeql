@@ -593,6 +593,7 @@ class InitializeParameterInstruction extends VariableInstruction {
    * Holds if this instruction initializes the parameter with index `index`, or
    * if `index` is `-1` and this instruction initializes `this`.
    */
+  pragma[noinline]
   final predicate hasIndex(int index) {
     index >= 0 and index = this.getParameter().getIndex()
     or
@@ -617,6 +618,7 @@ class InitializeIndirectionInstruction extends VariableInstruction {
    * index `index`, or if `index` is `-1` and this instruction initializes the memory
    * pointed to by `this`.
    */
+  pragma[noinline]
   final predicate hasIndex(int index) {
     index >= 0 and index = this.getParameter().getIndex()
     or
@@ -801,6 +803,7 @@ class ReturnIndirectionInstruction extends VariableInstruction {
    * Holds if this instruction is the return indirection for the parameter with index `index`, or
    * if this instruction is the return indirection for `this` and `index` is `-1`.
    */
+  pragma[noinline]
   final predicate hasIndex(int index) {
     index >= 0 and index = this.getParameter().getIndex()
     or
