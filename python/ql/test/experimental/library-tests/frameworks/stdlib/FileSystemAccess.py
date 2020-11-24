@@ -14,5 +14,5 @@ builtins.open("filepath")  # $getAPathArgument="filepath"
 builtins.open(file="filepath")  # $getAPathArgument="filepath"
 
 
-io.open("filepath")  # $ MISSING: getAPathArgument="filepath"
-io.open(file="filepath")  # $ MISSING: getAPathArgument="filepath"
+io.open("filepath")  # $getAPathArgument="filepath"
+io.open(file="filepath")  # $getAPathArgument="filepath"
