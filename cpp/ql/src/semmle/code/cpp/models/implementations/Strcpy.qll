@@ -23,15 +23,15 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
         "wcsncpy", // wcsncpy(dst, src, max_amount)
         "_wcsncpy_l", // _wcsncpy_l(dst, src, max_amount, locale)
         "_mbsncpy", // _mbsncpy(dst, src, max_amount)
-        "_mbsncpy_l" // _mbsncpy_l(dst, src, max_amount, locale)
-      ]
+        "_mbsncpy_l"
+      ] // _mbsncpy_l(dst, src, max_amount, locale)
     or
     getName() =
       [
         "strcpy_s", // strcpy_s(dst, max_amount, src)
         "wcscpy_s", // wcscpy_s(dst, max_amount, src)
-        "_mbscpy_s" // _mbscpy_s(dst, max_amount, src)
-      ] and
+        "_mbscpy_s"
+      ] and // _mbscpy_s(dst, max_amount, src)
     // exclude the 2-parameter template versions
     // that find the size of a fixed size destination buffer.
     getNumberOfParameters() = 3

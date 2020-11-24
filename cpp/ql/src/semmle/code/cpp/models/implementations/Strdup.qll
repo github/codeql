@@ -11,7 +11,7 @@ import semmle.code.cpp.models.interfaces.Taint
 /**
  * A `strdup` style allocation function.
  */
-class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
+private class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
   StrdupFunction() {
     exists(string name |
       hasGlobalName(name) and
@@ -47,7 +47,7 @@ class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction
 /**
  * A `strndup` style allocation function.
  */
-class StrndupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
+private class StrndupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
   StrndupFunction() {
     exists(string name |
       hasGlobalName(name) and

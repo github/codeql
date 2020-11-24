@@ -3,6 +3,7 @@
  */
 
 import cpp
+import semmle.code.cpp.models.implementations.Printf
 
 /**
  * A function call that writes to a file.

@@ -6,7 +6,6 @@ import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 private import semmle.code.cpp.internal.AddressConstantExpression
-private import semmle.code.cpp.models.implementations.Allocation
 
 /**
  * A C/C++ expression.
