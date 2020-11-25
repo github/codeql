@@ -1,12 +1,13 @@
-public class SQLInjection extends HttpServlet {
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-	throws ServletException, IOException {
+package main
 
-		StringBuilder sqlQueryBuilder = new StringBuilder();
-		sqlQueryBuilder.append("SELECT * FROM user WHERE user_id='");
-		sqlQueryBuilder.append(request.getParameter("user_id"));
-		sqlQueryBuilder.append("'");
+import (
+	"database/sql"
+	"fmt"
+	"net/http"
+)
 
-		// ...
-	}
+func handler(db *sql.DB, req *http.Request) {
+	q := fmt.Sprintf("SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='%s' ORDER BY PRICE",
+		req.URL.Query()["category"])
+	db.Query(q)
 }

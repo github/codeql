@@ -1,8 +1,20 @@
-public class XSS extends HttpServlet {
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-	throws ServletException, IOException {
-		// BAD: a request parameter is written directly to an error response page
-		response.sendError(HttpServletResponse.SC_NOT_FOUND,
-				"The page \"" + request.getParameter("page") + "\" was not found.");
-	}
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func serve() {
+	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		username := r.Form.Get("username")
+		if !isValidUsername(username) {
+			// BAD: a request parameter is incorporated without validation into the response
+			fmt.Fprintf(w, "%q is an unknown user", username)
+		} else {
+			// TODO: do something exciting
+		}
+	})
+	http.ListenAndServe(":80", nil)
 }
