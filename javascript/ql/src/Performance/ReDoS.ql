@@ -702,7 +702,9 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
     r1 != r2
     or
     r1 = r2 and q1 != q2
-  )
+  ) and
+  stateInsideBacktracking(r1) and
+  stateInsideBacktracking(r2)
 }
 
 /**
