@@ -47,6 +47,36 @@ Discard.cs:
 #   10|             4: [BlockStmt] {...}
 #   10|               0: [ReturnStmt] return ...;
 #   10|                 0: [IntLiteral] 0
+LocalFunction.cs:
+#    4| [Class] Class1
+#    6|   5: [Method] M1
+#    6|     -1: [TypeMention] Task
+#    7|     4: [BlockStmt] {...}
+#    8|       0: [LocalVariableDeclStmt] ... ...;
+#    8|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> i = ...
+#    8|           -1: [TypeMention] int?
+#    8|             1: [TypeMention] int
+#    8|           0: [LocalVariableAccess] access to local variable i
+#    8|           1: [CastExpr] (...) ...
+#    8|             1: [IntLiteral] 1
+#    9|       1: [LocalFunctionStmt] mul(...)
+#    9|         0: [LocalFunction] mul
+#-----|           2: (Parameters)
+#    9|             0: [Parameter] mul
+#    9|               -1: [TypeMention] int
+#   10|           4: [BlockStmt] {...}
+#   11|             0: [ReturnStmt] return ...;
+#   11|               0: [MulExpr] ... * ...
+#   11|                 0: [CastExpr] (...) ...
+#   11|                   1: [ParameterAccess] access to parameter mul
+#   11|                 1: [LocalVariableAccess] access to local variable i
+#   14|       2: [ExprStmt] ...;
+#   14|         0: [AwaitExpr] await ...
+#   14|           0: [LocalFunctionCall] call to local function mul
+#   14|             -1: [LocalFunctionAccess] access to local function mul
+#   14|             0: [IntLiteral] 2
+#   16|       3: [LocalFunctionStmt] localExtern(...)
+#   16|         0: [LocalFunction] localExtern
 NativeInt.cs:
 #    3| [Class] NativeInt
 #    5|   5: [Method] M1
