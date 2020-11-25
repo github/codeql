@@ -54,7 +54,7 @@ var bad6 = /^[\_$a-z][\_$a-z0-9]*(\[.*?\])*(\.[\_$a-z][\_$a-z0-9]*(\[.*?\])*)*$/
 // GOOD
 var good6 = /(a|.)*/;
 
-// NOT GOOD; we cannot detect all of them due to the way we build our NFAs
+// NOT GOOD; But we don't detect the last one due to how we construct the NFA.
 var bad7 = /^([a-z]+)+$/;
 var bad8 = /^([a-z]*)*$/;
 var bad9 = /^([a-zA-Z0-9])(([\\-.]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$/;
@@ -309,3 +309,27 @@ var good36 = /(([^/]|X)+)(\/[^]*)*$/;
 
 // GOOD - but we spuriously conclude that a rejecting suffix exists. 
 var good37 = /^((x([^Y]+)?)*(Y|$))/;
+
+// NOT GOOD
+var bad68 = /(a*)+b/;
+
+// NOT GOOD
+var bad69 = /foo([\w-]*)+bar/;
+
+// NOT GOOD
+var bad70 = /((ab)*)+c/;
+
+// NOT GOOD
+var bad71 = /(a?a?)*b/;
+
+// GOOD - but still flagged. only quadratic blowup. (The NFA looks very similar to `/(a*)*b/`)
+var good38 = /(a?)*b/;
+
+// NOT GOOD - but wrong pump string. 
+var bad72 = /(c?a?)*b/;
+
+// NOT GOOD
+var bad73 = /(?:a|a?)+b/;
+
+// NOT GOOD - but wrong pump string. 
+var bad74 = /(a?b?)*$/;

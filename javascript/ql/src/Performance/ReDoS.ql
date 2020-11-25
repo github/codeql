@@ -702,6 +702,10 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
     r1 != r2
     or
     r1 = r2 and q1 != q2
+    or
+    r1 = r2 and
+    q1 = q2 and
+    epsilonSucc+(q) = q
   ) and
   stateInsideBacktracking(r1) and
   stateInsideBacktracking(r2)
@@ -1114,12 +1118,25 @@ predicate isReDoSAttackable(RegExpTerm term, string pump, State s) {
 }
 
 /**
- * Holds if repeating `w' starting at `s` is a candidate for causing exponential backtracking.
+ * Holds if repeating `pump' starting at `state` is a candidate for causing exponential backtracking.
  * No check whether a rejected suffix exists has been made.
  */
-predicate isReDoSCandidate(State s, string w) {
-  isPumpable(s, w) and
-  not isPumpable(epsilonSucc+(s), _)
+predicate isReDoSCandidate(State state, string pump) {
+  isPumpable(state, pump) and
+  (
+    not isPumpable(epsilonSucc+(state), _)
+    or
+    epsilonSucc+(state) = state and
+    state =
+      max(State s, Location l |
+        s = epsilonSucc+(state) and
+        l = s.getRepr().getLocation() and
+        isPumpable(s, _) and
+        s.getRepr() instanceof InfiniteRepetitionQuantifier
+      |
+        s order by l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine()
+      )
+  )
 }
 
 /**
