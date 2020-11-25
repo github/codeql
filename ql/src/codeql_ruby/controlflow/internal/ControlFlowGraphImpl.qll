@@ -141,7 +141,14 @@ abstract private class StandardNode extends ControlFlowTree {
   abstract AstNode getChildNode(int i);
 
   private AstNode getChildNodeRanked(int i) {
-    result = rank[i + 1](AstNode child, int j | child = this.getChildNode(j) | child order by j)
+    result =
+      rank[i + 1](AstNode child, int j |
+        child = this.getChildNode(j) and
+        // Never descend into children with a separate scope
+        not child instanceof CfgScope
+      |
+        child order by j
+      )
   }
 
   /** Gets the first child node of this element. */
@@ -150,24 +157,17 @@ abstract private class StandardNode extends ControlFlowTree {
   /** Gets the last child node of this node. */
   final AstNode getLastChildNode() {
     exists(int last |
-      last = max(int i | exists(this.getChildNodeRanked(i))) and
-      result = this.getChildNodeRanked(last)
+      result = this.getChildNodeRanked(last) and
+      not exists(this.getChildNodeRanked(last + 1))
     )
   }
 
-  /** Gets the `i`th child, which is not the last node. */
-  pragma[nomagic]
-  private AstNode getNonLastChildNode(int i) {
-    result = this.getChildNodeRanked(i) and
-    not result = this.getLastChildNode()
-  }
-
-  final override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
+  final override predicate propagatesAbnormal(AstNode child) { child = this.getChildNodeRanked(_) }
 
   pragma[nomagic]
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     exists(int i |
-      last(this.getNonLastChildNode(i), pred, c) and
+      last(this.getChildNodeRanked(i), pred, c) and
       c instanceof NormalCompletion and
       first(this.getChildNodeRanked(i + 1), succ)
     )
@@ -428,7 +428,7 @@ private module Trees {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
-  private class ProgramTree extends StandardPostOrderTree, Program {
+  private class ProgramTree extends StandardPreOrderTree, Program {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
 
     override predicate isHidden() { any() }
