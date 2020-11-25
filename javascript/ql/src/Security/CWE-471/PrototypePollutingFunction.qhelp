@@ -39,7 +39,7 @@
     This function recursively copies properties from <code>src</code> to <code>dst</code>:
   </p>
 
-  <sample src="examples/PrototypePollutionUtility.js"/>
+  <sample src="examples/PrototypePollutingFunction.js"/>
 
   <p>
     However, if <code>src</code> is the object <code>{"__proto__": {"isAdmin": true}}</code>,
@@ -51,13 +51,13 @@
     are merged recursively:
   </p>
 
-  <sample src="examples/PrototypePollutionUtility_fixed.js"/>
+  <sample src="examples/PrototypePollutingFunction_fixed.js"/>
 
   <p>
     Alternatively, blacklist the <code>__proto__</code> and <code>constructor</code> properties:
   </p>
 
-  <sample src="examples/PrototypePollutionUtility_fixed2.js"/>
+  <sample src="examples/PrototypePollutingFunction_fixed2.js"/>
 </example>
 
 <references>

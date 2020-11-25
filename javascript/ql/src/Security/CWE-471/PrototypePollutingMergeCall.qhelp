@@ -34,7 +34,7 @@
     and then copied into a new object:
   </p>
 
-  <sample src="examples/PrototypePollution1.js"/>
+  <sample src="examples/PrototypePollutingMergeCall1.js"/>
 
   <p>
     Prior to lodash 4.17.11 this would be vulnerable to prototype pollution. An attacker could send the following GET request:
@@ -47,7 +47,7 @@
     Fix this by updating the lodash version:
   </p>
 
-  <sample src="examples/PrototypePollution_fixed.json"/>
+  <sample src="examples/PrototypePollutingMergeCall_fixed.json"/>
 
   <p>
     Note that some web frameworks, such as Express, parse query parameters using extended URL-encoding
@@ -56,7 +56,7 @@
     The example below would also be susceptible to prototype pollution:
   </p>
 
-  <sample src="examples/PrototypePollution2.js"/>
+  <sample src="examples/PrototypePollutingMergeCall2.js"/>
 
   <p>
     In the above example, an attacker can cause prototype pollution by sending the following GET request:

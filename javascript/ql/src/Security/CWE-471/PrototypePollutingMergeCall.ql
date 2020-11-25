@@ -1,7 +1,8 @@
 /**
- * @name Prototype pollution
+ * @name Prototype-polluting merge call
  * @description Recursively merging a user-controlled object into another object
- *              can allow an attacker to modify the built-in Object prototype.
+ *              can allow an attacker to modify the built-in Object prototype,
+ *              and possibly escalate to remote code execution or cross-site scripting.
  * @kind path-problem
  * @problem.severity error
  * @precision high

@@ -1,7 +1,7 @@
 /**
- * @name Prototype pollution in utility function
- * @description Recursively assigning properties on objects may cause
- *              accidental modification of a built-in prototype object.
+ * @name Prototype-polluting function
+ * @description Functions recursively assigning properties on objects may be
+ *              the cause of accidental modification of a built-in prototype object.
  * @kind path-problem
  * @problem.severity warning
  * @precision high
