@@ -120,3 +120,4 @@
 | tst.js:293:17:293:18 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.js:299:90:299:91 | e+ | This part of the regular expression may cause exponential backtracking on strings starting with '00000000000000' and containing many repetitions of 'e'. |
 | tst.js:302:18:302:19 | c+ | This part of the regular expression may cause exponential backtracking on strings starting with 'ab' and containing many repetitions of 'c'. |
+| tst.js:305:18:305:20 | \\s+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of ' '. |
