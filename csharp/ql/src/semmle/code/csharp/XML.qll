@@ -4,7 +4,8 @@
 
 import semmle.files.FileSystem
 
-private class TXMLLocatable = @xmldtd or @xmlelement or @xmlattribute or @xmlnamespace or @xmlcomment or @xmlcharacters;
+private class TXMLLocatable =
+  @xmldtd or @xmlelement or @xmlattribute or @xmlnamespace or @xmlcomment or @xmlcharacters;
 
 /** An XML element that has a location. */
 class XMLLocatable extends @xmllocatable, TXMLLocatable {
