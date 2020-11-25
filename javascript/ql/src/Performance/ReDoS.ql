@@ -1069,10 +1069,10 @@ module SuffixConstruction {
 }
 
 /**
- * Holds if `term` may cause exponential backtracking on strings containing many repetitions of `witness`.
+ * Holds if `term` may cause exponential backtracking on strings containing many repetitions of `pump`.
  * Gets the minimum possible string that causes exponential backtracking.
  */
-predicate isReDoSAttackable(RegExpTerm term, string witness, State s) {
+predicate isReDoSAttackable(RegExpTerm term, string pump, State s) {
   exists(int i, string c | s = Match(term, i) |
     c =
       min(string w |
@@ -1081,7 +1081,7 @@ predicate isReDoSAttackable(RegExpTerm term, string witness, State s) {
       |
         w order by w.length(), w
       ) and
-    witness = escape(rotate(c, i))
+    pump = escape(rotate(c, i))
   )
 }
 
@@ -1111,7 +1111,7 @@ string escape(string s) {
 /**
  * Gets `str` with the last `i` characters moved to the front.
  *
- * We use this to adjust the witness string to match with the beginning of
+ * We use this to adjust the pump string to match with the beginning of
  * a RegExpTerm, so it doesn't start in the middle of a constant.
  */
 bindingset[str, i]
@@ -1119,9 +1119,9 @@ string rotate(string str, int i) {
   result = str.suffix(str.length() - i) + str.prefix(str.length() - i)
 }
 
-from RegExpTerm t, string witness, State s, string prefixMsg
+from RegExpTerm t, string pump, State s, string prefixMsg
 where
-  isReDoSAttackable(t, witness, s) and
+  isReDoSAttackable(t, pump, s) and
   (
     prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s)) + "' and " and
     not PrefixConstruction::prefix(s) = ""
@@ -1132,4 +1132,4 @@ where
   )
 select t,
   "This part of the regular expression may cause exponential backtracking on strings " + prefixMsg +
-    "containing many repetitions of '" + witness + "'."
+    "containing many repetitions of '" + pump + "'."
