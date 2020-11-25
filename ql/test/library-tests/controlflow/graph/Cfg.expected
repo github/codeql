@@ -3,6 +3,9 @@ nodes
 | exit.rb:1:1:6:3 | exit m1 |
 | exit.rb:1:1:6:3 | exit m1 (abnormal) |
 | exit.rb:1:1:6:3 | exit m1 (normal) |
+| exit.rb:1:1:13:4 | enter top-level |
+| exit.rb:1:1:13:4 | exit top-level |
+| exit.rb:1:1:13:4 | exit top-level (abnormal) |
 | exit.rb:2:3:4:5 | If |
 | exit.rb:2:6:2:6 | x |
 | exit.rb:2:6:2:10 | Binary |
@@ -30,6 +33,9 @@ nodes
 | ifs.rb:1:1:9:3 | enter m1 |
 | ifs.rb:1:1:9:3 | exit m1 |
 | ifs.rb:1:1:9:3 | exit m1 (normal) |
+| ifs.rb:1:1:26:4 | enter top-level |
+| ifs.rb:1:1:26:4 | exit top-level |
+| ifs.rb:1:1:26:4 | exit top-level (normal) |
 | ifs.rb:2:3:8:5 | If |
 | ifs.rb:2:6:2:6 | x |
 | ifs.rb:2:6:2:10 | Binary |
@@ -96,6 +102,7 @@ nodes
 | loops.rb:1:1:6:3 | enter m1 |
 | loops.rb:1:1:6:3 | exit m1 |
 | loops.rb:1:1:6:3 | exit m1 (normal) |
+| loops.rb:1:1:28:3 | enter top-level |
 | loops.rb:2:3:5:5 | While |
 | loops.rb:2:9:2:9 | x |
 | loops.rb:2:9:2:14 | Binary |
@@ -160,6 +167,9 @@ nodes
 | raise.rb:1:1:6:3 | exit m1 |
 | raise.rb:1:1:6:3 | exit m1 (abnormal) |
 | raise.rb:1:1:6:3 | exit m1 (normal) |
+| raise.rb:1:1:6:4 | enter top-level |
+| raise.rb:1:1:6:4 | exit top-level |
+| raise.rb:1:1:6:4 | exit top-level (abnormal) |
 | raise.rb:2:3:4:5 | If |
 | raise.rb:2:6:2:6 | x |
 | raise.rb:2:6:2:10 | Binary |
@@ -174,6 +184,8 @@ edges
 | exit.rb:1:1:6:3 | enter m1 | exit.rb:2:3:4:5 | If | semmle.label | successor |
 | exit.rb:1:1:6:3 | exit m1 (abnormal) | exit.rb:1:1:6:3 | exit m1 | semmle.label | successor |
 | exit.rb:1:1:6:3 | exit m1 (normal) | exit.rb:1:1:6:3 | exit m1 | semmle.label | successor |
+| exit.rb:1:1:13:4 | enter top-level | exit.rb:2:3:4:5 | If | semmle.label | successor |
+| exit.rb:1:1:13:4 | exit top-level (abnormal) | exit.rb:1:1:13:4 | exit top-level | semmle.label | successor |
 | exit.rb:2:3:4:5 | If | exit.rb:2:6:2:6 | x | semmle.label | successor |
 | exit.rb:2:6:2:6 | x | exit.rb:2:10:2:10 | 2 | semmle.label | successor |
 | exit.rb:2:6:2:10 | Binary | exit.rb:3:10:3:10 | 1 | semmle.label | true |
@@ -181,9 +193,11 @@ edges
 | exit.rb:2:10:2:10 | 2 | exit.rb:2:6:2:10 | Binary | semmle.label | successor |
 | exit.rb:3:5:3:8 | exit | exit.rb:3:5:3:10 | MethodCall | semmle.label | successor |
 | exit.rb:3:5:3:10 | MethodCall | exit.rb:1:1:6:3 | exit m1 (abnormal) | semmle.label | exit |
+| exit.rb:3:5:3:10 | MethodCall | exit.rb:1:1:13:4 | exit top-level (abnormal) | semmle.label | exit |
 | exit.rb:3:10:3:10 | 1 | exit.rb:3:5:3:8 | exit | semmle.label | successor |
 | exit.rb:5:3:5:6 | puts | exit.rb:5:3:5:15 | MethodCall | semmle.label | successor |
 | exit.rb:5:3:5:15 | MethodCall | exit.rb:1:1:6:3 | exit m1 (normal) | semmle.label | successor |
+| exit.rb:5:3:5:15 | MethodCall | exit.rb:9:3:11:5 | If | semmle.label | successor |
 | exit.rb:5:8:5:15 | String | exit.rb:5:3:5:6 | puts | semmle.label | successor |
 | exit.rb:8:1:13:3 | enter m2 | exit.rb:9:3:11:5 | If | semmle.label | successor |
 | exit.rb:8:1:13:3 | exit m2 (abnormal) | exit.rb:8:1:13:3 | exit m2 | semmle.label | successor |
@@ -194,6 +208,7 @@ edges
 | exit.rb:9:6:9:10 | Binary | exit.rb:12:8:12:15 | String | semmle.label | false |
 | exit.rb:9:10:9:10 | 2 | exit.rb:9:6:9:10 | Binary | semmle.label | successor |
 | exit.rb:10:5:10:9 | abort | exit.rb:10:5:10:18 | MethodCall | semmle.label | successor |
+| exit.rb:10:5:10:18 | MethodCall | exit.rb:1:1:13:4 | exit top-level (abnormal) | semmle.label | exit |
 | exit.rb:10:5:10:18 | MethodCall | exit.rb:8:1:13:3 | exit m2 (abnormal) | semmle.label | exit |
 | exit.rb:10:11:10:18 | String | exit.rb:10:5:10:9 | abort | semmle.label | successor |
 | exit.rb:12:3:12:6 | puts | exit.rb:12:3:12:15 | MethodCall | semmle.label | successor |
@@ -201,6 +216,8 @@ edges
 | exit.rb:12:8:12:15 | String | exit.rb:12:3:12:6 | puts | semmle.label | successor |
 | ifs.rb:1:1:9:3 | enter m1 | ifs.rb:2:3:8:5 | If | semmle.label | successor |
 | ifs.rb:1:1:9:3 | exit m1 (normal) | ifs.rb:1:1:9:3 | exit m1 | semmle.label | successor |
+| ifs.rb:1:1:26:4 | enter top-level | ifs.rb:2:3:8:5 | If | semmle.label | successor |
+| ifs.rb:1:1:26:4 | exit top-level (normal) | ifs.rb:1:1:26:4 | exit top-level | semmle.label | successor |
 | ifs.rb:2:3:8:5 | If | ifs.rb:2:6:2:6 | x | semmle.label | successor |
 | ifs.rb:2:6:2:6 | x | ifs.rb:2:10:2:10 | 2 | semmle.label | successor |
 | ifs.rb:2:6:2:10 | Binary | ifs.rb:3:10:3:30 | String | semmle.label | true |
@@ -208,6 +225,7 @@ edges
 | ifs.rb:2:10:2:10 | 2 | ifs.rb:2:6:2:10 | Binary | semmle.label | successor |
 | ifs.rb:3:5:3:8 | puts | ifs.rb:3:5:3:30 | MethodCall | semmle.label | successor |
 | ifs.rb:3:5:3:30 | MethodCall | ifs.rb:1:1:9:3 | exit m1 (normal) | semmle.label | successor |
+| ifs.rb:3:5:3:30 | MethodCall | ifs.rb:12:3:14:5 | If | semmle.label | successor |
 | ifs.rb:3:10:3:30 | String | ifs.rb:3:5:3:8 | puts | semmle.label | successor |
 | ifs.rb:4:3:7:35 | Elsif | ifs.rb:4:9:4:9 | x | semmle.label | successor |
 | ifs.rb:4:9:4:9 | x | ifs.rb:4:14:4:14 | 2 | semmle.label | successor |
@@ -232,17 +250,21 @@ edges
 | ifs.rb:4:37:4:37 | 5 | ifs.rb:4:32:4:37 | Binary | semmle.label | successor |
 | ifs.rb:5:5:5:8 | puts | ifs.rb:5:5:5:17 | MethodCall | semmle.label | successor |
 | ifs.rb:5:5:5:17 | MethodCall | ifs.rb:1:1:9:3 | exit m1 (normal) | semmle.label | successor |
+| ifs.rb:5:5:5:17 | MethodCall | ifs.rb:12:3:14:5 | If | semmle.label | successor |
 | ifs.rb:5:10:5:17 | String | ifs.rb:5:5:5:8 | puts | semmle.label | successor |
 | ifs.rb:7:5:7:8 | puts | ifs.rb:7:5:7:35 | MethodCall | semmle.label | successor |
 | ifs.rb:7:5:7:35 | MethodCall | ifs.rb:1:1:9:3 | exit m1 (normal) | semmle.label | successor |
+| ifs.rb:7:5:7:35 | MethodCall | ifs.rb:12:3:14:5 | If | semmle.label | successor |
 | ifs.rb:7:10:7:35 | String | ifs.rb:7:5:7:8 | puts | semmle.label | successor |
 | ifs.rb:11:1:16:3 | enter m2 | ifs.rb:12:3:14:5 | If | semmle.label | successor |
 | ifs.rb:11:1:16:3 | exit m2 (normal) | ifs.rb:11:1:16:3 | exit m2 | semmle.label | successor |
 | ifs.rb:12:3:14:5 | If | ifs.rb:12:6:12:6 | b | semmle.label | successor |
 | ifs.rb:12:6:12:6 | b | ifs.rb:13:12:13:12 | 0 | semmle.label | true |
 | ifs.rb:12:6:12:6 | b | ifs.rb:15:10:15:10 | 1 | semmle.label | false |
+| ifs.rb:13:5:13:12 | Return | ifs.rb:1:1:26:4 | exit top-level (normal) | semmle.label | return |
 | ifs.rb:13:5:13:12 | Return | ifs.rb:11:1:16:3 | exit m2 (normal) | semmle.label | return |
 | ifs.rb:13:12:13:12 | 0 | ifs.rb:13:5:13:12 | Return | semmle.label | successor |
+| ifs.rb:15:3:15:10 | Return | ifs.rb:1:1:26:4 | exit top-level (normal) | semmle.label | return |
 | ifs.rb:15:3:15:10 | Return | ifs.rb:11:1:16:3 | exit m2 (normal) | semmle.label | return |
 | ifs.rb:15:10:15:10 | 1 | ifs.rb:15:3:15:10 | Return | semmle.label | successor |
 | ifs.rb:18:1:26:3 | enter m3 | ifs.rb:19:3:24:5 | If | semmle.label | successor |
@@ -271,10 +293,12 @@ edges
 | ifs.rb:25:8:25:8 | x | ifs.rb:25:3:25:6 | puts | semmle.label | successor |
 | loops.rb:1:1:6:3 | enter m1 | loops.rb:2:3:5:5 | While | semmle.label | successor |
 | loops.rb:1:1:6:3 | exit m1 (normal) | loops.rb:1:1:6:3 | exit m1 | semmle.label | successor |
+| loops.rb:1:1:28:3 | enter top-level | loops.rb:2:3:5:5 | While | semmle.label | successor |
 | loops.rb:2:3:5:5 | While | loops.rb:2:9:2:9 | x | semmle.label | successor |
 | loops.rb:2:9:2:9 | x | loops.rb:2:14:2:14 | 0 | semmle.label | successor |
 | loops.rb:2:9:2:14 | Binary | loops.rb:1:1:6:3 | exit m1 (normal) | semmle.label | false |
 | loops.rb:2:9:2:14 | Binary | loops.rb:3:10:3:10 | x | semmle.label | true |
+| loops.rb:2:9:2:14 | Binary | loops.rb:9:3:20:5 | While | semmle.label | false |
 | loops.rb:2:14:2:14 | 0 | loops.rb:2:9:2:14 | Binary | semmle.label | successor |
 | loops.rb:3:5:3:8 | puts | loops.rb:3:5:3:10 | MethodCall | semmle.label | successor |
 | loops.rb:3:5:3:10 | MethodCall | loops.rb:4:5:4:5 | x | semmle.label | successor |
@@ -318,6 +342,7 @@ edges
 | loops.rb:19:10:19:15 | String | loops.rb:19:5:19:8 | puts | semmle.label | successor |
 | loops.rb:21:3:21:6 | puts | loops.rb:21:3:21:13 | MethodCall | semmle.label | successor |
 | loops.rb:21:3:21:13 | MethodCall | loops.rb:8:1:22:3 | exit m2 (normal) | semmle.label | successor |
+| loops.rb:21:3:21:13 | MethodCall | loops.rb:25:4:25:4 | 1 | semmle.label | successor |
 | loops.rb:21:8:21:13 | String | loops.rb:21:3:21:6 | puts | semmle.label | successor |
 | loops.rb:24:1:28:3 | enter m3 | loops.rb:25:4:25:4 | 1 | semmle.label | successor |
 | loops.rb:24:1:28:3 | exit m3 (normal) | loops.rb:24:1:28:3 | exit m3 | semmle.label | successor |
@@ -336,6 +361,8 @@ edges
 | raise.rb:1:1:6:3 | enter m1 | raise.rb:2:3:4:5 | If | semmle.label | successor |
 | raise.rb:1:1:6:3 | exit m1 (abnormal) | raise.rb:1:1:6:3 | exit m1 | semmle.label | successor |
 | raise.rb:1:1:6:3 | exit m1 (normal) | raise.rb:1:1:6:3 | exit m1 | semmle.label | successor |
+| raise.rb:1:1:6:4 | enter top-level | raise.rb:2:3:4:5 | If | semmle.label | successor |
+| raise.rb:1:1:6:4 | exit top-level (abnormal) | raise.rb:1:1:6:4 | exit top-level | semmle.label | successor |
 | raise.rb:2:3:4:5 | If | raise.rb:2:6:2:6 | x | semmle.label | successor |
 | raise.rb:2:6:2:6 | x | raise.rb:2:10:2:10 | 2 | semmle.label | successor |
 | raise.rb:2:6:2:10 | Binary | raise.rb:3:11:3:17 | String | semmle.label | true |
@@ -343,6 +370,7 @@ edges
 | raise.rb:2:10:2:10 | 2 | raise.rb:2:6:2:10 | Binary | semmle.label | successor |
 | raise.rb:3:5:3:9 | raise | raise.rb:3:5:3:17 | MethodCall | semmle.label | successor |
 | raise.rb:3:5:3:17 | MethodCall | raise.rb:1:1:6:3 | exit m1 (abnormal) | semmle.label | raise |
+| raise.rb:3:5:3:17 | MethodCall | raise.rb:1:1:6:4 | exit top-level (abnormal) | semmle.label | raise |
 | raise.rb:3:11:3:17 | String | raise.rb:3:5:3:9 | raise | semmle.label | successor |
 | raise.rb:5:3:5:6 | puts | raise.rb:5:3:5:15 | MethodCall | semmle.label | successor |
 | raise.rb:5:3:5:15 | MethodCall | raise.rb:1:1:6:3 | exit m1 (normal) | semmle.label | successor |

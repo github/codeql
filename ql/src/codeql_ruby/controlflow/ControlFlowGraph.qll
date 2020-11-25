@@ -7,13 +7,33 @@ private import internal.ControlFlowGraphImpl
 private import internal.Splitting
 private import internal.Completion
 
-private class CfgScopeRange = @method or @block or @do_block;
+private class CfgScopeRange =
+  @program or @begin_block or @end_block or @module or @class or @singleton_class or @method or
+      @singleton_method or @block or @do_block;
 
 /** An AST node with an associated control-flow graph. */
 class CfgScope extends AstNode, CfgScopeRange {
   /** Gets the name of this scope. */
   string getName() {
+    this instanceof Program and
+    result = "top-level"
+    or
+    this instanceof BeginBlock and
+    result = "BEGIN block"
+    or
+    this instanceof EndBlock and
+    result = "END block"
+    or
+    result = this.(Module).getName().toString()
+    or
+    result = this.(Class).getName().toString()
+    or
+    this instanceof SingletonClass and
+    result = "singleton class"
+    or
     result = this.(Method).getName().toString()
+    or
+    result = this.(SingletonMethod).getName().toString()
     or
     this instanceof Block and
     result = "block"

@@ -246,6 +246,10 @@ private module Trees {
     }
   }
 
+  private class BeginBlockTree extends StandardPreOrderTree, BeginBlock {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+  }
+
   private class BinaryTree extends StandardPostOrderTree, Binary {
     BinaryTree() { not this instanceof LogicalAndAstNode and not this instanceof LogicalOrAstNode }
 
@@ -272,6 +276,12 @@ private module Trees {
     }
   }
 
+  private class ClassTree extends StandardPreOrderTree, Class {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
+  }
+
   private class DoTree extends StandardPreOrderTree, Do {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
 
@@ -288,6 +298,10 @@ private module Trees {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
 
     override predicate isHidden() { any() }
+  }
+
+  private class EndBlockTree extends StandardPreOrderTree, EndBlock {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
   private class IdentifierTree extends LeafTree, Identifier { }
@@ -392,6 +406,12 @@ private module Trees {
     }
   }
 
+  private class ModuleTree extends StandardPreOrderTree, Module {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
+  }
+
   private class NextTree extends StandardPostOrderTree, Next {
     final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
   }
@@ -408,12 +428,30 @@ private module Trees {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
+  private class ProgramTree extends StandardPostOrderTree, Program {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
+  }
+
   private class RedoTree extends StandardPostOrderTree, Redo {
     final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
   }
 
   private class ReturnTree extends StandardPostOrderTree, Return {
     final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+  }
+
+  private class SingletonClassTree extends StandardPreOrderTree, SingletonClass {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
+  }
+
+  private class SingletonMethodTree extends StandardPreOrderTree, SingletonMethod {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
   }
 
   private class StringTree extends LeafTree, String { }
