@@ -8,6 +8,7 @@
  */
 
 import codeql_ruby.printAst
+import codeql.files.FileSystem
 
 /**
  * The source file to generate an AST from.
@@ -36,7 +37,7 @@ File getFileBySourceArchiveName(string name) {
  * Overrides the configuration to print only nodes in the selected source file.
  */
 class Cfg extends PrintAstConfiguration {
-  override predicate shouldPrintNode(AstNode n) {
+  override predicate shouldPrintNode(Generated::AstNode n) {
     n.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
   }
 }

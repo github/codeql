@@ -201,7 +201,12 @@ binary_def(
   int loc: @location ref
 );
 
-@block_child_type = @block_parameters | @token_empty_statement | @underscore_statement
+block_parameters(
+  unique int block: @block ref,
+  unique int block_parameters: @block_parameters ref
+);
+
+@block_child_type = @token_empty_statement | @underscore_statement
 
 #keyset[block, index]
 block_child(
@@ -399,7 +404,12 @@ do_def(
   int loc: @location ref
 );
 
-@do_block_child_type = @block_parameters | @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
+do_block_parameters(
+  unique int do_block: @do_block ref,
+  unique int block_parameters: @block_parameters ref
+);
+
+@do_block_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
 
 #keyset[do_block, index]
 do_block_child(
@@ -1063,7 +1073,7 @@ setter_def(
   unique int id: @setter,
   int parent: @ast_node_parent ref,
   int parent_index: int ref,
-  int child: @token_identifier ref,
+  int name: @token_identifier ref,
   int loc: @location ref
 );
 

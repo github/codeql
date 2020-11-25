@@ -1,6 +1,6 @@
 /** Provides a simple analysis for identifying calls that will not return. */
 
-private import codeql_ruby.ast
+private import codeql_ruby.Generated::Generated
 private import Completion
 
 /** A call that definitely does not return (conservative analysis). */

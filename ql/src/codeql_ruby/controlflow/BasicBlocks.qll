@@ -1,6 +1,6 @@
 /** Provides classes representing basic blocks. */
 
-private import codeql_ruby.ast
+private import codeql_ruby.Generated::Generated
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import internal.ControlFlowGraphImpl
 private import SuccessorTypes

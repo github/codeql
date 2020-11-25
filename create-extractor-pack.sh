@@ -13,7 +13,7 @@ fi
 cargo build --release
 
 cargo run --release -p ruby-generator
-codeql query format -i ql/src/codeql_ruby/ast.qll
+codeql query format -i ql/src/codeql_ruby/Generated.qll
 
 rm -rf extractor-pack
 mkdir -p extractor-pack
