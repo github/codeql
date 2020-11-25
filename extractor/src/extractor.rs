@@ -188,6 +188,7 @@ impl Extractor {
             path: format!("{}", path.display()),
             file_label: *file_label,
             token_counter: 0,
+            toplevel_child_counter: 0,
             stack: Vec::new(),
             schema: &self.schema,
         };
@@ -257,14 +258,17 @@ struct Visitor<'a> {
     trap_writer: TrapWriter,
     /// A counter for tokens
     token_counter: usize,
+    /// A counter for top-level child nodes
+    toplevel_child_counter: usize,
     /// A lookup table from type name to node types
     schema: &'a NodeTypeMap,
-    /// A stack for gathering information from hild nodes. Whenever a node is entered
-    /// an empty list is pushed. All children append their data (field name, label, type) to
-    /// the the list. When the visitor leaves a node the list containing the child data is popped
-    /// from the stack and matched against the dbscheme for the node. If the expectations are met
-    /// the corresponding row definitions are added to the trap_output.
-    stack: Vec<Vec<(Option<&'static str>, Label, TypeName)>>,
+    /// A stack for gathering information from child nodes. Whenever a node is entered
+    /// the parent's [Label], child counter, and an empty list is pushed. All children append their data
+    /// (field name, label, type) to the the list. When the visitor leaves a node the list
+    /// containing the child data is popped from the stack and matched against the dbscheme
+    /// for the node. If the expectations are met the corresponding row definitions are
+    /// added to the trap_output.
+    stack: Vec<(Label, usize, Vec<(Option<&'static str>, Label, TypeName)>)>,
 }
 
 impl Visitor<'_> {
@@ -287,7 +291,9 @@ impl Visitor<'_> {
             return false;
         }
 
-        self.stack.push(Vec::new());
+        let id = self.trap_writer.fresh_id();
+
+        self.stack.push((id, 0, Vec::new()));
         return true;
     }
 
@@ -295,11 +301,10 @@ impl Visitor<'_> {
         if node.is_error() || node.is_missing() {
             return;
         }
-        let child_nodes = self.stack.pop().expect("Vistor: empty stack");
-        let id = self.trap_writer.fresh_id();
+        let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
         let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
         let loc = self.trap_writer.location(
-            self.file_label.clone(),
+            self.file_label,
             start_line,
             start_column,
             end_line,
@@ -313,12 +318,24 @@ impl Visitor<'_> {
             })
             .unwrap();
         let mut valid = true;
+        let (parent_id, parent_index) = match self.stack.last_mut() {
+            Some(p) if !node.is_extra() => {
+                p.1 += 1;
+                (p.0, p.1 - 1)
+            }
+            _ => {
+                self.toplevel_child_counter += 1;
+                (self.file_label, self.toplevel_child_counter - 1)
+            }
+        };
         match &table.kind {
             EntryKind::Token { kind_id, .. } => {
                 self.trap_writer.add_tuple(
                     "tokeninfo",
                     vec![
                         Arg::Label(id),
+                        Arg::Label(parent_id),
+                        Arg::Int(parent_index),
                         Arg::Int(*kind_id),
                         Arg::Label(self.file_label),
                         Arg::Int(self.token_counter),
@@ -335,6 +352,8 @@ impl Visitor<'_> {
                 if let Some(args) = self.complex_node(&node, fields, child_nodes, id) {
                     let mut all_args = Vec::new();
                     all_args.push(Arg::Label(id));
+                    all_args.push(Arg::Label(parent_id));
+                    all_args.push(Arg::Int(parent_index));
                     all_args.extend(args);
                     all_args.push(Arg::Label(loc));
                     self.trap_writer.add_tuple(&table_name, all_args);
@@ -354,7 +373,7 @@ impl Visitor<'_> {
             // Extra nodes are independent root nodes and do not belong to the parent node
             // Therefore we should not register them in the parent vector
             if let Some(parent) = self.stack.last_mut() {
-                parent.push((
+                parent.2.push((
                     field_name,
                     id,
                     TypeName {
