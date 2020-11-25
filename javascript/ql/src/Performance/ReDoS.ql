@@ -76,7 +76,7 @@ import semmle.javascript.security.performance.SuperlinearBackTracking
  *     back to itself has been identified, we attempt to construct a concrete
  *     string corresponding to it, which may fail.
  *   * Lastly we ensure that any state reached by repeating `n` copies of `w` has
- *     a suffix `x` (possible empty) that is __not__ accepted.
+ *     a suffix `x` (possible empty) that is most likely __not__ accepted.
  */
 
 /**
@@ -1009,24 +1009,26 @@ module SuffixConstruction {
 
   /**
    * Holds if all states reachable from `fork` by repeating `w`
-   * are rejectable by appending some suffix.
+   * are likely rejectable by appending some suffix.
    */
   predicate reachesOnlyRejectableSuffixes(State fork, string w) {
     isReDoSCandidate(fork, w) and
-    forex(State next | next = process(fork, w, w.length() - 1) | isDefinitelyRejectable(next))
+    forex(State next | next = process(fork, w, w.length() - 1) | isLikelyRejectable(next))
   }
 
   /**
-   * Holds if there definitely exists a path starting from `s` that leads to the regular expression being rejected.
+   * Holds if there likely exists a suffix starting from `s` that leads to the regular expression being rejected.
+   * This predicate might find impossible suffixes when searching for suffixes of length > 1, which can cause FPs.
    */
-  private predicate isDefinitelyRejectable(StateInPumpableRegexp s) {
+  private predicate isLikelyRejectable(StateInPumpableRegexp s) {
     // exists a reject edge with some char.
     hasRejectEdge(s, _)
     or
     // all edges (at least one) with some char leads to another state that is rejectable.
+    // the `next` states might not share a common suffix, which can cause FPs.
     exists(string char | char = relevant() |
       forex(State next | deltaClosed(s, getAnInputSymbolMatching(char), next) |
-        isDefinitelyRejectable(next)
+        isLikelyRejectable(next)
       )
     )
     or
