@@ -13,24 +13,54 @@ private VariableScope enclosingScope(AstNode node) {
   result.getScopeElement() = parent*(node.getParent())
 }
 
-/** Holds if `scope` defines `name` as a parameter. */
+/** A parameter. */
+class Parameter extends AstNode {
+  private int position;
+  private VariableScope scope;
+
+  Parameter() {
+    this =
+      scope.(BlockScope).getScopeElement().getAFieldOrChild().(BlockParameters).getChild(position)
+    or
+    this =
+      scope.(MethodScope).getScopeElement().getAFieldOrChild().(MethodParameters).getChild(position)
+  }
+
+  /** Gets the (zero-based) position of this parameter. */
+  final int getPosition() { result = position }
+
+  /** Gets the scope this parameter is declared in. */
+  final VariableScope getDeclaringScope() { result = scope }
+
+  /** Gets an access to this parameter. */
+  final ParameterAccess getAnAccess() { result.getParameter() = this }
+}
+
+private Identifier parameterIdentifier(Parameter p) {
+  result = p or
+  result = p.(SplatParameter).getName() or
+  result = p.(HashSplatParameter).getName() or
+  result = p.(BlockParameter).getName() or
+  result = p.(OptionalParameter).getName() or
+  result = p.(KeywordParameter).getName() or
+  result = destructuredIdentifier(p.(DestructuredParameter))
+}
+
+private Identifier destructuredIdentifier(AstNode node) {
+  result = node or
+  result = destructuredIdentifier(node.(DestructuredParameter).getAFieldOrChild())
+}
+
+/** Holds if `scope` defines `name` in its parameter declaration. */
 private predicate scopeDefinesParameter(VariableScope scope, string name, Location location) {
-  exists(Identifier var |
-    name = var.getValue() and
-    location = var.getLocation() and
-    var in [scope
-              .(BlockScope)
-              .getScopeElement()
-              .getAFieldOrChild()
-              .(BlockParameters)
-              .getAFieldOrChild+(),
-          scope
-              .(MethodScope)
-              .getScopeElement()
-              .getAFieldOrChild()
-              .(MethodParameters)
-              .getAFieldOrChild+()]
-  )
+  location =
+    min(Parameter p, Identifier i |
+      scope = p.getDeclaringScope() and
+      i = parameterIdentifier(p) and
+      name = i.getValue()
+    |
+      i.getLocation() as loc order by loc.getStartLine(), loc.getStartColumn()
+    )
 }
 
 /** Holds if `var` is assigned in `scope`. */
@@ -77,10 +107,9 @@ private module Cached {
 
   cached
   newtype TVariable =
-    TParameter(VariableScope scope, string name, Location location) {
-      scopeDefinesParameter(scope, name, location)
-    } or
     TLocalVariable(VariableScope scope, string name, Location location) {
+      scopeDefinesParameter(scope, name, location)
+      or
       not scopeDefinesParameter(scope, name, _) and
       not blockScopeInherits(scope, name, _) and
       location =
@@ -146,23 +175,6 @@ class Variable extends TVariable {
   VariableAccess getAnAccess() { result.getVariable() = this }
 }
 
-/** A parameter. */
-class Parameter extends Variable {
-  private VariableScope scope;
-  private string name;
-  private Location location;
-
-  Parameter() { this = TParameter(scope, name, location) }
-
-  final override string getName() { result = name }
-
-  final override Location getLocation() { result = location }
-
-  final override VariableScope getDeclaringScope() { result = scope }
-
-  final override ParameterAccess getAnAccess() { result = super.getAnAccess() }
-}
-
 /** A local variable. */
 class LocalVariable extends Variable {
   private VariableScope scope;
@@ -176,8 +188,6 @@ class LocalVariable extends Variable {
   final override Location getLocation() { result = location }
 
   final override VariableScope getDeclaringScope() { result = scope }
-
-  final override LocalVariableAccess getAnAccess() { result = super.getAnAccess() }
 }
 
 /** An identifier that refers to a variable. */
@@ -194,16 +204,17 @@ class VariableAccess extends Identifier {
 
 /** An identifier that refers to a parameter. */
 class ParameterAccess extends VariableAccess {
-  override Parameter variable;
+  Parameter parameter;
 
-  final override Parameter getVariable() { result = variable }
-}
+  ParameterAccess() {
+    exists(Identifier i |
+      i = parameterIdentifier(parameter) and
+      variable.getDeclaringScope() = parameter.getDeclaringScope() and
+      variable.getLocation() = i.getLocation()
+    )
+  }
 
-/** An identifier that refers to a local variable. */
-class LocalVariableAccess extends VariableAccess {
-  override LocalVariable variable;
-
-  final override LocalVariable getVariable() { result = super.getVariable() }
+  final Parameter getParameter() { result = parameter }
 }
 
 /** A top-level scope. */

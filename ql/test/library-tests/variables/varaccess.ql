@@ -5,14 +5,15 @@ query predicate variableAccess(VariableAccess access, Variable variable, Variabl
   scope = variable.getDeclaringScope()
 }
 
-query predicate parameterAccess(ParameterAccess access, Parameter variable, VariableScope scope) {
+query predicate parameterAccess(ParameterAccess access, LocalVariable variable, VariableScope scope) {
   variable = access.getVariable() and
   scope = variable.getDeclaringScope()
 }
 
 query predicate localVariableAccess(
-  LocalVariableAccess access, LocalVariable variable, VariableScope scope
+  VariableAccess access, LocalVariable variable, VariableScope scope
 ) {
+  not access instanceof ParameterAccess and
   variable = access.getVariable() and
   scope = variable.getDeclaringScope()
 }
