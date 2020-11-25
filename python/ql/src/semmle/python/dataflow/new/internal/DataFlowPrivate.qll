@@ -739,10 +739,6 @@ class ReturnNode extends CfgNode {
 
   /** Gets the kind of this return node. */
   ReturnKind getKind() { any() }
-
-  override DataFlowCallable getEnclosingCallable() {
-    result.getScope().getAStmt() = ret // TODO: check nested function definitions
-  }
 }
 
 /** A data flow node that represents the output of a call. */
