@@ -110,6 +110,8 @@ module TaintedPath {
       or
       // Checking against `null` has no bearing on path traversal.
       this.controlsNode(_, _, any(AbstractValues::NullValue nv))
+      or
+      this.(LogicalOperation).getAnOperand() instanceof WeakGuard
     }
   }
 
