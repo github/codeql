@@ -136,7 +136,6 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
         })
         .collect();
     ast_node_members.insert("token");
-    ast_node_members.insert("file");
     for (_, node) in nodes {
         match &node.kind {
             node_types::EntryKind::Union { members: n_members } => {
