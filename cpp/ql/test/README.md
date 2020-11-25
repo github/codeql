@@ -2,7 +2,7 @@
 
 This document provides additional information about the C/C++ CodeQL Tests located in `cpp/ql/test`.  See [Contributing to CodeQL](CONTRIBUTING.md) for general information about contributing to this repository.
 
-The tests can be run through Visual Studio Code.  Advanced users may also use the `odasa qltest` command.
+The tests can be run through Visual Studio Code.  Advanced users may also use the `codeql test run` command.
 
 ## Contributing to the tests
 
