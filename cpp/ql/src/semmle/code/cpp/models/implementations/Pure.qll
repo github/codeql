@@ -8,7 +8,8 @@ import semmle.code.cpp.models.interfaces.SideEffect
  *
  * INTERNAL: do not use.
  */
-class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
+private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,
+  SideEffectFunction {
   PureStrFunction() {
     hasGlobalOrStdName([
         "atof", "atoi", "atol", "atoll", "strcasestr", "strchnul", "strchr", "strchrnul", "strstr",
@@ -68,7 +69,7 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
  *
  * INTERNAL: do not use.
  */
-class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
+private class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   StrLenFunction() {
     hasGlobalOrStdName(["strlen", "strnlen", "wcslen"])
     or
@@ -123,7 +124,8 @@ private class PureFunction extends TaintFunction, SideEffectFunction {
  *
  * INTERNAL: do not use.
  */
-class PureMemFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
+private class PureMemFunction extends AliasFunction, ArrayFunction, TaintFunction,
+  SideEffectFunction {
   PureMemFunction() { hasGlobalOrStdName(["memchr", "memrchr", "rawmemchr", "memcmp", "memmem"]) }
 
   override predicate hasArrayInput(int bufParam) {
