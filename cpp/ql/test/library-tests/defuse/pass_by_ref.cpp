@@ -67,3 +67,11 @@ int * noTemporaryObject() {
   constPointerReferenceParameter(p);
   return p;
 }
+
+void pointerRvalueReferenceParameter(int * && pRef);
+
+int temporaryObject2() {
+  int x = 2;
+  pointerRvalueReferenceParameter(&x);
+  return x;
+}
