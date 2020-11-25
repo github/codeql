@@ -8,8 +8,10 @@
  * @precision high
  * @id js/prototype-pollution
  * @tags security
- *       external/cwe/cwe-250
+ *       external/cwe/cwe-078
+ *       external/cwe/cwe-094
  *       external/cwe/cwe-400
+ *       external/cwe/cwe-915
  */
 
 import javascript
