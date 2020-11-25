@@ -3,11 +3,7 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
-/**
- * Pure string functions.
- *
- * INTERNAL: do not use.
- */
+/** Pure string functions. */
 private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,
   SideEffectFunction {
   PureStrFunction() {
@@ -64,11 +60,7 @@ private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunctio
   }
 }
 
-/**
- * String standard `strlen` function, and related functions for computing string lengths.
- *
- * INTERNAL: do not use.
- */
+/** String standard `strlen` function, and related functions for computing string lengths. */
 private class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   StrLenFunction() {
     hasGlobalOrStdName(["strlen", "strnlen", "wcslen"])
@@ -119,11 +111,7 @@ private class PureFunction extends TaintFunction, SideEffectFunction {
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 }
 
-/**
- * Pure raw-memory functions.
- *
- * INTERNAL: do not use.
- */
+/** Pure raw-memory functions. */
 private class PureMemFunction extends AliasFunction, ArrayFunction, TaintFunction,
   SideEffectFunction {
   PureMemFunction() { hasGlobalOrStdName(["memchr", "memrchr", "rawmemchr", "memcmp", "memmem"]) }
