@@ -17,6 +17,9 @@
 | pass_by_ref.cpp:31:7:31:9 | arr | pass_by_ref.cpp:31:15:31:18 | {...} | pass_by_ref.cpp:31:15:31:18 | {...} |
 | pass_by_ref.cpp:37:7:37:9 | arr | pass_by_ref.cpp:37:15:37:18 | {...} | pass_by_ref.cpp:37:15:37:18 | {...} |
 | pass_by_ref.cpp:46:7:46:7 | i | pass_by_ref.cpp:46:11:46:11 | n | pass_by_ref.cpp:46:11:46:11 | n |
+| pass_by_ref.cpp:60:7:60:7 | x | pass_by_ref.cpp:60:10:60:11 | 2 | pass_by_ref.cpp:60:10:60:11 | 2 |
+| pass_by_ref.cpp:66:8:66:8 | p | pass_by_ref.cpp:66:12:66:18 | 0 | pass_by_ref.cpp:66:12:66:18 | 0 |
+| pass_by_ref.cpp:74:7:74:7 | x | pass_by_ref.cpp:74:10:74:11 | 2 | pass_by_ref.cpp:74:10:74:11 | 2 |
 | test.cpp:4:7:4:7 | a | test.cpp:5:3:5:8 | ... = ... | test.cpp:5:7:5:8 | a0 |
 | test.cpp:4:7:4:7 | a | test.cpp:13:3:13:7 | ... = ... | test.cpp:13:7:13:7 | b |
 | test.cpp:4:7:4:7 | a | test.cpp:19:5:19:9 | ... = ... | test.cpp:19:9:19:9 | 1 |
