@@ -15,8 +15,8 @@ private VariableScope enclosingScope(AstNode node) {
 
 /** A parameter. */
 class Parameter extends AstNode {
-  int position;
-  VariableScope scope;
+  private int position;
+  private VariableScope scope;
 
   Parameter() {
     this =
@@ -26,10 +26,13 @@ class Parameter extends AstNode {
       scope.(MethodScope).getScopeElement().getAFieldOrChild().(MethodParameters).getChild(position)
   }
 
+  /** Gets the (zero-based) position of this parameter. */
   final int getPosition() { result = position }
 
+  /** Gets the scope this parameter is declared in. */
   final VariableScope getDeclaringScope() { result = scope }
 
+  /** Gets an access to this parameter. */
   final ParameterAccess getAnAccess() { result.getParameter() = this }
 }
 
