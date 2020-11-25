@@ -135,7 +135,7 @@ module Public {
 
   /** An unbound callable. */
   class SummarizableCallable extends Callable {
-    SummarizableCallable() { this = this.getSourceDeclaration() }
+    SummarizableCallable() { this.isUnboundDeclaration() }
   }
 
   /** A flow-summary input specification. */

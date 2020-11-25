@@ -19,7 +19,7 @@ int isCountForIfChain(IfStmt is) {
   exists(int rest |
     (if is.getElse() instanceof IfStmt then rest = isCountForIfChain(is.getElse()) else rest = 0) and
     (
-      if getTypeCondition(is).getCheckedType().getSourceDeclaration().fromSource()
+      if getTypeCondition(is).getCheckedType().fromSource()
       then result = 1 + rest
       else result = rest
     )

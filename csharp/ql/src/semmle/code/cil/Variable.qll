@@ -108,8 +108,8 @@ class Parameter extends DotNet::Parameter, StackVariable, @cil_parameter {
     result = getMethod().getOverriddenMethod().getRawParameter(getRawPosition())
   }
 
-  override Parameter getSourceDeclaration() {
-    result = getMethod().getSourceDeclaration().getRawParameter(getRawPosition())
+  override Parameter getUnboundDeclaration() {
+    result = getMethod().getUnboundDeclaration().getRawParameter(getRawPosition())
   }
 }
 

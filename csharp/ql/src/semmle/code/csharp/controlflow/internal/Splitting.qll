@@ -245,7 +245,7 @@ module InitializerSplitting {
    * of member `m`.
    */
   predicate constructorInitializes(Constructor c, InitializedInstanceMember m) {
-    c = c.getSourceDeclaration() and
+    c.isUnboundDeclaration() and
     not c.isStatic() and
     c.getDeclaringType().hasMember(m) and
     (

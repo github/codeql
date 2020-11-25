@@ -94,13 +94,13 @@ module Gvn {
       or
       this = TArrayTypeKind(_, _) and result = 1
       or
-      exists(GenericType t | this = TConstructedType(t.getSourceDeclaration()) |
+      exists(GenericType t | this = TConstructedType(t.getUnboundDeclaration()) |
         result = t.getNumberOfArguments()
       )
     }
 
-    /** Gets the source declaration type that this kind corresponds to, if any. */
-    GenericType getConstructedSourceDeclaration() { this = TConstructedType(result) }
+    /** Gets the unbound declaration type that this kind corresponds to, if any. */
+    GenericType getConstructedUnboundDeclaration() { this = TConstructedType(result) }
 
     /**
      * Gets a textual representation of this kind when applied to arguments `args`.
@@ -123,7 +123,7 @@ module Gvn {
     string toString() {
       result = this.toStringBuiltin("")
       or
-      result = this.getConstructedSourceDeclaration().toStringNested()
+      result = this.getConstructedUnboundDeclaration().toStringNested()
     }
 
     /** Gets the location of this kind. */
@@ -138,9 +138,9 @@ module Gvn {
     or
     t = any(ArrayType at | result = TArrayTypeKind(at.getDimension(), at.getRank()))
     or
-    result = TConstructedType(t.getSourceDeclaration())
+    result = TConstructedType(t.getUnboundDeclaration())
     or
-    result = TConstructedType(t.(TupleType).getUnderlyingType().getSourceDeclaration())
+    result = TConstructedType(t.(TupleType).getUnderlyingType().getUnboundDeclaration())
   }
 
   /**
@@ -230,7 +230,7 @@ module Gvn {
 
     private GenericType getConstructedGenericDeclaringTypeAt(int i) {
       i = 0 and
-      result = this.getKind().getConstructedSourceDeclaration()
+      result = this.getKind().getConstructedUnboundDeclaration()
       or
       result = this.getConstructedGenericDeclaringTypeAt(i - 1).getGenericDeclaringType()
     }
@@ -499,12 +499,12 @@ module Gvn {
       TArrayTypeKind(int dim, int rnk) {
         exists(ArrayType at | dim = at.getDimension() and rnk = at.getRank())
       } or
-      TConstructedType(GenericType sourceDecl) {
-        sourceDecl = any(GenericType t).getSourceDeclaration() and
-        not sourceDecl instanceof PointerType and
-        not sourceDecl instanceof NullableType and
-        not sourceDecl instanceof ArrayType and
-        not sourceDecl instanceof TupleType
+      TConstructedType(GenericType unboundDecl) {
+        unboundDecl = any(GenericType t).getUnboundDeclaration() and
+        not unboundDecl instanceof PointerType and
+        not unboundDecl instanceof NullableType and
+        not unboundDecl instanceof ArrayType and
+        not unboundDecl instanceof TupleType
       }
 
     cached
