@@ -24,12 +24,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private Lambda(ExpressionNodeInfo info, CSharpSyntaxNode body, IEnumerable<ParameterSyntax> @params)
             : base(info)
         {
-            var symbol = cx.GetModel(info.Node).GetSymbolInfo(info.Node).Symbol as IMethodSymbol;
-
-            if (symbol is object)
+            if (cx.GetModel(info.Node).GetSymbolInfo(info.Node).Symbol is IMethodSymbol symbol)
             {
-                Modifier.ExtractStaticModifier(cx, info.Context.TrapWriter.Writer, this, symbol);
-                Modifier.ExtractAsyncModifier(cx, info.Context.TrapWriter.Writer, this, symbol);
+                Modifier.ExtractModifiers(cx, info.Context.TrapWriter.Writer, this, symbol);
             }
             else
             {
