@@ -580,3 +580,12 @@ def test_dynamic_tuple_creation_4():
 
     SINK(tup[0])  # Flow missing
     SINK_F(tup[1])
+
+def return_from_inner_scope(x):
+    try:
+        return x[0]
+    except IndexError:
+        return SOURCE
+
+def test_return_from_inner_scope():
+    SINK(return_from_inner_scope([]))
