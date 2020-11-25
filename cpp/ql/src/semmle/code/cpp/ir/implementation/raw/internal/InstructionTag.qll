@@ -28,6 +28,7 @@ newtype TInstructionTag =
   ReturnTag() or
   ExitFunctionTag() or
   AliasedDefinitionTag() or
+  InitializeNonLocalTag() or
   AliasedUseTag() or
   SwitchBranchTag() or
   CallTargetTag() or
@@ -126,6 +127,8 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = ExitFunctionTag() and result = "ExitFunc"
   or
   tag = AliasedDefinitionTag() and result = "AliasedDef"
+  or
+  tag = InitializeNonLocalTag() and result = "InitNonLocal"
   or
   tag = AliasedUseTag() and result = "AliasedUse"
   or
