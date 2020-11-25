@@ -278,14 +278,14 @@ class PropNameTracking extends DataFlow::Configuration {
   }
 
   override predicate isBarrierGuard(DataFlow::BarrierGuardNode node) {
-    node instanceof BlacklistEqualityGuard or
-    node instanceof WhitelistEqualityGuard or
+    node instanceof DenyListEqualityGuard or
+    node instanceof AllowListEqualityGuard or
     node instanceof HasOwnPropertyGuard or
     node instanceof InExprGuard or
     node instanceof InstanceOfGuard or
     node instanceof TypeofGuard or
-    node instanceof BlacklistInclusionGuard or
-    node instanceof WhitelistInclusionGuard or
+    node instanceof DenyListInclusionGuard or
+    node instanceof AllowListInclusionGuard or
     node instanceof IsPlainObjectGuard
   }
 }
@@ -293,11 +293,11 @@ class PropNameTracking extends DataFlow::Configuration {
 /**
  * Sanitizer guard of form `x === "__proto__"` or `x === "constructor"`.
  */
-class BlacklistEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNode {
+class DenyListEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNode {
   override EqualityTest astNode;
   string propName;
 
-  BlacklistEqualityGuard() {
+  DenyListEqualityGuard() {
     astNode.getAnOperand().getStringValue() = propName and
     propName = unsafePropName()
   }
@@ -312,10 +312,10 @@ class BlacklistEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNod
 /**
  * An equality test with something other than `__proto__` or `constructor`.
  */
-class WhitelistEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNode {
+class AllowListEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNode {
   override EqualityTest astNode;
 
-  WhitelistEqualityGuard() {
+  AllowListEqualityGuard() {
     not astNode.getAnOperand().getStringValue() = unsafePropName() and
     astNode.getAnOperand() instanceof Literal
   }
@@ -429,10 +429,10 @@ class TypeofGuard extends DataFlow::LabeledBarrierGuardNode, DataFlow::ValueNode
 /**
  * A check of form `["__proto__"].includes(x)` or similar.
  */
-class BlacklistInclusionGuard extends DataFlow::LabeledBarrierGuardNode, InclusionTest {
+class DenyListInclusionGuard extends DataFlow::LabeledBarrierGuardNode, InclusionTest {
   UnsafePropLabel label;
 
-  BlacklistInclusionGuard() {
+  DenyListInclusionGuard() {
     exists(DataFlow::ArrayCreationNode array |
       array.getAnElement().getStringValue() = label and
       array.flowsTo(getContainerNode())
@@ -449,8 +449,8 @@ class BlacklistInclusionGuard extends DataFlow::LabeledBarrierGuardNode, Inclusi
 /**
  * A check of form `xs.includes(x)` or similar, which sanitizes `x` in the true case.
  */
-class WhitelistInclusionGuard extends DataFlow::LabeledBarrierGuardNode {
-  WhitelistInclusionGuard() {
+class AllowListInclusionGuard extends DataFlow::LabeledBarrierGuardNode {
+  AllowListInclusionGuard() {
     this instanceof TaintTracking::PositiveIndexOfSanitizer
     or
     this instanceof TaintTracking::MembershipTestSanitizer and

@@ -29,7 +29,7 @@
 
   <p>
     Only merge or assign a property recursively when it is an own property of the <em>destination</em> object.
-    Alternatively, blacklist the property names <code>__proto__</code> and <code>constructor</code>
+    Alternatively, deny the property names <code>__proto__</code> and <code>constructor</code>
     from being merged or assigned to.
   </p>
 </recommendation>
@@ -54,7 +54,7 @@
   <sample src="examples/PrototypePollutingFunction_fixed.js"/>
 
   <p>
-    Alternatively, blacklist the <code>__proto__</code> and <code>constructor</code> properties:
+    Alternatively, deny the <code>__proto__</code> and <code>constructor</code> properties:
   </p>
 
   <sample src="examples/PrototypePollutingFunction_fixed2.js"/>
