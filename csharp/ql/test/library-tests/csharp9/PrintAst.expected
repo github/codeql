@@ -48,7 +48,7 @@ Discard.cs:
 #   10|               0: [ReturnStmt] return ...;
 #   10|                 0: [IntLiteral] 0
 NativeInt.cs:
-#    3| [Class] Class1
+#    3| [Class] NativeInt
 #    5|   5: [Method] M1
 #    5|     -1: [TypeMention] Void
 #-----|     2: (Parameters)

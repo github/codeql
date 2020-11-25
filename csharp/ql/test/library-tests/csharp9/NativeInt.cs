@@ -1,6 +1,6 @@
 using System;
 
-public class Class1
+public class NativeInt
 {
     public void M1(int j, uint k)
     {
