@@ -1,4 +1,41 @@
 nodes
+| cfg.rb:1:1:22:2 | enter top-level |
+| cfg.rb:1:1:22:2 | exit top-level |
+| cfg.rb:1:1:22:2 | exit top-level (normal) |
+| cfg.rb:3:1:3:13 | Alias |
+| cfg.rb:3:7:3:9 | foo |
+| cfg.rb:3:11:3:13 | bar |
+| cfg.rb:5:1:5:1 | b |
+| cfg.rb:5:1:5:6 | Assignment |
+| cfg.rb:5:5:5:6 | 42 |
+| cfg.rb:7:1:7:21 | SymbolArray |
+| cfg.rb:7:4:7:12 | BareSymbol |
+| cfg.rb:7:7:7:12 | Interpolation |
+| cfg.rb:7:10:7:10 | b |
+| cfg.rb:7:14:7:20 | BareSymbol |
+| cfg.rb:9:1:9:21 | StringArray |
+| cfg.rb:9:4:9:12 | BareString |
+| cfg.rb:9:7:9:12 | Interpolation |
+| cfg.rb:9:10:9:10 | b |
+| cfg.rb:9:14:9:20 | BareString |
+| cfg.rb:12:1:14:3 | Begin |
+| cfg.rb:13:3:13:6 | puts |
+| cfg.rb:13:3:13:8 | MethodCall |
+| cfg.rb:13:8:13:8 | 4 |
+| cfg.rb:16:1:18:1 | BeginBlock |
+| cfg.rb:16:1:18:1 | enter BEGIN block |
+| cfg.rb:16:1:18:1 | exit BEGIN block |
+| cfg.rb:16:1:18:1 | exit BEGIN block (normal) |
+| cfg.rb:17:3:17:6 | puts |
+| cfg.rb:17:3:17:14 | MethodCall |
+| cfg.rb:17:8:17:14 | String |
+| cfg.rb:20:1:22:1 | EndBlock |
+| cfg.rb:20:1:22:1 | enter END block |
+| cfg.rb:20:1:22:1 | exit END block |
+| cfg.rb:20:1:22:1 | exit END block (normal) |
+| cfg.rb:21:3:21:6 | puts |
+| cfg.rb:21:3:21:14 | MethodCall |
+| cfg.rb:21:8:21:14 | String |
 | exit.rb:1:1:6:3 | enter m1 |
 | exit.rb:1:1:6:3 | exit m1 |
 | exit.rb:1:1:6:3 | exit m1 (abnormal) |
@@ -171,6 +208,40 @@ nodes
 | raise.rb:5:3:5:15 | MethodCall |
 | raise.rb:5:8:5:15 | String |
 edges
+| cfg.rb:1:1:22:2 | enter top-level | cfg.rb:3:1:3:13 | Alias | semmle.label | successor |
+| cfg.rb:1:1:22:2 | exit top-level (normal) | cfg.rb:1:1:22:2 | exit top-level | semmle.label | successor |
+| cfg.rb:3:1:3:13 | Alias | cfg.rb:3:7:3:9 | foo | semmle.label | successor |
+| cfg.rb:3:7:3:9 | foo | cfg.rb:3:11:3:13 | bar | semmle.label | successor |
+| cfg.rb:3:11:3:13 | bar | cfg.rb:5:5:5:6 | 42 | semmle.label | successor |
+| cfg.rb:5:1:5:1 | b | cfg.rb:5:1:5:6 | Assignment | semmle.label | successor |
+| cfg.rb:5:1:5:6 | Assignment | cfg.rb:7:10:7:10 | b | semmle.label | successor |
+| cfg.rb:5:5:5:6 | 42 | cfg.rb:5:1:5:1 | b | semmle.label | successor |
+| cfg.rb:7:1:7:21 | SymbolArray | cfg.rb:9:10:9:10 | b | semmle.label | successor |
+| cfg.rb:7:4:7:12 | BareSymbol | cfg.rb:7:14:7:20 | BareSymbol | semmle.label | successor |
+| cfg.rb:7:7:7:12 | Interpolation | cfg.rb:7:4:7:12 | BareSymbol | semmle.label | successor |
+| cfg.rb:7:10:7:10 | b | cfg.rb:7:7:7:12 | Interpolation | semmle.label | successor |
+| cfg.rb:7:14:7:20 | BareSymbol | cfg.rb:7:1:7:21 | SymbolArray | semmle.label | successor |
+| cfg.rb:9:1:9:21 | StringArray | cfg.rb:12:1:14:3 | Begin | semmle.label | successor |
+| cfg.rb:9:4:9:12 | BareString | cfg.rb:9:14:9:20 | BareString | semmle.label | successor |
+| cfg.rb:9:7:9:12 | Interpolation | cfg.rb:9:4:9:12 | BareString | semmle.label | successor |
+| cfg.rb:9:10:9:10 | b | cfg.rb:9:7:9:12 | Interpolation | semmle.label | successor |
+| cfg.rb:9:14:9:20 | BareString | cfg.rb:9:1:9:21 | StringArray | semmle.label | successor |
+| cfg.rb:12:1:14:3 | Begin | cfg.rb:13:8:13:8 | 4 | semmle.label | successor |
+| cfg.rb:13:3:13:6 | puts | cfg.rb:13:3:13:8 | MethodCall | semmle.label | successor |
+| cfg.rb:13:3:13:8 | MethodCall | cfg.rb:1:1:22:2 | exit top-level (normal) | semmle.label | successor |
+| cfg.rb:13:8:13:8 | 4 | cfg.rb:13:3:13:6 | puts | semmle.label | successor |
+| cfg.rb:16:1:18:1 | BeginBlock | cfg.rb:17:8:17:14 | String | semmle.label | successor |
+| cfg.rb:16:1:18:1 | enter BEGIN block | cfg.rb:16:1:18:1 | BeginBlock | semmle.label | successor |
+| cfg.rb:16:1:18:1 | exit BEGIN block (normal) | cfg.rb:16:1:18:1 | exit BEGIN block | semmle.label | successor |
+| cfg.rb:17:3:17:6 | puts | cfg.rb:17:3:17:14 | MethodCall | semmle.label | successor |
+| cfg.rb:17:3:17:14 | MethodCall | cfg.rb:16:1:18:1 | exit BEGIN block (normal) | semmle.label | successor |
+| cfg.rb:17:8:17:14 | String | cfg.rb:17:3:17:6 | puts | semmle.label | successor |
+| cfg.rb:20:1:22:1 | EndBlock | cfg.rb:21:8:21:14 | String | semmle.label | successor |
+| cfg.rb:20:1:22:1 | enter END block | cfg.rb:20:1:22:1 | EndBlock | semmle.label | successor |
+| cfg.rb:20:1:22:1 | exit END block (normal) | cfg.rb:20:1:22:1 | exit END block | semmle.label | successor |
+| cfg.rb:21:3:21:6 | puts | cfg.rb:21:3:21:14 | MethodCall | semmle.label | successor |
+| cfg.rb:21:3:21:14 | MethodCall | cfg.rb:20:1:22:1 | exit END block (normal) | semmle.label | successor |
+| cfg.rb:21:8:21:14 | String | cfg.rb:21:3:21:6 | puts | semmle.label | successor |
 | exit.rb:1:1:6:3 | enter m1 | exit.rb:2:3:4:5 | If | semmle.label | successor |
 | exit.rb:1:1:6:3 | exit m1 (abnormal) | exit.rb:1:1:6:3 | exit m1 | semmle.label | successor |
 | exit.rb:1:1:6:3 | exit m1 (normal) | exit.rb:1:1:6:3 | exit m1 | semmle.label | successor |
