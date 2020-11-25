@@ -226,7 +226,8 @@ private predicate addressMayEscapeMutablyAt(Expr e) {
     // If we go through a temporary object step, we can take a reference to a temporary const pointer
     // object, where the pointer doesn't point to a const value
     exists(TemporaryObjectExpr temp, PointerType pt |
-      temp.getConversion() = e and pt = temp.getType().stripTopLevelSpecifiers()
+      temp.getConversion() = e.(ReferenceToExpr) and
+      pt = temp.getType().stripTopLevelSpecifiers()
     |
       not pt.getBaseType().isConst()
     )
