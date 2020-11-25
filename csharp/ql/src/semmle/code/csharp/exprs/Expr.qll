@@ -343,8 +343,8 @@ class ConstantPatternExpr extends PatternExpr {
 }
 
 /** A relational pattern, for example `>1` in `x is >1`. */
-abstract class RelationalPatternExpr extends PatternExpr, @relational_pattern_expr {
-  /** Get the operator of this relational pattern. */
+class RelationalPatternExpr extends PatternExpr, @relational_pattern_expr {
+  /** Gets the name of the operator in this pattern. */
   string getOperator() { none() }
 
   /** Gets the expression of this relational pattern. */
@@ -353,28 +353,28 @@ abstract class RelationalPatternExpr extends PatternExpr, @relational_pattern_ex
   override string toString() { result = getOperator() + " ..." }
 }
 
-/** A 'less than' pattern */
+/** A less-than pattern, for example `< 10` in `x is < 10`. */
 class LTPattern extends RelationalPatternExpr, @lt_pattern_expr {
   override string getOperator() { result = "<" }
 
   override string getAPrimaryQlClass() { result = "LTPattern" }
 }
 
-/** A 'greater than' pattern */
+/** A greater-than pattern, for example `> 10` in `x is > 10`. */
 class GTPattern extends RelationalPatternExpr, @gt_pattern_expr {
   override string getOperator() { result = ">" }
 
   override string getAPrimaryQlClass() { result = "GTPattern" }
 }
 
-/** A 'less than equal' pattern */
+/** A less-than or equals pattern, for example `<= 10` in `x is <= 10`. */
 class LEPattern extends RelationalPatternExpr, @le_pattern_expr {
   override string getOperator() { result = "<=" }
 
   override string getAPrimaryQlClass() { result = "LEPattern" }
 }
 
-/** A 'greater than equal' pattern */
+/** A greater-than or equals pattern, for example `>= 10` in `x is >= 10` */
 class GEPattern extends RelationalPatternExpr, @ge_pattern_expr {
   override string getOperator() { result = ">=" }
 
