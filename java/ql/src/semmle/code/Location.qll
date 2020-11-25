@@ -6,7 +6,7 @@
 
 import FileSystem
 import semmle.code.java.Element
-import semmle.code.SMAP
+private import semmle.code.SMAP
 
 /** Holds if element `e` has name `name`. */
 predicate hasName(Element e, string name) {
@@ -72,7 +72,7 @@ class Top extends @top {
     )
   }
 
-  predicate hasLocationInfoAux(
+  private predicate hasLocationInfoAux(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     exists(File f, Location l | fixedHasLocation(this, l, f) |
