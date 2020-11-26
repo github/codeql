@@ -49,6 +49,9 @@ module IndirectCommandInjection {
       or
       // `require('optimist').argv` => `{ _: [], a: ... b: ... }`
       this = DataFlow::moduleMember("optimist", "argv")
+      or
+      // `require("arg")({...spec})` => `{_: [], a: ..., b: ...}`
+      this = DataFlow::moduleImport("arg").getACall()
     }
   }
 

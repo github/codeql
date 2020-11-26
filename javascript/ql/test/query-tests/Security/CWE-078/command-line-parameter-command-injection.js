@@ -73,10 +73,10 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
 });
 
 (function () {
-	const args = process.argv.slice(2);
+	const argv = process.argv.slice(2);
 
 	var minimist = require("minimist");
-	cp.exec("cmd.sh " + minimist(args).foo); // NOT OK
+	cp.exec("cmd.sh " + minimist(argv).foo); // NOT OK
 
 	var subarg = require('subarg');
 	cp.exec("cmd.sh " + subarg(process.argv.slice(2)).foo); // NOT OK
@@ -85,6 +85,9 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
 	cp.exec("cmd.sh " + yargsParser(process.argv.slice(2)).foo); // NOT OK
 
 	import args from 'args'
-	const flags = args.parse(process.argv);
+	var flags = args.parse(process.argv);
+	cp.exec("cmd.sh " + flags.foo); // NOT OK
+
+	var flags = require('arg')({...spec});
 	cp.exec("cmd.sh " + flags.foo); // NOT OK
 })
