@@ -172,34 +172,6 @@ tokens(
 );
 
 /*
- * SMAP
- */
-
-smap_header(
-  int outputFileId: @file ref,
-  string outputFilename: string ref,
-  string defaultStratum: string ref
-);
-
-smap_files(
-  int outputFileId: @file ref,
-  string stratum: string ref,
-  int inputFileNum: int ref,
-  string inputFileName: string ref,
-  int inputFileId: @file ref
-);
-
-smap_lines(
-  int outputFileId: @file ref,
-  string stratum: string ref,
-  int inputFileNum: int ref,
-  int inputStartLine: int ref,
-  int inputLineCount: int ref,
-  int outputStartLine: int ref,
-  int outputLineIncrement: int ref
-);
-
-/*
  * Locations and files
  */
 
