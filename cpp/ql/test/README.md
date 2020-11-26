@@ -12,7 +12,7 @@ Every query in `cpp/ql/src` (outside of `cpp/ql/src/experimental`) should have a
 
 TODO: example?
 
-Library features should also have test coverage, in `cpp/ql/test/library-tests`.
+Features of the QL libraries in `cpp/ql/src` should also have test coverage, in `cpp/ql/test/library-tests`.
 
 ## Copying code
 
