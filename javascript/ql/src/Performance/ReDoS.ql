@@ -1022,20 +1022,41 @@ module SuffixConstruction {
    * Holds if there likely exists a suffix starting from `s` that leads to the regular expression being rejected.
    * This predicate might find impossible suffixes when searching for suffixes of length > 1, which can cause FPs.
    */
+  pragma[nomagic]
   private predicate isLikelyRejectable(StateInPumpableRegexp s) {
     // exists a reject edge with some char.
-    hasRejectEdge(s, _)
+    hasRejectEdge(s)
     or
+    hasEdgeToLikelyRejectable(s)
+    or
+    // stopping here is rejection
+    isRejectState(s)
+  }
+
+  /**
+   * Holds if `s` is not an accept state, and there is no epsilon transition to an accept state.
+   */
+  predicate isRejectState(StateInPumpableRegexp s) { not epsilonSucc*(s) = Accept(_) }
+
+  /**
+   * Holds if there is likely a non-empty suffix leading to rejection starting in `s`.
+   */
+  predicate hasEdgeToLikelyRejectable(StateInPumpableRegexp s) {
     // all edges (at least one) with some char leads to another state that is rejectable.
     // the `next` states might not share a common suffix, which can cause FPs.
     exists(string char | char = relevant() |
-      forex(State next | deltaClosed(s, getAnInputSymbolMatching(char), next) |
-        isLikelyRejectable(next)
-      )
+      forex(State next | deltaClosedChar(s, char, next) | isLikelyRejectable(next))
     )
-    or
-    // stopping here is rejection
-    not epsilonSucc*(s) = Accept(_)
+  }
+
+  /**
+   * Holds if there is a state `next` that can be reached from `prev`
+   * along epsilon edges, such that there is a transition from
+   * `prev` to `next` that the character symbol `char`.
+   */
+  predicate deltaClosedChar(StateInPumpableRegexp prev, string char, StateInPumpableRegexp next) {
+    char = relevant() and
+    deltaClosed(prev, getAnInputSymbolMatching(char), next)
   }
 
   /**
@@ -1047,9 +1068,8 @@ module SuffixConstruction {
    * Holds if there is no edge from `s` labeled `char` in our NFA.
    * The NFA does not model reject states, so the above is the same as saying there is a reject edge.
    */
-  private predicate hasRejectEdge(StateInPumpableRegexp s, string char) {
-    char = relevant() and
-    not deltaClosed(s, getAnInputSymbolMatching(char), _)
+  private predicate hasRejectEdge(State s) {
+    exists(string char | char = relevant() | not deltaClosedChar(s, char, _))
   }
 
   /**
