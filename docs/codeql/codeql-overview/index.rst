@@ -3,6 +3,8 @@
 CodeQL overview
 ===============
 
+Learn more about how CodeQL works, the languages and libraries supported by CodeQL analysis, and the tools you can use to run CodeQL on open source projects.
+
 - :doc:`About CodeQL <about-codeql>`: CodeQL is the analysis engine used by developers to automate security checks, and by security researchers to perform variant analysis. 
 
 - :doc:`Supported languages and frameworks <supported-languages-and-frameworks>`: View the languages, libraries, and frameworks supported in the latest version of CodeQL.
