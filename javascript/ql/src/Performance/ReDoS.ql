@@ -734,13 +734,9 @@ predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, State r2) 
   stateInsideBacktracking(r2)
 }
 
-/**
- * A list of pairs of input symbols that describe a path in the product automaton
- * starting from some fork state.
- */
-newtype Trace =
+private newtype TTrace =
   Nil() or
-  Step(InputSymbol s1, InputSymbol s2, Trace t) {
+  Step(InputSymbol s1, InputSymbol s2, TTrace t) {
     exists(StatePair p |
       isReachableFromFork(_, p, t, _) and
       step(p, s1, s2, _)
@@ -748,6 +744,20 @@ newtype Trace =
     or
     t = Nil() and isFork(_, s1, s2, _, _)
   }
+
+/**
+ * A list of pairs of input symbols that describe a path in the product automaton
+ * starting from some fork state.
+ */
+class Trace extends TTrace {
+  string toString() {
+    this = Nil() and result = "Nil()"
+    or
+    exists(InputSymbol s1, InputSymbol s2, Trace t | this = Step(s1, s2, t) |
+      result = "Step(" + s1 + ", " + s2 + ", " + t + ")"
+    )
+  }
+}
 
 /**
  * Gets the minimum char that is matched by both the character classes `c` and `d`.
