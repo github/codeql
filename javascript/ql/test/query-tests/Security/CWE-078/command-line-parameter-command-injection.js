@@ -91,3 +91,13 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
 	var flags = require('arg')({...spec});
 	cp.exec("cmd.sh " + flags.foo); // NOT OK
 })
+
+(function () {
+	const { ArgumentParser } = require('argparse');
+	
+	const parser = new ArgumentParser({description: 'Argparse example'});
+	
+	parser.add_argument('-f', '--foo', { help: 'foo bar' });
+	
+	cp.exec("cmd.sh " + parser.parse_args().foo); // NOT OK
+})

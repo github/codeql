@@ -153,6 +153,11 @@ nodes
 | command-line-parameter-command-injection.js:92:10:92:30 | "cmd.sh ... ags.foo |
 | command-line-parameter-command-injection.js:92:22:92:26 | flags |
 | command-line-parameter-command-injection.js:92:22:92:30 | flags.foo |
+| command-line-parameter-command-injection.js:102:10:102:44 | "cmd.sh ... s().foo |
+| command-line-parameter-command-injection.js:102:10:102:44 | "cmd.sh ... s().foo |
+| command-line-parameter-command-injection.js:102:22:102:40 | parser.parse_args() |
+| command-line-parameter-command-injection.js:102:22:102:40 | parser.parse_args() |
+| command-line-parameter-command-injection.js:102:22:102:44 | parser. ... s().foo |
 edges
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv |
 | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:22:8:36 | process.argv[2] |
@@ -288,6 +293,10 @@ edges
 | command-line-parameter-command-injection.js:92:22:92:26 | flags | command-line-parameter-command-injection.js:92:22:92:30 | flags.foo |
 | command-line-parameter-command-injection.js:92:22:92:30 | flags.foo | command-line-parameter-command-injection.js:92:10:92:30 | "cmd.sh ... ags.foo |
 | command-line-parameter-command-injection.js:92:22:92:30 | flags.foo | command-line-parameter-command-injection.js:92:10:92:30 | "cmd.sh ... ags.foo |
+| command-line-parameter-command-injection.js:102:22:102:40 | parser.parse_args() | command-line-parameter-command-injection.js:102:22:102:44 | parser. ... s().foo |
+| command-line-parameter-command-injection.js:102:22:102:40 | parser.parse_args() | command-line-parameter-command-injection.js:102:22:102:44 | parser. ... s().foo |
+| command-line-parameter-command-injection.js:102:22:102:44 | parser. ... s().foo | command-line-parameter-command-injection.js:102:10:102:44 | "cmd.sh ... s().foo |
+| command-line-parameter-command-injection.js:102:22:102:44 | parser. ... s().foo | command-line-parameter-command-injection.js:102:10:102:44 | "cmd.sh ... s().foo |
 #select
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line argument |
 | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line argument |
@@ -314,3 +323,4 @@ edges
 | command-line-parameter-command-injection.js:85:10:85:59 | "cmd.sh ... 2)).foo | command-line-parameter-command-injection.js:85:34:85:45 | process.argv | command-line-parameter-command-injection.js:85:10:85:59 | "cmd.sh ... 2)).foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:85:34:85:45 | process.argv | command-line argument |
 | command-line-parameter-command-injection.js:89:10:89:30 | "cmd.sh ... ags.foo | command-line-parameter-command-injection.js:88:25:88:36 | process.argv | command-line-parameter-command-injection.js:89:10:89:30 | "cmd.sh ... ags.foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:88:25:88:36 | process.argv | command-line argument |
 | command-line-parameter-command-injection.js:92:10:92:30 | "cmd.sh ... ags.foo | command-line-parameter-command-injection.js:91:14:91:38 | require ... .spec}) | command-line-parameter-command-injection.js:92:10:92:30 | "cmd.sh ... ags.foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:91:14:91:38 | require ... .spec}) | command-line argument |
+| command-line-parameter-command-injection.js:102:10:102:44 | "cmd.sh ... s().foo | command-line-parameter-command-injection.js:102:22:102:40 | parser.parse_args() | command-line-parameter-command-injection.js:102:10:102:44 | "cmd.sh ... s().foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:102:22:102:40 | parser.parse_args() | command-line argument |

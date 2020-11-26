@@ -52,6 +52,14 @@ module IndirectCommandInjection {
       or
       // `require("arg")({...spec})` => `{_: [], a: ..., b: ...}`
       this = DataFlow::moduleImport("arg").getACall()
+      or
+      // https://www.npmjs.com/package/argparse
+      this =
+        API::moduleImport("argparse")
+            .getMember("ArgumentParser")
+            .getInstance()
+            .getMember("parse_args")
+            .getACall()
     }
   }
 
