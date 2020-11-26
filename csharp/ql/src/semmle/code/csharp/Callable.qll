@@ -972,7 +972,7 @@ class ExplicitConversionOperator extends ConversionOperator {
  * }
  * ```
  */
-class LocalFunction extends Callable, Modifiable, @local_function {
+class LocalFunction extends Callable, Modifiable, Attributable, @local_function {
   override string getName() { local_functions(this, result, _, _) }
 
   override LocalFunction getUnboundDeclaration() { local_functions(this, _, _, result) }
@@ -996,4 +996,6 @@ class LocalFunction extends Callable, Modifiable, @local_function {
   override Parameter getRawParameter(int i) { result = getParameter(i) }
 
   override string getAPrimaryQlClass() { result = "LocalFunction" }
+
+  override string toString() { result = Callable.super.toString() }
 }

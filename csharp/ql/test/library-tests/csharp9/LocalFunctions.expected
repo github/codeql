@@ -6,3 +6,6 @@ localFunctionModifier
 | LocalFunction.cs:16:9:16:41 | localExtern | extern |
 | LocalFunction.cs:16:9:16:41 | localExtern | private |
 | LocalFunction.cs:16:9:16:41 | localExtern | static |
+| LocalFunction.cs:21:9:25:9 | dup | private |
+localFunctionAttribute
+| LocalFunction.cs:21:9:25:9 | dup | LocalFunction.cs:21:10:21:17 | [Obsolete(...)] |

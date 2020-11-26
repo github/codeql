@@ -227,8 +227,7 @@ tokens(
 @external_element = @externalMetric | @externalDefect | @externalDataElement;
 
 @attributable = @assembly | @field | @parameter | @operator | @method | @constructor
-              | @destructor | @callable_accessor | @value_or_ref_type | @declaration_with_accessors
-              | @local_function;
+              | @destructor | @callable_accessor | @value_or_ref_type | @declaration_with_accessors;
 
 /** LOCATIONS, ASEMMBLIES, MODULES, FILES and FOLDERS **/
 
@@ -987,7 +986,7 @@ case @expr.kind of
 | 109 = @local_function_invocation_expr
 | 110 = @ref_expr
 | 111 = @discard_expr
-/* C# 8.0 */
+/* C# 8.0 */ 
 | 112 = @range_expr
 | 113 = @index_expr
 | 114 = @switch_expr
