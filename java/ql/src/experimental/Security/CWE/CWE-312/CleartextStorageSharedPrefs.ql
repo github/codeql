@@ -127,6 +127,10 @@ class SharedPreferencesEditor extends MethodAccess {
   }
 }
 
+/**
+ * Flow from sensitive expressions to shared preferences.
+ * Note it can be merged into `SensitiveSourceFlowConfig` of `Security/CWE/CWE-312/SensitiveStorage.qll` when this query is promoted from the experimental directory.
+ */
 private class SensitiveSharedPrefsFlowConfig extends TaintTracking::Configuration {
   SensitiveSharedPrefsFlowConfig() {
     this = "CleartextStorageSharedPrefs::SensitiveSharedPrefsFlowConfig"
