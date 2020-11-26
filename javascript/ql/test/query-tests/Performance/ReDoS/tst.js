@@ -303,3 +303,9 @@ var bad66 = /^ab(c+)+$/;
 
 // NOT GOOD
 var bad67 = /(\d(\s+)*){20}/;
+
+// GOOD - but we spuriously conclude that a rejecting suffix exists. 
+var good36 = /(([^/]|X)+)(\/[^]*)*$/;
+
+// GOOD - but we spuriously conclude that a rejecting suffix exists. 
+var good37 = /^((x([^Y]+)?)*(Y|$))/;
