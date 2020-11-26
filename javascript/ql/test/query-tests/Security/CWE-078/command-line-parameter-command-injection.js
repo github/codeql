@@ -115,3 +115,16 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
 
 	cp.exec("cmd.sh " + cli.input[0]); // NOT OK
 });
+
+(function () {
+	var dashdash = require('dashdash');
+ 
+	var opts = dashdash.parse({options: options});
+	
+	cp.exec("cmd.sh " + opts.foo); // NOT OK
+
+	var parser = dashdash.createParser({options: options});
+	var opts = parser.parse();
+	
+	cp.exec("cmd.sh " + opts.foo); // NOT OK
+})
