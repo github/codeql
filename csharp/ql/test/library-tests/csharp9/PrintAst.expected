@@ -348,3 +348,52 @@ TypeParameterNullability.cs:
 #   24|         -1: [TypeMention] T?
 #   24|           1: [TypeMention] T
 #   24|     4: [BlockStmt] {...}
+TypePattern.cs:
+#    3| [Class] TypePattern
+#    5|   5: [Method] M1
+#    5|     -1: [TypeMention] object
+#-----|     2: (Parameters)
+#    5|       0: [Parameter] o1
+#    5|         -1: [TypeMention] object
+#    5|       1: [Parameter] o2
+#    5|         -1: [TypeMention] object
+#    6|     4: [BlockStmt] {...}
+#    7|       0: [LocalVariableDeclStmt] ... ...;
+#    7|         0: [LocalVariableDeclAndInitExpr] (Object,Object) t = ...
+#    7|           -1: [TypeMention] (object, object)
+#    7|           0: [LocalVariableAccess] access to local variable t
+#    7|           1: [TupleExpr] (..., ...)
+#    7|             0: [ParameterAccess] access to parameter o1
+#    7|             1: [ParameterAccess] access to parameter o2
+#    8|       1: [IfStmt] if (...) ...
+#    8|         0: [IsExpr] ... is ...
+#    8|           0: [LocalVariableAccess] access to local variable t
+#    8|           1: [RecursivePatternExpr] { ... }
+#    8|             2: [PositionalPatternExpr] ( ... )
+#    8|               0: [TypeAccessPatternExpr] access to type Int32
+#    8|                 0: [TypeMention] int
+#    8|               1: [TypeAccessPatternExpr] access to type String
+#    8|                 0: [TypeMention] string
+#    8|         1: [BlockStmt] {...}
+#    9|       2: [ReturnStmt] return ...;
+#    9|         0: [SwitchExpr] ... switch { ... }
+#    9|           -1: [ParameterAccess] access to parameter o1
+#   11|           0: [SwitchCaseExpr] ... => ...
+#   11|             0: [TypeAccessPatternExpr] access to type Int32
+#   11|               0: [TypeMention] int
+#   11|             2: [CastExpr] (...) ...
+#   11|               1: [IntLiteral] 1
+#   12|           1: [SwitchCaseExpr] ... => ...
+#   12|             0: [VariablePatternExpr] Double d
+#   12|               0: [TypeMention] double
+#   12|             2: [CastExpr] (...) ...
+#   12|               1: [LocalVariableAccess] access to local variable d
+#   13|           2: [SwitchCaseExpr] ... => ...
+#   13|             0: [TypeAccessPatternExpr] access to type String
+#   13|               0: [TypeMention] string
+#   13|             2: [CastExpr] (...) ...
+#   13|               1: [IntLiteral] 3
+#   14|           3: [SwitchCaseExpr] ... => ...
+#   14|             0: [VariablePatternExpr] Object o
+#   14|               0: [TypeMention] object
+#   14|             2: [LocalVariableAccess] access to local variable o
