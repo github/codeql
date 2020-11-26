@@ -63,6 +63,9 @@ module IndirectCommandInjection {
       or
       // `require('command-line-args')({...spec})` => `{a: ..., b: ...}`
       this = DataFlow::moduleImport("command-line-args").getACall()
+      or
+      // `require('meow')(help, {...spec})` => `{a: ..., b: ....}`
+      this = DataFlow::moduleImport("meow").getACall()
     }
   }
 

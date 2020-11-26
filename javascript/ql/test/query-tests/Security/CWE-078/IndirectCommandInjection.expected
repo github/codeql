@@ -165,6 +165,14 @@ nodes
 | command-line-parameter-command-injection.js:108:10:108:32 | "cmd.sh ... ons.foo |
 | command-line-parameter-command-injection.js:108:22:108:28 | options |
 | command-line-parameter-command-injection.js:108:22:108:32 | options.foo |
+| command-line-parameter-command-injection.js:114:8:114:52 | cli |
+| command-line-parameter-command-injection.js:114:14:114:52 | meow(`h ... lags}}) |
+| command-line-parameter-command-injection.js:114:14:114:52 | meow(`h ... lags}}) |
+| command-line-parameter-command-injection.js:116:10:116:33 | "cmd.sh ... nput[0] |
+| command-line-parameter-command-injection.js:116:10:116:33 | "cmd.sh ... nput[0] |
+| command-line-parameter-command-injection.js:116:22:116:24 | cli |
+| command-line-parameter-command-injection.js:116:22:116:30 | cli.input |
+| command-line-parameter-command-injection.js:116:22:116:33 | cli.input[0] |
 edges
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv |
 | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:22:8:36 | process.argv[2] |
@@ -310,6 +318,13 @@ edges
 | command-line-parameter-command-injection.js:108:22:108:28 | options | command-line-parameter-command-injection.js:108:22:108:32 | options.foo |
 | command-line-parameter-command-injection.js:108:22:108:32 | options.foo | command-line-parameter-command-injection.js:108:10:108:32 | "cmd.sh ... ons.foo |
 | command-line-parameter-command-injection.js:108:22:108:32 | options.foo | command-line-parameter-command-injection.js:108:10:108:32 | "cmd.sh ... ons.foo |
+| command-line-parameter-command-injection.js:114:8:114:52 | cli | command-line-parameter-command-injection.js:116:22:116:24 | cli |
+| command-line-parameter-command-injection.js:114:14:114:52 | meow(`h ... lags}}) | command-line-parameter-command-injection.js:114:8:114:52 | cli |
+| command-line-parameter-command-injection.js:114:14:114:52 | meow(`h ... lags}}) | command-line-parameter-command-injection.js:114:8:114:52 | cli |
+| command-line-parameter-command-injection.js:116:22:116:24 | cli | command-line-parameter-command-injection.js:116:22:116:30 | cli.input |
+| command-line-parameter-command-injection.js:116:22:116:30 | cli.input | command-line-parameter-command-injection.js:116:22:116:33 | cli.input[0] |
+| command-line-parameter-command-injection.js:116:22:116:33 | cli.input[0] | command-line-parameter-command-injection.js:116:10:116:33 | "cmd.sh ... nput[0] |
+| command-line-parameter-command-injection.js:116:22:116:33 | cli.input[0] | command-line-parameter-command-injection.js:116:10:116:33 | "cmd.sh ... nput[0] |
 #select
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line argument |
 | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line argument |
@@ -338,3 +353,4 @@ edges
 | command-line-parameter-command-injection.js:92:10:92:30 | "cmd.sh ... ags.foo | command-line-parameter-command-injection.js:91:14:91:38 | require ... .spec}) | command-line-parameter-command-injection.js:92:10:92:30 | "cmd.sh ... ags.foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:91:14:91:38 | require ... .spec}) | command-line argument |
 | command-line-parameter-command-injection.js:102:10:102:44 | "cmd.sh ... s().foo | command-line-parameter-command-injection.js:102:22:102:40 | parser.parse_args() | command-line-parameter-command-injection.js:102:10:102:44 | "cmd.sh ... s().foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:102:22:102:40 | parser.parse_args() | command-line argument |
 | command-line-parameter-command-injection.js:108:10:108:32 | "cmd.sh ... ons.foo | command-line-parameter-command-injection.js:107:18:107:51 | command ... itions) | command-line-parameter-command-injection.js:108:10:108:32 | "cmd.sh ... ons.foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:107:18:107:51 | command ... itions) | command-line argument |
+| command-line-parameter-command-injection.js:116:10:116:33 | "cmd.sh ... nput[0] | command-line-parameter-command-injection.js:114:14:114:52 | meow(`h ... lags}}) | command-line-parameter-command-injection.js:116:10:116:33 | "cmd.sh ... nput[0] | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:114:14:114:52 | meow(`h ... lags}}) | command-line argument |

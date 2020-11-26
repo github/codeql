@@ -107,3 +107,11 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
 	const options = commandLineArgs(optionDefinitions);
 	cp.exec("cmd.sh " + options.foo); // NOT OK
 });
+
+(function () {
+	const meow = require('meow');
+	 
+	const cli = meow(`helpstring`, {flags: {...flags}});
+
+	cp.exec("cmd.sh " + cli.input[0]); // NOT OK
+});
