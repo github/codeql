@@ -1,6 +1,6 @@
 /** Provides classes for modeling program variables. */
 
-private import ast
+private import Generated::Generated
 private import codeql.Locations
 
 private AstNode parent(AstNode n) {
