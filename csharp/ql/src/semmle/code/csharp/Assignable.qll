@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 
 /**
  * An assignable, that is, an element that can be assigned to. Either a
@@ -83,7 +84,7 @@ class AssignableRead extends AssignableAccess {
 
   pragma[noinline]
   private ControlFlow::Node getAnAdjacentReadSameVar() {
-    Ssa::Internal::adjacentReadPairSameVar(_, this.getAControlFlowNode(), result)
+    SsaImpl::adjacentReadPairSameVar(_, this.getAControlFlowNode(), result)
   }
 
   /**
