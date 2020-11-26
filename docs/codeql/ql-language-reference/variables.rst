@@ -1,4 +1,7 @@
+:tocdepth: 1
+
 .. index:: variable
+
 .. _variables:
 
 Variables

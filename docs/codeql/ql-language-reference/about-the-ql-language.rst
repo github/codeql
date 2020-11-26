@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _about-the-ql-language:
 
 About the QL language
