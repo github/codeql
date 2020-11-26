@@ -577,7 +577,15 @@ class BoolType extends IntegralType {
  * unsigned char e, f;
  * ```
  */
-abstract class CharType extends IntegralType { }
+class CharType extends IntegralType {
+  CharType() {
+    builtintypes(underlyingElement(this), _, 5, _, _, _)
+    or
+    builtintypes(underlyingElement(this), _, 6, _, _, _)
+    or
+    builtintypes(underlyingElement(this), _, 7, _, _, _)
+  }
+}
 
 /**
  * The C/C++ `char` type (which is distinct from `signed char` and
