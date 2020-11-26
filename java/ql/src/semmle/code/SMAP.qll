@@ -27,6 +27,7 @@ private predicate smap(File inputFile, int inLine, File outputFile, int outLineS
  * Holds if there exists a mapping between an SMAP input file and line
  * and a corresponding SMAP output file and line.
  */
+pragma[nomagic]
 private predicate smap(File inputFile, int inLine, File outputFile, int outLine) {
   exists(int outLineStart, int outLineEnd |
     smap(inputFile, inLine, outputFile, outLineStart, outLineEnd) and
@@ -47,6 +48,7 @@ predicate hasSmapLocationInfo(
   exists(File inputFile, File outputFile |
     inputPath = inputFile.getAbsolutePath() and
     outputPath = outputFile.getAbsolutePath() and
+    locations_default(_, outputFile, osl, _, oel, _) and
     smap(inputFile, isl, outputFile, osl) and
     smap(inputFile, iel - 1, outputFile, oel) and
     isc = 1 and
