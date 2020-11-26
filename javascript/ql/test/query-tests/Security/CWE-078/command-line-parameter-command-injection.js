@@ -127,4 +127,21 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
 	var opts = parser.parse();
 	
 	cp.exec("cmd.sh " + opts.foo); // NOT OK
-})
+});
+
+(function () {
+	const { program } = require('commander');
+	program.version('0.0.1');
+
+	cp.exec("cmd.sh " + program.opts().pizzaType); // NOT OK
+	cp.exec("cmd.sh " + program.pizzaType); // NOT OK
+});
+
+(function () {
+	const { Command } = require('commander');
+	const program = new Command();
+	program.version('0.0.1');
+
+	cp.exec("cmd.sh " + program.opts().pizzaType); // NOT OK
+	cp.exec("cmd.sh " + program.pizzaType); // NOT OK
+});

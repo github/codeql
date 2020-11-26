@@ -91,6 +91,34 @@ module IndirectCommandInjection {
   }
 
   /**
+   * A Command instance from the `commander` library.
+   */
+  private API::Node commander() {
+    result = API::moduleImport("commander")
+    or
+    // `require("commander").program === require("commander")`
+    result = commander().getMember("program")
+    or
+    result = commander().getMember("Command").getInstance()
+    or
+    // lots of chainable methods
+    result = commander().getAMember().getReturn()
+  }
+
+  /**
+   * A source of user input from the command-line parsed by the `commander` library.
+   */
+  private class CommanderSource extends Source {
+    CommanderSource() {
+      // the parsed commands are stored as properties on the command object.
+      this = commander().getAMember().getAnImmediateUse()
+      or
+      // or the `opts()` method gets a list of them.
+      this = commander().getMember("opts").getACall()
+    }
+  }
+
+  /**
    * Gets an instance of `yargs`.
    * Either directly imported as a module, or through some chained method call.
    */
