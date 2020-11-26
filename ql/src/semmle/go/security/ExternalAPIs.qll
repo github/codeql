@@ -74,7 +74,7 @@ class ExternalAPIDataNode extends DataFlow::Node {
     ) and
     // Not defined in the code that is being analysed
     not exists(call.getACallee().getBody()) and
-    // Not a function pointer, unless it's declared in a package
+    // Not a function pointer, unless it's declared at package scope
     not isProbableLocalFunctionPointer(call) and
     // Not defined in a test file
     not call.getFile() instanceof TestFile and
@@ -113,6 +113,7 @@ class ExternalAPIDataNode extends DataFlow::Node {
 TaintTracking::FunctionModel getAMethodModelInPackage(Package p) {
   p = result.getPackage() and
   result instanceof Method and
+  // We model any method of the form "String() string"
   result.getName() != "String" and
   not exists(TaintTracking::FunctionModel baseMethod |
     baseMethod != result and result.(Method).implements(baseMethod)
@@ -144,7 +145,7 @@ predicate isACommonSink(DataFlow::Node n) {
   n instanceof CleartextLogging::Sink
 }
 
-/** A node representing data being passed to an external API. */
+/** A node representing data being passed to an unknown external API. */
 class UnknownExternalAPIDataNode extends ExternalAPIDataNode {
   UnknownExternalAPIDataNode() {
     // Not a sink for a commonly-used query

@@ -9,9 +9,9 @@ unique sources of untrusted data flow to this API. This query is designed primar
 may be relevant for security analysis of this application.</p>
 
 <p>An external API is defined as a call to a function that is not defined in the source code and is not
-modeled as a taint step in the default taint library. Calls made in test files are also excluded.
+modeled as a taint step in the default taint library. Calls made in test files are excluded.
 External APIs may be from the  Go standard library, third party dependencies or from internal dependencies.
-The query will report the fully qualified method name, along with either <code>[param x]</code>,
+The query will report the fully-qualified method name, along with either <code>[param x]</code>,
 where <code>x</code> indicates the position of the parameter receiving the untrusted data or <code>[receiver]</code>
 indicating the untrusted data is used as the receiver of the method call.</p>
 
@@ -23,7 +23,7 @@ indicating the untrusted data is used as the receiver of the method call.</p>
 <ul>
   <li>If the result highlights a known sink, no action is required.</li>
   <li>If the result highlights an unknown sink for a problem, then add modeling for the sink to the relevant query.</li>
-  <li>If the result represents a call to an external API which transfers taint, add the appropriate modeling, and 
+  <li>If the result represents a call to an external API which transfers taint (for example, from a parameter to its return value), add the appropriate modeling, and 
   re-run the query to determine what new results have appeared due to this additional modeling.</li>
 </ul>
 
@@ -33,9 +33,13 @@ class to exclude known safe external APIs from future analysis.</p>
 </recommendation>
 <example>
 
+<sample src="ExternalAPISinkExample.go" />
+
 <p>If the query were to return the API <code>fmt.Fprintf [param 2]</code> then we should first consider
 whether this a security relevant sink. In this case, this is writing to a HTTP response, so we should
 consider whether this is an XSS sink. If it is, we should confirm that it is handled by the XSS query.</p>
+
+<sample src="ExternalAPITaintStepExample.go" />
 
 <p>If the query were to return the API <code>fmt.Sprintf [param 1]</code>, then this should be
 reviewed as a possible taint step, because tainted data would flow from the 1st argument to the return value

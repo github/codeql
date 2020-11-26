@@ -5,11 +5,11 @@
 <overview>
 <p>Using unsanitized untrusted data in an external API can cause a variety of security issues. This query reports 
 external APIs that use untrusted data. The results have very little filtering so that you can audit almost all
-examples. The query provides data for security reviews of the application and you can also use it to identify
+examples. The query provides data for security reviews of the application. It can also be used to identify
 external APIs that should be modeled as either taint steps, or sinks for specific problems.</p>
 
 <p>An external API is defined as a call to a function that is not defined in the source code and is not
-modeled as a taint step in the default taint library. Calls made in test files are also excluded.
+modeled as a taint step in the default taint library. Calls made in test files are excluded.
 External APIs may be from the Go standard library, third-party dependencies or from internal dependencies.
 The query reports uses of untrusted data in either the receiver or as one of the arguments of external APIs.</p>
 
@@ -23,7 +23,7 @@ The query reports uses of untrusted data in either the receiver or as one of the
   that the result is a false positive because this data is sanitized.</li>
   <li>If the result highlights an unknown sink for a problem, then add modeling for the sink to the relevant query, 
   and confirm that the result is either found, or is safe due to appropriate sanitization.</li>
-  <li>If the result represents a call to an external API that transfers taint, add the appropriate modeling, and 
+  <li>If the result represents a call to an external API that transfers taint (for example, from a parameter to its return value), add the appropriate modeling, and 
   re-run the query to determine what new results have appeared due to this additional modeling.</li>
 </ul>
 

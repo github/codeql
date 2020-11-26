@@ -13,7 +13,7 @@ func serve() {
 			// BAD: a request parameter is incorporated without validation into the response
 			fmt.Fprintf(w, "%q is an unknown user", username)
 		} else {
-			// TODO: do something exciting
+			// TODO: Handle successful login
 		}
 	})
 	http.ListenAndServe(":80", nil)
