@@ -355,38 +355,125 @@ TargetType.cs:
 #   10|               -1: [LocalVariableAccess] access to local variable rand
 #   10|             1: [DoubleLiteral] 0.5
 #   12|       2: [LocalVariableDeclStmt] ... ...;
-#   12|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x = ...
+#   12|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x0 = ...
 #   12|           -1: [TypeMention] int?
 #   12|             1: [TypeMention] int
-#   12|           0: [LocalVariableAccess] access to local variable x
-#   12|           1: [ConditionalExpr] ... ? ... : ...
-#   12|             0: [LocalVariableAccess] access to local variable condition
-#   13|             1: [CastExpr] (...) ...
-#   13|               1: [IntLiteral] 12
-#   14|             2: [NullLiteral] null
-#   16|       3: [LocalVariableDeclStmt] ... ...;
-#   16|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs = ...
-#   16|           -1: [TypeMention] IEnumerable<Int32>
+#   12|           0: [LocalVariableAccess] access to local variable x0
+#   12|           1: [CastExpr] (...) ...
+#   12|             1: [IntLiteral] 12
+#   13|       3: [ExprStmt] ...;
+#   13|         0: [AssignExpr] ... = ...
+#   13|           0: [LocalVariableAccess] access to local variable x0
+#   13|           1: [CastExpr] (...) ...
+#   13|             1: [IntLiteral] 13
+#   14|       4: [LocalVariableDeclStmt] ... ...;
+#   14|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x1 = ...
+#   14|           -1: [TypeMention] int?
+#   14|             1: [TypeMention] int
+#   14|           0: [LocalVariableAccess] access to local variable x1
+#   14|           1: [NullLiteral] null
+#   16|       5: [LocalVariableDeclStmt] ... ...;
+#   16|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x2 = ...
+#   16|           -1: [TypeMention] int?
 #   16|             1: [TypeMention] int
-#   16|           0: [LocalVariableAccess] access to local variable xs
+#   16|           0: [LocalVariableAccess] access to local variable x2
 #   16|           1: [ConditionalExpr] ... ? ... : ...
-#   16|             0: [IsExpr] ... is ...
-#   16|               0: [LocalVariableAccess] access to local variable x
-#   16|               1: [ConstantPatternExpr,NullLiteral] null
-#   17|             1: [ObjectCreation] object creation of type List<Int32>
-#   17|               -2: [TypeMention] List<Int32>
-#   17|                 1: [TypeMention] int
-#   17|               -1: [CollectionInitializer] { ..., ... }
-#   17|                 0: [ElementInitializer] call to method Add
-#   17|                   0: [IntLiteral] 0
-#   17|                 1: [ElementInitializer] call to method Add
-#   17|                   0: [IntLiteral] 1
-#   18|             2: [ArrayCreation] array creation of type Int32[]
-#   18|               -2: [TypeMention] Int32[]
-#   18|                 1: [TypeMention] int
-#   18|               -1: [ArrayInitializer] { ..., ... }
-#   18|                 0: [IntLiteral] 2
-#   18|                 1: [IntLiteral] 3
+#   16|             0: [LocalVariableAccess] access to local variable condition
+#   17|             1: [CastExpr] (...) ...
+#   17|               1: [IntLiteral] 12
+#   18|             2: [NullLiteral] null
+#   20|       6: [LocalVariableDeclStmt] ... ...;
+#   20|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x3 = ...
+#   20|           -1: [TypeMention] int?
+#   20|             1: [TypeMention] int
+#   20|           0: [LocalVariableAccess] access to local variable x3
+#   20|           1: [ConditionalExpr] ... ? ... : ...
+#   20|             0: [LocalVariableAccess] access to local variable condition
+#   21|             1: [CastExpr] (...) ...
+#   21|               0: [TypeAccess] access to type Nullable<Int32>
+#   21|                 0: [TypeMention] int?
+#   21|                   1: [TypeMention] int
+#   21|               1: [IntLiteral] 12
+#   22|             2: [NullLiteral] null
+#   24|       7: [LocalVariableDeclStmt] ... ...;
+#   24|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x4 = ...
+#   24|           -1: [TypeMention] int?
+#   24|             1: [TypeMention] int
+#   24|           0: [LocalVariableAccess] access to local variable x4
+#   24|           1: [ConditionalExpr] ... ? ... : ...
+#   24|             0: [LocalVariableAccess] access to local variable condition
+#   25|             1: [CastExpr] (...) ...
+#   25|               1: [IntLiteral] 12
+#   26|             2: [CastExpr] (...) ...
+#   26|               0: [TypeAccess] access to type Nullable<Int32>
+#   26|                 0: [TypeMention] int?
+#   26|                   1: [TypeMention] int
+#   26|               1: [NullLiteral] null
+#   28|       8: [LocalVariableDeclStmt] ... ...;
+#   28|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs0 = ...
+#   28|           -1: [TypeMention] IEnumerable<Int32>
+#   28|             1: [TypeMention] int
+#   28|           0: [LocalVariableAccess] access to local variable xs0
+#   28|           1: [ObjectCreation] object creation of type List<Int32>
+#   28|             -2: [TypeMention] List<Int32>
+#   28|               1: [TypeMention] int
+#   28|             -1: [CollectionInitializer] { ..., ... }
+#   28|               0: [ElementInitializer] call to method Add
+#   28|                 0: [IntLiteral] 0
+#   28|               1: [ElementInitializer] call to method Add
+#   28|                 0: [IntLiteral] 1
+#   29|       9: [LocalVariableDeclStmt] ... ...;
+#   29|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs1 = ...
+#   29|           -1: [TypeMention] IEnumerable<Int32>
+#   29|             1: [TypeMention] int
+#   29|           0: [LocalVariableAccess] access to local variable xs1
+#   29|           1: [ArrayCreation] array creation of type Int32[]
+#   29|             -2: [TypeMention] Int32[]
+#   29|               1: [TypeMention] int
+#   29|             -1: [ArrayInitializer] { ..., ... }
+#   29|               0: [IntLiteral] 2
+#   29|               1: [IntLiteral] 3
+#   31|       10: [LocalVariableDeclStmt] ... ...;
+#   31|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs2 = ...
+#   31|           -1: [TypeMention] IEnumerable<Int32>
+#   31|             1: [TypeMention] int
+#   31|           0: [LocalVariableAccess] access to local variable xs2
+#   31|           1: [ConditionalExpr] ... ? ... : ...
+#   31|             0: [IsExpr] ... is ...
+#   31|               0: [LocalVariableAccess] access to local variable x2
+#   31|               1: [ConstantPatternExpr,NullLiteral] null
+#   32|             1: [ObjectCreation] object creation of type List<Int32>
+#   32|               -2: [TypeMention] List<Int32>
+#   32|                 1: [TypeMention] int
+#   32|               -1: [CollectionInitializer] { ..., ... }
+#   32|                 0: [ElementInitializer] call to method Add
+#   32|                   0: [IntLiteral] 0
+#   32|                 1: [ElementInitializer] call to method Add
+#   32|                   0: [IntLiteral] 1
+#   33|             2: [ArrayCreation] array creation of type Int32[]
+#   33|               -2: [TypeMention] Int32[]
+#   33|                 1: [TypeMention] int
+#   33|               -1: [ArrayInitializer] { ..., ... }
+#   33|                 0: [IntLiteral] 2
+#   33|                 1: [IntLiteral] 3
+#   35|       11: [LocalVariableDeclStmt] ... ...;
+#   35|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> c = ...
+#   35|           -1: [TypeMention] int?
+#   35|             1: [TypeMention] int
+#   35|           0: [LocalVariableAccess] access to local variable c
+#   35|           1: [CastExpr] (...) ...
+#   35|             1: [ConditionalExpr] ... ? ... : ...
+#   35|               0: [LocalVariableAccess] access to local variable condition
+#   36|               1: [OperatorCall] call to operator implicit conversion
+#   36|                 0: [ObjectCreation] object creation of type TargetType
+#   36|                   0: [TypeMention] TargetType
+#   37|               2: [IntLiteral] 12
+#   40|   6: [ImplicitConversionOperator] implicit conversion
+#   40|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   40|       0: [Parameter] d
+#   40|         -1: [TypeMention] TargetType
+#   40|     4: [IntLiteral] 0
 TypeParameterNullability.cs:
 #    1| [Interface] I1
 #    3| [Class] A2
