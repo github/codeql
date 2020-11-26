@@ -100,4 +100,10 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
 	parser.add_argument('-f', '--foo', { help: 'foo bar' });
 	
 	cp.exec("cmd.sh " + parser.parse_args().foo); // NOT OK
-})
+});
+
+(function () {
+	const commandLineArgs = require('command-line-args');
+	const options = commandLineArgs(optionDefinitions);
+	cp.exec("cmd.sh " + options.foo); // NOT OK
+});

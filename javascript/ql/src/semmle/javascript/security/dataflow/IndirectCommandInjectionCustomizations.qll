@@ -60,6 +60,9 @@ module IndirectCommandInjection {
             .getInstance()
             .getMember("parse_args")
             .getACall()
+      or
+      // `require('command-line-args')({...spec})` => `{a: ..., b: ...}`
+      this = DataFlow::moduleImport("command-line-args").getACall()
     }
   }
 
