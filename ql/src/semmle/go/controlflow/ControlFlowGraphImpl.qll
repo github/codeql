@@ -17,6 +17,9 @@ private predicate notBlankIdent(Expr e) { not e instanceof BlankIdent }
 
 private predicate pureLvalue(ReferenceExpr e) { not e.isRvalue() }
 
+/**
+ * Holds if `e` is a branch condition, including the LHS of a short-circuiting binary operator.
+ */
 private predicate isCondRoot(Expr e) {
   e = any(LogicalBinaryExpr lbe).getLeftOperand()
   or
@@ -27,6 +30,18 @@ private predicate isCondRoot(Expr e) {
   e = any(ExpressionSwitchStmt ess | not exists(ess.getExpr())).getACase().getAnExpr()
 }
 
+/**
+ * Holds if `e` is a branch condition or part of a logical binary expression contributing to a
+ * branch condition.
+ *
+ * For example, in `v := (x && y) || (z && w)`, `x` and `(x && y)` and `z` are branch conditions
+ * (`isCondRoot` holds of them), whereas this predicate also holds of `y` (contributes to condition
+ * `x && y`) but not of `w` (contributes to the value `v`, but not to any branch condition).
+ *
+ * In the context `if (x && y) || (z && w)` then the whole `(x && y) || (z && w)` is a branch condition
+ * as well as `x` and `(x && y)` and `z` as previously, and this predicate holds of all their
+ * subexpressions.
+ */
 private predicate isCond(Expr e) {
   isCondRoot(e) or
   e = any(LogicalBinaryExpr lbe | isCond(lbe)).getRightOperand() or
@@ -50,7 +65,7 @@ newtype TControlFlowNode =
   /**
    * A control-flow node that represents the evaluation of an expression.
    */
-  MkExprNode(Expr e) { CFG::hasSemantics(e) } or
+  MkExprNode(Expr e) { CFG::hasEvaluationNode(e) } or
   /**
    * A control-flow node that represents the initialization of an element of a composite literal.
    */
@@ -478,11 +493,14 @@ module CFG {
   }
 
   /**
-   * Holds if `e` is an expression that has runtime semantics and hence should be represented in the
-   * control-flow graph.
+   * Holds if `e` should have an evaluation node in the control-flow graph.
+   *
+   * Excluded expressions include those not evaluated at runtime (e.g. identifiers, type expressions)
+   * and some logical expressions that are expressed as control-flow edges rather than having a specific
+   * evaluation node.
    */
   cached
-  predicate hasSemantics(Expr e) {
+  predicate hasEvaluationNode(Expr e) {
     // exclude expressions that do not denote a value
     not e instanceof TypeExpr and
     not e = any(FieldDecl f).getTag() and
@@ -492,7 +510,9 @@ module CFG {
     not (e instanceof Ident and not e instanceof ReferenceExpr) and
     not (e instanceof SelectorExpr and not e instanceof ReferenceExpr) and
     not pureLvalue(e) and
-    not isStructural(e) and
+    // exclude parentheses, which are purely concrete syntax, and some logical binary expressions
+    // whose evaluation is implied by control-flow edges without requiring an evaluation node.
+    not isControlFlowStructural(e) and
     // exclude expressions that are not evaluated at runtime
     not e = any(ImportSpec is).getPathExpr() and
     not e.getParent*() = any(ArrayTypeExpr ate).getLength() and
@@ -504,21 +524,27 @@ module CFG {
   /**
    * Holds if `e` is an expression that purely serves grouping or control-flow purposes.
    *
-   * Examples include parenthesized expressions and short-circuiting Boolean expressions used in
-   * a loop or `if` condition.
+   * Examples include parenthesized expressions and short-circuiting Boolean expressions used within
+   * a branch condition (`if` or `for` condition, or as part of a larger boolean expression, e.g.
+   * in `(x && y) || z`, the `&&` subexpression matches this predicate).
    */
-  private predicate isStructural(Expr e) {
+  private predicate isControlFlowStructural(Expr e) {
+    // Some logical binary operators do not need an evaluation node
+    // (for example, in `if x && y`, we evaluate `x` and then branch straight to either `y` or the
+    //  `else` block, so there is no control-flow step where `x && y` is specifically calculated)
     e instanceof LogicalBinaryExpr and
     isCond(e)
     or
+    // Purely concrete-syntactic structural expression:
     e instanceof ParenExpr
   }
 
   /**
    * Gets a constant root, that is, an expression that is constant but whose parent expression is not.
    *
-   * As an exception to the latter, for a grouping expression such as `(c)` where `c` is constant
-   * we still consider it to be a constant root, even though its parent expression is also constant.
+   * As an exception to the latter, for a control-flow structural expression such as `(c1)` or `c1 && c2`
+   * where `cn` are constants we still consider the `cn`s to be a constant roots, even though their parent
+   * expression is also constant.
    */
   private predicate constRoot(Expr root) {
     exists(Expr c |
@@ -529,10 +555,10 @@ module CFG {
   }
 
   /**
-   * Strips off any structural components from `e`.
+   * Strips off any control-flow structural components from `e`.
    */
   private Expr stripStructural(Expr e) {
-    if isStructural(e) then result = stripStructural(e.getAChildExpr()) else result = e
+    if isControlFlowStructural(e) then result = stripStructural(e.getAChildExpr()) else result = e
   }
 
   private class ControlFlowTree extends AstNode {
