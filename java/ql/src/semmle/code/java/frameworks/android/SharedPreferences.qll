@@ -1,63 +1,61 @@
 import semmle.code.java.Type
 
-/* Definitions related to `android.content.SharedPreferences`. */
+/** Definitions related to `android.content.SharedPreferences`. */
 module SharedPreferences {
-  /* The interface `android.content.SharedPreferences` */
-  class TypeSharedPreferences extends Interface {
-    TypeSharedPreferences() { hasQualifiedName("android.content", "SharedPreferences") }
+  /** The interface `android.content.SharedPreferences` */
+  class TypePrefs extends Interface {
+    TypePrefs() { hasQualifiedName("android.content", "SharedPreferences") }
   }
 
-  /* The class `androidx.security.crypto.EncryptedSharedPreferences`, which implements `SharedPreferences` with encryption support. */
-  class TypeEncryptedSharedPreferences extends Class {
-    TypeEncryptedSharedPreferences() {
+  /** The class `androidx.security.crypto.EncryptedSharedPreferences`, which implements `SharedPreferences` with encryption support. */
+  class TypeEncryptedPrefs extends Class {
+    TypeEncryptedPrefs() {
       hasQualifiedName("androidx.security.crypto", "EncryptedSharedPreferences")
     }
   }
 
-  /* The create method of `androidx.security.crypto.EncryptedSharedPreferences` */
-  class EncryptedSharedPrefsCreateMethod extends Method {
-    EncryptedSharedPrefsCreateMethod() {
-      getDeclaringType() instanceof TypeEncryptedSharedPreferences and
+  /** The create method of `androidx.security.crypto.EncryptedSharedPreferences` */
+  class CreateEncryptedPrefsMethod extends Method {
+    CreateEncryptedPrefsMethod() {
+      getDeclaringType() instanceof TypeEncryptedPrefs and
       hasName("create")
     }
   }
 
-  /* A getter method of `android.content.SharedPreferences`. */
-  class SharedPreferencesGetMethod extends Method {
-    SharedPreferencesGetMethod() {
-      getDeclaringType() instanceof TypeSharedPreferences and
+  /** A getter method of `android.content.SharedPreferences`. */
+  class GetPreferenceMethod extends Method {
+    GetPreferenceMethod() {
+      getDeclaringType() instanceof TypePrefs and
       getName().matches("get%")
     }
   }
 
-  /* Returns `android.content.SharedPreferences.Editor` from the `edit` call of `android.content.SharedPreferences`. */
-  class SharedPreferencesGetEditorMethod extends Method {
-    SharedPreferencesGetEditorMethod() {
-      getDeclaringType() instanceof TypeSharedPreferences and
+  /** Returns `android.content.SharedPreferences.Editor` from the `edit` call of `android.content.SharedPreferences`. */
+  class GetEditorMethod extends Method {
+    GetEditorMethod() {
+      getDeclaringType() instanceof TypePrefs and
       hasName("edit") and
-      getReturnType() instanceof TypeSharedPreferencesEditor
+      getReturnType() instanceof TypeEditor
     }
   }
 
-  /* Definitions related to `android.content.SharedPreferences.Editor`. */
-  class TypeSharedPreferencesEditor extends Interface {
-    TypeSharedPreferencesEditor() {
-      hasQualifiedName("android.content", "SharedPreferences$Editor")
-    }
+  /** Definitions related to `android.content.SharedPreferences.Editor`. */
+  class TypeEditor extends Interface {
+    TypeEditor() { hasQualifiedName("android.content", "SharedPreferences$Editor") }
   }
 
-  /* A setter method for `android.content.SharedPreferences`. */
-  class SharedPreferencesSetMethod extends Method {
-    SharedPreferencesSetMethod() {
-      getDeclaringType() instanceof TypeSharedPreferencesEditor and
+  /** A setter method for `android.content.SharedPreferences`. */
+  class SetPreferenceMethod extends Method {
+    SetPreferenceMethod() {
+      getDeclaringType() instanceof TypeEditor and
       getName().matches("put%")
     }
   }
 
-  /* A setter method for `android.content.SharedPreferences`. */
-  class SharedPreferencesStoreMethod extends Method {
-    SharedPreferencesStoreMethod() {
-      getDeclaringType() instanceof TypeSharedPreferencesEditor and
+  /** A setter method for `android.content.SharedPreferences`. */
+  class StorePreferenceMethod extends Method {
+    StorePreferenceMethod() {
+      getDeclaringType() instanceof TypeEditor and
       hasName(["commit", "apply"])
     }
   }

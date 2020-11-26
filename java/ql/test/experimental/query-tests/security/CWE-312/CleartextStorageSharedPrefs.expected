@@ -1,0 +1,22 @@
+edges
+| CleartextStorageSharedPrefs.java:16:19:16:36 | edit(...) : Editor | CleartextStorageSharedPrefs.java:17:3:17:8 | editor |
+| CleartextStorageSharedPrefs.java:16:19:16:36 | edit(...) : Editor | CleartextStorageSharedPrefs.java:18:3:18:8 | editor |
+| CleartextStorageSharedPrefs.java:16:19:16:36 | edit(...) : Editor | CleartextStorageSharedPrefs.java:19:3:19:8 | editor |
+| CleartextStorageSharedPrefs.java:25:19:25:36 | edit(...) : Editor | CleartextStorageSharedPrefs.java:28:3:28:8 | editor |
+| CleartextStorageSharedPrefs.java:44:19:44:36 | edit(...) : Editor | CleartextStorageSharedPrefs.java:47:3:47:8 | editor |
+nodes
+| CleartextStorageSharedPrefs.java:16:19:16:36 | edit(...) : Editor | semmle.label | edit(...) : Editor |
+| CleartextStorageSharedPrefs.java:17:3:17:8 | editor | semmle.label | editor |
+| CleartextStorageSharedPrefs.java:18:3:18:8 | editor | semmle.label | editor |
+| CleartextStorageSharedPrefs.java:18:32:18:39 | password | semmle.label | password |
+| CleartextStorageSharedPrefs.java:19:3:19:8 | editor | semmle.label | editor |
+| CleartextStorageSharedPrefs.java:25:19:25:36 | edit(...) : Editor | semmle.label | edit(...) : Editor |
+| CleartextStorageSharedPrefs.java:28:3:28:8 | editor | semmle.label | editor |
+| CleartextStorageSharedPrefs.java:44:19:44:36 | edit(...) : Editor | semmle.label | edit(...) : Editor |
+| CleartextStorageSharedPrefs.java:46:32:46:42 | encPassword | semmle.label | encPassword |
+| CleartextStorageSharedPrefs.java:47:3:47:8 | editor | semmle.label | editor |
+| CleartextStorageSharedPrefs.java:67:32:67:39 | password | semmle.label | password |
+| CleartextStorageSharedPrefs.java:87:32:87:39 | password | semmle.label | password |
+| CleartextStorageSharedPrefs.java:105:27:105:34 | password | semmle.label | password |
+#select
+| CleartextStorageSharedPrefs.java:19:3:19:17 | commit(...) | 'SharedPreferences' class $@ containing $@ is stored here. Data was added $@. | CleartextStorageSharedPrefs.java:16:19:16:36 | edit(...) | edit(...) | CleartextStorageSharedPrefs.java:18:32:18:39 | password | sensitive data | CleartextStorageSharedPrefs.java:18:32:18:39 | password | here |

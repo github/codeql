@@ -9,7 +9,7 @@ import java.util.Base64;
 import java.security.MessageDigest;
 
 /* Android activity that tests saving sensitive information in `SharedPreferences` */
-public class ClearTextStorageSharedPrefs extends Activity {
+public class CleartextStorageSharedPrefs extends Activity {
 	// BAD - save sensitive information in cleartext
 	public void testSetSharedPrefs1(Context context, String name, String password) {
 		SharedPreferences sharedPrefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);

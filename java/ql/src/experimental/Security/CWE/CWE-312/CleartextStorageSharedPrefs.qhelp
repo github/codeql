@@ -20,7 +20,7 @@
     <p>
       In the second and third examples, the code encrypts sensitive information before saving it to the device.
     </p>
-    <sample src="ClearTextStorageSharedPrefs.java" />
+    <sample src="CleartextStorageSharedPrefs.java" />
   </example>
 
   <references>
