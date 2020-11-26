@@ -887,14 +887,8 @@ StatePair getAForkPair(State fork) {
 predicate isPumpable(State fork, string w) {
   exists(StatePair q, Trace t |
     isReachableFromFork(fork, q, t, _) and
-    (
-      q = getAForkPair(fork) and w = concretise(t)
-      or
-      exists(InputSymbol s1, InputSymbol s2 |
-        step(q, s1, s2, getAForkPair(fork)) and
-        w = concretise(Step(s1, s2, t))
-      )
-    )
+    q = getAForkPair(fork) and
+    w = concretise(t)
   )
 }
 
