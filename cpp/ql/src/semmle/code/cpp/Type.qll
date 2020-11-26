@@ -578,9 +578,7 @@ class BoolType extends IntegralType {
  * ```
  */
 class CharType extends IntegralType {
-  CharType() {
-    builtintypes(underlyingElement(this), _, [5, 6, 7], _, _, _)
-  }
+  CharType() { builtintypes(underlyingElement(this), _, [5, 6, 7], _, _, _) }
 }
 
 /**
