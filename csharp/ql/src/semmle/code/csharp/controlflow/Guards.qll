@@ -1248,6 +1248,7 @@ module Internal {
       )
     }
 
+    pragma[nomagic]
     private Expr getAnEqualityCheckVal(Expr e, AbstractValue v, AbstractValue vExpr) {
       result = getAnEqualityCheck(e, v, vExpr.getAnExpr())
     }

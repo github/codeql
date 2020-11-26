@@ -237,6 +237,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * The assigned arguments to `x` are `1` and `4`, the assigned argument to
    * `y` is `5`, and the assigned arguments to `z` are `3` and `6`, respectively.
    */
+  pragma[nomagic]
   Expr getAnAssignedArgument() { result = getCallable().getACall().getArgumentForParameter(this) }
 
   /** Holds if this parameter is potentially overwritten in the body of its callable. */
