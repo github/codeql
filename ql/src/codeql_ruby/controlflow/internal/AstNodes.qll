@@ -40,7 +40,7 @@ class LogicalOrAstNode extends Binary {
   AstNode getAnOperand() { result in [left, right] }
 }
 
-private class If_or_elisif = @if or @elsif;
+private class If_or_elisif = @if or @elsif or @conditional;
 
 class IfElsifAstNode extends AstNode, If_or_elisif {
   AstNode getConditionNode() { none() }
@@ -59,6 +59,14 @@ private class IfAstNode extends IfElsifAstNode, If {
 }
 
 private class ElsifAstNode extends IfElsifAstNode, Elsif {
+  override AstNode getConditionNode() { result = this.getCondition() }
+
+  override AstNode getConsequenceNode() { result = this.getConsequence() }
+
+  override AstNode getAlternativeNode() { result = this.getAlternative() }
+}
+
+private class ConditionalAstNode extends IfElsifAstNode, Conditional {
   override AstNode getConditionNode() { result = this.getCondition() }
 
   override AstNode getConsequenceNode() { result = this.getConsequence() }
