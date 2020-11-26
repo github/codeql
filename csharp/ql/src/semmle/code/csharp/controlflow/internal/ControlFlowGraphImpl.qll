@@ -940,7 +940,7 @@ module Statements {
       not this instanceof JumpStmt
     }
 
-    final override ControlFlowTree getChildElement(int i) {
+    private ControlFlowTree getChildElement0(int i) {
       not this instanceof GeneralCatchClause and
       not this instanceof FixedStmt and
       not this instanceof UsingBlockStmt and
@@ -959,23 +959,22 @@ module Statements {
       or
       this =
         any(UsingBlockStmt us |
-          if exists(us.getExpr())
-          then (
-            result = us.getExpr() and
-            i = 0
-            or
-            result = us.getBody() and
-            i = 1
-          ) else (
-            result = us.getVariableDeclExpr(i)
-            or
-            result = us.getBody() and
-            i = max(int j | exists(us.getVariableDeclExpr(j))) + 1
-          )
+          result = us.getExpr() and
+          i = 0
+          or
+          result = us.getVariableDeclExpr(i)
+          or
+          result = us.getBody() and
+          i = max([1, count(us.getVariableDeclExpr(_))])
         )
       or
       result = this.(DefaultCase).getStmt() and
       i = 0
+    }
+
+    final override ControlFlowTree getChildElement(int i) {
+      result =
+        rank[i + 1](ControlFlowElement cfe, int j | cfe = this.getChildElement0(j) | cfe order by j)
     }
 
     final override predicate last(ControlFlowElement last, Completion c) {
