@@ -11,6 +11,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             switch (syntax)
             {
+                case ParenthesizedPatternSyntax parenthesizedPattern:
+                    return Pattern.Create(cx, parenthesizedPattern.Pattern, parent, child);
+
                 case ConstantPatternSyntax constantPattern:
                     return Expression.Create(cx, constantPattern.Expression, parent, child);
 

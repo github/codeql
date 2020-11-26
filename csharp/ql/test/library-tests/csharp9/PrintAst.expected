@@ -184,6 +184,67 @@ NativeInt.cs:
 #   25|               0: [CastExpr] (...) ...
 #   25|                 1: [LocalVariableAccess] access to local variable x
 #   25|               1: [LocalVariableAccess] access to local variable v
+ParenthesizedPattern.cs:
+#    3| [Class] T
+#    5| [Class] ParenthesizedPattern
+#    7|   5: [Method] M1
+#    7|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] o
+#    7|         -1: [TypeMention] object
+#    8|     4: [BlockStmt] {...}
+#    9|       0: [IfStmt] if (...) ...
+#    9|         0: [IsExpr] ... is ...
+#    9|           0: [ParameterAccess] access to parameter o
+#    9|           1: [RecursivePatternExpr] { ... }
+#    9|             0: [LocalVariableDeclExpr] Object p1
+#    9|             3: [PropertyPatternExpr] { ... }
+#   10|         1: [BlockStmt] {...}
+#   13|       1: [IfStmt] if (...) ...
+#   13|         0: [IsExpr] ... is ...
+#   13|           0: [ParameterAccess] access to parameter o
+#   13|           1: [RecursivePatternExpr] { ... }
+#   13|             0: [LocalVariableDeclExpr] Object p2
+#   13|             3: [PropertyPatternExpr] { ... }
+#   14|         1: [BlockStmt] {...}
+#   19|   6: [Method] M2
+#   19|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] o
+#   19|         -1: [TypeMention] object
+#   20|     4: [BlockStmt] {...}
+#   21|       0: [LocalVariableDeclStmt] ... ...;
+#   21|         0: [LocalVariableDeclAndInitExpr] Int32 r = ...
+#   21|           -1: [TypeMention] int
+#   21|           0: [LocalVariableAccess] access to local variable r
+#   21|           1: [SwitchExpr] ... switch { ... }
+#   21|             -1: [ParameterAccess] access to parameter o
+#   23|             0: [SwitchCaseExpr] ... => ...
+#   23|               0: [ConstantPatternExpr,IntLiteral] 1
+#   23|               2: [IntLiteral] 1
+#   24|             1: [SwitchCaseExpr] ... => ...
+#   24|               0: [ConstantPatternExpr,IntLiteral] 2
+#   24|               2: [IntLiteral] 2
+#   25|             2: [SwitchCaseExpr] ... => ...
+#   25|               0: [VariablePatternExpr] T t
+#   25|                 0: [TypeMention] T
+#   25|               1: [IsExpr] ... is ...
+#   25|                 0: [LocalVariableAccess] access to local variable t
+#   25|                 1: [RecursivePatternExpr] { ... }
+#   25|                   3: [PropertyPatternExpr] { ... }
+#   25|               2: [IntLiteral] 3
+#   26|             3: [SwitchCaseExpr] ... => ...
+#   26|               0: [VariablePatternExpr] Object o1
+#   26|                 0: [TypeMention] object
+#   26|               1: [IsExpr] ... is ...
+#   26|                 0: [LocalVariableAccess] access to local variable o1
+#   26|                 1: [RecursivePatternExpr] { ... }
+#   26|                   3: [PropertyPatternExpr] { ... }
+#   26|               2: [IntLiteral] 4
+#   27|             4: [SwitchCaseExpr] ... => ...
+#   27|               0: [TypeAccessPatternExpr] access to type String
+#   27|                 0: [TypeMention] string
+#   27|               2: [IntLiteral] 5
 TypeParameterNullability.cs:
 #    1| [Interface] I1
 #    3| [Class] A2
