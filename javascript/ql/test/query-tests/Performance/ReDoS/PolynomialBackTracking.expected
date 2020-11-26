@@ -277,6 +277,6 @@
 | tst.js:287:21:287:24 | [^]* | it can start matching anywhere |
 | tst.js:290:15:290:19 | (a+)* | it can start matching anywhere |
 | tst.js:290:16:290:17 | a+ | it can start matching anywhere |
-| tst.js:293:16:293:20 | (a+)* | it can start matching anywhere |
-| tst.js:293:17:293:18 | a+ | it can start matching anywhere |
+| tst.js:293:21:293:25 | (a+)* | it can start matching anywhere |
+| tst.js:293:22:293:23 | a+ | it can start matching anywhere |
 | tst.js:296:15:296:24 | ((;\|^)a+)+ | it can start matching anywhere |
