@@ -404,15 +404,26 @@ private import PhiInsertion
  */
 private module PhiInsertion {
   /**
+   * Holds if `phiBlock` is a block in the dominance frontier of a block that has a definition of the
+   * memory location `defLocation`.
+   */
+  pragma[noinline]
+  private predicate dominanceFrontierOfDefinition(
+    Alias::MemoryLocation defLocation, OldBlock phiBlock
+  ) {
+    exists(OldBlock defBlock |
+      phiBlock = Dominance::getDominanceFrontier(defBlock) and
+      definitionHasDefinitionInBlock(defLocation, defBlock)
+    )
+  }
+
+  /**
    * Holds if a `Phi` instruction needs to be inserted for location `defLocation` at the beginning of block `phiBlock`.
    */
   predicate definitionHasPhiNode(Alias::MemoryLocation defLocation, OldBlock phiBlock) {
-    exists(OldBlock defBlock |
-      phiBlock = Dominance::getDominanceFrontier(defBlock) and
-      definitionHasDefinitionInBlock(defLocation, defBlock) and
-      /* We can also eliminate those nodes where the definition is not live on any incoming edge */
-      definitionLiveOnEntryToBlock(defLocation, phiBlock)
-    )
+    dominanceFrontierOfDefinition(defLocation, phiBlock) and
+    /* We can also eliminate those nodes where the definition is not live on any incoming edge */
+    definitionLiveOnEntryToBlock(defLocation, phiBlock)
   }
 
   /**
