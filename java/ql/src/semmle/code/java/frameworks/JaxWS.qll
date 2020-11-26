@@ -171,6 +171,13 @@ class JaxRsResponseBuilder extends Class {
 }
 
 /**
+ * The class `javax.ws.rs.client.Client`.
+ */
+class JaxRsClient extends RefType {
+  JaxRsClient() { this.hasQualifiedName("javax.ws.rs.client", "Client") }
+}
+
+/**
  * A constructor that may be called by a JaxRS container to construct an instance to inject into a
  * resource method or resource class constructor.
  */
