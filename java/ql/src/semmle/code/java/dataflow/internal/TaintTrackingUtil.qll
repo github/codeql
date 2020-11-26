@@ -330,9 +330,6 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getDeclaringType().hasQualifiedName("javax.xml.transform.stream", "StreamSource") and
   m.hasName("getInputStream")
   or
-  m.getDeclaringType().hasQualifiedName("java.nio", "ByteBuffer") and
-  m.hasName("get")
-  or
   m.getDeclaringType() instanceof TypeFile and
   m.hasName("toPath")
   or
