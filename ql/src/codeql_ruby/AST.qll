@@ -1,14 +1,17 @@
+import codeql.Locations
 import codeql_ruby.Method
 import codeql_ruby.Parameter
 private import codeql_ruby.Generated
-
-class Location = Generated::Location;
 
 /**
  * A node in the abstract syntax tree. This class is the base class for all Ruby
  * program elements.
  */
 class AstNode extends @ast_node {
+  Generated::AstNode generated;
+
+  AstNode() { generated = this }
+
   /**
    * Gets the name of a primary CodeQL class to which this node belongs.
    *
@@ -22,7 +25,18 @@ class AstNode extends @ast_node {
   string toString() { result = "AstNode" }
 
   /** Gets the location if this node. */
-  Location getLocation() { result = this.(Generated::AstNode).getLocation() }
+  Location getLocation() { result = generated.getLocation() }
+
+  /**
+   * Gets the parent of this node in the abstract syntax tree, if it has one.
+   */
+  AstNode getParent() { result = generated.getParent() }
+
+  /**
+   * Gets the index (position) of this node in the parent node's list of
+   * children.
+   */
+  int getParentIndex() { result = generated.getParentIndex() }
 }
 
 /**
