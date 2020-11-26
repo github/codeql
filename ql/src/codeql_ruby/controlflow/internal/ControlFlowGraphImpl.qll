@@ -240,9 +240,9 @@ private module Trees {
 
   private class AssignmentTree extends StandardPostOrderTree, Assignment {
     final override AstNode getChildNode(int i) {
-      result = this.getLeft() and i = 0
+      result = this.getRight() and i = 0
       or
-      result = this.getRight() and i = 1
+      result = this.getLeft() and i = 1
     }
   }
 
