@@ -47,12 +47,23 @@ module IndirectCommandInjection {
       // `require('get-them-args')(...)` => `{ unknown: [], a: ... b: ... }`
       this = DataFlow::moduleImport("get-them-args").getACall()
       or
-      // `require('minimist')(...)` => `{ _: [], a: ... b: ... }`
-      this = DataFlow::moduleImport("minimist").getACall()
-      or
       // `require('optimist').argv` => `{ _: [], a: ... b: ... }`
       this = DataFlow::moduleMember("optimist", "argv")
     }
+  }
+
+  /**
+   * A command line parsing step from `pred` to `succ`.
+   * E.g: `var succ = require("minimist")(pred)`.
+   */
+  predicate argsParseStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call |
+      call = DataFlow::moduleMember("args", "parse").getACall() or
+      call = DataFlow::moduleImport(["yargs-parser", "minimist", "subarg"]).getACall()
+    |
+      succ = call and
+      pred = call.getArgument(0)
+    )
   }
 
   /**
