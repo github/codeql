@@ -27,8 +27,9 @@ Features of the QL libraries in `cpp/ql/src` should also have test coverage, in 
 The contents of `cpp/ql/test` should be original - nothing should be copied from other sources. In particular do not copy-paste C/C++ code from third party projects, your own projects, or the standard C/C++ library implementation of your compiler (regardless of the associated license). As an exception, required declarations may be taken from the following sources where necessary:
  - ISO/IEC Programming languages - C (all versions)
  - ISO/IEC Programming languages - C++ (all versions)
-
-In addition, C/C++ and QL code may be copied from other queries and tests in this repository.
+ - code from existing queries and tests in this repository
+	- this includes 'translating QL to C++', that is, writing C/C++ declarations from the information such as parameter names and positions specified in QL classes (when there is enough information to do so).
+ - code in the public domain
 
 For example the test above for the "Memory is never freed" (`cpp/memory-never-freed`) query requires the following declarations, taken from Programming languages — C (November 2018):
 ```
