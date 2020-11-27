@@ -1,7 +1,7 @@
 /**
  * @name Cleartext storage of sensitive information using `SharedPreferences` on Android
  * @description Cleartext Storage of Sensitive Information using SharedPreferences on Android allows access for users with root privileges or unexpected exposure from chained vulnerabilities.
- * @kind path-problem
+ * @kind problem
  * @id java/android/cleartext-storage-shared-prefs
  * @tags security
  *       external/cwe/cwe-312
@@ -14,7 +14,6 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.android.SharedPreferences
 import semmle.code.java.security.SensitiveActions
-import DataFlow::PathGraph
 
 /** Holds if the method call is a setter method of `SharedPreferences`. */
 private predicate sharedPreferencesInput(DataFlow::Node sharedPrefs, Expr input) {
