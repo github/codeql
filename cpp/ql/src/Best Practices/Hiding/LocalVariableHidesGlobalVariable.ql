@@ -2,7 +2,7 @@
  * @name Local variable hides global variable
  * @description A local variable or parameter that hides a global variable of the same name. This may be confusing. Consider renaming one of the variables.
  * @kind problem
- * @problem.severity warning
+ * @problem.severity recommendation
  * @precision very-high
  * @id cpp/local-variable-hides-global-variable
  * @tags maintainability
