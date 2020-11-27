@@ -772,6 +772,25 @@ class DictNode extends ControlFlowNode {
   }
 }
 
+/**
+ * A control flow node corresponding to an iterable literal. Currently does not include
+ * dictionaries, use `DictNode` directly instead.
+ */
+class IterableNode extends ControlFlowNode {
+  IterableNode() {
+    this instanceof SequenceNode
+    or
+    this instanceof SetNode
+  }
+
+  /** Gets the control flow node for an element of this iterable. */
+  ControlFlowNode getAnElement() {
+    result = this.(SequenceNode).getAnElement()
+    or
+    result = this.(SetNode).getAnElement()
+  }
+}
+
 private AstNode assigned_value(Expr lhs) {
   /* lhs = result */
   exists(Assign a | a.getATarget() = lhs and result = a.getValue())
