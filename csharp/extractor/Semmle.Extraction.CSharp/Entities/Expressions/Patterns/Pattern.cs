@@ -42,9 +42,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case RecursivePatternSyntax recPattern:
                     return new RecursivePattern(cx, recPattern, parent, child);
 
-                case RelationalPatternSyntax relPattern:
-                    return new RelationalPattern(cx, relPattern, parent, child);
-
                 case VarPatternSyntax varPattern:
                     switch (varPattern.Designation)
                     {
