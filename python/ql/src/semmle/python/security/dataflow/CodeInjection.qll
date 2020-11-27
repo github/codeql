@@ -8,6 +8,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.dataflow.new.BarrierGuards
 
 /**
  * A taint-tracking configuration for detecting code injection vulnerabilities.
@@ -20,6 +21,6 @@ class CodeInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink = any(CodeExecution e).getCode() }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+    guard instanceof StringConstCompare
   }
 }

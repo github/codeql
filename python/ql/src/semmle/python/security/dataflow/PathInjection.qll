@@ -31,6 +31,7 @@ import semmle.python.dataflow.new.TaintTracking2
 import semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
 import ChainedConfigs12
+import semmle.python.dataflow.new.BarrierGuards
 
 // ---------------------------------------------------------------------------
 // Case 1. The path is never normalized.
@@ -48,7 +49,7 @@ class PathNotNormalizedConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Path::PathNormalization }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+    guard instanceof StringConstCompare
   }
 }
 
@@ -74,7 +75,7 @@ class FirstNormalizationConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizerOut(DataFlow::Node node) { node instanceof Path::PathNormalization }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+    guard instanceof StringConstCompare
   }
 }
 
@@ -91,7 +92,7 @@ class NormalizedPathNotCheckedConfiguration extends TaintTracking2::Configuratio
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof Path::SafeAccessCheck
     or
-    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+    guard instanceof StringConstCompare
   }
 }
 

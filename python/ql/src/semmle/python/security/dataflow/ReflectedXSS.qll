@@ -8,6 +8,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.Concepts
 import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.dataflow.new.BarrierGuards
 
 /**
  * A taint-tracking configuration for detecting reflected server-side cross-site
@@ -26,6 +27,6 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof DataFlow::BarrierGuard::StringConstCompare
+    guard instanceof StringConstCompare
   }
 }
