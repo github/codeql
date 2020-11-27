@@ -60,7 +60,7 @@ private string getTemplateArgumentString(Declaration d, int i) {
 /**
  * A `Declaration` extended to add methods for generating strings useful only for dumps and debugging.
  */
-abstract private class DumpDeclaration extends Declaration {
+private class DumpDeclaration extends Declaration {
   DumpDeclaration() { shouldPrintDeclaration(this) }
 
   /**
