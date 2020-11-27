@@ -463,15 +463,21 @@
 | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; | 1 |
 | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; | 1 |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:159:21:159:45 | throw ...; | 1 |
-| Finally.cs:159:41:159:43 | "1" | Finally.cs:159:27:159:44 | object creation of type Exception | 2 |
-| Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | 2 |
-| Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | 2 |
+| Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | 1 |
+| Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | 1 |
+| Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:27:159:44 | object creation of type Exception | 1 |
+| Finally.cs:159:41:159:43 | "1" | Finally.cs:159:41:159:43 | "1" | 1 |
+| Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | 1 |
+| Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | 1 |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:161:39:161:54 | [exception: Exception] ... == ... | 6 |
 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... | 6 |
+| Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:39:161:54 | [exception: OutOfMemoryException] ... == ... | 6 |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | 6 |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | 6 |
+| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] ... == ... | 6 |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: Exception] ... == ... | 6 |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | 6 |
+| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] ... == ... | 6 |
 | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:163:17:163:42 | [finally: exception(ArgumentNullException)] call to method WriteLine | 6 |
 | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | Finally.cs:163:17:163:42 | [finally: exception(Exception)] call to method WriteLine | 6 |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:163:17:163:42 | call to method WriteLine | 6 |

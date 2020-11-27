@@ -2251,40 +2251,58 @@ nodeEnclosing
 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | [exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | [exception: OutOfMemoryException] Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: OutOfMemoryException] Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:39 | [exception: Exception] access to local variable e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:39 | [exception: NullReferenceException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:39 | [exception: OutOfMemoryException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: Exception] access to local variable e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: Exception] access to local variable e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: NullReferenceException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: OutOfMemoryException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:47 | [exception: Exception] access to property Message | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:47 | [exception: NullReferenceException] access to property Message | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:47 | [exception: OutOfMemoryException] access to property Message | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: Exception] access to property Message | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to property Message | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to property Message | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: Exception] access to property Message | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: NullReferenceException] access to property Message | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: OutOfMemoryException] access to property Message | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:54 | [exception: Exception] ... == ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:54 | [exception: OutOfMemoryException] ... == ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] ... == ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: Exception] ... == ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] ... == ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:52:161:54 | [exception: Exception] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:52:161:54 | [exception: NullReferenceException] "1" | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:52:161:54 | [exception: OutOfMemoryException] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: Exception] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] "1" | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: Exception] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: NullReferenceException] "1" | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:147:10:147:11 | M8 |
@@ -5068,15 +5086,21 @@ blockEnclosing
 | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:147:10:147:11 | M8 |

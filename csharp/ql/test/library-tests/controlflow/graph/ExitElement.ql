@@ -1,8 +1,8 @@
 import csharp
-import ControlFlow::Internal
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 private import semmle.code.csharp.controlflow.internal.Completion
 import Common
 
-from SourceControlFlowElement cfe, Completion c
-where cfe.fromSource()
-select cfe, last(cfe, c), c
+from SourceControlFlowElement cfe, ControlFlowElement last, Completion c
+where last(cfe, last, c)
+select cfe, last, c

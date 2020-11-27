@@ -2082,38 +2082,56 @@ dominance
 | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:21:159:45 | throw ...; |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:159:27:159:44 | object creation of type Exception |
+| Finally.cs:159:41:159:43 | "1" | Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
+| Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception |
+| Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:161:30:161:30 | [exception: Exception] Exception e |
 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e |
+| Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:30:161:30 | [exception: OutOfMemoryException] Exception e |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: Exception] Exception e |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: NullReferenceException] Exception e |
+| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] Exception e |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: Exception] Exception e |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: NullReferenceException] Exception e |
+| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: OutOfMemoryException] Exception e |
 | Finally.cs:161:30:161:30 | [exception: Exception] Exception e | Finally.cs:161:39:161:39 | [exception: Exception] access to local variable e |
 | Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e | Finally.cs:161:39:161:39 | [exception: NullReferenceException] access to local variable e |
+| Finally.cs:161:30:161:30 | [exception: OutOfMemoryException] Exception e | Finally.cs:161:39:161:39 | [exception: OutOfMemoryException] access to local variable e |
 | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: Exception] Exception e | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: Exception] access to local variable e |
 | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: NullReferenceException] Exception e | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to local variable e |
+| Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] Exception e | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to local variable e |
 | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: Exception] Exception e | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: Exception] access to local variable e |
 | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: NullReferenceException] Exception e | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: NullReferenceException] access to local variable e |
+| Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: OutOfMemoryException] Exception e | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: OutOfMemoryException] access to local variable e |
 | Finally.cs:161:39:161:39 | [exception: Exception] access to local variable e | Finally.cs:161:39:161:47 | [exception: Exception] access to property Message |
 | Finally.cs:161:39:161:39 | [exception: NullReferenceException] access to local variable e | Finally.cs:161:39:161:47 | [exception: NullReferenceException] access to property Message |
+| Finally.cs:161:39:161:39 | [exception: OutOfMemoryException] access to local variable e | Finally.cs:161:39:161:47 | [exception: OutOfMemoryException] access to property Message |
 | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: Exception] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: Exception] access to property Message |
 | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to property Message |
+| Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to property Message |
 | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: Exception] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: Exception] access to property Message |
 | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: NullReferenceException] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: NullReferenceException] access to property Message |
+| Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: OutOfMemoryException] access to local variable e | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: OutOfMemoryException] access to property Message |
 | Finally.cs:161:39:161:47 | [exception: Exception] access to property Message | Finally.cs:161:52:161:54 | [exception: Exception] "1" |
 | Finally.cs:161:39:161:47 | [exception: NullReferenceException] access to property Message | Finally.cs:161:52:161:54 | [exception: NullReferenceException] "1" |
+| Finally.cs:161:39:161:47 | [exception: OutOfMemoryException] access to property Message | Finally.cs:161:52:161:54 | [exception: OutOfMemoryException] "1" |
 | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: Exception] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: Exception] "1" |
 | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] "1" |
+| Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] "1" |
 | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: Exception] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: Exception] "1" |
 | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: NullReferenceException] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: NullReferenceException] "1" |
+| Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: OutOfMemoryException] access to property Message | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] "1" |
 | Finally.cs:161:52:161:54 | [exception: Exception] "1" | Finally.cs:161:39:161:54 | [exception: Exception] ... == ... |
 | Finally.cs:161:52:161:54 | [exception: NullReferenceException] "1" | Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... |
+| Finally.cs:161:52:161:54 | [exception: OutOfMemoryException] "1" | Finally.cs:161:39:161:54 | [exception: OutOfMemoryException] ... == ... |
 | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: Exception] "1" | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... |
 | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] "1" | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... |
+| Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] "1" | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] ... == ... |
 | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: Exception] "1" | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: Exception] ... == ... |
 | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: NullReferenceException] "1" | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... |
+| Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] "1" | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] ... == ... |
 | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:163:17:163:43 | [finally: exception(ArgumentNullException)] ...; |
 | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | Finally.cs:163:17:163:43 | [finally: exception(Exception)] ...; |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:163:17:163:43 | ...; |
@@ -6040,41 +6058,53 @@ postDominance
 | Finally.cs:158:21:158:36 | ... == ... | Finally.cs:158:36:158:36 | 1 |
 | Finally.cs:158:21:158:36 | [finally: exception(ArgumentNullException)] ... == ... | Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 |
 | Finally.cs:158:21:158:36 | [finally: exception(Exception)] ... == ... | Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 |
-| Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" |
-| Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" |
-| Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:41:159:43 | "1" |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:159:21:159:45 | throw ...; |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:159:27:159:44 | object creation of type Exception |
 | Finally.cs:161:30:161:30 | [exception: Exception] Exception e | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} |
 | Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:161:30:161:30 | [exception: OutOfMemoryException] Exception e | Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: Exception] Exception e | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} |
 | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: NullReferenceException] Exception e | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] Exception e | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: Exception] Exception e | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} |
 | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: NullReferenceException] Exception e | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: OutOfMemoryException] Exception e | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:161:39:161:39 | [exception: Exception] access to local variable e | Finally.cs:161:30:161:30 | [exception: Exception] Exception e |
 | Finally.cs:161:39:161:39 | [exception: NullReferenceException] access to local variable e | Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e |
+| Finally.cs:161:39:161:39 | [exception: OutOfMemoryException] access to local variable e | Finally.cs:161:30:161:30 | [exception: OutOfMemoryException] Exception e |
 | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: Exception] access to local variable e | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: Exception] Exception e |
 | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to local variable e | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: NullReferenceException] Exception e |
+| Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to local variable e | Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] Exception e |
 | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: Exception] access to local variable e | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: Exception] Exception e |
 | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: NullReferenceException] access to local variable e | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: NullReferenceException] Exception e |
+| Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: OutOfMemoryException] access to local variable e | Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: OutOfMemoryException] Exception e |
 | Finally.cs:161:39:161:47 | [exception: Exception] access to property Message | Finally.cs:161:39:161:39 | [exception: Exception] access to local variable e |
 | Finally.cs:161:39:161:47 | [exception: NullReferenceException] access to property Message | Finally.cs:161:39:161:39 | [exception: NullReferenceException] access to local variable e |
+| Finally.cs:161:39:161:47 | [exception: OutOfMemoryException] access to property Message | Finally.cs:161:39:161:39 | [exception: OutOfMemoryException] access to local variable e |
 | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: Exception] access to property Message | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: Exception] access to local variable e |
 | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to property Message | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to local variable e |
+| Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to property Message | Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to local variable e |
 | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: Exception] access to property Message | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: Exception] access to local variable e |
 | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: NullReferenceException] access to property Message | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: NullReferenceException] access to local variable e |
+| Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: OutOfMemoryException] access to property Message | Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: OutOfMemoryException] access to local variable e |
 | Finally.cs:161:39:161:54 | [exception: Exception] ... == ... | Finally.cs:161:52:161:54 | [exception: Exception] "1" |
 | Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... | Finally.cs:161:52:161:54 | [exception: NullReferenceException] "1" |
+| Finally.cs:161:39:161:54 | [exception: OutOfMemoryException] ... == ... | Finally.cs:161:52:161:54 | [exception: OutOfMemoryException] "1" |
 | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: Exception] "1" |
 | Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] "1" |
+| Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] ... == ... | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] "1" |
 | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: Exception] ... == ... | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: Exception] "1" |
 | Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: NullReferenceException] "1" |
+| Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] ... == ... | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] "1" |
 | Finally.cs:161:52:161:54 | [exception: Exception] "1" | Finally.cs:161:39:161:47 | [exception: Exception] access to property Message |
 | Finally.cs:161:52:161:54 | [exception: NullReferenceException] "1" | Finally.cs:161:39:161:47 | [exception: NullReferenceException] access to property Message |
+| Finally.cs:161:52:161:54 | [exception: OutOfMemoryException] "1" | Finally.cs:161:39:161:47 | [exception: OutOfMemoryException] access to property Message |
 | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: Exception] "1" | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: Exception] access to property Message |
 | Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] "1" | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to property Message |
+| Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] "1" | Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] access to property Message |
 | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: Exception] "1" | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: Exception] access to property Message |
 | Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: NullReferenceException] "1" | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: NullReferenceException] access to property Message |
+| Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: OutOfMemoryException] "1" | Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: OutOfMemoryException] access to property Message |
 | Finally.cs:163:17:163:42 | [finally: exception(ArgumentNullException)] call to method WriteLine | Finally.cs:163:35:163:41 | [finally: exception(ArgumentNullException)] access to array element |
 | Finally.cs:163:17:163:42 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:163:35:163:41 | [finally: exception(Exception)] access to array element |
 | Finally.cs:163:17:163:42 | call to method WriteLine | Finally.cs:163:35:163:41 | access to array element |
@@ -9348,15 +9378,21 @@ blockDominance
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:21:159:45 | throw ...; |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:27:159:44 | object creation of type Exception |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:41:159:43 | "1" |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:147:10:147:11 | enter M8 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:162:13:164:13 | {...} |
@@ -9369,9 +9405,11 @@ blockDominance
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:152:17:152:50 | throw ...; |
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 |
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| Finally.cs:152:17:152:50 | throw ...; | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" |
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} |
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:152:17:152:50 | throw ...; | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} |
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:165:13:168:13 | [finally: exception(ArgumentNullException)] catch {...} |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:147:10:147:11 | exit M8 (abnormal) |
@@ -9382,12 +9420,16 @@ blockDominance
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; |
+| Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
+| Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:165:13:168:13 | [finally: exception(ArgumentNullException)] catch {...} |
@@ -9395,44 +9437,69 @@ blockDominance
 | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} |
 | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 |
 | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; |
+| Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception |
 | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" |
 | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} |
 | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} |
 | Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:165:13:168:13 | [finally: exception(Exception)] catch {...} |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:147:10:147:11 | exit M8 (normal) |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:155:9:169:9 | {...} |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:158:36:158:36 | 1 |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:159:21:159:45 | throw ...; |
+| Finally.cs:155:9:169:9 | {...} | Finally.cs:159:27:159:44 | object creation of type Exception |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:159:41:159:43 | "1" |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:155:9:169:9 | {...} | Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:162:13:164:13 | {...} |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:165:13:168:13 | catch {...} |
 | Finally.cs:158:36:158:36 | 1 | Finally.cs:158:36:158:36 | 1 |
 | Finally.cs:158:36:158:36 | 1 | Finally.cs:159:21:159:45 | throw ...; |
+| Finally.cs:158:36:158:36 | 1 | Finally.cs:159:27:159:44 | object creation of type Exception |
 | Finally.cs:158:36:158:36 | 1 | Finally.cs:159:41:159:43 | "1" |
+| Finally.cs:158:36:158:36 | 1 | Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 | Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 |
 | Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
 | Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" |
+| Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 | Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 |
 | Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; |
+| Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception |
 | Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" |
+| Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; |
 | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:159:21:159:45 | throw ...; |
+| Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
+| Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; |
+| Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception |
+| Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:21:159:45 | throw ...; |
+| Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:27:159:44 | object creation of type Exception |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:159:21:159:45 | throw ...; |
+| Finally.cs:159:41:159:43 | "1" | Finally.cs:159:27:159:44 | object creation of type Exception |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:159:41:159:43 | "1" |
+| Finally.cs:159:41:159:43 | "1" | Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
 | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" |
+| Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; |
+| Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception |
 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" |
+| Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} |
 | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:162:13:164:13 | {...} |
@@ -11949,9 +12016,11 @@ postBlockDominance
 | Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:155:9:169:9 | {...} |
 | Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:158:36:158:36 | 1 |
 | Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:159:21:159:45 | throw ...; |
+| Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:159:27:159:44 | object creation of type Exception |
 | Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:159:41:159:43 | "1" |
 | Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} |
 | Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:162:13:164:13 | {...} |
 | Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:165:13:168:13 | catch {...} |
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:152:17:152:50 | throw ...; |
@@ -11965,17 +12034,23 @@ postBlockDominance
 | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; | Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; |
 | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; | Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:159:21:159:45 | throw ...; |
+| Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
+| Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception |
+| Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:27:159:44 | object creation of type Exception |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:159:41:159:43 | "1" |
 | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" |
 | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:159:21:159:45 | throw ...; |
-| Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:159:41:159:43 | "1" |
+| Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:159:27:159:44 | object creation of type Exception |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:13:164:13 | [exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} |
 | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} |
+| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} | Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: OutOfMemoryException] catch (...) {...} |
 | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} |
 | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:162:13:164:13 | {...} |

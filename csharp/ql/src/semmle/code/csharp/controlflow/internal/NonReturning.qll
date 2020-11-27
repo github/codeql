@@ -11,7 +11,7 @@ private import semmle.code.cil.CallableReturns
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.controlflow.internal.Completion
+private import Completion
 
 /** A call that definitely does not return (conservative analysis). */
 abstract class NonReturningCall extends Call {
