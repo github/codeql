@@ -1143,25 +1143,65 @@ abstract class BarrierGuard extends Node {
    * We check this by looking for guards on `inp` that dominate a `return` statement that
    * is the only `return` in `f` that can return `true`. This means that if `f` returns `true`,
    * the guard must have been satisfied. (Similar reasoning is applied for statements returning
-   * `false` or a non-`nil` value.)
+   * `false`, `nil` or a non-`nil` value.)
    */
   private predicate guardingFunction(
     Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p
   ) {
-    exists(ControlFlow::ConditionGuardNode guard, Node arg, FuncDecl fd, Node ret |
+    exists(FuncDecl fd, Node arg, Node ret |
       fd.getFunction() = f and
-      guards(guard, arg) and
       localFlow(inp.getExitNode(fd), arg) and
       ret = outp.getEntryNode(fd) and
-      guard.dominates(ret.getBasicBlock())
-    |
-      exists(boolean b |
-        onlyPossibleReturnOfBool(fd, outp, ret, b) and
-        p.isBoolean(b)
+      // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
+      (
+        exists(ControlFlow::ConditionGuardNode guard |
+          guards(guard, arg) and
+          guard.dominates(ret.getBasicBlock())
+        |
+          exists(boolean b |
+            onlyPossibleReturnOfBool(fd, outp, ret, b) and
+            p.isBoolean(b)
+          )
+          or
+          onlyPossibleReturnOfNonNil(fd, outp, ret) and
+          p.isNonNil()
+          or
+          onlyPossibleReturnOfNil(fd, outp, ret) and
+          p.isNil()
+        )
+        or
+        // Case: a function like "return someBarrierGuard(arg)"
+        // or "return !someBarrierGuard(arg) && otherCond(...)"
+        exists(boolean outcome |
+          not exists(DataFlow::Node otherRet | otherRet = outp.getEntryNode(fd) | otherRet != ret) and
+          this.checks(arg.asExpr(), outcome) and
+          // This predicate's contract is (p holds of ret ==> arg is checked),
+          // (and we have (this has outcome ==> arg is checked))
+          // but p.checkOn(ret, outcome, this) gives us (ret has outcome ==> p holds of this),
+          // so we need to swap outcome and (specifically boolean) p:
+          DataFlow::booleanProperty(outcome).checkOn(ret, p.asBoolean(), this)
+        )
+        or
+        // Case: a function like "return guardProxy(arg)"
+        // or "return !guardProxy(arg) || otherCond(...)"
+        exists(
+          Function f2, FunctionInput inp2, FunctionOutput outp2, CallNode c,
+          DataFlow::Property outpProp
+        |
+          not exists(DataFlow::Node otherRet | otherRet = outp.getEntryNode(fd) | otherRet != ret) and
+          guardingFunction(f2, inp2, outp2, outpProp) and
+          c = f2.getACall() and
+          arg = inp2.getNode(c) and
+          (
+            // See comment above ("This method's contract...") for rationale re: the inversion of
+            // `p` and `outpProp` here:
+            outpProp.checkOn(ret, p.asBoolean(), outp2.getNode(c))
+            or
+            // The particular case where p is non-boolean (i.e., nil or non-nil), and we directly return `c`:
+            outpProp = p and ret = outp2.getNode(c)
+          )
+        )
       )
-      or
-      onlyPossibleReturnOfNonNil(fd, outp, ret) and
-      p.isNonNil()
     )
   }
 }
@@ -1205,5 +1245,44 @@ private predicate onlyPossibleReturnOfNonNil(FuncDecl fd, FunctionOutput res, No
   possiblyReturnsNonNil(fd, res, ret) and
   forall(Node otherRet | otherRet = res.getEntryNode(fd) and otherRet != ret |
     otherRet.asExpr() = Builtin::nil().getAReference()
+  )
+}
+
+/**
+ * Holds if function `f`'s result `output`, which must be a return value, cannot be nil.
+ */
+private predicate certainlyReturnsNonNil(Function f, FunctionOutput output) {
+  output.isResult(_) and
+  (
+    f.hasQualifiedName("errors", "New")
+    or
+    f in [Builtin::new(), Builtin::make()]
+    or
+    exists(FuncDecl fd | fd = f.getFuncDecl() |
+      forex(DataFlow::Node ret | ret = output.getEntryNode(fd) | isCertainlyNotNil(ret))
+    )
+  )
+}
+
+/**
+ * Holds if `node` cannot be `nil`.
+ */
+private predicate isCertainlyNotNil(DataFlow::Node node) {
+  node instanceof DataFlow::AddressOperationNode
+  or
+  exists(DataFlow::CallNode c, FunctionOutput output | output.getExitNode(c) = node |
+    certainlyReturnsNonNil(c.getTarget(), output)
+  )
+}
+
+/**
+ * Holds if `ret` is the only data-flow node whose value contributes to the output `res` of `fd`
+ * that returns `nil`, since all the other output nodes are known to be non-nil.
+ */
+private predicate onlyPossibleReturnOfNil(FuncDecl fd, FunctionOutput res, DataFlow::Node ret) {
+  ret = res.getEntryNode(fd) and
+  ret.asExpr() = Builtin::nil().getAReference() and
+  forall(DataFlow::Node otherRet | otherRet = res.getEntryNode(fd) and otherRet != ret |
+    isCertainlyNotNil(otherRet)
   )
 }
