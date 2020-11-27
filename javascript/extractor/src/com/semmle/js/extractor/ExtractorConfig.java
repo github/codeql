@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.semmle.extractor.html.HtmlPopulator;
 import com.semmle.js.parser.JcornWrapper;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.UserError;
@@ -146,42 +147,6 @@ public class ExtractorConfig {
     }
   }
 
-  /** How to handle HTML files. */
-  public static enum HTMLHandling {
-    /** Only extract embedded scripts, not the HTML itself. */
-    SCRIPTS(false, false),
-    /** Only extract elements and embedded scripts, not text. */
-    ELEMENTS(true, false),
-    /** Extract elements, embedded scripts, and text. */
-    ALL(true, true);
-
-    private final boolean extractElements;
-
-    private final boolean extractText;
-
-    private HTMLHandling(boolean extractElements, boolean extractText) {
-      this.extractElements = extractElements;
-      this.extractText = extractText;
-    }
-
-    public boolean extractElements() {
-      return extractElements;
-    }
-
-    public boolean extractText() {
-      return extractText;
-    }
-
-    public boolean extractComments() {
-      return extractElements;
-    }
-
-    @Override
-    public String toString() {
-      return StringUtil.lc(name());
-    }
-  }
-
   /** Which language version is the source code parsed as? */
   private ECMAVersion ecmaVersion;
 
@@ -213,7 +178,7 @@ public class ExtractorConfig {
   private boolean tolerateParseErrors;
 
   /** How should HTML files be extracted? */
-  private HTMLHandling htmlHandling;
+  private HtmlPopulator.Config htmlHandling;
 
   /**
    * Which {@link FileExtractor.FileType} should this code be parsed as?
@@ -244,7 +209,7 @@ public class ExtractorConfig {
     this.platform = Platform.AUTO;
     this.jsx = true;
     this.sourceType = SourceType.AUTO;
-    this.htmlHandling = HTMLHandling.ELEMENTS;
+    this.htmlHandling = HtmlPopulator.Config.ELEMENTS;
     this.tolerateParseErrors = true;
     if (experimental) {
       this.mozExtensions = true;
@@ -403,11 +368,11 @@ public class ExtractorConfig {
     return res;
   }
 
-  public HTMLHandling getHtmlHandling() {
+  public HtmlPopulator.Config getHtmlHandling() {
     return htmlHandling;
   }
 
-  public ExtractorConfig withHtmlHandling(HTMLHandling htmlHandling) {
+  public ExtractorConfig withHtmlHandling(HtmlPopulator.Config htmlHandling) {
     ExtractorConfig res = new ExtractorConfig(this);
     res.htmlHandling = htmlHandling;
     return res;
