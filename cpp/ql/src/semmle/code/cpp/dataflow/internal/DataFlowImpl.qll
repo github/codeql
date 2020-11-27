@@ -366,7 +366,7 @@ private module Stage1 {
     exists(Node mid, Node node, TypedContent tc |
       not fullBarrier(node, config) and
       useFieldFlow(config) and
-      fwdFlow(mid, config) and
+      fwdFlow(mid, _, config) and
       store(mid, tc, node, _) and
       c = tc.getContent()
     )
@@ -389,8 +389,8 @@ private module Stage1 {
   }
 
   pragma[nomagic]
-  private predicate fwdFlowOutFromArg(DataFlowCall call, Node node, Configuration config) {
-    fwdFlowOut(call, node, true, config)
+  private predicate fwdFlowOutFromArg(DataFlowCall call, Node out, Configuration config) {
+    fwdFlowOut(call, out, true, config)
   }
 
   /**
@@ -584,21 +584,20 @@ private module Stage1 {
     revFlow(node, toReturn, config) and exists(returnAp) and exists(ap)
   }
 
-  private predicate throughFlowNodeCand1(Node node, Configuration config) {
+  private predicate throughFlowNodeCand(Node node, Configuration config) {
     revFlow(node, true, config) and
     fwdFlow(node, true, config) and
-    not fullBarrier(node, config) and
     not inBarrier(node, config) and
     not outBarrier(node, config)
   }
 
   /** Holds if flow may return from `callable`. */
   pragma[nomagic]
-  private predicate returnFlowCallableNodeCand1(
+  private predicate returnFlowCallableNodeCand(
     DataFlowCallable callable, ReturnKindExt kind, Configuration config
   ) {
     exists(ReturnNodeExt ret |
-      throughFlowNodeCand1(ret, config) and
+      throughFlowNodeCand(ret, config) and
       callable = ret.getEnclosingCallable() and
       kind = ret.getKind()
     )
@@ -610,8 +609,8 @@ private module Stage1 {
    */
   predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
     exists(ReturnKindExt kind |
-      throughFlowNodeCand1(p, config) and
-      returnFlowCallableNodeCand1(c, kind, config) and
+      throughFlowNodeCand(p, config) and
+      returnFlowCallableNodeCand(c, kind, config) and
       p.getEnclosingCallable() = c and
       exists(ap) and
       // we don't expect a parameter to return stored in itself
@@ -803,7 +802,7 @@ private module Stage2 {
     CcNoCall() { this = false }
   }
 
-  Cc ccAny() { result = false }
+  Cc ccNone() { result = false }
 
   private class LocalCc = Unit;
 
@@ -859,7 +858,7 @@ private module Stage2 {
   predicate fwdFlow(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     config.isSource(node) and
-    cc = ccAny() and
+    cc = ccNone() and
     argAp = apNone() and
     ap = getApNil(node)
     or
@@ -878,7 +877,7 @@ private module Stage2 {
       fwdFlow(mid, _, _, ap, config) and
       flowCand(node, _, unbind(config)) and
       jumpStep(mid, node, config) and
-      cc = ccAny() and
+      cc = ccNone() and
       argAp = apNone()
     )
     or
@@ -886,7 +885,7 @@ private module Stage2 {
       fwdFlow(mid, _, _, nil, config) and
       flowCand(node, _, unbind(config)) and
       additionalJumpStep(mid, node, config) and
-      cc = ccAny() and
+      cc = ccNone() and
       argAp = apNone() and
       ap = getApNil(node)
     )
@@ -970,13 +969,19 @@ private module Stage2 {
     )
   }
 
+  /**
+   * Holds if flow may exit from `call` at `out` with access path `ap`. The
+   * inner call context is `innercc`, but `ccOut` is just the call context
+   * based on the return step. In the case of through-flow `ccOut` is discarded
+   * and replaced by the outer call context as tracked by `fwdFlowIsEntered`.
+   */
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node node, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
+    DataFlowCall call, Node out, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
       fwdFlow(ret, innercc, argAp, ap, config) and
-      flowOutOfCall(call, ret, node, allowsFieldFlow, config) and
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
       checkCallContextReturn(innercc, inner, call) and
       ccOut = getCallContextReturn(inner, call)
@@ -987,9 +992,9 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowOutFromArg(
-    DataFlowCall call, Node node, Ap argAp, Ap ap, Configuration config
+    DataFlowCall call, Node out, Ap argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, node, any(CcCall ccc), _, apSome(argAp), ap, config)
+    fwdFlowOut(call, out, any(CcCall ccc), _, apSome(argAp), ap, config)
   }
 
   /**
@@ -1416,7 +1421,7 @@ private module Stage3 {
     CcNoCall() { this = false }
   }
 
-  Cc ccAny() { result = false }
+  Cc ccNone() { result = false }
 
   private class LocalCc = Unit;
 
@@ -1481,7 +1486,7 @@ private module Stage3 {
   private predicate fwdFlow0(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     config.isSource(node) and
-    cc = ccAny() and
+    cc = ccNone() and
     argAp = apNone() and
     ap = getApNil(node)
     or
@@ -1500,7 +1505,7 @@ private module Stage3 {
       fwdFlow(mid, _, _, ap, config) and
       flowCand(node, _, unbind(config)) and
       jumpStep(mid, node, config) and
-      cc = ccAny() and
+      cc = ccNone() and
       argAp = apNone()
     )
     or
@@ -1508,7 +1513,7 @@ private module Stage3 {
       fwdFlow(mid, _, _, nil, config) and
       flowCand(node, _, unbind(config)) and
       additionalJumpStep(mid, node, config) and
-      cc = ccAny() and
+      cc = ccNone() and
       argAp = apNone() and
       ap = getApNil(node)
     )
@@ -1592,13 +1597,19 @@ private module Stage3 {
     )
   }
 
+  /**
+   * Holds if flow may exit from `call` at `out` with access path `ap`. The
+   * inner call context is `innercc`, but `ccOut` is just the call context
+   * based on the return step. In the case of through-flow `ccOut` is discarded
+   * and replaced by the outer call context as tracked by `fwdFlowIsEntered`.
+   */
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node node, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
+    DataFlowCall call, Node out, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
       fwdFlow(ret, innercc, argAp, ap, config) and
-      flowOutOfCall(call, ret, node, allowsFieldFlow, config) and
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
       checkCallContextReturn(innercc, inner, call) and
       ccOut = getCallContextReturn(inner, call)
@@ -1609,9 +1620,9 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate fwdFlowOutFromArg(
-    DataFlowCall call, Node node, Ap argAp, Ap ap, Configuration config
+    DataFlowCall call, Node out, Ap argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, node, any(CcCall ccc), _, apSome(argAp), ap, config)
+    fwdFlowOut(call, out, any(CcCall ccc), _, apSome(argAp), ap, config)
   }
 
   /**
@@ -2096,7 +2107,7 @@ private module Stage4 {
 
   class CcNoCall = CallContextNoCall;
 
-  Cc ccAny() { result instanceof CallContextAny }
+  Cc ccNone() { result instanceof CallContextAny }
 
   private class LocalCc = LocalCallContext;
 
@@ -2108,7 +2119,7 @@ private module Stage4 {
 
   bindingset[call, c]
   private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
-    if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccAny()
+    if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
   }
 
   bindingset[innercc, inner, call]
@@ -2153,6 +2164,7 @@ private module Stage4 {
   bindingset[node, ap]
   private predicate filter(Node node, Ap ap) { any() }
 
+  // Type checking is not necessary here as it has already been done in stage 3.
   bindingset[ap, contentType]
   private predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
 
@@ -2180,7 +2192,7 @@ private module Stage4 {
   private predicate fwdFlow0(Node node, Cc cc, ApOption argAp, Ap ap, Configuration config) {
     flowCand(node, _, config) and
     config.isSource(node) and
-    cc = ccAny() and
+    cc = ccNone() and
     argAp = apNone() and
     ap = getApNil(node)
     or
@@ -2199,7 +2211,7 @@ private module Stage4 {
       fwdFlow(mid, _, _, ap, config) and
       flowCand(node, _, unbind(config)) and
       jumpStep(mid, node, config) and
-      cc = ccAny() and
+      cc = ccNone() and
       argAp = apNone()
     )
     or
@@ -2207,7 +2219,7 @@ private module Stage4 {
       fwdFlow(mid, _, _, nil, config) and
       flowCand(node, _, unbind(config)) and
       additionalJumpStep(mid, node, config) and
-      cc = ccAny() and
+      cc = ccNone() and
       argAp = apNone() and
       ap = getApNil(node)
     )
@@ -2291,13 +2303,19 @@ private module Stage4 {
     )
   }
 
+  /**
+   * Holds if flow may exit from `call` at `out` with access path `ap`. The
+   * inner call context is `innercc`, but `ccOut` is just the call context
+   * based on the return step. In the case of through-flow `ccOut` is discarded
+   * and replaced by the outer call context as tracked by `fwdFlowIsEntered`.
+   */
   pragma[nomagic]
   private predicate fwdFlowOut(
-    DataFlowCall call, Node node, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
+    DataFlowCall call, Node out, Cc innercc, Cc ccOut, ApOption argAp, Ap ap, Configuration config
   ) {
     exists(ReturnNodeExt ret, boolean allowsFieldFlow, DataFlowCallable inner |
       fwdFlow(ret, innercc, argAp, ap, config) and
-      flowOutOfCall(call, ret, node, allowsFieldFlow, config) and
+      flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
       checkCallContextReturn(innercc, inner, call) and
       ccOut = getCallContextReturn(inner, call)
@@ -2308,9 +2326,9 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate fwdFlowOutFromArg(
-    DataFlowCall call, Node node, Ap argAp, Ap ap, Configuration config
+    DataFlowCall call, Node out, Ap argAp, Ap ap, Configuration config
   ) {
-    fwdFlowOut(call, node, any(CcCall ccc), _, apSome(argAp), ap, config)
+    fwdFlowOut(call, out, any(CcCall ccc), _, apSome(argAp), ap, config)
   }
 
   /**
