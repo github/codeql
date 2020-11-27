@@ -819,7 +819,7 @@ class DataFlowType extends TDataFlowType {
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
-  CastNode() { none() }
+  CastNode() { readStep(_, _, this) or storeStep(_, _, this) }
 }
 
 /**
