@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -104,7 +105,12 @@ namespace Semmle.Extraction.CIL.Entities
 
         public Type GetTypeFromSerializedName(string name) => throw new NotImplementedException();
 
-        public PrimitiveTypeCode GetUnderlyingEnumType(Type type) => throw new NotImplementedException();
+        public PrimitiveTypeCode GetUnderlyingEnumType(Type type) => type switch
+        {
+            TypeReferenceType trt => throw new NotImplementedException(),
+            TypeDefinitionType tdt => tdt.UnderlyingEnumType ?? throw new NotImplementedException(),
+            _ => throw new NotImplementedException()
+        };
 
         public bool IsSystemType(Type type) => type is PrimitiveType; // ??
     }

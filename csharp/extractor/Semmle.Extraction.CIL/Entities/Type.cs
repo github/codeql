@@ -521,6 +521,13 @@ namespace Semmle.Extraction.CIL.Entities
                     var @base = (Type)Cx.CreateGeneric(this, td.BaseType);
                     yield return @base;
                     yield return Tuples.cil_base_class(this, @base);
+
+                    if (IsEnum(td.BaseType) &&
+                        UnderlyingEnumType.HasValue)
+                    {
+                        var underlying = Cx.Create(UnderlyingEnumType.Value);
+                        // todo: store CIL underlying enum type
+                    }
                 }
 
                 foreach (var @interface in td.GetInterfaceImplementations().Select(i => Cx.MdReader.GetInterfaceImplementation(i)))
@@ -532,6 +539,78 @@ namespace Semmle.Extraction.CIL.Entities
 
                 // Only type definitions have locations.
                 yield return Tuples.cil_type_location(this, Cx.Assembly);
+            }
+        }
+
+        private bool IsEnum(EntityHandle baseType)
+        {
+            return baseType.Kind switch
+            {
+                HandleKind.TypeReference => IsEnum((TypeReferenceHandle)baseType),
+                HandleKind.TypeDefinition => IsEnum((TypeDefinitionHandle)baseType),
+                _ => false,
+            };
+        }
+
+        private bool IsEnum(TypeReferenceHandle baseType)
+        {
+            var baseTypeReference = Cx.MdReader.GetTypeReference(baseType);
+
+            return Cx.MdReader.StringComparer.Equals(baseTypeReference.Name, "Enum") &&
+                !baseTypeReference.Namespace.IsNil &&
+                Cx.MdReader.StringComparer.Equals(baseTypeReference.Namespace, "System");
+        }
+
+        private bool IsEnum(TypeDefinitionHandle baseType)
+        {
+            var baseTypeDefinition = Cx.MdReader.GetTypeDefinition(baseType);
+
+            return Cx.MdReader.StringComparer.Equals(baseTypeDefinition.Name, "Enum") &&
+                !baseTypeDefinition.Namespace.IsNil &&
+                Cx.MdReader.StringComparer.Equals(baseTypeDefinition.Namespace, "System");
+        }
+
+        private bool isUnderlyingEnumTypeLoaded = false;
+        private PrimitiveTypeCode? underlyingEnumType;
+        private object underlyingEnumTypeLock = new object();
+
+        internal PrimitiveTypeCode? UnderlyingEnumType
+        {
+            get
+            {
+                if (isUnderlyingEnumTypeLoaded)
+                {
+                    return underlyingEnumType;
+                }
+
+                lock (underlyingEnumTypeLock)
+                {
+                    if (isUnderlyingEnumTypeLoaded)
+                    {
+                        return underlyingEnumType;
+                    }
+
+                    foreach (var handle in td.GetFields())
+                    {
+                        var field = Cx.MdReader.GetFieldDefinition(handle);
+                        if ((field.Attributes & FieldAttributes.Static) != 0)
+                        {
+                            continue;
+                        }
+
+                        var blob = Cx.MdReader.GetBlobReader(field.Signature);
+                        if (blob.ReadSignatureHeader().Kind != SignatureKind.Field)
+                        {
+                            break;
+                        }
+
+                        underlyingEnumType = (PrimitiveTypeCode)blob.ReadByte();
+                        break;
+                    }
+
+                    isUnderlyingEnumTypeLoaded = true;
+                    return underlyingEnumType;
+                }
             }
         }
 

@@ -66,6 +66,8 @@ namespace Semmle.Extraction.CSharp
         /// <returns><see cref="ExitCode"/></returns>
         public static ExitCode Run(string[] args)
         {
+            System.Threading.Thread.Sleep(20000);
+
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var commandLineArguments = Options.CreateWithEnvironment(args);
