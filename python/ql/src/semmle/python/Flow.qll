@@ -738,6 +738,7 @@ class ListNode extends SequenceNode {
   }
 }
 
+/** A control flow node corresponding to a set expression, such as `{ 1, 3, 5, 7, 9 }` */
 class SetNode extends ControlFlowNode {
   SetNode() { toAst(this) instanceof Set }
 
