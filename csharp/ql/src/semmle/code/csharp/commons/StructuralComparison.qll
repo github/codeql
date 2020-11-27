@@ -203,7 +203,7 @@ module Internal {
 
     private predicate sameByValue(Expr x, Expr y) { sameByValueAux(x, y, y.getValue()) }
 
-    pragma[noinline]
+    pragma[nomagic]
     private predicate sameByValueAux(Expr x, Expr y, string value) {
       candidateInternal(x, y) and
       value = x.getValue()
