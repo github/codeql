@@ -66,11 +66,17 @@ module HTTP {
 
       /** Holds if this header write defines the header `header`. */
       predicate definesHeader(string header, string value) {
-        header = this.getName().getStringValue().toLowerCase() and
+        header = this.getHeaderName() and
         value = this.getValue().getStringValue()
       }
 
-      /** Gets the node representing the name of the header defined by this write. */
+      /**
+       * Gets the node representing the name of the header defined by this write.
+       *
+       * Note that a `HeaderWrite` targeting a constant header (e.g. a routine that always
+       * sets the `Content-Type` header) may not have such a node, so callers should use
+       * `getHeaderName` in preference to this method).
+       */
       abstract DataFlow::Node getName();
 
       /** Gets the node representing the value of the header defined by this write. */
@@ -98,7 +104,13 @@ module HTTP {
     /** Holds if this header write defines the header `header`. */
     predicate definesHeader(string header, string value) { self.definesHeader(header, value) }
 
-    /** Gets the node representing the name of the header defined by this write. */
+    /**
+     * Gets the node representing the name of the header defined by this write.
+     *
+     * Note that a `HeaderWrite` targeting a constant header (e.g. a routine that always
+     * sets the `Content-Type` header) may not have such a node, so callers should use
+     * `getHeaderName` in preference to this method).
+     */
     DataFlow::Node getName() { result = self.getName() }
 
     /** Gets the node representing the value of the header defined by this write. */
@@ -173,7 +185,7 @@ module HTTP {
       /** Gets a dataflow node for a content-type associated with this body. */
       DataFlow::Node getAContentTypeNode() {
         exists(HTTP::HeaderWrite hw | hw = getResponseWriter().getAHeaderWrite() |
-          hw.getName().getStringValue().toLowerCase() = "content-type" and
+          hw.getHeaderName() = "content-type" and
           result = hw.getValue()
         )
       }
