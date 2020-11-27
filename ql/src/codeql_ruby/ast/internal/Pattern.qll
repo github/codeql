@@ -25,7 +25,8 @@ private predicate patternNode(Generated::AstNode n, boolean parameter) {
   parameter = false and
   n in [
       any(Generated::Assignment assign).getLeft(),
-      any(Generated::OperatorAssignment assign).getLeft()
+      any(Generated::OperatorAssignment assign).getLeft(),
+      any(Generated::ExceptionVariable a).getChild(), any(Generated::For f).getPattern(_)
     ]
 }
 
