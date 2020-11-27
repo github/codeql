@@ -1,4 +1,4 @@
-import codeql_ruby.Variables
+import codeql_ruby.Variable
 
 query predicate variableAccess(VariableAccess access, Variable variable, VariableScope scope) {
   variable = access.getVariable() and
