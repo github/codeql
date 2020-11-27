@@ -81,3 +81,32 @@ Importing new files can modify the behaviour of the standard library, by introdu
 Therefore, unless you have good reason not to, you should ensure that all subclasses are included when the base-class is (to the extent possible).
 
 One example where this _does not_ apply: `DataFlow::Configuration` and its variants are meant to be subclassed, but we generally do not want to import all configurations into the same scope at once.
+
+
+## Abstract classes as open or closed unions
+
+A class declared as `abstract` in QL represents a union of its direct subtypes (restricted by the intersections of its supertypes and subject to its characteristic predicate). Depending on context, we may want this union to be considered "open" or "closed".
+
+An open union is generally used for extensibility. For example, the abstract classes suggested by the `::Range` design pattern are explicitly intended as extension hooks. As another example, the `DataFlow::Configuration` design pattern provides an abstract class that is intended to be subclassed as a configuration mechanism.
+
+A closed union is a class for which we do not expect users of the library to add more values. Historically, we have occasionally modelled this as `abstract` classes in QL, but these days that would be considered an anti-pattern: Abstract classes that are intended to be closed behave in surprising ways when subclassed by library users, and importing libraries that include derived classes can invalidate compilation caches and subvert the meaning of the program.
+
+As an example, suppose we want to define a `BinaryExpr` class, which has subtypes of `PlusExpr`, `MinusExpr`, and so on. Morally, this represents a closed union: We do not anticipate new kinds of `BinaryExpr` being added. Therefore, it would be undesirable to model it as an abstract class:
+
+```ql
+/** ANTI-PATTERN */
+abstract class BinaryExpr extends Expr {
+  Expr getLhs() { result = this.getChild(0) }
+  Expr getRight() { result = this.getChild(1) }
+}
+
+class PlusExpr extends BinaryExpr {}
+class MinusExpr extends BinaryExpr {}
+...
+```
+
+Instead, the `BinaryExpr` class should be non-`abstract`, and we have the following options for specifying its extent:
+
+- Define a dbscheme type `@binary_expr = @plus_expr | @minus_expr | ...` and add it as an additional super-class for `BinaryExpr`.
+- Define a type alias `class RawBinaryExpr = @plus_expr | @minus_expr | ...` and add it as an additional super-class for `BinaryExpr`.
+- Add a characteristic predicate of `BinaryExpr() { this instanceof PlusExpr or this instanceof MinusExpr or ... }`.
