@@ -1,6 +1,6 @@
 import codeql.Locations
-import codeql_ruby.Method
-import codeql_ruby.Parameter
+import codeql_ruby.ast.Method
+import codeql_ruby.ast.Parameter
 private import codeql_ruby.Generated
 
 /**

@@ -1,4 +1,4 @@
-import codeql_ruby.Variable
+import codeql_ruby.ast.Variable
 
 query predicate variable(Variable v) { any() }
 
