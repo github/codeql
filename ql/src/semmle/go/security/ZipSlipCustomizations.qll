@@ -32,11 +32,41 @@ module ZipSlip {
    */
   abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
-  /** A file name from a zip or tar entry, as a source for zip slip. */
-  class FileNameSource extends Source, DataFlow::FieldReadNode {
-    FileNameSource() {
-      getField().hasQualifiedName("archive/zip", "File", "Name") or
-      getField().hasQualifiedName("archive/tar", "Header", "Name")
+  /**
+   * A tar file header, as a source for zip slip.
+   */
+  class TarHeaderSource extends Source, DataFlow::Node {
+    TarHeaderSource() {
+      this =
+        any(DataFlow::MethodCallNode mcn |
+          mcn.getTarget().hasQualifiedName("archive/tar", "Reader", "Next")
+        ).getResult(0)
+    }
+  }
+
+  /**
+   * A zip file header, as a source for zip slip.
+   */
+  class ZipHeaderSource extends Source {
+    ZipHeaderSource() {
+      exists(DataFlow::FieldReadNode frn, DataFlow::Node elbase |
+        frn.getField().hasQualifiedName("archive/zip", "Reader", "File") and
+        DataFlow::localFlow(frn, elbase)
+      |
+        DataFlow::readsAnElement(this, elbase)
+      )
+    }
+  }
+
+  /**
+   * Excludes zipped file data from consideration for zip slip.
+   */
+  class ZipFileOpen extends Sanitizer {
+    ZipFileOpen() {
+      this =
+        any(DataFlow::MethodCallNode mcn |
+          mcn.getTarget().hasQualifiedName("archive/zip", "File", "Open")
+        ).getResult(0)
     }
   }
 
@@ -56,12 +86,31 @@ module ZipSlip {
     TaintedPathSanitizerAsSanitizer() { this instanceof TaintedPath::Sanitizer }
   }
 
-  /** A path-traversal sanitizer guard, considered as a sanitizer guard for zip slip. */
-  class TaintedPathSanitizerGuardAsSanitizerGuard extends SanitizerGuard {
-    TaintedPath::SanitizerGuard self;
+  /**
+   * A sanitizer guard for zip-slip vulnerabilities which backtracks to sanitize expressions
+   * that locally flow into a guarded expression. For example, an ordinary sanitizer guard
+   * might say that in `if x { z := y }` the reference to `y` is sanitized because of the guard
+   * `x`; these guards say that if the function begins
+   * `f(p string) { w := filepath.Join(p); y := filepath.Dir(w) }` then both `p` and `w` are also
+   * sanitized as expressions that contributed taint to `y`.
+   *
+   * This is useful because many sanitizers don't directly check the filename included in an archive
+   * header, but some derived expression. It also propagates back from a field reference to its parent
+   * (e.g. `hdr.Filename` to `hdr`), increasing the chances that a future reference to `hdr.Filename`
+   * will also be regarded as clean (though SSA catches some cases of this).
+   */
+  class TaintedPathSanitizerGuardAsBacktrackingSanitizerGuard extends SanitizerGuard {
+    TaintedPath::SanitizerGuard taintedPathGuard;
 
-    TaintedPathSanitizerGuardAsSanitizerGuard() { self = this }
+    TaintedPathSanitizerGuardAsBacktrackingSanitizerGuard() { this = taintedPathGuard }
 
-    override predicate checks(Expr e, boolean branch) { self.checks(e, branch) }
+    override predicate checks(Expr e, boolean branch) {
+      exists(DataFlow::Node source, DataFlow::Node checked |
+        taintedPathGuard.checks(checked.asExpr(), branch) and
+        TaintTracking::localTaint(source, checked)
+      |
+        e = source.asExpr()
+      )
+    }
   }
 }

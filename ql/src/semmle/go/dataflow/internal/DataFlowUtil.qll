@@ -921,6 +921,35 @@ class TypeCastNode extends ExprNode {
 }
 
 /**
+ * A data-flow node representing an element of an array, map, slice or string defined from `range` statement.
+ *
+ * Example: in `_, x := range y { ... }`, this represents the `Node` that extracts the element from the
+ * range statement, which will flow to `x`.
+ */
+class RangeElementNode extends Node {
+  DataFlow::Node base;
+  IR::ExtractTupleElementInstruction extract;
+
+  RangeElementNode() {
+    this.asInstruction() = extract and
+    extract.extractsElement(_, 1) and
+    extract.getBase().(IR::GetNextEntryInstruction).getDomain() = base.asInstruction()
+  }
+
+  /** Gets the data-flow node representing the base from which the element is read. */
+  DataFlow::Node getBase() { result = base }
+}
+
+/**
+ * Holds if `node` reads an element from `base`, either via an element-read (`base[y]`) expression
+ * or via a range statement `_, node := range base`.
+ */
+predicate readsAnElement(DataFlow::Node node, DataFlow::Node base) {
+  node.(ElementReadNode).readsElement(base, _) or
+  node.(RangeElementNode).getBase() = base
+}
+
+/**
  * A model of a function specifying that the function copies input values from
  * a parameter or qualifier to a result.
  *
