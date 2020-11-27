@@ -9,7 +9,7 @@ void sink(int);
 // this result and be forced to write a better test if the function signature
 // detection should improve.
 void calleeAcrossLinkTargets(long x) {
-  sink(x);
+  sink(x); // $ ast,ir
 }
 
 void calleeAcrossLinkTargets(int x); // no body
