@@ -19,24 +19,15 @@ class StringConstCompare extends DataFlow::BarrierGuard, CompareNode {
       this.operands(checked_node, op, str_const.getAFlowNode())
     )
     or
-    exists(ControlFlowNode str_const_iterable, Cmpop op |
+    exists(IterableNode str_const_iterable, Cmpop op |
       op = any(In in_) and safe_branch = true
       or
       op = any(NotIn ni) and safe_branch = false
     |
-      this.operands(checked_node, op, str_const_iterable) and
-      (
-        str_const_iterable instanceof SequenceNode
-        or
-        str_const_iterable instanceof SetNode
-      ) and
-      forall(ControlFlowNode elem |
-        elem = str_const_iterable.(SequenceNode).getAnElement()
-        or
-        elem = str_const_iterable.(SetNode).getAnElement()
-      |
+      forall(ControlFlowNode elem | elem = str_const_iterable.getAnElement() |
         elem.getNode() instanceof StrConst
-      )
+      ) and
+      this.operands(checked_node, op, str_const_iterable)
     )
   }
 
