@@ -64,13 +64,7 @@ class ExternalAPIDataNode extends DataFlow::Node {
       or
       // Receiver to a call to a method which returns non trivial value
       this = call.getReceiver() and
-      i = -1 and
-      (
-        call.getTarget().getNumResult() >= 2
-        or
-        call.getTarget().getNumResult() = 1 and
-        not call.getTarget().getResultType(0) instanceof BoolType
-      )
+      i = -1
     ) and
     // Not defined in the code that is being analysed
     not exists(call.getACallee().getBody()) and
