@@ -74,8 +74,10 @@ You can, of course, do the same without the `::Range` pattern, but it's a little
 If you only had an `abstract class EscapeFunction { ... }`, then `JsEscapeFunction` would need to be implemented in a slightly tricky way to prevent it from extending `EscapeFunction` (instead of refining it). You would have to give it a charpred `this instanceof EscapeFunction`, which looks useless but isn't. And additionally, you'd have to provide trivial `none()` overrides of all the abstract predicates defined in `EscapeFunction`. This is all pretty awkward, and we can avoid it by distinguishing between `EscapeFunction` and `EscapeFunction::Range`.
 
 
-## Importing all subclasses of abstract base class
+## Importing all subclasses of a class
 
-When providing an abstract class, you should ensure that all subclasses are included when the abstract class is (unless you have good reason not to). Otherwise you risk having different meanings of the abstract class depending on what you happen to import.
+Importing new files can modify the behaviour of the standard library, by introducing new subtypes of `abstract` classes, by introducing new multiple inheritance relationships, or by overriding predicates. This can change query results and force evaluator cache misses.
 
-One example where this _does not_ apply: `DataFlow::Configuration` and its variants are abstract, but we generally do not want to import all configurations into the same scope at once.
+Therefore, unless you have good reason not to, you should ensure that all subclasses are included when the base-class is (to the extent possible).
+
+One example where this _does not_ apply: `DataFlow::Configuration` and its variants are meant to be subclassed, but we generally do not want to import all configurations into the same scope at once.
