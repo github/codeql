@@ -10,7 +10,7 @@ external APIs that should be modeled as either taint steps, or sinks for specifi
 
 <p>An external API is defined as a call to a function that is not defined in the source code and is not
 modeled as a taint step in the default taint library. Calls made in test files are excluded.
-External APIs may be from the Go standard library, third-party dependencies or from internal dependencies.
+External APIs may be from the Go standard library, third-party dependencies, or from internal dependencies.
 The query reports uses of untrusted data in either the receiver or as one of the arguments of external APIs.</p>
 
 </overview>
@@ -38,7 +38,7 @@ class to exclude known safe external APIs from future analysis.</p>
 
 <sample src="ExternalAPISinkExample.go" />
 
-<p>This is an XSS sink. The XSS query should therefore be reviewed to confirm that this sink is appropriately modeled, 
+<p>This is an XSS sink. The "Reflected cross-site scripting" query (<code>go/reflected-xss</code>) should therefore be reviewed to confirm that this sink is appropriately modeled, 
 and if it is, to confirm that the query reports this particular result, or that the result is a false positive due to 
 some existing sanitization.</p>
 
@@ -51,8 +51,9 @@ modeled as a taint step in the taint tracking library. The next step would be to
 re-run the query to determine what additional results might be found. In this example, an SQL injection vulnerability
 would be reported.</p>
 
-<p>Note that both examples are correctly handled by the standard taint tracking library, the reflected XSS query and SQL
-injection query.</p>
+<p>Note that both examples are correctly handled by the standard taint tracking library,
+the "Reflected cross-site scripting" query (<code>go/reflected-xss</code>),
+and the "Database query built from user-controlled sources" query (<code>go/sql-injection</code>).</p>
 </example>
 <references>
 

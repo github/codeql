@@ -10,10 +10,10 @@ may be relevant for security analysis of this application.</p>
 
 <p>An external API is defined as a call to a function that is not defined in the source code and is not
 modeled as a taint step in the default taint library. Calls made in test files are excluded.
-External APIs may be from the  Go standard library, third party dependencies or from internal dependencies.
+External APIs may be from the Go standard library, third party dependencies, or from internal dependencies.
 The query will report the fully-qualified method name, along with either <code>[param x]</code>,
-where <code>x</code> indicates the position of the parameter receiving the untrusted data or <code>[receiver]</code>
-indicating the untrusted data is used as the receiver of the method call.</p>
+where <code>x</code> indicates the position of the parameter receiving the untrusted data, or <code>[receiver]</code>
+indicating that the untrusted data is used as the receiver of the method call.</p>
 
 </overview>
 <recommendation>
@@ -36,16 +36,16 @@ class to exclude known safe external APIs from future analysis.</p>
 <sample src="ExternalAPISinkExample.go" />
 
 <p>If the query were to return the API <code>fmt.Fprintf [param 2]</code> then we should first consider
-whether this a security relevant sink. In this case, this is writing to a HTTP response, so we should
-consider whether this is an XSS sink. If it is, we should confirm that it is handled by the XSS query.</p>
+whether this a security relevant sink. In this case, this is writing to an HTTP response, so we should
+consider whether this is an XSS sink. If it is, we should confirm that it is handled by the "Reflected cross-site scripting" query (<code>go/reflected-xss</code>).</p>
 
 <sample src="ExternalAPITaintStepExample.go" />
 
 <p>If the query were to return the API <code>fmt.Sprintf [param 1]</code>, then this should be
-reviewed as a possible taint step, because tainted data would flow from the 1st argument to the return value
+reviewed as a possible taint step, because tainted data would flow from the first argument to the return value
 of the call.</p>
 
-<p>Note that both examples are correctly handled by the standard taint tracking library and XSS query.</p>
+<p>Note that both examples are correctly handled by the standard taint tracking library and the "Reflected cross-site scripting" query (<code>go/reflected-xss</code>).</p>
 </example>
 <references>
 
