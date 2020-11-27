@@ -304,6 +304,97 @@ private module Trees {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
+  /**
+   * Control flow of a for-in loop
+   *
+   * For example, this program fragment:
+   *
+   * ```rb
+   * for arg in args do
+   *  puts arg
+   * end
+   * puts "done";
+   * ```
+   *
+   * has the following control flow graph:
+   *
+   * ```
+   *           args
+   *            |
+   *          for------<-----
+   *           / \           \
+   *          /   \          |
+   *         /     \         |
+   *        /       \        |
+   *     empty    non-empty  |
+   *       |          \      |
+   *  puts "done"      \     |
+   *                  arg    |
+   *                    |    |
+   *                puts arg |
+   *                     \___/
+   * ```
+   */
+  private class ForTree extends ControlFlowTree, For {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getPattern(_) or child = this.getValue()
+    }
+
+    final override predicate first(AstNode node) { node = this.getValue() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last = this and
+      c.(EmptinessCompletion).isEmpty()
+      or
+      last(this.getBody(), last, c) and
+      not c.continuesLoop() and
+      not c instanceof BreakCompletion and
+      not c instanceof RedoCompletion
+      or
+      c =
+        any(NestedCompletion nc |
+          last(this.getBody(), last, nc.getInnerCompletion().(BreakCompletion)) and
+          nc.getOuterCompletion() instanceof SimpleCompletion
+        )
+    }
+
+    /**
+     * for pattern in value do body end
+     * ```
+     * value +-> for +--[non empty]--> pattern -> body -> for
+     *               |--[empty]--> exit
+     * ```
+     */
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      last(this.getValue(), pred, c) and
+      succ = this and
+      c instanceof SimpleCompletion
+      or
+      pred = this and
+      first(this.getPattern(0), succ) and
+      c instanceof EmptinessCompletion and
+      not c.(EmptinessCompletion).isEmpty()
+      or
+      exists(int i, ControlFlowTree next |
+        last(this.getPattern(i), pred, c) and
+        first(next, succ) and
+        c instanceof SimpleCompletion
+      |
+        next = this.getPattern(i + 1)
+        or
+        not exists(this.getPattern(i + 1)) and next = this.getBody()
+      )
+      or
+      last(this.getBody(), pred, c) and
+      succ = this and
+      c.continuesLoop()
+      or
+      last(this.getBody(), pred, any(RedoCompletion rc)) and
+      first(this.getBody(), succ) and
+      c instanceof SimpleCompletion
+    }
+  }
+
   private class IdentifierTree extends LeafTree, Identifier { }
 
   private class IfElsifTree extends PreOrderTree, IfElsifAstNode {
@@ -331,6 +422,12 @@ private module Trees {
         c instanceof FalseCompletion and first(this.getAlternativeNode(), succ)
       )
     }
+  }
+
+  private class InTree extends StandardPreOrderTree, In {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+
+    override predicate isHidden() { any() }
   }
 
   private class IntegerTree extends LeafTree, Integer { }
@@ -535,6 +632,7 @@ private module Cached {
   newtype TSuccessorType =
     TSuccessorSuccessor() or
     TBooleanSuccessor(boolean b) { b = true or b = false } or
+    TEmptinessSuccessor(boolean isEmpty) { isEmpty = true or isEmpty = false } or
     TReturnSuccessor() or
     TBreakSuccessor() or
     TNextSuccessor() or

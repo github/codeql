@@ -180,6 +180,15 @@ module SuccessorTypes {
   }
 
   /**
+   * A conditional control flow successor. Either a Boolean successor (`BooleanSuccessor`),
+   * or an emptiness successor (`EmptinessSuccessor`).
+   */
+  abstract class ConditionalSuccessor extends SuccessorType {
+    /** Gets the Boolean value of this successor. */
+    abstract boolean getValue();
+  }
+
+  /**
    * A Boolean control flow successor.
    *
    * For example, in
@@ -194,11 +203,51 @@ module SuccessorTypes {
    *
    * `x >= 0` has both a `true` successor and a `false` successor.
    */
-  class BooleanSuccessor extends SuccessorType, TBooleanSuccessor {
+  class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
     /** Gets the Boolean value. */
-    final boolean getValue() { this = TBooleanSuccessor(result) }
+    final override boolean getValue() { this = TBooleanSuccessor(result) }
 
     final override string toString() { result = getValue().toString() }
+  }
+
+  /**
+   * An emptiness control flow successor.
+   *
+   * For example, this program fragment:
+   *
+   * ```rb
+   * for arg in args do
+   *  puts arg
+   * end
+   * puts "done";
+   * ```
+   *
+   * has a control flow graph containing emptiness successors:
+   *
+   * ```
+   *           args
+   *            |
+   *          for------<-----
+   *           / \           \
+   *          /   \          |
+   *         /     \         |
+   *        /       \        |
+   *     empty    non-empty  |
+   *       |          \      |
+   *  puts "done"      \     |
+   *                  arg    |
+   *                    |    |
+   *                puts arg |
+   *                     \___/
+   * ```
+   */
+  class EmptinessSuccessor extends ConditionalSuccessor, TEmptinessSuccessor {
+    /** Holds if this is an empty successor. */
+    predicate isEmpty() { this = TEmptinessSuccessor(true) }
+
+    override boolean getValue() { this = TEmptinessSuccessor(result) }
+
+    override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
   }
 
   /**
