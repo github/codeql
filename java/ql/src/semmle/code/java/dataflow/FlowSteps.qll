@@ -167,6 +167,8 @@ private module Buffers {
       // public abstract Object array() [in Buffer]
       this.hasName("array")
     }
+
+    override predicate returnsTaintFrom(int arg) { arg = -1 }
   }
 
   class BufferChainMethod extends TaintPreservingCallable {
