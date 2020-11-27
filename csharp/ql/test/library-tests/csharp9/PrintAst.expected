@@ -335,6 +335,63 @@ ParenthesizedPattern.cs:
 #   27|               0: [TypeAccessPatternExpr] access to type String
 #   27|                 0: [TypeMention] string
 #   27|               2: [IntLiteral] 5
+RelationalPattern.cs:
+#    3| [Class] RelationalPattern
+#    5|   5: [Method] M1
+#    5|     -1: [TypeMention] bool
+#-----|     2: (Parameters)
+#    5|       0: [Parameter] c
+#    5|         -1: [TypeMention] char
+#    6|     4: [IsExpr] ... is ...
+#    6|       0: [ParameterAccess] access to parameter c
+#    6|       1: [GEPattern] >= ...
+#    6|         0: [CharLiteral] a
+#    7|   6: [Method] M2
+#    7|     -1: [TypeMention] bool
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] c
+#    7|         -1: [TypeMention] char
+#    8|     4: [IsExpr] ... is ...
+#    8|       0: [ParameterAccess] access to parameter c
+#    8|       1: [GTPattern] > ...
+#    8|         0: [CharLiteral] a
+#    9|   7: [Method] M3
+#    9|     -1: [TypeMention] bool
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] c
+#    9|         -1: [TypeMention] char
+#   10|     4: [IsExpr] ... is ...
+#   10|       0: [ParameterAccess] access to parameter c
+#   10|       1: [LEPattern] <= ...
+#   10|         0: [CharLiteral] a
+#   11|   8: [Method] M4
+#   11|     -1: [TypeMention] bool
+#-----|     2: (Parameters)
+#   11|       0: [Parameter] c
+#   11|         -1: [TypeMention] char
+#   12|     4: [IsExpr] ... is ...
+#   12|       0: [ParameterAccess] access to parameter c
+#   12|       1: [LTPattern] < ...
+#   12|         0: [CharLiteral] a
+#   14|   9: [Method] M5
+#   14|     -1: [TypeMention] string
+#-----|     2: (Parameters)
+#   14|       0: [Parameter] i
+#   14|         -1: [TypeMention] int
+#   15|     4: [BlockStmt] {...}
+#   16|       0: [ReturnStmt] return ...;
+#   16|         0: [SwitchExpr] ... switch { ... }
+#   16|           -1: [ParameterAccess] access to parameter i
+#   18|           0: [SwitchCaseExpr] ... => ...
+#   18|             0: [ConstantPatternExpr,IntLiteral] 1
+#   18|             2: [StringLiteral] "1"
+#   19|           1: [SwitchCaseExpr] ... => ...
+#   19|             0: [GTPattern] > ...
+#   19|               0: [IntLiteral] 1
+#   19|             2: [StringLiteral] ">1"
+#   20|           2: [SwitchCaseExpr] ... => ...
+#   20|             0: [DiscardPatternExpr] _
+#   20|             2: [StringLiteral] "other"
 TargetType.cs:
 #    5| [Class] TargetType
 #    7|   5: [Method] M2
