@@ -64,7 +64,7 @@ would suggest that this external API is not currently modeled as a taint step in
 taint tracking library. The next step would be to model this as a taint step, then
 re-run the query to determine what additional results might be found. In this example,
 the result of the Base64 decoding is pickled, which can result in remote code execution due
-to unsafe deserialization.
+to unsafe deserialization.</p>
 
 <p>Note that both examples are correctly handled by the standard taint tracking library and Unsafe Deserialization query.</p>
 </example>
