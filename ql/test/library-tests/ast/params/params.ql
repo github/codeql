@@ -2,12 +2,12 @@ import ruby
 
 ////////////////////////////////////////////////////////////////////////////////
 // Query predicates for various types of parameter
-query predicate idParams(IdentifierParameter ip, string name) { name = ip.getName() }
+query predicate idParams(NamedParameter np, string name) { name = np.getName() }
 
 query predicate blockParams(BlockParameter bp, string name) { name = bp.getName() }
 
-query predicate patternParams(PatternParameter pp, Parameter child, int childIndex) {
-  pp.getElement(childIndex) = child
+query predicate patternParams(TuplePatternParameter tpp, Pattern child, int childIndex) {
+  tpp.getElement(childIndex) = child
 }
 
 query predicate splatParams(SplatParameter sp, string name) { name = sp.getName() }

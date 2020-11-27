@@ -1,105 +1,123 @@
 import codeql_ruby.AST
 private import codeql_ruby.Generated
+private import Variable
+private import Pattern
+private import internal.Variable
+
+/** A parameter. */
+class Parameter extends AstNode {
+  private int pos;
+
+  Parameter() {
+    this = any(Generated::BlockParameters bp).getChild(pos)
+    or
+    this = any(Generated::MethodParameters mp).getChild(pos)
+    or
+    this = any(Generated::LambdaParameters lp).getChild(pos)
+  }
+
+  /** Gets the callable that this parameter belongs to. */
+  Callable getCallable() { result.getAParameter() = this }
+
+  /** Gets the zero-based position of this parameter. */
+  int getPosition() { result = pos }
+}
 
 /**
- * A parameter to a block, lambda, or method.
+ * A parameter defined using a pattern.
+ *
+ * This includes both simple parameters and tuple parameters.
  */
-abstract class Parameter extends AstNode {
-  /**
-   * Gets the position of this parameter in the parent block, lambda, or
-   * method's parameter list.
-   */
-  int getPosition() {
-    exists(Method m | m.getParameter(result) = this) or
-    exists(Block b | b.getParameter(result) = this) or
-    exists(Lambda l | l.getParameter(result) = this)
-  }
+class PatternParameter extends Parameter, Pattern {
+  override string toString() { result = Pattern.super.toString() }
+
+  override Location getLocation() { result = Pattern.super.getLocation() }
+}
+
+/** A parameter defined using a tuple pattern. */
+class TuplePatternParameter extends PatternParameter, TuplePattern {
+  override string toString() { result = TuplePattern.super.toString() }
+
+  override string describeQlClass() { result = "TuplePatternParameter" }
+}
+
+/** A named parameter. */
+class NamedParameter extends Parameter {
+  NamedParameter() { not this instanceof TuplePattern }
+
+  /** Gets the name of this parameter. */
+  string getName() { none() }
+
+  /** Gets the variable introduced by this parameter. */
+  Variable getVariable() { none() }
+
+  /** Gets an access to this parameter. */
+  final VariableAccess getAnAccess() { result = this.getVariable().getAnAccess() }
+}
+
+/** A simple (normal) parameter. */
+class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern {
+  override string getName() { result = VariablePattern.super.getName() }
+
+  final override Variable getVariable() { result = TLocalVariable(_, _, this) }
+
+  override string describeQlClass() { result = "SimpleParameter" }
+
+  override string toString() { result = this.getName() }
 }
 
 /**
  * A parameter that is a block. For example, `&bar` in the following code:
- * ```
+ * ```rb
  * def foo(&bar)
  *   bar.call if block_given?
  * end
  * ```
  */
-class BlockParameter extends @block_parameter, Parameter {
-  Generated::BlockParameter generated;
+class BlockParameter extends @block_parameter, NamedParameter {
+  override Generated::BlockParameter generated;
 
-  BlockParameter() { generated = this }
+  final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
   override string describeQlClass() { result = "BlockParameter" }
 
   override string toString() { result = "&" + this.getName() }
 
-  /** Gets the name of the parameter. */
-  string getName() { result = generated.getName().getValue() }
-}
-
-/**
- * A parameter that is destructured. For example, the parameter `(a, b)` in the
- * following code:
- * ```
- * pairs.each do |(a, b)|
- *   puts a + b
- * end
- * ```
- */
-class PatternParameter extends @destructured_parameter, Parameter, Pattern {
-  Generated::DestructuredParameter generated;
-
-  PatternParameter() { generated = this }
-
-  override string describeQlClass() { result = "PatternParameter" }
-
-  override string toString() { result = "(..., ...)" }
-
-  /**
-   * Gets the number of parameters of this destructuring.
-   */
-  override int getNumberOfElements() { result = count(this.getElement(_)) }
-
-  /**
-   * Gets the nth parameter of this pattern.
-   */
-  override AstNode getElement(int n) { result = generated.getChild(n) }
+  override string getName() { result = generated.getName().getValue() }
 }
 
 /**
  * A hash-splat (or double-splat) parameter. For example, `**options` in the
  * following code:
- * ```
+ * ```rb
  * def foo(bar, **options)
  *   ...
  * end
  * ```
  */
-class HashSplatParameter extends @hash_splat_parameter, Parameter {
-  Generated::HashSplatParameter generated;
+class HashSplatParameter extends @hash_splat_parameter, NamedParameter {
+  override Generated::HashSplatParameter generated;
 
-  HashSplatParameter() { generated = this }
+  final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
   override string describeQlClass() { result = "HashSplatParameter" }
 
   override string toString() { result = "**" + this.getName() }
 
-  /** Gets the name of the parameter. */
-  string getName() { result = generated.getName().getValue() }
+  override string getName() { result = generated.getName().getValue() }
 }
 
 /**
  * TODO
  */
-class KeywordParameter extends @keyword_parameter, Parameter {
-  Generated::KeywordParameter generated;
+class KeywordParameter extends @keyword_parameter, NamedParameter {
+  override Generated::KeywordParameter generated;
 
-  KeywordParameter() { generated = this }
+  final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
   override string describeQlClass() { result = "KeywordParameter" }
 
-  /** Gets the name of the parameter. */
-  string getName() { result = generated.getName().getValue() }
+  override string getName() { result = generated.getName().getValue() }
 
   /**
    * Gets the default value, i.e. the value assigned to the parameter when one
@@ -115,23 +133,22 @@ class KeywordParameter extends @keyword_parameter, Parameter {
 /**
  * An optional parameter. For example, the parameter `name` in the following
  * code:
- * ```
+ * ```rb
  * def say_hello(name = 'Anon')
  *   puts "hello #{name}"
  * end
  * ```
  */
-class OptionalParameter extends @optional_parameter, Parameter {
-  Generated::OptionalParameter generated;
+class OptionalParameter extends @optional_parameter, NamedParameter {
+  override Generated::OptionalParameter generated;
 
-  OptionalParameter() { generated = this }
+  final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
   override string describeQlClass() { result = "OptionalParameter" }
 
   override string toString() { result = this.getName() }
 
-  /** Gets the name of the parameter. */
-  string getName() { result = generated.getName().getValue() }
+  override string getName() { result = generated.getName().getValue() }
 
   /**
    * Gets the default value, i.e. the value assigned to the parameter when one
@@ -143,40 +160,20 @@ class OptionalParameter extends @optional_parameter, Parameter {
 
 /**
  * A splat parameter. For example, `*values` in the following code:
- * ```
+ * ```rb
  * def foo(bar, *values)
  *   ...
  * end
  * ```
  */
-class SplatParameter extends @splat_parameter, Parameter {
-  Generated::SplatParameter generated;
+class SplatParameter extends @splat_parameter, NamedParameter {
+  override Generated::SplatParameter generated;
 
-  SplatParameter() { generated = this }
+  final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
   override string describeQlClass() { result = "SplatParameter" }
 
   override string toString() { result = this.getName() }
 
-  /** Gets the name of the parameter. */
-  string getName() { result = generated.getName().getValue() }
-}
-
-/**
- * An identifier that is a parameter in a block, lambda, or method.
- */
-class IdentifierParameter extends @token_identifier, Parameter {
-  IdentifierParameter() {
-    block_parameters_child(_, _, this) or
-    destructured_parameter_child(_, _, this) or
-    lambda_parameters_child(_, _, this) or
-    method_parameters_child(_, _, this)
-  }
-
-  override string describeQlClass() { result = "IdentifierParameter" }
-
-  override string toString() { result = this.getName() }
-
-  /** Gets the name of the parameter. */
-  string getName() { result = this.(Generated::Identifier).getValue() }
+  override string getName() { result = generated.getName().getValue() }
 }

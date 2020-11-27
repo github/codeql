@@ -1,6 +1,8 @@
 import codeql.Locations
 import codeql_ruby.ast.Method
 import codeql_ruby.ast.Parameter
+import codeql_ruby.ast.Pattern
+import codeql_ruby.ast.Variable
 private import codeql_ruby.Generated
 
 /**
@@ -26,29 +28,4 @@ class AstNode extends @ast_node {
 
   /** Gets the location if this node. */
   Location getLocation() { result = generated.getLocation() }
-
-  /**
-   * Gets the parent of this node in the abstract syntax tree, if it has one.
-   */
-  AstNode getParent() { result = generated.getParent() }
-
-  /**
-   * Gets the index (position) of this node in the parent node's list of
-   * children.
-   */
-  int getParentIndex() { result = generated.getParentIndex() }
-}
-
-/**
- * Models program elements for destructured patterns.
- */
-abstract class Pattern extends AstNode {
-  /** Gets the number of elements in this pattern. */
-  abstract int getNumberOfElements();
-
-  /** Gets the nth element in this pattern. */
-  abstract AstNode getElement(int n);
-
-  /** Gets an element in this pattern. */
-  AstNode getAnElement() { result = this.getElement(_) }
 }
