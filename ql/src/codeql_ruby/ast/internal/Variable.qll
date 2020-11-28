@@ -13,13 +13,25 @@ private VariableScope enclosingScope(Generated::AstNode node) {
   result.getScopeElement() = parent*(node.getParent())
 }
 
+private predicate parameterAssignment(CallableScope scope, string name, Generated::Identifier i) {
+  assignment(i, true) and
+  scope = enclosingScope(i) and
+  name = i.getValue()
+}
+
 /** Holds if `scope` defines `name` in its parameter declaration at `i`. */
 private predicate scopeDefinesParameterVariable(
   CallableScope scope, string name, Generated::Identifier i
 ) {
-  assignment(i, true) and
-  scope = enclosingScope(i) and
-  name = i.getValue()
+  parameterAssignment(scope, name, i) and
+  // In case of overlapping parameter names (e.g. `_`), only the first
+  // parameter will give rise to a variable
+  i =
+    min(Generated::Identifier other |
+      parameterAssignment(scope, name, other)
+    |
+      other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
+    )
   or
   exists(Parameter p |
     p = scope.getScopeElement().getAParameter() and
