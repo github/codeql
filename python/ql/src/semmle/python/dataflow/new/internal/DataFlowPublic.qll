@@ -118,11 +118,13 @@ class Node extends TNode {
   Node track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 }
 
+/** A data-flow node corresponding to an SSA variable. */
 class EssaNode extends Node, TEssaNode {
   EssaVariable var;
 
   EssaNode() { this = TEssaNode(var) }
 
+  /** Gets the `EssaVariable` represented by this data-flow node. */
   EssaVariable getVar() { result = var }
 
   override EssaVariable asVar() { result = var }
@@ -135,11 +137,13 @@ class EssaNode extends Node, TEssaNode {
   override Location getLocation() { result = var.getDefinition().getLocation() }
 }
 
+/** A data-flow node corresponding to a control-flow node. */
 class CfgNode extends Node, TCfgNode {
   ControlFlowNode node;
 
   CfgNode() { this = TCfgNode(node) }
 
+  /** Gets the `ControlFlowNode` represented by this data-flow node. */
   ControlFlowNode getNode() { result = node }
 
   override ControlFlowNode asCfgNode() { result = node }
@@ -172,21 +176,21 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends EssaNode {
-  ParameterNode() { var instanceof ParameterDefinition }
+class ParameterNode extends CfgNode {
+  ParameterDefinition def;
+
+  ParameterNode() { node = def.getDefiningNode() }
 
   /**
    * Holds if this node is the parameter of callable `c` at the
    * (zero-based) index `i`.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) {
-    var.(ParameterDefinition).getDefiningNode() = c.getParameter(i)
-  }
+  predicate isParameterOf(DataFlowCallable c, int i) { node = c.getParameter(i) }
 
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 
   /** Gets the `Parameter` this `ParameterNode` represents. */
-  Parameter getParameter() { result = var.(ParameterDefinition).getParameter() }
+  Parameter getParameter() { result = def.getParameter() }
 }
 
 /**
@@ -352,14 +356,15 @@ class BarrierGuard extends GuardNode {
 }
 
 /**
- * A reference contained in an object. This is either a field or a property.
+ * Algebraic datatype for tracking data content associated with values.
+ * Content can be collection elements or object attributes.
  */
 newtype TContent =
   /** An element of a list. */
   TListElementContent() or
   /** An element of a set. */
   TSetElementContent() or
-  /** An element of a tuple at a specifik index. */
+  /** An element of a tuple at a specific index. */
   TTupleElementContent(int index) { exists(any(TupleNode tn).getElement(index)) } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
@@ -367,24 +372,32 @@ newtype TContent =
     or
     key = any(Keyword kw).getArg()
   } or
-  /** An element of a dictionary at any key. */
+  /** An element of a dictionary under any key. */
   TDictionaryElementAnyContent() or
   /** An object attribute. */
   TAttributeContent(string attr) { attr = any(Attribute a).getName() }
 
+/**
+ * A data-flow value can have associated content.
+ * If the value is a collection, it can have elements,
+ * if it is an object, it can have attribute values.
+ */
 class Content extends TContent {
   /** Gets a textual representation of this element. */
   string toString() { result = "Content" }
 }
 
+/** An element of a list. */
 class ListElementContent extends TListElementContent, Content {
   override string toString() { result = "List element" }
 }
 
+/** An element of a set. */
 class SetElementContent extends TSetElementContent, Content {
   override string toString() { result = "Set element" }
 }
 
+/** An element of a tuple at a specific index. */
 class TupleElementContent extends TTupleElementContent, Content {
   int index;
 
@@ -396,6 +409,7 @@ class TupleElementContent extends TTupleElementContent, Content {
   override string toString() { result = "Tuple element at index " + index.toString() }
 }
 
+/** An element of a dictionary under a specific key. */
 class DictionaryElementContent extends TDictionaryElementContent, Content {
   string key;
 
@@ -407,10 +421,12 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
   override string toString() { result = "Dictionary element at key " + key }
 }
 
+/** An element of a dictionary under any key. */
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
   override string toString() { result = "Any dictionary element" }
 }
 
+/** An object attribute. */
 class AttributeContent extends TAttributeContent, Content {
   private string attr;
 

@@ -89,6 +89,35 @@ nodes
 | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name |
 | classnames.js:15:52:15:62 | window.name |
+| dates.js:9:9:9:69 | taint |
+| dates.js:9:17:9:69 | decodeU ... ing(1)) |
+| dates.js:9:36:9:50 | window.location |
+| dates.js:9:36:9:50 | window.location |
+| dates.js:9:36:9:55 | window.location.hash |
+| dates.js:9:36:9:68 | window. ... ring(1) |
+| dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:42:11:68 | dateFns ...  taint) |
+| dates.js:11:63:11:67 | taint |
+| dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:42:12:71 | dateFns ...  taint) |
+| dates.js:12:66:12:70 | taint |
+| dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:42:13:70 | dateFns ... )(time) |
+| dates.js:13:59:13:63 | taint |
+| dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:42:16:67 | moment( ... (taint) |
+| dates.js:16:62:16:66 | taint |
+| dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:42:18:64 | datefor ...  taint) |
+| dates.js:18:59:18:63 | taint |
+| express.js:7:15:7:33 | req.param("wobble") |
+| express.js:7:15:7:33 | req.param("wobble") |
+| express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
@@ -122,6 +151,21 @@ nodes
 | jquery.js:16:38:16:52 | window.location |
 | jquery.js:16:38:16:52 | window.location |
 | jquery.js:16:38:16:63 | window. ... tring() |
+| jwt-server.js:7:9:7:35 | taint |
+| jwt-server.js:7:17:7:35 | req.param("wobble") |
+| jwt-server.js:7:17:7:35 | req.param("wobble") |
+| jwt-server.js:9:16:9:20 | taint |
+| jwt-server.js:9:55:9:61 | decoded |
+| jwt-server.js:11:19:11:25 | decoded |
+| jwt-server.js:11:19:11:29 | decoded.foo |
+| jwt-server.js:11:19:11:29 | decoded.foo |
+| jwt.js:4:36:4:39 | data |
+| jwt.js:4:36:4:39 | data |
+| jwt.js:5:9:5:34 | decoded |
+| jwt.js:5:19:5:34 | jwt_decode(data) |
+| jwt.js:5:30:5:33 | data |
+| jwt.js:6:14:6:20 | decoded |
+| jwt.js:6:14:6:20 | decoded |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message |
@@ -689,6 +733,32 @@ edges
 | classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| dates.js:9:9:9:69 | taint | dates.js:11:63:11:67 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:12:66:12:70 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:13:59:13:63 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:16:62:16:66 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:18:59:18:63 | taint |
+| dates.js:9:17:9:69 | decodeU ... ing(1)) | dates.js:9:9:9:69 | taint |
+| dates.js:9:36:9:50 | window.location | dates.js:9:36:9:55 | window.location.hash |
+| dates.js:9:36:9:50 | window.location | dates.js:9:36:9:55 | window.location.hash |
+| dates.js:9:36:9:55 | window.location.hash | dates.js:9:36:9:68 | window. ... ring(1) |
+| dates.js:9:36:9:68 | window. ... ring(1) | dates.js:9:17:9:69 | decodeU ... ing(1)) |
+| dates.js:11:42:11:68 | dateFns ...  taint) | dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:42:11:68 | dateFns ...  taint) | dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:63:11:67 | taint | dates.js:11:42:11:68 | dateFns ...  taint) |
+| dates.js:12:42:12:71 | dateFns ...  taint) | dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:42:12:71 | dateFns ...  taint) | dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:66:12:70 | taint | dates.js:12:42:12:71 | dateFns ...  taint) |
+| dates.js:13:42:13:70 | dateFns ... )(time) | dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:42:13:70 | dateFns ... )(time) | dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:59:13:63 | taint | dates.js:13:42:13:70 | dateFns ... )(time) |
+| dates.js:16:42:16:67 | moment( ... (taint) | dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:42:16:67 | moment( ... (taint) | dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:62:16:66 | taint | dates.js:16:42:16:67 | moment( ... (taint) |
+| dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:59:18:63 | taint | dates.js:18:42:18:64 | datefor ...  taint) |
+| express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
 | jquery.js:2:17:2:33 | document.location | jquery.js:2:17:2:40 | documen ... .search |
@@ -716,6 +786,19 @@ edges
 | jquery.js:16:38:16:52 | window.location | jquery.js:16:38:16:63 | window. ... tring() |
 | jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
 | jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
+| jwt-server.js:7:9:7:35 | taint | jwt-server.js:9:16:9:20 | taint |
+| jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
+| jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
+| jwt-server.js:9:16:9:20 | taint | jwt-server.js:9:55:9:61 | decoded |
+| jwt-server.js:9:55:9:61 | decoded | jwt-server.js:11:19:11:25 | decoded |
+| jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
+| jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
+| jwt.js:4:36:4:39 | data | jwt.js:5:30:5:33 | data |
+| jwt.js:4:36:4:39 | data | jwt.js:5:30:5:33 | data |
+| jwt.js:5:9:5:34 | decoded | jwt.js:6:14:6:20 | decoded |
+| jwt.js:5:9:5:34 | decoded | jwt.js:6:14:6:20 | decoded |
+| jwt.js:5:19:5:34 | jwt_decode(data) | jwt.js:5:9:5:34 | decoded |
+| jwt.js:5:30:5:33 | data | jwt.js:5:19:5:34 | jwt_decode(data) |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
@@ -1161,4 +1244,5 @@ edges
 | winjs.js:2:17:2:40 | documen ... .search | winjs.js:2:17:2:53 | documen ... ring(1) |
 | winjs.js:2:17:2:53 | documen ... ring(1) | winjs.js:2:7:2:53 | tainted |
 #select
+| jwt.js:6:14:6:20 | decoded | jwt.js:4:36:4:39 | data | jwt.js:6:14:6:20 | decoded | Cross-site scripting vulnerability due to $@. | jwt.js:4:36:4:39 | data | user-provided value |
 | typeahead.js:10:16:10:18 | loc | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc | Cross-site scripting vulnerability due to $@. | typeahead.js:9:28:9:30 | loc | user-provided value |

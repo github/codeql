@@ -3,11 +3,15 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
-class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
+/** Pure string functions. */
+private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,
+  SideEffectFunction {
   PureStrFunction() {
-    hasGlobalOrStdName(["atof", "atoi", "atol", "atoll", "strcasestr", "strchnul", "strchr",
-          "strchrnul", "strstr", "strpbrk", "strcmp", "strcspn", "strncmp", "strrchr", "strspn",
-          "strtod", "strtof", "strtol", "strtoll", "strtoq", "strtoul"])
+    hasGlobalOrStdName([
+        "atof", "atoi", "atol", "atoll", "strcasestr", "strchnul", "strchr", "strchrnul", "strstr",
+        "strpbrk", "strcmp", "strcspn", "strncmp", "strrchr", "strspn", "strtod", "strtof",
+        "strtol", "strtoll", "strtoq", "strtoul"
+      ])
   }
 
   override predicate hasArrayInput(int bufParam) {
@@ -56,7 +60,8 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
   }
 }
 
-class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
+/** String standard `strlen` function, and related functions for computing string lengths. */
+private class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   StrLenFunction() {
     hasGlobalOrStdName(["strlen", "strnlen", "wcslen"])
     or
@@ -89,7 +94,8 @@ class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   }
 }
 
-class PureFunction extends TaintFunction, SideEffectFunction {
+/** Pure functions. */
+private class PureFunction extends TaintFunction, SideEffectFunction {
   PureFunction() { hasGlobalOrStdName(["abs", "labs"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -103,4 +109,51 @@ class PureFunction extends TaintFunction, SideEffectFunction {
   override predicate hasOnlySpecificReadSideEffects() { any() }
 
   override predicate hasOnlySpecificWriteSideEffects() { any() }
+}
+
+/** Pure raw-memory functions. */
+private class PureMemFunction extends AliasFunction, ArrayFunction, TaintFunction,
+  SideEffectFunction {
+  PureMemFunction() { hasGlobalOrStdName(["memchr", "memrchr", "rawmemchr", "memcmp", "memmem"]) }
+
+  override predicate hasArrayInput(int bufParam) {
+    getParameter(bufParam).getUnspecifiedType() instanceof PointerType
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    exists(ParameterIndex i |
+      input.isParameter(i) and
+      exists(getParameter(i))
+      or
+      input.isParameterDeref(i) and
+      getParameter(i).getUnspecifiedType() instanceof PointerType
+    ) and
+    (
+      output.isReturnValueDeref() and
+      getUnspecifiedType() instanceof PointerType
+      or
+      output.isReturnValue()
+    )
+  }
+
+  override predicate parameterNeverEscapes(int i) {
+    getParameter(i).getUnspecifiedType() instanceof PointerType and
+    not parameterEscapesOnlyViaReturn(i)
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int i) {
+    i = 0 and
+    getUnspecifiedType() instanceof PointerType
+  }
+
+  override predicate parameterIsAlwaysReturned(int i) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    getParameter(i).getUnspecifiedType() instanceof PointerType and
+    buffer = true
+  }
 }

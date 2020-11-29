@@ -299,8 +299,10 @@ module PromiseFlow {
       or
       prop = errorProp() and
       value =
-        [promise.getRejectParameter().getACall().getArgument(0),
-            promise.getExecutor().getExceptionalReturn()]
+        [
+          promise.getRejectParameter().getACall().getArgument(0),
+          promise.getExecutor().getExceptionalReturn()
+        ]
     )
     or
     // promise creation call, e.g. `Promise.resolve`.

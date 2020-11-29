@@ -1603,17 +1603,26 @@ private predicate hasAllConstantLeafs(AddExpr add) {
 private string getConcatenatedString(Expr add) {
   result = getConcatenatedString(add.getUnderlyingValue())
   or
-  not add = getAnAddOperand(any(AddExpr parent | hasAllConstantLeafs(parent))) and
-  hasAllConstantLeafs(add) and
   result =
     strictconcat(Expr leaf |
-      leaf = getAnAddOperand*(add)
+      leaf = getAnAddOperand*(add.(SmallConcatRoot))
     |
       getConstantString(leaf)
       order by
         leaf.getLocation().getStartLine(), leaf.getLocation().getStartColumn()
-    ) and
-  result.length() < 1000 * 1000
+    )
+}
+
+/**
+ * An expr that is the root of a string concatenation of constant parts,
+ * and the length of the resulting concatenation is less than 1 million chars.
+ */
+private class SmallConcatRoot extends Expr {
+  SmallConcatRoot() {
+    not this = getAnAddOperand(any(AddExpr parent | hasAllConstantLeafs(parent))) and
+    hasAllConstantLeafs(this) and
+    sum(Expr leaf | leaf = getAnAddOperand*(this) | getConstantString(leaf).length()) < 1000 * 1000
+  }
 }
 
 /**

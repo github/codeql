@@ -4,6 +4,7 @@
  */
 
 import cpp
+import IDEContextual
 
 /**
  * Any element that might be the source or target of a jump-to-definition
@@ -207,11 +208,3 @@ Top definitionOf(Top e, string kind) {
   // later on.
   strictcount(result.getLocation()) < 10
 }
-
-/**
- * Returns an appropriately encoded version of a filename `name`
- * passed by the VS Code extension in order to coincide with the
- * output of `.getFile()` on locatable entities.
- */
-cached
-File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }

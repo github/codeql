@@ -25,6 +25,7 @@
 | pass_by_ref.cpp:21:7:21:8 | i2 | pass_by_ref.cpp:24:26:24:27 | i2 | pass_by_ref.cpp:27:39:27:40 | i2 |
 | pass_by_ref.cpp:21:7:21:8 | i2 | pass_by_ref.cpp:25:27:25:28 | i2 | pass_by_ref.cpp:27:39:27:40 | i2 |
 | pass_by_ref.cpp:45:17:45:17 | n | pass_by_ref.cpp:46:11:46:11 | n | pass_by_ref.cpp:48:7:48:7 | n |
+| pass_by_ref.cpp:66:8:66:8 | p | pass_by_ref.cpp:67:34:67:34 | p | pass_by_ref.cpp:68:10:68:10 | p |
 | test.cpp:4:7:4:7 | a | test.cpp:14:7:14:7 | a | test.cpp:18:7:18:7 | a |
 | test.cpp:4:7:4:7 | a | test.cpp:14:7:14:7 | a | test.cpp:24:7:24:7 | a |
 | test.cpp:4:7:4:7 | a | test.cpp:14:7:14:7 | a | test.cpp:28:11:28:11 | a |

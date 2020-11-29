@@ -1,4 +1,5 @@
 | patterns.cs:32:10:32:25 | enter SwitchStatements | patterns.cs:33:5:96:5 | {...} | semmle.label | successor |
+| patterns.cs:32:10:32:25 | exit SwitchStatements (normal) | patterns.cs:32:10:32:25 | exit SwitchStatements | semmle.label | successor |
 | patterns.cs:33:5:96:5 | {...} | patterns.cs:34:9:34:39 | ... ...; | semmle.label | successor |
 | patterns.cs:34:9:34:39 | ... ...; | patterns.cs:34:17:34:38 | object creation of type MyStruct | semmle.label | successor |
 | patterns.cs:34:13:34:38 | MyStruct s = ... | patterns.cs:36:9:44:9 | switch (...) {...} | semmle.label | successor |
@@ -160,11 +161,11 @@
 | patterns.cs:93:18:93:27 | { ... } | patterns.cs:94:13:94:24 | case ...: | semmle.label | no-match |
 | patterns.cs:93:19:93:19 | 1 | patterns.cs:93:22:93:26 | Int32 x | semmle.label | successor |
 | patterns.cs:93:22:93:26 | Int32 x | patterns.cs:93:18:93:27 | ( ... ) | semmle.label | successor |
-| patterns.cs:93:30:93:35 | break; | patterns.cs:32:10:32:25 | exit SwitchStatements | semmle.label | break |
+| patterns.cs:93:30:93:35 | break; | patterns.cs:32:10:32:25 | exit SwitchStatements (normal) | semmle.label | break |
 | patterns.cs:94:13:94:24 | case ...: | patterns.cs:94:19:94:19 | 2 | semmle.label | successor |
 | patterns.cs:94:18:94:23 | ( ... ) | patterns.cs:94:18:94:23 | { ... } | semmle.label | successor |
-| patterns.cs:94:18:94:23 | { ... } | patterns.cs:32:10:32:25 | exit SwitchStatements | semmle.label | no-match |
+| patterns.cs:94:18:94:23 | { ... } | patterns.cs:32:10:32:25 | exit SwitchStatements (normal) | semmle.label | no-match |
 | patterns.cs:94:18:94:23 | { ... } | patterns.cs:94:26:94:31 | break; | semmle.label | match |
 | patterns.cs:94:19:94:19 | 2 | patterns.cs:94:22:94:22 | _ | semmle.label | successor |
 | patterns.cs:94:22:94:22 | _ | patterns.cs:94:18:94:23 | ( ... ) | semmle.label | successor |
-| patterns.cs:94:26:94:31 | break; | patterns.cs:32:10:32:25 | exit SwitchStatements | semmle.label | break |
+| patterns.cs:94:26:94:31 | break; | patterns.cs:32:10:32:25 | exit SwitchStatements (normal) | semmle.label | break |

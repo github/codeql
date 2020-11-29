@@ -91,7 +91,8 @@ private newtype TPrintASTNode =
   TDeclarationEntryNode(DeclStmt stmt, DeclarationEntry entry) {
     // We create a unique node for each pair of (stmt, entry), to avoid having one node with
     // multiple parents due to extractor bug CPP-413.
-    stmt.getADeclarationEntry() = entry
+    stmt.getADeclarationEntry() = entry and
+    shouldPrintFunction(stmt.getEnclosingFunction())
   } or
   TParametersNode(Function func) { shouldPrintFunction(func) } or
   TConstructorInitializersNode(Constructor ctor) {
@@ -235,10 +236,26 @@ class PrintASTNode extends TPrintASTNode {
 }
 
 /**
+ * Class that restricts the elements that we compute `qlClass` for.
+ */
+private class PrintableElement extends Element {
+  PrintableElement() {
+    exists(TASTNode(this))
+    or
+    exists(TDeclarationEntryNode(_, this))
+    or
+    this instanceof Type
+  }
+
+  pragma[noinline]
+  string getAPrimaryQlClass0() { result = getAPrimaryQlClass() }
+}
+
+/**
  * Retrieves the canonical QL class(es) for entity `el`
  */
-private string qlClass(ElementBase el) {
-  result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
+private string qlClass(PrintableElement el) {
+  result = "[" + concat(el.getAPrimaryQlClass0(), ",") + "] "
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
   //result = "["+ concat(el.getAQlClass(), ",") + "] "
 }

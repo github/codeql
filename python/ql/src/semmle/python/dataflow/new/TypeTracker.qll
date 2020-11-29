@@ -44,12 +44,24 @@ class StepSummary extends TStepSummary {
   }
 }
 
+/** Provides predicates for updating step summaries (`StepSummary`s). */
 module StepSummary {
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
+   */
   cached
   predicate step(Node nodeFrom, Node nodeTo, StepSummary summary) {
     exists(Node mid | typePreservingStep*(nodeFrom, mid) and smallstep(mid, nodeTo, summary))
   }
 
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * local, heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * Unlike `StepSummary::step`, this predicate does not compress
+   * type-preserving steps.
+   */
   predicate smallstep(Node nodeFrom, Node nodeTo, StepSummary summary) {
     typePreservingStep(nodeFrom, nodeTo) and
     summary = LevelStep()
@@ -75,11 +87,26 @@ private predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
   nodeFrom = nodeTo.(PostUpdateNode).getPreUpdateNode()
 }
 
+/**
+ * Gets a callable for the call where `nodeFrom` is used as the `i`'th argument.
+ *
+ * Helper predicate to avoid bad join order experienced in `callStep`.
+ * This happened when `isParameterOf` was joined _before_ `getCallable`.
+ */
+pragma[nomagic]
+private DataFlowCallable getCallableForArgument(ArgumentNode nodeFrom, int i) {
+  exists(DataFlowCall call |
+    nodeFrom.argumentOf(call, i) and
+    result = call.getCallable()
+  )
+}
+
 /** Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call. */
 predicate callStep(ArgumentNode nodeFrom, ParameterNode nodeTo) {
   // TODO: Support special methods?
-  exists(DataFlowCall call, int i |
-    nodeFrom.argumentOf(call, i) and nodeTo.isParameterOf(call.getCallable(), i)
+  exists(DataFlowCallable callable, int i |
+    callable = getCallableForArgument(nodeFrom, i) and
+    nodeTo.isParameterOf(callable, i)
   )
 }
 
@@ -291,6 +318,7 @@ class TypeTracker extends TTypeTracker {
   }
 }
 
+/** Provides predicates for implementing custom `TypeTracker`s. */
 module TypeTracker {
   /**
    * Gets a valid end point of type tracking.

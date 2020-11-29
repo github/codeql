@@ -73,6 +73,19 @@ private module Impl {
       e2.(ExprNode::SubExpr).getRightOperand() = x and
       x.getIntValue() = -delta
     )
+    or
+    // Conditional expressions with only one branch can happen either
+    // because of pruning or because of Boolean splitting. In such cases
+    // the conditional expression has the same value as the branch.
+    delta = 0 and
+    e2 =
+      any(ExprNode::ConditionalExpr ce |
+        e1 = ce.getTrueExpr() and
+        not exists(ce.getFalseExpr())
+        or
+        e1 = ce.getFalseExpr() and
+        not exists(ce.getTrueExpr())
+      )
   }
 
   /** An expression whose value may control the execution of another element. */
@@ -141,7 +154,7 @@ private module Impl {
    */
   predicate propertyOverrides(Property p, string baseClass, string property) {
     exists(Property p2 |
-      p2.getSourceDeclaration().getDeclaringType().hasQualifiedName(baseClass) and
+      p2.getUnboundDeclaration().getDeclaringType().hasQualifiedName(baseClass) and
       p2.hasName(property)
     |
       p.overridesOrImplementsOrEquals(p2)

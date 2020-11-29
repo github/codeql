@@ -3,6 +3,7 @@
 import cpp
 import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.Alias
 
 /**
  * A function for running a command using a command interpreter.

@@ -15,7 +15,7 @@ private import TypeRef
  * A variable. Either a variable with local scope (`LocalScopeVariable`) or a field (`Field`).
  */
 class Variable extends Assignable, DotNet::Variable, @variable {
-  override Variable getSourceDeclaration() { result = this }
+  override Variable getUnboundDeclaration() { result = this }
 
   override VariableAccess getAnAccess() { result.getTarget() = this }
 
@@ -179,7 +179,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   /** Gets the declaring element of this parameter. */
   Parameterizable getDeclaringElement() { params(this, _, _, _, _, result, _) }
 
-  override Parameter getSourceDeclaration() { params(this, _, _, _, _, _, result) }
+  override Parameter getUnboundDeclaration() { params(this, _, _, _, _, _, result) }
 
   override ValueOrRefType getDeclaringType() {
     exists(Parameterizable p | p = this.getDeclaringElement() |
@@ -207,7 +207,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * }
    * ```
    */
-  Expr getDefaultValue() { result = this.getSourceDeclaration().getChildExpr(0) }
+  Expr getDefaultValue() { result = this.getUnboundDeclaration().getChildExpr(0) }
 
   /** Holds if this parameter has a default value. */
   predicate hasDefaultValue() { exists(getDefaultValue()) }
@@ -397,7 +397,7 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
   /** Holds if this field is `readonly`. */
   predicate isReadOnly() { this.hasModifier("readonly") }
 
-  override Field getSourceDeclaration() { fields(this, _, _, _, _, result) }
+  override Field getUnboundDeclaration() { fields(this, _, _, _, _, result) }
 
   override FieldAccess getAnAccess() { result = Variable.super.getAnAccess() }
 

@@ -6,7 +6,7 @@ class ModulusAnalysis
     const int c1 = 42;
     const int c2 = 43;
 
-    void M(int i, bool cond, int x, int y, int[] arr, int otherSeven)
+    void M(int i, bool cond1, bool cond2, bool cond3, int x, int y, int[] arr, int otherSeven)
     {
         var eq = i + 3;
 
@@ -26,7 +26,7 @@ class ModulusAnalysis
             }
         }
 
-        var j = cond
+        var j = cond1
             ? i * 4 + 3
             : i * 8 + 7;
         System.Console.WriteLine(j); // congruent 3 mod 4
@@ -47,7 +47,7 @@ class ModulusAnalysis
         l = GetArray().Length * 4 - 11;
         System.Console.WriteLine(l); // congruent 1 mod 4
 
-        if (cond)
+        if (cond2)
         {
             j = i * 4 + 3;
         }
@@ -57,7 +57,7 @@ class ModulusAnalysis
         }
         System.Console.WriteLine(j); // congruent 3 mod 4 (cond = true) or 7 mod 8 (cond = false)
 
-        if (cond)
+        if (cond2)
         {
             System.Console.WriteLine(j); // congruent 3 mod 4
         }
@@ -76,6 +76,12 @@ class ModulusAnalysis
         {
             System.Console.WriteLine(x); // congruent 3 mod 16
         }
+
+        j = cond3
+            ? i * 4 + 3
+            : i * 8 + 7;
+        if (!cond3)
+            System.Console.WriteLine(j); // congruent 7 mod 8
     }
 
     void For(int cap)

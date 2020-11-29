@@ -562,6 +562,9 @@ private Overlap getVariableMemoryLocationOverlap(
       use.getEndBitOffset())
 }
 
+bindingset[result, b]
+private boolean unbindBool(boolean b) { result != b.booleanNot() }
+
 MemoryLocation getResultMemoryLocation(Instruction instr) {
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
@@ -574,7 +577,8 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
           exists(Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
             hasResultMemoryAccess(instr, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
             result =
-              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset,
+                unbindBool(isMayAccess))
           )
         else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
       )
@@ -582,7 +586,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
       kind instanceof EntireAllocationMemoryAccess and
       result =
         TEntireAllocationMemoryLocation(getAddressOperandAllocation(instr.getResultAddressOperand()),
-          isMayAccess)
+          unbindBool(isMayAccess))
       or
       kind instanceof EscapedMemoryAccess and
       result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)

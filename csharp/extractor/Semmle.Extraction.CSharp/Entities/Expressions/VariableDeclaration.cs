@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var l = LocalVariable.Create(cx, symbol);
                 l.PopulateManual(ret, isVar);
                 if (optionalSyntax != null)
-                    TypeMention.Create(cx, optionalSyntax, parent, type);
+                    TypeMention.Create(cx, optionalSyntax, ret, type);
             });
             return ret;
         }

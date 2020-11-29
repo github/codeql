@@ -89,6 +89,35 @@ nodes
 | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name |
 | classnames.js:15:52:15:62 | window.name |
+| dates.js:9:9:9:69 | taint |
+| dates.js:9:17:9:69 | decodeU ... ing(1)) |
+| dates.js:9:36:9:50 | window.location |
+| dates.js:9:36:9:50 | window.location |
+| dates.js:9:36:9:55 | window.location.hash |
+| dates.js:9:36:9:68 | window. ... ring(1) |
+| dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:42:11:68 | dateFns ...  taint) |
+| dates.js:11:63:11:67 | taint |
+| dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:42:12:71 | dateFns ...  taint) |
+| dates.js:12:66:12:70 | taint |
+| dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:42:13:70 | dateFns ... )(time) |
+| dates.js:13:59:13:63 | taint |
+| dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:42:16:67 | moment( ... (taint) |
+| dates.js:16:62:16:66 | taint |
+| dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:42:18:64 | datefor ...  taint) |
+| dates.js:18:59:18:63 | taint |
+| express.js:7:15:7:33 | req.param("wobble") |
+| express.js:7:15:7:33 | req.param("wobble") |
+| express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
@@ -122,6 +151,14 @@ nodes
 | jquery.js:16:38:16:52 | window.location |
 | jquery.js:16:38:16:52 | window.location |
 | jquery.js:16:38:16:63 | window. ... tring() |
+| jwt-server.js:7:9:7:35 | taint |
+| jwt-server.js:7:17:7:35 | req.param("wobble") |
+| jwt-server.js:7:17:7:35 | req.param("wobble") |
+| jwt-server.js:9:16:9:20 | taint |
+| jwt-server.js:9:55:9:61 | decoded |
+| jwt-server.js:11:19:11:25 | decoded |
+| jwt-server.js:11:19:11:29 | decoded.foo |
+| jwt-server.js:11:19:11:29 | decoded.foo |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message |
@@ -685,6 +722,32 @@ edges
 | classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| dates.js:9:9:9:69 | taint | dates.js:11:63:11:67 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:12:66:12:70 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:13:59:13:63 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:16:62:16:66 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:18:59:18:63 | taint |
+| dates.js:9:17:9:69 | decodeU ... ing(1)) | dates.js:9:9:9:69 | taint |
+| dates.js:9:36:9:50 | window.location | dates.js:9:36:9:55 | window.location.hash |
+| dates.js:9:36:9:50 | window.location | dates.js:9:36:9:55 | window.location.hash |
+| dates.js:9:36:9:55 | window.location.hash | dates.js:9:36:9:68 | window. ... ring(1) |
+| dates.js:9:36:9:68 | window. ... ring(1) | dates.js:9:17:9:69 | decodeU ... ing(1)) |
+| dates.js:11:42:11:68 | dateFns ...  taint) | dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:42:11:68 | dateFns ...  taint) | dates.js:11:31:11:70 | `Time i ... aint)}` |
+| dates.js:11:63:11:67 | taint | dates.js:11:42:11:68 | dateFns ...  taint) |
+| dates.js:12:42:12:71 | dateFns ...  taint) | dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:42:12:71 | dateFns ...  taint) | dates.js:12:31:12:73 | `Time i ... aint)}` |
+| dates.js:12:66:12:70 | taint | dates.js:12:42:12:71 | dateFns ...  taint) |
+| dates.js:13:42:13:70 | dateFns ... )(time) | dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:42:13:70 | dateFns ... )(time) | dates.js:13:31:13:72 | `Time i ... time)}` |
+| dates.js:13:59:13:63 | taint | dates.js:13:42:13:70 | dateFns ... )(time) |
+| dates.js:16:42:16:67 | moment( ... (taint) | dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:42:16:67 | moment( ... (taint) | dates.js:16:31:16:69 | `Time i ... aint)}` |
+| dates.js:16:62:16:66 | taint | dates.js:16:42:16:67 | moment( ... (taint) |
+| dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
+| dates.js:18:59:18:63 | taint | dates.js:18:42:18:64 | datefor ...  taint) |
+| express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
 | jquery.js:2:17:2:33 | document.location | jquery.js:2:17:2:40 | documen ... .search |
@@ -712,6 +775,13 @@ edges
 | jquery.js:16:38:16:52 | window.location | jquery.js:16:38:16:63 | window. ... tring() |
 | jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
 | jquery.js:16:38:16:63 | window. ... tring() | jquery.js:16:19:16:64 | decodeU ... ring()) |
+| jwt-server.js:7:9:7:35 | taint | jwt-server.js:9:16:9:20 | taint |
+| jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
+| jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
+| jwt-server.js:9:16:9:20 | taint | jwt-server.js:9:55:9:61 | decoded |
+| jwt-server.js:9:55:9:61 | decoded | jwt-server.js:11:19:11:25 | decoded |
+| jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
+| jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
@@ -1175,12 +1245,19 @@ edges
 | classnames.js:11:31:11:79 | `<span  ... <span>` | classnames.js:10:45:10:55 | window.name | classnames.js:11:31:11:79 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:10:45:10:55 | window.name | user-provided value |
 | classnames.js:13:31:13:83 | `<span  ... <span>` | classnames.js:13:57:13:67 | window.name | classnames.js:13:31:13:83 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:13:57:13:67 | window.name | user-provided value |
 | classnames.js:15:31:15:78 | `<span  ... <span>` | classnames.js:15:52:15:62 | window.name | classnames.js:15:31:15:78 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:15:52:15:62 | window.name | user-provided value |
+| dates.js:11:31:11:70 | `Time i ... aint)}` | dates.js:9:36:9:50 | window.location | dates.js:11:31:11:70 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:9:36:9:50 | window.location | user-provided value |
+| dates.js:12:31:12:73 | `Time i ... aint)}` | dates.js:9:36:9:50 | window.location | dates.js:12:31:12:73 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:9:36:9:50 | window.location | user-provided value |
+| dates.js:13:31:13:72 | `Time i ... time)}` | dates.js:9:36:9:50 | window.location | dates.js:13:31:13:72 | `Time i ... time)}` | Cross-site scripting vulnerability due to $@. | dates.js:9:36:9:50 | window.location | user-provided value |
+| dates.js:16:31:16:69 | `Time i ... aint)}` | dates.js:9:36:9:50 | window.location | dates.js:16:31:16:69 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:9:36:9:50 | window.location | user-provided value |
+| dates.js:18:31:18:66 | `Time i ... aint)}` | dates.js:9:36:9:50 | window.location | dates.js:18:31:18:66 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:9:36:9:50 | window.location | user-provided value |
+| express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") | Cross-site scripting vulnerability due to $@. | express.js:7:15:7:33 | req.param("wobble") | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:40 | documen ... .search | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:33 | document.location | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | jquery.js:10:13:10:20 | location | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | Cross-site scripting vulnerability due to $@. | jquery.js:10:13:10:20 | location | user-provided value |
 | jquery.js:14:19:14:58 | decodeU ... n.hash) | jquery.js:14:38:14:52 | window.location | jquery.js:14:19:14:58 | decodeU ... n.hash) | Cross-site scripting vulnerability due to $@. | jquery.js:14:38:14:52 | window.location | user-provided value |
 | jquery.js:15:19:15:60 | decodeU ... search) | jquery.js:15:38:15:52 | window.location | jquery.js:15:19:15:60 | decodeU ... search) | Cross-site scripting vulnerability due to $@. | jquery.js:15:38:15:52 | window.location | user-provided value |
 | jquery.js:16:19:16:64 | decodeU ... ring()) | jquery.js:16:38:16:52 | window.location | jquery.js:16:19:16:64 | decodeU ... ring()) | Cross-site scripting vulnerability due to $@. | jquery.js:16:38:16:52 | window.location | user-provided value |
+| jwt-server.js:11:19:11:29 | decoded.foo | jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:11:19:11:29 | decoded.foo | Cross-site scripting vulnerability due to $@. | jwt-server.js:7:17:7:35 | req.param("wobble") | user-provided value |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | HTML injection vulnerability due to $@. | nodemailer.js:13:50:13:66 | req.query.message | user-provided value |
 | optionalSanitizer.js:6:18:6:23 | target | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:6:18:6:23 | target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |
 | optionalSanitizer.js:9:18:9:24 | tainted | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:9:18:9:24 | tainted | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |

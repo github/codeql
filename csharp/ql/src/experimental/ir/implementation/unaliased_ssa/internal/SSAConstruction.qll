@@ -404,15 +404,26 @@ private import PhiInsertion
  */
 private module PhiInsertion {
   /**
+   * Holds if `phiBlock` is a block in the dominance frontier of a block that has a definition of the
+   * memory location `defLocation`.
+   */
+  pragma[noinline]
+  private predicate dominanceFrontierOfDefinition(
+    Alias::MemoryLocation defLocation, OldBlock phiBlock
+  ) {
+    exists(OldBlock defBlock |
+      phiBlock = Dominance::getDominanceFrontier(defBlock) and
+      definitionHasDefinitionInBlock(defLocation, defBlock)
+    )
+  }
+
+  /**
    * Holds if a `Phi` instruction needs to be inserted for location `defLocation` at the beginning of block `phiBlock`.
    */
   predicate definitionHasPhiNode(Alias::MemoryLocation defLocation, OldBlock phiBlock) {
-    exists(OldBlock defBlock |
-      phiBlock = Dominance::getDominanceFrontier(defBlock) and
-      definitionHasDefinitionInBlock(defLocation, defBlock) and
-      /* We can also eliminate those nodes where the definition is not live on any incoming edge */
-      definitionLiveOnEntryToBlock(defLocation, phiBlock)
-    )
+    dominanceFrontierOfDefinition(defLocation, phiBlock) and
+    /* We can also eliminate those nodes where the definition is not live on any incoming edge */
+    definitionLiveOnEntryToBlock(defLocation, phiBlock)
   }
 
   /**
@@ -856,7 +867,8 @@ private module CachedForDebugging {
     exists(Alias::MemoryLocation location, OldBlock phiBlock, string specificity |
       instr = getPhi(phiBlock, location) and
       result =
-        "Phi Block(" + phiBlock.getUniqueId() + ")[" + specificity + "]: " + location.getUniqueId() and
+        "Phi Block(" + phiBlock.getFirstInstruction().getUniqueId() + ")[" + specificity + "]: " +
+          location.getUniqueId() and
       if location instanceof Alias::VirtualVariable
       then
         // Sort Phi nodes for virtual variables before Phi nodes for member locations.
@@ -873,6 +885,24 @@ private module CachedForDebugging {
     result.getAST() = var.getAST() and
     result.getTag() = var.getTag()
   }
+
+  cached
+  predicate instructionHasSortKeys(Instruction instr, int key1, int key2) {
+    exists(OldInstruction oldInstr |
+      oldInstr = getOldInstruction(instr) and
+      oldInstr.hasSortKeys(key1, key2)
+    )
+    or
+    instr instanceof TUnreachedInstruction and
+    key1 = maxValue() and
+    key2 = maxValue()
+  }
+
+  /**
+   * Returns the value of the maximum representable integer.
+   */
+  cached
+  int maxValue() { result = 2147483647 }
 }
 
 module SSAConsistency {

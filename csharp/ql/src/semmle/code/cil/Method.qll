@@ -86,7 +86,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 
   override Location getLocation() { result = Element.super.getLocation() }
 
-  override Location getALocation() { cil_method_location(this.getSourceDeclaration(), result) }
+  override Location getALocation() { cil_method_location(this.getUnboundDeclaration(), result) }
 
   override Parameter getRawParameter(int n) { cil_parameter(result, this, n, _) }
 
@@ -128,7 +128,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
   /** Gets the unbound declaration of this method, or the method itself. */
   Method getUnboundMethod() { cil_method_source_declaration(this, result) }
 
-  override Method getSourceDeclaration() { result = getUnboundMethod() }
+  override Method getUnboundDeclaration() { result = getUnboundMethod() }
 
   /** Holds if this method is an instance constructor. */
   predicate isInstanceConstructor() { isSpecial() and getName() = ".ctor" }

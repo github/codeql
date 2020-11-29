@@ -71,9 +71,9 @@ void test_string()
 
 	sink(a); // tainted
 	sink(b);
-	sink(c); // tainted [NOT DETECTED]
+	sink(c); // tainted
 	sink(b.c_str());
-	sink(c.c_str()); // tainted [NOT DETECTED]
+	sink(c.c_str()); // tainted
 }
 
 void test_stringstream()
@@ -91,12 +91,12 @@ void test_stringstream()
 	sink(ss2); // tainted
 	sink(ss3); // tainted [NOT DETECTED]
 	sink(ss4); // tainted
-	sink(ss5); // tainted [NOT DETECTED]
+	sink(ss5); // tainted
 	sink(ss1.str());
 	sink(ss2.str()); // tainted
 	sink(ss3.str()); // tainted [NOT DETECTED]
 	sink(ss4.str()); // tainted
-	sink(ss5.str()); // tainted [NOT DETECTED]
+	sink(ss5.str()); // tainted
 }
 
 void test_stringstream_int(int source)
@@ -123,14 +123,14 @@ void sink(const char *filename, const char *mode);
 void test_strings2()
 {
 	string path1 = user_input();
-	sink(path1.c_str(), "r"); // tainted [NOT DETECTED]
+	sink(path1.c_str(), "r"); // tainted
 
 	string path2;
 	path2 = user_input();
 	sink(path2.c_str(), "r"); // tainted
 
 	string path3(user_input());
-	sink(path3.c_str(), "r"); // tainted [NOT DETECTED]
+	sink(path3.c_str(), "r"); // tainted
 }
 
 void test_string3()
@@ -141,7 +141,7 @@ void test_string3()
 	std::string ss(cs);
 
 	sink(cs); // tainted
-	sink(ss); // tainted [NOT DETECTED]
+	sink(ss); // tainted
 }
 
 void test_string4()
@@ -155,5 +155,5 @@ void test_string4()
 	cs = ss.c_str();
 
 	sink(cs); // tainted [NOT DETECTED]
-	sink(ss); // tainted [NOT DETECTED]
+	sink(ss); // tainted
 }

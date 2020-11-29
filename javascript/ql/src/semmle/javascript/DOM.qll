@@ -374,8 +374,24 @@ module DOM {
         this = DOM::domValueRef().getAPropertyRead("baseUri")
         or
         this = DataFlow::globalVarRef("location")
+        or
+        this = any(DataFlow::Node n | n.hasUnderlyingType("Location")).getALocalSource() and
+        not this = nonFirstLocationType(DataFlow::TypeTracker::end()) // only start from the source, and not the locations we can type-track to.
       }
     }
+  }
+
+  /**
+   * Get a reference to a node of type `Location` that has gone through at least 1 type-tracking step.
+   */
+  private DataFlow::SourceNode nonFirstLocationType(DataFlow::TypeTracker t) {
+    // One step inlined in the beginning.
+    exists(DataFlow::TypeTracker t2 |
+      result =
+        any(DataFlow::Node n | n.hasUnderlyingType("Location")).getALocalSource().track(t2, t)
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = nonFirstLocationType(t2).track(t2, t))
   }
 
   /** Gets a data flow node that directly refers to a DOM `location` object. */

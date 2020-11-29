@@ -22,7 +22,12 @@ abstract class IteratorReferenceFunction extends Function { }
 abstract class GetIteratorFunction extends Function {
   /**
    * Holds if the return value or buffer represented by `output` is an iterator over the container
-   * passd in the argument, qualifier, or buffer represented by `input`.
+   * passed in the argument, qualifier, or buffer represented by `input`.
    */
   abstract predicate getsIterator(FunctionInput input, FunctionOutput output);
 }
+
+/**
+ * A type which can be used as an iterator.
+ */
+abstract class Iterator extends Type { }

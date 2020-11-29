@@ -26,13 +26,8 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             get
             {
-                // Ideally model.GetDeclaredSymbol(Stmt) would do
-                // the right thing but it doesn't exist.
-                // So instead, we have to do the lookup via GetEnclosingSymbol.
-
                 var m = cx.GetModel(Stmt);
-                var body = Stmt.Body == null ? Stmt.ExpressionBody : (CSharpSyntaxNode)Stmt.Body;
-                return m.GetEnclosingSymbol(body.GetLocation().SourceSpan.Start) as IMethodSymbol;
+                return m.GetDeclaredSymbol(Stmt) as IMethodSymbol;
             }
         }
 

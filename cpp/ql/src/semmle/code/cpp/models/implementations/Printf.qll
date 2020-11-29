@@ -62,7 +62,7 @@ class Fprintf extends FormattingFunction {
 /**
  * The standard function `sprintf` and its Microsoft and glib variants.
  */
-class Sprintf extends FormattingFunction {
+private class Sprintf extends FormattingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
@@ -119,11 +119,10 @@ class Sprintf extends FormattingFunction {
 }
 
 /**
- * The standard functions `snprintf` and `swprintf`, and their
- * Microsoft and glib variants.
+ * Implements `Snprintf`.
  */
-class Snprintf extends FormattingFunction {
-  Snprintf() {
+private class SnprintfImpl extends Snprintf {
+  SnprintfImpl() {
     this instanceof TopLevelFunction and
     (
       hasGlobalOrStdName("snprintf") or // C99 defines snprintf
@@ -180,12 +179,7 @@ class Snprintf extends FormattingFunction {
     )
   }
 
-  /**
-   * Holds if this function returns the length of the formatted string
-   * that would have been output, regardless of the amount of space
-   * in the buffer.
-   */
-  predicate returnsFullFormatLength() {
+  override predicate returnsFullFormatLength() {
     (
       hasGlobalOrStdName("snprintf") or
       hasGlobalName("g_snprintf") or
@@ -201,7 +195,7 @@ class Snprintf extends FormattingFunction {
 /**
  * The Microsoft `StringCchPrintf` function and variants.
  */
-class StringCchPrintf extends FormattingFunction {
+private class StringCchPrintf extends FormattingFunction {
   StringCchPrintf() {
     this instanceof TopLevelFunction and
     (

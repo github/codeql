@@ -1,0 +1,104 @@
+nodes
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name |
+| tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name |
+| tst-UntrustedDataToExternalAPI.js:5:13:5:21 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:5:13:5:21 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:6:17:6:25 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:6:17:6:25 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:7:16:7:24 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:7:16:7:24 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:8:31:8:39 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:8:31:8:39 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:9:18:9:26 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:9:18:9:26 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] |
+| tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] |
+| tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] |
+| tst-UntrustedDataToExternalAPI.js:10:19:10:27 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:11:20:11:28 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:11:20:11:28 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } |
+| tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } |
+| tst-UntrustedDataToExternalAPI.js:14:12:16:9 | {\\n      ...       } |
+| tst-UntrustedDataToExternalAPI.js:15:16:15:24 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:21:12:27:5 | {\\n      ... }\\n    } |
+| tst-UntrustedDataToExternalAPI.js:22:12:26:9 | {\\n      ...       } |
+| tst-UntrustedDataToExternalAPI.js:23:16:25:13 | {\\n      ...       } |
+| tst-UntrustedDataToExternalAPI.js:24:20:24:42 | [JSON.p ... usted)] |
+| tst-UntrustedDataToExternalAPI.js:24:20:24:42 | [JSON.p ... usted)] |
+| tst-UntrustedDataToExternalAPI.js:24:21:24:41 | JSON.pa ... rusted) |
+| tst-UntrustedDataToExternalAPI.js:24:32:24:40 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:30:13:30:30 | getDeepUntrusted() |
+| tst-UntrustedDataToExternalAPI.js:30:13:30:30 | getDeepUntrusted() |
+| tst-UntrustedDataToExternalAPI.js:30:13:30:30 | getDeepUntrusted() |
+| tst-UntrustedDataToExternalAPI.js:33:14:33:22 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:33:14:33:22 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:34:34:34:42 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:34:34:34:42 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} |
+| tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} |
+| tst-UntrustedDataToExternalAPI.js:42:8:42:16 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:43:8:43:16 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:44:8:44:16 | untrusted |
+edges
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:5:13:5:21 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:5:13:5:21 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:6:17:6:25 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:6:17:6:25 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:7:16:7:24 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:7:16:7:24 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:8:31:8:39 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:8:31:8:39 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:9:18:9:26 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:9:18:9:26 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:10:19:10:27 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:11:20:11:28 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:11:20:11:28 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:15:16:15:24 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:24:32:24:40 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:30:13:30:30 | getDeepUntrusted() |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:30:13:30:30 | getDeepUntrusted() |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:33:14:33:22 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:33:14:33:22 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:34:34:34:42 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:34:34:34:42 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:42:8:42:16 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:43:8:43:16 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:44:8:44:16 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted |
+| tst-UntrustedDataToExternalAPI.js:10:19:10:27 | untrusted | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] |
+| tst-UntrustedDataToExternalAPI.js:10:19:10:27 | untrusted | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] |
+| tst-UntrustedDataToExternalAPI.js:10:19:10:27 | untrusted | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] |
+| tst-UntrustedDataToExternalAPI.js:14:12:16:9 | {\\n      ...       } | tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } |
+| tst-UntrustedDataToExternalAPI.js:14:12:16:9 | {\\n      ...       } | tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } |
+| tst-UntrustedDataToExternalAPI.js:15:16:15:24 | untrusted | tst-UntrustedDataToExternalAPI.js:14:12:16:9 | {\\n      ...       } |
+| tst-UntrustedDataToExternalAPI.js:21:12:27:5 | {\\n      ... }\\n    } | tst-UntrustedDataToExternalAPI.js:30:13:30:30 | getDeepUntrusted() |
+| tst-UntrustedDataToExternalAPI.js:21:12:27:5 | {\\n      ... }\\n    } | tst-UntrustedDataToExternalAPI.js:30:13:30:30 | getDeepUntrusted() |
+| tst-UntrustedDataToExternalAPI.js:22:12:26:9 | {\\n      ...       } | tst-UntrustedDataToExternalAPI.js:21:12:27:5 | {\\n      ... }\\n    } |
+| tst-UntrustedDataToExternalAPI.js:23:16:25:13 | {\\n      ...       } | tst-UntrustedDataToExternalAPI.js:22:12:26:9 | {\\n      ...       } |
+| tst-UntrustedDataToExternalAPI.js:24:20:24:42 | [JSON.p ... usted)] | tst-UntrustedDataToExternalAPI.js:23:16:25:13 | {\\n      ...       } |
+| tst-UntrustedDataToExternalAPI.js:24:20:24:42 | [JSON.p ... usted)] | tst-UntrustedDataToExternalAPI.js:23:16:25:13 | {\\n      ...       } |
+| tst-UntrustedDataToExternalAPI.js:24:21:24:41 | JSON.pa ... rusted) | tst-UntrustedDataToExternalAPI.js:24:20:24:42 | [JSON.p ... usted)] |
+| tst-UntrustedDataToExternalAPI.js:24:21:24:41 | JSON.pa ... rusted) | tst-UntrustedDataToExternalAPI.js:24:20:24:42 | [JSON.p ... usted)] |
+| tst-UntrustedDataToExternalAPI.js:24:32:24:40 | untrusted | tst-UntrustedDataToExternalAPI.js:24:21:24:41 | JSON.pa ... rusted) |
+| tst-UntrustedDataToExternalAPI.js:42:8:42:16 | untrusted | tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} |
+| tst-UntrustedDataToExternalAPI.js:42:8:42:16 | untrusted | tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} |
+| tst-UntrustedDataToExternalAPI.js:43:8:43:16 | untrusted | tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} |
+| tst-UntrustedDataToExternalAPI.js:43:8:43:16 | untrusted | tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} |
+| tst-UntrustedDataToExternalAPI.js:44:8:44:16 | untrusted | tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} |
+| tst-UntrustedDataToExternalAPI.js:44:8:44:16 | untrusted | tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} |
+#select
+| tst-UntrustedDataToExternalAPI.js:5:13:5:21 | untrusted | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:5:13:5:21 | untrusted | Call to external-lib() [param 0] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:6:17:6:25 | untrusted | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:6:17:6:25 | untrusted | Call to external-lib() [param 0 'x'] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:7:16:7:24 | untrusted | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:7:16:7:24 | untrusted | Call to external-lib() [param *] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:8:31:8:39 | untrusted | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:8:31:8:39 | untrusted | Call to external-lib() [param *] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:9:18:9:26 | untrusted | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:9:18:9:26 | untrusted | Call to external-lib() [param 0] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] | Call to external-lib() [param 0] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:11:20:11:28 | untrusted | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:11:20:11:28 | untrusted | Call to external-lib() [param 1] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } | Call to external-lib() [param 0 'x'] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:30:13:30:30 | getDeepUntrusted() | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:30:13:30:30 | getDeepUntrusted() | Call to external-lib() [param 0] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:33:14:33:22 | untrusted | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:33:14:33:22 | untrusted | Call to external-lib.get.[callback].[param 'res'].send() [param 0] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:34:34:34:42 | untrusted | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:34:34:34:42 | untrusted | Call to external-lib.get.[callback].[param 'req'].app.locals.something.foo() [param 0] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |
+| tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} | Call to lodash.merge() [param 1] with untrusted data from $@. | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | window.name |

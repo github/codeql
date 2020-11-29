@@ -3,7 +3,7 @@
  */
 
 import semmle.code.cpp.models.interfaces.Taint
-import semmle.code.cpp.models.implementations.Iterator
+import semmle.code.cpp.models.interfaces.Iterator
 
 /**
  * Additional model for standard container constructors that reference the
@@ -13,7 +13,7 @@ import semmle.code.cpp.models.implementations.Iterator
  * std::vector<std::string> v(100, potentially_tainted_string);
  * ```
  */
-class StdSequenceContainerConstructor extends Constructor, TaintFunction {
+private class StdSequenceContainerConstructor extends Constructor, TaintFunction {
   StdSequenceContainerConstructor() {
     this.getDeclaringType().hasQualifiedName("std", ["vector", "deque", "list", "forward_list"])
   }
@@ -49,7 +49,7 @@ class StdSequenceContainerConstructor extends Constructor, TaintFunction {
 /**
  * The standard container function `data`.
  */
-class StdSequenceContainerData extends TaintFunction {
+private class StdSequenceContainerData extends TaintFunction {
   StdSequenceContainerData() { this.hasQualifiedName("std", ["array", "vector"], "data") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -67,7 +67,7 @@ class StdSequenceContainerData extends TaintFunction {
 /**
  * The standard container functions `push_back` and `push_front`.
  */
-class StdSequenceContainerPush extends TaintFunction {
+private class StdSequenceContainerPush extends TaintFunction {
   StdSequenceContainerPush() {
     this.hasQualifiedName("std", "vector", "push_back") or
     this.hasQualifiedName("std", "deque", ["push_back", "push_front"]) or
@@ -85,7 +85,7 @@ class StdSequenceContainerPush extends TaintFunction {
 /**
  * The standard container functions `front` and `back`.
  */
-class StdSequenceContainerFrontBack extends TaintFunction {
+private class StdSequenceContainerFrontBack extends TaintFunction {
   StdSequenceContainerFrontBack() {
     this.hasQualifiedName("std", "array", ["front", "back"]) or
     this.hasQualifiedName("std", "vector", ["front", "back"]) or
@@ -104,7 +104,7 @@ class StdSequenceContainerFrontBack extends TaintFunction {
 /**
  * The standard container functions `insert` and `insert_after`.
  */
-class StdSequenceContainerInsert extends TaintFunction {
+private class StdSequenceContainerInsert extends TaintFunction {
   StdSequenceContainerInsert() {
     this.hasQualifiedName("std", ["vector", "deque", "list"], "insert") or
     this.hasQualifiedName("std", ["forward_list"], "insert_after")
@@ -141,7 +141,7 @@ class StdSequenceContainerInsert extends TaintFunction {
 /**
  * The standard container function `assign`.
  */
-class StdSequenceContainerAssign extends TaintFunction {
+private class StdSequenceContainerAssign extends TaintFunction {
   StdSequenceContainerAssign() {
     this.hasQualifiedName("std", ["vector", "deque", "list", "forward_list"], "assign")
   }
@@ -173,7 +173,7 @@ class StdSequenceContainerAssign extends TaintFunction {
 /**
  * The standard container `swap` functions.
  */
-class StdSequenceContainerSwap extends TaintFunction {
+private class StdSequenceContainerSwap extends TaintFunction {
   StdSequenceContainerSwap() {
     this.hasQualifiedName("std", ["array", "vector", "deque", "list", "forward_list"], "swap")
   }
@@ -191,7 +191,7 @@ class StdSequenceContainerSwap extends TaintFunction {
 /**
  * The standard container functions `at` and `operator[]`.
  */
-class StdSequenceContainerAt extends TaintFunction {
+private class StdSequenceContainerAt extends TaintFunction {
   StdSequenceContainerAt() {
     this.hasQualifiedName("std", ["vector", "array", "deque"], ["at", "operator[]"])
   }
@@ -203,6 +203,37 @@ class StdSequenceContainerAt extends TaintFunction {
     or
     // reverse flow from returned reference to the qualifier
     input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The standard vector `emplace` function.
+ */
+class StdVectorEmplace extends TaintFunction {
+  StdVectorEmplace() { this.hasQualifiedName("std", "vector", "emplace") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from any parameter except the position iterator to qualifier and return value
+    // (here we assume taint flow from any constructor parameter to the constructed object)
+    input.isParameter([1 .. getNumberOfParameters() - 1]) and
+    (
+      output.isQualifierObject() or
+      output.isReturnValue()
+    )
+  }
+}
+
+/**
+ * The standard vector `emplace_back` function.
+ */
+class StdVectorEmplaceBack extends TaintFunction {
+  StdVectorEmplaceBack() { this.hasQualifiedName("std", "vector", "emplace_back") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from any parameter to qualifier
+    // (here we assume taint flow from any constructor parameter to the constructed object)
+    input.isParameter([0 .. getNumberOfParameters() - 1]) and
     output.isQualifierObject()
   }
 }

@@ -465,8 +465,8 @@ foreach.cs:
 #    5|               5: [IntLiteral] 6
 #    5|               6: [IntLiteral] 7
 #    7|       1: [ForeachStmt] foreach (... ... in ...) ...
-#    7|         -1: [TypeMention] int
 #    7|         0: [LocalVariableDeclExpr] Int32 items
+#    7|           0: [TypeMention] int
 #    7|         1: [LocalVariableAccess] access to local variable a_array
 #    8|         2: [BlockStmt] {...}
 #    9|           0: [LocalVariableDeclStmt] ... ...;
@@ -725,9 +725,9 @@ isexpr.cs:
 #   12|           1: [LocalVariableAccess] access to local variable obj
 #   13|       2: [IfStmt] if (...) ...
 #   13|         0: [IsExpr] ... is ...
-#   13|           -1: [TypeMention] Is_A
 #   13|           0: [LocalVariableAccess] access to local variable o
 #   13|           1: [VariablePatternExpr] Is_A tmp
+#   13|             0: [TypeMention] Is_A
 #   14|         1: [BlockStmt] {...}
 #   15|           0: [LocalVariableDeclStmt] ... ...;
 #   15|             0: [LocalVariableDeclAndInitExpr] Int32 res = ...

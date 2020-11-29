@@ -9,7 +9,7 @@ import semmle.code.cpp.models.interfaces.Deallocation
 /**
  * A deallocation function such as `free`.
  */
-class StandardDeallocationFunction extends DeallocationFunction {
+private class StandardDeallocationFunction extends DeallocationFunction {
   int freedArg;
 
   StandardDeallocationFunction() {
@@ -90,31 +90,9 @@ class StandardDeallocationFunction extends DeallocationFunction {
 }
 
 /**
- * An `operator delete` or `operator delete[]` function that may be associated
- * with `delete` or `delete[]` expressions.  Note that `delete` and `delete[]`
- * are not function calls, but these functions may also be called directly.
- */
-class OperatorDeleteDeallocationFunction extends DeallocationFunction {
-  OperatorDeleteDeallocationFunction() {
-    exists(string name |
-      hasGlobalName(name) and
-      (
-        // operator delete(pointer, ...)
-        name = "operator delete"
-        or
-        // operator delete[](pointer, ...)
-        name = "operator delete[]"
-      )
-    )
-  }
-
-  override int getFreedArg() { result = 0 }
-}
-
-/**
  * An deallocation expression that is a function call, such as call to `free`.
  */
-class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
+private class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
   DeallocationFunction target;
 
   CallDeallocationExpr() { target = getTarget() }
@@ -125,7 +103,7 @@ class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
 /**
  * An deallocation expression that is a `delete` expression.
  */
-class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
+private class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
   DeleteDeallocationExpr() { this instanceof DeleteExpr }
 
   override Expr getFreedExpr() { result = getExpr() }
@@ -134,7 +112,7 @@ class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
 /**
  * An deallocation expression that is a `delete []` expression.
  */
-class DeleteArrayDeallocationExpr extends DeallocationExpr, DeleteArrayExpr {
+private class DeleteArrayDeallocationExpr extends DeallocationExpr, DeleteArrayExpr {
   DeleteArrayDeallocationExpr() { this instanceof DeleteArrayExpr }
 
   override Expr getFreedExpr() { result = getExpr() }

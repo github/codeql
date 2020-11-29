@@ -18,8 +18,40 @@ class Declaration extends NamedElement, @dotnet_declaration {
   /** Gets the type containing this declaration, if any. */
   Type getDeclaringType() { none() }
 
-  /** Gets the unbound version of this declaration. */
-  Declaration getSourceDeclaration() { result = this }
+  /**
+   * DEPRECATED: Use `getUnboundDeclaration()` instaed.
+   *
+   * Gets the unbound version of this declaration.
+   */
+  deprecated final Declaration getSourceDeclaration() { result = this.getUnboundDeclaration() }
+
+  /**
+   * Gets the unbound version of this declaration, that is, the declaration where
+   * all type arguments have been removed. For example, in
+   *
+   * ```csharp
+   * class C<T>
+   * {
+   *     class Nested
+   *     {
+   *     }
+   *
+   *     void Method<S>() { }
+   * }
+   * ```
+   *
+   * we have the following
+   *
+   * | Declaration             | Unbound declaration |
+   * |-------------------------|---------------------|
+   * | `C<int>`                | `C<>`               |
+   * | `C<>.Nested`            | `C<>.Nested`        |
+   * | `C<int>.Nested`         | `C<>.Nested`        |
+   * | `C<>.Method<>`          | `C<>.Method<>`      |
+   * | `C<int>.Method<>`       | `C<>.Method<>`      |
+   * | `C<int>.Method<string>` | `C<>.Method<>`      |
+   */
+  Declaration getUnboundDeclaration() { result = this }
 }
 
 /** A member of a type. */

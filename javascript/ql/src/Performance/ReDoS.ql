@@ -45,9 +45,7 @@ import javascript
  *
  * This is what the query does. It makes no attempt to construct a prefix
  * leading into `q`, and only a weak one to construct a suffix that ensures
- * rejection; this causes some false positives. Also, the query does not fully
- * handle character classes and does not handle various other features at all;
- * this causes false negatives.
+ * rejection; this causes some false positives.
  *
  * Finally, sometimes it depends on the translation whether the NFA generated
  * for a regular expression has a pumpable fork or not. We implement one
@@ -63,20 +61,23 @@ import javascript
  *   * Transitions between states may be labelled with epsilon, or an abstract
  *     input symbol.
  *   * Each abstract input symbol represents a set of concrete input characters:
- *     either a single character, a set of characters represented by a (positive)
+ *     either a single character, a set of characters represented by a
  *     character class, or the set of all characters.
  *   * The product automaton is constructed lazily, starting with pair states
  *     `(q, q)` where `q` is a fork, and proceding along an over-approximate
  *     step relation.
  *   * The over-approximate step relation allows transitions along pairs of
- *     abstract input symbols as long as the symbols are not trivially incompatible.
+ *     abstract input symbols where the symbols have overlap in the characters they accept.
  *   * Once a trace of pairs of abstract input symbols that leads from a fork
  *     back to itself has been identified, we attempt to construct a concrete
  *     string corresponding to it, which may fail.
  *   * Instead of trying to construct a suffix that makes the automaton fail,
- *     we ensure that it isn't possible to reach the accepting state from the
- *     fork along epsilon transitions. In this case, it is very likely (though
- *     not guaranteed) that a rejecting suffix exists.
+ *     we ensure that repeating `n` copies of `w` does not reach a state that is
+ *     an epsilon transition from the accepting state.
+ *     This assumes that the accepting state accepts any suffix.
+ *     Regular expressions - where the end anchor `$` is used - have an accepting state
+ *     that does not accept all suffixes. Such regular expression not accurately
+ *     modelled by this assumption, which can cause false negatives.
  */
 
 /**
@@ -103,7 +104,15 @@ class RegExpRoot extends RegExpTerm {
    */
   predicate isRelevant() {
     // there is at least one repetition
-    exists(RegExpRepetition rep | getRoot(rep) = this) and
+    exists(RegExpRepetition rep | getRoot(rep) = this |
+      // that could possibly match the same thing in multiple ways.
+      exists(RegExpTerm child |
+        child instanceof RegExpAlt or
+        child instanceof RegExpQuantifier
+      |
+        child.getParent+() = rep
+      )
+    ) and
     // there are no lookbehinds
     not exists(RegExpLookbehind lbh | getRoot(lbh) = this) and
     // is actually used as a RegExp
@@ -123,6 +132,13 @@ class RegExpRepetition extends RegExpParent {
 }
 
 /**
+ * A constant in a regular expression that represents valid Unicode character(s).
+ */
+class RegexpCharacterConstant extends RegExpConstant {
+  RegexpCharacterConstant() { this.isCharacter() }
+}
+
+/**
  * Gets the root containing the given term, that is, the root of the literal,
  * or a branch of the root disjunction.
  */
@@ -136,15 +152,21 @@ RegExpRoot getRoot(RegExpTerm term) {
  */
 newtype TInputSymbol =
   /** An input symbol corresponding to character `c`. */
-  Char(string c) { c = any(RegExpConstant cc).getValue().charAt(_) } or
+  Char(string c) {
+    c = any(RegexpCharacterConstant cc | getRoot(cc).isRelevant()).getValue().charAt(_)
+  } or
   /**
    * An input symbol representing all characters matched by
-   * (positive, non-universal) character class `recc`.
+   * (non-universal) character class `recc`.
    */
-  CharClass(RegExpCharacterClass recc) {
+  CharClass(RegExpTerm recc) {
     getRoot(recc).isRelevant() and
-    not recc.isInverted() and
-    not recc.isUniversalClass()
+    (
+      recc instanceof RegExpCharacterClass and
+      not recc.(RegExpCharacterClass).isUniversalClass()
+    )
+    or
+    recc instanceof RegExpCharacterClassEscape
   } or
   /** An input symbol representing all characters matched by `.`. */
   Dot() or
@@ -152,6 +174,28 @@ newtype TInputSymbol =
   Any() or
   /** An epsilon transition in the automaton. */
   Epsilon()
+
+/**
+ * Holds if `a` and `b` are input symbols from the same regexp.
+ * (And not a `Dot()`, `Any()` or `Epsilon()`)
+ */
+private predicate sharesRoot(TInputSymbol a, TInputSymbol b) {
+  exists(RegExpRoot root |
+    belongsTo(a, root) and
+    belongsTo(b, root)
+  )
+}
+
+/**
+ * Holds if the `a` is an input symbol from a regexp that has root `root`.
+ */
+private predicate belongsTo(TInputSymbol a, RegExpRoot root) {
+  exists(RegExpTerm term | getRoot(term) = root |
+    a = Char(term.(RegexpCharacterConstant).getValue().charAt(_))
+    or
+    a = CharClass(term)
+  )
+}
 
 /**
  * An abstract input symbol, representing a set of concrete characters.
@@ -162,7 +206,7 @@ class InputSymbol extends TInputSymbol {
   string toString() {
     this = Char(result)
     or
-    result = any(RegExpCharacterClass recc | this = CharClass(recc)).toString()
+    result = any(RegExpTerm recc | this = CharClass(recc)).toString()
     or
     this = Dot() and result = "."
     or
@@ -171,79 +215,240 @@ class InputSymbol extends TInputSymbol {
 }
 
 /**
- * Gets a lower bound on the characters matched by the given character class term.
+ * An abstract input symbol that represents a character class.
  */
-string getCCLowerBound(RegExpTerm t) {
-  t.getParent() instanceof RegExpCharacterClass and
-  (
-    result = t.(RegExpConstant).getValue()
-    or
-    t.(RegExpCharacterRange).isRange(result, _)
-    or
-    exists(string name | name = t.(RegExpCharacterClassEscape).getValue() |
-      name = "w" and result = "0"
+abstract class CharacterClass extends InputSymbol {
+  /**
+   * Gets a character that is relevant for intersection-tests involving this
+   * character class.
+   *
+   * Specifically, this is any of the characters mentioned explicitly in the
+   * character class, offset by one if it is inverted. For character class escapes,
+   * the result is as if the class had been written out as a series of intervals.
+   *
+   * This set is large enough to ensure that for any two intersecting character
+   * classes, one contains a relevant character from the other.
+   */
+  abstract string getARelevantChar();
+
+  /**
+   * Holds if this character class matches `char`.
+   */
+  bindingset[char]
+  abstract predicate matches(string char);
+
+  /**
+   * Gets a character matched by this character class.
+   */
+  string choose() { result = getARelevantChar() and matches(result) }
+}
+
+/**
+ * Provides implementations for `CharacterClass`.
+ */
+private module CharacterClasses {
+  /**
+   * Holds if the character class `cc` has a child (constant or range) that matches `char`.
+   */
+  pragma[noinline]
+  predicate hasChildThatMatches(RegExpCharacterClass cc, string char) {
+    exists(CharClass(cc)) and
+    exists(RegExpTerm child | child = cc.getAChild() |
+      char = child.(RegexpCharacterConstant).getValue()
       or
-      name = "W" and result = ""
+      rangeMatchesOnLetterOrDigits(child, char)
       or
-      name = "s" and result = ""
+      not rangeMatchesOnLetterOrDigits(child, _) and
+      char = getARelevantChar() and
+      exists(string lo, string hi | child.(RegExpCharacterRange).isRange(lo, hi) |
+        lo <= char and
+        char <= hi
+      )
       or
-      name = "S" and result = ""
+      exists(RegExpCharacterClassEscape escape | escape = child |
+        escape.getValue() = escape.getValue().toLowerCase() and
+        classEscapeMatches(escape.getValue(), char)
+        or
+        char = getARelevantChar() and
+        escape.getValue() = escape.getValue().toUpperCase() and
+        not classEscapeMatches(escape.getValue().toLowerCase(), char)
+      )
     )
-  )
-}
+  }
 
-/**
- * The highest character used in a regular expression. Used to represent intervals without an upper bound.
- */
-string highestCharacter() { result = max(RegExpConstant c | | c.getValue()) }
-
-/**
- * Gets an upper bound on the characters matched by the given character class term.
- */
-string getCCUpperBound(RegExpTerm t) {
-  t.getParent() instanceof RegExpCharacterClass and
-  (
-    result = t.(RegExpConstant).getValue()
-    or
-    t.(RegExpCharacterRange).isRange(_, result)
-    or
-    exists(string name | name = t.(RegExpCharacterClassEscape).getValue() |
-      name = "w" and result = "z"
-      or
-      name = "W" and result = highestCharacter()
-      or
-      name = "s" and result = highestCharacter()
-      or
-      name = "S" and result = highestCharacter()
+  /**
+   * Holds if `range` is a range on lower-case, upper-case, or digits, and matches `char`.
+   * This predicate is used to restrict the searchspace for ranges by only joining `getAnyPossiblyMatchedChar`
+   * on a few ranges.
+   */
+  private predicate rangeMatchesOnLetterOrDigits(RegExpCharacterRange range, string char) {
+    exists(string lo, string hi |
+      range.isRange(lo, hi) and lo = lowercaseLetter() and hi = lowercaseLetter()
+    |
+      lo <= char and
+      char <= hi and
+      char = lowercaseLetter()
     )
-  )
-}
+    or
+    exists(string lo, string hi |
+      range.isRange(lo, hi) and lo = upperCaseLetter() and hi = upperCaseLetter()
+    |
+      lo <= char and
+      char <= hi and
+      char = upperCaseLetter()
+    )
+    or
+    exists(string lo, string hi | range.isRange(lo, hi) and lo = digit() and hi = digit() |
+      lo <= char and
+      char <= hi and
+      char = digit()
+    )
+  }
 
-/**
- * Holds if `s` belongs to `l` and is a character class whose set of matched characters is contained
- * in the interval `lo-hi`.
- */
-predicate hasBounds(RegExpRoot l, InputSymbol s, string lo, string hi) {
-  exists(RegExpCharacterClass cc | s = CharClass(cc) |
-    l = getRoot(cc) and
-    lo = min(getCCLowerBound(cc.getAChild())) and
-    hi = max(getCCUpperBound(cc.getAChild()))
-  )
-}
+  private string lowercaseLetter() { result = "abdcefghijklmnopqrstuvwxyz".charAt(_) }
 
-/**
- * Holds if `s1` and `s2` possibly have a non-empty intersection.
- *
- * This predicate is over-approximate; it is only used for pruning the search space.
- */
-predicate compatible(InputSymbol s1, InputSymbol s2) {
-  exists(RegExpRoot l, string lo1, string lo2, string hi1, string hi2 |
-    hasBounds(l, s1, lo1, hi1) and
-    hasBounds(l, s2, lo2, hi2) and
-    max(string s | s = lo1 or s = lo2) <= min(string s | s = hi1 or s = hi2)
-  )
-  or
-  exists(intersect(s1, s2))
+  private string upperCaseLetter() { result = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(_) }
+
+  private string digit() { result = [0 .. 9].toString() }
+
+  /**
+   * Gets a char that could be matched by a regular expression.
+   * Includes all printable ascii chars, all constants mentioned in a regexp, and all chars matches by the regexp `/\s|\d|\w/`.
+   */
+  string getARelevantChar() {
+    exists(ascii(result))
+    or
+    exists(RegexpCharacterConstant c | result = c.getValue().charAt(_))
+    or
+    classEscapeMatches(_, result)
+  }
+
+  /**
+   * Gets a char that is mentioned in the character class `c`.
+   */
+  private string getAMentionedChar(RegExpCharacterClass c) {
+    exists(RegExpTerm child | child = c.getAChild() |
+      result = child.(RegexpCharacterConstant).getValue()
+      or
+      child.(RegExpCharacterRange).isRange(result, _)
+      or
+      child.(RegExpCharacterRange).isRange(_, result)
+      or
+      exists(RegExpCharacterClassEscape escape | child = escape |
+        result = min(string s | classEscapeMatches(escape.getValue().toLowerCase(), s))
+        or
+        result = max(string s | classEscapeMatches(escape.getValue().toLowerCase(), s))
+      )
+    )
+  }
+
+  /**
+   * An implementation of `CharacterClass` for positive (non inverted) character classes.
+   */
+  private class PositiveCharacterClass extends CharacterClass {
+    RegExpCharacterClass cc;
+
+    PositiveCharacterClass() { this = CharClass(cc) and not cc.isInverted() }
+
+    override string getARelevantChar() { result = getAMentionedChar(cc) }
+
+    override predicate matches(string char) { hasChildThatMatches(cc, char) }
+  }
+
+  /**
+   * An implementation of `CharacterClass` for inverted character classes.
+   */
+  private class InvertedCharacterClass extends CharacterClass {
+    RegExpCharacterClass cc;
+
+    InvertedCharacterClass() { this = CharClass(cc) and cc.isInverted() }
+
+    override string getARelevantChar() {
+      result = nextChar(getAMentionedChar(cc)) or
+      nextChar(result) = getAMentionedChar(cc)
+    }
+
+    bindingset[char]
+    override predicate matches(string char) { not hasChildThatMatches(cc, char) }
+  }
+
+  /**
+   * Holds if the character class escape `clazz` (\d, \s, or \w) matches `char`.
+   */
+  pragma[noinline]
+  private predicate classEscapeMatches(string clazz, string char) {
+    clazz = "d" and
+    char = "0123456789".charAt(_)
+    or
+    clazz = "s" and
+    (
+      char = [" ", "\t", "\r", "\n"]
+      or
+      char = getARelevantChar() and
+      char.regexpMatch("\\u000b|\\u000c") // \v|\f (vertical tab | form feed)
+    )
+    or
+    clazz = "w" and
+    char = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".charAt(_)
+  }
+
+  /**
+   * An implementation of `CharacterClass` for \d, \s, and \w.
+   */
+  private class PositiveCharacterClassEscape extends CharacterClass {
+    RegExpCharacterClassEscape cc;
+
+    PositiveCharacterClassEscape() { this = CharClass(cc) and cc.getValue() = ["d", "s", "w"] }
+
+    override string getARelevantChar() {
+      cc.getValue() = "d" and
+      result = ["0", "9"]
+      or
+      cc.getValue() = "s" and
+      result = [" "]
+      or
+      cc.getValue() = "w" and
+      result = ["a", "Z", "_", "0", "9"]
+    }
+
+    override predicate matches(string char) { classEscapeMatches(cc.getValue(), char) }
+
+    override string choose() {
+      cc.getValue() = "d" and
+      result = "9"
+      or
+      cc.getValue() = "s" and
+      result = [" "]
+      or
+      cc.getValue() = "w" and
+      result = "a"
+    }
+  }
+
+  /**
+   * An implementation of `CharacterClass` for \D, \S, and \W.
+   */
+  private class NegativeCharacterClassEscape extends CharacterClass {
+    RegExpCharacterClassEscape cc;
+
+    NegativeCharacterClassEscape() { this = CharClass(cc) and cc.getValue() = ["D", "S", "W"] }
+
+    override string getARelevantChar() {
+      cc.getValue() = "D" and
+      result = ["a", "Z", "!"]
+      or
+      cc.getValue() = "S" and
+      result = ["a", "9", "!"]
+      or
+      cc.getValue() = "W" and
+      result = [" ", "!"]
+    }
+
+    bindingset[char]
+    override predicate matches(string char) {
+      not classEscapeMatches(cc.getValue().toLowerCase(), char)
+    }
+  }
 }
 
 newtype TState =
@@ -252,7 +457,7 @@ newtype TState =
     (
       i = 0
       or
-      exists(t.(RegExpConstant).getValue().charAt(i))
+      exists(t.(RegexpCharacterConstant).getValue().charAt(i))
     )
   } or
   Accept(RegExpRoot l) { l.isRelevant() }
@@ -324,7 +529,7 @@ State after(RegExpTerm t) {
  * Holds if the NFA has a transition from `q1` to `q2` labelled with `lbl`.
  */
 predicate delta(State q1, EdgeLabel lbl, State q2) {
-  exists(RegExpConstant s, int i |
+  exists(RegexpCharacterConstant s, int i |
     q1 = Match(s, i) and
     lbl = Char(s.getValue().charAt(i)) and
     (
@@ -342,7 +547,15 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
   exists(RegExpCharacterClass cc |
     cc.isUniversalClass() and q1 = before(cc) and lbl = Any() and q2 = after(cc)
     or
-    q1 = before(cc) and lbl = CharClass(cc) and q2 = after(cc)
+    q1 = before(cc) and
+    lbl = CharClass(cc) and
+    q2 = after(cc)
+  )
+  or
+  exists(RegExpCharacterClassEscape cc |
+    q1 = before(cc) and
+    lbl = CharClass(cc) and
+    q2 = after(cc)
   )
   or
   exists(RegExpAlt alt | lbl = Epsilon() | q1 = before(alt) and q2 = before(alt.getAChild()))
@@ -407,6 +620,10 @@ class StatePair extends TStatePair {
   StatePair() { this = MkStatePair(q1, q2) }
 
   string toString() { result = "(" + q1 + ", " + q2 + ")" }
+
+  State getLeft() { result = q1 }
+
+  State getRight() { result = q2 }
 }
 
 /**
@@ -444,10 +661,10 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
     delta(q1, s1, r1) and
     q2 = epsilonSucc*(q) and
     delta(q2, s2, r2) and
-    // Use pragma[noopt] to prevent compatible(s1,s2) from being the starting point of the join.
+    // Use pragma[noopt] to prevent intersect(s1,s2) from being the starting point of the join.
     // From (s1,s2) it would find a huge number of intermediate state pairs (q1,q2) originating from different literals,
     // and discover at the end that no `q` can reach both `q1` and `q2` by epsilon transitions.
-    compatible(s1, s2)
+    exists(intersect(s1, s2))
   |
     s1 != s2
     or
@@ -469,11 +686,13 @@ predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
  * Holds if there are transitions from the components of `q` to `r1` and `r2`
  * labelled with `s1` and `s2`, respectively.
  */
+pragma[noopt]
 predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
-  exists(State q1, State q2 | q = MkStatePair(q1, q2) |
+  exists(State q1, State q2 | q.getLeft() = q1 and q.getRight() = q2 |
     deltaClosed(q1, s1, r1) and
     deltaClosed(q2, s2, r2) and
-    compatible(s1, s2)
+    // use noopt to force the join on `intersect` to happen last.
+    exists(intersect(s1, s2))
   )
 }
 
@@ -493,31 +712,43 @@ newtype Trace =
   }
 
 /**
+ * Gets the minimum char that is matched by both the character classes `c` and `d`.
+ */
+private string getMinOverlapBetweenCharacterClasses(CharacterClass c, CharacterClass d) {
+  result = min(getAOverlapBetweenCharacterClasses(c, d))
+}
+
+/**
+ * Gets a char that is matched by both the character classes `c` and `d`.
+ * And `c` and `d` is not the same character class.
+ */
+private string getAOverlapBetweenCharacterClasses(CharacterClass c, CharacterClass d) {
+  sharesRoot(c, d) and
+  result = [c.getARelevantChar(), d.getARelevantChar()] and
+  c.matches(result) and
+  d.matches(result) and
+  not c = d
+}
+
+/**
  * Gets a character that is represented by both `c` and `d`.
  */
 string intersect(InputSymbol c, InputSymbol d) {
   c = Char(result) and
+  d = getAnInputSymbolMatching(result) and
   (
-    d = Char(result)
+    sharesRoot(c, d)
     or
-    exists(RegExpCharacterClass cc | d = CharClass(cc) |
-      exists(RegExpTerm child | child = cc.getAChild() |
-        result = child.(RegExpConstant).getValue()
-        or
-        exists(string lo, string hi | child.(RegExpCharacterRange).isRange(lo, hi) |
-          lo <= result and result <= hi
-        )
-      )
-    )
-    or
-    d = Dot() and
-    not (result = "\n" or result = "\r")
+    d = Dot()
     or
     d = Any()
   )
   or
-  exists(RegExpCharacterClass cc | c = CharClass(cc) and result = choose(cc) |
-    d = CharClass(cc)
+  result = getMinOverlapBetweenCharacterClasses(c, d)
+  or
+  result = c.(CharacterClass).choose() and
+  (
+    d = c
     or
     d = Dot() and
     not (result = "\n" or result = "\r")
@@ -538,15 +769,35 @@ string intersect(InputSymbol c, InputSymbol d) {
 }
 
 /**
- * Gets a character matched by character class `cc`.
+ * Gets a symbol that matches `char`.
  */
-string choose(RegExpCharacterClass cc) {
-  result =
-    min(string c |
-      exists(RegExpTerm child | child = cc.getAChild() |
-        c = child.(RegExpConstant).getValue() or
-        child.(RegExpCharacterRange).isRange(c, _)
-      )
+bindingset[char]
+InputSymbol getAnInputSymbolMatching(string char) {
+  result = Char(char)
+  or
+  result.(CharacterClass).matches(char)
+  or
+  result = Dot() and
+  not (char = "\n" or char = "\r")
+  or
+  result = Any()
+}
+
+/**
+ * Gets the char after `c` (from a simplified ASCII table).
+ */
+string nextChar(string c) { exists(int code | code = ascii(c) | code + 1 = ascii(result)) }
+
+/**
+ * Gets an approximation for the ASCII code for `char`.
+ * Only the easily printable chars are included (so no newline, tab, null, etc).
+ */
+int ascii(string char) {
+  char =
+    rank[result](string c |
+      c =
+        "! \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+            .charAt(_)
     )
 }
 
@@ -566,6 +817,7 @@ string concretise(Trace t) {
  * a path from `r` back to `(fork, fork)` with `rem` steps.
  */
 predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem) {
+  // base case
   exists(InputSymbol s1, InputSymbol s2, State q1, State q2 |
     isFork(fork, s1, s2, q1, q2) and
     r = MkStatePair(q1, q2) and
@@ -573,11 +825,12 @@ predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem) {
     rem = statePairDist(r, MkStatePair(fork, fork))
   )
   or
+  // recursive case
   exists(StatePair p, Trace v, InputSymbol s1, InputSymbol s2 |
     isReachableFromFork(fork, p, v, rem + 1) and
     step(p, s1, s2, r) and
     w = Step(s1, s2, v) and
-    rem > 0
+    rem >= statePairDist(r, MkStatePair(fork, fork))
   )
 }
 
@@ -608,14 +861,21 @@ predicate isPumpable(State fork, string w) {
 }
 
 /**
- * Gets a state that can be reached from pumpable `fork` consuming
- * the first `i+1` characters of `w`.
+ * Gets a state that can be reached from pumpable `fork` consuming all
+ * chars in `w` any number of times followed by the first `i+1` characters of `w`.
  *
- * Character classes are overapproximated as intervals; for example,
- * `[a-ln-z]` is treated the same as `[a-z]`, and hence considered
- * to match `m`, even though in fact it does not. This is fine for
- * our purposes, since we only use this predicate to avoid false
- * positives.
+ * This predicate is used to ensure that the accepting state is not reached from the fork by repeating `w`.
+ * This works under the assumption that any accepting state accepts all suffixes.
+ * For example, a regexp like `/^(a+)+/` will accept any string as long the prefix is some number of `"a"`s,
+ * and it is therefore not possible to construct a rejected suffix.
+ * This assumption breaks on regular expression that use the anchor `$`, e.g: `/^(a+)+$/`, and such regular
+ * expression are not accurately modeled by this query.
+ *
+ * The string `w` is repeated any number of times because it needs to be
+ * infinitely repeatedable for the attack to work.
+ * For a regular expression `/((ab)+)*abab/` the accepting state is not reachable from the fork
+ * using epsilon transitions. But any attempt at repeating `w` will end in the accepting state.
+ * This also relies on the assumption that any accepting state will accept all suffixes.
  */
 State process(State fork, string w, int i) {
   isPumpable(fork, w) and
@@ -623,11 +883,12 @@ State process(State fork, string w, int i) {
     i = 0 and prev = fork
     or
     prev = process(fork, w, i - 1)
+    or
+    // repeat until fixpoint
+    i = 0 and
+    prev = process(fork, w, w.length() - 1)
   |
-    exists(InputSymbol s |
-      deltaClosed(prev, s, result) and
-      exists(intersect(Char(w.charAt(i)), s))
-    )
+    deltaClosed(prev, getAnInputSymbolMatching(w.charAt(i)), result)
   )
 }
 
@@ -653,9 +914,14 @@ string rotate(string str, int i) {
 
 from RegExpTerm t, string c, int i
 where
-  c = min(string w | isPumpable(Match(t, i), w)) and
-  not isPumpable(epsilonSucc+(Match(t, i)), _) and
-  not epsilonSucc*(process(Match(t, i), c, c.length() - 1)) = Accept(_)
+  c =
+    min(string w |
+      isPumpable(Match(t, i), w) and
+      not isPumpable(epsilonSucc+(Match(t, i)), _) and
+      not epsilonSucc*(process(Match(t, i), w, _)) = Accept(_)
+    |
+      w order by w.length(), w
+    )
 select t,
   "This part of the regular expression may cause exponential backtracking on strings " +
     "containing many repetitions of '" + escape(rotate(c, i)) + "'."

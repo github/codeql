@@ -18,7 +18,7 @@ class Callable extends Declaration, @dotnet_callable {
   /** Holds if this callable has a body or an implementation. */
   predicate hasBody() { none() }
 
-  override Callable getSourceDeclaration() { result = Declaration.super.getSourceDeclaration() }
+  override Callable getUnboundDeclaration() { result = Declaration.super.getUnboundDeclaration() }
 
   /** Gets the number of parameters of this callable. */
   int getNumberOfParameters() { result = count(getAParameter()) }

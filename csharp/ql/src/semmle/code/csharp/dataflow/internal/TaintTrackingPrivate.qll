@@ -1,10 +1,10 @@
 private import csharp
 private import TaintTrackingPublic
 private import DataFlowImplCommon
+private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.ControlFlowReachability
-private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.commons.ComparisonTest
 private import cil
@@ -37,14 +37,13 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
     Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
   ) {
     exactScope = false and
+    isSuccessor = true and
     (
       e1 = e2.(ElementAccess).getQualifier() and
-      scope = e2 and
-      isSuccessor = true
+      scope = e2
       or
       e1 = e2.(AddExpr).getAnOperand() and
-      scope = e2 and
-      isSuccessor = true
+      scope = e2
       or
       // A comparison expression where taint can flow from one of the
       // operands if the other operand is a constant value.
@@ -54,51 +53,43 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
         other = ct.getAnArgument() and
         other.stripCasts().hasValue() and
         e1 != other and
-        scope = e2 and
-        isSuccessor = true
+        scope = e2
       )
       or
       e1 = e2.(UnaryLogicalOperation).getAnOperand() and
-      scope = e2 and
-      isSuccessor = false
+      scope = e2
       or
       e1 = e2.(BinaryLogicalOperation).getAnOperand() and
-      scope = e2 and
-      isSuccessor = false
+      scope = e2
       or
       // Taint from tuple argument
       e2 =
         any(TupleExpr te |
           e1 = te.getAnArgument() and
           te.isReadAccess() and
-          scope = e2 and
-          isSuccessor = true
+          scope = e2
         )
       or
       e1 = e2.(InterpolatedStringExpr).getAChild() and
-      scope = e2 and
-      isSuccessor = true
+      scope = e2
       or
       // Taint from tuple expression
       e2 =
         any(MemberAccess ma |
           ma.getQualifier().getType() instanceof TupleType and
           e1 = ma.getQualifier() and
-          scope = e2 and
-          isSuccessor = true
+          scope = e2
         )
       or
       e2 =
         any(OperatorCall oc |
           oc.getTarget().(ConversionOperator).fromLibrary() and
           e1 = oc.getAnArgument() and
-          scope = e2 and
-          isSuccessor = true
+          scope = e2
         )
       or
       e1 = e2.(AwaitExpr).getExpr() and
-      scope = e2 and
-      isSuccessor = true
+      scope = e2
     )
   }
 }
@@ -112,8 +103,6 @@ private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node n
 
 cached
 private module Cached {
-  private import Summaries
-
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.
@@ -130,19 +119,19 @@ private module Cached {
     (
       // Simple flow through library code is included in the exposed local
       // step relation, even though flow is technically inter-procedural
-      summaryThroughStep(nodeFrom, nodeTo, false)
+      FlowSummaryImpl::Private::throughStep(nodeFrom, nodeTo, false)
       or
       // Taint collection by adding a tainted element
       exists(DataFlow::ElementContent c |
         storeStep(nodeFrom, c, nodeTo)
         or
-        summarySetterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::setterStep(nodeFrom, c, nodeTo)
       )
       or
       exists(DataFlow::Content c |
         readStep(nodeFrom, c, nodeTo)
         or
-        summaryGetterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::getterStep(nodeFrom, c, nodeTo)
       |
         // Taint members
         c = any(TaintedMember m).(FieldOrProperty).getContent()
@@ -169,7 +158,7 @@ private module Cached {
     // tracking configurations where the source is a collection
     readStep(nodeFrom, TElementContent(), nodeTo)
     or
-    summaryLocalStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::localStep(nodeFrom, nodeTo, false)
     or
     nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
   }
