@@ -133,7 +133,6 @@
 | tst.js:317:18:317:23 | [\\w-]* | This part of the regular expression may cause exponential backtracking on strings starting with 'foo' and containing many repetitions of '-'. |
 | tst.js:320:15:320:19 | (ab)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'ab'. |
 | tst.js:323:14:323:20 | (a?a?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
-| tst.js:326:15:326:19 | (a?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.js:329:14:329:20 | (c?a?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.js:332:14:332:22 | (?:a\|a?)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.js:335:14:335:20 | (a?b?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |

@@ -322,7 +322,7 @@ var bad70 = /((ab)*)+c/;
 // NOT GOOD
 var bad71 = /(a?a?)*b/;
 
-// GOOD - but still flagged. only quadratic blowup. (The NFA looks very similar to `/(a*)*b/`)
+// GOOD
 var good38 = /(a?)*b/;
 
 // NOT GOOD - but wrong pump string. 

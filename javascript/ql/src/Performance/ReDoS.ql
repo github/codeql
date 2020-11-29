@@ -705,7 +705,25 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
     or
     r1 = r2 and
     q1 = q2 and
-    epsilonSucc+(q) = q
+    epsilonSucc+(q) = q and
+    exists(RegExpTerm term | term = q.getRepr() | term instanceof InfiniteRepetitionQuantifier) and
+    (
+      // There is either multiple possible "mid" states.
+      count(State mid |
+        mid = epsilonSucc+(q) and
+        q = epsilonSucc+(mid) and
+        not mid = q
+      ) > 2
+      or
+      // Or one of the mid states is an infinite quantifier itself
+      exists(State mid, RegExpTerm term |
+        mid = epsilonSucc+(q) and
+        q = epsilonSucc+(mid) and
+        not mid = q and
+        term = mid.getRepr() and
+        term instanceof InfiniteRepetitionQuantifier
+      )
+    )
   ) and
   stateInsideBacktracking(r1) and
   stateInsideBacktracking(r2)
