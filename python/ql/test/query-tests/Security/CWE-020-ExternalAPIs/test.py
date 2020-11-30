@@ -12,7 +12,8 @@ SECRET_KEY = b"SECRET_KEY"
 def hmac_example():
     data_raw = request.args.get("data").encode('utf-8')
     data = base64.decodebytes(data_raw)
-    digest = hmac.digest(SECRET_KEY, data, hashlib.sha256)
+    my_hmac = hmac.new(SECRET_KEY, data, hashlib.sha256)
+    digest = my_hmac.digest()
     print(digest)
     return "ok"
 
@@ -32,4 +33,5 @@ def unknown_lib_2():
 
 
 if __name__ == "__main__":
+    # http://127.0.0.1:5000/hmac-example?data=aGVsbG8gd29ybGQh
     app.run(debug=True)
