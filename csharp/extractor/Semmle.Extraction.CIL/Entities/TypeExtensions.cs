@@ -10,11 +10,17 @@ namespace Semmle.Extraction.CIL.Entities
         {
             return type.Kind switch
             {
-                HandleKind.TypeReference => ((TypeReferenceHandle)type).GetQualifiedName(metadataReader) == nonGenericName,
-                HandleKind.TypeDefinition => ((TypeDefinitionHandle)type).GetQualifiedName(metadataReader) == nonGenericName,
+                HandleKind.TypeReference => ((TypeReferenceHandle)type).HasMatchingName(nonGenericName, metadataReader),
+                HandleKind.TypeDefinition => ((TypeDefinitionHandle)type).HasMatchingName(nonGenericName, metadataReader),
                 _ => false,
             };
         }
+
+        public static bool HasMatchingName(this TypeReferenceHandle type, string nonGenericName, MetadataReader metadataReader) =>
+            type.GetQualifiedName(metadataReader) == nonGenericName;
+
+        public static bool HasMatchingName(this TypeDefinitionHandle type, string nonGenericName, MetadataReader metadataReader) =>
+            type.GetQualifiedName(metadataReader) == nonGenericName;
 
         private static string GetQualifiedName(this TypeDefinitionHandle typeHandle, MetadataReader metadataReader)
         {

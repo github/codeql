@@ -126,6 +126,11 @@ namespace Semmle.Extraction.CIL.Entities
             _ => throw new NotImplementedException()
         };
 
-        public bool IsSystemType(Type type) => type is PrimitiveType; // ??
+        public bool IsSystemType(Type type) => type switch
+        {
+            TypeReferenceType trt => trt.Handle.HasMatchingName("System.Type", cx.MdReader),
+            TypeDefinitionType tdt => tdt.Handle.HasMatchingName("System.Type", cx.MdReader),
+            _ => throw new NotImplementedException()
+        };
     }
 }

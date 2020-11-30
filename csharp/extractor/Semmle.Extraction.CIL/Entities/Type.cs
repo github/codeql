@@ -323,13 +323,13 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public sealed class TypeDefinitionType : Type
     {
-        private readonly Handle handle;
+        public TypeDefinitionHandle Handle { get; }
         private readonly TypeDefinition td;
 
         public TypeDefinitionType(Context cx, TypeDefinitionHandle handle) : base(cx)
         {
             td = cx.MdReader.GetTypeDefinition(handle);
-            this.handle = handle;
+            this.Handle = handle;
 
             declType =
                 td.GetDeclaringType().IsNil ? null :
@@ -341,10 +341,10 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override bool Equals(object? obj)
         {
-            return obj is TypeDefinitionType t && handle.Equals(t.handle);
+            return obj is TypeDefinitionType t && Handle.Equals(t.Handle);
         }
 
-        public override int GetHashCode() => handle.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public override void WriteId(TextWriter trapFile, bool inContext)
         {
@@ -462,7 +462,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.metadata_handle(this, Cx.Assembly, handle.GetHashCode());
+                yield return Tuples.metadata_handle(this, Cx.Assembly, Handle.GetHashCode());
 
                 foreach (var c in base.Contents) yield return c;
 
@@ -607,25 +607,25 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public sealed class TypeReferenceType : Type
     {
-        private readonly TypeReferenceHandle handle;
+        public TypeReferenceHandle Handle { get; }
         private readonly TypeReference tr;
         private readonly Lazy<TypeTypeParameter[]> typeParams;
 
         public TypeReferenceType(Context cx, TypeReferenceHandle handle) : base(cx)
         {
             this.typeParams = new Lazy<TypeTypeParameter[]>(MakeTypeParameters);
-            this.handle = handle;
+            this.Handle = handle;
             this.tr = cx.MdReader.GetTypeReference(handle);
         }
 
         public override bool Equals(object? obj)
         {
-            return obj is TypeReferenceType t && handle.Equals(t.handle);
+            return obj is TypeReferenceType t && Handle.Equals(t.Handle);
         }
 
         public override int GetHashCode()
         {
-            return handle.GetHashCode();
+            return Handle.GetHashCode();
         }
 
         private TypeTypeParameter[] MakeTypeParameters()
