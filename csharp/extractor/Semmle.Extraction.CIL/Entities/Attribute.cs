@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
-using System.Runtime.InteropServices.ComTypes;
+using System.Linq;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -59,17 +59,31 @@ namespace Semmle.Extraction.CIL.Entities
                 for (var index = 0; index < decoded.FixedArguments.Length; ++index)
                 {
                     var value = decoded.FixedArguments[index].Value;
-                    var stringValue = value?.ToString();
-                    yield return Tuples.cil_attribute_positional_argument(this, index, stringValue ?? "null");
+                    var stringValue = GetStringValue(value, out var _);
+                    // we should store if the arg is an array
+                    yield return Tuples.cil_attribute_positional_argument(this, index, stringValue);
                 }
 
                 foreach (var p in decoded.NamedArguments)
                 {
                     var value = p.Value;
-                    var stringValue = value?.ToString();
-                    yield return Tuples.cil_attribute_named_argument(this, p.Name, stringValue ?? "null");
+                    var stringValue = GetStringValue(value, out var _);
+                    // we should store if the arg is an array
+                    yield return Tuples.cil_attribute_named_argument(this, p.Name, stringValue);
                 }
             }
+        }
+
+        private static string GetStringValue(object? value, out bool isArray)
+        {
+            if (value is System.Collections.Immutable.ImmutableArray<CustomAttributeTypedArgument<Type>> values)
+            {
+                isArray = true;
+                return "[" + string.Join(",", values.Select(v => v.Value?.ToString() ?? "null")) + "]";
+            }
+
+            isArray = false;
+            return value?.ToString() ?? "null";
         }
 
         public static IEnumerable<IExtractionProduct> Populate(Context cx, IEntity @object, CustomAttributeHandleCollection attributes)
