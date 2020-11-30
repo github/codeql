@@ -276,6 +276,44 @@ private module Trees {
     }
   }
 
+  private class CaseTree extends PreOrderTree, Case {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getValue() or child = this.getChild(_).(When).getPattern(_)
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getValue(), last, c) and not exists(this.getChild(_))
+      or
+      last(this.getChild(_), last, c) and c instanceof SimpleCompletion
+      or
+      exists(int i, ControlFlowTree lastBranch |
+        lastBranch = this.getChild(i) and not exists(this.getChild(i + 1))
+      |
+        last(lastBranch, last, c) and
+        c instanceof FalseCompletion
+      )
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getValue(), succ) and
+      c instanceof SimpleCompletion
+      or
+      pred = this and
+      first(this.getChild(0), succ) and
+      not exists(this.getValue()) and
+      c instanceof SimpleCompletion
+      or
+      last(this.getValue(), pred, c) and
+      first(this.getChild(0), succ) and
+      c instanceof SimpleCompletion
+      or
+      exists(int i, ControlFlowTree branch | branch = this.getChild(i) |
+        last(branch, pred, c) and first(this.getChild(i + 1), succ) and c instanceof FalseCompletion
+      )
+    }
+  }
+
   private class ClassTree extends StandardPreOrderTree, Class {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
 
@@ -529,6 +567,10 @@ private module Trees {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
+  private class PatternTree extends StandardPostOrderTree, Pattern {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+  }
+
   private class ProgramTree extends StandardPreOrderTree, Program {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
 
@@ -567,6 +609,36 @@ private module Trees {
     UnaryTree() { not this instanceof LogicalNotAstNode }
 
     final override AstNode getChildNode(int i) { result = this.getOperand() and i = 0 }
+  }
+
+  private class WhenTree extends PreOrderTree, When {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getPattern(_) }
+
+    final override predicate last(AstNode last, Completion c) {
+      exists(int i |
+        not exists(this.getPattern(i + 1)) and
+        last(this.getPattern(i), last, c) and
+        c instanceof FalseCompletion
+      )
+      or
+      last(this.getBody(), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getPattern(0), succ) and
+      c instanceof SimpleCompletion
+      or
+      exists(int i, Pattern p |
+        p = this.getPattern(i) and
+        last(p, pred, c)
+      |
+        c instanceof TrueCompletion and first(this.getBody(), succ)
+        or
+        c instanceof FalseCompletion and
+        first(this.getPattern(i + 1), succ)
+      )
+    }
   }
 
   private class ConditionalLoopTree extends PreOrderTree, ConditionalLoopAstNode {

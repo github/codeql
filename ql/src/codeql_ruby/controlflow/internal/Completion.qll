@@ -137,6 +137,8 @@ private predicate inBooleanContext(AstNode n) {
   n = any(LogicalNotAstNode parent | inBooleanContext(parent)).getOperand()
   or
   n = any(ParenthesizedStatement parent | inBooleanContext(parent)).getChild()
+  or
+  n instanceof Pattern
 }
 
 /**
