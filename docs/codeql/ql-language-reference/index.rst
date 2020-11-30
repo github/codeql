@@ -35,7 +35,7 @@ Learn all about QL, the powerful query language that underlies the code scanning
 
 - :doc:`QL language specification <ql-language-specification>`: A formal specification for the QL language. It provides a comprehensive reference for terminology, syntax, and other technical details about QL. 
 
-- :doc:`QLDoc comment specification <qldoc-comment-specification>`: a formal specification for QLDoc comments.
+- :doc:`QLDoc comment specification <qldoc-comment-specification>`: A formal specification for QLDoc comments.
 
 .. toctree::
    :maxdepth: 1
