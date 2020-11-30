@@ -118,7 +118,7 @@ private predicate mustHaveBooleanCompletion(AstNode n) {
 private predicate inBooleanContext(AstNode n) {
   n = any(IfElsifAstNode parent).getConditionNode()
   or
-  n = any(While parent).getCondition()
+  n = any(ConditionalLoopAstNode parent).getCondition()
   or
   exists(LogicalAndAstNode parent |
     n = parent.getLeft()

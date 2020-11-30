@@ -4,6 +4,7 @@
  */
 
 private import codeql_ruby.ast.internal.TreeSitter::Generated
+private import codeql_ruby.controlflow.internal.Completion
 
 class LogicalNotAstNode extends Unary {
   AstNode operand;
@@ -72,6 +73,46 @@ private class ConditionalAstNode extends IfElsifAstNode, Conditional {
   override AstNode getConsequenceNode() { result = this.getConsequence() }
 
   override AstNode getAlternativeNode() { result = this.getAlternative() }
+}
+
+private class CondLoop = @while or @while_modifier or @until or @until_modifier;
+
+class ConditionalLoopAstNode extends AstNode, CondLoop {
+  AstNode getCondition() { none() }
+
+  AstNode getBody() { none() }
+
+  predicate continueLoop(BooleanCompletion c) { c instanceof TrueCompletion }
+
+  final predicate endLoop(BooleanCompletion c) { continueLoop(c.getDual()) }
+}
+
+private class WhileLoop extends ConditionalLoopAstNode, While {
+  override UnderscoreStatement getCondition() { result = While.super.getCondition() }
+
+  override Do getBody() { result = While.super.getBody() }
+}
+
+private class WhileModifierLoop extends ConditionalLoopAstNode, WhileModifier {
+  override AstNode getCondition() { result = WhileModifier.super.getCondition() }
+
+  override UnderscoreStatement getBody() { result = WhileModifier.super.getBody() }
+}
+
+private class UntilLoop extends ConditionalLoopAstNode, Until {
+  override UnderscoreStatement getCondition() { result = Until.super.getCondition() }
+
+  override Do getBody() { result = Until.super.getBody() }
+
+  override predicate continueLoop(BooleanCompletion c) { c instanceof FalseCompletion }
+}
+
+private class UntilModifierLoop extends ConditionalLoopAstNode, UntilModifier {
+  override AstNode getCondition() { result = UntilModifier.super.getCondition() }
+
+  override UnderscoreStatement getBody() { result = UntilModifier.super.getBody() }
+
+  override predicate continueLoop(BooleanCompletion c) { c instanceof FalseCompletion }
 }
 
 class ParenthesizedStatement extends ParenthesizedStatements {

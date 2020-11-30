@@ -565,12 +565,12 @@ private module Trees {
     final override AstNode getChildNode(int i) { result = this.getOperand() and i = 0 }
   }
 
-  private class WhileTree extends PreOrderTree, While {
+  private class ConditionalLoopTree extends PreOrderTree, ConditionalLoopAstNode {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getCondition() }
 
     final override predicate last(AstNode last, Completion c) {
       last(this.getCondition(), last, c) and
-      c instanceof FalseCompletion
+      this.endLoop(c)
       or
       last(this.getBody(), last, c) and
       not c.continuesLoop() and
@@ -590,7 +590,7 @@ private module Trees {
       c instanceof SimpleCompletion
       or
       last(this.getCondition(), pred, c) and
-      c instanceof TrueCompletion and
+      this.continueLoop(c) and
       first(this.getBody(), succ)
       or
       last(this.getBody(), pred, c) and
