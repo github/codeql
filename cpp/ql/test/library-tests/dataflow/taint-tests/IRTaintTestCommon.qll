@@ -1,6 +1,7 @@
 import cpp
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.TaintTracking
+import TestUtilities.InlineExpectationsTest
 
 /** Common data flow configuration to be used by tests. */
 class TestAllocationConfig extends TaintTracking::Configuration {
@@ -10,9 +11,6 @@ class TestAllocationConfig extends TaintTracking::Configuration {
     source.(DataFlow::ExprNode).getConvertedExpr().(FunctionCall).getTarget().getName() = "source"
     or
     source.asParameter().getName().matches("source%")
-    or
-    // Track uninitialized variables
-    exists(source.asUninitialized())
   }
 
   override predicate isSink(DataFlow::Node sink) {
