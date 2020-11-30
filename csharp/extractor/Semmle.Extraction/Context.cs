@@ -77,7 +77,7 @@ namespace Semmle.Extraction
         {
             if (idLabelCache.ContainsKey(id))
             {
-                ExtractionError("Label collision for " + id, entity.Label.ToString(), Entities.Location.Create(this, entity.ReportingLocation), "", Severity.Warning);
+                this.Extractor.Message(new Message("Label collision for " + id, entity.Label.ToString(), Entities.Location.Create(this, entity.ReportingLocation), "", Severity.Warning));
             }
             else
             {
