@@ -976,6 +976,8 @@ predicate kwOverflowStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
+  unpackingAssignmentReadStep(nodeFrom, c, nodeTo)
+  or
   popReadStep(nodeFrom, c, nodeTo)
   or
   comprehensionReadStep(nodeFrom, c, nodeTo)
@@ -1005,6 +1007,27 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
     or
     c.(DictionaryElementContent).getKey() =
       nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
+  )
+}
+
+/** Data flows from an iterable to an assigned variable. */
+predicate unpackingAssignmentReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
+  // iterable unpacking
+  //   `a, b = iterable`
+  //   nodeFrom is `iterable`, cfg node
+  //   nodeTo is `a` (or `b`), essa var
+  //   c is compatible with `a`s (or `b`s) index
+  exists(Assign assign, int index, SequenceNode target |
+    target.getNode() = assign.getATarget() and
+    nodeTo.getVar().getDefinition().(MultiAssignmentDefinition).indexOf(index, target) and
+    nodeFrom.asExpr() = assign.getValue() and
+    (
+      c instanceof ListElementContent
+      or
+      c instanceof SetElementContent
+      or
+      c.(TupleElementContent).getIndex() = index
+    )
   )
 }
 

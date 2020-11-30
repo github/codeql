@@ -61,6 +61,7 @@ edges
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:492:33:492:38 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:497:39:497:44 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:509:9:509:14 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:521:10:521:15 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:596:16:596:21 | ControlFlowNode for SOURCE |
 | test.py:20:1:20:6 | GSSA Variable SOURCE | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test |
 | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:20:1:20:6 | GSSA Variable SOURCE |
@@ -180,6 +181,10 @@ edges
 | test.py:497:39:497:44 | ControlFlowNode for SOURCE | test.py:497:10:497:45 | KwOverflowNode for f_extra_keyword() [Dictionary element at key b] |
 | test.py:509:9:509:14 | ControlFlowNode for SOURCE | test.py:511:10:511:10 | ControlFlowNode for a |
 | test.py:509:9:509:14 | ControlFlowNode for SOURCE | test.py:516:10:516:10 | ControlFlowNode for b |
+| test.py:521:10:521:15 | ControlFlowNode for SOURCE | test.py:521:10:521:26 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:521:10:521:26 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:522:12:522:12 | ControlFlowNode for t [Tuple element at index 0] |
+| test.py:522:5:522:5 | SSA variable a | test.py:523:10:523:10 | ControlFlowNode for a |
+| test.py:522:12:522:12 | ControlFlowNode for t [Tuple element at index 0] | test.py:522:5:522:5 | SSA variable a |
 | test.py:596:16:596:21 | ControlFlowNode for SOURCE | test.py:599:10:599:36 | ControlFlowNode for return_from_inner_scope() |
 nodes
 | datamodel.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module datamodel | semmle.label | ModuleVariableNode for Global Variable SOURCE in Module datamodel |
@@ -357,6 +362,11 @@ nodes
 | test.py:509:9:509:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:511:10:511:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
 | test.py:516:10:516:10 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
+| test.py:521:10:521:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:521:10:521:26 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:522:5:522:5 | SSA variable a | semmle.label | SSA variable a |
+| test.py:522:12:522:12 | ControlFlowNode for t [Tuple element at index 0] | semmle.label | ControlFlowNode for t [Tuple element at index 0] |
+| test.py:523:10:523:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
 | test.py:596:16:596:21 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:599:10:599:36 | ControlFlowNode for return_from_inner_scope() | semmle.label | ControlFlowNode for return_from_inner_scope() |
 #select
@@ -456,5 +466,7 @@ nodes
 | test.py:511:10:511:10 | ControlFlowNode for a | test.py:509:9:509:14 | ControlFlowNode for SOURCE | test.py:511:10:511:10 | ControlFlowNode for a | Flow found |
 | test.py:516:10:516:10 | ControlFlowNode for b | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:516:10:516:10 | ControlFlowNode for b | Flow found |
 | test.py:516:10:516:10 | ControlFlowNode for b | test.py:509:9:509:14 | ControlFlowNode for SOURCE | test.py:516:10:516:10 | ControlFlowNode for b | Flow found |
+| test.py:523:10:523:10 | ControlFlowNode for a | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:523:10:523:10 | ControlFlowNode for a | Flow found |
+| test.py:523:10:523:10 | ControlFlowNode for a | test.py:521:10:521:15 | ControlFlowNode for SOURCE | test.py:523:10:523:10 | ControlFlowNode for a | Flow found |
 | test.py:599:10:599:36 | ControlFlowNode for return_from_inner_scope() | test.py:20:10:20:17 | ControlFlowNode for Str | test.py:599:10:599:36 | ControlFlowNode for return_from_inner_scope() | Flow found |
 | test.py:599:10:599:36 | ControlFlowNode for return_from_inner_scope() | test.py:596:16:596:21 | ControlFlowNode for SOURCE | test.py:599:10:599:36 | ControlFlowNode for return_from_inner_scope() | Flow found |

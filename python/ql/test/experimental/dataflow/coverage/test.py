@@ -520,7 +520,7 @@ def test_swap():
 def test_unpacking_assignment():
     t = (SOURCE, NONSOURCE)
     a, b = t
-    SINK(a)  # Flow missing
+    SINK(a)
     SINK_F(b)
 
 
