@@ -516,6 +516,14 @@ def test_swap():
     SINK(b)
 
 
+@expects(2)
+def test_unpacking_assignment():
+    t = (SOURCE, NONSOURCE)
+    a, b = t
+    SINK(a)  # Flow missing
+    SINK_F(b)
+
+
 def test_deep_callgraph():
     # port of python/ql/test/library-tests/taint/general/deep.py
 
