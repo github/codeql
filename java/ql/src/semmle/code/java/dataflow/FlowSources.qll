@@ -204,6 +204,13 @@ private class BeanValidationSource extends RemoteFlowSource {
 /** Class for `tainted` user input. */
 abstract class UserInput extends DataFlow::Node { }
 
+/**
+ * Input that may be controlled by a remote user.
+ */
+private class RemoteUserInput extends UserInput {
+  RemoteUserInput() { this instanceof RemoteFlowSource }
+}
+
 /** A node with input that may be controlled by a local user. */
 abstract class LocalUserInput extends UserInput { }
 
