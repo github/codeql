@@ -41,7 +41,8 @@ class LogicalOrAstNode extends Binary {
   AstNode getAnOperand() { result in [left, right] }
 }
 
-private class If_or_elisif = @if or @elsif or @conditional;
+private class If_or_elisif =
+  @if or @elsif or @conditional or @if_modifier or @unless or @unless_modifier;
 
 class IfElsifAstNode extends AstNode, If_or_elisif {
   AstNode getConditionNode() { none() }
@@ -73,6 +74,26 @@ private class ConditionalAstNode extends IfElsifAstNode, Conditional {
   override AstNode getConsequenceNode() { result = this.getConsequence() }
 
   override AstNode getAlternativeNode() { result = this.getAlternative() }
+}
+
+private class IfModifierAstNode extends IfElsifAstNode, IfModifier {
+  override AstNode getConditionNode() { result = this.getCondition() }
+
+  override AstNode getConsequenceNode() { result = this.getBody() }
+}
+
+private class UnlessAstNode extends IfElsifAstNode, Unless {
+  override AstNode getConditionNode() { result = this.getCondition() }
+
+  override AstNode getConsequenceNode() { result = this.getAlternative() }
+
+  override AstNode getAlternativeNode() { result = this.getConsequence() }
+}
+
+private class UnlessModifierAstNode extends IfElsifAstNode, UnlessModifier {
+  override AstNode getConditionNode() { result = this.getCondition() }
+
+  override AstNode getAlternativeNode() { result = this.getBody() }
 }
 
 private class CondLoop = @while or @while_modifier or @until or @until_modifier;

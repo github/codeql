@@ -405,6 +405,10 @@ private module Trees {
       c instanceof FalseCompletion and
       not exists(this.getAlternativeNode())
       or
+      last(this.getConditionNode(), last, c) and
+      c instanceof TrueCompletion and
+      not exists(this.getConsequenceNode())
+      or
       last(this.getConsequenceNode(), last, c)
       or
       last(this.getAlternativeNode(), last, c)
