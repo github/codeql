@@ -14,7 +14,18 @@
  *       external/cwe/cwe-036
  *       external/cwe/cwe-073
  *       external/cwe/cwe-099
- *
+ */
+
+import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.DataFlow2
+import semmle.python.dataflow.new.TaintTracking
+import semmle.python.dataflow.new.TaintTracking2
+import semmle.python.Concepts
+import semmle.python.dataflow.new.RemoteFlowSources
+import ChainedConfigs12
+
+/*
  * The query detects cases where a user-controlled path is used in an unsafe manner,
  * meaning it is not both normalized and _afterwards_ checked.
  *
@@ -35,15 +46,6 @@
  * and so identifying the last check is not possible simply by finding a dataflow path from it
  * to a sink.
  */
-
-import python
-import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.DataFlow2
-import semmle.python.dataflow.new.TaintTracking
-import semmle.python.dataflow.new.TaintTracking2
-import semmle.python.Concepts
-import semmle.python.dataflow.new.RemoteFlowSources
-import ChainedConfigs12
 
 // ---------------------------------------------------------------------------
 // Case 1. The path is never normalized.
