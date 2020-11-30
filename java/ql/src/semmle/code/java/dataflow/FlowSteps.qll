@@ -152,8 +152,8 @@ private module Buffers {
   class BufferWrapMethod extends TaintPreservingCallable {
     BufferWrapMethod() {
       this.getDeclaringType() instanceof BufferType and
-      // public static ByteBuffer wrap​(byte[] array)
-      // public static ByteBuffer wrap​(byte[] array, int offset, int length)
+      // public static ByteBuffer wrap(byte[] array)
+      // public static ByteBuffer wrap(byte[] array, int offset, int length)
       this.hasName("wrap") and
       this.isStatic()
     }
@@ -185,9 +185,9 @@ private module Buffers {
     int idx;
 
     BufferBulkGetMethod() {
-      // public ByteBuffer get​(byte[] dst)
-      // public ByteBuffer get​(byte[] dst, int offset, int length)
-      // public ByteBuffer get​(int index, byte[] dst, int offset, int length)
+      // public ByteBuffer get(byte[] dst)
+      // public ByteBuffer get(byte[] dst, int offset, int length)
+      // public ByteBuffer get(int index, byte[] dst, int offset, int length)
       this.hasName("get") and
       this.getParameterType(idx) instanceof Array
     }
@@ -199,11 +199,11 @@ private module Buffers {
     int idx;
 
     BufferBulkPutMethod() {
-      // public final ByteBuffer put​(byte[] src)
-      // public ByteBuffer put​(byte[] src, int offset, int length)
-      // public ByteBuffer put​(int index, byte[] src, int offset, int length)
-      // public ByteBuffer put​(ByteBuffer src)
-      // public final CharBuffer put​(String src)
+      // public final ByteBuffer put(byte[] src)
+      // public ByteBuffer put(byte[] src, int offset, int length)
+      // public ByteBuffer put(int index, byte[] src, int offset, int length)
+      // public ByteBuffer put(ByteBuffer src)
+      // public final CharBuffer put(String src)
       this.hasName("put") and
       this.getParameterType(idx) instanceof RefType
     }
