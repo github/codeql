@@ -2,7 +2,8 @@ CodeQL documentation
 ====================
 
 .. toctree::
-   :hidden:
+   :includehidden:
+   :maxdepth: 3
    
    codeql-overview/index
    codeql-for-visual-studio-code/index
