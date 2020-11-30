@@ -56,8 +56,7 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     sink = ma.getQualifier() and
     not exists(DataFlow::ExprNode node |
       node.getExpr() = sink and
-      node
-          .getTypeBound()
+      node.getTypeBound()
           .(RefType)
           .hasQualifiedName("org.apache.commons.io.serialization", "ValidatingObjectInputStream")
     )

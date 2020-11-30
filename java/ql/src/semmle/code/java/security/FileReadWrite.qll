@@ -9,8 +9,7 @@ private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
     cie = fileReadingExpr and
     cie.getArgument(0) = fileAccess
   |
-    cie
-        .getConstructedType()
+    cie.getConstructedType()
         .hasQualifiedName("java.io", ["RandomAccessFile", "FileReader", "FileInputStream"])
   )
   or

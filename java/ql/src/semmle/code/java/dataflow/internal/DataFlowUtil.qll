@@ -421,8 +421,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   exists(MethodAccess ma, Method m |
     ma = node2.asExpr() and
     m = ma.getMethod() and
-    m
-        .getDeclaringType()
+    m.getDeclaringType()
         .getSourceDeclaration()
         .getASourceSupertype*()
         .hasQualifiedName("java.util", "Stack") and

@@ -63,8 +63,7 @@ module CleartextLogging {
       )
       or
       // avoid i18n strings
-      this
-          .(DataFlow::PropRead)
+      this.(DataFlow::PropRead)
           .getBase()
           .asExpr()
           .(VarRef)

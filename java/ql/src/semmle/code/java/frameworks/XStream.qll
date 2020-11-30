@@ -36,8 +36,7 @@ class XStreamEnableWhiteListing extends MethodAccess {
       exists(Field f |
         this.getAnArgument() = f.getAnAccess() and
         f.hasName("NONE") and
-        f
-            .getDeclaringType()
+        f.getDeclaringType()
             .hasQualifiedName("com.thoughtworks.xstream.security", "NoTypePermission")
       )
     )

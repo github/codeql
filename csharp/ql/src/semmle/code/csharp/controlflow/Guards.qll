@@ -481,8 +481,7 @@ class CollectionExpr extends Expr {
     result =
       any(PropertyRead pr |
         this = pr.getQualifier() and
-        pr
-            .getTarget()
+        pr.getTarget()
             .overridesOrImplementsOrEquals(any(Property p |
                 p.getUnboundDeclaration() =
                   any(SystemCollectionsGenericICollectionInterface x).getCountProperty()

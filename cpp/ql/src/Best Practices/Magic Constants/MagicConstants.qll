@@ -291,8 +291,7 @@ predicate arrayInitializerChild(AggregateLiteral parent, Expr e) {
 
 // i.e. not a constant folded expression
 predicate literallyLiteral(Literal lit) {
-  lit
-      .getValueText()
+  lit.getValueText()
       .regexpMatch(".*\".*|\\s*+[-+]?+\\s*+(0[xob][0-9a-fA-F]|[0-9])[0-9a-fA-F,._]*+([eE][-+]?+[0-9,._]*+)?+\\s*+[a-zA-Z]*+\\s*+")
 }
 

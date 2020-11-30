@@ -1089,8 +1089,7 @@ class FormatLiteral extends Literal {
     then result = this.getFormat().substring(0, this.getConvSpecOffset(0))
     else
       result =
-        this
-            .getFormat()
+        this.getFormat()
             .substring(this.getConvSpecOffset(n - 1) + this.getConvSpec(n - 1).length(),
               this.getConvSpecOffset(n))
   }
@@ -1106,8 +1105,7 @@ class FormatLiteral extends Literal {
         if n > 0
         then
           result =
-            this
-                .getFormat()
+            this.getFormat()
                 .substring(this.getConvSpecOffset(n - 1) + this.getConvSpec(n - 1).length(),
                   this.getFormat().length())
         else result = this.getFormat()

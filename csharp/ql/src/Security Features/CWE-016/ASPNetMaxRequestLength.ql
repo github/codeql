@@ -16,8 +16,7 @@ import semmle.code.asp.WebConfig
 from SystemWebXMLElement web, XMLAttribute maxReqLength
 where
   maxReqLength =
-    web
-        .getAChild(any(string s | s.toLowerCase() = "httpruntime"))
+    web.getAChild(any(string s | s.toLowerCase() = "httpruntime"))
         .getAttribute(any(string s | s.toLowerCase() = "maxrequestlength")) and
   maxReqLength.getValue().toInt() > 4096
 select maxReqLength, "Large 'maxRequestLength' value (" + maxReqLength.getValue() + " KB)."

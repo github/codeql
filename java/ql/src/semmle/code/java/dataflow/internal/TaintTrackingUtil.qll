@@ -684,8 +684,7 @@ private class FormatterCallable extends TaintPreservingCallable {
     (
       this.hasName(["format", "out", "toString"])
       or
-      this
-          .(Constructor)
+      this.(Constructor)
           .getParameterType(0)
           .(RefType)
           .getASourceSupertype*()

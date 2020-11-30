@@ -61,9 +61,8 @@ class GenericGeneratedCodeComment extends GeneratedCodeComment {
       entity = "file|class|interface|art[ei]fact|module|script" and
       was = "was|is|has been" and
       automatically = "automatically |mechanically |auto[- ]?" and
-      line
-          .regexpMatch("(?i).*\\bThis (" + entity + ") (" + was + ") (" + automatically +
-              ")?generated\\b.*")
+      line.regexpMatch("(?i).*\\bThis (" + entity + ") (" + was + ") (" + automatically +
+          ")?generated\\b.*")
     )
   }
 }
