@@ -1,0 +1,1 @@
+| DangerousWebPreferences.js:7:13:7:35 | context ... : false | Disabling contextIsolation is strongly discouraged. |

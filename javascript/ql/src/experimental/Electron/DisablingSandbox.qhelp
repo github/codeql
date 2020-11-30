@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      Sandboxing is one of the key security features of Electron that leverages
+      OS-specific security controls to ensure that exploits in the renderer 
+      process cannot harm the system. 
+    </p>
+    <p>
+      Without sandboxing, any exploit in the renderer process can potentially
+      cause code execution on the system level. 
+    </p>
+  </overview>
+  
+  <recommendation>
+    <p>
+      Do not disable the <code>sandbox</code> property.
+    </p>
+  </recommendation>
+  
+  <example>
+    <p>
+      The following example shows <code>sandbox</code>
+      being disabled.
+    </p>
+    <sample src="examples/DisablingSandbox.js"/>
+  </example>
+  
+  <references>
+    <li>Electron Documentation: <a href="https://www.electronjs.org/docs/api/sandbox-option">sandbox Option</a></li>
+    <li>Chromium: <a href="https://chromium.googlesource.com/chromium/src/+/master/docs/design/sandbox.md">Sandbox</a></li>
+  </references>
+</qhelp>

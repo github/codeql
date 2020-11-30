@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      Context isolation is an Electron feature that ensures that rendered website 
+      is running in different JavaScript context than both preload scripts and Electron's 
+      internal logic.
+    </p>
+    <p>
+      Disabling the Context Isolation is strongly discouraged as it could enable 
+      website to escalate its privileges and access internal Electron APIs.
+    </p>
+    <p>
+      Context Isolation is enabled by default from Electron 12, in lower versions
+      it has to be enabled manually.
+    </p>
+  </overview>
+  
+  <recommendation>
+    <p>
+      Do not disable the <code>contextIsolation</code> property.
+    </p>
+  </recommendation>
+  
+  <example>
+    <p>
+      The following example shows <code>contextIsolation</code>
+      being disabled.
+    </p>
+    <sample src="examples/DisablingContextIsolation.js"/>
+  </example>
+  
+  <references>
+    <li>Electron Documentation: <a href="https://www.electronjs.org/docs/tutorial/security#3-enable-context-isolation-for-remote-content">Security, Native Capabilities, and Your Responsibility</a></li>
+    <li>Electron Documentation: <a href="https://www.electronjs.org/docs/tutorial/context-isolation">Context Isolation</a></li>
+  </references>
+</qhelp>
