@@ -522,7 +522,7 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return @base;
                     yield return Tuples.cil_base_class(this, @base);
 
-                    if (IsEnum(td.BaseType) &&
+                    if (td.BaseType.IsEnum(Cx.MdReader) &&
                         UnderlyingEnumType.HasValue)
                     {
                         var underlying = Cx.Create(UnderlyingEnumType.Value);
@@ -540,34 +540,6 @@ namespace Semmle.Extraction.CIL.Entities
                 // Only type definitions have locations.
                 yield return Tuples.cil_type_location(this, Cx.Assembly);
             }
-        }
-
-        private bool IsEnum(EntityHandle baseType)
-        {
-            return baseType.Kind switch
-            {
-                HandleKind.TypeReference => IsEnum((TypeReferenceHandle)baseType),
-                HandleKind.TypeDefinition => IsEnum((TypeDefinitionHandle)baseType),
-                _ => false,
-            };
-        }
-
-        private bool IsEnum(TypeReferenceHandle baseType)
-        {
-            var baseTypeReference = Cx.MdReader.GetTypeReference(baseType);
-
-            return Cx.MdReader.StringComparer.Equals(baseTypeReference.Name, "Enum") &&
-                !baseTypeReference.Namespace.IsNil &&
-                Cx.MdReader.StringComparer.Equals(baseTypeReference.Namespace, "System");
-        }
-
-        private bool IsEnum(TypeDefinitionHandle baseType)
-        {
-            var baseTypeDefinition = Cx.MdReader.GetTypeDefinition(baseType);
-
-            return Cx.MdReader.StringComparer.Equals(baseTypeDefinition.Name, "Enum") &&
-                !baseTypeDefinition.Namespace.IsNil &&
-                Cx.MdReader.StringComparer.Equals(baseTypeDefinition.Namespace, "System");
         }
 
         private bool isUnderlyingEnumTypeLoaded = false;
