@@ -110,7 +110,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       s.(BooleanSuccessor).getValue() = this.getValue() and
-      exists(BooleanCompletion c | s.matchesCompletion(c) |
+      exists(BooleanCompletion c | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         e = cfe
       )
@@ -161,7 +161,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TNullValue(s.(NullnessSuccessor).getValue()) and
-      exists(NullnessCompletion c | s.matchesCompletion(c) |
+      exists(NullnessCompletion c | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         e = cfe
       )
@@ -190,7 +190,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TMatchValue(_, s.(MatchingSuccessor).getValue()) and
-      exists(MatchingCompletion c, Switch switch, Case case | s.matchesCompletion(c) |
+      exists(MatchingCompletion c, Switch switch, Case case | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         switchMatching(switch, case, cfe) and
         e = switch.getExpr() and
@@ -227,7 +227,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TEmptyCollectionValue(s.(EmptinessSuccessor).getValue()) and
-      exists(EmptinessCompletion c, ForeachStmt fs | s.matchesCompletion(c) |
+      exists(EmptinessCompletion c, ForeachStmt fs | s = c.getAMatchingSuccessorType() |
         c.isValidFor(cfe) and
         foreachEmptiness(fs, cfe) and
         e = fs.getIterableExpr()

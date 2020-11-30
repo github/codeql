@@ -47,8 +47,68 @@ Discard.cs:
 #   10|             4: [BlockStmt] {...}
 #   10|               0: [ReturnStmt] return ...;
 #   10|                 0: [IntLiteral] 0
-LocalFunction.cs:
+LambdaModifier.cs:
 #    4| [Class] Class1
+#    6|   5: [Method] M1
+#    6|     -1: [TypeMention] Task
+#    7|     4: [BlockStmt] {...}
+#    8|       0: [LocalFunctionStmt] m(...)
+#    8|         0: [LocalFunction] m
+#-----|           2: (Parameters)
+#    8|             0: [Parameter] f
+#    8|               -1: [TypeMention] Func<Int32, Int32>
+#    8|                 1: [TypeMention] int
+#    8|                 2: [TypeMention] int
+#    8|           4: [BlockStmt] {...}
+#   10|       1: [LocalConstantDeclStmt] const ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] Int32 z = ...
+#   10|           -1: [TypeMention] int
+#   10|           0: [LocalVariableAccess] access to local variable z
+#   10|           1: [IntLiteral] 10
+#   11|       2: [ExprStmt] ...;
+#   11|         0: [LocalFunctionCall] call to local function m
+#   11|           -1: [LocalFunctionAccess] access to local function m
+#   11|           0: [LambdaExpr] (...) => ...
+#-----|             2: (Parameters)
+#   11|               0: [Parameter] x
+#   11|             4: [AddExpr] ... + ...
+#   11|               0: [ParameterAccess] access to parameter x
+#   11|               1: [LocalVariableAccess] access to local variable z
+#   12|       3: [ExprStmt] ...;
+#   12|         0: [LocalFunctionCall] call to local function m
+#   12|           -1: [LocalFunctionAccess] access to local function m
+#   12|           0: [LambdaExpr] (...) => ...
+#-----|             2: (Parameters)
+#   12|               0: [Parameter] x
+#   12|             4: [AddExpr] ... + ...
+#   12|               0: [ParameterAccess] access to parameter x
+#   12|               1: [LocalVariableAccess] access to local variable z
+#   13|       4: [ExprStmt] ...;
+#   13|         0: [LocalFunctionCall] call to local function m
+#   13|           -1: [LocalFunctionAccess] access to local function m
+#   13|           0: [AnonymousMethodExpr] delegate(...) { ... }
+#-----|             2: (Parameters)
+#   13|               0: [Parameter] x
+#   13|                 -1: [TypeMention] int
+#   13|             4: [BlockStmt] {...}
+#   13|               0: [ReturnStmt] return ...;
+#   13|                 0: [AddExpr] ... + ...
+#   13|                   0: [ParameterAccess] access to parameter x
+#   13|                   1: [LocalVariableAccess] access to local variable z
+#   15|       5: [ExprStmt] ...;
+#   15|         0: [AwaitExpr] await ...
+#   15|           0: [MethodCall] call to method Run
+#   15|             -1: [TypeAccess] access to type Task
+#   15|               0: [TypeMention] Task
+#   15|             0: [LambdaExpr] (...) => ...
+#   15|               4: [BlockStmt] {...}
+#   15|                 0: [ExprStmt] ...;
+#   15|                   0: [AwaitExpr] await ...
+#   15|                     0: [PropertyCall] access to property CompletedTask
+#   15|                       -1: [TypeAccess] access to type Task
+#   15|                         0: [TypeMention] Task
+LocalFunction.cs:
+#    4| [Class] LocalFunction
 #    6|   5: [Method] M1
 #    6|     -1: [TypeMention] Task
 #    7|     4: [BlockStmt] {...}
@@ -77,6 +137,36 @@ LocalFunction.cs:
 #   14|             0: [IntLiteral] 2
 #   16|       3: [LocalFunctionStmt] localExtern(...)
 #   16|         0: [LocalFunction] localExtern
+#   19|   6: [Method] M2
+#   19|     -1: [TypeMention] Void
+#   20|     4: [BlockStmt] {...}
+#   21|       0: [LocalFunctionStmt] dup(...)
+#   21|         0: [LocalFunction] dup
+#-----|           0: (Attributes)
+#   21|             1: [Attribute] [Obsolete(...)]
+#   21|               0: [TypeMention] ObsoleteAttribute
+#-----|           2: (Parameters)
+#   22|             0: [Parameter] b
+#   22|               -1: [TypeMention] bool
+#-----|               0: (Attributes)
+#   22|                 1: [Attribute] [NotNullWhen(...)]
+#   22|                   -1: [TypeMention] NotNullWhenAttribute
+#   22|                   0: [BoolLiteral] true
+#   22|             1: [Parameter] i
+#   22|               -1: [TypeMention] int?
+#   22|                 1: [TypeMention] int
+#   23|           4: [BlockStmt] {...}
+#   24|             0: [ReturnStmt] return ...;
+#   24|               0: [MulExpr] ... * ...
+#   24|                 0: [CastExpr] (...) ...
+#   24|                   1: [IntLiteral] 2
+#   24|                 1: [ParameterAccess] access to parameter i
+#   27|       1: [ExprStmt] ...;
+#   27|         0: [LocalFunctionCall] call to local function dup
+#   27|           -1: [LocalFunctionAccess] access to local function dup
+#   27|           0: [BoolLiteral] true
+#   27|           1: [CastExpr] (...) ...
+#   27|             1: [IntLiteral] 42
 NativeInt.cs:
 #    3| [Class] NativeInt
 #    5|   5: [Method] M1
@@ -245,6 +335,145 @@ ParenthesizedPattern.cs:
 #   27|               0: [TypeAccessPatternExpr] access to type String
 #   27|                 0: [TypeMention] string
 #   27|               2: [IntLiteral] 5
+TargetType.cs:
+#    5| [Class] TargetType
+#    7|   5: [Method] M2
+#    7|     -1: [TypeMention] Void
+#    8|     4: [BlockStmt] {...}
+#    9|       0: [LocalVariableDeclStmt] ... ...;
+#    9|         0: [LocalVariableDeclAndInitExpr] Random rand = ...
+#    9|           -1: [TypeMention] Random
+#    9|           0: [LocalVariableAccess] access to local variable rand
+#    9|           1: [ObjectCreation] object creation of type Random
+#    9|             0: [TypeMention] Random
+#   10|       1: [LocalVariableDeclStmt] ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] Boolean condition = ...
+#   10|           -1: [TypeMention] bool
+#   10|           0: [LocalVariableAccess] access to local variable condition
+#   10|           1: [GTExpr] ... > ...
+#   10|             0: [MethodCall] call to method NextDouble
+#   10|               -1: [LocalVariableAccess] access to local variable rand
+#   10|             1: [DoubleLiteral] 0.5
+#   12|       2: [LocalVariableDeclStmt] ... ...;
+#   12|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x0 = ...
+#   12|           -1: [TypeMention] int?
+#   12|             1: [TypeMention] int
+#   12|           0: [LocalVariableAccess] access to local variable x0
+#   12|           1: [CastExpr] (...) ...
+#   12|             1: [IntLiteral] 12
+#   13|       3: [ExprStmt] ...;
+#   13|         0: [AssignExpr] ... = ...
+#   13|           0: [LocalVariableAccess] access to local variable x0
+#   13|           1: [CastExpr] (...) ...
+#   13|             1: [IntLiteral] 13
+#   14|       4: [LocalVariableDeclStmt] ... ...;
+#   14|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x1 = ...
+#   14|           -1: [TypeMention] int?
+#   14|             1: [TypeMention] int
+#   14|           0: [LocalVariableAccess] access to local variable x1
+#   14|           1: [NullLiteral] null
+#   16|       5: [LocalVariableDeclStmt] ... ...;
+#   16|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x2 = ...
+#   16|           -1: [TypeMention] int?
+#   16|             1: [TypeMention] int
+#   16|           0: [LocalVariableAccess] access to local variable x2
+#   16|           1: [ConditionalExpr] ... ? ... : ...
+#   16|             0: [LocalVariableAccess] access to local variable condition
+#   17|             1: [CastExpr] (...) ...
+#   17|               1: [IntLiteral] 12
+#   18|             2: [NullLiteral] null
+#   20|       6: [LocalVariableDeclStmt] ... ...;
+#   20|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x3 = ...
+#   20|           -1: [TypeMention] int?
+#   20|             1: [TypeMention] int
+#   20|           0: [LocalVariableAccess] access to local variable x3
+#   20|           1: [ConditionalExpr] ... ? ... : ...
+#   20|             0: [LocalVariableAccess] access to local variable condition
+#   21|             1: [CastExpr] (...) ...
+#   21|               0: [TypeAccess] access to type Nullable<Int32>
+#   21|                 0: [TypeMention] int?
+#   21|                   1: [TypeMention] int
+#   21|               1: [IntLiteral] 12
+#   22|             2: [NullLiteral] null
+#   24|       7: [LocalVariableDeclStmt] ... ...;
+#   24|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> x4 = ...
+#   24|           -1: [TypeMention] int?
+#   24|             1: [TypeMention] int
+#   24|           0: [LocalVariableAccess] access to local variable x4
+#   24|           1: [ConditionalExpr] ... ? ... : ...
+#   24|             0: [LocalVariableAccess] access to local variable condition
+#   25|             1: [CastExpr] (...) ...
+#   25|               1: [IntLiteral] 12
+#   26|             2: [CastExpr] (...) ...
+#   26|               0: [TypeAccess] access to type Nullable<Int32>
+#   26|                 0: [TypeMention] int?
+#   26|                   1: [TypeMention] int
+#   26|               1: [NullLiteral] null
+#   28|       8: [LocalVariableDeclStmt] ... ...;
+#   28|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs0 = ...
+#   28|           -1: [TypeMention] IEnumerable<Int32>
+#   28|             1: [TypeMention] int
+#   28|           0: [LocalVariableAccess] access to local variable xs0
+#   28|           1: [ObjectCreation] object creation of type List<Int32>
+#   28|             -2: [TypeMention] List<Int32>
+#   28|               1: [TypeMention] int
+#   28|             -1: [CollectionInitializer] { ..., ... }
+#   28|               0: [ElementInitializer] call to method Add
+#   28|                 0: [IntLiteral] 0
+#   28|               1: [ElementInitializer] call to method Add
+#   28|                 0: [IntLiteral] 1
+#   29|       9: [LocalVariableDeclStmt] ... ...;
+#   29|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs1 = ...
+#   29|           -1: [TypeMention] IEnumerable<Int32>
+#   29|             1: [TypeMention] int
+#   29|           0: [LocalVariableAccess] access to local variable xs1
+#   29|           1: [ArrayCreation] array creation of type Int32[]
+#   29|             -2: [TypeMention] Int32[]
+#   29|               1: [TypeMention] int
+#   29|             -1: [ArrayInitializer] { ..., ... }
+#   29|               0: [IntLiteral] 2
+#   29|               1: [IntLiteral] 3
+#   31|       10: [LocalVariableDeclStmt] ... ...;
+#   31|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> xs2 = ...
+#   31|           -1: [TypeMention] IEnumerable<Int32>
+#   31|             1: [TypeMention] int
+#   31|           0: [LocalVariableAccess] access to local variable xs2
+#   31|           1: [ConditionalExpr] ... ? ... : ...
+#   31|             0: [IsExpr] ... is ...
+#   31|               0: [LocalVariableAccess] access to local variable x2
+#   31|               1: [ConstantPatternExpr,NullLiteral] null
+#   32|             1: [ObjectCreation] object creation of type List<Int32>
+#   32|               -2: [TypeMention] List<Int32>
+#   32|                 1: [TypeMention] int
+#   32|               -1: [CollectionInitializer] { ..., ... }
+#   32|                 0: [ElementInitializer] call to method Add
+#   32|                   0: [IntLiteral] 0
+#   32|                 1: [ElementInitializer] call to method Add
+#   32|                   0: [IntLiteral] 1
+#   33|             2: [ArrayCreation] array creation of type Int32[]
+#   33|               -2: [TypeMention] Int32[]
+#   33|                 1: [TypeMention] int
+#   33|               -1: [ArrayInitializer] { ..., ... }
+#   33|                 0: [IntLiteral] 2
+#   33|                 1: [IntLiteral] 3
+#   35|       11: [LocalVariableDeclStmt] ... ...;
+#   35|         0: [LocalVariableDeclAndInitExpr] Nullable<Int32> c = ...
+#   35|           -1: [TypeMention] int?
+#   35|             1: [TypeMention] int
+#   35|           0: [LocalVariableAccess] access to local variable c
+#   35|           1: [CastExpr] (...) ...
+#   35|             1: [ConditionalExpr] ... ? ... : ...
+#   35|               0: [LocalVariableAccess] access to local variable condition
+#   36|               1: [OperatorCall] call to operator implicit conversion
+#   36|                 0: [ObjectCreation] object creation of type TargetType
+#   36|                   0: [TypeMention] TargetType
+#   37|               2: [IntLiteral] 12
+#   40|   6: [ImplicitConversionOperator] implicit conversion
+#   40|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#   40|       0: [Parameter] d
+#   40|         -1: [TypeMention] TargetType
+#   40|     4: [IntLiteral] 0
 TypeParameterNullability.cs:
 #    1| [Interface] I1
 #    3| [Class] A2
@@ -348,3 +577,52 @@ TypeParameterNullability.cs:
 #   24|         -1: [TypeMention] T?
 #   24|           1: [TypeMention] T
 #   24|     4: [BlockStmt] {...}
+TypePattern.cs:
+#    3| [Class] TypePattern
+#    5|   5: [Method] M1
+#    5|     -1: [TypeMention] object
+#-----|     2: (Parameters)
+#    5|       0: [Parameter] o1
+#    5|         -1: [TypeMention] object
+#    5|       1: [Parameter] o2
+#    5|         -1: [TypeMention] object
+#    6|     4: [BlockStmt] {...}
+#    7|       0: [LocalVariableDeclStmt] ... ...;
+#    7|         0: [LocalVariableDeclAndInitExpr] (Object,Object) t = ...
+#    7|           -1: [TypeMention] (object, object)
+#    7|           0: [LocalVariableAccess] access to local variable t
+#    7|           1: [TupleExpr] (..., ...)
+#    7|             0: [ParameterAccess] access to parameter o1
+#    7|             1: [ParameterAccess] access to parameter o2
+#    8|       1: [IfStmt] if (...) ...
+#    8|         0: [IsExpr] ... is ...
+#    8|           0: [LocalVariableAccess] access to local variable t
+#    8|           1: [RecursivePatternExpr] { ... }
+#    8|             2: [PositionalPatternExpr] ( ... )
+#    8|               0: [TypeAccessPatternExpr] access to type Int32
+#    8|                 0: [TypeMention] int
+#    8|               1: [TypeAccessPatternExpr] access to type String
+#    8|                 0: [TypeMention] string
+#    8|         1: [BlockStmt] {...}
+#    9|       2: [ReturnStmt] return ...;
+#    9|         0: [SwitchExpr] ... switch { ... }
+#    9|           -1: [ParameterAccess] access to parameter o1
+#   11|           0: [SwitchCaseExpr] ... => ...
+#   11|             0: [TypeAccessPatternExpr] access to type Int32
+#   11|               0: [TypeMention] int
+#   11|             2: [CastExpr] (...) ...
+#   11|               1: [IntLiteral] 1
+#   12|           1: [SwitchCaseExpr] ... => ...
+#   12|             0: [VariablePatternExpr] Double d
+#   12|               0: [TypeMention] double
+#   12|             2: [CastExpr] (...) ...
+#   12|               1: [LocalVariableAccess] access to local variable d
+#   13|           2: [SwitchCaseExpr] ... => ...
+#   13|             0: [TypeAccessPatternExpr] access to type String
+#   13|               0: [TypeMention] string
+#   13|             2: [CastExpr] (...) ...
+#   13|               1: [IntLiteral] 3
+#   14|           3: [SwitchCaseExpr] ... => ...
+#   14|             0: [VariablePatternExpr] Object o
+#   14|               0: [TypeMention] object
+#   14|             2: [LocalVariableAccess] access to local variable o

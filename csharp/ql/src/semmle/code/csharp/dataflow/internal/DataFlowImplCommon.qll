@@ -802,14 +802,9 @@ abstract class AccessPathFront extends TAccessPathFront {
 
   abstract boolean toBoolNonEmpty();
 
-  predicate headUsesContent(TypedContent tc) { this = TFrontHead(tc) }
+  TypedContent getHead() { this = TFrontHead(result) }
 
-  predicate isClearedAt(Node n) {
-    exists(TypedContent tc |
-      this.headUsesContent(tc) and
-      clearsContent(n, tc.getContent())
-    )
-  }
+  predicate isClearedAt(Node n) { clearsContent(n, getHead().getContent()) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {

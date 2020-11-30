@@ -838,7 +838,7 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
    * For example, for `new int` the result is `int`.
    * For `new int[5]` the result is `int[5]`.
    */
-  abstract Type getAllocatedType();
+  Type getAllocatedType() { none() } // overridden in subclasses
 
   /**
    * Gets the pointer `p` if this expression is of the form `new(p) T...`.
