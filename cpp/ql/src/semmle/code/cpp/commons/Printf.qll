@@ -34,66 +34,77 @@ class AttributeFormattingFunction extends FormattingFunction {
 
 /**
  * A standard function such as `vprintf` that has a format parameter
- * and a variable argument list of type `va_arg`.
+ * and a variable argument list of type `va_arg`. `formatParamIndex` indicates
+ * the format parameter and `type` indicates the type of `vprintf`:
+ *  - `""` is a `vprintf` variant, `outputParamIndex` is `-1`.
+ *  - `"f"` is a `vfprintf` variant, `outputParamIndex` indicates the output stream parameter.
+ *  - `"s"` is a `vsprintf` variant, `outputParamIndex` indicates the output buffer parameter.
+ *  - `"?"` if the type cannot be deteremined.  `outputParamIndex` is `-1`.
  */
-predicate primitiveVariadicFormatter(TopLevelFunction f, int formatParamIndex) {
-  f.getName().regexpMatch("_?_?va?[fs]?n?w?printf(_s)?(_p)?(_l)?") and
+predicate primitiveVariadicFormatter(
+  TopLevelFunction f, string type, int formatParamIndex, int outputParamIndex
+) {
+  type = f.getName().regexpCapture("_?_?va?([fs]?)n?w?printf(_s)?(_p)?(_l)?", 1) and
   (
     if f.getName().matches("%\\_l")
     then formatParamIndex = f.getNumberOfParameters() - 3
     else formatParamIndex = f.getNumberOfParameters() - 2
-  )
+  ) and
+  if type = "" then outputParamIndex = -1 else outputParamIndex = 0 // Conveniently, these buffer parameters are all at index 0.
 }
 
-/**
- * A standard function such as `vsprintf` that has an output parameter
- * and a variable argument list of type `va_arg`.
- */
-private predicate primitiveVariadicFormatterOutput(TopLevelFunction f, int outputParamIndex) {
-  // note: this might look like the regular expression in `primitiveVariadicFormatter`, but
-  // there is one important difference: the [fs] part is not optional, as these classify
-  // the `printf` variants that write to a buffer.
-  // Conveniently, these buffer parameters are all at index 0.
-  f.getName().regexpMatch("_?_?va?[fs]n?w?printf(_s)?(_p)?(_l)?") and outputParamIndex = 0
-}
-
-private predicate callsVariadicFormatter(Function f, int formatParamIndex) {
-  exists(FunctionCall fc, int i |
-    variadicFormatter(fc.getTarget(), i) and
+private predicate callsVariadicFormatter(
+  Function f, string type, int formatParamIndex, int outputParamIndex
+) {
+  // calls a variadic formatter with `formatParamIndex`, `outputParamIndex` linked
+  exists(FunctionCall fc, int format, int output |
+    variadicFormatter(fc.getTarget(), type, format, output) and
     fc.getEnclosingFunction() = f and
-    fc.getArgument(i) = f.getParameter(formatParamIndex).getAnAccess()
+    fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
+    fc.getArgument(output) = f.getParameter(outputParamIndex).getAnAccess()
   )
-}
-
-private predicate callsVariadicFormatterOutput(Function f, int outputParamIndex) {
-  exists(FunctionCall fc, int i |
-    fc.getEnclosingFunction() = f and
-    variadicFormatterOutput(fc.getTarget(), i) and
-    fc.getArgument(i) = f.getParameter(outputParamIndex).getAnAccess()
-  )
-}
-
-/**
- * Holds if `f` is a function such as `vprintf` that takes variable argument list
- * of type `va_arg` and writes formatted output to a buffer given as a parameter at
- * index `outputParamIndex`, if any.
- */
-private predicate variadicFormatterOutput(Function f, int outputParamIndex) {
-  primitiveVariadicFormatterOutput(f, outputParamIndex)
   or
-  not f.isVarargs() and
-  callsVariadicFormatterOutput(f, outputParamIndex)
+  // calls a variadic formatter with only `formatParamIndex` linked
+  exists(FunctionCall fc, string calledType, int format, int output |
+    variadicFormatter(fc.getTarget(), calledType, format, output) and
+    fc.getEnclosingFunction() = f and
+    fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
+    not fc.getArgument(output) = f.getParameter(_).getAnAccess() and
+    (
+      (
+        calledType = "" and
+        type = ""
+      ) or (
+        calledType != "" and
+        type = "?" // we probably should have an `outputParamIndex` link but have lost it.
+      )
+    ) and
+    outputParamIndex = -1
+  )
 }
 
 /**
  * Holds if `f` is a function such as `vprintf` that has a format parameter
- * (at `formatParamIndex`) and a variable argument list of type `va_arg`.
+ * and a variable argument list of type `va_arg`. `formatParamIndex` indicates
+ * the format parameter and `type` indicates the type of `vprintf`:
+ *  - `""` is a `vprintf` variant, `outputParamIndex` is `-1`.
+ *  - `"f"` is a `vfprintf` variant, `outputParamIndex` indicates the output stream parameter.
+ *  - `"s"` is a `vsprintf` variant, `outputParamIndex` indicates the output buffer parameter.
+ *  - `"?"` if the type cannot be deteremined.  `outputParamIndex` is `-1`.
  */
-predicate variadicFormatter(Function f, int formatParamIndex) {
-  primitiveVariadicFormatter(f, formatParamIndex)
+predicate variadicFormatter(Function f, string type, int formatParamIndex, int outputParamIndex) {
+  primitiveVariadicFormatter(f, type, formatParamIndex, outputParamIndex)
   or
   not f.isVarargs() and
-  callsVariadicFormatter(f, formatParamIndex)
+  callsVariadicFormatter(f, type, formatParamIndex, outputParamIndex)
+}
+
+deprecated predicate primitiveVariadicFormatter(TopLevelFunction f, int formatParamIndex) {
+  primitiveVariadicFormatter(f, _, formatParamIndex, _)
+}
+
+deprecated predicate variadicFormatter(Function f, int formatParamIndex) {
+  variadicFormatter(f, _, formatParamIndex, _)
 }
 
 /**
@@ -103,11 +114,17 @@ predicate variadicFormatter(Function f, int formatParamIndex) {
 class UserDefinedFormattingFunction extends FormattingFunction {
   override string getAPrimaryQlClass() { result = "UserDefinedFormattingFunction" }
 
-  UserDefinedFormattingFunction() { isVarargs() and callsVariadicFormatter(this, _) }
+  UserDefinedFormattingFunction() { isVarargs() and callsVariadicFormatter(this, _, _, _) }
 
-  override int getFormatParameterIndex() { callsVariadicFormatter(this, result) }
+  override int getFormatParameterIndex() { callsVariadicFormatter(this, _, result, _) }
 
-  override int getOutputParameterIndex() { callsVariadicFormatterOutput(this, result) }
+  override int getOutputParameterIndex() {
+    callsVariadicFormatter(this, _, _, result) and not result = -1
+  }
+
+  override predicate isOutputGlobal() { callsVariadicFormatter(this, "", _, _) }
+
+  override predicate isOutputStream() { callsVariadicFormatter(this, "f", _, _) }
 }
 
 /**
