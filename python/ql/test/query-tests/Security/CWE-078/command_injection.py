@@ -1,4 +1,4 @@
-
+import re
 import os
 import subprocess
 
@@ -71,3 +71,10 @@ def path_exists_not_sanitizer():
     path = request.args.get('path', '')
     if os.path.exists(path):
         os.system("ls " + path) # NOT OK
+
+
+@app.route("/restricted-characters")
+def restricted_characters():
+    path = request.args.get('path', '')
+    if re.match(r'^[a-zA-Z0-9_-]+$', path):
+        os.system("ls " + path) # OK (TODO: Currently FP)
