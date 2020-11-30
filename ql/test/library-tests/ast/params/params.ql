@@ -16,7 +16,7 @@ query predicate hashSplatParams(HashSplatParameter hsp, string name) { name = hs
 
 query predicate keywordParams(KeywordParameter kp, string name, string defaultValueStr) {
   name = kp.getName() and
-  if exists(kp.getDefaultValue())
+  if kp.isOptional()
   then defaultValueStr = kp.getDefaultValue().toString()
   else defaultValueStr = "(none)"
 }

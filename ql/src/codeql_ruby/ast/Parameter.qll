@@ -108,7 +108,15 @@ class HashSplatParameter extends @hash_splat_parameter, NamedParameter {
 }
 
 /**
- * TODO
+ * A keyword parameter, including a default value if the parameter is optional.
+ * For example, in the following example, `foo` is a keyword parameter with a
+ * default value of `0`, and `bar` is a mandatory keyword parameter with no
+ * default value mandatory parameter).
+ * ```rb
+ * def f(foo: 0, bar:)
+ *   foo * 10 + bar
+ * end
+ * ```
  */
 class KeywordParameter extends @keyword_parameter, NamedParameter {
   override Generated::KeywordParameter generated;
@@ -126,6 +134,12 @@ class KeywordParameter extends @keyword_parameter, NamedParameter {
    * TODO: better return type (Expr?)
    */
   AstNode getDefaultValue() { result = generated.getValue() }
+
+  /**
+   * Holds if the parameter is optional. That is, there is a default value that
+   * is used when the caller omits this parameter.
+   */
+  predicate isOptional() { exists(this.getDefaultValue()) }
 
   override string toString() { result = this.getName() }
 }
