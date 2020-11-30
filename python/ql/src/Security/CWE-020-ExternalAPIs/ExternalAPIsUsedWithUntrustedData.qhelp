@@ -57,5 +57,3 @@ reviewed as a possible taint step, because tainted data would flow from the 0th 
 
 </references>
 </qhelp>
-
-Mention something about `pickle.loads(user_input)`
