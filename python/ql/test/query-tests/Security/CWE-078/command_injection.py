@@ -5,6 +5,7 @@ import subprocess
 from flask import Flask, request
 app = Flask(__name__)
 
+
 @app.route("/command1")
 def command_injection1():
     files = request.args.get('files', '')
@@ -30,6 +31,7 @@ def others():
     files = request.args.get('files', '')
     # Don't let files be `; rm -rf /`
     os.popen("ls " + files)
+
 
 @app.route("/multiple")
 def multiple():
