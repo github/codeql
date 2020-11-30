@@ -1285,6 +1285,8 @@ private predicate certainlyReturnsNonNil(Function f, FunctionOutput output) {
   (
     f.hasQualifiedName("errors", "New")
     or
+    f.hasQualifiedName("fmt", "Errorf")
+    or
     f in [Builtin::new(), Builtin::make()]
     or
     exists(FuncDecl fd | fd = f.getFuncDecl() |
