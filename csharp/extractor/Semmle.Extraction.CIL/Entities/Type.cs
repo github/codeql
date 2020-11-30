@@ -8,6 +8,7 @@ using System.Reflection;
 using Semmle.Util;
 using System.IO;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Concurrent;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -337,6 +338,11 @@ namespace Semmle.Extraction.CIL.Entities
 
             // Lazy because should happen during population.
             typeParams = new Lazy<IEnumerable<TypeTypeParameter>>(MakeTypeParameters);
+
+            if (Handle.HasMatchingName("System.Type", cx.MdReader))
+            {
+                SystemTypeType.Cache.AddOrUpdate(cx, k => this, (k, v) => this);
+            }
         }
 
         public override bool Equals(object? obj)
@@ -616,6 +622,11 @@ namespace Semmle.Extraction.CIL.Entities
             this.typeParams = new Lazy<TypeTypeParameter[]>(MakeTypeParameters);
             this.Handle = handle;
             this.tr = cx.MdReader.GetTypeReference(handle);
+
+            if (Handle.HasMatchingName("System.Type", cx.MdReader))
+            {
+                SystemTypeType.Cache.AddOrUpdate(cx, k => this, (k, v) => this);
+            }
         }
 
         public override bool Equals(object? obj)
@@ -757,6 +768,10 @@ namespace Semmle.Extraction.CIL.Entities
         }
     }
 
+    public class SystemTypeType
+    {
+        public static readonly ConcurrentDictionary<Context, Type> Cache = new ConcurrentDictionary<Context, Type>();
+    }
 
     /// <summary>
     /// A constructed type.

@@ -102,11 +102,14 @@ namespace Semmle.Extraction.CIL.Entities
     internal class CustomAttributeDecoder : ICustomAttributeTypeProvider<Type>
     {
         private readonly Context cx;
+
         public CustomAttributeDecoder(Context cx) { this.cx = cx; }
 
         public Type GetPrimitiveType(PrimitiveTypeCode typeCode) => cx.Create(typeCode);
 
-        public Type GetSystemType() => throw new NotImplementedException();
+        public Type GetSystemType() => SystemTypeType.Cache.TryGetValue(cx, out var ret)
+            ? ret
+            : throw new NotImplementedException();
 
         public Type GetSZArrayType(Type elementType) =>
             cx.Populate(new ArrayType(cx, elementType));
@@ -117,11 +120,14 @@ namespace Semmle.Extraction.CIL.Entities
         public Type GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind) =>
             (Type)cx.Create(handle);
 
-        public Type GetTypeFromSerializedName(string name) => throw new NotImplementedException();
+        public Type GetTypeFromSerializedName(string name) =>
+            throw new NotImplementedException();
 
         public PrimitiveTypeCode GetUnderlyingEnumType(Type type) => type switch
         {
             TypeReferenceType trt => throw new NotImplementedException(),
+            // how do we know which assembly contains the tdt for trt?
+            // cx.MdReader.GetAssemblyReference((AssemblyReferenceHandle)trt.tr.ResolutionScope) gives the assembly
             TypeDefinitionType tdt => tdt.UnderlyingEnumType ?? throw new NotImplementedException(),
             _ => throw new NotImplementedException()
         };
