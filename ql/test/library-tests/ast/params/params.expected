@@ -7,13 +7,13 @@ idParams
 | params.rb:14:11:14:13 | foo | foo |
 | params.rb:14:16:14:18 | bar | bar |
 | params.rb:30:23:30:28 | wibble | wibble |
-| params.rb:30:31:30:36 | splat | splat |
+| params.rb:30:31:30:36 | *splat | splat |
 | params.rb:30:39:30:52 | **double_splat | double_splat |
 | params.rb:34:16:34:18 | val | val |
-| params.rb:34:21:34:26 | splat | splat |
+| params.rb:34:21:34:26 | *splat | splat |
 | params.rb:34:29:34:42 | **double_splat | double_splat |
 | params.rb:38:26:38:26 | x | x |
-| params.rb:38:29:38:33 | blah | blah |
+| params.rb:38:29:38:33 | *blah | blah |
 | params.rb:38:36:38:43 | **wibble | wibble |
 | params.rb:41:32:41:32 | x | x |
 | params.rb:41:35:41:38 | foo | foo |
@@ -47,9 +47,9 @@ patternParams
 | params.rb:25:40:25:54 | (..., ...) | params.rb:25:41:25:45 | third | 0 |
 | params.rb:25:40:25:54 | (..., ...) | params.rb:25:48:25:53 | fourth | 1 |
 splatParams
-| params.rb:30:31:30:36 | splat | splat |
-| params.rb:34:21:34:26 | splat | splat |
-| params.rb:38:29:38:33 | blah | blah |
+| params.rb:30:31:30:36 | *splat | splat |
+| params.rb:34:21:34:26 | *splat | splat |
+| params.rb:38:29:38:33 | *blah | blah |
 hashSplatParams
 | params.rb:30:39:30:52 | **double_splat | double_splat |
 | params.rb:34:29:34:42 | **double_splat | double_splat |
@@ -73,7 +73,7 @@ paramsInMethods
 | params.rb:4:1:5:3 | identifier_method_params | 2 | params.rb:4:40:4:42 | baz | SimpleParameter |
 | params.rb:17:1:18:3 | destructured_method_param | 0 | params.rb:17:31:17:39 | (..., ...) | TuplePatternParameter |
 | params.rb:30:1:31:3 | method_with_splat | 0 | params.rb:30:23:30:28 | wibble | SimpleParameter |
-| params.rb:30:1:31:3 | method_with_splat | 1 | params.rb:30:31:30:36 | splat | SplatParameter |
+| params.rb:30:1:31:3 | method_with_splat | 1 | params.rb:30:31:30:36 | *splat | SplatParameter |
 | params.rb:30:1:31:3 | method_with_splat | 2 | params.rb:30:39:30:52 | **double_splat | HashSplatParameter |
 | params.rb:41:1:43:3 | method_with_keyword_params | 0 | params.rb:41:32:41:32 | x | SimpleParameter |
 | params.rb:41:1:43:3 | method_with_keyword_params | 1 | params.rb:41:35:41:38 | foo | KeywordParameter |
@@ -88,7 +88,7 @@ paramsInBlocks
 | params.rb:9:11:11:3 | \| ... \| | 1 | params.rb:9:20:9:24 | value | SimpleParameter |
 | params.rb:22:12:22:32 | { ... } | 0 | params.rb:22:15:22:20 | (..., ...) | TuplePatternParameter |
 | params.rb:34:12:35:3 | \| ... \| | 0 | params.rb:34:16:34:18 | val | SimpleParameter |
-| params.rb:34:12:35:3 | \| ... \| | 1 | params.rb:34:21:34:26 | splat | SplatParameter |
+| params.rb:34:12:35:3 | \| ... \| | 1 | params.rb:34:21:34:26 | *splat | SplatParameter |
 | params.rb:34:12:35:3 | \| ... \| | 2 | params.rb:34:29:34:42 | **double_splat | HashSplatParameter |
 | params.rb:49:24:51:3 | \| ... \| | 0 | params.rb:49:28:49:30 | xx | KeywordParameter |
 | params.rb:49:24:51:3 | \| ... \| | 1 | params.rb:49:33:49:39 | yy | KeywordParameter |
@@ -100,7 +100,7 @@ paramsInLambdas
 | params.rb:25:19:27:1 | -> { ... } | 0 | params.rb:25:23:25:37 | (..., ...) | TuplePatternParameter |
 | params.rb:25:19:27:1 | -> { ... } | 1 | params.rb:25:40:25:54 | (..., ...) | TuplePatternParameter |
 | params.rb:38:22:38:47 | -> { ... } | 0 | params.rb:38:26:38:26 | x | SimpleParameter |
-| params.rb:38:22:38:47 | -> { ... } | 1 | params.rb:38:29:38:33 | blah | SplatParameter |
+| params.rb:38:22:38:47 | -> { ... } | 1 | params.rb:38:29:38:33 | *blah | SplatParameter |
 | params.rb:38:22:38:47 | -> { ... } | 2 | params.rb:38:36:38:43 | **wibble | HashSplatParameter |
 | params.rb:53:30:55:1 | -> { ... } | 0 | params.rb:53:34:53:34 | x | SimpleParameter |
 | params.rb:53:30:55:1 | -> { ... } | 1 | params.rb:53:37:53:38 | y | KeywordParameter |
@@ -121,13 +121,13 @@ paramsInLambdas
 | params.rb:25:23:25:37 | (..., ...) | 0 | TuplePatternParameter |
 | params.rb:25:40:25:54 | (..., ...) | 1 | TuplePatternParameter |
 | params.rb:30:23:30:28 | wibble | 0 | SimpleParameter |
-| params.rb:30:31:30:36 | splat | 1 | SplatParameter |
+| params.rb:30:31:30:36 | *splat | 1 | SplatParameter |
 | params.rb:30:39:30:52 | **double_splat | 2 | HashSplatParameter |
 | params.rb:34:16:34:18 | val | 0 | SimpleParameter |
-| params.rb:34:21:34:26 | splat | 1 | SplatParameter |
+| params.rb:34:21:34:26 | *splat | 1 | SplatParameter |
 | params.rb:34:29:34:42 | **double_splat | 2 | HashSplatParameter |
 | params.rb:38:26:38:26 | x | 0 | SimpleParameter |
-| params.rb:38:29:38:33 | blah | 1 | SplatParameter |
+| params.rb:38:29:38:33 | *blah | 1 | SplatParameter |
 | params.rb:38:36:38:43 | **wibble | 2 | HashSplatParameter |
 | params.rb:41:32:41:32 | x | 0 | SimpleParameter |
 | params.rb:41:35:41:38 | foo | 1 | KeywordParameter |

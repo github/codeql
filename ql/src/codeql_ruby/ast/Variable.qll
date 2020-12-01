@@ -8,10 +8,10 @@ private import internal.Variable
 /** A scope in which variables can be declared. */
 class VariableScope extends TScope {
   /** Gets a textual representation of this element. */
-  string toString() { none() }
+  final string toString() { result = this.(VariableScopeRange).toString() }
 
   /** Gets the program element this scope is associated with, if any. */
-  AstNode getScopeElement() { none() }
+  final AstNode getScopeElement() { result = this.(VariableScopeRange).getScopeElement() }
 
   /** Gets the location of the program element this scope is associated with. */
   final Location getLocation() { result = getScopeElement().getLocation() }
@@ -26,60 +26,19 @@ class VariableScope extends TScope {
   }
 }
 
-/** A top-level scope. */
-class TopLevelScope extends VariableScope, TTopLevelScope {
-  final override string toString() { result = "top-level scope" }
-
-  final override AstNode getScopeElement() { TTopLevelScope(result) = this }
-}
-
-/** A module scope. */
-class ModuleScope extends VariableScope, TModuleScope {
-  final override string toString() { result = "module scope" }
-
-  final override AstNode getScopeElement() { TModuleScope(result) = this }
-}
-
-/** A class scope. */
-class ClassScope extends VariableScope, TClassScope {
-  final override string toString() { result = "class scope" }
-
-  final override AstNode getScopeElement() { TClassScope(result) = this }
-}
-
-/** A callable scope. */
-class CallableScope extends VariableScope, TCallableScope {
-  private Callable c;
-
-  CallableScope() { this = TCallableScope(c) }
-
-  final override string toString() {
-    (c instanceof Method or c instanceof SingletonMethod) and
-    result = "method scope"
-    or
-    c instanceof Lambda and
-    result = "lambda scope"
-    or
-    c instanceof Block and
-    result = "block scope"
-  }
-
-  final override Callable getScopeElement() { TCallableScope(result) = this }
-}
-
 /** A variable declared in a scope. */
 class Variable extends TVariable {
   /** Gets the name of this variable. */
-  string getName() { none() }
+  final string getName() { result = this.(VariableRange).getName() }
 
   /** Gets a textual representation of this variable. */
   final string toString() { result = this.getName() }
 
   /** Gets the location of this variable. */
-  Location getLocation() { none() }
+  final Location getLocation() { result = this.(VariableRange).getLocation() }
 
   /** Gets the scope this variable is declared in. */
-  VariableScope getDeclaringScope() { none() }
+  final VariableScope getDeclaringScope() { result = this.(VariableRange).getDeclaringScope() }
 
   /** Gets an access to this variable. */
   VariableAccess getAnAccess() { result.getVariable() = this }
@@ -92,12 +51,6 @@ class LocalVariable extends Variable {
   private Generated::Identifier i;
 
   LocalVariable() { this = TLocalVariable(scope, name, i) }
-
-  final override string getName() { result = name }
-
-  final override Location getLocation() { result = i.getLocation() }
-
-  final override VariableScope getDeclaringScope() { result = scope }
 
   final override LocalVariableAccess getAnAccess() { result.getVariable() = this }
 }
@@ -112,7 +65,7 @@ class VariableAccess extends AstNode, @token_identifier {
   /** Gets the variable this identifier refers to. */
   Variable getVariable() { result = variable }
 
-  override string toString() { result = variable.getName() }
+  final override string toString() { result = variable.getName() }
 }
 
 /** An access to a local variable. */
@@ -120,6 +73,4 @@ class LocalVariableAccess extends VariableAccess {
   override LocalVariable variable;
 
   override LocalVariable getVariable() { result = variable }
-
-  override string toString() { result = variable.getName() }
 }
