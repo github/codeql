@@ -25,63 +25,9 @@ parameterVariable
 | parameters.rb:54:14:54:24 | y | parameters.rb:54:14:54:14 | y |
 | scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x |
 | scopes.rb:9:14:9:14 | x | scopes.rb:9:14:9:14 | x |
-parameterVariableAccess
-| nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a |
-| nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:16:13:16:13 | a |
-| nested_scopes.rb:16:26:16:26 | x | nested_scopes.rb:16:26:16:26 | x | nested_scopes.rb:16:26:16:26 | x |
-| nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:16:29:16:29 | a |
-| nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:17:15:17:15 | a |
-| nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:18:15:18:15 | a |
-| nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:18:34:18:34 | a |
-| nested_scopes.rb:18:26:18:26 | x | nested_scopes.rb:18:26:18:26 | x | nested_scopes.rb:18:26:18:26 | x |
-| nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a |
-| nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:23:16:23:16 | a |
-| parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
-| parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x | parameters.rb:3:9:3:9 | x |
-| parameters.rb:1:18:1:18 | y | parameters.rb:1:18:1:18 | y | parameters.rb:1:18:1:18 | y |
-| parameters.rb:1:18:1:18 | y | parameters.rb:1:18:1:18 | y | parameters.rb:2:4:2:4 | y |
-| parameters.rb:1:18:1:18 | y | parameters.rb:1:18:1:18 | y | parameters.rb:4:9:4:9 | y |
-| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client |
-| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:9:25:9:30 | client |
-| parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client | parameters.rb:11:41:11:46 | client |
-| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas |
-| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas |
-| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:11:14:11:19 | pizzas |
-| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map |
-| parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map | parameters.rb:16:3:16:5 | map |
-| parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key |
-| parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key | parameters.rb:17:13:17:15 | key |
-| parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value |
-| parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value | parameters.rb:17:22:17:26 | value |
-| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block | parameters.rb:21:17:21:21 | block |
-| parameters.rb:21:16:21:21 | &block | parameters.rb:21:17:21:21 | block | parameters.rb:22:3:22:7 | block |
-| parameters.rb:25:15:25:30 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name |
-| parameters.rb:25:15:25:30 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name |
-| parameters.rb:25:15:25:30 | name | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
-| parameters.rb:25:33:25:50 | size | parameters.rb:25:33:25:36 | size | parameters.rb:25:33:25:36 | size |
-| parameters.rb:25:33:25:50 | size | parameters.rb:25:33:25:36 | size | parameters.rb:27:8:27:11 | size |
-| parameters.rb:30:15:30:20 | first | parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first |
-| parameters.rb:30:15:30:20 | first | parameters.rb:30:15:30:19 | first | parameters.rb:31:11:31:15 | first |
-| parameters.rb:30:24:30:33 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle |
-| parameters.rb:30:24:30:33 | middle | parameters.rb:30:24:30:29 | middle | parameters.rb:31:20:31:25 | middle |
-| parameters.rb:30:36:30:40 | last | parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last |
-| parameters.rb:30:36:30:40 | last | parameters.rb:30:36:30:39 | last | parameters.rb:31:30:31:33 | last |
-| parameters.rb:35:11:35:21 | a | parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a |
-| parameters.rb:35:11:35:21 | a | parameters.rb:35:11:35:11 | a | parameters.rb:37:11:37:11 | a |
-| parameters.rb:40:12:40:19 | d | parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d |
-| parameters.rb:40:12:40:19 | d | parameters.rb:40:12:40:12 | d | parameters.rb:42:11:42:11 | d |
-| parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ |
-| parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:45:22:45:22 | _ |
-| parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:46:8:46:8 | _ |
-| parameters.rb:49:12:49:16 | (..., ...) | parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a |
-| parameters.rb:49:12:49:16 | (..., ...) | parameters.rb:49:13:49:13 | a | parameters.rb:50:11:50:11 | a |
-| parameters.rb:49:12:49:16 | (..., ...) | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b |
-| parameters.rb:49:12:49:16 | (..., ...) | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
-| parameters.rb:54:14:54:24 | y | parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y |
-| parameters.rb:54:14:54:24 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
-| scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x |
-| scopes.rb:9:14:9:14 | x | scopes.rb:9:14:9:14 | x | scopes.rb:9:14:9:14 | x |
-parameterVariableNoAcess
+parameterNoVariable
+| parameters.rb:45:22:45:22 | _ |
+parameterVariableNoAccess
 | nested_scopes.rb:16:26:16:26 | x | nested_scopes.rb:16:26:16:26 | x |
 | nested_scopes.rb:18:26:18:26 | x | nested_scopes.rb:18:26:18:26 | x |
 | scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x |

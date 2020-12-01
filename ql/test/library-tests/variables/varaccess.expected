@@ -63,7 +63,6 @@
 | parameters.rb:42:11:42:11 | d | parameters.rb:40:12:40:12 | d | parameters.rb:40:1:43:3 | method scope |
 | parameters.rb:42:16:42:16 | e | parameters.rb:40:15:40:15 | e | parameters.rb:40:1:43:3 | method scope |
 | parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:45:1:47:3 | method scope |
-| parameters.rb:45:22:45:22 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:45:1:47:3 | method scope |
 | parameters.rb:46:8:46:8 | _ | parameters.rb:45:20:45:20 | _ | parameters.rb:45:1:47:3 | method scope |
 | parameters.rb:49:13:49:13 | a | parameters.rb:49:13:49:13 | a | parameters.rb:49:1:51:3 | method scope |
 | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:49:1:51:3 | method scope |
