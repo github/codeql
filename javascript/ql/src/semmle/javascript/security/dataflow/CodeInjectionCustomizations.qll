@@ -138,4 +138,46 @@ module CodeInjection {
         API::moduleImport("module").getInstance().getMember("_compile").getACall().getArgument(0)
     }
   }
+
+  /**
+   * A value interpreted as as template by the `pug` library.
+   */
+  class PugTemplateSink extends Sink {
+    PugTemplateSink() {
+      this = DataFlow::moduleImport(["pug", "jade"]).getAMemberCall(["compile", "render"]).getArgument(0)
+    }
+  }
+
+  /**
+   * A value interpreted as a tempalte by the `dot` library.
+   */
+  class DotTemplateSink extends Sink {
+    DotTemplateSink() {
+      this = DataFlow::moduleImport("dot").getAMemberCall("template").getArgument(0)
+    }
+  }
+
+  /**
+   * A value interpreted as a template by the `ejs` library.
+   */
+  class EjsTemplateSink extends Sink {
+    EjsTemplateSink() { this = DataFlow::moduleImport("ejs").getAMemberCall("render").getArgument(0) }
+  }
+
+
+  /**
+   * A value interpreted as a template by the `nunjucks` library.
+   */
+  class NunjucksTemplateSink extends Sink {
+    NunjucksTemplateSink() {
+      this = DataFlow::moduleImport("nunjucks").getAMemberCall("renderString").getArgument(0)
+    }
+  }
+
+  /**
+   * A value interpreted as a template by `lodash` or `underscore`.
+   */
+  class LodashUnderscoreTemplateSink extends Sink {
+    LodashUnderscoreTemplateSink() { this = LodashUnderscore::member("template").getACall().getArgument(0) }
+  }
 }
