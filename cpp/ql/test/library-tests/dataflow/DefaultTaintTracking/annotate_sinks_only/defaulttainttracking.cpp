@@ -1,4 +1,4 @@
-#include "shared.h"
+#include "../shared.h"
 
 
 
@@ -13,15 +13,15 @@ int main() {
 
 
 
-  sink(_strdup(getenv("VAR")));
-  sink(strdup(getenv("VAR")));
-  sink(unmodeled_function(getenv("VAR")));
+  sink(_strdup(getenv("VAR"))); // $ ir MISSING: ast
+  sink(strdup(getenv("VAR"))); // $ ast,ir
+  sink(unmodeled_function(getenv("VAR"))); // clean by assumption
 
   char untainted_buf[100] = "";
   char buf[100] = "VAR = ";
-  sink(strcat(buf, getenv("VAR")));
+  sink(strcat(buf, getenv("VAR"))); // $ ast,ir
 
-  sink(buf);
+  sink(buf); // $ ast,ir
   sink(untainted_buf); // the two buffers would be conflated if we added flow through all partial chi inputs
 
   return 0;
@@ -37,46 +37,7 @@ void test_indirect_arg_to_model() {
     // read side effect.
     void *env_pointer = getenv("VAR"); // env_pointer is tainted, not its data.
     inet_addr_retval a = inet_addr((const char *)&env_pointer);
-    sink(a);
-}
-
-class B {
-    public:
-    virtual void f(const char*) = 0;
-};
-
-class D1 : public B {};
-
-class D2 : public D1 {
-    public:
-    void f(const char* p) override {}
-};
-
-class D3 : public D2 {
-    public:
-    void f(const char* p) override {
-        sink(p);
-    }
-};
-
-void test_dynamic_cast() {
-    B* b = new D3();
-    b->f(getenv("VAR")); // tainted
-
-    ((D2*)b)->f(getenv("VAR")); // tainted
-    static_cast<D2*>(b)->f(getenv("VAR")); // tainted
-    dynamic_cast<D2*>(b)->f(getenv("VAR")); // tainted
-    reinterpret_cast<D2*>(b)->f(getenv("VAR")); // tainted
-
-    B* b2 = new D2();
-    b2->f(getenv("VAR"));
-
-    ((D2*)b2)->f(getenv("VAR"));
-    static_cast<D2*>(b2)->f(getenv("VAR"));
-    dynamic_cast<D2*>(b2)->f(getenv("VAR"));
-    reinterpret_cast<D2*>(b2)->f(getenv("VAR"));
-
-    dynamic_cast<D3*>(b2)->f(getenv("VAR")); // tainted [FALSE POSITIVE]
+    sink(a); // $ ast,ir
 }
 
 namespace std {
@@ -85,7 +46,7 @@ namespace std {
 }
 
 void test_std_move() {
-  sink(std::move(getenv("VAR")));
+  sink(std::move(getenv("VAR"))); // $ ir MISSING: ast
 }
 
 void flow_to_outparam(char ** ret, char *arg) {
@@ -95,7 +56,7 @@ void flow_to_outparam(char ** ret, char *arg) {
 void test_outparams() {
     char *p2 = nullptr;
     flow_to_outparam(&p2, getenv("VAR"));
-    sink(p2); // tainted
+    sink(p2); // $ ir MISSING: ast
 }
 
 
@@ -123,7 +84,7 @@ struct Point {
   int y;
 
   void callSink() {
-    sink(this->x); // tainted
+    sink(this->x); // $ ir MISSING: ast
     sink(this->y); // not tainted
   }
 };
@@ -131,7 +92,7 @@ struct Point {
 void test_conflated_fields1() {
   Point p;
   p.x = getenv("VAR")[0];
-  sink(p.x); // tainted
+  sink(p.x); // $ ir MISSING: ast
   sink(p.y); // not tainted
   p.callSink();
 }
@@ -156,35 +117,35 @@ void sink(Point);
 void test_field_to_obj_taint_object(Point p) {
   p.x = getenv("VAR")[0];
   sink(p); // not tainted
-  sink(p.x); // tainted
+  sink(p.x); // $ ir MISSING: ast
 }
 
 void test_field_to_obj_taint_object_addrof(Point p) {
   taint_x(&p);
-  sink(p); // tainted [field -> object]
-  sink(&p); // tainted [field -> object]
-  sink(p.x); // tainted
+  sink(p); // $ MISSING: ast,ir // tainted [field -> object]
+  sink(&p); // $ MISSING: ast,ir // tainted [field -> object]
+  sink(p.x); // $ ir MISSING: ast
 }
 
 void test_field_to_obj_taint_pointer(Point* pp) {
   pp->x = getenv("VAR")[0];
-  sink(pp); // tainted [field -> object]
+  sink(pp); // $ MISSING: ast,ir // tainted [field -> object]
   sink(*pp); // not tainted
 }
 
 void call_sink_on_object(Point* pp) {
-  sink(pp); // tainted [field -> object]
-  sink(*pp); // tainted [field -> object]
+  sink(pp); // $ MISSING: ast,ir // tainted [field -> object]
+  sink(*pp); // $ MISSING: ast,ir // tainted [field -> object]
 }
 
 void test_field_to_obj_taint_call_sink(Point* pp) {
   pp->x = getenv("VAR")[0];
-  call_sink_on_object(pp);
+  call_sink_on_object(pp); // leads to MISSING in the callee
 }
 
 void test_field_to_obj_taint_through_setter(Point* pp) {
   taint_x(pp);
-  sink(pp); // tainted [field -> object]
+  sink(pp); // $ MISSING: ast,ir // tainted [field -> object]
   sink(*pp); // not tainted
 }
 
@@ -200,14 +161,14 @@ void test_field_to_obj_local_variable() {
 void test_field_to_obj_taint_array(Point* pp, int i) {
   pp[0].x = getenv("VAR")[0];
   sink(pp[i]); // not tainted
-  sink(pp); // tainted [field -> object]
+  sink(pp); // $ MISSING: ast,ir // tainted [field -> object]
   sink(*pp); // not tainted
 }
 
 void test_field_to_obj_test_pointer_arith(Point* pp) {
   (pp + sizeof(*pp))->x = getenv("VAR")[0];
-  sink(pp); // tainted [field -> object]
-  sink(pp + sizeof(*pp)); // tainted [field -> object]
+  sink(pp); // $ MISSING: ast,ir // tainted [field -> object]
+  sink(pp + sizeof(*pp)); // $ MISSING: ast,ir // tainted [field -> object]
 }
 
 void sink(char **);
@@ -225,13 +186,13 @@ void test_pointers1()
 	ptr3 = buffer;
 	ptr4 = &ptr3;
 
-	sink(buffer); // tainted
-	sink(ptr1); // tainted
-	sink(ptr2);
-	sink(*ptr2); // tainted [NOT DETECTED]
-	sink(ptr3); // tainted
-	sink(ptr4);
-	sink(*ptr4); // tainted [NOT DETECTED]
+	sink(buffer); // $ ast,ir
+	sink(ptr1); // $ ast,ir
+	sink(ptr2); // $ SPURIOUS: ast
+	sink(*ptr2); // $ ast MISSING: ir
+	sink(ptr3); // $ ast,ir
+	sink(ptr4); // $ SPURIOUS: ast
+	sink(*ptr4); // $ ast MISSING: ir
 }
 
 void test_pointers2()
@@ -247,11 +208,11 @@ void test_pointers2()
 	ptr3 = buffer;
 	ptr4 = &ptr3;
 
-	sink(buffer); // tainted [NOT DETECTED]
-	sink(ptr1); // tainted [NOT DETECTED]
-	sink(ptr2);
-	sink(*ptr2); // tainted [NOT DETECTED]
-	sink(ptr3); // tainted [NOT DETECTED]
-	sink(ptr4);
-	sink(*ptr4); // tainted [NOT DETECTED]
+	sink(buffer); // $ MISSING: ast,ir
+	sink(ptr1); // $ ast MISSING: ir
+	sink(ptr2); // $ SPURIOUS: ast
+	sink(*ptr2); // $ ast MISSING: ir
+	sink(ptr3); // $ MISSING: ast,ir
+	sink(ptr4); // clean
+	sink(*ptr4); // $ MISSING: ast,ir
 }
