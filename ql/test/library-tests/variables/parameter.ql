@@ -8,5 +8,5 @@ query predicate parameterVariableAccess(Parameter p, Variable v, VariableAccess 
 }
 
 query predicate parameterVariableNoAcess(Parameter p, Variable v) {
-  v = p.getAVariable() and not exists(v.getAnAccess())
+  v = p.getAVariable() and strictcount(v.getAnAccess()) = 1
 }
