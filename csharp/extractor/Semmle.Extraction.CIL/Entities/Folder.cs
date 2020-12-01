@@ -3,10 +3,6 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    internal interface IFolder : IFileOrFolder
-    {
-    }
-
     public sealed class Folder : LabelledEntity, IFolder
     {
         private readonly PathTransformer.ITransformedPath transformedPath;

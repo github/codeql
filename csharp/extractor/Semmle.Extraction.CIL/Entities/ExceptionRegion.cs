@@ -2,10 +2,6 @@
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    internal interface IExceptionRegion : IExtractedEntity
-    {
-    }
-
     /// <summary>
     /// An exception region entity.
     /// </summary>

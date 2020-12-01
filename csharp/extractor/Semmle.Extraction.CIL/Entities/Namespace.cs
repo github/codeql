@@ -7,13 +7,6 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A namespace.
     /// </summary>
-    internal interface INamespace : ITypeContainer
-    {
-    }
-
-    /// <summary>
-    /// A namespace.
-    /// </summary>
     public sealed class Namespace : TypeContainer, INamespace
     {
         public Namespace? ParentNamespace { get; }

@@ -5,13 +5,6 @@ using System.Reflection.Metadata;
 namespace Semmle.Extraction.CIL.Entities
 {
     /// <summary>
-    /// An event.
-    /// </summary>
-    internal interface IEvent : IExtractedEntity
-    {
-    }
-
-    /// <summary>
     /// An event entity.
     /// </summary>
     internal sealed class Event : LabelledEntity, IEvent
