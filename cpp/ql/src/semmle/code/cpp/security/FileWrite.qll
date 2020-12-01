@@ -143,9 +143,8 @@ private predicate fileWrite(Call write, Expr source, Expr dest) {
     )
     or
     // fprintf
-    f.(FormattingFunction).isOutputStream() and
     s >= f.(FormattingFunction).getFormatParameterIndex() and
-    d = f.(FormattingFunction).getOutputParameterIndex()
+    d = f.(FormattingFunction).getOutputParameterIndex(true)
   )
   or
   // file stream using '<<', 'put' or 'write'

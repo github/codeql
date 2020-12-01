@@ -128,13 +128,13 @@ class UserDefinedFormattingFunction extends FormattingFunction {
 
   override int getFormatParameterIndex() { callsVariadicFormatter(this, _, result, _) }
 
-  override int getOutputParameterIndex() {
-    callsVariadicFormatter(this, _, _, result) and not result = -1
+  override int getOutputParameterIndex(boolean isStream) {
+    callsVariadicFormatter(this, "f", _, result) and isStream = true
+    or
+    callsVariadicFormatter(this, "s", _, result) and isStream = false
   }
 
   override predicate isOutputGlobal() { callsVariadicFormatter(this, "", _, _) }
-
-  override predicate isOutputStream() { callsVariadicFormatter(this, "f", _, _) }
 }
 
 /**

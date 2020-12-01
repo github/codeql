@@ -58,9 +58,7 @@ private class Fprintf extends FormattingFunction {
 
   deprecated override predicate isWideCharDefault() { hasGlobalOrStdName("fwprintf") }
 
-  override int getOutputParameterIndex() { result = 0 }
-
-  override predicate isOutputStream() { any() }
+  override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = true }
 }
 
 /**
@@ -113,7 +111,9 @@ private class Sprintf extends FormattingFunction {
     result = 1
   }
 
-  override int getOutputParameterIndex() { not hasGlobalName("g_strdup_printf") and result = 0 }
+  override int getOutputParameterIndex(boolean isStream) {
+    not hasGlobalName("g_strdup_printf") and result = 0 and isStream = false
+  }
 
   override int getFirstFormatArgumentIndex() {
     if hasGlobalName("__builtin___sprintf_chk")
@@ -168,7 +168,7 @@ private class SnprintfImpl extends Snprintf {
         .getSize() > 1
   }
 
-  override int getOutputParameterIndex() { result = 0 }
+  override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
 
   override int getFirstFormatArgumentIndex() {
     exists(string name |
@@ -228,7 +228,7 @@ private class StringCchPrintf extends FormattingFunction {
         .getSize() > 1
   }
 
-  override int getOutputParameterIndex() { result = 0 }
+  override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
 
   override int getSizeParameterIndex() { result = 1 }
 }
