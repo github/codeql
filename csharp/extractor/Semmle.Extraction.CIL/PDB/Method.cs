@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.PDB
 {
-    internal class Method : IMethod
+    public class Method
     {
         public IEnumerable<SequencePoint> SequencePoints { get; }
 

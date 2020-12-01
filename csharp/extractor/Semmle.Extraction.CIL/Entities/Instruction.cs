@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A CIL instruction.
     /// </summary>
-    internal class Instruction : UnlabelledEntity, IInstruction
+    internal class Instruction : UnlabelledEntity, IEntity
     {
         /// <summary>
         /// The additional data following the opcode, if any.
@@ -433,10 +433,10 @@ namespace Semmle.Extraction.CIL.Entities
         }
 
         // Called to populate the jumps in each instruction.
-        public IEnumerable<IExtractionProduct> JumpContents(Dictionary<int, IInstruction> jump_table)
+        public IEnumerable<IExtractionProduct> JumpContents(Dictionary<int, Instruction> jump_table)
         {
             int target;
-            IInstruction? inst;
+            Instruction? inst;
 
             switch (PayloadType)
             {

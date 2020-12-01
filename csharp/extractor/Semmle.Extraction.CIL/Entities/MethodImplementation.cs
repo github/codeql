@@ -6,7 +6,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// A method implementation entity.
     /// In the database, the same method could in principle have multiple implementations.
     /// </summary>
-    internal class MethodImplementation : UnlabelledEntity, IMethodImplementation
+    internal class MethodImplementation : UnlabelledEntity
     {
         private readonly Method m;
 

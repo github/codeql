@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A type.
     /// </summary>
-    public abstract class Type : TypeContainer, IMember, IType
+    public abstract class Type : TypeContainer, IMember
     {
         public override string IdSuffix => ";cil-type";
 

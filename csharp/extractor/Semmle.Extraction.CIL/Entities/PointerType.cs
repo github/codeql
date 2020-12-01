@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    internal sealed class PointerType : Type, IPointerType
+    internal sealed class PointerType : Type
     {
         private readonly Type pointee;
 

@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// An event entity.
     /// </summary>
-    internal sealed class Event : LabelledEntity, IEvent
+    internal sealed class Event : LabelledEntity
     {
         private readonly EventDefinitionHandle handle;
         private readonly Type parent;

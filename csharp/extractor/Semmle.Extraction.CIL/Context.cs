@@ -110,7 +110,7 @@ namespace Semmle.Extraction.CIL
         /// </summary>
         /// <param name="handle">The handle of the method.</param>
         /// <returns>The debugging information, or null if the information could not be located.</returns>
-        public PDB.IMethod? GetMethodDebugInformation(MethodDefinitionHandle handle)
+        public PDB.Method? GetMethodDebugInformation(MethodDefinitionHandle handle)
         {
             return Pdb?.GetMethod(handle.ToDebugInformationHandle());
         }

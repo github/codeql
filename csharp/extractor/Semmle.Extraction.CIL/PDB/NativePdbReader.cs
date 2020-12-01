@@ -56,7 +56,7 @@ namespace Semmle.Extraction.PDB
 
         public IEnumerable<ISourceFile> SourceFiles => reader.GetDocuments().Select(d => new Document(d));
 
-        public IMethod? GetMethod(MethodDebugInformationHandle h)
+        public Method? GetMethod(MethodDebugInformationHandle h)
         {
             var methodToken = MetadataTokens.GetToken(h.ToDefinitionHandle());
             var method = reader.GetMethod(methodToken);

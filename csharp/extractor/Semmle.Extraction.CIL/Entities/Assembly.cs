@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// An assembly to extract.
     /// </summary>
-    public class Assembly : LabelledEntity, IAssembly
+    public class Assembly : LabelledEntity, ILocation
     {
         private readonly File file;
         private readonly AssemblyName assemblyName;

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    public class File : LabelledEntity, IFile
+    public class File : LabelledEntity, IFileOrFolder
     {
         protected string OriginalPath { get; }
         protected PathTransformer.ITransformedPath TransformedPath { get; }

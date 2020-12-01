@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// An entity representing a field.
     /// </summary>
-    internal abstract class Field : GenericContext, IField
+    internal abstract class Field : GenericContext, IMember
     {
         protected Field(Context cx) : base(cx)
         {

@@ -21,6 +21,6 @@ namespace Semmle.Extraction.PDB
         /// </summary>
         /// <param name="methodHandle">The handle to query.</param>
         /// <returns>The method information, or null if the method does not have debug information.</returns>
-        IMethod? GetMethod(MethodDebugInformationHandle methodHandle);
+        Method? GetMethod(MethodDebugInformationHandle methodHandle);
     }
 }

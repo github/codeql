@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// An array type.
     /// </summary>
-    internal sealed class ArrayType : Type, IArrayType
+    internal sealed class ArrayType : Type
     {
         private readonly Type elementType;
         private readonly int rank;

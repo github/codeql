@@ -9,11 +9,11 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A definition method - a method defined in the current assembly.
     /// </summary>
-    internal sealed class DefinitionMethod : Method, IMember
+    internal sealed class DefinitionMethod : Method
     {
         private readonly Handle handle;
         private readonly MethodDefinition md;
-        private readonly PDB.IMethod? methodDebugInformation;
+        private readonly PDB.Method? methodDebugInformation;
         private readonly Type declaringType;
 
         private readonly string name;
@@ -120,7 +120,7 @@ namespace Semmle.Extraction.CIL.Entities
                         }
                     }
 
-                    var jump_table = new Dictionary<int, IInstruction>();
+                    var jump_table = new Dictionary<int, Instruction>();
 
                     foreach (var c in Decode(body.GetILBytes(), jump_table))
                         yield return c;
@@ -178,7 +178,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        private IEnumerable<IExtractionProduct> Decode(byte[] ilbytes, Dictionary<int, IInstruction> jump_table)
+        private IEnumerable<IExtractionProduct> Decode(byte[] ilbytes, Dictionary<int, Instruction> jump_table)
         {
             // Sequence points are stored in order of offset.
             // We use an enumerator to locate the correct sequence point for each instruction.

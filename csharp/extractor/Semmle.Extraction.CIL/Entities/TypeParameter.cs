@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    internal abstract class TypeParameter : Type, ITypeParameter
+    internal abstract class TypeParameter : Type
     {
         protected readonly GenericContext gc;
 

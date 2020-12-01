@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// Entity representing a CIL attribute.
     /// </summary>
-    internal sealed class Attribute : UnlabelledEntity, IAttribute
+    internal sealed class Attribute : UnlabelledEntity
     {
         private readonly CustomAttributeHandle handle;
         private readonly CustomAttribute attrib;
