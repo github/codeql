@@ -108,7 +108,7 @@ paramsInLambdas
 | params.rb:70:31:70:64 | -> { ... } | 0 | params.rb:70:35:70:35 | a | SimpleParameter |
 | params.rb:70:31:70:64 | -> { ... } | 1 | params.rb:70:38:70:45 | b | OptionalParameter |
 | params.rb:70:31:70:64 | -> { ... } | 2 | params.rb:70:48:70:53 | c | OptionalParameter |
-#select
+params
 | params.rb:4:30:4:32 | foo | 0 | SimpleParameter |
 | params.rb:4:35:4:37 | bar | 1 | SimpleParameter |
 | params.rb:4:40:4:42 | baz | 2 | SimpleParameter |

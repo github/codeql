@@ -60,7 +60,11 @@ class VariableAccess extends AstNode, @token_identifier {
   override Generated::Identifier generated;
   Variable variable;
 
-  VariableAccess() { access(this, variable) }
+  VariableAccess() {
+    access(this, variable) and
+    // Do not generate an access at the defining location
+    not variable = TLocalVariable(_, _, this)
+  }
 
   /** Gets the variable this identifier refers to. */
   Variable getVariable() { result = variable }

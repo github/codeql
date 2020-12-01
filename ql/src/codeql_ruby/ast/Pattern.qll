@@ -2,6 +2,7 @@ import codeql_ruby.AST
 private import codeql_ruby.Generated
 private import codeql.Locations
 private import internal.Pattern
+private import internal.Variable
 private import Variable
 
 /** A pattern. */
@@ -16,8 +17,8 @@ class VariablePattern extends Pattern {
   /** Gets the name of the variable used in this pattern. */
   final string getVariableName() { result = generated.getValue() }
 
-  /** Gets the variable used in this pattern. */
-  Variable getVariable() { this = result.getAnAccess() }
+  /** Gets the variable used in (or introduced by) this pattern. */
+  Variable getVariable() { access(this, result) }
 
   override string toString() { result = this.getVariableName() }
 }

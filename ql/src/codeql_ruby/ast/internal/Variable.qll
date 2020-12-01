@@ -123,11 +123,7 @@ private module Cached {
 
   cached
   predicate access(Generated::Identifier access, Variable variable) {
-    exists(string name |
-      name = access.getValue() and
-      // Do not generate an access at the defining location
-      not variable = TLocalVariable(_, name, access)
-    |
+    exists(string name | name = access.getValue() |
       variable = enclosingScope(access).getVariable(name) and
       not strictlyBefore(access.getLocation(), variable.getLocation())
       or
