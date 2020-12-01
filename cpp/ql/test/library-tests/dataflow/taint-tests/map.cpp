@@ -310,8 +310,8 @@ void test_unordered_map()
 	for (i3 = m3.begin(); i3 != m3.end(); i3++)
 	{
 		sink(*i3); // $ MISSING: ast,ir
-		sink(i2->first); // $ ir MISSING: ast
-		sink(i2->second); // $ SPURIOUS: ir
+		sink(i3->first); // $ MISSING: ast,ir
+		sink(i3->second); // clean
 	}
 
 	// array-like access

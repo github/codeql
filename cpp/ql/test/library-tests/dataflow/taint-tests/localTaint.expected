@@ -1448,8 +1448,6 @@
 | map.cpp:304:15:304:19 | call to begin | map.cpp:306:9:306:10 | i2 |  |
 | map.cpp:304:15:304:19 | call to begin | map.cpp:307:8:307:9 | i2 |  |
 | map.cpp:304:15:304:19 | call to begin | map.cpp:308:8:308:9 | i2 |  |
-| map.cpp:304:15:304:19 | call to begin | map.cpp:313:8:313:9 | i2 |  |
-| map.cpp:304:15:304:19 | call to begin | map.cpp:314:8:314:9 | i2 |  |
 | map.cpp:304:30:304:31 | m2 | map.cpp:304:33:304:35 | call to end | TAINT |
 | map.cpp:304:30:304:31 | ref arg m2 | map.cpp:304:30:304:31 | m2 |  |
 | map.cpp:304:30:304:31 | ref arg m2 | map.cpp:334:7:334:8 | m2 |  |
@@ -1462,8 +1460,6 @@
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:306:9:306:10 | i2 |  |
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:307:8:307:9 | i2 |  |
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:308:8:308:9 | i2 |  |
-| map.cpp:304:40:304:41 | ref arg i2 | map.cpp:313:8:313:9 | i2 |  |
-| map.cpp:304:40:304:41 | ref arg i2 | map.cpp:314:8:314:9 | i2 |  |
 | map.cpp:306:8:306:8 | call to operator* | map.cpp:306:8:306:10 | call to pair | TAINT |
 | map.cpp:306:9:306:10 | i2 | map.cpp:306:8:306:8 | call to operator* | TAINT |
 | map.cpp:307:8:307:9 | i2 | map.cpp:307:10:307:10 | call to operator-> | TAINT |
@@ -1475,6 +1471,8 @@
 | map.cpp:310:15:310:19 | call to begin | map.cpp:310:24:310:25 | i3 |  |
 | map.cpp:310:15:310:19 | call to begin | map.cpp:310:40:310:41 | i3 |  |
 | map.cpp:310:15:310:19 | call to begin | map.cpp:312:9:312:10 | i3 |  |
+| map.cpp:310:15:310:19 | call to begin | map.cpp:313:8:313:9 | i3 |  |
+| map.cpp:310:15:310:19 | call to begin | map.cpp:314:8:314:9 | i3 |  |
 | map.cpp:310:30:310:31 | m3 | map.cpp:310:33:310:35 | call to end | TAINT |
 | map.cpp:310:30:310:31 | ref arg m3 | map.cpp:310:30:310:31 | m3 |  |
 | map.cpp:310:30:310:31 | ref arg m3 | map.cpp:438:1:438:1 | m3 |  |
@@ -1482,10 +1480,12 @@
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:310:24:310:25 | i3 |  |
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:310:40:310:41 | i3 |  |
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:312:9:312:10 | i3 |  |
+| map.cpp:310:40:310:41 | ref arg i3 | map.cpp:313:8:313:9 | i3 |  |
+| map.cpp:310:40:310:41 | ref arg i3 | map.cpp:314:8:314:9 | i3 |  |
 | map.cpp:312:8:312:8 | call to operator* | map.cpp:312:8:312:10 | call to pair | TAINT |
 | map.cpp:312:9:312:10 | i3 | map.cpp:312:8:312:8 | call to operator* | TAINT |
-| map.cpp:313:8:313:9 | i2 | map.cpp:313:10:313:10 | call to operator-> | TAINT |
-| map.cpp:314:8:314:9 | i2 | map.cpp:314:10:314:10 | call to operator-> | TAINT |
+| map.cpp:313:8:313:9 | i3 | map.cpp:313:10:313:10 | call to operator-> | TAINT |
+| map.cpp:314:8:314:9 | i3 | map.cpp:314:10:314:10 | call to operator-> | TAINT |
 | map.cpp:318:37:318:39 | call to unordered_map | map.cpp:319:7:319:9 | m10 |  |
 | map.cpp:318:37:318:39 | call to unordered_map | map.cpp:323:7:323:9 | m10 |  |
 | map.cpp:318:37:318:39 | call to unordered_map | map.cpp:438:1:438:1 | m10 |  |
