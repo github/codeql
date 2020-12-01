@@ -18,8 +18,7 @@ predicate incorrectUseOfDES(ObjectCreation e, string msg) {
 }
 
 predicate incorrectUseOfTripleDES(ObjectCreation e, string msg) {
-  e
-      .getType()
+  e.getType()
       .(Class)
       .hasQualifiedName("System.Security.Cryptography", "TripleDESCryptoServiceProvider") and
   msg =

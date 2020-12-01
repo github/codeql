@@ -859,8 +859,7 @@ module Expressions {
         c =
           any(NestedCompletion nc |
             nc.getInnerCompletion() = cc and
-            nc
-                .getOuterCompletion()
+            nc.getOuterCompletion()
                 .(ThrowCompletion)
                 .getExceptionClass()
                 .hasQualifiedName("System.InvalidOperationException")
