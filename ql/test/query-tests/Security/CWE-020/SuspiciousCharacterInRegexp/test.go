@@ -1,8 +1,20 @@
-package test
+package main
 
 import "regexp"
 
-func test() {
+func main() {
+	// many backslashes
+	regexp.MustCompile("\a") // BAD
+	regexp.MustCompile("\\a")
+	regexp.MustCompile("\\\a")  // BAD
+	regexp.MustCompile("x\\\a") // BAD
+	regexp.MustCompile("\\\\a")
+	regexp.MustCompile("\\\\\a") // BAD
+	regexp.MustCompile("\\\\\\a")
+	regexp.MustCompile("\\\\\\\a") // BAD
+	regexp.MustCompile("\\\\\\\\a")
+	regexp.MustCompile("\\\\\\\\\a") // BAD
+	regexp.MustCompile("\\\\\\\\\\a")
 
 	// BAD: probably a mistake:
 	regexp.MustCompile("hello\aworld")
@@ -20,5 +32,6 @@ func test() {
 	regexp.MustCompile("hello\010world")
 	regexp.MustCompile("hello\u0008world")
 	regexp.MustCompile("hello\U00000008world")
-
+	// GOOD: use of a raw string literal
+	regexp.MustCompile(`hello\b\sworld`)
 }
