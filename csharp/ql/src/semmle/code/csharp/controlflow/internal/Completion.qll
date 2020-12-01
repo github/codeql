@@ -388,9 +388,16 @@ private class TriedControlFlowElement extends ControlFlowElement {
   }
 }
 
-pragma[noinline]
+pragma[nomagic]
+private ValueOrRefType getACastExprBaseType(CastExpr ce) {
+  result = ce.getType().(ValueOrRefType).getABaseType()
+  or
+  result = getACastExprBaseType(ce).getABaseType()
+}
+
+pragma[nomagic]
 private predicate invalidCastCandidate(CastExpr ce) {
-  ce.getType() = ce.getExpr().getType().(ValueOrRefType).getASubType+()
+  ce.getExpr().getType() = getACastExprBaseType(ce)
 }
 
 private predicate assertion(Assertion a, int i, AssertMethod am, Expr e) {
