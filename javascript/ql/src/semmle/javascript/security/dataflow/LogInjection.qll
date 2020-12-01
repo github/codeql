@@ -4,6 +4,9 @@
 
 import javascript
 
+/**
+ * Provides default sources, sink, and sanitizers for reasoning about untrusted user input used in log entries.
+ */
 module LogInjection {
   /**
    * A data flow source for user input used in log entries.
