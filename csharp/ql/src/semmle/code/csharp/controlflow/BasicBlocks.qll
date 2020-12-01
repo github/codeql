@@ -298,6 +298,19 @@ private module Internal {
     cfn.isJoin()
     or
     cfn.getAPredecessor().isBranch()
+    or
+    /*
+     * In cases such as
+     * ```csharp
+     * if (b)
+     *     M()
+     * ```
+     * where the `false` edge out of `b` is not present (because we can prove it
+     * impossible), we still split up the basic block in two, in order to generate
+     * a `ConditionBlock` which can be used by the guards library.
+     */
+
+    exists(cfn.getAPredecessorByType(any(ControlFlow::SuccessorTypes::ConditionalSuccessor s)))
   }
 
   /**
