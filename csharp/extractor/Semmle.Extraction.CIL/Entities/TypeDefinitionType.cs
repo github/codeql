@@ -212,6 +212,15 @@ namespace Semmle.Extraction.CIL.Entities
                     var @base = (Type)Cx.CreateGeneric(this, td.BaseType);
                     yield return @base;
                     yield return Tuples.cil_base_class(this, @base);
+
+                    if (IsSystemEnum(td.BaseType) &&
+                        GetUnderlyingEnumType() is var underlying &&
+                        underlying.HasValue)
+                    {
+                        var underlyingType = Cx.Create(underlying.Value);
+                        yield return underlyingType;
+                        yield return Tuples.cil_enum_underlying_type(this, underlyingType);
+                    }
                 }
 
                 foreach (var @interface in td.GetInterfaceImplementations().Select(i => Cx.MdReader.GetInterfaceImplementation(i)))
@@ -224,6 +233,59 @@ namespace Semmle.Extraction.CIL.Entities
                 // Only type definitions have locations.
                 yield return Tuples.cil_type_location(this, Cx.Assembly);
             }
+        }
+
+        private bool IsSystemEnum(EntityHandle baseType)
+        {
+            return baseType.Kind switch
+            {
+                HandleKind.TypeReference => IsSystemEnum((TypeReferenceHandle)baseType),
+                HandleKind.TypeDefinition => IsSystemEnum((TypeDefinitionHandle)baseType),
+                _ => false,
+            };
+        }
+
+        private bool IsSystemEnum(TypeReferenceHandle baseType)
+        {
+            var baseTypeReference = Cx.MdReader.GetTypeReference(baseType);
+
+            return IsSystemEnum(baseTypeReference.Name, baseTypeReference.Namespace);
+        }
+
+        private bool IsSystemEnum(TypeDefinitionHandle baseType)
+        {
+            var baseTypeDefinition = Cx.MdReader.GetTypeDefinition(baseType);
+
+            return IsSystemEnum(baseTypeDefinition.Name, baseTypeDefinition.Namespace);
+        }
+
+        private bool IsSystemEnum(StringHandle typeName, StringHandle namespaceName)
+        {
+            return Cx.MdReader.StringComparer.Equals(typeName, "Enum") &&
+                !namespaceName.IsNil &&
+                Cx.MdReader.StringComparer.Equals(namespaceName, "System");
+        }
+
+        internal PrimitiveTypeCode? GetUnderlyingEnumType()
+        {
+            foreach (var handle in td.GetFields())
+            {
+                var field = Cx.MdReader.GetFieldDefinition(handle);
+                if ((field.Attributes & FieldAttributes.Static) != 0)
+                {
+                    continue;
+                }
+
+                var blob = Cx.MdReader.GetBlobReader(field.Signature);
+                if (blob.ReadSignatureHeader().Kind != SignatureKind.Field)
+                {
+                    break;
+                }
+
+                return (PrimitiveTypeCode)blob.ReadByte();
+            }
+
+            return null;
         }
 
         internal override Method LookupMethod(StringHandle name, BlobHandle signature)

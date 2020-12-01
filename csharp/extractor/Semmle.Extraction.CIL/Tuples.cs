@@ -32,6 +32,9 @@ namespace Semmle.Extraction.CIL
         internal static Tuple cil_base_class(Type t, Type @base) =>
             new Tuple("cil_base_class", t, @base);
 
+        internal static Tuple cil_enum_underlying_type(Type t, PrimitiveType underlying) =>
+            new Tuple("cil_enum_underlying_type", t, underlying);
+
         internal static Tuple cil_base_interface(Type t, Type @base) =>
             new Tuple("cil_base_interface", t, @base);
 

@@ -1803,6 +1803,7 @@ cil_newslot(int id: @cil_method ref);
 
 cil_base_class(unique int id: @cil_type ref, int base: @cil_type ref);
 cil_base_interface(int id: @cil_type ref, int base: @cil_type ref);
+cil_enum_underlying_type(unique int id: @cil_type ref, int underlying: @cil_type ref);
 
 #keyset[unbound, index]
 cil_type_parameter(

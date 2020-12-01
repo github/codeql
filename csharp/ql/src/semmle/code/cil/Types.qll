@@ -47,8 +47,12 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, @cil_valueorreftype {
 class Enum extends ValueOrRefType {
   Enum() { this.isEnum() }
 
-  // Note that we don't actually use the proper internal representation yet.
-  override IntType getUnderlyingType() { any() }
+  override IntegralType getUnderlyingType() {
+    cil_enum_underlying_type(this, result)
+    or
+    not exists(IntegralType underlying | cil_enum_underlying_type(this, underlying)) and
+    result = any(IntType i)
+  }
 }
 
 /** A `class`. */
