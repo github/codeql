@@ -978,7 +978,7 @@ attrArgPositional
 | !0 System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable`1.Enumerator.Current | [NullableAttribute(...)] | 0 | 1 |
 | !0 System.Tuple`1.Item1 | [NullableAttribute(...)] | 0 | 1 |
 | !0 System.Tuple`2.Item1 | [NullableAttribute(...)] | 0 | 1 |
-| !0[] System.ArraySegment`1.Array | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| !0[] System.ArraySegment`1.Array | [NullableAttribute(...)] | 0 | [2,1] |
 | !1 System.Collections.Generic.Dictionary`2.ValueCollection.Enumerator.Current | [NullableAttribute(...)] | 0 | 1 |
 | !1 System.Tuple`2.Item2 | [NullableAttribute(...)] | 0 | 1 |
 | Internal.Runtime.CompilerServices.Unsafe | [CLSCompliantAttribute(...)] | 0 | False |
@@ -1024,11 +1024,11 @@ attrArgPositional
 | System.AggregateException System.Threading.Tasks.Task.Exception | [NullableAttribute(...)] | 0 | 2 |
 | System.AppContext | [NullableAttribute(...)] | 0 | 0 |
 | System.AppContext | [NullableContextAttribute(...)] | 0 | 2 |
-| System.AppContext.FirstChanceException | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.AppContext.FirstChanceException | [NullableAttribute(...)] | 0 | [2,1] |
 | System.AppDomain | [NullableAttribute(...)] | 0 | 0 |
 | System.AppDomain | [NullableContextAttribute(...)] | 0 | 2 |
 | System.AppDomain System.AppDomain.CurrentDomain | [NullableAttribute(...)] | 0 | 1 |
-| System.AppDomain.FirstChanceException | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.AppDomain.FirstChanceException | [NullableAttribute(...)] | 0 | [2,1] |
 | System.AppDomainSetup | [NullableAttribute(...)] | 0 | 0 |
 | System.AppDomainSetup | [NullableContextAttribute(...)] | 0 | 2 |
 | System.AppDomainSetup System.AppDomain.SetupInformation | [NullableAttribute(...)] | 0 | 1 |
@@ -1050,7 +1050,7 @@ attrArgPositional
 | System.Array | [NullableAttribute(...)] | 0 | 0 |
 | System.Array | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Array | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.ArraySegment<!0> System.ArraySegment`1.Empty | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.ArraySegment<!0> System.ArraySegment`1.Empty | [NullableAttribute(...)] | 0 | [0,1] |
 | System.ArraySegment`1 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.ArraySegment`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.ArraySegment`1 | [NullableContextAttribute(...)] | 0 | 1 |
@@ -1069,7 +1069,7 @@ attrArgPositional
 | System.BadImageFormatException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.BitConverter | [NullableAttribute(...)] | 0 | 0 |
 | System.BitConverter | [NullableContextAttribute(...)] | 0 | 1 |
-| System.BitConverter.<>c.<>9__39_0 | [TupleElementNamesAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.BitConverter.<>c.<>9__39_0 | [TupleElementNamesAttribute(...)] | 0 | [value,startIndex,length] |
 | System.Buffer | [NullableAttribute(...)] | 0 | 0 |
 | System.Buffer | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Buffers.ArrayPool`1 | [NullableAttribute(...)] | 0 | 0 |
@@ -1113,8 +1113,8 @@ attrArgPositional
 | System.Collections.Generic.Comparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.Comparer`1 | [TypeDependencyAttribute(...)] | 0 | System.Collections.Generic.ObjectComparer`1 |
 | System.Collections.Generic.Comparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Collections.Generic.Dictionary<!0,!1>.KeyCollection System.Collections.Generic.Dictionary`2.Keys | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Collections.Generic.Dictionary<!0,!1>.ValueCollection System.Collections.Generic.Dictionary`2.Values | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.Dictionary<!0,!1>.KeyCollection System.Collections.Generic.Dictionary`2.Keys | [NullableAttribute(...)] | 0 | [1,0,0] |
+| System.Collections.Generic.Dictionary<!0,!1>.ValueCollection System.Collections.Generic.Dictionary`2.Values | [NullableAttribute(...)] | 0 | [1,0,0] |
 | System.Collections.Generic.Dictionary`2 | [DebuggerDisplayAttribute(...)] | 0 | Count = {Count} |
 | System.Collections.Generic.Dictionary`2 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Collections.Generic.Dictionary`2 | [NullableAttribute(...)] | 0 | 0 |
@@ -1130,20 +1130,20 @@ attrArgPositional
 | System.Collections.Generic.EqualityComparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.EqualityComparer`1 | [TypeDependencyAttribute(...)] | 0 | System.Collections.Generic.ObjectEqualityComparer`1 |
 | System.Collections.Generic.EqualityComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Collections.Generic.GenericComparer`1 | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.GenericComparer`1 | [NullableAttribute(...)] | 0 | [0,1] |
 | System.Collections.Generic.GenericComparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.GenericComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Collections.Generic.GenericEqualityComparer`1 | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.GenericEqualityComparer`1 | [NullableAttribute(...)] | 0 | [0,1] |
 | System.Collections.Generic.GenericEqualityComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.IAsyncEnumerable`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.ICollection`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.IComparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Collections.Generic.IDictionary<System.String,System.String> System.Diagnostics.Tracing.EventCommandEventArgs.Arguments | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.IDictionary<System.String,System.String> System.Diagnostics.Tracing.EventCommandEventArgs.Arguments | [NullableAttribute(...)] | 0 | [2,1,2] |
 | System.Collections.Generic.IDictionary`2 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Collections.Generic.IDictionary`2 | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Collections.Generic.IEqualityComparer<System.String> System.Collections.Generic.NonRandomizedStringEqualityComparer.Default | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.IEqualityComparer<System.String> System.Collections.Generic.NonRandomizedStringEqualityComparer.Default | [NullableAttribute(...)] | 0 | [1,2] |
 | System.Collections.Generic.IEqualityComparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Collections.Generic.IList<System.String> System.Runtime.CompilerServices.TupleElementNamesAttribute.TransformNames | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.IList<System.String> System.Runtime.CompilerServices.TupleElementNamesAttribute.TransformNames | [NullableAttribute(...)] | 0 | [1,2] |
 | System.Collections.Generic.IList`1 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Collections.Generic.IList`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.IReadOnlyDictionary`2 | [DefaultMemberAttribute(...)] | 0 | Item |
@@ -1154,25 +1154,25 @@ attrArgPositional
 | System.Collections.Generic.KeyNotFoundException | [NullableAttribute(...)] | 0 | 0 |
 | System.Collections.Generic.KeyNotFoundException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Collections.Generic.KeyNotFoundException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Collections.Generic.KeyValuePair<!0,!1> System.Collections.Generic.Dictionary`2.Enumerator.Current | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.KeyValuePair<!0,!1> System.Collections.Generic.Dictionary`2.Enumerator.Current | [NullableAttribute(...)] | 0 | [0,1,1] |
 | System.Collections.Generic.KeyValuePair`2 | [NullableAttribute(...)] | 0 | 0 |
 | System.Collections.Generic.KeyValuePair`2 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.KeyValuePair`2 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Collections.Generic.List<!0> System.Threading.ThreadLocal`1.ValuesForDebugDisplay | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.List<!0> System.Threading.ThreadLocal`1.ValuesForDebugDisplay | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Collections.Generic.List`1 | [DebuggerDisplayAttribute(...)] | 0 | Count = {Count} |
 | System.Collections.Generic.List`1 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Collections.Generic.List`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Collections.Generic.List`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.List`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.List`1.Enumerator | [NullableContextAttribute(...)] | 0 | 0 |
-| System.Collections.Generic.NonRandomizedStringEqualityComparer | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.NonRandomizedStringEqualityComparer | [NullableAttribute(...)] | 0 | [0,2] |
 | System.Collections.Generic.NonRandomizedStringEqualityComparer | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Collections.Generic.NullableComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.NullableEqualityComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Collections.Generic.ObjectComparer`1 | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.ObjectComparer`1 | [NullableAttribute(...)] | 0 | [0,1] |
 | System.Collections.Generic.ObjectComparer`1 | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Collections.Generic.ObjectComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Collections.Generic.ObjectEqualityComparer`1 | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.Generic.ObjectEqualityComparer`1 | [NullableAttribute(...)] | 0 | [0,1] |
 | System.Collections.Generic.ObjectEqualityComparer`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.Generic.ObjectEqualityComparer`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Collections.Generic.ValueListBuilder`1 | [DefaultMemberAttribute(...)] | 0 | Item |
@@ -1217,7 +1217,7 @@ attrArgPositional
 | System.Collections.ObjectModel.Collection`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Collections.ObjectModel.Collection`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Collections.ObjectModel.Collection`1 | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Collections.ObjectModel.ReadOnlyCollection<System.String> System.Diagnostics.Tracing.EventWrittenEventArgs.PayloadNames | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Collections.ObjectModel.ReadOnlyCollection<System.String> System.Diagnostics.Tracing.EventWrittenEventArgs.PayloadNames | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Collections.ObjectModel.ReadOnlyCollection`1 | [DebuggerDisplayAttribute(...)] | 0 | Count = {Count} |
 | System.Collections.ObjectModel.ReadOnlyCollection`1 | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Collections.ObjectModel.ReadOnlyCollection`1 | [NullableAttribute(...)] | 0 | 0 |
@@ -1258,7 +1258,7 @@ attrArgPositional
 | System.Diagnostics.ConditionalAttribute | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Diagnostics.Contracts.Contract | [NullableAttribute(...)] | 0 | 0 |
 | System.Diagnostics.Contracts.Contract | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Diagnostics.Contracts.Contract.ContractFailed | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Diagnostics.Contracts.Contract.ContractFailed | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Diagnostics.Contracts.ContractAbbreviatorAttribute | [ConditionalAttribute(...)] | 0 | CONTRACTS_FULL |
 | System.Diagnostics.Contracts.ContractArgumentValidatorAttribute | [ConditionalAttribute(...)] | 0 | CONTRACTS_FULL |
 | System.Diagnostics.Contracts.ContractClassAttribute | [ConditionalAttribute(...)] | 0 | CONTRACTS_FULL |
@@ -1311,13 +1311,13 @@ attrArgPositional
 | System.Diagnostics.Tracing.EventDataAttribute | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Diagnostics.Tracing.EventListener | [NullableAttribute(...)] | 0 | 0 |
 | System.Diagnostics.Tracing.EventListener | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Diagnostics.Tracing.EventListener.EventSourceCreated | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Diagnostics.Tracing.EventListener.EventWritten | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Diagnostics.Tracing.EventListener.EventSourceCreated | [NullableAttribute(...)] | 0 | [2,1] |
+| System.Diagnostics.Tracing.EventListener.EventWritten | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Diagnostics.Tracing.EventPayload | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Diagnostics.Tracing.EventSource | [NullableAttribute(...)] | 0 | 0 |
 | System.Diagnostics.Tracing.EventSource | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Diagnostics.Tracing.EventSource System.Diagnostics.Tracing.EventWrittenEventArgs.EventSource | [NullableAttribute(...)] | 0 | 1 |
-| System.Diagnostics.Tracing.EventSource.EventCommandExecuted | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Diagnostics.Tracing.EventSource.EventCommandExecuted | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Diagnostics.Tracing.EventSource.EventData | [NullableContextAttribute(...)] | 0 | 0 |
 | System.Diagnostics.Tracing.EventSourceAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Diagnostics.Tracing.EventSourceAttribute | [NullableContextAttribute(...)] | 0 | 2 |
@@ -1359,7 +1359,7 @@ attrArgPositional
 | System.Exception | [NullableAttribute(...)] | 0 | 0 |
 | System.Exception | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Exception | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Exception.SerializeObjectState | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Exception.SerializeObjectState | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Exception[] System.Reflection.ReflectionTypeLoadException.LoaderExceptions | [NullableAttribute(...)] | 0 | 2 |
 | System.ExecutionEngineException | [NullableAttribute(...)] | 0 | 0 |
 | System.ExecutionEngineException | [NullableContextAttribute(...)] | 0 | 2 |
@@ -1419,11 +1419,11 @@ attrArgPositional
 | System.Globalization.CultureTypes.WindowsOnlyCultures | [ObsoleteAttribute(...)] | 0 | This value has been deprecated.  Please use other values in CultureTypes. |
 | System.Globalization.DateTimeFormatInfo | [NullableAttribute(...)] | 0 | 0 |
 | System.Globalization.DateTimeFormatInfo | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Globalization.EraInfo[] System.Globalization.ChineseLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Globalization.EraInfo[] System.Globalization.EastAsianLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Globalization.EraInfo[] System.Globalization.JapaneseLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Globalization.EraInfo[] System.Globalization.KoreanLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Globalization.EraInfo[] System.Globalization.TaiwanLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Globalization.EraInfo[] System.Globalization.ChineseLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | [2,1] |
+| System.Globalization.EraInfo[] System.Globalization.EastAsianLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | [2,1] |
+| System.Globalization.EraInfo[] System.Globalization.JapaneseLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | [2,1] |
+| System.Globalization.EraInfo[] System.Globalization.KoreanLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | [2,1] |
+| System.Globalization.EraInfo[] System.Globalization.TaiwanLunisolarCalendar.CalEraInfo | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Globalization.GregorianCalendar | [NullableAttribute(...)] | 0 | 0 |
 | System.Globalization.GregorianCalendar | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Globalization.HebrewCalendar | [NullableAttribute(...)] | 0 | 0 |
@@ -1513,9 +1513,9 @@ attrArgPositional
 | System.IO.IOException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.IO.MemoryStream | [NullableAttribute(...)] | 0 | 0 |
 | System.IO.MemoryStream | [NullableContextAttribute(...)] | 0 | 1 |
-| System.IO.Path.<>c.<>9__37_0 | [TupleElementNamesAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.IO.Path.<>c.<>9__38_0 | [TupleElementNamesAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.IO.Path.<>c.<>9__39_0 | [TupleElementNamesAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.IO.Path.<>c.<>9__37_0 | [TupleElementNamesAttribute(...)] | 0 | [First,FirstLength,Second,SecondLength,HasSeparator] |
+| System.IO.Path.<>c.<>9__38_0 | [TupleElementNamesAttribute(...)] | 0 | [First,FirstLength,Second,SecondLength,Third,ThirdLength,FirstHasSeparator,ThirdHasSeparator,null] |
+| System.IO.Path.<>c.<>9__39_0 | [TupleElementNamesAttribute(...)] | 0 | [First,FirstLength,Second,SecondLength,Third,ThirdLength,Fourth,FourthLength,FirstHasSeparator,ThirdHasSeparator,FourthHasSeparator,null,null,null,null] |
 | System.IO.Path.InvalidPathChars | [NullableAttribute(...)] | 0 | 1 |
 | System.IO.Path.InvalidPathChars | [ObsoleteAttribute(...)] | 0 | Please use GetInvalidPathChars or GetInvalidFileNameChars instead. |
 | System.IO.PathTooLongException | [NullableAttribute(...)] | 0 | 0 |
@@ -1561,7 +1561,7 @@ attrArgPositional
 | System.Lazy`1 | [DebuggerDisplayAttribute(...)] | 0 | ThreadSafetyMode={Mode}, IsValueCreated={IsValueCreated}, IsValueFaulted={IsValueFaulted}, Value={ValueForDebugDisplay} |
 | System.Lazy`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Lazy`1 | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Lazy`2 | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Lazy`2 | [NullableAttribute(...)] | 0 | [0,1] |
 | System.Lazy`2 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.MarshalByRefObject | [ComVisibleAttribute(...)] | 0 | True |
 | System.MarshalByRefObject | [NullableAttribute(...)] | 0 | 0 |
@@ -1569,9 +1569,9 @@ attrArgPositional
 | System.MemberAccessException | [NullableAttribute(...)] | 0 | 0 |
 | System.MemberAccessException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.MemberAccessException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Memory<!0> System.Buffers.IMemoryOwner`1.Memory | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Memory<!0> System.Buffers.MemoryManager`1.Memory | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Memory<!0> System.Memory`1.Empty | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Memory<!0> System.Buffers.IMemoryOwner`1.Memory | [NullableAttribute(...)] | 0 | [0,1] |
+| System.Memory<!0> System.Buffers.MemoryManager`1.Memory | [NullableAttribute(...)] | 0 | [0,1] |
+| System.Memory<!0> System.Memory`1.Empty | [NullableAttribute(...)] | 0 | [0,1] |
 | System.Memory`1 | [DebuggerDisplayAttribute(...)] | 0 | {ToString(),raw} |
 | System.Memory`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Memory`1 | [NullableContextAttribute(...)] | 0 | 1 |
@@ -1640,16 +1640,16 @@ attrArgPositional
 | System.PlatformNotSupportedException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
 | System.Progress`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Progress`1 | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Progress`1.ProgressChanged | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Progress`1.ProgressChanged | [NullableAttribute(...)] | 0 | [2,1] |
 | System.RankException | [NullableAttribute(...)] | 0 | 0 |
 | System.RankException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.RankException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.ReadOnlyMemory<!0> System.ReadOnlyMemory`1.Empty | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.ReadOnlyMemory<!0> System.ReadOnlyMemory`1.Empty | [NullableAttribute(...)] | 0 | [0,1] |
 | System.ReadOnlyMemory`1 | [DebuggerDisplayAttribute(...)] | 0 | {ToString(),raw} |
 | System.ReadOnlyMemory`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.ReadOnlyMemory`1 | [NullableContextAttribute(...)] | 0 | 1 |
-| System.ReadOnlySpan<!0> System.ReadOnlyMemory`1.Span | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.ReadOnlySpan<!0> System.ReadOnlySpan`1.Empty | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.ReadOnlySpan<!0> System.ReadOnlyMemory`1.Span | [NullableAttribute(...)] | 0 | [0,1] |
+| System.ReadOnlySpan<!0> System.ReadOnlySpan`1.Empty | [NullableAttribute(...)] | 0 | [0,1] |
 | System.ReadOnlySpan<System.Byte> System.Text.Encoding.Preamble | [NullableAttribute(...)] | 0 | 0 |
 | System.ReadOnlySpan<System.Byte> System.Text.UTF32Encoding.Preamble | [NullableAttribute(...)] | 0 | 0 |
 | System.ReadOnlySpan<System.Byte> System.Text.UnicodeEncoding.Preamble | [NullableAttribute(...)] | 0 | 0 |
@@ -1878,7 +1878,7 @@ attrArgPositional
 | System.Runtime.CompilerServices.ConditionalWeakTable`2.CreateValueCallback | [NullableContextAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.ContractHelper | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.ContractHelper | [NullableContextAttribute(...)] | 0 | 2 |
-| System.Runtime.CompilerServices.ContractHelper.InternalContractFailed | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Runtime.CompilerServices.ContractHelper.InternalContractFailed | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Runtime.CompilerServices.CustomConstantAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.CustomConstantAttribute | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Runtime.CompilerServices.DateTimeConstantAttribute | [NullableAttribute(...)] | 0 | 0 |
@@ -2063,14 +2063,14 @@ attrArgPositional
 | System.Runtime.Loader.AssemblyLoadContext.AssemblyLoad | [NullableAttribute(...)] | 0 | 2 |
 | System.Runtime.Loader.AssemblyLoadContext.AssemblyResolve | [NullableAttribute(...)] | 0 | 2 |
 | System.Runtime.Loader.AssemblyLoadContext.ContextualReflectionScope | [NullableContextAttribute(...)] | 0 | 0 |
-| System.Runtime.Loader.AssemblyLoadContext.Resolving | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Runtime.Loader.AssemblyLoadContext.ResolvingUnmanagedDll | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Runtime.Loader.AssemblyLoadContext.Resolving | [NullableAttribute(...)] | 0 | [2,1,1,2] |
+| System.Runtime.Loader.AssemblyLoadContext.ResolvingUnmanagedDll | [NullableAttribute(...)] | 0 | [2,1,1] |
 | System.Runtime.Loader.AssemblyLoadContext.ResourceResolve | [NullableAttribute(...)] | 0 | 2 |
 | System.Runtime.Loader.AssemblyLoadContext.TypeResolve | [NullableAttribute(...)] | 0 | 2 |
-| System.Runtime.Loader.AssemblyLoadContext.Unloading | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Runtime.Loader.AssemblyLoadContext._resolving | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Runtime.Loader.AssemblyLoadContext._resolvingUnmanagedDll | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Runtime.Loader.AssemblyLoadContext._unloading | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Runtime.Loader.AssemblyLoadContext.Unloading | [NullableAttribute(...)] | 0 | [2,1] |
+| System.Runtime.Loader.AssemblyLoadContext._resolving | [NullableAttribute(...)] | 0 | [2,1,1,1] |
+| System.Runtime.Loader.AssemblyLoadContext._resolvingUnmanagedDll | [NullableAttribute(...)] | 0 | [2,1,1] |
+| System.Runtime.Loader.AssemblyLoadContext._unloading | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Runtime.Remoting.ObjectHandle | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.Remoting.ObjectHandle | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Runtime.Serialization.IDeserializationCallback | [NullableContextAttribute(...)] | 0 | 2 |
@@ -2119,8 +2119,8 @@ attrArgPositional
 | System.Security.VerificationException | [NullableAttribute(...)] | 0 | 0 |
 | System.Security.VerificationException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Security.VerificationException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Span<!0> System.Memory`1.Span | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
-| System.Span<!0> System.Span`1.Empty | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Span<!0> System.Memory`1.Span | [NullableAttribute(...)] | 0 | [0,1] |
+| System.Span<!0> System.Span`1.Empty | [NullableAttribute(...)] | 0 | [0,1] |
 | System.Span<System.Char> System.Text.StringBuilder.RemainingCurrentChunk | [NullableAttribute(...)] | 0 | 0 |
 | System.Span`1 | [DebuggerDisplayAttribute(...)] | 0 | {ToString(),raw} |
 | System.Span`1 | [DefaultMemberAttribute(...)] | 0 | Item |
@@ -2232,7 +2232,7 @@ attrArgPositional
 | System.Threading.SynchronizationContext | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.SynchronizationContext | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.SynchronizationContext System.Threading.SynchronizationContext.Current | [NullableAttribute(...)] | 0 | 2 |
-| System.Threading.SynchronizationContext.<>c.<>9__8_0 | [TupleElementNamesAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Threading.SynchronizationContext.<>c.<>9__8_0 | [TupleElementNamesAttribute(...)] | 0 | [d,state] |
 | System.Threading.SynchronizationLockException | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.SynchronizationLockException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Threading.SynchronizationLockException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
@@ -2271,7 +2271,7 @@ attrArgPositional
 | System.Threading.Tasks.TaskScheduler System.Threading.Tasks.TaskFactory.Scheduler | [NullableAttribute(...)] | 0 | 2 |
 | System.Threading.Tasks.TaskScheduler System.Threading.Tasks.TaskFactory`1.Scheduler | [NullableAttribute(...)] | 0 | 2 |
 | System.Threading.Tasks.TaskScheduler System.Threading.Tasks.TaskScheduler.InternalCurrent | [NullableAttribute(...)] | 0 | 2 |
-| System.Threading.Tasks.TaskScheduler.UnobservedTaskException | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Threading.Tasks.TaskScheduler.UnobservedTaskException | [NullableAttribute(...)] | 0 | [2,1] |
 | System.Threading.Tasks.TaskSchedulerException | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Tasks.TaskSchedulerException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Threading.Tasks.TaskSchedulerException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
@@ -2282,7 +2282,7 @@ attrArgPositional
 | System.Threading.Tasks.UnobservedTaskExceptionEventArgs | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Threading.Tasks.ValueTask | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Tasks.ValueTask | [NullableContextAttribute(...)] | 0 | 1 |
-| System.Threading.Tasks.ValueTask<!0> System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder`1.Task | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Threading.Tasks.ValueTask<!0> System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder`1.Task | [NullableAttribute(...)] | 0 | [0,1] |
 | System.Threading.Tasks.ValueTask`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Tasks.ValueTask`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.Thread | [NullableAttribute(...)] | 0 | 0 |
@@ -2293,7 +2293,7 @@ attrArgPositional
 | System.Threading.ThreadInterruptedException | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.ThreadInterruptedException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Threading.ThreadInterruptedException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Threading.ThreadLocal<System.Object> System.LocalDataStoreSlot.Data | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Threading.ThreadLocal<System.Object> System.LocalDataStoreSlot.Data | [NullableAttribute(...)] | 0 | [1,2] |
 | System.Threading.ThreadLocal`1 | [DebuggerDisplayAttribute(...)] | 0 | IsValueCreated={IsValueCreated}, Value={ValueForDebugDisplay}, Count={ValuesCountForDebugDisplay} |
 | System.Threading.ThreadLocal`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.ThreadLocal`1 | [NullableContextAttribute(...)] | 0 | 1 |
@@ -2394,7 +2394,7 @@ attrArgPositional
 | System.TypeUnloadedException | [NullableAttribute(...)] | 0 | 0 |
 | System.TypeUnloadedException | [NullableContextAttribute(...)] | 0 | 2 |
 | System.TypeUnloadedException | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |
-| System.Type[] System.Reflection.ReflectionTypeLoadException.Types | [NullableAttribute(...)] | 0 | System.Collections.Immutable.ImmutableArray`1[System.Reflection.Metadata.CustomAttributeTypedArgument`1[Semmle.Extraction.CIL.Entities.Type]] |
+| System.Type[] System.Reflection.ReflectionTypeLoadException.Types | [NullableAttribute(...)] | 0 | [2,1] |
 | System.TypedReference | [CLSCompliantAttribute(...)] | 0 | False |
 | System.TypedReference | [NullableAttribute(...)] | 0 | 0 |
 | System.TypedReference | [NullableContextAttribute(...)] | 0 | 1 |
