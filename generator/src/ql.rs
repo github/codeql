@@ -214,10 +214,12 @@ pub fn write<'a>(
         " * Automatically generated from the tree-sitter grammar; do not edit\n"
     )?;
     write!(file, " */\n\n")?;
+    write!(file, "module Generated {{\n")?;
 
     for element in elements {
         write!(file, "{}\n\n", &element)?;
     }
 
+    write!(file, "}}")?;
     Ok(())
 }

@@ -6,7 +6,7 @@
  * to hold for only the AST nodes you wish to view.
  */
 
-import codeql_ruby.ast
+import codeql_ruby.Generated
 
 /**
  * The query can extend this class to control which nodes are printed.
@@ -17,13 +17,13 @@ class PrintAstConfiguration extends string {
   /**
    * Holds if the given node should be printed.
    */
-  predicate shouldPrintNode(AstNode n) { any() }
+  predicate shouldPrintNode(Generated::AstNode n) { any() }
 }
 
 /**
  * A node in the output tree.
  */
-class PrintAstNode extends AstNode {
+class PrintAstNode extends Generated::AstNode {
   string getProperty(string key) {
     key = "semmle.label" and
     result = "[" + this.describeQlClass() + "] " + this.toString()
@@ -36,15 +36,15 @@ class PrintAstNode extends AstNode {
    */
   predicate shouldPrint() {
     (
-      not this instanceof Token
+      not this instanceof Generated::Token
       or
-      exists(AstNode parent | parent.getAFieldOrChild() = this)
+      exists(Generated::AstNode parent | parent.getAFieldOrChild() = this)
     ) and
     shouldPrintNode(this)
   }
 }
 
-private predicate shouldPrintNode(AstNode n) {
+private predicate shouldPrintNode(Generated::AstNode n) {
   exists(PrintAstConfiguration config | config.shouldPrintNode(n))
 }
 

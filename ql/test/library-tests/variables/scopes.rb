@@ -10,4 +10,9 @@ puts a
    puts a # local variable from top-level
    a = 3
    puts a # local variable from top-level
+   a, b, (c, d) = [4, 5, [6, 7]]
+   puts a # local variable from top-level
+   puts b # new local variable
+   puts c # new local variable
+   puts d # new local variable
 end

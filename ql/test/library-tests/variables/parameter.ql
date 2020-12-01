@@ -1,5 +1,5 @@
-import codeql_ruby.Variables
+import codeql_ruby.ast.Variable
 
-query predicate parameter(Parameter p, Variable v) { p.getAnAccess().getVariable() = v }
+query predicate parameter(NamedParameter p, Variable v) { p.getAnAccess().getVariable() = v }
 
-query predicate parameterNoAcess(Parameter p) { not exists(p.getAnAccess()) }
+query predicate parameterNoAcess(NamedParameter p) { not exists(p.getAnAccess()) }

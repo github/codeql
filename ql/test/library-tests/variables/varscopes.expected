@@ -25,6 +25,6 @@
 | parameters.rb:49:1:51:3 | method scope |
 | parameters.rb:54:9:57:3 | block scope |
 | scopes.rb:1:1:1:15 | method scope |
-| scopes.rb:1:1:13:3 | top-level scope |
+| scopes.rb:1:1:18:3 | top-level scope |
 | scopes.rb:2:9:6:3 | block scope |
-| scopes.rb:9:9:13:3 | block scope |
+| scopes.rb:9:9:18:3 | block scope |

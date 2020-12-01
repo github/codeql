@@ -4,7 +4,7 @@
  * A completion represents how a statement or expression terminates.
  */
 
-private import codeql_ruby.ast
+private import codeql_ruby.Generated::Generated
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import AstNodes
 private import NonReturning
