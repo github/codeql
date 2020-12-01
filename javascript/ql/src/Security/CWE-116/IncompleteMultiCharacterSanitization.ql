@@ -34,8 +34,7 @@ predicate isDangerous(RegExpTerm t) {
   exists(RegExpSequence seq | seq = t |
     t.getChild(0).getConstantValue() = "<" and
     // the `cript|scrip` case has been observed in the wild, not sure what the goal of that pattern is...
-    t
-        .getChild(0)
+    t.getChild(0)
         .getSuccessor+()
         .getAMatchedString()
         .regexpMatch("(?i)iframe|script|cript|scrip|style")

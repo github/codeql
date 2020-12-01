@@ -114,8 +114,7 @@ module Fastify {
       if methodName = "route"
       then
         result =
-          this
-              .flow()
+          this.flow()
               .(DataFlow::MethodCallNode)
               .getOptionArgument(0,
                 [

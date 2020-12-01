@@ -75,8 +75,7 @@ class Object extends @py_object {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.hasOrigin() and
-    this
-        .getOrigin()
+    this.getOrigin()
         .getLocation()
         .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     or

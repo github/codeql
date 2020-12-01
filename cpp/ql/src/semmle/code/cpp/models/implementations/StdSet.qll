@@ -132,9 +132,8 @@ private class StdSetErase extends TaintFunction {
  */
 private class StdSetEqualRange extends TaintFunction {
   StdSetEqualRange() {
-    this
-        .hasQualifiedName("std", ["set", "unordered_set"],
-          ["lower_bound", "upper_bound", "equal_range"])
+    this.hasQualifiedName("std", ["set", "unordered_set"],
+      ["lower_bound", "upper_bound", "equal_range"])
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

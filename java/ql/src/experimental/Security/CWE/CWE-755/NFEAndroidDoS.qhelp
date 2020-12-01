@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>NumberFormatException (NFE) thrown but not caught by an Android application will crash the application. If the application allows external inputs, an attacker can send an invalid number as intent extra to trigger NFE, which introduces local Denial of Service (Dos) attack.</p>
+    <p>
+      This is a common problem in Android development since Android components don't have
+      <code>throw Exception(...)</code>
+      in their class and method definitions.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      Use the Android methods intended to get number extras e.g.
+      <code>Intent.getFloatExtra(String name, float defaultValue)</code>
+      since they have the built-in try/catch processing, or explicitly do try/catch in the application.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows both 'BAD' and 'GOOD' configurations. In the 'BAD' configuration, number value is retrieved as string extra then parsed to double. In the 'GOOD' configuration, number value is retrieved as integer extra.</p>
+    <sample src="NFEAndroidDoS.java" />
+  </example>
+
+  <references>
+    <li>
+      CWE:
+      <a href="https://cwe.mitre.org/data/definitions/749.html">CWE-755: Improper Handling of Exceptional Conditions</a>
+    </li>
+    <li>
+      Android Developers:
+      <a href="https://developer.android.com/topic/performance/vitals/crash">Android Crashes</a>
+    </li>
+    <li>
+      Google Analytics:
+      <a href="https://developers.google.com/analytics/devguides/collection/android/v4/exceptions">Crash and Exception Measurement Using the Google Analytics SDK</a>
+    </li>
+  </references>
+</qhelp>
