@@ -75,10 +75,11 @@ module TestFile {
         is.getPath() = pkg and
         is.getFile() = this
       |
-        pkg = "net/http/httptest" or
-        pkg = "gen/thrifttest" or
-        pkg = "github.com/onsi/ginkgo" or
-        pkg = "github.com/onsi/gomega"
+        pkg in ["gen/thrifttest", "github.com/golang/mock/gomock", "github.com/onsi/ginkgo",
+              "github.com/onsi/gomega", "github.com/stretchr/testify/assert",
+              "github.com/stretchr/testify/http", "github.com/stretchr/testify/mock",
+              "github.com/stretchr/testify/require", "github.com/stretchr/testify/suite",
+              "gotest.tools/assert", "k8s.io/client-go/testing", "net/http/httptest", "testing"]
       )
     }
   }

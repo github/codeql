@@ -4,40 +4,23 @@ import go
 
 /** Provides models of commonly used functions in the `github.com/sirupsen/logrus` package. */
 module Logrus {
-  private string getAPkgName() {
-    result = "github.com/sirupsen/logrus"
-    or
-    result = "github.com/Sirupsen/logrus"
-  }
+  /** Gets the package name. */
+  string packagePath() { result in ["github.com/sirupsen/logrus", "github.com/Sirupsen/logrus"] }
 
   bindingset[result]
   private string getALogResultName() {
-    result.matches("Debug%")
-    or
-    result.matches("Error%")
-    or
-    result.matches("Fatal%")
-    or
-    result.matches("Info%")
-    or
-    result.matches("Panic%")
-    or
-    result.matches("Print%")
-    or
-    result.matches("Trace%")
-    or
-    result.matches("Warn%")
+    result.matches(["Debug%", "Error%", "Fatal%", "Info%", "Panic%", "Print%", "Trace%", "Warn%"])
   }
 
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    LogCall() { this.getTarget().hasQualifiedName(getAPkgName(), getALogResultName()) }
+    LogCall() { this.getTarget().hasQualifiedName(packagePath(), getALogResultName()) }
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 
   private class LogEntryCall extends LoggerCall::Range, DataFlow::MethodCallNode {
     LogEntryCall() {
-      this.getTarget().(Method).hasQualifiedName(getAPkgName(), "Entry", getALogResultName())
+      this.getTarget().(Method).hasQualifiedName(packagePath(), "Entry", getALogResultName())
     }
 
     override DataFlow::Node getAMessageComponent() {

@@ -36,7 +36,7 @@ module WebSocketRequestCall {
   private class GolangXNetDialFunc extends Range {
     GolangXNetDialFunc() {
       // func Dial(url_, protocol, origin string) (ws *Conn, err error)
-      this.getTarget().hasQualifiedName(package("golang.org/x/net", "websocket"), "Dial")
+      this.getTarget().hasQualifiedName(GolangOrgXNetWebsocket::packagePath(), "Dial")
     }
 
     override DataFlow::Node getRequestUrl() { result = this.getArgument(0) }
@@ -48,13 +48,13 @@ module WebSocketRequestCall {
   private class GolangXNetDialConfigFunc extends Range {
     GolangXNetDialConfigFunc() {
       // func DialConfig(config *Config) (ws *Conn, err error)
-      this.getTarget().hasQualifiedName(package("golang.org/x/net", "websocket"), "DialConfig")
+      this.getTarget().hasQualifiedName(GolangOrgXNetWebsocket::packagePath(), "DialConfig")
     }
 
     override DataFlow::Node getRequestUrl() {
       exists(DataFlow::CallNode cn |
         // func NewConfig(server, origin string) (config *Config, err error)
-        cn.getTarget().hasQualifiedName(package("golang.org/x/net", "websocket"), "NewConfig") and
+        cn.getTarget().hasQualifiedName(GolangOrgXNetWebsocket::packagePath(), "NewConfig") and
         this.getArgument(0) = cn.getResult(0).getASuccessor*() and
         result = cn.getArgument(0)
       )
@@ -72,7 +72,7 @@ module WebSocketRequestCall {
       // func (d *Dialer) DialContext(ctx context.Context, urlStr string, requestHeader http.Header) (*Conn, *http.Response, error)
       exists(string name, Method f |
         f = this.getTarget() and
-        f.hasQualifiedName(package("github.com/gorilla", "websocket"), "Dialer", name)
+        f.hasQualifiedName(GorillaWebsocket::packagePath(), "Dialer", name)
       |
         name = "Dial" and this.getArgument(0) = url
         or
@@ -170,7 +170,7 @@ module WebSocketReader {
   private class GolangXNetCodecRecv extends Range, Method {
     GolangXNetCodecRecv() {
       // func (cd Codec) Receive(ws *Conn, v interface{}) (err error)
-      this.hasQualifiedName("golang.org/x/net/websocket", "Codec", "Receive")
+      this.hasQualifiedName(GolangOrgXNetWebsocket::packagePath(), "Codec", "Receive")
     }
 
     override FunctionOutput getAnOutput() { result.isParameter(1) }
@@ -182,7 +182,7 @@ module WebSocketReader {
   private class GolangXNetConnRead extends Range, Method {
     GolangXNetConnRead() {
       // func (ws *Conn) Read(msg []byte) (n int, err error)
-      this.hasQualifiedName("golang.org/x/net/websocket", "Conn", "Read")
+      this.hasQualifiedName(GolangOrgXNetWebsocket::packagePath(), "Conn", "Read")
     }
 
     override FunctionOutput getAnOutput() { result.isParameter(0) }
@@ -242,7 +242,7 @@ module WebSocketReader {
   private class GorillaWebSocketReadJson extends Range {
     GorillaWebSocketReadJson() {
       // func ReadJSON(c *Conn, v interface{}) error
-      this.hasQualifiedName("github.com/gorilla/websocket", "ReadJSON")
+      this.hasQualifiedName(GorillaWebsocket::packagePath(), "ReadJSON")
     }
 
     override FunctionOutput getAnOutput() { result.isParameter(1) }
@@ -254,7 +254,7 @@ module WebSocketReader {
   private class GorillaWebSocketConnReadJson extends Range, Method {
     GorillaWebSocketConnReadJson() {
       // func (c *Conn) ReadJSON(v interface{}) error
-      this.hasQualifiedName("github.com/gorilla/websocket", "Conn", "ReadJSON")
+      this.hasQualifiedName(GorillaWebsocket::packagePath(), "Conn", "ReadJSON")
     }
 
     override FunctionOutput getAnOutput() { result.isParameter(0) }
@@ -266,7 +266,7 @@ module WebSocketReader {
   private class GorillaWebSocketReadMessage extends Range, Method {
     GorillaWebSocketReadMessage() {
       // func (c *Conn) ReadMessage() (messageType int, p []byte, err error)
-      this.hasQualifiedName("github.com/gorilla/websocket", "Conn", "ReadMessage")
+      this.hasQualifiedName(GorillaWebsocket::packagePath(), "Conn", "ReadMessage")
     }
 
     override FunctionOutput getAnOutput() { result.isResult(1) }
@@ -295,4 +295,16 @@ module WebSocketReader {
 
     override FunctionOutput getAnOutput() { result.isParameter(0) }
   }
+}
+
+module GorillaWebsocket {
+  /** Gets the package name. */
+  bindingset[result]
+  string packagePath() { result = package("github.com/gorilla", "websocket") }
+}
+
+module GolangOrgXNetWebsocket {
+  /** Gets the package name. */
+  bindingset[result]
+  string packagePath() { result = package("golang.org/x/net", "websocket") }
 }
