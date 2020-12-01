@@ -15,7 +15,12 @@ module CodeInjection {
   /**
    * A data flow sink for code injection vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends DataFlow::Node {
+    /**
+     * Gets the substitute for `X` in the message `User-provided value flows to X`.
+     */
+    string getMessageSuffix() { result = "here and is interpreted as code" }
+  }
 
   /**
    * A sanitizer for code injection vulnerabilities.
@@ -139,10 +144,15 @@ module CodeInjection {
     }
   }
 
+  /** A sink for code injection via template injection. */
+  private abstract class TemplateSink extends Sink {
+    override string getMessageSuffix() { result = "here and is interpreted as a template, which may contain code" }
+  }
+
   /**
    * A value interpreted as as template by the `pug` library.
    */
-  class PugTemplateSink extends Sink {
+  class PugTemplateSink extends TemplateSink {
     PugTemplateSink() {
       this = DataFlow::moduleImport(["pug", "jade"]).getAMemberCall(["compile", "render"]).getArgument(0)
     }
@@ -151,7 +161,7 @@ module CodeInjection {
   /**
    * A value interpreted as a tempalte by the `dot` library.
    */
-  class DotTemplateSink extends Sink {
+  class DotTemplateSink extends TemplateSink {
     DotTemplateSink() {
       this = DataFlow::moduleImport("dot").getAMemberCall("template").getArgument(0)
     }
@@ -160,7 +170,7 @@ module CodeInjection {
   /**
    * A value interpreted as a template by the `ejs` library.
    */
-  class EjsTemplateSink extends Sink {
+  class EjsTemplateSink extends TemplateSink {
     EjsTemplateSink() { this = DataFlow::moduleImport("ejs").getAMemberCall("render").getArgument(0) }
   }
 
@@ -168,7 +178,7 @@ module CodeInjection {
   /**
    * A value interpreted as a template by the `nunjucks` library.
    */
-  class NunjucksTemplateSink extends Sink {
+  class NunjucksTemplateSink extends TemplateSink {
     NunjucksTemplateSink() {
       this = DataFlow::moduleImport("nunjucks").getAMemberCall("renderString").getArgument(0)
     }
@@ -177,7 +187,7 @@ module CodeInjection {
   /**
    * A value interpreted as a template by `lodash` or `underscore`.
    */
-  class LodashUnderscoreTemplateSink extends Sink {
+  class LodashUnderscoreTemplateSink extends TemplateSink {
     LodashUnderscoreTemplateSink() { this = LodashUnderscore::member("template").getACall().getArgument(0) }
   }
 }
