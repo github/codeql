@@ -42,5 +42,7 @@ query predicate paramsInLambdas(Lambda l, int i, Parameter p, string pClass) {
 
 ////////////////////////////////////////////////////////////////////////////////
 // General query selecting all parameters
-from Parameter p
-select p, p.getPosition(), p.describeQlClass()
+query predicate params(Parameter p, int i, string pClass) {
+  i = p.getPosition() and
+  pClass = p.describeQlClass()
+}

@@ -1,6 +1,8 @@
-parameter
+parameterVariable
 | nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a |
+| nested_scopes.rb:16:26:16:26 | x | nested_scopes.rb:16:26:16:26 | x |
 | nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:16:29:16:29 | a |
+| nested_scopes.rb:18:26:18:26 | x | nested_scopes.rb:18:26:18:26 | x |
 | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a |
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
 | parameters.rb:1:18:1:18 | y | parameters.rb:1:18:1:18 | y |
@@ -18,10 +20,15 @@ parameter
 | parameters.rb:35:11:35:21 | a | parameters.rb:35:11:35:11 | a |
 | parameters.rb:40:12:40:19 | d | parameters.rb:40:12:40:12 | d |
 | parameters.rb:45:20:45:20 | _ | parameters.rb:45:20:45:20 | _ |
+| parameters.rb:49:12:49:16 | (..., ...) | parameters.rb:49:13:49:13 | a |
+| parameters.rb:49:12:49:16 | (..., ...) | parameters.rb:49:15:49:15 | b |
 | parameters.rb:54:14:54:24 | y | parameters.rb:54:14:54:14 | y |
-parameterNoAcess
-| nested_scopes.rb:16:26:16:26 | x |
-| nested_scopes.rb:18:26:18:26 | x |
+| scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x |
+| scopes.rb:9:14:9:14 | x | scopes.rb:9:14:9:14 | x |
+parameterNoVariable
 | parameters.rb:45:22:45:22 | _ |
-| scopes.rb:2:14:2:14 | x |
-| scopes.rb:9:14:9:14 | x |
+parameterVariableNoAccess
+| nested_scopes.rb:16:26:16:26 | x | nested_scopes.rb:16:26:16:26 | x |
+| nested_scopes.rb:18:26:18:26 | x | nested_scopes.rb:18:26:18:26 | x |
+| scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x |
+| scopes.rb:9:14:9:14 | x | scopes.rb:9:14:9:14 | x |

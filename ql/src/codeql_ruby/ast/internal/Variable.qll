@@ -123,13 +123,14 @@ private module Cached {
 
   cached
   predicate access(Generated::Identifier access, Variable variable) {
-    exists(string name |
-      name = access.getValue() and
-      // Do not generate an access at the defining location
-      not variable = TLocalVariable(_, name, access)
-    |
+    exists(string name | name = access.getValue() |
       variable = enclosingScope(access).getVariable(name) and
-      not strictlyBefore(access.getLocation(), variable.getLocation())
+      not strictlyBefore(access.getLocation(), variable.getLocation()) and
+      // In case of overlapping parameter names, later parameters should not
+      // be considered accesses to the first parameter
+      if parameterAssignment(_, _, access)
+      then scopeDefinesParameterVariable(_, _, access)
+      else any()
       or
       exists(VariableScope declScope |
         variable = declScope.getVariable(name) and

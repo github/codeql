@@ -1,5 +1,9 @@
 import codeql_ruby.ast.Variable
 
-query predicate parameter(NamedParameter p, Variable v) { p.getAnAccess().getVariable() = v }
+query predicate parameterVariable(Parameter p, Variable v) { v = p.getAVariable() }
 
-query predicate parameterNoAcess(NamedParameter p) { not exists(p.getAnAccess()) }
+query predicate parameterNoVariable(Parameter p) { not exists(p.getAVariable()) }
+
+query predicate parameterVariableNoAccess(Parameter p, Variable v) {
+  v = p.getAVariable() and strictcount(v.getAnAccess()) = 1
+}

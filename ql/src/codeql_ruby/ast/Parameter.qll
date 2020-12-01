@@ -21,6 +21,15 @@ class Parameter extends AstNode {
 
   /** Gets the zero-based position of this parameter. */
   final int getPosition() { result = pos }
+
+  /** Gets a variable introduced by this parameter. */
+  Variable getAVariable() { none() }
+
+  /** Gets the variable named `name` introduced by this parameter. */
+  final Variable getVariable(string name) {
+    result = this.getAVariable() and
+    result.getName() = name
+  }
 }
 
 /**
@@ -33,6 +42,10 @@ class PatternParameter extends Parameter, Pattern { }
 /** A parameter defined using a tuple pattern. */
 class TuplePatternParameter extends PatternParameter, TuplePattern {
   final override string describeQlClass() { result = "TuplePatternParameter" }
+
+  final override Variable getAVariable() {
+    result = this.getAnElement+().(VariablePattern).getVariable()
+  }
 }
 
 /** A named parameter. */
@@ -44,6 +57,8 @@ class NamedParameter extends Parameter {
 
   /** Gets the variable introduced by this parameter. */
   Variable getVariable() { none() }
+
+  final override Variable getAVariable() { result = this.getVariable() }
 
   /** Gets an access to this parameter. */
   final VariableAccess getAnAccess() { result = this.getVariable().getAnAccess() }
