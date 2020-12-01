@@ -74,9 +74,7 @@ private class StdStringConstructor extends Constructor, TaintFunction {
  * The `std::string` function `c_str`.
  */
 private class StdStringCStr extends TaintFunction {
-  StdStringCStr() {
-    this = any(StdBasicString s).getAnInstMemberNamed("c_str")
-  }
+  StdStringCStr() { this = any(StdBasicString s).getAnInstMemberNamed("c_str") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
@@ -89,9 +87,7 @@ private class StdStringCStr extends TaintFunction {
  * The `std::string` function `data`.
  */
 private class StdStringData extends TaintFunction {
-  StdStringData() {
-    this = any(StdBasicString s).getAnInstMemberNamed("data")
-  }
+  StdStringData() { this = any(StdBasicString s).getAnInstMemberNamed("data") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
@@ -109,9 +105,7 @@ private class StdStringData extends TaintFunction {
  * The `std::string` function `push_back`.
  */
 private class StdStringPush extends TaintFunction {
-  StdStringPush() {
-    this = any(StdBasicString s).getAnInstMemberNamed("push_back")
-  }
+  StdStringPush() { this = any(StdBasicString s).getAnInstMemberNamed("push_back") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to qualifier
@@ -124,9 +118,7 @@ private class StdStringPush extends TaintFunction {
  * The `std::string` functions `front` and `back`.
  */
 private class StdStringFrontBack extends TaintFunction {
-  StdStringFrontBack() {
-    this = any(StdBasicString s).getAnInstMemberNamed(["front", "back"])
-  }
+  StdStringFrontBack() { this = any(StdBasicString s).getAnInstMemberNamed(["front", "back"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from object to returned reference
@@ -203,9 +195,7 @@ private class StdStringAppend extends TaintFunction {
  * The standard function `std::string.assign`.
  */
 private class StdStringAssign extends TaintFunction {
-  StdStringAssign() {
-    this = any(StdBasicString s).getAnInstMemberNamed("assign")
-  }
+  StdStringAssign() { this = any(StdBasicString s).getAnInstMemberNamed("assign") }
 
   /**
    * Gets the index of a parameter to this function that is a string (or
@@ -245,9 +235,7 @@ private class StdStringAssign extends TaintFunction {
  * The standard function `std::string.copy`.
  */
 private class StdStringCopy extends TaintFunction {
-  StdStringCopy() {
-    this = any(StdBasicString s).getAnInstMemberNamed("copy")
-  }
+  StdStringCopy() { this = any(StdBasicString s).getAnInstMemberNamed("copy") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // copy(dest, num, pos)
@@ -260,9 +248,7 @@ private class StdStringCopy extends TaintFunction {
  * The standard function `std::string.substr`.
  */
 private class StdStringSubstr extends TaintFunction {
-  StdStringSubstr() {
-    this = any(StdBasicString s).getAnInstMemberNamed("substr")
-  }
+  StdStringSubstr() { this = any(StdBasicString s).getAnInstMemberNamed("substr") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // substr(pos, num)
@@ -306,9 +292,7 @@ private class StdStringSwap extends TaintFunction {
  * The `std::string` functions `at` and `operator[]`.
  */
 private class StdStringAt extends TaintFunction {
-  StdStringAt() {
-    this = any(StdBasicString s).getAnInstMemberNamed(["at", "operator[]"])
-  }
+  StdStringAt() { this = any(StdBasicString s).getAnInstMemberNamed(["at", "operator[]"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
@@ -337,9 +321,7 @@ private class StdBasicIStream extends TemplateClass {
  * The `std::istream` function `operator>>` (defined as a member function).
  */
 private class StdIStreamIn extends DataFlowFunction, TaintFunction {
-  StdIStreamIn() {
-    this = any(StdBasicIStream s).getAnInstMemberNamed("operator>>")
-  }
+  StdIStreamIn() { this = any(StdBasicIStream s).getAnInstMemberNamed("operator>>") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // returns reference to `*this`
@@ -431,9 +413,7 @@ private class StdIStreamRead extends DataFlowFunction, TaintFunction {
  * The `std::istream` function `readsome`.
  */
 private class StdIStreamReadSome extends TaintFunction {
-  StdIStreamReadSome() {
-    this = any(StdBasicIStream s).getAnInstMemberNamed("readsome")
-  }
+  StdIStreamReadSome() { this = any(StdBasicIStream s).getAnInstMemberNamed("readsome") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to first parameter
@@ -446,9 +426,7 @@ private class StdIStreamReadSome extends TaintFunction {
  * The `std::istream` function `putback`.
  */
 private class StdIStreamPutBack extends DataFlowFunction, TaintFunction {
-  StdIStreamPutBack() {
-    this = any(StdBasicIStream s).getAnInstMemberNamed("putback")
-  }
+  StdIStreamPutBack() { this = any(StdBasicIStream s).getAnInstMemberNamed("putback") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // returns reference to `*this`
@@ -481,9 +459,7 @@ private class StdIStreamPutBack extends DataFlowFunction, TaintFunction {
  * The `std::istream` function `getline`.
  */
 private class StdIStreamGetLine extends DataFlowFunction, TaintFunction {
-  StdIStreamGetLine() {
-    this = any(StdBasicIStream s).getAnInstMemberNamed("getline")
-  }
+  StdIStreamGetLine() { this = any(StdBasicIStream s).getAnInstMemberNamed("getline") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // returns reference to `*this`
@@ -609,7 +585,9 @@ private class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
  * input parameter.
  */
 private class StdStringStreamConstructor extends Constructor, TaintFunction {
-  StdStringStreamConstructor() { this = any(StdBasicStringStream s).getAnInstantiation().getAMember() }
+  StdStringStreamConstructor() {
+    this = any(StdBasicStringStream s).getAnInstantiation().getAMember()
+  }
 
   /**
    * Gets the index of a parameter to this function that is a string.
@@ -633,9 +611,7 @@ private class StdStringStreamConstructor extends Constructor, TaintFunction {
  * The `std::stringstream` function `str`.
  */
 private class StdStringStreamStr extends TaintFunction {
-  StdStringStreamStr() {
-    this = any(StdBasicStringStream s).getAnInstMemberNamed("str")
-  }
+  StdStringStreamStr() { this = any(StdBasicStringStream s).getAnInstMemberNamed("str") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to return value (if any)
