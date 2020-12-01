@@ -115,13 +115,13 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * this function behaves like `fprintf` (see `isOutputStream`).
    */
   int getOutputParameterIndex() { none() }
-  
+
   /**
    * Holds if this function outputs to a global stream such as standard output,
    * standard error or a system log. For example `printf`.
    */
   predicate isOutputGlobal() { none() }
-  
+
   /**
    * Holds if this function outputs to the stream indicated by
    * `getOutputParameterIndex()`, that is, this function behaves like `fprintf`.
@@ -167,7 +167,9 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
 
   override predicate hasArrayInput(int bufParam) { bufParam = getFormatParameterIndex() }
 
-  override predicate hasArrayOutput(int bufParam) { bufParam = getOutputParameterIndex() and not isOutputStream() }
+  override predicate hasArrayOutput(int bufParam) {
+    bufParam = getOutputParameterIndex() and not isOutputStream()
+  }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(int arg |

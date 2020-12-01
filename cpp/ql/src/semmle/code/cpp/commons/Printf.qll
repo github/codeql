@@ -71,13 +71,11 @@ private predicate callsVariadicFormatter(
     fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
     not fc.getArgument(output) = f.getParameter(_).getAnAccess() and
     (
-      (
-        calledType = "" and
-        type = ""
-      ) or (
-        calledType != "" and
-        type = "?" // we probably should have an `outputParamIndex` link but have lost it.
-      )
+      calledType = "" and
+      type = ""
+      or
+      calledType != "" and
+      type = "?" // we probably should have an `outputParamIndex` link but have lost it.
     ) and
     outputParamIndex = -1
   )
