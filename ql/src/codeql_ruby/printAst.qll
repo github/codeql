@@ -6,7 +6,7 @@
  * to hold for only the AST nodes you wish to view.
  */
 
-import codeql_ruby.Generated
+import ast.internal.TreeSitter
 
 /**
  * The query can extend this class to control which nodes are printed.

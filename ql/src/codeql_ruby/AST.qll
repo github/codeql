@@ -1,9 +1,9 @@
 import codeql.Locations
-import codeql_ruby.ast.Method
-import codeql_ruby.ast.Parameter
-import codeql_ruby.ast.Pattern
-import codeql_ruby.ast.Variable
-private import codeql_ruby.Generated
+import ast.Method
+import ast.Parameter
+import ast.Pattern
+import ast.Variable
+private import ast.internal.TreeSitter
 
 /**
  * A node in the abstract syntax tree. This class is the base class for all Ruby

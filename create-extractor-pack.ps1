@@ -1,7 +1,7 @@
 cargo build --release
 
 cargo run --release -p ruby-generator
-codeql query format -i ql\src\codeql_ruby\Generated.qll
+codeql query format -i ql\src\codeql_ruby\ast\internal\TreeSitter.qll
 
 rm -Recurse -Force extractor-pack
 mkdir extractor-pack | Out-Null

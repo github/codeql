@@ -1,5 +1,5 @@
 import codeql_ruby.AST
-private import codeql_ruby.Generated
+private import internal.TreeSitter
 private import internal.Method
 
 /** A callable. */

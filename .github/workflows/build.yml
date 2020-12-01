@@ -46,8 +46,8 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
-          name: Generated.qll
-          path: ql/src/codeql_ruby/Generated.qll
+          name: TreeSitter.qll
+          path: ql/src/codeql_ruby/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v2
         with:
           name: extractor-${{ matrix.os }}
