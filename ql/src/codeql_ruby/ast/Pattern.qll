@@ -11,15 +11,15 @@ class Pattern extends AstNode {
 
 /** A simple variable pattern. */
 class VariablePattern extends Pattern {
-  override Generated::Identifier generated;
+  final override Generated::Identifier generated;
 
   /** Gets the name of the variable used in this pattern. */
-  string getName() { result = generated.getValue() }
+  final string getVariableName() { result = generated.getValue() }
 
   /** Gets the variable used in this pattern. */
   Variable getVariable() { this = result.getAnAccess() }
 
-  override string toString() { result = this.getName() }
+  override string toString() { result = this.getVariableName() }
 }
 
 /**
@@ -36,5 +36,5 @@ class TuplePattern extends Pattern {
   /** Gets a sub pattern in this tuple pattern. */
   final Pattern getAnElement() { result = this.getElement(_) }
 
-  override string toString() { result = "(..., ...)" }
+  final override string toString() { result = "(..., ...)" }
 }

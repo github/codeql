@@ -5,7 +5,7 @@ parameter
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
 | parameters.rb:1:18:1:18 | y | parameters.rb:1:18:1:18 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client |
-| parameters.rb:7:25:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas |
+| parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas |
 | parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key |
 | parameters.rb:16:21:16:25 | value | parameters.rb:16:21:16:25 | value |

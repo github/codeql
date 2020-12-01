@@ -20,12 +20,12 @@ class Callable extends AstNode {
 class Method extends Callable, @method {
   final override Generated::Method generated;
 
-  override string describeQlClass() { result = "Method" }
+  final override string describeQlClass() { result = "Method" }
 
-  override string toString() { result = this.getName() }
+  final override string toString() { result = this.getName() }
 
   /** Gets the name of this method. */
-  string getName() {
+  final string getName() {
     result = generated.getName().(Generated::Token).getValue() or
     // TODO: use hand-written Symbol class
     result = generated.getName().(Generated::Symbol).toString() or
@@ -42,19 +42,19 @@ class Method extends Callable, @method {
    * end
    * ```
    */
-  predicate isSetter() { generated.getName() instanceof Generated::Setter }
+  final predicate isSetter() { generated.getName() instanceof Generated::Setter }
 }
 
 /** A singleton method. */
 class SingletonMethod extends Callable, @singleton_method {
   final override Generated::SingletonMethod generated;
 
-  override string describeQlClass() { result = "SingletonMethod" }
+  final override string describeQlClass() { result = "SingletonMethod" }
 
-  override string toString() { result = this.getName() }
+  final override string toString() { result = this.getName() }
 
   /** Gets the name of this method. */
-  string getName() {
+  final string getName() {
     result = generated.getName().(Generated::Token).getValue() or
     // TODO: use hand-written Symbol class
     result = generated.getName().(Generated::Symbol).toString() or
@@ -71,9 +71,9 @@ class SingletonMethod extends Callable, @singleton_method {
 class Lambda extends Callable, @lambda {
   final override Generated::Lambda generated;
 
-  override string describeQlClass() { result = "Lambda" }
+  final override string describeQlClass() { result = "Lambda" }
 
-  override string toString() { result = "-> { ... }" }
+  final override string toString() { result = "-> { ... }" }
 }
 
 /** A block. */
@@ -85,9 +85,9 @@ class Block extends AstNode, Callable {
 class DoBlock extends Block, @do_block {
   final override Generated::DoBlock generated;
 
-  override string describeQlClass() { result = "DoBlock" }
+  final override string describeQlClass() { result = "DoBlock" }
 
-  override string toString() { result = "| ... |" }
+  final override string toString() { result = "| ... |" }
 }
 
 /**
@@ -99,7 +99,7 @@ class DoBlock extends Block, @do_block {
 class BraceBlock extends Block, @block {
   final override Generated::Block generated;
 
-  override string describeQlClass() { result = "BraceBlock" }
+  final override string describeQlClass() { result = "BraceBlock" }
 
-  override string toString() { result = "{ ... }" }
+  final override string toString() { result = "{ ... }" }
 }
