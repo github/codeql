@@ -1,5 +1,5 @@
-C# query help
-=============
+CodeQL query help for C#
+========================
 
 .. include:: ../reusables/query-help-overview.rst
 

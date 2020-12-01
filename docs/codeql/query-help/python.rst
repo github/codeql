@@ -1,5 +1,5 @@
-Python query help
-=================
+CodeQL query help for Python
+============================
 
 .. include:: ../reusables/query-help-overview.rst
 

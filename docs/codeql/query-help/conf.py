@@ -57,4 +57,4 @@ html_static_path = ['../_static']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 
-exclude_patterns = ['toc-*'] # ignore toc-<lang>.rst files as they are 'included' in index pages
+exclude_patterns = ['toc-*', 'readme.md'] # ignore toc-<lang>.rst files as they are 'included' in index pages

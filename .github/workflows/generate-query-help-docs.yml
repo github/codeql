@@ -47,7 +47,7 @@ jobs:
       with:
         docs-folder: "query-help/"
         pre-build-command: "python -m pip install --upgrade recommonmark"
-        build-command: "sphinx-build -b html . _build" 
+        build-command: "sphinx-build -b dirhtml . _build" 
     - name: Upload HTML artifacts
       uses: actions/upload-artifact@v2
       with:

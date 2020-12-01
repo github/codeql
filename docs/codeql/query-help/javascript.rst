@@ -1,5 +1,5 @@
-JavaScript query help
-=====================
+CodeQL query help for JavaScript
+================================
 
 .. include:: ../reusables/query-help-overview.rst
 

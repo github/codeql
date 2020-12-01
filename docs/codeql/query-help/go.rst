@@ -1,5 +1,5 @@
-Go query help
-=============
+CodeQL query help for Go
+========================
 
 .. include:: ../reusables/query-help-overview.rst
 
