@@ -1,8 +1,5 @@
 uniqueEnclosingCallable
 | test.py:239:27:239:27 | ControlFlowNode for p | Node should have one enclosing callable but has 0. |
-| test.py:245:5:245:22 | PosOverflowNode for overflowCallee() | Node should have one enclosing callable but has 0. |
-| test.py:248:5:248:26 | KwOverflowNode for overflowCallee() | Node should have one enclosing callable but has 0. |
-| test.py:251:5:251:33 | KwOverflowNode for overflowCallee() | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation
