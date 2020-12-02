@@ -25,8 +25,8 @@ Features of the QL libraries in `cpp/ql/src` should also have test coverage, in 
 ## Copying code
 
 The contents of `cpp/ql/test` should be original - nothing should be copied from other sources. In particular do not copy-paste C/C++ code from third-party projects, your own projects, or the standard C/C++ library implementation of your compiler (regardless of the associated license). As an exception, required declarations may be taken from the following sources where necessary:
- - ISO/IEC Programming languages - C (all versions)
- - ISO/IEC Programming languages - C++ (all versions)
+ - [ISO/IEC Programming languages - C](https://www.iso.org/standard/74528.html) (all versions)
+ - [ISO/IEC Programming languages - C++](https://www.iso.org/standard/68564.html) (all versions)
  - Code from existing queries and tests in this repository
    This includes 'translating QL to C++', that is, writing C/C++ declarations from the information such as parameter names and positions specified in QL classes (when there is enough information to do so).
  - Code in the public domain
