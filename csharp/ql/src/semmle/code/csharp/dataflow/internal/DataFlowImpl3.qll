@@ -86,7 +86,7 @@ abstract class Configuration extends string {
    * This can be overridden to a smaller value to improve performance (a
    * value of 0 disables field flow), or a larger value to get more results.
    */
-  int fieldFlowBranchLimit() { result = 2 }
+  int fieldFlowBranchLimit() { result = 1 }
 
   /**
    * Holds if data may flow from `source` to `sink` for this configuration.

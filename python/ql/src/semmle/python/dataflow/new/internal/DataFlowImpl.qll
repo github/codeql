@@ -86,7 +86,7 @@ abstract class Configuration extends string {
    * This can be overridden to a smaller value to improve performance (a
    * value of 0 disables field flow), or a larger value to get more results.
    */
-  int fieldFlowBranchLimit() { result = 2 }
+  int fieldFlowBranchLimit() { result = 1 }
 
   /**
    * Holds if data may flow from `source` to `sink` for this configuration.
@@ -703,8 +703,12 @@ private predicate flowIntoCallNodeCand1(
  */
 private int branch(Node n1, Configuration conf) {
   result =
-    strictcount(Node n |
-      flowOutOfCallNodeCand1(_, n1, n, conf) or flowIntoCallNodeCand1(_, n1, n, conf)
+    strictcount(DataFlowCallable callable |
+      exists(Node n |
+        flowOutOfCallNodeCand1(_, n1, n, conf) or flowIntoCallNodeCand1(_, n1, n, conf)
+      |
+        callable = n.getEnclosingCallable()
+      )
     )
 }
 
@@ -715,8 +719,12 @@ private int branch(Node n1, Configuration conf) {
  */
 private int join(Node n2, Configuration conf) {
   result =
-    strictcount(Node n |
-      flowOutOfCallNodeCand1(_, n, n2, conf) or flowIntoCallNodeCand1(_, n, n2, conf)
+    strictcount(DataFlowCallable callable |
+      exists(Node n |
+        flowOutOfCallNodeCand1(_, n, n2, conf) or flowIntoCallNodeCand1(_, n, n2, conf)
+      |
+        callable = n.getEnclosingCallable()
+      )
     )
 }
 
