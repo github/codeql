@@ -8,7 +8,7 @@ The tests can be run through Visual Studio Code.  Advanced users may also use th
 
 We are keen to have unit tests for all of our QL code.
 
-Every query in `cpp/ql/src` (outside of `cpp/ql/src/experimental`) should have a test in the corresponding subdirectory of `cpp/ql/test/query-tests`. At a minimum, each query test shall contain one case that should be detected by the query, and one related case that should not.
+Every query in `cpp/ql/src` (outside of `cpp/ql/src/experimental`) should have a test in the corresponding subdirectory of `cpp/ql/test/query-tests`. At a minimum, each query test should contain one case that should be detected by the query, and one related case that should not.
 
 For example a simple test for the "Memory is never freed" (`cpp/memory-never-freed`) query might contain the following cases:
 ```
@@ -24,14 +24,14 @@ Features of the QL libraries in `cpp/ql/src` should also have test coverage, in 
 
 ## Copying code
 
-The contents of `cpp/ql/test` should be original - nothing should be copied from other sources. In particular do not copy-paste C/C++ code from third party projects, your own projects, or the standard C/C++ library implementation of your compiler (regardless of the associated license). As an exception, required declarations may be taken from the following sources where necessary:
+The contents of `cpp/ql/test` should be original - nothing should be copied from other sources. In particular do not copy-paste C/C++ code from third-party projects, your own projects, or the standard C/C++ library implementation of your compiler (regardless of the associated license). As an exception, required declarations may be taken from the following sources where necessary:
  - ISO/IEC Programming languages - C (all versions)
  - ISO/IEC Programming languages - C++ (all versions)
- - code from existing queries and tests in this repository
-	- this includes 'translating QL to C++', that is, writing C/C++ declarations from the information such as parameter names and positions specified in QL classes (when there is enough information to do so).
- - code in the public domain
+ - Code from existing queries and tests in this repository
+   This includes 'translating QL to C++', that is, writing C/C++ declarations from the information such as parameter names and positions specified in QL classes (when there is enough information to do so).
+ - Code in the public domain
 
-For example the test above for the "Memory is never freed" (`cpp/memory-never-freed`) query requires the following declarations, taken from Programming languages — C (November 2018):
+For example the test above for the "Memory is never freed" (`cpp/memory-never-freed`) query requires the following declarations, taken from [ISO/IEC 9899:2018 - Programming languages - C](https://www.iso.org/standard/74528.html):
 ```
 void *malloc(size_t size);
 void free(void *ptr);
@@ -43,7 +43,7 @@ typedef unsigned int size_t;
 
 ## Including files
 
-Standard and third party library header files should not be included in tests by means of `#include` or similar mechanisms. This is because the tests should be independent of platform and library versions installed on the running machine. Standard library declarations may be inserted directly where necessary (see the rules in the section above), but it is generally better to avoid using the standard library at all when possible.
+Standard and third-party library header files should not be included in tests by means of `#include` or similar mechanisms. This is because the tests should be independent of platform and library versions installed on the running machine. Standard library declarations may be inserted directly where necessary (see the rules in the section above), but it is generally better to avoid using the standard library at all when possible.
 
 `#include` may be used to include files from the same directory within `cpp/ql/test`.  For example the test for "Include header files only" (`cpp/include-non-header`) includes other files in the test directory:
 ```
