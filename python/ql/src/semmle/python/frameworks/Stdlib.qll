@@ -945,6 +945,93 @@ private module Stdlib {
   private DataFlow::Node io_attr(string attr_name) {
     result = io_attr(DataFlow::TypeTracker::end(), attr_name)
   }
+
+  // ---------------------------------------------------------------------------
+  // json
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `json` module. */
+  private DataFlow::Node json(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("json")
+    or
+    exists(DataFlow::TypeTracker t2 | result = json(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `json` module. */
+  DataFlow::Node json() { result = json(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `json` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node json_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["loads", "dumps"] and
+    (
+      t.start() and
+      result = DataFlow::importNode("json" + "." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = json()
+    )
+    or
+    // Due to bad performance when using normal setup with `json_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        json_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate json_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(json_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `json` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node json_attr(string attr_name) {
+    result = json_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  /**
+   * A call to `json.loads`
+   * See https://docs.python.org/3/library/json.html#json.loads
+   */
+  private class JsonLoadsCall extends Decoding::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    JsonLoadsCall() { node.getFunction() = json_attr("loads").asCfgNode() }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  /**
+   * A call to `json.dumps`
+   * See https://docs.python.org/3/library/json.html#json.dumps
+   */
+  private class JsonDumpsCall extends Encoding::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    JsonDumpsCall() { node.getFunction() = json_attr("dumps").asCfgNode() }
+
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "JSON" }
+  }
 }
 
 // ---------------------------------------------------------------------------
