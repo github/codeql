@@ -236,9 +236,8 @@ class Class extends UserType {
     or
     exists(ClassDerivation cd | cd.getBaseClass() = base |
       result =
-        this
-            .accessOfBaseMemberMulti(cd.getDerivedClass(),
-              fieldInBase.accessInDirectDerived(cd.getASpecifier().(AccessSpecifier)))
+        this.accessOfBaseMemberMulti(cd.getDerivedClass(),
+          fieldInBase.accessInDirectDerived(cd.getASpecifier().(AccessSpecifier)))
     )
   }
 

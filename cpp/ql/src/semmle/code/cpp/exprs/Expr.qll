@@ -847,8 +847,7 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
    */
   Expr getPlacementPointer() {
     result =
-      this
-          .getAllocatorCall()
+      this.getAllocatorCall()
           .getArgument(this.getAllocator().(OperatorNewAllocationFunction).getPlacementArgument())
   }
 }

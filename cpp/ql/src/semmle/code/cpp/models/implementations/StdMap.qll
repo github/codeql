@@ -179,9 +179,8 @@ private class StdMapErase extends TaintFunction {
  */
 private class StdMapEqualRange extends TaintFunction {
   StdMapEqualRange() {
-    this
-        .hasQualifiedName("std", ["map", "unordered_map"],
-          ["lower_bound", "upper_bound", "equal_range"])
+    this.hasQualifiedName("std", ["map", "unordered_map"],
+      ["lower_bound", "upper_bound", "equal_range"])
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

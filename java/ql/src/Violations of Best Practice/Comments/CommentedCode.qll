@@ -36,8 +36,7 @@ private predicate looksLikeCode(JavadocText line) {
  */
 private string trimmedCommentText(JavadocText line) {
   result =
-    line
-        .getText()
+    line.getText()
         .trim()
         .regexpReplaceAll("\\s*//.*$", "")
         .regexpReplaceAll("\\{@[^}]+\\}", "")

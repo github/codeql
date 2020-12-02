@@ -86,8 +86,7 @@ class CollectionType extends RefType {
     exists(RefType base | base = this.getABaseType*() |
       base.hasQualifiedName(collectionNamespaceName(), collectionTypeName())
       or
-      base
-          .(ConstructedType)
+      base.(ConstructedType)
           .getUnboundGeneric()
           .hasQualifiedName(genericCollectionNamespaceName(), genericCollectionTypeName())
     )

@@ -95,7 +95,7 @@ class Node extends TIRDataFlowNode {
    * Gets the uninitialized local variable corresponding to this node, if
    * any.
    */
-  LocalVariable asUninitialized() { none() }
+  deprecated LocalVariable asUninitialized() { none() }
 
   /**
    * Gets an upper bound on the type of this node.

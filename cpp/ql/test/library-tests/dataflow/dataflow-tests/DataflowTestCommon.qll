@@ -1,5 +1,6 @@
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
+import TestUtilities.InlineExpectationsTest
 
 /**
  * A `BarrierGuard` that stops flow to all occurrences of `x` within statement

@@ -1,6 +1,7 @@
 import cpp
 import semmle.code.cpp.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.Taint
+import TestUtilities.InlineExpectationsTest
 
 /** Common data flow configuration to be used by tests. */
 class TestAllocationConfig extends TaintTracking::Configuration {

@@ -84,8 +84,7 @@ class Value extends TObject {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this
-        .(ObjectInternal)
+    this.(ObjectInternal)
         .getOrigin()
         .getLocation()
         .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
