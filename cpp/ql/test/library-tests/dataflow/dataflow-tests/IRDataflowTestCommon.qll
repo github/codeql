@@ -1,6 +1,7 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.ir.IR
+import TestUtilities.InlineExpectationsTest
 
 /**
  * A `BarrierGuard` that stops flow to all occurrences of `x` within statement
@@ -24,9 +25,6 @@ class TestAllocationConfig extends DataFlow::Configuration {
     source.asExpr().(FunctionCall).getTarget().getName() = "source"
     or
     source.asParameter().getName().matches("source%")
-    or
-    // Track uninitialized variables
-    exists(source.asUninitialized())
   }
 
   override predicate isSink(DataFlow::Node sink) {

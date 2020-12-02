@@ -1,5 +1,5 @@
 
-#include "shared.h"
+#include "../shared.h"
 
 typedef unsigned long size_t;
 
@@ -41,7 +41,7 @@ namespace std
 	};
 
 	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>&, const charT*);
-	template<class charT, class traits, class Allocator> basic_ostream<charT, traits>& operator<<(basic_ostream<charT, traits>& os, const basic_string<charT, traits, Allocator>& str); 
+	template<class charT, class traits, class Allocator> basic_ostream<charT, traits>& operator<<(basic_ostream<charT, traits>& os, const basic_string<charT, traits, Allocator>& str);
 
 	template<class charT, class traits = char_traits<charT>>
 	class basic_iostream : public basic_istream<charT, traits>, public basic_ostream<charT, traits> {
@@ -69,11 +69,11 @@ void test_string()
 	std::string b("123");
 	std::string c(source());
 
-	sink(a); // tainted
-	sink(b);
-	sink(c); // tainted
-	sink(b.c_str());
-	sink(c.c_str()); // tainted
+	sink(a); // $ ast,ir
+	sink(b); // clean
+	sink(c); // $ ir MISSING: ast
+	sink(b.c_str()); // clean
+	sink(c.c_str()); // $ MISSING: ast,ir
 }
 
 void test_stringstream()
@@ -88,15 +88,15 @@ void test_stringstream()
 	ss5 << t;
 
 	sink(ss1);
-	sink(ss2); // tainted
-	sink(ss3); // tainted [NOT DETECTED]
-	sink(ss4); // tainted
-	sink(ss5); // tainted
+	sink(ss2); // $ ir MISSING: ast
+	sink(ss3); // $ MISSING: ast,ir
+	sink(ss4); // $ ir MISSING: ast
+	sink(ss5); // $ ir MISSING: ast
 	sink(ss1.str());
-	sink(ss2.str()); // tainted
-	sink(ss3.str()); // tainted [NOT DETECTED]
-	sink(ss4.str()); // tainted
-	sink(ss5.str()); // tainted
+	sink(ss2.str()); // $ MISSING: ast,ir
+	sink(ss3.str()); // $ MISSING: ast,ir
+	sink(ss4.str()); // $ MISSING: ast,ir
+	sink(ss5.str()); // $ MISSING: ast,ir
 }
 
 void test_stringstream_int(int source)
@@ -106,10 +106,10 @@ void test_stringstream_int(int source)
 	ss1 << 1234;
 	ss2 << source;
 
-	sink(ss1);
-	sink(ss2); // tainted [NOT DETECTED]
-	sink(ss1.str());
-	sink(ss2.str()); // tainted [NOT DETECTED]
+	sink(ss1); // clean
+	sink(ss2); // $ MISSING: ast,ir
+	sink(ss1.str()); // clean
+	sink(ss2.str()); // $ MISSING: ast,ir
 }
 
 using namespace std;
@@ -123,14 +123,14 @@ void sink(const char *filename, const char *mode);
 void test_strings2()
 {
 	string path1 = user_input();
-	sink(path1.c_str(), "r"); // tainted
+	sink(path1.c_str(), "r"); // $ MISSING: ast,ir
 
 	string path2;
 	path2 = user_input();
-	sink(path2.c_str(), "r"); // tainted
+	sink(path2.c_str(), "r"); // $ MISSING: ast,ir
 
 	string path3(user_input());
-	sink(path3.c_str(), "r"); // tainted
+	sink(path3.c_str(), "r"); // $ MISSING: ast,ir
 }
 
 void test_string3()
@@ -140,8 +140,8 @@ void test_string3()
 	// convert char * -> std::string
 	std::string ss(cs);
 
-	sink(cs); // tainted
-	sink(ss); // tainted
+	sink(cs); // $ ast,ir
+	sink(ss); // $ ir MISSING: ast
 }
 
 void test_string4()
@@ -154,6 +154,6 @@ void test_string4()
 	// convert back std::string -> char *
 	cs = ss.c_str();
 
-	sink(cs); // tainted [NOT DETECTED]
-	sink(ss); // tainted
+	sink(cs); // $ ast MISSING: ir
+	sink(ss); // $ ir MISSING: ast
 }

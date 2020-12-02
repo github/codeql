@@ -1,4 +1,4 @@
-#include "shared.h"
+#include "../shared.h"
 
 
 struct S {
@@ -14,7 +14,7 @@ struct S {
 };
 
 void calls_sink_with_argv(const char* a) {
-    sink(a);
+    sink(a); // $ ast,ir=96:26 ast,ir=98:18
 }
 
 extern int i;
@@ -27,7 +27,7 @@ public:
 class DerivedCallsSink : public BaseWithPureVirtual {
 public:
     void f(const char* p) override {
-        sink(p);
+        sink(p); // $ ir ast=108:10 SPURIOUS: ast=111:10
     }
 };
 
@@ -39,7 +39,7 @@ public:
 class DerivedCallsSinkDiamond1 : virtual public BaseWithPureVirtual {
 public:
     void f(const char* p) override {
-        sink(p);
+        sink(p); // $ ast,ir
     }
 };
 
@@ -65,7 +65,7 @@ public:
 class CRTPCallsSink : public CRTP<CRTPCallsSink> {
     public:
     void g(const char* p) {
-        sink(p);
+        sink(p); // $ ast,ir
     }
 };
 
@@ -79,7 +79,7 @@ class Derived2 : public Derived1 {
 class Derived3 : public Derived2 {
     public:
     void f(const char* p) override {
-        sink(p);
+        sink(p); // $ ast,ir=124:19 ast,ir=126:43 ast,ir=128:44
     }
 };
 
@@ -89,41 +89,41 @@ class CRTPDoesNotCallSink : public CRTP<CRTPDoesNotCallSink> {
 };
 
 int main(int argc, char *argv[]) {
-    sink(argv[0]);
+    sink(argv[0]); // $ ast,ir
 
-    sink(reinterpret_cast<int>(argv));
+    sink(reinterpret_cast<int>(argv)); // $ ast,ir
 
-    calls_sink_with_argv(argv[1]);
+    calls_sink_with_argv(argv[1]); // $ ast,ir
 
-    char*** p = &argv;
+    char*** p = &argv; // $ ast,ir
 
-    sink(*p[0]);
+    sink(*p[0]); // $ ast,ir
 
-    calls_sink_with_argv(*p[i]);
+    calls_sink_with_argv(*p[i]); // $ MISSING: ast,ir
 
-    sink(*(argv + 1));
+    sink(*(argv + 1)); // $ ast,ir
 
     BaseWithPureVirtual* b = new DerivedCallsSink;
 
-    b->f(argv[1]);
+    b->f(argv[1]); // $ ast,ir
 
     b = new DerivedDoesNotCallSink;
-    b->f(argv[0]); // no flow [FALSE POSITIVE by AST]
+    b->f(argv[0]); // $ SPURIOUS: ast
 
     BaseWithPureVirtual* b2 = new DerivesMultiple;
 
-    b2->f(argv[i]);
+    b2->f(argv[i]); // $ ast,ir
 
     CRTP<CRTPDoesNotCallSink> crtp_not_call_sink;
-    crtp_not_call_sink.f(argv[0]);
+    crtp_not_call_sink.f(argv[0]); // clean
 
     CRTP<CRTPCallsSink> crtp_calls_sink;
-    crtp_calls_sink.f(argv[0]);
+    crtp_calls_sink.f(argv[0]); // $ ast,ir
 
     Derived1* calls_sink = new Derived3;
-    calls_sink->f(argv[1]);
+    calls_sink->f(argv[1]); // $ ast,ir
 
-    static_cast<Derived2*>(calls_sink)->f(argv[1]);
+    static_cast<Derived2*>(calls_sink)->f(argv[1]); // $ ast,ir
 
-    dynamic_cast<Derived2*>(calls_sink)->f(argv[1]); // flow [NOT DETECTED by IR]
+    dynamic_cast<Derived2*>(calls_sink)->f(argv[1]); // $ ast,ir
 }
