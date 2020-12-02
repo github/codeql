@@ -34,8 +34,9 @@ private predicate isServletMethod(Callable c) {
   c.getDeclaringType() instanceof ServletClass and
   c.getNumberOfParameters() = 2 and
   c.getParameter(1).getType() instanceof ServletResponse and
-  c.getName() in ["doGet", "doPost", "doPut", "doDelete", "doHead", "doOptions", "doTrace",
-        "service"]
+  c.getName() in [
+      "doGet", "doPost", "doPut", "doDelete", "doHead", "doOptions", "doTrace", "service"
+    ]
 }
 
 /** Holds if `web.xml` has an error page configured. */
