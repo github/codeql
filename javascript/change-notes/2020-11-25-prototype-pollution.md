@@ -6,5 +6,6 @@ lgtm,codescanning
   This highlights indirect modification of `Object.prototype` via an unsafe `merge` call taking a user-controlled object as argument.
   * The query previously named "Prototype pollution in utility function" (`js/prototype-pollution-utility`) has been renamed to "Prototype-polluting function".
   This query highlights the implementation of an unsafe `merge` function, to ensure a robust API is exposed downstream.
-  * The prototype pollution queries have been moved to the Security/CWE-915 folder,
-  and tagged with CWE-079, CWE-094, CWE-400, and CWE-915.
+  * The above queries have been moved to the Security/CWE-915 folder, and tagged with CWE-079, CWE-094, CWE-400, and CWE-915.
+  * The query "Type confusion through parameter tampering" (`js/type-confusion-through-parameter-tampering`) now highlights
+  ineffective prototype pollution checks that can be bypassed by type confusion.
