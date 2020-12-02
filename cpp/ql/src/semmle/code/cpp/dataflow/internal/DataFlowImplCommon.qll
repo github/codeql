@@ -469,6 +469,15 @@ private module Cached {
   newtype TAccessPathFrontOption =
     TAccessPathFrontNone() or
     TAccessPathFrontSome(AccessPathFront apf)
+
+  /** Holds if `pun` is a post-update node for an argument to `call` at position `pos`. */
+  cached
+  predicate postUpdateArgument(PostUpdateNode pun, DataFlowCall call, int pos) {
+    exists(ArgumentNode arg |
+      pun.getPreUpdateNode() = arg and
+      arg.argumentOf(call, pos)
+    )
+  }
 }
 
 /**
@@ -657,7 +666,7 @@ class OutNodeExt extends Node {
   OutNodeExt() {
     this instanceof OutNode
     or
-    this.(PostUpdateNode).getPreUpdateNode() instanceof ArgumentNode
+    postUpdateArgument(this, _, _)
   }
 }
 
@@ -697,12 +706,7 @@ class ParamUpdateReturnKind extends ReturnKindExt, TParamUpdate {
 
   override string toString() { result = "param update " + pos }
 
-  override OutNodeExt getAnOutNode(DataFlowCall call) {
-    exists(ArgumentNode arg |
-      result.(PostUpdateNode).getPreUpdateNode() = arg and
-      arg.argumentOf(call, this.getPosition())
-    )
-  }
+  override OutNodeExt getAnOutNode(DataFlowCall call) { postUpdateArgument(result, call, pos) }
 }
 
 /** A callable tagged with a relevant return kind. */
