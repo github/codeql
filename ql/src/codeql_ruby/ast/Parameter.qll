@@ -1,6 +1,7 @@
 import codeql_ruby.AST
 private import Variable
 private import Pattern
+private import internal.Pattern
 private import internal.TreeSitter
 private import internal.Variable
 
@@ -37,15 +38,13 @@ class Parameter extends AstNode {
  *
  * This includes both simple parameters and tuple parameters.
  */
-class PatternParameter extends Parameter, Pattern { }
+class PatternParameter extends Parameter, Pattern {
+  override Variable getAVariable() { result = Pattern.super.getAVariable() }
+}
 
 /** A parameter defined using a tuple pattern. */
 class TuplePatternParameter extends PatternParameter, TuplePattern {
   final override string describeQlClass() { result = "TuplePatternParameter" }
-
-  final override Variable getAVariable() {
-    result = this.getAnElement+().(VariablePattern).getVariable()
-  }
 }
 
 /** A named parameter. */
@@ -58,7 +57,7 @@ class NamedParameter extends Parameter {
   /** Gets the variable introduced by this parameter. */
   Variable getVariable() { none() }
 
-  final override Variable getAVariable() { result = this.getVariable() }
+  override Variable getAVariable() { result = this.getVariable() }
 
   /** Gets an access to this parameter. */
   final VariableAccess getAnAccess() { result = this.getVariable().getAnAccess() }
@@ -66,9 +65,11 @@ class NamedParameter extends Parameter {
 
 /** A simple (normal) parameter. */
 class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern {
-  final override string getName() { result = this.getVariableName() }
+  final override string getName() { result = this.(VariablePatternRange).getVariableName() }
 
   final override Variable getVariable() { result = TLocalVariable(_, _, this) }
+
+  final override Variable getAVariable() { result = this.getVariable() }
 
   final override string describeQlClass() { result = "SimpleParameter" }
 

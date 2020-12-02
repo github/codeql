@@ -1,5 +1,6 @@
 import codeql_ruby.AST
 private import TreeSitter
+private import Variable
 private import codeql.Locations
 
 private predicate tuplePatternNode(Generated::AstNode n, boolean parameter) {
@@ -36,30 +37,38 @@ predicate assignment(Generated::Identifier i, boolean parameter) { patternNode(i
 
 abstract class PatternRange extends AstNode {
   PatternRange() { patternNode(this, _) }
+
+  abstract Variable getAVariable();
 }
 
-private class VariablePatternRange extends PatternRange {
+class VariablePatternRange extends PatternRange {
   override Generated::Identifier generated;
+
+  string getVariableName() { result = generated.getValue() }
+
+  override Variable getAVariable() { access(this, result) }
 }
 
 abstract class TuplePatternRange extends PatternRange {
-  abstract Pattern getElement(int i);
+  abstract PatternRange getElement(int i);
+
+  override Variable getAVariable() { result = this.getElement(_).getAVariable() }
 }
 
 private class ParameterTuplePatternRange extends TuplePatternRange {
   override Generated::DestructuredParameter generated;
 
-  override Pattern getElement(int i) { result = generated.getChild(i) }
+  override PatternRange getElement(int i) { result = generated.getChild(i) }
 }
 
 private class AssignmentTuplePatternRange extends TuplePatternRange {
   override Generated::DestructuredLeftAssignment generated;
 
-  override Pattern getElement(int i) { result = generated.getChild(i) }
+  override PatternRange getElement(int i) { result = generated.getChild(i) }
 }
 
 private class AssignmentListPatternRange extends TuplePatternRange {
   override Generated::LeftAssignmentList generated;
 
-  override Pattern getElement(int i) { result = generated.getChild(i) }
+  override PatternRange getElement(int i) { result = generated.getChild(i) }
 }

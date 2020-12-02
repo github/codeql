@@ -7,11 +7,15 @@ private import internal.Variable
 
 /** A scope in which variables can be declared. */
 class VariableScope extends TScope {
+  VariableScopeRange self;
+
+  VariableScope() { self = this }
+
   /** Gets a textual representation of this element. */
-  final string toString() { result = this.(VariableScopeRange).toString() }
+  final string toString() { result = self.toString() }
 
   /** Gets the program element this scope is associated with, if any. */
-  final AstNode getScopeElement() { result = this.(VariableScopeRange).getScopeElement() }
+  final AstNode getScopeElement() { result = self.getScopeElement() }
 
   /** Gets the location of the program element this scope is associated with. */
   final Location getLocation() { result = getScopeElement().getLocation() }
@@ -28,17 +32,21 @@ class VariableScope extends TScope {
 
 /** A variable declared in a scope. */
 class Variable extends TVariable {
+  VariableRange self;
+
+  Variable() { self = this }
+
   /** Gets the name of this variable. */
-  final string getName() { result = this.(VariableRange).getName() }
+  final string getName() { result = self.getName() }
 
   /** Gets a textual representation of this variable. */
   final string toString() { result = this.getName() }
 
   /** Gets the location of this variable. */
-  final Location getLocation() { result = this.(VariableRange).getLocation() }
+  final Location getLocation() { result = self.getLocation() }
 
   /** Gets the scope this variable is declared in. */
-  final VariableScope getDeclaringScope() { result = this.(VariableRange).getDeclaringScope() }
+  final VariableScope getDeclaringScope() { result = self.getDeclaringScope() }
 
   /** Gets an access to this variable. */
   VariableAccess getAnAccess() { result.getVariable() = this }
@@ -46,11 +54,7 @@ class Variable extends TVariable {
 
 /** A local variable. */
 class LocalVariable extends Variable {
-  private VariableScope scope;
-  private string name;
-  private Generated::Identifier i;
-
-  LocalVariable() { this = TLocalVariable(scope, name, i) }
+  override LocalVariableRange self;
 
   final override LocalVariableAccess getAnAccess() { result.getVariable() = this }
 }
