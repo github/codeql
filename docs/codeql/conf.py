@@ -109,5 +109,5 @@ templates_path = ['_templates']
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-exclude_patterns = ['vale*', '_static', '_templates', 'codeql', 'learn-ql', 'reusables', 'images', 'support', 'ql-training', '_build', '*.py*', 'README.rst']
+exclude_patterns = ['vale*', '_static', '_templates', 'reusables', 'images', 'support', 'ql-training', 'query-help','_build', '*.py*', 'README.rst']
 ##############################################################################
