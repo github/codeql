@@ -11,16 +11,13 @@ import java
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.DataFlow
 
-/** A return statement that returns `true`. */
-private class TrueReturnStmt extends ReturnStmt {
-  TrueReturnStmt() { getResult().(CompileTimeConstantExpr).getBooleanValue() = true }
-}
-
 /**
  * Holds if `m` always returns `true` ignoring any exceptional flow.
  */
 private predicate alwaysReturnsTrue(HostnameVerifierVerify m) {
-  forex(ReturnStmt rs | rs.getEnclosingCallable() = m | rs instanceof TrueReturnStmt)
+  forex(ReturnStmt rs | rs.getEnclosingCallable() = m |
+    rs.getResult().(CompileTimeConstantExpr).getBooleanValue() = true
+  )
 }
 
 /**
