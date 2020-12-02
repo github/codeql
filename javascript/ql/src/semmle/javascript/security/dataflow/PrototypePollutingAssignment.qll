@@ -41,8 +41,8 @@ module PrototypePollutingAssignment {
     ) {
       // Step from x -> obj[x] while switching to the ObjectPrototype label
       // (If `x` can have the value `__proto__` then the result can be Object.prototype)
-      exists(DataFlow::PropRead read |
-        pred = read.getPropertyNameExpr().flow() and
+      exists(DynamicPropRead read |
+        pred = read.getPropertyNameNode() and
         succ = read and
         inlbl.isTaint() and
         outlbl instanceof ObjectPrototype and
@@ -53,7 +53,7 @@ module PrototypePollutingAssignment {
         // Exclude cases where the read has no prototype, or a prototype other than Object.prototype.
         not read = prototypeLessObject().getAPropertyRead() and
         // Exclude cases where this property has just been assigned to
-        not read.(DynamicPropRead).hasDominatingAssignment()
+        not read.hasDominatingAssignment()
       )
       or
       // Same as above, but for property projection.
@@ -69,8 +69,8 @@ module PrototypePollutingAssignment {
     override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
       super.isLabeledBarrier(node, lbl)
       or
-      // Don't propagate the receiver into method calls, as the method lookup will fail on Object.prototype.
-      node = any(DataFlow::MethodCallNode m).getReceiver() and
+      // Don't propagate into the receiver, as the method lookups will generally fail on Object.prototype.
+      node instanceof DataFlow::ThisNode and
       lbl instanceof ObjectPrototype
     }
 
@@ -117,7 +117,10 @@ module PrototypePollutingAssignment {
     DataFlow::ValueNode {
     override PropAccess astNode;
 
-    PropertyPresenceCheck() { not isPropertyPresentOnObjectPrototype(astNode.getPropertyName()) }
+    PropertyPresenceCheck() {
+      astNode = any(ConditionGuardNode c).getTest() and // restrict size of charpred
+      not isPropertyPresentOnObjectPrototype(astNode.getPropertyName())
+    }
 
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = astNode.getBase() and
