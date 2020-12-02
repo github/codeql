@@ -486,6 +486,10 @@
 <v>408</v>
 </e>
 <e>
+<k>@template_literal_typeexpr</k>
+<v>100</v>
+</e>
+<e>
 <k>@template_element</k>
 <v>639</v>
 </e>
