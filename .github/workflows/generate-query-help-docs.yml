@@ -8,6 +8,7 @@ on:
      - 'lgtm.com'
   pull_request:
     paths:
+      - '.github/workflows/generate-query-help-docs.yml'
       - 'docs/codeql/query-help/**'
 
 jobs:
