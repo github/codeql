@@ -14,7 +14,9 @@ module PrototypePollutingAssignment {
   private import PrototypePollutingAssignmentCustomizations::PrototypePollutingAssignment
 
   // Materialize flow labels
-  private class ConcreteObjectPrototype extends ObjectPrototype { }
+  private class ConcreteObjectPrototype extends ObjectPrototype {
+    ConcreteObjectPrototype() { this = this }
+  }
 
   /** A taint-tracking configuration for reasoning about prototype-polluting assignments. */
   class Configuration extends TaintTracking::Configuration {
@@ -65,6 +67,8 @@ module PrototypePollutingAssignment {
     }
 
     override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+      super.isLabeledBarrier(node, lbl)
+      or
       // Don't propagate the receiver into method calls, as the method lookup will fail on Object.prototype.
       node = any(DataFlow::MethodCallNode m).getReceiver() and
       lbl instanceof ObjectPrototype
@@ -75,6 +79,7 @@ module PrototypePollutingAssignment {
       guard instanceof InExprCheck or
       guard instanceof InstanceofCheck or
       guard instanceof IsArrayCheck or
+      guard instanceof TypeofCheck or
       guard instanceof EqualityCheck
     }
   }
@@ -144,6 +149,28 @@ module PrototypePollutingAssignment {
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = astNode.getLeftOperand() and
       outcome = true and
+      label instanceof ObjectPrototype
+    }
+  }
+
+  /** A check of form `typeof e === "string"`. */
+  private class TypeofCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
+    override EqualityTest astNode;
+    Expr operand;
+    string value;
+
+    TypeofCheck() {
+      astNode.getLeftOperand().(TypeofExpr).getOperand() = operand and
+      astNode.getRightOperand().getStringValue() = value
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      (
+        value = "object" and outcome = false
+        or
+        value != "object" and outcome = true
+      ) and
+      e = operand and
       label instanceof ObjectPrototype
     }
   }
