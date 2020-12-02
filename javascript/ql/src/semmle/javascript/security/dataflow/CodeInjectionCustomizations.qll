@@ -145,8 +145,10 @@ module CodeInjection {
   }
 
   /** A sink for code injection via template injection. */
-  private abstract class TemplateSink extends Sink {
-    override string getMessageSuffix() { result = "here and is interpreted as a template, which may contain code" }
+  abstract private class TemplateSink extends Sink {
+    override string getMessageSuffix() {
+      result = "here and is interpreted as a template, which may contain code"
+    }
   }
 
   /**
@@ -154,7 +156,8 @@ module CodeInjection {
    */
   class PugTemplateSink extends TemplateSink {
     PugTemplateSink() {
-      this = DataFlow::moduleImport(["pug", "jade"]).getAMemberCall(["compile", "render"]).getArgument(0)
+      this =
+        DataFlow::moduleImport(["pug", "jade"]).getAMemberCall(["compile", "render"]).getArgument(0)
     }
   }
 
@@ -171,9 +174,10 @@ module CodeInjection {
    * A value interpreted as a template by the `ejs` library.
    */
   class EjsTemplateSink extends TemplateSink {
-    EjsTemplateSink() { this = DataFlow::moduleImport("ejs").getAMemberCall("render").getArgument(0) }
+    EjsTemplateSink() {
+      this = DataFlow::moduleImport("ejs").getAMemberCall("render").getArgument(0)
+    }
   }
-
 
   /**
    * A value interpreted as a template by the `nunjucks` library.
@@ -188,6 +192,8 @@ module CodeInjection {
    * A value interpreted as a template by `lodash` or `underscore`.
    */
   class LodashUnderscoreTemplateSink extends TemplateSink {
-    LodashUnderscoreTemplateSink() { this = LodashUnderscore::member("template").getACall().getArgument(0) }
+    LodashUnderscoreTemplateSink() {
+      this = LodashUnderscore::member("template").getACall().getArgument(0)
+    }
   }
 }
