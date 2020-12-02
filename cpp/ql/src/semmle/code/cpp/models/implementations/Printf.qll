@@ -11,7 +11,7 @@ import semmle.code.cpp.models.interfaces.Alias
 /**
  * The standard functions `printf`, `wprintf` and their glib variants.
  */
-class Printf extends FormattingFunction, AliasFunction {
+private class Printf extends FormattingFunction, AliasFunction {
   Printf() {
     this instanceof TopLevelFunction and
     (
@@ -31,6 +31,8 @@ class Printf extends FormattingFunction, AliasFunction {
     hasGlobalName("wprintf_s")
   }
 
+  override predicate isOutputGlobal() { any() }
+
   override predicate parameterNeverEscapes(int n) { n = 0 }
 
   override predicate parameterEscapesOnlyViaReturn(int n) { none() }
@@ -41,7 +43,7 @@ class Printf extends FormattingFunction, AliasFunction {
 /**
  * The standard functions `fprintf`, `fwprintf` and their glib variants.
  */
-class Fprintf extends FormattingFunction {
+private class Fprintf extends FormattingFunction {
   Fprintf() {
     this instanceof TopLevelFunction and
     (
@@ -56,7 +58,7 @@ class Fprintf extends FormattingFunction {
 
   deprecated override predicate isWideCharDefault() { hasGlobalOrStdName("fwprintf") }
 
-  override int getOutputParameterIndex() { result = 0 }
+  override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = true }
 }
 
 /**
@@ -109,7 +111,9 @@ private class Sprintf extends FormattingFunction {
     result = 1
   }
 
-  override int getOutputParameterIndex() { not hasGlobalName("g_strdup_printf") and result = 0 }
+  override int getOutputParameterIndex(boolean isStream) {
+    not hasGlobalName("g_strdup_printf") and result = 0 and isStream = false
+  }
 
   override int getFirstFormatArgumentIndex() {
     if hasGlobalName("__builtin___sprintf_chk")
@@ -164,7 +168,7 @@ private class SnprintfImpl extends Snprintf {
         .getSize() > 1
   }
 
-  override int getOutputParameterIndex() { result = 0 }
+  override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
 
   override int getFirstFormatArgumentIndex() {
     exists(string name |
@@ -224,7 +228,7 @@ private class StringCchPrintf extends FormattingFunction {
         .getSize() > 1
   }
 
-  override int getOutputParameterIndex() { result = 0 }
+  override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
 
   override int getSizeParameterIndex() { result = 1 }
 }
@@ -232,7 +236,7 @@ private class StringCchPrintf extends FormattingFunction {
 /**
  * The standard function `syslog`.
  */
-class Syslog extends FormattingFunction {
+private class Syslog extends FormattingFunction {
   Syslog() {
     this instanceof TopLevelFunction and
     hasGlobalName("syslog") and
@@ -240,4 +244,6 @@ class Syslog extends FormattingFunction {
   }
 
   override int getFormatParameterIndex() { result = 1 }
+
+  override predicate isOutputGlobal() { any() }
 }
