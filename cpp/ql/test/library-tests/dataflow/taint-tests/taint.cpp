@@ -420,30 +420,30 @@ void test_qualifiers()
 	sink(a);
 	sink(a.getMember());
 	a.setMember(source());
-	sink(a); // $ ast MISSING: ir
-	sink(a.getMember()); // $ ast MISSING: ir
+	sink(a); // $ ast,ir
+	sink(a.getMember()); // $ ast,ir
 
 	sink(b);
 	sink(b.getMember());
 	b.member = source();
 	sink(b); // $ ir MISSING: ast
 	sink(b.member); // $ ast,ir
-	sink(b.getMember());
+	sink(b.getMember()); // $ ir MISSING: ast
 
 	c = new MyClass2(0);
 
 	sink(c);
 	sink(c->getMember());
 	c->setMember(source());
-	sink(c); // $ ast MISSING: ir
-	sink(c->getMember()); // $ ast MISSING: ir
+	sink(c); // $ ast,ir
+	sink(c->getMember()); // $ ast,ir
 
 	delete c;
 
 	sink(d);
 	sink(d.getString());
 	d.setString(strings::source());
-	sink(d); // $ ast MISSING: ir
+	sink(d); // $ ast,ir
 	sink(d.getString()); // $ ast MISSING: ir
 }
 
