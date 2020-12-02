@@ -54,7 +54,7 @@ This overview omits some of the less important or intermediate classes from the 
 
 Each class has predicates, which are logical propositions about that class. They also define navigable relationships between classes. Predicates are inherited, so for example the ``AddExpr`` class inherits the predicates ``getLeftOperand()`` and ``getRightOperand()`` from ``BinaryArithmeticOperation``, and ``getType()`` from class ``Expr``. This is similar to how methods are inherited in object-oriented programming languages.
 
-In this overview, we present the most common and useful predicates. For the complete list of predicates available on each class, you can look in the CodeQL source code, use autocomplete in the editor, or see the `C# reference <https://help.semmle.com/qldoc/csharp>`__.
+In this overview, we present the most common and useful predicates. For the complete list of predicates available on each class, you can look in the CodeQL source code, use autocomplete in the editor, or see the `C# reference <https://codeql.github.com/codeql-standard-libraries/csharp>`__.
 
 Exercises
 ~~~~~~~~~
@@ -74,7 +74,7 @@ Exercise 1: Simplify this query:
 Files
 -----
 
-Files are represented by the class `File <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/File.qll/type.File$File.html>`__, and directories by the class `Folder <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/File.qll/type.File$Folder.html>`__. The database contains all of the source files and assemblies used during the compilation.
+Files are represented by the class `File <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/csharp/File.qll/type.File$File.html>`__, and directories by the class `Folder <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/csharp/File.qll/type.File$Folder.html>`__. The database contains all of the source files and assemblies used during the compilation.
 
 Class hierarchy
 ~~~~~~~~~~~~~~~
@@ -120,7 +120,7 @@ Exercise 2: Write a query to find the source file with the largest number of lin
 Elements
 --------
 
-The class `Element <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Element.qll/type.Element$Element.html>`__ is the base class for all parts of a C# program, and it's the root of the element class hierarchy. All program elements (such as types, methods, statements, and expressions) ultimately derive from this common base class.
+The class `Element <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/cil/Element.qll/type.Element$Element.html>`__ is the base class for all parts of a C# program, and it's the root of the element class hierarchy. All program elements (such as types, methods, statements, and expressions) ultimately derive from this common base class.
 
 ``Element`` forms a hierarchical structure of the program, which can be navigated using the ``getParent()`` and ``getChild()`` predicates. This is much like an abstract syntax tree, and also applies to elements in assemblies.
 
@@ -150,7 +150,7 @@ Note that ``getAQlClass()`` is available on all entities and is a useful way to 
 Locations
 ---------
 
-`Location <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/Location.qll/type.Location$Location.html>`__ represents a section of text in the source code, or an assembly. All elements have a ``Location`` obtained by their ``getLocation()`` predicate. A ``SourceLocation`` represents a span of text in source code, whereas an ``Assembly`` location represents a referenced assembly.
+`Location <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/csharp/Location.qll/type.Location$Location.html>`__ represents a section of text in the source code, or an assembly. All elements have a ``Location`` obtained by their ``getLocation()`` predicate. A ``SourceLocation`` represents a span of text in source code, whereas an ``Assembly`` location represents a referenced assembly.
 
 Sometimes elements have several locations, for example if they occur in both source code and an assembly. In this case, only the ``SourceLocation`` is returned.
 
@@ -189,7 +189,7 @@ Find all elements that are one character wide:
 Declarations
 ------------
 
-`Declaration <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Declaration.qll/type.Declaration$Declaration.html>`__ is the common class of all entities defined in the program, such as types, methods, variables etc. The database contains all declarations from the source code and all referenced assemblies.
+`Declaration <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/cil/Declaration.qll/type.Declaration$Declaration.html>`__ is the common class of all entities defined in the program, such as types, methods, variables etc. The database contains all declarations from the source code and all referenced assemblies.
 
 Class hierarchy
 ~~~~~~~~~~~~~~~
@@ -236,7 +236,7 @@ Find declarations containing a username:
 Variables
 ---------
 
-The class `Variable <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Variable.qll/type.Variable$Variable.html>`__ represents C# variables, such as fields, parameters and local variables. The database contains all variables from the source code, as well as all fields and parameters from assemblies referenced by the program.
+The class `Variable <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/cil/Variable.qll/type.Variable$Variable.html>`__ represents C# variables, such as fields, parameters and local variables. The database contains all variables from the source code, as well as all fields and parameters from assemblies referenced by the program.
 
 Class hierarchy
 ~~~~~~~~~~~~~~~
@@ -285,7 +285,7 @@ Find all unused local variables:
 Types
 -----
 
-Types are represented by the CodeQL class `Type <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Type.qll/type.Type$Type.html>`__ and consist of builtin types, interfaces, classes, structs, enums, and type parameters. The database contains types from the program and all referenced assemblies including mscorlib and the .NET framework.
+Types are represented by the CodeQL class `Type <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/cil/Type.qll/type.Type$Type.html>`__ and consist of builtin types, interfaces, classes, structs, enums, and type parameters. The database contains types from the program and all referenced assemblies including mscorlib and the .NET framework.
 
 The builtin types (``object``, ``int``, ``double`` etc.) have corresponding types (``System.Object``, ``System.Int32`` etc.) in mscorlib.
 
@@ -440,7 +440,7 @@ Exercise 5: Write a query to find all classes starting with the letter ``A``. (`
 Callables
 ---------
 
-Callables are represented by the class `Callable <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/Callable.qll/type.Callable$Callable.html>`__ and are anything that can be called independently, such as methods, constructors, destructors, operators, anonymous functions, indexers, and property accessors.
+Callables are represented by the class `Callable <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/csharp/Callable.qll/type.Callable$Callable.html>`__ and are anything that can be called independently, such as methods, constructors, destructors, operators, anonymous functions, indexers, and property accessors.
 
 The database contains all of the callables in your program and in all referenced assemblies.
 
@@ -566,7 +566,7 @@ Find ``Main`` methods which are not ``private``:
 Statements
 ----------
 
-Statements are represented by the class `Stmt <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/Stmt.qll/type.Stmt$Stmt.html>`__ and make up the body of methods (and other callables). The database contains all statements in the source code, but does not contain any statements from referenced assemblies where the source code is not available.
+Statements are represented by the class `Stmt <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/csharp/Stmt.qll/type.Stmt$Stmt.html>`__ and make up the body of methods (and other callables). The database contains all statements in the source code, but does not contain any statements from referenced assemblies where the source code is not available.
 
 Class hierarchy
 ~~~~~~~~~~~~~~~
@@ -691,7 +691,7 @@ Exercise 8: Modify the last example to exclude chains of ``if`` statements, wher
 Expressions
 -----------
 
-The `Expr <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/exprs/Expr.qll/type.Expr$Expr.html>`__ class represents all C# expressions in the program. An expression is something producing a value such as ``a+b`` or ``new List<int>()``. The database contains all expressions from the source code, but no expressions from referenced assemblies where the source code is not available.
+The `Expr <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/csharp/exprs/Expr.qll/type.Expr$Expr.html>`__ class represents all C# expressions in the program. An expression is something producing a value such as ``a+b`` or ``new List<int>()``. The database contains all expressions from the source code, but no expressions from referenced assemblies where the source code is not available.
 
 The ``Access`` class represents any use or cross-reference of another ``Declaration`` such a variable, property, method or field. The ``getTarget()`` predicate gets the declaration being accessed.
 
@@ -924,7 +924,7 @@ Exercise 9: Limit the previous query to string types. Exclude empty passwords or
 Attributes
 ----------
 
-C# attributes are represented by the class `Attribute <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Attribute.qll/type.Attribute$Attribute.html>`__. They can be present on many C# elements, such as classes, methods, fields, and parameters. The database contains attributes from the source code and all assembly references.
+C# attributes are represented by the class `Attribute <https://codeql.github.com/codeql-standard-libraries/csharp/semmle/code/cil/Attribute.qll/type.Attribute$Attribute.html>`__. They can be present on many C# elements, such as classes, methods, fields, and parameters. The database contains attributes from the source code and all assembly references.
 
 The attribute of any ``Element`` can be obtained via ``getAnAttribute()``, whereas if you have an attribute, you can find its element via ``getTarget()``. These two query fragments are identical:
 

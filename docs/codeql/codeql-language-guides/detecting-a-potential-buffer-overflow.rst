@@ -31,7 +31,7 @@ Defining the entities of interest
 
 You could approach this problem either by searching for code similar to the call to ``malloc`` in line 3 or the call to ``strcpy`` in line 5 (see example above). For our basic query, we start with a simple assumption: any call to ``malloc`` with only a ``strlen`` to define the memory size is likely to cause an error when the memory is populated.
 
-Calls to ``strlen`` can be identified using the library `StrlenCall <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/commons/StringAnalysis.qll/type.StringAnalysis$StrlenCall.html>`__ class, but we need to define a new class to identify calls to ``malloc``. Both the library class and the new class need to extend the standard class ``FunctionCall``, with the added restriction of the function name that they apply to:
+Calls to ``strlen`` can be identified using the library `StrlenCall <https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/commons/StringAnalysis.qll/type.StringAnalysis$StrlenCall.html>`__ class, but we need to define a new class to identify calls to ``malloc``. Both the library class and the new class need to extend the standard class ``FunctionCall``, with the added restriction of the function name that they apply to:
 
 .. code-block:: ql
 

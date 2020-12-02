@@ -120,9 +120,9 @@ Type tracking is a generalization of the above pattern, where a predicate matche
 and has a recursive clause that tracks the flow of that value.
 But instead of us having to deal with function calls/returns and property reads/writes,
 all of these steps are included in a single predicate,
-`SourceNode.track <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$track.2.html>`__,
+`SourceNode.track <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$track.2.html>`__,
 to be used with the companion class
-`TypeTracker <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/TypeTracking.qll/type.TypeTracking$TypeTracker.html>`__.
+`TypeTracker <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/TypeTracking.qll/type.TypeTracking$TypeTracker.html>`__.
 
 Predicates that use type tracking usually conform to the following general pattern, which we explain below:
 
@@ -435,7 +435,7 @@ Note that these predicates all return ``SourceNode``,
 so attempts to track a non-source node, such as an identifier or string literal,
 will not work.
 If this becomes an issue, see
-`TypeTracker.smallstep <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/TypeTracking.qll/predicate.TypeTracking$TypeTracker$smallstep.2.html>`__.
+`TypeTracker.smallstep <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/TypeTracking.qll/predicate.TypeTracking$TypeTracker$smallstep.2.html>`__.
 
 Also note that the predicates taking a ``TypeTracker`` or ``TypeBackTracker`` can often be made ``private``,
 as they are typically only used as an intermediate result to compute the other predicate.
@@ -511,14 +511,14 @@ Type tracking in the standard libraries
 
 Type tracking is used in a few places in the standard libraries:
 
-- The `DOM <https://help.semmle.com/qldoc/javascript/semmle/javascript/DOM.qll/module.DOM$DOM.html>`__ predicates,
-  `documentRef <https://help.semmle.com/qldoc/javascript/semmle/javascript/DOM.qll/predicate.DOM$DOM$documentRef.0.html>`__,
-  `locationRef <https://help.semmle.com/qldoc/javascript/semmle/javascript/DOM.qll/predicate.DOM$DOM$locationRef.0.html>`__, and
-  `domValueRef <https://help.semmle.com/qldoc/javascript/semmle/javascript/DOM.qll/predicate.DOM$DOM$domValueRef.0.html>`__,
+- The `DOM <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/DOM.qll/module.DOM$DOM.html>`__ predicates,
+  `documentRef <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/DOM.qll/predicate.DOM$DOM$documentRef.0.html>`__,
+  `locationRef <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/DOM.qll/predicate.DOM$DOM$locationRef.0.html>`__, and
+  `domValueRef <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/DOM.qll/predicate.DOM$DOM$domValueRef.0.html>`__,
   are implemented with type tracking.
-- The `HTTP <https://help.semmle.com/qldoc/javascript/semmle/javascript/frameworks/HTTP.qll/module.HTTP$HTTP.html>`__ server models, such as `Express <https://help.semmle.com/qldoc/javascript/semmle/javascript/frameworks/Express.qll/module.Express$Express.html>`__, use type tracking to track the installation of router handler functions.
-- The `Firebase <https://help.semmle.com/qldoc/javascript/semmle/javascript/frameworks/Firebase.qll/module.Firebase$Firebase.html>`__ and
-  `Socket.io <https://help.semmle.com/qldoc/javascript/semmle/javascript/frameworks/SocketIO.qll/module.SocketIO$SocketIO.html>`__ models use type tracking to track objects coming from their respective APIs.
+- The `HTTP <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/HTTP.qll/module.HTTP$HTTP.html>`__ server models, such as `Express <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/Express.qll/module.Express$Express.html>`__, use type tracking to track the installation of router handler functions.
+- The `Firebase <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/Firebase.qll/module.Firebase$Firebase.html>`__ and
+  `Socket.io <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/SocketIO.qll/module.SocketIO$SocketIO.html>`__ models use type tracking to track objects coming from their respective APIs.
 
 Further reading
 ---------------

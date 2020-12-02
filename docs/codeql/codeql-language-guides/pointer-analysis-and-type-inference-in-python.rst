@@ -15,7 +15,7 @@ Summary
 
 Class hierarchy for ``Value``:
 
--  `Value <https://help.semmle.com/qldoc/python/semmle/python/objects/ObjectAPI.qll/type.ObjectAPI$Value.html>`__
+-  `Value <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/objects/ObjectAPI.qll/type.ObjectAPI$Value.html>`__
 
    -  ``ClassValue``
    -  ``FunctionValue``

@@ -19,12 +19,12 @@ Support for analyzing TypeScript code is bundled with the CodeQL libraries for J
 Syntax
 ------
 
-Most syntax in TypeScript is represented in the same way as its JavaScript counterpart. For example, ``a+b`` is represented by an `AddExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$AddExpr.html>`__; the same as it would be in JavaScript. On the other hand, ``x as number`` is represented by `TypeAssertion <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAssertion.html>`__, a class that is specific to TypeScript.
+Most syntax in TypeScript is represented in the same way as its JavaScript counterpart. For example, ``a+b`` is represented by an `AddExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Expr.qll/type.Expr$AddExpr.html>`__; the same as it would be in JavaScript. On the other hand, ``x as number`` is represented by `TypeAssertion <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAssertion.html>`__, a class that is specific to TypeScript.
 
 Type annotations
 ~~~~~~~~~~~~~~~~
 
-The `TypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeExpr.html>`__ class represents anything that is part of a type annotation.
+The `TypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeExpr.html>`__ class represents anything that is part of a type annotation.
 
 Only type annotations that are explicit in the source code occur as a ``TypeExpr``. Types inferred by the TypeScript compiler are ``Type`` entities; for details about this, see the section on `static type information <#static-type-information>`__.
 
@@ -37,48 +37,48 @@ There are several ways to access type annotations, for example:
 -  ``VarDecl.getTypeAnnotation()`` (special case of ``BindingPattern.getTypeAnnotation()``)
 -  ``FieldDeclaration.getTypeAnnotation()``
 
-The `TypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeExpr.html>`__ class provides some convenient member predicates such as ``isString()`` and ``isVoid()`` to recognize commonly used types.
+The `TypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeExpr.html>`__ class provides some convenient member predicates such as ``isString()`` and ``isVoid()`` to recognize commonly used types.
 
 The subclasses that represent type annotations are:
 
--  `TypeAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAccess.html>`__: a name referring to a type, such as ``Date`` or ``http.ServerRequest``.
+-  `TypeAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAccess.html>`__: a name referring to a type, such as ``Date`` or ``http.ServerRequest``.
 
-   -  `LocalTypeAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalTypeAccess.html>`__: an unqualified name, such as ``Date``.
-   -  `QualifiedTypeAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$QualifiedTypeAccess.html>`__: a name prefixed by a namespace, such as ``http.ServerRequest``.
-   -  `ImportTypeAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ImportTypeAccess.html>`__: an ``import`` used as a type, such as ``import("./foo")``.
+   -  `LocalTypeAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalTypeAccess.html>`__: an unqualified name, such as ``Date``.
+   -  `QualifiedTypeAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$QualifiedTypeAccess.html>`__: a name prefixed by a namespace, such as ``http.ServerRequest``.
+   -  `ImportTypeAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ImportTypeAccess.html>`__: an ``import`` used as a type, such as ``import("./foo")``.
 
--  `PredefinedTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$PredefinedTypeExpr.html>`__: a predefined type, such as ``number``, ``string``, ``void``, or ``any``.
--  `ThisTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ThisTypeExpr.html>`__: the ``this`` type.
--  `InterfaceTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$InterfaceTypeExpr.html>`__, also known as a literal type, such as ``{x: number}``.
--  `FunctionTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$FunctionTypeExpr.html>`__: a type such as ``(x: number) => string``.
--  `GenericTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$GenericTypeExpr.html>`__: a named type with type arguments, such as ``Array<string>``.
--  `LiteralTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LiteralTypeExpr.html>`__: a string, number, or boolean constant used as a type, such as ``'foo'``.
--  `ArrayTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ArrayTypeExpr.html>`__: a type such as ``string[]``.
--  `UnionTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$UnionTypeExpr.html>`__: a type such as ``string | number``.
--  `IntersectionTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$IntersectionTypeExpr.html>`__: a type such as ``S & T``.
--  `IndexedAccessTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$IndexedAccessTypeExpr.html>`__: a type such as ``T[K]``.
--  `ParenthesizedTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ParenthesizedTypeExpr.html>`__: a type such as ``(string)``.
--  `TupleTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TupleTypeExpr.html>`__: a type such as ``[string, number]``.
--  `KeyofTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$KeyofTypeExpr.html>`__: a type such as ``keyof T``.
--  `TypeofTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeofTypeExpr.html>`__: a type such as ``typeof x``.
--  `IsTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$IsTypeExpr.html>`__: a type such as ``x is string``.
--  `MappedTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$MappedTypeExpr.html>`__: a type such as ``{ [K in C]: T }``.
+-  `PredefinedTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$PredefinedTypeExpr.html>`__: a predefined type, such as ``number``, ``string``, ``void``, or ``any``.
+-  `ThisTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ThisTypeExpr.html>`__: the ``this`` type.
+-  `InterfaceTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$InterfaceTypeExpr.html>`__, also known as a literal type, such as ``{x: number}``.
+-  `FunctionTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$FunctionTypeExpr.html>`__: a type such as ``(x: number) => string``.
+-  `GenericTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$GenericTypeExpr.html>`__: a named type with type arguments, such as ``Array<string>``.
+-  `LiteralTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LiteralTypeExpr.html>`__: a string, number, or boolean constant used as a type, such as ``'foo'``.
+-  `ArrayTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ArrayTypeExpr.html>`__: a type such as ``string[]``.
+-  `UnionTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$UnionTypeExpr.html>`__: a type such as ``string | number``.
+-  `IntersectionTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$IntersectionTypeExpr.html>`__: a type such as ``S & T``.
+-  `IndexedAccessTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$IndexedAccessTypeExpr.html>`__: a type such as ``T[K]``.
+-  `ParenthesizedTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ParenthesizedTypeExpr.html>`__: a type such as ``(string)``.
+-  `TupleTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TupleTypeExpr.html>`__: a type such as ``[string, number]``.
+-  `KeyofTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$KeyofTypeExpr.html>`__: a type such as ``keyof T``.
+-  `TypeofTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeofTypeExpr.html>`__: a type such as ``typeof x``.
+-  `IsTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$IsTypeExpr.html>`__: a type such as ``x is string``.
+-  `MappedTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$MappedTypeExpr.html>`__: a type such as ``{ [K in C]: T }``.
 
 There are some subclasses that may be part of a type annotation, but are not themselves types:
 
--  `TypeParameter <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeParameter.html>`__: a type parameter declared on a type or function, such as ``T`` in ``class C<T> {}``.
--  `NamespaceAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceAccess.html>`__: a name referring to a namespace from inside a type, such as ``http`` in ``http.ServerRequest``.
+-  `TypeParameter <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeParameter.html>`__: a type parameter declared on a type or function, such as ``T`` in ``class C<T> {}``.
+-  `NamespaceAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceAccess.html>`__: a name referring to a namespace from inside a type, such as ``http`` in ``http.ServerRequest``.
 
-   -  `LocalNamespaceAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceAccess.html>`__: the initial identifier in a prefix, such as ``http`` in ``http.ServerRequest``.
-   -  `QualifiedNamespaceAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$QualifiedNamespaceAccess.html>`__: a qualified name in a prefix, such as ``net.client`` in ``net.client.Connection``.
-   -  `ImportNamespaceAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ImportNamespaceAccess.html>`__: an ``import`` used as a namespace in a type, such as in ``import("http").ServerRequest``.
+   -  `LocalNamespaceAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceAccess.html>`__: the initial identifier in a prefix, such as ``http`` in ``http.ServerRequest``.
+   -  `QualifiedNamespaceAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$QualifiedNamespaceAccess.html>`__: a qualified name in a prefix, such as ``net.client`` in ``net.client.Connection``.
+   -  `ImportNamespaceAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ImportNamespaceAccess.html>`__: an ``import`` used as a namespace in a type, such as in ``import("http").ServerRequest``.
 
--  `VarTypeAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$VarTypeAccess.html>`__: a reference to a value from inside a type, such as ``x`` in ``typeof x`` or ``x is string``.
+-  `VarTypeAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$VarTypeAccess.html>`__: a reference to a value from inside a type, such as ``x`` in ``typeof x`` or ``x is string``.
 
 Function signatures
 ~~~~~~~~~~~~~~~~~~~
 
-The `Function <https://help.semmle.com/qldoc/javascript/semmle/javascript/Functions.qll/type.Functions$Function.html>`__ class is a broad class that includes both concrete functions and function signatures.
+The `Function <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Functions.qll/type.Functions$Function.html>`__ class is a broad class that includes both concrete functions and function signatures.
 
 Function signatures can take several forms:
 
@@ -94,7 +94,7 @@ We recommend that you use the predicate ``Function.hasBody()`` to distinguish co
 Type parameters
 ~~~~~~~~~~~~~~~
 
-The `TypeParameter <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeParameter.html>`__ class represents type parameters, and the `TypeParameterized <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeParameterized.html>`__ class represents entities that can declare type parameters. Classes, interfaces, type aliases, functions, and mapped type expressions are all ``TypeParameterized``.
+The `TypeParameter <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeParameter.html>`__ class represents type parameters, and the `TypeParameterized <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeParameterized.html>`__ class represents entities that can declare type parameters. Classes, interfaces, type aliases, functions, and mapped type expressions are all ``TypeParameterized``.
 
 You can access type parameters using the following predicates:
 
@@ -104,7 +104,7 @@ You can access type parameters using the following predicates:
 You can access type arguments using the following predicates:
 
 -  ``GenericTypeExpr.getTypeArgument(n)`` gets the ``n``\ th type argument of a type.
--  ``TypeAccess.getTypeArgument(n)`` is a convenient alternative for the above (a `TypeAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAccess.html>`__ with type arguments is wrapped in a `GenericTypeExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$GenericTypeExpr.html>`__).
+-  ``TypeAccess.getTypeArgument(n)`` is a convenient alternative for the above (a `TypeAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAccess.html>`__ with type arguments is wrapped in a `GenericTypeExpr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$GenericTypeExpr.html>`__).
 -  ``InvokeExpr.getTypeArgument(n)`` gets the ``n``\ th type argument of a call.
 -  ``ExpressionWithTypeArguments.getTypeArgument(n)`` gets the ``n``\ th type argument of a generic superclass expression.
 
@@ -128,7 +128,7 @@ Select expressions that cast a value to a type parameter:
 Classes and interfaces
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The CodeQL class `ClassOrInterface <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassOrInterface.html>`__ is a common supertype of classes and interfaces, and provides some TypeScript-specific member predicates:
+The CodeQL class `ClassOrInterface <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Classes.qll/type.Classes$ClassOrInterface.html>`__ is a common supertype of classes and interfaces, and provides some TypeScript-specific member predicates:
 
 -  ``ClassOrInterface.isAbstract()`` holds if this is an interface or a class with the ``abstract`` modifier.
 -  ``ClassOrInterface.getASuperInterface()`` gets a type from the ``implements`` clause of a class or from the ``extends`` clause of an interface.
@@ -136,7 +136,7 @@ The CodeQL class `ClassOrInterface <https://help.semmle.com/qldoc/javascript/sem
 -  ``ClassOrInterface.getAnIndexSignature()`` gets an index signature, such as in ``{ [key: string]: number }``.
 -  ``ClassOrInterface.getATypeParameter()`` gets a declared type parameter (special case of ``TypeParameterized.getATypeParameter()``).
 
-Note that the superclass of a class is an expression, not a type annotation. If the superclass has type arguments, it will be an expression of kind `ExpressionWithTypeArguments <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExpressionWithTypeArguments.html>`__.
+Note that the superclass of a class is an expression, not a type annotation. If the superclass has type arguments, it will be an expression of kind `ExpressionWithTypeArguments <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExpressionWithTypeArguments.html>`__.
 
 Also see the documentation for classes in the "`CodeQL libraries for JavaScript <introduce-libraries-js#classes>`__."
 
@@ -147,25 +147,25 @@ Statements
 
 The following are TypeScript-specific statements:
 
--  `NamespaceDeclaration <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceDeclaration.html>`__: a statement such as ``namespace M {}``.
--  `EnumDeclaration <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$EnumDeclaration.html>`__: a statement such as ``enum Color { red, green, blue }``.
--  `TypeAliasDeclaration <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAliasDeclaration.html>`__: a statement such as ``type A = number``.
--  `InterfaceDeclaration <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$InterfaceDeclaration.html>`__: a statement such as ``interface Point { x: number; y: number; }``.
--  `ImportEqualsDeclaration <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ImportEqualsDeclaration.html>`__: a statement such as ``import fs = require("fs")``.
--  `ExportAssignDeclaration <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExportAssignDeclaration.html>`__: a statement such as ``export = M``.
--  `ExportAsNamespaceDeclaration <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExportAsNamespaceDeclaration.html>`__: a statement such as ``export as namespace M``.
--  `ExternalModuleDeclaration <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExternalModuleDeclaration.html>`__: a statement such as ``module "foo" {}``.
--  `GlobalAugmentationDeclaration <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$GlobalAugmentationDeclaration.html>`__: a statement such as ``global {}``
+-  `NamespaceDeclaration <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceDeclaration.html>`__: a statement such as ``namespace M {}``.
+-  `EnumDeclaration <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$EnumDeclaration.html>`__: a statement such as ``enum Color { red, green, blue }``.
+-  `TypeAliasDeclaration <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAliasDeclaration.html>`__: a statement such as ``type A = number``.
+-  `InterfaceDeclaration <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$InterfaceDeclaration.html>`__: a statement such as ``interface Point { x: number; y: number; }``.
+-  `ImportEqualsDeclaration <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ImportEqualsDeclaration.html>`__: a statement such as ``import fs = require("fs")``.
+-  `ExportAssignDeclaration <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExportAssignDeclaration.html>`__: a statement such as ``export = M``.
+-  `ExportAsNamespaceDeclaration <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExportAsNamespaceDeclaration.html>`__: a statement such as ``export as namespace M``.
+-  `ExternalModuleDeclaration <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExternalModuleDeclaration.html>`__: a statement such as ``module "foo" {}``.
+-  `GlobalAugmentationDeclaration <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$GlobalAugmentationDeclaration.html>`__: a statement such as ``global {}``
 
 Expressions
 ~~~~~~~~~~~
 
 The following are TypeScript-specific expressions:
 
--  `ExpressionWithTypeArguments <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExpressionWithTypeArguments.html>`__: occurs when the ``extends`` clause of a class has type arguments, such as in ``class C extends D<string>``.
--  `TypeAssertion <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAssertion.html>`__: asserts that a value has a given type, such as ``x as number`` or ``<number> x``.
--  `NonNullAssertion <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NonNullAssertion.html>`__: asserts that a value is not null or undefined, such as ``x!``.
--  `ExternalModuleReference <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExternalModuleReference.html>`__: a ``require`` call on the right-hand side of an import-assign, such as ``import fs = require("fs")``.
+-  `ExpressionWithTypeArguments <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExpressionWithTypeArguments.html>`__: occurs when the ``extends`` clause of a class has type arguments, such as in ``class C extends D<string>``.
+-  `TypeAssertion <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAssertion.html>`__: asserts that a value has a given type, such as ``x as number`` or ``<number> x``.
+-  `NonNullAssertion <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NonNullAssertion.html>`__: asserts that a value is not null or undefined, such as ``x!``.
+-  `ExternalModuleReference <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExternalModuleReference.html>`__: a ``require`` call on the right-hand side of an import-assign, such as ``import fs = require("fs")``.
 
 Ambient declarations
 ~~~~~~~~~~~~~~~~~~~~
@@ -190,7 +190,7 @@ Static type information and global name binding is available for projects with "
 Basic usage
 ~~~~~~~~~~~
 
-The `Type <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$Type.html>`__ class represents a static type, such as ``number`` or ``string``. The type of an expression can be obtained with ``Expr.getType()``.
+The `Type <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$Type.html>`__ class represents a static type, such as ``number`` or ``string``. The type of an expression can be obtained with ``Expr.getType()``.
 
 Types that refer to a specific named type can be recognized in various ways:
 
@@ -343,7 +343,7 @@ Name binding
 
 In TypeScript, names can refer to variables, types, and namespaces, or a combination of these.
 
-These concepts are modeled as distinct entities: `Variable <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__, `TypeName <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$TypeName.html>`__, and `Namespace <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$Namespace.html>`__. For example, the class ``C`` below introduces both a variable and a type:
+These concepts are modeled as distinct entities: `Variable <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__, `TypeName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$TypeName.html>`__, and `Namespace <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$Namespace.html>`__. For example, the class ``C`` below introduces both a variable and a type:
 
 .. code-block:: typescript
 
@@ -351,7 +351,7 @@ These concepts are modeled as distinct entities: `Variable <https://help.semmle.
    let x = C; // refers to the variable C
    let y: C;  // refers to the type C
 
-The variable ``C`` and the type ``C`` are modeled as distinct entities. One is a `Variable <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__, the other is a `TypeName <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$TypeName.html>`__.
+The variable ``C`` and the type ``C`` are modeled as distinct entities. One is a `Variable <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__, the other is a `TypeName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$TypeName.html>`__.
 
 TypeScript also allows you to import types and namespaces, and give them local names in different scopes. For example, the import below introduces a local type name ``B``:
 
@@ -359,33 +359,33 @@ TypeScript also allows you to import types and namespaces, and give them local n
 
    import {C as B} from "./foo"
 
-The local name ``B`` is represented as a `LocalTypeName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalTypeName.html>`__ named ``B``, restricted to just the file containing the import. An import statement can also introduce a `Variable <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__ and a `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__.
+The local name ``B`` is represented as a `LocalTypeName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalTypeName.html>`__ named ``B``, restricted to just the file containing the import. An import statement can also introduce a `Variable <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__ and a `LocalNamespaceName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__.
 
 The following table shows the relevant classes for working with each kind of name. The classes are described in more detail below.
 
-+-----------+------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
-| Kind      | Local alias                                                                                                                                    | Canonical name                                                                                                                       | Definition                                                                                                                                        | Access                                                                                                                                   |
-+===========+================================================================================================================================================+======================================================================================================================================+===================================================================================================================================================+==========================================================================================================================================+
-| Value     | `Variable <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__                           |                                                                                                                                      |                                                                                                                                                   | `VarAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarAccess.html>`__                   |
-+-----------+------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
-| Type      | `LocalTypeName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalTypeName.html>`__               | `TypeName <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$TypeName.html>`__       | `TypeDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeDefinition.html>`__                | `TypeAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAccess.html>`__               |
-+-----------+------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
-| Namespace | `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__     | `Namespace <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$Namespace.html>`__     | `NamespaceDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceDeclaration.html>`__     | `NamespaceAccess <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceAccess.html>`__     |
-+-----------+------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
++-----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|   Kind    |                                                                           Local alias                                                                            |                                                                     Canonical name                                                                     |                                                                             Definition                                                                              |                                                                           Access                                                                           |
++===========+==================================================================================================================================================================+========================================================================================================================================================+=====================================================================================================================================================================+============================================================================================================================================================+
+| Value     | `Variable <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Variables.qll/type.Variables$Variable.html>`__                       |                                                                                                                                                        |                                                                                                                                                                     | `VarAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Variables.qll/type.Variables$VarAccess.html>`__               |
++-----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Type      | `LocalTypeName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalTypeName.html>`__           | `TypeName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$TypeName.html>`__   | `TypeDefinition <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeDefinition.html>`__            | `TypeAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeAccess.html>`__           |
++-----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Namespace | `LocalNamespaceName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__ | `Namespace <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$Namespace.html>`__ | `NamespaceDefinition <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceDeclaration.html>`__ | `NamespaceAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceAccess.html>`__ |
++-----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 **Note:** ``TypeName`` and ``Namespace`` are only populated if the database is generated using full TypeScript extraction. ``LocalTypeName`` and ``LocalNamespaceName`` are always populated.
 
 Type names
 ~~~~~~~~~~
 
-A `TypeName <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$TypeName.html>`__ is a qualified name for a type and is not bound to a specific lexical scope. The `TypeDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeDefinition.html>`__ class represents an entity that defines a type, namely a class, interface, type alias, enum, or enum member. The relevant predicates for working with type names are:
+A `TypeName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$TypeName.html>`__ is a qualified name for a type and is not bound to a specific lexical scope. The `TypeDefinition <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$TypeDefinition.html>`__ class represents an entity that defines a type, namely a class, interface, type alias, enum, or enum member. The relevant predicates for working with type names are:
 
 -  ``TypeAccess.getTypeName()`` gets the qualified name being referenced (if any).
 -  ``TypeDefinition.getTypeName()`` gets the qualified name of a class, interface, type alias, enum, or enum member.
 -  ``TypeName.getAnAccess()``, gets an access to a given type.
 -  ``TypeName.getADefinition()``, get a definition of a given type. Note that interfaces can have multiple definitions.
 
-A `LocalTypeName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalTypeName.html>`__ behaves like a block-scoped variable, that is, it has an unqualified name and is restricted to a specific scope. The relevant predicates are:
+A `LocalTypeName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalTypeName.html>`__ behaves like a block-scoped variable, that is, it has an unqualified name and is restricted to a specific scope. The relevant predicates are:
 
 -  ``LocalTypeAccess.getLocalTypeName()`` gets the local name referenced by an unqualified type access.
 -  ``LocalTypeName.getAnAccess()`` gets an access to a local type name.
@@ -397,7 +397,7 @@ Examples
 
 Find references that omit type arguments to a generic type.
 
-It is best to use `TypeName <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$TypeName.html>`__ to resolve through imports and qualified names:
+It is best to use `TypeName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$TypeName.html>`__ to resolve through imports and qualified names:
 
 .. code-block:: ql
 
@@ -427,11 +427,11 @@ Find imported names that are used as both a type and a value:
 Namespace names
 ~~~~~~~~~~~~~~~
 
-Namespaces are represented by the classes `Namespace <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$Namespace.html>`__ and `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__. The `NamespaceDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceDefinition.html>`__ class represents a syntactic definition of a namespace, which includes ordinary namespace declarations as well as enum declarations.
+Namespaces are represented by the classes `Namespace <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$Namespace.html>`__ and `LocalNamespaceName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__. The `NamespaceDefinition <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$NamespaceDefinition.html>`__ class represents a syntactic definition of a namespace, which includes ordinary namespace declarations as well as enum declarations.
 
 Note that these classes deal exclusively with namespaces referenced from inside type annotations, not through expressions.
 
-A `Namespace <https://help.semmle.com/qldoc/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$Namespace.html>`__ is a qualified name for a namespace, and is not bound to a specific scope. The relevant predicates for working with namespaces are:
+A `Namespace <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CanonicalNames.qll/type.CanonicalNames$Namespace.html>`__ is a qualified name for a namespace, and is not bound to a specific scope. The relevant predicates for working with namespaces are:
 
 -  ``NamespaceAccess.getNamespace()`` gets the namespace being referenced by a namespace access.
 -  ``NamespaceDefinition.getNamespace()`` gets the namespace defined by a namespace or enum declaration.
@@ -439,9 +439,9 @@ A `Namespace <https://help.semmle.com/qldoc/javascript/semmle/javascript/Canonic
 -  ``Namespace.getADefinition()`` gets a definition of this namespace. Note that namespaces can have multiple definitions.
 -  ``Namespace.getNamespaceMember(name)`` gets an inner namespace with a given name.
 -  ``Namespace.getTypeMember(name)`` gets a type exported under a given name.
--  ``Namespace.getAnExportingContainer()`` gets a `StmtContainer <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$StmtContainer.html>`__ whose exports contribute to this namespace. This can be a the body of a namespace declaration or the top-level of a module. Enums have no exporting containers.
+-  ``Namespace.getAnExportingContainer()`` gets a `StmtContainer <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/AST.qll/type.AST$StmtContainer.html>`__ whose exports contribute to this namespace. This can be a the body of a namespace declaration or the top-level of a module. Enums have no exporting containers.
 
-A `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__ behaves like a block-scoped variable, that is, it has an unqualified name and is restricted to a specific scope. The relevant predicates are:
+A `LocalNamespaceName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$LocalNamespaceName.html>`__ behaves like a block-scoped variable, that is, it has an unqualified name and is restricted to a specific scope. The relevant predicates are:
 
 -  ``LocalNamespaceAccess.getLocalNamespaceName()`` gets the local name referenced by an identifier.
 -  ``LocalNamespaceName.getAnAccess()`` gets an identifier that refers to this local name.

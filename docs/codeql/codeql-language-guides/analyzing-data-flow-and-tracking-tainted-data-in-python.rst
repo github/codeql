@@ -25,20 +25,20 @@ For further information on data flow and taint tracking with CodeQL, see ":ref:`
 Fundamentals of taint tracking using data flow analysis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The taint tracking library is in the `TaintTracking <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ module.
+The taint tracking library is in the `TaintTracking <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ module.
 Any taint tracking or data flow analysis query has three explicit components, one of which is optional, and an implicit component.
 The explicit components are:
 
-1. One or more ``sources`` of potentially insecure or unsafe data, represented by the `TaintTracking::Source <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintSource.html>`__ class.
-2. One or more ``sinks``, to where the data or taint may flow, represented by the `TaintTracking::Sink <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintSink.html>`__ class.
-3. Zero or more ``sanitizers``, represented by the `Sanitizer <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$Sanitizer.html>`__ class.
+1. One or more ``sources`` of potentially insecure or unsafe data, represented by the `TaintTracking::Source <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintSource.html>`__ class.
+2. One or more ``sinks``, to where the data or taint may flow, represented by the `TaintTracking::Sink <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintSink.html>`__ class.
+3. Zero or more ``sanitizers``, represented by the `Sanitizer <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$Sanitizer.html>`__ class.
 
 A taint tracking or data flow query gives results when there is the flow of data from a source to a sink, which is not blocked by a sanitizer.
 
-These three components are bound together using a `TaintTracking::Configuration <https://help.semmle.com/qldoc/python/semmle/python/dataflow/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__.
+These three components are bound together using a `TaintTracking::Configuration <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__.
 The purpose of the configuration is to specify exactly which sources and sinks are relevant to the specific query.
 
-The final, implicit component is the "kind" of taint, represented by the `TaintKind <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__ class.
+The final, implicit component is the "kind" of taint, represented by the `TaintKind <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__ class.
 The kind of taint determines which non-value-preserving steps are possible, in addition to value-preserving steps that are built into the analysis.
 In the above example ``dir = path + "/"``, taint flows from ``path`` to ``dir`` if the taint represents a string, but not if the taint is ``None``.
 

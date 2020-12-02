@@ -175,7 +175,7 @@ There are two points worth making about the source node API:
   2. Strings are not source nodes and cannot be tracked using this API. You can, however, use the ``mayHaveStringValue`` predicate on class ``DataFlow::Node``
      to reason about the possible string values flowing into a data flow node.
 
-For a full description of the ``DataFlow::SourceNode`` API, see the `JavaScript standard library <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Sources.qll/type.Sources$SourceNode.html>`__.
+For a full description of the ``DataFlow::SourceNode`` API, see the `JavaScript standard library <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/type.Sources$SourceNode.html>`__.
 
 Exercises
 ~~~~~~~~~
