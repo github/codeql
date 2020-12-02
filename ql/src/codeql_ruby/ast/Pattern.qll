@@ -7,23 +7,23 @@ private import Variable
 
 /** A pattern. */
 class Pattern extends AstNode {
-  PatternRange self;
+  Pattern::Range range;
 
-  Pattern() { self = this }
+  Pattern() { range = this }
 
   /** Gets a variable used in (or introduced by) this pattern. */
-  Variable getAVariable() { result = self.getAVariable() }
+  Variable getAVariable() { result = range.getAVariable() }
 }
 
 /** A simple variable pattern. */
 class VariablePattern extends Pattern {
-  final override VariablePatternRange self;
+  final override VariablePattern::Range range;
   final override Generated::Identifier generated;
 
   /** Gets the variable used in (or introduced by) this pattern. */
   Variable getVariable() { access(this, result) }
 
-  override string toString() { result = self.getVariableName() }
+  override string toString() { result = range.getVariableName() }
 }
 
 /**
@@ -32,10 +32,10 @@ class VariablePattern extends Pattern {
  * This includes both tuple patterns in parameters and assignments.
  */
 class TuplePattern extends Pattern {
-  final override TuplePatternRange self;
+  final override TuplePattern::Range range;
 
   /** Gets the `i`th pattern in this tuple pattern. */
-  final Pattern getElement(int i) { result = self.getElement(i) }
+  final Pattern getElement(int i) { result = range.getElement(i) }
 
   /** Gets a sub pattern in this tuple pattern. */
   final Pattern getAnElement() { result = this.getElement(_) }

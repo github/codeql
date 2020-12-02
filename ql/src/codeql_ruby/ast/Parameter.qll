@@ -1,6 +1,4 @@
 import codeql_ruby.AST
-private import Variable
-private import Pattern
 private import internal.Pattern
 private import internal.TreeSitter
 private import internal.Variable
@@ -65,7 +63,7 @@ class NamedParameter extends Parameter {
 
 /** A simple (normal) parameter. */
 class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern {
-  final override string getName() { result = this.(VariablePatternRange).getVariableName() }
+  final override string getName() { result = this.(VariablePattern::Range).getVariableName() }
 
   final override Variable getVariable() { result = TLocalVariable(_, _, this) }
 

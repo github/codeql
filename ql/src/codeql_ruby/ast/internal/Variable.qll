@@ -13,7 +13,9 @@ private VariableScope enclosingScope(Generated::AstNode node) {
   result.getScopeElement() = parent*(node.getParent())
 }
 
-private predicate parameterAssignment(CallableScopeRange scope, string name, Generated::Identifier i) {
+private predicate parameterAssignment(
+  CallableScope::Range scope, string name, Generated::Identifier i
+) {
   assignment(i, true) and
   scope = enclosingScope(i) and
   name = i.getValue()
@@ -21,7 +23,7 @@ private predicate parameterAssignment(CallableScopeRange scope, string name, Gen
 
 /** Holds if `scope` defines `name` in its parameter declaration at `i`. */
 private predicate scopeDefinesParameterVariable(
-  CallableScopeRange scope, string name, Generated::Identifier i
+  CallableScope::Range scope, string name, Generated::Identifier i
 ) {
   parameterAssignment(scope, name, i) and
   // In case of overlapping parameter names (e.g. `_`), only the first
@@ -142,69 +144,83 @@ private module Cached {
 
 import Cached
 
-abstract class VariableScopeRange extends TScope {
-  abstract string toString();
+module VariableScope {
+  abstract class Range extends TScope {
+    abstract string toString();
 
-  abstract AstNode getScopeElement();
-}
-
-class TopLevelScopeRange extends VariableScopeRange, TTopLevelScope {
-  override string toString() { result = "top-level scope" }
-
-  override AstNode getScopeElement() { TTopLevelScope(result) = this }
-}
-
-class ModuleScopeRange extends VariableScopeRange, TModuleScope {
-  override string toString() { result = "module scope" }
-
-  override AstNode getScopeElement() { TModuleScope(result) = this }
-}
-
-class ClassScopeRange extends VariableScopeRange, TClassScope {
-  override string toString() { result = "class scope" }
-
-  override AstNode getScopeElement() { TClassScope(result) = this }
-}
-
-class CallableScopeRange extends VariableScopeRange, TCallableScope {
-  private Callable c;
-
-  CallableScopeRange() { this = TCallableScope(c) }
-
-  override string toString() {
-    (c instanceof Method or c instanceof SingletonMethod) and
-    result = "method scope"
-    or
-    c instanceof Lambda and
-    result = "lambda scope"
-    or
-    c instanceof Block and
-    result = "block scope"
+    abstract AstNode getScopeElement();
   }
-
-  override Callable getScopeElement() { TCallableScope(result) = this }
 }
 
-class VariableRange extends TVariable {
-  abstract string getName();
+module TopLevelScope {
+  class Range extends VariableScope::Range, TTopLevelScope {
+    override string toString() { result = "top-level scope" }
 
-  string toString() { result = this.getName() }
-
-  abstract Location getLocation();
-
-  abstract VariableScope getDeclaringScope();
+    override AstNode getScopeElement() { TTopLevelScope(result) = this }
+  }
 }
 
-class LocalVariableRange extends VariableRange {
-  private VariableScope scope;
-  private string name;
-  private Generated::Identifier i;
+module ModuleScope {
+  class Range extends VariableScope::Range, TModuleScope {
+    override string toString() { result = "module scope" }
 
-  LocalVariableRange() { this = TLocalVariable(scope, name, i) }
+    override AstNode getScopeElement() { TModuleScope(result) = this }
+  }
+}
 
-  final override string getName() { result = name }
+module ClassScope {
+  class Range extends VariableScope::Range, TClassScope {
+    override string toString() { result = "class scope" }
 
-  final override Location getLocation() { result = i.getLocation() }
+    override AstNode getScopeElement() { TClassScope(result) = this }
+  }
+}
 
-  final override VariableScope getDeclaringScope() { result = scope }
+module CallableScope {
+  class Range extends VariableScope::Range, TCallableScope {
+    private Callable c;
+
+    Range() { this = TCallableScope(c) }
+
+    override string toString() {
+      (c instanceof Method or c instanceof SingletonMethod) and
+      result = "method scope"
+      or
+      c instanceof Lambda and
+      result = "lambda scope"
+      or
+      c instanceof Block and
+      result = "block scope"
+    }
+
+    override Callable getScopeElement() { TCallableScope(result) = this }
+  }
+}
+
+module Variable {
+  class Range extends TVariable {
+    abstract string getName();
+
+    string toString() { result = this.getName() }
+
+    abstract Location getLocation();
+
+    abstract VariableScope getDeclaringScope();
+  }
+}
+
+module LocalVariable {
+  class Range extends Variable::Range {
+    private VariableScope scope;
+    private string name;
+    private Generated::Identifier i;
+
+    Range() { this = TLocalVariable(scope, name, i) }
+
+    final override string getName() { result = name }
+
+    final override Location getLocation() { result = i.getLocation() }
+
+    final override VariableScope getDeclaringScope() { result = scope }
+  }
 }

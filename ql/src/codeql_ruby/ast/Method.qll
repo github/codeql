@@ -4,9 +4,9 @@ private import internal.Method
 
 /** A callable. */
 class Callable extends AstNode {
-  CallableRange self;
+  Callable::Range range;
 
-  Callable() { self = this }
+  Callable() { range = this }
 
   /** Gets the number of parameters of this callable. */
   final int getNumberOfParameters() { result = count(this.getAParameter()) }
@@ -15,12 +15,12 @@ class Callable extends AstNode {
   final Parameter getAParameter() { result = this.getParameter(_) }
 
   /** Gets the `n`th parameter of this callable. */
-  final Parameter getParameter(int n) { result = self.getParameter(n) }
+  final Parameter getParameter(int n) { result = range.getParameter(n) }
 }
 
 /** A method. */
 class Method extends Callable, @method {
-  final override MethodRange self;
+  final override Method::Range range;
   final override Generated::Method generated;
 
   final override string describeQlClass() { result = "Method" }
@@ -28,7 +28,7 @@ class Method extends Callable, @method {
   final override string toString() { result = this.getName() }
 
   /** Gets the name of this method. */
-  final string getName() { result = self.getName() }
+  final string getName() { result = range.getName() }
 
   /**
    * Holds if this is a setter method, as in the following example:
@@ -45,14 +45,14 @@ class Method extends Callable, @method {
 
 /** A singleton method. */
 class SingletonMethod extends Callable, @singleton_method {
-  final override SingletonMethodRange self;
+  final override SingletonMethod::Range range;
 
   final override string describeQlClass() { result = "SingletonMethod" }
 
   final override string toString() { result = this.getName() }
 
   /** Gets the name of this method. */
-  final string getName() { result = self.getName() }
+  final string getName() { result = range.getName() }
 }
 
 /**
@@ -62,7 +62,7 @@ class SingletonMethod extends Callable, @singleton_method {
  * ```
  */
 class Lambda extends Callable, @lambda {
-  final override LambdaRange self;
+  final override Lambda::Range range;
 
   final override string describeQlClass() { result = "Lambda" }
 
@@ -71,12 +71,12 @@ class Lambda extends Callable, @lambda {
 
 /** A block. */
 class Block extends AstNode, Callable {
-  override BlockRange self;
+  override Block::Range range;
 }
 
 /** A block enclosed within `do` and `end`. */
 class DoBlock extends Block, @do_block {
-  final override DoBlockRange self;
+  final override DoBlock::Range range;
 
   final override string describeQlClass() { result = "DoBlock" }
 
@@ -90,7 +90,7 @@ class DoBlock extends Block, @do_block {
  * ```
  */
 class BraceBlock extends Block, @block {
-  final override BraceBlockRange self;
+  final override BraceBlock::Range range;
 
   final override string describeQlClass() { result = "BraceBlock" }
 

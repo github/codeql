@@ -1,56 +1,70 @@
 import codeql_ruby.AST
 private import TreeSitter
 
-abstract class CallableRange extends AstNode {
-  abstract Parameter getParameter(int n);
-}
-
-class MethodRange extends CallableRange, @method {
-  final override Generated::Method generated;
-
-  override Parameter getParameter(int n) { result = generated.getParameters().getChild(n) }
-
-  string getName() {
-    result = generated.getName().(Generated::Token).getValue() or
-    // TODO: use hand-written Symbol class
-    result = generated.getName().(Generated::Symbol).toString() or
-    result = generated.getName().(Generated::Setter).getName().getValue() + "="
+module Callable {
+  abstract class Range extends AstNode {
+    abstract Parameter getParameter(int n);
   }
 }
 
-class SingletonMethodRange extends CallableRange, @singleton_method {
-  final override Generated::SingletonMethod generated;
+module Method {
+  class Range extends Callable::Range, @method {
+    final override Generated::Method generated;
 
-  override Parameter getParameter(int n) { result = generated.getParameters().getChild(n) }
+    override Parameter getParameter(int n) { result = generated.getParameters().getChild(n) }
 
-  string getName() {
-    result = generated.getName().(Generated::Token).getValue() or
-    // TODO: use hand-written Symbol class
-    result = generated.getName().(Generated::Symbol).toString() or
-    result = generated.getName().(Generated::Setter).getName().getValue() + "="
+    string getName() {
+      result = generated.getName().(Generated::Token).getValue() or
+      // TODO: use hand-written Symbol class
+      result = generated.getName().(Generated::Symbol).toString() or
+      result = generated.getName().(Generated::Setter).getName().getValue() + "="
+    }
   }
 }
 
-class LambdaRange extends CallableRange, @lambda {
-  final override Generated::Lambda generated;
+module SingletonMethod {
+  class Range extends Callable::Range, @singleton_method {
+    final override Generated::SingletonMethod generated;
 
-  final override Parameter getParameter(int n) { result = generated.getParameters().getChild(n) }
+    override Parameter getParameter(int n) { result = generated.getParameters().getChild(n) }
+
+    string getName() {
+      result = generated.getName().(Generated::Token).getValue() or
+      // TODO: use hand-written Symbol class
+      result = generated.getName().(Generated::Symbol).toString() or
+      result = generated.getName().(Generated::Setter).getName().getValue() + "="
+    }
+  }
 }
 
-abstract class BlockRange extends CallableRange {
-  Generated::BlockParameters params;
+module Lambda {
+  class Range extends Callable::Range, @lambda {
+    final override Generated::Lambda generated;
 
-  final override Parameter getParameter(int n) { result = params.getChild(n) }
+    final override Parameter getParameter(int n) { result = generated.getParameters().getChild(n) }
+  }
 }
 
-class DoBlockRange extends BlockRange, @do_block {
-  final override Generated::DoBlock generated;
+module Block {
+  abstract class Range extends Callable::Range {
+    Generated::BlockParameters params;
 
-  DoBlockRange() { params = generated.getParameters() }
+    final override Parameter getParameter(int n) { result = params.getChild(n) }
+  }
 }
 
-class BraceBlockRange extends BlockRange, @block {
-  final override Generated::Block generated;
+module DoBlock {
+  class Range extends Block::Range, @do_block {
+    final override Generated::DoBlock generated;
 
-  BraceBlockRange() { params = generated.getParameters() }
+    Range() { params = generated.getParameters() }
+  }
+}
+
+module BraceBlock {
+  class Range extends Block::Range, @block {
+    final override Generated::Block generated;
+
+    Range() { params = generated.getParameters() }
+  }
 }
