@@ -86,14 +86,19 @@ class ExplicitUpcast extends ExplicitCast {
     src != dest // Handled by `cs/useless-cast-to-self`
   }
 
-  /** Holds if this upcast is the argument of a call to `target`. */
-  private predicate isArgument(Call c, Callable target) {
+  pragma[nomagic]
+  private predicate isArgument(Type t) {
     exists(Parameter p |
       this = p.getAnAssignedArgument() and
-      p.getType() = this.getType() and
-      c.getAnArgument() = this and
-      target = c.getTarget()
+      t = p.getType()
     )
+  }
+
+  /** Holds if this upcast is the argument of a call to `target`. */
+  private predicate isArgument(Call c, Callable target) {
+    this.isArgument(this.getType()) and
+    c.getAnArgument() = this and
+    target = c.getTarget()
   }
 
   /** Holds if this upcast may be used to disambiguate the target of an instance call. */
