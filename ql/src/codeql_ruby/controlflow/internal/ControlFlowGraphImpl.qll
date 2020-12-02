@@ -31,7 +31,7 @@
  * caught up by its surrounding loop and turned into a `NormalCompletion`.
  */
 
-private import codeql_ruby.Generated::Generated
+private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import AstNodes
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import Completion

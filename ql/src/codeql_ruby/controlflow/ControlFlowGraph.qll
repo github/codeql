@@ -1,6 +1,6 @@
 /** Provides classes representing the control flow graph. */
 
-private import codeql_ruby.Generated::Generated
+private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import codeql_ruby.controlflow.BasicBlocks
 private import SuccessorTypes
 private import internal.ControlFlowGraphImpl

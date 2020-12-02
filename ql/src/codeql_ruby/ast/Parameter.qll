@@ -1,7 +1,7 @@
 import codeql_ruby.AST
-private import codeql_ruby.Generated
 private import Variable
 private import Pattern
+private import internal.TreeSitter
 private import internal.Variable
 
 /** A parameter. */

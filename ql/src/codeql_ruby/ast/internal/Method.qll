@@ -1,5 +1,5 @@
 import codeql_ruby.AST
-private import codeql_ruby.Generated
+private import TreeSitter
 
 abstract class CallableRange extends AstNode {
   abstract Parameter getParameter(int n);
