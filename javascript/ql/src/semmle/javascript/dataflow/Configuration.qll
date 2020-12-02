@@ -214,6 +214,7 @@ abstract class Configuration extends string {
    * Holds if `guard` is a barrier guard for this configuration, added through
    * `isBarrierGuard` or `AdditionalBarrierGuardNode`.
    */
+  pragma[nomagic]
   private predicate isBarrierGuardInternal(BarrierGuardNode guard) {
     isBarrierGuard(guard)
     or
@@ -368,6 +369,7 @@ abstract class BarrierGuardNode extends DataFlow::Node {
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
+pragma[nomagic]
 private predicate barrierGuardBlocksExpr(
   BarrierGuardNode guard, boolean outcome, Expr test, string label
 ) {
@@ -383,7 +385,7 @@ private predicate barrierGuardBlocksExpr(
 /**
  * Holds if `guard` may block the flow of a value reachable through exploratory flow.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
   exists(Expr e |
     barrierGuardBlocksExpr(guard, _, e, _) and
@@ -397,7 +399,7 @@ private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate barrierGuardBlocksAccessPath(
   BarrierGuardNode guard, boolean outcome, AccessPath ap, string label
 ) {
@@ -410,6 +412,7 @@ private predicate barrierGuardBlocksAccessPath(
  *
  * This predicate is outlined to give the optimizer a hint about the join ordering.
  */
+pragma[nomagic]
 private predicate barrierGuardBlocksSsaRefinement(
   BarrierGuardNode guard, boolean outcome, SsaRefinementNode ref, string label
 ) {
@@ -425,7 +428,7 @@ private predicate barrierGuardBlocksSsaRefinement(
  *
  * `outcome` is bound to the outcome of `cond` for join-ordering purposes.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate barrierGuardUsedInCondition(
   BarrierGuardNode guard, ConditionGuardNode cond, boolean outcome
 ) {
@@ -444,6 +447,7 @@ private predicate barrierGuardUsedInCondition(
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
+pragma[nomagic]
 private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node nd, string label) {
   // 1) `nd` is a use of a refinement node that blocks its input variable
   exists(SsaRefinementNode ref, boolean outcome |
@@ -466,6 +470,7 @@ private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node 
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
+pragma[nomagic]
 private predicate barrierGuardBlocksEdge(
   BarrierGuardNode guard, DataFlow::Node pred, DataFlow::Node succ, string label
 ) {
