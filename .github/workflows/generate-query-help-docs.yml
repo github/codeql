@@ -8,6 +8,7 @@ on:
      - 'lgtm.com'
   pull_request:
     paths:
+      - '.github/workflows/generate-query-help-docs.yml'
       - 'docs/codeql/query-help/**'
 
 jobs:
@@ -43,7 +44,7 @@ jobs:
       run: |
         PATH="$PATH:codeql-cli/codeql" python codeql/docs/codeql/query-help-markdown.py
     - name: Run Sphinx for query help
-      uses: ammaraskar/sphinx-action@master
+      uses: ammaraskar/sphinx-action@8b4f60114d7fd1faeba1a712269168508d4750d2 # v0.4
       with:
         docs-folder: "query-help/"
         pre-build-command: "python -m pip install --upgrade recommonmark"
