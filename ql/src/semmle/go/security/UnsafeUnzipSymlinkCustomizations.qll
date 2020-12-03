@@ -111,21 +111,33 @@ module UnsafeUnzipSymlink {
   private LoopStmt getLocalEnclosingLoop(Expr e) { result = getNonLoopParent*(e).getParent() }
 
   /**
-   * Gets one of `e`'s enclosing loop statements, including looking across function calls.
-   *
-   * The returned loops are the closest loop on their particular path (i.e., this might return
-   * multiple results, but no result encloses any other).
+   * Gets a call expression that may call `node`'s enclosing function if `node` has no local enclosing loop.
    */
-  private LoopStmt getAnEnclosingLoop(Expr e) {
-    result = getLocalEnclosingLoop(e)
-    or
-    not exists(getLocalEnclosingLoop(e)) and result = getAnEnclosingLoop(getAnExprCaller(e))
+  private Expr getAnExprCallerIfNotInLoop(Expr node) {
+    not exists(getLocalEnclosingLoop(node)) and
+    result = getAnExprCaller(node)
+  }
+
+  /**
+   * Gets a call to `os.Symlink`.
+   */
+  private CallExpr getASymlinkCall() { result.getTarget().hasQualifiedName("os", "Symlink") }
+
+  /**
+   * Gets the closest enclosing loop to an `os.Symlink` call, `archive/tar.Reader.Next` call or
+   * read from `archive/zip.Reader.File`.
+   */
+  private LoopStmt getAnExtractionOrSymlinkLoop(Expr e) {
+    (e = getASymlinkCall() or e = getAnArchiveEntryAccess()) and
+    result = getLocalEnclosingLoop(getAnExprCallerIfNotInLoop*(e))
   }
 
   /**
    * Gets a loop statement that contains either a read from `archive/zip.Reader.File` or a call to `archive/tar.Reader.Next()`.
    */
-  private LoopStmt getAnExtractionLoop() { result = getAnEnclosingLoop(getAnArchiveEntryAccess()) }
+  private LoopStmt getAnExtractionLoop() {
+    result = getAnExtractionOrSymlinkLoop(getAnArchiveEntryAccess())
+  }
 
   /**
    * An argument to a call to `os.Symlink` within a loop that extracts a zip or tar archive,
@@ -133,9 +145,9 @@ module UnsafeUnzipSymlink {
    */
   class OsSymlink extends DataFlow::Node, SymlinkSink {
     OsSymlink() {
-      exists(DataFlow::CallNode n | n.getTarget().hasQualifiedName("os", "Symlink") |
+      exists(DataFlow::CallNode n | n.asExpr() = getASymlinkCall() |
         this = n.getArgument([0, 1]) and
-        getAnEnclosingLoop(n.asExpr()) = getAnExtractionLoop()
+        getAnExtractionOrSymlinkLoop(n.asExpr()) = getAnExtractionLoop()
       )
     }
   }
