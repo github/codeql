@@ -38,7 +38,7 @@
 {%- block content %}
 <header class="Header">
     <div class="Header-item--full">
-        <a href="{{ pathto(master_doc) }}" class="Header-link f2 d-flex flex-items-center">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
             <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
             <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
                 aria-hidden="true">
@@ -69,20 +69,30 @@
             </summary>
 
             <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
                 <div class="dropdown-header">
-                    Help docs
+                    CodeQL tools
                 </div>
-                <li><a class="dropdown-item" href="https://help.semmle.com/QL/learn-ql/">Learn CodeQL</a></li>
-                <li><a class="dropdown-item" href="https://help.semmle.com/codeql/codeql-tools.html">CodeQL tools</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
                 </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
                 <li class="dropdown-divider" role="separator"></li>
                 <div class="dropdown-header">
                     Reference docs
                 </div>
-                <li><a class="dropdown-item" href="https://help.semmle.com/QL/ql-handbook/">QL language reference</a>
-                <li><a class="dropdown-item" href="https://help.semmle.com/QL/ql-libraries.html">CodeQL libraries</a>
-                <li><a class="dropdown-item" href="https://help.semmle.com/QL/ql-built-in-queries.html">CodeQL
-                        queries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href=".https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
                 <li class="dropdown-divider" role="separator"></li>
                 <div class="dropdown-header">
                     Source files
