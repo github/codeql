@@ -36,24 +36,12 @@ private predicate predictableInstruction(Instruction instr) {
  * library's `returnArgument` predicate.
  */
 predicate predictableOnlyFlow(string name) {
-  name = "strcasestr" or
-  name = "strchnul" or
-  name = "strchr" or
-  name = "strchrnul" or
-  name = "strcmp" or
-  name = "strcspn" or
-  name = "strncmp" or
-  name = "strndup" or
-  name = "strnlen" or
-  name = "strrchr" or
-  name = "strspn" or
-  name = "strstr" or
-  name = "strtod" or
-  name = "strtof" or
-  name = "strtol" or
-  name = "strtoll" or
-  name = "strtoq" or
-  name = "strtoul"
+  name =
+    [
+      "strcasestr", "strchnul", "strchr", "strchrnul", "strcmp", "strcspn", "strncmp", "strndup",
+      "strnlen", "strrchr", "strspn", "strstr", "strtod", "strtof", "strtol", "strtoll", "strtoq",
+      "strtoul"
+    ]
 }
 
 private DataFlow::Node getNodeForSource(Expr source) {
@@ -652,7 +640,8 @@ module TaintedWithPath {
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      this.inner()
+      this
+          .inner()
           .getLocation()
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
