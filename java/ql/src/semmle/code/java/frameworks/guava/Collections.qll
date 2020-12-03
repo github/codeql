@@ -187,8 +187,9 @@ private class TableReadMethod extends TaintPreservingCallable {
     // Map<R,Map<C,V>> rowMap()
     // Map<C,Map<R,V>> columnMap()
     this
-        .hasName(["put", "remove", "get", "row", "column", "cellSet", "values", "rowMap",
-              "columnMap"])
+        .hasName([
+            "put", "remove", "get", "row", "column", "cellSet", "values", "rowMap", "columnMap"
+          ])
   }
 
   override predicate returnsTaintFrom(int arg) { arg = -1 }
@@ -256,4 +257,50 @@ private class CopyOfMethod extends TaintPreservingCallable {
   }
 
   override predicate returnsTaintFrom(int arg) { arg = getNumberOfParameters() - 1 }
+}
+
+/**
+ * A taint-preserving static method of `com.google.common.collect.Sets`.
+ */
+private class SetsMethod extends TaintPreservingCallable {
+  int arg;
+
+  SetsMethod() {
+    this.getDeclaringType().hasQualifiedName(guavaCollectPackage(), "Sets") and
+    this.isStatic() and
+    (
+      // static <E> HashSet<E> newHashSet(E... elements)
+      // static <E> Set<E> newConcurrentHashSet(Iterable<? extends E> elements)
+      // static <E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet(Iterable<? extends E> elements)
+      // static <E extends Enum<E>>EnumSet<E> newEnumSet(Iterable<E> iterable, Class<E> elementType)
+      // etc
+      this.getName().matches("new%Set") and
+      arg = 0
+      or
+      // static <B> Set<List<B>> cartesianProduct(List<? extends Set<? extends B>> sets)
+      // static <B> Set<List<B>> cartesianProduct(Set<? extends B>... sets)
+      // static <E> Set<Set<E>> combinations(Set<E> set, int size)
+      // static <E> Sets.SetView<E> difference(Set<E> set1, Set<?> set2)
+      // static <E> NavigableSet<E> filter(NavigableSet<E> unfiltered, Predicate<? super E> predicate)
+      // static <E> Set<E> filter(Set<E> unfiltered, Predicate<? super E> predicate)
+      // static <E> SortedSet<E> filter(SortedSet<E> unfiltered, Predicate<? super E> predicate)
+      // static <E> Set<Set<E>> powerSet(Set<E> set)
+      // static <K extends Comparable<? super K>> NavigableSet<K>
+      // static <E> NavigableSet<E> synchronizedNavigableSet(NavigableSet<E> navigableSet)
+      // static <E> NavigableSet<E> unmodifiableNavigableSet(NavigableSet<E> set)
+      this
+          .hasName([
+              "cartesianProduct", "combinations", "difference", "filter", "powerSet", "subSet",
+              "synchronizedNavigableSet", "unmodifyableNavigableSet"
+            ]) and
+      arg = 0
+      or
+      // static <E> Sets.SetView<E> symmetricDifference(Set<? extends E> set1, Set<? extends E> set2)
+      // static <E> Sets.SetView<E> union(Set<? extends E> set1, Set<? extends E> set2)
+      this.hasName(["symmetricDifference", "union"]) and
+      arg = [0, 1]
+    )
+  }
+
+  override predicate returnsTaintFrom(int arg_) { arg_ = arg }
 }
