@@ -134,6 +134,7 @@ namespace Semmle.Extraction.CIL.Entities
             if (ct != null)
             {
                 ct.GetId(trapFile, inContext);
+                trapFile.Write('.');
             }
             else
             {
@@ -145,10 +146,10 @@ namespace Semmle.Extraction.CIL.Entities
                 if (!ContainingNamespace.IsGlobalNamespace)
                 {
                     ContainingNamespace.WriteId(trapFile);
+                    trapFile.Write('.');
                 }
             }
 
-            trapFile.Write('.');
             trapFile.Write(Cx.GetString(tr.Name));
         }
 
