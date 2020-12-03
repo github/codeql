@@ -67,7 +67,7 @@ To overcome these potential problems, two kinds of data flow are modeled in the 
 
 - Global data flow, effectively considers the data flow within an entire program, by calculating data flow between functions and through object properties. Computing global data flow is typically more time and energy intensive than local data flow, therefore queries should be refined to look for more specific sources and sinks.
 
-Many CodeQL queries contain examples of both local and global data flow analysis. See `the built-in queries <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__ for details.
+Many CodeQL queries contain examples of both local and global data flow analysis. For more information, see `CodeQL query help <https://codeql.github.com/codeql-query-help>`__.
 
 Normal data flow vs taint tracking
 **********************************

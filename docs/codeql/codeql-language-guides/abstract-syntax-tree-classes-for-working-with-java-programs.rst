@@ -277,6 +277,9 @@ Further reading
 .. include:: ../reusables/java-further-reading.rst
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
 
+.. Links used in tables. For information about using these links, see
+   https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#hyperlinks.
+
 .. _Expr: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$Expr.html
 .. _Stmt: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Statement.qll/type.Statement$Stmt.html
 .. _VarAccess: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$VarAccess.html

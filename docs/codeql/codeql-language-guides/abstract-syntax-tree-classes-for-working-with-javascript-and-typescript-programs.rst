@@ -361,6 +361,16 @@ All classes in this table are subclasses of Expr_.
 | ``yield`` Expr_               | YieldExpr_       |
 +-------------------------------+------------------+
 
+Further reading
+---------------
+
+.. include:: ../reusables/javascript-further-reading.rst
+.. include:: ../reusables/codeql-ref-tools-further-reading.rst
+
+
+.. Links used in tables. For information about using these links, see
+   https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#hyperlinks.
+
 .. _Stmt: https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html
 .. _Expr: https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html
 .. _ExprStmt: https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Stmt.qll/type.Stmt$ExprStmt.html
@@ -514,9 +524,3 @@ All classes in this table are subclasses of Expr_.
 .. _AwaitExpr: https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Expr.qll/type.Expr$AwaitExpr.html
 .. _YieldExpr: https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Expr.qll/type.Expr$YieldExpr.html
 
-
-Further reading
----------------
-
-.. include:: ../reusables/javascript-further-reading.rst
-.. include:: ../reusables/codeql-ref-tools-further-reading.rst
