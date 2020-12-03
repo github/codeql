@@ -859,9 +859,7 @@ private class NodeModuleSourcesNodes extends DataFlow::SourceNode::Range {
     )
   }
 
-  Variable getVariable() {
-    result = v
-  }
+  Variable getVariable() { result = v }
 }
 
 /**
