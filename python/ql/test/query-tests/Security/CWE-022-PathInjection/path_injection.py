@@ -72,3 +72,58 @@ def safe_path_abspath():
     npath = os.path.abspath(os.path.join(STATIC_DIR, filename))
     if npath.startswith(STATIC_DIR):
         f = open(npath)  # OK
+
+
+@app.route("/int-only/<int:foo_id>")
+def flask_int_only(foo_id):
+    # This is OK, since the flask routing ensures that `foo_id` MUST be an integer.
+    path = os.path.join(STATIC_DIR, foo_id)
+    f = open(path)  # OK TODO: FP
+
+
+@app.route("/not-path/<foo>")
+def flask_not_path(foo):
+    # On UNIX systems, this is OK, since without being marked as `<path:foo>`, flask
+    # routing ensures that `foo` cannot contain forward slashes (not by using %2F either).
+    path = os.path.join(STATIC_DIR, foo)
+    f = open(path)  # OK if only running on UNIX systems, NOT OK if could be running on windows
+
+
+@app.route("/no-dot-dot")
+def no_dot_dot():
+    filename = request.args.get('filename', '')
+    path = os.path.join(STATIC_DIR, filename)
+    # Note: even for UNIX-only programs, this check is not good enough, since it doesn't
+    # handle if `filename` is an absolute path
+    if '../' in path:
+        return "not this time"
+    f = open(path)  # NOT OK
+
+
+@app.route("/no-dot-dot-with-prefix")
+def no_dot_dot_with_prefix():
+    filename = request.args.get('filename', '')
+    path = os.path.join(STATIC_DIR, "img-"+filename)
+    # Note: Since `filename` has a prefix, it's not possible to use an absolute path.
+    # Therefore, for UNIX-only programs, the `../` check is enough to stop path injections.
+    if '../' in path:
+        return "not this time"
+    f = open(path)  # OK if only running on UNIX systems, NOT OK if could be running on windows
+
+
+@app.route("/replace-slash")
+def replace_slash():
+    filename = request.args.get('filename', '')
+    path = os.path.join(STATIC_DIR, filename)
+    sanitized = path.replace("/", "_")
+    f = open(sanitized)  # OK if only running on UNIX systems, NOT OK if could be running on windows
+
+
+@app.route("/stackoverflow-solution")
+def stackoverflow_solution():
+    # Solution provided in https://stackoverflow.com/a/45188896
+    filename = request.args.get('filename', '')
+    path = os.path.join(STATIC_DIR, filename)
+    if os.path.commonprefix((os.path.realpath(path), STATIC_DIR)) != STATIC_DIR:
+        return "not this time"
+    f = open(path) # OK TODO: FP
