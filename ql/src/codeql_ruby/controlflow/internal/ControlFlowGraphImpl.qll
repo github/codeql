@@ -598,6 +598,27 @@ private module Trees {
     final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
   }
 
+  private class RescueModifierTree extends PreOrderTree, RescueModifier {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getHandler() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getBody(), last, c) and
+      not c instanceof RaiseCompletion
+      or
+      last(this.getHandler(), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getBody(), succ) and
+      c instanceof SimpleCompletion
+      or
+      last(this.getBody(), pred, c) and
+      c instanceof RaiseCompletion and
+      first(this.getHandler(), succ)
+    }
+  }
+
   private class ReturnTree extends StandardPostOrderTree, Return {
     final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
   }

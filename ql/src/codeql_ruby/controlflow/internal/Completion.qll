@@ -57,6 +57,8 @@ abstract class Completion extends TCompletion {
       this = TBooleanCompletion(_)
     )
     or
+    n = any(RescueModifier parent).getBody() and this = TRaiseCompletion()
+    or
     not n instanceof NonReturningCall and
     not completionIsValidForStmt(n, _) and
     not mustHaveBooleanCompletion(n) and
