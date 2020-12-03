@@ -10,10 +10,8 @@ private class JsonIteratorUnmarshalFunction extends TaintTracking::FunctionModel
   JsonIteratorUnmarshalFunction() {
     this.hasQualifiedName("github.com/json-iterator/go", ["Unmarshal", "UnmarshalFromString"])
     or
-    exists(Method m |
-      m.hasQualifiedName("github.com/json-iterator/go", "API", ["Unmarshal", "UnmarshalFromString"]) and
-      this.(Method).implements(m)
-    )
+    this.(Method)
+        .implements("github.com/json-iterator/go", "API", ["Unmarshal", "UnmarshalFromString"])
   }
 
   override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }
