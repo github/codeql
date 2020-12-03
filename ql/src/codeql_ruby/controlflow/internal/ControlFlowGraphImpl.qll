@@ -267,7 +267,12 @@ private module Trees {
   }
 
   private class BeginTree extends StandardPreOrderTree, Begin {
-    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+    final override AstNode getChildNode(int i) {
+      result = this.getChild(i) and
+      not result instanceof Rescue and
+      not result instanceof Else and
+      not result instanceof Ensure
+    }
   }
 
   private class BeginBlockTree extends StandardPreOrderTree, BeginBlock {
