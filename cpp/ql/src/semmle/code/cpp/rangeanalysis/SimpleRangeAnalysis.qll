@@ -588,7 +588,7 @@ private float addRoundingDownSmall(float x, float small) {
 private predicate lowerBoundableExpr(Expr expr) {
   analyzableExpr(expr) and
   getUpperBoundsImpl(expr) <= exprMaxVal(expr) and
-   not exists(getValue(expr).toFloat())
+  not exists(getValue(expr).toFloat())
 }
 
 /**
