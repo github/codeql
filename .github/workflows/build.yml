@@ -20,13 +20,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Install GNU tar
+        if: runner.os == 'macOS'
+        run: |
+          brew install gnu-tar
+          echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
       - uses: actions/cache@v2
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-rust-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Check formatting
         run: cargo fmt --all -- --check
       - name: Build
