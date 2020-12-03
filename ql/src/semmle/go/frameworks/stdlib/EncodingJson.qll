@@ -101,14 +101,6 @@ module EncodingJson {
       hasQualifiedName("encoding/json", "Encoder", "SetIndent") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (RawMessage).MarshalJSON() ([]byte, error)
-      hasQualifiedName("encoding/json", "RawMessage", "MarshalJSON") and
-      (inp.isReceiver() and outp.isResult(0))
-      or
-      // signature: func (*RawMessage).UnmarshalJSON(data []byte) error
-      hasQualifiedName("encoding/json", "RawMessage", "UnmarshalJSON") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (Marshaler).MarshalJSON() ([]byte, error)
       implements("encoding/json", "Marshaler", "MarshalJSON") and
       (inp.isReceiver() and outp.isResult(0))
