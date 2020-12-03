@@ -31,11 +31,7 @@ private class IteratorTraits extends Class {
  */
 private class IteratorByTypedefs extends Iterator, Class {
   IteratorByTypedefs() {
-    this.getAMember().(TypedefType).hasName("difference_type") and
-    this.getAMember().(TypedefType).hasName("value_type") and
-    this.getAMember().(TypedefType).hasName("pointer") and
-    this.getAMember().(TypedefType).hasName("reference") and
-    this.getAMember().(TypedefType).hasName("iterator_category") and
+    this.getAMember().(TypedefType).hasName(["difference_type", "value_type", "pointer", "reference", "iterator_category"]) and
     not this.hasQualifiedName("std", "iterator_traits")
   }
 }

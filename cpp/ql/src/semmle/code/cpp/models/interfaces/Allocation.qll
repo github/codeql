@@ -93,16 +93,10 @@ abstract class AllocationExpr extends Expr {
  */
 class OperatorNewAllocationFunction extends AllocationFunction {
   OperatorNewAllocationFunction() {
-    exists(string name |
-      hasGlobalName(name) and
-      (
-        // operator new(bytes, ...)
-        name = "operator new"
-        or
-        // operator new[](bytes, ...)
-        name = "operator new[]"
-      )
-    )
+    hasGlobalName([
+        "operator new", // operator new(bytes, ...)
+        "operator new[]" // operator new[](bytes, ...)
+      ])
   }
 
   override int getSizeArg() { result = 0 }

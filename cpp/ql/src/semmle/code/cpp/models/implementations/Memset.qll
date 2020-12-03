@@ -15,13 +15,8 @@ import semmle.code.cpp.models.interfaces.SideEffect
 private class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction,
   SideEffectFunction {
   MemsetFunction() {
-    hasGlobalName("memset") or
-    hasGlobalName("wmemset") or
-    hasGlobalName("bzero") or
-    hasGlobalName("__builtin_memset") or
-    hasGlobalName("__builtin_memset_chk") or
-    hasQualifiedName("std", "memset") or
-    hasQualifiedName("std", "wmemset")
+    hasGlobalName(["memset", "wmemset", "bzero", "__builtin_memset", "__builtin_memset_chk"]) or
+    hasQualifiedName("std", ["memset", "wmemset"])
   }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
