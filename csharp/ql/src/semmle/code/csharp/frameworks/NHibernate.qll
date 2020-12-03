@@ -79,7 +79,7 @@ module NHibernate {
       this.getCallable()
           .getDeclaringType()
           .getDeclaringNamespace()
-          .getParent*()
+          .getParentNamespace*()
           .hasQualifiedName("", "NHibernate")
     }
   }

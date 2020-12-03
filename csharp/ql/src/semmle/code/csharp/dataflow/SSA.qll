@@ -1820,11 +1820,12 @@ module Ssa {
       BasicBlock bb, int i, LocalScopeSourceVariable v, ImplicitEntryDefinition def,
       ControlFlow::Nodes::ElementNode c, boolean additionalCalls
     ) {
-      exists(Callable reader |
+      exists(Callable reader, SourceVariable sv |
         implicitReadCandidate(bb, i, c, v) and
         readsCapturedVariable(c, v, reader, additionalCalls) and
-        def.getCallable() = reader and
-        def.getSourceVariable().getAssignable() = v.getAssignable()
+        sv = def.getSourceVariable() and
+        reader = sv.getEnclosingCallable() and
+        v.getAssignable() = sv.getAssignable()
       )
     }
 
