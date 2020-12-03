@@ -54,11 +54,11 @@ var bad6 = /^[\_$a-z][\_$a-z0-9]*(\[.*?\])*(\.[\_$a-z][\_$a-z0-9]*(\[.*?\])*)*$/
 // GOOD
 var good6 = /(a|.)*/;
 
-// NOT GOOD; But we don't detect the last one due to how we construct the NFA.
+// Testing the NFA - only some of the below are detected.
 var bad7 = /^([a-z]+)+$/;
-var bad8 = /^([a-z]*)*$/;
+var bad8 = /^([a-z]*)*$/; // NOT detected
 var bad9 = /^([a-zA-Z0-9])(([\\-.]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$/;
-var bad10 = /^(([a-z])+.)+[A-Z]([a-z])+$/;
+var bad10 = /^(([a-z])+.)+[A-Z]([a-z])+$/; // NOT detected
 
 // NOT GOOD; attack: "[" + "][".repeat(100) + "]!"
 // Adapted from Prototype.js (https://github.com/prototypejs/prototype), which
@@ -310,13 +310,13 @@ var good36 = /(([^/]|X)+)(\/[^]*)*$/;
 // GOOD - but we spuriously conclude that a rejecting suffix exists. 
 var good37 = /^((x([^Y]+)?)*(Y|$))/;
 
-// NOT GOOD
+// NOT GOOD - but not detected
 var bad68 = /(a*)+b/;
 
-// NOT GOOD
+// NOT GOOD - but not detected
 var bad69 = /foo([\w-]*)+bar/;
 
-// NOT GOOD
+// NOT GOOD - but not detected
 var bad70 = /((ab)*)+c/;
 
 // NOT GOOD
@@ -325,11 +325,11 @@ var bad71 = /(a?a?)*b/;
 // GOOD
 var good38 = /(a?)*b/;
 
-// NOT GOOD - but wrong pump string. 
+// NOT GOOD - but not detected
 var bad72 = /(c?a?)*b/;
 
 // NOT GOOD
 var bad73 = /(?:a|a?)+b/;
 
-// NOT GOOD - but wrong pump string. 
+// NOT GOOD - but not detected. 
 var bad74 = /(a?b?)*$/;
