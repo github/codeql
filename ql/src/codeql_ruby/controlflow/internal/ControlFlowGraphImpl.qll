@@ -431,6 +431,27 @@ private module Trees {
     }
   }
 
+  private class HeredocBeginningTree extends StandardPreOrderTree, HeredocBeginning {
+    final override AstNode getChildNode(int i) {
+      i = 0 and
+      result =
+        min(string name, HeredocBody doc, HeredocEnd end |
+          name = this.getValue().regexpCapture("^<<[-~]?[`']?(.*)[`']?$", 1) and
+          end = unique(HeredocEnd x | x = doc.getChild(_)) and
+          end.getValue() = name and
+          doc.getLocation().getFile() = this.getLocation().getFile() and
+          (
+            doc.getLocation().getStartLine() > this.getLocation().getStartLine()
+            or
+            doc.getLocation().getStartLine() = this.getLocation().getStartLine() and
+            doc.getLocation().getStartColumn() > this.getLocation().getStartColumn()
+          )
+        |
+          doc order by doc.getLocation().getStartLine(), doc.getLocation().getStartColumn()
+        )
+    }
+  }
+
   private class IdentifierTree extends LeafTree, Identifier { }
 
   private class IfElsifTree extends PreOrderTree, IfElsifAstNode {
