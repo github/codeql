@@ -95,10 +95,10 @@ abstract class Completion extends TCompletion {
 private predicate isBooleanConstant(AstNode n, boolean value) {
   mustHaveBooleanCompletion(n) and
   (
-    n.(Constant).getValue() = "true" and
+    n instanceof True and
     value = true
     or
-    n.(Constant).getValue() = "false" and
+    n instanceof False and
     value = false
   )
 }
