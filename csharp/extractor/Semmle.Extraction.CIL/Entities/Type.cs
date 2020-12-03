@@ -12,7 +12,8 @@ namespace Semmle.Extraction.CIL.Entities
     public abstract class Type : TypeContainer, IMember
     {
         public override string IdSuffix => ";cil-type";
-        internal const string PrimitiveTypePrefix = "builtin:";
+        internal const string AssemblyTypeNameSeparator = "::";
+        internal const string PrimitiveTypePrefix = "builtin" + AssemblyTypeNameSeparator + "System.";
 
         protected Type(Context cx) : base(cx) { }
 
@@ -71,6 +72,21 @@ namespace Semmle.Extraction.CIL.Entities
         public sealed override void WriteId(TextWriter trapFile) => WriteId(trapFile, false);
 
         public void GetId(TextWriter trapFile, bool inContext) => WriteId(trapFile, inContext);
+
+        /// <summary>
+        /// Returns the friendly qualified name of types, such as
+        /// ``"System.Collection.Generic.List`1"`` or
+        /// ``"System.Collection.Generic.List<System.Int32>"``.
+        ///
+        /// Note that method/type generic type parameters never show up in the returned name.
+        /// </summary>
+        public string GetQualifiedName()
+        {
+            using var writer = new StringWriter();
+            GetId(writer, false);
+            var name = writer.ToString();
+            return name.Substring(name.IndexOf(AssemblyTypeNameSeparator) + 2);
+        }
 
         public abstract CilTypeKind Kind { get; }
 

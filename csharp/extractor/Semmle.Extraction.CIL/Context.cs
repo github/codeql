@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 
@@ -83,7 +82,7 @@ namespace Semmle.Extraction.CIL
             trapFile.Write(GetString(def.Name));
             trapFile.Write('_');
             trapFile.Write(def.Version.ToString());
-            trapFile.Write("::");
+            trapFile.Write(Entities.Type.AssemblyTypeNameSeparator);
         }
 
         public Entities.TypeSignatureDecoder TypeSignatureDecoder { get; }

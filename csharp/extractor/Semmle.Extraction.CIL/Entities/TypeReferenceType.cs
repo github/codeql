@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CIL.Entities
                     trapFile.Write(Cx.GetString(assemblyDef.Name));
                     trapFile.Write('_');
                     trapFile.Write(assemblyDef.Version.ToString());
-                    trapFile.Write("::");
+                    trapFile.Write(Entities.Type.AssemblyTypeNameSeparator);
                     break;
                 default:
                     Cx.WriteAssemblyPrefix(trapFile);
