@@ -1,4 +1,4 @@
-import codeql_ruby.AST
+private import codeql_ruby.AST
 private import TreeSitter
 
 module Callable {
