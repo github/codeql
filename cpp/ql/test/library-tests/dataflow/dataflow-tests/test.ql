@@ -1,27 +1,109 @@
-import DataflowTestCommon
+import TestUtilities.dataflow.FlowTestCommon
 
-class ASTDataFlowTest extends InlineExpectationsTest {
-  ASTDataFlowTest() { this = "ASTDataFlowTest" }
+module ASTTest {
+  private import semmle.code.cpp.dataflow.DataFlow
 
-  override string getARelevantTag() { result = "ast" }
+  /**
+   * A `BarrierGuard` that stops flow to all occurrences of `x` within statement
+   * S in `if (guarded(x)) S`.
+   */
+  // This is tested in `BarrierGuard.cpp`.
+  class TestBarrierGuard extends DataFlow::BarrierGuard {
+    TestBarrierGuard() { this.(FunctionCall).getTarget().getName() = "guarded" }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node source, DataFlow::Node sink, TestAllocationConfig conf, int n |
-      tag = "ast" and
-      conf.hasFlow(source, sink) and
-      n = strictcount(DataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
-      (
-        n = 1 and value = ""
+    override predicate checks(Expr checked, boolean isTrue) {
+      checked = this.(FunctionCall).getArgument(0) and
+      isTrue = true
+    }
+  }
+
+  /** Common data flow configuration to be used by tests. */
+  class ASTTestAllocationConfig extends DataFlow::Configuration {
+    ASTTestAllocationConfig() { this = "ASTTestAllocationConfig" }
+
+    override predicate isSource(DataFlow::Node source) {
+      source.asExpr().(FunctionCall).getTarget().getName() = "source"
+      or
+      source.asParameter().getName().matches("source%")
+      or
+      source.(DataFlow::DefinitionByReferenceNode).getParameter().getName().matches("ref_source%")
+      or
+      // Track uninitialized variables
+      exists(source.asUninitialized())
+    }
+
+    override predicate isSink(DataFlow::Node sink) {
+      exists(FunctionCall call |
+        call.getTarget().getName() = "sink" and
+        sink.asExpr() = call.getAnArgument()
+      )
+    }
+
+    override predicate isBarrier(DataFlow::Node barrier) {
+      barrier.asExpr().(VariableAccess).getTarget().hasName("barrier")
+    }
+
+    override predicate isBarrierGuard(DataFlow::BarrierGuard bg) { bg instanceof TestBarrierGuard }
+  }
+}
+
+module IRTest {
+  private import semmle.code.cpp.ir.dataflow.DataFlow
+  private import semmle.code.cpp.ir.IR
+
+  /**
+   * A `BarrierGuard` that stops flow to all occurrences of `x` within statement
+   * S in `if (guarded(x)) S`.
+   */
+  // This is tested in `BarrierGuard.cpp`.
+  class TestBarrierGuard extends DataFlow::BarrierGuard {
+    TestBarrierGuard() { this.(CallInstruction).getStaticCallTarget().getName() = "guarded" }
+
+    override predicate checksInstr(Instruction checked, boolean isTrue) {
+      checked = this.(CallInstruction).getPositionalArgument(0) and
+      isTrue = true
+    }
+  }
+
+  /** Common data flow configuration to be used by tests. */
+  class IRTestAllocationConfig extends DataFlow::Configuration {
+    IRTestAllocationConfig() { this = "IRTestAllocationConfig" }
+
+    override predicate isSource(DataFlow::Node source) {
+      source.asExpr().(FunctionCall).getTarget().getName() = "source"
+      or
+      source.asParameter().getName().matches("source%")
+    }
+
+    override predicate isSink(DataFlow::Node sink) {
+      exists(FunctionCall call |
+        call.getTarget().getName() = "sink" and
+        sink.asExpr() = call.getAnArgument()
+      )
+    }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+      exists(GlobalOrNamespaceVariable var | var.getName().matches("flowTestGlobal%") |
+        writesVariable(n1.asInstruction(), var) and
+        var = n2.asVariable()
         or
-        // If there is more than one source for this sink
-        // we specify the source location explicitly.
-        n > 1 and
-        value =
-          source.getLocation().getStartLine().toString() + ":" +
-            source.getLocation().getStartColumn()
-      ) and
-      location = sink.getLocation() and
-      element = sink.toString()
-    )
+        readsVariable(n2.asInstruction(), var) and
+        var = n1.asVariable()
+      )
+    }
+
+    override predicate isBarrier(DataFlow::Node barrier) {
+      barrier.asExpr().(VariableAccess).getTarget().hasName("barrier")
+    }
+
+    override predicate isBarrierGuard(DataFlow::BarrierGuard bg) { bg instanceof TestBarrierGuard }
+  }
+
+  private predicate readsVariable(LoadInstruction load, Variable var) {
+    load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+  }
+
+  private predicate writesVariable(StoreInstruction store, Variable var) {
+    store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() = var
   }
 }
