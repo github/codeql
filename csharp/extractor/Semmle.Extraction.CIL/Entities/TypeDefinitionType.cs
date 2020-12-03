@@ -19,9 +19,11 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly TypeDefinition td;
         private readonly Lazy<IEnumerable<TypeTypeParameter>> typeParams;
         private readonly Type? declType;
+        private readonly NamedTypeIdWriter idWriter;
 
         public TypeDefinitionType(Context cx, TypeDefinitionHandle handle) : base(cx)
         {
+            idWriter = new NamedTypeIdWriter(this);
             td = cx.MdReader.GetTypeDefinition(handle);
             this.handle = handle;
 
@@ -42,32 +44,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override void WriteId(TextWriter trapFile, bool inContext)
         {
-            if (IsPrimitiveType)
-            {
-                WritePrimitiveTypeId(trapFile, Name);
-                return;
-            }
-
-            var name = Cx.GetString(td.Name);
-
-            if (ContainingType != null)
-            {
-                ContainingType.GetId(trapFile, inContext);
-                trapFile.Write('.');
-            }
-            else
-            {
-                WriteAssemblyPrefix(trapFile);
-
-                var ns = ContainingNamespace;
-                if (!ns.IsGlobalNamespace)
-                {
-                    ns.WriteId(trapFile);
-                    trapFile.Write('.');
-                }
-            }
-
-            trapFile.Write(name);
+            idWriter.WriteId(trapFile, inContext);
         }
 
         public override string Name

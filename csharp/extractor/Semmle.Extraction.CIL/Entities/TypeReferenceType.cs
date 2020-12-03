@@ -16,9 +16,11 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly TypeReferenceHandle handle;
         private readonly TypeReference tr;
         private readonly Lazy<TypeTypeParameter[]> typeParams;
+        private readonly NamedTypeIdWriter idWriter;
 
         public TypeReferenceType(Context cx, TypeReferenceHandle handle) : base(cx)
         {
+            this.idWriter = new NamedTypeIdWriter(this);
             this.typeParams = new Lazy<TypeTypeParameter[]>(MakeTypeParameters);
             this.handle = handle;
             this.tr = cx.MdReader.GetTypeReference(handle);
@@ -124,33 +126,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override void WriteId(TextWriter trapFile, bool inContext)
         {
-            if (IsPrimitiveType)
-            {
-                WritePrimitiveTypeId(trapFile, Name);
-                return;
-            }
-
-            var ct = ContainingType;
-            if (ct != null)
-            {
-                ct.GetId(trapFile, inContext);
-                trapFile.Write('.');
-            }
-            else
-            {
-                if (tr.ResolutionScope.Kind == HandleKind.AssemblyReference)
-                {
-                    WriteAssemblyPrefix(trapFile);
-                }
-
-                if (!ContainingNamespace.IsGlobalNamespace)
-                {
-                    ContainingNamespace.WriteId(trapFile);
-                    trapFile.Write('.');
-                }
-            }
-
-            trapFile.Write(Cx.GetString(tr.Name));
+            idWriter.WriteId(trapFile, inContext);
         }
 
         public override Type Construct(IEnumerable<Type> typeArguments)

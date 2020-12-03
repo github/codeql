@@ -193,7 +193,7 @@ namespace Semmle.Extraction.CIL.Entities
             return false;
         }
 
-        protected bool IsPrimitiveType => TryGetPrimitiveTypeCode(out _);
+        protected internal bool IsPrimitiveType => TryGetPrimitiveTypeCode(out _);
 
         public sealed override IEnumerable<Type> MethodParameters => Enumerable.Empty<Type>();
 
