@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         private TypeTypeParameter[] MakeTypeParameters()
         {
-            var newTypeParams = new TypeTypeParameter[ThisTypeParameters];
+            var newTypeParams = new TypeTypeParameter[ThisTypeParameterCount];
             for (var i = 0; i < newTypeParams.Length; ++i)
             {
                 newTypeParams[i] = new TypeTypeParameter(this, this, i);
@@ -66,9 +66,9 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override Namespace Namespace => Cx.CreateNamespace(tr.Namespace);
+        public override Namespace ContainingNamespace => Cx.CreateNamespace(tr.Namespace);
 
-        public override int ThisTypeParameters
+        public override int ThisTypeParameterCount
         {
             get
             {
@@ -92,9 +92,9 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                if (tr.ResolutionScope.Kind == HandleKind.TypeReference)
-                    return (Type)Cx.Create((TypeReferenceHandle)tr.ResolutionScope);
-                return null;
+                return tr.ResolutionScope.Kind == HandleKind.TypeReference
+                    ? (Type)Cx.Create((TypeReferenceHandle)tr.ResolutionScope)
+                    : null;
             }
         }
 
@@ -122,13 +122,11 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override IEnumerable<Type> TypeParameters => typeParams.Value;
 
-        public override IEnumerable<Type> MethodParameters => throw new InternalError("This type does not have method parameters");
-
         public override void WriteId(TextWriter trapFile, bool inContext)
         {
             if (IsPrimitiveType)
             {
-                PrimitiveTypeId(trapFile);
+                WritePrimitiveTypeId(trapFile, Name);
                 return;
             }
 
@@ -144,9 +142,9 @@ namespace Semmle.Extraction.CIL.Entities
                     WriteAssemblyPrefix(trapFile);
                 }
 
-                if (!Namespace.IsGlobalNamespace)
+                if (!ContainingNamespace.IsGlobalNamespace)
                 {
-                    Namespace.WriteId(trapFile);
+                    ContainingNamespace.WriteId(trapFile);
                 }
             }
 
@@ -156,7 +154,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Type Construct(IEnumerable<Type> typeArguments)
         {
-            if (TotalTypeParametersCheck != typeArguments.Count())
+            if (TotalTypeParametersCount != typeArguments.Count())
                 throw new InternalError("Mismatched type arguments");
 
             return Cx.Populate(new ConstructedType(Cx, this, typeArguments));

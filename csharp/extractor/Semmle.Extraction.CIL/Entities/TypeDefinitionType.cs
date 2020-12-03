@@ -14,8 +14,10 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public sealed class TypeDefinitionType : Type
     {
-        private readonly Handle handle;
+        private readonly TypeDefinitionHandle handle;
         private readonly TypeDefinition td;
+        private readonly Lazy<IEnumerable<TypeTypeParameter>> typeParams;
+        private readonly Type? declType;
 
         public TypeDefinitionType(Context cx, TypeDefinitionHandle handle) : base(cx)
         {
@@ -41,7 +43,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             if (IsPrimitiveType)
             {
-                PrimitiveTypeId(trapFile);
+                WritePrimitiveTypeId(trapFile, Name);
                 return;
             }
 
@@ -56,7 +58,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 WriteAssemblyPrefix(trapFile);
 
-                var ns = Namespace;
+                var ns = ContainingNamespace;
                 if (!ns.IsGlobalNamespace)
                 {
                     ns.WriteId(trapFile);
@@ -77,13 +79,11 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override Namespace Namespace => Cx.Create(td.NamespaceDefinition);
-
-        private readonly Type? declType;
+        public override Namespace ContainingNamespace => Cx.Create(td.NamespaceDefinition);
 
         public override Type? ContainingType => declType;
 
-        public override int ThisTypeParameters
+        public override int ThisTypeParameterCount
         {
             get
             {
@@ -99,6 +99,9 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Type Construct(IEnumerable<Type> typeArguments)
         {
+            if (TotalTypeParametersCount != typeArguments.Count())
+                throw new InternalError("Mismatched type arguments");
+
             return Cx.Populate(new ConstructedType(Cx, this, typeArguments));
         }
 
@@ -108,17 +111,17 @@ namespace Semmle.Extraction.CIL.Entities
             if (ct is null)
                 Cx.WriteAssemblyPrefix(trapFile);
             else if (IsPrimitiveType)
-                trapFile.Write("builtin:");
+                trapFile.Write(Type.PrimitiveTypePrefix);
             else
                 ct.WriteAssemblyPrefix(trapFile);
         }
 
         private IEnumerable<TypeTypeParameter> MakeTypeParameters()
         {
-            if (ThisTypeParameters == 0)
+            if (ThisTypeParameterCount == 0)
                 return Enumerable.Empty<TypeTypeParameter>();
 
-            var newTypeParams = new TypeTypeParameter[ThisTypeParameters];
+            var newTypeParams = new TypeTypeParameter[ThisTypeParameterCount];
             var genericParams = td.GetGenericParameters();
             var toSkip = genericParams.Count - newTypeParams.Length;
 
@@ -129,10 +132,6 @@ namespace Semmle.Extraction.CIL.Entities
                 newTypeParams[i].PopulateHandle(genericParams[i + toSkip]);
             return newTypeParams;
         }
-
-        private readonly Lazy<IEnumerable<TypeTypeParameter>> typeParams;
-
-        public override IEnumerable<Type> MethodParameters => Enumerable.Empty<Type>();
 
         public override IEnumerable<Type> TypeParameters
         {

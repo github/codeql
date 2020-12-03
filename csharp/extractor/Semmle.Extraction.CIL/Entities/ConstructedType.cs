@@ -17,6 +17,8 @@ namespace Semmle.Extraction.CIL.Entities
         // Either null or notEmpty
         private readonly Type[]? thisTypeArguments;
 
+        private readonly Type? containingType;
+
         public override IEnumerable<Type> ThisTypeArguments => thisTypeArguments.EnumerateNull();
 
         public override IEnumerable<Type> ThisGenericArguments => thisTypeArguments.EnumerateNull();
@@ -29,7 +31,7 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return c;
 
                 var i = 0;
-                foreach (var type in ThisGenericArguments)
+                foreach (var type in ThisTypeArguments)
                 {
                     yield return type;
                     yield return Tuples.cil_type_argument(this, i++, type);
@@ -42,11 +44,11 @@ namespace Semmle.Extraction.CIL.Entities
         public ConstructedType(Context cx, Type unboundType, IEnumerable<Type> typeArguments) : base(cx)
         {
             var suppliedArgs = typeArguments.Count();
-            if (suppliedArgs != unboundType.TotalTypeParametersCheck)
+            if (suppliedArgs != unboundType.TotalTypeParametersCount)
                 throw new InternalError("Unexpected number of type arguments in ConstructedType");
 
             unboundGenericType = unboundType;
-            var thisParams = unboundType.ThisTypeParameters;
+            var thisParams = unboundType.ThisTypeParameterCount;
 
             if (typeArguments.Count() == thisParams)
             {
@@ -88,14 +90,13 @@ namespace Semmle.Extraction.CIL.Entities
             return h;
         }
 
-        private readonly Type? containingType;
         public override Type? ContainingType => containingType;
 
         public override string Name => unboundGenericType.Name;
 
-        public override Namespace Namespace => unboundGenericType.Namespace!;
+        public override Namespace ContainingNamespace => unboundGenericType.ContainingNamespace!;
 
-        public override int ThisTypeParameters => thisTypeArguments == null ? 0 : thisTypeArguments.Length;
+        public override int ThisTypeParameterCount => thisTypeArguments == null ? 0 : thisTypeArguments.Length;
 
         public override CilTypeKind Kind => unboundGenericType.Kind;
 
@@ -115,9 +116,9 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 WriteAssemblyPrefix(trapFile);
 
-                if (!Namespace.IsGlobalNamespace)
+                if (!ContainingNamespace.IsGlobalNamespace)
                 {
-                    Namespace.WriteId(trapFile);
+                    ContainingNamespace.WriteId(trapFile);
                     trapFile.Write('.');
                 }
             }
@@ -139,7 +140,5 @@ namespace Semmle.Extraction.CIL.Entities
         public override void WriteAssemblyPrefix(TextWriter trapFile) => unboundGenericType.WriteAssemblyPrefix(trapFile);
 
         public override IEnumerable<Type> TypeParameters => GenericArguments;
-
-        public override IEnumerable<Type> MethodParameters => throw new NotImplementedException();
     }
 }

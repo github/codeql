@@ -21,8 +21,10 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('[');
-                for (var i = 1; i < shape.Rank; ++i)
-                    trapFile.Write(',');
+                if (shape.Rank > 1)
+                {
+                    trapFile.Write(string.Join(",", shape.Rank - 1));
+                }
                 trapFile.Write(']');
             }
         }

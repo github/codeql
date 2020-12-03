@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CIL.Entities
                 {
                     decoded = attrib.DecodeValue(new CustomAttributeDecoder(Cx));
                 }
-                catch (NotImplementedException)
+                catch (Exception exc)
                 {
                     // Attribute decoding is only partial at this stage.
                     yield break;
