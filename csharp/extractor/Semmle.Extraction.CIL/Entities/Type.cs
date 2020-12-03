@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics.CodeAnalysis;
-using System;
+using System.Linq;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -195,7 +195,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         protected bool IsPrimitiveType => TryGetPrimitiveTypeCode(out _);
 
-        public sealed override IEnumerable<Type> MethodParameters => throw new NotImplementedException();
+        public sealed override IEnumerable<Type> MethodParameters => Enumerable.Empty<Type>();
 
         public static Type DecodeType(GenericContext gc, TypeSpecificationHandle handle) =>
             gc.Cx.MdReader.GetTypeSpecification(handle).DecodeSignature(gc.Cx.TypeSignatureDecoder, gc);

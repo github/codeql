@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -152,7 +153,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.metadata_handle(this, Cx.Assembly, handle.GetHashCode());
+                yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
 
                 foreach (var c in base.Contents) yield return c;
 
