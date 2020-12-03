@@ -21,9 +21,9 @@ namespace Semmle.Extraction.CIL.Entities
         public TypeReferenceType(Context cx, TypeReferenceHandle handle) : base(cx)
         {
             this.idWriter = new NamedTypeIdWriter(this);
-            this.typeParams = new Lazy<TypeTypeParameter[]>(MakeTypeParameters);
             this.handle = handle;
             this.tr = cx.MdReader.GetTypeReference(handle);
+            this.typeParams = new Lazy<TypeTypeParameter[]>(GenericsHelper.MakeTypeParameters(this, ThisTypeParameterCount));
         }
 
         public override bool Equals(object? obj)
@@ -34,16 +34,6 @@ namespace Semmle.Extraction.CIL.Entities
         public override int GetHashCode()
         {
             return handle.GetHashCode();
-        }
-
-        private TypeTypeParameter[] MakeTypeParameters()
-        {
-            var newTypeParams = new TypeTypeParameter[ThisTypeParameterCount];
-            for (var i = 0; i < newTypeParams.Length; ++i)
-            {
-                newTypeParams[i] = new TypeTypeParameter(this, this, i);
-            }
-            return newTypeParams;
         }
 
         public override IEnumerable<IExtractionProduct> Contents
@@ -58,28 +48,11 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override string Name
-        {
-            get
-            {
-                var name = Cx.GetString(tr.Name);
-                var tick = name.IndexOf('`');
-                return tick == -1 ? name : name.Substring(0, tick);
-            }
-        }
+        public override string Name => GenericsHelper.GetNonGenericName(tr.Name, Cx.MdReader);
 
         public override Namespace ContainingNamespace => Cx.CreateNamespace(tr.Namespace);
 
-        public override int ThisTypeParameterCount
-        {
-            get
-            {
-                // Parse the name
-                var name = Cx.GetString(tr.Name);
-                var tick = name.IndexOf('`');
-                return tick == -1 ? 0 : int.Parse(name.Substring(tick + 1));
-            }
-        }
+        public override int ThisTypeParameterCount => GenericsHelper.GetGenericTypeParameterCount(tr.Name, Cx.MdReader);
 
         public override IEnumerable<Type> ThisGenericArguments
         {

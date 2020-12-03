@@ -47,15 +47,7 @@ namespace Semmle.Extraction.CIL.Entities
             idWriter.WriteId(trapFile, inContext);
         }
 
-        public override string Name
-        {
-            get
-            {
-                var name = Cx.GetString(td.Name);
-                var tick = name.IndexOf('`');
-                return tick == -1 ? name : name.Substring(0, tick);
-            }
-        }
+        public override string Name => GenericsHelper.GetNonGenericName(td.Name, Cx.MdReader);
 
         public override Namespace ContainingNamespace => Cx.Create(td.NamespaceDefinition);
 
