@@ -100,7 +100,8 @@ module TypeConfusionThroughParameterTampering {
   private class ProtoStringComparison extends Sink {
     ProtoStringComparison() {
       exists(EqualityTest test |
-        test.hasOperands(this.asExpr(), any(Expr e | e.getStringValue() = ["__proto__", "constructor"])) and
+        test.hasOperands(this.asExpr(),
+          any(Expr e | e.getStringValue() = ["__proto__", "constructor"])) and
         test.isStrict()
       )
     }

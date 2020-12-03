@@ -1192,8 +1192,8 @@ private predicate loadStep(
  */
 pragma[nomagic]
 private predicate reachableFromStoreBase(
-  string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd, DataFlow::Configuration cfg,
-  PathSummary summary
+  string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
+  DataFlow::Configuration cfg, PathSummary summary
 ) {
   exists(PathSummary s1, PathSummary s2, DataFlow::Node rhs |
     reachableFromSource(rhs, cfg, s1)
@@ -1204,7 +1204,8 @@ private predicate reachableFromStoreBase(
     endProp = startProp and
     base = nd and
     summary =
-      MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), DataFlow::FlowLabel::data(), DataFlow::FlowLabel::data())
+      MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), DataFlow::FlowLabel::data(),
+        DataFlow::FlowLabel::data())
   )
   or
   exists(PathSummary newSummary, PathSummary oldSummary |
@@ -1221,8 +1222,8 @@ private predicate reachableFromStoreBase(
  */
 pragma[noinline]
 private predicate reachableFromStoreBaseStep(
-  string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd, DataFlow::Configuration cfg,
-  PathSummary oldSummary, PathSummary newSummary
+  string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
+  DataFlow::Configuration cfg, PathSummary oldSummary, PathSummary newSummary
 ) {
   exists(DataFlow::Node mid |
     reachableFromStoreBase(startProp, endProp, base, mid, cfg, oldSummary) and
@@ -1264,7 +1265,10 @@ private predicate storeToLoad(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary oldSummary,
   PathSummary newSummary
 ) {
-  exists(string storeProp, string loadProp, DataFlow::Node storeBase, DataFlow::Node loadBase, PathSummary s1, PathSummary s2 |
+  exists(
+    string storeProp, string loadProp, DataFlow::Node storeBase, DataFlow::Node loadBase,
+    PathSummary s1, PathSummary s2
+  |
     storeStep(pred, storeBase, storeProp, cfg, s1) and
     reachableFromStoreBase(storeProp, loadProp, storeBase, loadBase, cfg, s2) and
     oldSummary = s1.appendValuePreserving(s2) and
