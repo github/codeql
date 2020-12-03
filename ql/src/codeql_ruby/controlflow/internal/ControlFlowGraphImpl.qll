@@ -316,8 +316,6 @@ private module Trees {
 
   private class ClassTree extends StandardPreOrderTree, Class {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
-
-    override predicate isHidden() { any() }
   }
 
   private class DoTree extends StandardPreOrderTree, Do {
@@ -547,8 +545,6 @@ private module Trees {
 
   private class ModuleTree extends StandardPreOrderTree, Module {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
-
-    override predicate isHidden() { any() }
   }
 
   private class NextTree extends StandardPostOrderTree, Next {
