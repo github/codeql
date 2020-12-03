@@ -76,7 +76,7 @@ This table lists all subclasses of Stmt_.
 |                                                                               |                       |                                  |                                                   |
 +-------------------------------------------------------------------------------+-----------------------+----------------------------------+---------------------------------------------------+
 | ``fallthrough``                                                               | FallthroughStmt_      | BranchStmt_                      | can only occur as final non-empty child of        |
-|                                                                               |                       |                                  | a CaseClause_ in an ExpressionSwitchStmt_         |                                                     |
+|                                                                               |                       |                                  | a CaseClause_ in an ExpressionSwitchStmt_         |
 +-------------------------------------------------------------------------------+-----------------------+----------------------------------+---------------------------------------------------+
 | LabelName_\ ``:`` Stmt_                                                       | LabeledStmt_          |                                  |                                                   |
 |                                                                               |                       |                                  |                                                   |
