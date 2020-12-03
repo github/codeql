@@ -984,11 +984,16 @@ private module Label {
 }
 
 private class NodeModuleSourcesNodes extends DataFlow::SourceNode::Range {
+  Variable v;
+
   NodeModuleSourcesNodes() {
     exists(NodeModule m |
-      this = DataFlow::ssaDefinitionNode(SSA::implicitInit([m.getModuleVariable(), m.getExportsVariable()]))
+      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v)) and
+      v = [m.getModuleVariable(), m.getExportsVariable()]
     )
   }
+
+  Variable getVariable() { result = v }
 }
 
 /**
@@ -998,7 +1003,7 @@ private class ModuleVarNode extends DataFlow::Node {
   Module m;
 
   ModuleVarNode() {
-    this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getModuleVariable()))
+    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getModuleVariable()
     or
     DataFlow::parameterNode(this, m.(AmdModule).getDefine().getModuleParameter())
   }
@@ -1013,7 +1018,7 @@ private class ExportsVarNode extends DataFlow::Node {
   Module m;
 
   ExportsVarNode() {
-    this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getExportsVariable()))
+    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getExportsVariable()
     or
     DataFlow::parameterNode(this, m.(AmdModule).getDefine().getExportsParameter())
   }
