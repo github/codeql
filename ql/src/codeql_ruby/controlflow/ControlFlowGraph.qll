@@ -8,7 +8,8 @@ private import internal.Splitting
 private import internal.Completion
 
 private class CfgScopeRange =
-  @program or @begin_block or @end_block or @method or @singleton_method or @block or @do_block;
+  @program or @begin_block or @end_block or @method or @singleton_method or @block or @do_block or
+      @lambda;
 
 /** An AST node with an associated control-flow graph. */
 class CfgScope extends AstNode, CfgScopeRange {
@@ -32,6 +33,9 @@ class CfgScope extends AstNode, CfgScopeRange {
     or
     this instanceof DoBlock and
     result = "do block"
+    or
+    this instanceof Lambda and
+    result = "lambda"
   }
 }
 
