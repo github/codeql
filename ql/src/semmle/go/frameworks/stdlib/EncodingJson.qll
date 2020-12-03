@@ -14,10 +14,7 @@ module EncodingJson {
 
   /** The `Marshal` or `MarshalIndent` function in the `encoding/json` package. */
   class MarshalFunction extends MarshalingFunction::Range {
-    MarshalFunction() {
-      this.hasQualifiedName("encoding/json", "Marshal") or
-      this.hasQualifiedName("encoding/json", "MarshalIndent")
-    }
+    MarshalFunction() { this.hasQualifiedName("encoding/json", ["Marshal", "MarshalIndent"]) }
 
     override FunctionInput getAnInput() { result.isParameter(0) }
 
