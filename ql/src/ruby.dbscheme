@@ -1341,13 +1341,11 @@ when_body(
   unique int then: @then ref
 );
 
-@when_pattern_type = @pattern | @reserved_word
-
 #keyset[when, index]
 when_pattern(
   int when: @when ref,
   int index: int ref,
-  unique int when_pattern_type: @when_pattern_type ref
+  unique int pattern: @pattern ref
 );
 
 #keyset[parent, parent_index]

@@ -1479,7 +1479,7 @@ module Generated {
 
     Then getBody() { when_body(this, result) }
 
-    AstNode getPattern(int i) { when_pattern(this, i, result) }
+    Pattern getPattern(int i) { when_pattern(this, i, result) }
 
     override AstNode getParent() { when_def(this, result, _, _) }
 
