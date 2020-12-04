@@ -12,11 +12,12 @@
  */
 
 import cpp
+import semmle.code.cpp.commons.Exclusions
 
 from RelationalOperation ro, SubExpr sub
 where
+  not isFromMacroDefinition(ro) and 
   ro.getLesserOperand().getValue().toInt() = 0 and
   ro.getGreaterOperand() = sub and
-  sub.getType().(IntegralType).isUnsigned()
-
-select ro , " difference in condition is always greater than or equal to zero "
+  sub.getFullyConverted().getUnspecifiedType().(IntegralType).isUnsigned()
+select ro , " difference in condition is always greater than or equal to zero " 
