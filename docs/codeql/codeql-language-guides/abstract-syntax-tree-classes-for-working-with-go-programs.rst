@@ -328,9 +328,9 @@ The following classes relate to what sort of entity the name refers to.
 -  LabelName_
 -  ValueName_
 
--  ConstantName_
--  VariableName_
--  FunctionName_
+   -  ConstantName_
+   -  VariableName_
+   -  FunctionName_
 
 Miscellaneous
 ~~~~~~~~~~~~~
