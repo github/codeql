@@ -1,4 +1,8 @@
 nodes
+| electron.js:4:12:4:22 | window.name |
+| electron.js:4:12:4:22 | window.name |
+| electron.js:7:20:7:29 | getTaint() |
+| electron.js:7:20:7:29 | getTaint() |
 | sanitizer.js:2:9:2:25 | url |
 | sanitizer.js:2:15:2:25 | window.name |
 | sanitizer.js:2:15:2:25 | window.name |
@@ -181,6 +185,10 @@ nodes
 | typed.ts:29:33:29:43 | redirectUri |
 | typed.ts:29:33:29:43 | redirectUri |
 edges
+| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
+| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
+| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
+| electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url |
@@ -349,6 +357,7 @@ edges
 | typed.ts:28:24:28:34 | redirectUri | typed.ts:29:33:29:43 | redirectUri |
 | typed.ts:28:24:28:34 | redirectUri | typed.ts:29:33:29:43 | redirectUri |
 #select
+| electron.js:7:20:7:29 | getTaint() | electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() | Untrusted URL redirection due to $@. | electron.js:4:12:4:22 | window.name | user-provided value |
 | sanitizer.js:4:27:4:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:4:27:4:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:16:27:16:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:16:27:16:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:19:27:19:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:19:27:19:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
