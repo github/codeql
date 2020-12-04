@@ -2507,6 +2507,98 @@ nodeEnclosing
 | Finally.cs:230:9:230:33 | call to method WriteLine | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:230:9:230:34 | ...; | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:230:27:230:32 | "Done" | Finally.cs:216:10:216:12 | M11 |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:233:10:233:12 | exit M12 | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:233:10:233:12 | exit M12 (abnormal) | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:233:10:233:12 | exit M12 (normal) | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:234:5:261:5 | {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:235:9:259:9 | try {...} ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:236:9:255:9 | {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:237:13:253:13 | try {...} ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:238:13:241:13 | {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:239:17:240:43 | if (...) ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:239:21:239:22 | access to parameter b1 | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:240:21:240:43 | throw ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:240:27:240:42 | object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:243:13:253:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:243:13:253:13 | {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:244:17:252:17 | [finally: exception(Exception)] try {...} ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:244:17:252:17 | [finally: exception(ExceptionA)] try {...} ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:244:17:252:17 | try {...} ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:245:17:248:17 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:245:17:248:17 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:245:17:248:17 | {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:246:21:247:47 | [finally: exception(Exception)] if (...) ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:246:21:247:47 | [finally: exception(ExceptionA)] if (...) ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:246:21:247:47 | if (...) ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:246:25:246:26 | [finally: exception(Exception)] access to parameter b2 | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:246:25:246:26 | [finally: exception(ExceptionA)] access to parameter b2 | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:246:25:246:26 | access to parameter b2 | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:25:247:47 | [finally: exception(Exception)] throw ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:25:247:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:25:247:47 | throw ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:31:247:46 | [finally: exception(Exception)] object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:31:247:46 | [finally: exception(ExceptionA)] object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:31:247:46 | object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally(2): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally(2): exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(2): exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(2): exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally(2): exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally(2): exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally: exception(Exception), finally(2): exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally: exception(Exception), finally(2): exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally: exception(ExceptionA), finally(2): exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally: exception(ExceptionA), finally(2): exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally: exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally(2): exception(Exception)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally(2): exception(ExceptionA)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally: exception(Exception), finally(2): exception(Exception)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally: exception(Exception), finally(2): exception(ExceptionA)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally: exception(Exception)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally: exception(ExceptionA), finally(2): exception(Exception)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally: exception(ExceptionA), finally(2): exception(ExceptionA)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally: exception(ExceptionA)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally(2): exception(Exception)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally(2): exception(ExceptionA)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally: exception(Exception), finally(2): exception(Exception)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally: exception(Exception), finally(2): exception(ExceptionA)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally: exception(Exception)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally: exception(ExceptionA), finally(2): exception(Exception)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally: exception(ExceptionA), finally(2): exception(ExceptionA)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally: exception(ExceptionA)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:254:13:254:44 | call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:254:13:254:45 | ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:254:31:254:43 | "Mid finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:257:9:259:9 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:257:9:259:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:257:9:259:9 | {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:13:258:46 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:13:258:46 | [finally: exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:13:258:46 | [finally: exception(OutOfMemoryException)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:13:258:46 | call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:13:258:47 | ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:13:258:47 | [finally: exception(Exception)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:13:258:47 | [finally: exception(ExceptionA)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:13:258:47 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:31:258:45 | "Outer finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:31:258:45 | [finally: exception(Exception)] "Outer finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:31:258:45 | [finally: exception(ExceptionA)] "Outer finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:31:258:45 | [finally: exception(OutOfMemoryException)] "Outer finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:260:9:260:33 | call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:260:9:260:34 | ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:260:27:260:32 | "Done" | Finally.cs:233:10:233:12 | M12 |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:6:10:6:11 | exit M1 | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:6:10:6:11 | exit M1 (normal) | Foreach.cs:6:10:6:11 | M1 |
@@ -5264,6 +5356,30 @@ blockEnclosing
 | Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:222:9:225:9 | catch {...} | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:216:10:216:12 | M11 |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:233:10:233:12 | exit M12 | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:233:10:233:12 | exit M12 (abnormal) | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:240:21:240:43 | throw ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:240:27:240:42 | object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:243:13:253:13 | {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:25:247:47 | [finally: exception(Exception)] throw ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:25:247:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:25:247:47 | throw ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:31:247:46 | [finally: exception(Exception)] object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:31:247:46 | [finally: exception(ExceptionA)] object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:31:247:46 | object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally(2): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:254:13:254:44 | call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:257:9:259:9 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:257:9:259:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:257:9:259:9 | {...} | Finally.cs:233:10:233:12 | M12 |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:6:10:6:11 | exit M1 (normal) | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:6:10:6:11 | M1 |

@@ -641,6 +641,30 @@
 | Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:13:220:36 | call to method WriteLine | 1 |
 | Finally.cs:222:9:225:9 | catch {...} | Finally.cs:224:13:224:38 | call to method WriteLine | 5 |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:216:10:216:12 | exit M11 | 9 |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:239:21:239:22 | access to parameter b1 | 8 |
+| Finally.cs:233:10:233:12 | exit M12 | Finally.cs:233:10:233:12 | exit M12 | 1 |
+| Finally.cs:233:10:233:12 | exit M12 (abnormal) | Finally.cs:233:10:233:12 | exit M12 (abnormal) | 1 |
+| Finally.cs:240:21:240:43 | throw ...; | Finally.cs:246:25:246:26 | [finally: exception(ExceptionA)] access to parameter b2 | 6 |
+| Finally.cs:240:27:240:42 | object creation of type ExceptionA | Finally.cs:240:27:240:42 | object creation of type ExceptionA | 1 |
+| Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | Finally.cs:246:25:246:26 | [finally: exception(Exception)] access to parameter b2 | 5 |
+| Finally.cs:243:13:253:13 | {...} | Finally.cs:246:25:246:26 | access to parameter b2 | 5 |
+| Finally.cs:247:25:247:47 | [finally: exception(Exception)] throw ...; | Finally.cs:251:21:251:54 | [finally: exception(Exception), finally(2): exception(ExceptionA)] call to method WriteLine | 5 |
+| Finally.cs:247:25:247:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:251:21:251:54 | [finally: exception(ExceptionA), finally(2): exception(ExceptionA)] call to method WriteLine | 5 |
+| Finally.cs:247:25:247:47 | throw ...; | Finally.cs:251:21:251:54 | [finally(2): exception(ExceptionA)] call to method WriteLine | 5 |
+| Finally.cs:247:31:247:46 | [finally: exception(Exception)] object creation of type ExceptionA | Finally.cs:247:31:247:46 | [finally: exception(Exception)] object creation of type ExceptionA | 1 |
+| Finally.cs:247:31:247:46 | [finally: exception(ExceptionA)] object creation of type ExceptionA | Finally.cs:247:31:247:46 | [finally: exception(ExceptionA)] object creation of type ExceptionA | 1 |
+| Finally.cs:247:31:247:46 | object creation of type ExceptionA | Finally.cs:247:31:247:46 | object creation of type ExceptionA | 1 |
+| Finally.cs:250:17:252:17 | [finally(2): exception(Exception)] {...} | Finally.cs:251:21:251:54 | [finally(2): exception(Exception)] call to method WriteLine | 4 |
+| Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | Finally.cs:251:21:251:54 | [finally: exception(Exception), finally(2): exception(Exception)] call to method WriteLine | 4 |
+| Finally.cs:250:17:252:17 | [finally: exception(Exception)] {...} | Finally.cs:251:21:251:54 | [finally: exception(Exception)] call to method WriteLine | 4 |
+| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | Finally.cs:251:21:251:54 | [finally: exception(ExceptionA), finally(2): exception(Exception)] call to method WriteLine | 4 |
+| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA)] {...} | Finally.cs:251:21:251:54 | [finally: exception(ExceptionA)] call to method WriteLine | 4 |
+| Finally.cs:250:17:252:17 | {...} | Finally.cs:254:31:254:43 | "Mid finally" | 6 |
+| Finally.cs:254:13:254:44 | call to method WriteLine | Finally.cs:254:13:254:44 | call to method WriteLine | 1 |
+| Finally.cs:257:9:259:9 | [finally: exception(Exception)] {...} | Finally.cs:258:13:258:46 | [finally: exception(Exception)] call to method WriteLine | 4 |
+| Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | Finally.cs:258:13:258:46 | [finally: exception(ExceptionA)] call to method WriteLine | 4 |
+| Finally.cs:257:9:259:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:258:13:258:46 | [finally: exception(OutOfMemoryException)] call to method WriteLine | 4 |
+| Finally.cs:257:9:259:9 | {...} | Finally.cs:233:10:233:12 | exit M12 (normal) | 8 |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:8:29:8:32 | access to parameter args | 3 |
 | Foreach.cs:6:10:6:11 | exit M1 (normal) | Foreach.cs:6:10:6:11 | exit M1 | 2 |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | 1 |

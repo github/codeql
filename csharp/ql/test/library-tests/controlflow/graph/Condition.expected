@@ -1678,6 +1678,40 @@ conditionBlock
 | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | false |
 | Finally.cs:208:13:210:13 | {...} | Finally.cs:209:31:209:46 | object creation of type ExceptionC | true |
 | Finally.cs:208:13:210:13 | {...} | Finally.cs:211:13:211:29 | ...; | false |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:240:21:240:43 | throw ...; | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:240:27:240:42 | object creation of type ExceptionA | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:243:13:253:13 | {...} | false |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:247:25:247:47 | [finally: exception(Exception)] throw ...; | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:247:25:247:47 | [finally: exception(ExceptionA)] throw ...; | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:247:25:247:47 | throw ...; | false |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:247:31:247:46 | [finally: exception(Exception)] object creation of type ExceptionA | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:247:31:247:46 | [finally: exception(ExceptionA)] object creation of type ExceptionA | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:247:31:247:46 | object creation of type ExceptionA | false |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:250:17:252:17 | [finally(2): exception(Exception)] {...} | false |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:250:17:252:17 | [finally: exception(Exception)] {...} | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:250:17:252:17 | [finally: exception(ExceptionA)] {...} | true |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:250:17:252:17 | {...} | false |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:254:13:254:44 | call to method WriteLine | false |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:257:9:259:9 | [finally: exception(OutOfMemoryException)] {...} | false |
+| Finally.cs:233:10:233:12 | enter M12 | Finally.cs:257:9:259:9 | {...} | false |
+| Finally.cs:240:21:240:43 | throw ...; | Finally.cs:247:25:247:47 | [finally: exception(ExceptionA)] throw ...; | true |
+| Finally.cs:240:21:240:43 | throw ...; | Finally.cs:247:31:247:46 | [finally: exception(ExceptionA)] object creation of type ExceptionA | true |
+| Finally.cs:240:21:240:43 | throw ...; | Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | true |
+| Finally.cs:240:21:240:43 | throw ...; | Finally.cs:250:17:252:17 | [finally: exception(ExceptionA)] {...} | false |
+| Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | Finally.cs:247:25:247:47 | [finally: exception(Exception)] throw ...; | true |
+| Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | Finally.cs:247:31:247:46 | [finally: exception(Exception)] object creation of type ExceptionA | true |
+| Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | true |
+| Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | Finally.cs:250:17:252:17 | [finally: exception(Exception)] {...} | false |
+| Finally.cs:243:13:253:13 | {...} | Finally.cs:247:25:247:47 | throw ...; | true |
+| Finally.cs:243:13:253:13 | {...} | Finally.cs:247:31:247:46 | object creation of type ExceptionA | true |
+| Finally.cs:243:13:253:13 | {...} | Finally.cs:250:17:252:17 | [finally(2): exception(Exception)] {...} | true |
+| Finally.cs:243:13:253:13 | {...} | Finally.cs:250:17:252:17 | {...} | false |
+| Finally.cs:243:13:253:13 | {...} | Finally.cs:254:13:254:44 | call to method WriteLine | false |
+| Finally.cs:243:13:253:13 | {...} | Finally.cs:257:9:259:9 | [finally: exception(OutOfMemoryException)] {...} | false |
+| Finally.cs:243:13:253:13 | {...} | Finally.cs:257:9:259:9 | {...} | false |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:6:10:6:11 | exit M1 (normal) | true |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:22:8:24 | String arg | false |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | exit M2 (normal) | true |
@@ -2666,6 +2700,14 @@ conditionFlow
 | Finally.cs:209:21:209:22 | [finally: exception(ExceptionA)] access to parameter b3 | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | false |
 | Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:209:31:209:46 | object creation of type ExceptionC | true |
 | Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:211:13:211:29 | ...; | false |
+| Finally.cs:239:21:239:22 | access to parameter b1 | Finally.cs:240:27:240:42 | object creation of type ExceptionA | true |
+| Finally.cs:239:21:239:22 | access to parameter b1 | Finally.cs:243:13:253:13 | {...} | false |
+| Finally.cs:246:25:246:26 | [finally: exception(Exception)] access to parameter b2 | Finally.cs:247:31:247:46 | [finally: exception(Exception)] object creation of type ExceptionA | true |
+| Finally.cs:246:25:246:26 | [finally: exception(Exception)] access to parameter b2 | Finally.cs:250:17:252:17 | [finally: exception(Exception)] {...} | false |
+| Finally.cs:246:25:246:26 | [finally: exception(ExceptionA)] access to parameter b2 | Finally.cs:247:31:247:46 | [finally: exception(ExceptionA)] object creation of type ExceptionA | true |
+| Finally.cs:246:25:246:26 | [finally: exception(ExceptionA)] access to parameter b2 | Finally.cs:250:17:252:17 | [finally: exception(ExceptionA)] {...} | false |
+| Finally.cs:246:25:246:26 | access to parameter b2 | Finally.cs:247:31:247:46 | object creation of type ExceptionA | true |
+| Finally.cs:246:25:246:26 | access to parameter b2 | Finally.cs:250:17:252:17 | {...} | false |
 | LoopUnrolling.cs:9:13:9:28 | ... == ... | LoopUnrolling.cs:10:13:10:19 | return ...; | true |
 | LoopUnrolling.cs:9:13:9:28 | ... == ... | LoopUnrolling.cs:11:29:11:32 | access to parameter args | false |
 | LoopUnrolling.cs:60:17:60:17 | [b (line 55): false] access to parameter b | LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | false |
