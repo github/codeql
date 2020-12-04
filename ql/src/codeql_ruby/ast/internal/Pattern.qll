@@ -1,6 +1,6 @@
-import codeql_ruby.AST
+private import codeql_ruby.AST
 private import TreeSitter
-private import Variable
+private import codeql_ruby.ast.internal.Variable
 private import codeql.Locations
 
 private predicate tuplePatternNode(Generated::AstNode n, boolean parameter) {

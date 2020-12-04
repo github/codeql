@@ -1,4 +1,4 @@
-import codeql_ruby.AST
+private import codeql_ruby.AST
 private import internal.Pattern
 private import internal.TreeSitter
 private import internal.Variable

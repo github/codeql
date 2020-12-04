@@ -1,7 +1,7 @@
-import codeql_ruby.AST
+private import codeql_ruby.AST
 private import TreeSitter
 private import codeql.Locations
-private import Pattern
+private import codeql_ruby.ast.internal.Pattern
 
 private Generated::AstNode parent(Generated::AstNode n) {
   result = n.getParent() and
