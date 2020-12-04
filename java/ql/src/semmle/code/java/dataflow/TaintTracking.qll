@@ -9,10 +9,4 @@ import semmle.code.java.dataflow.internal.TaintTrackingUtil::StringBuilderVarMod
 
 module TaintTracking {
   import semmle.code.java.dataflow.internal.tainttracking1.TaintTrackingImpl
-  private import semmle.code.java.dataflow.TaintTracking2
-
-  /**
-   * DEPRECATED: Use TaintTracking2::Configuration instead.
-   */
-  deprecated class Configuration2 = TaintTracking2::Configuration;
 }

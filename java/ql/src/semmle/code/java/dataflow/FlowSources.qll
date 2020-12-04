@@ -202,11 +202,9 @@ private class BeanValidationSource extends RemoteFlowSource {
 abstract class UserInput extends DataFlow::Node { }
 
 /**
- * DEPRECATED: Use `RemoteFlowSource` instead.
- *
  * Input that may be controlled by a remote user.
  */
-deprecated class RemoteUserInput extends UserInput {
+private class RemoteUserInput extends UserInput {
   RemoteUserInput() { this instanceof RemoteFlowSource }
 }
 
