@@ -1680,8 +1680,7 @@ private module Django {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
-      // TODO: Add HTTP verbs
-      result.getName() in ["post", "get"]
+      result.getName() = HTTP::httpVerbLower()
     }
 
     /** Gets a reference to this class. */
