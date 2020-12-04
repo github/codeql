@@ -55,15 +55,15 @@ class ExternalAPIDataNode extends DataFlow::Node {
     not call.getTarget().fromSource() and
     // Not a call to a method which is overridden in source
     not exists(Virtualizable m |
-      m.overridesOrImplementsOrEquals(call.getTarget().getSourceDeclaration()) and
+      m.overridesOrImplementsOrEquals(call.getTarget().getUnboundDeclaration()) and
       m.fromSource()
     ) and
     // Not a call to a known safe external API
-    not call.getTarget().getSourceDeclaration() instanceof SafeExternalAPICallable
+    not call.getTarget().getUnboundDeclaration() instanceof SafeExternalAPICallable
   }
 
   /** Gets the called API callable. */
-  Callable getCallable() { result = call.getTarget().getSourceDeclaration() }
+  Callable getCallable() { result = call.getTarget().getUnboundDeclaration() }
 
   /** Gets the index which is passed untrusted data (where -1 indicates the qualifier). */
   int getIndex() { result = i }
@@ -94,7 +94,7 @@ class UntrustedExternalAPIDataNode extends ExternalAPIDataNode {
 private newtype TExternalAPI =
   TExternalAPIParameter(Callable m, int index) {
     exists(UntrustedExternalAPIDataNode n |
-      m = n.getCallable().getSourceDeclaration() and
+      m = n.getCallable().getUnboundDeclaration() and
       index = n.getIndex()
     )
   }
@@ -103,7 +103,7 @@ private newtype TExternalAPI =
 class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
   /** Gets a possibly untrusted use of this external API. */
   UntrustedExternalAPIDataNode getUntrustedDataNode() {
-    this = TExternalAPIParameter(result.getCallable().getSourceDeclaration(), result.getIndex())
+    this = TExternalAPIParameter(result.getCallable().getUnboundDeclaration(), result.getIndex())
   }
 
   /** Gets the number of untrusted sources used with this external API. */
