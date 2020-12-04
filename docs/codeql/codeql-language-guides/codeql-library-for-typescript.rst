@@ -181,12 +181,6 @@ Static type information
 
 Static type information and global name binding is available for projects with "full" TypeScript extraction enabled. This option is enabled by default for projects on LGTM.com and when you create databases with the :ref:`CodeQL CLI <codeql-cli>`.
 
-.. pull-quote:: Note
-
-   If you are using the `legacy QL command-line tools <https://help.semmle.com/wiki/display/SD/QL+command-line+tools>`__, you must enable full TypeScript extraction by passing ``--typescript-full`` to the JavaScript extractor. For further information on customizing calls to the extractor, see `Customizing JavaScript extraction <https://help.semmle.com/wiki/display/SD/Customizing+JavaScript+extraction>`__.
-
-   Without full extraction, the classes and predicates described in this section are empty.
-
 Basic usage
 ~~~~~~~~~~~
 
