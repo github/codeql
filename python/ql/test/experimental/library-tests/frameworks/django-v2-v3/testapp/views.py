@@ -16,10 +16,10 @@ def deprecated(request: HttpRequest):  # $routeHandler
 
 
 class MyBasicViewHandler(View):
-    def get(self, request: HttpRequest): # $ MISSING: routeHandler
+    def get(self, request: HttpRequest): # $ routeHandler
         return HttpResponse("MyViewHandler: GET") # $ HttpResponse
 
-    def post(self, request: HttpRequest): # $ MISSING: routeHandler
+    def post(self, request: HttpRequest): # $ routeHandler
         return HttpResponse("MyViewHandler: POST") # $ HttpResponse
 
 
@@ -29,5 +29,5 @@ class MyCustomViewBaseClass(View):
 
 
 class MyViewHandlerWithCustomInheritance(MyCustomViewBaseClass):
-    def get(self, request: HttpRequest): # $ MISSING: routeHandler
+    def get(self, request: HttpRequest): # $ routeHandler
         return HttpResponse("MyViewHandlerWithCustomInheritance: GET") # $ HttpResponse
