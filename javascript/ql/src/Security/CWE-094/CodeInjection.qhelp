@@ -30,9 +30,7 @@ for example, steal cookies containing session information.
 </p>
 
 <sample src="examples/CodeInjection.js" />
-</example>
 
-<example>
 <p>
 The following example shows a Pug template being constructed from user input, allowing attackers to run
 arbitrary code via a payload such as <code>#{global.process.exit(1)}</code>.
@@ -56,10 +54,6 @@ OWASP:
 </li>
 <li>
 Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection">Code Injection</a>.
-</li>
-<li>
-OWASP:
-<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/18-Testing_for_Server_Side_Template_Injection">Server Side Template Injection</a>.
 </li>
 <li>
 PortSwigger Research Blog:
