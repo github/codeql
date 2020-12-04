@@ -74,6 +74,13 @@ class SetHostnameVerifierMethod extends Method {
   }
 }
 
+class SetDefaultHostnameVerifierMethod extends Method {
+  SetDefaultHostnameVerifierMethod() {
+    hasName("setDefaultHostnameVerifier") and
+    getDeclaringType().getASupertype*() instanceof HttpsURLConnection
+  }
+}
+
 bindingset[algorithmString]
 private string algorithmRegex(string algorithmString) {
   // Algorithms usually appear in names surrounded by characters that are not
