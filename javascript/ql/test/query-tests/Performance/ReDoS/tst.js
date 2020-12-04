@@ -58,7 +58,7 @@ var good6 = /(a|.)*/;
 var bad7 = /^([a-z]+)+$/;
 var bad8 = /^([a-z]*)*$/; // NOT detected
 var bad9 = /^([a-zA-Z0-9])(([\\-.]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$/;
-var bad10 = /^(([a-z])+.)+[A-Z]([a-z])+$/; // NOT detected	
+var bad10 = /^(([a-z])+.)+[A-Z]([a-z])+$/;
 
 // NOT GOOD; attack: "[" + "][".repeat(100) + "]!"
 // Adapted from Prototype.js (https://github.com/prototypejs/prototype), which

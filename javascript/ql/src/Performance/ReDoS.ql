@@ -118,8 +118,7 @@ newtype TStatePair =
   MkStatePair(State q1, State q2) {
     isFork(q1, _, _, _, _) and q2 = q1
     or
-    step(_, _, _, q1, q2) and
-    q1.toString() <= q2.toString()
+    step(_, _, _, q1, q2)
   }
 
 class StatePair extends TStatePair {
@@ -133,14 +132,6 @@ class StatePair extends TStatePair {
   State getLeft() { result = q1 }
 
   State getRight() { result = q2 }
-}
-
-/**
- * Gets the state pair `(q1, q2)` or `(q2, q1)`; note that only
- * one or the other is defined.
- */
-StatePair mkStatePair(State q1, State q2) {
-  result = MkStatePair(q1, q2) or result = MkStatePair(q2, q1)
 }
 
 predicate isStatePair(StatePair p) { any() }
@@ -191,7 +182,7 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
  * components of `r` labelled with `s1` and `s2`, respectively.
  */
 predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
-  exists(State r1, State r2 | step(q, s1, s2, r1, r2) and r = mkStatePair(r1, r2))
+  exists(State r1, State r2 | step(q, s1, s2, r1, r2) and r = MkStatePair(r1, r2))
 }
 
 /**
