@@ -1549,8 +1549,16 @@ private module Django {
     Parameter getRequestParam() { result = this.getArg(this.getRequestParamIndex()) }
   }
 
+  /** A data-flow node that sets up a route on a server, using the django framework. */
   abstract private class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
-    abstract override DjangoRouteHandler getARouteHandler();
+    /** Gets the data-flow node that is used as the argument for the view handler. */
+    abstract DataFlow::Node getViewArg();
+
+    final override DjangoRouteHandler getARouteHandler() {
+      exists(DataFlow::Node viewArg | viewArg = getViewArg() |
+        djangoRouteHandlerFunctionTracker(result) = viewArg
+      )
+    }
   }
 
   /**
@@ -1576,11 +1584,8 @@ private module Django {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
     }
 
-    override DjangoRouteHandler getARouteHandler() {
-      exists(DataFlow::Node viewArg |
-        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
-        djangoRouteHandlerFunctionTracker(result) = viewArg
-      )
+    override DataFlow::Node getViewArg() {
+      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
     }
 
     override Parameter getARoutedParameter() {
@@ -1661,11 +1666,8 @@ private module Django {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
     }
 
-    override DjangoRouteHandler getARouteHandler() {
-      exists(DataFlow::Node viewArg |
-        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
-        djangoRouteHandlerFunctionTracker(result) = viewArg
-      )
+    override DataFlow::Node getViewArg() {
+      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
     }
   }
 
@@ -1683,11 +1685,8 @@ private module Django {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("regex")]
     }
 
-    override DjangoRouteHandler getARouteHandler() {
-      exists(DataFlow::Node viewArg |
-        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
-        djangoRouteHandlerFunctionTracker(result) = viewArg
-      )
+    override DataFlow::Node getViewArg() {
+      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
     }
   }
 
