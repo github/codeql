@@ -357,6 +357,7 @@ private module SsaImpl {
      * Holds if `v` occurs at index `i1` in `b1` and at index `i2` in `b2` and
      * there is a path between them without any occurrence of `v`.
      */
+    pragma[nomagic]
     predicate adjacentVarRefs(BaseSsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2) {
       exists(int rankix |
         b1 = b2 and
