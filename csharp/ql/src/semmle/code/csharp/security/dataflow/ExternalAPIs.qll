@@ -7,11 +7,16 @@ import csharp
 import semmle.code.csharp.dataflow.flowsources.Remote
 import semmle.code.csharp.dataflow.TaintTracking
 import semmle.code.csharp.frameworks.System
+import semmle.code.csharp.dataflow.FlowSummary
 
 /**
- * A `Callable` that is considered a "safe" external API from a security perspective.
+ * A callable that is considered a "safe" external API from a security perspective.
  */
 abstract class SafeExternalAPICallable extends Callable { }
+
+private class SummarizedCallableSafe extends SafeExternalAPICallable {
+  SummarizedCallableSafe() { this instanceof SummarizedCallable }
+}
 
 /** The default set of "safe" external APIs. */
 private class DefaultSafeExternalAPICallable extends SafeExternalAPICallable {
@@ -53,13 +58,11 @@ class ExternalAPIDataNode extends DataFlow::Node {
       m.overridesOrImplementsOrEquals(call.getTarget().getSourceDeclaration()) and
       m.fromSource()
     ) and
-    // Not already modeled as a taint step
-    not exists(DataFlow::Node next | TaintTracking::localTaintStep(this, next)) and
     // Not a call to a known safe external API
     not call.getTarget().getSourceDeclaration() instanceof SafeExternalAPICallable
   }
 
-  /** Gets the called API `Callable`. */
+  /** Gets the called API callable. */
   Callable getCallable() { result = call.getTarget().getSourceDeclaration() }
 
   /** Gets the index which is passed untrusted data (where -1 indicates the qualifier). */
@@ -80,12 +83,12 @@ class UntrustedDataToExternalAPIConfig extends TaintTracking::Configuration {
 
 /** A node representing untrusted data being passed to an external API. */
 class UntrustedExternalAPIDataNode extends ExternalAPIDataNode {
-  UntrustedExternalAPIDataNode() { any(UntrustedDataToExternalAPIConfig c).hasFlow(_, this) }
+  private UntrustedDataToExternalAPIConfig c;
+
+  UntrustedExternalAPIDataNode() { c.hasFlow(_, this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
-  DataFlow::Node getAnUntrustedSource() {
-    any(UntrustedDataToExternalAPIConfig c).hasFlow(result, this)
-  }
+  DataFlow::Node getAnUntrustedSource() { c.hasFlow(result, this) }
 }
 
 private newtype TExternalAPI =
