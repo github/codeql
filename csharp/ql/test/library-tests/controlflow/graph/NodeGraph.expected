@@ -2680,8 +2680,10 @@
 | Finally.cs:251:21:251:54 | [finally(2): exception(ExceptionA)] call to method WriteLine | Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | semmle.label | exception(ExceptionA) |
 | Finally.cs:251:21:251:54 | [finally: exception(Exception), finally(2): exception(Exception)] call to method WriteLine | Finally.cs:257:9:259:9 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
 | Finally.cs:251:21:251:54 | [finally: exception(Exception), finally(2): exception(ExceptionA)] call to method WriteLine | Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | semmle.label | exception(ExceptionA) |
+| Finally.cs:251:21:251:54 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:257:9:259:9 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
 | Finally.cs:251:21:251:54 | [finally: exception(ExceptionA), finally(2): exception(Exception)] call to method WriteLine | Finally.cs:257:9:259:9 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
 | Finally.cs:251:21:251:54 | [finally: exception(ExceptionA), finally(2): exception(ExceptionA)] call to method WriteLine | Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | semmle.label | exception(ExceptionA) |
+| Finally.cs:251:21:251:54 | [finally: exception(ExceptionA)] call to method WriteLine | Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | semmle.label | exception(ExceptionA) |
 | Finally.cs:251:21:251:54 | call to method WriteLine | Finally.cs:254:13:254:45 | ...; | semmle.label | successor |
 | Finally.cs:251:21:251:55 | ...; | Finally.cs:251:39:251:53 | "Inner finally" | semmle.label | successor |
 | Finally.cs:251:21:251:55 | [finally(2): exception(Exception)] ...; | Finally.cs:251:39:251:53 | [finally(2): exception(Exception)] "Inner finally" | semmle.label | successor |
