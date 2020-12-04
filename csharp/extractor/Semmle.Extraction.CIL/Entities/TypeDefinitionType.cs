@@ -53,18 +53,6 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Type? ContainingType => declType;
 
-        public override int ThisTypeParameterCount
-        {
-            get
-            {
-                var containingType = td.GetDeclaringType();
-                var parentTypeParameters = containingType.IsNil ? 0 :
-                    Cx.MdReader.GetTypeDefinition(containingType).GetGenericParameters().Count;
-
-                return td.GetGenericParameters().Count - parentTypeParameters;
-            }
-        }
-
         public override CilTypeKind Kind => CilTypeKind.ValueOrRefType;
 
         public override Type Construct(IEnumerable<Type> typeArguments)
@@ -103,20 +91,22 @@ namespace Semmle.Extraction.CIL.Entities
             return newTypeParams;
         }
 
-        public override IEnumerable<Type> TypeParameters
+        public override int ThisTypeParameterCount
         {
             get
             {
-                if (declType != null)
-                {
-                    foreach (var t in declType.TypeParameters)
-                        yield return t;
-                }
+                var containingType = td.GetDeclaringType();
+                var parentTypeParameters = containingType.IsNil
+                    ? 0
+                    : Cx.MdReader.GetTypeDefinition(containingType).GetGenericParameters().Count;
 
-                foreach (var t in typeParams.Value)
-                    yield return t;
+                return td.GetGenericParameters().Count - parentTypeParameters;
             }
         }
+
+        public override IEnumerable<Type> TypeParameters => GenericsHelper.GetAllTypeParameters(declType, typeParams!.Value);
+
+        public override IEnumerable<Type> ThisGenericArguments => typeParams.Value;
 
         public override IEnumerable<IExtractionProduct> Contents
         {

@@ -31,29 +31,6 @@ namespace Semmle.Extraction.CIL.Entities
             return null;
         }
 
-        public IEnumerable<Type> TypeArguments
-        {
-            get
-            {
-                if (ContainingType != null)
-                {
-                    foreach (var t in ContainingType.TypeArguments)
-                        yield return t;
-                }
-                foreach (var t in ThisTypeArguments)
-                    yield return t;
-
-            }
-        }
-
-        public virtual IEnumerable<Type> ThisTypeArguments
-        {
-            get
-            {
-                yield break;
-            }
-        }
-
         /// <summary>
         /// Writes the assembly identifier of this type.
         /// </summary>
@@ -109,13 +86,25 @@ namespace Semmle.Extraction.CIL.Entities
         public abstract Type Construct(IEnumerable<Type> typeArguments);
 
         /// <summary>
-        /// The number of type arguments, or 0 if this isn't generic.
-        /// The containing type may also have type arguments.
+        /// Returns the type arguments of constructed types. For non-constructed types it returns an
+        /// empty collection.
+        /// </summary>
+        public virtual IEnumerable<Type> ThisTypeArguments
+        {
+            get
+            {
+                yield break;
+            }
+        }
+
+        /// <summary>
+        /// The number of type parameters for non-constructed generic types, the number of type arguments
+        /// for constructed types, or 0.
         /// </summary>
         public abstract int ThisTypeParameterCount { get; }
 
         /// <summary>
-        /// The total number of type parameters (including parent types).
+        /// The total number of type parameters/type arguments (including parent types).
         /// This is used for internal consistency checking only.
         /// </summary>
         public int TotalTypeParametersCount => ContainingType == null
@@ -123,8 +112,7 @@ namespace Semmle.Extraction.CIL.Entities
             : ThisTypeParameterCount + ContainingType.TotalTypeParametersCount;
 
         /// <summary>
-        /// Returns all bound/unbound generic arguments
-        /// of a constructed/unbound generic type.
+        /// Returns all bound/unbound generic arguments of a constructed/unbound generic type.
         /// </summary>
         public virtual IEnumerable<Type> ThisGenericArguments
         {

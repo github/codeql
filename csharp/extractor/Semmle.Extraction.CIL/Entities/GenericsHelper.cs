@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.Reflection.Metadata;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    internal class GenericsHelper
+    internal static class GenericsHelper
     {
         public static TypeTypeParameter[] MakeTypeParameters(Type container, int count)
         {
@@ -22,7 +23,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public static string GetNonGenericName(string name)
         {
-            var tick = name.IndexOf('`');
+            var tick = name.LastIndexOf('`');
             return tick == -1
                 ? name
                 : name.Substring(0, tick);
@@ -36,10 +37,23 @@ namespace Semmle.Extraction.CIL.Entities
 
         public static int GetGenericTypeParameterCount(string name)
         {
-            var tick = name.IndexOf('`');
+            var tick = name.LastIndexOf('`');
             return tick == -1
                 ? 0
                 : int.Parse(name.Substring(tick + 1));
+        }
+
+        public static IEnumerable<Type> GetAllTypeParameters(Type? container, IEnumerable<TypeTypeParameter> thisTypeParameters)
+        {
+            if (container != null)
+            {
+                foreach (var t in container.TypeParameters)
+                    yield return t;
+            }
+
+            foreach (var t in thisTypeParameters)
+                yield return t;
+
         }
     }
 }

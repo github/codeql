@@ -70,10 +70,6 @@ namespace Semmle.Extraction.CIL.Entities
             return h;
         }
 
-        public override IEnumerable<Type> ThisTypeArguments => thisTypeArguments.EnumerateNull();
-
-        public override IEnumerable<Type> ThisGenericArguments => thisTypeArguments.EnumerateNull();
-
         public override IEnumerable<IExtractionProduct> Contents
         {
             get
@@ -98,8 +94,6 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Namespace ContainingNamespace => unboundGenericType.ContainingNamespace!;
 
-        public override int ThisTypeParameterCount => thisTypeArguments == null ? 0 : thisTypeArguments.Length;
-
         public override CilTypeKind Kind => unboundGenericType.Kind;
 
         public override Type Construct(IEnumerable<Type> typeArguments)
@@ -114,6 +108,12 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override void WriteAssemblyPrefix(TextWriter trapFile) => unboundGenericType.WriteAssemblyPrefix(trapFile);
 
+        public override int ThisTypeParameterCount => thisTypeArguments?.Length ?? 0;
+
         public override IEnumerable<Type> TypeParameters => GenericArguments;
+
+        public override IEnumerable<Type> ThisTypeArguments => thisTypeArguments.EnumerateNull();
+
+        public override IEnumerable<Type> ThisGenericArguments => thisTypeArguments.EnumerateNull();
     }
 }

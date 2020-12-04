@@ -7,7 +7,7 @@ using Semmle.Util;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    internal sealed class NoMetadataHandleType : Type
+    internal sealed partial class NoMetadataHandleType : Type
     {
         private readonly string originalName;
         private readonly string name;
@@ -15,87 +15,56 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly string containerName;
         private readonly bool isContainerNamespace;
 
-        private readonly Lazy<TypeTypeParameter[]> typeParams;
+        private readonly Lazy<TypeTypeParameter[]>? typeParams;
 
         // Either null or notEmpty
         private readonly Type[]? thisTypeArguments;
         private readonly Type unboundGenericType;
+        private readonly Type? containingType;
 
         private readonly NamedTypeIdWriter idWriter;
 
         public NoMetadataHandleType(Context cx, string originalName) : base(cx)
         {
             this.originalName = originalName;
-            this.name = originalName;
             this.idWriter = new NamedTypeIdWriter(this);
 
-            // N1.N2.T1`3+T2`1[T3,[T4, Assembly1, Version=...],T5,T6], Assembly2, Version=...
-            // for example:
-            // typeof(System.Collections.Generic.List<int>.Enumerator)
-            // -> System.Collections.Generic.List`1+Enumerator[[System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e
-            // typeof(System.Collections.Generic.List<>.Enumerator)
-            // -> System.Collections.Generic.List`1+Enumerator, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e
+            var nameParser = new FullyQualifiedNameParser(originalName);
 
-            var lastBracketIndex = name.LastIndexOf(']');
-            var assemblyCommaIndex = name.IndexOf(',', lastBracketIndex < 0 ? 0 : lastBracketIndex);
-            if (assemblyCommaIndex >= 0)
+            name = nameParser.ShortName;
+            assemblyName = nameParser.AssemblyName;
+            isContainerNamespace = nameParser.IsContainerNamespace;
+            containerName = nameParser.ContainerName;
+
+            unboundGenericType = nameParser.UnboundGenericTypeName == null
+                ? this
+                : new NoMetadataHandleType(Cx, nameParser.UnboundGenericTypeName);
+
+            if (nameParser.TypeArguments != null)
             {
-                assemblyName = name.Substring(assemblyCommaIndex + 2);
-                name = name.Substring(0, assemblyCommaIndex);
-            }
-
-            var firstBracketIndex = name.IndexOf('[');
-            if (firstBracketIndex >= 0)
-            {
-                // TODO:
-                // * create types for arguments.
-                // * this type is a constructed generic -> create non constructed one too.
-                // * adjust containing type name, which can also be a constructed generic
-
-                // thisTypeArguments =
-                // unboundGenericType =
-                // containerName =
-
-                throw new NotImplementedException();
-                // name = name.Substring(0, firstBracketIndex);
+                thisTypeArguments = nameParser.TypeArguments.Select(t => new NoMetadataHandleType(Cx, t)).ToArray();
             }
             else
             {
-                thisTypeArguments = null;
-                unboundGenericType = this;
+                typeParams = new Lazy<TypeTypeParameter[]>(GenericsHelper.MakeTypeParameters(this, ThisTypeParameterCount));
             }
 
-            var lastPlusIndex = name.LastIndexOf('+');
-            if (lastPlusIndex >= 0)
-            {
-                containerName = name.Substring(0, lastPlusIndex);
-                name = name.Substring(lastPlusIndex + 1);
-                isContainerNamespace = false;
-            }
-            else
-            {
-                var lastDotIndex = name.LastIndexOf('.');
-                if (lastDotIndex >= 0)
-                {
-                    containerName = name.Substring(0, lastDotIndex);
-                    name = name.Substring(lastDotIndex + 1);
-                }
-                else
-                {
-                    containerName = cx.GlobalNamespace.Name;
-                }
-                isContainerNamespace = true;
-            }
+            containingType = isContainerNamespace
+                ? null
+                : new NoMetadataHandleType(Cx, containerName);
 
-            this.typeParams = new Lazy<TypeTypeParameter[]>(GenericsHelper.MakeTypeParameters(this, ThisTypeParameterCount));
+            Populate();
+        }
 
+        private void Populate()
+        {
             if (isContainerNamespace &&
                 !ContainingNamespace!.IsGlobalNamespace)
             {
-                cx.Populate(ContainingNamespace);
+                Cx.Populate(ContainingNamespace);
             }
 
-            cx.Populate(this);
+            Cx.Populate(this);
         }
 
         public override bool Equals(object? obj)
@@ -112,7 +81,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                foreach (var tp in typeParams.Value)
+                foreach (var tp in typeParams?.Value ?? Array.Empty<TypeTypeParameter>())
                     yield return tp;
 
                 foreach (var c in base.Contents)
@@ -137,19 +106,7 @@ namespace Semmle.Extraction.CIL.Entities
                 : new Namespace(Cx, containerName)
             : null;
 
-        public override Type? ContainingType => isContainerNamespace
-            ? null
-            : new NoMetadataHandleType(
-                Cx,
-                string.IsNullOrWhiteSpace(assemblyName)
-                    ? containerName
-                    : containerName + ", " + assemblyName);
-
-        public override int ThisTypeParameterCount => GenericsHelper.GetGenericTypeParameterCount(name);
-
-        public override IEnumerable<Type> TypeParameters => typeParams.Value;
-
-        public override IEnumerable<Type> ThisTypeArguments => thisTypeArguments.EnumerateNull();
+        public override Type? ContainingType => containingType;
 
         public override Type SourceDeclaration => unboundGenericType;
 
@@ -181,5 +138,21 @@ namespace Semmle.Extraction.CIL.Entities
         {
             idWriter.WriteId(trapFile, inContext);
         }
+
+        public override int ThisTypeParameterCount => unboundGenericType == this
+            ? GenericsHelper.GetGenericTypeParameterCount(name)
+            : thisTypeArguments!.Length;
+
+        public override IEnumerable<Type> TypeParameters => unboundGenericType == this
+            ? GenericsHelper.GetAllTypeParameters(containingType, typeParams!.Value)
+            : GenericArguments;
+
+        public override IEnumerable<Type> ThisTypeArguments => unboundGenericType == this
+            ? base.ThisTypeArguments
+            : thisTypeArguments!;
+
+        public override IEnumerable<Type> ThisGenericArguments => unboundGenericType == this
+            ? typeParams!.Value
+            : thisTypeArguments!;
     }
 }

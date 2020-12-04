@@ -52,17 +52,6 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Namespace ContainingNamespace => Cx.CreateNamespace(tr.Namespace);
 
-        public override int ThisTypeParameterCount => GenericsHelper.GetGenericTypeParameterCount(tr.Name, Cx.MdReader);
-
-        public override IEnumerable<Type> ThisGenericArguments
-        {
-            get
-            {
-                foreach (var t in typeParams.Value)
-                    yield return t;
-            }
-        }
-
         public override Type? ContainingType
         {
             get
@@ -95,7 +84,11 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override IEnumerable<Type> TypeParameters => typeParams.Value;
+        public override int ThisTypeParameterCount => GenericsHelper.GetGenericTypeParameterCount(tr.Name, Cx.MdReader);
+
+        public override IEnumerable<Type> TypeParameters => GenericsHelper.GetAllTypeParameters(ContainingType, typeParams!.Value);
+
+        public override IEnumerable<Type> ThisGenericArguments => typeParams.Value;
 
         public override void WriteId(TextWriter trapFile, bool inContext)
         {
