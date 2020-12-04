@@ -58,7 +58,7 @@ var good6 = /(a|.)*/;
 var bad7 = /^([a-z]+)+$/;
 var bad8 = /^([a-z]*)*$/; // NOT detected
 var bad9 = /^([a-zA-Z0-9])(([\\-.]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$/;
-var bad10 = /^(([a-z])+.)+[A-Z]([a-z])+$/; // NOT detected
+var bad10 = /^(([a-z])+.)+[A-Z]([a-z])+$/; // NOT detected	
 
 // NOT GOOD; attack: "[" + "][".repeat(100) + "]!"
 // Adapted from Prototype.js (https://github.com/prototypejs/prototype), which
@@ -335,4 +335,19 @@ var bad73 = /(?:a|a?)+b/;
 var bad74 = /(a?b?)*$/;
 
 // NOT GOOD
-var bad75 = /PRE(([a-c]|[c-d])T(e?e?e?e?|X))+(cTcT|cTXcTX$)/;
+var bad76 = /PRE(([a-c]|[c-d])T(e?e?e?e?|X))+(cTcT|cTXcTX$)/;
+
+// NOT GOOD - but not detected
+var bad77 = /^((a)+\w)+$/;
+
+// NOT GOOD
+var bad78 = /^(b+.)+$/;
+
+// GOOD
+var good39 = /a*b/;
+
+// All 4 bad combinations of nested * and +
+var bad79 = /(a*)*b/; // not detected
+var bad80 = /(a+)*b/;
+var bad81 = /(a*)+b/; // not detected
+var bad82 = /(a+)+b/;
