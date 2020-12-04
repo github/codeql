@@ -447,15 +447,13 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
     else
       // Unless it's a function that we know is side-effect-free, it may
       // have side-effects.
-      not this
-          .hasGlobalOrStdName([
-              "strcmp", "wcscmp", "_mbscmp", "strlen", "wcslen", "_mbslen", "_mbslen_l",
-              "_mbstrlen", "_mbstrlen_l", "strnlen", "strnlen_s", "wcsnlen", "wcsnlen_s",
-              "_mbsnlen", "_mbsnlen_l", "_mbstrnlen", "_mbstrnlen_l", "strncmp", "wcsncmp",
-              "_mbsncmp", "_mbsncmp_l", "strchr", "memchr", "wmemchr", "memcmp", "wmemcmp",
-              "_memicmp", "_memicmp_l", "feof", "isdigit", "isxdigit", "abs", "fabs", "labs",
-              "floor", "ceil", "atoi", "atol", "atoll", "atof"
-            ])
+      not this.hasGlobalOrStdName([
+          "strcmp", "wcscmp", "_mbscmp", "strlen", "wcslen", "_mbslen", "_mbslen_l", "_mbstrlen",
+          "_mbstrlen_l", "strnlen", "strnlen_s", "wcsnlen", "wcsnlen_s", "_mbsnlen", "_mbsnlen_l",
+          "_mbstrnlen", "_mbstrnlen_l", "strncmp", "wcsncmp", "_mbsncmp", "_mbsncmp_l", "strchr",
+          "memchr", "wmemchr", "memcmp", "wmemcmp", "_memicmp", "_memicmp_l", "feof", "isdigit",
+          "isxdigit", "abs", "fabs", "labs", "floor", "ceil", "atoi", "atol", "atoll", "atof"
+        ])
   }
 
   /**

@@ -189,8 +189,7 @@ class InitializationFunction extends Function {
       // Field wise assignment to the parameter
       any(Assignment e).getLValue() = getAFieldAccess(this.getParameter(i)) or
       i =
-        this
-            .(MemberFunction)
+        this.(MemberFunction)
             .getAnOverridingFunction+()
             .(InitializationFunction)
             .initializedParameter() or
@@ -458,12 +457,9 @@ class ConditionalInitializationCall extends FunctionCall {
       fa.getASuccessor+() = result
     ) and
     result =
-      this
-          .getArgument(getTarget(this)
-                .(ConditionalInitializationFunction)
-                .conditionallyInitializedParameter(_))
-          .(AddressOfExpr)
-          .getOperand()
+      this.getArgument(getTarget(this)
+            .(ConditionalInitializationFunction)
+            .conditionallyInitializedParameter(_)).(AddressOfExpr).getOperand()
   }
 
   Variable getStatusVariable() {
