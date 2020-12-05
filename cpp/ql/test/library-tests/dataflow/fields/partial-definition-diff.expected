@@ -183,6 +183,14 @@
 | aliasing.cpp:200:16:200:18 | ps2 | AST only |
 | aliasing.cpp:205:15:205:24 | & ... | AST only |
 | aliasing.cpp:205:16:205:18 | ps2 | AST only |
+| aliasing.cpp:211:3:211:4 | s2 | AST only |
+| aliasing.cpp:211:8:211:9 | m1 | AST only |
+| aliasing.cpp:218:3:218:4 | s2 | AST only |
+| aliasing.cpp:218:8:218:9 | m1 | AST only |
+| aliasing.cpp:225:15:225:22 | & ... | AST only |
+| aliasing.cpp:225:16:225:17 | s2 | AST only |
+| aliasing.cpp:232:15:232:22 | & ... | AST only |
+| aliasing.cpp:232:16:232:17 | s2 | AST only |
 | arrays.cpp:6:3:6:8 | access to array | AST only |
 | arrays.cpp:6:3:6:23 | arr | IR only |
 | arrays.cpp:15:3:15:10 | * ... | AST only |
@@ -399,6 +407,8 @@
 | simple.cpp:83:12:83:13 | f1 | AST only |
 | simple.cpp:84:14:84:20 | this | AST only |
 | simple.cpp:92:7:92:7 | i | AST only |
+| simple.cpp:104:5:104:5 | b | AST only |
+| simple.cpp:104:9:104:9 | i | AST only |
 | struct_init.c:15:8:15:9 | ab | AST only |
 | struct_init.c:15:12:15:12 | a | AST only |
 | struct_init.c:16:8:16:9 | ab | AST only |

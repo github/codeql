@@ -35,6 +35,10 @@
 | aliasing.cpp:194:19:194:19 | s |
 | aliasing.cpp:200:21:200:21 | s |
 | aliasing.cpp:205:21:205:21 | s |
+| aliasing.cpp:211:6:211:6 | s |
+| aliasing.cpp:218:6:218:6 | s |
+| aliasing.cpp:225:19:225:19 | s |
+| aliasing.cpp:232:19:232:19 | s |
 | arrays.cpp:6:3:6:5 | arr |
 | arrays.cpp:36:3:36:17 | access to array |
 | by_reference.cpp:12:5:12:5 | s |
@@ -68,4 +72,5 @@
 | simple.cpp:65:5:65:5 | a |
 | simple.cpp:83:9:83:10 | f2 |
 | simple.cpp:92:5:92:5 | a |
+| simple.cpp:104:7:104:7 | a |
 | struct_init.c:36:11:36:15 | outer |
