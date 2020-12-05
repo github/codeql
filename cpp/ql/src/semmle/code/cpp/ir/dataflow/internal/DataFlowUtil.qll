@@ -15,7 +15,10 @@ cached
 private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
   TOperandNode(Operand op) or
-  TVariableNode(Variable var)
+  TVariableNode(Variable var) or
+  // `FieldNodes` are used as targets of certain `storeStep`s to implement handling of stores to
+  // nested structs.
+  TFieldNode(FieldAddressInstruction field)
 
 /**
  * A node in a data flow graph.
@@ -170,6 +173,91 @@ class OperandNode extends Node, TOperandNode {
   override string toString() { result = this.getOperand().toString() }
 }
 
+abstract private class SkippableInstruction extends Instruction {
+  abstract Instruction getSourceInstruction();
+}
+
+private Instruction skipSkippableInstructionsRec(SkippableInstruction skip) {
+  result = skip.getSourceInstruction() and not result instanceof SkippableInstruction
+  or
+  result = skipSkippableInstructionsRec(skip.getSourceInstruction())
+}
+
+private Instruction skipSkippableInstructions(Instruction instr) {
+  result = instr and not result instanceof SkippableInstruction
+  or
+  result = skipSkippableInstructionsRec(instr)
+}
+
+private class SkippableCopyValueInstruction extends SkippableInstruction, CopyValueInstruction {
+  override Instruction getSourceInstruction() { result = this.getSourceValue() }
+}
+
+private class SkippableConvertInstruction extends SkippableInstruction, ConvertInstruction {
+  override Instruction getSourceInstruction() { result = this.getUnary() }
+}
+
+private class SkippableCheckedConvertInstruction extends SkippableInstruction,
+  CheckedConvertOrNullInstruction {
+  override Instruction getSourceInstruction() { result = this.getUnary() }
+}
+
+private class SkippableInheritanceConversionInstruction extends SkippableInstruction,
+  InheritanceConversionInstruction {
+  override Instruction getSourceInstruction() { result = this.getUnary() }
+}
+
+/**
+ * INTERNAL: do not use. Gets the `FieldNode` corresponding to `instr`, if
+ * `instr` is an instruction that propagates an address of a `FieldAddressInstruction`.
+ */
+FieldNode getFieldNodeForFieldInstruction(Instruction instr) {
+  result.getFieldInstruction() = skipSkippableInstructions(instr)
+}
+
+/**
+ * INTERNAL: do not use. A `FieldNode` represents the state of an object after modifying one
+ * of its fields.
+ */
+class FieldNode extends Node, TFieldNode {
+  FieldAddressInstruction field;
+
+  FieldNode() { this = TFieldNode(field) }
+
+  /** Gets the `Field` of this `FieldNode`. */
+  Field getField() { result = getFieldInstruction().getField() }
+
+  /** Gets the `FieldAddressInstruction` of this `FieldNode`. */
+  FieldAddressInstruction getFieldInstruction() { result = field }
+
+  /**
+   * Gets the `FieldNode` corresponding to the parent field of this `FieldNode`, if any.
+   *
+   * For example, if `f` is the `FieldNode` for `c` in the expression `a.b.c`, then `f.getObjectNode()`
+   * gives the `FieldNode` of `b`, and `f.getObjectNode().getObjectNode()` has no result as `a` is
+   * not a field.
+   */
+  FieldNode getObjectNode() { result = getFieldNodeForFieldInstruction(field.getObjectAddress()) }
+
+  /**
+   * Gets the `FieldNode` that has this `FieldNode` as parent, if any.
+   *
+   * For example, if `f` is the `FieldNode` corresponding to `b` in `a.b.c`, then `f.getNextNode()`
+   * gives the `FieldNode` corresponding to `c`, and `f.getNextNode().getNextNode()`.
+   */
+  FieldNode getNextNode() { result.getObjectNode() = this }
+
+  /** Gets the class where the field of this node is declared. */
+  Class getDeclaringType() { result = getField().getDeclaringType() }
+
+  override Function getFunction() { result = field.getEnclosingFunction() }
+
+  override IRType getType() { result = field.getResultIRType() }
+
+  override Location getLocation() { result = field.getLocation() }
+
+  override string toString() { result = this.getField().toString() }
+}
 /**
  * An expression, viewed as a node in a data flow graph.
  */
@@ -585,6 +673,33 @@ Node uninitializedNode(LocalVariable v) { none() }
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
+private predicate flowIntoReadNode(Node nodeFrom, Node nodeTo) {
+  // flow from the "innermost" field to the load of that field.
+  exists(FieldNode fieldNode | nodeTo = fieldNode |
+    not exists(fieldNode.getObjectNode()) and
+    (
+      exists(LoadInstruction load |
+        fieldNode.getNextNode*() = getFieldNodeForFieldInstruction(load.getSourceAddress()) and
+        nodeFrom.asInstruction() = load.getSourceValueOperand().getAnyDef()
+      )
+      or
+      // We need this to make stores look like loads for the dataflow library. So when there's a store
+      // of the form x->y = z we need to make the field node corresponding to y look like it's reading
+      // from the memory of x.
+      exists(StoreInstruction store, ChiInstruction chi |
+        chi.getPartial() = store and
+        fieldNode.getNextNode*() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
+        nodeFrom.asInstruction() = chi.getTotal()
+      )
+      or
+      exists(ReadSideEffectInstruction read |
+        fieldNode.getNextNode*() = getFieldNodeForFieldInstruction(read.getArgumentDef()) and
+        nodeFrom.asOperand() = read.getSideEffectOperand()
+      )
+    )
+  )
+}
+
 /**
  * INTERNAL: do not use.
  *
@@ -598,6 +713,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // Instruction -> Operand flow
   simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
+  or
+  flowIntoReadNode(nodeFrom, nodeTo)
 }
 
 pragma[noinline]
