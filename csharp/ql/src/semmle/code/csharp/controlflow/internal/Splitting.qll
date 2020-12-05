@@ -693,7 +693,7 @@ module FinallySplitting {
       then result = ""
       else
         if nestLevel > 0
-        then result = "finally(" + (nestLevel + 1) + "): " + type.toString()
+        then result = "finally(" + nestLevel + "): " + type.toString()
         else result = "finally: " + type.toString()
     }
   }
