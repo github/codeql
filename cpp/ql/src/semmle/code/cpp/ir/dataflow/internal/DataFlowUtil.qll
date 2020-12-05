@@ -18,7 +18,8 @@ private newtype TIRDataFlowNode =
   TVariableNode(Variable var) or
   // `FieldNodes` are used as targets of certain `storeStep`s to implement handling of stores to
   // nested structs.
-  TFieldNode(FieldAddressInstruction field)
+  TFieldNode(FieldAddressInstruction field) or
+  TPartialDefinitionNode(PartialDefinition pd)
 
 /**
  * A node in a data flow graph.
@@ -258,6 +259,23 @@ class FieldNode extends Node, TFieldNode {
 
   override string toString() { result = this.getField().toString() }
 }
+
+/**
+ * INTERNAL: do not use. A `FieldNode` represents the state of an object after modifying one
+ * of its fields.
+ */
+class PostUpdateFieldNode extends PartialDefinition {
+  override FieldNode node;
+
+  override FieldNode getPreUpdateNode() { result = node }
+
+  override Expr getDefinedExpr() {
+    result = node.getFieldInstruction().getObjectAddress().getUnconvertedResultExpression()
+  }
+
+  Field getField() { result = node.getField() }
+}
+
 /**
  * An expression, viewed as a node in a data flow graph.
  */
@@ -395,11 +413,37 @@ deprecated class UninitializedNode extends Node {
  * This class exists to match the interface used by Java. There are currently no non-abstract
  * classes that extend it. When we implement field flow, we can revisit this.
  */
-abstract class PostUpdateNode extends InstructionNode {
+abstract class PostUpdateNode extends Node {
   /**
    * Gets the node before the state update.
    */
   abstract Node getPreUpdateNode();
+
+  override Function getFunction() { result = getPreUpdateNode().getFunction() }
+
+  override IRType getType() { result = getPreUpdateNode().getType() }
+
+  override Location getLocation() { result = getPreUpdateNode().getLocation() }
+}
+
+private newtype TPartialDefinition =
+  MkPartialDefinition(Node node) {
+    isPointerStoreNode(node, _, _) or
+    isArrayStoreNode(node, _, _) or
+    node instanceof FieldNode
+  }
+
+/** INTERNAL: do not use. A partial definition of a node. */
+abstract class PartialDefinition extends TPartialDefinition {
+  Node node;
+
+  PartialDefinition() { this = MkPartialDefinition(node) }
+
+  abstract Node getPreUpdateNode();
+
+  abstract Expr getDefinedExpr();
+
+  string toString() { result = node.toString() + " [partial definition]" }
 }
 
 /**
@@ -415,132 +459,73 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract private class PartialDefinitionNode extends PostUpdateNode {
-  abstract Expr getDefinedExpr();
+class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
+  PartialDefinition pd;
+
+  PartialDefinitionNode() { this = TPartialDefinitionNode(pd) }
+
+  /** Gets the expression that is partially defined by this node, if any. */
+  Expr getDefinedExpr() { result = pd.getDefinedExpr() }
+
+  override Node getPreUpdateNode() { result = pd.getPreUpdateNode() }
+
+  PartialDefinition getPartialDefinition() { result = pd }
+
+  override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
-private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
-  StoreInstruction store;
-
-  ExplicitFieldStoreQualifierNode() {
-    not instr.isResultConflated() and
-    instr.getPartial() = store and
-    (
-      instr.getUpdatedInterval(_, _) or
-      store.getDestinationAddress() instanceof FieldAddressInstruction
-    )
-  }
-
-  // By using an operand as the result of this predicate we avoid the dataflow inconsistency errors
-  // caused by having multiple nodes sharing the same pre update node. This inconsistency error can cause
-  // a tuple explosion in the big step dataflow relation since it can make many nodes be the entry node
-  // into a big step.
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
-
-  override Expr getDefinedExpr() {
-    result =
-      store
-          .getDestinationAddress()
-          .(FieldAddressInstruction)
-          .getObjectAddress()
-          .getUnconvertedResultExpression()
-  }
-}
-
-/**
- * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
- * For instance, an update to a field of a struct containing only one field. For these cases we
- * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
- * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
- */
-private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
-  override StoreInstruction instr;
-
-  ExplicitSingleFieldStoreQualifierNode() {
-    not exists(ChiInstruction chi | chi.getPartial() = instr) and
-    // Without this condition any store would create a `PostUpdateNode`.
-    instr.getDestinationAddress() instanceof FieldAddressInstruction
-  }
-
-  override Node getPreUpdateNode() { none() }
-
-  override Expr getDefinedExpr() {
-    result =
-      instr
-          .getDestinationAddress()
-          .(FieldAddressInstruction)
-          .getObjectAddress()
-          .getUnconvertedResultExpression()
-  }
-}
-
-private FieldAddressInstruction getFieldInstruction(Instruction instr) {
-  result = instr or
-  result = instr.(CopyValueInstruction).getUnary()
-}
-
-/**
- * The target of a `fieldStoreStepAfterArraySuppression` store step, which is used to convert
- * an `ArrayContent` to a `FieldContent` when the `WriteSideEffect` instruction stores
- * into a field. See the QLDoc for `suppressArrayRead` for an example of where such a conversion
- * is inserted.
- */
-private class WriteSideEffectFieldStoreQualifierNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
-  WriteSideEffectInstruction write;
-  FieldAddressInstruction field;
-
-  WriteSideEffectFieldStoreQualifierNode() {
-    not instr.isResultConflated() and
-    instr.getPartial() = write and
-    field = getFieldInstruction(write.getDestinationAddress())
-  }
-
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
-
-  override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
-  }
+private predicate isArrayStoreNode(
+  InstructionNode node, ChiInstruction chi, PointerAddInstruction add
+) {
+  chi = node.getInstruction() and
+  not chi.isResultConflated() and
+  exists(StoreInstruction store |
+    chi.getPartial() = store and
+    add = store.getDestinationAddress()
+  )
 }
 
 /**
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
  */
-private class ArrayStoreNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
+private class ArrayStoreNode extends PartialDefinition {
+  override InstructionNode node;
+  ChiInstruction chi;
   PointerAddInstruction add;
 
-  ArrayStoreNode() {
-    not instr.isResultConflated() and
-    exists(StoreInstruction store |
-      instr.getPartial() = store and
-      add = store.getDestinationAddress()
-    )
-  }
+  ArrayStoreNode() { isArrayStoreNode(node, chi, add) }
 
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+  override Node getPreUpdateNode() { result.asOperand() = chi.getTotalOperand() }
 
   override Expr getDefinedExpr() { result = add.getLeft().getUnconvertedResultExpression() }
 }
 
+private predicate isPointerStoreNode(InstructionNode node, ChiInstruction chi, LoadInstruction load) {
+  chi = node.getInstruction() and
+  not chi.isResultConflated() and
+  exists(StoreInstruction store |
+    chi.getPartial() = store and
+    load = store.getDestinationAddress().(CopyValueInstruction).getUnary()
+  )
+}
+
 /**
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
  */
-private class PointerStoreNode extends PostUpdateNode {
-  override ChiInstruction instr;
+private class PointerStoreNode extends PartialDefinition {
+  override InstructionNode node;
+  ChiInstruction chi;
+  LoadInstruction load;
 
-  PointerStoreNode() {
-    not instr.isResultConflated() and
-    exists(StoreInstruction store |
-      instr.getPartial() = store and
-      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
-    )
+  PointerStoreNode() { isPointerStoreNode(node, chi, load) }
+
+  override Node getPreUpdateNode() { result.asOperand() = chi.getTotalOperand() }
+
+  override Expr getDefinedExpr() {
+    result = load.getSourceAddress().getUnconvertedResultExpression()
   }
-
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
 }
 
 /**
@@ -553,7 +538,7 @@ private class PointerStoreNode extends PostUpdateNode {
  * returned. This node will have its `getArgument()` equal to `&x` and its
  * `getVariableAccess()` equal to `x`.
  */
-class DefinitionByReferenceNode extends InstructionNode {
+class DefinitionByReferenceNode extends InstructionNode, PostUpdateNode {
   override WriteSideEffectInstruction instr;
 
   /** Gets the unconverted argument corresponding to this node. */
@@ -580,6 +565,22 @@ class DefinitionByReferenceNode extends InstructionNode {
     or
     not exists(instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget()) and
     result = "output argument"
+  }
+
+  override Function getFunction() { result = instr.getEnclosingFunction() }
+
+  override IRType getType() { result = instr.getResultIRType() }
+
+  override Location getLocation() { result = instr.getLocation() }
+
+  // Make the read side effect's side effect operand the pre update node of this write side effect.
+  // This ensures that we match up the parameter index of the parameter indirection's modification.
+  override Node getPreUpdateNode() {
+    exists(ReadSideEffectInstruction read |
+      read.getPrimaryInstruction() = instr.getPrimaryInstruction() and
+      read.getArgumentDef() = instr.getDestinationAddress() and
+      result.asOperand() = read.getSideEffectOperand()
+    )
   }
 }
 
@@ -673,6 +674,35 @@ Node uninitializedNode(LocalVariable v) { none() }
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
+private predicate flowOutOfPostUpdate(PartialDefinitionNode nodeFrom, Node nodeTo) {
+  // flow from the "outermost" field to the `ChiInstruction`, or `StoreInstruction`
+  // if no `ChiInstruction` exists.
+  exists(AddressOperand addressOperand, PostUpdateFieldNode pd |
+    pd = nodeFrom.getPartialDefinition() and
+    not exists(pd.getPreUpdateNode().getObjectNode()) and
+    pd.getPreUpdateNode().getNextNode*() = getFieldNodeForFieldInstruction(addressOperand.getDef()) and
+    (
+      exists(ChiInstruction chi |
+        nodeTo.asInstruction() = chi and
+        chi.getPartial().getAnOperand() = addressOperand
+      )
+      or
+      exists(StoreInstruction store |
+        not exists(ChiInstruction chi | chi.getPartial() = store) and
+        nodeTo.asInstruction() = store and
+        store.getDestinationAddressOperand() = addressOperand
+      )
+    )
+  )
+  or
+  // Note: This partial definition cannot be a `PostUpdateFieldNode` since these nodes do not have an
+  // operand node as their pre update node.
+  exists(PartialDefinition pd |
+    pd = nodeFrom.getPartialDefinition() and
+    nodeTo.asInstruction().(ChiInstruction).getTotalOperand() = pd.getPreUpdateNode().asOperand()
+  )
+}
+
 private predicate flowIntoReadNode(Node nodeFrom, Node nodeTo) {
   // flow from the "innermost" field to the load of that field.
   exists(FieldNode fieldNode | nodeTo = fieldNode |
@@ -715,6 +745,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
   or
   flowIntoReadNode(nodeFrom, nodeTo)
+  or
+  flowOutOfPostUpdate(nodeFrom, nodeTo)
 }
 
 pragma[noinline]
