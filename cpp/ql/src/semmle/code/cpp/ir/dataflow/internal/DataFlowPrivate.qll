@@ -228,69 +228,86 @@ private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array content" }
 }
 
-private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode node2) {
-  exists(StoreInstruction store, Class c |
-    store = node2.asInstruction() and
+/**
+ * A store step from the value of a `StoreInstruction` to the "innermost" field of the destination.
+ * This predicate only holds when there is no `ChiInsturction` that merges the result of the
+ * `StoreInstruction` into a larger memory.
+ */
+private predicate instrToFieldNodeStoreStepNoChi(
+  Node node1, FieldContent f, PartialDefinitionNode node2
+) {
+  exists(StoreInstruction store, PostUpdateFieldNode post |
+    post = node2.getPartialDefinition() and
+    not exists(ChiInstruction chi | chi.getPartial() = store) and
+    post.getPreUpdateNode() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
     store.getSourceValueOperand() = node1.asOperand() and
-    getWrittenField(store, f.(FieldContent).getAField(), c) and
-    f.hasOffset(c, _, _)
+    f.getADirectField() = post.getField()
   )
 }
 
-private FieldAddressInstruction getFieldInstruction(Instruction instr) {
-  result = instr or
-  result = instr.(CopyValueInstruction).getUnary()
-}
-
-pragma[noinline]
-private predicate getWrittenField(Instruction instr, Field f, Class c) {
-  exists(FieldAddressInstruction fa |
-    fa =
-      getFieldInstruction([
-          instr.(StoreInstruction).getDestinationAddress(),
-          instr.(WriteSideEffectInstruction).getDestinationAddress()
-        ]) and
-    f = fa.getField() and
-    c = f.getDeclaringType()
-  )
-}
-
-private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode node2) {
-  exists(ChiPartialOperand operand, ChiInstruction chi |
-    chi.getPartialOperand() = operand and
+/**
+ * A store step from a `StoreInstruction` to the "innermost" field
+ * of the destination. This predicate only holds when there exists a `ChiInstruction` that merges the
+ * result of the `StoreInstruction` into a larger memory.
+ */
+private predicate instrToFieldNodeStoreStepChi(
+  Node node1, FieldContent f, PartialDefinitionNode node2
+) {
+  exists(
+    ChiPartialOperand operand, StoreInstruction store, ChiInstruction chi, PostUpdateFieldNode post
+  |
+    post = node2.getPartialDefinition() and
+    not chi.isResultConflated() and
     node1.asOperand() = operand and
-    node2.asInstruction() = chi and
-    exists(Class c |
-      c = chi.getResultType() and
-      exists(int startBit, int endBit |
-        chi.getUpdatedInterval(startBit, endBit) and
-        f.hasOffset(c, startBit, endBit)
-      )
-      or
-      getWrittenField(operand.getDef(), f.getAField(), c) and
-      f.hasOffset(c, _, _)
-    )
+    chi.getPartialOperand() = operand and
+    store = operand.getDef() and
+    post.getPreUpdateNode() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
+    f.getADirectField() = post.getField()
   )
 }
 
-private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
+private predicate callableWithoutDefinitionStoreStep(
+  Node node1, FieldContent f, PartialDefinitionNode node2
+) {
+  exists(
+    WriteSideEffectInstruction write, ChiInstruction chi, PostUpdateFieldNode post,
+    Function callable
+  |
+    chi.getPartial() = write and
+    not chi.isResultConflated() and
+    post = node2.getPartialDefinition() and
+    node1.asInstruction() = write and
+    post.getPreUpdateNode() = getFieldNodeForFieldInstruction(write.getDestinationAddress()) and
+    f.getADirectField() = post.getField() and
+    callable = write.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() and
+    not callable.hasDefinition()
+  )
+}
+
+/**
+ * A store step from a `StoreInstruction` to the `ChiInstruction` generated from assigning
+ * to a pointer or array indirection
+ */
+private predicate arrayStoreStepChi(Node node1, ArrayContent a, PartialDefinitionNode node2) {
   a = TArrayContent() and
-  exists(ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store |
+  exists(
+    ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store, PartialDefinition pd
+  |
+    pd = node2.getPartialDefinition() and
     chi.getPartialOperand() = operand and
     store = operand.getDef() and
     node1.asOperand() = operand and
     // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
     // and `PointerStoreNode` require it in their characteristic predicates.
-    node2.asInstruction() = chi and
-    (
-      // `x[i] = taint()`
-      // This matches the characteristic predicate in `ArrayStoreNode`.
-      store.getDestinationAddress() instanceof PointerAddInstruction
-      or
-      // `*p = taint()`
-      // This matches the characteristic predicate in `PointerStoreNode`.
-      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
-    )
+    pd.getPreUpdateNode().asOperand() = chi.getTotalOperand()
+  |
+    // `x[i] = taint()`
+    // This matches the characteristic predicate in `ArrayStoreNode`.
+    store.getDestinationAddress() instanceof PointerAddInstruction
+    or
+    // `*p = taint()`
+    // This matches the characteristic predicate in `PointerStoreNode`.
+    store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
   )
 }
 
@@ -300,82 +317,10 @@ private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode n
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  fieldStoreStepNoChi(node1, f, node2) or
-  fieldStoreStepChi(node1, f, node2) or
+  instrToFieldNodeStoreStepNoChi(node1, f, node2) or
+  instrToFieldNodeStoreStepChi(node1, f, node2) or
   arrayStoreStepChi(node1, f, node2) or
-  fieldStoreStepAfterArraySuppression(node1, f, node2)
-}
-
-// This predicate pushes the correct `FieldContent` onto the access path when the
-// `suppressArrayRead` predicate has popped off an `ArrayContent`.
-private predicate fieldStoreStepAfterArraySuppression(
-  Node node1, FieldContent f, PostUpdateNode node2
-) {
-  exists(WriteSideEffectInstruction write, ChiInstruction chi, Class c |
-    not chi.isResultConflated() and
-    node1.asInstruction() = chi and
-    node2.asInstruction() = chi and
-    chi.getPartial() = write and
-    getWrittenField(write, f.getAField(), c) and
-    f.hasOffset(c, _, _)
-  )
-}
-
-bindingset[result, i]
-private int unbindInt(int i) { i <= result and i >= result }
-
-pragma[noinline]
-private predicate getLoadedField(LoadInstruction load, Field f, Class c) {
-  exists(FieldAddressInstruction fa |
-    fa = load.getSourceAddress() and
-    f = fa.getField() and
-    c = f.getDeclaringType()
-  )
-}
-
-/**
- * Holds if data can flow from `node1` to `node2` via a read of `f`.
- * Thus, `node1` references an object with a field `f` whose value ends up in
- * `node2`.
- */
-private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
-  exists(LoadOperand operand |
-    node2.asOperand() = operand and
-    node1.asInstruction() = operand.getAnyDef() and
-    exists(Class c |
-      c = operand.getAnyDef().getResultType() and
-      exists(int startBit, int endBit |
-        operand.getUsedInterval(unbindInt(startBit), unbindInt(endBit)) and
-        f.hasOffset(c, startBit, endBit)
-      )
-      or
-      getLoadedField(operand.getUse(), f.getAField(), c) and
-      f.hasOffset(c, _, _)
-    )
-  )
-}
-
-/**
- * When a store step happens in a function that looks like an array write such as:
- * ```cpp
- * void f(int* pa) {
- *   pa = source();
- * }
- * ```
- * it can be a write to an array, but it can also happen that `f` is called as `f(&a.x)`. If that is
- * the case, the `ArrayContent` that was written by the call to `f` should be popped off the access
- * path, and a `FieldContent` containing `x` should be pushed instead.
- * So this case pops `ArrayContent` off the access path, and the `fieldStoreStepAfterArraySuppression`
- * predicate in `storeStep` ensures that we push the right `FieldContent` onto the access path.
- */
-predicate suppressArrayRead(Node node1, ArrayContent a, Node node2) {
-  a = TArrayContent() and
-  exists(WriteSideEffectInstruction write, ChiInstruction chi |
-    node1.asInstruction() = write and
-    node2.asInstruction() = chi and
-    chi.getPartial() = write and
-    getWrittenField(write, _, _)
-  )
+  callableWithoutDefinitionStoreStep(node1, f, node2)
 }
 
 private class ArrayToPointerConvertInstruction extends ConvertInstruction {
