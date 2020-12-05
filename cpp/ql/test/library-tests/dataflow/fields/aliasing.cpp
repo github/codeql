@@ -210,7 +210,7 @@ void test_deep_struct_fields() {
   S2 s2;
   s2.s.m1 = user_input();
   S s = s2.s;
-  sink(s.m1); // $ ast MISSING: ir
+  sink(s.m1); // $ ast,ir
 }
 
 void test_deep_struct_fields_no_flow() {
@@ -224,7 +224,7 @@ void test_deep_struct_fields_taint_through_call() {
   S2 s2;
   taint_a_ptr(&s2.s.m1);
   S s = s2.s;
-  sink(s.m1); // $ ast MISSING: ir
+  sink(s.m1); // $ ast,ir
 }
 
 void test_deep_struct_fields_taint_through_call_no_flow() {
