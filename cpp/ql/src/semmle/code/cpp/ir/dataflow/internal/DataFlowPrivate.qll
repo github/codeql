@@ -209,6 +209,13 @@ private class FieldContent extends Content, TFieldContent {
   predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
 
   Field getAField() { result = getAField(c, startBit, endBit) }
+
+  pragma[noinline]
+  Field getADirectField() {
+    c = result.getDeclaringType() and
+    this.getAField() = result and
+    this.hasOffset(c, _, _)
+  }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
@@ -390,12 +397,16 @@ private Instruction skipCopyValueInstructions(Operand op) {
   result = skipOneCopyValueInstructionRec(op.getDef())
 }
 
+private class InexactLoadOperand extends LoadOperand {
+  InexactLoadOperand() { this.isDefinitionInexact() }
+}
+
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
   // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-  exists(LoadOperand operand, Instruction address |
-    operand.isDefinitionInexact() and
+  exists(InexactLoadOperand operand, Instruction address |
     node1.asInstruction() = operand.getAnyDef() and
+    not node1.asInstruction().isResultConflated() and
     operand = node2.asOperand() and
     address = skipCopyValueInstructions(operand.getAddressOperand()) and
     (
@@ -403,6 +414,53 @@ private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
       address instanceof ArrayToPointerConvertInstruction or
       address instanceof PointerOffsetInstruction
     )
+  )
+}
+
+/** Step from the value loaded by a `LoadInstruction` to the "outermost" loaded field. */
+private predicate instrToFieldNodeReadStep(FieldNode node1, FieldContent f, Node node2) {
+  (
+    node1.getNextNode() = node2
+    or
+    not exists(node1.getNextNode()) and
+    (
+      exists(LoadInstruction load |
+        node2.asInstruction() = load and
+        node1 = getFieldNodeForFieldInstruction(load.getSourceAddress())
+      )
+      or
+      exists(ReadSideEffectInstruction read |
+        node2.asOperand() = read.getSideEffectOperand() and
+        node1 = getFieldNodeForFieldInstruction(read.getArgumentDef())
+      )
+    )
+  ) and
+  f.getADirectField() = node1.getField()
+}
+
+bindingset[result, i]
+private int unbindInt(int i) { i <= result and i >= result }
+
+pragma[noinline]
+private predicate getFieldNodeFromLoadOperand(FieldNode fieldNode, LoadOperand loadOperand) {
+  fieldNode = getFieldNodeForFieldInstruction(loadOperand.getAddressOperand().getDef())
+}
+
+// Sometimes there's no explicit field dereference. In such cases we use the IR alias analysis to
+// determine the offset being, and deduce the field from this information.
+private predicate aliasedReadStep(Node node1, FieldContent f, Node node2) {
+  exists(LoadOperand operand, Class c, int startBit, int endBit |
+    // Ensure that we don't already catch this store step using a `FieldNode`.
+    not exists(FieldNode node |
+      getFieldNodeFromLoadOperand(node, operand) and
+      instrToFieldNodeReadStep(node, f, _)
+    ) and
+    node1.asInstruction() = operand.getAnyDef() and
+    node2.asOperand() = operand and
+    not node1.asInstruction().isResultConflated() and
+    c = operand.getAnyDef().getResultType() and
+    f.hasOffset(c, startBit, endBit) and
+    operand.getUsedInterval(unbindInt(startBit), unbindInt(endBit))
   )
 }
 
@@ -417,21 +475,23 @@ private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
  * f(&x);
  * use(x);
  * ```
- * the load on `x` in `use(x)` will exactly overlap with its definition (in this case the definition
- * is a `WriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
- * from the access path.
+ * the store to `*pa` in `f` will push `ArrayContent` onto the access path. The `innerRead` predicate
+ * pops the `ArrayContent` off the access path when a value-to-pointer or value-to-reference conversion
+ * happens on the argument that is ends up as the target of such a store.
  */
-private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
+private predicate innerReadSteap(Node node1, Content a, Node node2) {
   a = TArrayContent() and
-  exists(WriteSideEffectInstruction write, ChiInstruction chi |
-    not chi.isResultConflated() and
-    chi.getPartial() = write and
+  exists(WriteSideEffectInstruction write, CallInstruction call, Expr arg |
+    write.getPrimaryInstruction() = call and
     node1.asInstruction() = write and
-    node2.asInstruction() = chi and
-    // To distinquish this case from the `arrayReadStep` case we require that the entire variable was
-    // overwritten by the `WriteSideEffectInstruction` (i.e., there is a load that reads the
-    // entire variable).
-    exists(LoadInstruction load | load.getSourceValue() = chi)
+    (
+      not exists(ChiInstruction chi | chi.getPartial() = write)
+      or
+      exists(ChiInstruction chi | chi.getPartial() = write and not chi.isResultConflated())
+    ) and
+    node2.asInstruction() = write and
+    arg = call.getArgument(write.getIndex()).getUnconvertedResultExpression() and
+    (arg instanceof AddressOfExpr or arg.getConversion() instanceof ReferenceToExpr)
   )
 }
 
@@ -441,10 +501,10 @@ private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
  * `node2`.
  */
 predicate readStep(Node node1, Content f, Node node2) {
-  fieldReadStep(node1, f, node2) or
+  aliasedReadStep(node1, f, node2) or
   arrayReadStep(node1, f, node2) or
-  exactReadStep(node1, f, node2) or
-  suppressArrayRead(node1, f, node2)
+  instrToFieldNodeReadStep(node1, f, node2) or
+  innerReadSteap(node1, f, node2)
 }
 
 /**
