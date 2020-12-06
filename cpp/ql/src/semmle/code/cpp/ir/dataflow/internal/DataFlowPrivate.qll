@@ -241,7 +241,7 @@ private predicate instrToFieldNodeStoreStepNoChi(
     not exists(ChiInstruction chi | chi.getPartial() = store) and
     post.getPreUpdateNode() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
     store.getSourceValueOperand() = node1.asOperand() and
-    f.getADirectField() = post.getField()
+    f.getADirectField() = post.getPreUpdateNode().getField()
   )
 }
 
@@ -262,7 +262,7 @@ private predicate instrToFieldNodeStoreStepChi(
     chi.getPartialOperand() = operand and
     store = operand.getDef() and
     post.getPreUpdateNode() = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
-    f.getADirectField() = post.getField()
+    f.getADirectField() = post.getPreUpdateNode().getField()
   )
 }
 
@@ -278,7 +278,7 @@ private predicate callableWithoutDefinitionStoreStep(
     post = node2.getPartialDefinition() and
     node1.asInstruction() = write and
     post.getPreUpdateNode() = getFieldNodeForFieldInstruction(write.getDestinationAddress()) and
-    f.getADirectField() = post.getField() and
+    f.getADirectField() = post.getPreUpdateNode().getField() and
     callable = write.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() and
     not callable.hasDefinition()
   )

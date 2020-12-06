@@ -283,8 +283,6 @@ class PostUpdateFieldNode extends PartialDefinition {
   override Expr getDefinedExpr() {
     result = node.getFieldInstruction().getObjectAddress().getUnconvertedResultExpression()
   }
-
-  Field getField() { result = node.getField() }
 }
 
 /**
@@ -450,10 +448,13 @@ abstract class PartialDefinition extends TPartialDefinition {
 
   PartialDefinition() { this = MkPartialDefinition(node) }
 
+  /** Gets the node before the state update. */
   abstract Node getPreUpdateNode();
 
+  /** Gets the expression that is partially defined by this node. */
   abstract Expr getDefinedExpr();
 
+  /** Gets a string representation of this partial definition. */
   string toString() { result = node.toString() + " [partial definition]" }
 }
 
@@ -480,6 +481,7 @@ class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
 
   override Node getPreUpdateNode() { result = pd.getPreUpdateNode() }
 
+  /** Gets the `PartialDefinition` associated with this node. */
   PartialDefinition getPartialDefinition() { result = pd }
 
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
