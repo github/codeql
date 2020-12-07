@@ -13,45 +13,43 @@ private class StandardDeallocationFunction extends DeallocationFunction {
   int freedArg;
 
   StandardDeallocationFunction() {
-    exists(string name |
-      hasGlobalName([
+    hasGlobalName([
         // --- C library allocation
         "free", "realloc",
         // --- OpenSSL memory allocation
-        "CRYPTO_free", "CRYPTO_secure_free"]
-      ) and
-      freedArg = 0
-      or
-      hasGlobalOrStdName([
-          // --- Windows Memory Management for Windows Drivers
-          "ExFreePoolWithTag", "ExDeleteTimer", "IoFreeMdl", "IoFreeWorkItem",
-          "IoFreeErrorLogEntry", "MmFreeContiguousMemory", "MmFreeContiguousMemorySpecifyCache",
-          "MmFreeNonCachedMemory", "MmFreeMappingAddress", "MmFreePagesFromMdl",
-          "MmUnmapReservedMapping", "MmUnmapLockedPages",
-          // --- Windows Global / Local legacy allocation
-          "LocalFree", "GlobalFree", "LocalReAlloc", "GlobalReAlloc",
-          // --- Windows System Services allocation
-          "VirtualFree",
-          // --- Windows COM allocation
-          "CoTaskMemFree", "CoTaskMemRealloc",
-          // --- Windows Automation
-          "SysFreeString",
-          // --- Linux kernel memory allocator
-          "kmem_free"
-        ]) and
-      freedArg = 0
-      or
-      hasGlobalOrStdName([
-          // --- Windows Memory Management for Windows Drivers
-          "ExFreeToLookasideListEx", "ExFreeToPagedLookasideList", "ExFreeToNPagedLookasideList",
-          // --- NetBSD pool manager
-          "pool_put", "pool_cache_put"
-        ]) and
-      freedArg = 1
-      or
-      hasGlobalOrStdName(["HeapFree", "HeapReAlloc"]) and
-      freedArg = 2
-    )
+        "CRYPTO_free", "CRYPTO_secure_free"
+      ]) and
+    freedArg = 0
+    or
+    hasGlobalOrStdName([
+        // --- Windows Memory Management for Windows Drivers
+        "ExFreePoolWithTag", "ExDeleteTimer", "IoFreeMdl", "IoFreeWorkItem", "IoFreeErrorLogEntry",
+        "MmFreeContiguousMemory", "MmFreeContiguousMemorySpecifyCache", "MmFreeNonCachedMemory",
+        "MmFreeMappingAddress", "MmFreePagesFromMdl", "MmUnmapReservedMapping",
+        "MmUnmapLockedPages",
+        // --- Windows Global / Local legacy allocation
+        "LocalFree", "GlobalFree", "LocalReAlloc", "GlobalReAlloc",
+        // --- Windows System Services allocation
+        "VirtualFree",
+        // --- Windows COM allocation
+        "CoTaskMemFree", "CoTaskMemRealloc",
+        // --- Windows Automation
+        "SysFreeString",
+        // --- Linux kernel memory allocator
+        "kmem_free"
+      ]) and
+    freedArg = 0
+    or
+    hasGlobalOrStdName([
+        // --- Windows Memory Management for Windows Drivers
+        "ExFreeToLookasideListEx", "ExFreeToPagedLookasideList", "ExFreeToNPagedLookasideList",
+        // --- NetBSD pool manager
+        "pool_put", "pool_cache_put"
+      ]) and
+    freedArg = 1
+    or
+    hasGlobalOrStdName(["HeapFree", "HeapReAlloc"]) and
+    freedArg = 2
   }
 
   override int getFreedArg() { result = freedArg }
