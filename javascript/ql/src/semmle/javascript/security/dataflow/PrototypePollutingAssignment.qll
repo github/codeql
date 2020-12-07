@@ -10,6 +10,10 @@
 private import javascript
 private import semmle.javascript.DynamicPropertyAccess
 
+/**
+ * Provides a taint tracking configuration for reasoning about
+ * prototype-polluting assignments.
+ */
 module PrototypePollutingAssignment {
   private import PrototypePollutingAssignmentCustomizations::PrototypePollutingAssignment
 
