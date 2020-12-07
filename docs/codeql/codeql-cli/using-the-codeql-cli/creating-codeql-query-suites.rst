@@ -150,6 +150,15 @@ use::
        - high
        - very-high
 
+To create a suite that selects all queries with ``@kind problem`` and an
+``@tag`` starting with ``external/cwe`` from the ``codeql-javascript`` QL pack,
+use::
+
+   - qlpack: codeql-javascript
+   - include:
+       kind: problem
+       tags contain: /^external\/cwe\//
+
 Reusing existing query suite definitions
 -----------------------------------------
 
