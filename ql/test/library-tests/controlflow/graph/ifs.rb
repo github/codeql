@@ -24,3 +24,7 @@ def m3 x
   end
   puts x
 end
+
+def m4 (b1, b2, b3)
+  return (b1 ? b2 : b3) ? "b2 || b3" : "!b2 || !b3"
+end
