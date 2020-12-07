@@ -247,7 +247,139 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
         name: "ast_node_parent",
         members: ["ast_node", "file"].iter().cloned().collect(),
     }));
+
+    // TODO: remove
+    // Add duplicate code tables
+    entries.extend(duplicate_code_entries());
+
     entries
+}
+
+fn duplicate_code_entries() -> Vec<dbscheme::Entry<'static>> {
+    vec![
+        //  duplicateCode(
+        //     unique int id: @duplication,
+        //     string relativePath: string ref,
+        //     int equivClass: int ref);
+        dbscheme::Entry::Table(dbscheme::Table {
+            name: "duplicateCode",
+            keysets: None,
+            columns: vec![
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "id",
+                    unique: true,
+                    ql_type: ql::Type::AtType("duplication"),
+                    ql_type_is_ref: false,
+                },
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::String,
+                    name: "relativePath",
+                    unique: false,
+                    ql_type: ql::Type::String,
+                    ql_type_is_ref: true,
+                },
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "equivClass",
+                    unique: false,
+                    ql_type: ql::Type::Int,
+                    ql_type_is_ref: true,
+                },
+            ],
+        }),
+        //   similarCode(
+        //     unique int id: @similarity,
+        //     string relativePath: string ref,
+        //     int equivClass: int ref);
+        dbscheme::Entry::Table(dbscheme::Table {
+            name: "similarCode",
+            keysets: None,
+            columns: vec![
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "id",
+                    unique: true,
+                    ql_type: ql::Type::AtType("similarity"),
+                    ql_type_is_ref: false,
+                },
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::String,
+                    name: "relativePath",
+                    unique: false,
+                    ql_type: ql::Type::String,
+                    ql_type_is_ref: true,
+                },
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "equivClass",
+                    unique: false,
+                    ql_type: ql::Type::Int,
+                    ql_type_is_ref: true,
+                },
+            ],
+        }),
+        //   @duplication_or_similarity = @duplication | @similarity
+        dbscheme::Entry::Union(dbscheme::Union {
+            name: "duplication_or_similarity",
+            members: ["duplication", "similarity"].iter().cloned().collect(),
+        }),
+        //   tokens(
+        //     int id: @duplication_or_similarity ref,
+        //     int offset: int ref,
+        //     int beginLine: int ref,
+        //     int beginColumn: int ref,
+        //     int endLine: int ref,
+        //     int endColumn: int ref);
+        dbscheme::Entry::Table(dbscheme::Table {
+            name: "tokens",
+            keysets: None,
+            columns: vec![
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "id",
+                    unique: false,
+                    ql_type: ql::Type::AtType("duplication_or_similarity"),
+                    ql_type_is_ref: true,
+                },
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "offset",
+                    unique: false,
+                    ql_type: ql::Type::Int,
+                    ql_type_is_ref: true,
+                },
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "beginLine",
+                    unique: false,
+                    ql_type: ql::Type::Int,
+                    ql_type_is_ref: true,
+                },
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "beginColumn",
+                    unique: false,
+                    ql_type: ql::Type::Int,
+                    ql_type_is_ref: true,
+                },
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "endLine",
+                    unique: false,
+                    ql_type: ql::Type::Int,
+                    ql_type_is_ref: true,
+                },
+                dbscheme::Column {
+                    db_type: dbscheme::DbColumnType::Int,
+                    name: "endColumn",
+                    unique: false,
+                    ql_type: ql::Type::Int,
+                    ql_type_is_ref: true,
+                },
+            ],
+        }),
+    ]
 }
 
 fn create_tokeninfo<'a>(
