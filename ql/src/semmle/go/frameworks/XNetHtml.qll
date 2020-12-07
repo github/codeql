@@ -27,8 +27,10 @@ module XNetHtml {
 
     override predicate hasTaintFlow(DataFlow::FunctionInput input, DataFlow::FunctionOutput output) {
       getName() =
-        ["UnescapeString", "Parse", "ParseFragment", "ParseFragmentWithOptions", "ParseWithOptions",
-            "NewTokenizer", "NewTokenizerFragment"] and
+        [
+          "UnescapeString", "Parse", "ParseFragment", "ParseFragmentWithOptions",
+          "ParseWithOptions", "NewTokenizer", "NewTokenizerFragment"
+        ] and
       input.isParameter(0) and
       output.isResult(0)
       or
