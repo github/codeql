@@ -36,6 +36,9 @@ namespace Semmle.Extraction.CIL.Entities
                 return underlying.Value;
             }
 
+            var name = type.GetQualifiedName();
+            cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Info, $"Couldn't get underlying enum type for {name}");
+
             // We can't fall back to Int32, because the type returned here defines how many bytes are read from the
             // stream and how those bytes are interpreted.
             throw new NotImplementedException();
