@@ -188,9 +188,15 @@ module SuccessorTypes {
    * A conditional control flow successor. Either a Boolean successor (`BooleanSuccessor`),
    * or an emptiness successor (`EmptinessSuccessor`).
    */
-  abstract class ConditionalSuccessor extends SuccessorType {
+  class ConditionalSuccessor extends SuccessorType {
+    boolean value;
+
+    ConditionalSuccessor() { this = TBooleanSuccessor(value) or this = TEmptinessSuccessor(value) }
+
     /** Gets the Boolean value of this successor. */
-    abstract boolean getValue();
+    final boolean getValue() { result = value }
+
+    override string toString() { result = getValue().toString() }
   }
 
   /**
@@ -208,12 +214,7 @@ module SuccessorTypes {
    *
    * `x >= 0` has both a `true` successor and a `false` successor.
    */
-  class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
-    /** Gets the Boolean value. */
-    final override boolean getValue() { this = TBooleanSuccessor(result) }
-
-    final override string toString() { result = getValue().toString() }
-  }
+  class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor { }
 
   /**
    * An emptiness control flow successor.
@@ -248,11 +249,11 @@ module SuccessorTypes {
    */
   class EmptinessSuccessor extends ConditionalSuccessor, TEmptinessSuccessor {
     /** Holds if this is an empty successor. */
-    predicate isEmpty() { this = TEmptinessSuccessor(true) }
+    predicate isEmpty() { value = true }
 
-    override boolean getValue() { this = TEmptinessSuccessor(result) }
-
-    override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
+    final override string toString() {
+      if this.isEmpty() then result = "empty" else result = "non-empty"
+    }
   }
 
   /**
