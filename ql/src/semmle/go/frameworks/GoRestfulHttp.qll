@@ -1,7 +1,3 @@
-/**
- * Provides classes for working with HTTP-related concepts such as requests and responses.
- */
-
 import go
 
 /**
