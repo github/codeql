@@ -460,7 +460,7 @@ private module Trees {
    *
    * ```rb
    * for arg in args do
-   *  puts arg
+   *   puts arg
    * end
    * puts "done";
    * ```
@@ -538,9 +538,9 @@ private module Trees {
       succ = this and
       c.continuesLoop()
       or
-      last(this.getBody(), pred, any(RedoCompletion rc)) and
+      last(this.getBody(), pred, c) and
       first(this.getBody(), succ) and
-      c instanceof SimpleCompletion
+      c instanceof RedoCompletion
     }
   }
 
