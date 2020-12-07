@@ -255,15 +255,11 @@ private module Trees {
   }
 
   private class BareStringTree extends StandardPostOrderTree, BareString {
-    final override AstNode getChildNode(int i) {
-      result = this.getChild(i) and result instanceof Interpolation
-    }
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
   }
 
   private class BareSymbolTree extends StandardPostOrderTree, BareSymbol {
-    final override AstNode getChildNode(int i) {
-      result = this.getChild(i) and result instanceof Interpolation
-    }
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
   }
 
   private class BeginTree extends StandardPreOrderTree, Begin {
@@ -577,9 +573,7 @@ private module Trees {
   }
 
   private class HeredocBodyTree extends StandardPostOrderTree, HeredocBody {
-    final override AstNode getChildNode(int i) {
-      result = this.getChild(i) and result instanceof Interpolation
-    }
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
   }
 
   private class HeredocContentTree extends LeafTree, HeredocContent { }
@@ -802,9 +796,7 @@ private module Trees {
   }
 
   private class RegexTree extends StandardPostOrderTree, Regex {
-    final override AstNode getChildNode(int i) {
-      result = this.getChild(i) and result instanceof Interpolation
-    }
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
   }
 
   private class RescueTree extends StandardPreOrderTree, Rescue {
@@ -897,9 +889,7 @@ private module Trees {
   private class SplatParameterTree extends LeafTree, SplatParameter { }
 
   private class StringTree extends StandardPostOrderTree, String {
-    final override AstNode getChildNode(int i) {
-      result = this.getChild(i) and result instanceof Interpolation
-    }
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
   }
 
   private class StringArrayTree extends StandardPostOrderTree, StringArray {
@@ -909,9 +899,7 @@ private module Trees {
   private class StringContentTree extends LeafTree, StringContent { }
 
   private class SubshellTree extends StandardPostOrderTree, Subshell {
-    final override AstNode getChildNode(int i) {
-      result = this.getChild(i) and result instanceof Interpolation
-    }
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
   }
 
   private class SuperTree extends LeafTree, Super { }
@@ -921,9 +909,7 @@ private module Trees {
   }
 
   private class SymbolTree extends StandardPostOrderTree, Symbol {
-    final override AstNode getChildNode(int i) {
-      result = this.getChild(i) and result instanceof Interpolation
-    }
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
   }
 
   private class SymbolArrayTree extends StandardPostOrderTree, SymbolArray {
