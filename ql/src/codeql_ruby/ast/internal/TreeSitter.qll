@@ -4,8 +4,8 @@
  */
 
 module Generated {
-  import codeql.files.FileSystem
-  import codeql.Locations
+  private import codeql.files.FileSystem
+  private import codeql.Locations
 
   class AstNode extends @ast_node {
     string toString() { result = this.describeQlClass() }

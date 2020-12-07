@@ -9,7 +9,7 @@ pub enum TopLevel<'a> {
 impl<'a> fmt::Display for TopLevel<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            TopLevel::Import(x) => write!(f, "import {}", x),
+            TopLevel::Import(x) => write!(f, "private import {}", x),
             TopLevel::Class(cls) => write!(f, "{}", cls),
         }
     }

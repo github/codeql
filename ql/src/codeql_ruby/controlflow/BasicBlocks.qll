@@ -1,5 +1,6 @@
 /** Provides classes representing basic blocks. */
 
+private import codeql.Locations
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import internal.ControlFlowGraphImpl
