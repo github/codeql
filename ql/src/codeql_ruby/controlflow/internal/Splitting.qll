@@ -15,10 +15,16 @@ private int maxSplits() { result = 5 }
 cached
 private module Cached {
   cached
-  newtype TSplitKind = TConditionalCompletionSplitKind()
+  newtype TSplitKind =
+    TConditionalCompletionSplitKind() or
+    TEnsureSplitKind(int nestLevel) { nestLevel = any(Trees::RescueEnsureBlockTree t).nestLevel() }
 
   cached
-  newtype TSplit = TConditionalCompletionSplit(BooleanCompletion c)
+  newtype TSplit =
+    TConditionalCompletionSplit(ConditionalCompletion c) or
+    TEnsureSplit(EnsureSplitting::EnsureSplitType type, int nestLevel) {
+      nestLevel = any(Trees::RescueEnsureBlockTree t).nestLevel()
+    }
 
   cached
   newtype TSplits =
@@ -59,13 +65,6 @@ class Split extends TSplit {
   /** Gets a textual representation of this split. */
   string toString() { none() }
 }
-
-private AstNode parent(AstNode n) {
-  result.getAFieldOrChild() = n and
-  not n instanceof CfgScope
-}
-
-private CfgScope getScope(AstNode n) { result = parent+(n) }
 
 /**
  * Holds if split kinds `sk1` and `sk2` may overlap. That is, they may apply
@@ -195,7 +194,7 @@ private module ConditionalCompletionSplitting {
    * restrict the edges out of `x < 2 and x > 0` accordingly.
    */
   class ConditionalCompletionSplit extends Split, TConditionalCompletionSplit {
-    BooleanCompletion completion;
+    ConditionalCompletion completion;
 
     ConditionalCompletionSplit() { this = TConditionalCompletionSplit(completion) }
 
@@ -238,16 +237,255 @@ private module ConditionalCompletionSplitting {
     override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
       this.appliesTo(pred) and
       succ(pred, succ, c) and
-      if c instanceof BooleanCompletion then completion = c else any()
+      if c instanceof ConditionalCompletion then completion = c else any()
     }
 
     override predicate hasExitScope(AstNode last, CfgScope scope, Completion c) {
       this.appliesTo(last) and
       succExit(last, scope, c) and
-      if c instanceof BooleanCompletion then completion = c else any()
+      if c instanceof ConditionalCompletion then completion = c else any()
     }
 
     override predicate hasSuccessor(AstNode pred, AstNode succ, Completion c) { none() }
+  }
+}
+
+module EnsureSplitting {
+  /**
+   * The type of a split `ensure` node.
+   *
+   * The type represents one of the possible ways of entering an `ensure`
+   * block. For example, if a block ends with a `return` statement, then
+   * the `ensure` block must end with a `return` as well (provided that
+   * the `ensure` block executes normally).
+   */
+  class EnsureSplitType extends SuccessorType {
+    EnsureSplitType() { not this instanceof ConditionalSuccessor }
+
+    /** Holds if this split type matches entry into an `ensure` block with completion `c`. */
+    predicate isSplitForEntryCompletion(Completion c) {
+      if c instanceof NormalCompletion
+      then
+        // If the entry into the `ensure` block completes with any normal completion,
+        // it simply means normal execution after the `ensure` block
+        this instanceof NormalSuccessor
+      else this = c.getAMatchingSuccessorType()
+    }
+  }
+
+  /** A node that belongs to an `ensure` block. */
+  private class EnsureNode extends AstNode {
+    private Trees::RescueEnsureBlockTree block;
+
+    EnsureNode() { this = block.getAnEnsureDescendant() }
+
+    /** Gets the immediate block that this node belongs to. */
+    Trees::RescueEnsureBlockTree getBlock() { result = block }
+
+    /** Holds if this node is the entry node in the `ensure` block it belongs to. */
+    predicate isEntryNode() { first(block.getEnsure(), this) }
+  }
+
+  /** A node that does not belong to an `ensure` block. */
+  private class NonEnsureNode extends EnsureNode {
+    NonEnsureNode() { not this = any(Trees::RescueEnsureBlockTree t).getAnEnsureDescendant() }
+  }
+
+  /**
+   * A split for nodes belonging to an `ensure` block, which determines how to
+   * continue execution after leaving the `ensure` block. For example, in
+   *
+   * ```rb
+   * begin
+   *   if x
+   *     raise "Exception"
+   *   end
+   * ensure
+   *   puts "Ensure"
+   * end
+   * ```
+   *
+   * all control flow nodes in the `ensure` block have two splits: one representing
+   * normal execution of the body (when `x` evaluates to `true`), and one representing
+   * exceptional execution of the body (when `x` evaluates to `false`).
+   */
+  class EnsureSplit extends Split, TEnsureSplit {
+    private EnsureSplitType type;
+    private int nestLevel;
+
+    EnsureSplit() { this = TEnsureSplit(type, nestLevel) }
+
+    /**
+     * Gets the type of this `ensure` split, that is, how to continue execution after the
+     * `ensure` block.
+     */
+    EnsureSplitType getType() { result = type }
+
+    /** Gets the nesting level. */
+    int getNestLevel() { result = nestLevel }
+
+    override string toString() {
+      if type instanceof NormalSuccessor
+      then result = ""
+      else
+        if nestLevel > 0
+        then result = "ensure(" + nestLevel + "): " + type.toString()
+        else result = "ensure: " + type.toString()
+    }
+  }
+
+  private int getListOrder(EnsureSplitKind kind) {
+    result = ConditionalCompletionSplitting::getNextListOrder() + kind.getNestLevel()
+  }
+
+  int getNextListOrder() {
+    result = max([getListOrder(_) + 1, ConditionalCompletionSplitting::getNextListOrder()])
+  }
+
+  private class EnsureSplitKind extends SplitKind, TEnsureSplitKind {
+    private int nestLevel;
+
+    EnsureSplitKind() { this = TEnsureSplitKind(nestLevel) }
+
+    /** Gets the nesting level. */
+    int getNestLevel() { result = nestLevel }
+
+    override int getListOrder() { result = getListOrder(this) }
+
+    override string toString() { result = "ensure (" + nestLevel + ")" }
+  }
+
+  pragma[noinline]
+  private predicate hasEntry0(AstNode pred, EnsureNode succ, int nestLevel, Completion c) {
+    succ.isEntryNode() and
+    nestLevel = succ.getBlock().nestLevel() and
+    succ(pred, succ, c)
+  }
+
+  private class EnsureSplitImpl extends SplitImpl, EnsureSplit {
+    override EnsureSplitKind getKind() { result.getNestLevel() = this.getNestLevel() }
+
+    override predicate hasEntry(AstNode pred, AstNode succ, Completion c) {
+      hasEntry0(pred, succ, this.getNestLevel(), c) and
+      this.getType().isSplitForEntryCompletion(c)
+    }
+
+    override predicate hasEntryScope(CfgScope scope, AstNode first) { none() }
+
+    /**
+     * Holds if this split applies to `pred`, where `pred` is a valid predecessor.
+     */
+    private predicate appliesToPredecessor(AstNode pred) {
+      this.appliesTo(pred) and
+      (succ(pred, _, _) or succExit(pred, _, _))
+    }
+
+    pragma[noinline]
+    private predicate exit0(
+      AstNode pred, Trees::RescueEnsureBlockTree block, int nestLevel, Completion c
+    ) {
+      this.appliesToPredecessor(pred) and
+      nestLevel = block.nestLevel() and
+      last(block, pred, c)
+    }
+
+    /**
+     * Holds if `pred` may exit this split with completion `c`. The Boolean
+     * `inherited` indicates whether `c` is an inherited completion from the
+     * body.
+     */
+    private predicate exit(
+      Trees::RescueEnsureBlockTree block, AstNode pred, Completion c, boolean inherited
+    ) {
+      exists(EnsureSplitType type |
+        exit0(pred, block, this.getNestLevel(), c) and
+        type = this.getType()
+      |
+        if last(block.getEnsure(), pred, c)
+        then
+          // `ensure` block can itself exit with completion `c`: either `c` must
+          // match this split, `c` must be an abnormal completion, or this split
+          // does not require another completion to be recovered
+          inherited = false and
+          (
+            type = c.getAMatchingSuccessorType()
+            or
+            not c instanceof NormalCompletion
+            or
+            type instanceof NormalSuccessor
+          )
+        else (
+          // `ensure` block can exit with inherited completion `c`, which must
+          // match this split
+          inherited = true and
+          type = c.getAMatchingSuccessorType() and
+          not type instanceof NormalSuccessor
+        )
+      )
+      or
+      // If this split is normal, and an outer split can exit based on an inherited
+      // completion, we need to exit this split as well. For example, in
+      //
+      // ```rb
+      // def m(b1, b2)
+      //   if b1
+      //     return
+      //   end
+      // ensure
+      //   begin
+      //     if b2
+      //       raise "Exception"
+      //     end
+      //   ensure
+      //     puts "inner ensure"
+      //   end
+      // end
+      // ```
+      //
+      // if the outer split for `puts "inner ensure"` is `return` and the inner split
+      // is "normal" (corresponding to `b1 = true` and `b2 = false`), then the inner
+      // split must be able to exit with a `return` completion.
+      this.appliesToPredecessor(pred) and
+      exists(EnsureSplitImpl outer |
+        outer.getNestLevel() = this.getNestLevel() - 1 and
+        outer.exit(_, pred, c, inherited) and
+        this.getType() instanceof NormalSuccessor and
+        inherited = true
+      )
+    }
+
+    override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
+      succ(pred, succ, c) and
+      (
+        exit(_, pred, c, _)
+        or
+        exit(_, pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
+      )
+    }
+
+    override predicate hasExitScope(AstNode last, CfgScope scope, Completion c) {
+      succExit(last, scope, c) and
+      (
+        exit(_, last, c, _)
+        or
+        exit(_, last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
+      )
+    }
+
+    override predicate hasSuccessor(AstNode pred, AstNode succ, Completion c) {
+      this.appliesToPredecessor(pred) and
+      succ(pred, succ, c) and
+      succ =
+        any(EnsureNode en |
+          if en.isEntryNode()
+          then
+            // entering a nested `ensure` block
+            en.getBlock().nestLevel() > this.getNestLevel()
+          else
+            // staying in the same (possibly nested) `ensure` block as `pred`
+            en.getBlock().nestLevel() >= this.getNestLevel()
+        )
+    }
   }
 }
 

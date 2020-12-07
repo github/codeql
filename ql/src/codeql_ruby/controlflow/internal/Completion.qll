@@ -7,13 +7,15 @@
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import codeql_ruby.controlflow.ControlFlowGraph
 private import AstNodes
+private import ControlFlowGraphImpl
 private import NonReturning
 private import SuccessorTypes
 
 private newtype TCompletion =
   TSimpleCompletion() or
-  TBooleanCompletion(boolean b) { b = true or b = false } or
-  TEmptinessCompletion(boolean isEmpty) { isEmpty = true or isEmpty = false } or
+  TBooleanCompletion(boolean b) { b in [false, true] } or
+  TEmptinessCompletion(boolean isEmpty) { isEmpty in [false, true] } or
+  TMatchingCompletion(boolean isMatch) { isMatch in [false, true] } or
   TReturnCompletion() or
   TBreakCompletion() or
   TNextCompletion() or
@@ -21,10 +23,34 @@ private newtype TCompletion =
   TRetryCompletion() or
   TRaiseCompletion() or // TODO: Add exception type?
   TExitCompletion() or
-  TNestedCompletion(Completion inner, Completion outer) {
-    outer = TSimpleCompletion() and
-    inner = TBreakCompletion()
+  TNestedCompletion(Completion inner, Completion outer, int nestLevel) {
+    inner = TBreakCompletion() and
+    outer instanceof NonNestedNormalCompletion and
+    nestLevel = 0
+    or
+    inner instanceof NormalCompletion and
+    nestedEnsureCompletion(outer, nestLevel)
   }
+
+pragma[noinline]
+private predicate nestedEnsureCompletion(Completion outer, int nestLevel) {
+  (
+    outer = TReturnCompletion()
+    or
+    outer = TBreakCompletion()
+    or
+    outer = TNextCompletion()
+    or
+    outer = TRedoCompletion()
+    or
+    outer = TRetryCompletion()
+    or
+    outer = TRaiseCompletion()
+    or
+    outer = TExitCompletion()
+  ) and
+  nestLevel = any(Trees::RescueEnsureBlockTree t).nestLevel()
+}
 
 pragma[noinline]
 private predicate completionIsValidForStmt(AstNode n, Completion c) {
@@ -57,11 +83,15 @@ abstract class Completion extends TCompletion {
       this = TBooleanCompletion(_)
     )
     or
+    mustHaveMatchingCompletion(n) and
+    this = TMatchingCompletion(_)
+    or
     n = any(RescueModifier parent).getBody() and this = TRaiseCompletion()
     or
     not n instanceof NonReturningCall and
     not completionIsValidForStmt(n, _) and
     not mustHaveBooleanCompletion(n) and
+    not mustHaveMatchingCompletion(n) and
     this = TSimpleCompletion()
   }
 
@@ -144,13 +174,29 @@ private predicate inBooleanContext(AstNode n) {
 }
 
 /**
+ * Holds if a normal completion of `n` must be a matching completion.
+ */
+private predicate mustHaveMatchingCompletion(AstNode n) {
+  inMatchingContext(n) and
+  not n instanceof NonReturningCall
+}
+
+/**
+ * Holds if `n` is used in a matching context. That is, whether or
+ * not the value of `n` matches, determines the successor.
+ */
+private predicate inMatchingContext(AstNode n) { n = any(Rescue r).getExceptions().getChild(_) }
+
+/**
  * A completion that represents normal evaluation of a statement or an
  * expression.
  */
 abstract class NormalCompletion extends Completion { }
 
+abstract private class NonNestedNormalCompletion extends NormalCompletion { }
+
 /** A simple (normal) completion. */
-class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
+class SimpleCompletion extends NonNestedNormalCompletion, TSimpleCompletion {
   override NormalSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "simple" }
@@ -158,10 +204,13 @@ class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
 
 /**
  * A completion that represents evaluation of an expression, whose value determines
- * the successor. Either a Boolean completion (`BooleanCompletion`)
- * or an emptiness completion (`EmptinessCompletion`).
+ * the successor. Either a Boolean completion (`BooleanCompletion`), an emptiness
+ * completion (`EmptinessCompletion`), or a matching completion (`MatchingCompletion`).
  */
-abstract class ConditionalCompletion extends NormalCompletion { }
+abstract class ConditionalCompletion extends NonNestedNormalCompletion {
+  /** Gets the Boolean value of this conditional completion. */
+  abstract boolean getValue();
+}
 
 /**
  * A completion that represents evaluation of an expression
@@ -172,8 +221,7 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
 
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
-  /** Gets the Boolean value of this completion. */
-  boolean getValue() { result = value }
+  override boolean getValue() { result = value }
 
   /** Gets the dual Boolean completion. */
   BooleanCompletion getDual() { result = TBooleanCompletion(value.booleanNot()) }
@@ -198,84 +246,157 @@ class FalseCompletion extends BooleanCompletion {
  * a test in a `for in` statement.
  */
 class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
-  /** Holds if the emptiness test evaluates to `true`. */
-  predicate isEmpty() { this = TEmptinessCompletion(true) }
+  private boolean value;
 
-  override EmptinessSuccessor getAMatchingSuccessorType() {
-    if isEmpty() then result.getValue() = true else result.getValue() = false
-  }
+  EmptinessCompletion() { this = TEmptinessCompletion(value) }
 
-  override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
+  override boolean getValue() { result = value }
+
+  override EmptinessSuccessor getAMatchingSuccessorType() { result.getValue() = value }
+
+  override string toString() { if value = true then result = "empty" else result = "non-empty" }
+}
+
+/**
+ * A completion that represents evaluation of a matching test, for example
+ * a test in a `rescue` statement.
+ */
+class MatchingCompletion extends ConditionalCompletion, TMatchingCompletion {
+  private boolean value;
+
+  MatchingCompletion() { this = TMatchingCompletion(value) }
+
+  override boolean getValue() { result = value }
+
+  override MatchingSuccessor getAMatchingSuccessorType() { result.getValue() = value }
+
+  override string toString() { if value = true then result = "match" else result = "no-match" }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a return.
  */
-class ReturnCompletion extends Completion, TReturnCompletion {
+class ReturnCompletion extends Completion {
+  ReturnCompletion() {
+    this = TReturnCompletion() or
+    this = TNestedCompletion(_, TReturnCompletion(), _)
+  }
+
   override ReturnSuccessor getAMatchingSuccessorType() { any() }
 
-  override string toString() { result = "return" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TReturnCompletion() and result = "return"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a break from a loop.
  */
-class BreakCompletion extends Completion, TBreakCompletion {
+class BreakCompletion extends Completion {
+  BreakCompletion() {
+    this = TBreakCompletion() or
+    this = TNestedCompletion(_, TBreakCompletion(), _)
+  }
+
   override BreakSuccessor getAMatchingSuccessorType() { any() }
 
-  override string toString() { result = "break" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TBreakCompletion() and result = "break"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a continuation of a loop.
  */
-class NextCompletion extends Completion, TNextCompletion {
+class NextCompletion extends Completion {
+  NextCompletion() {
+    this = TNextCompletion() or
+    this = TNestedCompletion(_, TNextCompletion(), _)
+  }
+
   override NextSuccessor getAMatchingSuccessorType() { any() }
 
-  override string toString() { result = "next" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TNextCompletion() and result = "next"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a redo of a loop iteration.
  */
-class RedoCompletion extends Completion, TRedoCompletion {
+class RedoCompletion extends Completion {
+  RedoCompletion() {
+    this = TRedoCompletion() or
+    this = TNestedCompletion(_, TRedoCompletion(), _)
+  }
+
   override RedoSuccessor getAMatchingSuccessorType() { any() }
 
-  override string toString() { result = "redo" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TRedoCompletion() and result = "redo"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a retry.
  */
-class RetryCompletion extends Completion, TRetryCompletion {
+class RetryCompletion extends Completion {
+  RetryCompletion() {
+    this = TRetryCompletion() or
+    this = TNestedCompletion(_, TRetryCompletion(), _)
+  }
+
   override RetrySuccessor getAMatchingSuccessorType() { any() }
 
-  override string toString() { result = "retry" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TRetryCompletion() and result = "retry"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a thrown exception.
  */
-class RaiseCompletion extends Completion, TRaiseCompletion {
+class RaiseCompletion extends Completion {
+  RaiseCompletion() {
+    this = TRaiseCompletion() or
+    this = TNestedCompletion(_, TRaiseCompletion(), _)
+  }
+
   override RaiseSuccessor getAMatchingSuccessorType() { any() }
 
-  override string toString() { result = "raise" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TRaiseCompletion() and result = "raise"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in an abort/exit.
  */
-class ExitCompletion extends Completion, TExitCompletion {
+class ExitCompletion extends Completion {
+  ExitCompletion() {
+    this = TExitCompletion() or
+    this = TNestedCompletion(_, TExitCompletion(), _)
+  }
+
   override ExitSuccessor getAMatchingSuccessorType() { any() }
 
-  override string toString() { result = "exit" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TExitCompletion() and result = "exit"
+  }
 }
 
 /**
@@ -296,25 +417,60 @@ class ExitCompletion extends Completion, TExitCompletion {
  * the `while` loop can have a nested completion where the inner completion
  * is a `break` and the outer completion is a simple successor.
  */
-class NestedCompletion extends Completion, TNestedCompletion {
+abstract class NestedCompletion extends Completion, TNestedCompletion {
   Completion inner;
   Completion outer;
+  int nestLevel;
 
-  NestedCompletion() { this = TNestedCompletion(inner, outer) }
+  NestedCompletion() { this = TNestedCompletion(inner, outer, nestLevel) }
 
-  override Completion getInnerCompletion() { result = inner }
+  /** Gets a completion that is compatible with the inner completion. */
+  abstract Completion getAnInnerCompatibleCompletion();
+
+  /** Gets the level of this nested completion. */
+  final int getNestLevel() { result = nestLevel }
+
+  override string toString() { result = outer + " [" + inner + "] (" + nestLevel + ")" }
+}
+
+class NestedBreakCompletion extends NormalCompletion, NestedCompletion {
+  NestedBreakCompletion() {
+    inner = TBreakCompletion() and
+    outer instanceof NonNestedNormalCompletion
+  }
+
+  override BreakCompletion getInnerCompletion() { result = inner }
+
+  override NonNestedNormalCompletion getOuterCompletion() { result = outer }
+
+  override Completion getAnInnerCompatibleCompletion() {
+    result = inner and
+    outer = TSimpleCompletion()
+    or
+    result = TNestedCompletion(outer, inner, _)
+  }
+
+  override SuccessorType getAMatchingSuccessorType() {
+    outer instanceof SimpleCompletion and
+    result instanceof BreakSuccessor
+    or
+    result = outer.(ConditionalCompletion).getAMatchingSuccessorType()
+  }
+}
+
+class NestedEnsureCompletion extends NestedCompletion {
+  NestedEnsureCompletion() {
+    inner instanceof NormalCompletion and
+    nestedEnsureCompletion(outer, nestLevel)
+  }
+
+  override NormalCompletion getInnerCompletion() { result = inner }
 
   override Completion getOuterCompletion() { result = outer }
 
-  override SuccessorType getAMatchingSuccessorType() {
-    inner = TBreakCompletion() and
-    outer = TSimpleCompletion() and
-    result instanceof BreakSuccessor
+  override Completion getAnInnerCompatibleCompletion() {
+    result.getOuterCompletion() = this.getInnerCompletion()
   }
 
-  override string toString() { result = outer + " [" + inner + "]" }
-}
-
-private class NestedNormalCompletion extends NormalCompletion, NestedCompletion {
-  NestedNormalCompletion() { outer instanceof NormalCompletion }
+  override SuccessorType getAMatchingSuccessorType() { none() }
 }

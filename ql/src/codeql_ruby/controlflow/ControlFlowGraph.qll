@@ -186,12 +186,17 @@ module SuccessorTypes {
 
   /**
    * A conditional control flow successor. Either a Boolean successor (`BooleanSuccessor`),
-   * or an emptiness successor (`EmptinessSuccessor`).
+   * an emptiness successor (`EmptinessSuccessor`), or a matching successor
+   * (`MatchingSuccessor`)
    */
   class ConditionalSuccessor extends SuccessorType {
     boolean value;
 
-    ConditionalSuccessor() { this = TBooleanSuccessor(value) or this = TEmptinessSuccessor(value) }
+    ConditionalSuccessor() {
+      this = TBooleanSuccessor(value) or
+      this = TEmptinessSuccessor(value) or
+      this = TMatchingSuccessor(value)
+    }
 
     /** Gets the Boolean value of this successor. */
     final boolean getValue() { result = value }
@@ -248,12 +253,38 @@ module SuccessorTypes {
    * ```
    */
   class EmptinessSuccessor extends ConditionalSuccessor, TEmptinessSuccessor {
-    /** Holds if this is an empty successor. */
-    predicate isEmpty() { value = true }
+    override string toString() { if value = true then result = "empty" else result = "non-empty" }
+  }
 
-    final override string toString() {
-      if this.isEmpty() then result = "empty" else result = "non-empty"
-    }
+  /**
+   * A matching control flow successor.
+   *
+   * For example, this program fragment:
+   *
+   * ```rb
+   * case x
+   *   when 1 then puts "one"
+   *   else puts "not one"
+   * end
+   * ```
+   *
+   * has a control flow graph containing matching successors:
+   *
+   * ```
+   *            x
+   *            |
+   *            1
+   *           / \
+   *          /   \
+   *         /     \
+   *        /       \
+   *     match    non-match
+   *       |          |
+   *  puts "one"  puts "not one"
+   * ```
+   */
+  class MatchingSuccessor extends ConditionalSuccessor, TMatchingSuccessor {
+    override string toString() { if value = true then result = "match" else result = "no-match" }
   }
 
   /**

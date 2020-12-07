@@ -38,6 +38,14 @@ private import Completion
 private import SuccessorTypes
 private import Splitting
 
+private AstNode parent(AstNode n) {
+  result.getAFieldOrChild() = n and
+  not n instanceof CfgScope
+}
+
+/** Gets the CFG scope of node `n`. */
+CfgScope getScope(AstNode n) { result = parent+(n) }
+
 abstract private class ControlFlowTree extends AstNode {
   /**
    * Holds if `first` is the first element executed within this AST node.
@@ -227,7 +235,7 @@ abstract private class LeafTree extends PreOrderTree, PostOrderTree {
 }
 
 /** Defines the CFG by dispatch on the various AST types. */
-private module Trees {
+module Trees {
   private class AliasTree extends StandardPreOrderTree, Alias {
     final override AstNode getChildNode(int i) {
       i = 0 and result = this.getName()
@@ -262,12 +270,9 @@ private module Trees {
     final override Interpolation getChildNode(int i) { result = this.getChild(i) }
   }
 
-  private class BeginTree extends StandardPreOrderTree, Begin {
-    final override AstNode getChildNode(int i) {
-      result = this.getChild(i) and
-      not result instanceof Rescue and
-      not result instanceof Else and
-      not result instanceof Ensure
+  private class BeginTree extends RescueEnsureBlockTree, Begin {
+    final override AstNode getChildNode(int i, boolean rescuable) {
+      result = this.getChild(i) and rescuable = true
     }
 
     override predicate isHidden() { any() }
@@ -370,11 +375,14 @@ private module Trees {
 
   private class CharacterTree extends LeafTree, Character { }
 
-  private class ClassTree extends StandardPreOrderTree, Class {
-    final override AstNode getChildNode(int i) {
-      result = this.getName() and i = 0
-      or
-      result = this.getChild(i - 1)
+  private class ClassTree extends RescueEnsureBlockTree, Class {
+    final override AstNode getChildNode(int i, boolean rescuable) {
+      rescuable = true and
+      (
+        result = this.getName() and i = 0
+        or
+        result = this.getChild(i - 1)
+      )
     }
   }
 
@@ -399,11 +407,11 @@ private module Trees {
     override predicate isHidden() { any() }
   }
 
-  private class DoBlockTree extends StandardPreOrderTree, DoBlock {
-    final override AstNode getChildNode(int i) {
-      result = this.getParameters() and i = 0
+  private class DoBlockTree extends RescueEnsureBlockTree, DoBlock {
+    final override AstNode getChildNode(int i, boolean rescuable) {
+      result = this.getParameters() and i = 0 and rescuable = false
       or
-      result = this.getChild(i - 1)
+      result = this.getChild(i - 1) and rescuable = true
     }
 
     override predicate isHidden() { any() }
@@ -431,8 +439,6 @@ private module Trees {
 
   private class EnsureTree extends StandardPreOrderTree, Ensure {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
-
-    override predicate isHidden() { any() }
   }
 
   private class EscapeSequenceTree extends LeafTree, EscapeSequence { }
@@ -443,8 +449,58 @@ private module Trees {
     override predicate isHidden() { any() }
   }
 
-  private class ExceptionsTree extends StandardPostOrderTree, Exceptions {
-    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+  private class ExceptionsTree extends PreOrderTree, Exceptions {
+    final override predicate propagatesAbnormal(AstNode child) { none() }
+
+    /** Holds if this exception filter belongs to a final `rescue` block. */
+    pragma[noinline]
+    private predicate inLastRescue() {
+      exists(RescueEnsureBlockTree block, Rescue rescue, int i |
+        rescue = block.getRescue(i) and
+        this = rescue.getExceptions() and
+        not exists(block.getRescue(i + 1))
+      )
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getChild(_), last, c) and
+      c.(MatchingCompletion).getValue() = true
+      or
+      exists(int lst, Completion c0 |
+        last(this.getChild(lst), last, c0) and
+        not exists(this.getChild(lst + 1))
+      |
+        // The last exception filter in a last `rescue` block propagates
+        // the exception when it doesn't match
+        this.inLastRescue() and
+        c =
+          any(NestedEnsureCompletion nec |
+            nec.getOuterCompletion() instanceof RaiseCompletion and
+            nec.getInnerCompletion() = c0 and
+            c0.(MatchingCompletion).getValue() = false and
+            nec.getNestLevel() = 0
+          )
+        or
+        c = c0 and
+        (
+          not this.inLastRescue()
+          or
+          not c0.(MatchingCompletion).getValue() = false
+        )
+      )
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getChild(0), succ) and
+      c instanceof SimpleCompletion
+      or
+      exists(int i |
+        last(this.getChild(i), pred, c) and
+        c.(MatchingCompletion).getValue() = false and
+        first(this.getChild(i + 1), succ)
+      )
+    }
 
     override predicate isHidden() { any() }
   }
@@ -493,18 +549,14 @@ private module Trees {
 
     final override predicate last(AstNode last, Completion c) {
       last = this and
-      c.(EmptinessCompletion).isEmpty()
+      c.(EmptinessCompletion).getValue() = true
       or
       last(this.getBody(), last, c) and
       not c.continuesLoop() and
       not c instanceof BreakCompletion and
       not c instanceof RedoCompletion
       or
-      c =
-        any(NestedCompletion nc |
-          last(this.getBody(), last, nc.getInnerCompletion().(BreakCompletion)) and
-          nc.getOuterCompletion() instanceof SimpleCompletion
-        )
+      last(this.getBody(), last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
     }
 
     /**
@@ -521,8 +573,7 @@ private module Trees {
       or
       pred = this and
       first(this.getPattern(0), succ) and
-      c instanceof EmptinessCompletion and
-      not c.(EmptinessCompletion).isEmpty()
+      c.(EmptinessCompletion).getValue() = false
       or
       exists(int i, ControlFlowTree next |
         last(this.getPattern(i), pred, c) and
@@ -719,11 +770,11 @@ private module Trees {
     }
   }
 
-  private class MethodTree extends StandardPreOrderTree, Method {
-    final override AstNode getChildNode(int i) {
-      result = this.getParameters() and i = 0
+  private class MethodTree extends RescueEnsureBlockTree, Method {
+    final override AstNode getChildNode(int i, boolean rescuable) {
+      result = this.getParameters() and i = 0 and rescuable = false
       or
-      result = this.getChild(i - 1)
+      result = this.getChild(i - 1) and rescuable = true
     }
 
     override predicate isHidden() { any() }
@@ -744,11 +795,14 @@ private module Trees {
     override predicate isHidden() { any() }
   }
 
-  private class ModuleTree extends StandardPreOrderTree, Module {
-    final override AstNode getChildNode(int i) {
-      result = this.getName() and i = 0
-      or
-      result = this.getChild(i - 1)
+  private class ModuleTree extends RescueEnsureBlockTree, Module {
+    final override AstNode getChildNode(int i, boolean rescuable) {
+      rescuable = true and
+      (
+        result = this.getName() and i = 0
+        or
+        result = this.getChild(i - 1)
+      )
     }
   }
 
@@ -809,13 +863,272 @@ private module Trees {
     final override Interpolation getChildNode(int i) { result = this.getChild(i) }
   }
 
-  private class RescueTree extends StandardPreOrderTree, Rescue {
-    final override AstNode getChildNode(int i) {
-      result = this.getExceptions() and i = 0
+  private class RescueTree extends PreOrderTree, Rescue {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getExceptions() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getExceptions(), last, c) and
+      c.(MatchingCompletion).getValue() = false
       or
-      result = this.getVariable() and i = 1
+      last(this.getBody(), last, c)
       or
-      result = this.getBody() and i = 2
+      not exists(this.getExceptions()) and
+      not exists(this.getBody()) and
+      (
+        last(this.getVariable(), last, c)
+        or
+        not exists(this.getVariable()) and
+        last = this and
+        c.isValidFor(this)
+      )
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      exists(AstNode next |
+        pred = this and
+        first(next, succ) and
+        c instanceof SimpleCompletion
+      |
+        next = this.getExceptions()
+        or
+        not exists(this.getExceptions()) and
+        (
+          next = this.getVariable()
+          or
+          not exists(this.getVariable()) and
+          next = this.getBody()
+        )
+      )
+      or
+      exists(AstNode next |
+        last(this.getExceptions(), pred, c) and
+        first(next, succ) and
+        c.(MatchingCompletion).getValue() = true
+      |
+        next = this.getVariable()
+        or
+        not exists(this.getVariable()) and
+        next = this.getBody()
+      )
+      or
+      last(this.getVariable(), pred, c) and
+      first(this.getBody(), succ) and
+      c instanceof NormalCompletion
+    }
+  }
+
+  /** Gets a child of `n` that is in CFG scope `scope`. */
+  pragma[noinline]
+  private AstNode getAChildInScope(AstNode n, CfgScope scope) {
+    result.getParent() = n and
+    scope = getScope(result)
+  }
+
+  /** A block that may contain `rescue`/`ensure`. */
+  abstract class RescueEnsureBlockTree extends PreOrderTree {
+    /**
+     * Gets the `i`th child of this block. `rescuable` indicates whether exceptional
+     * execution of the child can be caught by `rescue`/`ensure`.
+     */
+    abstract AstNode getChildNode(int i, boolean rescuable);
+
+    /** Gets the `i`th child in the body of this block. */
+    final private AstNode getBodyChild(int i, boolean rescuable) {
+      result = this.getChildNode(_, rescuable) and
+      result =
+        rank[i + 1](AstNode child, int j |
+          child = this.getChildNode(j, _) and
+          not result instanceof Rescue and
+          not result instanceof Ensure and
+          not result instanceof Else and
+          not child instanceof CfgScope
+        |
+          child order by j
+        )
+    }
+
+    /** Gets the `i`th `rescue` block in this block. */
+    final Rescue getRescue(int i) {
+      result = rank[i + 1](Rescue s | s = this.getAFieldOrChild() | s order by s.getParentIndex())
+    }
+
+    /** Gets the `else` block in this block, if any. */
+    final private Else getElse() { result = unique(Else s | s = this.getAFieldOrChild()) }
+
+    /** Gets the `ensure` block in this block, if any. */
+    final Ensure getEnsure() { result = unique(Ensure s | s = this.getAFieldOrChild()) }
+
+    final private predicate hasEnsure() { exists(this.getEnsure()) }
+
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getEnsure() }
+
+    /**
+     * Gets a descendant that belongs to the `ensure` block of this block, if any.
+     * Nested `ensure` blocks are not included.
+     */
+    AstNode getAnEnsureDescendant() {
+      result = this.getEnsure()
+      or
+      exists(AstNode mid |
+        mid = this.getAnEnsureDescendant() and
+        result = getAChildInScope(mid, getScope(mid)) and
+        not exists(RescueEnsureBlockTree nestedBlock |
+          result = nestedBlock.getEnsure() and
+          nestedBlock != this
+        )
+      )
+    }
+
+    /**
+     * Holds if `innerBlock` has an `ensure` block and is immediately nested inside the
+     * `ensure` block of this block.
+     */
+    private predicate nestedEnsure(RescueEnsureBlockTree innerBlock) {
+      exists(Ensure innerEnsure |
+        innerEnsure = getAChildInScope(this.getAnEnsureDescendant(), getScope(this)) and
+        innerEnsure = innerBlock.getEnsure()
+      )
+    }
+
+    /**
+     * Gets the `ensure`-nesting level of this block. That is, the number of `ensure`
+     * blocks that this block is nested under.
+     */
+    int nestLevel() { result = count(RescueEnsureBlockTree outer | outer.nestedEnsure+(this)) }
+
+    /**
+     * Holds if `last` is a last element in the body of this block. `ensurable`
+     * indicates whether `last` may be a predecessor of an `ensure` block.
+     */
+    pragma[nomagic]
+    private predicate lastBody(AstNode last, Completion c, boolean ensurable) {
+      exists(boolean rescuable |
+        if c instanceof RaiseCompletion then ensurable = rescuable else ensurable = true
+      |
+        last(this.getBodyChild(_, rescuable), last, c) and
+        not c instanceof NormalCompletion
+        or
+        exists(int lst |
+          last(this.getBodyChild(lst, rescuable), last, c) and
+          not exists(this.getBodyChild(lst + 1, _))
+        )
+      )
+    }
+
+    /**
+     * Gets a last element from this block that may finish with completion `c`, such
+     * that control may be transferred to the `ensure` block (if it exists), but only
+     * if `ensurable = true`.
+     */
+    pragma[nomagic]
+    private AstNode getAnEnsurePredecessor(Completion c, boolean ensurable) {
+      exists(boolean ensurable0 |
+        // Exit completions ignore the `ensure` block (TODO: CHECK THIS)
+        if c instanceof ExitCompletion then ensurable = false else ensurable = ensurable0
+      |
+        this.lastBody(result, c, ensurable0) and
+        (
+          // Any non-throw completion will always continue directly to the `ensure` block,
+          // unless there is an `else` block
+          not c instanceof RaiseCompletion and
+          not exists(this.getElse())
+          or
+          // Any completion will continue to the `ensure` block when there are no `rescue`
+          // blocks
+          not exists(this.getRescue(_))
+        )
+        or
+        // Last element from any of the `rescue` blocks continues to the `ensure` block
+        last(this.getRescue(_).getBody(), result, c) and
+        ensurable0 = true
+        or
+        // Last element of last `rescue` block continues to the `ensure` block
+        exists(int lst |
+          last(this.getRescue(lst), result, c) and
+          not exists(this.getRescue(lst + 1)) and
+          ensurable0 = true
+        )
+        or
+        // Last element of `else` block continues to the `ensure` block
+        last(this.getElse(), result, c) and
+        ensurable0 = true
+      )
+    }
+
+    pragma[nomagic]
+    private predicate lastEnsure0(AstNode last, Completion c) { last(this.getEnsure(), last, c) }
+
+    pragma[nomagic]
+    private predicate lastEnsure(
+      AstNode last, NormalCompletion ensure, Completion outer, int nestLevel
+    ) {
+      this.lastEnsure0(last, ensure) and
+      exists(
+        this.getAnEnsurePredecessor(any(Completion c0 | outer = c0.getOuterCompletion()), true)
+      ) and
+      nestLevel = this.nestLevel()
+    }
+
+    override predicate last(AstNode last, Completion c) {
+      exists(boolean ensurable | last = this.getAnEnsurePredecessor(c, ensurable) |
+        not this.hasEnsure()
+        or
+        ensurable = false
+      )
+      or
+      // If the body completes normally, take the completion from the `ensure` block
+      this.lastEnsure(last, c, any(NormalCompletion nc), _)
+      or
+      // If the `ensure` block completes normally, it inherits any non-normal
+      // completion from the body
+      c =
+        any(NestedEnsureCompletion nec |
+          this
+              .lastEnsure(last, nec.getAnInnerCompatibleCompletion(), nec.getOuterCompletion(),
+                nec.getNestLevel())
+        )
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getBodyChild(0, _), succ) and
+      c instanceof SimpleCompletion
+      or
+      // Normal left-to-right evaluation in the body
+      exists(int i |
+        last(this.getBodyChild(i, _), pred, c) and
+        first(this.getBodyChild(i + 1, _), succ) and
+        c instanceof NormalCompletion
+      )
+      or
+      // Exceptional flow from body to first `rescue`
+      this.lastBody(pred, c, true) and
+      first(this.getRescue(0), succ) and
+      c instanceof RaiseCompletion
+      or
+      exists(Rescue rescue, int i | rescue = this.getRescue(i) |
+        pred = rescue and
+        last(this.getRescue(i), rescue, c) and
+        (
+          // Flow from one `rescue` clause to the next when there is no match
+          first(this.getRescue(i + 1), succ) and
+          c.(MatchingCompletion).getValue() = false
+          or
+          // Flow from last `rescue` clause to `ensure` block
+          not exists(this.getRescue(i + 1)) and
+          first(this.getEnsure(), succ) and
+          c.getInnerCompletion().(MatchingCompletion).getValue() = false
+        )
+      )
+      or
+      // Flow from body to `else` block when no exception
+      this.lastBody(pred, c, _) and
+      first(this.getElse(), succ) and
+      c instanceof NormalCompletion
+      or
+      // Flow into `ensure` block
+      pred = getAnEnsurePredecessor(c, true) and
+      first(this.getEnsure(), succ)
     }
   }
 
@@ -870,23 +1183,31 @@ private module Trees {
 
   private class SetterTree extends LeafTree, Setter { }
 
-  private class SingletonClassTree extends StandardPreOrderTree, SingletonClass {
-    final override AstNode getChildNode(int i) {
-      result = this.getValue() and i = 0
-      or
-      result = this.getChild(i - 1)
+  private class SingletonClassTree extends RescueEnsureBlockTree, SingletonClass {
+    final override AstNode getChildNode(int i, boolean rescuable) {
+      rescuable = true and
+      (
+        result = this.getValue() and i = 0
+        or
+        result = this.getChild(i - 1)
+      )
     }
 
     override predicate isHidden() { any() }
   }
 
-  private class SingletonMethodTree extends StandardPreOrderTree, SingletonMethod {
-    final override AstNode getChildNode(int i) {
-      result = this.getObject() and i = 0
+  private class SingletonMethodTree extends RescueEnsureBlockTree, SingletonMethod {
+    final override AstNode getChildNode(int i, boolean rescuable) {
+      result = this.getObject() and
+      i = 0 and
+      rescuable = true // TODO: CHECK THIS
       or
-      result = this.getParameters() and i = 1
+      result = this.getParameters() and
+      i = 1 and
+      rescuable = false
       or
-      result = this.getChild(i - 2)
+      result = this.getChild(i - 2) and
+      rescuable = true
     }
 
     override predicate isHidden() { any() }
@@ -990,11 +1311,7 @@ private module Trees {
       not c instanceof BreakCompletion and
       not c instanceof RedoCompletion
       or
-      c =
-        any(NestedCompletion nc |
-          last(this.getBodyNode(), last, nc.getInnerCompletion().(BreakCompletion)) and
-          nc.getOuterCompletion() instanceof SimpleCompletion
-        )
+      last(this.getBodyNode(), last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
@@ -1048,8 +1365,9 @@ private module Cached {
   cached
   newtype TSuccessorType =
     TSuccessorSuccessor() or
-    TBooleanSuccessor(boolean b) { b = true or b = false } or
-    TEmptinessSuccessor(boolean isEmpty) { isEmpty = true or isEmpty = false } or
+    TBooleanSuccessor(boolean b) { b in [false, true] } or
+    TEmptinessSuccessor(boolean isEmpty) { isEmpty in [false, true] } or
+    TMatchingSuccessor(boolean isMatch) { isMatch in [false, true] } or
     TReturnSuccessor() or
     TBreakSuccessor() or
     TNextSuccessor() or
