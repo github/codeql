@@ -163,15 +163,18 @@ module PrototypePollutingAssignment {
     string value;
 
     TypeofCheck() {
-      astNode.getLeftOperand().(TypeofExpr).getOperand() = operand and
-      astNode.getRightOperand().getStringValue() = value
+      exists(TypeofExpr typeof, Expr str |
+        astNode.hasOperands(typeof, str) and
+        typeof.getOperand() = operand and
+        str.getStringValue() = value
+      )
     }
 
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       (
-        value = "object" and outcome = false
+        value = "object" and outcome = astNode.getPolarity().booleanNot()
         or
-        value != "object" and outcome = true
+        value != "object" and outcome = astNode.getPolarity()
       ) and
       e = operand and
       label instanceof ObjectPrototype

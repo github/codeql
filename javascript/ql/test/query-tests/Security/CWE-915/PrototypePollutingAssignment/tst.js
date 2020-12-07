@@ -35,11 +35,20 @@ function mutateObject(obj, x) {
     if (obj instanceof Object) {
         obj.foo = x; // OK
     }
+    if (obj != null) {
+        obj.foo = x; // NOT OK
+    }
     if (typeof obj === 'function') {
         obj.foo = x; // OK
     }
-    if (obj != null) {
+    if (typeof obj !== 'function') {
         obj.foo = x; // NOT OK
+    }
+    if (typeof obj === 'object') {
+        obj.foo = x; // NOT OK
+    }
+    if (typeof obj !== 'object') {
+        obj.foo = x; // OK
     }
 }
 
