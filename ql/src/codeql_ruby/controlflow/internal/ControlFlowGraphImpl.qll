@@ -783,7 +783,10 @@ private module Trees {
   }
 
   private class ProgramTree extends StandardPreOrderTree, Program {
-    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+    final override AstNode getChildNode(int i) {
+      result = this.getChild(i) and
+      not result instanceof Uninterpreted
+    }
 
     override predicate isHidden() { any() }
   }
