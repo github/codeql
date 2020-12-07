@@ -557,12 +557,17 @@ private module Trees {
   private class HashSplatParameterTree extends LeafTree, HashSplatParameter { }
 
   private class HeredocBeginningTree extends StandardPreOrderTree, HeredocBeginning {
+    pragma[noinline]
+    private string getName() {
+      result = this.getValue().regexpCapture("^<<[-~]?[`']?(.*)[`']?$", 1)
+    }
+
     final override AstNode getChildNode(int i) {
       i = 0 and
       result =
         min(string name, HeredocBody doc, HeredocEnd end |
-          name = this.getValue().regexpCapture("^<<[-~]?[`']?(.*)[`']?$", 1) and
-          end = unique(HeredocEnd x | x = doc.getChild(_)) and
+          name = this.getName() and
+          end = unique(HeredocEnd x | x = doc.getChild(_) | x) and
           end.getValue() = name and
           doc.getLocation().getFile() = this.getLocation().getFile() and
           (
