@@ -302,4 +302,33 @@ module HTTP {
     /** Gets the response writer that this redirect is sent on, if any. */
     ResponseWriter getResponseWriter() { result = self.getResponseWriter() }
   }
+
+  /** Provides a class for modeling new HTTP handler APIs. */
+  module RequestHandler {
+    /**
+     * An HTTP request handler.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `HTTP::RequestHandler` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets a node that is used in a check that is tested before this handler is run. */
+      abstract predicate guardedBy(DataFlow::Node check);
+    }
+  }
+
+  /**
+   * An HTTP request handler.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `HTTP::RequestHandler::Range` instead.
+   */
+  class RequestHandler extends DataFlow::Node {
+    RequestHandler::Range self;
+
+    RequestHandler() { this = self }
+
+    /** Gets a node that is used in a check that is tested before this handler is run. */
+    predicate guardedBy(DataFlow::Node check) { self.guardedBy(check) }
+  }
 }

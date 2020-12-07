@@ -227,6 +227,20 @@ module NetHttp {
     }
   }
 
+  private class Handler extends HTTP::RequestHandler::Range {
+    DataFlow::CallNode handlerReg;
+
+    Handler() {
+      exists(Function regFn | regFn = handlerReg.getTarget() |
+        regFn.hasQualifiedName("net/http", ["Handle", "HandleFunc"]) or
+        regFn.(Method).hasQualifiedName("net/http", "ServeMux", ["Handle", "HandleFunc"])
+      ) and
+      this = handlerReg.getArgument(1)
+    }
+
+    override predicate guardedBy(DataFlow::Node check) { check = handlerReg.getArgument(0) }
+  }
+
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
