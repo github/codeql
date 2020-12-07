@@ -144,6 +144,9 @@ public class HTMLExtractor implements IExtractor {
 
   @Override
   public LoCInfo extract(TextualExtractor textualExtractor) {
+    // Angular templates contain attribute names that are not valid HTML/XML, such as [foo], (foo), [(foo)], and *foo.
+    // Allow a large number of errors in attribute names, so the Jericho parser does not give up.
+    Attributes.setDefaultMaxErrorCount(100);
     JavaScriptHTMLElementHandler eltHandler = new JavaScriptHTMLElementHandler(textualExtractor);
 
     HtmlPopulator extractor =
