@@ -14,19 +14,24 @@ private class MallocAllocationFunction extends AllocationFunction {
   int sizeArg;
 
   MallocAllocationFunction() {
+    // --- C library allocation
     hasGlobalOrStdName("malloc") and // malloc(size)
     sizeArg = 0
     or
     hasGlobalName([
+        // --- Windows Memory Management for Windows Drivers
         "MmAllocateContiguousMemory", // MmAllocateContiguousMemory(size, maxaddress)
         "MmAllocateContiguousNodeMemory", // MmAllocateContiguousNodeMemory(size, minaddress, maxaddress, bound, flag, prefer)
         "MmAllocateContiguousMemorySpecifyCache", // MmAllocateContiguousMemorySpecifyCache(size, minaddress, maxaddress, bound, type)
         "MmAllocateContiguousMemorySpecifyCacheNode", // MmAllocateContiguousMemorySpecifyCacheNode(size, minaddress, maxaddress, bound, type, prefer)
         "MmAllocateNonCachedMemory", // MmAllocateNonCachedMemory(size)
         "MmAllocateMappingAddress", // MmAllocateMappingAddress(size, tag)
+        // --- Windows COM allocation
         "CoTaskMemAlloc", // CoTaskMemAlloc(size)
+        // --- Linux kernel memory allocator
         "kmem_alloc", // kmem_alloc(size, flags)
         "kmem_zalloc", // kmem_zalloc(size, flags)
+        // --- OpenSSL memory allocation
         "CRYPTO_malloc", // CRYPTO_malloc(size_t num, const char *file, int line)
         "CRYPTO_zalloc", // CRYPTO_zalloc(size_t num, const char *file, int line)
         "CRYPTO_secure_malloc", // CRYPTO_secure_malloc(size_t num, const char *file, int line)
@@ -35,6 +40,7 @@ private class MallocAllocationFunction extends AllocationFunction {
     sizeArg = 0
     or
     hasGlobalName([
+        // --- Windows Memory Management for Windows Drivers
         "ExAllocatePool", // ExAllocatePool(type, size)
         "ExAllocatePoolWithTag", // ExAllocatePool(type, size, tag)
         "ExAllocatePoolWithTagPriority", // ExAllocatePoolWithTagPriority(type, size, tag, priority)
@@ -42,8 +48,10 @@ private class MallocAllocationFunction extends AllocationFunction {
         "ExAllocatePoolWithQuotaTag", // ExAllocatePoolWithQuotaTag(type, size, tag)
         "IoAllocateMdl", // IoAllocateMdl(address, size, flag, flag, irp)
         "IoAllocateErrorLogEntry", // IoAllocateErrorLogEntry(object, size)
+        // --- Windows Global / Local legacy allocation
         "LocalAlloc", // LocalAlloc(flags, size)
         "GlobalAlloc", // GlobalAlloc(flags, size)
+        // --- Windows System Services allocation
         "VirtualAlloc" // VirtualAlloc(address, size, type, flag)
       ]) and
     sizeArg = 1
@@ -52,6 +60,7 @@ private class MallocAllocationFunction extends AllocationFunction {
     sizeArg = 2
     or
     hasGlobalName([
+        // --- Windows Memory Management for Windows Drivers
         "MmAllocatePagesForMdl", // MmAllocatePagesForMdl(minaddress, maxaddress, skip, size)
         "MmAllocatePagesForMdlEx", // MmAllocatePagesForMdlEx(minaddress, maxaddress, skip, size, type, flags)
         "MmAllocateNodePagesForMdlEx" // MmAllocateNodePagesForMdlEx(minaddress, maxaddress, skip, size, type, prefer, flags)
@@ -71,6 +80,7 @@ private class AllocaAllocationFunction extends AllocationFunction {
 
   AllocaAllocationFunction() {
     hasGlobalName([
+        // --- stack allocation
         "alloca", // // alloca(size)
         "__builtin_alloca" // __builtin_alloca(size)
       ]) and
@@ -91,6 +101,7 @@ private class CallocAllocationFunction extends AllocationFunction {
   int multArg;
 
   CallocAllocationFunction() {
+    // --- C library allocation
     hasGlobalOrStdName("calloc") and // calloc(num, size)
     sizeArg = 1 and
     multArg = 0
@@ -110,14 +121,18 @@ private class ReallocAllocationFunction extends AllocationFunction {
   int reallocArg;
 
   ReallocAllocationFunction() {
+    // --- C library allocation
     hasGlobalOrStdName("realloc") and // realloc(ptr, size)
     sizeArg = 1 and
     reallocArg = 0
     or
     hasGlobalName([
+        // --- Windows Global / Local legacy allocation
         "LocalReAlloc", // LocalReAlloc(ptr, size, flags)
         "GlobalReAlloc", // GlobalReAlloc(ptr, size, flags)
+        // --- Windows COM allocation
         "CoTaskMemRealloc", // CoTaskMemRealloc(ptr, size)
+        // --- OpenSSL memory allocation
         "CRYPTO_realloc" // CRYPTO_realloc(void *addr, size_t num, const char *file, int line)
       ]) and
     sizeArg = 1 and
@@ -140,6 +155,7 @@ private class ReallocAllocationFunction extends AllocationFunction {
 private class SizelessAllocationFunction extends AllocationFunction {
   SizelessAllocationFunction() {
     hasGlobalName([
+        // --- Windows Memory Management for Windows Drivers
         "ExAllocateFromLookasideListEx", // ExAllocateFromLookasideListEx(list)
         "ExAllocateFromPagedLookasideList", // ExAllocateFromPagedLookasideList(list)
         "ExAllocateFromNPagedLookasideList", // ExAllocateFromNPagedLookasideList(list)
@@ -148,6 +164,7 @@ private class SizelessAllocationFunction extends AllocationFunction {
         "MmMapLockedPagesWithReservedMapping", // MmMapLockedPagesWithReservedMapping(address, tag, list, type)
         "MmMapLockedPages", // MmMapLockedPages(list, mode)
         "MmMapLockedPagesSpecifyCache", // MmMapLockedPagesSpecifyCache(list, mode, type, address, flag, flag)
+        // --- NetBSD pool manager
         "pool_get", // pool_get(pool, flags)
         "pool_cache_get" // pool_cache_get(pool, flags)
       ])
