@@ -362,7 +362,7 @@ module Trees {
       exists(int i, WhenTree branch | branch = this.getChild(i) |
         last(branch.getLastPattern(), pred, c) and
         first(this.getChild(i + 1), succ) and
-        c instanceof FalseCompletion
+        c.(ConditionalCompletion).getValue() = false
       )
     }
   }
@@ -836,8 +836,10 @@ module Trees {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
-  private class PatternTree extends StandardPostOrderTree, Pattern {
+  private class PatternTree extends StandardPreOrderTree, Pattern {
     final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+
+    final override predicate isHidden() { any() }
   }
 
   private class ProgramTree extends StandardPreOrderTree, Program {
@@ -1277,7 +1279,7 @@ module Trees {
 
     final override predicate last(AstNode last, Completion c) {
       last(this.getLastPattern(), last, c) and
-      c instanceof FalseCompletion
+      c.(ConditionalCompletion).getValue() = false
       or
       last(this.getBody(), last, c)
     }
@@ -1287,13 +1289,15 @@ module Trees {
       first(this.getPattern(0), succ) and
       c instanceof SimpleCompletion
       or
-      exists(int i, Pattern p |
+      exists(int i, Pattern p, boolean b |
         p = this.getPattern(i) and
-        last(p, pred, c)
+        last(p, pred, c) and
+        b = c.(ConditionalCompletion).getValue()
       |
-        c instanceof TrueCompletion and first(this.getBody(), succ)
+        b = true and
+        first(this.getBody(), succ)
         or
-        c instanceof FalseCompletion and
+        b = false and
         first(this.getPattern(i + 1), succ)
       )
     }

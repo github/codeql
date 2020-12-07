@@ -170,7 +170,11 @@ private predicate inBooleanContext(AstNode n) {
   or
   n = any(ParenthesizedStatement parent | inBooleanContext(parent)).getChild()
   or
-  n instanceof Pattern
+  exists(Case c, When w |
+    not exists(c.getValue()) and
+    c.getChild(_) = w and
+    w.getPattern(_).getChild() = n
+  )
 }
 
 /**
@@ -185,7 +189,15 @@ private predicate mustHaveMatchingCompletion(AstNode n) {
  * Holds if `n` is used in a matching context. That is, whether or
  * not the value of `n` matches, determines the successor.
  */
-private predicate inMatchingContext(AstNode n) { n = any(Rescue r).getExceptions().getChild(_) }
+private predicate inMatchingContext(AstNode n) {
+  n = any(Rescue r).getExceptions().getChild(_)
+  or
+  exists(Case c, When w |
+    exists(c.getValue()) and
+    c.getChild(_) = w and
+    w.getPattern(_).getChild() = n
+  )
+}
 
 /**
  * A completion that represents normal evaluation of a statement or an
