@@ -1,5 +1,6 @@
 /** Provides classes representing the control flow graph. */
 
+private import codeql.Locations
 private import codeql_ruby.ast.internal.TreeSitter::Generated
 private import codeql_ruby.controlflow.BasicBlocks
 private import SuccessorTypes
@@ -8,8 +9,8 @@ private import internal.Splitting
 private import internal.Completion
 
 private class CfgScopeRange =
-  @program or @begin_block or @end_block or @module or @class or @singleton_class or @method or
-      @singleton_method or @block or @do_block;
+  @program or @begin_block or @end_block or @method or @singleton_method or @block or @do_block or
+      @lambda;
 
 /** An AST node with an associated control-flow graph. */
 class CfgScope extends AstNode, CfgScopeRange {
@@ -24,13 +25,6 @@ class CfgScope extends AstNode, CfgScopeRange {
     this instanceof EndBlock and
     result = "END block"
     or
-    result = this.(Module).getName().toString()
-    or
-    result = this.(Class).getName().toString()
-    or
-    this instanceof SingletonClass and
-    result = "singleton class"
-    or
     result = this.(Method).getName().toString()
     or
     result = this.(SingletonMethod).getName().toString()
@@ -40,6 +34,9 @@ class CfgScope extends AstNode, CfgScopeRange {
     or
     this instanceof DoBlock and
     result = "do block"
+    or
+    this instanceof Lambda and
+    result = "lambda"
   }
 }
 
@@ -188,6 +185,21 @@ module SuccessorTypes {
   }
 
   /**
+   * A conditional control flow successor. Either a Boolean successor (`BooleanSuccessor`),
+   * or an emptiness successor (`EmptinessSuccessor`).
+   */
+  class ConditionalSuccessor extends SuccessorType {
+    boolean value;
+
+    ConditionalSuccessor() { this = TBooleanSuccessor(value) or this = TEmptinessSuccessor(value) }
+
+    /** Gets the Boolean value of this successor. */
+    final boolean getValue() { result = value }
+
+    override string toString() { result = getValue().toString() }
+  }
+
+  /**
    * A Boolean control flow successor.
    *
    * For example, in
@@ -202,11 +214,46 @@ module SuccessorTypes {
    *
    * `x >= 0` has both a `true` successor and a `false` successor.
    */
-  class BooleanSuccessor extends SuccessorType, TBooleanSuccessor {
-    /** Gets the Boolean value. */
-    final boolean getValue() { this = TBooleanSuccessor(result) }
+  class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor { }
 
-    final override string toString() { result = getValue().toString() }
+  /**
+   * An emptiness control flow successor.
+   *
+   * For example, this program fragment:
+   *
+   * ```rb
+   * for arg in args do
+   *   puts arg
+   * end
+   * puts "done";
+   * ```
+   *
+   * has a control flow graph containing emptiness successors:
+   *
+   * ```
+   *           args
+   *            |
+   *          for------<-----
+   *           / \           \
+   *          /   \          |
+   *         /     \         |
+   *        /       \        |
+   *     empty    non-empty  |
+   *       |          \      |
+   *  puts "done"      \     |
+   *                  arg    |
+   *                    |    |
+   *                puts arg |
+   *                     \___/
+   * ```
+   */
+  class EmptinessSuccessor extends ConditionalSuccessor, TEmptinessSuccessor {
+    /** Holds if this is an empty successor. */
+    predicate isEmpty() { value = true }
+
+    final override string toString() {
+      if this.isEmpty() then result = "empty" else result = "non-empty"
+    }
   }
 
   /**

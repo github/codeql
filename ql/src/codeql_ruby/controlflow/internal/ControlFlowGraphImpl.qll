@@ -228,6 +228,14 @@ abstract private class LeafTree extends PreOrderTree, PostOrderTree {
 
 /** Defines the CFG by dispatch on the various AST types. */
 private module Trees {
+  private class AliasTree extends StandardPreOrderTree, Alias {
+    final override AstNode getChildNode(int i) {
+      i = 0 and result = this.getName()
+      or
+      i = 1 and result = this.getAlias()
+    }
+  }
+
   private class ArgumentListTree extends StandardPostOrderTree, ArgumentList {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
 
@@ -240,10 +248,29 @@ private module Trees {
 
   private class AssignmentTree extends StandardPostOrderTree, Assignment {
     final override AstNode getChildNode(int i) {
-      result = this.getLeft() and i = 0
+      result = this.getRight() and i = 0
       or
-      result = this.getRight() and i = 1
+      result = this.getLeft() and i = 1
     }
+  }
+
+  private class BareStringTree extends StandardPostOrderTree, BareString {
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class BareSymbolTree extends StandardPostOrderTree, BareSymbol {
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class BeginTree extends StandardPreOrderTree, Begin {
+    final override AstNode getChildNode(int i) {
+      result = this.getChild(i) and
+      not result instanceof Rescue and
+      not result instanceof Else and
+      not result instanceof Ensure
+    }
+
+    override predicate isHidden() { any() }
   }
 
   private class BeginBlockTree extends StandardPreOrderTree, BeginBlock {
@@ -260,7 +287,25 @@ private module Trees {
     }
   }
 
-  private class BlockParametersTree extends LeafTree, BlockParameters {
+  private class BlockTree extends StandardPreOrderTree, Block {
+    final override AstNode getChildNode(int i) {
+      result = this.getParameters() and i = 0
+      or
+      result = this.getChild(i - 1)
+    }
+
+    override predicate isHidden() { any() }
+  }
+
+  private class BlockArgumentTree extends StandardPostOrderTree, BlockArgument {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+  }
+
+  private class BlockParameterTree extends LeafTree, BlockParameter { }
+
+  private class BlockParametersTree extends StandardPreOrderTree, BlockParameters {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
     override predicate isHidden() { any() }
   }
 
@@ -276,10 +321,76 @@ private module Trees {
     }
   }
 
-  private class ClassTree extends StandardPreOrderTree, Class {
+  private class CaseTree extends PreOrderTree, Case {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getValue() or child = this.getChild(_)
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getValue(), last, c) and not exists(this.getChild(_))
+      or
+      last(this.getChild(_).(When).getBody(), last, c)
+      or
+      exists(int i, ControlFlowTree lastBranch |
+        lastBranch = this.getChild(i) and
+        not exists(this.getChild(i + 1)) and
+        last(lastBranch, last, c)
+      )
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      exists(AstNode next |
+        pred = this and
+        first(next, succ) and
+        c instanceof SimpleCompletion
+      |
+        next = this.getValue()
+        or
+        not exists(this.getValue()) and
+        next = this.getChild(0)
+      )
+      or
+      last(this.getValue(), pred, c) and
+      first(this.getChild(0), succ) and
+      c instanceof SimpleCompletion
+      or
+      exists(int i, WhenTree branch | branch = this.getChild(i) |
+        last(branch.getLastPattern(), pred, c) and
+        first(this.getChild(i + 1), succ) and
+        c instanceof FalseCompletion
+      )
+    }
+  }
+
+  private class ChainedStringTree extends StandardPostOrderTree, ChainedString {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
 
     override predicate isHidden() { any() }
+  }
+
+  private class CharacterTree extends LeafTree, Character { }
+
+  private class ClassTree extends StandardPreOrderTree, Class {
+    final override AstNode getChildNode(int i) {
+      result = this.getName() and i = 0
+      or
+      result = this.getChild(i - 1)
+    }
+  }
+
+  private class ClassVariableTree extends LeafTree, ClassVariable { }
+
+  private class ComplexTree extends LeafTree, Complex { }
+
+  private class ConstantTree extends LeafTree, Constant { }
+
+  private class DestructuredLeftAssignmentTree extends StandardPostOrderTree,
+    DestructuredLeftAssignment {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class DestructuredParameterTree extends StandardPostOrderTree, DestructuredParameter {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
   private class DoTree extends StandardPreOrderTree, Do {
@@ -289,9 +400,21 @@ private module Trees {
   }
 
   private class DoBlockTree extends StandardPreOrderTree, DoBlock {
-    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+    final override AstNode getChildNode(int i) {
+      result = this.getParameters() and i = 0
+      or
+      result = this.getChild(i - 1)
+    }
 
     override predicate isHidden() { any() }
+  }
+
+  private class ElementReferenceTree extends StandardPostOrderTree, ElementReference {
+    final override AstNode getChildNode(int i) {
+      i = 0 and result = this.getObject()
+      or
+      result = this.getChild(i - 1)
+    }
   }
 
   private class ElseTree extends StandardPreOrderTree, Else {
@@ -300,9 +423,172 @@ private module Trees {
     override predicate isHidden() { any() }
   }
 
+  private class EmptyStatementTree extends LeafTree, EmptyStatement { }
+
   private class EndBlockTree extends StandardPreOrderTree, EndBlock {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
+
+  private class EnsureTree extends StandardPreOrderTree, Ensure {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
+  }
+
+  private class EscapeSequenceTree extends LeafTree, EscapeSequence { }
+
+  private class ExceptionVariableTree extends StandardPostOrderTree, ExceptionVariable {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+
+    override predicate isHidden() { any() }
+  }
+
+  private class ExceptionsTree extends StandardPostOrderTree, Exceptions {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
+  }
+
+  private class FalseTree extends LeafTree, False { }
+
+  private class FloatTree extends LeafTree, Float { }
+
+  /**
+   * Control flow of a for-in loop
+   *
+   * For example, this program fragment:
+   *
+   * ```rb
+   * for arg in args do
+   *   puts arg
+   * end
+   * puts "done";
+   * ```
+   *
+   * has the following control flow graph:
+   *
+   * ```
+   *           args
+   *            |
+   *          for------<-----
+   *           / \           \
+   *          /   \          |
+   *         /     \         |
+   *        /       \        |
+   *     empty    non-empty  |
+   *       |          \      |
+   *  puts "done"      \     |
+   *                  arg    |
+   *                    |    |
+   *                puts arg |
+   *                     \___/
+   * ```
+   */
+  private class ForTree extends ControlFlowTree, For {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getPattern(_) or child = this.getValue()
+    }
+
+    final override predicate first(AstNode node) { node = this.getValue() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last = this and
+      c.(EmptinessCompletion).isEmpty()
+      or
+      last(this.getBody(), last, c) and
+      not c.continuesLoop() and
+      not c instanceof BreakCompletion and
+      not c instanceof RedoCompletion
+      or
+      c =
+        any(NestedCompletion nc |
+          last(this.getBody(), last, nc.getInnerCompletion().(BreakCompletion)) and
+          nc.getOuterCompletion() instanceof SimpleCompletion
+        )
+    }
+
+    /**
+     * for pattern in value do body end
+     * ```
+     * value +-> for +--[non empty]--> pattern -> body -> for
+     *               |--[empty]--> exit
+     * ```
+     */
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      last(this.getValue(), pred, c) and
+      succ = this and
+      c instanceof SimpleCompletion
+      or
+      pred = this and
+      first(this.getPattern(0), succ) and
+      c instanceof EmptinessCompletion and
+      not c.(EmptinessCompletion).isEmpty()
+      or
+      exists(int i, ControlFlowTree next |
+        last(this.getPattern(i), pred, c) and
+        first(next, succ) and
+        c instanceof SimpleCompletion
+      |
+        next = this.getPattern(i + 1)
+        or
+        not exists(this.getPattern(i + 1)) and next = this.getBody()
+      )
+      or
+      last(this.getBody(), pred, c) and
+      succ = this and
+      c.continuesLoop()
+      or
+      last(this.getBody(), pred, c) and
+      first(this.getBody(), succ) and
+      c instanceof RedoCompletion
+    }
+  }
+
+  private class GlobalVariableTree extends LeafTree, GlobalVariable { }
+
+  private class HashTree extends StandardPostOrderTree, Hash {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class HashSplatArgumentTree extends StandardPostOrderTree, HashSplatArgument {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+  }
+
+  private class HashSplatParameterTree extends LeafTree, HashSplatParameter { }
+
+  private class HeredocBeginningTree extends StandardPreOrderTree, HeredocBeginning {
+    pragma[noinline]
+    private string getName() {
+      result = this.getValue().regexpCapture("^<<[-~]?[`']?(.*)[`']?$", 1)
+    }
+
+    final override AstNode getChildNode(int i) {
+      i = 0 and
+      result =
+        min(string name, HeredocBody doc, HeredocEnd end |
+          name = this.getName() and
+          end = unique(HeredocEnd x | x = doc.getChild(_) | x) and
+          end.getValue() = name and
+          doc.getLocation().getFile() = this.getLocation().getFile() and
+          (
+            doc.getLocation().getStartLine() > this.getLocation().getStartLine()
+            or
+            doc.getLocation().getStartLine() = this.getLocation().getStartLine() and
+            doc.getLocation().getStartColumn() > this.getLocation().getStartColumn()
+          )
+        |
+          doc order by doc.getLocation().getStartLine(), doc.getLocation().getStartColumn()
+        )
+    }
+  }
+
+  private class HeredocBodyTree extends StandardPostOrderTree, HeredocBody {
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class HeredocContentTree extends LeafTree, HeredocContent { }
+
+  private class HeredocEndTree extends LeafTree, HeredocEnd { }
 
   private class IdentifierTree extends LeafTree, Identifier { }
 
@@ -313,6 +599,10 @@ private module Trees {
       last(this.getConditionNode(), last, c) and
       c instanceof FalseCompletion and
       not exists(this.getAlternativeNode())
+      or
+      last(this.getConditionNode(), last, c) and
+      c instanceof TrueCompletion and
+      not exists(this.getConsequenceNode())
       or
       last(this.getConsequenceNode(), last, c)
       or
@@ -333,7 +623,45 @@ private module Trees {
     }
   }
 
+  private class InTree extends StandardPreOrderTree, In {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+
+    override predicate isHidden() { any() }
+  }
+
+  private class InstanceVariableTree extends LeafTree, InstanceVariable { }
+
   private class IntegerTree extends LeafTree, Integer { }
+
+  private class InterpolationTree extends StandardPostOrderTree, Interpolation {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+  }
+
+  private class KeywordParameterTree extends StandardPostOrderTree, KeywordParameter {
+    final override AstNode getChildNode(int i) { result = this.getValue() and i = 0 }
+  }
+
+  private class LambdaTree extends StandardPreOrderTree, Lambda {
+    final override AstNode getChildNode(int i) {
+      result = this.getParameters() and i = 0
+      or
+      result = this.getBody() and i = 1
+    }
+
+    override predicate isHidden() { any() }
+  }
+
+  private class LambdaParametersTree extends StandardPreOrderTree, LambdaParameters {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
+  }
+
+  private class LeftAssignmentListTree extends StandardPostOrderTree, LeftAssignmentList {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
+  }
 
   class LogicalAndTree extends PostOrderTree, LogicalAndAstNode {
     final override predicate propagatesAbnormal(AstNode child) { child in [left, right] }
@@ -392,7 +720,11 @@ private module Trees {
   }
 
   private class MethodTree extends StandardPreOrderTree, Method {
-    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+    final override AstNode getChildNode(int i) {
+      result = this.getParameters() and i = 0
+      or
+      result = this.getChild(i - 1)
+    }
 
     override predicate isHidden() { any() }
   }
@@ -406,15 +738,25 @@ private module Trees {
     }
   }
 
-  private class ModuleTree extends StandardPreOrderTree, Module {
+  private class MethodParametersTree extends StandardPreOrderTree, MethodParameters {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
 
     override predicate isHidden() { any() }
   }
 
+  private class ModuleTree extends StandardPreOrderTree, Module {
+    final override AstNode getChildNode(int i) {
+      result = this.getName() and i = 0
+      or
+      result = this.getChild(i - 1)
+    }
+  }
+
   private class NextTree extends StandardPostOrderTree, Next {
     final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
   }
+
+  private class NilTree extends LeafTree, Nil { }
 
   private class OperatorAssignmentTree extends StandardPostOrderTree, OperatorAssignment {
     final override AstNode getChildNode(int i) {
@@ -424,17 +766,85 @@ private module Trees {
     }
   }
 
+  private class OptionalParameterTree extends StandardPostOrderTree, OptionalParameter {
+    final override AstNode getChildNode(int i) { result = this.getValue() and i = 0 }
+  }
+
+  private class PairTree extends StandardPostOrderTree, Pair {
+    final override AstNode getChildNode(int i) {
+      result = this.getKey() and i = 0
+      or
+      result = this.getValue() and i = 1
+    }
+  }
+
   private class ParenthesizedStatementsTree extends StandardPostOrderTree, ParenthesizedStatements {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
+  private class PatternTree extends StandardPostOrderTree, Pattern {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+  }
+
   private class ProgramTree extends StandardPreOrderTree, Program {
-    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+    final override AstNode getChildNode(int i) {
+      result = this.getChild(i) and
+      not result instanceof Uninterpreted
+    }
 
     override predicate isHidden() { any() }
   }
 
+  private class RangeTree extends StandardPostOrderTree, Range {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class RationalTree extends LeafTree, Rational { }
+
   private class RedoTree extends StandardPostOrderTree, Redo {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+  }
+
+  private class RegexTree extends StandardPostOrderTree, Regex {
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class RescueTree extends StandardPreOrderTree, Rescue {
+    final override AstNode getChildNode(int i) {
+      result = this.getExceptions() and i = 0
+      or
+      result = this.getVariable() and i = 1
+      or
+      result = this.getBody() and i = 2
+    }
+  }
+
+  private class RescueModifierTree extends PreOrderTree, RescueModifier {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getHandler() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getBody(), last, c) and
+      not c instanceof RaiseCompletion
+      or
+      last(this.getHandler(), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getBody(), succ) and
+      c instanceof SimpleCompletion
+      or
+      last(this.getBody(), pred, c) and
+      c instanceof RaiseCompletion and
+      first(this.getHandler(), succ)
+    }
+  }
+
+  private class RestAssignmentTree extends StandardPostOrderTree, RestAssignment {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+  }
+
+  private class RetryTree extends StandardPreOrderTree, Retry {
     final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
   }
 
@@ -442,19 +852,79 @@ private module Trees {
     final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
   }
 
-  private class SingletonClassTree extends StandardPreOrderTree, SingletonClass {
+  private class RightAssignmentListTree extends StandardPostOrderTree, RightAssignmentList {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
+
+    override predicate isHidden() { any() }
+  }
+
+  private class ScopeResolutionTree extends StandardPostOrderTree, ScopeResolution {
+    final override AstNode getChildNode(int i) {
+      result = this.getScope() and i = 0
+      or
+      result = this.getName() and i = 1
+    }
+  }
+
+  private class SelfTree extends LeafTree, Self { }
+
+  private class SetterTree extends LeafTree, Setter { }
+
+  private class SingletonClassTree extends StandardPreOrderTree, SingletonClass {
+    final override AstNode getChildNode(int i) {
+      result = this.getValue() and i = 0
+      or
+      result = this.getChild(i - 1)
+    }
 
     override predicate isHidden() { any() }
   }
 
   private class SingletonMethodTree extends StandardPreOrderTree, SingletonMethod {
-    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+    final override AstNode getChildNode(int i) {
+      result = this.getObject() and i = 0
+      or
+      result = this.getParameters() and i = 1
+      or
+      result = this.getChild(i - 2)
+    }
 
     override predicate isHidden() { any() }
   }
 
-  private class StringTree extends LeafTree, String { }
+  private class SplatArgumentTree extends StandardPostOrderTree, SplatArgument {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+  }
+
+  private class SplatParameterTree extends LeafTree, SplatParameter { }
+
+  private class StringTree extends StandardPostOrderTree, String {
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class StringArrayTree extends StandardPostOrderTree, StringArray {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class StringContentTree extends LeafTree, StringContent { }
+
+  private class SubshellTree extends StandardPostOrderTree, Subshell {
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class SuperTree extends LeafTree, Super { }
+
+  private class SuperclassTree extends StandardPostOrderTree, Superclass {
+    final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
+  }
+
+  private class SymbolTree extends StandardPostOrderTree, Symbol {
+    final override Interpolation getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class SymbolArrayTree extends StandardPostOrderTree, SymbolArray {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+  }
 
   private class ThenTree extends StandardPreOrderTree, Then {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
@@ -462,49 +932,93 @@ private module Trees {
     override predicate isHidden() { any() }
   }
 
+  private class TrueTree extends LeafTree, True { }
+
   private class UnaryTree extends StandardPostOrderTree, Unary {
     UnaryTree() { not this instanceof LogicalNotAstNode }
 
     final override AstNode getChildNode(int i) { result = this.getOperand() and i = 0 }
   }
 
-  private class WhileTree extends PreOrderTree, While {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getCondition() }
+  private class UndefTree extends StandardPreOrderTree, Undef {
+    final override AstNode getChildNode(int i) { result = this.getChild(i) }
+  }
+
+  private class WhenTree extends PreOrderTree, When {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getPattern(_) }
+
+    final Pattern getLastPattern() {
+      exists(int i |
+        result = this.getPattern(i) and
+        not exists(this.getPattern(i + 1))
+      )
+    }
 
     final override predicate last(AstNode last, Completion c) {
-      last(this.getCondition(), last, c) and
+      last(this.getLastPattern(), last, c) and
       c instanceof FalseCompletion
       or
-      last(this.getBody(), last, c) and
+      last(this.getBody(), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getPattern(0), succ) and
+      c instanceof SimpleCompletion
+      or
+      exists(int i, Pattern p |
+        p = this.getPattern(i) and
+        last(p, pred, c)
+      |
+        c instanceof TrueCompletion and first(this.getBody(), succ)
+        or
+        c instanceof FalseCompletion and
+        first(this.getPattern(i + 1), succ)
+      )
+    }
+  }
+
+  private class ConditionalLoopTree extends PreOrderTree, ConditionalLoopAstNode {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getConditionNode() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getConditionNode(), last, c) and
+      this.endLoop(c)
+      or
+      last(this.getBodyNode(), last, c) and
       not c.continuesLoop() and
       not c instanceof BreakCompletion and
       not c instanceof RedoCompletion
       or
       c =
         any(NestedCompletion nc |
-          last(this.getBody(), last, nc.getInnerCompletion().(BreakCompletion)) and
+          last(this.getBodyNode(), last, nc.getInnerCompletion().(BreakCompletion)) and
           nc.getOuterCompletion() instanceof SimpleCompletion
         )
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       pred = this and
-      first(this.getCondition(), succ) and
+      first(this.getConditionNode(), succ) and
       c instanceof SimpleCompletion
       or
-      last(this.getCondition(), pred, c) and
-      c instanceof TrueCompletion and
-      first(this.getBody(), succ)
+      last(this.getConditionNode(), pred, c) and
+      this.continueLoop(c) and
+      first(this.getBodyNode(), succ)
       or
-      last(this.getBody(), pred, c) and
-      first(this.getCondition(), succ) and
+      last(this.getBodyNode(), pred, c) and
+      first(this.getConditionNode(), succ) and
       c.continuesLoop()
       or
-      last(this.getBody(), pred, any(RedoCompletion rc)) and
-      first(this.getBody(), succ) and
+      last(this.getBodyNode(), pred, any(RedoCompletion rc)) and
+      first(this.getBodyNode(), succ) and
       c instanceof SimpleCompletion
     }
   }
+}
+
+private class YieldTree extends StandardPreOrderTree, Yield {
+  final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
 }
 
 cached
@@ -535,6 +1049,7 @@ private module Cached {
   newtype TSuccessorType =
     TSuccessorSuccessor() or
     TBooleanSuccessor(boolean b) { b = true or b = false } or
+    TEmptinessSuccessor(boolean isEmpty) { isEmpty = true or isEmpty = false } or
     TReturnSuccessor() or
     TBreakSuccessor() or
     TNextSuccessor() or

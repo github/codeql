@@ -13,6 +13,7 @@ private import SuccessorTypes
 private newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(boolean b) { b = true or b = false } or
+  TEmptinessCompletion(boolean isEmpty) { isEmpty = true or isEmpty = false } or
   TReturnCompletion() or
   TBreakCompletion() or
   TNextCompletion() or
@@ -56,6 +57,8 @@ abstract class Completion extends TCompletion {
       this = TBooleanCompletion(_)
     )
     or
+    n = any(RescueModifier parent).getBody() and this = TRaiseCompletion()
+    or
     not n instanceof NonReturningCall and
     not completionIsValidForStmt(n, _) and
     not mustHaveBooleanCompletion(n) and
@@ -94,10 +97,10 @@ abstract class Completion extends TCompletion {
 private predicate isBooleanConstant(AstNode n, boolean value) {
   mustHaveBooleanCompletion(n) and
   (
-    n.(Constant).getValue() = "true" and
+    n instanceof True and
     value = true
     or
-    n.(Constant).getValue() = "false" and
+    n instanceof False and
     value = false
   )
 }
@@ -117,7 +120,7 @@ private predicate mustHaveBooleanCompletion(AstNode n) {
 private predicate inBooleanContext(AstNode n) {
   n = any(IfElsifAstNode parent).getConditionNode()
   or
-  n = any(While parent).getCondition()
+  n = any(ConditionalLoopAstNode parent).getConditionNode()
   or
   exists(LogicalAndAstNode parent |
     n = parent.getLeft()
@@ -136,6 +139,8 @@ private predicate inBooleanContext(AstNode n) {
   n = any(LogicalNotAstNode parent | inBooleanContext(parent)).getOperand()
   or
   n = any(ParenthesizedStatement parent | inBooleanContext(parent)).getChild()
+  or
+  n instanceof Pattern
 }
 
 /**
@@ -152,10 +157,17 @@ class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
 }
 
 /**
+ * A completion that represents evaluation of an expression, whose value determines
+ * the successor. Either a Boolean completion (`BooleanCompletion`)
+ * or an emptiness completion (`EmptinessCompletion`).
+ */
+abstract class ConditionalCompletion extends NormalCompletion { }
+
+/**
  * A completion that represents evaluation of an expression
  * with a Boolean value.
  */
-class BooleanCompletion extends NormalCompletion, TBooleanCompletion {
+class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   private boolean value;
 
   BooleanCompletion() { this = TBooleanCompletion(value) }
@@ -179,6 +191,21 @@ class TrueCompletion extends BooleanCompletion {
 /** A Boolean `false` completion. */
 class FalseCompletion extends BooleanCompletion {
   FalseCompletion() { this.getValue() = false }
+}
+
+/**
+ * A completion that represents evaluation of an emptiness test, for example
+ * a test in a `for in` statement.
+ */
+class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
+  /** Holds if the emptiness test evaluates to `true`. */
+  predicate isEmpty() { this = TEmptinessCompletion(true) }
+
+  override EmptinessSuccessor getAMatchingSuccessorType() {
+    if isEmpty() then result.getValue() = true else result.getValue() = false
+  }
+
+  override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
 }
 
 /**
