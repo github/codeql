@@ -8,7 +8,7 @@
  */
 
 import codeql_ruby.printAst
-import codeql.IDE
+import codeql.IDEContextual
 
 /**
  * The source file to generate an AST from.

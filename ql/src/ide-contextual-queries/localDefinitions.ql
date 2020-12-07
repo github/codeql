@@ -7,7 +7,7 @@
  * @tags ide-contextual-queries/local-definitions
  */
 
-import codeql.IDE
+import codeql.IDEContextual
 import codeql_ruby.AST
 
 external string selectedSourceFile();

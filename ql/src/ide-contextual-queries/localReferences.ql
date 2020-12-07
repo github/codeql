@@ -7,7 +7,7 @@
  * @tags ide-contextual-queries/local-references
  */
 
-import codeql.IDE
+import codeql.IDEContextual
 import codeql_ruby.AST
 import codeql_ruby.ast.Variable
 
