@@ -44,7 +44,7 @@ analysis involving deeper semantic properties of the program should be done on t
 
 The rest of this tutorial briefly summarizes the most important classes and predicates provided by
 this library, including references to the `detailed API documentation
-<https://help.semmle.com/qldoc/go/>`__ where applicable. We start by giving an overview of the AST
+<https://codeql.github.com/codeql-standard-libraries/go/>`__ where applicable. We start by giving an overview of the AST
 representation, followed by an explanation of names and entities, which are used to represent
 name-binding information, and of types and type information. Then we move on to control flow and the
 data-flow graph, and finally the call graph and a few advanced topics.
@@ -69,7 +69,7 @@ first child, reflecting their order in the program text. Similarly, ``x + y`` is
 ``(x + y)``, which is the zeroth child of ``(x + y) * z``, whose first child is ``z``.
 
 All AST nodes belong to class `AstNode
-<https://help.semmle.com/qldoc/go/semmle/go/AST.qll/type.AST$AstNode.html>`__, which defines generic
+<https://codeql.github.com/codeql-standard-libraries/go/semmle/go/AST.qll/type.AST$AstNode.html>`__, which defines generic
 tree traversal predicates:
 
 -  ``getChild(i)``: returns the ``i``\ th child of this AST node.
@@ -88,20 +88,20 @@ access to the source text corresponding to an AST node. The source text is not s
 dataset, and hence is not directly accessible to CodeQL queries.
 
 The predicate ``getLocation()`` in class ``AstNode`` returns a `Location
-<https://help.semmle.com/qldoc/go/semmle/go/Locations.qll/type.Locations$Location.html>`__ entity
+<https://codeql.github.com/codeql-standard-libraries/go/semmle/go/Locations.qll/type.Locations$Location.html>`__ entity
 describing the source location of the program element represented by the AST node. You can use its
 member predicates ``getFile()``, ``getStartLine()``, ``getStartColumn``, ``getEndLine()``, and
 ``getEndColumn()`` to obtain information about its file, start line and column, and end line and
 column.
 
 The most important subclasses of `AstNode
-<https://help.semmle.com/qldoc/go/semmle/go/AST.qll/type.AST$AstNode.html>`__ are `Stmt
-<https://help.semmle.com/qldoc/go/semmle/go/Stmt.qll/type.Stmt$Stmt.html>`__ and `Expr
-<https://help.semmle.com/qldoc/go/semmle/go/Expr.qll/type.Expr$Expr.html>`__, which represent
+<https://codeql.github.com/codeql-standard-libraries/go/semmle/go/AST.qll/type.AST$AstNode.html>`__ are `Stmt
+<https://codeql.github.com/codeql-standard-libraries/go/semmle/go/Stmt.qll/type.Stmt$Stmt.html>`__ and `Expr
+<https://codeql.github.com/codeql-standard-libraries/go/semmle/go/Expr.qll/type.Expr$Expr.html>`__, which represent
 statements and expressions, respectively. This section briefly discusses some of their more
 important subclasses and predicates. For a full reference of all the subclasses of `Stmt
-<https://help.semmle.com/qldoc/go/semmle/go/Stmt.qll/type.Stmt$Stmt.html>`__ and `Expr
-<https://help.semmle.com/qldoc/go/semmle/go/Expr.qll/type.Expr$Expr.html>`__, see
+<https://codeql.github.com/codeql-standard-libraries/go/semmle/go/Stmt.qll/type.Stmt$Stmt.html>`__ and `Expr
+<https://codeql.github.com/codeql-standard-libraries/go/semmle/go/Expr.qll/type.Expr$Expr.html>`__, see
 :doc:`Abstract syntax tree classes for Go <abstract-syntax-tree-classes-for-working-with-go-programs>`.
 
 Statements

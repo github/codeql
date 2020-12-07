@@ -234,7 +234,7 @@ instruction::
    - description: <name-of-query-suite>
 
 This value is displayed when you run `codeql resolve queries
-<../codeql-cli-manual/resolve-queries.html>`__, if the suite is added to a "well-known"
+<../manual/resolve-queries>`__, if the suite is added to a "well-known"
 directory. For more information, see "`Specifying well-known query suites
 <#specifying-well-known-query-suites>`__." 
 

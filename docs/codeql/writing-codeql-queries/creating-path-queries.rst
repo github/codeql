@@ -34,13 +34,7 @@ For more language-specific information on analyzing data flow, see:
 Path query examples
 *******************
 
-The easiest way to get started writing your own path query is to modify one of the existing queries. Visit the links below to see all the built-in path queries:
-
-- `C/C++ path queries <https://help.semmle.com/wiki/label/CCPPOBJ/path-problem>`__
-- `C# path queries <https://help.semmle.com/wiki/label/CSHARP/path-problem>`__
-- `Java path queries <https://help.semmle.com/wiki/label/java/path-problem>`__
-- `JavaScript path queries <https://help.semmle.com/wiki/label/js/path-problem>`__
-- `Python path queries <https://help.semmle.com/wiki/label/python/path-problem>`__
+The easiest way to get started writing your own path query is to modify one of the existing queries. For more information, see the `CodeQL query help <https://codeql.github.com/codeql-query-help>`__.
  
 The Security Lab researchers have used path queries to find security vulnerabilities in various open source projects. To see articles describing how these queries were written, as well as other posts describing other aspects of security research such as exploiting vulnerabilities, see the `GitHub Security Lab website <https://securitylab.github.com/research>`__.
 
@@ -120,7 +114,7 @@ For Python, the ``Paths`` module contains the ``edges`` predicate::
 
     import semmle.python.security.Paths 
 
-You can also import libraries specifically designed to implement data flow analysis in various common frameworks and environments, and many additional libraries are included with CodeQL. To see examples of the different libraries used in data flow analysis, see the links to the built-in queries above or browse the `standard libraries <https://help.semmle.com/QL/ql-libraries.html>`__.
+You can also import libraries specifically designed to implement data flow analysis in various common frameworks and environments, and many additional libraries are included with CodeQL. To see examples of the different libraries used in data flow analysis, see the links to the built-in queries above or browse the `standard libraries <https://codeql.github.com/codeql-standard-libraries>`__.
 
 For all languages, you can also optionally define a ``nodes`` query predicate, which specifies the nodes of the path graph that you are interested in. If ``nodes`` is defined, only edges with endpoints defined by these nodes are selected. If ``nodes`` is not defined, you select all possible endpoints of ``edges``.
 
@@ -133,7 +127,7 @@ You can also define your own ``edges`` predicate in the body of your query. It s
     /** Logical conditions which hold if `(a,b)` is an edge in the data flow graph */
     }
 
-For more examples of how to define an ``edges`` predicate, visit the `standard CodeQL libraries <https://help.semmle.com/QL/ql-libraries.html>`__ and search for ``edges``.
+For more examples of how to define an ``edges`` predicate, visit the `standard CodeQL libraries <https://codeql.github.com/codeql-standard-libraries>`__ and search for ``edges``.
 
 Declaring sources and sinks
 ***************************
@@ -159,7 +153,7 @@ If you are querying Python code (and you have used ``import semmle.python.securi
 
     from TaintedPathSource source, TaintedPathSink sink
 
-You can extend your query by adding different sources and sinks by either defining them in the query, or by importing predefined sources and sinks for specific frameworks and libraries. See the `Python path queries <https://help.semmle.com/wiki/label/python/path-problem>`__ for further details. 
+You can extend your query by adding different sources and sinks by either defining them in the query, or by importing predefined sources and sinks for specific frameworks and libraries. For more information, see the `CodeQL query help for Python <https://codeql.github.com/codeql-query-help/python>`__. 
 
 Defining flow conditions
 ************************

@@ -84,7 +84,7 @@ Let’s start by looking for calls to methods with names of the form ``sparql*Qu
     - a ``MethodAccess``: the call to a SPARQL query method
     - a ``Method``: the SPARQL query method.
   
-  - The ``where`` part of the query ties these variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard CodeQL library for Java <https://help.semmle.com/qldoc/java/>`__.
+  - The ``where`` part of the query ties these variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard CodeQL library for Java <https://codeql.github.com/codeql-standard-libraries/java/>`__.
 
 CodeQL query: find string concatenation
 =======================================

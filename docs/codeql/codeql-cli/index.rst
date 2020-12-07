@@ -10,7 +10,7 @@ CodeQL CLI
 
 - :ref:`CodeQL CLI reference <codeql-cli-reference>`: Learn more about the files you can use when running CodeQL processes and the results format and exit codes that CodeQL generates.
 
-- `CodeQL CLI manual <../codeql-cli-manual>`__: Detailed information about all the commands available with the CodeQL CLI.
+- `CodeQL CLI manual <manual>`__: Detailed information about all the commands available with the CodeQL CLI.
 
 .. toctree::
    :titlesonly:

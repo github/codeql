@@ -28,4 +28,4 @@ CodeQL CLI manual
 -----------------
 
 To view detailed information about each CodeQL CLI command,
-including its usage and options, add the ``--help`` flag or visit the "`CodeQL CLI manual <../codeql-cli-manual>`__."
+including its usage and options, add the ``--help`` flag or visit the "`CodeQL CLI manual <../manual>`__."

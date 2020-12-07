@@ -26,4 +26,4 @@ command line. To run a command, use::
    codeql [command] [subcommand]
 
 To view the reference documentation for a command, add the ``--help`` flag, or visit the 
-"`CodeQL CLI manual <../../codeql-cli-manual>`__."
+"`CodeQL CLI manual <../manual>`__."

@@ -636,7 +636,7 @@ is exactly equivalent to ``((Foo)x)``.
 
 Casts are useful if you want to call a :ref:`member predicate <member-predicates>` that is only defined for a more 
 specific type. For example, the following query selects Java 
-`classes <https://help.semmle.com/qldoc/java/semmle/code/java/Type.qll/type.Type$Class.html>`_
+`classes <https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Type.qll/type.Type$Class.html>`_
 that have a direct supertype called "List":: 
 
     import java

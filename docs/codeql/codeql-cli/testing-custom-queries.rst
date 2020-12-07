@@ -130,7 +130,7 @@ You can also specify:
 - .. include:: ../reusables/threads-query-execution.rst
 
 For full details of all the options you can use when testing queries,
-see the `test run reference documentation <../codeql-cli-manual/test-run.html>`__.
+see the `test run reference documentation <../manual/test-run>`__.
 
 Example
 -------
