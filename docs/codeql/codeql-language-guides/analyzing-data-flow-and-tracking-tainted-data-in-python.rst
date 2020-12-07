@@ -35,7 +35,7 @@ The explicit components are:
 
 A taint tracking or data flow query gives results when there is the flow of data from a source to a sink, which is not blocked by a sanitizer.
 
-These three components are bound together using a `TaintTracking::Configuration <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__.
+These three components are bound together using a `TaintTracking::Configuration <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/old/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__.
 The purpose of the configuration is to specify exactly which sources and sinks are relevant to the specific query.
 
 The final, implicit component is the "kind" of taint, represented by the `TaintKind <https://codeql.github.com/codeql-standard-libraries/python/semmle/python/dataflow/old/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__ class.
