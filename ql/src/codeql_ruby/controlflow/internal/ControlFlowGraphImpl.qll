@@ -269,6 +269,8 @@ private module Trees {
       not result instanceof Else and
       not result instanceof Ensure
     }
+
+    override predicate isHidden() { any() }
   }
 
   private class BeginBlockTree extends StandardPreOrderTree, BeginBlock {

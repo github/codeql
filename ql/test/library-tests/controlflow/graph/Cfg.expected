@@ -18,7 +18,6 @@ nodes
 | cfg.rb:9:7:9:12 | Interpolation |
 | cfg.rb:9:10:9:10 | b |
 | cfg.rb:9:14:9:20 | BareString |
-| cfg.rb:11:1:13:3 | Begin |
 | cfg.rb:12:3:12:6 | puts |
 | cfg.rb:12:3:12:8 | MethodCall |
 | cfg.rb:12:8:12:8 | 4 |
@@ -200,7 +199,6 @@ nodes
 | cfg.rb:75:27:75:28 | 10 |
 | cfg.rb:75:35:75:36 | 10 |
 | cfg.rb:75:43:75:43 | x |
-| cfg.rb:77:1:86:3 | Begin |
 | cfg.rb:78:3:78:3 | ; |
 | cfg.rb:88:1:88:6 | escape |
 | cfg.rb:88:1:88:23 | Assignment |
@@ -699,12 +697,11 @@ edges
 | cfg.rb:7:7:7:12 | Interpolation | cfg.rb:7:4:7:12 | BareSymbol | semmle.label | successor |
 | cfg.rb:7:10:7:10 | b | cfg.rb:7:7:7:12 | Interpolation | semmle.label | successor |
 | cfg.rb:7:14:7:20 | BareSymbol | cfg.rb:7:1:7:21 | SymbolArray | semmle.label | successor |
-| cfg.rb:9:1:9:21 | StringArray | cfg.rb:11:1:13:3 | Begin | semmle.label | successor |
+| cfg.rb:9:1:9:21 | StringArray | cfg.rb:12:8:12:8 | 4 | semmle.label | successor |
 | cfg.rb:9:4:9:12 | BareString | cfg.rb:9:14:9:20 | BareString | semmle.label | successor |
 | cfg.rb:9:7:9:12 | Interpolation | cfg.rb:9:4:9:12 | BareString | semmle.label | successor |
 | cfg.rb:9:10:9:10 | b | cfg.rb:9:7:9:12 | Interpolation | semmle.label | successor |
 | cfg.rb:9:14:9:20 | BareString | cfg.rb:9:1:9:21 | StringArray | semmle.label | successor |
-| cfg.rb:11:1:13:3 | Begin | cfg.rb:12:8:12:8 | 4 | semmle.label | successor |
 | cfg.rb:12:3:12:6 | puts | cfg.rb:12:3:12:8 | MethodCall | semmle.label | successor |
 | cfg.rb:12:3:12:8 | MethodCall | cfg.rb:23:1:23:2 | 41 | semmle.label | successor |
 | cfg.rb:12:8:12:8 | 4 | cfg.rb:12:3:12:6 | puts | semmle.label | successor |
@@ -882,15 +879,14 @@ edges
 | cfg.rb:75:4:75:8 | Binary | cfg.rb:75:15:75:15 | 0 | semmle.label | true |
 | cfg.rb:75:4:75:8 | Binary | cfg.rb:75:17:75:43 | Elsif | semmle.label | false |
 | cfg.rb:75:8:75:8 | 0 | cfg.rb:75:4:75:8 | Binary | semmle.label | successor |
-| cfg.rb:75:15:75:15 | 0 | cfg.rb:77:1:86:3 | Begin | semmle.label | successor |
+| cfg.rb:75:15:75:15 | 0 | cfg.rb:78:3:78:3 | ; | semmle.label | successor |
 | cfg.rb:75:17:75:43 | Elsif | cfg.rb:75:23:75:23 | x | semmle.label | successor |
 | cfg.rb:75:23:75:23 | x | cfg.rb:75:27:75:28 | 10 | semmle.label | successor |
 | cfg.rb:75:23:75:28 | Binary | cfg.rb:75:35:75:36 | 10 | semmle.label | true |
 | cfg.rb:75:23:75:28 | Binary | cfg.rb:75:43:75:43 | x | semmle.label | false |
 | cfg.rb:75:27:75:28 | 10 | cfg.rb:75:23:75:28 | Binary | semmle.label | successor |
-| cfg.rb:75:35:75:36 | 10 | cfg.rb:77:1:86:3 | Begin | semmle.label | successor |
-| cfg.rb:75:43:75:43 | x | cfg.rb:77:1:86:3 | Begin | semmle.label | successor |
-| cfg.rb:77:1:86:3 | Begin | cfg.rb:78:3:78:3 | ; | semmle.label | successor |
+| cfg.rb:75:35:75:36 | 10 | cfg.rb:78:3:78:3 | ; | semmle.label | successor |
+| cfg.rb:75:43:75:43 | x | cfg.rb:78:3:78:3 | ; | semmle.label | successor |
 | cfg.rb:78:3:78:3 | ; | cfg.rb:88:19:88:19 | x | semmle.label | successor |
 | cfg.rb:88:1:88:6 | escape | cfg.rb:88:1:88:23 | Assignment | semmle.label | successor |
 | cfg.rb:88:1:88:23 | Assignment | cfg.rb:90:11:90:13 | 1.4 | semmle.label | successor |
