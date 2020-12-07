@@ -19,7 +19,7 @@ This table lists all subclasses of `Stmt`_.
 +------------------------------------------------------------------------------------+---------------------------------+---------------------------------+--------------------------------------------+
 | `Expr`_ ``;``                                                                      | ExprStmt_                       |                                 |                                            |
 +------------------------------------------------------------------------------------+---------------------------------+---------------------------------+--------------------------------------------+
-| ``{`` `Stmt`_  ``... }``                                                           | Block_                          |                                 |                                            |
+| ``{`` `Stmt`_  ``... }``                                                           | BlockStmt_                      |                                 |                                            |
 +------------------------------------------------------------------------------------+---------------------------------+---------------------------------+--------------------------------------------+
 | ``if (`` `Expr`_ ``)`` `Stmt`_  ``else`` `Stmt`_                                   | IfStmt_                         | `ConditionalStmt`_              |                                            |
 +------------------------------------------------------------------------------------+                                 |                                 |                                            |
@@ -348,7 +348,7 @@ Further reading
 .. _ArrayCreationExpr: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$ArrayCreationExpr.html
 .. _EmptyStmt: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Statement.qll/type.Statement$EmptyStmt.html
 .. _ExprStmt: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Statement.qll/type.Statement$ExprStmt.html
-.. _Block: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Statement.qll/type.Statement$Block.html
+.. _BlockStmt: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Statement.qll/type.Statement$BlockStmt.html
 .. _IfStmt: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Statement.qll/type.Statement$IfStmt.html
 .. _WhileStmt: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Statement.qll/type.Statement$WhileStmt.html
 .. _DoStmt: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Statement.qll/type.Statement$DoStmt.html
