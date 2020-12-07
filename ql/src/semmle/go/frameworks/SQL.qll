@@ -195,8 +195,10 @@ module SQL {
         meth.hasQualifiedName(package, "DB", name) and
         this = meth.getACall().getArgument(0) and
         package = Gorm::packagePath() and
-        name in ["Where", "Raw", "Order", "Not", "Or", "Select", "Table", "Group", "Having",
-              "Joins", "Exec", "Distinct", "Pluck"]
+        name in [
+            "Where", "Raw", "Order", "Not", "Or", "Select", "Table", "Group", "Having", "Joins",
+            "Exec", "Distinct", "Pluck"
+          ]
       )
     }
   }

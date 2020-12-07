@@ -15,8 +15,10 @@ private module GoRestfulHttp {
     GoRestfulSourceMethod() {
       this
           .hasQualifiedName(package("github.com/emicklei/go-restful", ""), "Request",
-            ["QueryParameters", "QueryParameter", "BodyParameter", "HeaderParameter",
-                "PathParameter", "PathParameters"])
+            [
+              "QueryParameters", "QueryParameter", "BodyParameter", "HeaderParameter",
+              "PathParameter", "PathParameters"
+            ])
     }
   }
 

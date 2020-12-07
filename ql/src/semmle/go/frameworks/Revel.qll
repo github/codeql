@@ -53,8 +53,9 @@ module Revel {
       exists(string fieldName |
         this.getField().hasQualifiedName(packagePath(), "Request", fieldName)
       |
-        fieldName in ["Header", "ContentType", "AcceptLanguages", "Locale", "URL", "Form",
-              "MultipartForm"]
+        fieldName in [
+            "Header", "ContentType", "AcceptLanguages", "Locale", "URL", "Form", "MultipartForm"
+          ]
       )
     }
   }
@@ -65,9 +66,10 @@ module Revel {
       this
           .getTarget()
           .hasQualifiedName(packagePath(), "Request",
-            ["FormValue", "PostFormValue", "GetQuery", "GetForm", "GetMultipartForm", "GetBody",
-                "Cookie", "GetHttpHeader", "GetRequestURI", "MultipartReader", "Referer",
-                "UserAgent"])
+            [
+              "FormValue", "PostFormValue", "GetQuery", "GetForm", "GetMultipartForm", "GetBody",
+              "Cookie", "GetHttpHeader", "GetRequestURI", "MultipartReader", "Referer", "UserAgent"
+            ])
     }
   }
 

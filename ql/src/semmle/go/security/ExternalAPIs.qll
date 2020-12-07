@@ -17,8 +17,9 @@ private import Logrus
 abstract class SafeExternalAPIFunction extends Function { }
 
 private predicate isDefaultSafePackage(Package package) {
-  package.getPath() in ["time", "unicode/utf8",
-        package("http://gopkg.in/go-playground/validator", "")]
+  package.getPath() in [
+      "time", "unicode/utf8", package("http://gopkg.in/go-playground/validator", "")
+    ]
 }
 
 /** The default set of "safe" external APIs. */
@@ -126,8 +127,9 @@ Package getAPackageWithModels() {
   result = getAPackageWithFunctionModels()
   or
   // An incomplete list of packages which have been modelled but do not have any function models
-  result.getPath() in [Logrus::packagePath(), GolangOrgXNetWebsocket::packagePath(),
-        GorillaWebsocket::packagePath()]
+  result.getPath() in [
+      Logrus::packagePath(), GolangOrgXNetWebsocket::packagePath(), GorillaWebsocket::packagePath()
+    ]
 }
 
 /** Holds if `n` is a sink for XSS, SQL injection or request forgery. */

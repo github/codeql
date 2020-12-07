@@ -17,8 +17,10 @@ private module Echo {
     EchoContextSource() {
       exists(DataFlow::MethodCallNode call, string methodName |
         methodName =
-          ["Param", "ParamValues", "QueryParam", "QueryParams", "QueryString", "FormValue",
-              "FormParams", "FormFile", "MultipartForm", "Cookie", "Cookies"] and
+          [
+            "Param", "ParamValues", "QueryParam", "QueryParams", "QueryString", "FormValue",
+            "FormParams", "FormFile", "MultipartForm", "Cookie", "Cookies"
+          ] and
         call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
         this = call.getResult(0)
       )
