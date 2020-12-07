@@ -99,9 +99,9 @@ private class UnlessModifierAstNode extends IfElsifAstNode, UnlessModifier {
 private class CondLoop = @while or @while_modifier or @until or @until_modifier;
 
 class ConditionalLoopAstNode extends AstNode, CondLoop {
-  AstNode getCondition() { none() }
+  AstNode getConditionNode() { none() }
 
-  AstNode getBody() { none() }
+  AstNode getBodyNode() { none() }
 
   predicate continueLoop(BooleanCompletion c) { c instanceof TrueCompletion }
 
@@ -109,29 +109,29 @@ class ConditionalLoopAstNode extends AstNode, CondLoop {
 }
 
 private class WhileLoop extends ConditionalLoopAstNode, While {
-  override UnderscoreStatement getCondition() { result = While.super.getCondition() }
+  override UnderscoreStatement getConditionNode() { result = this.getCondition() }
 
-  override Do getBody() { result = While.super.getBody() }
+  override Do getBodyNode() { result = this.getBody() }
 }
 
 private class WhileModifierLoop extends ConditionalLoopAstNode, WhileModifier {
-  override AstNode getCondition() { result = WhileModifier.super.getCondition() }
+  override AstNode getConditionNode() { result = this.getCondition() }
 
-  override UnderscoreStatement getBody() { result = WhileModifier.super.getBody() }
+  override UnderscoreStatement getBodyNode() { result = this.getBody() }
 }
 
 private class UntilLoop extends ConditionalLoopAstNode, Until {
-  override UnderscoreStatement getCondition() { result = Until.super.getCondition() }
+  override UnderscoreStatement getConditionNode() { result = this.getCondition() }
 
-  override Do getBody() { result = Until.super.getBody() }
+  override Do getBodyNode() { result = this.getBody() }
 
   override predicate continueLoop(BooleanCompletion c) { c instanceof FalseCompletion }
 }
 
 private class UntilModifierLoop extends ConditionalLoopAstNode, UntilModifier {
-  override AstNode getCondition() { result = UntilModifier.super.getCondition() }
+  override AstNode getConditionNode() { result = this.getCondition() }
 
-  override UnderscoreStatement getBody() { result = UntilModifier.super.getBody() }
+  override UnderscoreStatement getBodyNode() { result = this.getBody() }
 
   override predicate continueLoop(BooleanCompletion c) { c instanceof FalseCompletion }
 }

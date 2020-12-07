@@ -223,7 +223,7 @@ module SuccessorTypes {
    *
    * ```rb
    * for arg in args do
-   *  puts arg
+   *   puts arg
    * end
    * puts "done";
    * ```
