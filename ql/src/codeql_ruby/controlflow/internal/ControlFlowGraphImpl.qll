@@ -1327,9 +1327,9 @@ module Trees {
       first(this.getConditionNode(), succ) and
       c.continuesLoop()
       or
-      last(this.getBodyNode(), pred, any(RedoCompletion rc)) and
+      last(this.getBodyNode(), pred, c) and
       first(this.getBodyNode(), succ) and
-      c instanceof SimpleCompletion
+      c instanceof RedoCompletion
     }
   }
 }

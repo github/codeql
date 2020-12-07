@@ -1685,7 +1685,7 @@ edges
 | cfg.rb:179:6:179:11 | Binary | cfg.rb:179:18:179:21 | Redo | semmle.label | true |
 | cfg.rb:179:6:179:11 | Binary | cfg.rb:180:8:180:8 | x | semmle.label | false |
 | cfg.rb:179:11:179:11 | 5 | cfg.rb:179:6:179:11 | Binary | semmle.label | successor |
-| cfg.rb:179:18:179:21 | Redo | cfg.rb:178:3:178:3 | x | semmle.label | successor |
+| cfg.rb:179:18:179:21 | Redo | cfg.rb:178:3:178:3 | x | semmle.label | redo |
 | cfg.rb:180:3:180:6 | puts | cfg.rb:180:3:180:8 | MethodCall | semmle.label | successor |
 | cfg.rb:180:3:180:8 | MethodCall | cfg.rb:177:7:177:7 | x | semmle.label | successor |
 | cfg.rb:180:8:180:8 | x | cfg.rb:180:3:180:6 | puts | semmle.label | successor |
@@ -1875,7 +1875,7 @@ edges
 | loops.rb:16:11:16:16 | Binary | loops.rb:17:7:17:10 | Redo | semmle.label | true |
 | loops.rb:16:11:16:16 | Binary | loops.rb:19:10:19:15 | String | semmle.label | false |
 | loops.rb:16:15:16:16 | 10 | loops.rb:16:11:16:16 | Binary | semmle.label | successor |
-| loops.rb:17:7:17:10 | Redo | loops.rb:10:10:10:10 | x | semmle.label | successor |
+| loops.rb:17:7:17:10 | Redo | loops.rb:10:10:10:10 | x | semmle.label | redo |
 | loops.rb:19:5:19:8 | puts | loops.rb:19:5:19:15 | MethodCall | semmle.label | successor |
 | loops.rb:19:5:19:15 | MethodCall | loops.rb:9:9:9:9 | x | semmle.label | successor |
 | loops.rb:19:10:19:15 | String | loops.rb:19:5:19:8 | puts | semmle.label | successor |
