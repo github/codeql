@@ -323,38 +323,41 @@ private module Trees {
 
   private class CaseTree extends PreOrderTree, Case {
     final override predicate propagatesAbnormal(AstNode child) {
-      child = this.getValue() or child = this.getChild(_).(When).getPattern(_)
+      child = this.getValue() or child = this.getChild(_)
     }
 
     final override predicate last(AstNode last, Completion c) {
       last(this.getValue(), last, c) and not exists(this.getChild(_))
       or
-      last(this.getChild(_), last, c) and c instanceof SimpleCompletion
+      last(this.getChild(_).(When).getBody(), last, c)
       or
       exists(int i, ControlFlowTree lastBranch |
-        lastBranch = this.getChild(i) and not exists(this.getChild(i + 1))
-      |
-        last(lastBranch, last, c) and
-        c instanceof FalseCompletion
+        lastBranch = this.getChild(i) and
+        not exists(this.getChild(i + 1)) and
+        last(lastBranch, last, c)
       )
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      first(this.getValue(), succ) and
-      c instanceof SimpleCompletion
-      or
-      pred = this and
-      first(this.getChild(0), succ) and
-      not exists(this.getValue()) and
-      c instanceof SimpleCompletion
+      exists(AstNode next |
+        pred = this and
+        first(next, succ) and
+        c instanceof SimpleCompletion
+      |
+        next = this.getValue()
+        or
+        not exists(this.getValue()) and
+        next = this.getChild(0)
+      )
       or
       last(this.getValue(), pred, c) and
       first(this.getChild(0), succ) and
       c instanceof SimpleCompletion
       or
-      exists(int i, ControlFlowTree branch | branch = this.getChild(i) |
-        last(branch, pred, c) and first(this.getChild(i + 1), succ) and c instanceof FalseCompletion
+      exists(int i, WhenTree branch | branch = this.getChild(i) |
+        last(branch.getLastPattern(), pred, c) and
+        first(this.getChild(i + 1), succ) and
+        c instanceof FalseCompletion
       )
     }
   }
@@ -939,12 +942,16 @@ private module Trees {
   private class WhenTree extends PreOrderTree, When {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getPattern(_) }
 
-    final override predicate last(AstNode last, Completion c) {
+    final Pattern getLastPattern() {
       exists(int i |
-        not exists(this.getPattern(i + 1)) and
-        last(this.getPattern(i), last, c) and
-        c instanceof FalseCompletion
+        result = this.getPattern(i) and
+        not exists(this.getPattern(i + 1))
       )
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(this.getLastPattern(), last, c) and
+      c instanceof FalseCompletion
       or
       last(this.getBody(), last, c)
     }
