@@ -140,7 +140,7 @@ class Definition extends TPreSsaDef {
 predicate implicitEntryDef(Callable c, PreBasicBlock bb, SimpleAssignable a) {
   not a instanceof LocalScopeVariable and
   c = a.getACallable() and
-  succEntry(c, bb)
+  scopeFirst(c, bb)
 }
 
 private predicate assignableDefAt(
@@ -157,7 +157,7 @@ private predicate assignableDefAt(
   or
   def.(ImplicitParameterDefinition).getParameter() = a and
   exists(Callable c | a = c.getAParameter() |
-    succEntry(c, bb) and
+    scopeFirst(c, bb) and
     i = -1
   )
 }
@@ -169,7 +169,7 @@ private predicate readAt(PreBasicBlock bb, int i, AssignableRead read, SimpleAss
 
 pragma[noinline]
 private predicate exitBlock(PreBasicBlock bb, Callable c) {
-  succExit(bb.getLastElement(), _, _) and
+  scopeLast(c, bb.getLastElement(), _) and
   c = bb.getEnclosingCallable()
 }
 

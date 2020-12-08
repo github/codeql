@@ -50,7 +50,20 @@ private import SuccessorTypes
 private import Splitting
 private import semmle.code.csharp.ExprOrStmtParent
 
-abstract private class ControlFlowTree extends ControlFlowElement {
+/** An element that defines a new CFG scope. */
+class CfgScope extends Element, @top_level_exprorstmt_parent { }
+
+module ControlFlowTree {
+  private class Range_ = @callable or @control_flow_element;
+
+  class Range extends Element, Range_ { }
+
+  private predicate id(Range x, Range y) { x = y }
+
+  predicate idOf(Range x, int y) = equivalenceRelation(id/2)(x, y)
+}
+
+abstract private class ControlFlowTree extends ControlFlowTree::Range {
   /**
    * Holds if `first` is the first element executed within this control
    * flow element.
@@ -103,26 +116,10 @@ predicate last(ControlFlowTree cft, ControlFlowElement last, Completion c) {
 pragma[nomagic]
 predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
   any(ControlFlowTree cft).succ(pred, succ, c)
-  or
-  exists(Constructor con, InitializerSplitting::InitializedInstanceMember m, int i |
-    last(m.getInitializer(), pred, c) and
-    c instanceof NormalCompletion and
-    InitializerSplitting::constructorInitializeOrder(con, m, i)
-  |
-    // Flow from one member initializer to the next
-    exists(InitializerSplitting::InitializedInstanceMember next |
-      InitializerSplitting::constructorInitializeOrder(con, next, i + 1) and
-      first(next.getInitializer(), succ)
-    )
-    or
-    // Flow from last member initializer to constructor body
-    m = InitializerSplitting::lastConstructorInitializer(con) and
-    first(con.getBody(), succ)
-  )
 }
 
 /** Holds if `first` is first executed when entering `scope`. */
-predicate succEntry(@top_level_exprorstmt_parent scope, ControlFlowElement first) {
+predicate scopeFirst(CfgScope scope, ControlFlowElement first) {
   scope =
     any(Callable c |
       if exists(c.(Constructor).getInitializer())
@@ -142,7 +139,7 @@ predicate succEntry(@top_level_exprorstmt_parent scope, ControlFlowElement first
 }
 
 /** Holds if `scope` is exited when `last` finishes with completion `c`. */
-predicate succExit(ControlFlowElement last, Callable scope, Completion c) {
+predicate scopeLast(Callable scope, ControlFlowElement last, Completion c) {
   last(scope.getBody(), last, c) and
   not c instanceof GotoCompletion
   or
@@ -151,6 +148,33 @@ predicate succExit(ControlFlowElement last, Callable scope, Completion c) {
     last(m.getInitializer(), last, c) and
     not scope.hasBody()
   )
+}
+
+private class CallableTree extends ControlFlowTree, Callable {
+  final override predicate propagatesAbnormal(ControlFlowElement child) { none() }
+
+  final override predicate first(ControlFlowElement first) { none() }
+
+  final override predicate last(ControlFlowElement last, Completion c) { none() }
+
+  final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    exists(Constructor con, InitializerSplitting::InitializedInstanceMember m, int i |
+      this = con and
+      last(m.getInitializer(), pred, c) and
+      c instanceof NormalCompletion and
+      InitializerSplitting::constructorInitializeOrder(con, m, i)
+    |
+      // Flow from one member initializer to the next
+      exists(InitializerSplitting::InitializedInstanceMember next |
+        InitializerSplitting::constructorInitializeOrder(con, next, i + 1) and
+        first(next.getInitializer(), succ)
+      )
+      or
+      // Flow from last member initializer to constructor body
+      m = InitializerSplitting::lastConstructorInitializer(con) and
+      first(con.getBody(), succ)
+    )
+  }
 }
 
 /**
@@ -347,7 +371,7 @@ module Expressions {
       not this instanceof ConstructorInitializer
     }
 
-    final override ControlFlowTree getChildElement(int i) { result = getExprChild(this, i) }
+    final override ControlFlowElement getChildElement(int i) { result = getExprChild(this, i) }
 
     final override predicate first(ControlFlowElement first) {
       first(this.getFirstChild(), first)
@@ -945,7 +969,7 @@ module Statements {
         )
     }
 
-    final override ControlFlowTree getChildElement(int i) {
+    final override ControlFlowElement getChildElement(int i) {
       result =
         rank[i + 1](ControlFlowElement cfe, int j | cfe = this.getChildElement0(j) | cfe order by j)
     }
