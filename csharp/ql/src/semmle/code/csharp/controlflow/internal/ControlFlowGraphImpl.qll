@@ -108,7 +108,7 @@ private predicate goto(ControlFlowElement cfe, GotoCompletion gc, string label, 
   // Special case: when a `goto` happens inside a `try` statement with a
   // `finally` block, flow does not go directly to the target, but instead
   // to the `finally` block (and from there possibly to the target)
-  not cfe = any(Statements::TryStmtTree t | t.hasFinally()).getBlockOrCatchFinallyPred(_) and
+  not cfe = any(Statements::TryStmtTree t | t.hasFinally()).getAFinallyPredecessor(_, true) and
   label = gc.getLabel() and
   enclosing = cfe.getEnclosingCallable()
 }
@@ -1355,26 +1355,30 @@ module Statements {
     /**
      * Gets a last element from a `try` or `catch` block of this `try` statement
      * that may finish with completion `c`, such that control may be transferred
-     * to the `finally` block (if it exists).
+     * to the `finally` block (if it exists), but only if `finalizable = true`.
      */
     pragma[nomagic]
-    ControlFlowElement getBlockOrCatchFinallyPred(Completion c) {
-      this.lastBlock(result, c) and
+    ControlFlowElement getAFinallyPredecessor(Completion c, boolean finalizable) {
+      // Exit completions skip the `finally` block
+      (if c instanceof ExitCompletion then finalizable = false else finalizable = true) and
       (
-        // Any non-throw completion from the `try` block will always continue directly
-        // to the `finally` block
-        not c instanceof ThrowCompletion
+        this.lastBlock(result, c) and
+        (
+          // Any non-throw completion from the `try` block will always continue directly
+          // to the `finally` block
+          not c instanceof ThrowCompletion
+          or
+          // Any completion from the `try` block will continue to the `finally` block
+          // when there are no catch clauses
+          not exists(this.getACatchClause())
+        )
         or
-        // Any completion from the `try` block will continue to the `finally` block
-        // when there are no catch clauses
-        not exists(this.getACatchClause())
+        // Last element from any of the `catch` clause blocks continues to the `finally` block
+        result = lastCatchClauseBlock(this.getACatchClause(), c)
+        or
+        // Last element of last `catch` clause continues to the `finally` block
+        result = lastLastCatchClause(this.getACatchClause(), c)
       )
-      or
-      // Last element from any of the `catch` clause blocks continues to the `finally` block
-      result = lastCatchClauseBlock(this.getACatchClause(), c)
-      or
-      // Last element of last `catch` clause continues to the `finally` block
-      result = lastLastCatchClause(this.getACatchClause(), c)
     }
 
     pragma[nomagic]
@@ -1387,19 +1391,19 @@ module Statements {
       ControlFlowElement last, NormalCompletion finally, Completion outer, int nestLevel
     ) {
       this.lastFinally0(last, finally) and
-      exists(this.getBlockOrCatchFinallyPred(any(Completion c0 | outer = c0.getOuterCompletion()))) and
+      exists(
+        this.getAFinallyPredecessor(any(Completion c0 | outer = c0.getOuterCompletion()), true)
+      ) and
       nestLevel = this.nestLevel()
     }
 
     final override predicate last(ControlFlowElement last, Completion c) {
-      last = this.getBlockOrCatchFinallyPred(c) and
-      (
+      exists(boolean finalizable | last = this.getAFinallyPredecessor(c, finalizable) |
         // If there is no `finally` block, last elements are from the body, from
         // the blocks of one of the `catch` clauses, or from the last `catch` clause
         not this.hasFinally()
         or
-        // Exit completions ignore the `finally` block
-        c instanceof ExitCompletion
+        finalizable = false
       )
       or
       this.lastFinally(last, c, any(NormalCompletion nc), _)
@@ -1433,43 +1437,22 @@ module Statements {
       first(this.getCatchClause(0), succ)
       or
       exists(CatchClause cc, int i | cc = this.getCatchClause(i) |
+        // Flow from one `catch` clause to the next
         pred = cc and
         last(this.getCatchClause(i), cc, c) and
-        (
-          // Flow from one `catch` clause to the next
-          first(this.getCatchClause(i + 1), succ) and
-          c = any(MatchingCompletion mc | not mc.isMatch())
-          or
-          // Flow from last `catch` clause to first element of `finally` block
-          this.getCatchClause(i).isLast() and
-          first(this.getFinally(), succ) and
-          c instanceof ThrowCompletion // inherited from `try` block
-        )
+        first(this.getCatchClause(i + 1), succ) and
+        c = any(MatchingCompletion mc | not mc.isMatch())
         or
+        // Flow from last element of `catch` clause filter to next `catch` clause
         last(this.getCatchClause(i), pred, c) and
         last(cc.getFilterClause(), pred, _) and
-        (
-          // Flow from last element of `catch` clause filter to next `catch` clause
-          first(this.getCatchClause(i + 1), succ) and
-          c instanceof FalseCompletion
-          or
-          // Flow from last element of `catch` clause filter, of last clause, to first
-          // element of `finally` block
-          this.getCatchClause(i).isLast() and
-          first(this.getFinally(), succ) and
-          c instanceof ThrowCompletion // inherited from `try` block
-        )
-        or
-        // Flow from last element of a `catch` block to first element of `finally` block
-        pred = lastCatchClauseBlock(cc, c) and
-        first(this.getFinally(), succ)
+        first(this.getCatchClause(i + 1), succ) and
+        c instanceof FalseCompletion
       )
       or
-      // Flow from last element of `try` block to first element of `finally` block
-      this.lastBlock(pred, c) and
-      first(this.getFinally(), succ) and
-      not c instanceof ExitCompletion and
-      (c instanceof ThrowCompletion implies not exists(this.getACatchClause()))
+      // Flow into `finally` block
+      pred = getAFinallyPredecessor(c, true) and
+      first(this.getFinally(), succ)
     }
   }
 

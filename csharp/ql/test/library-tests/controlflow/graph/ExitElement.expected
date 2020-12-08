@@ -1537,9 +1537,7 @@
 | ExitMethods.cs:88:9:88:28 | ...; | ExitMethods.cs:88:9:88:27 | call to method Exit | exit |
 | ExitMethods.cs:88:26:88:26 | 0 | ExitMethods.cs:88:26:88:26 | 0 | normal |
 | ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
-| ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit [normal] (0) |
 | ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
-| ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit [normal] (0) |
 | ExitMethods.cs:94:9:96:9 | {...} | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
 | ExitMethods.cs:95:13:95:18 | call to method Exit | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
 | ExitMethods.cs:95:13:95:18 | this access | ExitMethods.cs:95:13:95:18 | this access | normal |
