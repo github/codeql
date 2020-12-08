@@ -78,6 +78,6 @@ public class SAXParserTests {
     factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
     factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); 
     SAXParser parser = factory.newSAXParser();
-    parser.parse(sock.getInputStream(), new DefaultHandler()); //safe [FP]
+    parser.parse(sock.getInputStream(), new DefaultHandler()); //safe
   }
 }

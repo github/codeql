@@ -71,7 +71,6 @@ nodes
 | SAXParserTests.java:55:18:55:38 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SAXParserTests.java:64:18:64:38 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SAXParserTests.java:73:18:73:38 | getInputStream(...) | semmle.label | getInputStream(...) |
-| SAXParserTests.java:81:18:81:38 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | semmle.label | getInputStream(...) |
@@ -214,7 +213,6 @@ nodes
 | SAXParserTests.java:55:18:55:38 | getInputStream(...) | SAXParserTests.java:55:18:55:38 | getInputStream(...) | SAXParserTests.java:55:18:55:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:55:18:55:38 | getInputStream(...) | user input |
 | SAXParserTests.java:64:18:64:38 | getInputStream(...) | SAXParserTests.java:64:18:64:38 | getInputStream(...) | SAXParserTests.java:64:18:64:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:64:18:64:38 | getInputStream(...) | user input |
 | SAXParserTests.java:73:18:73:38 | getInputStream(...) | SAXParserTests.java:73:18:73:38 | getInputStream(...) | SAXParserTests.java:73:18:73:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:73:18:73:38 | getInputStream(...) | user input |
-| SAXParserTests.java:81:18:81:38 | getInputStream(...) | SAXParserTests.java:81:18:81:38 | getInputStream(...) | SAXParserTests.java:81:18:81:38 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXParserTests.java:81:18:81:38 | getInputStream(...) | user input |
 | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | user input |
 | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | user input |
 | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | Unsafe parsing of XML file from $@. | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | user input |
