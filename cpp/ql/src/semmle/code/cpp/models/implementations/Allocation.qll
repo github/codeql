@@ -28,7 +28,7 @@ private class MallocAllocationFunction extends AllocationFunction {
         "MmAllocateMappingAddress", // MmAllocateMappingAddress(size, tag)
         // --- Windows COM allocation
         "CoTaskMemAlloc", // CoTaskMemAlloc(size)
-        // --- Linux kernel memory allocator
+        // --- Solaris/BSD kernel memory allocator
         "kmem_alloc", // kmem_alloc(size, flags)
         "kmem_zalloc", // kmem_zalloc(size, flags)
         // --- OpenSSL memory allocation

@@ -35,7 +35,7 @@ private class StandardDeallocationFunction extends DeallocationFunction {
         "CoTaskMemFree", "CoTaskMemRealloc",
         // --- Windows Automation
         "SysFreeString",
-        // --- Linux kernel memory allocator
+        // --- Solaris/BSD kernel memory allocator
         "kmem_free"
       ]) and
     freedArg = 0
