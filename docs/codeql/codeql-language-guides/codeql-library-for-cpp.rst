@@ -160,11 +160,11 @@ This table lists subclasses of Stmt_ representing C/C++ statements.
 +==========================================================+================================+===================================================+
 | ``__asm__ ("`` *movb %bh, (%eax)* ``");``                | AsmStmt_                       | Specific to a given CPU instruction set           |
 +----------------------------------------------------------+--------------------------------+---------------------------------------------------+
-| ``{`` Stmt_... ``}``                                     | Block_                         |                                                   |
+| ``{`` Stmt_... ``}``                                     | BlockStmt_                     |                                                   |
 +----------------------------------------------------------+--------------------------------+---------------------------------------------------+
-| ``catch (`` Parameter_ ``)`` Block_                      | CatchBlock_                    |                                                   |
+| ``catch (`` Parameter_ ``)`` BlockStmt_                  | CatchBlock_                    |                                                   |
 +----------------------------------------------------------+--------------------------------+---------------------------------------------------+
-| ``catch ( ... )`` Block_                                 | CatchAnyBlock_                 |                                                   |
+| ``catch ( ... )`` BlockStmt_                             | CatchAnyBlock_                 |                                                   |
 +----------------------------------------------------------+--------------------------------+---------------------------------------------------+
 | ``goto *`` *labelptr* ``;``                              | ComputedGotoStmt_              | GNU extension; use with LabelLiteral_             |
 +----------------------------------------------------------+--------------------------------+---------------------------------------------------+
@@ -584,7 +584,7 @@ Further reading
 .. _TemplateVariable: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Variable.qll/type.Variable$TemplateVariable.html
 .. _Stmt: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html
 .. _AsmStmt: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$AsmStmt.html
-.. _Block: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Block.qll/type.Block$Block.html
+.. _BlockStmt: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Block.qll/type.Block$BlockStmt.html
 .. _CatchBlock: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$CatchBlock.html
 .. _CatchAnyBlock: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$CatchAnyBlock.html
 .. _ComputedGotoStmt: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$ComputedGotoStmt.html
@@ -751,6 +751,6 @@ Further reading
 .. _IncludeNext: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Include.qll/type.Include$IncludeNext.html
 .. _Macro: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Macro.qll/type.Macro$Macro.html
 .. _Char16Type: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Char16Type.html
-.. _Char32Type: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Char32Type.html>
+.. _Char32Type: https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Char32Type.html
 
 
