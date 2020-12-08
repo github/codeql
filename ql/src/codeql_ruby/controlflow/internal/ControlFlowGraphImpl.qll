@@ -392,6 +392,33 @@ module Trees {
 
   private class ConstantTree extends LeafTree, Constant { }
 
+  /** A parameter that may have a default value. */
+  abstract class DefaultValueParameterTree extends PreOrderTree {
+    abstract AstNode getDefaultValue();
+
+    predicate hasDefaultValue() { exists(this.getDefaultValue()) }
+
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getDefaultValue() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last = this and
+      exists(this.getDefaultValue()) and
+      c.(MatchingCompletion).getValue() = true
+      or
+      last(this.getDefaultValue(), last, c)
+      or
+      last = this and
+      not exists(this.getDefaultValue()) and
+      c instanceof SimpleCompletion
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      first(this.getDefaultValue(), succ) and
+      c.(MatchingCompletion).getValue() = false
+    }
+  }
+
   private class DestructuredLeftAssignmentTree extends StandardPostOrderTree,
     DestructuredLeftAssignment {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
@@ -688,8 +715,8 @@ module Trees {
     final override AstNode getChildNode(int i) { result = this.getChild() and i = 0 }
   }
 
-  private class KeywordParameterTree extends StandardPostOrderTree, KeywordParameter {
-    final override AstNode getChildNode(int i) { result = this.getValue() and i = 0 }
+  private class KeywordParameterTree extends DefaultValueParameterTree, KeywordParameter {
+    final override AstNode getDefaultValue() { result = this.getValue() }
   }
 
   private class LambdaTree extends StandardPreOrderTree, Lambda {
@@ -820,8 +847,8 @@ module Trees {
     }
   }
 
-  private class OptionalParameterTree extends StandardPostOrderTree, OptionalParameter {
-    final override AstNode getChildNode(int i) { result = this.getValue() and i = 0 }
+  private class OptionalParameterTree extends DefaultValueParameterTree, OptionalParameter {
+    final override AstNode getDefaultValue() { result = this.getValue() }
   }
 
   private class PairTree extends StandardPostOrderTree, Pair {
