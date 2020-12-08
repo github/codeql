@@ -1231,6 +1231,339 @@ private module Stdlib {
       }
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // BaseHTTPServer (Python 2 only)
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `BaseHTTPServer` module. */
+  private DataFlow::Node baseHTTPServer(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("BaseHTTPServer")
+    or
+    exists(DataFlow::TypeTracker t2 | result = baseHTTPServer(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `BaseHTTPServer` module. */
+  DataFlow::Node baseHTTPServer() { result = baseHTTPServer(DataFlow::TypeTracker::end()) }
+
+  /** Provides models for the `BaseHTTPServer` module. */
+  module BaseHTTPServer {
+    /**
+     * Provides models for the `BaseHTTPServer.BaseHTTPRequestHandler` class (Python 2 only).
+     */
+    module BaseHTTPRequestHandler {
+      /** Gets a reference to the `BaseHTTPServer.BaseHTTPRequestHandler` class. */
+      private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+        t.start() and
+        result = DataFlow::importNode("BaseHTTPServer" + "." + "BaseHTTPRequestHandler")
+        or
+        t.startInAttr("BaseHTTPRequestHandler") and
+        result = baseHTTPServer()
+        or
+        exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the `BaseHTTPServer.BaseHTTPRequestHandler` class. */
+      DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // SimpleHTTPServer (Python 2 only)
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `SimpleHTTPServer` module. */
+  private DataFlow::Node simpleHTTPServer(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("SimpleHTTPServer")
+    or
+    exists(DataFlow::TypeTracker t2 | result = simpleHTTPServer(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `SimpleHTTPServer` module. */
+  DataFlow::Node simpleHTTPServer() { result = simpleHTTPServer(DataFlow::TypeTracker::end()) }
+
+  /** Provides models for the `SimpleHTTPServer` module. */
+  module SimpleHTTPServer {
+    /**
+     * Provides models for the `SimpleHTTPServer.SimpleHTTPRequestHandler` class (Python 2 only).
+     */
+    module SimpleHTTPRequestHandler {
+      /** Gets a reference to the `SimpleHTTPServer.SimpleHTTPRequestHandler` class. */
+      private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+        t.start() and
+        result = DataFlow::importNode("SimpleHTTPServer" + "." + "SimpleHTTPRequestHandler")
+        or
+        t.startInAttr("SimpleHTTPRequestHandler") and
+        result = simpleHTTPServer()
+        or
+        exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the `SimpleHTTPServer.SimpleHTTPRequestHandler` class. */
+      DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // CGIHTTPServer (Python 2 only)
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `CGIHTTPServer` module. */
+  private DataFlow::Node cgiHTTPServer(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("CGIHTTPServer")
+    or
+    exists(DataFlow::TypeTracker t2 | result = cgiHTTPServer(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `CGIHTTPServer` module. */
+  DataFlow::Node cgiHTTPServer() { result = cgiHTTPServer(DataFlow::TypeTracker::end()) }
+
+  /** Provides models for the `CGIHTTPServer` module. */
+  module CGIHTTPServer {
+    /**
+     * Provides models for the `CGIHTTPServer.CGIHTTPRequestHandler` class (Python 2 only).
+     */
+    module CGIHTTPRequestHandler {
+      /** Gets a reference to the `CGIHTTPServer.CGIHTTPRequestHandler` class. */
+      private DataFlow::Node classRef(DataFlow::TypeTracker t) {
+        t.start() and
+        result = DataFlow::importNode("CGIHTTPServer" + "." + "CGIHTTPRequestHandler")
+        or
+        t.startInAttr("CGIHTTPRequestHandler") and
+        result = cgiHTTPServer()
+        or
+        exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the `CGIHTTPServer.CGIHTTPRequestHandler` class. */
+      DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // http (Python 3 only)
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `http` module. */
+  private DataFlow::Node http(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("http")
+    or
+    exists(DataFlow::TypeTracker t2 | result = http(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `http` module. */
+  DataFlow::Node http() { result = http(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `http` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node http_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["server"] and
+    (
+      t.start() and
+      result = DataFlow::importNode("http" + "." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = http()
+    )
+    or
+    // Due to bad performance when using normal setup with `http_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        http_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate http_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(http_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `http` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node http_attr(string attr_name) {
+    result = http_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  /** Provides models for the `http` module. */
+  module http {
+    // -------------------------------------------------------------------------
+    // http.server
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `http.server` module. */
+    DataFlow::Node server() { result = http_attr("server") }
+
+    /** Provides models for the `http.server` module */
+    module server {
+      /**
+       * Gets a reference to the attribute `attr_name` of the `http.server` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node server_attr(DataFlow::TypeTracker t, string attr_name) {
+        attr_name in ["BaseHTTPRequestHandler", "SimpleHTTPRequestHandler", "CGIHTTPRequestHandler"] and
+        (
+          t.start() and
+          result = DataFlow::importNode("http.server" + "." + attr_name)
+          or
+          t.startInAttr(attr_name) and
+          result = server()
+        )
+        or
+        // Due to bad performance when using normal setup with `server_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            server_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate server_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(server_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of the `http.server` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node server_attr(string attr_name) {
+        result = server_attr(DataFlow::TypeTracker::end(), attr_name)
+      }
+
+      /**
+       * Provides models for the `http.server.BaseHTTPRequestHandler` class (Python 3 only).
+       *
+       * See https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler.
+       */
+      module BaseHTTPRequestHandler {
+        /** Gets a reference to the `http.server.BaseHTTPRequestHandler` class. */
+        DataFlow::Node classRef() { result = server_attr("BaseHTTPRequestHandler") }
+      }
+
+      /**
+       * Provides models for the `http.server.SimpleHTTPRequestHandler` class (Python 3 only).
+       *
+       * See https://docs.python.org/3.9/library/http.server.html#http.server.SimpleHTTPRequestHandler.
+       */
+      module SimpleHTTPRequestHandler {
+        /** Gets a reference to the `http.server.SimpleHTTPRequestHandler` class. */
+        DataFlow::Node classRef() { result = server_attr("SimpleHTTPRequestHandler") }
+      }
+
+      /**
+       * Provides models for the `http.server.CGIHTTPRequestHandler` class (Python 3 only).
+       *
+       * See https://docs.python.org/3.9/library/http.server.html#http.server.CGIHTTPRequestHandler.
+       */
+      module CGIHTTPRequestHandler {
+        /** Gets a reference to the `http.server.CGIHTTPRequestHandler` class. */
+        DataFlow::Node classRef() { result = server_attr("CGIHTTPRequestHandler") }
+      }
+    }
+  }
+
+  /**
+   * Provides models for the `BaseHTTPRequestHandler` class and subclasses.
+   *
+   * See
+   *  - https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler
+   *  - https://docs.python.org/2.7/library/basehttpserver.html#BaseHTTPServer.BaseHTTPRequestHandler
+   */
+  private module HTTPRequestHandler {
+    /** Gets a reference to the `BaseHTTPRequestHandler` class or any subclass. */
+    private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
+      // Python 2
+      t.start() and
+      result in [
+          BaseHTTPServer::BaseHTTPRequestHandler::classRef(),
+          SimpleHTTPServer::SimpleHTTPRequestHandler::classRef(),
+          CGIHTTPServer::CGIHTTPRequestHandler::classRef()
+        ]
+      or
+      // Python 3
+      t.start() and
+      result in [
+          http::server::BaseHTTPRequestHandler::classRef(),
+          http::server::SimpleHTTPRequestHandler::classRef(),
+          http::server::CGIHTTPRequestHandler::classRef()
+        ]
+      or
+      // subclasses in project code
+      result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
+      or
+      exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `BaseHTTPRequestHandler` class or any subclass. */
+    DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
+
+    /** A HTTPRequestHandler class definition (most likely in project code). */
+    class HTTPRequestHandlerClassDef extends Class {
+      HTTPRequestHandlerClassDef() { this.getParent() = subclassRef().asExpr() }
+    }
+
+    /**
+     * A source of an instance of the `BaseHTTPRequestHandler` class or any subclass.
+     *
+     * This can include instantiation of the class, return value from function
+     * calls, or a special parameter that will be set when functions are call by external
+     * library.
+     *
+     * Use `classname::instance()` predicate to get references to instances of the `BaseHTTPRequestHandler` class or any subclass.
+     */
+    abstract class InstanceSource extends DataFlow::Node { }
+
+    /** The `self` parameter in a method on the `BaseHTTPRequestHandler` class or any subclass. */
+    private class SelfParam extends InstanceSource, RemoteFlowSource::Range, DataFlow::ParameterNode {
+      SelfParam() {
+        exists(HTTPRequestHandlerClassDef cls | cls.getAMethod().getArg(0) = this.getParameter())
+      }
+
+      override string getSourceType() { result = "stdlib HTTPRequestHandler" }
+    }
+
+    /** Gets a reference to an instance of the `BaseHTTPRequestHandler` class or any subclass. */
+    private DataFlow::Node instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of the `BaseHTTPRequestHandler` class or any subclass. */
+    DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        nodeFrom = instance() and
+        exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
+          read.getAttributeName() in [
+              // str
+              "requestline", "path",
+              // by default dict-like http.client.HTTPMessage, which is a subclass of email.message.Message
+              // see https://docs.python.org/3.9/library/email.compat32-message.html#email.message.Message
+              // TODO: Implement custom methods (at least `get_all`, `as_bytes`, `as_string`)
+              "headers",
+              // file-like
+              "rfile"
+            ]
+        )
+      }
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
