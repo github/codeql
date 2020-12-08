@@ -23,7 +23,7 @@ class Method extends Callable, @method {
   final override Method::Range range;
   final override Generated::Method generated;
 
-  final override string describeQlClass() { result = "Method" }
+  final override string getAPrimaryQlClass() { result = "Method" }
 
   final override string toString() { result = this.getName() }
 
@@ -47,7 +47,7 @@ class Method extends Callable, @method {
 class SingletonMethod extends Callable, @singleton_method {
   final override SingletonMethod::Range range;
 
-  final override string describeQlClass() { result = "SingletonMethod" }
+  final override string getAPrimaryQlClass() { result = "SingletonMethod" }
 
   final override string toString() { result = this.getName() }
 
@@ -64,7 +64,7 @@ class SingletonMethod extends Callable, @singleton_method {
 class Lambda extends Callable, @lambda {
   final override Lambda::Range range;
 
-  final override string describeQlClass() { result = "Lambda" }
+  final override string getAPrimaryQlClass() { result = "Lambda" }
 
   final override string toString() { result = "-> { ... }" }
 }
@@ -78,7 +78,7 @@ class Block extends AstNode, Callable {
 class DoBlock extends Block, @do_block {
   final override DoBlock::Range range;
 
-  final override string describeQlClass() { result = "DoBlock" }
+  final override string getAPrimaryQlClass() { result = "DoBlock" }
 
   final override string toString() { result = "| ... |" }
 }
@@ -92,7 +92,7 @@ class DoBlock extends Block, @do_block {
 class BraceBlock extends Block, @block {
   final override BraceBlock::Range range;
 
-  final override string describeQlClass() { result = "BraceBlock" }
+  final override string getAPrimaryQlClass() { result = "BraceBlock" }
 
   final override string toString() { result = "{ ... }" }
 }

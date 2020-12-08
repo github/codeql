@@ -27,7 +27,7 @@ pub fn write(language: &Language, classes: &[ql::TopLevel]) -> std::io::Result<(
 /// Creates the hard-coded `AstNode` class that acts as a supertype of all
 /// classes we generate.
 fn create_ast_node_class<'a>() -> ql::Class<'a> {
-    // Default implementation of `toString` calls `this.describeQlClass()`
+    // Default implementation of `toString` calls `this.getAPrimaryQlClass()`
     let to_string = ql::Predicate {
         name: "toString",
         overridden: false,
@@ -37,7 +37,7 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
             Box::new(ql::Expression::Var("result")),
             Box::new(ql::Expression::Dot(
                 Box::new(ql::Expression::Var("this")),
-                "describeQlClass",
+                "getAPrimaryQlClass",
                 vec![],
             )),
         ),
@@ -48,8 +48,8 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         create_none_predicate("getAFieldOrChild", false, Some(ql::Type::Normal("AstNode")));
     let get_parent = create_none_predicate("getParent", false, Some(ql::Type::Normal("AstNode")));
     let get_parent_index = create_none_predicate("getParentIndex", false, Some(ql::Type::Int));
-    let describe_ql_class = ql::Predicate {
-        name: "describeQlClass",
+    let get_a_primary_ql_class = ql::Predicate {
+        name: "getAPrimaryQlClass",
         overridden: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
@@ -69,7 +69,7 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
             get_parent,
             get_parent_index,
             get_a_field_or_child,
-            describe_ql_class,
+            get_a_primary_ql_class,
         ],
     }
 }
@@ -126,7 +126,7 @@ fn create_token_class<'a>() -> ql::Class<'a> {
             get_value,
             get_location,
             to_string,
-            create_describe_ql_class("Token"),
+            create_get_a_primary_ql_class("Token"),
         ],
     }
 }
@@ -135,7 +135,7 @@ fn create_token_class<'a>() -> ql::Class<'a> {
 fn create_reserved_word_class<'a>() -> ql::Class<'a> {
     let db_name = "reserved_word";
     let class_name = "ReservedWord";
-    let describe_ql_class = create_describe_ql_class(&class_name);
+    let get_a_primary_ql_class = create_get_a_primary_ql_class(&class_name);
     ql::Class {
         name: class_name,
         is_abstract: false,
@@ -143,7 +143,7 @@ fn create_reserved_word_class<'a>() -> ql::Class<'a> {
             .into_iter()
             .collect(),
         characteristic_predicate: None,
-        predicates: vec![describe_ql_class],
+        predicates: vec![get_a_primary_ql_class],
     }
 }
 
@@ -162,11 +162,11 @@ fn create_none_predicate<'a>(
     }
 }
 
-/// Creates an overridden `describeQlClass` predicate that returns the given
+/// Creates an overridden `getAPrimaryQlClass` predicate that returns the given
 /// name.
-fn create_describe_ql_class<'a>(class_name: &'a str) -> ql::Predicate<'a> {
+fn create_get_a_primary_ql_class<'a>(class_name: &'a str) -> ql::Predicate<'a> {
     ql::Predicate {
-        name: "describeQlClass",
+        name: "getAPrimaryQlClass",
         overridden: true,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
@@ -374,7 +374,7 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
         match &node.kind {
             node_types::EntryKind::Token { kind_id: _ } => {
                 if type_name.named {
-                    let describe_ql_class = create_describe_ql_class(&node.ql_class_name);
+                    let get_a_primary_ql_class = create_get_a_primary_ql_class(&node.ql_class_name);
                     let mut supertypes: BTreeSet<ql::Type> = BTreeSet::new();
                     supertypes.insert(ql::Type::AtType(&node.dbscheme_name));
                     supertypes.insert(ql::Type::Normal("Token"));
@@ -383,7 +383,7 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
                         is_abstract: false,
                         supertypes,
                         characteristic_predicate: None,
-                        predicates: vec![describe_ql_class],
+                        predicates: vec![get_a_primary_ql_class],
                     }));
                 }
             }
@@ -436,7 +436,7 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
                     .collect(),
                     characteristic_predicate: None,
                     predicates: vec![
-                        create_describe_ql_class(&main_class_name),
+                        create_get_a_primary_ql_class(&main_class_name),
                         create_get_location_predicate(&main_table_name, main_table_arity),
                     ],
                 };

@@ -8,7 +8,7 @@ module Generated {
   private import codeql.Locations
 
   class AstNode extends @ast_node {
-    string toString() { result = this.describeQlClass() }
+    string toString() { result = this.getAPrimaryQlClass() }
 
     Location getLocation() { none() }
 
@@ -18,7 +18,7 @@ module Generated {
 
     AstNode getAFieldOrChild() { none() }
 
-    string describeQlClass() { result = "???" }
+    string getAPrimaryQlClass() { result = "???" }
   }
 
   class Token extends @token, AstNode {
@@ -32,11 +32,11 @@ module Generated {
 
     override string toString() { result = getValue() }
 
-    override string describeQlClass() { result = "Token" }
+    override string getAPrimaryQlClass() { result = "Token" }
   }
 
   class ReservedWord extends @reserved_word, Token {
-    override string describeQlClass() { result = "ReservedWord" }
+    override string getAPrimaryQlClass() { result = "ReservedWord" }
   }
 
   class UnderscoreArg extends @underscore_arg, AstNode { }
@@ -52,7 +52,7 @@ module Generated {
   class UnderscoreVariable extends @underscore_variable, AstNode { }
 
   class Alias extends @alias, AstNode {
-    override string describeQlClass() { result = "Alias" }
+    override string getAPrimaryQlClass() { result = "Alias" }
 
     override Location getLocation() { alias_def(this, _, _, _, _, result) }
 
@@ -70,7 +70,7 @@ module Generated {
   }
 
   class ArgumentList extends @argument_list, AstNode {
-    override string describeQlClass() { result = "ArgumentList" }
+    override string getAPrimaryQlClass() { result = "ArgumentList" }
 
     override Location getLocation() { argument_list_def(this, _, _, result) }
 
@@ -84,7 +84,7 @@ module Generated {
   }
 
   class Array extends @array, AstNode {
-    override string describeQlClass() { result = "Array" }
+    override string getAPrimaryQlClass() { result = "Array" }
 
     override Location getLocation() { array_def(this, _, _, result) }
 
@@ -98,7 +98,7 @@ module Generated {
   }
 
   class Assignment extends @assignment, AstNode {
-    override string describeQlClass() { result = "Assignment" }
+    override string getAPrimaryQlClass() { result = "Assignment" }
 
     override Location getLocation() { assignment_def(this, _, _, _, _, result) }
 
@@ -116,7 +116,7 @@ module Generated {
   }
 
   class BareString extends @bare_string, AstNode {
-    override string describeQlClass() { result = "BareString" }
+    override string getAPrimaryQlClass() { result = "BareString" }
 
     override Location getLocation() { bare_string_def(this, _, _, result) }
 
@@ -130,7 +130,7 @@ module Generated {
   }
 
   class BareSymbol extends @bare_symbol, AstNode {
-    override string describeQlClass() { result = "BareSymbol" }
+    override string getAPrimaryQlClass() { result = "BareSymbol" }
 
     override Location getLocation() { bare_symbol_def(this, _, _, result) }
 
@@ -144,7 +144,7 @@ module Generated {
   }
 
   class Begin extends @begin, AstNode {
-    override string describeQlClass() { result = "Begin" }
+    override string getAPrimaryQlClass() { result = "Begin" }
 
     override Location getLocation() { begin_def(this, _, _, result) }
 
@@ -158,7 +158,7 @@ module Generated {
   }
 
   class BeginBlock extends @begin_block, AstNode {
-    override string describeQlClass() { result = "BeginBlock" }
+    override string getAPrimaryQlClass() { result = "BeginBlock" }
 
     override Location getLocation() { begin_block_def(this, _, _, result) }
 
@@ -172,7 +172,7 @@ module Generated {
   }
 
   class Binary extends @binary, AstNode {
-    override string describeQlClass() { result = "Binary" }
+    override string getAPrimaryQlClass() { result = "Binary" }
 
     override Location getLocation() { binary_def(this, _, _, _, _, _, result) }
 
@@ -194,7 +194,7 @@ module Generated {
   }
 
   class Block extends @block, AstNode {
-    override string describeQlClass() { result = "Block" }
+    override string getAPrimaryQlClass() { result = "Block" }
 
     override Location getLocation() { block_def(this, _, _, result) }
 
@@ -212,7 +212,7 @@ module Generated {
   }
 
   class BlockArgument extends @block_argument, AstNode {
-    override string describeQlClass() { result = "BlockArgument" }
+    override string getAPrimaryQlClass() { result = "BlockArgument" }
 
     override Location getLocation() { block_argument_def(this, _, _, _, result) }
 
@@ -226,7 +226,7 @@ module Generated {
   }
 
   class BlockParameter extends @block_parameter, AstNode {
-    override string describeQlClass() { result = "BlockParameter" }
+    override string getAPrimaryQlClass() { result = "BlockParameter" }
 
     override Location getLocation() { block_parameter_def(this, _, _, _, result) }
 
@@ -240,7 +240,7 @@ module Generated {
   }
 
   class BlockParameters extends @block_parameters, AstNode {
-    override string describeQlClass() { result = "BlockParameters" }
+    override string getAPrimaryQlClass() { result = "BlockParameters" }
 
     override Location getLocation() { block_parameters_def(this, _, _, result) }
 
@@ -254,7 +254,7 @@ module Generated {
   }
 
   class Break extends @break, AstNode {
-    override string describeQlClass() { result = "Break" }
+    override string getAPrimaryQlClass() { result = "Break" }
 
     override Location getLocation() { break_def(this, _, _, result) }
 
@@ -268,7 +268,7 @@ module Generated {
   }
 
   class Call extends @call, AstNode {
-    override string describeQlClass() { result = "Call" }
+    override string getAPrimaryQlClass() { result = "Call" }
 
     override Location getLocation() { call_def(this, _, _, _, _, result) }
 
@@ -286,7 +286,7 @@ module Generated {
   }
 
   class Case extends @case__, AstNode {
-    override string describeQlClass() { result = "Case" }
+    override string getAPrimaryQlClass() { result = "Case" }
 
     override Location getLocation() { case_def(this, _, _, result) }
 
@@ -302,7 +302,7 @@ module Generated {
   }
 
   class ChainedString extends @chained_string, AstNode {
-    override string describeQlClass() { result = "ChainedString" }
+    override string getAPrimaryQlClass() { result = "ChainedString" }
 
     override Location getLocation() { chained_string_def(this, _, _, result) }
 
@@ -316,11 +316,11 @@ module Generated {
   }
 
   class Character extends @token_character, Token {
-    override string describeQlClass() { result = "Character" }
+    override string getAPrimaryQlClass() { result = "Character" }
   }
 
   class Class extends @class, AstNode {
-    override string describeQlClass() { result = "Class" }
+    override string getAPrimaryQlClass() { result = "Class" }
 
     override Location getLocation() { class_def(this, _, _, _, result) }
 
@@ -338,19 +338,19 @@ module Generated {
   }
 
   class ClassVariable extends @token_class_variable, Token {
-    override string describeQlClass() { result = "ClassVariable" }
+    override string getAPrimaryQlClass() { result = "ClassVariable" }
   }
 
   class Comment extends @token_comment, Token {
-    override string describeQlClass() { result = "Comment" }
+    override string getAPrimaryQlClass() { result = "Comment" }
   }
 
   class Complex extends @token_complex, Token {
-    override string describeQlClass() { result = "Complex" }
+    override string getAPrimaryQlClass() { result = "Complex" }
   }
 
   class Conditional extends @conditional, AstNode {
-    override string describeQlClass() { result = "Conditional" }
+    override string getAPrimaryQlClass() { result = "Conditional" }
 
     override Location getLocation() { conditional_def(this, _, _, _, _, _, result) }
 
@@ -372,11 +372,11 @@ module Generated {
   }
 
   class Constant extends @token_constant, Token {
-    override string describeQlClass() { result = "Constant" }
+    override string getAPrimaryQlClass() { result = "Constant" }
   }
 
   class DestructuredLeftAssignment extends @destructured_left_assignment, AstNode {
-    override string describeQlClass() { result = "DestructuredLeftAssignment" }
+    override string getAPrimaryQlClass() { result = "DestructuredLeftAssignment" }
 
     override Location getLocation() { destructured_left_assignment_def(this, _, _, result) }
 
@@ -390,7 +390,7 @@ module Generated {
   }
 
   class DestructuredParameter extends @destructured_parameter, AstNode {
-    override string describeQlClass() { result = "DestructuredParameter" }
+    override string getAPrimaryQlClass() { result = "DestructuredParameter" }
 
     override Location getLocation() { destructured_parameter_def(this, _, _, result) }
 
@@ -404,7 +404,7 @@ module Generated {
   }
 
   class Do extends @do, AstNode {
-    override string describeQlClass() { result = "Do" }
+    override string getAPrimaryQlClass() { result = "Do" }
 
     override Location getLocation() { do_def(this, _, _, result) }
 
@@ -418,7 +418,7 @@ module Generated {
   }
 
   class DoBlock extends @do_block, AstNode {
-    override string describeQlClass() { result = "DoBlock" }
+    override string getAPrimaryQlClass() { result = "DoBlock" }
 
     override Location getLocation() { do_block_def(this, _, _, result) }
 
@@ -436,7 +436,7 @@ module Generated {
   }
 
   class ElementReference extends @element_reference, AstNode {
-    override string describeQlClass() { result = "ElementReference" }
+    override string getAPrimaryQlClass() { result = "ElementReference" }
 
     override Location getLocation() { element_reference_def(this, _, _, _, result) }
 
@@ -454,7 +454,7 @@ module Generated {
   }
 
   class Else extends @else, AstNode {
-    override string describeQlClass() { result = "Else" }
+    override string getAPrimaryQlClass() { result = "Else" }
 
     override Location getLocation() { else_def(this, _, _, result) }
 
@@ -468,7 +468,7 @@ module Generated {
   }
 
   class Elsif extends @elsif, AstNode {
-    override string describeQlClass() { result = "Elsif" }
+    override string getAPrimaryQlClass() { result = "Elsif" }
 
     override Location getLocation() { elsif_def(this, _, _, _, result) }
 
@@ -490,11 +490,11 @@ module Generated {
   }
 
   class EmptyStatement extends @token_empty_statement, Token {
-    override string describeQlClass() { result = "EmptyStatement" }
+    override string getAPrimaryQlClass() { result = "EmptyStatement" }
   }
 
   class EndBlock extends @end_block, AstNode {
-    override string describeQlClass() { result = "EndBlock" }
+    override string getAPrimaryQlClass() { result = "EndBlock" }
 
     override Location getLocation() { end_block_def(this, _, _, result) }
 
@@ -508,7 +508,7 @@ module Generated {
   }
 
   class Ensure extends @ensure, AstNode {
-    override string describeQlClass() { result = "Ensure" }
+    override string getAPrimaryQlClass() { result = "Ensure" }
 
     override Location getLocation() { ensure_def(this, _, _, result) }
 
@@ -522,11 +522,11 @@ module Generated {
   }
 
   class EscapeSequence extends @token_escape_sequence, Token {
-    override string describeQlClass() { result = "EscapeSequence" }
+    override string getAPrimaryQlClass() { result = "EscapeSequence" }
   }
 
   class ExceptionVariable extends @exception_variable, AstNode {
-    override string describeQlClass() { result = "ExceptionVariable" }
+    override string getAPrimaryQlClass() { result = "ExceptionVariable" }
 
     override Location getLocation() { exception_variable_def(this, _, _, _, result) }
 
@@ -540,7 +540,7 @@ module Generated {
   }
 
   class Exceptions extends @exceptions, AstNode {
-    override string describeQlClass() { result = "Exceptions" }
+    override string getAPrimaryQlClass() { result = "Exceptions" }
 
     override Location getLocation() { exceptions_def(this, _, _, result) }
 
@@ -554,15 +554,15 @@ module Generated {
   }
 
   class False extends @token_false, Token {
-    override string describeQlClass() { result = "False" }
+    override string getAPrimaryQlClass() { result = "False" }
   }
 
   class Float extends @token_float, Token {
-    override string describeQlClass() { result = "Float" }
+    override string getAPrimaryQlClass() { result = "Float" }
   }
 
   class For extends @for, AstNode {
-    override string describeQlClass() { result = "For" }
+    override string getAPrimaryQlClass() { result = "For" }
 
     override Location getLocation() { for_def(this, _, _, _, _, result) }
 
@@ -584,11 +584,11 @@ module Generated {
   }
 
   class GlobalVariable extends @token_global_variable, Token {
-    override string describeQlClass() { result = "GlobalVariable" }
+    override string getAPrimaryQlClass() { result = "GlobalVariable" }
   }
 
   class Hash extends @hash, AstNode {
-    override string describeQlClass() { result = "Hash" }
+    override string getAPrimaryQlClass() { result = "Hash" }
 
     override Location getLocation() { hash_def(this, _, _, result) }
 
@@ -602,7 +602,7 @@ module Generated {
   }
 
   class HashSplatArgument extends @hash_splat_argument, AstNode {
-    override string describeQlClass() { result = "HashSplatArgument" }
+    override string getAPrimaryQlClass() { result = "HashSplatArgument" }
 
     override Location getLocation() { hash_splat_argument_def(this, _, _, _, result) }
 
@@ -616,7 +616,7 @@ module Generated {
   }
 
   class HashSplatParameter extends @hash_splat_parameter, AstNode {
-    override string describeQlClass() { result = "HashSplatParameter" }
+    override string getAPrimaryQlClass() { result = "HashSplatParameter" }
 
     override Location getLocation() { hash_splat_parameter_def(this, _, _, result) }
 
@@ -630,11 +630,11 @@ module Generated {
   }
 
   class HeredocBeginning extends @token_heredoc_beginning, Token {
-    override string describeQlClass() { result = "HeredocBeginning" }
+    override string getAPrimaryQlClass() { result = "HeredocBeginning" }
   }
 
   class HeredocBody extends @heredoc_body, AstNode {
-    override string describeQlClass() { result = "HeredocBody" }
+    override string getAPrimaryQlClass() { result = "HeredocBody" }
 
     override Location getLocation() { heredoc_body_def(this, _, _, result) }
 
@@ -648,19 +648,19 @@ module Generated {
   }
 
   class HeredocContent extends @token_heredoc_content, Token {
-    override string describeQlClass() { result = "HeredocContent" }
+    override string getAPrimaryQlClass() { result = "HeredocContent" }
   }
 
   class HeredocEnd extends @token_heredoc_end, Token {
-    override string describeQlClass() { result = "HeredocEnd" }
+    override string getAPrimaryQlClass() { result = "HeredocEnd" }
   }
 
   class Identifier extends @token_identifier, Token {
-    override string describeQlClass() { result = "Identifier" }
+    override string getAPrimaryQlClass() { result = "Identifier" }
   }
 
   class If extends @if, AstNode {
-    override string describeQlClass() { result = "If" }
+    override string getAPrimaryQlClass() { result = "If" }
 
     override Location getLocation() { if_def(this, _, _, _, result) }
 
@@ -680,7 +680,7 @@ module Generated {
   }
 
   class IfModifier extends @if_modifier, AstNode {
-    override string describeQlClass() { result = "IfModifier" }
+    override string getAPrimaryQlClass() { result = "IfModifier" }
 
     override Location getLocation() { if_modifier_def(this, _, _, _, _, result) }
 
@@ -698,7 +698,7 @@ module Generated {
   }
 
   class In extends @in, AstNode {
-    override string describeQlClass() { result = "In" }
+    override string getAPrimaryQlClass() { result = "In" }
 
     override Location getLocation() { in_def(this, _, _, _, result) }
 
@@ -712,15 +712,15 @@ module Generated {
   }
 
   class InstanceVariable extends @token_instance_variable, Token {
-    override string describeQlClass() { result = "InstanceVariable" }
+    override string getAPrimaryQlClass() { result = "InstanceVariable" }
   }
 
   class Integer extends @token_integer, Token {
-    override string describeQlClass() { result = "Integer" }
+    override string getAPrimaryQlClass() { result = "Integer" }
   }
 
   class Interpolation extends @interpolation, AstNode {
-    override string describeQlClass() { result = "Interpolation" }
+    override string getAPrimaryQlClass() { result = "Interpolation" }
 
     override Location getLocation() { interpolation_def(this, _, _, _, result) }
 
@@ -734,7 +734,7 @@ module Generated {
   }
 
   class KeywordParameter extends @keyword_parameter, AstNode {
-    override string describeQlClass() { result = "KeywordParameter" }
+    override string getAPrimaryQlClass() { result = "KeywordParameter" }
 
     override Location getLocation() { keyword_parameter_def(this, _, _, _, result) }
 
@@ -752,7 +752,7 @@ module Generated {
   }
 
   class Lambda extends @lambda, AstNode {
-    override string describeQlClass() { result = "Lambda" }
+    override string getAPrimaryQlClass() { result = "Lambda" }
 
     override Location getLocation() { lambda_def(this, _, _, _, result) }
 
@@ -770,7 +770,7 @@ module Generated {
   }
 
   class LambdaParameters extends @lambda_parameters, AstNode {
-    override string describeQlClass() { result = "LambdaParameters" }
+    override string getAPrimaryQlClass() { result = "LambdaParameters" }
 
     override Location getLocation() { lambda_parameters_def(this, _, _, result) }
 
@@ -784,7 +784,7 @@ module Generated {
   }
 
   class LeftAssignmentList extends @left_assignment_list, AstNode {
-    override string describeQlClass() { result = "LeftAssignmentList" }
+    override string getAPrimaryQlClass() { result = "LeftAssignmentList" }
 
     override Location getLocation() { left_assignment_list_def(this, _, _, result) }
 
@@ -798,7 +798,7 @@ module Generated {
   }
 
   class Method extends @method, AstNode {
-    override string describeQlClass() { result = "Method" }
+    override string getAPrimaryQlClass() { result = "Method" }
 
     override Location getLocation() { method_def(this, _, _, _, result) }
 
@@ -820,7 +820,7 @@ module Generated {
   }
 
   class MethodCall extends @method_call, AstNode {
-    override string describeQlClass() { result = "MethodCall" }
+    override string getAPrimaryQlClass() { result = "MethodCall" }
 
     override Location getLocation() { method_call_def(this, _, _, _, result) }
 
@@ -842,7 +842,7 @@ module Generated {
   }
 
   class MethodParameters extends @method_parameters, AstNode {
-    override string describeQlClass() { result = "MethodParameters" }
+    override string getAPrimaryQlClass() { result = "MethodParameters" }
 
     override Location getLocation() { method_parameters_def(this, _, _, result) }
 
@@ -856,7 +856,7 @@ module Generated {
   }
 
   class Module extends @module, AstNode {
-    override string describeQlClass() { result = "Module" }
+    override string getAPrimaryQlClass() { result = "Module" }
 
     override Location getLocation() { module_def(this, _, _, _, result) }
 
@@ -874,7 +874,7 @@ module Generated {
   }
 
   class Next extends @next, AstNode {
-    override string describeQlClass() { result = "Next" }
+    override string getAPrimaryQlClass() { result = "Next" }
 
     override Location getLocation() { next_def(this, _, _, result) }
 
@@ -888,15 +888,15 @@ module Generated {
   }
 
   class Nil extends @token_nil, Token {
-    override string describeQlClass() { result = "Nil" }
+    override string getAPrimaryQlClass() { result = "Nil" }
   }
 
   class Operator extends @token_operator, Token {
-    override string describeQlClass() { result = "Operator" }
+    override string getAPrimaryQlClass() { result = "Operator" }
   }
 
   class OperatorAssignment extends @operator_assignment, AstNode {
-    override string describeQlClass() { result = "OperatorAssignment" }
+    override string getAPrimaryQlClass() { result = "OperatorAssignment" }
 
     override Location getLocation() { operator_assignment_def(this, _, _, _, _, result) }
 
@@ -915,7 +915,7 @@ module Generated {
   }
 
   class OptionalParameter extends @optional_parameter, AstNode {
-    override string describeQlClass() { result = "OptionalParameter" }
+    override string getAPrimaryQlClass() { result = "OptionalParameter" }
 
     override Location getLocation() { optional_parameter_def(this, _, _, _, _, result) }
 
@@ -934,7 +934,7 @@ module Generated {
   }
 
   class Pair extends @pair, AstNode {
-    override string describeQlClass() { result = "Pair" }
+    override string getAPrimaryQlClass() { result = "Pair" }
 
     override Location getLocation() { pair_def(this, _, _, _, _, result) }
 
@@ -952,7 +952,7 @@ module Generated {
   }
 
   class ParenthesizedStatements extends @parenthesized_statements, AstNode {
-    override string describeQlClass() { result = "ParenthesizedStatements" }
+    override string getAPrimaryQlClass() { result = "ParenthesizedStatements" }
 
     override Location getLocation() { parenthesized_statements_def(this, _, _, result) }
 
@@ -966,7 +966,7 @@ module Generated {
   }
 
   class Pattern extends @pattern, AstNode {
-    override string describeQlClass() { result = "Pattern" }
+    override string getAPrimaryQlClass() { result = "Pattern" }
 
     override Location getLocation() { pattern_def(this, _, _, _, result) }
 
@@ -980,7 +980,7 @@ module Generated {
   }
 
   class Program extends @program, AstNode {
-    override string describeQlClass() { result = "Program" }
+    override string getAPrimaryQlClass() { result = "Program" }
 
     override Location getLocation() { program_def(this, _, _, result) }
 
@@ -994,7 +994,7 @@ module Generated {
   }
 
   class Range extends @range, AstNode {
-    override string describeQlClass() { result = "Range" }
+    override string getAPrimaryQlClass() { result = "Range" }
 
     override Location getLocation() { range_def(this, _, _, result) }
 
@@ -1008,7 +1008,7 @@ module Generated {
   }
 
   class Rational extends @rational, AstNode {
-    override string describeQlClass() { result = "Rational" }
+    override string getAPrimaryQlClass() { result = "Rational" }
 
     override Location getLocation() { rational_def(this, _, _, _, result) }
 
@@ -1022,7 +1022,7 @@ module Generated {
   }
 
   class Redo extends @redo, AstNode {
-    override string describeQlClass() { result = "Redo" }
+    override string getAPrimaryQlClass() { result = "Redo" }
 
     override Location getLocation() { redo_def(this, _, _, result) }
 
@@ -1036,7 +1036,7 @@ module Generated {
   }
 
   class Regex extends @regex, AstNode {
-    override string describeQlClass() { result = "Regex" }
+    override string getAPrimaryQlClass() { result = "Regex" }
 
     override Location getLocation() { regex_def(this, _, _, result) }
 
@@ -1050,7 +1050,7 @@ module Generated {
   }
 
   class Rescue extends @rescue, AstNode {
-    override string describeQlClass() { result = "Rescue" }
+    override string getAPrimaryQlClass() { result = "Rescue" }
 
     override Location getLocation() { rescue_def(this, _, _, result) }
 
@@ -1070,7 +1070,7 @@ module Generated {
   }
 
   class RescueModifier extends @rescue_modifier, AstNode {
-    override string describeQlClass() { result = "RescueModifier" }
+    override string getAPrimaryQlClass() { result = "RescueModifier" }
 
     override Location getLocation() { rescue_modifier_def(this, _, _, _, _, result) }
 
@@ -1088,7 +1088,7 @@ module Generated {
   }
 
   class RestAssignment extends @rest_assignment, AstNode {
-    override string describeQlClass() { result = "RestAssignment" }
+    override string getAPrimaryQlClass() { result = "RestAssignment" }
 
     override Location getLocation() { rest_assignment_def(this, _, _, result) }
 
@@ -1102,7 +1102,7 @@ module Generated {
   }
 
   class Retry extends @retry, AstNode {
-    override string describeQlClass() { result = "Retry" }
+    override string getAPrimaryQlClass() { result = "Retry" }
 
     override Location getLocation() { retry_def(this, _, _, result) }
 
@@ -1116,7 +1116,7 @@ module Generated {
   }
 
   class Return extends @return, AstNode {
-    override string describeQlClass() { result = "Return" }
+    override string getAPrimaryQlClass() { result = "Return" }
 
     override Location getLocation() { return_def(this, _, _, result) }
 
@@ -1130,7 +1130,7 @@ module Generated {
   }
 
   class RightAssignmentList extends @right_assignment_list, AstNode {
-    override string describeQlClass() { result = "RightAssignmentList" }
+    override string getAPrimaryQlClass() { result = "RightAssignmentList" }
 
     override Location getLocation() { right_assignment_list_def(this, _, _, result) }
 
@@ -1144,7 +1144,7 @@ module Generated {
   }
 
   class ScopeResolution extends @scope_resolution, AstNode {
-    override string describeQlClass() { result = "ScopeResolution" }
+    override string getAPrimaryQlClass() { result = "ScopeResolution" }
 
     override Location getLocation() { scope_resolution_def(this, _, _, _, result) }
 
@@ -1162,11 +1162,11 @@ module Generated {
   }
 
   class Self extends @token_self, Token {
-    override string describeQlClass() { result = "Self" }
+    override string getAPrimaryQlClass() { result = "Self" }
   }
 
   class Setter extends @setter, AstNode {
-    override string describeQlClass() { result = "Setter" }
+    override string getAPrimaryQlClass() { result = "Setter" }
 
     override Location getLocation() { setter_def(this, _, _, _, result) }
 
@@ -1180,7 +1180,7 @@ module Generated {
   }
 
   class SingletonClass extends @singleton_class, AstNode {
-    override string describeQlClass() { result = "SingletonClass" }
+    override string getAPrimaryQlClass() { result = "SingletonClass" }
 
     override Location getLocation() { singleton_class_def(this, _, _, _, result) }
 
@@ -1198,7 +1198,7 @@ module Generated {
   }
 
   class SingletonMethod extends @singleton_method, AstNode {
-    override string describeQlClass() { result = "SingletonMethod" }
+    override string getAPrimaryQlClass() { result = "SingletonMethod" }
 
     override Location getLocation() { singleton_method_def(this, _, _, _, _, result) }
 
@@ -1223,7 +1223,7 @@ module Generated {
   }
 
   class SplatArgument extends @splat_argument, AstNode {
-    override string describeQlClass() { result = "SplatArgument" }
+    override string getAPrimaryQlClass() { result = "SplatArgument" }
 
     override Location getLocation() { splat_argument_def(this, _, _, _, result) }
 
@@ -1237,7 +1237,7 @@ module Generated {
   }
 
   class SplatParameter extends @splat_parameter, AstNode {
-    override string describeQlClass() { result = "SplatParameter" }
+    override string getAPrimaryQlClass() { result = "SplatParameter" }
 
     override Location getLocation() { splat_parameter_def(this, _, _, result) }
 
@@ -1251,7 +1251,7 @@ module Generated {
   }
 
   class String extends @string__, AstNode {
-    override string describeQlClass() { result = "String" }
+    override string getAPrimaryQlClass() { result = "String" }
 
     override Location getLocation() { string_def(this, _, _, result) }
 
@@ -1265,7 +1265,7 @@ module Generated {
   }
 
   class StringArray extends @string_array, AstNode {
-    override string describeQlClass() { result = "StringArray" }
+    override string getAPrimaryQlClass() { result = "StringArray" }
 
     override Location getLocation() { string_array_def(this, _, _, result) }
 
@@ -1279,11 +1279,11 @@ module Generated {
   }
 
   class StringContent extends @token_string_content, Token {
-    override string describeQlClass() { result = "StringContent" }
+    override string getAPrimaryQlClass() { result = "StringContent" }
   }
 
   class Subshell extends @subshell, AstNode {
-    override string describeQlClass() { result = "Subshell" }
+    override string getAPrimaryQlClass() { result = "Subshell" }
 
     override Location getLocation() { subshell_def(this, _, _, result) }
 
@@ -1297,11 +1297,11 @@ module Generated {
   }
 
   class Super extends @token_super, Token {
-    override string describeQlClass() { result = "Super" }
+    override string getAPrimaryQlClass() { result = "Super" }
   }
 
   class Superclass extends @superclass, AstNode {
-    override string describeQlClass() { result = "Superclass" }
+    override string getAPrimaryQlClass() { result = "Superclass" }
 
     override Location getLocation() { superclass_def(this, _, _, _, result) }
 
@@ -1315,7 +1315,7 @@ module Generated {
   }
 
   class Symbol extends @symbol, AstNode {
-    override string describeQlClass() { result = "Symbol" }
+    override string getAPrimaryQlClass() { result = "Symbol" }
 
     override Location getLocation() { symbol_def(this, _, _, result) }
 
@@ -1329,7 +1329,7 @@ module Generated {
   }
 
   class SymbolArray extends @symbol_array, AstNode {
-    override string describeQlClass() { result = "SymbolArray" }
+    override string getAPrimaryQlClass() { result = "SymbolArray" }
 
     override Location getLocation() { symbol_array_def(this, _, _, result) }
 
@@ -1343,7 +1343,7 @@ module Generated {
   }
 
   class Then extends @then, AstNode {
-    override string describeQlClass() { result = "Then" }
+    override string getAPrimaryQlClass() { result = "Then" }
 
     override Location getLocation() { then_def(this, _, _, result) }
 
@@ -1357,11 +1357,11 @@ module Generated {
   }
 
   class True extends @token_true, Token {
-    override string describeQlClass() { result = "True" }
+    override string getAPrimaryQlClass() { result = "True" }
   }
 
   class Unary extends @unary, AstNode {
-    override string describeQlClass() { result = "Unary" }
+    override string getAPrimaryQlClass() { result = "Unary" }
 
     override Location getLocation() { unary_def(this, _, _, _, _, result) }
 
@@ -1379,7 +1379,7 @@ module Generated {
   }
 
   class Undef extends @undef, AstNode {
-    override string describeQlClass() { result = "Undef" }
+    override string getAPrimaryQlClass() { result = "Undef" }
 
     override Location getLocation() { undef_def(this, _, _, result) }
 
@@ -1393,11 +1393,11 @@ module Generated {
   }
 
   class Uninterpreted extends @token_uninterpreted, Token {
-    override string describeQlClass() { result = "Uninterpreted" }
+    override string getAPrimaryQlClass() { result = "Uninterpreted" }
   }
 
   class Unless extends @unless, AstNode {
-    override string describeQlClass() { result = "Unless" }
+    override string getAPrimaryQlClass() { result = "Unless" }
 
     override Location getLocation() { unless_def(this, _, _, _, result) }
 
@@ -1419,7 +1419,7 @@ module Generated {
   }
 
   class UnlessModifier extends @unless_modifier, AstNode {
-    override string describeQlClass() { result = "UnlessModifier" }
+    override string getAPrimaryQlClass() { result = "UnlessModifier" }
 
     override Location getLocation() { unless_modifier_def(this, _, _, _, _, result) }
 
@@ -1437,7 +1437,7 @@ module Generated {
   }
 
   class Until extends @until, AstNode {
-    override string describeQlClass() { result = "Until" }
+    override string getAPrimaryQlClass() { result = "Until" }
 
     override Location getLocation() { until_def(this, _, _, _, _, result) }
 
@@ -1455,7 +1455,7 @@ module Generated {
   }
 
   class UntilModifier extends @until_modifier, AstNode {
-    override string describeQlClass() { result = "UntilModifier" }
+    override string getAPrimaryQlClass() { result = "UntilModifier" }
 
     override Location getLocation() { until_modifier_def(this, _, _, _, _, result) }
 
@@ -1473,7 +1473,7 @@ module Generated {
   }
 
   class When extends @when, AstNode {
-    override string describeQlClass() { result = "When" }
+    override string getAPrimaryQlClass() { result = "When" }
 
     override Location getLocation() { when_def(this, _, _, result) }
 
@@ -1489,7 +1489,7 @@ module Generated {
   }
 
   class While extends @while, AstNode {
-    override string describeQlClass() { result = "While" }
+    override string getAPrimaryQlClass() { result = "While" }
 
     override Location getLocation() { while_def(this, _, _, _, _, result) }
 
@@ -1507,7 +1507,7 @@ module Generated {
   }
 
   class WhileModifier extends @while_modifier, AstNode {
-    override string describeQlClass() { result = "WhileModifier" }
+    override string getAPrimaryQlClass() { result = "WhileModifier" }
 
     override Location getLocation() { while_modifier_def(this, _, _, _, _, result) }
 
@@ -1525,7 +1525,7 @@ module Generated {
   }
 
   class Yield extends @yield, AstNode {
-    override string describeQlClass() { result = "Yield" }
+    override string getAPrimaryQlClass() { result = "Yield" }
 
     override Location getLocation() { yield_def(this, _, _, result) }
 

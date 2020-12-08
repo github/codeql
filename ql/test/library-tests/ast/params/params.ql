@@ -29,20 +29,20 @@ query predicate optionalParams(OptionalParameter op, string name, AstNode defaul
 ////////////////////////////////////////////////////////////////////////////////
 // Query predicates for various contexts of parameters
 query predicate paramsInMethods(Method m, int i, Parameter p, string pClass) {
-  p = m.getParameter(i) and pClass = p.describeQlClass()
+  p = m.getParameter(i) and pClass = p.getAPrimaryQlClass()
 }
 
 query predicate paramsInBlocks(Block b, int i, Parameter p, string pClass) {
-  p = b.getParameter(i) and pClass = p.describeQlClass()
+  p = b.getParameter(i) and pClass = p.getAPrimaryQlClass()
 }
 
 query predicate paramsInLambdas(Lambda l, int i, Parameter p, string pClass) {
-  p = l.getParameter(i) and pClass = p.describeQlClass()
+  p = l.getParameter(i) and pClass = p.getAPrimaryQlClass()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // General query selecting all parameters
 query predicate params(Parameter p, int i, string pClass) {
   i = p.getPosition() and
-  pClass = p.describeQlClass()
+  pClass = p.getAPrimaryQlClass()
 }

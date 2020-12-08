@@ -26,7 +26,7 @@ class PrintAstConfiguration extends string {
 class PrintAstNode extends Generated::AstNode {
   string getProperty(string key) {
     key = "semmle.label" and
-    result = "[" + this.describeQlClass() + "] " + this.toString()
+    result = "[" + this.getAPrimaryQlClass() + "] " + this.toString()
   }
 
   /**
