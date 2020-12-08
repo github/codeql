@@ -69,7 +69,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             if (value is System.Collections.Immutable.ImmutableArray<CustomAttributeTypedArgument<Type>> values)
             {
-                return "[" + string.Join(",", values.Select(v => v.Value?.ToString() ?? "null")) + "]";
+                return "[" + string.Join(",", values.Select(v => GetStringValue(v.Value))) + "]";
             }
 
             return value?.ToString() ?? "null";
