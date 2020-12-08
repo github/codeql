@@ -703,7 +703,7 @@ module FinallySplitting {
   }
 
   int getNextListOrder() {
-    result = max(int i | i = getListOrder(_) + 1 or i = AssertionSplitting::getNextListOrder())
+    result = max([getListOrder(_) + 1, AssertionSplitting::getNextListOrder()])
   }
 
   private class FinallySplitKind extends SplitKind, TFinallySplitKind {
@@ -1209,8 +1209,7 @@ module BooleanSplitting {
   }
 
   int getNextListOrder() {
-    result =
-      max(int i | i = getListOrder(_) + 1 or i = ExceptionHandlerSplitting::getNextListOrder())
+    result = max([getListOrder(_) + 1, ExceptionHandlerSplitting::getNextListOrder()])
   }
 
   private class BooleanSplitKind extends SplitKind, TBooleanSplitKind {
@@ -1433,7 +1432,7 @@ module LoopSplitting {
   }
 
   int getNextListOrder() {
-    result = max(int i | i = getListOrder(_) + 1 or i = BooleanSplitting::getNextListOrder())
+    result = max([getListOrder(_) + 1, BooleanSplitting::getNextListOrder()])
   }
 
   private class LoopSplitKind extends SplitKind, TLoopSplitKind {
