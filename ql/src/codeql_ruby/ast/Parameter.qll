@@ -42,7 +42,7 @@ class PatternParameter extends Parameter, Pattern {
 
 /** A parameter defined using a tuple pattern. */
 class TuplePatternParameter extends PatternParameter, TuplePattern {
-  final override string describeQlClass() { result = "TuplePatternParameter" }
+  final override string getAPrimaryQlClass() { result = "TuplePatternParameter" }
 }
 
 /** A named parameter. */
@@ -69,7 +69,7 @@ class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern 
 
   final override Variable getAVariable() { result = this.getVariable() }
 
-  final override string describeQlClass() { result = "SimpleParameter" }
+  final override string getAPrimaryQlClass() { result = "SimpleParameter" }
 
   final override string toString() { result = this.getName() }
 }
@@ -87,7 +87,7 @@ class BlockParameter extends @block_parameter, NamedParameter {
 
   final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
-  final override string describeQlClass() { result = "BlockParameter" }
+  final override string getAPrimaryQlClass() { result = "BlockParameter" }
 
   final override string toString() { result = "&" + this.getName() }
 
@@ -108,7 +108,7 @@ class HashSplatParameter extends @hash_splat_parameter, NamedParameter {
 
   final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
-  final override string describeQlClass() { result = "HashSplatParameter" }
+  final override string getAPrimaryQlClass() { result = "HashSplatParameter" }
 
   final override string toString() { result = "**" + this.getName() }
 
@@ -131,7 +131,7 @@ class KeywordParameter extends @keyword_parameter, NamedParameter {
 
   final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
-  final override string describeQlClass() { result = "KeywordParameter" }
+  final override string getAPrimaryQlClass() { result = "KeywordParameter" }
 
   final override string getName() { result = generated.getName().getValue() }
 
@@ -166,7 +166,7 @@ class OptionalParameter extends @optional_parameter, NamedParameter {
 
   final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
-  final override string describeQlClass() { result = "OptionalParameter" }
+  final override string getAPrimaryQlClass() { result = "OptionalParameter" }
 
   final override string toString() { result = this.getName() }
 
@@ -193,7 +193,7 @@ class SplatParameter extends @splat_parameter, NamedParameter {
 
   final override Variable getVariable() { result = TLocalVariable(_, _, generated.getName()) }
 
-  final override string describeQlClass() { result = "SplatParameter" }
+  final override string getAPrimaryQlClass() { result = "SplatParameter" }
 
   final override string toString() { result = "*" + this.getName() }
 

@@ -21,7 +21,7 @@ class AstNode extends @ast_node {
    * determined, the result is `"???"`. If multiple primary classes match,
    * this predicate can have multiple results.
    */
-  string describeQlClass() { result = "???" }
+  string getAPrimaryQlClass() { result = "???" }
 
   /** Gets a textual representation of this node. */
   string toString() { result = "AstNode" }
