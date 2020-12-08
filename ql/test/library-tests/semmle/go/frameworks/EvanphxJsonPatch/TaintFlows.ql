@@ -1,25 +1,32 @@
 import go
+import TestUtilities.InlineExpectationsTest
 
-class SourceFunction extends Function {
-  SourceFunction() { this.getName() = ["getTaintedByteArray", "getTaintedPatch"] }
-}
-
-class SinkFunction extends Function {
-  SinkFunction() { this.getName() = ["sinkByteArray", "sinkPatch"] }
-}
-
-class TestConfig extends TaintTracking::Configuration {
-  TestConfig() { this = "testconfig" }
+class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "test-configuration" }
 
   override predicate isSource(DataFlow::Node source) {
-    source = any(SourceFunction f).getACall().getAResult()
+    source =
+      any(DataFlow::CallNode c | c.getCalleeName() in ["getTaintedByteArray", "getTaintedPatch"])
+          .getResult(0)
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = any(SinkFunction f).getACall().getAnArgument()
+    sink =
+      any(DataFlow::CallNode c | c.getCalleeName() in ["sinkByteArray", "sinkPatch"]).getArgument(0)
   }
 }
 
-from TestConfig config, DataFlow::PathNode source, DataFlow::PathNode sink, int i
-where config.hasFlowPath(source, sink) and source.hasLocationInfo(_, i, _, _, _)
-select source, sink, i order by i
+class TaintFlowTest extends InlineExpectationsTest {
+  TaintFlowTest() { this = "TaintFlowTest" }
+
+  override string getARelevantTag() { result = "taintflow" }
+
+  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+    tag = "taintflow" and
+    exists(DataFlow::Node sink | any(Configuration c).hasFlow(_, sink) |
+      element = sink.toString() and
+      value = "" and
+      sink.hasLocationInfo(file, line, _, _, _)
+    )
+  }
+}
