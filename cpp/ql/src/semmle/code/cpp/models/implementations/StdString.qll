@@ -253,25 +253,6 @@ private class StdStringSubstr extends TaintFunction {
 }
 
 /**
- * The standard functions `std::string.swap` and `std::stringstream::swap`.
- */
-private class StdStringSwap extends TaintFunction {
-  StdStringSwap() {
-    this.hasQualifiedName("std", "basic_string", "swap") or
-    this.hasQualifiedName("std", "basic_stringstream", "swap")
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // str1.swap(str2)
-    input.isQualifierObject() and
-    output.isParameterDeref(0)
-    or
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
-  }
-}
-
-/**
  * The `std::string` functions `at` and `operator[]`.
  */
 private class StdStringAt extends TaintFunction {
