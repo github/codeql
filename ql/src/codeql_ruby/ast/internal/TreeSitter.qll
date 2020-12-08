@@ -898,19 +898,22 @@ module Generated {
   class OperatorAssignment extends @operator_assignment, AstNode {
     override string getAPrimaryQlClass() { result = "OperatorAssignment" }
 
-    override Location getLocation() { operator_assignment_def(this, _, _, _, _, result) }
+    override Location getLocation() { operator_assignment_def(this, _, _, _, _, _, result) }
 
-    UnderscoreLhs getLeft() { operator_assignment_def(this, _, _, result, _, _) }
+    UnderscoreLhs getLeft() { operator_assignment_def(this, _, _, result, _, _, _) }
 
-    AstNode getRight() { operator_assignment_def(this, _, _, _, result, _) }
+    AstNode getOperator() { operator_assignment_def(this, _, _, _, result, _, _) }
 
-    override AstNode getParent() { operator_assignment_def(this, result, _, _, _, _) }
+    AstNode getRight() { operator_assignment_def(this, _, _, _, _, result, _) }
 
-    override int getParentIndex() { operator_assignment_def(this, _, result, _, _, _) }
+    override AstNode getParent() { operator_assignment_def(this, result, _, _, _, _, _) }
+
+    override int getParentIndex() { operator_assignment_def(this, _, result, _, _, _, _) }
 
     override AstNode getAFieldOrChild() {
-      operator_assignment_def(this, _, _, result, _, _) or
-      operator_assignment_def(this, _, _, _, result, _)
+      operator_assignment_def(this, _, _, result, _, _, _) or
+      operator_assignment_def(this, _, _, _, result, _, _) or
+      operator_assignment_def(this, _, _, _, _, result, _)
     }
   }
 
@@ -1012,7 +1015,7 @@ module Generated {
 
     override Location getLocation() { rational_def(this, _, _, _, result) }
 
-    Integer getChild() { rational_def(this, _, _, result, _) }
+    AstNode getChild() { rational_def(this, _, _, result, _) }
 
     override AstNode getParent() { rational_def(this, result, _, _, _) }
 
