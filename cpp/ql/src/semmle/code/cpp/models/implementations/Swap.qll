@@ -25,15 +25,13 @@ private class Swap extends DataFlowFunction {
  * obj1.swap(obj2)
  * ```
  */
-private class MemberSwap extends TaintFunction {
+private class MemberSwap extends TaintFunction, MemberFunction {
   MemberSwap() {
-    this.hasQualifiedName("std", "basic_string", "swap") or
-    this.hasQualifiedName("std", "basic_stringstream", "swap") or
-    this.hasQualifiedName("std", ["array", "vector", "deque", "list", "forward_list"], "swap") or
-    this.hasQualifiedName("std", ["set", "unordered_set"], "swap") or
-    this.hasQualifiedName("std", "pair", "swap") or
-    this.hasQualifiedName("std", ["map", "unordered_map"], "swap") or
-    this.hasQualifiedName("std", ["map", "unordered_map"], "swap")
+    this.hasName("swap") and
+    this.getNumberOfParameters() = 1 and
+    this.getParameter(0).getType() instanceof ReferenceType and
+    this.getParameter(0).getType().(ReferenceType).getBaseType().getUnspecifiedType() =
+      getDeclaringType()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
