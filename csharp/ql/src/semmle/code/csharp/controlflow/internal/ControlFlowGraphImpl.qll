@@ -96,23 +96,6 @@ predicate last(ControlFlowTree cft, ControlFlowElement last, Completion c) {
   )
 }
 
-pragma[noinline]
-private LabeledStmt getLabledStmt(string label, Callable c) {
-  result.getEnclosingCallable() = c and
-  label = result.getLabel()
-}
-
-pragma[nomagic]
-private predicate goto(ControlFlowElement cfe, GotoCompletion gc, string label, Callable enclosing) {
-  last(_, cfe, gc) and
-  // Special case: when a `goto` happens inside a `try` statement with a
-  // `finally` block, flow does not go directly to the target, but instead
-  // to the `finally` block (and from there possibly to the target)
-  not cfe = any(Statements::TryStmtTree t | t.hasFinally()).getAFinallyPredecessor(_, true) and
-  label = gc.getLabel() and
-  enclosing = cfe.getEnclosingCallable()
-}
-
 /**
  * Holds if `succ` is a control flow successor for `pred`, given that `pred`
  * finishes with completion `c`.
@@ -135,13 +118,6 @@ predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
     // Flow from last member initializer to constructor body
     m = InitializerSplitting::lastConstructorInitializer(con) and
     first(con.getBody(), succ)
-  )
-  or
-  // Flow from element with `goto` completion to first element of relevant
-  // target
-  exists(string label, Callable enclosing |
-    goto(pred, c, label, enclosing) and
-    first(getLabledStmt(label, enclosing), succ)
   )
 }
 
@@ -933,18 +909,18 @@ module Statements {
       // The following statements need special treatment
       not this instanceof IfStmt and
       not this instanceof SwitchStmt and
-      (this instanceof DefaultCase or not this instanceof CaseStmt) and
+      not this instanceof CaseStmt and
       not this instanceof LoopStmt and
       not this instanceof TryStmt and
       not this instanceof SpecificCatchClause and
-      not this instanceof JumpStmt
+      not this instanceof JumpStmt and
+      not this instanceof LabeledStmt
     }
 
     private ControlFlowTree getChildElement0(int i) {
       not this instanceof GeneralCatchClause and
       not this instanceof FixedStmt and
       not this instanceof UsingBlockStmt and
-      not this instanceof DefaultCase and
       result = this.getChild(i)
       or
       this = any(GeneralCatchClause gcc | i = 0 and result = gcc.getBlock())
@@ -967,9 +943,6 @@ module Statements {
           result = us.getBody() and
           i = max([1, count(us.getVariableDeclExpr(_))])
         )
-      or
-      result = this.(DefaultCase).getStmt() and
-      i = 0
     }
 
     final override ControlFlowTree getChildElement(int i) {
@@ -1045,8 +1018,9 @@ module Statements {
       last(this.getStmt(_), last, c) and
       not c instanceof BreakCompletion and
       not c instanceof NormalCompletion and
-      not getLabledStmt(c.(GotoCompletion).getLabel(), this.getEnclosingCallable()) instanceof
-        CaseStmt
+      not any(LabeledStmtTree t |
+        t.hasLabelInCallable(c.(GotoCompletion).getLabel(), this.getEnclosingCallable())
+      ) instanceof CaseStmt
       or
       // Last case exits with a non-match
       exists(CaseStmt cs, int last_ |
@@ -1568,6 +1542,51 @@ module Statements {
       last(this.getChild(0), pred, c) and
       succ = this and
       c instanceof NormalCompletion
+    }
+  }
+
+  pragma[nomagic]
+  private predicate goto(ControlFlowElement cfe, GotoCompletion gc, string label, Callable enclosing) {
+    last(_, cfe, gc) and
+    // Special case: when a `goto` happens inside a `try` statement with a
+    // `finally` block, flow does not go directly to the target, but instead
+    // to the `finally` block (and from there possibly to the target)
+    not cfe = any(Statements::TryStmtTree t | t.hasFinally()).getAFinallyPredecessor(_, true) and
+    label = gc.getLabel() and
+    enclosing = cfe.getEnclosingCallable()
+  }
+
+  private class LabeledStmtTree extends PreOrderTree, LabeledStmt {
+    final override predicate propagatesAbnormal(ControlFlowElement child) { none() }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      if this instanceof DefaultCase
+      then last(this.getStmt(), last, c)
+      else (
+        not this instanceof CaseStmt and
+        last = this and
+        c.isValidFor(this)
+      )
+    }
+
+    pragma[noinline]
+    predicate hasLabelInCallable(string label, Callable c) {
+      this.getEnclosingCallable() = c and
+      label = this.getLabel()
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this instanceof DefaultCase and
+      pred = this and
+      first(this.getStmt(), succ) and
+      c instanceof SimpleCompletion
+      or
+      // Flow from element with matching `goto` completion to this statement
+      exists(string label, Callable enclosing |
+        goto(pred, c, label, enclosing) and
+        this.hasLabelInCallable(label, enclosing) and
+        succ = this
+      )
     }
   }
 }
