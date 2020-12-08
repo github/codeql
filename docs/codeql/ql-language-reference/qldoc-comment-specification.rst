@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _qldoc-comment-specification:
 
 QLDoc comment specification
