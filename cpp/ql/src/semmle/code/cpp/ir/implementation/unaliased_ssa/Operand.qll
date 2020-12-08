@@ -10,73 +10,10 @@ private import Imports::MemoryAccessKind
 private import Imports::IRType
 private import Imports::Overlap
 private import Imports::OperandTag
+private import Imports::TOperand
+private import internal.OperandInternal
 
-cached
-private newtype TOperand =
-  TRegisterOperand(Instruction useInstr, RegisterOperandTag tag, Instruction defInstr) {
-    defInstr = Construction::getRegisterOperandDefinition(useInstr, tag) and
-    not Construction::isInCycle(useInstr) and
-    strictcount(Construction::getRegisterOperandDefinition(useInstr, tag)) = 1
-  } or
-  TNonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag) {
-    useInstr.getOpcode().hasOperand(tag)
-  } or
-  TPhiOperand(
-    PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
-  ) {
-    defInstr = Construction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
-  }
-
-/**
- * Base class for all register operands. This is a placeholder for the IPA union type that we will
- * eventually use for this purpose.
- */
-private class RegisterOperandBase extends TRegisterOperand {
-  /** Gets a textual representation of this element. */
-  abstract string toString();
-}
-
-/**
- * Returns the register operand with the specified parameters.
- */
-private RegisterOperandBase registerOperand(
-  Instruction useInstr, RegisterOperandTag tag, Instruction defInstr
-) {
-  result = TRegisterOperand(useInstr, tag, defInstr)
-}
-
-/**
- * Base class for all non-Phi memory operands. This is a placeholder for the IPA union type that we
- * will eventually use for this purpose.
- */
-private class NonPhiMemoryOperandBase extends TNonPhiMemoryOperand {
-  /** Gets a textual representation of this element. */
-  abstract string toString();
-}
-
-/**
- * Returns the non-Phi memory operand with the specified parameters.
- */
-private NonPhiMemoryOperandBase nonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag) {
-  result = TNonPhiMemoryOperand(useInstr, tag)
-}
-
-/**
- * Base class for all Phi operands. This is a placeholder for the IPA union type that we will
- * eventually use for this purpose.
- */
-private class PhiOperandBase extends TPhiOperand {
-  abstract string toString();
-}
-
-/**
- * Returns the Phi operand with the specified parameters.
- */
-private PhiOperandBase phiOperand(
-  Instruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
-) {
-  result = TPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
-}
+class TOperand = TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
 
 /**
  * An operand of an `Instruction`. The operand represents a use of the result of one instruction
@@ -239,8 +176,9 @@ class Operand extends TOperand {
  */
 class MemoryOperand extends Operand {
   MemoryOperand() {
-    this instanceof NonPhiMemoryOperandBase or
-    this instanceof PhiOperandBase
+    this instanceof TNonSSAMemoryOperand or
+    this instanceof TPhiOperand or
+    this instanceof TChiOperand
   }
 
   /**
@@ -278,7 +216,8 @@ class NonPhiOperand extends Operand {
 
   NonPhiOperand() {
     this = registerOperand(useInstr, tag, _) or
-    this = nonPhiMemoryOperand(useInstr, tag)
+    this = nonSSAMemoryOperand(useInstr, tag) or
+    this = chiOperand(useInstr, tag)
   }
 
   final override Instruction getUse() { result = useInstr }
@@ -298,7 +237,7 @@ class NonPhiOperand extends Operand {
 /**
  * An operand that consumes a register (non-memory) result.
  */
-class RegisterOperand extends NonPhiOperand, RegisterOperandBase {
+class RegisterOperand extends NonPhiOperand, TRegisterOperand {
   override RegisterOperandTag tag;
   Instruction defInstr;
 
@@ -317,10 +256,14 @@ class RegisterOperand extends NonPhiOperand, RegisterOperandBase {
 /**
  * A memory operand other than the operand of a `Phi` instruction.
  */
-class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, NonPhiMemoryOperandBase {
+class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand {
   override MemoryOperandTag tag;
 
-  NonPhiMemoryOperand() { this = nonPhiMemoryOperand(useInstr, tag) }
+  NonPhiMemoryOperand() {
+    this = nonSSAMemoryOperand(useInstr, tag)
+    or
+    this = chiOperand(useInstr, tag)
+  }
 
   final override string toString() { result = tag.toString() }
 
@@ -462,7 +405,7 @@ class SideEffectOperand extends TypedOperand {
 /**
  * An operand of a `PhiInstruction`.
  */
-class PhiInputOperand extends MemoryOperand, PhiOperandBase {
+class PhiInputOperand extends MemoryOperand, TPhiOperand {
   PhiInstruction useInstr;
   Instruction defInstr;
   IRBlock predecessorBlock;

@@ -6,6 +6,7 @@ private import Imports::Overlap
 private import Imports::TInstruction
 private import Imports::RawIR as RawIR
 private import SSAInstructions
+private import SSAOperands
 private import NewIR
 
 private class OldBlock = Reachability::ReachableBlock;
@@ -41,6 +42,9 @@ private module Cached {
 
   class TStageInstruction =
     TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction;
+
+  class TStageOperand =
+    TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
 
   cached
   predicate hasInstruction(TStageInstruction instr) {
