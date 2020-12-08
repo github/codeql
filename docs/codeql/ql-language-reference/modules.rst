@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _modules:
 
 Modules
