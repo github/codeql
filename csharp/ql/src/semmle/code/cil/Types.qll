@@ -50,8 +50,8 @@ class Enum extends ValueOrRefType {
   override IntegralType getUnderlyingType() {
     cil_enum_underlying_type(this, result)
     or
-    not exists(IntegralType underlying | cil_enum_underlying_type(this, underlying)) and
-    result = any(IntType i)
+    not cil_enum_underlying_type(this, _) and
+    result instanceof IntType
   }
 }
 

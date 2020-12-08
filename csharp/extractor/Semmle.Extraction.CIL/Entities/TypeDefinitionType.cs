@@ -271,7 +271,7 @@ namespace Semmle.Extraction.CIL.Entities
             foreach (var handle in td.GetFields())
             {
                 var field = Cx.MdReader.GetFieldDefinition(handle);
-                if ((field.Attributes & FieldAttributes.Static) != 0)
+                if (field.Attributes.HasFlag(FieldAttributes.Static))
                 {
                     continue;
                 }
