@@ -11,6 +11,9 @@ import (
 	io "io"
 	url "net/url"
 	reflect "reflect"
+
+	"k8s.io/apimachinery/pkg/conversion"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 type CacheableObject interface {
@@ -18,35 +21,35 @@ type CacheableObject interface {
 	GetObject() Object
 }
 
-func Convert_Slice_string_To_Pointer_int64(_ *[]string, _ **int64, _ interface{}) error {
+func Convert_Slice_string_To_Pointer_int64(_ *[]string, _ **int64, _ conversion.Scope) error {
 	return nil
 }
 
-func Convert_Slice_string_To_int(_ *[]string, _ *int, _ interface{}) error {
+func Convert_Slice_string_To_int(_ *[]string, _ *int, _ conversion.Scope) error {
 	return nil
 }
 
-func Convert_Slice_string_To_int64(_ *[]string, _ *int64, _ interface{}) error {
+func Convert_Slice_string_To_int64(_ *[]string, _ *int64, _ conversion.Scope) error {
 	return nil
 }
 
-func Convert_Slice_string_To_string(_ *[]string, _ *string, _ interface{}) error {
+func Convert_Slice_string_To_string(_ *[]string, _ *string, _ conversion.Scope) error {
 	return nil
 }
 
-func Convert_runtime_Object_To_runtime_RawExtension(_ *Object, _ *RawExtension, _ interface{}) error {
+func Convert_runtime_Object_To_runtime_RawExtension(_ *Object, _ *RawExtension, _ conversion.Scope) error {
 	return nil
 }
 
-func Convert_runtime_RawExtension_To_runtime_Object(_ *RawExtension, _ *Object, _ interface{}) error {
+func Convert_runtime_RawExtension_To_runtime_Object(_ *RawExtension, _ *Object, _ conversion.Scope) error {
 	return nil
 }
 
-func Convert_string_To_Pointer_int64(_ *string, _ **int64, _ interface{}) error {
+func Convert_string_To_Pointer_int64(_ *string, _ **int64, _ conversion.Scope) error {
 	return nil
 }
 
-func Convert_string_To_int64(_ *string, _ *int64, _ interface{}) error {
+func Convert_string_To_int64(_ *string, _ *int64, _ conversion.Scope) error {
 	return nil
 }
 
@@ -59,7 +62,7 @@ func DecodeInto(_ Decoder, _ []byte, _ Object) error {
 }
 
 type Decoder interface {
-	Decode(_ []byte, _ interface{}, _ Object) (Object, interface{}, error)
+	Decode(_ []byte, _ *schema.GroupVersionKind, _ Object) (Object, *schema.GroupVersionKind, error)
 }
 
 func DeepCopyJSON(_ map[string]interface{}) map[string]interface{} {
@@ -98,37 +101,37 @@ type Framer interface {
 
 type GroupVersioner interface {
 	Identifier() string
-	KindForGroupVersionKinds(_ []interface{}) (interface{}, bool)
+	KindForGroupVersionKinds(_ []schema.GroupVersionKind) (schema.GroupVersionKind, bool)
 }
 
 type Identifier string
 
-func NewEncodable(_ Encoder, _ Object, _ ...interface{}) Object {
+func NewEncodable(_ Encoder, _ Object, _ ...schema.GroupVersion) Object {
 	return nil
 }
 
-func NewEncodableList(_ Encoder, _ []Object, _ ...interface{}) []Object {
+func NewEncodableList(_ Encoder, _ []Object, _ ...schema.GroupVersion) []Object {
 	return nil
 }
 
 type Object interface {
 	DeepCopyObject() Object
-	GetObjectKind() interface{}
+	GetObjectKind() schema.ObjectKind
 }
 
 type ObjectConvertor interface {
 	Convert(_ interface{}, _ interface{}, _ interface{}) error
-	ConvertFieldLabel(_ interface{}, _ string, _ string) (string, string, error)
+	ConvertFieldLabel(_ schema.GroupVersionKind, _ string, _ string) (string, string, error)
 	ConvertToVersion(_ Object, _ GroupVersioner) (Object, error)
 }
 
 type ObjectCreater interface {
-	New(_ interface{}) (Object, error)
+	New(_ schema.GroupVersionKind) (Object, error)
 }
 
 type ObjectTyper interface {
-	ObjectKinds(_ Object) ([]interface{}, bool, error)
-	Recognizes(_ interface{}) bool
+	ObjectKinds(_ Object) ([]schema.GroupVersionKind, bool, error)
+	Recognizes(_ schema.GroupVersionKind) bool
 }
 
 type ObjectVersioner interface {
@@ -136,8 +139,8 @@ type ObjectVersioner interface {
 }
 
 type ParameterCodec interface {
-	DecodeParameters(_ url.Values, _ interface{}, _ Object) error
-	EncodeParameters(_ Object, _ interface{}) (url.Values, error)
+	DecodeParameters(_ url.Values, _ schema.GroupVersion, _ Object) error
+	EncodeParameters(_ Object, _ schema.GroupVersion) (url.Values, error)
 }
 
 type ProtobufMarshaller interface {
@@ -228,12 +231,12 @@ func (_ *TypeMeta) Descriptor() ([]byte, []int) {
 	return nil, nil
 }
 
-func (_ *TypeMeta) GetObjectKind() interface{} {
+func (_ *TypeMeta) GetObjectKind() schema.ObjectKind {
 	return nil
 }
 
-func (_ *TypeMeta) GroupVersionKind() interface{} {
-	return nil
+func (_ *TypeMeta) GroupVersionKind() schema.GroupVersionKind {
+	return schema.GroupVersionKind{}
 }
 
 func (_ *TypeMeta) Marshal() ([]byte, error) {
@@ -252,7 +255,7 @@ func (_ *TypeMeta) ProtoMessage() {}
 
 func (_ *TypeMeta) Reset() {}
 
-func (_ *TypeMeta) SetGroupVersionKind(_ interface{}) {}
+func (_ *TypeMeta) SetGroupVersionKind(_ schema.GroupVersionKind) {}
 
 func (_ *TypeMeta) Size() int {
 	return 0
@@ -307,12 +310,12 @@ func (_ *Unknown) Descriptor() ([]byte, []int) {
 	return nil, nil
 }
 
-func (_ *Unknown) GetObjectKind() interface{} {
+func (_ *Unknown) GetObjectKind() schema.ObjectKind {
 	return nil
 }
 
-func (_ *Unknown) GroupVersionKind() interface{} {
-	return nil
+func (_ *Unknown) GroupVersionKind() schema.GroupVersionKind {
+	return schema.GroupVersionKind{}
 }
 
 func (_ *Unknown) Marshal() ([]byte, error) {
@@ -335,7 +338,7 @@ func (_ *Unknown) ProtoMessage() {}
 
 func (_ *Unknown) Reset() {}
 
-func (_ *Unknown) SetGroupVersionKind(_ interface{}) {}
+func (_ *Unknown) SetGroupVersionKind(_ schema.GroupVersionKind) {}
 
 func (_ *Unknown) Size() int {
 	return 0
@@ -372,14 +375,14 @@ func (_ *Unknown) XXX_Unmarshal(_ []byte) error {
 type Unstructured interface {
 	DeepCopyObject() Object
 	EachListItem(_ func(Object) error) error
-	GetObjectKind() interface{}
+	GetObjectKind() schema.ObjectKind
 	IsList() bool
 	NewEmptyInstance() Unstructured
 	SetUnstructuredContent(_ map[string]interface{})
 	UnstructuredContent() map[string]interface{}
 }
 
-func UseOrCreateObject(_ ObjectTyper, _ ObjectCreater, _ interface{}, _ Object) (Object, error) {
+func UseOrCreateObject(_ ObjectTyper, _ ObjectCreater, _ schema.GroupVersionKind, _ Object) (Object, error) {
 	return nil, nil
 }
 
@@ -397,11 +400,11 @@ func (_ WithVersionEncoder) Identifier() Identifier {
 	return ""
 }
 
-func (_ WithVersionEncoder) ObjectKinds(_ Object) ([]interface{}, bool, error) {
+func (_ WithVersionEncoder) ObjectKinds(_ Object) ([]schema.GroupVersionKind, bool, error) {
 	return nil, false, nil
 }
 
-func (_ WithVersionEncoder) Recognizes(_ interface{}) bool {
+func (_ WithVersionEncoder) Recognizes(_ schema.GroupVersionKind) bool {
 	return false
 }
 
@@ -409,6 +412,6 @@ type WithoutVersionDecoder struct {
 	Decoder Decoder
 }
 
-func (_ WithoutVersionDecoder) Decode(_ []byte, _ interface{}, _ Object) (Object, interface{}, error) {
-	return nil, nil, nil
+func (_ WithoutVersionDecoder) Decode(_ []byte, _ *schema.GroupVersionKind, _ Object) (Object, schema.GroupVersionKind, error) {
+	return nil, schema.GroupVersionKind{}, nil
 }

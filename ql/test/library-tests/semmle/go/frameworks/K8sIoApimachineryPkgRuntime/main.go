@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"reflect"
 
-	// "k8s.io/apimachinery/pkg/conversion" // TODO
+	"k8s.io/apimachinery/pkg/conversion"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
@@ -22,10 +22,8 @@ func sink(interface{}) {
 }
 
 func main() {
-	// var decoder myDecoder // TODO
-	var decoder runtime.Decoder
-	// var s conversion.Scope // TODO
-	var s interface{}
+	var decoder myDecoder
+	var s conversion.Scope
 
 	var encoder myEncoder
 
@@ -357,20 +355,17 @@ func (m myObjectConverter) ConvertToVersion(in runtime.Object, gv runtime.GroupV
 	return nil, nil
 }
 
-// func (m myObjectConverter) ConvertFieldLabel(gvk schema.GroupVersionKind, label, value string) (string, string, error) { // TODO
-func (m myObjectConverter) ConvertFieldLabel(gvk interface{}, label, value string) (string, string, error) {
+func (m myObjectConverter) ConvertFieldLabel(gvk schema.GroupVersionKind, label, value string) (string, string, error) {
 	return "", "", nil
 }
 
 type myParameterCodec struct{}
 
-// func (m myParameterCodec) DecodeParameters(parameters url.Values, from schema.GroupVersion, into runtime.Object) error { // TODO
-func (m myParameterCodec) DecodeParameters(parameters url.Values, from interface{}, into runtime.Object) error {
+func (m myParameterCodec) DecodeParameters(parameters url.Values, from schema.GroupVersion, into runtime.Object) error {
 	return nil
 }
 
-// func (m myParameterCodec) EncodeParameters(obj runtime.Object, to schema.GroupVersion) (url.Values, error) { // TODO
-func (m myParameterCodec) EncodeParameters(obj runtime.Object, to interface{}) (url.Values, error) {
+func (m myParameterCodec) EncodeParameters(obj runtime.Object, to schema.GroupVersion) (url.Values, error) {
 	return nil, nil
 }
 
