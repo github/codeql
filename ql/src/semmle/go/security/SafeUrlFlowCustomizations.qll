@@ -10,11 +10,19 @@ import go
  * safe URL flow.
  */
 module SafeUrlFlow {
+  /** A source for safe URL flow. */
+  abstract class Source extends DataFlow::Node { }
+
   /** A sink for safe URL flow. */
   abstract class Sink extends DataFlow::Node { }
 
   /** An outgoing sanitizer edge for safe URL flow. */
   abstract class SanitizerEdge extends DataFlow::Node { }
+
+  /** Standard library safe URL sources. */
+  class StdlibSource extends Source, DataFlow::FieldReadNode {
+    StdlibSource() { this.getField().hasQualifiedName("net/http", "Request", ["Host", "URL"]) }
+  }
 
   /**
    * A method on a `net/url.URL` that is considered unsafe to use.

@@ -22,11 +22,7 @@ module SafeUrlFlow {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "SafeUrlFlow" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source.(DataFlow::FieldReadNode).getField().hasQualifiedName("net/http", "Request", "URL")
-      or
-      source.(DataFlow::FieldReadNode).getField().hasQualifiedName("net/http", "Request", "Host")
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
