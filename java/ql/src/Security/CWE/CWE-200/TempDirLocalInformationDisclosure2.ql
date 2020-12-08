@@ -16,7 +16,7 @@ private class MethodFileSystemFileCreation extends Method {
   MethodFileSystemFileCreation() {
     getDeclaringType() instanceof TypeFile and
     (
-      hasName("mkdir") or
+      hasName(["mkdir", "mkdirs"]) or
       hasName("createNewFile")
     )
   }

@@ -50,6 +50,11 @@ public class Test {
         tempDirChild.mkdir();
     }
 
+    void vulnerableFileCreateTempFileMkdirsTainted() {
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child");
+        tempDirChild.mkdir();
+    }
+
     void vulnerableFileCreateTempFilesWrite1() {
         File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child");
         Files.write(tempDirChild.toPath(), Arrays.asList("secret"), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
