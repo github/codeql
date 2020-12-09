@@ -4,16 +4,20 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/everything-accepting-hostname-verifier
+ * @id java/insecure-hostname-verifier
  * @tags security
  *       external/cwe/cwe-297
  */
 
 import java
-import semmle.code.java.security.Encryption
-import semmle.code.java.dataflow.DataFlow
-import DataFlow::PathGraph
+
 import semmle.code.java.controlflow.Guards
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.security.Encryption
+
+import DataFlow::PathGraph
 
 /**
  * Holds if `m` always returns `true` ignoring any exceptional flow.
