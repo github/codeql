@@ -9,6 +9,7 @@ import java.util.Stack;
 import com.semmle.js.ast.AClass;
 import com.semmle.js.ast.AFunction;
 import com.semmle.js.ast.AFunctionExpression;
+import com.semmle.js.ast.AngularPipeRef;
 import com.semmle.js.ast.ArrayExpression;
 import com.semmle.js.ast.ArrayPattern;
 import com.semmle.js.ast.ArrowFunctionExpression;
@@ -2125,6 +2126,13 @@ public class ASTExtractor {
       additionalErrors.add(
           new ParseError("Unexpected assignment pattern.", nd.getLoc().getStart()));
       return super.visit(nd, c);
+    }
+
+    @Override
+    public Label visit(AngularPipeRef nd, Context c) {
+      Label key = super.visit(nd, c);
+      visit(nd.getIdentifier(), key, 0, IdContext.label);
+      return key;
     }
   }
 

@@ -218,4 +218,25 @@ module Angular2 {
   private class DomAdapterLocation extends DOM::LocationSource::Range {
     DomAdapterLocation() { this = domAdapter().getAMethodCall("getLocation") }
   }
+
+  /**
+   * A reference to a pipe function, occurring in an Angular pipe expression
+   * that has been desugared to a function call.
+   *
+   * For example, the expression `x | f: y` is desugared to `f(x, y)` where
+   * `f` is a `PipeRefExpr`.
+   */
+  class PipeRefExpr extends Expr, @angular_pipe_ref {
+    /** Gets the identifier node naming the pipe. */
+    Identifier getIdentifier() {
+      result = getChildExpr(0)
+    }
+
+    /** Gets the name of the pipe being referenced. */
+    string getName() { result = getIdentifier().getName() }
+
+    override string getAPrimaryQlClass() {
+      result = "Angular2::PipeRefExpr"
+    }
+  }
 }

@@ -3,8 +3,10 @@ package com.semmle.jcorn;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.semmle.js.ast.AngularPipeRef;
 import com.semmle.js.ast.CallExpression;
 import com.semmle.js.ast.Expression;
+import com.semmle.js.ast.Identifier;
 import com.semmle.js.ast.Position;
 import com.semmle.js.ast.SourceLocation;
 
@@ -38,7 +40,10 @@ public class AngularExpressionParser extends Parser {
         arguments.add(parseExprOp(arg, argStartPos, argStartLocation, TokenType.plusMin.binop, true));
       }
       SourceLocation loc = new SourceLocation(startLoc);
-      return this.finishNode(new CallExpression(loc, right, null, arguments, false, false)); 
+      if (right instanceof Identifier) {
+        right = new AngularPipeRef(right.getLoc(), (Identifier)right);
+      }
+      return this.finishNode(new CallExpression(loc, right, null, arguments, false, false));
     }
     return super.buildBinary(startPos, startLoc, left, right, op, logical);
   }
