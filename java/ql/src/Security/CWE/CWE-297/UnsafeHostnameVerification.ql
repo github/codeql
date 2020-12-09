@@ -62,18 +62,60 @@ class TrustAllHostnameVerifierConfiguration extends DataFlow::Configuration {
   }
 }
 
-/** Holds if `node` is guarded by a flag that suggests an intentionally insecure feature. */
-private predicate isNodeGuardedByFlag(DataFlow::Node node) {
-  exists(Guard g | g.controls(node.asExpr().getBasicBlock(), _) |
-    g
-        .(VarAccess)
-        .getVariable()
-        .getName()
-        .regexpMatch("(?i).*(secure|(en|dis)able|selfCert|selfSign|validat|verif|trust|ignore).*")
+bindingset[result]
+private string getAFlagName() {
+  result.regexpMatch("(?i).*(secure|(en|dis)able|selfCert|selfSign|validat|verif|trust|ignore).*")
+}
+
+/** A configuration to model the flow of feature flags into `Guard`s. This is used to determine whether something is guarded by such a flag. */
+private class FlagTaintTracking extends TaintTracking2::Configuration {
+  FlagTaintTracking() { this = "FlagTaintTracking" }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(VarAccess v | v.getVariable().getName() = getAFlagName() | source.asExpr() = v)
+    or
+    exists(StringLiteral s | s.getRepresentedString() = getAFlagName() | source.asExpr() = s)
+    or
+    exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() | source.asExpr() = ma)
+  }
+
+  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof Guard }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MethodAccess ma | ma.getMethod() = any(EnvTaintedMethod m) |
+      ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
+    )
+    or
+    exists(MethodAccess ma |
+      ma.getMethod().hasName("parseBoolean") and
+      ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Boolean")
+    |
+      ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
+    )
+  }
+}
+
+/** Gets a guard that depends on a flag. */
+private Guard getAGuard() {
+  exists(FlagTaintTracking cfg, DataFlow::Node source, DataFlow::Node sink |
+    cfg.hasFlow(source, sink)
+  |
+    sink.asExpr() = result
   )
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, TrustAllHostnameVerifierConfiguration cfg
-where cfg.hasFlowPath(source, sink) and not isNodeGuardedByFlag(sink.getNode())
-select sink, source, sink, "$@ that accepts any certificate as valid, is used here.", source,
-  "This hostname verifier"
+/** Holds if `node` is guarded by a flag that suggests an intentionally insecure feature. */
+private predicate isNodeGuardedByFlag(DataFlow::Node node) {
+  exists(Guard g | g.controls(node.asExpr().getBasicBlock(), _) | g = getAGuard())
+}
+
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, TrustAllHostnameVerifierConfiguration cfg,
+  RefType verifier
+where
+  cfg.hasFlowPath(source, sink) and
+  not isNodeGuardedByFlag(sink.getNode()) and
+  verifier = source.getNode().asExpr().(ClassInstanceExpr).getConstructedType()
+select sink, source, sink,
+  "$@ that is defined $@ and accepts any certificate as valid, is used $@.", source,
+  "This hostname verifier", verifier, "here", sink, "here"
