@@ -1,6 +1,7 @@
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
+import java.security.cert.Certificate;
 
 public class UnsafeHostnameVerification {
 
@@ -55,10 +56,24 @@ public class UnsafeHostnameVerification {
 	public void testTrustAllHostnameDependingOnDerivedValue() {
 		String enabled = System.getProperty("disableHostnameVerification");
 		if (Boolean.parseBoolean(enabled)) {
-			HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);  // GOOD [but detected as BAD].
-			                                                                   // This is GOOD, because it depends on a feature
-			                                                                   // flag, but this is not detected by the query.
+			HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);  // GOOD, because it depends on a feature
+			                                                                   // flag.
 		}
+	}
+
+	public void testTrustAllHostnameWithExceptions() {
+		HostnameVerifier verifier = new HostnameVerifier() {
+			@Override
+			public boolean verify(String hostname, SSLSession session) {
+				verify(hostname, session.getPeerCertificates());
+				return true; // GOOD [but detected as BAD]. The verification of the certificate is done in another method and
+				    // in the case of a mismatch, an `Exception` is thrown so the `return true` statement never gets executed.
+			}
+
+			// Black-box method that properly verifies the certificate but throws an `Exception` in the case of a mismatch.
+			private void verify(String hostname, Certificate[] certs){}
+		};
+		HttpsURLConnection.setDefaultHostnameVerifier(verifier);
 	}
 
 	/**
