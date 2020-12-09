@@ -1,7 +1,7 @@
 /**
  * @name Prototype-polluting assignment
  * @description Modifying an object obtained via a user-controlled property name may
- *              lead to accidental modification of the built-in Object.prototype,
+ *              lead to accidental mutation of the built-in Object prototype,
  *              and possibly escalate to remote code execution or cross-site scripting.
  * @kind path-problem
  * @problem.severity warning
@@ -9,6 +9,7 @@
  * @id js/prototype-polluting-assignment
  * @tags security
  *       external/cwe/cwe-078
+ *       external/cwe/cwe-079
  *       external/cwe/cwe-094
  *       external/cwe/cwe-400
  *       external/cwe/cwe-915
