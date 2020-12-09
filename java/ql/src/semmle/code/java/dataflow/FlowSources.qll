@@ -292,7 +292,8 @@ private class SpringWebRequestGetMethod extends Method {
   }
 }
 
-private class EnvTaintedMethod extends Method {
+/** Models methods that are tainted by the environment of the user, such as `System.getProperty` or `System.getenv()`. */
+class EnvTaintedMethod extends Method {
   EnvTaintedMethod() {
     this instanceof MethodSystemGetenv or
     this instanceof PropertiesGetPropertyMethod or
