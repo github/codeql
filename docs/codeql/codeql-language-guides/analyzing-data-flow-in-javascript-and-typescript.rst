@@ -1,4 +1,4 @@
-.. _analyzing-data-flow-in-javascript:
+.. _analyzing-data-flow-in-javascript-and-typescript:
 
 Analyzing data flow in JavaScript and TypeScript
 ================================================

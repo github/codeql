@@ -17,7 +17,7 @@ Taint tracking differs from basic data flow in that it considers non-value-prese
 For example, in the assignment ``dir = path + "/"``, if ``path`` is tainted then ``dir`` is also tainted,
 even though there is no data flow from ``path`` to ``path + "/"``.
 
-Separate CodeQL libraries have been written to handle 'normal' data flow and taint tracking in :doc:`C/C++ <analyzing-data-flow-in-cpp>`, :doc:`C# <analyzing-data-flow-in-csharp>`, :doc:`Java <analyzing-data-flow-in-java>`, and :doc:`JavaScript <analyzing-data-flow-in-javascript>`. You can access the appropriate classes and predicates that reason about these different modes of data flow by importing the appropriate library in your query.
+Separate CodeQL libraries have been written to handle 'normal' data flow and taint tracking in :doc:`C/C++ <analyzing-data-flow-in-cpp>`, :doc:`C# <analyzing-data-flow-in-csharp>`, :doc:`Java <analyzing-data-flow-in-java>`, and :doc:`JavaScript <analyzing-data-flow-in-javascript-and-typescript>`. You can access the appropriate classes and predicates that reason about these different modes of data flow by importing the appropriate library in your query.
 In Python analysis, we can use the same taint tracking library to model both 'normal' data flow and taint flow, but we are still able make the distinction between steps that preserve values and those that don't by defining additional data flow properties.
 
 For further information on data flow and taint tracking with CodeQL, see ":ref:`Introduction to data flow <about-data-flow-analysis>`."
