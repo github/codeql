@@ -29,13 +29,20 @@ class SSLContext extends RefType {
   SSLContext() { hasQualifiedName("javax.net.ssl", "SSLContext") }
 }
 
+class SSLSession extends RefType {
+  SSLSession() { hasQualifiedName("javax.net.ssl", "SSLSession") }
+}
+
 class HostnameVerifier extends RefType {
   HostnameVerifier() { hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
 }
 
 class HostnameVerifierVerify extends Method {
   HostnameVerifierVerify() {
-    hasName("verify") and getDeclaringType().getASupertype*() instanceof HostnameVerifier
+    hasName("verify") and
+    getDeclaringType().getASupertype*() instanceof HostnameVerifier and
+    getParameterType(0) instanceof TypeString and
+    getParameterType(1) instanceof SSLSession
   }
 }
 
