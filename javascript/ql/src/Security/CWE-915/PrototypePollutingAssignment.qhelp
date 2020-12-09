@@ -7,7 +7,7 @@
   <p>
     Most JavaScript objects inherit the properties of the built-in <code>Object.prototype</code> object.
     Prototype pollution is a type of vulnerability in which an attacker is able to modify <code>Object.prototype</code>.
-    Since most objects inherit from the compromised <code>Object.prototype</code>, the attacker can use this
+    Since most objects inherit from the compromised <code>Object.prototype</code> object, the attacker can use this
     to tamper with the application logic, and often escalate to remote code execution or cross-site scripting.
   </p>
 
@@ -23,7 +23,7 @@
   <p>
     Use an associative data structure that is resilient to untrusted key values, such as a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>.
     In some cases, a prototype-less object created with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create(null)</a>
-    may be preferrable.
+    may be preferable.
   </p>
   <p>
     Alternatively, restrict the computed property name so it can't clash with a built-in property, either by

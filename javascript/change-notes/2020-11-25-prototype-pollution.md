@@ -1,5 +1,5 @@
 lgtm,codescanning
-* Detection of prototype pollution has improved and the queries involved have been reorganized:
+* We've improved the detection of prototype pollution, and the queries involved have been reorganized:
   * A new query "Prototype-polluting assignment" (`js/prototype-polluting-assignment`) has been added. This query
   highlights direct modifications of an object obtained via a user-controlled property name, which may accidentally alter `Object.prototype`.
   * The query previously named "Prototype pollution" (`js/prototype-pollution`) has been renamed to "Prototype-polluting merge call".
