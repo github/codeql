@@ -93,7 +93,7 @@ public class HTMLExtractor implements IExtractor {
 
             String source = attr.getValue();
             RowColumnVector valueStart = attr.getValueSegment().getRowColumnVector();
-            if (JS_ATTRIBUTE.matcher(attr.getName()).matches()) {
+            if (JS_ATTRIBUTE.matcher(attr.getName()).matches() || isAngularTemplateAttributeName(attr.getName())) {
               snippetLoC =
                   extractSnippet(
                       2,
@@ -126,6 +126,12 @@ public class HTMLExtractor implements IExtractor {
     public LoCInfo getLoCInfo() {
       return this.locInfo;
     }
+  }
+
+  private boolean isAngularTemplateAttributeName(String name) {
+    return name.startsWith("[") && name.endsWith("]") ||
+        name.startsWith("(") && name.endsWith(")") ||
+        name.startsWith("*ng");
   }
 
   /** List of HTML attributes whose value is interpreted as JavaScript. */
