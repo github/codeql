@@ -22,11 +22,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Clone github/codeql
+    - if: github.event.inputs.ref
+      name: Clone github/codeql (user defined ref)
       uses: actions/checkout@v2
       with:
         path: codeql
-        ref: '{{ github.event.inputs.ref }}' 
+        ref: ${{ github.event.inputs.ref }}
+    - if: github.event.inputs.ref == ''
+      name: Clone github/codeql (default ref)
+      uses: actions/checkout@v2
+      with:
+        path: codeql
     - name: Clone github/codeql-go
       uses: actions/checkout@v2
       with:
