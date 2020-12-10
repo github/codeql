@@ -2137,9 +2137,9 @@ public class ASTExtractor {
   }
 
   public List<ParseError> extract(
-      Node root, Platform platform, SourceType sourceType, int toplevelKind) {
+      Node root, Platform platform, SourceType sourceType, TopLevelKind toplevelKind) {
     lexicalExtractor.getMetrics().startPhase(ExtractionPhase.ASTExtractor_extract);
-    trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
+    trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind.getValue());
     locationManager.emitNodeLocation(root, toplevelLabel);
 
     V visitor = new V(platform, sourceType);

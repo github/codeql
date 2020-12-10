@@ -1,5 +1,9 @@
 package com.semmle.js.extractor;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.semmle.js.ast.Comment;
 import com.semmle.js.ast.Node;
 import com.semmle.js.ast.Token;
@@ -14,9 +18,6 @@ import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Extractor for populating JavaScript source code, including AST information, lexical information
@@ -36,7 +37,7 @@ public class JSExtractor {
       Pattern.compile("(?m)^([ \t]*)(import|export|goog\\.module)\\b");
 
   public Pair<Label, LoCInfo> extract(
-      TextualExtractor textualExtractor, String source, int toplevelKind, ScopeManager scopeManager)
+      TextualExtractor textualExtractor, String source, TopLevelKind toplevelKind, ScopeManager scopeManager)
       throws ParseError {
     // if the file starts with `{ "<string>":` it won't parse as JavaScript; try parsing as JSON
     // instead
@@ -84,7 +85,7 @@ public class JSExtractor {
   public Pair<Label, LoCInfo> extract(
       TextualExtractor textualExtractor,
       String source,
-      int toplevelKind,
+      TopLevelKind toplevelKind,
       ScopeManager scopeManager,
       SourceType sourceType,
       JSParser.Result parserRes)
@@ -121,7 +122,7 @@ public class JSExtractor {
       ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, null);
       toplevelLabel = scriptExtractor.getToplevelLabel();
 
-      trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
+      trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind.getValue());
       locationManager.emitSnippetLocation(toplevelLabel, 1, 1, 1, 1);
       loc = new LoCInfo(0, 0);
     }

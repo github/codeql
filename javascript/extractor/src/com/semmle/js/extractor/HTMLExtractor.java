@@ -73,7 +73,7 @@ public class HTMLExtractor implements IExtractor {
             RowColumnVector contentStart = content.getRowColumnVector();
             snippetLoC =
                 extractSnippet(
-                    1,
+                    TopLevelKind.inlineScript,
                     config.withSourceType(sourceType),
                     scopeManager,
                     textualExtractor,
@@ -96,7 +96,7 @@ public class HTMLExtractor implements IExtractor {
             if (JS_ATTRIBUTE.matcher(attr.getName()).matches() || isAngularTemplateAttributeName(attr.getName())) {
               snippetLoC =
                   extractSnippet(
-                      2,
+                      TopLevelKind.eventHandler,
                       config,
                       scopeManager,
                       textualExtractor,
@@ -108,7 +108,7 @@ public class HTMLExtractor implements IExtractor {
               source = source.substring(11);
               snippetLoC =
                   extractSnippet(
-                      3,
+                      TopLevelKind.javascriptUrl,
                       config,
                       scopeManager,
                       textualExtractor,
@@ -233,7 +233,7 @@ public class HTMLExtractor implements IExtractor {
   }
 
   private LoCInfo extractSnippet(
-      int toplevelKind,
+      TopLevelKind toplevelKind,
       ExtractorConfig config,
       ScopeManager scopeManager,
       TextualExtractor textualExtractor,
