@@ -1,10 +1,13 @@
 name: Generate CodeQL query help documentation using Sphinx
 
 on:
+  workflow_dispatch:
+      inputs:
+      description:
+        description: A description of the purpose of this job. For human consumption.
+        required: false
   push:
     branches:
-     - main
-     - 'rc/**'
      - 'lgtm.com'
   pull_request:
     paths:
