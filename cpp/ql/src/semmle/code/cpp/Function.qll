@@ -445,50 +445,15 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       // ... and likewise for destructors.
       this.(Destructor).getADestruction().mayBeGloballyImpure()
     else
-      not exists(string name | this.hasGlobalOrStdName(name) |
-        // Unless it's a function that we know is side-effect-free, it may
-        // have side-effects.
-        name = "strcmp" or
-        name = "wcscmp" or
-        name = "_mbscmp" or
-        name = "strlen" or
-        name = "wcslen" or
-        name = "_mbslen" or
-        name = "_mbslen_l" or
-        name = "_mbstrlen" or
-        name = "_mbstrlen_l" or
-        name = "strnlen" or
-        name = "strnlen_s" or
-        name = "wcsnlen" or
-        name = "wcsnlen_s" or
-        name = "_mbsnlen" or
-        name = "_mbsnlen_l" or
-        name = "_mbstrnlen" or
-        name = "_mbstrnlen_l" or
-        name = "strncmp" or
-        name = "wcsncmp" or
-        name = "_mbsncmp" or
-        name = "_mbsncmp_l" or
-        name = "strchr" or
-        name = "memchr" or
-        name = "wmemchr" or
-        name = "memcmp" or
-        name = "wmemcmp" or
-        name = "_memicmp" or
-        name = "_memicmp_l" or
-        name = "feof" or
-        name = "isdigit" or
-        name = "isxdigit" or
-        name = "abs" or
-        name = "fabs" or
-        name = "labs" or
-        name = "floor" or
-        name = "ceil" or
-        name = "atoi" or
-        name = "atol" or
-        name = "atoll" or
-        name = "atof"
-      )
+      // Unless it's a function that we know is side-effect-free, it may
+      // have side-effects.
+      not this.hasGlobalOrStdName([
+          "strcmp", "wcscmp", "_mbscmp", "strlen", "wcslen", "_mbslen", "_mbslen_l", "_mbstrlen",
+          "_mbstrlen_l", "strnlen", "strnlen_s", "wcsnlen", "wcsnlen_s", "_mbsnlen", "_mbsnlen_l",
+          "_mbstrnlen", "_mbstrnlen_l", "strncmp", "wcsncmp", "_mbsncmp", "_mbsncmp_l", "strchr",
+          "memchr", "wmemchr", "memcmp", "wmemcmp", "_memicmp", "_memicmp_l", "feof", "isdigit",
+          "isxdigit", "abs", "fabs", "labs", "floor", "ceil", "atoi", "atol", "atoll", "atof"
+        ])
   }
 
   /**
