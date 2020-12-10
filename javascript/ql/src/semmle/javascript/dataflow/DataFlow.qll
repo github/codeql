@@ -1592,7 +1592,8 @@ module DataFlow {
       e instanceof E4X::XMLAttributeSelector or
       e instanceof E4X::XMLDotDotExpression or
       e instanceof E4X::XMLFilterExpression or
-      e instanceof E4X::XMLQualifiedIdentifier
+      e instanceof E4X::XMLQualifiedIdentifier or
+      e instanceof Angular2::PipeRefExpr
     )
     or
     exists(Expr e | e = nd.asExpr() |
