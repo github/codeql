@@ -1,16 +1,16 @@
 import { Component } from "@angular/core";
 
 @Component({
-    selector: "foo-component",
-    templateUrl: "./foo.component.html"
+    selector: "source-component",
+    templateUrl: "./source.component.html"
 })
-export class Foo {
-    foo: string;
+export class Source {
+    taint: string;
     taintedArray: string[];
     safeArray: string[];
 
     constructor() {
-        this.foo = source();
+        this.taint = source();
         this.taintedArray = [...source()];
         this.safeArray = ['a', 'b'];
     }

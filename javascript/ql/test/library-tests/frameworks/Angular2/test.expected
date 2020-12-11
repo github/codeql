@@ -1,28 +1,28 @@
 pipeRef
-| foo.component.html:3:20:3:30 | unknownPipe |
-| foo.component.html:4:20:4:30 | unknownPipe |
-| foo.component.html:5:20:5:27 | testPipe |
-| foo.component.html:6:19:6:26 | testPipe |
+| source.component.html:3:22:3:32 | unknownPipe |
+| source.component.html:4:22:4:32 | unknownPipe |
+| source.component.html:5:22:5:29 | testPipe |
+| source.component.html:6:19:6:26 | testPipe |
 pipeCall
-| foo.component.html:3:14:3:30 | foo \| unknownPipe |
-| foo.component.html:4:14:4:37 | foo \| u ... :'safe' |
-| foo.component.html:5:14:5:34 | foo \| t ... :'safe' |
-| foo.component.html:6:14:6:30 | 42 \| testPipe:foo |
+| source.component.html:3:14:3:32 | taint \| unknownPipe |
+| source.component.html:4:14:4:39 | taint \| ... :'safe' |
+| source.component.html:5:14:5:36 | taint \| ... :'safe' |
+| source.component.html:6:14:6:32 | 42 \| testPipe:taint |
 pipeCallArg
-| 0 | foo.component.html:3:14:3:16 | foo | foo.component.html:3:14:3:30 | foo \| unknownPipe |
-| 0 | foo.component.html:4:14:4:16 | foo | foo.component.html:4:14:4:37 | foo \| u ... :'safe' |
-| 0 | foo.component.html:5:14:5:16 | foo | foo.component.html:5:14:5:34 | foo \| t ... :'safe' |
-| 0 | foo.component.html:6:14:6:15 | 42 | foo.component.html:6:14:6:30 | 42 \| testPipe:foo |
-| 1 | foo.component.html:4:32:4:37 | 'safe' | foo.component.html:4:14:4:37 | foo \| u ... :'safe' |
-| 1 | foo.component.html:5:29:5:34 | 'safe' | foo.component.html:5:14:5:34 | foo \| t ... :'safe' |
-| 1 | foo.component.html:6:28:6:30 | foo | foo.component.html:6:14:6:30 | 42 \| testPipe:foo |
+| 0 | source.component.html:3:14:3:18 | taint | source.component.html:3:14:3:32 | taint \| unknownPipe |
+| 0 | source.component.html:4:14:4:18 | taint | source.component.html:4:14:4:39 | taint \| ... :'safe' |
+| 0 | source.component.html:5:14:5:18 | taint | source.component.html:5:14:5:36 | taint \| ... :'safe' |
+| 0 | source.component.html:6:14:6:15 | 42 | source.component.html:6:14:6:32 | 42 \| testPipe:taint |
+| 1 | source.component.html:4:34:4:39 | 'safe' | source.component.html:4:14:4:39 | taint \| ... :'safe' |
+| 1 | source.component.html:5:31:5:36 | 'safe' | source.component.html:5:14:5:36 | taint \| ... :'safe' |
+| 1 | source.component.html:6:28:6:32 | taint | source.component.html:6:14:6:32 | 42 \| testPipe:taint |
 pipeClass
 | TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} |
 pipeClassRef
-| TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | foo.component.html:5:20:5:27 | testPipe |
-| TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | foo.component.html:6:19:6:26 | testPipe |
+| TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | source.component.html:5:22:5:29 | testPipe |
+| TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | source.component.html:6:19:6:26 | testPipe |
 taintFlow
-| foo.component.ts:13:20:13:27 | source() | other.component.ts:18:48:18:57 | this.prop1 |
-| foo.component.ts:13:20:13:27 | source() | other.component.ts:21:48:21:57 | this.prop4 |
-| foo.component.ts:13:20:13:27 | source() | other.component.ts:22:48:22:57 | this.prop5 |
-| foo.component.ts:14:33:14:40 | source() | other.component.ts:18:48:18:57 | this.prop1 |
+| source.component.ts:13:22:13:29 | source() | sink.component.ts:18:48:18:57 | this.sink1 |
+| source.component.ts:13:22:13:29 | source() | sink.component.ts:21:48:21:57 | this.sink4 |
+| source.component.ts:13:22:13:29 | source() | sink.component.ts:22:48:22:57 | this.sink5 |
+| source.component.ts:14:33:14:40 | source() | sink.component.ts:18:48:18:57 | this.sink1 |
