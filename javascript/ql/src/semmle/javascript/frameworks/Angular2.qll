@@ -363,6 +363,26 @@ module Angular2 {
     }
   }
 
+  /** A class with the `@Pipe` decorator. */
+  class PipeClass extends DataFlow::ClassNode {
+    DataFlow::CallNode decorator;
+
+    PipeClass() {
+      decorator = DataFlow::moduleMember("@angular/core", "Pipe").getACall() and
+      decorator = getADecorator()
+    }
+
+    /** Gets the value of the `name` option passed to the `@Pipe` decorator. */
+    string getPipeName() {
+      decorator.getOptionArgument(0, "name").mayHaveStringValue(result)
+    }
+
+    /** Gets a reference to this pipe. */
+    DataFlow::Node getAPipeRef() {
+      result.asExpr().(PipeRefExpr).getName() = getPipeName()
+    }
+  }
+
   private class ComponentSteps extends PreCallGraphStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(ComponentClass cls, string name |
@@ -383,6 +403,15 @@ module Angular2 {
         // from `getFieldOutputNode` are already handled by the general data flow library.
         pred = cls.getFieldNode(name) and
         succ = cls.getAReceiverNode().getAPropertyRead(name)
+      )
+    }
+  }
+
+  private class PipeSteps extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(PipeClass cls |
+        pred = cls.getInstanceMethod("transform") and
+        succ = cls.getAPipeRef()
       )
     }
   }
