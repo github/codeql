@@ -29,7 +29,7 @@
 
   <p>
     Only merge or assign a property recursively when it is an own property of the <em>destination</em> object.
-    Alternatively, blacklist the property names <code>__proto__</code> and <code>constructor</code>
+    Alternatively, block the property names <code>__proto__</code> and <code>constructor</code>
     from being merged or assigned to.
   </p>
 </recommendation>
@@ -39,7 +39,7 @@
     This function recursively copies properties from <code>src</code> to <code>dst</code>:
   </p>
 
-  <sample src="examples/PrototypePollutionUtility.js"/>
+  <sample src="examples/PrototypePollutingFunction.js"/>
 
   <p>
     However, if <code>src</code> is the object <code>{"__proto__": {"isAdmin": true}}</code>,
@@ -51,13 +51,13 @@
     are merged recursively:
   </p>
 
-  <sample src="examples/PrototypePollutionUtility_fixed.js"/>
+  <sample src="examples/PrototypePollutingFunction_fixed.js"/>
 
   <p>
-    Alternatively, blacklist the <code>__proto__</code> and <code>constructor</code> properties:
+    Alternatively, block the <code>__proto__</code> and <code>constructor</code> properties:
   </p>
 
-  <sample src="examples/PrototypePollutionUtility_fixed2.js"/>
+  <sample src="examples/PrototypePollutingFunction_fixed2.js"/>
 </example>
 
 <references>
