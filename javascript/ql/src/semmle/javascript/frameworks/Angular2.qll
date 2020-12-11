@@ -7,6 +7,7 @@ private import semmle.javascript.security.dataflow.Xss
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
 private import semmle.javascript.DynamicPropertyAccess
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
  * Provides classes for working with Angular (also known as Angular 2.x) applications.
@@ -237,6 +238,152 @@ module Angular2 {
 
     override string getAPrimaryQlClass() {
       result = "Angular2::PipeRefExpr"
+    }
+  }
+
+  /** The RHS of a `templateUrl` property, seen as a path expression. */
+  private class TemplateUrlPath extends PathExpr {
+    TemplateUrlPath() {
+      exists(Property prop |
+        prop.getName() = "templateUrl" and
+        this = prop.getInit()
+      )
+    }
+
+    override string getValue() {
+      result = this.(Expr).getStringValue()
+    }
+  }
+
+  /**
+   * Holds if the value of `attrib` is interpreted as an Angular expression.
+   */
+  predicate isAngularExpressionAttribute(HTML::Attribute attrib) {
+    attrib.getName().matches("(%)") or
+    attrib.getName().matches("[%]") or
+    attrib.getName().matches("*ng%")
+  }
+
+  /**
+   * Gets a global variable access to `name` within the given attribute.
+   */
+  pragma[noinline]
+  private GlobalVarAccess getAGlobalVarAccessInAttribute(CodeInAttribute code, string name) {
+    exists(ComponentClass cls) and // do not materialize for non-Angular codebases
+    result.getTopLevel() = code and
+    result.getName() = name
+  }
+
+  /**
+   * The class for an Angular component.
+   */
+  class ComponentClass extends DataFlow::ClassNode {
+    DataFlow::CallNode decorator;
+
+    ComponentClass() {
+      decorator = getADecorator() and
+      decorator = DataFlow::moduleMember("@angular/core", "Component").getACall()
+    }
+
+    /**
+     * Gets a data flow node representing the value of the declared
+     * instance field of the given name.
+     */
+    DataFlow::Node getFieldNode(string name) {
+      exists(FieldDeclaration f |
+        f.getName() = name and
+        f.getDeclaringClass().flow() = this and
+        result = f.getNameExpr().flow()
+      )
+    }
+
+    /**
+     * Gets a data flow node representing data flowing into a field of
+     * this component.
+     */
+    DataFlow::Node getFieldInputNode(string name) {
+      result = getFieldNode(name)
+      or
+      result = getInstanceMember(name, DataFlow::MemberKind::setter()).getParameter(0)
+    }
+
+    /**
+     * Gets a data flow node representing data flowing out of a field
+     * of this component.
+     */
+    DataFlow::Node getFieldOutputNode(string name) {
+      result = getFieldNode(name)
+      or
+      result = getInstanceMember(name, DataFlow::MemberKind::getter()).getReturnNode()
+      or
+      result = getInstanceMethod(name)
+    }
+
+    /**
+     * Gets the `selector` property of the `@Component` decorator.
+     */
+    string getSelector() {
+      decorator.getOptionArgument(0, "selector").mayHaveStringValue(result)
+    }
+
+    /** Gets an HTML element that instantiates this component. */
+    HTML::Element getATemplateInstantiation() {
+      result.getName() = getSelector()
+    }
+
+    /** Gets an argument that flows into the `name` field of this component. */
+    DataFlow::Node getATemplateArgument(string name) {
+      result = getATemplateInstantiation().getAttributeByName("[" + name + "]").getCodeInAttribute().getChildStmt(0).(ExprStmt).getExpr().flow()
+    }
+
+    /** Gets the `templateUrl` property of the `@Component` decorator. */
+    string getTemplateUrl() {
+      decorator.getOptionArgument(0, "templateUrl").mayHaveStringValue(result)
+    }
+
+    /**
+     * Gets the file referred to by `templateUrl`.
+     *
+     * Has no result if the template is given inline via a `template` property.
+     */
+    pragma[noinline]
+    File getTemplateFile() {
+      result = decorator.getOptionArgument(0, "templateUrl").asExpr().(PathExpr).resolve()
+    }
+
+    /**
+     * Gets an access to the variable `name` in the template body.
+     */
+    DataFlow::Node getATemplateVarAccess(string name) {
+      exists(HTML::Attribute attrib |
+        attrib.getFile() = getTemplateFile() and
+        isAngularExpressionAttribute(attrib) and
+        result = getAGlobalVarAccessInAttribute(attrib.getCodeInAttribute(), name).flow()
+      )
+    }
+  }
+
+  private class ComponentSteps extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(ComponentClass cls, string name |
+        // From <my-class [foo]="bar"/> to `foo` field in class
+        pred = cls.getATemplateArgument(name) and
+        succ = cls.getFieldInputNode(name)
+        or
+        // From `foo` field in class to <other-component [baz]="foo"/>
+        pred = cls.getFieldOutputNode(name) and
+        succ = cls.getATemplateVarAccess(name)
+        or
+        // From property write to the field input node
+        pred = cls.getAReceiverNode().getAPropertyWrite(name).getRhs() and
+        succ = cls.getFieldInputNode(name)
+        or
+        // From the field node to property read.
+        // We use `getFieldNode` instead of `getFieldOutputNode` as the other two cases
+        // from `getFieldOutputNode` are already handled by the general data flow library.
+        pred = cls.getFieldNode(name) and
+        succ = cls.getAReceiverNode().getAPropertyRead(name)
+      )
     }
   }
 }

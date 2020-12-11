@@ -1007,6 +1007,13 @@ class ClassNode extends DataFlow::SourceNode {
   TypeAnnotation getFieldTypeAnnotation(string fieldName) {
     result = impl.getFieldTypeAnnotation(fieldName)
   }
+
+  /**
+   * Gets a decorator applied to this class.
+   */
+  DataFlow::Node getADecorator() {
+    result = impl.getADecorator()
+  }
 }
 
 module ClassNode {
@@ -1064,6 +1071,9 @@ module ClassNode {
      * Gets the type annotation for the field `fieldName`, if any.
      */
     TypeAnnotation getFieldTypeAnnotation(string fieldName) { none() }
+
+    /** Gets a decorator applied to this class. */
+    DataFlow::Node getADecorator() { none() }
   }
 
   /**
@@ -1130,6 +1140,10 @@ module ClassNode {
         fieldName = field.getName() and
         result = field.getTypeAnnotation()
       )
+    }
+
+    override DataFlow::Node getADecorator() {
+      result = astNode.getADecorator().getExpression().flow()
     }
   }
 
