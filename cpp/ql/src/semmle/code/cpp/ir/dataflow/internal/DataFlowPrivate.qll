@@ -2,6 +2,7 @@ private import cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
+private import semmle.code.cpp.models.interfaces.DataFlow
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
@@ -271,16 +272,31 @@ private predicate callableWithoutDefinitionStoreStep(
 ) {
   exists(
     WriteSideEffectInstruction write, ChiInstruction chi, PostUpdateFieldNode post,
-    Function callable
+    Function callable, CallInstruction call
   |
     chi.getPartial() = write and
     not chi.isResultConflated() and
     post = node2.getPartialDefinition() and
-    node1.asInstruction() = write and
     post.getPreUpdateNode() = getFieldNodeForFieldInstruction(write.getDestinationAddress()) and
     f.getADirectField() = post.getPreUpdateNode().getField() and
-    callable = write.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() and
+    call = write.getPrimaryInstruction() and
+    callable = call.getStaticCallTarget() and
     not callable.hasDefinition()
+  |
+    exists(OutParameterDeref out | out.getIndex() = write.getIndex() |
+      callable.(DataFlowFunction).hasDataFlow(_, out) and
+      node1.asInstruction() = write
+    )
+    or
+    // Ideally we shouldn't need to do a store step from a read side effect, but if we don't have a
+    // model for the callee there might not be flow to the write side effect (since the callee has no
+    // definition). This case ensures that we propagate dataflow when a field is passed into a
+    // function that has a write side effect, even though the write side effect doesn't have incoming
+    // flow.
+    not callable instanceof DataFlowFunction and
+    exists(ReadSideEffectInstruction read | call = read.getPrimaryInstruction() |
+      node1.asInstruction() = read.getSideEffectOperand().getAnyDef()
+    )
   )
 }
 
