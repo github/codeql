@@ -50,7 +50,7 @@ There is too much information to search through by hand, so you decide to use yo
 
 #. Open the `query console on LGTM.com <https://lgtm.com/query>`__ to get started.
 #. Select a language and a demo project. For this tutorial, any language and project will do.
-#. Delete the default code ``import <ql-language-specification> select "hello world"``.
+#. Delete the default code ``import <language> select "hello world"``.
 
 QL libraries
 ------------

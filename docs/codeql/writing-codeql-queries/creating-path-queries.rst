@@ -52,7 +52,7 @@ For C/C++, C#, Java, and JavaScript you should use the following template::
      * ...
      */
 
-    import <ql-language-specification>
+    import <language>
     import DataFlow::PathGraph
     ...
 
