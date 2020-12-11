@@ -2,6 +2,7 @@ package com.semmle.js.extractor;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.semmle.extractor.html.HtmlPopulator;
@@ -106,14 +107,22 @@ public class HTMLExtractor implements IExtractor {
                       false /* isTypeScript */);
             } else if (isAngularTemplateAttributeName(attr.getName())) {
               // For an attribute *ngFor="let var of EXPR", start parsing at EXPR
-              int offset = attr.getName().equals("*ngFor") ? source.indexOf(" of ") + " of ".length() : 0;
+              int offset = 0;
+              if (attr.getName().equals("*ngFor")) {
+                Matcher m = ANGULAR_FOR_LOOP_DECL.matcher(source);
+                if (m.matches()) {
+                  String expr = m.group(2);
+                  offset = m.end(2) - expr.length();
+                  source = expr;
+                }
+              }
               snippetLoC =
                   extractSnippet(
                       TopLevelKind.eventHandler,
                       config.withSourceType(SourceType.ANGULAR_TEMPLATE),
                       scopeManager,
                       textualExtractor,
-                      source.substring(offset),
+                      source,
                       valueStart.getRow(),
                       valueStart.getColumn() + offset,
                       false /* isTypeScript */);
@@ -146,6 +155,8 @@ public class HTMLExtractor implements IExtractor {
         name.startsWith("(") && name.endsWith(")") ||
         name.startsWith("*ng");
   }
+
+  private static final Pattern ANGULAR_FOR_LOOP_DECL = Pattern.compile("^ *let +(\\w+) +of(?: +|(?!\\w))(.*)");
 
   /** List of HTML attributes whose value is interpreted as JavaScript. */
   private static final Pattern JS_ATTRIBUTE =

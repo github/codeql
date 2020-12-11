@@ -274,6 +274,10 @@ module Angular2 {
     result.getName() = name
   }
 
+  private DataFlow::Node getAttributeValueAsNode(HTML::Attribute attrib) {
+    result = attrib.getCodeInAttribute().getChildStmt(0).(ExprStmt).getExpr().flow()
+  }
+
   /**
    * The class for an Angular component.
    */
@@ -333,7 +337,7 @@ module Angular2 {
 
     /** Gets an argument that flows into the `name` field of this component. */
     DataFlow::Node getATemplateArgument(string name) {
-      result = getATemplateInstantiation().getAttributeByName("[" + name + "]").getCodeInAttribute().getChildStmt(0).(ExprStmt).getExpr().flow()
+      result = getAttributeValueAsNode(getATemplateInstantiation().getAttributeByName("[" + name + "]"))
     }
 
     /** Gets the `templateUrl` property of the `@Component` decorator. */
@@ -413,6 +417,59 @@ module Angular2 {
         pred = cls.getInstanceMethod("transform") and
         succ = cls.getAPipeRef()
       )
+    }
+  }
+
+  /**
+   * An attribute of form `*ngFor="let var of EXPR"`.
+   *
+   * The `EXPR` has been extracted as the sole `CodeInAttribute` top-level for this
+   * attribute. There is no AST node for the implied for-of loop.
+   */
+  private class ForLoopAttribute extends HTML::Attribute {
+    ForLoopAttribute() {
+      getName() = "*ngFor"
+    }
+
+    /** Gets a data-flow node holding the value being iterated over. */
+    DataFlow::Node getIterationDomain() {
+      result = getAttributeValueAsNode(this)
+    }
+
+    /** Gets the name of the variable holding the element of the current iteration. */
+    string getIteratorName() {
+      result = getValue().regexpCapture("^ *let (\\w+) .*", 1)
+    }
+
+    /** Gets an HTML element in which the iterator variable is in scope. */
+    HTML::Element getAnElementInScope() {
+      result.getParent*() = getElement()
+    }
+
+    /** Gets a reference to the iterator variable. */
+    DataFlow::Node getAnIteratorAccess() {
+      exists(HTML::Attribute attrib |
+        attrib = getAnElementInScope().getAnAttribute() and
+        isAngularExpressionAttribute(attrib) and
+        result = getAGlobalVarAccessInAttribute(attrib.getCodeInAttribute(), getIteratorName()).flow()
+      )
+    }
+  }
+
+  /**
+   * A taint step `array -> elem` in `*ngFor="let elem of array"`, or more precisely,
+   * a step from `array` to each access to `elem`.
+   */
+  private class ForLoopStep extends TaintTracking::AdditionalTaintStep {
+    ForLoopAttribute attrib;
+
+    ForLoopStep() {
+      this = attrib.getIterationDomain()
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = this and
+      succ = attrib.getAnIteratorAccess()
     }
   }
 }

@@ -22,6 +22,7 @@ pipeClassRef
 | TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | foo.component.html:5:20:5:27 | testPipe |
 | TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | foo.component.html:6:19:6:26 | testPipe |
 taintFlow
-| foo.component.ts:11:20:11:27 | source() | other.component.ts:18:48:18:57 | this.prop1 |
-| foo.component.ts:11:20:11:27 | source() | other.component.ts:21:48:21:57 | this.prop4 |
-| foo.component.ts:11:20:11:27 | source() | other.component.ts:22:48:22:57 | this.prop5 |
+| foo.component.ts:13:20:13:27 | source() | other.component.ts:18:48:18:57 | this.prop1 |
+| foo.component.ts:13:20:13:27 | source() | other.component.ts:21:48:21:57 | this.prop4 |
+| foo.component.ts:13:20:13:27 | source() | other.component.ts:22:48:22:57 | this.prop5 |
+| foo.component.ts:14:33:14:40 | source() | other.component.ts:18:48:18:57 | this.prop1 |
