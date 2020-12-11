@@ -1,0 +1,10 @@
+pipeRef
+| foo.component.html:2:19:2:21 | bar |
+| foo.component.html:3:20:3:28 | bar:'baz' |
+pipeCall
+| foo.component.html:2:13:2:21 | foo \| bar |
+| foo.component.html:3:14:3:28 | foo \| bar:'baz' |
+pipeCallArg
+| 0 | foo.component.html:2:13:2:15 | foo | foo.component.html:2:13:2:21 | foo \| bar |
+| 0 | foo.component.html:3:14:3:16 | foo | foo.component.html:3:14:3:28 | foo \| bar:'baz' |
+| 1 | foo.component.html:3:24:3:28 | 'baz' | foo.component.html:3:14:3:28 | foo \| bar:'baz' |

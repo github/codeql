@@ -41,9 +41,9 @@ public class AngularExpressionParser extends Parser {
       }
       SourceLocation loc = new SourceLocation(startLoc);
       if (right instanceof Identifier) {
-        right = new AngularPipeRef(right.getLoc(), (Identifier)right);
+        right = new AngularPipeRef(new SourceLocation(right.getLoc()), (Identifier)right);
       }
-      return this.finishNode(new CallExpression(loc, right, null, arguments, false, false));
+      return this.finishNode(new CallExpression(loc, right, new ArrayList<>(), arguments, false, false));
     }
     return super.buildBinary(startPos, startLoc, left, right, op, logical);
   }
