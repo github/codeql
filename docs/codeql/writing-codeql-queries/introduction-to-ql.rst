@@ -23,7 +23,7 @@ Once you have selected a language, the query console is populated with the query
 
 .. code-block:: ql
 
-   import <ql-language-specification>
+   import <language>
 
    select "hello world"
 
@@ -124,7 +124,7 @@ The following example queries *do* use these databases and give you an idea of h
 Queries using the CodeQL libraries can find errors and uncover variants of important security vulnerabilities in codebases.
 Visit `GitHub Security Lab <https://securitylab.github.com/>`__ to read about examples of vulnerabilities that we have recently found in open source projects.
 
-To import the CodeQL library for a specific programming language, type ``import <ql-language-specification>`` at the start of the query.
+To import the CodeQL library for a specific programming language, type ``import <language>`` at the start of the query.
 
 .. code-block:: ql
 
