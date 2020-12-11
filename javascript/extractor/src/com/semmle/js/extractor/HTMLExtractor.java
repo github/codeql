@@ -93,7 +93,7 @@ public class HTMLExtractor implements IExtractor {
 
             String source = attr.getValue();
             RowColumnVector valueStart = attr.getValueSegment().getRowColumnVector();
-            if (JS_ATTRIBUTE.matcher(attr.getName()).matches() || isAngularTemplateAttributeName(attr.getName())) {
+            if (JS_ATTRIBUTE.matcher(attr.getName()).matches()) {
               snippetLoC =
                   extractSnippet(
                       TopLevelKind.eventHandler,
@@ -103,6 +103,19 @@ public class HTMLExtractor implements IExtractor {
                       source,
                       valueStart.getRow(),
                       valueStart.getColumn(),
+                      false /* isTypeScript */);
+            } else if (isAngularTemplateAttributeName(attr.getName())) {
+              // For an attribute *ngFor="let var of EXPR", start parsing at EXPR
+              int offset = attr.getName().equals("*ngFor") ? source.indexOf(" of ") + " of ".length() : 0;
+              snippetLoC =
+                  extractSnippet(
+                      TopLevelKind.eventHandler,
+                      config.withSourceType(SourceType.ANGULAR_TEMPLATE),
+                      scopeManager,
+                      textualExtractor,
+                      source,
+                      valueStart.getRow(),
+                      valueStart.getColumn() + offset,
                       false /* isTypeScript */);
             } else if (source.startsWith("javascript:")) {
               source = source.substring(11);

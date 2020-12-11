@@ -14,9 +14,9 @@ import com.semmle.js.ast.SourceLocation;
  * Parser for Angular template expressions, based on the JS parser with
  * modified handling of the pipe operator.
  */
-public class AngularExpressionParser extends Parser {
-  public AngularExpressionParser(String input, int startPos) {
-    super(new Options(), input, startPos);
+public class AngularExpressionParser extends CustomParser {
+  public AngularExpressionParser(Options options, String input, int startPos) {
+    super(options, input, startPos);
   }
 
   @Override

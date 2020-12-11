@@ -10,6 +10,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.semmle.extractor.html.HtmlPopulator;
+import com.semmle.jcorn.AngularExpressionParser;
+import com.semmle.jcorn.CustomParser;
+import com.semmle.jcorn.Options;
+import com.semmle.jcorn.Parser;
 import com.semmle.js.parser.JcornWrapper;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.UserError;
@@ -78,12 +82,27 @@ public class ExtractorConfig {
     /** A CommonJS module that is not also an ES2015 module. */
     COMMONJS_MODULE,
 
+    /** An Angular template expression. */
+    ANGULAR_TEMPLATE,
+
     /** Automatically determined source type. */
     AUTO;
 
     @Override
     public String toString() {
       return StringUtil.lc(name());
+    }
+
+    /**
+     * Gets the parser to use for parsing this source type.
+     */
+    public Parser createParser(Options options, String input, int startPos) {
+      switch (this) {
+      case ANGULAR_TEMPLATE:
+        return new AngularExpressionParser(options, input, startPos);
+      default:
+        return new CustomParser(options, input, startPos);
+      }
     }
 
     /**
