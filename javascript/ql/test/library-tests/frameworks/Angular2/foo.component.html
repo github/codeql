@@ -1,4 +1,7 @@
 <other-component
-    [prop]="foo | bar"
-    [prop2]="foo | bar:'baz'"
+    [prop1]="foo"
+    [prop2]="foo | unknownPipe"
+    [prop3]="foo | unknownPipe:'safe'"
+    [prop4]="foo | testPipe:'safe'"
+    [prop5]="42 | testPipe:foo"
 ></other-component>

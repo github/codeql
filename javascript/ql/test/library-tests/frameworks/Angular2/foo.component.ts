@@ -8,6 +8,6 @@ export class Foo {
     foo: string;
 
     constructor() {
-        this.foo = "hello";
+        this.foo = source();
     }
 }
