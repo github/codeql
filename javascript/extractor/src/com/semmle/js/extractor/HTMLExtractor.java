@@ -113,7 +113,7 @@ public class HTMLExtractor implements IExtractor {
                       config.withSourceType(SourceType.ANGULAR_TEMPLATE),
                       scopeManager,
                       textualExtractor,
-                      source,
+                      source.substring(offset),
                       valueStart.getRow(),
                       valueStart.getColumn() + offset,
                       false /* isTypeScript */);
