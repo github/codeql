@@ -6,10 +6,6 @@ on:
         description:
           description: A description of the purpose of this job. For human consumption.
           required: false
-        ref: 
-          description: The branch in github/codeql to checkout when generating query help.
-          required: false
-          default: 'lgtm.com'
   push:
     branches:
      - 'lgtm.com'
@@ -17,19 +13,12 @@ on:
     paths:
       - '.github/workflows/generate-query-help-docs.yml'
       - 'docs/codeql/query-help/**'
-
+      
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - if: github.event.inputs.ref
-      name: Clone github/codeql (user defined ref)
-      uses: actions/checkout@v2
-      with:
-        path: codeql
-        ref: ${{ github.event.inputs.ref }}
-    - if: github.event.inputs.ref == ''
-      name: Clone github/codeql (default ref)
+    - name: Clone github/codeql
       uses: actions/checkout@v2
       with:
         path: codeql
