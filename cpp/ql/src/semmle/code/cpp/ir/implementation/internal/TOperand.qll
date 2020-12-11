@@ -8,7 +8,18 @@ private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR as Unaliased
 private import semmle.code.cpp.ir.implementation.aliased_ssa.IR as Aliased
 private import semmle.code.cpp.ir.internal.Overlap
 
+/**
+ * Provides the newtype used to represent operands across all phases of the IR.
+ */
 private module Internal {
+  
+  /**
+   * An IR operand. `TOperand` is shared across all phases of the IR. There are branches of this
+   * type for operands created directly from the AST (`TRegisterOperand` and `TNonSSAMemoryOperand`),
+   * for operands computed by each stage of SSA construction (`T*PhiOperand` and
+   * `TAliasedChiOperand`), and a placehold branch for operands that do not exist in a given
+   * stage of IR construction (`TNoOperand`).
+   */
   cached
   newtype TOperand =
     // RAW
@@ -51,6 +62,10 @@ private module Internal {
     }
 }
 
+/**
+ * Reexports some branches from `TOperand` so they can be used in stage modules without importing
+ * `TOperand` itself.
+ */
 private module Shared {
   class TRegisterOperand = Internal::TRegisterOperand;
 
@@ -73,6 +88,12 @@ private module Shared {
   }
 }
 
+/**
+ * Provides wrappers for the constructors of each branch of `TOperand` that is used by the
+ * raw IR stage.
+ * These wrappers are not parameterized because it is not possible to invoke an IPA constructor via
+ * a class alias.
+ */
 module RawOperands {
   import Shared
 
@@ -96,9 +117,12 @@ module RawOperands {
   TChiOperand chiOperand(Raw::Instruction useInstr, ChiOperandTag tag) { none() }
 }
 
-// TODO: can we get everything into either here or Operand.qll?
-// TODO: can we put `TStageOperand` in Construction? Might break something about the module caching setup, `Operand` is currently after everything in SSAConstruction
-// TODO: share empty ChiOperand?
+/**
+ * Provides wrappers for the constructors of each branch of `TOperand` that is used by the
+ * unaliased SSA stage.
+ * These wrappers are not parameterized because it is not possible to invoke an IPA constructor via
+ * a class alias.
+ */
 module UnliasedSSAOperands {
   import Shared
 
@@ -122,6 +146,12 @@ module UnliasedSSAOperands {
   TChiOperand chiOperand(Unaliased::Instruction useInstr, ChiOperandTag tag) { none() }
 }
 
+/**
+ * Provides wrappers for the constructors of each branch of `TOperand` that is used by the
+ * asliased SSA stage.
+ * These wrappers are not parameterized because it is not possible to invoke an IPA constructor via
+ * a class alias.
+ */
 module AliasedSSAOperands {
   import Shared
 

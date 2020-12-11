@@ -13,13 +13,17 @@ private import Imports::OperandTag
 private import Imports::TOperand
 private import internal.OperandInternal
 
-class TOperand = TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
+/**
+ * An operand of an `Instruction` in this stage of the IR. Implemented as a union of the branches
+ * of `TOperand` that are used in this stage.
+ */
+private class TStageOperand = TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
 
 /**
  * An operand of an `Instruction`. The operand represents a use of the result of one instruction
  * (the defining instruction) in another instruction (the use instruction)
  */
-class Operand extends TOperand {
+class Operand extends TStageOperand {
   /** Gets a textual representation of this element. */
   string toString() { result = "Operand" }
 

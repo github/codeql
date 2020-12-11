@@ -43,9 +43,6 @@ private module Cached {
   class TStageInstruction =
     TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction;
 
-  class TStageOperand =
-    TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
-
   cached
   predicate hasInstruction(TStageInstruction instr) {
     instr instanceof TRawInstruction and instr instanceof OldInstruction
