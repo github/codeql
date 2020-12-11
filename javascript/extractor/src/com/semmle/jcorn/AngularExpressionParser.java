@@ -9,6 +9,7 @@ import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.Identifier;
 import com.semmle.js.ast.Position;
 import com.semmle.js.ast.SourceLocation;
+import com.semmle.ts.ast.NonNullAssertion;
 
 /**
  * Parser for Angular template expressions, based on the JS parser with
@@ -46,5 +47,17 @@ public class AngularExpressionParser extends CustomParser {
       return this.finishNode(new CallExpression(loc, right, new ArrayList<>(), arguments, false, false));
     }
     return super.buildBinary(startPos, startLoc, left, right, op, logical);
+  }
+
+  @Override
+  protected Expression parseExprAtom(DestructuringErrors refDestructuringErrors) {
+    // Parse postfix "!" operator
+    Position startLoc = this.startLoc;
+    Expression expr = super.parseExprAtom(refDestructuringErrors);
+    if (this.type == TokenType.prefix && "!".equals(this.value)) {
+      this.next(); // consume "!" token
+      return finishNode(new NonNullAssertion(new SourceLocation(startLoc), expr));
+    }
+    return expr;
   }
 }
