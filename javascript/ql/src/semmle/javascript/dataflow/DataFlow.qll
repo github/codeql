@@ -1309,6 +1309,22 @@ module DataFlow {
   }
 
   /**
+   * INTERNAL: Do not use outside standard library.
+   *
+   * Gets a data flow node unique to the given field declaration.
+   *
+   * Note that this node defaults to being disconnected from the data flow
+   * graph, as the individual property reads and writes affecting the field are
+   * analyzed independently of the field declaration.
+   *
+   * Certain framework models may need this node to model the behavior of
+   * class and field decorators.
+   */
+  DataFlow::Node fieldDeclarationNode(FieldDeclaration field) {
+    result = TPropNode(field)
+  }
+
+  /**
    * Gets the data flow node corresponding the given l-value expression, if
    * such a node exists.
    *

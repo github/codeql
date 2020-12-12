@@ -293,7 +293,7 @@ module Angular2 {
       exists(FieldDeclaration f |
         f.getName() = name and
         f.getDeclaringClass().flow() = this and
-        result = f.getNameExpr().flow()
+        result = DataFlow::fieldDeclarationNode(f)
       )
     }
 
