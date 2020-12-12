@@ -11,6 +11,7 @@ export class SinkComponent {
     sink3: string;
     sink4: string;
     sink5: string;
+    sink6: string;
 
     constructor(private sanitizer: DomSanitizer) {}
 
@@ -20,5 +21,6 @@ export class SinkComponent {
         this.sanitizer.bypassSecurityTrustHtml(this.sink3);
         this.sanitizer.bypassSecurityTrustHtml(this.sink4);
         this.sanitizer.bypassSecurityTrustHtml(this.sink5);
+        this.sanitizer.bypassSecurityTrustHtml(this.sink6);
     }
 }
