@@ -123,7 +123,7 @@ module RawOperands {
  * These wrappers are not parameterized because it is not possible to invoke an IPA constructor via
  * a class alias.
  */
-module UnliasedSSAOperands {
+module UnaliasedSSAOperands {
   import Shared
 
   class TPhiOperand = Internal::TUnaliasedPhiOperand;
