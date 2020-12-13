@@ -34,4 +34,4 @@ where
   )
   or
   a.getValue().regexpMatch("(?is).*(pwd|password)\\s*=(?!\\s*;).*") // Attribute value matches password pattern
-select a, "Avoid plaintext passwords in configuration files."
+select a, "Plaintext passwords in configuration files."

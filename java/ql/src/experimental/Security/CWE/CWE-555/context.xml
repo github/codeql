@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-    <!-- BAD: Password of datasource is in not encrypted -->
+    <!-- BAD: Password of datasource is not encrypted -->
     <Resource name="jdbc/exampleDS" auth="Container" type="javax.sql.DataSource"
                maxTotal="100" maxIdle="30" maxWaitMillis="10000"
                username="root" password="1234"
