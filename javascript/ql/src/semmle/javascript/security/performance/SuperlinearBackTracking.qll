@@ -4,19 +4,7 @@
  */
 
 import javascript
-
-/**
- * A regular expression term that permits unlimited repetitions.
- */
-class InfiniteRepetitionQuantifier extends RegExpQuantifier {
-  InfiniteRepetitionQuantifier() {
-    this instanceof RegExpPlus
-    or
-    this instanceof RegExpStar
-    or
-    this instanceof RegExpRange and not exists(this.(RegExpRange).getUpperBound())
-  }
-}
+import ReDoSUtil
 
 /**
  * Holds if `t` matches at least an epsilon symbol.
