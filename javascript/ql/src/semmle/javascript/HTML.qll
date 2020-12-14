@@ -11,6 +11,29 @@ module HTML {
   }
 
   /**
+   * A file that may contain HTML elements.
+   *
+   * This is either an `.html` file or a source code file containing
+   * embedded HTML snippets.
+   */
+  private class FileContainingHtml extends File {
+    FileContainingHtml() {
+      getFileType().isHtml()
+      or
+      // The file contains an expression containing an HTML element
+      exists(Expr e |
+        e.getFile() = this and
+        xml_element_parent_expression(_, e, _)
+      )
+    }
+  }
+
+  /** Gets `i`th root node of the HTML fragment embedded in the given expression, if any. */
+  Element getHtmlElementFromExpr(Expr e, int i) {
+    xml_element_parent_expression(result, e, i)
+  }
+
+  /**
    * An HTML element.
    *
    * Example:
@@ -20,7 +43,7 @@ module HTML {
    * ```
    */
   class Element extends Locatable, @xmlelement {
-    Element() { exists(HtmlFile f | xmlElements(this, _, _, _, f)) }
+    Element() { exists(FileContainingHtml f | xmlElements(this, _, _, _, f)) }
 
     override Location getLocation() { xmllocations(this, result) }
 
@@ -85,13 +108,6 @@ module HTML {
   }
 
   /**
-   * Gets the inline script of the given attribute, if any.
-   */
-  CodeInAttribute getCodeInAttribute(XMLAttribute attribute) {
-    toplevel_parent_xml_node(result, attribute)
-  }
-
-  /**
    * An attribute of an HTML element.
    *
    * Examples:
@@ -104,7 +120,7 @@ module HTML {
    * ```
    */
   class Attribute extends Locatable, @xmlattribute {
-    Attribute() { exists(HtmlFile f | xmlAttrs(this, _, _, _, _, f)) }
+    Attribute() { exists(FileContainingHtml f | xmlAttrs(this, _, _, _, _, f)) }
 
     override Location getLocation() { xmllocations(this, result) }
 
@@ -112,7 +128,7 @@ module HTML {
      * Gets the inline script of this attribute, if any.
      */
     CodeInAttribute getCodeInAttribute() {
-      result = getCodeInAttribute(this)
+      toplevel_parent_xml_node(result, this)
     }
 
     /**
@@ -264,7 +280,7 @@ module HTML {
    * Note that instances of this class are only available if extraction is done with `--html all` or `--experimental`.
    */
   class TextNode extends Locatable, @xmlcharacters {
-    TextNode() { exists(HtmlFile f | xmlChars(this, _, _, _, _, f)) }
+    TextNode() { exists(FileContainingHtml f | xmlChars(this, _, _, _, _, f)) }
 
     override string toString() { result = getText() }
 
@@ -303,7 +319,7 @@ module HTML {
    * ```
    */
   class CommentNode extends Locatable, @xmlcomment {
-    CommentNode() { exists(HtmlFile f | xmlComments(this, _, _, f)) }
+    CommentNode() { exists(FileContainingHtml f | xmlComments(this, _, _, f)) }
 
     /** Gets the element in which this comment occurs. */
     Element getParent() { xmlComments(this, _, result, _) }

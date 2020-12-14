@@ -340,11 +340,6 @@ module Angular2 {
       result = getAttributeValueAsNode(getATemplateInstantiation().getAttributeByName("[" + name + "]"))
     }
 
-    /** Gets the `templateUrl` property of the `@Component` decorator. */
-    string getTemplateUrl() {
-      decorator.getOptionArgument(0, "templateUrl").mayHaveStringValue(result)
-    }
-
     /**
      * Gets the file referred to by `templateUrl`.
      *
@@ -355,30 +350,21 @@ module Angular2 {
       result = decorator.getOptionArgument(0, "templateUrl").asExpr().(PathExpr).resolve()
     }
 
-    pragma[noinline]
-    private Location getInlineTemplateLocation() {
-      result = decorator.getOptionArgument(0, "template").asExpr().getLocation()
-    }
-
-    private XMLAttribute getAnAttributeInInlineTemplate() {
-      exists(Location templateLoc, Location attribLoc |
-        templateLoc = getInlineTemplateLocation() and
-        attribLoc = result.getLocation() and
-        templateLoc.getFile() = attribLoc.getFile()
-        // TODO: check line/column - though in practice checking the file is enough
-      )
+    /** Gets an element in the HTML template of this component. */
+    HTML::Element getATemplateElement() {
+      result.getFile() = getTemplateFile()
+      or
+      result.getParent*() = HTML::getHtmlElementFromExpr(decorator.getOptionArgument(0, "template").asExpr(), _)
     }
 
     /**
      * Gets an access to the variable `name` in the template body.
      */
     DataFlow::Node getATemplateVarAccess(string name) {
-      exists(XMLAttribute attrib |
-        attrib.getLocation().getFile() = getTemplateFile() or
-        attrib = getAnAttributeInInlineTemplate()
-      |
+      exists(HTML::Attribute attrib |
+        attrib = getATemplateElement().getAnAttribute() and
         isAngularExpressionAttribute(attrib) and
-        result = getAGlobalVarAccessInAttribute(HTML::getCodeInAttribute(attrib), name).flow()
+        result = getAGlobalVarAccessInAttribute(attrib.getCodeInAttribute(), name).flow()
       )
     }
   }
