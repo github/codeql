@@ -1,5 +1,6 @@
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.Alias
 
 /**
  * The standard function `swap`. A use of `swap` looks like this:
@@ -25,7 +26,7 @@ private class Swap extends DataFlowFunction {
  * obj1.swap(obj2)
  * ```
  */
-private class MemberSwap extends TaintFunction, MemberFunction {
+private class MemberSwap extends TaintFunction, MemberFunction, AliasFunction {
   MemberSwap() {
     this.hasName("swap") and
     this.getNumberOfParameters() = 1 and
@@ -40,4 +41,10 @@ private class MemberSwap extends TaintFunction, MemberFunction {
     input.isParameterDeref(0) and
     output.isQualifierObject()
   }
+
+  override predicate parameterNeverEscapes(int index) { none() }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { index = 0 }
+
+  override predicate parameterIsAlwaysReturned(int index) { index = 0 }
 }
