@@ -828,6 +828,8 @@ next_def(
   int loc: @location ref
 );
 
+@operator_assignment_operator_type = @reserved_word
+
 @operator_assignment_right_type = @break | @call | @method_call | @next | @return | @underscore_arg | @yield
 
 #keyset[parent, parent_index]
@@ -836,6 +838,7 @@ operator_assignment_def(
   int parent: @ast_node_parent ref,
   int parent_index: int ref,
   int left: @underscore_lhs ref,
+  int operator: @operator_assignment_operator_type ref,
   int right: @operator_assignment_right_type ref,
   int loc: @location ref
 );
@@ -922,12 +925,14 @@ range_def(
   int loc: @location ref
 );
 
+@rational_child_type = @token_float | @token_integer
+
 #keyset[parent, parent_index]
 rational_def(
   unique int id: @rational,
   int parent: @ast_node_parent ref,
   int parent_index: int ref,
-  int child: @token_integer ref,
+  int child: @rational_child_type ref,
   int loc: @location ref
 );
 
