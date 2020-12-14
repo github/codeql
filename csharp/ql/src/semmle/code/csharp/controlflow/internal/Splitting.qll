@@ -29,7 +29,7 @@ private module Cached {
     TInitializerSplitKind() or
     TConditionalCompletionSplitKind() or
     TAssertionSplitKind() or
-    TFinallySplitKind(int nestLevel) { nestLevel = FinallySplitting::nestLevel(_) } or
+    TFinallySplitKind(int nestLevel) { nestLevel = any(Statements::TryStmtTree t).nestLevel() } or
     TExceptionHandlerSplitKind() or
     TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) { kind.startsSplit(_) } or
     TLoopSplitKind(LoopSplitting::AnalyzableLoopStmt loop)
@@ -43,7 +43,7 @@ private module Cached {
       success in [false, true]
     } or
     TFinallySplit(FinallySplitting::FinallySplitType type, int nestLevel) {
-      nestLevel = FinallySplitting::nestLevel(_)
+      nestLevel = any(Statements::TryStmtTree t).nestLevel()
     } or
     TExceptionHandlerSplit(ExceptionClass ec) or
     TBooleanSplit(BooleanSplitting::BooleanSplitSubKind kind, boolean branch) {
@@ -610,12 +610,6 @@ module AssertionSplitting {
   }
 }
 
-pragma[noinline]
-private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
-  result = cfe.getAChild() and
-  c = result.getEnclosingCallable()
-}
-
 module FinallySplitting {
   /**
    * The type of a split `finally` node.
@@ -639,45 +633,14 @@ module FinallySplitting {
     }
   }
 
-  /**
-   * Gets a descendant that belongs to the `finally` block of try statement
-   * `try`.
-   */
-  ControlFlowElement getAFinallyDescendant(TryStmt try) {
-    result = try.getFinally()
-    or
-    exists(ControlFlowElement mid |
-      mid = getAFinallyDescendant(try) and
-      result = getAChild(mid, mid.getEnclosingCallable()) and
-      not exists(TryStmt nestedTry |
-        result = nestedTry.getFinally() and
-        nestedTry != try
-      )
-    )
-  }
-
-  /**
-   * Holds if `innerTry` has a `finally` block and is immediately nested inside the
-   * `finally` block of `outerTry`.
-   */
-  private predicate nestedFinally(TryStmt outerTry, TryStmt innerTry) {
-    exists(ControlFlowElement innerFinally |
-      innerFinally = getAChild(getAFinallyDescendant(outerTry), outerTry.getEnclosingCallable()) and
-      innerFinally = innerTry.getFinally()
-    )
-  }
-
-  /** Gets the nesting level of the `finally` block for `try`. */
-  int nestLevel(TryStmt try) { result = strictcount(TryStmt outer | nestedFinally*(outer, try)) }
-
   /** A control flow element that belongs to a `finally` block. */
   private class FinallyControlFlowElement extends ControlFlowElement {
-    private TryStmt try;
+    private Statements::TryStmtTree try;
 
-    FinallyControlFlowElement() { this = getAFinallyDescendant(try) }
+    FinallyControlFlowElement() { this = try.getAFinallyDescendant() }
 
     /** Gets the immediate `try` block that this node belongs to. */
-    TryStmt getTryStmt() { result = try }
+    Statements::TryStmtTree getTryStmt() { result = try }
 
     /** Holds if this node is the entry node in the `finally` block it belongs to. */
     predicate isEntryNode() { first(try.getFinally(), this) }
@@ -685,7 +648,9 @@ module FinallySplitting {
 
   /** A control flow element that does not belong to a `finally` block. */
   private class NonFinallyControlFlowElement extends ControlFlowElement {
-    NonFinallyControlFlowElement() { not this = getAFinallyDescendant(_) }
+    NonFinallyControlFlowElement() {
+      not this = any(Statements::TryStmtTree t).getAFinallyDescendant()
+    }
   }
 
   /**
@@ -727,7 +692,7 @@ module FinallySplitting {
       if type instanceof NormalSuccessor
       then result = ""
       else
-        if nestLevel > 1
+        if nestLevel > 0
         then result = "finally(" + nestLevel + "): " + type.toString()
         else result = "finally: " + type.toString()
     }
@@ -759,7 +724,7 @@ module FinallySplitting {
     ControlFlowElement pred, FinallyControlFlowElement succ, int nestLevel, Completion c
   ) {
     succ.isEntryNode() and
-    nestLevel = nestLevel(succ.getTryStmt()) and
+    nestLevel = succ.getTryStmt().nestLevel() and
     succ(pred, succ, c)
   }
 
@@ -783,9 +748,11 @@ module FinallySplitting {
     }
 
     pragma[noinline]
-    private predicate exit0(ControlFlowElement pred, TryStmt try, int nestLevel, Completion c) {
+    private predicate exit0(
+      ControlFlowElement pred, Statements::TryStmtTree try, int nestLevel, Completion c
+    ) {
       this.appliesToPredecessor(pred) and
-      nestLevel = nestLevel(try) and
+      nestLevel = try.nestLevel() and
       last(try, pred, c)
     }
 
@@ -821,7 +788,7 @@ module FinallySplitting {
         )
       )
       or
-      // If this split is normal, and an outer split can exit based on a inherited
+      // If this split is normal, and an outer split can exit based on an inherited
       // completion, we need to exit this split as well. For example, in
       //
       // ```csharp
@@ -881,10 +848,10 @@ module FinallySplitting {
           if fcfe.isEntryNode()
           then
             // entering a nested `finally` block
-            nestLevel(fcfe.getTryStmt()) > this.getNestLevel()
+            fcfe.getTryStmt().nestLevel() > this.getNestLevel()
           else
             // staying in the same (possibly nested) `finally` block as `pred`
-            nestLevel(fcfe.getTryStmt()) >= this.getNestLevel()
+            fcfe.getTryStmt().nestLevel() >= this.getNestLevel()
         )
     }
   }
