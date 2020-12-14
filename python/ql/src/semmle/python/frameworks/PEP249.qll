@@ -62,11 +62,11 @@ module Connection {
 }
 
 /**
- * Provides models for the `db.Connection.cursor` method.
+ * Provides models for the `cursor` method on a connection.
  * See https://www.python.org/dev/peps/pep-0249/#cursor.
  */
 module cursor {
-  /** Gets a reference to the `db.connection.cursor` method. */
+  /** Gets a reference to the `cursor` method on a connection. */
   private DataFlow::Node methodRef(DataFlow::TypeTracker t) {
     t.startInAttr("cursor") and
     result = Connection::instance()
@@ -74,10 +74,10 @@ module cursor {
     exists(DataFlow::TypeTracker t2 | result = methodRef(t2).track(t2, t))
   }
 
-  /** Gets a reference to the `db.connection.cursor` metod. */
+  /** Gets a reference to the `cursor` method on a connection. */
   DataFlow::Node methodRef() { result = methodRef(DataFlow::TypeTracker::end()) }
 
-  /** Gets a reference to a result of calling `db.connection.cursor`. */
+  /** Gets a reference to a result of calling the `cursor` method on a connection. */
   private DataFlow::Node methodResult(DataFlow::TypeTracker t) {
     t.start() and
     result.asCfgNode().(CallNode).getFunction() = methodRef().asCfgNode()
@@ -85,12 +85,12 @@ module cursor {
     exists(DataFlow::TypeTracker t2 | result = methodResult(t2).track(t2, t))
   }
 
-  /** Gets a reference to a result of calling `db.connection.cursor`. */
+  /** Gets a reference to a result of calling the `cursor` method on a connection. */
   DataFlow::Node methodResult() { result = methodResult(DataFlow::TypeTracker::end()) }
 }
 
 /**
- * Gets a reference to the `db.Connection.Cursor.execute` function.
+ * Gets a reference to the `execute` method on a cursor.
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
 private DataFlow::Node execute(DataFlow::TypeTracker t) {
@@ -101,15 +101,16 @@ private DataFlow::Node execute(DataFlow::TypeTracker t) {
 }
 
 /**
- * Gets a reference to the `db.Connection.Cursor.execute` function.
+ * Gets a reference to the `execute` method on a cursor.
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
 DataFlow::Node execute() { result = execute(DataFlow::TypeTracker::end()) }
 
-private class DbConnectionExecute extends SqlExecution::Range, DataFlow::CfgNode {
+/** A call to the `execute` method on a cursor. */
+private class ExecuteCall extends SqlExecution::Range, DataFlow::CfgNode {
   override CallNode node;
 
-  DbConnectionExecute() { node.getFunction() = execute().asCfgNode() }
+  ExecuteCall() { node.getFunction() = execute().asCfgNode() }
 
   override DataFlow::Node getSql() {
     result.asCfgNode() in [node.getArg(0), node.getArgByName("sql")]
