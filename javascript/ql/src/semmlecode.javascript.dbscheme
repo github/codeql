@@ -136,6 +136,11 @@ toplevel_parent_xml_node(
   unique int toplevel: @toplevel ref,
   int xmlnode: @xml_node_with_code ref);
 
+xml_element_parent_expression(
+  unique int xmlnode: @xmlelement ref,
+  int expression: @expr ref,
+  int index: int ref);
+
 // statements
 #keyset[parent, idx]
 stmts (unique int id: @stmt, 

@@ -1143,7 +1143,7 @@ public class ASTExtractor {
       locationManager.emitNodeLocation(nd, propkey);
       visitAll(nd.getDecorators(), propkey, IdContext.varBind, -1, -1);
       visit(nd.getKey(), propkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
-      visit(nd.getValue(), propkey, 1, c.idcontext);
+      Label valueLabel = visit(nd.getValue(), propkey, 1, c.idcontext);
       visit(nd.getDefaultValue(), propkey, 2, IdContext.varBind);
       if (nd.isComputed()) trapwriter.addTuple("is_computed", propkey);
       if (nd.isMethod()) trapwriter.addTuple("is_method", propkey);
@@ -1151,7 +1151,7 @@ public class ASTExtractor {
       // Extract the value of a property named `template` as HTML, in order to support
       // Angular2 components with an inline template.
       if (!nd.isComputed() && "template".equals(tryGetIdentifierName(nd.getKey()))) {
-        extractStringValueAsHtml(nd.getValue());
+        extractStringValueAsHtml(nd.getValue(), valueLabel);
       }
       
       return propkey;
@@ -1160,7 +1160,7 @@ public class ASTExtractor {
     /**
      * Extracts the string value of <code>expr</code> as an HTML snippet.
      */
-    private void extractStringValueAsHtml(Expression expr) {
+    private void extractStringValueAsHtml(Expression expr, Label exprLabel) {
       TextualExtractor textualExtractor = lexicalExtractor.getTextualExtractor();
       if (textualExtractor.isSnippet()) {
         return; // do not create nested snippets
@@ -1185,7 +1185,11 @@ public class ASTExtractor {
           getMetrics(),
           vfile.toFile());
       HTMLExtractor html = HTMLExtractor.forEmbeddedHtml(config);
-      html.extract(innerTextualExtractor);
+      List<Label> rootNodes = html.extractEx(innerTextualExtractor).fst();
+      int rootNodeIndex = 0;
+      for (Label rootNode : rootNodes) {
+        trapwriter.addTuple("xml_element_parent_expression", rootNode, exprLabel, rootNodeIndex++);
+      }
     }
 
     private String tryGetIdentifierName(Expression e) {

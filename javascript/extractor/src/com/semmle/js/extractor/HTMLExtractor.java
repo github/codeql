@@ -1,7 +1,9 @@
 package com.semmle.js.extractor;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -180,9 +182,13 @@ public class HTMLExtractor implements IExtractor {
   public static HTMLExtractor forEmbeddedHtml(ExtractorConfig config) {
     return new HTMLExtractor(config, null, true);
   }
-
+  
   @Override
-  public LoCInfo extract(TextualExtractor textualExtractor) {
+  public LoCInfo extract(TextualExtractor textualExtractor) throws IOException {
+    return extractEx(textualExtractor).snd();
+  }
+
+  public Pair<List<Label>, LoCInfo> extractEx(TextualExtractor textualExtractor) {
     // Angular templates contain attribute names that are not valid HTML/XML, such as [foo], (foo), [(foo)], and *foo.
     // Allow a large number of errors in attribute names, so the Jericho parser does not give up.
     Attributes.setDefaultMaxErrorCount(100);
@@ -198,9 +204,9 @@ public class HTMLExtractor implements IExtractor {
     
     extractor.setStartOffset(locationManager.getStartLine() - 1, locationManager.getStartColumn() - 1);
 
-    extractor.doit(Option.some(eltHandler));
+    List<Label> rootNodes = extractor.doit(Option.some(eltHandler));
 
-    return locInfo;
+    return Pair.make(rootNodes, locInfo);
   }
 
   /**
