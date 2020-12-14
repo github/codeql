@@ -377,12 +377,9 @@ module Trees {
 
   private class ClassTree extends RescueEnsureBlockTree, Class {
     final override AstNode getChildNode(int i, boolean rescuable) {
-      rescuable = true and
-      (
-        result = this.getName() and i = 0
-        or
-        result = this.getChild(i - 1)
-      )
+      result = this.getName() and i = 0 and rescuable = false
+      or
+      result = this.getChild(i - 1) and rescuable = true
     }
   }
 
@@ -824,12 +821,9 @@ module Trees {
 
   private class ModuleTree extends RescueEnsureBlockTree, Module {
     final override AstNode getChildNode(int i, boolean rescuable) {
-      rescuable = true and
-      (
-        result = this.getName() and i = 0
-        or
-        result = this.getChild(i - 1)
-      )
+      result = this.getName() and i = 0 and rescuable = false
+      or
+      result = this.getChild(i - 1) and rescuable = true
     }
   }
 
@@ -1229,7 +1223,7 @@ module Trees {
     final override AstNode getChildNode(int i, boolean rescuable) {
       result = this.getObject() and
       i = 0 and
-      rescuable = true // TODO: CHECK THIS
+      rescuable = false
       or
       result = this.getParameters() and
       i = 1 and
