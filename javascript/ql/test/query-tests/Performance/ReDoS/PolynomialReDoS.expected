@@ -72,6 +72,26 @@ nodes
 | polynomial-redos.js:69:18:69:25 | req.body |
 | polynomial-redos.js:69:18:69:25 | req.body |
 | polynomial-redos.js:69:18:69:25 | req.body |
+| polynomial-redos.js:75:2:75:8 | tainted |
+| polynomial-redos.js:75:2:75:8 | tainted |
+| polynomial-redos.js:77:2:77:8 | tainted |
+| polynomial-redos.js:77:2:77:8 | tainted |
+| polynomial-redos.js:80:2:80:8 | tainted |
+| polynomial-redos.js:80:2:80:8 | tainted |
+| polynomial-redos.js:89:2:89:8 | tainted |
+| polynomial-redos.js:89:2:89:8 | tainted |
+| polynomial-redos.js:101:2:101:8 | tainted |
+| polynomial-redos.js:101:2:101:8 | tainted |
+| polynomial-redos.js:102:2:102:8 | tainted |
+| polynomial-redos.js:102:2:102:8 | tainted |
+| polynomial-redos.js:104:2:104:8 | tainted |
+| polynomial-redos.js:104:2:104:8 | tainted |
+| polynomial-redos.js:105:2:105:8 | tainted |
+| polynomial-redos.js:105:2:105:8 | tainted |
+| polynomial-redos.js:111:2:111:8 | tainted |
+| polynomial-redos.js:111:2:111:8 | tainted |
+| polynomial-redos.js:112:2:112:8 | tainted |
+| polynomial-redos.js:112:2:112:8 | tainted |
 edges
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:7:2:7:8 | tainted |
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:7:2:7:8 | tainted |
@@ -137,6 +157,26 @@ edges
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:66:19:66:25 | tainted |
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:67:18:67:24 | tainted |
 | polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:67:18:67:24 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:75:2:75:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:75:2:75:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:77:2:77:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:77:2:77:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:80:2:80:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:80:2:80:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:89:2:89:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:89:2:89:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:101:2:101:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:101:2:101:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:102:2:102:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:102:2:102:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:104:2:104:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:104:2:104:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:105:2:105:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:105:2:105:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:111:2:111:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:111:2:111:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:112:2:112:8 | tainted |
+| polynomial-redos.js:5:6:5:32 | tainted | polynomial-redos.js:112:2:112:8 | tainted |
 | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:5:6:5:32 | tainted |
 | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:5:6:5:32 | tainted |
 | polynomial-redos.js:68:18:68:24 | req.url | polynomial-redos.js:68:18:68:24 | req.url |
@@ -179,3 +219,15 @@ edges
 | polynomial-redos.js:66:19:66:25 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:66:19:66:25 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:66:9:66:10 | .* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
 | polynomial-redos.js:67:18:67:24 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:67:18:67:24 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:67:8:67:9 | .* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
 | polynomial-redos.js:69:18:69:25 | req.body | polynomial-redos.js:69:18:69:25 | req.body | polynomial-redos.js:69:18:69:25 | req.body | This expensive $@ use depends on $@. | polynomial-redos.js:69:8:69:9 | .* | regular expression | polynomial-redos.js:69:18:69:25 | req.body | a user-provided value |
+| polynomial-redos.js:75:2:75:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:75:2:75:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:75:18:75:19 | .* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:77:2:77:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:77:2:77:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:77:18:77:19 | .* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:80:2:80:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:80:2:80:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:80:17:80:18 | a* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:89:2:89:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:89:2:89:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:89:20:89:21 | a* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:101:2:101:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:101:2:101:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:101:17:101:18 | a+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:102:2:102:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:102:2:102:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:102:20:102:21 | a+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:104:2:104:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:104:2:104:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:104:17:104:18 | a+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:105:2:105:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:105:2:105:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:105:17:105:18 | a+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:105:2:105:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:105:2:105:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:105:19:105:20 | a+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:105:2:105:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:105:2:105:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:105:21:105:22 | a+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:111:2:111:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:111:2:111:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:111:17:111:19 | \\s* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:112:2:112:8 | tainted | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:112:2:112:8 | tainted | This expensive $@ use depends on $@. | polynomial-redos.js:112:17:112:19 | \\s+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |

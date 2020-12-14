@@ -52,6 +52,20 @@
 | polynomial-redos.js:67:8:67:9 | .* | it can start matching anywhere after the start of the preceeding '[^Y]' |
 | polynomial-redos.js:68:8:68:9 | .* | it can start matching anywhere after the start of the preceeding '[^Y]' |
 | polynomial-redos.js:69:8:69:9 | .* | it can start matching anywhere after the start of the preceeding '[^Y]' |
+| polynomial-redos.js:75:18:75:19 | .* | it can start matching anywhere after the start of the preceeding '<' |
+| polynomial-redos.js:77:18:77:19 | .* | it can start matching anywhere after the start of the preceeding 'Y' |
+| polynomial-redos.js:78:25:78:31 | (YH\|J)* | it can start matching anywhere after the start of the preceeding '(YH\|K)' |
+| polynomial-redos.js:78:25:78:31 | (YH\|J)* | it can start matching anywhere after the start of the preceeding 'YH\|K' |
+| polynomial-redos.js:80:17:80:18 | a* | it can start matching anywhere |
+| polynomial-redos.js:89:20:89:21 | a* | it can start matching anywhere after the start of the preceeding 'a*' |
+| polynomial-redos.js:101:17:101:18 | a+ | it can start matching anywhere |
+| polynomial-redos.js:102:20:102:21 | a+ | it can start matching anywhere after the start of the preceeding 'a+' |
+| polynomial-redos.js:104:17:104:18 | a+ | it can start matching anywhere |
+| polynomial-redos.js:105:17:105:18 | a+ | it can start matching anywhere |
+| polynomial-redos.js:105:19:105:20 | a+ | it can start matching anywhere after the start of the preceeding 'a+' |
+| polynomial-redos.js:105:21:105:22 | a+ | it can start matching anywhere after the start of the preceeding 'a+' |
+| polynomial-redos.js:111:17:111:19 | \\s* | it can start matching anywhere |
+| polynomial-redos.js:112:17:112:19 | \\s+ | it can start matching anywhere |
 | regexplib/address.js:18:26:18:31 | [ \\w]* | it can start matching anywhere after the start of the preceeding '[ \\w]{3,}' |
 | regexplib/address.js:20:144:20:147 | [ ]+ | it can start matching anywhere after the start of the preceeding '[a-zA-Z0-9 \\-.]{6,}' |
 | regexplib/address.js:24:26:24:31 | [ \\w]* | it can start matching anywhere after the start of the preceeding '[ \\w]{3,}' |

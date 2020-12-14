@@ -333,3 +333,6 @@ var bad73 = /(?:a|a?)+b/;
 
 // NOT GOOD - but not detected. 
 var bad74 = /(a?b?)*$/;
+
+// NOT GOOD
+var bad75 = /PRE(([a-c]|[c-d])T(e?e?e?e?|X))+(cTcT|cTXcTX$)/;

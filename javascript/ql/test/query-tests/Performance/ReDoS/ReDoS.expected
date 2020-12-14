@@ -125,3 +125,4 @@
 | tst.js:311:20:311:24 | [^Y]+ | This part of the regular expression may cause exponential backtracking on strings starting with 'x' and containing many repetitions of 'Xx'. |
 | tst.js:323:14:323:20 | (a?a?)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
 | tst.js:332:14:332:22 | (?:a\|a?)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| tst.js:338:17:338:45 | (([a-c]\|[c-d])T(e?e?e?e?\|X))+ | This part of the regular expression may cause exponential backtracking on strings starting with 'PRE' and containing many repetitions of 'cTX'. |

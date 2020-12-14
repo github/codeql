@@ -12,8 +12,8 @@ app.use(function(req, res) {
 	tainted.replace(/.*\./, ''); // NOT OK
 	tainted.replace(/^.*[/\\]/, ''); // OK
 	tainted.replace(/^.*\./, ''); // OK
-	tainted.replace(/^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/); // NOT OK
-	tainted.replace(/^(`+)([\s\S]*?[^`])\1(?!`)/); // OK
+	tainted.replace(/^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/); // NOT OK - but not detected
+	tainted.replace(/^(`+)([\s\S]*?[^`])\1(?!`)/); // NOT OK - but not detected
 	/^(.*,)+(.+)?$/.test(tainted); // NOT OK - but only flagged by js/redos
 	tainted.match(/[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i); // NOT OK
 	tainted.match(/[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i); // NOT OK (even though it is a proposed fix for the above)
@@ -67,4 +67,51 @@ app.use(function(req, res) {
 	(/[^Y].*X/.test(tainted)); // NOT OK
 	(/[^Y].*$/.test(req.url)); // OK - the input cannot contain newlines.
 	(/[^Y].*$/.test(req.body)); // NOT OK
+
+	tainted.match(/^([^-]+)-([A-Za-z0-9+/]+(?:=?=?))([?\x21-\x7E]*)$/); // NOT OK - but not detected
+
+	tainted.match(new RegExp("(MSIE) (\\d+)\\.(\\d+).*XBLWP7")); // NOT OK - but not detected
+
+	tainted.match(/<.*class="([^"]+)".*>/); // NOT OK - but not detected
+
+	tainted.match(/Y.*X/); // NOT OK
+	tatined.match(/B?(YH|K)(YH|J)*X/); // NOT OK - but not detected
+
+	tainted.match(/a*b/); // NOT OK - the initial repetition can start matching anywhere.
+	tainted.match(/cc*D/); // NOT OK - but flagged
+	tainted.match(/^ee*F/); // OK 
+	tainted.match(/^g*g*/); // OK
+	tainted.match(/^h*i*/); // OK
+
+	tainted.match(/^(ab)*ab(ab)*X/); // NOT OK - but not flagged
+
+	tainted.match(/aa*X/); // NOT OK - but not flagged
+	tainted.match(/^a*a*X/); // NOT OK
+	tainted.match(/\wa*X/); // NOT OK - but not flagged
+	tainted.match(/a*b*c*/); // OK
+	tainted.match(/a*a*a*a*/); // OK
+
+	tainted.match(/^([3-7]|A)*([2-5]|B)*X/); // NOT OK - but not flagged
+	tainted.match(/^\d*([2-5]|B)*X/); // NOT OK - but not flagged
+	tainted.match(/^([3-7]|A)*\d*X/); // NOT OK - but not flagged
+
+	tainted.match(/^(ab)+ab(ab)+X/); // NOT OK - but not flagged
+
+	tainted.match(/aa+X/); // NOT OK - but not flagged
+	tainted.match(/a+X/); // NOT OK
+	tainted.match(/^a+a+X/); // NOT OK
+	tainted.match(/\wa+X/); // NOT OK - but not flagged
+	tainted.match(/a+b+c+/); //NOT  OK
+	tainted.match(/a+a+a+a+/); // OK - but is flagged
+
+	tainted.match(/^([3-7]|A)+([2-5]|B)+X/); // NOT OK - but not flagged
+	tainted.match(/^\d+([2-5]|B)+X/); // NOT OK - but not flagged
+	tainted.match(/^([3-7]|A)+\d+X/); // NOT OK - but not flagged
+
+	tainted.match(/\s*$/); // NOT OK
+	tainted.match(/\s+$/); // NOT OK
+
+	tainted.match(/^\d*5\w*$/); // NOT OK - but not flagged
+
+	tainted.match(/\/\*[\d\D]*?\*\//g); // NOT OK - but not flagged
 });
