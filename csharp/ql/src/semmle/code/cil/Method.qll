@@ -246,6 +246,9 @@ class Setter extends Accessor {
   Setter() { cil_setter(_, this) }
 
   override Property getProperty() { cil_setter(result, this) }
+
+  /** Holds if this setter is an `init`-only accessor. */
+  predicate isInitOnly() { none() }
 }
 
 /**
