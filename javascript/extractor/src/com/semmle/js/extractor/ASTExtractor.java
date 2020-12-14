@@ -177,14 +177,22 @@ public class ASTExtractor {
     this.scopeManager = scopeManager;
     this.lexicalExtractor = lexicalExtractor;
     this.regexpExtractor = new RegExpExtractor(trapwriter, locationManager);
-    this.toplevelLabel =
-        trapwriter.globalID(
-            "script;{"
-                + locationManager.getFileLabel()
-                + "},"
-                + locationManager.getStartLine()
-                + ','
-                + locationManager.getStartColumn());
+    this.toplevelLabel = makeTopLevelLabel(trapwriter, locationManager.getFileLabel(), locationManager.getStartLine(), locationManager.getStartColumn());
+  }
+
+  /**
+   * Returns the label for the top-level starting at the given location.
+   * <p>
+   * May be used to refer to the top-level before it has been extracted.
+   */
+  public static Label makeTopLevelLabel(TrapWriter trapWriter, Label fileLabel, int startLine, int startColumn) {
+    return trapWriter.globalID(
+        "script;{"
+            + fileLabel
+            + "},"
+            + startLine
+            + ','
+            + startColumn);
   }
 
   public TrapWriter getTrapwriter() {

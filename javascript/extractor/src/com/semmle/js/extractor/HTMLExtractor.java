@@ -10,9 +10,11 @@ import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.ParseError;
 import com.semmle.util.data.Option;
+import com.semmle.util.data.Pair;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.io.WholeIO;
 import com.semmle.util.trap.TrapWriter;
+import com.semmle.util.trap.TrapWriter.Label;
 
 import net.htmlparser.jericho.Attribute;
 import net.htmlparser.jericho.Attributes;
@@ -23,15 +25,14 @@ import net.htmlparser.jericho.Segment;
 
 /** Extractor for handling HTML and XHTML files. */
 public class HTMLExtractor implements IExtractor {
+  private LoCInfo locInfo = new LoCInfo(0, 0);
+
   private class JavaScriptHTMLElementHandler implements HtmlPopulator.ElementHandler {
     private final ScopeManager scopeManager;
     private final TextualExtractor textualExtractor;
-    private LoCInfo locInfo;
-
+    
     public JavaScriptHTMLElementHandler(TextualExtractor textualExtractor) {
       this.textualExtractor = textualExtractor;
-
-      this.locInfo = new LoCInfo(0, 0);
 
       this.scopeManager =
           new ScopeManager(textualExtractor.getTrapwriter(), config.getEcmaVersion());
@@ -42,8 +43,7 @@ public class HTMLExtractor implements IExtractor {
      * attribute values.
      */
     @Override
-    public void handleElement(Element elt) {
-      LoCInfo snippetLoC = null;
+    public void handleElement(Element elt, HtmlPopulator.Context context) {
       if (elt.getName().equals(HTMLElementName.SCRIPT)) {
         SourceType sourceType = getScriptSourceType(elt, textualExtractor.getExtractedFile());
         if (sourceType != null) {
@@ -72,16 +72,17 @@ public class HTMLExtractor implements IExtractor {
           source = source.replace("<![CDATA[", "         ").replace("]]>", "   ");
           if (!source.trim().isEmpty()) {
             RowColumnVector contentStart = content.getRowColumnVector();
-            snippetLoC =
-                extractSnippet(
-                    TopLevelKind.inlineScript,
-                    config.withSourceType(sourceType),
-                    scopeManager,
-                    textualExtractor,
-                    source,
-                    contentStart.getRow(),
-                    contentStart.getColumn(),
-                    isTypeScript);
+            extractSnippet(
+                TopLevelKind.inlineScript,
+                config.withSourceType(sourceType),
+                scopeManager,
+                textualExtractor,
+                source,
+                contentStart.getRow(),
+                contentStart.getColumn(),
+                isTypeScript,
+                elt,
+                context);
           }
         }
       } else {
@@ -95,16 +96,17 @@ public class HTMLExtractor implements IExtractor {
             String source = attr.getValue();
             RowColumnVector valueStart = attr.getValueSegment().getRowColumnVector();
             if (JS_ATTRIBUTE.matcher(attr.getName()).matches()) {
-              snippetLoC =
-                  extractSnippet(
-                      TopLevelKind.eventHandler,
-                      config,
-                      scopeManager,
-                      textualExtractor,
-                      source,
-                      valueStart.getRow(),
-                      valueStart.getColumn(),
-                      false /* isTypeScript */);
+              extractSnippet(
+                  TopLevelKind.eventHandler,
+                  config,
+                  scopeManager,
+                  textualExtractor,
+                  source,
+                  valueStart.getRow(),
+                  valueStart.getColumn(),
+                  false /* isTypeScript */,
+                  attr,
+                  context);
             } else if (isAngularTemplateAttributeName(attr.getName())) {
               // For an attribute *ngFor="let var of EXPR", start parsing at EXPR
               int offset = 0;
@@ -116,37 +118,33 @@ public class HTMLExtractor implements IExtractor {
                   source = expr;
                 }
               }
-              snippetLoC =
-                  extractSnippet(
-                      TopLevelKind.eventHandler,
-                      config.withSourceType(SourceType.ANGULAR_TEMPLATE),
-                      scopeManager,
-                      textualExtractor,
-                      source,
-                      valueStart.getRow(),
-                      valueStart.getColumn() + offset,
-                      false /* isTypeScript */);
+              extractSnippet(
+                  TopLevelKind.eventHandler,
+                  config.withSourceType(SourceType.ANGULAR_TEMPLATE),
+                  scopeManager,
+                  textualExtractor,
+                  source,
+                  valueStart.getRow(),
+                  valueStart.getColumn() + offset,
+                  false /* isTypeScript */,
+                  attr,
+                  context);
             } else if (source.startsWith("javascript:")) {
               source = source.substring(11);
-              snippetLoC =
-                  extractSnippet(
-                      TopLevelKind.javascriptUrl,
-                      config,
-                      scopeManager,
-                      textualExtractor,
-                      source,
-                      valueStart.getRow(),
-                      valueStart.getColumn() + 11,
-                      false /* isTypeScript */);
+              extractSnippet(
+                  TopLevelKind.javascriptUrl,
+                  config,
+                  scopeManager,
+                  textualExtractor,
+                  source,
+                  valueStart.getRow(),
+                  valueStart.getColumn() + 11,
+                  false /* isTypeScript */,
+                  attr,
+                  context);
             }
           }
       }
-
-      if (snippetLoC != null) locInfo.add(snippetLoC);
-    }
-
-    public LoCInfo getLoCInfo() {
-      return this.locInfo;
     }
   }
 
@@ -202,7 +200,7 @@ public class HTMLExtractor implements IExtractor {
 
     extractor.doit(Option.some(eltHandler));
 
-    return eltHandler.getLoCInfo();
+    return locInfo;
   }
 
   /**
@@ -270,7 +268,7 @@ public class HTMLExtractor implements IExtractor {
     return val == null ? val : StringUtil.lc(val);
   }
 
-  private LoCInfo extractSnippet(
+  private void extractSnippet(
       TopLevelKind toplevelKind,
       ExtractorConfig config,
       ScopeManager scopeManager,
@@ -278,10 +276,18 @@ public class HTMLExtractor implements IExtractor {
       String source,
       int line,
       int column,
-      boolean isTypeScript) {
+      boolean isTypeScript,
+      Segment parentHtmlNode,
+      HtmlPopulator.Context context) {
+    TrapWriter trapWriter = textualExtractor.getTrapwriter();
+    LocationManager locationManager = textualExtractor.getLocationManager();
+    LocationManager scriptLocationManager =
+        new LocationManager(
+            locationManager.getSourceFile(), trapWriter, locationManager.getFileLabel());
+    scriptLocationManager.setStart(line, column);
     if (isTypeScript) {
       if (isEmbedded) {
-        return null; // Do not extract files from HTML embedded in other files.
+        return; // Do not extract files from HTML embedded in other files.
       }
       Path file = textualExtractor.getExtractedFile().toPath();
       FileSnippet snippet =
@@ -302,28 +308,36 @@ public class HTMLExtractor implements IExtractor {
         }
         state.getSnippets().put(virtualFile, snippet);
       }
-      return null; // LoC info is accounted for later
+      Label topLevelLabel = ASTExtractor.makeTopLevelLabel(
+          textualExtractor.getTrapwriter(),
+          scriptLocationManager.getFileLabel(),
+          scriptLocationManager.getStartLine(),
+          scriptLocationManager.getStartColumn());
+      emitTopLevelXmlNodeBinding(parentHtmlNode, topLevelLabel, context, trapWriter);
+      // Note: LoC info is accounted for later, so not added here.
+      return;
     }
-    TrapWriter trapwriter = textualExtractor.getTrapwriter();
-    LocationManager locationManager = textualExtractor.getLocationManager();
-    LocationManager scriptLocationManager =
-        new LocationManager(
-            locationManager.getSourceFile(), trapwriter, locationManager.getFileLabel());
-    scriptLocationManager.setStart(line, column);
     JSExtractor extractor = new JSExtractor(config);
     try {
       TextualExtractor tx =
           new TextualExtractor(
-              trapwriter,
+              trapWriter,
               scriptLocationManager,
               source,
               config.getExtractLines(),
               textualExtractor.getMetrics(),
               textualExtractor.getExtractedFile());
-      return extractor.extract(tx, source, toplevelKind, scopeManager).snd();
+      Pair<Label, LoCInfo> result = extractor.extract(tx, source, toplevelKind, scopeManager);
+      emitTopLevelXmlNodeBinding(parentHtmlNode, result.fst(), context, trapWriter);
+      locInfo.add(result.snd());
     } catch (ParseError e) {
       e.setPosition(scriptLocationManager.translatePosition(e.getPosition()));
       throw e.asUserError();
     }
+  }
+
+  private  void emitTopLevelXmlNodeBinding(Segment parentHtmlNode, Label topLevelLabel, HtmlPopulator.Context context, TrapWriter writer) {
+    Label htmlNodeLabel = context.getNodeLabel(parentHtmlNode);
+    writer.addTuple("toplevel_parent_xml_node", topLevelLabel, htmlNodeLabel);
   }
 }

@@ -88,26 +88,7 @@ module HTML {
    * Gets the inline script of the given attribute, if any.
    */
   CodeInAttribute getCodeInAttribute(XMLAttribute attribute) {
-    exists(
-      string f, Location l1, int sl1, int sc1, int el1, int ec1, Location l2, int sl2, int sc2,
-      int el2, int ec2
-    |
-      l1 = attribute.getLocation() and
-      l2 = result.getLocation() and
-      l1.hasLocationInfo(f, sl1, sc1, el1, ec1) and
-      l2.hasLocationInfo(f, sl2, sc2, el2, ec2)
-    |
-      (
-        sl1 = sl2 and sc1 < sc2
-        or
-        sl1 < sl2
-      ) and
-      (
-        el1 = el2 and ec1 > ec2
-        or
-        el1 > el2
-      )
-    )
+    toplevel_parent_xml_node(result, attribute)
   }
 
   /**
@@ -233,26 +214,7 @@ module HTML {
      * Gets the inline script of this script element, if any.
      */
     private InlineScript getInlineScript() {
-      exists(
-        string f, Location l1, int sl1, int sc1, int el1, int ec1, Location l2, int sl2, int sc2,
-        int el2, int ec2
-      |
-        l1 = getLocation() and
-        l2 = result.getLocation() and
-        l1.hasLocationInfo(f, sl1, sc1, el1, ec1) and
-        l2.hasLocationInfo(f, sl2, sc2, el2, ec2)
-      |
-        (
-          sl1 = sl2 and sc1 < sc2
-          or
-          sl1 < sl2
-        ) and
-        (
-          el1 = el2 and ec1 > ec2
-          or
-          el1 > el2
-        )
-      ) and
+      toplevel_parent_xml_node(result, this) and
       // the src attribute has precedence
       not exists(getSourcePath())
     }
