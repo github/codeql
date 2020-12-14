@@ -1,16 +1,19 @@
 name: Generate CodeQL query help documentation using Sphinx
 
 on:
+  workflow_dispatch:
+      inputs:
+        description:
+          description: A description of the purpose of this job. For human consumption.
+          required: false
   push:
     branches:
-     - main
-     - 'rc/**'
      - 'lgtm.com'
   pull_request:
     paths:
       - '.github/workflows/generate-query-help-docs.yml'
       - 'docs/codeql/query-help/**'
-
+      
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,7 +21,7 @@ jobs:
     - name: Clone github/codeql
       uses: actions/checkout@v2
       with:
-        path: codeql 
+        path: codeql
     - name: Clone github/codeql-go
       uses: actions/checkout@v2
       with:

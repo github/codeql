@@ -69,10 +69,8 @@ private class StdSequenceContainerData extends TaintFunction {
  */
 private class StdSequenceContainerPush extends TaintFunction {
   StdSequenceContainerPush() {
-    this.hasQualifiedName("std", "vector", "push_back") or
-    this.hasQualifiedName("std", "deque", ["push_back", "push_front"]) or
-    this.hasQualifiedName("std", "list", ["push_back", "push_front"]) or
-    this.hasQualifiedName("std", "forward_list", "push_front")
+    this.hasQualifiedName("std", ["vector", "deque", "list"], "push_back") or
+    this.hasQualifiedName("std", ["deque", "list", "forward_list"], "push_front")
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -87,11 +85,8 @@ private class StdSequenceContainerPush extends TaintFunction {
  */
 private class StdSequenceContainerFrontBack extends TaintFunction {
   StdSequenceContainerFrontBack() {
-    this.hasQualifiedName("std", "array", ["front", "back"]) or
-    this.hasQualifiedName("std", "vector", ["front", "back"]) or
-    this.hasQualifiedName("std", "deque", ["front", "back"]) or
-    this.hasQualifiedName("std", "list", ["front", "back"]) or
-    this.hasQualifiedName("std", "forward_list", "front")
+    this.hasQualifiedName("std", ["array", "vector", "deque", "list", "forward_list"], "front") or
+    this.hasQualifiedName("std", ["array", "vector", "deque", "list"], "back")
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -107,7 +102,7 @@ private class StdSequenceContainerFrontBack extends TaintFunction {
 private class StdSequenceContainerInsert extends TaintFunction {
   StdSequenceContainerInsert() {
     this.hasQualifiedName("std", ["vector", "deque", "list"], "insert") or
-    this.hasQualifiedName("std", ["forward_list"], "insert_after")
+    this.hasQualifiedName("std", "forward_list", "insert_after")
   }
 
   /**

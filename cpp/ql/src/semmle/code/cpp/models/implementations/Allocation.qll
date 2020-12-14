@@ -14,95 +14,58 @@ private class MallocAllocationFunction extends AllocationFunction {
   int sizeArg;
 
   MallocAllocationFunction() {
-    exists(string name |
-      hasGlobalOrStdName(name) and
-      // malloc(size)
-      (name = "malloc" and sizeArg = 0)
-      or
-      hasGlobalName(name) and
-      (
-        // ExAllocatePool(type, size)
-        name = "ExAllocatePool" and sizeArg = 1
-        or
-        // ExAllocatePool(type, size, tag)
-        name = "ExAllocatePoolWithTag" and sizeArg = 1
-        or
-        // ExAllocatePoolWithTagPriority(type, size, tag, priority)
-        name = "ExAllocatePoolWithTagPriority" and sizeArg = 1
-        or
-        // ExAllocatePoolWithQuota(type, size)
-        name = "ExAllocatePoolWithQuota" and sizeArg = 1
-        or
-        // ExAllocatePoolWithQuotaTag(type, size, tag)
-        name = "ExAllocatePoolWithQuotaTag" and sizeArg = 1
-        or
-        // IoAllocateMdl(address, size, flag, flag, irp)
-        name = "IoAllocateMdl" and sizeArg = 1
-        or
-        // IoAllocateErrorLogEntry(object, size)
-        name = "IoAllocateErrorLogEntry" and sizeArg = 1
-        or
-        // MmAllocateContiguousMemory(size, maxaddress)
-        name = "MmAllocateContiguousMemory" and sizeArg = 0
-        or
-        // MmAllocateContiguousNodeMemory(size, minaddress, maxaddress, bound, flag, prefer)
-        name = "MmAllocateContiguousNodeMemory" and sizeArg = 0
-        or
-        // MmAllocateContiguousMemorySpecifyCache(size, minaddress, maxaddress, bound, type)
-        name = "MmAllocateContiguousMemorySpecifyCache" and sizeArg = 0
-        or
-        // MmAllocateContiguousMemorySpecifyCacheNode(size, minaddress, maxaddress, bound, type, prefer)
-        name = "MmAllocateContiguousMemorySpecifyCacheNode" and sizeArg = 0
-        or
-        // MmAllocateNonCachedMemory(size)
-        name = "MmAllocateNonCachedMemory" and sizeArg = 0
-        or
-        // MmAllocateMappingAddress(size, tag)
-        name = "MmAllocateMappingAddress" and sizeArg = 0
-        or
-        // MmAllocatePagesForMdl(minaddress, maxaddress, skip, size)
-        name = "MmAllocatePagesForMdl" and sizeArg = 3
-        or
-        // MmAllocatePagesForMdlEx(minaddress, maxaddress, skip, size, type, flags)
-        name = "MmAllocatePagesForMdlEx" and sizeArg = 3
-        or
-        // MmAllocateNodePagesForMdlEx(minaddress, maxaddress, skip, size, type, prefer, flags)
-        name = "MmAllocateNodePagesForMdlEx" and sizeArg = 3
-        or
-        // LocalAlloc(flags, size)
-        name = "LocalAlloc" and sizeArg = 1
-        or
-        // GlobalAlloc(flags, size)
-        name = "GlobalAlloc" and sizeArg = 1
-        or
-        // HeapAlloc(heap, flags, size)
-        name = "HeapAlloc" and sizeArg = 2
-        or
-        // VirtualAlloc(address, size, type, flag)
-        name = "VirtualAlloc" and sizeArg = 1
-        or
-        // CoTaskMemAlloc(size)
-        name = "CoTaskMemAlloc" and sizeArg = 0
-        or
-        // kmem_alloc(size, flags)
-        name = "kmem_alloc" and sizeArg = 0
-        or
-        // kmem_zalloc(size, flags)
-        name = "kmem_zalloc" and sizeArg = 0
-        or
-        // CRYPTO_malloc(size_t num, const char *file, int line)
-        name = "CRYPTO_malloc" and sizeArg = 0
-        or
-        // CRYPTO_zalloc(size_t num, const char *file, int line)
-        name = "CRYPTO_zalloc" and sizeArg = 0
-        or
-        // CRYPTO_secure_malloc(size_t num, const char *file, int line)
-        name = "CRYPTO_secure_malloc" and sizeArg = 0
-        or
-        // CRYPTO_secure_zalloc(size_t num, const char *file, int line)
-        name = "CRYPTO_secure_zalloc" and sizeArg = 0
-      )
-    )
+    // --- C library allocation
+    hasGlobalOrStdName("malloc") and // malloc(size)
+    sizeArg = 0
+    or
+    hasGlobalName([
+        // --- Windows Memory Management for Windows Drivers
+        "MmAllocateContiguousMemory", // MmAllocateContiguousMemory(size, maxaddress)
+        "MmAllocateContiguousNodeMemory", // MmAllocateContiguousNodeMemory(size, minaddress, maxaddress, bound, flag, prefer)
+        "MmAllocateContiguousMemorySpecifyCache", // MmAllocateContiguousMemorySpecifyCache(size, minaddress, maxaddress, bound, type)
+        "MmAllocateContiguousMemorySpecifyCacheNode", // MmAllocateContiguousMemorySpecifyCacheNode(size, minaddress, maxaddress, bound, type, prefer)
+        "MmAllocateNonCachedMemory", // MmAllocateNonCachedMemory(size)
+        "MmAllocateMappingAddress", // MmAllocateMappingAddress(size, tag)
+        // --- Windows COM allocation
+        "CoTaskMemAlloc", // CoTaskMemAlloc(size)
+        // --- Solaris/BSD kernel memory allocator
+        "kmem_alloc", // kmem_alloc(size, flags)
+        "kmem_zalloc", // kmem_zalloc(size, flags)
+        // --- OpenSSL memory allocation
+        "CRYPTO_malloc", // CRYPTO_malloc(size_t num, const char *file, int line)
+        "CRYPTO_zalloc", // CRYPTO_zalloc(size_t num, const char *file, int line)
+        "CRYPTO_secure_malloc", // CRYPTO_secure_malloc(size_t num, const char *file, int line)
+        "CRYPTO_secure_zalloc" // CRYPTO_secure_zalloc(size_t num, const char *file, int line)
+      ]) and
+    sizeArg = 0
+    or
+    hasGlobalName([
+        // --- Windows Memory Management for Windows Drivers
+        "ExAllocatePool", // ExAllocatePool(type, size)
+        "ExAllocatePoolWithTag", // ExAllocatePool(type, size, tag)
+        "ExAllocatePoolWithTagPriority", // ExAllocatePoolWithTagPriority(type, size, tag, priority)
+        "ExAllocatePoolWithQuota", // ExAllocatePoolWithQuota(type, size)
+        "ExAllocatePoolWithQuotaTag", // ExAllocatePoolWithQuotaTag(type, size, tag)
+        "IoAllocateMdl", // IoAllocateMdl(address, size, flag, flag, irp)
+        "IoAllocateErrorLogEntry", // IoAllocateErrorLogEntry(object, size)
+        // --- Windows Global / Local legacy allocation
+        "LocalAlloc", // LocalAlloc(flags, size)
+        "GlobalAlloc", // GlobalAlloc(flags, size)
+        // --- Windows System Services allocation
+        "VirtualAlloc" // VirtualAlloc(address, size, type, flag)
+      ]) and
+    sizeArg = 1
+    or
+    hasGlobalName(["HeapAlloc"]) and // HeapAlloc(heap, flags, size)
+    sizeArg = 2
+    or
+    hasGlobalName([
+        // --- Windows Memory Management for Windows Drivers
+        "MmAllocatePagesForMdl", // MmAllocatePagesForMdl(minaddress, maxaddress, skip, size)
+        "MmAllocatePagesForMdlEx", // MmAllocatePagesForMdlEx(minaddress, maxaddress, skip, size, type, flags)
+        "MmAllocateNodePagesForMdlEx" // MmAllocateNodePagesForMdlEx(minaddress, maxaddress, skip, size, type, prefer, flags)
+      ]) and
+    sizeArg = 3
   }
 
   override int getSizeArg() { result = sizeArg }
@@ -116,16 +79,12 @@ private class AllocaAllocationFunction extends AllocationFunction {
   int sizeArg;
 
   AllocaAllocationFunction() {
-    exists(string name |
-      hasGlobalName(name) and
-      (
-        // alloca(size)
-        name = "alloca" and sizeArg = 0
-        or
-        // __builtin_alloca(size)
-        name = "__builtin_alloca" and sizeArg = 0
-      )
-    )
+    hasGlobalName([
+        // --- stack allocation
+        "alloca", // // alloca(size)
+        "__builtin_alloca" // __builtin_alloca(size)
+      ]) and
+    sizeArg = 0
   }
 
   override int getSizeArg() { result = sizeArg }
@@ -142,11 +101,10 @@ private class CallocAllocationFunction extends AllocationFunction {
   int multArg;
 
   CallocAllocationFunction() {
-    exists(string name |
-      hasGlobalOrStdName(name) and
-      // calloc(num, size)
-      (name = "calloc" and sizeArg = 1 and multArg = 0)
-    )
+    // --- C library allocation
+    hasGlobalOrStdName("calloc") and // calloc(num, size)
+    sizeArg = 1 and
+    multArg = 0
   }
 
   override int getSizeArg() { result = sizeArg }
@@ -163,29 +121,26 @@ private class ReallocAllocationFunction extends AllocationFunction {
   int reallocArg;
 
   ReallocAllocationFunction() {
-    exists(string name |
-      hasGlobalOrStdName(name) and
-      // realloc(ptr, size)
-      (name = "realloc" and sizeArg = 1 and reallocArg = 0)
-      or
-      hasGlobalName(name) and
-      (
-        // LocalReAlloc(ptr, size, flags)
-        name = "LocalReAlloc" and sizeArg = 1 and reallocArg = 0
-        or
-        // GlobalReAlloc(ptr, size, flags)
-        name = "GlobalReAlloc" and sizeArg = 1 and reallocArg = 0
-        or
-        // HeapReAlloc(heap, flags, ptr, size)
-        name = "HeapReAlloc" and sizeArg = 3 and reallocArg = 2
-        or
-        // CoTaskMemRealloc(ptr, size)
-        name = "CoTaskMemRealloc" and sizeArg = 1 and reallocArg = 0
-        or
-        // CRYPTO_realloc(void *addr, size_t num, const char *file, int line);
-        name = "CRYPTO_realloc" and sizeArg = 1 and reallocArg = 0
-      )
-    )
+    // --- C library allocation
+    hasGlobalOrStdName("realloc") and // realloc(ptr, size)
+    sizeArg = 1 and
+    reallocArg = 0
+    or
+    hasGlobalName([
+        // --- Windows Global / Local legacy allocation
+        "LocalReAlloc", // LocalReAlloc(ptr, size, flags)
+        "GlobalReAlloc", // GlobalReAlloc(ptr, size, flags)
+        // --- Windows COM allocation
+        "CoTaskMemRealloc", // CoTaskMemRealloc(ptr, size)
+        // --- OpenSSL memory allocation
+        "CRYPTO_realloc" // CRYPTO_realloc(void *addr, size_t num, const char *file, int line)
+      ]) and
+    sizeArg = 1 and
+    reallocArg = 0
+    or
+    hasGlobalName("HeapReAlloc") and // HeapReAlloc(heap, flags, ptr, size)
+    sizeArg = 3 and
+    reallocArg = 2
   }
 
   override int getSizeArg() { result = sizeArg }
@@ -199,40 +154,20 @@ private class ReallocAllocationFunction extends AllocationFunction {
  */
 private class SizelessAllocationFunction extends AllocationFunction {
   SizelessAllocationFunction() {
-    exists(string name |
-      hasGlobalName(name) and
-      (
-        // ExAllocateFromLookasideListEx(list)
-        name = "ExAllocateFromLookasideListEx"
-        or
-        // ExAllocateFromPagedLookasideList(list)
-        name = "ExAllocateFromPagedLookasideList"
-        or
-        // ExAllocateFromNPagedLookasideList(list)
-        name = "ExAllocateFromNPagedLookasideList"
-        or
-        // ExAllocateTimer(callback, context, attributes)
-        name = "ExAllocateTimer"
-        or
-        // IoAllocateWorkItem(object)
-        name = "IoAllocateWorkItem"
-        or
-        // MmMapLockedPagesWithReservedMapping(address, tag, list, type)
-        name = "MmMapLockedPagesWithReservedMapping"
-        or
-        // MmMapLockedPages(list, mode)
-        name = "MmMapLockedPages"
-        or
-        // MmMapLockedPagesSpecifyCache(list, mode, type, address, flag, flag)
-        name = "MmMapLockedPagesSpecifyCache"
-        or
-        // pool_get(pool, flags)
-        name = "pool_get"
-        or
-        // pool_cache_get(pool, flags)
-        name = "pool_cache_get"
-      )
-    )
+    hasGlobalName([
+        // --- Windows Memory Management for Windows Drivers
+        "ExAllocateFromLookasideListEx", // ExAllocateFromLookasideListEx(list)
+        "ExAllocateFromPagedLookasideList", // ExAllocateFromPagedLookasideList(list)
+        "ExAllocateFromNPagedLookasideList", // ExAllocateFromNPagedLookasideList(list)
+        "ExAllocateTimer", // ExAllocateTimer(callback, context, attributes)
+        "IoAllocateWorkItem", // IoAllocateWorkItem(object)
+        "MmMapLockedPagesWithReservedMapping", // MmMapLockedPagesWithReservedMapping(address, tag, list, type)
+        "MmMapLockedPages", // MmMapLockedPages(list, mode)
+        "MmMapLockedPagesSpecifyCache", // MmMapLockedPagesSpecifyCache(list, mode, type, address, flag, flag)
+        // --- NetBSD pool manager
+        "pool_get", // pool_get(pool, flags)
+        "pool_cache_get" // pool_cache_get(pool, flags)
+      ])
   }
 }
 

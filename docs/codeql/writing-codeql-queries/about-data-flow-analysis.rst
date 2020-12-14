@@ -19,7 +19,7 @@ See the following tutorials for more information about analyzing data flow in sp
 - ":ref:`Analyzing data flow in C/C++ <analyzing-data-flow-in-cpp>`"
 - ":ref:`Analyzing data flow in C# <analyzing-data-flow-in-csharp>`"
 - ":ref:`Analyzing data flow in Java <analyzing-data-flow-in-java>`"
-- ":ref:`Analyzing data flow in JavaScript/TypeScript <analyzing-data-flow-in-javascript>`"
+- ":ref:`Analyzing data flow in JavaScript/TypeScript <analyzing-data-flow-in-javascript-and-typescript>`"
 - ":ref:`Analyzing data flow and tracking tainted data in Python <analyzing-data-flow-and-tracking-tainted-data-in-python>`"
 
 .. pull-quote::

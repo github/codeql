@@ -59,14 +59,9 @@ class Options extends string {
   predicate exits(Function f) {
     f.getAnAttribute().hasName("noreturn")
     or
-    exists(string name | f.hasGlobalOrStdName(name) |
-      name = "exit" or
-      name = "_exit" or
-      name = "abort" or
-      name = "__assert_fail" or
-      name = "longjmp" or
-      name = "__builtin_unreachable"
-    )
+    f.hasGlobalOrStdName([
+        "exit", "_exit", "abort", "__assert_fail", "longjmp", "__builtin_unreachable"
+      ])
     or
     CustomOptions::exits(f) // old Options.qll
   }

@@ -16,9 +16,7 @@ class MyFinallySplitControlFlowNode extends ElementNode {
     )
   }
 
-  TryStmt getTryStmt() {
-    this.getElement() = Splitting::FinallySplitting::getAFinallyDescendant(result)
-  }
+  Statements::TryStmtTree getTryStmt() { this.getElement() = result.getAFinallyDescendant() }
 }
 
 query predicate finallyNode(MyFinallySplitControlFlowNode f, TryStmt try) { try = f.getTryStmt() }

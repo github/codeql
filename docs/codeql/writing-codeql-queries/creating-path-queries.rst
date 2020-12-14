@@ -27,7 +27,7 @@ For more language-specific information on analyzing data flow, see:
 - ":ref:`Analyzing data flow in C/C++ <analyzing-data-flow-in-cpp>`"
 - ":ref:`Analyzing data flow in C# <analyzing-data-flow-in-csharp>`"
 - ":ref:`Analyzing data flow in Java <analyzing-data-flow-in-java>`" 
-- ":ref:`Analyzing data flow in JavaScript/TypeScript <analyzing-data-flow-in-javascript>`"
+- ":ref:`Analyzing data flow in JavaScript/TypeScript <analyzing-data-flow-in-javascript-and-typescript>`"
 - ":ref:`Analyzing data flow and tracking tainted data in Python <analyzing-data-flow-and-tracking-tainted-data-in-python>`"
 
 
@@ -52,7 +52,7 @@ For C/C++, C#, Java, and JavaScript you should use the following template::
      * ...
      */
 
-    import <ql-language-specification>
+    import <language>
     import DataFlow::PathGraph
     ...
 

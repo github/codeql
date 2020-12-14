@@ -43,8 +43,8 @@ var bad6 = /^([\s\[\{\(]|#.*)*$/;
 // GOOD
 var good4 = /(\r\n|\r|\n)+/;
 
-// GOOD because it cannot be made to fail after the loop (but we can't tell that)
-var good5 = /((?:[^"']|".*?"|'.*?')*?)([(,)]|$)/;
+// BAD - PoC: `node -e "/((?:[^\"\']|\".*?\"|\'.*?\')*?)([(,)]|$)/.test(\"'''''''''''''''''''''''''''''''''''''''''''''\\\"\");"`. It's complicated though, because the regexp still matches something, it just matches the empty-string after the attack string.
+var actuallyBad = /((?:[^"']|".*?"|'.*?')*?)([(,)]|$)/;
 
 // NOT GOOD; attack: "a" + "[]".repeat(100) + ".b\n"
 // Adapted from Knockout (https://github.com/knockout/knockout), which is
@@ -54,11 +54,11 @@ var bad6 = /^[\_$a-z][\_$a-z0-9]*(\[.*?\])*(\.[\_$a-z][\_$a-z0-9]*(\[.*?\])*)*$/
 // GOOD
 var good6 = /(a|.)*/;
 
-// NOT GOOD; we cannot detect all of them due to the way we build our NFAs
+// Testing the NFA - only some of the below are detected.
 var bad7 = /^([a-z]+)+$/;
-var bad8 = /^([a-z]*)*$/;
+var bad8 = /^([a-z]*)*$/; // NOT detected
 var bad9 = /^([a-zA-Z0-9])(([\\-.]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$/;
-var bad10 = /^(([a-z])+.)+[A-Z]([a-z])+$/;
+var bad10 = /^(([a-z])+.)+[A-Z]([a-z])+$/; // NOT detected
 
 // NOT GOOD; attack: "[" + "][".repeat(100) + "]!"
 // Adapted from Prototype.js (https://github.com/prototypejs/prototype), which
@@ -178,7 +178,7 @@ var good12 = /(\d+(X\d+)?)+/;
 // GOOD - there is no witness in the end that could cause the regexp to not match
 var good13 = /([0-9]+(X[0-9]*)?)*/;
 
-// GOOD - but still flagged (always matches something)
+// GOOD
 var good15 = /^([^>]+)*(>|$)/;
 
 // NOT GOOD
@@ -267,3 +267,69 @@ var good28 = /foo([\uDC66\uDC67]|[\uDC68\uDC69])*foo/
 
 // GOOD
 var good29 = /foo((\uDC66|\uDC67)|(\uDC68|\uDC69))*foo/
+
+// NOT GOOD (but cannot currently construct a prefix)
+var bad62 = /a{2,3}(b+)+X/;
+
+// NOT GOOD (and a good prefix test)
+var bad63 = /^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>/;
+
+// GOOD
+var good30 = /(a+)*[^][^][^]?/;
+
+// GOOD - but we fail to see that repeating the attack string ends in the "accept any" state (due to not parsing the range `[^]{2,3}`).
+var good31 = /(a+)*[^]{2,3}/;
+
+// GOOD - but we spuriously conclude that a rejecting suffix exists (due to not parsing the range `[^]{2,}` when constructing the NFA).
+var good32 = /(a+)*([^]{2,}|X)$/;
+
+// GOOD
+var good33 = /(a+)*([^]*|X)$/;
+
+// NOT GOOD
+var bad64 = /((a+)*$|[^]+)/;
+
+// GOOD - but still flagged. The only change compared to the above is the order of alternatives, which we don't model.
+var good34 = /([^]+|(a+)*$)/;
+
+// GOOD
+var good35 = /((;|^)a+)+$/;
+
+// NOT GOOD (a good prefix test)
+var bad65 = /(^|;)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(e+)+f/;
+
+// NOT GOOD
+var bad66 = /^ab(c+)+$/;
+
+// NOT GOOD
+var bad67 = /(\d(\s+)*){20}/;
+
+// GOOD - but we spuriously conclude that a rejecting suffix exists. 
+var good36 = /(([^/]|X)+)(\/[^]*)*$/;
+
+// GOOD - but we spuriously conclude that a rejecting suffix exists. 
+var good37 = /^((x([^Y]+)?)*(Y|$))/;
+
+// NOT GOOD - but not detected
+var bad68 = /(a*)+b/;
+
+// NOT GOOD - but not detected
+var bad69 = /foo([\w-]*)+bar/;
+
+// NOT GOOD - but not detected
+var bad70 = /((ab)*)+c/;
+
+// NOT GOOD
+var bad71 = /(a?a?)*b/;
+
+// GOOD
+var good38 = /(a?)*b/;
+
+// NOT GOOD - but not detected
+var bad72 = /(c?a?)*b/;
+
+// NOT GOOD
+var bad73 = /(?:a|a?)+b/;
+
+// NOT GOOD - but not detected. 
+var bad74 = /(a?b?)*$/;

@@ -858,6 +858,7 @@ module Expressions {
         (cc.(MatchingCompletion).isNonMatch() or cc instanceof FalseCompletion) and
         c =
           any(NestedCompletion nc |
+            nc.getNestLevel() = 0 and
             nc.getInnerCompletion() = cc and
             nc.getOuterCompletion()
                 .(ThrowCompletion)
@@ -1300,12 +1301,52 @@ module Statements {
     last(cc.getBlock(), result, c)
   }
 
+  /** Gets a child of `cfe` that is in CFG scope `scope`. */
+  pragma[noinline]
+  private ControlFlowElement getAChildInScope(ControlFlowElement cfe, Callable scope) {
+    result = cfe.getAChild() and
+    scope = result.getEnclosingCallable()
+  }
+
   class TryStmtTree extends PreOrderTree, TryStmt {
     ControlFlowTree body;
 
     final override predicate propagatesAbnormal(ControlFlowElement child) {
       child = this.getFinally()
     }
+
+    /**
+     * Gets a descendant that belongs to the `finally` block of this try statement.
+     */
+    ControlFlowElement getAFinallyDescendant() {
+      result = this.getFinally()
+      or
+      exists(ControlFlowElement mid |
+        mid = this.getAFinallyDescendant() and
+        result = getAChildInScope(mid, mid.getEnclosingCallable()) and
+        not exists(TryStmtTree nestedTry |
+          result = nestedTry.getFinally() and
+          nestedTry != this
+        )
+      )
+    }
+
+    /**
+     * Holds if `innerTry` has a `finally` block and is immediately nested inside the
+     * `finally` block of this `try` statement.
+     */
+    private predicate nestedFinally(TryStmtTree innerTry) {
+      exists(ControlFlowElement innerFinally |
+        innerFinally = getAChildInScope(this.getAFinallyDescendant(), this.getEnclosingCallable()) and
+        innerFinally = innerTry.getFinally()
+      )
+    }
+
+    /**
+     * Gets the `finally`-nesting level of this `try` statement. That is, the number of
+     * `finally` blocks that this `try` statement is nested under.
+     */
+    int nestLevel() { result = count(TryStmtTree outer | outer.nestedFinally+(this)) }
 
     /** Holds if `last` is a last element of the block of this `try` statement. */
     pragma[nomagic]
@@ -1343,10 +1384,11 @@ module Statements {
 
     pragma[nomagic]
     private predicate lastFinally(
-      ControlFlowElement last, NormalCompletion finally, Completion outer
+      ControlFlowElement last, NormalCompletion finally, Completion outer, int nestLevel
     ) {
       this.lastFinally0(last, finally) and
-      exists(this.getBlockOrCatchFinallyPred(any(Completion c0 | outer = c0.getOuterCompletion())))
+      exists(this.getBlockOrCatchFinallyPred(any(Completion c0 | outer = c0.getOuterCompletion()))) and
+      nestLevel = this.nestLevel()
     }
 
     final override predicate last(ControlFlowElement last, Completion c) {
@@ -1360,13 +1402,14 @@ module Statements {
         c instanceof ExitCompletion
       )
       or
-      this.lastFinally(last, c, any(NormalCompletion nc))
+      this.lastFinally(last, c, any(NormalCompletion nc), _)
       or
       // If the `finally` block completes normally, it inherits any non-normal
       // completion that was current before the `finally` block was entered
       c =
         any(NestedCompletion nc |
-          this.lastFinally(last, nc.getAnInnerCompatibleCompletion(), nc.getOuterCompletion())
+          this.lastFinally(last, nc.getAnInnerCompatibleCompletion(), nc.getOuterCompletion(),
+            nc.getNestLevel())
         )
     }
 
@@ -1481,6 +1524,7 @@ module Statements {
       this.isLast() and
       c =
         any(NestedCompletion nc |
+          nc.getNestLevel() = 0 and
           this.throwMayBeUncaught(nc.getOuterCompletion().(ThrowCompletion)) and
           (
             // Incompatible exception type: clause itself

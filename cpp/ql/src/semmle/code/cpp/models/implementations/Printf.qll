@@ -15,11 +15,8 @@ private class Printf extends FormattingFunction, AliasFunction {
   Printf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdName("printf") or
-      hasGlobalName("printf_s") or
-      hasGlobalOrStdName("wprintf") or
-      hasGlobalName("wprintf_s") or
-      hasGlobalName("g_printf")
+      hasGlobalOrStdName(["printf", "wprintf"]) or
+      hasGlobalName(["printf_s", "wprintf_s", "g_printf"])
     ) and
     not exists(getDefinition().getFile().getRelativePath())
   }
@@ -47,8 +44,7 @@ private class Fprintf extends FormattingFunction {
   Fprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdName("fprintf") or
-      hasGlobalOrStdName("fwprintf") or
+      hasGlobalOrStdName(["fprintf", "fwprintf"]) or
       hasGlobalName("g_fprintf")
     ) and
     not exists(getDefinition().getFile().getRelativePath())
@@ -68,26 +64,18 @@ private class Sprintf extends FormattingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
-      // sprintf(dst, format, args...)
-      hasGlobalOrStdName("sprintf")
+      hasGlobalOrStdName([
+          "sprintf", // sprintf(dst, format, args...)
+          "wsprintf" // wsprintf(dst, format, args...)
+        ])
       or
-      //  _sprintf_l(dst, format, locale, args...)
-      hasGlobalName("_sprintf_l")
-      or
-      // __swprintf_l(dst, format, locale, args...)
-      hasGlobalName("__swprintf_l")
-      or
-      // wsprintf(dst, format, args...)
-      hasGlobalOrStdName("wsprintf")
-      or
-      // g_strdup_printf(format, ...)
-      hasGlobalName("g_strdup_printf")
-      or
-      // g_sprintf(dst, format, ...)
-      hasGlobalName("g_sprintf")
-      or
-      // __builtin___sprintf_chk(dst, flag, os, format, ...)
-      hasGlobalName("__builtin___sprintf_chk")
+      hasGlobalName([
+          "_sprintf_l", // _sprintf_l(dst, format, locale, args...)
+          "__swprintf_l", // __swprintf_l(dst, format, locale, args...)
+          "g_strdup_printf", // g_strdup_printf(format, ...)
+          "g_sprintf", // g_sprintf(dst, format, ...)
+          "__builtin___sprintf_chk" // __builtin___sprintf_chk(dst, flag, os, format, ...)
+        ])
     ) and
     not exists(getDefinition().getFile().getRelativePath())
   }
@@ -106,8 +94,7 @@ private class Sprintf extends FormattingFunction {
     or
     hasGlobalName("__builtin___sprintf_chk") and result = 3
     or
-    getName() != "g_strdup_printf" and
-    getName() != "__builtin___sprintf_chk" and
+    not getName() = ["g_strdup_printf", "__builtin___sprintf_chk"] and
     result = 1
   }
 
@@ -129,26 +116,18 @@ private class SnprintfImpl extends Snprintf {
   SnprintfImpl() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdName("snprintf") or // C99 defines snprintf
-      hasGlobalOrStdName("swprintf") or // The s version of wide-char printf is also always the n version
+      hasGlobalOrStdName([
+          "snprintf", // C99 defines snprintf
+          "swprintf" // The s version of wide-char printf is also always the n version
+        ])
+      or
       // Microsoft has _snprintf as well as several other variations
-      hasGlobalName("sprintf_s") or
-      hasGlobalName("snprintf_s") or
-      hasGlobalName("swprintf_s") or
-      hasGlobalName("_snprintf") or
-      hasGlobalName("_snprintf_s") or
-      hasGlobalName("_snprintf_l") or
-      hasGlobalName("_snprintf_s_l") or
-      hasGlobalName("_snwprintf") or
-      hasGlobalName("_snwprintf_s") or
-      hasGlobalName("_snwprintf_l") or
-      hasGlobalName("_snwprintf_s_l") or
-      hasGlobalName("_sprintf_s_l") or
-      hasGlobalName("_swprintf_l") or
-      hasGlobalName("_swprintf_s_l") or
-      hasGlobalName("g_snprintf") or
-      hasGlobalName("wnsprintf") or
-      hasGlobalName("__builtin___snprintf_chk")
+      hasGlobalName([
+          "sprintf_s", "snprintf_s", "swprintf_s", "_snprintf", "_snprintf_s", "_snprintf_l",
+          "_snprintf_s_l", "_snwprintf", "_snwprintf_s", "_snwprintf_l", "_snwprintf_s_l",
+          "_sprintf_s_l", "_swprintf_l", "_swprintf_s_l", "g_snprintf", "wnsprintf",
+          "__builtin___snprintf_chk"
+        ])
     ) and
     not exists(getDefinition().getFile().getRelativePath())
   }
@@ -186,9 +165,7 @@ private class SnprintfImpl extends Snprintf {
   override predicate returnsFullFormatLength() {
     (
       hasGlobalOrStdName("snprintf") or
-      hasGlobalName("g_snprintf") or
-      hasGlobalName("__builtin___snprintf_chk") or
-      hasGlobalName("snprintf_s")
+      hasGlobalName(["g_snprintf", "__builtin___snprintf_chk", "snprintf_s"])
     ) and
     not exists(getDefinition().getFile().getRelativePath())
   }
@@ -202,16 +179,10 @@ private class SnprintfImpl extends Snprintf {
 private class StringCchPrintf extends FormattingFunction {
   StringCchPrintf() {
     this instanceof TopLevelFunction and
-    (
-      hasGlobalName("StringCchPrintf") or
-      hasGlobalName("StringCchPrintfEx") or
-      hasGlobalName("StringCchPrintf_l") or
-      hasGlobalName("StringCchPrintf_lEx") or
-      hasGlobalName("StringCbPrintf") or
-      hasGlobalName("StringCbPrintfEx") or
-      hasGlobalName("StringCbPrintf_l") or
-      hasGlobalName("StringCbPrintf_lEx")
-    ) and
+    hasGlobalName([
+        "StringCchPrintf", "StringCchPrintfEx", "StringCchPrintf_l", "StringCchPrintf_lEx",
+        "StringCbPrintf", "StringCbPrintfEx", "StringCbPrintf_l", "StringCbPrintf_lEx"
+      ]) and
     not exists(getDefinition().getFile().getRelativePath())
   }
 
