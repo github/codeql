@@ -1712,6 +1712,7 @@ cil_field(
 @cil_variable = @cil_field | @cil_stack_variable;
 @cil_stack_variable = @cil_local_variable | @cil_parameter;
 @cil_member = @cil_method | @cil_type | @cil_field | @cil_property | @cil_event;
+@cil_custom_modifier_receiver = @cil_method | @cil_property | @cil_parameter | @cil_field; // todo: add function pointer type
 
 #keyset[method, index]
 cil_parameter(
@@ -1725,6 +1726,12 @@ cil_parameter_out(unique int id: @cil_parameter ref);
 
 cil_setter(unique int prop: @cil_property ref,
   int method: @cil_method ref);
+
+#keyset[id, modifier]
+cil_custom_modifiers(
+  int id: @cil_custom_modifier_receiver ref,
+  int modifier: @cil_type ref,
+  int kind: int ref); // modreq: 1, modopt: 0
 
 cil_getter(unique int prop: @cil_property ref,
   int method: @cil_method ref);

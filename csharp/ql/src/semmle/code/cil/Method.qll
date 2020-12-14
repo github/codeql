@@ -247,8 +247,12 @@ class Setter extends Accessor {
 
   override Property getProperty() { cil_setter(result, this) }
 
-  /** Holds if this setter is an `init`-only accessor. */
-  predicate isInitOnly() { none() }
+  /** Holds if this setter is an `init` accessor. */
+  predicate isInitOnly() {
+    exists(Type t | t.getQualifiedName() = "System.Runtime.CompilerServices.IsExternalInit" |
+      cil_custom_modifiers(this, t, 1)
+    )
+  }
 }
 
 /**

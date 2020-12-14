@@ -76,9 +76,10 @@ namespace Semmle.Extraction.CIL.Entities
 
                 var typeSignature = md.DecodeSignature(Cx.TypeSignatureDecoder, this);
 
-                Parameters = MakeParameters(typeSignature.ParameterTypes).ToArray();
+                var parameters = GetParameterExtractionProducts(typeSignature.ParameterTypes).ToArray();
+                Parameters = parameters.OfType<Parameter>().ToArray();
 
-                foreach (var c in Parameters)
+                foreach (var c in parameters)
                     yield return c;
 
                 foreach (var c in PopulateFlags)
@@ -95,7 +96,12 @@ namespace Semmle.Extraction.CIL.Entities
                 }
 
                 yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
-                yield return Tuples.cil_method(this, Name, declaringType, typeSignature.ReturnType);
+
+                foreach (var m in GetMethodExtractionProducts(Name, declaringType, typeSignature.ReturnType))
+                {
+                    yield return m;
+                }
+
                 yield return Tuples.cil_method_source_declaration(this, this);
                 yield return Tuples.cil_method_location(this, Cx.Assembly);
 
