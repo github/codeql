@@ -1,5 +1,6 @@
 package com.semmle.js.extractor;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -166,8 +167,10 @@ public class ASTExtractor {
   private final Label toplevelLabel;
   private final LexicalExtractor lexicalExtractor;
   private final RegExpExtractor regexpExtractor;
+  private final ExtractorConfig config;
 
-  public ASTExtractor(LexicalExtractor lexicalExtractor, ScopeManager scopeManager) {
+  public ASTExtractor(ExtractorConfig config, LexicalExtractor lexicalExtractor, ScopeManager scopeManager) {
+    this.config = config;
     this.trapwriter = lexicalExtractor.getTrapwriter();
     this.locationManager = lexicalExtractor.getLocationManager();
     this.contextManager = new SyntacticContextManager();
@@ -1136,7 +1139,68 @@ public class ASTExtractor {
       visit(nd.getDefaultValue(), propkey, 2, IdContext.varBind);
       if (nd.isComputed()) trapwriter.addTuple("is_computed", propkey);
       if (nd.isMethod()) trapwriter.addTuple("is_method", propkey);
+
+      // Extract the value of a property named `template` as HTML, in order to support
+      // Angular2 components with an inline template.
+      if (!nd.isComputed() && "template".equals(tryGetIdentifierName(nd.getKey()))) {
+        extractStringValueAsHtml(nd.getValue());
+      }
+      
       return propkey;
+    }
+
+    /**
+     * Extracts the string value of <code>expr</code> as an HTML snippet.
+     */
+    private void extractStringValueAsHtml(Expression expr) {
+      TextualExtractor textualExtractor = lexicalExtractor.getTextualExtractor();
+      if (textualExtractor.isSnippet()) {
+        return; // do not create nested snippets
+      }
+      String source = tryGetStringValueFromExpression(expr);
+      if (source == null) {
+        return;
+      }
+      SourceLocation loc = expr.getLoc();
+      Path originalFile = textualExtractor.getExtractedFile().toPath();
+      Path vfile = originalFile.resolveSibling(originalFile.getFileName().toString() + "." + loc.getStart().getLine() + "." + loc.getStart().getColumn() + ".html");
+      LocationManager innerLocationManager = new LocationManager(
+          locationManager.getSourceFile(),
+          locationManager.getTrapWriter(),
+          locationManager.getFileLabel());
+      innerLocationManager.setStart(loc.getStart().getLine(), loc.getStart().getColumn());
+      TextualExtractor innerTextualExtractor = new TextualExtractor(
+          trapwriter,
+          innerLocationManager,
+          source,
+          false,
+          getMetrics(),
+          vfile.toFile());
+      HTMLExtractor html = HTMLExtractor.forEmbeddedHtml(config);
+      html.extract(innerTextualExtractor);
+    }
+
+    private String tryGetIdentifierName(Expression e) {
+      return e instanceof Identifier ? ((Identifier)e).getName() : null;
+    }
+    
+    private String tryGetStringValueFromExpression(Expression e) {
+      if (e instanceof Literal) {
+        Literal lit = (Literal) e;
+        return lit.isStringLiteral() ? (String) lit.getValue() : null;
+      }
+      if (e instanceof TemplateLiteral) {
+        TemplateLiteral lit = (TemplateLiteral) e;
+        if (!lit.getExpressions().isEmpty()) {
+          return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (TemplateElement elm : lit.getQuasis()) {
+          sb.append(elm.getCooked());
+        }
+        return sb.toString();
+      }
+      return null;
     }
 
     @Override

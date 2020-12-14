@@ -355,14 +355,30 @@ module Angular2 {
       result = decorator.getOptionArgument(0, "templateUrl").asExpr().(PathExpr).resolve()
     }
 
+    pragma[noinline]
+    private Location getInlineTemplateLocation() {
+      result = decorator.getOptionArgument(0, "template").asExpr().getLocation()
+    }
+
+    private XMLAttribute getAnAttributeInInlineTemplate() {
+      exists(Location templateLoc, Location attribLoc |
+        templateLoc = getInlineTemplateLocation() and
+        attribLoc = result.getLocation() and
+        templateLoc.getFile() = attribLoc.getFile()
+        // TODO: check line/column - though in practice checking the file is enough
+      )
+    }
+
     /**
      * Gets an access to the variable `name` in the template body.
      */
     DataFlow::Node getATemplateVarAccess(string name) {
-      exists(HTML::Attribute attrib |
-        attrib.getFile() = getTemplateFile() and
+      exists(XMLAttribute attrib |
+        attrib.getLocation().getFile() = getTemplateFile() or
+        attrib = getAnAttributeInInlineTemplate()
+      |
         isAngularExpressionAttribute(attrib) and
-        result = getAGlobalVarAccessInAttribute(attrib.getCodeInAttribute(), name).flow()
+        result = getAGlobalVarAccessInAttribute(HTML::getCodeInAttribute(attrib), name).flow()
       )
     }
   }

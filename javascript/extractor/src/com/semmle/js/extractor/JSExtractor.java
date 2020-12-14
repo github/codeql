@@ -106,7 +106,7 @@ public class JSExtractor {
 
       lexicalExtractor =
           new LexicalExtractor(textualExtractor, parserRes.getTokens(), parserRes.getComments());
-      ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, scopeManager);
+      ASTExtractor scriptExtractor = new ASTExtractor(config, lexicalExtractor, scopeManager);
       toplevelLabel = scriptExtractor.getToplevelLabel();
       lexicalExtractor.extractComments(toplevelLabel);
       loc = lexicalExtractor.extractLines(parserRes.getSource(), toplevelLabel);
@@ -119,7 +119,7 @@ public class JSExtractor {
     } else {
       lexicalExtractor =
           new LexicalExtractor(textualExtractor, new ArrayList<Token>(), new ArrayList<Comment>());
-      ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, null);
+      ASTExtractor scriptExtractor = new ASTExtractor(config, lexicalExtractor, null);
       toplevelLabel = scriptExtractor.getToplevelLabel();
 
       trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind.getValue());

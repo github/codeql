@@ -22,8 +22,9 @@ pipeClassRef
 | TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | source.component.html:5:22:5:29 | testPipe |
 | TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | source.component.html:6:19:6:26 | testPipe |
 taintFlow
-| source.component.ts:13:22:13:29 | source() | sink.component.ts:19:48:19:57 | this.sink1 |
-| source.component.ts:13:22:13:29 | source() | sink.component.ts:22:48:22:57 | this.sink4 |
-| source.component.ts:13:22:13:29 | source() | sink.component.ts:23:48:23:57 | this.sink5 |
-| source.component.ts:13:22:13:29 | source() | sink.component.ts:24:48:24:57 | this.sink6 |
-| source.component.ts:14:33:14:40 | source() | sink.component.ts:19:48:19:57 | this.sink1 |
+| inline.component.ts:15:22:15:29 | source() | sink.component.ts:26:48:26:57 | this.sink7 |
+| source.component.ts:13:22:13:29 | source() | sink.component.ts:20:48:20:57 | this.sink1 |
+| source.component.ts:13:22:13:29 | source() | sink.component.ts:23:48:23:57 | this.sink4 |
+| source.component.ts:13:22:13:29 | source() | sink.component.ts:24:48:24:57 | this.sink5 |
+| source.component.ts:13:22:13:29 | source() | sink.component.ts:25:48:25:57 | this.sink6 |
+| source.component.ts:14:33:14:40 | source() | sink.component.ts:20:48:20:57 | this.sink1 |

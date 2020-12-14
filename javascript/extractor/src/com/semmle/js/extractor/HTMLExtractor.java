@@ -166,10 +166,21 @@ public class HTMLExtractor implements IExtractor {
 
   private final ExtractorConfig config;
   private final ExtractorState state;
+  private final boolean isEmbedded;
 
-  public HTMLExtractor(ExtractorConfig config, ExtractorState state) {
+  public HTMLExtractor(ExtractorConfig config, ExtractorState state, boolean isEmbedded) {
     this.config = config.withPlatform(Platform.WEB);
     this.state = state;
+    this.isEmbedded = isEmbedded;
+  }
+
+  public HTMLExtractor(ExtractorConfig config, ExtractorState state) {
+    this(config, state, false);
+  }
+
+  /** Creates an HTML extractor for embedded HTML snippets. */
+  public static HTMLExtractor forEmbeddedHtml(ExtractorConfig config) {
+    return new HTMLExtractor(config, null, true);
   }
 
   @Override
@@ -179,12 +190,15 @@ public class HTMLExtractor implements IExtractor {
     Attributes.setDefaultMaxErrorCount(100);
     JavaScriptHTMLElementHandler eltHandler = new JavaScriptHTMLElementHandler(textualExtractor);
 
+    LocationManager locationManager = textualExtractor.getLocationManager();
     HtmlPopulator extractor =
         new HtmlPopulator(
             this.config.getHtmlHandling(),
             textualExtractor.getSource(),
             textualExtractor.getTrapwriter(),
-            textualExtractor.getLocationManager().getFileLabel());
+            locationManager.getFileLabel());
+    
+    extractor.setStartOffset(locationManager.getStartLine() - 1, locationManager.getStartColumn() - 1);
 
     extractor.doit(Option.some(eltHandler));
 
@@ -266,6 +280,9 @@ public class HTMLExtractor implements IExtractor {
       int column,
       boolean isTypeScript) {
     if (isTypeScript) {
+      if (isEmbedded) {
+        return null; // Do not extract files from HTML embedded in other files.
+      }
       Path file = textualExtractor.getExtractedFile().toPath();
       FileSnippet snippet =
           new FileSnippet(file, line, column, toplevelKind, config.getSourceType());
