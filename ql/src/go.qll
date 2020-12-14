@@ -19,6 +19,7 @@ import semmle.go.Stmt
 import semmle.go.StringOps
 import semmle.go.Types
 import semmle.go.Util
+import semmle.go.concepts.HTTP
 import semmle.go.controlflow.BasicBlocks
 import semmle.go.controlflow.ControlFlowGraph
 import semmle.go.controlflow.IR
@@ -35,9 +36,9 @@ import semmle.go.frameworks.Encoding
 import semmle.go.frameworks.EvanphxJsonPatch
 import semmle.go.frameworks.Gin
 import semmle.go.frameworks.Glog
+import semmle.go.frameworks.GoRestfulHttp
 import semmle.go.frameworks.K8sIoApimachineryPkgRuntime
 import semmle.go.frameworks.Logrus
-import semmle.go.frameworks.HTTP
 import semmle.go.frameworks.Macaron
 import semmle.go.frameworks.Mux
 import semmle.go.frameworks.NoSQL
