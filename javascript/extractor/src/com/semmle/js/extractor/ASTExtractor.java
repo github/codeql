@@ -155,6 +155,9 @@ import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
+import com.semmle.util.data.Pair;
+import com.semmle.util.locations.OffsetTranslation;
+import com.semmle.util.locations.SourceMap;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
 
@@ -1165,25 +1168,23 @@ public class ASTExtractor {
       if (textualExtractor.isSnippet()) {
         return; // do not create nested snippets
       }
-      String source = tryGetStringValueFromExpression(expr);
-      if (source == null) {
+      Pair<String, OffsetTranslation> sourceAndOffset = tryGetStringValueFromExpression(expr);
+      if (sourceAndOffset == null) {
         return;
       }
+      String source = sourceAndOffset.fst();
       SourceLocation loc = expr.getLoc();
       Path originalFile = textualExtractor.getExtractedFile().toPath();
       Path vfile = originalFile.resolveSibling(originalFile.getFileName().toString() + "." + loc.getStart().getLine() + "." + loc.getStart().getColumn() + ".html");
-      LocationManager innerLocationManager = new LocationManager(
-          locationManager.getSourceFile(),
-          locationManager.getTrapWriter(),
-          locationManager.getFileLabel());
-      innerLocationManager.setStart(loc.getStart().getLine(), loc.getStart().getColumn());
+      SourceMap sourceMap = textualExtractor.getSourceMap().offsetBy(loc.getStart().getOffset(), sourceAndOffset.snd());
       TextualExtractor innerTextualExtractor = new TextualExtractor(
           trapwriter,
-          innerLocationManager,
+          locationManager,
           source,
           false,
           getMetrics(),
-          vfile.toFile());
+          vfile.toFile(),
+          sourceMap);
       HTMLExtractor html = HTMLExtractor.forEmbeddedHtml(config);
       List<Label> rootNodes = html.extractEx(innerTextualExtractor).fst();
       int rootNodeIndex = 0;
@@ -1195,22 +1196,25 @@ public class ASTExtractor {
     private String tryGetIdentifierName(Expression e) {
       return e instanceof Identifier ? ((Identifier)e).getName() : null;
     }
-    
-    private String tryGetStringValueFromExpression(Expression e) {
+
+    private Pair<String, OffsetTranslation> tryGetStringValueFromExpression(Expression e) {
       if (e instanceof Literal) {
         Literal lit = (Literal) e;
-        return lit.isStringLiteral() ? (String) lit.getValue() : null;
+        if (!lit.isStringLiteral()) {
+          return null;
+        }
+        return Pair.make((String) lit.getValue(), makeStringLiteralOffsets(lit.getRaw()));
       }
       if (e instanceof TemplateLiteral) {
         TemplateLiteral lit = (TemplateLiteral) e;
         if (!lit.getExpressions().isEmpty()) {
           return null;
         }
-        StringBuilder sb = new StringBuilder();
-        for (TemplateElement elm : lit.getQuasis()) {
-          sb.append(elm.getCooked());
+        if (lit.getQuasis().size() != 1) {
+          return null;
         }
-        return sb.toString();
+        TemplateElement element = lit.getQuasis().get(0);
+        return Pair.make((String) element.getCooked(), makeStringLiteralOffsets("`" + element.getRaw() + "`"));
       }
       return null;
     }

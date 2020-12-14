@@ -15,6 +15,7 @@ import com.semmle.util.data.Option;
 import com.semmle.util.data.Pair;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.io.WholeIO;
+import com.semmle.util.locations.Position;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
 
@@ -22,7 +23,6 @@ import net.htmlparser.jericho.Attribute;
 import net.htmlparser.jericho.Attributes;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
-import net.htmlparser.jericho.RowColumnVector;
 import net.htmlparser.jericho.Segment;
 
 /** Extractor for handling HTML and XHTML files. */
@@ -73,15 +73,13 @@ public class HTMLExtractor implements IExtractor {
            */
           source = source.replace("<![CDATA[", "         ").replace("]]>", "   ");
           if (!source.trim().isEmpty()) {
-            RowColumnVector contentStart = content.getRowColumnVector();
             extractSnippet(
                 TopLevelKind.inlineScript,
                 config.withSourceType(sourceType),
                 scopeManager,
                 textualExtractor,
                 source,
-                contentStart.getRow(),
-                contentStart.getColumn(),
+                content.getBegin(),
                 isTypeScript,
                 elt,
                 context);
@@ -96,7 +94,7 @@ public class HTMLExtractor implements IExtractor {
             if (attr.getValue() == null || attr.getValue().isEmpty()) continue;
 
             String source = attr.getValue();
-            RowColumnVector valueStart = attr.getValueSegment().getRowColumnVector();
+            int valueStart = attr.getValueSegment().getBegin();
             if (JS_ATTRIBUTE.matcher(attr.getName()).matches()) {
               extractSnippet(
                   TopLevelKind.eventHandler,
@@ -104,8 +102,7 @@ public class HTMLExtractor implements IExtractor {
                   scopeManager,
                   textualExtractor,
                   source,
-                  valueStart.getRow(),
-                  valueStart.getColumn(),
+                  valueStart,
                   false /* isTypeScript */,
                   attr,
                   context);
@@ -126,8 +123,7 @@ public class HTMLExtractor implements IExtractor {
                   scopeManager,
                   textualExtractor,
                   source,
-                  valueStart.getRow(),
-                  valueStart.getColumn() + offset,
+                  valueStart + offset,
                   false /* isTypeScript */,
                   attr,
                   context);
@@ -139,8 +135,7 @@ public class HTMLExtractor implements IExtractor {
                   scopeManager,
                   textualExtractor,
                   source,
-                  valueStart.getRow(),
-                  valueStart.getColumn() + 11,
+                  valueStart + 11,
                   false /* isTypeScript */,
                   attr,
                   context);
@@ -201,8 +196,11 @@ public class HTMLExtractor implements IExtractor {
             textualExtractor.getSource(),
             textualExtractor.getTrapwriter(),
             locationManager.getFileLabel());
-    
-    extractor.setStartOffset(locationManager.getStartLine() - 1, locationManager.getStartColumn() - 1);
+
+    // For efficiency, avoid building the source map if not needed (i.e. for plain HTML files).
+    if (textualExtractor.hasNonTrivialSourceMap()) {
+      extractor.setSourceMap(textualExtractor.getSourceMap());
+    }
 
     List<Label> rootNodes = extractor.doit(Option.some(eltHandler));
 
@@ -280,24 +278,23 @@ public class HTMLExtractor implements IExtractor {
       ScopeManager scopeManager,
       TextualExtractor textualExtractor,
       String source,
-      int line,
-      int column,
+      int offset,
       boolean isTypeScript,
       Segment parentHtmlNode,
       HtmlPopulator.Context context) {
     TrapWriter trapWriter = textualExtractor.getTrapwriter();
     LocationManager locationManager = textualExtractor.getLocationManager();
-    LocationManager scriptLocationManager =
-        new LocationManager(
-            locationManager.getSourceFile(), trapWriter, locationManager.getFileLabel());
-    scriptLocationManager.setStart(line, column);
+    // JavaScript AST extraction does not currently support source maps, so just set
+    // line/column numbers on the location manager.
+    Position pos = textualExtractor.getSourceMap().getStart(offset);
+    LocationManager scriptLocationManager = locationManager.startingAt(pos.getLine(), pos.getColumn());
     if (isTypeScript) {
       if (isEmbedded) {
         return; // Do not extract files from HTML embedded in other files.
       }
       Path file = textualExtractor.getExtractedFile().toPath();
       FileSnippet snippet =
-          new FileSnippet(file, line, column, toplevelKind, config.getSourceType());
+          new FileSnippet(file, pos.getLine(), pos.getColumn(), toplevelKind, config.getSourceType());
       VirtualSourceRoot vroot = config.getVirtualSourceRoot();
       // Vue files are special in that they can be imported as modules, and may only
       // contain one <script> tag.
