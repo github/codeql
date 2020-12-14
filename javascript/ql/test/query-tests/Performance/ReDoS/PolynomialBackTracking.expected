@@ -183,9 +183,9 @@
 | regexplib/uri.js:73:2:73:4 | .*? | it can start matching anywhere |
 | tst.js:14:14:14:19 | (.*,)+ | it can start matching anywhere |
 | tst.js:14:15:14:16 | .* | it can start matching anywhere |
-| tst.js:47:15:47:37 | (?:[^"']\|".*?"\|'.*?')*? | it can start matching anywhere |
-| tst.js:47:25:47:27 | .*? | it can start matching anywhere after the start of the preceeding '"' |
-| tst.js:47:31:47:33 | .*? | it can start matching anywhere after the start of the preceeding ''' |
+| tst.js:47:21:47:43 | (?:[^"']\|".*?"\|'.*?')*? | it can start matching anywhere |
+| tst.js:47:31:47:33 | .*? | it can start matching anywhere after the start of the preceeding '"' |
+| tst.js:47:37:47:39 | .*? | it can start matching anywhere after the start of the preceeding ''' |
 | tst.js:66:15:66:44 | ([\\w#:.~>+()\\s-]+\|\\*\|\\[.*?\\])+ | it can start matching anywhere |
 | tst.js:66:16:66:31 | [\\w#:.~>+()\\s-]+ | it can start matching anywhere |
 | tst.js:66:38:66:40 | .*? | it can start matching anywhere after the start of the preceeding '\\[' |
@@ -265,3 +265,28 @@
 | tst.js:257:14:257:116 | (.thisisagoddamnlongstringforstresstestingthequery\|\\sthisisagoddamnlongstringforstresstestingthequery)* | it can start matching anywhere |
 | tst.js:260:14:260:77 | (thisisagoddamnlongstringforstresstestingthequery\|this\\w+query)* | it can start matching anywhere |
 | tst.js:263:15:263:117 | (thisisagoddamnlongstringforstresstestingthequery\|imanotherbutunrelatedstringcomparedtotheotherstring)* | it can start matching anywhere |
+| tst.js:278:15:278:19 | (a+)* | it can start matching anywhere |
+| tst.js:278:16:278:17 | a+ | it can start matching anywhere |
+| tst.js:281:15:281:19 | (a+)* | it can start matching anywhere |
+| tst.js:281:16:281:17 | a+ | it can start matching anywhere |
+| tst.js:284:15:284:19 | (a+)* | it can start matching anywhere |
+| tst.js:284:16:284:17 | a+ | it can start matching anywhere |
+| tst.js:284:21:284:27 | [^]{2,} | it can start matching anywhere |
+| tst.js:287:15:287:19 | (a+)* | it can start matching anywhere |
+| tst.js:287:16:287:17 | a+ | it can start matching anywhere |
+| tst.js:287:21:287:24 | [^]* | it can start matching anywhere |
+| tst.js:290:15:290:19 | (a+)* | it can start matching anywhere |
+| tst.js:290:16:290:17 | a+ | it can start matching anywhere |
+| tst.js:293:21:293:25 | (a+)* | it can start matching anywhere |
+| tst.js:293:22:293:23 | a+ | it can start matching anywhere |
+| tst.js:296:15:296:24 | ((;\|^)a+)+ | it can start matching anywhere |
+| tst.js:308:16:308:24 | ([^/]\|X)+ | it can start matching anywhere |
+| tst.js:314:14:314:18 | (a*)+ | it can start matching anywhere |
+| tst.js:314:15:314:16 | a* | it can start matching anywhere |
+| tst.js:320:14:320:21 | ((ab)*)+ | it can start matching anywhere |
+| tst.js:320:15:320:19 | (ab)* | it can start matching anywhere |
+| tst.js:323:14:323:20 | (a?a?)* | it can start matching anywhere |
+| tst.js:326:15:326:19 | (a?)* | it can start matching anywhere |
+| tst.js:329:14:329:20 | (c?a?)* | it can start matching anywhere |
+| tst.js:332:14:332:22 | (?:a\|a?)+ | it can start matching anywhere |
+| tst.js:335:14:335:20 | (a?b?)* | it can start matching anywhere |

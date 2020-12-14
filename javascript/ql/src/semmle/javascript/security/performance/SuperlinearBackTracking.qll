@@ -8,7 +8,7 @@ import javascript
 /**
  * A regular expression term that permits unlimited repetitions.
  */
-private class InfiniteRepetitionQuantifier extends RegExpQuantifier {
+class InfiniteRepetitionQuantifier extends RegExpQuantifier {
   InfiniteRepetitionQuantifier() {
     this instanceof RegExpPlus
     or
