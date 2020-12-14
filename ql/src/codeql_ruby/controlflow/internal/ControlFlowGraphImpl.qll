@@ -476,41 +476,13 @@ module Trees {
   private class ExceptionsTree extends PreOrderTree, Exceptions {
     final override predicate propagatesAbnormal(AstNode child) { none() }
 
-    /** Holds if this exception filter belongs to a final `rescue` block. */
-    pragma[noinline]
-    private predicate inLastRescue() {
-      exists(RescueEnsureBlockTree block, Rescue rescue, int i |
-        rescue = block.getRescue(i) and
-        this = rescue.getExceptions() and
-        not exists(block.getRescue(i + 1))
-      )
-    }
-
     final override predicate last(AstNode last, Completion c) {
       last(this.getChild(_), last, c) and
       c.(MatchingCompletion).getValue() = true
       or
-      exists(int lst, Completion c0 |
-        last(this.getChild(lst), last, c0) and
+      exists(int lst |
+        last(this.getChild(lst), last, c) and
         not exists(this.getChild(lst + 1))
-      |
-        // The last exception filter in a last `rescue` block propagates
-        // the exception when it doesn't match
-        this.inLastRescue() and
-        c =
-          any(NestedEnsureCompletion nec |
-            nec.getOuterCompletion() instanceof RaiseCompletion and
-            nec.getInnerCompletion() = c0 and
-            c0.(MatchingCompletion).getValue() = false and
-            nec.getNestLevel() = 0
-          )
-        or
-        c = c0 and
-        (
-          not this.inLastRescue()
-          or
-          not c0.(MatchingCompletion).getValue() = false
-        )
       )
     }
 
@@ -889,21 +861,34 @@ module Trees {
   private class RescueTree extends PreOrderTree, Rescue {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getExceptions() }
 
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getExceptions(), last, c) and
-      c.(MatchingCompletion).getValue() = false
-      or
+    predicate lastMatch(AstNode last, Completion c) {
       last(this.getBody(), last, c)
       or
-      not exists(this.getExceptions()) and
       not exists(this.getBody()) and
       (
         last(this.getVariable(), last, c)
         or
         not exists(this.getVariable()) and
-        last = this and
-        c.isValidFor(this)
+        (
+          last(this.getExceptions(), last, c) and
+          c.(MatchingCompletion).getValue() = true
+          or
+          not exists(this.getExceptions()) and
+          last = this and
+          c.isValidFor(this)
+        )
       )
+    }
+
+    predicate lastNoMatch(AstNode last, Completion c) {
+      last(this.getExceptions(), last, c) and
+      c.(MatchingCompletion).getValue() = false
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      this.lastNoMatch(last, c)
+      or
+      this.lastMatch(last, c)
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
@@ -983,7 +968,11 @@ module Trees {
 
     final private predicate hasEnsure() { exists(this.getEnsure()) }
 
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getEnsure() }
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getEnsure()
+      or
+      child = this.getBodyChild(_, false)
+    }
 
     /**
      * Gets a descendant that belongs to the `ensure` block of this block, if any.
@@ -1045,37 +1034,39 @@ module Trees {
      */
     pragma[nomagic]
     private AstNode getAnEnsurePredecessor(Completion c, boolean ensurable) {
-      exists(boolean ensurable0 |
-        // Exit completions ignore the `ensure` block (TODO: CHECK THIS)
-        if c instanceof ExitCompletion then ensurable = false else ensurable = ensurable0
-      |
-        this.lastBody(result, c, ensurable0) and
-        (
-          // Any non-throw completion will always continue directly to the `ensure` block,
-          // unless there is an `else` block
-          not c instanceof RaiseCompletion and
-          not exists(this.getElse())
-          or
-          // Any completion will continue to the `ensure` block when there are no `rescue`
-          // blocks
-          not exists(this.getRescue(_))
-        )
+      this.lastBody(result, c, ensurable) and
+      (
+        // Any non-throw completion will always continue directly to the `ensure` block,
+        // unless there is an `else` block
+        not c instanceof RaiseCompletion and
+        not exists(this.getElse())
         or
-        // Last element from any of the `rescue` blocks continues to the `ensure` block
-        last(this.getRescue(_).getBody(), result, c) and
-        ensurable0 = true
-        or
-        // Last element of last `rescue` block continues to the `ensure` block
-        exists(int lst |
-          last(this.getRescue(lst), result, c) and
-          not exists(this.getRescue(lst + 1)) and
-          ensurable0 = true
-        )
-        or
-        // Last element of `else` block continues to the `ensure` block
-        last(this.getElse(), result, c) and
-        ensurable0 = true
+        // Any completion will continue to the `ensure` block when there are no `rescue`
+        // blocks
+        not exists(this.getRescue(_))
       )
+      or
+      // Last element from any matching `rescue` block continues to the `ensure` block
+      this.getRescue(_).(RescueTree).lastMatch(result, c) and
+      ensurable = true
+      or
+      // If the last `rescue` block does not match, continue to the `ensure` block
+      exists(int lst, MatchingCompletion mc |
+        this.getRescue(lst).(RescueTree).lastNoMatch(result, mc) and
+        mc.getValue() = false and
+        not exists(this.getRescue(lst + 1)) and
+        c =
+          any(NestedEnsureCompletion nec |
+            nec.getOuterCompletion() instanceof RaiseCompletion and
+            nec.getInnerCompletion() = mc and
+            nec.getNestLevel() = 0
+          ) and
+        ensurable = true
+      )
+      or
+      // Last element of `else` block continues to the `ensure` block
+      last(this.getElse(), result, c) and
+      ensurable = true
     }
 
     pragma[nomagic]
@@ -1129,19 +1120,10 @@ module Trees {
       first(this.getRescue(0), succ) and
       c instanceof RaiseCompletion
       or
-      exists(Rescue rescue, int i | rescue = this.getRescue(i) |
-        pred = rescue and
-        last(this.getRescue(i), rescue, c) and
-        (
-          // Flow from one `rescue` clause to the next when there is no match
-          first(this.getRescue(i + 1), succ) and
-          c.(MatchingCompletion).getValue() = false
-          or
-          // Flow from last `rescue` clause to `ensure` block
-          not exists(this.getRescue(i + 1)) and
-          first(this.getEnsure(), succ) and
-          c.getInnerCompletion().(MatchingCompletion).getValue() = false
-        )
+      // Flow from one `rescue` clause to the next when there is no match
+      exists(RescueTree rescue, int i | rescue = this.getRescue(i) |
+        rescue.lastNoMatch(pred, c) and
+        first(this.getRescue(i + 1), succ)
       )
       or
       // Flow from body to `else` block when no exception

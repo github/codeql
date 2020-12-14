@@ -125,6 +125,9 @@ raise.rb:
 #  121| enter m10
 #-----|  -> OptionalParameter
 
+#  128| enter m11
+#-----|  -> b
+
 break_ensure.rb:
 #    1| elements
 #-----|  -> elements
@@ -3059,16 +3062,91 @@ raise.rb:
 #  121| String
 #-----|  -> raise
 
-#  122| Ensure
+#  124| Ensure
 #-----|  -> String
 
-#  123| MethodCall
+#  125| MethodCall
 #-----|  -> exit m10 (normal)
 
-#  123| puts
+#  125| puts
 #-----|  -> MethodCall
 
-#  123| String
+#  125| String
+#-----|  -> puts
+
+#  128| b
+#-----|  -> If
+
+#  130| If
+#-----|  -> b
+
+#  130| b
+#-----| true -> ExceptionA
+#-----| false -> Ensure
+
+#  131| MethodCall
+#-----| raise -> Rescue
+
+#  131| raise
+#-----|  -> MethodCall
+
+#  131| ExceptionA
+#-----|  -> raise
+
+#  133| Rescue
+#-----|  -> ExceptionA
+
+#  133| ExceptionA
+#-----| no-match -> Rescue
+#-----| match -> Ensure
+
+#  134| Rescue
+#-----|  -> ExceptionB
+
+#  134| ExceptionB
+#-----| match -> String
+#-----| raise -> [ensure: raise] Ensure
+
+#  135| MethodCall
+#-----|  -> Ensure
+
+#  135| puts
+#-----|  -> MethodCall
+
+#  135| String
+#-----|  -> puts
+
+#  136| Ensure
+#-----|  -> String
+
+#  136| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] String
+
+#  137| MethodCall
+#-----|  -> String
+
+#  137| [ensure: raise] MethodCall
+#-----| raise -> exit m11 (abnormal)
+
+#  137| puts
+#-----|  -> MethodCall
+
+#  137| [ensure: raise] puts
+#-----|  -> [ensure: raise] MethodCall
+
+#  137| String
+#-----|  -> puts
+
+#  137| [ensure: raise] String
+#-----|  -> [ensure: raise] puts
+
+#  139| MethodCall
+#-----|  -> exit m11 (normal)
+
+#  139| puts
+#-----|  -> MethodCall
+
+#  139| String
 #-----|  -> puts
 
 break_ensure.rb:
@@ -3155,6 +3233,8 @@ raise.rb:
 #   94| exit m9
 
 #  121| exit m10
+
+#  128| exit m11
 
 break_ensure.rb:
 #    1| exit m1 (normal)
@@ -3306,3 +3386,9 @@ raise.rb:
 
 #  121| exit m10 (normal)
 #-----|  -> exit m10
+
+#  128| exit m11 (abnormal)
+#-----|  -> exit m11
+
+#  128| exit m11 (normal)
+#-----|  -> exit m11

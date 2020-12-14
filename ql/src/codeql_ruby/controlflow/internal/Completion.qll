@@ -222,8 +222,13 @@ class SimpleCompletion extends NonNestedNormalCompletion, TSimpleCompletion {
  * completion (`EmptinessCompletion`), or a matching completion (`MatchingCompletion`).
  */
 abstract class ConditionalCompletion extends NonNestedNormalCompletion {
+  boolean value;
+
+  bindingset[value]
+  ConditionalCompletion() { any() }
+
   /** Gets the Boolean value of this conditional completion. */
-  abstract boolean getValue();
+  final boolean getValue() { result = value }
 }
 
 /**
@@ -231,11 +236,7 @@ abstract class ConditionalCompletion extends NonNestedNormalCompletion {
  * with a Boolean value.
  */
 class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
-  private boolean value;
-
   BooleanCompletion() { this = TBooleanCompletion(value) }
-
-  override boolean getValue() { result = value }
 
   /** Gets the dual Boolean completion. */
   BooleanCompletion getDual() { result = TBooleanCompletion(value.booleanNot()) }
@@ -260,11 +261,7 @@ class FalseCompletion extends BooleanCompletion {
  * a test in a `for in` statement.
  */
 class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
-  private boolean value;
-
   EmptinessCompletion() { this = TEmptinessCompletion(value) }
-
-  override boolean getValue() { result = value }
 
   override EmptinessSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
@@ -276,11 +273,7 @@ class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
  * a test in a `rescue` statement.
  */
 class MatchingCompletion extends ConditionalCompletion, TMatchingCompletion {
-  private boolean value;
-
   MatchingCompletion() { this = TMatchingCompletion(value) }
-
-  override boolean getValue() { result = value }
 
   override MatchingSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 

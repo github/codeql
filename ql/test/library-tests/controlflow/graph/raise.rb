@@ -119,6 +119,22 @@ ensure
 end
 
 def m10(p = (raise "Exception"))
+rescue
+  puts "Will not get executed if p is not supplied"
 ensure
   puts "Will not get executed if p is not supplied"
+end
+
+def m11 b
+  begin
+    if b
+      raise ExceptionA
+    end
+  rescue ExceptionA
+  rescue ExceptionB
+    puts "ExceptionB"
+  ensure
+    puts "Ensure"
+  end
+  puts "End m5"
 end

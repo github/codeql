@@ -18,5 +18,5 @@ private class RaiseCall extends NonReturningCall, MethodCall {
 private class ExitCall extends NonReturningCall, MethodCall {
   ExitCall() { this.getMethod().toString() in ["abort", "exit"] }
 
-  override ExitCompletion getACompletion() { any() }
+  override ExitCompletion getACompletion() { not result instanceof NestedCompletion }
 }
