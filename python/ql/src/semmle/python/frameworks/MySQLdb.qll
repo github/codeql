@@ -17,7 +17,7 @@ private import PEP249
  * - https://mysqlclient.readthedocs.io/index.html
  * - https://pypi.org/project/MySQL-python/
  */
-module MySQLdb {
+private module MySQLdb {
   // ---------------------------------------------------------------------------
   // MySQLdb
   // ---------------------------------------------------------------------------
