@@ -639,34 +639,27 @@ module Trees {
 
   private class IdentifierTree extends LeafTree, Identifier { }
 
-  private class IfElsifTree extends PreOrderTree, IfElsifAstNode {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getConditionNode() }
-
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getConditionNode(), last, c) and
-      c instanceof FalseCompletion and
-      not exists(this.getAlternativeNode())
-      or
-      last(this.getConditionNode(), last, c) and
-      c instanceof TrueCompletion and
-      not exists(this.getConsequenceNode())
-      or
-      last(this.getConsequenceNode(), last, c)
-      or
-      last(this.getAlternativeNode(), last, c)
+  private class IfElsifTree extends PostOrderTree, IfElsifAstNode {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = this.getConditionNode() or child = this.getBranch(_)
     }
 
+    final override predicate first(AstNode first) { first(this.getConditionNode(), first) }
+
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      first(this.getConditionNode(), succ) and
-      c instanceof SimpleCompletion
-      or
-      last(this.getConditionNode(), pred, c) and
-      (
-        c instanceof TrueCompletion and first(this.getConsequenceNode(), succ)
+      exists(boolean b |
+        last(this.getConditionNode(), pred, c) and
+        b = c.(BooleanCompletion).getValue()
+      |
+        first(this.getBranch(b), succ)
         or
-        c instanceof FalseCompletion and first(this.getAlternativeNode(), succ)
+        not exists(this.getBranch(b)) and
+        succ = this
       )
+      or
+      last(this.getBranch(_), pred, c) and
+      succ = this and
+      c instanceof NormalCompletion
     }
   }
 

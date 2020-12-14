@@ -229,6 +229,9 @@ private module ConditionalCompletionSplitting {
         or
         last(succ.(ParenthesizedStatement).getChild(), pred, c) and
         completion = c
+        or
+        last(succ.(IfElsifAstNode).getBranch(_), pred, c) and
+        completion = c
       )
     }
 

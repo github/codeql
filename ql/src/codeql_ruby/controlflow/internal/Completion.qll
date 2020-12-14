@@ -148,7 +148,12 @@ private predicate mustHaveBooleanCompletion(AstNode n) {
  * that `n` evaluates to determines a true/false branch successor.
  */
 private predicate inBooleanContext(AstNode n) {
-  n = any(IfElsifAstNode parent).getConditionNode()
+  exists(IfElsifAstNode i |
+    n = i.getConditionNode()
+    or
+    inBooleanContext(i) and
+    n = i.getBranch(_)
+  )
   or
   n = any(ConditionalLoopAstNode parent).getConditionNode()
   or
@@ -174,6 +179,18 @@ private predicate inBooleanContext(AstNode n) {
     not exists(c.getValue()) and
     c.getChild(_) = w and
     w.getPattern(_).getChild() = n
+  )
+  or
+  exists(Then parent, int lst |
+    inBooleanContext(parent) and
+    n = parent.getChild(lst) and
+    not exists(parent.getChild(lst + 1))
+  )
+  or
+  exists(Else parent, int lst |
+    inBooleanContext(parent) and
+    n = parent.getChild(lst) and
+    not exists(parent.getChild(lst + 1))
   )
 }
 
