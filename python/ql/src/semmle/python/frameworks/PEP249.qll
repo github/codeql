@@ -90,23 +90,31 @@ module cursor {
 }
 
 /**
- * Gets a reference to the `execute` method on a cursor.
+ * Gets a reference to the `execute` method on a cursor (or on a connection).
+ *
+ * Note: while `execute` method on a connection is not part of PEP249, if it is used, we
+ * recognize it as an alias for constructing a cursor and calling `execute` on it.
+ *
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
 private DataFlow::Node execute(DataFlow::TypeTracker t) {
   t.startInAttr("execute") and
-  result = cursor::methodResult()
+  result in [cursor::methodResult(), Connection::instance()]
   or
   exists(DataFlow::TypeTracker t2 | result = execute(t2).track(t2, t))
 }
 
 /**
- * Gets a reference to the `execute` method on a cursor.
+ * Gets a reference to the `execute` method on a cursor (or on a connection).
+ *
+ * Note: while `execute` method on a connection is not part of PEP249, if it is used, we
+ * recognize it as an alias for constructing a cursor and calling `execute` on it.
+ *
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
 DataFlow::Node execute() { result = execute(DataFlow::TypeTracker::end()) }
 
-/** A call to the `execute` method on a cursor. */
+/** A call to the `execute` method on a cursor (or on a connection). */
 private class ExecuteCall extends SqlExecution::Range, DataFlow::CfgNode {
   override CallNode node;
 
