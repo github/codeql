@@ -81,6 +81,9 @@ ifs.rb:
 #   28| enter m4
 #-----|  -> b1
 
+#   32| enter m5
+#-----|  -> b1
+
 loops.rb:
 #    1| enter m1
 #-----|  -> x
@@ -2185,6 +2188,57 @@ ifs.rb:
 #   29| String
 #-----|  -> Return
 
+#   32| b1
+#-----|  -> b2
+
+#   32| b2
+#-----|  -> b3
+
+#   32| b3
+#-----|  -> b4
+
+#   32| b4
+#-----|  -> b5
+
+#   32| b5
+#-----|  -> If
+
+#   33| If
+#-----|  -> If
+
+#   33| ParenthesizedStatements
+#-----| true -> String
+#-----| false -> String
+
+#   33| If
+#-----|  -> b1
+
+#   33| b1
+#-----| true -> b2
+#-----| false -> Elsif
+
+#   33| b2
+#-----|  -> ParenthesizedStatements
+
+#   33| Elsif
+#-----|  -> b3
+
+#   33| b3
+#-----| true -> b4
+#-----| false -> b5
+
+#   33| b4
+#-----|  -> ParenthesizedStatements
+
+#   33| b5
+#-----|  -> ParenthesizedStatements
+
+#   33| String
+#-----|  -> exit m5 (normal)
+
+#   33| String
+#-----|  -> exit m5 (normal)
+
 loops.rb:
 #    1| x
 #-----|  -> While
@@ -3332,6 +3386,8 @@ ifs.rb:
 
 #   28| exit m4
 
+#   32| exit m5
+
 loops.rb:
 #    1| exit m1
 
@@ -3458,6 +3514,9 @@ ifs.rb:
 
 #   28| exit m4 (normal)
 #-----|  -> exit m4
+
+#   32| exit m5 (normal)
+#-----|  -> exit m5
 
 loops.rb:
 #    1| exit m1 (normal)
