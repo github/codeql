@@ -16,22 +16,22 @@ predicate isNotPassword(XMLAttribute a) {
   or
   a.getValue().regexpMatch("\\$\\{.*\\}") // Variable placeholder ${password}
   or
-  a.getValue().charAt(a.getValue().length() - 1) = "=" // A basic check of encrypted passwords ending with padding characters, which could be improved to be more accurate.
+  a.getValue().matches("%=") // A basic check of encrypted passwords ending with padding characters, which could be improved to be more accurate.
 }
 
-from XMLAttribute a
+from XMLAttribute nameAttr
 where
-  a.getName().toLowerCase() in ["password", "pwd"] and not isNotPassword(a) // Attribute name "password" or "pwd"
+  nameAttr.getName().toLowerCase() in ["password", "pwd"] and not isNotPassword(nameAttr) // Attribute name "password" or "pwd"
   or
   exists(
-    XMLAttribute b // name/value pair like <property name="password" value="mysecret"/>
+    XMLAttribute valueAttr // name/value pair like <property name="password" value="mysecret"/>
   |
-    b.getElement() = a.getElement() and
-    a.getName().toLowerCase() = "name" and
-    a.getValue().toLowerCase() in ["password", "pwd"] and
-    b.getName().toLowerCase() = "value" and
-    not isNotPassword(b)
+    valueAttr.getElement() = nameAttr.getElement() and
+    nameAttr.getName().toLowerCase() = "name" and
+    nameAttr.getValue().toLowerCase() in ["password", "pwd"] and
+    valueAttr.getName().toLowerCase() = "value" and
+    not isNotPassword(valueAttr)
   )
   or
-  a.getValue().regexpMatch("(?is).*(pwd|password)\\s*=(?!\\s*;).*") // Attribute value matches password pattern
-select a, "Plaintext password in configuration file."
+  nameAttr.getValue().regexpMatch("(?is).*(pwd|password)\\s*=(?!\\s*;).*") // Attribute value matches password pattern
+select nameAttr, "Plaintext password in configuration file."
