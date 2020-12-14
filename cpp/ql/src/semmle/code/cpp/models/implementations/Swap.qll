@@ -29,7 +29,6 @@ private class MemberSwap extends TaintFunction, MemberFunction {
   MemberSwap() {
     this.hasName("swap") and
     this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getType() instanceof ReferenceType and
     this.getParameter(0).getType().(ReferenceType).getBaseType().getUnspecifiedType() =
       getDeclaringType()
   }
