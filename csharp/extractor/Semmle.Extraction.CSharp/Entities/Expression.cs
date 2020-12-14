@@ -316,6 +316,11 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         public static ExprKind AdjustKind(this Expression.CallType ct, ExprKind k)
         {
+            if (k == ExprKind.ADDRESS_OF)
+            {
+                return k;
+            }
+
             switch (ct)
             {
                 case Expression.CallType.Dynamic:

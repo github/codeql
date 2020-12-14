@@ -1,5 +1,3 @@
-FunctionPointer.cs:
-#    9| [MethodAccess] access to method M0
 AnonymousObjectCreation.cs:
 #    5| [Class] AnonObj
 #    7|   5: [Field] l
@@ -112,6 +110,8 @@ FunctionPointer.cs:
 #    9|       -1: [TypeMention] delegate* default<Int32>
 #    9|       1: [AssignExpr] ... = ...
 #    9|         0: [FieldAccess] access to field pointer
+#    9|         1: [AddressOfExpr] &...
+#    9|           0: [MethodAccess] access to method M0
 #   11|     6: [Method] M0
 #   11|       -1: [TypeMention] int
 #   12|       4: [BlockStmt] {...}
