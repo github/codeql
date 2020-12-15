@@ -319,9 +319,9 @@ private module FlaskModel {
     }
 
     override Function getARouteHandler() {
-      exists(DataFlow::Node view_func_arg, DataFlow::Node func_src |
+      exists(DataFlow::Node view_func_arg, DataFlow::LocalSourceNode func_src |
         view_func_arg.asCfgNode() in [node.getArg(2), node.getArgByName("view_func")] and
-        DataFlow::localFlow(func_src, view_func_arg) and
+        func_src.flowsTo(view_func_arg) and
         func_src.asExpr().(CallableExpr) = result.getDefinition()
       )
     }
