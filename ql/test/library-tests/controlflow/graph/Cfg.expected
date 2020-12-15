@@ -1,1423 +1,3394 @@
-nodes
-| case.rb:1:1:6:3 | enter if_in_case |
-| case.rb:1:1:6:3 | exit if_in_case |
-| case.rb:1:1:6:3 | exit if_in_case (normal) |
-| case.rb:2:3:5:5 | Case |
-| case.rb:2:8:2:9 | x1 |
-| case.rb:3:5:3:42 | When |
-| case.rb:3:10:3:10 | 1 |
-| case.rb:3:10:3:10 | Pattern |
-| case.rb:3:17:3:42 | ParenthesizedStatements |
-| case.rb:3:18:3:41 | If |
-| case.rb:3:21:3:22 | x2 |
-| case.rb:3:29:3:32 | puts |
-| case.rb:3:29:3:37 | MethodCall |
-| case.rb:3:34:3:37 | String |
-| case.rb:4:5:4:24 | When |
-| case.rb:4:10:4:10 | 2 |
-| case.rb:4:10:4:10 | Pattern |
-| case.rb:4:17:4:20 | puts |
-| case.rb:4:17:4:24 | MethodCall |
-| case.rb:4:22:4:24 | String |
-| cfg.rb:1:1:194:1 | enter top-level |
-| cfg.rb:1:1:194:1 | exit top-level |
-| cfg.rb:1:1:194:1 | exit top-level (normal) |
-| cfg.rb:3:1:3:13 | Alias |
-| cfg.rb:3:7:3:9 | foo |
-| cfg.rb:3:11:3:13 | bar |
-| cfg.rb:5:1:5:1 | b |
-| cfg.rb:5:1:5:6 | Assignment |
-| cfg.rb:5:5:5:6 | 42 |
-| cfg.rb:7:1:7:21 | SymbolArray |
-| cfg.rb:7:4:7:12 | BareSymbol |
-| cfg.rb:7:7:7:12 | Interpolation |
-| cfg.rb:7:10:7:10 | b |
-| cfg.rb:7:14:7:20 | BareSymbol |
-| cfg.rb:9:1:9:21 | StringArray |
-| cfg.rb:9:4:9:12 | BareString |
-| cfg.rb:9:7:9:12 | Interpolation |
-| cfg.rb:9:10:9:10 | b |
-| cfg.rb:9:14:9:20 | BareString |
-| cfg.rb:12:3:12:6 | puts |
-| cfg.rb:12:3:12:8 | MethodCall |
-| cfg.rb:12:8:12:8 | 4 |
-| cfg.rb:15:1:17:1 | BeginBlock |
-| cfg.rb:15:1:17:1 | enter BEGIN block |
-| cfg.rb:15:1:17:1 | exit BEGIN block |
-| cfg.rb:15:1:17:1 | exit BEGIN block (normal) |
-| cfg.rb:16:3:16:6 | puts |
-| cfg.rb:16:3:16:14 | MethodCall |
-| cfg.rb:16:8:16:14 | String |
-| cfg.rb:19:1:21:1 | EndBlock |
-| cfg.rb:19:1:21:1 | enter END block |
-| cfg.rb:19:1:21:1 | exit END block |
-| cfg.rb:19:1:21:1 | exit END block (normal) |
-| cfg.rb:20:3:20:6 | puts |
-| cfg.rb:20:3:20:14 | MethodCall |
-| cfg.rb:20:8:20:14 | String |
-| cfg.rb:23:1:23:2 | 41 |
-| cfg.rb:23:1:23:6 | Binary |
-| cfg.rb:23:6:23:6 | 1 |
-| cfg.rb:25:1:25:1 | 2 |
-| cfg.rb:25:1:25:7 | Call |
-| cfg.rb:25:1:25:22 | MethodCall |
-| cfg.rb:25:3:25:7 | times |
-| cfg.rb:25:9:25:22 | enter block |
-| cfg.rb:25:9:25:22 | exit block |
-| cfg.rb:25:9:25:22 | exit block (normal) |
-| cfg.rb:25:12:25:12 | x |
-| cfg.rb:25:15:25:18 | puts |
-| cfg.rb:25:15:25:20 | MethodCall |
-| cfg.rb:25:20:25:20 | x |
-| cfg.rb:27:1:27:4 | puts |
-| cfg.rb:27:1:27:11 | MethodCall |
-| cfg.rb:27:6:27:11 | BlockArgument |
-| cfg.rb:27:7:27:11 | Symbol |
-| cfg.rb:29:1:29:4 | Proc |
-| cfg.rb:29:1:29:8 | Call |
-| cfg.rb:29:1:29:24 | MethodCall |
-| cfg.rb:29:6:29:8 | new |
-| cfg.rb:29:10:29:24 | enter block |
-| cfg.rb:29:10:29:24 | exit block |
-| cfg.rb:29:10:29:24 | exit block (normal) |
-| cfg.rb:29:13:29:14 | BlockParameter |
-| cfg.rb:29:17:29:17 | x |
-| cfg.rb:29:17:29:22 | Call |
-| cfg.rb:29:19:29:22 | call |
-| cfg.rb:31:1:33:3 | While |
-| cfg.rb:31:7:31:10 | true |
-| cfg.rb:32:3:32:9 | Break |
-| cfg.rb:32:9:32:9 | 1 |
-| cfg.rb:35:1:37:3 | If |
-| cfg.rb:35:4:35:8 | false |
-| cfg.rb:39:1:39:4 | self |
-| cfg.rb:39:1:39:9 | Call |
-| cfg.rb:39:1:39:12 | MethodCall |
-| cfg.rb:39:6:39:9 | puts |
-| cfg.rb:39:11:39:12 | 42 |
-| cfg.rb:41:1:45:3 | Case |
-| cfg.rb:41:6:41:7 | 10 |
-| cfg.rb:42:3:42:24 | When |
-| cfg.rb:42:8:42:8 | 1 |
-| cfg.rb:42:8:42:8 | Pattern |
-| cfg.rb:42:15:42:18 | puts |
-| cfg.rb:42:15:42:24 | MethodCall |
-| cfg.rb:42:20:42:24 | String |
-| cfg.rb:43:3:43:31 | When |
-| cfg.rb:43:8:43:8 | 2 |
-| cfg.rb:43:8:43:8 | Pattern |
-| cfg.rb:43:11:43:11 | 3 |
-| cfg.rb:43:11:43:11 | Pattern |
-| cfg.rb:43:14:43:14 | 4 |
-| cfg.rb:43:14:43:14 | Pattern |
-| cfg.rb:43:21:43:24 | puts |
-| cfg.rb:43:21:43:31 | MethodCall |
-| cfg.rb:43:26:43:31 | String |
-| cfg.rb:44:8:44:11 | puts |
-| cfg.rb:44:8:44:18 | MethodCall |
-| cfg.rb:44:13:44:18 | String |
-| cfg.rb:47:1:50:3 | Case |
-| cfg.rb:48:3:48:29 | When |
-| cfg.rb:48:8:48:8 | b |
-| cfg.rb:48:8:48:13 | Binary |
-| cfg.rb:48:8:48:13 | Pattern |
-| cfg.rb:48:13:48:13 | 1 |
-| cfg.rb:48:20:48:23 | puts |
-| cfg.rb:48:20:48:29 | MethodCall |
-| cfg.rb:48:25:48:29 | String |
-| cfg.rb:49:3:49:37 | When |
-| cfg.rb:49:8:49:8 | b |
-| cfg.rb:49:8:49:13 | Binary |
-| cfg.rb:49:8:49:13 | Pattern |
-| cfg.rb:49:13:49:13 | 0 |
-| cfg.rb:49:16:49:16 | b |
-| cfg.rb:49:16:49:20 | Binary |
-| cfg.rb:49:16:49:20 | Pattern |
-| cfg.rb:49:20:49:20 | 1 |
-| cfg.rb:49:27:49:30 | puts |
-| cfg.rb:49:27:49:37 | MethodCall |
-| cfg.rb:49:32:49:37 | String |
-| cfg.rb:52:1:52:7 | chained |
-| cfg.rb:52:1:52:35 | Assignment |
-| cfg.rb:52:11:52:13 | String |
-| cfg.rb:52:15:52:26 | String |
-| cfg.rb:52:16:52:25 | Interpolation |
-| cfg.rb:52:18:52:24 | chained |
-| cfg.rb:52:28:52:35 | String |
-| cfg.rb:54:1:54:9 | character |
-| cfg.rb:54:1:54:17 | Assignment |
-| cfg.rb:54:13:54:17 | ?\\x40 |
-| cfg.rb:58:1:72:3 | Class |
-| cfg.rb:58:7:58:11 | Silly |
-| cfg.rb:58:13:58:20 | Superclass |
-| cfg.rb:58:15:58:20 | Object |
-| cfg.rb:59:3:59:9 | complex |
-| cfg.rb:59:3:59:17 | Assignment |
-| cfg.rb:59:13:59:17 | 10-2i |
-| cfg.rb:60:3:60:13 | conditional |
-| cfg.rb:60:3:60:40 | Assignment |
-| cfg.rb:60:17:60:17 | b |
-| cfg.rb:60:17:60:22 | Binary |
-| cfg.rb:60:17:60:40 | Conditional |
-| cfg.rb:60:21:60:22 | 10 |
-| cfg.rb:60:26:60:32 | String |
-| cfg.rb:60:36:60:40 | String |
-| cfg.rb:61:3:61:3 | C |
-| cfg.rb:61:3:61:16 | Assignment |
-| cfg.rb:61:7:61:16 | String |
-| cfg.rb:62:3:62:13 | DestructuredLeftAssignment |
-| cfg.rb:62:3:62:27 | Assignment |
-| cfg.rb:62:4:62:4 | x |
-| cfg.rb:62:7:62:12 | DestructuredLeftAssignment |
-| cfg.rb:62:8:62:8 | y |
-| cfg.rb:62:11:62:11 | z |
-| cfg.rb:62:17:62:27 | Array |
-| cfg.rb:62:18:62:18 | 1 |
-| cfg.rb:62:21:62:26 | Array |
-| cfg.rb:62:22:62:22 | 2 |
-| cfg.rb:62:25:62:25 | 3 |
-| cfg.rb:63:3:66:5 | enter pattern |
-| cfg.rb:63:3:66:5 | exit pattern |
-| cfg.rb:63:3:66:5 | exit pattern (normal) |
-| cfg.rb:63:16:63:20 | DestructuredParameter |
-| cfg.rb:63:17:63:17 | a |
-| cfg.rb:63:19:63:19 | b |
-| cfg.rb:64:5:64:8 | puts |
-| cfg.rb:64:5:64:10 | MethodCall |
-| cfg.rb:64:10:64:10 | a |
-| cfg.rb:65:5:65:8 | puts |
-| cfg.rb:65:5:65:10 | MethodCall |
-| cfg.rb:65:10:65:10 | b |
-| cfg.rb:67:3:67:7 | items |
-| cfg.rb:67:3:67:19 | Assignment |
-| cfg.rb:67:11:67:19 | Array |
-| cfg.rb:67:12:67:12 | 1 |
-| cfg.rb:67:15:67:15 | 2 |
-| cfg.rb:67:18:67:18 | 3 |
-| cfg.rb:68:3:68:6 | puts |
-| cfg.rb:68:3:68:15 | MethodCall |
-| cfg.rb:68:8:68:12 | items |
-| cfg.rb:68:8:68:15 | ElementReference |
-| cfg.rb:68:14:68:14 | 2 |
-| cfg.rb:69:3:71:5 | enter print |
-| cfg.rb:69:3:71:5 | exit print |
-| cfg.rb:69:3:71:5 | exit print (normal) |
-| cfg.rb:70:5:70:8 | puts |
-| cfg.rb:70:5:70:16 | MethodCall |
-| cfg.rb:70:10:70:16 | String |
-| cfg.rb:74:1:74:1 | x |
-| cfg.rb:74:1:74:6 | Assignment |
-| cfg.rb:74:5:74:6 | 42 |
-| cfg.rb:75:1:75:47 | If |
-| cfg.rb:75:4:75:4 | x |
-| cfg.rb:75:4:75:8 | Binary |
-| cfg.rb:75:8:75:8 | 0 |
-| cfg.rb:75:15:75:15 | 0 |
-| cfg.rb:75:17:75:43 | Elsif |
-| cfg.rb:75:23:75:23 | x |
-| cfg.rb:75:23:75:28 | Binary |
-| cfg.rb:75:27:75:28 | 10 |
-| cfg.rb:75:35:75:36 | 10 |
-| cfg.rb:75:43:75:43 | x |
-| cfg.rb:78:3:78:3 | ; |
-| cfg.rb:88:1:88:6 | escape |
-| cfg.rb:88:1:88:23 | Assignment |
-| cfg.rb:88:10:88:23 | String |
-| cfg.rb:88:17:88:20 | Interpolation |
-| cfg.rb:88:19:88:19 | x |
-| cfg.rb:90:1:93:3 | For |
-| cfg.rb:90:5:90:5 | x |
-| cfg.rb:90:10:90:26 | Array |
-| cfg.rb:90:11:90:13 | 1.4 |
-| cfg.rb:90:16:90:18 | 2.5 |
-| cfg.rb:90:21:90:25 | 3.4e5 |
-| cfg.rb:91:3:91:24 | If |
-| cfg.rb:91:6:91:6 | x |
-| cfg.rb:91:6:91:10 | Binary |
-| cfg.rb:91:10:91:10 | 3 |
-| cfg.rb:91:17:91:20 | Next |
-| cfg.rb:92:3:92:6 | puts |
-| cfg.rb:92:3:92:8 | MethodCall |
-| cfg.rb:92:8:92:8 | x |
-| cfg.rb:95:1:95:7 | $global |
-| cfg.rb:95:1:95:12 | Assignment |
-| cfg.rb:95:11:95:12 | 42 |
-| cfg.rb:97:1:97:4 | map1 |
-| cfg.rb:97:1:97:32 | Assignment |
-| cfg.rb:97:8:97:32 | Hash |
-| cfg.rb:97:10:97:12 | String |
-| cfg.rb:97:10:97:19 | Pair |
-| cfg.rb:97:17:97:19 | String |
-| cfg.rb:97:22:97:24 | String |
-| cfg.rb:97:22:97:29 | Pair |
-| cfg.rb:97:27:97:29 | String |
-| cfg.rb:98:1:98:4 | map2 |
-| cfg.rb:98:1:98:36 | Assignment |
-| cfg.rb:98:8:98:36 | Hash |
-| cfg.rb:98:10:98:15 | HashSplatArgument |
-| cfg.rb:98:12:98:15 | map1 |
-| cfg.rb:98:18:98:20 | String |
-| cfg.rb:98:18:98:27 | Pair |
-| cfg.rb:98:25:98:27 | String |
-| cfg.rb:98:30:98:35 | HashSplatArgument |
-| cfg.rb:98:32:98:35 | map1 |
-| cfg.rb:101:1:104:3 | enter parameters |
-| cfg.rb:101:1:104:3 | exit parameters |
-| cfg.rb:101:1:104:3 | exit parameters (normal) |
-| cfg.rb:101:16:101:25 | OptionalParameter |
-| cfg.rb:101:24:101:25 | 42 |
-| cfg.rb:101:28:101:31 | KeywordParameter |
-| cfg.rb:101:34:101:41 | HashSplatParameter |
-| cfg.rb:102:3:102:6 | puts |
-| cfg.rb:102:3:102:12 | MethodCall |
-| cfg.rb:102:8:102:12 | value |
-| cfg.rb:103:3:103:20 | Return |
-| cfg.rb:103:10:103:15 | kwargs |
-| cfg.rb:103:10:103:20 | ElementReference |
-| cfg.rb:103:17:103:19 | key |
-| cfg.rb:106:1:106:4 | type |
-| cfg.rb:106:1:106:17 | Assignment |
-| cfg.rb:106:9:106:17 | String |
-| cfg.rb:107:1:107:5 | table |
-| cfg.rb:107:1:107:14 | Assignment |
-| cfg.rb:107:9:107:14 | String |
-| cfg.rb:108:1:108:4 | puts |
-| cfg.rb:108:1:108:12 | MethodCall |
-| cfg.rb:108:6:108:12 | ParenthesizedStatements |
-| cfg.rb:108:7:108:11 | <<SQL |
-| cfg.rb:108:13:111:3 | HeredocBody |
-| cfg.rb:109:15:109:22 | Interpolation |
-| cfg.rb:109:17:109:21 | table |
-| cfg.rb:110:7:110:13 | Interpolation |
-| cfg.rb:110:9:110:12 | type |
-| cfg.rb:113:1:113:4 | puts |
-| cfg.rb:113:1:113:9 | MethodCall |
-| cfg.rb:113:1:113:19 | IfModifier |
-| cfg.rb:113:6:113:9 | String |
-| cfg.rb:113:14:113:14 | b |
-| cfg.rb:113:14:113:19 | Binary |
-| cfg.rb:113:18:113:19 | 10 |
-| cfg.rb:115:1:118:3 | Class |
-| cfg.rb:115:7:115:7 | C |
-| cfg.rb:116:3:116:8 | @field |
-| cfg.rb:116:3:116:13 | Assignment |
-| cfg.rb:116:12:116:13 | 42 |
-| cfg.rb:117:3:117:16 | @@static_field |
-| cfg.rb:117:3:117:21 | Assignment |
-| cfg.rb:117:20:117:21 | 10 |
-| cfg.rb:120:1:120:4 | swap |
-| cfg.rb:120:1:120:28 | Assignment |
-| cfg.rb:120:8:120:28 | enter lambda |
-| cfg.rb:120:8:120:28 | exit lambda |
-| cfg.rb:120:8:120:28 | exit lambda (normal) |
-| cfg.rb:120:11:120:16 | DestructuredParameter |
-| cfg.rb:120:12:120:12 | x |
-| cfg.rb:120:15:120:15 | y |
-| cfg.rb:120:19:120:28 | enter block |
-| cfg.rb:120:19:120:28 | exit block |
-| cfg.rb:120:19:120:28 | exit block (normal) |
-| cfg.rb:120:21:120:26 | Array |
-| cfg.rb:120:22:120:22 | y |
-| cfg.rb:120:25:120:25 | x |
-| cfg.rb:122:1:131:3 | Module |
-| cfg.rb:122:8:122:8 | M |
-| cfg.rb:123:2:123:8 | nothing |
-| cfg.rb:123:2:123:14 | Assignment |
-| cfg.rb:123:12:123:14 | nil |
-| cfg.rb:124:2:124:5 | some |
-| cfg.rb:124:2:124:9 | Assignment |
-| cfg.rb:124:9:124:9 | 2 |
-| cfg.rb:125:2:125:5 | some |
-| cfg.rb:125:2:125:11 | OperatorAssignment |
-| cfg.rb:125:10:125:11 | 10 |
-| cfg.rb:126:2:126:5 | last |
-| cfg.rb:126:2:126:17 | Assignment |
-| cfg.rb:126:9:126:17 | ParenthesizedStatements |
-| cfg.rb:126:10:126:10 | 2 |
-| cfg.rb:126:13:126:13 | 4 |
-| cfg.rb:126:16:126:16 | 7 |
-| cfg.rb:127:2:127:6 | range |
-| cfg.rb:127:2:127:13 | Assignment |
-| cfg.rb:127:10:127:10 | 0 |
-| cfg.rb:127:10:127:13 | Range |
-| cfg.rb:127:13:127:13 | 9 |
-| cfg.rb:128:2:128:5 | half |
-| cfg.rb:128:2:128:19 | Assignment |
-| cfg.rb:128:9:128:9 | 1 |
-| cfg.rb:128:9:128:12 | Binary |
-| cfg.rb:128:9:128:19 | Binary |
-| cfg.rb:128:11:128:12 | Rational |
-| cfg.rb:128:16:128:16 | 1 |
-| cfg.rb:128:16:128:19 | Binary |
-| cfg.rb:128:18:128:19 | Rational |
-| cfg.rb:129:2:129:6 | regex |
-| cfg.rb:129:2:129:29 | Assignment |
-| cfg.rb:129:10:129:29 | Regex |
-| cfg.rb:129:20:129:27 | Interpolation |
-| cfg.rb:129:22:129:26 | range |
-| cfg.rb:130:2:130:9 | Constant |
-| cfg.rb:130:2:130:13 | Assignment |
-| cfg.rb:130:13:130:13 | 5 |
-| cfg.rb:133:1:133:1 | 1 |
-| cfg.rb:133:1:133:3 | Binary |
-| cfg.rb:133:1:133:29 | RescueModifier |
-| cfg.rb:133:3:133:3 | 0 |
-| cfg.rb:133:12:133:15 | puts |
-| cfg.rb:133:12:133:29 | MethodCall |
-| cfg.rb:133:17:133:29 | String |
-| cfg.rb:135:1:135:13 | DestructuredLeftAssignment |
-| cfg.rb:135:1:135:23 | Assignment |
-| cfg.rb:135:2:135:6 | RestAssignment |
-| cfg.rb:135:3:135:6 | init |
-| cfg.rb:135:9:135:12 | last |
-| cfg.rb:135:17:135:17 | 1 |
-| cfg.rb:135:20:135:20 | 2 |
-| cfg.rb:135:23:135:23 | 3 |
-| cfg.rb:137:1:137:1 | M |
-| cfg.rb:137:1:137:11 | ScopeResolution |
-| cfg.rb:137:4:137:11 | Constant |
-| cfg.rb:138:1:138:1 | M |
-| cfg.rb:138:1:138:8 | Call |
-| cfg.rb:138:1:138:18 | ScopeResolution |
-| cfg.rb:138:3:138:8 | itself |
-| cfg.rb:138:11:138:18 | Constant |
-| cfg.rb:140:10:140:14 | Silly |
-| cfg.rb:140:10:140:21 | Call |
-| cfg.rb:140:16:140:21 | itself |
-| cfg.rb:142:3:145:5 | enter print |
-| cfg.rb:142:3:145:5 | exit print |
-| cfg.rb:142:3:145:5 | exit print (normal) |
-| cfg.rb:143:5:143:8 | puts |
-| cfg.rb:143:5:143:20 | MethodCall |
-| cfg.rb:143:10:143:20 | String |
-| cfg.rb:144:5:144:8 | puts |
-| cfg.rb:144:5:144:22 | MethodCall |
-| cfg.rb:144:10:144:14 | super |
-| cfg.rb:144:10:144:20 | Call |
-| cfg.rb:144:10:144:22 | MethodCall |
-| cfg.rb:144:16:144:20 | print |
-| cfg.rb:148:1:148:5 | silly |
-| cfg.rb:148:1:148:17 | Assignment |
-| cfg.rb:148:9:148:13 | Silly |
-| cfg.rb:148:9:148:17 | Call |
-| cfg.rb:148:15:148:17 | new |
-| cfg.rb:149:1:151:3 | enter method |
-| cfg.rb:149:1:151:3 | exit method |
-| cfg.rb:149:1:151:3 | exit method (normal) |
-| cfg.rb:149:5:149:9 | silly |
-| cfg.rb:149:18:149:19 | SplatParameter |
-| cfg.rb:150:3:150:6 | puts |
-| cfg.rb:150:3:150:8 | MethodCall |
-| cfg.rb:150:8:150:8 | x |
-| cfg.rb:153:1:153:28 | enter two_parameters |
-| cfg.rb:153:1:153:28 | exit two_parameters |
-| cfg.rb:153:1:153:28 | exit two_parameters (normal) |
-| cfg.rb:153:21:153:21 | a |
-| cfg.rb:153:23:153:23 | b |
-| cfg.rb:155:1:155:14 | two_parameters |
-| cfg.rb:155:1:155:22 | MethodCall |
-| cfg.rb:155:16:155:21 | SplatArgument |
-| cfg.rb:155:17:155:21 | Array |
-| cfg.rb:155:18:155:18 | 1 |
-| cfg.rb:155:20:155:20 | 2 |
-| cfg.rb:157:1:157:10 | scriptfile |
-| cfg.rb:157:1:157:32 | Assignment |
-| cfg.rb:157:14:157:32 | Subshell |
-| cfg.rb:157:20:157:30 | Interpolation |
-| cfg.rb:157:22:157:29 | __FILE__ |
-| cfg.rb:159:1:159:6 | symbol |
-| cfg.rb:159:1:159:15 | Assignment |
-| cfg.rb:159:10:159:15 | Symbol |
-| cfg.rb:161:1:161:1 | x |
-| cfg.rb:161:1:161:8 | Assignment |
-| cfg.rb:161:5:161:8 | true |
-| cfg.rb:162:1:162:1 | x |
-| cfg.rb:162:1:162:10 | Assignment |
-| cfg.rb:162:5:162:10 | Unary |
-| cfg.rb:162:7:162:10 | true |
-| cfg.rb:163:1:163:1 | x |
-| cfg.rb:163:1:163:8 | Assignment |
-| cfg.rb:163:5:163:8 | Unary |
-| cfg.rb:163:7:163:8 | 42 |
-| cfg.rb:165:1:165:20 | Undef |
-| cfg.rb:165:7:165:20 | two_parameters |
-| cfg.rb:167:1:167:49 | Unless |
-| cfg.rb:167:8:167:8 | x |
-| cfg.rb:167:8:167:14 | Binary |
-| cfg.rb:167:13:167:14 | 10 |
-| cfg.rb:167:21:167:24 | puts |
-| cfg.rb:167:21:167:29 | MethodCall |
-| cfg.rb:167:26:167:29 | String |
-| cfg.rb:167:36:167:39 | puts |
-| cfg.rb:167:36:167:45 | MethodCall |
-| cfg.rb:167:41:167:45 | String |
-| cfg.rb:169:1:169:4 | puts |
-| cfg.rb:169:1:169:9 | MethodCall |
-| cfg.rb:169:1:169:23 | UnlessModifier |
-| cfg.rb:169:6:169:9 | String |
-| cfg.rb:169:18:169:18 | x |
-| cfg.rb:169:18:169:23 | Binary |
-| cfg.rb:169:23:169:23 | 0 |
-| cfg.rb:171:1:171:41 | Until |
-| cfg.rb:171:7:171:7 | x |
-| cfg.rb:171:7:171:12 | Binary |
-| cfg.rb:171:11:171:12 | 10 |
-| cfg.rb:171:17:171:17 | x |
-| cfg.rb:171:17:171:23 | OperatorAssignment |
-| cfg.rb:171:22:171:23 | 10 |
-| cfg.rb:171:26:171:29 | puts |
-| cfg.rb:171:26:171:37 | MethodCall |
-| cfg.rb:171:31:171:37 | String |
-| cfg.rb:173:1:173:1 | i |
-| cfg.rb:173:1:173:5 | Assignment |
-| cfg.rb:173:5:173:5 | 0 |
-| cfg.rb:174:1:174:22 | ParenthesizedStatements |
-| cfg.rb:174:1:174:36 | UntilModifier |
-| cfg.rb:174:2:174:5 | puts |
-| cfg.rb:174:2:174:13 | MethodCall |
-| cfg.rb:174:7:174:13 | String |
-| cfg.rb:174:16:174:16 | i |
-| cfg.rb:174:16:174:21 | OperatorAssignment |
-| cfg.rb:174:21:174:21 | 1 |
-| cfg.rb:174:30:174:30 | i |
-| cfg.rb:174:30:174:36 | Binary |
-| cfg.rb:174:35:174:36 | 10 |
-| cfg.rb:176:1:176:1 | x |
-| cfg.rb:176:1:176:5 | Assignment |
-| cfg.rb:176:5:176:5 | 0 |
-| cfg.rb:177:1:181:3 | While |
-| cfg.rb:177:7:177:7 | x |
-| cfg.rb:177:7:177:12 | Binary |
-| cfg.rb:177:11:177:12 | 10 |
-| cfg.rb:178:3:178:3 | x |
-| cfg.rb:178:3:178:8 | OperatorAssignment |
-| cfg.rb:178:8:178:8 | 1 |
-| cfg.rb:179:3:179:25 | If |
-| cfg.rb:179:6:179:6 | x |
-| cfg.rb:179:6:179:11 | Binary |
-| cfg.rb:179:11:179:11 | 5 |
-| cfg.rb:179:18:179:21 | Redo |
-| cfg.rb:180:3:180:6 | puts |
-| cfg.rb:180:3:180:8 | MethodCall |
-| cfg.rb:180:8:180:8 | x |
-| cfg.rb:183:1:183:22 | ParenthesizedStatements |
-| cfg.rb:183:1:183:35 | WhileModifier |
-| cfg.rb:183:2:183:5 | puts |
-| cfg.rb:183:2:183:13 | MethodCall |
-| cfg.rb:183:7:183:13 | String |
-| cfg.rb:183:16:183:16 | i |
-| cfg.rb:183:16:183:21 | OperatorAssignment |
-| cfg.rb:183:21:183:21 | 1 |
-| cfg.rb:183:30:183:30 | i |
-| cfg.rb:183:30:183:35 | Binary |
-| cfg.rb:183:35:183:35 | 0 |
-| cfg.rb:185:1:187:3 | enter run_block |
-| cfg.rb:186:3:186:10 | Yield |
-| cfg.rb:186:9:186:10 | 42 |
-| cfg.rb:189:1:189:9 | run_block |
-| cfg.rb:189:1:189:23 | MethodCall |
-| cfg.rb:189:11:189:23 | enter block |
-| cfg.rb:189:11:189:23 | exit block |
-| cfg.rb:189:11:189:23 | exit block (normal) |
-| cfg.rb:189:14:189:14 | x |
-| cfg.rb:189:16:189:19 | puts |
-| cfg.rb:189:16:189:21 | MethodCall |
-| cfg.rb:189:21:189:21 | x |
-| exit.rb:1:1:6:3 | enter m1 |
-| exit.rb:1:1:6:3 | exit m1 |
-| exit.rb:1:1:6:3 | exit m1 (abnormal) |
-| exit.rb:1:1:6:3 | exit m1 (normal) |
-| exit.rb:1:8:1:8 | x |
-| exit.rb:2:3:4:5 | If |
-| exit.rb:2:6:2:6 | x |
-| exit.rb:2:6:2:10 | Binary |
-| exit.rb:2:10:2:10 | 2 |
-| exit.rb:3:5:3:8 | exit |
-| exit.rb:3:5:3:10 | MethodCall |
-| exit.rb:3:10:3:10 | 1 |
-| exit.rb:5:3:5:6 | puts |
-| exit.rb:5:3:5:15 | MethodCall |
-| exit.rb:5:8:5:15 | String |
-| exit.rb:8:1:13:3 | enter m2 |
-| exit.rb:8:1:13:3 | exit m2 |
-| exit.rb:8:1:13:3 | exit m2 (abnormal) |
-| exit.rb:8:1:13:3 | exit m2 (normal) |
-| exit.rb:8:8:8:8 | x |
-| exit.rb:9:3:11:5 | If |
-| exit.rb:9:6:9:6 | x |
-| exit.rb:9:6:9:10 | Binary |
-| exit.rb:9:10:9:10 | 2 |
-| exit.rb:10:5:10:9 | abort |
-| exit.rb:10:5:10:18 | MethodCall |
-| exit.rb:10:11:10:18 | String |
-| exit.rb:12:3:12:6 | puts |
-| exit.rb:12:3:12:15 | MethodCall |
-| exit.rb:12:8:12:15 | String |
-| ifs.rb:1:1:9:3 | enter m1 |
-| ifs.rb:1:1:9:3 | exit m1 |
-| ifs.rb:1:1:9:3 | exit m1 (normal) |
-| ifs.rb:1:8:1:8 | x |
-| ifs.rb:2:3:8:5 | If |
-| ifs.rb:2:6:2:6 | x |
-| ifs.rb:2:6:2:10 | Binary |
-| ifs.rb:2:10:2:10 | 2 |
-| ifs.rb:3:5:3:8 | puts |
-| ifs.rb:3:5:3:30 | MethodCall |
-| ifs.rb:3:10:3:30 | String |
-| ifs.rb:4:3:7:35 | Elsif |
-| ifs.rb:4:9:4:9 | x |
-| ifs.rb:4:9:4:14 | Binary |
-| ifs.rb:4:9:4:24 | [false] Binary |
-| ifs.rb:4:9:4:24 | [true] Binary |
-| ifs.rb:4:9:4:38 | [false] Binary |
-| ifs.rb:4:9:4:38 | [true] Binary |
-| ifs.rb:4:14:4:14 | 2 |
-| ifs.rb:4:20:4:20 | x |
-| ifs.rb:4:20:4:24 | Binary |
-| ifs.rb:4:24:4:24 | 0 |
-| ifs.rb:4:30:4:38 | [false] Unary |
-| ifs.rb:4:30:4:38 | [true] Unary |
-| ifs.rb:4:31:4:38 | [false] ParenthesizedStatements |
-| ifs.rb:4:31:4:38 | [true] ParenthesizedStatements |
-| ifs.rb:4:32:4:32 | x |
-| ifs.rb:4:32:4:37 | Binary |
-| ifs.rb:4:37:4:37 | 5 |
-| ifs.rb:5:5:5:8 | puts |
-| ifs.rb:5:5:5:17 | MethodCall |
-| ifs.rb:5:10:5:17 | String |
-| ifs.rb:7:5:7:8 | puts |
-| ifs.rb:7:5:7:35 | MethodCall |
-| ifs.rb:7:10:7:35 | String |
-| ifs.rb:11:1:16:3 | enter m2 |
-| ifs.rb:11:1:16:3 | exit m2 |
-| ifs.rb:11:1:16:3 | exit m2 (normal) |
-| ifs.rb:11:8:11:8 | b |
-| ifs.rb:12:3:14:5 | If |
-| ifs.rb:12:6:12:6 | b |
-| ifs.rb:13:5:13:12 | Return |
-| ifs.rb:13:12:13:12 | 0 |
-| ifs.rb:15:3:15:10 | Return |
-| ifs.rb:15:10:15:10 | 1 |
-| ifs.rb:18:1:26:3 | enter m3 |
-| ifs.rb:18:1:26:3 | exit m3 |
-| ifs.rb:18:1:26:3 | exit m3 (normal) |
-| ifs.rb:18:8:18:8 | x |
-| ifs.rb:19:3:24:5 | If |
-| ifs.rb:19:6:19:6 | x |
-| ifs.rb:19:6:19:10 | Binary |
-| ifs.rb:19:10:19:10 | 0 |
-| ifs.rb:20:5:20:5 | x |
-| ifs.rb:20:5:20:10 | Assignment |
-| ifs.rb:20:9:20:10 | Unary |
-| ifs.rb:20:10:20:10 | x |
-| ifs.rb:21:5:23:7 | If |
-| ifs.rb:21:8:21:8 | x |
-| ifs.rb:21:8:21:13 | Binary |
-| ifs.rb:21:12:21:13 | 10 |
-| ifs.rb:22:7:22:7 | x |
-| ifs.rb:22:7:22:15 | Assignment |
-| ifs.rb:22:11:22:11 | x |
-| ifs.rb:22:11:22:15 | Binary |
-| ifs.rb:22:15:22:15 | 1 |
-| ifs.rb:25:3:25:6 | puts |
-| ifs.rb:25:3:25:8 | MethodCall |
-| ifs.rb:25:8:25:8 | x |
-| loops.rb:1:1:6:3 | enter m1 |
-| loops.rb:1:1:6:3 | exit m1 |
-| loops.rb:1:1:6:3 | exit m1 (normal) |
-| loops.rb:1:8:1:8 | x |
-| loops.rb:2:3:5:5 | While |
-| loops.rb:2:9:2:9 | x |
-| loops.rb:2:9:2:14 | Binary |
-| loops.rb:2:14:2:14 | 0 |
-| loops.rb:3:5:3:8 | puts |
-| loops.rb:3:5:3:10 | MethodCall |
-| loops.rb:3:10:3:10 | x |
-| loops.rb:4:5:4:5 | x |
-| loops.rb:4:5:4:10 | OperatorAssignment |
-| loops.rb:4:10:4:10 | 1 |
-| loops.rb:8:1:22:3 | enter m2 |
-| loops.rb:8:1:22:3 | exit m2 |
-| loops.rb:8:1:22:3 | exit m2 (normal) |
-| loops.rb:8:8:8:8 | x |
-| loops.rb:9:3:20:5 | While |
-| loops.rb:9:9:9:9 | x |
-| loops.rb:9:9:9:14 | Binary |
-| loops.rb:9:14:9:14 | 0 |
-| loops.rb:10:5:10:8 | puts |
-| loops.rb:10:5:10:10 | MethodCall |
-| loops.rb:10:10:10:10 | x |
-| loops.rb:11:5:11:5 | x |
-| loops.rb:11:5:11:10 | OperatorAssignment |
-| loops.rb:11:10:11:10 | 1 |
-| loops.rb:12:5:18:7 | If |
-| loops.rb:12:8:12:8 | x |
-| loops.rb:12:8:12:14 | Binary |
-| loops.rb:12:12:12:14 | 100 |
-| loops.rb:13:7:13:11 | Break |
-| loops.rb:14:5:17:10 | Elsif |
-| loops.rb:14:11:14:11 | x |
-| loops.rb:14:11:14:16 | Binary |
-| loops.rb:14:15:14:16 | 50 |
-| loops.rb:15:7:15:10 | Next |
-| loops.rb:16:5:17:10 | Elsif |
-| loops.rb:16:11:16:11 | x |
-| loops.rb:16:11:16:16 | Binary |
-| loops.rb:16:15:16:16 | 10 |
-| loops.rb:17:7:17:10 | Redo |
-| loops.rb:19:5:19:8 | puts |
-| loops.rb:19:5:19:15 | MethodCall |
-| loops.rb:19:10:19:15 | String |
-| loops.rb:21:3:21:6 | puts |
-| loops.rb:21:3:21:13 | MethodCall |
-| loops.rb:21:8:21:13 | String |
-| loops.rb:24:1:28:3 | enter m3 |
-| loops.rb:24:1:28:3 | exit m3 |
-| loops.rb:24:1:28:3 | exit m3 (normal) |
-| loops.rb:25:3:25:9 | Array |
-| loops.rb:25:3:25:14 | Call |
-| loops.rb:25:3:27:5 | MethodCall |
-| loops.rb:25:4:25:4 | 1 |
-| loops.rb:25:6:25:6 | 2 |
-| loops.rb:25:8:25:8 | 3 |
-| loops.rb:25:11:25:14 | each |
-| loops.rb:25:16:27:5 | enter do block |
-| loops.rb:25:16:27:5 | exit do block |
-| loops.rb:25:16:27:5 | exit do block (normal) |
-| loops.rb:25:20:25:20 | x |
-| loops.rb:26:5:26:8 | puts |
-| loops.rb:26:5:26:10 | MethodCall |
-| loops.rb:26:10:26:10 | x |
-| raise.rb:1:1:6:3 | enter m1 |
-| raise.rb:1:1:6:3 | exit m1 |
-| raise.rb:1:1:6:3 | exit m1 (abnormal) |
-| raise.rb:1:1:6:3 | exit m1 (normal) |
-| raise.rb:1:8:1:8 | x |
-| raise.rb:2:3:4:5 | If |
-| raise.rb:2:6:2:6 | x |
-| raise.rb:2:6:2:10 | Binary |
-| raise.rb:2:10:2:10 | 2 |
-| raise.rb:3:5:3:9 | raise |
-| raise.rb:3:5:3:17 | MethodCall |
-| raise.rb:3:11:3:17 | String |
-| raise.rb:5:3:5:6 | puts |
-| raise.rb:5:3:5:15 | MethodCall |
-| raise.rb:5:8:5:15 | String |
-edges
-| case.rb:1:1:6:3 | enter if_in_case | case.rb:2:3:5:5 | Case | semmle.label | successor |
-| case.rb:1:1:6:3 | exit if_in_case (normal) | case.rb:1:1:6:3 | exit if_in_case | semmle.label | successor |
-| case.rb:2:3:5:5 | Case | case.rb:2:8:2:9 | x1 | semmle.label | successor |
-| case.rb:2:8:2:9 | x1 | case.rb:3:5:3:42 | When | semmle.label | successor |
-| case.rb:3:5:3:42 | When | case.rb:3:10:3:10 | 1 | semmle.label | successor |
-| case.rb:3:10:3:10 | 1 | case.rb:3:10:3:10 | Pattern | semmle.label | successor |
-| case.rb:3:10:3:10 | Pattern | case.rb:3:18:3:41 | If | semmle.label | true |
-| case.rb:3:10:3:10 | Pattern | case.rb:4:5:4:24 | When | semmle.label | false |
-| case.rb:3:17:3:42 | ParenthesizedStatements | case.rb:1:1:6:3 | exit if_in_case (normal) | semmle.label | successor |
-| case.rb:3:18:3:41 | If | case.rb:3:21:3:22 | x2 | semmle.label | successor |
-| case.rb:3:21:3:22 | x2 | case.rb:3:17:3:42 | ParenthesizedStatements | semmle.label | false |
-| case.rb:3:21:3:22 | x2 | case.rb:3:34:3:37 | String | semmle.label | true |
-| case.rb:3:29:3:32 | puts | case.rb:3:29:3:37 | MethodCall | semmle.label | successor |
-| case.rb:3:29:3:37 | MethodCall | case.rb:3:17:3:42 | ParenthesizedStatements | semmle.label | successor |
-| case.rb:3:34:3:37 | String | case.rb:3:29:3:32 | puts | semmle.label | successor |
-| case.rb:4:5:4:24 | When | case.rb:4:10:4:10 | 2 | semmle.label | successor |
-| case.rb:4:10:4:10 | 2 | case.rb:4:10:4:10 | Pattern | semmle.label | successor |
-| case.rb:4:10:4:10 | Pattern | case.rb:1:1:6:3 | exit if_in_case (normal) | semmle.label | false |
-| case.rb:4:10:4:10 | Pattern | case.rb:4:22:4:24 | String | semmle.label | true |
-| case.rb:4:17:4:20 | puts | case.rb:4:17:4:24 | MethodCall | semmle.label | successor |
-| case.rb:4:17:4:24 | MethodCall | case.rb:1:1:6:3 | exit if_in_case (normal) | semmle.label | successor |
-| case.rb:4:22:4:24 | String | case.rb:4:17:4:20 | puts | semmle.label | successor |
-| cfg.rb:1:1:194:1 | enter top-level | cfg.rb:3:1:3:13 | Alias | semmle.label | successor |
-| cfg.rb:1:1:194:1 | exit top-level (normal) | cfg.rb:1:1:194:1 | exit top-level | semmle.label | successor |
-| cfg.rb:3:1:3:13 | Alias | cfg.rb:3:7:3:9 | foo | semmle.label | successor |
-| cfg.rb:3:7:3:9 | foo | cfg.rb:3:11:3:13 | bar | semmle.label | successor |
-| cfg.rb:3:11:3:13 | bar | cfg.rb:5:5:5:6 | 42 | semmle.label | successor |
-| cfg.rb:5:1:5:1 | b | cfg.rb:5:1:5:6 | Assignment | semmle.label | successor |
-| cfg.rb:5:1:5:6 | Assignment | cfg.rb:7:10:7:10 | b | semmle.label | successor |
-| cfg.rb:5:5:5:6 | 42 | cfg.rb:5:1:5:1 | b | semmle.label | successor |
-| cfg.rb:7:1:7:21 | SymbolArray | cfg.rb:9:10:9:10 | b | semmle.label | successor |
-| cfg.rb:7:4:7:12 | BareSymbol | cfg.rb:7:14:7:20 | BareSymbol | semmle.label | successor |
-| cfg.rb:7:7:7:12 | Interpolation | cfg.rb:7:4:7:12 | BareSymbol | semmle.label | successor |
-| cfg.rb:7:10:7:10 | b | cfg.rb:7:7:7:12 | Interpolation | semmle.label | successor |
-| cfg.rb:7:14:7:20 | BareSymbol | cfg.rb:7:1:7:21 | SymbolArray | semmle.label | successor |
-| cfg.rb:9:1:9:21 | StringArray | cfg.rb:12:8:12:8 | 4 | semmle.label | successor |
-| cfg.rb:9:4:9:12 | BareString | cfg.rb:9:14:9:20 | BareString | semmle.label | successor |
-| cfg.rb:9:7:9:12 | Interpolation | cfg.rb:9:4:9:12 | BareString | semmle.label | successor |
-| cfg.rb:9:10:9:10 | b | cfg.rb:9:7:9:12 | Interpolation | semmle.label | successor |
-| cfg.rb:9:14:9:20 | BareString | cfg.rb:9:1:9:21 | StringArray | semmle.label | successor |
-| cfg.rb:12:3:12:6 | puts | cfg.rb:12:3:12:8 | MethodCall | semmle.label | successor |
-| cfg.rb:12:3:12:8 | MethodCall | cfg.rb:23:1:23:2 | 41 | semmle.label | successor |
-| cfg.rb:12:8:12:8 | 4 | cfg.rb:12:3:12:6 | puts | semmle.label | successor |
-| cfg.rb:15:1:17:1 | BeginBlock | cfg.rb:16:8:16:14 | String | semmle.label | successor |
-| cfg.rb:15:1:17:1 | enter BEGIN block | cfg.rb:15:1:17:1 | BeginBlock | semmle.label | successor |
-| cfg.rb:15:1:17:1 | exit BEGIN block (normal) | cfg.rb:15:1:17:1 | exit BEGIN block | semmle.label | successor |
-| cfg.rb:16:3:16:6 | puts | cfg.rb:16:3:16:14 | MethodCall | semmle.label | successor |
-| cfg.rb:16:3:16:14 | MethodCall | cfg.rb:15:1:17:1 | exit BEGIN block (normal) | semmle.label | successor |
-| cfg.rb:16:8:16:14 | String | cfg.rb:16:3:16:6 | puts | semmle.label | successor |
-| cfg.rb:19:1:21:1 | EndBlock | cfg.rb:20:8:20:14 | String | semmle.label | successor |
-| cfg.rb:19:1:21:1 | enter END block | cfg.rb:19:1:21:1 | EndBlock | semmle.label | successor |
-| cfg.rb:19:1:21:1 | exit END block (normal) | cfg.rb:19:1:21:1 | exit END block | semmle.label | successor |
-| cfg.rb:20:3:20:6 | puts | cfg.rb:20:3:20:14 | MethodCall | semmle.label | successor |
-| cfg.rb:20:3:20:14 | MethodCall | cfg.rb:19:1:21:1 | exit END block (normal) | semmle.label | successor |
-| cfg.rb:20:8:20:14 | String | cfg.rb:20:3:20:6 | puts | semmle.label | successor |
-| cfg.rb:23:1:23:2 | 41 | cfg.rb:23:6:23:6 | 1 | semmle.label | successor |
-| cfg.rb:23:1:23:6 | Binary | cfg.rb:25:1:25:1 | 2 | semmle.label | successor |
-| cfg.rb:23:6:23:6 | 1 | cfg.rb:23:1:23:6 | Binary | semmle.label | successor |
-| cfg.rb:25:1:25:1 | 2 | cfg.rb:25:3:25:7 | times | semmle.label | successor |
-| cfg.rb:25:1:25:7 | Call | cfg.rb:25:1:25:22 | MethodCall | semmle.label | successor |
-| cfg.rb:25:1:25:22 | MethodCall | cfg.rb:27:7:27:11 | Symbol | semmle.label | successor |
-| cfg.rb:25:3:25:7 | times | cfg.rb:25:1:25:7 | Call | semmle.label | successor |
-| cfg.rb:25:9:25:22 | enter block | cfg.rb:25:12:25:12 | x | semmle.label | successor |
-| cfg.rb:25:9:25:22 | exit block (normal) | cfg.rb:25:9:25:22 | exit block | semmle.label | successor |
-| cfg.rb:25:12:25:12 | x | cfg.rb:25:20:25:20 | x | semmle.label | successor |
-| cfg.rb:25:15:25:18 | puts | cfg.rb:25:15:25:20 | MethodCall | semmle.label | successor |
-| cfg.rb:25:15:25:20 | MethodCall | cfg.rb:25:9:25:22 | exit block (normal) | semmle.label | successor |
-| cfg.rb:25:20:25:20 | x | cfg.rb:25:15:25:18 | puts | semmle.label | successor |
-| cfg.rb:27:1:27:4 | puts | cfg.rb:27:1:27:11 | MethodCall | semmle.label | successor |
-| cfg.rb:27:1:27:11 | MethodCall | cfg.rb:29:1:29:4 | Proc | semmle.label | successor |
-| cfg.rb:27:6:27:11 | BlockArgument | cfg.rb:27:1:27:4 | puts | semmle.label | successor |
-| cfg.rb:27:7:27:11 | Symbol | cfg.rb:27:6:27:11 | BlockArgument | semmle.label | successor |
-| cfg.rb:29:1:29:4 | Proc | cfg.rb:29:6:29:8 | new | semmle.label | successor |
-| cfg.rb:29:1:29:8 | Call | cfg.rb:29:1:29:24 | MethodCall | semmle.label | successor |
-| cfg.rb:29:1:29:24 | MethodCall | cfg.rb:31:1:33:3 | While | semmle.label | successor |
-| cfg.rb:29:6:29:8 | new | cfg.rb:29:1:29:8 | Call | semmle.label | successor |
-| cfg.rb:29:10:29:24 | enter block | cfg.rb:29:13:29:14 | BlockParameter | semmle.label | successor |
-| cfg.rb:29:10:29:24 | exit block (normal) | cfg.rb:29:10:29:24 | exit block | semmle.label | successor |
-| cfg.rb:29:13:29:14 | BlockParameter | cfg.rb:29:17:29:17 | x | semmle.label | successor |
-| cfg.rb:29:17:29:17 | x | cfg.rb:29:19:29:22 | call | semmle.label | successor |
-| cfg.rb:29:17:29:22 | Call | cfg.rb:29:10:29:24 | exit block (normal) | semmle.label | successor |
-| cfg.rb:29:19:29:22 | call | cfg.rb:29:17:29:22 | Call | semmle.label | successor |
-| cfg.rb:31:1:33:3 | While | cfg.rb:31:7:31:10 | true | semmle.label | successor |
-| cfg.rb:31:7:31:10 | true | cfg.rb:32:9:32:9 | 1 | semmle.label | true |
-| cfg.rb:32:3:32:9 | Break | cfg.rb:35:1:37:3 | If | semmle.label | break |
-| cfg.rb:32:9:32:9 | 1 | cfg.rb:32:3:32:9 | Break | semmle.label | successor |
-| cfg.rb:35:1:37:3 | If | cfg.rb:35:4:35:8 | false | semmle.label | successor |
-| cfg.rb:35:4:35:8 | false | cfg.rb:39:11:39:12 | 42 | semmle.label | false |
-| cfg.rb:39:1:39:4 | self | cfg.rb:39:6:39:9 | puts | semmle.label | successor |
-| cfg.rb:39:1:39:9 | Call | cfg.rb:39:1:39:12 | MethodCall | semmle.label | successor |
-| cfg.rb:39:1:39:12 | MethodCall | cfg.rb:41:1:45:3 | Case | semmle.label | successor |
-| cfg.rb:39:6:39:9 | puts | cfg.rb:39:1:39:9 | Call | semmle.label | successor |
-| cfg.rb:39:11:39:12 | 42 | cfg.rb:39:1:39:4 | self | semmle.label | successor |
-| cfg.rb:41:1:45:3 | Case | cfg.rb:41:6:41:7 | 10 | semmle.label | successor |
-| cfg.rb:41:6:41:7 | 10 | cfg.rb:42:3:42:24 | When | semmle.label | successor |
-| cfg.rb:42:3:42:24 | When | cfg.rb:42:8:42:8 | 1 | semmle.label | successor |
-| cfg.rb:42:8:42:8 | 1 | cfg.rb:42:8:42:8 | Pattern | semmle.label | successor |
-| cfg.rb:42:8:42:8 | Pattern | cfg.rb:42:20:42:24 | String | semmle.label | true |
-| cfg.rb:42:8:42:8 | Pattern | cfg.rb:43:3:43:31 | When | semmle.label | false |
-| cfg.rb:42:15:42:18 | puts | cfg.rb:42:15:42:24 | MethodCall | semmle.label | successor |
-| cfg.rb:42:15:42:24 | MethodCall | cfg.rb:47:1:50:3 | Case | semmle.label | successor |
-| cfg.rb:42:20:42:24 | String | cfg.rb:42:15:42:18 | puts | semmle.label | successor |
-| cfg.rb:43:3:43:31 | When | cfg.rb:43:8:43:8 | 2 | semmle.label | successor |
-| cfg.rb:43:8:43:8 | 2 | cfg.rb:43:8:43:8 | Pattern | semmle.label | successor |
-| cfg.rb:43:8:43:8 | Pattern | cfg.rb:43:11:43:11 | 3 | semmle.label | false |
-| cfg.rb:43:8:43:8 | Pattern | cfg.rb:43:26:43:31 | String | semmle.label | true |
-| cfg.rb:43:11:43:11 | 3 | cfg.rb:43:11:43:11 | Pattern | semmle.label | successor |
-| cfg.rb:43:11:43:11 | Pattern | cfg.rb:43:14:43:14 | 4 | semmle.label | false |
-| cfg.rb:43:11:43:11 | Pattern | cfg.rb:43:26:43:31 | String | semmle.label | true |
-| cfg.rb:43:14:43:14 | 4 | cfg.rb:43:14:43:14 | Pattern | semmle.label | successor |
-| cfg.rb:43:14:43:14 | Pattern | cfg.rb:43:26:43:31 | String | semmle.label | true |
-| cfg.rb:43:14:43:14 | Pattern | cfg.rb:44:13:44:18 | String | semmle.label | false |
-| cfg.rb:43:21:43:24 | puts | cfg.rb:43:21:43:31 | MethodCall | semmle.label | successor |
-| cfg.rb:43:21:43:31 | MethodCall | cfg.rb:47:1:50:3 | Case | semmle.label | successor |
-| cfg.rb:43:26:43:31 | String | cfg.rb:43:21:43:24 | puts | semmle.label | successor |
-| cfg.rb:44:8:44:11 | puts | cfg.rb:44:8:44:18 | MethodCall | semmle.label | successor |
-| cfg.rb:44:8:44:18 | MethodCall | cfg.rb:47:1:50:3 | Case | semmle.label | successor |
-| cfg.rb:44:13:44:18 | String | cfg.rb:44:8:44:11 | puts | semmle.label | successor |
-| cfg.rb:47:1:50:3 | Case | cfg.rb:48:3:48:29 | When | semmle.label | successor |
-| cfg.rb:48:3:48:29 | When | cfg.rb:48:8:48:8 | b | semmle.label | successor |
-| cfg.rb:48:8:48:8 | b | cfg.rb:48:13:48:13 | 1 | semmle.label | successor |
-| cfg.rb:48:8:48:13 | Binary | cfg.rb:48:8:48:13 | Pattern | semmle.label | successor |
-| cfg.rb:48:8:48:13 | Pattern | cfg.rb:48:25:48:29 | String | semmle.label | true |
-| cfg.rb:48:8:48:13 | Pattern | cfg.rb:49:3:49:37 | When | semmle.label | false |
-| cfg.rb:48:13:48:13 | 1 | cfg.rb:48:8:48:13 | Binary | semmle.label | successor |
-| cfg.rb:48:20:48:23 | puts | cfg.rb:48:20:48:29 | MethodCall | semmle.label | successor |
-| cfg.rb:48:20:48:29 | MethodCall | cfg.rb:52:11:52:13 | String | semmle.label | successor |
-| cfg.rb:48:25:48:29 | String | cfg.rb:48:20:48:23 | puts | semmle.label | successor |
-| cfg.rb:49:3:49:37 | When | cfg.rb:49:8:49:8 | b | semmle.label | successor |
-| cfg.rb:49:8:49:8 | b | cfg.rb:49:13:49:13 | 0 | semmle.label | successor |
-| cfg.rb:49:8:49:13 | Binary | cfg.rb:49:8:49:13 | Pattern | semmle.label | successor |
-| cfg.rb:49:8:49:13 | Pattern | cfg.rb:49:16:49:16 | b | semmle.label | false |
-| cfg.rb:49:8:49:13 | Pattern | cfg.rb:49:32:49:37 | String | semmle.label | true |
-| cfg.rb:49:13:49:13 | 0 | cfg.rb:49:8:49:13 | Binary | semmle.label | successor |
-| cfg.rb:49:16:49:16 | b | cfg.rb:49:20:49:20 | 1 | semmle.label | successor |
-| cfg.rb:49:16:49:20 | Binary | cfg.rb:49:16:49:20 | Pattern | semmle.label | successor |
-| cfg.rb:49:16:49:20 | Pattern | cfg.rb:49:32:49:37 | String | semmle.label | true |
-| cfg.rb:49:16:49:20 | Pattern | cfg.rb:52:11:52:13 | String | semmle.label | false |
-| cfg.rb:49:20:49:20 | 1 | cfg.rb:49:16:49:20 | Binary | semmle.label | successor |
-| cfg.rb:49:27:49:30 | puts | cfg.rb:49:27:49:37 | MethodCall | semmle.label | successor |
-| cfg.rb:49:27:49:37 | MethodCall | cfg.rb:52:11:52:13 | String | semmle.label | successor |
-| cfg.rb:49:32:49:37 | String | cfg.rb:49:27:49:30 | puts | semmle.label | successor |
-| cfg.rb:52:1:52:7 | chained | cfg.rb:52:1:52:35 | Assignment | semmle.label | successor |
-| cfg.rb:52:1:52:35 | Assignment | cfg.rb:54:13:54:17 | ?\\x40 | semmle.label | successor |
-| cfg.rb:52:11:52:13 | String | cfg.rb:52:18:52:24 | chained | semmle.label | successor |
-| cfg.rb:52:15:52:26 | String | cfg.rb:52:28:52:35 | String | semmle.label | successor |
-| cfg.rb:52:16:52:25 | Interpolation | cfg.rb:52:15:52:26 | String | semmle.label | successor |
-| cfg.rb:52:18:52:24 | chained | cfg.rb:52:16:52:25 | Interpolation | semmle.label | successor |
-| cfg.rb:52:28:52:35 | String | cfg.rb:52:1:52:7 | chained | semmle.label | successor |
-| cfg.rb:54:1:54:9 | character | cfg.rb:54:1:54:17 | Assignment | semmle.label | successor |
-| cfg.rb:54:1:54:17 | Assignment | cfg.rb:58:1:72:3 | Class | semmle.label | successor |
-| cfg.rb:54:13:54:17 | ?\\x40 | cfg.rb:54:1:54:9 | character | semmle.label | successor |
-| cfg.rb:58:1:72:3 | Class | cfg.rb:58:7:58:11 | Silly | semmle.label | successor |
-| cfg.rb:58:7:58:11 | Silly | cfg.rb:58:15:58:20 | Object | semmle.label | successor |
-| cfg.rb:58:13:58:20 | Superclass | cfg.rb:59:13:59:17 | 10-2i | semmle.label | successor |
-| cfg.rb:58:15:58:20 | Object | cfg.rb:58:13:58:20 | Superclass | semmle.label | successor |
-| cfg.rb:59:3:59:9 | complex | cfg.rb:59:3:59:17 | Assignment | semmle.label | successor |
-| cfg.rb:59:3:59:17 | Assignment | cfg.rb:60:17:60:40 | Conditional | semmle.label | successor |
-| cfg.rb:59:13:59:17 | 10-2i | cfg.rb:59:3:59:9 | complex | semmle.label | successor |
-| cfg.rb:60:3:60:13 | conditional | cfg.rb:60:3:60:40 | Assignment | semmle.label | successor |
-| cfg.rb:60:3:60:40 | Assignment | cfg.rb:61:7:61:16 | String | semmle.label | successor |
-| cfg.rb:60:17:60:17 | b | cfg.rb:60:21:60:22 | 10 | semmle.label | successor |
-| cfg.rb:60:17:60:22 | Binary | cfg.rb:60:26:60:32 | String | semmle.label | true |
-| cfg.rb:60:17:60:22 | Binary | cfg.rb:60:36:60:40 | String | semmle.label | false |
-| cfg.rb:60:17:60:40 | Conditional | cfg.rb:60:17:60:17 | b | semmle.label | successor |
-| cfg.rb:60:21:60:22 | 10 | cfg.rb:60:17:60:22 | Binary | semmle.label | successor |
-| cfg.rb:60:26:60:32 | String | cfg.rb:60:3:60:13 | conditional | semmle.label | successor |
-| cfg.rb:60:36:60:40 | String | cfg.rb:60:3:60:13 | conditional | semmle.label | successor |
-| cfg.rb:61:3:61:3 | C | cfg.rb:61:3:61:16 | Assignment | semmle.label | successor |
-| cfg.rb:61:3:61:16 | Assignment | cfg.rb:62:18:62:18 | 1 | semmle.label | successor |
-| cfg.rb:61:7:61:16 | String | cfg.rb:61:3:61:3 | C | semmle.label | successor |
-| cfg.rb:62:3:62:13 | DestructuredLeftAssignment | cfg.rb:62:3:62:27 | Assignment | semmle.label | successor |
-| cfg.rb:62:3:62:27 | Assignment | cfg.rb:67:12:67:12 | 1 | semmle.label | successor |
-| cfg.rb:62:4:62:4 | x | cfg.rb:62:8:62:8 | y | semmle.label | successor |
-| cfg.rb:62:7:62:12 | DestructuredLeftAssignment | cfg.rb:62:3:62:13 | DestructuredLeftAssignment | semmle.label | successor |
-| cfg.rb:62:8:62:8 | y | cfg.rb:62:11:62:11 | z | semmle.label | successor |
-| cfg.rb:62:11:62:11 | z | cfg.rb:62:7:62:12 | DestructuredLeftAssignment | semmle.label | successor |
-| cfg.rb:62:17:62:27 | Array | cfg.rb:62:4:62:4 | x | semmle.label | successor |
-| cfg.rb:62:18:62:18 | 1 | cfg.rb:62:22:62:22 | 2 | semmle.label | successor |
-| cfg.rb:62:21:62:26 | Array | cfg.rb:62:17:62:27 | Array | semmle.label | successor |
-| cfg.rb:62:22:62:22 | 2 | cfg.rb:62:25:62:25 | 3 | semmle.label | successor |
-| cfg.rb:62:25:62:25 | 3 | cfg.rb:62:21:62:26 | Array | semmle.label | successor |
-| cfg.rb:63:3:66:5 | enter pattern | cfg.rb:63:17:63:17 | a | semmle.label | successor |
-| cfg.rb:63:3:66:5 | exit pattern (normal) | cfg.rb:63:3:66:5 | exit pattern | semmle.label | successor |
-| cfg.rb:63:16:63:20 | DestructuredParameter | cfg.rb:64:10:64:10 | a | semmle.label | successor |
-| cfg.rb:63:17:63:17 | a | cfg.rb:63:19:63:19 | b | semmle.label | successor |
-| cfg.rb:63:19:63:19 | b | cfg.rb:63:16:63:20 | DestructuredParameter | semmle.label | successor |
-| cfg.rb:64:5:64:8 | puts | cfg.rb:64:5:64:10 | MethodCall | semmle.label | successor |
-| cfg.rb:64:5:64:10 | MethodCall | cfg.rb:65:10:65:10 | b | semmle.label | successor |
-| cfg.rb:64:10:64:10 | a | cfg.rb:64:5:64:8 | puts | semmle.label | successor |
-| cfg.rb:65:5:65:8 | puts | cfg.rb:65:5:65:10 | MethodCall | semmle.label | successor |
-| cfg.rb:65:5:65:10 | MethodCall | cfg.rb:63:3:66:5 | exit pattern (normal) | semmle.label | successor |
-| cfg.rb:65:10:65:10 | b | cfg.rb:65:5:65:8 | puts | semmle.label | successor |
-| cfg.rb:67:3:67:7 | items | cfg.rb:67:3:67:19 | Assignment | semmle.label | successor |
-| cfg.rb:67:3:67:19 | Assignment | cfg.rb:68:8:68:12 | items | semmle.label | successor |
-| cfg.rb:67:11:67:19 | Array | cfg.rb:67:3:67:7 | items | semmle.label | successor |
-| cfg.rb:67:12:67:12 | 1 | cfg.rb:67:15:67:15 | 2 | semmle.label | successor |
-| cfg.rb:67:15:67:15 | 2 | cfg.rb:67:18:67:18 | 3 | semmle.label | successor |
-| cfg.rb:67:18:67:18 | 3 | cfg.rb:67:11:67:19 | Array | semmle.label | successor |
-| cfg.rb:68:3:68:6 | puts | cfg.rb:68:3:68:15 | MethodCall | semmle.label | successor |
-| cfg.rb:68:3:68:15 | MethodCall | cfg.rb:74:5:74:6 | 42 | semmle.label | successor |
-| cfg.rb:68:8:68:12 | items | cfg.rb:68:14:68:14 | 2 | semmle.label | successor |
-| cfg.rb:68:8:68:15 | ElementReference | cfg.rb:68:3:68:6 | puts | semmle.label | successor |
-| cfg.rb:68:14:68:14 | 2 | cfg.rb:68:8:68:15 | ElementReference | semmle.label | successor |
-| cfg.rb:69:3:71:5 | enter print | cfg.rb:70:10:70:16 | String | semmle.label | successor |
-| cfg.rb:69:3:71:5 | exit print (normal) | cfg.rb:69:3:71:5 | exit print | semmle.label | successor |
-| cfg.rb:70:5:70:8 | puts | cfg.rb:70:5:70:16 | MethodCall | semmle.label | successor |
-| cfg.rb:70:5:70:16 | MethodCall | cfg.rb:69:3:71:5 | exit print (normal) | semmle.label | successor |
-| cfg.rb:70:10:70:16 | String | cfg.rb:70:5:70:8 | puts | semmle.label | successor |
-| cfg.rb:74:1:74:1 | x | cfg.rb:74:1:74:6 | Assignment | semmle.label | successor |
-| cfg.rb:74:1:74:6 | Assignment | cfg.rb:75:1:75:47 | If | semmle.label | successor |
-| cfg.rb:74:5:74:6 | 42 | cfg.rb:74:1:74:1 | x | semmle.label | successor |
-| cfg.rb:75:1:75:47 | If | cfg.rb:75:4:75:4 | x | semmle.label | successor |
-| cfg.rb:75:4:75:4 | x | cfg.rb:75:8:75:8 | 0 | semmle.label | successor |
-| cfg.rb:75:4:75:8 | Binary | cfg.rb:75:15:75:15 | 0 | semmle.label | true |
-| cfg.rb:75:4:75:8 | Binary | cfg.rb:75:17:75:43 | Elsif | semmle.label | false |
-| cfg.rb:75:8:75:8 | 0 | cfg.rb:75:4:75:8 | Binary | semmle.label | successor |
-| cfg.rb:75:15:75:15 | 0 | cfg.rb:78:3:78:3 | ; | semmle.label | successor |
-| cfg.rb:75:17:75:43 | Elsif | cfg.rb:75:23:75:23 | x | semmle.label | successor |
-| cfg.rb:75:23:75:23 | x | cfg.rb:75:27:75:28 | 10 | semmle.label | successor |
-| cfg.rb:75:23:75:28 | Binary | cfg.rb:75:35:75:36 | 10 | semmle.label | true |
-| cfg.rb:75:23:75:28 | Binary | cfg.rb:75:43:75:43 | x | semmle.label | false |
-| cfg.rb:75:27:75:28 | 10 | cfg.rb:75:23:75:28 | Binary | semmle.label | successor |
-| cfg.rb:75:35:75:36 | 10 | cfg.rb:78:3:78:3 | ; | semmle.label | successor |
-| cfg.rb:75:43:75:43 | x | cfg.rb:78:3:78:3 | ; | semmle.label | successor |
-| cfg.rb:78:3:78:3 | ; | cfg.rb:88:19:88:19 | x | semmle.label | successor |
-| cfg.rb:88:1:88:6 | escape | cfg.rb:88:1:88:23 | Assignment | semmle.label | successor |
-| cfg.rb:88:1:88:23 | Assignment | cfg.rb:90:11:90:13 | 1.4 | semmle.label | successor |
-| cfg.rb:88:10:88:23 | String | cfg.rb:88:1:88:6 | escape | semmle.label | successor |
-| cfg.rb:88:17:88:20 | Interpolation | cfg.rb:88:10:88:23 | String | semmle.label | successor |
-| cfg.rb:88:19:88:19 | x | cfg.rb:88:17:88:20 | Interpolation | semmle.label | successor |
-| cfg.rb:90:1:93:3 | For | cfg.rb:90:5:90:5 | x | semmle.label | non-empty |
-| cfg.rb:90:1:93:3 | For | cfg.rb:95:11:95:12 | 42 | semmle.label | empty |
-| cfg.rb:90:5:90:5 | x | cfg.rb:91:3:91:24 | If | semmle.label | successor |
-| cfg.rb:90:10:90:26 | Array | cfg.rb:90:1:93:3 | For | semmle.label | successor |
-| cfg.rb:90:11:90:13 | 1.4 | cfg.rb:90:16:90:18 | 2.5 | semmle.label | successor |
-| cfg.rb:90:16:90:18 | 2.5 | cfg.rb:90:21:90:25 | 3.4e5 | semmle.label | successor |
-| cfg.rb:90:21:90:25 | 3.4e5 | cfg.rb:90:10:90:26 | Array | semmle.label | successor |
-| cfg.rb:91:3:91:24 | If | cfg.rb:91:6:91:6 | x | semmle.label | successor |
-| cfg.rb:91:6:91:6 | x | cfg.rb:91:10:91:10 | 3 | semmle.label | successor |
-| cfg.rb:91:6:91:10 | Binary | cfg.rb:91:17:91:20 | Next | semmle.label | true |
-| cfg.rb:91:6:91:10 | Binary | cfg.rb:92:8:92:8 | x | semmle.label | false |
-| cfg.rb:91:10:91:10 | 3 | cfg.rb:91:6:91:10 | Binary | semmle.label | successor |
-| cfg.rb:91:17:91:20 | Next | cfg.rb:90:1:93:3 | For | semmle.label | next |
-| cfg.rb:92:3:92:6 | puts | cfg.rb:92:3:92:8 | MethodCall | semmle.label | successor |
-| cfg.rb:92:3:92:8 | MethodCall | cfg.rb:90:1:93:3 | For | semmle.label | successor |
-| cfg.rb:92:8:92:8 | x | cfg.rb:92:3:92:6 | puts | semmle.label | successor |
-| cfg.rb:95:1:95:7 | $global | cfg.rb:95:1:95:12 | Assignment | semmle.label | successor |
-| cfg.rb:95:1:95:12 | Assignment | cfg.rb:97:10:97:12 | String | semmle.label | successor |
-| cfg.rb:95:11:95:12 | 42 | cfg.rb:95:1:95:7 | $global | semmle.label | successor |
-| cfg.rb:97:1:97:4 | map1 | cfg.rb:97:1:97:32 | Assignment | semmle.label | successor |
-| cfg.rb:97:1:97:32 | Assignment | cfg.rb:98:12:98:15 | map1 | semmle.label | successor |
-| cfg.rb:97:8:97:32 | Hash | cfg.rb:97:1:97:4 | map1 | semmle.label | successor |
-| cfg.rb:97:10:97:12 | String | cfg.rb:97:17:97:19 | String | semmle.label | successor |
-| cfg.rb:97:10:97:19 | Pair | cfg.rb:97:22:97:24 | String | semmle.label | successor |
-| cfg.rb:97:17:97:19 | String | cfg.rb:97:10:97:19 | Pair | semmle.label | successor |
-| cfg.rb:97:22:97:24 | String | cfg.rb:97:27:97:29 | String | semmle.label | successor |
-| cfg.rb:97:22:97:29 | Pair | cfg.rb:97:8:97:32 | Hash | semmle.label | successor |
-| cfg.rb:97:27:97:29 | String | cfg.rb:97:22:97:29 | Pair | semmle.label | successor |
-| cfg.rb:98:1:98:4 | map2 | cfg.rb:98:1:98:36 | Assignment | semmle.label | successor |
-| cfg.rb:98:1:98:36 | Assignment | cfg.rb:106:9:106:17 | String | semmle.label | successor |
-| cfg.rb:98:8:98:36 | Hash | cfg.rb:98:1:98:4 | map2 | semmle.label | successor |
-| cfg.rb:98:10:98:15 | HashSplatArgument | cfg.rb:98:18:98:20 | String | semmle.label | successor |
-| cfg.rb:98:12:98:15 | map1 | cfg.rb:98:10:98:15 | HashSplatArgument | semmle.label | successor |
-| cfg.rb:98:18:98:20 | String | cfg.rb:98:25:98:27 | String | semmle.label | successor |
-| cfg.rb:98:18:98:27 | Pair | cfg.rb:98:32:98:35 | map1 | semmle.label | successor |
-| cfg.rb:98:25:98:27 | String | cfg.rb:98:18:98:27 | Pair | semmle.label | successor |
-| cfg.rb:98:30:98:35 | HashSplatArgument | cfg.rb:98:8:98:36 | Hash | semmle.label | successor |
-| cfg.rb:98:32:98:35 | map1 | cfg.rb:98:30:98:35 | HashSplatArgument | semmle.label | successor |
-| cfg.rb:101:1:104:3 | enter parameters | cfg.rb:101:24:101:25 | 42 | semmle.label | successor |
-| cfg.rb:101:1:104:3 | exit parameters (normal) | cfg.rb:101:1:104:3 | exit parameters | semmle.label | successor |
-| cfg.rb:101:16:101:25 | OptionalParameter | cfg.rb:101:28:101:31 | KeywordParameter | semmle.label | successor |
-| cfg.rb:101:24:101:25 | 42 | cfg.rb:101:16:101:25 | OptionalParameter | semmle.label | successor |
-| cfg.rb:101:28:101:31 | KeywordParameter | cfg.rb:101:34:101:41 | HashSplatParameter | semmle.label | successor |
-| cfg.rb:101:34:101:41 | HashSplatParameter | cfg.rb:102:8:102:12 | value | semmle.label | successor |
-| cfg.rb:102:3:102:6 | puts | cfg.rb:102:3:102:12 | MethodCall | semmle.label | successor |
-| cfg.rb:102:3:102:12 | MethodCall | cfg.rb:103:10:103:15 | kwargs | semmle.label | successor |
-| cfg.rb:102:8:102:12 | value | cfg.rb:102:3:102:6 | puts | semmle.label | successor |
-| cfg.rb:103:3:103:20 | Return | cfg.rb:101:1:104:3 | exit parameters (normal) | semmle.label | return |
-| cfg.rb:103:10:103:15 | kwargs | cfg.rb:103:17:103:19 | key | semmle.label | successor |
-| cfg.rb:103:10:103:20 | ElementReference | cfg.rb:103:3:103:20 | Return | semmle.label | successor |
-| cfg.rb:103:17:103:19 | key | cfg.rb:103:10:103:20 | ElementReference | semmle.label | successor |
-| cfg.rb:106:1:106:4 | type | cfg.rb:106:1:106:17 | Assignment | semmle.label | successor |
-| cfg.rb:106:1:106:17 | Assignment | cfg.rb:107:9:107:14 | String | semmle.label | successor |
-| cfg.rb:106:9:106:17 | String | cfg.rb:106:1:106:4 | type | semmle.label | successor |
-| cfg.rb:107:1:107:5 | table | cfg.rb:107:1:107:14 | Assignment | semmle.label | successor |
-| cfg.rb:107:1:107:14 | Assignment | cfg.rb:108:7:108:11 | <<SQL | semmle.label | successor |
-| cfg.rb:107:9:107:14 | String | cfg.rb:107:1:107:5 | table | semmle.label | successor |
-| cfg.rb:108:1:108:4 | puts | cfg.rb:108:1:108:12 | MethodCall | semmle.label | successor |
-| cfg.rb:108:1:108:12 | MethodCall | cfg.rb:113:1:113:19 | IfModifier | semmle.label | successor |
-| cfg.rb:108:6:108:12 | ParenthesizedStatements | cfg.rb:108:1:108:4 | puts | semmle.label | successor |
-| cfg.rb:108:7:108:11 | <<SQL | cfg.rb:109:17:109:21 | table | semmle.label | successor |
-| cfg.rb:108:13:111:3 | HeredocBody | cfg.rb:108:6:108:12 | ParenthesizedStatements | semmle.label | successor |
-| cfg.rb:109:15:109:22 | Interpolation | cfg.rb:110:9:110:12 | type | semmle.label | successor |
-| cfg.rb:109:17:109:21 | table | cfg.rb:109:15:109:22 | Interpolation | semmle.label | successor |
-| cfg.rb:110:7:110:13 | Interpolation | cfg.rb:108:13:111:3 | HeredocBody | semmle.label | successor |
-| cfg.rb:110:9:110:12 | type | cfg.rb:110:7:110:13 | Interpolation | semmle.label | successor |
-| cfg.rb:113:1:113:4 | puts | cfg.rb:113:1:113:9 | MethodCall | semmle.label | successor |
-| cfg.rb:113:1:113:9 | MethodCall | cfg.rb:115:1:118:3 | Class | semmle.label | successor |
-| cfg.rb:113:1:113:19 | IfModifier | cfg.rb:113:14:113:14 | b | semmle.label | successor |
-| cfg.rb:113:6:113:9 | String | cfg.rb:113:1:113:4 | puts | semmle.label | successor |
-| cfg.rb:113:14:113:14 | b | cfg.rb:113:18:113:19 | 10 | semmle.label | successor |
-| cfg.rb:113:14:113:19 | Binary | cfg.rb:113:6:113:9 | String | semmle.label | true |
-| cfg.rb:113:14:113:19 | Binary | cfg.rb:115:1:118:3 | Class | semmle.label | false |
-| cfg.rb:113:18:113:19 | 10 | cfg.rb:113:14:113:19 | Binary | semmle.label | successor |
-| cfg.rb:115:1:118:3 | Class | cfg.rb:115:7:115:7 | C | semmle.label | successor |
-| cfg.rb:115:7:115:7 | C | cfg.rb:116:12:116:13 | 42 | semmle.label | successor |
-| cfg.rb:116:3:116:8 | @field | cfg.rb:116:3:116:13 | Assignment | semmle.label | successor |
-| cfg.rb:116:3:116:13 | Assignment | cfg.rb:117:20:117:21 | 10 | semmle.label | successor |
-| cfg.rb:116:12:116:13 | 42 | cfg.rb:116:3:116:8 | @field | semmle.label | successor |
-| cfg.rb:117:3:117:16 | @@static_field | cfg.rb:117:3:117:21 | Assignment | semmle.label | successor |
-| cfg.rb:117:3:117:21 | Assignment | cfg.rb:120:1:120:4 | swap | semmle.label | successor |
-| cfg.rb:117:20:117:21 | 10 | cfg.rb:117:3:117:16 | @@static_field | semmle.label | successor |
-| cfg.rb:120:1:120:4 | swap | cfg.rb:120:1:120:28 | Assignment | semmle.label | successor |
-| cfg.rb:120:1:120:28 | Assignment | cfg.rb:122:1:131:3 | Module | semmle.label | successor |
-| cfg.rb:120:8:120:28 | enter lambda | cfg.rb:120:12:120:12 | x | semmle.label | successor |
-| cfg.rb:120:8:120:28 | exit lambda (normal) | cfg.rb:120:8:120:28 | exit lambda | semmle.label | successor |
-| cfg.rb:120:11:120:16 | DestructuredParameter | cfg.rb:120:8:120:28 | exit lambda (normal) | semmle.label | successor |
-| cfg.rb:120:12:120:12 | x | cfg.rb:120:15:120:15 | y | semmle.label | successor |
-| cfg.rb:120:15:120:15 | y | cfg.rb:120:11:120:16 | DestructuredParameter | semmle.label | successor |
-| cfg.rb:120:19:120:28 | enter block | cfg.rb:120:22:120:22 | y | semmle.label | successor |
-| cfg.rb:120:19:120:28 | exit block (normal) | cfg.rb:120:19:120:28 | exit block | semmle.label | successor |
-| cfg.rb:120:21:120:26 | Array | cfg.rb:120:19:120:28 | exit block (normal) | semmle.label | successor |
-| cfg.rb:120:22:120:22 | y | cfg.rb:120:25:120:25 | x | semmle.label | successor |
-| cfg.rb:120:25:120:25 | x | cfg.rb:120:21:120:26 | Array | semmle.label | successor |
-| cfg.rb:122:1:131:3 | Module | cfg.rb:122:8:122:8 | M | semmle.label | successor |
-| cfg.rb:122:8:122:8 | M | cfg.rb:123:12:123:14 | nil | semmle.label | successor |
-| cfg.rb:123:2:123:8 | nothing | cfg.rb:123:2:123:14 | Assignment | semmle.label | successor |
-| cfg.rb:123:2:123:14 | Assignment | cfg.rb:124:9:124:9 | 2 | semmle.label | successor |
-| cfg.rb:123:12:123:14 | nil | cfg.rb:123:2:123:8 | nothing | semmle.label | successor |
-| cfg.rb:124:2:124:5 | some | cfg.rb:124:2:124:9 | Assignment | semmle.label | successor |
-| cfg.rb:124:2:124:9 | Assignment | cfg.rb:125:2:125:5 | some | semmle.label | successor |
-| cfg.rb:124:9:124:9 | 2 | cfg.rb:124:2:124:5 | some | semmle.label | successor |
-| cfg.rb:125:2:125:5 | some | cfg.rb:125:10:125:11 | 10 | semmle.label | successor |
-| cfg.rb:125:2:125:11 | OperatorAssignment | cfg.rb:126:10:126:10 | 2 | semmle.label | successor |
-| cfg.rb:125:10:125:11 | 10 | cfg.rb:125:2:125:11 | OperatorAssignment | semmle.label | successor |
-| cfg.rb:126:2:126:5 | last | cfg.rb:126:2:126:17 | Assignment | semmle.label | successor |
-| cfg.rb:126:2:126:17 | Assignment | cfg.rb:127:10:127:10 | 0 | semmle.label | successor |
-| cfg.rb:126:9:126:17 | ParenthesizedStatements | cfg.rb:126:2:126:5 | last | semmle.label | successor |
-| cfg.rb:126:10:126:10 | 2 | cfg.rb:126:13:126:13 | 4 | semmle.label | successor |
-| cfg.rb:126:13:126:13 | 4 | cfg.rb:126:16:126:16 | 7 | semmle.label | successor |
-| cfg.rb:126:16:126:16 | 7 | cfg.rb:126:9:126:17 | ParenthesizedStatements | semmle.label | successor |
-| cfg.rb:127:2:127:6 | range | cfg.rb:127:2:127:13 | Assignment | semmle.label | successor |
-| cfg.rb:127:2:127:13 | Assignment | cfg.rb:128:9:128:9 | 1 | semmle.label | successor |
-| cfg.rb:127:10:127:10 | 0 | cfg.rb:127:13:127:13 | 9 | semmle.label | successor |
-| cfg.rb:127:10:127:13 | Range | cfg.rb:127:2:127:6 | range | semmle.label | successor |
-| cfg.rb:127:13:127:13 | 9 | cfg.rb:127:10:127:13 | Range | semmle.label | successor |
-| cfg.rb:128:2:128:5 | half | cfg.rb:128:2:128:19 | Assignment | semmle.label | successor |
-| cfg.rb:128:2:128:19 | Assignment | cfg.rb:129:22:129:26 | range | semmle.label | successor |
-| cfg.rb:128:9:128:9 | 1 | cfg.rb:128:11:128:12 | Rational | semmle.label | successor |
-| cfg.rb:128:9:128:12 | Binary | cfg.rb:128:16:128:16 | 1 | semmle.label | successor |
-| cfg.rb:128:9:128:19 | Binary | cfg.rb:128:2:128:5 | half | semmle.label | successor |
-| cfg.rb:128:11:128:12 | Rational | cfg.rb:128:9:128:12 | Binary | semmle.label | successor |
-| cfg.rb:128:16:128:16 | 1 | cfg.rb:128:18:128:19 | Rational | semmle.label | successor |
-| cfg.rb:128:16:128:19 | Binary | cfg.rb:128:9:128:19 | Binary | semmle.label | successor |
-| cfg.rb:128:18:128:19 | Rational | cfg.rb:128:16:128:19 | Binary | semmle.label | successor |
-| cfg.rb:129:2:129:6 | regex | cfg.rb:129:2:129:29 | Assignment | semmle.label | successor |
-| cfg.rb:129:2:129:29 | Assignment | cfg.rb:130:13:130:13 | 5 | semmle.label | successor |
-| cfg.rb:129:10:129:29 | Regex | cfg.rb:129:2:129:6 | regex | semmle.label | successor |
-| cfg.rb:129:20:129:27 | Interpolation | cfg.rb:129:10:129:29 | Regex | semmle.label | successor |
-| cfg.rb:129:22:129:26 | range | cfg.rb:129:20:129:27 | Interpolation | semmle.label | successor |
-| cfg.rb:130:2:130:9 | Constant | cfg.rb:130:2:130:13 | Assignment | semmle.label | successor |
-| cfg.rb:130:2:130:13 | Assignment | cfg.rb:133:1:133:29 | RescueModifier | semmle.label | successor |
-| cfg.rb:130:13:130:13 | 5 | cfg.rb:130:2:130:9 | Constant | semmle.label | successor |
-| cfg.rb:133:1:133:1 | 1 | cfg.rb:133:3:133:3 | 0 | semmle.label | successor |
-| cfg.rb:133:1:133:3 | Binary | cfg.rb:133:17:133:29 | String | semmle.label | raise |
-| cfg.rb:133:1:133:3 | Binary | cfg.rb:135:17:135:17 | 1 | semmle.label | successor |
-| cfg.rb:133:1:133:29 | RescueModifier | cfg.rb:133:1:133:1 | 1 | semmle.label | successor |
-| cfg.rb:133:3:133:3 | 0 | cfg.rb:133:1:133:3 | Binary | semmle.label | successor |
-| cfg.rb:133:12:133:15 | puts | cfg.rb:133:12:133:29 | MethodCall | semmle.label | successor |
-| cfg.rb:133:12:133:29 | MethodCall | cfg.rb:135:17:135:17 | 1 | semmle.label | successor |
-| cfg.rb:133:17:133:29 | String | cfg.rb:133:12:133:15 | puts | semmle.label | successor |
-| cfg.rb:135:1:135:13 | DestructuredLeftAssignment | cfg.rb:135:1:135:23 | Assignment | semmle.label | successor |
-| cfg.rb:135:1:135:23 | Assignment | cfg.rb:137:1:137:1 | M | semmle.label | successor |
-| cfg.rb:135:2:135:6 | RestAssignment | cfg.rb:135:9:135:12 | last | semmle.label | successor |
-| cfg.rb:135:3:135:6 | init | cfg.rb:135:2:135:6 | RestAssignment | semmle.label | successor |
-| cfg.rb:135:9:135:12 | last | cfg.rb:135:1:135:13 | DestructuredLeftAssignment | semmle.label | successor |
-| cfg.rb:135:17:135:17 | 1 | cfg.rb:135:20:135:20 | 2 | semmle.label | successor |
-| cfg.rb:135:20:135:20 | 2 | cfg.rb:135:23:135:23 | 3 | semmle.label | successor |
-| cfg.rb:135:23:135:23 | 3 | cfg.rb:135:3:135:6 | init | semmle.label | successor |
-| cfg.rb:137:1:137:1 | M | cfg.rb:137:4:137:11 | Constant | semmle.label | successor |
-| cfg.rb:137:1:137:11 | ScopeResolution | cfg.rb:138:1:138:1 | M | semmle.label | successor |
-| cfg.rb:137:4:137:11 | Constant | cfg.rb:137:1:137:11 | ScopeResolution | semmle.label | successor |
-| cfg.rb:138:1:138:1 | M | cfg.rb:138:3:138:8 | itself | semmle.label | successor |
-| cfg.rb:138:1:138:8 | Call | cfg.rb:138:11:138:18 | Constant | semmle.label | successor |
-| cfg.rb:138:1:138:18 | ScopeResolution | cfg.rb:140:10:140:14 | Silly | semmle.label | successor |
-| cfg.rb:138:3:138:8 | itself | cfg.rb:138:1:138:8 | Call | semmle.label | successor |
-| cfg.rb:138:11:138:18 | Constant | cfg.rb:138:1:138:18 | ScopeResolution | semmle.label | successor |
-| cfg.rb:140:10:140:14 | Silly | cfg.rb:140:16:140:21 | itself | semmle.label | successor |
-| cfg.rb:140:10:140:21 | Call | cfg.rb:148:9:148:13 | Silly | semmle.label | successor |
-| cfg.rb:140:16:140:21 | itself | cfg.rb:140:10:140:21 | Call | semmle.label | successor |
-| cfg.rb:142:3:145:5 | enter print | cfg.rb:143:10:143:20 | String | semmle.label | successor |
-| cfg.rb:142:3:145:5 | exit print (normal) | cfg.rb:142:3:145:5 | exit print | semmle.label | successor |
-| cfg.rb:143:5:143:8 | puts | cfg.rb:143:5:143:20 | MethodCall | semmle.label | successor |
-| cfg.rb:143:5:143:20 | MethodCall | cfg.rb:144:10:144:14 | super | semmle.label | successor |
-| cfg.rb:143:10:143:20 | String | cfg.rb:143:5:143:8 | puts | semmle.label | successor |
-| cfg.rb:144:5:144:8 | puts | cfg.rb:144:5:144:22 | MethodCall | semmle.label | successor |
-| cfg.rb:144:5:144:22 | MethodCall | cfg.rb:142:3:145:5 | exit print (normal) | semmle.label | successor |
-| cfg.rb:144:10:144:14 | super | cfg.rb:144:16:144:20 | print | semmle.label | successor |
-| cfg.rb:144:10:144:20 | Call | cfg.rb:144:10:144:22 | MethodCall | semmle.label | successor |
-| cfg.rb:144:10:144:22 | MethodCall | cfg.rb:144:5:144:8 | puts | semmle.label | successor |
-| cfg.rb:144:16:144:20 | print | cfg.rb:144:10:144:20 | Call | semmle.label | successor |
-| cfg.rb:148:1:148:5 | silly | cfg.rb:148:1:148:17 | Assignment | semmle.label | successor |
-| cfg.rb:148:1:148:17 | Assignment | cfg.rb:155:18:155:18 | 1 | semmle.label | successor |
-| cfg.rb:148:9:148:13 | Silly | cfg.rb:148:15:148:17 | new | semmle.label | successor |
-| cfg.rb:148:9:148:17 | Call | cfg.rb:148:1:148:5 | silly | semmle.label | successor |
-| cfg.rb:148:15:148:17 | new | cfg.rb:148:9:148:17 | Call | semmle.label | successor |
-| cfg.rb:149:1:151:3 | enter method | cfg.rb:149:5:149:9 | silly | semmle.label | successor |
-| cfg.rb:149:1:151:3 | exit method (normal) | cfg.rb:149:1:151:3 | exit method | semmle.label | successor |
-| cfg.rb:149:5:149:9 | silly | cfg.rb:149:18:149:19 | SplatParameter | semmle.label | successor |
-| cfg.rb:149:18:149:19 | SplatParameter | cfg.rb:150:8:150:8 | x | semmle.label | successor |
-| cfg.rb:150:3:150:6 | puts | cfg.rb:150:3:150:8 | MethodCall | semmle.label | successor |
-| cfg.rb:150:3:150:8 | MethodCall | cfg.rb:149:1:151:3 | exit method (normal) | semmle.label | successor |
-| cfg.rb:150:8:150:8 | x | cfg.rb:150:3:150:6 | puts | semmle.label | successor |
-| cfg.rb:153:1:153:28 | enter two_parameters | cfg.rb:153:21:153:21 | a | semmle.label | successor |
-| cfg.rb:153:1:153:28 | exit two_parameters (normal) | cfg.rb:153:1:153:28 | exit two_parameters | semmle.label | successor |
-| cfg.rb:153:21:153:21 | a | cfg.rb:153:23:153:23 | b | semmle.label | successor |
-| cfg.rb:153:23:153:23 | b | cfg.rb:153:1:153:28 | exit two_parameters (normal) | semmle.label | successor |
-| cfg.rb:155:1:155:14 | two_parameters | cfg.rb:155:1:155:22 | MethodCall | semmle.label | successor |
-| cfg.rb:155:1:155:22 | MethodCall | cfg.rb:157:22:157:29 | __FILE__ | semmle.label | successor |
-| cfg.rb:155:16:155:21 | SplatArgument | cfg.rb:155:1:155:14 | two_parameters | semmle.label | successor |
-| cfg.rb:155:17:155:21 | Array | cfg.rb:155:16:155:21 | SplatArgument | semmle.label | successor |
-| cfg.rb:155:18:155:18 | 1 | cfg.rb:155:20:155:20 | 2 | semmle.label | successor |
-| cfg.rb:155:20:155:20 | 2 | cfg.rb:155:17:155:21 | Array | semmle.label | successor |
-| cfg.rb:157:1:157:10 | scriptfile | cfg.rb:157:1:157:32 | Assignment | semmle.label | successor |
-| cfg.rb:157:1:157:32 | Assignment | cfg.rb:159:10:159:15 | Symbol | semmle.label | successor |
-| cfg.rb:157:14:157:32 | Subshell | cfg.rb:157:1:157:10 | scriptfile | semmle.label | successor |
-| cfg.rb:157:20:157:30 | Interpolation | cfg.rb:157:14:157:32 | Subshell | semmle.label | successor |
-| cfg.rb:157:22:157:29 | __FILE__ | cfg.rb:157:20:157:30 | Interpolation | semmle.label | successor |
-| cfg.rb:159:1:159:6 | symbol | cfg.rb:159:1:159:15 | Assignment | semmle.label | successor |
-| cfg.rb:159:1:159:15 | Assignment | cfg.rb:161:5:161:8 | true | semmle.label | successor |
-| cfg.rb:159:10:159:15 | Symbol | cfg.rb:159:1:159:6 | symbol | semmle.label | successor |
-| cfg.rb:161:1:161:1 | x | cfg.rb:161:1:161:8 | Assignment | semmle.label | successor |
-| cfg.rb:161:1:161:8 | Assignment | cfg.rb:162:7:162:10 | true | semmle.label | successor |
-| cfg.rb:161:5:161:8 | true | cfg.rb:161:1:161:1 | x | semmle.label | successor |
-| cfg.rb:162:1:162:1 | x | cfg.rb:162:1:162:10 | Assignment | semmle.label | successor |
-| cfg.rb:162:1:162:10 | Assignment | cfg.rb:163:7:163:8 | 42 | semmle.label | successor |
-| cfg.rb:162:5:162:10 | Unary | cfg.rb:162:1:162:1 | x | semmle.label | successor |
-| cfg.rb:162:7:162:10 | true | cfg.rb:162:5:162:10 | Unary | semmle.label | successor |
-| cfg.rb:163:1:163:1 | x | cfg.rb:163:1:163:8 | Assignment | semmle.label | successor |
-| cfg.rb:163:1:163:8 | Assignment | cfg.rb:165:1:165:20 | Undef | semmle.label | successor |
-| cfg.rb:163:5:163:8 | Unary | cfg.rb:163:1:163:1 | x | semmle.label | successor |
-| cfg.rb:163:7:163:8 | 42 | cfg.rb:163:5:163:8 | Unary | semmle.label | successor |
-| cfg.rb:165:1:165:20 | Undef | cfg.rb:165:7:165:20 | two_parameters | semmle.label | successor |
-| cfg.rb:165:7:165:20 | two_parameters | cfg.rb:167:1:167:49 | Unless | semmle.label | successor |
-| cfg.rb:167:1:167:49 | Unless | cfg.rb:167:8:167:8 | x | semmle.label | successor |
-| cfg.rb:167:8:167:8 | x | cfg.rb:167:13:167:14 | 10 | semmle.label | successor |
-| cfg.rb:167:8:167:14 | Binary | cfg.rb:167:26:167:29 | String | semmle.label | false |
-| cfg.rb:167:8:167:14 | Binary | cfg.rb:167:41:167:45 | String | semmle.label | true |
-| cfg.rb:167:13:167:14 | 10 | cfg.rb:167:8:167:14 | Binary | semmle.label | successor |
-| cfg.rb:167:21:167:24 | puts | cfg.rb:167:21:167:29 | MethodCall | semmle.label | successor |
-| cfg.rb:167:21:167:29 | MethodCall | cfg.rb:169:1:169:23 | UnlessModifier | semmle.label | successor |
-| cfg.rb:167:26:167:29 | String | cfg.rb:167:21:167:24 | puts | semmle.label | successor |
-| cfg.rb:167:36:167:39 | puts | cfg.rb:167:36:167:45 | MethodCall | semmle.label | successor |
-| cfg.rb:167:36:167:45 | MethodCall | cfg.rb:169:1:169:23 | UnlessModifier | semmle.label | successor |
-| cfg.rb:167:41:167:45 | String | cfg.rb:167:36:167:39 | puts | semmle.label | successor |
-| cfg.rb:169:1:169:4 | puts | cfg.rb:169:1:169:9 | MethodCall | semmle.label | successor |
-| cfg.rb:169:1:169:9 | MethodCall | cfg.rb:171:1:171:41 | Until | semmle.label | successor |
-| cfg.rb:169:1:169:23 | UnlessModifier | cfg.rb:169:18:169:18 | x | semmle.label | successor |
-| cfg.rb:169:6:169:9 | String | cfg.rb:169:1:169:4 | puts | semmle.label | successor |
-| cfg.rb:169:18:169:18 | x | cfg.rb:169:23:169:23 | 0 | semmle.label | successor |
-| cfg.rb:169:18:169:23 | Binary | cfg.rb:169:6:169:9 | String | semmle.label | false |
-| cfg.rb:169:18:169:23 | Binary | cfg.rb:171:1:171:41 | Until | semmle.label | true |
-| cfg.rb:169:23:169:23 | 0 | cfg.rb:169:18:169:23 | Binary | semmle.label | successor |
-| cfg.rb:171:1:171:41 | Until | cfg.rb:171:7:171:7 | x | semmle.label | successor |
-| cfg.rb:171:7:171:7 | x | cfg.rb:171:11:171:12 | 10 | semmle.label | successor |
-| cfg.rb:171:7:171:12 | Binary | cfg.rb:171:17:171:17 | x | semmle.label | false |
-| cfg.rb:171:7:171:12 | Binary | cfg.rb:173:5:173:5 | 0 | semmle.label | true |
-| cfg.rb:171:11:171:12 | 10 | cfg.rb:171:7:171:12 | Binary | semmle.label | successor |
-| cfg.rb:171:17:171:17 | x | cfg.rb:171:22:171:23 | 10 | semmle.label | successor |
-| cfg.rb:171:17:171:23 | OperatorAssignment | cfg.rb:171:31:171:37 | String | semmle.label | successor |
-| cfg.rb:171:22:171:23 | 10 | cfg.rb:171:17:171:23 | OperatorAssignment | semmle.label | successor |
-| cfg.rb:171:26:171:29 | puts | cfg.rb:171:26:171:37 | MethodCall | semmle.label | successor |
-| cfg.rb:171:26:171:37 | MethodCall | cfg.rb:171:7:171:7 | x | semmle.label | successor |
-| cfg.rb:171:31:171:37 | String | cfg.rb:171:26:171:29 | puts | semmle.label | successor |
-| cfg.rb:173:1:173:1 | i | cfg.rb:173:1:173:5 | Assignment | semmle.label | successor |
-| cfg.rb:173:1:173:5 | Assignment | cfg.rb:174:1:174:36 | UntilModifier | semmle.label | successor |
-| cfg.rb:173:5:173:5 | 0 | cfg.rb:173:1:173:1 | i | semmle.label | successor |
-| cfg.rb:174:1:174:22 | ParenthesizedStatements | cfg.rb:174:30:174:30 | i | semmle.label | successor |
-| cfg.rb:174:1:174:36 | UntilModifier | cfg.rb:174:30:174:30 | i | semmle.label | successor |
-| cfg.rb:174:2:174:5 | puts | cfg.rb:174:2:174:13 | MethodCall | semmle.label | successor |
-| cfg.rb:174:2:174:13 | MethodCall | cfg.rb:174:16:174:16 | i | semmle.label | successor |
-| cfg.rb:174:7:174:13 | String | cfg.rb:174:2:174:5 | puts | semmle.label | successor |
-| cfg.rb:174:16:174:16 | i | cfg.rb:174:21:174:21 | 1 | semmle.label | successor |
-| cfg.rb:174:16:174:21 | OperatorAssignment | cfg.rb:174:1:174:22 | ParenthesizedStatements | semmle.label | successor |
-| cfg.rb:174:21:174:21 | 1 | cfg.rb:174:16:174:21 | OperatorAssignment | semmle.label | successor |
-| cfg.rb:174:30:174:30 | i | cfg.rb:174:35:174:36 | 10 | semmle.label | successor |
-| cfg.rb:174:30:174:36 | Binary | cfg.rb:174:7:174:13 | String | semmle.label | false |
-| cfg.rb:174:30:174:36 | Binary | cfg.rb:176:5:176:5 | 0 | semmle.label | true |
-| cfg.rb:174:35:174:36 | 10 | cfg.rb:174:30:174:36 | Binary | semmle.label | successor |
-| cfg.rb:176:1:176:1 | x | cfg.rb:176:1:176:5 | Assignment | semmle.label | successor |
-| cfg.rb:176:1:176:5 | Assignment | cfg.rb:177:1:181:3 | While | semmle.label | successor |
-| cfg.rb:176:5:176:5 | 0 | cfg.rb:176:1:176:1 | x | semmle.label | successor |
-| cfg.rb:177:1:181:3 | While | cfg.rb:177:7:177:7 | x | semmle.label | successor |
-| cfg.rb:177:7:177:7 | x | cfg.rb:177:11:177:12 | 10 | semmle.label | successor |
-| cfg.rb:177:7:177:12 | Binary | cfg.rb:178:3:178:3 | x | semmle.label | true |
-| cfg.rb:177:7:177:12 | Binary | cfg.rb:183:1:183:35 | WhileModifier | semmle.label | false |
-| cfg.rb:177:11:177:12 | 10 | cfg.rb:177:7:177:12 | Binary | semmle.label | successor |
-| cfg.rb:178:3:178:3 | x | cfg.rb:178:8:178:8 | 1 | semmle.label | successor |
-| cfg.rb:178:3:178:8 | OperatorAssignment | cfg.rb:179:3:179:25 | If | semmle.label | successor |
-| cfg.rb:178:8:178:8 | 1 | cfg.rb:178:3:178:8 | OperatorAssignment | semmle.label | successor |
-| cfg.rb:179:3:179:25 | If | cfg.rb:179:6:179:6 | x | semmle.label | successor |
-| cfg.rb:179:6:179:6 | x | cfg.rb:179:11:179:11 | 5 | semmle.label | successor |
-| cfg.rb:179:6:179:11 | Binary | cfg.rb:179:18:179:21 | Redo | semmle.label | true |
-| cfg.rb:179:6:179:11 | Binary | cfg.rb:180:8:180:8 | x | semmle.label | false |
-| cfg.rb:179:11:179:11 | 5 | cfg.rb:179:6:179:11 | Binary | semmle.label | successor |
-| cfg.rb:179:18:179:21 | Redo | cfg.rb:178:3:178:3 | x | semmle.label | successor |
-| cfg.rb:180:3:180:6 | puts | cfg.rb:180:3:180:8 | MethodCall | semmle.label | successor |
-| cfg.rb:180:3:180:8 | MethodCall | cfg.rb:177:7:177:7 | x | semmle.label | successor |
-| cfg.rb:180:8:180:8 | x | cfg.rb:180:3:180:6 | puts | semmle.label | successor |
-| cfg.rb:183:1:183:22 | ParenthesizedStatements | cfg.rb:183:30:183:30 | i | semmle.label | successor |
-| cfg.rb:183:1:183:35 | WhileModifier | cfg.rb:183:30:183:30 | i | semmle.label | successor |
-| cfg.rb:183:2:183:5 | puts | cfg.rb:183:2:183:13 | MethodCall | semmle.label | successor |
-| cfg.rb:183:2:183:13 | MethodCall | cfg.rb:183:16:183:16 | i | semmle.label | successor |
-| cfg.rb:183:7:183:13 | String | cfg.rb:183:2:183:5 | puts | semmle.label | successor |
-| cfg.rb:183:16:183:16 | i | cfg.rb:183:21:183:21 | 1 | semmle.label | successor |
-| cfg.rb:183:16:183:21 | OperatorAssignment | cfg.rb:183:1:183:22 | ParenthesizedStatements | semmle.label | successor |
-| cfg.rb:183:21:183:21 | 1 | cfg.rb:183:16:183:21 | OperatorAssignment | semmle.label | successor |
-| cfg.rb:183:30:183:30 | i | cfg.rb:183:35:183:35 | 0 | semmle.label | successor |
-| cfg.rb:183:30:183:35 | Binary | cfg.rb:183:7:183:13 | String | semmle.label | true |
-| cfg.rb:183:30:183:35 | Binary | cfg.rb:189:1:189:9 | run_block | semmle.label | false |
-| cfg.rb:183:35:183:35 | 0 | cfg.rb:183:30:183:35 | Binary | semmle.label | successor |
-| cfg.rb:185:1:187:3 | enter run_block | cfg.rb:186:3:186:10 | Yield | semmle.label | successor |
-| cfg.rb:186:3:186:10 | Yield | cfg.rb:186:9:186:10 | 42 | semmle.label | successor |
-| cfg.rb:189:1:189:9 | run_block | cfg.rb:189:1:189:23 | MethodCall | semmle.label | successor |
-| cfg.rb:189:1:189:23 | MethodCall | cfg.rb:1:1:194:1 | exit top-level (normal) | semmle.label | successor |
-| cfg.rb:189:11:189:23 | enter block | cfg.rb:189:14:189:14 | x | semmle.label | successor |
-| cfg.rb:189:11:189:23 | exit block (normal) | cfg.rb:189:11:189:23 | exit block | semmle.label | successor |
-| cfg.rb:189:14:189:14 | x | cfg.rb:189:21:189:21 | x | semmle.label | successor |
-| cfg.rb:189:16:189:19 | puts | cfg.rb:189:16:189:21 | MethodCall | semmle.label | successor |
-| cfg.rb:189:16:189:21 | MethodCall | cfg.rb:189:11:189:23 | exit block (normal) | semmle.label | successor |
-| cfg.rb:189:21:189:21 | x | cfg.rb:189:16:189:19 | puts | semmle.label | successor |
-| exit.rb:1:1:6:3 | enter m1 | exit.rb:1:8:1:8 | x | semmle.label | successor |
-| exit.rb:1:1:6:3 | exit m1 (abnormal) | exit.rb:1:1:6:3 | exit m1 | semmle.label | successor |
-| exit.rb:1:1:6:3 | exit m1 (normal) | exit.rb:1:1:6:3 | exit m1 | semmle.label | successor |
-| exit.rb:1:8:1:8 | x | exit.rb:2:3:4:5 | If | semmle.label | successor |
-| exit.rb:2:3:4:5 | If | exit.rb:2:6:2:6 | x | semmle.label | successor |
-| exit.rb:2:6:2:6 | x | exit.rb:2:10:2:10 | 2 | semmle.label | successor |
-| exit.rb:2:6:2:10 | Binary | exit.rb:3:10:3:10 | 1 | semmle.label | true |
-| exit.rb:2:6:2:10 | Binary | exit.rb:5:8:5:15 | String | semmle.label | false |
-| exit.rb:2:10:2:10 | 2 | exit.rb:2:6:2:10 | Binary | semmle.label | successor |
-| exit.rb:3:5:3:8 | exit | exit.rb:3:5:3:10 | MethodCall | semmle.label | successor |
-| exit.rb:3:5:3:10 | MethodCall | exit.rb:1:1:6:3 | exit m1 (abnormal) | semmle.label | exit |
-| exit.rb:3:10:3:10 | 1 | exit.rb:3:5:3:8 | exit | semmle.label | successor |
-| exit.rb:5:3:5:6 | puts | exit.rb:5:3:5:15 | MethodCall | semmle.label | successor |
-| exit.rb:5:3:5:15 | MethodCall | exit.rb:1:1:6:3 | exit m1 (normal) | semmle.label | successor |
-| exit.rb:5:8:5:15 | String | exit.rb:5:3:5:6 | puts | semmle.label | successor |
-| exit.rb:8:1:13:3 | enter m2 | exit.rb:8:8:8:8 | x | semmle.label | successor |
-| exit.rb:8:1:13:3 | exit m2 (abnormal) | exit.rb:8:1:13:3 | exit m2 | semmle.label | successor |
-| exit.rb:8:1:13:3 | exit m2 (normal) | exit.rb:8:1:13:3 | exit m2 | semmle.label | successor |
-| exit.rb:8:8:8:8 | x | exit.rb:9:3:11:5 | If | semmle.label | successor |
-| exit.rb:9:3:11:5 | If | exit.rb:9:6:9:6 | x | semmle.label | successor |
-| exit.rb:9:6:9:6 | x | exit.rb:9:10:9:10 | 2 | semmle.label | successor |
-| exit.rb:9:6:9:10 | Binary | exit.rb:10:11:10:18 | String | semmle.label | true |
-| exit.rb:9:6:9:10 | Binary | exit.rb:12:8:12:15 | String | semmle.label | false |
-| exit.rb:9:10:9:10 | 2 | exit.rb:9:6:9:10 | Binary | semmle.label | successor |
-| exit.rb:10:5:10:9 | abort | exit.rb:10:5:10:18 | MethodCall | semmle.label | successor |
-| exit.rb:10:5:10:18 | MethodCall | exit.rb:8:1:13:3 | exit m2 (abnormal) | semmle.label | exit |
-| exit.rb:10:11:10:18 | String | exit.rb:10:5:10:9 | abort | semmle.label | successor |
-| exit.rb:12:3:12:6 | puts | exit.rb:12:3:12:15 | MethodCall | semmle.label | successor |
-| exit.rb:12:3:12:15 | MethodCall | exit.rb:8:1:13:3 | exit m2 (normal) | semmle.label | successor |
-| exit.rb:12:8:12:15 | String | exit.rb:12:3:12:6 | puts | semmle.label | successor |
-| ifs.rb:1:1:9:3 | enter m1 | ifs.rb:1:8:1:8 | x | semmle.label | successor |
-| ifs.rb:1:1:9:3 | exit m1 (normal) | ifs.rb:1:1:9:3 | exit m1 | semmle.label | successor |
-| ifs.rb:1:8:1:8 | x | ifs.rb:2:3:8:5 | If | semmle.label | successor |
-| ifs.rb:2:3:8:5 | If | ifs.rb:2:6:2:6 | x | semmle.label | successor |
-| ifs.rb:2:6:2:6 | x | ifs.rb:2:10:2:10 | 2 | semmle.label | successor |
-| ifs.rb:2:6:2:10 | Binary | ifs.rb:3:10:3:30 | String | semmle.label | true |
-| ifs.rb:2:6:2:10 | Binary | ifs.rb:4:3:7:35 | Elsif | semmle.label | false |
-| ifs.rb:2:10:2:10 | 2 | ifs.rb:2:6:2:10 | Binary | semmle.label | successor |
-| ifs.rb:3:5:3:8 | puts | ifs.rb:3:5:3:30 | MethodCall | semmle.label | successor |
-| ifs.rb:3:5:3:30 | MethodCall | ifs.rb:1:1:9:3 | exit m1 (normal) | semmle.label | successor |
-| ifs.rb:3:10:3:30 | String | ifs.rb:3:5:3:8 | puts | semmle.label | successor |
-| ifs.rb:4:3:7:35 | Elsif | ifs.rb:4:9:4:9 | x | semmle.label | successor |
-| ifs.rb:4:9:4:9 | x | ifs.rb:4:14:4:14 | 2 | semmle.label | successor |
-| ifs.rb:4:9:4:14 | Binary | ifs.rb:4:9:4:24 | [false] Binary | semmle.label | false |
-| ifs.rb:4:9:4:14 | Binary | ifs.rb:4:20:4:20 | x | semmle.label | true |
-| ifs.rb:4:9:4:24 | [false] Binary | ifs.rb:4:9:4:38 | [false] Binary | semmle.label | false |
-| ifs.rb:4:9:4:24 | [true] Binary | ifs.rb:4:32:4:32 | x | semmle.label | true |
-| ifs.rb:4:9:4:38 | [false] Binary | ifs.rb:7:10:7:35 | String | semmle.label | false |
-| ifs.rb:4:9:4:38 | [true] Binary | ifs.rb:5:10:5:17 | String | semmle.label | true |
-| ifs.rb:4:14:4:14 | 2 | ifs.rb:4:9:4:14 | Binary | semmle.label | successor |
-| ifs.rb:4:20:4:20 | x | ifs.rb:4:24:4:24 | 0 | semmle.label | successor |
-| ifs.rb:4:20:4:24 | Binary | ifs.rb:4:9:4:24 | [false] Binary | semmle.label | false |
-| ifs.rb:4:20:4:24 | Binary | ifs.rb:4:9:4:24 | [true] Binary | semmle.label | true |
-| ifs.rb:4:24:4:24 | 0 | ifs.rb:4:20:4:24 | Binary | semmle.label | successor |
-| ifs.rb:4:30:4:38 | [false] Unary | ifs.rb:4:9:4:38 | [false] Binary | semmle.label | false |
-| ifs.rb:4:30:4:38 | [true] Unary | ifs.rb:4:9:4:38 | [true] Binary | semmle.label | true |
-| ifs.rb:4:31:4:38 | [false] ParenthesizedStatements | ifs.rb:4:30:4:38 | [true] Unary | semmle.label | false |
-| ifs.rb:4:31:4:38 | [true] ParenthesizedStatements | ifs.rb:4:30:4:38 | [false] Unary | semmle.label | true |
-| ifs.rb:4:32:4:32 | x | ifs.rb:4:37:4:37 | 5 | semmle.label | successor |
-| ifs.rb:4:32:4:37 | Binary | ifs.rb:4:31:4:38 | [false] ParenthesizedStatements | semmle.label | false |
-| ifs.rb:4:32:4:37 | Binary | ifs.rb:4:31:4:38 | [true] ParenthesizedStatements | semmle.label | true |
-| ifs.rb:4:37:4:37 | 5 | ifs.rb:4:32:4:37 | Binary | semmle.label | successor |
-| ifs.rb:5:5:5:8 | puts | ifs.rb:5:5:5:17 | MethodCall | semmle.label | successor |
-| ifs.rb:5:5:5:17 | MethodCall | ifs.rb:1:1:9:3 | exit m1 (normal) | semmle.label | successor |
-| ifs.rb:5:10:5:17 | String | ifs.rb:5:5:5:8 | puts | semmle.label | successor |
-| ifs.rb:7:5:7:8 | puts | ifs.rb:7:5:7:35 | MethodCall | semmle.label | successor |
-| ifs.rb:7:5:7:35 | MethodCall | ifs.rb:1:1:9:3 | exit m1 (normal) | semmle.label | successor |
-| ifs.rb:7:10:7:35 | String | ifs.rb:7:5:7:8 | puts | semmle.label | successor |
-| ifs.rb:11:1:16:3 | enter m2 | ifs.rb:11:8:11:8 | b | semmle.label | successor |
-| ifs.rb:11:1:16:3 | exit m2 (normal) | ifs.rb:11:1:16:3 | exit m2 | semmle.label | successor |
-| ifs.rb:11:8:11:8 | b | ifs.rb:12:3:14:5 | If | semmle.label | successor |
-| ifs.rb:12:3:14:5 | If | ifs.rb:12:6:12:6 | b | semmle.label | successor |
-| ifs.rb:12:6:12:6 | b | ifs.rb:13:12:13:12 | 0 | semmle.label | true |
-| ifs.rb:12:6:12:6 | b | ifs.rb:15:10:15:10 | 1 | semmle.label | false |
-| ifs.rb:13:5:13:12 | Return | ifs.rb:11:1:16:3 | exit m2 (normal) | semmle.label | return |
-| ifs.rb:13:12:13:12 | 0 | ifs.rb:13:5:13:12 | Return | semmle.label | successor |
-| ifs.rb:15:3:15:10 | Return | ifs.rb:11:1:16:3 | exit m2 (normal) | semmle.label | return |
-| ifs.rb:15:10:15:10 | 1 | ifs.rb:15:3:15:10 | Return | semmle.label | successor |
-| ifs.rb:18:1:26:3 | enter m3 | ifs.rb:18:8:18:8 | x | semmle.label | successor |
-| ifs.rb:18:1:26:3 | exit m3 (normal) | ifs.rb:18:1:26:3 | exit m3 | semmle.label | successor |
-| ifs.rb:18:8:18:8 | x | ifs.rb:19:3:24:5 | If | semmle.label | successor |
-| ifs.rb:19:3:24:5 | If | ifs.rb:19:6:19:6 | x | semmle.label | successor |
-| ifs.rb:19:6:19:6 | x | ifs.rb:19:10:19:10 | 0 | semmle.label | successor |
-| ifs.rb:19:6:19:10 | Binary | ifs.rb:20:10:20:10 | x | semmle.label | true |
-| ifs.rb:19:6:19:10 | Binary | ifs.rb:25:8:25:8 | x | semmle.label | false |
-| ifs.rb:19:10:19:10 | 0 | ifs.rb:19:6:19:10 | Binary | semmle.label | successor |
-| ifs.rb:20:5:20:5 | x | ifs.rb:20:5:20:10 | Assignment | semmle.label | successor |
-| ifs.rb:20:5:20:10 | Assignment | ifs.rb:21:5:23:7 | If | semmle.label | successor |
-| ifs.rb:20:9:20:10 | Unary | ifs.rb:20:5:20:5 | x | semmle.label | successor |
-| ifs.rb:20:10:20:10 | x | ifs.rb:20:9:20:10 | Unary | semmle.label | successor |
-| ifs.rb:21:5:23:7 | If | ifs.rb:21:8:21:8 | x | semmle.label | successor |
-| ifs.rb:21:8:21:8 | x | ifs.rb:21:12:21:13 | 10 | semmle.label | successor |
-| ifs.rb:21:8:21:13 | Binary | ifs.rb:22:11:22:11 | x | semmle.label | true |
-| ifs.rb:21:8:21:13 | Binary | ifs.rb:25:8:25:8 | x | semmle.label | false |
-| ifs.rb:21:12:21:13 | 10 | ifs.rb:21:8:21:13 | Binary | semmle.label | successor |
-| ifs.rb:22:7:22:7 | x | ifs.rb:22:7:22:15 | Assignment | semmle.label | successor |
-| ifs.rb:22:7:22:15 | Assignment | ifs.rb:25:8:25:8 | x | semmle.label | successor |
-| ifs.rb:22:11:22:11 | x | ifs.rb:22:15:22:15 | 1 | semmle.label | successor |
-| ifs.rb:22:11:22:15 | Binary | ifs.rb:22:7:22:7 | x | semmle.label | successor |
-| ifs.rb:22:15:22:15 | 1 | ifs.rb:22:11:22:15 | Binary | semmle.label | successor |
-| ifs.rb:25:3:25:6 | puts | ifs.rb:25:3:25:8 | MethodCall | semmle.label | successor |
-| ifs.rb:25:3:25:8 | MethodCall | ifs.rb:18:1:26:3 | exit m3 (normal) | semmle.label | successor |
-| ifs.rb:25:8:25:8 | x | ifs.rb:25:3:25:6 | puts | semmle.label | successor |
-| loops.rb:1:1:6:3 | enter m1 | loops.rb:1:8:1:8 | x | semmle.label | successor |
-| loops.rb:1:1:6:3 | exit m1 (normal) | loops.rb:1:1:6:3 | exit m1 | semmle.label | successor |
-| loops.rb:1:8:1:8 | x | loops.rb:2:3:5:5 | While | semmle.label | successor |
-| loops.rb:2:3:5:5 | While | loops.rb:2:9:2:9 | x | semmle.label | successor |
-| loops.rb:2:9:2:9 | x | loops.rb:2:14:2:14 | 0 | semmle.label | successor |
-| loops.rb:2:9:2:14 | Binary | loops.rb:1:1:6:3 | exit m1 (normal) | semmle.label | false |
-| loops.rb:2:9:2:14 | Binary | loops.rb:3:10:3:10 | x | semmle.label | true |
-| loops.rb:2:14:2:14 | 0 | loops.rb:2:9:2:14 | Binary | semmle.label | successor |
-| loops.rb:3:5:3:8 | puts | loops.rb:3:5:3:10 | MethodCall | semmle.label | successor |
-| loops.rb:3:5:3:10 | MethodCall | loops.rb:4:5:4:5 | x | semmle.label | successor |
-| loops.rb:3:10:3:10 | x | loops.rb:3:5:3:8 | puts | semmle.label | successor |
-| loops.rb:4:5:4:5 | x | loops.rb:4:10:4:10 | 1 | semmle.label | successor |
-| loops.rb:4:5:4:10 | OperatorAssignment | loops.rb:2:9:2:9 | x | semmle.label | successor |
-| loops.rb:4:10:4:10 | 1 | loops.rb:4:5:4:10 | OperatorAssignment | semmle.label | successor |
-| loops.rb:8:1:22:3 | enter m2 | loops.rb:8:8:8:8 | x | semmle.label | successor |
-| loops.rb:8:1:22:3 | exit m2 (normal) | loops.rb:8:1:22:3 | exit m2 | semmle.label | successor |
-| loops.rb:8:8:8:8 | x | loops.rb:9:3:20:5 | While | semmle.label | successor |
-| loops.rb:9:3:20:5 | While | loops.rb:9:9:9:9 | x | semmle.label | successor |
-| loops.rb:9:9:9:9 | x | loops.rb:9:14:9:14 | 0 | semmle.label | successor |
-| loops.rb:9:9:9:14 | Binary | loops.rb:10:10:10:10 | x | semmle.label | true |
-| loops.rb:9:9:9:14 | Binary | loops.rb:21:8:21:13 | String | semmle.label | false |
-| loops.rb:9:14:9:14 | 0 | loops.rb:9:9:9:14 | Binary | semmle.label | successor |
-| loops.rb:10:5:10:8 | puts | loops.rb:10:5:10:10 | MethodCall | semmle.label | successor |
-| loops.rb:10:5:10:10 | MethodCall | loops.rb:11:5:11:5 | x | semmle.label | successor |
-| loops.rb:10:10:10:10 | x | loops.rb:10:5:10:8 | puts | semmle.label | successor |
-| loops.rb:11:5:11:5 | x | loops.rb:11:10:11:10 | 1 | semmle.label | successor |
-| loops.rb:11:5:11:10 | OperatorAssignment | loops.rb:12:5:18:7 | If | semmle.label | successor |
-| loops.rb:11:10:11:10 | 1 | loops.rb:11:5:11:10 | OperatorAssignment | semmle.label | successor |
-| loops.rb:12:5:18:7 | If | loops.rb:12:8:12:8 | x | semmle.label | successor |
-| loops.rb:12:8:12:8 | x | loops.rb:12:12:12:14 | 100 | semmle.label | successor |
-| loops.rb:12:8:12:14 | Binary | loops.rb:13:7:13:11 | Break | semmle.label | true |
-| loops.rb:12:8:12:14 | Binary | loops.rb:14:5:17:10 | Elsif | semmle.label | false |
-| loops.rb:12:12:12:14 | 100 | loops.rb:12:8:12:14 | Binary | semmle.label | successor |
-| loops.rb:13:7:13:11 | Break | loops.rb:21:8:21:13 | String | semmle.label | break |
-| loops.rb:14:5:17:10 | Elsif | loops.rb:14:11:14:11 | x | semmle.label | successor |
-| loops.rb:14:11:14:11 | x | loops.rb:14:15:14:16 | 50 | semmle.label | successor |
-| loops.rb:14:11:14:16 | Binary | loops.rb:15:7:15:10 | Next | semmle.label | true |
-| loops.rb:14:11:14:16 | Binary | loops.rb:16:5:17:10 | Elsif | semmle.label | false |
-| loops.rb:14:15:14:16 | 50 | loops.rb:14:11:14:16 | Binary | semmle.label | successor |
-| loops.rb:15:7:15:10 | Next | loops.rb:9:9:9:9 | x | semmle.label | next |
-| loops.rb:16:5:17:10 | Elsif | loops.rb:16:11:16:11 | x | semmle.label | successor |
-| loops.rb:16:11:16:11 | x | loops.rb:16:15:16:16 | 10 | semmle.label | successor |
-| loops.rb:16:11:16:16 | Binary | loops.rb:17:7:17:10 | Redo | semmle.label | true |
-| loops.rb:16:11:16:16 | Binary | loops.rb:19:10:19:15 | String | semmle.label | false |
-| loops.rb:16:15:16:16 | 10 | loops.rb:16:11:16:16 | Binary | semmle.label | successor |
-| loops.rb:17:7:17:10 | Redo | loops.rb:10:10:10:10 | x | semmle.label | successor |
-| loops.rb:19:5:19:8 | puts | loops.rb:19:5:19:15 | MethodCall | semmle.label | successor |
-| loops.rb:19:5:19:15 | MethodCall | loops.rb:9:9:9:9 | x | semmle.label | successor |
-| loops.rb:19:10:19:15 | String | loops.rb:19:5:19:8 | puts | semmle.label | successor |
-| loops.rb:21:3:21:6 | puts | loops.rb:21:3:21:13 | MethodCall | semmle.label | successor |
-| loops.rb:21:3:21:13 | MethodCall | loops.rb:8:1:22:3 | exit m2 (normal) | semmle.label | successor |
-| loops.rb:21:8:21:13 | String | loops.rb:21:3:21:6 | puts | semmle.label | successor |
-| loops.rb:24:1:28:3 | enter m3 | loops.rb:25:4:25:4 | 1 | semmle.label | successor |
-| loops.rb:24:1:28:3 | exit m3 (normal) | loops.rb:24:1:28:3 | exit m3 | semmle.label | successor |
-| loops.rb:25:3:25:9 | Array | loops.rb:25:11:25:14 | each | semmle.label | successor |
-| loops.rb:25:3:25:14 | Call | loops.rb:25:3:27:5 | MethodCall | semmle.label | successor |
-| loops.rb:25:3:27:5 | MethodCall | loops.rb:24:1:28:3 | exit m3 (normal) | semmle.label | successor |
-| loops.rb:25:4:25:4 | 1 | loops.rb:25:6:25:6 | 2 | semmle.label | successor |
-| loops.rb:25:6:25:6 | 2 | loops.rb:25:8:25:8 | 3 | semmle.label | successor |
-| loops.rb:25:8:25:8 | 3 | loops.rb:25:3:25:9 | Array | semmle.label | successor |
-| loops.rb:25:11:25:14 | each | loops.rb:25:3:25:14 | Call | semmle.label | successor |
-| loops.rb:25:16:27:5 | enter do block | loops.rb:25:20:25:20 | x | semmle.label | successor |
-| loops.rb:25:16:27:5 | exit do block (normal) | loops.rb:25:16:27:5 | exit do block | semmle.label | successor |
-| loops.rb:25:20:25:20 | x | loops.rb:26:10:26:10 | x | semmle.label | successor |
-| loops.rb:26:5:26:8 | puts | loops.rb:26:5:26:10 | MethodCall | semmle.label | successor |
-| loops.rb:26:5:26:10 | MethodCall | loops.rb:25:16:27:5 | exit do block (normal) | semmle.label | successor |
-| loops.rb:26:10:26:10 | x | loops.rb:26:5:26:8 | puts | semmle.label | successor |
-| raise.rb:1:1:6:3 | enter m1 | raise.rb:1:8:1:8 | x | semmle.label | successor |
-| raise.rb:1:1:6:3 | exit m1 (abnormal) | raise.rb:1:1:6:3 | exit m1 | semmle.label | successor |
-| raise.rb:1:1:6:3 | exit m1 (normal) | raise.rb:1:1:6:3 | exit m1 | semmle.label | successor |
-| raise.rb:1:8:1:8 | x | raise.rb:2:3:4:5 | If | semmle.label | successor |
-| raise.rb:2:3:4:5 | If | raise.rb:2:6:2:6 | x | semmle.label | successor |
-| raise.rb:2:6:2:6 | x | raise.rb:2:10:2:10 | 2 | semmle.label | successor |
-| raise.rb:2:6:2:10 | Binary | raise.rb:3:11:3:17 | String | semmle.label | true |
-| raise.rb:2:6:2:10 | Binary | raise.rb:5:8:5:15 | String | semmle.label | false |
-| raise.rb:2:10:2:10 | 2 | raise.rb:2:6:2:10 | Binary | semmle.label | successor |
-| raise.rb:3:5:3:9 | raise | raise.rb:3:5:3:17 | MethodCall | semmle.label | successor |
-| raise.rb:3:5:3:17 | MethodCall | raise.rb:1:1:6:3 | exit m1 (abnormal) | semmle.label | raise |
-| raise.rb:3:11:3:17 | String | raise.rb:3:5:3:9 | raise | semmle.label | successor |
-| raise.rb:5:3:5:6 | puts | raise.rb:5:3:5:15 | MethodCall | semmle.label | successor |
-| raise.rb:5:3:5:15 | MethodCall | raise.rb:1:1:6:3 | exit m1 (normal) | semmle.label | successor |
-| raise.rb:5:8:5:15 | String | raise.rb:5:3:5:6 | puts | semmle.label | successor |
+break_ensure.rb:
+#    1| enter m1
+#-----|  -> elements
+
+#   13| enter m2
+#-----|  -> elements
+
+#   27| enter m3
+#-----|  -> elements
+
+case.rb:
+#    1| enter if_in_case
+#-----|  -> Case
+
+cfg.rb:
+#    1| enter top-level
+#-----|  -> Alias
+
+#   15| enter BEGIN block
+#-----|  -> BeginBlock
+
+#   19| enter END block
+#-----|  -> EndBlock
+
+#   25| enter block
+#-----|  -> x
+
+#   29| enter block
+#-----|  -> BlockParameter
+
+#   63| enter pattern
+#-----|  -> a
+
+#   69| enter print
+#-----|  -> String
+
+#  101| enter parameters
+#-----|  -> OptionalParameter
+
+#  120| enter lambda
+#-----|  -> x
+
+#  120| enter block
+#-----|  -> y
+
+#  142| enter print
+#-----|  -> String
+
+#  149| enter method
+#-----|  -> silly
+
+#  153| enter two_parameters
+#-----|  -> a
+
+#  185| enter run_block
+#-----|  -> Yield
+
+#  189| enter block
+#-----|  -> x
+
+exit.rb:
+#    1| enter m1
+#-----|  -> x
+
+#    8| enter m2
+#-----|  -> x
+
+ifs.rb:
+#    1| enter m1
+#-----|  -> x
+
+#   11| enter m2
+#-----|  -> b
+
+#   18| enter m3
+#-----|  -> x
+
+#   28| enter m4
+#-----|  -> b1
+
+loops.rb:
+#    1| enter m1
+#-----|  -> x
+
+#    8| enter m2
+#-----|  -> x
+
+#   24| enter m3
+#-----|  -> 1
+
+#   25| enter do block
+#-----|  -> x
+
+raise.rb:
+#    1| enter top-level
+#-----|  -> Class
+
+#    7| enter m1
+#-----|  -> x
+
+#   14| enter m2
+#-----|  -> b
+
+#   25| enter m3
+#-----|  -> b
+
+#   36| enter m4
+#-----|  -> b
+
+#   47| enter m5
+#-----|  -> b
+
+#   57| enter m6
+#-----|  -> b
+
+#   68| enter m7
+#-----|  -> x
+
+#   79| enter m8
+#-----|  -> x
+
+#   94| enter m9
+#-----|  -> x
+
+#  121| enter m10
+#-----|  -> OptionalParameter
+
+#  128| enter m11
+#-----|  -> b
+
+break_ensure.rb:
+#    1| elements
+#-----|  -> elements
+
+#    2| For
+#-----| non-empty -> element
+#-----| empty -> Ensure
+
+#    2| element
+#-----|  -> If
+
+#    2| elements
+#-----|  -> For
+
+#    3| If
+#-----|  -> x
+
+#    3| Binary
+#-----| false -> For
+#-----| true -> Break
+
+#    3| x
+#-----|  -> 0
+
+#    3| 0
+#-----|  -> Binary
+
+#    4| Break
+#-----| break -> Ensure
+
+#    7| Ensure
+#-----|  -> If
+
+#    8| If
+#-----|  -> elements
+
+#    8| Call
+#-----| true -> String
+#-----| false -> exit m1 (normal)
+
+#    8| elements
+#-----|  -> nil?
+
+#    8| nil?
+#-----|  -> Call
+
+#    9| MethodCall
+#-----|  -> exit m1 (normal)
+
+#    9| puts
+#-----|  -> MethodCall
+
+#    9| String
+#-----|  -> puts
+
+#   13| elements
+#-----|  -> elements
+
+#   14| For
+#-----| non-empty -> element
+#-----| empty -> exit m2 (normal)
+
+#   14| element
+#-----|  -> If
+
+#   14| elements
+#-----|  -> For
+
+#   16| If
+#-----|  -> x
+
+#   16| Binary
+#-----| true -> Break
+#-----| false -> Ensure
+
+#   16| x
+#-----|  -> 0
+
+#   16| 0
+#-----|  -> Binary
+
+#   17| Break
+#-----| break -> [ensure: break] Ensure
+
+#   19| Ensure
+#-----|  -> If
+
+#   19| [ensure: break] Ensure
+#-----|  -> [ensure: break] If
+
+#   20| If
+#-----|  -> elements
+
+#   20| [ensure: break] If
+#-----|  -> [ensure: break] elements
+
+#   20| Call
+#-----| false -> For
+#-----| true -> String
+
+#   20| [ensure: break] Call
+#-----| true -> [ensure: break] String
+#-----| false -> exit m2 (normal)
+
+#   20| elements
+#-----|  -> nil?
+
+#   20| [ensure: break] elements
+#-----|  -> [ensure: break] nil?
+
+#   20| nil?
+#-----|  -> Call
+
+#   20| [ensure: break] nil?
+#-----|  -> [ensure: break] Call
+
+#   21| MethodCall
+#-----|  -> For
+
+#   21| [ensure: break] MethodCall
+#-----| break -> exit m2 (normal)
+
+#   21| puts
+#-----|  -> MethodCall
+
+#   21| [ensure: break] puts
+#-----|  -> [ensure: break] MethodCall
+
+#   21| String
+#-----|  -> puts
+
+#   21| [ensure: break] String
+#-----|  -> [ensure: break] puts
+
+#   27| elements
+#-----|  -> If
+
+#   29| If
+#-----|  -> elements
+
+#   29| Call
+#-----| true -> Return
+#-----| false -> Ensure
+
+#   29| elements
+#-----|  -> nil?
+
+#   29| nil?
+#-----|  -> Call
+
+#   30| Return
+#-----| return -> [ensure: return] Ensure
+
+#   32| Ensure
+#-----|  -> elements
+
+#   32| [ensure: return] Ensure
+#-----|  -> [ensure: return] elements
+
+#   33| For
+#-----| non-empty -> element
+#-----| empty -> String
+
+#   33| [ensure: return] For
+#-----| non-empty -> [ensure: return] element
+#-----| return -> exit m3 (normal)
+
+#   33| element
+#-----|  -> If
+
+#   33| [ensure: return] element
+#-----|  -> [ensure: return] If
+
+#   33| elements
+#-----|  -> For
+
+#   33| [ensure: return] elements
+#-----|  -> [ensure: return] For
+
+#   35| If
+#-----|  -> x
+
+#   35| [ensure: return] If
+#-----|  -> [ensure: return] x
+
+#   35| Binary
+#-----| false -> For
+#-----| true -> Break
+
+#   35| [ensure: return] Binary
+#-----| false -> [ensure: return] For
+#-----| true -> [ensure: return] Break
+
+#   35| x
+#-----|  -> 0
+
+#   35| [ensure: return] x
+#-----|  -> [ensure: return] 0
+
+#   35| 0
+#-----|  -> Binary
+
+#   35| [ensure: return] 0
+#-----|  -> [ensure: return] Binary
+
+#   36| Break
+#-----| break -> String
+
+#   36| [ensure: return] Break
+#-----| return -> exit m3 (normal)
+
+#   41| MethodCall
+#-----|  -> exit m3 (normal)
+
+#   41| puts
+#-----|  -> MethodCall
+
+#   41| String
+#-----|  -> puts
+
+case.rb:
+#    2| Case
+#-----|  -> x1
+
+#    2| x1
+#-----|  -> When
+
+#    3| When
+#-----|  -> 1
+
+#    3| 1
+#-----| match -> If
+#-----| no-match -> When
+
+#    3| ParenthesizedStatements
+#-----|  -> exit if_in_case (normal)
+
+#    3| If
+#-----|  -> x2
+
+#    3| x2
+#-----| false -> ParenthesizedStatements
+#-----| true -> String
+
+#    3| MethodCall
+#-----|  -> ParenthesizedStatements
+
+#    3| puts
+#-----|  -> MethodCall
+
+#    3| String
+#-----|  -> puts
+
+#    4| When
+#-----|  -> 2
+
+#    4| 2
+#-----| match -> String
+#-----| no-match -> exit if_in_case (normal)
+
+#    4| MethodCall
+#-----|  -> exit if_in_case (normal)
+
+#    4| puts
+#-----|  -> MethodCall
+
+#    4| String
+#-----|  -> puts
+
+cfg.rb:
+#    3| Alias
+#-----|  -> foo
+
+#    3| foo
+#-----|  -> bar
+
+#    3| bar
+#-----|  -> 42
+
+#    5| Assignment
+#-----|  -> b
+
+#    5| b
+#-----|  -> Assignment
+
+#    5| 42
+#-----|  -> b
+
+#    7| SymbolArray
+#-----|  -> b
+
+#    7| BareSymbol
+#-----|  -> BareSymbol
+
+#    7| Interpolation
+#-----|  -> BareSymbol
+
+#    7| b
+#-----|  -> Interpolation
+
+#    7| BareSymbol
+#-----|  -> SymbolArray
+
+#    9| StringArray
+#-----|  -> 4
+
+#    9| BareString
+#-----|  -> BareString
+
+#    9| Interpolation
+#-----|  -> BareString
+
+#    9| b
+#-----|  -> Interpolation
+
+#    9| BareString
+#-----|  -> StringArray
+
+#   12| MethodCall
+#-----|  -> 41
+
+#   12| puts
+#-----|  -> MethodCall
+
+#   12| 4
+#-----|  -> puts
+
+#   15| BeginBlock
+#-----|  -> String
+
+#   16| MethodCall
+#-----|  -> exit BEGIN block (normal)
+
+#   16| puts
+#-----|  -> MethodCall
+
+#   16| String
+#-----|  -> puts
+
+#   19| EndBlock
+#-----|  -> String
+
+#   20| MethodCall
+#-----|  -> exit END block (normal)
+
+#   20| puts
+#-----|  -> MethodCall
+
+#   20| String
+#-----|  -> puts
+
+#   23| Binary
+#-----|  -> 2
+
+#   23| 41
+#-----|  -> 1
+
+#   23| 1
+#-----|  -> Binary
+
+#   25| MethodCall
+#-----|  -> Symbol
+
+#   25| Call
+#-----|  -> MethodCall
+
+#   25| 2
+#-----|  -> times
+
+#   25| times
+#-----|  -> Call
+
+#   25| x
+#-----|  -> x
+
+#   25| MethodCall
+#-----|  -> exit block (normal)
+
+#   25| puts
+#-----|  -> MethodCall
+
+#   25| x
+#-----|  -> puts
+
+#   27| MethodCall
+#-----|  -> Proc
+
+#   27| puts
+#-----|  -> MethodCall
+
+#   27| BlockArgument
+#-----|  -> puts
+
+#   27| Symbol
+#-----|  -> BlockArgument
+
+#   29| MethodCall
+#-----|  -> While
+
+#   29| Call
+#-----|  -> MethodCall
+
+#   29| Proc
+#-----|  -> new
+
+#   29| new
+#-----|  -> Call
+
+#   29| BlockParameter
+#-----|  -> x
+
+#   29| Call
+#-----|  -> exit block (normal)
+
+#   29| x
+#-----|  -> call
+
+#   29| call
+#-----|  -> Call
+
+#   31| While
+#-----|  -> true
+
+#   31| true
+#-----| true -> 1
+
+#   32| Break
+#-----| break -> If
+
+#   32| 1
+#-----|  -> Break
+
+#   35| If
+#-----|  -> false
+
+#   35| false
+#-----| false -> 42
+
+#   39| MethodCall
+#-----|  -> Case
+
+#   39| Call
+#-----|  -> MethodCall
+
+#   39| self
+#-----|  -> puts
+
+#   39| puts
+#-----|  -> Call
+
+#   39| 42
+#-----|  -> self
+
+#   41| Case
+#-----|  -> 10
+
+#   41| 10
+#-----|  -> When
+
+#   42| When
+#-----|  -> 1
+
+#   42| 1
+#-----| match -> String
+#-----| no-match -> When
+
+#   42| MethodCall
+#-----|  -> Case
+
+#   42| puts
+#-----|  -> MethodCall
+
+#   42| String
+#-----|  -> puts
+
+#   43| When
+#-----|  -> 2
+
+#   43| 2
+#-----| no-match -> 3
+#-----| match -> String
+
+#   43| 3
+#-----| no-match -> 4
+#-----| match -> String
+
+#   43| 4
+#-----| match -> String
+#-----| no-match -> String
+
+#   43| MethodCall
+#-----|  -> Case
+
+#   43| puts
+#-----|  -> MethodCall
+
+#   43| String
+#-----|  -> puts
+
+#   44| MethodCall
+#-----|  -> Case
+
+#   44| puts
+#-----|  -> MethodCall
+
+#   44| String
+#-----|  -> puts
+
+#   47| Case
+#-----|  -> When
+
+#   48| When
+#-----|  -> b
+
+#   48| Binary
+#-----| true -> String
+#-----| false -> When
+
+#   48| b
+#-----|  -> 1
+
+#   48| 1
+#-----|  -> Binary
+
+#   48| MethodCall
+#-----|  -> String
+
+#   48| puts
+#-----|  -> MethodCall
+
+#   48| String
+#-----|  -> puts
+
+#   49| When
+#-----|  -> b
+
+#   49| Binary
+#-----| false -> b
+#-----| true -> String
+
+#   49| b
+#-----|  -> 0
+
+#   49| 0
+#-----|  -> Binary
+
+#   49| Binary
+#-----| true -> String
+#-----| false -> String
+
+#   49| b
+#-----|  -> 1
+
+#   49| 1
+#-----|  -> Binary
+
+#   49| MethodCall
+#-----|  -> String
+
+#   49| puts
+#-----|  -> MethodCall
+
+#   49| String
+#-----|  -> puts
+
+#   52| Assignment
+#-----|  -> ?\x40
+
+#   52| chained
+#-----|  -> Assignment
+
+#   52| String
+#-----|  -> chained
+
+#   52| String
+#-----|  -> String
+
+#   52| Interpolation
+#-----|  -> String
+
+#   52| chained
+#-----|  -> Interpolation
+
+#   52| String
+#-----|  -> chained
+
+#   54| Assignment
+#-----|  -> Class
+
+#   54| character
+#-----|  -> Assignment
+
+#   54| ?\x40
+#-----|  -> character
+
+#   58| Class
+#-----|  -> Silly
+
+#   58| Silly
+#-----|  -> Object
+
+#   58| Superclass
+#-----|  -> 10-2i
+
+#   58| Object
+#-----|  -> Superclass
+
+#   59| Assignment
+#-----|  -> Conditional
+
+#   59| complex
+#-----|  -> Assignment
+
+#   59| 10-2i
+#-----|  -> complex
+
+#   60| Assignment
+#-----|  -> String
+
+#   60| conditional
+#-----|  -> Assignment
+
+#   60| Conditional
+#-----|  -> b
+
+#   60| Binary
+#-----| true -> String
+#-----| false -> String
+
+#   60| b
+#-----|  -> 10
+
+#   60| 10
+#-----|  -> Binary
+
+#   60| String
+#-----|  -> conditional
+
+#   60| String
+#-----|  -> conditional
+
+#   61| Assignment
+#-----|  -> 1
+
+#   61| C
+#-----|  -> Assignment
+
+#   61| String
+#-----|  -> C
+
+#   62| Assignment
+#-----|  -> 1
+
+#   62| DestructuredLeftAssignment
+#-----|  -> Assignment
+
+#   62| x
+#-----|  -> y
+
+#   62| DestructuredLeftAssignment
+#-----|  -> DestructuredLeftAssignment
+
+#   62| y
+#-----|  -> z
+
+#   62| z
+#-----|  -> DestructuredLeftAssignment
+
+#   62| Array
+#-----|  -> x
+
+#   62| 1
+#-----|  -> 2
+
+#   62| Array
+#-----|  -> Array
+
+#   62| 2
+#-----|  -> 3
+
+#   62| 3
+#-----|  -> Array
+
+#   63| DestructuredParameter
+#-----|  -> a
+
+#   63| a
+#-----|  -> b
+
+#   63| b
+#-----|  -> DestructuredParameter
+
+#   64| MethodCall
+#-----|  -> b
+
+#   64| puts
+#-----|  -> MethodCall
+
+#   64| a
+#-----|  -> puts
+
+#   65| MethodCall
+#-----|  -> exit pattern (normal)
+
+#   65| puts
+#-----|  -> MethodCall
+
+#   65| b
+#-----|  -> puts
+
+#   67| Assignment
+#-----|  -> items
+
+#   67| items
+#-----|  -> Assignment
+
+#   67| Array
+#-----|  -> items
+
+#   67| 1
+#-----|  -> 2
+
+#   67| 2
+#-----|  -> 3
+
+#   67| 3
+#-----|  -> Array
+
+#   68| MethodCall
+#-----|  -> 42
+
+#   68| puts
+#-----|  -> MethodCall
+
+#   68| ElementReference
+#-----|  -> puts
+
+#   68| items
+#-----|  -> 2
+
+#   68| 2
+#-----|  -> ElementReference
+
+#   70| MethodCall
+#-----|  -> exit print (normal)
+
+#   70| puts
+#-----|  -> MethodCall
+
+#   70| String
+#-----|  -> puts
+
+#   74| Assignment
+#-----|  -> If
+
+#   74| x
+#-----|  -> Assignment
+
+#   74| 42
+#-----|  -> x
+
+#   75| If
+#-----|  -> x
+
+#   75| Binary
+#-----| true -> 0
+#-----| false -> Elsif
+
+#   75| x
+#-----|  -> 0
+
+#   75| 0
+#-----|  -> Binary
+
+#   75| 0
+#-----|  -> ;
+
+#   75| Elsif
+#-----|  -> x
+
+#   75| Binary
+#-----| true -> 10
+#-----| false -> x
+
+#   75| x
+#-----|  -> 10
+
+#   75| 10
+#-----|  -> Binary
+
+#   75| 10
+#-----|  -> ;
+
+#   75| x
+#-----|  -> ;
+
+#   78| ;
+#-----|  -> String
+
+#   83| MethodCall
+#-----|  -> Ensure
+
+#   83| puts
+#-----|  -> MethodCall
+
+#   83| String
+#-----|  -> puts
+
+#   84| Ensure
+#-----|  -> String
+
+#   85| MethodCall
+#-----|  -> x
+
+#   85| puts
+#-----|  -> MethodCall
+
+#   85| String
+#-----|  -> puts
+
+#   88| Assignment
+#-----|  -> 1.4
+
+#   88| escape
+#-----|  -> Assignment
+
+#   88| String
+#-----|  -> escape
+
+#   88| Interpolation
+#-----|  -> String
+
+#   88| x
+#-----|  -> Interpolation
+
+#   90| For
+#-----| non-empty -> x
+#-----| empty -> 42
+
+#   90| x
+#-----|  -> If
+
+#   90| Array
+#-----|  -> For
+
+#   90| 1.4
+#-----|  -> 2.5
+
+#   90| 2.5
+#-----|  -> 3.4e5
+
+#   90| 3.4e5
+#-----|  -> Array
+
+#   91| If
+#-----|  -> x
+
+#   91| Binary
+#-----| true -> Next
+#-----| false -> x
+
+#   91| x
+#-----|  -> 3
+
+#   91| 3
+#-----|  -> Binary
+
+#   91| Next
+#-----| next -> For
+
+#   92| MethodCall
+#-----|  -> For
+
+#   92| puts
+#-----|  -> MethodCall
+
+#   92| x
+#-----|  -> puts
+
+#   95| Assignment
+#-----|  -> String
+
+#   95| $global
+#-----|  -> Assignment
+
+#   95| 42
+#-----|  -> $global
+
+#   97| Assignment
+#-----|  -> map1
+
+#   97| map1
+#-----|  -> Assignment
+
+#   97| Hash
+#-----|  -> map1
+
+#   97| Pair
+#-----|  -> String
+
+#   97| String
+#-----|  -> String
+
+#   97| String
+#-----|  -> Pair
+
+#   97| Pair
+#-----|  -> Hash
+
+#   97| String
+#-----|  -> String
+
+#   97| String
+#-----|  -> Pair
+
+#   98| Assignment
+#-----|  -> String
+
+#   98| map2
+#-----|  -> Assignment
+
+#   98| Hash
+#-----|  -> map2
+
+#   98| HashSplatArgument
+#-----|  -> String
+
+#   98| map1
+#-----|  -> HashSplatArgument
+
+#   98| Pair
+#-----|  -> map1
+
+#   98| String
+#-----|  -> String
+
+#   98| String
+#-----|  -> Pair
+
+#   98| HashSplatArgument
+#-----|  -> Hash
+
+#   98| map1
+#-----|  -> HashSplatArgument
+
+#  101| OptionalParameter
+#-----| no-match -> 42
+#-----| match -> KeywordParameter
+
+#  101| 42
+#-----|  -> KeywordParameter
+
+#  101| KeywordParameter
+#-----|  -> HashSplatParameter
+
+#  101| HashSplatParameter
+#-----|  -> value
+
+#  102| MethodCall
+#-----|  -> kwargs
+
+#  102| puts
+#-----|  -> MethodCall
+
+#  102| value
+#-----|  -> puts
+
+#  103| Return
+#-----| return -> exit parameters (normal)
+
+#  103| ElementReference
+#-----|  -> Return
+
+#  103| kwargs
+#-----|  -> key
+
+#  103| key
+#-----|  -> ElementReference
+
+#  106| Assignment
+#-----|  -> String
+
+#  106| type
+#-----|  -> Assignment
+
+#  106| String
+#-----|  -> type
+
+#  107| Assignment
+#-----|  -> <<SQL
+
+#  107| table
+#-----|  -> Assignment
+
+#  107| String
+#-----|  -> table
+
+#  108| MethodCall
+#-----|  -> IfModifier
+
+#  108| puts
+#-----|  -> MethodCall
+
+#  108| ParenthesizedStatements
+#-----|  -> puts
+
+#  108| <<SQL
+#-----|  -> table
+
+#  108| HeredocBody
+#-----|  -> ParenthesizedStatements
+
+#  109| Interpolation
+#-----|  -> type
+
+#  109| table
+#-----|  -> Interpolation
+
+#  110| Interpolation
+#-----|  -> HeredocBody
+
+#  110| type
+#-----|  -> Interpolation
+
+#  113| IfModifier
+#-----|  -> b
+
+#  113| MethodCall
+#-----|  -> Class
+
+#  113| puts
+#-----|  -> MethodCall
+
+#  113| String
+#-----|  -> puts
+
+#  113| Binary
+#-----| true -> String
+#-----| false -> Class
+
+#  113| b
+#-----|  -> 10
+
+#  113| 10
+#-----|  -> Binary
+
+#  115| Class
+#-----|  -> C
+
+#  115| C
+#-----|  -> 42
+
+#  116| Assignment
+#-----|  -> 10
+
+#  116| @field
+#-----|  -> Assignment
+
+#  116| 42
+#-----|  -> @field
+
+#  117| Assignment
+#-----|  -> swap
+
+#  117| @@static_field
+#-----|  -> Assignment
+
+#  117| 10
+#-----|  -> @@static_field
+
+#  120| Assignment
+#-----|  -> Module
+
+#  120| swap
+#-----|  -> Assignment
+
+#  120| DestructuredParameter
+#-----|  -> exit lambda (normal)
+
+#  120| x
+#-----|  -> y
+
+#  120| y
+#-----|  -> DestructuredParameter
+
+#  120| Array
+#-----|  -> exit block (normal)
+
+#  120| y
+#-----|  -> x
+
+#  120| x
+#-----|  -> Array
+
+#  122| Module
+#-----|  -> M
+
+#  122| M
+#-----|  -> nil
+
+#  123| Assignment
+#-----|  -> 2
+
+#  123| nothing
+#-----|  -> Assignment
+
+#  123| nil
+#-----|  -> nothing
+
+#  124| Assignment
+#-----|  -> some
+
+#  124| some
+#-----|  -> Assignment
+
+#  124| 2
+#-----|  -> some
+
+#  125| OperatorAssignment
+#-----|  -> 2
+
+#  125| some
+#-----|  -> 10
+
+#  125| 10
+#-----|  -> OperatorAssignment
+
+#  126| Assignment
+#-----|  -> 0
+
+#  126| last
+#-----|  -> Assignment
+
+#  126| ParenthesizedStatements
+#-----|  -> last
+
+#  126| 2
+#-----|  -> 4
+
+#  126| 4
+#-----|  -> 7
+
+#  126| 7
+#-----|  -> ParenthesizedStatements
+
+#  127| Assignment
+#-----|  -> 1
+
+#  127| range
+#-----|  -> Assignment
+
+#  127| Range
+#-----|  -> range
+
+#  127| 0
+#-----|  -> 9
+
+#  127| 9
+#-----|  -> Range
+
+#  128| Assignment
+#-----|  -> range
+
+#  128| half
+#-----|  -> Assignment
+
+#  128| Binary
+#-----|  -> half
+
+#  128| Binary
+#-----|  -> 1
+
+#  128| 1
+#-----|  -> Rational
+
+#  128| Rational
+#-----|  -> Binary
+
+#  128| Binary
+#-----|  -> Binary
+
+#  128| 1
+#-----|  -> Rational
+
+#  128| Rational
+#-----|  -> Binary
+
+#  129| Assignment
+#-----|  -> 5
+
+#  129| regex
+#-----|  -> Assignment
+
+#  129| Regex
+#-----|  -> regex
+
+#  129| Interpolation
+#-----|  -> Regex
+
+#  129| range
+#-----|  -> Interpolation
+
+#  130| Assignment
+#-----|  -> RescueModifier
+
+#  130| Constant
+#-----|  -> Assignment
+
+#  130| 5
+#-----|  -> Constant
+
+#  133| RescueModifier
+#-----|  -> 1
+
+#  133| Binary
+#-----| raise -> String
+#-----|  -> 1
+
+#  133| 1
+#-----|  -> 0
+
+#  133| 0
+#-----|  -> Binary
+
+#  133| MethodCall
+#-----|  -> 1
+
+#  133| puts
+#-----|  -> MethodCall
+
+#  133| String
+#-----|  -> puts
+
+#  135| Assignment
+#-----|  -> M
+
+#  135| DestructuredLeftAssignment
+#-----|  -> Assignment
+
+#  135| RestAssignment
+#-----|  -> last
+
+#  135| init
+#-----|  -> RestAssignment
+
+#  135| last
+#-----|  -> DestructuredLeftAssignment
+
+#  135| 1
+#-----|  -> 2
+
+#  135| 2
+#-----|  -> 3
+
+#  135| 3
+#-----|  -> init
+
+#  137| ScopeResolution
+#-----|  -> M
+
+#  137| M
+#-----|  -> Constant
+
+#  137| Constant
+#-----|  -> ScopeResolution
+
+#  138| ScopeResolution
+#-----|  -> Silly
+
+#  138| Call
+#-----|  -> Constant
+
+#  138| M
+#-----|  -> itself
+
+#  138| itself
+#-----|  -> Call
+
+#  138| Constant
+#-----|  -> ScopeResolution
+
+#  140| Call
+#-----|  -> Silly
+
+#  140| Silly
+#-----|  -> itself
+
+#  140| itself
+#-----|  -> Call
+
+#  143| MethodCall
+#-----|  -> super
+
+#  143| puts
+#-----|  -> MethodCall
+
+#  143| String
+#-----|  -> puts
+
+#  144| MethodCall
+#-----|  -> exit print (normal)
+
+#  144| puts
+#-----|  -> MethodCall
+
+#  144| MethodCall
+#-----|  -> puts
+
+#  144| Call
+#-----|  -> MethodCall
+
+#  144| super
+#-----|  -> print
+
+#  144| print
+#-----|  -> Call
+
+#  148| Assignment
+#-----|  -> 1
+
+#  148| silly
+#-----|  -> Assignment
+
+#  148| Call
+#-----|  -> silly
+
+#  148| Silly
+#-----|  -> new
+
+#  148| new
+#-----|  -> Call
+
+#  149| silly
+#-----|  -> SplatParameter
+
+#  149| SplatParameter
+#-----|  -> x
+
+#  150| MethodCall
+#-----|  -> exit method (normal)
+
+#  150| puts
+#-----|  -> MethodCall
+
+#  150| x
+#-----|  -> puts
+
+#  153| a
+#-----|  -> b
+
+#  153| b
+#-----|  -> exit two_parameters (normal)
+
+#  155| MethodCall
+#-----|  -> __FILE__
+
+#  155| two_parameters
+#-----|  -> MethodCall
+
+#  155| SplatArgument
+#-----|  -> two_parameters
+
+#  155| Array
+#-----|  -> SplatArgument
+
+#  155| 1
+#-----|  -> 2
+
+#  155| 2
+#-----|  -> Array
+
+#  157| Assignment
+#-----|  -> Symbol
+
+#  157| scriptfile
+#-----|  -> Assignment
+
+#  157| Subshell
+#-----|  -> scriptfile
+
+#  157| Interpolation
+#-----|  -> Subshell
+
+#  157| __FILE__
+#-----|  -> Interpolation
+
+#  159| Assignment
+#-----|  -> true
+
+#  159| symbol
+#-----|  -> Assignment
+
+#  159| Symbol
+#-----|  -> symbol
+
+#  161| Assignment
+#-----|  -> true
+
+#  161| x
+#-----|  -> Assignment
+
+#  161| true
+#-----|  -> x
+
+#  162| Assignment
+#-----|  -> 42
+
+#  162| x
+#-----|  -> Assignment
+
+#  162| Unary
+#-----|  -> x
+
+#  162| true
+#-----|  -> Unary
+
+#  163| Assignment
+#-----|  -> Undef
+
+#  163| x
+#-----|  -> Assignment
+
+#  163| Unary
+#-----|  -> x
+
+#  163| 42
+#-----|  -> Unary
+
+#  165| Undef
+#-----|  -> two_parameters
+
+#  165| two_parameters
+#-----|  -> Unless
+
+#  167| Unless
+#-----|  -> x
+
+#  167| Binary
+#-----| false -> String
+#-----| true -> String
+
+#  167| x
+#-----|  -> 10
+
+#  167| 10
+#-----|  -> Binary
+
+#  167| MethodCall
+#-----|  -> UnlessModifier
+
+#  167| puts
+#-----|  -> MethodCall
+
+#  167| String
+#-----|  -> puts
+
+#  167| MethodCall
+#-----|  -> UnlessModifier
+
+#  167| puts
+#-----|  -> MethodCall
+
+#  167| String
+#-----|  -> puts
+
+#  169| UnlessModifier
+#-----|  -> x
+
+#  169| MethodCall
+#-----|  -> Until
+
+#  169| puts
+#-----|  -> MethodCall
+
+#  169| String
+#-----|  -> puts
+
+#  169| Binary
+#-----| false -> String
+#-----| true -> Until
+
+#  169| x
+#-----|  -> 0
+
+#  169| 0
+#-----|  -> Binary
+
+#  171| Until
+#-----|  -> x
+
+#  171| Binary
+#-----| false -> x
+#-----| true -> 0
+
+#  171| x
+#-----|  -> 10
+
+#  171| 10
+#-----|  -> Binary
+
+#  171| OperatorAssignment
+#-----|  -> String
+
+#  171| x
+#-----|  -> 10
+
+#  171| 10
+#-----|  -> OperatorAssignment
+
+#  171| MethodCall
+#-----|  -> x
+
+#  171| puts
+#-----|  -> MethodCall
+
+#  171| String
+#-----|  -> puts
+
+#  173| Assignment
+#-----|  -> UntilModifier
+
+#  173| i
+#-----|  -> Assignment
+
+#  173| 0
+#-----|  -> i
+
+#  174| UntilModifier
+#-----|  -> i
+
+#  174| ParenthesizedStatements
+#-----|  -> i
+
+#  174| MethodCall
+#-----|  -> i
+
+#  174| puts
+#-----|  -> MethodCall
+
+#  174| String
+#-----|  -> puts
+
+#  174| OperatorAssignment
+#-----|  -> ParenthesizedStatements
+
+#  174| i
+#-----|  -> 1
+
+#  174| 1
+#-----|  -> OperatorAssignment
+
+#  174| Binary
+#-----| false -> String
+#-----| true -> 0
+
+#  174| i
+#-----|  -> 10
+
+#  174| 10
+#-----|  -> Binary
+
+#  176| Assignment
+#-----|  -> While
+
+#  176| x
+#-----|  -> Assignment
+
+#  176| 0
+#-----|  -> x
+
+#  177| While
+#-----|  -> x
+
+#  177| Binary
+#-----| true -> x
+#-----| false -> WhileModifier
+
+#  177| x
+#-----|  -> 10
+
+#  177| 10
+#-----|  -> Binary
+
+#  178| OperatorAssignment
+#-----|  -> If
+
+#  178| x
+#-----|  -> 1
+
+#  178| 1
+#-----|  -> OperatorAssignment
+
+#  179| If
+#-----|  -> x
+
+#  179| Binary
+#-----| true -> Redo
+#-----| false -> x
+
+#  179| x
+#-----|  -> 5
+
+#  179| 5
+#-----|  -> Binary
+
+#  179| Redo
+#-----| redo -> x
+
+#  180| MethodCall
+#-----|  -> x
+
+#  180| puts
+#-----|  -> MethodCall
+
+#  180| x
+#-----|  -> puts
+
+#  183| WhileModifier
+#-----|  -> i
+
+#  183| ParenthesizedStatements
+#-----|  -> i
+
+#  183| MethodCall
+#-----|  -> i
+
+#  183| puts
+#-----|  -> MethodCall
+
+#  183| String
+#-----|  -> puts
+
+#  183| OperatorAssignment
+#-----|  -> ParenthesizedStatements
+
+#  183| i
+#-----|  -> 1
+
+#  183| 1
+#-----|  -> OperatorAssignment
+
+#  183| Binary
+#-----| true -> String
+#-----| false -> run_block
+
+#  183| i
+#-----|  -> 0
+
+#  183| 0
+#-----|  -> Binary
+
+#  186| Yield
+#-----|  -> 42
+
+#  186| 42
+
+#  189| MethodCall
+#-----|  -> exit top-level (normal)
+
+#  189| run_block
+#-----|  -> MethodCall
+
+#  189| x
+#-----|  -> x
+
+#  189| MethodCall
+#-----|  -> exit block (normal)
+
+#  189| puts
+#-----|  -> MethodCall
+
+#  189| x
+#-----|  -> puts
+
+exit.rb:
+#    1| x
+#-----|  -> If
+
+#    2| If
+#-----|  -> x
+
+#    2| Binary
+#-----| true -> 1
+#-----| false -> String
+
+#    2| x
+#-----|  -> 2
+
+#    2| 2
+#-----|  -> Binary
+
+#    3| MethodCall
+#-----| exit -> exit m1 (abnormal)
+
+#    3| exit
+#-----|  -> MethodCall
+
+#    3| 1
+#-----|  -> exit
+
+#    5| MethodCall
+#-----|  -> exit m1 (normal)
+
+#    5| puts
+#-----|  -> MethodCall
+
+#    5| String
+#-----|  -> puts
+
+#    8| x
+#-----|  -> If
+
+#    9| If
+#-----|  -> x
+
+#    9| Binary
+#-----| true -> String
+#-----| false -> String
+
+#    9| x
+#-----|  -> 2
+
+#    9| 2
+#-----|  -> Binary
+
+#   10| MethodCall
+#-----| exit -> exit m2 (abnormal)
+
+#   10| abort
+#-----|  -> MethodCall
+
+#   10| String
+#-----|  -> abort
+
+#   12| MethodCall
+#-----|  -> exit m2 (normal)
+
+#   12| puts
+#-----|  -> MethodCall
+
+#   12| String
+#-----|  -> puts
+
+ifs.rb:
+#    1| x
+#-----|  -> If
+
+#    2| If
+#-----|  -> x
+
+#    2| Binary
+#-----| true -> String
+#-----| false -> Elsif
+
+#    2| x
+#-----|  -> 2
+
+#    2| 2
+#-----|  -> Binary
+
+#    3| MethodCall
+#-----|  -> exit m1 (normal)
+
+#    3| puts
+#-----|  -> MethodCall
+
+#    3| String
+#-----|  -> puts
+
+#    4| Elsif
+#-----|  -> x
+
+#    4| [false] Binary
+#-----| false -> String
+
+#    4| [true] Binary
+#-----| true -> String
+
+#    4| [false] Binary
+#-----| false -> [false] Binary
+
+#    4| [true] Binary
+#-----| true -> x
+
+#    4| Binary
+#-----| false -> [false] Binary
+#-----| true -> x
+
+#    4| x
+#-----|  -> 2
+
+#    4| 2
+#-----|  -> Binary
+
+#    4| Binary
+#-----| false -> [false] Binary
+#-----| true -> [true] Binary
+
+#    4| x
+#-----|  -> 0
+
+#    4| 0
+#-----|  -> Binary
+
+#    4| [false] Unary
+#-----| false -> [false] Binary
+
+#    4| [true] Unary
+#-----| true -> [true] Binary
+
+#    4| [false] ParenthesizedStatements
+#-----| false -> [true] Unary
+
+#    4| [true] ParenthesizedStatements
+#-----| true -> [false] Unary
+
+#    4| Binary
+#-----| false -> [false] ParenthesizedStatements
+#-----| true -> [true] ParenthesizedStatements
+
+#    4| x
+#-----|  -> 5
+
+#    4| 5
+#-----|  -> Binary
+
+#    5| MethodCall
+#-----|  -> exit m1 (normal)
+
+#    5| puts
+#-----|  -> MethodCall
+
+#    5| String
+#-----|  -> puts
+
+#    7| MethodCall
+#-----|  -> exit m1 (normal)
+
+#    7| puts
+#-----|  -> MethodCall
+
+#    7| String
+#-----|  -> puts
+
+#   11| b
+#-----|  -> If
+
+#   12| If
+#-----|  -> b
+
+#   12| b
+#-----| true -> 0
+#-----| false -> 1
+
+#   13| Return
+#-----| return -> exit m2 (normal)
+
+#   13| 0
+#-----|  -> Return
+
+#   15| Return
+#-----| return -> exit m2 (normal)
+
+#   15| 1
+#-----|  -> Return
+
+#   18| x
+#-----|  -> If
+
+#   19| If
+#-----|  -> x
+
+#   19| Binary
+#-----| true -> x
+#-----| false -> x
+
+#   19| x
+#-----|  -> 0
+
+#   19| 0
+#-----|  -> Binary
+
+#   20| Assignment
+#-----|  -> If
+
+#   20| x
+#-----|  -> Assignment
+
+#   20| Unary
+#-----|  -> x
+
+#   20| x
+#-----|  -> Unary
+
+#   21| If
+#-----|  -> x
+
+#   21| Binary
+#-----| true -> x
+#-----| false -> x
+
+#   21| x
+#-----|  -> 10
+
+#   21| 10
+#-----|  -> Binary
+
+#   22| Assignment
+#-----|  -> x
+
+#   22| x
+#-----|  -> Assignment
+
+#   22| Binary
+#-----|  -> x
+
+#   22| x
+#-----|  -> 1
+
+#   22| 1
+#-----|  -> Binary
+
+#   25| MethodCall
+#-----|  -> exit m3 (normal)
+
+#   25| puts
+#-----|  -> MethodCall
+
+#   25| x
+#-----|  -> puts
+
+#   28| b1
+#-----|  -> b2
+
+#   28| b2
+#-----|  -> b3
+
+#   28| b3
+#-----|  -> Conditional
+
+#   29| Return
+#-----| return -> exit m4 (normal)
+
+#   29| Conditional
+#-----|  -> Conditional
+
+#   29| ParenthesizedStatements
+#-----| true -> String
+#-----| false -> String
+
+#   29| Conditional
+#-----|  -> b1
+
+#   29| b1
+#-----| true -> b2
+#-----| false -> b3
+
+#   29| b2
+#-----|  -> ParenthesizedStatements
+
+#   29| b3
+#-----|  -> ParenthesizedStatements
+
+#   29| String
+#-----|  -> Return
+
+#   29| String
+#-----|  -> Return
+
+loops.rb:
+#    1| x
+#-----|  -> While
+
+#    2| While
+#-----|  -> x
+
+#    2| Binary
+#-----| true -> x
+#-----| false -> exit m1 (normal)
+
+#    2| x
+#-----|  -> 0
+
+#    2| 0
+#-----|  -> Binary
+
+#    3| MethodCall
+#-----|  -> x
+
+#    3| puts
+#-----|  -> MethodCall
+
+#    3| x
+#-----|  -> puts
+
+#    4| OperatorAssignment
+#-----|  -> x
+
+#    4| x
+#-----|  -> 1
+
+#    4| 1
+#-----|  -> OperatorAssignment
+
+#    8| x
+#-----|  -> While
+
+#    9| While
+#-----|  -> x
+
+#    9| Binary
+#-----| true -> x
+#-----| false -> String
+
+#    9| x
+#-----|  -> 0
+
+#    9| 0
+#-----|  -> Binary
+
+#   10| MethodCall
+#-----|  -> x
+
+#   10| puts
+#-----|  -> MethodCall
+
+#   10| x
+#-----|  -> puts
+
+#   11| OperatorAssignment
+#-----|  -> If
+
+#   11| x
+#-----|  -> 1
+
+#   11| 1
+#-----|  -> OperatorAssignment
+
+#   12| If
+#-----|  -> x
+
+#   12| Binary
+#-----| true -> Break
+#-----| false -> Elsif
+
+#   12| x
+#-----|  -> 100
+
+#   12| 100
+#-----|  -> Binary
+
+#   13| Break
+#-----| break -> String
+
+#   14| Elsif
+#-----|  -> x
+
+#   14| Binary
+#-----| true -> Next
+#-----| false -> Elsif
+
+#   14| x
+#-----|  -> 50
+
+#   14| 50
+#-----|  -> Binary
+
+#   15| Next
+#-----| next -> x
+
+#   16| Elsif
+#-----|  -> x
+
+#   16| Binary
+#-----| true -> Redo
+#-----| false -> String
+
+#   16| x
+#-----|  -> 10
+
+#   16| 10
+#-----|  -> Binary
+
+#   17| Redo
+#-----| redo -> x
+
+#   19| MethodCall
+#-----|  -> x
+
+#   19| puts
+#-----|  -> MethodCall
+
+#   19| String
+#-----|  -> puts
+
+#   21| MethodCall
+#-----|  -> exit m2 (normal)
+
+#   21| puts
+#-----|  -> MethodCall
+
+#   21| String
+#-----|  -> puts
+
+#   25| MethodCall
+#-----|  -> exit m3 (normal)
+
+#   25| Call
+#-----|  -> MethodCall
+
+#   25| Array
+#-----|  -> each
+
+#   25| 1
+#-----|  -> 2
+
+#   25| 2
+#-----|  -> 3
+
+#   25| 3
+#-----|  -> Array
+
+#   25| each
+#-----|  -> Call
+
+#   25| x
+#-----|  -> x
+
+#   26| MethodCall
+#-----|  -> exit do block (normal)
+
+#   26| puts
+#-----|  -> MethodCall
+
+#   26| x
+#-----|  -> puts
+
+raise.rb:
+#    1| Class
+#-----|  -> ExceptionA
+
+#    1| ExceptionA
+#-----|  -> Exception
+
+#    1| Superclass
+#-----|  -> Class
+
+#    1| Exception
+#-----|  -> Superclass
+
+#    4| Class
+#-----|  -> ExceptionB
+
+#    4| ExceptionB
+#-----|  -> Exception
+
+#    4| Superclass
+#-----|  -> exit top-level (normal)
+
+#    4| Exception
+#-----|  -> Superclass
+
+#    7| x
+#-----|  -> If
+
+#    8| If
+#-----|  -> x
+
+#    8| Binary
+#-----| true -> String
+#-----| false -> String
+
+#    8| x
+#-----|  -> 2
+
+#    8| 2
+#-----|  -> Binary
+
+#    9| MethodCall
+#-----| raise -> exit m1 (abnormal)
+
+#    9| raise
+#-----|  -> MethodCall
+
+#    9| String
+#-----|  -> raise
+
+#   11| MethodCall
+#-----|  -> exit m1 (normal)
+
+#   11| puts
+#-----|  -> MethodCall
+
+#   11| String
+#-----|  -> puts
+
+#   14| b
+#-----|  -> If
+
+#   16| If
+#-----|  -> b
+
+#   16| b
+#-----| true -> ExceptionA
+#-----| false -> String
+
+#   17| MethodCall
+#-----| raise -> Rescue
+
+#   17| raise
+#-----|  -> MethodCall
+
+#   17| ExceptionA
+#-----|  -> raise
+
+#   19| Rescue
+#-----|  -> ExceptionA
+
+#   19| ExceptionA
+#-----| match -> String
+#-----| raise -> exit m2 (abnormal)
+
+#   20| MethodCall
+#-----|  -> String
+
+#   20| puts
+#-----|  -> MethodCall
+
+#   20| String
+#-----|  -> puts
+
+#   22| MethodCall
+#-----|  -> exit m2 (normal)
+
+#   22| puts
+#-----|  -> MethodCall
+
+#   22| String
+#-----|  -> puts
+
+#   25| b
+#-----|  -> If
+
+#   27| If
+#-----|  -> b
+
+#   27| b
+#-----| true -> ExceptionA
+#-----| false -> String
+
+#   28| MethodCall
+#-----| raise -> Rescue
+
+#   28| raise
+#-----|  -> MethodCall
+
+#   28| ExceptionA
+#-----|  -> raise
+
+#   30| Rescue
+#-----|  -> String
+
+#   31| MethodCall
+#-----|  -> String
+
+#   31| puts
+#-----|  -> MethodCall
+
+#   31| String
+#-----|  -> puts
+
+#   33| MethodCall
+#-----|  -> exit m3 (normal)
+
+#   33| puts
+#-----|  -> MethodCall
+
+#   33| String
+#-----|  -> puts
+
+#   36| b
+#-----|  -> If
+
+#   38| If
+#-----|  -> b
+
+#   38| b
+#-----| true -> ExceptionA
+#-----| false -> String
+
+#   39| MethodCall
+#-----| raise -> Rescue
+
+#   39| raise
+#-----|  -> MethodCall
+
+#   39| ExceptionA
+#-----|  -> raise
+
+#   41| Rescue
+#-----|  -> e
+
+#   41| e
+#-----|  -> String
+
+#   42| MethodCall
+#-----|  -> String
+
+#   42| puts
+#-----|  -> MethodCall
+
+#   42| String
+#-----|  -> puts
+
+#   44| MethodCall
+#-----|  -> exit m4 (normal)
+
+#   44| puts
+#-----|  -> MethodCall
+
+#   44| String
+#-----|  -> puts
+
+#   47| b
+#-----|  -> If
+
+#   49| If
+#-----|  -> b
+
+#   49| b
+#-----| true -> ExceptionA
+#-----| false -> String
+
+#   50| MethodCall
+#-----| raise -> Rescue
+
+#   50| raise
+#-----|  -> MethodCall
+
+#   50| ExceptionA
+#-----|  -> raise
+
+#   52| Rescue
+#-----|  -> e
+
+#   52| e
+#-----|  -> String
+
+#   54| MethodCall
+#-----|  -> exit m5 (normal)
+
+#   54| puts
+#-----|  -> MethodCall
+
+#   54| String
+#-----|  -> puts
+
+#   57| b
+#-----|  -> If
+
+#   59| If
+#-----|  -> b
+
+#   59| b
+#-----| true -> ExceptionA
+#-----| false -> String
+
+#   60| MethodCall
+#-----| raise -> Rescue
+
+#   60| raise
+#-----|  -> MethodCall
+
+#   60| ExceptionA
+#-----|  -> raise
+
+#   62| Rescue
+#-----|  -> ExceptionA
+
+#   62| ExceptionA
+#-----| no-match -> ExceptionB
+#-----| match -> e
+
+#   62| ExceptionB
+#-----| match -> e
+#-----| raise -> exit m6 (abnormal)
+
+#   62| e
+#-----|  -> String
+
+#   63| MethodCall
+#-----|  -> String
+
+#   63| puts
+#-----|  -> MethodCall
+
+#   63| String
+#-----|  -> puts
+
+#   65| MethodCall
+#-----|  -> exit m6 (normal)
+
+#   65| puts
+#-----|  -> MethodCall
+
+#   65| String
+#-----|  -> puts
+
+#   68| x
+#-----|  -> If
+
+#   69| If
+#-----|  -> x
+
+#   69| Binary
+#-----| true -> String
+#-----| false -> Elsif
+
+#   69| x
+#-----|  -> 2
+
+#   69| 2
+#-----|  -> Binary
+
+#   70| MethodCall
+#-----| raise -> [ensure: raise] Ensure
+
+#   70| raise
+#-----|  -> MethodCall
+
+#   70| String
+#-----|  -> raise
+
+#   71| Elsif
+#-----|  -> x
+
+#   71| Binary
+#-----| true -> String
+#-----| false -> String
+
+#   71| x
+#-----|  -> 0
+
+#   71| 0
+#-----|  -> Binary
+
+#   72| Return
+#-----| return -> [ensure: return] Ensure
+
+#   72| String
+#-----|  -> Return
+
+#   74| MethodCall
+#-----|  -> Ensure
+
+#   74| puts
+#-----|  -> MethodCall
+
+#   74| String
+#-----|  -> puts
+
+#   75| Ensure
+#-----|  -> String
+
+#   75| [ensure: return] Ensure
+#-----|  -> [ensure: return] String
+
+#   75| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] String
+
+#   76| MethodCall
+#-----|  -> exit m7 (normal)
+
+#   76| [ensure: return] MethodCall
+#-----| return -> exit m7 (normal)
+
+#   76| [ensure: raise] MethodCall
+#-----| raise -> exit m7 (abnormal)
+
+#   76| puts
+#-----|  -> MethodCall
+
+#   76| [ensure: return] puts
+#-----|  -> [ensure: return] MethodCall
+
+#   76| [ensure: raise] puts
+#-----|  -> [ensure: raise] MethodCall
+
+#   76| String
+#-----|  -> puts
+
+#   76| [ensure: return] String
+#-----|  -> [ensure: return] puts
+
+#   76| [ensure: raise] String
+#-----|  -> [ensure: raise] puts
+
+#   79| x
+#-----|  -> String
+
+#   80| MethodCall
+#-----|  -> If
+
+#   80| puts
+#-----|  -> MethodCall
+
+#   80| String
+#-----|  -> puts
+
+#   82| If
+#-----|  -> x
+
+#   82| Binary
+#-----| true -> String
+#-----| false -> Elsif
+
+#   82| x
+#-----|  -> 2
+
+#   82| 2
+#-----|  -> Binary
+
+#   83| MethodCall
+#-----| raise -> [ensure: raise] Ensure
+
+#   83| raise
+#-----|  -> MethodCall
+
+#   83| String
+#-----|  -> raise
+
+#   84| Elsif
+#-----|  -> x
+
+#   84| Binary
+#-----| true -> String
+#-----| false -> String
+
+#   84| x
+#-----|  -> 0
+
+#   84| 0
+#-----|  -> Binary
+
+#   85| Return
+#-----| return -> [ensure: return] Ensure
+
+#   85| String
+#-----|  -> Return
+
+#   87| MethodCall
+#-----|  -> Ensure
+
+#   87| puts
+#-----|  -> MethodCall
+
+#   87| String
+#-----|  -> puts
+
+#   88| Ensure
+#-----|  -> String
+
+#   88| [ensure: return] Ensure
+#-----|  -> [ensure: return] String
+
+#   88| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] String
+
+#   89| MethodCall
+#-----|  -> String
+
+#   89| [ensure: return] MethodCall
+#-----| return -> exit m8 (normal)
+
+#   89| [ensure: raise] MethodCall
+#-----| raise -> exit m8 (abnormal)
+
+#   89| puts
+#-----|  -> MethodCall
+
+#   89| [ensure: return] puts
+#-----|  -> [ensure: return] MethodCall
+
+#   89| [ensure: raise] puts
+#-----|  -> [ensure: raise] MethodCall
+
+#   89| String
+#-----|  -> puts
+
+#   89| [ensure: return] String
+#-----|  -> [ensure: return] puts
+
+#   89| [ensure: raise] String
+#-----|  -> [ensure: raise] puts
+
+#   91| MethodCall
+#-----|  -> exit m8 (normal)
+
+#   91| puts
+#-----|  -> MethodCall
+
+#   91| String
+#-----|  -> puts
+
+#   94| x
+#-----|  -> b1
+
+#   94| b1
+#-----|  -> b2
+
+#   94| b2
+#-----|  -> String
+
+#   95| MethodCall
+#-----|  -> If
+
+#   95| puts
+#-----|  -> MethodCall
+
+#   95| String
+#-----|  -> puts
+
+#   97| If
+#-----|  -> x
+
+#   97| Binary
+#-----| true -> String
+#-----| false -> Elsif
+
+#   97| x
+#-----|  -> 2
+
+#   97| 2
+#-----|  -> Binary
+
+#   98| MethodCall
+#-----| raise -> [ensure: raise] Ensure
+
+#   98| raise
+#-----|  -> MethodCall
+
+#   98| String
+#-----|  -> raise
+
+#   99| Elsif
+#-----|  -> x
+
+#   99| Binary
+#-----| true -> String
+#-----| false -> String
+
+#   99| x
+#-----|  -> 0
+
+#   99| 0
+#-----|  -> Binary
+
+#  100| Return
+#-----| return -> [ensure: return] Ensure
+
+#  100| String
+#-----|  -> Return
+
+#  102| MethodCall
+#-----|  -> Ensure
+
+#  102| puts
+#-----|  -> MethodCall
+
+#  102| String
+#-----|  -> puts
+
+#  103| Ensure
+#-----|  -> String
+
+#  103| [ensure: return] Ensure
+#-----|  -> [ensure: return] String
+
+#  103| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] String
+
+#  104| MethodCall
+#-----|  -> If
+
+#  104| [ensure: return] MethodCall
+#-----|  -> [ensure: return] If
+
+#  104| [ensure: raise] MethodCall
+#-----|  -> [ensure: raise] If
+
+#  104| puts
+#-----|  -> MethodCall
+
+#  104| [ensure: return] puts
+#-----|  -> [ensure: return] MethodCall
+
+#  104| [ensure: raise] puts
+#-----|  -> [ensure: raise] MethodCall
+
+#  104| String
+#-----|  -> puts
+
+#  104| [ensure: return] String
+#-----|  -> [ensure: return] puts
+
+#  104| [ensure: raise] String
+#-----|  -> [ensure: raise] puts
+
+#  106| If
+#-----|  -> b1
+
+#  106| [ensure: return] If
+#-----|  -> [ensure: return] b1
+
+#  106| [ensure: raise] If
+#-----|  -> [ensure: raise] b1
+
+#  106| b1
+#-----| true -> String
+#-----| false -> Ensure
+
+#  106| [ensure: return] b1
+#-----| true -> [ensure: return] String
+#-----| false -> [ensure: return] Ensure
+
+#  106| [ensure: raise] b1
+#-----| true -> [ensure: raise] String
+#-----| false -> [ensure: raise] Ensure
+
+#  107| MethodCall
+#-----| raise -> [ensure(1): raise] Ensure
+
+#  107| [ensure: return] MethodCall
+#-----| raise -> [ensure: return, ensure(1): raise] Ensure
+
+#  107| [ensure: raise] MethodCall
+#-----| raise -> [ensure: raise, ensure(1): raise] Ensure
+
+#  107| raise
+#-----|  -> MethodCall
+
+#  107| [ensure: return] raise
+#-----|  -> [ensure: return] MethodCall
+
+#  107| [ensure: raise] raise
+#-----|  -> [ensure: raise] MethodCall
+
+#  107| String
+#-----|  -> raise
+
+#  107| [ensure: return] String
+#-----|  -> [ensure: return] raise
+
+#  107| [ensure: raise] String
+#-----|  -> [ensure: raise] raise
+
+#  109| Ensure
+#-----|  -> String
+
+#  109| [ensure(1): raise] Ensure
+#-----|  -> [ensure(1): raise] String
+
+#  109| [ensure: return] Ensure
+#-----|  -> [ensure: return] String
+
+#  109| [ensure: return, ensure(1): raise] Ensure
+#-----|  -> [ensure: return, ensure(1): raise] String
+
+#  109| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] String
+
+#  109| [ensure: raise, ensure(1): raise] Ensure
+#-----|  -> [ensure: raise, ensure(1): raise] String
+
+#  110| MethodCall
+#-----|  -> String
+
+#  110| [ensure(1): raise] MethodCall
+#-----| raise -> [ensure: raise] Ensure
+
+#  110| [ensure: return] MethodCall
+#-----| return -> [ensure: return] Ensure
+
+#  110| [ensure: return, ensure(1): raise] MethodCall
+#-----| raise -> [ensure: raise] Ensure
+
+#  110| [ensure: raise] MethodCall
+#-----| raise -> [ensure: raise] Ensure
+
+#  110| [ensure: raise, ensure(1): raise] MethodCall
+#-----| raise -> [ensure: raise] Ensure
+
+#  110| puts
+#-----|  -> MethodCall
+
+#  110| [ensure(1): raise] puts
+#-----|  -> [ensure(1): raise] MethodCall
+
+#  110| [ensure: return] puts
+#-----|  -> [ensure: return] MethodCall
+
+#  110| [ensure: return, ensure(1): raise] puts
+#-----|  -> [ensure: return, ensure(1): raise] MethodCall
+
+#  110| [ensure: raise] puts
+#-----|  -> [ensure: raise] MethodCall
+
+#  110| [ensure: raise, ensure(1): raise] puts
+#-----|  -> [ensure: raise, ensure(1): raise] MethodCall
+
+#  110| String
+#-----|  -> puts
+
+#  110| [ensure(1): raise] String
+#-----|  -> [ensure(1): raise] puts
+
+#  110| [ensure: return] String
+#-----|  -> [ensure: return] puts
+
+#  110| [ensure: return, ensure(1): raise] String
+#-----|  -> [ensure: return, ensure(1): raise] puts
+
+#  110| [ensure: raise] String
+#-----|  -> [ensure: raise] puts
+
+#  110| [ensure: raise, ensure(1): raise] String
+#-----|  -> [ensure: raise, ensure(1): raise] puts
+
+#  113| MethodCall
+#-----|  -> Ensure
+
+#  113| puts
+#-----|  -> MethodCall
+
+#  113| String
+#-----|  -> puts
+
+#  114| Ensure
+#-----|  -> String
+
+#  114| [ensure: return] Ensure
+#-----|  -> [ensure: return] String
+
+#  114| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] String
+
+#  115| MethodCall
+#-----|  -> If
+
+#  115| [ensure: return] MethodCall
+#-----|  -> [ensure: return] If
+
+#  115| [ensure: raise] MethodCall
+#-----|  -> [ensure: raise] If
+
+#  115| puts
+#-----|  -> MethodCall
+
+#  115| [ensure: return] puts
+#-----|  -> [ensure: return] MethodCall
+
+#  115| [ensure: raise] puts
+#-----|  -> [ensure: raise] MethodCall
+
+#  115| String
+#-----|  -> puts
+
+#  115| [ensure: return] String
+#-----|  -> [ensure: return] puts
+
+#  115| [ensure: raise] String
+#-----|  -> [ensure: raise] puts
+
+#  116| If
+#-----|  -> b2
+
+#  116| [ensure: return] If
+#-----|  -> [ensure: return] b2
+
+#  116| [ensure: raise] If
+#-----|  -> [ensure: raise] b2
+
+#  116| b2
+#-----| true -> String
+#-----| false -> exit m9 (normal)
+
+#  116| [ensure: return] b2
+#-----| true -> [ensure: return] String
+#-----| return -> exit m9 (normal)
+
+#  116| [ensure: raise] b2
+#-----| true -> [ensure: raise] String
+#-----| raise -> exit m9 (abnormal)
+
+#  117| MethodCall
+#-----| raise -> exit m9 (abnormal)
+
+#  117| [ensure: return] MethodCall
+#-----| raise -> exit m9 (abnormal)
+
+#  117| [ensure: raise] MethodCall
+#-----| raise -> exit m9 (abnormal)
+
+#  117| raise
+#-----|  -> MethodCall
+
+#  117| [ensure: return] raise
+#-----|  -> [ensure: return] MethodCall
+
+#  117| [ensure: raise] raise
+#-----|  -> [ensure: raise] MethodCall
+
+#  117| String
+#-----|  -> raise
+
+#  117| [ensure: return] String
+#-----|  -> [ensure: return] raise
+
+#  117| [ensure: raise] String
+#-----|  -> [ensure: raise] raise
+
+#  121| OptionalParameter
+#-----| no-match -> String
+#-----| match -> Ensure
+
+#  121| MethodCall
+#-----| raise -> exit m10 (abnormal)
+
+#  121| raise
+#-----|  -> MethodCall
+
+#  121| String
+#-----|  -> raise
+
+#  124| Ensure
+#-----|  -> String
+
+#  125| MethodCall
+#-----|  -> exit m10 (normal)
+
+#  125| puts
+#-----|  -> MethodCall
+
+#  125| String
+#-----|  -> puts
+
+#  128| b
+#-----|  -> If
+
+#  130| If
+#-----|  -> b
+
+#  130| b
+#-----| true -> ExceptionA
+#-----| false -> Ensure
+
+#  131| MethodCall
+#-----| raise -> Rescue
+
+#  131| raise
+#-----|  -> MethodCall
+
+#  131| ExceptionA
+#-----|  -> raise
+
+#  133| Rescue
+#-----|  -> ExceptionA
+
+#  133| ExceptionA
+#-----| no-match -> Rescue
+#-----| match -> Ensure
+
+#  134| Rescue
+#-----|  -> ExceptionB
+
+#  134| ExceptionB
+#-----| match -> String
+#-----| raise -> [ensure: raise] Ensure
+
+#  135| MethodCall
+#-----|  -> Ensure
+
+#  135| puts
+#-----|  -> MethodCall
+
+#  135| String
+#-----|  -> puts
+
+#  136| Ensure
+#-----|  -> String
+
+#  136| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] String
+
+#  137| MethodCall
+#-----|  -> String
+
+#  137| [ensure: raise] MethodCall
+#-----| raise -> exit m11 (abnormal)
+
+#  137| puts
+#-----|  -> MethodCall
+
+#  137| [ensure: raise] puts
+#-----|  -> [ensure: raise] MethodCall
+
+#  137| String
+#-----|  -> puts
+
+#  137| [ensure: raise] String
+#-----|  -> [ensure: raise] puts
+
+#  139| MethodCall
+#-----|  -> exit m11 (normal)
+
+#  139| puts
+#-----|  -> MethodCall
+
+#  139| String
+#-----|  -> puts
+
+break_ensure.rb:
+#    1| exit m1
+
+#   13| exit m2
+
+#   27| exit m3
+
+case.rb:
+#    1| exit if_in_case
+
+cfg.rb:
+#    1| exit top-level
+
+#   15| exit BEGIN block
+
+#   19| exit END block
+
+#   25| exit block
+
+#   29| exit block
+
+#   63| exit pattern
+
+#   69| exit print
+
+#  101| exit parameters
+
+#  120| exit lambda
+
+#  120| exit block
+
+#  142| exit print
+
+#  149| exit method
+
+#  153| exit two_parameters
+
+#  189| exit block
+
+exit.rb:
+#    1| exit m1
+
+#    8| exit m2
+
+ifs.rb:
+#    1| exit m1
+
+#   11| exit m2
+
+#   18| exit m3
+
+#   28| exit m4
+
+loops.rb:
+#    1| exit m1
+
+#    8| exit m2
+
+#   24| exit m3
+
+#   25| exit do block
+
+raise.rb:
+#    1| exit top-level
+
+#    7| exit m1
+
+#   14| exit m2
+
+#   25| exit m3
+
+#   36| exit m4
+
+#   47| exit m5
+
+#   57| exit m6
+
+#   68| exit m7
+
+#   79| exit m8
+
+#   94| exit m9
+
+#  121| exit m10
+
+#  128| exit m11
+
+break_ensure.rb:
+#    1| exit m1 (normal)
+#-----|  -> exit m1
+
+#   13| exit m2 (normal)
+#-----|  -> exit m2
+
+#   27| exit m3 (normal)
+#-----|  -> exit m3
+
+case.rb:
+#    1| exit if_in_case (normal)
+#-----|  -> exit if_in_case
+
+cfg.rb:
+#    1| exit top-level (normal)
+#-----|  -> exit top-level
+
+#   15| exit BEGIN block (normal)
+#-----|  -> exit BEGIN block
+
+#   19| exit END block (normal)
+#-----|  -> exit END block
+
+#   25| exit block (normal)
+#-----|  -> exit block
+
+#   29| exit block (normal)
+#-----|  -> exit block
+
+#   63| exit pattern (normal)
+#-----|  -> exit pattern
+
+#   69| exit print (normal)
+#-----|  -> exit print
+
+#  101| exit parameters (normal)
+#-----|  -> exit parameters
+
+#  120| exit lambda (normal)
+#-----|  -> exit lambda
+
+#  120| exit block (normal)
+#-----|  -> exit block
+
+#  142| exit print (normal)
+#-----|  -> exit print
+
+#  149| exit method (normal)
+#-----|  -> exit method
+
+#  153| exit two_parameters (normal)
+#-----|  -> exit two_parameters
+
+#  189| exit block (normal)
+#-----|  -> exit block
+
+exit.rb:
+#    1| exit m1 (abnormal)
+#-----|  -> exit m1
+
+#    1| exit m1 (normal)
+#-----|  -> exit m1
+
+#    8| exit m2 (abnormal)
+#-----|  -> exit m2
+
+#    8| exit m2 (normal)
+#-----|  -> exit m2
+
+ifs.rb:
+#    1| exit m1 (normal)
+#-----|  -> exit m1
+
+#   11| exit m2 (normal)
+#-----|  -> exit m2
+
+#   18| exit m3 (normal)
+#-----|  -> exit m3
+
+#   28| exit m4 (normal)
+#-----|  -> exit m4
+
+loops.rb:
+#    1| exit m1 (normal)
+#-----|  -> exit m1
+
+#    8| exit m2 (normal)
+#-----|  -> exit m2
+
+#   24| exit m3 (normal)
+#-----|  -> exit m3
+
+#   25| exit do block (normal)
+#-----|  -> exit do block
+
+raise.rb:
+#    1| exit top-level (normal)
+#-----|  -> exit top-level
+
+#    7| exit m1 (abnormal)
+#-----|  -> exit m1
+
+#    7| exit m1 (normal)
+#-----|  -> exit m1
+
+#   14| exit m2 (abnormal)
+#-----|  -> exit m2
+
+#   14| exit m2 (normal)
+#-----|  -> exit m2
+
+#   25| exit m3 (normal)
+#-----|  -> exit m3
+
+#   36| exit m4 (normal)
+#-----|  -> exit m4
+
+#   47| exit m5 (normal)
+#-----|  -> exit m5
+
+#   57| exit m6 (abnormal)
+#-----|  -> exit m6
+
+#   57| exit m6 (normal)
+#-----|  -> exit m6
+
+#   68| exit m7 (abnormal)
+#-----|  -> exit m7
+
+#   68| exit m7 (normal)
+#-----|  -> exit m7
+
+#   79| exit m8 (abnormal)
+#-----|  -> exit m8
+
+#   79| exit m8 (normal)
+#-----|  -> exit m8
+
+#   94| exit m9 (abnormal)
+#-----|  -> exit m9
+
+#   94| exit m9 (normal)
+#-----|  -> exit m9
+
+#  121| exit m10 (abnormal)
+#-----|  -> exit m10
+
+#  121| exit m10 (normal)
+#-----|  -> exit m10
+
+#  128| exit m11 (abnormal)
+#-----|  -> exit m11
+
+#  128| exit m11 (normal)
+#-----|  -> exit m11
