@@ -156,9 +156,9 @@ abstract class SplitImpl extends Split {
    * Holds if this split is left when control passes from `last` out of the enclosing
    * scope `scope` with completion `c`.
    *
-   * Invariant: `hasExitScope(last, scope, c) implies succExit(last, scope, c)`
+   * Invariant: `hasExitScope(scope, last, c) implies succExit(scope, last, c)`
    */
-  abstract predicate hasExitScope(AstNode last, CfgScope scope, Completion c);
+  abstract predicate hasExitScope(CfgScope scope, AstNode last, Completion c);
 
   /**
    * Holds if this split is maintained when control passes from `pred` to `succ` with
@@ -240,9 +240,9 @@ private module ConditionalCompletionSplitting {
       if c instanceof ConditionalCompletion then completion = c else any()
     }
 
-    override predicate hasExitScope(AstNode last, CfgScope scope, Completion c) {
+    override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
       this.appliesTo(last) and
-      succExit(last, scope, c) and
+      succExit(scope, last, c) and
       if c instanceof ConditionalCompletion then completion = c else any()
     }
 
@@ -284,11 +284,6 @@ module EnsureSplitting {
 
     /** Holds if this node is the entry node in the `ensure` block it belongs to. */
     predicate isEntryNode() { first(block.getEnsure(), this) }
-  }
-
-  /** A node that does not belong to an `ensure` block. */
-  private class NonEnsureNode extends EnsureNode {
-    NonEnsureNode() { not this = any(Trees::RescueEnsureBlockTree t).getAnEnsureDescendant() }
   }
 
   /**
@@ -377,7 +372,7 @@ module EnsureSplitting {
      */
     private predicate appliesToPredecessor(AstNode pred) {
       this.appliesTo(pred) and
-      (succ(pred, _, _) or succExit(pred, _, _))
+      (succ(pred, _, _) or succExit(_, pred, _))
     }
 
     pragma[noinline]
@@ -463,8 +458,8 @@ module EnsureSplitting {
       )
     }
 
-    override predicate hasExitScope(AstNode last, CfgScope scope, Completion c) {
-      succExit(last, scope, c) and
+    override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
+      succExit(scope, last, c) and
       (
         exit(_, last, c, _)
         or
@@ -551,9 +546,9 @@ predicate succExitSplits(AstNode last, Splits predSplits, CfgScope scope, Succes
   exists(Reachability::SameSplitsBlock b, Completion c | last = b.getANode() |
     b.isReachable(predSplits) and
     t = c.getAMatchingSuccessorType() and
-    succExit(last, scope, c) and
+    succExit(scope, last, c) and
     forall(SplitImpl predSplit | predSplit = predSplits.getASplit() |
-      predSplit.hasExitScope(last, scope, c)
+      predSplit.hasExitScope(scope, last, c)
     )
   )
 }

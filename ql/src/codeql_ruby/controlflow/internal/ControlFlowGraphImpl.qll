@@ -131,7 +131,7 @@ predicate succEntry(CfgScope scope, AstNode first) {
 
 /** Holds if `last` with completion `c` can exit `scope`. */
 pragma[nomagic]
-predicate succExit(AstNode last, CfgScope scope, Completion c) {
+predicate succExit(CfgScope scope, AstNode last, Completion c) {
   exists(AstNode n |
     last(scope, n, c) and
     succImplIfHidden*(last, n) and
