@@ -108,13 +108,23 @@ module NetHttp {
 
     override string getHeaderName() { result = "status" }
 
-    override string getHeaderValue() { result = this.getValue().getIntValue().toString() }
-
     override DataFlow::Node getName() { none() }
 
     override DataFlow::Node getValue() { result = this.getArgument(0) }
 
     override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
+  }
+
+  private class ResponseErrorCall extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+    ResponseErrorCall() { this.getTarget().hasQualifiedName("net/http", "Error") }
+
+    override string getHeaderName() { result = "status" }
+
+    override DataFlow::Node getName() { none() }
+
+    override DataFlow::Node getValue() { result = this.getArgument(2) }
+
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getArgument(0) }
   }
 
   private class RequestBody extends HTTP::RequestBody::Range, DataFlow::ExprNode {
