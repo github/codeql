@@ -35,5 +35,18 @@ public class FnPointer
         {
             int j = f(new T());
         }
+
+        static void M5(delegate*<B, A> f, delegate*<A, B> ff)
+        {
+            M5(ff, ff); // implicit conversion due to implicit reference conversion
+        }
+
+        static void M6(delegate*<int*, void*> f, delegate*<void*, int*> ff)
+        {
+            M6(ff, ff); // implicit conversion due to implicit pointer conversion
+        }
+
+        class A { }
+        class B : A { }
     }
 }

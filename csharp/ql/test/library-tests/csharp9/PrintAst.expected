@@ -193,6 +193,37 @@ FunctionPointer.cs:
 #   36|               -1: [ParameterAccess] access to parameter f
 #   36|               0: [ObjectCreation] object creation of type T
 #   36|                 0: [TypeMention] T
+#   39|     11: [Method] M5
+#   39|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   39|         0: [Parameter] f
+#   39|           -1: [TypeMention] delegate* default<B,A>
+#   39|         1: [Parameter] ff
+#   39|           -1: [TypeMention] delegate* default<A,B>
+#   40|       4: [BlockStmt] {...}
+#   41|         0: [ExprStmt] ...;
+#   41|           0: [MethodCall] call to method M5
+#   41|             0: [CastExpr] (...) ...
+#   41|               1: [ParameterAccess] access to parameter ff
+#   41|             1: [ParameterAccess] access to parameter ff
+#   44|     12: [Method] M6
+#   44|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   44|         0: [Parameter] f
+#   44|           -1: [TypeMention] delegate* default<Int32*,Void*>
+#   44|         1: [Parameter] ff
+#   44|           -1: [TypeMention] delegate* default<Void*,Int32*>
+#   45|       4: [BlockStmt] {...}
+#   46|         0: [ExprStmt] ...;
+#   46|           0: [MethodCall] call to method M6
+#   46|             0: [CastExpr] (...) ...
+#   46|               1: [ParameterAccess] access to parameter ff
+#   46|             1: [ParameterAccess] access to parameter ff
+#   49|     13: [Class] A
+#   50|     14: [Class] B
+#-----|       3: (Base types)
+#   50|         0: [TypeMention] A
+#   50|         0: [TypeMention] A
 InitOnlyProperty.cs:
 #    3| [NamespaceDeclaration] namespace ... { ... }
 #    5|   1: [Class] IsExternalInit

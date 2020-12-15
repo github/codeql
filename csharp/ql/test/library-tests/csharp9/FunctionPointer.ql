@@ -14,3 +14,7 @@ query predicate parameter(FunctionPointerType fpt, int i, Parameter p, string t)
 }
 
 query predicate invocation(FunctionPointerCall fpc) { any() }
+
+query predicate casts(ImplicitCast cast, FunctionPointerType fromType, FunctionPointerType toType) {
+  cast.getSourceType() = fromType and cast.getTargetType() = toType
+}
