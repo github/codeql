@@ -1,35 +1,11 @@
-/**
- * Provides a taint-tracking configuration for reasoning about untrusted user input when using Service Stack framework
- */
 import csharp
 
-module ServiceStackSQL {
-    import semmle.code.csharp.security.dataflow.SqlInjection::SqlInjection
-
-    string getSourceType(DataFlow::Node node) {
-        result = node.(RemoteFlowSource).getSourceType()
-        or
-        result = node.(LocalFlowSource).getSourceType()
+/** Provides definitions related to the namespace `ServiceStack`. */
+module ServiceStack {
+    class ServiceClass extends Class {
+        ServiceClass() { this.getBaseClass+().getName()="Service" }
     }
-      
-    predicate serviceStackRequests(Method m) {
-        exists(ValueOrRefType type, ServiceStackClass ssc |
-            type.fromSource() and
-            m = type.getAMethod() and
-            m = ssc.getAMember().getDeclaringType().getAMethod() and
-    
-            // verify other verb methods in service stack docs
-            m.getName() = ["Post","Get", "Put", "Delete","Any", "Option", "Head"]
-            // not reccommended match approach below
-            //.toLowerCase().regexpMatch("(Post|Get|Put|Delete)")
-    
-        )
-    }
-      
-    class ServiceStackClass extends Class {
-          ServiceStackClass() { this.getBaseClass+().getName()="Service" }
-    }
-      
+          
     class ServiceStackRequestClass extends Class {
         ServiceStackRequestClass() {
             // Classes directly used in as param to request method
@@ -42,7 +18,27 @@ module ServiceStackSQL {
                 this = outer.getAField().getType())
         }
     }
-      
+    
+    predicate serviceStackRequests(Method m) {
+        exists(ValueOrRefType type, ServiceClass ssc |
+            type.fromSource() and
+            m = type.getAMethod() and
+            m = ssc.getAMember().getDeclaringType().getAMethod() and
+    
+            // verify other verb methods in service stack docs
+            m.getName() = ["Post","Get", "Put", "Delete","Any", "Option", "Head"]
+            // not reccommended match approach below
+            //.toLowerCase().regexpMatch("(Post|Get|Put|Delete)")
+    
+        )
+    }
+}
+
+/** Flow sources for the ServiceStack framework */
+module Sources {
+    private import ServiceStack::ServiceStack
+    private import semmle.code.csharp.security.dataflow.flowsources.Remote
+
     class ServiceClassSources extends RemoteFlowSource {
         ServiceClassSources() { 
             exists(Method m | 
@@ -59,6 +55,12 @@ module ServiceStackSQL {
             result = "ServiceStackSources"
         }
     }
+}
+
+/** SQL sinks for the ServiceStack framework */
+module SQL {
+    private import ServiceStack::ServiceStack
+    private import semmle.code.csharp.security.dataflow.SqlInjection::SqlInjection
       
     class SqlSinks extends Sink {
         SqlSinks() { this.asExpr() instanceof SqlInjectionExpr }
@@ -83,4 +85,9 @@ module ServiceStackSQL {
             )
         }
     }
+}
+
+/** XSS sinks for the ServiceStack framework */
+module XSS {
+    // TODO
 }
