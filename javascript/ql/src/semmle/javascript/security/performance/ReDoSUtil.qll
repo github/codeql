@@ -561,6 +561,8 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     lbl = Epsilon() and q2 = Accept(root)
   )
   or
+  exists(RegExpRoot root | q1 = Match(root, 0) | lbl = Any() and q2 = q1)
+  or
   exists(RegExpDollar dollar | q1 = before(dollar) |
     lbl = Epsilon() and q2 = Accept(getRoot(dollar))
   )
