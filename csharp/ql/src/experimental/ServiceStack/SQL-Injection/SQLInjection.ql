@@ -6,7 +6,7 @@
  */
 
 import csharp
-import semmle.code.csharp.frameworks.microsoft.ServiceStack::ServiceStackSQL
+import semmle.code.csharp.frameworks.ServiceStack::ServiceStackSQL
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
