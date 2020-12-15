@@ -1209,14 +1209,21 @@ private module Stdlib {
       private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
         override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
           // Methods
-          nodeFrom = instance() and
-          nodeTo in [getvalueRef(), getfirstRef(), getlistRef()]
+          exists(DataFlow::AttrRead read | read = nodeTo and read.getObject() = nodeFrom |
+            nodeFrom = instance() and
+            nodeTo in [getvalueRef(), getfirstRef(), getlistRef()]
+          )
           or
-          nodeFrom = getvalueRef() and nodeTo = getvalueResult()
-          or
-          nodeFrom = getfirstRef() and nodeTo = getfirstResult()
-          or
-          nodeFrom = getlistRef() and nodeTo = getlistResult()
+          exists(CallNode call |
+            nodeTo.asCfgNode() = call and
+            call.getFunction() = nodeFrom.asCfgNode()
+          |
+            nodeFrom = getvalueRef() and nodeTo = getvalueResult()
+            or
+            nodeFrom = getfirstRef() and nodeTo = getfirstResult()
+            or
+            nodeFrom = getlistRef() and nodeTo = getlistResult()
+          )
           or
           // Indexing
           nodeFrom in [instance(), fieldList()] and
