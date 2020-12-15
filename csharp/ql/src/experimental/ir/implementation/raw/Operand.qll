@@ -17,13 +17,25 @@ private import internal.OperandInternal
  * An operand of an `Instruction` in this stage of the IR. Implemented as a union of the branches
  * of `TOperand` that are used in this stage.
  */
-private class TStageOperand = TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
+private class TStageOperand =
+  TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
 
 /**
  * An operand of an `Instruction`. The operand represents a use of the result of one instruction
  * (the defining instruction) in another instruction (the use instruction)
  */
 class Operand extends TStageOperand {
+  Operand() {
+    // Ensure that the operand does not refer to instructions from earlier stages that are unreachable here
+    exists(Instruction use, Instruction def | this = registerOperand(use, _, def))
+    or
+    exists(Instruction use | this = nonSSAMemoryOperand(use, _))
+    or
+    exists(Instruction use, Instruction def, IRBlock block | this = phiOperand(use, def, block, _))
+    or
+    exists(Instruction use | this = chiOperand(use, _))
+  }
+
   /** Gets a textual representation of this element. */
   string toString() { result = "Operand" }
 
