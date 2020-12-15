@@ -93,7 +93,9 @@ impl<'a> fmt::Display for Type<'a> {
 pub enum Expression<'a> {
     Var(&'a str),
     String(&'a str),
+    Integer(usize),
     Pred(&'a str, Vec<Expression<'a>>),
+    And(Vec<Expression<'a>>),
     Or(Vec<Expression<'a>>),
     Equals(Box<Expression<'a>>, Box<Expression<'a>>),
     Dot(Box<Expression<'a>>, &'a str, Vec<Expression<'a>>),
@@ -110,6 +112,7 @@ impl<'a> fmt::Display for Expression<'a> {
         match self {
             Expression::Var(x) => write!(f, "{}", x),
             Expression::String(s) => write!(f, "\"{}\"", s),
+            Expression::Integer(n) => write!(f, "{}", n),
             Expression::Pred(n, args) => {
                 write!(f, "{}(", n)?;
                 for (index, arg) in args.iter().enumerate() {
@@ -119,6 +122,19 @@ impl<'a> fmt::Display for Expression<'a> {
                     write!(f, "{}", arg)?;
                 }
                 write!(f, ")")
+            }
+            Expression::And(conjuncts) => {
+                if conjuncts.is_empty() {
+                    write!(f, "any()")
+                } else {
+                    for (index, conjunct) in conjuncts.iter().enumerate() {
+                        if index > 0 {
+                            write!(f, " and ")?;
+                        }
+                        write!(f, "({})", conjunct)?;
+                    }
+                    Ok(())
+                }
             }
             Expression::Or(disjuncts) => {
                 if disjuncts.is_empty() {

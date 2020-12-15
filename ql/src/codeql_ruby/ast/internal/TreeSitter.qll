@@ -178,7 +178,59 @@ module Generated {
 
     AstNode getLeft() { binary_def(this, _, _, result, _, _, _) }
 
-    AstNode getOperator() { binary_def(this, _, _, _, result, _, _) }
+    string getOperator() {
+      exists(int value | binary_def(this, _, _, _, value, _, _) |
+        result = "!=" and value = 0
+        or
+        result = "!~" and value = 1
+        or
+        result = "%" and value = 2
+        or
+        result = "&" and value = 3
+        or
+        result = "&&" and value = 4
+        or
+        result = "*" and value = 5
+        or
+        result = "**" and value = 6
+        or
+        result = "+" and value = 7
+        or
+        result = "-" and value = 8
+        or
+        result = "/" and value = 9
+        or
+        result = "<" and value = 10
+        or
+        result = "<<" and value = 11
+        or
+        result = "<=" and value = 12
+        or
+        result = "<=>" and value = 13
+        or
+        result = "==" and value = 14
+        or
+        result = "===" and value = 15
+        or
+        result = "=~" and value = 16
+        or
+        result = ">" and value = 17
+        or
+        result = ">=" and value = 18
+        or
+        result = ">>" and value = 19
+        or
+        result = "^" and value = 20
+        or
+        result = "and" and value = 21
+        or
+        result = "or" and value = 22
+        or
+        result = "|" and value = 23
+        or
+        result = "||" and value = 24
+      )
+    }
 
     AstNode getRight() { binary_def(this, _, _, _, _, result, _) }
 
@@ -187,9 +239,7 @@ module Generated {
     override int getParentIndex() { binary_def(this, _, result, _, _, _, _) }
 
     override AstNode getAFieldOrChild() {
-      binary_def(this, _, _, result, _, _, _) or
-      binary_def(this, _, _, _, result, _, _) or
-      binary_def(this, _, _, _, _, result, _)
+      binary_def(this, _, _, result, _, _, _) or binary_def(this, _, _, _, _, result, _)
     }
   }
 
@@ -902,7 +952,35 @@ module Generated {
 
     UnderscoreLhs getLeft() { operator_assignment_def(this, _, _, result, _, _, _) }
 
-    AstNode getOperator() { operator_assignment_def(this, _, _, _, result, _, _) }
+    string getOperator() {
+      exists(int value | operator_assignment_def(this, _, _, _, value, _, _) |
+        result = "%=" and value = 0
+        or
+        result = "&&=" and value = 1
+        or
+        result = "&=" and value = 2
+        or
+        result = "**=" and value = 3
+        or
+        result = "*=" and value = 4
+        or
+        result = "+=" and value = 5
+        or
+        result = "-=" and value = 6
+        or
+        result = "/=" and value = 7
+        or
+        result = "<<=" and value = 8
+        or
+        result = ">>=" and value = 9
+        or
+        result = "^=" and value = 10
+        or
+        result = "|=" and value = 11
+        or
+        result = "||=" and value = 12
+      )
+    }
 
     AstNode getRight() { operator_assignment_def(this, _, _, _, _, result, _) }
 
@@ -912,7 +990,6 @@ module Generated {
 
     override AstNode getAFieldOrChild() {
       operator_assignment_def(this, _, _, result, _, _, _) or
-      operator_assignment_def(this, _, _, _, result, _, _) or
       operator_assignment_def(this, _, _, _, _, result, _)
     }
   }
@@ -1370,15 +1447,27 @@ module Generated {
 
     AstNode getOperand() { unary_def(this, _, _, result, _, _) }
 
-    AstNode getOperator() { unary_def(this, _, _, _, result, _) }
+    string getOperator() {
+      exists(int value | unary_def(this, _, _, _, value, _) |
+        result = "!" and value = 0
+        or
+        result = "+" and value = 1
+        or
+        result = "-" and value = 2
+        or
+        result = "defined?" and value = 3
+        or
+        result = "not" and value = 4
+        or
+        result = "~" and value = 5
+      )
+    }
 
     override AstNode getParent() { unary_def(this, result, _, _, _, _) }
 
     override int getParentIndex() { unary_def(this, _, result, _, _, _) }
 
-    override AstNode getAFieldOrChild() {
-      unary_def(this, _, _, result, _, _) or unary_def(this, _, _, _, result, _)
-    }
+    override AstNode getAFieldOrChild() { unary_def(this, _, _, result, _, _) }
   }
 
   class Undef extends @undef, AstNode {
