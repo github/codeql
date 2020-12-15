@@ -62,7 +62,7 @@ module FunctionInput {
   FunctionInput functionResult() { result.isResult() }
 
   /** Gets a `FunctionInput` representing the `i`th result. */
-  FunctionInput functionResult(int i) { result.isParameter(i) }
+  FunctionInput functionResult(int i) { result.isResult(i) }
 }
 
 /** A parameter position of a function, viewed as a source of input. */
@@ -196,7 +196,7 @@ module FunctionOutput {
   FunctionOutput functionResult() { result.isResult() }
 
   /** Gets a `FunctionOutput` representing the `i`th result. */
-  FunctionOutput functionResult(int i) { result.isParameter(i) }
+  FunctionOutput functionResult(int i) { result.isResult(i) }
 
   /** Gets a `FunctionOutput` representing the receiver after a function returns. */
   FunctionOutput receiver() { result.isReceiver() }
