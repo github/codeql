@@ -1116,13 +1116,13 @@ private module Stdlib {
       DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
       /**
-       * A source of an instance of `cgi.FieldStorage`.
+       * A source of instances of `cgi.FieldStorage`, extend this class to model new instances.
        *
-       * This can include instantiation of the class, return value from function
-       * calls, or a special parameter that will be set when functions are call by external
+       * This can include instantiations of the class, return values from function
+       * calls, or a special parameter that will be set when functions are called by an external
        * library.
        *
-       * Use `FieldStorage::instance()` predicate to get references to instances of `cgi.FieldStorage`.
+       * Use the predicate `FieldStorage::instance()` to get references to instances of `cgi.FieldStorage`.
        */
       abstract class InstanceSource extends DataFlow::Node { }
 
@@ -1569,13 +1569,13 @@ private module Stdlib {
     }
 
     /**
-     * A source of an instance of the `BaseHTTPRequestHandler` class or any subclass.
+     * A source of instances of the `BaseHTTPRequestHandler` class or any subclass, extend this class to model new instances.
      *
-     * This can include instantiation of the class, return value from function
-     * calls, or a special parameter that will be set when functions are call by external
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
      * library.
      *
-     * Use `classname::instance()` predicate to get references to instances of the `BaseHTTPRequestHandler` class or any subclass.
+     * Use the predicate `classname::instance()` to get references to instances of the `BaseHTTPRequestHandler` class or any subclass.
      */
     abstract class InstanceSource extends DataFlow::Node { }
 
