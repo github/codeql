@@ -68,6 +68,10 @@ exit.rb:
 #    8| enter m2
 #-----|  -> x
 
+heredoc.rb:
+#    1| enter double_heredoc
+#-----|  -> <<A
+
 ifs.rb:
 #    1| enter m1
 #-----|  -> x
@@ -1950,6 +1954,25 @@ exit.rb:
 #   12| String
 #-----|  -> puts
 
+heredoc.rb:
+#    2| MethodCall
+#-----|  -> exit double_heredoc (normal)
+
+#    2| puts
+#-----|  -> MethodCall
+
+#    2| <<A
+#-----|  -> HeredocBody
+
+#    2| <<A
+#-----|  -> HeredocBody
+
+#    2| HeredocBody
+#-----|  -> <<A
+
+#    4| HeredocBody
+#-----|  -> puts
+
 ifs.rb:
 #    1| x
 #-----|  -> x
@@ -3380,6 +3403,9 @@ exit.rb:
 
 #    8| exit m2
 
+heredoc.rb:
+#    1| exit double_heredoc
+
 ifs.rb:
 #    1| exit m1
 
@@ -3504,6 +3530,10 @@ exit.rb:
 
 #    8| exit m2 (normal)
 #-----|  -> exit m2
+
+heredoc.rb:
+#    1| exit double_heredoc (normal)
+#-----|  -> exit double_heredoc
 
 ifs.rb:
 #    1| exit m1 (normal)

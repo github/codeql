@@ -37,6 +37,7 @@ private import codeql_ruby.controlflow.ControlFlowGraph
 private import Completion
 private import SuccessorTypes
 private import Splitting
+private import codeql.files.FileSystem
 
 private AstNode parent(AstNode n) {
   result.getAFieldOrChild() = n and
@@ -606,29 +607,27 @@ module Trees {
 
   private class HashSplatParameterTree extends LeafTree, HashSplatParameter { }
 
-  private class HeredocBeginningTree extends StandardPreOrderTree, HeredocBeginning {
-    pragma[noinline]
-    private string getName() {
-      result = this.getValue().regexpCapture("^<<[-~]?[`']?(.*)[`']?$", 1)
-    }
+  private HeredocBody heredoc(HeredocBeginning start) {
+    exists(int i, File f |
+      start =
+        rank[i](HeredocBeginning b |
+          f = b.getLocation().getFile()
+        |
+          b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
+        ) and
+      result =
+        rank[i](HeredocBody b |
+          f = b.getLocation().getFile()
+        |
+          b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
+        )
+    )
+  }
 
+  private class HeredocBeginningTree extends StandardPreOrderTree, HeredocBeginning {
     final override AstNode getChildNode(int i) {
       i = 0 and
-      result =
-        min(string name, HeredocBody doc, HeredocEnd end |
-          name = this.getName() and
-          end = unique(HeredocEnd x | x = doc.getChild(_) | x) and
-          end.getValue() = name and
-          doc.getLocation().getFile() = this.getLocation().getFile() and
-          (
-            doc.getLocation().getStartLine() > this.getLocation().getStartLine()
-            or
-            doc.getLocation().getStartLine() = this.getLocation().getStartLine() and
-            doc.getLocation().getStartColumn() > this.getLocation().getStartColumn()
-          )
-        |
-          doc order by doc.getLocation().getStartLine(), doc.getLocation().getStartColumn()
-        )
+      result = heredoc(this)
     }
   }
 
