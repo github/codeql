@@ -73,10 +73,26 @@ private module CfgScope {
 
   private class BlockScope extends Range, Generated::Block {
     final override string getName() { result = "block" }
+
+    final override predicate entry(Generated::AstNode first) {
+      first(this.(Trees::BlockTree).getFirstChildNode(), first)
+    }
+
+    final override predicate exit(Generated::AstNode last, Completion c) {
+      last(this.(Trees::BlockTree).getLastChildNode(), last, c)
+    }
   }
 
   private class LambdaScope extends Range, Generated::Lambda {
     final override string getName() { result = "lambda" }
+
+    final override predicate entry(Generated::AstNode first) {
+      first(this.(Trees::LambdaTree).getFirstChildNode(), first)
+    }
+
+    final override predicate exit(Generated::AstNode last, Completion c) {
+      last(this.(Trees::LambdaTree).getLastChildNode(), last, c)
+    }
   }
 }
 

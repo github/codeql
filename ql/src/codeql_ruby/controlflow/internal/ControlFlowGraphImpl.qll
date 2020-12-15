@@ -295,7 +295,7 @@ module Trees {
     }
   }
 
-  private class BlockTree extends StandardPreOrderTree, Block {
+  class BlockTree extends StandardNode, PreOrderTree, PostOrderTree, Block {
     final override AstNode getChildNode(int i) {
       result = this.getParameters() and i = 0
       or
@@ -439,7 +439,9 @@ module Trees {
     override predicate isHidden() { any() }
   }
 
-  private class DoBlockTree extends RescueEnsureBlockTree, PreOrderTree, PostOrderTree, DoBlock {
+  private class DoBlockTree extends RescueEnsureBlockTree, PostOrderTree, DoBlock {
+    final override predicate first(AstNode first) { first = this }
+
     final override AstNode getChildNode(int i, boolean rescuable) {
       result = this.getParameters() and i = 0 and rescuable = false
       or
@@ -687,7 +689,7 @@ module Trees {
     final override AstNode getDefaultValue() { result = this.getValue() }
   }
 
-  private class LambdaTree extends StandardPreOrderTree, Lambda {
+  class LambdaTree extends StandardNode, PreOrderTree, PostOrderTree, Lambda {
     final override AstNode getChildNode(int i) {
       result = this.getParameters() and i = 0
       or
