@@ -3,7 +3,7 @@
 Specifying additional remote flow sources for JavaScript
 ========================================================
 
-You can model potential sources of untrusted user input without making changes to the CodeQL standard libary fror JavaScript.
+You can model potential sources of untrusted user input without making changes to the CodeQL standard library for JavaScript.
 
 As mentioned in the :doc:`Data flow cheat sheet for JavaScript <data-flow-cheat-sheet-for-javascript>`, the CodeQL libraries for JavaScript
 provide a class `RemoteFlowSource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/type.RemoteFlowSources$RemoteFlowSource.html>`__ to represent sources of untrusted user input, sometimes also referred to as `remote flow
