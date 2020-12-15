@@ -73,6 +73,9 @@ heredoc.rb:
 #-----|  -> <<A
 
 ifs.rb:
+#    1| enter top-level
+#-----|  -> 1
+
 #    1| enter m1
 #-----|  -> x
 
@@ -87,6 +90,9 @@ ifs.rb:
 
 #   32| enter m5
 #-----|  -> b1
+
+#   36| enter conditional_method_def
+#-----|  -> String
 
 loops.rb:
 #    1| enter m1
@@ -2265,6 +2271,31 @@ ifs.rb:
 #   33| String
 #-----|  -> If
 
+#   36| UnlessModifier
+#-----|  -> exit top-level (normal)
+
+#   36| conditional_method_def
+#-----|  -> UnlessModifier
+
+#   37| MethodCall
+#-----|  -> exit conditional_method_def (normal)
+
+#   37| puts
+#-----|  -> MethodCall
+
+#   37| String
+#-----|  -> puts
+
+#   38| Binary
+#-----| true -> UnlessModifier
+#-----| false -> conditional_method_def
+
+#   38| 1
+#-----|  -> 2
+
+#   38| 2
+#-----|  -> Binary
+
 loops.rb:
 #    1| x
 #-----|  -> While
@@ -3404,6 +3435,8 @@ heredoc.rb:
 #    1| exit double_heredoc
 
 ifs.rb:
+#    1| exit top-level
+
 #    1| exit m1
 
 #   11| exit m2
@@ -3413,6 +3446,8 @@ ifs.rb:
 #   28| exit m4
 
 #   32| exit m5
+
+#   36| exit conditional_method_def
 
 loops.rb:
 #    1| exit m1
@@ -3533,6 +3568,9 @@ heredoc.rb:
 #-----|  -> exit double_heredoc
 
 ifs.rb:
+#    1| exit top-level (normal)
+#-----|  -> exit top-level
+
 #    1| exit m1 (normal)
 #-----|  -> exit m1
 
@@ -3547,6 +3585,9 @@ ifs.rb:
 
 #   32| exit m5 (normal)
 #-----|  -> exit m5
+
+#   36| exit conditional_method_def (normal)
+#-----|  -> exit conditional_method_def
 
 loops.rb:
 #    1| exit m1 (normal)

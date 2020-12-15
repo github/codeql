@@ -32,3 +32,7 @@ end
 def m5 (b1, b2, b3, b4, b5)
   if (if b1 then b2 elsif b3 then b4 else b5 end) then "b2 || b4 || b5" else "!b2 || !b4 || !b5" end
 end
+
+def conditional_method_def()
+  puts "bla"
+end unless 1 == 2
