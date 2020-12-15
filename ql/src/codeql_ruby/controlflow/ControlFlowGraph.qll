@@ -1,55 +1,97 @@
 /** Provides classes representing the control flow graph. */
 
 private import codeql.Locations
-private import codeql_ruby.ast.internal.TreeSitter::Generated
+private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.controlflow.BasicBlocks
 private import SuccessorTypes
 private import internal.ControlFlowGraphImpl
 private import internal.Splitting
 private import internal.Completion
 
-private class CfgScopeRange =
-  @program or @begin_block or @end_block or @method or @singleton_method or @block or @do_block or
-      @lambda;
+private module CfgScope {
+  abstract class Range extends Generated::AstNode {
+    abstract string getName();
+
+    predicate entry(Generated::AstNode first) { first(this, first) }
+
+    predicate exit(Generated::AstNode last, Completion c) { last(this, last, c) }
+  }
+
+  private class ProgramScope extends Range, Generated::Program {
+    final override string getName() { result = "top-level" }
+  }
+
+  private class BeginBlockScope extends Range, Generated::BeginBlock {
+    final override string getName() { result = "BEGIN block" }
+  }
+
+  private class EndBlockScope extends Range, Generated::EndBlock {
+    final override string getName() { result = "END block" }
+  }
+
+  private class MethodScope extends Range, Generated::AstNode {
+    MethodScope() { this instanceof Generated::Method }
+
+    final override string getName() { result = this.(Generated::Method).getName().toString() }
+
+    final override predicate entry(Generated::AstNode first) {
+      first(this.(Trees::RescueEnsureBlockTree).firstBody(), first)
+    }
+
+    final override predicate exit(Generated::AstNode last, Completion c) {
+      this.(Trees::RescueEnsureBlockTree).lastBody(last, c)
+    }
+  }
+
+  private class SingletonMethodScope extends Range, Generated::AstNode {
+    SingletonMethodScope() { this instanceof Generated::SingletonMethod }
+
+    final override string getName() {
+      result = this.(Generated::SingletonMethod).getName().toString()
+    }
+
+    final override predicate entry(Generated::AstNode first) {
+      first(this.(Trees::RescueEnsureBlockTree).firstBody(), first)
+    }
+
+    final override predicate exit(Generated::AstNode last, Completion c) {
+      this.(Trees::RescueEnsureBlockTree).lastBody(last, c)
+    }
+  }
+
+  private class DoBlockScope extends Range, Generated::DoBlock {
+    final override string getName() { result = "do block" }
+
+    final override predicate entry(Generated::AstNode first) {
+      first(this.(Trees::RescueEnsureBlockTree).firstBody(), first)
+    }
+
+    final override predicate exit(Generated::AstNode last, Completion c) {
+      this.(Trees::RescueEnsureBlockTree).lastBody(last, c)
+    }
+  }
+
+  private class BlockScope extends Range, Generated::Block {
+    final override string getName() { result = "block" }
+  }
+
+  private class LambdaScope extends Range, Generated::Lambda {
+    final override string getName() { result = "lambda" }
+  }
+}
 
 /** An AST node with an associated control-flow graph. */
-class CfgScope extends AstNode, CfgScopeRange {
+class CfgScope extends Generated::AstNode {
+  CfgScope::Range range;
+
+  CfgScope() { range = this }
+
   /** Gets the name of this scope. */
-  string getName() {
-    this instanceof Program and
-    result = "top-level"
-    or
-    this instanceof BeginBlock and
-    result = "BEGIN block"
-    or
-    this instanceof EndBlock and
-    result = "END block"
-    or
-    result = this.(Method).getName().toString()
-    or
-    result = this.(SingletonMethod).getName().toString()
-    or
-    this instanceof Block and
-    result = "block"
-    or
-    this instanceof DoBlock and
-    result = "do block"
-    or
-    this instanceof Lambda and
-    result = "lambda"
-  }
+  string getName() { result = range.getName() }
 
-  predicate entry(AstNode first) {
-    first(this.(Trees::RescueEnsureBlockTree).firstBody(), first)
-    or
-    not this instanceof Trees::RescueEnsureBlockTree and first(this, first)
-  }
+  predicate entry(Generated::AstNode first) { range.entry(first) }
 
-  predicate exit(AstNode last, Completion c) {
-    this.(Trees::RescueEnsureBlockTree).lastBody(last, c)
-    or
-    not this instanceof Trees::RescueEnsureBlockTree and last(this, last, c)
-  }
+  predicate exit(Generated::AstNode last, Completion c) { range.exit(last, c) }
 }
 
 /**
@@ -65,7 +107,7 @@ class CfgNode extends TCfgNode {
   string toString() { none() }
 
   /** Gets the AST node that this node corresponds to, if any. */
-  AstNode getNode() { none() }
+  Generated::AstNode getNode() { none() }
 
   /** Gets the location of this control flow node. */
   Location getLocation() { result = this.getNode().getLocation() }
@@ -160,11 +202,11 @@ module CfgNodes {
    */
   class AstCfgNode extends CfgNode, TAstNode {
     private Splits splits;
-    private AstNode n;
+    private Generated::AstNode n;
 
     AstCfgNode() { this = TAstNode(n, splits) }
 
-    final override AstNode getNode() { result = n }
+    final override Generated::AstNode getNode() { result = n }
 
     final override string toString() {
       result = "[" + this.getSplitsString() + "] " + n.toString()
