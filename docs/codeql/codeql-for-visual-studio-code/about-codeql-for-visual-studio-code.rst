@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _about-codeql-for-visual-studio-code:
 
 About CodeQL for Visual Studio Code

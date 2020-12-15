@@ -17,7 +17,7 @@ private import PEP249
  * - https://dev.mysql.com/doc/connector-python/en/
  * - https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
  */
-module MysqlConnectorPython {
+private module MysqlConnectorPython {
   // ---------------------------------------------------------------------------
   // mysql
   // ---------------------------------------------------------------------------

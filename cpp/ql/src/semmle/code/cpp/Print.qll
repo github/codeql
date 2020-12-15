@@ -385,7 +385,7 @@ private class DumpFunction extends DumpDeclaration, Function {
 
   private string getACVQualifier() {
     result = getASpecifier().getName() and
-    (result = "const" or result = "volatile")
+    result = ["const", "volatile"]
   }
 
   private string getDeclaratorSuffix() {

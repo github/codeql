@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
+private import PEP249
 
 /** Provides models for the Python standard library. */
 private module Stdlib {
@@ -91,7 +92,7 @@ private module Stdlib {
        * For example, using `attr_name = "join"` will get all uses of `os.path.join`.
        */
       private DataFlow::Node path_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["join", "normpath"] and
+        attr_name in ["join", "normpath", "realpath", "abspath"] and
         (
           t.start() and
           result = DataFlow::importNode("os.path." + attr_name)
@@ -151,6 +152,54 @@ private module Stdlib {
   private class OsPathNormpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       exists(OsPathNormpathCall call |
+        nodeTo = call and
+        nodeFrom = call.getPathArg()
+      )
+    }
+  }
+
+  /**
+   * A call to `os.path.abspath`.
+   * See https://docs.python.org/3/library/os.path.html#os.path.abspath
+   */
+  private class OsPathAbspathCall extends Path::PathNormalization::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    OsPathAbspathCall() { node.getFunction() = os::path::path_attr("abspath").asCfgNode() }
+
+    DataFlow::Node getPathArg() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
+    }
+  }
+
+  /** An additional taint step for calls to `os.path.abspath` */
+  private class OsPathAbspathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(OsPathAbspathCall call |
+        nodeTo = call and
+        nodeFrom = call.getPathArg()
+      )
+    }
+  }
+
+  /**
+   * A call to `os.path.realpath`.
+   * See https://docs.python.org/3/library/os.path.html#os.path.realpath
+   */
+  private class OsPathRealpathCall extends Path::PathNormalization::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    OsPathRealpathCall() { node.getFunction() = os::path::path_attr("realpath").asCfgNode() }
+
+    DataFlow::Node getPathArg() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
+    }
+  }
+
+  /** An additional taint step for calls to `os.path.realpath` */
+  private class OsPathRealpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(OsPathRealpathCall call |
         nodeTo = call and
         nodeFrom = call.getPathArg()
       )
@@ -1570,6 +1619,29 @@ private module Stdlib {
         )
       }
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // sqlite3
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `sqlite3` module. */
+  private DataFlow::Node sqlite3(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("sqlite3")
+    or
+    exists(DataFlow::TypeTracker t2 | result = sqlite3(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `sqlite3` module. */
+  DataFlow::Node sqlite3() { result = sqlite3(DataFlow::TypeTracker::end()) }
+
+  /**
+   * sqlite3 implements PEP 249, providing ways to execute SQL statements against a database.
+   *
+   * See https://devdocs.io/python~3.9/library/sqlite3
+   */
+  class Sqlite3 extends PEP249Module {
+    Sqlite3() { this = sqlite3() }
   }
 }
 

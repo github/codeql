@@ -14,11 +14,7 @@ class PackedTimeType extends Type {
   }
 }
 
-private predicate timeType(string typeName) {
-  typeName = "_SYSTEMTIME" or
-  typeName = "SYSTEMTIME" or
-  typeName = "tm"
-}
+private predicate timeType(string typeName) { typeName = ["_SYSTEMTIME", "SYSTEMTIME", "tm"] }
 
 /**
  * A type that is used to represent times and dates in an 'unpacked' form, that is,

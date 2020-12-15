@@ -79,7 +79,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   }
 
   /** Holds if this type is an `enum`. */
-  predicate isEnum() { this.getBaseClass*().isSystemType("Enum") }
+  predicate isEnum() { this.getBaseClass().isSystemType("Enum") }
 
   /** Holds if this type is public. */
   predicate isPublic() { cil_public(this) }

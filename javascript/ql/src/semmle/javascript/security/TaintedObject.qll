@@ -63,6 +63,14 @@ module TaintedObject {
       src = call.getASourceOperand() and
       trg = call.getDestinationOperand().getALocalSource()
     )
+    or
+    // Spreading into an object preserves deep object taint: `p -> { ...p }`
+    inlbl = label() and
+    outlbl = label() and
+    exists(ObjectLiteralNode obj |
+      src = obj.getASpreadProperty() and
+      trg = obj
+    )
   }
 
   /**

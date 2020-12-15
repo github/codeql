@@ -214,6 +214,7 @@ abstract class Configuration extends string {
    * Holds if `guard` is a barrier guard for this configuration, added through
    * `isBarrierGuard` or `AdditionalBarrierGuardNode`.
    */
+  pragma[nomagic]
   private predicate isBarrierGuardInternal(BarrierGuardNode guard) {
     isBarrierGuard(guard)
     or
@@ -368,6 +369,7 @@ abstract class BarrierGuardNode extends DataFlow::Node {
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
+pragma[nomagic]
 private predicate barrierGuardBlocksExpr(
   BarrierGuardNode guard, boolean outcome, Expr test, string label
 ) {
@@ -383,7 +385,7 @@ private predicate barrierGuardBlocksExpr(
 /**
  * Holds if `guard` may block the flow of a value reachable through exploratory flow.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
   exists(Expr e |
     barrierGuardBlocksExpr(guard, _, e, _) and
@@ -397,7 +399,7 @@ private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate barrierGuardBlocksAccessPath(
   BarrierGuardNode guard, boolean outcome, AccessPath ap, string label
 ) {
@@ -410,6 +412,7 @@ private predicate barrierGuardBlocksAccessPath(
  *
  * This predicate is outlined to give the optimizer a hint about the join ordering.
  */
+pragma[nomagic]
 private predicate barrierGuardBlocksSsaRefinement(
   BarrierGuardNode guard, boolean outcome, SsaRefinementNode ref, string label
 ) {
@@ -425,7 +428,7 @@ private predicate barrierGuardBlocksSsaRefinement(
  *
  * `outcome` is bound to the outcome of `cond` for join-ordering purposes.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate barrierGuardUsedInCondition(
   BarrierGuardNode guard, ConditionGuardNode cond, boolean outcome
 ) {
@@ -444,6 +447,7 @@ private predicate barrierGuardUsedInCondition(
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
+pragma[nomagic]
 private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node nd, string label) {
   // 1) `nd` is a use of a refinement node that blocks its input variable
   exists(SsaRefinementNode ref, boolean outcome |
@@ -466,6 +470,7 @@ private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node 
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
+pragma[nomagic]
 private predicate barrierGuardBlocksEdge(
   BarrierGuardNode guard, DataFlow::Node pred, DataFlow::Node succ, string label
 ) {
@@ -1183,50 +1188,50 @@ private predicate loadStep(
 }
 
 /**
- * Holds if `rhs` is the right-hand side of a write to property `prop`, and `nd` is reachable
- * from the base of that write under configuration `cfg` (possibly through callees) along a
- * path summarized by `summary`.
+ * Holds if there is flow to `base.startProp`, and `base.startProp` flows to `nd.endProp` under `cfg/summary`.
  */
 pragma[nomagic]
 private predicate reachableFromStoreBase(
-  string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
-  PathSummary summary
+  string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
+  DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists(PathSummary s1, PathSummary s2 |
+  exists(PathSummary s1, PathSummary s2, DataFlow::Node rhs |
     reachableFromSource(rhs, cfg, s1)
     or
-    reachableFromStoreBase(_, _, rhs, cfg, s1)
+    reachableFromStoreBase(_, _, _, rhs, cfg, s1)
   |
-    storeStep(rhs, nd, prop, cfg, s2) and
+    storeStep(rhs, nd, startProp, cfg, s2) and
+    endProp = startProp and
+    base = nd and
     summary =
-      MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), s2.getStartLabel(),
-        s2.getEndLabel())
+      MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), DataFlow::FlowLabel::data(),
+        DataFlow::FlowLabel::data())
   )
   or
   exists(PathSummary newSummary, PathSummary oldSummary |
-    reachableFromStoreBaseStep(prop, rhs, nd, cfg, oldSummary, newSummary) and
+    reachableFromStoreBaseStep(startProp, endProp, base, nd, cfg, oldSummary, newSummary) and
     summary = oldSummary.appendValuePreserving(newSummary)
   )
 }
 
 /**
- * Holds if `rhs` is the right-hand side of a write to property `prop`, and `nd` is reachable
- * from the base of that write under configuration `cfg` (possibly through callees) along a
- * path whose last step is summarized by `newSummary`, and the previous steps are summarized
+ * Holds if `base` is the base of a write to property `prop`, and `nd` is reachable
+ * from `base` under configuration `cfg` (possibly through callees) along a path whose
+ * last step is summarized by `newSummary`, and the previous steps are summarized
  * by `oldSummary`.
  */
 pragma[noinline]
 private predicate reachableFromStoreBaseStep(
-  string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
-  PathSummary oldSummary, PathSummary newSummary
+  string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
+  DataFlow::Configuration cfg, PathSummary oldSummary, PathSummary newSummary
 ) {
   exists(DataFlow::Node mid |
-    reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) and
+    reachableFromStoreBase(startProp, endProp, base, mid, cfg, oldSummary) and
     flowStep(mid, cfg, nd, newSummary)
     or
     exists(string midProp |
-      reachableFromStoreBase(midProp, rhs, mid, cfg, oldSummary) and
-      isAdditionalLoadStoreStep(mid, nd, midProp, prop, cfg) and
+      reachableFromStoreBase(startProp, midProp, base, mid, cfg, oldSummary) and
+      isAdditionalLoadStoreStep(mid, nd, midProp, endProp, cfg) and
       newSummary = PathSummary::level()
     )
   )
@@ -1260,9 +1265,14 @@ private predicate storeToLoad(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary oldSummary,
   PathSummary newSummary
 ) {
-  exists(string prop, DataFlow::Node base |
-    reachableFromStoreBase(prop, pred, base, cfg, oldSummary) and
-    loadStep(base, succ, prop, cfg, newSummary)
+  exists(
+    string storeProp, string loadProp, DataFlow::Node storeBase, DataFlow::Node loadBase,
+    PathSummary s1, PathSummary s2
+  |
+    storeStep(pred, storeBase, storeProp, cfg, s1) and
+    reachableFromStoreBase(storeProp, loadProp, storeBase, loadBase, cfg, s2) and
+    oldSummary = s1.appendValuePreserving(s2) and
+    loadStep(loadBase, succ, loadProp, cfg, newSummary)
   )
 }
 
@@ -1281,6 +1291,9 @@ private predicate summarizedHigherOrderCall(
     DataFlow::Node innerArg, DataFlow::SourceNode cbParm, PathSummary oldSummary
   |
     reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
+    // Only track actual parameter flow.
+    // Captured flow does not need to be summarized - it is handled by the local case in `higherOrderCall`.
+    not arg = DataFlow::capturedVariableNode(_) and
     argumentPassing(outer, cb, f, cbParm) and
     innerArg = inner.getArgument(j)
   |
