@@ -38,6 +38,18 @@ class CfgScope extends AstNode, CfgScopeRange {
     this instanceof Lambda and
     result = "lambda"
   }
+
+  predicate entry(AstNode first) {
+    first(this.(Trees::RescueEnsureBlockTree).firstBody(), first)
+    or
+    not this instanceof Trees::RescueEnsureBlockTree and first(this, first)
+  }
+
+  predicate exit(AstNode last, Completion c) {
+    this.(Trees::RescueEnsureBlockTree).lastBody(last, c)
+    or
+    not this instanceof Trees::RescueEnsureBlockTree and last(this, last, c)
+  }
 }
 
 /**
