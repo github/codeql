@@ -8,6 +8,9 @@ break_ensure.rb:
 #   27| enter m3
 #-----|  -> elements
 
+#   44| enter m4
+#-----|  -> elements
+
 case.rb:
 #    1| enter if_in_case
 #-----|  -> Case
@@ -128,6 +131,9 @@ raise.rb:
 #  128| enter m11
 #-----|  -> b
 
+#  142| enter m12
+#-----|  -> b
+
 break_ensure.rb:
 #    1| elements
 #-----|  -> elements
@@ -143,13 +149,13 @@ break_ensure.rb:
 #-----|  -> For
 
 #    3| If
-#-----|  -> x
+#-----|  -> element
 
 #    3| Binary
 #-----| false -> For
 #-----| true -> Break
 
-#    3| x
+#    3| element
 #-----|  -> 0
 
 #    3| 0
@@ -197,13 +203,13 @@ break_ensure.rb:
 #-----|  -> For
 
 #   16| If
-#-----|  -> x
+#-----|  -> element
 
 #   16| Binary
 #-----| true -> Break
 #-----| false -> Ensure
 
-#   16| x
+#   16| element
 #-----|  -> 0
 
 #   16| 0
@@ -347,6 +353,85 @@ break_ensure.rb:
 
 #   41| String
 #-----|  -> puts
+
+#   44| elements
+#-----|  -> elements
+
+#   45| For
+#-----| non-empty -> element
+#-----| empty -> exit m4 (normal)
+
+#   45| element
+#-----|  -> If
+
+#   45| elements
+#-----|  -> For
+
+#   47| If
+#-----|  -> element
+
+#   47| Binary
+#-----| true -> String
+#-----| false -> Ensure
+
+#   47| element
+#-----|  -> 1
+
+#   47| 1
+#-----|  -> Binary
+
+#   48| MethodCall
+#-----| raise -> [ensure: raise] Ensure
+
+#   48| raise
+#-----|  -> MethodCall
+
+#   48| String
+#-----|  -> raise
+
+#   50| Ensure
+#-----|  -> If
+
+#   50| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] If
+
+#   51| If
+#-----|  -> element
+
+#   51| [ensure: raise] If
+#-----|  -> [ensure: raise] element
+
+#   51| Binary
+#-----| false -> For
+#-----| true -> 10
+
+#   51| [ensure: raise] Binary
+#-----| true -> [ensure: raise] 10
+#-----| raise -> exit m4 (abnormal)
+
+#   51| element
+#-----|  -> 0
+
+#   51| [ensure: raise] element
+#-----|  -> [ensure: raise] 0
+
+#   51| 0
+#-----|  -> Binary
+
+#   51| [ensure: raise] 0
+#-----|  -> [ensure: raise] Binary
+
+#   52| Break
+#-----| break -> exit m4 (normal)
+
+#   52| [ensure: raise] Break
+#-----| break -> exit m4 (normal)
+
+#   52| 10
+#-----|  -> Break
+
+#   52| [ensure: raise] 10
+#-----|  -> [ensure: raise] Break
 
 case.rb:
 #    2| Case
@@ -3149,12 +3234,51 @@ raise.rb:
 #  139| String
 #-----|  -> puts
 
+#  142| b
+#-----|  -> If
+
+#  143| If
+#-----|  -> b
+
+#  143| b
+#-----| true -> String
+#-----| false -> Ensure
+
+#  144| MethodCall
+#-----| raise -> [ensure: raise] Ensure
+
+#  144| raise
+#-----|  -> MethodCall
+
+#  144| String
+#-----|  -> raise
+
+#  146| Ensure
+#-----|  -> 3
+
+#  146| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] 3
+
+#  147| Return
+#-----| return -> exit m12 (normal)
+
+#  147| [ensure: raise] Return
+#-----| return -> exit m12 (normal)
+
+#  147| 3
+#-----|  -> Return
+
+#  147| [ensure: raise] 3
+#-----|  -> [ensure: raise] Return
+
 break_ensure.rb:
 #    1| exit m1
 
 #   13| exit m2
 
 #   27| exit m3
+
+#   44| exit m4
 
 case.rb:
 #    1| exit if_in_case
@@ -3236,6 +3360,8 @@ raise.rb:
 
 #  128| exit m11
 
+#  142| exit m12
+
 break_ensure.rb:
 #    1| exit m1 (normal)
 #-----|  -> exit m1
@@ -3245,6 +3371,12 @@ break_ensure.rb:
 
 #   27| exit m3 (normal)
 #-----|  -> exit m3
+
+#   44| exit m4 (abnormal)
+#-----|  -> exit m4
+
+#   44| exit m4 (normal)
+#-----|  -> exit m4
 
 case.rb:
 #    1| exit if_in_case (normal)
@@ -3392,3 +3524,6 @@ raise.rb:
 
 #  128| exit m11 (normal)
 #-----|  -> exit m11
+
+#  142| exit m12 (normal)
+#-----|  -> exit m12

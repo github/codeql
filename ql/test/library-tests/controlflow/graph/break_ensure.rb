@@ -1,6 +1,6 @@
 def m1 elements
   for element in elements do
-    if x > 0 then
+    if element > 0 then
       break
     end
   end
@@ -13,7 +13,7 @@ end
 def m2 elements
   for element in elements do
     begin
-      if x > 0 then
+      if element > 0 then
         break
       end
     ensure
@@ -39,4 +39,18 @@ def m3 elements
     end
   end
   puts "Done"
+end
+
+def m4 elements
+  for element in elements do
+    begin
+      if element > 1 then
+        raise ""
+      end
+    ensure
+      if element > 0 then
+        break 10;
+      end
+    end
+  end
 end
