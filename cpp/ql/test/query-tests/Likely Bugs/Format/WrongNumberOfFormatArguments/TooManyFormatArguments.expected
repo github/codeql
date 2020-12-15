@@ -12,3 +12,6 @@
 | test.c:39:3:39:8 | call to printf | Format expects 2 arguments but given 5 |
 | test.c:40:3:40:8 | call to printf | Format expects 2 arguments but given 4 |
 | test.c:41:3:41:8 | call to printf | Format expects 2 arguments but given 3 |
+| test.c:46:2:46:7 | call to printf | Format expects 1 arguments but given 2 |
+| test.c:47:2:47:7 | call to printf | Format expects 1 arguments but given 2 |
+| test.c:48:2:48:7 | call to printf | Format expects 1 arguments but given 2 |

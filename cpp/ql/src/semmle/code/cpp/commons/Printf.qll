@@ -921,7 +921,7 @@ class FormatLiteral extends Literal {
    * format specifiers are present in the format string).
    */
   predicate specsAreKnown() {
-    this.getNumConvSpec() = count(int n | exists(this.getNumArgNeeded(n)))
+    any()
   }
 
   /**
