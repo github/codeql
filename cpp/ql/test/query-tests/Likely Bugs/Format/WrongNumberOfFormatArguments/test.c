@@ -43,7 +43,7 @@ void test(int i, const char *str)
 
 	printf("%@ %i %i", 1, 2); // GOOD
 
-	printf("%Y", 1, 2); // GOOD (unknown format character, this might be correct) [FALSE POSITIVE]
-	printf("%1.1Y", 1, 2); // GOOD (unknown format character, this might be correct) [FALSE POSITIVE]
-	printf("%*.*Y", 1, 2); // GOOD (unknown format character, this might be correct) [FALSE POSITIVE]
+	printf("%Y", 1, 2); // GOOD (unknown format character, this might be correct)
+	printf("%1.1Y", 1, 2); // GOOD (unknown format character, this might be correct)
+	printf("%*.*Y", 1, 2); // GOOD (unknown format character, this might be correct)
 }
