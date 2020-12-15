@@ -134,6 +134,9 @@ raise.rb:
 #  142| enter m12
 #-----|  -> b
 
+#  150| enter m13
+#-----|  -> Ensure
+
 break_ensure.rb:
 #    1| elements
 #-----|  -> elements
@@ -3271,6 +3274,9 @@ raise.rb:
 #  147| [ensure: raise] 3
 #-----|  -> [ensure: raise] Return
 
+#  151| Ensure
+#-----|  -> exit m13 (normal)
+
 break_ensure.rb:
 #    1| exit m1
 
@@ -3361,6 +3367,8 @@ raise.rb:
 #  128| exit m11
 
 #  142| exit m12
+
+#  150| exit m13
 
 break_ensure.rb:
 #    1| exit m1 (normal)
@@ -3527,3 +3535,6 @@ raise.rb:
 
 #  142| exit m12 (normal)
 #-----|  -> exit m12
+
+#  150| exit m13 (normal)
+#-----|  -> exit m13
