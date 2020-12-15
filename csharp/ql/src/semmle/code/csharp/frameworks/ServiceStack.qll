@@ -89,5 +89,30 @@ module SQL {
 
 /** XSS sinks for the ServiceStack framework */
 module XSS {
-    // TODO
+    private import ServiceStack::ServiceStack
+    private import semmle.code.csharp.security.dataflow.flowsources.Remote
+
+    class XssSinks extends RemoteFlowSource {
+        XssSinks() { 
+                exists( Method m | 
+                    ((
+                        this.asParameter() = m.getAParameter() and
+                        serviceStackRequests(m) 
+                    ) or 
+                    // if object is tainted then the rest follows as well
+                    (   serviceStackRequests(m) and 
+                        m.getAParameter().getType().(RefType).getAProperty().getAnAccess() = this.asExpr()
+                    )) 
+                    // along with finding the right methods, find ones that return strings/object which are strings
+                    and (
+                        m.getReturnType() instanceof ObjectType or
+                        m.getReturnType() instanceof StringType
+                    )
+            ) 
+        }
+    
+        override string getSourceType() {
+            result = "XssSinks"
+        }
+    }
 }
