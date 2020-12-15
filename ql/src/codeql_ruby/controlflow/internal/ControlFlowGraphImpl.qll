@@ -150,14 +150,7 @@ abstract private class StandardNode extends ControlFlowTree {
   abstract AstNode getChildNode(int i);
 
   private AstNode getChildNodeRanked(int i) {
-    result =
-      rank[i + 1](AstNode child, int j |
-        child = this.getChildNode(j) and
-        // Never descend into children with a separate scope
-        not child instanceof CfgScope
-      |
-        child order by j
-      )
+    result = rank[i + 1](AstNode child, int j | child = this.getChildNode(j) | child order by j)
   }
 
   /** Gets the first child node of this element. */
@@ -301,8 +294,6 @@ module Trees {
       or
       result = this.getChild(i - 1)
     }
-
-    override predicate isHidden() { any() }
   }
 
   private class BlockArgumentTree extends StandardPostOrderTree, BlockArgument {
@@ -447,8 +438,6 @@ module Trees {
       or
       result = this.getChild(i - 1) and rescuable = true
     }
-
-    override predicate isHidden() { any() }
   }
 
   private class ElementReferenceTree extends StandardPostOrderTree, ElementReference {
@@ -695,8 +684,6 @@ module Trees {
       or
       result = this.getBody() and i = 1
     }
-
-    override predicate isHidden() { any() }
   }
 
   private class LambdaParametersTree extends StandardPreOrderTree, LambdaParameters {
@@ -783,8 +770,6 @@ module Trees {
       succ = this and
       c instanceof NormalCompletion
     }
-
-    override predicate isHidden() { any() }
   }
 
   private class MethodParametersTree extends StandardPreOrderTree, MethodParameters {
@@ -952,8 +937,7 @@ module Trees {
           child = this.getChildNode(j, _) and
           not result instanceof Rescue and
           not result instanceof Ensure and
-          not result instanceof Else and
-          not child instanceof CfgScope
+          not result instanceof Else
         |
           child order by j
         )
@@ -1219,8 +1203,6 @@ module Trees {
     }
 
     final override predicate last(AstNode last, Completion c) { this.lastBody(last, c) }
-
-    override predicate isHidden() { any() }
   }
 
   private class SingletonMethodTree extends RescueEnsureBlockTree, PostOrderTree, SingletonMethod {
@@ -1246,8 +1228,6 @@ module Trees {
       succ = this and
       c instanceof NormalCompletion
     }
-
-    override predicate isHidden() { any() }
   }
 
   private class SplatArgumentTree extends StandardPostOrderTree, SplatArgument {

@@ -1,4 +1,7 @@
 break_ensure.rb:
+#    1| enter top-level
+#-----|  -> m1
+
 #    1| enter m1
 #-----|  -> elements
 
@@ -12,12 +15,15 @@ break_ensure.rb:
 #-----|  -> elements
 
 case.rb:
+#    1| enter top-level
+#-----|  -> if_in_case
+
 #    1| enter if_in_case
 #-----|  -> Case
 
 cfg.rb:
 #    1| enter top-level
-#-----|  -> Alias
+#-----|  -> bar
 
 #   15| enter BEGIN block
 #-----|  -> BeginBlock
@@ -62,6 +68,9 @@ cfg.rb:
 #-----|  -> x
 
 exit.rb:
+#    1| enter top-level
+#-----|  -> m1
+
 #    1| enter m1
 #-----|  -> x
 
@@ -69,12 +78,15 @@ exit.rb:
 #-----|  -> x
 
 heredoc.rb:
+#    1| enter top-level
+#-----|  -> double_heredoc
+
 #    1| enter double_heredoc
 #-----|  -> <<A
 
 ifs.rb:
 #    1| enter top-level
-#-----|  -> 1
+#-----|  -> m1
 
 #    1| enter m1
 #-----|  -> x
@@ -95,6 +107,9 @@ ifs.rb:
 #-----|  -> String
 
 loops.rb:
+#    1| enter top-level
+#-----|  -> m1
+
 #    1| enter m1
 #-----|  -> x
 
@@ -151,6 +166,12 @@ raise.rb:
 #-----|  -> Ensure
 
 break_ensure.rb:
+#    1| Method
+#-----|  -> m2
+
+#    1| m1
+#-----|  -> Method
+
 #    1| elements
 #-----|  -> elements
 
@@ -204,6 +225,12 @@ break_ensure.rb:
 
 #    9| String
 #-----|  -> puts
+
+#   13| Method
+#-----|  -> m3
+
+#   13| m2
+#-----|  -> Method
 
 #   13| elements
 #-----|  -> elements
@@ -283,6 +310,12 @@ break_ensure.rb:
 
 #   21| [ensure: break] String
 #-----|  -> [ensure: break] puts
+
+#   27| Method
+#-----|  -> m4
+
+#   27| m3
+#-----|  -> Method
 
 #   27| elements
 #-----|  -> elements
@@ -370,6 +403,12 @@ break_ensure.rb:
 #   41| String
 #-----|  -> puts
 
+#   44| Method
+#-----|  -> exit top-level (normal)
+
+#   44| m4
+#-----|  -> Method
+
 #   44| elements
 #-----|  -> elements
 
@@ -450,6 +489,12 @@ break_ensure.rb:
 #-----|  -> [ensure: raise] Break
 
 case.rb:
+#    1| Method
+#-----|  -> exit top-level (normal)
+
+#    1| if_in_case
+#-----|  -> Method
+
 #    2| Case
 #-----|  -> x1
 
@@ -499,6 +544,12 @@ case.rb:
 #-----|  -> puts
 
 cfg.rb:
+#    1| Method
+#-----|  -> Alias
+
+#    1| bar
+#-----|  -> Method
+
 #    3| Alias
 #-----|  -> foo
 
@@ -548,7 +599,7 @@ cfg.rb:
 #-----|  -> StringArray
 
 #   12| Call
-#-----|  -> 41
+#-----|  -> BeginBlock
 
 #   12| puts
 #-----|  -> Call
@@ -560,6 +611,7 @@ cfg.rb:
 #-----|  -> String
 
 #   16| Call
+#-----|  -> EndBlock
 #-----|  -> exit BEGIN block (normal)
 
 #   16| puts
@@ -572,6 +624,7 @@ cfg.rb:
 #-----|  -> String
 
 #   20| Call
+#-----|  -> 41
 #-----|  -> exit END block (normal)
 
 #   20| puts
@@ -871,7 +924,7 @@ cfg.rb:
 #-----|  -> C
 
 #   62| Assignment
-#-----|  -> 1
+#-----|  -> pattern
 
 #   62| DestructuredLeftAssignment
 #-----|  -> Assignment
@@ -902,6 +955,12 @@ cfg.rb:
 
 #   62| 3
 #-----|  -> Array
+
+#   63| Method
+#-----|  -> 1
+
+#   63| pattern
+#-----|  -> Method
 
 #   63| DestructuredParameter
 #-----|  -> a
@@ -949,7 +1008,7 @@ cfg.rb:
 #-----|  -> Array
 
 #   68| Call
-#-----|  -> 42
+#-----|  -> print
 
 #   68| puts
 #-----|  -> Call
@@ -962,6 +1021,12 @@ cfg.rb:
 
 #   68| 2
 #-----|  -> ElementReference
+
+#   69| Method
+#-----|  -> 42
+
+#   69| print
+#-----|  -> Method
 
 #   70| Call
 #-----|  -> exit print (normal)
@@ -1136,7 +1201,7 @@ cfg.rb:
 #-----|  -> Pair
 
 #   98| Assignment
-#-----|  -> String
+#-----|  -> parameters
 
 #   98| map2
 #-----|  -> Assignment
@@ -1164,6 +1229,12 @@ cfg.rb:
 
 #   98| map1
 #-----|  -> HashSplatArgument
+
+#  101| Method
+#-----|  -> String
+
+#  101| parameters
+#-----|  -> Method
 
 #  101| OptionalParameter
 #-----| no-match -> 42
@@ -1282,7 +1353,7 @@ cfg.rb:
 #-----|  -> @field
 
 #  117| Assignment
-#-----|  -> swap
+#-----|  -> Lambda
 
 #  117| @@static_field
 #-----|  -> Assignment
@@ -1296,14 +1367,20 @@ cfg.rb:
 #  120| swap
 #-----|  -> Assignment
 
+#  120| Lambda
+#-----|  -> swap
+
 #  120| DestructuredParameter
-#-----|  -> exit lambda (normal)
+#-----|  -> Block
 
 #  120| x
 #-----|  -> y
 
 #  120| y
 #-----|  -> DestructuredParameter
+
+#  120| Block
+#-----|  -> exit lambda (normal)
 
 #  120| Array
 #-----|  -> exit block (normal)
@@ -1487,7 +1564,7 @@ cfg.rb:
 #-----|  -> ScopeResolution
 
 #  138| ScopeResolution
-#-----|  -> Silly
+#-----|  -> SingletonClass
 
 #  138| Call
 #-----|  -> Constant
@@ -1501,14 +1578,29 @@ cfg.rb:
 #  138| Constant
 #-----|  -> ScopeResolution
 
-#  140| Call
+#  140| SingletonClass
 #-----|  -> Silly
+
+#  140| Call
+#-----|  -> Setter
 
 #  140| Silly
 #-----|  -> itself
 
 #  140| itself
 #-----|  -> Call
+
+#  141| Method
+#-----|  -> print
+
+#  141| Setter
+#-----|  -> Method
+
+#  142| Method
+#-----|  -> Silly
+
+#  142| print
+#-----|  -> Method
 
 #  143| Call
 #-----|  -> super
@@ -1535,7 +1627,7 @@ cfg.rb:
 #-----|  -> Call
 
 #  148| Assignment
-#-----|  -> 1
+#-----|  -> silly
 
 #  148| silly
 #-----|  -> Assignment
@@ -1549,6 +1641,15 @@ cfg.rb:
 #  148| new
 #-----|  -> Call
 
+#  149| SingletonMethod
+#-----|  -> two_parameters
+
+#  149| silly
+#-----|  -> method
+
+#  149| method
+#-----|  -> SingletonMethod
+
 #  149| SplatParameter
 #-----|  -> x
 
@@ -1560,6 +1661,12 @@ cfg.rb:
 
 #  150| x
 #-----|  -> puts
+
+#  153| Method
+#-----|  -> 1
+
+#  153| two_parameters
+#-----|  -> Method
 
 #  153| a
 #-----|  -> b
@@ -1865,6 +1972,12 @@ cfg.rb:
 #  183| 0
 #-----|  -> Binary
 
+#  185| Method
+#-----|  -> run_block
+
+#  185| run_block
+#-----|  -> Method
+
 #  186| Yield
 #-----|  -> 42
 
@@ -1889,6 +2002,12 @@ cfg.rb:
 #-----|  -> puts
 
 exit.rb:
+#    1| Method
+#-----|  -> m2
+
+#    1| m1
+#-----|  -> Method
+
 #    1| x
 #-----|  -> x
 
@@ -1922,6 +2041,12 @@ exit.rb:
 
 #    5| String
 #-----|  -> puts
+
+#    8| Method
+#-----|  -> exit top-level (normal)
+
+#    8| m2
+#-----|  -> Method
 
 #    8| x
 #-----|  -> x
@@ -1958,11 +2083,17 @@ exit.rb:
 #-----|  -> puts
 
 heredoc.rb:
-#    2| MethodCall
+#    1| Method
+#-----|  -> exit top-level (normal)
+
+#    1| double_heredoc
+#-----|  -> Method
+
+#    2| Call
 #-----|  -> exit double_heredoc (normal)
 
 #    2| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    2| <<A
 #-----|  -> HeredocBody
@@ -1977,6 +2108,12 @@ heredoc.rb:
 #-----|  -> puts
 
 ifs.rb:
+#    1| Method
+#-----|  -> m2
+
+#    1| m1
+#-----|  -> Method
+
 #    1| x
 #-----|  -> x
 
@@ -2077,6 +2214,12 @@ ifs.rb:
 #    7| String
 #-----|  -> puts
 
+#   11| Method
+#-----|  -> m3
+
+#   11| m2
+#-----|  -> Method
+
 #   11| b
 #-----|  -> b
 
@@ -2098,6 +2241,12 @@ ifs.rb:
 
 #   15| 1
 #-----|  -> Return
+
+#   18| Method
+#-----|  -> m4
+
+#   18| m3
+#-----|  -> Method
 
 #   18| x
 #-----|  -> x
@@ -2164,6 +2313,12 @@ ifs.rb:
 #   25| x
 #-----|  -> puts
 
+#   28| Method
+#-----|  -> m5
+
+#   28| m4
+#-----|  -> Method
+
 #   28| b1
 #-----|  -> b2
 
@@ -2208,6 +2363,12 @@ ifs.rb:
 
 #   29| String
 #-----|  -> Conditional
+
+#   32| Method
+#-----|  -> 1
+
+#   32| m5
+#-----|  -> Method
 
 #   32| b1
 #-----|  -> b2
@@ -2274,14 +2435,17 @@ ifs.rb:
 #   36| UnlessModifier
 #-----|  -> exit top-level (normal)
 
-#   36| conditional_method_def
+#   36| Method
 #-----|  -> UnlessModifier
 
-#   37| MethodCall
+#   36| conditional_method_def
+#-----|  -> Method
+
+#   37| Call
 #-----|  -> exit conditional_method_def (normal)
 
 #   37| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   37| String
 #-----|  -> puts
@@ -2297,6 +2461,12 @@ ifs.rb:
 #-----|  -> Binary
 
 loops.rb:
+#    1| Method
+#-----|  -> m2
+
+#    1| m1
+#-----|  -> Method
+
 #    1| x
 #-----|  -> While
 
@@ -2330,6 +2500,12 @@ loops.rb:
 
 #    4| 1
 #-----|  -> OperatorAssignment
+
+#    8| Method
+#-----|  -> m3
+
+#    8| m2
+#-----|  -> Method
 
 #    8| x
 #-----|  -> While
@@ -2431,6 +2607,12 @@ loops.rb:
 #   21| String
 #-----|  -> puts
 
+#   24| Method
+#-----|  -> exit top-level (normal)
+
+#   24| m3
+#-----|  -> Method
+
 #   25| Call
 #-----|  -> exit m3 (normal)
 
@@ -2481,10 +2663,16 @@ raise.rb:
 #-----|  -> Exception
 
 #    4| Superclass
-#-----|  -> exit top-level (normal)
+#-----|  -> m1
 
 #    4| Exception
 #-----|  -> Superclass
+
+#    7| Method
+#-----|  -> m2
+
+#    7| m1
+#-----|  -> Method
 
 #    7| x
 #-----|  -> x
@@ -2519,6 +2707,12 @@ raise.rb:
 
 #   11| String
 #-----|  -> puts
+
+#   14| Method
+#-----|  -> m3
+
+#   14| m2
+#-----|  -> Method
 
 #   14| b
 #-----|  -> b
@@ -2564,6 +2758,12 @@ raise.rb:
 #   22| String
 #-----|  -> puts
 
+#   25| Method
+#-----|  -> m4
+
+#   25| m3
+#-----|  -> Method
+
 #   25| b
 #-----|  -> b
 
@@ -2603,6 +2803,12 @@ raise.rb:
 
 #   33| String
 #-----|  -> puts
+
+#   36| Method
+#-----|  -> m5
+
+#   36| m4
+#-----|  -> Method
 
 #   36| b
 #-----|  -> b
@@ -2647,6 +2853,12 @@ raise.rb:
 #   44| String
 #-----|  -> puts
 
+#   47| Method
+#-----|  -> m6
+
+#   47| m5
+#-----|  -> Method
+
 #   47| b
 #-----|  -> b
 
@@ -2680,6 +2892,12 @@ raise.rb:
 
 #   54| String
 #-----|  -> puts
+
+#   57| Method
+#-----|  -> m7
+
+#   57| m6
+#-----|  -> Method
 
 #   57| b
 #-----|  -> b
@@ -2731,6 +2949,12 @@ raise.rb:
 
 #   65| String
 #-----|  -> puts
+
+#   68| Method
+#-----|  -> m8
+
+#   68| m7
+#-----|  -> Method
 
 #   68| x
 #-----|  -> x
@@ -2820,6 +3044,12 @@ raise.rb:
 
 #   76| [ensure: raise] String
 #-----|  -> [ensure: raise] puts
+
+#   79| Method
+#-----|  -> m9
+
+#   79| m8
+#-----|  -> Method
 
 #   79| x
 #-----|  -> String
@@ -2927,6 +3157,12 @@ raise.rb:
 
 #   91| String
 #-----|  -> puts
+
+#   94| Method
+#-----|  -> m10
+
+#   94| m9
+#-----|  -> Method
 
 #   94| x
 #-----|  -> b1
@@ -3245,6 +3481,12 @@ raise.rb:
 #  117| [ensure: raise] String
 #-----|  -> [ensure: raise] raise
 
+#  121| Method
+#-----|  -> m11
+
+#  121| m10
+#-----|  -> Method
+
 #  121| OptionalParameter
 #-----| no-match -> String
 #-----| match -> Ensure
@@ -3269,6 +3511,12 @@ raise.rb:
 
 #  125| String
 #-----|  -> puts
+
+#  128| Method
+#-----|  -> m12
+
+#  128| m11
+#-----|  -> Method
 
 #  128| b
 #-----|  -> b
@@ -3345,6 +3593,12 @@ raise.rb:
 #  139| String
 #-----|  -> puts
 
+#  142| Method
+#-----|  -> m13
+
+#  142| m12
+#-----|  -> Method
+
 #  142| b
 #-----|  -> b
 
@@ -3382,10 +3636,18 @@ raise.rb:
 #  147| [ensure: raise] 3
 #-----|  -> [ensure: raise] Return
 
+#  150| Method
+#-----|  -> exit top-level (normal)
+
+#  150| m13
+#-----|  -> Method
+
 #  151| Ensure
 #-----|  -> exit m13 (normal)
 
 break_ensure.rb:
+#    1| exit top-level
+
 #    1| exit m1
 
 #   13| exit m2
@@ -3395,6 +3657,8 @@ break_ensure.rb:
 #   44| exit m4
 
 case.rb:
+#    1| exit top-level
+
 #    1| exit if_in_case
 
 cfg.rb:
@@ -3427,11 +3691,15 @@ cfg.rb:
 #  189| exit block
 
 exit.rb:
+#    1| exit top-level
+
 #    1| exit m1
 
 #    8| exit m2
 
 heredoc.rb:
+#    1| exit top-level
+
 #    1| exit double_heredoc
 
 ifs.rb:
@@ -3450,6 +3718,8 @@ ifs.rb:
 #   36| exit conditional_method_def
 
 loops.rb:
+#    1| exit top-level
+
 #    1| exit m1
 
 #    8| exit m2
@@ -3488,6 +3758,9 @@ raise.rb:
 #  150| exit m13
 
 break_ensure.rb:
+#    1| exit top-level (normal)
+#-----|  -> exit top-level
+
 #    1| exit m1 (normal)
 #-----|  -> exit m1
 
@@ -3504,6 +3777,9 @@ break_ensure.rb:
 #-----|  -> exit m4
 
 case.rb:
+#    1| exit top-level (normal)
+#-----|  -> exit top-level
+
 #    1| exit if_in_case (normal)
 #-----|  -> exit if_in_case
 
@@ -3551,6 +3827,9 @@ cfg.rb:
 #-----|  -> exit block
 
 exit.rb:
+#    1| exit top-level (normal)
+#-----|  -> exit top-level
+
 #    1| exit m1 (abnormal)
 #-----|  -> exit m1
 
@@ -3564,6 +3843,9 @@ exit.rb:
 #-----|  -> exit m2
 
 heredoc.rb:
+#    1| exit top-level (normal)
+#-----|  -> exit top-level
+
 #    1| exit double_heredoc (normal)
 #-----|  -> exit double_heredoc
 
@@ -3590,6 +3872,9 @@ ifs.rb:
 #-----|  -> exit conditional_method_def
 
 loops.rb:
+#    1| exit top-level (normal)
+#-----|  -> exit top-level
+
 #    1| exit m1 (normal)
 #-----|  -> exit m1
 
