@@ -73,22 +73,6 @@ private class StdSetEmplace extends TaintFunction {
 }
 
 /**
- * The standard set `swap` functions.
- */
-private class StdSetSwap extends TaintFunction {
-  StdSetSwap() { this.hasQualifiedName("std", ["set", "unordered_set"], "swap") }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // container1.swap(container2)
-    input.isQualifierObject() and
-    output.isParameterDeref(0)
-    or
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
-  }
-}
-
-/**
  * The standard set `merge` function.
  */
 private class StdSetMerge extends TaintFunction {
