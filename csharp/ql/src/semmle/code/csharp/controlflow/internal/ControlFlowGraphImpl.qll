@@ -50,7 +50,20 @@ private import SuccessorTypes
 private import Splitting
 private import semmle.code.csharp.ExprOrStmtParent
 
-abstract private class ControlFlowTree extends ControlFlowElement {
+/** An element that defines a new CFG scope. */
+class CfgScope extends Element, @top_level_exprorstmt_parent { }
+
+module ControlFlowTree {
+  private class Range_ = @callable or @control_flow_element;
+
+  class Range extends Element, Range_ { }
+
+  private predicate id(Range x, Range y) { x = y }
+
+  predicate idOf(Range x, int y) = equivalenceRelation(id/2)(x, y)
+}
+
+abstract private class ControlFlowTree extends ControlFlowTree::Range {
   /**
    * Holds if `first` is the first element executed within this control
    * flow element.
@@ -96,23 +109,6 @@ predicate last(ControlFlowTree cft, ControlFlowElement last, Completion c) {
   )
 }
 
-pragma[noinline]
-private LabeledStmt getLabledStmt(string label, Callable c) {
-  result.getEnclosingCallable() = c and
-  label = result.getLabel()
-}
-
-pragma[nomagic]
-private predicate goto(ControlFlowElement cfe, GotoCompletion gc, string label, Callable enclosing) {
-  last(_, cfe, gc) and
-  // Special case: when a `goto` happens inside a `try` statement with a
-  // `finally` block, flow does not go directly to the target, but instead
-  // to the `finally` block (and from there possibly to the target)
-  not cfe = any(Statements::TryStmtTree t | t.hasFinally()).getBlockOrCatchFinallyPred(_) and
-  label = gc.getLabel() and
-  enclosing = cfe.getEnclosingCallable()
-}
-
 /**
  * Holds if `succ` is a control flow successor for `pred`, given that `pred`
  * finishes with completion `c`.
@@ -120,33 +116,10 @@ private predicate goto(ControlFlowElement cfe, GotoCompletion gc, string label, 
 pragma[nomagic]
 predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
   any(ControlFlowTree cft).succ(pred, succ, c)
-  or
-  exists(Constructor con, InitializerSplitting::InitializedInstanceMember m, int i |
-    last(m.getInitializer(), pred, c) and
-    c instanceof NormalCompletion and
-    InitializerSplitting::constructorInitializeOrder(con, m, i)
-  |
-    // Flow from one member initializer to the next
-    exists(InitializerSplitting::InitializedInstanceMember next |
-      InitializerSplitting::constructorInitializeOrder(con, next, i + 1) and
-      first(next.getInitializer(), succ)
-    )
-    or
-    // Flow from last member initializer to constructor body
-    m = InitializerSplitting::lastConstructorInitializer(con) and
-    first(con.getBody(), succ)
-  )
-  or
-  // Flow from element with `goto` completion to first element of relevant
-  // target
-  exists(string label, Callable enclosing |
-    goto(pred, c, label, enclosing) and
-    first(getLabledStmt(label, enclosing), succ)
-  )
 }
 
 /** Holds if `first` is first executed when entering `scope`. */
-predicate succEntry(@top_level_exprorstmt_parent scope, ControlFlowElement first) {
+predicate scopeFirst(CfgScope scope, ControlFlowElement first) {
   scope =
     any(Callable c |
       if exists(c.(Constructor).getInitializer())
@@ -166,7 +139,7 @@ predicate succEntry(@top_level_exprorstmt_parent scope, ControlFlowElement first
 }
 
 /** Holds if `scope` is exited when `last` finishes with completion `c`. */
-predicate succExit(ControlFlowElement last, Callable scope, Completion c) {
+predicate scopeLast(Callable scope, ControlFlowElement last, Completion c) {
   last(scope.getBody(), last, c) and
   not c instanceof GotoCompletion
   or
@@ -175,6 +148,33 @@ predicate succExit(ControlFlowElement last, Callable scope, Completion c) {
     last(m.getInitializer(), last, c) and
     not scope.hasBody()
   )
+}
+
+private class CallableTree extends ControlFlowTree, Callable {
+  final override predicate propagatesAbnormal(ControlFlowElement child) { none() }
+
+  final override predicate first(ControlFlowElement first) { none() }
+
+  final override predicate last(ControlFlowElement last, Completion c) { none() }
+
+  final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    exists(Constructor con, InitializerSplitting::InitializedInstanceMember m, int i |
+      this = con and
+      last(m.getInitializer(), pred, c) and
+      c instanceof NormalCompletion and
+      InitializerSplitting::constructorInitializeOrder(con, m, i)
+    |
+      // Flow from one member initializer to the next
+      exists(InitializerSplitting::InitializedInstanceMember next |
+        InitializerSplitting::constructorInitializeOrder(con, next, i + 1) and
+        first(next.getInitializer(), succ)
+      )
+      or
+      // Flow from last member initializer to constructor body
+      m = InitializerSplitting::lastConstructorInitializer(con) and
+      first(con.getBody(), succ)
+    )
+  }
 }
 
 /**
@@ -371,7 +371,7 @@ module Expressions {
       not this instanceof ConstructorInitializer
     }
 
-    final override ControlFlowTree getChildElement(int i) { result = getExprChild(this, i) }
+    final override ControlFlowElement getChildElement(int i) { result = getExprChild(this, i) }
 
     final override predicate first(ControlFlowElement first) {
       first(this.getFirstChild(), first)
@@ -933,18 +933,18 @@ module Statements {
       // The following statements need special treatment
       not this instanceof IfStmt and
       not this instanceof SwitchStmt and
-      (this instanceof DefaultCase or not this instanceof CaseStmt) and
+      not this instanceof CaseStmt and
       not this instanceof LoopStmt and
       not this instanceof TryStmt and
       not this instanceof SpecificCatchClause and
-      not this instanceof JumpStmt
+      not this instanceof JumpStmt and
+      not this instanceof LabeledStmt
     }
 
     private ControlFlowTree getChildElement0(int i) {
       not this instanceof GeneralCatchClause and
       not this instanceof FixedStmt and
       not this instanceof UsingBlockStmt and
-      not this instanceof DefaultCase and
       result = this.getChild(i)
       or
       this = any(GeneralCatchClause gcc | i = 0 and result = gcc.getBlock())
@@ -967,12 +967,9 @@ module Statements {
           result = us.getBody() and
           i = max([1, count(us.getVariableDeclExpr(_))])
         )
-      or
-      result = this.(DefaultCase).getStmt() and
-      i = 0
     }
 
-    final override ControlFlowTree getChildElement(int i) {
+    final override ControlFlowElement getChildElement(int i) {
       result =
         rank[i + 1](ControlFlowElement cfe, int j | cfe = this.getChildElement0(j) | cfe order by j)
     }
@@ -1045,8 +1042,9 @@ module Statements {
       last(this.getStmt(_), last, c) and
       not c instanceof BreakCompletion and
       not c instanceof NormalCompletion and
-      not getLabledStmt(c.(GotoCompletion).getLabel(), this.getEnclosingCallable()) instanceof
-        CaseStmt
+      not any(LabeledStmtTree t |
+        t.hasLabelInCallable(c.(GotoCompletion).getLabel(), this.getEnclosingCallable())
+      ) instanceof CaseStmt
       or
       // Last case exits with a non-match
       exists(CaseStmt cs, int last_ |
@@ -1355,26 +1353,30 @@ module Statements {
     /**
      * Gets a last element from a `try` or `catch` block of this `try` statement
      * that may finish with completion `c`, such that control may be transferred
-     * to the `finally` block (if it exists).
+     * to the `finally` block (if it exists), but only if `finalizable = true`.
      */
     pragma[nomagic]
-    ControlFlowElement getBlockOrCatchFinallyPred(Completion c) {
-      this.lastBlock(result, c) and
+    ControlFlowElement getAFinallyPredecessor(Completion c, boolean finalizable) {
+      // Exit completions skip the `finally` block
+      (if c instanceof ExitCompletion then finalizable = false else finalizable = true) and
       (
-        // Any non-throw completion from the `try` block will always continue directly
-        // to the `finally` block
-        not c instanceof ThrowCompletion
+        this.lastBlock(result, c) and
+        (
+          // Any non-throw completion from the `try` block will always continue directly
+          // to the `finally` block
+          not c instanceof ThrowCompletion
+          or
+          // Any completion from the `try` block will continue to the `finally` block
+          // when there are no catch clauses
+          not exists(this.getACatchClause())
+        )
         or
-        // Any completion from the `try` block will continue to the `finally` block
-        // when there are no catch clauses
-        not exists(this.getACatchClause())
+        // Last element from any of the `catch` clause blocks continues to the `finally` block
+        result = lastCatchClauseBlock(this.getACatchClause(), c)
+        or
+        // Last element of last `catch` clause continues to the `finally` block
+        result = lastLastCatchClause(this.getACatchClause(), c)
       )
-      or
-      // Last element from any of the `catch` clause blocks continues to the `finally` block
-      result = lastCatchClauseBlock(this.getACatchClause(), c)
-      or
-      // Last element of last `catch` clause continues to the `finally` block
-      result = lastLastCatchClause(this.getACatchClause(), c)
     }
 
     pragma[nomagic]
@@ -1387,19 +1389,19 @@ module Statements {
       ControlFlowElement last, NormalCompletion finally, Completion outer, int nestLevel
     ) {
       this.lastFinally0(last, finally) and
-      exists(this.getBlockOrCatchFinallyPred(any(Completion c0 | outer = c0.getOuterCompletion()))) and
+      exists(
+        this.getAFinallyPredecessor(any(Completion c0 | outer = c0.getOuterCompletion()), true)
+      ) and
       nestLevel = this.nestLevel()
     }
 
     final override predicate last(ControlFlowElement last, Completion c) {
-      last = this.getBlockOrCatchFinallyPred(c) and
-      (
+      exists(boolean finalizable | last = this.getAFinallyPredecessor(c, finalizable) |
         // If there is no `finally` block, last elements are from the body, from
         // the blocks of one of the `catch` clauses, or from the last `catch` clause
         not this.hasFinally()
         or
-        // Exit completions ignore the `finally` block
-        c instanceof ExitCompletion
+        finalizable = false
       )
       or
       this.lastFinally(last, c, any(NormalCompletion nc), _)
@@ -1433,43 +1435,22 @@ module Statements {
       first(this.getCatchClause(0), succ)
       or
       exists(CatchClause cc, int i | cc = this.getCatchClause(i) |
+        // Flow from one `catch` clause to the next
         pred = cc and
         last(this.getCatchClause(i), cc, c) and
-        (
-          // Flow from one `catch` clause to the next
-          first(this.getCatchClause(i + 1), succ) and
-          c = any(MatchingCompletion mc | not mc.isMatch())
-          or
-          // Flow from last `catch` clause to first element of `finally` block
-          this.getCatchClause(i).isLast() and
-          first(this.getFinally(), succ) and
-          c instanceof ThrowCompletion // inherited from `try` block
-        )
+        first(this.getCatchClause(i + 1), succ) and
+        c = any(MatchingCompletion mc | not mc.isMatch())
         or
+        // Flow from last element of `catch` clause filter to next `catch` clause
         last(this.getCatchClause(i), pred, c) and
         last(cc.getFilterClause(), pred, _) and
-        (
-          // Flow from last element of `catch` clause filter to next `catch` clause
-          first(this.getCatchClause(i + 1), succ) and
-          c instanceof FalseCompletion
-          or
-          // Flow from last element of `catch` clause filter, of last clause, to first
-          // element of `finally` block
-          this.getCatchClause(i).isLast() and
-          first(this.getFinally(), succ) and
-          c instanceof ThrowCompletion // inherited from `try` block
-        )
-        or
-        // Flow from last element of a `catch` block to first element of `finally` block
-        pred = lastCatchClauseBlock(cc, c) and
-        first(this.getFinally(), succ)
+        first(this.getCatchClause(i + 1), succ) and
+        c instanceof FalseCompletion
       )
       or
-      // Flow from last element of `try` block to first element of `finally` block
-      this.lastBlock(pred, c) and
-      first(this.getFinally(), succ) and
-      not c instanceof ExitCompletion and
-      (c instanceof ThrowCompletion implies not exists(this.getACatchClause()))
+      // Flow into `finally` block
+      pred = getAFinallyPredecessor(c, true) and
+      first(this.getFinally(), succ)
     }
   }
 
@@ -1585,6 +1566,51 @@ module Statements {
       last(this.getChild(0), pred, c) and
       succ = this and
       c instanceof NormalCompletion
+    }
+  }
+
+  pragma[nomagic]
+  private predicate goto(ControlFlowElement cfe, GotoCompletion gc, string label, Callable enclosing) {
+    last(_, cfe, gc) and
+    // Special case: when a `goto` happens inside a `try` statement with a
+    // `finally` block, flow does not go directly to the target, but instead
+    // to the `finally` block (and from there possibly to the target)
+    not cfe = any(Statements::TryStmtTree t | t.hasFinally()).getAFinallyPredecessor(_, true) and
+    label = gc.getLabel() and
+    enclosing = cfe.getEnclosingCallable()
+  }
+
+  private class LabeledStmtTree extends PreOrderTree, LabeledStmt {
+    final override predicate propagatesAbnormal(ControlFlowElement child) { none() }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      if this instanceof DefaultCase
+      then last(this.getStmt(), last, c)
+      else (
+        not this instanceof CaseStmt and
+        last = this and
+        c.isValidFor(this)
+      )
+    }
+
+    pragma[noinline]
+    predicate hasLabelInCallable(string label, Callable c) {
+      this.getEnclosingCallable() = c and
+      label = this.getLabel()
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this instanceof DefaultCase and
+      pred = this and
+      first(this.getStmt(), succ) and
+      c instanceof SimpleCompletion
+      or
+      // Flow from element with matching `goto` completion to this statement
+      exists(string label, Callable enclosing |
+        goto(pred, c, label, enclosing) and
+        this.hasLabelInCallable(label, enclosing) and
+        succ = this
+      )
     }
   }
 }
