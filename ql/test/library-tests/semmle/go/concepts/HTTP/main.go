@@ -3,9 +3,9 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"html"
 	"io"
 	"io/ioutil"
-	"net/html"
 	"net/http"
 )
 

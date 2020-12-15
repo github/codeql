@@ -64,10 +64,17 @@ module HTTP {
       /** Gets the (lower-case) name of a header set by this definition. */
       string getHeaderName() { result = this.getName().getStringValue().toLowerCase() }
 
+      /** Gets the value of the header set by this definition. */
+      string getHeaderValue() {
+        result = this.getValue().getStringValue()
+        or
+        result = this.getValue().getIntValue().toString()
+      }
+
       /** Holds if this header write defines the header `header`. */
       predicate definesHeader(string header, string value) {
         header = this.getHeaderName() and
-        value = this.getValue().getStringValue()
+        value = this.getHeaderValue()
       }
 
       /**
@@ -100,6 +107,9 @@ module HTTP {
 
     /** Gets the (lower-case) name of a header set by this definition. */
     string getHeaderName() { result = self.getHeaderName() }
+
+    /** Gets the value of the header set by this definition. */
+    string getHeaderValue() { result = self.getHeaderValue() }
 
     /** Holds if this header write defines the header `header`. */
     predicate definesHeader(string header, string value) { self.definesHeader(header, value) }

@@ -108,9 +108,7 @@ module NetHttp {
 
     override string getHeaderName() { result = "status" }
 
-    override predicate definesHeader(string header, string value) {
-      header = "status" and value = this.getValue().getIntValue().toString()
-    }
+    override string getHeaderValue() { result = this.getValue().getIntValue().toString() }
 
     override DataFlow::Node getName() { none() }
 
