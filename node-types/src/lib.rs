@@ -237,7 +237,8 @@ fn add_field(
         let mut counter = 0;
         let mut field_token_ints: BTreeMap<String, (usize, String)> = BTreeMap::new();
         for t in converted_types {
-            let dbscheme_variant_name = escape_name(&format!("{}_{}", parent_flattened_name, t.kind));
+            let dbscheme_variant_name =
+                escape_name(&format!("{}_{}", parent_flattened_name, t.kind));
             field_token_ints.insert(t.kind.to_owned(), (counter, dbscheme_variant_name));
             counter += 1;
         }
