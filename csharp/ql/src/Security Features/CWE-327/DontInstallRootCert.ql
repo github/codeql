@@ -18,8 +18,7 @@ class AddCertToRootStoreConfig extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     exists(ObjectCreation oc | oc = source.asExpr() |
-      oc
-          .getType()
+      oc.getType()
           .(RefType)
           .hasQualifiedName("System.Security.Cryptography.X509Certificates.X509Store") and
       oc.getArgument(0).(Access).getTarget().hasName("Root")
@@ -29,11 +28,9 @@ class AddCertToRootStoreConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       (
-        mc
-            .getTarget()
+        mc.getTarget()
             .hasQualifiedName("System.Security.Cryptography.X509Certificates.X509Store", "Add") or
-        mc
-            .getTarget()
+        mc.getTarget()
             .hasQualifiedName("System.Security.Cryptography.X509Certificates.X509Store", "AddRange")
       ) and
       sink.asExpr() = mc.getQualifier()

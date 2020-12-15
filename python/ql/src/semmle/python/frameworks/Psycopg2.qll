@@ -17,7 +17,7 @@ private import PEP249
  * - https://www.psycopg.org/docs/
  * - https://pypi.org/project/psycopg2/
  */
-module Psycopg2 {
+private module Psycopg2 {
   // ---------------------------------------------------------------------------
   // Psycopg
   // ---------------------------------------------------------------------------

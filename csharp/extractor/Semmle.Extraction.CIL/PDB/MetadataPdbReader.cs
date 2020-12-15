@@ -41,7 +41,7 @@ namespace Semmle.Extraction.PDB
 
         public IEnumerable<ISourceFile> SourceFiles => reader.Documents.Select(handle => new SourceFile(reader, handle));
 
-        public IMethod? GetMethod(MethodDebugInformationHandle handle)
+        public Method? GetMethod(MethodDebugInformationHandle handle)
         {
             var debugInfo = reader.GetMethodDebugInformation(handle);
 

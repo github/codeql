@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
+private import PEP249
 
 /** Provides models for the Python standard library. */
 private module Stdlib {
@@ -91,7 +92,7 @@ private module Stdlib {
        * For example, using `attr_name = "join"` will get all uses of `os.path.join`.
        */
       private DataFlow::Node path_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["join", "normpath"] and
+        attr_name in ["join", "normpath", "realpath", "abspath"] and
         (
           t.start() and
           result = DataFlow::importNode("os.path." + attr_name)
@@ -151,6 +152,54 @@ private module Stdlib {
   private class OsPathNormpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       exists(OsPathNormpathCall call |
+        nodeTo = call and
+        nodeFrom = call.getPathArg()
+      )
+    }
+  }
+
+  /**
+   * A call to `os.path.abspath`.
+   * See https://docs.python.org/3/library/os.path.html#os.path.abspath
+   */
+  private class OsPathAbspathCall extends Path::PathNormalization::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    OsPathAbspathCall() { node.getFunction() = os::path::path_attr("abspath").asCfgNode() }
+
+    DataFlow::Node getPathArg() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
+    }
+  }
+
+  /** An additional taint step for calls to `os.path.abspath` */
+  private class OsPathAbspathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(OsPathAbspathCall call |
+        nodeTo = call and
+        nodeFrom = call.getPathArg()
+      )
+    }
+  }
+
+  /**
+   * A call to `os.path.realpath`.
+   * See https://docs.python.org/3/library/os.path.html#os.path.realpath
+   */
+  private class OsPathRealpathCall extends Path::PathNormalization::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    OsPathRealpathCall() { node.getFunction() = os::path::path_attr("realpath").asCfgNode() }
+
+    DataFlow::Node getPathArg() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
+    }
+  }
+
+  /** An additional taint step for calls to `os.path.realpath` */
+  private class OsPathRealpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(OsPathRealpathCall call |
         nodeTo = call and
         nodeFrom = call.getPathArg()
       )
@@ -944,6 +993,116 @@ private module Stdlib {
    */
   private DataFlow::Node io_attr(string attr_name) {
     result = io_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  // ---------------------------------------------------------------------------
+  // json
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `json` module. */
+  private DataFlow::Node json(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("json")
+    or
+    exists(DataFlow::TypeTracker t2 | result = json(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `json` module. */
+  DataFlow::Node json() { result = json(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `json` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node json_attr(DataFlow::TypeTracker t, string attr_name) {
+    attr_name in ["loads", "dumps"] and
+    (
+      t.start() and
+      result = DataFlow::importNode("json" + "." + attr_name)
+      or
+      t.startInAttr(attr_name) and
+      result = json()
+    )
+    or
+    // Due to bad performance when using normal setup with `json_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        json_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate json_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(json_attr(t2, attr_name), res, summary)
+  }
+
+  /**
+   * Gets a reference to the attribute `attr_name` of the `json` module.
+   * WARNING: Only holds for a few predefined attributes.
+   */
+  private DataFlow::Node json_attr(string attr_name) {
+    result = json_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  /**
+   * A call to `json.loads`
+   * See https://docs.python.org/3/library/json.html#json.loads
+   */
+  private class JsonLoadsCall extends Decoding::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    JsonLoadsCall() { node.getFunction() = json_attr("loads").asCfgNode() }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  /**
+   * A call to `json.dumps`
+   * See https://docs.python.org/3/library/json.html#json.dumps
+   */
+  private class JsonDumpsCall extends Encoding::Range, DataFlow::CfgNode {
+    override CallNode node;
+
+    JsonDumpsCall() { node.getFunction() = json_attr("dumps").asCfgNode() }
+
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  // ---------------------------------------------------------------------------
+  // sqlite3
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `sqlite3` module. */
+  private DataFlow::Node sqlite3(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::importNode("sqlite3")
+    or
+    exists(DataFlow::TypeTracker t2 | result = sqlite3(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the `sqlite3` module. */
+  DataFlow::Node sqlite3() { result = sqlite3(DataFlow::TypeTracker::end()) }
+
+  /**
+   * sqlite3 implements PEP 249, providing ways to execute SQL statements against a database.
+   *
+   * See https://devdocs.io/python~3.9/library/sqlite3
+   */
+  class Sqlite3 extends PEP249Module {
+    Sqlite3() { this = sqlite3() }
   }
 }
 

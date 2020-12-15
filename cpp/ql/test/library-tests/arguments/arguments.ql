@@ -5,8 +5,7 @@ from Compilation c, int i, string s
 where
   i > 0 and
   s =
-    c
-        .getArgument(i)
+    c.getArgument(i)
         .replaceAll("\\", "/")
         .regexpReplaceAll(".*(/qltest/predefined_macros)", "<tools>$1")
 select c.getAFileCompiled().toString(), i, s

@@ -1,3 +1,5 @@
+:tocdepth: 1
+
 .. _ql-language-specification:
 
 QL language specification

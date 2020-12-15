@@ -1,4 +1,7 @@
+:tocdepth: 1
+
 .. index:: alias
+
 .. _aliases:
 
 Aliases

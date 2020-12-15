@@ -19,8 +19,7 @@ import DataFlow::PathGraph
  */
 class ELMessageInterpolatorType extends RefType {
   ELMessageInterpolatorType() {
-    this
-        .getASourceSupertype*()
+    this.getASourceSupertype*()
         .hasQualifiedName("org.hibernate.validator.messageinterpolation",
           ["ResourceBundleMessageInterpolator", "ValueFormatterMessageInterpolator"])
   }
@@ -38,9 +37,8 @@ class SetMessageInterpolatorCall extends MethodAccess {
         t.hasQualifiedName("javax.validation", ["Configuration", "ValidatorContext"]) and
         m.getName() = "messageInterpolator"
         or
-        t
-            .hasQualifiedName("org.springframework.validation.beanvalidation",
-              ["CustomValidatorBean", "LocalValidatorFactoryBean"]) and
+        t.hasQualifiedName("org.springframework.validation.beanvalidation",
+          ["CustomValidatorBean", "LocalValidatorFactoryBean"]) and
         m.getName() = "setMessageInterpolator"
       )
     )
@@ -58,8 +56,7 @@ class SetMessageInterpolatorCall extends MethodAccess {
  */
 class BuildConstraintViolationWithTemplateMethod extends Method {
   BuildConstraintViolationWithTemplateMethod() {
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .hasQualifiedName("javax.validation", "ConstraintValidatorContext") and
     this.hasName("buildConstraintViolationWithTemplate")

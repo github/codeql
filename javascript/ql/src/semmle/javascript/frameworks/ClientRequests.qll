@@ -792,8 +792,7 @@ module ClientRequest {
       this = cmd and
       (
         cmd.getACommandArgument().getStringValue() = "curl" or
-        cmd
-            .getACommandArgument()
+        cmd.getACommandArgument()
             .(StringOps::ConcatenationRoot)
             .getConstantStringParts()
             .regexpMatch("curl .*")

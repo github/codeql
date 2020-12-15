@@ -760,9 +760,8 @@ private module Cached {
       c instanceof ElementContent
       or
       exists(ForeachStmt fs, Ssa::ExplicitDefinition def |
-        x
-            .hasDefPath(fs.getIterableExpr(), node1.getControlFlowNode(), def.getADefinition(),
-              def.getControlFlowNode()) and
+        x.hasDefPath(fs.getIterableExpr(), node1.getControlFlowNode(), def.getADefinition(),
+          def.getControlFlowNode()) and
         node2.(SsaDefinitionNode).getDefinition() = def and
         c instanceof ElementContent
       )
@@ -1268,8 +1267,7 @@ private module ArgumentNodes {
 
     override DotNet::Type getTypeImpl() {
       result =
-        c
-            .getParameter(delegateIndex)
+        c.getParameter(delegateIndex)
             .getType()
             .(SystemLinqExpressions::DelegateExtType)
             .getDelegateType()
@@ -1583,8 +1581,7 @@ private module OutNodes {
 
     override DotNet::Type getTypeImpl() {
       result =
-        c
-            .getParameter(pos)
+        c.getParameter(pos)
             .getType()
             .(SystemLinqExpressions::DelegateExtType)
             .getDelegateType()

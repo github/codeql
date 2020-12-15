@@ -478,7 +478,7 @@ private predicate copyValueBetweenArguments(Function f, int sourceArg, int destA
   or
   exists(FormattingFunction ff | ff = f |
     sourceArg in [ff.getFormatParameterIndex() .. maxArgIndex(f)] and
-    destArg = ff.getOutputParameterIndex()
+    destArg = ff.getOutputParameterIndex(false)
   )
 }
 

@@ -38,16 +38,10 @@ abstract class DeallocationExpr extends Expr {
  */
 class OperatorDeleteDeallocationFunction extends DeallocationFunction {
   OperatorDeleteDeallocationFunction() {
-    exists(string name |
-      hasGlobalName(name) and
-      (
-        // operator delete(pointer, ...)
-        name = "operator delete"
-        or
-        // operator delete[](pointer, ...)
-        name = "operator delete[]"
-      )
-    )
+    hasGlobalName([
+        "operator delete", // operator delete(pointer, ...)
+        "operator delete[]" // operator delete[](pointer, ...)
+      ])
   }
 
   override int getFreedArg() { result = 0 }

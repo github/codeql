@@ -112,8 +112,7 @@ private class SpringMultipartRequestSource extends RemoteFlowSource {
     exists(MethodAccess ma, Method m |
       ma = this.asExpr() and
       m = ma.getMethod() and
-      m
-          .getDeclaringType()
+      m.getDeclaringType()
           .getASourceSupertype*()
           .hasQualifiedName("org.springframework.web.multipart", "MultipartRequest") and
       m.getName().matches("get%")
@@ -128,8 +127,7 @@ private class SpringMultipartFileSource extends RemoteFlowSource {
     exists(MethodAccess ma, Method m |
       ma = this.asExpr() and
       m = ma.getMethod() and
-      m
-          .getDeclaringType()
+      m.getDeclaringType()
           .getASourceSupertype*()
           .hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
       m.getName().matches("get%")
@@ -189,8 +187,7 @@ private class BeanValidationSource extends RemoteFlowSource {
     exists(Method m, Parameter v |
       this.asParameter() = v and
       m.getParameter(0) = v and
-      m
-          .getDeclaringType()
+      m.getDeclaringType()
           .getASourceSupertype+()
           .hasQualifiedName("javax.validation", "ConstraintValidator") and
       m.hasName("isValid") and
@@ -205,11 +202,9 @@ private class BeanValidationSource extends RemoteFlowSource {
 abstract class UserInput extends DataFlow::Node { }
 
 /**
- * DEPRECATED: Use `RemoteFlowSource` instead.
- *
  * Input that may be controlled by a remote user.
  */
-deprecated class RemoteUserInput extends UserInput {
+private class RemoteUserInput extends UserInput {
   RemoteUserInput() { this instanceof RemoteFlowSource }
 }
 
@@ -237,8 +232,7 @@ class EnvInput extends LocalUserInput {
     exists(Field f | this.asExpr() = f.getAnAccess() | f instanceof SystemIn)
     or
     // Access to files.
-    this
-        .asExpr()
+    this.asExpr()
         .(ConstructorCall)
         .getConstructedType()
         .hasQualifiedName("java.io", "FileInputStream")

@@ -26,6 +26,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("accessors", accessorKey, kind, name, propKey, unboundAccessor);
         }
 
+        internal static void init_only_accessors(this TextWriter trapFile, Accessor accessorKey)
+        {
+            trapFile.WriteTuple("init_only_accessors", accessorKey);
+        }
+
         internal static void array_element_type(this TextWriter trapFile, ArrayType array, int dimension, int rank, Type elementType)
         {
             trapFile.WriteTuple("array_element_type", array, dimension, rank, elementType);

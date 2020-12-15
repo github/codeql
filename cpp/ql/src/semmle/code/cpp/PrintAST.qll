@@ -34,8 +34,7 @@ private predicate shouldPrintFunction(Function func) {
 bindingset[s]
 private string escapeString(string s) {
   result =
-    s
-        .replaceAll("\\", "\\\\")
+    s.replaceAll("\\", "\\\\")
         .replaceAll("\n", "\\n")
         .replaceAll("\r", "\\r")
         .replaceAll("\t", "\\t")

@@ -3,11 +3,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    internal interface ILocal : IExtractedEntity
-    {
-    }
-
-    internal class LocalVariable : LabelledEntity, ILocal
+    internal class LocalVariable : LabelledEntity
     {
         private readonly MethodImplementation method;
         private readonly int index;

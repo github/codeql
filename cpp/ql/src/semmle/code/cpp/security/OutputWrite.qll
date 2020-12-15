@@ -59,11 +59,9 @@ private predicate outputWrite(Expr write, Expr source) {
   exists(Function f, int arg |
     f = write.(Call).getTarget() and source = write.(Call).getArgument(arg)
   |
-    // printf
-    arg >= f.(Printf).getFormatParameterIndex()
-    or
-    // syslog
-    arg >= f.(Syslog).getFormatParameterIndex()
+    // printf / syslog
+    f.(FormattingFunction).isOutputGlobal() and
+    arg >= f.(FormattingFunction).getFormatParameterIndex()
     or
     // puts, putchar
     (

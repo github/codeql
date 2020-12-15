@@ -56,8 +56,7 @@ module ReDoS {
     s.getValue().regexpMatch(".*\\([^()*+\\]]+\\]?(\\*|\\+)\\.?\\)(\\*|\\+).*")
     or
     // Example: (([a-z])?([a-z]+.))+
-    s
-        .getValue()
+    s.getValue()
         .regexpMatch(".*\\((\\([^()]+\\)\\?)?\\([^()*+\\]]+\\]?(\\*|\\+)\\.?\\)\\)(\\*|\\+).*")
     or
     // Example: (([a-z])+.)+

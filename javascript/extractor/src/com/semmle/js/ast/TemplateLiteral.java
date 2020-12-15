@@ -21,20 +21,23 @@ public class TemplateLiteral extends Expression {
     super("TemplateLiteral", loc);
     this.expressions = expressions;
     this.quasis = quasis;
-    this.children = mergeChildren(expressions, quasis);
+    this.children = TemplateLiteral.<Expression>mergeChildren(expressions, quasis);
   }
 
   /*
    * Merge quasis and expressions into a single array in textual order.
    * Also filter out the empty constant strings that the parser likes to generate.
    */
-  private List<Expression> mergeChildren(
-      List<Expression> expressions, List<TemplateElement> quasis) {
-    List<Expression> children = new ArrayList<Expression>();
+  @SuppressWarnings("unchecked")
+  public static <E extends INode> List<E> mergeChildren(
+      List<? extends INode> expressions,
+      List<TemplateElement> quasis) {
+
+    List<INode> children = new ArrayList<INode>();
     int j = 0, n = quasis.size();
 
     for (int i = 0, m = expressions.size(); i < m; ++i) {
-      Expression expr = expressions.get(i);
+      INode expr = expressions.get(i);
       for (; j < n; ++j) {
         TemplateElement quasi = quasis.get(j);
         if (quasi.getLoc().getStart().compareTo(expr.getLoc().getStart()) > 0) break;
@@ -48,7 +51,7 @@ public class TemplateLiteral extends Expression {
       if (!quasi.getRaw().isEmpty()) children.add(quasi);
     }
 
-    return children;
+    return (List<E>)children;
   }
 
   @Override
