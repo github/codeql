@@ -3,7 +3,7 @@
 Specifying additional remote flow sources for JavaScript
 ========================================================
 
-You can model potential sources of untrusted user input in external files without making changes to the CodeQL standard library.
+You can model potential sources of untrusted user input in your code without making changes to the CodeQL standard library by specifying extra remote flow sources in an external file.
 
 .. pull-quote::
 
