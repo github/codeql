@@ -1203,15 +1203,11 @@ module Trees {
 
   private class SingletonMethodTree extends RescueEnsureBlockTree, SingletonMethod {
     final override AstNode getChildNode(int i, boolean rescuable) {
-      result = this.getObject() and
+      result = this.getParameters() and
       i = 0 and
       rescuable = false
       or
-      result = this.getParameters() and
-      i = 1 and
-      rescuable = false
-      or
-      result = this.getChild(i - 2) and
+      result = this.getChild(i - 1) and
       rescuable = true
     }
 

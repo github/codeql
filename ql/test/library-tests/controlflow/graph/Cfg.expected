@@ -50,7 +50,7 @@ cfg.rb:
 #-----|  -> String
 
 #  149| enter method
-#-----|  -> silly
+#-----|  -> SplatParameter
 
 #  153| enter two_parameters
 #-----|  -> a
@@ -1542,9 +1542,6 @@ cfg.rb:
 
 #  148| new
 #-----|  -> Call
-
-#  149| silly
-#-----|  -> SplatParameter
 
 #  149| SplatParameter
 #-----|  -> x
