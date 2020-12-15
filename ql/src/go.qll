@@ -39,6 +39,7 @@ import semmle.go.frameworks.Gin
 import semmle.go.frameworks.Glog
 import semmle.go.frameworks.GoRestfulHttp
 import semmle.go.frameworks.K8sIoApimachineryPkgRuntime
+import semmle.go.frameworks.K8sIoClientGo
 import semmle.go.frameworks.Logrus
 import semmle.go.frameworks.Macaron
 import semmle.go.frameworks.Mux

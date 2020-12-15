@@ -184,6 +184,10 @@ module CleartextLogging {
     override string describe() { result = "HTTP request headers" }
   }
 
+  private class KubernetesSecretInterfaceSource extends Source, K8sIoClientGo::SecretInterfaceSource {
+    override string describe() { result = "Kubernetes Secret" }
+  }
+
   /**
    * The first element of a split by ' '  or ':', often sanitizing a username/password pair
    * or the "Method value" syntax used in the HTTP Authorization header.
