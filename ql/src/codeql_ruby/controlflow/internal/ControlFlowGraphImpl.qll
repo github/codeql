@@ -131,7 +131,7 @@ predicate succEntry(CfgScope scope, AstNode first) {
 
 /** Holds if `last` with completion `c` can exit `scope`. */
 pragma[nomagic]
-predicate succExit(AstNode last, CfgScope scope, Completion c) {
+predicate succExit(CfgScope scope, AstNode last, Completion c) {
   exists(AstNode n |
     last(scope, n, c) and
     succImplIfHidden*(last, n) and
@@ -1101,12 +1101,26 @@ module Trees {
               .lastEnsure(last, nec.getAnInnerCompatibleCompletion(), nec.getOuterCompletion(),
                 nec.getNestLevel())
         )
+      or
+      not exists(this.getBodyChild(_, _)) and
+      not exists(this.getRescue(_)) and
+      this.lastEnsure0(last, c)
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       pred = this and
-      first(this.getBodyChild(0, _), succ) and
-      c instanceof SimpleCompletion
+      c instanceof SimpleCompletion and
+      (
+        first(this.getBodyChild(0, _), succ)
+        or
+        not exists(this.getBodyChild(_, _)) and
+        (
+          first(this.getRescue(0), succ)
+          or
+          not exists(this.getRescue(_)) and
+          first(this.getEnsure(), succ)
+        )
+      )
       or
       // Normal left-to-right evaluation in the body
       exists(int i |
