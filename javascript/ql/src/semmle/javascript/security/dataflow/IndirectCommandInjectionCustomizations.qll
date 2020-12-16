@@ -73,6 +73,12 @@ module IndirectCommandInjection {
           API::moduleImport("dashdash"),
           API::moduleImport("dashdash").getMember("createParser").getReturn()
         ].getMember("parse").getACall()
+      or
+      // `require('commander').myCmdArgumentName`
+      this = commander().getAMember().getAnImmediateUse()
+      or
+      // `require('commander').opt()` => `{a: ..., b: ...}`
+      this = commander().getMember("opts").getACall()
     }
   }
 
@@ -103,19 +109,6 @@ module IndirectCommandInjection {
     or
     // lots of chainable methods
     result = commander().getAMember().getReturn()
-  }
-
-  /**
-   * A source of user input from the command-line parsed by the `commander` library.
-   */
-  private class CommanderSource extends Source {
-    CommanderSource() {
-      // the parsed commands are stored as properties on the command object.
-      this = commander().getAMember().getAnImmediateUse()
-      or
-      // or the `opts()` method gets a list of them.
-      this = commander().getMember("opts").getACall()
-    }
   }
 
   /**
