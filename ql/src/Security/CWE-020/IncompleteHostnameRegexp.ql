@@ -30,6 +30,55 @@ predicate isIncompleteHostNameRegexpPattern(string pattern, string hostPart) {
             "(([():|?a-z0-9-]+(\\\\)?[.])?" + commonTLD() + ")" + ".*", 1)
 }
 
+/** Holds if `b` sets the HTTP status code (represented by a pseudo-header named  `status`) */
+predicate writesHttpError(ReachableBasicBlock b) {
+  forex(HTTP::HeaderWrite hw |
+    hw.getHeaderName() = "status" and hw.asInstruction().getBasicBlock() = b
+  |
+    exists(string code | code.matches("4__") or code.matches("5__") |
+      hw.definesHeader("status", code)
+    )
+  )
+}
+
+/** Holds if starting from `block` a status code representing an error is certainly set. */
+predicate onlyErrors(BasicBlock block) {
+  writesHttpError(block)
+  or
+  forex(ReachableBasicBlock pred | pred = block.getAPredecessor() | onlyErrors(pred))
+}
+
+/** Gets a node that refers to a handler that is considered to return an HTTP error. */
+DataFlow::Node getASafeHandler() {
+  exists(Variable v |
+    v.hasQualifiedName(ElazarlGoproxy::packagePath(), ["AlwaysReject", "RejectConnect"])
+  |
+    result = v.getARead()
+  )
+  or
+  exists(Function f |
+    onlyErrors(f.getFuncDecl().(ControlFlow::Root).getExitNode().getBasicBlock())
+  |
+    result = f.getARead()
+  )
+}
+
+/** Holds if `regexp` is used in a check before `handler` is called. */
+predicate regexpGuardsHandler(RegexpPattern regexp, HTTP::RequestHandler handler) {
+  handler.guardedBy(DataFlow::exprNode(regexp.getAUse().asExpr().getParent*()))
+}
+
+/** Holds if `regexp` guards an HTTP error write. */
+predicate regexpGuardsError(RegexpPattern regexp) {
+  exists(ControlFlow::ConditionGuardNode cond, RegexpMatchFunction match, DataFlow::CallNode call |
+    call.getTarget() = match and
+    match.getRegexp(call) = regexp
+  |
+    cond.ensures(match.getResult().getNode(call).getASuccessor*(), true) and
+    cond.dominates(any(ReachableBasicBlock b | writesHttpError(b)))
+  )
+}
+
 class Config extends DataFlow::Configuration {
   Config() { this = "IncompleteHostNameRegexp::Config" }
 
@@ -47,7 +96,13 @@ class Config extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node source) { isSource(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof RegexpPattern and
+    forall(HTTP::RequestHandler handler | regexpGuardsHandler(sink, handler) |
+      not handler = getASafeHandler()
+    ) and
+    not regexpGuardsError(sink)
+  }
 }
 
 from Config c, DataFlow::PathNode source, DataFlow::PathNode sink, string hostPart
