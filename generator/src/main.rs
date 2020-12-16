@@ -54,7 +54,7 @@ fn make_field_type<'a>(
                 name: parent_name,
                 column: match &field.storage {
                     node_types::Storage::Column { name } => name,
-                    node_types::Storage::Table { name, has_index: _ } => name,
+                    node_types::Storage::Table { name, .. } => name,
                 },
                 branches,
             });

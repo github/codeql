@@ -2,7 +2,6 @@ use node_types::{EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
-use std::ops::Range;
 use std::path::Path;
 use tracing::{error, info, span, Level};
 use tree_sitter::{Language, Node, Parser, Tree};
@@ -251,7 +250,7 @@ struct ChildNode {
     field_name: Option<&'static str>,
     label: Label,
     type_name: TypeName,
-    src_range: Range<usize>,
+    text: &'static str,
 }
 
 struct Visitor<'a> {
@@ -388,7 +387,7 @@ impl Visitor<'_> {
                         kind: node.kind().to_owned(),
                         named: node.is_named(),
                     },
-                    src_range: node.byte_range(),
+                    text: node.kind(),
                 });
             };
         }
@@ -401,11 +400,7 @@ impl Visitor<'_> {
         child_nodes: &Vec<ChildNode>,
         parent_id: Label,
     ) -> Option<Vec<Arg>> {
-        enum ChildValue {
-            Label(Label),
-            Int(usize),
-        }
-        let mut map: Map<&Option<String>, (&Field, Vec<ChildValue>)> = Map::new();
+        let mut map: Map<&Option<String>, (&Field, Vec<Arg>)> = Map::new();
         for field in fields {
             map.insert(&field.name, (field, Vec::new()));
         }
@@ -413,30 +408,16 @@ impl Visitor<'_> {
             if let Some((field, values)) = map.get_mut(&child_node.field_name.map(|x| x.to_owned()))
             {
                 //TODO: handle error and missing nodes
-                if let node_types::FieldTypeInfo::ReservedWordInt(int_mapping) = &field.type_info {
-                    // For this field, we look up the string value in
-                    // `int_mapping` and emit the corresponding integer instead.
-                    let field_text = String::from_utf8_lossy(
-                        &self.source[child_node.src_range.start..child_node.src_range.end],
-                    )
-                    .into_owned();
-                    match int_mapping.get(&field_text) {
-                        Some((value, _)) => {
-                            values.push(ChildValue::Int(*value));
-                        }
-                        None => {
-                            error!(
-                                "{}:{}: missing integer mapping for field {}::{} with value {}",
-                                &self.path,
-                                node.start_position().row + 1,
-                                node.kind(),
-                                child_node.field_name.unwrap_or("child"),
-                                field_text,
-                            );
-                        }
+                if self.type_matches(&child_node.type_name, &field.type_info) {
+                    if let node_types::FieldTypeInfo::ReservedWordInt(int_mapping) =
+                        &field.type_info
+                    {
+                        // We can safely unwrap because type_matches checks the key is in the map.
+                        let (int_value, _) = int_mapping.get(child_node.text).unwrap();
+                        values.push(Arg::Int(*int_value));
+                    } else {
+                        values.push(Arg::Label(child_node.label));
                     }
-                } else if self.type_matches(&child_node.type_name, &field.type_info) {
-                    values.push(ChildValue::Label(child_node.label));
                 } else if field.name.is_some() {
                     error!(
                         "{}:{}: type mismatch for field {}::{} with type {:?} != {:?}",
@@ -468,10 +449,7 @@ impl Visitor<'_> {
             match &field.storage {
                 Storage::Column { name: column_name } => {
                     if child_values.len() == 1 {
-                        args.push(match child_values.first().unwrap() {
-                            ChildValue::Label(label) => Arg::Label(*label),
-                            ChildValue::Int(value) => Arg::Int(*value),
-                        });
+                        args.push(child_values.first().unwrap().clone());
                     } else {
                         is_valid = false;
                         error!(
@@ -508,10 +486,7 @@ impl Visitor<'_> {
                         if *has_index {
                             args.push(Arg::Int(index))
                         }
-                        args.push(match child_value {
-                            ChildValue::Label(label) => Arg::Label(*label),
-                            ChildValue::Int(value) => Arg::Int(*value),
-                        });
+                        args.push(child_value.clone());
                         self.trap_writer.add_tuple(&table_name, args);
                     }
                 }
@@ -543,7 +518,9 @@ impl Visitor<'_> {
                 return self.type_matches_set(tp, types);
             }
 
-            node_types::FieldTypeInfo::ReservedWordInt(_) => panic!("???"),
+            node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
+                return !tp.named && int_mapping.contains_key(&tp.kind)
+            }
         }
         false
     }
@@ -702,7 +679,7 @@ impl fmt::Display for Index {
 }
 
 // Some untyped argument to a TrapEntry.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Arg {
     Label(Label),
     Int(usize),

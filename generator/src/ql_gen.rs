@@ -307,8 +307,8 @@ fn create_field_getters<'a>(
         node_types::FieldTypeInfo::ReservedWordInt(_) => Some(ql::Type::String),
     };
     let formal_parameters = match &field.storage {
-        node_types::Storage::Column { name: _ } => vec![],
-        node_types::Storage::Table { name: _, has_index } => {
+        node_types::Storage::Column { .. } => vec![],
+        node_types::Storage::Table { has_index, .. } => {
             if *has_index {
                 vec![ql::FormalParameter {
                     name: "i",

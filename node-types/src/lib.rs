@@ -104,7 +104,7 @@ pub fn convert_nodes(nodes: &Vec<NodeInfo>) -> NodeTypeMap {
 
     // First, find all the token kinds
     for node in nodes {
-        if let None = &node.subtypes {
+        if node.subtypes.is_none() {
             if node.fields.as_ref().map_or(0, |x| x.len()) == 0 && node.children.is_none() {
                 let type_name = TypeName {
                     kind: node.kind.clone(),
