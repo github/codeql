@@ -33,10 +33,8 @@ class MultToAllocConfig extends DataFlow::Configuration {
   }
 }
 
-string describe(DataFlow::PathNode n) {
-  result = n.getNode().asExpr().getEnclosingFunction().getName()
-}
-
 from MultToAllocConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink, source, sink, "$@ in " + concat(describe(source), ", "), source, "here"
+select sink, source, sink,
+  "Potentially overflowing value from $@ is used in the size of this allocation.", source,
+  "multiplication"
