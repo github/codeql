@@ -1,8 +1,8 @@
 /**
  * @name Multiplication result may overflow and be used in allocation
- * @description TODO
+ * @description Using a multiplication result that may overflow in the size of an allocation may lead to buffer overflows when the allocated memory is used.
  * @kind path-problem
- * @problem.severity TODO
+ * @problem.severity warning
  * @precision TODO
  * @tags security
  *       correctness
