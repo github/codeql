@@ -181,6 +181,11 @@ table.docutils.footnote {
     margin-left: 10px;
 }
 
+table.footnote td.label {
+    padding-right: 10px;
+    display: table-cell;
+}
+
 /* -- STYLE PULL-QUOTE AS ADMONITION WHILE DOCS STILL PARSED FOR LGTM EMBEDDED HELP------------------------- */
 
 blockquote.pull-quote {
