@@ -118,8 +118,22 @@ newtype TStatePair =
   MkStatePair(State q1, State q2) {
     isFork(q1, _, _, _, _) and q2 = q1
     or
-    step(_, _, _, q1, q2)
+    (step(_, _, _, q1, q2) or step(_, _, _, q2, q1)) and
+    rankState(q1) <= rankState(q2)
   }
+
+/**
+ * Gets a unique number for a `state`.
+ * Is used to create an ordering of states, where states with the same `toString()` will be ordered differently.
+ */
+int rankState(State state) {
+  state =
+    rank[result](State s, Location l |
+      l = s.getRepr().getLocation()
+    |
+      s order by l.getStartLine(), l.getStartColumn(), s.toString()
+    )
+}
 
 class StatePair extends TStatePair {
   State q1;
@@ -191,11 +205,19 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
 }
 
 /**
+ * Gets the state pair `(q1, q2)` or `(q2, q1)`; note that only
+ * one or the other is defined.
+ */
+StatePair mkStatePair(State q1, State q2) {
+  result = MkStatePair(q1, q2) or result = MkStatePair(q2, q1)
+}
+
+/**
  * Holds if there are transitions from the components of `q` to the corresponding
  * components of `r` labelled with `s1` and `s2`, respectively.
  */
 predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
-  exists(State r1, State r2 | step(q, s1, s2, r1, r2) and r = MkStatePair(r1, r2))
+  exists(State r1, State r2 | step(q, s1, s2, r1, r2) and r = mkStatePair(r1, r2))
 }
 
 /**
