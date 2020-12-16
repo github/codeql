@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CIL.Entities
             var ct = type.ContainingType;
             if (ct != null)
             {
-                ct.GetId(trapFile, inContext);
+                ct.WriteId(trapFile, inContext);
                 trapFile.Write('.');
             }
             else

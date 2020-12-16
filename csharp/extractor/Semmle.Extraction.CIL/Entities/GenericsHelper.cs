@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CIL.Entities
             var newTypeParams = new TypeTypeParameter[count];
             for (var i = 0; i < newTypeParams.Length; ++i)
             {
-                newTypeParams[i] = new TypeTypeParameter(container, container, i);
+                newTypeParams[i] = new TypeTypeParameter(container, i);
             }
             return newTypeParams;
         }

@@ -21,9 +21,9 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('[');
-                if (shape.Rank > 1)
+                for (var i = 1; i < shape.Rank; ++i)
                 {
-                    trapFile.Write(string.Join(",", shape.Rank - 1));
+                    trapFile.Write(',');
                 }
                 trapFile.Write(']');
             }

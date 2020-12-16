@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -33,7 +34,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 ExtractAssemblyName(ref name, out var lastBracketIndex);
                 ExtractTypeArguments(ref name, lastBracketIndex, out var containerTypeArguments);
-                ExtractContainer(ref name, containerTypeArguments);
+                ContainerName = ExtractContainer(ref name, containerTypeArguments);
 
                 ShortName = name;
             }
@@ -70,51 +71,43 @@ namespace Semmle.Extraction.CIL.Entities
 
                 TypeArguments = thisTypeArgs;
 
-                if (string.IsNullOrWhiteSpace(containerTypeArgs))
-                {
-                    // containing type is not constructed generics
-                    containerTypeArguments = "";
-                }
-                else
-                {
-                    // "T3,[T4, Assembly1, Version=...],,]"
-                    containerTypeArguments = $"[{containerTypeArgs}]";
-                }
+                containerTypeArguments = string.IsNullOrWhiteSpace(containerTypeArgs)
+                    ? ""                            // containing type is not constructed generics
+                    : $"[{containerTypeArgs}]";     // "T3,[T4, Assembly1, Version=...],,]"
 
                 UnboundGenericTypeName = $"{name}{AssemblySuffix}";
             }
 
-            private void ExtractContainer(ref string name, string containerTypeArguments)
+            private string ExtractContainer(ref string name, string containerTypeArguments)
             {
                 var lastPlusIndex = name.LastIndexOf('+');
                 IsContainerNamespace = lastPlusIndex < 0;
                 if (IsContainerNamespace)
                 {
-                    ExtractContainerNamespace(ref name);
+                    return ExtractContainerNamespace(ref name);
                 }
-                else
-                {
-                    ExtractContainerType(ref name, containerTypeArguments, lastPlusIndex);
-                }
+
+                return ExtractContainerType(ref name, containerTypeArguments, lastPlusIndex);
             }
 
-            private void ExtractContainerNamespace(ref string name)
+            private static string ExtractContainerNamespace(ref string name)
             {
                 var lastDotIndex = name.LastIndexOf('.');
                 if (lastDotIndex >= 0)
                 {
-                    (ContainerName, _, name) = name.Split(lastDotIndex, lastDotIndex + 1);
+                    string containerName;
+                    (containerName, _, name) = name.Split(lastDotIndex, lastDotIndex + 1);
+                    return containerName;
                 }
-                else
-                {
-                    ContainerName = ""; // global namespace name
-                }
+
+                return ""; // global namespace name
             }
 
-            private void ExtractContainerType(ref string name, string containerTypeArguments, int lastPlusIndex)
+            private string ExtractContainerType(ref string name, string containerTypeArguments, int lastPlusIndex)
             {
-                (ContainerName, _, name) = name.Split(lastPlusIndex, lastPlusIndex + 1);
-                ContainerName = $"{ContainerName}{containerTypeArguments}{AssemblySuffix}";
+                string containerName;
+                (containerName, _, name) = name.Split(lastPlusIndex, lastPlusIndex + 1);
+                return $"{containerName}{containerTypeArguments}{AssemblySuffix}";
             }
 
             private void ExtractAssemblyName(ref string name, out int lastBracketIndex)
@@ -157,14 +150,10 @@ namespace Semmle.Extraction.CIL.Entities
                         thisTypeArgs.Push(typeArgs[(startCurrentType + 1)..^1]);
                     }
 
-                    if (startCurrentType != 0)
-                    {
-                        typeArgs = typeArgs.Substring(0, startCurrentType - 1);
-                    }
-                    else
-                    {
-                        typeArgs = "";
-                    }
+                    typeArgs = startCurrentType != 0
+                        ? typeArgs.Substring(0, startCurrentType - 1)
+                        : "";
+
                     thisTypeArgCount--;
                 }
                 return (typeArgs, thisTypeArgs.ToList());

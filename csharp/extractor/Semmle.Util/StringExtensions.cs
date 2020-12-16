@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Semmle.Extraction.CIL
+namespace Semmle.Util
 {
     public static class StringExtensions
     {

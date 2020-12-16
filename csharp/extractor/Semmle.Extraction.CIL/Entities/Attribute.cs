@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CIL.Entities
                 {
                     decoded = attrib.DecodeValue(new CustomAttributeDecoder(Cx));
                 }
-                catch (Exception exc)
+                catch
                 {
                     Cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Info,
                         $"Attribute decoding is partial. Decoding attribute {constructor.DeclaringType.GetQualifiedName()} failed on {@object}.");
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CIL.Entities
                 foreach (var p in decoded.NamedArguments)
                 {
                     var stringValue = GetStringValue(p.Type, p.Value);
-                    yield return Tuples.cil_attribute_named_argument(this, p.Name, stringValue);
+                    yield return Tuples.cil_attribute_named_argument(this, p.Name!, stringValue);
                 }
             }
         }

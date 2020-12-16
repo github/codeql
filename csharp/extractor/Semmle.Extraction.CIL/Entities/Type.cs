@@ -48,8 +48,6 @@ namespace Semmle.Extraction.CIL.Entities
 
         public sealed override void WriteId(TextWriter trapFile) => WriteId(trapFile, false);
 
-        public void GetId(TextWriter trapFile, bool inContext) => WriteId(trapFile, inContext);
-
         /// <summary>
         /// Returns the friendly qualified name of types, such as
         /// ``"System.Collection.Generic.List`1"`` or
@@ -60,7 +58,7 @@ namespace Semmle.Extraction.CIL.Entities
         public string GetQualifiedName()
         {
             using var writer = new StringWriter();
-            GetId(writer, false);
+            WriteId(writer, false);
             var name = writer.ToString();
             return name.Substring(name.IndexOf(AssemblyTypeNameSeparator) + 2);
         }
@@ -107,9 +105,8 @@ namespace Semmle.Extraction.CIL.Entities
         /// The total number of type parameters/type arguments (including parent types).
         /// This is used for internal consistency checking only.
         /// </summary>
-        public int TotalTypeParametersCount => ContainingType == null
-            ? ThisTypeParameterCount
-            : ThisTypeParameterCount + ContainingType.TotalTypeParametersCount;
+        public int TotalTypeParametersCount =>
+            ThisTypeParameterCount + (ContainingType?.TotalTypeParametersCount ?? 0);
 
         /// <summary>
         /// Returns all bound/unbound generic arguments of a constructed/unbound generic type.

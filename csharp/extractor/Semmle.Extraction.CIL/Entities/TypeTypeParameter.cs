@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
         private readonly Type type;
         private readonly int index;
 
-        public TypeTypeParameter(GenericContext cx, Type t, int i) : base(cx)
+        public TypeTypeParameter(Type t, int i) : base(t)
         {
             index = i;
             type = t;

@@ -30,10 +30,9 @@ namespace Semmle.Extraction.CIL.Entities
         public PrimitiveTypeCode GetUnderlyingEnumType(Type type)
         {
             if (type is TypeDefinitionType tdt &&
-                tdt.GetUnderlyingEnumType() is var underlying &&
-                underlying.HasValue)
+                tdt.GetUnderlyingEnumType() is PrimitiveTypeCode underlying)
             {
-                return underlying.Value;
+                return underlying;
             }
 
             var name = type.GetQualifiedName();

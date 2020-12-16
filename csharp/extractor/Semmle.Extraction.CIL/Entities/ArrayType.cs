@@ -31,11 +31,11 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override void WriteId(TextWriter trapFile, bool inContext)
         {
-            elementType.GetId(trapFile, inContext);
+            elementType.WriteId(trapFile, inContext);
             trapFile.Write('[');
-            if (rank > 1)
+            for (var i = 1; i < rank; ++i)
             {
-                trapFile.Write(new string(',', rank - 1));
+                trapFile.Write(',');
             }
             trapFile.Write(']');
         }

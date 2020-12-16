@@ -85,7 +85,7 @@ namespace Semmle.Extraction.CIL.Entities
 
             // Two-phase population because type parameters can be mutually dependent
             for (var i = 0; i < newTypeParams.Length; ++i)
-                newTypeParams[i] = Cx.Populate(new TypeTypeParameter(this, this, i));
+                newTypeParams[i] = Cx.Populate(new TypeTypeParameter(this, i));
             for (var i = 0; i < newTypeParams.Length; ++i)
                 newTypeParams[i].PopulateHandle(genericParams[i + toSkip]);
             return newTypeParams;
