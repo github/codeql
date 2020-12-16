@@ -19,9 +19,7 @@ private class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlow
         "wcsdup", // wcsdup(str)
         "_strdup", // _strdup(str)
         "_wcsdup", // _wcsdup(str)
-        "_mbsdup", // _mbsdup(str)
-        // --- Windows Automation
-        "SysAllocString" // SysAllocString(string)
+        "_mbsdup" // _mbsdup(str)
       ])
   }
 
