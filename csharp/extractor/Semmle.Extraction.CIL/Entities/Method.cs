@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A method entity.
     /// </summary>
-    internal abstract class Method : TypeContainer, IMember, ICustomModifierReceiver
+    internal abstract class Method : TypeContainer, IMember, ICustomModifierReceiver, IParameterizable
     {
         protected MethodTypeParameter[]? genericParams;
         protected GenericContext gc;

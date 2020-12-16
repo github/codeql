@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CIL.Entities
             elementType;  // ??
 
         Type ISignatureTypeProvider<Type, GenericContext>.GetFunctionPointerType(MethodSignature<Type> signature) =>
-            cx.ErrorType; // Don't know what to do !!
+            cx.Populate(new FunctionPointerType(cx, signature));
 
         Type IConstructedTypeProvider<Type>.GetGenericInstantiation(Type genericType, ImmutableArray<Type> typeArguments) =>
             genericType.Construct(typeArguments);

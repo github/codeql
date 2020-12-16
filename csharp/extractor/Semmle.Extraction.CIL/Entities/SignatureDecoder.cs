@@ -48,10 +48,20 @@ namespace Semmle.Extraction.CIL.Entities
 
         private struct FnPtr : ITypeSignature
         {
+            private readonly MethodSignature<ITypeSignature> signature;
+
+            public FnPtr(MethodSignature<ITypeSignature> signature)
+            {
+                this.signature = signature;
+            }
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
-                trapFile.Write("<method signature>");
+                FunctionPointerType.WriteName(
+                    trapFile.Write,
+                    t => t.WriteId(trapFile, gc),
+                    signature
+                );
             }
         }
 
@@ -62,7 +72,7 @@ namespace Semmle.Extraction.CIL.Entities
             new ByRef(elementType);
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetFunctionPointerType(MethodSignature<ITypeSignature> signature) =>
-            new FnPtr();
+            new FnPtr(signature);
 
         private class Instantiation : ITypeSignature
         {
