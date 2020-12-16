@@ -2,35 +2,33 @@ import csharp
 
 /** Provides definitions related to the namespace `ServiceStack`. */
 module ServiceStack {
+
+    /** A class representing a Service */
     class ServiceClass extends Class {
-        ServiceClass() { this.getBaseClass+().getName()="Service" }
-    }
-          
-    class ServiceStackRequestClass extends Class {
-        ServiceStackRequestClass() {
-            // Classes directly used in as param to request method
-            exists(Method m |
-                serviceStackRequests(m) and
-                this = m.getAParameter().getType()) or
-            // Classes of a property or field on another request class
-            exists(ServiceStackRequestClass outer |
-                this = outer.getAProperty().getType() or
-                this = outer.getAField().getType())
+        ServiceClass() { this.getBaseClass+().getQualifiedName()="ServiceStack.Service" }
+
+        /** Get a method that handles incoming requests */
+        Method getARequestMethod() {
+            result = this.getAMethod(["Post", "Get", "Put", "Delete", "Any", "Option", "Head"])
         }
     }
-    
-    predicate serviceStackRequests(Method m) {
-        exists(ValueOrRefType type, ServiceClass ssc |
-            type.fromSource() and
-            m = type.getAMethod() and
-            m = ssc.getAMember().getDeclaringType().getAMethod() and
-    
-            // verify other verb methods in service stack docs
-            m.getName() = ["Post","Get", "Put", "Delete","Any", "Option", "Head"]
-            // not reccommended match approach below
-            //.toLowerCase().regexpMatch("(Post|Get|Put|Delete)")
-    
-        )
+
+    /** Top-level Request DTO types */
+    class RequestDTO extends Class {
+        RequestDTO() {
+            this.getABaseInterface().getQualifiedName()  = ["ServiceStack.IReturn", "ServieStack.IReturnVoid"]
+        }
+    }
+
+    /** Top-level Response DTO types */
+    class ResponseDTO extends Class {
+        ResponseDTO() {
+            exists(RequestDTO req, ConstructedGeneric respInterface |
+                req.getABaseInterface() = respInterface and
+                respInterface.getUndecoratedName() = "IReturn" and
+                respInterface.getATypeArgument() = this
+            )
+        }
     }
 }
 
@@ -38,21 +36,36 @@ module ServiceStack {
 module Sources {
     private import ServiceStack::ServiceStack
     private import semmle.code.csharp.security.dataflow.flowsources.Remote
+    private import semmle.code.csharp.commons.Collections
 
-    class ServiceClassSources extends RemoteFlowSource {
-        ServiceClassSources() { 
-            exists(Method m | 
-                serviceStackRequests(m) and
-                // keep this for primitive typed request params (string/int)
-                this.asParameter() = m.getAParameter()) or
-            exists(ServiceStackRequestClass reqClass |
-                // look for field reads on request classes
-                reqClass.getAProperty().getAnAccess() = this.asExpr() or
-                reqClass.getAField().getAnAccess() = this.asExpr())
+    /** Types involved in a RequestDTO. Recurse through props and collection types */
+    private predicate involvedInRequest(RefType c) {
+        c instanceof RequestDTO or
+        exists(RefType parent, RefType propType | involvedInRequest(parent) |
+            (propType = parent.getAProperty().getType() or propType = parent.getAField().getType()) and
+            if propType instanceof CollectionType then (
+                c = propType.(ConstructedGeneric).getATypeArgument() or
+                c = propType.(ArrayType).getElementType()
+            ) else (
+                c = propType
+            )
+        )
+    }
+
+    class ServiceStackSource extends RemoteFlowSource {
+        ServiceStackSource() {
+            // Parameters are sources. In practice only interesting when they are string/primitive typed. 
+            exists(ServiceClass service | 
+                service.getARequestMethod().getAParameter() = this.asParameter()) or
+            // Field/property accesses on RequestDTOs and request involved types
+            // involved types aren't necessarily only from requests so may lead to FPs...
+            exists(RefType reqType | involvedInRequest(reqType) |
+                reqType.getAProperty().getAnAccess() = this.asExpr() or
+                reqType.getAField().getAnAccess() = this.asExpr())
         }
       
         override string getSourceType() {
-            result = "ServiceStackSources"
+            result = "ServiceStack request DTO field"
         }
     }
 }
@@ -62,28 +75,44 @@ module SQL {
     private import ServiceStack::ServiceStack
     private import semmle.code.csharp.security.dataflow.SqlInjection::SqlInjection
       
-    class SqlSinks extends Sink {
-        SqlSinks() { this.asExpr() instanceof SqlInjectionExpr }
-    }
-      
-    class SqlStringMethod extends Method {
-        SqlStringMethod() {
-            this.getName() in [
-                "Custom", "CustomSelect", "CustomInsert", "CustomUpdate",
-                "SqlScalar", "SqlList", "SqlColumn", "ColumnDistinct",
-                "PreCreateTable", "PostCreateTable", "PreDropTable", "PostDropTable",
-                "ExecuteSql", "ExecuteSqlAsync",
-                "UnsafeSelect", "UnsafeFrom", "UnsafeWhere", "UnsafeAnd", "UnsafeOr"
-            ]  
+    class ServiceStackSink extends Sink {
+        ServiceStackSink() { 
+            exists(MethodCall mc, Method m, int p |
+                (mc.getTarget() = m.getAnOverrider*() or mc.getTarget() = m.getAnImplementor*()) and
+                sqlSinkParam(m, p) and
+                mc.getArgument(p) = this.asExpr())
         }
     }
-      
-    class SqlInjectionExpr extends Expr {
-        SqlInjectionExpr() {
-            exists(MethodCall mc |
-                mc.getTarget() instanceof SqlStringMethod and mc.getArgument(1) = this
-            )
-        }
+
+    private predicate sqlSinkParam(Method m, int p) {
+        exists(RefType cls | cls = m.getDeclaringType() |
+            (
+                // if using the typed query builder api, only need to worry about Unsafe variants
+                cls.getQualifiedName() = ["ServiceStack.OrmLite.SqlExpression", "ServiceStack.OrmLite.IUntypedSqlExpression"] and
+                m.getName().matches("Unsafe%") and
+                p = 0
+             ) or (
+                // Read api - all string typed 1st params are potential sql sinks. They should be templates, not directly user controlled. 
+                cls.getQualifiedName() = ["ServiceStack.OrmLite.OrmLiteReadApi", "ServiceStack.OrmLite.OrmLiteReadExpressionsApi", "ServiceStack.OrmLite.OrmLiteReadApiAsync", "ServiceStack.OrmLite.OrmLiteReadExpressionsApiAsync"] and
+                m.getParameter(p).getType() instanceof StringType and
+                p = 1
+             ) or (
+                // Write API - only 2 methods that take string
+                cls.getQualifiedName() = ["ServiceStack.OrmLite.OrmLiteWriteApi", "ServiceStack.OrmLite.OrmLiteWriteApiAsync"] and
+                m.getName() = ["ExecuteSql", "ExecuteSqlAsync"] and
+                p = 1
+             ) or (
+                // NoSQL sinks in redis client. TODO should these be separate query?
+                cls.getQualifiedName() = "ServiceStack.Redis.IRedisClient" and
+                (m.getName() = ["Custom", "LoadLuaScript"] or (m.getName().matches("%Lua%") and not m.getName().matches("%Sha%"))) and
+                p = 0
+             )
+             // TODO
+             // ServiceStack.OrmLite.OrmLiteUtils.SqlColumn - what about other similar classes?
+             // couldn't find CustomSelect
+             // need to handle "PreCreateTable", "PostCreateTable", "PreDropTable", "PostDropTable"
+
+        )
     }
 }
 
