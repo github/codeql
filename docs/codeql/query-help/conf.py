@@ -54,6 +54,8 @@ templates_path = ['../_templates']
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['../_static']
 
+html_favicon = '../images/site/favicon.ico'
+
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 
