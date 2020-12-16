@@ -900,6 +900,7 @@ class FormatLiteral extends Literal {
    */
   int getNumArgNeeded(int n) {
     exists(this.getConvSpecOffset(n)) and
+    exists(this.getConversionChar(n)) and
     result = count(int mode | hasFormatArgumentIndexFor(n, mode))
   }
 
