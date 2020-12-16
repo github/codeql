@@ -136,5 +136,17 @@ def m11 b
   ensure
     puts "Ensure"
   end
-  puts "End m5"
+  puts "End m11"
+end
+
+def m12 b
+  if b
+    raise ""
+  end
+ensure
+  return 3
+end
+
+def m13
+ensure
 end

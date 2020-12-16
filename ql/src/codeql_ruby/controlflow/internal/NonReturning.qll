@@ -9,13 +9,13 @@ abstract class NonReturningCall extends AstNode {
   abstract Completion getACompletion();
 }
 
-private class RaiseCall extends NonReturningCall, MethodCall {
+private class RaiseCall extends NonReturningCall, Call {
   RaiseCall() { this.getMethod().toString() = "raise" }
 
   override RaiseCompletion getACompletion() { not result instanceof NestedCompletion }
 }
 
-private class ExitCall extends NonReturningCall, MethodCall {
+private class ExitCall extends NonReturningCall, Call {
   ExitCall() { this.getMethod().toString() in ["abort", "exit"] }
 
   override ExitCompletion getACompletion() { not result instanceof NestedCompletion }

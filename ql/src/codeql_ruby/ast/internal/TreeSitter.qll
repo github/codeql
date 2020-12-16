@@ -320,18 +320,25 @@ module Generated {
   class Call extends @call, AstNode {
     override string getAPrimaryQlClass() { result = "Call" }
 
-    override Location getLocation() { call_def(this, _, _, _, _, result) }
+    override Location getLocation() { call_def(this, _, _, _, result) }
 
-    AstNode getMethod() { call_def(this, _, _, result, _, _) }
+    ArgumentList getArguments() { call_arguments(this, result) }
 
-    AstNode getReceiver() { call_def(this, _, _, _, result, _) }
+    AstNode getBlock() { call_block(this, result) }
 
-    override AstNode getParent() { call_def(this, result, _, _, _, _) }
+    AstNode getMethod() { call_def(this, _, _, result, _) }
 
-    override int getParentIndex() { call_def(this, _, result, _, _, _) }
+    AstNode getReceiver() { call_receiver(this, result) }
+
+    override AstNode getParent() { call_def(this, result, _, _, _) }
+
+    override int getParentIndex() { call_def(this, _, result, _, _) }
 
     override AstNode getAFieldOrChild() {
-      call_def(this, _, _, result, _, _) or call_def(this, _, _, _, result, _)
+      call_arguments(this, result) or
+      call_block(this, result) or
+      call_def(this, _, _, result, _) or
+      call_receiver(this, result)
     }
   }
 
@@ -866,28 +873,6 @@ module Generated {
       method_def(this, _, _, result, _) or
       method_parameters(this, result) or
       method_child(this, _, result)
-    }
-  }
-
-  class MethodCall extends @method_call, AstNode {
-    override string getAPrimaryQlClass() { result = "MethodCall" }
-
-    override Location getLocation() { method_call_def(this, _, _, _, result) }
-
-    ArgumentList getArguments() { method_call_arguments(this, result) }
-
-    AstNode getBlock() { method_call_block(this, result) }
-
-    AstNode getMethod() { method_call_def(this, _, _, result, _) }
-
-    override AstNode getParent() { method_call_def(this, result, _, _, _) }
-
-    override int getParentIndex() { method_call_def(this, _, result, _, _) }
-
-    override AstNode getAFieldOrChild() {
-      method_call_arguments(this, result) or
-      method_call_block(this, result) or
-      method_call_def(this, _, _, result, _)
     }
   }
 

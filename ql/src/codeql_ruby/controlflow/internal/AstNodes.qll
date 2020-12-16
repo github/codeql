@@ -47,53 +47,59 @@ private class If_or_elisif =
 class IfElsifAstNode extends AstNode, If_or_elisif {
   AstNode getConditionNode() { none() }
 
-  AstNode getConsequenceNode() { none() }
-
-  AstNode getAlternativeNode() { none() }
+  AstNode getBranch(boolean b) { none() }
 }
 
 private class IfAstNode extends IfElsifAstNode, If {
   override AstNode getConditionNode() { result = this.getCondition() }
 
-  override AstNode getConsequenceNode() { result = this.getConsequence() }
-
-  override AstNode getAlternativeNode() { result = this.getAlternative() }
+  override AstNode getBranch(boolean b) {
+    b = true and result = this.getConsequence()
+    or
+    b = false and result = this.getAlternative()
+  }
 }
 
 private class ElsifAstNode extends IfElsifAstNode, Elsif {
   override AstNode getConditionNode() { result = this.getCondition() }
 
-  override AstNode getConsequenceNode() { result = this.getConsequence() }
-
-  override AstNode getAlternativeNode() { result = this.getAlternative() }
+  override AstNode getBranch(boolean b) {
+    b = true and result = this.getConsequence()
+    or
+    b = false and result = this.getAlternative()
+  }
 }
 
 private class ConditionalAstNode extends IfElsifAstNode, Conditional {
   override AstNode getConditionNode() { result = this.getCondition() }
 
-  override AstNode getConsequenceNode() { result = this.getConsequence() }
-
-  override AstNode getAlternativeNode() { result = this.getAlternative() }
+  override AstNode getBranch(boolean b) {
+    b = true and result = this.getConsequence()
+    or
+    b = false and result = this.getAlternative()
+  }
 }
 
 private class IfModifierAstNode extends IfElsifAstNode, IfModifier {
   override AstNode getConditionNode() { result = this.getCondition() }
 
-  override AstNode getConsequenceNode() { result = this.getBody() }
+  override AstNode getBranch(boolean b) { b = true and result = this.getBody() }
 }
 
 private class UnlessAstNode extends IfElsifAstNode, Unless {
   override AstNode getConditionNode() { result = this.getCondition() }
 
-  override AstNode getConsequenceNode() { result = this.getAlternative() }
-
-  override AstNode getAlternativeNode() { result = this.getConsequence() }
+  override AstNode getBranch(boolean b) {
+    b = false and result = this.getConsequence()
+    or
+    b = true and result = this.getAlternative()
+  }
 }
 
 private class UnlessModifierAstNode extends IfElsifAstNode, UnlessModifier {
   override AstNode getConditionNode() { result = this.getCondition() }
 
-  override AstNode getAlternativeNode() { result = this.getBody() }
+  override AstNode getBranch(boolean b) { b = false and result = this.getBody() }
 }
 
 private class CondLoop = @while or @while_modifier or @until or @until_modifier;

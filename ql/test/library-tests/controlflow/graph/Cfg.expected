@@ -8,6 +8,9 @@ break_ensure.rb:
 #   27| enter m3
 #-----|  -> elements
 
+#   44| enter m4
+#-----|  -> elements
+
 case.rb:
 #    1| enter if_in_case
 #-----|  -> Case
@@ -78,6 +81,9 @@ ifs.rb:
 #   28| enter m4
 #-----|  -> b1
 
+#   32| enter m5
+#-----|  -> b1
+
 loops.rb:
 #    1| enter m1
 #-----|  -> x
@@ -128,6 +134,12 @@ raise.rb:
 #  128| enter m11
 #-----|  -> b
 
+#  142| enter m12
+#-----|  -> b
+
+#  150| enter m13
+#-----|  -> Ensure
+
 break_ensure.rb:
 #    1| elements
 #-----|  -> elements
@@ -137,19 +149,19 @@ break_ensure.rb:
 #-----| empty -> Ensure
 
 #    2| element
-#-----|  -> If
+#-----|  -> element
 
 #    2| elements
 #-----|  -> For
 
 #    3| If
-#-----|  -> x
+#-----|  -> For
 
 #    3| Binary
-#-----| false -> For
+#-----| false -> If
 #-----| true -> Break
 
-#    3| x
+#    3| element
 #-----|  -> 0
 
 #    3| 0
@@ -159,14 +171,14 @@ break_ensure.rb:
 #-----| break -> Ensure
 
 #    7| Ensure
-#-----|  -> If
-
-#    8| If
 #-----|  -> elements
 
+#    8| If
+#-----|  -> exit m1 (normal)
+
 #    8| Call
+#-----| false -> If
 #-----| true -> String
-#-----| false -> exit m1 (normal)
 
 #    8| elements
 #-----|  -> nil?
@@ -174,11 +186,11 @@ break_ensure.rb:
 #    8| nil?
 #-----|  -> Call
 
-#    9| MethodCall
-#-----|  -> exit m1 (normal)
+#    9| Call
+#-----|  -> If
 
 #    9| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    9| String
 #-----|  -> puts
@@ -191,19 +203,19 @@ break_ensure.rb:
 #-----| empty -> exit m2 (normal)
 
 #   14| element
-#-----|  -> If
+#-----|  -> element
 
 #   14| elements
 #-----|  -> For
 
 #   16| If
-#-----|  -> x
+#-----|  -> Ensure
 
 #   16| Binary
+#-----| false -> If
 #-----| true -> Break
-#-----| false -> Ensure
 
-#   16| x
+#   16| element
 #-----|  -> 0
 
 #   16| 0
@@ -213,24 +225,24 @@ break_ensure.rb:
 #-----| break -> [ensure: break] Ensure
 
 #   19| Ensure
-#-----|  -> If
-
-#   19| [ensure: break] Ensure
-#-----|  -> [ensure: break] If
-
-#   20| If
 #-----|  -> elements
 
-#   20| [ensure: break] If
+#   19| [ensure: break] Ensure
 #-----|  -> [ensure: break] elements
 
+#   20| If
+#-----|  -> For
+
+#   20| [ensure: break] If
+#-----| break -> exit m2 (normal)
+
 #   20| Call
-#-----| false -> For
+#-----| false -> If
 #-----| true -> String
 
 #   20| [ensure: break] Call
+#-----| false -> [ensure: break] If
 #-----| true -> [ensure: break] String
-#-----| false -> exit m2 (normal)
 
 #   20| elements
 #-----|  -> nil?
@@ -244,17 +256,17 @@ break_ensure.rb:
 #   20| [ensure: break] nil?
 #-----|  -> [ensure: break] Call
 
-#   21| MethodCall
-#-----|  -> For
+#   21| Call
+#-----|  -> If
 
-#   21| [ensure: break] MethodCall
-#-----| break -> exit m2 (normal)
+#   21| [ensure: break] Call
+#-----|  -> [ensure: break] If
 
 #   21| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   21| [ensure: break] puts
-#-----|  -> [ensure: break] MethodCall
+#-----|  -> [ensure: break] Call
 
 #   21| String
 #-----|  -> puts
@@ -263,14 +275,14 @@ break_ensure.rb:
 #-----|  -> [ensure: break] puts
 
 #   27| elements
-#-----|  -> If
-
-#   29| If
 #-----|  -> elements
 
+#   29| If
+#-----|  -> Ensure
+
 #   29| Call
+#-----| false -> If
 #-----| true -> Return
-#-----| false -> Ensure
 
 #   29| elements
 #-----|  -> nil?
@@ -296,10 +308,10 @@ break_ensure.rb:
 #-----| return -> exit m3 (normal)
 
 #   33| element
-#-----|  -> If
+#-----|  -> x
 
 #   33| [ensure: return] element
-#-----|  -> [ensure: return] If
+#-----|  -> [ensure: return] x
 
 #   33| elements
 #-----|  -> For
@@ -308,17 +320,17 @@ break_ensure.rb:
 #-----|  -> [ensure: return] For
 
 #   35| If
-#-----|  -> x
+#-----|  -> For
 
 #   35| [ensure: return] If
-#-----|  -> [ensure: return] x
+#-----|  -> [ensure: return] For
 
 #   35| Binary
-#-----| false -> For
+#-----| false -> If
 #-----| true -> Break
 
 #   35| [ensure: return] Binary
-#-----| false -> [ensure: return] For
+#-----| false -> [ensure: return] If
 #-----| true -> [ensure: return] Break
 
 #   35| x
@@ -339,14 +351,93 @@ break_ensure.rb:
 #   36| [ensure: return] Break
 #-----| return -> exit m3 (normal)
 
-#   41| MethodCall
+#   41| Call
 #-----|  -> exit m3 (normal)
 
 #   41| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   41| String
 #-----|  -> puts
+
+#   44| elements
+#-----|  -> elements
+
+#   45| For
+#-----| non-empty -> element
+#-----| empty -> exit m4 (normal)
+
+#   45| element
+#-----|  -> element
+
+#   45| elements
+#-----|  -> For
+
+#   47| If
+#-----|  -> Ensure
+
+#   47| Binary
+#-----| false -> If
+#-----| true -> String
+
+#   47| element
+#-----|  -> 1
+
+#   47| 1
+#-----|  -> Binary
+
+#   48| Call
+#-----| raise -> [ensure: raise] Ensure
+
+#   48| raise
+#-----|  -> Call
+
+#   48| String
+#-----|  -> raise
+
+#   50| Ensure
+#-----|  -> element
+
+#   50| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] element
+
+#   51| If
+#-----|  -> For
+
+#   51| [ensure: raise] If
+#-----| raise -> exit m4 (abnormal)
+
+#   51| Binary
+#-----| false -> If
+#-----| true -> 10
+
+#   51| [ensure: raise] Binary
+#-----| false -> [ensure: raise] If
+#-----| true -> [ensure: raise] 10
+
+#   51| element
+#-----|  -> 0
+
+#   51| [ensure: raise] element
+#-----|  -> [ensure: raise] 0
+
+#   51| 0
+#-----|  -> Binary
+
+#   51| [ensure: raise] 0
+#-----|  -> [ensure: raise] Binary
+
+#   52| Break
+#-----| break -> exit m4 (normal)
+
+#   52| [ensure: raise] Break
+#-----| break -> exit m4 (normal)
+
+#   52| 10
+#-----|  -> Break
+
+#   52| [ensure: raise] 10
+#-----|  -> [ensure: raise] Break
 
 case.rb:
 #    2| Case
@@ -359,24 +450,24 @@ case.rb:
 #-----|  -> 1
 
 #    3| 1
-#-----| match -> If
+#-----| match -> x2
 #-----| no-match -> When
 
 #    3| ParenthesizedStatements
 #-----|  -> exit if_in_case (normal)
 
 #    3| If
-#-----|  -> x2
-
-#    3| x2
-#-----| false -> ParenthesizedStatements
-#-----| true -> String
-
-#    3| MethodCall
 #-----|  -> ParenthesizedStatements
 
+#    3| x2
+#-----| false -> If
+#-----| true -> String
+
+#    3| Call
+#-----|  -> If
+
 #    3| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    3| String
 #-----|  -> puts
@@ -388,11 +479,11 @@ case.rb:
 #-----| match -> String
 #-----| no-match -> exit if_in_case (normal)
 
-#    4| MethodCall
+#    4| Call
 #-----|  -> exit if_in_case (normal)
 
 #    4| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    4| String
 #-----|  -> puts
@@ -446,11 +537,11 @@ cfg.rb:
 #    9| BareString
 #-----|  -> StringArray
 
-#   12| MethodCall
+#   12| Call
 #-----|  -> 41
 
 #   12| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   12| 4
 #-----|  -> puts
@@ -458,11 +549,11 @@ cfg.rb:
 #   15| BeginBlock
 #-----|  -> String
 
-#   16| MethodCall
+#   16| Call
 #-----|  -> exit BEGIN block (normal)
 
 #   16| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   16| String
 #-----|  -> puts
@@ -470,11 +561,11 @@ cfg.rb:
 #   19| EndBlock
 #-----|  -> String
 
-#   20| MethodCall
+#   20| Call
 #-----|  -> exit END block (normal)
 
 #   20| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   20| String
 #-----|  -> puts
@@ -488,11 +579,8 @@ cfg.rb:
 #   23| 1
 #-----|  -> Binary
 
-#   25| MethodCall
-#-----|  -> Symbol
-
 #   25| Call
-#-----|  -> MethodCall
+#-----|  -> Symbol
 
 #   25| 2
 #-----|  -> times
@@ -503,20 +591,20 @@ cfg.rb:
 #   25| x
 #-----|  -> x
 
-#   25| MethodCall
+#   25| Call
 #-----|  -> exit block (normal)
 
 #   25| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   25| x
 #-----|  -> puts
 
-#   27| MethodCall
+#   27| Call
 #-----|  -> Proc
 
 #   27| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   27| BlockArgument
 #-----|  -> puts
@@ -524,11 +612,8 @@ cfg.rb:
 #   27| Symbol
 #-----|  -> BlockArgument
 
-#   29| MethodCall
-#-----|  -> While
-
 #   29| Call
-#-----|  -> MethodCall
+#-----|  -> While
 
 #   29| Proc
 #-----|  -> new
@@ -555,31 +640,28 @@ cfg.rb:
 #-----| true -> 1
 
 #   32| Break
-#-----| break -> If
+#-----| break -> false
 
 #   32| 1
 #-----|  -> Break
 
 #   35| If
-#-----|  -> false
+#-----|  -> self
 
 #   35| false
-#-----| false -> 42
-
-#   39| MethodCall
-#-----|  -> Case
+#-----| false -> If
 
 #   39| Call
-#-----|  -> MethodCall
+#-----|  -> Case
 
 #   39| self
-#-----|  -> puts
+#-----|  -> 42
 
 #   39| puts
 #-----|  -> Call
 
 #   39| 42
-#-----|  -> self
+#-----|  -> puts
 
 #   41| Case
 #-----|  -> 10
@@ -594,11 +676,11 @@ cfg.rb:
 #-----| match -> String
 #-----| no-match -> When
 
-#   42| MethodCall
+#   42| Call
 #-----|  -> Case
 
 #   42| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   42| String
 #-----|  -> puts
@@ -618,20 +700,20 @@ cfg.rb:
 #-----| match -> String
 #-----| no-match -> String
 
-#   43| MethodCall
+#   43| Call
 #-----|  -> Case
 
 #   43| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   43| String
 #-----|  -> puts
 
-#   44| MethodCall
+#   44| Call
 #-----|  -> Case
 
 #   44| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   44| String
 #-----|  -> puts
@@ -652,11 +734,11 @@ cfg.rb:
 #   48| 1
 #-----|  -> Binary
 
-#   48| MethodCall
+#   48| Call
 #-----|  -> String
 
 #   48| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   48| String
 #-----|  -> puts
@@ -684,11 +766,11 @@ cfg.rb:
 #   49| 1
 #-----|  -> Binary
 
-#   49| MethodCall
+#   49| Call
 #-----|  -> String
 
 #   49| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   49| String
 #-----|  -> puts
@@ -736,7 +818,7 @@ cfg.rb:
 #-----|  -> Superclass
 
 #   59| Assignment
-#-----|  -> Conditional
+#-----|  -> b
 
 #   59| complex
 #-----|  -> Assignment
@@ -751,7 +833,7 @@ cfg.rb:
 #-----|  -> Assignment
 
 #   60| Conditional
-#-----|  -> b
+#-----|  -> conditional
 
 #   60| Binary
 #-----| true -> String
@@ -764,10 +846,10 @@ cfg.rb:
 #-----|  -> Binary
 
 #   60| String
-#-----|  -> conditional
+#-----|  -> Conditional
 
 #   60| String
-#-----|  -> conditional
+#-----|  -> Conditional
 
 #   61| Assignment
 #-----|  -> 1
@@ -820,20 +902,20 @@ cfg.rb:
 #   63| b
 #-----|  -> DestructuredParameter
 
-#   64| MethodCall
+#   64| Call
 #-----|  -> b
 
 #   64| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   64| a
 #-----|  -> puts
 
-#   65| MethodCall
+#   65| Call
 #-----|  -> exit pattern (normal)
 
 #   65| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   65| b
 #-----|  -> puts
@@ -856,11 +938,11 @@ cfg.rb:
 #   67| 3
 #-----|  -> Array
 
-#   68| MethodCall
+#   68| Call
 #-----|  -> 42
 
 #   68| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   68| ElementReference
 #-----|  -> puts
@@ -871,17 +953,17 @@ cfg.rb:
 #   68| 2
 #-----|  -> ElementReference
 
-#   70| MethodCall
+#   70| Call
 #-----|  -> exit print (normal)
 
 #   70| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   70| String
 #-----|  -> puts
 
 #   74| Assignment
-#-----|  -> If
+#-----|  -> x
 
 #   74| x
 #-----|  -> Assignment
@@ -890,11 +972,11 @@ cfg.rb:
 #-----|  -> x
 
 #   75| If
-#-----|  -> x
+#-----|  -> ;
 
 #   75| Binary
 #-----| true -> 0
-#-----| false -> Elsif
+#-----| false -> x
 
 #   75| x
 #-----|  -> 0
@@ -903,10 +985,10 @@ cfg.rb:
 #-----|  -> Binary
 
 #   75| 0
-#-----|  -> ;
+#-----|  -> If
 
 #   75| Elsif
-#-----|  -> x
+#-----|  -> If
 
 #   75| Binary
 #-----| true -> 10
@@ -919,19 +1001,19 @@ cfg.rb:
 #-----|  -> Binary
 
 #   75| 10
-#-----|  -> ;
+#-----|  -> Elsif
 
 #   75| x
-#-----|  -> ;
+#-----|  -> Elsif
 
 #   78| ;
 #-----|  -> String
 
-#   83| MethodCall
+#   83| Call
 #-----|  -> Ensure
 
 #   83| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   83| String
 #-----|  -> puts
@@ -939,11 +1021,11 @@ cfg.rb:
 #   84| Ensure
 #-----|  -> String
 
-#   85| MethodCall
+#   85| Call
 #-----|  -> x
 
 #   85| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   85| String
 #-----|  -> puts
@@ -968,7 +1050,7 @@ cfg.rb:
 #-----| empty -> 42
 
 #   90| x
-#-----|  -> If
+#-----|  -> x
 
 #   90| Array
 #-----|  -> For
@@ -986,8 +1068,8 @@ cfg.rb:
 #-----|  -> x
 
 #   91| Binary
+#-----| false -> If
 #-----| true -> Next
-#-----| false -> x
 
 #   91| x
 #-----|  -> 3
@@ -998,11 +1080,11 @@ cfg.rb:
 #   91| Next
 #-----| next -> For
 
-#   92| MethodCall
+#   92| Call
 #-----|  -> For
 
 #   92| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   92| x
 #-----|  -> puts
@@ -1086,11 +1168,11 @@ cfg.rb:
 #  101| HashSplatParameter
 #-----|  -> value
 
-#  102| MethodCall
+#  102| Call
 #-----|  -> kwargs
 
 #  102| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  102| value
 #-----|  -> puts
@@ -1125,11 +1207,11 @@ cfg.rb:
 #  107| String
 #-----|  -> table
 
-#  108| MethodCall
-#-----|  -> IfModifier
+#  108| Call
+#-----|  -> b
 
 #  108| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  108| ParenthesizedStatements
 #-----|  -> puts
@@ -1153,20 +1235,20 @@ cfg.rb:
 #-----|  -> Interpolation
 
 #  113| IfModifier
-#-----|  -> b
-
-#  113| MethodCall
 #-----|  -> Class
 
+#  113| Call
+#-----|  -> IfModifier
+
 #  113| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  113| String
 #-----|  -> puts
 
 #  113| Binary
+#-----| false -> IfModifier
 #-----| true -> String
-#-----| false -> Class
 
 #  113| b
 #-----|  -> 10
@@ -1352,11 +1434,11 @@ cfg.rb:
 #  133| 0
 #-----|  -> Binary
 
-#  133| MethodCall
+#  133| Call
 #-----|  -> 1
 
 #  133| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  133| String
 #-----|  -> puts
@@ -1418,26 +1500,23 @@ cfg.rb:
 #  140| itself
 #-----|  -> Call
 
-#  143| MethodCall
+#  143| Call
 #-----|  -> super
 
 #  143| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  143| String
 #-----|  -> puts
 
-#  144| MethodCall
+#  144| Call
 #-----|  -> exit print (normal)
 
 #  144| puts
-#-----|  -> MethodCall
-
-#  144| MethodCall
-#-----|  -> puts
+#-----|  -> Call
 
 #  144| Call
-#-----|  -> MethodCall
+#-----|  -> puts
 
 #  144| super
 #-----|  -> print
@@ -1466,11 +1545,11 @@ cfg.rb:
 #  149| SplatParameter
 #-----|  -> x
 
-#  150| MethodCall
+#  150| Call
 #-----|  -> exit method (normal)
 
 #  150| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  150| x
 #-----|  -> puts
@@ -1481,11 +1560,11 @@ cfg.rb:
 #  153| b
 #-----|  -> exit two_parameters (normal)
 
-#  155| MethodCall
+#  155| Call
 #-----|  -> __FILE__
 
 #  155| two_parameters
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  155| SplatArgument
 #-----|  -> two_parameters
@@ -1560,7 +1639,7 @@ cfg.rb:
 #-----|  -> two_parameters
 
 #  165| two_parameters
-#-----|  -> Unless
+#-----|  -> x
 
 #  167| Unless
 #-----|  -> x
@@ -1575,39 +1654,39 @@ cfg.rb:
 #  167| 10
 #-----|  -> Binary
 
-#  167| MethodCall
-#-----|  -> UnlessModifier
+#  167| Call
+#-----|  -> Unless
 
 #  167| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  167| String
 #-----|  -> puts
 
-#  167| MethodCall
-#-----|  -> UnlessModifier
+#  167| Call
+#-----|  -> Unless
 
 #  167| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  167| String
 #-----|  -> puts
 
 #  169| UnlessModifier
-#-----|  -> x
-
-#  169| MethodCall
 #-----|  -> Until
 
+#  169| Call
+#-----|  -> UnlessModifier
+
 #  169| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  169| String
 #-----|  -> puts
 
 #  169| Binary
+#-----| true -> UnlessModifier
 #-----| false -> String
-#-----| true -> Until
 
 #  169| x
 #-----|  -> 0
@@ -1637,11 +1716,11 @@ cfg.rb:
 #  171| 10
 #-----|  -> OperatorAssignment
 
-#  171| MethodCall
+#  171| Call
 #-----|  -> x
 
 #  171| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  171| String
 #-----|  -> puts
@@ -1661,11 +1740,11 @@ cfg.rb:
 #  174| ParenthesizedStatements
 #-----|  -> i
 
-#  174| MethodCall
+#  174| Call
 #-----|  -> i
 
 #  174| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  174| String
 #-----|  -> puts
@@ -1712,7 +1791,7 @@ cfg.rb:
 #-----|  -> Binary
 
 #  178| OperatorAssignment
-#-----|  -> If
+#-----|  -> x
 
 #  178| x
 #-----|  -> 1
@@ -1724,8 +1803,8 @@ cfg.rb:
 #-----|  -> x
 
 #  179| Binary
+#-----| false -> If
 #-----| true -> Redo
-#-----| false -> x
 
 #  179| x
 #-----|  -> 5
@@ -1736,11 +1815,11 @@ cfg.rb:
 #  179| Redo
 #-----| redo -> x
 
-#  180| MethodCall
+#  180| Call
 #-----|  -> x
 
 #  180| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  180| x
 #-----|  -> puts
@@ -1751,11 +1830,11 @@ cfg.rb:
 #  183| ParenthesizedStatements
 #-----|  -> i
 
-#  183| MethodCall
+#  183| Call
 #-----|  -> i
 
 #  183| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  183| String
 #-----|  -> puts
@@ -1784,34 +1863,34 @@ cfg.rb:
 
 #  186| 42
 
-#  189| MethodCall
+#  189| Call
 #-----|  -> exit top-level (normal)
 
 #  189| run_block
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  189| x
 #-----|  -> x
 
-#  189| MethodCall
+#  189| Call
 #-----|  -> exit block (normal)
 
 #  189| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  189| x
 #-----|  -> puts
 
 exit.rb:
 #    1| x
-#-----|  -> If
-
-#    2| If
 #-----|  -> x
 
+#    2| If
+#-----|  -> String
+
 #    2| Binary
+#-----| false -> If
 #-----| true -> 1
-#-----| false -> String
 
 #    2| x
 #-----|  -> 2
@@ -1819,33 +1898,33 @@ exit.rb:
 #    2| 2
 #-----|  -> Binary
 
-#    3| MethodCall
+#    3| Call
 #-----| exit -> exit m1 (abnormal)
 
 #    3| exit
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    3| 1
 #-----|  -> exit
 
-#    5| MethodCall
+#    5| Call
 #-----|  -> exit m1 (normal)
 
 #    5| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    5| String
 #-----|  -> puts
 
 #    8| x
-#-----|  -> If
-
-#    9| If
 #-----|  -> x
 
+#    9| If
+#-----|  -> String
+
 #    9| Binary
+#-----| false -> If
 #-----| true -> String
-#-----| false -> String
 
 #    9| x
 #-----|  -> 2
@@ -1853,34 +1932,34 @@ exit.rb:
 #    9| 2
 #-----|  -> Binary
 
-#   10| MethodCall
+#   10| Call
 #-----| exit -> exit m2 (abnormal)
 
 #   10| abort
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   10| String
 #-----|  -> abort
 
-#   12| MethodCall
+#   12| Call
 #-----|  -> exit m2 (normal)
 
 #   12| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   12| String
 #-----|  -> puts
 
 ifs.rb:
 #    1| x
-#-----|  -> If
+#-----|  -> x
 
 #    2| If
-#-----|  -> x
+#-----|  -> exit m1 (normal)
 
 #    2| Binary
 #-----| true -> String
-#-----| false -> Elsif
+#-----| false -> x
 
 #    2| x
 #-----|  -> 2
@@ -1888,17 +1967,17 @@ ifs.rb:
 #    2| 2
 #-----|  -> Binary
 
-#    3| MethodCall
-#-----|  -> exit m1 (normal)
+#    3| Call
+#-----|  -> If
 
 #    3| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    3| String
 #-----|  -> puts
 
 #    4| Elsif
-#-----|  -> x
+#-----|  -> If
 
 #    4| [false] Binary
 #-----| false -> String
@@ -1954,33 +2033,33 @@ ifs.rb:
 #    4| 5
 #-----|  -> Binary
 
-#    5| MethodCall
-#-----|  -> exit m1 (normal)
+#    5| Call
+#-----|  -> Elsif
 
 #    5| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    5| String
 #-----|  -> puts
 
-#    7| MethodCall
-#-----|  -> exit m1 (normal)
+#    7| Call
+#-----|  -> Elsif
 
 #    7| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    7| String
 #-----|  -> puts
 
 #   11| b
-#-----|  -> If
-
-#   12| If
 #-----|  -> b
 
+#   12| If
+#-----|  -> 1
+
 #   12| b
+#-----| false -> If
 #-----| true -> 0
-#-----| false -> 1
 
 #   13| Return
 #-----| return -> exit m2 (normal)
@@ -1995,14 +2074,14 @@ ifs.rb:
 #-----|  -> Return
 
 #   18| x
-#-----|  -> If
+#-----|  -> x
 
 #   19| If
 #-----|  -> x
 
 #   19| Binary
+#-----| false -> If
 #-----| true -> x
-#-----| false -> x
 
 #   19| x
 #-----|  -> 0
@@ -2011,7 +2090,7 @@ ifs.rb:
 #-----|  -> Binary
 
 #   20| Assignment
-#-----|  -> If
+#-----|  -> x
 
 #   20| x
 #-----|  -> Assignment
@@ -2023,11 +2102,11 @@ ifs.rb:
 #-----|  -> Unary
 
 #   21| If
-#-----|  -> x
+#-----|  -> If
 
 #   21| Binary
+#-----| false -> If
 #-----| true -> x
-#-----| false -> x
 
 #   21| x
 #-----|  -> 10
@@ -2036,7 +2115,7 @@ ifs.rb:
 #-----|  -> Binary
 
 #   22| Assignment
-#-----|  -> x
+#-----|  -> If
 
 #   22| x
 #-----|  -> Assignment
@@ -2050,11 +2129,11 @@ ifs.rb:
 #   22| 1
 #-----|  -> Binary
 
-#   25| MethodCall
+#   25| Call
 #-----|  -> exit m3 (normal)
 
 #   25| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   25| x
 #-----|  -> puts
@@ -2066,36 +2145,105 @@ ifs.rb:
 #-----|  -> b3
 
 #   28| b3
-#-----|  -> Conditional
+#-----|  -> b1
 
 #   29| Return
 #-----| return -> exit m4 (normal)
 
 #   29| Conditional
-#-----|  -> Conditional
+#-----|  -> Return
 
-#   29| ParenthesizedStatements
-#-----| true -> String
+#   29| [false] ParenthesizedStatements
 #-----| false -> String
 
-#   29| Conditional
-#-----|  -> b1
+#   29| [true] ParenthesizedStatements
+#-----| true -> String
+
+#   29| [false] Conditional
+#-----| false -> [false] ParenthesizedStatements
+
+#   29| [true] Conditional
+#-----| true -> [true] ParenthesizedStatements
 
 #   29| b1
 #-----| true -> b2
 #-----| false -> b3
 
 #   29| b2
-#-----|  -> ParenthesizedStatements
+#-----| false -> [false] Conditional
+#-----| true -> [true] Conditional
 
 #   29| b3
-#-----|  -> ParenthesizedStatements
+#-----| false -> [false] Conditional
+#-----| true -> [true] Conditional
 
 #   29| String
-#-----|  -> Return
+#-----|  -> Conditional
 
 #   29| String
-#-----|  -> Return
+#-----|  -> Conditional
+
+#   32| b1
+#-----|  -> b2
+
+#   32| b2
+#-----|  -> b3
+
+#   32| b3
+#-----|  -> b4
+
+#   32| b4
+#-----|  -> b5
+
+#   32| b5
+#-----|  -> b1
+
+#   33| If
+#-----|  -> exit m5 (normal)
+
+#   33| [false] ParenthesizedStatements
+#-----| false -> String
+
+#   33| [true] ParenthesizedStatements
+#-----| true -> String
+
+#   33| [false] If
+#-----| false -> [false] ParenthesizedStatements
+
+#   33| [true] If
+#-----| true -> [true] ParenthesizedStatements
+
+#   33| b1
+#-----| true -> b2
+#-----| false -> b3
+
+#   33| b2
+#-----| false -> [false] If
+#-----| true -> [true] If
+
+#   33| [false] Elsif
+#-----| false -> [false] If
+
+#   33| [true] Elsif
+#-----| true -> [true] If
+
+#   33| b3
+#-----| true -> b4
+#-----| false -> b5
+
+#   33| b4
+#-----| false -> [false] Elsif
+#-----| true -> [true] Elsif
+
+#   33| b5
+#-----| false -> [false] Elsif
+#-----| true -> [true] Elsif
+
+#   33| String
+#-----|  -> If
+
+#   33| String
+#-----|  -> If
 
 loops.rb:
 #    1| x
@@ -2114,11 +2262,11 @@ loops.rb:
 #    2| 0
 #-----|  -> Binary
 
-#    3| MethodCall
+#    3| Call
 #-----|  -> x
 
 #    3| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    3| x
 #-----|  -> puts
@@ -2148,17 +2296,17 @@ loops.rb:
 #    9| 0
 #-----|  -> Binary
 
-#   10| MethodCall
+#   10| Call
 #-----|  -> x
 
 #   10| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   10| x
 #-----|  -> puts
 
 #   11| OperatorAssignment
-#-----|  -> If
+#-----|  -> x
 
 #   11| x
 #-----|  -> 1
@@ -2167,11 +2315,11 @@ loops.rb:
 #-----|  -> OperatorAssignment
 
 #   12| If
-#-----|  -> x
+#-----|  -> String
 
 #   12| Binary
 #-----| true -> Break
-#-----| false -> Elsif
+#-----| false -> x
 
 #   12| x
 #-----|  -> 100
@@ -2183,11 +2331,11 @@ loops.rb:
 #-----| break -> String
 
 #   14| Elsif
-#-----|  -> x
+#-----|  -> If
 
 #   14| Binary
 #-----| true -> Next
-#-----| false -> Elsif
+#-----| false -> x
 
 #   14| x
 #-----|  -> 50
@@ -2199,11 +2347,11 @@ loops.rb:
 #-----| next -> x
 
 #   16| Elsif
-#-----|  -> x
+#-----|  -> Elsif
 
 #   16| Binary
+#-----| false -> Elsif
 #-----| true -> Redo
-#-----| false -> String
 
 #   16| x
 #-----|  -> 10
@@ -2214,29 +2362,26 @@ loops.rb:
 #   17| Redo
 #-----| redo -> x
 
-#   19| MethodCall
+#   19| Call
 #-----|  -> x
 
 #   19| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   19| String
 #-----|  -> puts
 
-#   21| MethodCall
+#   21| Call
 #-----|  -> exit m2 (normal)
 
 #   21| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   21| String
 #-----|  -> puts
 
-#   25| MethodCall
-#-----|  -> exit m3 (normal)
-
 #   25| Call
-#-----|  -> MethodCall
+#-----|  -> exit m3 (normal)
 
 #   25| Array
 #-----|  -> each
@@ -2256,11 +2401,11 @@ loops.rb:
 #   25| x
 #-----|  -> x
 
-#   26| MethodCall
+#   26| Call
 #-----|  -> exit do block (normal)
 
 #   26| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   26| x
 #-----|  -> puts
@@ -2291,14 +2436,14 @@ raise.rb:
 #-----|  -> Superclass
 
 #    7| x
-#-----|  -> If
-
-#    8| If
 #-----|  -> x
 
+#    8| If
+#-----|  -> String
+
 #    8| Binary
+#-----| false -> If
 #-----| true -> String
-#-----| false -> String
 
 #    8| x
 #-----|  -> 2
@@ -2306,39 +2451,39 @@ raise.rb:
 #    8| 2
 #-----|  -> Binary
 
-#    9| MethodCall
+#    9| Call
 #-----| raise -> exit m1 (abnormal)
 
 #    9| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #    9| String
 #-----|  -> raise
 
-#   11| MethodCall
+#   11| Call
 #-----|  -> exit m1 (normal)
 
 #   11| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   11| String
 #-----|  -> puts
 
 #   14| b
-#-----|  -> If
-
-#   16| If
 #-----|  -> b
 
-#   16| b
-#-----| true -> ExceptionA
-#-----| false -> String
+#   16| If
+#-----|  -> String
 
-#   17| MethodCall
+#   16| b
+#-----| false -> If
+#-----| true -> ExceptionA
+
+#   17| Call
 #-----| raise -> Rescue
 
 #   17| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   17| ExceptionA
 #-----|  -> raise
@@ -2350,39 +2495,39 @@ raise.rb:
 #-----| match -> String
 #-----| raise -> exit m2 (abnormal)
 
-#   20| MethodCall
+#   20| Call
 #-----|  -> String
 
 #   20| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   20| String
 #-----|  -> puts
 
-#   22| MethodCall
+#   22| Call
 #-----|  -> exit m2 (normal)
 
 #   22| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   22| String
 #-----|  -> puts
 
 #   25| b
-#-----|  -> If
-
-#   27| If
 #-----|  -> b
 
-#   27| b
-#-----| true -> ExceptionA
-#-----| false -> String
+#   27| If
+#-----|  -> String
 
-#   28| MethodCall
+#   27| b
+#-----| false -> If
+#-----| true -> ExceptionA
+
+#   28| Call
 #-----| raise -> Rescue
 
 #   28| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   28| ExceptionA
 #-----|  -> raise
@@ -2390,39 +2535,39 @@ raise.rb:
 #   30| Rescue
 #-----|  -> String
 
-#   31| MethodCall
+#   31| Call
 #-----|  -> String
 
 #   31| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   31| String
 #-----|  -> puts
 
-#   33| MethodCall
+#   33| Call
 #-----|  -> exit m3 (normal)
 
 #   33| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   33| String
 #-----|  -> puts
 
 #   36| b
-#-----|  -> If
-
-#   38| If
 #-----|  -> b
 
-#   38| b
-#-----| true -> ExceptionA
-#-----| false -> String
+#   38| If
+#-----|  -> String
 
-#   39| MethodCall
+#   38| b
+#-----| false -> If
+#-----| true -> ExceptionA
+
+#   39| Call
 #-----| raise -> Rescue
 
 #   39| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   39| ExceptionA
 #-----|  -> raise
@@ -2433,39 +2578,39 @@ raise.rb:
 #   41| e
 #-----|  -> String
 
-#   42| MethodCall
+#   42| Call
 #-----|  -> String
 
 #   42| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   42| String
 #-----|  -> puts
 
-#   44| MethodCall
+#   44| Call
 #-----|  -> exit m4 (normal)
 
 #   44| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   44| String
 #-----|  -> puts
 
 #   47| b
-#-----|  -> If
-
-#   49| If
 #-----|  -> b
 
-#   49| b
-#-----| true -> ExceptionA
-#-----| false -> String
+#   49| If
+#-----|  -> String
 
-#   50| MethodCall
+#   49| b
+#-----| false -> If
+#-----| true -> ExceptionA
+
+#   50| Call
 #-----| raise -> Rescue
 
 #   50| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   50| ExceptionA
 #-----|  -> raise
@@ -2476,30 +2621,30 @@ raise.rb:
 #   52| e
 #-----|  -> String
 
-#   54| MethodCall
+#   54| Call
 #-----|  -> exit m5 (normal)
 
 #   54| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   54| String
 #-----|  -> puts
 
 #   57| b
-#-----|  -> If
-
-#   59| If
 #-----|  -> b
 
-#   59| b
-#-----| true -> ExceptionA
-#-----| false -> String
+#   59| If
+#-----|  -> String
 
-#   60| MethodCall
+#   59| b
+#-----| false -> If
+#-----| true -> ExceptionA
+
+#   60| Call
 #-----| raise -> Rescue
 
 #   60| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   60| ExceptionA
 #-----|  -> raise
@@ -2518,33 +2663,33 @@ raise.rb:
 #   62| e
 #-----|  -> String
 
-#   63| MethodCall
+#   63| Call
 #-----|  -> String
 
 #   63| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   63| String
 #-----|  -> puts
 
-#   65| MethodCall
+#   65| Call
 #-----|  -> exit m6 (normal)
 
 #   65| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   65| String
 #-----|  -> puts
 
 #   68| x
-#-----|  -> If
+#-----|  -> x
 
 #   69| If
-#-----|  -> x
+#-----|  -> String
 
 #   69| Binary
 #-----| true -> String
-#-----| false -> Elsif
+#-----| false -> x
 
 #   69| x
 #-----|  -> 2
@@ -2552,21 +2697,21 @@ raise.rb:
 #   69| 2
 #-----|  -> Binary
 
-#   70| MethodCall
+#   70| Call
 #-----| raise -> [ensure: raise] Ensure
 
 #   70| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   70| String
 #-----|  -> raise
 
 #   71| Elsif
-#-----|  -> x
+#-----|  -> If
 
 #   71| Binary
+#-----| false -> Elsif
 #-----| true -> String
-#-----| false -> String
 
 #   71| x
 #-----|  -> 0
@@ -2580,11 +2725,11 @@ raise.rb:
 #   72| String
 #-----|  -> Return
 
-#   74| MethodCall
+#   74| Call
 #-----|  -> Ensure
 
 #   74| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   74| String
 #-----|  -> puts
@@ -2598,23 +2743,23 @@ raise.rb:
 #   75| [ensure: raise] Ensure
 #-----|  -> [ensure: raise] String
 
-#   76| MethodCall
+#   76| Call
 #-----|  -> exit m7 (normal)
 
-#   76| [ensure: return] MethodCall
+#   76| [ensure: return] Call
 #-----| return -> exit m7 (normal)
 
-#   76| [ensure: raise] MethodCall
+#   76| [ensure: raise] Call
 #-----| raise -> exit m7 (abnormal)
 
 #   76| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   76| [ensure: return] puts
-#-----|  -> [ensure: return] MethodCall
+#-----|  -> [ensure: return] Call
 
 #   76| [ensure: raise] puts
-#-----|  -> [ensure: raise] MethodCall
+#-----|  -> [ensure: raise] Call
 
 #   76| String
 #-----|  -> puts
@@ -2628,21 +2773,21 @@ raise.rb:
 #   79| x
 #-----|  -> String
 
-#   80| MethodCall
-#-----|  -> If
+#   80| Call
+#-----|  -> x
 
 #   80| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   80| String
 #-----|  -> puts
 
 #   82| If
-#-----|  -> x
+#-----|  -> String
 
 #   82| Binary
 #-----| true -> String
-#-----| false -> Elsif
+#-----| false -> x
 
 #   82| x
 #-----|  -> 2
@@ -2650,21 +2795,21 @@ raise.rb:
 #   82| 2
 #-----|  -> Binary
 
-#   83| MethodCall
+#   83| Call
 #-----| raise -> [ensure: raise] Ensure
 
 #   83| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   83| String
 #-----|  -> raise
 
 #   84| Elsif
-#-----|  -> x
+#-----|  -> If
 
 #   84| Binary
+#-----| false -> Elsif
 #-----| true -> String
-#-----| false -> String
 
 #   84| x
 #-----|  -> 0
@@ -2678,11 +2823,11 @@ raise.rb:
 #   85| String
 #-----|  -> Return
 
-#   87| MethodCall
+#   87| Call
 #-----|  -> Ensure
 
 #   87| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   87| String
 #-----|  -> puts
@@ -2696,23 +2841,23 @@ raise.rb:
 #   88| [ensure: raise] Ensure
 #-----|  -> [ensure: raise] String
 
-#   89| MethodCall
+#   89| Call
 #-----|  -> String
 
-#   89| [ensure: return] MethodCall
+#   89| [ensure: return] Call
 #-----| return -> exit m8 (normal)
 
-#   89| [ensure: raise] MethodCall
+#   89| [ensure: raise] Call
 #-----| raise -> exit m8 (abnormal)
 
 #   89| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   89| [ensure: return] puts
-#-----|  -> [ensure: return] MethodCall
+#-----|  -> [ensure: return] Call
 
 #   89| [ensure: raise] puts
-#-----|  -> [ensure: raise] MethodCall
+#-----|  -> [ensure: raise] Call
 
 #   89| String
 #-----|  -> puts
@@ -2723,11 +2868,11 @@ raise.rb:
 #   89| [ensure: raise] String
 #-----|  -> [ensure: raise] puts
 
-#   91| MethodCall
+#   91| Call
 #-----|  -> exit m8 (normal)
 
 #   91| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   91| String
 #-----|  -> puts
@@ -2741,21 +2886,21 @@ raise.rb:
 #   94| b2
 #-----|  -> String
 
-#   95| MethodCall
-#-----|  -> If
+#   95| Call
+#-----|  -> x
 
 #   95| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   95| String
 #-----|  -> puts
 
 #   97| If
-#-----|  -> x
+#-----|  -> String
 
 #   97| Binary
 #-----| true -> String
-#-----| false -> Elsif
+#-----| false -> x
 
 #   97| x
 #-----|  -> 2
@@ -2763,21 +2908,21 @@ raise.rb:
 #   97| 2
 #-----|  -> Binary
 
-#   98| MethodCall
+#   98| Call
 #-----| raise -> [ensure: raise] Ensure
 
 #   98| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #   98| String
 #-----|  -> raise
 
 #   99| Elsif
-#-----|  -> x
+#-----|  -> If
 
 #   99| Binary
+#-----| false -> Elsif
 #-----| true -> String
-#-----| false -> String
 
 #   99| x
 #-----|  -> 0
@@ -2791,11 +2936,11 @@ raise.rb:
 #  100| String
 #-----|  -> Return
 
-#  102| MethodCall
+#  102| Call
 #-----|  -> Ensure
 
 #  102| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  102| String
 #-----|  -> puts
@@ -2809,23 +2954,23 @@ raise.rb:
 #  103| [ensure: raise] Ensure
 #-----|  -> [ensure: raise] String
 
-#  104| MethodCall
-#-----|  -> If
+#  104| Call
+#-----|  -> b1
 
-#  104| [ensure: return] MethodCall
-#-----|  -> [ensure: return] If
+#  104| [ensure: return] Call
+#-----|  -> [ensure: return] b1
 
-#  104| [ensure: raise] MethodCall
-#-----|  -> [ensure: raise] If
+#  104| [ensure: raise] Call
+#-----|  -> [ensure: raise] b1
 
 #  104| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  104| [ensure: return] puts
-#-----|  -> [ensure: return] MethodCall
+#-----|  -> [ensure: return] Call
 
 #  104| [ensure: raise] puts
-#-----|  -> [ensure: raise] MethodCall
+#-----|  -> [ensure: raise] Call
 
 #  104| String
 #-----|  -> puts
@@ -2837,43 +2982,43 @@ raise.rb:
 #-----|  -> [ensure: raise] puts
 
 #  106| If
-#-----|  -> b1
+#-----|  -> Ensure
 
 #  106| [ensure: return] If
-#-----|  -> [ensure: return] b1
+#-----|  -> [ensure: return] Ensure
 
 #  106| [ensure: raise] If
-#-----|  -> [ensure: raise] b1
+#-----|  -> [ensure: raise] Ensure
 
 #  106| b1
+#-----| false -> If
 #-----| true -> String
-#-----| false -> Ensure
 
 #  106| [ensure: return] b1
+#-----| false -> [ensure: return] If
 #-----| true -> [ensure: return] String
-#-----| false -> [ensure: return] Ensure
 
 #  106| [ensure: raise] b1
+#-----| false -> [ensure: raise] If
 #-----| true -> [ensure: raise] String
-#-----| false -> [ensure: raise] Ensure
 
-#  107| MethodCall
+#  107| Call
 #-----| raise -> [ensure(1): raise] Ensure
 
-#  107| [ensure: return] MethodCall
+#  107| [ensure: return] Call
 #-----| raise -> [ensure: return, ensure(1): raise] Ensure
 
-#  107| [ensure: raise] MethodCall
+#  107| [ensure: raise] Call
 #-----| raise -> [ensure: raise, ensure(1): raise] Ensure
 
 #  107| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  107| [ensure: return] raise
-#-----|  -> [ensure: return] MethodCall
+#-----|  -> [ensure: return] Call
 
 #  107| [ensure: raise] raise
-#-----|  -> [ensure: raise] MethodCall
+#-----|  -> [ensure: raise] Call
 
 #  107| String
 #-----|  -> raise
@@ -2902,41 +3047,41 @@ raise.rb:
 #  109| [ensure: raise, ensure(1): raise] Ensure
 #-----|  -> [ensure: raise, ensure(1): raise] String
 
-#  110| MethodCall
+#  110| Call
 #-----|  -> String
 
-#  110| [ensure(1): raise] MethodCall
+#  110| [ensure(1): raise] Call
 #-----| raise -> [ensure: raise] Ensure
 
-#  110| [ensure: return] MethodCall
+#  110| [ensure: return] Call
 #-----| return -> [ensure: return] Ensure
 
-#  110| [ensure: return, ensure(1): raise] MethodCall
+#  110| [ensure: return, ensure(1): raise] Call
 #-----| raise -> [ensure: raise] Ensure
 
-#  110| [ensure: raise] MethodCall
+#  110| [ensure: raise] Call
 #-----| raise -> [ensure: raise] Ensure
 
-#  110| [ensure: raise, ensure(1): raise] MethodCall
+#  110| [ensure: raise, ensure(1): raise] Call
 #-----| raise -> [ensure: raise] Ensure
 
 #  110| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  110| [ensure(1): raise] puts
-#-----|  -> [ensure(1): raise] MethodCall
+#-----|  -> [ensure(1): raise] Call
 
 #  110| [ensure: return] puts
-#-----|  -> [ensure: return] MethodCall
+#-----|  -> [ensure: return] Call
 
 #  110| [ensure: return, ensure(1): raise] puts
-#-----|  -> [ensure: return, ensure(1): raise] MethodCall
+#-----|  -> [ensure: return, ensure(1): raise] Call
 
 #  110| [ensure: raise] puts
-#-----|  -> [ensure: raise] MethodCall
+#-----|  -> [ensure: raise] Call
 
 #  110| [ensure: raise, ensure(1): raise] puts
-#-----|  -> [ensure: raise, ensure(1): raise] MethodCall
+#-----|  -> [ensure: raise, ensure(1): raise] Call
 
 #  110| String
 #-----|  -> puts
@@ -2956,11 +3101,11 @@ raise.rb:
 #  110| [ensure: raise, ensure(1): raise] String
 #-----|  -> [ensure: raise, ensure(1): raise] puts
 
-#  113| MethodCall
+#  113| Call
 #-----|  -> Ensure
 
 #  113| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  113| String
 #-----|  -> puts
@@ -2974,23 +3119,23 @@ raise.rb:
 #  114| [ensure: raise] Ensure
 #-----|  -> [ensure: raise] String
 
-#  115| MethodCall
-#-----|  -> If
+#  115| Call
+#-----|  -> b2
 
-#  115| [ensure: return] MethodCall
-#-----|  -> [ensure: return] If
+#  115| [ensure: return] Call
+#-----|  -> [ensure: return] b2
 
-#  115| [ensure: raise] MethodCall
-#-----|  -> [ensure: raise] If
+#  115| [ensure: raise] Call
+#-----|  -> [ensure: raise] b2
 
 #  115| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  115| [ensure: return] puts
-#-----|  -> [ensure: return] MethodCall
+#-----|  -> [ensure: return] Call
 
 #  115| [ensure: raise] puts
-#-----|  -> [ensure: raise] MethodCall
+#-----|  -> [ensure: raise] Call
 
 #  115| String
 #-----|  -> puts
@@ -3002,43 +3147,43 @@ raise.rb:
 #-----|  -> [ensure: raise] puts
 
 #  116| If
-#-----|  -> b2
+#-----|  -> exit m9 (normal)
 
 #  116| [ensure: return] If
-#-----|  -> [ensure: return] b2
-
-#  116| [ensure: raise] If
-#-----|  -> [ensure: raise] b2
-
-#  116| b2
-#-----| true -> String
-#-----| false -> exit m9 (normal)
-
-#  116| [ensure: return] b2
-#-----| true -> [ensure: return] String
 #-----| return -> exit m9 (normal)
 
+#  116| [ensure: raise] If
+#-----| raise -> exit m9 (abnormal)
+
+#  116| b2
+#-----| false -> If
+#-----| true -> String
+
+#  116| [ensure: return] b2
+#-----| false -> [ensure: return] If
+#-----| true -> [ensure: return] String
+
 #  116| [ensure: raise] b2
+#-----| false -> [ensure: raise] If
 #-----| true -> [ensure: raise] String
+
+#  117| Call
 #-----| raise -> exit m9 (abnormal)
 
-#  117| MethodCall
+#  117| [ensure: return] Call
 #-----| raise -> exit m9 (abnormal)
 
-#  117| [ensure: return] MethodCall
-#-----| raise -> exit m9 (abnormal)
-
-#  117| [ensure: raise] MethodCall
+#  117| [ensure: raise] Call
 #-----| raise -> exit m9 (abnormal)
 
 #  117| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  117| [ensure: return] raise
-#-----|  -> [ensure: return] MethodCall
+#-----|  -> [ensure: return] Call
 
 #  117| [ensure: raise] raise
-#-----|  -> [ensure: raise] MethodCall
+#-----|  -> [ensure: raise] Call
 
 #  117| String
 #-----|  -> raise
@@ -3053,11 +3198,11 @@ raise.rb:
 #-----| no-match -> String
 #-----| match -> Ensure
 
-#  121| MethodCall
+#  121| Call
 #-----| raise -> exit m10 (abnormal)
 
 #  121| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  121| String
 #-----|  -> raise
@@ -3065,30 +3210,30 @@ raise.rb:
 #  124| Ensure
 #-----|  -> String
 
-#  125| MethodCall
+#  125| Call
 #-----|  -> exit m10 (normal)
 
 #  125| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  125| String
 #-----|  -> puts
 
 #  128| b
-#-----|  -> If
-
-#  130| If
 #-----|  -> b
 
-#  130| b
-#-----| true -> ExceptionA
-#-----| false -> Ensure
+#  130| If
+#-----|  -> Ensure
 
-#  131| MethodCall
+#  130| b
+#-----| false -> If
+#-----| true -> ExceptionA
+
+#  131| Call
 #-----| raise -> Rescue
 
 #  131| raise
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  131| ExceptionA
 #-----|  -> raise
@@ -3107,11 +3252,11 @@ raise.rb:
 #-----| match -> String
 #-----| raise -> [ensure: raise] Ensure
 
-#  135| MethodCall
+#  135| Call
 #-----|  -> Ensure
 
 #  135| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  135| String
 #-----|  -> puts
@@ -3122,17 +3267,17 @@ raise.rb:
 #  136| [ensure: raise] Ensure
 #-----|  -> [ensure: raise] String
 
-#  137| MethodCall
+#  137| Call
 #-----|  -> String
 
-#  137| [ensure: raise] MethodCall
+#  137| [ensure: raise] Call
 #-----| raise -> exit m11 (abnormal)
 
 #  137| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  137| [ensure: raise] puts
-#-----|  -> [ensure: raise] MethodCall
+#-----|  -> [ensure: raise] Call
 
 #  137| String
 #-----|  -> puts
@@ -3140,14 +3285,54 @@ raise.rb:
 #  137| [ensure: raise] String
 #-----|  -> [ensure: raise] puts
 
-#  139| MethodCall
+#  139| Call
 #-----|  -> exit m11 (normal)
 
 #  139| puts
-#-----|  -> MethodCall
+#-----|  -> Call
 
 #  139| String
 #-----|  -> puts
+
+#  142| b
+#-----|  -> b
+
+#  143| If
+#-----|  -> Ensure
+
+#  143| b
+#-----| false -> If
+#-----| true -> String
+
+#  144| Call
+#-----| raise -> [ensure: raise] Ensure
+
+#  144| raise
+#-----|  -> Call
+
+#  144| String
+#-----|  -> raise
+
+#  146| Ensure
+#-----|  -> 3
+
+#  146| [ensure: raise] Ensure
+#-----|  -> [ensure: raise] 3
+
+#  147| Return
+#-----| return -> exit m12 (normal)
+
+#  147| [ensure: raise] Return
+#-----| return -> exit m12 (normal)
+
+#  147| 3
+#-----|  -> Return
+
+#  147| [ensure: raise] 3
+#-----|  -> [ensure: raise] Return
+
+#  151| Ensure
+#-----|  -> exit m13 (normal)
 
 break_ensure.rb:
 #    1| exit m1
@@ -3155,6 +3340,8 @@ break_ensure.rb:
 #   13| exit m2
 
 #   27| exit m3
+
+#   44| exit m4
 
 case.rb:
 #    1| exit if_in_case
@@ -3202,6 +3389,8 @@ ifs.rb:
 
 #   28| exit m4
 
+#   32| exit m5
+
 loops.rb:
 #    1| exit m1
 
@@ -3236,6 +3425,10 @@ raise.rb:
 
 #  128| exit m11
 
+#  142| exit m12
+
+#  150| exit m13
+
 break_ensure.rb:
 #    1| exit m1 (normal)
 #-----|  -> exit m1
@@ -3245,6 +3438,12 @@ break_ensure.rb:
 
 #   27| exit m3 (normal)
 #-----|  -> exit m3
+
+#   44| exit m4 (abnormal)
+#-----|  -> exit m4
+
+#   44| exit m4 (normal)
+#-----|  -> exit m4
 
 case.rb:
 #    1| exit if_in_case (normal)
@@ -3319,6 +3518,9 @@ ifs.rb:
 #   28| exit m4 (normal)
 #-----|  -> exit m4
 
+#   32| exit m5 (normal)
+#-----|  -> exit m5
+
 loops.rb:
 #    1| exit m1 (normal)
 #-----|  -> exit m1
@@ -3392,3 +3594,9 @@ raise.rb:
 
 #  128| exit m11 (normal)
 #-----|  -> exit m11
+
+#  142| exit m12 (normal)
+#-----|  -> exit m12
+
+#  150| exit m13 (normal)
+#-----|  -> exit m13
