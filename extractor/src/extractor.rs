@@ -250,7 +250,6 @@ struct ChildNode {
     field_name: Option<&'static str>,
     label: Label,
     type_name: TypeName,
-    text: &'static str,
 }
 
 struct Visitor<'a> {
@@ -387,7 +386,6 @@ impl Visitor<'_> {
                         kind: node.kind().to_owned(),
                         named: node.is_named(),
                     },
-                    text: node.kind(),
                 });
             };
         }
@@ -413,7 +411,7 @@ impl Visitor<'_> {
                         &field.type_info
                     {
                         // We can safely unwrap because type_matches checks the key is in the map.
-                        let (int_value, _) = int_mapping.get(child_node.text).unwrap();
+                        let (int_value, _) = int_mapping.get(&child_node.type_name.kind).unwrap();
                         values.push(Arg::Int(*int_value));
                     } else {
                         values.push(Arg::Label(child_node.label));
