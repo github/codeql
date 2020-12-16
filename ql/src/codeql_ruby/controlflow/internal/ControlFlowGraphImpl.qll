@@ -317,9 +317,9 @@ module Trees {
     final override AstNode getChildNode(int i) {
       result = this.getReceiver() and i = 0
       or
-      result = this.getArguments() and i = 1
+      result = this.getMethod() and i = 1
       or
-      result = this.getMethod() and i = 2
+      result = this.getArguments() and i = 2
     }
   }
 
