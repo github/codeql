@@ -12,7 +12,6 @@ private import semmle.code.cpp.ir.internal.Overlap
  * Provides the newtype used to represent operands across all phases of the IR.
  */
 private module Internal {
-  
   /**
    * An IR operand. `TOperand` is shared across all phases of the IR. There are branches of this
    * type for operands created directly from the AST (`TRegisterOperand` and `TNonSSAMemoryOperand`),
