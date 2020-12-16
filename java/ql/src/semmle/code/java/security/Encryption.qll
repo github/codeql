@@ -98,7 +98,7 @@ string getAnInsecureAlgorithmName() {
   result = "RC4" or
   result = "RC5" or
   result = "ARCFOUR" or // a variant of RC4
-  result = "ECB" or // encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay attacks
+  result = "ECB" or // encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks
   result = "AES/CBC/PKCS5Padding" // CBC mode of operation with PKCS#5 (or PKCS#7) padding is vulnerable to padding oracle attacks
 }
 
