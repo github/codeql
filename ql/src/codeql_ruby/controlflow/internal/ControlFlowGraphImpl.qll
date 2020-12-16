@@ -274,7 +274,7 @@ module Trees {
     override predicate isHidden() { any() }
   }
 
-  private class BeginBlockTree extends StandardPreOrderTree, BeginBlock {
+  class BeginBlockTree extends PreOrderTree, PostOrderTree, StandardNode, BeginBlock {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
@@ -456,7 +456,7 @@ module Trees {
 
   private class EmptyStatementTree extends LeafTree, EmptyStatement { }
 
-  private class EndBlockTree extends StandardPreOrderTree, EndBlock {
+  class EndBlockTree extends StandardNode, PreOrderTree, PostOrderTree, EndBlock {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 

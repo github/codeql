@@ -26,10 +26,10 @@ cfg.rb:
 #-----|  -> bar
 
 #   15| enter BEGIN block
-#-----|  -> BeginBlock
+#-----|  -> String
 
 #   19| enter END block
-#-----|  -> EndBlock
+#-----|  -> String
 
 #   25| enter block
 #-----|  -> x
@@ -608,10 +608,9 @@ cfg.rb:
 #-----|  -> puts
 
 #   15| BeginBlock
-#-----|  -> String
+#-----|  -> EndBlock
 
 #   16| Call
-#-----|  -> EndBlock
 #-----|  -> exit BEGIN block (normal)
 
 #   16| puts
@@ -621,10 +620,9 @@ cfg.rb:
 #-----|  -> puts
 
 #   19| EndBlock
-#-----|  -> String
+#-----|  -> 41
 
 #   20| Call
-#-----|  -> 41
 #-----|  -> exit END block (normal)
 
 #   20| puts

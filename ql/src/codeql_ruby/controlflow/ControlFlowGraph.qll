@@ -23,10 +23,26 @@ private module CfgScope {
 
   private class BeginBlockScope extends Range, Generated::BeginBlock {
     final override string getName() { result = "BEGIN block" }
+
+    final override predicate entry(Generated::AstNode first) {
+      first(this.(Trees::BeginBlockTree).getFirstChildNode(), first)
+    }
+
+    final override predicate exit(Generated::AstNode last, Completion c) {
+      last(this.(Trees::BeginBlockTree).getLastChildNode(), last, c)
+    }
   }
 
   private class EndBlockScope extends Range, Generated::EndBlock {
     final override string getName() { result = "END block" }
+
+    final override predicate entry(Generated::AstNode first) {
+      first(this.(Trees::EndBlockTree).getFirstChildNode(), first)
+    }
+
+    final override predicate exit(Generated::AstNode last, Completion c) {
+      last(this.(Trees::EndBlockTree).getLastChildNode(), last, c)
+    }
   }
 
   private class MethodScope extends Range, Generated::AstNode {
