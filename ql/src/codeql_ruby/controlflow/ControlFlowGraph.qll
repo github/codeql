@@ -76,6 +76,8 @@ private module CfgScope {
   }
 
   private class DoBlockScope extends Range, Generated::DoBlock {
+    DoBlockScope() { not this.getParent() instanceof Generated::Lambda }
+
     final override string getName() { result = "do block" }
 
     final override predicate entry(Generated::AstNode first) {
@@ -88,6 +90,8 @@ private module CfgScope {
   }
 
   private class BlockScope extends Range, Generated::Block {
+    BlockScope() { not this.getParent() instanceof Generated::Lambda }
+
     final override string getName() { result = "block" }
 
     final override predicate entry(Generated::AstNode first) {
@@ -103,11 +107,22 @@ private module CfgScope {
     final override string getName() { result = "lambda" }
 
     final override predicate entry(Generated::AstNode first) {
-      first(this.(Trees::LambdaTree).getFirstChildNode(), first)
+      first(this.getParameters(), first)
+      or
+      not exists(this.getParameters()) and
+      (
+        first(this.getBody().(Trees::DoBlockTree).firstBody(), first)
+        or
+        first(this.getBody().(Trees::BlockTree).getFirstChildNode(), first)
+      )
     }
 
     final override predicate exit(Generated::AstNode last, Completion c) {
-      last(this.(Trees::LambdaTree).getLastChildNode(), last, c)
+      last(this.getBody().(Trees::BlockTree).getLastChildNode(), last, c)
+      or
+      this.getBody().(Trees::RescueEnsureBlockTree).lastBody(last, c)
+      or
+      not exists(this.getBody()) and last(this.getParameters(), last, c)
     }
   }
 }

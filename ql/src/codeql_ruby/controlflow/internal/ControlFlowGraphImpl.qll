@@ -431,7 +431,7 @@ module Trees {
     override predicate isHidden() { any() }
   }
 
-  private class DoBlockTree extends RescueEnsureBlockTree, PostOrderTree, DoBlock {
+  class DoBlockTree extends RescueEnsureBlockTree, PostOrderTree, DoBlock {
     final override predicate first(AstNode first) { first = this }
 
     final override AstNode getChildNode(int i, boolean rescuable) {
@@ -679,11 +679,19 @@ module Trees {
     final override AstNode getDefaultValue() { result = this.getValue() }
   }
 
-  class LambdaTree extends StandardNode, PreOrderTree, PostOrderTree, Lambda {
-    final override AstNode getChildNode(int i) {
-      result = this.getParameters() and i = 0
+  class LambdaTree extends PreOrderTree, PostOrderTree, Lambda {
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getParameters() }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      this.getBody().(ControlFlowTree).succ(pred, succ, c)
       or
-      result = this.getBody() and i = 1
+      last(this.getParameters(), pred, c) and
+      c instanceof NormalCompletion and
+      (
+        first(this.getBody().(DoBlockTree).firstBody(), succ)
+        or
+        first(this.getBody().(BlockTree).getFirstChildNode(), succ)
+      )
     }
   }
 

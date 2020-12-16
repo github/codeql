@@ -49,9 +49,6 @@ cfg.rb:
 #  120| enter lambda
 #-----|  -> x
 
-#  120| enter block
-#-----|  -> y
-
 #  142| enter print
 #-----|  -> puts
 
@@ -1375,7 +1372,7 @@ cfg.rb:
 #-----|  -> swap
 
 #  120| DestructuredParameter
-#-----|  -> Block
+#-----|  -> y
 
 #  120| x
 #-----|  -> y
@@ -1383,11 +1380,8 @@ cfg.rb:
 #  120| y
 #-----|  -> DestructuredParameter
 
-#  120| Block
-#-----|  -> exit lambda (normal)
-
 #  120| Array
-#-----|  -> exit block (normal)
+#-----|  -> exit lambda (normal)
 
 #  120| y
 #-----|  -> x
@@ -3690,8 +3684,6 @@ cfg.rb:
 
 #  120| exit lambda
 
-#  120| exit block
-
 #  142| exit print
 
 #  149| exit method
@@ -3820,9 +3812,6 @@ cfg.rb:
 
 #  120| exit lambda (normal)
 #-----|  -> exit lambda
-
-#  120| exit block (normal)
-#-----|  -> exit block
 
 #  142| exit print (normal)
 #-----|  -> exit print
