@@ -647,6 +647,9 @@ cfg.rb:
 #-----|  -> times
 
 #   25| times
+#-----|  -> Block
+
+#   25| Block
 #-----|  -> Call
 
 #   25| x
@@ -680,6 +683,9 @@ cfg.rb:
 #-----|  -> new
 
 #   29| new
+#-----|  -> Block
+
+#   29| Block
 #-----|  -> Call
 
 #   29| BlockParameter
@@ -1985,6 +1991,9 @@ cfg.rb:
 #-----|  -> exit top-level (normal)
 
 #  189| run_block
+#-----|  -> Block
+
+#  189| Block
 #-----|  -> Call
 
 #  189| x
@@ -2627,6 +2636,9 @@ loops.rb:
 #-----|  -> Array
 
 #   25| each
+#-----|  -> DoBlock
+
+#   25| DoBlock
 #-----|  -> Call
 
 #   25| x
