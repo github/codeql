@@ -104,8 +104,7 @@ module XSS {
                     (
                         r.getExpr() instanceof ObjectCreation 
                         and r.getExpr().getType().hasName("HttpResult")
-                        //TODO check if we have a valid content type
-                        //TODO write another check for the decorated version
+                        //TODO write a content type check for this decorated version
                     ) 
                     or 
                     (
