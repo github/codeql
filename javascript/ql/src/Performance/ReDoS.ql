@@ -187,6 +187,17 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
     or
     r1 = r2 and q1 != q2
     or
+    // If q can reach itself by epsilon transitions, then there are two distinct paths to the q1/q2 state:
+    // one that uses the loop and one that doesn't. The engine will separately attempt to match with each path,
+    // despite ending in the same state. The "fork" thus arises from the choice of whether to use the loop or not.
+    // To avoid every state in the loop becoming a fork state,
+    // we arbitrarily pick the InfiniteRepetitionQuantifier state as the canonical fork state for the loop
+    // (every epsilon-loop must contain such a state).
+    //
+    // We additionally require that the there exists another InfiniteRepetitionQuantifier `mid` on the path from `q` to itself.
+    // This is done to avoid flagging regular expressions such as `/(a?)*b/` - that only has polynomial runtime.
+    // The below code is therefore a heuritic, that only flags regular expressions such as `/(a*)*b/`,
+    // and does not flag regular expressions such as `/(a?b?)c/`, but the latter pattern is not used frequently.
     r1 = r2 and
     q1 = q2 and
     epsilonSucc+(q) = q and
