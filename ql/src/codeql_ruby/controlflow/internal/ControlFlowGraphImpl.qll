@@ -321,9 +321,9 @@ module Trees {
   private class CallTree extends StandardPostOrderTree, Call {
     // this.getBlock() is not included as it uses a different scope
     final override AstNode getChildNode(int i) {
-      result = this.getArguments() and i = 0
+      result = this.getReceiver() and i = 0
       or
-      result = this.getReceiver() and i = 1
+      result = this.getArguments() and i = 1
       or
       result = this.getMethod() and i = 2
     }
