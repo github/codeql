@@ -67,7 +67,7 @@ module IndirectCommandInjection {
       // `require('meow')(help, {...spec})` => `{a: ..., b: ....}`
       this = DataFlow::moduleImport("meow").getACall()
       or
-      // https://www.npmjs.com/package/dashdash
+      // `require("dashdash").createParser(...spec)` => `{a: ..., b: ...}`
       this =
         [
           API::moduleImport("dashdash"),
