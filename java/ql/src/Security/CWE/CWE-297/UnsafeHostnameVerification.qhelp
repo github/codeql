@@ -22,9 +22,9 @@ An attack would look like this:
 <recommendation>
 <p>
 Do not use an open <code>HostnameVerifier</code>.
+</p>
 <li>If you use an open verifier to solve a configuration problem with TLS/HTTPS you should solve the configuration problem instead.
 </li>
-</p>
 
 </recommendation>
 
