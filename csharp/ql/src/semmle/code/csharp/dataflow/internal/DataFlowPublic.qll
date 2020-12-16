@@ -44,16 +44,12 @@ class Node extends TNode {
   }
 
   /** Gets the enclosing callable of this node. */
-  cached
   final DataFlowCallable getEnclosingCallable() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
     result = unique(DataFlowCallable c | c = this.(NodeImpl).getEnclosingCallableImpl() | c)
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
-  cached
   final ControlFlow::Node getControlFlowNode() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
     result = unique(ControlFlow::Node n | n = this.(NodeImpl).getControlFlowNodeImpl() | n)
   }
 
@@ -81,7 +77,7 @@ class Node extends TNode {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -116,25 +112,23 @@ class ExprNode extends Node {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
+cached
 class ParameterNode extends Node {
-  ParameterNode() {
-    // charpred needed to avoid making `ParameterNode` abstract
-    explicitParameterNode(this, _) or
-    this.(SsaDefinitionNode).getDefinition() instanceof
-      ImplicitCapturedParameterNodeImpl::SsaCapturedEntryDefinition or
-    this = TInstanceParameterNode(_) or
-    this = TCilParameterNode(_) or
-    this = TSummaryParameterNode(_, _)
-  }
+  private ParameterNodes::ParameterNodeImpl impl;
+
+  cached
+  ParameterNode() { Stages::DataFlowStage::forceCachingInSameStage() and this = impl }
 
   /** Gets the parameter corresponding to this node, if any. */
-  DotNet::Parameter getParameter() { none() }
+  cached
+  DotNet::Parameter getParameter() { result = impl.getParameter() }
 
   /**
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { none() }
+  cached
+  predicate isParameterOf(DataFlowCallable c, int i) { impl.isParameterOf(c, i) }
 }
 
 /** A definition, viewed as a node in a data flow graph. */

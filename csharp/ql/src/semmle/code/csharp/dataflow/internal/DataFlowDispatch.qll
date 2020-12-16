@@ -4,6 +4,7 @@ private import dotnet
 private import DataFlowPrivate
 private import DelegateDataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.Collections
@@ -260,7 +261,13 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlow::Node getNode();
 
   /** Gets the enclosing callable of this call. */
-  abstract DataFlowCallable getEnclosingCallable();
+  final DataFlowCallable getEnclosingCallable() {
+    result = unique(DataFlowCallable c | c = this.getEnclosingCallableImpl() | c)
+  }
+
+  /** Gets the enclosing callable of this call. */
+  cached
+  abstract DataFlowCallable getEnclosingCallableImpl();
 
   /** Gets the underlying expression, if any. */
   final DotNet::Expr getExpr() { result = this.getNode().asExpr() }
@@ -293,7 +300,10 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override Callable getEnclosingCallableImpl() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = cfn.getEnclosingCallable()
+  }
 
   override string toString() { result = cfn.toString() }
 
@@ -323,7 +333,7 @@ class ExplicitDelegateDataFlowCall extends DelegateDataFlowCall, TExplicitDelega
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override Callable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
 
   override string toString() { result = cfn.toString() }
 
@@ -347,7 +357,7 @@ class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCa
 
   override DataFlow::ExprNode getNode() { none() }
 
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override Callable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
 
   override string toString() { result = "[transitive] " + cfn.toString() }
 
@@ -369,7 +379,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
 
   override DataFlow::ExprNode getNode() { result.getExpr() = call }
 
-  override CIL::Callable getEnclosingCallable() { result = call.getEnclosingCallable() }
+  override CIL::Callable getEnclosingCallableImpl() { result = call.getEnclosingCallable() }
 
   override string toString() { result = call.toString() }
 
@@ -400,7 +410,7 @@ class SummaryDelegateCall extends DelegateDataFlowCall, TSummaryDelegateCall {
 
   override DataFlow::Node getNode() { none() }
 
-  override Callable getEnclosingCallable() { result = c }
+  override Callable getEnclosingCallableImpl() { result = c }
 
   override string toString() { result = "[summary] delegate call, parameter " + pos + " of " + c }
 

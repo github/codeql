@@ -22,6 +22,7 @@ private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 abstract class NodeImpl extends Node {
   /** Do not call: use `getEnclosingCallable()` instead. */
+  cached
   abstract DataFlowCallable getEnclosingCallableImpl();
 
   /** Do not call: use `getType()` instead. */
@@ -40,6 +41,7 @@ abstract class NodeImpl extends Node {
   }
 
   /** Do not call: use `getControlFlowNode()` instead. */
+  cached
   abstract ControlFlow::Node getControlFlowNodeImpl();
 
   /** Do not call: use `getLocation()` instead. */
@@ -51,12 +53,16 @@ abstract class NodeImpl extends Node {
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
     result = this.getExpr().getEnclosingCallable()
   }
 
   override DotNet::Type getTypeImpl() { result = this.getExpr().getType() }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { this = TExprNode(result) }
+  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    this = TExprNode(result)
+  }
 
   override Location getLocationImpl() { result = this.getExpr().getLocation() }
 
@@ -836,33 +842,6 @@ private module Cached {
     )
   }
 
-  cached
-  predicate outRefReturnNode(Ssa::ExplicitDefinition def, OutRefReturnKind kind) {
-    exists(Parameter p |
-      def.isLiveOutRefParameterDefinition(p) and
-      kind.getPosition() = p.getPosition()
-    |
-      p.isOut() and kind instanceof OutReturnKind
-      or
-      p.isRef() and kind instanceof RefReturnKind
-    )
-  }
-
-  cached
-  predicate qualifierOutNode(DataFlowCall call, Node n) {
-    n.(ExprPostUpdateNode).getPreUpdateNode().(ExplicitArgumentNode).argumentOf(call, -1)
-    or
-    any(ObjectOrCollectionInitializerConfiguration x)
-        .hasExprPath(_, n.(ExprNode).getControlFlowNode(), _, call.getControlFlowNode())
-  }
-
-  cached
-  predicate castNode(Node n) {
-    n.asExpr() instanceof Cast
-    or
-    n.(AssignableDefinitionNode).getDefinition() instanceof AssignableDefinitions::PatternDefinition
-  }
-
   /** Holds if `n` should be hidden from path explanations. */
   cached
   predicate nodeIsHidden(Node n) {
@@ -911,8 +890,12 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
   }
 }
 
-private module ParameterNodes {
-  abstract private class ParameterNodeImpl extends ParameterNode, NodeImpl { }
+module ParameterNodes {
+  abstract class ParameterNodeImpl extends NodeImpl {
+    abstract DotNet::Parameter getParameter();
+
+    abstract predicate isParameterOf(DataFlowCallable c, int i);
+  }
 
   /**
    * Holds if definition node `node` is an entry definition for parameter `p`.
@@ -957,6 +940,8 @@ private module ParameterNodes {
 
     /** Gets the callable containing this implicit instance parameter. */
     Callable getCallable() { result = callable }
+
+    override DotNet::Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, int pos) { callable = c and pos = -1 }
 
@@ -1024,13 +1009,15 @@ private module ParameterNodes {
    * }                      }
    * ```
    */
-  class ImplicitCapturedParameterNode extends ParameterNode, SsaDefinitionNode {
+  class ImplicitCapturedParameterNode extends ParameterNodeImpl, SsaDefinitionNode {
     override SsaCapturedEntryDefinition def;
 
     ImplicitCapturedParameterNode() { def = this.getDefinition() }
 
     /** Gets the captured variable that this implicit parameter models. */
     LocalScopeVariable getVariable() { result = def.getVariable() }
+
+    override DotNet::Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, int i) {
       i = getParameterPosition(def) and
@@ -1082,12 +1069,14 @@ private module ParameterNodes {
 import ParameterNodes
 
 /** A data-flow node that represents a call argument. */
+cached
 abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
   cached
   abstract predicate argumentOf(DataFlowCall call, int pos);
 
   /** Gets the call in which this node is an argument. */
+  cached
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
@@ -1108,6 +1097,7 @@ private module ArgumentNodes {
   /** A data-flow node that represents an explicit call argument. */
   class ExplicitArgumentNode extends ArgumentNode {
     ExplicitArgumentNode() {
+      Stages::DataFlowStage::forceCachingInSameStage() and
       this.asExpr() instanceof Argument
       or
       this.asExpr() = any(CIL::Call call).getAnArgument()
@@ -1295,8 +1285,10 @@ private module ArgumentNodes {
 import ArgumentNodes
 
 /** A data-flow node that represents a value returned by a callable. */
+cached
 abstract class ReturnNode extends Node {
   /** Gets the kind of this return node. */
+  cached
   abstract ReturnKind getKind();
 }
 
@@ -1307,6 +1299,7 @@ private module ReturnNodes {
    */
   class ExprReturnNode extends ReturnNode, ExprNode {
     ExprReturnNode() {
+      Stages::DataFlowStage::forceCachingInSameStage() and
       exists(DotNet::Callable c, DotNet::Expr e | e = this.getExpr() |
         c.canReturn(e)
         or
@@ -1315,7 +1308,8 @@ private module ReturnNodes {
     }
 
     override ReturnKind getKind() {
-      any(DotNet::Callable c).canReturn(this.getExpr()) and result instanceof NormalReturnKind
+      any(DotNet::Callable c).canReturn(this.getExpr()) and
+      result instanceof NormalReturnKind
     }
   }
 
@@ -1326,7 +1320,16 @@ private module ReturnNodes {
   class OutRefReturnNode extends ReturnNode, SsaDefinitionNode {
     OutRefReturnKind kind;
 
-    OutRefReturnNode() { outRefReturnNode(this.getDefinition(), kind) }
+    OutRefReturnNode() {
+      exists(Parameter p |
+        def.isLiveOutRefParameterDefinition(p) and
+        kind.getPosition() = p.getPosition()
+      |
+        p.isOut() and kind instanceof OutReturnKind
+        or
+        p.isRef() and kind instanceof RefReturnKind
+      )
+    }
 
     override ReturnKind getKind() { result = kind }
   }
@@ -1428,6 +1431,7 @@ private module ReturnNodes {
 import ReturnNodes
 
 /** A data-flow node that represents the output of a call. */
+cached
 abstract class OutNode extends Node {
   /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
   cached
@@ -1466,6 +1470,7 @@ private module OutNodes {
     private DataFlowCall call;
 
     ExprOutNode() {
+      Stages::DataFlowStage::forceCachingInSameStage() and
       exists(DotNet::Expr e | e = this.getExpr() |
         call = csharpCall(e, this.getControlFlowNode()) or
         call = TCilCall(e)
@@ -1513,7 +1518,12 @@ private module OutNodes {
   private class QualifierOutNode extends OutNode, Node {
     private DataFlowCall call;
 
-    QualifierOutNode() { qualifierOutNode(call, this) }
+    QualifierOutNode() {
+      this.(ExprPostUpdateNode).getPreUpdateNode().(ExplicitArgumentNode).argumentOf(call, -1)
+      or
+      any(ObjectOrCollectionInitializerConfiguration x)
+          .hasExprPath(_, this.(ExprNode).getControlFlowNode(), _, call.getControlFlowNode())
+    }
 
     override DataFlowCall getCall(ReturnKind kind) {
       result = call and
@@ -1787,7 +1797,7 @@ class DataFlowType extends Gvn::GvnType {
 }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) { result = n.getDataFlowType() }
+Gvn::GvnType getNodeType(NodeImpl n) { result = n.getDataFlowType() }
 
 /** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }
@@ -1834,8 +1844,10 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
  * to the value before the update with the exception of `ObjectCreation`,
  * which represents the value after the constructor has run.
  */
+cached
 abstract class PostUpdateNode extends Node {
   /** Gets the node before the state update. */
+  cached
   abstract Node getPreUpdateNode();
 }
 
@@ -1843,7 +1855,10 @@ private module PostUpdateNodes {
   class ObjectCreationNode extends PostUpdateNode, ExprNode, TExprNode {
     private ObjectCreation oc;
 
-    ObjectCreationNode() { this = TExprNode(oc.getAControlFlowNode()) }
+    ObjectCreationNode() {
+      Stages::DataFlowStage::forceCachingInSameStage() and
+      this = TExprNode(oc.getAControlFlowNode())
+    }
 
     override Node getPreUpdateNode() {
       exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) |
@@ -1909,8 +1924,16 @@ private module PostUpdateNodes {
 private import PostUpdateNodes
 
 /** A node that performs a type cast. */
+cached
 class CastNode extends Node {
-  CastNode() { castNode(this) }
+  cached
+  CastNode() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    this.asExpr() instanceof Cast
+    or
+    this.(AssignableDefinitionNode).getDefinition() instanceof
+      AssignableDefinitions::PatternDefinition
+  }
 }
 
 class DataFlowExpr = DotNet::Expr;
