@@ -319,10 +319,13 @@ module Trees {
   }
 
   private class CallTree extends StandardPostOrderTree, Call {
+    // this.getBlock() is not included as it uses a different scope
     final override AstNode getChildNode(int i) {
       result = this.getReceiver() and i = 0
       or
-      result = this.getMethod() and i = 1
+      result = this.getArguments() and i = 1
+      or
+      result = this.getMethod() and i = 2
     }
   }
 
@@ -767,15 +770,6 @@ module Trees {
     }
 
     override predicate isHidden() { any() }
-  }
-
-  private class MethodCallTree extends StandardPostOrderTree, MethodCall {
-    // this.getBlock() is not included as it uses a different scope
-    final override AstNode getChildNode(int i) {
-      result = this.getArguments() and i = 0
-      or
-      result = this.getMethod() and i = 1
-    }
   }
 
   private class MethodParametersTree extends StandardPreOrderTree, MethodParameters {
