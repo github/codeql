@@ -98,18 +98,17 @@ module XSS {
 
     class XssExpr extends Expr {
         XssExpr() {
-            exists(ReturnStmt r, Method m |
-                this = r.getExpr() and 
+            exists(ReturnStmt r |
+                this = r.getExpr() and
                 (
                     (
-                        r.getExpr() instanceof ObjectCreation 
-                        and r.getExpr().getType().hasName("HttpResult")
+                        r.getExpr().(ObjectCreation).getType().hasName("HttpResult")
                         //TODO write a content type check for this decorated version
                     ) 
                     or 
                     (
-                        r.getExpr().getType().hasName("String")
-                    )   
+                        r.getExpr().getType() instanceof StringType
+                    )
                 )
             )
         }
