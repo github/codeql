@@ -1,5 +1,14 @@
 package com.semmle.js.extractor;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.semmle.js.ast.ArrayPattern;
 import com.semmle.js.ast.BlockStatement;
 import com.semmle.js.ast.CatchClause;
@@ -54,14 +63,6 @@ import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /** Class for maintaining scoping information during extraction. */
 public class ScopeManager {
@@ -104,7 +105,7 @@ public class ScopeManager {
 
   public ScopeManager(TrapWriter trapWriter, ECMAVersion ecmaVersion) {
     this.trapWriter = trapWriter;
-    this.toplevelScope = enterScope(0, trapWriter.globalID("global_scope"), null);
+    this.toplevelScope = enterScope(ScopeKind.global, trapWriter.globalID("global_scope"), null);
     this.ecmaVersion = ecmaVersion;
   }
 
@@ -115,12 +116,12 @@ public class ScopeManager {
    * @param scopeLabel the label of the scope itself
    * @param scopeNodeLabel the label of the AST node inducing this scope; may be null
    */
-  public Scope enterScope(int scopeKind, Label scopeLabel, Label scopeNodeLabel) {
+  public Scope enterScope(ScopeKind scopeKind, Label scopeLabel, Label scopeNodeLabel) {
     Label outerScopeLabel = curScope == null ? null : curScope.scopeLabel;
 
     curScope = new Scope(curScope, scopeLabel);
 
-    trapWriter.addTuple("scopes", curScope.scopeLabel, scopeKind);
+    trapWriter.addTuple("scopes", curScope.scopeLabel, scopeKind.getValue());
     if (scopeNodeLabel != null)
       trapWriter.addTuple("scopenodes", scopeNodeLabel, curScope.scopeLabel);
     if (outerScopeLabel != null)
@@ -162,32 +163,32 @@ public class ScopeManager {
     return toplevelScope;
   }
 
-  private static final Map<String, Integer> scopeKinds = new LinkedHashMap<String, Integer>();
+  private static final Map<String, ScopeKind> scopeKinds = new LinkedHashMap<String, ScopeKind>();
 
   static {
-    scopeKinds.put("Program", 0);
-    scopeKinds.put("FunctionDeclaration", 1);
-    scopeKinds.put("FunctionExpression", 1);
-    scopeKinds.put("ArrowFunctionExpression", 1);
-    scopeKinds.put("CatchClause", 2);
-    scopeKinds.put("Module", 3);
-    scopeKinds.put("BlockStatement", 4);
-    scopeKinds.put("SwitchStatement", 4);
-    scopeKinds.put("ForStatement", 5);
-    scopeKinds.put("ForInStatement", 6);
-    scopeKinds.put("ForOfStatement", 6);
-    scopeKinds.put("ComprehensionBlock", 7);
-    scopeKinds.put("LetStatement", 4);
-    scopeKinds.put("LetExpression", 4);
-    scopeKinds.put("ClassExpression", 8);
-    scopeKinds.put("NamespaceDeclaration", 9);
-    scopeKinds.put("ClassDeclaration", 10);
-    scopeKinds.put("InterfaceDeclaration", 11);
-    scopeKinds.put("TypeAliasDeclaration", 12);
-    scopeKinds.put("MappedTypeExpr", 13);
-    scopeKinds.put("EnumDeclaration", 14);
-    scopeKinds.put("ExternalModuleDeclaration", 15);
-    scopeKinds.put("ConditionalTypeExpr", 16);
+    scopeKinds.put("Program", ScopeKind.global);
+    scopeKinds.put("FunctionDeclaration", ScopeKind.function);
+    scopeKinds.put("FunctionExpression", ScopeKind.function);
+    scopeKinds.put("ArrowFunctionExpression", ScopeKind.function);
+    scopeKinds.put("CatchClause", ScopeKind.catch_);
+    scopeKinds.put("Module", ScopeKind.module);
+    scopeKinds.put("BlockStatement", ScopeKind.block);
+    scopeKinds.put("SwitchStatement", ScopeKind.block);
+    scopeKinds.put("ForStatement", ScopeKind.for_);
+    scopeKinds.put("ForInStatement", ScopeKind.forIn);
+    scopeKinds.put("ForOfStatement", ScopeKind.forIn);
+    scopeKinds.put("ComprehensionBlock", ScopeKind.comprehensionBlock);
+    scopeKinds.put("LetStatement", ScopeKind.block);
+    scopeKinds.put("LetExpression", ScopeKind.block);
+    scopeKinds.put("ClassExpression", ScopeKind.classExpr);
+    scopeKinds.put("NamespaceDeclaration", ScopeKind.namespace);
+    scopeKinds.put("ClassDeclaration", ScopeKind.classDecl);
+    scopeKinds.put("InterfaceDeclaration", ScopeKind.interface_);
+    scopeKinds.put("TypeAliasDeclaration", ScopeKind.typeAlias);
+    scopeKinds.put("MappedTypeExpr", ScopeKind.mappedType);
+    scopeKinds.put("EnumDeclaration", ScopeKind.enum_);
+    scopeKinds.put("ExternalModuleDeclaration", ScopeKind.externalModule);
+    scopeKinds.put("ConditionalTypeExpr", ScopeKind.conditionalType);
   }
 
   /**
