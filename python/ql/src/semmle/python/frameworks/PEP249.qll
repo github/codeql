@@ -29,13 +29,13 @@ DataFlow::Node connect() { result = connect(DataFlow::TypeTracker::end()) }
  */
 module Connection {
   /**
-   * A source of an instance of `db.Connection`.
+   * A source of instances of `db.Connection`, extend this class to model new instances.
    *
-   * This can include instantiation of the class, return value from function
+   * This can include instantiations of the class, return values from function
    * calls, or a special parameter that will be set when functions are called by external
    * libraries.
    *
-   * Use `Connection::instance()` predicate to get references to instances of `db.Connection`.
+   * Use the predicate `Connection::instance()` to get references to instances of `db.Connection`.
    *
    * Extend this class if the module implementing PEP 249 offers more direct ways to obtain
    * a connection than going through `connect`.
