@@ -1918,6 +1918,7 @@ cil_attribute_positional_argument(
 @dotnet_member = @member | @cil_member;
 @dotnet_event = @event | @cil_event;
 @dotnet_property = @property | @cil_property | @indexer;
+@dotnet_parameterizable = @parameterizable | @cil_parameterizable;
 
 // Common types
 @dotnet_type = @type | @cil_type;
