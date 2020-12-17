@@ -13,72 +13,24 @@ private module Gin {
    */
   private class GithubComGinGonicGinContextSource extends UntrustedFlowSource::Range {
     GithubComGinGonicGinContextSource() {
-      exists(string typeName | typeName = "Context" |
-        // Method calls:
-        exists(DataFlow::MethodCallNode call, string methodName |
-          call.getTarget().hasQualifiedName(packagePath(), typeName, methodName) and
-          (
-            methodName = "FullPath"
-            or
-            methodName = "GetHeader"
-            or
-            methodName = "QueryArray"
-            or
-            methodName = "Query"
-            or
-            methodName = "PostFormArray"
-            or
-            methodName = "PostForm"
-            or
-            methodName = "Param"
-            or
-            methodName = "GetStringSlice"
-            or
-            methodName = "GetString"
-            or
-            methodName = "GetRawData"
-            or
-            methodName = "ClientIP"
-            or
-            methodName = "ContentType"
-            or
-            methodName = "Cookie"
-            or
-            methodName = "GetQueryArray"
-            or
-            methodName = "GetQuery"
-            or
-            methodName = "GetPostFormArray"
-            or
-            methodName = "GetPostForm"
-            or
-            methodName = "DefaultPostForm"
-            or
-            methodName = "DefaultQuery"
-            or
-            methodName = "GetPostFormMap"
-            or
-            methodName = "GetQueryMap"
-            or
-            methodName = "GetStringMap"
-            or
-            methodName = "GetStringMapString"
-            or
-            methodName = "GetStringMapStringSlice"
-            or
-            methodName = "PostFormMap"
-            or
-            methodName = "QueryMap"
-          )
-        |
-          this = call.getResult(0)
-        )
-        or
-        // Field reads:
-        exists(DataFlow::Field fld |
-          fld.hasQualifiedName(packagePath(), typeName, ["Accepted", "Params"]) and
-          this = fld.getARead()
-        )
+      // Method calls:
+      exists(DataFlow::MethodCallNode call, string methodName |
+        call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
+        methodName in [
+            "FullPath", "GetHeader", "QueryArray", "Query", "PostFormArray", "PostForm", "Param",
+            "GetStringSlice", "GetString", "GetRawData", "ClientIP", "ContentType", "Cookie",
+            "GetQueryArray", "GetQuery", "GetPostFormArray", "GetPostForm", "DefaultPostForm",
+            "DefaultQuery", "GetPostFormMap", "GetQueryMap", "GetStringMap", "GetStringMapString",
+            "GetStringMapStringSlice", "PostFormMap", "QueryMap"
+          ]
+      |
+        this = call.getResult(0)
+      )
+      or
+      // Field reads:
+      exists(DataFlow::Field fld |
+        fld.hasQualifiedName(packagePath(), "Context", ["Accepted", "Params"]) and
+        this = fld.getARead()
       )
     }
   }
@@ -104,32 +56,16 @@ private module Gin {
    */
   private class GithubComGinGonicGinContextBindSource extends UntrustedFlowSource::Range {
     GithubComGinGonicGinContextBindSource() {
-      exists(string typeName | typeName = "Context" |
-        exists(DataFlow::MethodCallNode call, string methodName |
-          call.getTarget().hasQualifiedName(packagePath(), typeName, methodName) and
-          (
-            methodName = "BindJSON" or
-            methodName = "BindYAML" or
-            methodName = "BindXML" or
-            methodName = "BindUri" or
-            methodName = "BindQuery" or
-            methodName = "BindWith" or
-            methodName = "BindHeader" or
-            methodName = "MustBindWith" or
-            methodName = "Bind" or
-            methodName = "ShouldBind" or
-            methodName = "ShouldBindBodyWith" or
-            methodName = "ShouldBindJSON" or
-            methodName = "ShouldBindQuery" or
-            methodName = "ShouldBindUri" or
-            methodName = "ShouldBindHeader" or
-            methodName = "ShouldBindWith" or
-            methodName = "ShouldBindXML" or
-            methodName = "ShouldBindYAML"
-          )
-        |
-          this = FunctionOutput::parameter(0).getExitNode(call)
-        )
+      exists(DataFlow::MethodCallNode call, string methodName |
+        call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
+        methodName in [
+            "BindJSON", "BindYAML", "BindXML", "BindUri", "BindQuery", "BindWith", "BindHeader",
+            "MustBindWith", "Bind", "ShouldBind", "ShouldBindBodyWith", "ShouldBindJSON",
+            "ShouldBindQuery", "ShouldBindUri", "ShouldBindHeader", "ShouldBindWith",
+            "ShouldBindXML", "ShouldBindYAML"
+          ]
+      |
+        this = FunctionOutput::parameter(0).getExitNode(call)
       )
     }
   }
