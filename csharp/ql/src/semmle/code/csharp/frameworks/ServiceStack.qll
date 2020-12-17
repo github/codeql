@@ -127,17 +127,12 @@ module XSS {
 
     class XssExpr extends Expr {
         XssExpr() {
-            exists(ReturnStmt r |
-                (
-                    r.getExpr().getType() instanceof StringType
-                )
-                |
-                this = r.getExpr()
+            exists(ServiceClass service, ReturnStmt r |
+                this = r.getExpr() and
+                r.getEnclosingCallable() = service.getARequestMethod()
             ) or 
             exists(ObjectCreation oc |
-                oc.getType().hasName("HttpResult") and
-                oc.getAnArgument().getType() instanceof StringType
-                |
+                oc.getType().hasQualifiedName("ServiceStack.HttpResult") and
                 this = oc.getArgument(0)
             )
         }
