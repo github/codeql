@@ -99,7 +99,7 @@ string getAnInsecureAlgorithmName() {
   result = "RC5" or
   result = "ARCFOUR" or // a variant of RC4
   result = "ECB" or // encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks
-  result = "AES/CBC/PKCS5Padding" // CBC mode of operation with PKCS#5 (or PKCS#7) padding is vulnerable to padding oracle attacks
+  result = "AES/CBC/PKCS[5|7]Padding" // CBC mode of operation with PKCS#5 (or PKCS#7) padding is vulnerable to padding oracle attacks
 }
 
 /**
@@ -141,7 +141,7 @@ string getASecureAlgorithmName() {
   result = "SHA512" or
   result = "CCM" or
   result = "GCM" or
-  result = "AES" or
+  result = "AES([^a-zA-Z](?!ECB|CBC/PKCS[5|7]Padding)).*" or
   result = "Blowfish" or
   result = "ECIES"
 }

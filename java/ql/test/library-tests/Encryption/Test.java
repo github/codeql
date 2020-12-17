@@ -14,7 +14,6 @@ class Test {
 			"AES/ECB/NoPadding",
 			"AES/CBC/PKCS5Padding");
 
-
 	List<String> goodStrings = Arrays.asList(
 			"AES",
 			"AES_function",
