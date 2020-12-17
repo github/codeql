@@ -12,13 +12,13 @@ use std::path::PathBuf;
 use tracing::{error, info};
 
 /// Given the name of the parent node, and its field information, returns a pair,
-/// the first of which is the name of the field's type. The second is an optional
-/// dbscheme entry that should be added, representing a union of all the possible
-/// types the field can take.
+/// the first of which is the field's type. The second is an optional dbscheme
+/// entry that should be added.
 fn make_field_type<'a>(
+    parent_name: &'a str,
     field: &'a node_types::Field,
     nodes: &'a node_types::NodeTypeMap,
-) -> (&'a str, Option<dbscheme::Entry<'a>>) {
+) -> (ql::Type<'a>, Option<dbscheme::Entry<'a>>) {
     match &field.type_info {
         node_types::FieldTypeInfo::Multiple {
             types,
@@ -32,14 +32,34 @@ fn make_field_type<'a>(
                 .map(|t| nodes.get(t).unwrap().dbscheme_name.as_str())
                 .collect();
             (
-                &dbscheme_union,
+                ql::Type::AtType(&dbscheme_union),
                 Some(dbscheme::Entry::Union(dbscheme::Union {
                     name: dbscheme_union,
                     members,
                 })),
             )
         }
-        node_types::FieldTypeInfo::Single(t) => (&nodes.get(&t).unwrap().dbscheme_name, None),
+        node_types::FieldTypeInfo::Single(t) => {
+            let dbscheme_name = &nodes.get(&t).unwrap().dbscheme_name;
+            (ql::Type::AtType(dbscheme_name), None)
+        }
+        node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
+            // The field will be an `int` in the db, and we add a case split to
+            // create other db types for each integer value.
+            let mut branches: Vec<(usize, &'a str)> = Vec::new();
+            for (_, (value, name)) in int_mapping {
+                branches.push((*value, name));
+            }
+            let case = dbscheme::Entry::Case(dbscheme::Case {
+                name: parent_name,
+                column: match &field.storage {
+                    node_types::Storage::Column { name } => name,
+                    node_types::Storage::Table { name, .. } => name,
+                },
+                branches,
+            });
+            (ql::Type::Int, Some(case))
+        }
     }
 }
 
@@ -52,7 +72,7 @@ fn add_field_for_table_storage<'a>(
     let parent_name = &nodes.get(&field.parent).unwrap().dbscheme_name;
     // This field can appear zero or multiple times, so put
     // it in an auxiliary table.
-    let (field_type_name, field_type_entry) = make_field_type(&field, nodes);
+    let (field_ql_type, field_type_entry) = make_field_type(parent_name, &field, nodes);
     let parent_column = dbscheme::Column {
         unique: !has_index,
         db_type: dbscheme::DbColumnType::Int,
@@ -70,8 +90,11 @@ fn add_field_for_table_storage<'a>(
     let field_column = dbscheme::Column {
         unique: true,
         db_type: dbscheme::DbColumnType::Int,
-        name: field_type_name,
-        ql_type: ql::Type::AtType(field_type_name),
+        name: match &field.name {
+            None => "child",
+            Some(name) => name,
+        },
+        ql_type: field_ql_type,
         ql_type_is_ref: true,
     };
     let field_table = dbscheme::Table {
@@ -93,19 +116,20 @@ fn add_field_for_table_storage<'a>(
 }
 
 fn add_field_for_column_storage<'a>(
+    parent_name: &'a str,
     field: &'a node_types::Field,
     column_name: &'a str,
     nodes: &'a node_types::NodeTypeMap,
 ) -> (dbscheme::Column<'a>, Option<dbscheme::Entry<'a>>) {
     // This field must appear exactly once, so we add it as
     // a column to the main table for the node type.
-    let (field_type_name, field_type_entry) = make_field_type(&field, nodes);
+    let (field_ql_type, field_type_entry) = make_field_type(parent_name, &field, nodes);
     (
         dbscheme::Column {
             unique: false,
             db_type: dbscheme::DbColumnType::Int,
             name: column_name,
-            ql_type: ql::Type::AtType(field_type_name),
+            ql_type: field_ql_type,
             ql_type_is_ref: true,
         },
         field_type_entry,
@@ -185,9 +209,13 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
                 // auxiliary tables or columns in the defining table for them.
                 for field in fields {
                     match &field.storage {
-                        node_types::Storage::Column { name } => {
-                            let (field_column, field_type_entry) =
-                                add_field_for_column_storage(field, name, nodes);
+                        node_types::Storage::Column { name: column_name } => {
+                            let (field_column, field_type_entry) = add_field_for_column_storage(
+                                &node.dbscheme_name,
+                                field,
+                                column_name,
+                                nodes,
+                            );
                             if let Some(field_type_entry) = field_type_entry {
                                 entries.push(field_type_entry);
                             }

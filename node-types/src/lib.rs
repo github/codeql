@@ -41,6 +41,10 @@ pub enum FieldTypeInfo {
         dbscheme_union: String,
         ql_class: String,
     },
+
+    /// The field can be one of several tokens, so the db type will be an `int`
+    /// with a `case @foo.kind` for each possiblity.
+    ReservedWordInt(BTreeMap<String, (usize, String)>),
 }
 
 #[derive(Debug)]
@@ -74,12 +78,12 @@ pub enum Storage {
 pub fn read_node_types(node_types_path: &Path) -> std::io::Result<NodeTypeMap> {
     let file = fs::File::open(node_types_path)?;
     let node_types = serde_json::from_reader(file)?;
-    Ok(convert_nodes(node_types))
+    Ok(convert_nodes(&node_types))
 }
 
 pub fn read_node_types_str(node_types_json: &str) -> std::io::Result<NodeTypeMap> {
     let node_types = serde_json::from_str(node_types_json)?;
-    Ok(convert_nodes(node_types))
+    Ok(convert_nodes(&node_types))
 }
 
 fn convert_type(node_type: &NodeType) -> TypeName {
@@ -94,9 +98,23 @@ fn convert_types(node_types: &Vec<NodeType>) -> Set<TypeName> {
     std::collections::BTreeSet::from(iter)
 }
 
-pub fn convert_nodes(nodes: Vec<NodeInfo>) -> NodeTypeMap {
+pub fn convert_nodes(nodes: &Vec<NodeInfo>) -> NodeTypeMap {
     let mut entries = NodeTypeMap::new();
     let mut token_kinds = Set::new();
+
+    // First, find all the token kinds
+    for node in nodes {
+        if node.subtypes.is_none() {
+            if node.fields.as_ref().map_or(0, |x| x.len()) == 0 && node.children.is_none() {
+                let type_name = TypeName {
+                    kind: node.kind.clone(),
+                    named: node.named,
+                };
+                token_kinds.insert(type_name);
+            }
+        }
+    }
+
     for node in nodes {
         let flattened_name = &node_type_name(&node.kind, node.named);
         let dbscheme_name = escape_name(&flattened_name);
@@ -106,7 +124,7 @@ pub fn convert_nodes(nodes: Vec<NodeInfo>) -> NodeTypeMap {
             // type.
             entries.insert(
                 TypeName {
-                    kind: node.kind,
+                    kind: node.kind.clone(),
                     named: node.named,
                 },
                 Entry {
@@ -118,15 +136,11 @@ pub fn convert_nodes(nodes: Vec<NodeInfo>) -> NodeTypeMap {
                 },
             );
         } else if node.fields.as_ref().map_or(0, |x| x.len()) == 0 && node.children.is_none() {
-            let type_name = TypeName {
-                kind: node.kind,
-                named: node.named,
-            };
-            token_kinds.insert(type_name);
+            // Token kind, handled above.
         } else {
             // It's a product type, defined by a table.
             let type_name = TypeName {
-                kind: node.kind,
+                kind: node.kind.clone(),
                 named: node.named,
             };
             let table_name = escape_name(&(format!("{}_def", &flattened_name)));
@@ -141,12 +155,13 @@ pub fn convert_nodes(nodes: Vec<NodeInfo>) -> NodeTypeMap {
                         Some(field_name.to_string()),
                         field_info,
                         &mut fields,
+                        &token_kinds,
                     );
                 }
             }
             if let Some(children) = &node.children {
                 // Treat children as if they were a field called 'child'.
-                add_field(&type_name, None, children, &mut fields);
+                add_field(&type_name, None, children, &mut fields, &token_kinds);
             }
             entries.insert(
                 type_name,
@@ -188,6 +203,7 @@ fn add_field(
     field_name: Option<String>,
     field_info: &FieldInfo,
     fields: &mut Vec<Field>,
+    token_kinds: &Set<TypeName>,
 ) {
     let parent_flattened_name = node_type_name(&parent_type_name.kind, parent_type_name.named);
     let storage = if !field_info.multiple && field_info.required {
@@ -209,12 +225,30 @@ fn add_field(
             name: field_table_name,
         }
     };
-    let type_info = if field_info.types.len() == 1 {
-        FieldTypeInfo::Single(convert_type(field_info.types.iter().next().unwrap()))
+    let converted_types = convert_types(&field_info.types);
+    let type_info = if field_info
+        .types
+        .iter()
+        .all(|t| !t.named && token_kinds.contains(&convert_type(t)))
+    {
+        // All possible types for this field are reserved words. The db
+        // representation will be an `int` with a `case @foo.field = ...` to
+        // enumerate the possible values.
+        let mut counter = 0;
+        let mut field_token_ints: BTreeMap<String, (usize, String)> = BTreeMap::new();
+        for t in converted_types {
+            let dbscheme_variant_name =
+                escape_name(&format!("{}_{}", parent_flattened_name, t.kind));
+            field_token_ints.insert(t.kind.to_owned(), (counter, dbscheme_variant_name));
+            counter += 1;
+        }
+        FieldTypeInfo::ReservedWordInt(field_token_ints)
+    } else if field_info.types.len() == 1 {
+        FieldTypeInfo::Single(converted_types.into_iter().next().unwrap())
     } else {
         // The dbscheme type for this field will be a union. In QL, it'll just be AstNode.
         FieldTypeInfo::Multiple {
-            types: convert_types(&field_info.types),
+            types: converted_types,
             dbscheme_union: format!(
                 "{}_{}_type",
                 &parent_flattened_name,

@@ -246,6 +246,12 @@ fn full_id_for_folder(path: &Path) -> String {
     format!("{};folder", normalize_path(path))
 }
 
+struct ChildNode {
+    field_name: Option<&'static str>,
+    label: Label,
+    type_name: TypeName,
+}
+
 struct Visitor<'a> {
     /// The file path of the source code (as string)
     path: String,
@@ -262,13 +268,13 @@ struct Visitor<'a> {
     toplevel_child_counter: usize,
     /// A lookup table from type name to node types
     schema: &'a NodeTypeMap,
-    /// A stack for gathering information from child nodes. Whenever a node is entered
-    /// the parent's [Label], child counter, and an empty list is pushed. All children append their data
-    /// (field name, label, type) to the the list. When the visitor leaves a node the list
-    /// containing the child data is popped from the stack and matched against the dbscheme
-    /// for the node. If the expectations are met the corresponding row definitions are
-    /// added to the trap_output.
-    stack: Vec<(Label, usize, Vec<(Option<&'static str>, Label, TypeName)>)>,
+    /// A stack for gathering information from child nodes. Whenever a node is
+    /// entered the parent's [Label], child counter, and an empty list is pushed.
+    /// All children append their data to the the list. When the visitor leaves a
+    /// node the list containing the child data is popped from the stack and
+    /// matched against the dbscheme for the node. If the expectations are met
+    /// the corresponding row definitions are added to the trap_output.
+    stack: Vec<(Label, usize, Vec<ChildNode>)>,
 }
 
 impl Visitor<'_> {
@@ -349,7 +355,7 @@ impl Visitor<'_> {
                 fields,
                 name: table_name,
             } => {
-                if let Some(args) = self.complex_node(&node, fields, child_nodes, id) {
+                if let Some(args) = self.complex_node(&node, fields, &child_nodes, id) {
                     let mut all_args = Vec::new();
                     all_args.push(Arg::Label(id));
                     all_args.push(Arg::Label(parent_id));
@@ -373,14 +379,14 @@ impl Visitor<'_> {
             // Extra nodes are independent root nodes and do not belong to the parent node
             // Therefore we should not register them in the parent vector
             if let Some(parent) = self.stack.last_mut() {
-                parent.2.push((
+                parent.2.push(ChildNode {
                     field_name,
-                    id,
-                    TypeName {
+                    label: id,
+                    type_name: TypeName {
                         kind: node.kind().to_owned(),
                         named: node.is_named(),
                     },
-                ))
+                });
             };
         }
     }
@@ -389,38 +395,47 @@ impl Visitor<'_> {
         &mut self,
         node: &Node,
         fields: &Vec<Field>,
-        child_nodes: Vec<(Option<&str>, Label, TypeName)>,
+        child_nodes: &Vec<ChildNode>,
         parent_id: Label,
     ) -> Option<Vec<Arg>> {
-        let mut map: Map<&Option<String>, (&Field, Vec<Label>)> = std::collections::BTreeMap::new();
+        let mut map: Map<&Option<String>, (&Field, Vec<Arg>)> = Map::new();
         for field in fields {
             map.insert(&field.name, (field, Vec::new()));
         }
-        for (child_field, child_id, child_type) in child_nodes {
-            if let Some((field, values)) = map.get_mut(&child_field.map(|x| x.to_owned())) {
+        for child_node in child_nodes {
+            if let Some((field, values)) = map.get_mut(&child_node.field_name.map(|x| x.to_owned()))
+            {
                 //TODO: handle error and missing nodes
-                if self.type_matches(&child_type, &field.type_info) {
-                    values.push(child_id);
+                if self.type_matches(&child_node.type_name, &field.type_info) {
+                    if let node_types::FieldTypeInfo::ReservedWordInt(int_mapping) =
+                        &field.type_info
+                    {
+                        // We can safely unwrap because type_matches checks the key is in the map.
+                        let (int_value, _) = int_mapping.get(&child_node.type_name.kind).unwrap();
+                        values.push(Arg::Int(*int_value));
+                    } else {
+                        values.push(Arg::Label(child_node.label));
+                    }
                 } else if field.name.is_some() {
                     error!(
                         "{}:{}: type mismatch for field {}::{} with type {:?} != {:?}",
                         &self.path,
                         node.start_position().row + 1,
                         node.kind(),
-                        child_field.unwrap_or("child"),
-                        child_type,
+                        child_node.field_name.unwrap_or("child"),
+                        child_node.type_name,
                         field.type_info
                     )
                 }
             } else {
-                if child_field.is_some() || child_type.named {
+                if child_node.field_name.is_some() || child_node.type_name.named {
                     error!(
                         "{}:{}: value for unknown field: {}::{} and type {:?}",
                         &self.path,
                         node.start_position().row + 1,
                         node.kind(),
-                        &child_field.unwrap_or("child"),
-                        &child_type
+                        &child_node.field_name.unwrap_or("child"),
+                        &child_node.type_name
                     );
                 }
             }
@@ -428,18 +443,18 @@ impl Visitor<'_> {
         let mut args = Vec::new();
         let mut is_valid = true;
         for field in fields {
-            let child_ids = &map.get(&field.name).unwrap().1;
+            let child_values = &map.get(&field.name).unwrap().1;
             match &field.storage {
                 Storage::Column { name: column_name } => {
-                    if child_ids.len() == 1 {
-                        args.push(Arg::Label(*child_ids.first().unwrap()));
+                    if child_values.len() == 1 {
+                        args.push(child_values.first().unwrap().clone());
                     } else {
                         is_valid = false;
                         error!(
                             "{}:{}: {} for field: {}::{}",
                             &self.path,
                             node.start_position().row + 1,
-                            if child_ids.is_empty() {
+                            if child_values.is_empty() {
                                 "missing value"
                             } else {
                                 "too many values"
@@ -453,7 +468,7 @@ impl Visitor<'_> {
                     name: table_name,
                     has_index,
                 } => {
-                    for (index, child_id) in child_ids.iter().enumerate() {
+                    for (index, child_value) in child_values.iter().enumerate() {
                         if !*has_index && index > 0 {
                             error!(
                                 "{}:{}: too many values for field: {}::{}",
@@ -469,7 +484,7 @@ impl Visitor<'_> {
                         if *has_index {
                             args.push(Arg::Int(index))
                         }
-                        args.push(Arg::Label(*child_id));
+                        args.push(child_value.clone());
                         self.trap_writer.add_tuple(&table_name, args);
                     }
                 }
@@ -499,6 +514,10 @@ impl Visitor<'_> {
             }
             node_types::FieldTypeInfo::Multiple { types, .. } => {
                 return self.type_matches_set(tp, types);
+            }
+
+            node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
+                return !tp.named && int_mapping.contains_key(&tp.kind)
             }
         }
         false
@@ -658,7 +677,7 @@ impl fmt::Display for Index {
 }
 
 // Some untyped argument to a TrapEntry.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Arg {
     Label(Label),
     Int(usize),

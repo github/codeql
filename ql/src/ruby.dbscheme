@@ -74,7 +74,7 @@ alias_def(
 argument_list_child(
   int argument_list: @argument_list ref,
   int index: int ref,
-  unique int argument_list_child_type: @argument_list_child_type ref
+  unique int child: @argument_list_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -91,7 +91,7 @@ argument_list_def(
 array_child(
   int array: @array ref,
   int index: int ref,
-  unique int array_child_type: @array_child_type ref
+  unique int child: @array_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -122,7 +122,7 @@ assignment_def(
 bare_string_child(
   int bare_string: @bare_string ref,
   int index: int ref,
-  unique int bare_string_child_type: @bare_string_child_type ref
+  unique int child: @bare_string_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -139,7 +139,7 @@ bare_string_def(
 bare_symbol_child(
   int bare_symbol: @bare_symbol ref,
   int index: int ref,
-  unique int bare_symbol_child_type: @bare_symbol_child_type ref
+  unique int child: @bare_symbol_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -156,7 +156,7 @@ bare_symbol_def(
 begin_child(
   int begin: @begin ref,
   int index: int ref,
-  unique int begin_child_type: @begin_child_type ref
+  unique int child: @begin_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -173,7 +173,7 @@ begin_def(
 begin_block_child(
   int begin_block: @begin_block ref,
   int index: int ref,
-  unique int begin_block_child_type: @begin_block_child_type ref
+  unique int child: @begin_block_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -186,7 +186,34 @@ begin_block_def(
 
 @binary_left_type = @break | @call | @next | @return | @underscore_arg | @yield
 
-@binary_operator_type = @reserved_word
+case @binary.operator of
+  0 = @binary_bangequal
+| 1 = @binary_bangtilde
+| 2 = @binary_percent
+| 3 = @binary_ampersand
+| 4 = @binary_ampersandampersand
+| 5 = @binary_star
+| 6 = @binary_starstar
+| 7 = @binary_plus
+| 8 = @binary_minus
+| 9 = @binary_slash
+| 10 = @binary_langle
+| 11 = @binary_langlelangle
+| 12 = @binary_langleequal
+| 13 = @binary_langleequalrangle
+| 14 = @binary_equalequal
+| 15 = @binary_equalequalequal
+| 16 = @binary_equaltilde
+| 17 = @binary_rangle
+| 18 = @binary_rangleequal
+| 19 = @binary_ranglerangle
+| 20 = @binary_caret
+| 21 = @binary_and
+| 22 = @binary_or
+| 23 = @binary_pipe
+| 24 = @binary_pipepipe
+;
+
 
 @binary_right_type = @break | @call | @next | @return | @underscore_arg | @yield
 
@@ -196,14 +223,14 @@ binary_def(
   int parent: @ast_node_parent ref,
   int parent_index: int ref,
   int left: @binary_left_type ref,
-  int operator: @binary_operator_type ref,
+  int operator: int ref,
   int right: @binary_right_type ref,
   int loc: @location ref
 );
 
 block_parameters(
   unique int block: @block ref,
-  unique int block_parameters: @block_parameters ref
+  unique int parameters: @block_parameters ref
 );
 
 @block_child_type = @token_empty_statement | @underscore_statement
@@ -212,7 +239,7 @@ block_parameters(
 block_child(
   int block: @block ref,
   int index: int ref,
-  unique int block_child_type: @block_child_type ref
+  unique int child: @block_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -247,7 +274,7 @@ block_parameter_def(
 block_parameters_child(
   int block_parameters: @block_parameters ref,
   int index: int ref,
-  unique int block_parameters_child_type: @block_parameters_child_type ref
+  unique int child: @block_parameters_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -260,7 +287,7 @@ block_parameters_def(
 
 break_child(
   unique int break: @break ref,
-  unique int argument_list: @argument_list ref
+  unique int child: @argument_list ref
 );
 
 #keyset[parent, parent_index]
@@ -273,14 +300,14 @@ break_def(
 
 call_arguments(
   unique int call: @call ref,
-  unique int argument_list: @argument_list ref
+  unique int arguments: @argument_list ref
 );
 
 @call_block_type = @block | @do_block
 
 call_block(
   unique int call: @call ref,
-  unique int call_block_type: @call_block_type ref
+  unique int block: @call_block_type ref
 );
 
 @call_method_type = @argument_list | @scope_resolution | @token_operator | @underscore_variable
@@ -289,7 +316,7 @@ call_block(
 
 call_receiver(
   unique int call: @call ref,
-  unique int call_receiver_type: @call_receiver_type ref
+  unique int receiver: @call_receiver_type ref
 );
 
 #keyset[parent, parent_index]
@@ -303,7 +330,7 @@ call_def(
 
 case_value(
   unique int case__: @case__ ref,
-  unique int underscore_statement: @underscore_statement ref
+  unique int value: @underscore_statement ref
 );
 
 @case_child_type = @else | @when
@@ -312,7 +339,7 @@ case_value(
 case_child(
   int case__: @case__ ref,
   int index: int ref,
-  unique int case_child_type: @case_child_type ref
+  unique int child: @case_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -327,7 +354,7 @@ case_def(
 chained_string_child(
   int chained_string: @chained_string ref,
   int index: int ref,
-  unique int string__: @string__ ref
+  unique int child: @string__ ref
 );
 
 #keyset[parent, parent_index]
@@ -346,7 +373,7 @@ chained_string_def(
 class_child(
   int class: @class ref,
   int index: int ref,
-  unique int class_child_type: @class_child_type ref
+  unique int child: @class_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -375,7 +402,7 @@ conditional_def(
 destructured_left_assignment_child(
   int destructured_left_assignment: @destructured_left_assignment ref,
   int index: int ref,
-  unique int destructured_left_assignment_child_type: @destructured_left_assignment_child_type ref
+  unique int child: @destructured_left_assignment_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -392,7 +419,7 @@ destructured_left_assignment_def(
 destructured_parameter_child(
   int destructured_parameter: @destructured_parameter ref,
   int index: int ref,
-  unique int destructured_parameter_child_type: @destructured_parameter_child_type ref
+  unique int child: @destructured_parameter_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -409,7 +436,7 @@ destructured_parameter_def(
 do_child(
   int do: @do ref,
   int index: int ref,
-  unique int do_child_type: @do_child_type ref
+  unique int child: @do_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -422,7 +449,7 @@ do_def(
 
 do_block_parameters(
   unique int do_block: @do_block ref,
-  unique int block_parameters: @block_parameters ref
+  unique int parameters: @block_parameters ref
 );
 
 @do_block_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
@@ -431,7 +458,7 @@ do_block_parameters(
 do_block_child(
   int do_block: @do_block ref,
   int index: int ref,
-  unique int do_block_child_type: @do_block_child_type ref
+  unique int child: @do_block_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -448,7 +475,7 @@ do_block_def(
 element_reference_child(
   int element_reference: @element_reference ref,
   int index: int ref,
-  unique int element_reference_child_type: @element_reference_child_type ref
+  unique int child: @element_reference_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -466,7 +493,7 @@ element_reference_def(
 else_child(
   int else: @else ref,
   int index: int ref,
-  unique int else_child_type: @else_child_type ref
+  unique int child: @else_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -481,12 +508,12 @@ else_def(
 
 elsif_alternative(
   unique int elsif: @elsif ref,
-  unique int elsif_alternative_type: @elsif_alternative_type ref
+  unique int alternative: @elsif_alternative_type ref
 );
 
 elsif_consequence(
   unique int elsif: @elsif ref,
-  unique int then: @then ref
+  unique int consequence: @then ref
 );
 
 #keyset[parent, parent_index]
@@ -504,7 +531,7 @@ elsif_def(
 end_block_child(
   int end_block: @end_block ref,
   int index: int ref,
-  unique int end_block_child_type: @end_block_child_type ref
+  unique int child: @end_block_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -521,7 +548,7 @@ end_block_def(
 ensure_child(
   int ensure: @ensure ref,
   int index: int ref,
-  unique int ensure_child_type: @ensure_child_type ref
+  unique int child: @ensure_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -547,7 +574,7 @@ exception_variable_def(
 exceptions_child(
   int exceptions: @exceptions ref,
   int index: int ref,
-  unique int exceptions_child_type: @exceptions_child_type ref
+  unique int child: @exceptions_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -564,7 +591,7 @@ exceptions_def(
 for_pattern(
   int for: @for ref,
   int index: int ref,
-  unique int for_pattern_type: @for_pattern_type ref
+  unique int pattern: @for_pattern_type ref
 );
 
 #keyset[parent, parent_index]
@@ -583,7 +610,7 @@ for_def(
 hash_child(
   int hash: @hash ref,
   int index: int ref,
-  unique int hash_child_type: @hash_child_type ref
+  unique int child: @hash_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -605,7 +632,7 @@ hash_splat_argument_def(
 
 hash_splat_parameter_name(
   unique int hash_splat_parameter: @hash_splat_parameter ref,
-  unique int token_identifier: @token_identifier ref
+  unique int name: @token_identifier ref
 );
 
 #keyset[parent, parent_index]
@@ -622,7 +649,7 @@ hash_splat_parameter_def(
 heredoc_body_child(
   int heredoc_body: @heredoc_body ref,
   int index: int ref,
-  unique int heredoc_body_child_type: @heredoc_body_child_type ref
+  unique int child: @heredoc_body_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -637,12 +664,12 @@ heredoc_body_def(
 
 if_alternative(
   unique int if: @if ref,
-  unique int if_alternative_type: @if_alternative_type ref
+  unique int alternative: @if_alternative_type ref
 );
 
 if_consequence(
   unique int if: @if ref,
-  unique int then: @then ref
+  unique int consequence: @then ref
 );
 
 #keyset[parent, parent_index]
@@ -686,7 +713,7 @@ interpolation_def(
 
 keyword_parameter_value(
   unique int keyword_parameter: @keyword_parameter ref,
-  unique int underscore_arg: @underscore_arg ref
+  unique int value: @underscore_arg ref
 );
 
 #keyset[parent, parent_index]
@@ -702,7 +729,7 @@ keyword_parameter_def(
 
 lambda_parameters(
   unique int lambda: @lambda ref,
-  unique int lambda_parameters: @lambda_parameters ref
+  unique int parameters: @lambda_parameters ref
 );
 
 #keyset[parent, parent_index]
@@ -720,7 +747,7 @@ lambda_def(
 lambda_parameters_child(
   int lambda_parameters: @lambda_parameters ref,
   int index: int ref,
-  unique int lambda_parameters_child_type: @lambda_parameters_child_type ref
+  unique int child: @lambda_parameters_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -737,7 +764,7 @@ lambda_parameters_def(
 left_assignment_list_child(
   int left_assignment_list: @left_assignment_list ref,
   int index: int ref,
-  unique int left_assignment_list_child_type: @left_assignment_list_child_type ref
+  unique int child: @left_assignment_list_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -750,7 +777,7 @@ left_assignment_list_def(
 
 method_parameters(
   unique int method: @method ref,
-  unique int method_parameters: @method_parameters ref
+  unique int parameters: @method_parameters ref
 );
 
 @method_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
@@ -759,7 +786,7 @@ method_parameters(
 method_child(
   int method: @method ref,
   int index: int ref,
-  unique int method_child_type: @method_child_type ref
+  unique int child: @method_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -777,7 +804,7 @@ method_def(
 method_parameters_child(
   int method_parameters: @method_parameters ref,
   int index: int ref,
-  unique int method_parameters_child_type: @method_parameters_child_type ref
+  unique int child: @method_parameters_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -796,7 +823,7 @@ method_parameters_def(
 module_child(
   int module: @module ref,
   int index: int ref,
-  unique int module_child_type: @module_child_type ref
+  unique int child: @module_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -810,7 +837,7 @@ module_def(
 
 next_child(
   unique int next: @next ref,
-  unique int argument_list: @argument_list ref
+  unique int child: @argument_list ref
 );
 
 #keyset[parent, parent_index]
@@ -821,7 +848,22 @@ next_def(
   int loc: @location ref
 );
 
-@operator_assignment_operator_type = @reserved_word
+case @operator_assignment.operator of
+  0 = @operator_assignment_percentequal
+| 1 = @operator_assignment_ampersandampersandequal
+| 2 = @operator_assignment_ampersandequal
+| 3 = @operator_assignment_starstarequal
+| 4 = @operator_assignment_starequal
+| 5 = @operator_assignment_plusequal
+| 6 = @operator_assignment_minusequal
+| 7 = @operator_assignment_slashequal
+| 8 = @operator_assignment_langlelangleequal
+| 9 = @operator_assignment_ranglerangleequal
+| 10 = @operator_assignment_caretequal
+| 11 = @operator_assignment_pipeequal
+| 12 = @operator_assignment_pipepipeequal
+;
+
 
 @operator_assignment_right_type = @break | @call | @next | @return | @underscore_arg | @yield
 
@@ -831,7 +873,7 @@ operator_assignment_def(
   int parent: @ast_node_parent ref,
   int parent_index: int ref,
   int left: @underscore_lhs ref,
-  int operator: @operator_assignment_operator_type ref,
+  int operator: int ref,
   int right: @operator_assignment_right_type ref,
   int loc: @location ref
 );
@@ -864,7 +906,7 @@ pair_def(
 parenthesized_statements_child(
   int parenthesized_statements: @parenthesized_statements ref,
   int index: int ref,
-  unique int parenthesized_statements_child_type: @parenthesized_statements_child_type ref
+  unique int child: @parenthesized_statements_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -892,7 +934,7 @@ pattern_def(
 program_child(
   int program: @program ref,
   int index: int ref,
-  unique int program_child_type: @program_child_type ref
+  unique int child: @program_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -907,7 +949,7 @@ program_def(
 range_child(
   int range: @range ref,
   int index: int ref,
-  unique int underscore_arg: @underscore_arg ref
+  unique int child: @underscore_arg ref
 );
 
 #keyset[parent, parent_index]
@@ -931,7 +973,7 @@ rational_def(
 
 redo_child(
   unique int redo: @redo ref,
-  unique int argument_list: @argument_list ref
+  unique int child: @argument_list ref
 );
 
 #keyset[parent, parent_index]
@@ -948,7 +990,7 @@ redo_def(
 regex_child(
   int regex: @regex ref,
   int index: int ref,
-  unique int regex_child_type: @regex_child_type ref
+  unique int child: @regex_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -961,7 +1003,7 @@ regex_def(
 
 rescue_body(
   unique int rescue: @rescue ref,
-  unique int then: @then ref
+  unique int body: @then ref
 );
 
 rescue_exceptions(
@@ -971,7 +1013,7 @@ rescue_exceptions(
 
 rescue_variable(
   unique int rescue: @rescue ref,
-  unique int exception_variable: @exception_variable ref
+  unique int variable: @exception_variable ref
 );
 
 #keyset[parent, parent_index]
@@ -996,7 +1038,7 @@ rescue_modifier_def(
 
 rest_assignment_child(
   unique int rest_assignment: @rest_assignment ref,
-  unique int underscore_lhs: @underscore_lhs ref
+  unique int child: @underscore_lhs ref
 );
 
 #keyset[parent, parent_index]
@@ -1009,7 +1051,7 @@ rest_assignment_def(
 
 retry_child(
   unique int retry: @retry ref,
-  unique int argument_list: @argument_list ref
+  unique int child: @argument_list ref
 );
 
 #keyset[parent, parent_index]
@@ -1022,7 +1064,7 @@ retry_def(
 
 return_child(
   unique int return: @return ref,
-  unique int argument_list: @argument_list ref
+  unique int child: @argument_list ref
 );
 
 #keyset[parent, parent_index]
@@ -1039,7 +1081,7 @@ return_def(
 right_assignment_list_child(
   int right_assignment_list: @right_assignment_list ref,
   int index: int ref,
-  unique int right_assignment_list_child_type: @right_assignment_list_child_type ref
+  unique int child: @right_assignment_list_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -1054,7 +1096,7 @@ right_assignment_list_def(
 
 scope_resolution_scope(
   unique int scope_resolution: @scope_resolution ref,
-  unique int underscore_primary: @underscore_primary ref
+  unique int scope: @underscore_primary ref
 );
 
 #keyset[parent, parent_index]
@@ -1081,7 +1123,7 @@ setter_def(
 singleton_class_child(
   int singleton_class: @singleton_class ref,
   int index: int ref,
-  unique int singleton_class_child_type: @singleton_class_child_type ref
+  unique int child: @singleton_class_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -1097,7 +1139,7 @@ singleton_class_def(
 
 singleton_method_parameters(
   unique int singleton_method: @singleton_method ref,
-  unique int method_parameters: @method_parameters ref
+  unique int parameters: @method_parameters ref
 );
 
 @singleton_method_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
@@ -1106,7 +1148,7 @@ singleton_method_parameters(
 singleton_method_child(
   int singleton_method: @singleton_method ref,
   int index: int ref,
-  unique int singleton_method_child_type: @singleton_method_child_type ref
+  unique int child: @singleton_method_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -1130,7 +1172,7 @@ splat_argument_def(
 
 splat_parameter_name(
   unique int splat_parameter: @splat_parameter ref,
-  unique int token_identifier: @token_identifier ref
+  unique int name: @token_identifier ref
 );
 
 #keyset[parent, parent_index]
@@ -1147,7 +1189,7 @@ splat_parameter_def(
 string_child(
   int string__: @string__ ref,
   int index: int ref,
-  unique int string_child_type: @string_child_type ref
+  unique int child: @string_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -1162,7 +1204,7 @@ string_def(
 string_array_child(
   int string_array: @string_array ref,
   int index: int ref,
-  unique int bare_string: @bare_string ref
+  unique int child: @bare_string ref
 );
 
 #keyset[parent, parent_index]
@@ -1179,7 +1221,7 @@ string_array_def(
 subshell_child(
   int subshell: @subshell ref,
   int index: int ref,
-  unique int subshell_child_type: @subshell_child_type ref
+  unique int child: @subshell_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -1207,7 +1249,7 @@ superclass_def(
 symbol_child(
   int symbol: @symbol ref,
   int index: int ref,
-  unique int symbol_child_type: @symbol_child_type ref
+  unique int child: @symbol_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -1222,7 +1264,7 @@ symbol_def(
 symbol_array_child(
   int symbol_array: @symbol_array ref,
   int index: int ref,
-  unique int bare_symbol: @bare_symbol ref
+  unique int child: @bare_symbol ref
 );
 
 #keyset[parent, parent_index]
@@ -1239,7 +1281,7 @@ symbol_array_def(
 then_child(
   int then: @then ref,
   int index: int ref,
-  unique int then_child_type: @then_child_type ref
+  unique int child: @then_child_type ref
 );
 
 #keyset[parent, parent_index]
@@ -1252,7 +1294,15 @@ then_def(
 
 @unary_operand_type = @break | @call | @next | @parenthesized_statements | @return | @token_float | @token_integer | @underscore_arg | @yield
 
-@unary_operator_type = @reserved_word
+case @unary.operator of
+  0 = @unary_bang
+| 1 = @unary_plus
+| 2 = @unary_minus
+| 3 = @unary_definedquestion
+| 4 = @unary_not
+| 5 = @unary_tilde
+;
+
 
 #keyset[parent, parent_index]
 unary_def(
@@ -1260,7 +1310,7 @@ unary_def(
   int parent: @ast_node_parent ref,
   int parent_index: int ref,
   int operand: @unary_operand_type ref,
-  int operator: @unary_operator_type ref,
+  int operator: int ref,
   int loc: @location ref
 );
 
@@ -1268,7 +1318,7 @@ unary_def(
 undef_child(
   int undef: @undef ref,
   int index: int ref,
-  unique int underscore_method_name: @underscore_method_name ref
+  unique int child: @underscore_method_name ref
 );
 
 #keyset[parent, parent_index]
@@ -1283,12 +1333,12 @@ undef_def(
 
 unless_alternative(
   unique int unless: @unless ref,
-  unique int unless_alternative_type: @unless_alternative_type ref
+  unique int alternative: @unless_alternative_type ref
 );
 
 unless_consequence(
   unique int unless: @unless ref,
-  unique int then: @then ref
+  unique int consequence: @then ref
 );
 
 #keyset[parent, parent_index]
@@ -1336,7 +1386,7 @@ until_modifier_def(
 
 when_body(
   unique int when: @when ref,
-  unique int then: @then ref
+  unique int body: @then ref
 );
 
 #keyset[when, index]
@@ -1378,7 +1428,7 @@ while_modifier_def(
 
 yield_child(
   unique int yield: @yield ref,
-  unique int argument_list: @argument_list ref
+  unique int child: @argument_list ref
 );
 
 #keyset[parent, parent_index]
