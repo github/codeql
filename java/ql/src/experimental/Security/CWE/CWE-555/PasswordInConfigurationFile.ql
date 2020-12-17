@@ -11,12 +11,27 @@
 
 import java
 
-predicate isNotPassword(XMLAttribute a) {
-  a.getValue() = "" // Empty string
-  or
-  a.getValue().regexpMatch("\\$\\{.*\\}") // Variable placeholder ${password}
-  or
-  a.getValue().matches("%=") // A basic check of encrypted passwords ending with padding characters, which could be improved to be more accurate.
+/* Holds if the attribute value is not a cleartext password */
+predicate isNotPassword(XMLAttribute attr) {
+  exists(string value | value = attr.getValue().trim() |
+    value = "" // Empty string
+    or
+    value.regexpMatch("\\$\\{.*\\}") // Variable placeholder ${password}
+    or
+    value.matches("%=") // A basic check of encrypted passwords ending with padding characters, which could be improved to be more accurate.
+  )
+}
+
+/* Holds if the attribute value has an embedded password */
+predicate hasEmbeddedPassword(XMLAttribute attr) {
+  exists(string password |
+    password = attr.getValue().regexpCapture("(?is).*(pwd|password)\\s*=([^;:,]*).*", 2).trim() and
+    not (
+      password = "" or
+      password.regexpMatch("\\$\\{.*\\}") or
+      password.matches("%=")
+    )
+  )
 }
 
 from XMLAttribute nameAttr
@@ -33,5 +48,5 @@ where
     not isNotPassword(valueAttr)
   )
   or
-  nameAttr.getValue().regexpMatch("(?is).*(pwd|password)\\s*=(?!\\s*;).*") // Attribute value matches password pattern
+  hasEmbeddedPassword(nameAttr) // Attribute value matches password pattern
 select nameAttr, "Plaintext password in configuration file."
