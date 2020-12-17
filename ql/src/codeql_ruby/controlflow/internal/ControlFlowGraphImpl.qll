@@ -169,7 +169,7 @@ private AstNode parent(AstNode n) {
 }
 
 /** Gets the CFG scope of node `n`. */
-CfgScope getScope(AstNode n) { result = parent+(n) }
+CfgScope getScope(AstNode n) { result = unique(CfgScope scope | scope = parent+(n)) }
 
 abstract private class ControlFlowTree extends AstNode {
   /**
