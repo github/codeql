@@ -100,17 +100,17 @@ module XSS {
         XssExpr() {
             exists(ReturnStmt r, Expr arg |
                 (
-                    r.getExpr().(ObjectCreation).getType().hasName("HttpResult") and
-                    r.getExpr().(ObjectCreation).getAnArgument().getType() instanceof StringType and
-                    arg = r.getExpr().(ObjectCreation).getAnArgument()
-                )
-                or
-                (
                     r.getExpr().getType() instanceof StringType and
                     arg = r.getExpr()
                 )
                 |
                 this = arg
+            ) or 
+            exists(ObjectCreation oc |
+                oc.getType().hasName("HttpResult") and
+                oc.getAnArgument().getType() instanceof StringType
+                |
+                this = oc.getAnArgument()
             )
         }
     }
