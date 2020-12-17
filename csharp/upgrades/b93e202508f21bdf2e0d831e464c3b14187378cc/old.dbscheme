@@ -1078,8 +1078,6 @@ case @expr.kind of
 
 @throw_element = @throw_expr | @throw_stmt;
 
-@implicitly_typeable_object_creation_expr = @object_creation_expr | @explicit_delegate_creation_expr;
-
 implicitly_typed_array_creation(
   unique int id: @array_creation_expr ref);
 
@@ -1088,9 +1086,6 @@ explicitly_sized_array_creation(
 
 stackalloc_array_creation(
   unique int id: @array_creation_expr ref);
-
-implicitly_typed_object_creation(
-  unique int id: @implicitly_typeable_object_creation_expr ref);
 
 mutator_invocation_mode(
   unique int id: @operator_invocation_expr ref,

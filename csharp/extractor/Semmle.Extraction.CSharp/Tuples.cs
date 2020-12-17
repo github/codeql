@@ -301,6 +301,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("implicitly_typed_array_creation", array);
         }
 
+        internal static void implicitly_typed_object_creation(this TextWriter trapFile, Expression expression)
+        {
+            trapFile.WriteTuple("implicitly_typed_object_creation", expression);
+        }
+
         internal static void indexer_location(this TextWriter trapFile, Indexer indexer, Location location)
         {
             trapFile.WriteTuple("indexer_location", indexer, location);

@@ -1,3 +1,4 @@
+| AnonymousObjectCreation.cs:9:29:9:31 | set_Prop1 | set |
 | InitOnlyProperty.cs:12:42:12:45 | set_Prop0 | init |
 | InitOnlyProperty.cs:13:37:13:40 | set_Prop1 | init |
 | InitOnlyProperty.cs:14:37:14:39 | set_Prop2 | set |
