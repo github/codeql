@@ -1,5 +1,4 @@
 import codeql_ruby.AST
-private import codeql_ruby.ast.internal.TreeSitter
 private import internal.Expr
 
 /**
