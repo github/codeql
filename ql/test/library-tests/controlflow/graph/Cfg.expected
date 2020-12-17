@@ -162,6 +162,12 @@ raise.rb:
 #  150| enter m13
 #-----|  -> Ensure
 
+#  154| enter m14
+#-----|  -> element
+
+#  155| enter block
+#-----|  -> elem
+
 break_ensure.rb:
 #    1| Method
 #-----|  -> m2
@@ -3641,13 +3647,60 @@ raise.rb:
 #-----|  -> [ensure: raise] Return
 
 #  150| Method
-#-----|  -> exit top-level (normal)
+#-----|  -> m14
 
 #  150| m13
 #-----|  -> Method
 
 #  151| Ensure
 #-----|  -> exit m13 (normal)
+
+#  154| Method
+#-----|  -> exit top-level (normal)
+
+#  154| m14
+#-----|  -> Method
+
+#  154| element
+#-----|  -> element
+
+#  155| Call
+#-----|  -> exit m14 (normal)
+
+#  155| element
+#-----|  -> each
+
+#  155| each
+#-----|  -> Block
+
+#  155| Block
+#-----|  -> Call
+
+#  155| elem
+#-----|  -> element
+
+#  155| IfModifier
+#-----|  -> exit block (normal)
+
+#  155| Call
+#-----| raise -> exit m14 (abnormal)
+#-----| raise -> exit block (abnormal)
+
+#  155| raise
+#-----|  -> String
+
+#  155| String
+#-----|  -> Call
+
+#  155| Call
+#-----| false -> IfModifier
+#-----| true -> raise
+
+#  155| element
+#-----|  -> nil?
+
+#  155| nil?
+#-----|  -> Call
 
 break_ensure.rb:
 #    1| exit top-level
@@ -3758,6 +3811,10 @@ raise.rb:
 #  142| exit m12
 
 #  150| exit m13
+
+#  154| exit m14
+
+#  155| exit block
 
 break_ensure.rb:
 #    1| exit top-level (normal)
@@ -3952,3 +4009,15 @@ raise.rb:
 
 #  150| exit m13 (normal)
 #-----|  -> exit m13
+
+#  154| exit m14 (abnormal)
+#-----|  -> exit m14
+
+#  154| exit m14 (normal)
+#-----|  -> exit m14
+
+#  155| exit block (abnormal)
+#-----|  -> exit block
+
+#  155| exit block (normal)
+#-----|  -> exit block
