@@ -74,7 +74,7 @@ module Revel {
   }
 
   private class ServerCookieGetValue extends TaintTracking::FunctionModel, Method {
-    ServerCookieGetValue() { this.hasQualifiedName(packagePath(), "ServerCookie", "GetValue") }
+    ServerCookieGetValue() { this.implements(packagePath(), "ServerCookie", "GetValue") }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult()
@@ -83,7 +83,7 @@ module Revel {
 
   private class ServerMultipartFormGetFiles extends TaintTracking::FunctionModel, Method {
     ServerMultipartFormGetFiles() {
-      this.hasQualifiedName(packagePath(), "ServerMultipartForm", ["GetFiles", "GetValues"])
+      this.implements(packagePath(), "ServerMultipartForm", ["GetFiles", "GetValues"])
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
