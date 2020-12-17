@@ -124,6 +124,23 @@ private class RegexpCharacterConstant extends RegExpConstant {
 }
 
 /**
+ * Holds if `term` is the chosen cannonical representative for all terms with string representation `str`.
+ *
+ * Using cannonical representatives gives a huge performance boost when working with tuples containing multiple `InputSymbol`s.
+ * The number of `InputSymbol`s is decreased by 3 orders of magnitude or more in some larger benchmarks.
+ */
+private predicate isCannonicalTerm(RegExpTerm term, string str) {
+  term =
+    rank[1](RegExpTerm t, Location loc, File file |
+      loc = t.getLocation() and
+      file = t.getFile() and
+      str = t.getRawValue()
+    |
+      t order by t.getFile().getRelativePath(), loc.getStartLine(), loc.getStartColumn()
+    )
+}
+
+/**
  * An abstract input symbol, representing a set of concrete characters.
  */
 private newtype TInputSymbol =
@@ -133,11 +150,11 @@ private newtype TInputSymbol =
   } or
   /**
    * An input symbol representing all characters matched by
-   * (non-universal) character class `recc`.
+   * a (non-universal) character class that has string representation `charClassString`.
    */
-  CharClass(RegExpTerm recc) {
-    getRoot(recc).isRelevant() and
-    (
+  CharClass(string charClassString) {
+    exists(RegExpTerm term | term.getRawValue() = charClassString | getRoot(term).isRelevant()) and
+    exists(RegExpTerm recc | isCannonicalTerm(recc, charClassString) |
       recc instanceof RegExpCharacterClass and
       not recc.(RegExpCharacterClass).isUniversalClass()
       or
@@ -168,8 +185,11 @@ private predicate sharesRoot(TInputSymbol a, TInputSymbol b) {
 private predicate belongsTo(TInputSymbol a, RegExpRoot root) {
   exists(RegExpTerm term | getRoot(term) = root |
     a = Char(term.(RegexpCharacterConstant).getValue().charAt(_))
-    or
-    a = CharClass(term)
+  )
+  or
+  exists(string str, RegExpTerm term | a = CharClass(str) |
+    term.getRawValue() = str and
+    getRoot(term) = root
   )
 }
 
@@ -182,7 +202,7 @@ class InputSymbol extends TInputSymbol {
   string toString() {
     this = Char(result)
     or
-    result = any(RegExpTerm recc | this = CharClass(recc)).toString()
+    this = CharClass(result)
     or
     this = Dot() and result = "."
     or
@@ -228,7 +248,10 @@ private module CharacterClasses {
    */
   pragma[noinline]
   predicate hasChildThatMatches(RegExpCharacterClass cc, string char) {
-    exists(CharClass(cc)) and
+    exists(string str |
+      isCannonicalTerm(cc, str) and
+      exists(CharClass(str))
+    ) and
     exists(RegExpTerm child | child = cc.getAChild() |
       char = child.(RegexpCharacterConstant).getValue()
       or
@@ -324,7 +347,9 @@ private module CharacterClasses {
   private class PositiveCharacterClass extends CharacterClass {
     RegExpCharacterClass cc;
 
-    PositiveCharacterClass() { this = CharClass(cc) and not cc.isInverted() }
+    PositiveCharacterClass() {
+      exists(string str | isCannonicalTerm(cc, str) | this = CharClass(str) and not cc.isInverted())
+    }
 
     override string getARelevantChar() { result = getAMentionedChar(cc) }
 
@@ -337,7 +362,9 @@ private module CharacterClasses {
   private class InvertedCharacterClass extends CharacterClass {
     RegExpCharacterClass cc;
 
-    InvertedCharacterClass() { this = CharClass(cc) and cc.isInverted() }
+    InvertedCharacterClass() {
+      exists(string str | isCannonicalTerm(cc, str) | this = CharClass(str) and cc.isInverted())
+    }
 
     override string getARelevantChar() {
       result = nextChar(getAMentionedChar(cc)) or
@@ -374,7 +401,11 @@ private module CharacterClasses {
   private class PositiveCharacterClassEscape extends CharacterClass {
     RegExpCharacterClassEscape cc;
 
-    PositiveCharacterClassEscape() { this = CharClass(cc) and cc.getValue() = ["d", "s", "w"] }
+    PositiveCharacterClassEscape() {
+      exists(string str | isCannonicalTerm(cc, str) |
+        this = CharClass(str) and cc.getValue() = ["d", "s", "w"]
+      )
+    }
 
     override string getARelevantChar() {
       cc.getValue() = "d" and
@@ -407,7 +438,11 @@ private module CharacterClasses {
   private class NegativeCharacterClassEscape extends CharacterClass {
     RegExpCharacterClassEscape cc;
 
-    NegativeCharacterClassEscape() { this = CharClass(cc) and cc.getValue() = ["D", "S", "W"] }
+    NegativeCharacterClassEscape() {
+      exists(string str | isCannonicalTerm(cc, str) |
+        this = CharClass(str) and cc.getValue() = ["D", "S", "W"]
+      )
+    }
 
     override string getARelevantChar() {
       cc.getValue() = "D" and
@@ -490,13 +525,13 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     cc.isUniversalClass() and q1 = before(cc) and lbl = Any() and q2 = after(cc)
     or
     q1 = before(cc) and
-    lbl = CharClass(cc) and
+    lbl = CharClass(cc.getRawValue()) and
     q2 = after(cc)
   )
   or
   exists(RegExpCharacterClassEscape cc |
     q1 = before(cc) and
-    lbl = CharClass(cc) and
+    lbl = CharClass(cc.getRawValue()) and
     q2 = after(cc)
   )
   or
