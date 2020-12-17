@@ -52,7 +52,7 @@ class UnaryArithmeticOperation extends UnaryOperation {
 /**
  * A unary plus expression.
  * ```rb
- * b = + a;
+ * + a
  * ```
  */
 class UnaryPlusExpr extends UnaryArithmeticOperation, @unary_plus {
@@ -64,7 +64,7 @@ class UnaryPlusExpr extends UnaryArithmeticOperation, @unary_plus {
 /**
  * A unary minus expression.
  * ```rb
- * b = - a;
+ * - a
  * ```
  */
 class UnaryMinusExpr extends UnaryArithmeticOperation, @unary_minus {
