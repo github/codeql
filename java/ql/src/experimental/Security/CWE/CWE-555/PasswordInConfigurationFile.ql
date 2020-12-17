@@ -11,7 +11,7 @@
 
 import java
 
-/* Holds if the attribute value is not a cleartext password */
+/** Holds if the attribute value is not a cleartext password */
 bindingset[value]
 predicate isNotPassword(string value) {
   value = "" // Empty string
@@ -21,7 +21,7 @@ predicate isNotPassword(string value) {
   value.matches("%=") // A basic check of encrypted passwords ending with padding characters, which could be improved to be more accurate.
 }
 
-/* Holds if the attribute value has an embedded password */
+/** Holds if the attribute value has an embedded password */
 bindingset[value]
 predicate hasEmbeddedPassword(string value) {
   exists(string password |
