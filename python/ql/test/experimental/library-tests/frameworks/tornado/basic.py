@@ -28,12 +28,22 @@ class RedirectHandler(tornado.web.RequestHandler):
         self.redirect(url)
 
 
+class BaseReverseInheritance(tornado.web.RequestHandler):
+    def get(self):
+        self.write("hello from BaseReverseInheritance")
+
+
+class ReverseInheritance(BaseReverseInheritance):
+    pass
+
+
 def make_app():
     return tornado.web.Application([
         (r"/basic", BasicHandler),
         (r"/deep", DeepInheritance),
         (r"/form", FormHandler),
         (r"/redirect", RedirectHandler),
+        (r"/reverse-inheritance", ReverseInheritance),
     ])
 
 
@@ -52,3 +62,5 @@ if __name__ == "__main__":
 
     # curl -X POST -F "name=foo" http://localhost:8888/form
     # curl -v -H 'url: http://example.com' http://localhost:8888/redirect
+
+    # http://localhost:8888/reverse-inheritance
