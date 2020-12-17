@@ -22,7 +22,8 @@ jobs:
 
       - name: Fetch CodeQL
         run: |
-          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip
+          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
           unzip -q codeql-linux64.zip
         env:
           GITHUB_TOKEN: ${{ github.token }}
