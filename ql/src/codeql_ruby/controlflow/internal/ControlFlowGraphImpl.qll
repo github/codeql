@@ -37,6 +37,131 @@ private import codeql_ruby.controlflow.ControlFlowGraph
 private import Completion
 private import SuccessorTypes
 private import Splitting
+private import codeql.files.FileSystem
+
+module CfgScope {
+  abstract class Range_ extends AstNode {
+    abstract string getName();
+
+    abstract predicate entry(AstNode first);
+
+    abstract predicate exit(AstNode last, Completion c);
+  }
+
+  private class ProgramScope extends Range_, Program {
+    final override string getName() { result = "top-level" }
+
+    final override predicate entry(AstNode first) { first(this, first) }
+
+    final override predicate exit(AstNode last, Completion c) { last(this, last, c) }
+  }
+
+  private class BeginBlockScope extends Range_, BeginBlock {
+    final override string getName() { result = "BEGIN block" }
+
+    final override predicate entry(AstNode first) {
+      first(this.(Trees::BeginBlockTree).getFirstChildNode(), first)
+    }
+
+    final override predicate exit(AstNode last, Completion c) {
+      last(this.(Trees::BeginBlockTree).getLastChildNode(), last, c)
+    }
+  }
+
+  private class EndBlockScope extends Range_, EndBlock {
+    final override string getName() { result = "END block" }
+
+    final override predicate entry(AstNode first) {
+      first(this.(Trees::EndBlockTree).getFirstChildNode(), first)
+    }
+
+    final override predicate exit(AstNode last, Completion c) {
+      last(this.(Trees::EndBlockTree).getLastChildNode(), last, c)
+    }
+  }
+
+  private class MethodScope extends Range_, AstNode {
+    MethodScope() { this instanceof Method }
+
+    final override string getName() { result = this.(Method).getName().toString() }
+
+    final override predicate entry(AstNode first) {
+      this.(Trees::RescueEnsureBlockTree).firstInner(first)
+    }
+
+    final override predicate exit(AstNode last, Completion c) {
+      this.(Trees::RescueEnsureBlockTree).lastInner(last, c)
+    }
+  }
+
+  private class SingletonMethodScope extends Range_, AstNode {
+    SingletonMethodScope() { this instanceof SingletonMethod }
+
+    final override string getName() { result = this.(SingletonMethod).getName().toString() }
+
+    final override predicate entry(AstNode first) {
+      this.(Trees::RescueEnsureBlockTree).firstInner(first)
+    }
+
+    final override predicate exit(AstNode last, Completion c) {
+      this.(Trees::RescueEnsureBlockTree).lastInner(last, c)
+    }
+  }
+
+  private class DoBlockScope extends Range_, DoBlock {
+    DoBlockScope() { not this.getParent() instanceof Lambda }
+
+    final override string getName() { result = "do block" }
+
+    final override predicate entry(AstNode first) {
+      this.(Trees::RescueEnsureBlockTree).firstInner(first)
+    }
+
+    final override predicate exit(AstNode last, Completion c) {
+      this.(Trees::RescueEnsureBlockTree).lastInner(last, c)
+    }
+  }
+
+  private class BlockScope extends Range_, Block {
+    BlockScope() { not this.getParent() instanceof Lambda }
+
+    final override string getName() { result = "block" }
+
+    final override predicate entry(AstNode first) {
+      first(this.(Trees::BlockTree).getFirstChildNode(), first)
+    }
+
+    final override predicate exit(AstNode last, Completion c) {
+      last(this.(Trees::BlockTree).getLastChildNode(), last, c)
+    }
+  }
+
+  private class LambdaScope extends Range_, Lambda {
+    final override string getName() { result = "lambda" }
+
+    final override predicate entry(AstNode first) {
+      first(this.getParameters(), first)
+      or
+      not exists(this.getParameters()) and
+      (
+        this.getBody().(Trees::DoBlockTree).firstInner(first)
+        or
+        first(this.getBody().(Trees::BlockTree).getFirstChildNode(), first)
+      )
+    }
+
+    final override predicate exit(AstNode last, Completion c) {
+      last(this.getParameters(), last, c) and
+      not c instanceof NormalCompletion
+      or
+      last(this.getBody().(Trees::BlockTree).getLastChildNode(), last, c)
+      or
+      this.getBody().(Trees::RescueEnsureBlockTree).lastInner(last, c)
+      or
+      not exists(this.getBody()) and last(this.getParameters(), last, c)
+    }
+  }
+}
 
 private AstNode parent(AstNode n) {
   result.getAFieldOrChild() = n and
@@ -121,9 +246,9 @@ predicate succ(AstNode pred, AstNode succ, Completion c) {
 
 /** Holds if `first` is first executed when entering `scope`. */
 pragma[nomagic]
-predicate succEntry(CfgScope scope, AstNode first) {
+predicate succEntry(CfgScope::Range_ scope, AstNode first) {
   exists(AstNode n |
-    first(scope, n) and
+    scope.entry(n) and
     succImplIfHidden*(n, first) and
     not isHidden(first)
   )
@@ -131,9 +256,9 @@ predicate succEntry(CfgScope scope, AstNode first) {
 
 /** Holds if `last` with completion `c` can exit `scope`. */
 pragma[nomagic]
-predicate succExit(CfgScope scope, AstNode last, Completion c) {
+predicate succExit(CfgScope::Range_ scope, AstNode last, Completion c) {
   exists(AstNode n |
-    last(scope, n, c) and
+    scope.exit(n, c) and
     succImplIfHidden*(last, n) and
     not isHidden(last)
   )
@@ -149,14 +274,7 @@ abstract private class StandardNode extends ControlFlowTree {
   abstract AstNode getChildNode(int i);
 
   private AstNode getChildNodeRanked(int i) {
-    result =
-      rank[i + 1](AstNode child, int j |
-        child = this.getChildNode(j) and
-        // Never descend into children with a separate scope
-        not child instanceof CfgScope
-      |
-        child order by j
-      )
+    result = rank[i + 1](AstNode child, int j | child = this.getChildNode(j) | child order by j)
   }
 
   /** Gets the first child node of this element. */
@@ -170,7 +288,7 @@ abstract private class StandardNode extends ControlFlowTree {
     )
   }
 
-  final override predicate propagatesAbnormal(AstNode child) { child = this.getChildNodeRanked(_) }
+  override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
 
   pragma[nomagic]
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
@@ -229,9 +347,17 @@ abstract private class StandardPostOrderTree extends StandardNode, PostOrderTree
 }
 
 abstract private class LeafTree extends PreOrderTree, PostOrderTree {
+  override predicate propagatesAbnormal(AstNode child) { none() }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
+}
+
+abstract class ScopeTree extends StandardNode, LeafTree {
   final override predicate propagatesAbnormal(AstNode child) { none() }
 
-  final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
+  final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    StandardNode.super.succ(pred, succ, c)
+  }
 }
 
 /** Defines the CFG by dispatch on the various AST types. */
@@ -270,15 +396,17 @@ module Trees {
     final override Interpolation getChildNode(int i) { result = this.getChild(i) }
   }
 
-  private class BeginTree extends RescueEnsureBlockTree, Begin {
+  private class BeginTree extends RescueEnsureBlockTree, PreOrderTree, Begin {
     final override AstNode getChildNode(int i, boolean rescuable) {
       result = this.getChild(i) and rescuable = true
     }
 
+    final override predicate last(AstNode last, Completion c) { this.lastInner(last, c) }
+
     override predicate isHidden() { any() }
   }
 
-  private class BeginBlockTree extends StandardPreOrderTree, BeginBlock {
+  class BeginBlockTree extends ScopeTree, BeginBlock {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
@@ -292,14 +420,12 @@ module Trees {
     }
   }
 
-  private class BlockTree extends StandardPreOrderTree, Block {
+  class BlockTree extends ScopeTree, Block {
     final override AstNode getChildNode(int i) {
       result = this.getParameters() and i = 0
       or
       result = this.getChild(i - 1)
     }
-
-    override predicate isHidden() { any() }
   }
 
   private class BlockArgumentTree extends StandardPostOrderTree, BlockArgument {
@@ -319,13 +445,14 @@ module Trees {
   }
 
   private class CallTree extends StandardPostOrderTree, Call {
-    // this.getBlock() is not included as it uses a different scope
     final override AstNode getChildNode(int i) {
       result = this.getReceiver() and i = 0
       or
-      result = this.getArguments() and i = 1
+      result = this.getMethod() and i = 1
       or
-      result = this.getMethod() and i = 2
+      result = this.getArguments() and i = 2
+      or
+      result = this.getBlock() and i = 3
     }
   }
 
@@ -378,12 +505,14 @@ module Trees {
 
   private class CharacterTree extends LeafTree, Character { }
 
-  private class ClassTree extends RescueEnsureBlockTree, Class {
+  private class ClassTree extends RescueEnsureBlockTree, PreOrderTree, Class {
     final override AstNode getChildNode(int i, boolean rescuable) {
       result = this.getName() and i = 0 and rescuable = false
       or
       result = this.getChild(i - 1) and rescuable = true
     }
+
+    final override predicate last(AstNode last, Completion c) { this.lastInner(last, c) }
   }
 
   private class ClassVariableTree extends LeafTree, ClassVariable { }
@@ -434,14 +563,14 @@ module Trees {
     override predicate isHidden() { any() }
   }
 
-  private class DoBlockTree extends RescueEnsureBlockTree, DoBlock {
+  class DoBlockTree extends RescueEnsureBlockTree, PostOrderTree, DoBlock {
+    final override predicate first(AstNode first) { first = this }
+
     final override AstNode getChildNode(int i, boolean rescuable) {
       result = this.getParameters() and i = 0 and rescuable = false
       or
       result = this.getChild(i - 1) and rescuable = true
     }
-
-    override predicate isHidden() { any() }
   }
 
   private class ElementReferenceTree extends StandardPostOrderTree, ElementReference {
@@ -460,7 +589,7 @@ module Trees {
 
   private class EmptyStatementTree extends LeafTree, EmptyStatement { }
 
-  private class EndBlockTree extends StandardPreOrderTree, EndBlock {
+  class EndBlockTree extends ScopeTree, EndBlock {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
@@ -606,29 +735,27 @@ module Trees {
 
   private class HashSplatParameterTree extends LeafTree, HashSplatParameter { }
 
-  private class HeredocBeginningTree extends StandardPreOrderTree, HeredocBeginning {
-    pragma[noinline]
-    private string getName() {
-      result = this.getValue().regexpCapture("^<<[-~]?[`']?(.*)[`']?$", 1)
-    }
+  private HeredocBody heredoc(HeredocBeginning start) {
+    exists(int i, File f |
+      start =
+        rank[i](HeredocBeginning b |
+          f = b.getLocation().getFile()
+        |
+          b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
+        ) and
+      result =
+        rank[i](HeredocBody b |
+          f = b.getLocation().getFile()
+        |
+          b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
+        )
+    )
+  }
 
+  private class HeredocBeginningTree extends StandardPreOrderTree, HeredocBeginning {
     final override AstNode getChildNode(int i) {
       i = 0 and
-      result =
-        min(string name, HeredocBody doc, HeredocEnd end |
-          name = this.getName() and
-          end = unique(HeredocEnd x | x = doc.getChild(_) | x) and
-          end.getValue() = name and
-          doc.getLocation().getFile() = this.getLocation().getFile() and
-          (
-            doc.getLocation().getStartLine() > this.getLocation().getStartLine()
-            or
-            doc.getLocation().getStartLine() = this.getLocation().getStartLine() and
-            doc.getLocation().getStartColumn() > this.getLocation().getStartColumn()
-          )
-        |
-          doc order by doc.getLocation().getStartLine(), doc.getLocation().getStartColumn()
-        )
+      result = heredoc(this)
     }
   }
 
@@ -684,14 +811,16 @@ module Trees {
     final override AstNode getDefaultValue() { result = this.getValue() }
   }
 
-  private class LambdaTree extends StandardPreOrderTree, Lambda {
-    final override AstNode getChildNode(int i) {
-      result = this.getParameters() and i = 0
-      or
-      result = this.getBody() and i = 1
+  class LambdaTree extends LeafTree, Lambda {
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      last(this.getParameters(), pred, c) and
+      c instanceof NormalCompletion and
+      (
+        this.getBody().(DoBlockTree).firstInner(succ)
+        or
+        first(this.getBody().(BlockTree).getFirstChildNode(), succ)
+      )
     }
-
-    override predicate isHidden() { any() }
   }
 
   private class LambdaParametersTree extends StandardPreOrderTree, LambdaParameters {
@@ -762,14 +891,22 @@ module Trees {
     }
   }
 
-  private class MethodTree extends RescueEnsureBlockTree, Method {
+  private class MethodTree extends RescueEnsureBlockTree, PostOrderTree, Method {
     final override AstNode getChildNode(int i, boolean rescuable) {
       result = this.getParameters() and i = 0 and rescuable = false
       or
       result = this.getChild(i - 1) and rescuable = true
     }
 
-    override predicate isHidden() { any() }
+    final override predicate first(AstNode first) { first(this.getName(), first) }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      RescueEnsureBlockTree.super.succ(pred, succ, c)
+      or
+      last(this.getName(), pred, c) and
+      succ = this and
+      c instanceof NormalCompletion
+    }
   }
 
   private class MethodParametersTree extends StandardPreOrderTree, MethodParameters {
@@ -778,12 +915,14 @@ module Trees {
     override predicate isHidden() { any() }
   }
 
-  private class ModuleTree extends RescueEnsureBlockTree, Module {
+  private class ModuleTree extends RescueEnsureBlockTree, PreOrderTree, Module {
     final override AstNode getChildNode(int i, boolean rescuable) {
       result = this.getName() and i = 0 and rescuable = false
       or
       result = this.getChild(i - 1) and rescuable = true
     }
+
+    final override predicate last(AstNode last, Completion c) { this.lastInner(last, c) }
   }
 
   private class NextTree extends StandardPostOrderTree, Next {
@@ -920,7 +1059,7 @@ module Trees {
   }
 
   /** A block that may contain `rescue`/`ensure`. */
-  abstract class RescueEnsureBlockTree extends PreOrderTree {
+  abstract class RescueEnsureBlockTree extends ControlFlowTree {
     /**
      * Gets the `i`th child of this block. `rescuable` indicates whether exceptional
      * execution of the child can be caught by `rescue`/`ensure`.
@@ -935,8 +1074,7 @@ module Trees {
           child = this.getChildNode(j, _) and
           not result instanceof Rescue and
           not result instanceof Ensure and
-          not result instanceof Else and
-          not child instanceof CfgScope
+          not result instanceof Else
         |
           child order by j
         )
@@ -955,11 +1093,7 @@ module Trees {
 
     final private predicate hasEnsure() { exists(this.getEnsure()) }
 
-    final override predicate propagatesAbnormal(AstNode child) {
-      child = this.getEnsure()
-      or
-      child = this.getBodyChild(_, false)
-    }
+    final override predicate propagatesAbnormal(AstNode child) { none() }
 
     /**
      * Gets a descendant that belongs to the `ensure` block of this block, if any.
@@ -1070,7 +1204,7 @@ module Trees {
       nestLevel = this.nestLevel()
     }
 
-    override predicate last(AstNode last, Completion c) {
+    predicate lastInner(AstNode last, Completion c) {
       exists(boolean ensurable | last = this.getAnEnsurePredecessor(c, ensurable) |
         not this.hasEnsure()
         or
@@ -1092,22 +1226,28 @@ module Trees {
       not exists(this.getBodyChild(_, _)) and
       not exists(this.getRescue(_)) and
       this.lastEnsure0(last, c)
+      or
+      last([this.getEnsure(), this.getBodyChild(_, false)], last, c) and
+      not c instanceof NormalCompletion
     }
 
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    predicate firstInner(AstNode first) {
+      first(this.getBodyChild(0, _), first)
+      or
+      not exists(this.getBodyChild(_, _)) and
+      (
+        first(this.getRescue(_), first)
+        or
+        not exists(this.getRescue(_)) and
+        first(this.getEnsure(), first)
+      )
+    }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      this instanceof PreOrderTree and
       pred = this and
       c instanceof SimpleCompletion and
-      (
-        first(this.getBodyChild(0, _), succ)
-        or
-        not exists(this.getBodyChild(_, _)) and
-        (
-          first(this.getRescue(0), succ)
-          or
-          not exists(this.getRescue(_)) and
-          first(this.getEnsure(), succ)
-        )
-      )
+      this.firstInner(succ)
       or
       // Normal left-to-right evaluation in the body
       exists(int i |
@@ -1189,7 +1329,7 @@ module Trees {
 
   private class SetterTree extends LeafTree, Setter { }
 
-  private class SingletonClassTree extends RescueEnsureBlockTree, SingletonClass {
+  private class SingletonClassTree extends RescueEnsureBlockTree, PreOrderTree, SingletonClass {
     final override AstNode getChildNode(int i, boolean rescuable) {
       rescuable = true and
       (
@@ -1199,24 +1339,32 @@ module Trees {
       )
     }
 
-    override predicate isHidden() { any() }
+    final override predicate last(AstNode last, Completion c) { this.lastInner(last, c) }
   }
 
-  private class SingletonMethodTree extends RescueEnsureBlockTree, SingletonMethod {
+  private class SingletonMethodTree extends RescueEnsureBlockTree, PostOrderTree, SingletonMethod {
     final override AstNode getChildNode(int i, boolean rescuable) {
-      result = this.getObject() and
+      result = this.getParameters() and
       i = 0 and
       rescuable = false
       or
-      result = this.getParameters() and
-      i = 1 and
-      rescuable = false
-      or
-      result = this.getChild(i - 2) and
+      result = this.getChild(i - 1) and
       rescuable = true
     }
 
-    override predicate isHidden() { any() }
+    final override predicate first(AstNode first) { first(this.getObject(), first) }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      RescueEnsureBlockTree.super.succ(pred, succ, c)
+      or
+      last(this.getObject(), pred, c) and
+      first(this.getName(), succ) and
+      c instanceof NormalCompletion
+      or
+      last(this.getName(), pred, c) and
+      succ = this and
+      c instanceof NormalCompletion
+    }
   }
 
   private class SplatArgumentTree extends StandardPostOrderTree, SplatArgument {

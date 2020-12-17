@@ -384,7 +384,7 @@ module EnsureSplitting {
     ) {
       this.appliesToPredecessor(pred) and
       nestLevel = block.nestLevel() and
-      last(block, pred, c)
+      block.lastInner(pred, c)
     }
 
     /**

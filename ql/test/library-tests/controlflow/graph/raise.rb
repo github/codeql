@@ -150,3 +150,7 @@ end
 def m13
 ensure
 end
+
+def m14 element
+  element.each { |elem| raise "" if element.nil? }
+end
