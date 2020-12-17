@@ -13,7 +13,6 @@ class FormatMethod extends Method {
     exists(Class declType | declType = this.getDeclaringType() |
       this.getParameter(0).getType() instanceof SystemIFormatProviderInterface and
       this.getParameter(1).getType() instanceof StringType and
-      this.getNumberOfParameters() >= 3 and
       (
         this = any(SystemStringClass c).getFormatMethod()
         or
@@ -21,7 +20,6 @@ class FormatMethod extends Method {
       )
       or
       this.getParameter(0).getType() instanceof StringType and
-      this.getNumberOfParameters() >= 2 and
       (
         this = any(SystemStringClass c).getFormatMethod()
         or
