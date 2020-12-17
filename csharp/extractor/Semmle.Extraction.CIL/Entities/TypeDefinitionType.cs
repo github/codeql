@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -14,11 +15,15 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public sealed class TypeDefinitionType : Type
     {
-        private readonly Handle handle;
+        private readonly TypeDefinitionHandle handle;
         private readonly TypeDefinition td;
+        private readonly Lazy<IEnumerable<TypeTypeParameter>> typeParams;
+        private readonly Type? declType;
+        private readonly NamedTypeIdWriter idWriter;
 
         public TypeDefinitionType(Context cx, TypeDefinitionHandle handle) : base(cx)
         {
+            idWriter = new NamedTypeIdWriter(this);
             td = cx.MdReader.GetTypeDefinition(handle);
             this.handle = handle;
 
@@ -39,66 +44,22 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override void WriteId(TextWriter trapFile, bool inContext)
         {
-            if (IsPrimitiveType)
-            {
-                PrimitiveTypeId(trapFile);
-                return;
-            }
-
-            var name = Cx.GetString(td.Name);
-
-            if (ContainingType != null)
-            {
-                ContainingType.GetId(trapFile, inContext);
-                trapFile.Write('.');
-            }
-            else
-            {
-                WriteAssemblyPrefix(trapFile);
-
-                var ns = Namespace;
-                if (!ns.IsGlobalNamespace)
-                {
-                    ns.WriteId(trapFile);
-                    trapFile.Write('.');
-                }
-            }
-
-            trapFile.Write(name);
+            idWriter.WriteId(trapFile, inContext);
         }
 
-        public override string Name
-        {
-            get
-            {
-                var name = Cx.GetString(td.Name);
-                var tick = name.IndexOf('`');
-                return tick == -1 ? name : name.Substring(0, tick);
-            }
-        }
+        public override string Name => GenericsHelper.GetNonGenericName(td.Name, Cx.MdReader);
 
-        public override Namespace Namespace => Cx.Create(td.NamespaceDefinition);
-
-        private readonly Type? declType;
+        public override Namespace ContainingNamespace => Cx.Create(td.NamespaceDefinition);
 
         public override Type? ContainingType => declType;
-
-        public override int ThisTypeParameters
-        {
-            get
-            {
-                var containingType = td.GetDeclaringType();
-                var parentTypeParameters = containingType.IsNil ? 0 :
-                    Cx.MdReader.GetTypeDefinition(containingType).GetGenericParameters().Count;
-
-                return td.GetGenericParameters().Count - parentTypeParameters;
-            }
-        }
 
         public override CilTypeKind Kind => CilTypeKind.ValueOrRefType;
 
         public override Type Construct(IEnumerable<Type> typeArguments)
         {
+            if (TotalTypeParametersCount != typeArguments.Count())
+                throw new InternalError("Mismatched type arguments");
+
             return Cx.Populate(new ConstructedType(Cx, this, typeArguments));
         }
 
@@ -108,52 +69,50 @@ namespace Semmle.Extraction.CIL.Entities
             if (ct is null)
                 Cx.WriteAssemblyPrefix(trapFile);
             else if (IsPrimitiveType)
-                trapFile.Write("builtin:");
+                trapFile.Write(Type.PrimitiveTypePrefix);
             else
                 ct.WriteAssemblyPrefix(trapFile);
         }
 
         private IEnumerable<TypeTypeParameter> MakeTypeParameters()
         {
-            if (ThisTypeParameters == 0)
+            if (ThisTypeParameterCount == 0)
                 return Enumerable.Empty<TypeTypeParameter>();
 
-            var newTypeParams = new TypeTypeParameter[ThisTypeParameters];
+            var newTypeParams = new TypeTypeParameter[ThisTypeParameterCount];
             var genericParams = td.GetGenericParameters();
             var toSkip = genericParams.Count - newTypeParams.Length;
 
             // Two-phase population because type parameters can be mutually dependent
             for (var i = 0; i < newTypeParams.Length; ++i)
-                newTypeParams[i] = Cx.Populate(new TypeTypeParameter(this, this, i));
+                newTypeParams[i] = Cx.Populate(new TypeTypeParameter(this, i));
             for (var i = 0; i < newTypeParams.Length; ++i)
                 newTypeParams[i].PopulateHandle(genericParams[i + toSkip]);
             return newTypeParams;
         }
 
-        private readonly Lazy<IEnumerable<TypeTypeParameter>> typeParams;
-
-        public override IEnumerable<Type> MethodParameters => Enumerable.Empty<Type>();
-
-        public override IEnumerable<Type> TypeParameters
+        public override int ThisTypeParameterCount
         {
             get
             {
-                if (declType != null)
-                {
-                    foreach (var t in declType.TypeParameters)
-                        yield return t;
-                }
+                var containingType = td.GetDeclaringType();
+                var parentTypeParameters = containingType.IsNil
+                    ? 0
+                    : Cx.MdReader.GetTypeDefinition(containingType).GetGenericParameters().Count;
 
-                foreach (var t in typeParams.Value)
-                    yield return t;
+                return td.GetGenericParameters().Count - parentTypeParameters;
             }
         }
+
+        public override IEnumerable<Type> TypeParameters => GenericsHelper.GetAllTypeParameters(declType, typeParams!.Value);
+
+        public override IEnumerable<Type> ThisGenericArguments => typeParams.Value;
 
         public override IEnumerable<IExtractionProduct> Contents
         {
             get
             {
-                yield return Tuples.metadata_handle(this, Cx.Assembly, handle.GetHashCode());
+                yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
 
                 foreach (var c in base.Contents) yield return c;
 

@@ -178,7 +178,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        private IEnumerable<IExtractionProduct> Decode(byte[] ilbytes, Dictionary<int, Instruction> jump_table)
+        private IEnumerable<IExtractionProduct> Decode(byte[]? ilbytes, Dictionary<int, Instruction> jump_table)
         {
             // Sequence points are stored in order of offset.
             // We use an enumerator to locate the correct sequence point for each instruction.
@@ -203,9 +203,9 @@ namespace Semmle.Extraction.CIL.Entities
             }
 
             var child = 0;
-            for (var offset = 0; offset < ilbytes.Length;)
+            for (var offset = 0; offset < (ilbytes?.Length ?? 0);)
             {
-                var instruction = new Instruction(Cx, this, ilbytes, offset, child++);
+                var instruction = new Instruction(Cx, this, ilbytes!, offset, child++);
                 yield return instruction;
 
                 if (nextSequencePoint != null && offset >= nextSequencePoint.Current.Offset)
@@ -245,12 +245,12 @@ namespace Semmle.Extraction.CIL.Entities
                     var ilbytes = body.GetILBytes();
 
                     var child = 0;
-                    for (var offset = 0; offset < ilbytes.Length;)
+                    for (var offset = 0; offset < (ilbytes?.Length ?? 0);)
                     {
                         Instruction decoded;
                         try
                         {
-                            decoded = new Instruction(Cx, this, ilbytes, offset, child++);
+                            decoded = new Instruction(Cx, this, ilbytes!, offset, child++);
                             offset += decoded.Width;
                         }
                         catch  // lgtm[cs/catch-of-all-exceptions]

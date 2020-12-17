@@ -43,33 +43,38 @@ namespace Semmle.Extraction.CIL.Entities
                 {
                     decoded = attrib.DecodeValue(new CustomAttributeDecoder(Cx));
                 }
-                catch (NotImplementedException)
+                catch
                 {
-                    // Attribute decoding is only partial at this stage.
+                    Cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Info,
+                        $"Attribute decoding is partial. Decoding attribute {constructor.DeclaringType.GetQualifiedName()} failed on {@object}.");
                     yield break;
                 }
 
                 for (var index = 0; index < decoded.FixedArguments.Length; ++index)
                 {
-                    var value = decoded.FixedArguments[index].Value;
-                    var stringValue = GetStringValue(value);
+                    var stringValue = GetStringValue(decoded.FixedArguments[index].Type, decoded.FixedArguments[index].Value);
                     yield return Tuples.cil_attribute_positional_argument(this, index, stringValue);
                 }
 
                 foreach (var p in decoded.NamedArguments)
                 {
-                    var value = p.Value;
-                    var stringValue = GetStringValue(value);
-                    yield return Tuples.cil_attribute_named_argument(this, p.Name, stringValue);
+                    var stringValue = GetStringValue(p.Type, p.Value);
+                    yield return Tuples.cil_attribute_named_argument(this, p.Name!, stringValue);
                 }
             }
         }
 
-        private static string GetStringValue(object? value)
+        private static string GetStringValue(Type type, object? value)
         {
             if (value is System.Collections.Immutable.ImmutableArray<CustomAttributeTypedArgument<Type>> values)
             {
-                return "[" + string.Join(",", values.Select(v => GetStringValue(v.Value))) + "]";
+                return "[" + string.Join(",", values.Select(v => GetStringValue(v.Type, v.Value))) + "]";
+            }
+
+            if (type.GetQualifiedName() == "System.Type" &&
+                value is Type t)
+            {
+                return t.GetQualifiedName();
             }
 
             return value?.ToString() ?? "null";
