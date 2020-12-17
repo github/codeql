@@ -118,6 +118,9 @@ private module CfgScope {
     }
 
     final override predicate exit(Generated::AstNode last, Completion c) {
+      last(this.getParameters(), last, c) and
+      not c instanceof NormalCompletion
+      or
       last(this.getBody().(Trees::BlockTree).getLastChildNode(), last, c)
       or
       this.getBody().(Trees::RescueEnsureBlockTree).lastBody(last, c)

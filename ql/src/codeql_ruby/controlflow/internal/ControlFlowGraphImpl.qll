@@ -164,7 +164,7 @@ abstract private class StandardNode extends ControlFlowTree {
     )
   }
 
-  final override predicate propagatesAbnormal(AstNode child) { child = this.getChildNodeRanked(_) }
+  override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
 
   pragma[nomagic]
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
@@ -223,9 +223,17 @@ abstract private class StandardPostOrderTree extends StandardNode, PostOrderTree
 }
 
 abstract private class LeafTree extends PreOrderTree, PostOrderTree {
+  override predicate propagatesAbnormal(AstNode child) { none() }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
+}
+
+abstract class ScopeTree extends StandardNode, LeafTree {
   final override predicate propagatesAbnormal(AstNode child) { none() }
 
-  final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
+  final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    StandardNode.super.succ(pred, succ, c)
+  }
 }
 
 /** Defines the CFG by dispatch on the various AST types. */
@@ -274,7 +282,7 @@ module Trees {
     override predicate isHidden() { any() }
   }
 
-  class BeginBlockTree extends PreOrderTree, PostOrderTree, StandardNode, BeginBlock {
+  class BeginBlockTree extends ScopeTree, BeginBlock {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
@@ -288,7 +296,7 @@ module Trees {
     }
   }
 
-  class BlockTree extends StandardNode, PreOrderTree, PostOrderTree, Block {
+  class BlockTree extends ScopeTree, Block {
     final override AstNode getChildNode(int i) {
       result = this.getParameters() and i = 0
       or
@@ -457,7 +465,7 @@ module Trees {
 
   private class EmptyStatementTree extends LeafTree, EmptyStatement { }
 
-  class EndBlockTree extends StandardNode, PreOrderTree, PostOrderTree, EndBlock {
+  class EndBlockTree extends ScopeTree, EndBlock {
     final override AstNode getChildNode(int i) { result = this.getChild(i) }
   }
 
@@ -679,12 +687,8 @@ module Trees {
     final override AstNode getDefaultValue() { result = this.getValue() }
   }
 
-  class LambdaTree extends PreOrderTree, PostOrderTree, Lambda {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getParameters() }
-
+  class LambdaTree extends LeafTree, Lambda {
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      this.getBody().(ControlFlowTree).succ(pred, succ, c)
-      or
       last(this.getParameters(), pred, c) and
       c instanceof NormalCompletion and
       (

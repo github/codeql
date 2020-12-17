@@ -3683,7 +3683,6 @@ raise.rb:
 #-----|  -> exit block (normal)
 
 #  155| Call
-#-----| raise -> exit m14 (abnormal)
 #-----| raise -> exit block (abnormal)
 
 #  155| raise
@@ -4009,9 +4008,6 @@ raise.rb:
 
 #  150| exit m13 (normal)
 #-----|  -> exit m13
-
-#  154| exit m14 (abnormal)
-#-----|  -> exit m14
 
 #  154| exit m14 (normal)
 #-----|  -> exit m14
