@@ -1,6 +1,8 @@
 import codeql.Locations
+import ast.Expr
 import ast.Method
 import ast.Parameter
+import ast.Operation
 import ast.Pattern
 import ast.Variable
 private import ast.internal.TreeSitter

@@ -1,0 +1,15 @@
+unaryOperations
+| operations.rb:23:1:23:2 | ! ... | ! | operations.rb:23:2:23:2 | a | NotExpr |
+| operations.rb:24:1:24:5 | not ... | not | operations.rb:24:5:24:5 | b | NotExpr |
+| operations.rb:25:1:25:3 | + ... | + | operations.rb:25:2:25:3 | 14 | UnaryPlusExpr |
+| operations.rb:26:1:26:2 | - ... | - | operations.rb:26:2:26:2 | 7 | UnaryMinusExpr |
+| operations.rb:27:1:27:2 | ~ ... | ~ | operations.rb:27:2:27:2 | x | ComplementExpr |
+| operations.rb:28:1:28:12 | defined? ... | defined? | operations.rb:28:10:28:12 | foo | DefinedExpr |
+unaryLogicalOperations
+| operations.rb:23:1:23:2 | ! ... | ! | operations.rb:23:2:23:2 | a | NotExpr |
+| operations.rb:24:1:24:5 | not ... | not | operations.rb:24:5:24:5 | b | NotExpr |
+unaryArithmeticOperations
+| operations.rb:25:1:25:3 | + ... | + | operations.rb:25:2:25:3 | 14 | UnaryPlusExpr |
+| operations.rb:26:1:26:2 | - ... | - | operations.rb:26:2:26:2 | 7 | UnaryMinusExpr |
+unaryBitwiseOperations
+| operations.rb:27:1:27:2 | ~ ... | ~ | operations.rb:27:2:27:2 | x | ComplementExpr |

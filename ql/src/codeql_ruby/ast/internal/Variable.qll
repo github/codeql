@@ -1,6 +1,7 @@
-private import codeql_ruby.AST
 private import TreeSitter
 private import codeql.Locations
+private import codeql_ruby.AST
+private import codeql_ruby.ast.internal.Expr
 private import codeql_ruby.ast.internal.Pattern
 
 private Generated::AstNode parent(Generated::AstNode n) {
@@ -222,5 +223,24 @@ module LocalVariable {
     final override Location getLocation() { result = i.getLocation() }
 
     final override VariableScope getDeclaringScope() { result = scope }
+  }
+}
+
+module VariableAccess {
+  class Range extends Expr::Range, @token_identifier {
+    override Generated::Identifier generated;
+    Variable variable;
+
+    Range() { access(this, variable) }
+
+    Variable getVariable() { result = variable }
+  }
+}
+
+module LocalVariableAccess {
+  class Range extends VariableAccess::Range {
+    override LocalVariable variable;
+
+    override LocalVariable getVariable() { result = variable }
   }
 }
