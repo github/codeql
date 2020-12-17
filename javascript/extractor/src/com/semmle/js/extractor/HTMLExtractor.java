@@ -118,7 +118,7 @@ public class HTMLExtractor implements IExtractor {
                 }
               }
               extractSnippet(
-                  TopLevelKind.eventHandler,
+                  TopLevelKind.angularTemplate,
                   config.withSourceType(SourceType.ANGULAR_TEMPLATE),
                   scopeManager,
                   textualExtractor,

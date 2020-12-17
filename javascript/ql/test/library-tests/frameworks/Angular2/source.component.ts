@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: "source-component",
@@ -9,9 +10,13 @@ export class Source {
     taintedArray: string[];
     safeArray: string[];
 
-    constructor() {
+    constructor(private sanitizer: DomSanitizer) {
         this.taint = source();
         this.taintedArray = [...source()];
         this.safeArray = ['a', 'b'];
+    }
+
+    methodOnComponent(x) {
+        this.sanitizer.bypassSecurityTrustHtml(x);
     }
 }

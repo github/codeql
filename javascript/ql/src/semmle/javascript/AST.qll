@@ -300,7 +300,7 @@ class InlineScript extends @inline_script, Script { }
  * ```
  */
 class CodeInAttribute extends TopLevel {
-  CodeInAttribute() { this instanceof @event_handler or this instanceof @javascript_url }
+  CodeInAttribute() { this instanceof @event_handler or this instanceof @javascript_url or this instanceof @angular_template_toplevel }
 }
 
 /**

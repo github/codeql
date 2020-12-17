@@ -124,7 +124,8 @@ case @toplevel.kind of
    0 = @script
 |  1 = @inline_script
 |  2 = @event_handler
-|  3 = @javascript_url;
+|  3 = @javascript_url
+|  4 = @angular_template_toplevel;
 
 is_module (int tl: @toplevel ref);
 is_nodejs (int tl: @toplevel ref);

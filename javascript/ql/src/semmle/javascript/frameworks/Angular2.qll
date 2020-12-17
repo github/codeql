@@ -241,6 +241,33 @@ module Angular2 {
     }
   }
 
+  /**
+   * A reference to a variable in a template expression, corresponding
+   * to a property on the component class.
+   */
+  class TemplateVarRefExpr extends Expr {
+    TemplateVarRefExpr() {
+      this = any(TemplateTopLevel tl).getScope().getAVariable().getAnAccess()
+    }
+  }
+
+  /** The top-level containing an Angular expression. */
+  class TemplateTopLevel extends TopLevel, @angular_template_toplevel {
+    /** Gets the expression in this top-level. */
+    Expr getExpression() {
+      result = getChildStmt(0).(ExprStmt).getExpr()
+    }
+
+    /** Gets the data flow node representing the initialization of the given variable in this scope. */
+    DataFlow::Node getVariableInit(string name) {
+      result = DataFlow::ssaDefinitionNode(SSA::implicitInit(getScope().getVariable(name)))
+    }
+
+    DataFlow::SourceNode getAVariableUse(string name) {
+      result = getScope().getVariable(name).getAnAccess().flow()
+    }
+  }
+
   /** The RHS of a `templateUrl` property, seen as a path expression. */
   private class TemplateUrlPath extends PathExpr {
     TemplateUrlPath() {
@@ -264,18 +291,8 @@ module Angular2 {
     attrib.getName().matches("*ng%")
   }
 
-  /**
-   * Gets a global variable access to `name` within the given attribute.
-   */
-  pragma[noinline]
-  private GlobalVarAccess getAGlobalVarAccessInAttribute(CodeInAttribute code, string name) {
-    exists(ComponentClass cls) and // do not materialize for non-Angular codebases
-    result.getTopLevel() = code and
-    result.getName() = name
-  }
-
   private DataFlow::Node getAttributeValueAsNode(HTML::Attribute attrib) {
-    result = attrib.getCodeInAttribute().getChildStmt(0).(ExprStmt).getExpr().flow()
+    result = attrib.getCodeInAttribute().(TemplateTopLevel).getExpression().flow()
   }
 
   /**
@@ -361,11 +378,7 @@ module Angular2 {
      * Gets an access to the variable `name` in the template body.
      */
     DataFlow::Node getATemplateVarAccess(string name) {
-      exists(HTML::Attribute attrib |
-        attrib = getATemplateElement().getAnAttribute() and
-        isAngularExpressionAttribute(attrib) and
-        result = getAGlobalVarAccessInAttribute(attrib.getCodeInAttribute(), name).flow()
-      )
+      result = getATemplateElement().getAnAttribute().getCodeInAttribute().(TemplateTopLevel).getAVariableUse(name)
     }
   }
 
@@ -450,11 +463,7 @@ module Angular2 {
 
     /** Gets a reference to the iterator variable. */
     DataFlow::Node getAnIteratorAccess() {
-      exists(HTML::Attribute attrib |
-        attrib = getAnElementInScope().getAnAttribute() and
-        isAngularExpressionAttribute(attrib) and
-        result = getAGlobalVarAccessInAttribute(attrib.getCodeInAttribute(), getIteratorName()).flow()
-      )
+      result = getAnElementInScope().getAnAttribute().getCodeInAttribute().(TemplateTopLevel).getAVariableUse(getIteratorName())
     }
   }
 
@@ -472,6 +481,15 @@ module Angular2 {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = this and
       succ = attrib.getAnIteratorAccess()
+    }
+  }
+
+  private class AnyCastStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
+    AnyCastStep() { this = any(TemplateTopLevel tl).getAVariableUse("$any").getACall() }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = getArgument(0) and
+      succ = this
     }
   }
 }

@@ -102,11 +102,21 @@ public class ScopeManager {
   private final Scope toplevelScope;
   private final ECMAVersion ecmaVersion;
   private final Set<String> implicitGlobals = new LinkedHashSet<String>();
+  private Scope implicitVariableScope;
 
   public ScopeManager(TrapWriter trapWriter, ECMAVersion ecmaVersion) {
     this.trapWriter = trapWriter;
     this.toplevelScope = enterScope(ScopeKind.global, trapWriter.globalID("global_scope"), null);
     this.ecmaVersion = ecmaVersion;
+    this.implicitVariableScope = toplevelScope; 
+  }
+
+  /**
+   * Sets the scope in which to declare variables that are referenced without
+   * being declared. This defaults to the global scope.
+   */
+  public void setImplicitVariableScope(Scope implicitVariableScope) {
+    this.implicitVariableScope = implicitVariableScope;
   }
 
   /**
@@ -193,12 +203,12 @@ public class ScopeManager {
 
   /**
    * Get the label for a given variable in the current scope; if it cannot be found, add it to the
-   * global scope.
+   * implicit variable scope (usually the global scope). 
    */
   public Label getVarKey(String name) {
     Label lbl = curScope.lookupVariable(name);
     if (lbl == null) {
-      lbl = addVariable(name, toplevelScope);
+      lbl = addVariable(name, implicitVariableScope);
       implicitGlobals.add(name);
     }
     return lbl;

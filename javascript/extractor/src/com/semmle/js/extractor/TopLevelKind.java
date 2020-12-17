@@ -7,7 +7,8 @@ public enum TopLevelKind {
   script(0),
   inlineScript(1),
   eventHandler(2),
-  javascriptUrl(3);
+  javascriptUrl(3),
+  angularTemplate(4);
   
   private int value;
   

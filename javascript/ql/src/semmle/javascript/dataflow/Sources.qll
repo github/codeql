@@ -309,7 +309,8 @@ module SourceNode {
         astNode instanceof ImportSpecifier or
         astNode instanceof ImportMetaExpr or
         astNode instanceof TaggedTemplateExpr or
-        astNode instanceof Angular2::PipeRefExpr
+        astNode instanceof Angular2::PipeRefExpr or
+        astNode instanceof Angular2::TemplateVarRefExpr
       )
       or
       DataFlow::parameterNode(this, _)

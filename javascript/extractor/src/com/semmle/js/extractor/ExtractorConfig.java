@@ -113,6 +113,14 @@ public class ExtractorConfig {
       return this != SCRIPT;
     }
 
+    /**
+     * Returns true if this source type cannot access the global scope directly, and undeclared
+     * variables are implicitly declared in its local scope. Implies {@link #hasLocalScope()}.
+     */
+    public boolean hasNoGlobalScope() {
+      return this == ANGULAR_TEMPLATE;
+    }
+
     /** Returns true if this source is implicitly in strict mode. */
     public boolean isStrictMode() {
       return this == MODULE;

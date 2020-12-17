@@ -4,6 +4,7 @@
     [sink3]="taint | unknownPipe:'safe'"
     [sink4]="taint | testPipe:'safe'"
     [sink5]="42 | testPipe:taint"
+    (someEvent)="methodOnComponent(taint)"
 ></sink-component>
 
 <div *ngFor="let element of taintedArray">
