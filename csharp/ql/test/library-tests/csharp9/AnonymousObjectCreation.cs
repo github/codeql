@@ -19,4 +19,9 @@ public class AnonObj
     void M2(int x) { }
 
     D GetM() { return new(M2); }
+
+    void MethodAdd()
+    {
+        List<int> list = new();// { 1, 2, 3 }; todo: the initializer causes an extraction error
+    }
 }

@@ -45,6 +45,15 @@ AnonymousObjectCreation.cs:
 #   21|         0: [ExplicitDelegateCreation] delegate creation of type D
 #   21|           0: [ImplicitDelegateCreation] delegate creation of type D
 #   21|             0: [MethodAccess] access to method M2
+#   23|   11: [Method] MethodAdd
+#   23|     -1: [TypeMention] Void
+#   24|     4: [BlockStmt] {...}
+#   25|       0: [LocalVariableDeclStmt] ... ...;
+#   25|         0: [LocalVariableDeclAndInitExpr] List<Int32> list = ...
+#   25|           -1: [TypeMention] List<Int32>
+#   25|             1: [TypeMention] int
+#   25|           0: [LocalVariableAccess] access to local variable list
+#   25|           1: [ObjectCreation] object creation of type List<Int32>
 Discard.cs:
 #    3| [Class] Discard
 #    5|   5: [Method] M1
