@@ -1,3 +1,10 @@
+/**
+ * General modelling of ServiceStack framework including separate modules for:
+ *  - flow sources
+ *  - SQLi sinks
+ *  - XSS sinks
+ */
+
 import csharp
 
 /** Provides definitions related to the namespace `ServiceStack`. */
@@ -52,6 +59,13 @@ module Sources {
         )
     }
 
+    /** 
+     *  Remote flow sources for ServiceStack
+     * 
+     *  Assumes all nested fields/properties on request DTOs are tainted, which is
+     *  an overapproximation and may lead to FPs depending on how Service Stack app
+     *  is configured.
+     */
     class ServiceStackSource extends RemoteFlowSource {
         ServiceStackSource() {
             // Parameters are sources. In practice only interesting when they are string/primitive typed. 
@@ -70,11 +84,12 @@ module Sources {
     }
 }
 
-/** SQL sinks for the ServiceStack framework */
+/** SQLi support for the ServiceStack framework */
 module SQL {
     private import ServiceStack::ServiceStack
     private import semmle.code.csharp.security.dataflow.SqlInjection::SqlInjection
       
+    /** SQLi sinks for ServiceStack */
     class ServiceStackSink extends Sink {
         ServiceStackSink() { 
             exists(MethodCall mc, Method m, int p |
@@ -116,24 +131,21 @@ module SQL {
     }
 }
 
-/** XSS sinks for the ServiceStack framework */
+/** XSS support for ServiceStack framework */
 module XSS {
     private import ServiceStack::ServiceStack
     private import semmle.code.csharp.security.dataflow.XSS::XSS
 
-    class XssSinks extends Sink {
-        XssSinks() { this.asExpr() instanceof XssExpr }
-    }
-
-    class XssExpr extends Expr {
-        XssExpr() {
+    /** XSS sinks for ServiceStack */
+    class XssSink extends Sink {
+        XssSink() { 
             exists(ServiceClass service, ReturnStmt r |
-                this = r.getExpr() and
+                this.asExpr() = r.getExpr() and
                 r.getEnclosingCallable() = service.getARequestMethod()
             ) or 
             exists(ObjectCreation oc |
                 oc.getType().hasQualifiedName("ServiceStack.HttpResult") and
-                this = oc.getArgument(0)
+                this.asExpr() = oc.getArgument(0)
             )
         }
     }
