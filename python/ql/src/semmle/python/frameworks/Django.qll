@@ -1747,13 +1747,11 @@ private module Django {
     abstract DataFlow::Node getViewArg();
 
     final override DjangoRouteHandler getARouteHandler() {
-      exists(DataFlow::Node viewArg | viewArg = getViewArg() |
-        djangoRouteHandlerFunctionTracker(result) = viewArg
-        or
-        exists(DjangoViewClassDef vc |
-          viewArg = vc.asViewResult() and
-          result = vc.getARouteHandler()
-        )
+      djangoRouteHandlerFunctionTracker(result) = getViewArg()
+      or
+      exists(DjangoViewClassDef vc |
+        getViewArg() = vc.asViewResult() and
+        result = vc.getARouteHandler()
       )
     }
   }
