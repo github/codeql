@@ -197,6 +197,10 @@ module Angular2 {
       or
       result = getOptionArgument(argumentOffset + 1, "body")
     }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      result = this and responseType = "rxjs.observable" and promise = false
+    }
   }
 
   private string getInternalName(string name) {
