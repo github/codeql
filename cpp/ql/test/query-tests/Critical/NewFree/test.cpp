@@ -424,3 +424,24 @@ void test13()
 
 	delete myPointer3.getPointer(); // GOOD
 }
+
+char *strdup(const char *s1);
+char *strndup(const char *s1, size_t n);
+wchar_t* wcsdup(const wchar_t* s1);
+
+void test14()
+{
+	char *s1 = strdup("string");
+	char *s2 = strdup("string");
+	char *s3 = strndup("string", 3);
+	char *s4 = strndup("string", 3);
+	wchar_t *s5 = wcsdup(L"string");
+	wchar_t *s6 = wcsdup(L"string");
+
+	delete s1; // BAD: strdup -> delete
+	free(s2); // GOOD
+	delete s3; // BAD: strndup -> delete
+	free(s4); // GOOD
+	delete s5; // BAD: wcsdup -> delete
+	free(s6); // GOOD
+}
