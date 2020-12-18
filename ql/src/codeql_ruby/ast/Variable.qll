@@ -60,21 +60,23 @@ class LocalVariable extends Variable {
 }
 
 /** An access to a variable. */
-class VariableAccess extends AstNode, @token_identifier {
-  override Generated::Identifier generated;
-  Variable variable;
-
-  VariableAccess() { access(this, variable) }
+class VariableAccess extends Expr, @token_identifier {
+  override VariableAccess::Range range;
 
   /** Gets the variable this identifier refers to. */
-  Variable getVariable() { result = variable }
+  Variable getVariable() { result = range.getVariable() }
 
-  final override string toString() { result = variable.getName() }
+  final override string toString() { result = this.getVariable().getName() }
+  // TODO uncomment this and fix the params test
+  //override string getAPrimaryQlClass() { result = "VariableAccess" }
 }
 
 /** An access to a local variable. */
 class LocalVariableAccess extends VariableAccess {
-  override LocalVariable variable;
+  final override LocalVariableAccess::Range range;
 
-  override LocalVariable getVariable() { result = variable }
+  /** Gets the variable this identifier refers to. */
+  final override LocalVariable getVariable() { result = range.getVariable() }
+  // TODO uncomment this and fix the params test
+  //final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
 }

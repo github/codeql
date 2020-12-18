@@ -56,17 +56,17 @@ hashSplatParams
 | params.rb:38:36:38:43 | **wibble | wibble |
 keywordParams
 | params.rb:41:35:41:38 | foo | foo | (none) |
-| params.rb:41:41:41:46 | bar | bar | AstNode |
+| params.rb:41:41:41:46 | bar | bar | 7 |
 | params.rb:49:28:49:30 | xx | xx | (none) |
-| params.rb:49:33:49:39 | yy | yy | AstNode |
+| params.rb:49:33:49:39 | yy | yy | 100 |
 | params.rb:53:37:53:38 | y | y | (none) |
-| params.rb:53:41:53:44 | z | z | AstNode |
+| params.rb:53:41:53:44 | z | z | 3 |
 optionalParams
-| params.rb:58:39:58:46 | val2 | val2 | params.rb:58:46:58:46 | AstNode |
-| params.rb:58:49:58:58 | val3 | val3 | params.rb:58:56:58:58 | AstNode |
-| params.rb:65:35:65:42 | age | age | params.rb:65:41:65:42 | AstNode |
-| params.rb:70:38:70:45 | b | b | params.rb:70:42:70:45 | AstNode |
-| params.rb:70:48:70:53 | c | c | params.rb:70:52:70:53 | AstNode |
+| params.rb:58:39:58:46 | val2 | val2 | params.rb:58:46:58:46 | 0 |
+| params.rb:58:49:58:58 | val3 | val3 | params.rb:58:56:58:58 | 100 |
+| params.rb:65:35:65:42 | age | age | params.rb:65:41:65:42 | 99 |
+| params.rb:70:38:70:45 | b | b | params.rb:70:42:70:45 | 1000 |
+| params.rb:70:48:70:53 | c | c | params.rb:70:52:70:53 | 20 |
 paramsInMethods
 | params.rb:4:1:5:3 | identifier_method_params | 0 | params.rb:4:30:4:32 | foo | SimpleParameter |
 | params.rb:4:1:5:3 | identifier_method_params | 1 | params.rb:4:35:4:37 | bar | SimpleParameter |
