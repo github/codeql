@@ -274,7 +274,7 @@ class TypeTracker extends TTypeTracker {
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   pragma[inline]
-  TypeTracker step(Node nodeFrom, Node nodeTo) {
+  TypeTracker step(LocalSourceNode nodeFrom, Node nodeTo) {
     exists(StepSummary summary |
       StepSummary::step(nodeFrom, nodeTo, summary) and
       result = this.append(summary)
