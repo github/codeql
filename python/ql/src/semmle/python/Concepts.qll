@@ -295,6 +295,8 @@ module SqlExecution {
 
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
+  import semmle.python.web.HttpConstants
+
   /** Provides classes for modeling HTTP servers. */
   module Server {
     /**

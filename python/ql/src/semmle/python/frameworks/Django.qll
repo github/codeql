@@ -1498,6 +1498,147 @@ private module Django {
         }
       }
     }
+
+    // -------------------------------------------------------------------------
+    // django.views
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `django.views` module. */
+    DataFlow::Node views() { result = django_attr("views") }
+
+    /** Provides models for the `django.views` module */
+    module views {
+      /**
+       * Gets a reference to the attribute `attr_name` of the `django.views` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node views_attr(DataFlow::TypeTracker t, string attr_name) {
+        // for 1.11.x, see: https://github.com/django/django/blob/stable/1.11.x/django/views/__init__.py
+        attr_name in ["generic", "View"] and
+        (
+          t.start() and
+          result = DataFlow::importNode("django.views" + "." + attr_name)
+          or
+          t.startInAttr(attr_name) and
+          result = views()
+        )
+        or
+        // Due to bad performance when using normal setup with `views_attr(t2, attr_name).track(t2, t)`
+        // we have inlined that code and forced a join
+        exists(DataFlow::TypeTracker t2 |
+          exists(DataFlow::StepSummary summary |
+            views_attr_first_join(t2, attr_name, result, summary) and
+            t = t2.append(summary)
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate views_attr_first_join(
+        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+        DataFlow::StepSummary summary
+      ) {
+        DataFlow::StepSummary::step(views_attr(t2, attr_name), res, summary)
+      }
+
+      /**
+       * Gets a reference to the attribute `attr_name` of the `django.views` module.
+       * WARNING: Only holds for a few predefined attributes.
+       */
+      private DataFlow::Node views_attr(string attr_name) {
+        result = views_attr(DataFlow::TypeTracker::end(), attr_name)
+      }
+
+      // -------------------------------------------------------------------------
+      // django.views.generic
+      // -------------------------------------------------------------------------
+      /** Gets a reference to the `django.views.generic` module. */
+      DataFlow::Node generic() { result = views_attr("generic") }
+
+      /** Provides models for the `django.views.generic` module */
+      module generic {
+        /**
+         * Gets a reference to the attribute `attr_name` of the `django.views.generic` module.
+         * WARNING: Only holds for a few predefined attributes.
+         */
+        private DataFlow::Node generic_attr(DataFlow::TypeTracker t, string attr_name) {
+          // for 3.1.x see: https://github.com/django/django/blob/stable/3.1.x/django/views/generic/__init__.py
+          // same for 1.11.x see: https://github.com/django/django/blob/stable/1.11.x/django/views/generic/__init__.py
+          attr_name in [
+              "View", "TemplateView", "RedirectView", "ArchiveIndexView", "YearArchiveView",
+              "MonthArchiveView", "WeekArchiveView", "DayArchiveView", "TodayArchiveView",
+              "DateDetailView", "DetailView", "FormView", "CreateView", "UpdateView", "DeleteView",
+              "ListView", "GenericViewError"
+            ] and
+          (
+            t.start() and
+            result = DataFlow::importNode("django.views.generic" + "." + attr_name)
+            or
+            t.startInAttr(attr_name) and
+            result = generic()
+          )
+          or
+          // Due to bad performance when using normal setup with `generic_attr(t2, attr_name).track(t2, t)`
+          // we have inlined that code and forced a join
+          exists(DataFlow::TypeTracker t2 |
+            exists(DataFlow::StepSummary summary |
+              generic_attr_first_join(t2, attr_name, result, summary) and
+              t = t2.append(summary)
+            )
+          )
+        }
+
+        pragma[nomagic]
+        private predicate generic_attr_first_join(
+          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
+          DataFlow::StepSummary summary
+        ) {
+          DataFlow::StepSummary::step(generic_attr(t2, attr_name), res, summary)
+        }
+
+        /**
+         * Gets a reference to the attribute `attr_name` of the `django.views.generic` module.
+         * WARNING: Only holds for a few predefined attributes.
+         */
+        private DataFlow::Node generic_attr(string attr_name) {
+          result = generic_attr(DataFlow::TypeTracker::end(), attr_name)
+        }
+
+        /**
+         * Provides models for the `django.views.generic.View` class and subclasses.
+         *
+         * See
+         *  - https://docs.djangoproject.com/en/3.1/topics/class-based-views/
+         *  - https://docs.djangoproject.com/en/3.1/ref/class-based-views/
+         */
+        module View {
+          /** Gets a reference to the `django.views.generic.View` class or any subclass. */
+          private DataFlow::Node subclassRef(DataFlow::TypeTracker t) {
+            t.start() and
+            result =
+              generic_attr([
+                  "View",
+                  // Known Views
+                  "TemplateView", "RedirectView", "ArchiveIndexView", "YearArchiveView",
+                  "MonthArchiveView", "WeekArchiveView", "DayArchiveView", "TodayArchiveView",
+                  "DateDetailView", "DetailView", "FormView", "CreateView", "UpdateView",
+                  "DeleteView", "ListView"
+                ])
+            or
+            // `django.views.View` alias
+            t.start() and
+            result = views_attr("View")
+            or
+            // subclasses in project code
+            result.asExpr().(ClassExpr).getABase() = subclassRef(t.continue()).asExpr()
+            or
+            exists(DataFlow::TypeTracker t2 | result = subclassRef(t2).track(t2, t))
+          }
+
+          /** Gets a reference to the `django.views.generic.View` class or any subclass. */
+          DataFlow::Node subclassRef() { result = subclassRef(DataFlow::TypeTracker::end()) }
+        }
+      }
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -1530,11 +1671,62 @@ private module Django {
     result = djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func)
   }
 
+  /** A django View class defined in project code. */
+  class DjangoViewClassDef extends Class {
+    DjangoViewClassDef() { this.getABase() = django::views::generic::View::subclassRef().asExpr() }
+
+    /** Gets a function that could handle incoming requests, if any. */
+    DjangoRouteHandler getARouteHandler() {
+      // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
+      // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
+      result = this.getAMethod() and
+      result.getName() = HTTP::httpVerbLower()
+    }
+
+    /** Gets a reference to this class. */
+    private DataFlow::Node getARef(DataFlow::TypeTracker t) {
+      t.start() and
+      result.asExpr().(ClassExpr) = this.getParent()
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.getARef(t2).track(t2, t))
+    }
+
+    /** Gets a reference to this class. */
+    DataFlow::Node getARef() { result = this.getARef(DataFlow::TypeTracker::end()) }
+
+    /** Gets a reference to the `as_view` classmethod of this class. */
+    private DataFlow::Node asViewRef(DataFlow::TypeTracker t) {
+      t.startInAttr("as_view") and
+      result = this.getARef()
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.asViewRef(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the `as_view` classmethod of this class. */
+    DataFlow::Node asViewRef() { result = this.asViewRef(DataFlow::TypeTracker::end()) }
+
+    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
+    private DataFlow::Node asViewResult(DataFlow::TypeTracker t) {
+      t.start() and
+      result.asCfgNode().(CallNode).getFunction() = this.asViewRef().asCfgNode()
+      or
+      exists(DataFlow::TypeTracker t2 | result = asViewResult(t2).track(t2, t))
+    }
+
+    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
+    DataFlow::Node asViewResult() { result = asViewResult(DataFlow::TypeTracker::end()) }
+  }
+
   /**
-   * A function that is used as a django route handler.
+   * A function that is a django route handler, meaning it handles incoming requests
+   * with the django framework.
    */
   private class DjangoRouteHandler extends Function {
-    DjangoRouteHandler() { exists(djangoRouteHandlerFunctionTracker(this)) }
+    DjangoRouteHandler() {
+      exists(djangoRouteHandlerFunctionTracker(this))
+      or
+      any(DjangoViewClassDef vc).getARouteHandler() = this
+    }
 
     /** Gets the index of the request parameter. */
     int getRequestParamIndex() {
@@ -1549,8 +1741,19 @@ private module Django {
     Parameter getRequestParam() { result = this.getArg(this.getRequestParamIndex()) }
   }
 
+  /** A data-flow node that sets up a route on a server, using the django framework. */
   abstract private class DjangoRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CfgNode {
-    abstract override DjangoRouteHandler getARouteHandler();
+    /** Gets the data-flow node that is used as the argument for the view handler. */
+    abstract DataFlow::Node getViewArg();
+
+    final override DjangoRouteHandler getARouteHandler() {
+      djangoRouteHandlerFunctionTracker(result) = getViewArg()
+      or
+      exists(DjangoViewClassDef vc |
+        getViewArg() = vc.asViewResult() and
+        result = vc.getARouteHandler()
+      )
+    }
   }
 
   /**
@@ -1576,11 +1779,8 @@ private module Django {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
     }
 
-    override DjangoRouteHandler getARouteHandler() {
-      exists(DataFlow::Node viewArg |
-        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
-        djangoRouteHandlerFunctionTracker(result) = viewArg
-      )
+    override DataFlow::Node getViewArg() {
+      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
     }
 
     override Parameter getARoutedParameter() {
@@ -1661,11 +1861,8 @@ private module Django {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
     }
 
-    override DjangoRouteHandler getARouteHandler() {
-      exists(DataFlow::Node viewArg |
-        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
-        djangoRouteHandlerFunctionTracker(result) = viewArg
-      )
+    override DataFlow::Node getViewArg() {
+      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
     }
   }
 
@@ -1683,11 +1880,8 @@ private module Django {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("regex")]
     }
 
-    override DjangoRouteHandler getARouteHandler() {
-      exists(DataFlow::Node viewArg |
-        viewArg.asCfgNode() in [node.getArg(1), node.getArgByName("view")] and
-        djangoRouteHandlerFunctionTracker(result) = viewArg
-      )
+    override DataFlow::Node getViewArg() {
+      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
     }
   }
 

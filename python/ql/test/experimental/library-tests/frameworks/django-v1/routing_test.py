@@ -32,7 +32,7 @@ class Foo(object):
 
 class ClassView(View, Foo):
 
-    def get(self, request, untrusted):  # $ MISSING: routeHandler routedParameter=untrusted
+    def get(self, request, untrusted):  # $ routeHandler routedParameter=untrusted
         return HttpResponse('ClassView get: {}'.format(untrusted))  # $HttpResponse
 
 
