@@ -204,16 +204,14 @@ private predicate nodeIsBarrierIn(DataFlow::Node node) {
 
 cached
 private predicate commonTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  instructionToInstructionTaintStep(fromNode.asInstruction(), toNode.asInstruction())
-  or
   operandToInstructionTaintStep(fromNode.asOperand(), toNode.asInstruction())
   or
-  operandToOperandTaintStep(fromNode.asOperand(), toNode.asOperand())
+  instructionToOperandTaintStep(fromNode.asInstruction(), toNode.asOperand())
 }
 
-private predicate operandToOperandTaintStep(Operand fromOperand, Operand toOperand) {
+private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand toOperand) {
   exists(ReadSideEffectInstruction readInstr |
-    fromOperand = readInstr.getArgumentOperand() and
+    fromInstr = readInstr.getArgumentDef() and
     toOperand = readInstr.getSideEffectOperand()
   )
 }
@@ -256,18 +254,18 @@ private predicate operandToInstructionTaintStep(Operand fromOperand, Instruction
         outInstr.getPrimaryInstruction() = call
       )
     )
-}
-
-private predicate instructionToInstructionTaintStep(Instruction i1, Instruction i2) {
+  or
   // Flow through pointer dereference
-  i2.(LoadInstruction).getSourceAddress() = i1
+  toInstr.(LoadInstruction).getSourceAddressOperand() = fromOperand
   or
   // Flow through partial reads of arrays and unions
-  i2.(LoadInstruction).getSourceValueOperand().getAnyDef() = i1 and
-  not i1.isResultConflated() and
-  (
-    i1.getResultType() instanceof ArrayType or
-    i1.getResultType() instanceof Union
+  toInstr.(LoadInstruction).getSourceValueOperand() = fromOperand and
+  exists(Instruction fromInstr | fromInstr = fromOperand.getAnyDef() |
+    not fromInstr.isResultConflated() and
+    (
+      fromInstr.getResultType() instanceof ArrayType or
+      fromInstr.getResultType() instanceof Union
+    )
   )
   or
   // Unary instructions tend to preserve enough information in practice that we
@@ -277,63 +275,53 @@ private predicate instructionToInstructionTaintStep(Instruction i1, Instruction 
   // `FieldAddressInstruction` could cause flow into one field to come out an
   // unrelated field. This would happen across function boundaries, where the IR
   // would not be able to match loads to stores.
-  i2.(UnaryInstruction).getUnary() = i1 and
+  toInstr.(UnaryInstruction).getUnaryOperand() = fromOperand and
   (
-    not i2 instanceof FieldAddressInstruction
+    not toInstr instanceof FieldAddressInstruction
     or
-    i2.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
+    toInstr.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
   )
   or
-  // Flow out of definition-by-reference
-  i2.(ChiInstruction).getPartial() = i1.(WriteSideEffectInstruction) and
-  not i2.isResultConflated()
-  or
   // Flow from an element to an array or union that contains it.
-  i2.(ChiInstruction).getPartial() = i1 and
-  not i2.isResultConflated() and
-  exists(Type t | i2.getResultLanguageType().hasType(t, false) |
+  toInstr.(ChiInstruction).getPartialOperand() = fromOperand and
+  not toInstr.isResultConflated() and
+  exists(Type t | toInstr.getResultLanguageType().hasType(t, false) |
     t instanceof Union
     or
     t instanceof ArrayType
   )
   or
   exists(BinaryInstruction bin |
-    bin = i2 and
-    predictableInstruction(i2.getAnOperand().getDef()) and
-    i1 = i2.getAnOperand().getDef()
+    bin = toInstr and
+    predictableInstruction(toInstr.getAnOperand().getDef()) and
+    fromOperand = toInstr.getAnOperand()
   )
   or
   // This is part of the translation of `a[i]`, where we want taint to flow
   // from `a`.
-  i2.(PointerAddInstruction).getLeft() = i1
-  or
-  // Until we have from through indirections across calls, we'll take flow out
-  // of the parameter and into its indirection.
-  exists(IRFunction f, Parameter parameter |
-    i1 = getInitializeParameter(f, parameter) and
-    i2 = getInitializeIndirection(f, parameter)
-  )
+  toInstr.(PointerAddInstruction).getLeftOperand() = fromOperand
   or
   // Until we have flow through indirections across calls, we'll take flow out
   // of the indirection and into the argument.
   // When we get proper flow through indirections across calls, this code can be
   // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
   exists(ReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = i1 and
-    read.getArgumentDef() = i2
+    read.getSideEffectOperand() = fromOperand and
+    read.getArgumentDef() = toInstr
   )
-}
-
-pragma[noinline]
-private InitializeIndirectionInstruction getInitializeIndirection(IRFunction f, Parameter p) {
-  result.getParameter() = p and
-  result.getEnclosingIRFunction() = f
-}
-
-pragma[noinline]
-private InitializeParameterInstruction getInitializeParameter(IRFunction f, Parameter p) {
-  result.getParameter() = p and
-  result.getEnclosingIRFunction() = f
+  or
+  // Until we have from through indirections across calls, we'll take flow out
+  // of the parameter and into its indirection.
+  // `InitializeIndirectionInstruction` only has a single operand: the address of the
+  // value whose direction we are initializing. When initializing an indirection of a parameter `p`,
+  // the IR looks like this:
+  // ```
+  // m1 = InitializeParameter[p] : &r1
+  // r2 = Load[p] : r2, m1
+  // m3 = InitializeIndirection[p] : &r2
+  // ```
+  // So by having flow from r2 to m3 we're enabling flow from `m1` to `m3`.
+  toInstr.(InitializeIndirectionInstruction).getAnOperand() = fromOperand
 }
 
 /**
