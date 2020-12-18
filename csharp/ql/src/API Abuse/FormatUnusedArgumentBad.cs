@@ -1,6 +1,6 @@
 using System;
 
-class Bad
+class Bad2
 {
     void M(Exception ex)
     {
