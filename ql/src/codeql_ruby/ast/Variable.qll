@@ -60,15 +60,13 @@ class LocalVariable extends Variable {
 }
 
 /** An access to a variable. */
-class VariableAccess extends Expr, @token_identifier {
+class VariableAccess extends Expr {
   override VariableAccess::Range range;
 
   /** Gets the variable this identifier refers to. */
   Variable getVariable() { result = range.getVariable() }
 
   final override string toString() { result = this.getVariable().getName() }
-  // TODO uncomment this and fix the params test
-  //override string getAPrimaryQlClass() { result = "VariableAccess" }
 }
 
 /** An access to a local variable. */

@@ -227,20 +227,18 @@ module LocalVariable {
 }
 
 module VariableAccess {
-  class Range extends Expr::Range, @token_identifier {
-    override Generated::Identifier generated;
-    Variable variable;
-
-    Range() { access(this, variable) }
-
-    Variable getVariable() { result = variable }
+  abstract class Range extends Expr::Range {
+    abstract Variable getVariable();
   }
 }
 
 module LocalVariableAccess {
-  class Range extends VariableAccess::Range {
-    override LocalVariable variable;
+  class Range extends VariableAccess::Range, @token_identifier {
+    override Generated::Identifier generated;
+    LocalVariable variable;
 
-    override LocalVariable getVariable() { result = variable }
+    Range() { access(this, variable) }
+
+    final override LocalVariable getVariable() { result = variable }
   }
 }
