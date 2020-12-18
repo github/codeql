@@ -1705,7 +1705,7 @@ private module Django {
     /** Gets a reference to the `as_view` classmethod of this class. */
     DataFlow::Node asViewRef() { result = this.asViewRef(DataFlow::TypeTracker::end()) }
 
-    /** Gets a reference to a the result of calling the `as_view` classmethod of this class. */
+    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
     private DataFlow::Node asViewResult(DataFlow::TypeTracker t) {
       t.start() and
       result.asCfgNode().(CallNode).getFunction() = this.asViewRef().asCfgNode()
@@ -1713,7 +1713,7 @@ private module Django {
       exists(DataFlow::TypeTracker t2 | result = asViewResult(t2).track(t2, t))
     }
 
-    /** Gets a reference to a the result of calling the `as_view` classmethod of this class. */
+    /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
     DataFlow::Node asViewResult() { result = asViewResult(DataFlow::TypeTracker::end()) }
   }
 
