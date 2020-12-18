@@ -213,9 +213,7 @@ module NoRegexMatchExpr {
 }
 
 module Assignment {
-  class DbUnion = @operator_assignment or @assignment;
-
-  abstract class Range extends Operation::Range, DbUnion {
+  abstract class Range extends Operation::Range {
     abstract Expr getLhs();
 
     abstract Expr getRhs();

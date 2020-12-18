@@ -22,7 +22,8 @@ class Literal extends Expr {
 
   override string toString() { result = this.getValueText() }
 
-  string getValueText() { result = range.getValueText() }
+  /** Gets the source text for this literal. */
+  final string getValueText() { result = range.getValueText() }
 }
 
 /**

@@ -10,10 +10,10 @@ class Operation extends Expr {
   override Operation::Range range;
 
   /** Gets the operator of this operation. */
-  string getOperator() { result = range.getOperator() }
+  final string getOperator() { result = range.getOperator() }
 
   /** Gets an operand of this operation. */
-  Expr getAnOperand() { result = range.getAnOperand() }
+  final Expr getAnOperand() { result = range.getAnOperand() }
 }
 
 /** A unary operation. */
@@ -21,7 +21,7 @@ class UnaryOperation extends Operation, @unary {
   override UnaryOperation::Range range;
 
   /** Gets the operand of this unary operation. */
-  Expr getOperand() { result = range.getOperand() }
+  final Expr getOperand() { result = range.getOperand() }
 
   override string toString() { result = this.getOperator() + " ..." }
 }
@@ -109,10 +109,10 @@ class BinaryOperation extends Operation, @binary {
   override string toString() { result = "... " + this.getOperator() + " ..." }
 
   /** Gets the left operand of this binary operation. */
-  Expr getLeftOperand() { result = range.getLeftOperand() }
+  final Expr getLeftOperand() { result = range.getLeftOperand() }
 
   /** Gets the right operand of this binary operation. */
-  Expr getRightOperand() { result = range.getRightOperand() }
+  final Expr getRightOperand() { result = range.getRightOperand() }
 }
 
 /**
@@ -351,9 +351,9 @@ class CaseEqExpr extends EqualityOperation, @binary_equalequalequal {
 class RelationalOperation extends ComparisonOperation {
   override RelationalOperation::Range range;
 
-  Expr getGreaterOperand() { result = range.getGreaterOperand() }
+  final Expr getGreaterOperand() { result = range.getGreaterOperand() }
 
-  Expr getLesserOperand() { result = range.getLesserOperand() }
+  final Expr getLesserOperand() { result = range.getLesserOperand() }
 }
 
 /**
@@ -451,10 +451,10 @@ class Assignment extends Operation {
   override string toString() { result = "... " + this.getOperator() + " ..." }
 
   /** Gets the left hand side of this assignment. */
-  Expr getLhs() { result = range.getLhs() }
+  final Expr getLhs() { result = range.getLhs() }
 
   /** Gets the right hand side of this assignment. */
-  Expr getRhs() { result = range.getRhs() }
+  final Expr getRhs() { result = range.getRhs() }
 }
 
 /**

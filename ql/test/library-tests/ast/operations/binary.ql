@@ -12,80 +12,56 @@ query predicate binaryOperations(
 query predicate binaryArithmeticOperations(
   BinaryArithmeticOperation o, string operator, Expr left, Expr right, string pClass
 ) {
-  operator = o.getOperator() and
-  left = o.getLeftOperand() and
-  right = o.getRightOperand() and
-  pClass = o.getAPrimaryQlClass()
+  binaryOperations(o, operator, left, right, pClass)
 }
 
 query predicate binaryLogicalOperations(
   BinaryLogicalOperation o, string operator, Expr left, Expr right, string pClass
 ) {
-  operator = o.getOperator() and
-  left = o.getLeftOperand() and
-  right = o.getRightOperand() and
-  pClass = o.getAPrimaryQlClass()
+  binaryOperations(o, operator, left, right, pClass)
 }
 
 query predicate binaryBitwiseOperations(
   BinaryBitwiseOperation o, string operator, Expr left, Expr right, string pClass
 ) {
-  operator = o.getOperator() and
-  left = o.getLeftOperand() and
-  right = o.getRightOperand() and
-  pClass = o.getAPrimaryQlClass()
+  binaryOperations(o, operator, left, right, pClass)
 }
 
 query predicate comparisonOperations(
   ComparisonOperation o, string operator, Expr left, Expr right, string pClass
 ) {
-  operator = o.getOperator() and
-  left = o.getLeftOperand() and
-  right = o.getRightOperand() and
-  pClass = o.getAPrimaryQlClass()
+  binaryOperations(o, operator, left, right, pClass)
 }
 
 query predicate equalityOperations(
   EqualityOperation o, string operator, Expr left, Expr right, string pClass
 ) {
-  operator = o.getOperator() and
-  left = o.getLeftOperand() and
-  right = o.getRightOperand() and
-  pClass = o.getAPrimaryQlClass()
+  binaryOperations(o, operator, left, right, pClass)
 }
 
 query predicate relationalOperations(
-  RelationalOperation o, string operator, Expr left, Expr right, string pClass
+  RelationalOperation o, string operator, Expr lesser, Expr greater, string pClass
 ) {
   operator = o.getOperator() and
-  left = o.getLeftOperand() and
-  right = o.getRightOperand() and
+  lesser = o.getLesserOperand() and
+  greater = o.getGreaterOperand() and
   pClass = o.getAPrimaryQlClass()
 }
 
 query predicate spaceshipExprs(
   SpaceshipExpr e, string operator, Expr left, Expr right, string pClass
 ) {
-  operator = e.getOperator() and
-  left = e.getLeftOperand() and
-  right = e.getRightOperand() and
-  pClass = e.getAPrimaryQlClass()
+  binaryOperations(e, operator, left, right, pClass)
 }
 
 query predicate regexMatchExprs(
   RegexMatchExpr e, string operator, Expr left, Expr right, string pClass
 ) {
-  operator = e.getOperator() and
-  left = e.getLeftOperand() and
-  right = e.getRightOperand() and
-  pClass = e.getAPrimaryQlClass()
+  binaryOperations(e, operator, left, right, pClass)
 }
 
 query predicate noRegexMatchExprs(
   NoRegexMatchExpr e, string operator, Expr left, Expr right, string pClass
 ) {
-  operator = e.getOperator() and
-  left = e.getLeftOperand() and
-  right = e.getRightOperand() and
-  pClass = e.getAPrimaryQlClass()
+  binaryOperations(e, operator, left, right, pClass)
 }

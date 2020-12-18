@@ -76,7 +76,7 @@ class LocalVariableAccess extends VariableAccess {
   final override LocalVariableAccess::Range range;
 
   /** Gets the variable this identifier refers to. */
-  override LocalVariable getVariable() { result = range.getVariable() }
+  final override LocalVariable getVariable() { result = range.getVariable() }
 
   final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
 }
