@@ -28,6 +28,6 @@ class AstNode extends @ast_node {
   /** Gets a textual representation of this node. */
   string toString() { result = "AstNode" }
 
-  /** Gets the location if this node. */
+  /** Gets the location of this node. */
   Location getLocation() { result = generated.getLocation() }
 }
