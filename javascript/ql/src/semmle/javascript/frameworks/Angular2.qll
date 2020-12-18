@@ -242,6 +242,23 @@ module Angular2 {
   }
 
   /**
+   * A call derived from a pipe expression.
+   *
+   * For example, the expression `x | f: y` is desugared to `f(x, y)` where
+   * `f` is a `PipeRefExpr` and the call itself is a `PipeCallExpr`.
+   */
+  class PipeCallExpr extends CallExpr {
+    PipeCallExpr() {
+      getCallee() instanceof PipeRefExpr
+    }
+
+    /** Gets the name of the pipe being invoked, such as `f` in `x | f`. */
+    string getPipeName() {
+      result = getCallee().(PipeRefExpr).getName()
+    }
+  }
+
+  /**
    * A reference to a variable in a template expression, corresponding
    * to a property on the component class.
    */
@@ -263,6 +280,7 @@ module Angular2 {
       result = DataFlow::ssaDefinitionNode(SSA::implicitInit(getScope().getVariable(name)))
     }
 
+    /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */
     DataFlow::SourceNode getAVariableUse(string name) {
       result = getScope().getVariable(name).getAnAccess().flow()
     }
@@ -375,9 +393,9 @@ module Angular2 {
     }
 
     /**
-     * Gets an access to the variable `name` in the template body.
+     * Gets an access to the given template variable within the template body of this component.
      */
-    DataFlow::Node getATemplateVarAccess(string name) {
+    DataFlow::SourceNode getATemplateVarAccess(string name) {
       result = getATemplateElement().getAnAttribute().getCodeInAttribute().(TemplateTopLevel).getAVariableUse(name)
     }
   }
@@ -453,7 +471,7 @@ module Angular2 {
 
     /** Gets the name of the variable holding the element of the current iteration. */
     string getIteratorName() {
-      result = getValue().regexpCapture("^ *let (\\w+) .*", 1)
+      result = getValue().regexpCapture(" *let +(\\w+).*", 1)
     }
 
     /** Gets an HTML element in which the iterator variable is in scope. */
@@ -484,11 +502,119 @@ module Angular2 {
     }
   }
 
-  private class AnyCastStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    AnyCastStep() { this = any(TemplateTopLevel tl).getAVariableUse("$any").getACall() }
+  private class AnyCastStep extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = any(TemplateTopLevel tl).getAVariableUse("$any").getACall() and
+        pred = call.getArgument(0) and
+        succ = call
+      )
+    }
+  }
+
+  /**
+   * Gets an invocation of the pipe of the given name.
+   *
+   * For example, the call generated from `items | async` would be found by `getAPipeCall("async")`.
+   */
+  DataFlow::CallNode getAPipeCall(string name) {
+    result.getCalleeNode().asExpr().(PipeRefExpr).getName() = name
+  }
+
+  private class BuiltinPipeStep extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
+    string name;
+
+    BuiltinPipeStep() {
+      this = getAPipeCall(name)
+    }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(0) and
+      succ = this and
+      exists(int i | pred = getArgument(i) |
+        i = 0 and name = ["async", "i18nPlural", "json", "keyvalue", "lowercase", "uppercase", "titlecase", "slice"]
+        or
+        i = 1 and name = "date" // date format string
+      )
+      or
+      // Arguments to translate are assumed to be included in the result somewhere
+      name = "translate" and
+      succ = this and
+      pred = [getArgument(1), getOptionArgument(1, _)]
+    }
+  }
+
+  /**
+   * A `<mat-table>` element.
+   */
+  class MatTableElement extends HTML::Element {
+    MatTableElement() {
+      getName() = "mat-table"
+    }
+
+    /** Gets the data flow node corresponding to the `[dataSource]` attribute. */
+    DataFlow::Node getDataSourceNode() {
+      result = getAttributeValueAsNode(getAttributeByName("[dataSource]"))
+    }
+
+    /**
+     * Gets an element of form `<mat-cell *matCellDef="let rowBinding">` in this table.
+     */
+    HTML::Element getATableCell(string rowBinding) {
+      result.getName() = "mat-cell" and
+      result.getParent+() = this and
+      rowBinding = result.getAttributeByName("*matCellDef").getValue().regexpCapture(" *let +(\\w+).*", 1)
+    }
+
+    /** Gets a data flow node that refers to one of the rows from the data source. */
+    DataFlow::Node getARowRef() {
+      exists(string rowBinding |
+        result = getATableCell(rowBinding).getChild*().getAnAttribute().getCodeInAttribute().(TemplateTopLevel).getAVariableUse(rowBinding)
+      )
+    }
+  }
+
+  /**
+   * A taint step from `x -> y` in code of form:
+   * ```
+   * <mat-table [dataSource]="x">
+   *   <mat-cell *matCellDef="let y">
+   *     <foo [prop]="y"/>
+   *   </mat-cell>
+   * </mat-table>
+   * ```
+   */
+  private class MatTableTaintStep extends TaintTracking::AdditionalTaintStep {
+    MatTableElement table;
+
+    MatTableTaintStep() {
+      this = table.getDataSourceNode()
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = this and
+      succ = table.getARowRef()
+    }
+  }
+
+  /** Like `MatTableTaintStep` but as a value-preserving load step. */
+  private class MatTableLoadStep extends PreCallGraphStep {
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      exists(MatTableElement table |
+        pred = table.getDataSourceNode() and
+        succ = table.getARowRef() and
+        prop = DataFlow::PseudoProperties::arrayElement()
+      )
+    }
+  }
+
+  /** A taint step into the data array of a `MatTableDataSource` instance. */
+  private class MatTableDataSourceStep extends TaintTracking::AdditionalTaintStep, DataFlow::NewNode {
+    MatTableDataSourceStep() {
+      this = DataFlow::moduleMember("@angular/material/table", "MatTableDataSource").getAnInstantiation()
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = [getArgument(0), getAPropertyWrite("data").getRhs()] and
       succ = this
     }
   }
