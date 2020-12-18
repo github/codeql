@@ -199,6 +199,9 @@ private predicate belongsTo(TInputSymbol a, RegExpRoot root) {
 class InputSymbol extends TInputSymbol {
   InputSymbol() { not this instanceof Epsilon }
 
+  /**
+   * Gets a string representation of this input symbol.
+   */
   string toString() {
     this = Char(result)
     or
@@ -594,7 +597,7 @@ RegExpRoot getRoot(RegExpTerm term) {
   result = getRoot(term.getParent())
 }
 
-newtype TState =
+private newtype TState =
   Match(RegExpTerm t, int i) {
     getRoot(t).isRelevant() and
     (
@@ -605,6 +608,11 @@ newtype TState =
   } or
   Accept(RegExpRoot l) { l.isRelevant() } or
   AcceptAnySuffix(RegExpRoot l) { l.isRelevant() }
+
+/**
+ * Gets a state that is about to match the regular expression `t`.
+ */
+State mkMatch(RegExpTerm t) { result = Match(t, 0) }
 
 /**
  * A state in the NFA corresponding to a regular expression.
@@ -624,6 +632,9 @@ class State extends TState {
     this = AcceptAnySuffix(repr)
   }
 
+  /**
+   * Gets a string representation for this state in a regular expression.
+   */
   string toString() {
     exists(int i | this = Match(repr, i) | result = "Match(" + repr + "," + i + ")")
     or
@@ -634,6 +645,9 @@ class State extends TState {
     result = "AcceptAny(" + repr + ")"
   }
 
+  /**
+   * Gets the location for this state.
+   */
   Location getLocation() { result = repr.getLocation() }
 
   /**

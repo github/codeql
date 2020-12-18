@@ -55,7 +55,15 @@ class SuperLiniearReDoSConfiguration extends ReDoSConfiguration {
 /**
  * Gets any root (start) state of a regular expression.
  */
-private State getRootState() { result = Match(any(RegExpRoot r), 0) }
+private State getRootState() { result = mkMatch(any(RegExpRoot r)) }
+
+private newtype TStateTuple =
+  MkStateTuple(State q1, State q2, State q3) {
+    // starts at (pivot, pivot, succ)
+    isStartLoops(q1, q3) and q1 = q2
+    or
+    step(_, _, _, _, q1, q2, q3) and FeasibleTuple::isFeasibleTuple(q1, q2, q3)
+  }
 
 /**
  * A state in the product automaton.
@@ -70,14 +78,6 @@ private State getRootState() { result = Match(any(RegExpRoot r), 0) }
  * trick where `q1 <= q2`. This trick cannot be used here as the order
  * of the elements matter.
  */
-newtype TStateTuple =
-  MkStateTuple(State q1, State q2, State q3) {
-    // starts at (pivot, pivot, succ)
-    isStartLoops(q1, q3) and q1 = q2
-    or
-    step(_, _, _, _, q1, q2, q3) and FeasibleTuple::isFeasibleTuple(q1, q2, q3)
-  }
-
 class StateTuple extends TStateTuple {
   State q1;
   State q2;
@@ -85,8 +85,14 @@ class StateTuple extends TStateTuple {
 
   StateTuple() { this = MkStateTuple(q1, q2, q3) }
 
+  /**
+   * Gest a string repesentation of this tuple.
+   */
   string toString() { result = "(" + q1 + ", " + q2 + ", " + q3 + ")" }
 
+  /**
+   * Holds if this tuple is `(r1, r2, r3)`.
+   */
   pragma[noinline]
   predicate isTuple(State r1, State r2, State r3) { r1 = q1 and r2 = q2 and r3 = q3 }
 }
@@ -158,7 +164,7 @@ predicate isStartLoops(State pivot, State succ) {
   (
     pivot.getRepr() = any(InfiniteRepetitionQuantifier i)
     or
-    pivot = Match(any(RegExpRoot root), 0)
+    pivot = mkMatch(any(RegExpRoot root))
   )
 }
 
@@ -227,6 +233,9 @@ private newtype TTrace =
  * starting from some start state.
  */
 class Trace extends TTrace {
+  /**
+   * Gets a string representation of this Trace that can be used for debug purposes.
+   */
   string toString() {
     this = Nil() and result = "Nil()"
     or
