@@ -210,6 +210,19 @@ private predicate commonTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode
 }
 
 private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand toOperand) {
+  // Propagate flow from the definition of an operand to the operand, even when the overlap is inexact.
+  // We only do this in certain cases:
+  // 1. The instruction's result must not be conflated, and
+  // 2. The instruction's result type is one the types where we expect element-to-object flow. Currently
+  // this array types and union types. This matches the other two cases of element-to-object flow in
+  // `DefaultTaintTracking`.
+  toOperand.getAnyDef() = fromInstr and
+  not fromInstr.isResultConflated() and
+  (
+    fromInstr.getResultType() instanceof ArrayType or
+    fromInstr.getResultType() instanceof Union
+  )
+  or
   exists(ReadSideEffectInstruction readInstr |
     fromInstr = readInstr.getArgumentDef() and
     toOperand = readInstr.getSideEffectOperand()
