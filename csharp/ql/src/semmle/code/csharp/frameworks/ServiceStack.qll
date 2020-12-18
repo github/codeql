@@ -7,41 +7,36 @@
 
 import csharp
 
-/** Provides definitions related to the namespace `ServiceStack`. */
-module ServiceStack {
+/** A class representing a Service */
+class ServiceClass extends Class {
+    ServiceClass() { this.getBaseClass+().getQualifiedName()="ServiceStack.Service" }
 
-    /** A class representing a Service */
-    class ServiceClass extends Class {
-        ServiceClass() { this.getBaseClass+().getQualifiedName()="ServiceStack.Service" }
-
-        /** Get a method that handles incoming requests */
-        Method getARequestMethod() {
-            result = this.getAMethod(["Post", "Get", "Put", "Delete", "Any", "Option", "Head"])
-        }
+    /** Get a method that handles incoming requests */
+    Method getARequestMethod() {
+        result = this.getAMethod(["Post", "Get", "Put", "Delete", "Any", "Option", "Head"])
     }
+}
 
-    /** Top-level Request DTO types */
-    class RequestDTO extends Class {
-        RequestDTO() {
-            this.getABaseInterface().getQualifiedName()  = ["ServiceStack.IReturn", "ServieStack.IReturnVoid"]
-        }
+/** Top-level Request DTO types */
+class RequestDTO extends Class {
+    RequestDTO() {
+        this.getABaseInterface().getQualifiedName()  = ["ServiceStack.IReturn", "ServieStack.IReturnVoid"]
     }
+}
 
-    /** Top-level Response DTO types */
-    class ResponseDTO extends Class {
-        ResponseDTO() {
-            exists(RequestDTO req, ConstructedGeneric respInterface |
-                req.getABaseInterface() = respInterface and
-                respInterface.getUndecoratedName() = "IReturn" and
-                respInterface.getATypeArgument() = this
-            )
-        }
+/** Top-level Response DTO types */
+class ResponseDTO extends Class {
+    ResponseDTO() {
+        exists(RequestDTO req, ConstructedGeneric respInterface |
+            req.getABaseInterface() = respInterface and
+            respInterface.getUndecoratedName() = "IReturn" and
+            respInterface.getATypeArgument() = this
+        )
     }
 }
 
 /** Flow sources for the ServiceStack framework */
 module Sources {
-    private import ServiceStack::ServiceStack
     private import semmle.code.csharp.security.dataflow.flowsources.Remote
     private import semmle.code.csharp.commons.Collections
 
@@ -86,7 +81,6 @@ module Sources {
 
 /** SQLi support for the ServiceStack framework */
 module SQL {
-    private import ServiceStack::ServiceStack
     private import semmle.code.csharp.security.dataflow.SqlInjection::SqlInjection
       
     /** SQLi sinks for ServiceStack */
@@ -133,7 +127,6 @@ module SQL {
 
 /** XSS support for ServiceStack framework */
 module XSS {
-    private import ServiceStack::ServiceStack
     private import semmle.code.csharp.security.dataflow.XSS::XSS
 
     /** XSS sinks for ServiceStack */
