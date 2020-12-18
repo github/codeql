@@ -1,3 +1,5 @@
+| file://:0:0:0:0 | $0 |
+| file://:0:0:0:0 | $global |
 | nested_scopes.rb:5:3:5:3 | a |
 | nested_scopes.rb:7:5:7:5 | a |
 | nested_scopes.rb:9:7:9:7 | a |
@@ -40,3 +42,4 @@
 | scopes.rb:13:7:13:7 | b |
 | scopes.rb:13:11:13:11 | c |
 | scopes.rb:13:14:13:14 | d |
+| scopes.rb:24:1:24:6 | script |

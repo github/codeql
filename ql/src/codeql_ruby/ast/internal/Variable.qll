@@ -101,6 +101,7 @@ cached
 private module Cached {
   cached
   newtype TScope =
+    TGlobalScope() or
     TTopLevelScope(Generated::Program node) or
     TModuleScope(Generated::Module node) or
     TClassScope(AstNode cls) {
@@ -110,6 +111,9 @@ private module Cached {
 
   cached
   newtype TVariable =
+    TGlobalVariable(TGlobalScope scope, string name) {
+      name = any(Generated::GlobalVariable var).getValue()
+    } or
     TLocalVariable(VariableScope scope, string name, Generated::Identifier i) {
       scopeDefinesParameterVariable(scope, name, i)
       or
@@ -150,6 +154,14 @@ module VariableScope {
     abstract string toString();
 
     abstract AstNode getScopeElement();
+  }
+}
+
+module GlobalScope {
+  class Range extends VariableScope::Range, TGlobalScope {
+    override string toString() { result = "global scope" }
+
+    override AstNode getScopeElement() { none() }
   }
 }
 
@@ -226,6 +238,21 @@ module LocalVariable {
   }
 }
 
+module GlobalVariable {
+  class Range extends Variable::Range {
+    private VariableScope scope;
+    private string name;
+
+    Range() { this = TGlobalVariable(scope, name) }
+
+    final override string getName() { result = name }
+
+    final override Location getLocation() { none() }
+
+    final override VariableScope getDeclaringScope() { result = scope }
+  }
+}
+
 module VariableAccess {
   abstract class Range extends Expr::Range {
     abstract Variable getVariable();
@@ -240,5 +267,15 @@ module LocalVariableAccess {
     Range() { access(this, variable) }
 
     final override LocalVariable getVariable() { result = variable }
+  }
+}
+
+module GlobalVariableAccess {
+  class Range extends VariableAccess::Range, @token_global_variable {
+    GlobalVariable variable;
+
+    Range() { this.(Generated::GlobalVariable).getValue() = variable.getName() }
+
+    final override GlobalVariable getVariable() { result = variable }
   }
 }

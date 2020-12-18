@@ -59,6 +59,13 @@ class LocalVariable extends Variable {
   final override LocalVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
+/** A global variable. */
+class GlobalVariable extends Variable {
+  override GlobalVariable::Range range;
+
+  final override GlobalVariableAccess getAnAccess() { result.getVariable() = this }
+}
+
 /** An access to a variable. */
 class VariableAccess extends Expr {
   override VariableAccess::Range range;
@@ -70,11 +77,21 @@ class VariableAccess extends Expr {
 }
 
 /** An access to a local variable. */
-class LocalVariableAccess extends VariableAccess {
+class LocalVariableAccess extends VariableAccess, @token_identifier {
   final override LocalVariableAccess::Range range;
 
   /** Gets the variable this identifier refers to. */
   final override LocalVariable getVariable() { result = range.getVariable() }
   // TODO uncomment this and fix the params test
   //final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
+}
+
+/** An access to a local variable. */
+class GlobalVariableAccess extends VariableAccess, @token_global_variable {
+  final override GlobalVariableAccess::Range range;
+
+  /** Gets the variable this identifier refers to. */
+  final override GlobalVariable getVariable() { result = range.getVariable() }
+
+  final override string getAPrimaryQlClass() { result = "GlobalVariableAccess" }
 }
