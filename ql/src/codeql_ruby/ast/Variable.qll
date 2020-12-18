@@ -82,8 +82,10 @@ class LocalVariableAccess extends VariableAccess, @token_identifier {
 
   /** Gets the variable this identifier refers to. */
   final override LocalVariable getVariable() { result = range.getVariable() }
-  // TODO uncomment this and fix the params test
-  //final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
+
+  final override string getAPrimaryQlClass() {
+    not this instanceof SimpleParameter and result = "LocalVariableAccess"
+  }
 }
 
 /** An access to a local variable. */
