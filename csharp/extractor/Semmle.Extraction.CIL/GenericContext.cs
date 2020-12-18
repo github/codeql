@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CIL
         }
 
         /// <summary>
-        /// The list of generic type parameters, including type parameters of
+        /// The list of generic type parameters/arguments, including type parameters/arguments of
         /// containing types.
         /// </summary>
         public abstract IEnumerable<Entities.Type> TypeParameters { get; }

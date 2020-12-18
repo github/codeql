@@ -18,32 +18,26 @@ namespace Semmle.Extraction.CIL.Entities
             return obj is PrimitiveType pt && typeCode == pt.typeCode;
         }
 
-        public override int GetHashCode()
-        {
-            return 1337 * (int)typeCode;
-        }
+        public override int GetHashCode() => typeCode.GetHashCode();
 
         public override void WriteId(TextWriter trapFile, bool inContext)
         {
-            trapFile.Write("builtin:");
-            trapFile.Write(Name);
+            Type.WritePrimitiveTypeId(trapFile, Name);
         }
 
         public override string Name => typeCode.Id();
 
-        public override Namespace Namespace => Cx.SystemNamespace;
+        public override Namespace ContainingNamespace => Cx.SystemNamespace;
 
         public override Type? ContainingType => null;
 
-        public override int ThisTypeParameters => 0;
+        public override int ThisTypeParameterCount => 0;
 
         public override CilTypeKind Kind => CilTypeKind.ValueOrRefType;
 
         public override void WriteAssemblyPrefix(TextWriter trapFile) { }
 
         public override IEnumerable<Type> TypeParameters => throw new NotImplementedException();
-
-        public override IEnumerable<Type> MethodParameters => throw new NotImplementedException();
 
         public override Type Construct(IEnumerable<Type> typeArguments) => throw new NotImplementedException();
     }

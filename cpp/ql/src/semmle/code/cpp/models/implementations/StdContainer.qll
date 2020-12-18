@@ -166,24 +166,6 @@ private class StdSequenceContainerAssign extends TaintFunction {
 }
 
 /**
- * The standard container `swap` functions.
- */
-private class StdSequenceContainerSwap extends TaintFunction {
-  StdSequenceContainerSwap() {
-    this.hasQualifiedName("std", ["array", "vector", "deque", "list", "forward_list"], "swap")
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // container1.swap(container2)
-    input.isQualifierObject() and
-    output.isParameterDeref(0)
-    or
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
-  }
-}
-
-/**
  * The standard container functions `at` and `operator[]`.
  */
 private class StdSequenceContainerAt extends TaintFunction {

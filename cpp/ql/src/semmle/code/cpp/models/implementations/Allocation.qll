@@ -82,7 +82,9 @@ private class AllocaAllocationFunction extends AllocationFunction {
     hasGlobalName([
         // --- stack allocation
         "alloca", // // alloca(size)
-        "__builtin_alloca" // __builtin_alloca(size)
+        "__builtin_alloca", // __builtin_alloca(size)
+        "_alloca", // _alloca(size)
+        "_malloca" // _malloca(size)
       ]) and
     sizeArg = 0
   }

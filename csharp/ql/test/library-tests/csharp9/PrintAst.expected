@@ -1,3 +1,59 @@
+AnonymousObjectCreation.cs:
+#    5| [Class] AnonObj
+#    7|   5: [Field] l
+#    7|     -1: [TypeMention] List<AnonObj>
+#    7|       1: [TypeMention] AnonObj
+#    7|     1: [AssignExpr] ... = ...
+#    7|       0: [FieldAccess] access to field l
+#    7|       1: [ObjectCreation] object creation of type List<AnonObj>
+#    9|   6: [Property] Prop1
+#    9|     -1: [TypeMention] int
+#    9|     3: [Getter] get_Prop1
+#    9|     4: [Setter] set_Prop1
+#-----|       2: (Parameters)
+#    9|         0: [Parameter] value
+#   11|   7: [Method] M1
+#   11|     -1: [TypeMention] AnonObj
+#-----|     2: (Parameters)
+#   11|       0: [Parameter] t
+#   11|         -1: [TypeMention] AnonObj
+#   12|     4: [BlockStmt] {...}
+#   13|       0: [ExprStmt] ...;
+#   13|         0: [MethodCall] call to method M1
+#   13|           -1: [ThisAccess] this access
+#   13|           0: [ObjectCreation] object creation of type AnonObj
+#   13|             -1: [ObjectInitializer] { ..., ... }
+#   13|               0: [MemberInitializer] ... = ...
+#   13|                 0: [PropertyCall] access to property Prop1
+#   13|                 1: [IntLiteral] 1
+#   14|       1: [ReturnStmt] return ...;
+#   14|         0: [ObjectCreation] object creation of type AnonObj
+#   17|   8: [DelegateType] D
+#-----|     2: (Parameters)
+#   17|       0: [Parameter] x
+#   17|         -1: [TypeMention] int
+#   19|   9: [Method] M2
+#   19|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   19|       0: [Parameter] x
+#   19|         -1: [TypeMention] int
+#   19|     4: [BlockStmt] {...}
+#   21|   10: [Method] GetM
+#   21|     -1: [TypeMention] D
+#   21|     4: [BlockStmt] {...}
+#   21|       0: [ReturnStmt] return ...;
+#   21|         0: [ExplicitDelegateCreation] delegate creation of type D
+#   21|           0: [ImplicitDelegateCreation] delegate creation of type D
+#   21|             0: [MethodAccess] access to method M2
+#   23|   11: [Method] MethodAdd
+#   23|     -1: [TypeMention] Void
+#   24|     4: [BlockStmt] {...}
+#   25|       0: [LocalVariableDeclStmt] ... ...;
+#   25|         0: [LocalVariableDeclAndInitExpr] List<Int32> list = ...
+#   25|           -1: [TypeMention] List<Int32>
+#   25|             1: [TypeMention] int
+#   25|           0: [LocalVariableAccess] access to local variable list
+#   25|           1: [ObjectCreation] object creation of type List<Int32>
 Discard.cs:
 #    3| [Class] Discard
 #    5|   5: [Method] M1
@@ -47,6 +103,88 @@ Discard.cs:
 #   10|             4: [BlockStmt] {...}
 #   10|               0: [ReturnStmt] return ...;
 #   10|                 0: [IntLiteral] 0
+InitOnlyProperty.cs:
+#    3| [NamespaceDeclaration] namespace ... { ... }
+#    5|   1: [Class] IsExternalInit
+#   10| [Class] Base
+#   12|   5: [Property] Prop0
+#   12|     -1: [TypeMention] int
+#   12|     3: [Getter] get_Prop0
+#   12|       4: [BlockStmt] {...}
+#   12|         0: [ReturnStmt] return ...;
+#   12|           0: [IntLiteral] 1
+#   12|     4: [Setter] set_Prop0
+#-----|       2: (Parameters)
+#   12|         0: [Parameter] value
+#   12|       4: [BlockStmt] {...}
+#   12|         0: [ExprStmt] ...;
+#   12|           0: [AssignExpr] ... = ...
+#   12|             0: [PropertyCall] access to property Prop1
+#   12|             1: [ParameterAccess] access to parameter value
+#   13|   6: [Property] Prop1
+#   13|     -1: [TypeMention] int
+#   13|     3: [Getter] get_Prop1
+#   13|     4: [Setter] set_Prop1
+#-----|       2: (Parameters)
+#   13|         0: [Parameter] value
+#   14|   7: [Property] Prop2
+#   14|     -1: [TypeMention] int
+#   14|     3: [Getter] get_Prop2
+#   14|     4: [Setter] set_Prop2
+#-----|       2: (Parameters)
+#   14|         0: [Parameter] value
+#   18| [Class] Derived
+#-----|   3: (Base types)
+#   18|     0: [TypeMention] Base
+#   20|   5: [Property] Prop1
+#   20|     -1: [TypeMention] int
+#   20|     3: [Getter] get_Prop1
+#   20|     4: [Setter] set_Prop1
+#-----|       2: (Parameters)
+#   20|         0: [Parameter] value
+#   21|   6: [Property] Prop2
+#   21|     -1: [TypeMention] int
+#   23|     3: [Getter] get_Prop2
+#   23|       4: [BlockStmt] {...}
+#   23|         0: [ReturnStmt] return ...;
+#   23|           0: [IntLiteral] 0
+#   24|     4: [Setter] set_Prop2
+#-----|       2: (Parameters)
+#   24|         0: [Parameter] value
+#   25|       4: [BlockStmt] {...}
+#   26|         0: [ExprStmt] ...;
+#   26|           0: [MethodCall] call to method WriteLine
+#   26|             -1: [TypeAccess] access to type Console
+#   26|               0: [TypeMention] Console
+#   26|             0: [ParameterAccess] access to parameter value
+#   27|         1: [ExprStmt] ...;
+#   27|           0: [AssignExpr] ... = ...
+#   27|             0: [PropertyCall] access to property Prop1
+#   27|             1: [ParameterAccess] access to parameter value
+#   28|         2: [ExprStmt] ...;
+#   28|           0: [AssignExpr] ... = ...
+#   28|             0: [PropertyCall] access to property Prop0
+#   28|             1: [ParameterAccess] access to parameter value
+#   33| [Class] C1
+#   35|   5: [Method] M1
+#   35|     -1: [TypeMention] Void
+#   36|     4: [BlockStmt] {...}
+#   37|       0: [LocalVariableDeclStmt] ... ...;
+#   37|         0: [LocalVariableDeclAndInitExpr] Derived d = ...
+#   37|           -1: [TypeMention] Derived
+#   37|           0: [LocalVariableAccess] access to local variable d
+#   37|           1: [ObjectCreation] object creation of type Derived
+#   37|             -2: [TypeMention] Derived
+#   38|             -1: [ObjectInitializer] { ..., ... }
+#   39|               0: [MemberInitializer] ... = ...
+#   39|                 0: [PropertyCall] access to property Prop1
+#   39|                 1: [IntLiteral] 1
+#   40|               1: [MemberInitializer] ... = ...
+#   40|                 0: [PropertyCall] access to property Prop2
+#   40|                 1: [IntLiteral] 2
+#   41|               2: [MemberInitializer] ... = ...
+#   41|                 0: [PropertyCall] access to property Prop0
+#   41|                 1: [IntLiteral] 0
 LambdaModifier.cs:
 #    4| [Class] Class1
 #    6|   5: [Method] M1

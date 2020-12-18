@@ -540,9 +540,9 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.request.HttpRequest`.
+           * A source of instances of `django.http.request.HttpRequest`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
+           * This can include instantiations of the class, return values from function
            * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
@@ -646,13 +646,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponse`.
+           * A source of instances of `django.http.response.HttpResponse`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponse::instance()` predicate to get references to instances of `django.http.response.HttpResponse`.
+           * Use the predicate `HttpResponse::instance()` to get references to instances of `django.http.response.HttpResponse`.
            */
           abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
           }
@@ -716,13 +716,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseRedirect`.
+           * A source of instances of `django.http.response.HttpResponseRedirect`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseRedirect::instance()` predicate to get references to instances of `django.http.response.HttpResponseRedirect`.
+           * Use the predicate `HttpResponseRedirect::instance()` to get references to instances of `django.http.response.HttpResponseRedirect`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -782,13 +782,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponsePermanentRedirect`.
+           * A source of instances of `django.http.response.HttpResponsePermanentRedirect`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponsePermanentRedirect::instance()` predicate to get references to instances of `django.http.response.HttpResponsePermanentRedirect`.
+           * Use the predicate `HttpResponsePermanentRedirect::instance()` to get references to instances of `django.http.response.HttpResponsePermanentRedirect`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -849,13 +849,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseNotModified`.
+           * A source of instances of `django.http.response.HttpResponseNotModified`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseNotModified::instance()` predicate to get references to instances of `django.http.response.HttpResponseNotModified`.
+           * Use the predicate `HttpResponseNotModified::instance()` to get references to instances of `django.http.response.HttpResponseNotModified`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -910,13 +910,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseBadRequest`.
+           * A source of instances of `django.http.response.HttpResponseBadRequest`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseBadRequest::instance()` predicate to get references to instances of `django.http.response.HttpResponseBadRequest`.
+           * Use the predicate `HttpResponseBadRequest::instance()` to get references to instances of `django.http.response.HttpResponseBadRequest`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -973,13 +973,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseNotFound`.
+           * A source of instances of `django.http.response.HttpResponseNotFound`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseNotFound::instance()` predicate to get references to instances of `django.http.response.HttpResponseNotFound`.
+           * Use the predicate `HttpResponseNotFound::instance()` to get references to instances of `django.http.response.HttpResponseNotFound`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1036,13 +1036,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseForbidden`.
+           * A source of instances of `django.http.response.HttpResponseForbidden`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseForbidden::instance()` predicate to get references to instances of `django.http.response.HttpResponseForbidden`.
+           * Use the predicate `HttpResponseForbidden::instance()` to get references to instances of `django.http.response.HttpResponseForbidden`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1099,13 +1099,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseNotAllowed`.
+           * A source of instances of `django.http.response.HttpResponseNotAllowed`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseNotAllowed::instance()` predicate to get references to instances of `django.http.response.HttpResponseNotAllowed`.
+           * Use the predicate `HttpResponseNotAllowed::instance()` to get references to instances of `django.http.response.HttpResponseNotAllowed`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1163,13 +1163,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseGone`.
+           * A source of instances of `django.http.response.HttpResponseGone`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseGone::instance()` predicate to get references to instances of `django.http.response.HttpResponseGone`.
+           * Use the predicate `HttpResponseGone::instance()` to get references to instances of `django.http.response.HttpResponseGone`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1226,13 +1226,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.HttpResponseServerError`.
+           * A source of instances of `django.http.response.HttpResponseServerError`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `HttpResponseServerError::instance()` predicate to get references to instances of `django.http.response.HttpResponseServerError`.
+           * Use the predicate `HttpResponseServerError::instance()` to get references to instances of `django.http.response.HttpResponseServerError`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1289,13 +1289,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.JsonResponse`.
+           * A source of instances of `django.http.response.JsonResponse`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `JsonResponse::instance()` predicate to get references to instances of `django.http.response.JsonResponse`.
+           * Use the predicate `JsonResponse::instance()` to get references to instances of `django.http.response.JsonResponse`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1355,13 +1355,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.StreamingHttpResponse`.
+           * A source of instances of `django.http.response.StreamingHttpResponse`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `StreamingHttpResponse::instance()` predicate to get references to instances of `django.http.response.StreamingHttpResponse`.
+           * Use the predicate `StreamingHttpResponse::instance()` to get references to instances of `django.http.response.StreamingHttpResponse`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
@@ -1418,13 +1418,13 @@ private module Django {
           DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
-           * A source of an instance of `django.http.response.FileResponse`.
+           * A source of instances of `django.http.response.FileResponse`, extend this class to model new instances.
            *
-           * This can include instantiation of the class, return value from function
-           * calls, or a special parameter that will be set when functions are call by external
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
            * library.
            *
-           * Use `FileResponse::instance()` predicate to get references to instances of `django.http.response.FileResponse`.
+           * Use the predicate `FileResponse::instance()` to get references to instances of `django.http.response.FileResponse`.
            */
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 

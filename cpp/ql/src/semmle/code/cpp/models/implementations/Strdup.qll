@@ -14,6 +14,7 @@ import semmle.code.cpp.models.interfaces.Taint
 private class StrdupFunction extends AllocationFunction, ArrayFunction, DataFlowFunction {
   StrdupFunction() {
     hasGlobalName([
+        // --- C library allocation
         "strdup", // strdup(str)
         "wcsdup", // wcsdup(str)
         "_strdup", // _strdup(str)
@@ -39,8 +40,8 @@ private class StrndupFunction extends AllocationFunction, ArrayFunction, DataFlo
   StrndupFunction() {
     exists(string name |
       hasGlobalName(name) and
-      // strndup(str, maxlen)
-      name = "strndup"
+      // --- C library allocation
+      name = "strndup" // strndup(str, maxlen)
     )
   }
 

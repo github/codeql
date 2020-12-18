@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public Type GetPrimitiveType(PrimitiveTypeCode typeCode) => cx.Create(typeCode);
 
-        public Type GetSystemType() => throw new NotImplementedException();
+        public Type GetSystemType() => new NoMetadataHandleType(cx, "System.Type");
 
         public Type GetSZArrayType(Type elementType) =>
             cx.Populate(new ArrayType(cx, elementType));
@@ -25,10 +25,23 @@ namespace Semmle.Extraction.CIL.Entities
         public Type GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind) =>
             (Type)cx.Create(handle);
 
-        public Type GetTypeFromSerializedName(string name) => throw new NotImplementedException();
+        public Type GetTypeFromSerializedName(string name) => new NoMetadataHandleType(cx, name);
 
-        public PrimitiveTypeCode GetUnderlyingEnumType(Type type) => throw new NotImplementedException();
+        public PrimitiveTypeCode GetUnderlyingEnumType(Type type)
+        {
+            if (type is TypeDefinitionType tdt &&
+                tdt.GetUnderlyingEnumType() is PrimitiveTypeCode underlying)
+            {
+                return underlying;
+            }
 
-        public bool IsSystemType(Type type) => type is PrimitiveType; // ??
+            var name = type.GetQualifiedName();
+            cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Info, $"Couldn't get underlying enum type for {name}");
+
+            // We can't fall back to Int32, because the type returned here defines how many bytes are read from the
+            // stream and how those bytes are interpreted.
+            throw new NotImplementedException();
+        }
+        public bool IsSystemType(Type type) => type.GetQualifiedName() == "System.Type";
     }
 }

@@ -27,27 +27,26 @@ namespace Semmle.Extraction.CIL.Entities
             return obj is ArrayType array && elementType.Equals(array.elementType) && rank == array.rank;
         }
 
-        public override int GetHashCode()
-        {
-            return elementType.GetHashCode() * 5 + rank;
-        }
+        public override int GetHashCode() => HashCode.Combine(elementType, rank);
 
         public override void WriteId(TextWriter trapFile, bool inContext)
         {
-            elementType.GetId(trapFile, inContext);
+            elementType.WriteId(trapFile, inContext);
             trapFile.Write('[');
             for (var i = 1; i < rank; ++i)
+            {
                 trapFile.Write(',');
+            }
             trapFile.Write(']');
         }
 
         public override string Name => elementType.Name + "[]";
 
-        public override Namespace Namespace => Cx.SystemNamespace;
+        public override Namespace ContainingNamespace => Cx.SystemNamespace;
 
         public override Type? ContainingType => null;
 
-        public override int ThisTypeParameters => elementType.ThisTypeParameters;
+        public override int ThisTypeParameterCount => elementType.ThisTypeParameterCount;
 
         public override CilTypeKind Kind => CilTypeKind.Array;
 
@@ -71,7 +70,5 @@ namespace Semmle.Extraction.CIL.Entities
         public override IEnumerable<Type> GenericArguments => elementType.GenericArguments;
 
         public override IEnumerable<Type> TypeParameters => elementType.TypeParameters;
-
-        public override IEnumerable<Type> MethodParameters => throw new NotImplementedException();
     }
 }

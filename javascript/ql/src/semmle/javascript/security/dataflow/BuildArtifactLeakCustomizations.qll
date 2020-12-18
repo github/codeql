@@ -4,8 +4,6 @@
  */
 
 import javascript
-private import semmle.javascript.dataflow.InferredTypes
-private import semmle.javascript.security.SensitiveActions::HeuristicNames
 
 /**
  * Sinks for storage of sensitive information in build artifact.

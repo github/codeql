@@ -173,9 +173,9 @@ abstract class SplitImpl extends Split {
    * Holds if this split is entered when control passes from `scope` to the entry point
    * `first`.
    *
-   * Invariant: `hasEntryScope(scope, first) implies succEntry(scope, first)`.
+   * Invariant: `hasEntryScope(scope, first) implies scopeFirst(scope, first)`.
    */
-  abstract predicate hasEntryScope(Callable scope, ControlFlowElement first);
+  abstract predicate hasEntryScope(CfgScope scope, ControlFlowElement first);
 
   /**
    * Holds if this split is left when control passes from `pred` to `succ` with
@@ -189,9 +189,9 @@ abstract class SplitImpl extends Split {
    * Holds if this split is left when control passes from `last` out of the enclosing
    * scope `scope` with completion `c`.
    *
-   * Invariant: `hasExitScope(last, scope, c) implies succExit(last, scope, c)`
+   * Invariant: `hasExitScope(last, scope, c) implies scopeLast(scope, last, c)`
    */
-  abstract predicate hasExitScope(ControlFlowElement last, Callable scope, Completion c);
+  abstract predicate hasExitScope(ControlFlowElement last, CfgScope scope, Completion c);
 
   /**
    * Holds if this split is maintained when control passes from `pred` to `succ` with
@@ -364,8 +364,8 @@ module InitializerSplitting {
       )
     }
 
-    override predicate hasEntryScope(Callable scope, ControlFlowElement first) {
-      succEntry(scope, first) and
+    override predicate hasEntryScope(CfgScope scope, ControlFlowElement first) {
+      scopeFirst(scope, first) and
       scope = this.getConstructor() and
       first = any(InitializedInstanceMember m).getAnInitializerDescendant()
     }
@@ -377,9 +377,9 @@ module InitializerSplitting {
       succ.getEnclosingCallable() = this.getConstructor()
     }
 
-    override predicate hasExitScope(ControlFlowElement last, Callable scope, Completion c) {
+    override predicate hasExitScope(ControlFlowElement last, CfgScope scope, Completion c) {
       this.appliesTo(last) and
-      succExit(last, scope, c) and
+      scopeLast(scope, last, c) and
       scope = this.getConstructor()
     }
 
@@ -468,7 +468,7 @@ module ConditionalCompletionSplitting {
       )
     }
 
-    override predicate hasEntryScope(Callable scope, ControlFlowElement first) { none() }
+    override predicate hasEntryScope(CfgScope scope, ControlFlowElement first) { none() }
 
     override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       this.appliesTo(pred) and
@@ -476,9 +476,9 @@ module ConditionalCompletionSplitting {
       if c instanceof ConditionalCompletion then completion = c else any()
     }
 
-    override predicate hasExitScope(ControlFlowElement last, Callable scope, Completion c) {
+    override predicate hasExitScope(ControlFlowElement last, CfgScope scope, Completion c) {
       this.appliesTo(last) and
-      succExit(last, scope, c) and
+      scopeLast(scope, last, c) and
       if c instanceof ConditionalCompletion then completion = c else any()
     }
 
@@ -574,7 +574,7 @@ module AssertionSplitting {
       )
     }
 
-    override predicate hasEntryScope(Callable scope, ControlFlowElement first) { none() }
+    override predicate hasEntryScope(CfgScope scope, ControlFlowElement first) { none() }
 
     override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       this.appliesTo(pred) and
@@ -589,10 +589,10 @@ module AssertionSplitting {
       )
     }
 
-    override predicate hasExitScope(ControlFlowElement last, Callable scope, Completion c) {
+    override predicate hasExitScope(ControlFlowElement last, CfgScope scope, Completion c) {
       this.appliesTo(last) and
       last = a and
-      succExit(last, scope, c) and
+      scopeLast(scope, last, c) and
       (
         success = true and
         c instanceof NormalCompletion
@@ -703,7 +703,7 @@ module FinallySplitting {
   }
 
   int getNextListOrder() {
-    result = max(int i | i = getListOrder(_) + 1 or i = AssertionSplitting::getNextListOrder())
+    result = max([getListOrder(_) + 1, AssertionSplitting::getNextListOrder()])
   }
 
   private class FinallySplitKind extends SplitKind, TFinallySplitKind {
@@ -736,7 +736,7 @@ module FinallySplitting {
       this.getType().isSplitForEntryCompletion(c)
     }
 
-    override predicate hasEntryScope(Callable scope, ControlFlowElement first) { none() }
+    override predicate hasEntryScope(CfgScope scope, ControlFlowElement first) { none() }
 
     /**
      * Holds if this split applies to control flow element `pred`, where `pred`
@@ -744,7 +744,7 @@ module FinallySplitting {
      */
     private predicate appliesToPredecessor(ControlFlowElement pred) {
       this.appliesTo(pred) and
-      (succ(pred, _, _) or succExit(pred, _, _))
+      (succ(pred, _, _) or scopeLast(_, pred, _))
     }
 
     pragma[noinline]
@@ -831,8 +831,8 @@ module FinallySplitting {
       )
     }
 
-    override predicate hasExitScope(ControlFlowElement last, Callable scope, Completion c) {
-      succExit(last, scope, c) and
+    override predicate hasExitScope(ControlFlowElement last, CfgScope scope, Completion c) {
+      scopeLast(scope, last, c) and
       (
         exit(last, c, _)
         or
@@ -930,7 +930,7 @@ module ExceptionHandlerSplitting {
       )
     }
 
-    override predicate hasEntryScope(Callable scope, ControlFlowElement first) { none() }
+    override predicate hasEntryScope(CfgScope scope, ControlFlowElement first) { none() }
 
     /**
      * Holds if this split applies to catch clause `scc`. The parameter `match`
@@ -958,7 +958,7 @@ module ExceptionHandlerSplitting {
      */
     private predicate appliesToPredecessor(ControlFlowElement pred, Completion c) {
       this.appliesTo(pred) and
-      (succ(pred, _, c) or succExit(pred, _, c)) and
+      (succ(pred, _, c) or scopeLast(_, pred, c)) and
       (
         pred instanceof SpecificCatchClause
         implies
@@ -1012,10 +1012,10 @@ module ExceptionHandlerSplitting {
       )
     }
 
-    override predicate hasExitScope(ControlFlowElement last, Callable scope, Completion c) {
+    override predicate hasExitScope(ControlFlowElement last, CfgScope scope, Completion c) {
       // Exit out from last `catch` clause (no catch clauses match)
       this.hasLastExit(last, c) and
-      succExit(last, scope, c)
+      scopeLast(scope, last, c)
     }
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
@@ -1209,8 +1209,7 @@ module BooleanSplitting {
   }
 
   int getNextListOrder() {
-    result =
-      max(int i | i = getListOrder(_) + 1 or i = ExceptionHandlerSplitting::getNextListOrder())
+    result = max([getListOrder(_) + 1, ExceptionHandlerSplitting::getNextListOrder()])
   }
 
   private class BooleanSplitKind extends SplitKind, TBooleanSplitKind {
@@ -1243,7 +1242,7 @@ module BooleanSplitting {
       hasEntry0(pred, succ, this.getSubKind(), this.getBranch(), c)
     }
 
-    override predicate hasEntryScope(Callable scope, ControlFlowElement first) { none() }
+    override predicate hasEntryScope(CfgScope scope, ControlFlowElement first) { none() }
 
     private ConditionBlock getACorrelatedCondition(boolean inverted) {
       this.getSubKind().correlatesConditions(_, result, inverted)
@@ -1256,7 +1255,7 @@ module BooleanSplitting {
     private predicate appliesToBlock(PreBasicBlock bb, Completion c) {
       this.appliesTo(bb) and
       exists(ControlFlowElement last | last = bb.getLastElement() |
-        (succ(last, _, c) or succExit(last, _, c)) and
+        (succ(last, _, c) or scopeLast(_, last, c)) and
         // Respect the value recorded in this split for all correlated conditions
         forall(boolean inverted | bb = this.getACorrelatedCondition(inverted) |
           c.getInnerCompletion() instanceof BooleanCompletion
@@ -1276,10 +1275,10 @@ module BooleanSplitting {
       )
     }
 
-    override predicate hasExitScope(ControlFlowElement last, Callable scope, Completion c) {
+    override predicate hasExitScope(ControlFlowElement last, CfgScope scope, Completion c) {
       exists(PreBasicBlock bb | this.appliesToBlock(bb, c) |
         last = bb.getLastElement() and
-        succExit(last, scope, c)
+        scopeLast(scope, last, c)
       )
     }
 
@@ -1433,7 +1432,7 @@ module LoopSplitting {
   }
 
   int getNextListOrder() {
-    result = max(int i | i = getListOrder(_) + 1 or i = BooleanSplitting::getNextListOrder())
+    result = max([getListOrder(_) + 1, BooleanSplitting::getNextListOrder()])
   }
 
   private class LoopSplitKind extends SplitKind, TLoopSplitKind {
@@ -1453,7 +1452,7 @@ module LoopSplitting {
       loop.start(pred, succ, c)
     }
 
-    override predicate hasEntryScope(Callable scope, ControlFlowElement first) { none() }
+    override predicate hasEntryScope(CfgScope scope, ControlFlowElement first) { none() }
 
     /**
      * Holds if this split applies to control flow element `pred`, where `pred`
@@ -1461,7 +1460,7 @@ module LoopSplitting {
      */
     private predicate appliesToPredecessor(ControlFlowElement pred, Completion c) {
       this.appliesTo(pred) and
-      (succ(pred, _, c) or succExit(pred, _, c)) and
+      (succ(pred, _, c) or scopeLast(_, pred, c)) and
       not loop.pruneLoopCondition(pred, c)
     }
 
@@ -1470,9 +1469,9 @@ module LoopSplitting {
       loop.stop(pred, succ, c)
     }
 
-    override predicate hasExitScope(ControlFlowElement last, Callable scope, Completion c) {
+    override predicate hasExitScope(ControlFlowElement last, CfgScope scope, Completion c) {
       this.appliesToPredecessor(last, c) and
-      succExit(last, scope, c)
+      scopeLast(scope, last, c)
     }
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
@@ -1502,10 +1501,10 @@ class Splits extends TSplits {
 }
 
 private predicate succEntrySplitsFromRank(
-  @top_level_exprorstmt_parent pred, ControlFlowElement succ, Splits splits, int rnk
+  CfgScope pred, ControlFlowElement succ, Splits splits, int rnk
 ) {
   splits = TSplitsNil() and
-  succEntry(pred, succ) and
+  scopeFirst(pred, succ) and
   rnk = 0
   or
   exists(SplitImpl head, Splits tail | succEntrySplitsCons(pred, succ, head, tail, rnk) |
@@ -1526,11 +1525,9 @@ private predicate succEntrySplitsCons(
  * when entering callable `pred`.
  */
 pragma[noinline]
-predicate succEntrySplits(
-  @top_level_exprorstmt_parent pred, ControlFlowElement succ, Splits succSplits, SuccessorType t
-) {
+predicate succEntrySplits(CfgScope pred, ControlFlowElement succ, Splits succSplits, SuccessorType t) {
   exists(int rnk |
-    succEntry(pred, succ) and
+    scopeFirst(pred, succ) and
     t instanceof NormalSuccessor and
     succEntrySplitsFromRank(pred, succ, succSplits, rnk) and
     // Attribute arguments in assemblies are represented as expressions, even though
@@ -1549,11 +1546,11 @@ predicate succEntrySplits(
  * Holds if `pred` with splits `predSplits` can exit the enclosing callable
  * `succ` with type `t`.
  */
-predicate succExitSplits(ControlFlowElement pred, Splits predSplits, Callable succ, SuccessorType t) {
+predicate succExitSplits(ControlFlowElement pred, Splits predSplits, CfgScope succ, SuccessorType t) {
   exists(Reachability::SameSplitsBlock b, Completion c | pred = b.getAnElement() |
     b.isReachable(predSplits) and
     t = c.getAMatchingSuccessorType() and
-    succExit(pred, succ, c) and
+    scopeLast(succ, pred, c) and
     forall(SplitImpl predSplit | predSplit = predSplits.getASplit() |
       predSplit.hasExitScope(pred, succ, c)
     )
@@ -1890,7 +1887,7 @@ module Reachability {
    * That is, `cfe` starts a new block of elements with the same set of splits.
    */
   private predicate startsSplits(ControlFlowElement cfe) {
-    succEntry(_, cfe)
+    scopeFirst(_, cfe)
     or
     exists(SplitImpl s |
       s.hasEntry(_, cfe, _)
