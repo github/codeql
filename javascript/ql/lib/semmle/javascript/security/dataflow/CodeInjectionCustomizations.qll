@@ -229,17 +229,8 @@ module CodeInjection {
   }
 
   /**
-   * A code operator of a NoSQL query as a code injection sink.
-   */
-  class NoSqlCodeInjectionSink extends Sink {
-    NoSqlCodeInjectionSink() { any(NoSql::Query q).getACodeOperator() = this }
-  }
-
-  /** DEPRECATED: Alias for NoSqlCodeInjectionSink */
-  deprecated class NoSQLCodeInjectionSink = NoSqlCodeInjectionSink;
-
-  /**
-   * The first argument to `Module.prototype._compile`, considered as a code-injection sink.
+   * The first argument to `Module.prototype._compile` from the Node.js built-in module `module`,
+   * considered as a code-injection sink.
    */
   class ModuleCompileSink extends Sink {
     ModuleCompileSink() {
