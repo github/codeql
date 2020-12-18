@@ -9,13 +9,23 @@
 | mongodb.js:112:5:112:19 | doc.find(query) |
 | mongodb_bodySafe.js:18:7:18:21 | doc.find(query) |
 | mongodb_bodySafe.js:29:7:29:21 | doc.find(query) |
-| mongoose.js:65:2:65:51 | Documen ... on(){}) |
-| mongoose.js:85:2:85:52 | Documen ... query)) |
-| mongoose.js:86:2:86:52 | Documen ... query)) |
+| mongoose.js:27:5:27:25 | Documen ... (query) |
+| mongoose.js:36:5:36:36 | Documen ...  query) |
+| mongoose.js:39:5:39:24 | Document.find(query) |
 | mongoose.js:92:2:92:52 | Documen ... query)) |
 | mongoose.js:93:2:93:49 | Documen ... query)) |
+| mongoose.js:94:2:94:17 | Document.find(X) |
+| mongoose.js:95:2:95:17 | Document.find(X) |
+| mongoose.js:96:2:96:17 | Document.find(X) |
+| mongoose.js:97:2:97:17 | Document.find(X) |
 | mongoose.js:99:2:99:50 | Documen ... query)) |
-| mongoose.js:113:2:113:53 | Documen ... () { }) |
+| mongoose.js:121:2:121:20 | Document.find(cond) |
+| mongoose.js:130:2:130:27 | Documen ... : id }) |
+| mongoose.js:131:2:131:36 | Documen ... id } }) |
+| mongooseJsonParse.js:23:5:23:24 | Document.find(query) |
+| mongooseModelClient.js:11:3:11:25 | MyModel ... d: v }) |
+| mongooseModelClient.js:12:3:12:35 | MyModel ... y.id }) |
+| mongooseModelClient.js:13:3:13:40 | MyModel ... id}` }) |
 | socketio.js:11:5:11:54 | db.run( ... ndle}`) |
 | tst3.js:9:3:11:4 | pool.qu ... ts\\n  }) |
 | tst3.js:16:3:18:4 | pool.qu ... ts\\n  }) |
