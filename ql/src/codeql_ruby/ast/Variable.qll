@@ -177,7 +177,7 @@ class LocalVariableWriteAccess extends LocalVariableAccess, VariableWriteAccess 
 /** An access to a local variable where the value is read. */
 class LocalVariableReadAccess extends LocalVariableAccess, VariableReadAccess { }
 
-/** An access to a local variable. */
+/** An access to a global variable. */
 class GlobalVariableAccess extends VariableAccess, @token_global_variable {
   final override GlobalVariableAccess::Range range;
 
