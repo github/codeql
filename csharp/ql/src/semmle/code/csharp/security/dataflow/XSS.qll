@@ -10,6 +10,7 @@ module XSS {
   import semmle.code.csharp.frameworks.system.Net
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.frameworks.system.web.UI
+  import semmle.code.csharp.frameworks.ServiceStack::XSS
   import semmle.code.csharp.security.Sanitizers
   import semmle.code.csharp.security.dataflow.flowsinks.Html
   import semmle.code.csharp.security.dataflow.flowsinks.Remote
