@@ -218,6 +218,9 @@ class FormatCall extends MethodCall {
   /** Gets the argument number of the first supplied insert. */
   int getFirstArgument() { result = this.getFormatArgument() + 1 }
 
+  /** Holds if this call has one or more insertions. */
+  predicate hasInsertions() { exists(this.getArgument(this.getFirstArgument())) }
+
   /** Holds if the arguments are supplied in an array, not individually. */
   predicate hasArrayExpr() {
     this.getNumberOfArguments() = this.getFirstArgument() + 1 and
