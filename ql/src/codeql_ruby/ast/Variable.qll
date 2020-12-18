@@ -67,8 +67,8 @@ class VariableAccess extends Expr, @token_identifier {
   Variable getVariable() { result = range.getVariable() }
 
   final override string toString() { result = this.getVariable().getName() }
-
-  override string getAPrimaryQlClass() { result = "VariableAccess" }
+  // TODO uncomment this and fix the params test
+  //override string getAPrimaryQlClass() { result = "VariableAccess" }
 }
 
 /** An access to a local variable. */
@@ -77,6 +77,6 @@ class LocalVariableAccess extends VariableAccess {
 
   /** Gets the variable this identifier refers to. */
   final override LocalVariable getVariable() { result = range.getVariable() }
-
-  final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
+  // TODO uncomment this and fix the params test
+  //final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
 }
