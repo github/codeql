@@ -214,7 +214,7 @@ private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand t
   // We only do this in certain cases:
   // 1. The instruction's result must not be conflated, and
   // 2. The instruction's result type is one the types where we expect element-to-object flow. Currently
-  // this array types and union types. This matches the other two cases of element-to-object flow in
+  // this is array types and union types. This matches the other two cases of element-to-object flow in
   // `DefaultTaintTracking`.
   toOperand.getAnyDef() = fromInstr and
   not fromInstr.isResultConflated() and
@@ -326,14 +326,15 @@ private predicate operandToInstructionTaintStep(Operand fromOperand, Instruction
   // Until we have from through indirections across calls, we'll take flow out
   // of the parameter and into its indirection.
   // `InitializeIndirectionInstruction` only has a single operand: the address of the
-  // value whose direction we are initializing. When initializing an indirection of a parameter `p`,
+  // value whose indirection we are initializing. When initializing an indirection of a parameter `p`,
   // the IR looks like this:
   // ```
   // m1 = InitializeParameter[p] : &r1
   // r2 = Load[p] : r2, m1
   // m3 = InitializeIndirection[p] : &r2
   // ```
-  // So by having flow from r2 to m3 we're enabling flow from `m1` to `m3`.
+  // So by having flow from `r2` to `m3` we're enabling flow from `m1` to `m3`. This relies on the
+  // `LoadOperand`'s overlap being exact.
   toInstr.(InitializeIndirectionInstruction).getAnOperand() = fromOperand
 }
 
