@@ -2,7 +2,6 @@
  * TODO: Doc about this file.
  */
 
-import DataFlow::PathGraph
 import go
 
 /**
