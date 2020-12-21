@@ -439,7 +439,7 @@ Exercise 2
      Configuration() { this="String to System.Uri" }
      
      override predicate isSource(DataFlow::Node src) {
-       src.asExpr().hasValue()
+       src.asExpr().(Expr).hasValue()
      }
      
      override predicate isSink(DataFlow::Node sink) {
