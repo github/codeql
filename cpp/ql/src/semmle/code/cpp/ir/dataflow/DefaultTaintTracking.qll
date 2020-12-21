@@ -46,21 +46,23 @@ predicate predictableOnlyFlow(string name) {
 
 private DataFlow::Node getNodeForSource(Expr source) {
   isUserInput(source, _) and
-  (
-    result = DataFlow::exprNode(source)
-    or
-    // Some of the sources in `isUserInput` are intended to match the value of
-    // an expression, while others (those modeled below) are intended to match
-    // the taint that propagates out of an argument, like the `char *` argument
-    // to `gets`. It's impossible here to tell which is which, but the "access
-    // to argv" source is definitely not intended to match an output argument,
-    // and it causes false positives if we let it.
-    //
-    // This case goes together with the similar (but not identical) rule in
-    // `nodeIsBarrierIn`.
-    result = DataFlow::definitionByReferenceNodeFromArgument(source) and
-    not argv(source.(VariableAccess).getTarget())
-  )
+  result = getNodeForExpr(source)
+}
+
+private DataFlow::Node getNodeForExpr(Expr node) {
+  result = DataFlow::exprNode(node)
+  or
+  // Some of the sources in `isUserInput` are intended to match the value of
+  // an expression, while others (those modeled below) are intended to match
+  // the taint that propagates out of an argument, like the `char *` argument
+  // to `gets`. It's impossible here to tell which is which, but the "access
+  // to argv" source is definitely not intended to match an output argument,
+  // and it causes false positives if we let it.
+  //
+  // This case goes together with the similar (but not identical) rule in
+  // `nodeIsBarrierIn`.
+  result = DataFlow::definitionByReferenceNodeFromArgument(node) and
+  not argv(node.(VariableAccess).getTarget())
 }
 
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
@@ -537,6 +539,9 @@ module TaintedWithPath {
    * a characteristic predicate.
    */
   class TaintTrackingConfiguration extends TSingleton {
+    /** Override this to specify which elements are sources in this configuration. */
+    predicate isSource(Expr source) { exists(getNodeForSource(source)) }
+
     /** Override this to specify which elements are sinks in this configuration. */
     abstract predicate isSink(Element e);
 
@@ -553,7 +558,11 @@ module TaintedWithPath {
   private class AdjustedConfiguration extends DataFlow3::Configuration {
     AdjustedConfiguration() { this = "AdjustedConfiguration" }
 
-    override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
+    override predicate isSource(DataFlow::Node source) {
+      exists(TaintTrackingConfiguration cfg, Expr e |
+        cfg.isSource(e) and source = getNodeForExpr(e)
+      )
+    }
 
     override predicate isSink(DataFlow::Node sink) {
       exists(TaintTrackingConfiguration cfg | cfg.isSink(adjustedSink(sink)))
@@ -596,7 +605,8 @@ module TaintedWithPath {
       exists(AdjustedConfiguration cfg, DataFlow3::Node sourceNode, DataFlow3::Node sinkNode |
         cfg.hasFlow(sourceNode, sinkNode)
       |
-        sourceNode = getNodeForSource(e)
+        sourceNode = getNodeForExpr(e) and
+        exists(TaintTrackingConfiguration ttCfg | ttCfg.isSource(e))
         or
         e = adjustedSink(sinkNode) and
         exists(TaintTrackingConfiguration ttCfg | ttCfg.isSink(e))
@@ -650,7 +660,7 @@ module TaintedWithPath {
 
   /** A PathNode whose `Element` is a source. It may also be a sink. */
   private class InitialPathNode extends EndpointPathNode {
-    InitialPathNode() { exists(getNodeForSource(this.inner())) }
+    InitialPathNode() { exists(TaintTrackingConfiguration cfg | cfg.isSource(this.inner())) }
   }
 
   /** A PathNode whose `Element` is a sink. It may also be a source. */
@@ -672,14 +682,14 @@ module TaintedWithPath {
     // Same for the first node
     exists(WrapPathNode sourceNode |
       DataFlow3::PathGraph::edges(sourceNode.inner(), b.(WrapPathNode).inner()) and
-      sourceNode.inner().getNode() = getNodeForSource(a.(InitialPathNode).inner())
+      sourceNode.inner().getNode() = getNodeForExpr(a.(InitialPathNode).inner())
     )
     or
     // Finally, handle the case where the path goes directly from a source to a
     // sink, meaning that they both need to be translated.
     exists(WrapPathNode sinkNode, WrapPathNode sourceNode |
       DataFlow3::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
-      sourceNode.inner().getNode() = getNodeForSource(a.(InitialPathNode).inner()) and
+      sourceNode.inner().getNode() = getNodeForExpr(a.(InitialPathNode).inner()) and
       b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
   }
@@ -702,7 +712,7 @@ module TaintedWithPath {
   predicate taintedWithPath(Expr source, Element tainted, PathNode sourceNode, PathNode sinkNode) {
     exists(AdjustedConfiguration cfg, DataFlow3::Node flowSource, DataFlow3::Node flowSink |
       source = sourceNode.(InitialPathNode).inner() and
-      flowSource = getNodeForSource(source) and
+      flowSource = getNodeForExpr(source) and
       cfg.hasFlow(flowSource, flowSink) and
       tainted = adjustedSink(flowSink) and
       tainted = sinkNode.(FinalPathNode).inner()
