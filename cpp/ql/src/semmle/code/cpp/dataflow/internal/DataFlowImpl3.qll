@@ -1280,7 +1280,7 @@ private module LocalFlowBigStep {
    * Holds if `node` can be the first node in a maximal subsequence of local
    * flow steps in a dataflow path.
    */
-  predicate localFlowEntry(Node node, Configuration config) {
+  predicate localFlowEntry(Node node, LocalCallContext cc, Configuration config) {
     Stage2::revFlow(node, config) and
     (
       config.isSource(node) or
@@ -1291,7 +1291,8 @@ private module LocalFlowBigStep {
       store(_, _, node, _) or
       read(_, _, node) or
       node instanceof FlowCheckNode
-    )
+    ) and
+    cc.relevantFor(node.getEnclosingCallable())
   }
 
   /**
@@ -1334,7 +1335,7 @@ private module LocalFlowBigStep {
   ) {
     not isUnreachableInCall(node2, cc.(LocalCallContextSpecificCall).getCall()) and
     (
-      localFlowEntry(node1, config) and
+      localFlowEntry(node1, cc, config) and
       (
         localFlowStepNodeCand1(node1, node2, config) and
         preservesValue = true and
@@ -1345,7 +1346,6 @@ private module LocalFlowBigStep {
         t = getNodeType(node2)
       ) and
       node1 != node2 and
-      cc.relevantFor(node1.getEnclosingCallable()) and
       not isUnreachableInCall(node1, cc.(LocalCallContextSpecificCall).getCall()) and
       Stage2::revFlow(node2, unbind(config))
       or
@@ -2131,7 +2131,7 @@ private module Stage4 {
 
   bindingset[node, cc, config]
   private LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
-    localFlowEntry(node, config) and
+    localFlowEntry(node, _, config) and
     result = getLocalCallContext(cc, node.getEnclosingCallable())
   }
 
