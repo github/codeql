@@ -1756,6 +1756,23 @@ private module Django {
     }
   }
 
+  /** A request handler defined in a django view class, that has no known route. */
+  private class DjangoViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range,
+    DjangoRouteHandler {
+    DjangoViewClassHandlerWithoutKnownRoute() {
+      exists(DjangoViewClassDef vc | vc.getARequestHandler() = this) and
+      not exists(DjangoRouteSetup setup | setup.getARequestHandler() = this)
+    }
+
+    override Parameter getARoutedParameter() {
+      // Since we don't know the URL pattern, we simply mark all parameters as a routed
+      // parameter. This should give us more RemoteFlowSources but could also lead to
+      // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      result in [this.getArg(_), this.getArgByName(_)] and
+      not result = any(int i | i <= this.getRequestParamIndex() | this.getArg(i))
+    }
+  }
+
   /**
    * Gets the regex that is used by django to find routed parameters when using `django.urls.path`.
    *

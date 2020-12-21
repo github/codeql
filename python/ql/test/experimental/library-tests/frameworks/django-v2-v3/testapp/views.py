@@ -24,7 +24,7 @@ class MyBasicViewHandler(View):
 
 
 class MyCustomViewBaseClass(View):
-    def post(self, request: HttpRequest): # $ MISSING: requestHandler
+    def post(self, request: HttpRequest): # $ requestHandler
         return HttpResponse("MyCustomViewBaseClass: POST") # $ HttpResponse
 
 
