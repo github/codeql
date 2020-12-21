@@ -183,10 +183,8 @@
 | Fields.cs:49:17:49:28 | SSA call def(Fields.stat) | Fields.cs:49:17:49:28 | object creation of type Fields |
 | Fields.cs:51:9:51:20 | SSA call def(Fields.stat) | Fields.cs:51:9:51:20 | object creation of type Fields |
 | Fields.cs:61:17:61:17 | SSA entry def(this.LoopField) | Fields.cs:61:17:61:17 | H |
-| Fields.cs:63:16:63:28 | SSA untracked def(this.VolatileField) | Fields.cs:63:16:63:28 | this access |
-| Fields.cs:69:21:69:33 | SSA untracked def(this.VolatileField) | Fields.cs:69:21:69:33 | this access |
-| Fields.cs:71:17:71:35 | SSA untracked def(this.SingleAccessedField) | Fields.cs:71:17:71:35 | this access |
-| Fields.cs:76:20:76:38 | SSA untracked def(this.SingleAccessedField) | Fields.cs:76:20:76:38 | this access |
+| Fields.cs:61:17:61:17 | SSA entry def(this.SingleAccessedField) | Fields.cs:61:17:61:17 | H |
+| Fields.cs:74:17:74:17 | SSA entry def(this.SingleAccessedField) | Fields.cs:74:17:74:17 | I |
 | Fields.cs:77:13:77:45 | SSA def(f) | Fields.cs:77:13:77:45 | Fields f = ... |
 | Fields.cs:78:23:78:54 | SSA def(a) | Fields.cs:78:23:78:54 | Action a = ... |
 | Fields.cs:78:27:78:54 | SSA capture def(f) | Fields.cs:78:27:78:54 | (...) => ... |
@@ -264,10 +262,10 @@
 | Properties.cs:49:17:49:32 | SSA call def(Properties.stat) | Properties.cs:49:17:49:32 | object creation of type Properties |
 | Properties.cs:51:9:51:24 | SSA call def(Properties.stat) | Properties.cs:51:9:51:24 | object creation of type Properties |
 | Properties.cs:61:17:61:17 | SSA entry def(this.LoopProp) | Properties.cs:61:17:61:17 | H |
+| Properties.cs:61:17:61:17 | SSA entry def(this.SingleAccessedProp) | Properties.cs:61:17:61:17 | H |
 | Properties.cs:61:23:61:23 | SSA param(i) | Properties.cs:61:23:61:23 | i |
 | Properties.cs:63:16:63:18 | SSA def(i) | Properties.cs:63:16:63:18 | ...-- |
-| Properties.cs:67:21:67:38 | SSA untracked def(this.SingleAccessedProp) | Properties.cs:67:21:67:38 | this access |
-| Properties.cs:72:20:72:37 | SSA untracked def(this.SingleAccessedProp) | Properties.cs:72:20:72:37 | this access |
+| Properties.cs:70:17:70:17 | SSA entry def(this.SingleAccessedProp) | Properties.cs:70:17:70:17 | I |
 | Properties.cs:73:13:73:32 | SSA def(f) | Properties.cs:73:13:73:32 | Properties f = ... |
 | Properties.cs:74:23:74:54 | SSA def(a) | Properties.cs:74:23:74:54 | Action a = ... |
 | Properties.cs:74:27:74:54 | SSA capture def(f) | Properties.cs:74:27:74:54 | (...) => ... |
@@ -281,11 +279,6 @@
 | Properties.cs:83:9:83:22 | SSA def(this.xs) | Properties.cs:83:9:83:22 | ... = ... |
 | Properties.cs:84:9:84:25 | SSA def(f.xs) | Properties.cs:84:9:84:25 | ... = ... |
 | Properties.cs:85:24:85:46 | SSA capture def(b) | Properties.cs:85:24:85:46 | (...) => ... |
-| Properties.cs:95:20:95:38 | SSA untracked def(this.NonTrivialProp) | Properties.cs:95:20:95:23 | this access |
-| Properties.cs:98:16:98:31 | SSA untracked def(this.VirtualProp) | Properties.cs:98:16:98:19 | this access |
-| Properties.cs:100:9:100:26 | SSA untracked def(this.VolatileField) | Properties.cs:100:9:100:12 | this access |
-| Properties.cs:101:21:101:38 | SSA untracked def(this.VolatileField) | Properties.cs:101:21:101:24 | this access |
-| Properties.cs:101:21:101:41 | SSA untracked def(this.VolatileField.xs) | Properties.cs:101:21:101:38 | access to field VolatileField |
 | Properties.cs:106:37:106:37 | SSA param(p) | Properties.cs:106:37:106:37 | p |
 | Properties.cs:108:10:108:10 | SSA entry def(this.Props) | Properties.cs:108:10:108:10 | K |
 | Properties.cs:108:10:108:10 | SSA entry def(this.Props.Props) | Properties.cs:108:10:108:10 | K |

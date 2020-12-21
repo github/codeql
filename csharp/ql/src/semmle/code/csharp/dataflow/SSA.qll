@@ -17,6 +17,12 @@ module Ssa {
         or
         this instanceof Property
       }
+
+      /**
+       * Holds if the this field or any of the fields part of the qualifier
+       * are volatile.
+       */
+      predicate isVolatile() { this.(Field).isVolatile() }
     }
 
     /** An instance field or property. */
@@ -43,10 +49,12 @@ module Ssa {
           c = v.getAnAccess().getEnclosingCallable()
         } or
         TPlainFieldOrProp(Callable c, FieldOrProp f) {
-          exists(FieldOrPropRead fr | isPlainFieldOrPropAccess(fr, f, c))
+          exists(FieldOrPropRead fr | isPlainFieldOrPropAccess(fr, f, c)) and
+          trackFieldOrProp(f)
         } or
         TQualifiedFieldOrProp(Callable c, SourceVariable q, InstanceFieldOrProp f) {
-          exists(FieldOrPropRead fr | isQualifiedFieldOrPropAccess(fr, f, c, q))
+          exists(FieldOrPropRead fr | isQualifiedFieldOrPropAccess(fr, f, c, q)) and
+          trackFieldOrProp(f)
         }
 
       /** Gets an access to source variable `v`. */
@@ -70,9 +78,9 @@ module Ssa {
 
       cached
       AssignableDefinition getADefinition(ExplicitDefinition def) {
-        exists(TrackedVar tv, AssignableDefinition ad | def = TSsaExplicitDef(tv, ad, _, _) |
+        exists(SourceVariable sv, AssignableDefinition ad | def = TSsaExplicitDef(sv, ad, _, _) |
           result = ad or
-          result = getASameOutRefDefAfter(tv, ad)
+          result = getASameOutRefDefAfter(sv, ad)
         )
       }
     }
@@ -360,6 +368,23 @@ module Ssa {
     predicate liveAfterWrite(BasicBlock bb, int i, SourceVariable v, ReadKind rk) {
       exists(int rnk | rnk = refRank(bb, i, v, Write(_)) | liveAtRank(bb, i, v, rnk, rk))
     }
+
+    /**
+     * Holds if `fp` is a field or a property that is interesting as a basis for SSA.
+     *
+     * - A volatile field is never interesting, since all reads must reread from
+     *   memory and we are forced to assume that the value can change at any point.
+     * - A property is only interesting if it is "field-like", that is, it is a
+     *   non-overridable trivial property.
+     */
+    predicate trackFieldOrProp(FieldOrProp fp) {
+      not fp.isVolatile() and
+      (
+        fp instanceof Field
+        or
+        fp = any(TrivialProperty p | not p.isOverridableOrImplementable())
+      )
+    }
   }
 
   private import SourceVariableImpl
@@ -460,15 +485,6 @@ module Ssa {
       }
 
       override Location getLocation() { result = getFirstAccess().getLocation() }
-
-      /**
-       * Holds if the this field or any of the fields part of the qualifier
-       * are volatile.
-       */
-      predicate isVolatile() {
-        this.getAssignable().(Field).isVolatile() or
-        this.getQualifier().(FieldOrPropSourceVariable).isVolatile()
-      }
     }
 
     /** A plain field or property. */
@@ -498,93 +514,9 @@ module Ssa {
 
   private import SourceVariables
 
-  private module TrackedVariablesImpl {
-    /** Gets the number of accesses of field or property `fp`. */
-    private int numberOfAccesses(FieldOrPropSourceVariable fp) {
-      result = strictcount(fp.getAnAccess())
-    }
-
-    /** Holds if field or property `fp` is accessed inside a loop. */
-    private predicate loopAccessed(FieldOrPropSourceVariable fp) {
-      exists(FieldOrPropRead fpr |
-        fpr = fp.getAnAccess() and
-        fpr.getAControlFlowNode().getBasicBlock().inLoop()
-      )
-    }
-
-    /** Holds if field or property `fp` is accessed more than once or inside a loop. */
-    private predicate multiAccessed(FieldOrPropSourceVariable fp) {
-      loopAccessed(fp) or 1 < numberOfAccesses(fp)
-    }
-
-    /**
-     * Holds if `fp` is a field or a property that is interesting as a basis for SSA.
-     *
-     * - A field or property that is read twice is interesting as we want to know whether
-     *   the reads refer to the same value.
-     * - A field or property that is both written and read is interesting as we want to
-     *   know whether the read might get the written value.
-     * - A field or property that is read in a loop is interesting as we want to know whether
-     *   the value is the same in different iterations (that is, whether the SSA
-     *   definition can be placed outside the loop).
-     * - A volatile field is never interesting, since all reads must reread from
-     *   memory and we are forced to assume that the value can change at any point.
-     * - A property is only interesting if it is "field-like", that is, it is a
-     *   non-overridable trivial property.
-     */
-    predicate trackFieldOrProp(FieldOrPropSourceVariable fp) {
-      multiAccessed(fp) and
-      not fp.isVolatile() and
-      exists(Assignable a | a = fp.getAssignable() |
-        a instanceof Field
-        or
-        a = any(TrivialProperty p | not p.isOverridableOrImplementable())
-      )
-    }
-  }
-
-  private import TrackedVariablesImpl
-
-  /**
-   * A source variable that gets a non-trivial SSA construction.
-   */
-  private class TrackedVar extends SourceVariable {
-    TrackedVar() {
-      this instanceof LocalScopeSourceVariable or
-      trackFieldOrProp(this)
-    }
-  }
-
-  /**
-   * A field or property that gets a non-trivial SSA construction.
-   */
-  private class TrackedFieldOrProp extends TrackedVar, FieldOrPropSourceVariable { }
-
-  /**
-   * A source variable that gets a trivial SSA construction, that is a
-   * definition prior to every read.
-   */
-  private class UntrackedVar extends SourceVariable {
-    UntrackedVar() { not this instanceof TrackedVar }
-  }
-
   private module SsaDefReaches {
-    /** A non-trivial SSA definition. */
-    private class TrackedDefinition extends Definition {
-      TrackedDefinition() {
-        // Same as `not this instanceof ImplicitUntrackedDefinition` but
-        // avoids negative recursion
-        this instanceof ExplicitDefinition or
-        this instanceof ImplicitEntryDefinition or
-        this instanceof ImplicitCallDefinition or
-        this instanceof ImplicitQualifierDefinition or
-        this instanceof PseudoDefinition
-      }
-    }
-
     /**
-     * A classification of SSA variable references into reads and non-trivial
-     * SSA definitions.
+     * A classification of SSA variable references into reads definitions.
      */
     private newtype SsaRefKind =
       SsaRead() or
@@ -592,8 +524,8 @@ module Ssa {
 
     /**
      * Holds if the `i`th node of basic block `bb` is a reference to `v`,
-     * either a read (when `k` is `Read()`) or a non-trivial SSA definition
-     * (when `k` is `SsaDef()`).
+     * either a read (when `k` is `Read()`) or an SSA definition (when `k`
+     * is `SsaDef()`).
      */
     private predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
       exists(ReadKind rk | variableRead(bb, i, v, _, rk) |
@@ -601,7 +533,7 @@ module Ssa {
         k = SsaRead()
       )
       or
-      exists(TrackedDefinition def | definesAt(def, bb, i, v)) and
+      exists(Definition def | definesAt(def, bb, i, v)) and
       k = SsaDef()
     }
 
@@ -629,12 +561,10 @@ module Ssa {
     }
 
     /**
-     * Holds if the non-trivial SSA definition `def` reaches rank index `rankix`
-     * in its own basic block `bb`.
+     * Holds if the SSA definition `def` reaches rank index `rankix` in its own
+     * basic block `bb`.
      */
-    private predicate ssaDefReachesRank(
-      BasicBlock bb, TrackedDefinition def, int rankix, TrackedVar v
-    ) {
+    private predicate ssaDefReachesRank(BasicBlock bb, Definition def, int rankix, SourceVariable v) {
       exists(int i |
         rankix = ssaRefRank(bb, i, v, SsaDef()) and
         definesAt(def, bb, i, v)
@@ -645,12 +575,12 @@ module Ssa {
     }
 
     /**
-     * Holds if the non-trivial SSA definition of `v` at `def` reaches `read` in the
+     * Holds if the SSA definition of `v` at `def` reaches `read` in the
      * same basic block without crossing another SSA definition of `v`.
      * The read at `node` is of kind `rk`.
      */
     private predicate ssaDefReachesReadWithinBlock(
-      TrackedVar v, TrackedDefinition def, ControlFlow::Node read, ReadKind rk
+      SourceVariable v, Definition def, ControlFlow::Node read, ReadKind rk
     ) {
       exists(BasicBlock bb, int rankix, int i |
         ssaDefReachesRank(bb, def, rankix, v) and
@@ -660,12 +590,11 @@ module Ssa {
     }
 
     /**
-     * Holds if the non-trivial SSA definition of `v` at `def` reaches uncertain SSA
-     * definition `redef` in the same basic block, without crossing another SSA
-     * definition of `v`.
+     * Holds if the SSA definition of `v` at `def` reaches uncertain SSA definition
+     * `redef` in the same basic block, without crossing another SSA definition of `v`.
      */
     private predicate ssaDefReachesUncertainDefWithinBlock(
-      TrackedVar v, TrackedDefinition def, UncertainDefinition redef
+      SourceVariable v, Definition def, UncertainDefinition redef
     ) {
       exists(BasicBlock bb, int rankix, int i |
         ssaDefReachesRank(bb, def, rankix, v) and
@@ -678,7 +607,7 @@ module Ssa {
      * Same as `ssaRefRank()`, but restricted to actual reads of `def`, or
      * `def` itself.
      */
-    private int ssaDefRank(TrackedDefinition def, TrackedVar v, BasicBlock bb, int i) {
+    private int ssaDefRank(Definition def, SourceVariable v, BasicBlock bb, int i) {
       v = def.getSourceVariable() and
       result = ssaRefRank(bb, i, v, _) and
       (
@@ -688,12 +617,12 @@ module Ssa {
       )
     }
 
-    private int maxSsaDefRefRank(BasicBlock bb, TrackedVar v) {
+    private int maxSsaDefRefRank(BasicBlock bb, SourceVariable v) {
       result = ssaDefRank(_, v, bb, _) and
       not result + 1 = ssaDefRank(_, v, bb, _)
     }
 
-    private predicate varOccursInBlock(TrackedDefinition def, BasicBlock bb, TrackedVar v) {
+    private predicate varOccursInBlock(Definition def, BasicBlock bb, SourceVariable v) {
       exists(ssaDefRank(def, v, bb, _))
     }
 
@@ -710,7 +639,7 @@ module Ssa {
      * and the underlying variable for `def` is neither read nor written in any block
      * on the path between `bb1` and `bb2`.
      */
-    private predicate varBlockReaches(TrackedDefinition def, BasicBlock bb1, BasicBlock bb2) {
+    private predicate varBlockReaches(Definition def, BasicBlock bb1, BasicBlock bb2) {
       varOccursInBlock(def, bb1, _) and
       bb2 = bb1.getASuccessor()
       or
@@ -724,9 +653,7 @@ module Ssa {
      * `def` is read at `cfn`, `cfn` is in a transitive successor block of `bb1`,
      * and `def` is not read in any block on the path between `bb1` and `cfn`.
      */
-    private predicate varBlockReachesRead(
-      TrackedDefinition def, BasicBlock bb1, ControlFlow::Node cfn
-    ) {
+    private predicate varBlockReachesRead(Definition def, BasicBlock bb1, ControlFlow::Node cfn) {
       exists(BasicBlock bb2, int i2 |
         varBlockReaches(def, bb1, bb2) and
         ssaRefRank(bb2, i2, def.getSourceVariable(), SsaRead()) = 1 and
@@ -739,9 +666,7 @@ module Ssa {
      * or a write), `def` is read at `cfn`, and there is a path between them without
      * any read of `def`.
      */
-    private predicate adjacentVarRead(
-      TrackedDefinition def, BasicBlock bb1, int i1, ControlFlow::Node cfn
-    ) {
+    private predicate adjacentVarRead(Definition def, BasicBlock bb1, int i1, ControlFlow::Node cfn) {
       exists(int rankix, int i2 |
         rankix = ssaDefRank(def, _, bb1, i1) and
         rankix + 1 = ssaDefRank(def, _, bb1, i2) and
@@ -755,14 +680,13 @@ module Ssa {
     cached
     private module Cached {
       /**
-       * Holds if `cfn` is a last read of the non-trivial SSA definition `def`.
-       * That is, `cfn` can reach the end of the enclosing callable, or another
-       * SSA definition for the underlying source variable, without passing through
-       * another read.
+       * Holds if `cfn` is a last read of the SSA definition `def`. That is, `cfn`
+       * can reach the end of the enclosing callable, or another SSA definition for
+       * the underlying source variable, without passing through another read.
        */
       cached
-      predicate lastRead(TrackedDefinition def, ControlFlow::Node cfn) {
-        exists(BasicBlock bb1, int i1, int rnk, TrackedVar v |
+      predicate lastRead(Definition def, ControlFlow::Node cfn) {
+        exists(BasicBlock bb1, int i1, int rnk, SourceVariable v |
           variableRead(bb1, i1, v, cfn, _) and
           rnk = ssaDefRank(def, v, bb1, i1)
         |
@@ -788,9 +712,7 @@ module Ssa {
       }
 
       pragma[noinline]
-      private predicate ssaDefReachesEndOfBlockRec(
-        BasicBlock bb, TrackedDefinition def, TrackedVar v
-      ) {
+      private predicate ssaDefReachesEndOfBlockRec(BasicBlock bb, Definition def, SourceVariable v) {
         exists(BasicBlock idom | ssaDefReachesEndOfBlock(idom, def, v) |
           // The construction of SSA form ensures that each read of a variable is
           // dominated by its definition. An SSA definition therefore reaches a
@@ -803,12 +725,12 @@ module Ssa {
       }
 
       /**
-       * Holds if the non-trivial SSA definition of `v` at `def` reaches the end of a
-       * basic block `bb`, at which point it is still live, without crossing another
+       * Holds if the SSA definition of `v` at `def` reaches the end of a basic
+       * block `bb`, at which point it is still live, without crossing another
        * SSA definition of `v`.
        */
       cached
-      predicate ssaDefReachesEndOfBlock(BasicBlock bb, TrackedDefinition def, TrackedVar v) {
+      predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable v) {
         exists(int last | last = maxSsaRefRank(bb, v) |
           ssaDefReachesRank(bb, def, last, v) and
           liveAtExit(bb, v, _)
@@ -820,13 +742,12 @@ module Ssa {
       }
 
       /**
-       * Holds if the non-trivial SSA definition of `v` at `def` reaches `read` without
-       * crossing another SSA definition of `v`.
-       * The read at `node` is of kind `rk`.
+       * Holds if the SSA definition of `v` at `def` reaches `read` without crossing
+       * another SSA definition of `v`. The read at `node` is of kind `rk`.
        */
       cached
       predicate ssaDefReachesRead(
-        TrackedVar v, TrackedDefinition def, ControlFlow::Node read, ReadKind rk
+        SourceVariable v, Definition def, ControlFlow::Node read, ReadKind rk
       ) {
         ssaDefReachesReadWithinBlock(v, def, read, rk)
         or
@@ -838,12 +759,12 @@ module Ssa {
       }
 
       /**
-       * Holds if the non-trivial SSA definition of `v` at `def` reaches uncertain SSA
-       * definition `redef` without crossing another SSA definition of `v`.
+       * Holds if the SSA definition of `v` at `def` reaches uncertain SSA definition
+       * `redef` without crossing another SSA definition of `v`.
        */
       cached
       predicate ssaDefReachesUncertainDef(
-        TrackedVar v, TrackedDefinition def, UncertainDefinition redef
+        SourceVariable v, Definition def, UncertainDefinition redef
       ) {
         ssaDefReachesUncertainDefWithinBlock(v, def, redef)
         or
@@ -855,11 +776,11 @@ module Ssa {
       }
 
       /**
-       * Holds if the value defined at non-trivial SSA definition `def` can reach a
-       * read at `cfn`, without passing through any other read.
+       * Holds if the value defined at SSA definition `def` can reach a read at `cfn`,
+       * without passing through any other read.
        */
       cached
-      predicate firstReadSameVar(TrackedDefinition def, ControlFlow::Node cfn) {
+      predicate firstReadSameVar(Definition def, ControlFlow::Node cfn) {
         exists(BasicBlock bb1, int i1 |
           definesAt(def, bb1, i1, _) and
           adjacentVarRead(def, bb1, i1, cfn)
@@ -873,7 +794,7 @@ module Ssa {
        */
       cached
       predicate adjacentReadPairSameVar(
-        TrackedDefinition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
+        Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
       ) {
         exists(BasicBlock bb1, int i1 |
           variableRead(bb1, i1, _, cfn1, _) and
@@ -981,7 +902,7 @@ module Ssa {
       fpdef.getTarget() = fp and
       not init(fpdef) and
       fpdef.getEnclosingCallable() = c and
-      exists(TrackedFieldOrProp tf | tf.getAssignable() = fp)
+      exists(FieldOrPropSourceVariable tf | tf.getAssignable() = fp)
     }
 
     /**
@@ -1173,7 +1094,7 @@ module Ssa {
      * an update somewhere, and `fp` is likely to be live in `bb` at index
      * `i`.
      */
-    private predicate updateCandidate(BasicBlock bb, int i, TrackedFieldOrProp fp, Call call) {
+    private predicate updateCandidate(BasicBlock bb, int i, FieldOrPropSourceVariable fp, Call call) {
       possiblyLiveAtAllNodes(bb, fp) and
       callAt(bb, i, call) and
       relevantDefinition(_, fp.getAssignable(), _) and
@@ -1181,11 +1102,11 @@ module Ssa {
     }
 
     private predicate source(
-      Call call, TrackedFieldOrProp tfp, FieldOrProp fp, Callable c, boolean fresh
+      Call call, FieldOrPropSourceVariable fps, FieldOrProp fp, Callable c, boolean fresh
     ) {
-      updateCandidate(_, _, tfp, call) and
+      updateCandidate(_, _, fps, call) and
       c = getARuntimeTarget(call, _) and
-      fp = tfp.getAssignable() and
+      fp = fps.getAssignable() and
       if c instanceof Constructor then fresh = true else fresh = false
     }
 
@@ -1259,13 +1180,13 @@ module Ssa {
     }
 
     private predicate updatesNamedFieldOrPropPossiblyLive(
-      BasicBlock bb, int i, TrackedFieldOrProp fp, Call call, Callable setter
+      BasicBlock bb, int i, FieldOrPropSourceVariable fp, Call call, Callable setter
     ) {
       updateCandidate(bb, i, fp, call) and
       updatesNamedFieldOrProp_(fp, call, setter)
     }
 
-    private int firstRefAfterCall(BasicBlock bb, int i, TrackedFieldOrProp fp) {
+    private int firstRefAfterCall(BasicBlock bb, int i, FieldOrPropSourceVariable fp) {
       updatesNamedFieldOrPropPossiblyLive(bb, i, fp, _, _) and
       result = min(int k | k > i and ref(bb, k, fp, _))
     }
@@ -1275,7 +1196,7 @@ module Ssa {
      * update occurs in `setter`.
      */
     cached
-    predicate updatesNamedFieldOrProp(Call c, TrackedFieldOrProp fp, Callable setter) {
+    predicate updatesNamedFieldOrProp(Call c, FieldOrPropSourceVariable fp, Callable setter) {
       forceCachingInSameStage() and
       exists(BasicBlock bb, int i | updatesNamedFieldOrPropPossiblyLive(bb, i, fp, c, setter) |
         not exists(firstRefAfterCall(bb, i, fp)) and
@@ -1784,16 +1705,14 @@ module Ssa {
      *      properties, or captured variables).
      *   4. Implicit indirect definitions of variables through qualifier definitions
      *      (fields or properties).
-     *   5. Implicit definitions of variables prior to all reads, for variables that
-     *      are not amenable to SSA analysis (`UntrackedVar`).
-     *   6. Phi nodes.
+     *   5. Phi nodes.
      *
      * SSA definitions are only introduced where necessary. That is, dead assignments
      * have no associated SSA definitions.
      */
     cached
     newtype TDefinition =
-      TSsaExplicitDef(TrackedVar v, AssignableDefinition def, BasicBlock bb, int i) {
+      TSsaExplicitDef(SourceVariable v, AssignableDefinition def, BasicBlock bb, int i) {
         variableDefinition(bb, i, v, def) and
         (
           exists(ReadKind rk | liveAfterWrite(bb, i, v, rk) |
@@ -1814,7 +1733,7 @@ module Ssa {
           liveAfterWriteCaptured(bb, i, v)
         )
       } or
-      TSsaImplicitEntryDef(TrackedVar v, ControlFlow::BasicBlocks::EntryBlock ebb) {
+      TSsaImplicitEntryDef(SourceVariable v, ControlFlow::BasicBlocks::EntryBlock ebb) {
         liveAtEntry(ebb, v, _) and
         exists(Callable c |
           c = ebb.getCallable() and
@@ -1828,10 +1747,10 @@ module Ssa {
           )
           or
           // Each tracked field and property has an implicit entry definition
-          v instanceof TrackedFieldOrProp
+          v instanceof FieldOrPropSourceVariable
         )
       } or
-      TSsaImplicitCallDef(TrackedVar v, Call c, BasicBlock bb, int i) {
+      TSsaImplicitCallDef(SourceVariable v, Call c, BasicBlock bb, int i) {
         bb.getNode(i) = c.getAControlFlowNode() and
         (
           // Liveness of `v` after `c` is guaranteed by `updatesNamedFieldOrProp`
@@ -1841,7 +1760,7 @@ module Ssa {
           updatesCapturedVariable(c, v, _, _)
         )
       } or
-      TSsaImplicitQualifierDef(TrackedVar v, Definition qdef) {
+      TSsaImplicitQualifierDef(SourceVariable v, Definition qdef) {
         exists(BasicBlock bb, int i |
           qdef.getSourceVariable() = v.getQualifier() and
           qdef.definesAt(bb, i) and
@@ -1854,17 +1773,13 @@ module Ssa {
           not exists(TSsaImplicitCallDef(v, _, bb, i))
         )
       } or
-      TSsaImplicitUntrackedDef(UntrackedVar v, BasicBlock bb, int i) {
-        // Insert a definition prior to every read for untracked variables
-        bb.getNode(i + 1) = v.getAnAccess().(AssignableRead).getAControlFlowNode()
-      } or
-      TPhiNode(TrackedVar v, ControlFlow::BasicBlocks::JoinBlock bb) {
+      TPhiNode(SourceVariable v, ControlFlow::BasicBlocks::JoinBlock bb) {
         phiNodeMaybeLive(bb, v) and
         liveAtEntry(bb, v, _)
       }
 
     pragma[noinline]
-    private predicate phiNodeMaybeLive(ControlFlow::BasicBlocks::JoinBlock bb, TrackedVar v) {
+    private predicate phiNodeMaybeLive(ControlFlow::BasicBlocks::JoinBlock bb, SourceVariable v) {
       exists(Definition def, BasicBlock bb1 | definesAt(def, bb1, _, v) |
         bb1.inDominanceFrontier(bb)
       )
@@ -1885,8 +1800,6 @@ module Ssa {
       def = TSsaImplicitCallDef(v, _, bb, i)
       or
       exists(Definition qdef | def = TSsaImplicitQualifierDef(v, qdef) | definesAt(qdef, bb, i, _))
-      or
-      def = TSsaImplicitUntrackedDef(v, bb, i)
       or
       def = TPhiNode(v, bb) and i = -1
     }
@@ -2256,10 +2169,10 @@ module Ssa {
    * An SSA definition that corresponds to an explicit assignable definition.
    */
   class ExplicitDefinition extends Definition, TSsaExplicitDef {
-    TrackedVar tv;
+    SourceVariable sv;
     AssignableDefinition ad;
 
-    ExplicitDefinition() { this = TSsaExplicitDef(tv, ad, _, _) }
+    ExplicitDefinition() { this = TSsaExplicitDef(sv, ad, _, _) }
 
     /**
      * Gets an underlying assignable definition. The result is always unique,
@@ -2337,16 +2250,14 @@ module Ssa {
    * An SSA definition that does not correspond to an explicit variable definition.
    * Either an implicit initialization of a variable at the beginning of a callable
    * (`ImplicitEntryDefinition`), an implicit definition via a call
-   * (`ImplicitCallDefinition`), an implicit definition where the qualifier is
-   * updated (`ImplicitQualifierDefinition`), or a definition for a field or
-   * property that is not amenable to SSA analysis (`ImplicitUntrackedDefinition`).
+   * (`ImplicitCallDefinition`), or an implicit definition where the qualifier is
+   * updated (`ImplicitQualifierDefinition`).
    */
   class ImplicitDefinition extends Definition {
     ImplicitDefinition() {
       this = TSsaImplicitEntryDef(_, _) or
       this = TSsaImplicitCallDef(_, _, _, _) or
-      this = TSsaImplicitQualifierDef(_, _) or
-      this = TSsaImplicitUntrackedDef(_, _, _)
+      this = TSsaImplicitQualifierDef(_, _)
     }
   }
 
@@ -2421,25 +2332,6 @@ module Ssa {
   }
 
   /**
-   * An SSA definition for a variable that is not amenable to SSA analysis. A definition
-   * is inserted prior to every read.
-   */
-  class ImplicitUntrackedDefinition extends ImplicitDefinition, TSsaImplicitUntrackedDef {
-    override AssignableRead getARead() {
-      exists(BasicBlock bb, int i, UntrackedVar v |
-        this = TSsaImplicitUntrackedDef(v, bb, i) and
-        result.getAControlFlowNode() = bb.getNode(i + 1)
-      )
-    }
-
-    override string toString() {
-      result = getToStringPrefix(this) + "SSA untracked def(" + getSourceVariable() + ")"
-    }
-
-    override Location getLocation() { result = this.getARead().getLocation() }
-  }
-
-  /**
    * An SSA definition that has no actual semantics, but simply serves to
    * merge or filter data flow.
    *
@@ -2483,7 +2375,7 @@ module Ssa {
      *   call definition on line 9 as inputs.
      */
     override Definition getAnInput() {
-      exists(BasicBlock bb, BasicBlock phiPred, TrackedVar v |
+      exists(BasicBlock bb, BasicBlock phiPred, SourceVariable v |
         definesAt(this, bb, _, v) and
         bb.getAPredecessor() = phiPred and
         ssaDefReachesEndOfBlock(phiPred, result, v)
