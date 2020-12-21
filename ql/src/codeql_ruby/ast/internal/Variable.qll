@@ -20,7 +20,6 @@ private predicate parameterAssignment(
 private predicate scopeDefinesParameterVariable(
   CallableScope::Range scope, string name, Generated::Identifier i
 ) {
-  parameterAssignment(scope, name, i) and
   // In case of overlapping parameter names (e.g. `_`), only the first
   // parameter will give rise to a variable
   i =
@@ -115,7 +114,6 @@ private module Cached {
     TLocalVariable(VariableScope scope, string name, Generated::Identifier i) {
       scopeDefinesParameterVariable(scope, name, i)
       or
-      scopeAssigns(scope, name, i) and
       i =
         min(Generated::Identifier other |
           scopeAssigns(scope, name, other)
