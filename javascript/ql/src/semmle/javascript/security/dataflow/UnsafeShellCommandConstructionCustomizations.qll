@@ -53,7 +53,7 @@ module UnsafeShellCommandConstruction {
     ExternalInputSource() {
       this =
         Exports::getAValueExportedBy(Exports::getTopmostPackageJSON())
-            .(DataFlow::FunctionNode)
+            .getAFunctionValue()
             .getAParameter() and
       not this.getName() = ["cmd", "command"] // looks to be on purpose.
     }
