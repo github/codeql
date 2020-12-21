@@ -53,14 +53,14 @@ class Variable extends TVariable {
 }
 
 /** A local variable. */
-class LocalVariable extends Variable {
+class LocalVariable extends Variable, TLocalVariable {
   override LocalVariable::Range range;
 
   final override LocalVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
 /** A global variable. */
-class GlobalVariable extends Variable {
+class GlobalVariable extends Variable, TGlobalVariable {
   override GlobalVariable::Range range;
 
   final override GlobalVariableAccess getAnAccess() { result.getVariable() = this }

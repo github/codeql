@@ -111,9 +111,7 @@ private module Cached {
 
   cached
   newtype TVariable =
-    TGlobalVariable(TGlobalScope scope, string name) {
-      name = any(Generated::GlobalVariable var).getValue()
-    } or
+    TGlobalVariable(string name) { name = any(Generated::GlobalVariable var).getValue() } or
     TLocalVariable(VariableScope scope, string name, Generated::Identifier i) {
       scopeDefinesParameterVariable(scope, name, i)
       or
@@ -223,7 +221,7 @@ module Variable {
 }
 
 module LocalVariable {
-  class Range extends Variable::Range {
+  class Range extends Variable::Range, TLocalVariable {
     private VariableScope scope;
     private string name;
     private Generated::Identifier i;
@@ -239,17 +237,16 @@ module LocalVariable {
 }
 
 module GlobalVariable {
-  class Range extends Variable::Range {
-    private VariableScope scope;
+  class Range extends Variable::Range, TGlobalVariable {
     private string name;
 
-    Range() { this = TGlobalVariable(scope, name) }
+    Range() { this = TGlobalVariable(name) }
 
     final override string getName() { result = name }
 
     final override Location getLocation() { none() }
 
-    final override VariableScope getDeclaringScope() { result = scope }
+    final override VariableScope getDeclaringScope() { result = TGlobalScope() }
   }
 }
 
