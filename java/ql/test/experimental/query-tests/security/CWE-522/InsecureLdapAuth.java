@@ -1,0 +1,92 @@
+import java.util.Hashtable;
+
+import javax.naming.Context;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+import javax.naming.ldap.InitialLdapContext;
+
+public class InsecureLdapAuth {
+	// BAD - Test LDAP authentication in cleartext using `DirContext`.
+	public void testCleartextLdapAuth(String ldapUserName, String password) {
+		String ldapUrl = "ldap://ad.your-server.com:389";
+		Hashtable<String, String> environment = new Hashtable<String, String>();
+		environment.put(Context.INITIAL_CONTEXT_FACTORY,
+			"com.sun.jndi.ldap.LdapCtxFactory");
+		environment.put(Context.PROVIDER_URL, ldapUrl);
+		environment.put(Context.REFERRAL, "follow");
+		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
+		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
+		environment.put(Context.SECURITY_CREDENTIALS, password);
+		DirContext dirContext = new InitialDirContext(environment);
+	}
+
+	// BAD - Test LDAP authentication in cleartext using `DirContext`.
+	public void testCleartextLdapAuth(String ldapUserName, String password, String serverName) {
+		String ldapUrl = "ldap://"+serverName+":389";
+		Hashtable<String, String> environment = new Hashtable<String, String>();
+		environment.put(Context.INITIAL_CONTEXT_FACTORY,
+			"com.sun.jndi.ldap.LdapCtxFactory");
+		environment.put(Context.PROVIDER_URL, ldapUrl);
+		environment.put(Context.REFERRAL, "follow");
+		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
+		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
+		environment.put(Context.SECURITY_CREDENTIALS, password);
+		DirContext dirContext = new InitialDirContext(environment);
+	}
+
+	// GOOD - Test LDAP authentication over SSL.
+	public void testSslLdapAuth(String ldapUserName, String password) {
+		String ldapUrl = "ldaps://ad.your-server.com:636";
+		Hashtable<String, String> environment = new Hashtable<String, String>();
+		environment.put(Context.INITIAL_CONTEXT_FACTORY,
+			"com.sun.jndi.ldap.LdapCtxFactory");
+		environment.put(Context.PROVIDER_URL, ldapUrl);
+		environment.put(Context.REFERRAL, "follow");
+		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
+		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
+		environment.put(Context.SECURITY_CREDENTIALS, password);
+		DirContext dirContext = new InitialDirContext(environment);
+	}
+
+	// GOOD - Test LDAP authentication with SASL authentication.
+	public void testSaslLdapAuth(String ldapUserName, String password) {
+		String ldapUrl = "ldap://ad.your-server.com:389";
+		Hashtable<String, String> environment = new Hashtable<String, String>();
+		environment.put(Context.INITIAL_CONTEXT_FACTORY,
+			"com.sun.jndi.ldap.LdapCtxFactory");
+		environment.put(Context.PROVIDER_URL, ldapUrl);
+		environment.put(Context.REFERRAL, "follow");
+		environment.put(Context.SECURITY_AUTHENTICATION, "DIGEST-MD5 GSSAPI");
+		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
+		environment.put(Context.SECURITY_CREDENTIALS, password);
+		DirContext dirContext = new InitialDirContext(environment);
+	}
+
+	// GOOD - Test LDAP authentication in cleartext connecting to local LDAP server.
+	public void testCleartextLdapAuth2(String ldapUserName, String password) {
+		String ldapUrl = "ldap://localhost:389";
+		Hashtable<String, String> environment = new Hashtable<String, String>();
+		environment.put(Context.INITIAL_CONTEXT_FACTORY,
+			"com.sun.jndi.ldap.LdapCtxFactory");
+		environment.put(Context.PROVIDER_URL, ldapUrl);
+		environment.put(Context.REFERRAL, "follow");
+		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
+		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
+		environment.put(Context.SECURITY_CREDENTIALS, password);
+		DirContext dirContext = new InitialDirContext(environment);
+	}
+
+	// BAD - Test LDAP authentication in cleartext using `InitialLdapContext`.
+	public void testCleartextLdapAuth3(String ldapUserName, String password) {
+		String ldapUrl = "ldap://ad.your-server.com:389";
+		Hashtable<String, String> environment = new Hashtable<String, String>();
+		environment.put(Context.INITIAL_CONTEXT_FACTORY,
+			"com.sun.jndi.ldap.LdapCtxFactory");
+		environment.put(Context.PROVIDER_URL, ldapUrl);
+		environment.put(Context.REFERRAL, "follow");
+		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
+		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
+		environment.put(Context.SECURITY_CREDENTIALS, password);
+		InitialLdapContext ldapContext = new InitialLdapContext(environment, null);
+	}	
+}
