@@ -85,6 +85,13 @@ class GlobalVariable extends Variable, TGlobalVariable {
   final override GlobalVariableAccess getAnAccess() { result.getVariable() = this }
 }
 
+/** An instance variable. */
+class InstanceVariable extends Variable, TInstanceVariable {
+  override InstanceVariable::Range range;
+
+  final override InstanceVariableAccess getAnAccess() { result.getVariable() = this }
+}
+
 /** An access to a variable. */
 class VariableAccess extends Expr {
   override VariableAccess::Range range;
@@ -192,3 +199,14 @@ class GlobalVariableWriteAccess extends GlobalVariableAccess, VariableWriteAcces
 
 /** An access to a global variable where the value is read. */
 class GlobalVariableReadAccess extends GlobalVariableAccess, VariableReadAccess { }
+
+/** An access to an instance variable. */
+class InstanceVariableAccess extends VariableAccess, @token_instance_variable {
+  final override InstanceVariableAccess::Range range;
+
+  /** Gets the variable this identifier refers to. */
+  final override InstanceVariable getVariable() { result = range.getVariable() }
+
+  final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
+}
+
