@@ -734,8 +734,8 @@ module TaintedWithPath {
    * through a global variable.
    */
   predicate taintedWithoutGlobals(Element tainted) {
-    exists(PathNode sourceNode, FinalPathNode sinkNode |
-      sourceNode.(WrapPathNode).inner().getNode() = getNodeForSource(_) and
+    exists(AdjustedConfiguration cfg, PathNode sourceNode, FinalPathNode sinkNode |
+      cfg.isSource(sourceNode.(WrapPathNode).inner().getNode()) and
       edgesWithoutGlobals+(sourceNode, sinkNode) and
       tainted = sinkNode.inner()
     )
