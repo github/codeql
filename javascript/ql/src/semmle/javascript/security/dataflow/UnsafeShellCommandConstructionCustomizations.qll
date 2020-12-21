@@ -189,4 +189,25 @@ module UnsafeShellCommandConstruction {
       )
     }
   }
+
+  /**
+   * A check of the form `type x === "X"`, where x is  "number", or "boolean",
+   * which sanitized `x` in its "then" branch.
+   */
+  class TypeOfSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+    Expr x;
+    override EqualityTest astNode;
+
+    TypeOfSanitizer() {
+      exists(StringLiteral str, TypeofExpr typeof | astNode.hasOperands(str, typeof) |
+        str.getValue() = ["number", "boolean"] and // "undefined" is already handled in TaintTracking.qll
+        typeof.getOperand() = x
+      )
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = astNode.getPolarity() and
+      e = x
+    }
+  }
 }

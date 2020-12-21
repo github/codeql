@@ -339,3 +339,9 @@ module.exports.unproblematic = function() {
 module.exports.problematic = function(n) {
 	cp.exec("rm -rf " + id(n)); // NOT OK
 };
+
+module.exports.typeofNumber = function(n) {
+	if (typeof n === "number") {
+		cp.exec("rm -rf " + n); // OK
+	}
+};
