@@ -142,7 +142,9 @@ class SqlExecutionTest extends InlineExpectationsTest {
 class HttpServerRouteSetupTest extends InlineExpectationsTest {
   HttpServerRouteSetupTest() { this = "HttpServerRouteSetupTest" }
 
-  override string getARelevantTag() { result in ["routeSetup", "routeHandler", "routedParameter"] }
+  override string getARelevantTag() {
+    result in ["routeSetup", "requestHandler", "routedParameter"]
+  }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(HTTP::Server::RouteSetup setup |
@@ -157,16 +159,15 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
       tag = "routeSetup"
     )
     or
-    exists(HTTP::Server::RouteSetup setup, Function func |
-      func = setup.getARouteHandler() and
-      location = func.getLocation() and
-      element = func.toString() and
+    exists(HTTP::Server::RequestHandler handler |
+      location = handler.getLocation() and
+      element = handler.toString() and
       value = "" and
-      tag = "routeHandler"
+      tag = "requestHandler"
     )
     or
-    exists(HTTP::Server::RouteSetup setup, Parameter param |
-      param = setup.getARoutedParameter() and
+    exists(HTTP::Server::RequestHandler handler, Parameter param |
+      param = handler.getARoutedParameter() and
       location = param.getLocation() and
       element = param.toString() and
       value = param.asName().getId() and

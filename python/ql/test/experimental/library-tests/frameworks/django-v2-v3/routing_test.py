@@ -4,19 +4,19 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpRe
 from django.views import View
 
 
-def url_match_xss(request, foo, bar, no_taint=None):  # $routeHandler routedParameter=foo routedParameter=bar
+def url_match_xss(request, foo, bar, no_taint=None):  # $requestHandler routedParameter=foo routedParameter=bar
     return HttpResponse('url_match_xss: {} {}'.format(foo, bar))  # $HttpResponse
 
 
-def get_params_xss(request):  # $routeHandler
+def get_params_xss(request):  # $requestHandler
     return HttpResponse(request.GET.get("untrusted"))  # $HttpResponse
 
 
-def post_params_xss(request):  # $routeHandler
+def post_params_xss(request):  # $requestHandler
     return HttpResponse(request.POST.get("untrusted"))  # $HttpResponse
 
 
-def http_resp_write(request):  # $routeHandler
+def http_resp_write(request):  # $requestHandler
     rsp = HttpResponse()  # $HttpResponse
     rsp.write(request.GET.get("untrusted"))  # $HttpResponse
     return rsp
@@ -26,22 +26,22 @@ class Foo(object):
     # Note: since Foo is used as the super type in a class view, it will be able to handle requests.
 
 
-    def post(self, request, untrusted):  # $ MISSING: routeHandler routedParameter=untrusted
+    def post(self, request, untrusted):  # $ MISSING: requestHandler routedParameter=untrusted
         return HttpResponse('Foo post: {}'.format(untrusted))  # $HttpResponse
 
 
 class ClassView(View, Foo):
 
-    def get(self, request, untrusted):  # $ routeHandler routedParameter=untrusted
+    def get(self, request, untrusted):  # $ requestHandler routedParameter=untrusted
         return HttpResponse('ClassView get: {}'.format(untrusted))  # $HttpResponse
 
 
-def show_articles(request, page_number=1):  # $routeHandler routedParameter=page_number
+def show_articles(request, page_number=1):  # $requestHandler routedParameter=page_number
     page_number = int(page_number)
     return HttpResponse('articles page: {}'.format(page_number))  # $HttpResponse
 
 
-def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $routeHandler routedParameter=arg0 routedParameter=arg1
+def xxs_positional_arg(request, arg0, arg1, no_taint=None):  # $requestHandler routedParameter=arg0 routedParameter=arg1
     return HttpResponse('xxs_positional_arg: {} {}'.format(arg0, arg1))  # $HttpResponse
 
 
@@ -62,7 +62,7 @@ urlpatterns = [
 
 # Show we understand the keyword arguments to django.urls.re_path
 
-def re_path_kwargs(request):  # $routeHandler
+def re_path_kwargs(request):  # $requestHandler
     return HttpResponse('re_path_kwargs')  # $HttpResponse
 
 
@@ -75,16 +75,16 @@ urlpatterns = [
 ################################################################################
 
 # saying page_number is an externally controlled *string* is a bit strange, when we have an int converter :O
-def page_number(request, page_number=1):  # $routeHandler routedParameter=page_number
+def page_number(request, page_number=1):  # $requestHandler routedParameter=page_number
     return HttpResponse('page_number: {}'.format(page_number))  # $HttpResponse
 
-def foo_bar_baz(request, foo, bar, baz):  # $routeHandler routedParameter=foo routedParameter=bar routedParameter=baz
+def foo_bar_baz(request, foo, bar, baz):  # $requestHandler routedParameter=foo routedParameter=bar routedParameter=baz
     return HttpResponse('foo_bar_baz: {} {} {}'.format(foo, bar, baz))  # $HttpResponse
 
-def path_kwargs(request, foo, bar):  # $routeHandler routedParameter=foo routedParameter=bar
+def path_kwargs(request, foo, bar):  # $requestHandler routedParameter=foo routedParameter=bar
     return HttpResponse('path_kwargs: {} {} {}'.format(foo, bar))  # $HttpResponse
 
-def not_valid_identifier(request):  # $routeHandler
+def not_valid_identifier(request):  # $requestHandler
     return HttpResponse('<foo!>')  # $HttpResponse
 
 urlpatterns = [
@@ -101,7 +101,7 @@ urlpatterns = [
 # This version 1.x way of defining urls is deprecated in Django 3.1, but still works
 from django.conf.urls import url
 
-def deprecated(request):  # $routeHandler
+def deprecated(request):  # $requestHandler
     return HttpResponse('deprecated')  # $HttpResponse
 
 urlpatterns = [
@@ -113,5 +113,5 @@ class PossiblyNotRouted(View):
     # Even if our analysis can't find a route-setup for this class, we should still
     # consider it to be a handle incoming HTTP requests
 
-    def get(self, request, possibly_not_routed=42):  # $ MISSING: routeHandler routedParameter=possibly_not_routed
+    def get(self, request, possibly_not_routed=42):  # $ MISSING: requestHandler routedParameter=possibly_not_routed
         return HttpResponse('PossiblyNotRouted get: {}'.format(possibly_not_routed))  # $HttpResponse
