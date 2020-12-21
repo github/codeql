@@ -1067,9 +1067,8 @@ module Trees {
       // completion from the body
       c =
         any(NestedEnsureCompletion nec |
-          this
-              .lastEnsure(last, nec.getAnInnerCompatibleCompletion(), nec.getOuterCompletion(),
-                nec.getNestLevel())
+          this.lastEnsure(last, nec.getAnInnerCompatibleCompletion(), nec.getOuterCompletion(),
+            nec.getNestLevel())
         )
       or
       not exists(this.getBodyChild(_, _)) and
