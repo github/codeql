@@ -114,4 +114,6 @@ app.use(function(req, res) {
 	tainted.match(/^\d*5\w*$/); // NOT OK
 
 	tainted.match(/\/\*[\d\D]*?\*\//g); // NOT OK
+
+	tainted.match(/(#\d+)+/); // OK - but still flagged due to insufficient suffix-checking.
 });

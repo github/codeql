@@ -802,10 +802,16 @@ private module PrefixConstruction {
       result = prefix(prev) and delta(prev, Epsilon(), state)
       or
       not delta(prev, Epsilon(), state) and
-      result =
-        prefix(prev) +
-          min(string c | delta(prev, any(InputSymbol symbol | c = intersect(Any(), symbol)), state))
+      result = prefix(prev) + getMinimumEdgeChar(prev, state)
     )
+  }
+
+  /**
+   * Gets the minimum char for which there exists a transition from `prev` to `next` in the NFA.
+   */
+  private string getMinimumEdgeChar(State prev, State next) {
+    result =
+      min(string c | delta(prev, any(InputSymbol symbol | c = intersect(Any(), symbol)), next))
   }
 
   /**
@@ -871,13 +877,25 @@ private module SuffixConstruction {
   /**
    * Holds if there is likely a non-empty suffix leading to rejection starting in `s`.
    */
-  pragma[noinline]
+  pragma[noopt]
   predicate hasEdgeToLikelyRejectable(StateInPumpableRegexp s) {
     // all edges (at least one) with some char leads to another state that is rejectable.
     // the `next` states might not share a common suffix, which can cause FPs.
-    exists(string char | char = relevant(getRoot(s.getRepr())) |
-      forex(State next | deltaClosedChar(s, char, next) | isLikelyRejectable(next))
+    exists(string char | char = hasEdgeToLikelyRejectableHelper(s) |
+      exists(State next | deltaClosedChar(s, char, next) | isLikelyRejectable(next)) and
+      forall(State next | deltaClosedChar(s, char, next) | isLikelyRejectable(next))
     )
+  }
+
+  /**
+   * Gets a char for there exists a transition away from `s`,
+   * and `s` has not been found to be rejectable by `hasRejectEdge` or `isRejectState`.
+   */
+  pragma[noinline]
+  private string hasEdgeToLikelyRejectableHelper(StateInPumpableRegexp s) {
+    not hasRejectEdge(s) and
+    not isRejectState(s) and
+    deltaClosedChar(s, result, _)
   }
 
   /**
@@ -900,37 +918,76 @@ private module SuffixConstruction {
    */
   pragma[noinline]
   private string relevant(RegExpRoot root) {
-    result = ["a", "9", "|", "\n", " "]
+    result = ["a", "9", "|", "\n", " ", "|", "\n", "Z"] // must include all the strings from `hasSimpleRejectEdge`.
     or
     exists(InputSymbol s | belongsTo(s, root) | result = intersect(s, _))
   }
 
   /**
-   * Holds if there is no edge from `s` labeled `char` in our NFA.
+   * Holds if there exists a `char` such that there is no edge from `s` labeled `char` in our NFA.
    * The NFA does not model reject states, so the above is the same as saying there is a reject edge.
    */
   private predicate hasRejectEdge(State s) {
+    hasSimpleRejectEdge(s)
+    or
+    not hasSimpleRejectEdge(s) and
     exists(string char | char = relevant(getRoot(s.getRepr())) | not deltaClosedChar(s, char, _))
+  }
+
+  /**
+   * Holds if there is not edge from `s` labeled with "|", "\n", or "Z" in our NFA.
+   * This predicate is used as a cheap pre-processing to speed up `hasRejectEdge`.
+   */
+  private predicate hasSimpleRejectEdge(State s) {
+    // The three chars were chosen arbitrarily.
+    exists(string char | char = ["|", "\n", "Z"] | not deltaClosedChar(s, char, _))
   }
 
   /**
    * Gets a state that can be reached from pumpable `fork` consuming all
    * chars in `w` any number of times followed by the first `i+1` characters of `w`.
    */
+  pragma[noopt]
   private State process(State fork, string w, int i) {
+    exists(State prev | prev = getProcessPrevious(fork, i, w) |
+      exists(string char, InputSymbol sym |
+        char = w.charAt(i) and
+        deltaClosed(prev, sym, result) and
+        sym = getAProcessInputSymbol(char)
+      )
+    )
+  }
+
+  /**
+   * Gets a state that can be reached from pumpable `fork` consuming all
+   * chars in `w` any number of times followed by the first `i` characters of `w`.
+   */
+  private State getProcessPrevious(State fork, int i, string w) {
     isReDoSCandidate(fork, w) and
-    exists(State prev |
-      i = 0 and prev = fork
+    (
+      i = 0 and result = fork
       or
-      prev = process(fork, w, i - 1)
+      result = process(fork, w, i - 1)
       or
       // repeat until fixpoint
       i = 0 and
-      prev = process(fork, w, w.length() - 1)
-    |
-      deltaClosed(prev, getAnInputSymbolMatching(w.charAt(i)), result)
+      result = process(fork, w, w.length() - 1)
     )
   }
+
+  /**
+   * Gets an InputSymbol that matches `char`.
+   * The predicate is specialized to only have a result for the `char`s that are relevant for the `process` predicate.
+   */
+  private InputSymbol getAProcessInputSymbol(string char) {
+    char = getAProcessChar() and
+    result = getAnInputSymbolMatching(char)
+  }
+
+  /**
+   * Gets a `char` that occurs in a `pump` string.
+   */
+  private string getAProcessChar() { result = any(string s | isReDoSCandidate(_, s)).charAt(_) }
 }
 
 /**
