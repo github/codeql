@@ -1909,6 +1909,8 @@ private module Django {
     RemoteFlowSource::Range, DataFlow::ParameterNode {
     DjangoRouteHandlerRequestParam() {
       this.getParameter() = any(DjangoRouteSetup setup).getARequestHandler().getRequestParam()
+      or
+      this.getParameter() = any(DjangoViewClassHandlerWithoutKnownRoute setup).getRequestParam()
     }
 
     override string getSourceType() { result = "django.http.request.HttpRequest" }
