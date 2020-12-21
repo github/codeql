@@ -13,7 +13,6 @@ class FormatMethod extends Method {
     exists(Class declType | declType = this.getDeclaringType() |
       this.getParameter(0).getType() instanceof SystemIFormatProviderInterface and
       this.getParameter(1).getType() instanceof StringType and
-      this.getNumberOfParameters() >= 3 and
       (
         this = any(SystemStringClass c).getFormatMethod()
         or
@@ -21,7 +20,6 @@ class FormatMethod extends Method {
       )
       or
       this.getParameter(0).getType() instanceof StringType and
-      this.getNumberOfParameters() >= 2 and
       (
         this = any(SystemStringClass c).getFormatMethod()
         or
@@ -219,6 +217,9 @@ class FormatCall extends MethodCall {
 
   /** Gets the argument number of the first supplied insert. */
   int getFirstArgument() { result = this.getFormatArgument() + 1 }
+
+  /** Holds if this call has one or more insertions. */
+  predicate hasInsertions() { exists(this.getArgument(this.getFirstArgument())) }
 
   /** Holds if the arguments are supplied in an array, not individually. */
   predicate hasArrayExpr() {

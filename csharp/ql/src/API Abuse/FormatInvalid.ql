@@ -14,5 +14,7 @@ import semmle.code.csharp.frameworks.Format
 import FormatFlow
 
 from FormatCall s, InvalidFormatString src, PathNode source, PathNode sink
-where hasFlowPath(src, source, s, sink)
+where
+  hasFlowPath(src, source, s, sink) and
+  s.hasInsertions()
 select src, source, sink, "Invalid format string used in $@ formatting call.", s, "this"
